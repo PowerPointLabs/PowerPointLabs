@@ -1,0 +1,13 @@
+C:\Users\Raunak\Documents\powerpointlabs-clone\PowerPointLabs2007\PowerPointLabs2007\bin\Debug\PowerPointLabs2007.dll
+C:\Users\Raunak\Documents\powerpointlabs-clone\PowerPointLabs2007\PowerPointLabs2007\bin\Debug\PowerPointLabs2007.pdb
+C:\Users\Raunak\Documents\powerpointlabs-clone\PowerPointLabs2007\PowerPointLabs2007\bin\Debug\PowerPointLabs2007.dll.manifest
+C:\Users\Raunak\Documents\powerpointlabs-clone\PowerPointLabs2007\PowerPointLabs2007\bin\Debug\PowerPointLabs2007.vsto
+C:\Users\Raunak\Documents\powerpointlabs-clone\PowerPointLabs2007\PowerPointLabs2007\bin\Debug\Microsoft.Office.Tools.Common.v4.0.Utilities.dll
+C:\Users\Raunak\Documents\powerpointlabs-clone\PowerPointLabs2007\PowerPointLabs2007\bin\Debug\Microsoft.Office.Tools.Common.v4.0.Utilities.xml
+C:\Users\Raunak\Documents\powerpointlabs-clone\PowerPointLabs2007\PowerPointLabs2007\obj\Debug\ResolveAssemblyReference.cache
+C:\Users\Raunak\Documents\powerpointlabs-clone\PowerPointLabs2007\PowerPointLabs2007\obj\Debug\PowerPointLabs2007.Form1.resources
+C:\Users\Raunak\Documents\powerpointlabs-clone\PowerPointLabs2007\PowerPointLabs2007\obj\Debug\PowerPointLabs2007.Properties.Resources.resources
+C:\Users\Raunak\Documents\powerpointlabs-clone\PowerPointLabs2007\PowerPointLabs2007\obj\Debug\GenerateResource.read.1.tlog
+C:\Users\Raunak\Documents\powerpointlabs-clone\PowerPointLabs2007\PowerPointLabs2007\obj\Debug\GenerateResource.write.1.tlog
+C:\Users\Raunak\Documents\powerpointlabs-clone\PowerPointLabs2007\PowerPointLabs2007\obj\Debug\PowerPointLabs2007.dll
+C:\Users\Raunak\Documents\powerpointlabs-clone\PowerPointLabs2007\PowerPointLabs2007\obj\Debug\PowerPointLabs2007.pdb
