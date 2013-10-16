@@ -227,12 +227,12 @@ namespace PowerPointLabs2007
                         //motion.MotionEffect.FromY = initialY / presentation.PageSetup.SlideHeight * 100;
                         //motion.MotionEffect.ToX = (finalX - initialX) / presentation.PageSetup.SlideWidth * 100;
                         //motion.MotionEffect.ToY = (finalY - initialY) / presentation.PageSetup.SlideHeight * 100;
-                        motion.MotionEffect.Path = "M 0 0 L " + (finalX - initialX) / presentation.PageSetup.SlideWidth + " " + (finalY - initialY) / presentation.PageSetup.SlideHeight + " E"; 
+                        motion.MotionEffect.Path = "M 0 0 C " + ((finalX - initialX) / 2) / presentation.PageSetup.SlideWidth + " " + ((finalY - initialY) / 2) / presentation.PageSetup.SlideHeight + " " + ((finalX - initialX) / 2) / presentation.PageSetup.SlideWidth + " " + ((finalY - initialY) / 2) / presentation.PageSetup.SlideHeight + " " + (finalX - initialX) / presentation.PageSetup.SlideWidth + " " + (finalY - initialY) / presentation.PageSetup.SlideHeight + " E"; 
                     }
 
                     //Resize Effect
-                    //if (sh.Type != Office.MsoShapeType.msoPlaceholder && sh.Type != Office.MsoShapeType.msoTextBox)
-                    //{
+                    if (sh.Type != Office.MsoShapeType.msoPlaceholder && sh.Type != Office.MsoShapeType.msoTextBox)
+                    {
                         float finalWidth = shapes2[count].Width;
                         float initialWidth = shapes1[count].Width;
                         float finalHeight = shapes2[count].Height;
@@ -247,7 +247,7 @@ namespace PowerPointLabs2007
                             resize.ScaleEffect.ToX = (finalWidth / initialWidth) * 100;
                             resize.ScaleEffect.ToY = (finalHeight / initialHeight) * 100;
                         }
-                    //}
+                    }
                     if (sh.HasTextFrame == Office.MsoTriState.msoTrue && sh.TextFrame.HasText == Office.MsoTriState.msoTrue && sh.TextFrame.TextRange.Font.Size != shapes2[count].TextFrame.TextRange.Font.Size)
                     {
                         sh.TextFrame.WordWrap = Office.MsoTriState.msoTrue;
