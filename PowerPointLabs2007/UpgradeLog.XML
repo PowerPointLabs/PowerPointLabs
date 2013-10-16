@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?><?xml-stylesheet type='text/xsl' href='_UpgradeReport_Files/UpgradeReport.xslt'?><UpgradeLog>
+<Properties><Property Name="Solution" Value="PowerPointLabs2007">
+</Property><Property Name="Solution File" Value="C:\Users\Raunak\Documents\powerpointlabs-clone\PowerPointLabs2007\PowerPointLabs2007.sln">
+</Property><Property Name="User Options File" Value="C:\Users\Raunak\Documents\powerpointlabs-clone\PowerPointLabs2007\PowerPointLabs2007.suo">
+</Property><Property Name="Date" Value="Wednesday, October 16, 2013">
+</Property><Property Name="Time" Value="9:28 AM">
+</Property></Properties><Event ErrorLevel="0" Project="" Source="PowerPointLabs2007.sln" Description="File successfully backed up as C:\Users\Raunak\Desktop\Backup\PowerPointLabs2007.sln">
+</Event><Event ErrorLevel="0" Project="" Source="PowerPointLabs2007.suo" Description="File successfully backed up as C:\Users\Raunak\Desktop\Backup\PowerPointLabs2007.suo">
+</Event><Event ErrorLevel="0" Project="PowerPointLabs2007" Source="PowerPointLabs2007\PowerPointLabs2007.csproj" Description="Project file successfully backed up as C:\Users\Raunak\Desktop\Backup\PowerPointLabs2007\PowerPointLabs2007.csproj">
+</Event><Event ErrorLevel="0" Project="PowerPointLabs2007" Source="PowerPointLabs2007\Form1.cs" Description="File successfully backed up as C:\Users\Raunak\Desktop\Backup\PowerPointLabs2007\Form1.cs">
+</Event><Event ErrorLevel="0" Project="PowerPointLabs2007" Source="PowerPointLabs2007\Form1.Designer.cs" Description="File successfully backed up as C:\Users\Raunak\Desktop\Backup\PowerPointLabs2007\Form1.Designer.cs">
+</Event><Event ErrorLevel="0" Project="PowerPointLabs2007" Source="PowerPointLabs2007\Properties\AssemblyInfo.cs" Description="File successfully backed up as C:\Users\Raunak\Desktop\Backup\PowerPointLabs2007\Properties\AssemblyInfo.cs">
+</Event><Event ErrorLevel="0" Project="PowerPointLabs2007" Source="PowerPointLabs2007\Properties\Resources.Designer.cs" Description="File successfully backed up as C:\Users\Raunak\Desktop\Backup\PowerPointLabs2007\Properties\Resources.Designer.cs">
+</Event><Event ErrorLevel="0" Project="PowerPointLabs2007" Source="PowerPointLabs2007\Properties\Settings.Designer.cs" Description="File successfully backed up as C:\Users\Raunak\Desktop\Backup\PowerPointLabs2007\Properties\Settings.Designer.cs">
+</Event><Event ErrorLevel="0" Project="PowerPointLabs2007" Source="PowerPointLabs2007\Ribbon1.cs" Description="File successfully backed up as C:\Users\Raunak\Desktop\Backup\PowerPointLabs2007\Ribbon1.cs">
+</Event><Event ErrorLevel="0" Project="PowerPointLabs2007" Source="PowerPointLabs2007\ThisAddIn.cs" Description="File successfully backed up as C:\Users\Raunak\Desktop\Backup\PowerPointLabs2007\ThisAddIn.cs">
+</Event><Event ErrorLevel="0" Project="PowerPointLabs2007" Source="PowerPointLabs2007\ThisAddIn.Designer.cs" Description="File successfully backed up as C:\Users\Raunak\Desktop\Backup\PowerPointLabs2007\ThisAddIn.Designer.cs">
+</Event><Event ErrorLevel="0" Project="PowerPointLabs2007" Source="PowerPointLabs2007\PowerPointLabs2007_TemporaryKey.pfx" Description="File successfully backed up as C:\Users\Raunak\Desktop\Backup\PowerPointLabs2007\PowerPointLabs2007_TemporaryKey.pfx">
+</Event><Event ErrorLevel="0" Project="PowerPointLabs2007" Source="PowerPointLabs2007\Properties\Settings.settings" Description="File successfully backed up as C:\Users\Raunak\Desktop\Backup\PowerPointLabs2007\Properties\Settings.settings">
+</Event><Event ErrorLevel="0" Project="PowerPointLabs2007" Source="PowerPointLabs2007\ThisAddIn.Designer.xml" Description="File successfully backed up as C:\Users\Raunak\Desktop\Backup\PowerPointLabs2007\ThisAddIn.Designer.xml">
+</Event><Event ErrorLevel="0" Project="PowerPointLabs2007" Source="PowerPointLabs2007\Form1.resx" Description="File successfully backed up as C:\Users\Raunak\Desktop\Backup\PowerPointLabs2007\Form1.resx">
+</Event><Event ErrorLevel="0" Project="PowerPointLabs2007" Source="PowerPointLabs2007\Properties\Resources.resx" Description="File successfully backed up as C:\Users\Raunak\Desktop\Backup\PowerPointLabs2007\Properties\Resources.resx">
+</Event><Event ErrorLevel="0" Project="PowerPointLabs2007" Source="PowerPointLabs2007\Ribbon1.xml" Description="File successfully backed up as C:\Users\Raunak\Desktop\Backup\PowerPointLabs2007\Ribbon1.xml">
+</Event><Event ErrorLevel="0" Project="PowerPointLabs2007" Source="PowerPointLabs2007\PowerPointLabs2007.csproj" Description="Project converted successfully">
+</Event><Event ErrorLevel="3" Project="PowerPointLabs2007" Source="PowerPointLabs2007\PowerPointLabs2007.csproj" Description="Converted">
+</Event><Event ErrorLevel="0" Project="" Source="PowerPointLabs2007.sln" Description="The solution file does not require conversion.">
+</Event><Event ErrorLevel="3" Project="" Source="PowerPointLabs2007.sln" Description="No Conversion Required">
+</Event><Event ErrorLevel="0" Project="PowerPointLabs2007" Source="PowerPointLabs2007\PowerPointLabs2007.csproj" Description="Scan complete: Upgrade not required for project files.">
+</Event></UpgradeLog>

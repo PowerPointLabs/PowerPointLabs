@@ -87,8 +87,16 @@ namespace PowerPointLabs2007
         {
             //Get References of current and next slides
             PowerPoint.Slide currentSlide = GetCurrentSlide();
-            PowerPoint.Slide nextSlide = GetNextSlide(currentSlide);
-            AddCompleteAutoMotion(currentSlide, nextSlide);
+            PowerPoint.Presentation presentation = Globals.ThisAddIn.Application.ActivePresentation;
+            if (currentSlide != null && currentSlide.SlideIndex != presentation.Slides.Count)
+            {
+                PowerPoint.Slide nextSlide = GetNextSlide(currentSlide);
+                AddCompleteAutoMotion(currentSlide, nextSlide);
+            }
+            else
+            {
+                System.Windows.Forms.MessageBox.Show("Please select the correct slide", "Unable to Add Animations");
+            }
         }
 
         public void ReloadButtonClick(Office.IRibbonControl control)
@@ -199,6 +207,7 @@ namespace PowerPointLabs2007
             //Add animation effects to the duplicated objects
             foreach (PowerPoint.Shape sh in newSlide.Shapes)
             {
+                DeleteShapeAnnimations(newSlide, sh);
                 if (count < shapeIDs.Count() && sh.Id == shapeIDs[count])
                 {
                     //Motion Effect
@@ -288,11 +297,13 @@ namespace PowerPointLabs2007
 
             //Manage Slide Transitions
             newSlide.SlideShowTransition.EntryEffect = PowerPoint.PpEntryEffect.ppEffectFadeSmoothly;
-            //newSlide.SlideShowTransition.Duration = defaultDuration;
-            newSlide.SlideShowTransition.Speed = PowerPoint.PpTransitionSpeed.ppTransitionSpeedFast;
+            newSlide.SlideShowTransition.Duration = defaultDuration;
             newSlide.SlideShowTransition.AdvanceOnTime = Office.MsoTriState.msoTrue;
             newSlide.SlideShowTransition.AdvanceOnClick = Office.MsoTriState.msoFalse;
             newSlide.SlideShowTransition.AdvanceTime = 0;
+
+            PowerPoint.Slide nextSlide = GetNextSlide(newSlide);
+            nextSlide.SlideShowTransition.EntryEffect = PowerPoint.PpEntryEffect.ppEffectNone;
 
             return newSlide;
         }
@@ -395,6 +406,26 @@ namespace PowerPointLabs2007
             else
             {
                 return d;
+            }
+        }
+
+        private void DeleteShapeAnnimations(PowerPoint.Slide slide, PowerPoint.Shape shape)
+        {
+            PowerPoint.Sequence sequence = slide.TimeLine.MainSequence;
+            for (int x = sequence.Count; x >= 1; x--)
+            {
+                PowerPoint.Effect effect = sequence[x];
+                if (effect.Shape.Name == shape.Name)
+                effect.Delete();
+            }
+
+            PowerPoint.Slide nextSlide = GetNextSlide(slide);
+            sequence = nextSlide.TimeLine.MainSequence;
+            for (int x = sequence.Count; x >= 1; x--)
+            {
+                PowerPoint.Effect effect = sequence[x];
+                if (effect.Shape.Name == shape.Name)
+                    effect.Delete();
             }
         }
 

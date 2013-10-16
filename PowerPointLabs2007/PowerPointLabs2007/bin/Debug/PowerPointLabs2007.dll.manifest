@@ -43,27 +43,12 @@
   </dependency>
   <dependency>
     <dependentAssembly dependencyType="preRequisite" allowDelayedBinding="true">
-      <assemblyIdentity name="Microsoft.Office.Tools" version="10.0.0.0" publicKeyToken="B03F5F7F11D50A3A" language="neutral" processorArchitecture="msil" />
-    </dependentAssembly>
-  </dependency>
-  <dependency>
-    <dependentAssembly dependencyType="preRequisite" allowDelayedBinding="true">
-      <assemblyIdentity name="Microsoft.Office.Tools.Common" version="10.0.0.0" publicKeyToken="B03F5F7F11D50A3A" language="neutral" processorArchitecture="msil" />
-    </dependentAssembly>
-  </dependency>
-  <dependency>
-    <dependentAssembly dependencyType="preRequisite" allowDelayedBinding="true">
       <assemblyIdentity name="Microsoft.Office.Tools.v4.0.Framework" version="10.0.0.0" publicKeyToken="B03F5F7F11D50A3A" language="neutral" processorArchitecture="msil" />
     </dependentAssembly>
   </dependency>
   <dependency>
     <dependentAssembly dependencyType="preRequisite" allowDelayedBinding="true">
       <assemblyIdentity name="Microsoft.VisualStudio.Tools.Applications.Runtime" version="10.0.0.0" publicKeyToken="B03F5F7F11D50A3A" language="neutral" processorArchitecture="msil" />
-    </dependentAssembly>
-  </dependency>
-  <dependency>
-    <dependentAssembly dependencyType="preRequisite" allowDelayedBinding="true">
-      <assemblyIdentity name="stdole" version="7.0.3300.0" publicKeyToken="B03F5F7F11D50A3A" language="neutral" />
     </dependentAssembly>
   </dependency>
   <dependency>
@@ -79,14 +64,14 @@
     </dependentAssembly>
   </dependency>
   <dependency>
-    <dependentAssembly dependencyType="install" allowDelayedBinding="true" codebase="PowerPointLabs2007.dll" size="56320">
+    <dependentAssembly dependencyType="install" allowDelayedBinding="true" codebase="PowerPointLabs2007.dll" size="61440">
       <assemblyIdentity name="PowerPointLabs2007" version="1.0.0.0" language="neutral" processorArchitecture="msil" />
       <hash>
         <dsig:Transforms>
           <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
         </dsig:Transforms>
         <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha1" />
-        <dsig:DigestValue>gDJn3u6h3QYgDxWDkNBhIYcNLbM=</dsig:DigestValue>
+        <dsig:DigestValue>6UJ+VLVCDsfXSfq09eM3eDzzCyY=</dsig:DigestValue>
       </hash>
     </dependentAssembly>
   </dependency>
@@ -112,4 +97,4 @@
       </vstov4:customizations>
     </vstav3:application>
   </vstav3:addIn>
-<publisherIdentity name="CN=WIN-PL42AMNB4SG\Raunak" issuerKeyHash="827fcc7f733c19094c61d14aec85d81df352b0df" /><Signature Id="StrongNameSignature" xmlns="http://www.w3.org/2000/09/xmldsig#"><SignedInfo><CanonicalizationMethod Algorithm="http://www.w3.org/2001/10/xml-exc-c14n#" /><SignatureMethod Algorithm="http://www.w3.org/2000/09/xmldsig#rsa-sha1" /><Reference URI=""><Transforms><Transform Algorithm="http://www.w3.org/2000/09/xmldsig#enveloped-signature" /><Transform Algorithm="http://www.w3.org/2001/10/xml-exc-c14n#" /></Transforms><DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha1" /><DigestValue>F1rJE4cURJBXTuokJBxi0PYlxEc=</DigestValue></Reference></SignedInfo><SignatureValue>YAIihlT0iL/DJI8arqvekdqM2LFP8uEnV6g2xuw4Kmt7uznHw4l2ygC/V8NJgaXVPkdLMHghS2JIj8rvaCrkyAKH0cwGsgwWZTfmO9BbH3+p94L0nn8ye0uUexWxdZpiY9jSfxmOeSl4NB3U6rEdmZBPpu4lMqX9X+rx69F66Wc=</SignatureValue><KeyInfo Id="StrongNameKeyInfo"><KeyValue><RSAKeyValue><Modulus>rAX2lhn8miS3RxuymvVrR24rugG1W/9jl5Tay8gc7kShdxwPqBRt5/zMuNPcfxMq+BkjGNQ1BeN5JroxbH1I5UvMsrJhVtKIeDW8CzamlA4aPCR6YnD8MaTb2NLtI609o1EEcVYrx9RZZc4qJFJcf00tsuNRH5AYKInkPOV929E=</Modulus><Exponent>AQAB</Exponent></RSAKeyValue></KeyValue><msrel:RelData xmlns:msrel="http://schemas.microsoft.com/windows/rel/2005/reldata"><r:license xmlns:r="urn:mpeg:mpeg21:2003:01-REL-R-NS" xmlns:as="http://schemas.microsoft.com/windows/pki/2005/Authenticode"><r:grant><as:ManifestInformation Hash="47c425f6d0621c2424ea4e579044148713c95a17" Description="" Url=""><as:assemblyIdentity name="PowerPointLabs2007.dll" version="1.0.0.0" publicKeyToken="c43a3dcd73c0775e" language="neutral" processorArchitecture="msil" type="win32" /></as:ManifestInformation><as:SignedBy /><as:AuthenticodePublisher><as:X509SubjectName>CN=WIN-PL42AMNB4SG\Raunak</as:X509SubjectName></as:AuthenticodePublisher></r:grant><r:issuer><Signature Id="AuthenticodeSignature" xmlns="http://www.w3.org/2000/09/xmldsig#"><SignedInfo><CanonicalizationMethod Algorithm="http://www.w3.org/2001/10/xml-exc-c14n#" /><SignatureMethod Algorithm="http://www.w3.org/2000/09/xmldsig#rsa-sha1" /><Reference URI=""><Transforms><Transform Algorithm="http://www.w3.org/2000/09/xmldsig#enveloped-signature" /><Transform Algorithm="http://www.w3.org/2001/10/xml-exc-c14n#" /></Transforms><DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha1" /><DigestValue>NUWh9Mf8aN1moJm0kdgp2fznlZk=</DigestValue></Reference></SignedInfo><SignatureValue>J1e8G+uiDzgGJPcY1FoQJwGcNB22An3QUbjUIel6ZERMMansFW1FY5x+fS9MAlM8Hc8j58Fd8UICLk5wywRyK81x6mhZcUCSlBqsk98tZSV/BHP0WbgP9+Fn3URRCawVxeDxv2jtfbg9qMwh+RHAyeRbibAJo+Mj0uHI0ax+9a8=</SignatureValue><KeyInfo><KeyValue><RSAKeyValue><Modulus>rAX2lhn8miS3RxuymvVrR24rugG1W/9jl5Tay8gc7kShdxwPqBRt5/zMuNPcfxMq+BkjGNQ1BeN5JroxbH1I5UvMsrJhVtKIeDW8CzamlA4aPCR6YnD8MaTb2NLtI609o1EEcVYrx9RZZc4qJFJcf00tsuNRH5AYKInkPOV929E=</Modulus><Exponent>AQAB</Exponent></RSAKeyValue></KeyValue><X509Data><X509Certificate>MIIB8TCCAVqgAwIBAgIQUBpGvl/1pIRP7A0667QZqzANBgkqhkiG9w0BAQUFADA3MTUwMwYDVQQDHiwAVwBJAE4ALQBQAEwANAAyAEEATQBOAEIANABTAEcAXABSAGEAdQBuAGEAazAeFw0xMzEwMTUxNzU1NDZaFw0xNDEwMTUyMzU1NDZaMDcxNTAzBgNVBAMeLABXAEkATgAtAFAATAA0ADIAQQBNAE4AQgA0AFMARwBcAFIAYQB1AG4AYQBrMIGfMA0GCSqGSIb3DQEBAQUAA4GNADCBiQKBgQCsBfaWGfyaJLdHG7Ka9WtHbiu6AbVb/2OXlNrLyBzuRKF3HA+oFG3n/My409x/Eyr4GSMY1DUF43kmujFsfUjlS8yysmFW0oh4NbwLNqaUDho8JHpicPwxpNvY0u0jrT2jUQRxVivH1FllziokUlx/TS2y41EfkBgoieQ85X3b0QIDAQABMA0GCSqGSIb3DQEBBQUAA4GBAH4QH+dsMSM8Tco8wN+bigEW1h7xxgF0XxGk4uCAW3I/rZ+KcxGO7Z03LDq58PDomV+Yc1DF4JEbjyF7vajqtbu79ajNZf+KHtcS5UebGJypUFrBkpOD1ssGvtoqpuDnSiTjQIS8Ui35MBG3c9iaGBXjJW42zqGkoW69vIVJWlwF</X509Certificate></X509Data></KeyInfo></Signature></r:issuer></r:license></msrel:RelData></KeyInfo></Signature></asmv1:assembly>
+<publisherIdentity name="CN=WIN-PL42AMNB4SG\Raunak" issuerKeyHash="827fcc7f733c19094c61d14aec85d81df352b0df" /><Signature Id="StrongNameSignature" xmlns="http://www.w3.org/2000/09/xmldsig#"><SignedInfo><CanonicalizationMethod Algorithm="http://www.w3.org/2001/10/xml-exc-c14n#" /><SignatureMethod Algorithm="http://www.w3.org/2000/09/xmldsig#rsa-sha1" /><Reference URI=""><Transforms><Transform Algorithm="http://www.w3.org/2000/09/xmldsig#enveloped-signature" /><Transform Algorithm="http://www.w3.org/2001/10/xml-exc-c14n#" /></Transforms><DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha1" /><DigestValue>cdI79yJkvlUgxxtV3eTAJwpOayw=</DigestValue></Reference></SignedInfo><SignatureValue>iEZLLacMawvpewqRkso/E4EB47IGy1Ue4Sh92+/4JPZ0cJc52noPOfIT6P+8cZMeZ0e1fxpWO4XKtDpptlC1+Q49EAYPwhEhYfYsKkIhj93ODscYvsJ5YnA3asXtbMrlrxHbLgiFFFkC69/CIpvi0lV2H3Yz27g6eqoOQ4A9oJA=</SignatureValue><KeyInfo Id="StrongNameKeyInfo"><KeyValue><RSAKeyValue><Modulus>rAX2lhn8miS3RxuymvVrR24rugG1W/9jl5Tay8gc7kShdxwPqBRt5/zMuNPcfxMq+BkjGNQ1BeN5JroxbH1I5UvMsrJhVtKIeDW8CzamlA4aPCR6YnD8MaTb2NLtI609o1EEcVYrx9RZZc4qJFJcf00tsuNRH5AYKInkPOV929E=</Modulus><Exponent>AQAB</Exponent></RSAKeyValue></KeyValue><msrel:RelData xmlns:msrel="http://schemas.microsoft.com/windows/rel/2005/reldata"><r:license xmlns:r="urn:mpeg:mpeg21:2003:01-REL-R-NS" xmlns:as="http://schemas.microsoft.com/windows/pki/2005/Authenticode"><r:grant><as:ManifestInformation Hash="2c6b4e0a27c0e4dd551bc72055be6422f73bd271" Description="" Url=""><as:assemblyIdentity name="PowerPointLabs2007.dll" version="1.0.0.0" publicKeyToken="c43a3dcd73c0775e" language="neutral" processorArchitecture="msil" type="win32" /></as:ManifestInformation><as:SignedBy /><as:AuthenticodePublisher><as:X509SubjectName>CN=WIN-PL42AMNB4SG\Raunak</as:X509SubjectName></as:AuthenticodePublisher></r:grant><r:issuer><Signature Id="AuthenticodeSignature" xmlns="http://www.w3.org/2000/09/xmldsig#"><SignedInfo><CanonicalizationMethod Algorithm="http://www.w3.org/2001/10/xml-exc-c14n#" /><SignatureMethod Algorithm="http://www.w3.org/2000/09/xmldsig#rsa-sha1" /><Reference URI=""><Transforms><Transform Algorithm="http://www.w3.org/2000/09/xmldsig#enveloped-signature" /><Transform Algorithm="http://www.w3.org/2001/10/xml-exc-c14n#" /></Transforms><DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha1" /><DigestValue>DrDiuW8cldXDOPtGEcMZY4wfBLY=</DigestValue></Reference></SignedInfo><SignatureValue>OlKkBJvH1PrUGQ7m9LlxBdM8VoMUY+AyoKOGj54cEI3LEAaSXsqu5dG2SG4spQLJEOfiVj2Q80BgIih76rETD+lp8ar4AKTp6ImRVRVP65un2ADUhTA694R81ZE0tWibwD5MLWR7Q1Q70cE5eUyOwKTkmvTT8fJJdMhoj5Xzftk=</SignatureValue><KeyInfo><KeyValue><RSAKeyValue><Modulus>rAX2lhn8miS3RxuymvVrR24rugG1W/9jl5Tay8gc7kShdxwPqBRt5/zMuNPcfxMq+BkjGNQ1BeN5JroxbH1I5UvMsrJhVtKIeDW8CzamlA4aPCR6YnD8MaTb2NLtI609o1EEcVYrx9RZZc4qJFJcf00tsuNRH5AYKInkPOV929E=</Modulus><Exponent>AQAB</Exponent></RSAKeyValue></KeyValue><X509Data><X509Certificate>MIIB8TCCAVqgAwIBAgIQUBpGvl/1pIRP7A0667QZqzANBgkqhkiG9w0BAQUFADA3MTUwMwYDVQQDHiwAVwBJAE4ALQBQAEwANAAyAEEATQBOAEIANABTAEcAXABSAGEAdQBuAGEAazAeFw0xMzEwMTUxNzU1NDZaFw0xNDEwMTUyMzU1NDZaMDcxNTAzBgNVBAMeLABXAEkATgAtAFAATAA0ADIAQQBNAE4AQgA0AFMARwBcAFIAYQB1AG4AYQBrMIGfMA0GCSqGSIb3DQEBAQUAA4GNADCBiQKBgQCsBfaWGfyaJLdHG7Ka9WtHbiu6AbVb/2OXlNrLyBzuRKF3HA+oFG3n/My409x/Eyr4GSMY1DUF43kmujFsfUjlS8yysmFW0oh4NbwLNqaUDho8JHpicPwxpNvY0u0jrT2jUQRxVivH1FllziokUlx/TS2y41EfkBgoieQ85X3b0QIDAQABMA0GCSqGSIb3DQEBBQUAA4GBAH4QH+dsMSM8Tco8wN+bigEW1h7xxgF0XxGk4uCAW3I/rZ+KcxGO7Z03LDq58PDomV+Yc1DF4JEbjyF7vajqtbu79ajNZf+KHtcS5UebGJypUFrBkpOD1ssGvtoqpuDnSiTjQIS8Ui35MBG3c9iaGBXjJW42zqGkoW69vIVJWlwF</X509Certificate></X509Data></KeyInfo></Signature></r:issuer></r:license></msrel:RelData></KeyInfo></Signature></asmv1:assembly>

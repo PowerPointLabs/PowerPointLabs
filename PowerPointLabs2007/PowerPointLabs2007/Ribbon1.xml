@@ -1,5 +1,5 @@
 ﻿<?xml version="1.0" encoding="UTF-8"?>
-<customUI xmlns="http://schemas.microsoft.com/office/2006/01/customui" onLoad="Ribbon_Load">
+<customUI xmlns="http://schemas.microsoft.com/office/2009/07/customui" onLoad="Ribbon_Load">
   <ribbon>
     <tabs>
       <tab id="PowerPlugsAddIns" label="PowerPlugs">
@@ -34,7 +34,7 @@
       </tab>
     </tabs>
   </ribbon>
-  <!--<contextMenus>
+  <contextMenus>
     <contextMenu idMso="ContextMenuShape">
       <button id="nameEditShape"
               label="Edit Name"
@@ -71,6 +71,6 @@
               imageMso="HappyFace"
               onAction="NameEditBtnClick"/>
     </contextMenu>
-  </contextMenus>-->
+  </contextMenus>
 </customUI>
 
