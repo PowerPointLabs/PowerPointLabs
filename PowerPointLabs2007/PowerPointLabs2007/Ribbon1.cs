@@ -231,8 +231,8 @@ namespace PowerPointLabs2007
                     }
 
                     //Resize Effect
-                    if (sh.Type != Office.MsoShapeType.msoPlaceholder && sh.Type != Office.MsoShapeType.msoTextBox)
-                    {
+                    //if (sh.Type != Office.MsoShapeType.msoPlaceholder && sh.Type != Office.MsoShapeType.msoTextBox)
+                    //{
                         float finalWidth = shapes2[count].Width;
                         float initialWidth = shapes1[count].Width;
                         float finalHeight = shapes2[count].Height;
@@ -241,22 +241,21 @@ namespace PowerPointLabs2007
                         if ((finalWidth != initialWidth) || (finalHeight != initialHeight))
                         {
                             effectResize = sequence.AddEffect(sh, PowerPoint.MsoAnimEffect.msoAnimEffectGrowShrink, PowerPoint.MsoAnimateByLevel.msoAnimateLevelNone, PowerPoint.MsoAnimTriggerType.msoAnimTriggerWithPrevious);
-                            PowerPoint.AnimationBehavior resize = effectResize.Behaviors.Add(PowerPoint.MsoAnimType.msoAnimTypeScale);
+                            //PowerPoint.AnimationBehavior resize = effectResize.Behaviors.Add(PowerPoint.MsoAnimType.msoAnimTypeScale);
+                            PowerPoint.AnimationBehavior resize = effectResize.Behaviors[1];
                             effectResize.Timing.Duration = defaultDuration;
-
                             resize.ScaleEffect.ToX = (finalWidth / initialWidth) * 100;
                             resize.ScaleEffect.ToY = (finalHeight / initialHeight) * 100;
                         }
-                    }
-                    else
+                    //}
+                    if (sh.HasTextFrame == Office.MsoTriState.msoTrue && sh.TextFrame.HasText == Office.MsoTriState.msoTrue && sh.TextFrame.TextRange.Font.Size != shapes2[count].TextFrame.TextRange.Font.Size)
                     {
+                        sh.TextFrame.WordWrap = Office.MsoTriState.msoTrue;
                         effectFontResize = sequence.AddEffect(sh, PowerPoint.MsoAnimEffect.msoAnimEffectChangeFontSize, PowerPoint.MsoAnimateByLevel.msoAnimateLevelNone, PowerPoint.MsoAnimTriggerType.msoAnimTriggerWithPrevious);
                         effectFontResize.Timing.Duration = defaultDuration;
-                        PowerPoint.AnimationBehavior resizeFont = effectFontResize.Behaviors.Add(PowerPoint.MsoAnimType.msoAnimTypeProperty);
-                        resizeFont.PropertyEffect.To = 200 / 1;
-                        //effectFontResize.EffectParameters.Size = 2;
+                        PowerPoint.AnimationBehavior resizeFont = effectFontResize.Behaviors[1];
+                        resizeFont.PropertyEffect.To = shapes2[count].TextFrame.TextRange.Font.Size / shapes1[count].TextFrame.TextRange.Font.Size;
                     }
-
 
                     //Rotation Effect
                     float finalRotation = shapes2[count].Rotation;
