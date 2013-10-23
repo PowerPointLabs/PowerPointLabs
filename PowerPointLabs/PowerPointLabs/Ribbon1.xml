@@ -41,52 +41,54 @@
   </ribbon>
   <contextMenus>
     <contextMenu idMso="ContextMenuShape">
+      <menuSeparator id="separatorShape"/>
       <button id="nameEditShape"
               label="Edit Name"
-              imageMso="HappyFace"
+              imageMso="EditCitation"
               onAction="NameEditBtnClick"/>
+      <button id="spotlightShape"
+              label="Add Spotlight"
+              imageMso="ObjectEffectGlowGallery"
+              onAction="SpotlightBtnClick"/>
     </contextMenu>
     <contextMenu idMso="ContextMenuPicture">
+      <menuSeparator id="separatorPicture"/>
       <button id="nameEditPicture"
               label="Edit Name"
-              imageMso="HappyFace"
+              imageMso="EditCitation"
               onAction="NameEditBtnClick"/>
     </contextMenu>
     <contextMenu idMso="ContextMenuChartArea">
+      <menuSeparator id="separatorChart"/>
       <button id="nameEditChart"
               label="Edit Name"
-              imageMso="HappyFace"
+              imageMso="EditCitation"
               onAction="NameEditBtnClick"/>
     </contextMenu>
     <contextMenu idMso="ContextMenuTable">
+      <menuSeparator id="separatorTable"/>
       <button id="nameEditTable"
               label="Edit Name"
-              imageMso="HappyFace"
+              imageMso="EditCitation"
               onAction="NameEditBtnClick"/>
     </contextMenu>
     <contextMenu idMso="ContextMenuObjectsGroup">
+      <menuSeparator id="separatorGroup"/>
       <button id="nameEditGroup"
               label="Edit Name"
-              imageMso="HappyFace"
+              imageMso="EditCitation"
               onAction="NameEditBtnClick"/>
-    </contextMenu>
-    <contextMenu idMso="ContextMenuInk">
-      <button id="nameEditInk"
-              label="Edit Name"
-              imageMso="HappyFace"
-              onAction="NameEditBtnClick"/>
-    </contextMenu>
-    <contextMenu idMso="ContextMenuShape">
-      <button id="spotlightShape"
-              label="Add Spotlight"
-              imageMso="HappyFace"
-              onAction="SpotlightBtnClick"/>
-    </contextMenu>
-    <contextMenu idMso="ContextMenuObjectsGroup">
       <button id="zoomShape"
               label="Add Zoom"
-              imageMso="HappyFace"
+              imageMso="PanAndZoomWindow"
               onAction="ZoomBtnClick"/>
+    </contextMenu>
+    <contextMenu idMso="ContextMenuInk">
+      <menuSeparator id="separatorInk"/>
+      <button id="nameEditInk"
+              label="Edit Name"
+              imageMso="EditCitation"
+              onAction="NameEditBtnClick"/>
     </contextMenu>
   </contextMenus>
 </customUI>
