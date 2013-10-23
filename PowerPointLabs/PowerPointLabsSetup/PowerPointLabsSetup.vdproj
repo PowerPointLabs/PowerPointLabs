@@ -366,7 +366,7 @@
         {
             "{3C67513D-01DD-4637-8A68-80971EB9504F}:_1AA810FB0D25404F9155B1C31521ED27"
             {
-            "DefaultLocation" = "8:[ProgramFilesFolder][Manufacturer]\\[ProductName]"
+            "DefaultLocation" = "8:[ProgramFiles64Folder][Manufacturer]\\[ProductName]"
             "Name" = "8:#1925"
             "AlwaysCreate" = "11:FALSE"
             "Condition" = "8:"
@@ -415,7 +415,7 @@
         "Name" = "8:Microsoft Visual Studio"
         "ProductName" = "8:PowerPointLabs"
         "ProductCode" = "8:{746E1AB0-C0E0-4F25-B67D-4FA2B0672317}"
-        "PackageCode" = "8:{96BFD85B-F4E0-49E1-9C48-E46B2B2BBE7F}"
+        "PackageCode" = "8:{3939217D-510D-412E-8621-4406F821E585}"
         "UpgradeCode" = "8:{E41A2BC7-B789-40B3-A085-8152D5AA6B9E}"
         "AspNetVersion" = "8:4.0.30319.0"
         "RestartWWWService" = "11:FALSE"
@@ -436,7 +436,7 @@
         "ARPIconIndex" = "3:0"
         "SearchPath" = "8:"
         "UseSystemSearchPath" = "11:TRUE"
-        "TargetPlatform" = "3:0"
+        "TargetPlatform" = "3:1"
         "PreBuildEvent" = "8:"
         "PostBuildEvent" = "8:"
         "RunPostBuildEvent" = "3:0"
