@@ -30,10 +30,33 @@
                    sizeString="AAAA"
                    getText = "OnGetText"
                    onChange = "OnChangeDuration"/>
-          <button id="aboutButton"
+          <button id="aboutButtonAutoMotion"
                   label="About"
                   imageMso="Info"
                   screentip="Learn More about PPTLabs AutoMotion"
+                  onAction="AboutButtonClick"/>
+        </group>
+        <group id="SpotLightGroup"
+               label="PPTLabs Spotlight"
+               visible="true">
+          <editBox id="spotlightTransparency"
+                   label="Transparency"
+                   imageMso="PrintTitles"
+                   sizeString="AAAA"
+                   getText = "OnGetTransparency"
+                   onChange = "OnChangeTransparency"/>
+          <dropDown id="spotlightSoftEdgesList"
+                    label ="Soft Edges"
+                    imageMso="PictureEffectsSoftEdgesGallery"
+                    sizeString ="AAAAAAAA"
+                    getItemCount ="OnGetItemCountSpotlight"
+                    getItemLabel ="OnGetItemLabelSpotlight"
+                    getSelectedItemIndex="OnGetSelectedItemIndexSpotlight" 
+                    onAction ="OnSelectItemSpotlight" />
+          <button id="aboutButtonSpotlight"
+                  label="About"
+                  imageMso="Info"
+                  screentip="Learn More about PPTLabs Spotlight"
                   onAction="AboutButtonClick"/>
         </group>
       </tab>

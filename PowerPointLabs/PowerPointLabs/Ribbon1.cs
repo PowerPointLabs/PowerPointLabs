@@ -34,9 +34,20 @@ namespace PowerPointLabs
     {
         private Office.IRibbonUI ribbon;
 
-        public PowerPoint.MsoAnimEffect defaultEffect = PowerPoint.MsoAnimEffect.msoAnimEffectCustom;
+        public float defaultSoftEdges = 0;
         public float defaultDuration = 0.5f;
+        public float defaultTransparency = 0.3f;
         public bool startUp = false;
+        public Dictionary<String, float> softEdgesMapping = new Dictionary<string,float>
+        {
+            {"No Edges", 0},
+            {"1 Point", 1},
+            {"2.5 Points", 2.5f},
+            {"5 Points", 5},
+            {"10 Points", 10},
+            {"25 Points", 25},
+            {"50 Points", 50}
+        };
         //public Dictionary<String, PowerPoint.MsoAnimEffect> effectMapping = new Dictionary<String, PowerPoint.MsoAnimEffect>
         //{ 
         //    {"Appear", PowerPoint.MsoAnimEffect.msoAnimEffectAppear},
@@ -114,7 +125,7 @@ namespace PowerPointLabs
             }
             else
             {
-                System.Windows.Forms.MessageBox.Show("The current slide was not added by PPAutoMotion", "Error");
+                System.Windows.Forms.MessageBox.Show("The current slide was not added by PPTLabs AutoMotion", "Error");
             }
         }
 
@@ -151,6 +162,45 @@ namespace PowerPointLabs
         public String OnGetText(Office.IRibbonControl control)
         {
             return defaultDuration.ToString();
+        }
+
+        //Transparency Callbacks
+        public void OnChangeTransparency(Office.IRibbonControl control, String text)
+        {
+            if (text.Contains('%'))
+            {
+                text = text.Substring(0, text.IndexOf('%'));    
+            }
+            defaultTransparency = float.Parse(text);
+            defaultTransparency /= 100;
+            ribbon.InvalidateControl("spotlightTransparency");
+        }
+
+        public String OnGetTransparency(Office.IRibbonControl control)
+        {
+            return (defaultTransparency*100).ToString() + "%";
+        }
+
+        public int OnGetItemCountSpotlight(Office.IRibbonControl control)
+        {
+            return softEdgesMapping.Count;
+        }
+
+        public String OnGetItemLabelSpotlight(Office.IRibbonControl control, int index)
+        {
+            String[] keys = softEdgesMapping.Keys.ToArray();
+            return keys[index];
+        }
+
+        public void OnSelectItemSpotlight(Office.IRibbonControl control, String selectedId, int selectedIndex)
+        {
+            String[] keys = softEdgesMapping.Keys.ToArray();
+            defaultSoftEdges = softEdgesMapping[keys[selectedIndex]];
+        }
+
+        public int OnGetSelectedItemIndexSpotlight(Office.IRibbonControl control)
+        {
+            return 0;
         }
 
         //Edit Name Callbacks
@@ -236,7 +286,7 @@ namespace PowerPointLabs
             PowerPoint.Presentation presentation = Globals.ThisAddIn.Application.ActivePresentation;
             PowerPoint.Shape rectangleShape = addedSlide.Shapes.AddShape(Office.MsoAutoShapeType.msoShapeRectangle, 0, 0, presentation.PageSetup.SlideWidth, presentation.PageSetup.SlideHeight);
             rectangleShape.Fill.ForeColor.RGB = 0x000000;
-            rectangleShape.Fill.Transparency = 0.2f;
+            rectangleShape.Fill.Transparency = defaultTransparency;
             rectangleShape.Line.Visible = Office.MsoTriState.msoFalse;
             rectangleShape.Name = "SpotlightShape1";
 
@@ -272,6 +322,7 @@ namespace PowerPointLabs
             pictureShape.Top = 0;
             pictureShape.PictureFormat.TransparencyColor = 0xffffff;
             pictureShape.PictureFormat.TransparentBackground = Office.MsoTriState.msoTrue;
+            pictureShape.SoftEdge.Radius = defaultSoftEdges;
         }
 
         #endregion
