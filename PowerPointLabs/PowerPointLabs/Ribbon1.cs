@@ -27,7 +27,7 @@ using PowerPoint = Microsoft.Office.Interop.PowerPoint;
 // For more information, see the Ribbon XML documentation in the Visual Studio Tools for Office Help.
 
 
-namespace PowerPointLabs2007
+namespace PowerPointLabs
 {
     [ComVisible(true)]
     public class Ribbon1 : Office.IRibbonExtensibility
@@ -37,30 +37,30 @@ namespace PowerPointLabs2007
         public PowerPoint.MsoAnimEffect defaultEffect = PowerPoint.MsoAnimEffect.msoAnimEffectCustom;
         public float defaultDuration = 0.5f;
         public bool startUp = false;
-        public Dictionary<String, PowerPoint.MsoAnimEffect> effectMapping = new Dictionary<String, PowerPoint.MsoAnimEffect>
-        { 
-            {"Appear", PowerPoint.MsoAnimEffect.msoAnimEffectAppear},
-            {"Arc Up", PowerPoint.MsoAnimEffect.msoAnimEffectArcUp},
-            {"Ascend", PowerPoint.MsoAnimEffect.msoAnimEffectAscend},
-            {"Blinds", PowerPoint.MsoAnimEffect.msoAnimEffectBlinds},
-            {"Checkerboard", PowerPoint.MsoAnimEffect.msoAnimEffectCheckerboard},
-            {"Circle", PowerPoint.MsoAnimEffect.msoAnimEffectCircle},
-            {"Crawl", PowerPoint.MsoAnimEffect.msoAnimEffectCrawl},
-            {"Credits", PowerPoint.MsoAnimEffect.msoAnimEffectCredits},
-            {"Descend", PowerPoint.MsoAnimEffect.msoAnimEffectDescend},
-            {"Diamond", PowerPoint.MsoAnimEffect.msoAnimEffectDiamond},
-            {"Dissolve", PowerPoint.MsoAnimEffect.msoAnimEffectDissolve},
-            {"Ease In", PowerPoint.MsoAnimEffect.msoAnimEffectEaseIn},
-            {"Expand", PowerPoint.MsoAnimEffect.msoAnimEffectExpand},
-            {"Fade", PowerPoint.MsoAnimEffect.msoAnimEffectFade},
-            {"Faded Swivel", PowerPoint.MsoAnimEffect.msoAnimEffectFadedSwivel},
-            {"Faded Zoom", PowerPoint.MsoAnimEffect.msoAnimEffectFadedZoom},
-            {"Flash Bulb", PowerPoint.MsoAnimEffect.msoAnimEffectFlashBulb},
-            {"Flash Once", PowerPoint.MsoAnimEffect.msoAnimEffectFlashOnce},
-            {"Flicker", PowerPoint.MsoAnimEffect.msoAnimEffectFlicker},
-            {"Flip", PowerPoint.MsoAnimEffect.msoAnimEffectFlip},
-            {"Float", PowerPoint.MsoAnimEffect.msoAnimEffectFloat}
-        };
+        //public Dictionary<String, PowerPoint.MsoAnimEffect> effectMapping = new Dictionary<String, PowerPoint.MsoAnimEffect>
+        //{ 
+        //    {"Appear", PowerPoint.MsoAnimEffect.msoAnimEffectAppear},
+        //    {"Arc Up", PowerPoint.MsoAnimEffect.msoAnimEffectArcUp},
+        //    {"Ascend", PowerPoint.MsoAnimEffect.msoAnimEffectAscend},
+        //    {"Blinds", PowerPoint.MsoAnimEffect.msoAnimEffectBlinds},
+        //    {"Checkerboard", PowerPoint.MsoAnimEffect.msoAnimEffectCheckerboard},
+        //    {"Circle", PowerPoint.MsoAnimEffect.msoAnimEffectCircle},
+        //    {"Crawl", PowerPoint.MsoAnimEffect.msoAnimEffectCrawl},
+        //    {"Credits", PowerPoint.MsoAnimEffect.msoAnimEffectCredits},
+        //    {"Descend", PowerPoint.MsoAnimEffect.msoAnimEffectDescend},
+        //    {"Diamond", PowerPoint.MsoAnimEffect.msoAnimEffectDiamond},
+        //    {"Dissolve", PowerPoint.MsoAnimEffect.msoAnimEffectDissolve},
+        //    {"Ease In", PowerPoint.MsoAnimEffect.msoAnimEffectEaseIn},
+        //    {"Expand", PowerPoint.MsoAnimEffect.msoAnimEffectExpand},
+        //    {"Fade", PowerPoint.MsoAnimEffect.msoAnimEffectFade},
+        //    {"Faded Swivel", PowerPoint.MsoAnimEffect.msoAnimEffectFadedSwivel},
+        //    {"Faded Zoom", PowerPoint.MsoAnimEffect.msoAnimEffectFadedZoom},
+        //    {"Flash Bulb", PowerPoint.MsoAnimEffect.msoAnimEffectFlashBulb},
+        //    {"Flash Once", PowerPoint.MsoAnimEffect.msoAnimEffectFlashOnce},
+        //    {"Flicker", PowerPoint.MsoAnimEffect.msoAnimEffectFlicker},
+        //    {"Flip", PowerPoint.MsoAnimEffect.msoAnimEffectFlip},
+        //    {"Float", PowerPoint.MsoAnimEffect.msoAnimEffectFloat}
+        //};
 
         public Ribbon1()
         {
@@ -70,7 +70,7 @@ namespace PowerPointLabs2007
 
         public string GetCustomUI(string ribbonID)
         {
-            return GetResourceText("PowerPointLabs2007.Ribbon1.xml");
+            return GetResourceText("PowerPointLabs.Ribbon1.xml");
         }
 
         #endregion
@@ -118,23 +118,29 @@ namespace PowerPointLabs2007
             }
         }
 
+        public void AboutButtonClick(Office.IRibbonControl control)
+        {
+            AboutForm form = new AboutForm();
+            form.Show();
+        }
+
         //Dropdown Callbacks
-        public int OnGetItemCount(Office.IRibbonControl control)
-        {
-            return effectMapping.Count;
-        }
+        //public int OnGetItemCount(Office.IRibbonControl control)
+        //{
+        //    return effectMapping.Count;
+        //}
 
-        public String OnGetItemLabel(Office.IRibbonControl control, int index)
-        {
-            String[] keys = effectMapping.Keys.ToArray();
-            return keys[index];
-        }
+        //public String OnGetItemLabel(Office.IRibbonControl control, int index)
+        //{
+        //    String[] keys = effectMapping.Keys.ToArray();
+        //    return keys[index];
+        //}
 
-        public void OnSelectItem(Office.IRibbonControl control, String selectedId, int selectedIndex)
-        {
-            String[] keys = effectMapping.Keys.ToArray();
-            defaultEffect = effectMapping[keys[selectedIndex]];
-        }
+        //public void OnSelectItem(Office.IRibbonControl control, String selectedId, int selectedIndex)
+        //{
+        //    String[] keys = effectMapping.Keys.ToArray();
+        //    defaultEffect = effectMapping[keys[selectedIndex]];
+        //}
 
         //Duration Callbacks
         public void OnChangeDuration(Office.IRibbonControl control, String text)
@@ -159,6 +165,113 @@ namespace PowerPointLabs2007
         {
             PowerPoint.Shape selectedShape = (PowerPoint.Shape)Globals.ThisAddIn.Application.ActiveWindow.Selection.ShapeRange[1];
             selectedShape.Name = newName;
+        }
+
+        public void ZoomBtnClick(Office.IRibbonControl control)
+        {
+            PowerPoint.Slide currentSlide = GetCurrentSlide();
+            PowerPoint.Shape picture = null;
+            PowerPoint.Shape selectedShape = null;
+
+            foreach (PowerPoint.Shape shape in Globals.ThisAddIn.Application.ActiveWindow.Selection.ShapeRange)
+            {
+                if (((PowerPoint.Shape)shape).Type == Office.MsoShapeType.msoPicture)
+                {
+                    picture = (PowerPoint.Shape)shape;
+                }
+                else
+                {
+                    selectedShape = (PowerPoint.Shape)shape;
+                }
+            }
+            //PowerPoint.Shape selectedShape = (PowerPoint.Shape)Globals.ThisAddIn.Application.ActiveWindow.Selection.ShapeRange[1];
+
+            float centerX = selectedShape.Left + selectedShape.Width / 2;
+            float centerY = selectedShape.Top + selectedShape.Height / 2;
+
+            picture.Copy();
+            PowerPoint.Shape duplicatePic = currentSlide.Shapes.PasteSpecial(PowerPoint.PpPasteDataType.ppPastePNG)[1];
+
+            duplicatePic.PictureFormat.CropLeft += selectedShape.Left - picture.Left;
+            duplicatePic.PictureFormat.CropTop += selectedShape.Top - picture.Top;
+            duplicatePic.PictureFormat.CropRight += (picture.Left + picture.Width) - (selectedShape.Left + selectedShape.Width);
+            duplicatePic.PictureFormat.CropBottom += (picture.Top + picture.Height) - (selectedShape.Top + selectedShape.Height);
+
+            selectedShape.Delete();
+            duplicatePic.Cut();
+
+            currentSlide.Duplicate();
+            //Globals.ThisAddIn.Application.ActivePresentation.Slides.AddSlide(currentSlide.SlideIndex + 1, Globals.ThisAddIn.Application.ActivePresentation.SlideMaster.CustomLayouts[7]);
+            PowerPoint.Slide addedSlide = GetNextSlide(currentSlide);
+
+            Globals.ThisAddIn.Application.ActiveWindow.View.GotoSlide(addedSlide.SlideIndex);
+            PowerPoint.Shape sh = addedSlide.Shapes.Paste()[1];
+
+            PowerPoint.Presentation presentation = Globals.ThisAddIn.Application.ActivePresentation;
+            sh.Width *= 2.0f;
+            sh.Left = centerX - sh.Width / 2;
+            sh.Top = centerY - sh.Height / 2;
+            if (sh.Left < 0)
+                sh.Left = 0;
+            else if (sh.Left + sh.Width > presentation.PageSetup.SlideWidth)
+                sh.Left = presentation.PageSetup.SlideWidth - sh.Width;
+            if (sh.Top < 0)
+                sh.Top = 0;
+            else if (sh.Top + sh.Height > presentation.PageSetup.SlideHeight)
+                sh.Top = presentation.PageSetup.SlideHeight - sh.Height;
+
+
+            PowerPoint.Sequence sequence = addedSlide.TimeLine.MainSequence;
+            PowerPoint.Effect zoomEffect = null;
+            zoomEffect = sequence.AddEffect(sh, PowerPoint.MsoAnimEffect.msoAnimEffectFadedZoom, PowerPoint.MsoAnimateByLevel.msoAnimateLevelNone, PowerPoint.MsoAnimTriggerType.msoAnimTriggerWithPrevious);
+            zoomEffect.Timing.Duration = 0.5f;
+        }
+
+        public void SpotlightBtnClick(Office.IRibbonControl control)
+        {
+            PowerPoint.Slide currentSlide = GetCurrentSlide();
+            currentSlide.Duplicate();
+            PowerPoint.Slide addedSlide = GetNextSlide(currentSlide);
+
+            PowerPoint.Presentation presentation = Globals.ThisAddIn.Application.ActivePresentation;
+            PowerPoint.Shape rectangleShape = addedSlide.Shapes.AddShape(Office.MsoAutoShapeType.msoShapeRectangle, 0, 0, presentation.PageSetup.SlideWidth, presentation.PageSetup.SlideHeight);
+            rectangleShape.Fill.ForeColor.RGB = 0x000000;
+            rectangleShape.Fill.Transparency = 0.2f;
+            rectangleShape.Line.Visible = Office.MsoTriState.msoFalse;
+            rectangleShape.Name = "SpotlightShape1";
+
+            PowerPoint.Shape selectedShape = (PowerPoint.Shape)Globals.ThisAddIn.Application.ActiveWindow.Selection.ShapeRange[1];
+            selectedShape.Copy();
+
+            foreach (PowerPoint.Shape sh in addedSlide.Shapes)
+            {
+                if (sh.Name.Equals(selectedShape.Name))
+                {
+                    sh.Delete();
+                }
+            }
+            PowerPoint.Shape newShape = addedSlide.Shapes.Paste()[1];
+            newShape.Left = selectedShape.Left;
+            newShape.Top = selectedShape.Top;
+            newShape.Fill.ForeColor.RGB = 0xffffff;
+            newShape.Line.Visible = Office.MsoTriState.msoFalse;
+            newShape.Name = "SpotlightShape2";
+            selectedShape.Delete();
+
+            Globals.ThisAddIn.Application.ActiveWindow.View.GotoSlide(addedSlide.SlideIndex);
+            String[] array = { "SpotlightShape1", "SpotlightShape2" };
+            PowerPoint.ShapeRange newRange = addedSlide.Shapes.Range(array);
+            newRange.Select();
+
+            PowerPoint.Selection currentSelection = Globals.ThisAddIn.Application.ActiveWindow.Selection;
+            int count = currentSelection.ShapeRange.Count;
+            currentSelection.Cut();
+
+            PowerPoint.Shape pictureShape = addedSlide.Shapes.PasteSpecial(PowerPoint.PpPasteDataType.ppPastePNG)[1];
+            pictureShape.Left = 0;
+            pictureShape.Top = 0;
+            pictureShape.PictureFormat.TransparencyColor = 0xffffff;
+            pictureShape.PictureFormat.TransparentBackground = Office.MsoTriState.msoTrue;
         }
 
         #endregion
@@ -227,10 +340,10 @@ namespace PowerPointLabs2007
                         //motion.MotionEffect.FromY = initialY / presentation.PageSetup.SlideHeight * 100;
                         //motion.MotionEffect.ToX = (finalX - initialX) / presentation.PageSetup.SlideWidth * 100;
                         //motion.MotionEffect.ToY = (finalY - initialY) / presentation.PageSetup.SlideHeight * 100;
-                        
+
                         //Create VML path for the motion path
                         //This path needs to be a curved path to allow the user to edit points
-                        motion.MotionEffect.Path = "M 0 0 C " + ((finalX - initialX) / 2) / presentation.PageSetup.SlideWidth + " " + ((finalY - initialY) / 2) / presentation.PageSetup.SlideHeight + " " + ((finalX - initialX) / 2) / presentation.PageSetup.SlideWidth + " " + ((finalY - initialY) / 2) / presentation.PageSetup.SlideHeight + " " + (finalX - initialX) / presentation.PageSetup.SlideWidth + " " + (finalY - initialY) / presentation.PageSetup.SlideHeight + " E"; 
+                        motion.MotionEffect.Path = "M 0 0 C " + ((finalX - initialX) / 2) / presentation.PageSetup.SlideWidth + " " + ((finalY - initialY) / 2) / presentation.PageSetup.SlideHeight + " " + ((finalX - initialX) / 2) / presentation.PageSetup.SlideWidth + " " + ((finalY - initialY) / 2) / presentation.PageSetup.SlideHeight + " " + (finalX - initialX) / presentation.PageSetup.SlideWidth + " " + (finalY - initialY) / presentation.PageSetup.SlideHeight + " E";
                     }
 
                     //Resize Effect
@@ -384,7 +497,7 @@ namespace PowerPointLabs2007
             toAngle = Normalize(toAngle);
 
             float rotation1 = toAngle - fromAngle;
-            float rotation2 = rotation1 == 0 ? 0 : Math.Abs(360 - Math.Abs(rotation1))*(rotation1/Math.Abs(rotation1))*-1;
+            float rotation2 = rotation1 == 0 ? 0 : Math.Abs(360 - Math.Abs(rotation1)) * (rotation1 / Math.Abs(rotation1)) * -1;
 
             if (Math.Abs(rotation1) < Math.Abs(rotation2))
             {
@@ -419,7 +532,7 @@ namespace PowerPointLabs2007
             {
                 PowerPoint.Effect effect = sequence[x];
                 if (effect.Shape.Name == shape.Name)
-                effect.Delete();
+                    effect.Delete();
             }
 
             PowerPoint.Slide nextSlide = GetNextSlide(slide);
