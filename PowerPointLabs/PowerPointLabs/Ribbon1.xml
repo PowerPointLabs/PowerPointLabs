@@ -9,7 +9,7 @@
                    label="Add Animation"
                    size="large"
                    screentip="Add AutoMotion animation for current slide"
-                   imageMso="DuplicateSelectedSlides"
+                   imageMso="AnimationPreview"
                    onAction="AddAnimationButtonClick"/>
           <button id="ReloadButton"
                   label ="Reload Animation"
@@ -57,7 +57,7 @@
                   label="About"
                   imageMso="Info"
                   screentip="Learn More about PPTLabs Spotlight"
-                  onAction="AboutButtonClick"/>
+                  onAction="AboutButtonClickSpotlight"/>
         </group>
       </tab>
     </tabs>

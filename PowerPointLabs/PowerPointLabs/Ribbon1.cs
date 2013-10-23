@@ -135,6 +135,12 @@ namespace PowerPointLabs
             form.Show();
         }
 
+        public void AboutButtonClickSpotlight(Office.IRibbonControl control)
+        {
+            AboutSpotlight form = new AboutSpotlight();
+            form.Show();
+        }
+
         //Dropdown Callbacks
         //public int OnGetItemCount(Office.IRibbonControl control)
         //{
@@ -236,45 +242,56 @@ namespace PowerPointLabs
             }
             //PowerPoint.Shape selectedShape = (PowerPoint.Shape)Globals.ThisAddIn.Application.ActiveWindow.Selection.ShapeRange[1];
 
-            float centerX = selectedShape.Left + selectedShape.Width / 2;
-            float centerY = selectedShape.Top + selectedShape.Height / 2;
+            if (picture == null || selectedShape == null)
+            {
+                System.Windows.Forms.MessageBox.Show("Unable to add zoom animation for selected objects", "Error");
+            }
+            else
+            {
+                float centerX = selectedShape.Left + selectedShape.Width / 2;
+                float centerY = selectedShape.Top + selectedShape.Height / 2;
 
-            picture.Copy();
-            PowerPoint.Shape duplicatePic = currentSlide.Shapes.PasteSpecial(PowerPoint.PpPasteDataType.ppPastePNG)[1];
+                picture.Copy();
+                PowerPoint.Shape duplicatePic = currentSlide.Shapes.PasteSpecial(PowerPoint.PpPasteDataType.ppPastePNG)[1];
 
-            duplicatePic.PictureFormat.CropLeft += selectedShape.Left - picture.Left;
-            duplicatePic.PictureFormat.CropTop += selectedShape.Top - picture.Top;
-            duplicatePic.PictureFormat.CropRight += (picture.Left + picture.Width) - (selectedShape.Left + selectedShape.Width);
-            duplicatePic.PictureFormat.CropBottom += (picture.Top + picture.Height) - (selectedShape.Top + selectedShape.Height);
+                duplicatePic.PictureFormat.CropLeft += selectedShape.Left - picture.Left;
+                duplicatePic.PictureFormat.CropTop += selectedShape.Top - picture.Top;
+                duplicatePic.PictureFormat.CropRight += (picture.Left + picture.Width) - (selectedShape.Left + selectedShape.Width);
+                duplicatePic.PictureFormat.CropBottom += (picture.Top + picture.Height) - (selectedShape.Top + selectedShape.Height);
 
-            selectedShape.Delete();
-            duplicatePic.Cut();
+                selectedShape.Delete();
+                duplicatePic.Cut();
 
-            currentSlide.Duplicate();
-            //Globals.ThisAddIn.Application.ActivePresentation.Slides.AddSlide(currentSlide.SlideIndex + 1, Globals.ThisAddIn.Application.ActivePresentation.SlideMaster.CustomLayouts[7]);
-            PowerPoint.Slide addedSlide = GetNextSlide(currentSlide);
+                //currentSlide.Duplicate();
+                Globals.ThisAddIn.Application.ActivePresentation.Slides.AddSlide(currentSlide.SlideIndex + 1, Globals.ThisAddIn.Application.ActivePresentation.SlideMaster.CustomLayouts[7]);
+                PowerPoint.Slide addedSlide = GetNextSlide(currentSlide);
 
-            Globals.ThisAddIn.Application.ActiveWindow.View.GotoSlide(addedSlide.SlideIndex);
-            PowerPoint.Shape sh = addedSlide.Shapes.Paste()[1];
+                Globals.ThisAddIn.Application.ActiveWindow.View.GotoSlide(addedSlide.SlideIndex);
+                PowerPoint.Shape sh = addedSlide.Shapes.Paste()[1];
 
-            PowerPoint.Presentation presentation = Globals.ThisAddIn.Application.ActivePresentation;
-            sh.Width *= 2.0f;
-            sh.Left = centerX - sh.Width / 2;
-            sh.Top = centerY - sh.Height / 2;
-            if (sh.Left < 0)
-                sh.Left = 0;
-            else if (sh.Left + sh.Width > presentation.PageSetup.SlideWidth)
-                sh.Left = presentation.PageSetup.SlideWidth - sh.Width;
-            if (sh.Top < 0)
-                sh.Top = 0;
-            else if (sh.Top + sh.Height > presentation.PageSetup.SlideHeight)
-                sh.Top = presentation.PageSetup.SlideHeight - sh.Height;
+                PowerPoint.Presentation presentation = Globals.ThisAddIn.Application.ActivePresentation;
+                sh.Width = presentation.PageSetup.SlideWidth;
+                sh.Height = presentation.PageSetup.SlideHeight;
+                sh.Left = (presentation.PageSetup.SlideWidth / 2) - (sh.Width / 2);
+                sh.Top = (presentation.PageSetup.SlideHeight / 2) - (sh.Height / 2);
+                //sh.Width *= 2.0f;
+                //sh.Left = centerX - sh.Width / 2;
+                //sh.Top = centerY - sh.Height / 2;
+                //if (sh.Left < 0)
+                //    sh.Left = 0;
+                //else if (sh.Left + sh.Width > presentation.PageSetup.SlideWidth)
+                //    sh.Left = presentation.PageSetup.SlideWidth - sh.Width;
+                //if (sh.Top < 0)
+                //    sh.Top = 0;
+                //else if (sh.Top + sh.Height > presentation.PageSetup.SlideHeight)
+                //    sh.Top = presentation.PageSetup.SlideHeight - sh.Height;
 
 
-            PowerPoint.Sequence sequence = addedSlide.TimeLine.MainSequence;
-            PowerPoint.Effect zoomEffect = null;
-            zoomEffect = sequence.AddEffect(sh, PowerPoint.MsoAnimEffect.msoAnimEffectFadedZoom, PowerPoint.MsoAnimateByLevel.msoAnimateLevelNone, PowerPoint.MsoAnimTriggerType.msoAnimTriggerWithPrevious);
-            zoomEffect.Timing.Duration = 0.5f;
+                PowerPoint.Sequence sequence = addedSlide.TimeLine.MainSequence;
+                PowerPoint.Effect zoomEffect = null;
+                zoomEffect = sequence.AddEffect(sh, PowerPoint.MsoAnimEffect.msoAnimEffectFadedZoom, PowerPoint.MsoAnimateByLevel.msoAnimateLevelNone, PowerPoint.MsoAnimTriggerType.msoAnimTriggerWithPrevious);
+                zoomEffect.Timing.Duration = 0.5f;
+            }
         }
 
         public void SpotlightBtnClick(Office.IRibbonControl control)

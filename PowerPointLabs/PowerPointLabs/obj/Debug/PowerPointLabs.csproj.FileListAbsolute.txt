@@ -12,3 +12,4 @@ C:\Users\Raunak\Documents\powerpointlabs-clone\PowerPointLabs\PowerPointLabs\obj
 C:\Users\Raunak\Documents\powerpointlabs-clone\PowerPointLabs\PowerPointLabs\obj\Debug\PowerPointLabs.dll
 C:\Users\Raunak\Documents\powerpointlabs-clone\PowerPointLabs\PowerPointLabs\obj\Debug\PowerPointLabs.pdb
 C:\Users\Raunak\Documents\powerpointlabs-clone\PowerPointLabs\PowerPointLabs\obj\Debug\PowerPointLabs.AboutForm.resources
+C:\Users\Raunak\Documents\powerpointlabs-clone\PowerPointLabs\PowerPointLabs\obj\Debug\PowerPointLabs.AboutSpotlight.resources
