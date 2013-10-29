@@ -377,10 +377,19 @@ namespace PowerPointLabs
             //PowerPoint.Effect effectDisappear = null;
             PowerPoint.Presentation presentation = Globals.ThisAddIn.Application.ActivePresentation;
 
-            PowerPoint.Shape indicatorShape = newSlide.Shapes.AddShape(Office.MsoAutoShapeType.msoShapeRightTriangle, presentation.PageSetup.SlideWidth - 40, 0, 40.0f, 40.0f);
-            indicatorShape.Rotation = 180;
-            indicatorShape.Name = "PPIndicator" + GetTimestamp(DateTime.Now);
+            PowerPoint.Shape indicatorShape = newSlide.Shapes.AddShape(Office.MsoAutoShapeType.msoShapeRectangle, presentation.PageSetup.SlideWidth - 100, 0, 100.0f, 100.0f);
+            indicatorShape.ShapeStyle = Office.MsoShapeStyleIndex.msoShapeStylePreset28;
+            indicatorShape.TextFrame2.TextRange.Text = "Added By \nPowerPointLabs";
+            //indicatorShape.TextFrame2.NoTextRotation = Office.MsoTriState.msoFalse;
+            indicatorShape.TextFrame2.AutoSize = Office.MsoAutoSize.msoAutoSizeTextToFitShape;
+            //indicatorShape.TextFrame2.WordWrap = Office.MsoTriState.msoFalse;
 
+            //indicatorShape.Rotation = 180;
+            indicatorShape.Cut();
+            indicatorShape = newSlide.Shapes.PasteSpecial(PowerPoint.PpPasteDataType.ppPastePNG)[1];
+            indicatorShape.Left = presentation.PageSetup.SlideWidth - indicatorShape.Width + 5;
+            indicatorShape.Top = 0;
+            indicatorShape.Name = "PPIndicator" + GetTimestamp(DateTime.Now);
             //effectDisappear = sequence.AddEffect(indicatorShape, PowerPoint.MsoAnimEffect.msoAnimEffectAppear, PowerPoint.MsoAnimateByLevel.msoAnimateLevelNone, PowerPoint.MsoAnimTriggerType.msoAnimTriggerWithPrevious);
             //effectDisappear.Exit = Office.MsoTriState.msoTrue;
             //effectDisappear.Timing.Duration = 0;

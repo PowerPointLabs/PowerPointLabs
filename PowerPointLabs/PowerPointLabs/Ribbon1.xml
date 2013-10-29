@@ -74,6 +74,17 @@
               imageMso="ObjectEffectGlowGallery"
               onAction="SpotlightBtnClick"/>
     </contextMenu>
+    <contextMenu idMso="ContextMenuShapeFreeform">
+      <menuSeparator id="separatorFreeform"/>
+      <button id="nameEditFreeform"
+              label="Edit Name"
+              imageMso="EditCitation"
+              onAction="NameEditBtnClick"/>
+      <button id="spotlightFreeform"
+              label="Add Spotlight"
+              imageMso="ObjectEffectGlowGallery"
+              onAction="SpotlightBtnClick"/>
+    </contextMenu>
     <contextMenu idMso="ContextMenuPicture">
       <menuSeparator id="separatorPicture"/>
       <button id="nameEditPicture"

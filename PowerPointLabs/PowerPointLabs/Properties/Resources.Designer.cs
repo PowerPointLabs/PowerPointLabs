@@ -9,6 +9,7 @@
 //------------------------------------------------------------------------------
 
 namespace PowerPointLabs.Properties {
+    using System;
     
     
     /// <summary>
