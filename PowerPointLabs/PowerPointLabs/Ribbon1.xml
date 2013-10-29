@@ -24,21 +24,29 @@
                     getItemCount ="OnGetItemCount"
                     getItemLabel ="OnGetItemLabel"
                     onAction ="OnSelectItem" />-->
+          <!--<button id="aboutButtonAutoMotion"
+                  size="large"
+                  label="About"
+                  imageMso="Info"
+                  screentip="Learn More about PPTLabs AutoMotion"
+                  onAction="AboutButtonClick"/>-->
           <editBox id="animationDurationOption"
                    label="Duration"
                    imageMso="StartTimer"
                    sizeString="AAAA"
                    getText = "OnGetText"
                    onChange = "OnChangeDuration"/>
-          <button id="aboutButtonAutoMotion"
-                  label="About"
-                  imageMso="Info"
-                  screentip="Learn More about PPTLabs AutoMotion"
-                  onAction="AboutButtonClick"/>
         </group>
         <group id="SpotLightGroup"
                label="PPTLabs Spotlight"
                visible="true">
+          <button  id="AddSpotlightButton"
+                   label="Add Spotlight"
+                   size="large"
+                   screentip="Add Spotlight using the current shape"
+                   imageMso="SmartArtAddShape"
+                   getEnabled="OnGetEnabledSpotlight"
+                   onAction="SpotlightBtnClick"/>
           <editBox id="spotlightTransparency"
                    label="Transparency"
                    imageMso="PrintTitles"
@@ -53,11 +61,29 @@
                     getItemLabel ="OnGetItemLabelSpotlight"
                     getSelectedItemIndex="OnGetSelectedItemIndexSpotlight" 
                     onAction ="OnSelectItemSpotlight" />
-          <button id="aboutButtonSpotlight"
+          <!--<button id="aboutButtonSpotlight"
                   label="About"
+                  size="large"
                   imageMso="Info"
                   screentip="Learn More about PPTLabs Spotlight"
-                  onAction="AboutButtonClickSpotlight"/>
+                  onAction="AboutButtonClickSpotlight"/>-->
+        </group>
+        <group id="PPTLabsHelp"
+               label="Help"
+               visible="true">
+          <button id="aboutButton"
+                  label="About"
+                  size="large"
+                  imageMso="Info"
+                  screentip="Learn More about the PPTLabs plug-in"
+                  onAction="AboutButtonClick"/>
+          <button id="websiteButton"
+                  label="Visit Website"
+                  size="large"
+                  imageMso="Info"
+                  enabled="false"
+                  screentip="Visit the PPTLabs website"
+                  onAction="WebsiteButtonClick"/>
         </group>
       </tab>
     </tabs>

@@ -18,6 +18,21 @@ namespace PowerPointLabs
             ((PowerPoint.EApplication_Event)this.Application).NewPresentation += new Microsoft.Office.Interop.PowerPoint.EApplication_NewPresentationEventHandler(ThisAddIn_NewPresentation);
             ((PowerPoint.EApplication_Event)this.Application).SlideShowBegin += new Microsoft.Office.Interop.PowerPoint.EApplication_SlideShowBeginEventHandler(ThisAddIn_BeginSlideShow);
             ((PowerPoint.EApplication_Event)this.Application).SlideShowEnd += new Microsoft.Office.Interop.PowerPoint.EApplication_SlideShowEndEventHandler(ThisAddIn_EndSlideShow);
+            ((PowerPoint.EApplication_Event)this.Application).WindowSelectionChange += new Microsoft.Office.Interop.PowerPoint.EApplication_WindowSelectionChangeEventHandler(ThisAddIn_SelectionChanged);
+        }
+
+        void ThisAddIn_SelectionChanged(PowerPoint.Selection Sel)
+        {
+            ribbon.spotlightEnabled = false;
+            if (Sel.Type == PowerPoint.PpSelectionType.ppSelectionShapes)
+            {
+                PowerPoint.Shape sh = Sel.ShapeRange[1];
+                if (sh.Type == Office.MsoShapeType.msoAutoShape || sh.Type == Office.MsoShapeType.msoFreeform || sh.Type == Office.MsoShapeType.msoTextBox || sh.Type == Office.MsoShapeType.msoPlaceholder)
+                {
+                    ribbon.spotlightEnabled = true;
+                }
+            }
+            ribbon.RefreshRibbonControl("AddSpotlightButton");
         }
 
         void ThisAddIn_BeginSlideShow(PowerPoint.SlideShowWindow Wn)

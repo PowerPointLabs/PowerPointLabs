@@ -38,6 +38,7 @@ namespace PowerPointLabs
         public float defaultDuration = 0.5f;
         public float defaultTransparency = 0.3f;
         public bool startUp = false;
+        public bool spotlightEnabled = false;
         public Dictionary<String, float> softEdgesMapping = new Dictionary<string,float>
         {
             {"No Edges", 0},
@@ -94,6 +95,11 @@ namespace PowerPointLabs
             this.ribbon = ribbonUI;
         }
 
+        public void RefreshRibbonControl(String controlID)
+        {
+            ribbon.InvalidateControl(controlID);
+        }
+
         public void AddAnimationButtonClick(Office.IRibbonControl control)
         {
             //Get References of current and next slides
@@ -135,11 +141,11 @@ namespace PowerPointLabs
             form.Show();
         }
 
-        public void AboutButtonClickSpotlight(Office.IRibbonControl control)
-        {
-            AboutSpotlight form = new AboutSpotlight();
-            form.Show();
-        }
+        //public void AboutButtonClickSpotlight(Office.IRibbonControl control)
+        //{
+        //    AboutSpotlight form = new AboutSpotlight();
+        //    form.Show();
+        //}
 
         //Dropdown Callbacks
         //public int OnGetItemCount(Office.IRibbonControl control)
@@ -207,6 +213,11 @@ namespace PowerPointLabs
         public int OnGetSelectedItemIndexSpotlight(Office.IRibbonControl control)
         {
             return 0;
+        }
+
+        public bool OnGetEnabledSpotlight(Office.IRibbonControl control)
+        {
+            return spotlightEnabled;
         }
 
         //Edit Name Callbacks
