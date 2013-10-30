@@ -168,7 +168,19 @@ namespace PowerPointLabs
         //Duration Callbacks
         public void OnChangeDuration(Office.IRibbonControl control, String text)
         {
-            defaultDuration = float.Parse(text);
+            if (text == "")
+                defaultDuration = 0.01f;
+            else
+            {
+                float enteredValue = float.Parse(text);
+                if (enteredValue < 0.01)
+                    defaultDuration = 0.01f;
+                else if (enteredValue > 59.0)
+                    defaultDuration = 59.0f;
+                else
+                    defaultDuration = enteredValue;
+            }
+            ribbon.InvalidateControl("animationDurationOption");
         }
 
         public String OnGetText(Office.IRibbonControl control)
@@ -183,8 +195,15 @@ namespace PowerPointLabs
             {
                 text = text.Substring(0, text.IndexOf('%'));    
             }
-            defaultTransparency = float.Parse(text);
-            defaultTransparency /= 100;
+            float result;
+            if (float.TryParse(text, out result))
+            {
+                if (result > 0 && result <= 100)
+                {
+                    defaultTransparency = result;
+                    defaultTransparency /= 100;
+                }
+            }
             ribbon.InvalidateControl("spotlightTransparency");
         }
 
