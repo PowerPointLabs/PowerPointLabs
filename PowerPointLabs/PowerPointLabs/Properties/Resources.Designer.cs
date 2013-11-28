@@ -59,5 +59,26 @@ namespace PowerPointLabs.Properties {
                 resourceCulture = value;
             }
         }
+        
+        internal static System.Drawing.Bitmap AddAnimation {
+            get {
+                object obj = ResourceManager.GetObject("AddAnimation", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        internal static System.Drawing.Bitmap ReloadAnimation {
+            get {
+                object obj = ResourceManager.GetObject("ReloadAnimation", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        internal static System.Drawing.Bitmap Spotlight {
+            get {
+                object obj = ResourceManager.GetObject("Spotlight", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
     }
 }

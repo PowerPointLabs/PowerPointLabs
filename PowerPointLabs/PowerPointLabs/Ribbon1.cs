@@ -34,7 +34,7 @@ namespace PowerPointLabs
     {
         private Office.IRibbonUI ribbon;
 
-        public float defaultSoftEdges = 0;
+        public float defaultSoftEdges = 5;
         public float defaultDuration = 0.5f;
         public float defaultTransparency = 0.3f;
         public bool startUp = false;
@@ -49,6 +49,9 @@ namespace PowerPointLabs
             {"25 Points", 25},
             {"50 Points", 50}
         };
+
+        public Dictionary<String, PowerPoint.Shape> spotlightShapeMapping = new Dictionary<string,PowerPoint.Shape>();
+        public Dictionary<String, PowerPoint.Slide> spotlightSlideMapping = new Dictionary<string, PowerPoint.Slide>();
         //public Dictionary<String, PowerPoint.MsoAnimEffect> effectMapping = new Dictionary<String, PowerPoint.MsoAnimEffect>
         //{ 
         //    {"Appear", PowerPoint.MsoAnimEffect.msoAnimEffectAppear},
@@ -165,6 +168,21 @@ namespace PowerPointLabs
         //    defaultEffect = effectMapping[keys[selectedIndex]];
         //}
 
+        public System.Drawing.Bitmap GetAddAnimationImage(Office.IRibbonControl control)
+        {
+            return new System.Drawing.Bitmap(Properties.Resources.AddAnimation);
+        }
+
+        public System.Drawing.Bitmap GetReloadAnimationImage(Office.IRibbonControl control)
+        {
+            return new System.Drawing.Bitmap(Properties.Resources.ReloadAnimation);
+        }
+
+        public System.Drawing.Bitmap GetSpotlightImage(Office.IRibbonControl control)
+        {
+            return new System.Drawing.Bitmap(Properties.Resources.Spotlight);
+        }
+
         //Duration Callbacks
         public void OnChangeDuration(Office.IRibbonControl control, String text)
         {
@@ -231,7 +249,8 @@ namespace PowerPointLabs
 
         public int OnGetSelectedItemIndexSpotlight(Office.IRibbonControl control)
         {
-            return 0;
+            float[] values = softEdgesMapping.Values.ToArray();
+            return Array.IndexOf(values, defaultSoftEdges);
         }
 
         public bool OnGetEnabledSpotlight(Office.IRibbonControl control)
@@ -298,12 +317,39 @@ namespace PowerPointLabs
 
                 Globals.ThisAddIn.Application.ActiveWindow.View.GotoSlide(addedSlide.SlideIndex);
                 PowerPoint.Shape sh = addedSlide.Shapes.Paste()[1];
+                sh.Left = centerX - (sh.Width / 2);
+                sh.Top = centerY - (sh.Height / 2);
 
                 PowerPoint.Presentation presentation = Globals.ThisAddIn.Application.ActivePresentation;
-                sh.Width = presentation.PageSetup.SlideWidth;
-                sh.Height = presentation.PageSetup.SlideHeight;
-                sh.Left = (presentation.PageSetup.SlideWidth / 2) - (sh.Width / 2);
-                sh.Top = (presentation.PageSetup.SlideHeight / 2) - (sh.Height / 2);
+                PowerPoint.Effect effectMotion = null;
+                PowerPoint.Effect effectResize = null;
+                PowerPoint.Sequence sequence = addedSlide.TimeLine.MainSequence;
+                float finalX = (presentation.PageSetup.SlideWidth / 2);
+                float initialX = (sh.Left + (sh.Width) / 2);
+                float finalY = (presentation.PageSetup.SlideHeight / 2);
+                float initialY = (sh.Top + (sh.Height) / 2);
+
+                effectMotion = sequence.AddEffect(sh, PowerPoint.MsoAnimEffect.msoAnimEffectPathDown, PowerPoint.MsoAnimateByLevel.msoAnimateLevelNone, PowerPoint.MsoAnimTriggerType.msoAnimTriggerWithPrevious);
+                PowerPoint.AnimationBehavior motion = effectMotion.Behaviors[1];
+                effectMotion.Timing.Duration = defaultDuration;
+                motion.MotionEffect.Path = "M 0 0 C " + ((finalX - initialX) / 2) / presentation.PageSetup.SlideWidth + " " + ((finalY - initialY) / 2) / presentation.PageSetup.SlideHeight + " " + ((finalX - initialX) / 2) / presentation.PageSetup.SlideWidth + " " + ((finalY - initialY) / 2) / presentation.PageSetup.SlideHeight + " " + (finalX - initialX) / presentation.PageSetup.SlideWidth + " " + (finalY - initialY) / presentation.PageSetup.SlideHeight + " E";
+                    
+
+                float finalWidth = presentation.PageSetup.SlideWidth;
+                float initialWidth = sh.Width;
+                float finalHeight = presentation.PageSetup.SlideHeight;
+                float initialHeight = sh.Height;
+
+                effectResize = sequence.AddEffect(sh, PowerPoint.MsoAnimEffect.msoAnimEffectGrowShrink, PowerPoint.MsoAnimateByLevel.msoAnimateLevelNone, PowerPoint.MsoAnimTriggerType.msoAnimTriggerWithPrevious);
+                PowerPoint.AnimationBehavior resize = effectResize.Behaviors[1];
+
+                effectResize.Timing.Duration = defaultDuration;
+                resize.ScaleEffect.ToX = (finalWidth / initialWidth) * 100;
+                resize.ScaleEffect.ToY = (finalHeight / initialHeight) * 100;
+                //sh.Width = presentation.PageSetup.SlideWidth;
+                //sh.Height = presentation.PageSetup.SlideHeight;
+                //sh.Left = (presentation.PageSetup.SlideWidth / 2) - (sh.Width / 2);
+                //sh.Top = (presentation.PageSetup.SlideHeight / 2) - (sh.Height / 2);
                 //sh.Width *= 2.0f;
                 //sh.Left = centerX - sh.Width / 2;
                 //sh.Top = centerY - sh.Height / 2;
@@ -317,18 +363,54 @@ namespace PowerPointLabs
                 //    sh.Top = presentation.PageSetup.SlideHeight - sh.Height;
 
 
-                PowerPoint.Sequence sequence = addedSlide.TimeLine.MainSequence;
-                PowerPoint.Effect zoomEffect = null;
-                zoomEffect = sequence.AddEffect(sh, PowerPoint.MsoAnimEffect.msoAnimEffectFadedZoom, PowerPoint.MsoAnimateByLevel.msoAnimateLevelNone, PowerPoint.MsoAnimTriggerType.msoAnimTriggerWithPrevious);
-                zoomEffect.Timing.Duration = 0.5f;
+                //PowerPoint.Sequence sequence = addedSlide.TimeLine.MainSequence;
+                //PowerPoint.Effect zoomEffect = null;
+                //zoomEffect = sequence.AddEffect(sh, PowerPoint.MsoAnimEffect.msoAnimEffectFadedZoom, PowerPoint.MsoAnimateByLevel.msoAnimateLevelNone, PowerPoint.MsoAnimTriggerType.msoAnimTriggerWithPrevious);
+                //zoomEffect.Timing.Duration = 0.5f;
+            }
+        }
+
+        public void ReloadSpotlightButtonClick(Office.IRibbonControl control)
+        {
+            PowerPoint.Slide tempSlide = GetCurrentSlide();
+            if (tempSlide.Name.Contains("PPTLabsSpotlight")) //&& tempSlide.Name.Substring(0, 14).Equals("PPTLabsSpotlight")
+            {
+                PowerPoint.Slide currentSlide;
+                PowerPoint.Shape spotlightShape;
+                if (spotlightSlideMapping.TryGetValue(tempSlide.Name, out currentSlide))
+                {
+                    if (spotlightShapeMapping.TryGetValue(tempSlide.Name, out spotlightShape))
+                    {
+                        spotlightSlideMapping.Remove(tempSlide.Name);
+                        spotlightShapeMapping.Remove(tempSlide.Name);
+                        tempSlide.Delete();
+                        AddSpotlightEffect(currentSlide, spotlightShape);
+                    }
+                }
+            }
+            else
+            {
+                System.Windows.Forms.MessageBox.Show("The current slide was not added by PPTLabs Spotlight", "Error");
             }
         }
 
         public void SpotlightBtnClick(Office.IRibbonControl control)
         {
             PowerPoint.Slide currentSlide = GetCurrentSlide();
+            PowerPoint.Shape spotlightShape = (PowerPoint.Shape)Globals.ThisAddIn.Application.ActiveWindow.Selection.ShapeRange[1];
+            AddSpotlightEffect(currentSlide, spotlightShape);
+        }
+
+        #endregion
+
+        #region Helpers
+
+        private void AddSpotlightEffect(PowerPoint.Slide currentSlide, PowerPoint.Shape spotlightShape)
+        {
             currentSlide.Duplicate();
             PowerPoint.Slide addedSlide = GetNextSlide(currentSlide);
+            addedSlide.Name = "PPTLabsSpotlight" + GetTimestamp(DateTime.Now);
+            spotlightSlideMapping.Add(addedSlide.Name, currentSlide);
 
             PowerPoint.Presentation presentation = Globals.ThisAddIn.Application.ActivePresentation;
             PowerPoint.Shape rectangleShape = addedSlide.Shapes.AddShape(Office.MsoAutoShapeType.msoShapeRectangle, 0, 0, presentation.PageSetup.SlideWidth, presentation.PageSetup.SlideHeight);
@@ -337,7 +419,7 @@ namespace PowerPointLabs
             rectangleShape.Line.Visible = Office.MsoTriState.msoFalse;
             rectangleShape.Name = "SpotlightShape1";
 
-            PowerPoint.Shape selectedShape = (PowerPoint.Shape)Globals.ThisAddIn.Application.ActiveWindow.Selection.ShapeRange[1];
+            PowerPoint.Shape selectedShape = spotlightShape;
             selectedShape.Copy();
 
             foreach (PowerPoint.Shape sh in addedSlide.Shapes)
@@ -350,9 +432,12 @@ namespace PowerPointLabs
             PowerPoint.Shape newShape = addedSlide.Shapes.Paste()[1];
             newShape.Left = selectedShape.Left;
             newShape.Top = selectedShape.Top;
+            int color = newShape.Fill.ForeColor.RGB;
+            //newShape.
             newShape.Fill.ForeColor.RGB = 0xffffff;
             newShape.Line.Visible = Office.MsoTriState.msoFalse;
             newShape.Name = "SpotlightShape2";
+            spotlightShapeMapping.Add(addedSlide.Name, newShape);
             selectedShape.Delete();
 
             Globals.ThisAddIn.Application.ActiveWindow.View.GotoSlide(addedSlide.SlideIndex);
@@ -365,16 +450,14 @@ namespace PowerPointLabs
             currentSelection.Cut();
 
             PowerPoint.Shape pictureShape = addedSlide.Shapes.PasteSpecial(PowerPoint.PpPasteDataType.ppPastePNG)[1];
-            pictureShape.Left = 0;
-            pictureShape.Top = 0;
             pictureShape.PictureFormat.TransparencyColor = 0xffffff;
             pictureShape.PictureFormat.TransparentBackground = Office.MsoTriState.msoTrue;
             pictureShape.SoftEdge.Radius = defaultSoftEdges;
+            pictureShape.Width = presentation.PageSetup.SlideWidth + 2 * defaultSoftEdges;
+            pictureShape.Height = presentation.PageSetup.SlideHeight + 2 * defaultSoftEdges;
+            pictureShape.Left = 0 - defaultSoftEdges;
+            pictureShape.Top = 0 - defaultSoftEdges;
         }
-
-        #endregion
-
-        #region Helpers
 
         private void AddCompleteAutoMotion(PowerPoint.Slide currentSlide, PowerPoint.Slide nextSlide)
         {
@@ -547,12 +630,12 @@ namespace PowerPointLabs
                     if (haveSameNames(sh1, sh2))
                     {
                         flag = true;
-                        if (sh1.Type == Office.MsoShapeType.msoPlaceholder)
+                        if (sh1.Type == Office.MsoShapeType.msoPlaceholder && sh1.HasTextFrame == Office.MsoTriState.msoTrue)
                         {
                             sh1.TextFrame.TextRange.Text.Trim();
                             sh1.TextFrame.AutoSize = PowerPoint.PpAutoSize.ppAutoSizeShapeToFitText;
                         }
-                        if (sh2.Type == Office.MsoShapeType.msoPlaceholder)
+                        if (sh2.Type == Office.MsoShapeType.msoPlaceholder && sh2.HasTextFrame == Office.MsoTriState.msoTrue)
                         {
                             sh2.TextFrame.TextRange.Text.Trim();
                             sh2.TextFrame.AutoSize = PowerPoint.PpAutoSize.ppAutoSizeShapeToFitText;
