@@ -4,15 +4,15 @@
     <tabs>
       <tab id="PowerPointLabsAddIns" label="PowerPointLabs">
         <group id="AutoMotionGroup"
-               label="PPTLabs AutoMotion" visible ="true">
+               label="Auto Animate" visible ="true">
           <button id="AddAnimationButton"
-                  label="Add Animation"
+                  label="Add Animation Slide"
                   size="large"
                   getImage="GetAddAnimationImage"
                   screentip="Add AutoMotion animation for current slide"
                   onAction="AddAnimationButtonClick"/>
           <button id="ReloadButton"
-                  label ="Reload Animation"
+                  label ="Recreate Animation"
                   size ="large"
                   getImage="GetReloadAnimationImage"
                   screentip="Reload AutoMotion animation for current slide"
@@ -38,10 +38,10 @@
                    onChange = "OnChangeDuration"/>
         </group>
         <group id="SpotLightGroup"
-               label="PPTLabs Spotlight"
+               label="Spotlight"
                visible="true">
           <button   id="AddSpotlightButton"
-                   label="Add Spotlight"
+                   label="Create Spotlight"
                    size="large"
                    screentip="Add Spotlight using the current shape"
                    getImage="GetSpotlightImage"
@@ -74,22 +74,48 @@
                   screentip="Learn More about PPTLabs Spotlight"
                   onAction="AboutButtonClickSpotlight"/>-->
         </group>
-        <group id="PPTLabsHelp"
-               label="Help"
+        <group id="ComingSoon"
+               label="Coming Soon"
                visible="true">
+          <button id="MoveBulletsButton"
+                 label ="Highlight Bullets"
+                 size ="large"
+                 getImage="GetHighlightBulletsImage"
+                 screentip="*Feature Coming Soon!*"
+                 onAction="HighlightBulletsButtonClick"/>
+          <button id="AddZoomButton"
+                 label ="Zoom to Area"
+                 size ="large"
+                 getImage="GetZoomImage"
+                 screentip="*Feature Coming Soon!*"
+                 onAction="AddZoomButtonClick"/>
+          <button id="MoveCropShapeButton"
+                 label ="Cut-out Shape"
+                 size ="large"
+                 getImage="GetCropShapeImage"
+                 screentip="*Feature Coming Soon!*"
+                 onAction="CropShapeButtonClick"/>
+        </group>
+        <group id="PPTLabsHelp"
+               visible="true">
+          <button id="HelpButton"
+                  label="Help"
+                  size="large"
+                  getImage="GetHelpImage"
+                  screentip="Get help on using PowerPoint Labs"
+                  onAction="HelpButtonClick"/>
+          <button id="FeedbackButton"
+                  label="Report Issues/Feedback"
+                  size="large"
+                  getImage="GetFeedbackImage"
+                  screentip="Help improve PowerPoint Labs"
+                  onAction="FeedbackButtonClick"/>
           <button id="aboutButton"
                   label="About"
                   size="large"
-                  imageMso="Info"
+                  getImage="GetAboutImage"
                   screentip="Learn More about the PPTLabs plug-in"
                   onAction="AboutButtonClick"/>
-          <button id="websiteButton"
-                  label="Visit Website"
-                  size="large"
-                  imageMso="Info"
-                  enabled="false"
-                  screentip="Visit the PPTLabs website"
-                  onAction="WebsiteButtonClick"/>
         </group>
       </tab>
     </tabs>

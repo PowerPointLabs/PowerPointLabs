@@ -144,6 +144,26 @@ namespace PowerPointLabs
             form.Show();
         }
 
+        public void HelpButtonClick(Office.IRibbonControl control)
+        {
+        }
+
+        public void FeedbackButtonClick(Office.IRibbonControl control)
+        {
+        }
+
+        public void HighlightBulletsButtonClick(Office.IRibbonControl control)
+        {
+        }
+
+        public void AddZoomButtonClick(Office.IRibbonControl control)
+        {
+        }
+
+        public void CropShapeButtonClick(Office.IRibbonControl control)
+        {
+        }
+
         //public void AboutButtonClickSpotlight(Office.IRibbonControl control)
         //{
         //    AboutSpotlight form = new AboutSpotlight();
@@ -183,6 +203,31 @@ namespace PowerPointLabs
             return new System.Drawing.Bitmap(Properties.Resources.Spotlight);
         }
 
+        public System.Drawing.Bitmap GetHighlightBulletsImage(Office.IRibbonControl control)
+        {
+            return new System.Drawing.Bitmap(Properties.Resources.Bullets);
+        }
+        public System.Drawing.Bitmap GetZoomImage(Office.IRibbonControl control)
+        {
+            return new System.Drawing.Bitmap(Properties.Resources.Zoom);
+        }
+        public System.Drawing.Bitmap GetCropShapeImage(Office.IRibbonControl control)
+        {
+            return new System.Drawing.Bitmap(Properties.Resources.CutOutShape);
+        }
+
+        public System.Drawing.Bitmap GetAboutImage(Office.IRibbonControl control)
+        {
+            return new System.Drawing.Bitmap(Properties.Resources.About);
+        }
+        public System.Drawing.Bitmap GetHelpImage(Office.IRibbonControl control)
+        {
+            return new System.Drawing.Bitmap(Properties.Resources.Help);
+        }
+        public System.Drawing.Bitmap GetFeedbackImage(Office.IRibbonControl control)
+        {
+            return new System.Drawing.Bitmap(Properties.Resources.Feedback);
+        }
         //Duration Callbacks
         public void OnChangeDuration(Office.IRibbonControl control, String text)
         {

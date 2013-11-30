@@ -29,15 +29,15 @@
     <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
     <TargetFrameworkProfile>Client</TargetFrameworkProfile>
     <DefineConstants>VSTO40</DefineConstants>
-    <IsWebBootstrapper>False</IsWebBootstrapper>
+    <IsWebBootstrapper>True</IsWebBootstrapper>
     <BootstrapperEnabled>true</BootstrapperEnabled>
-    <PublishUrl>C:\Users\Raunak\Documents\Deploy\</PublishUrl>
-    <InstallUrl />
+    <PublishUrl>C:\Users\Raunak\Documents\PowerPoint Labs\</PublishUrl>
+    <InstallUrl>http://www.comp.nus.edu.sg/~pptlabs/download/</InstallUrl>
     <TargetCulture>en</TargetCulture>
-    <ApplicationVersion>1.0.0.1</ApplicationVersion>
-    <AutoIncrementApplicationRevision>true</AutoIncrementApplicationRevision>
+    <ApplicationVersion>0.0.0.1</ApplicationVersion>
+    <AutoIncrementApplicationRevision>false</AutoIncrementApplicationRevision>
     <UpdateEnabled>true</UpdateEnabled>
-    <UpdateInterval>7</UpdateInterval>
+    <UpdateInterval>0</UpdateInterval>
     <UpdateIntervalUnits>days</UpdateIntervalUnits>
     <ProductName>PowerPointLabs</ProductName>
     <PublisherName />
@@ -260,13 +260,31 @@
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
-    <None Include="Resources\AddAnimation.png" />
+    <None Include="Resources\Zoom.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Spotlight.png" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\ReloadAnimation.png" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="Resources\Spotlight.png" />
+    <None Include="Resources\Help.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Feedback.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\CutOutShape.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Bullets.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\AddAnimation.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\About.png" />
   </ItemGroup>
   <!-- Include the build rules for a C# project. -->
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
