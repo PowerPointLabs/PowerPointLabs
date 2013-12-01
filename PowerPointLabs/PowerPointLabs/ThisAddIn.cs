@@ -16,8 +16,8 @@ namespace PowerPointLabs
         private void ThisAddIn_Startup(object sender, System.EventArgs e)
         {
             ((PowerPoint.EApplication_Event)this.Application).NewPresentation += new Microsoft.Office.Interop.PowerPoint.EApplication_NewPresentationEventHandler(ThisAddIn_NewPresentation);
-            ((PowerPoint.EApplication_Event)this.Application).SlideShowBegin += new Microsoft.Office.Interop.PowerPoint.EApplication_SlideShowBeginEventHandler(ThisAddIn_BeginSlideShow);
-            ((PowerPoint.EApplication_Event)this.Application).SlideShowEnd += new Microsoft.Office.Interop.PowerPoint.EApplication_SlideShowEndEventHandler(ThisAddIn_EndSlideShow);
+            //((PowerPoint.EApplication_Event)this.Application).SlideShowBegin += new Microsoft.Office.Interop.PowerPoint.EApplication_SlideShowBeginEventHandler(ThisAddIn_BeginSlideShow);
+            //((PowerPoint.EApplication_Event)this.Application).SlideShowEnd += new Microsoft.Office.Interop.PowerPoint.EApplication_SlideShowEndEventHandler(ThisAddIn_EndSlideShow);
             ((PowerPoint.EApplication_Event)this.Application).WindowSelectionChange += new Microsoft.Office.Interop.PowerPoint.EApplication_WindowSelectionChangeEventHandler(ThisAddIn_SelectionChanged);
         }
 
@@ -35,34 +35,34 @@ namespace PowerPointLabs
             ribbon.RefreshRibbonControl("AddSpotlightButton");
         }
 
-        void ThisAddIn_BeginSlideShow(PowerPoint.SlideShowWindow Wn)
-        {
-            PowerPoint.Presentation pres = Wn.Presentation;
-            indicators.Clear();
+        //void ThisAddIn_BeginSlideShow(PowerPoint.SlideShowWindow Wn)
+        //{
+        //    PowerPoint.Presentation pres = Wn.Presentation;
+        //    indicators.Clear();
 
-            foreach (PowerPoint.Slide sl in pres.Slides)
-            {
-                if (sl.Name.Contains("PPSlide") && sl.Name.Substring(0, 7).Equals("PPSlide"))
-                {
-                    foreach (PowerPoint.Shape sh in sl.Shapes)
-                    {
-                        if (sh.Name.Contains("PPIndicator"))
-                        {
-                            sh.Visible = Office.MsoTriState.msoFalse;
-                            indicators.Add(sh);
-                        }
-                    }
-                }
-            }
-        }
+        //    foreach (PowerPoint.Slide sl in pres.Slides)
+        //    {
+        //        if (sl.Name.Contains("PPSlide") && sl.Name.Substring(0, 7).Equals("PPSlide"))
+        //        {
+        //            foreach (PowerPoint.Shape sh in sl.Shapes)
+        //            {
+        //                if (sh.Name.Contains("PPIndicator"))
+        //                {
+        //                    sh.Visible = Office.MsoTriState.msoFalse;
+        //                    indicators.Add(sh);
+        //                }
+        //            }
+        //        }
+        //    }
+        //}
 
-        void ThisAddIn_EndSlideShow(PowerPoint.Presentation Pres)
-        {
-            foreach (PowerPoint.Shape sh in indicators)
-            {
-                sh.Visible = Office.MsoTriState.msoTrue;
-            }
-        }
+        //void ThisAddIn_EndSlideShow(PowerPoint.Presentation Pres)
+        //{
+        //    foreach (PowerPoint.Shape sh in indicators)
+        //    {
+        //        sh.Visible = Office.MsoTriState.msoTrue;
+        //    }
+        //}
 
         void ThisAddIn_NewPresentation(PowerPoint.Presentation Pres)
         {
