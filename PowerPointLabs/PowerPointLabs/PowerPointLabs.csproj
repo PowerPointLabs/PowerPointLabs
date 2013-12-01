@@ -34,7 +34,7 @@
     <PublishUrl>C:\Users\Raunak\Documents\PowerPoint Labs\</PublishUrl>
     <InstallUrl>http://www.comp.nus.edu.sg/~pptlabs/download/</InstallUrl>
     <TargetCulture>en</TargetCulture>
-    <ApplicationVersion>0.0.0.1</ApplicationVersion>
+    <ApplicationVersion>0.0.0.2</ApplicationVersion>
     <AutoIncrementApplicationRevision>false</AutoIncrementApplicationRevision>
     <UpdateEnabled>true</UpdateEnabled>
     <UpdateInterval>0</UpdateInterval>
@@ -269,9 +269,6 @@
     <None Include="Resources\ReloadAnimation.png" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="Resources\Help.png" />
-  </ItemGroup>
-  <ItemGroup>
     <None Include="Resources\Feedback.png" />
   </ItemGroup>
   <ItemGroup>
@@ -282,6 +279,9 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\AddAnimation.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Help.png" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\About.png" />
