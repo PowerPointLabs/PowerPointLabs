@@ -41,6 +41,7 @@ namespace PowerPointLabs
         public bool spotlightEnabled = false;
         public bool addAutoMotionEnabled = true;
         public bool reloadAutoMotionEnabled = true;
+        public bool reloadSpotlight = true;
         public Dictionary<String, float> softEdgesMapping = new Dictionary<string,float>
         {
             {"No Edges", 0},
@@ -286,6 +287,11 @@ namespace PowerPointLabs
         public bool OnGetEnabledSpotlight(Office.IRibbonControl control)
         {
             return spotlightEnabled;
+        }
+
+        public bool OnGetEnabledReloadSpotlight(Office.IRibbonControl control)
+        {
+            return reloadSpotlight;
         }
 
         public bool OnGetEnabledAddAutoMotion(Office.IRibbonControl control)

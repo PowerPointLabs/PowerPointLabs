@@ -54,19 +54,24 @@ namespace PowerPointLabs
         {
             ribbon.addAutoMotionEnabled = true;
             ribbon.reloadAutoMotionEnabled = true;
+            ribbon.reloadSpotlight = true;
             if (SldRange.Count != 1)
             {
                 ribbon.addAutoMotionEnabled = false;
                 ribbon.reloadAutoMotionEnabled = false;
+                ribbon.reloadSpotlight = false;
             }
             else
             {
                 PowerPoint.Slide tmp = SldRange[1];
                 if (!(tmp.Name.Contains("PPSlide") && tmp.Name.Substring(0, 7).Equals("PPSlide")))
                     ribbon.reloadAutoMotionEnabled = false;
+                if (!(tmp.Name.Contains("PPTLabsSpotlight")))
+                    ribbon.reloadSpotlight = false;
             }
             ribbon.RefreshRibbonControl("AddAnimationButton");
             ribbon.RefreshRibbonControl("ReloadButton");
+            ribbon.RefreshRibbonControl("ReloadSpotlightButton");
         }
 
         //void ThisAddIn_BeginSlideShow(PowerPoint.SlideShowWindow Wn)

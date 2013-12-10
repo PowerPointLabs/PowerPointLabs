@@ -53,7 +53,8 @@
                   label ="Reload Spotlight"
                   size ="large"
                   screentip="Reload Spotlight effect for current slide"
-                  imageMso="RecurrenceEdit"
+                  getImage="GetSpotlightImage"
+                  getEnabled="OnGetEnabledReloadSpotlight"
                   onAction="ReloadSpotlightButtonClick"/>
           <editBox id="spotlightTransparency"
                    label="Transparency"
