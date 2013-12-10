@@ -67,6 +67,13 @@ namespace PowerPointLabs.Properties {
             }
         }
         
+        internal static System.Drawing.Bitmap Acknowledgement {
+            get {
+                object obj = ResourceManager.GetObject("Acknowledgement", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
         internal static System.Drawing.Bitmap AddAnimation {
             get {
                 object obj = ResourceManager.GetObject("AddAnimation", resourceCulture);
@@ -98,6 +105,13 @@ namespace PowerPointLabs.Properties {
         internal static System.Drawing.Bitmap Help {
             get {
                 object obj = ResourceManager.GetObject("Help", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        internal static System.Drawing.Bitmap Indicator {
+            get {
+                object obj = ResourceManager.GetObject("Indicator", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }

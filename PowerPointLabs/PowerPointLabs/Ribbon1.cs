@@ -412,6 +412,7 @@ namespace PowerPointLabs
                 //PowerPoint.Effect zoomEffect = null;
                 //zoomEffect = sequence.AddEffect(sh, PowerPoint.MsoAnimEffect.msoAnimEffectFadedZoom, PowerPoint.MsoAnimateByLevel.msoAnimateLevelNone, PowerPoint.MsoAnimTriggerType.msoAnimTriggerWithPrevious);
                 //zoomEffect.Timing.Duration = 0.5f;
+                AddAckSlide();
             }
         }
 
@@ -444,6 +445,7 @@ namespace PowerPointLabs
             PowerPoint.Slide currentSlide = GetCurrentSlide();
             PowerPoint.Shape spotlightShape = (PowerPoint.Shape)Globals.ThisAddIn.Application.ActiveWindow.Selection.ShapeRange[1];
             AddSpotlightEffect(currentSlide, spotlightShape);
+            AddAckSlide();
         }
 
         #endregion
@@ -539,8 +541,8 @@ namespace PowerPointLabs
             PowerPoint.Presentation presentation = Globals.ThisAddIn.Application.ActivePresentation;
 
             String tempFileName = Path.GetTempFileName();
-            Properties.Resources.Logo.Save(tempFileName);
-            PowerPoint.Shape indicatorShape = newSlide.Shapes.AddPicture(tempFileName, Office.MsoTriState.msoFalse, Office.MsoTriState.msoTrue, presentation.PageSetup.SlideWidth - Properties.Resources.Logo.Width, 0, Properties.Resources.Logo.Width, Properties.Resources.Logo.Height); 
+            Properties.Resources.Indicator.Save(tempFileName);
+            PowerPoint.Shape indicatorShape = newSlide.Shapes.AddPicture(tempFileName, Office.MsoTriState.msoFalse, Office.MsoTriState.msoTrue, presentation.PageSetup.SlideWidth - 200, 0, 200, 140); 
             //PowerPoint.Shape indicatorShape = newSlide.Shapes.AddShape(Office.MsoAutoShapeType.msoShapeRectangle, presentation.PageSetup.SlideWidth - 100, 0, 100.0f, 100.0f);
             //indicatorShape.ShapeStyle = Office.MsoShapeStyleIndex.msoShapeStylePreset28;
             //indicatorShape.TextFrame2.TextRange.Text = "Added By \nPowerPointLabs";
@@ -687,7 +689,27 @@ namespace PowerPointLabs
             PowerPoint.Slide nextSlide = GetNextSlide(newSlide);
             nextSlide.SlideShowTransition.EntryEffect = PowerPoint.PpEntryEffect.ppEffectNone;
 
+            AddAckSlide();
+
             return newSlide;
+        }
+
+        private void AddAckSlide()
+        {
+            PowerPoint.Slide tempSlide = (Globals.ThisAddIn.Application.ActivePresentation.Slides[Globals.ThisAddIn.Application.ActivePresentation.Slides.Count]);
+            if (!(tempSlide.Name.Contains("PPAck") && tempSlide.Name.Substring(0, 5).Equals("PPAck")))
+            {
+                PowerPoint.Slide ackSlide = Globals.ThisAddIn.Application.ActivePresentation.Slides.AddSlide(Globals.ThisAddIn.Application.ActivePresentation.Slides.Count + 1, GetCurrentSlide().CustomLayout);
+                Globals.ThisAddIn.Application.ActiveWindow.View.GotoSlide(ackSlide.SlideIndex);
+                PowerPoint.Presentation presentation = Globals.ThisAddIn.Application.ActivePresentation;
+                String tempFileName = Path.GetTempFileName();
+                Properties.Resources.Acknowledgement.Save(tempFileName);
+                float width = presentation.PageSetup.SlideWidth * 0.858f;
+                float height = presentation.PageSetup.SlideHeight * (5.33f / 7.5f);
+                PowerPoint.Shape ackShape = ackSlide.Shapes.AddPicture(tempFileName, Office.MsoTriState.msoFalse, Office.MsoTriState.msoTrue, ((presentation.PageSetup.SlideWidth - width) / 2), ((presentation.PageSetup.SlideHeight - height) / 2), width, height);
+                ackSlide.SlideShowTransition.Hidden = Office.MsoTriState.msoTrue;
+                ackSlide.Name = "PPAck" + GetTimestamp(DateTime.Now);
+            }
         }
 
         private bool GetMatchingShapeDetails(PowerPoint.Slide currentSlide, PowerPoint.Slide nextSlide, out PowerPoint.Shape[] shapes1, out PowerPoint.Shape[] shapes2, out int[] shapeIDs)
