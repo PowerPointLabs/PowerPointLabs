@@ -49,12 +49,12 @@
                    getImage="GetSpotlightImage"
                    getEnabled="OnGetEnabledSpotlight"
                    onAction="SpotlightBtnClick"/>
-          <!--<button id="ReloadSpotlightButton"
+          <button id="ReloadSpotlightButton"
                   label ="Reload Spotlight"
                   size ="large"
                   screentip="Reload Spotlight effect for current slide"
                   imageMso="RecurrenceEdit"
-                  onAction="ReloadSpotlightButtonClick"/>-->
+                  onAction="ReloadSpotlightButtonClick"/>
           <editBox id="spotlightTransparency"
                    label="Transparency"
                    imageMso="PrintTitles"
