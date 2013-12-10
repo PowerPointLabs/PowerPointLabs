@@ -10,12 +10,14 @@
                   size="large"
                   getImage="GetAddAnimationImage"
                   screentip="Add AutoMotion animation for current slide"
+                  getEnabled="OnGetEnabledAddAutoMotion"
                   onAction="AddAnimationButtonClick"/>
           <button id="ReloadButton"
                   label ="Recreate Animation"
                   size ="large"
                   getImage="GetReloadAnimationImage"
                   screentip="Reload AutoMotion animation for current slide"
+                  getEnabled="OnGetEnabledReloadAutoMotion"
                   onAction="ReloadButtonClick"/>
           <!--<dropDown  id="animationStylesList"
                     label ="Animations Style"

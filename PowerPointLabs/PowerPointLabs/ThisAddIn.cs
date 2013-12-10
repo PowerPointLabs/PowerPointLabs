@@ -5,6 +5,7 @@ using System.Text;
 using System.Xml.Linq;
 using PowerPoint = Microsoft.Office.Interop.PowerPoint;
 using Office = Microsoft.Office.Core;
+using System.Deployment.Application;
 
 namespace PowerPointLabs
 {
@@ -19,6 +20,19 @@ namespace PowerPointLabs
             //((PowerPoint.EApplication_Event)this.Application).SlideShowBegin += new Microsoft.Office.Interop.PowerPoint.EApplication_SlideShowBeginEventHandler(ThisAddIn_BeginSlideShow);
             //((PowerPoint.EApplication_Event)this.Application).SlideShowEnd += new Microsoft.Office.Interop.PowerPoint.EApplication_SlideShowEndEventHandler(ThisAddIn_EndSlideShow);
             ((PowerPoint.EApplication_Event)this.Application).WindowSelectionChange += new Microsoft.Office.Interop.PowerPoint.EApplication_WindowSelectionChangeEventHandler(ThisAddIn_SelectionChanged);
+            ((PowerPoint.EApplication_Event)this.Application).SlideSelectionChanged += new Microsoft.Office.Interop.PowerPoint.EApplication_SlideSelectionChangedEventHandler(ThisAddIn_SlideSelectionChanged);
+            DisplayUpdateDetails();
+        }
+
+        void DisplayUpdateDetails()
+        {
+            if (!ApplicationDeployment.IsNetworkDeployed)
+                return;
+
+            if (!ApplicationDeployment.CurrentDeployment.IsFirstRun)
+                return;
+
+            System.Windows.Forms.MessageBox.Show("PowerPointLabs has been updated recently.\nPlease visit http://powerpointlabs.info for more details", "Application Updated");
         }
 
         void ThisAddIn_SelectionChanged(PowerPoint.Selection Sel)
@@ -32,7 +46,27 @@ namespace PowerPointLabs
                     ribbon.spotlightEnabled = true;
                 }
             }
+
             ribbon.RefreshRibbonControl("AddSpotlightButton");
+        }
+
+        void ThisAddIn_SlideSelectionChanged(PowerPoint.SlideRange SldRange)
+        {
+            ribbon.addAutoMotionEnabled = true;
+            ribbon.reloadAutoMotionEnabled = true;
+            if (SldRange.Count != 1)
+            {
+                ribbon.addAutoMotionEnabled = false;
+                ribbon.reloadAutoMotionEnabled = false;
+            }
+            else
+            {
+                PowerPoint.Slide tmp = SldRange[1];
+                if (!(tmp.Name.Contains("PPSlide") && tmp.Name.Substring(0, 7).Equals("PPSlide")))
+                    ribbon.reloadAutoMotionEnabled = false;
+            }
+            ribbon.RefreshRibbonControl("AddAnimationButton");
+            ribbon.RefreshRibbonControl("ReloadButton");
         }
 
         //void ThisAddIn_BeginSlideShow(PowerPoint.SlideShowWindow Wn)

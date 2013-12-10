@@ -39,6 +39,8 @@ namespace PowerPointLabs
         public float defaultTransparency = 0.3f;
         public bool startUp = false;
         public bool spotlightEnabled = false;
+        public bool addAutoMotionEnabled = true;
+        public bool reloadAutoMotionEnabled = true;
         public Dictionary<String, float> softEdgesMapping = new Dictionary<string,float>
         {
             {"No Edges", 0},
@@ -52,30 +54,6 @@ namespace PowerPointLabs
 
         public Dictionary<String, PowerPoint.Shape> spotlightShapeMapping = new Dictionary<string,PowerPoint.Shape>();
         public Dictionary<String, PowerPoint.Slide> spotlightSlideMapping = new Dictionary<string, PowerPoint.Slide>();
-        //public Dictionary<String, PowerPoint.MsoAnimEffect> effectMapping = new Dictionary<String, PowerPoint.MsoAnimEffect>
-        //{ 
-        //    {"Appear", PowerPoint.MsoAnimEffect.msoAnimEffectAppear},
-        //    {"Arc Up", PowerPoint.MsoAnimEffect.msoAnimEffectArcUp},
-        //    {"Ascend", PowerPoint.MsoAnimEffect.msoAnimEffectAscend},
-        //    {"Blinds", PowerPoint.MsoAnimEffect.msoAnimEffectBlinds},
-        //    {"Checkerboard", PowerPoint.MsoAnimEffect.msoAnimEffectCheckerboard},
-        //    {"Circle", PowerPoint.MsoAnimEffect.msoAnimEffectCircle},
-        //    {"Crawl", PowerPoint.MsoAnimEffect.msoAnimEffectCrawl},
-        //    {"Credits", PowerPoint.MsoAnimEffect.msoAnimEffectCredits},
-        //    {"Descend", PowerPoint.MsoAnimEffect.msoAnimEffectDescend},
-        //    {"Diamond", PowerPoint.MsoAnimEffect.msoAnimEffectDiamond},
-        //    {"Dissolve", PowerPoint.MsoAnimEffect.msoAnimEffectDissolve},
-        //    {"Ease In", PowerPoint.MsoAnimEffect.msoAnimEffectEaseIn},
-        //    {"Expand", PowerPoint.MsoAnimEffect.msoAnimEffectExpand},
-        //    {"Fade", PowerPoint.MsoAnimEffect.msoAnimEffectFade},
-        //    {"Faded Swivel", PowerPoint.MsoAnimEffect.msoAnimEffectFadedSwivel},
-        //    {"Faded Zoom", PowerPoint.MsoAnimEffect.msoAnimEffectFadedZoom},
-        //    {"Flash Bulb", PowerPoint.MsoAnimEffect.msoAnimEffectFlashBulb},
-        //    {"Flash Once", PowerPoint.MsoAnimEffect.msoAnimEffectFlashOnce},
-        //    {"Flicker", PowerPoint.MsoAnimEffect.msoAnimEffectFlicker},
-        //    {"Flip", PowerPoint.MsoAnimEffect.msoAnimEffectFlip},
-        //    {"Float", PowerPoint.MsoAnimEffect.msoAnimEffectFloat}
-        //};
 
         public Ribbon1()
         {
@@ -146,22 +124,29 @@ namespace PowerPointLabs
 
         public void HelpButtonClick(Office.IRibbonControl control)
         {
+            string myURL = "http://powerpointlabs.info";
+            System.Diagnostics.Process.Start(myURL);
         }
 
         public void FeedbackButtonClick(Office.IRibbonControl control)
         {
+            string myURL = "http://powerpointlabs.info";
+            System.Diagnostics.Process.Start(myURL);
         }
 
         public void HighlightBulletsButtonClick(Office.IRibbonControl control)
         {
+            System.Windows.Forms.MessageBox.Show("This feature is coming soon!                ", "Coming Soon");
         }
 
         public void AddZoomButtonClick(Office.IRibbonControl control)
         {
+            System.Windows.Forms.MessageBox.Show("This feature is coming soon!                ", "Coming Soon");
         }
 
         public void CropShapeButtonClick(Office.IRibbonControl control)
         {
+            System.Windows.Forms.MessageBox.Show("This feature is coming soon!                ", "Coming Soon");
         }
 
         //public void AboutButtonClickSpotlight(Office.IRibbonControl control)
@@ -301,6 +286,16 @@ namespace PowerPointLabs
         public bool OnGetEnabledSpotlight(Office.IRibbonControl control)
         {
             return spotlightEnabled;
+        }
+
+        public bool OnGetEnabledAddAutoMotion(Office.IRibbonControl control)
+        {
+            return addAutoMotionEnabled;
+        }
+
+        public bool OnGetEnabledReloadAutoMotion(Office.IRibbonControl control)
+        {
+            return reloadAutoMotionEnabled;
         }
 
         //Edit Name Callbacks
