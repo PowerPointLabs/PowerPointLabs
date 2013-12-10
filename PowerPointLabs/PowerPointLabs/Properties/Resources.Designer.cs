@@ -102,6 +102,13 @@ namespace PowerPointLabs.Properties {
             }
         }
         
+        internal static System.Drawing.Bitmap Logo {
+            get {
+                object obj = ResourceManager.GetObject("Logo", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
         internal static System.Drawing.Bitmap ReloadAnimation {
             get {
                 object obj = ResourceManager.GetObject("ReloadAnimation", resourceCulture);

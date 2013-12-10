@@ -538,18 +538,21 @@ namespace PowerPointLabs
             PowerPoint.MsoAnimTriggerType trigger = PowerPoint.MsoAnimTriggerType.msoAnimTriggerWithPrevious;
             PowerPoint.Presentation presentation = Globals.ThisAddIn.Application.ActivePresentation;
 
-            PowerPoint.Shape indicatorShape = newSlide.Shapes.AddShape(Office.MsoAutoShapeType.msoShapeRectangle, presentation.PageSetup.SlideWidth - 100, 0, 100.0f, 100.0f);
-            indicatorShape.ShapeStyle = Office.MsoShapeStyleIndex.msoShapeStylePreset28;
-            indicatorShape.TextFrame2.TextRange.Text = "Added By \nPowerPointLabs";
+            String tempFileName = Path.GetTempFileName();
+            Properties.Resources.Logo.Save(tempFileName);
+            PowerPoint.Shape indicatorShape = newSlide.Shapes.AddPicture(tempFileName, Office.MsoTriState.msoFalse, Office.MsoTriState.msoTrue, presentation.PageSetup.SlideWidth - Properties.Resources.Logo.Width, 0, Properties.Resources.Logo.Width, Properties.Resources.Logo.Height); 
+            //PowerPoint.Shape indicatorShape = newSlide.Shapes.AddShape(Office.MsoAutoShapeType.msoShapeRectangle, presentation.PageSetup.SlideWidth - 100, 0, 100.0f, 100.0f);
+            //indicatorShape.ShapeStyle = Office.MsoShapeStyleIndex.msoShapeStylePreset28;
+            //indicatorShape.TextFrame2.TextRange.Text = "Added By \nPowerPointLabs";
             //indicatorShape.TextFrame2.NoTextRotation = Office.MsoTriState.msoFalse;
-            indicatorShape.TextFrame2.AutoSize = Office.MsoAutoSize.msoAutoSizeTextToFitShape;
+            //indicatorShape.TextFrame2.AutoSize = Office.MsoAutoSize.msoAutoSizeTextToFitShape;
             //indicatorShape.TextFrame2.WordWrap = Office.MsoTriState.msoFalse;
 
             //indicatorShape.Rotation = 180;
-            indicatorShape.Cut();
-            indicatorShape = newSlide.Shapes.PasteSpecial(PowerPoint.PpPasteDataType.ppPastePNG)[1];
-            indicatorShape.Left = presentation.PageSetup.SlideWidth - indicatorShape.Width + 5;
-            indicatorShape.Top = 0;
+            //indicatorShape.Cut();
+            //indicatorShape = newSlide.Shapes.PasteSpecial(PowerPoint.PpPasteDataType.ppPastePNG)[1];
+            //indicatorShape.Left = presentation.PageSetup.SlideWidth - indicatorShape.Width + 5;
+            //indicatorShape.Top = 0;
             indicatorShape.Name = "PPIndicator" + GetTimestamp(DateTime.Now);
             effectDisappear = sequence.AddEffect(indicatorShape, PowerPoint.MsoAnimEffect.msoAnimEffectAppear, PowerPoint.MsoAnimateByLevel.msoAnimateLevelNone, PowerPoint.MsoAnimTriggerType.msoAnimTriggerWithPrevious);
             effectDisappear.Exit = Office.MsoTriState.msoTrue;
@@ -675,7 +678,7 @@ namespace PowerPointLabs
             //}
 
             //Manage Slide Transitions
-            //newSlide.SlideShowTransition.EntryEffect = PowerPoint.PpEntryEffect.ppEffectFadeSmoothly;
+            newSlide.SlideShowTransition.EntryEffect = PowerPoint.PpEntryEffect.ppEffectNone;
             //newSlide.SlideShowTransition.Duration = defaultDuration;
             newSlide.SlideShowTransition.AdvanceOnTime = Office.MsoTriState.msoTrue;
             newSlide.SlideShowTransition.AdvanceOnClick = Office.MsoTriState.msoFalse;
