@@ -44,7 +44,7 @@ namespace PowerPointLabs
         public bool reloadSpotlight = true;
         public Dictionary<String, float> softEdgesMapping = new Dictionary<string,float>
         {
-            {"No Edges", 0},
+            {"None", 0},
             {"1 Point", 1},
             {"2.5 Points", 2.5f},
             {"5 Points", 5},
@@ -132,7 +132,7 @@ namespace PowerPointLabs
 
         public void FeedbackButtonClick(Office.IRibbonControl control)
         {
-            string myURL = "http://powerpointlabs.info";
+            string myURL = "http://powerpointlabs.info/contact.html";
             System.Diagnostics.Process.Start(myURL);
         }
 

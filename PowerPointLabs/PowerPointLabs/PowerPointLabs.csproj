@@ -32,9 +32,9 @@
     <IsWebBootstrapper>True</IsWebBootstrapper>
     <BootstrapperEnabled>true</BootstrapperEnabled>
     <PublishUrl>C:\Users\Raunak\Documents\PowerPoint Labs\</PublishUrl>
-    <InstallUrl>http://www.comp.nus.edu.sg/~pptlabs/download/</InstallUrl>
+    <InstallUrl>http://www.comp.nus.edu.sg/~pptlabs/download-78563/</InstallUrl>
     <TargetCulture>en</TargetCulture>
-    <ApplicationVersion>0.0.0.3</ApplicationVersion>
+    <ApplicationVersion>0.0.0.4</ApplicationVersion>
     <AutoIncrementApplicationRevision>false</AutoIncrementApplicationRevision>
     <UpdateEnabled>true</UpdateEnabled>
     <UpdateInterval>0</UpdateInterval>
