@@ -9,7 +9,7 @@
                   label="Add Animation Slide"
                   size="large"
                   getImage="GetAddAnimationImage"
-                  screentip="Add AutoMotion animation for current slide"
+                  supertip="Add AutoMotion animation for current slide"
                   getEnabled="OnGetEnabledAddAutoMotion"
                   onAction="AddAnimationButtonClick"/>
           <button id="ReloadButton"
@@ -53,7 +53,7 @@
                   label ="Reload Spotlight"
                   size ="large"
                   screentip="Reload Spotlight effect for current slide"
-                  getImage="GetSpotlightImage"
+                  getImage="GetReloadSpotlightImage"
                   getEnabled="OnGetEnabledReloadSpotlight"
                   onAction="ReloadSpotlightButtonClick"/>
           <editBox id="spotlightTransparency"

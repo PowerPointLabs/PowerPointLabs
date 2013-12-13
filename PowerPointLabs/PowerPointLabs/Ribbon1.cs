@@ -119,8 +119,9 @@ namespace PowerPointLabs
 
         public void AboutButtonClick(Office.IRibbonControl control)
         {
-            AboutForm form = new AboutForm();
-            form.Show();
+            //AboutForm form = new AboutForm();
+            //form.Show();
+            System.Windows.Forms.MessageBox.Show("          PowerPointLabs Plugin Version 1.0.0 [Release date: 15 Dec 2013]\n     Developed at School of Computing, National University of Singapore.\n        For more information, visit our website http://PowerPointLabs.info", "About PowerPointLabs");
         }
 
         public void HelpButtonClick(Office.IRibbonControl control)
@@ -187,6 +188,11 @@ namespace PowerPointLabs
         public System.Drawing.Bitmap GetSpotlightImage(Office.IRibbonControl control)
         {
             return new System.Drawing.Bitmap(Properties.Resources.Spotlight);
+        }
+
+        public System.Drawing.Bitmap GetReloadSpotlightImage(Office.IRibbonControl control)
+        {
+            return new System.Drawing.Bitmap(Properties.Resources.ReloadSpotlight);
         }
 
         public System.Drawing.Bitmap GetHighlightBulletsImage(Office.IRibbonControl control)
