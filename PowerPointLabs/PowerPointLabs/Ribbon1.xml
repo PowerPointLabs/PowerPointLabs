@@ -127,7 +127,7 @@
     <contextMenu idMso="ContextMenuShape">
       <menuSeparator id="separatorShape"/>
       <button id="nameEditShape"
-              label="Edit Name"
+              label="Edit Name" 
               imageMso="EditCitation"
               onAction="NameEditBtnClick"/>
       <button id="spotlightShape"
