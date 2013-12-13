@@ -44,7 +44,7 @@ namespace PowerPointLabs
         public bool reloadSpotlight = true;
         public Dictionary<String, float> softEdgesMapping = new Dictionary<string,float>
         {
-            {"No Edges", 0},
+            {"None", 0},
             {"1 Point", 1},
             {"2.5 Points", 2.5f},
             {"5 Points", 5},
@@ -119,8 +119,9 @@ namespace PowerPointLabs
 
         public void AboutButtonClick(Office.IRibbonControl control)
         {
-            AboutForm form = new AboutForm();
-            form.Show();
+            //AboutForm form = new AboutForm();
+            //form.Show();
+            System.Windows.Forms.MessageBox.Show("          PowerPointLabs Plugin Version 1.0.0 [Release date: 15 Dec 2013]\n     Developed at School of Computing, National University of Singapore.\n        For more information, visit our website http://PowerPointLabs.info", "About PowerPointLabs");
         }
 
         public void HelpButtonClick(Office.IRibbonControl control)
@@ -131,7 +132,7 @@ namespace PowerPointLabs
 
         public void FeedbackButtonClick(Office.IRibbonControl control)
         {
-            string myURL = "http://powerpointlabs.info";
+            string myURL = "http://powerpointlabs.info/contact.html";
             System.Diagnostics.Process.Start(myURL);
         }
 
@@ -187,6 +188,11 @@ namespace PowerPointLabs
         public System.Drawing.Bitmap GetSpotlightImage(Office.IRibbonControl control)
         {
             return new System.Drawing.Bitmap(Properties.Resources.Spotlight);
+        }
+
+        public System.Drawing.Bitmap GetReloadSpotlightImage(Office.IRibbonControl control)
+        {
+            return new System.Drawing.Bitmap(Properties.Resources.ReloadSpotlight);
         }
 
         public System.Drawing.Bitmap GetHighlightBulletsImage(Office.IRibbonControl control)
@@ -561,7 +567,7 @@ namespace PowerPointLabs
 
             String tempFileName = Path.GetTempFileName();
             Properties.Resources.Indicator.Save(tempFileName);
-            PowerPoint.Shape indicatorShape = newSlide.Shapes.AddPicture(tempFileName, Office.MsoTriState.msoFalse, Office.MsoTriState.msoTrue, presentation.PageSetup.SlideWidth - 200, 0, 200, 140); 
+            PowerPoint.Shape indicatorShape = newSlide.Shapes.AddPicture(tempFileName, Office.MsoTriState.msoFalse, Office.MsoTriState.msoTrue, presentation.PageSetup.SlideWidth - 120, 0, 120, 84); 
             //PowerPoint.Shape indicatorShape = newSlide.Shapes.AddShape(Office.MsoAutoShapeType.msoShapeRectangle, presentation.PageSetup.SlideWidth - 100, 0, 100.0f, 100.0f);
             //indicatorShape.ShapeStyle = Office.MsoShapeStyleIndex.msoShapeStylePreset28;
             //indicatorShape.TextFrame2.TextRange.Text = "Added By \nPowerPointLabs";

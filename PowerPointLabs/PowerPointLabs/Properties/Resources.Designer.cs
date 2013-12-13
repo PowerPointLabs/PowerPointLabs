@@ -130,6 +130,13 @@ namespace PowerPointLabs.Properties {
             }
         }
         
+        internal static System.Drawing.Bitmap ReloadSpotlight {
+            get {
+                object obj = ResourceManager.GetObject("ReloadSpotlight", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
         internal static System.Drawing.Bitmap Spotlight {
             get {
                 object obj = ResourceManager.GetObject("Spotlight", resourceCulture);
