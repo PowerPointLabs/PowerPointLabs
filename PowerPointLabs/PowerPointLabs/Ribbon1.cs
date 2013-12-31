@@ -126,7 +126,7 @@ namespace PowerPointLabs
 
         public void HelpButtonClick(Office.IRibbonControl control)
         {
-            string myURL = "http://powerpointlabs.info";
+            string myURL = "http://powerpointlabs.info/docs.html";
             System.Diagnostics.Process.Start(myURL);
         }
 
