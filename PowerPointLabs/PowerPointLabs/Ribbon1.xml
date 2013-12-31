@@ -195,6 +195,19 @@
               imageMso="EditCitation"
               onAction="NameEditBtnClick"/>
     </contextMenu>
+    <contextMenu idMso="ContextMenuThumbnail">
+      <menuSeparator id="separatorThumbnail"/>
+      <button id="applyAutoMotionThumbnail"
+              label="Add Animation Slide"
+              getImage="GetAddAnimationImage"
+              getEnabled="OnGetEnabledAddAutoMotion"
+              onAction="AddAnimationButtonClick"/>
+      <button id="reloadAutoMotionThumbnail"
+              label="Recreate Animation"
+              getImage="GetReloadAnimationImage"
+              getEnabled="OnGetEnabledReloadAutoMotion"
+              onAction="ReloadButtonClick"/>
+    </contextMenu>
   </contextMenus>
 </customUI>
 
