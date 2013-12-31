@@ -467,6 +467,7 @@ namespace PowerPointLabs
         {
             PowerPoint.Slide currentSlide = GetCurrentSlide();
             PowerPoint.Shape tempShape = (PowerPoint.Shape)Globals.ThisAddIn.Application.ActiveWindow.Selection.ShapeRange[1];
+            //tempShape.Name = "PPTLabsSpotlightShape" + GetTimestamp(DateTime.Now);
 
             currentSlide.Duplicate();
             PowerPoint.Slide addedSlide = GetNextSlide(currentSlide);
@@ -523,11 +524,12 @@ namespace PowerPointLabs
             PowerPoint.Shape pictureShape = addedSlide.Shapes.PasteSpecial(PowerPoint.PpPasteDataType.ppPastePNG)[1];
             pictureShape.PictureFormat.TransparencyColor = 0xffffff;
             pictureShape.PictureFormat.TransparentBackground = Office.MsoTriState.msoTrue;
+            pictureShape.Left = 0.0f - defaultSoftEdges;
+            pictureShape.Top = 0.0f - defaultSoftEdges;
+            pictureShape.LockAspectRatio = Office.MsoTriState.msoFalse;
+            pictureShape.Width = presentation.PageSetup.SlideWidth + (2.0f * defaultSoftEdges);
+            pictureShape.Height = presentation.PageSetup.SlideHeight + (2.0f * defaultSoftEdges);
             pictureShape.SoftEdge.Radius = defaultSoftEdges;
-            pictureShape.Width = presentation.PageSetup.SlideWidth + 2 * defaultSoftEdges;
-            pictureShape.Height = presentation.PageSetup.SlideHeight + 2 * defaultSoftEdges;
-            pictureShape.Left = 0 - defaultSoftEdges;
-            pictureShape.Top = 0 - defaultSoftEdges;
             pictureShape.Name = "SpotlightShape1";
         }
 
