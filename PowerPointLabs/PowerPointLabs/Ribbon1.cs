@@ -492,8 +492,30 @@ namespace PowerPointLabs
             }
             tempShape.Copy();
             PowerPoint.Shape spotlightShape = addedSlide.Shapes.Paste()[1];
-            spotlightShape.Left = tempShape.Left;
-            spotlightShape.Top = tempShape.Top;
+            if (tempShape.Left < 0)
+            {
+                spotlightShape.Left = 0;
+                spotlightShape.Width = tempShape.Width - (0.0f - tempShape.Left);
+            }
+            else
+                spotlightShape.Left = tempShape.Left;
+
+            if (tempShape.Left + tempShape.Width > Globals.ThisAddIn.Application.ActivePresentation.PageSetup.SlideWidth)
+                spotlightShape.Width = (Globals.ThisAddIn.Application.ActivePresentation.PageSetup.SlideWidth - spotlightShape.Left);
+
+            if (tempShape.Top < 0)
+            {
+                spotlightShape.Top = 0;
+                spotlightShape.Height = tempShape.Height - (0.0f - tempShape.Top);
+            }
+            else
+                spotlightShape.Top = tempShape.Top;
+
+            if (tempShape.Top + tempShape.Height > Globals.ThisAddIn.Application.ActivePresentation.PageSetup.SlideHeight)
+                spotlightShape.Height = (Globals.ThisAddIn.Application.ActivePresentation.PageSetup.SlideHeight - spotlightShape.Top);
+
+            //spotlightShape.Left = tempShape.Left;
+            //spotlightShape.Top = tempShape.Top;
             spotlightShape.Fill.ForeColor.RGB = 0xffffff;
             spotlightShape.Line.Visible = Office.MsoTriState.msoFalse;
             spotlightShape.Name = "SpotlightShape2";
