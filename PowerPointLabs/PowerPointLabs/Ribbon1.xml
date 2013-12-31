@@ -16,7 +16,7 @@
                   label ="Recreate Animation"
                   size ="large"
                   getImage="GetReloadAnimationImage"
-                  supertip="Recreates an existing animation slide with new animations.&#13;&#13;To activate, select the animation slide (added previously) and click this button."
+                  supertip="Recreates an existing animation slide with new animations.&#13;&#13;To activate, select the original slide or the animation slide (added previously) and click this button."
                   getEnabled="OnGetEnabledReloadAutoMotion"
                   onAction="ReloadButtonClick"/>
           <!--<dropDown  id="animationStylesList"

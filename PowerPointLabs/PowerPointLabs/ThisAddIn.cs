@@ -64,7 +64,8 @@ namespace PowerPointLabs
             else
             {
                 PowerPoint.Slide tmp = SldRange[1];
-                if (!(tmp.Name.Contains("PPSlide") && tmp.Name.Substring(0, 7).Equals("PPSlide")))
+                if (!((tmp.Name.Contains("PPSlideAnimated") && tmp.Name.Substring(0, 15).Equals("PPSlideAnimated"))
+                    || (tmp.Name.Contains("PPSlideStart") && tmp.Name.Substring(0, 12).Equals("PPSlideStart"))))
                     ribbon.reloadAutoMotionEnabled = false;
                 if (!(tmp.Name.Contains("PPTLabsSpotlight")))
                     ribbon.reloadSpotlight = false;

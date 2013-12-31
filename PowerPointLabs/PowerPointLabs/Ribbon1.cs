@@ -101,7 +101,7 @@ namespace PowerPointLabs
         public void ReloadButtonClick(Office.IRibbonControl control)
         {
             PowerPoint.Slide tempSlide = GetCurrentSlide();
-            if (tempSlide.Name.Contains("PPSlide") && tempSlide.Name.Substring(0, 7).Equals("PPSlide"))
+            if (tempSlide.Name.Contains("PPSlideAnimated") && tempSlide.Name.Substring(0, 15).Equals("PPSlideAnimated"))
             {
                 PowerPoint.Presentation presentation = Globals.ThisAddIn.Application.ActivePresentation;
                 PowerPoint.Slide nextSlide = presentation.Slides[tempSlide.SlideIndex + 1];
@@ -110,6 +110,16 @@ namespace PowerPointLabs
                 tempSlide.Delete();
 
                 AddCompleteAutoMotion(currentSlide, nextSlide);
+            }
+            else if (tempSlide.Name.Contains("PPSlideStart") && tempSlide.Name.Substring(0, 12).Equals("PPSlideStart"))
+            {
+                PowerPoint.Presentation presentation = Globals.ThisAddIn.Application.ActivePresentation;
+                PowerPoint.Slide animatedSlide = presentation.Slides[tempSlide.SlideIndex + 1];
+                PowerPoint.Slide finalSlide = presentation.Slides[tempSlide.SlideIndex + 2];
+                Globals.ThisAddIn.Application.ActiveWindow.View.GotoSlide(tempSlide.SlideIndex);
+                animatedSlide.Delete();
+
+                AddCompleteAutoMotion(tempSlide, finalSlide);
             }
             else
             {
@@ -686,11 +696,12 @@ namespace PowerPointLabs
         {
             //Duplicate current slide
             currentSlide.Duplicate();
+            currentSlide.Name = "PPSlideStart" + GetTimestamp(DateTime.Now);
             //Globals.ThisAddIn.Application.ActivePresentation.Slides.AddSlide(currentSlide.SlideIndex + 1, currentSlide.CustomLayout);
 
             //Store reference of new slide
             PowerPoint.Slide newSlide = GetNextSlide(currentSlide);
-            newSlide.Name = "PPSlide" + GetTimestamp(DateTime.Now);
+            newSlide.Name = "PPSlideAnimated" + GetTimestamp(DateTime.Now);
 
             //Go to new slide
             Globals.ThisAddIn.Application.ActiveWindow.View.GotoSlide(newSlide.SlideIndex);
