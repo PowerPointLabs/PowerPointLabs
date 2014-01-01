@@ -577,6 +577,8 @@ namespace PowerPointLabs
                 //If an identical object exists
                 PowerPoint.Slide newSlide = PrepareAnimatedSlide(currentSlide, shapeIDs);
                 AddAnimationsToShapes(newSlide, shapes1, shapes2, shapeIDs);
+                this.ribbon.ActivateTabMso("TabAnimations");
+                Globals.ThisAddIn.Application.CommandBars.ExecuteMso("AnimationPreview");
             }
             else
             {
