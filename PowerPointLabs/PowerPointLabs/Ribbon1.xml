@@ -180,6 +180,10 @@
               label="Add Zoom"
               imageMso="PanAndZoomWindow"
               onAction="ZoomBtnClick"/>
+      <button id="spotlightGroup"
+              label="Add Spotlight"
+              imageMso="ObjectEffectGlowGallery"
+              onAction="SpotlightBtnClick"/>
     </contextMenu>
     <contextMenu idMso="ContextMenuInk">
       <menuSeparator id="separatorInk"/>
