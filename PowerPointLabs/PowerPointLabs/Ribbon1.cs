@@ -34,9 +34,9 @@ namespace PowerPointLabs
     {
         private Office.IRibbonUI ribbon;
 
-        public float defaultSoftEdges = 5;
+        public float defaultSoftEdges = 10;
         public float defaultDuration = 0.5f;
-        public float defaultTransparency = 0.3f;
+        public float defaultTransparency = 0.7f;
         public bool startUp = false;
         public bool spotlightEnabled = false;
         public bool addAutoMotionEnabled = true;
@@ -687,7 +687,13 @@ namespace PowerPointLabs
 
                             //Create VML path for the motion path
                             //This path needs to be a curved path to allow the user to edit points
-                            motion.MotionEffect.Path = "M 0 0 C " + ((finalX - initialX) / 2) / presentation.PageSetup.SlideWidth + " " + ((finalY - initialY) / 2) / presentation.PageSetup.SlideHeight + " " + ((finalX - initialX) / 2) / presentation.PageSetup.SlideWidth + " " + ((finalY - initialY) / 2) / presentation.PageSetup.SlideHeight + " " + (finalX - initialX) / presentation.PageSetup.SlideWidth + " " + (finalY - initialY) / presentation.PageSetup.SlideHeight + " E";
+                            float point1X = ((finalX - initialX) / 2f) / presentation.PageSetup.SlideWidth;
+                            float point1Y = ((finalY - initialY) / 2f) / presentation.PageSetup.SlideHeight;
+                            float point2X = ((finalX - initialX) / 2f) / presentation.PageSetup.SlideWidth;
+                            float point2Y = ((finalY - initialY) / 2f) / presentation.PageSetup.SlideHeight;
+                            float point3X = (finalX - initialX) / presentation.PageSetup.SlideWidth;
+                            float point3Y = (finalY - initialY) / presentation.PageSetup.SlideHeight;
+                            motion.MotionEffect.Path = "M 0 0 C " + point1X + " " + point1Y + " " + point2X + " " + point2Y + " " + point3X + " " + point3Y + " E";
                         }
 
                         //Resize Effect
@@ -700,6 +706,7 @@ namespace PowerPointLabs
 
                             if ((finalWidth != initialWidth) || (finalHeight != initialHeight))
                             {
+                                sh.LockAspectRatio = Office.MsoTriState.msoFalse;
                                 effectResize = sequence.AddEffect(sh, PowerPoint.MsoAnimEffect.msoAnimEffectGrowShrink, PowerPoint.MsoAnimateByLevel.msoAnimateLevelNone, trigger);
                                 //PowerPoint.AnimationBehavior resize = effectResize.Behaviors.Add(PowerPoint.MsoAnimType.msoAnimTypeScale);
                                 PowerPoint.AnimationBehavior resize = effectResize.Behaviors[1];
@@ -730,7 +737,6 @@ namespace PowerPointLabs
                             effectRotate.EffectParameters.Amount = GetMinimumRotation(initialRotation, finalRotation);
                             trigger = PowerPoint.MsoAnimTriggerType.msoAnimTriggerWithPrevious;
                         }
-
                         count++;
                     }
                 }
@@ -868,7 +874,7 @@ namespace PowerPointLabs
             toAngle = Normalize(toAngle);
 
             float rotation1 = toAngle - fromAngle;
-            float rotation2 = rotation1 == 0 ? 0 : Math.Abs(360 - Math.Abs(rotation1)) * (rotation1 / Math.Abs(rotation1)) * -1;
+            float rotation2 = rotation1 == 0.0f ? 0.0f : Math.Abs(360.0f - Math.Abs(rotation1)) * (rotation1 / Math.Abs(rotation1)) * -1.0f;
 
             if (Math.Abs(rotation1) < Math.Abs(rotation2))
             {
@@ -883,12 +889,12 @@ namespace PowerPointLabs
         private float Normalize(float i)
         {
             //find effective angle
-            float d = Math.Abs(i) % 360;
+            float d = Math.Abs(i) % 360.0f;
 
             if (i < 0)
             {
                 //return positive equivalent
-                return 360 - d;
+                return 360.0f - d;
             }
             else
             {
