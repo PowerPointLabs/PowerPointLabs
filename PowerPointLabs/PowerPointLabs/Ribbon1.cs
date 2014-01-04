@@ -121,6 +121,41 @@ namespace PowerPointLabs
 
                 AddCompleteAutoMotion(tempSlide, finalSlide);
             }
+            else if (tempSlide.Name.Contains("PPSlideEnd") && tempSlide.Name.Substring(0, 10).Equals("PPSlideEnd"))
+            {
+                PowerPoint.Presentation presentation = Globals.ThisAddIn.Application.ActivePresentation;
+                PowerPoint.Slide animatedSlide = presentation.Slides[tempSlide.SlideIndex - 1];
+                PowerPoint.Slide firstSlide = presentation.Slides[tempSlide.SlideIndex - 2];
+                Globals.ThisAddIn.Application.ActiveWindow.View.GotoSlide(tempSlide.SlideIndex);
+                animatedSlide.Delete();
+
+                AddCompleteAutoMotion(firstSlide, tempSlide);
+            }
+            else if (tempSlide.Name.Contains("PPSlideMulti") && tempSlide.Name.Substring(0, 12).Equals("PPSlideMulti"))
+            {
+                PowerPoint.Presentation presentation = Globals.ThisAddIn.Application.ActivePresentation;
+                PowerPoint.Slide startSlide1 = tempSlide;
+                PowerPoint.Slide animatedSlide1 = tempSlide;
+                PowerPoint.Slide animatedSlide2 = tempSlide;
+                PowerPoint.Slide endSlide2 = tempSlide;
+                if (tempSlide.SlideIndex > 2)
+                {
+                    animatedSlide1 = presentation.Slides[tempSlide.SlideIndex - 1];
+                    startSlide1 = presentation.Slides[tempSlide.SlideIndex - 2];
+                    Globals.ThisAddIn.Application.ActiveWindow.View.GotoSlide(tempSlide.SlideIndex);
+                    animatedSlide1.Delete();
+                    AddCompleteAutoMotion(startSlide1, tempSlide);
+                }
+
+                if (tempSlide.SlideIndex < presentation.Slides.Count - 1)
+                {
+                    animatedSlide2 = presentation.Slides[tempSlide.SlideIndex + 1];
+                    endSlide2 = presentation.Slides[tempSlide.SlideIndex + 2];
+                    Globals.ThisAddIn.Application.ActiveWindow.View.GotoSlide(tempSlide.SlideIndex);
+                    animatedSlide2.Delete();
+                    AddCompleteAutoMotion(tempSlide, endSlide2);
+                }    
+            }
             else
             {
                 System.Windows.Forms.MessageBox.Show("The current slide was not added by PPTLabs AutoMotion", "Error");
@@ -598,7 +633,7 @@ namespace PowerPointLabs
                 //If an identical object exists
                 PowerPoint.Slide newSlide = PrepareAnimatedSlide(currentSlide, shapeIDs);
                 AddAnimationsToShapes(newSlide, shapes1, shapes2, shapeIDs);
-                this.ribbon.ActivateTabMso("TabAnimations");
+                //this.ribbon.ActivateTabMso("TabAnimations");
                 Globals.ThisAddIn.Application.CommandBars.ExecuteMso("AnimationPreview");
             }
             else
@@ -747,7 +782,10 @@ namespace PowerPointLabs
         {
             //Duplicate current slide
             currentSlide.Duplicate();
-            currentSlide.Name = "PPSlideStart" + GetTimestamp(DateTime.Now);
+            if (currentSlide.Name.Contains("PPSlideEnd") || currentSlide.Name.Contains("PPSlideMulti"))
+                currentSlide.Name = "PPSlideMulti" + GetTimestamp(DateTime.Now);
+            else
+                currentSlide.Name = "PPSlideStart" + GetTimestamp(DateTime.Now);
             //Globals.ThisAddIn.Application.ActivePresentation.Slides.AddSlide(currentSlide.SlideIndex + 1, currentSlide.CustomLayout);
 
             //Store reference of new slide
@@ -777,6 +815,10 @@ namespace PowerPointLabs
 
             PowerPoint.Slide nextSlide = GetNextSlide(newSlide);
             nextSlide.SlideShowTransition.EntryEffect = PowerPoint.PpEntryEffect.ppEffectNone;
+            if (nextSlide.Name.Contains("PPSlideStart") || nextSlide.Name.Contains("PPSlideMulti"))
+                nextSlide.Name = "PPSlideMulti" + GetTimestamp(DateTime.Now);
+            else
+                nextSlide.Name = "PPSlideEnd" + GetTimestamp(DateTime.Now);
 
             AddAckSlide();
 

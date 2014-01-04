@@ -67,12 +67,20 @@ namespace PowerPointLabs
                 PowerPoint.Presentation presentation = Globals.ThisAddIn.Application.ActivePresentation;
                 int slideIndex = tmp.SlideIndex;
                 PowerPoint.Slide next = tmp;
+                PowerPoint.Slide prev = tmp;
 
                 if (slideIndex < presentation.Slides.Count)
                     next = presentation.Slides[slideIndex + 1];
+                if (slideIndex > 1)
+                    prev = presentation.Slides[slideIndex - 1];
                 if (!((tmp.Name.Contains("PPSlideAnimated") && tmp.Name.Substring(0, 15).Equals("PPSlideAnimated"))
                     || ((tmp.Name.Contains("PPSlideStart") && tmp.Name.Substring(0, 12).Equals("PPSlideStart"))
-                    && (next.Name.Contains("PPSlideAnimated") && next.Name.Substring(0, 15).Equals("PPSlideAnimated")))))
+                    && (next.Name.Contains("PPSlideAnimated") && next.Name.Substring(0, 15).Equals("PPSlideAnimated")))
+                    || ((tmp.Name.Contains("PPSlideEnd") && tmp.Name.Substring(0, 10).Equals("PPSlideEnd"))
+                    && (prev.Name.Contains("PPSlideAnimated") && prev.Name.Substring(0, 15).Equals("PPSlideAnimated")))
+                    || ((tmp.Name.Contains("PPSlideMulti") && tmp.Name.Substring(0, 12).Equals("PPSlideMulti"))
+                    && ((prev.Name.Contains("PPSlideAnimated") && prev.Name.Substring(0, 15).Equals("PPSlideAnimated"))
+                    || (next.Name.Contains("PPSlideAnimated") && next.Name.Substring(0, 15).Equals("PPSlideAnimated"))))))
                     ribbon.reloadAutoMotionEnabled = false;
                 if (!(tmp.Name.Contains("PPTLabsSpotlight")))
                     ribbon.reloadSpotlight = false;
