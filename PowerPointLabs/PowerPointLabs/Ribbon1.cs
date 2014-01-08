@@ -142,18 +142,24 @@ namespace PowerPointLabs
                 {
                     animatedSlide1 = presentation.Slides[tempSlide.SlideIndex - 1];
                     startSlide1 = presentation.Slides[tempSlide.SlideIndex - 2];
-                    Globals.ThisAddIn.Application.ActiveWindow.View.GotoSlide(tempSlide.SlideIndex);
-                    animatedSlide1.Delete();
-                    AddCompleteAutoMotion(startSlide1, tempSlide);
+                    if (animatedSlide1.Name.Contains("PPSlideAnimated") && startSlide1.Name.Contains("PPSlideStart"))
+                    {
+                        Globals.ThisAddIn.Application.ActiveWindow.View.GotoSlide(tempSlide.SlideIndex);
+                        animatedSlide1.Delete();
+                        AddCompleteAutoMotion(startSlide1, tempSlide);
+                    }
                 }
 
                 if (tempSlide.SlideIndex < presentation.Slides.Count - 1)
                 {
                     animatedSlide2 = presentation.Slides[tempSlide.SlideIndex + 1];
                     endSlide2 = presentation.Slides[tempSlide.SlideIndex + 2];
-                    Globals.ThisAddIn.Application.ActiveWindow.View.GotoSlide(tempSlide.SlideIndex);
-                    animatedSlide2.Delete();
-                    AddCompleteAutoMotion(tempSlide, endSlide2);
+                    if (animatedSlide2.Name.Contains("PPSlideAnimated") && endSlide2.Name.Contains("PPSlideEnd"))
+                    {
+                        Globals.ThisAddIn.Application.ActiveWindow.View.GotoSlide(tempSlide.SlideIndex);
+                        animatedSlide2.Delete();
+                        AddCompleteAutoMotion(tempSlide, endSlide2);
+                    }
                 }    
             }
             else
@@ -660,18 +666,7 @@ namespace PowerPointLabs
             String tempFileName = Path.GetTempFileName();
             Properties.Resources.Indicator.Save(tempFileName);
             PowerPoint.Shape indicatorShape = newSlide.Shapes.AddPicture(tempFileName, Office.MsoTriState.msoFalse, Office.MsoTriState.msoTrue, presentation.PageSetup.SlideWidth - 120, 0, 120, 84); 
-            //PowerPoint.Shape indicatorShape = newSlide.Shapes.AddShape(Office.MsoAutoShapeType.msoShapeRectangle, presentation.PageSetup.SlideWidth - 100, 0, 100.0f, 100.0f);
-            //indicatorShape.ShapeStyle = Office.MsoShapeStyleIndex.msoShapeStylePreset28;
-            //indicatorShape.TextFrame2.TextRange.Text = "Added By \nPowerPointLabs";
-            //indicatorShape.TextFrame2.NoTextRotation = Office.MsoTriState.msoFalse;
-            //indicatorShape.TextFrame2.AutoSize = Office.MsoAutoSize.msoAutoSizeTextToFitShape;
-            //indicatorShape.TextFrame2.WordWrap = Office.MsoTriState.msoFalse;
-
-            //indicatorShape.Rotation = 180;
-            //indicatorShape.Cut();
-            //indicatorShape = newSlide.Shapes.PasteSpecial(PowerPoint.PpPasteDataType.ppPastePNG)[1];
-            //indicatorShape.Left = presentation.PageSetup.SlideWidth - indicatorShape.Width + 5;
-            //indicatorShape.Top = 0;
+            
             indicatorShape.Name = "PPIndicator" + GetTimestamp(DateTime.Now);
             effectDisappear = sequence.AddEffect(indicatorShape, PowerPoint.MsoAnimEffect.msoAnimEffectAppear, PowerPoint.MsoAnimateByLevel.msoAnimateLevelNone, PowerPoint.MsoAnimTriggerType.msoAnimTriggerWithPrevious);
             effectDisappear.Exit = Office.MsoTriState.msoTrue;
@@ -700,77 +695,125 @@ namespace PowerPointLabs
                     {
                         DeleteShapeAnnimations(newSlide, sh);
                         trigger = (count == 0 && fadeFlag) ? PowerPoint.MsoAnimTriggerType.msoAnimTriggerAfterPrevious : PowerPoint.MsoAnimTriggerType.msoAnimTriggerWithPrevious;
-
-                        //Motion Effect
                         float finalX = (shapes2[count].Left + (shapes2[count].Width) / 2);
                         float initialX = (shapes1[count].Left + (shapes1[count].Width) / 2);
                         float finalY = (shapes2[count].Top + (shapes2[count].Height) / 2);
                         float initialY = (shapes1[count].Top + (shapes1[count].Height) / 2);
 
-                        if ((finalX != initialX) || (finalY != initialY))
-                        {
-                            effectMotion = sequence.AddEffect(sh, PowerPoint.MsoAnimEffect.msoAnimEffectPathDown, PowerPoint.MsoAnimateByLevel.msoAnimateLevelNone, trigger);
-                            //PowerPoint.AnimationBehavior motion = effectMotion.Behaviors.Add(PowerPoint.MsoAnimType.msoAnimTypeMotion);
-                            PowerPoint.AnimationBehavior motion = effectMotion.Behaviors[1];
-                            effectMotion.Timing.Duration = defaultDuration;
-                            trigger = PowerPoint.MsoAnimTriggerType.msoAnimTriggerWithPrevious;
-                            //effectMotion.EffectParameters.Relative = Office.MsoTriState.msoTrue;
-                            //motion.MotionEffect.FromX = initialX / presentation.PageSetup.SlideWidth * 100;
-                            //motion.MotionEffect.FromY = initialY / presentation.PageSetup.SlideHeight * 100;
-                            //motion.MotionEffect.ToX = (finalX - initialX) / presentation.PageSetup.SlideWidth * 100;
-                            //motion.MotionEffect.ToY = (finalY - initialY) / presentation.PageSetup.SlideHeight * 100;
-
-                            //Create VML path for the motion path
-                            //This path needs to be a curved path to allow the user to edit points
-                            float point1X = ((finalX - initialX) / 2f) / presentation.PageSetup.SlideWidth;
-                            float point1Y = ((finalY - initialY) / 2f) / presentation.PageSetup.SlideHeight;
-                            float point2X = ((finalX - initialX) / 2f) / presentation.PageSetup.SlideWidth;
-                            float point2Y = ((finalY - initialY) / 2f) / presentation.PageSetup.SlideHeight;
-                            float point3X = (finalX - initialX) / presentation.PageSetup.SlideWidth;
-                            float point3Y = (finalY - initialY) / presentation.PageSetup.SlideHeight;
-                            motion.MotionEffect.Path = "M 0 0 C " + point1X + " " + point1Y + " " + point2X + " " + point2Y + " " + point3X + " " + point3Y + " E";
-                        }
-
-                        //Resize Effect
-                        if (sh.Type != Office.MsoShapeType.msoPlaceholder && sh.Type != Office.MsoShapeType.msoTextBox)
-                        {
-                            float finalWidth = shapes2[count].Width;
-                            float initialWidth = shapes1[count].Width;
-                            float finalHeight = shapes2[count].Height;
-                            float initialHeight = shapes1[count].Height;
-
-                            if ((finalWidth != initialWidth) || (finalHeight != initialHeight))
-                            {
-                                sh.LockAspectRatio = Office.MsoTriState.msoFalse;
-                                effectResize = sequence.AddEffect(sh, PowerPoint.MsoAnimEffect.msoAnimEffectGrowShrink, PowerPoint.MsoAnimateByLevel.msoAnimateLevelNone, trigger);
-                                //PowerPoint.AnimationBehavior resize = effectResize.Behaviors.Add(PowerPoint.MsoAnimType.msoAnimTypeScale);
-                                PowerPoint.AnimationBehavior resize = effectResize.Behaviors[1];
-
-                                effectResize.Timing.Duration = defaultDuration;
-                                resize.ScaleEffect.ToX = (finalWidth / initialWidth) * 100;
-                                resize.ScaleEffect.ToY = (finalHeight / initialHeight) * 100;
-                                trigger = PowerPoint.MsoAnimTriggerType.msoAnimTriggerWithPrevious;
-                            }
-                        }
-                        if (sh.HasTextFrame == Office.MsoTriState.msoTrue && sh.TextFrame.HasText == Office.MsoTriState.msoTrue && sh.TextFrame.TextRange.Font.Size != shapes2[count].TextFrame.TextRange.Font.Size)
-                        {
-                            sh.TextFrame.WordWrap = Office.MsoTriState.msoTrue;
-                            effectFontResize = sequence.AddEffect(sh, PowerPoint.MsoAnimEffect.msoAnimEffectChangeFontSize, PowerPoint.MsoAnimateByLevel.msoAnimateLevelNone, trigger);
-                            effectFontResize.Timing.Duration = defaultDuration;
-                            PowerPoint.AnimationBehavior resizeFont = effectFontResize.Behaviors[1];
-                            resizeFont.PropertyEffect.To = shapes2[count].TextFrame.TextRange.Font.Size / shapes1[count].TextFrame.TextRange.Font.Size;
-                            trigger = PowerPoint.MsoAnimTriggerType.msoAnimTriggerWithPrevious;
-                        }
-
-                        //Rotation Effect
                         float finalRotation = shapes2[count].Rotation;
                         float initialRotation = shapes1[count].Rotation;
-                        if (finalRotation != initialRotation)
+
+                        float finalWidth = shapes2[count].Width;
+                        float initialWidth = shapes1[count].Width;
+                        float finalHeight = shapes2[count].Height;
+                        float initialHeight = shapes1[count].Height;
+
+                        if ((finalRotation != initialRotation || (initialRotation % 90) != 0) && (finalHeight != initialHeight || finalWidth != initialWidth))
                         {
-                            effectRotate = sequence.AddEffect(sh, PowerPoint.MsoAnimEffect.msoAnimEffectSpin, PowerPoint.MsoAnimateByLevel.msoAnimateLevelNone, trigger);
-                            effectRotate.Timing.Duration = defaultDuration;
-                            effectRotate.EffectParameters.Amount = GetMinimumRotation(initialRotation, finalRotation);
-                            trigger = PowerPoint.MsoAnimTriggerType.msoAnimTriggerWithPrevious;
+                            float incrementWidth = ((finalWidth / initialWidth) - 1.0f) / 50.0f;
+                            float incrementHeight = ((finalHeight / initialHeight) - 1.0f) / 50.0f;
+                            float incrementRotation = GetMinimumRotation(initialRotation, finalRotation) / 50.0f;
+                            float incrementLeft = (finalX - initialX) / 50.0f;
+                            float incrementTop = (finalY - initialY) / 50.0f;
+
+                            PowerPoint.Shape lastShape = sh;
+                            for (int i = 1; i <= 50; i++)
+                            {
+                                PowerPoint.Shape dupShape = sh.Duplicate()[1];
+                                if (i != 1)
+                                    sequence[sequence.Count].Delete();
+
+                                dupShape.Left = sh.Left;
+                                dupShape.Top = sh.Top;
+                                dupShape.ScaleWidth((1.0f + (incrementWidth * i)), Office.MsoTriState.msoFalse, Office.MsoScaleFrom.msoScaleFromMiddle);
+                                dupShape.ScaleHeight((1.0f + (incrementHeight * i)), Office.MsoTriState.msoFalse, Office.MsoScaleFrom.msoScaleFromMiddle);
+                                dupShape.Rotation += (incrementRotation * i);
+                                dupShape.Left += (incrementLeft * i);
+                                dupShape.Top += (incrementTop * i);
+
+                                PowerPoint.Effect appear = sequence.AddEffect(dupShape, PowerPoint.MsoAnimEffect.msoAnimEffectAppear, PowerPoint.MsoAnimateByLevel.msoAnimateLevelNone, PowerPoint.MsoAnimTriggerType.msoAnimTriggerWithPrevious);
+                                //appear.Timing.Duration = 0.005f;
+                                appear.Timing.TriggerDelayTime = (0.01f * i);
+
+                                PowerPoint.Effect disappear = sequence.AddEffect(lastShape, PowerPoint.MsoAnimEffect.msoAnimEffectAppear, PowerPoint.MsoAnimateByLevel.msoAnimateLevelNone, PowerPoint.MsoAnimTriggerType.msoAnimTriggerWithPrevious);
+                                disappear.Exit = Office.MsoTriState.msoTrue;
+                                //disappear.Timing.Duration = 0.005f;
+                                disappear.Timing.TriggerDelayTime = (0.01f * i);
+
+                                lastShape = dupShape;
+                            }
+                        }
+                        else 
+                        {
+                            //Motion Effect
+                            if ((finalX != initialX) || (finalY != initialY))
+                            {
+                                effectMotion = sequence.AddEffect(sh, PowerPoint.MsoAnimEffect.msoAnimEffectPathDown, PowerPoint.MsoAnimateByLevel.msoAnimateLevelNone, trigger);
+                                //PowerPoint.AnimationBehavior motion = effectMotion.Behaviors.Add(PowerPoint.MsoAnimType.msoAnimTypeMotion);
+                                PowerPoint.AnimationBehavior motion = effectMotion.Behaviors[1];
+                                effectMotion.Timing.Duration = defaultDuration;
+                                trigger = PowerPoint.MsoAnimTriggerType.msoAnimTriggerWithPrevious;
+                                //effectMotion.EffectParameters.Relative = Office.MsoTriState.msoTrue;
+                                //motion.MotionEffect.FromX = initialX / presentation.PageSetup.SlideWidth * 100;
+                                //motion.MotionEffect.FromY = initialY / presentation.PageSetup.SlideHeight * 100;
+                                //motion.MotionEffect.ToX = (finalX - initialX) / presentation.PageSetup.SlideWidth * 100;
+                                //motion.MotionEffect.ToY = (finalY - initialY) / presentation.PageSetup.SlideHeight * 100;
+
+                                //Create VML path for the motion path
+                                //This path needs to be a curved path to allow the user to edit points
+                                float point1X = ((finalX - initialX) / 2f) / presentation.PageSetup.SlideWidth;
+                                float point1Y = ((finalY - initialY) / 2f) / presentation.PageSetup.SlideHeight;
+                                float point2X = ((finalX - initialX) / 2f) / presentation.PageSetup.SlideWidth;
+                                float point2Y = ((finalY - initialY) / 2f) / presentation.PageSetup.SlideHeight;
+                                float point3X = (finalX - initialX) / presentation.PageSetup.SlideWidth;
+                                float point3Y = (finalY - initialY) / presentation.PageSetup.SlideHeight;
+                                motion.MotionEffect.Path = "M 0 0 C " + point1X + " " + point1Y + " " + point2X + " " + point2Y + " " + point3X + " " + point3Y + " E";
+                            }
+
+                            //Resize Effect
+                            if (sh.Type != Office.MsoShapeType.msoPlaceholder && sh.Type != Office.MsoShapeType.msoTextBox)
+                            {
+                                if ((finalWidth != initialWidth) || (finalHeight != initialHeight))
+                                {
+                                    sh.LockAspectRatio = Office.MsoTriState.msoTrue;
+                                    effectResize = sequence.AddEffect(sh, PowerPoint.MsoAnimEffect.msoAnimEffectGrowShrink, PowerPoint.MsoAnimateByLevel.msoAnimateLevelNone, trigger);
+                                    //PowerPoint.AnimationBehavior resize = effectResize.Behaviors.Add(PowerPoint.MsoAnimType.msoAnimTypeScale);
+                                    PowerPoint.AnimationBehavior resize = effectResize.Behaviors[1];
+
+                                    //float rotCos = (float)Math.Cos(degToRad(sh.Rotation));
+                                    //float rotSin = (float)Math.Sin(degToRad(sh.Rotation));
+
+                                    effectResize.Timing.Duration = defaultDuration;
+                                    //sh.ScaleWidth((finalWidth / initialWidth), Office.MsoTriState.msoFalse, Office.MsoScaleFrom.msoScaleFromMiddle);
+                                    //sh.ScaleHeight((finalHeight / initialHeight), Office.MsoTriState.msoFalse, Office.MsoScaleFrom.msoScaleFromMiddle);
+
+                                    resize.ScaleEffect.ByX = (finalWidth / initialWidth) * 100;
+                                    resize.ScaleEffect.ByY = (finalHeight / initialHeight) * 100;
+
+                                    //resize.ScaleEffect.ByX = (((finalWidth / initialWidth) * Math.Abs(rotCos)) + ((finalHeight / initialHeight) * Math.Abs(rotSin))) * 100;
+                                    //resize.ScaleEffect.ByY = (((finalWidth / initialWidth) * Math.Abs(rotSin)) + ((finalHeight / initialHeight) * Math.Abs(rotCos))) * 100;
+                                    trigger = PowerPoint.MsoAnimTriggerType.msoAnimTriggerWithPrevious;
+                                }
+                            }
+                            if (sh.HasTextFrame == Office.MsoTriState.msoTrue && sh.TextFrame.HasText == Office.MsoTriState.msoTrue && sh.TextFrame.TextRange.Font.Size != shapes2[count].TextFrame.TextRange.Font.Size)
+                            {
+                                sh.TextFrame.WordWrap = Office.MsoTriState.msoTrue;
+                                effectFontResize = sequence.AddEffect(sh, PowerPoint.MsoAnimEffect.msoAnimEffectChangeFontSize, PowerPoint.MsoAnimateByLevel.msoAnimateLevelNone, trigger);
+                                effectFontResize.Timing.Duration = defaultDuration;
+                                PowerPoint.AnimationBehavior resizeFont = effectFontResize.Behaviors[1];
+                                resizeFont.PropertyEffect.To = shapes2[count].TextFrame.TextRange.Font.Size / shapes1[count].TextFrame.TextRange.Font.Size;
+                                trigger = PowerPoint.MsoAnimTriggerType.msoAnimTriggerWithPrevious;
+                            }
+
+                            //Rotation Effect
+                            if (finalRotation != initialRotation)
+                            {
+                                effectRotate = sequence.AddEffect(sh, PowerPoint.MsoAnimEffect.msoAnimEffectSpin, PowerPoint.MsoAnimateByLevel.msoAnimateLevelNone, trigger);
+                                PowerPoint.AnimationBehavior rotate = effectRotate.Behaviors[1];
+                                effectRotate.Timing.Duration = defaultDuration;
+                                effectRotate.EffectParameters.Amount = GetMinimumRotation(initialRotation, finalRotation);
+                                trigger = PowerPoint.MsoAnimTriggerType.msoAnimTriggerWithPrevious;
+                            }
                         }
                         count++;
                     }
