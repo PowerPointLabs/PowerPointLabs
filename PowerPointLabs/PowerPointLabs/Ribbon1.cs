@@ -665,8 +665,12 @@ namespace PowerPointLabs
 
             String tempFileName = Path.GetTempFileName();
             Properties.Resources.Indicator.Save(tempFileName);
-            PowerPoint.Shape indicatorShape = newSlide.Shapes.AddPicture(tempFileName, Office.MsoTriState.msoFalse, Office.MsoTriState.msoTrue, presentation.PageSetup.SlideWidth - 120, 0, 120, 84); 
-            
+            PowerPoint.Shape indicatorShape = newSlide.Shapes.AddPicture(tempFileName, Office.MsoTriState.msoFalse, Office.MsoTriState.msoTrue, presentation.PageSetup.SlideWidth - 120, 0, 120, 84);
+            indicatorShape.Left = presentation.PageSetup.SlideWidth - 120;
+            indicatorShape.Top = 0;
+            indicatorShape.Width = 120;
+            indicatorShape.Height = 84;
+            indicatorShape.ZOrder(Office.MsoZOrderCmd.msoBringToFront);
             indicatorShape.Name = "PPIndicator" + GetTimestamp(DateTime.Now);
             effectDisappear = sequence.AddEffect(indicatorShape, PowerPoint.MsoAnimEffect.msoAnimEffectAppear, PowerPoint.MsoAnimateByLevel.msoAnimateLevelNone, PowerPoint.MsoAnimTriggerType.msoAnimTriggerWithPrevious);
             effectDisappear.Exit = Office.MsoTriState.msoTrue;
@@ -733,12 +737,12 @@ namespace PowerPointLabs
 
                                 PowerPoint.Effect appear = sequence.AddEffect(dupShape, PowerPoint.MsoAnimEffect.msoAnimEffectAppear, PowerPoint.MsoAnimateByLevel.msoAnimateLevelNone, PowerPoint.MsoAnimTriggerType.msoAnimTriggerWithPrevious);
                                 //appear.Timing.Duration = 0.005f;
-                                appear.Timing.TriggerDelayTime = (0.01f * i);
+                                appear.Timing.TriggerDelayTime = ((defaultDuration / 50) * i);
 
                                 PowerPoint.Effect disappear = sequence.AddEffect(lastShape, PowerPoint.MsoAnimEffect.msoAnimEffectAppear, PowerPoint.MsoAnimateByLevel.msoAnimateLevelNone, PowerPoint.MsoAnimTriggerType.msoAnimTriggerWithPrevious);
                                 disappear.Exit = Office.MsoTriState.msoTrue;
                                 //disappear.Timing.Duration = 0.005f;
-                                disappear.Timing.TriggerDelayTime = (0.01f * i);
+                                disappear.Timing.TriggerDelayTime = ((defaultDuration / 50) * i);
 
                                 lastShape = dupShape;
                             }
