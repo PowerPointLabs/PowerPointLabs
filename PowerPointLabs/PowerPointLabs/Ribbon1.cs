@@ -5,6 +5,7 @@ using System.Linq;
 using System.Reflection;
 using System.Runtime.InteropServices;
 using System.Text;
+using System.Diagnostics;
 using Office = Microsoft.Office.Core;
 using PowerPoint = Microsoft.Office.Interop.PowerPoint;
 
@@ -33,7 +34,6 @@ namespace PowerPointLabs
     public class Ribbon1 : Office.IRibbonExtensibility
     {
         private Office.IRibbonUI ribbon;
-
         public float defaultSoftEdges = 10;
         public float defaultDuration = 0.5f;
         public float defaultTransparency = 0.7f;
@@ -58,6 +58,18 @@ namespace PowerPointLabs
 
         public Ribbon1()
         {
+            //// The folder for the roaming current user 
+            //string folder = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData);
+
+            //// Combine the base folder with your specific folder....
+            //string specificFolder = Path.Combine(folder, "PowerPointLabs");
+
+            //// Check if folder exists and if not, create it
+            //if (!Directory.Exists(specificFolder))
+            //    Directory.CreateDirectory(specificFolder);
+            //string fileName = Path.Combine(specificFolder, "PowerPointLabs_Log.log");
+
+            //Trace.Listeners.Add(new TextWriterTraceListener(fileName));
         }
 
         #region IRibbonExtensibility Members
@@ -84,18 +96,26 @@ namespace PowerPointLabs
 
         public void AddAnimationButtonClick(Office.IRibbonControl control)
         {
-            //Get References of current and next slides
-            PowerPoint.Slide currentSlide = GetCurrentSlide();
-            PowerPoint.Presentation presentation = Globals.ThisAddIn.Application.ActivePresentation;
-            if (currentSlide != null && currentSlide.SlideIndex != presentation.Slides.Count)
+            try
             {
-                PowerPoint.Slide nextSlide = GetNextSlide(currentSlide);
-                AddCompleteAutoMotion(currentSlide, nextSlide);
+                //Get References of current and next slides
+                PowerPoint.Slide currentSlide = GetCurrentSlide();
+                PowerPoint.Presentation presentation = Globals.ThisAddIn.Application.ActivePresentation;
+                if (currentSlide != null && currentSlide.SlideIndex != presentation.Slides.Count)
+                {
+                    PowerPoint.Slide nextSlide = GetNextSlide(currentSlide);
+                    AddCompleteAutoMotion(currentSlide, nextSlide);
+                }
+                else
+                {
+                    System.Windows.Forms.MessageBox.Show("Please select the correct slide", "Unable to Add Animations");
+                }
             }
-            else
+            catch (Exception e)
             {
-                System.Windows.Forms.MessageBox.Show("Please select the correct slide", "Unable to Add Animations");
+                //Log(GetTimestamp(DateTime.Now) + ": " + e.Message + ": " + e.Source);
             }
+            
         }
 
         public void ReloadButtonClick(Office.IRibbonControl control)
@@ -172,7 +192,7 @@ namespace PowerPointLabs
         {
             //AboutForm form = new AboutForm();
             //form.Show();
-            System.Windows.Forms.MessageBox.Show("          PowerPointLabs Plugin Version 1.2.0 [Release date: 8 Jan 2014]\n     Developed at School of Computing, National University of Singapore.\n        For more information, visit our website http://PowerPointLabs.info", "About PowerPointLabs");
+            System.Windows.Forms.MessageBox.Show("          PowerPointLabs Plugin Version 1.2.1 [Release date: 10 Jan 2014]\n     Developed at School of Computing, National University of Singapore.\n        For more information, visit our website http://PowerPointLabs.info", "About PowerPointLabs");
         }
 
         public void HelpButtonClick(Office.IRibbonControl control)
@@ -637,10 +657,13 @@ namespace PowerPointLabs
             if (GetMatchingShapeDetails(currentSlide, nextSlide, out shapes1, out shapes2, out shapeIDs))
             {
                 //If an identical object exists
+                AboutForm progressForm = new AboutForm();
+                progressForm.Visible = true;
                 PowerPoint.Slide newSlide = PrepareAnimatedSlide(currentSlide, shapeIDs);
                 AddAnimationsToShapes(newSlide, shapes1, shapes2, shapeIDs);
                 //this.ribbon.ActivateTabMso("TabAnimations");
                 Globals.ThisAddIn.Application.CommandBars.ExecuteMso("AnimationPreview");
+                progressForm.Visible = false;
             }
             else
             {
@@ -855,15 +878,25 @@ namespace PowerPointLabs
 
             //Go to new slide
             Globals.ThisAddIn.Application.ActiveWindow.View.GotoSlide(newSlide.SlideIndex);
+            PowerPoint.Presentation presentation = Globals.ThisAddIn.Application.ActivePresentation;
 
             //Delete non-identical shapes
-            //foreach (PowerPoint.Shape sh in newSlide.Shapes)
+            //foreach (PowerPoint.Effect eff in newSlide.TimeLine.MainSequence)
             //{
-            //    if (!shapeIDs.Contains(sh.Id))
+            //    if (eff.EffectType >= PowerPoint.MsoAnimEffect.msoAnimEffectPathCircle && eff.EffectType <= PowerPoint.MsoAnimEffect.msoAnimEffectPathRight)
             //    {
             //        //sh.Delete();
-            //        fadeEffect = sequence.AddEffect(sh, PowerPoint.MsoAnimEffect.msoAnimEffectFade, PowerPoint.MsoAnimateByLevel.msoAnimateLevelNone, PowerPoint.MsoAnimTriggerType.msoAnimTriggerWithPrevious);
-            //        fadeEffect.Timing.Duration = defaultDuration;
+            //        PowerPoint.AnimationBehavior motion = eff.Behaviors[1];
+            //        if (motion.Type == PowerPoint.MsoAnimType.msoAnimTypeMotion)
+            //        {
+            //            PowerPoint.Shape sh = eff.Shape;
+            //            string[] path = motion.MotionEffect.Path.Split(' ');
+            //            int count = path.Length;
+            //            float xVal = Convert.ToSingle(path[count - 3]);
+            //            float yVal = Convert.ToSingle(path[count - 2]);
+            //            sh.Left += (xVal * presentation.PageSetup.SlideWidth);
+            //            sh.Top += (yVal * presentation.PageSetup.SlideHeight);
+            //        }
             //    }
             //}
 
@@ -940,6 +973,13 @@ namespace PowerPointLabs
                 }
             }
             return flag;
+        }
+
+        private void Log(String logText)
+        {
+            //Trace.WriteLine(logText);
+            //Trace.Flush();
+            Trace.TraceInformation(logText);
         }
 
         private PowerPoint.Slide GetCurrentSlide()

@@ -176,10 +176,10 @@
               label="Edit Name"
               imageMso="EditCitation"
               onAction="NameEditBtnClick"/>
-      <button id="zoomShape"
+      <!--<button id="zoomShape"
               label="Add Zoom"
               imageMso="PanAndZoomWindow"
-              onAction="ZoomBtnClick"/>
+              onAction="ZoomBtnClick"/>-->
       <button id="spotlightGroup"
               label="Add Spotlight"
               imageMso="ObjectEffectGlowGallery"
