@@ -930,7 +930,7 @@ namespace PowerPointLabs
                                     if (i != 1)
                                         sequence[sequence.Count].Delete();
 
-                                    //dupShape.LockAspectRatio = Office.MsoTriState.msoFalse;
+                                    dupShape.LockAspectRatio = Office.MsoTriState.msoFalse;
                                     dupShape.Left = sh.Left;
                                     dupShape.Top = sh.Top;
                                     dupShape.ScaleWidth((1.0f + (incrementWidth * i)), Office.MsoTriState.msoFalse, Office.MsoScaleFrom.msoScaleFromMiddle);
