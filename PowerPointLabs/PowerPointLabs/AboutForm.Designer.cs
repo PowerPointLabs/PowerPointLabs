@@ -34,6 +34,7 @@
             // AboutForm
             // 
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.None;
+            this.AutoValidate = System.Windows.Forms.AutoValidate.Disable;
             this.BackColor = System.Drawing.SystemColors.Window;
             this.CausesValidation = false;
             resources.ApplyResources(this, "$this");

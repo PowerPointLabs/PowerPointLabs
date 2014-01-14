@@ -28,7 +28,7 @@ namespace PowerPointLabs
         private void button1_Click(object sender, EventArgs e)
         {
             this.newName = this.textBox1.Text;
-            ribbon.nameEdited(this.newName);
+            ribbon.ShapeNameEdited(this.newName);
             this.Dispose();
         }
 

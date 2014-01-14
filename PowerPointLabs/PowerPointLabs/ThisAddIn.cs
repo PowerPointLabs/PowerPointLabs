@@ -1,8 +1,10 @@
 ﻿using System;
+using System.IO;
 using System.Collections;
 using System.Linq;
 using System.Text;
 using System.Xml.Linq;
+using System.Diagnostics;
 using PowerPoint = Microsoft.Office.Interop.PowerPoint;
 using Office = Microsoft.Office.Core;
 using System.Deployment.Application;
@@ -16,24 +18,44 @@ namespace PowerPointLabs
 
         private void ThisAddIn_Startup(object sender, System.EventArgs e)
         {
+            SetUpLogger();
+            Trace.TraceInformation(DateTime.Now.ToString("yyyyMMddHHmmss") + ": PowerPointLabs Started");
             ((PowerPoint.EApplication_Event)this.Application).NewPresentation += new Microsoft.Office.Interop.PowerPoint.EApplication_NewPresentationEventHandler(ThisAddIn_NewPresentation);
             //((PowerPoint.EApplication_Event)this.Application).SlideShowBegin += new Microsoft.Office.Interop.PowerPoint.EApplication_SlideShowBeginEventHandler(ThisAddIn_BeginSlideShow);
             //((PowerPoint.EApplication_Event)this.Application).SlideShowEnd += new Microsoft.Office.Interop.PowerPoint.EApplication_SlideShowEndEventHandler(ThisAddIn_EndSlideShow);
             ((PowerPoint.EApplication_Event)this.Application).WindowSelectionChange += new Microsoft.Office.Interop.PowerPoint.EApplication_WindowSelectionChangeEventHandler(ThisAddIn_SelectionChanged);
             ((PowerPoint.EApplication_Event)this.Application).SlideSelectionChanged += new Microsoft.Office.Interop.PowerPoint.EApplication_SlideSelectionChangedEventHandler(ThisAddIn_SlideSelectionChanged);
             //DisplayUpdateDetails();
+
         }
 
-        void DisplayUpdateDetails()
+        void SetUpLogger()
         {
-            if (!ApplicationDeployment.IsNetworkDeployed)
-                return;
+            // The folder for the roaming current user 
+            string folder = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData);
 
-            if (!ApplicationDeployment.CurrentDeployment.IsFirstRun)
-                return;
+            // Combine the base folder with your specific folder....
+            string specificFolder = Path.Combine(folder, "PowerPointLabs");
 
-            System.Windows.Forms.MessageBox.Show("PowerPointLabs has been updated recently.\nPlease visit http://powerpointlabs.info for more details", "Application Updated");
+            // Check if folder exists and if not, create it
+            if (!Directory.Exists(specificFolder))
+                Directory.CreateDirectory(specificFolder);
+            string fileName = Path.Combine(specificFolder, "PowerPointLabs_Log_1.log");
+
+            Trace.AutoFlush = true;
+            Trace.Listeners.Add(new TextWriterTraceListener(fileName));
         }
+
+        //void DisplayUpdateDetails()
+        //{
+        //    if (!ApplicationDeployment.IsNetworkDeployed)
+        //        return;
+
+        //    if (!ApplicationDeployment.CurrentDeployment.IsFirstRun)
+        //        return;
+
+        //    System.Windows.Forms.MessageBox.Show("PowerPointLabs has been updated recently.\nPlease visit http://powerpointlabs.info for more details", "Application Updated");
+        //}
 
         void ThisAddIn_SelectionChanged(PowerPoint.Selection Sel)
         {
@@ -125,6 +147,8 @@ namespace PowerPointLabs
 
         private void ThisAddIn_Shutdown(object sender, System.EventArgs e)
         {
+            Trace.TraceInformation(DateTime.Now.ToString("yyyyMMddHHmmss") + ": PowerPointLabs Exiting");
+            Trace.Close();
         }
 
         protected override Microsoft.Office.Core.IRibbonExtensibility CreateRibbonExtensibilityObject()

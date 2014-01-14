@@ -34,7 +34,7 @@
     <PublishUrl>C:\Users\Raunak\Documents\PowerPoint Labs\</PublishUrl>
     <InstallUrl>http://www.comp.nus.edu.sg/~pptlabs/download/dev/</InstallUrl>
     <TargetCulture>en</TargetCulture>
-    <ApplicationVersion>0.0.0.7</ApplicationVersion>
+    <ApplicationVersion>1.2.2.0</ApplicationVersion>
     <AutoIncrementApplicationRevision>false</AutoIncrementApplicationRevision>
     <UpdateEnabled>true</UpdateEnabled>
     <UpdateInterval>0</UpdateInterval>

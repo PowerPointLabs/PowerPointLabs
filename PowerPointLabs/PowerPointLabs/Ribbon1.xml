@@ -37,7 +37,7 @@
                    imageMso="StartTimer"
                    sizeString="AAAA"
                    supertip="The duration (in seconds) for the animations in the animation slides to be created."
-                   getText = "OnGetText"
+                   getText = "OnGetDurationText"
                    onChange = "OnChangeDuration"/>
         </group>
         <group id="SpotLightGroup"
