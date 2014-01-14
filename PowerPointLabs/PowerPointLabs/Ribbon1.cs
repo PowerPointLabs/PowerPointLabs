@@ -933,11 +933,31 @@ namespace PowerPointLabs
                                     dupShape.LockAspectRatio = Office.MsoTriState.msoFalse;
                                     dupShape.Left = sh.Left;
                                     dupShape.Top = sh.Top;
-                                    dupShape.ScaleWidth((1.0f + (incrementWidth * i)), Office.MsoTriState.msoFalse, Office.MsoScaleFrom.msoScaleFromMiddle);
-                                    dupShape.ScaleHeight((1.0f + (incrementHeight * i)), Office.MsoTriState.msoFalse, Office.MsoScaleFrom.msoScaleFromMiddle);
-                                    dupShape.Rotation += (incrementRotation * i);
-                                    dupShape.Left += (incrementLeft * i);
-                                    dupShape.Top += (incrementTop * i);
+
+                                    if (incrementWidth != 0.0f)
+                                    {
+                                        dupShape.ScaleWidth((1.0f + (incrementWidth * i)), Office.MsoTriState.msoFalse, Office.MsoScaleFrom.msoScaleFromMiddle);
+                                    }
+
+                                    if (incrementHeight != 0.0f)
+                                    {
+                                        dupShape.ScaleHeight((1.0f + (incrementHeight * i)), Office.MsoTriState.msoFalse, Office.MsoScaleFrom.msoScaleFromMiddle);
+                                    }
+
+                                    if (incrementRotation != 0.0f)
+                                    {
+                                        dupShape.Rotation += (incrementRotation * i);
+                                    }
+
+                                    if (incrementLeft != 0.0f)
+                                    {
+                                        dupShape.Left += (incrementLeft * i);
+                                    }
+
+                                    if (incrementTop != 0.0f)
+                                    {
+                                        dupShape.Top += (incrementTop * i);
+                                    }
 
                                     if (incrementFont != 0.0f)
                                     {
