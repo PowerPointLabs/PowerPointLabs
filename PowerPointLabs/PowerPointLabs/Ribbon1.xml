@@ -39,6 +39,11 @@
                    supertip="The duration (in seconds) for the animations in the animation slides to be created."
                    getText = "OnGetDurationText"
                    onChange = "OnChangeDuration"/>
+          <checkBox id="animationStyleOption"
+                    label="Smoother Animation"
+                    supertip="Use a frame-based approach for smoother resize animations.&#13;&#13;This may result in larger file sizes and slower loading times for animated slides."
+                    onAction="AnimationStyleChanged"
+                    getPressed="AnimationStyleGetPressed"/>
         </group>
         <group id="SpotLightGroup"
                label="Spotlight"
@@ -73,6 +78,11 @@
                     getItemLabel ="OnGetItemLabelSpotlight"
                     getSelectedItemIndex="OnGetSelectedItemIndexSpotlight" 
                     onAction ="OnSelectItemSpotlight" />
+          <!--<checkBox id="SpotlightDeleteOption"
+                    label="Delete Spotlight Shape"
+                    supertip="Check this option if you want to delete the spotlight shape when adding this effect."
+                    onAction="SpotlightDeleteOptionChanged"
+                    getPressed="SpotlightDeleteOptionGetPressed"/>-->
           <!--<button id="aboutButtonSpotlight"
                   label="About"
                   size="large"
