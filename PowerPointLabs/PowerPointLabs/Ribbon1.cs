@@ -997,11 +997,20 @@ namespace PowerPointLabs
                     if (!shapeIDs.Contains(sh.Id) && sh.Id != indicatorID)
                     {
                         //sh.Delete();
-                        DeleteShapeAnnimations(newSlide, sh);
-                        effectFade = sequence.AddEffect(sh, PowerPoint.MsoAnimEffect.msoAnimEffectFade, PowerPoint.MsoAnimateByLevel.msoAnimateLevelNone, PowerPoint.MsoAnimTriggerType.msoAnimTriggerWithPrevious);
-                        effectFade.Exit = Office.MsoTriState.msoTrue;
-                        effectFade.Timing.Duration = defaultDuration;
-                        fadeFlag = true;
+                        if (DeleteShapeAnnimations(newSlide, sh))
+                        {
+                            effectFade = sequence.AddEffect(sh, PowerPoint.MsoAnimEffect.msoAnimEffectFade, PowerPoint.MsoAnimateByLevel.msoAnimateLevelNone, PowerPoint.MsoAnimTriggerType.msoAnimTriggerWithPrevious);
+                            effectFade.Exit = Office.MsoTriState.msoTrue;
+                            effectFade.Timing.Duration = defaultDuration;
+                            fadeFlag = true;
+                        }
+                        else
+                        {
+                            PowerPoint.Effect effectDisappear2 = null;
+                            effectDisappear2 = sequence.AddEffect(sh, PowerPoint.MsoAnimEffect.msoAnimEffectAppear, PowerPoint.MsoAnimateByLevel.msoAnimateLevelNone, PowerPoint.MsoAnimTriggerType.msoAnimTriggerWithPrevious);
+                            effectDisappear2.Exit = Office.MsoTriState.msoTrue;
+                            effectDisappear2.Timing.Duration = 0;
+                        }
                     }
                 }
 
@@ -1010,6 +1019,7 @@ namespace PowerPointLabs
                 {
                     if (shapeIDs.Contains(sh.Id))
                     {
+                        count = Array.IndexOf(shapeIDs, sh.Id);
                         if (count < shapeIDs.Count() && sh.Id == shapeIDs[count])
                         {
                             DeleteShapeAnnimations(newSlide, sh);
@@ -1344,16 +1354,21 @@ namespace PowerPointLabs
                 throw;
             }
         }
-        private void DeleteShapeAnnimations(PowerPoint.Slide slide, PowerPoint.Shape shape)
+        private bool DeleteShapeAnnimations(PowerPoint.Slide slide, PowerPoint.Shape shape)
         {
             try
             {
                 PowerPoint.Sequence sequence = slide.TimeLine.MainSequence;
+                bool flag = true;
                 for (int x = sequence.Count; x >= 1; x--)
                 {
                     PowerPoint.Effect effect = sequence[x];
                     if (effect.Shape.Name == shape.Name)
-                        effect.Delete();
+                    {
+                        if (effect.Exit == Office.MsoTriState.msoTrue)
+                            flag = false;
+                        effect.Delete(); 
+                    }
                 }
 
                 PowerPoint.Slide nextSlide = GetNextSlide(slide);
@@ -1362,8 +1377,13 @@ namespace PowerPointLabs
                 {
                     PowerPoint.Effect effect = sequence[x];
                     if (effect.Shape.Name == shape.Name)
+                    {
+                        if (effect.Exit == Office.MsoTriState.msoTrue)
+                            flag = false;
                         effect.Delete();
+                    }
                 }
+                return flag;
             }
             catch (Exception e)
             {
