@@ -1245,7 +1245,8 @@ namespace PowerPointLabs
                 newSlide.SlideShowTransition.AdvanceTime = 0;
 
                 PowerPoint.Slide nextSlide = GetNextSlide(newSlide);
-                nextSlide.SlideShowTransition.EntryEffect = PowerPoint.PpEntryEffect.ppEffectNone;
+                if (nextSlide.SlideShowTransition.EntryEffect != PowerPoint.PpEntryEffect.ppEffectFade && nextSlide.SlideShowTransition.EntryEffect != PowerPoint.PpEntryEffect.ppEffectFadeSmoothly)
+                    nextSlide.SlideShowTransition.EntryEffect = PowerPoint.PpEntryEffect.ppEffectNone;
                 if (nextSlide.Name.Contains("PPSlideStart") || nextSlide.Name.Contains("PPSlideMulti"))
                     nextSlide.Name = "PPSlideMulti" + GetTimestamp(DateTime.Now);
                 else
