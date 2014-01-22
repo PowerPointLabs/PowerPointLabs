@@ -412,6 +412,8 @@ namespace PowerPointLabs
                     
                     spotlightShape.Fill.ForeColor.RGB = 0xffffff;
                     spotlightShape.Line.Visible = Office.MsoTriState.msoFalse;
+                    if (spotlightShape.HasTextFrame == Office.MsoTriState.msoTrue && spotlightShape.TextFrame.HasText == Office.MsoTriState.msoTrue)
+                        spotlightShape.TextFrame.TextRange.Font.Color.RGB = 0xffffff;
                     spotlightShape.Name = "SpotlightShape" + counter;
                     counter++;
 
@@ -880,7 +882,7 @@ namespace PowerPointLabs
             try
             {
                 PowerPoint.Presentation presentation = Globals.ThisAddIn.Application.ActivePresentation;
-                PowerPoint.Shape rectangleShape = addedSlide.Shapes.AddShape(Office.MsoAutoShapeType.msoShapeRectangle, 0, 0, presentation.PageSetup.SlideWidth, presentation.PageSetup.SlideHeight);
+                PowerPoint.Shape rectangleShape = addedSlide.Shapes.AddShape(Office.MsoAutoShapeType.msoShapeRectangle, (-1 * defaultSoftEdges), (-1 * defaultSoftEdges), (presentation.PageSetup.SlideWidth + (2.0f * defaultSoftEdges)), (presentation.PageSetup.SlideHeight + (2.0f * defaultSoftEdges)));
                 rectangleShape.Fill.ForeColor.RGB = 0x000000;
                 rectangleShape.Fill.Transparency = defaultTransparency;
                 rectangleShape.Line.Visible = Office.MsoTriState.msoFalse;
@@ -905,18 +907,20 @@ namespace PowerPointLabs
                 PowerPoint.Shape pictureShape = addedSlide.Shapes.PasteSpecial(PowerPoint.PpPasteDataType.ppPastePNG)[1];
                 pictureShape.PictureFormat.TransparencyColor = 0xffffff;
                 pictureShape.PictureFormat.TransparentBackground = Office.MsoTriState.msoTrue;
-                pictureShape.Left = 0.0f;
-                pictureShape.Top = 0.0f;
+                pictureShape.Left = -1 * defaultSoftEdges;
+                pictureShape.Top = -1 * defaultSoftEdges;
                 pictureShape.LockAspectRatio = Office.MsoTriState.msoFalse;
                 float incrementWidth = (2.0f * defaultSoftEdges) / pictureShape.Width;
                 float incrementHeight = (2.0f * defaultSoftEdges) / pictureShape.Height;
 
                 pictureShape.SoftEdge.Radius = defaultSoftEdges;
-
-                pictureShape.ScaleWidth((1.0f + incrementWidth), Office.MsoTriState.msoFalse, Office.MsoScaleFrom.msoScaleFromMiddle);
-                pictureShape.ScaleHeight((1.0f + incrementHeight), Office.MsoTriState.msoFalse, Office.MsoScaleFrom.msoScaleFromMiddle);
+                //pictureShape.SoftEdge.Type = Office.MsoSoftEdgeType.msoSoftEdgeType4;
+                //pictureShape.ScaleWidth((1.0f + incrementWidth), Office.MsoTriState.msoFalse, Office.MsoScaleFrom.msoScaleFromMiddle);
+                //pictureShape.ScaleHeight((1.0f + incrementHeight), Office.MsoTriState.msoFalse, Office.MsoScaleFrom.msoScaleFromMiddle);
                 //pictureShape.Width = presentation.PageSetup.SlideWidth + (2.0f * defaultSoftEdges);
                 //pictureShape.Height = presentation.PageSetup.SlideHeight + (2.0f * defaultSoftEdges);
+                //pictureShape.Left = (-1 * defaultSoftEdges);
+                //pictureShape.Top = (-1 * defaultSoftEdges);
                 pictureShape.Name = "SpotlightShape1";
             }
             catch (Exception e)
