@@ -2,9 +2,9 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Speech.Synthesis;
-using AudioGen.Models;
+using PowerPointLabs.Models;
 
-namespace AudioGen.SpeechEngine
+namespace PowerPointLabs.SpeechEngine
 {
     static class TextToSpeech
     {

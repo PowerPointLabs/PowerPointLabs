@@ -1,4 +1,4 @@
-﻿namespace AudioGen.Views
+﻿namespace PowerPointLabs.Views
 {
     partial class ProcessingStatusForm
     {

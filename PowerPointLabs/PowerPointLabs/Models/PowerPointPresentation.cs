@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Runtime.InteropServices;
 using Microsoft.Office.Interop.PowerPoint;
 
-namespace AudioGen.Models
+namespace PowerPointLabs.Models
 {
     class PowerPointPresentation
     {

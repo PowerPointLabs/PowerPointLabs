@@ -1,9 +1,9 @@
 ﻿using System;
 using System.Speech.Synthesis;
 using System.Windows.Forms;
-using AudioGen.Views;
+using PowerPointLabs.Views;
 
-namespace AudioGen.SpeechEngine
+namespace PowerPointLabs.SpeechEngine
 {
     class PromptToAudio
     {

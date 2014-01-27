@@ -1,11 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
-using AudioGen.Models;
+using PowerPointLabs.Models;
 using Microsoft.Office.Core;
 using Microsoft.Office.Interop.PowerPoint;
 using Shape = Microsoft.Office.Interop.PowerPoint.Shape;
 
-namespace AudioGen
+namespace PowerPointLabs
 {
     class NotesToCaptions
     {
@@ -35,7 +35,7 @@ namespace AudioGen
             {
                 String currentCaption = captionCollection[i];
                 Shape captionBox = AddCaptionBoxToSlide(currentCaption, s);
-                captionBox.Name = "AudioGen Caption " + i;
+                captionBox.Name = "PowerPointLabs Caption " + i;
 
                 if (i != 0)
                 {
@@ -121,7 +121,7 @@ namespace AudioGen
         {
             if (slide != null)
             {
-                slide.DeleteShapesWithPrefix("AudioGen Caption ");
+                slide.DeleteShapesWithPrefix("PowerPointLabs Caption ");
             }
         }
     }

@@ -1,6 +1,6 @@
 ﻿using System.Windows.Forms;
 
-namespace AudioGen.Views
+namespace PowerPointLabs.Views
 {
     public partial class ProcessingStatusForm : Form
     {

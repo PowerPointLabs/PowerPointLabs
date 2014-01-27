@@ -2,7 +2,7 @@ using System;
 using System.Linq;
 using System.Speech.Synthesis;
 
-namespace AudioGen.Tags
+namespace PowerPointLabs.Tags
 {
     public class StartVoiceTag : Tag
     {

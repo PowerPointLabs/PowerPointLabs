@@ -4,19 +4,19 @@ using System.IO;
 using System.Linq;
 using System.Runtime.InteropServices;
 using System.Windows.Forms;
-using AudioGen.Models;
-using AudioGen.SpeechEngine;
-using AudioGen.Views;
+using PowerPointLabs.Models;
+using PowerPointLabs.SpeechEngine;
+using PowerPointLabs.Views;
 using Microsoft.Office.Core;
 using Microsoft.Office.Interop.PowerPoint;
 using Shape = Microsoft.Office.Interop.PowerPoint.Shape;
 
-namespace AudioGen
+namespace PowerPointLabs
 {
     class NotesToAudio
     {
-        private const string TempFolderName = "\\AudioGen Temp\\";
-        private const string SpeechShapePrefix = "AudioGen Speech";
+        private const string TempFolderName = "\\PowerPointLabs Temp\\";
+        private const string SpeechShapePrefix = "PowerPointLabs Speech";
 
         public static void PreviewAnimations()
         {
@@ -81,7 +81,7 @@ namespace AudioGen
                     try
                     {
                         Shape audioShape = InsertAudioFileOnSlide(slide, fileName);
-                        audioShape.Name = String.Format("AudioGen Speech {0}", i);
+                        audioShape.Name = String.Format("PowerPointLabs Speech {0}", i);
                         slide.RemoveAnimationsForShape(audioShape);
 
                         if (isOnClick)

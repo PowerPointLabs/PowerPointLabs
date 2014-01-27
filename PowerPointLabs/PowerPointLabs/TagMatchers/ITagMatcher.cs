@@ -1,9 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text.RegularExpressions;
-using AudioGen.Tags;
+using PowerPointLabs.Tags;
 
-namespace AudioGen.TagMatchers
+namespace PowerPointLabs.TagMatchers
 {
     public interface ITagMatcher
     {

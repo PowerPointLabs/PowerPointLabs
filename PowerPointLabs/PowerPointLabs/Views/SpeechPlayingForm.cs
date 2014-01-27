@@ -1,9 +1,9 @@
 ﻿using System;
 using System.Speech.Synthesis;
 using System.Windows.Forms;
-using AudioGen.SpeechEngine;
+using PowerPointLabs.SpeechEngine;
 
-namespace AudioGen.Views
+namespace PowerPointLabs.Views
 {
     public partial class SpeechPlayingForm : Form
     {

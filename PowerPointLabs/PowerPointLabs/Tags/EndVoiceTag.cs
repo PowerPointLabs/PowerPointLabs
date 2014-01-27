@@ -1,7 +1,7 @@
 ﻿using System.Speech.Synthesis;
-using AudioGen.SpeechEngine;
+using PowerPointLabs.SpeechEngine;
 
-namespace AudioGen.Tags
+namespace PowerPointLabs.Tags
 {
     public class EndVoiceTag : Tag
     {

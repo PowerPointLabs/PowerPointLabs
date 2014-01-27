@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Speech.Synthesis;
 
-namespace AudioGen.Tags
+namespace PowerPointLabs.Tags
 {
     public interface ITag
     {

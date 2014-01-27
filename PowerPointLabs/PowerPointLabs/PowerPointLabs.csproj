@@ -116,6 +116,7 @@
     <EnableUnmanagedDebugging>false</EnableUnmanagedDebugging>
     <DefineConstants>$(DefineConstants);DEBUG;TRACE</DefineConstants>
     <WarningLevel>4</WarningLevel>
+    <Prefer32Bit>false</Prefer32Bit>
   </PropertyGroup>
   <!--
     This section defines properties that are set when the "Release" configuration is selected.
@@ -140,6 +141,7 @@
     <EnableUnmanagedDebugging>false</EnableUnmanagedDebugging>
     <DefineConstants>$(DefineConstants);TRACE</DefineConstants>
     <WarningLevel>4</WarningLevel>
+    <Prefer32Bit>false</Prefer32Bit>
   </PropertyGroup>
   <!--
     This section enables pre- and post-build steps. However, in VSTO use
@@ -185,6 +187,7 @@
     <Reference Include="System.Data" />
     <Reference Include="System.Deployment" />
     <Reference Include="System.Drawing" />
+    <Reference Include="System.Speech" />
     <Reference Include="System.Windows.Forms" />
     <Reference Include="System.Xml" />
     <Reference Include="System.Core" />
@@ -229,9 +232,25 @@
     <Compile Include="Form1.Designer.cs">
       <DependentUpon>Form1.cs</DependentUpon>
     </Compile>
+    <Compile Include="Models\PowerPointPresentation.cs" />
+    <Compile Include="Models\PowerPointSlide.cs" />
+    <Compile Include="Models\TaggedText.cs" />
+    <Compile Include="NotesToAudio.cs" />
+    <Compile Include="NotesToCaptions.cs" />
     <Compile Include="Properties\AssemblyInfo.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="SpeechEngine\PromptToAudio.cs" />
+    <Compile Include="SpeechEngine\SynthesisState.cs" />
+    <Compile Include="SpeechEngine\TextToSpeech.cs" />
+    <Compile Include="Views\ProcessingStatusForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Views\ProcessingStatusForm.Designer.cs" />
+    <Compile Include="Views\SpeechPlayingForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Views\SpeechPlayingForm.Designer.cs" />
     <EmbeddedResource Include="AboutForm.resx">
       <DependentUpon>AboutForm.cs</DependentUpon>
     </EmbeddedResource>
@@ -251,6 +270,8 @@
       <DependentUpon>Resources.resx</DependentUpon>
       <DesignTime>True</DesignTime>
     </Compile>
+    <EmbeddedResource Include="Views\ProcessingStatusForm.resx" />
+    <EmbeddedResource Include="Views\SpeechPlayingForm.resx" />
     <None Include="PowerPointLabs_TemporaryKey.pfx" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
@@ -262,6 +283,22 @@
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
     </Compile>
     <Compile Include="Ribbon1.cs" />
+    <Compile Include="TagMatchers\EndSpeedTagMatcher.cs" />
+    <Compile Include="TagMatchers\EndVoiceTagMatcher.cs" />
+    <Compile Include="TagMatchers\ITagMatcher.cs" />
+    <Compile Include="TagMatchers\Matchers.cs" />
+    <Compile Include="TagMatchers\PauseTagMatcher.cs" />
+    <Compile Include="TagMatchers\PronounceTagMatcher.cs" />
+    <Compile Include="TagMatchers\StartSpeedTagMatcher.cs" />
+    <Compile Include="TagMatchers\StartVoiceTagMatcher.cs" />
+    <Compile Include="Tags\EndSpeedTag.cs" />
+    <Compile Include="Tags\EndVoiceTag.cs" />
+    <Compile Include="Tags\ITag.cs" />
+    <Compile Include="Tags\PauseTag.cs" />
+    <Compile Include="Tags\PronounceTag.cs" />
+    <Compile Include="Tags\StartSpeedTag.cs" />
+    <Compile Include="Tags\StartVoiceTag.cs" />
+    <Compile Include="Tags\Tag.cs" />
     <Compile Include="ThisAddIn.cs">
       <SubType>Code</SubType>
     </Compile>

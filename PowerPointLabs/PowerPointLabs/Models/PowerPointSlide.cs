@@ -7,7 +7,7 @@ using Shape = Microsoft.Office.Interop.PowerPoint.Shape;
 using ShapeRange = Microsoft.Office.Interop.PowerPoint.ShapeRange;
 using Shapes = Microsoft.Office.Interop.PowerPoint.Shapes;
 
-namespace AudioGen.Models
+namespace PowerPointLabs.Models
 {
     class PowerPointSlide
     {

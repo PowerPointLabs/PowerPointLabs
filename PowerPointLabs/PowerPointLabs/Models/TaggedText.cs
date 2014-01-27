@@ -3,10 +3,10 @@ using System.Collections.Generic;
 using System.Speech.Synthesis;
 using System.Text;
 using System.Text.RegularExpressions;
-using AudioGen.TagMatchers;
-using AudioGen.Tags;
+using PowerPointLabs.TagMatchers;
+using PowerPointLabs.Tags;
 
-namespace AudioGen.Models
+namespace PowerPointLabs.Models
 {
     public class TaggedText
     {

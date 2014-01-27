@@ -1,6 +1,6 @@
 ﻿using System.Speech.Synthesis;
 
-namespace AudioGen.SpeechEngine
+namespace PowerPointLabs.SpeechEngine
 {
     public class SynthesisState
     {
