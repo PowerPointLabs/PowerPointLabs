@@ -19,7 +19,6 @@ D:\Users\Jerome\SkyDrive\Projects\Office\powerpointlabs\PowerPointLabs\PowerPoin
 D:\Users\Jerome\SkyDrive\Projects\Office\powerpointlabs\PowerPointLabs\PowerPointLabs\bin\Debug\PowerPointLabs.vsto
 D:\Users\Jerome\SkyDrive\Projects\Office\powerpointlabs\PowerPointLabs\PowerPointLabs\bin\Debug\Microsoft.Office.Tools.Common.v4.0.Utilities.dll
 D:\Users\Jerome\SkyDrive\Projects\Office\powerpointlabs\PowerPointLabs\PowerPointLabs\bin\Debug\Microsoft.Office.Tools.Common.v4.0.Utilities.xml
-D:\Users\Jerome\SkyDrive\Projects\Office\powerpointlabs\PowerPointLabs\PowerPointLabs\obj\Debug\PowerPointLabs.csprojResolveAssemblyReference.cache
 D:\Users\Jerome\SkyDrive\Projects\Office\powerpointlabs\PowerPointLabs\PowerPointLabs\obj\Debug\PowerPointLabs.AboutForm.resources
 D:\Users\Jerome\SkyDrive\Projects\Office\powerpointlabs\PowerPointLabs\PowerPointLabs\obj\Debug\PowerPointLabs.AboutSpotlight.resources
 D:\Users\Jerome\SkyDrive\Projects\Office\powerpointlabs\PowerPointLabs\PowerPointLabs\obj\Debug\PowerPointLabs.Form1.resources
