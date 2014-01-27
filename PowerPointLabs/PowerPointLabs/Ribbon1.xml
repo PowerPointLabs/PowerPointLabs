@@ -273,6 +273,24 @@
               getEnabled="OnGetEnabledReloadAutoMotion"
               onAction="ReloadButtonClick"/>
     </contextMenu>
+    <contextMenu idMso="ContextMenuNotesEditText">
+      <menuSeparator id="separatorNotes" />
+      <button id="contextSpeakSelectedText"
+              label="Speak Selected Text"
+              imageMso="PlaybackTipPlay"
+              onAction="SpeakSelectedTextClick"/>
+      <button id="contextAddCurrentSlide"
+              label="Add Audio (Current Slide)"
+              imageMso="AudioInsert"
+              onAction="ContextAddAudioClick"/>
+    </contextMenu>
+    <contextMenu idMso="ContextMenuAudio">
+      <menuSeparator id="separatorShapes"/>
+      <button id="contextReplaceAudio"
+              label="Replace Audio"
+              imageMso="NoAudioStyle"
+              onAction="ContextReplaceAudioClick"/>
+    </contextMenu>
   </contextMenus>
 </customUI>
 
