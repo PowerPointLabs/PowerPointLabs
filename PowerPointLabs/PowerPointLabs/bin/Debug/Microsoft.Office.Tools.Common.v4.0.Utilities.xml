@@ -7,12 +7,7 @@
     <member name="T:Microsoft.Office.Tools.AddInBase">
       <summary>Provides the base class for the ThisAddIn class in application-level add-ins that you create by using Visual Studio.</summary>
     </member>
-    <member name="M:Microsoft.Office.Tools.AddInBase.#ctor(Microsoft.Office.Tools.Factory,System.IServiceProvider,System.String,System.String)">
-      <param name="factory"></param>
-      <param name="serviceProvider"></param>
-      <param name="primaryCookie"></param>
-      <param name="identifier"></param>
-    </member>
+    <member name="M:Microsoft.Office.Tools.AddInBase.#ctor(Microsoft.Office.Tools.Factory,System.IServiceProvider,System.String,System.String)"></member>
     <member name="P:Microsoft.Office.Tools.AddInBase.Base">
       <summary>Gets the <see cref="T:Microsoft.Office.Tools.AddIn" /> object that this <see cref="T:Microsoft.Office.Tools.AddInBase" /> object extends.</summary>
       <returns>The object that this <see cref="T:Microsoft.Office.Tools.AddInBase" /> object extends.</returns>
@@ -25,11 +20,13 @@
       <returns>An object that implements the Microsoft.Office.Core.IRibbonExtensibility interface.</returns>
     </member>
     <member name="M:Microsoft.Office.Tools.AddInBase.CreateRibbonObjects">
-      <summary>Returns an array of <see cref="T:Microsoft.Office.Tools.Ribbon.OfficeRibbon" /> objects to the <see cref="M:Microsoft.Office.Tools.AddInBase.CreateRibbonExtensibilityObject" /> method.</summary>
-      <returns>An array of <see cref="T:Microsoft.Office.Tools.Ribbon.OfficeRibbon" /> objects.</returns>
+      <summary>Returns an array of <see cref="T:Microsoft.Office.Tools.Ribbon.IRibbonExtension" /> objects to the <see cref="M:Microsoft.Office.Tools.AddInBase.CreateRibbonExtensibilityObject" /> method. The objects represent the Ribbons to display at run time.</summary>
+      <returns>An array of <see cref="T:Microsoft.Office.Tools.Ribbon.IRibbonExtension" /> objects that represent the Ribbons to display at run time.</returns>
     </member>
     <member name="P:Microsoft.Office.Tools.AddInBase.DataBindings"></member>
-    <member name="P:Microsoft.Office.Tools.AddInBase.DataHost"></member>
+    <member name="P:Microsoft.Office.Tools.AddInBase.DataHost">
+      <returns>Returns <see cref="T:Microsoft.Office.Tools.ICachedDataProvider" />.</returns>
+    </member>
     <member name="M:Microsoft.Office.Tools.AddInBase.Dispose">
       <summary>Releases the resources used by the <see cref="T:Microsoft.Office.Tools.AddInBase" />.</summary>
     </member>
@@ -37,14 +34,17 @@
     <member name="M:Microsoft.Office.Tools.AddInBase.EndInit"></member>
     <member name="M:Microsoft.Office.Tools.AddInBase.FinishInitialization"></member>
     <member name="M:Microsoft.Office.Tools.AddInBase.GetHostItem``1(System.Type,System.String)">
-      <param name="type"></param>
-      <param name="cookie"></param>
+      <returns>Returns <see cref="T:Microsoft.Office.Tools.Ribbon.IRibbonExtension" />.</returns>
       <typeparam name="T"></typeparam>
     </member>
-    <member name="P:Microsoft.Office.Tools.AddInBase.HostContext"></member>
+    <member name="P:Microsoft.Office.Tools.AddInBase.HostContext">
+      <returns>Returns <see cref="T:System.IServiceProvider" />.</returns>
+    </member>
     <member name="M:Microsoft.Office.Tools.AddInBase.Initialize"></member>
     <member name="M:Microsoft.Office.Tools.AddInBase.InitializeDataBindings"></member>
-    <member name="P:Microsoft.Office.Tools.AddInBase.ItemProvider"></member>
+    <member name="P:Microsoft.Office.Tools.AddInBase.ItemProvider">
+      <returns>Returns <see cref="T:Microsoft.Office.Tools.IHostItemProvider" />.</returns>
+    </member>
     <member name="M:Microsoft.Office.Tools.AddInBase.Microsoft#Office#Tools#EntryPoint#BeginInit"></member>
     <member name="M:Microsoft.Office.Tools.AddInBase.Microsoft#Office#Tools#EntryPoint#EndInit"></member>
     <member name="M:Microsoft.Office.Tools.AddInBase.Microsoft#Office#Tools#EntryPoint#FinishInitialization"></member>
@@ -53,12 +53,18 @@
     <member name="M:Microsoft.Office.Tools.AddInBase.Microsoft#Office#Tools#EntryPoint#OnShutdown"></member>
     <member name="M:Microsoft.Office.Tools.AddInBase.Microsoft#Office#Tools#EntryPoint#OnStartup"></member>
     <member name="M:Microsoft.Office.Tools.AddInBase.Microsoft#Office#Tools#IAddInExtension#CreateRibbonExtensibilityObject"></member>
-    <member name="M:Microsoft.Office.Tools.AddInBase.Microsoft#Office#Tools#IAddInExtension#CreateRibbonObjects"></member>
-    <member name="M:Microsoft.Office.Tools.AddInBase.Microsoft#Office#Tools#IAddInExtension#RequestComAddInAutomationService"></member>
-    <member name="M:Microsoft.Office.Tools.AddInBase.Microsoft#Office#Tools#IAddInExtension#RequestService(System.Guid)">
-      <param name="serviceGuid"></param>
+    <member name="M:Microsoft.Office.Tools.AddInBase.Microsoft#Office#Tools#IAddInExtension#CreateRibbonObjects">
+      <returns>Returns <see cref="T:Microsoft.Office.Tools.Ribbon.IRibbonExtension" />.</returns>
     </member>
-    <member name="P:Microsoft.Office.Tools.AddInBase.Microsoft#Office#Tools#IExtension#ExtensionBase"></member>
+    <member name="M:Microsoft.Office.Tools.AddInBase.Microsoft#Office#Tools#IAddInExtension#RequestComAddInAutomationService">
+      <returns>Returns <see cref="T:System.Object" />.</returns>
+    </member>
+    <member name="M:Microsoft.Office.Tools.AddInBase.Microsoft#Office#Tools#IAddInExtension#RequestService(System.Guid)">
+      <returns>Returns <see cref="T:System.Object" />.</returns>
+    </member>
+    <member name="P:Microsoft.Office.Tools.AddInBase.Microsoft#Office#Tools#IExtension#ExtensionBase">
+      <returns>Returns <see cref="T:System.Object" />.</returns>
+    </member>
     <member name="M:Microsoft.Office.Tools.AddInBase.OnShutdown"></member>
     <member name="M:Microsoft.Office.Tools.AddInBase.OnStartup"></member>
     <member name="M:Microsoft.Office.Tools.AddInBase.RequestComAddInAutomationService">
@@ -89,7 +95,6 @@
     </member>
     <member name="M:Microsoft.Office.Tools.Ribbon.RibbonBase.#ctor(Microsoft.Office.Tools.Ribbon.RibbonFactory)">
       <summary>Initializes a new instance of the <see cref="T:Microsoft.Office.Tools.Ribbon.RibbonBase" /> class.</summary>
-      <param name="factory"></param>
     </member>
     <member name="P:Microsoft.Office.Tools.Ribbon.RibbonBase.Base">
       <summary>Gets the <see cref="T:Microsoft.Office.Tools.Ribbon.RibbonBase" /> object that this <see cref="T:Microsoft.Office.Tools.Ribbon.RibbonBase" /> object extends.</summary>
@@ -176,9 +181,7 @@
     <member name="T:Microsoft.Office.Tools.Ribbon.RibbonCollectionBase">
       <summary>Provides access to the <see cref="T:Microsoft.Office.Tools.Ribbon.IRibbonExtension" /> objects in a Ribbon customization.</summary>
     </member>
-    <member name="M:Microsoft.Office.Tools.Ribbon.RibbonCollectionBase.#ctor(Microsoft.Office.Tools.Ribbon.RibbonFactory)">
-      <param name="factory"></param>
-    </member>
+    <member name="M:Microsoft.Office.Tools.Ribbon.RibbonCollectionBase.#ctor(Microsoft.Office.Tools.Ribbon.RibbonFactory)"></member>
     <member name="P:Microsoft.Office.Tools.Ribbon.RibbonCollectionBase.Base">
       <summary>Gets a <see cref="T:System.Collections.Generic.IList`1" /> of <see cref="T:Microsoft.Office.Tools.Ribbon.IRibbonExtension" /> objects in the <see cref="T:Microsoft.Office.Tools.Ribbon.RibbonCollectionBase" />.</summary>
       <returns>A <see cref="T:System.Collections.Generic.IList`1" /> of <see cref="T:Microsoft.Office.Tools.Ribbon.IRibbonExtension" /> objects in the <see cref="T:Microsoft.Office.Tools.Ribbon.RibbonCollectionBase" />.</returns>
@@ -186,48 +189,24 @@
     <member name="M:Microsoft.Office.Tools.Ribbon.RibbonCollectionBase.GetRibbon``1">
       <typeparam name="TRibbon"></typeparam>
     </member>
-    <member name="M:Microsoft.Office.Tools.Ribbon.RibbonCollectionBase.GetRibbon(System.Type)">
-      <param name="customRibbonType"></param>
-    </member>
+    <member name="M:Microsoft.Office.Tools.Ribbon.RibbonCollectionBase.GetRibbon(System.Type)"></member>
     <member name="M:Microsoft.Office.Tools.Ribbon.RibbonCollectionBase.GetRibbonContextCollection``1(System.Object)">
-      <param name="contextWindow"></param>
       <typeparam name="TRibbonCollection"></typeparam>
     </member>
-    <member name="M:Microsoft.Office.Tools.Ribbon.RibbonCollectionBase.GetRibbonContextCollection(System.Object,System.Type)">
-      <param name="contextWindow"></param>
-      <param name="customRibbonType"></param>
-    </member>
+    <member name="M:Microsoft.Office.Tools.Ribbon.RibbonCollectionBase.GetRibbonContextCollection(System.Object,System.Type)"></member>
     <member name="P:Microsoft.Office.Tools.Ribbon.RibbonCollectionBase.Microsoft#Office#Tools#IExtension#ExtensionBase"></member>
-    <member name="M:Microsoft.Office.Tools.Ribbon.RibbonCollectionBase.System#Collections#Generic#ICollection{T}#Add(Microsoft.Office.Tools.Ribbon.IRibbonExtension)">
-      <param name="item"></param>
-    </member>
+    <member name="M:Microsoft.Office.Tools.Ribbon.RibbonCollectionBase.System#Collections#Generic#ICollection{T}#Add(Microsoft.Office.Tools.Ribbon.IRibbonExtension)"></member>
     <member name="M:Microsoft.Office.Tools.Ribbon.RibbonCollectionBase.System#Collections#Generic#ICollection{T}#Clear"></member>
-    <member name="M:Microsoft.Office.Tools.Ribbon.RibbonCollectionBase.System#Collections#Generic#ICollection{T}#Contains(Microsoft.Office.Tools.Ribbon.IRibbonExtension)">
-      <param name="item"></param>
-    </member>
-    <member name="M:Microsoft.Office.Tools.Ribbon.RibbonCollectionBase.System#Collections#Generic#ICollection{T}#CopyTo(Microsoft.Office.Tools.Ribbon.IRibbonExtension[],System.Int32)">
-      <param name="array"></param>
-      <param name="arrayIndex"></param>
-    </member>
+    <member name="M:Microsoft.Office.Tools.Ribbon.RibbonCollectionBase.System#Collections#Generic#ICollection{T}#Contains(Microsoft.Office.Tools.Ribbon.IRibbonExtension)"></member>
+    <member name="M:Microsoft.Office.Tools.Ribbon.RibbonCollectionBase.System#Collections#Generic#ICollection{T}#CopyTo(Microsoft.Office.Tools.Ribbon.IRibbonExtension[],System.Int32)"></member>
     <member name="P:Microsoft.Office.Tools.Ribbon.RibbonCollectionBase.System#Collections#Generic#ICollection{T}#Count"></member>
     <member name="P:Microsoft.Office.Tools.Ribbon.RibbonCollectionBase.System#Collections#Generic#ICollection{T}#IsReadOnly"></member>
-    <member name="M:Microsoft.Office.Tools.Ribbon.RibbonCollectionBase.System#Collections#Generic#ICollection{T}#Remove(Microsoft.Office.Tools.Ribbon.IRibbonExtension)">
-      <param name="item"></param>
-    </member>
+    <member name="M:Microsoft.Office.Tools.Ribbon.RibbonCollectionBase.System#Collections#Generic#ICollection{T}#Remove(Microsoft.Office.Tools.Ribbon.IRibbonExtension)"></member>
     <member name="M:Microsoft.Office.Tools.Ribbon.RibbonCollectionBase.System#Collections#Generic#IEnumerable{T}#GetEnumerator"></member>
-    <member name="M:Microsoft.Office.Tools.Ribbon.RibbonCollectionBase.System#Collections#Generic#IList{T}#IndexOf(Microsoft.Office.Tools.Ribbon.IRibbonExtension)">
-      <param name="item"></param>
-    </member>
-    <member name="M:Microsoft.Office.Tools.Ribbon.RibbonCollectionBase.System#Collections#Generic#IList{T}#Insert(System.Int32,Microsoft.Office.Tools.Ribbon.IRibbonExtension)">
-      <param name="index"></param>
-      <param name="item"></param>
-    </member>
-    <member name="P:Microsoft.Office.Tools.Ribbon.RibbonCollectionBase.System#Collections#Generic#IList{T}#Item(System.Int32)">
-      <param name="index"></param>
-    </member>
-    <member name="M:Microsoft.Office.Tools.Ribbon.RibbonCollectionBase.System#Collections#Generic#IList{T}#RemoveAt(System.Int32)">
-      <param name="index"></param>
-    </member>
+    <member name="M:Microsoft.Office.Tools.Ribbon.RibbonCollectionBase.System#Collections#Generic#IList{T}#IndexOf(Microsoft.Office.Tools.Ribbon.IRibbonExtension)"></member>
+    <member name="M:Microsoft.Office.Tools.Ribbon.RibbonCollectionBase.System#Collections#Generic#IList{T}#Insert(System.Int32,Microsoft.Office.Tools.Ribbon.IRibbonExtension)"></member>
+    <member name="P:Microsoft.Office.Tools.Ribbon.RibbonCollectionBase.System#Collections#Generic#IList{T}#Item(System.Int32)"></member>
+    <member name="M:Microsoft.Office.Tools.Ribbon.RibbonCollectionBase.System#Collections#Generic#IList{T}#RemoveAt(System.Int32)"></member>
     <member name="M:Microsoft.Office.Tools.Ribbon.RibbonCollectionBase.System#Collections#IEnumerable#GetEnumerator"></member>
   </members>
 </doc>

@@ -1,6 +1,8 @@
 ﻿
-Microsoft Visual Studio Solution File, Format Version 11.00
-# Visual Studio 2010
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 2013
+VisualStudioVersion = 12.0.21005.1
+MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PowerPointLabs", "PowerPointLabs\PowerPointLabs.csproj", "{E0696DF3-9906-4E0E-906E-F9D47F41EF80}"
 EndProject
 Project("{54435603-DBB4-11D2-8724-00A0C9A8B90C}") = "PowerPointLabsSetup", "PowerPointLabsSetup\PowerPointLabsSetup.vdproj", "{FE2B3394-92E5-4724-9296-A7B31E548242}"
