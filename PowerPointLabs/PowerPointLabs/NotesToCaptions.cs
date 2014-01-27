@@ -1,0 +1,128 @@
+﻿using System;
+using System.Collections.Generic;
+using AudioGen.Models;
+using Microsoft.Office.Core;
+using Microsoft.Office.Interop.PowerPoint;
+using Shape = Microsoft.Office.Interop.PowerPoint.Shape;
+
+namespace AudioGen
+{
+    class NotesToCaptions
+    {
+        public static void EmbedCaptionsOnAllSlides()
+        {
+            foreach (var slide in PowerPointPresentation.Slides)
+            {
+                RemoveCaptionsFromSlide(slide);
+                EmbedCaptionsOnSlide(slide);
+            }
+        }
+
+        private static void EmbedCaptionsOnSlide(PowerPointSlide s)
+        {
+            String rawNotes = s.NotesPageText;
+
+            if (String.IsNullOrWhiteSpace(rawNotes))
+            {
+                return;
+            }
+
+            var separatedNotes = SplitNotesByClicks(rawNotes);
+            var captionCollection = ConvertSectionsToCaptions(separatedNotes);
+
+            Shape previous = null;
+            for (int i = 0; i < captionCollection.Count; i++)
+            {
+                String currentCaption = captionCollection[i];
+                Shape captionBox = AddCaptionBoxToSlide(currentCaption, s);
+                captionBox.Name = "AudioGen Caption " + i;
+
+                if (i != 0)
+                {
+                    s.ShowShapeAfterClick(captionBox, i);
+                    s.HideShapeAfterClick(previous, i);
+                }
+
+                if (i == captionCollection.Count - 1)
+                {
+                    s.HideShapeAsLastClickIfNeeded(captionBox);
+                }
+                previous = captionBox;
+            }
+        }
+
+        private static IEnumerable<string> SplitNotesByClicks(string rawNotes)
+        {
+            TaggedText taggedNotes = new TaggedText(rawNotes);
+            List<String> splitByClicks = taggedNotes.SplitByClicks();
+            return splitByClicks;
+        }
+
+        private static List<string> ConvertSectionsToCaptions(IEnumerable<string> separatedNotes)
+        {
+            List<String> captionCollection = new List<string>();
+            foreach (string text in separatedNotes)
+            {
+                TaggedText section = new TaggedText(text);
+                String currentCaption = section.ToPrettyString();
+                captionCollection.Add(currentCaption);
+            }
+            return captionCollection;
+        }
+
+        private static Shape AddCaptionBoxToSlide(string caption, PowerPointSlide s)
+        {
+            float slideWidth = PowerPointPresentation.SlideWidth;
+            float slideHeight = PowerPointPresentation.SlideHeight;
+            
+            Shape textBox = s.Shapes.AddTextbox(MsoTextOrientation.msoTextOrientationHorizontal, 0, slideHeight - 100,
+                slideWidth, 100);
+            textBox.TextFrame.AutoSize = PpAutoSize.ppAutoSizeShapeToFitText;
+            textBox.TextFrame.TextRange.Text = caption;
+            textBox.TextFrame.WordWrap = MsoTriState.msoTrue;
+            textBox.TextEffect.Alignment = MsoTextEffectAlignment.msoTextEffectAlignmentCentered;
+            textBox.TextFrame.TextRange.Font.Size = 12;
+            textBox.Fill.BackColor.RGB = 0;
+            textBox.Fill.Transparency = 0.2f;
+            textBox.TextFrame.TextRange.Font.Color.RGB = 0xffffff;
+
+            textBox.Top = slideHeight - textBox.Height;
+            return textBox;
+        }
+
+        public static void EmbedCaptionsOnCurrentSlide()
+        {
+            var currentSlide = PowerPointPresentation.CurrentSlide;
+            if (currentSlide != null)
+            {
+                RemoveCaptionsFromSlide(currentSlide);
+                EmbedCaptionsOnSlide(currentSlide);
+            }
+        }
+
+        public static void RemoveCaptionsFromCurrentSlide()
+        {
+            var currentSlide = PowerPointPresentation.CurrentSlide;
+            if (currentSlide != null)
+            {
+                RemoveCaptionsFromSlide(currentSlide);
+            }
+        }
+
+        public static void RemoveCaptionsFromAllSlides()
+        {
+            foreach (PowerPointSlide s in PowerPointPresentation.Slides)
+            {
+                RemoveCaptionsFromSlide(s);
+            }
+        }
+
+        private static void RemoveCaptionsFromSlide(PowerPointSlide slide)
+        {
+            if (slide != null)
+            {
+                slide.DeleteShapesWithPrefix("AudioGen Caption ");
+            }
+        }
+    }
+}
