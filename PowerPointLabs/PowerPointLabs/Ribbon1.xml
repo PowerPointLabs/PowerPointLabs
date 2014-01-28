@@ -90,6 +90,57 @@
                   screentip="Learn More about PPTLabs Spotlight"
                   onAction="AboutButtonClickSpotlight"/>-->
         </group>
+        <group id="embedAudio" label="Auto Narrate">
+          <button id="addAudio"
+                  label="Add Audio"
+                  imageMso="AudioInsert"
+                  onAction="AddAudioClick"
+                  keytip="NA"
+                  size="large" />
+          <button id="removeAudio"
+                  label="Remove Audio"
+                  imageMso="AudioNoteDelete"
+                  onAction="RemoveAudioClick"
+                  keytip="NR"
+                  size="large" />
+          <dropDown id="defaultVoicePicker"
+                    label="Default Voice"
+                    keytip="NV"
+                    onAction="DefaultVoiceSelectionChanged"
+                    showImage="false"
+                    getItemCount="DefaultVoicePickerCount"
+                    getItemLabel="DefaultVoicePickerLabel"
+                    getSelectedItemIndex="DefaultVoiceSelectedIndex" />
+          <checkBox id="allSlides"
+                    label="All Slides"
+                    keytip="NL"
+                    supertip="If checked, audio will be added to or removed from all slides, instead of just the current one."
+                    onAction="AllSlidesChecked" />
+          <checkBox id="previewCurrentSlide"
+                    label="Preview"
+                    keytip="NP"
+                    supertip="If checked, the current slide's audio and animations will play after the Add Audio button is clicked."
+                    onAction="PreviewCurrentSlideChecked" />
+        </group>
+        <group id="embedCaptions" label="Auto Captions">
+          <button id="addCaptions"
+                  label="Add Captions"
+                  imageMso="ScheduledTaskInsert"
+                  keytip="CA"
+                  onAction="AddCaptionClick"
+                  size="large" />
+          <button id="removeCaptions"
+                  label="Remove Captions"
+                  imageMso="SectionMergeWithPrevious"
+                  keytip="CR"
+                  onAction="RemoveCaptionClick"
+                  size="large" />
+          <checkBox id="allSlidesCaptions"
+                    label="All Slides"
+                    keytip="CL"
+                    supertip="If checked, captions will be added to or removed from all slides, instead of just the current one."
+                    onAction="AllSlidesCaptionsChecked" />
+        </group>
         <group id="ComingSoon"
                label="Coming Soon"
                visible="true">
@@ -221,6 +272,24 @@
               getImage="GetReloadAnimationImage"
               getEnabled="OnGetEnabledReloadAutoMotion"
               onAction="ReloadButtonClick"/>
+    </contextMenu>
+    <contextMenu idMso="ContextMenuNotesEditText">
+      <menuSeparator id="separatorNotes" />
+      <button id="contextSpeakSelectedText"
+              label="Speak Selected Text"
+              imageMso="PlaybackTipPlay"
+              onAction="SpeakSelectedTextClick"/>
+      <button id="contextAddCurrentSlide"
+              label="Add Audio (Current Slide)"
+              imageMso="AudioInsert"
+              onAction="ContextAddAudioClick"/>
+    </contextMenu>
+    <contextMenu idMso="ContextMenuAudio">
+      <menuSeparator id="separatorShapes"/>
+      <button id="contextReplaceAudio"
+              label="Replace Audio"
+              imageMso="NoAudioStyle"
+              onAction="ContextReplaceAudioClick"/>
     </contextMenu>
   </contextMenus>
 </customUI>

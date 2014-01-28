@@ -58,6 +58,14 @@ namespace PowerPointLabs
         public Dictionary<String, PowerPoint.Shape> spotlightShapeMapping = new Dictionary<string,PowerPoint.Shape>();
         public Dictionary<String, PowerPoint.Slide> spotlightSlideMapping = new Dictionary<string, PowerPoint.Slide>();
 
+        private bool _allSlides;
+        private bool _previewCurrentSlide;
+        private bool _captionsAllSlides;
+
+        private IEnumerable<string> _voiceNames;
+
+        private int _voiceSelected = 0;
+
         public Ribbon1()
         {
         }
@@ -77,6 +85,9 @@ namespace PowerPointLabs
         public void Ribbon_Load(Office.IRibbonUI ribbonUI)
         {
             this.ribbon = ribbonUI;
+
+            LoadVoicesIntoDropdown();
+            SetCoreVoicesToSelections();
         }
         public void RefreshRibbonControl(String controlID)
         {
@@ -89,6 +100,23 @@ namespace PowerPointLabs
                 LogException(e, "RefreshRibbonControl");
                 throw;
             }
+        }
+
+        private void LoadVoicesIntoDropdown()
+        {
+            SetVoicesFromInstalledOptions();
+            RefreshVoicePicker();
+        }
+
+        private void SetVoicesFromInstalledOptions()
+        {
+            var installedVoices = NotesToAudio.GetVoices().ToList();
+            _voiceNames = installedVoices;
+        }
+
+        private void RefreshVoicePicker()
+        {
+            RefreshRibbonControl("defaultVoicePicker");
         }
 
         //Button Click Callbacks
@@ -871,6 +899,153 @@ namespace PowerPointLabs
                 throw;
             }
         }
+
+        #region NotesToAudio Button Callbacks
+        public void SpeakSelectedTextClick(Office.IRibbonControl control)
+        {
+            NotesToAudio.SpeakSelectedText();
+        }
+
+        public void RemoveAudioClick(Office.IRibbonControl control)
+        {
+            if (_allSlides)
+            {
+                NotesToAudio.RemoveAudioFromAllSlides();
+            }
+            else
+            {
+                NotesToAudio.RemoveAudioFromCurrentSlide();
+            }
+        }
+
+        public void AddAudioClick(Office.IRibbonControl control)
+        {
+            if (_allSlides)
+            {
+                NotesToAudio.EmbedAllSlideNotes();
+            }
+            else
+            {
+                NotesToAudio.EmbedCurrentSlideNotes();
+            }
+
+            PreviewAnimationsIfChecked();
+        }
+
+        public void ContextAddAudioClick(Office.IRibbonControl control)
+        {
+            NotesToAudio.EmbedCurrentSlideNotes();
+            PreviewAnimationsIfChecked();
+        }
+        #endregion
+
+        #region NotesToCaptions Button Callbacks
+
+        public void AddCaptionClick(Office.IRibbonControl control)
+        {
+            if (_captionsAllSlides)
+            {
+                NotesToCaptions.EmbedCaptionsOnAllSlides();
+            }
+            else
+            {
+                NotesToCaptions.EmbedCaptionsOnCurrentSlide();
+            }
+        }
+
+        public void RemoveCaptionClick(Office.IRibbonControl control)
+        {
+            if (_captionsAllSlides)
+            {
+                NotesToCaptions.RemoveCaptionsFromAllSlides();
+            }
+            else
+            {
+                NotesToCaptions.RemoveCaptionsFromCurrentSlide();
+            }
+        }
+
+        public void ContextReplaceAudioClick(Office.IRibbonControl control)
+        {
+            NotesToAudio.ReplaceSelectedAudio();
+        }
+
+        #endregion
+
+        #region NotesToAudio/Caption Helpers
+
+        private void PreviewAnimationsIfChecked()
+        {
+            if (_previewCurrentSlide)
+            {
+                NotesToAudio.PreviewAnimations();
+            }
+        }
+
+        public void AllSlidesChecked(Office.IRibbonControl control, bool pressed)
+        {
+            _allSlides = pressed;
+        }
+
+        public void PreviewCurrentSlideChecked(Office.IRibbonControl control, bool pressed)
+        {
+            _previewCurrentSlide = pressed;
+        }
+
+        public void AllSlidesCaptionsChecked(Office.IRibbonControl control, bool pressed)
+        {
+            _captionsAllSlides = pressed;
+        }
+
+        #region Dropdown Index/Label Handlers
+
+        public int DefaultVoiceSelectedIndex(Office.IRibbonControl control)
+        {
+            return _voiceSelected;
+        }
+
+        public int DefaultVoicePickerCount(Office.IRibbonControl control)
+        {
+            return _voiceNames.Count();
+        }
+
+        public string DefaultVoicePickerLabel(Office.IRibbonControl control, int index)
+        {
+            return _voiceNames.ToArray()[index];
+        }
+        #endregion
+
+        #region Dropdown Selection Handlers
+        public void DefaultVoiceSelectionChanged(Office.IRibbonControl control, string selectedId, int selectedIndex)
+        {
+            _voiceSelected = selectedIndex;
+            SetCoreVoicesToSelections();
+        }
+
+        #endregion
+
+        private void SetCoreVoicesToSelections()
+        {
+            string defaultVoice = GetSelectedVoiceOrNull();
+            NotesToAudio.SetDefaultVoice(defaultVoice);
+        }
+
+        private string GetSelectedVoiceOrNull()
+        {
+            string selectedVoice = null;
+            try
+            {
+                selectedVoice = _voiceNames.ToArray()[_voiceSelected];
+            }
+            catch (IndexOutOfRangeException)
+            {
+                // No voices are installed.
+                // (It should be impossible for the index to be out of range otherwise.)
+            }
+            return selectedVoice;
+        }
+
+        #endregion
 
         #endregion
 
