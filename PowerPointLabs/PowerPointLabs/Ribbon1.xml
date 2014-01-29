@@ -19,6 +19,13 @@
                   supertip="Recreates an existing animation slide with new animations.&#13;&#13;To activate, select the original slide or the animation slide (added previously) and click this button."
                   getEnabled="OnGetEnabledReloadAutoMotion"
                   onAction="ReloadButtonClick"/>
+         <!--<button id="InSlideAnimateButton"
+                  label="Add In-Slide Animation"
+                  size="large"
+                  getImage="GetAddAnimationImage"
+                  supertip="Adds a slide with animations to create an animated transition from the currently selected slide to the next slide."
+                  getEnabled="OnGetEnabledAddAutoMotion"
+                  onAction="AddInSlideAnimationButtonClick"/>-->
           <!--<dropDown  id="animationStylesList"
                     label ="Animations Style"
                     imageMso="AnimationGallery"
@@ -141,6 +148,28 @@
                     supertip="If checked, captions will be added to or removed from all slides, instead of just the current one."
                     onAction="AllSlidesCaptionsChecked" />
         </group>
+        <group id="PPTLabsHelp"
+               label="Help"
+               visible="true">
+          <button id="HelpButton"
+                  label="Help"
+                  size="large"
+                  getImage="GetHelpImage"
+                  supertip="Click this to visit PowerPointLabs help page in our website."
+                  onAction="HelpButtonClick"/>
+          <button id="FeedbackButton"
+                  label="Report Issues/ Send Feedback"
+                  size="large"
+                  getImage="GetFeedbackImage"
+                  supertip="Click this to email us problem reports or other feedback. "
+                  onAction="FeedbackButtonClick"/>
+          <button id="aboutButton"
+                  label="About"
+                  size="large"
+                  getImage="GetAboutImage"
+                  supertip="Information about the PowerPointLabs plugin."
+                  onAction="AboutButtonClick"/>
+        </group>
         <group id="ComingSoon"
                label="Coming Soon"
                visible="true">
@@ -162,27 +191,6 @@
                  getImage="GetCropShapeImage"
                  supertip="*Feature Coming Soon!*"
                  onAction="CropShapeButtonClick"/>
-        </group>
-        <group id="PPTLabsHelp"
-               visible="true">
-          <button id="HelpButton"
-                  label="Help"
-                  size="large"
-                  getImage="GetHelpImage"
-                  supertip="Click this to visit PowerPointLabs help page in our website."
-                  onAction="HelpButtonClick"/>
-          <button id="FeedbackButton"
-                  label="Report Issues/ Send Feedback"
-                  size="large"
-                  getImage="GetFeedbackImage"
-                  supertip="Click this to email us problem reports or other feedback. "
-                  onAction="FeedbackButtonClick"/>
-          <button id="aboutButton"
-                  label="About"
-                  size="large"
-                  getImage="GetAboutImage"
-                  supertip="Information about the PowerPointLabs plugin."
-                  onAction="AboutButtonClick"/>
         </group>
       </tab>
     </tabs>
