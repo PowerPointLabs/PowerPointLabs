@@ -1712,6 +1712,20 @@ namespace PowerPointLabs
                 newSlide.SlideShowTransition.AdvanceOnTime = Office.MsoTriState.msoTrue;
                 newSlide.SlideShowTransition.AdvanceOnClick = Office.MsoTriState.msoFalse;
                 newSlide.SlideShowTransition.AdvanceTime = 0;
+                if (newSlide.HasNotesPage == Office.MsoTriState.msoTrue)
+                {
+                    foreach (PowerPoint.Shape sh in newSlide.NotesPage.Shapes)
+                    {
+                        if (sh.TextFrame.HasText == Office.MsoTriState.msoTrue)
+                            sh.TextEffect.Text = "";
+                    }
+                }
+
+                foreach (PowerPoint.Shape sh in newSlide.Shapes)
+                {
+                    if (sh.Type == Office.MsoShapeType.msoMedia)
+                        sh.Delete();
+                }
 
                 PowerPoint.Slide nextSlide = GetNextSlide(newSlide);
                 if (nextSlide.SlideShowTransition.EntryEffect != PowerPoint.PpEntryEffect.ppEffectFade && nextSlide.SlideShowTransition.EntryEffect != PowerPoint.PpEntryEffect.ppEffectFadeSmoothly)
