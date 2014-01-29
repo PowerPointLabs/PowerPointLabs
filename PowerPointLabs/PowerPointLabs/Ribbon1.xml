@@ -19,13 +19,13 @@
                   supertip="Recreates an existing animation slide with new animations.&#13;&#13;To activate, select the original slide or the animation slide (added previously) and click this button."
                   getEnabled="OnGetEnabledReloadAutoMotion"
                   onAction="ReloadButtonClick"/>
-         <!--<button id="InSlideAnimateButton"
+         <button id="InSlideAnimateButton"
                   label="Add In-Slide Animation"
                   size="large"
                   getImage="GetAddAnimationImage"
-                  supertip="Adds a slide with animations to create an animated transition from the currently selected slide to the next slide."
-                  getEnabled="OnGetEnabledAddAutoMotion"
-                  onAction="AddInSlideAnimationButtonClick"/>-->
+                  supertip="Adds a  new slide with appropriate animations to move selected object within a slide.&#13;&#13;To activate, select the shapes in the order in which you want them to appear and click on this button."
+                  getEnabled="OnGetEnabledAddInSlide"
+                  onAction="AddInSlideAnimationButtonClick"/>
           <!--<dropDown  id="animationStylesList"
                     label ="Animations Style"
                     imageMso="AnimationGallery"

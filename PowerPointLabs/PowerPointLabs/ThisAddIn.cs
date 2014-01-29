@@ -60,6 +60,7 @@ namespace PowerPointLabs
         void ThisAddIn_SelectionChanged(PowerPoint.Selection Sel)
         {
             ribbon.spotlightEnabled = false;
+            ribbon.inSlideEnabled = false;
             if (Sel.Type == PowerPoint.PpSelectionType.ppSelectionShapes)
             {
                 PowerPoint.Shape sh = Sel.ShapeRange[1];
@@ -67,9 +68,23 @@ namespace PowerPointLabs
                 {
                     ribbon.spotlightEnabled = true;
                 }
+                if (Sel.ShapeRange.Count > 1)
+                {
+                    foreach (PowerPoint.Shape tempShape in Sel.ShapeRange)
+                    {
+                        if (sh.Type == tempShape.Type)
+                            ribbon.inSlideEnabled = true;
+                        if (sh.Type == Office.MsoShapeType.msoAutoShape && sh.AutoShapeType != tempShape.AutoShapeType)
+                        {
+                            ribbon.inSlideEnabled = false;
+                            break;
+                        }
+                    }
+                }
             }
 
             ribbon.RefreshRibbonControl("AddSpotlightButton");
+            ribbon.RefreshRibbonControl("InSlideAnimateButton");
         }
 
         void ThisAddIn_SlideSelectionChanged(PowerPoint.SlideRange SldRange)

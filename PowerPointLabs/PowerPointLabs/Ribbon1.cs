@@ -41,6 +41,7 @@ namespace PowerPointLabs
         public float defaultTransparency = 0.7f;
         public bool startUp = false;
         public bool spotlightEnabled = false;
+        public bool inSlideEnabled = false;
         public bool addAutoMotionEnabled = true;
         public bool reloadAutoMotionEnabled = true;
         public bool reloadSpotlight = true;
@@ -138,7 +139,6 @@ namespace PowerPointLabs
             try
             {
                 PowerPoint.Sequence sequence = slide.TimeLine.MainSequence;
-                bool flag = true;
                 PowerPoint.Effect e = null;
                 for (int x = sequence.Count; x >= 1; x--)
                 {
@@ -172,12 +172,32 @@ namespace PowerPointLabs
                 currentSlide.Duplicate();
                 PowerPoint.Slide addedSlide = GetNextSlide(currentSlide);
                 addedSlide.Name = "PPTLabsInSlide" + GetTimestamp(DateTime.Now);
+                addedSlide.SlideShowTransition.EntryEffect = PowerPoint.PpEntryEffect.ppEffectNone;
+                Globals.ThisAddIn.Application.ActiveWindow.View.GotoSlide(addedSlide.SlideIndex);
+                foreach (PowerPoint.Shape sh in addedSlide.Shapes)
+                {
+                    DeleteShapeAnnimations(addedSlide, sh);
+                }
 
                 PowerPoint.Sequence sequence = addedSlide.TimeLine.MainSequence;
                 PowerPoint.Effect effectMotion = null;
                 PowerPoint.Effect effectResize = null;
                 PowerPoint.Effect effectRotate = null;
+                PowerPoint.Effect effectDisappear = null;
                 PowerPoint.MsoAnimTriggerType trigger = PowerPoint.MsoAnimTriggerType.msoAnimTriggerOnPageClick;
+
+                String tempFileName = Path.GetTempFileName();
+                Properties.Resources.Indicator.Save(tempFileName);
+                PowerPoint.Shape indicatorShape = addedSlide.Shapes.AddPicture(tempFileName, Office.MsoTriState.msoFalse, Office.MsoTriState.msoTrue, presentation.PageSetup.SlideWidth - 120, 0, 120, 84);
+                indicatorShape.Left = presentation.PageSetup.SlideWidth - 120;
+                indicatorShape.Top = 0;
+                indicatorShape.Width = 120;
+                indicatorShape.Height = 84;
+                indicatorShape.Name = "PPIndicator" + GetTimestamp(DateTime.Now);
+                effectDisappear = sequence.AddEffect(indicatorShape, PowerPoint.MsoAnimEffect.msoAnimEffectAppear, PowerPoint.MsoAnimateByLevel.msoAnimateLevelNone, PowerPoint.MsoAnimTriggerType.msoAnimTriggerWithPrevious);
+                effectDisappear.Exit = Office.MsoTriState.msoTrue;
+                effectDisappear.Timing.Duration = 0;
+                int indicatorID = indicatorShape.Id;
                 
                 for (int num = 1; num <= shapes.Count - 1; num++)
                 {
@@ -186,7 +206,6 @@ namespace PowerPointLabs
 
                     if (sh1 == null || sh2 == null)
                         return;
-
 
                     trigger = PowerPoint.MsoAnimTriggerType.msoAnimTriggerOnPageClick;
                     float finalX = (sh2.Left + (sh2.Width) / 2);
@@ -351,6 +370,7 @@ namespace PowerPointLabs
                 {
                     sh.Delete();
                 }
+                AddAckSlide();
             }
             catch (Exception e)
             {
@@ -1107,6 +1127,10 @@ namespace PowerPointLabs
         public bool OnGetEnabledReloadAutoMotion(Office.IRibbonControl control)
         {
             return reloadAutoMotionEnabled;
+        }
+        public bool OnGetEnabledAddInSlide(Office.IRibbonControl control)
+        {
+            return inSlideEnabled;
         }
 
         //Edit Name Callbacks
