@@ -168,45 +168,30 @@ namespace PowerPointLabs
 
                 PowerPoint.Presentation presentation = Globals.ThisAddIn.Application.ActivePresentation;
                 PowerPoint.ShapeRange shapes = Globals.ThisAddIn.Application.ActiveWindow.Selection.ShapeRange;
-                
-                currentSlide.Duplicate();
-                PowerPoint.Slide addedSlide = GetNextSlide(currentSlide);
-                addedSlide.Name = "PPTLabsInSlide" + GetTimestamp(DateTime.Now);
-                addedSlide.SlideShowTransition.EntryEffect = PowerPoint.PpEntryEffect.ppEffectNone;
-                //addedSlide.SlideShowTransition.AdvanceOnClick = Office.MsoTriState.msoTrue;
-                Globals.ThisAddIn.Application.ActiveWindow.View.GotoSlide(addedSlide.SlideIndex);
-                foreach (PowerPoint.Shape sh in addedSlide.Shapes)
+
+                foreach (PowerPoint.Shape sh in shapes)
                 {
-                    DeleteShapeAnnimations(addedSlide, sh);
+                    DeleteShapeAnnimations(currentSlide, sh);
                 }
 
-                PowerPoint.Sequence sequence = addedSlide.TimeLine.MainSequence;
+                PowerPoint.Sequence sequence = currentSlide.TimeLine.MainSequence;
                 PowerPoint.Effect effectMotion = null;
                 PowerPoint.Effect effectResize = null;
                 PowerPoint.Effect effectRotate = null;
-                PowerPoint.Effect effectDisappear = null;
                 PowerPoint.MsoAnimTriggerType trigger = PowerPoint.MsoAnimTriggerType.msoAnimTriggerOnPageClick;
 
-                String tempFileName = Path.GetTempFileName();
-                Properties.Resources.Indicator.Save(tempFileName);
-                PowerPoint.Shape indicatorShape = addedSlide.Shapes.AddPicture(tempFileName, Office.MsoTriState.msoFalse, Office.MsoTriState.msoTrue, presentation.PageSetup.SlideWidth - 120, 0, 120, 84);
-                indicatorShape.Left = presentation.PageSetup.SlideWidth - 120;
-                indicatorShape.Top = 0;
-                indicatorShape.Width = 120;
-                indicatorShape.Height = 84;
-                indicatorShape.Name = "PPIndicator" + GetTimestamp(DateTime.Now);
-                effectDisappear = sequence.AddEffect(indicatorShape, PowerPoint.MsoAnimEffect.msoAnimEffectAppear, PowerPoint.MsoAnimateByLevel.msoAnimateLevelNone, PowerPoint.MsoAnimTriggerType.msoAnimTriggerWithPrevious);
-                effectDisappear.Exit = Office.MsoTriState.msoTrue;
-                effectDisappear.Timing.Duration = 0;
-                int indicatorID = indicatorShape.Id;
-                
                 for (int num = 1; num <= shapes.Count - 1; num++)
                 {
-                    PowerPoint.Shape sh1 = FindIdenticalShape(addedSlide, shapes[num]);
-                    PowerPoint.Shape sh2 = FindIdenticalShape(addedSlide, shapes[num + 1]);
+                    PowerPoint.Shape sh1 = shapes[num];
+                    PowerPoint.Shape sh2 = shapes[num + 1];
 
                     if (sh1 == null || sh2 == null)
                         return;
+
+                    if (num == 1)
+                    {
+                        PowerPoint.Effect appear = sequence.AddEffect(sh1, PowerPoint.MsoAnimEffect.msoAnimEffectAppear, PowerPoint.MsoAnimateByLevel.msoAnimateLevelNone, PowerPoint.MsoAnimTriggerType.msoAnimTriggerOnPageClick);
+                    }
 
                     trigger = PowerPoint.MsoAnimTriggerType.msoAnimTriggerOnPageClick;
                     float finalX = (sh2.Left + (sh2.Width) / 2);
@@ -255,7 +240,7 @@ namespace PowerPointLabs
                             {
                                 sequence[sequence.Count].Delete();
                             }
-                            PowerPoint.Effect shapeEffect = GetShapeAnnimations(addedSlide, dupShape);
+                            PowerPoint.Effect shapeEffect = GetShapeAnnimations(currentSlide, dupShape);
                             if (shapeEffect != null)
                                 shapeEffect.Delete();
 
@@ -366,11 +351,7 @@ namespace PowerPointLabs
                     PowerPoint.Effect shape1Disappear = sequence.AddEffect(sh1, PowerPoint.MsoAnimEffect.msoAnimEffectAppear, PowerPoint.MsoAnimateByLevel.msoAnimateLevelNone, PowerPoint.MsoAnimTriggerType.msoAnimTriggerAfterPrevious);
                     shape1Disappear.Exit = Office.MsoTriState.msoTrue;
                 }
-
-                foreach (PowerPoint.Shape sh in shapes)
-                {
-                    sh.Delete();
-                }
+                Globals.ThisAddIn.Application.CommandBars.ExecuteMso("AnimationPreview");
                 AddAckSlide();
             }
             catch (Exception e)
