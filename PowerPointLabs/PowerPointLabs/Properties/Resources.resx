@@ -127,6 +127,12 @@
   <data name="AddAnimation" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\AddAnimation.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
+  <data name="AddAudio" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\AddAudio.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="AddCaption" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\AddCaption.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
   <data name="Bullets" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\Bullets.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
@@ -150,6 +156,12 @@
   </data>
   <data name="ReloadSpotlight" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\ReloadSpotlight.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="RemoveAudio" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\RemoveAudio.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="RemoveCaption" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\RemoveCaption.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
   <data name="Spotlight" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\Spotlight.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>

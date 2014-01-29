@@ -173,6 +173,7 @@ namespace PowerPointLabs
                 PowerPoint.Slide addedSlide = GetNextSlide(currentSlide);
                 addedSlide.Name = "PPTLabsInSlide" + GetTimestamp(DateTime.Now);
                 addedSlide.SlideShowTransition.EntryEffect = PowerPoint.PpEntryEffect.ppEffectNone;
+                //addedSlide.SlideShowTransition.AdvanceOnClick = Office.MsoTriState.msoTrue;
                 Globals.ThisAddIn.Application.ActiveWindow.View.GotoSlide(addedSlide.SlideIndex);
                 foreach (PowerPoint.Shape sh in addedSlide.Shapes)
                 {
@@ -736,7 +737,7 @@ namespace PowerPointLabs
         {
             //AboutForm form = new AboutForm();
             //form.Show();
-            System.Windows.Forms.MessageBox.Show("          PowerPointLabs Plugin Version 1.3.2 [Release date: 28 Jan 2014]\n     Developed at School of Computing, National University of Singapore.\n        For more information, visit our website http://PowerPointLabs.info", "About PowerPointLabs");
+            System.Windows.Forms.MessageBox.Show("          PowerPointLabs Plugin Version 1.3.3 [Release date: 29 Jan 2014]\n     Developed at School of Computing, National University of Singapore.\n        For more information, visit our website http://PowerPointLabs.info", "About PowerPointLabs");
         }
         public void HelpButtonClick(Office.IRibbonControl control)
         {
@@ -915,7 +916,54 @@ namespace PowerPointLabs
                 throw;
             }
         }
-        
+        public System.Drawing.Bitmap GetAddAudioImage(Office.IRibbonControl control)
+        {
+            try
+            {
+                return new System.Drawing.Bitmap(Properties.Resources.AddAudio);
+            }
+            catch (Exception e)
+            {
+                LogException(e, "GetAddAudioImage");
+                throw;
+            }
+        }
+        public System.Drawing.Bitmap GetRemoveAudioImage(Office.IRibbonControl control)
+        {
+            try
+            {
+                return new System.Drawing.Bitmap(Properties.Resources.RemoveAudio);
+            }
+            catch (Exception e)
+            {
+                LogException(e, "GetRemoveAudioImage");
+                throw;
+            }
+        }
+        public System.Drawing.Bitmap GetAddCaptionsImage(Office.IRibbonControl control)
+        {
+            try
+            {
+                return new System.Drawing.Bitmap(Properties.Resources.AddCaption);
+            }
+            catch (Exception e)
+            {
+                LogException(e, "GetAddCaptionsImage");
+                throw;
+            }
+        }
+        public System.Drawing.Bitmap GetRemoveCaptionsImage(Office.IRibbonControl control)
+        {
+            try
+            {
+                return new System.Drawing.Bitmap(Properties.Resources.RemoveCaption);
+            }
+            catch (Exception e)
+            {
+                LogException(e, "GetRemoveCaptionsImage");
+                throw;
+            }
+        }
         //Duration Callbacks
         public void OnChangeDuration(Office.IRibbonControl control, String text)
         {

@@ -20,7 +20,7 @@
                   getEnabled="OnGetEnabledReloadAutoMotion"
                   onAction="ReloadButtonClick"/>
          <button id="InSlideAnimateButton"
-                  label="Add In-Slide Animation"
+                  label="Animate In-Slide"
                   size="large"
                   getImage="GetAddAnimationImage"
                   supertip="Adds a  new slide with appropriate animations to move selected object within a slide.&#13;&#13;To activate, select the shapes in the order in which you want them to appear and click on this button."
@@ -100,15 +100,15 @@
         <group id="embedAudio" label="Auto Narrate">
           <button id="addAudio"
                   label="Add Audio"
-                  imageMso="AudioInsert"
                   onAction="AddAudioClick"
                   keytip="NA"
+                  getImage="GetAddAudioImage"
                   size="large" />
           <button id="removeAudio"
                   label="Remove Audio"
-                  imageMso="AudioNoteDelete"
                   onAction="RemoveAudioClick"
                   keytip="NR"
+                  getImage="GetRemoveAudioImage"
                   size="large" />
           <dropDown id="defaultVoicePicker"
                     label="Default Voice"
@@ -132,15 +132,15 @@
         <group id="embedCaptions" label="Auto Captions">
           <button id="addCaptions"
                   label="Add Captions"
-                  imageMso="ScheduledTaskInsert"
                   keytip="CA"
                   onAction="AddCaptionClick"
+                  getImage="GetAddCaptionsImage"
                   size="large" />
           <button id="removeCaptions"
                   label="Remove Captions"
-                  imageMso="SectionMergeWithPrevious"
                   keytip="CR"
                   onAction="RemoveCaptionClick"
+                  getImage="GetRemoveCaptionsImage"
                   size="large" />
           <checkBox id="allSlidesCaptions"
                     label="All Slides"
@@ -253,6 +253,11 @@
               label="Add Spotlight"
               imageMso="ObjectEffectGlowGallery"
               onAction="SpotlightBtnClick"/>
+      <button id="inSlideAnimateGroup"
+              label="Animate In-Slide"
+              imageMso="ObjectEffectGlowGallery"
+              getEnabled="OnGetEnabledAddInSlide"
+              onAction="AddInSlideAnimationButtonClick"/>
     </contextMenu>
     <contextMenu idMso="ContextMenuInk">
       <menuSeparator id="separatorInk"/>

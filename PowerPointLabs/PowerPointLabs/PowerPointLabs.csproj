@@ -358,6 +358,18 @@
   <ItemGroup>
     <None Include="Resources\ReloadSpotlight.png" />
   </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\RemoveCaption.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\RemoveAudio.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\AddCaption.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\AddAudio.png" />
+  </ItemGroup>
   <!-- Include the build rules for a C# project. -->
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
