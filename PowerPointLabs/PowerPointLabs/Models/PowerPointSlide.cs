@@ -81,31 +81,20 @@ namespace PowerPointLabs.Models
             }
             else
             {
-                var firstShapeOnClick = shapesTriggeredByClick[0];
-                var shapeClickEffect = FirstEffectForShape(firstShapeOnClick);
+                var shapeClickEffect = _slide.TimeLine.MainSequence.FindFirstAnimationForClick(1);
 
                 InsertAnimationBeforeExisting(shape, shapeClickEffect, MsoAnimEffect.msoAnimEffectMediaPlay);
             }
         }
 
-        private Effect FirstEffectForShape(Shape firstShapeOnClick)
-        {
-            var sequence = _slide.TimeLine.MainSequence.Cast<Effect>().ToList();
-            var shapeClickEffect = sequence.FirstOrDefault(
-                effect =>
-                    effect.Shape.Equals(firstShapeOnClick) &&
-                    effect.Timing.TriggerType == MsoAnimTriggerType.msoAnimTriggerOnPageClick);
-            return shapeClickEffect;
-        }
-
         private Effect InsertAnimationBeforeExisting(Shape shape, Effect existing, MsoAnimEffect effect)
         {
             var sequence = _slide.TimeLine.MainSequence;
-            
+
             Effect newAnimation = sequence.AddEffect(shape, effect, MsoAnimateByLevel.msoAnimateLevelNone,
                 MsoAnimTriggerType.msoAnimTriggerWithPrevious);
             newAnimation.MoveBefore(existing);
-            
+
             return newAnimation;
         }
 
@@ -119,11 +108,9 @@ namespace PowerPointLabs.Models
             var shapesTriggeredByClick = GetShapesTriggeredByClick();
 
             Effect addedEffect;
-            if (shapesTriggeredByClick.Count > index)
+            if (shapesTriggeredByClick.Count > index + 1) // Clicks are 1-indexed while shapes are 0-indexed.
             {
-                // We need to find the (i+1)th animation, and add this before it.
-                var shapeToInsertBefore = shapesTriggeredByClick[index];
-                var clickEffect = FirstEffectForShape(shapeToInsertBefore);
+                var clickEffect = _slide.TimeLine.MainSequence.FindFirstAnimationForClick(index + 1);
 
                 addedEffect = InsertAnimationBeforeExisting(shape, clickEffect, effect);
             }
