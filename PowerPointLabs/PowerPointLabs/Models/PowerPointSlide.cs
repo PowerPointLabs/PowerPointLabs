@@ -178,10 +178,7 @@ namespace PowerPointLabs.Models
 
         private IEnumerable<Shape> GetShapesWithAnimations()
         {
-            var shapes = _slide.Shapes.Cast<Shape>().ToList();
-            var shapesWithAnimations = shapes.Where(shape => shape.AnimationSettings.Animate == MsoTriState.msoTrue).ToList();
-            shapesWithAnimations.Sort(
-                (first, second) => first.AnimationSettings.AnimationOrder.CompareTo(second.AnimationSettings.AnimationOrder));
+            var shapesWithAnimations = _slide.TimeLine.MainSequence.Cast<Effect>().Select(effect => effect.Shape).ToList();
             return shapesWithAnimations;
         }
 
