@@ -370,6 +370,10 @@
   <ItemGroup>
     <None Include="Resources\AddAudio.png" />
   </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\AddNarrationContext.png" />
+    <None Include="Resources\SpeakTextContext.png" />
+  </ItemGroup>
   <!-- Include the build rules for a C# project. -->
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>

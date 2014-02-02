@@ -45,3 +45,4 @@ D:\Users\Jerome\SkyDrive\Projects\Office\PowerPointLabs\repo\PowerPointLabs\Powe
 D:\Users\Jerome\SkyDrive\Projects\Office\PowerPointLabs\repo\PowerPointLabs\PowerPointLabs\obj\Debug\PowerPointLabs.csproj.GenerateResource.Cache
 D:\Users\Jerome\SkyDrive\Projects\Office\PowerPointLabs\repo\PowerPointLabs\PowerPointLabs\obj\Debug\PowerPointLabs.dll
 D:\Users\Jerome\SkyDrive\Projects\Office\PowerPointLabs\repo\PowerPointLabs\PowerPointLabs\obj\Debug\PowerPointLabs.pdb
+D:\Users\Jerome\SkyDrive\Projects\Office\PowerPointLabs\repo\PowerPointLabs\PowerPointLabs\obj\Debug\PowerPointLabs.csprojResolveAssemblyReference.cache

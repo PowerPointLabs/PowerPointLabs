@@ -290,11 +290,11 @@
       <menuSeparator id="separatorNotes" />
       <button id="contextSpeakSelectedText"
               label="Speak Selected Text"
-              imageMso="PlaybackTipPlay"
+              getImage="GetPreviewNarrationContextImage"
               onAction="SpeakSelectedTextClick"/>
       <button id="contextAddCurrentSlide"
               label="Add Audio (Current Slide)"
-              imageMso="AudioInsert"
+              getImage="GetAddAudioContextImage"
               onAction="ContextAddAudioClick"/>
     </contextMenu>
     <contextMenu idMso="ContextMenuAudio">
