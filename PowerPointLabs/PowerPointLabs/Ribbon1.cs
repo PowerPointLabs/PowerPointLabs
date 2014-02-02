@@ -945,6 +945,31 @@ namespace PowerPointLabs
                 throw;
             }
         }
+
+        public System.Drawing.Bitmap GetAddAudioContextImage(Office.IRibbonControl control)
+        {
+            try
+            {
+                return new System.Drawing.Bitmap(Properties.Resources.AddNarrationContext);
+            }
+            catch (Exception e)
+            {
+                LogException(e, "GetAddAudioContextImage");
+                throw;
+            }
+        }
+        public System.Drawing.Bitmap GetPreviewNarrationContextImage(Office.IRibbonControl control)
+        {
+            try
+            {
+                return new System.Drawing.Bitmap(Properties.Resources.SpeakTextContext);
+            }
+            catch (Exception e)
+            {
+                LogException(e, "GetPreviewNarrationContextImage");
+                throw;
+            }
+        }
         //Duration Callbacks
         public void OnChangeDuration(Office.IRibbonControl control, String text)
         {
