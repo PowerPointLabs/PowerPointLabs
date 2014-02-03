@@ -374,6 +374,24 @@
     <None Include="Resources\AddNarrationContext.png" />
     <None Include="Resources\SpeakTextContext.png" />
   </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\ReloadAnimationContext.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\InSlideContext.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\InSlideAnimation.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\EditNameContext.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\AddSpotlightContext.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\AddAnimationContext.png" />
+  </ItemGroup>
   <!-- Include the build rules for a C# project. -->
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>

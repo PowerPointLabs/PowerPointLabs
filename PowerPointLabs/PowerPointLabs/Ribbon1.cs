@@ -970,6 +970,78 @@ namespace PowerPointLabs
                 throw;
             }
         }
+        public System.Drawing.Bitmap GetInSlideAnimationImage(Office.IRibbonControl control)
+        {
+            try
+            {
+                return new System.Drawing.Bitmap(Properties.Resources.InSlideAnimation);
+            }
+            catch (Exception e)
+            {
+                LogException(e, "GetInSlideAnimationImage");
+                throw;
+            }
+        }
+        public System.Drawing.Bitmap GetAddAnimationContextImage(Office.IRibbonControl control)
+        {
+            try
+            {
+                return new System.Drawing.Bitmap(Properties.Resources.AddAnimationContext);
+            }
+            catch (Exception e)
+            {
+                LogException(e, "GetAddAnimationContextImage");
+                throw;
+            }
+        }
+        public System.Drawing.Bitmap GetReloadAnimationContextImage(Office.IRibbonControl control)
+        {
+            try
+            {
+                return new System.Drawing.Bitmap(Properties.Resources.ReloadAnimationContext);
+            }
+            catch (Exception e)
+            {
+                LogException(e, "GetReloadAnimationContextImage");
+                throw;
+            }
+        }
+        public System.Drawing.Bitmap GetAddSpotlightContextImage(Office.IRibbonControl control)
+        {
+            try
+            {
+                return new System.Drawing.Bitmap(Properties.Resources.AddSpotlightContext);
+            }
+            catch (Exception e)
+            {
+                LogException(e, "GetAddSpotlightContextImage");
+                throw;
+            }
+        }
+        public System.Drawing.Bitmap GetEditNameContextImage(Office.IRibbonControl control)
+        {
+            try
+            {
+                return new System.Drawing.Bitmap(Properties.Resources.EditNameContext);
+            }
+            catch (Exception e)
+            {
+                LogException(e, "GetEditNameContextImage");
+                throw;
+            }
+        }
+        public System.Drawing.Bitmap GetInSlideAnimationContextImage(Office.IRibbonControl control)
+        {
+            try
+            {
+                return new System.Drawing.Bitmap(Properties.Resources.InSlideContext);
+            }
+            catch (Exception e)
+            {
+                LogException(e, "GetInSlideAnimationContextImage");
+                throw;
+            }
+        }
         //Duration Callbacks
         public void OnChangeDuration(Office.IRibbonControl control, String text)
         {

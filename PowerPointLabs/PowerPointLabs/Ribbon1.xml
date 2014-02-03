@@ -20,28 +20,14 @@
                   getEnabled="OnGetEnabledReloadAutoMotion"
                   onAction="ReloadButtonClick"/>
          <button id="InSlideAnimateButton"
-                  label="Animate In-Slide"
+                  label="Animate In Slide"
                   size="large"
-                  getImage="GetAddAnimationImage"
-                  supertip="Adds a  new slide with appropriate animations to move selected object within a slide.&#13;&#13;To activate, select the shapes in the order in which you want them to appear and click on this button."
+                  getImage="GetInSlideAnimationImage"
+                  supertip="Adds a new slide with appropriate animations to move selected object within a slide.&#13;&#13;To activate, select the shapes in the order in which you want them to appear and click on this button."
                   getEnabled="OnGetEnabledAddInSlide"
                   onAction="AddInSlideAnimationButtonClick"/>
-          <!--<dropDown  id="animationStylesList"
-                    label ="Animations Style"
-                    imageMso="AnimationGallery"
-                    sizeString ="AAAAAAAAAAAAAAAAAAAA"
-                    getItemCount ="OnGetItemCount"
-                    getItemLabel ="OnGetItemLabel"
-                    onAction ="OnSelectItem" />-->
-          <!--<button id="aboutButtonAutoMotion"
-                  size="large"
-                  label="About"
-                  imageMso="Info"
-                  screentip="Learn More about PPTLabs AutoMotion"
-                  onAction="AboutButtonClick"/>-->
           <editBox id="animationDurationOption"
                    label="Duration"
-                   imageMso="StartTimer"
                    sizeString="AAAA"
                    supertip="The duration (in seconds) for the animations in the animation slides to be created."
                    getText = "OnGetDurationText"
@@ -71,14 +57,12 @@
                   onAction="ReloadSpotlightButtonClick"/>
           <editBox id="spotlightTransparency"
                    label="Transparency"
-                   imageMso="PrintTitles"
                    sizeString="AAAA"
                    supertip="The transparency level of the spotlight effect to be created."
                    getText = "OnGetTransparency"
                    onChange = "OnChangeTransparency"/>
           <dropDown id="spotlightSoftEdgesList"
                     label ="Soft Edges"
-                    imageMso="PictureEffectsSoftEdgesGallery"
                     sizeString ="AAAAAAAA"
                     supertip="The softness of the edges of the spotlight effect to be created."
                     getItemCount ="OnGetItemCountSpotlight"
@@ -90,12 +74,6 @@
                     supertip="Check this option if you want to delete the spotlight shape when adding this effect."
                     onAction="SpotlightDeleteOptionChanged"
                     getPressed="SpotlightDeleteOptionGetPressed"/>-->
-          <!--<button id="aboutButtonSpotlight"
-                  label="About"
-                  size="large"
-                  imageMso="Info"
-                  screentip="Learn More about PPTLabs Spotlight"
-                  onAction="AboutButtonClickSpotlight"/>-->
         </group>
         <group id="embedAudio" label="Auto Narrate">
           <button id="addAudio"
@@ -199,51 +177,51 @@
     <contextMenu idMso="ContextMenuShape">
       <menuSeparator id="separatorShape"/>
       <button id="nameEditShape"
-              label="Edit Name" 
-              imageMso="EditCitation"
+              label="Edit Name"
+              getImage="GetEditNameContextImage"
               onAction="NameEditBtnClick"/>
       <button id="spotlightShape"
               label="Add Spotlight"
-              imageMso="ObjectEffectGlowGallery"
+              getImage="GetAddSpotlightContextImage"
               onAction="SpotlightBtnClick"/>
     </contextMenu>
     <contextMenu idMso="ContextMenuShapeFreeform">
       <menuSeparator id="separatorFreeform"/>
       <button id="nameEditFreeform"
               label="Edit Name"
-              imageMso="EditCitation"
+              getImage="GetEditNameContextImage"
               onAction="NameEditBtnClick"/>
       <button id="spotlightFreeform"
               label="Add Spotlight"
-              imageMso="ObjectEffectGlowGallery"
+              getImage="GetAddSpotlightContextImage"
               onAction="SpotlightBtnClick"/>
     </contextMenu>
     <contextMenu idMso="ContextMenuPicture">
       <menuSeparator id="separatorPicture"/>
       <button id="nameEditPicture"
               label="Edit Name"
-              imageMso="EditCitation"
+              getImage="GetEditNameContextImage"
               onAction="NameEditBtnClick"/>
     </contextMenu>
     <contextMenu idMso="ContextMenuChartArea">
       <menuSeparator id="separatorChart"/>
       <button id="nameEditChart"
               label="Edit Name"
-              imageMso="EditCitation"
+              getImage="GetEditNameContextImage"
               onAction="NameEditBtnClick"/>
     </contextMenu>
     <contextMenu idMso="ContextMenuTable">
       <menuSeparator id="separatorTable"/>
       <button id="nameEditTable"
               label="Edit Name"
-              imageMso="EditCitation"
+              getImage="GetEditNameContextImage"
               onAction="NameEditBtnClick"/>
     </contextMenu>
     <contextMenu idMso="ContextMenuObjectsGroup">
       <menuSeparator id="separatorGroup"/>
       <button id="nameEditGroup"
               label="Edit Name"
-              imageMso="EditCitation"
+              getImage="GetEditNameContextImage"
               onAction="NameEditBtnClick"/>
       <!--<button id="zoomShape"
               label="Add Zoom"
@@ -251,11 +229,11 @@
               onAction="ZoomBtnClick"/>-->
       <button id="spotlightGroup"
               label="Add Spotlight"
-              imageMso="ObjectEffectGlowGallery"
+              getImage="GetAddSpotlightContextImage"
               onAction="SpotlightBtnClick"/>
       <button id="inSlideAnimateGroup"
               label="Animate In-Slide"
-              imageMso="ObjectEffectGlowGallery"
+              getImage="GetInSlideAnimationContextImage"
               getEnabled="OnGetEnabledAddInSlide"
               onAction="AddInSlideAnimationButtonClick"/>
     </contextMenu>
@@ -263,26 +241,26 @@
       <menuSeparator id="separatorInk"/>
       <button id="nameEditInk"
               label="Edit Name"
-              imageMso="EditCitation"
+              getImage="GetEditNameContextImage"
               onAction="NameEditBtnClick"/>
     </contextMenu>
     <contextMenu idMso="ContextMenuSmartArtBackground">
       <menuSeparator id="separatorSmartArt"/>
       <button id="nameEditSmartArt"
               label="Edit Name"
-              imageMso="EditCitation"
+              getImage="GetEditNameContextImage"
               onAction="NameEditBtnClick"/>
     </contextMenu>
     <contextMenu idMso="ContextMenuThumbnail">
       <menuSeparator id="separatorThumbnail"/>
       <button id="applyAutoMotionThumbnail"
               label="Add Animation Slide"
-              getImage="GetAddAnimationImage"
+              getImage="GetAddAnimationContextImage"
               getEnabled="OnGetEnabledAddAutoMotion"
               onAction="AddAnimationButtonClick"/>
       <button id="reloadAutoMotionThumbnail"
               label="Recreate Animation"
-              getImage="GetReloadAnimationImage"
+              getImage="GetReloadAnimationContextImage"
               getEnabled="OnGetEnabledReloadAutoMotion"
               onAction="ReloadButtonClick"/>
     </contextMenu>
