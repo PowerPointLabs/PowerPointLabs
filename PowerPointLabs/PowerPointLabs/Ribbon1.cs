@@ -718,7 +718,7 @@ namespace PowerPointLabs
         {
             //AboutForm form = new AboutForm();
             //form.Show();
-            System.Windows.Forms.MessageBox.Show("          PowerPointLabs Plugin Version 1.3.3 [Release date: 29 Jan 2014]\n     Developed at School of Computing, National University of Singapore.\n        For more information, visit our website http://PowerPointLabs.info", "About PowerPointLabs");
+            System.Windows.Forms.MessageBox.Show("          PowerPointLabs Plugin Version 1.3.4 [Release date: 3 Feb 2014]\n     Developed at School of Computing, National University of Singapore.\n        For more information, visit our website http://PowerPointLabs.info", "About PowerPointLabs");
         }
         public void HelpButtonClick(Office.IRibbonControl control)
         {
@@ -1852,31 +1852,48 @@ namespace PowerPointLabs
                 shapes1 = new PowerPoint.Shape[currentSlide.Shapes.Count];
                 shapes2 = new PowerPoint.Shape[currentSlide.Shapes.Count];
                 shapeIDs = new int[currentSlide.Shapes.Count];
+                PowerPoint.Shape matchingShape;
 
                 foreach (PowerPoint.Shape sh1 in currentSlide.Shapes)
                 {
+                    matchingShape = null;
                     foreach (PowerPoint.Shape sh2 in nextSlide.Shapes)
                     {
-                        if (haveSameNames(sh1, sh2))
+                        if (sh1.Id == sh2.Id && haveSameNames(sh1, sh2))
                         {
+                            if (matchingShape == null)
+                                matchingShape = sh2;
+                            else
+                            {
+                                if (GetDistanceBetweenShapes(sh1, sh2) < GetDistanceBetweenShapes(sh1, matchingShape))
+                                    matchingShape = sh2;
+                            }
                             flag = true;
-                            //if (sh1.Type == Office.MsoShapeType.msoPlaceholder && sh1.HasTextFrame == Office.MsoTriState.msoTrue)
-                            //{
-                            //    sh1.TextFrame.TextRange.Text.Trim();
-                            //    sh1.TextFrame.AutoSize = PowerPoint.PpAutoSize.ppAutoSizeShapeToFitText;
-                            //}
-                            //if (sh2.Type == Office.MsoShapeType.msoPlaceholder && sh2.HasTextFrame == Office.MsoTriState.msoTrue)
-                            //{
-                            //    sh2.TextFrame.TextRange.Text.Trim();
-                            //    sh2.TextFrame.AutoSize = PowerPoint.PpAutoSize.ppAutoSizeShapeToFitText;
-                            //}
-
-                            shapes1[counter] = sh1;
-                            shapes2[counter] = sh2;
-                            shapeIDs[counter] = sh1.Id;
-                            counter++;
-                            break;
                         }
+                    }
+                    if (matchingShape == null)
+                    {
+                        foreach (PowerPoint.Shape sh2 in nextSlide.Shapes)
+                        {
+                            if (haveSameNames(sh1, sh2))
+                            {
+                                if (matchingShape == null)
+                                    matchingShape = sh2;
+                                else
+                                {
+                                    if (GetDistanceBetweenShapes(sh1, sh2) < GetDistanceBetweenShapes(sh1, matchingShape))
+                                        matchingShape = sh2;
+                                }
+                                flag = true;
+                            }
+                        }
+                    }
+                    if (matchingShape != null)
+                    {
+                        shapes1[counter] = sh1;
+                        shapes2[counter] = matchingShape;
+                        shapeIDs[counter] = sh1.Id;
+                        counter++;
                     }
                 }
                 return flag;
@@ -1886,6 +1903,15 @@ namespace PowerPointLabs
                 LogException(e, "GetMatchingShapeDetails");
                 throw;
             }
+        }
+        private float GetDistanceBetweenShapes(PowerPoint.Shape sh1, PowerPoint.Shape sh2)
+        {
+            float sh1CenterX = (sh1.Left + (sh1.Width / 2));
+            float sh2CenterX = (sh2.Left + (sh2.Width / 2));
+            float sh1CenterY = (sh1.Top + (sh1.Height / 2));
+            float sh2CenterY = (sh2.Top + (sh2.Height / 2));
+            float distSquared = (float)(Math.Pow((sh2CenterX - sh1CenterX), 2) +  Math.Pow((sh2CenterY - sh1CenterY), 2));
+            return (float)(Math.Sqrt(distSquared));
         }
         private float GetMinimumRotation(float fromAngle, float toAngle)
         {
@@ -1948,22 +1974,9 @@ namespace PowerPointLabs
                     {
                         if (effect.Exit == Office.MsoTriState.msoTrue)
                             flag = false;
-                        effect.Delete(); 
+                        effect.Delete();
                     }
                 }
-
-                //PowerPoint.Slide nextSlide = GetNextSlide(slide);
-                //sequence = nextSlide.TimeLine.MainSequence;
-                //for (int x = sequence.Count; x >= 1; x--)
-                //{
-                //    PowerPoint.Effect effect = sequence[x];
-                //    if (effect.Shape.Name == shape.Name)
-                //    {
-                //        if (effect.Exit == Office.MsoTriState.msoTrue)
-                //            flag = false;
-                //        effect.Delete();
-                //    }
-                //}
                 return flag;
             }
             catch (Exception e)
