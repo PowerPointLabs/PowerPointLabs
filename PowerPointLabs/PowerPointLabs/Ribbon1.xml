@@ -23,7 +23,7 @@
                   label="Animate In Slide"
                   size="large"
                   getImage="GetInSlideAnimationImage"
-                  supertip="Adds a new slide with appropriate animations to move selected object within a slide.&#13;&#13;To activate, select the shapes in the order in which you want them to appear and click on this button."
+                  supertip="Moves a shape around the slide in multiple steps.&#13;&#13;To activate, copy the shape to locations where you want it to stop, select the copies in the order you want them to appear, and click this button"
                   getEnabled="OnGetEnabledAddInSlide"
                   onAction="AddInSlideAnimationButtonClick"/>
           <editBox id="animationDurationOption"
@@ -80,11 +80,13 @@
                   label="Add Audio"
                   onAction="AddAudioClick"
                   keytip="NA"
+                  supertip="Generates synthesized audio from text in the Speaker Notes pane, and adds it to the slide(s)."
                   getImage="GetAddAudioImage"
                   size="large" />
           <button id="removeAudio"
                   label="Remove Audio"
                   onAction="RemoveAudioClick"
+                  supertip="Removes any generated audio that was added using Auto Narrate from the slide(s)."
                   keytip="NR"
                   getImage="GetRemoveAudioImage"
                   size="large" />
@@ -92,6 +94,7 @@
                     label="Default Voice"
                     keytip="NV"
                     onAction="DefaultVoiceSelectionChanged"
+                    supertip="The voice to be used when generating synthesized audio. Use [Voice] tags to specify a different voice for a particular section of text."
                     showImage="false"
                     getItemCount="DefaultVoicePickerCount"
                     getItemLabel="DefaultVoicePickerLabel"
@@ -111,12 +114,14 @@
           <button id="addCaptions"
                   label="Add Captions"
                   keytip="CA"
+                  supertip="Generates movie-style subtitles from text in the Speaker Notes pane, and adds it to the slide(s)."
                   onAction="AddCaptionClick"
                   getImage="GetAddCaptionsImage"
                   size="large" />
           <button id="removeCaptions"
                   label="Remove Captions"
                   keytip="CR"
+                  supertip="Removes any captions that were added using Auto Captions from the slide(s)."
                   onAction="RemoveCaptionClick"
                   getImage="GetRemoveCaptionsImage"
                   size="large" />

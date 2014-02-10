@@ -718,7 +718,7 @@ namespace PowerPointLabs
         {
             //AboutForm form = new AboutForm();
             //form.Show();
-            System.Windows.Forms.MessageBox.Show("          PowerPointLabs Plugin Version 1.3.4 [Release date: 3 Feb 2014]\n     Developed at School of Computing, National University of Singapore.\n        For more information, visit our website http://PowerPointLabs.info", "About PowerPointLabs");
+            System.Windows.Forms.MessageBox.Show("          PowerPointLabs Plugin Version 1.4.1 [Release date: 6 Feb 2014]\n     Developed at School of Computing, National University of Singapore.\n        For more information, visit our website http://PowerPointLabs.info", "About PowerPointLabs");
         }
         public void HelpButtonClick(Office.IRibbonControl control)
         {
