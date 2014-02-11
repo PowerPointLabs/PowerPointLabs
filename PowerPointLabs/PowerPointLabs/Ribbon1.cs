@@ -695,6 +695,21 @@ namespace PowerPointLabs
                     spotShape.Delete();
                 }
 
+                if (addedSlide.HasNotesPage == Office.MsoTriState.msoTrue)
+                {
+                    foreach (PowerPoint.Shape sh in addedSlide.NotesPage.Shapes)
+                    {
+                        if (sh.TextFrame.HasText == Office.MsoTriState.msoTrue)
+                            sh.TextEffect.Text = "";
+                    }
+                }
+
+                foreach (PowerPoint.Shape sh in addedSlide.Shapes)
+                {
+                    if (sh.Type == Office.MsoShapeType.msoMedia)
+                        sh.Delete();
+                }
+
                 AddSpotlightEffect(addedSlide, spotlightShapes);
                 AddAckSlide();
 
