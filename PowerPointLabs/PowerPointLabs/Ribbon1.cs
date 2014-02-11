@@ -42,6 +42,7 @@ namespace PowerPointLabs
         public bool startUp = false;
         public bool spotlightEnabled = false;
         public bool inSlideEnabled = false;
+        public bool zoomButtonEnabled = false;
         public bool addAutoMotionEnabled = true;
         public bool reloadAutoMotionEnabled = true;
         public bool reloadSpotlight = true;
@@ -767,7 +768,95 @@ namespace PowerPointLabs
         }
         public void AddZoomButtonClick(Office.IRibbonControl control)
         {
-            System.Windows.Forms.MessageBox.Show("This feature is coming soon!                ", "Coming Soon");
+            //System.Windows.Forms.MessageBox.Show("This feature is coming soon!                ", "Coming Soon");
+            
+            //Get References of current and next slides
+            PowerPoint.Slide currentSlide = GetCurrentSlide();
+            if (Globals.ThisAddIn.Application.ActiveWindow.Selection.ShapeRange.Count == 0)
+                return;
+
+            PowerPoint.Presentation presentation = Globals.ThisAddIn.Application.ActivePresentation;
+            PowerPoint.Shape shape = Globals.ThisAddIn.Application.ActiveWindow.Selection.ShapeRange[1];
+            DeleteShapeAnnimations(currentSlide, shape);
+
+            if (currentSlide != null && currentSlide.SlideIndex != presentation.Slides.Count)
+            {
+                PowerPoint.Slide nextSlide = GetNextSlide(currentSlide);
+                String tempFileName = Path.GetTempFileName() + ".png";
+                nextSlide.Export(tempFileName, "PNG");
+                shape.Fill.UserPicture(tempFileName);
+                shape.Line.Visible = Office.MsoTriState.msoFalse;
+                shape.Name = "PPTZoomInShape" + GetTimestamp(DateTime.Now);
+
+                currentSlide.Duplicate();
+                PowerPoint.Slide addedSlide = GetNextSlide(currentSlide);
+                addedSlide.Name = "PPTLabsZoomIn" + GetTimestamp(DateTime.Now);
+
+                PowerPoint.Sequence sequence = currentSlide.TimeLine.MainSequence;
+                PowerPoint.Effect effectAppear = sequence.AddEffect(shape, PowerPoint.MsoAnimEffect.msoAnimEffectZoom, PowerPoint.MsoAnimateByLevel.msoAnimateLevelNone, PowerPoint.MsoAnimTriggerType.msoAnimTriggerOnPageClick);
+                effectAppear.Timing.Duration = 0.25f;
+
+                PowerPoint.Shape zoomShape = null;
+                sequence = addedSlide.TimeLine.MainSequence;
+                foreach(PowerPoint.Shape sh in addedSlide.Shapes)
+                {
+                    if (sh.Name.Contains("PPTZoomInShape"))
+                    {
+                        zoomShape = sh;
+                        break;
+                    }
+                }
+
+                PowerPoint.Effect effectMotion = null;
+                PowerPoint.Effect effectResize = null;
+                PowerPoint.Effect effectDisappear = null;
+
+                tempFileName = Path.GetTempFileName();
+                Properties.Resources.Indicator.Save(tempFileName);
+                PowerPoint.Shape indicatorShape = addedSlide.Shapes.AddPicture(tempFileName, Office.MsoTriState.msoFalse, Office.MsoTriState.msoTrue, presentation.PageSetup.SlideWidth - 120, 0, 120, 84);
+                indicatorShape.Left = presentation.PageSetup.SlideWidth - 120;
+                indicatorShape.Top = 0;
+                indicatorShape.Width = 120;
+                indicatorShape.Height = 84;
+                indicatorShape.Name = "PPIndicator" + GetTimestamp(DateTime.Now);
+                effectDisappear = sequence.AddEffect(indicatorShape, PowerPoint.MsoAnimEffect.msoAnimEffectAppear, PowerPoint.MsoAnimateByLevel.msoAnimateLevelNone, PowerPoint.MsoAnimTriggerType.msoAnimTriggerWithPrevious);
+                effectDisappear.Exit = Office.MsoTriState.msoTrue;
+                effectDisappear.Timing.Duration = 0;
+                
+                float finalX = (presentation.PageSetup.SlideWidth / 2);
+                float initialX = (zoomShape.Left + (zoomShape.Width) / 2);
+                float finalY = (presentation.PageSetup.SlideHeight / 2);
+                float initialY = (zoomShape.Top + (zoomShape.Height) / 2);
+
+                zoomShape.ZOrder(Office.MsoZOrderCmd.msoBringToFront);
+                effectMotion = sequence.AddEffect(zoomShape, PowerPoint.MsoAnimEffect.msoAnimEffectPathDown, PowerPoint.MsoAnimateByLevel.msoAnimateLevelNone, PowerPoint.MsoAnimTriggerType.msoAnimTriggerWithPrevious);
+                PowerPoint.AnimationBehavior motion = effectMotion.Behaviors[1];
+                effectMotion.Timing.Duration = defaultDuration;
+                motion.MotionEffect.Path = "M 0 0 C " + ((finalX - initialX) / 2) / presentation.PageSetup.SlideWidth + " " + ((finalY - initialY) / 2) / presentation.PageSetup.SlideHeight + " " + ((finalX - initialX) / 2) / presentation.PageSetup.SlideWidth + " " + ((finalY - initialY) / 2) / presentation.PageSetup.SlideHeight + " " + (finalX - initialX) / presentation.PageSetup.SlideWidth + " " + (finalY - initialY) / presentation.PageSetup.SlideHeight + " E";
+                effectMotion.Timing.SmoothStart = Office.MsoTriState.msoFalse;
+                effectMotion.Timing.SmoothEnd = Office.MsoTriState.msoFalse;
+
+                float finalWidth = presentation.PageSetup.SlideWidth;
+                float initialWidth = zoomShape.Width;
+                float finalHeight = presentation.PageSetup.SlideHeight;
+                float initialHeight = zoomShape.Height;
+
+                effectResize = sequence.AddEffect(zoomShape, PowerPoint.MsoAnimEffect.msoAnimEffectGrowShrink, PowerPoint.MsoAnimateByLevel.msoAnimateLevelNone, PowerPoint.MsoAnimTriggerType.msoAnimTriggerWithPrevious);
+                PowerPoint.AnimationBehavior resize = effectResize.Behaviors[1];
+
+                effectResize.Timing.Duration = defaultDuration;
+                resize.ScaleEffect.ToX = (finalWidth / initialWidth) * 100;
+                resize.ScaleEffect.ToY = (finalHeight / initialHeight) * 100;
+
+                addedSlide.SlideShowTransition.AdvanceOnTime = Office.MsoTriState.msoTrue;
+                addedSlide.SlideShowTransition.AdvanceOnClick = Office.MsoTriState.msoFalse;
+                addedSlide.SlideShowTransition.AdvanceTime = 0;
+                AddAckSlide();
+            }
+            else
+            {
+                System.Windows.Forms.MessageBox.Show("Please select the correct slide", "Unable to Add Animations");
+            }
         }
         public void CropShapeButtonClick(Office.IRibbonControl control)
         {
@@ -1272,6 +1361,10 @@ namespace PowerPointLabs
         public bool OnGetEnabledAddInSlide(Office.IRibbonControl control)
         {
             return inSlideEnabled;
+        }
+        public bool OnGetEnabledZoomButton(Office.IRibbonControl control)
+        {
+            return zoomButtonEnabled;
         }
 
         //Edit Name Callbacks

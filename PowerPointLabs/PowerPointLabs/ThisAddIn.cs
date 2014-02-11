@@ -61,12 +61,17 @@ namespace PowerPointLabs
         {
             ribbon.spotlightEnabled = false;
             ribbon.inSlideEnabled = false;
+            ribbon.zoomButtonEnabled = false;
             if (Sel.Type == PowerPoint.PpSelectionType.ppSelectionShapes)
             {
                 PowerPoint.Shape sh = Sel.ShapeRange[1];
                 if (sh.Type == Office.MsoShapeType.msoAutoShape || sh.Type == Office.MsoShapeType.msoFreeform || sh.Type == Office.MsoShapeType.msoTextBox || sh.Type == Office.MsoShapeType.msoPlaceholder)
                 {
                     ribbon.spotlightEnabled = true;
+                }
+                if (sh.Type == Office.MsoShapeType.msoAutoShape && sh.AutoShapeType == Office.MsoAutoShapeType.msoShapeRectangle)
+                {
+                    ribbon.zoomButtonEnabled = true;
                 }
                 if (Sel.ShapeRange.Count > 1)
                 {
@@ -85,6 +90,7 @@ namespace PowerPointLabs
 
             ribbon.RefreshRibbonControl("AddSpotlightButton");
             ribbon.RefreshRibbonControl("InSlideAnimateButton");
+            ribbon.RefreshRibbonControl("AddZoomButton");
         }
 
         void ThisAddIn_SlideSelectionChanged(PowerPoint.SlideRange SldRange)

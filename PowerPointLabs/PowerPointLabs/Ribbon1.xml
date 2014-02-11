@@ -38,6 +38,16 @@
                     onAction="AnimationStyleChanged"
                     getPressed="AnimationStyleGetPressed"/>
         </group>
+        <group id="AutoZoomGroup"
+               label="Auto Zoom" visible ="true">
+          <button id="AddZoomButton"
+                 label ="Zoom In"
+                 size ="large"
+                 getImage="GetZoomImage"
+                 supertip="*Feature Coming Soon!*"
+                 getEnabled="OnGetEnabledZoomButton"
+                 onAction="AddZoomButtonClick"/>
+        </group>
         <group id="SpotLightGroup"
                label="Spotlight"
                visible="true">
@@ -162,12 +172,6 @@
                  getImage="GetHighlightBulletsImage"
                  supertip="*Feature Coming Soon!*"
                  onAction="HighlightBulletsButtonClick"/>
-          <button id="AddZoomButton"
-                 label ="Zoom to Area"
-                 size ="large"
-                 getImage="GetZoomImage"
-                 supertip="*Feature Coming Soon!*"
-                 onAction="AddZoomButtonClick"/>
           <button id="MoveCropShapeButton"
                  label ="Cut-out Shape"
                  size ="large"
