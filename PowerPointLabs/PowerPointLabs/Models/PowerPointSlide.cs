@@ -98,11 +98,6 @@ namespace PowerPointLabs.Models
             return newAnimation;
         }
 
-        public void SetAudioAsClickTriggered(Shape shape, int index)
-        {
-            SetShapeAsClickTriggered(shape, index, MsoAnimEffect.msoAnimEffectMediaPlay);
-        }
-
         public Effect SetShapeAsClickTriggered(Shape shape, int index, MsoAnimEffect effect)
         {
             var shapesTriggeredByClick = GetShapesTriggeredByClick();
