@@ -98,27 +98,28 @@ namespace PowerPointLabs.Models
             return newAnimation;
         }
 
-        public Effect SetShapeAsClickTriggered(Shape shape, int index, MsoAnimEffect effect)
+        public Effect SetShapeAsClickTriggered(Shape shape, int clickNumber, MsoAnimEffect effect)
         {
-            var shapesTriggeredByClick = GetShapesTriggeredByClick();
-
             Effect addedEffect;
-            int clickIndex = index + 1; // Clicks are 1-indexed while shapes are 0-indexed.
-            if (shapesTriggeredByClick.Count > clickIndex) 
-            {
-                var clickEffect = _slide.TimeLine.MainSequence.FindFirstAnimationForClick(clickIndex);
 
-                addedEffect = InsertAnimationBeforeExisting(shape, clickEffect, effect);
+            Sequence mainSequence = _slide.TimeLine.MainSequence;
+            Effect nextClickEffect = mainSequence.FindFirstAnimationForClick(clickNumber + 1);
+            Effect previousClickEffect = mainSequence.FindFirstAnimationForClick(clickNumber);
+
+            bool hasClicksAfter = nextClickEffect != null;
+            bool hasClickBefore = previousClickEffect != null;
+
+            if (hasClicksAfter)
+            {
+                addedEffect = InsertAnimationBeforeExisting(shape, nextClickEffect, effect);
             }
-            else if (shapesTriggeredByClick.Count == index)
+            else if (hasClickBefore)
             {
                 addedEffect = AddShapeAsLastAutoplaying(shape, effect);
             }
             else
             {
-                // Just add this as a new click effect.
-                var animationSequence = _slide.TimeLine.MainSequence;
-                addedEffect = animationSequence.AddEffect(shape, effect);
+                addedEffect = mainSequence.AddEffect(shape, effect);
             }
 
             return addedEffect;
