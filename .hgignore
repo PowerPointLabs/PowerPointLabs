@@ -2,4 +2,5 @@ syntax: glob
 
 *.suo
 *.user
-
+*/bin
+*/obj
