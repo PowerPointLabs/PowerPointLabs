@@ -103,9 +103,10 @@ namespace PowerPointLabs.Models
             var shapesTriggeredByClick = GetShapesTriggeredByClick();
 
             Effect addedEffect;
-            if (shapesTriggeredByClick.Count > index + 1) // Clicks are 1-indexed while shapes are 0-indexed.
+            int clickIndex = index + 1; // Clicks are 1-indexed while shapes are 0-indexed.
+            if (shapesTriggeredByClick.Count > clickIndex) 
             {
-                var clickEffect = _slide.TimeLine.MainSequence.FindFirstAnimationForClick(index + 1);
+                var clickEffect = _slide.TimeLine.MainSequence.FindFirstAnimationForClick(clickIndex);
 
                 addedEffect = InsertAnimationBeforeExisting(shape, clickEffect, effect);
             }
