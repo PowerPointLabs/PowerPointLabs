@@ -73,17 +73,18 @@ namespace PowerPointLabs.Models
 
         public void SetAudioAsAutoplay(Shape shape)
         {
-            var shapesTriggeredByClick = GetShapesTriggeredByClick();
+            var mainSequence = _slide.TimeLine.MainSequence;
 
-            if (shapesTriggeredByClick.Count == 0)
+            Effect firstClickEvent = mainSequence.FindFirstAnimationForClick(1);
+            bool hasNoClicksOnSlide = firstClickEvent == null;
+
+            if (hasNoClicksOnSlide)
             {
                 AddShapeAsLastAutoplaying(shape, MsoAnimEffect.msoAnimEffectMediaPlay);
             }
             else
             {
-                var shapeClickEffect = _slide.TimeLine.MainSequence.FindFirstAnimationForClick(1);
-
-                InsertAnimationBeforeExisting(shape, shapeClickEffect, MsoAnimEffect.msoAnimEffectMediaPlay);
+                InsertAnimationBeforeExisting(shape, firstClickEvent, MsoAnimEffect.msoAnimEffectMediaPlay);
             }
         }
 
