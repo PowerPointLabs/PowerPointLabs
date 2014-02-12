@@ -851,8 +851,26 @@ namespace PowerPointLabs
                 addedSlide.SlideShowTransition.AdvanceOnTime = Office.MsoTriState.msoTrue;
                 addedSlide.SlideShowTransition.AdvanceOnClick = Office.MsoTriState.msoFalse;
                 addedSlide.SlideShowTransition.AdvanceTime = 0;
-                if (nextSlide.SlideShowTransition.EntryEffect != PowerPoint.PpEntryEffect.ppEffectFade && nextSlide.SlideShowTransition.EntryEffect != PowerPoint.PpEntryEffect.ppEffectFadeSmoothly)
-                    nextSlide.SlideShowTransition.EntryEffect = PowerPoint.PpEntryEffect.ppEffectNone;
+                addedSlide.SlideShowTransition.EntryEffect = PowerPoint.PpEntryEffect.ppEffectNone;
+                if (addedSlide.HasNotesPage == Office.MsoTriState.msoTrue)
+                {
+                    foreach (PowerPoint.Shape sh in addedSlide.NotesPage.Shapes)
+                    {
+                        if (sh.TextFrame.HasText == Office.MsoTriState.msoTrue)
+                            sh.TextEffect.Text = "";
+                    }
+                }
+
+                foreach (PowerPoint.Shape sh in addedSlide.Shapes)
+                {
+                    if (sh.Type == Office.MsoShapeType.msoMedia)
+                        sh.Delete();
+                }
+
+                //if (nextSlide.SlideShowTransition.EntryEffect != PowerPoint.PpEntryEffect.ppEffectFade && nextSlide.SlideShowTransition.EntryEffect != PowerPoint.PpEntryEffect.ppEffectFadeSmoothly)
+                //    nextSlide.SlideShowTransition.EntryEffect = PowerPoint.PpEntryEffect.ppEffectNone;
+                nextSlide.SlideShowTransition.EntryEffect = PowerPoint.PpEntryEffect.ppEffectFadeSmoothly;
+                nextSlide.SlideShowTransition.Duration = 0.5f;
                 Globals.ThisAddIn.Application.ActiveWindow.View.GotoSlide(addedSlide.SlideIndex);
                 Globals.ThisAddIn.Application.CommandBars.ExecuteMso("AnimationPreview");
                 AddAckSlide();
@@ -955,8 +973,26 @@ namespace PowerPointLabs
                 addedSlide.SlideShowTransition.AdvanceOnTime = Office.MsoTriState.msoTrue;
                 addedSlide.SlideShowTransition.AdvanceOnClick = Office.MsoTriState.msoFalse;
                 addedSlide.SlideShowTransition.AdvanceTime = 0;
-                if (currentSlide.SlideShowTransition.EntryEffect != PowerPoint.PpEntryEffect.ppEffectFade && currentSlide.SlideShowTransition.EntryEffect != PowerPoint.PpEntryEffect.ppEffectFadeSmoothly)
-                    currentSlide.SlideShowTransition.EntryEffect = PowerPoint.PpEntryEffect.ppEffectNone;
+                addedSlide.SlideShowTransition.EntryEffect = PowerPoint.PpEntryEffect.ppEffectNone;
+
+                if (addedSlide.HasNotesPage == Office.MsoTriState.msoTrue)
+                {
+                    foreach (PowerPoint.Shape sh in addedSlide.NotesPage.Shapes)
+                    {
+                        if (sh.TextFrame.HasText == Office.MsoTriState.msoTrue)
+                            sh.TextEffect.Text = "";
+                    }
+                }
+
+                foreach (PowerPoint.Shape sh in addedSlide.Shapes)
+                {
+                    if (sh.Type == Office.MsoShapeType.msoMedia)
+                        sh.Delete();
+                }
+                //if (currentSlide.SlideShowTransition.EntryEffect != PowerPoint.PpEntryEffect.ppEffectFade && currentSlide.SlideShowTransition.EntryEffect != PowerPoint.PpEntryEffect.ppEffectFadeSmoothly)
+                //    currentSlide.SlideShowTransition.EntryEffect = PowerPoint.PpEntryEffect.ppEffectNone;
+                currentSlide.SlideShowTransition.EntryEffect = PowerPoint.PpEntryEffect.ppEffectFadeSmoothly;
+                currentSlide.SlideShowTransition.Duration = 0.5f;
                 Globals.ThisAddIn.Application.ActiveWindow.View.GotoSlide(addedSlide.SlideIndex);
                 Globals.ThisAddIn.Application.CommandBars.ExecuteMso("AnimationPreview");
                 AddAckSlide();
