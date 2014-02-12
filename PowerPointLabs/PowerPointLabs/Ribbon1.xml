@@ -40,13 +40,20 @@
         </group>
         <group id="AutoZoomGroup"
                label="Auto Zoom" visible ="true">
-          <button id="AddZoomButton"
+          <button id="AddZoomInButton"
                  label ="Zoom In"
                  size ="large"
                  getImage="GetZoomImage"
-                 supertip="*Feature Coming Soon!*"
+                 supertip="Adds a slide with animations to create an zoom-in effect from the currently selected shape to the next slide.&#13;&#13;To activate, select a rectangle shape and click on this button."
                  getEnabled="OnGetEnabledZoomButton"
-                 onAction="AddZoomButtonClick"/>
+                 onAction="AddZoomInButtonClick"/>
+          <button id="AddZoomOutButton"
+                 label ="Zoom Out"
+                 size ="large"
+                 getImage="GetZoomImage"
+                 supertip="Adds a slide with animations to create an zoom-out effect from the previous slide to the currently selected shape.&#13;&#13;To activate, select a rectangle shape and click on this button."
+                 getEnabled="OnGetEnabledZoomButton"
+                 onAction="AddZoomOutButtonClick"/>
         </group>
         <group id="SpotLightGroup"
                label="Spotlight"
@@ -193,6 +200,16 @@
               label="Add Spotlight"
               getImage="GetAddSpotlightContextImage"
               onAction="SpotlightBtnClick"/>
+      <button id="zoomInContextMenu"
+              label ="Zoom In"
+              getImage="GetZoomImage"
+              getEnabled="OnGetEnabledZoomButton"
+              onAction="AddZoomInButtonClick"/>
+      <button id="zoomOutContextMenu"
+             label ="Zoom Out"
+             getImage="GetZoomImage"
+             getEnabled="OnGetEnabledZoomButton"
+             onAction="AddZoomOutButtonClick"/>
     </contextMenu>
     <contextMenu idMso="ContextMenuShapeFreeform">
       <menuSeparator id="separatorFreeform"/>

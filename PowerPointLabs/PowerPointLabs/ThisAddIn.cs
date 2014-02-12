@@ -75,6 +75,7 @@ namespace PowerPointLabs
                 }
                 if (Sel.ShapeRange.Count > 1)
                 {
+                    ribbon.zoomButtonEnabled = false;
                     foreach (PowerPoint.Shape tempShape in Sel.ShapeRange)
                     {
                         if (sh.Type == tempShape.Type)
@@ -90,7 +91,8 @@ namespace PowerPointLabs
 
             ribbon.RefreshRibbonControl("AddSpotlightButton");
             ribbon.RefreshRibbonControl("InSlideAnimateButton");
-            ribbon.RefreshRibbonControl("AddZoomButton");
+            ribbon.RefreshRibbonControl("AddZoomInButton");
+            ribbon.RefreshRibbonControl("AddZoomOutButton");
         }
 
         void ThisAddIn_SlideSelectionChanged(PowerPoint.SlideRange SldRange)
