@@ -143,21 +143,6 @@ namespace PowerPointLabs.Models
             return effect;
         }
 
-        private List<Shape> GetShapesTriggeredByClick()
-        {
-            var shapesWithAnimations = GetShapesWithAnimations();
-            var shapesOnClick =
-                shapesWithAnimations.Where(shape => shape.AnimationSettings.AdvanceMode == PpAdvanceMode.ppAdvanceOnClick)
-                    .ToList();
-            return shapesOnClick;
-        }
-
-        private IEnumerable<Shape> GetShapesWithAnimations()
-        {
-            var shapesWithAnimations = _slide.TimeLine.MainSequence.Cast<Effect>().Select(effect => effect.Shape).ToList();
-            return shapesWithAnimations;
-        }
-
         public void ShowShapeAfterClick(Shape shape, int clickNumber)
         {
             SetShapeAsClickTriggered(shape, clickNumber, MsoAnimEffect.msoAnimEffectAppear);
