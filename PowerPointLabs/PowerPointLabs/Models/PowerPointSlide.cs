@@ -132,15 +132,6 @@ namespace PowerPointLabs.Models
             return addedEffect;
         }
 
-        private Effect InsertAnimationAtIndex(Shape shape, int index, MsoAnimEffect animationEffect)
-        {
-            var animationSequence = _slide.TimeLine.MainSequence;
-            Effect effect = animationSequence.AddEffect(shape, animationEffect, MsoAnimateByLevel.msoAnimateLevelNone,
-                MsoAnimTriggerType.msoAnimTriggerWithPrevious);
-            effect.MoveTo(index);
-            return effect;
-        }
-
         private Effect InsertAnimationAtIndex(Shape shape, int index, MsoAnimEffect animationEffect,
             MsoAnimTriggerType triggerType)
         {
