@@ -734,7 +734,7 @@ namespace PowerPointLabs
         {
             //AboutForm form = new AboutForm();
             //form.Show();
-            System.Windows.Forms.MessageBox.Show("          PowerPointLabs Plugin Version 1.4.1 [Release date: 6 Feb 2014]\n     Developed at School of Computing, National University of Singapore.\n        For more information, visit our website http://PowerPointLabs.info", "About PowerPointLabs");
+            System.Windows.Forms.MessageBox.Show("          PowerPointLabs Plugin Version 1.4.1 [Release date: 14 Feb 2014]\n     Developed at School of Computing, National University of Singapore.\n        For more information, visit our website http://PowerPointLabs.info", "About PowerPointLabs");
         }
         public void HelpButtonClick(Office.IRibbonControl control)
         {
@@ -782,6 +782,12 @@ namespace PowerPointLabs
             if (currentSlide != null && currentSlide.SlideIndex != presentation.Slides.Count)
             {
                 PowerPoint.Slide nextSlide = GetNextSlide(currentSlide);
+                PowerPoint.Slide tempSlide = nextSlide;
+                if (nextSlide.Name.Contains("PPTLabsZoomIn") && nextSlide.SlideIndex < presentation.Slides.Count)
+                {
+                    nextSlide = GetNextSlide(tempSlide);
+                    tempSlide.Delete();
+                }
                 String tempFileName = Path.GetTempFileName() + ".png";
                 nextSlide.Export(tempFileName, "PNG");
                 shape.Fill.UserPicture(tempFileName);
@@ -826,20 +832,20 @@ namespace PowerPointLabs
                 float finalHeight = presentation.PageSetup.SlideHeight;
                 float initialHeight = shape.Height;
 
-                float finalX = (presentation.PageSetup.SlideWidth / 2);
-                float initialX = (shape.Left + (shape.Width) / 2);
-                float finalY = (presentation.PageSetup.SlideHeight / 2);
-                float initialY = (shape.Top + (shape.Height) / 2);
+                float finalX = (presentation.PageSetup.SlideWidth / 2) * (finalWidth / initialWidth);
+                float initialX = (shape.Left + (shape.Width) / 2) * (finalWidth / initialWidth);
+                float finalY = (presentation.PageSetup.SlideHeight / 2) * (finalHeight / initialHeight);
+                float initialY = (shape.Top + (shape.Height) / 2) * (finalHeight / initialHeight);
 
                 effectMotion = sequence.AddEffect(zoomShape, PowerPoint.MsoAnimEffect.msoAnimEffectPathDown, PowerPoint.MsoAnimateByLevel.msoAnimateLevelNone, PowerPoint.MsoAnimTriggerType.msoAnimTriggerWithPrevious);
                 PowerPoint.AnimationBehavior motion = effectMotion.Behaviors[1];
                 effectMotion.Timing.Duration = defaultDuration;
-                float point1X = ((finalX - initialX) / 2f) / presentation.PageSetup.SlideWidth * (finalWidth / initialWidth);
-                float point1Y = ((finalY - initialY) / 2f) / presentation.PageSetup.SlideHeight * (finalWidth / initialWidth);
-                float point2X = ((finalX - initialX) / 2f) / presentation.PageSetup.SlideWidth * (finalWidth / initialWidth);
-                float point2Y = ((finalY - initialY) / 2f) / presentation.PageSetup.SlideHeight * (finalWidth / initialWidth);
-                float point3X = (finalX - initialX) / presentation.PageSetup.SlideWidth * (finalWidth / initialWidth);
-                float point3Y = (finalY - initialY) / presentation.PageSetup.SlideHeight * (finalWidth / initialWidth);
+                float point1X = ((finalX - initialX) / 2f) / presentation.PageSetup.SlideWidth;
+                float point1Y = ((finalY - initialY) / 2f) / presentation.PageSetup.SlideHeight;
+                float point2X = ((finalX - initialX) / 2f) / presentation.PageSetup.SlideWidth;
+                float point2Y = ((finalY - initialY) / 2f) / presentation.PageSetup.SlideHeight;
+                float point3X = (finalX - initialX) / presentation.PageSetup.SlideWidth;
+                float point3Y = (finalY - initialY) / presentation.PageSetup.SlideHeight;
                 motion.MotionEffect.Path = "M 0 0 C " + point1X + " " + point1Y + " " + point2X + " " + point2Y + " " + point3X + " " + point3Y + " E";
                 effectMotion.Timing.SmoothStart = Office.MsoTriState.msoFalse;
                 effectMotion.Timing.SmoothEnd = Office.MsoTriState.msoFalse;
@@ -900,6 +906,12 @@ namespace PowerPointLabs
             if (currentSlide != null && currentSlide.SlideIndex != 1)
             {
                 PowerPoint.Slide prevSlide = GetPrevSlide(currentSlide);
+                PowerPoint.Slide tempSlide = prevSlide;
+                while (prevSlide.Name.Contains("PPTLabsZoomOut") && prevSlide.SlideIndex > 1)
+                {
+                    prevSlide = GetPrevSlide(tempSlide);
+                    tempSlide.Delete();
+                }
                 String tempFileName = Path.GetTempFileName() + ".png";
                 prevSlide.Export(tempFileName, "PNG");
                 shape.Fill.UserPicture(tempFileName);

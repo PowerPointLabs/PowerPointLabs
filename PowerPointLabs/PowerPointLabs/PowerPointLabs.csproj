@@ -41,7 +41,7 @@
     <PublishUrl>C:\Users\Raunak\Documents\PowerPoint Labs\</PublishUrl>
     <InstallUrl>http://www.comp.nus.edu.sg/~pptlabs/download/dev/</InstallUrl>
     <TargetCulture>en</TargetCulture>
-    <ApplicationVersion>1.4.0.0</ApplicationVersion>
+    <ApplicationVersion>1.4.1.0</ApplicationVersion>
     <AutoIncrementApplicationRevision>false</AutoIncrementApplicationRevision>
     <UpdateEnabled>true</UpdateEnabled>
     <UpdateInterval>0</UpdateInterval>
@@ -391,6 +391,12 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\AddAnimationContext.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\FitToWidth.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\FitToHeight.png" />
   </ItemGroup>
   <!-- Include the build rules for a C# project. -->
   <PropertyGroup>
