@@ -1690,6 +1690,92 @@ namespace PowerPointLabs
 
         #endregion
 
+        #region Fit To Slide | Fit To Width | Fit To Height
+
+        private const int SelectedShapeIndex = 1;
+        private const int TopMost = 0;
+        private const int LeftMost = 0;
+
+        public void FitToWidthClick(Office.IRibbonControl control)
+        {
+            DoFitToWidth();
+        }
+
+        public void FitToHeightClick(Office.IRibbonControl control)
+        {
+            DoFitToHeight();
+        }
+
+        private void DoFitToHeight()
+        {
+            var pageSetup = GetPageSetup();
+            var selectedShape = GetSelectedShape();
+            float shapeSizeRatio = GetSizeRatio(selectedShape.Height, selectedShape.Width);
+            //fit to height
+            selectedShape.Height = pageSetup.SlideHeight;
+            selectedShape.Width = selectedShape.Height / shapeSizeRatio;
+            //move to centre
+            selectedShape.Left = (pageSetup.SlideWidth - selectedShape.Width) / 2;
+            selectedShape.Top = TopMost;
+        }
+
+        private void DoFitToWidth()
+        {
+            var pageSetup = GetPageSetup();
+            var selectedShape = GetSelectedShape();
+            float shapeSizeRatio = GetSizeRatio(selectedShape.Height, selectedShape.Width);
+            //fit to width
+            selectedShape.Width = pageSetup.SlideWidth;
+            selectedShape.Height = selectedShape.Width * shapeSizeRatio;
+            //move to middle
+            selectedShape.Top = (pageSetup.SlideHeight - selectedShape.Height) / 2;
+            selectedShape.Left = LeftMost;
+        }
+
+        private float GetSizeRatio(float height, float width)
+        {
+            return height / width;
+        }
+
+        private PowerPoint.PageSetup GetPageSetup()
+        {
+            return Globals.ThisAddIn.Application.ActivePresentation.PageSetup;
+        }
+
+        private PowerPoint.Shape GetSelectedShape()
+        {
+            return Globals.ThisAddIn.Application.
+                   ActiveWindow.Selection.ShapeRange[SelectedShapeIndex];
+        }
+
+        public System.Drawing.Bitmap GetFitToWidthImage(Office.IRibbonControl control)
+        {
+            try
+            {
+                return new System.Drawing.Bitmap(Properties.Resources.FitToWidth);
+            }
+            catch (Exception e)
+            {
+                LogException(e, "GetFitToWidthImage");
+                throw;
+            }
+        }
+
+        public System.Drawing.Bitmap GetFitToHeightImage(Office.IRibbonControl control)
+        {
+            try
+            {
+                return new System.Drawing.Bitmap(Properties.Resources.FitToHeight);
+            }
+            catch (Exception e)
+            {
+                LogException(e, "GetFitToHeightImage");
+                throw;
+            }
+        }
+
+        #endregion
+
         #region Helpers
 
         //Spotlight Helpers

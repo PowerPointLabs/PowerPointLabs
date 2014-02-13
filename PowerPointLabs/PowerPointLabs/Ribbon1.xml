@@ -210,6 +210,14 @@
              getImage="GetZoomImage"
              getEnabled="OnGetEnabledZoomButton"
              onAction="AddZoomOutButtonClick"/>
+      <button id="fitToWidthShape"
+              label="Fit To Width"
+              getImage="GetFitToWidthImage"
+              onAction="FitToWidthClick"/>
+      <button id="fitToHeightShape"
+              label="Fit To Height"
+              getImage="GetFitToHeightImage"
+              onAction="FitToHeightClick"/>
     </contextMenu>
     <contextMenu idMso="ContextMenuShapeFreeform">
       <menuSeparator id="separatorFreeform"/>
@@ -221,6 +229,14 @@
               label="Add Spotlight"
               getImage="GetAddSpotlightContextImage"
               onAction="SpotlightBtnClick"/>
+      <button id="fitToWidthFreeform"
+              label="Fit To Width"
+              getImage="GetFitToWidthImage"
+              onAction="FitToWidthClick"/>
+      <button id="fitToHeightFreeform"
+              label="Fit To Height"
+              getImage="GetFitToHeightImage"
+              onAction="FitToHeightClick"/>
     </contextMenu>
     <contextMenu idMso="ContextMenuPicture">
       <menuSeparator id="separatorPicture"/>
@@ -228,6 +244,14 @@
               label="Edit Name"
               getImage="GetEditNameContextImage"
               onAction="NameEditBtnClick"/>
+      <button id="fitToWidthPicture"
+              label="Fit To Width"
+              getImage="GetFitToWidthImage"
+              onAction="FitToWidthClick"/>
+      <button id="fitToHeightPicture"
+              label="Fit To Height"
+              getImage="GetFitToHeightImage"
+              onAction="FitToHeightClick"/>
     </contextMenu>
     <contextMenu idMso="ContextMenuChartArea">
       <menuSeparator id="separatorChart"/>
@@ -235,6 +259,14 @@
               label="Edit Name"
               getImage="GetEditNameContextImage"
               onAction="NameEditBtnClick"/>
+      <button id="fitToWidthChart"
+              label="Fit To Width"
+              getImage="GetFitToWidthImage"
+              onAction="FitToWidthClick"/>
+      <button id="fitToHeightChart"
+              label="Fit To Height"
+              getImage="GetFitToHeightImage"
+              onAction="FitToHeightClick"/>
     </contextMenu>
     <contextMenu idMso="ContextMenuTable">
       <menuSeparator id="separatorTable"/>
@@ -242,6 +274,14 @@
               label="Edit Name"
               getImage="GetEditNameContextImage"
               onAction="NameEditBtnClick"/>
+      <button id="fitToWidthTable"
+              label="Fit To Width"
+              getImage="GetFitToWidthImage"
+              onAction="FitToWidthClick"/>
+      <button id="fitToHeightTable"
+              label="Fit To Height"
+              getImage="GetFitToHeightImage"
+              onAction="FitToHeightClick"/>
     </contextMenu>
     <contextMenu idMso="ContextMenuObjectsGroup">
       <menuSeparator id="separatorGroup"/>
