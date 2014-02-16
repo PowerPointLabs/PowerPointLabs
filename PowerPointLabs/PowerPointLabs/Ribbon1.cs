@@ -798,8 +798,8 @@ namespace PowerPointLabs
                 addedSlide.Name = "PPTLabsZoomIn" + GetTimestamp(DateTime.Now);
 
                 PowerPoint.Sequence sequence = currentSlide.TimeLine.MainSequence;
-                PowerPoint.Effect effectAppear = sequence.AddEffect(shape, PowerPoint.MsoAnimEffect.msoAnimEffectZoom, PowerPoint.MsoAnimateByLevel.msoAnimateLevelNone, PowerPoint.MsoAnimTriggerType.msoAnimTriggerOnPageClick);
-                effectAppear.Timing.Duration = 0.25f;
+                PowerPoint.Effect effectAppear = sequence.AddEffect(shape, PowerPoint.MsoAnimEffect.msoAnimEffectFade, PowerPoint.MsoAnimateByLevel.msoAnimateLevelNone, PowerPoint.MsoAnimTriggerType.msoAnimTriggerOnPageClick);
+                effectAppear.Timing.Duration = 0.50f;
 
                 currentSlide.Copy();
                 PowerPoint.Shape zoomShape = addedSlide.Shapes.PasteSpecial(PowerPoint.PpPasteDataType.ppPastePNG)[1];
