@@ -378,9 +378,6 @@
     <None Include="Resources\ReloadAnimationContext.png" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="Resources\InSlideContext.png" />
-  </ItemGroup>
-  <ItemGroup>
     <None Include="Resources\InSlideAnimation.png" />
   </ItemGroup>
   <ItemGroup>
@@ -391,6 +388,21 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\AddAnimationContext.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\ZoomOutContext.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\ZoomOut.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\ZoomInContext.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\ZoomIn.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\InSlideContext.png" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\FitToWidth.png" />

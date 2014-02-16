@@ -1098,15 +1098,27 @@ namespace PowerPointLabs
                 throw;
             }
         }
-        public System.Drawing.Bitmap GetZoomImage(Office.IRibbonControl control)
+        public System.Drawing.Bitmap GetZoomInImage(Office.IRibbonControl control)
         {
             try
             {
-                return new System.Drawing.Bitmap(Properties.Resources.Zoom);
+                return new System.Drawing.Bitmap(Properties.Resources.ZoomIn);
             }
             catch (Exception e)
             {
-                LogException(e, "GetZoomImage");
+                LogException(e, "GetZoomInImage");
+                throw;
+            }
+        }
+        public System.Drawing.Bitmap GetZoomOutImage(Office.IRibbonControl control)
+        {
+            try
+            {
+                return new System.Drawing.Bitmap(Properties.Resources.ZoomOut);
+            }
+            catch (Exception e)
+            {
+                LogException(e, "GetZoomOutImage");
                 throw;
             }
         }
@@ -1300,6 +1312,30 @@ namespace PowerPointLabs
             catch (Exception e)
             {
                 LogException(e, "GetInSlideAnimationContextImage");
+                throw;
+            }
+        }
+        public System.Drawing.Bitmap GetZoomInContextImage(Office.IRibbonControl control)
+        {
+            try
+            {
+                return new System.Drawing.Bitmap(Properties.Resources.ZoomInContext);
+            }
+            catch (Exception e)
+            {
+                LogException(e, "GetZoomInContextImage");
+                throw;
+            }
+        }
+        public System.Drawing.Bitmap GetZoomOutContextImage(Office.IRibbonControl control)
+        {
+            try
+            {
+                return new System.Drawing.Bitmap(Properties.Resources.ZoomOutContext);
+            }
+            catch (Exception e)
+            {
+                LogException(e, "GetZoomOutContextImage");
                 throw;
             }
         }
