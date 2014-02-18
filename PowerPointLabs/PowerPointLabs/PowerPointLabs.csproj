@@ -239,8 +239,10 @@
     <Compile Include="Models\PowerPointPresentation.cs" />
     <Compile Include="Models\PowerPointSlide.cs" />
     <Compile Include="Models\TaggedText.cs" />
+    <Compile Include="NativeMethods.cs" />
     <Compile Include="NotesToAudio.cs" />
     <Compile Include="NotesToCaptions.cs" />
+    <Compile Include="PPMouse.cs" />
     <Compile Include="Properties\AssemblyInfo.cs">
       <SubType>Code</SubType>
     </Compile>
