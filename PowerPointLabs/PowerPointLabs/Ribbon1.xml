@@ -210,6 +210,10 @@
              getImage="GetZoomImage"
              getEnabled="OnGetEnabledZoomButton"
              onAction="AddZoomOutButtonClick"/>
+      <button id="cutOutShapeShape"
+              label="Cut-out Shape"
+              getImage="GetCutOutShapeMenuImage"
+              onAction="CropShapeButtonClick"/>
       <button id="fitToWidthShape"
               label="Fit To Width"
               getImage="GetFitToWidthImage"
@@ -229,6 +233,10 @@
               label="Add Spotlight"
               getImage="GetAddSpotlightContextImage"
               onAction="SpotlightBtnClick"/>
+      <button id="cutOutShapeFreeform"
+              label="Cut-out Shape"
+              getImage="GetCutOutShapeMenuImage"
+              onAction="CropShapeButtonClick"/>
       <button id="fitToWidthFreeform"
               label="Fit To Width"
               getImage="GetFitToWidthImage"
@@ -302,6 +310,10 @@
               getImage="GetInSlideAnimationContextImage"
               getEnabled="OnGetEnabledAddInSlide"
               onAction="AddInSlideAnimationButtonClick"/>
+      <button id="cutOutShapeGroup"
+              label="Cut-out Shape"
+              getImage="GetCutOutShapeMenuImage"
+              onAction="CropShapeButtonClick"/>
     </contextMenu>
     <contextMenu idMso="ContextMenuInk">
       <menuSeparator id="separatorInk"/>

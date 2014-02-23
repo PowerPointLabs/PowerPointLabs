@@ -1960,6 +1960,19 @@ namespace PowerPointLabs
             return true;
         }
 
+        public System.Drawing.Bitmap GetCutOutShapeMenuImage(Office.IRibbonControl control)
+        {
+            try
+            {
+                return new System.Drawing.Bitmap(Properties.Resources.CutOutShapeMenu);
+            }
+            catch (Exception e)
+            {
+                LogException(e, "GetCutOutShapeMenuImage");
+                throw;
+            }
+        }
+
         #endregion
 
         #region Helpers
