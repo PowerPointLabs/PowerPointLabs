@@ -74,7 +74,7 @@
                   label ="Crop To Shape"
                   size ="large"
                   getImage="GetCropShapeImage"
-                  supertip="*Feature Coming Soon!*"
+                  supertip="Crop a picture according to your selected shape(s).&#13;&#13;To activate, draw a shape upon the picture you want to crop, select the shape, and then click on this button."
                   onAction="CropShapeButtonClick"/>
         </group>
         <group id="SpotLightGroup"

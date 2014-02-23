@@ -745,10 +745,8 @@ namespace PowerPointLabs
                 PowerPoint.Slide magnifyingSlide = AddMagnifyingSlide(currentSlide, selectedShape);
                 //PowerPoint.Slide magnifiedSlide = AddMagnifiedSlide(magnifyingSlide);
                 PowerPoint.Slide demagnifyingSlide = AddDeMagnifyingSlide(magnifyingSlide, selectedShape);
-                selectedShape.Delete();
+                selectedShape.Visible = Office.MsoTriState.msoFalse;
 
-                //nextSlide.SlideShowTransition.EntryEffect = PowerPoint.PpEntryEffect.ppEffectFadeSmoothly;
-                //nextSlide.SlideShowTransition.Duration = 0.25f;
                 Globals.ThisAddIn.Application.ActiveWindow.View.GotoSlide(magnifyingSlide.SlideIndex);
                 Globals.ThisAddIn.Application.CommandBars.ExecuteMso("AnimationPreview");
                 AddAckSlide();
@@ -1015,7 +1013,7 @@ namespace PowerPointLabs
             foreach (PowerPoint.Shape sh in nextSlide.Shapes)
             {
                 sh.Copy();
-                tempFileName = Path.GetTempFileName() + ".png";
+                tempFileName = Path.GetTempFileName();
                 PowerPoint.Shape tempPicture1 = nextSlide.Shapes.PasteSpecial(PowerPoint.PpPasteDataType.ppPastePNG)[1];
                 tempPicture1.Export(tempFileName, PowerPoint.PpShapeFormat.ppShapeFormatPNG);
                 tempPicture1.Delete();
@@ -1041,7 +1039,7 @@ namespace PowerPointLabs
             shapeGroup.Width = shape.Width;
             shapeGroup.Height = shape.Height;
             //shapeGroup.Name = "PPTZoomInShape" + GetTimestamp(DateTime.Now);
-            shape.Delete();
+            shape.Visible = Office.MsoTriState.msoFalse;
 
             PowerPoint.Slide addedSlide = currentSlide.Duplicate()[1];
             addedSlide.Name = "PPTLabsZoomIn" + GetTimestamp(DateTime.Now);
@@ -1191,7 +1189,7 @@ namespace PowerPointLabs
                         tempSlide.Delete();
                     }
 
-                    String tempFileName = Path.GetTempFileName() + ".png";
+                    String tempFileName = Path.GetTempFileName();
                     nextSlide.Export(tempFileName, "PNG");
                     shape.Fill.UserPicture(tempFileName);
                     shape.Line.Visible = Office.MsoTriState.msoFalse;
@@ -1356,7 +1354,7 @@ namespace PowerPointLabs
             foreach (PowerPoint.Shape sh in prevSlide.Shapes)
             {
                 sh.Copy();
-                tempFileName = Path.GetTempFileName() + ".png";
+                tempFileName = Path.GetTempFileName();
                 PowerPoint.Shape tempPicture1 = addedSlide.Shapes.PasteSpecial(PowerPoint.PpPasteDataType.ppPastePNG)[1];
                 tempPicture1.Export(tempFileName, PowerPoint.PpShapeFormat.ppShapeFormatPNG);
                 tempPicture1.LockAspectRatio = Office.MsoTriState.msoFalse;
@@ -1388,7 +1386,7 @@ namespace PowerPointLabs
             shapeGroup.Width = shape.Width;
             shapeGroup.Height = shape.Height;
             //shapeGroup.Name = "PPTZoomInShape" + GetTimestamp(DateTime.Now);
-            shape.Delete();
+            shape.Visible = Office.MsoTriState.msoFalse;
 
             PowerPoint.ShapeRange range = null;
             List<PowerPoint.Shape> shapesToZoom = new List<PowerPoint.Shape>();
@@ -1531,7 +1529,7 @@ namespace PowerPointLabs
                     }
 
 
-                    String tempFileName = Path.GetTempFileName() + ".png";
+                    String tempFileName = Path.GetTempFileName();
                     prevSlide.Export(tempFileName, "PNG");
                     shape.Fill.UserPicture(tempFileName);
                     shape.Line.Visible = Office.MsoTriState.msoFalse;
