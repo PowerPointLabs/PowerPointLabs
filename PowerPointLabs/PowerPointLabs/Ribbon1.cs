@@ -460,84 +460,298 @@ namespace PowerPointLabs
                 throw;
             }
         }
+        private PowerPoint.Slide AddMagnifyingSlide(PowerPoint.Slide currentSlide, PowerPoint.Shape selectedShape)
+        {
+            PowerPoint.Presentation presentation = Globals.ThisAddIn.Application.ActivePresentation;
+            PowerPoint.Slide addedSlide = currentSlide.Duplicate()[1];
+            addedSlide.Name = "PPTLabsMagnifyingSlide" + GetTimestamp(DateTime.Now);
+
+            float centerX = selectedShape.Left + selectedShape.Width / 2;
+            float centerY = selectedShape.Top + selectedShape.Height / 2;
+
+            PowerPoint.Shape sh = FindIdenticalShape(addedSlide, selectedShape);
+            if (sh != null)
+            {
+                sh.Delete();
+            }
+
+            addedSlide.Copy();
+            PowerPoint.Shape duplicatePic = addedSlide.Shapes.PasteSpecial(PowerPoint.PpPasteDataType.ppPastePNG)[1];
+            duplicatePic.Name = "PPTLabsMagnifyArea" + GetTimestamp(DateTime.Now);
+
+            float scaleFactorX = presentation.PageSetup.SlideWidth / duplicatePic.Width;
+            float scaleFactorY = presentation.PageSetup.SlideHeight / duplicatePic.Height;
+
+            duplicatePic.LockAspectRatio = Office.MsoTriState.msoFalse;
+            duplicatePic.Left = 0;
+            duplicatePic.Top = 0;
+            duplicatePic.Width = presentation.PageSetup.SlideWidth;
+            duplicatePic.Height = presentation.PageSetup.SlideHeight;
+
+            duplicatePic.PictureFormat.CropLeft += selectedShape.Left / scaleFactorX;
+            duplicatePic.PictureFormat.CropTop += selectedShape.Top / scaleFactorY;
+            duplicatePic.PictureFormat.CropRight += (presentation.PageSetup.SlideWidth - (selectedShape.Left + selectedShape.Width)) / scaleFactorX;
+            duplicatePic.PictureFormat.CropBottom += (presentation.PageSetup.SlideHeight - (selectedShape.Top + selectedShape.Height)) / scaleFactorY;
+
+            //duplicatePic.Cut();
+
+            //currentSlide.Duplicate();
+            //Globals.ThisAddIn.Application.ActivePresentation.Slides.AddSlide(currentSlide.SlideIndex + 1, Globals.ThisAddIn.Application.ActivePresentation.SlideMaster.CustomLayouts[7]);
+            //PowerPoint.Slide addedSlide = GetNextSlide(currentSlide);
+
+            //Globals.ThisAddIn.Application.ActiveWindow.View.GotoSlide(addedSlide.SlideIndex);
+            //PowerPoint.Shape sh = addedSlide.Shapes.Paste()[1];
+            duplicatePic.Left = centerX - (duplicatePic.Width / 2);
+            duplicatePic.Top = centerY - (duplicatePic.Height / 2);
+
+            PowerPoint.Effect effectMotion = null;
+            PowerPoint.Effect effectResize = null;
+            PowerPoint.Effect effectDisappear = null;
+            PowerPoint.Effect effectFade = null;
+
+            PowerPoint.Sequence sequence = addedSlide.TimeLine.MainSequence;
+
+            String tempFileName = Path.GetTempFileName();
+            Properties.Resources.Indicator.Save(tempFileName);
+            PowerPoint.Shape indicatorShape = addedSlide.Shapes.AddPicture(tempFileName, Office.MsoTriState.msoFalse, Office.MsoTriState.msoTrue, presentation.PageSetup.SlideWidth - 120, 0, 120, 84);
+            indicatorShape.Left = presentation.PageSetup.SlideWidth - 120;
+            indicatorShape.Top = 0;
+            indicatorShape.Width = 120;
+            indicatorShape.Height = 84;
+            indicatorShape.Name = "PPIndicator" + GetTimestamp(DateTime.Now);
+            effectDisappear = sequence.AddEffect(indicatorShape, PowerPoint.MsoAnimEffect.msoAnimEffectAppear, PowerPoint.MsoAnimateByLevel.msoAnimateLevelNone, PowerPoint.MsoAnimTriggerType.msoAnimTriggerWithPrevious);
+            effectDisappear.Exit = Office.MsoTriState.msoTrue;
+            effectDisappear.Timing.Duration = 0;
+
+            foreach (PowerPoint.Shape tmp in addedSlide.Shapes)
+            {
+                if (!(tmp.Equals(duplicatePic) || tmp.Equals(indicatorShape)))
+                {
+                    DeleteShapeAnnimations(addedSlide, tmp);
+                    effectFade = sequence.AddEffect(tmp, PowerPoint.MsoAnimEffect.msoAnimEffectFade, PowerPoint.MsoAnimateByLevel.msoAnimateLevelNone, PowerPoint.MsoAnimTriggerType.msoAnimTriggerWithPrevious);
+                    effectFade.Exit = Office.MsoTriState.msoTrue;
+                    effectFade.Timing.Duration = 0.5f;
+                }
+            }
+
+            float finalX = (presentation.PageSetup.SlideWidth / 2);
+            float initialX = (duplicatePic.Left + (duplicatePic.Width) / 2);
+            float finalY = (presentation.PageSetup.SlideHeight / 2);
+            float initialY = (duplicatePic.Top + (duplicatePic.Height) / 2);
+
+            float finalWidth = presentation.PageSetup.SlideWidth;
+            float initialWidth = duplicatePic.Width;
+            float finalHeight = presentation.PageSetup.SlideHeight;
+            float initialHeight = duplicatePic.Height;
+
+            effectMotion = sequence.AddEffect(duplicatePic, PowerPoint.MsoAnimEffect.msoAnimEffectPathDown, PowerPoint.MsoAnimateByLevel.msoAnimateLevelNone, PowerPoint.MsoAnimTriggerType.msoAnimTriggerAfterPrevious);
+            PowerPoint.AnimationBehavior motion = effectMotion.Behaviors[1];
+            effectMotion.Timing.Duration = 0.5f;
+            float point1X = ((finalX - initialX) / 2f) / presentation.PageSetup.SlideWidth;
+            float point1Y = ((finalY - initialY) / 2f) / presentation.PageSetup.SlideHeight;
+            float point2X = ((finalX - initialX) / 2f) / presentation.PageSetup.SlideWidth;
+            float point2Y = ((finalY - initialY) / 2f) / presentation.PageSetup.SlideHeight;
+            float point3X = (finalX - initialX) / presentation.PageSetup.SlideWidth;
+            float point3Y = (finalY - initialY) / presentation.PageSetup.SlideHeight;
+
+            motion.MotionEffect.Path = "M 0 0 C " + point1X + " " + point1Y + " " + point2X + " " + point2Y + " " + point3X + " " + point3Y + " E";
+            effectMotion.Timing.SmoothStart = Office.MsoTriState.msoFalse;
+            effectMotion.Timing.SmoothEnd = Office.MsoTriState.msoFalse;
+
+            effectResize = sequence.AddEffect(duplicatePic, PowerPoint.MsoAnimEffect.msoAnimEffectGrowShrink, PowerPoint.MsoAnimateByLevel.msoAnimateLevelNone, PowerPoint.MsoAnimTriggerType.msoAnimTriggerWithPrevious);
+            PowerPoint.AnimationBehavior resize = effectResize.Behaviors[1];
+            effectResize.Timing.Duration = 0.5f;
+            resize.ScaleEffect.ByX = (finalWidth / initialWidth) * 100;
+            resize.ScaleEffect.ByY = (finalHeight / initialHeight) * 100;
+
+            indicatorShape.ZOrder(Office.MsoZOrderCmd.msoBringToFront);
+            addedSlide.SlideShowTransition.AdvanceOnTime = Office.MsoTriState.msoFalse;
+            addedSlide.SlideShowTransition.AdvanceOnClick = Office.MsoTriState.msoTrue;
+            addedSlide.SlideShowTransition.AdvanceTime = 0;
+            addedSlide.SlideShowTransition.EntryEffect = PowerPoint.PpEntryEffect.ppEffectNone;
+            if (addedSlide.HasNotesPage == Office.MsoTriState.msoTrue)
+            {
+                foreach (PowerPoint.Shape tmp in addedSlide.NotesPage.Shapes)
+                {
+                    if (tmp.TextFrame.HasText == Office.MsoTriState.msoTrue)
+                        tmp.TextEffect.Text = "";
+                }
+            }
+
+            foreach (PowerPoint.Shape tmp in addedSlide.Shapes)
+            {
+                if (tmp.Type == Office.MsoShapeType.msoMedia)
+                    tmp.Delete();
+            }
+            return addedSlide;
+        }
+        private PowerPoint.Slide AddMagnifiedSlide(PowerPoint.Slide magnifyingSlide)
+        {
+            PowerPoint.Presentation presentation = Globals.ThisAddIn.Application.ActivePresentation;
+            PowerPoint.Slide addedSlide = magnifyingSlide.Duplicate()[1];
+            addedSlide.Name = "PPTLabsMagnifiedSlide" + GetTimestamp(DateTime.Now);
+            PowerPoint.Shape magnifyShape = null;
+            foreach (PowerPoint.Shape sh in magnifyingSlide.Shapes)
+            {
+                PowerPoint.Shape tmp = FindIdenticalShape(addedSlide, sh);
+                if (!sh.Name.Contains("PPTLabsMagnifyArea"))
+                {
+                    tmp.Delete();
+                }
+                else
+                {
+                    magnifyShape = tmp;
+                }
+            }
+
+            DeleteShapeAnnimations(addedSlide, magnifyShape);
+            magnifyShape.LockAspectRatio = Office.MsoTriState.msoFalse;
+            magnifyShape.Left = 0;
+            magnifyShape.Top = 0;
+            magnifyShape.Width = presentation.PageSetup.SlideWidth;
+            magnifyShape.Height = presentation.PageSetup.SlideHeight;
+
+            PowerPoint.Effect effectDisappear = null;
+            PowerPoint.Sequence sequence = addedSlide.TimeLine.MainSequence;
+            String tempFileName = Path.GetTempFileName();
+            Properties.Resources.Indicator.Save(tempFileName);
+            PowerPoint.Shape indicatorShape = addedSlide.Shapes.AddPicture(tempFileName, Office.MsoTriState.msoFalse, Office.MsoTriState.msoTrue, presentation.PageSetup.SlideWidth - 120, 0, 120, 84);
+            indicatorShape.Left = presentation.PageSetup.SlideWidth - 120;
+            indicatorShape.Top = 0;
+            indicatorShape.Width = 120;
+            indicatorShape.Height = 84;
+            indicatorShape.Name = "PPIndicator" + GetTimestamp(DateTime.Now);
+            effectDisappear = sequence.AddEffect(indicatorShape, PowerPoint.MsoAnimEffect.msoAnimEffectAppear, PowerPoint.MsoAnimateByLevel.msoAnimateLevelNone, PowerPoint.MsoAnimTriggerType.msoAnimTriggerWithPrevious);
+            effectDisappear.Exit = Office.MsoTriState.msoTrue;
+            effectDisappear.Timing.Duration = 0;
+
+            indicatorShape.ZOrder(Office.MsoZOrderCmd.msoBringToFront);
+            addedSlide.SlideShowTransition.EntryEffect = PowerPoint.PpEntryEffect.ppEffectNone;
+            addedSlide.SlideShowTransition.AdvanceOnTime = Office.MsoTriState.msoFalse;
+            addedSlide.SlideShowTransition.AdvanceOnClick = Office.MsoTriState.msoTrue;
+            return addedSlide;
+        }
+        private PowerPoint.Slide AddDeMagnifyingSlide(PowerPoint.Slide magnifyingSlide, PowerPoint.Shape selectedShape)
+        {
+            PowerPoint.Presentation presentation = Globals.ThisAddIn.Application.ActivePresentation;
+            PowerPoint.Slide addedSlide = magnifyingSlide.Duplicate()[1];
+            addedSlide.Name = "PPTLabsDeMagnifyingSlide" + GetTimestamp(DateTime.Now);
+
+            PowerPoint.Shape magnifyShape = null;
+            foreach (PowerPoint.Shape sh in magnifyingSlide.Shapes)
+            {
+                PowerPoint.Shape tmp = FindIdenticalShape(addedSlide, sh);
+                DeleteShapeAnnimations(addedSlide, tmp);
+                if (sh.Name.Contains("PPTLabsMagnifyArea"))
+                {
+                    magnifyShape = tmp;
+                }
+                if (sh.Name.Contains("PPIndicator"))
+                {
+                    tmp.Delete();
+                }
+            }
+
+            magnifyShape.LockAspectRatio = Office.MsoTriState.msoFalse;
+            magnifyShape.Left = 0;
+            magnifyShape.Top = 0;
+            magnifyShape.Width = presentation.PageSetup.SlideWidth;
+            magnifyShape.Height = presentation.PageSetup.SlideHeight;
+
+            PowerPoint.Effect effectDisappear = null;
+            PowerPoint.Effect effectMotion = null;
+            PowerPoint.Effect effectResize = null;
+            PowerPoint.Effect effectFade = null;
+
+            PowerPoint.Sequence sequence = addedSlide.TimeLine.MainSequence;
+            String tempFileName = Path.GetTempFileName();
+            Properties.Resources.Indicator.Save(tempFileName);
+            PowerPoint.Shape indicatorShape = addedSlide.Shapes.AddPicture(tempFileName, Office.MsoTriState.msoFalse, Office.MsoTriState.msoTrue, presentation.PageSetup.SlideWidth - 120, 0, 120, 84);
+            indicatorShape.Left = presentation.PageSetup.SlideWidth - 120;
+            indicatorShape.Top = 0;
+            indicatorShape.Width = 120;
+            indicatorShape.Height = 84;
+            indicatorShape.Name = "PPIndicator" + GetTimestamp(DateTime.Now);
+            effectDisappear = sequence.AddEffect(indicatorShape, PowerPoint.MsoAnimEffect.msoAnimEffectAppear, PowerPoint.MsoAnimateByLevel.msoAnimateLevelNone, PowerPoint.MsoAnimTriggerType.msoAnimTriggerWithPrevious);
+            effectDisappear.Exit = Office.MsoTriState.msoTrue;
+            effectDisappear.Timing.Duration = 0;
+
+            float finalX = (selectedShape.Left + (selectedShape.Width) / 2);
+            float initialX = (magnifyShape.Left + (magnifyShape.Width) / 2);
+            float finalY = (selectedShape.Top + (selectedShape.Height) / 2);
+            float initialY = (magnifyShape.Top + (magnifyShape.Height) / 2);
+
+            float finalWidth = selectedShape.Width;
+            float initialWidth = magnifyShape.Width;
+            float finalHeight = selectedShape.Height;
+            float initialHeight = magnifyShape.Height;
+
+            effectMotion = sequence.AddEffect(magnifyShape, PowerPoint.MsoAnimEffect.msoAnimEffectPathDown, PowerPoint.MsoAnimateByLevel.msoAnimateLevelNone, PowerPoint.MsoAnimTriggerType.msoAnimTriggerWithPrevious);
+            PowerPoint.AnimationBehavior motion = effectMotion.Behaviors[1];
+            effectMotion.Timing.Duration = 0.5f;
+            float point1X = ((finalX - initialX) / 2f) / presentation.PageSetup.SlideWidth;
+            float point1Y = ((finalY - initialY) / 2f) / presentation.PageSetup.SlideHeight;
+            float point2X = ((finalX - initialX) / 2f) / presentation.PageSetup.SlideWidth;
+            float point2Y = ((finalY - initialY) / 2f) / presentation.PageSetup.SlideHeight;
+            float point3X = (finalX - initialX) / presentation.PageSetup.SlideWidth;
+            float point3Y = (finalY - initialY) / presentation.PageSetup.SlideHeight;
+
+            motion.MotionEffect.Path = "M 0 0 C " + point1X + " " + point1Y + " " + point2X + " " + point2Y + " " + point3X + " " + point3Y + " E";
+            effectMotion.Timing.SmoothStart = Office.MsoTriState.msoFalse;
+            effectMotion.Timing.SmoothEnd = Office.MsoTriState.msoFalse;
+
+            effectResize = sequence.AddEffect(magnifyShape, PowerPoint.MsoAnimEffect.msoAnimEffectGrowShrink, PowerPoint.MsoAnimateByLevel.msoAnimateLevelNone, PowerPoint.MsoAnimTriggerType.msoAnimTriggerWithPrevious);
+            PowerPoint.AnimationBehavior resize = effectResize.Behaviors[1];
+            effectResize.Timing.Duration = 0.5f;
+            resize.ScaleEffect.ByX = (finalWidth / initialWidth) * 100;
+            resize.ScaleEffect.ByY = (finalHeight / initialHeight) * 100;
+
+            int i = 0;
+            foreach (PowerPoint.Shape tmp in addedSlide.Shapes)
+            {
+                if (!(tmp.Equals(magnifyShape) || tmp.Equals(indicatorShape)))
+                {
+                    if (i == 0)
+                    {
+                        effectFade = sequence.AddEffect(tmp, PowerPoint.MsoAnimEffect.msoAnimEffectFade, PowerPoint.MsoAnimateByLevel.msoAnimateLevelNone, PowerPoint.MsoAnimTriggerType.msoAnimTriggerAfterPrevious);
+                    }
+                    else
+                    {
+                        effectFade = sequence.AddEffect(tmp, PowerPoint.MsoAnimEffect.msoAnimEffectFade, PowerPoint.MsoAnimateByLevel.msoAnimateLevelNone, PowerPoint.MsoAnimTriggerType.msoAnimTriggerWithPrevious);
+                    }
+                    effectFade.Timing.Duration = 0.5f;
+                    i++;
+                }
+            }
+
+            indicatorShape.ZOrder(Office.MsoZOrderCmd.msoBringToFront);
+            addedSlide.SlideShowTransition.EntryEffect = PowerPoint.PpEntryEffect.ppEffectNone;
+            addedSlide.SlideShowTransition.AdvanceOnTime = Office.MsoTriState.msoFalse;
+            addedSlide.SlideShowTransition.AdvanceOnClick = Office.MsoTriState.msoTrue;
+
+            return addedSlide;
+        }
         public void ZoomBtnClick(Office.IRibbonControl control)
         {
             try
             {
                 PowerPoint.Slide currentSlide = GetCurrentSlide();
-                PowerPoint.Shape picture = null;
-                PowerPoint.Shape selectedShape = null;
+                if (Globals.ThisAddIn.Application.ActiveWindow.Selection.ShapeRange.Count == 0)
+                    return;
 
-                foreach (PowerPoint.Shape shape in Globals.ThisAddIn.Application.ActiveWindow.Selection.ShapeRange)
-                {
-                    if (((PowerPoint.Shape)shape).Type == Office.MsoShapeType.msoPicture)
-                    {
-                        picture = (PowerPoint.Shape)shape;
-                    }
-                    else
-                    {
-                        selectedShape = (PowerPoint.Shape)shape;
-                    }
-                }
-                //PowerPoint.Shape selectedShape = (PowerPoint.Shape)Globals.ThisAddIn.Application.ActiveWindow.Selection.ShapeRange[1];
+                PowerPoint.Shape selectedShape = Globals.ThisAddIn.Application.ActiveWindow.Selection.ShapeRange[1];
+                selectedShape.Name = "PPTLabsMagnifyShape" + GetTimestamp(DateTime.Now);
 
-                if (picture == null || selectedShape == null)
-                {
-                    System.Windows.Forms.MessageBox.Show("Unable to add zoom animation for selected objects", "Error");
-                }
-                else
-                {
-                    float centerX = selectedShape.Left + selectedShape.Width / 2;
-                    float centerY = selectedShape.Top + selectedShape.Height / 2;
+                PowerPoint.Slide magnifyingSlide = AddMagnifyingSlide(currentSlide, selectedShape);
+                //PowerPoint.Slide magnifiedSlide = AddMagnifiedSlide(magnifyingSlide);
+                PowerPoint.Slide demagnifyingSlide = AddDeMagnifyingSlide(magnifyingSlide, selectedShape);
+                selectedShape.Delete();
 
-                    picture.Copy();
-                    PowerPoint.Shape duplicatePic = currentSlide.Shapes.PasteSpecial(PowerPoint.PpPasteDataType.ppPastePNG)[1];
-
-                    duplicatePic.PictureFormat.CropLeft += selectedShape.Left - picture.Left;
-                    duplicatePic.PictureFormat.CropTop += selectedShape.Top - picture.Top;
-                    duplicatePic.PictureFormat.CropRight += (picture.Left + picture.Width) - (selectedShape.Left + selectedShape.Width);
-                    duplicatePic.PictureFormat.CropBottom += (picture.Top + picture.Height) - (selectedShape.Top + selectedShape.Height);
-
-                    selectedShape.Delete();
-                    duplicatePic.Cut();
-
-                    //currentSlide.Duplicate();
-                    Globals.ThisAddIn.Application.ActivePresentation.Slides.AddSlide(currentSlide.SlideIndex + 1, Globals.ThisAddIn.Application.ActivePresentation.SlideMaster.CustomLayouts[7]);
-                    PowerPoint.Slide addedSlide = GetNextSlide(currentSlide);
-
-                    Globals.ThisAddIn.Application.ActiveWindow.View.GotoSlide(addedSlide.SlideIndex);
-                    PowerPoint.Shape sh = addedSlide.Shapes.Paste()[1];
-                    sh.Left = centerX - (sh.Width / 2);
-                    sh.Top = centerY - (sh.Height / 2);
-
-                    PowerPoint.Presentation presentation = Globals.ThisAddIn.Application.ActivePresentation;
-                    PowerPoint.Effect effectMotion = null;
-                    PowerPoint.Effect effectResize = null;
-                    PowerPoint.Sequence sequence = addedSlide.TimeLine.MainSequence;
-                    float finalX = (presentation.PageSetup.SlideWidth / 2);
-                    float initialX = (sh.Left + (sh.Width) / 2);
-                    float finalY = (presentation.PageSetup.SlideHeight / 2);
-                    float initialY = (sh.Top + (sh.Height) / 2);
-
-                    effectMotion = sequence.AddEffect(sh, PowerPoint.MsoAnimEffect.msoAnimEffectPathDown, PowerPoint.MsoAnimateByLevel.msoAnimateLevelNone, PowerPoint.MsoAnimTriggerType.msoAnimTriggerWithPrevious);
-                    PowerPoint.AnimationBehavior motion = effectMotion.Behaviors[1];
-                    effectMotion.Timing.Duration = defaultDuration;
-                    motion.MotionEffect.Path = "M 0 0 C " + ((finalX - initialX) / 2) / presentation.PageSetup.SlideWidth + " " + ((finalY - initialY) / 2) / presentation.PageSetup.SlideHeight + " " + ((finalX - initialX) / 2) / presentation.PageSetup.SlideWidth + " " + ((finalY - initialY) / 2) / presentation.PageSetup.SlideHeight + " " + (finalX - initialX) / presentation.PageSetup.SlideWidth + " " + (finalY - initialY) / presentation.PageSetup.SlideHeight + " E";
-
-
-                    float finalWidth = presentation.PageSetup.SlideWidth;
-                    float initialWidth = sh.Width;
-                    float finalHeight = presentation.PageSetup.SlideHeight;
-                    float initialHeight = sh.Height;
-
-                    effectResize = sequence.AddEffect(sh, PowerPoint.MsoAnimEffect.msoAnimEffectGrowShrink, PowerPoint.MsoAnimateByLevel.msoAnimateLevelNone, PowerPoint.MsoAnimTriggerType.msoAnimTriggerWithPrevious);
-                    PowerPoint.AnimationBehavior resize = effectResize.Behaviors[1];
-
-                    effectResize.Timing.Duration = defaultDuration;
-                    resize.ScaleEffect.ToX = (finalWidth / initialWidth) * 100;
-                    resize.ScaleEffect.ToY = (finalHeight / initialHeight) * 100;
-                    AddAckSlide();
-                }
+                //nextSlide.SlideShowTransition.EntryEffect = PowerPoint.PpEntryEffect.ppEffectFadeSmoothly;
+                //nextSlide.SlideShowTransition.Duration = 0.25f;
+                Globals.ThisAddIn.Application.ActiveWindow.View.GotoSlide(magnifyingSlide.SlideIndex);
+                Globals.ThisAddIn.Application.CommandBars.ExecuteMso("AnimationPreview");
+                AddAckSlide();
             }
             catch (Exception e)
             {
