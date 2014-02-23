@@ -54,6 +54,11 @@
                  supertip="Adds a slide with animations to create an zoom-out effect from the previous slide to the currently selected shape.&#13;&#13;To activate, select a rectangle shape and click on this button."
                  getEnabled="OnGetEnabledZoomButton"
                  onAction="AddZoomOutButtonClick"/>
+          <checkBox id="zoomStyleOption"
+                    label="Omit Background"
+                    supertip="Omit the slide background while performing Auto Zoom."
+                    onAction="ZoomStyleChanged"
+                    getPressed="ZoomStyleGetPressed"/>
         </group>
         <group id="SpotLightGroup"
                label="Spotlight"
