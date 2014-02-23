@@ -41,14 +41,14 @@
         <group id="AutoZoomGroup"
                label="Auto Zoom" visible ="true">
           <button id="AddZoomInButton"
-                 label ="Zoom In"
+                 label ="Drill Down"
                  size ="large"
                  getImage="GetZoomInImage"
                  supertip="Adds a slide with animations to create an zoom-in effect from the currently selected shape to the next slide.&#13;&#13;To activate, select a rectangle shape and click on this button."
                  getEnabled="OnGetEnabledZoomButton"
                  onAction="AddZoomInButtonClick"/>
           <button id="AddZoomOutButton"
-                 label ="Zoom Out"
+                 label ="Step Back"
                  size ="large"
                  getImage="GetZoomOutImage"
                  supertip="Adds a slide with animations to create an zoom-out effect from the previous slide to the currently selected shape.&#13;&#13;To activate, select a rectangle shape and click on this button."
@@ -59,6 +59,16 @@
                     supertip="Omit the slide background while performing Auto Zoom."
                     onAction="ZoomStyleChanged"
                     getPressed="ZoomStyleGetPressed"/>
+        </group>
+        <group id="AutoCropGroup"
+               label="Auto Crop"
+               visible="true">
+          <button id="MoveCropShapeButton"
+                  label ="Crop To Shape"
+                  size ="large"
+                  getImage="GetCropShapeImage"
+                  supertip="*Feature Coming Soon!*"
+                  onAction="CropShapeButtonClick"/>
         </group>
         <group id="SpotLightGroup"
                label="Spotlight"
@@ -184,12 +194,6 @@
                  getImage="GetHighlightBulletsImage"
                  supertip="*Feature Coming Soon!*"
                  onAction="HighlightBulletsButtonClick"/>
-          <button id="MoveCropShapeButton"
-                 label ="Cut-out Shape"
-                 size ="large"
-                 getImage="GetCropShapeImage"
-                 supertip="*Feature Coming Soon!*"
-                 onAction="CropShapeButtonClick"/>
         </group>
       </tab>
     </tabs>
@@ -206,12 +210,12 @@
               getImage="GetAddSpotlightContextImage"
               onAction="SpotlightBtnClick"/>
       <button id="zoomInContextMenu"
-              label ="Zoom In"
+              label ="Drill Down"
               getImage="GetZoomInContextImage"
               getEnabled="OnGetEnabledZoomButton"
               onAction="AddZoomInButtonClick"/>
       <button id="zoomOutContextMenu"
-             label ="Zoom Out"
+             label ="Step Back"
              getImage="GetZoomOutContextImage"
              getEnabled="OnGetEnabledZoomButton"
              onAction="AddZoomOutButtonClick"/>

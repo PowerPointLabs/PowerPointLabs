@@ -792,6 +792,9 @@ namespace PowerPointLabs
                 tempSlide.Delete();
             }
 
+            if (nextSlide.Shapes.Count == 0)
+                return;
+
             Globals.ThisAddIn.Application.ActiveWindow.Selection.Unselect();
             Globals.ThisAddIn.Application.ActiveWindow.View.GotoSlide(currentSlide.SlideIndex);
             String tempFileName = "";
@@ -1125,6 +1128,9 @@ namespace PowerPointLabs
                 prevSlide = GetPrevSlide(tempSlide);
                 tempSlide.Delete();
             }
+
+            if (prevSlide.Shapes.Count == 0)
+                return;
 
             PowerPoint.Slide addedSlide = Globals.ThisAddIn.Application.ActivePresentation.Slides.AddSlide(prevSlide.SlideIndex + 1, prevSlide.CustomLayout);
             //PowerPoint.Slide addedSlide = prevSlide.Duplicate()[1];
