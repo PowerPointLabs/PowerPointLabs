@@ -73,7 +73,7 @@ namespace PowerPointLabs
                 {
                     ribbon.spotlightEnabled = true;
                 }
-                if (sh.Type == Office.MsoShapeType.msoAutoShape && sh.AutoShapeType == Office.MsoAutoShapeType.msoShapeRectangle)
+                if ((sh.Type == Office.MsoShapeType.msoAutoShape && sh.AutoShapeType == Office.MsoAutoShapeType.msoShapeRectangle) || sh.Type == Office.MsoShapeType.msoPicture)
                 {
                     ribbon.zoomButtonEnabled = true;
                 }

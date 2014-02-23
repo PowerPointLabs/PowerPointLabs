@@ -1172,6 +1172,13 @@ namespace PowerPointLabs
             PowerPoint.Presentation presentation = Globals.ThisAddIn.Application.ActivePresentation;
             PowerPoint.Shape shape = Globals.ThisAddIn.Application.ActiveWindow.Selection.ShapeRange[1];
             DeleteShapeAnnimations(currentSlide, shape);
+            if (shape.HasTextFrame == Office.MsoTriState.msoTrue)
+            {
+                if (shape.TextFrame.HasText == Office.MsoTriState.msoTrue)
+                {
+                    shape.TextFrame.TextRange.Text = "";
+                }
+            }
 
             if (currentSlide != null && currentSlide.SlideIndex != presentation.Slides.Count)
             {
@@ -1511,6 +1518,13 @@ namespace PowerPointLabs
             PowerPoint.Presentation presentation = Globals.ThisAddIn.Application.ActivePresentation;
             PowerPoint.Shape shape = Globals.ThisAddIn.Application.ActiveWindow.Selection.ShapeRange[1];
             DeleteShapeAnnimations(currentSlide, shape);
+            if (shape.HasTextFrame == Office.MsoTriState.msoTrue)
+            {
+                if (shape.TextFrame.HasText == Office.MsoTriState.msoTrue)
+                {
+                    shape.TextFrame.TextRange.Text = "";
+                }
+            }
 
             if (currentSlide != null && currentSlide.SlideIndex != 1)
             {

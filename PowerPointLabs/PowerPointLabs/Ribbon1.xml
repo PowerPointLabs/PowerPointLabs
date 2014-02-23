@@ -273,6 +273,16 @@
               label="Edit Name"
               getImage="GetEditNameContextImage"
               onAction="NameEditBtnClick"/>
+      <button id="zoomInContextMenuPicture"
+              label ="Drill Down"
+              getImage="GetZoomInContextImage"
+              getEnabled="OnGetEnabledZoomButton"
+              onAction="AddZoomInButtonClick"/>
+      <button id="zoomOutContextMenuPicture"
+             label ="Step Back"
+             getImage="GetZoomOutContextImage"
+             getEnabled="OnGetEnabledZoomButton"
+             onAction="AddZoomOutButtonClick"/>
       <button id="fitToWidthPicture"
               label="Fit To Width"
               getImage="GetFitToWidthImage"
