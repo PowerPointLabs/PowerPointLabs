@@ -1588,6 +1588,30 @@ namespace PowerPointLabs
                 throw;
             }
         }
+        public System.Drawing.Bitmap GetMagnifyImage(Office.IRibbonControl control)
+        {
+            try
+            {
+                return new System.Drawing.Bitmap(Properties.Resources.Magnify);
+            }
+            catch (Exception e)
+            {
+                LogException(e, "GetMagnifyImage");
+                throw;
+            }
+        }
+        public System.Drawing.Bitmap GetMagnifyContextImage(Office.IRibbonControl control)
+        {
+            try
+            {
+                return new System.Drawing.Bitmap(Properties.Resources.MagnifyContext);
+            }
+            catch (Exception e)
+            {
+                LogException(e, "GetMagnifyContextImage");
+                throw;
+            }
+        }
         public System.Drawing.Bitmap GetCropShapeImage(Office.IRibbonControl control)
         {
             try

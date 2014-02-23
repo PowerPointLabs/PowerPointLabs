@@ -54,6 +54,13 @@
                  supertip="Adds a slide with animations to create an zoom-out effect from the previous slide to the currently selected shape.&#13;&#13;To activate, select a rectangle shape and click on this button."
                  getEnabled="OnGetEnabledZoomButton"
                  onAction="AddZoomOutButtonClick"/>
+          <button id="MagnifyButton"
+                 label ="Magnify"
+                 size ="large"
+                 getImage="GetMagnifyImage"
+                 supertip="Magnify into a portion of a slide or image.&#13;&#13;To activate, place a rectangle shape on the area that you want to magnify and click on this button.&#13;&#13;This feature works best with high-resolution images."
+                 getEnabled="OnGetEnabledZoomButton"
+                 onAction="ZoomBtnClick"/>
           <checkBox id="zoomStyleOption"
                     label="Omit Background"
                     supertip="Omit the slide background while performing Auto Zoom."
@@ -219,6 +226,11 @@
              getImage="GetZoomOutContextImage"
              getEnabled="OnGetEnabledZoomButton"
              onAction="AddZoomOutButtonClick"/>
+      <button id="magnifyContextMenu"
+             label ="Magnify"
+             getImage="GetMagnifyContextImage"
+             getEnabled="OnGetEnabledZoomButton"
+             onAction="ZoomBtnClick"/>
       <button id="cutOutShapeShape"
               label="Cut-out Shape"
               getImage="GetCutOutShapeMenuImage"
