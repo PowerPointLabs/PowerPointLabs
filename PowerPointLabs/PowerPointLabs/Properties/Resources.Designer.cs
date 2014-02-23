@@ -163,6 +163,16 @@ namespace PowerPointLabs.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
+        internal static System.Drawing.Bitmap CutOutShapeMenu {
+            get {
+                object obj = ResourceManager.GetObject("CutOutShapeMenu", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
         internal static System.Drawing.Bitmap EditNameContext {
             get {
                 object obj = ResourceManager.GetObject("EditNameContext", resourceCulture);

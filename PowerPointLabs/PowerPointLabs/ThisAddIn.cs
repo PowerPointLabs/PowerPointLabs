@@ -3,8 +3,10 @@ using System.IO;
 using System.Collections;
 using System.Linq;
 using System.Text;
+using System.Windows.Forms;
 using System.Xml.Linq;
 using System.Diagnostics;
+using PPExtraEventHelper;
 using PowerPoint = Microsoft.Office.Interop.PowerPoint;
 using Office = Microsoft.Office.Core;
 using System.Deployment.Application;
@@ -26,7 +28,9 @@ namespace PowerPointLabs
             ((PowerPoint.EApplication_Event)this.Application).WindowSelectionChange += new Microsoft.Office.Interop.PowerPoint.EApplication_WindowSelectionChangeEventHandler(ThisAddIn_SelectionChanged);
             ((PowerPoint.EApplication_Event)this.Application).SlideSelectionChanged += new Microsoft.Office.Interop.PowerPoint.EApplication_SlideSelectionChangedEventHandler(ThisAddIn_SlideSelectionChanged);
             //DisplayUpdateDetails();
-
+            PPMouse.Init(Application);
+            SetupDoubleClickHandler();
+            SetupTabActivateHandler();
         }
 
         void SetUpLogger()
@@ -168,8 +172,117 @@ namespace PowerPointLabs
         {
         }
 
+        #region Tab Activate
+
+        private void SetupTabActivateHandler()
+        {
+            TabActivate += TabActivateEventHandler;
+        }
+
+        private Native.WinEventDelegate TabActivate;
+
+        private IntPtr eventHook = IntPtr.Zero;
+
+        //This handler is used to check, whether Home tab is enabled or not
+        //After Shortcut (Alt + H + O) is sent to PowerPoint by method OpenPropertyWindowForOffice10,
+        //if unsuccessful (Home tab is not enabled), EVENT_SYSTEM_MENUEND will be received
+        //if successful   (Property window is open), EVENT_OBJECT_CREATE will be received
+        //To check the events occurred, use AccEvent32.exe
+        //Refer to MSAA - Event Constants: 
+        //http://msdn.microsoft.com/en-us/library/windows/desktop/dd318066(v=vs.85).aspx
+        void TabActivateEventHandler(IntPtr hook, uint eventType,
+        IntPtr hwnd, int idObject, int child, uint thread, uint time)
+        {
+            if (eventType == (uint)Native.Event.EVENT_SYSTEM_MENUEND
+                || eventType == (uint)Native.Event.EVENT_OBJECT_CREATE)
+            {
+                Native.UnhookWinEvent(eventHook);
+                eventHook = IntPtr.Zero;
+            }
+            if (eventType == (uint)Native.Event.EVENT_SYSTEM_MENUEND)
+            {
+                string description = "To activate 'Double Click to Open Property' feature, you need to enable 'Home' tab " +
+                              "in Options -> Customize Ribbon -> Main Tabs -> tick the checkbox of 'Home' -> click OK but" +
+                              "ton to save.";
+                string title = "Unable to activate 'Double Click to Open Property' feature";
+                MessageBox.Show(description, title);
+            }
+        }
+
+        #endregion
+
+        #region Double Click to Open Property Window
+
+        private void SetupDoubleClickHandler()
+        {
+            PPMouse.DoubleClick += DoubleClickEventHandler;
+        }
+
+        private void DoubleClickEventHandler(PowerPoint.Selection selection)
+        {
+            if (selection.Type == PowerPoint.PpSelectionType.ppSelectionShapes)
+            {
+                const string OfficeVersion2013 = "15.0";
+                const string OfficeVersion2010 = "14.0";
+                if (Application.Version == OfficeVersion2013)
+                {
+                    OpenPropertyWindowForOffice13(selection);
+                }
+                else if (Application.Version == OfficeVersion2010)
+                {
+                    OpenPropertyWindowForOffice10();
+                }
+            }
+        }
+
+        //For office 2013 only:
+        //Open Background Format window, then selecting the shape will
+        //convert the window to Property window
+        private void OpenPropertyWindowForOffice13(PowerPoint.Selection selection)
+        {
+            const int CommandOpenBackgroundFormat = 0x8F;
+            var selectedShapes = selection.ShapeRange;
+            Native.SendMessage(
+                Process.GetCurrentProcess().MainWindowHandle,
+                (uint)Native.Message.WM_COMMAND,
+                new IntPtr(CommandOpenBackgroundFormat),
+                IntPtr.Zero
+                );
+            selectedShapes.Select();
+        }
+
+        //For office 2010 (in office 2013, this method has bad user exp)
+        //Use hotkey (Alt - H - O) to activate Property window
+        private void OpenPropertyWindowForOffice10()
+        {
+            try
+            {
+                string Shortcut_Alt_H_O = "%ho";
+                if (eventHook == IntPtr.Zero)
+                {
+                    //Check whether Home tab is enabled or not
+                    eventHook = Native.SetWinEventHook(
+                        (uint)Native.Event.EVENT_SYSTEM_MENUEND,
+                        (uint)Native.Event.EVENT_OBJECT_CREATE,
+                        IntPtr.Zero,
+                        TabActivate,
+                        (uint)Process.GetCurrentProcess().Id,
+                        0,
+                        0);
+                }
+                SendKeys.Send(Shortcut_Alt_H_O);
+            }
+            catch (InvalidOperationException)
+            {
+                //
+            }
+        }
+
+        #endregion
+
         private void ThisAddIn_Shutdown(object sender, System.EventArgs e)
         {
+            PPExtraEventHelper.PPMouse.StopHook();
             Trace.TraceInformation(DateTime.Now.ToString("yyyyMMddHHmmss") + ": PowerPointLabs Exiting");
             Trace.Close();
         }
