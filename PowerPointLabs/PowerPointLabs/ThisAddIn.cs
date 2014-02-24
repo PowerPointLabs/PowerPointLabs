@@ -264,16 +264,16 @@ namespace PowerPointLabs
         //convert the window to Property window
         private void OpenPropertyWindowForOffice13(PowerPoint.Selection selection)
         {
-            const int CommandOpenBackgroundFormat = 0x8F;
-            var selectedShapes = selection.ShapeRange;
-            Native.SendMessage(
-                Process.GetCurrentProcess().MainWindowHandle,
-                (uint)Native.Message.WM_COMMAND,
-                new IntPtr(CommandOpenBackgroundFormat),
-                IntPtr.Zero
-                );
             if (!isInSlideShow)
             {
+                const int CommandOpenBackgroundFormat = 0x8F;
+                var selectedShapes = selection.ShapeRange;
+                Native.SendMessage(
+                    Process.GetCurrentProcess().MainWindowHandle,
+                    (uint) Native.Message.WM_COMMAND,
+                    new IntPtr(CommandOpenBackgroundFormat),
+                    IntPtr.Zero
+                    );
                 selectedShapes.Select();
             }
         }
@@ -284,20 +284,23 @@ namespace PowerPointLabs
         {
             try
             {
-                string Shortcut_Alt_H_O = "%ho";
-                if (eventHook == IntPtr.Zero)
+                if (!isInSlideShow)
                 {
-                    //Check whether Home tab is enabled or not
-                    eventHook = Native.SetWinEventHook(
-                        (uint)Native.Event.EVENT_SYSTEM_MENUEND,
-                        (uint)Native.Event.EVENT_OBJECT_CREATE,
-                        IntPtr.Zero,
-                        TabActivate,
-                        (uint)Process.GetCurrentProcess().Id,
-                        0,
-                        0);
+                    string Shortcut_Alt_H_O = "%ho";
+                    if (eventHook == IntPtr.Zero)
+                    {
+                        //Check whether Home tab is enabled or not
+                        eventHook = Native.SetWinEventHook(
+                            (uint) Native.Event.EVENT_SYSTEM_MENUEND,
+                            (uint) Native.Event.EVENT_OBJECT_CREATE,
+                            IntPtr.Zero,
+                            TabActivate,
+                            (uint) Process.GetCurrentProcess().Id,
+                            0,
+                            0);
+                    }
+                    SendKeys.Send(Shortcut_Alt_H_O);
                 }
-                SendKeys.Send(Shortcut_Alt_H_O);
             }
             catch (InvalidOperationException)
             {
