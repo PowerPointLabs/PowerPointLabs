@@ -1020,6 +1020,7 @@ namespace PowerPointLabs
                 tempPicture1.Delete();
 
                 PowerPoint.Shape tempPicture2 = currentSlide.Shapes.AddPicture(tempFileName, Office.MsoTriState.msoFalse, Office.MsoTriState.msoTrue, sh.Left, sh.Top, sh.Width, sh.Height);
+                sh.Name += GetTimestamp(DateTime.Now);
                 tempPicture2.Name = sh.Name;
                 tempPicture2.Select(Office.MsoTriState.msoFalse);
             }
@@ -1045,13 +1046,13 @@ namespace PowerPointLabs
             PowerPoint.Slide addedSlide = currentSlide.Duplicate()[1];
             addedSlide.Name = "PPTLabsZoomIn" + GetTimestamp(DateTime.Now);
 
-            PowerPoint.ShapeRange range = null;
+            //PowerPoint.ShapeRange range = null;
             PowerPoint.Shape identicalShape = FindIdenticalShape(addedSlide, shapeGroup);
             List<PowerPoint.Shape> shapesToZoom = new List<PowerPoint.Shape>();
             if (identicalShape.Type == Office.MsoShapeType.msoGroup)
             {
-                range = identicalShape.Ungroup();
-                foreach (PowerPoint.Shape tmp in range)
+                //range = identicalShape.Ungroup();
+                foreach (PowerPoint.Shape tmp in identicalShape.GroupItems)
                 {
                     shapesToZoom.Add(tmp);
                 }
@@ -1061,8 +1062,16 @@ namespace PowerPointLabs
                 shapesToZoom.Add(identicalShape);
             }
 
+            shapeGroup.Cut();
+            PowerPoint.Shape shapePicture = currentSlide.Shapes.PasteSpecial(PowerPoint.PpPasteDataType.ppPastePNG)[1];
+            shapePicture.LockAspectRatio = Office.MsoTriState.msoFalse;
+            shapePicture.Left = shape.Left;
+            shapePicture.Top = shape.Top;
+            shapePicture.Width = shape.Width;
+            shapePicture.Height = shape.Height;
+
             PowerPoint.Sequence sequence = currentSlide.TimeLine.MainSequence;
-            PowerPoint.Effect effectAppear = sequence.AddEffect(shapeGroup, PowerPoint.MsoAnimEffect.msoAnimEffectFade, PowerPoint.MsoAnimateByLevel.msoAnimateLevelNone, PowerPoint.MsoAnimTriggerType.msoAnimTriggerOnPageClick);
+            PowerPoint.Effect effectAppear = sequence.AddEffect(shapePicture, PowerPoint.MsoAnimEffect.msoAnimEffectFade, PowerPoint.MsoAnimateByLevel.msoAnimateLevelNone, PowerPoint.MsoAnimTriggerType.msoAnimTriggerOnPageClick);
             effectAppear.Timing.Duration = 0.50f;
             sequence = addedSlide.TimeLine.MainSequence;
 
@@ -1087,7 +1096,7 @@ namespace PowerPointLabs
 
             foreach (PowerPoint.Shape sh in addedSlide.Shapes)
             {
-                if (!shapesToZoom.Contains(sh))
+                if (!shapesToZoom.Contains(sh) && !sh.Equals(indicatorShape) && !sh.Equals(identicalShape))
                 {
                     effectFade = sequence.AddEffect(sh, PowerPoint.MsoAnimEffect.msoAnimEffectFade, PowerPoint.MsoAnimateByLevel.msoAnimateLevelNone, PowerPoint.MsoAnimTriggerType.msoAnimTriggerWithPrevious);
                     effectFade.Exit = Office.MsoTriState.msoTrue;
@@ -1100,6 +1109,7 @@ namespace PowerPointLabs
             {
                 PowerPoint.MsoAnimTriggerType trigger = (i == 0 && fadeFlag) ? PowerPoint.MsoAnimTriggerType.msoAnimTriggerAfterPrevious : PowerPoint.MsoAnimTriggerType.msoAnimTriggerWithPrevious;
                 PowerPoint.Shape matchingShape = FindMatchingShape(nextSlide, sh);
+                matchingShape.Name = matchingShape.Name.Substring(0, matchingShape.Name.Length - 18);
                 float finalWidth = matchingShape.Width;
                 float initialWidth = sh.Width;
                 float finalHeight = matchingShape.Height;
@@ -1363,6 +1373,7 @@ namespace PowerPointLabs
             foreach (PowerPoint.Shape sh in prevSlide.Shapes)
             {
                 sh.Copy();
+                sh.Name += GetTimestamp(DateTime.Now);
                 tempFileName = Path.GetTempFileName();
                 PowerPoint.Shape tempPicture1 = addedSlide.Shapes.PasteSpecial(PowerPoint.PpPasteDataType.ppPastePNG)[1];
                 tempPicture1.Export(tempFileName, PowerPoint.PpShapeFormat.ppShapeFormatPNG);
@@ -1377,6 +1388,7 @@ namespace PowerPointLabs
                 PowerPoint.Shape tempPicture2 = currentSlide.Shapes.AddPicture(tempFileName, Office.MsoTriState.msoFalse, Office.MsoTriState.msoTrue, sh.Left, sh.Top, sh.Width, sh.Height);
                 tempPicture2.Name = sh.Name;
                 tempPicture2.Select(Office.MsoTriState.msoFalse);
+                sh.Name = sh.Name.Substring(0, sh.Name.Length - 18);
             }
             PowerPoint.Selection sel = Globals.ThisAddIn.Application.ActiveWindow.Selection;
             PowerPoint.Shape shapeGroup = null;
@@ -1397,12 +1409,12 @@ namespace PowerPointLabs
             //shapeGroup.Name = "PPTZoomInShape" + GetTimestamp(DateTime.Now);
             shape.Visible = Office.MsoTriState.msoFalse;
 
-            PowerPoint.ShapeRange range = null;
+            //PowerPoint.ShapeRange range = null;
             List<PowerPoint.Shape> shapesToZoom = new List<PowerPoint.Shape>();
             if (shapeGroup.Type == Office.MsoShapeType.msoGroup)
             {
-                range = shapeGroup.Ungroup();
-                foreach (PowerPoint.Shape tmp in range)
+                //range = shapeGroup.Ungroup();
+                foreach (PowerPoint.Shape tmp in shapeGroup.GroupItems)
                 {
                     shapesToZoom.Add(tmp);
                 }
@@ -1416,6 +1428,14 @@ namespace PowerPointLabs
             PowerPoint.Effect effectDisappear = null;
             PowerPoint.Effect effectMotion = null;
             PowerPoint.Effect effectResize = null;
+
+            shapeGroup.Copy();
+            PowerPoint.Shape shapePicture = currentSlide.Shapes.PasteSpecial(PowerPoint.PpPasteDataType.ppPastePNG)[1];
+            shapePicture.LockAspectRatio = Office.MsoTriState.msoFalse;
+            shapePicture.Left = shape.Left;
+            shapePicture.Top = shape.Top;
+            shapePicture.Width = shape.Width;
+            shapePicture.Height = shape.Height;
 
             tempFileName = Path.GetTempFileName();
             Properties.Resources.Indicator.Save(tempFileName);
@@ -1480,6 +1500,7 @@ namespace PowerPointLabs
                 resize.ScaleEffect.ByY = (finalHeight / initialHeight) * 100;
             }
 
+            shapeGroup.Delete();
             indicatorShape.ZOrder(Office.MsoZOrderCmd.msoBringToFront);
             addedSlide.SlideShowTransition.AdvanceOnTime = Office.MsoTriState.msoTrue;
             addedSlide.SlideShowTransition.AdvanceOnClick = Office.MsoTriState.msoFalse;
