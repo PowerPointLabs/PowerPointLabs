@@ -2931,12 +2931,52 @@ namespace PowerPointLabs
             var pageSetup = GetPageSetup();
             var selectedShape = GetSelectedShape();
             float shapeSizeRatio = GetSizeRatio(selectedShape.Height, selectedShape.Width);
+            float factor = GetRotationFactorForFitToHeight(ref selectedShape);
             //fit to height
-            selectedShape.Height = pageSetup.SlideHeight;
+            selectedShape.Height = (pageSetup.SlideHeight / factor);
             selectedShape.Width = selectedShape.Height / shapeSizeRatio;
             //move to centre
             selectedShape.Left = (pageSetup.SlideWidth - selectedShape.Width) / 2;
             selectedShape.Top = TopMost;
+            AdjustMoveToCentreForFitToHeight(ref selectedShape);
+        }
+
+        private void AdjustMoveToCentreForFitToHeight(ref PowerPoint.Shape shape)
+        {
+            float adjustLength;
+            float rotation = SetupRotationValueForAdjustment(ref shape);
+            //Pythagorean theorem
+            float diagonal = (float)Math.Sqrt(Math.Pow(shape.Width / 2, 2)
+                + Math.Pow(shape.Height / 2, 2));
+            //Law of cosines
+            float oppositeSideLength = (float)Math.Sqrt((Math.Pow(diagonal, 2) * 2
+                * (1 - Math.Cos(rotation))));
+            float angle1 = (float)Math.Atan(shape.Width / shape.Height);
+            float angle2 = (float)((Math.PI - rotation) / 2);
+            //case 1:
+            if ((shape.Rotation >= 0 && shape.Rotation <= 90)
+                || (shape.Rotation > 270 && shape.Rotation <= 360))
+            {
+                float targetAngle = (float)(Math.PI - angle1 - angle2);
+                adjustLength = (float)(oppositeSideLength * Math.Cos(targetAngle));
+            }
+            //case 2:
+            else/* case: 90 < rotation < 270)*/
+            {
+                float targetAngle = angle1 - angle2;
+                adjustLength = (float)(oppositeSideLength * Math.Cos(targetAngle)) - shape.Height;
+            }
+            shape.Top += adjustLength;
+        }
+
+        private float GetRotationFactorForFitToHeight(ref PowerPoint.Shape shape)
+        {
+            //set up rotation value
+            float rotation = SetupRotationValueForRotateFactor(ref shape);
+            //calculate factor for Fit to Height
+            float shapeSizeRatio = GetSizeRatio(shape.Height, shape.Width);
+            float factor = (float)(Math.Cos(rotation) + Math.Sin(rotation) / shapeSizeRatio);
+            return factor;
         }
 
         private void DoFitToWidth()
@@ -2945,11 +2985,89 @@ namespace PowerPointLabs
             var selectedShape = GetSelectedShape();
             float shapeSizeRatio = GetSizeRatio(selectedShape.Height, selectedShape.Width);
             //fit to width
-            selectedShape.Width = pageSetup.SlideWidth;
-            selectedShape.Height = selectedShape.Width * shapeSizeRatio;
+            float factor = GetRotationFactorForFitToWidth(ref selectedShape);
+            selectedShape.Height = pageSetup.SlideWidth / factor;
+            selectedShape.Width = selectedShape.Height / shapeSizeRatio;
             //move to middle
             selectedShape.Top = (pageSetup.SlideHeight - selectedShape.Height) / 2;
             selectedShape.Left = LeftMost;
+            //adjustment for rotation
+            AdjustMoveToCentreForFitToWidth(ref selectedShape);
+        }
+
+        private void AdjustMoveToCentreForFitToWidth(ref PowerPoint.Shape shape)
+        {
+            float adjustLength;
+            float rotation = SetupRotationValueForAdjustment(ref shape);
+            //Pythagorean theorem
+            float diagonal = (float)Math.Sqrt(Math.Pow(shape.Width / 2, 2)
+                + Math.Pow(shape.Height / 2, 2));
+            //Law of cosines
+            float oppositeSideLength = (float)Math.Sqrt((Math.Pow(diagonal, 2) * 2
+                * (1 - Math.Cos(rotation))));
+            float angle1 = (float)Math.Atan(shape.Height / shape.Width);
+            float angle2 = (float)((Math.PI - rotation) / 2);
+            //case 1:
+            if ((shape.Rotation >= 0 && shape.Rotation <= 90)
+                || (shape.Rotation > 270 && shape.Rotation <= 360))
+            {
+                float targetAngle = (float)(Math.PI - angle1 - angle2);
+                adjustLength = (float)(oppositeSideLength * Math.Cos(targetAngle));
+            }
+            //case 2:
+            else/* case: 90 < rotation < 270)*/
+            {
+                float targetAngle = angle1 - angle2;
+                adjustLength = (float)(oppositeSideLength * Math.Cos(targetAngle)) - shape.Width;
+            }
+            shape.Left += adjustLength;
+        }
+
+        private float SetupRotationValueForAdjustment(ref PowerPoint.Shape shape)
+        {
+            float rotation = shape.Rotation;
+            if (shape.Rotation > 180 && shape.Rotation <= 360)
+            {
+                rotation = 360 - shape.Rotation;
+            }
+            return ConvertDegToRad(rotation);
+        }
+
+        private float GetRotationFactorForFitToWidth(ref PowerPoint.Shape shape)
+        {
+            float rotation = SetupRotationValueForRotateFactor(ref shape);
+            //calculate factor for Fit to Height
+            float shapeSizeRatio = GetSizeRatio(shape.Height, shape.Width);
+            float factor = (float)(Math.Sin(rotation) + Math.Cos(rotation) / shapeSizeRatio);
+            return factor;
+        }
+
+        private float SetupRotationValueForRotateFactor(ref PowerPoint.Shape shape)
+        {
+            float rotation;
+            if (shape.Rotation == 90.0)
+            {
+                rotation = shape.Rotation;
+            }
+            else if (shape.Rotation == 270.0)
+            {
+                rotation = 360 - shape.Rotation;
+            }
+            else if ((shape.Rotation > 90 && shape.Rotation <= 180)
+                     || (shape.Rotation > 270 && shape.Rotation <= 360))
+            {
+                rotation = (360 - shape.Rotation) % 90;
+            }
+            else
+            {
+                rotation = shape.Rotation % 90;
+            }
+            return ConvertDegToRad(rotation);
+        }
+
+        private float ConvertDegToRad(float rotation)
+        {
+            rotation = (float)((rotation) * Math.PI / 180); return rotation;
         }
 
         private float GetSizeRatio(float height, float width)
