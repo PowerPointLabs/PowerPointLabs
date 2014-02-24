@@ -97,7 +97,7 @@ namespace PowerPointLabs
             ribbon.RefreshRibbonControl("InSlideAnimateButton");
             ribbon.RefreshRibbonControl("AddZoomInButton");
             ribbon.RefreshRibbonControl("AddZoomOutButton");
-            ribbon.RefreshRibbonControl("MagnifyButton");
+            ribbon.RefreshRibbonControl("ZoomToAreaButton");
         }
 
         void ThisAddIn_SlideSelectionChanged(PowerPoint.SlideRange SldRange)

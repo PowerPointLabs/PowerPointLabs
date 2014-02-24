@@ -2228,27 +2228,27 @@ namespace PowerPointLabs
                 throw;
             }
         }
-        public System.Drawing.Bitmap GetMagnifyImage(Office.IRibbonControl control)
+        public System.Drawing.Bitmap GetZoomToAreaImage(Office.IRibbonControl control)
         {
             try
             {
-                return new System.Drawing.Bitmap(Properties.Resources.Magnify);
+                return new System.Drawing.Bitmap(Properties.Resources.ZoomToArea);
             }
             catch (Exception e)
             {
-                LogException(e, "GetMagnifyImage");
+                LogException(e, "GetZoomToAreaImage");
                 throw;
             }
         }
-        public System.Drawing.Bitmap GetMagnifyContextImage(Office.IRibbonControl control)
+        public System.Drawing.Bitmap GetZoomToAreaContextImage(Office.IRibbonControl control)
         {
             try
             {
-                return new System.Drawing.Bitmap(Properties.Resources.MagnifyContext);
+                return new System.Drawing.Bitmap(Properties.Resources.ZoomToAreaContext);
             }
             catch (Exception e)
             {
-                LogException(e, "GetMagnifyContextImage");
+                LogException(e, "GetZoomToAreaContextImage");
                 throw;
             }
         }

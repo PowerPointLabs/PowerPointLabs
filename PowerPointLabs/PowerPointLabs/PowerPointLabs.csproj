@@ -421,6 +421,12 @@
   <ItemGroup>
     <None Include="Resources\Magnify.png" />
   </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\ZoomToAreaContext.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\ZoomToArea.png" />
+  </ItemGroup>
   <!-- Include the build rules for a C# project. -->
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
