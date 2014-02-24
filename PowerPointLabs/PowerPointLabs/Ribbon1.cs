@@ -565,8 +565,8 @@ namespace PowerPointLabs
             resize.ScaleEffect.ByY = (finalHeight / initialHeight) * 100;
 
             indicatorShape.ZOrder(Office.MsoZOrderCmd.msoBringToFront);
-            addedSlide.SlideShowTransition.AdvanceOnTime = Office.MsoTriState.msoFalse;
-            addedSlide.SlideShowTransition.AdvanceOnClick = Office.MsoTriState.msoTrue;
+            addedSlide.SlideShowTransition.AdvanceOnTime = Office.MsoTriState.msoTrue;
+            addedSlide.SlideShowTransition.AdvanceOnClick = Office.MsoTriState.msoFalse;
             addedSlide.SlideShowTransition.AdvanceTime = 0;
             addedSlide.SlideShowTransition.EntryEffect = PowerPoint.PpEntryEffect.ppEffectNone;
             if (addedSlide.HasNotesPage == Office.MsoTriState.msoTrue)
@@ -636,6 +636,7 @@ namespace PowerPointLabs
             PowerPoint.Presentation presentation = Globals.ThisAddIn.Application.ActivePresentation;
             PowerPoint.Slide addedSlide = magnifyingSlide.Duplicate()[1];
             addedSlide.Name = "PPTLabsDeMagnifyingSlide" + GetTimestamp(DateTime.Now);
+            addedSlide.MoveTo(magnifyingSlide.SlideIndex + 2);
 
             PowerPoint.Shape magnifyShape = null;
             foreach (PowerPoint.Shape sh in magnifyingSlide.Shapes)
@@ -743,7 +744,7 @@ namespace PowerPointLabs
                 selectedShape.Name = "PPTLabsMagnifyShape" + GetTimestamp(DateTime.Now);
 
                 PowerPoint.Slide magnifyingSlide = AddMagnifyingSlide(currentSlide, selectedShape);
-                //PowerPoint.Slide magnifiedSlide = AddMagnifiedSlide(magnifyingSlide);
+                PowerPoint.Slide magnifiedSlide = AddMagnifiedSlide(magnifyingSlide);
                 PowerPoint.Slide demagnifyingSlide = AddDeMagnifyingSlide(magnifyingSlide, selectedShape);
                 selectedShape.Visible = Office.MsoTriState.msoFalse;
 
