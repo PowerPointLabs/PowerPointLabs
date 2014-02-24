@@ -62,8 +62,8 @@
                  getEnabled="OnGetEnabledZoomButton"
                  onAction="ZoomBtnClick"/>
           <checkBox id="zoomStyleOption"
-                    label="Omit Background"
-                    supertip="Omit the slide background while performing Auto Zoom."
+                    label="Include Background"
+                    supertip="Include the slide background while performing Auto Zoom."
                     onAction="ZoomStyleChanged"
                     getPressed="ZoomStyleGetPressed"/>
         </group>

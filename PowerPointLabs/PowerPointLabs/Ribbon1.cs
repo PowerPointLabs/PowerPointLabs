@@ -1197,7 +1197,7 @@ namespace PowerPointLabs
 
             if (currentSlide != null && currentSlide.SlideIndex != presentation.Slides.Count)
             {
-                if (backgroundZoomChecked)
+                if (!backgroundZoomChecked)
                 {
                     ZoomInOmitBackground(currentSlide, shape);
                 }
@@ -1555,7 +1555,7 @@ namespace PowerPointLabs
 
             if (currentSlide != null && currentSlide.SlideIndex != 1)
             {
-                if (backgroundZoomChecked)
+                if (!backgroundZoomChecked)
                 {
                     ZoomOutOmitBackground(currentSlide, shape);
                 }
