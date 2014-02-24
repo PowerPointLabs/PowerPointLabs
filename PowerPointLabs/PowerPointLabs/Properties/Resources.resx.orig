@@ -190,9 +190,21 @@
   <data name="Zoom" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\Zoom.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
+  <data name="FitToHeight" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\FitToHeight.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="FitToWidth" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\FitToWidth.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+<<<<<<< local
   <data name="InSlideContext" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\InSlideContext.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+=======
+  <data name="CutOutShapeMenu" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\CutOutShapeMenu.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+>>>>>>> other
   </data>
+<<<<<<< local
   <data name="ZoomIn" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\ZoomIn.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
@@ -205,19 +217,6 @@
   <data name="ZoomOutContext" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\ZoomOutContext.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
-  <data name="CutOutShapeMenu" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\CutOutShapeMenu.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
-  <data name="FitToHeight" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\FitToHeight.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
-  <data name="FitToWidth" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\FitToWidth.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
-  <data name="ZoomToArea" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\ZoomToArea.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
-  <data name="ZoomToAreaContext" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\ZoomToAreaContext.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
+=======
+>>>>>>> other
 </root>

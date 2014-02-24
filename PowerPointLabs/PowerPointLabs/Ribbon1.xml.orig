@@ -41,41 +41,24 @@
         <group id="AutoZoomGroup"
                label="Auto Zoom" visible ="true">
           <button id="AddZoomInButton"
-                 label ="Drill Down"
+                 label ="Zoom In"
                  size ="large"
                  getImage="GetZoomInImage"
-                 supertip="Adds a slide with animations to create a zoom-in effect from the currently selected shape to the next slide.&#13;&#13;To activate, select a rectangle shape on the slide that you want to drill down from and click on this button."
+                 supertip="Adds a slide with animations to create an zoom-in effect from the currently selected shape to the next slide.&#13;&#13;To activate, select a rectangle shape and click on this button."
                  getEnabled="OnGetEnabledZoomButton"
                  onAction="AddZoomInButtonClick"/>
           <button id="AddZoomOutButton"
-                 label ="Step Back"
+                 label ="Zoom Out"
                  size ="large"
                  getImage="GetZoomOutImage"
-                 supertip="Adds a slide with animations to create a zoom-out effect from the previous slide to the currently selected shape.&#13;&#13;To activate, select a rectangle shape on the slide that you want to step back to and click on this button."
+                 supertip="Adds a slide with animations to create an zoom-out effect from the previous slide to the currently selected shape.&#13;&#13;To activate, select a rectangle shape and click on this button."
                  getEnabled="OnGetEnabledZoomButton"
                  onAction="AddZoomOutButtonClick"/>
-          <button id="ZoomToAreaButton"
-                 label ="Zoom To Area"
-                 size ="large"
-                 getImage="GetZoomToAreaImage"
-                 supertip="Zoom into an area of a slide or image.&#13;&#13;To activate, place a rectangle shape on the portion that you want to magnify and click on this button.&#13;&#13;This feature works best with high-resolution images."
-                 getEnabled="OnGetEnabledZoomButton"
-                 onAction="ZoomBtnClick"/>
           <checkBox id="zoomStyleOption"
-                    label="Include Background"
-                    supertip="Include the slide background while performing Auto Zoom."
+                    label="Omit Background"
+                    supertip="Omit the slide background while performing Auto Zoom."
                     onAction="ZoomStyleChanged"
                     getPressed="ZoomStyleGetPressed"/>
-        </group>
-        <group id="AutoCropGroup"
-               label="Auto Crop"
-               visible="true">
-          <button id="MoveCropShapeButton"
-                  label ="Crop To Shape"
-                  size ="large"
-                  getImage="GetCropShapeImage"
-                  supertip="Crop a picture according to your selected shape(s).&#13;&#13;To activate, draw a shape upon the picture you want to crop, select the shape, and then click on this button."
-                  onAction="CropShapeButtonClick"/>
         </group>
         <group id="SpotLightGroup"
                label="Spotlight"
@@ -201,6 +184,12 @@
                  getImage="GetHighlightBulletsImage"
                  supertip="*Feature Coming Soon!*"
                  onAction="HighlightBulletsButtonClick"/>
+          <button id="MoveCropShapeButton"
+                 label ="Cut-out Shape"
+                 size ="large"
+                 getImage="GetCropShapeImage"
+                 supertip="*Feature Coming Soon!*"
+                 onAction="CropShapeButtonClick"/>
         </group>
       </tab>
     </tabs>
@@ -217,24 +206,15 @@
               getImage="GetAddSpotlightContextImage"
               onAction="SpotlightBtnClick"/>
       <button id="zoomInContextMenu"
-              label ="Drill Down"
+              label ="Zoom In"
               getImage="GetZoomInContextImage"
               getEnabled="OnGetEnabledZoomButton"
               onAction="AddZoomInButtonClick"/>
       <button id="zoomOutContextMenu"
-             label ="Step Back"
+             label ="Zoom Out"
              getImage="GetZoomOutContextImage"
              getEnabled="OnGetEnabledZoomButton"
              onAction="AddZoomOutButtonClick"/>
-      <button id="ZoomToAreaContextMenu"
-             label ="Zoom To Area"
-             getImage="GetZoomToAreaContextImage"
-             getEnabled="OnGetEnabledZoomButton"
-             onAction="ZoomBtnClick"/>
-      <button id="cutOutShapeShape"
-              label="Crop To Shape"
-              getImage="GetCutOutShapeMenuImage"
-              onAction="CropShapeButtonClick"/>
       <button id="fitToWidthShape"
               label="Fit To Width"
               getImage="GetFitToWidthImage"
@@ -254,10 +234,6 @@
               label="Add Spotlight"
               getImage="GetAddSpotlightContextImage"
               onAction="SpotlightBtnClick"/>
-      <button id="cutOutShapeFreeform"
-              label="Crop To Shape"
-              getImage="GetCutOutShapeMenuImage"
-              onAction="CropShapeButtonClick"/>
       <button id="fitToWidthFreeform"
               label="Fit To Width"
               getImage="GetFitToWidthImage"
@@ -273,16 +249,6 @@
               label="Edit Name"
               getImage="GetEditNameContextImage"
               onAction="NameEditBtnClick"/>
-      <button id="zoomInContextMenuPicture"
-              label ="Drill Down"
-              getImage="GetZoomInContextImage"
-              getEnabled="OnGetEnabledZoomButton"
-              onAction="AddZoomInButtonClick"/>
-      <button id="zoomOutContextMenuPicture"
-             label ="Step Back"
-             getImage="GetZoomOutContextImage"
-             getEnabled="OnGetEnabledZoomButton"
-             onAction="AddZoomOutButtonClick"/>
       <button id="fitToWidthPicture"
               label="Fit To Width"
               getImage="GetFitToWidthImage"
@@ -341,10 +307,6 @@
               getImage="GetInSlideAnimationContextImage"
               getEnabled="OnGetEnabledAddInSlide"
               onAction="AddInSlideAnimationButtonClick"/>
-      <button id="cutOutShapeGroup"
-              label="Crop To Shape"
-              getImage="GetCutOutShapeMenuImage"
-              onAction="CropShapeButtonClick"/>
     </contextMenu>
     <contextMenu idMso="ContextMenuInk">
       <menuSeparator id="separatorInk"/>

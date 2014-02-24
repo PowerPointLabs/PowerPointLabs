@@ -41,7 +41,7 @@
     <PublishUrl>C:\Users\Raunak\Documents\PowerPoint Labs\</PublishUrl>
     <InstallUrl>http://www.comp.nus.edu.sg/~pptlabs/download/dev/</InstallUrl>
     <TargetCulture>en</TargetCulture>
-    <ApplicationVersion>1.4.0.0</ApplicationVersion>
+    <ApplicationVersion>1.4.3.0</ApplicationVersion>
     <AutoIncrementApplicationRevision>false</AutoIncrementApplicationRevision>
     <UpdateEnabled>true</UpdateEnabled>
     <UpdateInterval>0</UpdateInterval>
@@ -239,8 +239,10 @@
     <Compile Include="Models\PowerPointPresentation.cs" />
     <Compile Include="Models\PowerPointSlide.cs" />
     <Compile Include="Models\TaggedText.cs" />
+    <Compile Include="NativeMethods.cs" />
     <Compile Include="NotesToAudio.cs" />
     <Compile Include="NotesToCaptions.cs" />
+    <Compile Include="PPMouse.cs" />
     <Compile Include="Properties\AssemblyInfo.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -378,9 +380,6 @@
     <None Include="Resources\ReloadAnimationContext.png" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="Resources\InSlideContext.png" />
-  </ItemGroup>
-  <ItemGroup>
     <None Include="Resources\InSlideAnimation.png" />
   </ItemGroup>
   <ItemGroup>
@@ -391,6 +390,42 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\AddAnimationContext.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\ZoomOutContext.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\ZoomOut.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\ZoomInContext.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\ZoomIn.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\InSlideContext.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\FitToWidth.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\FitToHeight.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\CutOutShapeMenu.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\MagnifyContext.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Magnify.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\ZoomToAreaContext.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\ZoomToArea.png" />
   </ItemGroup>
   <!-- Include the build rules for a C# project. -->
   <PropertyGroup>
