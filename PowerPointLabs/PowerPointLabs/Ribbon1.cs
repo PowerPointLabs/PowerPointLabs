@@ -724,6 +724,9 @@ namespace PowerPointLabs
                     i++;
                 }
             }
+            effectFade = sequence.AddEffect(magnifyShape, PowerPoint.MsoAnimEffect.msoAnimEffectFade, PowerPoint.MsoAnimateByLevel.msoAnimateLevelNone, PowerPoint.MsoAnimTriggerType.msoAnimTriggerWithPrevious);
+            effectFade.Exit = Office.MsoTriState.msoTrue;
+            effectFade.Timing.Duration = 0.5f;
 
             indicatorShape.ZOrder(Office.MsoZOrderCmd.msoBringToFront);
             addedSlide.SlideShowTransition.EntryEffect = PowerPoint.PpEntryEffect.ppEffectNone;
