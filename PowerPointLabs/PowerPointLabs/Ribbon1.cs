@@ -534,15 +534,28 @@ namespace PowerPointLabs
                 }
             }
 
-            float finalX = (presentation.PageSetup.SlideWidth / 2);
+            duplicatePic.Copy();
+            PowerPoint.Shape magnifyShape = addedSlide.Shapes.Paste()[1];
+            magnifyShape.LockAspectRatio = Office.MsoTriState.msoTrue;
+            if (magnifyShape.Width > magnifyShape.Height)
+                magnifyShape.Width = presentation.PageSetup.SlideWidth;
+            else
+                magnifyShape.Height = presentation.PageSetup.SlideHeight;
+
+            magnifyShape.Left = (presentation.PageSetup.SlideWidth / 2) - (magnifyShape.Width / 2);
+            magnifyShape.Top = (presentation.PageSetup.SlideHeight / 2) - (magnifyShape.Height / 2);
+
+            float finalX = (magnifyShape.Left + (magnifyShape.Width) / 2);
             float initialX = (duplicatePic.Left + (duplicatePic.Width) / 2);
-            float finalY = (presentation.PageSetup.SlideHeight / 2);
+            float finalY = (magnifyShape.Top + (magnifyShape.Height) / 2);
             float initialY = (duplicatePic.Top + (duplicatePic.Height) / 2);
 
-            float finalWidth = presentation.PageSetup.SlideWidth;
+            float finalWidth = magnifyShape.Width;
             float initialWidth = duplicatePic.Width;
-            float finalHeight = presentation.PageSetup.SlideHeight;
+            float finalHeight = magnifyShape.Height;
             float initialHeight = duplicatePic.Height;
+
+            magnifyShape.Delete();
 
             effectMotion = sequence.AddEffect(duplicatePic, PowerPoint.MsoAnimEffect.msoAnimEffectPathDown, PowerPoint.MsoAnimateByLevel.msoAnimateLevelNone, PowerPoint.MsoAnimTriggerType.msoAnimTriggerAfterPrevious);
             PowerPoint.AnimationBehavior motion = effectMotion.Behaviors[1];
@@ -605,11 +618,16 @@ namespace PowerPointLabs
             }
 
             DeleteShapeAnnimations(addedSlide, magnifyShape);
-            magnifyShape.LockAspectRatio = Office.MsoTriState.msoFalse;
-            magnifyShape.Left = 0;
-            magnifyShape.Top = 0;
-            magnifyShape.Width = presentation.PageSetup.SlideWidth;
-            magnifyShape.Height = presentation.PageSetup.SlideHeight;
+            magnifyShape.LockAspectRatio = Office.MsoTriState.msoTrue;
+            //magnifyShape.Left = 0;
+            //magnifyShape.Top = 0;
+            if (magnifyShape.Width > magnifyShape.Height)
+                magnifyShape.Width = presentation.PageSetup.SlideWidth;
+            else
+                magnifyShape.Height = presentation.PageSetup.SlideHeight;
+
+            magnifyShape.Left = (presentation.PageSetup.SlideWidth / 2) - (magnifyShape.Width / 2);
+            magnifyShape.Top = (presentation.PageSetup.SlideHeight / 2) - (magnifyShape.Height / 2);
 
             PowerPoint.Effect effectDisappear = null;
             PowerPoint.Sequence sequence = addedSlide.TimeLine.MainSequence;
@@ -653,11 +671,14 @@ namespace PowerPointLabs
                 }
             }
 
-            magnifyShape.LockAspectRatio = Office.MsoTriState.msoFalse;
-            magnifyShape.Left = 0;
-            magnifyShape.Top = 0;
-            magnifyShape.Width = presentation.PageSetup.SlideWidth;
-            magnifyShape.Height = presentation.PageSetup.SlideHeight;
+            magnifyShape.LockAspectRatio = Office.MsoTriState.msoTrue;
+            if (magnifyShape.Width > magnifyShape.Height)
+                magnifyShape.Width = presentation.PageSetup.SlideWidth;
+            else
+                magnifyShape.Height = presentation.PageSetup.SlideHeight;
+
+            magnifyShape.Left = (presentation.PageSetup.SlideWidth / 2) - (magnifyShape.Width / 2);
+            magnifyShape.Top = (presentation.PageSetup.SlideHeight / 2) - (magnifyShape.Height / 2);
 
             PowerPoint.Effect effectDisappear = null;
             PowerPoint.Effect effectMotion = null;
