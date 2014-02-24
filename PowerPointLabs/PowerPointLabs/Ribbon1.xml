@@ -232,7 +232,7 @@
              getEnabled="OnGetEnabledZoomButton"
              onAction="ZoomBtnClick"/>
       <button id="cutOutShapeShape"
-              label="Cut-out Shape"
+              label="Crop To Shape"
               getImage="GetCutOutShapeMenuImage"
               onAction="CropShapeButtonClick"/>
       <button id="fitToWidthShape"
@@ -255,7 +255,7 @@
               getImage="GetAddSpotlightContextImage"
               onAction="SpotlightBtnClick"/>
       <button id="cutOutShapeFreeform"
-              label="Cut-out Shape"
+              label="Crop To Shape"
               getImage="GetCutOutShapeMenuImage"
               onAction="CropShapeButtonClick"/>
       <button id="fitToWidthFreeform"
@@ -342,7 +342,7 @@
               getEnabled="OnGetEnabledAddInSlide"
               onAction="AddInSlideAnimationButtonClick"/>
       <button id="cutOutShapeGroup"
-              label="Cut-out Shape"
+              label="Crop To Shape"
               getImage="GetCutOutShapeMenuImage"
               onAction="CropShapeButtonClick"/>
     </contextMenu>
