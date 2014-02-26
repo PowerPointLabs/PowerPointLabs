@@ -3209,7 +3209,17 @@ namespace PowerPointLabs
 
         private void TakeScreenshot(string fileToStore)
         {
-            GetCurrentSlide().Export(fileToStore, "PNG");
+            GetCurrentSlide().Export(fileToStore, "PNG", (int)GetDesiredExportWidth(), (int)GetDesiredExportHeight());
+        }
+
+        private double GetDesiredExportWidth()
+        {
+            return Application.ActivePresentation.PageSetup.SlideWidth / 72.0 * 96.0;
+        }
+
+        private double GetDesiredExportHeight()
+        {
+            return Application.ActivePresentation.PageSetup.SlideHeight / 72.0 * 96.0;
         }
 
         private void FillInShapeWithScreenshot(ref PowerPoint.Shape shape, string fileToStore)
