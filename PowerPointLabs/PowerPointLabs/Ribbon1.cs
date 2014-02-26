@@ -36,7 +36,7 @@ namespace PowerPointLabs
     {
         private Office.IRibbonUI ribbon;
         public bool frameAnimationChecked = false;
-        public bool backgroundZoomChecked = false;
+        public bool backgroundZoomChecked = true;
         public bool spotlightDelete = true;
         public float defaultSoftEdges = 10;
         public float defaultDuration = 0.5f;
@@ -798,7 +798,7 @@ namespace PowerPointLabs
             int j = 0;
             foreach (PowerPoint.Shape tmp in addedSlide.Shapes)
             {
-                if (!(tmp.Equals(duplicatePic) || tmp.Equals(indicatorShape)) && !(tmp.Name.Contains("PPTLabsMagnifyArea")))
+                if (!(tmp.Equals(duplicatePic) || tmp.Equals(indicatorShape)) && !(tmp.Name.Contains("PPTLabsMagnifyShape")) && !(tmp.Name.Contains("PPTLabsMagnifyArea")))
                 {
                     tmp.Visible = Office.MsoTriState.msoTrue;
                     if (j == 0)
@@ -1350,7 +1350,7 @@ namespace PowerPointLabs
         {
             //AboutForm form = new AboutForm();
             //form.Show();
-            System.Windows.Forms.MessageBox.Show("          PowerPointLabs Plugin Version 1.4.5 [Release date: 24 Feb 2014]\n     Developed at School of Computing, National University of Singapore.\n        For more information, visit our website http://PowerPointLabs.info", "About PowerPointLabs");
+            System.Windows.Forms.MessageBox.Show("          PowerPointLabs Plugin Version 1.4.6 [Release date: 25 Feb 2014]\n     Developed at School of Computing, National University of Singapore.\n        For more information, visit our website http://PowerPointLabs.info", "About PowerPointLabs");
         }
         public void HelpButtonClick(Office.IRibbonControl control)
         {
