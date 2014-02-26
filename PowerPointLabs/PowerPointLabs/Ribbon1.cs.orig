@@ -1350,7 +1350,7 @@ namespace PowerPointLabs
         {
             //AboutForm form = new AboutForm();
             //form.Show();
-            System.Windows.Forms.MessageBox.Show("          PowerPointLabs Plugin Version 1.4.6 [Release date: 25 Feb 2014]\n     Developed at School of Computing, National University of Singapore.\n        For more information, visit our website http://PowerPointLabs.info", "About PowerPointLabs");
+            System.Windows.Forms.MessageBox.Show("          PowerPointLabs Plugin Version 1.4.7 [Release date: 26 Feb 2014]\n     Developed at School of Computing, National University of Singapore.\n        For more information, visit our website http://PowerPointLabs.info", "About PowerPointLabs");
         }
         public void HelpButtonClick(Office.IRibbonControl control)
         {
@@ -3124,13 +3124,36 @@ namespace PowerPointLabs
                 string path = GetPathToStore();
                 TakeScreenshotWithoutShape(ref shape, path);
                 FillInShapeWithScreenshot(ref shape, path);
-                RemoveOverlapItems(shape);
-                ConvertToPicture(ref shape);
+                //RemoveOverlapItems(shape);
+                if (shape.Type == Office.MsoShapeType.msoGroup)
+                {
+                    ConvertToPicture(ref shape);
+                }
+                else
+                {
+                    ReformShape(shape);
+                }
             }
             else
             {
-                MessageBox.Show("Please select a shape", "Unable to crop");
+                MessageBox.Show("To activate, please select unrotated shape(s)", "Unable to crop");
             }
+        }
+
+        private void ReformShape(PowerPoint.Shape shape)
+        {
+            shape.Export(GetPathForFillInBackground(), PowerPoint.PpShapeFormat.ppShapeFormatPNG);
+            var fillEffect = shape.Fill;
+            fillEffect.UserPicture(GetPathForFillInBackground());
+            shape.Line.Weight = 6;//arbitrary large weight
+            shape.Line.Visible = Office.MsoTriState.msoTrue;
+            shape.Select();
+        }
+
+        private string GetPathForFillInBackground()
+        {
+            string path = Environment.GetFolderPath(Environment.SpecialFolder.CommonDocuments);
+            return path + "\\currentFillInBg.png";
         }
 
         private string GetPathToStore()
@@ -3148,6 +3171,7 @@ namespace PowerPointLabs
             var pic = GetCurrentSlide().Shapes.PasteSpecial(PowerPoint.PpPasteDataType.ppPastePNG)[1];
             pic.Left = x;
             pic.Top = y;
+            pic.Select();
         }
 
         private bool IsFirstOneOverlapWithSecond(PowerPoint.Shape first, PowerPoint.Shape second)
@@ -3272,14 +3296,48 @@ namespace PowerPointLabs
             foreach (var o in shapeRange)
             {
                 var shape = o as PowerPoint.Shape;
-                if (shape.Type != Office.MsoShapeType.msoAutoShape
+                if ((shape.Type != Office.MsoShapeType.msoAutoShape
                     && shape.Type != Office.MsoShapeType.msoFreeform
                     && shape.Type != Office.MsoShapeType.msoGroup)
+                    || shape.Rotation != 0)
+                {
+                    return false;
+                }
+                else if (shape.Type == Office.MsoShapeType.msoGroup
+                    && IsRotatedGroups(sel))
                 {
                     return false;
                 }
             }
             return true;
+        }
+
+        private bool IsRotatedGroups(PowerPoint.Selection sel)
+        {
+            var range = sel.ShapeRange;
+            Queue<PowerPoint.Shape> selectedShapes = new Queue<PowerPoint.Shape>();
+
+            foreach (var item in range)
+            {
+                selectedShapes.Enqueue(item as PowerPoint.Shape);
+            }
+            while (selectedShapes.Count != 0)
+            {
+                var shape = selectedShapes.Dequeue();
+                if (shape.Type == Office.MsoShapeType.msoGroup)
+                {
+                    foreach (var item in shape.GroupItems)
+                    {
+                        selectedShapes.Enqueue(item as PowerPoint.Shape);
+                    }
+                }
+                else
+                {
+                    if (shape.Rotation != 0)
+                        return true;
+                }
+            }
+            return false;
         }
 
         public System.Drawing.Bitmap GetCutOutShapeMenuImage(Office.IRibbonControl control)
