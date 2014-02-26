@@ -3214,12 +3214,12 @@ namespace PowerPointLabs
 
         private double GetDesiredExportWidth()
         {
-            return Application.ActivePresentation.PageSetup.SlideWidth / 72.0 * 96.0;
+            return Globals.ThisAddIn.Application.ActivePresentation.PageSetup.SlideWidth / 72.0 * 96.0;
         }
 
         private double GetDesiredExportHeight()
         {
-            return Application.ActivePresentation.PageSetup.SlideHeight / 72.0 * 96.0;
+            return Globals.ThisAddIn.Application.ActivePresentation.PageSetup.SlideHeight / 72.0 * 96.0;
         }
 
         private void FillInShapeWithScreenshot(ref PowerPoint.Shape shape, string fileToStore)
