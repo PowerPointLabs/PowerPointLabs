@@ -36,7 +36,7 @@ namespace PowerPointLabs
     {
         private Office.IRibbonUI ribbon;
         public bool frameAnimationChecked = false;
-        public bool backgroundZoomChecked = false;
+        public bool backgroundZoomChecked = true;
         public bool spotlightDelete = true;
         public float defaultSoftEdges = 10;
         public float defaultDuration = 0.5f;
@@ -795,14 +795,25 @@ namespace PowerPointLabs
                 lastShape = dupShape;
             }
 
+            int j = 0;
             foreach (PowerPoint.Shape tmp in addedSlide.Shapes)
             {
-                if (!(tmp.Equals(duplicatePic) || tmp.Equals(indicatorShape)))
+                if (!(tmp.Equals(duplicatePic) || tmp.Equals(indicatorShape)) && !(tmp.Name.Contains("PPTLabsMagnifyShape")) && !(tmp.Name.Contains("PPTLabsMagnifyArea")))
                 {
                     tmp.Visible = Office.MsoTriState.msoTrue;
+                    if (j == 0)
+                    {
+                        effectFade = sequence.AddEffect(tmp, PowerPoint.MsoAnimEffect.msoAnimEffectFade, PowerPoint.MsoAnimateByLevel.msoAnimateLevelNone, PowerPoint.MsoAnimTriggerType.msoAnimTriggerAfterPrevious);
+                    }
+                    else
+                    {
+                        effectFade = sequence.AddEffect(tmp, PowerPoint.MsoAnimEffect.msoAnimEffectFade, PowerPoint.MsoAnimateByLevel.msoAnimateLevelNone, PowerPoint.MsoAnimTriggerType.msoAnimTriggerWithPrevious);
+                    }
+                    effectFade.Timing.Duration = 0.5f;
+                    j++;
                 }
             }
-            effectFade = sequence.AddEffect(lastShape, PowerPoint.MsoAnimEffect.msoAnimEffectFade, PowerPoint.MsoAnimateByLevel.msoAnimateLevelNone, PowerPoint.MsoAnimTriggerType.msoAnimTriggerAfterPrevious);
+            effectFade = sequence.AddEffect(lastShape, PowerPoint.MsoAnimEffect.msoAnimEffectFade, PowerPoint.MsoAnimateByLevel.msoAnimateLevelNone, PowerPoint.MsoAnimTriggerType.msoAnimTriggerWithPrevious);
             effectFade.Exit = Office.MsoTriState.msoTrue;
             effectFade.Timing.Duration = 0.5f;
 
@@ -1339,7 +1350,7 @@ namespace PowerPointLabs
         {
             //AboutForm form = new AboutForm();
             //form.Show();
-            System.Windows.Forms.MessageBox.Show("          PowerPointLabs Plugin Version 1.4.3 [Release date: 24 Feb 2014]\n     Developed at School of Computing, National University of Singapore.\n        For more information, visit our website http://PowerPointLabs.info", "About PowerPointLabs");
+            System.Windows.Forms.MessageBox.Show("          PowerPointLabs Plugin Version 1.4.7 [Release date: 26 Feb 2014]\n     Developed at School of Computing, National University of Singapore.\n        For more information, visit our website http://PowerPointLabs.info", "About PowerPointLabs");
         }
         public void HelpButtonClick(Office.IRibbonControl control)
         {
@@ -2920,12 +2931,52 @@ namespace PowerPointLabs
             var pageSetup = GetPageSetup();
             var selectedShape = GetSelectedShape();
             float shapeSizeRatio = GetSizeRatio(selectedShape.Height, selectedShape.Width);
+            float factor = GetRotationFactorForFitToHeight(ref selectedShape);
             //fit to height
-            selectedShape.Height = pageSetup.SlideHeight;
+            selectedShape.Height = (pageSetup.SlideHeight / factor);
             selectedShape.Width = selectedShape.Height / shapeSizeRatio;
             //move to centre
             selectedShape.Left = (pageSetup.SlideWidth - selectedShape.Width) / 2;
             selectedShape.Top = TopMost;
+            AdjustMoveToCentreForFitToHeight(ref selectedShape);
+        }
+
+        private void AdjustMoveToCentreForFitToHeight(ref PowerPoint.Shape shape)
+        {
+            float adjustLength;
+            float rotation = SetupRotationValueForAdjustment(ref shape);
+            //Pythagorean theorem
+            float diagonal = (float)Math.Sqrt(Math.Pow(shape.Width / 2, 2)
+                + Math.Pow(shape.Height / 2, 2));
+            //Law of cosines
+            float oppositeSideLength = (float)Math.Sqrt((Math.Pow(diagonal, 2) * 2
+                * (1 - Math.Cos(rotation))));
+            float angle1 = (float)Math.Atan(shape.Width / shape.Height);
+            float angle2 = (float)((Math.PI - rotation) / 2);
+            //case 1:
+            if ((shape.Rotation >= 0 && shape.Rotation <= 90)
+                || (shape.Rotation > 270 && shape.Rotation <= 360))
+            {
+                float targetAngle = (float)(Math.PI - angle1 - angle2);
+                adjustLength = (float)(oppositeSideLength * Math.Cos(targetAngle));
+            }
+            //case 2:
+            else/* case: 90 < rotation < 270)*/
+            {
+                float targetAngle = angle1 - angle2;
+                adjustLength = (float)(oppositeSideLength * Math.Cos(targetAngle)) - shape.Height;
+            }
+            shape.Top += adjustLength;
+        }
+
+        private float GetRotationFactorForFitToHeight(ref PowerPoint.Shape shape)
+        {
+            //set up rotation value
+            float rotation = SetupRotationValueForRotateFactor(ref shape);
+            //calculate factor for Fit to Height
+            float shapeSizeRatio = GetSizeRatio(shape.Height, shape.Width);
+            float factor = (float)(Math.Cos(rotation) + Math.Sin(rotation) / shapeSizeRatio);
+            return factor;
         }
 
         private void DoFitToWidth()
@@ -2934,11 +2985,89 @@ namespace PowerPointLabs
             var selectedShape = GetSelectedShape();
             float shapeSizeRatio = GetSizeRatio(selectedShape.Height, selectedShape.Width);
             //fit to width
-            selectedShape.Width = pageSetup.SlideWidth;
-            selectedShape.Height = selectedShape.Width * shapeSizeRatio;
+            float factor = GetRotationFactorForFitToWidth(ref selectedShape);
+            selectedShape.Height = pageSetup.SlideWidth / factor;
+            selectedShape.Width = selectedShape.Height / shapeSizeRatio;
             //move to middle
             selectedShape.Top = (pageSetup.SlideHeight - selectedShape.Height) / 2;
             selectedShape.Left = LeftMost;
+            //adjustment for rotation
+            AdjustMoveToCentreForFitToWidth(ref selectedShape);
+        }
+
+        private void AdjustMoveToCentreForFitToWidth(ref PowerPoint.Shape shape)
+        {
+            float adjustLength;
+            float rotation = SetupRotationValueForAdjustment(ref shape);
+            //Pythagorean theorem
+            float diagonal = (float)Math.Sqrt(Math.Pow(shape.Width / 2, 2)
+                + Math.Pow(shape.Height / 2, 2));
+            //Law of cosines
+            float oppositeSideLength = (float)Math.Sqrt((Math.Pow(diagonal, 2) * 2
+                * (1 - Math.Cos(rotation))));
+            float angle1 = (float)Math.Atan(shape.Height / shape.Width);
+            float angle2 = (float)((Math.PI - rotation) / 2);
+            //case 1:
+            if ((shape.Rotation >= 0 && shape.Rotation <= 90)
+                || (shape.Rotation > 270 && shape.Rotation <= 360))
+            {
+                float targetAngle = (float)(Math.PI - angle1 - angle2);
+                adjustLength = (float)(oppositeSideLength * Math.Cos(targetAngle));
+            }
+            //case 2:
+            else/* case: 90 < rotation < 270)*/
+            {
+                float targetAngle = angle1 - angle2;
+                adjustLength = (float)(oppositeSideLength * Math.Cos(targetAngle)) - shape.Width;
+            }
+            shape.Left += adjustLength;
+        }
+
+        private float SetupRotationValueForAdjustment(ref PowerPoint.Shape shape)
+        {
+            float rotation = shape.Rotation;
+            if (shape.Rotation > 180 && shape.Rotation <= 360)
+            {
+                rotation = 360 - shape.Rotation;
+            }
+            return ConvertDegToRad(rotation);
+        }
+
+        private float GetRotationFactorForFitToWidth(ref PowerPoint.Shape shape)
+        {
+            float rotation = SetupRotationValueForRotateFactor(ref shape);
+            //calculate factor for Fit to Height
+            float shapeSizeRatio = GetSizeRatio(shape.Height, shape.Width);
+            float factor = (float)(Math.Sin(rotation) + Math.Cos(rotation) / shapeSizeRatio);
+            return factor;
+        }
+
+        private float SetupRotationValueForRotateFactor(ref PowerPoint.Shape shape)
+        {
+            float rotation;
+            if (shape.Rotation == 90.0)
+            {
+                rotation = shape.Rotation;
+            }
+            else if (shape.Rotation == 270.0)
+            {
+                rotation = 360 - shape.Rotation;
+            }
+            else if ((shape.Rotation > 90 && shape.Rotation <= 180)
+                     || (shape.Rotation > 270 && shape.Rotation <= 360))
+            {
+                rotation = (360 - shape.Rotation) % 90;
+            }
+            else
+            {
+                rotation = shape.Rotation % 90;
+            }
+            return ConvertDegToRad(rotation);
+        }
+
+        private float ConvertDegToRad(float rotation)
+        {
+            rotation = (float)((rotation) * Math.PI / 180); return rotation;
         }
 
         private float GetSizeRatio(float height, float width)
@@ -2995,13 +3124,36 @@ namespace PowerPointLabs
                 string path = GetPathToStore();
                 TakeScreenshotWithoutShape(ref shape, path);
                 FillInShapeWithScreenshot(ref shape, path);
-                RemoveOverlapItems(shape);
-                ConvertToPicture(ref shape);
+                //RemoveOverlapItems(shape);
+                if (shape.Type == Office.MsoShapeType.msoGroup)
+                {
+                    ConvertToPicture(ref shape);
+                }
+                else
+                {
+                    ReformShape(shape);
+                }
             }
             else
             {
-                MessageBox.Show("Please select a shape", "Unable to crop");
+                MessageBox.Show("To activate, please select unrotated shape(s)", "Unable to crop");
             }
+        }
+
+        private void ReformShape(PowerPoint.Shape shape)
+        {
+            shape.Export(GetPathForFillInBackground(), PowerPoint.PpShapeFormat.ppShapeFormatPNG);
+            var fillEffect = shape.Fill;
+            fillEffect.UserPicture(GetPathForFillInBackground());
+            shape.Line.Weight = 6;//arbitrary large weight
+            shape.Line.Visible = Office.MsoTriState.msoTrue;
+            shape.Select();
+        }
+
+        private string GetPathForFillInBackground()
+        {
+            string path = Environment.GetFolderPath(Environment.SpecialFolder.CommonDocuments);
+            return path + "\\currentFillInBg.png";
         }
 
         private string GetPathToStore()
@@ -3019,6 +3171,7 @@ namespace PowerPointLabs
             var pic = GetCurrentSlide().Shapes.PasteSpecial(PowerPoint.PpPasteDataType.ppPastePNG)[1];
             pic.Left = x;
             pic.Top = y;
+            pic.Select();
         }
 
         private bool IsFirstOneOverlapWithSecond(PowerPoint.Shape first, PowerPoint.Shape second)
@@ -3056,7 +3209,17 @@ namespace PowerPointLabs
 
         private void TakeScreenshot(string fileToStore)
         {
-            GetCurrentSlide().Export(fileToStore, "PNG");
+            GetCurrentSlide().Export(fileToStore, "PNG", (int)GetDesiredExportWidth(), (int)GetDesiredExportHeight());
+        }
+
+        private double GetDesiredExportWidth()
+        {
+            return Globals.ThisAddIn.Application.ActivePresentation.PageSetup.SlideWidth / 72.0 * 96.0;
+        }
+
+        private double GetDesiredExportHeight()
+        {
+            return Globals.ThisAddIn.Application.ActivePresentation.PageSetup.SlideHeight / 72.0 * 96.0;
         }
 
         private void FillInShapeWithScreenshot(ref PowerPoint.Shape shape, string fileToStore)
@@ -3143,14 +3306,48 @@ namespace PowerPointLabs
             foreach (var o in shapeRange)
             {
                 var shape = o as PowerPoint.Shape;
-                if (shape.Type != Office.MsoShapeType.msoAutoShape
+                if ((shape.Type != Office.MsoShapeType.msoAutoShape
                     && shape.Type != Office.MsoShapeType.msoFreeform
                     && shape.Type != Office.MsoShapeType.msoGroup)
+                    || shape.Rotation != 0)
+                {
+                    return false;
+                }
+                else if (shape.Type == Office.MsoShapeType.msoGroup
+                    && IsRotatedGroups(sel))
                 {
                     return false;
                 }
             }
             return true;
+        }
+
+        private bool IsRotatedGroups(PowerPoint.Selection sel)
+        {
+            var range = sel.ShapeRange;
+            Queue<PowerPoint.Shape> selectedShapes = new Queue<PowerPoint.Shape>();
+
+            foreach (var item in range)
+            {
+                selectedShapes.Enqueue(item as PowerPoint.Shape);
+            }
+            while (selectedShapes.Count != 0)
+            {
+                var shape = selectedShapes.Dequeue();
+                if (shape.Type == Office.MsoShapeType.msoGroup)
+                {
+                    foreach (var item in shape.GroupItems)
+                    {
+                        selectedShapes.Enqueue(item as PowerPoint.Shape);
+                    }
+                }
+                else
+                {
+                    if (shape.Rotation != 0)
+                        return true;
+                }
+            }
+            return false;
         }
 
         public System.Drawing.Bitmap GetCutOutShapeMenuImage(Office.IRibbonControl control)

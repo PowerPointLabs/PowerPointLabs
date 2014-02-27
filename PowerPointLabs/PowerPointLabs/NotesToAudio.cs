@@ -72,7 +72,6 @@ namespace PowerPointLabs
                 String fileNameSearchPattern = String.Format("Slide {0} Speech", slide.Index);
                 var audioFiles = GetAudioFilePaths(folderPath, fileNameSearchPattern);
 
-                int clickCount = 0;
                 for (int i = 0; i < audioFiles.Length; i++)
                 {
                     String fileName = audioFiles[i];
@@ -86,8 +85,7 @@ namespace PowerPointLabs
 
                         if (isOnClick)
                         {
-                            clickCount++;
-                            slide.SetAudioAsClickTriggered(audioShape, clickCount);
+                            slide.SetShapeAsClickTriggered(audioShape, i, MsoAnimEffect.msoAnimEffectMediaPlay);
                         }
                         else
                         {

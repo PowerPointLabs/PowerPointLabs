@@ -2,6 +2,7 @@
 using System.IO;
 using System.Collections;
 using System.Linq;
+using System.Runtime.InteropServices;
 using System.Text;
 using System.Windows.Forms;
 using System.Xml.Linq;
@@ -28,6 +29,8 @@ namespace PowerPointLabs
             ((PowerPoint.EApplication_Event)this.Application).WindowSelectionChange += new Microsoft.Office.Interop.PowerPoint.EApplication_WindowSelectionChangeEventHandler(ThisAddIn_SelectionChanged);
             ((PowerPoint.EApplication_Event)this.Application).SlideSelectionChanged += new Microsoft.Office.Interop.PowerPoint.EApplication_SlideSelectionChangedEventHandler(ThisAddIn_SlideSelectionChanged);
             //DisplayUpdateDetails();
+            Application.SlideShowBegin += SlideShowBeginHandler;
+            Application.SlideShowEnd += SlideShowEndHandler;
             PPMouse.Init(Application);
             SetupDoubleClickHandler();
             SetupTabActivateHandler();
@@ -214,6 +217,18 @@ namespace PowerPointLabs
 
         #region Double Click to Open Property Window
 
+        private bool isInSlideShow = false;
+
+        private void SlideShowBeginHandler(PowerPoint.SlideShowWindow wn)
+        {
+            isInSlideShow = true;
+        }
+
+        private void SlideShowEndHandler(PowerPoint.Presentation presentation)
+        {
+            isInSlideShow = false;
+        }
+
         private void SetupDoubleClickHandler()
         {
             PPMouse.DoubleClick += DoubleClickEventHandler;
@@ -221,18 +236,26 @@ namespace PowerPointLabs
 
         private void DoubleClickEventHandler(PowerPoint.Selection selection)
         {
-            if (selection.Type == PowerPoint.PpSelectionType.ppSelectionShapes)
+            try
             {
-                const string OfficeVersion2013 = "15.0";
-                const string OfficeVersion2010 = "14.0";
-                if (Application.Version == OfficeVersion2013)
+                if (selection.Type == PowerPoint.PpSelectionType.ppSelectionShapes)
                 {
-                    OpenPropertyWindowForOffice13(selection);
+                    const string OfficeVersion2013 = "15.0";
+                    const string OfficeVersion2010 = "14.0";
+                    if (Application.Version == OfficeVersion2013)
+                    {
+                        OpenPropertyWindowForOffice13(selection);
+                    }
+                    else if (Application.Version == OfficeVersion2010)
+                    {
+                        OpenPropertyWindowForOffice10();
+                    }
                 }
-                else if (Application.Version == OfficeVersion2010)
-                {
-                    OpenPropertyWindowForOffice10();
-                }
+            }
+            catch (COMException e)
+            {
+                string logText = "DoubleClickEventHandler" + ": " + e.Message + ": " + e.StackTrace;
+                Trace.TraceError(DateTime.Now.ToString("yyyyMMddHHmmss") + ": " + logText);
             }
         }
 
@@ -241,15 +264,18 @@ namespace PowerPointLabs
         //convert the window to Property window
         private void OpenPropertyWindowForOffice13(PowerPoint.Selection selection)
         {
-            const int CommandOpenBackgroundFormat = 0x8F;
-            var selectedShapes = selection.ShapeRange;
-            Native.SendMessage(
-                Process.GetCurrentProcess().MainWindowHandle,
-                (uint)Native.Message.WM_COMMAND,
-                new IntPtr(CommandOpenBackgroundFormat),
-                IntPtr.Zero
-                );
-            selectedShapes.Select();
+            if (!isInSlideShow)
+            {
+                const int CommandOpenBackgroundFormat = 0x8F;
+                var selectedShapes = selection.ShapeRange;
+                Native.SendMessage(
+                    Process.GetCurrentProcess().MainWindowHandle,
+                    (uint) Native.Message.WM_COMMAND,
+                    new IntPtr(CommandOpenBackgroundFormat),
+                    IntPtr.Zero
+                    );
+                selectedShapes.Select();
+            }
         }
 
         //For office 2010 (in office 2013, this method has bad user exp)
@@ -258,20 +284,23 @@ namespace PowerPointLabs
         {
             try
             {
-                string Shortcut_Alt_H_O = "%ho";
-                if (eventHook == IntPtr.Zero)
+                if (!isInSlideShow)
                 {
-                    //Check whether Home tab is enabled or not
-                    eventHook = Native.SetWinEventHook(
-                        (uint)Native.Event.EVENT_SYSTEM_MENUEND,
-                        (uint)Native.Event.EVENT_OBJECT_CREATE,
-                        IntPtr.Zero,
-                        TabActivate,
-                        (uint)Process.GetCurrentProcess().Id,
-                        0,
-                        0);
+                    string Shortcut_Alt_H_O = "%ho";
+                    if (eventHook == IntPtr.Zero)
+                    {
+                        //Check whether Home tab is enabled or not
+                        eventHook = Native.SetWinEventHook(
+                            (uint) Native.Event.EVENT_SYSTEM_MENUEND,
+                            (uint) Native.Event.EVENT_OBJECT_CREATE,
+                            IntPtr.Zero,
+                            TabActivate,
+                            (uint) Process.GetCurrentProcess().Id,
+                            0,
+                            0);
+                    }
+                    SendKeys.Send(Shortcut_Alt_H_O);
                 }
-                SendKeys.Send(Shortcut_Alt_H_O);
             }
             catch (InvalidOperationException)
             {

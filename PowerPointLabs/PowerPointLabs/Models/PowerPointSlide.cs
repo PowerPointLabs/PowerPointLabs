@@ -73,17 +73,18 @@ namespace PowerPointLabs.Models
 
         public void SetAudioAsAutoplay(Shape shape)
         {
-            var shapesTriggeredByClick = GetShapesTriggeredByClick();
+            var mainSequence = _slide.TimeLine.MainSequence;
 
-            if (shapesTriggeredByClick.Count == 0)
+            Effect firstClickEvent = mainSequence.FindFirstAnimationForClick(1);
+            bool hasNoClicksOnSlide = firstClickEvent == null;
+
+            if (hasNoClicksOnSlide)
             {
                 AddShapeAsLastAutoplaying(shape, MsoAnimEffect.msoAnimEffectMediaPlay);
             }
             else
             {
-                var shapeClickEffect = _slide.TimeLine.MainSequence.FindFirstAnimationForClick(1);
-
-                InsertAnimationBeforeExisting(shape, shapeClickEffect, MsoAnimEffect.msoAnimEffectMediaPlay);
+                InsertAnimationBeforeExisting(shape, firstClickEvent, MsoAnimEffect.msoAnimEffectMediaPlay);
             }
         }
 
@@ -98,31 +99,28 @@ namespace PowerPointLabs.Models
             return newAnimation;
         }
 
-        public void SetAudioAsClickTriggered(Shape shape, int index)
+        public Effect SetShapeAsClickTriggered(Shape shape, int clickNumber, MsoAnimEffect effect)
         {
-            SetShapeAsClickTriggered(shape, index, MsoAnimEffect.msoAnimEffectMediaPlay);
-        }
-
-        public Effect SetShapeAsClickTriggered(Shape shape, int index, MsoAnimEffect effect)
-        {
-            var shapesTriggeredByClick = GetShapesTriggeredByClick();
-
             Effect addedEffect;
-            if (shapesTriggeredByClick.Count > index + 1) // Clicks are 1-indexed while shapes are 0-indexed.
-            {
-                var clickEffect = _slide.TimeLine.MainSequence.FindFirstAnimationForClick(index + 1);
 
-                addedEffect = InsertAnimationBeforeExisting(shape, clickEffect, effect);
+            Sequence mainSequence = _slide.TimeLine.MainSequence;
+            Effect nextClickEffect = mainSequence.FindFirstAnimationForClick(clickNumber + 1);
+            Effect previousClickEffect = mainSequence.FindFirstAnimationForClick(clickNumber);
+
+            bool hasClicksAfter = nextClickEffect != null;
+            bool hasClickBefore = previousClickEffect != null;
+
+            if (hasClicksAfter)
+            {
+                addedEffect = InsertAnimationBeforeExisting(shape, nextClickEffect, effect);
             }
-            else if (shapesTriggeredByClick.Count == index)
+            else if (hasClickBefore)
             {
                 addedEffect = AddShapeAsLastAutoplaying(shape, effect);
             }
             else
             {
-                // Just add this as a new click effect.
-                var animationSequence = _slide.TimeLine.MainSequence;
-                addedEffect = animationSequence.AddEffect(shape, effect);
+                addedEffect = mainSequence.AddEffect(shape, effect);
             }
 
             return addedEffect;
@@ -135,15 +133,6 @@ namespace PowerPointLabs.Models
             return addedEffect;
         }
 
-        private Effect InsertAnimationAtIndex(Shape shape, int index, MsoAnimEffect animationEffect)
-        {
-            var animationSequence = _slide.TimeLine.MainSequence;
-            Effect effect = animationSequence.AddEffect(shape, animationEffect, MsoAnimateByLevel.msoAnimateLevelNone,
-                MsoAnimTriggerType.msoAnimTriggerWithPrevious);
-            effect.MoveTo(index);
-            return effect;
-        }
-
         private Effect InsertAnimationAtIndex(Shape shape, int index, MsoAnimEffect animationEffect,
             MsoAnimTriggerType triggerType)
         {
@@ -152,21 +141,6 @@ namespace PowerPointLabs.Models
                 triggerType);
             effect.MoveTo(index);
             return effect;
-        }
-
-        private List<Shape> GetShapesTriggeredByClick()
-        {
-            var shapesWithAnimations = GetShapesWithAnimations();
-            var shapesOnClick =
-                shapesWithAnimations.Where(shape => shape.AnimationSettings.AdvanceMode == PpAdvanceMode.ppAdvanceOnClick)
-                    .ToList();
-            return shapesOnClick;
-        }
-
-        private IEnumerable<Shape> GetShapesWithAnimations()
-        {
-            var shapesWithAnimations = _slide.TimeLine.MainSequence.Cast<Effect>().Select(effect => effect.Shape).ToList();
-            return shapesWithAnimations;
         }
 
         public void ShowShapeAfterClick(Shape shape, int clickNumber)
