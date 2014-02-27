@@ -3125,7 +3125,7 @@ namespace PowerPointLabs
                 try
                 {
                     var shape = FormShapeForCropToShape(ref selection);
-                    string path = GetPathToStore();
+                    string path = GetPathToStore();                    
                     TakeScreenshotWithoutShape(ref shape, path);
                     FillInShapeWithScreenshot(ref shape, path);
                     ReformShapeOutput(shape);
@@ -3159,8 +3159,8 @@ namespace PowerPointLabs
                 float verticalRatio =
                     (float)(GetDesiredExportHeight() / Globals.ThisAddIn.Application.ActivePresentation.PageSetup.SlideHeight);
                 Bitmap croppedImage = KiCut(slideImage,
-                    (shape.Left - 12) * horizontalRatio,
-                    (shape.Top - 12) * verticalRatio,
+                    shape.Left * horizontalRatio,
+                    shape.Top * verticalRatio,
                     shape.Width * horizontalRatio,
                     shape.Height * verticalRatio);
                 croppedImage.Save(GetPathForFillInBackground(), ImageFormat.Png);
@@ -3254,9 +3254,9 @@ namespace PowerPointLabs
 
         private void TakeScreenshotWithoutShape(ref PowerPoint.Shape shape, string fileToStore)
         {
-            shape.Cut();
+            shape.Visible = Office.MsoTriState.msoFalse;
             TakeScreenshot(fileToStore);
-            shape = GetCurrentSlide().Shapes.Paste()[1];
+            shape.Visible = Office.MsoTriState.msoTrue;
         }
 
         private void TakeScreenshot(string fileToStore)
@@ -3286,9 +3286,14 @@ namespace PowerPointLabs
         private PowerPoint.Shape FormShapeForCropToShape(ref PowerPoint.Selection selection)
         {
             var oldRange = selection.ShapeRange;
+            var nameList = ProduceNameList(GetCurrentSlide().Shapes.Range());
+            oldRange.Cut();
+            oldRange = GetCurrentSlide().Shapes.Paste();
+            ModifyNames(oldRange);
             oldRange.Copy();
             var copyRange = GetCurrentSlide().Shapes.Paste();
-            var nameList = ProduceNameList(oldRange);
+            AdjustPosition(oldRange, copyRange);
+            ModifyNames(copyRange, "_CropToShape");
             var ungroupedCopyRange = UngroupAllShapes(copyRange);
             var mergedShape = MergeAllShapes(ref ungroupedCopyRange, nameList);
             RemoveRotation(ref mergedShape, nameList);
@@ -3304,6 +3309,22 @@ namespace PowerPointLabs
             return mergedShape;
         }
 
+        private void AdjustPosition(PowerPoint.ShapeRange oldRange, PowerPoint.ShapeRange copyRange)
+        {
+            Dictionary<string, Tuple<float,float>> dict = new Dictionary<string, Tuple<float,float>>();
+            foreach (var sh in oldRange)
+            {
+                var shape = sh as PowerPoint.Shape;
+                dict.Add(shape.Name, new Tuple<float, float>(shape.Left, shape.Top));
+            }
+            foreach (var sh in copyRange)
+            {
+                var shape = sh as PowerPoint.Shape;
+                shape.Left = dict[shape.Name].Item1;
+                shape.Top = dict[shape.Name].Item2;
+            }
+        }
+
         private List<string> ProduceNameList(PowerPoint.ShapeRange range)
         {
             List<string> output = new List<string>();
@@ -3312,14 +3333,32 @@ namespace PowerPointLabs
                 output.Add((sh as PowerPoint.Shape).Name);
             }
             return output;
+        }
+
+        private void ModifyNames(PowerPoint.ShapeRange range, string appendString = "")
+        {
+            if (appendString != "")
+            {
+                foreach (var sh in range)
+                {
+                    (sh as PowerPoint.Shape).Name += appendString;
+                }
+            }
+            else
+            {
+                foreach (var sh in range)
+                {
+                    (sh as PowerPoint.Shape).Name = Guid.NewGuid().ToString();
+                }
+            }
         } 
 
         private bool IsWithinSlide(PowerPoint.Shape shape)
         {
-            bool cond1 = shape.Left >= 12;
-            bool cond2 = shape.Top >= 12;
-            bool cond3 = shape.Left + shape.Width <= Globals.ThisAddIn.Application.ActivePresentation.PageSetup.SlideWidth + 12;
-            bool cond4 = shape.Top + shape.Height <= Globals.ThisAddIn.Application.ActivePresentation.PageSetup.SlideHeight + 12;
+            bool cond1 = shape.Left >= -1;
+            bool cond2 = shape.Top >= -1;
+            bool cond3 = shape.Left + shape.Width <= Globals.ThisAddIn.Application.ActivePresentation.PageSetup.SlideWidth + 1;
+            bool cond4 = shape.Top + shape.Height <= Globals.ThisAddIn.Application.ActivePresentation.PageSetup.SlideHeight + 1;
             return cond1 && cond2 && cond3 && cond4;
         }
 
@@ -3366,10 +3405,12 @@ namespace PowerPointLabs
                 foreach (var sh in newRange)
                 {
                     var mergedShape = sh as PowerPoint.Shape;
-                    if (!nameList.Contains(mergedShape.Name)
-                        && KaisBirthday == mergedShape.Line.ForeColor.RGB)
+                    if (!nameList.Contains(mergedShape.Name))
                     {
-                        shape = mergedShape;
+                        if(KaisBirthday == mergedShape.Line.ForeColor.RGB)
+                        {
+                            shape = mergedShape;
+                        }
                     }
                 }
             }
@@ -3398,10 +3439,12 @@ namespace PowerPointLabs
                 {
                     helperShape = mergedShape;
                 }
-                else if (!nameList.Contains(mergedShape.Name)
-                    && KaisBirthday == mergedShape.Line.ForeColor.RGB)
+                else if (!nameList.Contains(mergedShape.Name))
                 {
-                    list.Add(mergedShape.Name);
+                    if(KaisBirthday == mergedShape.Line.ForeColor.RGB)
+                    {
+                        list.Add(mergedShape.Name);
+                    }
                 }
             }
             helperShape.Delete();
@@ -3414,10 +3457,12 @@ namespace PowerPointLabs
             foreach (var sh in newRange)
             {
                 var mergedShape = sh as PowerPoint.Shape;
-                if (!nameList.Contains(mergedShape.Name)
-                    && KaisBirthday == mergedShape.Line.ForeColor.RGB)
+                if (!nameList.Contains(mergedShape.Name))
                 {
-                    shape = mergedShape;
+                    if(KaisBirthday == mergedShape.Line.ForeColor.RGB)
+                    {
+                        shape = mergedShape;
+                    }
                 }
             }
         }
