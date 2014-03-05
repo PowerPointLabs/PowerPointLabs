@@ -1,5 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Drawing;
+using System.Drawing.Imaging;
 using System.IO;
 using System.Linq;
 using System.Reflection;
@@ -3118,36 +3120,131 @@ namespace PowerPointLabs
 
         private void CropShape(ref PowerPoint.Selection selection)
         {
-            if (IsValidSelectionForCropToShape(ref selection))
+            try
             {
+                IsValidSelectionForCropToShape(ref selection);
                 var shape = FormShapeForCropToShape(ref selection);
-                string path = GetPathToStore();
-                TakeScreenshotWithoutShape(ref shape, path);
-                FillInShapeWithScreenshot(ref shape, path);
-                //RemoveOverlapItems(shape);
-                if (shape.Type == Office.MsoShapeType.msoGroup)
-                {
-                    ConvertToPicture(ref shape);
-                }
-                else
-                {
-                    ReformShape(shape);
-                }
+                TakeScreenshotWithoutShape(ref shape);
+                FillInShapeWithScreenshot(shape);
             }
-            else
+            catch (Exception)
             {
-                MessageBox.Show("To activate, please select unrotated shape(s)", "Unable to crop");
+                MessageBox.Show(GetCropToShapeErrorMessage(), "Unable to crop");
+                CropToShapeErrorCode = -1;
             }
         }
 
-        private void ReformShape(PowerPoint.Shape shape)
+        private int CropToShapeErrorCode = -1;
+        private const int ERROR_SELECTION_COUNT_ZERO = 0;
+        private const int ERROR_SELECTION_NON_SHAPE = 1;
+        private const int ERROR_EXCEED_SLIDE_BOUND = 2;
+        private const int ERROR_ROTATION_NON_ZERO = 3;
+        const string OfficeVersion2013 = "15.0";
+        const string OfficeVersion2010 = "14.0";
+
+        private string GetCropToShapeErrorMessage()
         {
-            shape.Export(GetPathForFillInBackground(), PowerPoint.PpShapeFormat.ppShapeFormatPNG);
+            switch (CropToShapeErrorCode)
+            {
+                case ERROR_SELECTION_COUNT_ZERO:
+                    return "To start 'Auto Crop', please select at least one shape.";
+                case ERROR_SELECTION_NON_SHAPE:
+                    return "'Auto Crop' only supports shape objects.";
+                case ERROR_EXCEED_SLIDE_BOUND:
+                    return "Please ensure your shape is within the slide.";
+                case ERROR_ROTATION_NON_ZERO:
+                    return "Please ensure your shape is unrotated.";
+                default:
+                    return "Undefined error.";                    
+            }
+        }
+
+        private void FillInShapeWithScreenshot(PowerPoint.Shape shape)
+        {
             var fillEffect = shape.Fill;
-            fillEffect.UserPicture(GetPathForFillInBackground());
-            shape.Line.Weight = 6;//arbitrary large weight
+            if (Globals.ThisAddIn.Application.Version == OfficeVersion2013
+                || (Globals.ThisAddIn.Application.Version == OfficeVersion2010
+                && shape.Type != Office.MsoShapeType.msoGroup))
+            {
+                ProduceFillInBackground(ref shape);
+                fillEffect.UserPicture(GetPathForFillInBackground());                
+                shape.Select();
+            }
+            else if(Globals.ThisAddIn.Application.Version == OfficeVersion2010)
+            {
+                fillEffect.UserTextured(GetPathToStore());
+                fillEffect.TextureOffsetX = -shape.Left;
+                fillEffect.TextureOffsetY = -shape.Top;
+                AdjustFillEffect(ref shape);
+                shape.Line.Visible = Office.MsoTriState.msoFalse;
+                var pic = ConvertToPicture(ref shape);
+                shape = pic;
+            }
+            shape.Line.Weight = 3;//arbitrary slightly large weight
+            shape.Line.ForeColor.RGB = 0xffffff;
             shape.Line.Visible = Office.MsoTriState.msoTrue;
-            shape.Select();
+        }
+
+        private void AdjustFillEffect(ref PowerPoint.Shape shape)
+        {
+            if (shape.Type == Office.MsoShapeType.msoGroup)
+            {
+                var range = shape.Ungroup();
+                foreach (var o in range)
+                {
+                    var sh = o as PowerPoint.Shape;
+                    var tmpFillEffect = sh.Fill;
+                    tmpFillEffect.TextureOffsetX = -sh.Left;
+                    tmpFillEffect.TextureOffsetY = -sh.Top;
+                }
+                shape = range.Group();
+            }
+        }
+
+        private void ProduceFillInBackground(ref PowerPoint.Shape shape)
+        {
+            using (Bitmap slideImage = (Bitmap)Bitmap.FromFile(GetPathToStore()))
+            {
+                float horizontalRatio =
+                    (float)(GetDesiredExportWidth() / Globals.ThisAddIn.Application.ActivePresentation.PageSetup.SlideWidth);
+                float verticalRatio =
+                    (float)(GetDesiredExportHeight() / Globals.ThisAddIn.Application.ActivePresentation.PageSetup.SlideHeight);
+                Bitmap croppedImage = KiCut(slideImage,
+                    shape.Left * horizontalRatio,
+                    shape.Top * verticalRatio,
+                    shape.Width * horizontalRatio,
+                    shape.Height * verticalRatio);
+                croppedImage.Save(GetPathForFillInBackground(), ImageFormat.Png);
+            }
+        }
+
+        public static Bitmap KiCut(Bitmap original, float startX, float startY, float width, float height)
+        {
+            if (original == null)
+            {
+                return null;
+            }
+            if (startX >= original.Width || startY >= original.Height)
+            {
+                return null;
+            }
+            try
+            {
+                Bitmap outputImage = new Bitmap((int)width, (int)height, PixelFormat.Format24bppRgb);
+
+                Graphics inputGraphics = Graphics.FromImage(outputImage);
+                inputGraphics.DrawImage(original,
+                    new Rectangle(0, 0, (int)width, (int)height),
+                    new Rectangle((int)startX, (int)startY, (int)width, (int)height),
+                    GraphicsUnit.Pixel);
+                inputGraphics.Dispose();
+
+                return outputImage;
+            }
+            catch
+            {
+                return null;
+            }
         }
 
         private string GetPathForFillInBackground()
@@ -3162,7 +3259,7 @@ namespace PowerPointLabs
             return path + "\\currentSlide.png";
         }
 
-        private void ConvertToPicture(ref PowerPoint.Shape shape)
+        private PowerPoint.Shape ConvertToPicture(ref PowerPoint.Shape shape)
         {
             shape.Copy();
             float x = shape.Left;
@@ -3172,6 +3269,7 @@ namespace PowerPointLabs
             pic.Left = x;
             pic.Top = y;
             pic.Select();
+            return pic;
         }
 
         private bool IsFirstOneOverlapWithSecond(PowerPoint.Shape first, PowerPoint.Shape second)
@@ -3200,16 +3298,17 @@ namespace PowerPointLabs
             }
         }
 
-        private void TakeScreenshotWithoutShape(ref PowerPoint.Shape shape, string fileToStore)
+        private void TakeScreenshotWithoutShape(ref PowerPoint.Shape shape)
         {
-            shape.Cut();
-            TakeScreenshot(fileToStore);
-            shape = GetCurrentSlide().Shapes.Paste()[1];
+            shape.Visible = Office.MsoTriState.msoFalse;
+            TakeScreenshot();
+            shape.Visible = Office.MsoTriState.msoTrue;
         }
 
-        private void TakeScreenshot(string fileToStore)
+        private void TakeScreenshot()
         {
-            GetCurrentSlide().Export(fileToStore, "PNG", (int)GetDesiredExportWidth(), (int)GetDesiredExportHeight());
+            GetCurrentSlide().Export(GetPathToStore(), "PNG", 
+                (int)GetDesiredExportWidth(), (int)GetDesiredExportHeight());
         }
 
         private double GetDesiredExportWidth()
@@ -3222,42 +3321,107 @@ namespace PowerPointLabs
             return Globals.ThisAddIn.Application.ActivePresentation.PageSetup.SlideHeight / 72.0 * 96.0;
         }
 
-        private void FillInShapeWithScreenshot(ref PowerPoint.Shape shape, string fileToStore)
-        {
-            var fillEffect = shape.Fill;
-            fillEffect.UserTextured(fileToStore);
-            fillEffect.TextureOffsetX = -shape.Left;
-            fillEffect.TextureOffsetY = -shape.Top;
-            AdjustFillEffect(ref shape);
-            shape.Line.Visible = Office.MsoTriState.msoFalse;
-        }
-
         private PowerPoint.Shape FormShapeForCropToShape(ref PowerPoint.Selection selection)
         {
-            var range = UngroupAll(selection.ShapeRange);
-            PowerPoint.Shape shape;
-            if (range.Count > 1)
+            var oldRange = selection.ShapeRange;
+            //some shapes in the nameList cannot be used due to 
+            //Powerpoint's 'Delete-Undo' bug: when a shape got deleted or cut, then undo,
+            //then we can only read its name/width/height/left/top.. for others, it aborts
+            var nameList = ProduceNameList(GetCurrentSlide().Shapes.Range());
+            //'Cut-Paste' is a normal workaround method for the bug mentioned above
+            oldRange.Cut();
+            oldRange = GetCurrentSlide().Shapes.Paste();
+            var copyRange = MakeCopyWithSamePosition(oldRange);
+            var ungroupedCopyRange = UngroupAllShapes(copyRange);
+            PowerPoint.Shape mergedShape = ungroupedCopyRange[1];
+            if (Globals.ThisAddIn.Application.Version == OfficeVersion2013)
             {
-                shape = range.Group();
+                mergedShape = MergeAllShapes(ref ungroupedCopyRange, nameList);
+                RemoveRotation(ref mergedShape, nameList);
+            }
+            else if (Globals.ThisAddIn.Application.Version == OfficeVersion2010)
+            {
+                if (ungroupedCopyRange.Count > 1)
+                {
+                    mergedShape = ungroupedCopyRange.Group();
+                }
+            }
+            if (IsWithinSlide(mergedShape))
+            {
+                oldRange.Delete();
             }
             else
             {
-                shape = range[1];
+                mergedShape.Delete();
+                ThrowExceptionFromCropToShape(ERROR_EXCEED_SLIDE_BOUND);
             }
-            return shape;
+            return mergedShape;
         }
 
-        private bool IsValidSelectionForCropToShape(ref PowerPoint.Selection selection)
+        private PowerPoint.ShapeRange MakeCopyWithSamePosition(PowerPoint.ShapeRange oldRange)
         {
-            return selection.Type == PowerPoint.PpSelectionType.ppSelectionShapes
-                        && selection.ShapeRange.Count >= 1
-                        && IsShape(selection);
+            //setup shapes' names in oldRange, so that shapes' names in copyRange is the same
+            ModifyNames(oldRange);
+            oldRange.Copy();
+            var copyRange = GetCurrentSlide().Shapes.Paste();
+            //adjust position
+            Dictionary<string, Tuple<float,float>> dict = new Dictionary<string, Tuple<float,float>>();
+            foreach (var sh in oldRange)
+            {
+                var shape = sh as PowerPoint.Shape;
+                dict.Add(shape.Name, new Tuple<float, float>(shape.Left, shape.Top));
+            }
+            foreach (var sh in copyRange)
+            {
+                var shape = sh as PowerPoint.Shape;
+                shape.Left = dict[shape.Name].Item1;
+                shape.Top = dict[shape.Name].Item2;
+            }
+            //append something in case we want to differentiate them
+            ModifyNames(copyRange, "_Copy");
+            return copyRange;
         }
 
-        private PowerPoint.ShapeRange UngroupAll(PowerPoint.ShapeRange range)
+        private List<string> ProduceNameList(PowerPoint.ShapeRange range)
         {
-            range.Cut();
-            range = GetCurrentSlide().Shapes.Paste();
+            List<string> output = new List<string>();
+            foreach (var sh in range)
+            {
+                output.Add((sh as PowerPoint.Shape).Name);
+            }
+            return output;
+        }
+
+        private void ModifyNames(PowerPoint.ShapeRange range, string appendString = "")
+        {
+            if (appendString != "")
+            {
+                foreach (var sh in range)
+                {
+                    (sh as PowerPoint.Shape).Name += appendString;
+                }
+            }
+            else
+            {
+                foreach (var sh in range)
+                {
+                    (sh as PowerPoint.Shape).Name = Guid.NewGuid().ToString();
+                }
+            }
+        } 
+
+        private bool IsWithinSlide(PowerPoint.Shape shape)
+        {
+            //-1 and +1 for better user experience
+            bool cond1 = shape.Left >= -1;
+            bool cond2 = shape.Top >= -1;
+            bool cond3 = shape.Left + shape.Width <= Globals.ThisAddIn.Application.ActivePresentation.PageSetup.SlideWidth + 1;
+            bool cond4 = shape.Top + shape.Height <= Globals.ThisAddIn.Application.ActivePresentation.PageSetup.SlideHeight + 1;
+            return cond1 && cond2 && cond3 && cond4;
+        }
+
+        private PowerPoint.ShapeRange UngroupAllShapes(PowerPoint.ShapeRange range)
+        {
             List<string> ungroupedShapes = new List<string>();
             Queue<PowerPoint.Shape> selectedShapes = new Queue<PowerPoint.Shape>();
 
@@ -3276,27 +3440,152 @@ namespace PowerPointLabs
                         selectedShapes.Enqueue(item as PowerPoint.Shape);
                     }
                 }
+                else if (Globals.ThisAddIn.Application.Version == OfficeVersion2010
+                    && shape.Rotation != 0.0)
+                {
+                    //remove copies before throwing exception
+                    shape.Delete();
+                    if (ungroupedShapes.Count > 0)
+                    {
+                        GetCurrentSlide().Shapes.Range(ungroupedShapes.ToArray()).Delete();
+                    }
+                    while (selectedShapes.Count != 0)
+                    {
+                        selectedShapes.Dequeue().Delete();
+                    }
+                    ThrowExceptionFromCropToShape(ERROR_ROTATION_NON_ZERO);
+                }
+                else if (!IsShape(shape))
+                {
+                    //remove copies before throwing exception
+                    shape.Delete();
+                    if (ungroupedShapes.Count > 0)
+                    {
+                        GetCurrentSlide().Shapes.Range(ungroupedShapes.ToArray()).Delete();
+                    }
+                    while (selectedShapes.Count != 0)
+                    {
+                        selectedShapes.Dequeue().Delete();
+                    }
+                    ThrowExceptionFromCropToShape(ERROR_SELECTION_NON_SHAPE);
+                }
                 else
                 {
+                    shape.Name = Guid.NewGuid().ToString();
                     ungroupedShapes.Add(shape.Name);
                 }
             }
             return GetCurrentSlide().Shapes.Range(ungroupedShapes.ToArray());
         }
 
-        private void AdjustFillEffect(ref PowerPoint.Shape shape)
+        private PowerPoint.Shape MergeAllShapes(ref PowerPoint.ShapeRange range, List<string> nameList)
         {
-            if (shape.Type == Office.MsoShapeType.msoGroup)
+            PowerPoint.Shape shape = range[1];
+            if (range.Count > 1)
             {
-                var range = shape.Ungroup();
-                foreach (var o in range)
+                int KaisBirthday = 0x900209;
+                range[1].Line.ForeColor.RGB = KaisBirthday;
+                //merged shape will inherit the foreColor of range[1]'s line,
+                //which is Xie Kai's birthday :p
+                //a better choice can be: random number or timestamp
+                range.MergeShapes(Office.MsoMergeCmd.msoMergeUnion, range[1]);
+                //find the merged shape
+                var newRange = GetCurrentSlide().Shapes.Range();
+                foreach (var sh in newRange)
                 {
-                    var sh = o as PowerPoint.Shape;
-                    var tmpFillEffect = sh.Fill;
-                    tmpFillEffect.TextureOffsetX = -sh.Left;
-                    tmpFillEffect.TextureOffsetY = -sh.Top;
+                    var mergedShape = sh as PowerPoint.Shape;
+                    if (!nameList.Contains(mergedShape.Name))
+                    {
+                        if(KaisBirthday == mergedShape.Line.ForeColor.RGB)
+                        {
+                            shape = mergedShape;
+                        }
+                    }
                 }
-                shape = range.Group();
+            }
+            return shape;
+        }
+
+        private void RemoveRotation(ref PowerPoint.Shape shape, List<string> nameList)
+        {
+            var helperShape = GetCurrentSlide().Shapes.AddShape(Office.MsoAutoShapeType.msoShapeRectangle, -100, -100, 1, 1);
+            int KaisBirthday = 0x900209;
+            helperShape.Line.ForeColor.RGB = KaisBirthday;
+            //merged shape will inherit the foreColor of range[1]'s line,
+            //which is Xie Kai's birthday :p
+            //a better choice can be: random number or timestamp
+            var range = GetCurrentSlide().
+                Shapes.Range(new List<string> { helperShape.Name, shape.Name }.ToArray());
+            //Separate the shapes and make rotation back to zero
+            range.MergeShapes(Office.MsoMergeCmd.msoMergeFragment, helperShape);
+            //find those resulted shapes
+            var newRange = GetCurrentSlide().Shapes.Range();
+            List<string> list = new List<string>();
+            foreach (var sh in newRange)
+            {
+                var mergedShape = sh as PowerPoint.Shape;
+                if (mergedShape.Left == -100
+                    && mergedShape.Top == -100
+                    && mergedShape.Width == 1
+                    && mergedShape.Height == 1)
+                {
+                    helperShape = mergedShape;
+                }
+                else if (!nameList.Contains(mergedShape.Name))
+                {
+                    if(KaisBirthday == mergedShape.Line.ForeColor.RGB)
+                    {
+                        list.Add(mergedShape.Name);
+                    }
+                }
+            }
+            helperShape.Delete();
+            range = GetCurrentSlide().Shapes.Range(list.ToArray());
+            if (list.Count > 1)
+            {
+                range.MergeShapes(Office.MsoMergeCmd.msoMergeUnion);
+                //find out the merged shape
+                newRange = GetCurrentSlide().Shapes.Range();
+                foreach (var sh in newRange)
+                {
+                    var mergedShape = sh as PowerPoint.Shape;
+                    if (!nameList.Contains(mergedShape.Name))
+                    {
+                        if (KaisBirthday == mergedShape.Line.ForeColor.RGB)
+                        {
+                            shape = mergedShape;
+                        }
+                    }
+                }
+            }
+            else
+            {
+                shape = range[1];
+            }
+        }
+
+        private void ThrowExceptionFromCropToShape(int typeOfError)
+        {
+            CropToShapeErrorCode = typeOfError;
+            throw new Exception("Error: " + typeOfError.ToString());
+        }
+
+        private void IsValidSelectionForCropToShape(ref PowerPoint.Selection selection)
+        {
+            if (selection.Type == PowerPoint.PpSelectionType.ppSelectionShapes)
+            {
+                if (selection.ShapeRange.Count < 1)
+                {
+                    ThrowExceptionFromCropToShape(ERROR_SELECTION_COUNT_ZERO);
+                }
+                if (!IsShape(selection))
+                {
+                    ThrowExceptionFromCropToShape(ERROR_SELECTION_NON_SHAPE);
+                }
+            }
+            else
+            {
+                ThrowExceptionFromCropToShape(ERROR_SELECTION_COUNT_ZERO);
             }
         }
 
@@ -3306,48 +3595,21 @@ namespace PowerPointLabs
             foreach (var o in shapeRange)
             {
                 var shape = o as PowerPoint.Shape;
-                if ((shape.Type != Office.MsoShapeType.msoAutoShape
-                    && shape.Type != Office.MsoShapeType.msoFreeform
-                    && shape.Type != Office.MsoShapeType.msoGroup)
-                    || shape.Rotation != 0)
-                {
+                if (!IsShape(shape))
                     return false;
-                }
-                else if (shape.Type == Office.MsoShapeType.msoGroup
-                    && IsRotatedGroups(sel))
-                {
-                    return false;
-                }
             }
             return true;
         }
 
-        private bool IsRotatedGroups(PowerPoint.Selection sel)
+        private bool IsShape(PowerPoint.Shape shape)
         {
-            var range = sel.ShapeRange;
-            Queue<PowerPoint.Shape> selectedShapes = new Queue<PowerPoint.Shape>();
-
-            foreach (var item in range)
+            if (shape.Type != Office.MsoShapeType.msoAutoShape
+                    && shape.Type != Office.MsoShapeType.msoFreeform
+                    && shape.Type != Office.MsoShapeType.msoGroup)
             {
-                selectedShapes.Enqueue(item as PowerPoint.Shape);
+                return false;
             }
-            while (selectedShapes.Count != 0)
-            {
-                var shape = selectedShapes.Dequeue();
-                if (shape.Type == Office.MsoShapeType.msoGroup)
-                {
-                    foreach (var item in shape.GroupItems)
-                    {
-                        selectedShapes.Enqueue(item as PowerPoint.Shape);
-                    }
-                }
-                else
-                {
-                    if (shape.Rotation != 0)
-                        return true;
-                }
-            }
-            return false;
+            return true;
         }
 
         public System.Drawing.Bitmap GetCutOutShapeMenuImage(Office.IRibbonControl control)

@@ -1350,7 +1350,7 @@ namespace PowerPointLabs
         {
             //AboutForm form = new AboutForm();
             //form.Show();
-            System.Windows.Forms.MessageBox.Show("          PowerPointLabs Plugin Version 1.4.7 [Release date: 26 Feb 2014]\n     Developed at School of Computing, National University of Singapore.\n        For more information, visit our website http://PowerPointLabs.info", "About PowerPointLabs");
+            System.Windows.Forms.MessageBox.Show("          PowerPointLabs Plugin Version 1.5 [Release date: 27 Feb 2014]\n     Developed at School of Computing, National University of Singapore.\n        For more information, visit our website http://PowerPointLabs.info", "About PowerPointLabs");
         }
         public void HelpButtonClick(Office.IRibbonControl control)
         {
@@ -3209,7 +3209,17 @@ namespace PowerPointLabs
 
         private void TakeScreenshot(string fileToStore)
         {
-            GetCurrentSlide().Export(fileToStore, "PNG");
+            GetCurrentSlide().Export(fileToStore, "PNG", (int)GetDesiredExportWidth(), (int)GetDesiredExportHeight());
+        }
+
+        private double GetDesiredExportWidth()
+        {
+            return Globals.ThisAddIn.Application.ActivePresentation.PageSetup.SlideWidth / 72.0 * 96.0;
+        }
+
+        private double GetDesiredExportHeight()
+        {
+            return Globals.ThisAddIn.Application.ActivePresentation.PageSetup.SlideHeight / 72.0 * 96.0;
         }
 
         private void FillInShapeWithScreenshot(ref PowerPoint.Shape shape, string fileToStore)
