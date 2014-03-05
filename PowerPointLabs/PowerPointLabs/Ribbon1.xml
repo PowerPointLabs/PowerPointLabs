@@ -231,6 +231,10 @@
              getImage="GetZoomToAreaContextImage"
              getEnabled="OnGetEnabledZoomButton"
              onAction="ZoomBtnClick"/>
+      <button id="ConvertToPictureShape"
+             label ="Convert to Picture"
+             getImage="GetConvertToPicMenuImage"
+             onAction="ConvertToPictureButtonClick"/>
       <button id="cutOutShapeShape"
               label="Crop To Shape"
               getImage="GetCutOutShapeMenuImage"
@@ -254,6 +258,10 @@
               label="Add Spotlight"
               getImage="GetAddSpotlightContextImage"
               onAction="SpotlightBtnClick"/>
+      <button id="ConvertToPictureFreeform"
+             label ="Convert to Picture"
+             getImage="GetConvertToPicMenuImage"
+             onAction="ConvertToPictureButtonClick"/>
       <button id="cutOutShapeFreeform"
               label="Crop To Shape"
               getImage="GetCutOutShapeMenuImage"
@@ -298,6 +306,10 @@
               label="Edit Name"
               getImage="GetEditNameContextImage"
               onAction="NameEditBtnClick"/>
+      <button id="ConvertToPictureChart"
+             label ="Convert to Picture"
+             getImage="GetConvertToPicMenuImage"
+             onAction="ConvertToPictureButtonClick"/>
       <button id="fitToWidthChart"
               label="Fit To Width"
               getImage="GetFitToWidthImage"
