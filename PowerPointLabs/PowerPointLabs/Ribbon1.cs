@@ -1227,18 +1227,18 @@ namespace PowerPointLabs
                 currentSlide.Duplicate();
                 PowerPoint.Slide addedSlide = GetNextSlide(currentSlide);
                 addedSlide.Name = "PPTLabsSpotlight" + GetTimestamp(DateTime.Now);
-                int counter = 2;
                 List<PowerPoint.Shape> spotlightShapes = new List<PowerPoint.Shape>();
 
                 foreach (PowerPoint.Shape spotShape in selectedShapes)
                 { 
-                    foreach (PowerPoint.Shape copyShape in addedSlide.Shapes)
+                    foreach (PowerPoint.Shape copyShape in currentSlide.Shapes)
                     {
-                        if (copyShape.Name.Equals(spotShape.Name))
+                        if (copyShape.Name.Equals(spotShape.Name) || copyShape.Name.Contains("SpotlightShape"))
                         {
                             //if (spotlightDelete)
                             //{
-                                copyShape.Delete();
+                            PowerPoint.Shape sh = FindIdenticalShape(addedSlide, copyShape);
+                            sh.Delete();
                             //}
                             //else
                             //{
@@ -1301,8 +1301,7 @@ namespace PowerPointLabs
                     spotlightShape.Line.Visible = Office.MsoTriState.msoFalse;
                     if (spotlightShape.HasTextFrame == Office.MsoTriState.msoTrue && spotlightShape.TextFrame.HasText == Office.MsoTriState.msoTrue)
                         spotlightShape.TextFrame.TextRange.Font.Color.RGB = 0xffffff;
-                    spotlightShape.Name = "SpotlightShape" + counter;
-                    counter++;
+                    spotlightShape.Name = "SpotlightShape" + GetTimestamp(DateTime.Now);
 
                     PowerPoint.Shape duplicateShape = spotlightShape.Duplicate()[1];
                     duplicateShape.Visible = Office.MsoTriState.msoFalse;
