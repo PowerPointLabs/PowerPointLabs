@@ -3668,6 +3668,38 @@ namespace PowerPointLabs
 
         #endregion
 
+        #region feature: Conver to Picture
+
+        public void ConvertToPictureButtonClick(Office.IRibbonControl control)
+        {
+            var selection = Globals.ThisAddIn.Application.
+                ActiveWindow.Selection;
+            if (selection.Type == PowerPoint.PpSelectionType.ppSelectionShapes)
+            {
+                var shape = selection.ShapeRange[1];
+                ConvertToPicture(ref shape);
+            }
+            else
+            {
+                MessageBox.Show("Convert to Picture only supports Shapes and Charts.", "Unable to Convert to Picture");
+            }
+        }
+
+        public System.Drawing.Bitmap GetConvertToPicMenuImage(Office.IRibbonControl control)
+        {
+            try
+            {
+                return new System.Drawing.Bitmap(Properties.Resources.ConvertToPicture);
+            }
+            catch (Exception e)
+            {
+                LogException(e, "GetConvertToPicMenuImage");
+                throw;
+            }
+        }
+
+        #endregion
+
         #region Helpers
 
         //Spotlight Helpers
