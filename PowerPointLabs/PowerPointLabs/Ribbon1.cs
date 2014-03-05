@@ -904,9 +904,13 @@ namespace PowerPointLabs
             PowerPoint.Shape magnifyShape = addedSlide.Shapes.Paste()[1];
             magnifyShape.LockAspectRatio = Office.MsoTriState.msoTrue;
             if (magnifyShape.Width > magnifyShape.Height)
+            {
                 magnifyShape.Width = presentation.PageSetup.SlideWidth;
+            }
             else
+            {
                 magnifyShape.Height = presentation.PageSetup.SlideHeight;
+            }
 
             magnifyShape.Left = (presentation.PageSetup.SlideWidth / 2) - (magnifyShape.Width / 2);
             magnifyShape.Top = (presentation.PageSetup.SlideHeight / 2) - (magnifyShape.Height / 2);
@@ -1130,8 +1134,28 @@ namespace PowerPointLabs
                 if (Globals.ThisAddIn.Application.ActiveWindow.Selection.ShapeRange.Count == 0)
                     return;
 
-                PowerPoint.Shape selectedShape = Globals.ThisAddIn.Application.ActiveWindow.Selection.ShapeRange[1];
-                selectedShape.Name = "PPTLabsMagnifyShape" + GetTimestamp(DateTime.Now);
+                PowerPoint.Shape selectedShape2 = Globals.ThisAddIn.Application.ActiveWindow.Selection.ShapeRange[1];
+                selectedShape2.Name = "PPTLabsMagnifyShape" + GetTimestamp(DateTime.Now);
+                selectedShape2.Copy();
+                selectedShape2.Visible = Office.MsoTriState.msoFalse;
+                PowerPoint.Shape selectedShape = currentSlide.Shapes.Paste()[1];
+                selectedShape.LockAspectRatio = Office.MsoTriState.msoFalse;
+
+                if (selectedShape2.Width > selectedShape2.Height)
+                {
+                    selectedShape.Width = selectedShape2.Width;
+                    selectedShape.Height = Globals.ThisAddIn.Application.ActivePresentation.PageSetup.SlideHeight * selectedShape.Width / Globals.ThisAddIn.Application.ActivePresentation.PageSetup.SlideWidth;
+                    selectedShape.Left = selectedShape2.Left + (selectedShape2.Width / 2) - (selectedShape.Width / 2);
+                    selectedShape.Top = selectedShape2.Top + (selectedShape2.Height / 2) - (selectedShape.Height / 2);
+                }
+                else
+                {
+                    selectedShape.Height = selectedShape2.Height;
+                    selectedShape.Width = Globals.ThisAddIn.Application.ActivePresentation.PageSetup.SlideWidth * selectedShape.Height / Globals.ThisAddIn.Application.ActivePresentation.PageSetup.SlideHeight;
+                    selectedShape.Left = selectedShape2.Left + (selectedShape2.Width / 2) - (selectedShape.Width / 2);
+                    selectedShape.Top = selectedShape2.Top + (selectedShape2.Height / 2) - (selectedShape.Height / 2);
+                }
+
 
                 if (!backgroundZoomChecked)
                 {
@@ -1151,8 +1175,8 @@ namespace PowerPointLabs
                     Globals.ThisAddIn.Application.ActiveWindow.View.GotoSlide(magnifyingSlide.SlideIndex);
                     Globals.ThisAddIn.Application.CommandBars.ExecuteMso("AnimationPreview");
                 }
-                selectedShape.Visible = Office.MsoTriState.msoFalse;
-
+                //selectedShape.Visible = Office.MsoTriState.msoFalse;
+                selectedShape.Delete();
                 AddAckSlide();
             }
             catch (Exception e)
