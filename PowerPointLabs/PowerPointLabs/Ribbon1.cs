@@ -828,19 +828,19 @@ namespace PowerPointLabs
                     tmp.Visible = Office.MsoTriState.msoTrue;
                     if (j == 0)
                     {
-                        effectFade = sequence.AddEffect(tmp, PowerPoint.MsoAnimEffect.msoAnimEffectFade, PowerPoint.MsoAnimateByLevel.msoAnimateLevelNone, PowerPoint.MsoAnimTriggerType.msoAnimTriggerAfterPrevious);
+                        effectFade = sequence.AddEffect(tmp, PowerPoint.MsoAnimEffect.msoAnimEffectAppear, PowerPoint.MsoAnimateByLevel.msoAnimateLevelNone, PowerPoint.MsoAnimTriggerType.msoAnimTriggerAfterPrevious);
                     }
                     else
                     {
-                        effectFade = sequence.AddEffect(tmp, PowerPoint.MsoAnimEffect.msoAnimEffectFade, PowerPoint.MsoAnimateByLevel.msoAnimateLevelNone, PowerPoint.MsoAnimTriggerType.msoAnimTriggerWithPrevious);
+                        effectFade = sequence.AddEffect(tmp, PowerPoint.MsoAnimEffect.msoAnimEffectAppear, PowerPoint.MsoAnimateByLevel.msoAnimateLevelNone, PowerPoint.MsoAnimTriggerType.msoAnimTriggerWithPrevious);
                     }
-                    effectFade.Timing.Duration = 0.5f;
+                    effectFade.Timing.Duration = 0.01f;
                     j++;
                 }
             }
-            effectFade = sequence.AddEffect(lastShape, PowerPoint.MsoAnimEffect.msoAnimEffectFade, PowerPoint.MsoAnimateByLevel.msoAnimateLevelNone, PowerPoint.MsoAnimTriggerType.msoAnimTriggerWithPrevious);
+            effectFade = sequence.AddEffect(lastShape, PowerPoint.MsoAnimEffect.msoAnimEffectAppear, PowerPoint.MsoAnimateByLevel.msoAnimateLevelNone, PowerPoint.MsoAnimTriggerType.msoAnimTriggerWithPrevious);
             effectFade.Exit = Office.MsoTriState.msoTrue;
-            effectFade.Timing.Duration = 0.5f;
+            effectFade.Timing.Duration = 0.01f;
 
             indicatorShape.ZOrder(Office.MsoZOrderCmd.msoBringToFront);
             addedSlide.SlideShowTransition.EntryEffect = PowerPoint.PpEntryEffect.ppEffectNone;
@@ -926,7 +926,7 @@ namespace PowerPointLabs
                     DeleteShapeAnnimations(addedSlide, tmp);
                     effectFade = sequence.AddEffect(tmp, PowerPoint.MsoAnimEffect.msoAnimEffectFade, PowerPoint.MsoAnimateByLevel.msoAnimateLevelNone, PowerPoint.MsoAnimTriggerType.msoAnimTriggerWithPrevious);
                     effectFade.Exit = Office.MsoTriState.msoTrue;
-                    effectFade.Timing.Duration = 0.5f;
+                    effectFade.Timing.Duration = 0.25f;
                 }
             }
 
@@ -1141,13 +1141,13 @@ namespace PowerPointLabs
                     {
                         effectFade = sequence.AddEffect(tmp, PowerPoint.MsoAnimEffect.msoAnimEffectFade, PowerPoint.MsoAnimateByLevel.msoAnimateLevelNone, PowerPoint.MsoAnimTriggerType.msoAnimTriggerWithPrevious);
                     }
-                    effectFade.Timing.Duration = 0.5f;
+                    effectFade.Timing.Duration = 0.25f;
                     i++;
                 }
             }
             effectFade = sequence.AddEffect(magnifyShape, PowerPoint.MsoAnimEffect.msoAnimEffectFade, PowerPoint.MsoAnimateByLevel.msoAnimateLevelNone, PowerPoint.MsoAnimTriggerType.msoAnimTriggerWithPrevious);
             effectFade.Exit = Office.MsoTriState.msoTrue;
-            effectFade.Timing.Duration = 0.5f;
+            effectFade.Timing.Duration = 0.25f;
 
             indicatorShape.ZOrder(Office.MsoZOrderCmd.msoBringToFront);
             addedSlide.SlideShowTransition.EntryEffect = PowerPoint.PpEntryEffect.ppEffectNone;
@@ -3576,7 +3576,7 @@ namespace PowerPointLabs
                 //merged shape will inherit the foreColor of range[1]'s line,
                 //which is Xie Kai's birthday :p
                 //a better choice can be: random number or timestamp
-                range.MergeShapes(Office.MsoMergeCmd.msoMergeUnion, range[1]);
+                //range.MergeShapes(Office.MsoMergeCmd.msoMergeUnion, range[1]);
                 //find the merged shape
                 var newRange = GetCurrentSlide().Shapes.Range();
                 foreach (var sh in newRange)
@@ -3605,7 +3605,7 @@ namespace PowerPointLabs
             var range = GetCurrentSlide().
                 Shapes.Range(new List<string> { helperShape.Name, shape.Name }.ToArray());
             //Separate the shapes and make rotation back to zero
-            range.MergeShapes(Office.MsoMergeCmd.msoMergeFragment, helperShape);
+            //range.MergeShapes(Office.MsoMergeCmd.msoMergeFragment, helperShape);
             //find those resulted shapes
             var newRange = GetCurrentSlide().Shapes.Range();
             List<string> list = new List<string>();
@@ -3631,7 +3631,7 @@ namespace PowerPointLabs
             range = GetCurrentSlide().Shapes.Range(list.ToArray());
             if (list.Count > 1)
             {
-                range.MergeShapes(Office.MsoMergeCmd.msoMergeUnion);
+                //range.MergeShapes(Office.MsoMergeCmd.msoMergeUnion);
                 //find out the merged shape
                 newRange = GetCurrentSlide().Shapes.Range();
                 foreach (var sh in newRange)
