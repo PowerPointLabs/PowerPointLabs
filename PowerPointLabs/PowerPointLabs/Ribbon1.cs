@@ -60,6 +60,22 @@ namespace PowerPointLabs
             {"25 Points", 25},
             {"50 Points", 50}
         };
+
+        private List<PowerPoint.MsoAnimEffect> entryEffects = new List<PowerPoint.MsoAnimEffect>()
+        {
+            PowerPoint.MsoAnimEffect.msoAnimEffectAppear, PowerPoint.MsoAnimEffect.msoAnimEffectBlinds, PowerPoint.MsoAnimEffect.msoAnimEffectBox,
+            PowerPoint.MsoAnimEffect.msoAnimEffectCheckerboard, PowerPoint.MsoAnimEffect.msoAnimEffectCircle, PowerPoint.MsoAnimEffect.msoAnimEffectDiamond,
+            PowerPoint.MsoAnimEffect.msoAnimEffectDissolve, PowerPoint.MsoAnimEffect.msoAnimEffectFly, PowerPoint.MsoAnimEffect.msoAnimEffectPeek, 
+            PowerPoint.MsoAnimEffect.msoAnimEffectPlus, PowerPoint.MsoAnimEffect.msoAnimEffectRandomBars, PowerPoint.MsoAnimEffect.msoAnimEffectSplit,
+            PowerPoint.MsoAnimEffect.msoAnimEffectStrips, PowerPoint.MsoAnimEffect.msoAnimEffectWedge, PowerPoint.MsoAnimEffect.msoAnimEffectWheel,
+            PowerPoint.MsoAnimEffect.msoAnimEffectWipe, PowerPoint.MsoAnimEffect.msoAnimEffectExpand, PowerPoint.MsoAnimEffect.msoAnimEffectFade,
+            PowerPoint.MsoAnimEffect.msoAnimEffectFadedSwivel, PowerPoint.MsoAnimEffect.msoAnimEffectFadedZoom, PowerPoint.MsoAnimEffect.msoAnimEffectZoom,
+            PowerPoint.MsoAnimEffect.msoAnimEffectCenterRevolve, PowerPoint.MsoAnimEffect.msoAnimEffectFloat, PowerPoint.MsoAnimEffect.msoAnimEffectGrowAndTurn,
+            PowerPoint.MsoAnimEffect.msoAnimEffectRiseUp, PowerPoint.MsoAnimEffect.msoAnimEffectSpinner, PowerPoint.MsoAnimEffect.msoAnimEffectSwivel,
+            PowerPoint.MsoAnimEffect.msoAnimEffectBoomerang, PowerPoint.MsoAnimEffect.msoAnimEffectBounce, PowerPoint.MsoAnimEffect.msoAnimEffectCredits,
+            PowerPoint.MsoAnimEffect.msoAnimEffectFlip, PowerPoint.MsoAnimEffect.msoAnimEffectFloat, PowerPoint.MsoAnimEffect.msoAnimEffectPinwheel,
+            PowerPoint.MsoAnimEffect.msoAnimEffectSpiral, PowerPoint.MsoAnimEffect.msoAnimEffectWhip
+        };
         
         public Dictionary<String, PowerPoint.Shape> spotlightShapeMapping = new Dictionary<string,PowerPoint.Shape>();
         public Dictionary<String, PowerPoint.Slide> spotlightSlideMapping = new Dictionary<string, PowerPoint.Slide>();
@@ -466,6 +482,13 @@ namespace PowerPointLabs
         {
             PowerPoint.Presentation presentation = Globals.ThisAddIn.Application.ActivePresentation;
             PowerPoint.Slide addedSlide = currentSlide.Duplicate()[1];
+            MoveMotionAnimation(addedSlide);
+            foreach (PowerPoint.Shape sh in currentSlide.Shapes)
+            {
+                PowerPoint.Shape tmp = FindIdenticalShape(addedSlide, sh);
+                if (HasExitAnimation(addedSlide, tmp))
+                    tmp.Delete();
+            }
             addedSlide.Name = "PPTLabsMagnifyingSlide" + GetTimestamp(DateTime.Now);
 
             float centerX = selectedShape.Left + selectedShape.Width / 2;
@@ -830,15 +853,22 @@ namespace PowerPointLabs
         {
             PowerPoint.Presentation presentation = Globals.ThisAddIn.Application.ActivePresentation;
             PowerPoint.Slide addedSlide = currentSlide.Duplicate()[1];
+            MoveMotionAnimation(addedSlide);
+            foreach (PowerPoint.Shape sh in currentSlide.Shapes)
+            {
+                PowerPoint.Shape tmp = FindIdenticalShape(addedSlide, sh);
+                if (HasExitAnimation(addedSlide, tmp))
+                    tmp.Delete();
+            }
             addedSlide.Name = "PPTLabsMagnifyingSlide" + GetTimestamp(DateTime.Now);
 
             float centerX = selectedShape.Left + selectedShape.Width / 2;
             float centerY = selectedShape.Top + selectedShape.Height / 2;
 
-            PowerPoint.Shape sh = FindIdenticalShape(addedSlide, selectedShape);
-            if (sh != null)
+            PowerPoint.Shape identicalShape = FindIdenticalShape(addedSlide, selectedShape);
+            if (identicalShape != null)
             {
-                sh.Delete();
+                identicalShape.Delete();
             }
 
             addedSlide.Copy();
@@ -1440,7 +1470,8 @@ namespace PowerPointLabs
             List<PowerPoint.Shape> nextSlideShapes = new List<PowerPoint.Shape>();
             foreach (PowerPoint.Shape sh in nextSlide.Shapes)
             {
-                nextSlideShapes.Add(sh);
+                if(!HasEntryAnimation(nextSlide, sh))
+                    nextSlideShapes.Add(sh);
             }
 
             foreach (PowerPoint.Shape sh in nextSlideShapes)
@@ -1638,8 +1669,16 @@ namespace PowerPointLabs
 
                     //String tempFileName = Path.GetTempFileName();
                     //nextSlide.Export(tempFileName, "PNG");
-                    nextSlide.Copy();
+                    tempSlide = nextSlide.Duplicate()[1];
+                    foreach (PowerPoint.Shape sh in nextSlide.Shapes)
+                    {
+                        PowerPoint.Shape tmp = FindIdenticalShape(tempSlide, sh);
+                        if (HasEntryAnimation(tempSlide, tmp))
+                            tmp.Delete();
+                    }
+                    tempSlide.Copy();
                     PowerPoint.Shape shapePictureCurrentSlide = currentSlide.Shapes.PasteSpecial(PowerPoint.PpPasteDataType.ppPastePNG)[1];
+                    tempSlide.Delete();
 
                     if (shape.Name.Contains("PPTZoomInShape"))
                     {
@@ -4254,6 +4293,92 @@ namespace PowerPointLabs
             {
                 LogException(e, "DeleteShapeAnimations");
                 throw;
+            }
+        }
+        private bool HasEntryAnimation(PowerPoint.Slide slide, PowerPoint.Shape shape)
+        {
+            try
+            {
+                PowerPoint.Sequence sequence = slide.TimeLine.MainSequence;
+                bool flag = false;
+                for (int x = sequence.Count; x >= 1; x--)
+                {
+                    PowerPoint.Effect effect = sequence[x];
+                    if (effect.Shape.Name == shape.Name && effect.Shape.Id == shape.Id)
+                    {
+                        if (entryEffects.Contains(effect.EffectType))
+                        {
+                            flag = true;
+                            break;
+                        }
+                    }
+                }
+                return flag;
+            }
+            catch (Exception e)
+            {
+                LogException(e, "HasEntryAnimation");
+                throw;
+            }
+        }
+        private bool HasExitAnimation(PowerPoint.Slide slide, PowerPoint.Shape shape)
+        {
+            try
+            {
+                PowerPoint.Sequence sequence = slide.TimeLine.MainSequence;
+                PowerPoint.Presentation presentation = Globals.ThisAddIn.Application.ActivePresentation;
+                bool flag = false;
+                for (int x = sequence.Count; x >= 1; x--)
+                {
+                    PowerPoint.Effect effect = sequence[x];
+                    if (effect.Shape.Name == shape.Name && effect.Shape.Id == shape.Id)
+                    {
+                        if (effect.Exit == Office.MsoTriState.msoTrue)
+                        {
+                            flag = true;
+                            break;
+                        }
+                    }
+                }
+
+                return flag;
+            }
+            catch (Exception e)
+            {
+                LogException(e, "HasEntryAnimation");
+                throw;
+            }
+        }
+        private void MoveMotionAnimation(PowerPoint.Slide slide)
+        {
+            try
+            {
+                PowerPoint.Sequence sequence = slide.TimeLine.MainSequence;
+                PowerPoint.Presentation presentation = Globals.ThisAddIn.Application.ActivePresentation;
+                foreach (PowerPoint.Effect eff in slide.TimeLine.MainSequence)
+                {
+                    if ((eff.EffectType >= PowerPoint.MsoAnimEffect.msoAnimEffectPathCircle && eff.EffectType <= PowerPoint.MsoAnimEffect.msoAnimEffectPathRight) || eff.EffectType == PowerPoint.MsoAnimEffect.msoAnimEffectCustom)
+                    {
+                        //sh.Delete();
+                        PowerPoint.AnimationBehavior motion = eff.Behaviors[1];
+                        if (motion.Type == PowerPoint.MsoAnimType.msoAnimTypeMotion)
+                        {
+                            PowerPoint.Shape sh = eff.Shape;
+                            string motionPath = motion.MotionEffect.Path.Trim();
+                            if (motionPath.Last() < 'A' || motionPath.Last() > 'Z')
+                                motionPath += " X";
+                            string[] path = motionPath.Split(' ');
+                            int count = path.Length;
+                            float xVal = Convert.ToSingle(path[count - 3]);
+                            float yVal = Convert.ToSingle(path[count - 2]);
+                            sh.Left += (xVal * presentation.PageSetup.SlideWidth);
+                            sh.Top += (yVal * presentation.PageSetup.SlideHeight);
+                        }
+                    }
+                }
+            }
+            catch (Exception e)
+            {
             }
         }
         //Other Helpers
