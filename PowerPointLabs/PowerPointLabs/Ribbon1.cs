@@ -3250,15 +3250,13 @@ namespace PowerPointLabs
         private void FillInShapeWithScreenshot(PowerPoint.Shape shape)
         {
             var fillEffect = shape.Fill;
-            if (Globals.ThisAddIn.Application.Version == OfficeVersion2013
-                || (Globals.ThisAddIn.Application.Version == OfficeVersion2010
-                && shape.Type != Office.MsoShapeType.msoGroup))
+            if (shape.Type != Office.MsoShapeType.msoGroup)
             {
                 ProduceFillInBackground(ref shape);
                 fillEffect.UserPicture(GetPathForFillInBackground());                
                 shape.Select();
             }
-            else if(Globals.ThisAddIn.Application.Version == OfficeVersion2010)
+            else
             {
                 fillEffect.UserTextured(GetPathToStore());
                 fillEffect.TextureOffsetX = -shape.Left;
@@ -3439,25 +3437,26 @@ namespace PowerPointLabs
             //some shapes in the nameList cannot be used due to 
             //Powerpoint's 'Delete-Undo' bug: when a shape got deleted or cut, then undo,
             //then we can only read its name/width/height/left/top.. for others, it aborts
-            var nameList = ProduceNameList(GetCurrentSlide().Shapes.Range());
+            //var nameList = ProduceNameList(GetCurrentSlide().Shapes.Range());
             //'Cut-Paste' is a normal workaround method for the bug mentioned above
             oldRange.Cut();
             oldRange = GetCurrentSlide().Shapes.Paste();
             var copyRange = MakeCopyWithSamePosition(oldRange);
             var ungroupedCopyRange = UngroupAllShapes(copyRange);
             PowerPoint.Shape mergedShape = ungroupedCopyRange[1];
-            if (Globals.ThisAddIn.Application.Version == OfficeVersion2013)
-            {
-                mergedShape = MergeAllShapes(ref ungroupedCopyRange, nameList);
-                RemoveRotation(ref mergedShape, nameList);
-            }
-            else if (Globals.ThisAddIn.Application.Version == OfficeVersion2010)
-            {
+            //if (Globals.ThisAddIn.Application.Version == OfficeVersion2013)
+            //{
+            //    mergedShape = MergeAllShapes(ref ungroupedCopyRange, nameList);
+            //    RemoveRotation(ref mergedShape, nameList);
+            //}
+            //else 
+            //if (Globals.ThisAddIn.Application.Version == OfficeVersion2010)
+            //{
                 if (ungroupedCopyRange.Count > 1)
                 {
                     mergedShape = ungroupedCopyRange.Group();
                 }
-            }
+            //}
             if (IsWithinSlide(mergedShape))
             {
                 oldRange.Delete();
@@ -3552,8 +3551,8 @@ namespace PowerPointLabs
                         selectedShapes.Enqueue(item as PowerPoint.Shape);
                     }
                 }
-                else if (Globals.ThisAddIn.Application.Version == OfficeVersion2010
-                    && shape.Rotation != 0.0)
+                else if (/*Globals.ThisAddIn.Application.Version == OfficeVersion2010
+                    && */shape.Rotation != 0.0)
                 {
                     //remove copies before throwing exception
                     shape.Delete();
@@ -3590,91 +3589,91 @@ namespace PowerPointLabs
             return GetCurrentSlide().Shapes.Range(ungroupedShapes.ToArray());
         }
 
-        private PowerPoint.Shape MergeAllShapes(ref PowerPoint.ShapeRange range, List<string> nameList)
-        {
-            PowerPoint.Shape shape = range[1];
-            if (range.Count > 1)
-            {
-                int KaisBirthday = 0x900209;
-                range[1].Line.ForeColor.RGB = KaisBirthday;
-                //merged shape will inherit the foreColor of range[1]'s line,
-                //which is Xie Kai's birthday :p
-                //a better choice can be: random number or timestamp
-                range.MergeShapes(Office.MsoMergeCmd.msoMergeUnion, range[1]);
-                //find the merged shape
-                var newRange = GetCurrentSlide().Shapes.Range();
-                foreach (var sh in newRange)
-                {
-                    var mergedShape = sh as PowerPoint.Shape;
-                    if (!nameList.Contains(mergedShape.Name))
-                    {
-                        if(KaisBirthday == mergedShape.Line.ForeColor.RGB)
-                        {
-                            shape = mergedShape;
-                        }
-                    }
-                }
-            }
-            return shape;
-        }
+        //private PowerPoint.Shape MergeAllShapes(ref PowerPoint.ShapeRange range, List<string> nameList)
+        //{
+        //    PowerPoint.Shape shape = range[1];
+        //    if (range.Count > 1)
+        //    {
+        //        int KaisBirthday = 0x900209;
+        //        range[1].Line.ForeColor.RGB = KaisBirthday;
+        //        //merged shape will inherit the foreColor of range[1]'s line,
+        //        //which is Xie Kai's birthday :p
+        //        //a better choice can be: random number or timestamp
+        //        range.MergeShapes(Office.MsoMergeCmd.msoMergeUnion, range[1]);
+        //        //find the merged shape
+        //        var newRange = GetCurrentSlide().Shapes.Range();
+        //        foreach (var sh in newRange)
+        //        {
+        //            var mergedShape = sh as PowerPoint.Shape;
+        //            if (!nameList.Contains(mergedShape.Name))
+        //            {
+        //                if(KaisBirthday == mergedShape.Line.ForeColor.RGB)
+        //                {
+        //                    shape = mergedShape;
+        //                }
+        //            }
+        //        }
+        //    }
+        //    return shape;
+        //}
 
-        private void RemoveRotation(ref PowerPoint.Shape shape, List<string> nameList)
-        {
-            var helperShape = GetCurrentSlide().Shapes.AddShape(Office.MsoAutoShapeType.msoShapeRectangle, -100, -100, 1, 1);
-            int KaisBirthday = 0x900209;
-            helperShape.Line.ForeColor.RGB = KaisBirthday;
-            //merged shape will inherit the foreColor of range[1]'s line,
-            //which is Xie Kai's birthday :p
-            //a better choice can be: random number or timestamp
-            var range = GetCurrentSlide().
-                Shapes.Range(new List<string> { helperShape.Name, shape.Name }.ToArray());
-            //Separate the shapes and make rotation back to zero
-            range.MergeShapes(Office.MsoMergeCmd.msoMergeFragment, helperShape);
-            //find those resulted shapes
-            var newRange = GetCurrentSlide().Shapes.Range();
-            List<string> list = new List<string>();
-            foreach (var sh in newRange)
-            {
-                var mergedShape = sh as PowerPoint.Shape;
-                if (mergedShape.Left == -100
-                    && mergedShape.Top == -100
-                    && mergedShape.Width == 1
-                    && mergedShape.Height == 1)
-                {
-                    helperShape = mergedShape;
-                }
-                else if (!nameList.Contains(mergedShape.Name))
-                {
-                    if(KaisBirthday == mergedShape.Line.ForeColor.RGB)
-                    {
-                        list.Add(mergedShape.Name);
-                    }
-                }
-            }
-            helperShape.Delete();
-            range = GetCurrentSlide().Shapes.Range(list.ToArray());
-            if (list.Count > 1)
-            {
-                range.MergeShapes(Office.MsoMergeCmd.msoMergeUnion);
-                //find out the merged shape
-                newRange = GetCurrentSlide().Shapes.Range();
-                foreach (var sh in newRange)
-                {
-                    var mergedShape = sh as PowerPoint.Shape;
-                    if (!nameList.Contains(mergedShape.Name))
-                    {
-                        if (KaisBirthday == mergedShape.Line.ForeColor.RGB)
-                        {
-                            shape = mergedShape;
-                        }
-                    }
-                }
-            }
-            else
-            {
-                shape = range[1];
-            }
-        }
+        //private void RemoveRotation(ref PowerPoint.Shape shape, List<string> nameList)
+        //{
+        //    var helperShape = GetCurrentSlide().Shapes.AddShape(Office.MsoAutoShapeType.msoShapeRectangle, -100, -100, 1, 1);
+        //    int KaisBirthday = 0x900209;
+        //    helperShape.Line.ForeColor.RGB = KaisBirthday;
+        //    //merged shape will inherit the foreColor of range[1]'s line,
+        //    //which is Xie Kai's birthday :p
+        //    //a better choice can be: random number or timestamp
+        //    var range = GetCurrentSlide().
+        //        Shapes.Range(new List<string> { helperShape.Name, shape.Name }.ToArray());
+        //    //Separate the shapes and make rotation back to zero
+        //    range.MergeShapes(Office.MsoMergeCmd.msoMergeFragment, helperShape);
+        //    //find those resulted shapes
+        //    var newRange = GetCurrentSlide().Shapes.Range();
+        //    List<string> list = new List<string>();
+        //    foreach (var sh in newRange)
+        //    {
+        //        var mergedShape = sh as PowerPoint.Shape;
+        //        if (mergedShape.Left == -100
+        //            && mergedShape.Top == -100
+        //            && mergedShape.Width == 1
+        //            && mergedShape.Height == 1)
+        //        {
+        //            helperShape = mergedShape;
+        //        }
+        //        else if (!nameList.Contains(mergedShape.Name))
+        //        {
+        //            if(KaisBirthday == mergedShape.Line.ForeColor.RGB)
+        //            {
+        //                list.Add(mergedShape.Name);
+        //            }
+        //        }
+        //    }
+        //    helperShape.Delete();
+        //    range = GetCurrentSlide().Shapes.Range(list.ToArray());
+        //    if (list.Count > 1)
+        //    {
+        //        range.MergeShapes(Office.MsoMergeCmd.msoMergeUnion);
+        //        //find out the merged shape
+        //        newRange = GetCurrentSlide().Shapes.Range();
+        //        foreach (var sh in newRange)
+        //        {
+        //            var mergedShape = sh as PowerPoint.Shape;
+        //            if (!nameList.Contains(mergedShape.Name))
+        //            {
+        //                if (KaisBirthday == mergedShape.Line.ForeColor.RGB)
+        //                {
+        //                    shape = mergedShape;
+        //                }
+        //            }
+        //        }
+        //    }
+        //    else
+        //    {
+        //        shape = range[1];
+        //    }
+        //}
 
         private void ThrowExceptionFromCropToShape(int typeOfError)
         {
