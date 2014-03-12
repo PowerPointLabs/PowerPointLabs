@@ -3000,7 +3000,7 @@ namespace PowerPointLabs
 
         #endregion
 
-        #region Fit To Slide | Fit To Width | Fit To Height
+        #region feature: Fit To Slide | Fit To Width | Fit To Height
 
         private const int SelectedShapeIndex = 1;
         private const int TopMost = 0;
@@ -3349,13 +3349,37 @@ namespace PowerPointLabs
 
         private PowerPoint.Shape ConvertToPicture(ref PowerPoint.Shape shape)
         {
+            float rotation = 0;
+            try
+            {
+                rotation = shape.Rotation;
+                shape.Rotation = 0;
+            }
+            catch(Exception)
+            {
+                //chart cannot be rotated
+            }
             shape.Copy();
             float x = shape.Left;
             float y = shape.Top;
+            float xOffset = 0;
+            float yOffset = 0;
+            try
+            {
+                xOffset = shape.Line.Weight/2;
+                yOffset = shape.Line.Weight/2;
+                xOffset = xOffset < 1 ? 0 : xOffset;
+                yOffset = yOffset < 1 ? 0 : yOffset;
+            }
+            catch (Exception)
+            {
+                //no outline for this shape
+            }
             shape.Delete();
             var pic = GetCurrentSlide().Shapes.PasteSpecial(PowerPoint.PpPasteDataType.ppPastePNG)[1];
-            pic.Left = x;
-            pic.Top = y;
+            pic.Left = x - xOffset;
+            pic.Top = y - yOffset;
+            pic.Rotation = rotation;
             pic.Select();
             return pic;
         }
@@ -3724,6 +3748,8 @@ namespace PowerPointLabs
             if (selection.Type == PowerPoint.PpSelectionType.ppSelectionShapes)
             {
                 var shape = selection.ShapeRange[1];
+                shape.Cut();
+                shape = GetCurrentSlide().Shapes.Paste()[1];
                 ConvertToPicture(ref shape);
             }
             else
