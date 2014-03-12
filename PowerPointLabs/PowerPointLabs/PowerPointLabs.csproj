@@ -236,8 +236,10 @@
     <Compile Include="Form1.Designer.cs">
       <DependentUpon>Form1.cs</DependentUpon>
     </Compile>
+    <Compile Include="Models\PowerPointAckSlide.cs" />
     <Compile Include="Models\PowerPointPresentation.cs" />
     <Compile Include="Models\PowerPointSlide.cs" />
+    <Compile Include="Models\PowerPointSpotlightSlide.cs" />
     <Compile Include="Models\TaggedText.cs" />
     <Compile Include="NativeMethods.cs" />
     <Compile Include="NotesToAudio.cs" />
@@ -249,6 +251,7 @@
     <Compile Include="SpeechEngine\PromptToAudio.cs" />
     <Compile Include="SpeechEngine\SynthesisState.cs" />
     <Compile Include="SpeechEngine\TextToSpeech.cs" />
+    <Compile Include="Spotlight.cs" />
     <Compile Include="Views\ProcessingStatusForm.cs">
       <SubType>Form</SubType>
     </Compile>

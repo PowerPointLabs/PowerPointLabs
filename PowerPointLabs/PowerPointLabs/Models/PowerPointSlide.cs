@@ -11,9 +11,9 @@ namespace PowerPointLabs.Models
 {
     class PowerPointSlide
     {
-        private readonly Slide _slide;
+        protected readonly Slide _slide;
 
-        private PowerPointSlide(Slide slide)
+        protected PowerPointSlide(Slide slide)
         {
             _slide = slide;
         }
@@ -25,7 +25,12 @@ namespace PowerPointLabs.Models
                 return null;
             }
 
-            return new PowerPointSlide(slide);
+            if (slide.Name.Contains("PPTLabsSpotlight"))
+                return PowerPointSpotlightSlide.FromSlideFactory(slide);
+            else if (slide.Name.Contains("PPTLabsAck"))
+                return PowerPointAckSlide.FromSlideFactory(slide);
+            else
+                return new PowerPointSlide(slide);
         }
 
         public String NotesPageText
@@ -231,6 +236,49 @@ namespace PowerPointLabs.Models
             {
                 e.Delete();
             }
+        }
+
+        public PowerPointSlide CreateSpotlightSlide()
+        {
+            Slide duplicatedSlide = _slide.Duplicate()[1];
+            return PowerPointSpotlightSlide.FromSlideFactory(duplicatedSlide);
+        }
+
+        protected void DeleteSlideNotes()
+        {
+            if (_slide.HasNotesPage == MsoTriState.msoTrue)
+            {
+                foreach (Shape sh in _slide.NotesPage.Shapes)
+                {
+                    if (sh.TextFrame.HasText == MsoTriState.msoTrue)
+                        sh.TextEffect.Text = "";
+                }
+            }
+        }
+
+        protected void DeleteSlideMedia()
+        {
+            foreach (Shape sh in _slide.Shapes)
+            {
+                if (sh.Type == MsoShapeType.msoMedia)
+                    sh.Delete();
+            }
+        }
+
+        public bool isSpotlightSlide()
+        {
+            return _slide.Name.Contains("PPTLabsSpotlight");
+        }
+
+        public bool isAckSlide()
+        {
+            return _slide.Name.Contains("PPTLabsAck");
+        }
+
+        public PowerPointSlide CreateAckSlide()
+        {
+            Slide ackSlide = Globals.ThisAddIn.Application.ActivePresentation.Slides.Add(Globals.ThisAddIn.Application.ActivePresentation.Slides.Count + 1, PpSlideLayout.ppLayoutBlank);
+            return PowerPointAckSlide.FromSlideFactory(ackSlide);
         }
     }
 }

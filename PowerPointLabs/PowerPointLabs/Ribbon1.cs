@@ -40,9 +40,7 @@ namespace PowerPointLabs
         public bool frameAnimationChecked = false;
         public bool backgroundZoomChecked = true;
         public bool spotlightDelete = true;
-        public float defaultSoftEdges = 10;
         public float defaultDuration = 0.5f;
-        public float defaultTransparency = 0.7f;
         public bool startUp = false;
         public bool spotlightEnabled = false;
         public bool inSlideEnabled = false;
@@ -1219,48 +1217,7 @@ namespace PowerPointLabs
         {
             try
             {
-                PowerPoint.Slide tempSlide = GetCurrentSlide();
-                PowerPoint.Shape shape1 = null;
-                List<PowerPoint.Shape> spotlightShapes = new List<PowerPoint.Shape>();
-                if (tempSlide.Name.Contains("PPTLabsSpotlight")) //&& tempSlide.Name.Substring(0, 14).Equals("PPTLabsSpotlight")
-                {
-                    foreach (PowerPoint.Shape sh in tempSlide.Shapes)
-                    {
-                        if (sh.Name.Equals("SpotlightShape1"))
-                        {
-                            shape1 = sh;
-                        }
-                        else if (sh.Name.Contains("SpotlightShape"))
-                        {
-                            spotlightShapes.Add(sh);
-                        }
-                    }
-
-                    if (shape1 == null || spotlightShapes.Count == 0)
-                    {
-                        System.Windows.Forms.MessageBox.Show("The current slide cannot be reloaded", "Error");
-                    }
-                    else
-                    {
-                        shape1.Delete();
-
-                        foreach (PowerPoint.Shape sh in spotlightShapes)
-                        {
-                            sh.Visible = Office.MsoTriState.msoTrue;
-
-                            PowerPoint.Shape duplicateShape = sh.Duplicate()[1];
-                            duplicateShape.Visible = Office.MsoTriState.msoFalse;
-                            duplicateShape.Left = sh.Left;
-                            duplicateShape.Top = sh.Top;
-                        }
-
-                        AddSpotlightEffect(tempSlide, spotlightShapes);
-                    }
-                }
-                else
-                {
-                    System.Windows.Forms.MessageBox.Show("The current slide was not added by PPTLabs Spotlight", "Error");
-                }
+                Spotlight.ReloadSpotlightEffect();
             }
             catch (Exception e)
             {
@@ -1272,128 +1229,9 @@ namespace PowerPointLabs
         {
             try
             {
-                PowerPoint.Slide currentSlide = GetCurrentSlide();
                 if (Globals.ThisAddIn.Application.ActiveWindow.Selection.ShapeRange.Count == 0)
                     return;
-
-                PowerPoint.ShapeRange selectedShapes = Globals.ThisAddIn.Application.ActiveWindow.Selection.ShapeRange;
-
-                currentSlide.Duplicate();
-                PowerPoint.Slide addedSlide = GetNextSlide(currentSlide);
-                addedSlide.Name = "PPTLabsSpotlight" + GetTimestamp(DateTime.Now);
-                List<PowerPoint.Shape> spotlightShapes = new List<PowerPoint.Shape>();
-
-                foreach (PowerPoint.Shape spotShape in selectedShapes)
-                { 
-                    foreach (PowerPoint.Shape copyShape in currentSlide.Shapes)
-                    {
-                        if (copyShape.Name.Equals(spotShape.Name) || copyShape.Name.Contains("SpotlightShape"))
-                        {
-                            //if (spotlightDelete)
-                            //{
-                            PowerPoint.Shape sh = FindIdenticalShape(addedSlide, copyShape);
-                            sh.Delete();
-                            //}
-                            //else
-                            //{
-                            //    copyShape.Name = "SpotlightCopy" + GetTimestamp(DateTime.Now);
-                            //}
-
-                        }
-                    }
-                    spotShape.Copy();
-                    PowerPoint.Shape spotlightShape = addedSlide.Shapes.Paste()[1];
-
-                    if (spotShape.Left < 0)
-                    {
-                        spotlightShape.Left = 0;
-                        spotlightShape.Width = spotShape.Width - (0.0f - spotShape.Left);
-                    }
-                    else
-                        spotlightShape.Left = spotShape.Left;
-
-                    if (spotShape.Left + spotShape.Width > Globals.ThisAddIn.Application.ActivePresentation.PageSetup.SlideWidth)
-                        spotlightShape.Width = (Globals.ThisAddIn.Application.ActivePresentation.PageSetup.SlideWidth - spotlightShape.Left);
-
-                    if (spotShape.Top < 0)
-                    {
-                        spotlightShape.Top = 0;
-                        spotlightShape.Height = spotShape.Height - (0.0f - spotShape.Top);
-                    }
-                    else
-                        spotlightShape.Top = spotShape.Top;
-
-                    if (spotShape.Top + spotShape.Height > Globals.ThisAddIn.Application.ActivePresentation.PageSetup.SlideHeight)
-                        spotlightShape.Height = (Globals.ThisAddIn.Application.ActivePresentation.PageSetup.SlideHeight - spotlightShape.Top);
-
-                    //if (!spotlightDelete)
-                    //{
-                    //    float oldLeft = spotlightShape.Left;
-                    //    float oldTop = spotlightShape.Top;
-                    //    spotlightShape.Left -= 5.0f;
-                    //    spotlightShape.Top -= 5.0f;
-                    //    spotlightShape.Width += 10.0f;
-                    //    spotlightShape.Height += 10.0f;
-
-                    //    if (spotlightShape.Left < 0.0f)
-                    //    {
-                    //        spotlightShape.Left = 0.0f;
-                    //        spotlightShape.Width = spotlightShape.Width - (0.0f - spotlightShape.Left);
-                    //    }
-                    //    if (spotlightShape.Top < 0.0f)
-                    //    {
-                    //        spotlightShape.Top = 0.0f;
-                    //        spotlightShape.Top = spotlightShape.Height - (0.0f - spotlightShape.Top);
-                    //    }
-                    //    if (spotlightShape.Left + spotlightShape.Width > Globals.ThisAddIn.Application.ActivePresentation.PageSetup.SlideWidth)
-                    //        spotlightShape.Width = (Globals.ThisAddIn.Application.ActivePresentation.PageSetup.SlideWidth - oldLeft);
-                    //    if (spotlightShape.Top + spotlightShape.Height > Globals.ThisAddIn.Application.ActivePresentation.PageSetup.SlideHeight)
-                    //        spotlightShape.Height = (Globals.ThisAddIn.Application.ActivePresentation.PageSetup.SlideHeight - oldTop);
-                    //}
-                    
-                    spotlightShape.Fill.ForeColor.RGB = 0xffffff;
-                    spotlightShape.Line.Visible = Office.MsoTriState.msoFalse;
-                    if (spotlightShape.HasTextFrame == Office.MsoTriState.msoTrue && spotlightShape.TextFrame.HasText == Office.MsoTriState.msoTrue)
-                        spotlightShape.TextFrame.TextRange.Font.Color.RGB = 0xffffff;
-                    spotlightShape.Name = "SpotlightShape" + GetTimestamp(DateTime.Now);
-
-                    PowerPoint.Shape duplicateShape = spotlightShape.Duplicate()[1];
-                    duplicateShape.Visible = Office.MsoTriState.msoFalse;
-                    duplicateShape.Left = spotlightShape.Left;
-                    duplicateShape.Top = spotlightShape.Top;
-
-                    spotlightShapes.Add(spotlightShape);
-                    //if (spotlightDelete)
-                    spotShape.Delete();
-                }
-
-                if (addedSlide.HasNotesPage == Office.MsoTriState.msoTrue)
-                {
-                    foreach (PowerPoint.Shape sh in addedSlide.NotesPage.Shapes)
-                    {
-                        if (sh.TextFrame.HasText == Office.MsoTriState.msoTrue)
-                            sh.TextEffect.Text = "";
-                    }
-                }
-
-                foreach (PowerPoint.Shape sh in addedSlide.Shapes)
-                {
-                    if (sh.Type == Office.MsoShapeType.msoMedia)
-                        sh.Delete();
-                }
-
-                AddSpotlightEffect(addedSlide, spotlightShapes);
-                AddAckSlide();
-
-                //Bring spotlight shapes to front
-                //List<PowerPoint.Shape> shapesToEdit = new List<PowerPoint.Shape>();
-                //foreach (PowerPoint.Shape copyShape in addedSlide.Shapes)
-                //{
-                //    if (copyShape.Name.Contains("SpotlightCopy") && !spotlightDelete)
-                //    {
-                //        copyShape.ZOrder(Office.MsoZOrderCmd.msoBringToFront);
-                //    }
-                //}
+                Spotlight.AddSpotlightEffect();
             }
             catch (Exception e)
             {
@@ -2718,8 +2556,8 @@ namespace PowerPointLabs
                 {
                     if (result > 0 && result <= 100)
                     {
-                        defaultTransparency = result;
-                        defaultTransparency /= 100;
+                        Spotlight.defaultTransparency = result;
+                        Spotlight.defaultTransparency /= 100;
                     }
                 }
                 ribbon.InvalidateControl("spotlightTransparency");
@@ -2734,7 +2572,7 @@ namespace PowerPointLabs
         {
             try
             {
-                return (defaultTransparency * 100).ToString() + "%";
+                return (Spotlight.defaultTransparency * 100).ToString() + "%";
             }
             catch (Exception e)
             {
@@ -2774,7 +2612,7 @@ namespace PowerPointLabs
             try
             {
                 String[] keys = softEdgesMapping.Keys.ToArray();
-                defaultSoftEdges = softEdgesMapping[keys[selectedIndex]];
+                Spotlight.defaultSoftEdges = softEdgesMapping[keys[selectedIndex]];
             }
             catch (Exception e)
             {
@@ -2787,7 +2625,7 @@ namespace PowerPointLabs
             try
             {
                 float[] values = softEdgesMapping.Values.ToArray();
-                return Array.IndexOf(values, defaultSoftEdges);
+                return Array.IndexOf(values, Spotlight.defaultSoftEdges);
             }
             catch (Exception e)
             {
@@ -3576,7 +3414,7 @@ namespace PowerPointLabs
                 //merged shape will inherit the foreColor of range[1]'s line,
                 //which is Xie Kai's birthday :p
                 //a better choice can be: random number or timestamp
-                range.MergeShapes(Office.MsoMergeCmd.msoMergeUnion, range[1]);
+                //range.MergeShapes(Office.MsoMergeCmd.msoMergeUnion, range[1]);
                 //find the merged shape
                 var newRange = GetCurrentSlide().Shapes.Range();
                 foreach (var sh in newRange)
@@ -3605,7 +3443,7 @@ namespace PowerPointLabs
             var range = GetCurrentSlide().
                 Shapes.Range(new List<string> { helperShape.Name, shape.Name }.ToArray());
             //Separate the shapes and make rotation back to zero
-            range.MergeShapes(Office.MsoMergeCmd.msoMergeFragment, helperShape);
+            //range.MergeShapes(Office.MsoMergeCmd.msoMergeFragment, helperShape);
             //find those resulted shapes
             var newRange = GetCurrentSlide().Shapes.Range();
             List<string> list = new List<string>();
@@ -3631,7 +3469,7 @@ namespace PowerPointLabs
             range = GetCurrentSlide().Shapes.Range(list.ToArray());
             if (list.Count > 1)
             {
-                range.MergeShapes(Office.MsoMergeCmd.msoMergeUnion);
+                //range.MergeShapes(Office.MsoMergeCmd.msoMergeUnion);
                 //find out the merged shape
                 newRange = GetCurrentSlide().Shapes.Range();
                 foreach (var sh in newRange)
@@ -3750,58 +3588,7 @@ namespace PowerPointLabs
         #region Helpers
 
         //Spotlight Helpers
-        private void AddSpotlightEffect(PowerPoint.Slide addedSlide, List<PowerPoint.Shape> spotlightShapes)
-        {
-            try
-            {
-                PowerPoint.Presentation presentation = Globals.ThisAddIn.Application.ActivePresentation;
-                PowerPoint.Shape rectangleShape = addedSlide.Shapes.AddShape(Office.MsoAutoShapeType.msoShapeRectangle, (-1 * defaultSoftEdges), (-1 * defaultSoftEdges), (presentation.PageSetup.SlideWidth + (2.0f * defaultSoftEdges)), (presentation.PageSetup.SlideHeight + (2.0f * defaultSoftEdges)));
-                rectangleShape.Fill.ForeColor.RGB = 0x000000;
-                rectangleShape.Fill.Transparency = defaultTransparency;
-                rectangleShape.Line.Visible = Office.MsoTriState.msoFalse;
-                rectangleShape.Name = "SpotlightShape1";
-                rectangleShape.ZOrder(Office.MsoZOrderCmd.msoSendToBack);
-
-                Globals.ThisAddIn.Application.ActiveWindow.View.GotoSlide(addedSlide.SlideIndex);
-                List<String> shapeNames = new List<String>();
-                shapeNames.Add("SpotlightShape1");
-                foreach (PowerPoint.Shape sh in spotlightShapes)
-                {
-                    shapeNames.Add(sh.Name);
-                }
-                String[] array = shapeNames.ToArray();
-                PowerPoint.ShapeRange newRange = addedSlide.Shapes.Range(array);
-                newRange.Select();
-
-                PowerPoint.Selection currentSelection = Globals.ThisAddIn.Application.ActiveWindow.Selection;
-                int count = currentSelection.ShapeRange.Count;
-                currentSelection.Cut();
-
-                PowerPoint.Shape pictureShape = addedSlide.Shapes.PasteSpecial(PowerPoint.PpPasteDataType.ppPastePNG)[1];
-                pictureShape.PictureFormat.TransparencyColor = 0xffffff;
-                pictureShape.PictureFormat.TransparentBackground = Office.MsoTriState.msoTrue;
-                pictureShape.Left = -1 * defaultSoftEdges;
-                pictureShape.Top = -1 * defaultSoftEdges;
-                pictureShape.LockAspectRatio = Office.MsoTriState.msoFalse;
-                float incrementWidth = (2.0f * defaultSoftEdges) / pictureShape.Width;
-                float incrementHeight = (2.0f * defaultSoftEdges) / pictureShape.Height;
-
-                pictureShape.SoftEdge.Radius = defaultSoftEdges;
-                //pictureShape.SoftEdge.Type = Office.MsoSoftEdgeType.msoSoftEdgeType4;
-                //pictureShape.ScaleWidth((1.0f + incrementWidth), Office.MsoTriState.msoFalse, Office.MsoScaleFrom.msoScaleFromMiddle);
-                //pictureShape.ScaleHeight((1.0f + incrementHeight), Office.MsoTriState.msoFalse, Office.MsoScaleFrom.msoScaleFromMiddle);
-                //pictureShape.Width = presentation.PageSetup.SlideWidth + (2.0f * defaultSoftEdges);
-                //pictureShape.Height = presentation.PageSetup.SlideHeight + (2.0f * defaultSoftEdges);
-                //pictureShape.Left = (-1 * defaultSoftEdges);
-                //pictureShape.Top = (-1 * defaultSoftEdges);
-                pictureShape.Name = "SpotlightShape1";
-            }
-            catch (Exception e)
-            {
-                LogException(e, "AddSpotlightEffect");
-                throw;
-            }
-        }
+        
 
         //AutoAnimate Helpers
         private void AddCompleteAutoMotion(PowerPoint.Slide currentSlide, PowerPoint.Slide nextSlide)
