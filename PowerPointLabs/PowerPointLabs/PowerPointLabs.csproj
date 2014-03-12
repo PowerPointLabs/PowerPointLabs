@@ -236,6 +236,7 @@
     <Compile Include="Form1.Designer.cs">
       <DependentUpon>Form1.cs</DependentUpon>
     </Compile>
+    <Compile Include="InSlideAnimate.cs" />
     <Compile Include="Models\PowerPointAckSlide.cs" />
     <Compile Include="Models\PowerPointPresentation.cs" />
     <Compile Include="Models\PowerPointSlide.cs" />
