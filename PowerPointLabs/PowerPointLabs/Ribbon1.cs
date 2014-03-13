@@ -3355,26 +3355,27 @@ namespace PowerPointLabs
 
         private void FillInShapeWithScreenshot(PowerPoint.Shape shape)
         {
-            var fillEffect = shape.Fill;
             if (shape.Type != Office.MsoShapeType.msoGroup)
             {
                 ProduceFillInBackground(ref shape);
-                fillEffect.UserPicture(GetPathForFillInBackground());                
-                shape.Select();
+                shape.Fill.UserPicture(GetPathForFillInBackground());
             }
             else
             {
-                fillEffect.UserTextured(GetPathToStore());
-                fillEffect.TextureOffsetX = -shape.Left;
-                fillEffect.TextureOffsetY = -shape.Top;
-                AdjustFillEffect(ref shape);
-                shape.Line.Visible = Office.MsoTriState.msoFalse;
-                var pic = ConvertToPicture(ref shape);
-                shape = pic;
+                using (Bitmap slideImage = (Bitmap) Bitmap.FromFile(GetPathToStore()))
+                {
+                    foreach (var sh in shape.GroupItems)
+                    {
+                        var shapeGroupItem = sh as PowerPoint.Shape;
+                        ProduceFillInBackground(ref shapeGroupItem, slideImage);
+                        shapeGroupItem.Fill.UserPicture(GetPathForFillInBackground());
+                    }
+                }
             }
-            shape.Line.Weight = 3;//arbitrary slightly large weight
-            shape.Line.ForeColor.RGB = 0xffffff;
-            shape.Line.Visible = Office.MsoTriState.msoTrue;
+            shape.Line.Visible = Office.MsoTriState.msoFalse;
+            shape.Copy();
+            GetCurrentSlide().Shapes.Paste();
+            shape.Delete();            
         }
 
         private void AdjustFillEffect(ref PowerPoint.Shape shape)
@@ -3408,6 +3409,20 @@ namespace PowerPointLabs
                     shape.Height * verticalRatio);
                 croppedImage.Save(GetPathForFillInBackground(), ImageFormat.Png);
             }
+        }
+
+        private void ProduceFillInBackground(ref PowerPoint.Shape shape, Bitmap slideImage)
+        {
+            float horizontalRatio =
+                (float)(GetDesiredExportWidth() / Globals.ThisAddIn.Application.ActivePresentation.PageSetup.SlideWidth);
+            float verticalRatio =
+                (float)(GetDesiredExportHeight() / Globals.ThisAddIn.Application.ActivePresentation.PageSetup.SlideHeight);
+            Bitmap croppedImage = KiCut(slideImage,
+                shape.Left * horizontalRatio,
+                shape.Top * verticalRatio,
+                shape.Width * horizontalRatio,
+                shape.Height * verticalRatio);
+            croppedImage.Save(GetPathForFillInBackground(), ImageFormat.Png);
         }
 
         public static Bitmap KiCut(Bitmap original, float startX, float startY, float width, float height)
