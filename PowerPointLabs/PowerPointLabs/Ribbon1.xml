@@ -353,6 +353,10 @@
               getImage="GetInSlideAnimationContextImage"
               getEnabled="OnGetEnabledAddInSlide"
               onAction="AddInSlideAnimationButtonClick"/>
+      <button id="ConvertToPictureGroup"
+             label ="Convert to Picture"
+             getImage="GetConvertToPicMenuImage"
+             onAction="ConvertToPictureButtonClick"/>
       <button id="cutOutShapeGroup"
               label="Crop To Shape"
               getImage="GetCutOutShapeMenuImage"
@@ -371,6 +375,10 @@
               label="Edit Name"
               getImage="GetEditNameContextImage"
               onAction="NameEditBtnClick"/>
+      <button id="ConvertToPictureSmartArt"
+             label ="Convert to Picture"
+             getImage="GetConvertToPicMenuImage"
+             onAction="ConvertToPictureButtonClick"/>
     </contextMenu>
     <contextMenu idMso="ContextMenuThumbnail">
       <menuSeparator id="separatorThumbnail"/>

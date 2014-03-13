@@ -3859,7 +3859,7 @@ namespace PowerPointLabs
 
         #endregion
 
-        #region feature: Conver to Picture
+        #region feature: Convert to Picture
 
         public void ConvertToPictureButtonClick(Office.IRibbonControl control)
         {
@@ -3868,6 +3868,10 @@ namespace PowerPointLabs
             if (selection.Type == PowerPoint.PpSelectionType.ppSelectionShapes)
             {
                 var shape = selection.ShapeRange[1];
+                if (selection.ShapeRange.Count > 1)
+                {
+                    shape = selection.ShapeRange.Group();
+                }
                 shape.Cut();
                 shape = GetCurrentSlide().Shapes.Paste()[1];
                 ConvertToPicture(ref shape);
