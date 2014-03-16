@@ -82,14 +82,17 @@ namespace PowerPointLabs
                 }
                 if (Sel.ShapeRange.Count > 1)
                 {
-                    ribbon.zoomButtonEnabled = false;
                     foreach (PowerPoint.Shape tempShape in Sel.ShapeRange)
                     {
                         if (sh.Type == tempShape.Type)
+                        {
                             ribbon.inSlideEnabled = true;
+                            ribbon.zoomButtonEnabled = true;
+                        }
                         if (sh.Type == Office.MsoShapeType.msoAutoShape && sh.AutoShapeType != tempShape.AutoShapeType)
                         {
                             ribbon.inSlideEnabled = false;
+                            ribbon.zoomButtonEnabled = false;
                             break;
                         }
                     }
