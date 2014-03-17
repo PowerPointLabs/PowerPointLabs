@@ -3157,96 +3157,96 @@ namespace PowerPointLabs
 
 
         //Transparency Callbacks
-        public void OnChangeTransparency(Office.IRibbonControl control, String text)
-        {
-            try
-            {
-                if (text.Contains('%'))
-                {
-                    text = text.Substring(0, text.IndexOf('%'));
-                }
-                float result;
-                if (float.TryParse(text, out result))
-                {
-                    if (result > 0 && result <= 100)
-                    {
-                        defaultTransparency = result;
-                        defaultTransparency /= 100;
-                    }
-                }
-                ribbon.InvalidateControl("spotlightTransparency");
-            }
-            catch (Exception e)
-            {
-                LogException(e, "OnChangeTransparency");
-                throw;
-            }
-        }
-        public String OnGetTransparency(Office.IRibbonControl control)
-        {
-            try
-            {
-                return (defaultTransparency * 100).ToString() + "%";
-            }
-            catch (Exception e)
-            {
-                LogException(e, "OnGetTransparency");
-                throw;
-            }
-        }
+        //public void OnChangeTransparency(Office.IRibbonControl control, String text)
+        //{
+        //    try
+        //    {
+                //if (text.Contains('%'))
+                //{
+                //    text = text.Substring(0, text.IndexOf('%'));
+                //}
+        //        float result;
+        //        if (float.TryParse(text, out result))
+        //        {
+        //            if (result > 0 && result <= 100)
+        //            {
+        //                defaultTransparency = result;
+        //                defaultTransparency /= 100;
+        //            }
+        //        }
+        //        ribbon.InvalidateControl("spotlightTransparency");
+        //    }
+        //    catch (Exception e)
+        //    {
+        //        LogException(e, "OnChangeTransparency");
+        //        throw;
+        //    }
+        //}
+        //public String OnGetTransparency(Office.IRibbonControl control)
+        //{
+        //    try
+        //    {
+        //        return (defaultTransparency * 100).ToString() + "%";
+        //    }
+        //    catch (Exception e)
+        //    {
+        //        LogException(e, "OnGetTransparency");
+        //        throw;
+        //    }
+        //}
 
         //Spotlight Edges Callbacks
-        public int OnGetItemCountSpotlight(Office.IRibbonControl control)
-        {
-            try
-            {
-                return softEdgesMapping.Count;
-            }
-            catch (Exception e)
-            {
-                LogException(e, "OnGetItemCountSpotlight");
-                throw;
-            }
-        }
-        public String OnGetItemLabelSpotlight(Office.IRibbonControl control, int index)
-        {
-            try
-            {
-                String[] keys = softEdgesMapping.Keys.ToArray();
-                return keys[index];
-            }
-            catch (Exception e)
-            {
-                LogException(e, "OnGetItemLabelSpotlight");
-                throw;
-            }
-        }
-        public void OnSelectItemSpotlight(Office.IRibbonControl control, String selectedId, int selectedIndex)
-        {
-            try
-            {
-                String[] keys = softEdgesMapping.Keys.ToArray();
-                defaultSoftEdges = softEdgesMapping[keys[selectedIndex]];
-            }
-            catch (Exception e)
-            {
-                LogException(e, "OnSelectItemSpotlight");
-                throw;
-            }
-        }
-        public int OnGetSelectedItemIndexSpotlight(Office.IRibbonControl control)
-        {
-            try
-            {
-                float[] values = softEdgesMapping.Values.ToArray();
-                return Array.IndexOf(values, defaultSoftEdges);
-            }
-            catch (Exception e)
-            {
-                LogException(e, "OnGetSelectedItemIndexSpotlight");
-                throw;
-            }
-        }
+        //public int OnGetItemCountSpotlight(Office.IRibbonControl control)
+        //{
+        //    try
+        //    {
+        //        return softEdgesMapping.Count;
+        //    }
+        //    catch (Exception e)
+        //    {
+        //        LogException(e, "OnGetItemCountSpotlight");
+        //        throw;
+        //    }
+        //}
+        //public String OnGetItemLabelSpotlight(Office.IRibbonControl control, int index)
+        //{
+        //    try
+        //    {
+        //        String[] keys = softEdgesMapping.Keys.ToArray();
+        //        return keys[index];
+        //    }
+        //    catch (Exception e)
+        //    {
+        //        LogException(e, "OnGetItemLabelSpotlight");
+        //        throw;
+        //    }
+        //}
+        //public void OnSelectItemSpotlight(Office.IRibbonControl control, String selectedId, int selectedIndex)
+        //{
+        //    try
+        //    {
+        //        String[] keys = softEdgesMapping.Keys.ToArray();
+        //        defaultSoftEdges = softEdgesMapping[keys[selectedIndex]];
+        //    }
+        //    catch (Exception e)
+        //    {
+        //        LogException(e, "OnSelectItemSpotlight");
+        //        throw;
+        //    }
+        //}
+        //public int OnGetSelectedItemIndexSpotlight(Office.IRibbonControl control)
+        //{
+        //    try
+        //    {
+        //        float[] values = softEdgesMapping.Values.ToArray();
+        //        return Array.IndexOf(values, defaultSoftEdges);
+        //    }
+        //    catch (Exception e)
+        //    {
+        //        LogException(e, "OnGetSelectedItemIndexSpotlight");
+        //        throw;
+        //    }
+        //}
 
         //Control Enabled Callbacks
         public bool OnGetEnabledSpotlight(Office.IRibbonControl control)
@@ -3354,6 +3354,34 @@ namespace PowerPointLabs
             catch (Exception e)
             {
                 LogException(e, "ZoomPropertiesEdited");
+                throw;
+            }
+        }
+
+        public void SpotlightDialogButtonPressed(Office.IRibbonControl control)
+        {
+            try
+            {
+                SpotlightDialogBox dialog = new SpotlightDialogBox(this, defaultTransparency, defaultSoftEdges);
+                dialog.Show();
+            }
+            catch (Exception e)
+            {
+                LogException(e, "SpotlightDialogButtonPressed");
+                throw;
+            }
+        }
+
+        public void SpotlightPropertiesEdited(float newTransparency, float newSoftEdge)
+        {
+            try
+            {
+                defaultTransparency = newTransparency;
+                defaultSoftEdges = newSoftEdge;
+            }
+            catch (Exception e)
+            {
+                LogException(e, "SpotlightPropertiesEdited");
                 throw;
             }
         }

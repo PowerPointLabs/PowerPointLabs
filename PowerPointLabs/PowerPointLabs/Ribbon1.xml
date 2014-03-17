@@ -104,7 +104,7 @@
                   getImage="GetReloadSpotlightImage"
                   getEnabled="OnGetEnabledReloadSpotlight"
                   onAction="ReloadSpotlightButtonClick"/>
-          <editBox id="spotlightTransparency"
+          <!--<editBox id="spotlightTransparency"
                    label="Transparency"
                    sizeString="AAAA"
                    supertip="The transparency level of the spotlight effect to be created."
@@ -117,12 +117,16 @@
                     getItemCount ="OnGetItemCountSpotlight"
                     getItemLabel ="OnGetItemLabelSpotlight"
                     getSelectedItemIndex="OnGetSelectedItemIndexSpotlight" 
-                    onAction ="OnSelectItemSpotlight" />
+                    onAction ="OnSelectItemSpotlight" />-->
           <!--<checkBox id="SpotlightDeleteOption"
                     label="Delete Spotlight Shape"
                     supertip="Check this option if you want to delete the spotlight shape when adding this effect."
                     onAction="SpotlightDeleteOptionChanged"
                     getPressed="SpotlightDeleteOptionGetPressed"/>-->
+          <dialogBoxLauncher>
+            <button id ="SpotlightDialogBox"
+                    onAction="SpotlightDialogButtonPressed"/>
+          </dialogBoxLauncher>
         </group>
         <group id="embedAudio" label="Auto Narrate">
           <button id="addAudio"

@@ -255,6 +255,12 @@
     <Compile Include="SpeechEngine\PromptToAudio.cs" />
     <Compile Include="SpeechEngine\SynthesisState.cs" />
     <Compile Include="SpeechEngine\TextToSpeech.cs" />
+    <Compile Include="SpotlightDialogBox.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="SpotlightDialogBox.Designer.cs">
+      <DependentUpon>SpotlightDialogBox.cs</DependentUpon>
+    </Compile>
     <Compile Include="Views\ProcessingStatusForm.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -285,6 +291,9 @@
       <DependentUpon>Resources.resx</DependentUpon>
       <DesignTime>True</DesignTime>
     </Compile>
+    <EmbeddedResource Include="SpotlightDialogBox.resx">
+      <DependentUpon>SpotlightDialogBox.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Views\ProcessingStatusForm.resx" />
     <EmbeddedResource Include="Views\SpeechPlayingForm.resx" />
     <None Include="PowerPointLabs_TemporaryKey.pfx" />
