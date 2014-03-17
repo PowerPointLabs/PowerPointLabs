@@ -230,6 +230,12 @@
     <Compile Include="AutoAnimateDialogBox.Designer.cs">
       <DependentUpon>AutoAnimateDialogBox.cs</DependentUpon>
     </Compile>
+    <Compile Include="AutoZoomDialogBox.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="AutoZoomDialogBox.Designer.cs">
+      <DependentUpon>AutoZoomDialogBox.cs</DependentUpon>
+    </Compile>
     <Compile Include="Form1.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -262,6 +268,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="AutoAnimateDialogBox.resx">
       <DependentUpon>AutoAnimateDialogBox.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="AutoZoomDialogBox.resx">
+      <DependentUpon>AutoZoomDialogBox.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Form1.resx">
       <DependentUpon>Form1.cs</DependentUpon>

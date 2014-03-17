@@ -67,11 +67,15 @@
                  supertip="Zoom into an area of a slide or image.&#13;&#13;To activate, place a rectangle shape on the portion that you want to magnify and click on this button.&#13;&#13;This feature works best with high-resolution images."
                  getEnabled="OnGetEnabledZoomButton"
                  onAction="ZoomBtnClick"/>
-          <checkBox id="zoomStyleOption"
+          <!--<checkBox id="zoomStyleOption"
                     label="Include Background"
                     supertip="Include the slide background while performing Auto Zoom."
                     onAction="ZoomStyleChanged"
-                    getPressed="ZoomStyleGetPressed"/>
+                    getPressed="ZoomStyleGetPressed"/>-->
+          <dialogBoxLauncher>
+            <button id ="AutoZoomDialogBox"
+                    onAction="AutoZoomDialogButtonPressed"/>
+          </dialogBoxLauncher>
         </group>
         <group id="AutoCropGroup"
                label="Auto Crop"

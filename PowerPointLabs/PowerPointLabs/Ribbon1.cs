@@ -884,12 +884,12 @@ namespace PowerPointLabs
 
                 PowerPoint.Effect appear = sequence.AddEffect(dupShape, PowerPoint.MsoAnimEffect.msoAnimEffectAppear, PowerPoint.MsoAnimateByLevel.msoAnimateLevelNone, PowerPoint.MsoAnimTriggerType.msoAnimTriggerWithPrevious);
                 //appear.Timing.Duration = 0.005f;
-                appear.Timing.TriggerDelayTime = ((defaultDuration / numFrames) * i);
+                appear.Timing.TriggerDelayTime = ((0.5f / numFrames) * i);
 
                 PowerPoint.Effect disappear = sequence.AddEffect(lastShape, PowerPoint.MsoAnimEffect.msoAnimEffectAppear, PowerPoint.MsoAnimateByLevel.msoAnimateLevelNone, PowerPoint.MsoAnimTriggerType.msoAnimTriggerWithPrevious);
                 disappear.Exit = Office.MsoTriState.msoTrue;
                 //disappear.Timing.Duration = 0.005f;
-                disappear.Timing.TriggerDelayTime = ((defaultDuration / numFrames) * i);
+                disappear.Timing.TriggerDelayTime = ((0.5f / numFrames) * i);
 
                 lastShape = dupShape;
             }
@@ -3327,6 +3327,33 @@ namespace PowerPointLabs
             catch (Exception e)
             {
                 LogException(e, "AnimationPropertiesEdited");
+                throw;
+            }
+        }
+
+        public void AutoZoomDialogButtonPressed(Office.IRibbonControl control)
+        {
+            try
+            {
+                AutoZoomDialogBox dialog = new AutoZoomDialogBox(this, backgroundZoomChecked);
+                dialog.Show();
+            }
+            catch (Exception e)
+            {
+                LogException(e, "AutoZoomDialogButtonPressed");
+                throw;
+            }
+        }
+
+        public void ZoomPropertiesEdited(bool backgroundChecked)
+        {
+            try
+            {
+                backgroundZoomChecked = backgroundChecked;
+            }
+            catch (Exception e)
+            {
+                LogException(e, "ZoomPropertiesEdited");
                 throw;
             }
         }
