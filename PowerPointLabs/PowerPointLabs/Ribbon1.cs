@@ -573,6 +573,9 @@ namespace PowerPointLabs
             indicatorShape.Height = 84;
             indicatorShape.Name = "PPIndicator" + GetTimestamp(DateTime.Now);
             effectDisappear = sequence.AddEffect(indicatorShape, PowerPoint.MsoAnimEffect.msoAnimEffectAppear, PowerPoint.MsoAnimateByLevel.msoAnimateLevelNone, PowerPoint.MsoAnimTriggerType.msoAnimTriggerWithPrevious);
+            effectDisappear.Timing.Duration = 0;
+
+            effectDisappear = sequence.AddEffect(indicatorShape, PowerPoint.MsoAnimEffect.msoAnimEffectAppear, PowerPoint.MsoAnimateByLevel.msoAnimateLevelNone, PowerPoint.MsoAnimTriggerType.msoAnimTriggerWithPrevious);
             effectDisappear.Exit = Office.MsoTriState.msoTrue;
             effectDisappear.Timing.Duration = 0;
 
@@ -734,6 +737,9 @@ namespace PowerPointLabs
             indicatorShape.Height = 84;
             indicatorShape.Name = "PPIndicator" + GetTimestamp(DateTime.Now);
             effectDisappear = sequence.AddEffect(indicatorShape, PowerPoint.MsoAnimEffect.msoAnimEffectAppear, PowerPoint.MsoAnimateByLevel.msoAnimateLevelNone, PowerPoint.MsoAnimTriggerType.msoAnimTriggerWithPrevious);
+            effectDisappear.Timing.Duration = 0;
+
+            effectDisappear = sequence.AddEffect(indicatorShape, PowerPoint.MsoAnimEffect.msoAnimEffectAppear, PowerPoint.MsoAnimateByLevel.msoAnimateLevelNone, PowerPoint.MsoAnimTriggerType.msoAnimTriggerWithPrevious);
             effectDisappear.Exit = Office.MsoTriState.msoTrue;
             effectDisappear.Timing.Duration = 0;
 
@@ -814,6 +820,9 @@ namespace PowerPointLabs
             indicatorShape.Width = 120;
             indicatorShape.Height = 84;
             indicatorShape.Name = "PPIndicator" + GetTimestamp(DateTime.Now);
+            effectDisappear = sequence.AddEffect(indicatorShape, PowerPoint.MsoAnimEffect.msoAnimEffectAppear, PowerPoint.MsoAnimateByLevel.msoAnimateLevelNone, PowerPoint.MsoAnimTriggerType.msoAnimTriggerWithPrevious);
+            effectDisappear.Timing.Duration = 0;
+
             effectDisappear = sequence.AddEffect(indicatorShape, PowerPoint.MsoAnimEffect.msoAnimEffectAppear, PowerPoint.MsoAnimateByLevel.msoAnimateLevelNone, PowerPoint.MsoAnimTriggerType.msoAnimTriggerWithPrevious);
             effectDisappear.Exit = Office.MsoTriState.msoTrue;
             effectDisappear.Timing.Duration = 0;
@@ -1027,6 +1036,9 @@ namespace PowerPointLabs
             indicatorShape.Height = 84;
             indicatorShape.Name = "PPIndicator" + GetTimestamp(DateTime.Now);
             effectDisappear = sequence.AddEffect(indicatorShape, PowerPoint.MsoAnimEffect.msoAnimEffectAppear, PowerPoint.MsoAnimateByLevel.msoAnimateLevelNone, PowerPoint.MsoAnimTriggerType.msoAnimTriggerWithPrevious);
+            effectDisappear.Timing.Duration = 0;
+
+            effectDisappear = sequence.AddEffect(indicatorShape, PowerPoint.MsoAnimEffect.msoAnimEffectAppear, PowerPoint.MsoAnimateByLevel.msoAnimateLevelNone, PowerPoint.MsoAnimTriggerType.msoAnimTriggerWithPrevious);
             effectDisappear.Exit = Office.MsoTriState.msoTrue;
             effectDisappear.Timing.Duration = 0;
 
@@ -1156,6 +1168,9 @@ namespace PowerPointLabs
             indicatorShape.Height = 84;
             indicatorShape.Name = "PPIndicator" + GetTimestamp(DateTime.Now);
             effectDisappear = sequence.AddEffect(indicatorShape, PowerPoint.MsoAnimEffect.msoAnimEffectAppear, PowerPoint.MsoAnimateByLevel.msoAnimateLevelNone, PowerPoint.MsoAnimTriggerType.msoAnimTriggerWithPrevious);
+            effectDisappear.Timing.Duration = 0;
+
+            effectDisappear = sequence.AddEffect(indicatorShape, PowerPoint.MsoAnimEffect.msoAnimEffectAppear, PowerPoint.MsoAnimateByLevel.msoAnimateLevelNone, PowerPoint.MsoAnimTriggerType.msoAnimTriggerWithPrevious);
             effectDisappear.Exit = Office.MsoTriState.msoTrue;
             effectDisappear.Timing.Duration = 0;
 
@@ -1210,6 +1225,9 @@ namespace PowerPointLabs
             indicatorShape.Width = 120;
             indicatorShape.Height = 84;
             indicatorShape.Name = "PPIndicator" + GetTimestamp(DateTime.Now);
+            effectDisappear = sequence.AddEffect(indicatorShape, PowerPoint.MsoAnimEffect.msoAnimEffectAppear, PowerPoint.MsoAnimateByLevel.msoAnimateLevelNone, PowerPoint.MsoAnimTriggerType.msoAnimTriggerWithPrevious);
+            effectDisappear.Timing.Duration = 0;
+
             effectDisappear = sequence.AddEffect(indicatorShape, PowerPoint.MsoAnimEffect.msoAnimEffectAppear, PowerPoint.MsoAnimateByLevel.msoAnimateLevelNone, PowerPoint.MsoAnimTriggerType.msoAnimTriggerWithPrevious);
             effectDisappear.Exit = Office.MsoTriState.msoTrue;
             effectDisappear.Timing.Duration = 0;
@@ -1293,6 +1311,9 @@ namespace PowerPointLabs
             indicatorShape.Width = 120;
             indicatorShape.Height = 84;
             indicatorShape.Name = "PPIndicator" + GetTimestamp(DateTime.Now);
+            effectDisappear = sequence.AddEffect(indicatorShape, PowerPoint.MsoAnimEffect.msoAnimEffectAppear, PowerPoint.MsoAnimateByLevel.msoAnimateLevelNone, PowerPoint.MsoAnimTriggerType.msoAnimTriggerWithPrevious);
+            effectDisappear.Timing.Duration = 0;
+
             effectDisappear = sequence.AddEffect(indicatorShape, PowerPoint.MsoAnimEffect.msoAnimEffectAppear, PowerPoint.MsoAnimateByLevel.msoAnimateLevelNone, PowerPoint.MsoAnimTriggerType.msoAnimTriggerWithPrevious);
             effectDisappear.Exit = Office.MsoTriState.msoTrue;
             effectDisappear.Timing.Duration = 0;
@@ -1464,17 +1485,41 @@ namespace PowerPointLabs
         {
             try
             {
+                PowerPoint.Presentation presentation = Globals.ThisAddIn.Application.ActivePresentation;
                 PowerPoint.Slide currentSlide = GetCurrentSlide();
                 if (Globals.ThisAddIn.Application.ActiveWindow.Selection.ShapeRange.Count == 0)
                     return;
 
+                if (currentSlide.Name.Contains("PPTLabsZoomToAreaSlide"))
+                {
+                    PowerPoint.Slide nextSlide = GetNextSlide(currentSlide);
+                    PowerPoint.Slide tempSlide = null;
+                    while ((nextSlide.Name.Contains("PPTLabsMagnifyingSlide") || (nextSlide.Name.Contains("PPTLabsMagnifiedSlide")) 
+                           || (nextSlide.Name.Contains("PPTLabsDeMagnifyingSlide")) || (nextSlide.Name.Contains("PPTLabsMagnifiedPanSlide")))
+                           && nextSlide.SlideIndex < presentation.Slides.Count)
+                    {
+                        tempSlide = nextSlide;
+                        nextSlide = GetNextSlide(tempSlide);
+                        tempSlide.Delete();
+                    }
+                }
+                currentSlide.Name = "PPTLabsZoomToAreaSlide" + GetTimestamp(DateTime.Now);
                 PowerPoint.ShapeRange selectedShapes = Globals.ThisAddIn.Application.ActiveWindow.Selection.ShapeRange;
                 //PowerPoint.Shape selectedShape2 = Globals.ThisAddIn.Application.ActiveWindow.Selection.ShapeRange[1];
                 int count = 1;
                 PowerPoint.Slide lastMagnifiedSlide = null;
-                PowerPoint.Shape lastMagnifiedShape = null;
+                PowerPoint.Effect effectDisappear = null;
+                PowerPoint.Effect effectAppear = null;
+
                 foreach (PowerPoint.Shape sh in selectedShapes)
                 {
+                    PowerPoint.Sequence sequence = currentSlide.TimeLine.MainSequence;
+                    effectAppear = sequence.AddEffect(sh, PowerPoint.MsoAnimEffect.msoAnimEffectAppear, PowerPoint.MsoAnimateByLevel.msoAnimateLevelNone, PowerPoint.MsoAnimTriggerType.msoAnimTriggerWithPrevious);
+                    effectAppear.Timing.Duration = 0;
+
+                    effectDisappear = sequence.AddEffect(sh, PowerPoint.MsoAnimEffect.msoAnimEffectAppear, PowerPoint.MsoAnimateByLevel.msoAnimateLevelNone, PowerPoint.MsoAnimTriggerType.msoAnimTriggerWithPrevious);
+                    effectDisappear.Exit = Office.MsoTriState.msoTrue;
+                    effectDisappear.Timing.Duration = 0;
                     sh.Visible = Office.MsoTriState.msoFalse;
                 }
                 foreach(PowerPoint.Shape selectedShape2 in selectedShapes)
@@ -1482,7 +1527,16 @@ namespace PowerPointLabs
                     selectedShape2.Visible = Office.MsoTriState.msoTrue;
                     selectedShape2.Name = "PPTLabsMagnifyShape" + GetTimestamp(DateTime.Now);
                     selectedShape2.Copy();
-                    selectedShape2.Visible = Office.MsoTriState.msoFalse;
+                    if (selectedShape2.HasTextFrame == Office.MsoTriState.msoTrue)
+                    {
+                        selectedShape2.TextFrame2.DeleteText();
+                        selectedShape2.TextFrame2.TextRange.Text = "Zoom Shape " + count;
+                        selectedShape2.TextFrame2.AutoSize = Office.MsoAutoSize.msoAutoSizeTextToFitShape;
+                        selectedShape2.TextFrame2.TextRange.Font.Fill.ForeColor.RGB = 0xffffff;
+                        selectedShape2.TextFrame2.TextRange.Font.Bold = Office.MsoTriState.msoTrue;
+                        selectedShape2.Visible = Office.MsoTriState.msoFalse;
+                    }
+                    
                     PowerPoint.Shape selectedShape = currentSlide.Shapes.Paste()[1];
                     selectedShape.LockAspectRatio = Office.MsoTriState.msoFalse;
                     PowerPoint.Slide magnifyingSlide = null;
@@ -1551,7 +1605,13 @@ namespace PowerPointLabs
                     
                     count++;
                 }
-                
+                foreach (PowerPoint.Shape sh in selectedShapes)
+                {
+                    sh.Visible = Office.MsoTriState.msoTrue;
+                    sh.Fill.ForeColor.RGB = 0xaaaaaa;
+                    sh.Fill.Transparency = 0.7f;
+                    sh.Line.ForeColor.RGB = 0x000000;
+                }
                 AddAckSlide();
             }
             catch (Exception e)
@@ -1899,6 +1959,9 @@ namespace PowerPointLabs
             indicatorShape.Height = 84;
             indicatorShape.Name = "PPIndicator" + GetTimestamp(DateTime.Now);
             effectDisappear = sequence.AddEffect(indicatorShape, PowerPoint.MsoAnimEffect.msoAnimEffectAppear, PowerPoint.MsoAnimateByLevel.msoAnimateLevelNone, PowerPoint.MsoAnimTriggerType.msoAnimTriggerWithPrevious);
+            effectDisappear.Timing.Duration = 0;
+
+            effectDisappear = sequence.AddEffect(indicatorShape, PowerPoint.MsoAnimEffect.msoAnimEffectAppear, PowerPoint.MsoAnimateByLevel.msoAnimateLevelNone, PowerPoint.MsoAnimTriggerType.msoAnimTriggerWithPrevious);
             effectDisappear.Exit = Office.MsoTriState.msoTrue;
             effectDisappear.Timing.Duration = 0;
             bool fadeFlag = false;
@@ -2085,6 +2148,9 @@ namespace PowerPointLabs
                     indicatorShape.Width = 120;
                     indicatorShape.Height = 84;
                     indicatorShape.Name = "PPIndicator" + GetTimestamp(DateTime.Now);
+                    effectDisappear = sequence.AddEffect(indicatorShape, PowerPoint.MsoAnimEffect.msoAnimEffectAppear, PowerPoint.MsoAnimateByLevel.msoAnimateLevelNone, PowerPoint.MsoAnimTriggerType.msoAnimTriggerWithPrevious);
+                    effectDisappear.Timing.Duration = 0;
+
                     effectDisappear = sequence.AddEffect(indicatorShape, PowerPoint.MsoAnimEffect.msoAnimEffectAppear, PowerPoint.MsoAnimateByLevel.msoAnimateLevelNone, PowerPoint.MsoAnimTriggerType.msoAnimTriggerWithPrevious);
                     effectDisappear.Exit = Office.MsoTriState.msoTrue;
                     effectDisappear.Timing.Duration = 0;
@@ -2278,6 +2344,9 @@ namespace PowerPointLabs
             indicatorShape.Height = 84;
             indicatorShape.Name = "PPIndicator" + GetTimestamp(DateTime.Now);
             effectDisappear = sequence.AddEffect(indicatorShape, PowerPoint.MsoAnimEffect.msoAnimEffectAppear, PowerPoint.MsoAnimateByLevel.msoAnimateLevelNone, PowerPoint.MsoAnimTriggerType.msoAnimTriggerWithPrevious);
+            effectDisappear.Timing.Duration = 0;
+
+            effectDisappear = sequence.AddEffect(indicatorShape, PowerPoint.MsoAnimEffect.msoAnimEffectAppear, PowerPoint.MsoAnimateByLevel.msoAnimateLevelNone, PowerPoint.MsoAnimTriggerType.msoAnimTriggerWithPrevious);
             effectDisappear.Exit = Office.MsoTriState.msoTrue;
             effectDisappear.Timing.Duration = 0;
 
@@ -2457,6 +2526,9 @@ namespace PowerPointLabs
                     indicatorShape.Width = 120;
                     indicatorShape.Height = 84;
                     indicatorShape.Name = "PPIndicator" + GetTimestamp(DateTime.Now);
+                    effectDisappear = sequence.AddEffect(indicatorShape, PowerPoint.MsoAnimEffect.msoAnimEffectAppear, PowerPoint.MsoAnimateByLevel.msoAnimateLevelNone, PowerPoint.MsoAnimTriggerType.msoAnimTriggerWithPrevious);
+                    effectDisappear.Timing.Duration = 0;
+
                     effectDisappear = sequence.AddEffect(indicatorShape, PowerPoint.MsoAnimEffect.msoAnimEffectAppear, PowerPoint.MsoAnimateByLevel.msoAnimateLevelNone, PowerPoint.MsoAnimTriggerType.msoAnimTriggerWithPrevious);
                     effectDisappear.Exit = Office.MsoTriState.msoTrue;
                     effectDisappear.Timing.Duration = 0;
@@ -4249,6 +4321,9 @@ namespace PowerPointLabs
                 indicatorShape.Width = 120;
                 indicatorShape.Height = 84;
                 indicatorShape.Name = "PPIndicator" + GetTimestamp(DateTime.Now);
+                effectDisappear = sequence.AddEffect(indicatorShape, PowerPoint.MsoAnimEffect.msoAnimEffectAppear, PowerPoint.MsoAnimateByLevel.msoAnimateLevelNone, PowerPoint.MsoAnimTriggerType.msoAnimTriggerWithPrevious);
+                effectDisappear.Timing.Duration = 0;
+
                 effectDisappear = sequence.AddEffect(indicatorShape, PowerPoint.MsoAnimEffect.msoAnimEffectAppear, PowerPoint.MsoAnimateByLevel.msoAnimateLevelNone, PowerPoint.MsoAnimTriggerType.msoAnimTriggerWithPrevious);
                 effectDisappear.Exit = Office.MsoTriState.msoTrue;
                 effectDisappear.Timing.Duration = 0;
