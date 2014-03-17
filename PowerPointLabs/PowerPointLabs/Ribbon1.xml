@@ -367,6 +367,11 @@
               getImage="GetInSlideAnimationContextImage"
               getEnabled="OnGetEnabledAddInSlide"
               onAction="AddInSlideAnimationButtonClick"/>
+      <button id="ZoomToAreaContextMenuGroup"
+             label ="Zoom To Area"
+             getImage="GetZoomToAreaContextImage"
+             getEnabled="OnGetEnabledZoomButton"
+             onAction="ZoomBtnClick"/>
       <button id="ConvertToPictureGroup"
              label ="Convert to Picture"
              getImage="GetConvertToPicMenuImage"
