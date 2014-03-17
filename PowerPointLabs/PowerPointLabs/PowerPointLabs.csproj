@@ -224,11 +224,11 @@
     <Compile Include="AboutForm.Designer.cs">
       <DependentUpon>AboutForm.cs</DependentUpon>
     </Compile>
-    <Compile Include="AboutSpotlight.cs">
+    <Compile Include="AutoAnimateDialogBox.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="AboutSpotlight.Designer.cs">
-      <DependentUpon>AboutSpotlight.cs</DependentUpon>
+    <Compile Include="AutoAnimateDialogBox.Designer.cs">
+      <DependentUpon>AutoAnimateDialogBox.cs</DependentUpon>
     </Compile>
     <Compile Include="Form1.cs">
       <SubType>Form</SubType>
@@ -260,8 +260,8 @@
     <EmbeddedResource Include="AboutForm.resx">
       <DependentUpon>AboutForm.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="AboutSpotlight.resx">
-      <DependentUpon>AboutSpotlight.cs</DependentUpon>
+    <EmbeddedResource Include="AutoAnimateDialogBox.resx">
+      <DependentUpon>AutoAnimateDialogBox.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Form1.resx">
       <DependentUpon>Form1.cs</DependentUpon>

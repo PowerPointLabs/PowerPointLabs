@@ -3023,75 +3023,75 @@ namespace PowerPointLabs
             }
         }
         //Duration Callbacks
-        public void OnChangeDuration(Office.IRibbonControl control, String text)
-        {
-            try
-            {
-                if (text == "")
-                    defaultDuration = 0.01f;
-                else
-                {
-                    float enteredValue = float.Parse(text);
-                    if (enteredValue < 0.01)
-                        defaultDuration = 0.01f;
-                    else if (enteredValue > 59.0)
-                        defaultDuration = 59.0f;
-                    else
-                        defaultDuration = enteredValue;
-                }
-                ribbon.InvalidateControl("animationDurationOption");
-            }
-            catch (Exception e)
-            {
-                LogException(e, "OnChangeDuration");
-                throw;
-            }
-        }
-        public String OnGetDurationText(Office.IRibbonControl control)
-        {
-            try
-            {
-                return defaultDuration.ToString();
-            }
-            catch (Exception e)
-            {
-                LogException(e, "OnGetDurationText");
-                throw;
-            }
-        }
+        //public void OnChangeDuration(Office.IRibbonControl control, String text)
+        //{
+        //    try
+        //    {
+        //        if (text == "")
+        //            defaultDuration = 0.01f;
+        //        else
+        //        {
+        //            float enteredValue = float.Parse(text);
+        //            if (enteredValue < 0.01)
+        //                defaultDuration = 0.01f;
+        //            else if (enteredValue > 59.0)
+        //                defaultDuration = 59.0f;
+        //            else
+        //                defaultDuration = enteredValue;
+        //        }
+        //        ribbon.InvalidateControl("animationDurationOption");
+        //    }
+        //    catch (Exception e)
+        //    {
+        //        LogException(e, "OnChangeDuration");
+        //        throw;
+        //    }
+        //}
+        //public String OnGetDurationText(Office.IRibbonControl control)
+        //{
+        //    try
+        //    {
+        //        return defaultDuration.ToString();
+        //    }
+        //    catch (Exception e)
+        //    {
+        //        LogException(e, "OnGetDurationText");
+        //        throw;
+        //    }
+        //}
 
         //Checkbox Callbacks
-        public void AnimationStyleChanged(Office.IRibbonControl control, bool pressed)
-        {
-            try
-            {
-                if (pressed)
-                {
-                    frameAnimationChecked = true;
-                }
-                else
-                {
-                    frameAnimationChecked = false;
-                }
-            }
-            catch (Exception e)
-            {
-                LogException(e, "AnimationStyleChanged");
-                throw;
-            }
-        }
-        public bool AnimationStyleGetPressed(Office.IRibbonControl control)
-        {
-            try
-            {
-                return frameAnimationChecked;
-            }
-            catch (Exception e)
-            {
-                LogException(e, "AnimationStyleGetPressed");
-                throw;
-            }
-        }
+        //public void AnimationStyleChanged(Office.IRibbonControl control, bool pressed)
+        //{
+        //    try
+        //    {
+        //        if (pressed)
+        //        {
+        //            frameAnimationChecked = true;
+        //        }
+        //        else
+        //        {
+        //            frameAnimationChecked = false;
+        //        }
+        //    }
+        //    catch (Exception e)
+        //    {
+        //        LogException(e, "AnimationStyleChanged");
+        //        throw;
+        //    }
+        //}
+        //public bool AnimationStyleGetPressed(Office.IRibbonControl control)
+        //{
+        //    try
+        //    {
+        //        return frameAnimationChecked;
+        //    }
+        //    catch (Exception e)
+        //    {
+        //        LogException(e, "AnimationStyleGetPressed");
+        //        throw;
+        //    }
+        //}
         public void ZoomStyleChanged(Office.IRibbonControl control, bool pressed)
         {
             try
@@ -3299,6 +3299,34 @@ namespace PowerPointLabs
             catch (Exception e)
             {
                 LogException(e, "ShapeNameEdited");
+                throw;
+            }
+        }
+
+        public void AutoAnimateDialogButtonPressed(Office.IRibbonControl control)
+        {
+            try
+            {
+                AutoAnimateDialogBox dialog = new AutoAnimateDialogBox(this, defaultDuration, frameAnimationChecked);
+                dialog.Show();
+            }
+            catch (Exception e)
+            {
+                LogException(e, "AutoAnimateDialogButtonPressed");
+                throw;
+            }
+        }
+
+        public void AnimationPropertiesEdited(float newDuration, bool newFrameChecked)
+        {
+            try
+            {
+                defaultDuration = newDuration;
+                frameAnimationChecked = newFrameChecked;
+            }
+            catch (Exception e)
+            {
+                LogException(e, "AnimationPropertiesEdited");
                 throw;
             }
         }

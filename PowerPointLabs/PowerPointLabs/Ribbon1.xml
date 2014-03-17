@@ -4,7 +4,8 @@
     <tabs>
       <tab id="PowerPointLabsAddIns" label="PowerPointLabs">
         <group id="AutoMotionGroup"
-               label="Auto Animate" visible ="true">
+               label="Auto Animate" 
+               visible ="true">
           <button id="AddAnimationButton"
                   label="Add Animation Slide"
                   size="large"
@@ -26,7 +27,7 @@
                   supertip="Moves a shape around the slide in multiple steps.&#13;&#13;To activate, copy the shape to locations where you want it to stop, select the copies in the order you want them to appear, and click this button"
                   getEnabled="OnGetEnabledAddInSlide"
                   onAction="AddInSlideAnimationButtonClick"/>
-          <editBox id="animationDurationOption"
+          <!--<editBox id="animationDurationOption"
                    label="Duration"
                    sizeString="AAAA"
                    supertip="The duration (in seconds) for the animations in the animation slides to be created."
@@ -36,7 +37,12 @@
                     label="Smoother Animation"
                     supertip="Use a frame-based approach for smoother resize animations.&#13;&#13;This may result in larger file sizes and slower loading times for animated slides."
                     onAction="AnimationStyleChanged"
-                    getPressed="AnimationStyleGetPressed"/>
+                    getPressed="AnimationStyleGetPressed"/>-->
+          <dialogBoxLauncher>
+            <button id ="AutoAnimateDialogBox"
+                    onAction="AutoAnimateDialogButtonPressed"/>
+          </dialogBoxLauncher>
+                             
         </group>
         <group id="AutoZoomGroup"
                label="Auto Zoom" visible ="true">
