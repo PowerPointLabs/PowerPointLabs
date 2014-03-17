@@ -1490,7 +1490,7 @@ namespace PowerPointLabs
                 if (Globals.ThisAddIn.Application.ActiveWindow.Selection.ShapeRange.Count == 0)
                     return;
 
-                if (currentSlide.Name.Contains("PPTLabsZoomToAreaSlide"))
+                if (currentSlide.Name.Contains("PPTLabsZoomToAreaSlide") && currentSlide.SlideIndex != presentation.Slides.Count)
                 {
                     PowerPoint.Slide nextSlide = GetNextSlide(currentSlide);
                     PowerPoint.Slide tempSlide = null;
