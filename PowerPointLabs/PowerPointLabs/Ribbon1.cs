@@ -1404,8 +1404,8 @@ namespace PowerPointLabs
 
             int numFrames = 10;
 
-            //float incrementWidth = ((finalWidth / initialWidth) - 1.0f) / numFrames;
-            //float incrementHeight = ((finalHeight / initialHeight) - 1.0f) / numFrames;
+            float incrementWidth = ((finalWidth / initialWidth) - 1.0f) / numFrames;
+            float incrementHeight = ((finalHeight / initialHeight) - 1.0f) / numFrames;
             //float incrementRotation = GetMinimumRotation(initialRotation, finalRotation) / numFrames;
             float incrementLeft = (finalX - initialX) / numFrames;
             float incrementTop = (finalY - initialY) / numFrames;
@@ -1422,15 +1422,15 @@ namespace PowerPointLabs
                 dupShape.Top = magnifyShapeFrom.Top;
                 //dupShape.Rotation = groupShape.Rotation;
 
-                //if (incrementWidth != 0.0f)
-                //{
-                //    dupShape.ScaleWidth((1.0f + (incrementWidth * i)), Office.MsoTriState.msoFalse, Office.MsoScaleFrom.msoScaleFromMiddle);
-                //}
+                if (incrementWidth != 0.0f)
+                {
+                    dupShape.ScaleWidth((1.0f + (incrementWidth * i)), Office.MsoTriState.msoFalse, Office.MsoScaleFrom.msoScaleFromMiddle);
+                }
 
-                //if (incrementHeight != 0.0f)
-                //{
-                //    dupShape.ScaleHeight((1.0f + (incrementHeight * i)), Office.MsoTriState.msoFalse, Office.MsoScaleFrom.msoScaleFromMiddle);
-                //}
+                if (incrementHeight != 0.0f)
+                {
+                    dupShape.ScaleHeight((1.0f + (incrementHeight * i)), Office.MsoTriState.msoFalse, Office.MsoScaleFrom.msoScaleFromMiddle);
+                }
 
                 //if (incrementRotation != 0.0f)
                 //{
@@ -1558,6 +1558,20 @@ namespace PowerPointLabs
                         selectedShape.Left = selectedShape2.Left + (selectedShape2.Width / 2) - (selectedShape.Width / 2);
                         selectedShape.Top = selectedShape2.Top + (selectedShape2.Height / 2) - (selectedShape.Height / 2);
                     }
+
+                    if (selectedShape.Width > presentation.PageSetup.SlideWidth)
+                        selectedShape.Width = presentation.PageSetup.SlideWidth;
+                    if (selectedShape.Height > presentation.PageSetup.SlideHeight)
+                        selectedShape.Height = presentation.PageSetup.SlideHeight;
+
+                    if (selectedShape.Left < 0)
+                        selectedShape.Left = 0;
+                    if (selectedShape.Left + selectedShape.Width > presentation.PageSetup.SlideWidth)
+                        selectedShape.Left = presentation.PageSetup.SlideWidth - selectedShape.Width;
+                    if (selectedShape.Top < 0)
+                        selectedShape.Top = 0;
+                    if (selectedShape.Top + selectedShape.Height > presentation.PageSetup.SlideHeight)
+                        selectedShape.Top = presentation.PageSetup.SlideHeight - selectedShape.Height;
 
                     if (!backgroundZoomChecked)
                     {
