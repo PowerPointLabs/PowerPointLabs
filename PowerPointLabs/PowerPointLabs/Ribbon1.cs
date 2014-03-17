@@ -1569,9 +1569,6 @@ namespace PowerPointLabs
                         {
                             demagnifyingSlide = AddDeMagnifyingSlide(magnifyingSlide, selectedShape);
                         }
-
-                        //Globals.ThisAddIn.Application.ActiveWindow.View.GotoSlide(magnifyingSlide.SlideIndex);
-                        //Globals.ThisAddIn.Application.CommandBars.ExecuteMso("AnimationPreview");
                     }
                     else
                     {
@@ -1605,6 +1602,8 @@ namespace PowerPointLabs
                     
                     count++;
                 }
+                Globals.ThisAddIn.Application.ActiveWindow.View.GotoSlide(currentSlide.SlideIndex);
+                //Globals.ThisAddIn.Application.CommandBars.ExecuteMso("AnimationPreview");
                 foreach (PowerPoint.Shape sh in selectedShapes)
                 {
                     sh.Visible = Office.MsoTriState.msoTrue;
@@ -1627,6 +1626,7 @@ namespace PowerPointLabs
                 PowerPoint.Slide tempSlide = GetCurrentSlide();
                 PowerPoint.Shape shape1 = null;
                 List<PowerPoint.Shape> spotlightShapes = new List<PowerPoint.Shape>();
+                PowerPoint.Shape indicatorShape = null;
                 if (tempSlide.Name.Contains("PPTLabsSpotlight")) //&& tempSlide.Name.Substring(0, 14).Equals("PPTLabsSpotlight")
                 {
                     foreach (PowerPoint.Shape sh in tempSlide.Shapes)
@@ -1639,6 +1639,10 @@ namespace PowerPointLabs
                         {
                             spotlightShapes.Add(sh);
                         }
+                        else if (sh.Name.Contains("PPIndicator"))
+                        {
+                            indicatorShape = sh;
+                        }
                     }
 
                     if (shape1 == null || spotlightShapes.Count == 0)
@@ -1648,7 +1652,8 @@ namespace PowerPointLabs
                     else
                     {
                         shape1.Delete();
-
+                        if (indicatorShape != null)
+                            indicatorShape.Delete();
                         foreach (PowerPoint.Shape sh in spotlightShapes)
                         {
                             sh.Visible = Office.MsoTriState.msoTrue;
@@ -1689,7 +1694,8 @@ namespace PowerPointLabs
                 List<PowerPoint.Shape> spotlightShapes = new List<PowerPoint.Shape>();
 
                 foreach (PowerPoint.Shape spotShape in selectedShapes)
-                { 
+                {
+                    DeleteShapeAnnimations(currentSlide, spotShape);
                     foreach (PowerPoint.Shape copyShape in currentSlide.Shapes)
                     {
                         if (copyShape.Name.Equals(spotShape.Name) || copyShape.Name.Contains("SpotlightShape"))
@@ -1757,6 +1763,7 @@ namespace PowerPointLabs
                     //}
                     
                     spotlightShape.Fill.ForeColor.RGB = 0xffffff;
+                    spotlightShape.Fill.Transparency = 0;
                     spotlightShape.Line.Visible = Office.MsoTriState.msoFalse;
                     if (spotlightShape.HasTextFrame == Office.MsoTriState.msoTrue && spotlightShape.TextFrame.HasText == Office.MsoTriState.msoTrue)
                         spotlightShape.TextFrame.TextRange.Font.Color.RGB = 0xffffff;
@@ -1769,7 +1776,21 @@ namespace PowerPointLabs
 
                     spotlightShapes.Add(spotlightShape);
                     //if (spotlightDelete)
-                    spotShape.Delete();
+                    //spotShape.Delete();
+                    spotShape.Fill.ForeColor.RGB = 0xaaaaaa;
+                    spotShape.Fill.Transparency = 0.7f;
+                    spotShape.Line.ForeColor.RGB = 0x000000;
+                    PowerPoint.Effect effectDisappear = null;
+
+                    PowerPoint.Sequence sequence = currentSlide.TimeLine.MainSequence;
+                    effectDisappear = sequence.AddEffect(spotShape, PowerPoint.MsoAnimEffect.msoAnimEffectAppear, PowerPoint.MsoAnimateByLevel.msoAnimateLevelNone, PowerPoint.MsoAnimTriggerType.msoAnimTriggerWithPrevious);
+                    effectDisappear.Timing.Duration = 0;
+                    effectDisappear.MoveTo(1);
+
+                    effectDisappear = sequence.AddEffect(spotShape, PowerPoint.MsoAnimEffect.msoAnimEffectAppear, PowerPoint.MsoAnimateByLevel.msoAnimateLevelNone, PowerPoint.MsoAnimTriggerType.msoAnimTriggerWithPrevious);
+                    effectDisappear.Exit = Office.MsoTriState.msoTrue;
+                    effectDisappear.Timing.Duration = 0;
+                    effectDisappear.MoveTo(2);
                 }
 
                 if (addedSlide.HasNotesPage == Office.MsoTriState.msoTrue)
@@ -4216,6 +4237,26 @@ namespace PowerPointLabs
             try
             {
                 PowerPoint.Presentation presentation = Globals.ThisAddIn.Application.ActivePresentation;
+
+                PowerPoint.Sequence sequence = addedSlide.TimeLine.MainSequence;
+                PowerPoint.Effect effectDisappear = null;
+
+                String tempFileName = Path.GetTempFileName();
+                Properties.Resources.Indicator.Save(tempFileName);
+                PowerPoint.Shape indicatorShape = addedSlide.Shapes.AddPicture(tempFileName, Office.MsoTriState.msoFalse, Office.MsoTriState.msoTrue, presentation.PageSetup.SlideWidth - 120, 0, 120, 84);
+                indicatorShape.Left = presentation.PageSetup.SlideWidth - 120;
+                indicatorShape.Top = 0;
+                indicatorShape.Width = 120;
+                indicatorShape.Height = 84;
+                indicatorShape.Name = "PPIndicator" + GetTimestamp(DateTime.Now);
+                effectDisappear = sequence.AddEffect(indicatorShape, PowerPoint.MsoAnimEffect.msoAnimEffectAppear, PowerPoint.MsoAnimateByLevel.msoAnimateLevelNone, PowerPoint.MsoAnimTriggerType.msoAnimTriggerWithPrevious);
+                effectDisappear.Timing.Duration = 0;
+
+                effectDisappear = sequence.AddEffect(indicatorShape, PowerPoint.MsoAnimEffect.msoAnimEffectAppear, PowerPoint.MsoAnimateByLevel.msoAnimateLevelNone, PowerPoint.MsoAnimTriggerType.msoAnimTriggerWithPrevious);
+                effectDisappear.Exit = Office.MsoTriState.msoTrue;
+                effectDisappear.Timing.Duration = 0;
+                int indicatorID = indicatorShape.Id;
+
                 PowerPoint.Shape rectangleShape = addedSlide.Shapes.AddShape(Office.MsoAutoShapeType.msoShapeRectangle, (-1 * defaultSoftEdges), (-1 * defaultSoftEdges), (presentation.PageSetup.SlideWidth + (2.0f * defaultSoftEdges)), (presentation.PageSetup.SlideHeight + (2.0f * defaultSoftEdges)));
                 rectangleShape.Fill.ForeColor.RGB = 0x000000;
                 rectangleShape.Fill.Transparency = defaultTransparency;
@@ -4256,6 +4297,7 @@ namespace PowerPointLabs
                 //pictureShape.Left = (-1 * defaultSoftEdges);
                 //pictureShape.Top = (-1 * defaultSoftEdges);
                 pictureShape.Name = "SpotlightShape1";
+                indicatorShape.ZOrder(Office.MsoZOrderCmd.msoBringToFront);
             }
             catch (Exception e)
             {
