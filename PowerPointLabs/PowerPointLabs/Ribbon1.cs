@@ -1712,6 +1712,7 @@ namespace PowerPointLabs
 
                         }
                     }
+                    spotShape.ShapeStyle = Office.MsoShapeStyleIndex.msoShapeStylePreset1;
                     spotShape.Copy();
                     PowerPoint.Shape spotlightShape = addedSlide.Shapes.Paste()[1];
 
@@ -1761,9 +1762,8 @@ namespace PowerPointLabs
                     //    if (spotlightShape.Top + spotlightShape.Height > Globals.ThisAddIn.Application.ActivePresentation.PageSetup.SlideHeight)
                     //        spotlightShape.Height = (Globals.ThisAddIn.Application.ActivePresentation.PageSetup.SlideHeight - oldTop);
                     //}
-                    
+
                     spotlightShape.Fill.ForeColor.RGB = 0xffffff;
-                    spotlightShape.Fill.Transparency = 0;
                     spotlightShape.Line.Visible = Office.MsoTriState.msoFalse;
                     if (spotlightShape.HasTextFrame == Office.MsoTriState.msoTrue && spotlightShape.TextFrame.HasText == Office.MsoTriState.msoTrue)
                         spotlightShape.TextFrame.TextRange.Font.Color.RGB = 0xffffff;
