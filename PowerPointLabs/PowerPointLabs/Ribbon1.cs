@@ -515,40 +515,43 @@ namespace PowerPointLabs
             duplicatePic.Name = "PPTLabsMagnifyAreaSlide" + GetTimestamp(DateTime.Now);
 
             Globals.ThisAddIn.Application.ActiveWindow.Selection.Unselect();
-            Globals.ThisAddIn.Application.ActiveWindow.View.GotoSlide(addedSlide.SlideIndex);
+            Globals.ThisAddIn.Application.ActiveWindow.View.GotoSlide(tempSlide.SlideIndex);
 
-            PowerPoint.Shape tempDuplicate = duplicatePic.Duplicate()[1];
-            tempDuplicate.Left = 0;
-            tempDuplicate.Top = 0;
-            tempDuplicate.Select();
-            foreach (PowerPoint.Shape sh in tempSlide.Shapes)
-            {
-                if (sh.Visible == Office.MsoTriState.msoTrue)
-                {
-                    PowerPoint.Shape dupShape = null;
-                    sh.Copy();
-                    if (sh.Type == Office.MsoShapeType.msoPlaceholder)
-                    {
-                        dupShape = addedSlide.Shapes.PasteSpecial(PowerPoint.PpPasteDataType.ppPastePNG)[1];
-                    }
-                    else
-                    {
-                        dupShape = addedSlide.Shapes.Paste()[1];
-                    }
+            PowerPoint.Shape cropShape = tempSlide.Shapes.AddShape(Office.MsoAutoShapeType.msoShapeRectangle, 0, 0, presentation.PageSetup.SlideWidth-1, presentation.PageSetup.SlideHeight-1);
+            cropShape.Select();
+            //PowerPoint.Shape tempDuplicate = duplicatePic.Duplicate()[1];
+            //tempDuplicate.Left = 0;
+            //tempDuplicate.Top = 0;
+            //tempDuplicate.Select();
+            //foreach (PowerPoint.Shape sh in tempSlide.Shapes)
+            //{
+            //    if (sh.Visible == Office.MsoTriState.msoTrue)
+            //    {
+            //        PowerPoint.Shape dupShape = null;
+            //        sh.Copy();
+            //        if (sh.Type == Office.MsoShapeType.msoPlaceholder)
+            //        {
+            //            dupShape = addedSlide.Shapes.PasteSpecial(PowerPoint.PpPasteDataType.ppPastePNG)[1];
+            //        }
+            //        else
+            //        {
+            //            dupShape = addedSlide.Shapes.Paste()[1];
+            //        }
                    
-                    dupShape.LockAspectRatio = Office.MsoTriState.msoFalse;
-                    dupShape.Width = sh.Width;
-                    dupShape.Height = sh.Height;
-                    dupShape.Left = sh.Left;
-                    dupShape.Top = sh.Top;
-                    dupShape.Select(Office.MsoTriState.msoFalse);
-                }
-            }
+            //        dupShape.LockAspectRatio = Office.MsoTriState.msoFalse;
+            //        dupShape.Width = sh.Width;
+            //        dupShape.Height = sh.Height;
+            //        dupShape.Left = sh.Left;
+            //        dupShape.Top = sh.Top;
+            //        dupShape.Select(Office.MsoTriState.msoFalse);
+            //    }
+            //}
 
             PowerPoint.Selection sel = Globals.ThisAddIn.Application.ActiveWindow.Selection;
+            PowerPoint.Shape croppedShape = CropShapeToSlide(ref sel);
 
-            tempSlide.Delete();
-            sel.Cut();
+            //tempSlide.Delete();
+            croppedShape.Cut();
             PowerPoint.Shape duplicatePic2 = addedSlide.Shapes.PasteSpecial(PowerPoint.PpPasteDataType.ppPastePNG)[1];
             duplicatePic2.LockAspectRatio = Office.MsoTriState.msoFalse;
             duplicatePic2.Left = 0;
@@ -565,6 +568,7 @@ namespace PowerPointLabs
             duplicatePic2.Left = centerX - (duplicatePic2.Width / 2);
             duplicatePic2.Top = centerY - (duplicatePic2.Height / 2);
             duplicatePic2.Visible = Office.MsoTriState.msoFalse;
+            tempSlide.Delete();
 
             PowerPoint.Effect effectMotion = null;
             PowerPoint.Effect effectResize = null;
@@ -970,41 +974,46 @@ namespace PowerPointLabs
             duplicatePic.Name = "PPTLabsMagnifyAreaSlide" + GetTimestamp(DateTime.Now);
 
             Globals.ThisAddIn.Application.ActiveWindow.Selection.Unselect();
-            Globals.ThisAddIn.Application.ActiveWindow.View.GotoSlide(addedSlide.SlideIndex);
+            Globals.ThisAddIn.Application.ActiveWindow.View.GotoSlide(tempSlide.SlideIndex);
 
-            PowerPoint.Shape tempDuplicate = duplicatePic.Duplicate()[1];
-            tempDuplicate.Left = 0;
-            tempDuplicate.Top = 0;
-            tempDuplicate.Select();
-            foreach (PowerPoint.Shape sh in tempSlide.Shapes)
-            {
+            PowerPoint.Shape cropShape = tempSlide.Shapes.AddShape(Office.MsoAutoShapeType.msoShapeRectangle, 0, 0, presentation.PageSetup.SlideWidth - 1, presentation.PageSetup.SlideHeight - 1);
+            cropShape.Select();
 
-                if (sh.Visible == Office.MsoTriState.msoTrue)
-                {
-                    PowerPoint.Shape dupShape = null;
-                    sh.Copy();
-                    if (sh.Type == Office.MsoShapeType.msoPlaceholder)
-                    {
-                        dupShape = addedSlide.Shapes.PasteSpecial(PowerPoint.PpPasteDataType.ppPastePNG)[1];
-                    }
-                    else
-                    {
-                        dupShape = addedSlide.Shapes.Paste()[1];
-                    }
+            //PowerPoint.Shape tempDuplicate = duplicatePic.Duplicate()[1];
+            //tempDuplicate.Left = 0;
+            //tempDuplicate.Top = 0;
+            //tempDuplicate.Select();
+            //foreach (PowerPoint.Shape sh in tempSlide.Shapes)
+            //{
 
-                    dupShape.LockAspectRatio = Office.MsoTriState.msoFalse;
-                    dupShape.Width = sh.Width;
-                    dupShape.Height = sh.Height;
-                    dupShape.Left = sh.Left;
-                    dupShape.Top = sh.Top;
-                    dupShape.Select(Office.MsoTriState.msoFalse);
-                }
-            }
+            //    if (sh.Visible == Office.MsoTriState.msoTrue)
+            //    {
+            //        PowerPoint.Shape dupShape = null;
+            //        sh.Copy();
+            //        if (sh.Type == Office.MsoShapeType.msoPlaceholder)
+            //        {
+            //            dupShape = addedSlide.Shapes.PasteSpecial(PowerPoint.PpPasteDataType.ppPastePNG)[1];
+            //        }
+            //        else
+            //        {
+            //            dupShape = addedSlide.Shapes.Paste()[1];
+            //        }
+
+            //        dupShape.LockAspectRatio = Office.MsoTriState.msoFalse;
+            //        dupShape.Width = sh.Width;
+            //        dupShape.Height = sh.Height;
+            //        dupShape.Left = sh.Left;
+            //        dupShape.Top = sh.Top;
+            //        dupShape.Select(Office.MsoTriState.msoFalse);
+            //    }
+            //}
             
             PowerPoint.Selection sel = Globals.ThisAddIn.Application.ActiveWindow.Selection;
+            PowerPoint.Shape croppedShape = CropShapeToSlide(ref sel);
 
-            tempSlide.Delete();
-            sel.Cut();
+            //tempSlide.Delete();
+            croppedShape.Cut();
+
             PowerPoint.Shape duplicatePic2 = addedSlide.Shapes.PasteSpecial(PowerPoint.PpPasteDataType.ppPastePNG)[1];
             duplicatePic2.LockAspectRatio = Office.MsoTriState.msoFalse;
             duplicatePic2.Left = 0;
@@ -1036,6 +1045,7 @@ namespace PowerPointLabs
             duplicatePic2.Left = centerX - (duplicatePic.Width / 2);
             duplicatePic2.Top = centerY - (duplicatePic.Height / 2);
             duplicatePic2.Visible = Office.MsoTriState.msoFalse;
+            tempSlide.Delete();
 
             PowerPoint.Effect effectMotion = null;
             PowerPoint.Effect effectResize = null;
@@ -3757,6 +3767,24 @@ namespace PowerPointLabs
         #endregion
 
         #region feature: Crop to Shape
+        private PowerPoint.Shape CropShapeToSlide(ref PowerPoint.Selection selection)
+        {
+            try
+            {
+                IsValidSelectionForCropToShape(ref selection);
+                var shape = FormShapeForCropToShape(ref selection);
+                TakeScreenshotWithoutShape(ref shape);
+                return FillInShapeWithScreenshotOfSlide(shape);
+                //return shape;
+            }
+            catch (Exception)
+            {
+                MessageBox.Show(GetCropToShapeErrorMessage(), "Unable to crop");
+                CropToShapeErrorCode = -1;
+                return null;
+            }
+        }
+
         private void CropShape(ref PowerPoint.Selection selection)
         {
             try
@@ -3796,6 +3824,32 @@ namespace PowerPointLabs
                 default:
                     return "Undefined error.";                    
             }
+        }
+
+        private PowerPoint.Shape FillInShapeWithScreenshotOfSlide(PowerPoint.Shape shape)
+        {
+            if (shape.Type != Office.MsoShapeType.msoGroup)
+            {
+                ProduceFillInBackground(ref shape);
+                shape.Fill.UserPicture(GetPathForFillInBackground());
+            }
+            else
+            {
+                using (Bitmap slideImage = (Bitmap)Bitmap.FromFile(GetPathToStore()))
+                {
+                    foreach (var sh in shape.GroupItems)
+                    {
+                        var shapeGroupItem = sh as PowerPoint.Shape;
+                        ProduceFillInBackground(ref shapeGroupItem, slideImage);
+                        shapeGroupItem.Fill.UserPicture(GetPathForFillInBackground());
+                    }
+                }
+            }
+            shape.Line.Visible = Office.MsoTriState.msoFalse;
+            shape.Copy();
+            PowerPoint.Shape returnShape = GetCurrentSlide().Shapes.Paste()[1];
+            shape.Delete();
+            return returnShape;
         }
 
         private void FillInShapeWithScreenshot(PowerPoint.Shape shape)
