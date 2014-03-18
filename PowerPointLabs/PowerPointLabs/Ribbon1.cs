@@ -523,11 +523,19 @@ namespace PowerPointLabs
             tempDuplicate.Select();
             foreach (PowerPoint.Shape sh in tempSlide.Shapes)
             {
-                if (sh.Visible == Office.MsoTriState.msoTrue && sh.Type != Office.MsoShapeType.msoPlaceholder)
+                if (sh.Visible == Office.MsoTriState.msoTrue)
                 {
+                    PowerPoint.Shape dupShape = null;
                     sh.Copy();
-                    PowerPoint.Shape dupShape = addedSlide.Shapes.Paste()[1];
-
+                    if (sh.Type == Office.MsoShapeType.msoPlaceholder)
+                    {
+                        dupShape = addedSlide.Shapes.PasteSpecial(PowerPoint.PpPasteDataType.ppPastePNG)[1];
+                    }
+                    else
+                    {
+                        dupShape = addedSlide.Shapes.Paste()[1];
+                    }
+                   
                     dupShape.LockAspectRatio = Office.MsoTriState.msoFalse;
                     dupShape.Width = sh.Width;
                     dupShape.Height = sh.Height;
@@ -970,10 +978,19 @@ namespace PowerPointLabs
             tempDuplicate.Select();
             foreach (PowerPoint.Shape sh in tempSlide.Shapes)
             {
-                if (sh.Visible == Office.MsoTriState.msoTrue && sh.Type != Office.MsoShapeType.msoPlaceholder)
+
+                if (sh.Visible == Office.MsoTriState.msoTrue)
                 {
+                    PowerPoint.Shape dupShape = null;
                     sh.Copy();
-                    PowerPoint.Shape dupShape = addedSlide.Shapes.Paste()[1];
+                    if (sh.Type == Office.MsoShapeType.msoPlaceholder)
+                    {
+                        dupShape = addedSlide.Shapes.PasteSpecial(PowerPoint.PpPasteDataType.ppPastePNG)[1];
+                    }
+                    else
+                    {
+                        dupShape = addedSlide.Shapes.Paste()[1];
+                    }
 
                     dupShape.LockAspectRatio = Office.MsoTriState.msoFalse;
                     dupShape.Width = sh.Width;
@@ -3740,7 +3757,6 @@ namespace PowerPointLabs
         #endregion
 
         #region feature: Crop to Shape
-
         private void CropShape(ref PowerPoint.Selection selection)
         {
             try
