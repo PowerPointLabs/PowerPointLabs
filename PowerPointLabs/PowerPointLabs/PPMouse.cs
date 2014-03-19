@@ -38,7 +38,7 @@ namespace PPExtraEventHelper
         public delegate void DoubleClickEventDelegate(PowerPoint.Selection selection);
 
         //Handler
-        public static DoubleClickEventDelegate DoubleClick;
+        public static event DoubleClickEventDelegate DoubleClick;
 
         private static int HookProcedureCallback(int nCode, IntPtr wParam, IntPtr lParam)
         {

@@ -4,6 +4,7 @@ using System.Collections;
 using System.Linq;
 using System.Runtime.InteropServices;
 using System.Text;
+using System.Text.RegularExpressions;
 using System.Windows.Forms;
 using System.Xml.Linq;
 using System.Diagnostics;
@@ -32,8 +33,10 @@ namespace PowerPointLabs
             Application.SlideShowBegin += SlideShowBeginHandler;
             Application.SlideShowEnd += SlideShowEndHandler;
             PPMouse.Init(Application);
+            PPCopy.Init(Application);
             SetupDoubleClickHandler();
             SetupTabActivateHandler();
+            SetupBeforeCopyHandler();
         }
 
         void SetUpLogger()
@@ -230,6 +233,43 @@ namespace PowerPointLabs
         private void SlideShowEndHandler(PowerPoint.Presentation presentation)
         {
             isInSlideShow = false;
+        }
+
+        private void SetupBeforeCopyHandler()
+        {
+            PPCopy.AfterCopyPaste += BeforeCopyEventHandler;
+        }
+
+        private void BeforeCopyEventHandler(PowerPoint.Selection selection)
+        {
+            try
+            {
+                if (selection.Type == PowerPoint.PpSelectionType.ppSelectionShapes)
+                {
+                    bool isAnyNameChanged = false;
+                    foreach (var sh in selection.ShapeRange)
+                    {
+                        var shape = sh as PowerPoint.Shape;
+                        //only change shape's name, if it's like
+                        //typeName index
+                        Regex r = new Regex(@"^[^paste_]\D+\s\d+");
+                        if (r.IsMatch(shape.Name))
+                        {
+                            shape.Name = "paste_" + shape.Name;
+                            isAnyNameChanged = true;
+                        }
+                        if (isAnyNameChanged)
+                        {
+                            selection.Copy();
+                        }
+                    }
+                    
+                }
+            }
+            catch
+            {
+                
+            }
         }
 
         private void SetupDoubleClickHandler()
