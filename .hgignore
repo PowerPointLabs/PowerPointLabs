@@ -4,3 +4,4 @@ syntax: glob
 *.user
 */bin
 */obj
+Thumbs.db
