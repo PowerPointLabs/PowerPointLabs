@@ -109,9 +109,10 @@ namespace PowerPointLabs
         {
             this.ribbon = ribbonUI;
 
-            LoadVoicesIntoDropdown();
+            SetVoicesFromInstalledOptions();
             SetCoreVoicesToSelections();
         }
+
         public void RefreshRibbonControl(String controlID)
         {
             try
@@ -125,22 +126,12 @@ namespace PowerPointLabs
             }
         }
 
-        private void LoadVoicesIntoDropdown()
-        {
-            SetVoicesFromInstalledOptions();
-            RefreshVoicePicker();
-        }
-
         private void SetVoicesFromInstalledOptions()
         {
             var installedVoices = NotesToAudio.GetVoices().ToList();
             _voiceNames = installedVoices;
         }
-
-        private void RefreshVoicePicker()
-        {
-            RefreshRibbonControl("defaultVoicePicker");
-        }
+        
 
         //Button Click Callbacks
         private PowerPoint.Shape FindIdenticalShape(PowerPoint.Slide slideToSearch, PowerPoint.Shape shapeToSearch)
