@@ -9,6 +9,7 @@ using System.Runtime.InteropServices;
 using System.Text;
 using System.Diagnostics;
 using System.Windows.Forms;
+using PowerPointLabs.Views;
 using Office = Microsoft.Office.Core;
 using PowerPoint = Microsoft.Office.Interop.PowerPoint;
 
@@ -4324,6 +4325,20 @@ namespace PowerPointLabs
         #endregion
 
         #region NotesToAudio/Caption Helpers
+        public void AutoNarrateDialogButtonPressed(Office.IRibbonControl control)
+        {
+            try
+            {
+                AutoNarrateDialogBox dialog = new AutoNarrateDialogBox();
+                dialog.Show();
+            }
+            catch (Exception e)
+            {
+                LogException(e, "AutoNarrateDialogButtonPressed");
+                throw;
+            }
+        }
+
 
         private void PreviewAnimationsIfChecked()
         {

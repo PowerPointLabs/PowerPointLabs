@@ -4,7 +4,7 @@
     <tabs>
       <tab id="PowerPointLabsAddIns" label="PowerPointLabs">
         <group id="AutoMotionGroup"
-               label="Auto Animate" 
+               label="Auto Animate"
                visible ="true">
           <button id="AddAnimationButton"
                   label="Add Animation Slide"
@@ -20,13 +20,13 @@
                   supertip="Recreates an existing animation slide with new animations.&#13;&#13;To activate, select the original slide or the animation slide (added previously) and click this button."
                   getEnabled="OnGetEnabledReloadAutoMotion"
                   onAction="ReloadButtonClick"/>
-         <button id="InSlideAnimateButton"
-                  label="Animate In Slide"
-                  size="large"
-                  getImage="GetInSlideAnimationImage"
-                  supertip="Moves a shape around the slide in multiple steps.&#13;&#13;To activate, copy the shape to locations where you want it to stop, select the copies in the order you want them to appear, and click this button"
-                  getEnabled="OnGetEnabledAddInSlide"
-                  onAction="AddInSlideAnimationButtonClick"/>
+          <button id="InSlideAnimateButton"
+                   label="Animate In Slide"
+                   size="large"
+                   getImage="GetInSlideAnimationImage"
+                   supertip="Moves a shape around the slide in multiple steps.&#13;&#13;To activate, copy the shape to locations where you want it to stop, select the copies in the order you want them to appear, and click this button"
+                   getEnabled="OnGetEnabledAddInSlide"
+                   onAction="AddInSlideAnimationButtonClick"/>
           <!--<editBox id="animationDurationOption"
                    label="Duration"
                    sizeString="AAAA"
@@ -42,7 +42,7 @@
             <button id ="AutoAnimateDialogBox"
                     onAction="AutoAnimateDialogButtonPressed"/>
           </dialogBoxLauncher>
-                             
+
         </group>
         <group id="AutoZoomGroup"
                label="Auto Zoom" visible ="true">
@@ -143,25 +143,10 @@
                   keytip="NR"
                   getImage="GetRemoveAudioImage"
                   size="large" />
-          <dropDown id="defaultVoicePicker"
-                    label="Default Voice"
-                    keytip="NV"
-                    onAction="DefaultVoiceSelectionChanged"
-                    supertip="The voice to be used when generating synthesized audio. Use [Voice] tags to specify a different voice for a particular section of text."
-                    showImage="false"
-                    getItemCount="DefaultVoicePickerCount"
-                    getItemLabel="DefaultVoicePickerLabel"
-                    getSelectedItemIndex="DefaultVoiceSelectedIndex" />
-          <checkBox id="allSlides"
-                    label="All Slides"
-                    keytip="NL"
-                    supertip="If checked, audio will be added to or removed from all slides, instead of just the current one."
-                    onAction="AllSlidesChecked" />
-          <checkBox id="previewCurrentSlide"
-                    label="Preview"
-                    keytip="NP"
-                    supertip="If checked, the current slide's audio and animations will play after the Add Audio button is clicked."
-                    onAction="PreviewCurrentSlideChecked" />
+          <dialogBoxLauncher>
+            <button id="AutoNarrateDialogBox"
+                    onAction="AutoNarrateDialogButtonPressed"/>
+          </dialogBoxLauncher>
         </group>
         <group id="embedCaptions" label="Auto Captions">
           <button id="addCaptions"
