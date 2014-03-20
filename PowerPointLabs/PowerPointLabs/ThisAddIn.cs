@@ -36,7 +36,7 @@ namespace PowerPointLabs
             PPCopy.Init(Application);
             SetupDoubleClickHandler();
             SetupTabActivateHandler();
-            SetupBeforeCopyHandler();
+            SetupAfterCopyPasteHandler();
         }
 
         void SetUpLogger()
@@ -235,12 +235,12 @@ namespace PowerPointLabs
             isInSlideShow = false;
         }
 
-        private void SetupBeforeCopyHandler()
+        private void SetupAfterCopyPasteHandler()
         {
-            PPCopy.AfterCopyPaste += BeforeCopyEventHandler;
+            PPCopy.AfterCopyPaste += AfterCopyPasteEventHandler;
         }
 
-        private void BeforeCopyEventHandler(PowerPoint.Selection selection)
+        private void AfterCopyPasteEventHandler(PowerPoint.Selection selection)
         {
             try
             {
@@ -252,10 +252,11 @@ namespace PowerPointLabs
                         var shape = sh as PowerPoint.Shape;
                         //only change shape's name, if it's like
                         //typeName index
-                        Regex r = new Regex(@"^[^paste_]\D+\s\d+");
+                        Regex r = new Regex(@"^[^\[]\D+\s\d+$");
                         if (r.IsMatch(shape.Name))
                         {
-                            shape.Name = "paste_" + shape.Name;
+                            //TODO: handle Cut-Undo bug
+                            shape.Name = "[" + shape.Name + "]";
                             isAnyNameChanged = true;
                         }
                         if (isAnyNameChanged)
@@ -268,7 +269,7 @@ namespace PowerPointLabs
             }
             catch
             {
-                
+                //TODO: log in ThisAddIn.cs
             }
         }
 

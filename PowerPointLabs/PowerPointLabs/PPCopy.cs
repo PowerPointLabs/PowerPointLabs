@@ -20,17 +20,18 @@ namespace PPExtraEventHelper
             if (instance == null)
             {
                 instance = new PPCopy();
-            }
-            instance.Visible = false;
-            isSuccessful = Native.AddClipboardFormatListener(instance.Handle);
-            application.WindowSelectionChange += (selection) =>
-            {
-                selectedRange = selection;
-                if (!isSuccessful)
+
+                instance.Visible = false;
+                isSuccessful = Native.AddClipboardFormatListener(instance.Handle);
+                application.WindowSelectionChange += (selection) =>
                 {
-                    isSuccessful = Native.AddClipboardFormatListener(instance.Handle);
-                }
-            };
+                    selectedRange = selection;
+                    if (!isSuccessful)
+                    {
+                        isSuccessful = Native.AddClipboardFormatListener(instance.Handle);
+                    }
+                };
+            }
         }
 
         //Delegate
@@ -49,7 +50,8 @@ namespace PPExtraEventHelper
             base.WndProc(ref m);
             if (m.Msg == (int)Native.Message.WM_CLIPBOARDUPDATE)
             {
-                if (selectedRange != null)
+                if (selectedRange != null
+                    && AfterCopyPaste != null)
                 {
                     PPCopy.AfterCopyPaste(selectedRange);
                 }
