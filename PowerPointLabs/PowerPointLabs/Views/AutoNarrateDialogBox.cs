@@ -15,5 +15,20 @@ namespace PowerPointLabs.Views
         {
             InitializeComponent();
         }
+
+        private void AutoNarrateDialogBox_Load(object sender, EventArgs e)
+        {
+            ToolTip voiceToolTip = new ToolTip();
+            voiceToolTip.SetToolTip(defaultVoice, 
+                "The voice to be used when generating synthesized audio. Use [Voice] tags to specify a different voice for a particular section of text.");
+
+            ToolTip allSlidesToolTip = new ToolTip();
+            allSlidesToolTip.SetToolTip(allSlides, 
+                "If checked, audio will be added to or removed from all slides, instead of just the current one.");
+
+            ToolTip previewToolTip = new ToolTip();
+            previewToolTip.SetToolTip(preview,
+                "If checked, the current slide's audio and animations will play after the Add Audio button is clicked.");
+        }
     }
 }
