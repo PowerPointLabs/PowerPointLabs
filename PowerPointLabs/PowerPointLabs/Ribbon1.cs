@@ -4348,45 +4348,16 @@ namespace PowerPointLabs
             }
         }
 
-        public void AllSlidesChecked(Office.IRibbonControl control, bool pressed)
+        public void AutoNarrateSettingsChanged(String voiceName, bool allSlides, bool previewCurrentSlide)
         {
-            _allSlides = pressed;
+            _allSlides = allSlides;
+            _previewCurrentSlide = previewCurrentSlide;
+            if (!String.IsNullOrWhiteSpace(voiceName))
+            {
+                NotesToAudio.SetDefaultVoice(voiceName);
+            }
         }
 
-        public void PreviewCurrentSlideChecked(Office.IRibbonControl control, bool pressed)
-        {
-            _previewCurrentSlide = pressed;
-        }
-
-        public void AllSlidesCaptionsChecked(Office.IRibbonControl control, bool pressed)
-        {
-            _captionsAllSlides = pressed;
-        }
-
-        #region Dropdown Index/Label Handlers
-
-        public int DefaultVoiceSelectedIndex(Office.IRibbonControl control)
-        {
-            return _voiceSelected;
-        }
-
-        public int DefaultVoicePickerCount(Office.IRibbonControl control)
-        {
-            return _voiceNames.Count();
-        }
-
-        public string DefaultVoicePickerLabel(Office.IRibbonControl control, int index)
-        {
-            return _voiceNames.ToArray()[index];
-        }
-        #endregion
-
-        #region Dropdown Selection Handlers
-        public void DefaultVoiceSelectionChanged(Office.IRibbonControl control, string selectedId, int selectedIndex)
-        {
-            _voiceSelected = selectedIndex;
-            SetCoreVoicesToSelections();
-        }
 
         #endregion
 
@@ -4410,8 +4381,6 @@ namespace PowerPointLabs
             }
             return selectedVoice;
         }
-
-        #endregion
 
         #endregion
 
