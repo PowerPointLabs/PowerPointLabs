@@ -13,15 +13,17 @@ namespace PowerPointLabs.Views
     {
         private Ribbon1 ribbon;
 
+        public delegate void UpdateSettingsDelegate(String voiceName, bool allSlides, bool preview);
+
+        public UpdateSettingsDelegate SettingsHandler;
+
         public AutoNarrateDialogBox()
         {
             InitializeComponent();
         }
 
-        public AutoNarrateDialogBox(Ribbon1 parent, int selectedVoice, List<String> voices, bool allSlides, bool preview) : this()
+        public AutoNarrateDialogBox(int selectedVoice, List<String> voices, bool allSlides, bool preview) : this()
         {
-            ribbon = parent;
-
             defaultVoice.DataSource = voices;
             defaultVoice.SelectedIndex = selectedVoice;
 
@@ -51,7 +53,7 @@ namespace PowerPointLabs.Views
 
         private void ok_Click(object sender, EventArgs e)
         {
-            ribbon.AutoNarrateSettingsChanged(defaultVoice.Text, allSlides.Checked, preview.Checked);
+            SettingsHandler(defaultVoice.Text, allSlides.Checked, preview.Checked);
 
             Dispose();
         }

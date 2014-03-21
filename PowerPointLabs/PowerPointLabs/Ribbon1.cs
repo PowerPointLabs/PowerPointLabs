@@ -4329,8 +4329,9 @@ namespace PowerPointLabs
         {
             try
             {
-                var dialog = new AutoNarrateDialogBox(this, _voiceSelected, _voiceNames, _allSlides,
+                var dialog = new AutoNarrateDialogBox(_voiceSelected, _voiceNames, _allSlides,
                     _previewCurrentSlide);
+                dialog.SettingsHandler += AutoNarrateSettingsChanged;
                 dialog.Show();
             }
             catch (Exception e)
