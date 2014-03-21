@@ -261,6 +261,12 @@
     <Compile Include="SpotlightDialogBox.Designer.cs">
       <DependentUpon>SpotlightDialogBox.cs</DependentUpon>
     </Compile>
+    <Compile Include="Views\AutoCaptionDialogBox.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Views\AutoCaptionDialogBox.Designer.cs">
+      <DependentUpon>AutoCaptionDialogBox.cs</DependentUpon>
+    </Compile>
     <Compile Include="Views\AutoNarrateDialogBox.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -299,6 +305,9 @@
     </Compile>
     <EmbeddedResource Include="SpotlightDialogBox.resx">
       <DependentUpon>SpotlightDialogBox.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Views\AutoCaptionDialogBox.resx">
+      <DependentUpon>AutoCaptionDialogBox.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Views\AutoNarrateDialogBox.resx">
       <DependentUpon>AutoNarrateDialogBox.cs</DependentUpon>
