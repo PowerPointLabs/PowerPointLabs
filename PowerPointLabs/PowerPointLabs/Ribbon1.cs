@@ -4660,13 +4660,13 @@ namespace PowerPointLabs
             switch (CropToShapeErrorCode)
             {
                 case ERROR_SELECTION_COUNT_ZERO:
-                    return "To start 'Auto Crop', please select at least one shape.";
+                    return "To start 'Crop To Shape', please select at least one shape.";
                 case ERROR_SELECTION_NON_SHAPE:
-                    return "'Auto Crop' only supports shape objects.";
+                    return "'Crop To Shape' only supports shape objects.";
                 case ERROR_EXCEED_SLIDE_BOUND:
                     return "Please ensure your shape is within the slide.";
                 case ERROR_ROTATION_NON_ZERO:
-                    return "Please ensure your shape is unrotated.";
+                    return "In the current version, the 'Crop To Shape' feature does not work if the shape is rotated";
                 default:
                     return "Undefined error.";
             }
