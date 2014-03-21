@@ -52,7 +52,7 @@ namespace PowerPointLabs
         public bool addAutoMotionEnabled = true;
         public bool reloadAutoMotionEnabled = true;
         public bool reloadSpotlight = true;
-        public Dictionary<String, float> softEdgesMapping = new Dictionary<string,float>
+        public Dictionary<String, float> softEdgesMapping = new Dictionary<string, float>
         {
             {"None", 0},
             {"1 Point", 1},
@@ -78,15 +78,15 @@ namespace PowerPointLabs
             PowerPoint.MsoAnimEffect.msoAnimEffectFlip, PowerPoint.MsoAnimEffect.msoAnimEffectFloat, PowerPoint.MsoAnimEffect.msoAnimEffectPinwheel,
             PowerPoint.MsoAnimEffect.msoAnimEffectSpiral, PowerPoint.MsoAnimEffect.msoAnimEffectWhip
         };
-        
-        public Dictionary<String, PowerPoint.Shape> spotlightShapeMapping = new Dictionary<string,PowerPoint.Shape>();
+
+        public Dictionary<String, PowerPoint.Shape> spotlightShapeMapping = new Dictionary<string, PowerPoint.Shape>();
         public Dictionary<String, PowerPoint.Slide> spotlightSlideMapping = new Dictionary<string, PowerPoint.Slide>();
 
         private bool _allSlides;
         private bool _previewCurrentSlide;
         private bool _captionsAllSlides;
 
-        private IEnumerable<string> _voiceNames;
+        private List<string> _voiceNames;
 
         private int _voiceSelected = 0;
 
@@ -132,7 +132,7 @@ namespace PowerPointLabs
             var installedVoices = NotesToAudio.GetVoices().ToList();
             _voiceNames = installedVoices;
         }
-        
+
 
         //Button Click Callbacks
         private PowerPoint.Shape FindIdenticalShape(PowerPoint.Slide slideToSearch, PowerPoint.Shape shapeToSearch)
@@ -510,7 +510,7 @@ namespace PowerPointLabs
             Globals.ThisAddIn.Application.ActiveWindow.Selection.Unselect();
             Globals.ThisAddIn.Application.ActiveWindow.View.GotoSlide(tempSlide.SlideIndex);
 
-            PowerPoint.Shape cropShape = tempSlide.Shapes.AddShape(Office.MsoAutoShapeType.msoShapeRectangle, 0, 0, presentation.PageSetup.SlideWidth-1, presentation.PageSetup.SlideHeight-1);
+            PowerPoint.Shape cropShape = tempSlide.Shapes.AddShape(Office.MsoAutoShapeType.msoShapeRectangle, 0, 0, presentation.PageSetup.SlideWidth - 1, presentation.PageSetup.SlideHeight - 1);
             cropShape.Select();
             //PowerPoint.Shape tempDuplicate = duplicatePic.Duplicate()[1];
             //tempDuplicate.Left = 0;
@@ -530,7 +530,7 @@ namespace PowerPointLabs
             //        {
             //            dupShape = addedSlide.Shapes.Paste()[1];
             //        }
-                   
+
             //        dupShape.LockAspectRatio = Office.MsoTriState.msoFalse;
             //        dupShape.Width = sh.Width;
             //        dupShape.Height = sh.Height;
@@ -1000,7 +1000,7 @@ namespace PowerPointLabs
             //        dupShape.Select(Office.MsoTriState.msoFalse);
             //    }
             //}
-            
+
             PowerPoint.Selection sel = Globals.ThisAddIn.Application.ActiveWindow.Selection;
             PowerPoint.Shape croppedShape = CropShapeToSlide(ref sel);
 
@@ -1340,7 +1340,7 @@ namespace PowerPointLabs
 
             PowerPoint.Shape magnifyShapeFrom = null;
             PowerPoint.Shape magnifyShapeTo = null;
-            
+
             foreach (PowerPoint.Shape sh in slideToPanFrom.Shapes)
             {
                 PowerPoint.Shape tmp = FindIdenticalShape(addedSlide, sh);
@@ -1501,7 +1501,7 @@ namespace PowerPointLabs
             return addedSlide;
 
         }
-        public void MultiSlideZoomToArea(PowerPoint.Slide currentSlide, List<PowerPoint.Shape>selectedShapes)
+        public void MultiSlideZoomToArea(PowerPoint.Slide currentSlide, List<PowerPoint.Shape> selectedShapes)
         {
             try
             {
@@ -2475,7 +2475,7 @@ namespace PowerPointLabs
                     selectedShape.Top = 0;
                 if (selectedShape.Top + selectedShape.Height > presentation.PageSetup.SlideHeight)
                     selectedShape.Top = presentation.PageSetup.SlideHeight - selectedShape.Height;
-                
+
                 editedSelectedShapes.Add(selectedShape);
                 count++;
             }
@@ -2775,7 +2775,7 @@ namespace PowerPointLabs
             List<PowerPoint.Shape> nextSlideShapes = new List<PowerPoint.Shape>();
             foreach (PowerPoint.Shape sh in nextSlide.Shapes)
             {
-                if(!HasEntryAnimation(nextSlide, sh))
+                if (!HasEntryAnimation(nextSlide, sh))
                     nextSlideShapes.Add(sh);
             }
 
@@ -2838,8 +2838,8 @@ namespace PowerPointLabs
 
             PowerPoint.Slide addedSlide = currentSlide.Duplicate()[1];
             addedSlide.Name = "PPTLabsZoomIn" + GetTimestamp(DateTime.Now);
-            PowerPoint.Shape shapePicture = FindIdenticalShape(addedSlide, shapePictureCurrentSlide); 
-            
+            PowerPoint.Shape shapePicture = FindIdenticalShape(addedSlide, shapePictureCurrentSlide);
+
             PowerPoint.Sequence sequence = currentSlide.TimeLine.MainSequence;
             PowerPoint.Effect effectAppear = sequence.AddEffect(shapePictureCurrentSlide, PowerPoint.MsoAnimEffect.msoAnimEffectFade, PowerPoint.MsoAnimateByLevel.msoAnimateLevelNone, PowerPoint.MsoAnimTriggerType.msoAnimTriggerOnPageClick);
             effectAppear.Timing.Duration = 0.50f;
@@ -2911,7 +2911,7 @@ namespace PowerPointLabs
             trigger = PowerPoint.MsoAnimTriggerType.msoAnimTriggerWithPrevious;
 
             shapeGroup.Delete();
-            shapePictureNextSlide.Delete();            
+            shapePictureNextSlide.Delete();
 
             indicatorShape.ZOrder(Office.MsoZOrderCmd.msoBringToFront);
             addedSlide.SlideShowTransition.AdvanceOnTime = Office.MsoTriState.msoTrue;
@@ -2941,7 +2941,7 @@ namespace PowerPointLabs
         public void AddZoomInButtonClick(Office.IRibbonControl control)
         {
             //System.Windows.Forms.MessageBox.Show("This feature is coming soon!                ", "Coming Soon");
-            
+
             //Get References of current and next slides
             PowerPoint.Slide currentSlide = GetCurrentSlide();
             if (Globals.ThisAddIn.Application.ActiveWindow.Selection.ShapeRange.Count == 0)
@@ -4026,10 +4026,10 @@ namespace PowerPointLabs
         //{
         //    try
         //    {
-                //if (text.Contains('%'))
-                //{
-                //    text = text.Substring(0, text.IndexOf('%'));
-                //}
+        //if (text.Contains('%'))
+        //{
+        //    text = text.Substring(0, text.IndexOf('%'));
+        //}
         //        float result;
         //        if (float.TryParse(text, out result))
         //        {
@@ -4329,7 +4329,8 @@ namespace PowerPointLabs
         {
             try
             {
-                AutoNarrateDialogBox dialog = new AutoNarrateDialogBox();
+                var dialog = new AutoNarrateDialogBox(this, _voiceSelected, _voiceNames, _allSlides,
+                    _previewCurrentSlide);
                 dialog.Show();
             }
             catch (Exception e)
@@ -4355,6 +4356,7 @@ namespace PowerPointLabs
             if (!String.IsNullOrWhiteSpace(voiceName))
             {
                 NotesToAudio.SetDefaultVoice(voiceName);
+                _voiceSelected = _voiceNames.IndexOf(voiceName);
             }
         }
 
@@ -4644,7 +4646,7 @@ namespace PowerPointLabs
                 case ERROR_ROTATION_NON_ZERO:
                     return "Please ensure your shape is unrotated.";
                 default:
-                    return "Undefined error.";                    
+                    return "Undefined error.";
             }
         }
 
@@ -4683,7 +4685,7 @@ namespace PowerPointLabs
             }
             else
             {
-                using (Bitmap slideImage = (Bitmap) Bitmap.FromFile(GetPathToStore()))
+                using (Bitmap slideImage = (Bitmap)Bitmap.FromFile(GetPathToStore()))
                 {
                     foreach (var sh in shape.GroupItems)
                     {
@@ -4696,7 +4698,7 @@ namespace PowerPointLabs
             shape.Line.Visible = Office.MsoTriState.msoFalse;
             shape.Copy();
             GetCurrentSlide().Shapes.Paste();
-            shape.Delete();            
+            shape.Delete();
         }
 
         private void AdjustFillEffect(ref PowerPoint.Shape shape)
@@ -4795,7 +4797,7 @@ namespace PowerPointLabs
                 rotation = shape.Rotation;
                 shape.Rotation = 0;
             }
-            catch(Exception)
+            catch (Exception)
             {
                 //chart cannot be rotated
             }
@@ -4806,8 +4808,8 @@ namespace PowerPointLabs
             float yOffset = 0;
             try
             {
-                xOffset = shape.Line.Weight/2;
-                yOffset = shape.Line.Weight/2;
+                xOffset = shape.Line.Weight / 2;
+                yOffset = shape.Line.Weight / 2;
                 xOffset = xOffset < 1 ? 0 : xOffset;
                 yOffset = yOffset < 1 ? 0 : yOffset;
             }
@@ -4859,7 +4861,7 @@ namespace PowerPointLabs
 
         private void TakeScreenshot()
         {
-            GetCurrentSlide().Export(GetPathToStore(), "PNG", 
+            GetCurrentSlide().Export(GetPathToStore(), "PNG",
                 (int)GetDesiredExportWidth(), (int)GetDesiredExportHeight());
         }
 
@@ -4894,10 +4896,10 @@ namespace PowerPointLabs
             //else 
             //if (Globals.ThisAddIn.Application.Version == OfficeVersion2010)
             //{
-                if (ungroupedCopyRange.Count > 1)
-                {
-                    mergedShape = ungroupedCopyRange.Group();
-                }
+            if (ungroupedCopyRange.Count > 1)
+            {
+                mergedShape = ungroupedCopyRange.Group();
+            }
             //}
             if (IsWithinSlide(mergedShape))
             {
@@ -4918,7 +4920,7 @@ namespace PowerPointLabs
             oldRange.Copy();
             var copyRange = GetCurrentSlide().Shapes.Paste();
             //adjust position
-            Dictionary<string, Tuple<float,float>> dict = new Dictionary<string, Tuple<float,float>>();
+            Dictionary<string, Tuple<float, float>> dict = new Dictionary<string, Tuple<float, float>>();
             foreach (var sh in oldRange)
             {
                 var shape = sh as PowerPoint.Shape;
@@ -4961,7 +4963,7 @@ namespace PowerPointLabs
                     (sh as PowerPoint.Shape).Name = Guid.NewGuid().ToString();
                 }
             }
-        } 
+        }
 
         private bool IsWithinSlide(PowerPoint.Shape shape)
         {
@@ -5715,7 +5717,7 @@ namespace PowerPointLabs
             float sh2CenterX = (sh2.Left + (sh2.Width / 2));
             float sh1CenterY = (sh1.Top + (sh1.Height / 2));
             float sh2CenterY = (sh2.Top + (sh2.Height / 2));
-            float distSquared = (float)(Math.Pow((sh2CenterX - sh1CenterX), 2) +  Math.Pow((sh2CenterY - sh1CenterY), 2));
+            float distSquared = (float)(Math.Pow((sh2CenterX - sh1CenterX), 2) + Math.Pow((sh2CenterY - sh1CenterY), 2));
             return (float)(Math.Sqrt(distSquared));
         }
         private float GetMinimumRotation(float fromAngle, float toAngle)

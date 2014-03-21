@@ -30,8 +30,8 @@
         {
             this.allSlides = new System.Windows.Forms.CheckBox();
             this.preview = new System.Windows.Forms.CheckBox();
-            this.cancelButton = new System.Windows.Forms.Button();
-            this.okButton = new System.Windows.Forms.Button();
+            this.cancel = new System.Windows.Forms.Button();
+            this.ok = new System.Windows.Forms.Button();
             this.defaultVoice = new System.Windows.Forms.ComboBox();
             this.label1 = new System.Windows.Forms.Label();
             this.SuspendLayout();
@@ -40,7 +40,7 @@
             // 
             this.allSlides.AutoSize = true;
             this.allSlides.Location = new System.Drawing.Point(24, 49);
-            this.allSlides.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.allSlides.Margin = new System.Windows.Forms.Padding(4);
             this.allSlides.Name = "allSlides";
             this.allSlides.Size = new System.Drawing.Size(87, 21);
             this.allSlides.TabIndex = 0;
@@ -51,39 +51,42 @@
             // 
             this.preview.AutoSize = true;
             this.preview.Location = new System.Drawing.Point(24, 78);
-            this.preview.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.preview.Margin = new System.Windows.Forms.Padding(4);
             this.preview.Name = "preview";
             this.preview.Size = new System.Drawing.Size(79, 21);
             this.preview.TabIndex = 1;
             this.preview.Text = "Preview";
             this.preview.UseVisualStyleBackColor = true;
             // 
-            // cancelButton
+            // cancel
             // 
-            this.cancelButton.DialogResult = System.Windows.Forms.DialogResult.Cancel;
-            this.cancelButton.Location = new System.Drawing.Point(295, 98);
-            this.cancelButton.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
-            this.cancelButton.Name = "cancelButton";
-            this.cancelButton.Size = new System.Drawing.Size(100, 28);
-            this.cancelButton.TabIndex = 2;
-            this.cancelButton.Text = "Cancel";
-            this.cancelButton.UseVisualStyleBackColor = true;
+            this.cancel.DialogResult = System.Windows.Forms.DialogResult.Cancel;
+            this.cancel.Location = new System.Drawing.Point(295, 98);
+            this.cancel.Margin = new System.Windows.Forms.Padding(4);
+            this.cancel.Name = "cancel";
+            this.cancel.Size = new System.Drawing.Size(100, 28);
+            this.cancel.TabIndex = 2;
+            this.cancel.Text = "Cancel";
+            this.cancel.UseVisualStyleBackColor = true;
+            this.cancel.Click += new System.EventHandler(this.cancel_Click);
             // 
-            // okButton
+            // ok
             // 
-            this.okButton.Location = new System.Drawing.Point(187, 98);
-            this.okButton.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
-            this.okButton.Name = "okButton";
-            this.okButton.Size = new System.Drawing.Size(100, 28);
-            this.okButton.TabIndex = 3;
-            this.okButton.Text = "OK";
-            this.okButton.UseVisualStyleBackColor = true;
+            this.ok.Location = new System.Drawing.Point(187, 98);
+            this.ok.Margin = new System.Windows.Forms.Padding(4);
+            this.ok.Name = "ok";
+            this.ok.Size = new System.Drawing.Size(100, 28);
+            this.ok.TabIndex = 3;
+            this.ok.Text = "OK";
+            this.ok.UseVisualStyleBackColor = true;
+            this.ok.Click += new System.EventHandler(this.ok_Click);
             // 
             // defaultVoice
             // 
+            this.defaultVoice.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.defaultVoice.FormattingEnabled = true;
             this.defaultVoice.Location = new System.Drawing.Point(130, 16);
-            this.defaultVoice.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.defaultVoice.Margin = new System.Windows.Forms.Padding(4);
             this.defaultVoice.Name = "defaultVoice";
             this.defaultVoice.Size = new System.Drawing.Size(268, 24);
             this.defaultVoice.TabIndex = 4;
@@ -102,16 +105,16 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.CancelButton = this.cancelButton;
+            this.CancelButton = this.cancel;
             this.ClientSize = new System.Drawing.Size(411, 137);
             this.Controls.Add(this.label1);
             this.Controls.Add(this.defaultVoice);
-            this.Controls.Add(this.okButton);
-            this.Controls.Add(this.cancelButton);
+            this.Controls.Add(this.ok);
+            this.Controls.Add(this.cancel);
             this.Controls.Add(this.preview);
             this.Controls.Add(this.allSlides);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog;
-            this.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.Margin = new System.Windows.Forms.Padding(4);
             this.MaximizeBox = false;
             this.MinimizeBox = false;
             this.Name = "AutoNarrateDialogBox";
@@ -129,8 +132,8 @@
 
         private System.Windows.Forms.CheckBox allSlides;
         private System.Windows.Forms.CheckBox preview;
-        private System.Windows.Forms.Button cancelButton;
-        private System.Windows.Forms.Button okButton;
+        private System.Windows.Forms.Button cancel;
+        private System.Windows.Forms.Button ok;
         private System.Windows.Forms.ComboBox defaultVoice;
         private System.Windows.Forms.Label label1;
     }
