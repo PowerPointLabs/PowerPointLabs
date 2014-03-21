@@ -40,7 +40,7 @@ namespace PowerPointLabs
         private Office.IRibbonUI ribbon;
         public bool frameAnimationChecked = false;
         public bool backgroundZoomChecked = true;
-        public bool singleSlideZoomChecked = false;
+        public bool multiSlideZoomChecked = false;
         public bool spotlightDelete = true;
         public float defaultSoftEdges = 10;
         public float defaultDuration = 0.5f;
@@ -2480,7 +2480,7 @@ namespace PowerPointLabs
                 count++;
             }
 
-            if (singleSlideZoomChecked)
+            if (!multiSlideZoomChecked)
             {
                 SingleSlideZoomToArea(currentSlide, editedSelectedShapes);
             }
@@ -2710,7 +2710,7 @@ namespace PowerPointLabs
         {
             //AboutForm form = new AboutForm();
             //form.Show();
-            System.Windows.Forms.MessageBox.Show("          PowerPointLabs Plugin Version 1.6.1 [Release date: 17 Mar 2014]\n     Developed at School of Computing, National University of Singapore.\n        For more information, visit our website http://PowerPointLabs.info", "About PowerPointLabs");
+            System.Windows.Forms.MessageBox.Show("          PowerPointLabs Plugin Version 1.6.2 [Release date: 21 Mar 2014]\n     Developed at School of Computing, National University of Singapore.\n        For more information, visit our website http://PowerPointLabs.info", "About PowerPointLabs");
         }
         public void HelpButtonClick(Office.IRibbonControl control)
         {
@@ -4172,7 +4172,8 @@ namespace PowerPointLabs
         {
             try
             {
-                AutoAnimateDialogBox dialog = new AutoAnimateDialogBox(this, defaultDuration, frameAnimationChecked);
+                AutoAnimateDialogBox dialog = new AutoAnimateDialogBox(defaultDuration, frameAnimationChecked);
+                dialog.SettingsHandler += AnimationPropertiesEdited;
                 dialog.Show();
             }
             catch (Exception e)
@@ -4200,7 +4201,8 @@ namespace PowerPointLabs
         {
             try
             {
-                AutoZoomDialogBox dialog = new AutoZoomDialogBox(this, backgroundZoomChecked, singleSlideZoomChecked);
+                AutoZoomDialogBox dialog = new AutoZoomDialogBox(backgroundZoomChecked, multiSlideZoomChecked);
+                dialog.SettingsHandler += ZoomPropertiesEdited;
                 dialog.Show();
             }
             catch (Exception e)
@@ -4210,12 +4212,12 @@ namespace PowerPointLabs
             }
         }
 
-        public void ZoomPropertiesEdited(bool backgroundChecked, bool singleSlideChecked)
+        public void ZoomPropertiesEdited(bool backgroundChecked, bool multiSlideChecked)
         {
             try
             {
                 backgroundZoomChecked = backgroundChecked;
-                singleSlideZoomChecked = singleSlideChecked;
+                multiSlideZoomChecked = multiSlideChecked;
             }
             catch (Exception e)
             {
@@ -4228,7 +4230,8 @@ namespace PowerPointLabs
         {
             try
             {
-                SpotlightDialogBox dialog = new SpotlightDialogBox(this, defaultTransparency, defaultSoftEdges);
+                SpotlightDialogBox dialog = new SpotlightDialogBox(defaultTransparency, defaultSoftEdges);
+                dialog.SettingsHandler += SpotlightPropertiesEdited;
                 dialog.Show();
             }
             catch (Exception e)
