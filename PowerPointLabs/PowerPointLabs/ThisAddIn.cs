@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Collections;
 using System.Linq;
@@ -246,25 +247,56 @@ namespace PowerPointLabs
             {
                 if (selection.Type == PowerPoint.PpSelectionType.ppSelectionShapes)
                 {
+                    //Modify name for selected shapes
                     bool isAnyNameChanged = false;
+                    //only change shape's name, if it's in this form:
+                    //TypeName Number 
+                    Regex namePattern = new Regex(@"^[^\[]\D+\s\d+$");
+                    List<PowerPoint.Shape> corruptedShapes = new List<PowerPoint.Shape>();
+                    List<String> nameList = new List<string>();
                     foreach (var sh in selection.ShapeRange)
                     {
                         var shape = sh as PowerPoint.Shape;
-                        //only change shape's name, if it's like
-                        //typeName index
-                        Regex r = new Regex(@"^[^\[]\D+\s\d+$");
-                        if (r.IsMatch(shape.Name))
+                        if (namePattern.IsMatch(shape.Name))
                         {
-                            //TODO: handle Cut-Undo bug
-                            shape.Name = "[" + shape.Name + "]";
                             isAnyNameChanged = true;
-                        }
-                        if (isAnyNameChanged)
-                        {
-                            selection.Copy();
+                            try
+                            {
+                                shape.Name = "[" + shape.Name + "]";
+                                nameList.Add(shape.Name);
+                            }
+                            catch
+                            {
+                                corruptedShapes.Add(shape);
+                            }
                         }
                     }
-                    
+                    //Handling corrupted shapes
+                    PowerPoint.Slide currentSlide = Application.ActiveWindow.View.Slide as PowerPoint.Slide;
+                    for (int i = 0; i < corruptedShapes.Count; i++)
+                    {
+                        corruptedShapes[i].Copy();
+                        var shape = currentSlide.Shapes.Paste()[1];
+                        if (namePattern.IsMatch(corruptedShapes[i].Name))
+                        {
+                            shape.Name = "[" + corruptedShapes[i].Name + "]";
+                            nameList.Add(shape.Name);
+                        }
+                        shape.Left = corruptedShapes[i].Left;
+                        shape.Top = corruptedShapes[i].Top;
+                        while (shape.ZOrderPosition > corruptedShapes[i].ZOrderPosition)
+                        {
+                            shape.ZOrder(Office.MsoZOrderCmd.msoSendBackward);
+                        }
+                        corruptedShapes[i].Delete();
+                    }
+                    //Change the copy, now copy also has the modified name
+                    if (isAnyNameChanged)
+                    {
+                        var range = currentSlide.Shapes.Range(nameList.ToArray());
+                        range.Copy();
+                        range.Select();
+                    }
                 }
             }
             catch
