@@ -11,10 +11,7 @@ namespace PowerPointLabs.Views
 {
     public partial class AutoNarrateDialogBox : Form
     {
-        private Ribbon1 ribbon;
-
         public delegate void UpdateSettingsDelegate(String voiceName, bool allSlides, bool preview);
-
         public UpdateSettingsDelegate SettingsHandler;
 
         public AutoNarrateDialogBox()
