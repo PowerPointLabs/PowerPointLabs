@@ -163,16 +163,11 @@
                   onAction="RemoveCaptionClick"
                   getImage="GetRemoveCaptionsImage"
                   size="large" />
-          <checkBox id="allSlidesCaptions"
-                    label="All Slides"
-                    keytip="CL"
-                    supertip="If checked, captions will be added to or removed from all slides, instead of just the current one."
-                    onAction="AllSlidesCaptionsChecked" />
-           <dialogBoxLauncher>
+          <dialogBoxLauncher>
             <button id="AutoCaptionDialogBox"
                     onAction="AutoCaptionDialogButtonPressed"/>
-           </dialogBoxLauncher>
-         </group>
+          </dialogBoxLauncher>
+        </group>
         <group id="PPTLabsHelp"
                label="Help"
                visible="true">

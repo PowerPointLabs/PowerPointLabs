@@ -9,15 +9,21 @@ using System.Windows.Forms;
 
 namespace PowerPointLabs.Views
 {
+
     public partial class AutoCaptionDialogBox : Form
     {
-        private Ribbon1 ribbon;
+        public delegate void UpdateSettingsDelegate(bool allSlides);
+        public UpdateSettingsDelegate SettingsHandler;
 
         public AutoCaptionDialogBox()
         {
             InitializeComponent();
         }
 
+        public AutoCaptionDialogBox(bool allSlides) : this()
+        {
+            this.allSlides.Checked = allSlides;
+        }
 
         private void cancel_Click(object sender, EventArgs e)
         {
@@ -26,7 +32,7 @@ namespace PowerPointLabs.Views
 
         private void ok_Click(object sender, EventArgs e)
         {
-
+            SettingsHandler(allSlides.Checked);
             Dispose();
         }
     }

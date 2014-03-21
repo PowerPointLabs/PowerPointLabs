@@ -4356,7 +4356,8 @@ namespace PowerPointLabs
         {
             try
             {
-                var dialog = new AutoCaptionDialogBox();
+                var dialog = new AutoCaptionDialogBox(_captionsAllSlides);
+                dialog.SettingsHandler += AutoCaptionSettingsChanged;
                 dialog.Show();
             }
             catch (Exception e)
@@ -4364,6 +4365,11 @@ namespace PowerPointLabs
                 LogException(e, "AutoCaptionDialogButtonPressed");
                 throw;
             }
+        }
+
+        public void AutoCaptionSettingsChanged(bool allSlides)
+        {
+            _captionsAllSlides = allSlides;
         }
 
         private void PreviewAnimationsIfChecked()
