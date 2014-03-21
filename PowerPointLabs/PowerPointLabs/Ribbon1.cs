@@ -4352,6 +4352,20 @@ namespace PowerPointLabs
             }
         }
 
+        public void AutoCaptionDialogButtonPressed(Office.IRibbonControl control)
+        {
+            try
+            {
+                var dialog = new AutoCaptionDialogBox();
+                dialog.Show();
+            }
+            catch (Exception e)
+            {
+                LogException(e, "AutoCaptionDialogButtonPressed");
+                throw;
+            }
+        }
+
         private void PreviewAnimationsIfChecked()
         {
             if (_previewCurrentSlide)
