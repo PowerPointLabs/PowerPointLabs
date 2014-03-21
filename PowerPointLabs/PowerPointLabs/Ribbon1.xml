@@ -168,7 +168,11 @@
                     keytip="CL"
                     supertip="If checked, captions will be added to or removed from all slides, instead of just the current one."
                     onAction="AllSlidesCaptionsChecked" />
-        </group>
+           <dialogBoxLauncher>
+            <button id="AutoCaptionDialogBox"
+                    onAction="AutoCaptionDialogButtonPressed"/>
+           </dialogBoxLauncher>
+         </group>
         <group id="PPTLabsHelp"
                label="Help"
                visible="true">
