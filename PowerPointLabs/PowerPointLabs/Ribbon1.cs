@@ -4341,15 +4341,6 @@ namespace PowerPointLabs
             }
         }
 
-
-        private void PreviewAnimationsIfChecked()
-        {
-            if (_previewCurrentSlide)
-            {
-                NotesToAudio.PreviewAnimations();
-            }
-        }
-
         public void AutoNarrateSettingsChanged(String voiceName, bool allSlides, bool previewCurrentSlide)
         {
             _allSlides = allSlides;
@@ -4361,6 +4352,13 @@ namespace PowerPointLabs
             }
         }
 
+        private void PreviewAnimationsIfChecked()
+        {
+            if (_previewCurrentSlide)
+            {
+                NotesToAudio.PreviewAnimations();
+            }
+        }
 
         #endregion
 
