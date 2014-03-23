@@ -4826,23 +4826,12 @@ namespace PowerPointLabs
             shape.Copy();
             float x = shape.Left;
             float y = shape.Top;
-            float xOffset = 0;
-            float yOffset = 0;
-            try
-            {
-                xOffset = shape.Line.Weight / 2;
-                yOffset = shape.Line.Weight / 2;
-                xOffset = xOffset < 1 ? 0 : xOffset;
-                yOffset = yOffset < 1 ? 0 : yOffset;
-            }
-            catch (Exception)
-            {
-                //no outline for this shape
-            }
+            float width = shape.Width;
+            float height = shape.Height;
             shape.Delete();
             var pic = GetCurrentSlide().Shapes.PasteSpecial(PowerPoint.PpPasteDataType.ppPastePNG)[1];
-            pic.Left = x - xOffset;
-            pic.Top = y - yOffset;
+            pic.Left = x + (width - pic.Width) / 2;
+            pic.Top = y + (height - pic.Height) / 2;
             pic.Rotation = rotation;
             pic.Select();
             return pic;
