@@ -40,7 +40,7 @@ namespace PowerPointLabs
         private Office.IRibbonUI ribbon;
         public bool frameAnimationChecked = false;
         public bool backgroundZoomChecked = true;
-        public bool singleSlideZoomChecked = false;
+        public bool multiSlideZoomChecked = false;
         public bool spotlightDelete = true;
         public float defaultSoftEdges = 10;
         public float defaultDuration = 0.5f;
@@ -2480,7 +2480,7 @@ namespace PowerPointLabs
                 count++;
             }
 
-            if (singleSlideZoomChecked)
+            if (!multiSlideZoomChecked)
             {
                 SingleSlideZoomToArea(currentSlide, editedSelectedShapes);
             }
@@ -2710,7 +2710,7 @@ namespace PowerPointLabs
         {
             //AboutForm form = new AboutForm();
             //form.Show();
-            System.Windows.Forms.MessageBox.Show("          PowerPointLabs Plugin Version 1.6.1 [Release date: 17 Mar 2014]\n     Developed at School of Computing, National University of Singapore.\n        For more information, visit our website http://PowerPointLabs.info", "About PowerPointLabs");
+            System.Windows.Forms.MessageBox.Show("          PowerPointLabs Plugin Version 1.6.2 [Release date: 21 Mar 2014]\n     Developed at School of Computing, National University of Singapore.\n        For more information, visit our website http://PowerPointLabs.info", "About PowerPointLabs");
         }
         public void HelpButtonClick(Office.IRibbonControl control)
         {
@@ -4172,7 +4172,8 @@ namespace PowerPointLabs
         {
             try
             {
-                AutoAnimateDialogBox dialog = new AutoAnimateDialogBox(this, defaultDuration, frameAnimationChecked);
+                AutoAnimateDialogBox dialog = new AutoAnimateDialogBox(defaultDuration, frameAnimationChecked);
+                dialog.SettingsHandler += AnimationPropertiesEdited;
                 dialog.Show();
             }
             catch (Exception e)
@@ -4200,7 +4201,8 @@ namespace PowerPointLabs
         {
             try
             {
-                AutoZoomDialogBox dialog = new AutoZoomDialogBox(this, backgroundZoomChecked, singleSlideZoomChecked);
+                AutoZoomDialogBox dialog = new AutoZoomDialogBox(backgroundZoomChecked, multiSlideZoomChecked);
+                dialog.SettingsHandler += ZoomPropertiesEdited;
                 dialog.Show();
             }
             catch (Exception e)
@@ -4210,12 +4212,12 @@ namespace PowerPointLabs
             }
         }
 
-        public void ZoomPropertiesEdited(bool backgroundChecked, bool singleSlideChecked)
+        public void ZoomPropertiesEdited(bool backgroundChecked, bool multiSlideChecked)
         {
             try
             {
                 backgroundZoomChecked = backgroundChecked;
-                singleSlideZoomChecked = singleSlideChecked;
+                multiSlideZoomChecked = multiSlideChecked;
             }
             catch (Exception e)
             {
@@ -4228,7 +4230,8 @@ namespace PowerPointLabs
         {
             try
             {
-                SpotlightDialogBox dialog = new SpotlightDialogBox(this, defaultTransparency, defaultSoftEdges);
+                SpotlightDialogBox dialog = new SpotlightDialogBox(defaultTransparency, defaultSoftEdges);
+                dialog.SettingsHandler += SpotlightPropertiesEdited;
                 dialog.Show();
             }
             catch (Exception e)
@@ -4657,13 +4660,13 @@ namespace PowerPointLabs
             switch (CropToShapeErrorCode)
             {
                 case ERROR_SELECTION_COUNT_ZERO:
-                    return "To start 'Auto Crop', please select at least one shape.";
+                    return "To start 'Crop To Shape', please select at least one shape.";
                 case ERROR_SELECTION_NON_SHAPE:
-                    return "'Auto Crop' only supports shape objects.";
+                    return "'Crop To Shape' only supports shape objects.";
                 case ERROR_EXCEED_SLIDE_BOUND:
                     return "Please ensure your shape is within the slide.";
                 case ERROR_ROTATION_NON_ZERO:
-                    return "Please ensure your shape is unrotated.";
+                    return "In the current version, the 'Crop To Shape' feature does not work if the shape is rotated";
                 default:
                     return "Undefined error.";
             }
@@ -4823,23 +4826,12 @@ namespace PowerPointLabs
             shape.Copy();
             float x = shape.Left;
             float y = shape.Top;
-            float xOffset = 0;
-            float yOffset = 0;
-            try
-            {
-                xOffset = shape.Line.Weight / 2;
-                yOffset = shape.Line.Weight / 2;
-                xOffset = xOffset < 1 ? 0 : xOffset;
-                yOffset = yOffset < 1 ? 0 : yOffset;
-            }
-            catch (Exception)
-            {
-                //no outline for this shape
-            }
+            float width = shape.Width;
+            float height = shape.Height;
             shape.Delete();
             var pic = GetCurrentSlide().Shapes.PasteSpecial(PowerPoint.PpPasteDataType.ppPastePNG)[1];
-            pic.Left = x - xOffset;
-            pic.Top = y - yOffset;
+            pic.Left = x + (width - pic.Width) / 2;
+            pic.Top = y + (height - pic.Height) / 2;
             pic.Rotation = rotation;
             pic.Select();
             return pic;

@@ -70,9 +70,9 @@
             this.checkBox2.AutoSize = true;
             this.checkBox2.Location = new System.Drawing.Point(12, 48);
             this.checkBox2.Name = "checkBox2";
-            this.checkBox2.Size = new System.Drawing.Size(185, 17);
+            this.checkBox2.Size = new System.Drawing.Size(206, 17);
             this.checkBox2.TabIndex = 5;
-            this.checkBox2.Text = "Use Single Slide for Zoom to Area";
+            this.checkBox2.Text = "Put all zoom effects on separate slides";
             this.checkBox2.UseVisualStyleBackColor = true;
             // 
             // AutoZoomDialogBox

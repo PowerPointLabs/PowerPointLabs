@@ -11,9 +11,7 @@ namespace PowerPointLabs
 {
     public partial class SpotlightDialogBox : Form
     {
-        public float spotlightTransparency;
-        public float softEdge;
-        public Dictionary<String, float> softEdgesMapping = new Dictionary<string, float>
+        private Dictionary<String, float> softEdgesMapping = new Dictionary<string, float>
         {
             {"None", 0},
             {"1 Point", 1},
@@ -23,28 +21,29 @@ namespace PowerPointLabs
             {"25 Points", 25},
             {"50 Points", 50}
         };
-        private Ribbon1 ribbon;
+        private float lastTransparency;
+
+        public delegate void UpdateSettingsDelegate(float spotlightTransparency, float softEdge);
+        public UpdateSettingsDelegate SettingsHandler;
         public SpotlightDialogBox()
         {
             InitializeComponent();
         }
 
-        public SpotlightDialogBox(Ribbon1 parentRibbon, float defaultTransparency, float defaultSoftEdge)
+        public SpotlightDialogBox(float defaultTransparency, float defaultSoftEdge)
             : this()
         {
-            ribbon = parentRibbon;
-            spotlightTransparency = defaultTransparency;
-            softEdge = defaultSoftEdge;
+            this.textBox1.Text = defaultTransparency.ToString("P0");
+            lastTransparency = defaultTransparency;
+
             String[] keys = softEdgesMapping.Keys.ToArray();
             this.comboBox1.Items.AddRange(keys);
+            float[] values = softEdgesMapping.Values.ToArray();
+            this.comboBox1.SelectedIndex = Array.IndexOf(values, defaultSoftEdge);
         }
 
         private void SpotlightDialogBox_Load(object sender, EventArgs e)
         {
-            this.textBox1.Text = spotlightTransparency.ToString("P0");
-            float[] values = softEdgesMapping.Values.ToArray();
-            this.comboBox1.SelectedIndex = Array.IndexOf(values, softEdge);
-
             ToolTip ttComboBox = new ToolTip();
             ttComboBox.SetToolTip(comboBox1, "The softness of the edges of the spotlight effect to be created.");
             ToolTip ttTextField = new ToolTip();
@@ -64,13 +63,13 @@ namespace PowerPointLabs
             {
                 if (enteredValue > 0 && enteredValue <= 100)
                 {
-                    spotlightTransparency = enteredValue / 100;
+                    lastTransparency = enteredValue / 100;
                 }
-                textBox1.Text = spotlightTransparency.ToString("P0");
+                textBox1.Text = lastTransparency.ToString("P0");
             }
             else
             {
-                textBox1.Text = spotlightTransparency.ToString("P0"); ;
+                textBox1.Text = lastTransparency.ToString("P0"); ;
             }
         }
 
@@ -82,9 +81,7 @@ namespace PowerPointLabs
                 text = text.Substring(0, text.IndexOf('%'));
             }
 
-            this.spotlightTransparency = float.Parse(text) / 100;
-            this.softEdge = softEdgesMapping[(String)this.comboBox1.SelectedItem];
-            ribbon.SpotlightPropertiesEdited(spotlightTransparency, softEdge);
+            SettingsHandler(float.Parse(text) / 100, softEdgesMapping[(String)this.comboBox1.SelectedItem]);
             this.Dispose();
         }
 

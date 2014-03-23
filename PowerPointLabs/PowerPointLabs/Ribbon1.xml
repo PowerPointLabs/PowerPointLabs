@@ -371,6 +371,10 @@
               label="Edit Name"
               getImage="GetEditNameContextImage"
               onAction="NameEditBtnClick"/>
+      <button id="ConvertToPictureInk"
+             label ="Convert to Picture"
+             getImage="GetConvertToPicMenuImage"
+             onAction="ConvertToPictureButtonClick"/>
     </contextMenu>
     <contextMenu idMso="ContextMenuSmartArtBackground">
       <menuSeparator id="separatorSmartArt"/>
