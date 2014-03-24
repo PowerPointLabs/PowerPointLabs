@@ -1,6 +1,21 @@
 ﻿<?xml version="1.0" encoding="UTF-8"?>
 <customUI xmlns="http://schemas.microsoft.com/office/2009/07/customui" onLoad="Ribbon_Load">
   <ribbon>
+    <contextualTabs>
+      <tabSet idMso="TabSetDrawingTools">
+        <tab idMso="TabDrawingToolsFormat">
+          <group id="AdditionalFeatures"
+                 label="Other"
+                 insertBeforeMso="GroupShapeStyles"
+                 getVisible="GetVisibilityForCombineShapes">
+            <menu idMso="CombineShapesMenu"
+                  label="Combine Shapes"
+                  size="large"
+                  getVisible="GetVisibilityForCombineShapes" />
+          </group>
+        </tab>
+      </tabSet>
+    </contextualTabs> 
     <tabs>
       <tab id="PowerPointLabsAddIns" label="PowerPointLabs">
         <group id="AutoMotionGroup"
@@ -167,14 +182,6 @@
             <button id="AutoCaptionDialogBox"
                     onAction="AutoCaptionDialogButtonPressed"/>
           </dialogBoxLauncher>
-        </group>
-        <group id="AdditionalFeatures"
-               label="Other"
-               getVisible="GetVisibilityForCombineShapes">
-          <menu idMso="CombineShapesMenu"
-                label="Combine Shapes"
-                size="large"
-                getVisible="GetVisibilityForCombineShapes" />
         </group>
         <group id="PPTLabsHelp"
                label="Help"
