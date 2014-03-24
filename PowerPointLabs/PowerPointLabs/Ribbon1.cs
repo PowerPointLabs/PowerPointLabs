@@ -4811,6 +4811,11 @@ namespace PowerPointLabs
             return path + "\\currentSlide.png";
         }
 
+        public bool GetVisibilityForCombineShapes(Office.IRibbonControl control)
+        {
+            return Globals.ThisAddIn.Application.Version == OfficeVersion2010;
+        }
+
         private PowerPoint.Shape ConvertToPicture(ref PowerPoint.Shape shape)
         {
             float rotation = 0;

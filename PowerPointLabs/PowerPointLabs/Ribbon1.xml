@@ -168,6 +168,14 @@
                     onAction="AutoCaptionDialogButtonPressed"/>
           </dialogBoxLauncher>
         </group>
+        <group id="AdditionalFeatures"
+               label="Other"
+               getVisible="GetVisibilityForCombineShapes">
+          <menu idMso="CombineShapesMenu"
+                label="Combine Shapes"
+                size="large"
+                getVisible="GetVisibilityForCombineShapes" />
+        </group>
         <group id="PPTLabsHelp"
                label="Help"
                visible="true">
