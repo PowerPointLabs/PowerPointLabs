@@ -209,11 +209,21 @@
                label="Coming Soon"
                visible="true">
           <button id="MoveBulletsButton"
-                 label ="Highlight Bullets"
+                 label ="Highlight Bullets Color"
                  size ="large"
                  getImage="GetHighlightBulletsImage"
                  supertip="*Feature Coming Soon!*"
                  onAction="HighlightBulletsButtonClick"/>
+          <button id="MoveBullets2Button"
+                 label ="Highlight Bullets Box"
+                 size ="large"
+                 getImage="GetHighlightBulletsImage"
+                 supertip="*Feature Coming Soon!*"
+                 onAction="HighlightBulletsButtonClick2"/>
+          <dialogBoxLauncher>
+            <button id="HighlightBulletsDialogBox"
+                    onAction="HighlightBulletsDialogBoxPressed"/>
+          </dialogBoxLauncher>
         </group>
       </tab>
     </tabs>
