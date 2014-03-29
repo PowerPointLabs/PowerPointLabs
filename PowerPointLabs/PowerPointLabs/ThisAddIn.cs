@@ -72,7 +72,8 @@ namespace PowerPointLabs
             if (Sel.Type == PowerPoint.PpSelectionType.ppSelectionShapes)
             {
                 PowerPoint.Shape sh = Sel.ShapeRange[1];
-                if (sh.Type == Office.MsoShapeType.msoAutoShape || sh.Type == Office.MsoShapeType.msoFreeform || sh.Type == Office.MsoShapeType.msoTextBox || sh.Type == Office.MsoShapeType.msoPlaceholder)
+                if (sh.Type == Office.MsoShapeType.msoAutoShape || sh.Type == Office.MsoShapeType.msoFreeform || sh.Type == Office.MsoShapeType.msoTextBox || sh.Type == Office.MsoShapeType.msoPlaceholder
+                    || sh.Type == Office.MsoShapeType.msoCallout || sh.Type == Office.MsoShapeType.msoInk || sh.Type == Office.MsoShapeType.msoGroup)
                 {
                     ribbon.spotlightEnabled = true;
                 }
