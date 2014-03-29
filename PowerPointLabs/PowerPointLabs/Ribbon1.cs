@@ -1861,6 +1861,8 @@ namespace PowerPointLabs
                 }
             }
             addedSlide.SlideShowTransition.EntryEffect = PowerPoint.PpEntryEffect.ppEffectNone;
+            addedSlide.SlideShowTransition.AdvanceOnTime = Office.MsoTriState.msoFalse;
+            addedSlide.SlideShowTransition.AdvanceOnClick = Office.MsoTriState.msoTrue;
             if (addedSlide.HasNotesPage == Office.MsoTriState.msoTrue)
             {
                 foreach (PowerPoint.Shape tmp in addedSlide.NotesPage.Shapes)
