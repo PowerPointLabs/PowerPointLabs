@@ -2821,55 +2821,51 @@ namespace PowerPointLabs
                         }
                     }
                     spotShape.ShapeStyle = Office.MsoShapeStyleIndex.msoShapeStylePreset1;
+                    spotShape.Line.Visible = Office.MsoTriState.msoFalse;
+                    if (spotShape.HasTextFrame == Office.MsoTriState.msoTrue && spotShape.TextFrame.HasText == Office.MsoTriState.msoTrue)
+                        spotShape.TextFrame.TextRange.Font.Color.RGB = 0xffffff;
+
+                    if (spotShape.Type == Office.MsoShapeType.msoGroup)
+                    {
+
+                        PowerPoint.ShapeRange shRange = spotShape.GroupItems.Range(1);
+                        foreach(PowerPoint.Shape sh in shRange)
+                        {
+                            if (sh.HasTextFrame == Office.MsoTriState.msoTrue && sh.TextFrame.HasText == Office.MsoTriState.msoTrue)
+                                sh.TextFrame.TextRange.Font.Color.RGB = 0xffffff;
+                        }
+                    }
+                    PowerPoint.Shape spotlightShape = null;
                     spotShape.Copy();
-                    PowerPoint.Shape spotlightShape = addedSlide.Shapes.Paste()[1];
-
-                    if (spotShape.Left < 0)
+                    if (spotShape.Type != Office.MsoShapeType.msoCallout)
                     {
-                        spotlightShape.Left = 0;
-                        spotlightShape.Width = spotShape.Width - (0.0f - spotShape.Left);
+                        spotlightShape  = addedSlide.Shapes.PasteSpecial(PowerPoint.PpPasteDataType.ppPastePNG)[1];
+                        spotlightShape.Left = spotShape.Left + (spotShape.Width / 2) - (spotlightShape.Width / 2);
+                        spotlightShape.Top = spotShape.Top + (spotShape.Height / 2) - (spotlightShape.Height / 2);
+
+                        if (spotlightShape.Left < 0)
+                        {
+                            spotlightShape.PictureFormat.CropLeft += (0.0f - spotlightShape.Left);
+                        }
+                        if (spotlightShape.Left + spotlightShape.Width > Globals.ThisAddIn.Application.ActivePresentation.PageSetup.SlideWidth)
+                        {
+                            spotlightShape.PictureFormat.CropRight += (spotlightShape.Left + spotlightShape.Width - Globals.ThisAddIn.Application.ActivePresentation.PageSetup.SlideWidth);
+                        }
+                        if (spotlightShape.Top < 0)
+                        {
+                            spotlightShape.PictureFormat.CropTop += (0.0f - spotlightShape.Top);
+                        }
+                        if (spotlightShape.Top + spotlightShape.Height > Globals.ThisAddIn.Application.ActivePresentation.PageSetup.SlideHeight)
+                        {
+                            spotlightShape.PictureFormat.CropBottom += (spotlightShape.Top + spotlightShape.Height - Globals.ThisAddIn.Application.ActivePresentation.PageSetup.SlideHeight);
+                        }
                     }
                     else
-                        spotlightShape.Left = spotShape.Left;
-
-                    if (spotShape.Left + spotShape.Width > Globals.ThisAddIn.Application.ActivePresentation.PageSetup.SlideWidth)
-                        spotlightShape.Width = (Globals.ThisAddIn.Application.ActivePresentation.PageSetup.SlideWidth - spotlightShape.Left);
-
-                    if (spotShape.Top < 0)
                     {
-                        spotlightShape.Top = 0;
-                        spotlightShape.Height = spotShape.Height - (0.0f - spotShape.Top);
+                        spotlightShape = addedSlide.Shapes.Paste()[1];
+                        spotlightShape.Left = spotShape.Left + (spotShape.Width / 2) - (spotlightShape.Width / 2);
+                        spotlightShape.Top = spotShape.Top + (spotShape.Height / 2) - (spotlightShape.Height / 2);
                     }
-                    else
-                        spotlightShape.Top = spotShape.Top;
-
-                    if (spotShape.Top + spotShape.Height > Globals.ThisAddIn.Application.ActivePresentation.PageSetup.SlideHeight)
-                        spotlightShape.Height = (Globals.ThisAddIn.Application.ActivePresentation.PageSetup.SlideHeight - spotlightShape.Top);
-
-                    //if (!spotlightDelete)
-                    //{
-                    //    float oldLeft = spotlightShape.Left;
-                    //    float oldTop = spotlightShape.Top;
-                    //    spotlightShape.Left -= 5.0f;
-                    //    spotlightShape.Top -= 5.0f;
-                    //    spotlightShape.Width += 10.0f;
-                    //    spotlightShape.Height += 10.0f;
-
-                    //    if (spotlightShape.Left < 0.0f)
-                    //    {
-                    //        spotlightShape.Left = 0.0f;
-                    //        spotlightShape.Width = spotlightShape.Width - (0.0f - spotlightShape.Left);
-                    //    }
-                    //    if (spotlightShape.Top < 0.0f)
-                    //    {
-                    //        spotlightShape.Top = 0.0f;
-                    //        spotlightShape.Top = spotlightShape.Height - (0.0f - spotlightShape.Top);
-                    //    }
-                    //    if (spotlightShape.Left + spotlightShape.Width > Globals.ThisAddIn.Application.ActivePresentation.PageSetup.SlideWidth)
-                    //        spotlightShape.Width = (Globals.ThisAddIn.Application.ActivePresentation.PageSetup.SlideWidth - oldLeft);
-                    //    if (spotlightShape.Top + spotlightShape.Height > Globals.ThisAddIn.Application.ActivePresentation.PageSetup.SlideHeight)
-                    //        spotlightShape.Height = (Globals.ThisAddIn.Application.ActivePresentation.PageSetup.SlideHeight - oldTop);
-                    //}
 
                     spotlightShape.Fill.ForeColor.RGB = 0xffffff;
                     spotlightShape.Line.Visible = Office.MsoTriState.msoFalse;
@@ -2887,6 +2883,7 @@ namespace PowerPointLabs
                     //spotShape.Delete();
                     spotShape.Fill.ForeColor.RGB = 0xaaaaaa;
                     spotShape.Fill.Transparency = 0.7f;
+                    spotShape.Line.Visible = Office.MsoTriState.msoTrue;
                     spotShape.Line.ForeColor.RGB = 0x000000;
                     PowerPoint.Effect effectDisappear = null;
 
