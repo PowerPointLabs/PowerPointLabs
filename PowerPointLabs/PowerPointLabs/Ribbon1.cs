@@ -161,39 +161,40 @@ namespace PowerPointLabs
             {
                 //Get References of current and next slides
                 PowerPoint.Slide currentSlide = GetCurrentSlide();
-                PowerPoint.Slide addedSlide = currentSlide.Duplicate()[1];
-                addedSlide.Name = "PPTLabsHighlightBulletsSlide" + GetTimestamp(DateTime.Now);
                 PowerPoint.Presentation presentation = Globals.ThisAddIn.Application.ActivePresentation;
                 PowerPoint.Effect effectDisappear = null;
                 int effectCount = 0;
 
-                PowerPoint.Sequence sequence = addedSlide.TimeLine.MainSequence;
+                PowerPoint.Sequence sequence = currentSlide.TimeLine.MainSequence;
                 List<PowerPoint.Shape> textShapes = new List<PowerPoint.Shape>();
-                foreach (PowerPoint.Shape tmp in currentSlide.Shapes)
+                List<PowerPoint.Shape> shapesToDelete = new List<PowerPoint.Shape>();
+                foreach (PowerPoint.Shape sh in currentSlide.Shapes)
                 {
-                    PowerPoint.Shape sh = FindIdenticalShape(addedSlide, tmp);
-                    if (sh.Name.Contains("PPIndicator"))
-                        sh.Delete();
+                    if (sh.Name.Contains("PPIndicator") || sh.Name.Contains("PPTLabsHighlightBackgroundShape"))
+                        shapesToDelete.Add(sh);
                     else
                     {
-                        DeleteShapeAnnimations(addedSlide, sh);
                         if (sh.HasTextFrame == Office.MsoTriState.msoTrue && sh.TextFrame2.HasText == Office.MsoTriState.msoTrue
                             && sh.TextFrame2.TextRange.ParagraphFormat.Bullet.Visible == Office.MsoTriState.msoTrue
                             && sh.TextFrame2.TextRange.ParagraphFormat.Bullet.Type != Office.MsoBulletType.msoBulletNone)
                         {
+                            DeleteShapeAnnimations(currentSlide, sh);
                             textShapes.Add(sh);
                         }
                     }
                 }
 
-                if (currentSlide.Name.Contains("PPTLabsHighlightBulletsSlide"))
+                if (shapesToDelete.Count > 0)
                 {
-                    currentSlide.Delete();
+                    foreach (PowerPoint.Shape sh in shapesToDelete)
+                    {
+                        sh.Delete();
+                    }
                 }
 
                 String tempFileName = Path.GetTempFileName();
                 Properties.Resources.Indicator.Save(tempFileName);
-                PowerPoint.Shape indicatorShape = addedSlide.Shapes.AddPicture(tempFileName, Office.MsoTriState.msoFalse, Office.MsoTriState.msoTrue, presentation.PageSetup.SlideWidth - 120, 0, 120, 84);
+                PowerPoint.Shape indicatorShape = currentSlide.Shapes.AddPicture(tempFileName, Office.MsoTriState.msoFalse, Office.MsoTriState.msoTrue, presentation.PageSetup.SlideWidth - 120, 0, 120, 84);
                 indicatorShape.Left = presentation.PageSetup.SlideWidth - 120;
                 indicatorShape.Top = 0;
                 indicatorShape.Width = 120;
@@ -201,14 +202,16 @@ namespace PowerPointLabs
                 indicatorShape.Name = "PPIndicator" + GetTimestamp(DateTime.Now);
                 effectDisappear = sequence.AddEffect(indicatorShape, PowerPoint.MsoAnimEffect.msoAnimEffectAppear, PowerPoint.MsoAnimateByLevel.msoAnimateLevelNone, PowerPoint.MsoAnimTriggerType.msoAnimTriggerWithPrevious);
                 effectDisappear.Timing.Duration = 0;
+                effectDisappear.MoveTo(1);
 
                 effectDisappear = sequence.AddEffect(indicatorShape, PowerPoint.MsoAnimEffect.msoAnimEffectAppear, PowerPoint.MsoAnimateByLevel.msoAnimateLevelNone, PowerPoint.MsoAnimTriggerType.msoAnimTriggerWithPrevious);
                 effectDisappear.Exit = Office.MsoTriState.msoTrue;
                 effectDisappear.Timing.Duration = 0;
-                effectCount += 2;
+                effectDisappear.MoveTo(2);
+                effectCount += sequence.Count;
 
                 Globals.ThisAddIn.Application.ActiveWindow.Selection.Unselect();
-                Globals.ThisAddIn.Application.ActiveWindow.View.GotoSlide(addedSlide.SlideIndex);
+                Globals.ThisAddIn.Application.ActiveWindow.View.GotoSlide(currentSlide.SlideIndex);
 
                 foreach (PowerPoint.Shape sh in textShapes)
                 {
@@ -216,11 +219,12 @@ namespace PowerPointLabs
                     {
                         if (paragraph.ParagraphFormat.Bullet.Visible == Office.MsoTriState.msoTrue && paragraph.TrimText().Length > 0)
                         {
-                            PowerPoint.Shape tmp = addedSlide.Shapes.AddShape(Office.MsoAutoShapeType.msoShapeRectangle, paragraph.BoundLeft, paragraph.BoundTop, paragraph.BoundWidth, paragraph.BoundHeight);
+                            PowerPoint.Shape tmp = currentSlide.Shapes.AddShape(Office.MsoAutoShapeType.msoShapeRectangle, paragraph.BoundLeft, paragraph.BoundTop, paragraph.BoundWidth, paragraph.BoundHeight);
                             tmp.Fill.ForeColor.RGB = CreateRGB(backgroundColor);
                             tmp.Fill.Transparency = 0.50f;
                             tmp.Line.Visible = Office.MsoTriState.msoFalse;
                             tmp.ZOrder(Office.MsoZOrderCmd.msoSendToBack);
+                            tmp.Name = "PPTLabsHighlightBackgroundShape" + GetTimestamp(DateTime.Now);
                             tmp.Select(Office.MsoTriState.msoFalse);
                         }
 
@@ -228,7 +232,7 @@ namespace PowerPointLabs
                 }
                 bool oldValue = frameAnimationChecked;
                 frameAnimationChecked = false;
-                AddInSlideAnimation(addedSlide, true);
+                AddInSlideAnimation(currentSlide, true);
                 frameAnimationChecked = oldValue;
                 Globals.ThisAddIn.Application.ActiveWindow.Selection.Unselect();
                 AddAckSlide();
@@ -349,7 +353,7 @@ namespace PowerPointLabs
             }
             catch (Exception e)
             {
-                LogException(e, "HighlightBulletsButtonClick");
+                LogException(e, "HighlightBulletsTextButtonClick");
                 throw;
             }
         }
@@ -422,10 +426,7 @@ namespace PowerPointLabs
 
                     if (num == 1)
                     {
-                        if (!isHighlightBullets)
-                            trigger = PowerPoint.MsoAnimTriggerType.msoAnimTriggerOnPageClick;
-                        else
-                            trigger = PowerPoint.MsoAnimTriggerType.msoAnimTriggerWithPrevious;
+                        trigger = PowerPoint.MsoAnimTriggerType.msoAnimTriggerOnPageClick;
                         PowerPoint.Effect appear = sequence.AddEffect(sh1, PowerPoint.MsoAnimEffect.msoAnimEffectAppear, PowerPoint.MsoAnimateByLevel.msoAnimateLevelNone, trigger);
                     }
 
