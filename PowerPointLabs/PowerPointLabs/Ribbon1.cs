@@ -53,6 +53,7 @@ namespace PowerPointLabs
         public bool reloadAutoMotionEnabled = true;
         public bool reloadSpotlight = true;
         public Color highlightColor = Color.FromArgb(242, 41, 10);
+        public Color defaultColor = Color.FromArgb(0, 0, 0);
         public Dictionary<String, float> softEdgesMapping = new Dictionary<string, float>
         {
             {"None", 0},
@@ -153,7 +154,7 @@ namespace PowerPointLabs
             // return value
             return rgb;
         }
-        public void HighlightBulletsButtonClick2(Office.IRibbonControl control)
+        public void HighlightBulletsBackgroundButtonClick(Office.IRibbonControl control)
         {
             try
             {
@@ -237,7 +238,7 @@ namespace PowerPointLabs
             }
         }
 
-        public void HighlightBulletsButtonClick(Office.IRibbonControl control)
+        public void HighlightBulletsTextButtonClick(Office.IRibbonControl control)
         {
             try
             {
@@ -3836,15 +3837,27 @@ namespace PowerPointLabs
                 throw;
             }
         }
-        public System.Drawing.Bitmap GetHighlightBulletsImage(Office.IRibbonControl control)
+        public System.Drawing.Bitmap GetHighlightBulletsTextImage(Office.IRibbonControl control)
         {
             try
             {
-                return new System.Drawing.Bitmap(Properties.Resources.Bullets);
+                return new System.Drawing.Bitmap(Properties.Resources.HighlightText);
             }
             catch (Exception e)
             {
-                LogException(e, "GetHighlightBulletsImage");
+                LogException(e, "GetHighlightBulletsTextImage");
+                throw;
+            }
+        }
+        public System.Drawing.Bitmap GetHighlightBulletsBackgroundImage(Office.IRibbonControl control)
+        {
+            try
+            {
+                return new System.Drawing.Bitmap(Properties.Resources.HighlightBackground);
+            }
+            catch (Exception e)
+            {
+                LogException(e, "GetHighlightBulletsBackgroundImage");
                 throw;
             }
         }
@@ -4481,14 +4494,31 @@ namespace PowerPointLabs
             }
         }
 
+        public void HighlightBulletsPropertiesEdited(Color newHighlightColor, Color newDefaultColor)
+        {
+            try
+            {
+                highlightColor = newHighlightColor;
+                defaultColor = newDefaultColor;
+            }
+            catch (Exception e)
+            {
+                LogException(e, "HighlightBulletsPropertiesEdited");
+                throw;
+            }
+        }
         public void HighlightBulletsDialogBoxPressed(Office.IRibbonControl control)
         {
-            ColorDialog colorDialog = new ColorDialog();
-            colorDialog.Color = highlightColor;
-            colorDialog.FullOpen = true;
-            if (colorDialog.ShowDialog() != DialogResult.Cancel)
+            try
             {
-                highlightColor = colorDialog.Color;
+                HighlightBulletsDialogBox dialog = new HighlightBulletsDialogBox(highlightColor, defaultColor);
+                dialog.SettingsHandler += HighlightBulletsPropertiesEdited;
+                dialog.Show();
+            }
+            catch (Exception e)
+            {
+                LogException(e, "HighlightBulletsDialogBoxPressed");
+                throw;
             }
         }
 

@@ -183,6 +183,26 @@
                     onAction="AutoCaptionDialogButtonPressed"/>
           </dialogBoxLauncher>
         </group>
+        <group id="HighlightBullets"
+               label="Highlight Bullets"
+               visible="true">
+          <button id="HighlightBulletsTextButton"
+                 label ="Highlight Text"
+                 size ="large"
+                 getImage="GetHighlightBulletsTextImage"
+                 supertip="Highlights all the bullet points on the specified slide by changing the text color."
+                 onAction="HighlightBulletsTextButtonClick"/>
+          <button id="HighlightBulletsBackgroundButton"
+                 label ="Highlight Background"
+                 size ="large"
+                 getImage="GetHighlightBulletsBackgroundImage"
+                 supertip="Highlights all the bullet points on the specified slide by highlighting the text background"
+                 onAction="HighlightBulletsBackgroundButtonClick"/>
+          <dialogBoxLauncher>
+            <button id="HighlightBulletsDialogBox"
+                    onAction="HighlightBulletsDialogBoxPressed"/>
+          </dialogBoxLauncher>
+        </group>
         <group id="PPTLabsHelp"
                label="Help"
                visible="true">
@@ -204,26 +224,6 @@
                   getImage="GetAboutImage"
                   supertip="Information about the PowerPointLabs plugin."
                   onAction="AboutButtonClick"/>
-        </group>
-        <group id="ComingSoon"
-               label="Coming Soon"
-               visible="true">
-          <button id="MoveBulletsButton"
-                 label ="Highlight Bullets Color"
-                 size ="large"
-                 getImage="GetHighlightBulletsImage"
-                 supertip="*Feature Coming Soon!*"
-                 onAction="HighlightBulletsButtonClick"/>
-          <button id="MoveBullets2Button"
-                 label ="Highlight Bullets Box"
-                 size ="large"
-                 getImage="GetHighlightBulletsImage"
-                 supertip="*Feature Coming Soon!*"
-                 onAction="HighlightBulletsButtonClick2"/>
-          <dialogBoxLauncher>
-            <button id="HighlightBulletsDialogBox"
-                    onAction="HighlightBulletsDialogBoxPressed"/>
-          </dialogBoxLauncher>
         </group>
       </tab>
     </tabs>
