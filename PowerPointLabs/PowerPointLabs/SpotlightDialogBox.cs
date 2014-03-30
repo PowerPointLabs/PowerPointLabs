@@ -82,12 +82,12 @@ namespace PowerPointLabs
             }
 
             SettingsHandler(float.Parse(text) / 100, softEdgesMapping[(String)this.comboBox1.SelectedItem]);
-            this.Dispose();
+            this.Close();
         }
 
         private void button2_Click(object sender, EventArgs e)
         {
-            this.Dispose();
+            this.Close();
         }
     }
 }

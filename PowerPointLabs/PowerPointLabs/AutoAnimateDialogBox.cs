@@ -37,7 +37,7 @@ namespace PowerPointLabs
 
         private void button2_Click(object sender, EventArgs e)
         {
-            this.Dispose();
+            this.Close();
         }
         private void textBox1_Validating(object sender, System.ComponentModel.CancelEventArgs e)
         {
@@ -64,7 +64,7 @@ namespace PowerPointLabs
         private void button1_Click(object sender, EventArgs e)
         {
             SettingsHandler(float.Parse(this.textBox1.Text), this.checkBox1.Checked);
-            this.Dispose();
+            this.Close();
         }
     }
 }

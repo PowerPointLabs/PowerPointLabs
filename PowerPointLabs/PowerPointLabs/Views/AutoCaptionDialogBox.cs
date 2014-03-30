@@ -18,6 +18,7 @@ namespace PowerPointLabs.Views
         public AutoCaptionDialogBox()
         {
             InitializeComponent();
+            this.ShowInTaskbar = false;
         }
 
         public AutoCaptionDialogBox(bool allSlides) : this()
@@ -27,13 +28,13 @@ namespace PowerPointLabs.Views
 
         private void cancel_Click(object sender, EventArgs e)
         {
-            Dispose();
+            Close();
         }
 
         private void ok_Click(object sender, EventArgs e)
         {
             SettingsHandler(allSlides.Checked);
-            Dispose();
+            Close();
         }
     }
 }

@@ -17,6 +17,7 @@ namespace PowerPointLabs.Views
         public AutoNarrateDialogBox()
         {
             InitializeComponent();
+            this.ShowInTaskbar = false;
         }
 
         public AutoNarrateDialogBox(int selectedVoice, List<String> voices, bool allSlides, bool preview) : this()
@@ -45,14 +46,14 @@ namespace PowerPointLabs.Views
 
         private void cancel_Click(object sender, EventArgs e)
         {
-            Dispose();
+            Close();
         }
 
         private void ok_Click(object sender, EventArgs e)
         {
             SettingsHandler(defaultVoice.Text, allSlides.Checked, preview.Checked);
 
-            Dispose();
+            Close();
         }
     }
 }

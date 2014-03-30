@@ -36,13 +36,13 @@ namespace PowerPointLabs
 
         private void button2_Click(object sender, EventArgs e)
         {
-            this.Dispose();
+            this.Close();
         }
 
         private void button1_Click(object sender, EventArgs e)
         {
             SettingsHandler(this.checkBox1.Checked, this.checkBox2.Checked);
-            this.Dispose();
+            this.Close();
         }
     }
 }

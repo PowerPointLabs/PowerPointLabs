@@ -4385,7 +4385,7 @@ namespace PowerPointLabs
             {
                 PowerPoint.Shape selectedShape = (PowerPoint.Shape)Globals.ThisAddIn.Application.ActiveWindow.Selection.ShapeRange[1];
                 Form1 editForm = new Form1(this, selectedShape.Name);
-                editForm.Show();
+                editForm.ShowDialog();
             }
             catch (Exception e)
             {
@@ -4413,7 +4413,7 @@ namespace PowerPointLabs
             {
                 AutoAnimateDialogBox dialog = new AutoAnimateDialogBox(defaultDuration, frameAnimationChecked);
                 dialog.SettingsHandler += AnimationPropertiesEdited;
-                dialog.Show();
+                dialog.ShowDialog();
             }
             catch (Exception e)
             {
@@ -4442,7 +4442,7 @@ namespace PowerPointLabs
             {
                 AutoZoomDialogBox dialog = new AutoZoomDialogBox(backgroundZoomChecked, multiSlideZoomChecked);
                 dialog.SettingsHandler += ZoomPropertiesEdited;
-                dialog.Show();
+                dialog.ShowDialog();
             }
             catch (Exception e)
             {
@@ -4471,7 +4471,7 @@ namespace PowerPointLabs
             {
                 SpotlightDialogBox dialog = new SpotlightDialogBox(defaultTransparency, defaultSoftEdges);
                 dialog.SettingsHandler += SpotlightPropertiesEdited;
-                dialog.Show();
+                dialog.ShowDialog();
             }
             catch (Exception e)
             {
@@ -4513,7 +4513,7 @@ namespace PowerPointLabs
             {
                 HighlightBulletsDialogBox dialog = new HighlightBulletsDialogBox(highlightColor, defaultColor);
                 dialog.SettingsHandler += HighlightBulletsPropertiesEdited;
-                dialog.Show();
+                dialog.ShowDialog();
             }
             catch (Exception e)
             {
@@ -4602,7 +4602,7 @@ namespace PowerPointLabs
                 var dialog = new AutoNarrateDialogBox(_voiceSelected, _voiceNames, _allSlides,
                     _previewCurrentSlide);
                 dialog.SettingsHandler += AutoNarrateSettingsChanged;
-                dialog.Show();
+                dialog.ShowDialog();
             }
             catch (Exception e)
             {
@@ -4628,7 +4628,7 @@ namespace PowerPointLabs
             {
                 var dialog = new AutoCaptionDialogBox(_captionsAllSlides);
                 dialog.SettingsHandler += AutoCaptionSettingsChanged;
-                dialog.Show();
+                dialog.ShowDialog();
             }
             catch (Exception e)
             {

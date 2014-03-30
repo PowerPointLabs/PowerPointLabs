@@ -57,7 +57,6 @@
             this.button2.TabIndex = 2;
             this.button2.Text = "Cancel";
             this.button2.UseVisualStyleBackColor = true;
-            this.button2.Click += new System.EventHandler(this.button2_Click);
             // 
             // label1
             // 
@@ -118,6 +117,7 @@
             this.MaximizeBox = false;
             this.MinimizeBox = false;
             this.Name = "HighlightBulletsDialogBox";
+            this.ShowInTaskbar = false;
             this.SizeGripStyle = System.Windows.Forms.SizeGripStyle.Hide;
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Highlight Bullets Properties";

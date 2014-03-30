@@ -38,12 +38,7 @@ namespace PowerPointLabs
         private void button1_Click(object sender, EventArgs e)
         {
             SettingsHandler(this.pictureBox1.BackColor, this.pictureBox2.BackColor);
-            this.Dispose();
-        }
-
-        private void button2_Click(object sender, EventArgs e)
-        {
-            this.Dispose();
+            this.Close();
         }
 
         private void pictureBox2_Click(object sender, EventArgs e)
