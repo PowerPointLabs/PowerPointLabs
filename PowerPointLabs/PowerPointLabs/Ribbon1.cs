@@ -312,14 +312,14 @@ namespace PowerPointLabs
                         highlight.Timing.Duration = 0.01f;
 
                         highlight = sequence[start - 1 + count + j];
-                        highlight.EffectParameters.Color2.RGB = initialColor;
+                        highlight.EffectParameters.Color2.RGB = CreateRGB(defaultColor);
                         highlight.Timing.Duration = 0.01f;
                         highlight.MoveTo(start + i);
                         highlight.Timing.TriggerType = PowerPoint.MsoAnimTriggerType.msoAnimTriggerWithPrevious;
                     }
 
                     highlight = sequence[sequence.Count];
-                    highlight.EffectParameters.Color2.RGB = initialColor;
+                    highlight.EffectParameters.Color2.RGB = CreateRGB(defaultColor);
                     highlight.Timing.Duration = 0.01f;
                     highlight.Timing.TriggerType = PowerPoint.MsoAnimTriggerType.msoAnimTriggerOnPageClick;
                     effectCount += totalCount;
