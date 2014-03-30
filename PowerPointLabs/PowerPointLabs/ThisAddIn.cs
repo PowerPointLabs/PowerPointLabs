@@ -112,11 +112,13 @@ namespace PowerPointLabs
             ribbon.addAutoMotionEnabled = true;
             ribbon.reloadAutoMotionEnabled = true;
             ribbon.reloadSpotlight = true;
+            ribbon.highlightBulletsEnabled = true;
             if (SldRange.Count != 1)
             {
                 ribbon.addAutoMotionEnabled = false;
                 ribbon.reloadAutoMotionEnabled = false;
                 ribbon.reloadSpotlight = false;
+                ribbon.highlightBulletsEnabled = false;
             }
             else
             {
@@ -145,6 +147,8 @@ namespace PowerPointLabs
             ribbon.RefreshRibbonControl("AddAnimationButton");
             ribbon.RefreshRibbonControl("ReloadButton");
             ribbon.RefreshRibbonControl("ReloadSpotlightButton");
+            ribbon.RefreshRibbonControl("HighlightBulletsTextButton");
+            ribbon.RefreshRibbonControl("HighlightBulletsBackgroundButton");
         }
 
         //void ThisAddIn_BeginSlideShow(PowerPoint.SlideShowWindow Wn)

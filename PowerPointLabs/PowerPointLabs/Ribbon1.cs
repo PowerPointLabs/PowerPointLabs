@@ -49,6 +49,7 @@ namespace PowerPointLabs
         public bool spotlightEnabled = false;
         public bool inSlideEnabled = false;
         public bool zoomButtonEnabled = false;
+        public bool highlightBulletsEnabled = true;
         public bool addAutoMotionEnabled = true;
         public bool reloadAutoMotionEnabled = true;
         public bool reloadSpotlight = true;
@@ -161,6 +162,7 @@ namespace PowerPointLabs
             {
                 //Get References of current and next slides
                 PowerPoint.Slide currentSlide = GetCurrentSlide();
+                currentSlide.Name = "PPTLabsHighlightBulletsSlide" + GetTimestamp(DateTime.Now);
                 PowerPoint.Presentation presentation = Globals.ThisAddIn.Application.ActivePresentation;
                 PowerPoint.Effect effectDisappear = null;
                 int effectCount = 0;
@@ -212,6 +214,7 @@ namespace PowerPointLabs
 
                 Globals.ThisAddIn.Application.ActiveWindow.Selection.Unselect();
                 Globals.ThisAddIn.Application.ActiveWindow.View.GotoSlide(currentSlide.SlideIndex);
+                bool anySelected = false;
 
                 foreach (PowerPoint.Shape sh in textShapes)
                 {
@@ -226,12 +229,13 @@ namespace PowerPointLabs
                             tmp.ZOrder(Office.MsoZOrderCmd.msoSendToBack);
                             tmp.Name = "PPTLabsHighlightBackgroundShape" + GetTimestamp(DateTime.Now);
                             tmp.Select(Office.MsoTriState.msoFalse);
+                            anySelected = true;
                         }
 
                     }
                 }
 
-                if (Globals.ThisAddIn.Application.ActiveWindow.Selection.ShapeRange.Count > 0)
+                if (anySelected)
                 {
                     bool oldValue = frameAnimationChecked;
                     frameAnimationChecked = false;
@@ -3903,6 +3907,32 @@ namespace PowerPointLabs
                 throw;
             }
         }
+
+        public System.Drawing.Bitmap GetHighlightBulletsTextContextImage(Office.IRibbonControl control)
+        {
+            try
+            {
+                return new System.Drawing.Bitmap(Properties.Resources.HighlightTextContext);
+            }
+            catch (Exception e)
+            {
+                LogException(e, "GetHighlightBulletsTextContextImage");
+                throw;
+            }
+        }
+        public System.Drawing.Bitmap GetHighlightBulletsBackgroundContextImage(Office.IRibbonControl control)
+        {
+            try
+            {
+                return new System.Drawing.Bitmap(Properties.Resources.HighlightBackgroundContext);
+            }
+            catch (Exception e)
+            {
+                LogException(e, "GetHighlightBulletsBackgroundContextImage");
+                throw;
+            }
+        }
+
         public System.Drawing.Bitmap GetZoomInImage(Office.IRibbonControl control)
         {
             try
@@ -3915,6 +3945,7 @@ namespace PowerPointLabs
                 throw;
             }
         }
+
         public System.Drawing.Bitmap GetZoomOutImage(Office.IRibbonControl control)
         {
             try
@@ -4418,6 +4449,10 @@ namespace PowerPointLabs
         public bool OnGetEnabledZoomButton(Office.IRibbonControl control)
         {
             return zoomButtonEnabled;
+        }
+        public bool OnGetEnabledHighlightBullets(Office.IRibbonControl control)
+        {
+            return highlightBulletsEnabled;
         }
 
         //Edit Name Callbacks

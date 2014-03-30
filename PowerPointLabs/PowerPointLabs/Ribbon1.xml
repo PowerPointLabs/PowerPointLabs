@@ -191,12 +191,14 @@
                  size ="large"
                  getImage="GetHighlightBulletsTextImage"
                  supertip="Highlights all the bullet points on the specified slide by changing the text color."
+                 getEnabled="OnGetEnabledHighlightBullets"
                  onAction="HighlightBulletsTextButtonClick"/>
           <button id="HighlightBulletsBackgroundButton"
                  label ="Highlight Background"
                  size ="large"
                  getImage="GetHighlightBulletsBackgroundImage"
                  supertip="Highlights all the bullet points on the specified slide by highlighting the text background"
+                 getEnabled="OnGetEnabledHighlightBullets"
                  onAction="HighlightBulletsBackgroundButtonClick"/>
           <dialogBoxLauncher>
             <button id="HighlightBulletsDialogBox"
@@ -424,6 +426,16 @@
               getImage="GetReloadAnimationContextImage"
               getEnabled="OnGetEnabledReloadAutoMotion"
               onAction="ReloadButtonClick"/>
+      <button id="HighlightBulletsTextThumbnail"
+              label ="Highlight Text"
+              getImage="GetHighlightBulletsTextContextImage"
+              getEnabled="OnGetEnabledHighlightBullets"
+              onAction="HighlightBulletsTextButtonClick"/>
+      <button id="HighlightBulletsBackgroundThumbnail"
+             label ="Highlight Background"
+             getImage="GetHighlightBulletsBackgroundContextImage"
+             getEnabled="OnGetEnabledHighlightBullets"
+             onAction="HighlightBulletsBackgroundButtonClick"/>
     </contextMenu>
     <contextMenu idMso="ContextMenuNotesEditText">
       <menuSeparator id="separatorNotes" />
