@@ -54,6 +54,7 @@ namespace PowerPointLabs
         public bool reloadSpotlight = true;
         public Color highlightColor = Color.FromArgb(242, 41, 10);
         public Color defaultColor = Color.FromArgb(0, 0, 0);
+        public Color backgroundColor = Color.FromArgb(255, 255, 0);
         public Dictionary<String, float> softEdgesMapping = new Dictionary<string, float>
         {
             {"None", 0},
@@ -216,8 +217,8 @@ namespace PowerPointLabs
                         if (paragraph.ParagraphFormat.Bullet.Visible == Office.MsoTriState.msoTrue && paragraph.TrimText().Length > 0)
                         {
                             PowerPoint.Shape tmp = addedSlide.Shapes.AddShape(Office.MsoAutoShapeType.msoShapeRectangle, paragraph.BoundLeft, paragraph.BoundTop, paragraph.BoundWidth, paragraph.BoundHeight);
-                            tmp.Fill.ForeColor.RGB = 0x00ffff;
-                            tmp.Fill.Transparency = 0.81f;
+                            tmp.Fill.ForeColor.RGB = CreateRGB(backgroundColor);
+                            tmp.Fill.Transparency = 0.80f;
                             tmp.Line.ForeColor.RGB = 0x0000C0;
                             tmp.Select(Office.MsoTriState.msoFalse);
                         }
@@ -4494,12 +4495,13 @@ namespace PowerPointLabs
             }
         }
 
-        public void HighlightBulletsPropertiesEdited(Color newHighlightColor, Color newDefaultColor)
+        public void HighlightBulletsPropertiesEdited(Color newHighlightColor, Color newDefaultColor, Color newBackgroundColor)
         {
             try
             {
                 highlightColor = newHighlightColor;
                 defaultColor = newDefaultColor;
+                backgroundColor = newBackgroundColor;
             }
             catch (Exception e)
             {
@@ -4511,7 +4513,7 @@ namespace PowerPointLabs
         {
             try
             {
-                HighlightBulletsDialogBox dialog = new HighlightBulletsDialogBox(highlightColor, defaultColor);
+                HighlightBulletsDialogBox dialog = new HighlightBulletsDialogBox(highlightColor, defaultColor, backgroundColor);
                 dialog.SettingsHandler += HighlightBulletsPropertiesEdited;
                 dialog.ShowDialog();
             }
