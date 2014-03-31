@@ -5,7 +5,25 @@ namespace PPExtraEventHelper
 {
     internal class Native
     {
-        [DllImport("User32.dll", CallingConvention = CallingConvention.StdCall, CharSet = CharSet.Auto)]
+        //Minimum supported client: Vista
+        [DllImport("user32.dll", SetLastError = true)]
+        [return: MarshalAs(UnmanagedType.Bool)]
+        internal static extern bool AddClipboardFormatListener(IntPtr hwnd);
+
+        //Minimum supported client: Vista
+        [DllImport("user32.dll", SetLastError = true)]
+        [return: MarshalAs(UnmanagedType.Bool)]
+        internal static extern bool RemoveClipboardFormatListener(IntPtr hwnd);
+
+        //Minimum supported client: Windows 2000
+        [DllImport("user32.dll")]
+        internal static extern IntPtr SetClipboardViewer(IntPtr hwnd);
+
+        //Minimum supported client: Windows 2000
+        [DllImport("user32.dll")]
+        internal static extern IntPtr ChangeClipboardChain(IntPtr hwnd, IntPtr hWndNext);
+
+        [DllImport("user32.dll", CallingConvention = CallingConvention.StdCall, CharSet = CharSet.Auto)]
         internal static extern int GetWindowThreadProcessId(IntPtr hwnd, int ID);
 
         [DllImport("user32.dll", SetLastError = true)]
@@ -77,6 +95,9 @@ namespace PPExtraEventHelper
         {
             WM_COMMAND = 0x111,
             WM_LBUTTONDBLCLK = 0x0203,
+            WM_DRAWCLIPBOARD = 0x308,
+            WM_CHANGECBCHAIN = 0x30D,
+            WM_CLIPBOARDUPDATE = 0x031D,
         }
 
         internal enum Event
