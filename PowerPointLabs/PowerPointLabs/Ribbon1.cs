@@ -2891,6 +2891,7 @@ namespace PowerPointLabs
                         }
                     }
                     spotShape.ShapeStyle = Office.MsoShapeStyleIndex.msoShapeStylePreset1;
+                    spotShape.Fill.ForeColor.RGB = 0xffffff;
                     spotShape.Line.Visible = Office.MsoTriState.msoFalse;
                     if (spotShape.HasTextFrame == Office.MsoTriState.msoTrue && spotShape.TextFrame.HasText == Office.MsoTriState.msoTrue)
                         spotShape.TextFrame.TextRange.Font.Color.RGB = 0xffffff;
@@ -2937,7 +2938,7 @@ namespace PowerPointLabs
                         spotlightShape.Top = spotShape.Top + (spotShape.Height / 2) - (spotlightShape.Height / 2);
                     }
 
-                    spotlightShape.Fill.ForeColor.RGB = 0xffffff;
+                    //spotlightShape.Fill.ForeColor.RGB = 0xffffff;
                     spotlightShape.Line.Visible = Office.MsoTriState.msoFalse;
                     if (spotlightShape.HasTextFrame == Office.MsoTriState.msoTrue && spotlightShape.TextFrame.HasText == Office.MsoTriState.msoTrue)
                         spotlightShape.TextFrame.TextRange.Font.Color.RGB = 0xffffff;
