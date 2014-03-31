@@ -10,6 +10,7 @@ namespace PPExtraEventHelper
     internal class PPMouse
     {
         private static int hook;
+        private static bool isInit = false;
         private static PowerPoint.Selection selectedRange;
         private static IntPtr slideViewWindowHandle;
         private static Rectangle slideViewWindowRectangle;
@@ -18,15 +19,19 @@ namespace PPExtraEventHelper
 
         public static void Init(PowerPoint.Application application)
         {
-            application.WindowSelectionChange += (selection) =>
+            if (!isInit)
             {
-                selectedRange = selection;
-                if (!IsHookSuccessful())
+                isInit = true;
+                application.WindowSelectionChange += (selection) =>
                 {
-                    IntPtr PPHandle = Process.GetCurrentProcess().MainWindowHandle;
-                    StartHook(PPHandle);
-                }
-            };
+                    selectedRange = selection;
+                    if (!IsHookSuccessful())
+                    {
+                        IntPtr PPHandle = Process.GetCurrentProcess().MainWindowHandle;
+                        StartHook(PPHandle);
+                    }
+                };
+            }
         }
 
         private static bool IsHookSuccessful()
@@ -38,7 +43,7 @@ namespace PPExtraEventHelper
         public delegate void DoubleClickEventDelegate(PowerPoint.Selection selection);
 
         //Handler
-        public static DoubleClickEventDelegate DoubleClick;
+        public static event DoubleClickEventDelegate DoubleClick;
 
         private static int HookProcedureCallback(int nCode, IntPtr wParam, IntPtr lParam)
         {
@@ -47,7 +52,8 @@ namespace PPExtraEventHelper
                 if (wParam.ToInt32() == (int)Native.Message.WM_LBUTTONDBLCLK 
                     && !IsReEnteredCallback())
                 {
-                    if (IsMouseWithinSlideViewWindow())
+                    if (IsMouseWithinSlideViewWindow()
+                        && DoubleClick != null)
                     {
                         DoubleClick(selectedRange);
                     }

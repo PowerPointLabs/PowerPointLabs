@@ -254,6 +254,9 @@
     <Compile Include="NativeMethods.cs" />
     <Compile Include="NotesToAudio.cs" />
     <Compile Include="NotesToCaptions.cs" />
+    <Compile Include="PPCopy.cs">
+      <SubType>Component</SubType>
+    </Compile>
     <Compile Include="PPMouse.cs" />
     <Compile Include="Properties\AssemblyInfo.cs">
       <SubType>Code</SubType>
