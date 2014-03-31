@@ -22,15 +22,22 @@ namespace PPExtraEventHelper
                 instance = new PPCopy();
 
                 instance.Visible = false;
-                isSuccessful = Native.AddClipboardFormatListener(instance.Handle);
-                application.WindowSelectionChange += (selection) =>
+                try
                 {
-                    selectedRange = selection;
-                    if (!isSuccessful)
+                    isSuccessful = Native.AddClipboardFormatListener(instance.Handle);
+                    application.WindowSelectionChange += (selection) =>
                     {
-                        isSuccessful = Native.AddClipboardFormatListener(instance.Handle);
-                    }
-                };
+                        selectedRange = selection;
+                        if (!isSuccessful)
+                        {
+                            isSuccessful = Native.AddClipboardFormatListener(instance.Handle);
+                        }
+                    };
+                }
+                catch
+                {
+                    //TODO: support win XP?
+                }
             }
         }
 
@@ -42,7 +49,10 @@ namespace PPExtraEventHelper
 
         protected override void Dispose(bool disposing)
         {
-            Native.RemoveClipboardFormatListener(instance.Handle);
+            if (isSuccessful)
+            {
+                Native.RemoveClipboardFormatListener(instance.Handle);
+            }
         }
 
         protected override void WndProc(ref Message m)

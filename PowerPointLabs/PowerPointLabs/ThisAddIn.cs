@@ -76,7 +76,8 @@ namespace PowerPointLabs
             if (Sel.Type == PowerPoint.PpSelectionType.ppSelectionShapes)
             {
                 PowerPoint.Shape sh = Sel.ShapeRange[1];
-                if (sh.Type == Office.MsoShapeType.msoAutoShape || sh.Type == Office.MsoShapeType.msoFreeform || sh.Type == Office.MsoShapeType.msoTextBox || sh.Type == Office.MsoShapeType.msoPlaceholder)
+                if (sh.Type == Office.MsoShapeType.msoAutoShape || sh.Type == Office.MsoShapeType.msoFreeform || sh.Type == Office.MsoShapeType.msoTextBox || sh.Type == Office.MsoShapeType.msoPlaceholder
+                    || sh.Type == Office.MsoShapeType.msoCallout || sh.Type == Office.MsoShapeType.msoInk || sh.Type == Office.MsoShapeType.msoGroup)
                 {
                     ribbon.spotlightEnabled = true;
                 }
@@ -115,11 +116,13 @@ namespace PowerPointLabs
             ribbon.addAutoMotionEnabled = true;
             ribbon.reloadAutoMotionEnabled = true;
             ribbon.reloadSpotlight = true;
+            ribbon.highlightBulletsEnabled = true;
             if (SldRange.Count != 1)
             {
                 ribbon.addAutoMotionEnabled = false;
                 ribbon.reloadAutoMotionEnabled = false;
                 ribbon.reloadSpotlight = false;
+                ribbon.highlightBulletsEnabled = false;
             }
             else
             {
@@ -148,6 +151,8 @@ namespace PowerPointLabs
             ribbon.RefreshRibbonControl("AddAnimationButton");
             ribbon.RefreshRibbonControl("ReloadButton");
             ribbon.RefreshRibbonControl("ReloadSpotlightButton");
+            ribbon.RefreshRibbonControl("HighlightBulletsTextButton");
+            ribbon.RefreshRibbonControl("HighlightBulletsBackgroundButton");
         }
 
         //void ThisAddIn_BeginSlideShow(PowerPoint.SlideShowWindow Wn)
@@ -254,6 +259,7 @@ namespace PowerPointLabs
                     Regex namePattern = new Regex(@"^[^\[]\D+\s\d+$");
                     List<PowerPoint.Shape> corruptedShapes = new List<PowerPoint.Shape>();
                     List<String> nameList = new List<string>();
+                    Dictionary<String, String> nameDict = new Dictionary<String, String>();
                     foreach (var sh in selection.ShapeRange)
                     {
                         var shape = sh as PowerPoint.Shape;
@@ -262,7 +268,10 @@ namespace PowerPointLabs
                             isAnyNameChanged = true;
                             try
                             {
-                                shape.Name = "[" + shape.Name + "]";
+                                String guid = Guid.NewGuid().ToString();
+                                String uniqueName = "[" + guid + "]";
+                                nameDict[uniqueName] = "[" + shape.Name + "]";
+                                shape.Name = uniqueName;
                                 nameList.Add(shape.Name);
                             }
                             catch
@@ -279,7 +288,10 @@ namespace PowerPointLabs
                         var shape = currentSlide.Shapes.Paste()[1];
                         if (namePattern.IsMatch(corruptedShapes[i].Name))
                         {
-                            shape.Name = "[" + corruptedShapes[i].Name + "]";
+                            String guid = Guid.NewGuid().ToString();
+                            String uniqueName = "[" + guid + "]";
+                            nameDict[uniqueName] = "[" + corruptedShapes[i].Name + "]";
+                            shape.Name = uniqueName;
                             nameList.Add(shape.Name);
                         }
                         shape.Left = corruptedShapes[i].Left;
@@ -293,7 +305,14 @@ namespace PowerPointLabs
                     //Change the copy, now copy also has the modified name
                     if (isAnyNameChanged)
                     {
+                        //here, select the shapes by their GUID, instead of normal names
+                        //otherwise, the selection may be wrong due to 'SAME NAME' issue
                         var range = currentSlide.Shapes.Range(nameList.ToArray());
+                        foreach(var sh in range){
+                            //change back to their normal names
+                            PowerPoint.Shape shape = sh as PowerPoint.Shape;
+                            shape.Name = nameDict[shape.Name];
+                        }
                         range.Copy();
                         range.Select();
                     }
