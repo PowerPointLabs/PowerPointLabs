@@ -6,10 +6,32 @@ using System.Linq;
 using System.Text;
 using System.Xml;
 
+//
+//  DeployHelper Class
+//  ------------------
+//  Simply double click the .exe file to patch PowerPointLabs, 
+//  to make it support PostInstall event (e.g. open tutorial file after install pptlabs)
+//
+//  HOW TO USE
+//
+//  1. Fill in DeployHelper.conf
+//  - Mage is a component provided by Visual Studio
+//  - Key is inside PowerPointLabs project
+//
+//  2. Copy both DeployHelper.exe and DeployHelper.conf to the publish folder
+//
+//  3. Run DeployHelper.exe
+//
+
 namespace DeployHelper
 {
     class Program
     {
+        const string ERROR_NO_CONFIG = "Can't Find Config.";
+        const string ERROR_NO_VSTO = "Can't Find VSTO.";
+        const string ERROR_NO_MANIFEST = "Can't Find Manifest For This Version";
+        const string ERROR_ALREADY_PATCHED = "Already Patched.";
+        const string ERROR_INVALID_KEY_OR_MAGE_DIR = "Invalid Mage or Key Directory.";
         static void DisplayWarning(string content)
         {
             Console.ForegroundColor = ConsoleColor.Red;
@@ -26,52 +48,40 @@ namespace DeployHelper
             Console.ReadKey();
         }
 
+        static string AddQuote(string dir)
+        {
+            return "\"" + dir + "\"";
+        }
+
         static void Main(string[] args)
         {
-            //TODO: refactor...
-            //reference on what it does
+            //Reference on What It Does
             //http://msdn.microsoft.com/en-us/library/vstudio/dd465291(v=vs.100).aspx
 
-            //read config
-            Console.WriteLine("PowerPointLabs Version (Format - A.B.C.D, e.g. 1.7.1.0): ");
-            string version = Console.ReadLine();
-            while (string.IsNullOrEmpty(version))
-            {
-                version = Console.ReadLine();
-            }
+
+            //*****************
+            //***Read Config***
+            //*****************
             string currentDirectory = System.Environment.CurrentDirectory;
+            string vstoDirectory = currentDirectory + @"\PowerPointLabs.vsto";
             string configDirectory = currentDirectory + @"\DeployHelper.conf";
             string[] configContent;
+
+            //get keyDir and mageDir from config file
+            //use them to re-sign
             try
             {
                 configContent = System.IO.File.ReadAllLines(configDirectory);
             }
             catch
             {
-                DisplayWarning("Can't Find Config.");
+                DisplayWarning(ERROR_NO_CONFIG);
                 return;
             }
-            string vstoDirectory = currentDirectory + @"\PowerPointLabs.vsto";
             string mageDirectory = configContent[1];
             string keyDirectory = configContent[3];
-            string[] versionDetails = version.Split('.');
-            string versionMajor;
-            string versionMinor;
-            string versionBuild;
-            string versionRevision;
-            try
-            {
-                versionMajor = versionDetails[0];
-                versionMinor = versionDetails[1];
-                versionBuild = versionDetails[2];
-                versionRevision = versionDetails[3];
-            }
-            catch
-            {
-                DisplayWarning("Version Invalid.");
-                return;
-            }
 
+            //get version from VSTO file
             XmlDocument currentVsto;
             try
             {
@@ -80,22 +90,26 @@ namespace DeployHelper
             }
             catch
             {
-                DisplayWarning("Can't Find VSTO.");
+                DisplayWarning(ERROR_NO_VSTO);
                 return;
             }
             var vstoNode = currentVsto.GetElementsByTagName("assemblyIdentity")[0];
-            if (vstoNode.Attributes["version"].Value != version)
-            {
-                DisplayWarning("Different Version From Current VSTO's");
-                return;
-            }
+            string version = vstoNode.Attributes["version"].Value;
+
+            string[] versionDetails = version.Split('.');
+            string versionMajor = versionDetails[0];
+            string versionMinor = versionDetails[1];
+            string versionBuild = versionDetails[2];
+            string versionRevision = versionDetails[3];
 
             string buildDirectory = currentDirectory + @"\Application Files\PowerPointLabs_"
                 + versionMajor + "_" + versionMinor + "_" + versionBuild + "_" + versionRevision;
             string manifestDirectory = buildDirectory + @"\PowerPointLabs.dll.manifest";
             string destVstoDirectory = buildDirectory + @"\PowerPointLabs.vsto";
 
-            //modify manifest
+            //*********************
+            //***Modify Manifest***
+            //*********************
             XmlDocument doc = new XmlDocument();
             XmlDocument docBackup = new XmlDocument();
             try
@@ -105,71 +119,81 @@ namespace DeployHelper
             }
             catch
             {
-                DisplayWarning("Can't Find Manifest For This Version");
+                DisplayWarning(ERROR_NO_MANIFEST);
                 return;
             }
-            //is patched?
+            //If Not Patched
             if (doc.GetElementsByTagName("vstav3:postAction").Count == 0)
             {
-                //patch content
-                string xmlFrag =
-                    "<vstav3:postAction>" +
-                    "<vstav3:entryPoint class=\"PowerPointLabs.PostInstall\">" +
-                    "<assemblyIdentity name=\"PostInstall\" language=\"neutral\" " +
-                    "version=\"" + version + "\" processorArchitecture=\"msil\" " +
-                    "xmlns=\"urn:schemas-microsoft-com:asm.v2\" />" +
-                    "</vstav3:entryPoint>" +
-                    "<vstav3:postActionData>" +
-                    "</vstav3:postActionData>" +
-                    "</vstav3:postAction>";
-                NameTable xmlFragNameTable = new NameTable();
-                XmlNamespaceManager xmlFragNamespaceManager = new XmlNamespaceManager(xmlFragNameTable);
-                xmlFragNamespaceManager.AddNamespace("vstav3", "urn:schemas-microsoft-com:vsta.v3");
-                XmlParserContext xmlFragContext = new XmlParserContext(null, xmlFragNamespaceManager, null,
-                    XmlSpace.None);
-                XmlReaderSettings xmlFragSettings = new XmlReaderSettings();
-                xmlFragSettings.ConformanceLevel = ConformanceLevel.Fragment;
-                XmlReader xmlFragReader = XmlReader.Create(new StringReader(xmlFrag), xmlFragSettings, xmlFragContext);
-                XmlDocument xmlFragDocument = new XmlDocument();
-                xmlFragDocument.Load(xmlFragReader);
-                XmlNode parentNode = doc.GetElementsByTagName("vstav3:addIn")[0];
-                XmlNode node = doc.GetElementsByTagName("vstav3:update")[0];
-                XmlElement nodeToInsert = doc.CreateElement("vstav3", "postActions", "urn:schemas-microsoft-com:vsta.v3");
-                nodeToInsert.InnerXml = xmlFragDocument.InnerXml;
-                parentNode.InsertAfter(nodeToInsert, node);
+                //Patch Content for Manifest
+                //************************************************************
+                //<vstav3:postActions>
+                //  <vstav3:postAction>
+                //      <vstav3:entryPoint class="PowerPointLabs.PostInstall">
+                //          <assemblyIdentity 
+                //          name="PostInstall" 
+                //          version="{$version}" 
+                //          language="neutral" 
+                //          processorArchitecture="msil"/>
+                //      </vstav3:entryPoint>
+                //      <vstav3:postActionData>
+                //      </vstav3:postActionData>
+                //  </vstav3:postAction>
+                //</vstav3:postActions>
+                //************************************************************
+                XmlNode addInNode = doc.GetElementsByTagName("vstav3:addIn")[0];
+                XmlNode updateNode = doc.GetElementsByTagName("vstav3:update")[0];
+                XmlElement postActionsNode = doc.CreateElement("vstav3", "postActions", "urn:schemas-microsoft-com:vsta.v3");
+                XmlElement postActionNode = doc.CreateElement("vstav3", "postAction", "urn:schemas-microsoft-com:vsta.v3");
+                XmlElement entryPointNode = doc.CreateElement("vstav3", "entryPoint", "urn:schemas-microsoft-com:vsta.v3");
+                entryPointNode.SetAttribute("class", "PowerPointLabs.PostInstall");
+                XmlElement postActionDataNode = doc.CreateElement("vstav3", "postActionData", "urn:schemas-microsoft-com:vsta.v3");
+                
+                addInNode.InsertAfter(postActionsNode, updateNode);
+                postActionsNode.AppendChild(postActionNode);
+                postActionNode.AppendChild(entryPointNode);
+                entryPointNode.InnerXml = "<assemblyIdentity " +
+                                          "name=" + AddQuote("PostInstall") + " " +
+                                          "version=" + AddQuote(version) + " " +
+                                          "language=" + AddQuote("neutral") + " " +
+                                          "processorArchitecture=" + AddQuote("msil") + "/>";
+                postActionNode.AppendChild(postActionDataNode);
                 doc.Save(manifestDirectory);
             }
             else
             {
-                DisplayWarning("Already Patched.");
+                DisplayWarning(ERROR_ALREADY_PATCHED);
                 return;
             }
 
-            //re-sign
-            string argumentsSignManifest =
-                "-sign " + "\"" + manifestDirectory + "\"" + " -certfile " + "\"" + keyDirectory + "\"";
-            string argumentsSignVsto =
-                "-update " + "\"" + vstoDirectory + "\"" + " -appmanifest " + "\"" + manifestDirectory + "\"" +
-                " -certfile " + "\"" + keyDirectory + "\"";
+            //*************
+            //***Re-Sign***
+            //*************
+            string argsForSignManifest =
+                "-sign " + AddQuote(manifestDirectory) + " -certfile " + AddQuote(keyDirectory);
+            string argsForSignVsto =
+                "-update " + AddQuote(vstoDirectory) + " -appmanifest " + AddQuote(manifestDirectory) +
+                " -certfile " + AddQuote(keyDirectory);
             System.Diagnostics.Process process = new Process();
             try
             {
                 process.StartInfo.FileName = mageDirectory;
-                process.StartInfo.Arguments = argumentsSignManifest;
+                process.StartInfo.Arguments = argsForSignManifest;
                 process.StartInfo.WindowStyle = ProcessWindowStyle.Hidden;
                 process.Start();
                 process.WaitForExit();
                 process = new Process();
                 process.StartInfo.FileName = mageDirectory;
-                process.StartInfo.Arguments = argumentsSignVsto;
+                process.StartInfo.Arguments = argsForSignVsto;
                 process.StartInfo.WindowStyle = ProcessWindowStyle.Hidden;
                 process.Start();
                 process.WaitForExit();
             }
             catch
             {
+                //Restore manifest file
                 docBackup.Save(manifestDirectory);
-                DisplayWarning("Invalid Mage or Key Directory.");
+                DisplayWarning(ERROR_INVALID_KEY_OR_MAGE_DIR);
                 return;
             }
             System.IO.File.Copy(vstoDirectory, destVstoDirectory, true);
