@@ -256,14 +256,18 @@
              getImage="GetZoomToAreaContextImage"
              getEnabled="OnGetEnabledZoomButton"
              onAction="ZoomBtnClick"/>
-      <button id="HighlightBulletsTextShape"
+      <menu id="HighlightBulletsMenuShape"
+            label="Highlight Bullets"
+            getImage="GetHighlightBulletsBackgroundContextImage">
+        <button id="HighlightBulletsTextShape"
               label ="Highlight Text"
               getImage="GetHighlightBulletsTextContextImage"
               onAction="HighlightBulletsTextButtonClick"/>
-      <button id="HighlightBulletsBackgroundShape"
-             label ="Highlight Background"
-             getImage="GetHighlightBulletsBackgroundContextImage"
-             onAction="HighlightBulletsBackgroundButtonClick"/>
+        <button id="HighlightBulletsBackgroundShape"
+               label ="Highlight Background"
+               getImage="GetHighlightBulletsBackgroundContextImage"
+               onAction="HighlightBulletsBackgroundButtonClick"/>
+      </menu>
       <button id="ConvertToPictureShape"
              label ="Convert to Picture"
              getImage="GetConvertToPicMenuImage"
@@ -391,14 +395,18 @@
              getImage="GetZoomToAreaContextImage"
              getEnabled="OnGetEnabledZoomButton"
              onAction="ZoomBtnClick"/>
-      <button id="HighlightBulletsTextGroup"
-              label ="Highlight Text"
-              getImage="GetHighlightBulletsTextContextImage"
-              onAction="HighlightBulletsTextButtonClick"/>
-      <button id="HighlightBulletsBackgroundGroup"
-             label ="Highlight Background"
-             getImage="GetHighlightBulletsBackgroundContextImage"
-             onAction="HighlightBulletsBackgroundButtonClick"/>
+      <menu id="HighlightBulletsMenuGroup"
+            label="Highlight Bullets"
+            getImage="GetHighlightBulletsBackgroundContextImage">
+        <button id="HighlightBulletsTextGroup"
+            label ="Highlight Text"
+            getImage="GetHighlightBulletsTextContextImage"
+            onAction="HighlightBulletsTextButtonClick"/>
+        <button id="HighlightBulletsBackgroundGroup"
+               label ="Highlight Background"
+               getImage="GetHighlightBulletsBackgroundContextImage"
+               onAction="HighlightBulletsBackgroundButtonClick"/>
+      </menu>
       <button id="ConvertToPictureGroup"
              label ="Convert to Picture"
              getImage="GetConvertToPicMenuImage"
@@ -442,16 +450,20 @@
               getImage="GetReloadAnimationContextImage"
               getEnabled="OnGetEnabledReloadAutoMotion"
               onAction="ReloadButtonClick"/>
-      <button id="HighlightBulletsTextThumbnail"
+      <menu id="HighlightBulletsMenuThumbnail"
+            label="Highlight Bullets"
+            getImage="GetHighlightBulletsBackgroundContextImage">
+        <button id="HighlightBulletsTextThumbnail"
               label ="Highlight Text"
               getImage="GetHighlightBulletsTextContextImage"
               getEnabled="OnGetEnabledHighlightBullets"
               onAction="HighlightBulletsTextButtonClick"/>
-      <button id="HighlightBulletsBackgroundThumbnail"
-             label ="Highlight Background"
-             getImage="GetHighlightBulletsBackgroundContextImage"
-             getEnabled="OnGetEnabledHighlightBullets"
-             onAction="HighlightBulletsBackgroundButtonClick"/>
+        <button id="HighlightBulletsBackgroundThumbnail"
+               label ="Highlight Background"
+               getImage="GetHighlightBulletsBackgroundContextImage"
+               getEnabled="OnGetEnabledHighlightBullets"
+               onAction="HighlightBulletsBackgroundButtonClick"/>
+      </menu>
     </contextMenu>
     <contextMenu idMso="ContextMenuNotesEditText">
       <menuSeparator id="separatorNotes" />
