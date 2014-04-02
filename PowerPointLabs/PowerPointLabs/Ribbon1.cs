@@ -158,7 +158,6 @@ namespace PowerPointLabs
         }
         private void HighlightBulletsBackground(PowerPoint.Slide currentSlide, List<PowerPoint.Shape> textShapes)
         {
-            PowerPoint.Effect effectDisappear = null;
             PowerPoint.Presentation presentation = Globals.ThisAddIn.Application.ActivePresentation;
             PowerPoint.Sequence sequence = currentSlide.TimeLine.MainSequence;
 
@@ -187,23 +186,6 @@ namespace PowerPointLabs
 
             if (anySelected)
             {
-                String tempFileName = Path.GetTempFileName();
-                Properties.Resources.Indicator.Save(tempFileName);
-                PowerPoint.Shape indicatorShape = currentSlide.Shapes.AddPicture(tempFileName, Office.MsoTriState.msoFalse, Office.MsoTriState.msoTrue, presentation.PageSetup.SlideWidth - 120, 0, 120, 84);
-                indicatorShape.Left = presentation.PageSetup.SlideWidth - 120;
-                indicatorShape.Top = 0;
-                indicatorShape.Width = 120;
-                indicatorShape.Height = 84;
-                indicatorShape.Name = "PPIndicator" + GetTimestamp(DateTime.Now);
-                effectDisappear = sequence.AddEffect(indicatorShape, PowerPoint.MsoAnimEffect.msoAnimEffectAppear, PowerPoint.MsoAnimateByLevel.msoAnimateLevelNone, PowerPoint.MsoAnimTriggerType.msoAnimTriggerWithPrevious);
-                effectDisappear.Timing.Duration = 0;
-                effectDisappear.MoveTo(1);
-
-                effectDisappear = sequence.AddEffect(indicatorShape, PowerPoint.MsoAnimEffect.msoAnimEffectAppear, PowerPoint.MsoAnimateByLevel.msoAnimateLevelNone, PowerPoint.MsoAnimTriggerType.msoAnimTriggerWithPrevious);
-                effectDisappear.Exit = Office.MsoTriState.msoTrue;
-                effectDisappear.Timing.Duration = 0;
-                effectDisappear.MoveTo(2);
-
                 bool oldValue = frameAnimationChecked;
                 frameAnimationChecked = false;
                 AddInSlideAnimation(currentSlide, true);
@@ -264,27 +246,8 @@ namespace PowerPointLabs
         private void HighlightBulletsText(PowerPoint.Slide currentSlide, List<PowerPoint.Shape> textShapes)
         {
             PowerPoint.Presentation presentation = Globals.ThisAddIn.Application.ActivePresentation;
-            PowerPoint.Effect effectDisappear = null;
             int effectCount = 0;
             PowerPoint.Sequence sequence = currentSlide.TimeLine.MainSequence;
-
-            String tempFileName = Path.GetTempFileName();
-            Properties.Resources.Indicator.Save(tempFileName);
-            PowerPoint.Shape indicatorShape = currentSlide.Shapes.AddPicture(tempFileName, Office.MsoTriState.msoFalse, Office.MsoTriState.msoTrue, presentation.PageSetup.SlideWidth - 120, 0, 120, 84);
-            indicatorShape.Left = presentation.PageSetup.SlideWidth - 120;
-            indicatorShape.Top = 0;
-            indicatorShape.Width = 120;
-            indicatorShape.Height = 84;
-            indicatorShape.Name = "PPIndicator" + GetTimestamp(DateTime.Now);
-            effectDisappear = sequence.AddEffect(indicatorShape, PowerPoint.MsoAnimEffect.msoAnimEffectAppear, PowerPoint.MsoAnimateByLevel.msoAnimateLevelNone, PowerPoint.MsoAnimTriggerType.msoAnimTriggerWithPrevious);
-            effectDisappear.Timing.Duration = 0;
-            effectDisappear.MoveTo(1);
-
-            effectDisappear = sequence.AddEffect(indicatorShape, PowerPoint.MsoAnimEffect.msoAnimEffectAppear, PowerPoint.MsoAnimateByLevel.msoAnimateLevelNone, PowerPoint.MsoAnimTriggerType.msoAnimTriggerWithPrevious);
-            effectDisappear.Exit = Office.MsoTriState.msoTrue;
-            effectDisappear.Timing.Duration = 0;
-            effectDisappear.MoveTo(2);
-            effectCount += sequence.Count;
             bool firstShape = true;
 
             foreach (PowerPoint.Shape sh in textShapes)
