@@ -310,9 +310,21 @@ namespace PowerPointLabs
         private void HighlightBulletsText(PowerPoint.Slide currentSlide, List<PowerPoint.Shape> textShapes)
         {
             PowerPoint.Presentation presentation = Globals.ThisAddIn.Application.ActivePresentation;
-            int effectCount = 0;
             PowerPoint.Sequence sequence = currentSlide.TimeLine.MainSequence;
+            int effectCount = sequence.Count;
             bool firstShape = true;
+            if (effectCount != 0)
+            {
+                if (sequence[effectCount].EffectType == PowerPoint.MsoAnimEffect.msoAnimEffectChangeFontColor)
+                {
+                    firstShape = false;
+                }
+                if (sequence[1].EffectType == PowerPoint.MsoAnimEffect.msoAnimEffectChangeFontColor)
+                {
+                    sequence[1].Timing.TriggerType = PowerPoint.MsoAnimTriggerType.msoAnimTriggerOnPageClick;
+                }
+            }
+            
 
             foreach (PowerPoint.Shape sh in textShapes)
             {
@@ -373,17 +385,28 @@ namespace PowerPointLabs
                     firstShape = false;
                 }
             }
-            if (sequence.Count != 0)
-                sequence[sequence.Count].Delete();
+            //if (sequence.Count != 0)
+            //    sequence[sequence.Count].Delete();
             AddAckSlide();
         }
 
         private void HighlightBulletsTextWithText(PowerPoint.Slide currentSlide, List<PowerPoint.Shape> textShapes, Office.TextRange2 text)
         {
             PowerPoint.Presentation presentation = Globals.ThisAddIn.Application.ActivePresentation;
-            int effectCount = 0;
             PowerPoint.Sequence sequence = currentSlide.TimeLine.MainSequence;
+            int effectCount = sequence.Count;
             bool firstShape = true;
+            if (effectCount != 0)
+            {
+                if (sequence[effectCount].EffectType == PowerPoint.MsoAnimEffect.msoAnimEffectChangeFontColor)
+                {
+                    firstShape = false;
+                }
+                if (sequence[1].EffectType == PowerPoint.MsoAnimEffect.msoAnimEffectChangeFontColor)
+                {
+                    sequence[1].Timing.TriggerType = PowerPoint.MsoAnimTriggerType.msoAnimTriggerOnPageClick;
+                }
+            }
 
             foreach (PowerPoint.Shape sh in textShapes)
             {
@@ -450,8 +473,8 @@ namespace PowerPointLabs
                     firstShape = false;
                 }
             }
-            if (sequence.Count != 0)
-                sequence[sequence.Count].Delete();
+            //if (sequence.Count != 0)
+            //    sequence[sequence.Count].Delete();
             AddAckSlide();
         }
         public void HighlightBulletsTextButtonClick(Office.IRibbonControl control)
@@ -506,9 +529,10 @@ namespace PowerPointLabs
                             shapesToDelete.Add(sh);
                         else
                         {
-                            DeleteShapeAnnimations(tmpSlide, sh);
                             if (selectedShapes.Contains(tmp))
                             {
+                                if (!isTextSelected)
+                                    DeleteShapeAnnimations(tmpSlide, sh);
                                 selectedShapes.Insert(selectedShapes.IndexOf(tmp), sh);
                                 selectedShapes.Remove(tmp);
                             }
