@@ -171,7 +171,47 @@ namespace PowerPointLabs
                 {
                     if (paragraph.ParagraphFormat.Bullet.Visible == Office.MsoTriState.msoTrue && paragraph.TrimText().Length > 0)
                     {
-                        PowerPoint.Shape tmp = currentSlide.Shapes.AddShape(Office.MsoAutoShapeType.msoShapeRectangle, paragraph.BoundLeft, paragraph.BoundTop, paragraph.BoundWidth, paragraph.BoundHeight);
+                        PowerPoint.Shape tmp = currentSlide.Shapes.AddShape(Office.MsoAutoShapeType.msoShapeRoundedRectangle, paragraph.BoundLeft, paragraph.BoundTop, paragraph.BoundWidth, paragraph.BoundHeight);
+                        tmp.Adjustments[1] = 0.25f;
+                        tmp.Fill.ForeColor.RGB = CreateRGB(backgroundColor);
+                        tmp.Fill.Transparency = 0.50f;
+                        tmp.Line.Visible = Office.MsoTriState.msoFalse;
+                        tmp.ZOrder(Office.MsoZOrderCmd.msoSendToBack);
+                        tmp.Name = "PPTLabsHighlightBackgroundShape" + GetTimestamp(DateTime.Now);
+                        tmp.Select(Office.MsoTriState.msoFalse);
+                        anySelected = true;
+                    }
+
+                }
+            }
+
+            if (anySelected)
+            {
+                bool oldValue = frameAnimationChecked;
+                frameAnimationChecked = false;
+                AddInSlideAnimation(currentSlide, true);
+                frameAnimationChecked = oldValue;
+                Globals.ThisAddIn.Application.ActiveWindow.Selection.Unselect();
+                AddAckSlide();
+            }
+        }
+        private void HighlightBulletsBackgroundWithText(PowerPoint.Slide currentSlide, List<PowerPoint.Shape> textShapes, Office.TextRange2 text)
+        {
+            PowerPoint.Presentation presentation = Globals.ThisAddIn.Application.ActivePresentation;
+            PowerPoint.Sequence sequence = currentSlide.TimeLine.MainSequence;
+
+            Globals.ThisAddIn.Application.ActiveWindow.Selection.Unselect();
+            Globals.ThisAddIn.Application.ActiveWindow.View.GotoSlide(currentSlide.SlideIndex);
+            bool anySelected = false;
+
+            foreach (PowerPoint.Shape sh in textShapes)
+            {
+                foreach (Office.TextRange2 paragraph in sh.TextFrame2.TextRange.Paragraphs)
+                {
+                    if (!((text.Start + text.Length < paragraph.Start) || (text.Start > paragraph.Start + paragraph.Length - 1)) && paragraph.TrimText().Length > 0)
+                    {
+                        PowerPoint.Shape tmp = currentSlide.Shapes.AddShape(Office.MsoAutoShapeType.msoShapeRoundedRectangle, paragraph.BoundLeft, paragraph.BoundTop, paragraph.BoundWidth, paragraph.BoundHeight);
+                        tmp.Adjustments[1] = 0.25f;
                         tmp.Fill.ForeColor.RGB = CreateRGB(backgroundColor);
                         tmp.Fill.Transparency = 0.50f;
                         tmp.Line.Visible = Office.MsoTriState.msoFalse;
@@ -218,23 +258,47 @@ namespace PowerPointLabs
                 }
 
                 PowerPoint.ShapeRange shapes = null;
+                Office.TextRange2 text = null;
+                bool isTextSelected = false;
                 if (Globals.ThisAddIn.Application.ActiveWindow.Selection.Type == PowerPoint.PpSelectionType.ppSelectionShapes)
                     shapes = Globals.ThisAddIn.Application.ActiveWindow.Selection.ShapeRange;
+                else if (Globals.ThisAddIn.Application.ActiveWindow.Selection.Type == PowerPoint.PpSelectionType.ppSelectionText)
+                {
+                    shapes = Globals.ThisAddIn.Application.ActiveWindow.Selection.ShapeRange;
+                    text = Globals.ThisAddIn.Application.ActiveWindow.Selection.TextRange2.TrimText();
+                    isTextSelected = true;
+                }
                 else
                     shapes = currentSlide.Shapes.Range();
 
                 List<PowerPoint.Shape> shapesToUse = new List<PowerPoint.Shape>();
                 foreach (PowerPoint.Shape sh in shapes)
                 {
-                    if (sh.HasTextFrame == Office.MsoTriState.msoTrue && sh.TextFrame2.HasText == Office.MsoTriState.msoTrue
+                    if (!isTextSelected)
+                    {
+                        if (sh.HasTextFrame == Office.MsoTriState.msoTrue && sh.TextFrame2.HasText == Office.MsoTriState.msoTrue
                         && sh.TextFrame2.TextRange.ParagraphFormat.Bullet.Visible == Office.MsoTriState.msoTrue
                         && sh.TextFrame2.TextRange.ParagraphFormat.Bullet.Type != Office.MsoBulletType.msoBulletNone)
+                        {
+                            DeleteShapeAnnimations(currentSlide, sh);
+                            shapesToUse.Add(sh);
+                        }
+                    }
+                    else
                     {
-                        DeleteShapeAnnimations(currentSlide, sh);
-                        shapesToUse.Add(sh);
+                        if (sh.HasTextFrame == Office.MsoTriState.msoTrue && sh.TextFrame2.HasText == Office.MsoTriState.msoTrue)
+                        {
+                            DeleteShapeAnnimations(currentSlide, sh);
+                            shapesToUse.Add(sh);
+                        }
                     }
                 }
-                HighlightBulletsBackground(currentSlide, shapesToUse);   
+
+                if (!isTextSelected)
+                    HighlightBulletsBackground(currentSlide, shapesToUse);
+                else
+                    HighlightBulletsBackgroundWithText(currentSlide, shapesToUse, text);
+                   
             }
             catch (Exception e)
             {
@@ -313,6 +377,83 @@ namespace PowerPointLabs
                 sequence[sequence.Count].Delete();
             AddAckSlide();
         }
+
+        private void HighlightBulletsTextWithText(PowerPoint.Slide currentSlide, List<PowerPoint.Shape> textShapes, Office.TextRange2 text)
+        {
+            PowerPoint.Presentation presentation = Globals.ThisAddIn.Application.ActivePresentation;
+            int effectCount = 0;
+            PowerPoint.Sequence sequence = currentSlide.TimeLine.MainSequence;
+            bool firstShape = true;
+
+            foreach (PowerPoint.Shape sh in textShapes)
+            {
+                int initialColor = sh.TextFrame2.TextRange.Font.Fill.ForeColor.RGB;
+                sequence.AddEffect(sh, PowerPoint.MsoAnimEffect.msoAnimEffectChangeFontColor, PowerPoint.MsoAnimateByLevel.msoAnimateTextByFifthLevel, PowerPoint.MsoAnimTriggerType.msoAnimTriggerOnPageClick);
+                int count = sequence.Count - effectCount;
+                sequence.AddEffect(sh, PowerPoint.MsoAnimEffect.msoAnimEffectChangeFontColor, PowerPoint.MsoAnimateByLevel.msoAnimateTextByFifthLevel, PowerPoint.MsoAnimTriggerType.msoAnimTriggerWithPrevious);
+                int start = effectCount + 1;
+
+                int shapeCount = count;
+                for (int i = 1, j = 1; i <= sh.TextFrame2.TextRange.Paragraphs.Count; i++, j++)
+                {
+                    Office.TextRange2 paragraph = sh.TextFrame2.TextRange.Paragraphs[i];
+                    if (paragraph.Text.Trim().Length == 0)
+                    {
+                        shapeCount--;
+                        j--;
+                        continue;
+                    }
+                    if ((text.Start + text.Length < paragraph.Start) || (text.Start > paragraph.Start + paragraph.Length - 1))
+                    {
+                        sequence[start - 1 + i + shapeCount].Delete();
+                        sequence[start - 1 + j].Delete();
+                        j--;
+                        shapeCount -= 2;
+                    }
+                }
+                int totalCount = sequence.Count - effectCount;
+
+                if (totalCount > 0)
+                {
+                    PowerPoint.Effect highlight = sequence[start];
+                    highlight.EffectParameters.Color2.RGB = CreateRGB(highlightColor);
+                    //highlight.Behaviors[1].ColorEffect.To.RGB = CreateRGB(highlightColor);
+                    highlight.Timing.Duration = 0.01f;
+                    if (firstShape)
+                    {
+                        highlight.Timing.TriggerType = PowerPoint.MsoAnimTriggerType.msoAnimTriggerOnPageClick;
+                    }
+                    else
+                    {
+                        highlight.Timing.TriggerType = PowerPoint.MsoAnimTriggerType.msoAnimTriggerAfterPrevious;
+                    }
+
+                    count = totalCount / 2;
+                    for (int i = 2, j = 1; i < totalCount; i += 2, j++)
+                    {
+                        PowerPoint.Effect highlight2 = sequence[start - 1 + i];
+                        highlight2.EffectParameters.Color2.RGB = CreateRGB(highlightColor);
+                        highlight2.Timing.Duration = 0.01f;
+
+                        PowerPoint.Effect highlight3 = sequence[start - 1 + count + j];
+                        highlight3.EffectParameters.Color2.RGB = CreateRGB(defaultColor);
+                        highlight3.Timing.Duration = 0.01f;
+                        highlight3.MoveTo(start + i);
+                        highlight3.Timing.TriggerType = PowerPoint.MsoAnimTriggerType.msoAnimTriggerWithPrevious;
+                    }
+
+                    PowerPoint.Effect highlight4 = sequence[sequence.Count];
+                    highlight4.EffectParameters.Color2.RGB = CreateRGB(defaultColor);
+                    highlight4.Timing.Duration = 0.01f;
+                    highlight4.Timing.TriggerType = PowerPoint.MsoAnimTriggerType.msoAnimTriggerOnPageClick;
+                    effectCount += totalCount;
+                    firstShape = false;
+                }
+            }
+            if (sequence.Count != 0)
+                sequence[sequence.Count].Delete();
+            AddAckSlide();
+        }
         public void HighlightBulletsTextButtonClick(Office.IRibbonControl control)
         {
             try
@@ -320,19 +461,37 @@ namespace PowerPointLabs
                 //Get References of current and next slides
                 PowerPoint.Slide currentSlide = GetCurrentSlide();
                 PowerPoint.ShapeRange shapes = null;
+                Office.TextRange2 text = null;
+                bool isTextSelected = false;
                 if (Globals.ThisAddIn.Application.ActiveWindow.Selection.Type == PowerPoint.PpSelectionType.ppSelectionShapes)
                     shapes = Globals.ThisAddIn.Application.ActiveWindow.Selection.ShapeRange;
+                else if (Globals.ThisAddIn.Application.ActiveWindow.Selection.Type == PowerPoint.PpSelectionType.ppSelectionText)
+                {
+                    shapes = Globals.ThisAddIn.Application.ActiveWindow.Selection.ShapeRange;
+                    text = Globals.ThisAddIn.Application.ActiveWindow.Selection.TextRange2.TrimText();
+                    isTextSelected = true;
+                }
                 else
                     shapes = currentSlide.Shapes.Range();
 
                 List<PowerPoint.Shape> selectedShapes = new List<PowerPoint.Shape>();
                 foreach (PowerPoint.Shape sh in shapes)
                 {
-                    if (sh.HasTextFrame == Office.MsoTriState.msoTrue && sh.TextFrame2.HasText == Office.MsoTriState.msoTrue
+                    if (!isTextSelected)
+                    {
+                        if (sh.HasTextFrame == Office.MsoTriState.msoTrue && sh.TextFrame2.HasText == Office.MsoTriState.msoTrue
                         && sh.TextFrame2.TextRange.ParagraphFormat.Bullet.Visible == Office.MsoTriState.msoTrue
                         && sh.TextFrame2.TextRange.ParagraphFormat.Bullet.Type != Office.MsoBulletType.msoBulletNone)
+                        {
+                            selectedShapes.Add(sh);
+                        }
+                    }
+                    else
                     {
-                        selectedShapes.Add(sh);
+                        if (sh.HasTextFrame == Office.MsoTriState.msoTrue && sh.TextFrame2.HasText == Office.MsoTriState.msoTrue)
+                        {
+                            selectedShapes.Add(sh);
+                        }
                     }
                 }
 
@@ -370,7 +529,13 @@ namespace PowerPointLabs
 
                 currentSlide.Name = "PPTLabsHighlightBulletsSlide" + GetTimestamp(DateTime.Now);
                 if (selectedShapes.Count != 0)
-                    HighlightBulletsText(currentSlide, selectedShapes);
+                {
+                    if (!isTextSelected)
+                        HighlightBulletsText(currentSlide, selectedShapes);
+                    else
+                        HighlightBulletsTextWithText(currentSlide, selectedShapes, text);
+                }
+                    
             }
             catch (Exception e)
             {
