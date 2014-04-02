@@ -14,6 +14,7 @@ namespace PPExtraEventHelper
         private static bool isSuccessful;
         private static PowerPoint.Selection selectedRange;
         private static PPCopy instance;
+        private static IntPtr handle;
 
         public static void Init(PowerPoint.Application application)
         {
@@ -25,6 +26,7 @@ namespace PPExtraEventHelper
                 try
                 {
                     isSuccessful = Native.AddClipboardFormatListener(instance.Handle);
+                    handle = instance.Handle;
                     application.WindowSelectionChange += (selection) =>
                     {
                         selectedRange = selection;
@@ -51,7 +53,7 @@ namespace PPExtraEventHelper
         {
             if (isSuccessful)
             {
-                Native.RemoveClipboardFormatListener(instance.Handle);
+                Native.RemoveClipboardFormatListener(handle);
             }
         }
 
