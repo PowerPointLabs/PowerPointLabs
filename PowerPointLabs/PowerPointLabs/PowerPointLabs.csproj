@@ -254,6 +254,7 @@
     <Compile Include="NativeMethods.cs" />
     <Compile Include="NotesToAudio.cs" />
     <Compile Include="NotesToCaptions.cs" />
+    <Compile Include="PostInstall.cs" />
     <Compile Include="PPCopy.cs">
       <SubType>Component</SubType>
     </Compile>
@@ -326,6 +327,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Views\ProcessingStatusForm.resx" />
     <EmbeddedResource Include="Views\SpeechPlayingForm.resx" />
+    <Content Include="PowerPointLabs Quick Tutorial.pptx">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
     <None Include="PowerPointLabs_TemporaryKey.pfx" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
