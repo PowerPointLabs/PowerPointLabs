@@ -165,8 +165,47 @@ namespace PowerPointLabs
             Globals.ThisAddIn.Application.ActiveWindow.View.GotoSlide(currentSlide.SlideIndex);
             bool anySelected = false;
 
+            List<PowerPoint.Shape> shapesToDelete = new List<PowerPoint.Shape>();
+            bool shouldSelect;
+            for (int i = currentSlide.Shapes.Count; i >= 1; i--)
+            {
+                PowerPoint.Shape sh = currentSlide.Shapes[i];
+                shouldSelect = true;
+                if (sh.Name.Contains("PPTLabsHighlightBackgroundShape"))
+                {
+                    foreach (PowerPoint.Shape tmp in textShapes)
+                    {
+                        if (sh.Tags["HighlightBackground"].Equals(tmp.Name))
+                        {
+                            shapesToDelete.Add(sh);
+                            shouldSelect = false;
+                            break;
+                        }
+                    }
+                    if (shouldSelect)
+                    {
+                        DeleteShapeAnnimations(currentSlide, sh);
+                        sh.Select(Office.MsoTriState.msoFalse);
+                    }
+                }
+                if (sh.Name.Contains("HighlightTextShape"))
+                {
+                    DeleteShapeAnnimations(currentSlide, sh);
+                }
+            }
+            if (shapesToDelete.Count > 0)
+            {
+                foreach (PowerPoint.Shape sh in shapesToDelete)
+                {
+                    sh.Delete();
+                }
+            }
+
+            int count = 0;
             foreach (PowerPoint.Shape sh in textShapes)
             {
+                if (!sh.Name.Contains("HighlightBackgroundShape"))
+                    sh.Name = "HighlightBackgroundShape" + Guid.NewGuid().ToString();
                 foreach (Office.TextRange2 paragraph in sh.TextFrame2.TextRange.Paragraphs)
                 {
                     if (paragraph.ParagraphFormat.Bullet.Visible == Office.MsoTriState.msoTrue && paragraph.TrimText().Length > 0)
@@ -177,7 +216,9 @@ namespace PowerPointLabs
                         tmp.Fill.Transparency = 0.50f;
                         tmp.Line.Visible = Office.MsoTriState.msoFalse;
                         tmp.ZOrder(Office.MsoZOrderCmd.msoSendToBack);
+                        count++;
                         tmp.Name = "PPTLabsHighlightBackgroundShape" + GetTimestamp(DateTime.Now);
+                        tmp.Tags.Add("HighlightBackground", sh.Name);
                         tmp.Select(Office.MsoTriState.msoFalse);
                         anySelected = true;
                     }
@@ -204,8 +245,24 @@ namespace PowerPointLabs
             Globals.ThisAddIn.Application.ActiveWindow.View.GotoSlide(currentSlide.SlideIndex);
             bool anySelected = false;
 
+            for (int i = currentSlide.Shapes.Count; i >= 1; i--)
+            {
+                PowerPoint.Shape sh = currentSlide.Shapes[i];
+                if (sh.Name.Contains("PPTLabsHighlightBackgroundShape"))
+                {
+                   DeleteShapeAnnimations(currentSlide, sh);
+                   sh.Select(Office.MsoTriState.msoFalse);
+                }
+                if (sh.Name.Contains("HighlightTextShape"))
+                {
+                    DeleteShapeAnnimations(currentSlide, sh);
+                }
+            }
+
             foreach (PowerPoint.Shape sh in textShapes)
             {
+                if (!sh.Name.Contains("HighlightBackgroundShape"))
+                    sh.Name = "HighlightBackgroundShape" + Guid.NewGuid().ToString();
                 foreach (Office.TextRange2 paragraph in sh.TextFrame2.TextRange.Paragraphs)
                 {
                     if (!((text.Start + text.Length < paragraph.Start) || (text.Start > paragraph.Start + paragraph.Length - 1)) && paragraph.TrimText().Length > 0)
@@ -217,6 +274,7 @@ namespace PowerPointLabs
                         tmp.Line.Visible = Office.MsoTriState.msoFalse;
                         tmp.ZOrder(Office.MsoZOrderCmd.msoSendToBack);
                         tmp.Name = "PPTLabsHighlightBackgroundShape" + GetTimestamp(DateTime.Now);
+                        tmp.Tags.Add("HighlightBackground", sh.Name);
                         tmp.Select(Office.MsoTriState.msoFalse);
                         anySelected = true;
                     }
@@ -243,19 +301,7 @@ namespace PowerPointLabs
                 PowerPoint.Slide currentSlide = GetCurrentSlide();
                 currentSlide.Name = "PPTLabsHighlightBulletsSlide" + GetTimestamp(DateTime.Now);
 
-                List<PowerPoint.Shape> shapesToDelete = new List<PowerPoint.Shape>();
-                foreach (PowerPoint.Shape sh in currentSlide.Shapes)
-                {
-                    if (sh.Name.Contains("PPIndicator") || sh.Name.Contains("PPTLabsHighlightBackgroundShape"))
-                        shapesToDelete.Add(sh);
-                }
-                if (shapesToDelete.Count > 0)
-                {
-                    foreach (PowerPoint.Shape sh in shapesToDelete)
-                    {
-                        sh.Delete();
-                    }
-                }
+                
 
                 PowerPoint.ShapeRange shapes = null;
                 Office.TextRange2 text = null;
@@ -269,7 +315,22 @@ namespace PowerPointLabs
                     isTextSelected = true;
                 }
                 else
+                {
+                    List<PowerPoint.Shape> shapesToDelete = new List<PowerPoint.Shape>();
+                    foreach (PowerPoint.Shape sh in currentSlide.Shapes)
+                    {
+                        if (sh.Name.Contains("PPIndicator") || sh.Name.Contains("PPTLabsHighlightBackgroundShape"))
+                            shapesToDelete.Add(sh);
+                    }
+                    if (shapesToDelete.Count > 0)
+                    {
+                        foreach (PowerPoint.Shape sh in shapesToDelete)
+                        {
+                            sh.Delete();
+                        }
+                    }
                     shapes = currentSlide.Shapes.Range();
+                }
 
                 List<PowerPoint.Shape> shapesToUse = new List<PowerPoint.Shape>();
                 foreach (PowerPoint.Shape sh in shapes)
@@ -328,6 +389,8 @@ namespace PowerPointLabs
 
             foreach (PowerPoint.Shape sh in textShapes)
             {
+                if (!sh.Name.Contains("HighlightTextShape"))
+                    sh.Name = "HighlightTextShape" + GetTimestamp(DateTime.Now);
                 int initialColor = sh.TextFrame2.TextRange.Font.Fill.ForeColor.RGB;
                 sequence.AddEffect(sh, PowerPoint.MsoAnimEffect.msoAnimEffectChangeFontColor, PowerPoint.MsoAnimateByLevel.msoAnimateTextByFifthLevel, PowerPoint.MsoAnimTriggerType.msoAnimTriggerOnPageClick);
                 int count = sequence.Count - effectCount;
@@ -410,6 +473,8 @@ namespace PowerPointLabs
 
             foreach (PowerPoint.Shape sh in textShapes)
             {
+                if (!sh.Name.Contains("HighlightTextShape"))
+                    sh.Name = "HighlightTextShape" + GetTimestamp(DateTime.Now);
                 int initialColor = sh.TextFrame2.TextRange.Font.Fill.ForeColor.RGB;
                 sequence.AddEffect(sh, PowerPoint.MsoAnimEffect.msoAnimEffectChangeFontColor, PowerPoint.MsoAnimateByLevel.msoAnimateTextByFifthLevel, PowerPoint.MsoAnimTriggerType.msoAnimTriggerOnPageClick);
                 int count = sequence.Count - effectCount;
@@ -625,6 +690,14 @@ namespace PowerPointLabs
                 PowerPoint.Effect effectResize = null;
                 PowerPoint.Effect effectRotate = null;
                 PowerPoint.MsoAnimTriggerType trigger;
+
+                if (shapes.Count == 1)
+                {
+                    PowerPoint.Shape sh1 = shapes[1];
+                    PowerPoint.Effect appear = sequence.AddEffect(sh1, PowerPoint.MsoAnimEffect.msoAnimEffectAppear, PowerPoint.MsoAnimateByLevel.msoAnimateLevelNone, PowerPoint.MsoAnimTriggerType.msoAnimTriggerOnPageClick);
+                    PowerPoint.Effect shape1Disappear = sequence.AddEffect(sh1, PowerPoint.MsoAnimEffect.msoAnimEffectAppear, PowerPoint.MsoAnimateByLevel.msoAnimateLevelNone, PowerPoint.MsoAnimTriggerType.msoAnimTriggerOnPageClick);
+                    shape1Disappear.Exit = Office.MsoTriState.msoTrue;
+                }
 
                 for (int num = 1; num <= shapes.Count - 1; num++)
                 {
