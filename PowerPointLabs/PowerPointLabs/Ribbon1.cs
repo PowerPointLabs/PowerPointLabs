@@ -201,7 +201,6 @@ namespace PowerPointLabs
                 }
             }
 
-            int count = 0;
             foreach (PowerPoint.Shape sh in textShapes)
             {
                 if (!sh.Name.Contains("HighlightBackgroundShape"))
@@ -216,7 +215,6 @@ namespace PowerPointLabs
                         tmp.Fill.Transparency = 0.50f;
                         tmp.Line.Visible = Office.MsoTriState.msoFalse;
                         tmp.ZOrder(Office.MsoZOrderCmd.msoSendToBack);
-                        count++;
                         tmp.Name = "PPTLabsHighlightBackgroundShape" + GetTimestamp(DateTime.Now);
                         tmp.Tags.Add("HighlightBackground", sh.Name);
                         tmp.Select(Office.MsoTriState.msoFalse);
@@ -335,6 +333,8 @@ namespace PowerPointLabs
                 List<PowerPoint.Shape> shapesToUse = new List<PowerPoint.Shape>();
                 foreach (PowerPoint.Shape sh in shapes)
                 {
+                    if (sh.Name.Contains("PPTLabsHighlightBackgroundShape"))
+                        continue;
                     if (!isTextSelected)
                     {
                         if (sh.HasTextFrame == Office.MsoTriState.msoTrue && sh.TextFrame2.HasText == Office.MsoTriState.msoTrue
@@ -3232,7 +3232,7 @@ namespace PowerPointLabs
         {
             //AboutForm form = new AboutForm();
             //form.Show();
-            System.Windows.Forms.MessageBox.Show("          PowerPointLabs Plugin Version 1.7.1 [Release date: 31 Mar 2014]\n     Developed at School of Computing, National University of Singapore.\n        For more information, visit our website http://PowerPointLabs.info", "About PowerPointLabs");
+            System.Windows.Forms.MessageBox.Show("          PowerPointLabs Plugin Version 1.7.2 [Release date: 3 Apr 2014]\n     Developed at School of Computing, National University of Singapore.\n        For more information, visit our website http://PowerPointLabs.info", "About PowerPointLabs");
         }
         public void HelpButtonClick(Office.IRibbonControl control)
         {
