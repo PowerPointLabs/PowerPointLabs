@@ -243,78 +243,70 @@ namespace PowerPointLabs
 
         private void SetupAfterCopyPasteHandler()
         {
-            PPCopy.AfterCopyPaste += AfterCopyPasteEventHandler;
+            PPCopy.AfterCopy += AfterCopyEventHandler;
+            PPCopy.AfterPaste += AfterPasteEventHandler;
         }
 
-        private void AfterCopyPasteEventHandler(PowerPoint.Selection selection)
+        private List<PowerPoint.Shape> copiedShapes = new List<PowerPoint.Shape>();
+        private PowerPoint.Slide previousSlideForCopyEvent;
+        private string previousPptName;
+
+        private void AfterPasteEventHandler(PowerPoint.Selection selection)
+        {
+            try
+            {
+                PowerPoint.Slide currentSlide = Application.ActiveWindow.View.Slide as PowerPoint.Slide;
+                string pptName = Application.ActivePresentation.Name;
+                if (selection.Type == PowerPoint.PpSelectionType.ppSelectionShapes
+                    && currentSlide.SlideID != previousSlideForCopyEvent.SlideID
+                    && pptName == previousPptName)
+                {
+                    List<String> nameListForPastedShapes = new List<string>();
+                    Dictionary<String, String> nameDictForPastedShapes = new Dictionary<string, string>();
+                    List<String> nameListForCopiedShapes = new List<string>();
+
+                    foreach (var shape in copiedShapes)
+                    {
+                        nameListForCopiedShapes.Add(shape.Name);
+                    }
+
+                    for(int i = 1; i <= selection.ShapeRange.Count; i++)
+                    {
+                        PowerPoint.Shape shape = selection.ShapeRange[i];
+                        string uniqueName = Guid.NewGuid().ToString();
+                        nameDictForPastedShapes[uniqueName] = nameListForCopiedShapes[i-1];
+                        shape.Name = uniqueName;
+                        nameListForPastedShapes.Add(shape.Name);
+                    }
+                    //Re-select pasted shapes
+                    var range = currentSlide.Shapes.Range(nameListForPastedShapes.ToArray());
+                    foreach (var sh in range)
+                    {
+                        PowerPoint.Shape shape = sh as PowerPoint.Shape;
+                        shape.Name = nameDictForPastedShapes[shape.Name];
+                    }
+                    range.Select();
+                }
+            }
+            catch
+            {
+                //TODO: log in ThisAddIn.cs
+            }
+        }
+
+        private void AfterCopyEventHandler(PowerPoint.Selection selection)
         {
             try
             {
                 if (selection.Type == PowerPoint.PpSelectionType.ppSelectionShapes)
                 {
-                    //Modify name for selected shapes
-                    bool isAnyNameChanged = false;
-                    //only change shape's name, if it's in this form:
-                    //TypeName Number 
-                    Regex namePattern = new Regex(@"^[^\[]\D+\s\d+$");
-                    List<PowerPoint.Shape> corruptedShapes = new List<PowerPoint.Shape>();
-                    List<String> nameList = new List<string>();
-                    Dictionary<String, String> nameDict = new Dictionary<String, String>();
+                    copiedShapes.Clear();
+                    previousSlideForCopyEvent = Application.ActiveWindow.View.Slide as PowerPoint.Slide;
+                    previousPptName = Application.ActivePresentation.Name;
                     foreach (var sh in selection.ShapeRange)
                     {
                         var shape = sh as PowerPoint.Shape;
-                        if (namePattern.IsMatch(shape.Name))
-                        {
-                            isAnyNameChanged = true;
-                            try
-                            {
-                                String guid = Guid.NewGuid().ToString();
-                                String uniqueName = "[" + guid + "]";
-                                nameDict[uniqueName] = "[" + shape.Name + "]";
-                                shape.Name = uniqueName;
-                                nameList.Add(shape.Name);
-                            }
-                            catch
-                            {
-                                corruptedShapes.Add(shape);
-                            }
-                        }
-                    }
-                    //Handling corrupted shapes
-                    PowerPoint.Slide currentSlide = Application.ActiveWindow.View.Slide as PowerPoint.Slide;
-                    for (int i = 0; i < corruptedShapes.Count; i++)
-                    {
-                        corruptedShapes[i].Copy();
-                        var shape = currentSlide.Shapes.Paste()[1];
-                        if (namePattern.IsMatch(corruptedShapes[i].Name))
-                        {
-                            String guid = Guid.NewGuid().ToString();
-                            String uniqueName = "[" + guid + "]";
-                            nameDict[uniqueName] = "[" + corruptedShapes[i].Name + "]";
-                            shape.Name = uniqueName;
-                            nameList.Add(shape.Name);
-                        }
-                        shape.Left = corruptedShapes[i].Left;
-                        shape.Top = corruptedShapes[i].Top;
-                        while (shape.ZOrderPosition > corruptedShapes[i].ZOrderPosition)
-                        {
-                            shape.ZOrder(Office.MsoZOrderCmd.msoSendBackward);
-                        }
-                        corruptedShapes[i].Delete();
-                    }
-                    //Change the copy, now copy also has the modified name
-                    if (isAnyNameChanged)
-                    {
-                        //here, select the shapes by their GUID, instead of normal names
-                        //otherwise, the selection may be wrong due to 'SAME NAME' issue
-                        var range = currentSlide.Shapes.Range(nameList.ToArray());
-                        foreach(var sh in range){
-                            //change back to their normal names
-                            PowerPoint.Shape shape = sh as PowerPoint.Shape;
-                            shape.Name = nameDict[shape.Name];
-                        }
-                        range.Copy();
-                        range.Select();
+                        copiedShapes.Add(shape);
                     }
                 }
             }
