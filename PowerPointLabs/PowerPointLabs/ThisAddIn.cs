@@ -338,6 +338,10 @@ namespace PowerPointLabs
                         var shape = sh as PowerPoint.Shape;
                         copiedShapes.Add(shape);
                     }
+                    copiedShapes.Sort((PowerPoint.Shape x, PowerPoint.Shape y) =>
+                    {
+                        return x.Id - y.Id;
+                    });
                 }
             }
             catch
