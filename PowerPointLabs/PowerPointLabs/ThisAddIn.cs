@@ -261,18 +261,48 @@ namespace PowerPointLabs
                     && currentSlide.SlideID != previousSlideForCopyEvent.SlideID
                     && pptName == previousPptName)
                 {
+                    PowerPoint.ShapeRange pastedShapes = selection.ShapeRange;
                     List<String> nameListForPastedShapes = new List<string>();
                     Dictionary<String, String> nameDictForPastedShapes = new Dictionary<string, string>();
                     List<String> nameListForCopiedShapes = new List<string>();
+                    Regex namePattern = new Regex(@"^[^\[]\D+\s\d+$");
+                    List<PowerPoint.Shape> corruptedShapes = new List<PowerPoint.Shape>();
 
                     foreach (var shape in copiedShapes)
                     {
-                        nameListForCopiedShapes.Add(shape.Name);
+                        try
+                        {
+                            if (namePattern.IsMatch(shape.Name))
+                            {
+                                shape.Name = "[" + shape.Name + "]";
+                            }
+                            nameListForCopiedShapes.Add(shape.Name);
+                        }
+                        catch
+                        {
+                            //handling corrupted shapes
+                            shape.Copy();
+                            var fixedShape = previousSlideForCopyEvent.Shapes.Paste()[1];
+                            fixedShape.Name = "[" + shape.Name + "]";
+                            fixedShape.Left = shape.Left;
+                            fixedShape.Top = shape.Top;
+                            while (fixedShape.ZOrderPosition > shape.ZOrderPosition)
+                            {
+                                fixedShape.ZOrder(Office.MsoZOrderCmd.msoSendBackward);
+                            }
+                            corruptedShapes.Add(shape);
+                            nameListForCopiedShapes.Add(fixedShape.Name);
+                        }
                     }
 
-                    for(int i = 1; i <= selection.ShapeRange.Count; i++)
+                    for (int i = 0; i < corruptedShapes.Count; i++)
                     {
-                        PowerPoint.Shape shape = selection.ShapeRange[i];
+                        corruptedShapes[i].Delete();
+                    }
+
+                    for (int i = 1; i <= pastedShapes.Count; i++)
+                    {
+                        PowerPoint.Shape shape = pastedShapes[i];
                         string uniqueName = Guid.NewGuid().ToString();
                         nameDictForPastedShapes[uniqueName] = nameListForCopiedShapes[i-1];
                         shape.Name = uniqueName;
