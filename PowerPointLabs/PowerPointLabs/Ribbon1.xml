@@ -1,10 +1,26 @@
 ﻿<?xml version="1.0" encoding="UTF-8"?>
 <customUI xmlns="http://schemas.microsoft.com/office/2009/07/customui" onLoad="Ribbon_Load">
   <ribbon>
+    <contextualTabs>
+      <tabSet idMso="TabSetDrawingTools">
+        <tab idMso="TabDrawingToolsFormat">
+          <group id="AdditionalFeatures"
+                 label="Other"
+                 insertBeforeMso="GroupShapeStyles"
+                 getVisible="GetVisibilityForCombineShapes">
+            <menu idMso="CombineShapesMenu"
+                  label="Combine Shapes"
+                  size="large"
+                  getVisible="GetVisibilityForCombineShapes" />
+          </group>
+        </tab>
+      </tabSet>
+    </contextualTabs> 
     <tabs>
       <tab id="PowerPointLabsAddIns" label="PowerPointLabs">
         <group id="AutoMotionGroup"
-               label="Auto Animate" visible ="true">
+               label="Auto Animate"
+               visible ="true">
           <button id="AddAnimationButton"
                   label="Add Animation Slide"
                   size="large"
@@ -19,14 +35,14 @@
                   supertip="Recreates an existing animation slide with new animations.&#13;&#13;To activate, select the original slide or the animation slide (added previously) and click this button."
                   getEnabled="OnGetEnabledReloadAutoMotion"
                   onAction="ReloadButtonClick"/>
-         <button id="InSlideAnimateButton"
-                  label="Animate In Slide"
-                  size="large"
-                  getImage="GetInSlideAnimationImage"
-                  supertip="Moves a shape around the slide in multiple steps.&#13;&#13;To activate, copy the shape to locations where you want it to stop, select the copies in the order you want them to appear, and click this button"
-                  getEnabled="OnGetEnabledAddInSlide"
-                  onAction="AddInSlideAnimationButtonClick"/>
-          <editBox id="animationDurationOption"
+          <button id="InSlideAnimateButton"
+                   label="Animate In Slide"
+                   size="large"
+                   getImage="GetInSlideAnimationImage"
+                   supertip="Moves a shape around the slide in multiple steps.&#13;&#13;To activate, copy the shape to locations where you want it to stop, select the copies in the order you want them to appear, and click this button"
+                   getEnabled="OnGetEnabledAddInSlide"
+                   onAction="AddInSlideAnimationButtonClick"/>
+          <!--<editBox id="animationDurationOption"
                    label="Duration"
                    sizeString="AAAA"
                    supertip="The duration (in seconds) for the animations in the animation slides to be created."
@@ -36,7 +52,12 @@
                     label="Smoother Animation"
                     supertip="Use a frame-based approach for smoother resize animations.&#13;&#13;This may result in larger file sizes and slower loading times for animated slides."
                     onAction="AnimationStyleChanged"
-                    getPressed="AnimationStyleGetPressed"/>
+                    getPressed="AnimationStyleGetPressed"/>-->
+          <dialogBoxLauncher>
+            <button id ="AutoAnimateDialogBox"
+                    onAction="AutoAnimateDialogButtonPressed"/>
+          </dialogBoxLauncher>
+
         </group>
         <group id="AutoZoomGroup"
                label="Auto Zoom" visible ="true">
@@ -61,11 +82,15 @@
                  supertip="Zoom into an area of a slide or image.&#13;&#13;To activate, place a rectangle shape on the portion that you want to magnify and click on this button.&#13;&#13;This feature works best with high-resolution images."
                  getEnabled="OnGetEnabledZoomButton"
                  onAction="ZoomBtnClick"/>
-          <checkBox id="zoomStyleOption"
+          <!--<checkBox id="zoomStyleOption"
                     label="Include Background"
                     supertip="Include the slide background while performing Auto Zoom."
                     onAction="ZoomStyleChanged"
-                    getPressed="ZoomStyleGetPressed"/>
+                    getPressed="ZoomStyleGetPressed"/>-->
+          <dialogBoxLauncher>
+            <button id ="AutoZoomDialogBox"
+                    onAction="AutoZoomDialogButtonPressed"/>
+          </dialogBoxLauncher>
         </group>
         <group id="AutoCropGroup"
                label="Auto Crop"
@@ -94,7 +119,7 @@
                   getImage="GetReloadSpotlightImage"
                   getEnabled="OnGetEnabledReloadSpotlight"
                   onAction="ReloadSpotlightButtonClick"/>
-          <editBox id="spotlightTransparency"
+          <!--<editBox id="spotlightTransparency"
                    label="Transparency"
                    sizeString="AAAA"
                    supertip="The transparency level of the spotlight effect to be created."
@@ -107,12 +132,16 @@
                     getItemCount ="OnGetItemCountSpotlight"
                     getItemLabel ="OnGetItemLabelSpotlight"
                     getSelectedItemIndex="OnGetSelectedItemIndexSpotlight" 
-                    onAction ="OnSelectItemSpotlight" />
+                    onAction ="OnSelectItemSpotlight" />-->
           <!--<checkBox id="SpotlightDeleteOption"
                     label="Delete Spotlight Shape"
                     supertip="Check this option if you want to delete the spotlight shape when adding this effect."
                     onAction="SpotlightDeleteOptionChanged"
                     getPressed="SpotlightDeleteOptionGetPressed"/>-->
+          <dialogBoxLauncher>
+            <button id ="SpotlightDialogBox"
+                    onAction="SpotlightDialogButtonPressed"/>
+          </dialogBoxLauncher>
         </group>
         <group id="embedAudio" label="Auto Narrate">
           <button id="addAudio"
@@ -129,25 +158,10 @@
                   keytip="NR"
                   getImage="GetRemoveAudioImage"
                   size="large" />
-          <dropDown id="defaultVoicePicker"
-                    label="Default Voice"
-                    keytip="NV"
-                    onAction="DefaultVoiceSelectionChanged"
-                    supertip="The voice to be used when generating synthesized audio. Use [Voice] tags to specify a different voice for a particular section of text."
-                    showImage="false"
-                    getItemCount="DefaultVoicePickerCount"
-                    getItemLabel="DefaultVoicePickerLabel"
-                    getSelectedItemIndex="DefaultVoiceSelectedIndex" />
-          <checkBox id="allSlides"
-                    label="All Slides"
-                    keytip="NL"
-                    supertip="If checked, audio will be added to or removed from all slides, instead of just the current one."
-                    onAction="AllSlidesChecked" />
-          <checkBox id="previewCurrentSlide"
-                    label="Preview"
-                    keytip="NP"
-                    supertip="If checked, the current slide's audio and animations will play after the Add Audio button is clicked."
-                    onAction="PreviewCurrentSlideChecked" />
+          <dialogBoxLauncher>
+            <button id="AutoNarrateDialogBox"
+                    onAction="AutoNarrateDialogButtonPressed"/>
+          </dialogBoxLauncher>
         </group>
         <group id="embedCaptions" label="Auto Captions">
           <button id="addCaptions"
@@ -164,11 +178,32 @@
                   onAction="RemoveCaptionClick"
                   getImage="GetRemoveCaptionsImage"
                   size="large" />
-          <checkBox id="allSlidesCaptions"
-                    label="All Slides"
-                    keytip="CL"
-                    supertip="If checked, captions will be added to or removed from all slides, instead of just the current one."
-                    onAction="AllSlidesCaptionsChecked" />
+          <dialogBoxLauncher>
+            <button id="AutoCaptionDialogBox"
+                    onAction="AutoCaptionDialogButtonPressed"/>
+          </dialogBoxLauncher>
+        </group>
+        <group id="HighlightBullets"
+               label="Highlight Bullets"
+               visible="true">
+          <button id="HighlightBulletsTextButton"
+                 label ="Highlight Text"
+                 size ="large"
+                 getImage="GetHighlightBulletsTextImage"
+                 supertip="Highlights all the bullet points on the specified slide by changing the text color."
+                 getEnabled="OnGetEnabledHighlightBullets"
+                 onAction="HighlightBulletsTextButtonClick"/>
+          <button id="HighlightBulletsBackgroundButton"
+                 label ="Highlight Background"
+                 size ="large"
+                 getImage="GetHighlightBulletsBackgroundImage"
+                 supertip="Highlights all the bullet points on the specified slide by highlighting the text background"
+                 getEnabled="OnGetEnabledHighlightBullets"
+                 onAction="HighlightBulletsBackgroundButtonClick"/>
+          <dialogBoxLauncher>
+            <button id="HighlightBulletsDialogBox"
+                    onAction="HighlightBulletsDialogBoxPressed"/>
+          </dialogBoxLauncher>
         </group>
         <group id="PPTLabsHelp"
                label="Help"
@@ -191,16 +226,6 @@
                   getImage="GetAboutImage"
                   supertip="Information about the PowerPointLabs plugin."
                   onAction="AboutButtonClick"/>
-        </group>
-        <group id="ComingSoon"
-               label="Coming Soon"
-               visible="true">
-          <button id="MoveBulletsButton"
-                 label ="Highlight Bullets"
-                 size ="large"
-                 getImage="GetHighlightBulletsImage"
-                 supertip="*Feature Coming Soon!*"
-                 onAction="HighlightBulletsButtonClick"/>
         </group>
       </tab>
     </tabs>
@@ -231,6 +256,18 @@
              getImage="GetZoomToAreaContextImage"
              getEnabled="OnGetEnabledZoomButton"
              onAction="ZoomBtnClick"/>
+      <menu id="HighlightBulletsMenuShape"
+            label="Highlight Bullets"
+            getImage="GetHighlightBulletsBackgroundContextImage">
+        <button id="HighlightBulletsTextShape"
+              label ="Highlight Text"
+              getImage="GetHighlightBulletsTextContextImage"
+              onAction="HighlightBulletsTextButtonClick"/>
+        <button id="HighlightBulletsBackgroundShape"
+               label ="Highlight Background"
+               getImage="GetHighlightBulletsBackgroundContextImage"
+               onAction="HighlightBulletsBackgroundButtonClick"/>
+      </menu>
       <button id="ConvertToPictureShape"
              label ="Convert to Picture"
              getImage="GetConvertToPicMenuImage"
@@ -353,6 +390,27 @@
               getImage="GetInSlideAnimationContextImage"
               getEnabled="OnGetEnabledAddInSlide"
               onAction="AddInSlideAnimationButtonClick"/>
+      <button id="ZoomToAreaContextMenuGroup"
+             label ="Zoom To Area"
+             getImage="GetZoomToAreaContextImage"
+             getEnabled="OnGetEnabledZoomButton"
+             onAction="ZoomBtnClick"/>
+      <menu id="HighlightBulletsMenuGroup"
+            label="Highlight Bullets"
+            getImage="GetHighlightBulletsBackgroundContextImage">
+        <button id="HighlightBulletsTextGroup"
+            label ="Highlight Text"
+            getImage="GetHighlightBulletsTextContextImage"
+            onAction="HighlightBulletsTextButtonClick"/>
+        <button id="HighlightBulletsBackgroundGroup"
+               label ="Highlight Background"
+               getImage="GetHighlightBulletsBackgroundContextImage"
+               onAction="HighlightBulletsBackgroundButtonClick"/>
+      </menu>
+      <button id="ConvertToPictureGroup"
+             label ="Convert to Picture"
+             getImage="GetConvertToPicMenuImage"
+             onAction="ConvertToPictureButtonClick"/>
       <button id="cutOutShapeGroup"
               label="Crop To Shape"
               getImage="GetCutOutShapeMenuImage"
@@ -364,6 +422,10 @@
               label="Edit Name"
               getImage="GetEditNameContextImage"
               onAction="NameEditBtnClick"/>
+      <button id="ConvertToPictureInk"
+             label ="Convert to Picture"
+             getImage="GetConvertToPicMenuImage"
+             onAction="ConvertToPictureButtonClick"/>
     </contextMenu>
     <contextMenu idMso="ContextMenuSmartArtBackground">
       <menuSeparator id="separatorSmartArt"/>
@@ -371,6 +433,10 @@
               label="Edit Name"
               getImage="GetEditNameContextImage"
               onAction="NameEditBtnClick"/>
+      <button id="ConvertToPictureSmartArt"
+             label ="Convert to Picture"
+             getImage="GetConvertToPicMenuImage"
+             onAction="ConvertToPictureButtonClick"/>
     </contextMenu>
     <contextMenu idMso="ContextMenuThumbnail">
       <menuSeparator id="separatorThumbnail"/>
@@ -384,6 +450,20 @@
               getImage="GetReloadAnimationContextImage"
               getEnabled="OnGetEnabledReloadAutoMotion"
               onAction="ReloadButtonClick"/>
+      <menu id="HighlightBulletsMenuThumbnail"
+            label="Highlight Bullets"
+            getImage="GetHighlightBulletsBackgroundContextImage">
+        <button id="HighlightBulletsTextThumbnail"
+              label ="Highlight Text"
+              getImage="GetHighlightBulletsTextContextImage"
+              getEnabled="OnGetEnabledHighlightBullets"
+              onAction="HighlightBulletsTextButtonClick"/>
+        <button id="HighlightBulletsBackgroundThumbnail"
+               label ="Highlight Background"
+               getImage="GetHighlightBulletsBackgroundContextImage"
+               getEnabled="OnGetEnabledHighlightBullets"
+               onAction="HighlightBulletsBackgroundButtonClick"/>
+      </menu>
     </contextMenu>
     <contextMenu idMso="ContextMenuNotesEditText">
       <menuSeparator id="separatorNotes" />

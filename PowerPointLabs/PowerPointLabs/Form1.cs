@@ -29,7 +29,7 @@ namespace PowerPointLabs
         {
             this.newName = this.textBox1.Text;
             ribbon.ShapeNameEdited(this.newName);
-            this.Dispose();
+            this.Close();
         }
 
         private void Form1_Load(object sender, EventArgs e)
@@ -39,7 +39,7 @@ namespace PowerPointLabs
 
         private void button2_Click(object sender, EventArgs e)
         {
-            this.Dispose();
+            this.Close();
         }
     }
 }

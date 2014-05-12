@@ -1,9 +1,11 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Collections;
 using System.Linq;
 using System.Runtime.InteropServices;
 using System.Text;
+using System.Text.RegularExpressions;
 using System.Windows.Forms;
 using System.Xml.Linq;
 using System.Diagnostics;
@@ -32,8 +34,10 @@ namespace PowerPointLabs
             Application.SlideShowBegin += SlideShowBeginHandler;
             Application.SlideShowEnd += SlideShowEndHandler;
             PPMouse.Init(Application);
+            PPCopy.Init(Application);
             SetupDoubleClickHandler();
             SetupTabActivateHandler();
+            SetupAfterCopyPasteHandler();
         }
 
         void SetUpLogger()
@@ -72,7 +76,8 @@ namespace PowerPointLabs
             if (Sel.Type == PowerPoint.PpSelectionType.ppSelectionShapes)
             {
                 PowerPoint.Shape sh = Sel.ShapeRange[1];
-                if (sh.Type == Office.MsoShapeType.msoAutoShape || sh.Type == Office.MsoShapeType.msoFreeform || sh.Type == Office.MsoShapeType.msoTextBox || sh.Type == Office.MsoShapeType.msoPlaceholder)
+                if (sh.Type == Office.MsoShapeType.msoAutoShape || sh.Type == Office.MsoShapeType.msoFreeform || sh.Type == Office.MsoShapeType.msoTextBox || sh.Type == Office.MsoShapeType.msoPlaceholder
+                    || sh.Type == Office.MsoShapeType.msoCallout || sh.Type == Office.MsoShapeType.msoInk || sh.Type == Office.MsoShapeType.msoGroup)
                 {
                     ribbon.spotlightEnabled = true;
                 }
@@ -82,14 +87,17 @@ namespace PowerPointLabs
                 }
                 if (Sel.ShapeRange.Count > 1)
                 {
-                    ribbon.zoomButtonEnabled = false;
                     foreach (PowerPoint.Shape tempShape in Sel.ShapeRange)
                     {
                         if (sh.Type == tempShape.Type)
+                        {
                             ribbon.inSlideEnabled = true;
+                            ribbon.zoomButtonEnabled = true;
+                        }
                         if (sh.Type == Office.MsoShapeType.msoAutoShape && sh.AutoShapeType != tempShape.AutoShapeType)
                         {
                             ribbon.inSlideEnabled = false;
+                            ribbon.zoomButtonEnabled = false;
                             break;
                         }
                     }
@@ -108,11 +116,13 @@ namespace PowerPointLabs
             ribbon.addAutoMotionEnabled = true;
             ribbon.reloadAutoMotionEnabled = true;
             ribbon.reloadSpotlight = true;
+            ribbon.highlightBulletsEnabled = true;
             if (SldRange.Count != 1)
             {
                 ribbon.addAutoMotionEnabled = false;
                 ribbon.reloadAutoMotionEnabled = false;
                 ribbon.reloadSpotlight = false;
+                ribbon.highlightBulletsEnabled = false;
             }
             else
             {
@@ -141,6 +151,8 @@ namespace PowerPointLabs
             ribbon.RefreshRibbonControl("AddAnimationButton");
             ribbon.RefreshRibbonControl("ReloadButton");
             ribbon.RefreshRibbonControl("ReloadSpotlightButton");
+            ribbon.RefreshRibbonControl("HighlightBulletsTextButton");
+            ribbon.RefreshRibbonControl("HighlightBulletsBackgroundButton");
         }
 
         //void ThisAddIn_BeginSlideShow(PowerPoint.SlideShowWindow Wn)
@@ -227,6 +239,115 @@ namespace PowerPointLabs
         private void SlideShowEndHandler(PowerPoint.Presentation presentation)
         {
             isInSlideShow = false;
+        }
+
+        private void SetupAfterCopyPasteHandler()
+        {
+            PPCopy.AfterCopy += AfterCopyEventHandler;
+            PPCopy.AfterPaste += AfterPasteEventHandler;
+        }
+
+        private List<PowerPoint.Shape> copiedShapes = new List<PowerPoint.Shape>();
+        private PowerPoint.Slide previousSlideForCopyEvent;
+        private string previousPptName;
+
+        private void AfterPasteEventHandler(PowerPoint.Selection selection)
+        {
+            try
+            {
+                PowerPoint.Slide currentSlide = Application.ActiveWindow.View.Slide as PowerPoint.Slide;
+                string pptName = Application.ActivePresentation.Name;
+                if (selection.Type == PowerPoint.PpSelectionType.ppSelectionShapes
+                    && currentSlide.SlideID != previousSlideForCopyEvent.SlideID
+                    && pptName == previousPptName)
+                {
+                    PowerPoint.ShapeRange pastedShapes = selection.ShapeRange;
+                    List<String> nameListForPastedShapes = new List<string>();
+                    Dictionary<String, String> nameDictForPastedShapes = new Dictionary<string, string>();
+                    List<String> nameListForCopiedShapes = new List<string>();
+                    Regex namePattern = new Regex(@"^[^\[]\D+\s\d+$");
+                    List<PowerPoint.Shape> corruptedShapes = new List<PowerPoint.Shape>();
+
+                    foreach (var shape in copiedShapes)
+                    {
+                        try
+                        {
+                            if (namePattern.IsMatch(shape.Name))
+                            {
+                                shape.Name = "[" + shape.Name + "]";
+                            }
+                            nameListForCopiedShapes.Add(shape.Name);
+                        }
+                        catch
+                        {
+                            //handling corrupted shapes
+                            shape.Copy();
+                            var fixedShape = previousSlideForCopyEvent.Shapes.Paste()[1];
+                            fixedShape.Name = "[" + shape.Name + "]";
+                            fixedShape.Left = shape.Left;
+                            fixedShape.Top = shape.Top;
+                            while (fixedShape.ZOrderPosition > shape.ZOrderPosition)
+                            {
+                                fixedShape.ZOrder(Office.MsoZOrderCmd.msoSendBackward);
+                            }
+                            corruptedShapes.Add(shape);
+                            nameListForCopiedShapes.Add(fixedShape.Name);
+                        }
+                    }
+
+                    for (int i = 0; i < corruptedShapes.Count; i++)
+                    {
+                        corruptedShapes[i].Delete();
+                    }
+
+                    for (int i = 1; i <= pastedShapes.Count; i++)
+                    {
+                        PowerPoint.Shape shape = pastedShapes[i];
+                        string uniqueName = Guid.NewGuid().ToString();
+                        nameDictForPastedShapes[uniqueName] = nameListForCopiedShapes[i-1];
+                        shape.Name = uniqueName;
+                        nameListForPastedShapes.Add(shape.Name);
+                    }
+                    //Re-select pasted shapes
+                    var range = currentSlide.Shapes.Range(nameListForPastedShapes.ToArray());
+                    foreach (var sh in range)
+                    {
+                        PowerPoint.Shape shape = sh as PowerPoint.Shape;
+                        shape.Name = nameDictForPastedShapes[shape.Name];
+                    }
+                    range.Select();
+                }
+            }
+            catch
+            {
+                //TODO: log in ThisAddIn.cs
+            }
+        }
+
+        private void AfterCopyEventHandler(PowerPoint.Selection selection)
+        {
+            try
+            {
+                if (selection.Type == PowerPoint.PpSelectionType.ppSelectionShapes)
+                {
+                    copiedShapes.Clear();
+                    previousSlideForCopyEvent = Application.ActiveWindow.View.Slide as PowerPoint.Slide;
+                    previousPptName = Application.ActivePresentation.Name;
+                    foreach (var sh in selection.ShapeRange)
+                    {
+                        var shape = sh as PowerPoint.Shape;
+                        copiedShapes.Add(shape);
+                    }
+                    copiedShapes.Sort((PowerPoint.Shape x, PowerPoint.Shape y) =>
+                    {
+                        return x.Id - y.Id;
+                    });
+                }
+            }
+            catch
+            {
+                //TODO: log in ThisAddIn.cs
+            }
         }
 
         private void SetupDoubleClickHandler()
