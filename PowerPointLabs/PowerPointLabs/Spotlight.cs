@@ -27,7 +27,7 @@ namespace PowerPointLabs
         {
             try
             {
-                var currentSlide = PowerPointPresentation.CurrentSlide;
+                var currentSlide = PowerPointPresentation.CurrentSlide as PowerPointSlide;
                 PowerPoint.ShapeRange selectedShapes = Globals.ThisAddIn.Application.ActiveWindow.Selection.ShapeRange;
                 
                 var addedSlide = currentSlide.CreateSpotlightSlide() as PowerPointSpotlightSlide;
@@ -37,10 +37,11 @@ namespace PowerPointLabs
                 foreach (PowerPoint.Shape spotShape in selectedShapes)
                 {
                     addedSlide.DeleteShapesWithPrefix(spotShape.Name);
+                    PreFormatShapeOnCurrentSlide(spotShape);
                     PowerPoint.Shape spotlightShape = addedSlide.CreateSpotlightShape(spotShape);
                     CreateSpotlightDuplicate(spotlightShape);
                     spotlightShapes.Add(spotlightShape);
-                    spotShape.Delete();
+                    PostFormatShapeOnCurrentSlide(currentSlide, spotShape);
                 }
                 
                 addedSlide.PrepareForSpotlight();
@@ -63,6 +64,7 @@ namespace PowerPointLabs
                 if (currentSlide.isSpotlightSlide())
                 {
                     PowerPoint.Shape spotlightPicture = null;
+                    PowerPoint.Shape indicatorShape = null;
                     List<PowerPoint.Shape> spotlightShapes = new List<PowerPoint.Shape>();
 
                     foreach (PowerPoint.Shape sh in currentSlide.Shapes)
@@ -75,6 +77,10 @@ namespace PowerPointLabs
                         {
                             spotlightShapes.Add(sh);
                         }
+                        else if (sh.Name.Contains("PPTLabsIndicator"))
+                        {
+                            indicatorShape = sh;
+                        }
                     }
 
                     if (spotlightPicture == null || spotlightShapes.Count == 0)
@@ -84,6 +90,8 @@ namespace PowerPointLabs
                     else
                     {
                         spotlightPicture.Delete();
+                        if (indicatorShape != null)
+                            indicatorShape.Delete();
 
                         foreach (PowerPoint.Shape sh in spotlightShapes)
                         {
@@ -108,6 +116,47 @@ namespace PowerPointLabs
             }
         }
 
+        private static void PreFormatShapeOnCurrentSlide(PowerPoint.Shape spotShape)
+        {
+            spotShape.ShapeStyle = Office.MsoShapeStyleIndex.msoShapeStylePreset1;
+            spotShape.Fill.ForeColor.RGB = 0xffffff;
+            spotShape.Line.Visible = Office.MsoTriState.msoFalse;
+            
+            //Change color of text on shapes to white
+            if (spotShape.HasTextFrame == Office.MsoTriState.msoTrue && spotShape.TextFrame.HasText == Office.MsoTriState.msoTrue)
+                spotShape.TextFrame.TextRange.Font.Color.RGB = 0xffffff;
+
+            if (spotShape.Type == Office.MsoShapeType.msoGroup)
+            {
+                PowerPoint.ShapeRange shRange = spotShape.GroupItems.Range(1);
+                foreach (PowerPoint.Shape sh in shRange)
+                {
+                    if (sh.HasTextFrame == Office.MsoTriState.msoTrue && sh.TextFrame.HasText == Office.MsoTriState.msoTrue)
+                        sh.TextFrame.TextRange.Font.Color.RGB = 0xffffff;
+                }
+            }
+        }
+
+        private static void PostFormatShapeOnCurrentSlide(PowerPointSlide currentSlide, PowerPoint.Shape spotShape)
+        {
+            spotShape.Fill.ForeColor.RGB = 0xaaaaaa;
+            spotShape.Fill.Transparency = 0.7f;
+            spotShape.Line.Visible = Office.MsoTriState.msoTrue;
+            spotShape.Line.ForeColor.RGB = 0x000000;
+
+            PowerPoint.Effect effectAppear = null;
+            PowerPoint.Effect effectDisappear = null;
+
+            PowerPoint.Sequence sequence = currentSlide.TimeLine.MainSequence;
+            effectAppear = sequence.AddEffect(spotShape, PowerPoint.MsoAnimEffect.msoAnimEffectAppear, PowerPoint.MsoAnimateByLevel.msoAnimateLevelNone, PowerPoint.MsoAnimTriggerType.msoAnimTriggerWithPrevious);
+            effectAppear.Timing.Duration = 0;
+            effectAppear.MoveTo(1);
+
+            effectDisappear = sequence.AddEffect(spotShape, PowerPoint.MsoAnimEffect.msoAnimEffectAppear, PowerPoint.MsoAnimateByLevel.msoAnimateLevelNone, PowerPoint.MsoAnimTriggerType.msoAnimTriggerWithPrevious);
+            effectDisappear.Exit = Office.MsoTriState.msoTrue;
+            effectDisappear.Timing.Duration = 0;
+            effectDisappear.MoveTo(2);
+        }
         
         private static void CreateSpotlightDuplicate(PowerPoint.Shape spotlightShape)
         {

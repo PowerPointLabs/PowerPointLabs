@@ -29,15 +29,30 @@ namespace PowerPointLabs.Models
         {
             DeleteSlideNotes();
             DeleteSlideMedia();
+            RemoveSlideTransitions();
         }
 
         public PowerPoint.Shape CreateSpotlightShape(PowerPoint.Shape spotShape)
         {
             spotShape.Copy();
-            PowerPoint.Shape spotlightShape = this.Shapes.Paste()[1];
-            CropSpotlightShapeToSlide(spotShape, ref spotlightShape);
+            bool isCallout = false;
+            PowerPoint.Shape spotlightShape;
+            if (spotShape.Type == Office.MsoShapeType.msoCallout)
+                isCallout = true;
+
+            if (isCallout)
+            {
+                spotlightShape = this.Shapes.Paste()[1];
+                MoveToOriginalPosition(spotShape, ref spotlightShape);
+            }
+            else
+            {
+                spotlightShape = this.Shapes.PasteSpecial(PowerPoint.PpPasteDataType.ppPastePNG)[1];
+                MoveToOriginalPosition(spotShape, ref spotlightShape);
+                CropSpotlightPictureToSlide(ref spotlightShape);
+            }
+
             PrepareSpotlightShape(ref spotlightShape);
-         
             return spotlightShape;
         }
 
@@ -45,9 +60,11 @@ namespace PowerPointLabs.Models
         {
             try
             {
+                PowerPoint.Shape indicatorShape = AddPowerPointLabsIndicator();
                 AddRectangleShape();
                 PowerPoint.Shape spotlightPicture = ConvertToSpotlightPicture(spotlightShapes);
                 FormatSpotlightPicture(spotlightPicture);
+                indicatorShape.ZOrder(Office.MsoZOrderCmd.msoBringToFront);
             }
             catch (Exception e)
             {
@@ -56,46 +73,41 @@ namespace PowerPointLabs.Models
             }
         }
 
-        private void CropSpotlightShapeToSlide(PowerPoint.Shape reference, ref PowerPoint.Shape shapeToCrop)
+        private void RemoveSlideTransitions()
         {
-            //Check Left border
-            if (reference.Left < 0)
-            {
-                shapeToCrop.Left = 0;
-                shapeToCrop.Width = reference.Width - (0.0f - reference.Left);
-            }
-            else
-            {
-                shapeToCrop.Left = reference.Left;
-            }
+            base.RemoveSlideTransitions();
+            _slide.SlideShowTransition.AdvanceOnTime = Office.MsoTriState.msoFalse;
+            _slide.SlideShowTransition.AdvanceOnClick = Office.MsoTriState.msoTrue;
+        }
 
-            //Check Right border
-            if (reference.Left + reference.Width > PowerPointPresentation.SlideWidth)
-            {
-                shapeToCrop.Width = (PowerPointPresentation.SlideWidth - shapeToCrop.Left);
-            }
+        private void MoveToOriginalPosition(PowerPoint.Shape reference, ref PowerPoint.Shape spotlightShape)
+        {
+            spotlightShape.Left = reference.Left + (reference.Width / 2) - (spotlightShape.Width / 2);
+            spotlightShape.Top = reference.Top + (reference.Height / 2) - (spotlightShape.Height / 2);
+        }
 
-            //Check Top border
-            if (reference.Top < 0)
+        private void CropSpotlightPictureToSlide(ref PowerPoint.Shape shapeToCrop)
+        {
+            if (shapeToCrop.Left < 0)
             {
-                shapeToCrop.Top = 0;
-                shapeToCrop.Height = reference.Height - (0.0f - reference.Top);
+                shapeToCrop.PictureFormat.CropLeft += (0.0f - shapeToCrop.Left);
             }
-            else
+            if (shapeToCrop.Left + shapeToCrop.Width > PowerPointPresentation.SlideWidth)
             {
-                shapeToCrop.Top = reference.Top;
+                shapeToCrop.PictureFormat.CropRight += (shapeToCrop.Left + shapeToCrop.Width - PowerPointPresentation.SlideWidth);
             }
-
-            //Check Bottom border
-            if (reference.Top + reference.Height > PowerPointPresentation.SlideHeight)
+            if (shapeToCrop.Top < 0)
             {
-                shapeToCrop.Height = (PowerPointPresentation.SlideHeight - shapeToCrop.Top);
+                shapeToCrop.PictureFormat.CropTop += (0.0f - shapeToCrop.Top);
+            }
+            if (shapeToCrop.Top + shapeToCrop.Height > PowerPointPresentation.SlideHeight)
+            {
+                shapeToCrop.PictureFormat.CropBottom += (shapeToCrop.Top + shapeToCrop.Height - PowerPointPresentation.SlideHeight);
             }
         }
 
         private void PrepareSpotlightShape(ref PowerPoint.Shape spotlightShape)
         {
-            spotlightShape.Fill.ForeColor.RGB = 0xffffff;
             spotlightShape.Line.Visible = Office.MsoTriState.msoFalse;
             if (spotlightShape.HasTextFrame == Office.MsoTriState.msoTrue && spotlightShape.TextFrame.HasText == Office.MsoTriState.msoTrue)
                 spotlightShape.TextFrame.TextRange.Font.Color.RGB = 0xffffff;

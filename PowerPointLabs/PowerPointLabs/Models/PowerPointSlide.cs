@@ -1,11 +1,14 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.IO;
 using Microsoft.Office.Core;
 using Microsoft.Office.Interop.PowerPoint;
 using Shape = Microsoft.Office.Interop.PowerPoint.Shape;
 using ShapeRange = Microsoft.Office.Interop.PowerPoint.ShapeRange;
 using Shapes = Microsoft.Office.Interop.PowerPoint.Shapes;
+using Office = Microsoft.Office.Core;
+using PowerPoint = Microsoft.Office.Interop.PowerPoint;
 
 namespace PowerPointLabs.Models
 {
@@ -63,6 +66,11 @@ namespace PowerPointLabs.Models
         public SlideShowTransition Transition
         {
             get { return _slide.SlideShowTransition; }
+        }
+
+        public TimeLine TimeLine
+        {
+            get { return _slide.TimeLine; }
         }
 
         public void DeleteShapesWithPrefix(string prefix)
@@ -263,6 +271,37 @@ namespace PowerPointLabs.Models
                 if (sh.Type == MsoShapeType.msoMedia)
                     sh.Delete();
             }
+        }
+
+        protected Shape AddPowerPointLabsIndicator()
+        {
+            String tempFileName = Path.GetTempFileName();
+            Properties.Resources.Indicator.Save(tempFileName);
+            Shape indicatorShape = _slide.Shapes.AddPicture(tempFileName, Office.MsoTriState.msoFalse, Office.MsoTriState.msoTrue, PowerPointPresentation.SlideWidth - 120, 0, 120, 84);
+            
+            indicatorShape.Left = PowerPointPresentation.SlideWidth - 120;
+            indicatorShape.Top = 0;
+            indicatorShape.Width = 120;
+            indicatorShape.Height = 84;
+            indicatorShape.Name = "PPTLabsIndicator" + DateTime.Now.ToString("yyyyMMddHHmmssffff");
+
+            PowerPoint.Effect effectAppear = null;
+            PowerPoint.Effect effectDisappear = null;
+            PowerPoint.Sequence sequence = _slide.TimeLine.MainSequence;
+
+            effectAppear = sequence.AddEffect(indicatorShape, PowerPoint.MsoAnimEffect.msoAnimEffectAppear, PowerPoint.MsoAnimateByLevel.msoAnimateLevelNone, PowerPoint.MsoAnimTriggerType.msoAnimTriggerWithPrevious);
+            effectAppear.Timing.Duration = 0;
+
+            effectDisappear = sequence.AddEffect(indicatorShape, PowerPoint.MsoAnimEffect.msoAnimEffectAppear, PowerPoint.MsoAnimateByLevel.msoAnimateLevelNone, PowerPoint.MsoAnimTriggerType.msoAnimTriggerWithPrevious);
+            effectDisappear.Exit = Office.MsoTriState.msoTrue;
+            effectDisappear.Timing.Duration = 0;
+
+            return indicatorShape;
+        }
+
+        protected void RemoveSlideTransitions()
+        {
+            _slide.SlideShowTransition.EntryEffect = PowerPoint.PpEntryEffect.ppEffectNone;
         }
 
         public bool isSpotlightSlide()

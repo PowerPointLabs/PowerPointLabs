@@ -242,7 +242,6 @@
     <Compile Include="Form1.Designer.cs">
       <DependentUpon>Form1.cs</DependentUpon>
     </Compile>
-    <Compile Include="InSlideAnimate.cs" />
     <Compile Include="Models\PowerPointAckSlide.cs" />
     <Compile Include="HighlightBulletsDialogBox.cs">
       <SubType>Form</SubType>
