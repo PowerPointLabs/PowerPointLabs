@@ -224,6 +224,7 @@
     <Compile Include="AboutForm.Designer.cs">
       <DependentUpon>AboutForm.cs</DependentUpon>
     </Compile>
+    <Compile Include="AnimateInSlide.cs" />
     <Compile Include="AutoAnimateDialogBox.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -236,12 +237,14 @@
     <Compile Include="AutoZoomDialogBox.Designer.cs">
       <DependentUpon>AutoZoomDialogBox.cs</DependentUpon>
     </Compile>
+    <Compile Include="DefaultMotionAnimation.cs" />
     <Compile Include="Form1.cs">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="Form1.Designer.cs">
       <DependentUpon>Form1.cs</DependentUpon>
     </Compile>
+    <Compile Include="FrameMotionAnimation.cs" />
     <Compile Include="Models\PowerPointAckSlide.cs" />
     <Compile Include="HighlightBulletsDialogBox.cs">
       <SubType>Form</SubType>

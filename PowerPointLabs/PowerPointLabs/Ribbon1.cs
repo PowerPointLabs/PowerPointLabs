@@ -867,13 +867,7 @@ namespace PowerPointLabs
         {
             try
             {
-                //Get References of current and next slides
-                PowerPoint.Slide currentSlide = GetCurrentSlide();
-                if (Globals.ThisAddIn.Application.ActiveWindow.Selection.ShapeRange.Count == 0)
-                    return;
-                AddInSlideAnimation(currentSlide, false);
-                Globals.ThisAddIn.Application.CommandBars.ExecuteMso("AnimationPreview");
-                AddAckSlide();
+                AnimateInSlide.AddAnimationInSlide();
             }
             catch (Exception e)
             {
@@ -4557,6 +4551,8 @@ namespace PowerPointLabs
             {
                 defaultDuration = newDuration;
                 frameAnimationChecked = newFrameChecked;
+                AnimateInSlide.defaultDuration = newDuration;
+                AnimateInSlide.frameAnimationChecked = newFrameChecked;
             }
             catch (Exception e)
             {

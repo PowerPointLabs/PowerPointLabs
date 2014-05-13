@@ -238,6 +238,28 @@ namespace PowerPointLabs.Models
             }
         }
 
+        public void RemoveAnimationsForShapes(List<Shape> shapes)
+        {
+            foreach (PowerPoint.Shape sh in shapes)
+            {
+                PowerPoint.Sequence sequence = _slide.TimeLine.MainSequence;
+                for (int x = sequence.Count; x >= 1; x--)
+                {
+                    PowerPoint.Effect effect = sequence[x];
+                    if (effect.Shape.Name == sh.Name && effect.Shape.Id == sh.Id)
+                        effect.Delete();
+                }
+            }
+        }
+
+        public List<PowerPoint.Shape> GetShapesWithPrefix(string prefix)
+        {
+            List<Shape> shapes = _slide.Shapes.Cast<Shape>().ToList();
+            List<Shape> matchingShapes = shapes.Where(current => current.Name.StartsWith(prefix)).ToList();
+
+            return matchingShapes;
+        }
+
         private static void DeleteEffectsForShape(Shape shape, IEnumerable<Effect> mainEffects)
         {
             foreach (Effect e in mainEffects.Where(e => e.Shape.Equals(shape)))
@@ -302,6 +324,31 @@ namespace PowerPointLabs.Models
         protected void RemoveSlideTransitions()
         {
             _slide.SlideShowTransition.EntryEffect = PowerPoint.PpEntryEffect.ppEffectNone;
+        }
+
+        public void MoveMotionAnimation()
+        {
+            PowerPoint.Sequence sequence = _slide.TimeLine.MainSequence;
+            foreach (PowerPoint.Effect eff in _slide.TimeLine.MainSequence)
+            {
+                if ((eff.EffectType >= PowerPoint.MsoAnimEffect.msoAnimEffectPathCircle && eff.EffectType <= PowerPoint.MsoAnimEffect.msoAnimEffectPathRight) || eff.EffectType == PowerPoint.MsoAnimEffect.msoAnimEffectCustom)
+                {
+                    PowerPoint.AnimationBehavior motion = eff.Behaviors[1];
+                    if (motion.Type == PowerPoint.MsoAnimType.msoAnimTypeMotion)
+                    {
+                        PowerPoint.Shape sh = eff.Shape;
+                        string motionPath = motion.MotionEffect.Path.Trim();
+                        if (motionPath.Last() < 'A' || motionPath.Last() > 'Z')
+                            motionPath += " X";
+                        string[] path = motionPath.Split(' ');
+                        int count = path.Length;
+                        float xVal = Convert.ToSingle(path[count - 3]);
+                        float yVal = Convert.ToSingle(path[count - 2]);
+                        sh.Left += (xVal * PowerPointPresentation.SlideWidth);
+                        sh.Top += (yVal * PowerPointPresentation.SlideHeight);
+                    }
+                }
+            }
         }
 
         public bool isSpotlightSlide()
