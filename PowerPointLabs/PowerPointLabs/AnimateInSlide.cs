@@ -13,6 +13,7 @@ namespace PowerPointLabs
     {
         public static float defaultDuration = 0.5f;
         public static bool frameAnimationChecked = false;
+        public static bool isHighlightBullets = false;
         public static void AddAnimationInSlide()
         {
             try
@@ -21,16 +22,23 @@ namespace PowerPointLabs
                 var selectedShapes = Globals.ThisAddIn.Application.ActiveWindow.Selection.ShapeRange as PowerPoint.ShapeRange;
 
                 currentSlide.RemoveAnimationsForShapes(selectedShapes.Cast<PowerPoint.Shape>().ToList());
-                currentSlide.RemoveAnimationsForShapes(currentSlide.GetShapesWithPrefix("InSlideAnimateShape"));
-                FormatInSlideAnimateShapes(selectedShapes);
+
+                if (!isHighlightBullets)
+                {
+                    currentSlide.RemoveAnimationsForShapes(currentSlide.GetShapesWithPrefix("InSlideAnimateShape"));
+                    FormatInSlideAnimateShapes(selectedShapes);
+                }
                 
                 if (selectedShapes.Count == 1)
                     InSlideAnimateSingleShape(currentSlide, selectedShapes[1]);
                 else
                     InSlideAnimateMultiShape(currentSlide, selectedShapes);
-                
-                Globals.ThisAddIn.Application.CommandBars.ExecuteMso("AnimationPreview");
-                AddAckSlide();
+
+                if (!isHighlightBullets)
+                {
+                    Globals.ThisAddIn.Application.CommandBars.ExecuteMso("AnimationPreview");
+                    AddAckSlide();
+                }
             }
             catch (Exception e)
             {

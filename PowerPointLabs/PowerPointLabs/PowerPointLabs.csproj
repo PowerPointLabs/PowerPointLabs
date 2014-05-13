@@ -245,6 +245,7 @@
       <DependentUpon>Form1.cs</DependentUpon>
     </Compile>
     <Compile Include="FrameMotionAnimation.cs" />
+    <Compile Include="HighlightBulletsBackground.cs" />
     <Compile Include="Models\PowerPointAckSlide.cs" />
     <Compile Include="HighlightBulletsDialogBox.cs">
       <SubType>Form</SubType>

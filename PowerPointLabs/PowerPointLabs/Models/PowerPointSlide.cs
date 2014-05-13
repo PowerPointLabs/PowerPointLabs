@@ -73,6 +73,12 @@ namespace PowerPointLabs.Models
             get { return _slide.TimeLine; }
         }
 
+        public string Name
+        {
+            get { return _slide.Name; }
+            set { _slide.Name = value; }
+        }
+
         public void DeleteShapesWithPrefix(string prefix)
         {
             List<Shape> shapes = _slide.Shapes.Cast<Shape>().ToList();
@@ -238,17 +244,22 @@ namespace PowerPointLabs.Models
             }
         }
 
+        public void DeleteShapeAnimations(Shape sh)
+        {
+            PowerPoint.Sequence sequence = _slide.TimeLine.MainSequence;
+            for (int x = sequence.Count; x >= 1; x--)
+            {
+                PowerPoint.Effect effect = sequence[x];
+                if (effect.Shape.Name == sh.Name && effect.Shape.Id == sh.Id)
+                    effect.Delete();
+            }
+        }
+
         public void RemoveAnimationsForShapes(List<Shape> shapes)
         {
             foreach (PowerPoint.Shape sh in shapes)
             {
-                PowerPoint.Sequence sequence = _slide.TimeLine.MainSequence;
-                for (int x = sequence.Count; x >= 1; x--)
-                {
-                    PowerPoint.Effect effect = sequence[x];
-                    if (effect.Shape.Name == sh.Name && effect.Shape.Id == sh.Id)
-                        effect.Delete();
-                }
+                DeleteShapeAnimations(sh);
             }
         }
 
