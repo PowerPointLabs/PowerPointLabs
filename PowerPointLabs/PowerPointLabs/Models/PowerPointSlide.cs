@@ -79,6 +79,11 @@ namespace PowerPointLabs.Models
             set { _slide.Name = value; }
         }
 
+        public void Delete()
+        {
+            _slide.Delete();
+        }
+
         public void DeleteShapesWithPrefix(string prefix)
         {
             List<Shape> shapes = _slide.Shapes.Cast<Shape>().ToList();
@@ -285,6 +290,25 @@ namespace PowerPointLabs.Models
             return PowerPointSpotlightSlide.FromSlideFactory(duplicatedSlide);
         }
 
+        public PowerPointSlide CreateAutoAnimateSlide()
+        {
+            Slide duplicatedSlide = _slide.Duplicate()[1];
+            return PowerPointAutoAnimateSlide.FromSlideFactory(duplicatedSlide);
+        }
+
+        public bool HasExitAnimation(Shape shape)
+        {
+            PowerPoint.Sequence sequence = _slide.TimeLine.MainSequence;
+            for (int x = sequence.Count; x >= 1; x--)
+            {
+                PowerPoint.Effect effect = sequence[x];
+                if (effect.Shape.Name == shape.Name && effect.Shape.Id == shape.Id)
+                    if (effect.Exit == Office.MsoTriState.msoTrue)
+                        return true;
+            }
+            return false;
+        }
+
         protected void DeleteSlideNotes()
         {
             if (_slide.HasNotesPage == MsoTriState.msoTrue)
@@ -360,6 +384,62 @@ namespace PowerPointLabs.Models
                     }
                 }
             }
+        }
+
+        public Shape GetShapeWithSameIDAndName(Shape shapeToMatch)
+        {
+            Shape tempMatchingShape = null;
+            foreach (Shape sh in _slide.Shapes)
+            {
+                if (shapeToMatch.Id == sh.Id && haveSameNames(shapeToMatch, sh))
+                {
+                    if (tempMatchingShape == null)
+                        tempMatchingShape = sh;
+                    else
+                    {
+                        if (GetDistanceBetweenShapes(shapeToMatch, sh) < GetDistanceBetweenShapes(shapeToMatch, tempMatchingShape))
+                            tempMatchingShape = sh;
+                    }
+                }
+            }
+            return tempMatchingShape;
+        }
+
+        public Shape GetShapeWithSameName(Shape shapeToMatch)
+        {
+            Shape tempMatchingShape = null;
+            foreach (Shape sh in _slide.Shapes)
+            {
+                if (haveSameNames(shapeToMatch, sh))
+                {
+                    if (tempMatchingShape == null)
+                        tempMatchingShape = sh;
+                    else
+                    {
+                        if (GetDistanceBetweenShapes(shapeToMatch, sh) < GetDistanceBetweenShapes(shapeToMatch, tempMatchingShape))
+                            tempMatchingShape = sh;
+                    }
+                }
+            }
+            return tempMatchingShape;
+        }
+
+        private float GetDistanceBetweenShapes(PowerPoint.Shape sh1, PowerPoint.Shape sh2)
+        {
+            float sh1CenterX = (sh1.Left + (sh1.Width / 2));
+            float sh2CenterX = (sh2.Left + (sh2.Width / 2));
+            float sh1CenterY = (sh1.Top + (sh1.Height / 2));
+            float sh2CenterY = (sh2.Top + (sh2.Height / 2));
+            float distSquared = (float)(Math.Pow((sh2CenterX - sh1CenterX), 2) + Math.Pow((sh2CenterY - sh1CenterY), 2));
+            return (float)(Math.Sqrt(distSquared));
+        }
+
+        private bool haveSameNames(PowerPoint.Shape sh1, PowerPoint.Shape sh2)
+        {
+            String name1 = sh1.Name;
+            String name2 = sh2.Name;
+
+            return (name1.ToUpper().CompareTo(name2.ToUpper()) == 0);
         }
 
         public bool isSpotlightSlide()

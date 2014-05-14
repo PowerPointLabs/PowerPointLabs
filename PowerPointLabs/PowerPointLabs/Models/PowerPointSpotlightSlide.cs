@@ -29,7 +29,7 @@ namespace PowerPointLabs.Models
         {
             DeleteSlideNotes();
             DeleteSlideMedia();
-            RemoveSlideTransitions();
+            ManageSlideTransitions();
         }
 
         public PowerPoint.Shape CreateSpotlightShape(PowerPoint.Shape spotShape)
@@ -73,7 +73,7 @@ namespace PowerPointLabs.Models
             }
         }
 
-        private void RemoveSlideTransitions()
+        private void ManageSlideTransitions()
         {
             base.RemoveSlideTransitions();
             _slide.SlideShowTransition.AdvanceOnTime = Office.MsoTriState.msoFalse;

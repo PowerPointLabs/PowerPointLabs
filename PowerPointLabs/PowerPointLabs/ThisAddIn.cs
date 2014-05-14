@@ -57,17 +57,6 @@ namespace PowerPointLabs
             Trace.Listeners.Add(new TextWriterTraceListener(fileName));
         }
 
-        //void DisplayUpdateDetails()
-        //{
-        //    if (!ApplicationDeployment.IsNetworkDeployed)
-        //        return;
-
-        //    if (!ApplicationDeployment.CurrentDeployment.IsFirstRun)
-        //        return;
-
-        //    System.Windows.Forms.MessageBox.Show("PowerPointLabs has been updated recently.\nPlease visit http://powerpointlabs.info for more details", "Application Updated");
-        //}
-
         void ThisAddIn_SelectionChanged(PowerPoint.Selection Sel)
         {
             ribbon.spotlightEnabled = false;
@@ -136,14 +125,14 @@ namespace PowerPointLabs
                     next = presentation.Slides[slideIndex + 1];
                 if (slideIndex > 1)
                     prev = presentation.Slides[slideIndex - 1];
-                if (!((tmp.Name.Contains("PPSlideAnimated") && tmp.Name.Substring(0, 15).Equals("PPSlideAnimated"))
-                    || ((tmp.Name.Contains("PPSlideStart") && tmp.Name.Substring(0, 12).Equals("PPSlideStart"))
-                    && (next.Name.Contains("PPSlideAnimated") && next.Name.Substring(0, 15).Equals("PPSlideAnimated")))
-                    || ((tmp.Name.Contains("PPSlideEnd") && tmp.Name.Substring(0, 10).Equals("PPSlideEnd"))
-                    && (prev.Name.Contains("PPSlideAnimated") && prev.Name.Substring(0, 15).Equals("PPSlideAnimated")))
-                    || ((tmp.Name.Contains("PPSlideMulti") && tmp.Name.Substring(0, 12).Equals("PPSlideMulti"))
-                    && ((prev.Name.Contains("PPSlideAnimated") && prev.Name.Substring(0, 15).Equals("PPSlideAnimated"))
-                    || (next.Name.Contains("PPSlideAnimated") && next.Name.Substring(0, 15).Equals("PPSlideAnimated"))))))
+                if (!((tmp.Name.StartsWith("PPTAutoAnimateSlideAnimated"))
+                    || ((tmp.Name.StartsWith("PPTAutoAnimateSlideStart"))
+                    && (next.Name.StartsWith("PPTAutoAnimateSlideAnimated")))
+                    || ((tmp.Name.StartsWith("PPTAutoAnimateSlideEnd"))
+                    && (prev.Name.StartsWith("PPTAutoAnimateSlideAnimated")))
+                    || ((tmp.Name.StartsWith("PPTAutoAnimateSlideMulti"))
+                    && ((prev.Name.StartsWith("PPTAutoAnimateSlideAnimated"))
+                    || (next.Name.StartsWith("PPTAutoAnimateSlideAnimated"))))))
                     ribbon.reloadAutoMotionEnabled = false;
                 if (!(tmp.Name.Contains("PPTLabsSpotlight")))
                     ribbon.reloadSpotlight = false;
@@ -154,35 +143,6 @@ namespace PowerPointLabs
             ribbon.RefreshRibbonControl("HighlightBulletsTextButton");
             ribbon.RefreshRibbonControl("HighlightBulletsBackgroundButton");
         }
-
-        //void ThisAddIn_BeginSlideShow(PowerPoint.SlideShowWindow Wn)
-        //{
-        //    PowerPoint.Presentation pres = Wn.Presentation;
-        //    indicators.Clear();
-
-        //    foreach (PowerPoint.Slide sl in pres.Slides)
-        //    {
-        //        if (sl.Name.Contains("PPSlide") && sl.Name.Substring(0, 7).Equals("PPSlide"))
-        //        {
-        //            foreach (PowerPoint.Shape sh in sl.Shapes)
-        //            {
-        //                if (sh.Name.Contains("PPIndicator"))
-        //                {
-        //                    sh.Visible = Office.MsoTriState.msoFalse;
-        //                    indicators.Add(sh);
-        //                }
-        //            }
-        //        }
-        //    }
-        //}
-
-        //void ThisAddIn_EndSlideShow(PowerPoint.Presentation Pres)
-        //{
-        //    foreach (PowerPoint.Shape sh in indicators)
-        //    {
-        //        sh.Visible = Office.MsoTriState.msoTrue;
-        //    }
-        //}
 
         void ThisAddIn_NewPresentation(PowerPoint.Presentation Pres)
         {

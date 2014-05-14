@@ -11,7 +11,7 @@ namespace PowerPointLabs
 {
     class DefaultMotionAnimation
     {
-        public static void AddDefaultMotionAnimation(PowerPointSlide animationSlide, PowerPoint.Shape initialShape, PowerPoint.Shape finalShape, float duration)
+        public static void AddDefaultMotionAnimation(PowerPointSlide animationSlide, PowerPoint.Shape initialShape, PowerPoint.Shape finalShape, float duration, PowerPoint.MsoAnimTriggerType trigger)
         {
             float initialX = (initialShape.Left + (initialShape.Width) / 2);
             float initialY = (initialShape.Top + (initialShape.Height) / 2);
@@ -25,7 +25,6 @@ namespace PowerPointLabs
             float finalWidth = finalShape.Width;
             float finalHeight = finalShape.Height;
 
-            PowerPoint.MsoAnimTriggerType trigger = PowerPoint.MsoAnimTriggerType.msoAnimTriggerOnPageClick;
             PowerPoint.Sequence sequence = animationSlide.TimeLine.MainSequence;
             PowerPoint.Effect effectMotion = null;
             PowerPoint.Effect effectResize = null;

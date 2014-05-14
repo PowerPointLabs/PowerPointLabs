@@ -76,9 +76,12 @@ namespace PowerPointLabs
                 }
 
                 if (NeedsFrameAnimation(shape1, shape2))
+                {
+                    FrameMotionAnimation.animationType = FrameMotionAnimation.FrameMotionAnimationType.kInSlideAnimate;
                     FrameMotionAnimation.AddFrameMotionAnimation(currentSlide, shape1, shape2, defaultDuration);
+                }
                 else
-                    DefaultMotionAnimation.AddDefaultMotionAnimation(currentSlide, shape1, shape2, defaultDuration);
+                    DefaultMotionAnimation.AddDefaultMotionAnimation(currentSlide, shape1, shape2, defaultDuration, PowerPoint.MsoAnimTriggerType.msoAnimTriggerOnPageClick);
 
                 PowerPoint.Effect shape2Appear = currentSlide.TimeLine.MainSequence.AddEffect(shape2, PowerPoint.MsoAnimEffect.msoAnimEffectAppear, PowerPoint.MsoAnimateByLevel.msoAnimateLevelNone, PowerPoint.MsoAnimTriggerType.msoAnimTriggerAfterPrevious);
                 PowerPoint.Effect shape1Disappear = currentSlide.TimeLine.MainSequence.AddEffect(shape1, PowerPoint.MsoAnimEffect.msoAnimEffectAppear, PowerPoint.MsoAnimateByLevel.msoAnimateLevelNone, PowerPoint.MsoAnimTriggerType.msoAnimTriggerAfterPrevious);

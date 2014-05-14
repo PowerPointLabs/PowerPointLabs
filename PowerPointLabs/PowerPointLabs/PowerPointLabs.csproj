@@ -218,40 +218,42 @@
     can be found.
   -->
   <ItemGroup>
-    <Compile Include="AboutForm.cs">
+    <Compile Include="AutoAnimate.cs" />
+    <Compile Include="Models\PowerPointAutoAnimateSlide.cs" />
+    <Compile Include="Views\AboutForm.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="AboutForm.Designer.cs">
+    <Compile Include="Views\AboutForm.Designer.cs">
       <DependentUpon>AboutForm.cs</DependentUpon>
     </Compile>
     <Compile Include="AnimateInSlide.cs" />
-    <Compile Include="AutoAnimateDialogBox.cs">
+    <Compile Include="Views\AutoAnimateDialogBox.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="AutoAnimateDialogBox.Designer.cs">
+    <Compile Include="Views\AutoAnimateDialogBox.Designer.cs">
       <DependentUpon>AutoAnimateDialogBox.cs</DependentUpon>
     </Compile>
-    <Compile Include="AutoZoomDialogBox.cs">
+    <Compile Include="Views\AutoZoomDialogBox.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="AutoZoomDialogBox.Designer.cs">
+    <Compile Include="Views\AutoZoomDialogBox.Designer.cs">
       <DependentUpon>AutoZoomDialogBox.cs</DependentUpon>
     </Compile>
     <Compile Include="DefaultMotionAnimation.cs" />
-    <Compile Include="Form1.cs">
+    <Compile Include="Views\Form1.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Form1.Designer.cs">
+    <Compile Include="Views\Form1.Designer.cs">
       <DependentUpon>Form1.cs</DependentUpon>
     </Compile>
     <Compile Include="FrameMotionAnimation.cs" />
     <Compile Include="HighlightBulletsBackground.cs" />
     <Compile Include="HighlightBulletsText.cs" />
     <Compile Include="Models\PowerPointAckSlide.cs" />
-    <Compile Include="HighlightBulletsDialogBox.cs">
+    <Compile Include="Views\HighlightBulletsDialogBox.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="HighlightBulletsDialogBox.Designer.cs">
+    <Compile Include="Views\HighlightBulletsDialogBox.Designer.cs">
       <DependentUpon>HighlightBulletsDialogBox.cs</DependentUpon>
     </Compile>
     <Compile Include="Models\PowerPointPresentation.cs" />
@@ -273,10 +275,10 @@
     <Compile Include="SpeechEngine\SynthesisState.cs" />
     <Compile Include="SpeechEngine\TextToSpeech.cs" />
     <Compile Include="Spotlight.cs" />
-    <Compile Include="SpotlightDialogBox.cs">
+    <Compile Include="Views\SpotlightDialogBox.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="SpotlightDialogBox.Designer.cs">
+    <Compile Include="Views\SpotlightDialogBox.Designer.cs">
       <DependentUpon>SpotlightDialogBox.cs</DependentUpon>
     </Compile>
     <Compile Include="Views\AutoCaptionDialogBox.cs">
@@ -299,19 +301,19 @@
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="Views\SpeechPlayingForm.Designer.cs" />
-    <EmbeddedResource Include="AboutForm.resx">
+    <EmbeddedResource Include="Views\AboutForm.resx">
       <DependentUpon>AboutForm.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="AutoAnimateDialogBox.resx">
+    <EmbeddedResource Include="Views\AutoAnimateDialogBox.resx">
       <DependentUpon>AutoAnimateDialogBox.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="AutoZoomDialogBox.resx">
+    <EmbeddedResource Include="Views\AutoZoomDialogBox.resx">
       <DependentUpon>AutoZoomDialogBox.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Form1.resx">
+    <EmbeddedResource Include="Views\Form1.resx">
       <DependentUpon>Form1.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="HighlightBulletsDialogBox.resx">
+    <EmbeddedResource Include="Views\HighlightBulletsDialogBox.resx">
       <DependentUpon>HighlightBulletsDialogBox.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
@@ -324,7 +326,7 @@
       <DependentUpon>Resources.resx</DependentUpon>
       <DesignTime>True</DesignTime>
     </Compile>
-    <EmbeddedResource Include="SpotlightDialogBox.resx">
+    <EmbeddedResource Include="Views\SpotlightDialogBox.resx">
       <DependentUpon>SpotlightDialogBox.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Views\AutoCaptionDialogBox.resx">

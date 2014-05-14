@@ -9,8 +9,11 @@ using PowerPoint = Microsoft.Office.Interop.PowerPoint;
 
 namespace PowerPointLabs
 {
+
     class FrameMotionAnimation
     {
+        public enum FrameMotionAnimationType { kAutoAnimate, kInSlideAnimate };
+        public static FrameMotionAnimationType animationType = FrameMotionAnimationType.kAutoAnimate;
         public static void AddFrameMotionAnimation(PowerPointSlide animationSlide, PowerPoint.Shape initialShape, PowerPoint.Shape finalShape, float duration)
         {
             float initialX = (initialShape.Left + (initialShape.Width) / 2);
@@ -50,10 +53,13 @@ namespace PowerPointLabs
                 PowerPoint.Shape dupShape = initialShape.Duplicate()[1];
                 if (i != 1)
                     sequence[sequence.Count].Delete();
-  
-                PowerPoint.Effect shapeEffect = GetShapeAnimations(animationSlide, dupShape);
-                if (shapeEffect != null)
-                    shapeEffect.Delete();
+
+                if (animationType == FrameMotionAnimationType.kInSlideAnimate)
+                {
+                    PowerPoint.Effect shapeEffect = GetShapeAnimations(animationSlide, dupShape);
+                    if (shapeEffect != null)
+                        shapeEffect.Delete();
+                }
 
                 dupShape.LockAspectRatio = Office.MsoTriState.msoFalse;
                 dupShape.Left = initialShape.Left;
@@ -77,7 +83,7 @@ namespace PowerPointLabs
                 if (incrementFont != 0.0f)
                     dupShape.TextFrame.TextRange.Font.Size += (incrementFont * i);
 
-                if (i == 1)
+                if (i == 1 && animationType == FrameMotionAnimationType.kInSlideAnimate)
                 {
                     PowerPoint.Effect appear = sequence.AddEffect(dupShape, PowerPoint.MsoAnimEffect.msoAnimEffectAppear, PowerPoint.MsoAnimateByLevel.msoAnimateLevelNone, PowerPoint.MsoAnimTriggerType.msoAnimTriggerOnPageClick);
                 }
@@ -94,9 +100,12 @@ namespace PowerPointLabs
                 lastShape = dupShape;
             }
 
-            PowerPoint.Effect disappearLast = sequence.AddEffect(lastShape, PowerPoint.MsoAnimEffect.msoAnimEffectAppear, PowerPoint.MsoAnimateByLevel.msoAnimateLevelNone, PowerPoint.MsoAnimTriggerType.msoAnimTriggerWithPrevious);
-            disappearLast.Exit = Office.MsoTriState.msoTrue;
-            disappearLast.Timing.TriggerDelayTime = duration;
+            if (animationType == FrameMotionAnimationType.kInSlideAnimate)
+            {
+                PowerPoint.Effect disappearLast = sequence.AddEffect(lastShape, PowerPoint.MsoAnimEffect.msoAnimEffectAppear, PowerPoint.MsoAnimateByLevel.msoAnimateLevelNone, PowerPoint.MsoAnimTriggerType.msoAnimTriggerWithPrevious);
+                disappearLast.Exit = Office.MsoTriState.msoTrue;
+                disappearLast.Timing.TriggerDelayTime = duration;
+            }
         }
 
         private static float GetMinimumRotation(float fromAngle, float toAngle)
