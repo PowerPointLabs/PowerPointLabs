@@ -13,8 +13,8 @@ namespace PowerPointLabs
     class HighlightBulletsBackground
     {
         public static Color backgroundColor = Color.FromArgb(255, 255, 0);
-        public enum HighlightBulletsSelection { kShapeSelected, kTextSelected, kNoneSelected };
-        public static HighlightBulletsSelection userSelection = HighlightBulletsSelection.kNoneSelected;
+        public enum HighlightBackgroundSelection { kShapeSelected, kTextSelected, kNoneSelected };
+        public static HighlightBackgroundSelection userSelection = HighlightBackgroundSelection.kNoneSelected;
         public static void AddHighlightBulletsBackground()
         {
             try
@@ -27,14 +27,14 @@ namespace PowerPointLabs
 
                 switch (userSelection)
                 {
-                    case HighlightBulletsSelection.kShapeSelected:
+                    case HighlightBackgroundSelection.kShapeSelected:
                         selectedShapes = Globals.ThisAddIn.Application.ActiveWindow.Selection.ShapeRange;
                         break;
-                    case HighlightBulletsSelection.kTextSelected:
+                    case HighlightBackgroundSelection.kTextSelected:
                         selectedShapes = Globals.ThisAddIn.Application.ActiveWindow.Selection.ShapeRange;
                         selectedText = Globals.ThisAddIn.Application.ActiveWindow.Selection.TextRange2.TrimText();
                         break;
-                    case HighlightBulletsSelection.kNoneSelected:
+                    case HighlightBackgroundSelection.kNoneSelected:
                         currentSlide.DeleteShapesWithPrefix("PPTLabsIndicator");
                         currentSlide.DeleteShapesWithPrefix("PPTLabsHighlightBackgroundShape");
                         selectedShapes = currentSlide.Shapes.Range();
@@ -49,7 +49,7 @@ namespace PowerPointLabs
                 Globals.ThisAddIn.Application.ActiveWindow.Selection.Unselect();
                 Globals.ThisAddIn.Application.ActiveWindow.View.GotoSlide(currentSlide.Index);
 
-                SelectShapesToAnimate(currentSlide, shapesToUse);
+                SelectOldShapesToAnimate(currentSlide, shapesToUse);
                 newShapesAdded = AddNewShapesToAnimate(currentSlide, shapesToUse, selectedText);
 
                 if (newShapesAdded)
@@ -79,8 +79,8 @@ namespace PowerPointLabs
                     sh.Name = "HighlightBackgroundShape" + Guid.NewGuid().ToString();
                 foreach (Office.TextRange2 paragraph in sh.TextFrame2.TextRange.Paragraphs)
                 {
-                    if ((userSelection != HighlightBulletsSelection.kTextSelected) && (paragraph.ParagraphFormat.Bullet.Visible == Office.MsoTriState.msoTrue && paragraph.TrimText().Length > 0)
-                        || ((userSelection == HighlightBulletsSelection.kTextSelected) && (!((selectedText.Start + selectedText.Length < paragraph.Start) || (selectedText.Start > paragraph.Start + paragraph.Length - 1)) && paragraph.TrimText().Length > 0)))
+                    if ((userSelection != HighlightBackgroundSelection.kTextSelected) && (paragraph.ParagraphFormat.Bullet.Visible == Office.MsoTriState.msoTrue && paragraph.TrimText().Length > 0)
+                        || ((userSelection == HighlightBackgroundSelection.kTextSelected) && (!((selectedText.Start + selectedText.Length < paragraph.Start) || (selectedText.Start > paragraph.Start + paragraph.Length - 1)) && paragraph.TrimText().Length > 0)))
                     {
                         PowerPoint.Shape highlightShape = currentSlide.Shapes.AddShape(Office.MsoAutoShapeType.msoShapeRoundedRectangle, paragraph.BoundLeft, paragraph.BoundTop, paragraph.BoundWidth, paragraph.BoundHeight);
                         highlightShape.Adjustments[1] = 0.25f;
@@ -98,7 +98,7 @@ namespace PowerPointLabs
             return anySelected;
         }
 
-        private static void SelectShapesToAnimate(PowerPointSlide currentSlide, List<PowerPoint.Shape> shapesToUse)
+        private static void SelectOldShapesToAnimate(PowerPointSlide currentSlide, List<PowerPoint.Shape> shapesToUse)
         {
             List<PowerPoint.Shape> shapesToDelete = new List<PowerPoint.Shape>();
             bool shouldSelect;
@@ -109,7 +109,7 @@ namespace PowerPointLabs
                 shouldSelect = true;
                 if (sh.Name.Contains("PPTLabsHighlightBackgroundShape"))
                 {
-                    if (userSelection != HighlightBulletsSelection.kTextSelected)
+                    if (userSelection != HighlightBackgroundSelection.kTextSelected)
                     {
                         foreach (PowerPoint.Shape tmp in shapesToUse)
                         {
@@ -163,7 +163,7 @@ namespace PowerPointLabs
             {
                 if (sh.Name.Contains("PPTLabsHighlightBackgroundShape"))
                     continue;
-                if (userSelection != HighlightBulletsSelection.kTextSelected)
+                if (userSelection != HighlightBackgroundSelection.kTextSelected)
                 {
                     if (sh.HasTextFrame == Office.MsoTriState.msoTrue && sh.TextFrame2.HasText == Office.MsoTriState.msoTrue
                     && sh.TextFrame2.TextRange.ParagraphFormat.Bullet.Visible == Office.MsoTriState.msoTrue
