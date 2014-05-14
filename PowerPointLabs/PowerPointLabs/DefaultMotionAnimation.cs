@@ -25,14 +25,32 @@ namespace PowerPointLabs
             float finalWidth = finalShape.Width;
             float finalHeight = finalShape.Height;
 
-            PowerPoint.Sequence sequence = animationSlide.TimeLine.MainSequence;
-            PowerPoint.Effect effectMotion = null;
-            PowerPoint.Effect effectResize = null;
-            PowerPoint.Effect effectRotate = null;
+            AddMotionAnimation(animationSlide, initialShape, initialX, initialY, finalX, finalY, duration, ref trigger);
+            AddResizeAnimation(animationSlide, initialShape, initialWidth, initialHeight, finalWidth, finalHeight, duration, ref trigger);
+            AddRotationAnimation(animationSlide, initialShape, initialRotation, finalRotation, duration, ref trigger);
+        }
 
+        public static void AddDrillDownMotionAnimation(PowerPointSlide animationSlide, PowerPoint.Shape shapeToZoom, PowerPoint.Shape referenceShape, float duration, PowerPoint.MsoAnimTriggerType trigger)
+        {
+            float finalWidth = PowerPointPresentation.SlideWidth;
+            float initialWidth = referenceShape.Width;
+            float finalHeight = PowerPointPresentation.SlideHeight;
+            float initialHeight = referenceShape.Height;
+
+            float finalX = (PowerPointPresentation.SlideWidth / 2) * (finalWidth / initialWidth);
+            float initialX = (referenceShape.Left + (referenceShape.Width) / 2) * (finalWidth / initialWidth);
+            float finalY = (PowerPointPresentation.SlideHeight / 2) * (finalHeight / initialHeight);
+            float initialY = (referenceShape.Top + (referenceShape.Height) / 2) * (finalHeight / initialHeight);
+
+            AddMotionAnimation(animationSlide, shapeToZoom, initialX, initialY, finalX, finalY, duration, ref trigger);
+            AddResizeAnimation(animationSlide, shapeToZoom, initialWidth, initialHeight, finalWidth, finalHeight, duration, ref trigger);
+        }
+
+        private static void AddMotionAnimation(PowerPointSlide animationSlide, PowerPoint.Shape animationShape, float initialX, float initialY, float finalX, float finalY, float duration, ref PowerPoint.MsoAnimTriggerType trigger)
+        {
             if ((finalX != initialX) || (finalY != initialY))
             {
-                effectMotion = sequence.AddEffect(initialShape, PowerPoint.MsoAnimEffect.msoAnimEffectPathDown, PowerPoint.MsoAnimateByLevel.msoAnimateLevelNone, trigger);
+                PowerPoint.Effect effectMotion = animationSlide.TimeLine.MainSequence.AddEffect(animationShape, PowerPoint.MsoAnimEffect.msoAnimEffectPathDown, PowerPoint.MsoAnimateByLevel.msoAnimateLevelNone, trigger);
                 PowerPoint.AnimationBehavior motion = effectMotion.Behaviors[1];
                 effectMotion.Timing.Duration = duration;
                 trigger = PowerPoint.MsoAnimTriggerType.msoAnimTriggerWithPrevious;
@@ -47,28 +65,32 @@ namespace PowerPointLabs
                 effectMotion.Timing.SmoothStart = Office.MsoTriState.msoFalse;
                 effectMotion.Timing.SmoothEnd = Office.MsoTriState.msoFalse;
             }
+        }
 
-            //Resize Effect
+        private static void AddRotationAnimation(PowerPointSlide animationSlide, PowerPoint.Shape animationShape, float initialRotation, float finalRotation, float duration, ref PowerPoint.MsoAnimTriggerType trigger)
+        {
+            if (finalRotation != initialRotation)
+            {
+                PowerPoint.Effect effectRotate = animationSlide.TimeLine.MainSequence.AddEffect(animationShape, PowerPoint.MsoAnimEffect.msoAnimEffectSpin, PowerPoint.MsoAnimateByLevel.msoAnimateLevelNone, trigger);
+                PowerPoint.AnimationBehavior rotate = effectRotate.Behaviors[1];
+                effectRotate.Timing.Duration = duration;
+                effectRotate.EffectParameters.Amount = GetMinimumRotation(initialRotation, finalRotation);
+                trigger = PowerPoint.MsoAnimTriggerType.msoAnimTriggerWithPrevious;
+            }
+        }
+
+        private static void AddResizeAnimation(PowerPointSlide animationSlide, PowerPoint.Shape animationShape, float initialWidth, float initialHeight, float finalWidth, float finalHeight, float duration, ref PowerPoint.MsoAnimTriggerType trigger)
+        {
             if ((finalWidth != initialWidth) || (finalHeight != initialHeight))
             {
-                initialShape.LockAspectRatio = Office.MsoTriState.msoFalse;
-                effectResize = sequence.AddEffect(initialShape, PowerPoint.MsoAnimEffect.msoAnimEffectGrowShrink, PowerPoint.MsoAnimateByLevel.msoAnimateLevelNone, trigger);
+                animationShape.LockAspectRatio = Office.MsoTriState.msoFalse;
+                PowerPoint.Effect effectResize = animationSlide.TimeLine.MainSequence.AddEffect(animationShape, PowerPoint.MsoAnimEffect.msoAnimEffectGrowShrink, PowerPoint.MsoAnimateByLevel.msoAnimateLevelNone, trigger);
                 PowerPoint.AnimationBehavior resize = effectResize.Behaviors[1];
                 effectResize.Timing.Duration = duration;
 
                 resize.ScaleEffect.ByX = (finalWidth / initialWidth) * 100;
                 resize.ScaleEffect.ByY = (finalHeight / initialHeight) * 100;
 
-                trigger = PowerPoint.MsoAnimTriggerType.msoAnimTriggerWithPrevious;
-            }
-
-            //Rotation Effect
-            if (finalRotation != initialRotation)
-            {
-                effectRotate = sequence.AddEffect(initialShape, PowerPoint.MsoAnimEffect.msoAnimEffectSpin, PowerPoint.MsoAnimateByLevel.msoAnimateLevelNone, trigger);
-                PowerPoint.AnimationBehavior rotate = effectRotate.Behaviors[1];
-                effectRotate.Timing.Duration = duration;
-                effectRotate.EffectParameters.Amount = GetMinimumRotation(initialRotation, finalRotation);
                 trigger = PowerPoint.MsoAnimTriggerType.msoAnimTriggerWithPrevious;
             }
         }

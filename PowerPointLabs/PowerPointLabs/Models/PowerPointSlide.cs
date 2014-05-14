@@ -15,6 +15,21 @@ namespace PowerPointLabs.Models
     class PowerPointSlide
     {
         protected readonly Slide _slide;
+        private List<PowerPoint.MsoAnimEffect> entryEffects = new List<PowerPoint.MsoAnimEffect>()
+        {
+            PowerPoint.MsoAnimEffect.msoAnimEffectAppear, PowerPoint.MsoAnimEffect.msoAnimEffectBlinds, PowerPoint.MsoAnimEffect.msoAnimEffectBox,
+            PowerPoint.MsoAnimEffect.msoAnimEffectCheckerboard, PowerPoint.MsoAnimEffect.msoAnimEffectCircle, PowerPoint.MsoAnimEffect.msoAnimEffectDiamond,
+            PowerPoint.MsoAnimEffect.msoAnimEffectDissolve, PowerPoint.MsoAnimEffect.msoAnimEffectFly, PowerPoint.MsoAnimEffect.msoAnimEffectPeek, 
+            PowerPoint.MsoAnimEffect.msoAnimEffectPlus, PowerPoint.MsoAnimEffect.msoAnimEffectRandomBars, PowerPoint.MsoAnimEffect.msoAnimEffectSplit,
+            PowerPoint.MsoAnimEffect.msoAnimEffectStrips, PowerPoint.MsoAnimEffect.msoAnimEffectWedge, PowerPoint.MsoAnimEffect.msoAnimEffectWheel,
+            PowerPoint.MsoAnimEffect.msoAnimEffectWipe, PowerPoint.MsoAnimEffect.msoAnimEffectExpand, PowerPoint.MsoAnimEffect.msoAnimEffectFade,
+            PowerPoint.MsoAnimEffect.msoAnimEffectFadedSwivel, PowerPoint.MsoAnimEffect.msoAnimEffectFadedZoom, PowerPoint.MsoAnimEffect.msoAnimEffectZoom,
+            PowerPoint.MsoAnimEffect.msoAnimEffectCenterRevolve, PowerPoint.MsoAnimEffect.msoAnimEffectFloat, PowerPoint.MsoAnimEffect.msoAnimEffectGrowAndTurn,
+            PowerPoint.MsoAnimEffect.msoAnimEffectRiseUp, PowerPoint.MsoAnimEffect.msoAnimEffectSpinner, PowerPoint.MsoAnimEffect.msoAnimEffectSwivel,
+            PowerPoint.MsoAnimEffect.msoAnimEffectBoomerang, PowerPoint.MsoAnimEffect.msoAnimEffectBounce, PowerPoint.MsoAnimEffect.msoAnimEffectCredits,
+            PowerPoint.MsoAnimEffect.msoAnimEffectFlip, PowerPoint.MsoAnimEffect.msoAnimEffectFloat, PowerPoint.MsoAnimEffect.msoAnimEffectPinwheel,
+            PowerPoint.MsoAnimEffect.msoAnimEffectSpiral, PowerPoint.MsoAnimEffect.msoAnimEffectWhip
+        };
 
         protected PowerPointSlide(Slide slide)
         {
@@ -84,6 +99,17 @@ namespace PowerPointLabs.Models
             _slide.Delete();
         }
 
+        public void Copy()
+        {
+            _slide.Copy();
+        }
+
+        public PowerPointSlide Duplicate()
+        {
+            Slide duplicatedSlide = _slide.Duplicate()[1];
+            return PowerPointSlide.FromSlideFactory(duplicatedSlide);
+        }
+
         public void DeleteShapesWithPrefix(string prefix)
         {
             List<Shape> shapes = _slide.Shapes.Cast<Shape>().ToList();
@@ -95,6 +121,16 @@ namespace PowerPointLabs.Models
             }
         }
 
+        public void DeleteAllShapes()
+        {
+            List<Shape> shapes = _slide.Shapes.Cast<Shape>().ToList();
+
+            var matchingShapes = shapes;
+            foreach (Shape s in matchingShapes)
+            {
+                s.Delete();
+            }
+        }
         public void SetAudioAsAutoplay(Shape shape)
         {
             var mainSequence = _slide.TimeLine.MainSequence;
@@ -296,6 +332,13 @@ namespace PowerPointLabs.Models
             return PowerPointAutoAnimateSlide.FromSlideFactory(duplicatedSlide);
         }
 
+        public PowerPointSlide CreateDrillDownSlide()
+        {
+            //Slide addedSlide = Globals.ThisAddIn.Application.ActivePresentation.Slides.AddSlide(_slide.SlideIndex + 1, _slide.CustomLayout);
+            Slide duplicatedSlide = _slide.Duplicate()[1];
+            return PowerPointDrillDownSlide.FromSlideFactory(duplicatedSlide);
+        }
+
         public bool HasExitAnimation(Shape shape)
         {
             PowerPoint.Sequence sequence = _slide.TimeLine.MainSequence;
@@ -304,6 +347,19 @@ namespace PowerPointLabs.Models
                 PowerPoint.Effect effect = sequence[x];
                 if (effect.Shape.Name == shape.Name && effect.Shape.Id == shape.Id)
                     if (effect.Exit == Office.MsoTriState.msoTrue)
+                        return true;
+            }
+            return false;
+        }
+
+        public bool HasEntryAnimation(PowerPoint.Shape shape)
+        {
+            PowerPoint.Sequence sequence = _slide.TimeLine.MainSequence;
+            for (int x = sequence.Count; x >= 1; x--)
+            {
+                PowerPoint.Effect effect = sequence[x];
+                if (effect.Shape.Name == shape.Name && effect.Shape.Id == shape.Id)
+                    if (entryEffects.Contains(effect.EffectType))
                         return true;
             }
             return false;

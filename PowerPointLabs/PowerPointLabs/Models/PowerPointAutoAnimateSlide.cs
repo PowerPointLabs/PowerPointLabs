@@ -7,8 +7,6 @@ using PowerPoint = Microsoft.Office.Interop.PowerPoint;
 
 namespace PowerPointLabs.Models
 {
-    //TO DO: Make FrameMotionAnimation generic
-    //       check for fadeFlag condition
     class PowerPointAutoAnimateSlide : PowerPointSlide
     {
         private PowerPointAutoAnimateSlide(PowerPoint.Slide slide) : base(slide)
