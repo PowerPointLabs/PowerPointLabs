@@ -339,6 +339,12 @@ namespace PowerPointLabs.Models
             return PowerPointDrillDownSlide.FromSlideFactory(duplicatedSlide);
         }
 
+        public PowerPointSlide CreateStepBackSlide()
+        {
+            Slide duplicatedSlide = _slide.Duplicate()[1];
+            return PowerPointStepBackSlide.FromSlideFactory(duplicatedSlide);
+        }
+
         public bool HasExitAnimation(Shape shape)
         {
             PowerPoint.Sequence sequence = _slide.TimeLine.MainSequence;

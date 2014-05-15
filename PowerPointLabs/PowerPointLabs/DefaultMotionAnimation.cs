@@ -46,6 +46,22 @@ namespace PowerPointLabs
             AddResizeAnimation(animationSlide, shapeToZoom, initialWidth, initialHeight, finalWidth, finalHeight, duration, ref trigger);
         }
 
+        public static void AddStepBackMotionAnimation(PowerPointSlide animationSlide, PowerPoint.Shape shapeToZoom, PowerPoint.Shape referenceShape, float duration, PowerPoint.MsoAnimTriggerType trigger)
+        {
+            float initialX = (shapeToZoom.Left + (shapeToZoom.Width) / 2);
+            float finalX = (referenceShape.Left + (referenceShape.Width) / 2);
+            float initialY = (shapeToZoom.Top + (shapeToZoom.Height) / 2);
+            float finalY = (referenceShape.Top + (referenceShape.Height) / 2);
+
+            float initialWidth = shapeToZoom.Width;
+            float finalWidth = referenceShape.Width;
+            float initialHeight = shapeToZoom.Height;
+            float finalHeight = referenceShape.Height;
+
+            AddMotionAnimation(animationSlide, shapeToZoom, initialX, initialY, finalX, finalY, duration, ref trigger);
+            AddResizeAnimation(animationSlide, shapeToZoom, initialWidth, initialHeight, finalWidth, finalHeight, duration, ref trigger);
+        }
+
         private static void AddMotionAnimation(PowerPointSlide animationSlide, PowerPoint.Shape animationShape, float initialX, float initialY, float finalX, float finalY, float duration, ref PowerPoint.MsoAnimTriggerType trigger)
         {
             if ((finalX != initialX) || (finalY != initialY))

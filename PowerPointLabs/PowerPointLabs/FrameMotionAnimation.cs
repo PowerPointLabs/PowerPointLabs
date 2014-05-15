@@ -12,7 +12,7 @@ namespace PowerPointLabs
 
     class FrameMotionAnimation
     {
-        public enum FrameMotionAnimationType { kAutoAnimate, kInSlideAnimate };
+        public enum FrameMotionAnimationType { kAutoAnimate, kInSlideAnimate, kStepBackWithBackground };
         public static FrameMotionAnimationType animationType = FrameMotionAnimationType.kAutoAnimate;
         public static void AddFrameMotionAnimation(PowerPointSlide animationSlide, PowerPoint.Shape initialShape, PowerPoint.Shape finalShape, float duration)
         {
@@ -46,6 +46,34 @@ namespace PowerPointLabs
             float incrementTop = (finalY - initialY) / numFrames;
             float incrementFont = (finalFont - initialFont) / numFrames;
 
+            AddFrameAnimationEffects(animationSlide, initialShape, incrementLeft, incrementTop, incrementWidth, incrementHeight, incrementRotation, incrementFont, duration, numFrames);
+        }
+
+        public static void AddStepBackFrameMotionAnimation(PowerPointSlide animationSlide, PowerPoint.Shape initialShape)
+        {
+            float initialX = (initialShape.Left + (initialShape.Width) / 2);
+            float initialY = (initialShape.Top + (initialShape.Height) / 2);
+            float initialWidth = initialShape.Width;
+            float initialHeight = initialShape.Height;
+
+            float finalX = PowerPointPresentation.SlideWidth / 2;
+            float finalY = PowerPointPresentation.SlideHeight / 2;
+            float finalWidth = PowerPointPresentation.SlideWidth;
+            float finalHeight = PowerPointPresentation.SlideHeight;
+
+            int numFrames = 10;
+            float duration = numFrames * 0.04f;
+
+            float incrementWidth = ((finalWidth / initialWidth) - 1.0f) / numFrames;
+            float incrementHeight = ((finalHeight / initialHeight) - 1.0f) / numFrames;
+            float incrementLeft = (finalX - initialX) / numFrames;
+            float incrementTop = (finalY - initialY) / numFrames;
+
+            AddFrameAnimationEffects(animationSlide, initialShape, incrementLeft, incrementTop, incrementWidth, incrementHeight, 0.0f, 0.0f, duration, numFrames);
+        }
+
+        private static void AddFrameAnimationEffects(PowerPointSlide animationSlide, PowerPoint.Shape initialShape, float incrementLeft, float incrementTop, float incrementWidth, float incrementHeight, float incrementRotation ,float incrementFont, float duration, int numFrames)
+        {
             PowerPoint.Shape lastShape = initialShape;
             PowerPoint.Sequence sequence = animationSlide.TimeLine.MainSequence;
             for (int i = 1; i <= numFrames; i++)
