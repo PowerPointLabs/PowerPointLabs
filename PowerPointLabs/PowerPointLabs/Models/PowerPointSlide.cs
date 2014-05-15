@@ -104,6 +104,11 @@ namespace PowerPointLabs.Models
             _slide.Copy();
         }
 
+        public void MoveTo(int index)
+        {
+            _slide.MoveTo(index);
+        }
+
         public PowerPointSlide Duplicate()
         {
             Slide duplicatedSlide = _slide.Duplicate()[1];
@@ -351,6 +356,29 @@ namespace PowerPointLabs.Models
             return PowerPointZoomToAreaSingleSlide.FromSlideFactory(duplicatedSlide);
         }
 
+        public PowerPointSlide CreateZoomMagnifyingSlide()
+        {
+            Slide duplicatedSlide = _slide.Duplicate()[1];
+            return PowerPointMagnifyingSlide.FromSlideFactory(duplicatedSlide);
+        }
+
+        public PowerPointSlide CreateZoomMagnifiedSlide()
+        {
+            Slide duplicatedSlide = _slide.Duplicate()[1];
+            return PowerPointMagnifiedSlide.FromSlideFactory(duplicatedSlide);
+        }
+
+        public PowerPointSlide CreateZoomDeMagnifyingSlide()
+        {
+            Slide duplicatedSlide = _slide.Duplicate()[1];
+            return PowerPointDeMagnifyingSlide.FromSlideFactory(duplicatedSlide);
+        }
+
+        public PowerPointSlide CreateZoomPanSlide()
+        {
+            Slide duplicatedSlide = _slide.Duplicate()[1];
+            return PowerPointMagnifiedPanSlide.FromSlideFactory(duplicatedSlide);
+        }
         public bool HasExitAnimation(Shape shape)
         {
             PowerPoint.Sequence sequence = _slide.TimeLine.MainSequence;

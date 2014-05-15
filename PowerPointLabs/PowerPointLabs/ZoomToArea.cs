@@ -27,8 +27,8 @@ namespace PowerPointLabs
 
                 if (!multiSlideZoomChecked)
                     AddSingleSlideZoomToArea(currentSlide, editedSelectedShapes);
-                //else
-                //    MultiSlideZoomToArea(currentSlide, editedSelectedShapes);
+                else
+                    AddMultiSlideZoomToArea(currentSlide, editedSelectedShapes);
 
                 Globals.ThisAddIn.Application.ActiveWindow.View.GotoSlide(currentSlide.Index);
                 PostFormatSelectedShapes(ref selectedShapes);
@@ -38,6 +38,55 @@ namespace PowerPointLabs
             {
                 //LogException(e, "AddDrillDownAnimation");
                 throw;
+            }
+        }
+
+        private static void AddMultiSlideZoomToArea(PowerPointSlide currentSlide, List<PowerPoint.Shape> shapesToZoom)
+        {
+            int shapeCount = 1;
+            PowerPointSlide lastMagnifiedSlide = null;
+            PowerPointMagnifyingSlide magnifyingSlide = null;
+            PowerPointMagnifiedSlide magnifiedSlide = null;
+            PowerPointMagnifiedPanSlide magnifiedPanSlide = null;
+            PowerPointDeMagnifyingSlide deMagnifyingSlide = null;
+
+            foreach (PowerPoint.Shape selectedShape in shapesToZoom)
+            {
+                magnifyingSlide = (PowerPointMagnifyingSlide)currentSlide.CreateZoomMagnifyingSlide();
+                magnifyingSlide.AddZoomToAreaAnimation(selectedShape);
+
+                magnifiedSlide = (PowerPointMagnifiedSlide)magnifyingSlide.CreateZoomMagnifiedSlide();
+                magnifiedSlide.AddZoomToAreaAnimation(selectedShape);
+
+                if (shapeCount != 1)
+                {
+                    magnifiedPanSlide = (PowerPointMagnifiedPanSlide)lastMagnifiedSlide.CreateZoomPanSlide();
+                    magnifiedPanSlide.AddZoomToAreaAnimation(lastMagnifiedSlide, magnifiedSlide);
+                }
+
+                if (shapeCount == shapesToZoom.Count)
+                {
+                    deMagnifyingSlide = (PowerPointDeMagnifyingSlide)magnifyingSlide.CreateZoomDeMagnifyingSlide();
+                    deMagnifyingSlide.MoveTo(magnifyingSlide.Index + 2);
+                    deMagnifyingSlide.AddZoomToAreaAnimation(selectedShape);
+                }
+
+                selectedShape.Delete();
+
+                if (shapeCount != 1)
+                {
+                    magnifyingSlide.Delete();
+                    magnifiedSlide.MoveTo(magnifiedPanSlide.Index);
+                    if (deMagnifyingSlide != null)
+                        deMagnifyingSlide.MoveTo(magnifiedSlide.Index);
+                    lastMagnifiedSlide = magnifiedSlide;
+                }
+                else
+                {
+                    lastMagnifiedSlide = magnifiedSlide;
+                }
+
+                shapeCount++;
             }
         }
 
