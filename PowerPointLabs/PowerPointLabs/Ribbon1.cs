@@ -2160,110 +2160,111 @@ namespace PowerPointLabs
         }
         public void ZoomBtnClick(Office.IRibbonControl control)
         {
-            PowerPoint.Presentation presentation = Globals.ThisAddIn.Application.ActivePresentation;
-            PowerPoint.Slide currentSlide = GetCurrentSlide();
-            if (Globals.ThisAddIn.Application.ActiveWindow.Selection.ShapeRange.Count == 0)
-                return;
+            ZoomToArea.AddZoomToArea();
+            //PowerPoint.Presentation presentation = Globals.ThisAddIn.Application.ActivePresentation;
+            //PowerPoint.Slide currentSlide = GetCurrentSlide();
+            //if (Globals.ThisAddIn.Application.ActiveWindow.Selection.ShapeRange.Count == 0)
+            //    return;
 
-            if (currentSlide.Name.Contains("PPTLabsZoomToAreaSlide") && currentSlide.SlideIndex != presentation.Slides.Count)
-            {
-                PowerPoint.Slide nextSlide = GetNextSlide(currentSlide);
-                PowerPoint.Slide tempSlide = null;
-                while ((nextSlide.Name.Contains("PPTLabsMagnifyingSlide") || (nextSlide.Name.Contains("PPTLabsMagnifiedSlide"))
-                       || (nextSlide.Name.Contains("PPTLabsDeMagnifyingSlide")) || (nextSlide.Name.Contains("PPTLabsMagnifiedPanSlide")))
-                       && nextSlide.SlideIndex < presentation.Slides.Count)
-                {
-                    tempSlide = nextSlide;
-                    nextSlide = GetNextSlide(tempSlide);
-                    tempSlide.Delete();
-                }
-            }
-            currentSlide.Name = "PPTLabsZoomToAreaSlide" + GetTimestamp(DateTime.Now);
-            PowerPoint.ShapeRange selectedShapes = Globals.ThisAddIn.Application.ActiveWindow.Selection.ShapeRange;
-            List<PowerPoint.Shape> editedSelectedShapes = new List<PowerPoint.Shape>();
-            PowerPoint.Effect effectAppear = null;
-            PowerPoint.Effect effectDisappear = null;
-            int count = 1;
+            //if (currentSlide.Name.Contains("PPTLabsZoomToAreaSlide") && currentSlide.SlideIndex != presentation.Slides.Count)
+            //{
+            //    PowerPoint.Slide nextSlide = GetNextSlide(currentSlide);
+            //    PowerPoint.Slide tempSlide = null;
+            //    while ((nextSlide.Name.Contains("PPTLabsMagnifyingSlide") || (nextSlide.Name.Contains("PPTLabsMagnifiedSlide"))
+            //           || (nextSlide.Name.Contains("PPTLabsDeMagnifyingSlide")) || (nextSlide.Name.Contains("PPTLabsMagnifiedPanSlide")))
+            //           && nextSlide.SlideIndex < presentation.Slides.Count)
+            //    {
+            //        tempSlide = nextSlide;
+            //        nextSlide = GetNextSlide(tempSlide);
+            //        tempSlide.Delete();
+            //    }
+            //}
+            //currentSlide.Name = "PPTLabsZoomToAreaSlide" + GetTimestamp(DateTime.Now);
+            //PowerPoint.ShapeRange selectedShapes = Globals.ThisAddIn.Application.ActiveWindow.Selection.ShapeRange;
+            //List<PowerPoint.Shape> editedSelectedShapes = new List<PowerPoint.Shape>();
+            //PowerPoint.Effect effectAppear = null;
+            //PowerPoint.Effect effectDisappear = null;
+            //int count = 1;
 
-            foreach (PowerPoint.Shape sh in selectedShapes)
-            {
-                PowerPoint.Sequence sequence = currentSlide.TimeLine.MainSequence;
-                effectAppear = sequence.AddEffect(sh, PowerPoint.MsoAnimEffect.msoAnimEffectAppear, PowerPoint.MsoAnimateByLevel.msoAnimateLevelNone, PowerPoint.MsoAnimTriggerType.msoAnimTriggerWithPrevious);
-                effectAppear.Timing.Duration = 0;
+            //foreach (PowerPoint.Shape sh in selectedShapes)
+            //{
+            //    PowerPoint.Sequence sequence = currentSlide.TimeLine.MainSequence;
+            //    effectAppear = sequence.AddEffect(sh, PowerPoint.MsoAnimEffect.msoAnimEffectAppear, PowerPoint.MsoAnimateByLevel.msoAnimateLevelNone, PowerPoint.MsoAnimTriggerType.msoAnimTriggerWithPrevious);
+            //    effectAppear.Timing.Duration = 0;
 
-                effectDisappear = sequence.AddEffect(sh, PowerPoint.MsoAnimEffect.msoAnimEffectAppear, PowerPoint.MsoAnimateByLevel.msoAnimateLevelNone, PowerPoint.MsoAnimTriggerType.msoAnimTriggerWithPrevious);
-                effectDisappear.Exit = Office.MsoTriState.msoTrue;
-                effectDisappear.Timing.Duration = 0;
-                sh.Visible = Office.MsoTriState.msoFalse;
-            }
-            foreach (PowerPoint.Shape selectedShape2 in selectedShapes)
-            {
-                selectedShape2.Visible = Office.MsoTriState.msoTrue;
-                selectedShape2.Name = "PPTLabsMagnifyShape" + GetTimestamp(DateTime.Now);
-                selectedShape2.Copy();
-                if (selectedShape2.HasTextFrame == Office.MsoTriState.msoTrue)
-                {
-                    selectedShape2.TextFrame2.DeleteText();
-                    selectedShape2.TextFrame2.TextRange.Text = "Zoom Shape " + count;
-                    selectedShape2.TextFrame2.AutoSize = Office.MsoAutoSize.msoAutoSizeTextToFitShape;
-                    selectedShape2.TextFrame2.TextRange.Font.Fill.ForeColor.RGB = 0xffffff;
-                    selectedShape2.TextFrame2.TextRange.Font.Bold = Office.MsoTriState.msoTrue;
-                    selectedShape2.Visible = Office.MsoTriState.msoFalse;
-                }
+            //    effectDisappear = sequence.AddEffect(sh, PowerPoint.MsoAnimEffect.msoAnimEffectAppear, PowerPoint.MsoAnimateByLevel.msoAnimateLevelNone, PowerPoint.MsoAnimTriggerType.msoAnimTriggerWithPrevious);
+            //    effectDisappear.Exit = Office.MsoTriState.msoTrue;
+            //    effectDisappear.Timing.Duration = 0;
+            //    sh.Visible = Office.MsoTriState.msoFalse;
+            //}
+            //foreach (PowerPoint.Shape selectedShape2 in selectedShapes)
+            //{
+            //    selectedShape2.Visible = Office.MsoTriState.msoTrue;
+            //    selectedShape2.Name = "PPTLabsMagnifyShape" + GetTimestamp(DateTime.Now);
+            //    selectedShape2.Copy();
+            //    if (selectedShape2.HasTextFrame == Office.MsoTriState.msoTrue)
+            //    {
+            //        selectedShape2.TextFrame2.DeleteText();
+            //        selectedShape2.TextFrame2.TextRange.Text = "Zoom Shape " + count;
+            //        selectedShape2.TextFrame2.AutoSize = Office.MsoAutoSize.msoAutoSizeTextToFitShape;
+            //        selectedShape2.TextFrame2.TextRange.Font.Fill.ForeColor.RGB = 0xffffff;
+            //        selectedShape2.TextFrame2.TextRange.Font.Bold = Office.MsoTriState.msoTrue;
+            //        selectedShape2.Visible = Office.MsoTriState.msoFalse;
+            //    }
 
-                PowerPoint.Shape selectedShape = currentSlide.Shapes.Paste()[1];
-                selectedShape.LockAspectRatio = Office.MsoTriState.msoFalse;
+            //    PowerPoint.Shape selectedShape = currentSlide.Shapes.Paste()[1];
+            //    selectedShape.LockAspectRatio = Office.MsoTriState.msoFalse;
 
-                if (selectedShape2.Width > selectedShape2.Height)
-                {
-                    selectedShape.Width = selectedShape2.Width;
-                    selectedShape.Height = Globals.ThisAddIn.Application.ActivePresentation.PageSetup.SlideHeight * selectedShape.Width / Globals.ThisAddIn.Application.ActivePresentation.PageSetup.SlideWidth;
-                    selectedShape.Left = selectedShape2.Left + (selectedShape2.Width / 2) - (selectedShape.Width / 2);
-                    selectedShape.Top = selectedShape2.Top + (selectedShape2.Height / 2) - (selectedShape.Height / 2);
-                }
-                else
-                {
-                    selectedShape.Height = selectedShape2.Height;
-                    selectedShape.Width = Globals.ThisAddIn.Application.ActivePresentation.PageSetup.SlideWidth * selectedShape.Height / Globals.ThisAddIn.Application.ActivePresentation.PageSetup.SlideHeight;
-                    selectedShape.Left = selectedShape2.Left + (selectedShape2.Width / 2) - (selectedShape.Width / 2);
-                    selectedShape.Top = selectedShape2.Top + (selectedShape2.Height / 2) - (selectedShape.Height / 2);
-                }
+            //    if (selectedShape2.Width > selectedShape2.Height)
+            //    {
+            //        selectedShape.Width = selectedShape2.Width;
+            //        selectedShape.Height = Globals.ThisAddIn.Application.ActivePresentation.PageSetup.SlideHeight * selectedShape.Width / Globals.ThisAddIn.Application.ActivePresentation.PageSetup.SlideWidth;
+            //        selectedShape.Left = selectedShape2.Left + (selectedShape2.Width / 2) - (selectedShape.Width / 2);
+            //        selectedShape.Top = selectedShape2.Top + (selectedShape2.Height / 2) - (selectedShape.Height / 2);
+            //    }
+            //    else
+            //    {
+            //        selectedShape.Height = selectedShape2.Height;
+            //        selectedShape.Width = Globals.ThisAddIn.Application.ActivePresentation.PageSetup.SlideWidth * selectedShape.Height / Globals.ThisAddIn.Application.ActivePresentation.PageSetup.SlideHeight;
+            //        selectedShape.Left = selectedShape2.Left + (selectedShape2.Width / 2) - (selectedShape.Width / 2);
+            //        selectedShape.Top = selectedShape2.Top + (selectedShape2.Height / 2) - (selectedShape.Height / 2);
+            //    }
 
-                if (selectedShape.Width > presentation.PageSetup.SlideWidth)
-                    selectedShape.Width = presentation.PageSetup.SlideWidth;
-                if (selectedShape.Height > presentation.PageSetup.SlideHeight)
-                    selectedShape.Height = presentation.PageSetup.SlideHeight;
+            //    if (selectedShape.Width > presentation.PageSetup.SlideWidth)
+            //        selectedShape.Width = presentation.PageSetup.SlideWidth;
+            //    if (selectedShape.Height > presentation.PageSetup.SlideHeight)
+            //        selectedShape.Height = presentation.PageSetup.SlideHeight;
 
-                if (selectedShape.Left < 0)
-                    selectedShape.Left = 0;
-                if (selectedShape.Left + selectedShape.Width > presentation.PageSetup.SlideWidth)
-                    selectedShape.Left = presentation.PageSetup.SlideWidth - selectedShape.Width;
-                if (selectedShape.Top < 0)
-                    selectedShape.Top = 0;
-                if (selectedShape.Top + selectedShape.Height > presentation.PageSetup.SlideHeight)
-                    selectedShape.Top = presentation.PageSetup.SlideHeight - selectedShape.Height;
+            //    if (selectedShape.Left < 0)
+            //        selectedShape.Left = 0;
+            //    if (selectedShape.Left + selectedShape.Width > presentation.PageSetup.SlideWidth)
+            //        selectedShape.Left = presentation.PageSetup.SlideWidth - selectedShape.Width;
+            //    if (selectedShape.Top < 0)
+            //        selectedShape.Top = 0;
+            //    if (selectedShape.Top + selectedShape.Height > presentation.PageSetup.SlideHeight)
+            //        selectedShape.Top = presentation.PageSetup.SlideHeight - selectedShape.Height;
 
-                editedSelectedShapes.Add(selectedShape);
-                count++;
-            }
+            //    editedSelectedShapes.Add(selectedShape);
+            //    count++;
+            //}
 
-            if (!multiSlideZoomChecked)
-            {
-                SingleSlideZoomToArea(currentSlide, editedSelectedShapes);
-            }
-            else
-            {
-                MultiSlideZoomToArea(currentSlide, editedSelectedShapes);
-            }
-            Globals.ThisAddIn.Application.ActiveWindow.View.GotoSlide(currentSlide.SlideIndex);
-            foreach (PowerPoint.Shape sh in selectedShapes)
-            {
-                sh.Visible = Office.MsoTriState.msoTrue;
-                sh.Fill.ForeColor.RGB = 0xaaaaaa;
-                sh.Fill.Transparency = 0.7f;
-                sh.Line.ForeColor.RGB = 0x000000;
-            }
-            AddAckSlide();
+            //if (!multiSlideZoomChecked)
+            //{
+            //    SingleSlideZoomToArea(currentSlide, editedSelectedShapes);
+            //}
+            //else
+            //{
+            //    MultiSlideZoomToArea(currentSlide, editedSelectedShapes);
+            //}
+            //Globals.ThisAddIn.Application.ActiveWindow.View.GotoSlide(currentSlide.SlideIndex);
+            //foreach (PowerPoint.Shape sh in selectedShapes)
+            //{
+            //    sh.Visible = Office.MsoTriState.msoTrue;
+            //    sh.Fill.ForeColor.RGB = 0xaaaaaa;
+            //    sh.Fill.Transparency = 0.7f;
+            //    sh.Line.ForeColor.RGB = 0x000000;
+            //}
+            //AddAckSlide();
         }
         public void AboutButtonClick(Office.IRibbonControl control)
         {
@@ -2820,6 +2821,8 @@ namespace PowerPointLabs
                 backgroundZoomChecked = backgroundChecked;
                 multiSlideZoomChecked = multiSlideChecked;
                 AutoZoom.backgroundZoomChecked = backgroundChecked;
+                ZoomToArea.backgroundZoomChecked = backgroundChecked;
+                ZoomToArea.multiSlideZoomChecked = multiSlideChecked;
             }
             catch (Exception e)
             {
@@ -3245,7 +3248,7 @@ namespace PowerPointLabs
         #endregion
 
         #region feature: Crop to Shape
-        private PowerPoint.Shape CropShapeToSlide(ref PowerPoint.Selection selection)
+        public PowerPoint.Shape CropShapeToSlide(ref PowerPoint.Selection selection)
         {
             try
             {

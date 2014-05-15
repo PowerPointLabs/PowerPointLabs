@@ -12,7 +12,7 @@ namespace PowerPointLabs
 
     class FrameMotionAnimation
     {
-        public enum FrameMotionAnimationType { kAutoAnimate, kInSlideAnimate, kStepBackWithBackground };
+        public enum FrameMotionAnimationType { kAutoAnimate, kInSlideAnimate, kStepBackWithBackground, kZoomToAreaPan };
         public static FrameMotionAnimationType animationType = FrameMotionAnimationType.kAutoAnimate;
         public static void AddFrameMotionAnimation(PowerPointSlide animationSlide, PowerPoint.Shape initialShape, PowerPoint.Shape finalShape, float duration)
         {
@@ -72,6 +72,29 @@ namespace PowerPointLabs
             AddFrameAnimationEffects(animationSlide, initialShape, incrementLeft, incrementTop, incrementWidth, incrementHeight, 0.0f, 0.0f, duration, numFrames);
         }
 
+        public static void AddZoomToAreaPanFrameMotionAnimation(PowerPointSlide animationSlide, PowerPoint.Shape initialShape, PowerPoint.Shape finalShape)
+        {
+            float initialX = (initialShape.Left + (initialShape.Width) / 2);
+            float initialY = (initialShape.Top + (initialShape.Height) / 2);
+            float initialWidth = initialShape.Width;
+            float initialHeight = initialShape.Height;
+
+            float finalX = (finalShape.Left + (finalShape.Width) / 2);
+            float finalY = (finalShape.Top + (finalShape.Height) / 2);
+            float finalWidth = finalShape.Width;
+            float finalHeight = finalShape.Height;
+
+            int numFrames = 10;
+            float duration = numFrames * 0.04f;
+
+            float incrementWidth = ((finalWidth / initialWidth) - 1.0f) / numFrames;
+            float incrementHeight = ((finalHeight / initialHeight) - 1.0f) / numFrames;
+            float incrementLeft = (finalX - initialX) / numFrames;
+            float incrementTop = (finalY - initialY) / numFrames;
+
+            AddFrameAnimationEffects(animationSlide, initialShape, incrementLeft, incrementTop, incrementWidth, incrementHeight, 0.0f, 0.0f, duration, numFrames);
+        }
+
         private static void AddFrameAnimationEffects(PowerPointSlide animationSlide, PowerPoint.Shape initialShape, float incrementLeft, float incrementTop, float incrementWidth, float incrementHeight, float incrementRotation ,float incrementFont, float duration, int numFrames)
         {
             PowerPoint.Shape lastShape = initialShape;
@@ -82,12 +105,11 @@ namespace PowerPointLabs
                 if (i != 1)
                     sequence[sequence.Count].Delete();
 
-                if (animationType == FrameMotionAnimationType.kInSlideAnimate)
-                {
-                    PowerPoint.Effect shapeEffect = GetShapeAnimations(animationSlide, dupShape);
-                    if (shapeEffect != null)
-                        shapeEffect.Delete();
-                }
+                if (animationType == FrameMotionAnimationType.kInSlideAnimate || animationType == FrameMotionAnimationType.kZoomToAreaPan)
+                    animationSlide.DeleteShapeAnimations(dupShape);
+
+                if (animationType == FrameMotionAnimationType.kZoomToAreaPan)
+                    dupShape.Name = "PPTLabsMagnifyPanAreaGroup" + DateTime.Now.ToString("yyyyMMddHHmmssffff");
 
                 dupShape.LockAspectRatio = Office.MsoTriState.msoFalse;
                 dupShape.Left = initialShape.Left;
@@ -111,7 +133,7 @@ namespace PowerPointLabs
                 if (incrementFont != 0.0f)
                     dupShape.TextFrame.TextRange.Font.Size += (incrementFont * i);
 
-                if (i == 1 && animationType == FrameMotionAnimationType.kInSlideAnimate)
+                if (i == 1 && (animationType == FrameMotionAnimationType.kInSlideAnimate || animationType == FrameMotionAnimationType.kZoomToAreaPan)) 
                 {
                     PowerPoint.Effect appear = sequence.AddEffect(dupShape, PowerPoint.MsoAnimEffect.msoAnimEffectAppear, PowerPoint.MsoAnimateByLevel.msoAnimateLevelNone, PowerPoint.MsoAnimTriggerType.msoAnimTriggerOnPageClick);
                 }
@@ -128,9 +150,9 @@ namespace PowerPointLabs
                 lastShape = dupShape;
             }
 
-            if (animationType == FrameMotionAnimationType.kInSlideAnimate)
+            if (animationType == FrameMotionAnimationType.kInSlideAnimate || animationType == FrameMotionAnimationType.kZoomToAreaPan)
             {
-                PowerPoint.Effect disappearLast = sequence.AddEffect(lastShape, PowerPoint.MsoAnimEffect.msoAnimEffectAppear, PowerPoint.MsoAnimateByLevel.msoAnimateLevelNone, PowerPoint.MsoAnimTriggerType.msoAnimTriggerWithPrevious);
+                PowerPoint.Effect disappearLast = sequence.AddEffect(lastShape, PowerPoint.MsoAnimEffect.msoAnimEffectAppear, PowerPoint.MsoAnimateByLevel.msoAnimateLevelNone, PowerPoint.MsoAnimTriggerType.msoAnimTriggerAfterPrevious);
                 disappearLast.Exit = Office.MsoTriState.msoTrue;
                 disappearLast.Timing.TriggerDelayTime = duration;
             }

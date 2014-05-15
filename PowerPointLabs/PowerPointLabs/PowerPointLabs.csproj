@@ -223,6 +223,7 @@
     <Compile Include="Models\PowerPointAutoAnimateSlide.cs" />
     <Compile Include="Models\PowerPointDrillDownSlide.cs" />
     <Compile Include="Models\PowerPointStepBackSlide.cs" />
+    <Compile Include="Models\PowerPointZoomToAreaSingleSlide.cs" />
     <Compile Include="Views\AboutForm.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -304,6 +305,7 @@
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="Views\SpeechPlayingForm.Designer.cs" />
+    <Compile Include="ZoomToArea.cs" />
     <EmbeddedResource Include="Views\AboutForm.resx">
       <DependentUpon>AboutForm.cs</DependentUpon>
     </EmbeddedResource>

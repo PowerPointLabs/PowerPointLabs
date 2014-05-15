@@ -18,7 +18,7 @@ namespace PowerPointLabs
 {
     public partial class ThisAddIn
     {
-        Ribbon1 ribbon;
+        public Ribbon1 ribbon;
         public ArrayList indicators = new ArrayList();
 
         private void ThisAddIn_Startup(object sender, System.EventArgs e)

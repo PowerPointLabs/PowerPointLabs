@@ -345,6 +345,12 @@ namespace PowerPointLabs.Models
             return PowerPointStepBackSlide.FromSlideFactory(duplicatedSlide);
         }
 
+        public PowerPointSlide CreateZoomToAreaSingleSlide()
+        {
+            Slide duplicatedSlide = _slide.Duplicate()[1];
+            return PowerPointZoomToAreaSingleSlide.FromSlideFactory(duplicatedSlide);
+        }
+
         public bool HasExitAnimation(Shape shape)
         {
             PowerPoint.Sequence sequence = _slide.TimeLine.MainSequence;
@@ -446,6 +452,17 @@ namespace PowerPointLabs.Models
                     }
                 }
             }
+        }
+
+        public void AddAppearDisappearAnimation(Shape sh)
+        {
+            PowerPoint.Sequence sequence = _slide.TimeLine.MainSequence;
+            PowerPoint.Effect effectAppear = sequence.AddEffect(sh, PowerPoint.MsoAnimEffect.msoAnimEffectAppear, PowerPoint.MsoAnimateByLevel.msoAnimateLevelNone, PowerPoint.MsoAnimTriggerType.msoAnimTriggerWithPrevious);
+            effectAppear.Timing.Duration = 0;
+
+            PowerPoint.Effect effectDisappear = sequence.AddEffect(sh, PowerPoint.MsoAnimEffect.msoAnimEffectAppear, PowerPoint.MsoAnimateByLevel.msoAnimateLevelNone, PowerPoint.MsoAnimTriggerType.msoAnimTriggerWithPrevious);
+            effectDisappear.Exit = Office.MsoTriState.msoTrue;
+            effectDisappear.Timing.Duration = 0;
         }
 
         public Shape GetShapeWithSameIDAndName(Shape shapeToMatch)
