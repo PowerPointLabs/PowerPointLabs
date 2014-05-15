@@ -62,6 +62,22 @@ namespace PowerPointLabs
             AddResizeAnimation(animationSlide, shapeToZoom, initialWidth, initialHeight, finalWidth, finalHeight, duration, ref trigger);
         }
 
+        public static void AddZoomToAreaMotionAnimation(PowerPointSlide animationSlide, PowerPoint.Shape shapeToZoom, PowerPoint.Shape initialShape, PowerPoint.Shape finalShape, float duration, PowerPoint.MsoAnimTriggerType trigger)
+        {
+            float initialWidth = initialShape.Width;
+            float finalWidth = finalShape.Width;
+            float initialHeight = initialShape.Height;
+            float finalHeight = finalShape.Height;
+
+            float initialX = (initialShape.Left + (initialShape.Width) / 2) * (finalWidth / initialWidth);
+            float finalX = (finalShape.Left + (finalShape.Width) / 2) * (finalWidth / initialWidth);
+            float initialY = (initialShape.Top + (initialShape.Height) / 2) * (finalHeight / initialHeight);
+            float finalY = (finalShape.Top + (finalShape.Height) / 2) * (finalHeight / initialHeight);
+
+            AddMotionAnimation(animationSlide, shapeToZoom, initialX, initialY, finalX, finalY, duration, ref trigger);
+            AddResizeAnimation(animationSlide, shapeToZoom, initialWidth, initialHeight, finalWidth, finalHeight, duration, ref trigger);
+        }
+
         private static void AddMotionAnimation(PowerPointSlide animationSlide, PowerPoint.Shape animationShape, float initialX, float initialY, float finalX, float finalY, float duration, ref PowerPoint.MsoAnimTriggerType trigger)
         {
             if ((finalX != initialX) || (finalY != initialY))

@@ -10,10 +10,7 @@ namespace PowerPointLabs.Models
     class PowerPointZoomToAreaSingleSlide : PowerPointSlide
     {
         private PowerPoint.Shape indicatorShape = null;
-        //private PowerPoint.Shape zoomSlidePicture = null;
         private PowerPoint.Shape zoomSlideCroppedShapes = null;
-        //private float scaleFactorX = 0.0f;
-        //private float scaleFactorY = 0.0f;
 
         private PowerPointZoomToAreaSingleSlide(PowerPoint.Slide slide) : base(slide)
         {
@@ -36,13 +33,6 @@ namespace PowerPointLabs.Models
             var matchingShapes = shapes.Where(current => (HasExitAnimation(current) || shapesToZoom.Contains(current)));
             foreach (PowerPoint.Shape s in matchingShapes)
                 s.Delete();
-
-            //_slide.Copy();
-            //zoomSlidePicture = _slide.Shapes.PasteSpecial(PowerPoint.PpPasteDataType.ppPastePNG)[1];
-            //zoomSlidePicture.Name = "PPTLabsZoomSlide" + DateTime.Now.ToString("yyyyMMddHHmmssffff");
-            //scaleFactorX = PowerPointPresentation.SlideWidth / zoomSlidePicture.Width;
-            //scaleFactorY = PowerPointPresentation.SlideHeight / zoomSlidePicture.Height;
-            //FitShapeToSlide(ref zoomSlidePicture);
 
             AddZoomSlideCroppedPicture();
 
@@ -71,13 +61,70 @@ namespace PowerPointLabs.Models
                 if (!ZoomToArea.backgroundZoomChecked)
                     ZoomWithoutBackground(zoomShape, shapeCount, ref lastMagnifiedShape, shapesToZoom.Count);
                 else
-                {
-                }
+                    ZoomWithBackground(zoomShape, shapeCount, ref lastMagnifiedShape, shapesToZoom.Count);
                 shapeCount++;
                 zoomShape.Delete();
                 indicatorShape.ZOrder(Office.MsoZOrderCmd.msoBringToFront);
             }
             zoomSlideCroppedShapes.Delete();
+        }
+        private void ZoomWithBackground(PowerPoint.Shape zoomShape, int shapeCount, ref PowerPoint.Shape lastMagnifiedShape, int totalShapes)
+        {
+            if (shapeCount == 1)
+            {
+                PowerPoint.Shape shapeToZoom = zoomSlideCroppedShapes.Duplicate()[1];
+                FitShapeToSlide(ref shapeToZoom);
+                shapeToZoom.Name = "PPTLabsMagnifyingAreaSlide" + DateTime.Now.ToString("yyyyMMddHHmmssffff");
+
+                PowerPoint.Shape referenceShape = GetReferenceShape(zoomShape);
+                DefaultMotionAnimation.AddZoomToAreaMotionAnimation(this, shapeToZoom, zoomShape, referenceShape, 0.5f, PowerPoint.MsoAnimTriggerType.msoAnimTriggerAfterPrevious);
+
+                referenceShape.Delete();
+                PowerPoint.Shape tempShape1 = GetShapeToZoom(zoomShape);
+                PowerPoint.Shape tempShape2 = GetReferenceShape(tempShape1);
+                lastMagnifiedShape = GetLastMagnifiedShape(tempShape2);
+                lastMagnifiedShape.Name = "PPTLabsMagnifyAreaGroupShape" + shapeCount + "-" + DateTime.Now.ToString("yyyyMMddHHmmssffff");
+                tempShape1.Delete();
+
+                PowerPoint.Effect effectAppear = _slide.TimeLine.MainSequence.AddEffect(lastMagnifiedShape, PowerPoint.MsoAnimEffect.msoAnimEffectAppear, PowerPoint.MsoAnimateByLevel.msoAnimateLevelNone, PowerPoint.MsoAnimTriggerType.msoAnimTriggerAfterPrevious);
+                effectAppear.Timing.Duration = 0;
+
+                PowerPoint.Effect effectDisappear = _slide.TimeLine.MainSequence.AddEffect(shapeToZoom, PowerPoint.MsoAnimEffect.msoAnimEffectAppear, PowerPoint.MsoAnimateByLevel.msoAnimateLevelNone, PowerPoint.MsoAnimTriggerType.msoAnimTriggerWithPrevious);
+                effectDisappear.Exit = Office.MsoTriState.msoTrue;
+                effectDisappear.Timing.Duration = 0;
+            }
+            else
+            {
+                PowerPoint.Shape tempShape1 = GetShapeToZoom(zoomShape);
+                PowerPoint.Shape tempShape2 = GetReferenceShape(tempShape1);
+                PowerPoint.Shape referenceShape = GetLastMagnifiedShape(tempShape2);
+                tempShape1.Delete();
+                referenceShape.Name = "PPTLabsMagnifyAreaGroupShape" + shapeCount + "-" + DateTime.Now.ToString("yyyyMMddHHmmssffff");
+                PowerPoint.Shape shapeToZoom = lastMagnifiedShape;
+                FrameMotionAnimation.animationType = FrameMotionAnimation.FrameMotionAnimationType.kZoomToAreaPan;
+                FrameMotionAnimation.AddZoomToAreaPanFrameMotionAnimation(this, shapeToZoom, referenceShape);
+
+                lastMagnifiedShape = referenceShape;
+                PowerPoint.Effect effectAppear = _slide.TimeLine.MainSequence.AddEffect(lastMagnifiedShape, PowerPoint.MsoAnimEffect.msoAnimEffectAppear, PowerPoint.MsoAnimateByLevel.msoAnimateLevelNone, PowerPoint.MsoAnimTriggerType.msoAnimTriggerWithPrevious);
+                effectAppear.Timing.Duration = 0;
+            }
+
+            if (shapeCount == totalShapes)
+            {
+                PowerPoint.Shape shapeToZoom = GetShapeToZoomWithBackground(zoomShape);
+
+                PowerPoint.Effect effectAppear = _slide.TimeLine.MainSequence.AddEffect(shapeToZoom, PowerPoint.MsoAnimEffect.msoAnimEffectAppear, PowerPoint.MsoAnimateByLevel.msoAnimateLevelNone, PowerPoint.MsoAnimTriggerType.msoAnimTriggerOnPageClick);
+                effectAppear.Timing.Duration = 0;
+
+                FrameMotionAnimation.animationType = FrameMotionAnimation.FrameMotionAnimationType.kZoomToAreaDeMagnify;
+                FrameMotionAnimation.AddStepBackFrameMotionAnimation(this, shapeToZoom);
+                PowerPoint.Effect lastEffect = _slide.TimeLine.MainSequence[_slide.TimeLine.MainSequence.Count];
+                ManageEndAnimationsForZoomWithBackground();
+                lastEffect.MoveTo(_slide.TimeLine.MainSequence.Count);
+                lastEffect.Timing.TriggerType = PowerPoint.MsoAnimTriggerType.msoAnimTriggerWithPrevious;
+                lastEffect.Timing.TriggerDelayTime = 0.0f;
+                lastEffect.Timing.Duration = 0.01f;
+            }
         }
 
         private void ZoomWithoutBackground(PowerPoint.Shape zoomShape, int shapeCount, ref PowerPoint.Shape lastMagnifiedShape, int totalShapes)
@@ -131,11 +178,40 @@ namespace PowerPointLabs.Models
                 effectDisappear.Exit = Office.MsoTriState.msoTrue;
 
                 DefaultMotionAnimation.AddStepBackMotionAnimation(this, shapeToZoom, referenceShape, 0.5f, PowerPoint.MsoAnimTriggerType.msoAnimTriggerWithPrevious);
-                ManageEndAnimations();
+                ManageEndAnimationsForZoomWithoutBackground();
             }
         }
 
-        private void ManageEndAnimations()
+        private void ManageEndAnimationsForZoomWithBackground()
+        {
+            bool isFirst = true;
+            PowerPoint.Effect effectAppear = null;
+            foreach (PowerPoint.Shape tmp in _slide.Shapes)
+            {
+                if (!(tmp.Equals(indicatorShape)) && !(tmp.Name.Contains("PPTLabsMagnifyAreaGroup")) && !(tmp.Name.Contains("PPTLabsMagnifyPanAreaGroup")) && !(tmp.Name.Contains("PPTLabsDeMagnifyAreaSlide")) && !(tmp.Name.Contains("PPTLabsMagnifyingAreaSlide")))
+                {
+                    if (isFirst)
+                        effectAppear = _slide.TimeLine.MainSequence.AddEffect(tmp, PowerPoint.MsoAnimEffect.msoAnimEffectAppear, PowerPoint.MsoAnimateByLevel.msoAnimateLevelNone, PowerPoint.MsoAnimTriggerType.msoAnimTriggerAfterPrevious);
+                    else
+                        effectAppear = _slide.TimeLine.MainSequence.AddEffect(tmp, PowerPoint.MsoAnimEffect.msoAnimEffectAppear, PowerPoint.MsoAnimateByLevel.msoAnimateLevelNone, PowerPoint.MsoAnimTriggerType.msoAnimTriggerWithPrevious);
+                    effectAppear.Timing.Duration = 0.01f;
+                    isFirst = false;
+                }
+                else if (tmp.Name.Contains("PPTLabsMagnifyAreaGroup") || tmp.Name.Contains("PPTLabsMagnifyingAreaSlide"))
+                {
+                    if (isFirst)
+                        effectAppear = _slide.TimeLine.MainSequence.AddEffect(tmp, PowerPoint.MsoAnimEffect.msoAnimEffectAppear, PowerPoint.MsoAnimateByLevel.msoAnimateLevelNone, PowerPoint.MsoAnimTriggerType.msoAnimTriggerAfterPrevious);
+                    else
+                        effectAppear = _slide.TimeLine.MainSequence.AddEffect(tmp, PowerPoint.MsoAnimEffect.msoAnimEffectAppear, PowerPoint.MsoAnimateByLevel.msoAnimateLevelNone, PowerPoint.MsoAnimTriggerType.msoAnimTriggerWithPrevious);
+
+                    effectAppear.Exit = Office.MsoTriState.msoTrue;
+                    effectAppear.Timing.Duration = 0.01f;
+                    isFirst = false;
+                }
+            }
+        }
+
+        private void ManageEndAnimationsForZoomWithoutBackground()
         {
             bool isFirst = true;
             PowerPoint.Effect effectFade = null;
@@ -157,12 +233,12 @@ namespace PowerPointLabs.Models
                 if (tmp.Name.Contains("PPTLabsMagnifyAreaGroup") || tmp.Name.Contains("PPTLabsMagnifyingAreaSlide") || tmp.Name.Contains("PPTLabsDeMagnifyAreaSlide"))
                 {
                     if (isFirst)
-                        effectFade = _slide.TimeLine.MainSequence.AddEffect(tmp, PowerPoint.MsoAnimEffect.msoAnimEffectFade, PowerPoint.MsoAnimateByLevel.msoAnimateLevelNone, PowerPoint.MsoAnimTriggerType.msoAnimTriggerAfterPrevious);
+                        effectFade = _slide.TimeLine.MainSequence.AddEffect(tmp, PowerPoint.MsoAnimEffect.msoAnimEffectAppear, PowerPoint.MsoAnimateByLevel.msoAnimateLevelNone, PowerPoint.MsoAnimTriggerType.msoAnimTriggerAfterPrevious);
                     else
-                        effectFade = _slide.TimeLine.MainSequence.AddEffect(tmp, PowerPoint.MsoAnimEffect.msoAnimEffectFade, PowerPoint.MsoAnimateByLevel.msoAnimateLevelNone, PowerPoint.MsoAnimTriggerType.msoAnimTriggerWithPrevious);
+                        effectFade = _slide.TimeLine.MainSequence.AddEffect(tmp, PowerPoint.MsoAnimEffect.msoAnimEffectAppear, PowerPoint.MsoAnimateByLevel.msoAnimateLevelNone, PowerPoint.MsoAnimTriggerType.msoAnimTriggerWithPrevious);
 
                     effectFade.Exit = Office.MsoTriState.msoTrue;
-                    effectFade.Timing.Duration = 0.25f;
+                    effectFade.Timing.Duration = 0.01f;
                     isFirst = false;
                 }       
             }
@@ -211,6 +287,40 @@ namespace PowerPointLabs.Models
             return shapeToZoom;
         }
 
+        private PowerPoint.Shape GetShapeToZoomWithBackground(PowerPoint.Shape zoomShape)
+        {
+            PowerPoint.Shape shapeToZoom = zoomSlideCroppedShapes.Duplicate()[1];
+            FitShapeToSlide(ref shapeToZoom);
+            shapeToZoom.Name = "PPTLabsDeMagnifyAreaSlide" + DateTime.Now.ToString("yyyyMMddHHmmssffff");
+
+            PowerPoint.Shape referenceShape = GetReferenceShape(zoomShape);
+
+            float finalWidthMagnify = referenceShape.Width;
+            float initialWidthMagnify = zoomShape.Width;
+            float finalHeightMagnify = referenceShape.Height;
+            float initialHeightMagnify = zoomShape.Height;
+
+            zoomShape.Copy();
+            PowerPoint.Shape zoomShapeCopy = _slide.Shapes.Paste()[1];
+            CopyShapeAttributes(zoomShape, ref zoomShapeCopy);
+
+            Globals.ThisAddIn.Application.ActiveWindow.View.GotoSlide(_slide.SlideIndex);
+            shapeToZoom.Select();
+            zoomShapeCopy.Select(Office.MsoTriState.msoFalse);
+            PowerPoint.ShapeRange selection = Globals.ThisAddIn.Application.ActiveWindow.Selection.ShapeRange;
+            PowerPoint.Shape groupShape = selection.Group();
+
+            groupShape.Width *= (finalWidthMagnify / initialWidthMagnify);
+            groupShape.Height *= (finalHeightMagnify / initialHeightMagnify);
+            groupShape.Ungroup();
+            shapeToZoom.Left += (referenceShape.Left - zoomShapeCopy.Left);
+            shapeToZoom.Top += (referenceShape.Top - zoomShapeCopy.Top);
+            zoomShapeCopy.Delete();
+            referenceShape.Delete();
+
+            return shapeToZoom;
+        }
+
         private void AddZoomSlideCroppedPicture()
         {
             PowerPointSlide zoomSlideCopy = this.Duplicate();
@@ -224,8 +334,6 @@ namespace PowerPointLabs.Models
 
             zoomSlideCroppedShapes = _slide.Shapes.PasteSpecial(PowerPoint.PpPasteDataType.ppPastePNG)[1];
             zoomSlideCroppedShapes.Name = "PPTLabsZoomGroup" + DateTime.Now.ToString("yyyyMMddHHmmssffff");
-            //scaleFactorX = PowerPointPresentation.SlideWidth / zoomSlideCroppedShapes.Width;
-            //scaleFactorY = PowerPointPresentation.SlideHeight / zoomSlideCroppedShapes.Height;
             FitShapeToSlide(ref zoomSlideCroppedShapes);
             zoomSlideCopy.Delete();
         }
@@ -250,6 +358,19 @@ namespace PowerPointLabs.Models
         {
             shapeToMove.Left = shapeToCopy.Left + (shapeToCopy.Width / 2) - (shapeToMove.Width / 2);
             shapeToMove.Top = shapeToCopy.Top + (shapeToCopy.Height / 2) - (shapeToMove.Height / 2);
+        }
+
+        private static void CopyShapeSize(PowerPoint.Shape shapeToCopy, ref PowerPoint.Shape shapeToMove)
+        {
+            shapeToMove.LockAspectRatio = Office.MsoTriState.msoFalse;
+            shapeToMove.Width = shapeToCopy.Width;
+            shapeToMove.Height = shapeToCopy.Height;
+        }
+
+        private static void CopyShapeAttributes(PowerPoint.Shape shapeToCopy, ref PowerPoint.Shape shapeToMove)
+        {
+            CopyShapeSize(shapeToCopy, ref shapeToMove);
+            CopyShapePosition(shapeToCopy, ref shapeToMove);
         }
     }
 }

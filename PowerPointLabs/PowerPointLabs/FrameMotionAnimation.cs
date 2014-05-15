@@ -12,7 +12,7 @@ namespace PowerPointLabs
 
     class FrameMotionAnimation
     {
-        public enum FrameMotionAnimationType { kAutoAnimate, kInSlideAnimate, kStepBackWithBackground, kZoomToAreaPan };
+        public enum FrameMotionAnimationType { kAutoAnimate, kInSlideAnimate, kStepBackWithBackground, kZoomToAreaPan, kZoomToAreaDeMagnify };
         public static FrameMotionAnimationType animationType = FrameMotionAnimationType.kAutoAnimate;
         public static void AddFrameMotionAnimation(PowerPointSlide animationSlide, PowerPoint.Shape initialShape, PowerPoint.Shape finalShape, float duration)
         {
@@ -102,10 +102,10 @@ namespace PowerPointLabs
             for (int i = 1; i <= numFrames; i++)
             {
                 PowerPoint.Shape dupShape = initialShape.Duplicate()[1];
-                if (i != 1)
+                if (i != 1 && animationType != FrameMotionAnimationType.kZoomToAreaDeMagnify)
                     sequence[sequence.Count].Delete();
 
-                if (animationType == FrameMotionAnimationType.kInSlideAnimate || animationType == FrameMotionAnimationType.kZoomToAreaPan)
+                if (animationType == FrameMotionAnimationType.kInSlideAnimate || animationType == FrameMotionAnimationType.kZoomToAreaPan || animationType == FrameMotionAnimationType.kZoomToAreaDeMagnify)
                     animationSlide.DeleteShapeAnimations(dupShape);
 
                 if (animationType == FrameMotionAnimationType.kZoomToAreaPan)
@@ -150,7 +150,7 @@ namespace PowerPointLabs
                 lastShape = dupShape;
             }
 
-            if (animationType == FrameMotionAnimationType.kInSlideAnimate || animationType == FrameMotionAnimationType.kZoomToAreaPan)
+            if (animationType == FrameMotionAnimationType.kInSlideAnimate || animationType == FrameMotionAnimationType.kZoomToAreaPan || animationType == FrameMotionAnimationType.kZoomToAreaDeMagnify)
             {
                 PowerPoint.Effect disappearLast = sequence.AddEffect(lastShape, PowerPoint.MsoAnimEffect.msoAnimEffectAppear, PowerPoint.MsoAnimateByLevel.msoAnimateLevelNone, PowerPoint.MsoAnimTriggerType.msoAnimTriggerAfterPrevious);
                 disappearLast.Exit = Office.MsoTriState.msoTrue;
