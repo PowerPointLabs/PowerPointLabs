@@ -27,6 +27,17 @@ namespace PowerPointLabs.Models
 
         public void PrepareForSpotlight()
         {
+            MoveMotionAnimation();
+
+            //Delete shapes with exit animations
+            List<PowerPoint.Shape> shapes = _slide.Shapes.Cast<PowerPoint.Shape>().ToList();
+            var matchingShapes = shapes.Where(current => (HasExitAnimation(current)));
+            foreach (PowerPoint.Shape s in matchingShapes)
+                s.Delete();
+
+            foreach (PowerPoint.Shape s in _slide.Shapes)
+                DeleteShapeAnimations(s);
+
             DeleteSlideNotes();
             DeleteSlideMedia();
             ManageSlideTransitions();
