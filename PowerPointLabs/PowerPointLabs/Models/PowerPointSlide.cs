@@ -43,12 +43,7 @@ namespace PowerPointLabs.Models
                 return null;
             }
 
-            if (slide.Name.Contains("PPTLabsSpotlight"))
-                return PowerPointSpotlightSlide.FromSlideFactory(slide);
-            else if (slide.Name.Contains("PPTLabsAck"))
-                return PowerPointAckSlide.FromSlideFactory(slide);
-            else
-                return new PowerPointSlide(slide);
+            return new PowerPointSlide(slide);
         }
 
         public String NotesPageText
@@ -191,23 +186,6 @@ namespace PowerPointLabs.Models
             return addedEffect;
         }
 
-        private Effect AddShapeAsLastAutoplaying(Shape shape, MsoAnimEffect effect)
-        {
-            Effect addedEffect = _slide.TimeLine.MainSequence.AddEffect(shape, effect,
-                MsoAnimateByLevel.msoAnimateLevelNone, MsoAnimTriggerType.msoAnimTriggerWithPrevious);
-            return addedEffect;
-        }
-
-        private Effect InsertAnimationAtIndex(Shape shape, int index, MsoAnimEffect animationEffect,
-            MsoAnimTriggerType triggerType)
-        {
-            var animationSequence = _slide.TimeLine.MainSequence;
-            Effect effect = animationSequence.AddEffect(shape, animationEffect, MsoAnimateByLevel.msoAnimateLevelNone,
-                triggerType);
-            effect.MoveTo(index);
-            return effect;
-        }
-
         public void ShowShapeAfterClick(Shape shape, int clickNumber)
         {
             SetShapeAsClickTriggered(shape, clickNumber, MsoAnimEffect.msoAnimEffectAppear);
@@ -226,37 +204,6 @@ namespace PowerPointLabs.Models
                 var animationSequence = _slide.TimeLine.MainSequence;
                 var effect = animationSequence.AddEffect(shape, MsoAnimEffect.msoAnimEffectFade);
                 effect.Exit = MsoTriState.msoTrue;
-            }
-        }
-
-        private bool IsNextSlideTransitionBlacklisted()
-        {
-            bool isLastSlide = _slide.SlideIndex == PowerPointPresentation.SlideCount;
-            if (isLastSlide)
-            {
-                return false;
-            }
-
-            // Indexes are from 1, while the slide collection starts from 0.
-            PowerPointSlide nextSlide = PowerPointPresentation.Slides.ElementAt(Index);
-            switch (nextSlide.Transition.EntryEffect)
-            {
-                case PpEntryEffect.ppEffectCoverUp:
-                case PpEntryEffect.ppEffectCoverLeftUp:
-                case PpEntryEffect.ppEffectCoverRightUp:
-                case PpEntryEffect.ppEffectFlyFromBottom:
-                case PpEntryEffect.ppEffectPushUp:
-                case PpEntryEffect.ppEffectPushDown:
-                case PpEntryEffect.ppEffectSwitchUp:
-                case PpEntryEffect.ppEffectFlipUp:
-                case PpEntryEffect.ppEffectCubeUp:
-                case PpEntryEffect.ppEffectRotateUp:
-                case PpEntryEffect.ppEffectBoxUp:
-                case PpEntryEffect.ppEffectOrbitUp:
-                case PpEntryEffect.ppEffectPanUp:
-                    return true;
-                default:
-                    return false;
             }
         }
 
@@ -315,14 +262,6 @@ namespace PowerPointLabs.Models
             List<Shape> matchingShapes = shapes.Where(current => current.Name.StartsWith(prefix)).ToList();
 
             return matchingShapes;
-        }
-
-        private static void DeleteEffectsForShape(Shape shape, IEnumerable<Effect> mainEffects)
-        {
-            foreach (Effect e in mainEffects.Where(e => e.Shape.Equals(shape)))
-            {
-                e.Delete();
-            }
         }
 
         public PowerPointSlide CreateSpotlightSlide()
@@ -431,12 +370,12 @@ namespace PowerPointLabs.Models
             String tempFileName = Path.GetTempFileName();
             Properties.Resources.Indicator.Save(tempFileName);
             Shape indicatorShape = _slide.Shapes.AddPicture(tempFileName, Office.MsoTriState.msoFalse, Office.MsoTriState.msoTrue, PowerPointPresentation.SlideWidth - 120, 0, 120, 84);
-            
+
             indicatorShape.Left = PowerPointPresentation.SlideWidth - 120;
             indicatorShape.Top = 0;
             indicatorShape.Width = 120;
             indicatorShape.Height = 84;
-            indicatorShape.Name = "PPTLabsIndicator" + DateTime.Now.ToString("yyyyMMddHHmmssffff");
+            indicatorShape.Name = "PPIndicator" + DateTime.Now.ToString("yyyyMMddHHmmssffff");
 
             PowerPoint.Effect effectAppear = null;
             PowerPoint.Effect effectDisappear = null;
@@ -531,6 +470,78 @@ namespace PowerPointLabs.Models
             return tempMatchingShape;
         }
 
+        public bool isSpotlightSlide()
+        {
+            return _slide.Name.Contains("PPTLabsSpotlight");
+        }
+
+        public bool isAckSlide()
+        {
+            return _slide.Name.Contains("PPAck");
+        }
+
+        public PowerPointSlide CreateAckSlide()
+        {
+            Slide ackSlide = Globals.ThisAddIn.Application.ActivePresentation.Slides.Add(Globals.ThisAddIn.Application.ActivePresentation.Slides.Count + 1, PpSlideLayout.ppLayoutBlank);
+            return PowerPointAckSlide.FromSlideFactory(ackSlide);
+        }
+
+        private Effect AddShapeAsLastAutoplaying(Shape shape, MsoAnimEffect effect)
+        {
+            Effect addedEffect = _slide.TimeLine.MainSequence.AddEffect(shape, effect,
+                MsoAnimateByLevel.msoAnimateLevelNone, MsoAnimTriggerType.msoAnimTriggerWithPrevious);
+            return addedEffect;
+        }
+
+        private Effect InsertAnimationAtIndex(Shape shape, int index, MsoAnimEffect animationEffect,
+            MsoAnimTriggerType triggerType)
+        {
+            var animationSequence = _slide.TimeLine.MainSequence;
+            Effect effect = animationSequence.AddEffect(shape, animationEffect, MsoAnimateByLevel.msoAnimateLevelNone,
+                triggerType);
+            effect.MoveTo(index);
+            return effect;
+        }
+
+        private bool IsNextSlideTransitionBlacklisted()
+        {
+            bool isLastSlide = _slide.SlideIndex == PowerPointPresentation.SlideCount;
+            if (isLastSlide)
+            {
+                return false;
+            }
+
+            // Indexes are from 1, while the slide collection starts from 0.
+            PowerPointSlide nextSlide = PowerPointPresentation.Slides.ElementAt(Index);
+            switch (nextSlide.Transition.EntryEffect)
+            {
+                case PpEntryEffect.ppEffectCoverUp:
+                case PpEntryEffect.ppEffectCoverLeftUp:
+                case PpEntryEffect.ppEffectCoverRightUp:
+                case PpEntryEffect.ppEffectFlyFromBottom:
+                case PpEntryEffect.ppEffectPushUp:
+                case PpEntryEffect.ppEffectPushDown:
+                case PpEntryEffect.ppEffectSwitchUp:
+                case PpEntryEffect.ppEffectFlipUp:
+                case PpEntryEffect.ppEffectCubeUp:
+                case PpEntryEffect.ppEffectRotateUp:
+                case PpEntryEffect.ppEffectBoxUp:
+                case PpEntryEffect.ppEffectOrbitUp:
+                case PpEntryEffect.ppEffectPanUp:
+                    return true;
+                default:
+                    return false;
+            }
+        }
+
+        private static void DeleteEffectsForShape(Shape shape, IEnumerable<Effect> mainEffects)
+        {
+            foreach (Effect e in mainEffects.Where(e => e.Shape.Equals(shape)))
+            {
+                e.Delete();
+            }
+        }
+
         private float GetDistanceBetweenShapes(PowerPoint.Shape sh1, PowerPoint.Shape sh2)
         {
             float sh1CenterX = (sh1.Left + (sh1.Width / 2));
@@ -547,22 +558,6 @@ namespace PowerPointLabs.Models
             String name2 = sh2.Name;
 
             return (name1.ToUpper().CompareTo(name2.ToUpper()) == 0);
-        }
-
-        public bool isSpotlightSlide()
-        {
-            return _slide.Name.Contains("PPTLabsSpotlight");
-        }
-
-        public bool isAckSlide()
-        {
-            return _slide.Name.Contains("PPTLabsAck");
-        }
-
-        public PowerPointSlide CreateAckSlide()
-        {
-            Slide ackSlide = Globals.ThisAddIn.Application.ActivePresentation.Slides.Add(Globals.ThisAddIn.Application.ActivePresentation.Slides.Count + 1, PpSlideLayout.ppLayoutBlank);
-            return PowerPointAckSlide.FromSlideFactory(ackSlide);
         }
     }
 }

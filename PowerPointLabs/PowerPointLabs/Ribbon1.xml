@@ -42,17 +42,6 @@
                    supertip="Moves a shape around the slide in multiple steps.&#13;&#13;To activate, copy the shape to locations where you want it to stop, select the copies in the order you want them to appear, and click this button"
                    getEnabled="OnGetEnabledAddInSlide"
                    onAction="AddInSlideAnimationButtonClick"/>
-          <!--<editBox id="animationDurationOption"
-                   label="Duration"
-                   sizeString="AAAA"
-                   supertip="The duration (in seconds) for the animations in the animation slides to be created."
-                   getText = "OnGetDurationText"
-                   onChange = "OnChangeDuration"/>
-          <checkBox id="animationStyleOption"
-                    label="Smoother Animation"
-                    supertip="Use a frame-based approach for smoother resize animations.&#13;&#13;This may result in larger file sizes and slower loading times for animated slides."
-                    onAction="AnimationStyleChanged"
-                    getPressed="AnimationStyleGetPressed"/>-->
           <dialogBoxLauncher>
             <button id ="AutoAnimateDialogBox"
                     onAction="AutoAnimateDialogButtonPressed"/>
@@ -82,11 +71,6 @@
                  supertip="Zoom into an area of a slide or image.&#13;&#13;To activate, place a rectangle shape on the portion that you want to magnify and click on this button.&#13;&#13;This feature works best with high-resolution images."
                  getEnabled="OnGetEnabledZoomButton"
                  onAction="ZoomBtnClick"/>
-          <!--<checkBox id="zoomStyleOption"
-                    label="Include Background"
-                    supertip="Include the slide background while performing Auto Zoom."
-                    onAction="ZoomStyleChanged"
-                    getPressed="ZoomStyleGetPressed"/>-->
           <dialogBoxLauncher>
             <button id ="AutoZoomDialogBox"
                     onAction="AutoZoomDialogButtonPressed"/>
@@ -119,25 +103,6 @@
                   getImage="GetReloadSpotlightImage"
                   getEnabled="OnGetEnabledReloadSpotlight"
                   onAction="ReloadSpotlightButtonClick"/>
-          <!--<editBox id="spotlightTransparency"
-                   label="Transparency"
-                   sizeString="AAAA"
-                   supertip="The transparency level of the spotlight effect to be created."
-                   getText = "OnGetTransparency"
-                   onChange = "OnChangeTransparency"/>
-          <dropDown id="spotlightSoftEdgesList"
-                    label ="Soft Edges"
-                    sizeString ="AAAAAAAA"
-                    supertip="The softness of the edges of the spotlight effect to be created."
-                    getItemCount ="OnGetItemCountSpotlight"
-                    getItemLabel ="OnGetItemLabelSpotlight"
-                    getSelectedItemIndex="OnGetSelectedItemIndexSpotlight" 
-                    onAction ="OnSelectItemSpotlight" />-->
-          <!--<checkBox id="SpotlightDeleteOption"
-                    label="Delete Spotlight Shape"
-                    supertip="Check this option if you want to delete the spotlight shape when adding this effect."
-                    onAction="SpotlightDeleteOptionChanged"
-                    getPressed="SpotlightDeleteOptionGetPressed"/>-->
           <dialogBoxLauncher>
             <button id ="SpotlightDialogBox"
                     onAction="SpotlightDialogButtonPressed"/>
@@ -377,10 +342,6 @@
               label="Edit Name"
               getImage="GetEditNameContextImage"
               onAction="NameEditBtnClick"/>
-      <!--<button id="zoomShape"
-              label="Add Zoom"
-              imageMso="PanAndZoomWindow"
-              onAction="ZoomBtnClick"/>-->
       <button id="spotlightGroup"
               label="Add Spotlight"
               getImage="GetAddSpotlightContextImage"

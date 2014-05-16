@@ -41,7 +41,7 @@ namespace PowerPointLabs
 
             float incrementWidth = ((finalWidth / initialWidth) - 1.0f) / numFrames;
             float incrementHeight = ((finalHeight / initialHeight) - 1.0f) / numFrames;
-            float incrementRotation = GetMinimumRotation(initialRotation, finalRotation) / numFrames;
+            float incrementRotation = PowerPointLabsGlobals.GetMinimumRotation(initialRotation, finalRotation) / numFrames;
             float incrementLeft = (finalX - initialX) / numFrames;
             float incrementTop = (finalY - initialY) / numFrames;
             float incrementFont = (finalFont - initialFont) / numFrames;
@@ -156,47 +156,6 @@ namespace PowerPointLabs
                 disappearLast.Exit = Office.MsoTriState.msoTrue;
                 disappearLast.Timing.TriggerDelayTime = duration;
             }
-        }
-
-        private static float GetMinimumRotation(float fromAngle, float toAngle)
-        {
-            fromAngle = Normalize(fromAngle);
-            toAngle = Normalize(toAngle);
-
-            float rotation1 = toAngle - fromAngle;
-            float rotation2 = rotation1 == 0.0f ? 0.0f : Math.Abs(360.0f - Math.Abs(rotation1)) * (rotation1 / Math.Abs(rotation1)) * -1.0f;
-
-            if (Math.Abs(rotation1) < Math.Abs(rotation2))
-                return rotation1;
-            else
-                return rotation2;
-        }
-
-        private static float Normalize(float i)
-        {
-            //find effective angle
-            float d = Math.Abs(i) % 360.0f;
-
-            if (i < 0)
-                return 360.0f - d; //return positive equivalent
-            else
-                return d;
-        }
-
-        private static PowerPoint.Effect GetShapeAnimations(PowerPointSlide slide, PowerPoint.Shape shape)
-        {
-            PowerPoint.Sequence sequence = slide.TimeLine.MainSequence;
-            PowerPoint.Effect e = null;
-            for (int x = sequence.Count; x >= 1; x--)
-            {
-                PowerPoint.Effect effect = sequence[x];
-                if (effect.Shape.Name == shape.Name && effect.Shape.Id == shape.Id)
-                {
-                    e = effect;
-                    break;
-                }
-            }
-            return e;
         }
     }
 }

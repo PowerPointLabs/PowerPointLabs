@@ -25,6 +25,7 @@ namespace PowerPointLabs
                 PowerPoint.ShapeRange selectedShapes = null;
                 Office.TextRange2 selectedText = null;
 
+                //Get shapes to consider for animation
                 switch (userSelection)
                 {
                     case HighlightBackgroundSelection.kShapeSelected:
@@ -35,7 +36,7 @@ namespace PowerPointLabs
                         selectedText = Globals.ThisAddIn.Application.ActiveWindow.Selection.TextRange2.TrimText();
                         break;
                     case HighlightBackgroundSelection.kNoneSelected:
-                        currentSlide.DeleteShapesWithPrefix("PPTLabsIndicator");
+                        currentSlide.DeleteShapesWithPrefix("PPIndicator");
                         currentSlide.DeleteShapesWithPrefix("PPTLabsHighlightBackgroundShape");
                         selectedShapes = currentSlide.Shapes.Range();
                         break;
@@ -59,17 +60,18 @@ namespace PowerPointLabs
                     AnimateInSlide.isHighlightBullets = true;
                     AnimateInSlide.AddAnimationInSlide();
                     AnimateInSlide.frameAnimationChecked = oldValue;
-                    AddAckSlide();
+                    PowerPointLabsGlobals.AddAckSlide();
                 }
                 Globals.ThisAddIn.Application.ActiveWindow.Selection.Unselect();
             }
             catch (Exception e)
             {
-                //LogException(e, "SpotlightBtnClick");
+                PowerPointLabsGlobals.LogException(e, "AddHighlightBulletsBackground");
                 throw;
             }
         }
 
+        //Add highlight shape for paragraphs within selected shape which have bullets or with text selected by user
         private static bool AddNewShapesToAnimate(PowerPointSlide currentSlide, List<PowerPoint.Shape> shapesToUse, Office.TextRange2 selectedText)
         {
             bool anySelected = false;
@@ -84,7 +86,7 @@ namespace PowerPointLabs
                     {
                         PowerPoint.Shape highlightShape = currentSlide.Shapes.AddShape(Office.MsoAutoShapeType.msoShapeRoundedRectangle, paragraph.BoundLeft, paragraph.BoundTop, paragraph.BoundWidth, paragraph.BoundHeight);
                         highlightShape.Adjustments[1] = 0.25f;
-                        highlightShape.Fill.ForeColor.RGB = CreateRGB(backgroundColor);
+                        highlightShape.Fill.ForeColor.RGB = PowerPointLabsGlobals.CreateRGB(backgroundColor);
                         highlightShape.Fill.Transparency = 0.50f;
                         highlightShape.Line.Visible = Office.MsoTriState.msoFalse;
                         highlightShape.ZOrder(Office.MsoZOrderCmd.msoSendToBack);
@@ -106,13 +108,14 @@ namespace PowerPointLabs
             for (int i = currentSlide.Shapes.Count; i >= 1; i--)
             {
                 PowerPoint.Shape sh = currentSlide.Shapes[i];
-                shouldSelect = true;
+                shouldSelect = true; //We should not select existing highlight shapes. Instead they should be deleted
                 if (sh.Name.Contains("PPTLabsHighlightBackgroundShape"))
                 {
                     if (userSelection != HighlightBackgroundSelection.kTextSelected)
                     {
                         foreach (PowerPoint.Shape tmp in shapesToUse)
                         {
+                            //Each highlight shape stores a tag of the shape it is associated with
                             if (sh.Tags["HighlightBackground"].Equals(tmp.Name))
                             {
                                 shapesToDelete.Add(sh);
@@ -127,6 +130,7 @@ namespace PowerPointLabs
                         sh.Select(Office.MsoTriState.msoFalse);
                     }
                 }
+                //Remove existing animations for highlight text as well
                 if (sh.Name.Contains("HighlightTextShape"))
                     currentSlide.DeleteShapeAnimations(sh);
             }
@@ -136,26 +140,11 @@ namespace PowerPointLabs
                     sh.Delete();
         }
 
-        private static int CreateRGB(Color color)
-        {
-            // initial value
-            int rgb = 0;
-
-            // swap
-            int red = color.B;
-            int blue = color.R;
-            int green = color.G;
-
-            // create the newColor
-            Color newColor = Color.FromArgb(red, green, blue);
-
-            // set the return value
-            rgb = newColor.ToArgb();
-
-            // return value
-            return rgb;
-        }
-
+        /*Get shapes to use for animation.
+         * If user does not select anything: Select shapes which have bullet points
+         * If user selects some shapes: Keep shapes from user selection which have bullet points
+         * If user selects some text: Keep shapes used to store text
+         */
         private static List<PowerPoint.Shape> GetShapesToUse(PowerPointSlide currentSlide, PowerPoint.ShapeRange shapes)
         {
             List<PowerPoint.Shape> shapesToUse = new List<PowerPoint.Shape>();
@@ -183,23 +172,6 @@ namespace PowerPointLabs
                 }
             }
             return shapesToUse;
-        }
-
-        private static void AddAckSlide()
-        {
-            try
-            {
-                PowerPointSlide lastSlide = PowerPointPresentation.Slides.Last();
-                if (!lastSlide.isAckSlide())
-                {
-                    lastSlide.CreateAckSlide();
-                }
-            }
-            catch (Exception e)
-            {
-                //LogException(e, "AddAckSlide");
-                throw;
-            }
         }
     }
 }

@@ -41,7 +41,7 @@ namespace PowerPointLabs
             }
             catch (Exception e)
             {
-                //LogException(e, "AddAnimationButtonClick");
+                PowerPointLabsGlobals.LogException(e, "AddAnimationButtonClick");
                 throw;
             }
             
@@ -54,35 +54,35 @@ namespace PowerPointLabs
                 var selectedSlide = PowerPointPresentation.CurrentSlide as PowerPointSlide;
                 PowerPointSlide currentSlide = null, animatedSlide = null, nextSlide = null;
 
-                if (selectedSlide.Name.StartsWith("PPTAutoAnimateSlideAnimated"))
+                if (selectedSlide.Name.StartsWith("PPSlideAnimated"))
                 {
                     nextSlide = PowerPointPresentation.Slides.ElementAt(selectedSlide.Index);
                     currentSlide = PowerPointPresentation.Slides.ElementAt(selectedSlide.Index - 2);
                     animatedSlide = selectedSlide;
                     ManageSlidesForReload(currentSlide, nextSlide, animatedSlide);
                 }
-                else if (selectedSlide.Name.StartsWith("PPTAutoAnimateSlideStart"))
+                else if (selectedSlide.Name.StartsWith("PPSlideStart"))
                 {
                     animatedSlide = PowerPointPresentation.Slides.ElementAt(selectedSlide.Index);
                     nextSlide = PowerPointPresentation.Slides.ElementAt(selectedSlide.Index + 1);
                     currentSlide = selectedSlide;
                     ManageSlidesForReload(currentSlide, nextSlide, animatedSlide);
                 }
-                else if (selectedSlide.Name.StartsWith("PPTAutoAnimateSlideEnd"))
+                else if (selectedSlide.Name.StartsWith("PPSlideEnd"))
                 {
                     animatedSlide = PowerPointPresentation.Slides.ElementAt(selectedSlide.Index - 2);
                     currentSlide = PowerPointPresentation.Slides.ElementAt(selectedSlide.Index - 3);
                     nextSlide = selectedSlide;
                     ManageSlidesForReload(currentSlide, nextSlide, animatedSlide);
                 }
-                else if (selectedSlide.Name.StartsWith("PPTAutoAnimateSlideMulti"))
+                else if (selectedSlide.Name.StartsWith("PPSlideMulti"))
                 {
                     if (selectedSlide.Index > 2)
                     {
                         animatedSlide = PowerPointPresentation.Slides.ElementAt(selectedSlide.Index - 2);
                         currentSlide = PowerPointPresentation.Slides.ElementAt(selectedSlide.Index - 3);
                         nextSlide = selectedSlide;
-                        if (animatedSlide.Name.StartsWith("PPTAutoAnimateSlideAnimated"))
+                        if (animatedSlide.Name.StartsWith("PPSlideAnimated"))
                             ManageSlidesForReload(currentSlide, nextSlide, animatedSlide);
                     }
 
@@ -91,7 +91,7 @@ namespace PowerPointLabs
                         animatedSlide = PowerPointPresentation.Slides.ElementAt(selectedSlide.Index);
                         nextSlide = PowerPointPresentation.Slides.ElementAt(selectedSlide.Index + 1);
                         currentSlide = selectedSlide;
-                        if (animatedSlide.Name.StartsWith("PPTAutoAnimateSlideAnimated"))
+                        if (animatedSlide.Name.StartsWith("PPSlideAnimated"))
                             ManageSlidesForReload(currentSlide, nextSlide, animatedSlide);
                     }
                 }
@@ -100,7 +100,7 @@ namespace PowerPointLabs
             }
             catch (Exception e)
             {
-                //LogException(e, "AddAnimationButtonClick");
+                PowerPointLabsGlobals.LogException(e, "ReloadAutoAnimation");
                 throw;
             }
         }
@@ -122,13 +122,15 @@ namespace PowerPointLabs
 
             AboutForm progressForm = new AboutForm();
             progressForm.Visible = true;
-            addedSlide.MoveMotionAnimation();
+
+            addedSlide.MoveMotionAnimation(); //Move shapes with motion animation already added
             addedSlide.PrepareForAutoAnimate();
             RenameCurrentSlide(currentSlide);
             PrepareNextSlide(nextSlide);
             addedSlide.AddAutoAnimation(currentSlideShapes, nextSlideShapes, matchingShapeIDs);
             Globals.ThisAddIn.Application.CommandBars.ExecuteMso("AnimationPreview");
-            AddAckSlide();
+            PowerPointLabsGlobals.AddAckSlide();
+
             progressForm.Visible = false;
         }
 
@@ -137,18 +139,18 @@ namespace PowerPointLabs
             if (nextSlide.Transition.EntryEffect != PowerPoint.PpEntryEffect.ppEffectFade && nextSlide.Transition.EntryEffect != PowerPoint.PpEntryEffect.ppEffectFadeSmoothly)
                 nextSlide.Transition.EntryEffect = PowerPoint.PpEntryEffect.ppEffectNone;
 
-            if (nextSlide.Name.StartsWith("PPTAutoAnimateSlideStart") || nextSlide.Name.StartsWith("PPTAutoAnimateSlideMulti"))
-                nextSlide.Name = "PPTAutoAnimateSlideMulti" + DateTime.Now.ToString("yyyyMMddHHmmssffff");
+            if (nextSlide.Name.StartsWith("PPSlideStart") || nextSlide.Name.StartsWith("PPSlideMulti"))
+                nextSlide.Name = "PPSlideMulti" + DateTime.Now.ToString("yyyyMMddHHmmssffff");
             else
-                nextSlide.Name = "PPTAutoAnimateSlideEnd" + DateTime.Now.ToString("yyyyMMddHHmmssffff");
+                nextSlide.Name = "PPSlideEnd" + DateTime.Now.ToString("yyyyMMddHHmmssffff");
         }
 
         private static void RenameCurrentSlide(PowerPointSlide currentSlide)
         {
-            if (currentSlide.Name.StartsWith("PPTAutoAnimateSlideEnd") || currentSlide.Name.StartsWith("PPTAutoAnimateSlideMulti"))
-                currentSlide.Name = "PPTAutoAnimateSlideMulti" + DateTime.Now.ToString("yyyyMMddHHmmssffff");
+            if (currentSlide.Name.StartsWith("PPSlideEnd") || currentSlide.Name.StartsWith("PPSlideMulti"))
+                currentSlide.Name = "PPSlideMulti" + DateTime.Now.ToString("yyyyMMddHHmmssffff");
             else
-                currentSlide.Name = "PPTAutoAnimateSlideStart" + DateTime.Now.ToString("yyyyMMddHHmmssffff");
+                currentSlide.Name = "PPSlideStart" + DateTime.Now.ToString("yyyyMMddHHmmssffff");
         }
 
         private static bool GetMatchingShapeDetails(PowerPointSlide currentSlide, PowerPointSlide nextSlide)
@@ -178,23 +180,6 @@ namespace PowerPointLabs
             }
 
             return flag;
-        }
-
-        private static void AddAckSlide()
-        {
-            try
-            {
-                PowerPointSlide lastSlide = PowerPointPresentation.Slides.Last();
-                if (!lastSlide.isAckSlide())
-                {
-                    lastSlide.CreateAckSlide();
-                }
-            }
-            catch (Exception e)
-            {
-                //LogException(e, "AddAckSlide");
-                throw;
-            }
         }
     }
 }

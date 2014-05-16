@@ -26,11 +26,9 @@ namespace PowerPointLabs
             SetUpLogger();
             Trace.TraceInformation(DateTime.Now.ToString("yyyyMMddHHmmss") + ": PowerPointLabs Started");
             ((PowerPoint.EApplication_Event)this.Application).NewPresentation += new Microsoft.Office.Interop.PowerPoint.EApplication_NewPresentationEventHandler(ThisAddIn_NewPresentation);
-            //((PowerPoint.EApplication_Event)this.Application).SlideShowBegin += new Microsoft.Office.Interop.PowerPoint.EApplication_SlideShowBeginEventHandler(ThisAddIn_BeginSlideShow);
-            //((PowerPoint.EApplication_Event)this.Application).SlideShowEnd += new Microsoft.Office.Interop.PowerPoint.EApplication_SlideShowEndEventHandler(ThisAddIn_EndSlideShow);
             ((PowerPoint.EApplication_Event)this.Application).WindowSelectionChange += new Microsoft.Office.Interop.PowerPoint.EApplication_WindowSelectionChangeEventHandler(ThisAddIn_SelectionChanged);
             ((PowerPoint.EApplication_Event)this.Application).SlideSelectionChanged += new Microsoft.Office.Interop.PowerPoint.EApplication_SlideSelectionChangedEventHandler(ThisAddIn_SlideSelectionChanged);
-            //DisplayUpdateDetails();
+
             Application.SlideShowBegin += SlideShowBeginHandler;
             Application.SlideShowEnd += SlideShowEndHandler;
             PPMouse.Init(Application);
@@ -125,14 +123,14 @@ namespace PowerPointLabs
                     next = presentation.Slides[slideIndex + 1];
                 if (slideIndex > 1)
                     prev = presentation.Slides[slideIndex - 1];
-                if (!((tmp.Name.StartsWith("PPTAutoAnimateSlideAnimated"))
-                    || ((tmp.Name.StartsWith("PPTAutoAnimateSlideStart"))
-                    && (next.Name.StartsWith("PPTAutoAnimateSlideAnimated")))
-                    || ((tmp.Name.StartsWith("PPTAutoAnimateSlideEnd"))
-                    && (prev.Name.StartsWith("PPTAutoAnimateSlideAnimated")))
-                    || ((tmp.Name.StartsWith("PPTAutoAnimateSlideMulti"))
-                    && ((prev.Name.StartsWith("PPTAutoAnimateSlideAnimated"))
-                    || (next.Name.StartsWith("PPTAutoAnimateSlideAnimated"))))))
+                if (!((tmp.Name.StartsWith("PPSlideAnimated"))
+                    || ((tmp.Name.StartsWith("PPSlideStart"))
+                    && (next.Name.StartsWith("PPSlideAnimated")))
+                    || ((tmp.Name.StartsWith("PPSlideEnd"))
+                    && (prev.Name.StartsWith("PPSlideAnimated")))
+                    || ((tmp.Name.StartsWith("PPSlideMulti"))
+                    && ((prev.Name.StartsWith("PPSlideAnimated"))
+                    || (next.Name.StartsWith("PPSlideAnimated"))))))
                     ribbon.reloadAutoMotionEnabled = false;
                 if (!(tmp.Name.Contains("PPTLabsSpotlight")))
                     ribbon.reloadSpotlight = false;

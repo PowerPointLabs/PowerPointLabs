@@ -11,6 +11,8 @@ namespace PowerPointLabs
 {
     class DefaultMotionAnimation
     {
+        //Use initial shape and final shape to calculate intial and final positions
+        //Add motion, resize and rotation animations to initialShape
         public static void AddDefaultMotionAnimation(PowerPointSlide animationSlide, PowerPoint.Shape initialShape, PowerPoint.Shape finalShape, float duration, PowerPoint.MsoAnimTriggerType trigger)
         {
             float initialX = (initialShape.Left + (initialShape.Width) / 2);
@@ -30,6 +32,8 @@ namespace PowerPointLabs
             AddRotationAnimation(animationSlide, initialShape, initialRotation, finalRotation, duration, ref trigger);
         }
 
+        //Use reference shape and slide dimensions to calculate intial and final positions
+        //Add motion and resize animations to shapeToZoom
         public static void AddDrillDownMotionAnimation(PowerPointSlide animationSlide, PowerPoint.Shape shapeToZoom, PowerPoint.Shape referenceShape, float duration, PowerPoint.MsoAnimTriggerType trigger)
         {
             float finalWidth = PowerPointPresentation.SlideWidth;
@@ -46,6 +50,8 @@ namespace PowerPointLabs
             AddResizeAnimation(animationSlide, shapeToZoom, initialWidth, initialHeight, finalWidth, finalHeight, duration, ref trigger);
         }
 
+        //Use shapeToZoom and reference shape to calculate intial and final positions
+        //Add motion and resize animations to shapeToZoom
         public static void AddStepBackMotionAnimation(PowerPointSlide animationSlide, PowerPoint.Shape shapeToZoom, PowerPoint.Shape referenceShape, float duration, PowerPoint.MsoAnimTriggerType trigger)
         {
             float initialX = (shapeToZoom.Left + (shapeToZoom.Width) / 2);
@@ -62,6 +68,8 @@ namespace PowerPointLabs
             AddResizeAnimation(animationSlide, shapeToZoom, initialWidth, initialHeight, finalWidth, finalHeight, duration, ref trigger);
         }
 
+        //Use initial shape and final shape to calculate intial and final positions.
+        //Add motion and resize animations to shapeToZoom
         public static void AddZoomToAreaMotionAnimation(PowerPointSlide animationSlide, PowerPoint.Shape shapeToZoom, PowerPoint.Shape initialShape, PowerPoint.Shape finalShape, float duration, PowerPoint.MsoAnimTriggerType trigger)
         {
             float initialWidth = initialShape.Width;
@@ -106,7 +114,7 @@ namespace PowerPointLabs
                 PowerPoint.Effect effectRotate = animationSlide.TimeLine.MainSequence.AddEffect(animationShape, PowerPoint.MsoAnimEffect.msoAnimEffectSpin, PowerPoint.MsoAnimateByLevel.msoAnimateLevelNone, trigger);
                 PowerPoint.AnimationBehavior rotate = effectRotate.Behaviors[1];
                 effectRotate.Timing.Duration = duration;
-                effectRotate.EffectParameters.Amount = GetMinimumRotation(initialRotation, finalRotation);
+                effectRotate.EffectParameters.Amount = PowerPointLabsGlobals.GetMinimumRotation(initialRotation, finalRotation);
                 trigger = PowerPoint.MsoAnimTriggerType.msoAnimTriggerWithPrevious;
             }
         }
@@ -125,31 +133,6 @@ namespace PowerPointLabs
 
                 trigger = PowerPoint.MsoAnimTriggerType.msoAnimTriggerWithPrevious;
             }
-        }
-
-        private static float GetMinimumRotation(float fromAngle, float toAngle)
-        {
-            fromAngle = Normalize(fromAngle);
-            toAngle = Normalize(toAngle);
-
-            float rotation1 = toAngle - fromAngle;
-            float rotation2 = rotation1 == 0.0f ? 0.0f : Math.Abs(360.0f - Math.Abs(rotation1)) * (rotation1 / Math.Abs(rotation1)) * -1.0f;
-
-            if (Math.Abs(rotation1) < Math.Abs(rotation2))
-                return rotation1;
-            else
-                return rotation2;
-        }
-
-        private static float Normalize(float i)
-        {
-            //find effective angle
-            float d = Math.Abs(i) % 360.0f;
-
-            if (i < 0)
-                return 360.0f - d; //return positive equivalent
-            else
-                return d;
         }
     }
 }

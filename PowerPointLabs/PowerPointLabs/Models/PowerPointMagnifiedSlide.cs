@@ -29,12 +29,13 @@ namespace PowerPointLabs.Models
         {
             PrepareForZoomToArea();
 
+            //Create zoomed-in version of the part of the slide specified by zoom shape
             zoomSlideCroppedShapes.PictureFormat.CropLeft += zoomShape.Left;
             zoomSlideCroppedShapes.PictureFormat.CropTop += zoomShape.Top;
             zoomSlideCroppedShapes.PictureFormat.CropRight += (PowerPointPresentation.SlideWidth - (zoomShape.Left + zoomShape.Width));
             zoomSlideCroppedShapes.PictureFormat.CropBottom += (PowerPointPresentation.SlideHeight - (zoomShape.Top + zoomShape.Height));
 
-            CopyShapePosition(zoomShape, ref zoomSlideCroppedShapes);
+            PowerPointLabsGlobals.CopyShapePosition(zoomShape, ref zoomSlideCroppedShapes);
 
             zoomSlideCroppedShapes.LockAspectRatio = Office.MsoTriState.msoTrue;
             if (zoomSlideCroppedShapes.Width > zoomSlideCroppedShapes.Height)
@@ -55,6 +56,7 @@ namespace PowerPointLabs.Models
 
         private void PrepareForZoomToArea()
         {
+            //Delete all shapes on slide except slide-size crop copied from magnifying slide
             List<PowerPoint.Shape> shapes = _slide.Shapes.Cast<PowerPoint.Shape>().ToList();
             var matchingShapes = shapes.Where(current => (!current.Name.Contains("PPTLabsMagnifyAreaGroup")));
             foreach (PowerPoint.Shape s in matchingShapes)
@@ -75,12 +77,6 @@ namespace PowerPointLabs.Models
             base.RemoveSlideTransitions();
             _slide.SlideShowTransition.AdvanceOnTime = Office.MsoTriState.msoFalse;
             _slide.SlideShowTransition.AdvanceOnClick = Office.MsoTriState.msoTrue;
-        }
-
-        private static void CopyShapePosition(PowerPoint.Shape shapeToCopy, ref PowerPoint.Shape shapeToMove)
-        {
-            shapeToMove.Left = shapeToCopy.Left + (shapeToCopy.Width / 2) - (shapeToMove.Width / 2);
-            shapeToMove.Top = shapeToCopy.Top + (shapeToCopy.Height / 2) - (shapeToMove.Height / 2);
         }
     }
 }

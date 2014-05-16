@@ -15,7 +15,7 @@ namespace PowerPointLabs.Models
 
         private PowerPointMagnifiedPanSlide(PowerPoint.Slide slide) : base(slide)
         {
-            _slide.Name = "PPTLabsDeMagnifyingSlide" + DateTime.Now.ToString("yyyyMMddHHmmssffff");
+            _slide.Name = "PPTLabsMagnifiedPanSlide" + DateTime.Now.ToString("yyyyMMddHHmmssffff");
         }
 
         new public static PowerPointSlide FromSlideFactory(PowerPoint.Slide slide)
@@ -36,6 +36,7 @@ namespace PowerPointLabs.Models
 
         private void PrepareForZoomToArea(PowerPointSlide slideToPanFrom, PowerPointSlide slideToPanTo)
         {
+            //Delete all shapes from slide excpet last magnified shape
             List<PowerPoint.Shape> shapes = _slide.Shapes.Cast<PowerPoint.Shape>().ToList();
             var matchingShapes = shapes.Where(current => (!current.Name.Contains("PPTLabsMagnifyAreaGroup")));
             foreach (PowerPoint.Shape s in matchingShapes)
@@ -44,6 +45,7 @@ namespace PowerPointLabs.Models
             panShapeFrom = GetShapesWithPrefix("PPTLabsMagnifyAreaGroup")[0];
             panShapeTo = slideToPanTo.GetShapesWithPrefix("PPTLabsMagnifyAreaGroup")[0];
 
+            //Add fade animation to existing shapes
             shapes = _slide.Shapes.Cast<PowerPoint.Shape>().ToList();
             matchingShapes = shapes.Where(current => (!(current.Equals(indicatorShape) || current.Equals(panShapeFrom))));
             foreach (PowerPoint.Shape s in matchingShapes)

@@ -12,9 +12,9 @@ namespace PowerPointLabs.Models
     {
         private PowerPointAckSlide(PowerPoint.Slide slide) : base(slide)
         {
-            if (!slide.Name.Contains("PPTLabsAck"))
+            if (!slide.Name.Contains("PPAck"))
             {
-                _slide.Name = "PPTLabsAck" + DateTime.Now.ToString("yyyyMMddHHmmssffff");
+                _slide.Name = "PPAck" + DateTime.Now.ToString("yyyyMMddHHmmssffff");
                 String tempFileName = Path.GetTempFileName();
                 Properties.Resources.Acknowledgement.Save(tempFileName);
                 float width = PowerPointPresentation.SlideWidth * 0.858f;

@@ -32,11 +32,11 @@ namespace PowerPointLabs
 
                 Globals.ThisAddIn.Application.ActiveWindow.View.GotoSlide(currentSlide.Index);
                 PostFormatSelectedShapes(ref selectedShapes);
-                AddAckSlide();   
+                PowerPointLabsGlobals.AddAckSlide();   
             }
             catch (Exception e)
             {
-                //LogException(e, "AddDrillDownAnimation");
+                PowerPointLabsGlobals.LogException(e, "AddZoomToArea");
                 throw;
             }
         }
@@ -123,6 +123,7 @@ namespace PowerPointLabs
             return editedSelectedShapes;
         }
 
+        //Shape dimensions should match the slide dimensions and the shape should be within the slide
         private static PowerPoint.Shape GetBestFitShape(PowerPointSlide currentSlide, PowerPoint.Shape zoomShape)
         {
             zoomShape.Copy();
@@ -140,7 +141,7 @@ namespace PowerPointLabs
                 zoomShapeCopy.Height = zoomShape.Height;
                 zoomShapeCopy.Width = Globals.ThisAddIn.Application.ActivePresentation.PageSetup.SlideWidth * zoomShapeCopy.Height / Globals.ThisAddIn.Application.ActivePresentation.PageSetup.SlideHeight;
             }
-            CopyShapePosition(zoomShape, ref zoomShapeCopy);
+            PowerPointLabsGlobals.CopyShapePosition(zoomShape, ref zoomShapeCopy);
 
             if (zoomShapeCopy.Width > PowerPointPresentation.SlideWidth)
                 zoomShapeCopy.Width = PowerPointPresentation.SlideWidth;
@@ -177,58 +178,13 @@ namespace PowerPointLabs
                 PowerPointSlide nextSlide = PowerPointPresentation.Slides.ElementAt(currentSlide.Index);
                 PowerPointSlide tempSlide = null;
                 while ((nextSlide.Name.Contains("PPTLabsMagnifyingSlide") || (nextSlide.Name.Contains("PPTLabsMagnifiedSlide"))
-                       || (nextSlide.Name.Contains("PPTLabsDeMagnifyingSlide")) || (nextSlide.Name.Contains("PPTLabsMagnifiedPanSlide")))
-                       && nextSlide.Index < PowerPointPresentation.SlideCount)
+                       || (nextSlide.Name.Contains("PPTLabsDeMagnifyingSlide")) || (nextSlide.Name.Contains("PPTLabsMagnifiedPanSlide"))
+                       || (nextSlide.Name.Contains("PPTLabsMagnifyingSingleSlide"))) && nextSlide.Index < PowerPointPresentation.SlideCount)
                 {
                     tempSlide = nextSlide;
                     nextSlide = PowerPointPresentation.Slides.ElementAt(tempSlide.Index);
                     tempSlide.Delete();
                 }
-            }
-        }
-
-        private static void CopyShapePosition(PowerPoint.Shape shapeToCopy, ref PowerPoint.Shape shapeToMove)
-        {
-            shapeToMove.Left = shapeToCopy.Left + (shapeToCopy.Width / 2) - (shapeToMove.Width / 2);
-            shapeToMove.Top = shapeToCopy.Top + (shapeToCopy.Height / 2) - (shapeToMove.Height / 2);
-        }
-
-        private static void CopyShapeSize(PowerPoint.Shape shapeToCopy, ref PowerPoint.Shape shapeToMove)
-        {
-            shapeToMove.LockAspectRatio = Office.MsoTriState.msoFalse;
-            shapeToMove.Width = shapeToCopy.Width;
-            shapeToMove.Height = shapeToCopy.Height;
-        }
-
-        private static void CopyShapeAttributes(PowerPoint.Shape shapeToCopy, ref PowerPoint.Shape shapeToMove)
-        {
-            CopyShapeSize(shapeToCopy, ref shapeToMove);
-            CopyShapePosition(shapeToCopy, ref shapeToMove);
-        }
-
-        private static void FitShapeToSlide(ref PowerPoint.Shape shapeToMove)
-        {
-            shapeToMove.LockAspectRatio = Office.MsoTriState.msoFalse;
-            shapeToMove.Left = 0;
-            shapeToMove.Top = 0;
-            shapeToMove.Width = PowerPointPresentation.SlideWidth;
-            shapeToMove.Height = PowerPointPresentation.SlideHeight;
-        }
-
-        private static void AddAckSlide()
-        {
-            try
-            {
-                PowerPointSlide lastSlide = PowerPointPresentation.Slides.Last();
-                if (!lastSlide.isAckSlide())
-                {
-                    lastSlide.CreateAckSlide();
-                }
-            }
-            catch (Exception e)
-            {
-                //LogException(e, "AddAckSlide");
-                throw;
             }
         }
     }

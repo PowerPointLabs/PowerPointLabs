@@ -11,7 +11,7 @@ namespace PowerPointLabs.Models
     {
         private PowerPointAutoAnimateSlide(PowerPoint.Slide slide) : base(slide)
         {
-            _slide.Name = "PPTAutoAnimateSlideAnimated" + DateTime.Now.ToString("yyyyMMddHHmmssffff");
+            _slide.Name = "PPSlideAnimated" + DateTime.Now.ToString("yyyyMMddHHmmssffff");
         }
 
         new public static PowerPointSlide FromSlideFactory(PowerPoint.Slide slide)
@@ -61,6 +61,7 @@ namespace PowerPointLabs.Models
             }
         }
 
+        //Fade out non-matching shapes. If shape has exit animation, then delete it
         private void ManageNonMatchingShapes(int[] matchingShapeIDs, int indicatorShapeID)
         {
             foreach (PowerPoint.Shape sh in _slide.Shapes)

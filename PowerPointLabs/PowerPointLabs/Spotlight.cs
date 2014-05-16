@@ -47,11 +47,11 @@ namespace PowerPointLabs
                 addedSlide.PrepareForSpotlight();
                 addedSlide.AddSpotlightEffect(spotlightShapes);
                 currentSlide.DeleteShapesWithPrefix("SpotlightShape");
-                AddAckSlide();
+                PowerPointLabsGlobals.AddAckSlide();
             }
             catch (Exception e)
             {
-                //LogException(e, "SpotlightBtnClick");
+                PowerPointLabsGlobals.LogException(e, "SpotlightBtnClick");
                 throw;
             }
         }
@@ -77,7 +77,7 @@ namespace PowerPointLabs
                         {
                             spotlightShapes.Add(sh);
                         }
-                        else if (sh.Name.Contains("PPTLabsIndicator"))
+                        else if (sh.Name.Contains("PPIndicator"))
                         {
                             indicatorShape = sh;
                         }
@@ -101,7 +101,7 @@ namespace PowerPointLabs
 
                         currentSlide.PrepareForSpotlight();
                         currentSlide.AddSpotlightEffect(spotlightShapes);
-                        AddAckSlide();
+                        PowerPointLabsGlobals.AddAckSlide();
                     }
                 }
                 else
@@ -111,13 +111,14 @@ namespace PowerPointLabs
             }
             catch (Exception e)
             {
-                //LogException(e, "ReloadSpotlightButtonClick");
+                PowerPointLabsGlobals.LogException(e, "ReloadSpotlightButtonClick");
                 throw;
             }
         }
 
         private static void PreFormatShapeOnCurrentSlide(PowerPoint.Shape spotShape)
         {
+            //Change color of shape to white. This is used later for creating spotlight shape
             spotShape.ShapeStyle = Office.MsoShapeStyleIndex.msoShapeStylePreset1;
             spotShape.Fill.ForeColor.RGB = 0xffffff;
             spotShape.Line.Visible = Office.MsoTriState.msoFalse;
@@ -126,6 +127,7 @@ namespace PowerPointLabs
             if (spotShape.HasTextFrame == Office.MsoTriState.msoTrue && spotShape.TextFrame.HasText == Office.MsoTriState.msoTrue)
                 spotShape.TextFrame.TextRange.Font.Color.RGB = 0xffffff;
 
+            //Deal with text on grouped shapes
             if (spotShape.Type == Office.MsoShapeType.msoGroup)
             {
                 PowerPoint.ShapeRange shRange = spotShape.GroupItems.Range(1);
@@ -139,6 +141,7 @@ namespace PowerPointLabs
 
         private static void PostFormatShapeOnCurrentSlide(PowerPointSlide currentSlide, PowerPoint.Shape spotShape)
         {
+            //Format selected shape on current slide
             spotShape.Fill.ForeColor.RGB = 0xaaaaaa;
             spotShape.Fill.Transparency = 0.7f;
             spotShape.Line.Visible = Office.MsoTriState.msoTrue;
@@ -165,23 +168,6 @@ namespace PowerPointLabs
             duplicateShape.Visible = Office.MsoTriState.msoFalse;
             duplicateShape.Left = spotlightShape.Left;
             duplicateShape.Top = spotlightShape.Top;
-        }
-
-        private static void AddAckSlide()
-        {
-            try
-            {
-                PowerPointSlide lastSlide = PowerPointPresentation.Slides.Last();
-                if (!lastSlide.isAckSlide())
-                {
-                    lastSlide.CreateAckSlide();
-                }
-            }
-            catch (Exception e)
-            {
-                //LogException(e, "AddAckSlide");
-                throw;
-            }
         }
     }
 }

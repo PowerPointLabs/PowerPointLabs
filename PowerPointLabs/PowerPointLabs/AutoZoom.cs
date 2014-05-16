@@ -44,7 +44,7 @@ namespace PowerPointLabs
                     
                     currentSlide.Copy();
                     shapeToZoom = addedSlide.Shapes.PasteSpecial(PowerPoint.PpPasteDataType.ppPastePNG)[1];
-                    FitShapeToSlide(ref shapeToZoom);
+                    PowerPointLabsGlobals.FitShapeToSlide(ref shapeToZoom);
                     shapeToZoom.ZOrder(Office.MsoZOrderCmd.msoBringToFront);
 
                     addedSlide.PrepareForDrillDown();
@@ -66,11 +66,11 @@ namespace PowerPointLabs
 
                 Globals.ThisAddIn.Application.ActiveWindow.View.GotoSlide(addedSlide.Index);
                 Globals.ThisAddIn.Application.CommandBars.ExecuteMso("AnimationPreview");
-                AddAckSlide();
+                PowerPointLabsGlobals.AddAckSlide();
             }
             catch (Exception e)
             {
-                //LogException(e, "AddDrillDownAnimation");
+                PowerPointLabsGlobals.LogException(e, "AddDrillDownAnimation");
                 throw;
             }
         }
@@ -127,11 +127,11 @@ namespace PowerPointLabs
                 currentSlide.Transition.Duration = 0.25f;
                 Globals.ThisAddIn.Application.ActiveWindow.View.GotoSlide(addedSlide.Index);
                 Globals.ThisAddIn.Application.CommandBars.ExecuteMso("AnimationPreview");
-                AddAckSlide();
+                PowerPointLabsGlobals.AddAckSlide();
             }
             catch (Exception e)
             {
-                //LogException(e, "AddStepBackAnimation");
+                PowerPointLabsGlobals.LogException(e, "AddStepBackAnimation");
                 throw;
             }
         }
@@ -150,6 +150,7 @@ namespace PowerPointLabs
             selectedShape.Rotation = 0;
         }
 
+        //Delete previously added drill down slides
         private static PowerPointSlide GetNextSlide(PowerPointSlide currentSlide)
         {
             PowerPointSlide nextSlide = PowerPointPresentation.Slides.ElementAt(currentSlide.Index);
@@ -164,6 +165,7 @@ namespace PowerPointLabs
             return nextSlide;
         }
 
+        //Delete previously added step back slides
         private static PowerPointSlide GetPreviousSlide(PowerPointSlide currentSlide)
         {
             PowerPointSlide previousSlide = PowerPointPresentation.Slides.ElementAt(currentSlide.Index - 2);
@@ -177,6 +179,7 @@ namespace PowerPointLabs
             return previousSlide;
         }
 
+        //Return picture copy of next slide where shapes with exit animations have been deleted
         private static PowerPoint.Shape GetNextSlidePictureWithoutBackground(PowerPointSlide currentSlide, PowerPointSlide nextSlide, ref PowerPoint.Shape pictureOnNextSlide)
         {
             Globals.ThisAddIn.Application.ActiveWindow.Selection.Unselect();
@@ -194,7 +197,7 @@ namespace PowerPointLabs
             {
                 sh.Copy();
                 shapeCopy = nextSlide.Shapes.Paste()[1];
-                CopyShapeAttributes(sh, ref shapeCopy);
+                PowerPointLabsGlobals.CopyShapeAttributes(sh, ref shapeCopy);
                 shapeCopy.Select(Office.MsoTriState.msoFalse);
             }
 
@@ -207,7 +210,7 @@ namespace PowerPointLabs
 
             shapeGroup.Copy();
             pictureOnNextSlide = nextSlide.Shapes.PasteSpecial(PowerPoint.PpPasteDataType.ppPastePNG)[1];
-            CopyShapePosition(shapeGroup, ref pictureOnNextSlide);
+            PowerPointLabsGlobals.CopyShapePosition(shapeGroup, ref pictureOnNextSlide);
             shapeGroup.Delete();
 
             pictureOnNextSlide.Copy();
@@ -215,6 +218,7 @@ namespace PowerPointLabs
             return slidePicture;
         }
 
+        //Return picture copy of next slide where shapes with exit animations have been deleted
         private static PowerPoint.Shape GetNextSlidePictureWithBackground(PowerPointSlide currentSlide, PowerPointSlide nextSlide)
         {
             PowerPointSlide nextSlideCopy = nextSlide.Duplicate();
@@ -229,6 +233,7 @@ namespace PowerPointLabs
             return slidePicture;
         }
 
+        //Return picture copy of previous slide where shapes with exit animations have been deleted
         private static PowerPoint.Shape GetPreviousSlidePictureWithBackground(PowerPointSlide currentSlide, PowerPointSlide previousSlide)
         {
             PowerPointSlide previousSlideCopy = previousSlide.Duplicate();
@@ -243,10 +248,11 @@ namespace PowerPointLabs
             return slidePicture;
         }
 
+        //Set position, size and animations of the next slide copy
         private static void PrepareNextSlidePicture(PowerPointSlide currentSlide, PowerPoint.Shape selectedShape, ref PowerPoint.Shape nextSlidePicture)
         {
             if (selectedShape.Name.Contains("PPTZoomInShape"))
-                CopyShapeAttributes(selectedShape, ref nextSlidePicture);
+                PowerPointLabsGlobals.CopyShapeAttributes(selectedShape, ref nextSlidePicture);
             else
             {
                 nextSlidePicture.LockAspectRatio = Office.MsoTriState.msoTrue;
@@ -255,7 +261,7 @@ namespace PowerPointLabs
                 else
                     nextSlidePicture.Width = selectedShape.Width;
 
-                CopyShapePosition(selectedShape, ref nextSlidePicture);
+                PowerPointLabsGlobals.CopyShapePosition(selectedShape, ref nextSlidePicture);
             }
  
             selectedShape.Visible = Office.MsoTriState.msoFalse;
@@ -265,10 +271,11 @@ namespace PowerPointLabs
             effectAppear.Timing.Duration = 0.50f;
         }
 
+        //Set position, size and animations of the previous slide copy
         private static void PreparePreviousSlidePicture(PowerPointSlide currentSlide, PowerPoint.Shape selectedShape, ref PowerPoint.Shape previousSlidePicture)
         {
             if (selectedShape.Name.Contains("PPTZoomOutShape"))
-                CopyShapeAttributes(selectedShape, ref previousSlidePicture);
+                PowerPointLabsGlobals.CopyShapeAttributes(selectedShape, ref previousSlidePicture);
             else
             {
                 previousSlidePicture.LockAspectRatio = Office.MsoTriState.msoTrue;
@@ -277,18 +284,19 @@ namespace PowerPointLabs
                 else
                     previousSlidePicture.Width = selectedShape.Width;
 
-                CopyShapePosition(selectedShape, ref previousSlidePicture);
+                PowerPointLabsGlobals.CopyShapePosition(selectedShape, ref previousSlidePicture);
             }
 
             selectedShape.Visible = Office.MsoTriState.msoFalse;
             previousSlidePicture.Name = "PPTZoomOutShape" + DateTime.Now.ToString("yyyyMMddHHmmssffff");
         }
 
+
         private static PowerPoint.Shape GetStepBackWithBackgroundShapeToZoom(PowerPointSlide currentSlide, PowerPointSlide addedSlide, PowerPoint.Shape previousSlidePicture)
         {
             currentSlide.Copy();
             PowerPoint.Shape currentSlideCopy = addedSlide.Shapes.PasteSpecial(PowerPoint.PpPasteDataType.ppPastePNG)[1];
-            FitShapeToSlide(ref currentSlideCopy);
+            PowerPointLabsGlobals.FitShapeToSlide(ref currentSlideCopy);
 
             previousSlidePicture.Copy();
             PowerPoint.Shape previousSlidePictureCopy = addedSlide.Shapes.Paste()[1];
@@ -324,7 +332,7 @@ namespace PowerPointLabs
                 {
                     sh.Copy();
                     PowerPoint.Shape shapeCopy = addedSlide.Shapes.Paste()[1];
-                    CopyShapeAttributes(sh, ref shapeCopy);
+                    PowerPointLabsGlobals.CopyShapeAttributes(sh, ref shapeCopy);
                     shapeCopy.Select(Office.MsoTriState.msoFalse);
                 } 
             }
@@ -338,56 +346,11 @@ namespace PowerPointLabs
 
             shapeGroup.Copy();
             PowerPoint.Shape previousSlidePicture = addedSlide.Shapes.PasteSpecial(PowerPoint.PpPasteDataType.ppPastePNG)[1];
-            CopyShapePosition(shapeGroup, ref previousSlidePicture);
+            PowerPointLabsGlobals.CopyShapePosition(shapeGroup, ref previousSlidePicture);
             previousSlidePicture.Name = "PPTZoomOutShape" + DateTime.Now.ToString("yyyyMMddHHmmssffff");
             shapeGroup.Delete();
 
             return previousSlidePicture;
-        }
-
-        private static void CopyShapePosition(PowerPoint.Shape shapeToCopy, ref PowerPoint.Shape shapeToMove)
-        {
-            shapeToMove.Left = shapeToCopy.Left + (shapeToCopy.Width / 2) - (shapeToMove.Width / 2);
-            shapeToMove.Top = shapeToCopy.Top + (shapeToCopy.Height / 2) - (shapeToMove.Height / 2);
-        }
-
-        private static void CopyShapeSize(PowerPoint.Shape shapeToCopy, ref PowerPoint.Shape shapeToMove)
-        {
-            shapeToMove.LockAspectRatio = Office.MsoTriState.msoFalse;
-            shapeToMove.Width = shapeToCopy.Width;
-            shapeToMove.Height = shapeToCopy.Height;
-        }
-
-        private static void CopyShapeAttributes(PowerPoint.Shape shapeToCopy, ref PowerPoint.Shape shapeToMove)
-        {
-            CopyShapeSize(shapeToCopy, ref shapeToMove);
-            CopyShapePosition(shapeToCopy, ref shapeToMove);
-        }
-
-        private static void FitShapeToSlide(ref PowerPoint.Shape shapeToMove)
-        {
-            shapeToMove.LockAspectRatio = Office.MsoTriState.msoFalse;
-            shapeToMove.Left = 0;
-            shapeToMove.Top = 0;
-            shapeToMove.Width = PowerPointPresentation.SlideWidth;
-            shapeToMove.Height = PowerPointPresentation.SlideHeight;
-        }
-
-        private static void AddAckSlide()
-        {
-            try
-            {
-                PowerPointSlide lastSlide = PowerPointPresentation.Slides.Last();
-                if (!lastSlide.isAckSlide())
-                {
-                    lastSlide.CreateAckSlide();
-                }
-            }
-            catch (Exception e)
-            {
-                //LogException(e, "AddAckSlide");
-                throw;
-            }
         }
     }
 }

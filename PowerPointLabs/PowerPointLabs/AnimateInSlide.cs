@@ -37,12 +37,12 @@ namespace PowerPointLabs
                 if (!isHighlightBullets)
                 {
                     Globals.ThisAddIn.Application.CommandBars.ExecuteMso("AnimationPreview");
-                    AddAckSlide();
+                    PowerPointLabsGlobals.AddAckSlide();
                 }
             }
             catch (Exception e)
             {
-                //LogException(e, "SpotlightBtnClick");
+                PowerPointLabsGlobals.LogException(e, "AddAnimationInSlide");
                 throw;
             }
         }
@@ -83,6 +83,7 @@ namespace PowerPointLabs
                 else
                     DefaultMotionAnimation.AddDefaultMotionAnimation(currentSlide, shape1, shape2, defaultDuration, PowerPoint.MsoAnimTriggerType.msoAnimTriggerOnPageClick);
 
+                //Transition from shape1 to shape2
                 PowerPoint.Effect shape2Appear = currentSlide.TimeLine.MainSequence.AddEffect(shape2, PowerPoint.MsoAnimEffect.msoAnimEffectAppear, PowerPoint.MsoAnimateByLevel.msoAnimateLevelNone, PowerPoint.MsoAnimTriggerType.msoAnimTriggerAfterPrevious);
                 PowerPoint.Effect shape1Disappear = currentSlide.TimeLine.MainSequence.AddEffect(shape1, PowerPoint.MsoAnimEffect.msoAnimEffectAppear, PowerPoint.MsoAnimateByLevel.msoAnimateLevelNone, PowerPoint.MsoAnimTriggerType.msoAnimTriggerAfterPrevious);
                 shape1Disappear.Exit = Office.MsoTriState.msoTrue;
@@ -109,23 +110,6 @@ namespace PowerPointLabs
             else
             {
                 return false;
-            }
-        }
-
-        private static void AddAckSlide()
-        {
-            try
-            {
-                PowerPointSlide lastSlide = PowerPointPresentation.Slides.Last();
-                if (!lastSlide.isAckSlide())
-                {
-                    lastSlide.CreateAckSlide();
-                }
-            }
-            catch (Exception e)
-            {
-                //LogException(e, "AddAckSlide");
-                throw;
             }
         }
     }

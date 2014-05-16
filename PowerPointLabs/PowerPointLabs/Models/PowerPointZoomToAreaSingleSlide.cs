@@ -14,7 +14,7 @@ namespace PowerPointLabs.Models
 
         private PowerPointZoomToAreaSingleSlide(PowerPoint.Slide slide) : base(slide)
         {
-            _slide.Name = "PPTLabsMagnifyingSlide" + DateTime.Now.ToString("yyyyMMddHHmmssffff");
+            _slide.Name = "PPTLabsMagnifyingSingleSlide" + DateTime.Now.ToString("yyyyMMddHHmmssffff");
         }
 
         new public static PowerPointSlide FromSlideFactory(PowerPoint.Slide slide)
@@ -29,6 +29,7 @@ namespace PowerPointLabs.Models
         {
             MoveMotionAnimation();
 
+            //Delete zoom shapes and shapes with exit animations
             List<PowerPoint.Shape> shapes = _slide.Shapes.Cast<PowerPoint.Shape>().ToList();
             var matchingShapes = shapes.Where(current => (HasExitAnimation(current) || shapesToZoom.Contains(current)));
             foreach (PowerPoint.Shape s in matchingShapes)
@@ -41,6 +42,7 @@ namespace PowerPointLabs.Models
             ManageSlideTransitions();
             indicatorShape = AddPowerPointLabsIndicator();
 
+            //Add fade out effect for non-zoom shapes
             shapes = _slide.Shapes.Cast<PowerPoint.Shape>().ToList();
             matchingShapes = shapes.Where(current => (!(current.Equals(indicatorShape) || current.Equals(zoomSlideCroppedShapes))));
             foreach (PowerPoint.Shape s in matchingShapes)
@@ -72,8 +74,9 @@ namespace PowerPointLabs.Models
         {
             if (shapeCount == 1)
             {
+                //First Shape, add zoom in animation
                 PowerPoint.Shape shapeToZoom = zoomSlideCroppedShapes.Duplicate()[1];
-                FitShapeToSlide(ref shapeToZoom);
+                PowerPointLabsGlobals.FitShapeToSlide(ref shapeToZoom);
                 shapeToZoom.Name = "PPTLabsMagnifyingAreaSlide" + DateTime.Now.ToString("yyyyMMddHHmmssffff");
 
                 PowerPoint.Shape referenceShape = GetReferenceShape(zoomShape);
@@ -95,6 +98,7 @@ namespace PowerPointLabs.Models
             }
             else
             {
+                //Add pan animation from last magnified shape
                 PowerPoint.Shape tempShape1 = GetShapeToZoom(zoomShape);
                 PowerPoint.Shape tempShape2 = GetReferenceShape(tempShape1);
                 PowerPoint.Shape referenceShape = GetLastMagnifiedShape(tempShape2);
@@ -111,6 +115,7 @@ namespace PowerPointLabs.Models
 
             if (shapeCount == totalShapes)
             {
+                //Last shape, add zoom out animation
                 PowerPoint.Shape shapeToZoom = GetShapeToZoomWithBackground(zoomShape);
 
                 PowerPoint.Effect effectAppear = _slide.TimeLine.MainSequence.AddEffect(shapeToZoom, PowerPoint.MsoAnimEffect.msoAnimEffectAppear, PowerPoint.MsoAnimateByLevel.msoAnimateLevelNone, PowerPoint.MsoAnimTriggerType.msoAnimTriggerOnPageClick);
@@ -131,6 +136,7 @@ namespace PowerPointLabs.Models
         {
             if (shapeCount == 1)
             {
+                //First Shape, add zoom in animation
                 PowerPoint.Shape shapeToZoom = GetShapeToZoom(zoomShape);
                 shapeToZoom.Name = "PPTLabsMagnifyingAreaSlide" + DateTime.Now.ToString("yyyyMMddHHmmssffff");
                 PowerPoint.Shape referenceShape = GetReferenceShape(shapeToZoom);
@@ -148,6 +154,7 @@ namespace PowerPointLabs.Models
             }
             else
             {
+                //Add pan animation from last magnified shape
                 PowerPoint.Shape tempShape1 = GetShapeToZoom(zoomShape);
                 PowerPoint.Shape tempShape2 = GetReferenceShape(tempShape1);
                 PowerPoint.Shape referenceShape = GetLastMagnifiedShape(tempShape2);
@@ -164,6 +171,7 @@ namespace PowerPointLabs.Models
 
             if (shapeCount == totalShapes)
             {
+                //Last shape, add zoom out animation
                 PowerPoint.Shape tempShape1 = GetShapeToZoom(zoomShape);
                 PowerPoint.Shape shapeToZoom = GetReferenceShape(tempShape1);
                 tempShape1.Delete();
@@ -182,6 +190,7 @@ namespace PowerPointLabs.Models
             }
         }
 
+        //Add disappear animations for PPTLabs shapes and fade animation for remaining shapes
         private void ManageEndAnimationsForZoomWithBackground()
         {
             bool isFirst = true;
@@ -211,6 +220,7 @@ namespace PowerPointLabs.Models
             }
         }
 
+        //Add disappear animations for PPTLabs shapes and fade animation for remaining shapes
         private void ManageEndAnimationsForZoomWithoutBackground()
         {
             bool isFirst = true;
@@ -244,6 +254,7 @@ namespace PowerPointLabs.Models
             }
         }
 
+        //Remove crop attributes of shape
         private PowerPoint.Shape GetLastMagnifiedShape(PowerPoint.Shape referenceShape)
         {
             DeleteShapeAnimations(referenceShape);
@@ -255,6 +266,7 @@ namespace PowerPointLabs.Models
             return referenceShape;
         }
 
+        //Return copy of argument shape that fits the slide
         private PowerPoint.Shape GetReferenceShape(PowerPoint.Shape shapeToZoom)
         {
             shapeToZoom.Copy();
@@ -272,25 +284,27 @@ namespace PowerPointLabs.Models
             return referenceShape;
         }
 
+        //Return cropped part of slide picture to be used for zoom in animation
         private PowerPoint.Shape GetShapeToZoom(PowerPoint.Shape zoomShape)
         {
             PowerPoint.Shape shapeToZoom = zoomSlideCroppedShapes.Duplicate()[1];
             DeleteShapeAnimations(shapeToZoom);
-            CopyShapePosition(zoomSlideCroppedShapes, ref shapeToZoom);
+            PowerPointLabsGlobals.CopyShapePosition(zoomSlideCroppedShapes, ref shapeToZoom);
 
             shapeToZoom.PictureFormat.CropLeft += zoomShape.Left;
             shapeToZoom.PictureFormat.CropTop += zoomShape.Top;
             shapeToZoom.PictureFormat.CropRight += (PowerPointPresentation.SlideWidth - (zoomShape.Left + zoomShape.Width));
             shapeToZoom.PictureFormat.CropBottom += (PowerPointPresentation.SlideHeight - (zoomShape.Top + zoomShape.Height));
 
-            CopyShapePosition(zoomShape, ref shapeToZoom);
+            PowerPointLabsGlobals.CopyShapePosition(zoomShape, ref shapeToZoom);
             return shapeToZoom;
         }
 
+        //Return zoomed version of cropped slide picture to be used for zoom out animation
         private PowerPoint.Shape GetShapeToZoomWithBackground(PowerPoint.Shape zoomShape)
         {
             PowerPoint.Shape shapeToZoom = zoomSlideCroppedShapes.Duplicate()[1];
-            FitShapeToSlide(ref shapeToZoom);
+            PowerPointLabsGlobals.FitShapeToSlide(ref shapeToZoom);
             shapeToZoom.Name = "PPTLabsDeMagnifyAreaSlide" + DateTime.Now.ToString("yyyyMMddHHmmssffff");
 
             PowerPoint.Shape referenceShape = GetReferenceShape(zoomShape);
@@ -302,7 +316,7 @@ namespace PowerPointLabs.Models
 
             zoomShape.Copy();
             PowerPoint.Shape zoomShapeCopy = _slide.Shapes.Paste()[1];
-            CopyShapeAttributes(zoomShape, ref zoomShapeCopy);
+            PowerPointLabsGlobals.CopyShapeAttributes(zoomShape, ref zoomShapeCopy);
 
             Globals.ThisAddIn.Application.ActiveWindow.View.GotoSlide(_slide.SlideIndex);
             shapeToZoom.Select();
@@ -321,6 +335,7 @@ namespace PowerPointLabs.Models
             return shapeToZoom;
         }
 
+        //Stores a cropped image of the slide in the global variable. Uses the CropShapeToSlide() method in Ribbon1.
         private void AddZoomSlideCroppedPicture()
         {
             PowerPointSlide zoomSlideCopy = this.Duplicate();
@@ -334,7 +349,7 @@ namespace PowerPointLabs.Models
 
             zoomSlideCroppedShapes = _slide.Shapes.PasteSpecial(PowerPoint.PpPasteDataType.ppPastePNG)[1];
             zoomSlideCroppedShapes.Name = "PPTLabsZoomGroup" + DateTime.Now.ToString("yyyyMMddHHmmssffff");
-            FitShapeToSlide(ref zoomSlideCroppedShapes);
+            PowerPointLabsGlobals.FitShapeToSlide(ref zoomSlideCroppedShapes);
             zoomSlideCopy.Delete();
         }
 
@@ -343,34 +358,6 @@ namespace PowerPointLabs.Models
             base.RemoveSlideTransitions();
             _slide.SlideShowTransition.AdvanceOnTime = Office.MsoTriState.msoFalse;
             _slide.SlideShowTransition.AdvanceOnClick = Office.MsoTriState.msoTrue;
-        }
-
-        private void FitShapeToSlide(ref PowerPoint.Shape shapeToMove)
-        {
-            shapeToMove.LockAspectRatio = Office.MsoTriState.msoFalse;
-            shapeToMove.Left = 0;
-            shapeToMove.Top = 0;
-            shapeToMove.Width = PowerPointPresentation.SlideWidth;
-            shapeToMove.Height = PowerPointPresentation.SlideHeight;
-        }
-
-        private static void CopyShapePosition(PowerPoint.Shape shapeToCopy, ref PowerPoint.Shape shapeToMove)
-        {
-            shapeToMove.Left = shapeToCopy.Left + (shapeToCopy.Width / 2) - (shapeToMove.Width / 2);
-            shapeToMove.Top = shapeToCopy.Top + (shapeToCopy.Height / 2) - (shapeToMove.Height / 2);
-        }
-
-        private static void CopyShapeSize(PowerPoint.Shape shapeToCopy, ref PowerPoint.Shape shapeToMove)
-        {
-            shapeToMove.LockAspectRatio = Office.MsoTriState.msoFalse;
-            shapeToMove.Width = shapeToCopy.Width;
-            shapeToMove.Height = shapeToCopy.Height;
-        }
-
-        private static void CopyShapeAttributes(PowerPoint.Shape shapeToCopy, ref PowerPoint.Shape shapeToMove)
-        {
-            CopyShapeSize(shapeToCopy, ref shapeToMove);
-            CopyShapePosition(shapeToCopy, ref shapeToMove);
         }
     }
 }

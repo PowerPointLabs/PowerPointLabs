@@ -26,6 +26,7 @@ namespace PowerPointLabs
                 PowerPoint.ShapeRange selectedShapes = null;
                 Office.TextRange2 selectedText = null;
 
+                //Get shapes to consider for animation
                 switch (userSelection)
                 {
                     case HighlightTextSelection.kShapeSelected:
@@ -36,7 +37,7 @@ namespace PowerPointLabs
                         selectedText = Globals.ThisAddIn.Application.ActiveWindow.Selection.TextRange2.TrimText();
                         break;
                     case HighlightTextSelection.kNoneSelected:
-                        currentSlide.DeleteShapesWithPrefix("PPTLabsIndicator");
+                        currentSlide.DeleteShapesWithPrefix("PPIndicator");
                         currentSlide.DeleteShapesWithPrefix("PPTLabsHighlightBackgroundShape");
                         selectedShapes = currentSlide.Shapes.Range();
                         break;
@@ -61,14 +62,15 @@ namespace PowerPointLabs
                     if (!sh.Name.Contains("HighlightTextShape"))
                         sh.Name = "HighlightTextShape" + DateTime.Now.ToString("yyyyMMddHHmmssffff");
 
-                    //Add Appear effect
+                    //Add Font Appear effect for all paragraphs within shape
                     sequence.AddEffect(sh, PowerPoint.MsoAnimEffect.msoAnimEffectChangeFontColor, PowerPoint.MsoAnimateByLevel.msoAnimateTextByFifthLevel, PowerPoint.MsoAnimTriggerType.msoAnimTriggerOnPageClick);
                     int addedEffectCount = sequence.Count - initialEffectCount;
-                    
-                    //Add Disappear effect
+
+                    //Add Font Disappear effect for all paragraphs within shape
                     sequence.AddEffect(sh, PowerPoint.MsoAnimEffect.msoAnimEffectChangeFontColor, PowerPoint.MsoAnimateByLevel.msoAnimateTextByFifthLevel, PowerPoint.MsoAnimTriggerType.msoAnimTriggerWithPrevious);
                     int addedEffectsStart = initialEffectCount + 1;
                     
+                    //Remove effects for paragraphs without bullet points
                     RemoveEffectsForTextWithoutBullets(currentSlide, sh, addedEffectsStart, addedEffectCount, selectedText);
                     int finalEffectCount = sequence.Count - initialEffectCount;
 
@@ -79,22 +81,23 @@ namespace PowerPointLabs
                         isFirstShape = false;
                     }
                 }
-                AddAckSlide();
+                PowerPointLabsGlobals.AddAckSlide();
             }
             catch (Exception e)
             {
-                //LogException(e, "SpotlightBtnClick");
+                PowerPointLabsGlobals.LogException(e, "AddHighlightBulletsText");
                 throw;
             }
         }
 
+        //Reorder and customize the font appear and font disappear animations added earlier
         private static void FormatAddedEffects(PowerPointSlide currentSlide, int addedEffectsStart, int finalEffectCount, bool isFirstShape)
         {
             PowerPoint.Sequence sequence = currentSlide.TimeLine.MainSequence;
 
             //Highlight Color appear
             PowerPoint.Effect firstHighlightAppear = sequence[addedEffectsStart];
-            firstHighlightAppear.EffectParameters.Color2.RGB = CreateRGB(highlightColor);
+            firstHighlightAppear.EffectParameters.Color2.RGB = PowerPointLabsGlobals.CreateRGB(highlightColor);
             firstHighlightAppear.Timing.Duration = 0.01f;
             firstHighlightAppear.Timing.TriggerType = isFirstShape ? PowerPoint.MsoAnimTriggerType.msoAnimTriggerOnPageClick : PowerPoint.MsoAnimTriggerType.msoAnimTriggerAfterPrevious;
 
@@ -102,25 +105,26 @@ namespace PowerPointLabs
             for (int i = 2, j = 1; i < finalEffectCount; i += 2, j++)
             {
                 PowerPoint.Effect nextHighlightAppear = sequence[addedEffectsStart - 1 + i];
-                nextHighlightAppear.EffectParameters.Color2.RGB = CreateRGB(highlightColor);
+                nextHighlightAppear.EffectParameters.Color2.RGB = PowerPointLabsGlobals.CreateRGB(highlightColor);
                 nextHighlightAppear.Timing.Duration = 0.01f;
 
                 PowerPoint.Effect firstHighlightDisappear = sequence[addedEffectsStart - 1 + countCopy + j];
-                firstHighlightDisappear.EffectParameters.Color2.RGB = CreateRGB(defaultColor);
+                firstHighlightDisappear.EffectParameters.Color2.RGB = PowerPointLabsGlobals.CreateRGB(defaultColor);
                 firstHighlightDisappear.Timing.Duration = 0.01f;
                 firstHighlightDisappear.MoveTo(addedEffectsStart + i);
                 firstHighlightDisappear.Timing.TriggerType = PowerPoint.MsoAnimTriggerType.msoAnimTriggerWithPrevious;
             }
 
             PowerPoint.Effect lastHighlightDisappear = sequence[sequence.Count];
-            lastHighlightDisappear.EffectParameters.Color2.RGB = CreateRGB(defaultColor);
+            lastHighlightDisappear.EffectParameters.Color2.RGB = PowerPointLabsGlobals.CreateRGB(defaultColor);
             lastHighlightDisappear.Timing.Duration = 0.01f;
             lastHighlightDisappear.Timing.TriggerType = PowerPoint.MsoAnimTriggerType.msoAnimTriggerOnPageClick;
         }
 
+        //Delete existing animations
         private static void ProcessExistingHighlightSlide(PowerPointSlide currentSlide, List<PowerPoint.Shape> shapesToUse)
         {
-            currentSlide.DeleteShapesWithPrefix("PPTLabsIndicator");
+            currentSlide.DeleteShapesWithPrefix("PPIndicator");
             currentSlide.DeleteShapesWithPrefix("PPTLabsHighlightBackgroundShape");
 
             foreach (PowerPoint.Shape tmp in currentSlide.Shapes)
@@ -177,6 +181,11 @@ namespace PowerPointLabs
             return isFirstShape;
         }
 
+        /*Get shapes to use for animation.
+         * If user does not select anything: Select shapes which have bullet points
+         * If user selects some shapes: Keep shapes from user selection which have bullet points
+         * If user selects some text: Keep shapes used to store text
+         */
         private static List<PowerPoint.Shape> GetShapesToUse(PowerPointSlide currentSlide, PowerPoint.ShapeRange selectedShapes)
         {
             List<PowerPoint.Shape> shapesToUse = new List<PowerPoint.Shape>();
@@ -200,43 +209,6 @@ namespace PowerPointLabs
                 }
             }
             return shapesToUse;
-        }
-
-        private static int CreateRGB(Color color)
-        {
-            // initial value
-            int rgb = 0;
-
-            // swap
-            int red = color.B;
-            int blue = color.R;
-            int green = color.G;
-
-            // create the newColor
-            Color newColor = Color.FromArgb(red, green, blue);
-
-            // set the return value
-            rgb = newColor.ToArgb();
-
-            // return value
-            return rgb;
-        }
-
-        private static void AddAckSlide()
-        {
-            try
-            {
-                PowerPointSlide lastSlide = PowerPointPresentation.Slides.Last();
-                if (!lastSlide.isAckSlide())
-                {
-                    lastSlide.CreateAckSlide();
-                }
-            }
-            catch (Exception e)
-            {
-                //LogException(e, "AddAckSlide");
-                throw;
-            }
         }
     }
 }

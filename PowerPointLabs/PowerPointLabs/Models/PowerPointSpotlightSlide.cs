@@ -32,23 +32,25 @@ namespace PowerPointLabs.Models
             ManageSlideTransitions();
         }
 
+        //Edit selected spotlight shape to fit within the current slide
         public PowerPoint.Shape CreateSpotlightShape(PowerPoint.Shape spotShape)
         {
             spotShape.Copy();
             bool isCallout = false;
             PowerPoint.Shape spotlightShape;
+            
             if (spotShape.Type == Office.MsoShapeType.msoCallout)
                 isCallout = true;
 
             if (isCallout)
             {
                 spotlightShape = this.Shapes.Paste()[1];
-                MoveToOriginalPosition(spotShape, ref spotlightShape);
+                PowerPointLabsGlobals.CopyShapePosition(spotShape, ref spotlightShape);
             }
             else
             {
                 spotlightShape = this.Shapes.PasteSpecial(PowerPoint.PpPasteDataType.ppPastePNG)[1];
-                MoveToOriginalPosition(spotShape, ref spotlightShape);
+                PowerPointLabsGlobals.CopyShapePosition(spotShape, ref spotlightShape);
                 CropSpotlightPictureToSlide(ref spotlightShape);
             }
 
@@ -68,7 +70,7 @@ namespace PowerPointLabs.Models
             }
             catch (Exception e)
             {
-                //LogException(e, "AddSpotlightEffect");
+                PowerPointLabsGlobals.LogException(e, "AddSpotlightEffect");
                 throw;
             }
         }
@@ -78,12 +80,6 @@ namespace PowerPointLabs.Models
             base.RemoveSlideTransitions();
             _slide.SlideShowTransition.AdvanceOnTime = Office.MsoTriState.msoFalse;
             _slide.SlideShowTransition.AdvanceOnClick = Office.MsoTriState.msoTrue;
-        }
-
-        private void MoveToOriginalPosition(PowerPoint.Shape reference, ref PowerPoint.Shape spotlightShape)
-        {
-            spotlightShape.Left = reference.Left + (reference.Width / 2) - (spotlightShape.Width / 2);
-            spotlightShape.Top = reference.Top + (reference.Height / 2) - (spotlightShape.Height / 2);
         }
 
         private void CropSpotlightPictureToSlide(ref PowerPoint.Shape shapeToCrop)
