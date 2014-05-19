@@ -11,8 +11,8 @@
 
 # Build results
 
-*/bin/
-*/obj/
+bin/
+obj/
 
 Thumbs.db
 
