@@ -76,7 +76,7 @@
     </BootstrapperPackage>
     <BootstrapperPackage Include="Microsoft.VSTORuntime.4.0">
       <Visible>False</Visible>
-      <ProductName>Microsoft Visual Studio 2010 Tools for Office Runtime %28x86 and x64%29</ProductName>
+      <ProductName>Microsoft Visual Studio 2010 Tools for Office Runtime %28x86 和 x64%29语言包 - 简体中文</ProductName>
       <Install>true</Install>
     </BootstrapperPackage>
     <BootstrapperPackage Include="Microsoft.Windows.Installer.3.1">
@@ -228,6 +228,7 @@
     <Compile Include="Models\PowerPointMagnifyingSlide.cs" />
     <Compile Include="Models\PowerPointStepBackSlide.cs" />
     <Compile Include="Models\PowerPointZoomToAreaSingleSlide.cs" />
+    <Compile Include="NotesToRecord.cs" />
     <Compile Include="PowerPointLabsGlobals.cs" />
     <Compile Include="Views\AboutForm.cs">
       <SubType>Form</SubType>
@@ -284,6 +285,12 @@
     <Compile Include="SpeechEngine\SynthesisState.cs" />
     <Compile Include="SpeechEngine\TextToSpeech.cs" />
     <Compile Include="Spotlight.cs" />
+    <Compile Include="Views\RecorderUI.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Views\RecorderUI.Designer.cs">
+      <DependentUpon>RecorderUI.cs</DependentUpon>
+    </Compile>
     <Compile Include="Views\SpotlightDialogBox.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -336,6 +343,9 @@
       <DependentUpon>Resources.resx</DependentUpon>
       <DesignTime>True</DesignTime>
     </Compile>
+    <EmbeddedResource Include="Views\RecorderUI.resx">
+      <DependentUpon>RecorderUI.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Views\SpotlightDialogBox.resx">
       <DependentUpon>SpotlightDialogBox.cs</DependentUpon>
     </EmbeddedResource>
@@ -513,6 +523,9 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\HighlightBackgroundContext.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Recorder\" />
   </ItemGroup>
   <!-- Include the build rules for a C# project. -->
   <PropertyGroup>

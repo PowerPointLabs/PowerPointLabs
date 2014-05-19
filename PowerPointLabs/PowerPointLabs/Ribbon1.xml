@@ -109,13 +109,20 @@
           </dialogBoxLauncher>
         </group>
         <group id="embedAudio" label="Auto Narrate">
-          <button id="addAudio"
+          <splitButton id="addAudioSplit" size="large">
+            <button id="addAudio"
                   label="Add Audio"
                   onAction="AddAudioClick"
                   keytip="NA"
                   supertip="Generates synthesized audio from text in the Speaker Notes pane, and adds it to the slide(s)."
-                  getImage="GetAddAudioImage"
-                  size="large" />
+                  getImage="GetAddAudioImage" />
+            <menu id="menu">
+              <button id="addRecord"
+                      label="Add Record"
+                      onAction="AddRecordClick"
+                      keytip="NA" />
+            </menu>
+          </splitButton>
           <button id="removeAudio"
                   label="Remove Audio"
                   onAction="RemoveAudioClick"

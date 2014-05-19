@@ -851,6 +851,23 @@ namespace PowerPointLabs
             }
         }
 
+        # region AudioRecord Button Callbacks
+        public void AddRecordClick(Office.IRibbonControl control)
+        {
+            try
+            {
+                var dialog = new RecorderUI();
+                dialog.StopNotifier += NotesToRecord.EmbedRecordToSlide;
+                dialog.ShowDialog();
+            }
+            catch (Exception e)
+            {
+                PowerPointLabsGlobals.LogException(e, "AddRecordingButtonPressed");
+                throw;
+            }
+        }
+        # endregion
+
         #region NotesToAudio Button Callbacks
         public void SpeakSelectedTextClick(Office.IRibbonControl control)
         {
