@@ -1,13 +1,13 @@
-﻿namespace PowerPointLabs.Views
+﻿namespace PowerPointLabs
 {
-    partial class RecorderUI
+    partial class RecorderTaskPane
     {
-        /// <summary>
+        /// <summary> 
         /// Required designer variable.
         /// </summary>
         private System.ComponentModel.IContainer components = null;
 
-        /// <summary>
+        /// <summary> 
         /// Clean up any resources being used.
         /// </summary>
         /// <param name="disposing">true if managed resources should be disposed; otherwise, false.</param>
@@ -20,14 +20,24 @@
             base.Dispose(disposing);
         }
 
-        #region Windows Form Designer generated code
+        #region Component Designer generated code
 
-        /// <summary>
-        /// Required method for Designer support - do not modify
+        /// <summary> 
+        /// Required method for Designer support - do not modify 
         /// the contents of this method with the code editor.
         /// </summary>
         private void InitializeComponent()
         {
+            this.SuspendLayout();
+            // 
+            // RecorderTaskPane
+            // 
+            this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
+            this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+            this.Name = "RecorderTaskPane";
+            this.Size = new System.Drawing.Size(216, 222);
+            this.ResumeLayout(false);
+
             this.statusLabel = new System.Windows.Forms.Label();
             this.recButton = new System.Windows.Forms.Button();
             this.stopButton = new System.Windows.Forms.Button();
@@ -150,18 +160,12 @@
             this.Controls.Add(this.stopButton);
             this.Controls.Add(this.recButton);
             this.Controls.Add(this.statusLabel);
-            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
-            this.MaximizeBox = false;
-            this.MinimizeBox = false;
             this.Name = "RecorderUI";
-            this.ShowInTaskbar = false;
             this.Text = "MCIRecorder";
-            this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.RecorderUI_FormClosing);
             this.Load += new System.EventHandler(this.RecorderUI_Load);
             ((System.ComponentModel.ISupportInitialize)(this.soundTrackBar)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
-
         }
 
         #endregion

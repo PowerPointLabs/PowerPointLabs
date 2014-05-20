@@ -53,6 +53,9 @@ namespace PowerPointLabs
         public bool reloadAutoMotionEnabled = true;
         public bool reloadSpotlight = true;
 
+        public bool _recorderPaneVisible = false;
+        private bool _firstLoadRecorder = true;
+
         private bool _allSlides;
         private bool _previewCurrentSlide;
         private bool _captionsAllSlides;
@@ -854,16 +857,21 @@ namespace PowerPointLabs
         # region AudioRecord Button Callbacks
         public void AddRecordClick(Office.IRibbonControl control)
         {
-            try
+            // if currently the pane is hidden, show the pane
+            if (!_recorderPaneVisible)
             {
-                var dialog = new RecorderUI();
-                dialog.StopNotifier += NotesToRecord.EmbedRecordToSlide;
-                dialog.ShowDialog();
-            }
-            catch (Exception e)
-            {
-                PowerPointLabsGlobals.LogException(e, "AddRecordingButtonPressed");
-                throw;
+                // fire the pane visble change event
+                Globals.ThisAddIn.customTaskPane.Visible = true;
+                
+                // if this is not the first time loading the UI, reload the UI
+                if (_firstLoadRecorder)
+                {
+                    _firstLoadRecorder = false;
+                }
+                else
+                {
+                    Globals.ThisAddIn.recorderTaskPane.RecorderUIReload();
+                }
             }
         }
         # endregion

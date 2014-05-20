@@ -1,9 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel;
-using System.Data;
 using System.Diagnostics;
 using System.Drawing;
+using System.Data;
 using System.IO;
 using System.Linq;
 using System.Text;
@@ -11,10 +11,11 @@ using System.Threading;
 using System.Windows.Forms;
 using PPExtraEventHelper;
 
-namespace PowerPointLabs.Views
+namespace PowerPointLabs
 {
-    public partial class RecorderUI : Form
+    public partial class RecorderTaskPane : UserControl
     {
+        # region WinForm
         private enum Status
         {
             Idle,
@@ -48,7 +49,7 @@ namespace PowerPointLabs.Views
         private Stopwatch _stopwatch;
 
         // Records save and display
-        private string TempPath = Path.GetTempPath();
+        private readonly string _tempPath = Path.GetTempPath();
         private int _curRecNumber;
 
         // delgates to make thread safe control calls
@@ -59,16 +60,11 @@ namespace PowerPointLabs.Views
                                                     int infoLen,
                                                     IntPtr callBack);
 
-        // delegate as notifiers
+        // delegates as notifiers
         public delegate void RecordStopNotify(string recName);
         public RecordStopNotify StopNotifier;
 
-        public RecorderUI()
-        {
-            InitializeComponent();
-            mciRetInfo = new StringBuilder(MCI_RET_INFO_BUF_LEN);
-        }
-
+        // call when the pane becomes visible for the first time
         private void RecorderUI_Load(object sender, EventArgs e)
         {
             statusLabel.Text = "Ready.";
@@ -77,7 +73,17 @@ namespace PowerPointLabs.Views
             ResetUI();
         }
 
-        private void RecorderUI_FormClosing(object sender, FormClosingEventArgs e)
+        // call when the pane becomes visible from the second time onwards
+        public void RecorderUIReload()
+        {
+            statusLabel.Text = "Ready.";
+            statusLabel.Visible = true;
+            _curRecNumber = 0;
+            ResetUI();
+        }
+
+        // disable timer and thread when the pane is closed
+        public void RecorderUI_FormClosing()
         {
             // before closing, clean up all unfinished sessions
             Native.mciSendString("close sound", null, 0, IntPtr.Zero);
@@ -224,7 +230,7 @@ namespace PowerPointLabs.Views
                 recDisplay.Items[selected].Selected = true;
             }
 
-            _curPlayBack = TempPath + "/Rec" + selected.ToString() + ".wav";
+            _curPlayBack = _tempPath + "/Rec" + selected.ToString() + ".wav";
 
             return true;
         }
@@ -421,7 +427,7 @@ namespace PowerPointLabs.Views
             // adjust the stop time difference between timer-stop and recording-stop
             timerLabel.Text = ConvertMillisToTime(recLength);
 
-            string saveName = TempPath + "/Rec" + _curRecNumber.ToString() + ".wav";
+            string saveName = _tempPath + "/Rec" + _curRecNumber.ToString() + ".wav";
             _curRecNumber++;
             Native.mciSendString("save sound " + saveName, null, 0, IntPtr.Zero);
             Native.mciSendString("close sound", null, 0, IntPtr.Zero);
@@ -596,6 +602,14 @@ namespace PowerPointLabs.Views
         }
 
         # endregion
+        # endregion
+
+        // do when the task pane first initialized
+        public RecorderTaskPane()
+        {
+            mciRetInfo = new StringBuilder(MCI_RET_INFO_BUF_LEN);
+            InitializeComponent();
+        }
 
         /// <summary>
         /// Overridden Win Form call back function, used to sniff call back
@@ -613,7 +627,7 @@ namespace PowerPointLabs.Views
                         statusLabel.Text = "Ready.";
                         playButton.Text = "Play";
                         _playButtonStatus = Status.Idle;
-                        
+
                         // dispose timer and track bar timer while setting the
                         // track bar to full
                         ResetSession();
@@ -627,7 +641,7 @@ namespace PowerPointLabs.Views
                         break;
                 }
             }
-            
+
             base.WndProc(ref m);
         }
     }

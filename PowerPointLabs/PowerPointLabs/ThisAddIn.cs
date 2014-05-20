@@ -20,6 +20,10 @@ namespace PowerPointLabs
     {
         public Ribbon1 ribbon;
         public ArrayList indicators = new ArrayList();
+        public Microsoft.Office.Tools.CustomTaskPane customTaskPane;
+        public RecorderTaskPane recorderTaskPane;
+
+        private const int _taskPaneWidth = 300;
 
         private void ThisAddIn_Startup(object sender, System.EventArgs e)
         {
@@ -36,6 +40,7 @@ namespace PowerPointLabs
             SetupDoubleClickHandler();
             SetupTabActivateHandler();
             SetupAfterCopyPasteHandler();
+            SetupRecorderTaskPane();
         }
 
         void SetUpLogger()
@@ -53,6 +58,33 @@ namespace PowerPointLabs
 
             Trace.AutoFlush = true;
             Trace.Listeners.Add(new TextWriterTraceListener(fileName));
+        }
+
+        void SetupRecorderTaskPane()
+        {
+            // register the recorder task pane to the CustomTaskPanes collection
+            recorderTaskPane = new RecorderTaskPane();
+            recorderTaskPane.StopNotifier += NotesToRecord.EmbedRecordToSlide;
+            customTaskPane = CustomTaskPanes.Add(recorderTaskPane, "Record Script");
+
+            // recorder task pane customization
+            customTaskPane.Visible = false;
+            customTaskPane.VisibleChanged += TaskPaneVisibleValueChangedEventHandler;
+            customTaskPane.Width = _taskPaneWidth;
+        }
+
+        void TaskPaneVisibleValueChangedEventHandler(object sender, EventArgs e)
+        {
+            // hide the pane
+            if (ribbon._recorderPaneVisible)
+            {
+                ribbon._recorderPaneVisible = false;
+                recorderTaskPane.RecorderUI_FormClosing();
+            }
+            else
+            {
+                ribbon._recorderPaneVisible = true;
+            }
         }
 
         void ThisAddIn_SelectionChanged(PowerPoint.Selection Sel)
