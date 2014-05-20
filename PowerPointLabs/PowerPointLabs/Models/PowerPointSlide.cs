@@ -43,7 +43,12 @@ namespace PowerPointLabs.Models
                 return null;
             }
 
-            return new PowerPointSlide(slide);
+            if (slide.Name.Contains("PPTLabsSpotlight"))
+                return PowerPointSpotlightSlide.FromSlideFactory(slide);
+            else if (slide.Name.Contains("PPTLabsAck"))
+                return PowerPointAckSlide.FromSlideFactory(slide);
+            else
+                return new PowerPointSlide(slide);
         }
 
         public String NotesPageText
