@@ -100,18 +100,21 @@ namespace DeployHelper
         #endregion
         #region Helper functions
 
+        private static void ConsoleWriteWithColor(String content, ConsoleColor color)
+        {
+            Console.ForegroundColor = color;
+            Console.Write(content);
+            Console.ResetColor();
+        }
+
         private static void PrepareWelcomeInfo()
         {
             Console.WriteLine("Checklist before deploy:");
             Console.Write("1. Have you updated the version number in the ");
-            Console.ForegroundColor = ConsoleColor.Yellow;
-            Console.Write("About ");
-            Console.ResetColor();
+            ConsoleWriteWithColor("About ", ConsoleColor.Yellow);
             Console.WriteLine("button?");
             Console.Write("2. Is there newer version of ");
-            Console.ForegroundColor = ConsoleColor.Yellow;
-            Console.Write("Pptlabs tutorial");
-            Console.ResetColor();
+            ConsoleWriteWithColor("Pptlabs tutorial", ConsoleColor.Yellow);
             Console.WriteLine("? If there is," +
                               " you need to update it in the Pptlabs project and in the zip file as well");
             Console.WriteLine("Press any key to continue");
@@ -124,17 +127,13 @@ namespace DeployHelper
 
         private static void DisplayWarning(string content)
         {
-            Console.ForegroundColor = ConsoleColor.Red;
-            Console.WriteLine(content);
-            Console.ResetColor();
+            ConsoleWriteWithColor(content, ConsoleColor.Red);
             throw new InvalidOperationException(content);
         }
 
         private static void DisplayDone(string content)
         {
-            Console.ForegroundColor = ConsoleColor.Green;
-            Console.WriteLine(content);
-            Console.ResetColor();
+            ConsoleWriteWithColor(content, ConsoleColor.Green);
         }
 
         private static string AddQuote(string dir)
@@ -352,12 +351,21 @@ namespace DeployHelper
         private static void ReSign()
         {
             if (_isPatched) return;
+            CheckDirKeyExist();
             InitReSignArgs();
             SignManifest();
             SignVsto();
             //overwrite old vsto file with resigned new vsto file
             File.Copy(DirVsto, _dirDestVsto, IsOverWritten);
             DisplayDone(DonePatched);
+        }
+
+        private static void CheckDirKeyExist()
+        {
+            if (!File.Exists(_configDirKey))
+            {
+                HandleReSignFailure();
+            }
         }
 
         private static void InitReSignArgs()
@@ -387,9 +395,7 @@ namespace DeployHelper
             }
             catch
             {
-                //Restore manifest file
-                _manifestBackup.Save(_dirManifest);
-                DisplayWarning(ErrorInvalidKeyOrMageDir);
+                HandleReSignFailure();
             }
         }
 
@@ -411,10 +417,15 @@ namespace DeployHelper
             }
             catch
             {
-                //Restore manifest file
-                _manifestBackup.Save(_dirManifest);
-                DisplayWarning(ErrorInvalidKeyOrMageDir);
+                HandleReSignFailure();
             }
+        }
+
+        private static void HandleReSignFailure()
+        {
+            //Restore manifest file
+            _manifestBackup.Save(_dirManifest);
+            DisplayWarning(ErrorInvalidKeyOrMageDir);
         }
 
         #endregion
@@ -649,9 +660,7 @@ namespace DeployHelper
         private static void PrepareEndMessage()
         {
             Console.Write("Remember to merge from default branch into ");
-            Console.ForegroundColor = ConsoleColor.Yellow;
-            Console.Write("release ");
-            Console.ResetColor();
+            ConsoleWriteWithColor("release ", ConsoleColor.Yellow);
             Console.WriteLine("branch.");
         }
         #endregion
