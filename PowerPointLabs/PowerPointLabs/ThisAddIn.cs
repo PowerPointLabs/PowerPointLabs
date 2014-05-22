@@ -24,6 +24,7 @@ namespace PowerPointLabs
         public RecorderTaskPane recorderTaskPane;
 
         private const int _taskPaneWidth = 300;
+        private const string TempFolderName = @"\PowerPointLabs Temp\";
 
         private void ThisAddIn_Startup(object sender, System.EventArgs e)
         {
@@ -32,6 +33,7 @@ namespace PowerPointLabs
             ((PowerPoint.EApplication_Event)this.Application).NewPresentation += new Microsoft.Office.Interop.PowerPoint.EApplication_NewPresentationEventHandler(ThisAddIn_NewPresentation);
             ((PowerPoint.EApplication_Event)this.Application).WindowSelectionChange += new Microsoft.Office.Interop.PowerPoint.EApplication_WindowSelectionChangeEventHandler(ThisAddIn_SelectionChanged);
             ((PowerPoint.EApplication_Event)this.Application).SlideSelectionChanged += new Microsoft.Office.Interop.PowerPoint.EApplication_SlideSelectionChangedEventHandler(ThisAddIn_SlideSelectionChanged);
+            ((PowerPoint.EApplication_Event)this.Application).PresentationClose += new Microsoft.Office.Interop.PowerPoint.EApplication_PresentationCloseEventHandler(ThisAddIn_PresentationClose);
 
             Application.SlideShowBegin += SlideShowBeginHandler;
             Application.SlideShowEnd += SlideShowEndHandler;
@@ -184,6 +186,12 @@ namespace PowerPointLabs
 
         void ThisAddIn_NewPresentation(PowerPoint.Presentation Pres)
         {
+        }
+
+        void ThisAddIn_PresentationClose(PowerPoint.Presentation Pres)
+        {
+            string tempFolderPath = Path.GetTempPath() + TempFolderName;
+            Directory.Delete(tempFolderPath, true);
         }
 
         void UpdateRecorderPane(int count, int id)
