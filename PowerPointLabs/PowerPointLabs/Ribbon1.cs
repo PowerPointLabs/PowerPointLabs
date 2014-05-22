@@ -9,6 +9,7 @@ using System.Runtime.InteropServices;
 using System.Text;
 using System.Diagnostics;
 using System.Windows.Forms;
+using PowerPointLabs.Models;
 using PowerPointLabs.Views;
 using Office = Microsoft.Office.Core;
 using PowerPoint = Microsoft.Office.Interop.PowerPoint;
@@ -857,21 +858,17 @@ namespace PowerPointLabs
         # region AudioRecord Button Callbacks
         public void AddRecordClick(Office.IRibbonControl control)
         {
+            // TODO:
+            // Handle exception when user clicks the button without selecting any slides
+
             // if currently the pane is hidden, show the pane
             if (!_recorderPaneVisible)
             {
                 // fire the pane visble change event
                 Globals.ThisAddIn.customTaskPane.Visible = true;
                 
-                // if this is not the first time loading the UI, reload the UI
-                if (_firstLoadRecorder)
-                {
-                    _firstLoadRecorder = false;
-                }
-                else
-                {
-                    Globals.ThisAddIn.recorderTaskPane.RecorderUIReload();
-                }
+                // reload the pane
+                Globals.ThisAddIn.recorderTaskPane.RecorderPaneReload();
             }
         }
         # endregion
@@ -896,13 +893,29 @@ namespace PowerPointLabs
 
         public void AddAudioClick(Office.IRibbonControl control)
         {
+            // TODO:
+            // Handle exception when user clicks the button without selecting any slides
+            var currentSlide = PowerPointPresentation.CurrentSlide;
+
             if (_allSlides)
             {
-                NotesToAudio.EmbedAllSlideNotes();
+                var allAudioFiles = NotesToAudio.EmbedAllSlideNotes();
+
+                // initialize all slides' audio
+                Globals.ThisAddIn.recorderTaskPane.InitializeAudioAndScript(allAudioFiles, true);
             }
             else
             {
-                NotesToAudio.EmbedCurrentSlideNotes();
+                var audioFiles = NotesToAudio.EmbedCurrentSlideNotes();
+
+                // initialize the current slide's audio
+                Globals.ThisAddIn.recorderTaskPane.InitializeAudioAndScript(currentSlide.ID, audioFiles, true);
+            }
+
+            // if current list is visible, update the pane immediately
+            if (_recorderPaneVisible)
+            {
+                Globals.ThisAddIn.recorderTaskPane.UpdateLists(currentSlide.ID);
             }
 
             PreviewAnimationsIfChecked();

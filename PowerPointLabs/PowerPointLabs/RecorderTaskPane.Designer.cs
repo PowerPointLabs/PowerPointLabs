@@ -28,16 +28,6 @@
         /// </summary>
         private void InitializeComponent()
         {
-            this.SuspendLayout();
-            // 
-            // RecorderTaskPane
-            // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
-            this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.Name = "RecorderTaskPane";
-            this.Size = new System.Drawing.Size(216, 222);
-            this.ResumeLayout(false);
-
             this.statusLabel = new System.Windows.Forms.Label();
             this.recButton = new System.Windows.Forms.Button();
             this.stopButton = new System.Windows.Forms.Button();
@@ -49,6 +39,10 @@
             this.recName = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.recLength = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.recDate = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+            this.scriptDisplay = new System.Windows.Forms.ListView();
+            this.scriptListViewLabel = new System.Windows.Forms.Label();
+            this.statusColumn = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+            this.scirptColumn = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             ((System.ComponentModel.ISupportInitialize)(this.soundTrackBar)).BeginInit();
             this.SuspendLayout();
             // 
@@ -148,11 +142,43 @@
             this.recDate.Text = "Record Date";
             this.recDate.Width = 81;
             // 
-            // RecorderUI
+            // scriptDisplay
+            // 
+            this.scriptDisplay.Columns.AddRange(new System.Windows.Forms.ColumnHeader[] {
+            this.statusColumn,
+            this.scirptColumn});
+            this.scriptDisplay.Location = new System.Drawing.Point(12, 356);
+            this.scriptDisplay.Name = "scriptDisplay";
+            this.scriptDisplay.Size = new System.Drawing.Size(255, 168);
+            this.scriptDisplay.TabIndex = 7;
+            this.scriptDisplay.UseCompatibleStateImageBehavior = false;
+            this.scriptDisplay.View = System.Windows.Forms.View.Details;
+            // 
+            // scriptListViewLabel
+            // 
+            this.scriptListViewLabel.AutoSize = true;
+            this.scriptListViewLabel.Font = new System.Drawing.Font("SimSun", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+            this.scriptListViewLabel.Location = new System.Drawing.Point(14, 336);
+            this.scriptListViewLabel.Name = "scriptListViewLabel";
+            this.scriptListViewLabel.Size = new System.Drawing.Size(82, 12);
+            this.scriptListViewLabel.TabIndex = 8;
+            this.scriptListViewLabel.Text = "Your Script";
+            // 
+            // statusColumn
+            // 
+            this.statusColumn.Text = "Status";
+            // 
+            // scirptColumn
+            // 
+            this.scirptColumn.Text = "Script";
+            this.scirptColumn.Width = 184;
+            // 
+            // RecorderTaskPane
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(280, 341);
+            this.Controls.Add(this.scriptListViewLabel);
+            this.Controls.Add(this.scriptDisplay);
             this.Controls.Add(this.recDisplay);
             this.Controls.Add(this.soundTrackBar);
             this.Controls.Add(this.timerLabel);
@@ -160,12 +186,13 @@
             this.Controls.Add(this.stopButton);
             this.Controls.Add(this.recButton);
             this.Controls.Add(this.statusLabel);
-            this.Name = "RecorderUI";
-            this.Text = "MCIRecorder";
-            this.Load += new System.EventHandler(this.RecorderUI_Load);
+            this.Name = "RecorderTaskPane";
+            this.Size = new System.Drawing.Size(280, 538);
+            this.Load += new System.EventHandler(this.RecorderPane_Load);
             ((System.ComponentModel.ISupportInitialize)(this.soundTrackBar)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
+
         }
 
         #endregion
@@ -181,5 +208,9 @@
         private System.Windows.Forms.ColumnHeader recName;
         private System.Windows.Forms.ColumnHeader recLength;
         private System.Windows.Forms.ColumnHeader recDate;
+        private System.Windows.Forms.ListView scriptDisplay;
+        private System.Windows.Forms.ColumnHeader statusColumn;
+        private System.Windows.Forms.ColumnHeader scirptColumn;
+        private System.Windows.Forms.Label scriptListViewLabel;
     }
 }

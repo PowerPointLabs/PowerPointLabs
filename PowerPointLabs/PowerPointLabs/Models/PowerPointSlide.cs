@@ -73,6 +73,11 @@ namespace PowerPointLabs.Models
             get { return _slide.Shapes; }
         }
 
+        public int ID
+        {
+            get { return _slide.SlideID; }
+        }
+
         public int Index
         {
             get { return _slide.SlideIndex; }

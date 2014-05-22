@@ -6,115 +6,76 @@ using System.Drawing;
 using System.Data;
 using System.IO;
 using System.Linq;
+using System.Security.Cryptography;
+using System.Security.Policy;
 using System.Text;
 using System.Threading;
 using System.Windows.Forms;
 using PPExtraEventHelper;
+using PowerPointLabs.Models;
+using PowerPointLabs.AudioMisc;
 
 namespace PowerPointLabs
 {
     public partial class RecorderTaskPane : UserControl
     {
-        # region WinForm
-        private enum Status
+        // for hashing the speaker's script
+        private MD5 _md5 = MD5.Create();
+
+        // data structures to track embedded audio information
+        
+        // map the text MD5 to record id
+        private Dictionary<string, int> _md5ScriptMapper;
+        // map the scipt id to record id
+        private Dictionary<int, int> _scriptRecrodMapper;
+        // map a slide id to relative slide id
+        private Dictionary<int, int> _relativeSlideIDmapper;
+        // a collection of slides, each slide has a list of audio object
+        private List<List<Audio>> _audioList;
+        // a collection of slides, each slide has a list of script
+        private List<List<string>> _scriptList;
+
+        // slide monitor
+        private PowerPointSlide _currentSlide;
+        public int _currentSlideID;
+        public bool _clearRecord = false;
+
+        // Records save and display
+        private readonly string _tempPath = Path.GetTempPath();
+        private const string TempFolderName = "\\PowerPointLabs Temp\\";
+        private const string SaveNameFormat = "Slide {0} Speech";
+        private const string SpeechShapePrefix = "PowerPointLabs Speech";
+
+        private enum RecorderStatus
         {
             Idle,
             Recording,
             Playing,
             Pause
-        };
-
-        private const int MM_MCINOTIFY = 0x03B9;
-        private const int MCI_NOTIFY_SUCCESS = 0x01;
-        private const int MCI_NOTIFY_SUPERSEDED = 0x02;
-        private const int MCI_NOTIFY_ABORTED = 0x04;
-        private const int MCI_NOTIFY_FAILURE = 0x08;
-
-        private const int MCI_RET_INFO_BUF_LEN = 128;
-
-        private StringBuilder mciRetInfo;
-        
-        private string _curPlayBack = "";
-        private int _resumeWaitingTime;
-        private int _playbackLenMillis;
-        private int _playbackTimeCnt;
-        private int _timerCnt;
-
-        private Status _recButtonStatus;
-        private Status _playButtonStatus;
-
-        private System.Threading.Timer _timer;
-        private Thread _trackbarThread;
-
-        private Stopwatch _stopwatch;
-
-        // Records save and display
-        private readonly string _tempPath = Path.GetTempPath();
-        private int _curRecNumber;
-
-        // delgates to make thread safe control calls
-        private delegate void SetLabelTextCallBack(Label label, string text);
-        private delegate void SetTrackbarCallBack(TrackBar bar, int pos);
-        private delegate void MCISendStringCallBack(string mciCommand,
-                                                    StringBuilder mciRetInfo,
-                                                    int infoLen,
-                                                    IntPtr callBack);
-
-        // delegates as notifiers
-        public delegate void RecordStopNotify(string recName);
-        public RecordStopNotify StopNotifier;
-
-        // call when the pane becomes visible for the first time
-        private void RecorderUI_Load(object sender, EventArgs e)
-        {
-            statusLabel.Text = "Ready.";
-            statusLabel.Visible = true;
-            _curRecNumber = 0;
-            ResetUI();
         }
-
-        // call when the pane becomes visible from the second time onwards
-        public void RecorderUIReload()
+        private enum ScriptStatus
         {
-            statusLabel.Text = "Ready.";
-            statusLabel.Visible = true;
-            _curRecNumber = 0;
-            ResetUI();
-        }
-
-        // disable timer and thread when the pane is closed
-        public void RecorderUI_FormClosing()
-        {
-            // before closing, clean up all unfinished sessions
-            Native.mciSendString("close sound", null, 0, IntPtr.Zero);
-
-            if (_timer != null)
-            {
-                _timer.Dispose();
-            }
-
-            if (_trackbarThread != null && _trackbarThread.IsAlive)
-            {
-                _trackbarThread.Abort();
-            }
+            Generated,
+            Recorded,
+            None
         }
 
         # region Helper Functions
         /// <summary>
         /// This function will reset the UI to the default state.
         /// </summary>
-        private void ResetUI()
+        private void ResetRecorder()
         {
             soundTrackBar.Value = 0;
             timerLabel.Text = "00:00:00";
             statusLabel.Text = "Ready.";
-            
+
             recButton.Text = "Record";
             stopButton.Text = "Stop";
             playButton.Text = "Play";
 
-            _recButtonStatus = Status.Idle;
-            _playButtonStatus = Status.Idle;
+            _recButtonStatus = RecorderStatus.Idle;
+            _playButtonStatus = RecorderStatus.Idle;
         }
 
         /// <summary>
@@ -157,8 +118,8 @@ namespace PowerPointLabs
         private void ResetSession()
         {
             // close unfinished sound session
-            Native.mciSendString("close sound", null, 0, IntPtr.Zero);
-            
+            CloseAudio();
+
             // reset timer and trackbar
             ResetTimer();
             ResetTrackbar(0);
@@ -190,19 +151,89 @@ namespace PowerPointLabs
 
         private string ConvertMillisToTime(int millis)
         {
-            return ConvertMillisToTime((long) millis);
+            return ConvertMillisToTime((long)millis);
         }
 
-        private void UpdateRecordList(string length)
+        private string GetMD5(string s)
         {
-            // add the latest record to the list
-            ListViewItem item = recDisplay.Items.Add(_curRecNumber.ToString());
-            item.SubItems.Add("Rec" + _curRecNumber.ToString());
-            item.SubItems.Add(length);
-            item.SubItems.Add(DateTime.Now.ToString());
+            var hashcode = _md5.ComputeHash(System.Text.Encoding.UTF8.GetBytes(s));
+            StringBuilder sb = new StringBuilder();
 
-            // and select it by default
-            recDisplay.Items[_curRecNumber - 1].Selected = true;
+            foreach (byte x in hashcode)
+            {
+                sb.Append(x.ToString("X2"));
+            }
+
+            return sb.ToString();
+        }
+
+        private int GetRelativeSlideID(int curID)
+        {
+            if (!_relativeSlideIDmapper.ContainsKey(curID))
+            {
+                _relativeSlideIDmapper[curID] = _audioList.Count;
+            }
+            
+            return _relativeSlideIDmapper[curID];
+        }
+
+        private void OpenNewAudio()
+        {
+            Native.mciSendString("open new type waveaudio alias sound", null, 0, IntPtr.Zero);
+        }
+
+        private void OpenAudio(string name)
+        {
+            Native.mciSendString("open \"" + name + "\" alias sound", null, 0, IntPtr.Zero);
+        }
+
+        private void CloseAudio()
+        {
+            Native.mciSendString("close sound", null, 0, IntPtr.Zero);
+        }
+
+        private int GetAudioLength()
+        {
+            Native.mciSendString("status sound length", mciRetInfo, MCI_RET_INFO_BUF_LEN, IntPtr.Zero);
+            return Int32.Parse(mciRetInfo.ToString());
+        }
+
+        private int GetAudioLength(string name)
+        {
+            int length;
+
+            OpenAudio(name);
+            length = GetAudioLength();
+            CloseAudio();
+
+            return length;
+        }
+
+        private string GetAudioLengthString()
+        {
+            int length = GetAudioLength();
+            return ConvertMillisToTime(length);
+        }
+
+        private string GetAudioLengthString(string name)
+        {
+            string length;
+
+            OpenAudio(name);
+            length = GetAudioLengthString();
+            CloseAudio();
+
+            return length;
+        }
+
+        private Audio.AudioType GetAudioType(string name)
+        {
+            if (name.Contains("Rec"))
+            {
+                return Audio.AudioType.Record;
+            }
+
+            return Audio.AudioType.Auto;
         }
 
         private bool LoadPlayback()
@@ -215,7 +246,7 @@ namespace PowerPointLabs
                 return false;
             }
 
-            for (int i = 0; i < _curRecNumber; i ++)
+            for (int i = 0; i < _curRecNumber; i++)
             {
                 if (recDisplay.Items[i].Selected)
                 {
@@ -230,11 +261,279 @@ namespace PowerPointLabs
                 recDisplay.Items[selected].Selected = true;
             }
 
-            _curPlayBack = _tempPath + "/Rec" + selected.ToString() + ".wav";
+            _curPlayBack = _tempPath + "Rec" + selected.ToString() + ".wav";
 
             return true;
         }
+
+        private void UpdateRecordList(string length)
+        {
+            // add the latest record to the list
+            ListViewItem item = recDisplay.Items.Add(_curRecNumber.ToString());
+            item.SubItems.Add("Rec" + _curRecNumber.ToString());
+            item.SubItems.Add(length);
+            item.SubItems.Add(DateTime.Now.ToString());
+
+            // and select it by default
+            recDisplay.Items[_curRecNumber - 1].Selected = true;
+        }
+
+        private void UpdateRecordList(int index, string name, string length)
+        {
+            // add the latest record to the list
+            ListViewItem item = recDisplay.Items.Add(index.ToString());
+            item.SubItems.Add(name);
+            item.SubItems.Add(length);
+            item.SubItems.Add(DateTime.Now.ToString());
+        }
+
+        private void UpdateScriptList(string name, ScriptStatus status)
+        {
+            ListViewItem item = scriptDisplay.Items.Add(status.ToString());
+            item.SubItems.Add(name);
+        }
+
+        public void UpdateLists(int slideID)
+        {
+            int relativeID = GetRelativeSlideID(slideID);
+            List<Audio> audio = _audioList[relativeID];
+            List<string> scirpt = _scriptList[relativeID];
+
+            // TODO:
+            // Clear all + add all will be very slow, find some means to
+            // do it faster
+
+            // update the record list view
+            ClearRecordList();
+            recDisplay.BeginUpdate();
+            for (int i = 0; i < audio.Count; i++)
+            {
+                UpdateRecordList(i, audio[i].SaveName, GetAudioLengthString(audio[i].SaveName));
+            }
+            recDisplay.EndUpdate();
+
+            // update the script list view
+            ClearScriptList();
+            scriptDisplay.BeginUpdate();
+            for (int i = 0; i < scirpt.Count; i++)
+            {
+                if (audio[i].Type == Audio.AudioType.Auto)
+                {
+                    UpdateScriptList(scirpt[i], ScriptStatus.Generated);
+                }
+                else
+                {
+                    UpdateScriptList(scirpt[i], ScriptStatus.Recorded);
+                }
+            }
+            scriptDisplay.EndUpdate();
+        }
+
+        public void ClearRecordList()
+        {
+            recDisplay.BeginUpdate();
+            recDisplay.Items.Clear();
+            recDisplay.EndUpdate();
+        }
+
+        public void ClearScriptList()
+        {
+            scriptDisplay.BeginUpdate();
+            scriptDisplay.Items.Clear();
+            scriptDisplay.EndUpdate();
+        }
+
+        public void ClearLists()
+        {
+            ClearRecordList();
+            ClearScriptList();
+        }
+
+        public void InitializeAudioAndScript(int slideID, string[] names, bool forceRefresh)
+        {
+            string[] audioSaveNames = null;
+            string folderPath = Path.GetTempPath() + TempFolderName;
+            int relativeSlideID = GetRelativeSlideID(slideID);
+            _currentSlide = PowerPointPresentation.CurrentSlide;
+            bool initialized = _audioList != null && _audioList.Count > relativeSlideID;
+
+            // check if the selected slide has been initialized before
+            if (initialized)
+            {
+                // TODO: 
+                // if the slide has been initialized, check if the record has been updated
+
+                // currently using forceRefresh to force an entire refresh
+                if (!forceRefresh)
+                {
+                    return;
+                }
+            }
+
+            // if the script of the selected slide has not been initialized yet,
+            // we need to sniff the note pane to initialize the script list
+
+            // TODO:
+            // now we assume the first record -> first chunk of note, ect.
+
+            // retrieve the tag notes
+            var taggedNotes = new TaggedText(_currentSlide.NotesPageText.Trim());
+            List<String> splitScript = taggedNotes.SplitByClicks();
+
+            // if the slide has been initialized, update the list
+            if (initialized)
+            {
+                _scriptList[relativeSlideID] = splitScript;
+            }
+            else
+            // add the splitted notes into script list
+            {
+                _scriptList.Add(splitScript);
+            }
+
+            // map the md5 to script list index, this is used to do reorder
+            for (int i = 0; i < splitScript.Count; i++)
+            {
+                string md5 = GetMD5(splitScript[i]);
+                _md5ScriptMapper[md5] = i;
+            }
+
+            // if the audio of the selected slide has not been initialized yet,
+            // we need to put all audio in the current slide into the list.
+            if (!initialized)
+            {
+                _audioList.Add(new List<Audio>());
+            }
+
+            // if audio names have not been given, retrieve from files.
+            if (names == null)
+            {
+                // retrieve all actual audio files in the slide
+                String fileNameSearchPattern = String.Format(SaveNameFormat, _currentSlideID);
+                var filePaths = Directory.EnumerateFiles(folderPath, "*.wav");
+                audioSaveNames = filePaths.Where(path => path.Contains(fileNameSearchPattern)).ToArray();
+            }
+            else
+            {
+                audioSaveNames = names;
+            }
+
+            // construct audio object and put into audio collection
+            for (int i = 0; i < audioSaveNames.Length; i++)
+            {
+                Audio audio = new Audio();
+                string saveName = audioSaveNames[i];
+
+                audio.SaveName = saveName;
+                audio.Length = GetAudioLengthString(saveName);
+                audio.LengthMillis = GetAudioLength(saveName);
+                audio.MatchSciptID = i;
+                audio.Type = GetAudioType(saveName);
+
+                _audioList[relativeSlideID].Add(audio);
+            }
+        }
+
+        public void InitializeAudioAndScript(List<string[]> names, bool forceRefresh)
+        {
+            // TODO:
+            // if a slide has been initialized, check if some of the records have been updated
+            // currently use forceRefresh to force an entire refresh
+            var slides = PowerPointPresentation.Slides.ToList();
+
+            for (int i = 0; i < slides.Count; i ++)
+            {
+                var slide = slides[i];
+
+                InitializeAudioAndScript(slide.ID, names[i], forceRefresh);
+            }
+        }
         # endregion
+
+        # region WinForm
+        private const int MM_MCINOTIFY = 0x03B9;
+        private const int MCI_NOTIFY_SUCCESS = 0x01;
+        private const int MCI_NOTIFY_ABORTED = 0x04;
+        private const int MCI_NOTIFY_FAILURE = 0x08;
+
+        private const int MCI_RET_INFO_BUF_LEN = 128;
+
+        private StringBuilder mciRetInfo;
+        
+        private string _curPlayBack = "";
+        private int _resumeWaitingTime;
+        private int _playbackLenMillis;
+        private int _playbackTimeCnt;
+        private int _timerCnt;
+
+        private RecorderStatus _recButtonStatus;
+        private RecorderStatus _playButtonStatus;
+
+        private System.Threading.Timer _timer;
+        private Thread _trackbarThread;
+
+        private Stopwatch _stopwatch;
+        
+        private int _curRecNumber;
+
+        // delgates to make thread safe control calls
+        private delegate void SetLabelTextCallBack(Label label, string text);
+        private delegate void SetTrackbarCallBack(TrackBar bar, int pos);
+        private delegate void MCISendStringCallBack(string mciCommand,
+                                                    StringBuilder mciRetInfo,
+                                                    int infoLen,
+                                                    IntPtr callBack);
+
+        // delegates as notifiers
+        public delegate void RecordStopNotify(string recName);
+        public RecordStopNotify StopNotifier;
+
+        // call when the pane becomes visible for the first time
+        private void RecorderPane_Load(object sender, EventArgs e)
+        {
+            statusLabel.Text = "Ready.";
+            statusLabel.Visible = true;
+            _curRecNumber = 0;
+            ResetRecorder();
+
+            _currentSlide = PowerPointPresentation.CurrentSlide;
+            if (_currentSlide != null)
+            {
+                UpdateLists(_currentSlide.ID);
+            }
+        }
+
+        // call when the pane becomes visible from the second time onwards
+        public void RecorderPaneReload()
+        {
+            statusLabel.Text = "Ready.";
+            statusLabel.Visible = true;
+            _curRecNumber = 0;
+            ResetRecorder();
+
+            _currentSlide = PowerPointPresentation.CurrentSlide;
+            if (_currentSlide != null)
+            {
+                UpdateLists(_currentSlide.ID);
+            }
+        }
+
+        // disable timer and thread when the pane is closed
+        public void RecorderPaneClosing()
+        {
+            // before closing, clean up all unfinished sessions
+            CloseAudio();
+
+            if (_timer != null)
+            {
+                _timer.Dispose();
+            }
+
+            if (_trackbarThread != null && _trackbarThread.IsAlive)
+            {
+                _trackbarThread.Abort();
+            }
+        }
 
         # region Thread Safe Control Methods
         private void ThreadSafeUpdateLabelText(Label label, string time)
@@ -337,7 +636,7 @@ namespace PowerPointLabs
             ResetSession();
 
             // UI settings
-            ResetUI();
+            ResetRecorder();
             statusLabel.Text = "Recording...";
             statusLabel.Visible = true;
             recButton.Text = "Pause";
@@ -346,11 +645,11 @@ namespace PowerPointLabs
 
             // change the status to recording status and change the button text
             // to pause
-            _recButtonStatus = Status.Recording;
+            _recButtonStatus = RecorderStatus.Recording;
             recButton.Text = "Pause";
 
             // start recording
-            Native.mciSendString("open new type waveaudio alias sound", null, 0, IntPtr.Zero);
+            OpenNewAudio();
             Native.mciSendString("record sound", null, 0, IntPtr.Zero);
 
             // start the timer
@@ -366,7 +665,7 @@ namespace PowerPointLabs
         private void RecButtonRecordingHandler()
         {
             // change the status to pause and change the button text to resume
-            _recButtonStatus = Status.Pause;
+            _recButtonStatus = RecorderStatus.Pause;
             recButton.Text = "Resume";
 
             // pause the sound and stop the timer
@@ -377,8 +676,7 @@ namespace PowerPointLabs
             // millis to wait before next integral second.
 
             // retrieve current length
-            Native.mciSendString("status sound length", mciRetInfo, MCI_RET_INFO_BUF_LEN, IntPtr.Zero);
-            int currentLen = int.Parse(mciRetInfo.ToString());
+            int currentLen = GetAudioLength();
             _resumeWaitingTime = _timerCnt * 1000 - currentLen;
 
             if (_resumeWaitingTime < 0)
@@ -395,7 +693,7 @@ namespace PowerPointLabs
         {
             // change the status to recording and change the button text to
             // pause
-            _recButtonStatus = Status.Recording;
+            _recButtonStatus = RecorderStatus.Recording;
             recButton.Text = "Pause";
 
             // resume recording and restart the timer
@@ -414,23 +712,20 @@ namespace PowerPointLabs
 
             // change rec button status, rec button text, update status label
             // and stop timer
-            _recButtonStatus = Status.Idle;
+            _recButtonStatus = RecorderStatus.Idle;
             recButton.Text = "Record";
             statusLabel.Text = "Ready.";
             ResetTimer();
 
             // stop recording and get the length of the recording
             Native.mciSendString("stop sound", null, 0, IntPtr.Zero);
-            Native.mciSendString("status sound length", mciRetInfo, MCI_RET_INFO_BUF_LEN, IntPtr.Zero);
-
-            int recLength = int.Parse(mciRetInfo.ToString());
             // adjust the stop time difference between timer-stop and recording-stop
-            timerLabel.Text = ConvertMillisToTime(recLength);
+            timerLabel.Text = GetAudioLengthString();
 
-            string saveName = _tempPath + "/Rec" + _curRecNumber.ToString() + ".wav";
+            string saveName = _tempPath + "Rec" + _curRecNumber.ToString() + ".wav";
             _curRecNumber++;
             Native.mciSendString("save sound " + saveName, null, 0, IntPtr.Zero);
-            Native.mciSendString("close sound", null, 0, IntPtr.Zero);
+            CloseAudio();
 
             // update record list
             UpdateRecordList(timerLabel.Text);
@@ -449,7 +744,7 @@ namespace PowerPointLabs
             // status label and reset all sessions
             Native.mciSendString("stop sound", null, 0, IntPtr.Zero);
             ResetSession();
-            _playButtonStatus = Status.Idle;
+            _playButtonStatus = RecorderStatus.Idle;
             playButton.Text = "Play";
             statusLabel.Text = "Ready.";
         }
@@ -469,19 +764,17 @@ namespace PowerPointLabs
             else
             {
                 // UI settings
-                ResetUI();
+                ResetRecorder();
                 statusLabel.Text = "Playing...";
                 statusLabel.Visible = true;
 
                 // change the button status and change the button text
-                _playButtonStatus = Status.Playing;
+                _playButtonStatus = RecorderStatus.Playing;
                 playButton.Text = "Pause";
 
                 // get play back length
-                Native.mciSendString("open \"" + _curPlayBack + "\" alias sound", null, 0, IntPtr.Zero);
-                Native.mciSendString("status sound length", mciRetInfo, MCI_RET_INFO_BUF_LEN, IntPtr.Zero);
-                _playbackLenMillis = int.Parse(mciRetInfo.ToString());
-                //System.Console.WriteLine("total len" + _playbackLenMillis);
+                OpenAudio(_curPlayBack);
+                _playbackLenMillis = GetAudioLength();
 
                 // start the timer and track bar
                 _playbackTimeCnt = 0;
@@ -502,7 +795,7 @@ namespace PowerPointLabs
         private void PlayButtonPlayingHandler()
         {
             // change the status to pause and change the text to resume
-            _playButtonStatus = Status.Pause;
+            _playButtonStatus = RecorderStatus.Pause;
             playButton.Text = "Resume";
 
             // pause the sound, timer and trackbar
@@ -533,7 +826,7 @@ namespace PowerPointLabs
         {
             // change the status to playing and change the button text to
             // pause
-            _playButtonStatus = Status.Playing;
+            _playButtonStatus = RecorderStatus.Playing;
             playButton.Text = "Pause";
 
             // resume recording, restart the timer and continue the track bar
@@ -549,13 +842,13 @@ namespace PowerPointLabs
         {
             switch (_recButtonStatus)
             {
-                case Status.Idle:
+                case RecorderStatus.Idle:
                     RecButtonIdleHandler();
                     break;
-                case Status.Recording:
+                case RecorderStatus.Recording:
                     RecButtonRecordingHandler();
                     break;
-                case Status.Pause:
+                case RecorderStatus.Pause:
                     RecButtonPauseHandler();
                     break;
                 default:
@@ -566,13 +859,13 @@ namespace PowerPointLabs
 
         private void StopButtonClick(object sender, EventArgs e)
         {
-            if (_recButtonStatus == Status.Recording ||
-                _recButtonStatus == Status.Pause)
+            if (_recButtonStatus == RecorderStatus.Recording ||
+                _recButtonStatus == RecorderStatus.Pause)
             {
                 StopButtonRecordingHandler();
             } else
-            if (_playButtonStatus == Status.Playing ||
-                _playButtonStatus == Status.Pause)
+            if (_playButtonStatus == RecorderStatus.Playing ||
+                _playButtonStatus == RecorderStatus.Pause)
             {
                 StopButtonPlayingHandler();
             }
@@ -586,13 +879,13 @@ namespace PowerPointLabs
         {
             switch (_playButtonStatus)
             {
-                case Status.Idle:
+                case RecorderStatus.Idle:
                     PlayButtonIdleHandler();
                     break;
-                case Status.Playing:
+                case RecorderStatus.Playing:
                     PlayButtonPlayingHandler();
                     break;
-                case Status.Pause:
+                case RecorderStatus.Pause:
                     PlayButtonPauseHandler();
                     break;
                 default:
@@ -608,6 +901,13 @@ namespace PowerPointLabs
         public RecorderTaskPane()
         {
             mciRetInfo = new StringBuilder(MCI_RET_INFO_BUF_LEN);
+            _audioList = new List<List<Audio>>();
+            _scriptList = new List<List<string>>();
+            
+            _relativeSlideIDmapper = new Dictionary<int, int>();
+            _scriptRecrodMapper = new Dictionary<int, int>();
+            _md5ScriptMapper = new Dictionary<string, int>();
+            
             InitializeComponent();
         }
 
@@ -626,7 +926,7 @@ namespace PowerPointLabs
                         // UI settings
                         statusLabel.Text = "Ready.";
                         playButton.Text = "Play";
-                        _playButtonStatus = Status.Idle;
+                        _playButtonStatus = RecorderStatus.Idle;
 
                         // dispose timer and track bar timer while setting the
                         // track bar to full

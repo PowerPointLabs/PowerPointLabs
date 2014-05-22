@@ -218,6 +218,7 @@
     can be found.
   -->
   <ItemGroup>
+    <Compile Include="AudioMisc\Audio.cs" />
     <Compile Include="AutoAnimate.cs" />
     <Compile Include="AutoZoom.cs" />
     <Compile Include="Models\PowerPointAutoAnimateSlide.cs" />

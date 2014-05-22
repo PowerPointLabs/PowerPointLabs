@@ -27,7 +27,7 @@ namespace PowerPointLabs
 
         private void ThisAddIn_Startup(object sender, System.EventArgs e)
         {
-            SetUpLogger();
+            SetupLogger();
             Trace.TraceInformation(DateTime.Now.ToString("yyyyMMddHHmmss") + ": PowerPointLabs Started");
             ((PowerPoint.EApplication_Event)this.Application).NewPresentation += new Microsoft.Office.Interop.PowerPoint.EApplication_NewPresentationEventHandler(ThisAddIn_NewPresentation);
             ((PowerPoint.EApplication_Event)this.Application).WindowSelectionChange += new Microsoft.Office.Interop.PowerPoint.EApplication_WindowSelectionChangeEventHandler(ThisAddIn_SelectionChanged);
@@ -43,7 +43,7 @@ namespace PowerPointLabs
             SetupRecorderTaskPane();
         }
 
-        void SetUpLogger()
+        void SetupLogger()
         {
             // The folder for the roaming current user 
             string folder = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData);
@@ -68,6 +68,8 @@ namespace PowerPointLabs
             customTaskPane = CustomTaskPanes.Add(recorderTaskPane, "Record Script");
 
             // recorder task pane customization
+            // currently recorder pane is always visible since only one pane in the
+            // custom task pane collection
             customTaskPane.Visible = false;
             customTaskPane.VisibleChanged += TaskPaneVisibleValueChangedEventHandler;
             customTaskPane.Width = _taskPaneWidth;
@@ -79,7 +81,7 @@ namespace PowerPointLabs
             if (ribbon._recorderPaneVisible)
             {
                 ribbon._recorderPaneVisible = false;
-                recorderTaskPane.RecorderUI_FormClosing();
+                recorderTaskPane.RecorderPaneClosing();
             }
             else
             {
@@ -132,10 +134,15 @@ namespace PowerPointLabs
 
         void ThisAddIn_SlideSelectionChanged(PowerPoint.SlideRange SldRange)
         {
+            // update recorder pane
+            UpdateRecorderPane(SldRange.Count, SldRange[1].SlideID);
+            
+            // ribbon function init
             ribbon.addAutoMotionEnabled = true;
             ribbon.reloadAutoMotionEnabled = true;
             ribbon.reloadSpotlight = true;
             ribbon.highlightBulletsEnabled = true;
+
             if (SldRange.Count != 1)
             {
                 ribbon.addAutoMotionEnabled = false;
@@ -167,6 +174,7 @@ namespace PowerPointLabs
                 if (!(tmp.Name.Contains("PPTLabsSpotlight")))
                     ribbon.reloadSpotlight = false;
             }
+
             ribbon.RefreshRibbonControl("AddAnimationButton");
             ribbon.RefreshRibbonControl("ReloadButton");
             ribbon.RefreshRibbonControl("ReloadSpotlightButton");
@@ -176,6 +184,29 @@ namespace PowerPointLabs
 
         void ThisAddIn_NewPresentation(PowerPoint.Presentation Pres)
         {
+        }
+
+        void UpdateRecorderPane(int count, int id)
+        {
+            // if the user has selected none or more than 1 slides, recorder pane should show nothing
+            if (count != 1)
+            {
+                if (customTaskPane.Visible)
+                {
+                    recorderTaskPane.ClearLists();
+                }
+            }
+            else
+            {
+                // initailize the current slide
+                recorderTaskPane.InitializeAudioAndScript(id, null, false);
+
+                // if the pane is shown, refresh the pane immediately
+                if (customTaskPane.Visible)
+                {
+                    recorderTaskPane.UpdateLists(id);
+                }
+            }
         }
 
         #region Tab Activate
