@@ -184,6 +184,10 @@ namespace PowerPointLabs
             ribbon.RefreshRibbonControl("HighlightBulletsBackgroundButton");
         }
 
+        // TODO:
+        // Each new presentation should be assigned a UID, this will be used
+        // to distinguish different audio files with same slide number but
+        // within different presentation.
         void ThisAddIn_NewPresentation(PowerPoint.Presentation Pres)
         {
         }

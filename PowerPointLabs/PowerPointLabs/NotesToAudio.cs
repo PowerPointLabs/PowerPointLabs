@@ -83,7 +83,7 @@ namespace PowerPointLabs
             {
                 slide.DeleteShapesWithPrefix(SpeechShapePrefix);
 
-                String fileNameSearchPattern = String.Format("Slide {0} Speech", slide.Index);
+                String fileNameSearchPattern = String.Format("Slide {0} Speech", slide.ID);
                 audioFiles = GetAudioFilePaths(folderPath, fileNameSearchPattern);
 
                 for (int i = 0; i < audioFiles.Length; i++)
@@ -155,7 +155,7 @@ namespace PowerPointLabs
         {
             try
             {
-                String fileNameFormat = "Slide " + slide.Index + " Speech {0}";
+                String fileNameFormat = "Slide " + slide.ID + " Speech {0}";
                 TextToSpeech.SaveStringToWaveFiles(slide.NotesPageText, folderPath, fileNameFormat);
                 return true;
             }

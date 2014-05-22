@@ -42,7 +42,7 @@ namespace PowerPointLabs
 
         // Records save and display
         private readonly string _tempPath = Path.GetTempPath();
-        private const string TempFolderName = "\\PowerPointLabs Temp\\";
+        private const string TempFolderName = @"\PowerPointLabs Temp\";
         private const string SaveNameFormat = "Slide {0} Speech";
         private const string SpeechShapePrefix = "PowerPointLabs Speech";
 
