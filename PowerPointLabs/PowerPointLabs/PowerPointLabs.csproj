@@ -526,7 +526,7 @@
     <None Include="Resources\HighlightBackgroundContext.png" />
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="Recorder\" />
+    <Folder Include="Utils\" />
   </ItemGroup>
   <!-- Include the build rules for a C# project. -->
   <PropertyGroup>

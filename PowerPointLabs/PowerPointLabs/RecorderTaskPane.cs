@@ -117,7 +117,7 @@ namespace PowerPointLabs
         private void ResetSession()
         {
             // close unfinished sound session
-            CloseAudio();
+            Audio.CloseAudio();
 
             // reset timer and trackbar
             ResetTimer();
@@ -176,41 +176,9 @@ namespace PowerPointLabs
             return _relativeSlideIDmapper[curID];
         }
 
-        private void OpenNewAudio()
-        {
-            Native.mciSendString("open new type waveaudio alias sound", null, 0, IntPtr.Zero);
-        }
-
-        private void OpenAudio(string name)
-        {
-            Native.mciSendString("open \"" + name + "\" alias sound", null, 0, IntPtr.Zero);
-        }
-
-        private void CloseAudio()
-        {
-            Native.mciSendString("close sound", null, 0, IntPtr.Zero);
-        }
-
-        private int GetAudioLength()
-        {
-            Native.mciSendString("status sound length", mciRetInfo, MCI_RET_INFO_BUF_LEN, IntPtr.Zero);
-            return Int32.Parse(mciRetInfo.ToString());
-        }
-
-        private int GetAudioLength(string name)
-        {
-            int length;
-
-            OpenAudio(name);
-            length = GetAudioLength();
-            CloseAudio();
-
-            return length;
-        }
-
         private string GetAudioLengthString()
         {
-            int length = GetAudioLength();
+            int length = Audio.GetAudioLength();
             return ConvertMillisToTime(length);
         }
 
@@ -218,21 +186,11 @@ namespace PowerPointLabs
         {
             string length;
 
-            OpenAudio(name);
+            Audio.OpenAudio(name);
             length = GetAudioLengthString();
-            CloseAudio();
+            Audio.CloseAudio();
 
             return length;
-        }
-
-        private Audio.AudioType GetAudioType(string name)
-        {
-            if (name.Contains("Rec"))
-            {
-                return Audio.AudioType.Record;
-            }
-
-            return Audio.AudioType.Auto;
         }
 
         private bool LoadPlayback()
@@ -434,9 +392,9 @@ namespace PowerPointLabs
 
                 audio.SaveName = saveName;
                 audio.Length = GetAudioLengthString(saveName);
-                audio.LengthMillis = GetAudioLength(saveName);
+                audio.LengthMillis = Audio.GetAudioLength(saveName);
                 audio.MatchSciptID = i;
-                audio.Type = GetAudioType(saveName);
+                audio.Type = Audio.GetAudioType(saveName);
 
                 _audioList[relativeSlideID].Add(audio);
             }
@@ -459,19 +417,9 @@ namespace PowerPointLabs
         # endregion
 
         # region WinForm
-        private const int MM_MCINOTIFY = 0x03B9;
-        private const int MCI_NOTIFY_SUCCESS = 0x01;
-        private const int MCI_NOTIFY_ABORTED = 0x04;
-        private const int MCI_NOTIFY_FAILURE = 0x08;
-
-        private const int MCI_RET_INFO_BUF_LEN = 128;
-
-        private StringBuilder mciRetInfo;
-        
         private string _curPlayBack = "";
         private int _resumeWaitingTime;
         private int _playbackLenMillis;
-        private int _playbackTimeCnt;
         private int _timerCnt;
 
         private RecorderStatus _recButtonStatus;
@@ -530,7 +478,7 @@ namespace PowerPointLabs
         public void RecorderPaneClosing()
         {
             // before closing, clean up all unfinished sessions
-            CloseAudio();
+            Audio.CloseAudio();
 
             if (_timer != null)
             {
@@ -657,7 +605,7 @@ namespace PowerPointLabs
             recButton.Text = "Pause";
 
             // start recording
-            OpenNewAudio();
+            Audio.OpenNewAudio();
             Native.mciSendString("record sound", null, 0, IntPtr.Zero);
 
             // start the timer
@@ -684,7 +632,7 @@ namespace PowerPointLabs
             // millis to wait before next integral second.
 
             // retrieve current length
-            int currentLen = GetAudioLength();
+            int currentLen = Audio.GetAudioLength();
             _resumeWaitingTime = _timerCnt * 1000 - currentLen;
 
             if (_resumeWaitingTime < 0)
@@ -733,7 +681,7 @@ namespace PowerPointLabs
             string saveName = _tempPath + "Rec" + _curRecNumber.ToString() + ".wav";
             _curRecNumber++;
             Native.mciSendString("save sound " + saveName, null, 0, IntPtr.Zero);
-            CloseAudio();
+            Audio.CloseAudio();
 
             // update record list
             UpdateRecordList(timerLabel.Text);
@@ -781,11 +729,10 @@ namespace PowerPointLabs
                 playButton.Text = "Pause";
 
                 // get play back length
-                OpenAudio(_curPlayBack);
-                _playbackLenMillis = GetAudioLength();
+                Audio.OpenAudio(_curPlayBack);
+                _playbackLenMillis = Audio.GetAudioLength();
 
                 // start the timer and track bar
-                _playbackTimeCnt = 0;
                 _timerCnt = 0;
                 _timer = new System.Threading.Timer(TimerEvent, null, 0, 1000);
                 _trackbarThread = new Thread(TrackbarEvent);
@@ -816,8 +763,7 @@ namespace PowerPointLabs
             // millis to wait before next integral second.
 
             // retrieve current length
-            Native.mciSendString("status sound position", mciRetInfo, MCI_RET_INFO_BUF_LEN, IntPtr.Zero);
-            int currentLen = int.Parse(mciRetInfo.ToString());
+            int currentLen = Audio.GetAudioCurrentPosition();
             _resumeWaitingTime = _timerCnt * 1000 - currentLen;
 
             if (_resumeWaitingTime < 0)
@@ -908,7 +854,6 @@ namespace PowerPointLabs
         // do when the task pane first initialized
         public RecorderTaskPane()
         {
-            mciRetInfo = new StringBuilder(MCI_RET_INFO_BUF_LEN);
             _audioList = new List<List<Audio>>();
             _scriptList = new List<List<string>>();
             
@@ -926,11 +871,11 @@ namespace PowerPointLabs
         /// <param name="m">A reference to the message sent by MCI.</param>
         protected override void WndProc(ref Message m)
         {
-            if (m.Msg == MM_MCINOTIFY)
+            if (m.Msg == Audio.MM_MCINOTIFY)
             {
                 switch (m.WParam.ToInt32())
                 {
-                    case MCI_NOTIFY_SUCCESS:
+                    case Audio.MCI_NOTIFY_SUCCESS:
                         // UI settings
                         statusLabel.Text = "Ready.";
                         playButton.Text = "Play";
@@ -941,11 +886,11 @@ namespace PowerPointLabs
                         ResetSession();
                         soundTrackBar.Value = soundTrackBar.Maximum;
                         break;
-                    case MCI_NOTIFY_ABORTED:
+                    case Audio.MCI_NOTIFY_ABORTED:
                         ResetTrackbar(0);
                         break;
                     default:
-                        MessageBox.Show("other error");
+                        MessageBox.Show("Fatal error");
                         break;
                 }
             }
