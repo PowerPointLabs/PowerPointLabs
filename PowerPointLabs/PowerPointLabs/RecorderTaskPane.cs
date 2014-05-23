@@ -124,6 +124,13 @@ namespace PowerPointLabs
             ResetTrackbar(0);
         }
 
+        private void SetAllRecorderButtonState(bool enable)
+        {
+            recButton.Enabled = enable;
+            playButton.Enabled = enable;
+            stopButton.Enabled = enable;
+        }
+
         /// <summary>
         /// This function will convert a time in milli-second to HH:MM:SS:MMS
         /// </summary>
@@ -176,6 +183,26 @@ namespace PowerPointLabs
             return _relativeSlideIDmapper[curID];
         }
 
+        private Audio GetPlaybackFromList()
+        {
+            var slideID = GetRelativeSlideID(PowerPointPresentation.CurrentSlide.ID);
+            int playbackIndex = -1;
+            
+            if (recDisplay.SelectedIndices.Count != 0)
+            {
+                playbackIndex = recDisplay.SelectedIndices[0];
+            }
+            
+            if (playbackIndex == -1)
+            {
+                return null;
+            }
+            else
+            {
+                return _audioList[slideID][playbackIndex];
+            }
+        }
+
         private string GetAudioLengthString()
         {
             int length = Audio.GetAudioLength();
@@ -191,36 +218,6 @@ namespace PowerPointLabs
             Audio.CloseAudio();
 
             return length;
-        }
-
-        private bool LoadPlayback()
-        {
-            int selected = -1;
-
-            // if no record is found, return false
-            if (_curRecNumber == 0)
-            {
-                return false;
-            }
-
-            for (int i = 0; i < _curRecNumber; i++)
-            {
-                if (recDisplay.Items[i].Selected)
-                {
-                    selected = i;
-                    break;
-                }
-            }
-
-            if (selected == -1)
-            {
-                selected = _curRecNumber - 1;
-                recDisplay.Items[selected].Selected = true;
-            }
-
-            _curPlayBack = _tempPath + "Rec" + selected.ToString() + ".wav";
-
-            return true;
         }
 
         // this function is unused for now
@@ -285,6 +282,10 @@ namespace PowerPointLabs
                 }
             }
             scriptDisplay.EndUpdate();
+
+            // since the pane was just renewed, no item is selected thus all
+            // button should be disabled
+            SetAllRecorderButtonState(false);
         }
 
         public void ClearRecordList()
@@ -418,7 +419,6 @@ namespace PowerPointLabs
         # endregion
 
         # region WinForm
-        private string _curPlayBack = "";
         private int _resumeWaitingTime;
         private int _playbackLenMillis;
         private int _timerCnt;
@@ -453,6 +453,10 @@ namespace PowerPointLabs
             _curRecNumber = 0;
             ResetRecorder();
 
+            // disable all buttons when just enter the pane and nothing has
+            // been selected
+            SetAllRecorderButtonState(false);
+
             _currentSlide = PowerPointPresentation.CurrentSlide;
             if (_currentSlide != null)
             {
@@ -467,6 +471,10 @@ namespace PowerPointLabs
             statusLabel.Visible = true;
             _curRecNumber = 0;
             ResetRecorder();
+
+            // disable record button when just enter the pane and nothing has
+            // been selected
+            SetAllRecorderButtonState(false);
 
             _currentSlide = PowerPointPresentation.CurrentSlide;
             if (_currentSlide != null)
@@ -714,24 +722,27 @@ namespace PowerPointLabs
             // close unfinished session
             ResetSession();
 
-            if (!LoadPlayback())
+            // UI settings
+            ResetRecorder();
+            statusLabel.Text = "Playing...";
+            statusLabel.Visible = true;
+
+            // change the button status and change the button text
+            _playButtonStatus = RecorderStatus.Playing;
+            playButton.Text = "Pause";
+
+            // get play back length
+            var playback = GetPlaybackFromList();
+
+            // this shall not happen since the button is disabled when nothing
+            // is selected
+            if (playback == null)
             {
                 MessageBox.Show("No record to play back. Please record first.");
             }
             else
             {
-                // UI settings
-                ResetRecorder();
-                statusLabel.Text = "Playing...";
-                statusLabel.Visible = true;
-
-                // change the button status and change the button text
-                _playButtonStatus = RecorderStatus.Playing;
-                playButton.Text = "Pause";
-
-                // get play back length
-                Audio.OpenAudio(_curPlayBack);
-                _playbackLenMillis = Audio.GetAudioLength();
+                _playbackLenMillis = playback.LengthMillis;
 
                 // start the timer and track bar
                 _timerCnt = 0;
@@ -740,6 +751,7 @@ namespace PowerPointLabs
                 _trackbarThread.Start();
 
                 // start play back
+                Audio.OpenAudio(playback.SaveName);
                 Native.mciSendString("play sound notify", null, 0, this.Handle);
             }
         }
@@ -851,13 +863,22 @@ namespace PowerPointLabs
 
         private void RecDisplayItemSelectionChanged(object sender, ListViewItemSelectionChangedEventArgs e)
         {
+            // if some record is selected, enable the record button
             if (e.IsSelected)
             {
                 scriptDisplay.Items[e.ItemIndex].Selected = true;
+                SetAllRecorderButtonState(true);
             }
             else
             {
                 scriptDisplay.Items[e.ItemIndex].Selected = false;
+                
+                // disabling only happens when buttons are idle
+                if (_playButtonStatus == RecorderStatus.Idle &&
+                    _recButtonStatus == RecorderStatus.Idle)
+                {
+                    SetAllRecorderButtonState(false);
+                }
             }
         }
 
@@ -866,13 +887,20 @@ namespace PowerPointLabs
             if (e.IsSelected)
             {
                 recDisplay.Items[e.ItemIndex].Selected = true;
+                SetAllRecorderButtonState(true);
             }
             else
             {
                 recDisplay.Items[e.ItemIndex].Selected = false;
+                
+                // disabling only happens when buttons are idle
+                if (_playButtonStatus == RecorderStatus.Idle &&
+                    _recButtonStatus == RecorderStatus.Idle)
+                {
+                    SetAllRecorderButtonState(false);
+                }
             }
         }
-
         # endregion
         # endregion
 
