@@ -17,7 +17,7 @@ using PowerPointLabs.AudioMisc;
 
 namespace PowerPointLabs
 {
-    public partial class RecorderTaskPane : UserControl
+    internal partial class RecorderTaskPane : UserControl
     {
         // for hashing the speaker's script
         private MD5 _md5 = MD5.Create();
@@ -37,7 +37,6 @@ namespace PowerPointLabs
 
         // slide monitor
         private PowerPointSlide _currentSlide;
-        public int _currentSlideID;
         public bool _clearRecord = false;
 
         // Records save and display
@@ -349,12 +348,13 @@ namespace PowerPointLabs
             ClearScriptList();
         }
 
-        public void InitializeAudioAndScript(int slideID, string[] names, bool forceRefresh)
+        public void InitializeAudioAndScript(PowerPointSlide slide, string[] names, bool forceRefresh)
         {
             string[] audioSaveNames = null;
             string folderPath = Path.GetTempPath() + TempFolderName;
+            
+            int slideID = slide.ID;
             int relativeSlideID = GetRelativeSlideID(slideID);
-            _currentSlide = PowerPointPresentation.CurrentSlide;
             bool initialized = _audioList != null && _audioList.Count > relativeSlideID;
 
             // check if the selected slide has been initialized before
@@ -377,7 +377,7 @@ namespace PowerPointLabs
             // now we assume the first record -> first chunk of note, ect.
 
             // retrieve the tag notes
-            var taggedNotes = new TaggedText(_currentSlide.NotesPageText.Trim());
+            var taggedNotes = new TaggedText(slide.NotesPageText.Trim());
             List<String> splitScript = taggedNotes.SplitByClicks();
 
             // if the slide has been initialized, update the list
@@ -404,12 +404,20 @@ namespace PowerPointLabs
             {
                 _audioList.Add(new List<Audio>());
             }
+            // else clear the audio collection of current slide
+            // TODO:
+            // obviously we don't need to delete all items in the list, only
+            // those modified items should be replaced.
+            else
+            {
+                _audioList[relativeSlideID].Clear();
+            }
 
             // if audio names have not been given, retrieve from files.
             if (names == null)
             {
                 // retrieve all actual audio files in the slide
-                String fileNameSearchPattern = String.Format(SaveNameFormat, _currentSlideID);
+                String fileNameSearchPattern = String.Format(SaveNameFormat, slideID);
                 var filePaths = Directory.EnumerateFiles(folderPath, "*.wav");
                 audioSaveNames = filePaths.Where(path => path.Contains(fileNameSearchPattern)).ToArray();
             }
@@ -445,7 +453,7 @@ namespace PowerPointLabs
             {
                 var slide = slides[i];
 
-                InitializeAudioAndScript(slide.ID, names[i], forceRefresh);
+                InitializeAudioAndScript(slide, names[i], forceRefresh);
             }
         }
         # endregion

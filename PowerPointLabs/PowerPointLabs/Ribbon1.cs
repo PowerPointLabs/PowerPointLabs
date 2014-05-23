@@ -909,7 +909,7 @@ namespace PowerPointLabs
                 var audioFiles = NotesToAudio.EmbedCurrentSlideNotes();
 
                 // initialize the current slide's audio
-                Globals.ThisAddIn.recorderTaskPane.InitializeAudioAndScript(currentSlide.ID, audioFiles, true);
+                Globals.ThisAddIn.recorderTaskPane.InitializeAudioAndScript(currentSlide, audioFiles, true);
             }
 
             // if current list is visible, update the pane immediately

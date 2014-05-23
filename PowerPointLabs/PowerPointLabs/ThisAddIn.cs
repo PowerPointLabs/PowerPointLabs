@@ -10,6 +10,7 @@ using System.Windows.Forms;
 using System.Xml.Linq;
 using System.Diagnostics;
 using PPExtraEventHelper;
+using PowerPointLabs.Models;
 using PowerPoint = Microsoft.Office.Interop.PowerPoint;
 using Office = Microsoft.Office.Core;
 using System.Deployment.Application;
@@ -20,8 +21,9 @@ namespace PowerPointLabs
     {
         public Ribbon1 ribbon;
         public ArrayList indicators = new ArrayList();
-        public Microsoft.Office.Tools.CustomTaskPane customTaskPane;
-        public RecorderTaskPane recorderTaskPane;
+        
+        internal Microsoft.Office.Tools.CustomTaskPane customTaskPane;
+        internal RecorderTaskPane recorderTaskPane;
 
         private const int _taskPaneWidth = 300;
         private const string TempFolderName = @"\PowerPointLabs Temp\";
@@ -211,7 +213,7 @@ namespace PowerPointLabs
             else
             {
                 // initailize the current slide
-                recorderTaskPane.InitializeAudioAndScript(id, null, false);
+                recorderTaskPane.InitializeAudioAndScript(PowerPointPresentation.CurrentSlide, null, false);
 
                 // if the pane is shown, refresh the pane immediately
                 if (customTaskPane.Visible)
