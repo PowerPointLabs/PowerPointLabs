@@ -223,6 +223,7 @@ namespace PowerPointLabs
             return true;
         }
 
+        // this function is unused for now
         private void UpdateRecordList(string length)
         {
             // add the latest record to the list
@@ -845,6 +846,30 @@ namespace PowerPointLabs
                 default:
                     MessageBox.Show("Invalid Operation");
                     break;
+            }
+        }
+
+        private void RecDisplayItemSelectionChanged(object sender, ListViewItemSelectionChangedEventArgs e)
+        {
+            if (e.IsSelected)
+            {
+                scriptDisplay.Items[e.ItemIndex].Selected = true;
+            }
+            else
+            {
+                scriptDisplay.Items[e.ItemIndex].Selected = false;
+            }
+        }
+
+        private void ScriptDisplayItemSelectionChanged(object sender, ListViewItemSelectionChangedEventArgs e)
+        {
+            if (e.IsSelected)
+            {
+                recDisplay.Items[e.ItemIndex].Selected = true;
+            }
+            else
+            {
+                recDisplay.Items[e.ItemIndex].Selected = false;
             }
         }
 

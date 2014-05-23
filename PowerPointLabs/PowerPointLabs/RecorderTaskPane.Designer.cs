@@ -40,9 +40,9 @@
             this.recLength = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.recDate = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.scriptDisplay = new System.Windows.Forms.ListView();
-            this.scriptListViewLabel = new System.Windows.Forms.Label();
             this.statusColumn = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.scirptColumn = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+            this.scriptListViewLabel = new System.Windows.Forms.Label();
             ((System.ComponentModel.ISupportInitialize)(this.soundTrackBar)).BeginInit();
             this.SuspendLayout();
             // 
@@ -121,6 +121,7 @@
             this.recDisplay.TabIndex = 6;
             this.recDisplay.UseCompatibleStateImageBehavior = false;
             this.recDisplay.View = System.Windows.Forms.View.Details;
+            this.recDisplay.ItemSelectionChanged += new System.Windows.Forms.ListViewItemSelectionChangedEventHandler(this.RecDisplayItemSelectionChanged);
             // 
             // recNumber
             // 
@@ -147,12 +148,25 @@
             this.scriptDisplay.Columns.AddRange(new System.Windows.Forms.ColumnHeader[] {
             this.statusColumn,
             this.scirptColumn});
+            this.scriptDisplay.FullRowSelect = true;
+            this.scriptDisplay.HideSelection = false;
             this.scriptDisplay.Location = new System.Drawing.Point(12, 356);
+            this.scriptDisplay.MultiSelect = false;
             this.scriptDisplay.Name = "scriptDisplay";
             this.scriptDisplay.Size = new System.Drawing.Size(255, 168);
             this.scriptDisplay.TabIndex = 7;
             this.scriptDisplay.UseCompatibleStateImageBehavior = false;
             this.scriptDisplay.View = System.Windows.Forms.View.Details;
+            this.scriptDisplay.ItemSelectionChanged += new System.Windows.Forms.ListViewItemSelectionChangedEventHandler(this.ScriptDisplayItemSelectionChanged);
+            // 
+            // statusColumn
+            // 
+            this.statusColumn.Text = "Status";
+            // 
+            // scirptColumn
+            // 
+            this.scirptColumn.Text = "Script";
+            this.scirptColumn.Width = 184;
             // 
             // scriptListViewLabel
             // 
@@ -163,15 +177,6 @@
             this.scriptListViewLabel.Size = new System.Drawing.Size(82, 12);
             this.scriptListViewLabel.TabIndex = 8;
             this.scriptListViewLabel.Text = "Your Script";
-            // 
-            // statusColumn
-            // 
-            this.statusColumn.Text = "Status";
-            // 
-            // scirptColumn
-            // 
-            this.scirptColumn.Text = "Script";
-            this.scirptColumn.Width = 184;
             // 
             // RecorderTaskPane
             // 
