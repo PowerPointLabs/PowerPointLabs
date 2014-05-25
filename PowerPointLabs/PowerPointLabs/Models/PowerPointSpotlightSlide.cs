@@ -89,8 +89,9 @@ namespace PowerPointLabs.Models
         }
 
         /// <summary>
-        /// export formatted spotlight picture as a new picture,
-        /// so that when it's displayed, no need to render the effect (which's very slow)
+        /// Export formatted spotlight picture as a new picture,
+        /// then use the new pic to replace the formatted one.
+        /// Thus when it's displayed, no need to render the effect (which's very slow)
         /// </summary>
         /// <param name="spotlightPicture"></param>
         private void RenderSpotlightPicture(PowerPoint.Shape spotlightPicture)
