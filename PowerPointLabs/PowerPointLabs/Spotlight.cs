@@ -69,7 +69,7 @@ namespace PowerPointLabs
 
                     foreach (PowerPoint.Shape sh in currentSlide.Shapes)
                     {
-                        if (sh.Name.Equals("SpotlightShape1"))
+                        if (sh.Name.Contains("SpotlightShape1"))
                         {
                             spotlightPicture = sh;
                         }
@@ -90,6 +90,7 @@ namespace PowerPointLabs
                     else
                     {
                         spotlightPicture.Delete();
+
                         if (indicatorShape != null)
                             indicatorShape.Delete();
 

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Text;
 using Office = Microsoft.Office.Core;
@@ -77,6 +78,7 @@ namespace PowerPointLabs.Models
                 AddRectangleShape();
                 PowerPoint.Shape spotlightPicture = ConvertToSpotlightPicture(spotlightShapes);
                 FormatSpotlightPicture(spotlightPicture);
+                RenderSpotlightPicture(spotlightPicture);
                 indicatorShape.ZOrder(Office.MsoZOrderCmd.msoBringToFront);
             }
             catch (Exception e)
@@ -84,6 +86,27 @@ namespace PowerPointLabs.Models
                 PowerPointLabsGlobals.LogException(e, "AddSpotlightEffect");
                 throw;
             }
+        }
+
+        /// <summary>
+        /// Export formatted spotlight picture as a new picture,
+        /// then use the new pic to replace the formatted one.
+        /// Thus when it's displayed, no need to render the effect (which's very slow)
+        /// </summary>
+        /// <param name="spotlightPicture"></param>
+        private void RenderSpotlightPicture(PowerPoint.Shape spotlightPicture)
+        {
+            string dirOfRenderedPicture = Path.GetTempPath() + @"\rendered_" + spotlightPicture.Name;
+            //Render process:
+            //export formatted spotlight picture to a temp folder
+            spotlightPicture.Export(dirOfRenderedPicture, PowerPoint.PpShapeFormat.ppShapeFormatPNG);
+            //then add the exported new picture back
+            var renderedPicture = PowerPointPresentation.CurrentSlide.Shapes.AddPicture(
+                dirOfRenderedPicture, Office.MsoTriState.msoFalse, Office.MsoTriState.msoTrue,
+                spotlightPicture.Left, spotlightPicture.Top, spotlightPicture.Width, spotlightPicture.Height);
+
+            renderedPicture.Name = spotlightPicture.Name + "_rendered";
+            spotlightPicture.Delete();
         }
 
         private void ManageSlideTransitions()
