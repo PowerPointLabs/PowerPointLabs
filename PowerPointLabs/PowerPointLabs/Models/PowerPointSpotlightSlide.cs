@@ -88,6 +88,7 @@ namespace PowerPointLabs.Models
                     spotlightPicture.Left, spotlightPicture.Top, spotlightPicture.Width, spotlightPicture.Height);
                 renderedPicture.Name = spotlightPicture.Name + "_rendered";
                 spotlightPicture.Visible = Office.MsoTriState.msoFalse;
+                spotlightPicture.Delete();
 
                 indicatorShape.ZOrder(Office.MsoZOrderCmd.msoBringToFront);
             }

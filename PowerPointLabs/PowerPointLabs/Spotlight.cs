@@ -63,15 +63,15 @@ namespace PowerPointLabs
                 var currentSlide = PowerPointPresentation.CurrentSlide as PowerPointSpotlightSlide;
                 if (currentSlide.isSpotlightSlide())
                 {
-                    PowerPoint.Shape spotlightPicture = null;
+                    List<PowerPoint.Shape> spotlightPictures = new List<PowerPoint.Shape>();
                     PowerPoint.Shape indicatorShape = null;
                     List<PowerPoint.Shape> spotlightShapes = new List<PowerPoint.Shape>();
 
                     foreach (PowerPoint.Shape sh in currentSlide.Shapes)
                     {
-                        if (sh.Name.Equals("SpotlightShape1"))
+                        if (sh.Name.Contains("SpotlightShape1"))
                         {
-                            spotlightPicture = sh;
+                            spotlightPictures.Add(sh);
                         }
                         else if (sh.Name.Contains("SpotlightShape"))
                         {
@@ -83,13 +83,17 @@ namespace PowerPointLabs
                         }
                     }
 
-                    if (spotlightPicture == null || spotlightShapes.Count == 0)
+                    if (spotlightPictures.Count == 0 || spotlightShapes.Count == 0)
                     {
                         System.Windows.Forms.MessageBox.Show("The spotlight effect cannot be recreated for the current slide.\nPlease click on the Create Spotlight button to create a new spotlight.", "Error");
                     }
                     else
                     {
-                        spotlightPicture.Delete();
+                        foreach (var spotlightPicture in spotlightPictures)
+                        {
+                            spotlightPicture.Delete();
+                        }
+
                         if (indicatorShape != null)
                             indicatorShape.Delete();
 
