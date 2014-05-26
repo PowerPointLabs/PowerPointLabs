@@ -207,7 +207,7 @@ namespace PowerPointLabs
             {
                 if (customTaskPane.Visible)
                 {
-                    recorderTaskPane.ClearLists();
+                    recorderTaskPane.ClearDisplayLists();
                 }
             }
             else

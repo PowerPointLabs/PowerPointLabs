@@ -881,13 +881,23 @@ namespace PowerPointLabs
 
         public void RemoveAudioClick(Office.IRibbonControl control)
         {
+            var currentSlide = PowerPointPresentation.CurrentSlide;
+            
             if (_allSlides)
             {
                 NotesToAudio.RemoveAudioFromAllSlides();
+                Globals.ThisAddIn.recorderTaskPane.ClearDataLists();
             }
             else
             {
                 NotesToAudio.RemoveAudioFromCurrentSlide();
+                Globals.ThisAddIn.recorderTaskPane.ClearDataLists(currentSlide.ID);
+            }
+
+            // if current list is visible, update the pane immediately
+            if (_recorderPaneVisible)
+            {
+                Globals.ThisAddIn.recorderTaskPane.UpdateLists(currentSlide.ID);
             }
         }
 

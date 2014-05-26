@@ -37,7 +37,6 @@ namespace PowerPointLabs
 
         // slide monitor
         private PowerPointSlide _currentSlide;
-        public bool _clearRecord = false;
 
         // Records save and display
         private readonly string _tempPath = Path.GetTempPath();
@@ -57,7 +56,7 @@ namespace PowerPointLabs
             Default,
             Generated,
             Recorded,
-            None
+            Untracked
         }
 
         # region Helper Functions
@@ -145,7 +144,7 @@ namespace PowerPointLabs
             return sb.ToString();
         }
 
-        private int GetRelativeSlideID(int curID)
+        private int GetRelativeSlideIndex(int curID)
         {
             if (!_relativeSlideIDmapper.ContainsKey(curID))
             {
@@ -157,7 +156,7 @@ namespace PowerPointLabs
 
         private Audio GetPlaybackFromList()
         {
-            var slideID = GetRelativeSlideID(PowerPointPresentation.CurrentSlide.ID);
+            var slideID = GetRelativeSlideIndex(PowerPointPresentation.CurrentSlide.ID);
             int playbackIndex = -1;
             
             if (recDisplay.SelectedIndices.Count != 0)
@@ -231,7 +230,7 @@ namespace PowerPointLabs
 
         public void UpdateLists(int slideID)
         {
-            int relativeID = GetRelativeSlideID(slideID);
+            int relativeID = GetRelativeSlideIndex(slideID);
             List<Audio> audio = _audioList[relativeID];
             List<string> scirpt = _scriptList[relativeID];
 
@@ -240,7 +239,7 @@ namespace PowerPointLabs
             // do it faster
 
             // update the record list view
-            ClearRecordList();
+            ClearRecordDisplayList();
             recDisplay.BeginUpdate();
             for (int i = 0; i < audio.Count; i++)
             {
@@ -249,7 +248,7 @@ namespace PowerPointLabs
             recDisplay.EndUpdate();
 
             // update the script list view
-            ClearScriptList();
+            ClearScriptDisplayList();
             scriptDisplay.BeginUpdate();
             for (int i = 0; i < scirpt.Count; i++)
             {
@@ -269,33 +268,73 @@ namespace PowerPointLabs
             SetAllRecorderButtonState(false);
         }
 
-        public void ClearRecordList()
+        public void ClearRecordDisplayList()
         {
             recDisplay.BeginUpdate();
             recDisplay.Items.Clear();
             recDisplay.EndUpdate();
         }
 
-        public void ClearScriptList()
+        public void ClearScriptDisplayList()
         {
             scriptDisplay.BeginUpdate();
             scriptDisplay.Items.Clear();
             scriptDisplay.EndUpdate();
         }
 
-        public void ClearLists()
+        public void ClearDisplayLists()
         {
-            ClearRecordList();
-            ClearScriptList();
+            ClearRecordDisplayList();
+            ClearScriptDisplayList();
+        }
+
+        public void ClearRecordDataList()
+        {
+            foreach (var slide in _audioList)
+            {
+                slide.Clear();
+            }
+        }
+
+        public void ClearRecordDataList(int id)
+        {
+            int relativeIndex = GetRelativeSlideIndex(id);
+            _audioList[relativeIndex].Clear();
+        }
+
+        public void ClearScriptDataList()
+        {
+            foreach (var slide in _scriptList)
+            {
+                slide.Clear();
+            }
+        }
+
+        public void ClearScriptDataList(int id)
+        {
+            int relativeIndex = GetRelativeSlideIndex(id);
+            _scriptList[relativeIndex].Clear();
+        }
+
+        public void ClearDataLists()
+        {
+            ClearRecordDataList();
+            ClearScriptDataList();
+        }
+
+        public void ClearDataLists(int id)
+        {
+            ClearRecordDataList(id);
+            ClearScriptDataList(id);
         }
 
         public void InitializeAudioAndScript(PowerPointSlide slide, string[] names, bool forceRefresh)
         {
             string[] audioSaveNames = null;
-            string folderPath = Path.GetTempPath() + TempFolderName;
+            string folderPath = _tempPath + TempFolderName;
             
             int slideID = slide.ID;
-            int relativeSlideID = GetRelativeSlideID(slideID);
+            int relativeSlideID = GetRelativeSlideIndex(slideID);
             bool initialized = _audioList != null && _audioList.Count > relativeSlideID;
 
             // check if the selected slide has been initialized before
@@ -425,7 +464,6 @@ namespace PowerPointLabs
         {
             statusLabel.Text = "Ready.";
             statusLabel.Visible = true;
-            _curRecNumber = 0;
             ResetRecorder();
 
             // disable all buttons when just enter the pane and nothing has
@@ -444,7 +482,6 @@ namespace PowerPointLabs
         {
             statusLabel.Text = "Ready.";
             statusLabel.Visible = true;
-            _curRecNumber = 0;
             ResetRecorder();
 
             // disable record button when just enter the pane and nothing has
@@ -693,7 +730,7 @@ namespace PowerPointLabs
                 AudioHelper.CloseAudio();
 
                 // update record list
-                var relativeID = GetRelativeSlideID(PowerPointPresentation.CurrentSlide.ID);
+                var relativeID = GetRelativeSlideIndex(PowerPointPresentation.CurrentSlide.ID);
                 var replaceIndex = recDisplay.SelectedIndices[0];
                 _audioList[relativeID][replaceIndex] = replaceRec;
                 UpdateRecordList(replaceIndex, replaceRec.SaveName, replaceRec.Length);
