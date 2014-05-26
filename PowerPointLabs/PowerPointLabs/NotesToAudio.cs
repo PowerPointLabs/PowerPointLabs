@@ -74,6 +74,8 @@ namespace PowerPointLabs
         private static string[] EmbedSlideNotes(PowerPointSlide slide)
         {
             String folderPath = Path.GetTempPath() + TempFolderName;
+            String fileNameSearchPattern = String.Format("Slide {0} Speech", slide.ID);
+            
             Directory.CreateDirectory(folderPath);
 
             bool isSaveSuccessful = OutputSlideNotesToFiles(slide, folderPath);
@@ -83,7 +85,6 @@ namespace PowerPointLabs
             {
                 slide.DeleteShapesWithPrefix(SpeechShapePrefix);
 
-                String fileNameSearchPattern = String.Format("Slide {0} Speech", slide.ID);
                 audioFiles = GetAudioFilePaths(folderPath, fileNameSearchPattern);
 
                 for (int i = 0; i < audioFiles.Length; i++)

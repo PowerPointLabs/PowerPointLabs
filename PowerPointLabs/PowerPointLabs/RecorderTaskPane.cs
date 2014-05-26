@@ -54,6 +54,7 @@ namespace PowerPointLabs
         }
         private enum ScriptStatus
         {
+            Default,
             Generated,
             Recorded,
             None
@@ -117,7 +118,7 @@ namespace PowerPointLabs
         private void ResetSession()
         {
             // close unfinished sound session
-            Audio.CloseAudio();
+            AudioHelper.CloseAudio();
 
             // reset timer and trackbar
             ResetTimer();
@@ -129,35 +130,6 @@ namespace PowerPointLabs
             recButton.Enabled = enable;
             playButton.Enabled = enable;
             stopButton.Enabled = enable;
-        }
-
-        /// <summary>
-        /// This function will convert a time in milli-second to HH:MM:SS:MMS
-        /// </summary>
-        /// <param name="millis">Time in millis.</param>
-        /// <returns>A string in HH:MM:SS:MMS format.</returns>
-        private string ConvertMillisToTime(long millis)
-        {
-            int ms, s, m, h;
-
-            ms = (int)millis % 1000;
-            millis /= 1000;
-
-            s = (int)(millis % 60);
-            millis /= 60;
-
-            m = (int)(millis % 60);
-            millis /= 60;
-
-            h = (int)(millis % 60);
-            millis /= 60;
-
-            return System.String.Format("{0:D2}:{1:D2}:{2:D2}", h, m, s);
-        }
-
-        private string ConvertMillisToTime(int millis)
-        {
-            return ConvertMillisToTime((long)millis);
         }
 
         private string GetMD5(string s)
@@ -203,49 +175,58 @@ namespace PowerPointLabs
             }
         }
 
-        private string GetAudioLengthString()
-        {
-            int length = Audio.GetAudioLength();
-            return ConvertMillisToTime(length);
-        }
-
-        private string GetAudioLengthString(string name)
-        {
-            string length;
-
-            Audio.OpenAudio(name);
-            length = GetAudioLengthString();
-            Audio.CloseAudio();
-
-            return length;
-        }
-
-        // this function is unused for now
-        private void UpdateRecordList(string length)
-        {
-            // add the latest record to the list
-            ListViewItem item = recDisplay.Items.Add(_curRecNumber.ToString());
-            item.SubItems.Add("Rec" + _curRecNumber.ToString());
-            item.SubItems.Add(length);
-            item.SubItems.Add(DateTime.Now.ToString());
-
-            // and select it by default
-            recDisplay.Items[_curRecNumber - 1].Selected = true;
-        }
-
         private void UpdateRecordList(int index, string name, string length)
         {
+            // change index to 1-base
+            index ++;
             // add the latest record to the list
-            ListViewItem item = recDisplay.Items.Add(index.ToString());
-            item.SubItems.Add(name);
-            item.SubItems.Add(length);
-            item.SubItems.Add(DateTime.Now.ToString());
+            if (index > recDisplay.Items.Count)
+            {
+                ListViewItem item = recDisplay.Items.Add(index.ToString());
+                item.SubItems.Add(name);
+                item.SubItems.Add(length);
+                item.SubItems.Add(DateTime.Now.ToString());
+            }
+            else
+            {
+                // if name needs to be updated
+                if (name != null)
+                {
+                    recDisplay.Items[index - 1].SubItems[1].Text = name;
+                }
+
+                // if length needs to be updated
+                if (length != null)
+                {
+                    recDisplay.Items[index - 1].SubItems[2].Text = length;
+                }
+
+                recDisplay.Items[index - 1].SubItems[3].Text = DateTime.Now.ToString();
+            }
         }
 
-        private void UpdateScriptList(string name, ScriptStatus status)
+        private void UpdateScriptList(int index, string content, ScriptStatus status)
         {
-            ListViewItem item = scriptDisplay.Items.Add(status.ToString());
-            item.SubItems.Add(name);
+            // change index to 1-base
+            index++;
+
+            if (index > scriptDisplay.Items.Count)
+            {
+                ListViewItem item = scriptDisplay.Items.Add(status.ToString());
+                item.SubItems.Add(content);
+            }
+            else
+            {
+                if (status != ScriptStatus.Default)
+                {
+                    scriptDisplay.Items[index - 1].SubItems[0].Text = status.ToString();
+                }
+
+                if (content != null)
+                {
+                    scriptDisplay.Items[index - 1].SubItems[1].Text = content;
+                }
+            }
         }
 
         public void UpdateLists(int slideID)
@@ -263,7 +244,7 @@ namespace PowerPointLabs
             recDisplay.BeginUpdate();
             for (int i = 0; i < audio.Count; i++)
             {
-                UpdateRecordList(i, audio[i].SaveName, GetAudioLengthString(audio[i].SaveName));
+                UpdateRecordList(i, audio[i].SaveName, AudioHelper.GetAudioLengthString(audio[i].SaveName));
             }
             recDisplay.EndUpdate();
 
@@ -274,11 +255,11 @@ namespace PowerPointLabs
             {
                 if (audio[i].Type == Audio.AudioType.Auto)
                 {
-                    UpdateScriptList(scirpt[i], ScriptStatus.Generated);
+                    UpdateScriptList(i, scirpt[i], ScriptStatus.Generated);
                 }
                 else
                 {
-                    UpdateScriptList(scirpt[i], ScriptStatus.Recorded);
+                    UpdateScriptList(i, scirpt[i], ScriptStatus.Recorded);
                 }
             }
             scriptDisplay.EndUpdate();
@@ -389,14 +370,8 @@ namespace PowerPointLabs
             // construct audio object and put into audio collection
             for (int i = 0; i < audioSaveNames.Length; i++)
             {
-                Audio audio = new Audio();
                 string saveName = audioSaveNames[i];
-
-                audio.SaveName = saveName;
-                audio.Length = GetAudioLengthString(saveName);
-                audio.LengthMillis = Audio.GetAudioLength(saveName);
-                audio.MatchSciptID = i;
-                audio.Type = Audio.GetAudioType(saveName);
+                var audio = new Audio(null, saveName, i);
 
                 _audioList[relativeSlideID].Add(audio);
             }
@@ -487,7 +462,7 @@ namespace PowerPointLabs
         public void RecorderPaneClosing()
         {
             // before closing, clean up all unfinished sessions
-            Audio.CloseAudio();
+            AudioHelper.CloseAudio();
 
             if (_timer != null)
             {
@@ -559,7 +534,7 @@ namespace PowerPointLabs
         # region Timer and Trackbar Regualr Event Handlers
         private void TimerEvent(Object o)
         {
-            ThreadSafeUpdateLabelText(timerLabel, ConvertMillisToTime(_timerCnt * 1000));
+            ThreadSafeUpdateLabelText(timerLabel, AudioHelper.ConvertMillisToTime(_timerCnt * 1000));
             _timerCnt++;
         }
 
@@ -607,6 +582,11 @@ namespace PowerPointLabs
             recButton.Text = "Pause";
             // disable control of playing
             playButton.Enabled = false;
+            // enable stop button
+            stopButton.Enabled = true;
+            // disable control of both lists
+            recDisplay.Enabled = false;
+            scriptDisplay.Enabled = false;
 
             // change the status to recording status and change the button text
             // to pause
@@ -614,7 +594,7 @@ namespace PowerPointLabs
             recButton.Text = "Pause";
 
             // start recording
-            Audio.OpenNewAudio();
+            AudioHelper.OpenNewAudio();
             Native.mciSendString("record sound", null, 0, IntPtr.Zero);
 
             // start the timer
@@ -629,8 +609,12 @@ namespace PowerPointLabs
         /// </summary>
         private void RecButtonRecordingHandler()
         {
+            // make sure stop button is enabled
+            stopButton.Enabled = true;
+
             // change the status to pause and change the button text to resume
             _recButtonStatus = RecorderStatus.Pause;
+            statusLabel.Text = "Pause";
             recButton.Text = "Resume";
 
             // pause the sound and stop the timer
@@ -641,7 +625,7 @@ namespace PowerPointLabs
             // millis to wait before next integral second.
 
             // retrieve current length
-            int currentLen = Audio.GetAudioLength();
+            int currentLen = AudioHelper.GetAudioLength();
             _resumeWaitingTime = _timerCnt * 1000 - currentLen;
 
             if (_resumeWaitingTime < 0)
@@ -656,9 +640,13 @@ namespace PowerPointLabs
         /// </summary>
         private void RecButtonPauseHandler()
         {
+            // make sure stop button is enabled
+            stopButton.Enabled = true;
+
             // change the status to recording and change the button text to
             // pause
             _recButtonStatus = RecorderStatus.Recording;
+            statusLabel.Text = "Recording...";
             recButton.Text = "Pause";
 
             // resume recording and restart the timer
@@ -682,21 +670,44 @@ namespace PowerPointLabs
             statusLabel.Text = "Ready.";
             ResetTimer();
 
+            var currentPlayback = GetPlaybackFromList();
+
             // stop recording and get the length of the recording
             Native.mciSendString("stop sound", null, 0, IntPtr.Zero);
             // adjust the stop time difference between timer-stop and recording-stop
-            timerLabel.Text = GetAudioLengthString();
+            timerLabel.Text = AudioHelper.GetAudioLengthString();
 
-            string saveName = _tempPath + "Rec" + _curRecNumber.ToString() + ".wav";
-            _curRecNumber++;
-            Native.mciSendString("save sound " + saveName, null, 0, IntPtr.Zero);
-            Audio.CloseAudio();
+            // ask if the user wants to do the replacement
+            if (MessageBox.Show("Do you want to replace\n" + currentPlayback.SaveName + "\nwith current record?",
+                                "Replacement", MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.Yes)
+            {
+                // user wants to do the replacement, save the file and replace the record
+                string saveName = currentPlayback.SaveName.Replace(".wav", " rec.wav");
+                Audio replaceRec = AudioHelper.DumpAudio(saveName, currentPlayback.MatchSciptID);
 
-            // update record list
-            UpdateRecordList(timerLabel.Text);
+                // delete the old file
+                File.Delete(currentPlayback.SaveName);
 
-            // notify outside
-            StopNotifier(saveName);
+                // save curent sound
+                Native.mciSendString("save sound \"" + saveName + "\"", null, 0, IntPtr.Zero);
+                AudioHelper.CloseAudio();
+
+                // update record list
+                var relativeID = GetRelativeSlideID(PowerPointPresentation.CurrentSlide.ID);
+                var replaceIndex = recDisplay.SelectedIndices[0];
+                _audioList[relativeID][replaceIndex] = replaceRec;
+                UpdateRecordList(replaceIndex, replaceRec.SaveName, replaceRec.Length);
+
+                // update the script list
+                UpdateScriptList(replaceIndex, null, ScriptStatus.Recorded);
+
+                // notify outside to embed the audio
+                StopNotifier(saveName);
+            }
+
+            // enable control of both lists
+            recDisplay.Enabled = true;
+            scriptDisplay.Enabled = true;
         }
 
         /// <summary>
@@ -726,6 +737,8 @@ namespace PowerPointLabs
             ResetRecorder();
             statusLabel.Text = "Playing...";
             statusLabel.Visible = true;
+            // enable stop button
+            stopButton.Enabled = true;
 
             // change the button status and change the button text
             _playButtonStatus = RecorderStatus.Playing;
@@ -751,7 +764,7 @@ namespace PowerPointLabs
                 _trackbarThread.Start();
 
                 // start play back
-                Audio.OpenAudio(playback.SaveName);
+                AudioHelper.OpenAudio(playback.SaveName);
                 Native.mciSendString("play sound notify", null, 0, this.Handle);
             }
         }
@@ -762,8 +775,12 @@ namespace PowerPointLabs
         /// </summary>
         private void PlayButtonPlayingHandler()
         {
+            // make sure stop button is enabled
+            stopButton.Enabled = true;
+
             // change the status to pause and change the text to resume
             _playButtonStatus = RecorderStatus.Pause;
+            statusLabel.Text = "Pause";
             playButton.Text = "Resume";
 
             // pause the sound, timer and trackbar
@@ -776,7 +793,7 @@ namespace PowerPointLabs
             // millis to wait before next integral second.
 
             // retrieve current length
-            int currentLen = Audio.GetAudioCurrentPosition();
+            int currentLen = AudioHelper.GetAudioCurrentPosition();
             _resumeWaitingTime = _timerCnt * 1000 - currentLen;
 
             if (_resumeWaitingTime < 0)
@@ -791,9 +808,13 @@ namespace PowerPointLabs
         /// </summary>
         private void PlayButtonPauseHandler()
         {
+            // make sure stop button is enabled
+            stopButton.Enabled = true;
+
             // change the status to playing and change the button text to
             // pause
             _playButtonStatus = RecorderStatus.Playing;
+            statusLabel.Text = "Playing...";
             playButton.Text = "Pause";
 
             // resume recording, restart the timer and continue the track bar
@@ -868,6 +889,7 @@ namespace PowerPointLabs
             {
                 scriptDisplay.Items[e.ItemIndex].Selected = true;
                 SetAllRecorderButtonState(true);
+                stopButton.Enabled = false;
             }
             else
             {
@@ -888,6 +910,7 @@ namespace PowerPointLabs
             {
                 recDisplay.Items[e.ItemIndex].Selected = true;
                 SetAllRecorderButtonState(true);
+                stopButton.Enabled = false;
             }
             else
             {
@@ -915,6 +938,9 @@ namespace PowerPointLabs
             _md5ScriptMapper = new Dictionary<string, int>();
             
             InitializeComponent();
+
+            // don't allow user to touch trackbar, thus disabled
+            soundTrackBar.Enabled = false;
         }
 
         /// <summary>
@@ -924,11 +950,11 @@ namespace PowerPointLabs
         /// <param name="m">A reference to the message sent by MCI.</param>
         protected override void WndProc(ref Message m)
         {
-            if (m.Msg == Audio.MM_MCINOTIFY)
+            if (m.Msg == AudioHelper.MM_MCINOTIFY)
             {
                 switch (m.WParam.ToInt32())
                 {
-                    case Audio.MCI_NOTIFY_SUCCESS:
+                    case AudioHelper.MCI_NOTIFY_SUCCESS:
                         // UI settings
                         statusLabel.Text = "Ready.";
                         playButton.Text = "Play";
@@ -939,7 +965,7 @@ namespace PowerPointLabs
                         ResetSession();
                         soundTrackBar.Value = soundTrackBar.Maximum;
                         break;
-                    case Audio.MCI_NOTIFY_ABORTED:
+                    case AudioHelper.MCI_NOTIFY_ABORTED:
                         ResetTrackbar(0);
                         break;
                     default:
