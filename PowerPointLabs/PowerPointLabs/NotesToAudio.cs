@@ -77,6 +77,21 @@ namespace PowerPointLabs
             String fileNameSearchPattern = String.Format("Slide {0} Speech", slide.ID);
             
             Directory.CreateDirectory(folderPath);
+            
+            // TODO:
+            // obviously deleting all audios in current slide may not a good idea, some lines of script
+            // may still be the same. Check the line first before deleting, if the line has not been
+            // changed, leave the audio.
+
+            // delete all old audios in the current slide
+            var audiosInCurrentSlide = Directory.GetFiles(folderPath);
+            foreach (var audio in audiosInCurrentSlide)
+            {
+                if (audio.Contains(fileNameSearchPattern))
+                {
+                    File.Delete(audio);
+                }
+            }
 
             bool isSaveSuccessful = OutputSlideNotesToFiles(slide, folderPath);
             string[] audioFiles = null;

@@ -719,10 +719,15 @@ namespace PowerPointLabs
             // change play button status, update play button text, update
             // status label and reset all sessions
             Native.mciSendString("stop sound", null, 0, IntPtr.Zero);
+
+            // UI settings
             ResetSession();
             _playButtonStatus = RecorderStatus.Idle;
             playButton.Text = "Play";
             statusLabel.Text = "Ready.";
+            // enable both lists
+            recDisplay.Enabled = true;
+            scriptDisplay.Enabled = true;
         }
 
         /// <summary>
@@ -739,6 +744,9 @@ namespace PowerPointLabs
             statusLabel.Visible = true;
             // enable stop button
             stopButton.Enabled = true;
+            // disable control of both lists
+            recDisplay.Enabled = false;
+            scriptDisplay.Enabled = false;
 
             // change the button status and change the button text
             _playButtonStatus = RecorderStatus.Playing;
@@ -959,6 +967,9 @@ namespace PowerPointLabs
                         statusLabel.Text = "Ready.";
                         playButton.Text = "Play";
                         _playButtonStatus = RecorderStatus.Idle;
+                        // enable both lists
+                        recDisplay.Enabled = true;
+                        scriptDisplay.Enabled = true;
 
                         // dispose timer and track bar timer while setting the
                         // track bar to full

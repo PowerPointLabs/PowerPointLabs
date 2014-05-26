@@ -893,8 +893,6 @@ namespace PowerPointLabs
 
         public void AddAudioClick(Office.IRibbonControl control)
         {
-            // TODO:
-            // Handle exception when user clicks the button without selecting any slides
             var currentSlide = PowerPointPresentation.CurrentSlide;
 
             if (_allSlides)
