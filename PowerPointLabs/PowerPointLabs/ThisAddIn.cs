@@ -10,6 +10,7 @@ using System.Windows.Forms;
 using System.Xml.Linq;
 using System.Diagnostics;
 using PPExtraEventHelper;
+using System.IO.Compression;
 using PowerPointLabs.Models;
 using PowerPoint = Microsoft.Office.Interop.PowerPoint;
 using Office = Microsoft.Office.Core;
@@ -36,6 +37,7 @@ namespace PowerPointLabs
             ((PowerPoint.EApplication_Event)this.Application).WindowSelectionChange += new Microsoft.Office.Interop.PowerPoint.EApplication_WindowSelectionChangeEventHandler(ThisAddIn_SelectionChanged);
             ((PowerPoint.EApplication_Event)this.Application).SlideSelectionChanged += new Microsoft.Office.Interop.PowerPoint.EApplication_SlideSelectionChangedEventHandler(ThisAddIn_SlideSelectionChanged);
             ((PowerPoint.EApplication_Event)this.Application).PresentationClose += new Microsoft.Office.Interop.PowerPoint.EApplication_PresentationCloseEventHandler(ThisAddIn_PresentationClose);
+            ((PowerPoint.EApplication_Event)this.Application).PresentationOpen += new Microsoft.Office.Interop.PowerPoint.EApplication_PresentationOpenEventHandler(ThisAddIn_PrensentationOpen);
 
             Application.SlideShowBegin += SlideShowBeginHandler;
             Application.SlideShowEnd += SlideShowEndHandler;
@@ -68,7 +70,7 @@ namespace PowerPointLabs
         {
             // register the recorder task pane to the CustomTaskPanes collection
             recorderTaskPane = new RecorderTaskPane();
-            recorderTaskPane.StopNotifier += NotesToRecord.EmbedRecordToSlide;
+            recorderTaskPane.ReplaceSoundShape += NotesToRecord.ReplaceArtificialWithVoice;
             customTaskPane = CustomTaskPanes.Add(recorderTaskPane, "Record Script");
 
             // recorder task pane customization
@@ -192,6 +194,11 @@ namespace PowerPointLabs
         // within different presentation.
         void ThisAddIn_NewPresentation(PowerPoint.Presentation Pres)
         {
+        }
+
+        void ThisAddIn_PrensentationOpen(PowerPoint.Presentation Pres)
+        {
+            
         }
 
         void ThisAddIn_PresentationClose(PowerPoint.Presentation Pres)

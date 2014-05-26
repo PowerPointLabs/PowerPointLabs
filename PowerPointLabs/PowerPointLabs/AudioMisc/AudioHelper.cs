@@ -110,13 +110,15 @@ namespace PowerPointLabs.AudioMisc
         /// <summary>
         /// Dump current sound into an Audio object.
         /// </summary>
+        /// <param name="name">The name that display on panes.</param>
         /// <param name="saveName">The intended save name.</param>
         /// <param name="matchScriptID">The corresponding script id for the current track.</param>
         /// <returns>An Audio object with all fields set up.</returns>
-        public static Audio DumpAudio(string saveName, int matchScriptID)
+        public static Audio DumpAudio(string name, string saveName, int matchScriptID)
         {
             var audio = new Audio
                             {
+                                Name = name,
                                 SaveName = saveName,
                                 Length = GetAudioLengthString(),
                                 LengthMillis = GetAudioLength(),

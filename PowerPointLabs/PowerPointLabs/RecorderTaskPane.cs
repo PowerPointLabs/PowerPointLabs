@@ -42,7 +42,7 @@ namespace PowerPointLabs
         private readonly string _tempPath = Path.GetTempPath();
         private const string TempFolderName = @"\PowerPointLabs Temp\";
         private const string SaveNameFormat = "Slide {0} Speech";
-        private const string SpeechShapePrefix = "PowerPointLabs Speech";
+        private const string SpeechShapeFormat = "PowerPointLabs Speech {0}";
 
         private enum RecorderStatus
         {
@@ -243,7 +243,7 @@ namespace PowerPointLabs
             recDisplay.BeginUpdate();
             for (int i = 0; i < audio.Count; i++)
             {
-                UpdateRecordList(i, audio[i].SaveName, AudioHelper.GetAudioLengthString(audio[i].SaveName));
+                UpdateRecordList(i, audio[i].Name, AudioHelper.GetAudioLengthString(audio[i].SaveName));
             }
             recDisplay.EndUpdate();
 
@@ -410,7 +410,8 @@ namespace PowerPointLabs
             for (int i = 0; i < audioSaveNames.Length; i++)
             {
                 string saveName = audioSaveNames[i];
-                var audio = new Audio(null, saveName, i);
+                string name = String.Format(SpeechShapeFormat, i);
+                var audio = new Audio(name, saveName, i);
 
                 _audioList[relativeSlideID].Add(audio);
             }
@@ -444,8 +445,6 @@ namespace PowerPointLabs
         private Thread _trackbarThread;
 
         private Stopwatch _stopwatch;
-        
-        private int _curRecNumber;
 
         // delgates to make thread safe control calls
         private delegate void SetLabelTextCallBack(Label label, string text);
@@ -456,8 +455,8 @@ namespace PowerPointLabs
                                                     IntPtr callBack);
 
         // delegates as notifiers
-        public delegate void RecordStopNotify(string recName);
-        public RecordStopNotify StopNotifier;
+        public delegate void RecordStopNotify(Audio audio);
+        public RecordStopNotify ReplaceSoundShape;
 
         // call when the pane becomes visible for the first time
         private void RecorderPane_Load(object sender, EventArgs e)
@@ -720,7 +719,7 @@ namespace PowerPointLabs
             {
                 // user wants to do the replacement, save the file and replace the record
                 string saveName = currentPlayback.SaveName.Replace(".wav", " rec.wav");
-                Audio replaceRec = AudioHelper.DumpAudio(saveName, currentPlayback.MatchSciptID);
+                Audio replaceRec = AudioHelper.DumpAudio(currentPlayback.Name, saveName, currentPlayback.MatchSciptID);
 
                 // delete the old file
                 File.Delete(currentPlayback.SaveName);
@@ -733,13 +732,13 @@ namespace PowerPointLabs
                 var relativeID = GetRelativeSlideIndex(PowerPointPresentation.CurrentSlide.ID);
                 var replaceIndex = recDisplay.SelectedIndices[0];
                 _audioList[relativeID][replaceIndex] = replaceRec;
-                UpdateRecordList(replaceIndex, replaceRec.SaveName, replaceRec.Length);
+                UpdateRecordList(replaceIndex, null, replaceRec.Length);
 
                 // update the script list
                 UpdateScriptList(replaceIndex, null, ScriptStatus.Recorded);
 
                 // notify outside to embed the audio
-                StopNotifier(saveName);
+                ReplaceSoundShape(replaceRec);
             }
 
             // enable control of both lists
