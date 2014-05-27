@@ -11,6 +11,7 @@ using System.Security.Policy;
 using System.Text;
 using System.Threading;
 using System.Windows.Forms;
+using Microsoft.Office.Interop.PowerPoint;
 using PPExtraEventHelper;
 using PowerPointLabs.Models;
 using PowerPointLabs.AudioMisc;
@@ -41,8 +42,11 @@ namespace PowerPointLabs
         // Records save and display
         private readonly string _tempPath = Path.GetTempPath();
         private const string TempFolderName = @"\PowerPointLabs Temp\";
+        private readonly string tempFullPath = Path.GetTempPath() + TempFolderName;
         private const string SaveNameFormat = "Slide {0} Speech";
+        private const string SpeechShapePrefix = "PowerPointLabs Speech";
         private const string SpeechShapeFormat = "PowerPointLabs Speech {0}";
+        private const string ReopenSpeechFormat = "media{0}";
 
         private enum RecorderStatus
         {
@@ -326,6 +330,65 @@ namespace PowerPointLabs
         {
             ClearRecordDataList(id);
             ClearScriptDataList(id);
+        }
+
+        public void SetupListsWhenOpen()
+        {
+            var slides = PowerPointPresentation.Slides.ToList();
+            
+            foreach (var slide in slides)
+            {
+                // retrieve the tag notes
+                var taggedNotes = new TaggedText(slide.NotesPageText.Trim());
+                List<String> splitScript = taggedNotes.SplitByClicks();
+
+                // add the splitted notes into script list
+                _scriptList.Add(splitScript);
+
+                // mapping the shapes with media files, and set up the audio list
+
+                // append a new list of of audios to the current presentatoin audio list
+                _audioList.Add(new List<Audio>());
+                
+                // get all audio shapes
+                var shapes = slide.GetShapesWithMediaType(PpMediaType.ppMediaTypeSound);
+
+                // iterate through all shapes, skip audios that are not generated speech
+                for (int i = 0, validFileCnt = 0; i < shapes.Count; i ++)
+                {
+                    var shape = shapes[i];
+                    
+                    // if current audio is a speech, dump it into Audio object
+                    if (shape.Name.Contains(SpeechShapePrefix))
+                    {
+                        var audio = new Audio();
+                        
+                        validFileCnt++;
+                        
+                        // detect audio type
+                        if (shape.MediaFormat.AudioSamplingRate == Audio.GeneratedSamplingRate)
+                        {
+                            audio.Type = Audio.AudioType.Auto;
+                        } else
+                        if (shape.MediaFormat.AudioSamplingRate == Audio.RecordedSamplingRate) 
+                        {
+                            audio.Type = Audio.AudioType.Record;
+                        }
+                        else
+                        {
+                            MessageBox.Show("Unrecognize Embedded Audio");
+                        }
+
+                        audio.SaveName = tempFullPath + String.Format(ReopenSpeechFormat, validFileCnt);
+                        audio.Name = String.Format(SpeechShapeFormat, validFileCnt);
+                        audio.MatchSciptID = validFileCnt - 1;
+                        audio.Length = AudioHelper.GetAudioLengthString(audio.SaveName);
+                        audio.LengthMillis = AudioHelper.GetAudioLength(audio.SaveName);
+
+                        _audioList[slide.Index - 1].Add(audio);
+                    }
+                }
+            }
         }
 
         public void InitializeAudioAndScript(PowerPointSlide slide, string[] names, bool forceRefresh)

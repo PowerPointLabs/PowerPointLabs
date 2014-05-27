@@ -13,6 +13,11 @@ namespace PowerPointLabs.AudioMisc
             Auto
         }
 
+        public const int GeneratedSamplingRate = 22050;
+        public const int RecordedSamplingRate = 11025;
+        public const int GeneratedBitRate = 16;
+        public const int RecordedBitRate = 8;
+
         public string Name { get; set; }
         public int MatchSciptID { get; set; }
         public string SaveName { get; set; }

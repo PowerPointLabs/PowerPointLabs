@@ -319,6 +319,7 @@
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="Views\SpeechPlayingForm.Designer.cs" />
+    <Compile Include="ZipStorer.cs" />
     <Compile Include="ZoomToArea.cs" />
     <EmbeddedResource Include="RecorderTaskPane.resx">
       <DependentUpon>RecorderTaskPane.cs</DependentUpon>

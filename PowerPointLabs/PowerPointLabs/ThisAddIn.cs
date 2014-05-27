@@ -198,7 +198,10 @@ namespace PowerPointLabs
 
         void ThisAddIn_PrensentationOpen(PowerPoint.Presentation Pres)
         {
-            
+            // extract embedded audio files to temp folder
+            PrepareMediaFiles(Pres);
+            // set up recorder pane
+            recorderTaskPane.SetupListsWhenOpen();
         }
 
         void ThisAddIn_PresentationClose(PowerPoint.Presentation Pres)
@@ -228,6 +231,55 @@ namespace PowerPointLabs
                     recorderTaskPane.UpdateLists(id);
                 }
             }
+        }
+
+        void PrepareMediaFiles(PowerPoint.Presentation Pres)
+        {
+            string presFullName = Pres.FullName;
+            string presName = Pres.Name;
+            string tempPath = Path.GetTempPath() + TempFolderName;
+            string zipName = presName.Replace(".pptx", ".zip");
+            string zipFullPath = tempPath + zipName;
+
+            // if temp folder doesn't exist, create
+            if (!Directory.Exists(tempPath))
+            {
+                Directory.CreateDirectory(tempPath);
+            }
+            else
+            // else clear the folder
+            {
+                Directory.Delete(tempPath, true);
+                Directory.CreateDirectory(tempPath);
+            }
+
+            // copy the file to temp folder and rename to zip
+            try
+            {
+                File.Copy(presFullName, zipFullPath);
+            }
+            catch (Exception e)
+            {
+                MessageBox.Show(e.Message);
+                throw;
+            }
+
+            // open the zip and extract media files to temp folder
+            ZipStorer zip = ZipStorer.Open(zipFullPath, FileAccess.Read);
+
+            List<ZipStorer.ZipFileEntry> dir = zip.ReadCentralDir();
+
+            foreach (ZipStorer.ZipFileEntry entry in dir)
+            {
+                string name = Path.GetFileName(entry.FilenameInZip);
+                if (name.Contains(".wav"))
+                {
+                    zip.ExtractFile(entry, tempPath + name);
+                }
+            }
+
+            zip.Close();
+            File.Delete(zipFullPath);
         }
 
         #region Tab Activate
