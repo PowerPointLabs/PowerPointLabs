@@ -11,10 +11,12 @@ using System.Security.Policy;
 using System.Text;
 using System.Threading;
 using System.Windows.Forms;
+using Microsoft.Office.Core;
 using Microsoft.Office.Interop.PowerPoint;
 using PPExtraEventHelper;
 using PowerPointLabs.Models;
 using PowerPointLabs.AudioMisc;
+using Shape = Microsoft.Office.Interop.PowerPoint.Shape;
 
 namespace PowerPointLabs
 {
@@ -35,9 +37,6 @@ namespace PowerPointLabs
         private List<List<Audio>> _audioList;
         // a collection of slides, each slide has a list of script
         private List<List<string>> _scriptList;
-
-        // slide monitor
-        private PowerPointSlide _currentSlide;
 
         // Records save and display
         private readonly string _tempPath = Path.GetTempPath();
@@ -390,6 +389,19 @@ namespace PowerPointLabs
             }
         }
 
+        public void ShutdownReembed()
+        {
+            var slides = PowerPointPresentation.Slides.ToList();
+
+            foreach (var slide in slides)
+            {
+                foreach (var audio in _audioList[slide.Index - 1])
+                {
+                    audio.EmbedOnSlide(slide);
+                }
+            }
+        }
+
         public void InitializeAudioAndScript(PowerPointSlide slide, string[] names, bool forceRefresh)
         {
             string[] audioSaveNames = null;
@@ -531,10 +543,10 @@ namespace PowerPointLabs
             // been selected
             SetAllRecorderButtonState(false);
 
-            _currentSlide = PowerPointPresentation.CurrentSlide;
-            if (_currentSlide != null)
+            var currentSlide = PowerPointPresentation.CurrentSlide;
+            if (currentSlide != null)
             {
-                UpdateLists(_currentSlide.ID);
+                UpdateLists(currentSlide.ID);
             }
         }
 
@@ -549,10 +561,10 @@ namespace PowerPointLabs
             // been selected
             SetAllRecorderButtonState(false);
 
-            _currentSlide = PowerPointPresentation.CurrentSlide;
-            if (_currentSlide != null)
+            var currentSlide = PowerPointPresentation.CurrentSlide;
+            if (currentSlide != null)
             {
-                UpdateLists(_currentSlide.ID);
+                UpdateLists(currentSlide.ID);
             }
         }
 
@@ -800,7 +812,8 @@ namespace PowerPointLabs
                 UpdateScriptList(replaceIndex, null, ScriptStatus.Recorded);
 
                 // notify outside to embed the audio
-                ReplaceSoundShape(replaceRec);
+                //ReplaceSoundShape(replaceRec);
+                replaceRec.EmbedOnSlide(PowerPointPresentation.CurrentSlide);
             }
 
             // enable control of both lists
@@ -1064,6 +1077,8 @@ namespace PowerPointLabs
                         statusLabel.Text = "Ready.";
                         playButton.Text = "Play";
                         _playButtonStatus = RecorderStatus.Idle;
+                        // disable stop button
+                        stopButton.Enabled = false;
                         // enable both lists
                         recDisplay.Enabled = true;
                         scriptDisplay.Enabled = true;

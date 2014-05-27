@@ -28,6 +28,7 @@ namespace PowerPointLabs
 
         private const int _taskPaneWidth = 300;
         private const string TempFolderName = @"\PowerPointLabs Temp\";
+        private const string SpeechShapePrefix = "PowerPointLabs Speech";
 
         private void ThisAddIn_Startup(object sender, System.EventArgs e)
         {
@@ -206,6 +207,10 @@ namespace PowerPointLabs
 
         void ThisAddIn_PresentationClose(PowerPoint.Presentation Pres)
         {
+            // embed all audios once again to preserve the playing sequence
+            recorderTaskPane.ShutdownReembed();
+
+            // delete the temp folder
             string tempFolderPath = Path.GetTempPath() + TempFolderName;
             Directory.Delete(tempFolderPath, true);
         }

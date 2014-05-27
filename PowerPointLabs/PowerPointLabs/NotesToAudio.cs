@@ -83,7 +83,7 @@ namespace PowerPointLabs
             // may still be the same. Check the line first before deleting, if the line has not been
             // changed, leave the audio.
 
-            // delete all old audios in the current slide
+            // to avoid duplicate records, delete all old audios in the current slide
             var audiosInCurrentSlide = Directory.GetFiles(folderPath);
             foreach (var audio in audiosInCurrentSlide)
             {

@@ -1,6 +1,9 @@
 ﻿using System;
 using System.Text;
+using Microsoft.Office.Core;
 using PPExtraEventHelper;
+using PowerPointLabs.Models;
+using Shape = Microsoft.Office.Interop.PowerPoint.Shape;
 
 namespace PowerPointLabs.AudioMisc
 {
@@ -127,6 +130,16 @@ namespace PowerPointLabs.AudioMisc
                             };
             
             return audio;
+        }
+
+        public static Shape InsertAudioFileOnSlide(PowerPointSlide slide, string fileName)
+        {
+            float slideWidth = PowerPointPresentation.SlideWidth;
+
+            Shape audioShape = slide.Shapes.AddMediaObject2(fileName, MsoTriState.msoFalse, MsoTriState.msoTrue, slideWidth + 20);
+            slide.RemoveAnimationsForShape(audioShape);
+
+            return audioShape;
         }
     }
 }
