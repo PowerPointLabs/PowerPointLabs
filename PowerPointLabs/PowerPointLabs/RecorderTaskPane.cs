@@ -29,8 +29,8 @@ namespace PowerPointLabs
         private Dictionary<string, int> _md5ScriptMapper;
         // map the scipt id to record id
         private Dictionary<int, int> _scriptRecrodMapper;
-        // map a slide id to relative slide id
-        private Dictionary<int, int> _relativeSlideIDmapper;
+        // this offset is used to map a slide id to relative slide id
+        private const int slideIDOffset = 256;
         // a collection of slides, each slide has a list of audio object
         private List<List<Audio>> _audioList;
         // a collection of slides, each slide has a list of script
@@ -46,7 +46,7 @@ namespace PowerPointLabs
         private const string SaveNameFormat = "Slide {0} Speech";
         private const string SpeechShapePrefix = "PowerPointLabs Speech";
         private const string SpeechShapeFormat = "PowerPointLabs Speech {0}";
-        private const string ReopenSpeechFormat = "media{0}";
+        private const string ReopenSpeechFormat = "media{0}.wav";
 
         private enum RecorderStatus
         {
@@ -150,12 +150,7 @@ namespace PowerPointLabs
 
         private int GetRelativeSlideIndex(int curID)
         {
-            if (!_relativeSlideIDmapper.ContainsKey(curID))
-            {
-                _relativeSlideIDmapper[curID] = _audioList.Count;
-            }
-            
-            return _relativeSlideIDmapper[curID];
+            return curID - slideIDOffset;
         }
 
         private Audio GetPlaybackFromList()
@@ -335,6 +330,9 @@ namespace PowerPointLabs
         public void SetupListsWhenOpen()
         {
             var slides = PowerPointPresentation.Slides.ToList();
+            // track the total count of valid speech audio, this helps avoid
+            // mixing up other audios with speech audios
+            int validSpeechCnt = 0;
             
             foreach (var slide in slides)
             {
@@ -354,23 +352,22 @@ namespace PowerPointLabs
                 var shapes = slide.GetShapesWithMediaType(PpMediaType.ppMediaTypeSound);
 
                 // iterate through all shapes, skip audios that are not generated speech
-                for (int i = 0, validFileCnt = 0; i < shapes.Count; i ++)
+                for (int i = 0; i < shapes.Count; i++)
                 {
                     var shape = shapes[i];
-                    
+
                     // if current audio is a speech, dump it into Audio object
                     if (shape.Name.Contains(SpeechShapePrefix))
                     {
                         var audio = new Audio();
-                        
-                        validFileCnt++;
-                        
+
                         // detect audio type
                         if (shape.MediaFormat.AudioSamplingRate == Audio.GeneratedSamplingRate)
                         {
                             audio.Type = Audio.AudioType.Auto;
-                        } else
-                        if (shape.MediaFormat.AudioSamplingRate == Audio.RecordedSamplingRate) 
+                        }
+                        else
+                        if (shape.MediaFormat.AudioSamplingRate == Audio.RecordedSamplingRate)
                         {
                             audio.Type = Audio.AudioType.Record;
                         }
@@ -379,13 +376,15 @@ namespace PowerPointLabs
                             MessageBox.Show("Unrecognize Embedded Audio");
                         }
 
-                        audio.SaveName = tempFullPath + String.Format(ReopenSpeechFormat, validFileCnt);
-                        audio.Name = String.Format(SpeechShapeFormat, validFileCnt);
-                        audio.MatchSciptID = validFileCnt - 1;
+                        audio.SaveName = tempFullPath + String.Format(ReopenSpeechFormat, validSpeechCnt + 1);
+                        audio.Name = String.Format(SpeechShapeFormat, validSpeechCnt);
+                        audio.MatchSciptID = validSpeechCnt;
                         audio.Length = AudioHelper.GetAudioLengthString(audio.SaveName);
                         audio.LengthMillis = AudioHelper.GetAudioLength(audio.SaveName);
 
                         _audioList[slide.Index - 1].Add(audio);
+
+                        validSpeechCnt++;
                     }
                 }
             }
@@ -1040,7 +1039,6 @@ namespace PowerPointLabs
             _audioList = new List<List<Audio>>();
             _scriptList = new List<List<string>>();
             
-            _relativeSlideIDmapper = new Dictionary<int, int>();
             _scriptRecrodMapper = new Dictionary<int, int>();
             _md5ScriptMapper = new Dictionary<string, int>();
             

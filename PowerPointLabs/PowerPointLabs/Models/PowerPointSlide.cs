@@ -277,7 +277,8 @@ namespace PowerPointLabs.Models
         public List<PowerPoint.Shape> GetShapesWithMediaType(PpMediaType type)
         {
             List<Shape> shapes = _slide.Shapes.Cast<Shape>().ToList();
-            List<Shape> matchingShapes = shapes.Where(current => current.MediaType == type).ToList();
+            List<Shape> matchingShapes = shapes.Where(current => current.Type == MsoShapeType.msoMedia &&
+                                                                 current.MediaType == type).ToList();
 
             return matchingShapes;
         }
