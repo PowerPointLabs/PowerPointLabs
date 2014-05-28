@@ -394,6 +394,14 @@ namespace PowerPointLabs
                         }
 
                         audio.SaveName = tempFullPath + String.Format(ReopenSpeechFormat, validSpeechCnt + 1);
+
+                        // if current audio is not the first speech audio on the slide, append (OnClick)
+                        // to the name
+                        if (speechOnSlide != 0)
+                        {
+                            audio.SaveName = audio.SaveName.Replace(".wav", " (OnClick).wav");
+                        }
+
                         audio.Name = shape.Name;
                         audio.MatchSciptID = speechOnSlide;
                         audio.Length = AudioHelper.GetAudioLengthString(audio.SaveName);
@@ -417,13 +425,6 @@ namespace PowerPointLabs
                 {
                     audio.EmbedOnSlide(slide);
                 }
-
-                List<Shape> shapes = slide.Shapes.Cast<Shape>().ToList();
-
-                //foreach (var sh in shapes)
-                //{
-                //    MessageBox.Show(sh.Name);
-                //}
             }
         }
 
