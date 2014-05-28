@@ -399,7 +399,9 @@ namespace PowerPointLabs
                         // to the name
                         if (speechOnSlide != 0)
                         {
-                            audio.SaveName = audio.SaveName.Replace(".wav", " (OnClick).wav");
+                            string newName = audio.SaveName.Replace(".wav", " (OnClick).wav"); ;
+                            Directory.Move(audio.SaveName, newName);
+                            audio.SaveName = newName;
                         }
 
                         audio.Name = shape.Name;
