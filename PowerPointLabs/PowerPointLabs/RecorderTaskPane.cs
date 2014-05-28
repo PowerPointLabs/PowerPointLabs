@@ -226,6 +226,24 @@ namespace PowerPointLabs
             }
         }
 
+        public bool HasEvent()
+        {
+            return _recButtonStatus != RecorderStatus.Idle || _playButtonStatus != RecorderStatus.Idle;
+        }
+
+        public void ForceStopEvent()
+        {
+            if (_recButtonStatus != RecorderStatus.Idle)
+            {
+                StopButtonRecordingHandler();
+            }
+
+            if (_playButtonStatus != RecorderStatus.Idle)
+            {
+                StopButtonPlayingHandler();
+            }
+        }
+
         public void UpdateLists(int slideID)
         {
             int relativeID = GetRelativeSlideIndex(slideID);
@@ -399,6 +417,13 @@ namespace PowerPointLabs
                 {
                     audio.EmbedOnSlide(slide);
                 }
+
+                List<Shape> shapes = slide.Shapes.Cast<Shape>().ToList();
+
+                foreach (var sh in shapes)
+                {
+                    MessageBox.Show(sh.Name);
+                }
             }
         }
 
@@ -472,6 +497,12 @@ namespace PowerPointLabs
             {
                 // retrieve all actual audio files in the slide
                 String fileNameSearchPattern = String.Format(SaveNameFormat, slideID);
+                
+                if (!Directory.Exists(folderPath))
+                {
+                    Directory.CreateDirectory(folderPath);
+                }
+
                 var filePaths = Directory.EnumerateFiles(folderPath, "*.wav");
                 audioSaveNames = filePaths.Where(path => path.Contains(fileNameSearchPattern)).ToArray();
             }
@@ -819,6 +850,8 @@ namespace PowerPointLabs
             // enable control of both lists
             recDisplay.Enabled = true;
             scriptDisplay.Enabled = true;
+            // disable stop button
+            stopButton.Enabled = false;
         }
 
         /// <summary>

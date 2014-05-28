@@ -143,6 +143,9 @@ namespace PowerPointLabs
         {
             // update recorder pane
             UpdateRecorderPane(SldRange.Count, SldRange[1].SlideID);
+
+            // in case the recorder is on event
+            BreakRecorderEvents();
             
             // ribbon function init
             ribbon.addAutoMotionEnabled = true;
@@ -207,8 +210,16 @@ namespace PowerPointLabs
 
         void ThisAddIn_PresentationClose(PowerPoint.Presentation Pres)
         {
+            var saved = Pres.Saved;
+
             // embed all audios once again to preserve the playing sequence
             recorderTaskPane.ShutdownReembed();
+
+            // if the presentation has been saved before embed, save the presentation
+            if (saved == Office.MsoTriState.msoTrue)
+            {
+                Pres.Save();
+            }
 
             // delete the temp folder
             string tempFolderPath = Path.GetTempPath() + TempFolderName;
@@ -235,6 +246,14 @@ namespace PowerPointLabs
                 {
                     recorderTaskPane.UpdateLists(id);
                 }
+            }
+        }
+
+        void BreakRecorderEvents()
+        {
+            if (recorderTaskPane.HasEvent())
+            {
+                recorderTaskPane.ForceStopEvent();
             }
         }
 
