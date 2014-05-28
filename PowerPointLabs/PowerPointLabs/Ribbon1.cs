@@ -1248,32 +1248,6 @@ namespace PowerPointLabs
             return Globals.ThisAddIn.Application.Version == OfficeVersion2010;
         }
 
-        private PowerPoint.Shape ConvertToPicture(ref PowerPoint.Shape shape)
-        {
-            float rotation = 0;
-            try
-            {
-                rotation = shape.Rotation;
-                shape.Rotation = 0;
-            }
-            catch (Exception)
-            {
-                //chart cannot be rotated
-            }
-            shape.Copy();
-            float x = shape.Left;
-            float y = shape.Top;
-            float width = shape.Width;
-            float height = shape.Height;
-            shape.Delete();
-            var pic = PowerPointLabsGlobals.GetCurrentSlide().Shapes.PasteSpecial(PowerPoint.PpPasteDataType.ppPastePNG)[1];
-            pic.Left = x + (width - pic.Width) / 2;
-            pic.Top = y + (height - pic.Height) / 2;
-            pic.Rotation = rotation;
-            pic.Select();
-            return pic;
-        }
-
         private bool IsFirstOneOverlapWithSecond(PowerPoint.Shape first, PowerPoint.Shape second)
         {
             if (first == second)
@@ -1634,36 +1608,12 @@ namespace PowerPointLabs
 
         public void ConvertToPictureButtonClick(Office.IRibbonControl control)
         {
-            var selection = Globals.ThisAddIn.Application.
-                ActiveWindow.Selection;
-            if (selection.Type == PowerPoint.PpSelectionType.ppSelectionShapes)
-            {
-                var shape = selection.ShapeRange[1];
-                if (selection.ShapeRange.Count > 1)
-                {
-                    shape = selection.ShapeRange.Group();
-                }
-                shape.Cut();
-                shape = PowerPointLabsGlobals.GetCurrentSlide().Shapes.Paste()[1];
-                ConvertToPicture(ref shape);
-            }
-            else
-            {
-                MessageBox.Show("Convert to Picture only supports Shapes and Charts.", "Unable to Convert to Picture");
-            }
+            ConvertToPicture.ConvertSelectionToPicture();
         }
 
         public System.Drawing.Bitmap GetConvertToPicMenuImage(Office.IRibbonControl control)
         {
-            try
-            {
-                return new System.Drawing.Bitmap(Properties.Resources.ConvertToPicture);
-            }
-            catch (Exception e)
-            {
-                PowerPointLabsGlobals.LogException(e, "GetConvertToPicMenuImage");
-                throw;
-            }
+            return ConvertToPicture.GetConvertToPicMenuImage(control);
         }
 
         #endregion
