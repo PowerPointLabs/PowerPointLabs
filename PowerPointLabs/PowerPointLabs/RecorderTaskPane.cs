@@ -369,7 +369,7 @@ namespace PowerPointLabs
                 var shapes = slide.GetShapesWithMediaType(PpMediaType.ppMediaTypeSound);
 
                 // iterate through all shapes, skip audios that are not generated speech
-                for (int i = 0; i < shapes.Count; i++)
+                for (int i = 0, speechOnSlide = 0; i < shapes.Count; i++, speechOnSlide++)
                 {
                     var shape = shapes[i];
 
@@ -394,8 +394,8 @@ namespace PowerPointLabs
                         }
 
                         audio.SaveName = tempFullPath + String.Format(ReopenSpeechFormat, validSpeechCnt + 1);
-                        audio.Name = String.Format(SpeechShapeFormat, validSpeechCnt);
-                        audio.MatchSciptID = validSpeechCnt;
+                        audio.Name = shape.Name;
+                        audio.MatchSciptID = speechOnSlide;
                         audio.Length = AudioHelper.GetAudioLengthString(audio.SaveName);
                         audio.LengthMillis = AudioHelper.GetAudioLength(audio.SaveName);
 
@@ -420,10 +420,10 @@ namespace PowerPointLabs
 
                 List<Shape> shapes = slide.Shapes.Cast<Shape>().ToList();
 
-                foreach (var sh in shapes)
-                {
-                    MessageBox.Show(sh.Name);
-                }
+                //foreach (var sh in shapes)
+                //{
+                //    MessageBox.Show(sh.Name);
+                //}
             }
         }
 
@@ -872,6 +872,8 @@ namespace PowerPointLabs
             // enable both lists
             recDisplay.Enabled = true;
             scriptDisplay.Enabled = true;
+            // disable stop button
+            stopButton.Enabled = false;
         }
 
         /// <summary>
