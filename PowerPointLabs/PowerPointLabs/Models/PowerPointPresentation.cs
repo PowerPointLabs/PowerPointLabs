@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Runtime.InteropServices;
 using Microsoft.Office.Interop.PowerPoint;
 
@@ -21,6 +20,14 @@ namespace PowerPointLabs.Models
                     // No slide is selected, or in view.
                     return null;
                 }
+            }
+        }
+
+        public static Selection CurrentSelection
+        {
+            get
+            {
+                return Globals.ThisAddIn.Application.ActiveWindow.Selection;
             }
         }
 
