@@ -71,7 +71,6 @@ namespace PowerPointLabs
         {
             // register the recorder task pane to the CustomTaskPanes collection
             recorderTaskPane = new RecorderTaskPane();
-            recorderTaskPane.ReplaceSoundShape += NotesToRecord.ReplaceArtificialWithVoice;
             customTaskPane = CustomTaskPanes.Add(recorderTaskPane, "Record Script");
 
             // recorder task pane customization

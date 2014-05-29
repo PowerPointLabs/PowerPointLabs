@@ -562,10 +562,6 @@ namespace PowerPointLabs
                                                     int infoLen,
                                                     IntPtr callBack);
 
-        // delegates as notifiers
-        public delegate void RecordStopNotify(Audio audio);
-        public RecordStopNotify ReplaceSoundShape;
-
         // call when the pane becomes visible for the first time
         private void RecorderPane_Load(object sender, EventArgs e)
         {
@@ -814,47 +810,57 @@ namespace PowerPointLabs
             statusLabel.Text = "Ready.";
             ResetTimer();
 
-            var currentPlayback = GetPlaybackFromList();
-
-            // stop recording and get the length of the recording
-            Native.mciSendString("stop sound", null, 0, IntPtr.Zero);
-            // adjust the stop time difference between timer-stop and recording-stop
-            timerLabel.Text = AudioHelper.GetAudioLengthString();
-
-            // ask if the user wants to do the replacement
-            if (MessageBox.Show("Do you want to replace\n" + currentPlayback.SaveName + "\nwith current record?",
-                                "Replacement", MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.Yes)
+            try
             {
-                // user wants to do the replacement, save the file and replace the record
-                string saveName = currentPlayback.SaveName.Replace(".wav", " rec.wav");
-                Audio replaceRec = AudioHelper.DumpAudio(currentPlayback.Name, saveName, currentPlayback.MatchSciptID);
+                var currentPlayback = GetPlaybackFromList();
 
-                // delete the old file
-                File.Delete(currentPlayback.SaveName);
+                // stop recording and get the length of the recording
+                Native.mciSendString("stop sound", null, 0, IntPtr.Zero);
+                // adjust the stop time difference between timer-stop and recording-stop
+                timerLabel.Text = AudioHelper.GetAudioLengthString();
 
-                // save curent sound
-                Native.mciSendString("save sound \"" + saveName + "\"", null, 0, IntPtr.Zero);
-                AudioHelper.CloseAudio();
+                // ask if the user wants to do the replacement
+                if (MessageBox.Show("Do you want to replace\n" + currentPlayback.SaveName + "\nwith current record?",
+                                    "Replacement", MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.Yes)
+                {
+                    // user wants to do the replacement, save the file and replace the record
+                    string saveName = currentPlayback.SaveName.Replace(".wav", " rec.wav");
+                    Audio replaceRec = AudioHelper.DumpAudio(currentPlayback.Name, saveName, currentPlayback.MatchSciptID);
 
-                // update record list
-                var relativeID = GetRelativeSlideIndex(PowerPointPresentation.CurrentSlide.ID);
-                var replaceIndex = recDisplay.SelectedIndices[0];
-                _audioList[relativeID][replaceIndex] = replaceRec;
-                UpdateRecordList(replaceIndex, null, replaceRec.Length);
+                    // delete the old file
+                    File.Delete(currentPlayback.SaveName);
 
-                // update the script list
-                UpdateScriptList(replaceIndex, null, ScriptStatus.Recorded);
+                    // save curent sound
+                    Native.mciSendString("save sound \"" + saveName + "\"", null, 0, IntPtr.Zero);
+                    AudioHelper.CloseAudio();
 
-                // notify outside to embed the audio
-                //ReplaceSoundShape(replaceRec);
-                replaceRec.EmbedOnSlide(PowerPointPresentation.CurrentSlide);
+                    // update record list
+                    var relativeID = GetRelativeSlideIndex(PowerPointPresentation.CurrentSlide.ID);
+                    var replaceIndex = recDisplay.SelectedIndices[0];
+                    _audioList[relativeID][replaceIndex] = replaceRec;
+                    UpdateRecordList(replaceIndex, null, replaceRec.Length);
+
+                    // update the script list
+                    UpdateScriptList(replaceIndex, null, ScriptStatus.Recorded);
+
+                    // notify outside to embed the audio
+                    replaceRec.EmbedOnSlide(PowerPointPresentation.CurrentSlide);
+                }
             }
-
-            // enable control of both lists
-            recDisplay.Enabled = true;
-            scriptDisplay.Enabled = true;
-            // disable stop button
-            stopButton.Enabled = false;
+            catch (Exception e)
+            {
+                MessageBox.Show("Record cannot be saved");
+                throw;
+            }
+            finally
+            // do the following UI re-setup
+            {
+                // enable control of both lists
+                recDisplay.Enabled = true;
+                scriptDisplay.Enabled = true;
+                // disable stop button
+                stopButton.Enabled = false;
+            }
         }
 
         /// <summary>
