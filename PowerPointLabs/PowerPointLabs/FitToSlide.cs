@@ -10,38 +10,26 @@ namespace PowerPointLabs
         private const int TopMost = 0;
         private const int LeftMost = 0;
 
-        public static void DoFitToHeight()
+        public static void FitToHeight(PowerPoint.Shape selectedShape)
         {
-            var selectedShape = GetSelectedShape();
             float shapeSizeRatio = GetSizeRatio(selectedShape);
             float resizeFactor = GetResizeFactorForFitToHeight(selectedShape);
 
-            FitToHeight(selectedShape, resizeFactor, shapeSizeRatio);
+            selectedShape.Height = PowerPointPresentation.SlideHeight / resizeFactor;
+            selectedShape.Width = selectedShape.Height / shapeSizeRatio;
             MoveToCenterForFitToHeight(selectedShape);
             AdjustPositionForFitToHeight(selectedShape);
         }
 
-        public static void DoFitToWidth()
+        public static void FitToWidth(PowerPoint.Shape selectedShape)
         {
-            var selectedShape = GetSelectedShape();
             float shapeSizeRatio = GetSizeRatio(selectedShape);
             float resizeFactor = GetResizeFactorForFitToWidth(selectedShape);
 
-            FitToWidth(selectedShape, resizeFactor, shapeSizeRatio);
+            selectedShape.Height = PowerPointPresentation.SlideWidth / resizeFactor;
+            selectedShape.Width = selectedShape.Height / shapeSizeRatio;
             MoveToCenterForFitToWidth(selectedShape);
             AdjustPositionForFitToWidth(selectedShape);
-        }
-
-        private static void FitToHeight(PowerPoint.Shape shape, float resizeFactor, float shapeSizeRatio)
-        {
-            shape.Height = PowerPointPresentation.SlideHeight / resizeFactor;
-            shape.Width = shape.Height / shapeSizeRatio;
-        }
-
-        private static void FitToWidth(PowerPoint.Shape shape, float resizeFactor, float shapeSizeRatio)
-        {
-            shape.Height = PowerPointPresentation.SlideWidth / resizeFactor;
-            shape.Width = shape.Height / shapeSizeRatio;
         }
 
         private static void MoveToCenterForFitToHeight(PowerPoint.Shape selectedShape)
@@ -173,9 +161,30 @@ namespace PowerPointLabs
             return shape.Height / shape.Width;
         }
 
-        private static PowerPoint.Shape GetSelectedShape()
+        public static System.Drawing.Bitmap GetFitToWidthImage(Office.IRibbonControl control)
         {
-            return PowerPointPresentation.CurrentSelection.ShapeRange[1];
+            try
+            {
+                return new System.Drawing.Bitmap(Properties.Resources.FitToWidth);
+            }
+            catch (Exception e)
+            {
+                PowerPointLabsGlobals.LogException(e, "GetFitToWidthImage");
+                throw;
+            }
+        }
+
+        public static System.Drawing.Bitmap GetFitToHeightImage(Office.IRibbonControl control)
+        {
+            try
+            {
+                return new System.Drawing.Bitmap(Properties.Resources.FitToHeight);
+            }
+            catch (Exception e)
+            {
+                PowerPointLabsGlobals.LogException(e, "GetFitToHeightImage");
+                throw;
+            }
         }
     }
 }

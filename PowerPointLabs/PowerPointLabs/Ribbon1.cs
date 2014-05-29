@@ -1002,38 +1002,24 @@ namespace PowerPointLabs
 
         public void FitToWidthClick(Office.IRibbonControl control)
         {
-            FitToSlide.DoFitToWidth();
+            var selectedShape = PowerPointPresentation.CurrentSelection.ShapeRange[1];
+            FitToSlide.FitToWidth(selectedShape);
         }
 
         public void FitToHeightClick(Office.IRibbonControl control)
         {
-            FitToSlide.DoFitToHeight();
+            var selectedShape = PowerPointPresentation.CurrentSelection.ShapeRange[1];
+            FitToSlide.FitToHeight(selectedShape);
         }
 
         public System.Drawing.Bitmap GetFitToWidthImage(Office.IRibbonControl control)
         {
-            try
-            {
-                return new System.Drawing.Bitmap(Properties.Resources.FitToWidth);
-            }
-            catch (Exception e)
-            {
-                PowerPointLabsGlobals.LogException(e, "GetFitToWidthImage");
-                throw;
-            }
+            return FitToSlide.GetFitToWidthImage(control);
         }
 
         public System.Drawing.Bitmap GetFitToHeightImage(Office.IRibbonControl control)
         {
-            try
-            {
-                return new System.Drawing.Bitmap(Properties.Resources.FitToHeight);
-            }
-            catch (Exception e)
-            {
-                PowerPointLabsGlobals.LogException(e, "GetFitToHeightImage");
-                throw;
-            }
+            return FitToSlide.GetFitToHeightImage(control);
         }
 
         #endregion
