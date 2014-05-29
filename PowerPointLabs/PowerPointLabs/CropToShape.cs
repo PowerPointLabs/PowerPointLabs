@@ -1,13 +1,13 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.Drawing;
 using System.Drawing.Imaging;
 using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Windows.Forms;
+using PowerPointLabs.Models;
 using Office = Microsoft.Office.Core;
 using PowerPoint = Microsoft.Office.Interop.PowerPoint;
 
@@ -30,6 +30,7 @@ namespace PowerPointLabs
         private const string MessageBoxTitle = "Unable to crop";
 
         private static readonly string SlidePicture = Path.GetTempPath() + @"\slide.png";
+        private static readonly string FillInBackgroundPicture = Path.GetTempPath() + @"\currentFillInBg.png";
 
         public static PowerPoint.Shape Crop(PowerPoint.Selection selection)
         {
@@ -55,7 +56,7 @@ namespace PowerPointLabs
                 {
                     ThrowErrorCode(ErrorCodeForSelectionCountZero);
                 }
-                if (!IsShape(selection))
+                if (!IsShapeForSelection(selection))
                 {
                     ThrowErrorCode(ErrorCodeForSelectionNonShape);
                 }
@@ -96,23 +97,21 @@ namespace PowerPointLabs
             return mergedShape;
         }
 
-        public static PowerPoint.Shape FillInShapeWithScreenshot(PowerPoint.Shape shape)
+        private static PowerPoint.Shape FillInShapeWithScreenshot(PowerPoint.Shape shape)
         {
             if (shape.Type != Office.MsoShapeType.msoGroup)
             {
-                ProduceFillInBackground(shape);
-                shape.Fill.UserPicture(GetPathToFillInBackgroundPicture());
+                CreateFillInBackgroundForShape(shape);
+                shape.Fill.UserPicture(FillInBackgroundPicture);
             }
             else
             {
                 using (var slideImage = (Bitmap)Image.FromFile(SlidePicture))
                 {
-                    foreach (var sh in shape.GroupItems)
+                    foreach (var shapeGroupItem in (from PowerPoint.Shape sh in shape.GroupItems select sh))
                     {
-                        var shapeGroupItem = sh as PowerPoint.Shape;
-                        ProduceFillInBackground(shapeGroupItem, slideImage);
-                        Debug.Assert(shapeGroupItem != null, "shapeGroupItem not null");
-                        shapeGroupItem.Fill.UserPicture(GetPathToFillInBackgroundPicture());
+                        CreateFillInBackground(shapeGroupItem, slideImage);
+                        shapeGroupItem.Fill.UserPicture(FillInBackgroundPicture);
                     }
                 }
             }
@@ -123,52 +122,37 @@ namespace PowerPointLabs
             return shapeToReturn;
         }
 
-        private static void ProduceFillInBackground(PowerPoint.Shape shape)
+        private static void CreateFillInBackgroundForShape(PowerPoint.Shape shape)
         {
             using (var slideImage = (Bitmap)Image.FromFile(SlidePicture))
             {
-                float horizontalRatio =
-                    (float)(GetDesiredExportWidth() / Globals.ThisAddIn.Application.ActivePresentation.PageSetup.SlideWidth);
-                float verticalRatio =
-                    (float)(GetDesiredExportHeight() / Globals.ThisAddIn.Application.ActivePresentation.PageSetup.SlideHeight);
-                var croppedImage = KiCut(slideImage,
-                    shape.Left * horizontalRatio,
-                    shape.Top * verticalRatio,
-                    shape.Width * horizontalRatio,
-                    shape.Height * verticalRatio);
-                croppedImage.Save(GetPathToFillInBackgroundPicture(), ImageFormat.Png);
+                CreateFillInBackground(shape, slideImage);
             }
         }
 
-        private static void ProduceFillInBackground(PowerPoint.Shape shape, Bitmap slideImage)
+        private static void CreateFillInBackground(PowerPoint.Shape shape, Bitmap slideImage)
         {
             float horizontalRatio =
-                (float)(GetDesiredExportWidth() / Globals.ThisAddIn.Application.ActivePresentation.PageSetup.SlideWidth);
+                (float)(GetDesiredExportWidth() / PowerPointPresentation.SlideWidth);
             float verticalRatio =
-                (float)(GetDesiredExportHeight() / Globals.ThisAddIn.Application.ActivePresentation.PageSetup.SlideHeight);
-            Bitmap croppedImage = KiCut(slideImage,
+                (float)(GetDesiredExportHeight() / PowerPointPresentation.SlideHeight);
+            var croppedImage = KiCut(slideImage,
                 shape.Left * horizontalRatio,
                 shape.Top * verticalRatio,
                 shape.Width * horizontalRatio,
                 shape.Height * verticalRatio);
-            croppedImage.Save(GetPathToFillInBackgroundPicture(), ImageFormat.Png);
+            croppedImage.Save(FillInBackgroundPicture, ImageFormat.Png);
         }
 
-        public static Bitmap KiCut(Bitmap original, float startX, float startY, float width, float height)
+        private static Bitmap KiCut(Bitmap original, float startX, float startY, float width, float height)
         {
-            if (original == null)
-            {
-                return null;
-            }
-            if (startX >= original.Width || startY >= original.Height)
-            {
-                return null;
-            }
+            if (original == null) return null;
+            if (startX >= original.Width || startY >= original.Height) return null;
             try
             {
-                Bitmap outputImage = new Bitmap((int)width, (int)height, PixelFormat.Format24bppRgb);
+                var outputImage = new Bitmap((int)width, (int)height, PixelFormat.Format24bppRgb);
 
-                Graphics inputGraphics = Graphics.FromImage(outputImage);
+                var inputGraphics = Graphics.FromImage(outputImage);
                 inputGraphics.DrawImage(original,
                     new Rectangle(0, 0, (int)width, (int)height),
                     new Rectangle((int)startX, (int)startY, (int)width, (int)height),
@@ -181,12 +165,6 @@ namespace PowerPointLabs
             {
                 return null;
             }
-        }
-
-        private static string GetPathToFillInBackgroundPicture()
-        {
-            string path = Path.GetTempPath();
-            return path + @"\currentFillInBg.png";
         }
 
         private static void TakeScreenshotProxy(PowerPoint.Shape shape)
@@ -242,6 +220,11 @@ namespace PowerPointLabs
             return rangeCopy;
         }
 
+        /// <summary>
+        /// Assumption: 2 ranges have the same names
+        /// </summary>
+        /// <param name="rangeReference"></param>
+        /// <param name="rangeCopy"></param>
         private static void AdjustSamePositionForShapeRange(IEnumerable rangeReference, IEnumerable rangeCopy)
         {
             var nameMap = (from PowerPoint.Shape shape in rangeReference select shape)
@@ -266,8 +249,8 @@ namespace PowerPointLabs
             //-1 and +1 for better user experience
             bool cond1 = shape.Left >= -1;
             bool cond2 = shape.Top >= -1;
-            bool cond3 = shape.Left + shape.Width <= Globals.ThisAddIn.Application.ActivePresentation.PageSetup.SlideWidth + 1;
-            bool cond4 = shape.Top + shape.Height <= Globals.ThisAddIn.Application.ActivePresentation.PageSetup.SlideHeight + 1;
+            bool cond3 = shape.Left + shape.Width <= PowerPointPresentation.SlideWidth + 1;
+            bool cond4 = shape.Top + shape.Height <= PowerPointPresentation.SlideHeight + 1;
             return cond1 && cond2 && cond3 && cond4;
         }
 
@@ -323,7 +306,7 @@ namespace PowerPointLabs
             }
         }
 
-        private static bool IsShape(PowerPoint.Selection sel)
+        private static bool IsShapeForSelection(PowerPoint.Selection sel)
         {
             var shapeRange = sel.ShapeRange;
             return (from PowerPoint.Shape shape in shapeRange select shape).All(IsShape);
