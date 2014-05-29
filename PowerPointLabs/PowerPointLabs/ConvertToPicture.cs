@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Windows.Forms;
-using PowerPointLabs.Models;
 using Office = Microsoft.Office.Core;
 using PowerPoint = Microsoft.Office.Interop.PowerPoint;
 
@@ -11,14 +10,13 @@ namespace PowerPointLabs
         private const string ErrorTypeNotSupported = "Convert to Picture only supports Shapes and Charts.";
         private const string ErrorWindowTitle = "Unable to Convert to Picture";
 
-        public static void ConvertSelectionToPicture()
+        public static void Convert(PowerPoint.Selection selection)
         {
-            var selection = PowerPointPresentation.CurrentSelection;
             if (IsSelectionShape(selection))
             {
                 var shape = GetShapeFromSelection(selection);
                 shape = CutPasteShape(shape);
-                ConvertToPictureForShape(ref shape);
+                ConvertToPictureForShape(shape);
             }
             else
             {
@@ -26,7 +24,7 @@ namespace PowerPointLabs
             }
         }
 
-        public static PowerPoint.Shape ConvertToPictureForShape(ref PowerPoint.Shape shape)
+        public static PowerPoint.Shape ConvertToPictureForShape(PowerPoint.Shape shape)
         {
             float rotation = 0;
             try

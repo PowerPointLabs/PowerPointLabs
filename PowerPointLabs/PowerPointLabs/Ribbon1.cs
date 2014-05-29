@@ -1043,7 +1043,8 @@ namespace PowerPointLabs
 
         public void ConvertToPictureButtonClick(Office.IRibbonControl control)
         {
-            ConvertToPicture.ConvertSelectionToPicture();
+            var selection = PowerPointPresentation.CurrentSelection;
+            ConvertToPicture.Convert(selection);
         }
 
         public System.Drawing.Bitmap GetConvertToPicMenuImage(Office.IRibbonControl control)
