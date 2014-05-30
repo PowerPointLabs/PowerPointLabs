@@ -370,7 +370,7 @@ namespace PowerPointLabs
         {
             if (_recButtonStatus != RecorderStatus.Idle)
             {
-                StopButtonRecordingHandler();
+                StopButtonRecordingHandler(GetPlaybackFromList(), scriptDisplay.SelectedIndices[0]);
             }
 
             if (_playButtonStatus != RecorderStatus.Idle)
@@ -771,7 +771,7 @@ namespace PowerPointLabs
         /// Handler handles the click event when the button is at idle state.
         /// Note: The routine will reset all other sessions.
         /// </summary>
-        private void RecButtonIdleHandler()
+        public void RecButtonIdleHandler()
         {
             // close unfinished session
             ResetSession();
@@ -859,7 +859,7 @@ namespace PowerPointLabs
         /// Handler handles click event when sound is recording. It will save
         /// the sound to a user-specified path.
         /// </summary>
-        private void StopButtonRecordingHandler()
+        private void StopButtonRecordingHandler(Audio currentPlayback, int recordIndex)
         {
             // enable the control of play button
             playButton.Enabled = true;
@@ -873,8 +873,6 @@ namespace PowerPointLabs
 
             try
             {
-                var currentPlayback = GetPlaybackFromList();
-
                 // stop recording and get the length of the recording
                 Native.mciSendString("stop sound", null, 0, IntPtr.Zero);
                 // adjust the stop time difference between timer-stop and recording-stop
@@ -889,7 +887,6 @@ namespace PowerPointLabs
                     string displayName;
 
                     var relativeID = GetRelativeSlideIndex(PowerPointPresentation.CurrentSlide.ID);
-                    var recordIndex = scriptDisplay.SelectedIndices[0];
                     
                     if (currentPlayback != null)
                     {
@@ -1094,7 +1091,7 @@ namespace PowerPointLabs
             if (_recButtonStatus == RecorderStatus.Recording ||
                 _recButtonStatus == RecorderStatus.Pause)
             {
-                StopButtonRecordingHandler();
+                StopButtonRecordingHandler(GetPlaybackFromList(), scriptDisplay.SelectedIndices[0]);
             } else
             if (_playButtonStatus == RecorderStatus.Playing ||
                 _playButtonStatus == RecorderStatus.Pause)

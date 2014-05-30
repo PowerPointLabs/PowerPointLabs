@@ -28,24 +28,25 @@
         /// </summary>
         private void InitializeComponent()
         {
-            this.button1 = new System.Windows.Forms.Button();
+            this.recButton = new System.Windows.Forms.Button();
             this.SuspendLayout();
             // 
-            // button1
+            // recButton
             // 
-            this.button1.Location = new System.Drawing.Point(12, 12);
-            this.button1.Name = "button1";
-            this.button1.Size = new System.Drawing.Size(75, 23);
-            this.button1.TabIndex = 0;
-            this.button1.Text = "Record";
-            this.button1.UseVisualStyleBackColor = true;
+            this.recButton.Location = new System.Drawing.Point(12, 12);
+            this.recButton.Name = "recButton";
+            this.recButton.Size = new System.Drawing.Size(75, 23);
+            this.recButton.TabIndex = 0;
+            this.recButton.Text = "Record";
+            this.recButton.UseVisualStyleBackColor = true;
+            this.recButton.Click += new System.EventHandler(this.RecButtonClick);
             // 
             // InShowControl
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(103, 54);
-            this.Controls.Add(this.button1);
+            this.Controls.Add(this.recButton);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;
             this.MaximizeBox = false;
             this.MinimizeBox = false;
@@ -61,6 +62,6 @@
 
         #endregion
 
-        private System.Windows.Forms.Button button1;
+        private System.Windows.Forms.Button recButton;
     }
 }
