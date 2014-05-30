@@ -180,6 +180,12 @@ namespace PowerPointLabs
             return _audioList[slideID][playbackIndex];
         }
 
+        public Audio GetPlaybackFromList(int index, int slideID)
+        {
+            var relativeSlideID = GetRelativeSlideIndex(slideID);
+            return _audioList[relativeSlideID][index];
+        }
+
         private void UpdateRecordList(int index, string name, string length)
         {
             // change index to 1-base
@@ -370,7 +376,8 @@ namespace PowerPointLabs
         {
             if (_recButtonStatus != RecorderStatus.Idle)
             {
-                StopButtonRecordingHandler(GetPlaybackFromList(), scriptDisplay.SelectedIndices[0]);
+                StopButtonRecordingHandler(GetPlaybackFromList(), scriptDisplay.SelectedIndices[0],
+                                           PowerPointPresentation.CurrentSlide);
             }
 
             if (_playButtonStatus != RecorderStatus.Idle)
@@ -859,7 +866,7 @@ namespace PowerPointLabs
         /// Handler handles click event when sound is recording. It will save
         /// the sound to a user-specified path.
         /// </summary>
-        private void StopButtonRecordingHandler(Audio currentPlayback, int recordIndex)
+        public void StopButtonRecordingHandler(Audio currentPlayback, int recordIndex, PowerPointSlide currentSlide)
         {
             // enable the control of play button
             playButton.Enabled = true;
@@ -886,7 +893,7 @@ namespace PowerPointLabs
                     string saveName = currentPlayback.SaveName.Replace(".wav", " rec.wav");
                     string displayName;
 
-                    var relativeID = GetRelativeSlideIndex(PowerPointPresentation.CurrentSlide.ID);
+                    var relativeID = GetRelativeSlideIndex(currentSlide.ID);
                     
                     if (currentPlayback != null)
                     {
@@ -922,7 +929,7 @@ namespace PowerPointLabs
                     UpdateScriptList(recordIndex, null, ScriptStatus.Recorded);
 
                     // notify outside to embed the audio
-                    newRec.EmbedOnSlide(PowerPointPresentation.CurrentSlide);
+                    newRec.EmbedOnSlide(currentSlide);
                 }
             }
             catch (Exception e)
@@ -1091,7 +1098,8 @@ namespace PowerPointLabs
             if (_recButtonStatus == RecorderStatus.Recording ||
                 _recButtonStatus == RecorderStatus.Pause)
             {
-                StopButtonRecordingHandler(GetPlaybackFromList(), scriptDisplay.SelectedIndices[0]);
+                StopButtonRecordingHandler(GetPlaybackFromList(), scriptDisplay.SelectedIndices[0],
+                                           PowerPointPresentation.CurrentSlide);
             } else
             if (_playButtonStatus == RecorderStatus.Playing ||
                 _playButtonStatus == RecorderStatus.Pause)

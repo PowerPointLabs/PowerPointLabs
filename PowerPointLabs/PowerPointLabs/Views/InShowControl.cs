@@ -10,6 +10,7 @@ using System.Text;
 using System.Windows.Forms;
 using Microsoft.Office.Interop.PowerPoint;
 using PPExtraEventHelper;
+using PowerPointLabs.Models;
 using Point = System.Drawing.Point;
 
 namespace PowerPointLabs.Views
@@ -51,17 +52,25 @@ namespace PowerPointLabs.Views
 
         private void RecButtonClick(object sender, EventArgs e)
         {
+            var recorderPane = Globals.ThisAddIn.recorderTaskPane;
+            var click = _slideShowWindow.View.GetClickIndex();
+            var currentSlide = PowerPointSlide.FromSlideFactory(_slideShowWindow.View.Slide);
+
             switch (_status)
             {
                 case ButtonStatus.Idle:
+                    _status = ButtonStatus.Rec;
                     recButton.Text = "Stop and Advance";
-                    Globals.ThisAddIn.recorderTaskPane.RecButtonIdleHandler();
+                    recorderPane.RecButtonIdleHandler();
+                    _slideShowWindow.View.GotoClick(click + 1);
                     break;
 
                 case ButtonStatus.Rec:
+                    _status = ButtonStatus.Idle;
                     recButton.Text = "Record";
-                    var currentSlide = _slideShowWindow.View.Slide;
-                    var slideRelativeIndex = currentSlide.SlideID - 256;
+                    
+                    recorderPane.StopButtonRecordingHandler(recorderPane.GetPlaybackFromList(click, currentSlide.ID),
+                                                            click, currentSlide);
                     break;
             }
         }
