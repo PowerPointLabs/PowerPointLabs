@@ -1,13 +1,8 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Runtime.InteropServices;
-using System.Text;
 using System.Windows.Forms;
-using Microsoft.Office.Core;
 using Microsoft.Office.Interop.PowerPoint;
 using PowerPointLabs.Models;
-using Shape = Microsoft.Office.Interop.PowerPoint.Shape;
 
 namespace PowerPointLabs.AudioMisc
 {
@@ -48,6 +43,7 @@ namespace PowerPointLabs.AudioMisc
 
         public void EmbedOnSlide(PowerPointSlide slide)
         {
+            // to distinguish the new shape with the old shape
             var shapeName = Name;
             var isOnClick = SaveName.Contains("OnClick");
 
@@ -57,24 +53,45 @@ namespace PowerPointLabs.AudioMisc
 
             if (slide != null)
             {
-                // delete old shape
-                slide.DeleteShapesWithPrefix(shapeName);
+                var sequence = slide.TimeLine.MainSequence;
+                var nextClickEffect = sequence.FindFirstAnimationForClick(clickNumber + 1);
 
                 // embed new shape
                 try
                 {
                     var audioShape = AudioHelper.InsertAudioFileOnSlide(slide, SaveName);
-                    slide.RemoveAnimationsForShape(audioShape);
-                    audioShape.Name = shapeName;
+                    //slide.RemoveAnimationsForShape(audioShape);
+                    
+                    // give a temp name first so that we are able to delete the old shape
+                    // with prefix
+                    audioShape.Name = "#";
 
                     if (isOnClick)
                     {
-                        slide.SetShapeAsClickTriggered(audioShape, clickNumber, MsoAnimEffect.msoAnimEffectMediaPlay);
+                        //slide.SetShapeAsClickTriggered(audioShape, clickNumber, MsoAnimEffect.msoAnimEffectMediaPlay);
+
+                        if (nextClickEffect != null)
+                        {
+                            var newAnimation = sequence.AddEffect(audioShape, MsoAnimEffect.msoAnimEffectMediaPlay,
+                                                              MsoAnimateByLevel.msoAnimateLevelNone,
+                                                              MsoAnimTriggerType.msoAnimTriggerOnPageClick, clickNumber);
+                            newAnimation.MoveBefore(nextClickEffect);
+                        }
+                        else
+                        {
+                            sequence.AddEffect(audioShape, MsoAnimEffect.msoAnimEffectMediaPlay);
+                        }
                     }
                     else
                     {
                         slide.SetAudioAsAutoplay(audioShape);
                     }
+                    
+                    // delete old shape
+                    slide.DeleteShapesWithPrefix(shapeName);
+
+                    // rename the new shape
+                    audioShape.Name = shapeName;
                 }
                 catch (COMException)
                 {

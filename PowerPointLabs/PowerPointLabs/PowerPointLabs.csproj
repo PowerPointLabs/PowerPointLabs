@@ -230,7 +230,6 @@
     <Compile Include="Models\PowerPointMagnifyingSlide.cs" />
     <Compile Include="Models\PowerPointStepBackSlide.cs" />
     <Compile Include="Models\PowerPointZoomToAreaSingleSlide.cs" />
-    <Compile Include="NotesToRecord.cs" />
     <Compile Include="PowerPointLabsGlobals.cs" />
     <Compile Include="RecorderTaskPane.cs">
       <SubType>UserControl</SubType>
@@ -293,6 +292,12 @@
     <Compile Include="SpeechEngine\SynthesisState.cs" />
     <Compile Include="SpeechEngine\TextToSpeech.cs" />
     <Compile Include="Spotlight.cs" />
+    <Compile Include="Views\InShowControl.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Views\InShowControl.Designer.cs">
+      <DependentUpon>InShowControl.cs</DependentUpon>
+    </Compile>
     <Compile Include="Views\SpotlightDialogBox.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -349,6 +354,9 @@
       <DependentUpon>Resources.resx</DependentUpon>
       <DesignTime>True</DesignTime>
     </Compile>
+    <EmbeddedResource Include="Views\InShowControl.resx">
+      <DependentUpon>InShowControl.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Views\SpotlightDialogBox.resx">
       <DependentUpon>SpotlightDialogBox.cs</DependentUpon>
     </EmbeddedResource>

@@ -856,7 +856,7 @@ namespace PowerPointLabs
         }
 
         # region AudioRecord Button Callbacks
-        public void AddRecordClick(Office.IRibbonControl control)
+        public void RecManagementClick(Office.IRibbonControl control)
         {
             // TODO:
             // Handle exception when user clicks the button without selecting any slides
@@ -886,12 +886,12 @@ namespace PowerPointLabs
             if (_allSlides)
             {
                 NotesToAudio.RemoveAudioFromAllSlides();
-                Globals.ThisAddIn.recorderTaskPane.ClearDataLists();
+                Globals.ThisAddIn.recorderTaskPane.ClearRecordDataList();
             }
             else
             {
                 NotesToAudio.RemoveAudioFromCurrentSlide();
-                Globals.ThisAddIn.recorderTaskPane.ClearDataLists(currentSlide.ID);
+                Globals.ThisAddIn.recorderTaskPane.ClearRecordDataList(currentSlide.ID);
             }
 
             // if current list is visible, update the pane immediately

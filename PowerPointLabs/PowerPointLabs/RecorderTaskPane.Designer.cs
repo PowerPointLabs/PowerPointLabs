@@ -43,6 +43,7 @@
             this.statusColumn = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.scirptColumn = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.scriptListViewLabel = new System.Windows.Forms.Label();
+            this.slideShowButton = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.soundTrackBar)).BeginInit();
             this.SuspendLayout();
             // 
@@ -61,7 +62,7 @@
             // 
             this.recButton.Location = new System.Drawing.Point(12, 22);
             this.recButton.Name = "recButton";
-            this.recButton.Size = new System.Drawing.Size(75, 41);
+            this.recButton.Size = new System.Drawing.Size(53, 41);
             this.recButton.TabIndex = 1;
             this.recButton.Text = "Record";
             this.recButton.UseVisualStyleBackColor = true;
@@ -69,9 +70,9 @@
             // 
             // stopButton
             // 
-            this.stopButton.Location = new System.Drawing.Point(103, 22);
+            this.stopButton.Location = new System.Drawing.Point(71, 22);
             this.stopButton.Name = "stopButton";
-            this.stopButton.Size = new System.Drawing.Size(75, 41);
+            this.stopButton.Size = new System.Drawing.Size(43, 41);
             this.stopButton.TabIndex = 2;
             this.stopButton.Text = "Stop";
             this.stopButton.UseVisualStyleBackColor = true;
@@ -79,9 +80,9 @@
             // 
             // playButton
             // 
-            this.playButton.Location = new System.Drawing.Point(195, 22);
+            this.playButton.Location = new System.Drawing.Point(120, 22);
             this.playButton.Name = "playButton";
-            this.playButton.Size = new System.Drawing.Size(75, 41);
+            this.playButton.Size = new System.Drawing.Size(44, 41);
             this.playButton.TabIndex = 3;
             this.playButton.Text = "Play";
             this.playButton.UseVisualStyleBackColor = true;
@@ -178,10 +179,21 @@
             this.scriptListViewLabel.TabIndex = 8;
             this.scriptListViewLabel.Text = "Your Script";
             // 
+            // slideShowButton
+            // 
+            this.slideShowButton.Location = new System.Drawing.Point(170, 22);
+            this.slideShowButton.Name = "slideShowButton";
+            this.slideShowButton.Size = new System.Drawing.Size(78, 41);
+            this.slideShowButton.TabIndex = 9;
+            this.slideShowButton.Text = "Slide Show";
+            this.slideShowButton.UseVisualStyleBackColor = true;
+            this.slideShowButton.Click += new System.EventHandler(this.SlideShowButtonClick);
+            // 
             // RecorderTaskPane
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+            this.Controls.Add(this.slideShowButton);
             this.Controls.Add(this.scriptListViewLabel);
             this.Controls.Add(this.scriptDisplay);
             this.Controls.Add(this.recDisplay);
@@ -217,5 +229,6 @@
         private System.Windows.Forms.ColumnHeader statusColumn;
         private System.Windows.Forms.ColumnHeader scirptColumn;
         private System.Windows.Forms.Label scriptListViewLabel;
+        private System.Windows.Forms.Button slideShowButton;
     }
 }

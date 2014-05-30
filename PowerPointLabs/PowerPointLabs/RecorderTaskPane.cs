@@ -16,6 +16,7 @@ using Microsoft.Office.Interop.PowerPoint;
 using PPExtraEventHelper;
 using PowerPointLabs.Models;
 using PowerPointLabs.AudioMisc;
+using PowerPointLabs.Views;
 using Shape = Microsoft.Office.Interop.PowerPoint.Shape;
 
 namespace PowerPointLabs
@@ -24,11 +25,15 @@ namespace PowerPointLabs
     {
         // for hashing the speaker's script
         private MD5 _md5 = MD5.Create();
+        // for all mappers
+        private const int Offset = 1000;
 
         // data structures to track embedded audio information
         
         // map the text MD5 to record id
         private Dictionary<string, int> _md5ScriptMapper;
+        // map the record id to script id
+        private Dictionary<int, int> _recordScriptMapper;
         // map the scipt id to record id
         private Dictionary<int, int> _scriptRecrodMapper;
         // this offset is used to map a slide id to relative slide id
@@ -152,24 +157,27 @@ namespace PowerPointLabs
             return curID - slideIDOffset;
         }
 
+        private int GetHashedKey(int slideID, int index)
+        {
+            return slideID*Offset + index;
+        }
+
         private Audio GetPlaybackFromList()
         {
             var slideID = GetRelativeSlideIndex(PowerPointPresentation.CurrentSlide.ID);
             int playbackIndex = -1;
             
-            if (recDisplay.SelectedIndices.Count != 0)
+            if (scriptDisplay.SelectedIndices.Count != 0)
             {
-                playbackIndex = recDisplay.SelectedIndices[0];
+                playbackIndex = scriptDisplay.SelectedIndices[0];
             }
             
             if (playbackIndex == -1)
             {
                 return null;
             }
-            else
-            {
-                return _audioList[slideID][playbackIndex];
-            }
+            
+            return _audioList[slideID][playbackIndex];
         }
 
         private void UpdateRecordList(int index, string name, string length)
@@ -226,24 +234,6 @@ namespace PowerPointLabs
             }
         }
 
-        public bool HasEvent()
-        {
-            return _recButtonStatus != RecorderStatus.Idle || _playButtonStatus != RecorderStatus.Idle;
-        }
-
-        public void ForceStopEvent()
-        {
-            if (_recButtonStatus != RecorderStatus.Idle)
-            {
-                StopButtonRecordingHandler();
-            }
-
-            if (_playButtonStatus != RecorderStatus.Idle)
-            {
-                StopButtonPlayingHandler();
-            }
-        }
-
         public void UpdateLists(int slideID)
         {
             int relativeID = GetRelativeSlideIndex(slideID);
@@ -268,13 +258,24 @@ namespace PowerPointLabs
             scriptDisplay.BeginUpdate();
             for (int i = 0; i < scirpt.Count; i++)
             {
-                if (audio[i].Type == Audio.AudioType.Auto)
+                var hashedKey = GetHashedKey(relativeID, i);
+
+                if (_scriptRecrodMapper.ContainsKey(hashedKey))
                 {
-                    UpdateScriptList(i, scirpt[i], ScriptStatus.Generated);
+                    var corresRecIndex = _scriptRecrodMapper[hashedKey];
+
+                    if (audio[corresRecIndex].Type == Audio.AudioType.Auto)
+                    {
+                        UpdateScriptList(i, scirpt[i], ScriptStatus.Generated);
+                    }
+                    else
+                    {
+                        UpdateScriptList(i, scirpt[i], ScriptStatus.Recorded);
+                    }
                 }
                 else
                 {
-                    UpdateScriptList(i, scirpt[i], ScriptStatus.Recorded);
+                    UpdateScriptList(i, scirpt[i], ScriptStatus.Untracked);
                 }
             }
             scriptDisplay.EndUpdate();
@@ -306,15 +307,31 @@ namespace PowerPointLabs
 
         public void ClearRecordDataList()
         {
-            foreach (var slide in _audioList)
+            // clear the data structure
+            foreach (var audioInslide in _audioList)
             {
-                slide.Clear();
+                audioInslide.Clear();
             }
+
+            // clear the script->audio & audio->script mappings
+            _scriptRecrodMapper.Clear();
+            _recordScriptMapper.Clear();
         }
 
         public void ClearRecordDataList(int id)
         {
             int relativeIndex = GetRelativeSlideIndex(id);
+            
+            // clear the script->audio & audio->script mappings
+            for (int i = 0; i < _audioList[relativeIndex].Count; i ++)
+            {
+                var hashedKey = GetHashedKey(relativeIndex, i);
+
+                _scriptRecrodMapper.Remove(GetHashedKey(relativeIndex, _recordScriptMapper[hashedKey]));
+                _recordScriptMapper.Remove(hashedKey);
+            }
+
+            // clear data structure
             _audioList[relativeIndex].Clear();
         }
 
@@ -342,6 +359,24 @@ namespace PowerPointLabs
         {
             ClearRecordDataList(id);
             ClearScriptDataList(id);
+        }
+
+        public bool HasEvent()
+        {
+            return _recButtonStatus != RecorderStatus.Idle || _playButtonStatus != RecorderStatus.Idle;
+        }
+
+        public void ForceStopEvent()
+        {
+            if (_recButtonStatus != RecorderStatus.Idle)
+            {
+                StopButtonRecordingHandler();
+            }
+
+            if (_playButtonStatus != RecorderStatus.Idle)
+            {
+                StopButtonPlayingHandler();
+            }
         }
 
         public void SetupListsWhenOpen()
@@ -410,6 +445,11 @@ namespace PowerPointLabs
                         audio.LengthMillis = AudioHelper.GetAudioLength(audio.SaveName);
 
                         _audioList[slide.Index - 1].Add(audio);
+
+                        // map the audio to the script, and vice versa
+                        var hashedKey = GetHashedKey(slide.Index - 1, speechOnSlide);
+                        _recordScriptMapper[hashedKey] = speechOnSlide;
+                        _scriptRecrodMapper[hashedKey] = speechOnSlide;
 
                         validSpeechCnt++;
                     }
@@ -523,6 +563,17 @@ namespace PowerPointLabs
 
                 _audioList[relativeSlideID].Add(audio);
             }
+
+            // map each audio with the script, and vice versa
+            // currently each audio (record) maps to a script, but a script
+            // does not need a corresponding audio.
+            for (int i = 0; i < _audioList[relativeSlideID].Count; i ++)
+            {
+                var hashedKey = GetHashedKey(relativeSlideID, i);
+
+                _recordScriptMapper[hashedKey] = i;
+                _scriptRecrodMapper[hashedKey] = i;
+            }
         }
 
         public void InitializeAudioAndScript(List<string[]> names, bool forceRefresh)
@@ -539,6 +590,14 @@ namespace PowerPointLabs
                 InitializeAudioAndScript(slide, names[i], forceRefresh);
             }
         }
+
+        public void DisposeInSlideControlBox()
+        {
+            if (_inShowControlBox != null)
+            {
+                _inShowControlBox.Dispose();
+            }
+        }
         # endregion
 
         # region WinForm
@@ -553,6 +612,8 @@ namespace PowerPointLabs
         private Thread _trackbarThread;
 
         private Stopwatch _stopwatch;
+
+        private InShowControl _inShowControlBox;
 
         // delgates to make thread safe control calls
         private delegate void SetLabelTextCallBack(Label label, string text);
@@ -825,8 +886,22 @@ namespace PowerPointLabs
                 {
                     // user wants to do the replacement, save the file and replace the record
                     string saveName = currentPlayback.SaveName.Replace(".wav", " rec.wav");
-                    Audio replaceRec = AudioHelper.DumpAudio(currentPlayback.Name, saveName, currentPlayback.MatchSciptID);
+                    string displayName;
 
+                    var relativeID = GetRelativeSlideIndex(PowerPointPresentation.CurrentSlide.ID);
+                    var recordIndex = scriptDisplay.SelectedIndices[0];
+                    
+                    if (currentPlayback != null)
+                    {
+                        displayName = currentPlayback.Name;
+                    }
+                    else
+                    {
+                        displayName = String.Format(SpeechShapeFormat, recordIndex);
+                    }
+
+                    Audio newRec = AudioHelper.DumpAudio(displayName, saveName, currentPlayback.MatchSciptID);;
+                    
                     // delete the old file
                     File.Delete(currentPlayback.SaveName);
 
@@ -835,16 +910,22 @@ namespace PowerPointLabs
                     AudioHelper.CloseAudio();
 
                     // update record list
-                    var relativeID = GetRelativeSlideIndex(PowerPointPresentation.CurrentSlide.ID);
-                    var replaceIndex = recDisplay.SelectedIndices[0];
-                    _audioList[relativeID][replaceIndex] = replaceRec;
-                    UpdateRecordList(replaceIndex, null, replaceRec.Length);
+                    if (recordIndex < _audioList[relativeID].Count)
+                    {
+                        _audioList[relativeID][recordIndex] = newRec;
+                    }
+                    else
+                    {
+                        _audioList[relativeID].Add(newRec);
+                    }
+
+                    UpdateRecordList(recordIndex, displayName, newRec.Length);
 
                     // update the script list
-                    UpdateScriptList(replaceIndex, null, ScriptStatus.Recorded);
+                    UpdateScriptList(recordIndex, null, ScriptStatus.Recorded);
 
                     // notify outside to embed the audio
-                    replaceRec.EmbedOnSlide(PowerPointPresentation.CurrentSlide);
+                    newRec.EmbedOnSlide(PowerPointPresentation.CurrentSlide);
                 }
             }
             catch (Exception e)
@@ -1045,18 +1126,56 @@ namespace PowerPointLabs
             }
         }
 
+        private void SlideShowButtonClick(object sender, EventArgs e)
+        {
+            // start the slide show
+            var slideShowSettings = Globals.ThisAddIn.Application.ActivePresentation.SlideShowSettings;
+            slideShowSettings.Run();
+
+            // get the slideShowWindow and slideShowView object
+            var slideShowWindow = Globals.ThisAddIn.Application.ActivePresentation.SlideShowWindow;
+            var slideShowView = slideShowWindow.View;
+
+            // init the in-show control
+            _inShowControlBox = new InShowControl();
+            _inShowControlBox.Show();
+
+            // activate the show
+            slideShowWindow.Activate();
+        }
+
         private void RecDisplayItemSelectionChanged(object sender, ListViewItemSelectionChangedEventArgs e)
         {
+            int corresIndex;
+            int currentSlideRelativeID = GetRelativeSlideIndex(PowerPointPresentation.CurrentSlide.ID);
+            int hashedKey = GetHashedKey(currentSlideRelativeID, e.ItemIndex);
+
+            if (_recordScriptMapper.ContainsKey(hashedKey))
+            {
+                corresIndex = _recordScriptMapper[hashedKey];
+            }
+            else
+            {
+                corresIndex = -1;
+            }
+
             // if some record is selected, enable the record button
             if (e.IsSelected)
             {
-                scriptDisplay.Items[e.ItemIndex].Selected = true;
+                if (corresIndex != -1)
+                {
+                    scriptDisplay.Items[e.ItemIndex].Selected = true;
+                }
+                
                 SetAllRecorderButtonState(true);
                 stopButton.Enabled = false;
             }
             else
             {
-                scriptDisplay.Items[e.ItemIndex].Selected = false;
+                if (corresIndex != -1)
+                {
+                    scriptDisplay.Items[e.ItemIndex].Selected = false;
+                }
                 
                 // disabling only happens when buttons are idle
                 if (_playButtonStatus == RecorderStatus.Idle &&
@@ -1069,15 +1188,39 @@ namespace PowerPointLabs
 
         private void ScriptDisplayItemSelectionChanged(object sender, ListViewItemSelectionChangedEventArgs e)
         {
-            if (e.IsSelected)
+            int corresIndex;
+            int currentSlideRelativeID = GetRelativeSlideIndex(PowerPointPresentation.CurrentSlide.ID);
+            int hashedKey = GetHashedKey(currentSlideRelativeID, e.ItemIndex);
+
+            if (_scriptRecrodMapper.ContainsKey(hashedKey))
             {
-                recDisplay.Items[e.ItemIndex].Selected = true;
-                SetAllRecorderButtonState(true);
-                stopButton.Enabled = false;
+                corresIndex = _scriptRecrodMapper[e.ItemIndex];
             }
             else
             {
-                recDisplay.Items[e.ItemIndex].Selected = false;
+                corresIndex = -1;
+            }
+
+            if (e.IsSelected)
+            {
+                SetAllRecorderButtonState(true);
+                stopButton.Enabled = false;
+
+                if (corresIndex != -1)
+                {
+                    recDisplay.Items[corresIndex].Selected = true;
+                }
+                else
+                {
+                    playButton.Enabled = false;
+                }
+            }
+            else
+            {
+                if (corresIndex != -1)
+                {
+                    recDisplay.Items[corresIndex].Selected = false;
+                }
                 
                 // disabling only happens when buttons are idle
                 if (_playButtonStatus == RecorderStatus.Idle &&
@@ -1096,6 +1239,7 @@ namespace PowerPointLabs
             _audioList = new List<List<Audio>>();
             _scriptList = new List<List<string>>();
             
+            _recordScriptMapper = new Dictionary<int, int>();
             _scriptRecrodMapper = new Dictionary<int, int>();
             _md5ScriptMapper = new Dictionary<string, int>();
             

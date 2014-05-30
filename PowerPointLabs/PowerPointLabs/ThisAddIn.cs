@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Drawing;
 using System.IO;
 using System.Collections;
 using System.Linq;
@@ -12,6 +13,7 @@ using System.Diagnostics;
 using PPExtraEventHelper;
 using System.IO.Compression;
 using PowerPointLabs.Models;
+using PowerPointLabs.Views;
 using PowerPoint = Microsoft.Office.Interop.PowerPoint;
 using Office = Microsoft.Office.Core;
 using System.Deployment.Application;
@@ -25,6 +27,7 @@ namespace PowerPointLabs
         
         internal Microsoft.Office.Tools.CustomTaskPane customTaskPane;
         internal RecorderTaskPane recorderTaskPane;
+        internal InShowControl inShowControlBox;
 
         private const int _taskPaneWidth = 300;
         private const string TempFolderName = @"\PowerPointLabs Temp\";
@@ -212,7 +215,15 @@ namespace PowerPointLabs
             var saved = Pres.Saved;
 
             // embed all audios once again to preserve the playing sequence
-            recorderTaskPane.ShutdownReembed();
+            try
+            {
+                recorderTaskPane.ShutdownReembed();
+            }
+            catch (Exception e)
+            {
+                MessageBox.Show(e.Message);
+                throw;
+            }
 
             // if the presentation has been saved before embed, save the presentation
             if (saved == Office.MsoTriState.msoTrue)
@@ -250,6 +261,10 @@ namespace PowerPointLabs
 
         void BreakRecorderEvents()
         {
+            // TODO:
+            // Slide change event will interrupt mci device behaviour before
+            // the event raised. Now we discard the record, we may want to
+            // take this record by some means.
             if (recorderTaskPane.HasEvent())
             {
                 recorderTaskPane.ForceStopEvent();
@@ -356,6 +371,9 @@ namespace PowerPointLabs
         private void SlideShowEndHandler(PowerPoint.Presentation presentation)
         {
             isInSlideShow = false;
+            
+            // when leave the show, dispose the in-show control if we have one
+            recorderTaskPane.DisposeInSlideControlBox();
         }
 
         private void SetupAfterCopyPasteHandler()

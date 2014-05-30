@@ -118,8 +118,8 @@
                   getImage="GetAddAudioImage" />
             <menu id="menu">
               <button id="addRecord"
-                      label="Add Record"
-                      onAction="AddRecordClick"
+                      label="Record Management"
+                      onAction="RecManagementClick"
                       keytip="NA" />
             </menu>
           </splitButton>
