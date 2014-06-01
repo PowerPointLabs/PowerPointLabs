@@ -1194,6 +1194,9 @@ namespace PowerPointLabs
 
             // activate the show
             slideShowWindow.Activate();
+
+            // goto the selected slide
+            slideShowView.GotoSlide(PowerPointPresentation.CurrentSlide.Index);
         }
 
         private void RecDisplayItemSelectionChanged(object sender, ListViewItemSelectionChangedEventArgs e)

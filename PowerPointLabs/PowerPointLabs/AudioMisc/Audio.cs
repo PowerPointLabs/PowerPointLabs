@@ -58,6 +58,7 @@ namespace PowerPointLabs.AudioMisc
             {
                 var sequence = slide.TimeLine.MainSequence;
                 var nextClickEffect = sequence.FindFirstAnimationForClick(clickNumber + 1);
+                var onClickEffect = sequence.FindFirstAnimationForClick(clickNumber);
 
                 // embed new shape
                 try
@@ -70,23 +71,27 @@ namespace PowerPointLabs.AudioMisc
 
                     if (isOnClick)
                     {
-                        if (nextClickEffect != null)
+                        if (onClickEffect.Shape.Name == shapeName)
                         {
-                            var newAnimation = sequence.AddEffect(audioShape, MsoAnimEffect.msoAnimEffectMediaPlay,
-                                                              MsoAnimateByLevel.msoAnimateLevelNone,
-                                                              MsoAnimTriggerType.msoAnimTriggerOnPageClick, clickNumber);
-                            newAnimation.MoveBefore(nextClickEffect);
+                            var newAnimation = sequence.AddEffect(audioShape, MsoAnimEffect.msoAnimEffectMediaPlay);
+                            newAnimation.MoveBefore(onClickEffect);
                         }
                         else
                         {
-                            sequence.AddEffect(audioShape, MsoAnimEffect.msoAnimEffectMediaPlay);
+                            var newAnimation = sequence.AddEffect(audioShape, MsoAnimEffect.msoAnimEffectMediaPlay,
+                                                                  MsoAnimateByLevel.msoAnimateLevelNone,
+                                                                  MsoAnimTriggerType.msoAnimTriggerWithPrevious);
+                            if (nextClickEffect != null)
+                            {
+                                newAnimation.MoveBefore(nextClickEffect);
+                            }
                         }
                     }
                     else
                     {
                         slide.SetAudioAsAutoplay(audioShape);
                     }
-                    
+
                     // delete old shape
                     slide.DeleteShapesWithPrefix(shapeName);
 
