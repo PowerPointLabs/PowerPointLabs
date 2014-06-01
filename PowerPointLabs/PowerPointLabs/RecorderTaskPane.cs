@@ -1180,13 +1180,17 @@ namespace PowerPointLabs
 
         private void SlideShowButtonClick(object sender, EventArgs e)
         {
-            // start the slide show
+            // get current slide number
+            var slideIndex = PowerPointPresentation.CurrentSlide.Index;
+            
+            // set the starting slide and start the slide show
             var slideShowSettings = Globals.ThisAddIn.Application.ActivePresentation.SlideShowSettings;
+            // start from the selected slide
+            slideShowSettings.StartingSlide = slideIndex;
             slideShowSettings.Run();
 
             // get the slideShowWindow and slideShowView object
             var slideShowWindow = Globals.ThisAddIn.Application.ActivePresentation.SlideShowWindow;
-            var slideShowView = slideShowWindow.View;
 
             // init the in-show control
             _inShowControlBox = new InShowControl();
@@ -1194,9 +1198,6 @@ namespace PowerPointLabs
 
             // activate the show
             slideShowWindow.Activate();
-
-            // goto the selected slide
-            slideShowView.GotoSlide(PowerPointPresentation.CurrentSlide.Index);
         }
 
         private void RecDisplayItemSelectionChanged(object sender, ListViewItemSelectionChangedEventArgs e)
