@@ -32,8 +32,6 @@ namespace PowerPointLabs
         
         // map the text MD5 to record id
         private Dictionary<string, int> _md5ScriptMapper;
-        // map the scipt id to record id
-        private Dictionary<int, int> _scriptRecrodMapper;
         // this offset is used to map a slide id to relative slide id
         private const int slideIDOffset = 256;
         // a collection of slides, each slide has a list of audio object
@@ -198,13 +196,7 @@ namespace PowerPointLabs
         public Audio GetPlaybackFromList(int scriptIndex, int slideID)
         {
             var relativeSlideID = GetRelativeSlideIndex(slideID);
-            var hashedKey = GetHashedKey(relativeSlideID, scriptIndex);
-            int recordIndex = -1;
-
-            if (_scriptRecrodMapper.ContainsKey(hashedKey))
-            {
-                recordIndex = _scriptRecrodMapper[hashedKey];
-            }
+            int recordIndex = GetRecordIndexFromScriptIndex(relativeSlideID, scriptIndex);
 
             if (recordIndex != -1)
             {
@@ -295,10 +287,6 @@ namespace PowerPointLabs
             // update the record list view
             ClearRecordDisplayList();
             recDisplay.BeginUpdate();
-            //for (int i = 0; i < audio.Count; i++)
-            //{
-            //    UpdateRecordList(i, audio[i].Name, AudioHelper.GetAudioLengthString(audio[i].SaveName));
-            //}
             UpdateRecordList(relativeID);
             recDisplay.EndUpdate();
 
@@ -307,12 +295,10 @@ namespace PowerPointLabs
             scriptDisplay.BeginUpdate();
             for (int i = 0; i < scirpt.Count; i++)
             {
-                var hashedKey = GetHashedKey(relativeID, i);
+                var corresRecIndex = GetRecordIndexFromScriptIndex(relativeID, i);
 
-                if (_scriptRecrodMapper.ContainsKey(hashedKey))
+                if (corresRecIndex != -1)
                 {
-                    var corresRecIndex = _scriptRecrodMapper[hashedKey];
-
                     if (audio[corresRecIndex].Type == Audio.AudioType.Auto)
                     {
                         UpdateScriptList(i, scirpt[i], ScriptStatus.Generated);
@@ -361,22 +347,11 @@ namespace PowerPointLabs
             {
                 audioInslide.Clear();
             }
-
-            // clear the script->audio & audio->script mappings
-            _scriptRecrodMapper.Clear();
         }
 
         public void ClearRecordDataList(int id)
         {
             int relativeIndex = GetRelativeSlideIndex(id);
-            
-            // clear the script->audio mappings
-            for (int i = 0; i < _audioList[relativeIndex].Count; i ++)
-            {
-                var audio = _audioList[relativeIndex][i];
-
-                _scriptRecrodMapper.Remove(GetHashedKey(relativeIndex, audio.MatchSciptID));
-            }
 
             // clear data structure
             _audioList[relativeIndex].Clear();
@@ -494,10 +469,6 @@ namespace PowerPointLabs
 
                         _audioList[slide.Index - 1].Add(audio);
 
-                        // map the audio to the script, and vice versa
-                        var hashedKey = GetHashedKey(slide.Index - 1, speechOnSlide);
-                        _scriptRecrodMapper[hashedKey] = speechOnSlide;
-
                         validSpeechCnt++;
                     }
                 }
@@ -612,16 +583,6 @@ namespace PowerPointLabs
                 var audio = new Audio(name, saveName, i);
 
                 _audioList[relativeSlideID].Add(audio);
-            }
-
-            // map each audio with the script, and vice versa
-            // currently each audio (record) maps to a script, but a script
-            // does not need a corresponding audio.
-            for (int i = 0; i < _audioList[relativeSlideID].Count; i ++)
-            {
-                var hashedKey = GetHashedKey(relativeSlideID, i);
-
-                _scriptRecrodMapper[hashedKey] = i;
             }
         }
 
@@ -993,8 +954,8 @@ namespace PowerPointLabs
                     // script, we need to construct the new record and insert it to a proper
                     // position
                     {
-                        var saveNameSuffix = " " + _audioList[relativeID].Count.ToString() + " rec.wav";
-                        saveName = String.Format(SaveNameFormat, relativeID) + saveNameSuffix;
+                        var saveNameSuffix = " " + scriptIndex.ToString() + " rec.wav";
+                        saveName = tempFullPath + String.Format(SaveNameFormat, relativeID) + saveNameSuffix;
                         
                         // the display name -> which script it corresponds to
                         displayName = String.Format(SpeechShapeFormat, scriptIndex);
@@ -1012,11 +973,8 @@ namespace PowerPointLabs
                         }
 
                         // update the whole record display list
+                        ClearRecordDisplayList();
                         UpdateRecordList(relativeID);
-
-                        // update script->audio mapper
-                        var hashedKey = GetHashedKey(relativeID, scriptIndex);
-                        _scriptRecrodMapper[hashedKey] = recordIndex;
                     }
 
                     // save curent sound
@@ -1255,7 +1213,7 @@ namespace PowerPointLabs
             {
                 if (corresIndex != -1)
                 {
-                    scriptDisplay.Items[e.ItemIndex].Selected = true;
+                    scriptDisplay.Items[corresIndex].Selected = true;
                 }
                 
                 SetAllRecorderButtonState(true);
@@ -1265,7 +1223,7 @@ namespace PowerPointLabs
             {
                 if (corresIndex != -1)
                 {
-                    scriptDisplay.Items[e.ItemIndex].Selected = false;
+                    scriptDisplay.Items[corresIndex].Selected = false;
                 }
                 
                 // disabling only happens when buttons are idle
@@ -1279,18 +1237,8 @@ namespace PowerPointLabs
 
         private void ScriptDisplayItemSelectionChanged(object sender, ListViewItemSelectionChangedEventArgs e)
         {
-            int corresIndex;
-            int currentSlideRelativeID = GetRelativeSlideIndex(PowerPointPresentation.CurrentSlide.ID);
-            int hashedKey = GetHashedKey(currentSlideRelativeID, e.ItemIndex);
-
-            if (_scriptRecrodMapper.ContainsKey(hashedKey))
-            {
-                corresIndex = _scriptRecrodMapper[hashedKey];
-            }
-            else
-            {
-                corresIndex = -1;
-            }
+            int relativeSlideID = GetRelativeSlideIndex(PowerPointPresentation.CurrentSlide.ID);
+            int corresIndex = GetRecordIndexFromScriptIndex(relativeSlideID, e.ItemIndex);
 
             if (e.IsSelected)
             {
@@ -1330,7 +1278,6 @@ namespace PowerPointLabs
             _audioList = new List<List<Audio>>();
             _scriptList = new List<List<string>>();
             
-            _scriptRecrodMapper = new Dictionary<int, int>();
             _md5ScriptMapper = new Dictionary<string, int>();
             
             InitializeComponent();
