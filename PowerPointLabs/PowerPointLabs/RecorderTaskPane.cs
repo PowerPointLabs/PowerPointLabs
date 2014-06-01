@@ -455,7 +455,6 @@ namespace PowerPointLabs
 
                         // map the audio to the script, and vice versa
                         var hashedKey = GetHashedKey(slide.Index - 1, speechOnSlide);
-                        _recordScriptMapper[hashedKey] = speechOnSlide;
                         _scriptRecrodMapper[hashedKey] = speechOnSlide;
 
                         validSpeechCnt++;
@@ -470,9 +469,12 @@ namespace PowerPointLabs
 
             foreach (var slide in slides)
             {
+                int audioIndex = 0;
+                
                 foreach (var audio in _audioList[slide.Index - 1])
                 {
-                    audio.EmbedOnSlide(slide);
+                    audio.EmbedOnSlide(slide, audioIndex);
+                    audioIndex++;
                 }
             }
         }
@@ -578,7 +580,6 @@ namespace PowerPointLabs
             {
                 var hashedKey = GetHashedKey(relativeSlideID, i);
 
-                _recordScriptMapper[hashedKey] = i;
                 _scriptRecrodMapper[hashedKey] = i;
             }
         }
@@ -866,7 +867,7 @@ namespace PowerPointLabs
         /// Handler handles click event when sound is recording. It will save
         /// the sound to a user-specified path.
         /// </summary>
-        public void StopButtonRecordingHandler(Audio currentPlayback, int recordIndex, PowerPointSlide currentSlide)
+        public void StopButtonRecordingHandler(Audio currentPlayback, int scriptIndex, PowerPointSlide currentSlide)
         {
             // enable the control of play button
             playButton.Enabled = true;
@@ -901,7 +902,7 @@ namespace PowerPointLabs
                     }
                     else
                     {
-                        displayName = String.Format(SpeechShapeFormat, recordIndex);
+                        displayName = String.Format(SpeechShapeFormat, scriptIndex);
                     }
 
                     Audio newRec = AudioHelper.DumpAudio(displayName, saveName, currentPlayback.MatchSciptID);;
@@ -914,22 +915,22 @@ namespace PowerPointLabs
                     AudioHelper.CloseAudio();
 
                     // update record list
-                    if (recordIndex < _audioList[relativeID].Count)
+                    if (scriptIndex < _audioList[relativeID].Count)
                     {
-                        _audioList[relativeID][recordIndex] = newRec;
+                        _audioList[relativeID][scriptIndex] = newRec;
                     }
                     else
                     {
                         _audioList[relativeID].Add(newRec);
                     }
 
-                    UpdateRecordList(recordIndex, displayName, newRec.Length);
+                    UpdateRecordList(scriptIndex, displayName, newRec.Length);
 
                     // update the script list
-                    UpdateScriptList(recordIndex, null, ScriptStatus.Recorded);
+                    UpdateScriptList(scriptIndex, null, ScriptStatus.Recorded);
 
                     // notify outside to embed the audio
-                    newRec.EmbedOnSlide(currentSlide);
+                    newRec.EmbedOnSlide(currentSlide, scriptIndex);
                 }
             }
             catch (Exception e)

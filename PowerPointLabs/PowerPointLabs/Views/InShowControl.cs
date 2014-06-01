@@ -62,7 +62,6 @@ namespace PowerPointLabs.Views
                     _status = ButtonStatus.Rec;
                     recButton.Text = "Stop and Advance";
                     recorderPane.RecButtonIdleHandler();
-                    _slideShowWindow.View.GotoClick(click + 1);
                     break;
 
                 case ButtonStatus.Rec:
@@ -71,6 +70,7 @@ namespace PowerPointLabs.Views
                     
                     recorderPane.StopButtonRecordingHandler(recorderPane.GetPlaybackFromList(click, currentSlide.ID),
                                                             click, currentSlide);
+                    _slideShowWindow.View.GotoClick(click + 1);
                     break;
             }
         }

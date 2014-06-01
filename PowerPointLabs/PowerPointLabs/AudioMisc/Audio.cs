@@ -41,15 +41,22 @@ namespace PowerPointLabs.AudioMisc
             Type = AudioHelper.GetAudioType(saveName);
         }
 
-        public void EmbedOnSlide(PowerPointSlide slide)
+        // before we embed, we need to check if we have any old shape on the slide if
+        // we have, we need to delete it AFTER the new shape is inserted to preserve
+        // the original timeline.
+        // However, for the inserted shape animation, we need to see if the animation
+        // is the first animation for the click. If there are some other click events
+        // on that click, the animation should be made as (OnPrev); else it should be
+        // made as (OnPageClick).
+        public void EmbedOnSlide(PowerPointSlide slide, int clickNumber)
         {
             // to distinguish the new shape with the old shape
             var shapeName = Name;
             var isOnClick = SaveName.Contains("OnClick");
 
             // init click number
-            var temp = Name.Split(new[] { ' ' });
-            var clickNumber = Int32.Parse(temp[2]);
+            //var temp = Name.Split(new[] { ' ' });
+            //var clickNumber = Int32.Parse(temp[2]);
 
             if (slide != null)
             {
@@ -68,7 +75,7 @@ namespace PowerPointLabs.AudioMisc
 
                     if (isOnClick)
                     {
-                        //slide.SetShapeAsClickTriggered(audioShape, clickNumber, MsoAnimEffect.msoAnimEffectMediaPlay);
+                        slide.SetShapeAsClickTriggered(audioShape, clickNumber, MsoAnimEffect.msoAnimEffectMediaPlay);
 
                         if (nextClickEffect != null)
                         {
