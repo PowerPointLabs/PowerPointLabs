@@ -455,12 +455,12 @@ namespace PowerPointLabs
 
                         // if current audio is not the first speech audio on the slide, append (OnClick)
                         // to the name
-                        if (speechOnSlide != 0)
-                        {
-                            string newName = audio.SaveName.Replace(".wav", " (OnClick).wav"); ;
-                            Directory.Move(audio.SaveName, newName);
-                            audio.SaveName = newName;
-                        }
+                        //if (speechOnSlide != 0)
+                        //{
+                        //    string newName = audio.SaveName.Replace(".wav", " (OnClick).wav"); ;
+                        //    Directory.Move(audio.SaveName, newName);
+                        //    audio.SaveName = newName;
+                        //}
 
                         audio.Name = shape.Name;
                         audio.MatchSciptID = speechOnSlide;

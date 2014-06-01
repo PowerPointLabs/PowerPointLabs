@@ -52,11 +52,7 @@ namespace PowerPointLabs.AudioMisc
         {
             // to distinguish the new shape with the old shape
             var shapeName = Name;
-            var isOnClick = SaveName.Contains("OnClick");
-
-            // init click number
-            //var temp = Name.Split(new[] { ' ' });
-            //var clickNumber = Int32.Parse(temp[2]);
+            var isOnClick = clickNumber > 0;
 
             if (slide != null)
             {
@@ -67,7 +63,6 @@ namespace PowerPointLabs.AudioMisc
                 try
                 {
                     var audioShape = AudioHelper.InsertAudioFileOnSlide(slide, SaveName);
-                    //slide.RemoveAnimationsForShape(audioShape);
                     
                     // give a temp name first so that we are able to delete the old shape
                     // with prefix
@@ -75,8 +70,6 @@ namespace PowerPointLabs.AudioMisc
 
                     if (isOnClick)
                     {
-                        slide.SetShapeAsClickTriggered(audioShape, clickNumber, MsoAnimEffect.msoAnimEffectMediaPlay);
-
                         if (nextClickEffect != null)
                         {
                             var newAnimation = sequence.AddEffect(audioShape, MsoAnimEffect.msoAnimEffectMediaPlay,
