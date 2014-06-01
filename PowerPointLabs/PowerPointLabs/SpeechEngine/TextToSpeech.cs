@@ -34,7 +34,7 @@ namespace PowerPointLabs.SpeechEngine
         {
             var taggedNotes = new TaggedText(notesText);
             List<String> stringsToSave = taggedNotes.SplitByClicks();
-            MD5 md5 = MD5.Create();
+            //MD5 md5 = MD5.Create();
 
             for (int i = 0; i < stringsToSave.Count; i++)
             {
@@ -45,16 +45,16 @@ namespace PowerPointLabs.SpeechEngine
                 String fileName = i > 0 ? baseFileName + " (OnClick)" : baseFileName;
 
                 // compute md5 of the converted text
-                var hashcode = md5.ComputeHash(System.Text.Encoding.UTF8.GetBytes(textToSave));
-                StringBuilder sb = new StringBuilder();
+                //var hashcode = md5.ComputeHash(System.Text.Encoding.UTF8.GetBytes(textToSave));
+                //StringBuilder sb = new StringBuilder();
                 
-                foreach (byte x in hashcode)
-                {
-                    sb.Append(x.ToString("X2"));
-                }
+                //foreach (byte x in hashcode)
+                //{
+                //    sb.Append(x.ToString("X2"));
+                //}
 
                 // append MD5 to the file name
-                fileName += " " + sb.ToString();
+                //fileName += " " + sb.ToString();
                 String filePath = folderPath + "\\" + fileName + ".wav";
 
                 SaveStringToWaveFile(textToSave, filePath);

@@ -68,8 +68,7 @@ namespace PowerPointLabs.Views
                     _status = ButtonStatus.Idle;
                     recButton.Text = "Record";
                     
-                    recorderPane.StopButtonRecordingHandler(recorderPane.GetPlaybackFromList(click, currentSlide.ID),
-                                                            click, currentSlide);
+                    recorderPane.StopButtonRecordingHandler(click, currentSlide);
                     _slideShowWindow.View.GotoClick(click + 1);
                     break;
             }

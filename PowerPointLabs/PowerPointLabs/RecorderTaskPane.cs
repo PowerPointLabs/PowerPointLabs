@@ -32,8 +32,6 @@ namespace PowerPointLabs
         
         // map the text MD5 to record id
         private Dictionary<string, int> _md5ScriptMapper;
-        // map the record id to script id
-        private Dictionary<int, int> _recordScriptMapper;
         // map the scipt id to record id
         private Dictionary<int, int> _scriptRecrodMapper;
         // this offset is used to map a slide id to relative slide id
@@ -157,9 +155,26 @@ namespace PowerPointLabs
             return curID - slideIDOffset;
         }
 
-        private int GetHashedKey(int slideID, int index)
+        private int GetHashedKey(int relativeSlideID, int index)
         {
-            return slideID*Offset + index;
+            return relativeSlideID * Offset + index;
+        }
+
+        private int GetRecordIndexFromScriptIndex(int relativeId, int scriptIndex)
+        {
+            var recordIndex = -1;
+
+            for (var i = 0; i < _audioList[relativeId].Count; i ++)
+            {
+                var audio = _audioList[relativeId][i];
+
+                if (audio.MatchSciptID == scriptIndex)
+                {
+                    recordIndex = i;
+                }
+            }
+
+            return recordIndex;
         }
 
         private Audio GetPlaybackFromList()
@@ -167,9 +182,9 @@ namespace PowerPointLabs
             var slideID = GetRelativeSlideIndex(PowerPointPresentation.CurrentSlide.ID);
             int playbackIndex = -1;
             
-            if (scriptDisplay.SelectedIndices.Count != 0)
+            if (recDisplay.SelectedIndices.Count != 0)
             {
-                playbackIndex = scriptDisplay.SelectedIndices[0];
+                playbackIndex = recDisplay.SelectedIndices[0];
             }
             
             if (playbackIndex == -1)
@@ -180,16 +195,30 @@ namespace PowerPointLabs
             return _audioList[slideID][playbackIndex];
         }
 
-        public Audio GetPlaybackFromList(int index, int slideID)
+        public Audio GetPlaybackFromList(int scriptIndex, int slideID)
         {
             var relativeSlideID = GetRelativeSlideIndex(slideID);
-            return _audioList[relativeSlideID][index];
+            var hashedKey = GetHashedKey(relativeSlideID, scriptIndex);
+            int recordIndex = -1;
+
+            if (_scriptRecrodMapper.ContainsKey(hashedKey))
+            {
+                recordIndex = _scriptRecrodMapper[hashedKey];
+            }
+
+            if (recordIndex != -1)
+            {
+                return _audioList[relativeSlideID][recordIndex];
+            }
+
+            return null;
         }
 
+        // decripted
         private void UpdateRecordList(int index, string name, string length)
         {
             // change index to 1-base
-            index ++;
+            index++;
             // add the latest record to the list
             if (index > recDisplay.Items.Count)
             {
@@ -213,6 +242,19 @@ namespace PowerPointLabs
                 }
 
                 recDisplay.Items[index - 1].SubItems[3].Text = DateTime.Now.ToString();
+            }
+        }
+
+        private void UpdateRecordList(int relativeSlideID)
+        {
+            for (int index = 0; index < _audioList[relativeSlideID].Count; index ++ )
+            {
+                var audio = _audioList[relativeSlideID][index];
+
+                ListViewItem item = recDisplay.Items.Add((index + 1).ToString());
+                item.SubItems.Add(audio.Name);
+                item.SubItems.Add(audio.Length);
+                item.SubItems.Add(DateTime.Now.ToString());
             }
         }
 
@@ -253,10 +295,11 @@ namespace PowerPointLabs
             // update the record list view
             ClearRecordDisplayList();
             recDisplay.BeginUpdate();
-            for (int i = 0; i < audio.Count; i++)
-            {
-                UpdateRecordList(i, audio[i].Name, AudioHelper.GetAudioLengthString(audio[i].SaveName));
-            }
+            //for (int i = 0; i < audio.Count; i++)
+            //{
+            //    UpdateRecordList(i, audio[i].Name, AudioHelper.GetAudioLengthString(audio[i].SaveName));
+            //}
+            UpdateRecordList(relativeID);
             recDisplay.EndUpdate();
 
             // update the script list view
@@ -321,20 +364,18 @@ namespace PowerPointLabs
 
             // clear the script->audio & audio->script mappings
             _scriptRecrodMapper.Clear();
-            _recordScriptMapper.Clear();
         }
 
         public void ClearRecordDataList(int id)
         {
             int relativeIndex = GetRelativeSlideIndex(id);
             
-            // clear the script->audio & audio->script mappings
+            // clear the script->audio mappings
             for (int i = 0; i < _audioList[relativeIndex].Count; i ++)
             {
-                var hashedKey = GetHashedKey(relativeIndex, i);
+                var audio = _audioList[relativeIndex][i];
 
-                _scriptRecrodMapper.Remove(GetHashedKey(relativeIndex, _recordScriptMapper[hashedKey]));
-                _recordScriptMapper.Remove(hashedKey);
+                _scriptRecrodMapper.Remove(GetHashedKey(relativeIndex, audio.MatchSciptID));
             }
 
             // clear data structure
@@ -376,7 +417,7 @@ namespace PowerPointLabs
         {
             if (_recButtonStatus != RecorderStatus.Idle)
             {
-                StopButtonRecordingHandler(GetPlaybackFromList(), scriptDisplay.SelectedIndices[0],
+                StopButtonRecordingHandler(scriptDisplay.SelectedIndices[0],
                                            PowerPointPresentation.CurrentSlide);
             }
 
@@ -867,7 +908,7 @@ namespace PowerPointLabs
         /// Handler handles click event when sound is recording. It will save
         /// the sound to a user-specified path.
         /// </summary>
-        public void StopButtonRecordingHandler(Audio currentPlayback, int scriptIndex, PowerPointSlide currentSlide)
+        public void StopButtonRecordingHandler(int scriptIndex, PowerPointSlide currentSlide)
         {
             // enable the control of play button
             playButton.Enabled = true;
@@ -879,6 +920,9 @@ namespace PowerPointLabs
             statusLabel.Text = "Ready.";
             ResetTimer();
 
+            // get current playback, can be null if there's no matched audio
+            var currentPlayback = GetPlaybackFromList(scriptIndex, currentSlide.ID);
+
             try
             {
                 // stop recording and get the length of the recording
@@ -887,49 +931,102 @@ namespace PowerPointLabs
                 timerLabel.Text = AudioHelper.GetAudioLengthString();
 
                 // ask if the user wants to do the replacement
-                if (MessageBox.Show("Do you want to replace\n" + currentPlayback.SaveName + "\nwith current record?",
-                                    "Replacement", MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.Yes)
+                DialogResult result;
+                if (currentPlayback == null)
+                {
+                    result = MessageBox.Show("Do you want to save the record?",
+                                             "Replacement", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
+                }
+                else
+                {
+                    result = MessageBox.Show("Do you want to replace\n" + currentPlayback.SaveName + "\nwith current record?",
+                                             "Replacement", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
+                }
+                
+                if (result == DialogResult.Yes)
                 {
                     // user wants to do the replacement, save the file and replace the record
-                    string saveName = currentPlayback.SaveName.Replace(".wav", " rec.wav");
+                    string saveName;
                     string displayName;
+                    Audio newRec = null;
 
                     var relativeID = GetRelativeSlideIndex(currentSlide.ID);
-                    
-                    if (currentPlayback != null)
+
+                    // map the script index with record index
+                    // here a simple iteration will find:
+                    // 1. the replacement position if a record exists;
+                    // 2. an insertion position if a record needs to be added
+                    // specially, index == -1 means the record needs to be appended
+                    var recordIndex = -1;
+
+                    for (int i = 0; i < _audioList[relativeID].Count; i ++ )
                     {
-                        displayName = currentPlayback.Name;
-                    }
-                    else
-                    {
-                        displayName = String.Format(SpeechShapeFormat, scriptIndex);
+                        var audio = _audioList[relativeID][i];
+                        
+                        if (audio.MatchSciptID >= scriptIndex)
+                        {
+                            recordIndex = i;
+                            break;
+                        }
                     }
 
-                    Audio newRec = AudioHelper.DumpAudio(displayName, saveName, currentPlayback.MatchSciptID);;
-                    
-                    // delete the old file
-                    File.Delete(currentPlayback.SaveName);
+                    // if current playback != null -> there's a corresponding record for the
+                    // script, we can do the replacement;
+                    if (currentPlayback != null)
+                    {
+                        saveName = currentPlayback.SaveName.Replace(".wav", " rec.wav");
+                        displayName = currentPlayback.Name;
+                        newRec = AudioHelper.DumpAudio(displayName, saveName, currentPlayback.MatchSciptID);
+                        
+                        // delete the old file
+                        File.Delete(currentPlayback.SaveName);
+
+                        // replace the record list
+                        // at this place, record index == the index of current play back
+                        _audioList[relativeID][recordIndex] = newRec;
+
+                        // update the item in display
+                        UpdateRecordList(recordIndex, displayName, newRec.Length);
+                    }
+                    else
+                    // if current playback == null -> there's no corresponding record for the
+                    // script, we need to construct the new record and insert it to a proper
+                    // position
+                    {
+                        var saveNameSuffix = " " + _audioList[relativeID].Count.ToString() + " rec.wav";
+                        saveName = String.Format(SaveNameFormat, relativeID) + saveNameSuffix;
+                        
+                        // the display name -> which script it corresponds to
+                        displayName = String.Format(SpeechShapeFormat, scriptIndex);
+
+                        newRec = AudioHelper.DumpAudio(displayName, saveName, scriptIndex);
+
+                        // insert the new audio
+                        if (recordIndex == -1)
+                        {
+                            _audioList[relativeID].Add(newRec);
+                        }
+                        else
+                        {
+                            _audioList[relativeID].Insert(recordIndex, newRec);
+                        }
+
+                        // update the whole record display list
+                        UpdateRecordList(relativeID);
+
+                        // update script->audio mapper
+                        var hashedKey = GetHashedKey(relativeID, scriptIndex);
+                        _scriptRecrodMapper[hashedKey] = recordIndex;
+                    }
 
                     // save curent sound
                     Native.mciSendString("save sound \"" + saveName + "\"", null, 0, IntPtr.Zero);
                     AudioHelper.CloseAudio();
 
-                    // update record list
-                    if (scriptIndex < _audioList[relativeID].Count)
-                    {
-                        _audioList[relativeID][scriptIndex] = newRec;
-                    }
-                    else
-                    {
-                        _audioList[relativeID].Add(newRec);
-                    }
-
-                    UpdateRecordList(scriptIndex, displayName, newRec.Length);
-
                     // update the script list
                     UpdateScriptList(scriptIndex, null, ScriptStatus.Recorded);
 
-                    // notify outside to embed the audio
+                    // embed the audio
                     newRec.EmbedOnSlide(currentSlide, scriptIndex);
                 }
             }
@@ -978,32 +1075,30 @@ namespace PowerPointLabs
         {
             // close unfinished session
             ResetSession();
-
-            // UI settings
             ResetRecorder();
-            statusLabel.Text = "Playing...";
-            statusLabel.Visible = true;
-            // enable stop button
-            stopButton.Enabled = true;
-            // disable control of both lists
-            recDisplay.Enabled = false;
-            scriptDisplay.Enabled = false;
-
-            // change the button status and change the button text
-            _playButtonStatus = RecorderStatus.Playing;
-            playButton.Text = "Pause";
-
+            
             // get play back length
             var playback = GetPlaybackFromList();
 
-            // this shall not happen since the button is disabled when nothing
-            // is selected
             if (playback == null)
             {
                 MessageBox.Show("No record to play back. Please record first.");
             }
             else
             {
+                // UI settings
+                statusLabel.Text = "Playing...";
+                statusLabel.Visible = true;
+                // enable stop button
+                stopButton.Enabled = true;
+                // disable control of both lists
+                recDisplay.Enabled = false;
+                scriptDisplay.Enabled = false;
+
+                // change the button status and change the button text
+                _playButtonStatus = RecorderStatus.Playing;
+                playButton.Text = "Pause";
+
                 _playbackLenMillis = playback.LengthMillis;
 
                 // start the timer and track bar
@@ -1099,7 +1194,7 @@ namespace PowerPointLabs
             if (_recButtonStatus == RecorderStatus.Recording ||
                 _recButtonStatus == RecorderStatus.Pause)
             {
-                StopButtonRecordingHandler(GetPlaybackFromList(), scriptDisplay.SelectedIndices[0],
+                StopButtonRecordingHandler(scriptDisplay.SelectedIndices[0],
                                            PowerPointPresentation.CurrentSlide);
             } else
             if (_playButtonStatus == RecorderStatus.Playing ||
@@ -1152,18 +1247,8 @@ namespace PowerPointLabs
 
         private void RecDisplayItemSelectionChanged(object sender, ListViewItemSelectionChangedEventArgs e)
         {
-            int corresIndex;
             int currentSlideRelativeID = GetRelativeSlideIndex(PowerPointPresentation.CurrentSlide.ID);
-            int hashedKey = GetHashedKey(currentSlideRelativeID, e.ItemIndex);
-
-            if (_recordScriptMapper.ContainsKey(hashedKey))
-            {
-                corresIndex = _recordScriptMapper[hashedKey];
-            }
-            else
-            {
-                corresIndex = -1;
-            }
+            int corresIndex = _audioList[currentSlideRelativeID][e.ItemIndex].MatchSciptID;
 
             // if some record is selected, enable the record button
             if (e.IsSelected)
@@ -1200,7 +1285,7 @@ namespace PowerPointLabs
 
             if (_scriptRecrodMapper.ContainsKey(hashedKey))
             {
-                corresIndex = _scriptRecrodMapper[e.ItemIndex];
+                corresIndex = _scriptRecrodMapper[hashedKey];
             }
             else
             {
@@ -1245,7 +1330,6 @@ namespace PowerPointLabs
             _audioList = new List<List<Audio>>();
             _scriptList = new List<List<string>>();
             
-            _recordScriptMapper = new Dictionary<int, int>();
             _scriptRecrodMapper = new Dictionary<int, int>();
             _md5ScriptMapper = new Dictionary<string, int>();
             
