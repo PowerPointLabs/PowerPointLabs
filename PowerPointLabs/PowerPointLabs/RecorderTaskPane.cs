@@ -451,19 +451,12 @@ namespace PowerPointLabs
                             MessageBox.Show("Unrecognize Embedded Audio");
                         }
 
+                        // derive matched id from shape name
+                        var temp = shape.Name.Split(new [] {' '});
+                        audio.MatchSciptID = Int32.Parse(temp[2]);
+
                         audio.SaveName = tempFullPath + String.Format(ReopenSpeechFormat, validSpeechCnt + 1);
-
-                        // if current audio is not the first speech audio on the slide, append (OnClick)
-                        // to the name
-                        //if (speechOnSlide != 0)
-                        //{
-                        //    string newName = audio.SaveName.Replace(".wav", " (OnClick).wav"); ;
-                        //    Directory.Move(audio.SaveName, newName);
-                        //    audio.SaveName = newName;
-                        //}
-
                         audio.Name = shape.Name;
-                        audio.MatchSciptID = speechOnSlide;
                         audio.Length = AudioHelper.GetAudioLengthString(audio.SaveName);
                         audio.LengthMillis = AudioHelper.GetAudioLength(audio.SaveName);
 
