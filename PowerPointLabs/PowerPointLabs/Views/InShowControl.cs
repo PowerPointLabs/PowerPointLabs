@@ -46,8 +46,6 @@ namespace PowerPointLabs.Views
             Native.GetWindowRect(new HandleRef(new object(), slideShowWindow), out rec);
             
             Location = new Point(rec.Right - Width, rec.Bottom - Height- 50);
-
-            _currentScriptIndex = 0;
         }
 
         private void RecButtonClick(object sender, EventArgs e)
@@ -69,6 +67,7 @@ namespace PowerPointLabs.Views
                     recButton.Text = "Record";
                     
                     recorderPane.StopButtonRecordingHandler(click, currentSlide);
+                    _slideShowWindow.Activate();
                     _slideShowWindow.View.GotoClick(click + 1);
                     break;
             }

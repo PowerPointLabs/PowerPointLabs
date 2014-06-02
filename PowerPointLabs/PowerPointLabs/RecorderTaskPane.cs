@@ -1185,12 +1185,14 @@ namespace PowerPointLabs
             
             // set the starting slide and start the slide show
             var slideShowSettings = Globals.ThisAddIn.Application.ActivePresentation.SlideShowSettings;
+            
             // start from the selected slide
             slideShowSettings.StartingSlide = slideIndex;
-            slideShowSettings.Run();
-
+            slideShowSettings.EndingSlide = Globals.ThisAddIn.Application.ActivePresentation.Slides.Count;
+            slideShowSettings.RangeType = PpSlideShowRangeType.ppShowSlideRange;
+            
             // get the slideShowWindow and slideShowView object
-            var slideShowWindow = Globals.ThisAddIn.Application.ActivePresentation.SlideShowWindow;
+            var slideShowWindow = slideShowSettings.Run();
 
             // init the in-show control
             _inShowControlBox = new InShowControl();

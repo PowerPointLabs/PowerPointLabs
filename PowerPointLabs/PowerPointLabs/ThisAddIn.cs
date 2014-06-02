@@ -233,7 +233,10 @@ namespace PowerPointLabs
 
             // delete the temp folder
             string tempFolderPath = Path.GetTempPath() + TempFolderName;
-            Directory.Delete(tempFolderPath, true);
+            if (Directory.Exists(tempFolderPath))
+            {
+                Directory.Delete(tempFolderPath, true);
+            }
         }
 
         void UpdateRecorderPane(int count, int id)
