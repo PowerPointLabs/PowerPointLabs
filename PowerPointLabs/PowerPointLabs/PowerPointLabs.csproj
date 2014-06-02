@@ -222,6 +222,9 @@
     <Compile Include="AudioMisc\AudioHelper.cs" />
     <Compile Include="AutoAnimate.cs" />
     <Compile Include="AutoZoom.cs" />
+    <Compile Include="ConvertToPicture.cs" />
+    <Compile Include="CropToShape.cs" />
+    <Compile Include="FitToSlide.cs" />
     <Compile Include="Models\PowerPointAutoAnimateSlide.cs" />
     <Compile Include="Models\PowerPointDeMagnifyingSlide.cs" />
     <Compile Include="Models\PowerPointDrillDownSlide.cs" />

@@ -133,7 +133,7 @@ namespace DeployHelper
 
         private static void DisplayDone(string content)
         {
-            ConsoleWriteWithColor(content, ConsoleColor.Green);
+            ConsoleWriteWithColor(content + "\n", ConsoleColor.Green);
         }
 
         private static string AddQuote(string dir)
