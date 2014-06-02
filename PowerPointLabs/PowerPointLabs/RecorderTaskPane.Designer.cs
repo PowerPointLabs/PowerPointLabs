@@ -38,12 +38,13 @@
             this.recNumber = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.recName = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.recLength = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
-            this.recDate = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.scriptDisplay = new System.Windows.Forms.ListView();
             this.statusColumn = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.scirptColumn = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.scriptListViewLabel = new System.Windows.Forms.Label();
             this.slideShowButton = new System.Windows.Forms.Button();
+            this.scriptDetialLabel = new System.Windows.Forms.Label();
+            this.scriptDetailTextBox = new System.Windows.Forms.TextBox();
             ((System.ComponentModel.ISupportInitialize)(this.soundTrackBar)).BeginInit();
             this.SuspendLayout();
             // 
@@ -111,14 +112,13 @@
             this.recDisplay.Columns.AddRange(new System.Windows.Forms.ColumnHeader[] {
             this.recNumber,
             this.recName,
-            this.recLength,
-            this.recDate});
+            this.recLength});
             this.recDisplay.FullRowSelect = true;
             this.recDisplay.HideSelection = false;
-            this.recDisplay.Location = new System.Drawing.Point(14, 138);
+            this.recDisplay.Location = new System.Drawing.Point(12, 137);
             this.recDisplay.MultiSelect = false;
             this.recDisplay.Name = "recDisplay";
-            this.recDisplay.Size = new System.Drawing.Size(253, 191);
+            this.recDisplay.Size = new System.Drawing.Size(253, 122);
             this.recDisplay.TabIndex = 6;
             this.recDisplay.UseCompatibleStateImageBehavior = false;
             this.recDisplay.View = System.Windows.Forms.View.Details;
@@ -127,22 +127,17 @@
             // recNumber
             // 
             this.recNumber.Text = "No.";
-            this.recNumber.Width = 38;
+            this.recNumber.Width = 34;
             // 
             // recName
             // 
             this.recName.Text = "Name";
-            this.recName.Width = 47;
+            this.recName.Width = 138;
             // 
             // recLength
             // 
             this.recLength.Text = "Length";
-            this.recLength.Width = 68;
-            // 
-            // recDate
-            // 
-            this.recDate.Text = "Record Date";
-            this.recDate.Width = 81;
+            this.recLength.Width = 74;
             // 
             // scriptDisplay
             // 
@@ -151,10 +146,10 @@
             this.scirptColumn});
             this.scriptDisplay.FullRowSelect = true;
             this.scriptDisplay.HideSelection = false;
-            this.scriptDisplay.Location = new System.Drawing.Point(12, 356);
+            this.scriptDisplay.Location = new System.Drawing.Point(12, 287);
             this.scriptDisplay.MultiSelect = false;
             this.scriptDisplay.Name = "scriptDisplay";
-            this.scriptDisplay.Size = new System.Drawing.Size(255, 168);
+            this.scriptDisplay.Size = new System.Drawing.Size(253, 122);
             this.scriptDisplay.TabIndex = 7;
             this.scriptDisplay.UseCompatibleStateImageBehavior = false;
             this.scriptDisplay.View = System.Windows.Forms.View.Details;
@@ -173,11 +168,11 @@
             // 
             this.scriptListViewLabel.AutoSize = true;
             this.scriptListViewLabel.Font = new System.Drawing.Font("SimSun", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.scriptListViewLabel.Location = new System.Drawing.Point(14, 336);
+            this.scriptListViewLabel.Location = new System.Drawing.Point(14, 269);
             this.scriptListViewLabel.Name = "scriptListViewLabel";
             this.scriptListViewLabel.Size = new System.Drawing.Size(82, 12);
             this.scriptListViewLabel.TabIndex = 8;
-            this.scriptListViewLabel.Text = "Your Script";
+            this.scriptListViewLabel.Text = "Script List";
             // 
             // slideShowButton
             // 
@@ -189,10 +184,32 @@
             this.slideShowButton.UseVisualStyleBackColor = true;
             this.slideShowButton.Click += new System.EventHandler(this.SlideShowButtonClick);
             // 
+            // scriptDetialLabel
+            // 
+            this.scriptDetialLabel.AutoSize = true;
+            this.scriptDetialLabel.Font = new System.Drawing.Font("SimSun", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+            this.scriptDetialLabel.Location = new System.Drawing.Point(12, 417);
+            this.scriptDetialLabel.Name = "scriptDetialLabel";
+            this.scriptDetialLabel.Size = new System.Drawing.Size(96, 12);
+            this.scriptDetialLabel.TabIndex = 10;
+            this.scriptDetialLabel.Text = "Script Detail";
+            // 
+            // scriptDetailTextBox
+            // 
+            this.scriptDetailTextBox.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.scriptDetailTextBox.Font = new System.Drawing.Font("SimSun", 10.5F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+            this.scriptDetailTextBox.Location = new System.Drawing.Point(12, 434);
+            this.scriptDetailTextBox.Multiline = true;
+            this.scriptDetailTextBox.Name = "scriptDetailTextBox";
+            this.scriptDetailTextBox.Size = new System.Drawing.Size(253, 95);
+            this.scriptDetailTextBox.TabIndex = 11;
+            // 
             // RecorderTaskPane
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+            this.Controls.Add(this.scriptDetailTextBox);
+            this.Controls.Add(this.scriptDetialLabel);
             this.Controls.Add(this.slideShowButton);
             this.Controls.Add(this.scriptListViewLabel);
             this.Controls.Add(this.scriptDisplay);
@@ -204,7 +221,7 @@
             this.Controls.Add(this.recButton);
             this.Controls.Add(this.statusLabel);
             this.Name = "RecorderTaskPane";
-            this.Size = new System.Drawing.Size(280, 538);
+            this.Size = new System.Drawing.Size(280, 546);
             this.Load += new System.EventHandler(this.RecorderPane_Load);
             ((System.ComponentModel.ISupportInitialize)(this.soundTrackBar)).EndInit();
             this.ResumeLayout(false);
@@ -224,11 +241,12 @@
         private System.Windows.Forms.ColumnHeader recNumber;
         private System.Windows.Forms.ColumnHeader recName;
         private System.Windows.Forms.ColumnHeader recLength;
-        private System.Windows.Forms.ColumnHeader recDate;
         private System.Windows.Forms.ListView scriptDisplay;
         private System.Windows.Forms.ColumnHeader statusColumn;
         private System.Windows.Forms.ColumnHeader scirptColumn;
         private System.Windows.Forms.Label scriptListViewLabel;
         private System.Windows.Forms.Button slideShowButton;
+        private System.Windows.Forms.Label scriptDetialLabel;
+        private System.Windows.Forms.TextBox scriptDetailTextBox;
     }
 }

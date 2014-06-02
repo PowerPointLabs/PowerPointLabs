@@ -137,6 +137,12 @@ namespace PowerPointLabs
             stopButton.Enabled = enable;
         }
 
+        private void SetScriptTextBoxScroll()
+        {
+            // TODO:
+            // need to implement
+        }
+
         private string GetMD5(string s)
         {
             var hashcode = _md5.ComputeHash(System.Text.Encoding.UTF8.GetBytes(s));
@@ -153,11 +159,6 @@ namespace PowerPointLabs
         private int GetRelativeSlideIndex(int curID)
         {
             return curID - slideIDOffset;
-        }
-
-        private int GetHashedKey(int relativeSlideID, int index)
-        {
-            return relativeSlideID * Offset + index;
         }
 
         private int GetRecordIndexFromScriptIndex(int relativeId, int scriptIndex)
@@ -219,7 +220,6 @@ namespace PowerPointLabs
                 ListViewItem item = recDisplay.Items.Add(index.ToString());
                 item.SubItems.Add(name);
                 item.SubItems.Add(length);
-                item.SubItems.Add(DateTime.Now.ToString());
             }
             else
             {
@@ -248,7 +248,6 @@ namespace PowerPointLabs
                 ListViewItem item = recDisplay.Items.Add((index + 1).ToString());
                 item.SubItems.Add(audio.Name);
                 item.SubItems.Add(audio.Length);
-                item.SubItems.Add(DateTime.Now.ToString());
             }
         }
 
@@ -1229,33 +1228,39 @@ namespace PowerPointLabs
 
         private void RecDisplayItemSelectionChanged(object sender, ListViewItemSelectionChangedEventArgs e)
         {
-            int currentSlideRelativeID = GetRelativeSlideIndex(PowerPointPresentation.CurrentSlide.ID);
-            int corresIndex = _audioList[currentSlideRelativeID][e.ItemIndex].MatchSciptID;
+            int relativeSlideID = GetRelativeSlideIndex(PowerPointPresentation.CurrentSlide.ID);
+            int corresIndex = _audioList[relativeSlideID][e.ItemIndex].MatchSciptID;
 
             // if some record is selected, enable the record button
             if (e.IsSelected)
             {
+                SetAllRecorderButtonState(true);
+                stopButton.Enabled = false;
+
                 if (corresIndex != -1)
                 {
                     scriptDisplay.Items[corresIndex].Selected = true;
                 }
-                
-                SetAllRecorderButtonState(true);
-                stopButton.Enabled = false;
+
+                scriptDetailTextBox.Text = _scriptList[relativeSlideID][corresIndex];
+
+                SetScriptTextBoxScroll();
             }
             else
             {
-                if (corresIndex != -1)
-                {
-                    scriptDisplay.Items[corresIndex].Selected = false;
-                }
-                
                 // disabling only happens when buttons are idle
                 if (_playButtonStatus == RecorderStatus.Idle &&
                     _recButtonStatus == RecorderStatus.Idle)
                 {
                     SetAllRecorderButtonState(false);
                 }
+
+                if (corresIndex != -1)
+                {
+                    scriptDisplay.Items[corresIndex].Selected = false;
+                }
+
+                scriptDetailTextBox.Text = "";
             }
         }
 
@@ -1277,21 +1282,28 @@ namespace PowerPointLabs
                 {
                     playButton.Enabled = false;
                 }
+
+                scriptDetailTextBox.Text = _scriptList[relativeSlideID][e.ItemIndex];
+
+                SetScriptTextBoxScroll();
             }
             else
             {
-                if (corresIndex != -1)
-                {
-                    recDisplay.Items[corresIndex].Selected = false;
-                }
-                
                 // disabling only happens when buttons are idle
                 if (_playButtonStatus == RecorderStatus.Idle &&
                     _recButtonStatus == RecorderStatus.Idle)
                 {
                     SetAllRecorderButtonState(false);
                 }
+
+                if (corresIndex != -1)
+                {
+                    recDisplay.Items[corresIndex].Selected = false;
+                }
+
+                scriptDetailTextBox.Text = "";
             }
+            
         }
         # endregion
         # endregion

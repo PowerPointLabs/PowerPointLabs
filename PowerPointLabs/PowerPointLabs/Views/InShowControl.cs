@@ -24,9 +24,6 @@ namespace PowerPointLabs.Views
         }
 
         private ButtonStatus _status;
-        
-        private int _currentSlide;
-        private int _currentScriptIndex;
         private SlideShowWindow _slideShowWindow;
 
         public InShowControl()
@@ -45,7 +42,7 @@ namespace PowerPointLabs.Views
             Native.RECT rec;
             Native.GetWindowRect(new HandleRef(new object(), slideShowWindow), out rec);
             
-            Location = new Point(rec.Right - Width, rec.Bottom - Height- 50);
+            Location = new Point(rec.Right - Width, rec.Bottom - Height- 55);
         }
 
         private void RecButtonClick(object sender, EventArgs e)
@@ -77,7 +74,7 @@ namespace PowerPointLabs.Views
                     }
                     else
                     {
-                        _slideShowWindow.View.GotoClick(click + 1);
+                        _slideShowWindow.View.GotoClick(click + 2);
                     }
                     
                     break;
