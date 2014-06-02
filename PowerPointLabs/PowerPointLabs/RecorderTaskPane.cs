@@ -38,6 +38,8 @@ namespace PowerPointLabs
         private List<List<Audio>> _audioList;
         // a collection of slides, each slide has a list of script
         private List<List<string>> _scriptList;
+        // a collection of audio buffer, for buffering slide show time recording
+        public List<List<Tuple<Audio, int>>> _audioBuffer;
 
         // Records save and display
         private readonly string _tempPath = Path.GetTempPath();
@@ -388,12 +390,17 @@ namespace PowerPointLabs
             return _recButtonStatus != RecorderStatus.Idle || _playButtonStatus != RecorderStatus.Idle;
         }
 
+        public void EnableSlideShow()
+        {
+            slideShowButton.Enabled = true;
+        }
+
         public void ForceStopEvent()
         {
             if (_recButtonStatus != RecorderStatus.Idle)
             {
                 StopButtonRecordingHandler(scriptDisplay.SelectedIndices[0],
-                                           PowerPointPresentation.CurrentSlide);
+                                           PowerPointPresentation.CurrentSlide, false);
             }
 
             if (_playButtonStatus != RecorderStatus.Idle)
@@ -862,7 +869,7 @@ namespace PowerPointLabs
         /// Handler handles click event when sound is recording. It will save
         /// the sound to a user-specified path.
         /// </summary>
-        public void StopButtonRecordingHandler(int scriptIndex, PowerPointSlide currentSlide)
+        public void StopButtonRecordingHandler(int scriptIndex, PowerPointSlide currentSlide, bool buffered)
         {
             // enable the control of play button
             playButton.Enabled = true;
@@ -977,8 +984,20 @@ namespace PowerPointLabs
                     // update the script list
                     UpdateScriptList(scriptIndex, null, ScriptStatus.Recorded);
 
-                    // embed the audio
-                    newRec.EmbedOnSlide(currentSlide, scriptIndex);
+                    // check if we need to buffer the audio or embed the audio
+                    if (!buffered)
+                    {
+                        newRec.EmbedOnSlide(currentSlide, scriptIndex);
+                    }
+                    else
+                    {
+                        while (_audioBuffer.Count < currentSlide.Index)
+                        {
+                            _audioBuffer.Add(new List<Tuple<Audio, int>>());
+                        }
+
+                        _audioBuffer[currentSlide.Index - 1].Add(new Tuple<Audio, int>(newRec, scriptIndex));
+                    }
                 }
             }
             catch (Exception e)
@@ -1146,7 +1165,7 @@ namespace PowerPointLabs
                 _recButtonStatus == RecorderStatus.Pause)
             {
                 StopButtonRecordingHandler(scriptDisplay.SelectedIndices[0],
-                                           PowerPointPresentation.CurrentSlide);
+                                           PowerPointPresentation.CurrentSlide, false);
             } else
             if (_playButtonStatus == RecorderStatus.Playing ||
                 _playButtonStatus == RecorderStatus.Pause)
@@ -1180,6 +1199,12 @@ namespace PowerPointLabs
 
         private void SlideShowButtonClick(object sender, EventArgs e)
         {
+            // clear audio buffer
+            _audioBuffer.Clear();
+
+            // disable slide show button
+            slideShowButton.Enabled = false;
+
             // get current slide number
             var slideIndex = PowerPointPresentation.CurrentSlide.Index;
             
@@ -1188,7 +1213,7 @@ namespace PowerPointLabs
             
             // start from the selected slide
             slideShowSettings.StartingSlide = slideIndex;
-            slideShowSettings.EndingSlide = Globals.ThisAddIn.Application.ActivePresentation.Slides.Count;
+            slideShowSettings.EndingSlide = PowerPointPresentation.SlideCount;
             slideShowSettings.RangeType = PpSlideShowRangeType.ppShowSlideRange;
             
             // get the slideShowWindow and slideShowView object
@@ -1276,6 +1301,7 @@ namespace PowerPointLabs
         {
             _audioList = new List<List<Audio>>();
             _scriptList = new List<List<string>>();
+            _audioBuffer = new List<List<Tuple<Audio, int>>>();
             
             _md5ScriptMapper = new Dictionary<string, int>();
             

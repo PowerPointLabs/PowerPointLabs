@@ -239,6 +239,46 @@ namespace PowerPointLabs
             }
         }
 
+        private void SlideShowBeginHandler(PowerPoint.SlideShowWindow wn)
+        {
+            isInSlideShow = true;
+        }
+
+        private void SlideShowEndHandler(PowerPoint.Presentation presentation)
+        {
+            isInSlideShow = false;
+
+            // enable slide show button
+            recorderTaskPane.EnableSlideShow();
+
+            // when leave the show, dispose the in-show control if we have one
+            recorderTaskPane.DisposeInSlideControlBox();
+
+            // if audio buffer is not empty, render the effects
+            if (recorderTaskPane._audioBuffer.Count != 0)
+            {
+                var slides = PowerPointPresentation.Slides.ToList();
+
+                for (int i = 0; i < recorderTaskPane._audioBuffer.Count; i++)
+                {
+                    if (recorderTaskPane._audioBuffer[i].Count != 0)
+                    {
+                        foreach (var audio in recorderTaskPane._audioBuffer[i])
+                        {
+                            audio.Item1.EmbedOnSlide(slides[i], audio.Item2);
+                        }
+                    }
+                }
+            }
+
+            // clear the buffer after embed
+            recorderTaskPane._audioBuffer.Clear();
+
+            // change back the slide range settings
+            Application.ActivePresentation.SlideShowSettings.StartingSlide = 1;
+            Application.ActivePresentation.SlideShowSettings.RangeType = PowerPoint.PpSlideShowRangeType.ppShowAll;
+        }
+
         void UpdateRecorderPane(int count, int id)
         {
             // if the user has selected none or more than 1 slides, recorder pane should show nothing
@@ -365,19 +405,6 @@ namespace PowerPointLabs
         #region Double Click to Open Property Window
 
         private bool isInSlideShow = false;
-
-        private void SlideShowBeginHandler(PowerPoint.SlideShowWindow wn)
-        {
-            isInSlideShow = true;
-        }
-
-        private void SlideShowEndHandler(PowerPoint.Presentation presentation)
-        {
-            isInSlideShow = false;
-            
-            // when leave the show, dispose the in-show control if we have one
-            recorderTaskPane.DisposeInSlideControlBox();
-        }
 
         private void SetupAfterCopyPasteHandler()
         {

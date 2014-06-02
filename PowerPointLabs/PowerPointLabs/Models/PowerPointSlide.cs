@@ -117,7 +117,7 @@ namespace PowerPointLabs.Models
         public PowerPointSlide Duplicate()
         {
             Slide duplicatedSlide = _slide.Duplicate()[1];
-            return PowerPointSlide.FromSlideFactory(duplicatedSlide);
+            return FromSlideFactory(duplicatedSlide);
         }
 
         public void DeleteShapesWithPrefix(string prefix)
