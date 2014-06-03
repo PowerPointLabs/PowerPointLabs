@@ -828,9 +828,13 @@ namespace PowerPointLabs
             recDisplay.Enabled = false;
             scriptDisplay.Enabled = false;
 
-            // track the on going script index
-            _replaceScriptIndex = scriptDisplay.SelectedIndices[0];
-            _replaceScriptSlide = PowerPointPresentation.CurrentSlide;
+            // track the on going script index if not in slide show mode
+            if (_inShowControlBox == null ||
+                _inShowControlBox.GetCurrentStatus() == InShowControl.ButtonStatus.Idle)
+            {
+                _replaceScriptIndex = scriptDisplay.SelectedIndices[0];
+                _replaceScriptSlide = PowerPointPresentation.CurrentSlide;
+            }
 
             // change the status to recording status and change the button text
             // to pause
@@ -1008,8 +1012,10 @@ namespace PowerPointLabs
                             _audioList[relativeID].Insert(recordIndex, newRec);
                         }
 
-                        // update the whole record display list
-                        if (relativeID == GetRelativeSlideIndex(PowerPointPresentation.CurrentSlide.ID))
+                        // update the whole record display list if not in slide show mode
+                        if (_inShowControlBox == null ||
+                            _inShowControlBox.GetCurrentStatus() == InShowControl.ButtonStatus.Idle &&
+                            relativeID == GetRelativeSlideIndex(PowerPointPresentation.CurrentSlide.ID))
                         {
                             ClearRecordDisplayList();
                             UpdateRecordList(relativeID);
@@ -1020,8 +1026,10 @@ namespace PowerPointLabs
                     Native.mciSendString("save sound \"" + saveName + "\"", null, 0, IntPtr.Zero);
                     AudioHelper.CloseAudio();
 
-                    // update the script list
-                    if (relativeID == GetRelativeSlideIndex(PowerPointPresentation.CurrentSlide.ID))
+                    // update the script list if not in slide show mode
+                    if (_inShowControlBox == null ||
+                        _inShowControlBox.GetCurrentStatus() == InShowControl.ButtonStatus.Idle &&
+                        relativeID == GetRelativeSlideIndex(PowerPointPresentation.CurrentSlide.ID))
                     {
                         UpdateScriptList(scriptIndex, null, ScriptStatus.Recorded);
                     }
