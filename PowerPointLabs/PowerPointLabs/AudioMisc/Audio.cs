@@ -71,10 +71,14 @@ namespace PowerPointLabs.AudioMisc
 
                     if (isOnClick)
                     {
-                        if (onClickEffect.Shape.Name == shapeName)
+                        if (onClickEffect == null || onClickEffect.Shape.Name == shapeName)
                         {
                             var newAnimation = sequence.AddEffect(audioShape, MsoAnimEffect.msoAnimEffectMediaPlay);
-                            newAnimation.MoveBefore(onClickEffect);
+                            
+                            if (onClickEffect != null)
+                            {
+                                newAnimation.MoveBefore(onClickEffect);
+                            }
                         }
                         else
                         {

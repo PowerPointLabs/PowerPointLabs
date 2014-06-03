@@ -17,7 +17,7 @@ namespace PowerPointLabs.Views
 {
     public partial class InShowControl : Form
     {
-        internal enum ButtonStatus
+        public enum ButtonStatus
         {
             Idle,
             Rec
@@ -43,6 +43,17 @@ namespace PowerPointLabs.Views
             Native.GetWindowRect(new HandleRef(new object(), slideShowWindow), out rec);
             
             Location = new Point(rec.Right - Width, rec.Bottom - Height- 55);
+            _status = ButtonStatus.Idle;
+        }
+
+        public ButtonStatus GetCurrentStatus()
+        {
+            return _status;
+        }
+
+        public void ForceStop()
+        {
+            RecButtonClick(null, null);
         }
 
         private void RecButtonClick(object sender, EventArgs e)
@@ -74,7 +85,7 @@ namespace PowerPointLabs.Views
                     }
                     else
                     {
-                        _slideShowWindow.View.GotoClick(click + 2);
+                        _slideShowWindow.View.GotoClick(click + 1);
                     }
                     
                     break;

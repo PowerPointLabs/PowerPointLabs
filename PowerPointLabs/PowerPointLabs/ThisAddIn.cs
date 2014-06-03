@@ -281,7 +281,6 @@ namespace PowerPointLabs
             recorderTaskPane._audioBuffer.Clear();
 
             // change back the slide range settings
-            //Application.ActivePresentation.SlideShowSettings.StartingSlide = 1;
             Application.ActivePresentation.SlideShowSettings.RangeType = PowerPoint.PpSlideShowRangeType.ppShowAll;
         }
 

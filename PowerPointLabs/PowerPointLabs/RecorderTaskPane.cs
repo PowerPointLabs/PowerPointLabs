@@ -207,6 +207,11 @@ namespace PowerPointLabs
 
         public Audio GetPlaybackFromList(int scriptIndex, int slideID)
         {
+            if (scriptIndex == -1 || slideID == -1)
+            {
+                return null;
+            }
+
             var relativeSlideID = GetRelativeSlideIndex(slideID);
             int recordIndex = GetRecordIndexFromScriptIndex(relativeSlideID, scriptIndex);
 
@@ -416,8 +421,15 @@ namespace PowerPointLabs
         {
             if (_recButtonStatus != RecorderStatus.Idle)
             {
-                StopButtonRecordingHandler(scriptDisplay.SelectedIndices[0],
-                                           PowerPointPresentation.CurrentSlide, false);
+                if (_inShowControlBox != null &&
+                    _inShowControlBox.GetCurrentStatus() != InShowControl.ButtonStatus.Idle)
+                {
+                    _inShowControlBox.ForceStop();
+                }
+                else
+                {
+                    StopButtonRecordingHandler(_replaceScriptIndex, _replaceScriptSlide, false);
+                }
             }
 
             if (_playButtonStatus != RecorderStatus.Idle)
@@ -641,6 +653,8 @@ namespace PowerPointLabs
         private int _resumeWaitingTime;
         private int _playbackLenMillis;
         private int _timerCnt;
+        private int _replaceScriptIndex;
+        private PowerPointSlide _replaceScriptSlide;
 
         private RecorderStatus _recButtonStatus;
         private RecorderStatus _playButtonStatus;
@@ -814,6 +828,10 @@ namespace PowerPointLabs
             recDisplay.Enabled = false;
             scriptDisplay.Enabled = false;
 
+            // track the on going script index
+            _replaceScriptIndex = scriptDisplay.SelectedIndices[0];
+            _replaceScriptSlide = PowerPointPresentation.CurrentSlide;
+
             // change the status to recording status and change the button text
             // to pause
             _recButtonStatus = RecorderStatus.Recording;
@@ -902,7 +920,7 @@ namespace PowerPointLabs
             try
             {
                 // stop recording and get the length of the recording
-                int x = Native.mciSendString("stop sound", null, 0, IntPtr.Zero);
+                Native.mciSendString("stop sound", null, 0, IntPtr.Zero);
                 // adjust the stop time difference between timer-stop and recording-stop
                 timerLabel.Text = AudioHelper.GetAudioLengthString();
 
@@ -1017,7 +1035,7 @@ namespace PowerPointLabs
             }
             catch (Exception e)
             {
-                MessageBox.Show("Record cannot be saved");
+                MessageBox.Show("Record cannot be saved\n" + e.Message);
                 throw;
             }
             finally
