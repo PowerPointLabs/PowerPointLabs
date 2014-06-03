@@ -38,7 +38,7 @@ namespace PowerPointLabs.Tags
         {
             int firstTagClosingIndex = Contents.IndexOf(']');
             int lastTagStartIndex = Contents.LastIndexOf('[');
-            String wordToPronounce = Contents.Substring(firstTagClosingIndex, lastTagStartIndex - firstTagClosingIndex);
+            String wordToPronounce = Contents.Substring(firstTagClosingIndex + 1, lastTagStartIndex - firstTagClosingIndex - 1);
             return wordToPronounce;
         }
     }
