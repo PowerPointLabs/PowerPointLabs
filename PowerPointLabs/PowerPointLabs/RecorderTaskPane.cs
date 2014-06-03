@@ -32,8 +32,10 @@ namespace PowerPointLabs
         
         // map the text MD5 to record id
         private Dictionary<string, int> _md5ScriptMapper;
+        // map slide id to relative index
+        private Dictionary<int, int> _slideRelativeMapper;
         // this offset is used to map a slide id to relative slide id
-        private const int slideIDOffset = 256;
+        private int _relativeSlideCounter;
         // a collection of slides, each slide has a list of audio object
         private List<List<Audio>> _audioList;
         // a collection of slides, each slide has a list of script
@@ -158,7 +160,14 @@ namespace PowerPointLabs
 
         private int GetRelativeSlideIndex(int curID)
         {
-            return curID - slideIDOffset;
+            if (!_slideRelativeMapper.ContainsKey(curID))
+            {
+                _slideRelativeMapper[curID] = _relativeSlideCounter;
+
+                _relativeSlideCounter++;
+            }
+
+            return _slideRelativeMapper[curID];
         }
 
         private int GetRecordIndexFromScriptIndex(int relativeId, int scriptIndex)
@@ -316,6 +325,9 @@ namespace PowerPointLabs
             }
             scriptDisplay.EndUpdate();
 
+            // by default, clear the script detial box
+            scriptDetailTextBox.Text = "";
+
             // since the pane was just renewed, no item is selected thus all
             // button should be disabled
             SetAllRecorderButtonState(false);
@@ -335,10 +347,16 @@ namespace PowerPointLabs
             scriptDisplay.EndUpdate();
         }
 
+        public void ClearScriptTextBox()
+        {
+            scriptDetailTextBox.Text = "";
+        }
+
         public void ClearDisplayLists()
         {
             ClearRecordDisplayList();
             ClearScriptDisplayList();
+            ClearScriptTextBox();
         }
 
         public void ClearRecordDataList()
@@ -417,12 +435,22 @@ namespace PowerPointLabs
             
             foreach (var slide in slides)
             {
-                // retrieve the tag notes
-                var taggedNotes = new TaggedText(slide.NotesPageText.Trim());
-                List<String> splitScript = taggedNotes.SplitByClicks();
+                if (slide.NotesPageText != String.Empty)
+                {
+                    // retrieve the tag notes
+                    var taggedNotes = new TaggedText(slide.NotesPageText.Trim());
+                    List<String> splitScript = taggedNotes.SplitByClicks();
 
-                // add the splitted notes into script list
-                _scriptList.Add(splitScript);
+                    // add the splitted notes into script list
+                    _scriptList.Add(splitScript);
+                }
+                else
+                {
+                    _scriptList.Add(new List<string>());
+                }
+                
+                // update the slide id to relative id mapper
+                GetRelativeSlideIndex(slide.ID);
 
                 // mapping the shapes with media files, and set up the audio list
 
@@ -653,19 +681,7 @@ namespace PowerPointLabs
         // call when the pane becomes visible from the second time onwards
         public void RecorderPaneReload()
         {
-            statusLabel.Text = "Ready.";
-            statusLabel.Visible = true;
-            ResetRecorder();
-
-            // disable record button when just enter the pane and nothing has
-            // been selected
-            SetAllRecorderButtonState(false);
-
-            var currentSlide = PowerPointPresentation.CurrentSlide;
-            if (currentSlide != null)
-            {
-                UpdateLists(currentSlide.ID);
-            }
+            RecorderPane_Load(null, null);
         }
 
         // disable timer and thread when the pane is closed
@@ -886,7 +902,7 @@ namespace PowerPointLabs
             try
             {
                 // stop recording and get the length of the recording
-                Native.mciSendString("stop sound", null, 0, IntPtr.Zero);
+                int x = Native.mciSendString("stop sound", null, 0, IntPtr.Zero);
                 // adjust the stop time difference between timer-stop and recording-stop
                 timerLabel.Text = AudioHelper.GetAudioLengthString();
 
@@ -1316,6 +1332,9 @@ namespace PowerPointLabs
             _audioBuffer = new List<List<Tuple<Audio, int>>>();
             
             _md5ScriptMapper = new Dictionary<string, int>();
+            _slideRelativeMapper = new Dictionary<int, int>();
+
+            _relativeSlideCounter = 0;
             
             InitializeComponent();
 

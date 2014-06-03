@@ -248,6 +248,12 @@ namespace PowerPointLabs
         {
             isInSlideShow = false;
 
+            // force recording session ends
+            if (recorderTaskPane.HasEvent())
+            {
+                recorderTaskPane.ForceStopEvent();
+            }
+
             // enable slide show button
             recorderTaskPane.EnableSlideShow();
 
@@ -275,7 +281,7 @@ namespace PowerPointLabs
             recorderTaskPane._audioBuffer.Clear();
 
             // change back the slide range settings
-            Application.ActivePresentation.SlideShowSettings.StartingSlide = 1;
+            //Application.ActivePresentation.SlideShowSettings.StartingSlide = 1;
             Application.ActivePresentation.SlideShowSettings.RangeType = PowerPoint.PpSlideShowRangeType.ppShowAll;
         }
 

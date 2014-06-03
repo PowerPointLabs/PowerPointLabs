@@ -17,7 +17,7 @@ namespace PowerPointLabs.Views
 {
     public partial class InShowControl : Form
     {
-        private enum ButtonStatus
+        internal enum ButtonStatus
         {
             Idle,
             Rec
