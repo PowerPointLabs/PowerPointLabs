@@ -25,6 +25,8 @@ namespace PowerPointLabs.Views
 
         private ButtonStatus _status;
         private SlideShowWindow _slideShowWindow;
+        private int _recordStartClick;
+        private PowerPointSlide _recordStartSlide;
 
         public InShowControl()
         {
@@ -53,7 +55,8 @@ namespace PowerPointLabs.Views
 
         public void ForceStop()
         {
-            RecButtonClick(null, null);
+            _status = ButtonStatus.Idle;
+            Globals.ThisAddIn.recorderTaskPane.StopButtonRecordingHandler(_recordStartClick, _recordStartSlide, false);
         }
 
         private void RecButtonClick(object sender, EventArgs e)
@@ -66,14 +69,18 @@ namespace PowerPointLabs.Views
             {
                 case ButtonStatus.Idle:
                     _status = ButtonStatus.Rec;
+                    _recordStartClick = click;
+                    _recordStartSlide = currentSlide;
+
                     recButton.Text = "Stop and Advance";
                     recorderPane.RecButtonIdleHandler();
+                    _slideShowWindow.Activate();
                     break;
 
                 case ButtonStatus.Rec:
                     recButton.Text = "Record";
-                    
-                    recorderPane.StopButtonRecordingHandler(click, currentSlide, true);
+
+                    recorderPane.StopButtonRecordingHandler(_recordStartClick, _recordStartSlide, true);
                     _slideShowWindow.Activate();
 
                     var totalClick = _slideShowWindow.View.GetClickCount();
