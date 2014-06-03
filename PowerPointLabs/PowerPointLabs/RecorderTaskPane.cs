@@ -41,7 +41,9 @@ namespace PowerPointLabs
         // a collection of slides, each slide has a list of script
         private List<List<string>> _scriptList;
         // a collection of audio buffer, for buffering slide show time recording
-        public List<List<Tuple<Audio, int>>> _audioBuffer;
+        public List<List<Tuple<Audio, int>>> AudioBuffer;
+        // a buffer to store the audio that has been replaced
+        private Audio _undoAudioBuffer;
 
         // Records save and display
         private readonly string _tempPath = Path.GetTempPath();
@@ -223,7 +225,7 @@ namespace PowerPointLabs
             return null;
         }
 
-        // decripted
+        //---------------------decripted--------------------------------
         private void UpdateRecordList(int index, string name, string length)
         {
             // change index to 1-base
@@ -252,6 +254,7 @@ namespace PowerPointLabs
                 recDisplay.Items[index - 1].SubItems[3].Text = DateTime.Now.ToString();
             }
         }
+        //---------------------------------------------------------------
 
         private void UpdateRecordList(int relativeSlideID)
         {
@@ -272,14 +275,36 @@ namespace PowerPointLabs
 
             if (index > scriptDisplay.Items.Count)
             {
-                ListViewItem item = scriptDisplay.Items.Add(status.ToString());
+                string displayStatus;
+
+                if (status == ScriptStatus.Untracked)
+                {
+                    displayStatus = "No Audio";
+                }
+                else
+                {
+                    displayStatus = status.ToString();
+                }
+
+                ListViewItem item = scriptDisplay.Items.Add(displayStatus);
                 item.SubItems.Add(content);
             }
             else
             {
                 if (status != ScriptStatus.Default)
                 {
-                    scriptDisplay.Items[index - 1].SubItems[0].Text = status.ToString();
+                    string displayStatus;
+
+                    if (status == ScriptStatus.Untracked)
+                    {
+                        displayStatus = "No Audio";
+                    }
+                    else
+                    {
+                        displayStatus = status.ToString();
+                    }
+
+                    scriptDisplay.Items[index - 1].SubItems[0].Text = displayStatus;
                 }
 
                 if (content != null)
@@ -336,6 +361,21 @@ namespace PowerPointLabs
             // since the pane was just renewed, no item is selected thus all
             // button should be disabled
             SetAllRecorderButtonState(false);
+        }
+
+        public void UndoLastRecord(int scriptIndex, PowerPointSlide slide)
+        {
+            int relativeID = GetRelativeSlideIndex(slide.ID);
+            int recordIndex = GetRecordIndexFromScriptIndex(relativeID, scriptIndex);
+
+            if (_undoAudioBuffer != null)
+            {
+                _audioList[relativeID][recordIndex] = _undoAudioBuffer;
+            }
+            else
+            {
+                _audioList[relativeID].RemoveAt(recordIndex);
+            }
         }
 
         public void ClearRecordDisplayList()
@@ -405,6 +445,14 @@ namespace PowerPointLabs
         {
             ClearRecordDataList(id);
             ClearScriptDataList(id);
+        }
+
+        public void DisposeInSlideControlBox()
+        {
+            if (_inShowControlBox != null)
+            {
+                _inShowControlBox.Dispose();
+            }
         }
 
         public bool HasEvent()
@@ -639,14 +687,6 @@ namespace PowerPointLabs
                 InitializeAudioAndScript(slide, names[i], forceRefresh);
             }
         }
-
-        public void DisposeInSlideControlBox()
-        {
-            if (_inShowControlBox != null)
-            {
-                _inShowControlBox.Dispose();
-            }
-        }
         # endregion
 
         # region WinForm
@@ -806,10 +846,6 @@ namespace PowerPointLabs
         # endregion
 
         # region Button Event Handlers
-        /// <summary>
-        /// Handler handles the click event when the button is at idle state.
-        /// Note: The routine will reset all other sessions.
-        /// </summary>
         public void RecButtonIdleHandler()
         {
             // close unfinished session
@@ -827,6 +863,9 @@ namespace PowerPointLabs
             // disable control of both lists
             recDisplay.Enabled = false;
             scriptDisplay.Enabled = false;
+
+            // clear the undo buffer
+            _undoAudioBuffer = null;
 
             // track the on going script index if not in slide show mode
             if (_inShowControlBox == null ||
@@ -850,11 +889,6 @@ namespace PowerPointLabs
             _timer = new System.Threading.Timer(TimerEvent, null, 0, 1000);
         }
 
-        /// <summary>
-        /// Handler handles the click event when the sound is recording. The
-        /// recording will be paused and the timer will stop at the current
-        /// length.
-        /// </summary>
         private void RecButtonRecordingHandler()
         {
             // make sure stop button is enabled
@@ -882,10 +916,6 @@ namespace PowerPointLabs
             }
         }
 
-        /// <summary>
-        /// Handler handles click event when the sound recording is paused. The
-        /// recording will resume and the timer will keep counting.
-        /// </summary>
         private void RecButtonPauseHandler()
         {
             // make sure stop button is enabled
@@ -902,10 +932,6 @@ namespace PowerPointLabs
             _timer = new System.Threading.Timer(TimerEvent, null, _resumeWaitingTime, 1000);
         }
 
-        /// <summary>
-        /// Handler handles click event when sound is recording. It will save
-        /// the sound to a user-specified path.
-        /// </summary>
         public void StopButtonRecordingHandler(int scriptIndex, PowerPointSlide currentSlide, bool buffered)
         {
             // enable the control of play button
@@ -975,12 +1001,9 @@ namespace PowerPointLabs
                         saveName = currentPlayback.SaveName.Replace(".wav", " rec.wav");
                         displayName = currentPlayback.Name;
                         newRec = AudioHelper.DumpAudio(displayName, saveName, currentPlayback.MatchSciptID);
-                        
-                        // delete the old file
-                        File.Delete(currentPlayback.SaveName);
 
-                        // replace the record list
-                        // at this place, record index == the index of current play back
+                        // note down the old record and replace the record list
+                        _undoAudioBuffer = _audioList[relativeID][recordIndex];
                         _audioList[relativeID][recordIndex] = newRec;
 
                         // update the item in display
@@ -1043,12 +1066,12 @@ namespace PowerPointLabs
                     }
                     else
                     {
-                        while (_audioBuffer.Count < currentSlide.Index)
+                        while (AudioBuffer.Count < currentSlide.Index)
                         {
-                            _audioBuffer.Add(new List<Tuple<Audio, int>>());
+                            AudioBuffer.Add(new List<Tuple<Audio, int>>());
                         }
 
-                        _audioBuffer[currentSlide.Index - 1].Add(new Tuple<Audio, int>(newRec, scriptIndex));
+                        AudioBuffer[currentSlide.Index - 1].Add(new Tuple<Audio, int>(newRec, scriptIndex));
                     }
                 }
             }
@@ -1068,10 +1091,6 @@ namespace PowerPointLabs
             }
         }
 
-        /// <summary>
-        /// Handler handles click event when the sound is playing back. It will
-        /// stop the sound and reset all settings.
-        /// </summary>
         private void StopButtonPlayingHandler()
         {
             // change play button status, update play button text, update
@@ -1090,9 +1109,6 @@ namespace PowerPointLabs
             stopButton.Enabled = false;
         }
 
-        /// <summary>
-        /// Handler handles click event when idle.
-        /// </summary>
         private void PlayButtonIdleHandler()
         {
             // close unfinished session
@@ -1135,10 +1151,6 @@ namespace PowerPointLabs
             }
         }
 
-        /// <summary>
-        /// Handler handles click event when the sound is playing. It pauses
-        /// the sound, timer and track bar.
-        /// </summary>
         private void PlayButtonPlayingHandler()
         {
             // make sure stop button is enabled
@@ -1168,10 +1180,6 @@ namespace PowerPointLabs
             }
         }
 
-        /// <summary>
-        /// Handler handles click event when the sound is paused. It resumes
-        /// the sound, timer and track bar.
-        /// </summary>
         private void PlayButtonPauseHandler()
         {
             // make sure stop button is enabled
@@ -1252,7 +1260,7 @@ namespace PowerPointLabs
         private void SlideShowButtonClick(object sender, EventArgs e)
         {
             // clear audio buffer
-            _audioBuffer.Clear();
+            AudioBuffer.Clear();
 
             // disable slide show button
             slideShowButton.Enabled = false;
@@ -1366,7 +1374,7 @@ namespace PowerPointLabs
         {
             _audioList = new List<List<Audio>>();
             _scriptList = new List<List<string>>();
-            _audioBuffer = new List<List<Tuple<Audio, int>>>();
+            AudioBuffer = new List<List<Tuple<Audio, int>>>();
             
             _md5ScriptMapper = new Dictionary<string, int>();
             _slideRelativeMapper = new Dictionary<int, int>();

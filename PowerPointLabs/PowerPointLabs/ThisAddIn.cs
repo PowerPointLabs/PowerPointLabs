@@ -261,15 +261,15 @@ namespace PowerPointLabs
             recorderTaskPane.DisposeInSlideControlBox();
 
             // if audio buffer is not empty, render the effects
-            if (recorderTaskPane._audioBuffer.Count != 0)
+            if (recorderTaskPane.AudioBuffer.Count != 0)
             {
                 var slides = PowerPointPresentation.Slides.ToList();
 
-                for (int i = 0; i < recorderTaskPane._audioBuffer.Count; i++)
+                for (int i = 0; i < recorderTaskPane.AudioBuffer.Count; i++)
                 {
-                    if (recorderTaskPane._audioBuffer[i].Count != 0)
+                    if (recorderTaskPane.AudioBuffer[i].Count != 0)
                     {
-                        foreach (var audio in recorderTaskPane._audioBuffer[i])
+                        foreach (var audio in recorderTaskPane.AudioBuffer[i])
                         {
                             audio.Item1.EmbedOnSlide(slides[i], audio.Item2);
                         }
@@ -278,7 +278,7 @@ namespace PowerPointLabs
             }
 
             // clear the buffer after embed
-            recorderTaskPane._audioBuffer.Clear();
+            recorderTaskPane.AudioBuffer.Clear();
 
             // change back the slide range settings
             Application.ActivePresentation.SlideShowSettings.RangeType = PowerPoint.PpSlideShowRangeType.ppShowAll;

@@ -25,6 +25,7 @@ namespace PowerPointLabs.Views
 
         private ButtonStatus _status;
         private SlideShowWindow _slideShowWindow;
+        private int _startingSlide;
         private int _recordStartClick;
         private PowerPointSlide _recordStartSlide;
 
@@ -37,6 +38,7 @@ namespace PowerPointLabs.Views
             TransparencyKey = Color.Magenta;
 
             _slideShowWindow = Globals.ThisAddIn.Application.ActivePresentation.SlideShowWindow;
+            _startingSlide = Globals.ThisAddIn.Application.ActivePresentation.SlideShowSettings.StartingSlide;
 
             // get slide show window
             IntPtr slideShowWindow = new IntPtr(_slideShowWindow.HWND);
@@ -57,6 +59,11 @@ namespace PowerPointLabs.Views
         {
             _status = ButtonStatus.Idle;
             Globals.ThisAddIn.recorderTaskPane.StopButtonRecordingHandler(_recordStartClick, _recordStartSlide, false);
+        }
+
+        private int GetRelativeSlideIndex(int index)
+        {
+            return index - _startingSlide + 1;
         }
 
         private void RecButtonClick(object sender, EventArgs e)
@@ -98,6 +105,23 @@ namespace PowerPointLabs.Views
                     
                     break;
             }
+        }
+
+        private void UndoButtonClick(object sender, EventArgs e)
+        {
+            var recorderPane = Globals.ThisAddIn.recorderTaskPane;
+            var temp = recorderPane.AudioBuffer[_recordStartSlide.Index - 1];
+
+            // revert back the last action
+            recorderPane.UndoLastRecord(_recordStartClick, _recordStartSlide);
+            temp.RemoveAt(temp.Count - 1);
+
+            // goto previous slide and click
+            _slideShowWindow.View.GotoSlide(GetRelativeSlideIndex(_recordStartSlide.Index));
+            _slideShowWindow.View.GotoClick(_recordStartClick);
+
+            // activate the show window
+            _slideShowWindow.Activate();
         }
     }
 }

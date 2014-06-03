@@ -118,7 +118,7 @@
                   getImage="GetAddAudioImage" />
             <menu id="menu">
               <button id="addRecord"
-                      label="Record Management"
+                      label="Record Manually"
                       onAction="RecManagementClick"
                       keytip="NA" />
             </menu>

@@ -158,11 +158,12 @@
             // statusColumn
             // 
             this.statusColumn.Text = "Status";
+            this.statusColumn.Width = 70;
             // 
             // scirptColumn
             // 
             this.scirptColumn.Text = "Script";
-            this.scirptColumn.Width = 184;
+            this.scirptColumn.Width = 176;
             // 
             // scriptListViewLabel
             // 
@@ -170,9 +171,9 @@
             this.scriptListViewLabel.Font = new System.Drawing.Font("SimSun", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
             this.scriptListViewLabel.Location = new System.Drawing.Point(14, 269);
             this.scriptListViewLabel.Name = "scriptListViewLabel";
-            this.scriptListViewLabel.Size = new System.Drawing.Size(82, 12);
+            this.scriptListViewLabel.Size = new System.Drawing.Size(54, 12);
             this.scriptListViewLabel.TabIndex = 8;
-            this.scriptListViewLabel.Text = "Script List";
+            this.scriptListViewLabel.Text = "Scripts";
             // 
             // slideShowButton
             // 
@@ -190,9 +191,9 @@
             this.scriptDetialLabel.Font = new System.Drawing.Font("SimSun", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
             this.scriptDetialLabel.Location = new System.Drawing.Point(12, 417);
             this.scriptDetialLabel.Name = "scriptDetialLabel";
-            this.scriptDetialLabel.Size = new System.Drawing.Size(96, 12);
+            this.scriptDetialLabel.Size = new System.Drawing.Size(103, 12);
             this.scriptDetialLabel.TabIndex = 10;
-            this.scriptDetialLabel.Text = "Script Detail";
+            this.scriptDetialLabel.Text = "Current Script";
             // 
             // scriptDetailTextBox
             // 
