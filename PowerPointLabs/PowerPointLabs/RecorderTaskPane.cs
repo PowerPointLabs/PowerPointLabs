@@ -980,7 +980,10 @@ namespace PowerPointLabs
                         _audioList[relativeID][recordIndex] = newRec;
 
                         // update the item in display
-                        UpdateRecordList(recordIndex, displayName, newRec.Length);
+                        if (relativeID == GetRelativeSlideIndex(PowerPointPresentation.CurrentSlide.ID))
+                        {
+                            UpdateRecordList(recordIndex, displayName, newRec.Length);
+                        }
                     }
                     else
                     // if current playback == null -> there's no corresponding record for the
@@ -1006,8 +1009,11 @@ namespace PowerPointLabs
                         }
 
                         // update the whole record display list
-                        ClearRecordDisplayList();
-                        UpdateRecordList(relativeID);
+                        if (relativeID == GetRelativeSlideIndex(PowerPointPresentation.CurrentSlide.ID))
+                        {
+                            ClearRecordDisplayList();
+                            UpdateRecordList(relativeID);
+                        }
                     }
 
                     // save curent sound
@@ -1015,7 +1021,10 @@ namespace PowerPointLabs
                     AudioHelper.CloseAudio();
 
                     // update the script list
-                    UpdateScriptList(scriptIndex, null, ScriptStatus.Recorded);
+                    if (relativeID == GetRelativeSlideIndex(PowerPointPresentation.CurrentSlide.ID))
+                    {
+                        UpdateScriptList(scriptIndex, null, ScriptStatus.Recorded);
+                    }
 
                     // check if we need to buffer the audio or embed the audio
                     if (!buffered)
