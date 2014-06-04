@@ -490,6 +490,14 @@ namespace PowerPointLabs
             
             foreach (var slide in slides)
             {
+                // update the slide id to relative id mapper
+                var relativeID = GetRelativeSlideIndex(slide.ID);
+
+                if (_scriptList.Count == relativeID)
+                {
+                    _scriptList.Add(new List<string>());
+                }
+
                 if (slide.NotesPageText != String.Empty)
                 {
                     // retrieve the tag notes
@@ -497,15 +505,8 @@ namespace PowerPointLabs
                     List<String> splitScript = taggedNotes.SplitByClicks();
 
                     // add the splitted notes into script list
-                    _scriptList.Add(splitScript);
+                    _scriptList[relativeID] = splitScript;
                 }
-                else
-                {
-                    _scriptList.Add(new List<string>());
-                }
-                
-                // update the slide id to relative id mapper
-                GetRelativeSlideIndex(slide.ID);
 
                 // mapping the shapes with media files, and set up the audio list
 
@@ -1378,29 +1379,6 @@ namespace PowerPointLabs
 
             recButton.Image = Properties.Resources.Record;
             playButton.Image = Properties.Resources.Play;
-
-            //recButton.ImageList = new ImageList();
-            //playButton.ImageList = new ImageList();
-
-            //// set up image appearance
-            //recButton.ImageList.ImageSize = new Size(32, 32);
-
-            //// set up image list for record button
-            //recButton.ImageList.Images.Add(Properties.Resources.Record);
-            //recButton.ImageList.Images.Add(Properties.Resources.Pause);
-
-            //// set default icon for record button
-            //recButton.Image = Properties.Resources.Record;
-
-            //// set up image appearance
-            //playButton.ImageList.ImageSize = new Size(32, 32);
-
-            //// set up image list for play button
-            //playButton.ImageList.Images.Add(Properties.Resources.Play);
-            //playButton.ImageList.Images.Add(Properties.Resources.Pause);
-
-            //// set default icon for play button
-            //playButton.Image = Properties.Resources.Play;
 
             // don't allow user to touch trackbar, thus disabled
             soundTrackBar.Enabled = false;

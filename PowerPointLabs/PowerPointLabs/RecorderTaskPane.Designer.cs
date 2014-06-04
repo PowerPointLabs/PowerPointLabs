@@ -117,7 +117,7 @@
             this.recDisplay.Location = new System.Drawing.Point(12, 156);
             this.recDisplay.MultiSelect = false;
             this.recDisplay.Name = "recDisplay";
-            this.recDisplay.Size = new System.Drawing.Size(253, 122);
+            this.recDisplay.Size = new System.Drawing.Size(253, 105);
             this.recDisplay.TabIndex = 6;
             this.recDisplay.UseCompatibleStateImageBehavior = false;
             this.recDisplay.View = System.Windows.Forms.View.Details;
@@ -145,10 +145,10 @@
             this.scirptColumn});
             this.scriptDisplay.FullRowSelect = true;
             this.scriptDisplay.HideSelection = false;
-            this.scriptDisplay.Location = new System.Drawing.Point(12, 305);
+            this.scriptDisplay.Location = new System.Drawing.Point(12, 288);
             this.scriptDisplay.MultiSelect = false;
             this.scriptDisplay.Name = "scriptDisplay";
-            this.scriptDisplay.Size = new System.Drawing.Size(253, 122);
+            this.scriptDisplay.Size = new System.Drawing.Size(253, 102);
             this.scriptDisplay.TabIndex = 7;
             this.scriptDisplay.UseCompatibleStateImageBehavior = false;
             this.scriptDisplay.View = System.Windows.Forms.View.Details;
@@ -168,7 +168,7 @@
             // 
             this.scriptListViewLabel.AutoSize = true;
             this.scriptListViewLabel.Font = new System.Drawing.Font("SimSun", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.scriptListViewLabel.Location = new System.Drawing.Point(14, 284);
+            this.scriptListViewLabel.Location = new System.Drawing.Point(10, 267);
             this.scriptListViewLabel.Name = "scriptListViewLabel";
             this.scriptListViewLabel.Size = new System.Drawing.Size(54, 12);
             this.scriptListViewLabel.TabIndex = 8;
@@ -188,7 +188,7 @@
             // 
             this.scriptDetialLabel.AutoSize = true;
             this.scriptDetialLabel.Font = new System.Drawing.Font("SimSun", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.scriptDetialLabel.Location = new System.Drawing.Point(10, 436);
+            this.scriptDetialLabel.Location = new System.Drawing.Point(10, 395);
             this.scriptDetialLabel.Name = "scriptDetialLabel";
             this.scriptDetialLabel.Size = new System.Drawing.Size(103, 12);
             this.scriptDetialLabel.TabIndex = 10;
@@ -198,10 +198,10 @@
             // 
             this.scriptDetailTextBox.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.scriptDetailTextBox.Font = new System.Drawing.Font("SimSun", 10.5F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.scriptDetailTextBox.Location = new System.Drawing.Point(12, 457);
+            this.scriptDetailTextBox.Location = new System.Drawing.Point(12, 413);
             this.scriptDetailTextBox.Multiline = true;
             this.scriptDetailTextBox.Name = "scriptDetailTextBox";
-            this.scriptDetailTextBox.Size = new System.Drawing.Size(253, 95);
+            this.scriptDetailTextBox.Size = new System.Drawing.Size(253, 122);
             this.scriptDetailTextBox.TabIndex = 11;
             // 
             // stopButton
@@ -223,7 +223,7 @@
             // 
             this.label1.AutoSize = true;
             this.label1.Font = new System.Drawing.Font("SimSun", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.label1.Location = new System.Drawing.Point(12, 137);
+            this.label1.Location = new System.Drawing.Point(10, 138);
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(40, 12);
             this.label1.TabIndex = 12;
@@ -247,7 +247,7 @@
             this.Controls.Add(this.recButton);
             this.Controls.Add(this.statusLabel);
             this.Name = "RecorderTaskPane";
-            this.Size = new System.Drawing.Size(280, 573);
+            this.Size = new System.Drawing.Size(280, 554);
             this.Load += new System.EventHandler(this.RecorderPane_Load);
             ((System.ComponentModel.ISupportInitialize)(this.soundTrackBar)).EndInit();
             this.ResumeLayout(false);
