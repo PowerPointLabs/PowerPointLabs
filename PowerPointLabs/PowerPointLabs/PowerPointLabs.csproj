@@ -329,6 +329,9 @@
     <Compile Include="Views\SpeechPlayingForm.Designer.cs" />
     <Compile Include="ZipStorer.cs" />
     <Compile Include="ZoomToArea.cs" />
+    <Content Include="Resources\Record.png" />
+    <None Include="Resources\Play.png" />
+    <None Include="Resources\Pause.png" />
     <EmbeddedResource Include="RecorderTaskPane.resx">
       <DependentUpon>RecorderTaskPane.cs</DependentUpon>
     </EmbeddedResource>

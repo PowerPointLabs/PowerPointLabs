@@ -79,9 +79,8 @@ namespace PowerPointLabs
             timerLabel.Text = "00:00:00";
             statusLabel.Text = "Ready.";
 
-            recButton.Text = "Record";
-            stopButton.Text = "Stop";
-            playButton.Text = "Play";
+            recButton.Image = Properties.Resources.Record;
+            playButton.Image = Properties.Resources.Play;
 
             _recButtonStatus = RecorderStatus.Idle;
             _playButtonStatus = RecorderStatus.Idle;
@@ -855,7 +854,7 @@ namespace PowerPointLabs
             ResetRecorder();
             statusLabel.Text = "Recording...";
             statusLabel.Visible = true;
-            recButton.Text = "Pause";
+            recButton.Image = Properties.Resources.Pause;
             // disable control of playing
             playButton.Enabled = false;
             // enable stop button
@@ -875,10 +874,8 @@ namespace PowerPointLabs
                 _replaceScriptSlide = PowerPointPresentation.CurrentSlide;
             }
 
-            // change the status to recording status and change the button text
-            // to pause
+            // change the status to recording status
             _recButtonStatus = RecorderStatus.Recording;
-            recButton.Text = "Pause";
 
             // start recording
             AudioHelper.OpenNewAudio();
@@ -897,7 +894,7 @@ namespace PowerPointLabs
             // change the status to pause and change the button text to resume
             _recButtonStatus = RecorderStatus.Pause;
             statusLabel.Text = "Pause";
-            recButton.Text = "Resume";
+            recButton.Image = Properties.Resources.Record;
 
             // pause the sound and stop the timer
             _timer.Dispose();
@@ -925,7 +922,7 @@ namespace PowerPointLabs
             // pause
             _recButtonStatus = RecorderStatus.Recording;
             statusLabel.Text = "Recording...";
-            recButton.Text = "Pause";
+            recButton.Image = Properties.Resources.Pause;
 
             // resume recording and restart the timer
             Native.mciSendString("resume sound", null, 0, IntPtr.Zero);
@@ -940,7 +937,7 @@ namespace PowerPointLabs
             // change rec button status, rec button text, update status label
             // and stop timer
             _recButtonStatus = RecorderStatus.Idle;
-            recButton.Text = "Record";
+            recButton.Image = Properties.Resources.Record;
             statusLabel.Text = "Ready.";
             ResetTimer();
 
@@ -1100,7 +1097,7 @@ namespace PowerPointLabs
             // UI settings
             ResetSession();
             _playButtonStatus = RecorderStatus.Idle;
-            playButton.Text = "Play";
+            playButton.Image = Properties.Resources.Play;
             statusLabel.Text = "Ready.";
             // enable both lists
             recDisplay.Enabled = true;
@@ -1133,9 +1130,9 @@ namespace PowerPointLabs
                 recDisplay.Enabled = false;
                 scriptDisplay.Enabled = false;
 
-                // change the button status and change the button text
+                // change the button status
                 _playButtonStatus = RecorderStatus.Playing;
-                playButton.Text = "Pause";
+                playButton.Image = Properties.Resources.Pause;
 
                 _playbackLenMillis = playback.LengthMillis;
 
@@ -1159,7 +1156,7 @@ namespace PowerPointLabs
             // change the status to pause and change the text to resume
             _playButtonStatus = RecorderStatus.Pause;
             statusLabel.Text = "Pause";
-            playButton.Text = "Resume";
+            playButton.Image = Properties.Resources.Play;
 
             // pause the sound, timer and trackbar
             Native.mciSendString("pause sound", null, 0, IntPtr.Zero);
@@ -1189,7 +1186,7 @@ namespace PowerPointLabs
             // pause
             _playButtonStatus = RecorderStatus.Playing;
             statusLabel.Text = "Playing...";
-            playButton.Text = "Pause";
+            playButton.Image = Properties.Resources.Pause;
 
             // resume recording, restart the timer and continue the track bar
             Native.mciSendString("resume sound", null, 0, IntPtr.Zero);
@@ -1383,6 +1380,32 @@ namespace PowerPointLabs
             
             InitializeComponent();
 
+            recButton.Image = Properties.Resources.Record;
+            playButton.Image = Properties.Resources.Play;
+
+            //recButton.ImageList = new ImageList();
+            //playButton.ImageList = new ImageList();
+
+            //// set up image appearance
+            //recButton.ImageList.ImageSize = new Size(32, 32);
+
+            //// set up image list for record button
+            //recButton.ImageList.Images.Add(Properties.Resources.Record);
+            //recButton.ImageList.Images.Add(Properties.Resources.Pause);
+
+            //// set default icon for record button
+            //recButton.Image = Properties.Resources.Record;
+
+            //// set up image appearance
+            //playButton.ImageList.ImageSize = new Size(32, 32);
+
+            //// set up image list for play button
+            //playButton.ImageList.Images.Add(Properties.Resources.Play);
+            //playButton.ImageList.Images.Add(Properties.Resources.Pause);
+
+            //// set default icon for play button
+            //playButton.Image = Properties.Resources.Play;
+
             // don't allow user to touch trackbar, thus disabled
             soundTrackBar.Enabled = false;
         }
@@ -1401,7 +1424,7 @@ namespace PowerPointLabs
                     case AudioHelper.MCI_NOTIFY_SUCCESS:
                         // UI settings
                         statusLabel.Text = "Ready.";
-                        playButton.Text = "Play";
+                        playButton.Image = Properties.Resources.Play;
                         _playButtonStatus = RecorderStatus.Idle;
                         // disable stop button
                         stopButton.Enabled = false;
