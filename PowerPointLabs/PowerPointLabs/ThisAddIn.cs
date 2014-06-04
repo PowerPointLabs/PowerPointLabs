@@ -141,8 +141,23 @@ namespace PowerPointLabs
             ribbon.RefreshRibbonControl("ZoomToAreaButton");
         }
 
+        bool SlidesInRangeHaveCaptions(PowerPoint.SlideRange SldRange)
+        {
+            foreach (PowerPoint.Slide slide in SldRange)
+            {
+                PowerPointSlide pptSlide = PowerPointSlide.FromSlideFactory(slide);
+                if (pptSlide.HasCaptions())
+                {
+                    return true;
+                }
+            }
+            return false;
+        }
+
         void ThisAddIn_SlideSelectionChanged(PowerPoint.SlideRange SldRange)
         {
+            ribbon.removeCaptionsEnabled = SlidesInRangeHaveCaptions(SldRange);
+
             // update recorder pane
             UpdateRecorderPane(SldRange.Count, SldRange[1].SlideID);
 
@@ -192,6 +207,7 @@ namespace PowerPointLabs
             ribbon.RefreshRibbonControl("ReloadSpotlightButton");
             ribbon.RefreshRibbonControl("HighlightBulletsTextButton");
             ribbon.RefreshRibbonControl("HighlightBulletsBackgroundButton");
+            ribbon.RefreshRibbonControl("removeCaptions");
         }
 
         // TODO:
