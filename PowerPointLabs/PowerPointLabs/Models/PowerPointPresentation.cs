@@ -48,6 +48,35 @@ namespace PowerPointLabs.Models
             }
         }
 
+        public static IEnumerable<PowerPointSlide> SelectedSlides
+        {
+            get
+            {
+                var interopSlides = Globals.ThisAddIn.Application.ActiveWindow.Selection.SlideRange;
+                List<PowerPointSlide> slides = new List<PowerPointSlide>();
+
+                foreach (Slide interopSlide in interopSlides)
+                {
+                    PowerPointSlide s = PowerPointSlide.FromSlideFactory(interopSlide);
+                    slides.Add(s);
+                }
+
+                return slides;
+            }
+        }
+
+        public static bool SlidesHaveCaptions(IEnumerable<PowerPointSlide> slides)
+        {
+            foreach (PowerPointSlide slide in slides)
+            {
+                if (slide.HasCaptions())
+                {
+                    return true;
+                }
+            }
+            return false;
+        }
+
         public static int SlideCount
         {
             get { return Globals.ThisAddIn.Application.ActivePresentation.Slides.Count; }

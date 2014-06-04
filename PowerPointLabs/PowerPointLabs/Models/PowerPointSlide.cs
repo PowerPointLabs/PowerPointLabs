@@ -505,6 +505,18 @@ namespace PowerPointLabs.Models
             return PowerPointAckSlide.FromSlideFactory(ackSlide);
         }
 
+        public bool HasCaptions()
+        {
+            foreach (PowerPoint.Shape shape in this.Shapes)
+            {
+                if (shape.Name.Length > 22 && shape.Name.Substring(0, 22).Equals("PowerPointLabs Caption"))
+                {
+                    return true;
+                }
+            }
+            return false;
+        }
+
         private Effect AddShapeAsLastAutoplaying(Shape shape, MsoAnimEffect effect)
         {
             Effect addedEffect = _slide.TimeLine.MainSequence.AddEffect(shape, effect,

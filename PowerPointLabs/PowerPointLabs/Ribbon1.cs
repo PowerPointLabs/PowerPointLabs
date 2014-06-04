@@ -53,7 +53,8 @@ namespace PowerPointLabs
         public bool addAutoMotionEnabled = true;
         public bool reloadAutoMotionEnabled = true;
         public bool reloadSpotlight = true;
-
+        public bool removeCaptionsEnabled = true;
+        
         public bool _recorderPaneVisible = false;
         private bool _firstLoadRecorder = true;
 
@@ -694,7 +695,10 @@ namespace PowerPointLabs
         {
             return highlightBulletsEnabled;
         }
-
+        public bool OnGetEnabledRemoveCaptions(Office.IRibbonControl control)
+        {
+            return removeCaptionsEnabled;
+        }
         //Edit Name Callbacks
         public void NameEditBtnClick(Office.IRibbonControl control)
         {
@@ -936,11 +940,20 @@ namespace PowerPointLabs
             if (_captionsAllSlides)
             {
                 NotesToCaptions.EmbedCaptionsOnAllSlides();
+                if (PowerPointPresentation.SlidesHaveCaptions(PowerPointPresentation.Slides))
+                {
+                    removeCaptionsEnabled = true;
+                }
             }
             else
             {
                 NotesToCaptions.EmbedCaptionsOnCurrentSlide();
+                if (PowerPointPresentation.CurrentSlide.HasCaptions())
+                {
+                    removeCaptionsEnabled = true;
+                }
             }
+            RefreshRibbonControl("removeCaptions");
         }
 
         public void RemoveCaptionClick(Office.IRibbonControl control)
@@ -953,6 +966,8 @@ namespace PowerPointLabs
             {
                 NotesToCaptions.RemoveCaptionsFromCurrentSlide();
             }
+            removeCaptionsEnabled = false;
+            RefreshRibbonControl("removeCaptions");
         }
 
         public void ContextReplaceAudioClick(Office.IRibbonControl control)

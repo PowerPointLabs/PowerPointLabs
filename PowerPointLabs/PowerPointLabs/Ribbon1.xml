@@ -149,6 +149,7 @@
                   supertip="Removes any captions that were added using Auto Captions from the slide(s)."
                   onAction="RemoveCaptionClick"
                   getImage="GetRemoveCaptionsImage"
+                  getEnabled="OnGetEnabledRemoveCaptions"
                   size="large" />
           <dialogBoxLauncher>
             <button id="AutoCaptionDialogBox"
