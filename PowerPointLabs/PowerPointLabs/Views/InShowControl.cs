@@ -85,7 +85,7 @@ namespace PowerPointLabs.Views
                     break;
 
                 case ButtonStatus.Rec:
-                    recButton.Text = "Record";
+                    recButton.Text = "Start Recording";
 
                     recorderPane.StopButtonRecordingHandler(_recordStartClick, _recordStartSlide, true);
                     _slideShowWindow.Activate();

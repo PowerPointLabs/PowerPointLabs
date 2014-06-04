@@ -224,7 +224,6 @@ namespace PowerPointLabs
             return null;
         }
 
-        //---------------------decripted--------------------------------
         private void UpdateRecordList(int index, string name, string length)
         {
             // change index to 1-base
@@ -249,11 +248,8 @@ namespace PowerPointLabs
                 {
                     recDisplay.Items[index - 1].SubItems[2].Text = length;
                 }
-
-                recDisplay.Items[index - 1].SubItems[3].Text = DateTime.Now.ToString();
             }
         }
-        //---------------------------------------------------------------
 
         private void UpdateRecordList(int relativeSlideID)
         {

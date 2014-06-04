@@ -208,7 +208,7 @@
             // 
             this.stopButton.BackColor = System.Drawing.Color.Transparent;
             this.stopButton.FlatAppearance.BorderColor = System.Drawing.SystemColors.ControlLightLight;
-            this.stopButton.FlatAppearance.MouseDownBackColor = System.Drawing.Color.Transparent;
+            this.stopButton.FlatAppearance.MouseDownBackColor = System.Drawing.SystemColors.ControlLightLight;
             this.stopButton.FlatAppearance.MouseOverBackColor = System.Drawing.Color.Transparent;
             this.stopButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.stopButton.Image = global::PowerPointLabs.Properties.Resources.Stop;
