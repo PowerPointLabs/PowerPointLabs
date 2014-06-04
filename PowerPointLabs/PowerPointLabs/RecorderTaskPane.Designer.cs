@@ -62,20 +62,30 @@
             // 
             // recButton
             // 
+            this.recButton.BackColor = System.Drawing.Color.Transparent;
+            this.recButton.FlatAppearance.BorderColor = System.Drawing.SystemColors.ControlLightLight;
+            this.recButton.FlatAppearance.MouseDownBackColor = System.Drawing.Color.Transparent;
+            this.recButton.FlatAppearance.MouseOverBackColor = System.Drawing.Color.Transparent;
+            this.recButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.recButton.Location = new System.Drawing.Point(12, 22);
             this.recButton.Name = "recButton";
             this.recButton.Size = new System.Drawing.Size(43, 41);
             this.recButton.TabIndex = 1;
-            this.recButton.UseVisualStyleBackColor = true;
+            this.recButton.UseVisualStyleBackColor = false;
             this.recButton.Click += new System.EventHandler(this.RecButtonClick);
             // 
             // playButton
             // 
+            this.playButton.BackColor = System.Drawing.Color.Transparent;
+            this.playButton.FlatAppearance.BorderColor = System.Drawing.SystemColors.ControlLightLight;
+            this.playButton.FlatAppearance.MouseDownBackColor = System.Drawing.Color.Transparent;
+            this.playButton.FlatAppearance.MouseOverBackColor = System.Drawing.Color.Transparent;
+            this.playButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.playButton.Location = new System.Drawing.Point(110, 22);
             this.playButton.Name = "playButton";
             this.playButton.Size = new System.Drawing.Size(43, 41);
             this.playButton.TabIndex = 3;
-            this.playButton.UseVisualStyleBackColor = true;
+            this.playButton.UseVisualStyleBackColor = false;
             this.playButton.Click += new System.EventHandler(this.PlayButtonClick);
             // 
             // timerLabel
@@ -196,12 +206,17 @@
             // 
             // stopButton
             // 
+            this.stopButton.BackColor = System.Drawing.Color.Transparent;
+            this.stopButton.FlatAppearance.BorderColor = System.Drawing.SystemColors.ControlLightLight;
+            this.stopButton.FlatAppearance.MouseDownBackColor = System.Drawing.Color.Transparent;
+            this.stopButton.FlatAppearance.MouseOverBackColor = System.Drawing.Color.Transparent;
+            this.stopButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.stopButton.Image = global::PowerPointLabs.Properties.Resources.Stop;
             this.stopButton.Location = new System.Drawing.Point(61, 22);
             this.stopButton.Name = "stopButton";
             this.stopButton.Size = new System.Drawing.Size(43, 41);
             this.stopButton.TabIndex = 2;
-            this.stopButton.UseVisualStyleBackColor = true;
+            this.stopButton.UseVisualStyleBackColor = false;
             this.stopButton.Click += new System.EventHandler(this.StopButtonClick);
             // 
             // label1
