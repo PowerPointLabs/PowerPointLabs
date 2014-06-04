@@ -169,7 +169,8 @@
                   label="Highlight Fragments"
                   size="large"
                   supertip="Highlights all the text fragments selected"
-                  />
+                  getEnabled="OnGetEnabledHighlightTextFragments"
+                  onAction="HighlightTextFragmentsButtonClick"/>
           <dialogBoxLauncher>
             <button id="HighlightBulletsDialogBox"
                     onAction="HighlightBulletsDialogBoxPressed"/>

@@ -53,6 +53,7 @@ namespace PowerPointLabs
         public bool addAutoMotionEnabled = true;
         public bool reloadAutoMotionEnabled = true;
         public bool reloadSpotlight = true;
+        public bool highlightTextFragmentsEnabled = true;
 
         private bool _allSlides;
         private bool _previewCurrentSlide;
@@ -141,6 +142,19 @@ namespace PowerPointLabs
             catch (Exception e)
             {
                 PowerPointLabsGlobals.LogException(e, "HighlightBulletsTextButtonClick");
+                throw;
+            }
+        }
+
+        public void HighlightTextFragmentsButtonClick(Office.IRibbonControl control)
+        {
+            try
+            {
+
+            }
+            catch (Exception e)
+            {
+                PowerPointLabsGlobals.LogException(e, "HighlightTextFragmentsButtonClick");
                 throw;
             }
         }
@@ -691,7 +705,10 @@ namespace PowerPointLabs
         {
             return highlightBulletsEnabled;
         }
-
+        public bool OnGetEnabledHighlightTextFragments(Office.IRibbonControl control)
+        {
+            return highlightTextFragmentsEnabled;
+        }
         //Edit Name Callbacks
         public void NameEditBtnClick(Office.IRibbonControl control)
         {
