@@ -114,7 +114,7 @@
             this.recLength});
             this.recDisplay.FullRowSelect = true;
             this.recDisplay.HideSelection = false;
-            this.recDisplay.Location = new System.Drawing.Point(12, 156);
+            this.recDisplay.Location = new System.Drawing.Point(12, 307);
             this.recDisplay.MultiSelect = false;
             this.recDisplay.Name = "recDisplay";
             this.recDisplay.Size = new System.Drawing.Size(253, 105);
@@ -145,7 +145,7 @@
             this.scirptColumn});
             this.scriptDisplay.FullRowSelect = true;
             this.scriptDisplay.HideSelection = false;
-            this.scriptDisplay.Location = new System.Drawing.Point(12, 288);
+            this.scriptDisplay.Location = new System.Drawing.Point(12, 438);
             this.scriptDisplay.MultiSelect = false;
             this.scriptDisplay.Name = "scriptDisplay";
             this.scriptDisplay.Size = new System.Drawing.Size(253, 102);
@@ -168,7 +168,7 @@
             // 
             this.scriptListViewLabel.AutoSize = true;
             this.scriptListViewLabel.Font = new System.Drawing.Font("SimSun", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.scriptListViewLabel.Location = new System.Drawing.Point(10, 267);
+            this.scriptListViewLabel.Location = new System.Drawing.Point(10, 419);
             this.scriptListViewLabel.Name = "scriptListViewLabel";
             this.scriptListViewLabel.Size = new System.Drawing.Size(54, 12);
             this.scriptListViewLabel.TabIndex = 8;
@@ -188,7 +188,7 @@
             // 
             this.scriptDetialLabel.AutoSize = true;
             this.scriptDetialLabel.Font = new System.Drawing.Font("SimSun", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.scriptDetialLabel.Location = new System.Drawing.Point(10, 395);
+            this.scriptDetialLabel.Location = new System.Drawing.Point(10, 135);
             this.scriptDetialLabel.Name = "scriptDetialLabel";
             this.scriptDetialLabel.Size = new System.Drawing.Size(103, 12);
             this.scriptDetialLabel.TabIndex = 10;
@@ -198,7 +198,7 @@
             // 
             this.scriptDetailTextBox.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.scriptDetailTextBox.Font = new System.Drawing.Font("SimSun", 10.5F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.scriptDetailTextBox.Location = new System.Drawing.Point(12, 413);
+            this.scriptDetailTextBox.Location = new System.Drawing.Point(12, 157);
             this.scriptDetailTextBox.Multiline = true;
             this.scriptDetailTextBox.Name = "scriptDetailTextBox";
             this.scriptDetailTextBox.Size = new System.Drawing.Size(253, 122);
@@ -223,7 +223,7 @@
             // 
             this.label1.AutoSize = true;
             this.label1.Font = new System.Drawing.Font("SimSun", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.label1.Location = new System.Drawing.Point(10, 138);
+            this.label1.Location = new System.Drawing.Point(10, 286);
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(40, 12);
             this.label1.TabIndex = 12;
