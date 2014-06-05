@@ -949,16 +949,22 @@ namespace PowerPointLabs
                 timerLabel.Text = AudioHelper.GetAudioLengthString();
 
                 // ask if the user wants to do the replacement
-                DialogResult result;
-                if (currentPlayback == null)
+                var result = DialogResult.Yes;
+
+                // prompt to the user only when escaping the slide show while recording
+                if (_inShowControlBox != null && 
+                    _inShowControlBox.GetCurrentStatus() == InShowControl.ButtonStatus.Estop)
                 {
-                    result = MessageBox.Show("Do you want to save the record?",
-                                             "Replacement", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
-                }
-                else
-                {
-                    result = MessageBox.Show("Do you want to replace\n" + currentPlayback.SaveName + "\nwith current record?",
-                                             "Replacement", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
+                    if (currentPlayback == null)
+                    {
+                        result = MessageBox.Show("Do you want to save the record?",
+                                                 "Replacement", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
+                    }
+                    else
+                    {
+                        result = MessageBox.Show("Do you want to replace\n" + currentPlayback.Name + "\nwith current record?",
+                                                 "Replacement", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
+                    }
                 }
                 
                 if (result == DialogResult.Yes)
@@ -1001,8 +1007,12 @@ namespace PowerPointLabs
                         _audioList[relativeID][recordIndex] = newRec;
 
                         // update the item in display
+                        // check status of in show control box to:
+                        // 1. reduce unnecessary update (won't see the display lists while slide show)
+                        // 2. current slide == null during slide show, use in show box status to guard
+                        // null ptr exception.
                         if (_inShowControlBox == null ||
-                            _inShowControlBox.GetCurrentStatus() == InShowControl.ButtonStatus.Idle &&
+                            _inShowControlBox.GetCurrentStatus() != InShowControl.ButtonStatus.Rec &&
                             relativeID == GetRelativeSlideIndex(PowerPointPresentation.CurrentSlide.ID))
                         {
                             UpdateRecordList(recordIndex, displayName, newRec.Length);
@@ -1033,7 +1043,7 @@ namespace PowerPointLabs
 
                         // update the whole record display list if not in slide show mode
                         if (_inShowControlBox == null ||
-                            _inShowControlBox.GetCurrentStatus() == InShowControl.ButtonStatus.Idle &&
+                            _inShowControlBox.GetCurrentStatus() != InShowControl.ButtonStatus.Rec &&
                             relativeID == GetRelativeSlideIndex(PowerPointPresentation.CurrentSlide.ID))
                         {
                             ClearRecordDisplayList();
@@ -1047,7 +1057,7 @@ namespace PowerPointLabs
 
                     // update the script list if not in slide show mode
                     if (_inShowControlBox == null ||
-                        _inShowControlBox.GetCurrentStatus() == InShowControl.ButtonStatus.Idle &&
+                        _inShowControlBox.GetCurrentStatus() != InShowControl.ButtonStatus.Rec &&
                         relativeID == GetRelativeSlideIndex(PowerPointPresentation.CurrentSlide.ID))
                     {
                         UpdateScriptList(scriptIndex, null, ScriptStatus.Recorded);

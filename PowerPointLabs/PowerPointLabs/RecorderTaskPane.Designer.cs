@@ -180,7 +180,7 @@
             this.slideShowButton.Name = "slideShowButton";
             this.slideShowButton.Size = new System.Drawing.Size(108, 41);
             this.slideShowButton.TabIndex = 9;
-            this.slideShowButton.Text = "Record while\nSlide Show";
+            this.slideShowButton.Text = "Record During\nSlide Show";
             this.slideShowButton.UseVisualStyleBackColor = true;
             this.slideShowButton.Click += new System.EventHandler(this.SlideShowButtonClick);
             // 

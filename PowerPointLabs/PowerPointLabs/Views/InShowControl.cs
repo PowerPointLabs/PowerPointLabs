@@ -20,6 +20,7 @@ namespace PowerPointLabs.Views
         public enum ButtonStatus
         {
             Idle,
+            Estop,
             Rec
         }
 
@@ -57,8 +58,9 @@ namespace PowerPointLabs.Views
 
         public void ForceStop()
         {
-            _status = ButtonStatus.Idle;
+            _status = ButtonStatus.Estop;
             Globals.ThisAddIn.recorderTaskPane.StopButtonRecordingHandler(_recordStartClick, _recordStartSlide, false);
+            _status = ButtonStatus.Idle;
         }
 
         private int GetRelativeSlideIndex(int index)
