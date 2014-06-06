@@ -57,6 +57,7 @@ namespace PowerPointLabs
         private const string SpeechShapeFormat = "PowerPointLabs Speech {0}";
         private const string ReopenSpeechFormat = "media{0}.wav";
         private int _recordClipCnt;
+        private int _recordTotalLength;
 
         private enum RecorderStatus
         {
@@ -165,8 +166,6 @@ namespace PowerPointLabs
                 return;
             }
 
-            var tempOutputName = tempFullPath + "merge.wav";
-
             foreach (var audio in audios)
             {
                 using (var reader = new WaveFileReader(audio))
@@ -177,7 +176,7 @@ namespace PowerPointLabs
                     }
                     else
                     {
-                        if (!reader.WaveFormat.Equals(waveFileWriter.WaveFormat))
+                        if (!reader.WaveFormat.Equals(writer.WaveFormat))
                         {
                             throw new InvalidOperationException("Can't concatenate WAV Files that don't share the same format");
                         }
@@ -189,9 +188,9 @@ namespace PowerPointLabs
                         writer.Write(buffer, 0, read);
                     }
                 }
-            }
 
-            File.Move(tempOutputName, outputName);
+                File.Delete(audio);
+            }
 
             if (writer != null)
             {
@@ -592,6 +591,17 @@ namespace PowerPointLabs
         {
             ClearRecordDataList(id);
             ClearScriptDataList(id);
+        }
+
+        private void DeleteTempAudioFiles()
+        {
+            var audioFiles = Directory.EnumerateFiles(tempFullPath, "*.wav");
+            var tempAudios = audioFiles.Where(audio => audio.Contains("temp")).ToArray();
+
+            foreach (var audio in tempAudios)
+            {
+                File.Delete(audio);
+            }
         }
 
         public void DisposeInSlideControlBox()
@@ -1026,8 +1036,9 @@ namespace PowerPointLabs
             // change the status to recording status
             _recButtonStatus = RecorderStatus.Recording;
 
-            // new record, clip counter should be reset
+            // new record, clip counter and total length should be reset
             _recordClipCnt = 0;
+            _recordTotalLength = 0;
             // construct new save name
             var tempSaveName = String.Format(tempWaveFileNameFormat, _recordClipCnt);
 
@@ -1051,10 +1062,11 @@ namespace PowerPointLabs
             statusLabel.Text = "Pause";
             recButton.Image = Properties.Resources.Record;
 
-            // stop the sound, increase clip counter and stop the timer
-            //Native.mciSendString("pause sound", null, 0, IntPtr.Zero);
+            // stop the sound, increase clip counter, add current clip length to
+            // total record length and stop the timer
             NStopRecordAudio();
             _recordClipCnt++;
+            _recordTotalLength += NGetRecordLengthMillis();
             _timer.Dispose();
 
             // since the timer is counting in seconds, we need to know how many
@@ -1112,8 +1124,8 @@ namespace PowerPointLabs
                 NStopRecordAudio();
                 
                 // adjust the stop time difference between timer-stop and recording-stop
-                var recordLength = NGetRecordLengthMillis();
-                timerLabel.Text = AudioHelper.ConvertMillisToTime(recordLength);
+                _recordTotalLength += NGetRecordLengthMillis();
+                timerLabel.Text = AudioHelper.ConvertMillisToTime(_recordTotalLength);
                 
                 // recorder resources clean up
                 NCleanup();
@@ -1170,7 +1182,7 @@ namespace PowerPointLabs
                     {
                         saveName = currentPlayback.SaveName.Replace(".wav", " rec.wav");
                         displayName = currentPlayback.Name;
-                        newRec = AudioHelper.DumpAudio(displayName, saveName, recordLength, currentPlayback.MatchSciptID);
+                        newRec = AudioHelper.DumpAudio(displayName, saveName, _recordTotalLength, currentPlayback.MatchSciptID);
 
                         // note down the old record and replace the record list
                         _undoAudioBuffer = _audioList[relativeID][recordIndex];
@@ -1199,7 +1211,7 @@ namespace PowerPointLabs
                         // the display name -> which script it corresponds to
                         displayName = String.Format(SpeechShapeFormat, scriptIndex);
 
-                        newRec = AudioHelper.DumpAudio(displayName, saveName, recordLength, scriptIndex);
+                        newRec = AudioHelper.DumpAudio(displayName, saveName, _recordTotalLength, scriptIndex);
 
                         // insert the new audio
                         if (recordIndex == -1)
@@ -1252,13 +1264,7 @@ namespace PowerPointLabs
                 else
                 {
                     // user does not want to save the file, delete all the temp files
-                    var audioFiles = Directory.EnumerateFiles(tempFullPath, "*.wav");
-                    var tempAudios = audioFiles.Where(audio => audio.Contains("temp")).ToArray();
-
-                    foreach (var audio in tempAudios)
-                    {
-                        File.Delete(audio);
-                    }
+                    DeleteTempAudioFiles();
                 }
             }
             catch (Exception e)
