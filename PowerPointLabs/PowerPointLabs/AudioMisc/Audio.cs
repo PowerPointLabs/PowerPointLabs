@@ -36,8 +36,8 @@ namespace PowerPointLabs.AudioMisc
             Name = name;
             MatchSciptID = matchScriptID;
             SaveName = saveName;
-            Length = AudioHelper.GetAudioLengthString(saveName);
             LengthMillis = AudioHelper.GetAudioLength(saveName);
+            Length = AudioHelper.ConvertMillisToTime(LengthMillis);
             Type = AudioHelper.GetAudioType(saveName);
         }
 

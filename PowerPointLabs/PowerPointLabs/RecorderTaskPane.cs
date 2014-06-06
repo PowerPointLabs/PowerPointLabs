@@ -13,10 +13,12 @@ using System.Threading;
 using System.Windows.Forms;
 using Microsoft.Office.Core;
 using Microsoft.Office.Interop.PowerPoint;
+using NAudio.Wave;
 using PPExtraEventHelper;
 using PowerPointLabs.Models;
 using PowerPointLabs.AudioMisc;
 using PowerPointLabs.Views;
+using NAudio;
 using Shape = Microsoft.Office.Interop.PowerPoint.Shape;
 
 namespace PowerPointLabs
@@ -49,10 +51,12 @@ namespace PowerPointLabs
         private readonly string _tempPath = Path.GetTempPath();
         private const string TempFolderName = @"\PowerPointLabs Temp\";
         private readonly string tempFullPath = Path.GetTempPath() + TempFolderName;
+        private readonly string tempWaveFileNameFormat = Path.GetTempPath() + TempFolderName + "temp{0}.wav";
         private const string SaveNameFormat = "Slide {0} Speech";
         private const string SpeechShapePrefix = "PowerPointLabs Speech";
         private const string SpeechShapeFormat = "PowerPointLabs Speech {0}";
         private const string ReopenSpeechFormat = "media{0}.wav";
+        private int _recordClipCnt;
 
         private enum RecorderStatus
         {
@@ -68,6 +72,153 @@ namespace PowerPointLabs
             Recorded,
             Untracked
         }
+
+        # region Recorder functions
+        private IWaveIn waveInStream;
+        private WaveFileWriter waveFileWriter;
+        private int _currentLength;
+
+        private void WaveInStreamOnDataAvailable(object sender, WaveInEventArgs waveInEventArgs)
+        {
+            if (InvokeRequired)
+            {
+                BeginInvoke(new EventHandler<WaveInEventArgs>(WaveInStreamOnDataAvailable), sender, waveInEventArgs);
+            }
+            else
+            {
+                if (waveFileWriter != null)
+                {
+                    waveFileWriter.Write(waveInEventArgs.Buffer, 0, waveInEventArgs.BytesRecorded);
+                    _currentLength = (int)(waveFileWriter.Length * 1000 / waveFileWriter.WaveFormat.AverageBytesPerSecond);
+                }
+            }
+        }
+
+        private void WaveInStreamOnRecordingStopped(object sender, StoppedEventArgs stoppedEventArgs)
+        {
+            if (waveFileWriter != null)
+            {
+                waveFileWriter.Dispose();
+                waveFileWriter = null;
+            }
+        }
+
+        private void NCleanup()
+        {
+            _currentLength = 0;
+
+            if (waveInStream != null)
+            {
+                waveInStream.Dispose();
+                waveInStream = null;
+            }
+
+            if (waveFileWriter != null)
+            {
+                waveFileWriter.Dispose();
+                waveFileWriter = null;
+            }
+        }
+
+        private void NStartRecordAudio(string fileName, int rate, int bits, int channel, bool isBackground)
+        {
+            // prepare wave header and wav output file
+            if (isBackground)
+            {
+                waveInStream = new WaveInEvent();
+            }
+            else
+            {
+                waveInStream = new WaveIn();
+            }
+
+            waveInStream.WaveFormat = new WaveFormat(rate, bits, channel);
+            waveFileWriter = new WaveFileWriter(fileName, waveInStream.WaveFormat);
+
+            waveInStream.DataAvailable += WaveInStreamOnDataAvailable;
+            waveInStream.RecordingStopped += WaveInStreamOnRecordingStopped;
+
+            // start recording here
+            waveInStream.StartRecording();
+        }
+
+        private void NStopRecordAudio()
+        {
+            if (waveInStream != null)
+            {
+                waveInStream.StopRecording();
+            }
+        }
+
+        private void NMergeAudios(string[] audios, string outputName)
+        {
+            var buffer = new byte[2048];
+            WaveFileWriter writer = null;
+
+            if (audios.Length == 1)
+            {
+                if (audios[0] != outputName)
+                {
+                    File.Move(audios[0], outputName);
+                }
+
+                return;
+            }
+
+            var tempOutputName = tempFullPath + "merge.wav";
+
+            foreach (var audio in audios)
+            {
+                using (var reader = new WaveFileReader(audio))
+                {
+                    if (writer == null)
+                    {
+                        writer = new WaveFileWriter(outputName, reader.WaveFormat);
+                    }
+                    else
+                    {
+                        if (!reader.WaveFormat.Equals(waveFileWriter.WaveFormat))
+                        {
+                            throw new InvalidOperationException("Can't concatenate WAV Files that don't share the same format");
+                        }
+                    }
+
+                    int read;
+                    while ((read = reader.Read(buffer, 0, buffer.Length)) > 0)
+                    {
+                        writer.Write(buffer, 0, read);
+                    }
+                }
+            }
+
+            File.Move(tempOutputName, outputName);
+
+            if (writer != null)
+            {
+                writer.Dispose();
+            }
+        }
+
+        private void NMergeAudios(string path, string baseName, string outputName)
+        {
+            var audioFiles = Directory.EnumerateFiles(path, "*.wav");
+            var audios = audioFiles.Where(audio => audio.Contains(baseName)).ToArray();
+
+            NMergeAudios(audios, outputName);
+        }
+
+        private int NGetRecordLengthMillis()
+        {
+            return _currentLength;
+        }
+
+        private string NGetRecordLengthString()
+        {
+            var lengthString = AudioHelper.ConvertMillisToTime(NGetRecordLengthMillis());
+
+            return lengthString;
+        }
+        # endregion
 
         # region Helper Functions
         /// <summary>
@@ -125,8 +276,9 @@ namespace PowerPointLabs
         /// </summary>
         private void ResetSession()
         {
-            // close unfinished sound session
+            // close unfinished sound session, both from wavin and mci
             AudioHelper.CloseAudio();
+            NCleanup();
 
             // reset timer and trackbar
             ResetTimer();
@@ -874,9 +1026,15 @@ namespace PowerPointLabs
             // change the status to recording status
             _recButtonStatus = RecorderStatus.Recording;
 
+            // new record, clip counter should be reset
+            _recordClipCnt = 0;
+            // construct new save name
+            var tempSaveName = String.Format(tempWaveFileNameFormat, _recordClipCnt);
+
             // start recording
-            AudioHelper.OpenNewAudio();
-            Native.mciSendString("record sound", null, 0, IntPtr.Zero);
+            //AudioHelper.OpenNewAudio();
+            //Native.mciSendString("record sound", null, 0, IntPtr.Zero);
+            NStartRecordAudio(tempSaveName, 11025, 16, 1, true);
 
             // start the timer
             _timerCnt = 0;
@@ -893,21 +1051,25 @@ namespace PowerPointLabs
             statusLabel.Text = "Pause";
             recButton.Image = Properties.Resources.Record;
 
-            // pause the sound and stop the timer
+            // stop the sound, increase clip counter and stop the timer
+            //Native.mciSendString("pause sound", null, 0, IntPtr.Zero);
+            NStopRecordAudio();
+            _recordClipCnt++;
             _timer.Dispose();
-            Native.mciSendString("pause sound", null, 0, IntPtr.Zero);
 
             // since the timer is counting in seconds, we need to know how many
             // millis to wait before next integral second.
 
             // retrieve current length
-            int currentLen = AudioHelper.GetAudioLength();
+            int currentLen = NGetRecordLengthMillis();
             _resumeWaitingTime = _timerCnt * 1000 - currentLen;
 
             if (_resumeWaitingTime < 0)
             {
                 _resumeWaitingTime = 0;
             }
+
+            NCleanup();
         }
 
         private void RecButtonPauseHandler()
@@ -921,8 +1083,10 @@ namespace PowerPointLabs
             statusLabel.Text = "Recording...";
             recButton.Image = Properties.Resources.Pause;
 
-            // resume recording and restart the timer
-            Native.mciSendString("resume sound", null, 0, IntPtr.Zero);
+            // start a new recording, name it after clip counter and restart the timer
+            //Native.mciSendString("resume sound", null, 0, IntPtr.Zero);
+            var tempSaveName = String.Format(tempWaveFileNameFormat, _recordClipCnt);
+            NStartRecordAudio(tempSaveName, 11025, 16, 1, true);
             _timer = new System.Threading.Timer(TimerEvent, null, _resumeWaitingTime, 1000);
         }
 
@@ -944,9 +1108,15 @@ namespace PowerPointLabs
             try
             {
                 // stop recording and get the length of the recording
-                Native.mciSendString("stop sound", null, 0, IntPtr.Zero);
+                //Native.mciSendString("stop sound", null, 0, IntPtr.Zero);
+                NStopRecordAudio();
+                
                 // adjust the stop time difference between timer-stop and recording-stop
-                timerLabel.Text = AudioHelper.GetAudioLengthString();
+                var recordLength = NGetRecordLengthMillis();
+                timerLabel.Text = AudioHelper.ConvertMillisToTime(recordLength);
+                
+                // recorder resources clean up
+                NCleanup();
 
                 // ask if the user wants to do the replacement
                 var result = DialogResult.Yes;
@@ -1000,7 +1170,7 @@ namespace PowerPointLabs
                     {
                         saveName = currentPlayback.SaveName.Replace(".wav", " rec.wav");
                         displayName = currentPlayback.Name;
-                        newRec = AudioHelper.DumpAudio(displayName, saveName, currentPlayback.MatchSciptID);
+                        newRec = AudioHelper.DumpAudio(displayName, saveName, recordLength, currentPlayback.MatchSciptID);
 
                         // note down the old record and replace the record list
                         _undoAudioBuffer = _audioList[relativeID][recordIndex];
@@ -1019,7 +1189,7 @@ namespace PowerPointLabs
                         }
                     }
                     else
-                    // if current playback == null -> there's no corresponding record for the
+                    // if current playback == null -> there's NO corresponding record for the
                     // script, we need to construct the new record and insert it to a proper
                     // position
                     {
@@ -1029,7 +1199,7 @@ namespace PowerPointLabs
                         // the display name -> which script it corresponds to
                         displayName = String.Format(SpeechShapeFormat, scriptIndex);
 
-                        newRec = AudioHelper.DumpAudio(displayName, saveName, scriptIndex);
+                        newRec = AudioHelper.DumpAudio(displayName, saveName, recordLength, scriptIndex);
 
                         // insert the new audio
                         if (recordIndex == -1)
@@ -1051,9 +1221,10 @@ namespace PowerPointLabs
                         }
                     }
 
-                    // save curent sound
-                    Native.mciSendString("save sound \"" + saveName + "\"", null, 0, IntPtr.Zero);
-                    AudioHelper.CloseAudio();
+                    // save curent sound -> rename the temp file to the correct save name
+                    //Native.mciSendString("save sound \"" + saveName + "\"", null, 0, IntPtr.Zero);
+                    //AudioHelper.CloseAudio();
+                    NMergeAudios(tempFullPath, "temp", saveName);
 
                     // update the script list if not in slide show mode
                     if (_inShowControlBox == null ||
@@ -1076,6 +1247,17 @@ namespace PowerPointLabs
                         }
 
                         AudioBuffer[currentSlide.Index - 1].Add(new Tuple<Audio, int>(newRec, scriptIndex));
+                    }
+                }
+                else
+                {
+                    // user does not want to save the file, delete all the temp files
+                    var audioFiles = Directory.EnumerateFiles(tempFullPath, "*.wav");
+                    var tempAudios = audioFiles.Where(audio => audio.Contains("temp")).ToArray();
+
+                    foreach (var audio in tempAudios)
+                    {
+                        File.Delete(audio);
                     }
                 }
             }

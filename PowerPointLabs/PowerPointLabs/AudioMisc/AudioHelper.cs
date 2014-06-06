@@ -1,14 +1,18 @@
 ﻿using System;
+using System.IO;
+using System.Linq;
 using System.Text;
 using Microsoft.Office.Core;
 using PPExtraEventHelper;
 using PowerPointLabs.Models;
+using NAudio.Wave;
 using Shape = Microsoft.Office.Interop.PowerPoint.Shape;
 
 namespace PowerPointLabs.AudioMisc
 {
     internal class AudioHelper
     {
+        # region MCI Constants
         public const int MM_MCINOTIFY = 0x03B9;
         public const int MCI_NOTIFY_SUCCESS = 0x01;
         public const int MCI_NOTIFY_ABORTED = 0x04;
@@ -17,6 +21,7 @@ namespace PowerPointLabs.AudioMisc
         private const int MCI_RET_INFO_BUF_LEN = 128;
 
         private static StringBuilder mciRetInfo;
+        # endregion
 
         /// <summary>
         /// This function will convert a time in milli-second to HH:MM:SS:MMS
@@ -54,7 +59,7 @@ namespace PowerPointLabs.AudioMisc
 
         public static void OpenAudio(string name)
         {
-            Native.mciSendString("open \"" + name + "\" alias sound", null, 0, IntPtr.Zero);
+            int x = Native.mciSendString("open \"" + name + "\" alias sound", null, 0, IntPtr.Zero);
         }
 
         public static void CloseAudio()
@@ -65,7 +70,7 @@ namespace PowerPointLabs.AudioMisc
         public static int GetAudioLength()
         {
             mciRetInfo = new StringBuilder(MCI_RET_INFO_BUF_LEN);
-            Native.mciSendString("status sound length", mciRetInfo, MCI_RET_INFO_BUF_LEN, IntPtr.Zero);
+            int x = Native.mciSendString("status sound length", mciRetInfo, MCI_RET_INFO_BUF_LEN, IntPtr.Zero);
             return Int32.Parse(mciRetInfo.ToString());
         }
 
@@ -117,14 +122,20 @@ namespace PowerPointLabs.AudioMisc
         /// <param name="saveName">The intended save name.</param>
         /// <param name="matchScriptID">The corresponding script id for the current track.</param>
         /// <returns>An Audio object with all fields set up.</returns>
-        public static Audio DumpAudio(string name, string saveName, int matchScriptID)
+        public static Audio DumpAudio(string name, string saveName, int length, int matchScriptID)
         {
+            // get length from file if length is not specified
+            if (length == -1)
+            {
+                length = GetAudioLength(saveName);  
+            }
+
             var audio = new Audio
                             {
                                 Name = name,
                                 SaveName = saveName,
-                                Length = GetAudioLengthString(),
-                                LengthMillis = GetAudioLength(),
+                                LengthMillis = length,
+                                Length = ConvertMillisToTime(length),
                                 MatchSciptID = matchScriptID,
                                 Type = GetAudioType(saveName)
                             };
