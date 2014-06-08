@@ -63,6 +63,7 @@ namespace DeployHelper
                 ProduceZip();
                 SftpUpload();
                 CleanUp();
+                DisplayEndMessage();
             }
             catch
             {
@@ -266,6 +267,7 @@ namespace DeployHelper
 
         private static void ModifyManifest()
         {
+            Console.WriteLine("Patching...");
             LoadManifest();
             if (!IsPatched())
             {
@@ -436,6 +438,7 @@ namespace DeployHelper
 
         private static void ProduceZip()
         {
+            Console.WriteLine("Zipping...");
             SetupBinExe();
             SetupZipFolder();
             CreateZipFile();
@@ -526,6 +529,7 @@ namespace DeployHelper
                     CreateDirectory(DirAppFilesInLocalPath);
                     CreateDirectory(dirNewestVerFolder);
 
+                    Console.WriteLine("Connecting the server...");
                     session.Open(sessionOptions);
                     if (session.Opened)
                     {
@@ -541,6 +545,7 @@ namespace DeployHelper
                         File.Copy(DirPptLabsZipPath, ZipPathToUpload, IsOverWritten);
                         File.Copy(DirVsto, VstoPathToUpload, IsOverWritten);
 
+                        Console.WriteLine("Uploading...");
                         UploadLocalFile(session, remotePath, transferOptions);
                         DisplayDone(DoneUploaded);
                     }
@@ -553,6 +558,8 @@ namespace DeployHelper
             catch (Exception e)
             {
                 Console.WriteLine("Error during SFTP uploading: {0}", e);
+                CleanUp();
+                DisplayWarning(ErrorNetworkFailed);
             }
         }
 
@@ -625,6 +632,11 @@ namespace DeployHelper
         {
             Console.Write(InfoEnterPassword);
             var password = Console.ReadLine();
+            while (password == null || password.Trim() == "")
+            {
+                Console.Write(InfoEnterPassword);
+                password = Console.ReadLine();
+            }
 
             var sessionOptions = new SessionOptions
             {
@@ -648,7 +660,10 @@ namespace DeployHelper
             Directory.Delete(DirPptLabsZipFolder, IsSubDirectoryToDelete);
             Directory.Delete(DirLocalPathToUpload, IsSubDirectoryToDelete);
             File.Delete(DirPptLabsZipPath);
-            
+        }
+
+        private static void DisplayEndMessage()
+        {
             DisplayDone("All Done!");
             if (_isReleased)
             {
@@ -659,7 +674,7 @@ namespace DeployHelper
 
         private static void PrepareEndMessage()
         {
-            Console.Write("Remember to merge from default branch into ");
+            Console.Write("Remember to merge from dev branch into ");
             ConsoleWriteWithColor("release ", ConsoleColor.Yellow);
             Console.WriteLine("branch.");
         }
