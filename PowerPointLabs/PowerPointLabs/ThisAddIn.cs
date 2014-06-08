@@ -437,10 +437,12 @@ namespace PowerPointLabs
         private void SetupAfterCopyPasteHandler()
         {
             PPCopy.AfterCopy += AfterCopyEventHandler;
+            PPCopy.AfterPaste += AfterPasteRecorderEventHandler;
             PPCopy.AfterPaste += AfterPasteEventHandler;
         }
 
         private List<PowerPoint.Shape> copiedShapes = new List<PowerPoint.Shape>();
+        private List<PowerPoint.Slide> copiedSlides = new List<PowerPoint.Slide>();
         private PowerPoint.Slide previousSlideForCopyEvent;
         private string previousPptName;
 
@@ -517,11 +519,44 @@ namespace PowerPointLabs
             }
         }
 
+        private void AfterPasteRecorderEventHandler(PowerPoint.Selection selection)
+        {
+            if (selection.Type == PowerPoint.PpSelectionType.ppSelectionSlides)
+            {
+                var slideRange = selection.SlideRange;
+                var oriSlide = 0;
+
+                foreach (var sld in slideRange)
+                {
+                    var oldID = copiedSlides[oriSlide].SlideID;
+                    var newID = (sld as PowerPoint.Slide).SlideID;
+                    
+                    recorderTaskPane.CopySlideToSlide(oldID, newID);
+
+                    oriSlide++;
+                }
+
+                // update the lists when all done
+                UpdateRecorderPane(slideRange.Count, slideRange[1].SlideID);
+            }
+        }
+
         private void AfterCopyEventHandler(PowerPoint.Selection selection)
         {
             try
             {
-                if (selection.Type == PowerPoint.PpSelectionType.ppSelectionShapes)
+                if (selection.Type == PowerPoint.PpSelectionType.ppSelectionSlides)
+                {
+                    copiedSlides.Clear();
+
+                    foreach (var sld in selection.SlideRange)
+                    {
+                        var slide = sld as PowerPoint.Slide;
+
+                        copiedSlides.Add(slide);
+                    }
+                }
+                else if (selection.Type == PowerPoint.PpSelectionType.ppSelectionShapes)
                 {
                     copiedShapes.Clear();
                     previousSlideForCopyEvent = Application.ActiveWindow.View.Slide as PowerPoint.Slide;

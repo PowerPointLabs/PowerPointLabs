@@ -619,6 +619,37 @@ namespace PowerPointLabs
             ClearScriptDataList(id);
         }
 
+        public void CopySlideToSlide(int oldID, int newID)
+        {
+            var oldRelativeID = GetRelativeSlideIndex(oldID);
+            var newRelativeID = GetRelativeSlideIndex(newID);
+
+            var audioList = new List<Audio>(_audioList[oldRelativeID]);
+            var scriptList = new List<string>(_scriptList[oldRelativeID]);
+
+            // we only need to copy the old audio list, the script list does not need.
+            // This is because the new script list will be updated when the slide is 
+            // initialized, but audio must be copied since it won't get initialized
+            // during intilaiztion.
+            if (newRelativeID >= _audioList.Count)
+            {
+                _audioList.Add(audioList);
+            }
+            else
+            {
+                _audioList[newRelativeID] = audioList;
+            }
+
+            if (newRelativeID >= _scriptList.Count)
+            {
+                _scriptList.Add(scriptList);
+            }
+            else
+            {
+                _scriptList[newRelativeID] = scriptList;
+            }
+        }
+
         private void DeleteTempAudioFiles()
         {
             var audioFiles = Directory.EnumerateFiles(tempFullPath, "*.wav");
