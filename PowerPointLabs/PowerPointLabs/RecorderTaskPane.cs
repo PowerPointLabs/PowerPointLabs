@@ -159,6 +159,12 @@ namespace PowerPointLabs
             var buffer = new byte[2048];
             WaveFileWriter writer = null;
 
+            // delete the old file if it exists
+            if (File.Exists(outputName))
+            {
+                File.Delete(outputName);
+            }
+
             if (audios.Length == 1)
             {
                 if (audios[0] != outputName)
