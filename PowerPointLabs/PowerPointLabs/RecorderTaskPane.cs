@@ -1245,6 +1245,8 @@ namespace PowerPointLabs
                         if (recordIndex == -1)
                         {
                             _audioList[relativeID].Add(newRec);
+                            // update record index, will be used in highlighting
+                            recordIndex = _audioList[relativeID].Count - 1;
                         }
                         else
                         {
@@ -1258,6 +1260,9 @@ namespace PowerPointLabs
                         {
                             ClearRecordDisplayList();
                             UpdateRecordList(relativeID);
+
+                            // highlight the latest added record
+                            recDisplay.Items[recordIndex].Selected = true;
                         }
                     }
 
