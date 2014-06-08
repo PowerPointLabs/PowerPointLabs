@@ -20,7 +20,7 @@ namespace PowerPointLabs.AudioMisc
         public const int RecordedBitRate = 8;
 
         public string Name { get; set; }
-        public int MatchSciptID { get; set; }
+        public int MatchScriptID { get; set; }
         public string SaveName { get; set; }
         public string Length { get; set; }
         public int LengthMillis { get; set; }
@@ -34,7 +34,7 @@ namespace PowerPointLabs.AudioMisc
         public Audio(string name, string saveName, int matchScriptID)
         {
             Name = name;
-            MatchSciptID = matchScriptID;
+            MatchScriptID = matchScriptID;
             SaveName = saveName;
             LengthMillis = AudioHelper.GetAudioLength(saveName);
             Length = AudioHelper.ConvertMillisToTime(LengthMillis);

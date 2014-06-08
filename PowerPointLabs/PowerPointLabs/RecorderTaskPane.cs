@@ -48,14 +48,16 @@ namespace PowerPointLabs
         private Audio _undoAudioBuffer;
 
         // Records save and display
-        private readonly string _tempPath = Path.GetTempPath();
         private const string TempFolderName = @"\PowerPointLabs Temp\";
-        private readonly string tempFullPath = Path.GetTempPath() + TempFolderName;
-        private readonly string tempWaveFileNameFormat = Path.GetTempPath() + TempFolderName + "temp{0}.wav";
         private const string SaveNameFormat = "Slide {0} Speech";
         private const string SpeechShapePrefix = "PowerPointLabs Speech";
         private const string SpeechShapeFormat = "PowerPointLabs Speech {0}";
         private const string ReopenSpeechFormat = "media{0}.wav";
+
+        private readonly string _tempPath = Path.GetTempPath();
+        private readonly string tempFullPath = Path.GetTempPath() + TempFolderName;
+        private readonly string tempWaveFileNameFormat = Path.GetTempPath() + TempFolderName + "temp{0}.wav";
+
         private int _recordClipCnt;
         private int _recordTotalLength;
 
@@ -74,7 +76,8 @@ namespace PowerPointLabs
             Untracked
         }
 
-        # region Recorder functions
+        # region Recorder Utilities
+        // these utilities wrapped NAudio functions
         private IWaveIn waveInStream;
         private WaveFileWriter waveFileWriter;
         private int _currentLength;
@@ -326,13 +329,30 @@ namespace PowerPointLabs
         {
             var recordIndex = -1;
 
+            // if no matched script, return -1 directly
+            if (scriptIndex == -1)
+            {
+                return -1;
+            }
+
+            // TODO:
+            // this function can be better implemented using binary search
+
             for (var i = 0; i < _audioList[relativeId].Count; i ++)
             {
                 var audio = _audioList[relativeId][i];
 
-                if (audio.MatchSciptID == scriptIndex)
+                if (audio.MatchScriptID == scriptIndex)
                 {
                     recordIndex = i;
+                }
+
+                // since the list is sorted according to match script id, if the current
+                // matched script ID is larger than script index, we can conclude that
+                // there's no mactched record
+                if (audio.MatchScriptID > scriptIndex)
+                {
+                    break;
                 }
             }
 
@@ -705,7 +725,7 @@ namespace PowerPointLabs
 
                         // derive matched id from shape name
                         var temp = shape.Name.Split(new [] {' '});
-                        audio.MatchSciptID = Int32.Parse(temp[2]);
+                        audio.MatchScriptID = Int32.Parse(temp[2]);
 
                         audio.SaveName = tempFullPath + String.Format(ReopenSpeechFormat, validSpeechCnt + 1);
                         audio.Name = shape.Name;
@@ -1043,8 +1063,6 @@ namespace PowerPointLabs
             var tempSaveName = String.Format(tempWaveFileNameFormat, _recordClipCnt);
 
             // start recording
-            //AudioHelper.OpenNewAudio();
-            //Native.mciSendString("record sound", null, 0, IntPtr.Zero);
             NStartRecordAudio(tempSaveName, 11025, 16, 1, true);
 
             // start the timer
@@ -1119,8 +1137,7 @@ namespace PowerPointLabs
 
             try
             {
-                // stop recording and get the length of the recording
-                //Native.mciSendString("stop sound", null, 0, IntPtr.Zero);
+                // stop recording in the first play to reduce redundant recording
                 NStopRecordAudio();
                 
                 // adjust the stop time difference between timer-stop and recording-stop
@@ -1149,9 +1166,14 @@ namespace PowerPointLabs
                     }
                 }
                 
-                if (result == DialogResult.Yes)
+                if (result == DialogResult.No)
                 {
-                    // user wants to do the replacement, save the file and replace the record
+                    // user does not want to save the file, delete all the temp files
+                    DeleteTempAudioFiles();
+                }
+                else
+                {
+                    // user confirms the recording, save the file and replace the record
                     string saveName;
                     string displayName;
                     Audio newRec = null;
@@ -1169,7 +1191,7 @@ namespace PowerPointLabs
                     {
                         var audio = _audioList[relativeID][i];
                         
-                        if (audio.MatchSciptID >= scriptIndex)
+                        if (audio.MatchScriptID >= scriptIndex)
                         {
                             recordIndex = i;
                             break;
@@ -1182,7 +1204,7 @@ namespace PowerPointLabs
                     {
                         saveName = currentPlayback.SaveName.Replace(".wav", " rec.wav");
                         displayName = currentPlayback.Name;
-                        newRec = AudioHelper.DumpAudio(displayName, saveName, _recordTotalLength, currentPlayback.MatchSciptID);
+                        newRec = AudioHelper.DumpAudio(displayName, saveName, _recordTotalLength, currentPlayback.MatchScriptID);
 
                         // note down the old record and replace the record list
                         _undoAudioBuffer = _audioList[relativeID][recordIndex];
@@ -1233,9 +1255,7 @@ namespace PowerPointLabs
                         }
                     }
 
-                    // save curent sound -> rename the temp file to the correct save name
-                    //Native.mciSendString("save sound \"" + saveName + "\"", null, 0, IntPtr.Zero);
-                    //AudioHelper.CloseAudio();
+                    // save current sound -> rename the temp file to the correct save name
                     NMergeAudios(tempFullPath, "temp", saveName);
 
                     // update the script list if not in slide show mode
@@ -1260,11 +1280,6 @@ namespace PowerPointLabs
 
                         AudioBuffer[currentSlide.Index - 1].Add(new Tuple<Audio, int>(newRec, scriptIndex));
                     }
-                }
-                else
-                {
-                    // user does not want to save the file, delete all the temp files
-                    DeleteTempAudioFiles();
                 }
             }
             catch (Exception e)
@@ -1482,7 +1497,7 @@ namespace PowerPointLabs
         private void RecDisplayItemSelectionChanged(object sender, ListViewItemSelectionChangedEventArgs e)
         {
             int relativeSlideID = GetRelativeSlideIndex(PowerPointPresentation.CurrentSlide.ID);
-            int corresIndex = _audioList[relativeSlideID][e.ItemIndex].MatchSciptID;
+            int corresIndex = _audioList[relativeSlideID][e.ItemIndex].MatchScriptID;
 
             // if some record is selected, enable the record button
             if (e.IsSelected)
@@ -1490,14 +1505,21 @@ namespace PowerPointLabs
                 SetAllRecorderButtonState(true);
                 stopButton.Enabled = false;
 
-                if (corresIndex != -1)
+                if (corresIndex != -1 &&
+                    corresIndex < scriptDisplay.Items.Count)
                 {
                     scriptDisplay.Items[corresIndex].Selected = true;
+
+                    scriptDetailTextBox.ForeColor = Color.Black;
+                    scriptDetailTextBox.Font = new System.Drawing.Font(scriptDetailTextBox.Font, FontStyle.Regular);
+                    scriptDetailTextBox.Text = _scriptList[relativeSlideID][corresIndex];
                 }
-
-                scriptDetailTextBox.Text = _scriptList[relativeSlideID][corresIndex];
-
-                SetScriptTextBoxScroll();
+                else
+                {
+                    scriptDetailTextBox.ForeColor = Color.Red;
+                    scriptDetailTextBox.Font = new System.Drawing.Font(scriptDetailTextBox.Font, FontStyle.Bold);
+                    scriptDetailTextBox.Text = "Script Not Written";
+                }
             }
             else
             {
@@ -1508,7 +1530,8 @@ namespace PowerPointLabs
                     SetAllRecorderButtonState(false);
                 }
 
-                if (corresIndex != -1)
+                if (corresIndex != -1 &&
+                    corresIndex < scriptDisplay.Items.Count)
                 {
                     scriptDisplay.Items[corresIndex].Selected = false;
                 }

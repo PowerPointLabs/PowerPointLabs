@@ -136,7 +136,7 @@ namespace PowerPointLabs.AudioMisc
                                 SaveName = saveName,
                                 LengthMillis = length,
                                 Length = ConvertMillisToTime(length),
-                                MatchSciptID = matchScriptID,
+                                MatchScriptID = matchScriptID,
                                 Type = GetAudioType(saveName)
                             };
             

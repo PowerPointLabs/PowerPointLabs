@@ -47,8 +47,11 @@ namespace PowerPointLabs.Views
             Native.RECT rec;
             Native.GetWindowRect(new HandleRef(new object(), slideShowWindow), out rec);
             
-            Location = new Point(rec.Right - Width, rec.Bottom - Height- 55);
+            Location = new Point(rec.Right - Width, rec.Bottom - Height- 65);
             _status = ButtonStatus.Idle;
+
+            // disable undo button by default, enable only when there has something to undo
+            undoButton.Enabled = false;
         }
 
         public ButtonStatus GetCurrentStatus()
@@ -105,6 +108,9 @@ namespace PowerPointLabs.Views
 
                     _status = ButtonStatus.Idle;
                     
+                    // stop produces a undo-able record, thus enable undo button
+                    undoButton.Enabled = true;
+                    
                     break;
             }
         }
@@ -114,6 +120,9 @@ namespace PowerPointLabs.Views
             var recorderPane = Globals.ThisAddIn.recorderTaskPane;
             var temp = recorderPane.AudioBuffer[_recordStartSlide.Index - 1];
 
+            // disable undo since we allow only 1 step undo
+            undoButton.Enabled = false;
+
             // revert back the last action
             recorderPane.UndoLastRecord(_recordStartClick, _recordStartSlide);
             temp.RemoveAt(temp.Count - 1);
@@ -122,7 +131,7 @@ namespace PowerPointLabs.Views
             _slideShowWindow.View.GotoSlide(GetRelativeSlideIndex(_recordStartSlide.Index));
             _slideShowWindow.View.GotoClick(_recordStartClick);
 
-            // activate the show window
+            // activate the show window to allow user click on the slide show
             _slideShowWindow.Activate();
         }
     }
