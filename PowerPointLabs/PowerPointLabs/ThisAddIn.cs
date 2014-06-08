@@ -220,6 +220,13 @@ namespace PowerPointLabs
 
         void ThisAddIn_PrensentationOpen(PowerPoint.Presentation Pres)
         {
+            // before open, check if the temp folder already exists. If it is, delete it
+            string tempFolderPath = Path.GetTempPath() + TempFolderName;
+            if (Directory.Exists(tempFolderPath))
+            {
+                Directory.Delete(tempFolderPath, true);
+            }
+
             // extract embedded audio files to temp folder
             PrepareMediaFiles(Pres);
             // set up recorder pane
@@ -245,13 +252,13 @@ namespace PowerPointLabs
             if (saved == Office.MsoTriState.msoTrue)
             {
                 Pres.Save();
-            }
 
-            // delete the temp folder
-            string tempFolderPath = Path.GetTempPath() + TempFolderName;
-            if (Directory.Exists(tempFolderPath))
-            {
-                Directory.Delete(tempFolderPath, true);
+                // delete the temp folder only when user has saved file
+                string tempFolderPath = Path.GetTempPath() + TempFolderName;
+                if (Directory.Exists(tempFolderPath))
+                {
+                    Directory.Delete(tempFolderPath, true);
+                }
             }
         }
 

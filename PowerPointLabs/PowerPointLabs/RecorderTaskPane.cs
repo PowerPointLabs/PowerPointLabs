@@ -1492,6 +1492,9 @@ namespace PowerPointLabs
             // get the slideShowWindow and slideShowView object
             var slideShowWindow = slideShowSettings.Run();
 
+            // unhide the pointer
+            slideShowWindow.View.PointerType = PpSlideShowPointerType.ppSlideShowPointerArrow;
+
             // init the in-show control
             _inShowControlBox = new InShowControl();
             _inShowControlBox.Show();
