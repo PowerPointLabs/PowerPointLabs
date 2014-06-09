@@ -92,7 +92,7 @@
             // 
             this.timerLabel.AutoSize = true;
             this.timerLabel.Font = new System.Drawing.Font("Times New Roman", 20.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.timerLabel.Location = new System.Drawing.Point(151, 69);
+            this.timerLabel.Location = new System.Drawing.Point(157, 66);
             this.timerLabel.Name = "timerLabel";
             this.timerLabel.Size = new System.Drawing.Size(116, 31);
             this.timerLabel.TabIndex = 4;

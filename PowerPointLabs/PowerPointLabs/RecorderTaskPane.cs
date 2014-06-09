@@ -51,6 +51,7 @@ namespace PowerPointLabs
         private const string TempFolderName = @"\PowerPointLabs Temp\";
         private const string SaveNameFormat = "Slide {0} Speech";
         private const string SpeechShapePrefix = "PowerPointLabs Speech";
+        private const string SpeechShapePrefixOld = "AudioGen Speech";
         private const string SpeechShapeFormat = "PowerPointLabs Speech {0}";
         private const string ReopenSpeechFormat = "media{0}.wav";
 
@@ -741,7 +742,8 @@ namespace PowerPointLabs
                     var shape = shapes[i];
 
                     // if current audio is a speech, dump it into Audio object
-                    if (shape.Name.Contains(SpeechShapePrefix))
+                    if (shape.Name.Contains(SpeechShapePrefix) ||
+                        shape.Name.Contains(SpeechShapePrefixOld))
                     {
                         var audio = new Audio();
 

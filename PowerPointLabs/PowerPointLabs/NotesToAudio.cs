@@ -17,6 +17,7 @@ namespace PowerPointLabs
     {
         private const string TempFolderName = "\\PowerPointLabs Temp\\";
         private const string SpeechShapePrefix = "PowerPointLabs Speech";
+        private const string SpeechShapePrefixOld = "AudioGen Speech";
 
         public static void PreviewAnimations()
         {
@@ -201,6 +202,7 @@ namespace PowerPointLabs
             foreach (PowerPointSlide s in slides)
             {
                 s.DeleteShapesWithPrefix(SpeechShapePrefix);
+                s.DeleteShapesWithPrefix(SpeechShapePrefixOld);
             }
         }
 
@@ -212,6 +214,7 @@ namespace PowerPointLabs
                 return;
             }
             currentSlide.DeleteShapesWithPrefix(SpeechShapePrefix);
+            currentSlide.DeleteShapesWithPrefix(SpeechShapePrefixOld);
         }
 
         public static IEnumerable<String> GetVoices()
