@@ -894,7 +894,7 @@ namespace PowerPointLabs
             }
             else
             {
-                NotesToCaptions.EmbedCaptionsOnCurrentSlide();
+                NotesToCaptions.EmbedCaptionsOnSelectedSlides();
             }
         }
 
@@ -906,7 +906,7 @@ namespace PowerPointLabs
             }
             else
             {
-                NotesToCaptions.RemoveCaptionsFromCurrentSlide();
+                NotesToCaptions.RemoveCaptionsFromSelectedSlides();
             }
         }
 
