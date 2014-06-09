@@ -14,6 +14,7 @@ using PPExtraEventHelper;
 using System.IO.Compression;
 using PowerPointLabs.Models;
 using PowerPointLabs.Views;
+using PowerPointLabs.XMLMisc;
 using PowerPoint = Microsoft.Office.Interop.PowerPoint;
 using Office = Microsoft.Office.Core;
 using System.Deployment.Application;
@@ -377,6 +378,8 @@ namespace PowerPointLabs
             ZipStorer zip = ZipStorer.Open(zipFullPath, FileAccess.Read);
 
             List<ZipStorer.ZipFileEntry> dir = zip.ReadCentralDir();
+            string pattern = @"slide(\d+)\.xml";
+            Regex regex = new Regex(pattern);
 
             foreach (ZipStorer.ZipFileEntry entry in dir)
             {
@@ -384,6 +387,12 @@ namespace PowerPointLabs
                 if (name.Contains(".wav"))
                 {
                     zip.ExtractFile(entry, tempPath + name);
+                }
+                else if (regex.IsMatch(name))
+                {
+                    zip.ExtractFile(entry, tempPath + name);
+
+                    //var match = regex.Match(name);
                 }
             }
 
