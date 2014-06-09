@@ -44,24 +44,13 @@ namespace PowerPointLabs.SpeechEngine
                 // The first item will autoplay; everything else is triggered by a click.
                 String fileName = i > 0 ? baseFileName + " (OnClick)" : baseFileName;
 
-                // compute md5 of the converted text
-                //var hashcode = md5.ComputeHash(System.Text.Encoding.UTF8.GetBytes(textToSave));
-                //StringBuilder sb = new StringBuilder();
-                
-                //foreach (byte x in hashcode)
-                //{
-                //    sb.Append(x.ToString("X2"));
-                //}
-
-                // append MD5 to the file name
-                //fileName += " " + sb.ToString();
                 String filePath = folderPath + "\\" + fileName + ".wav";
 
                 SaveStringToWaveFile(textToSave, filePath);
             }
         }
 
-        private static void SaveStringToWaveFile(String textToSave, String filePath)
+        public static void SaveStringToWaveFile(String textToSave, String filePath)
         {
             var builder = GetPromptForText(textToSave);
             PromptToAudio.SaveAsWav(builder, filePath);

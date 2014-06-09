@@ -1660,7 +1660,7 @@ namespace PowerPointLabs
             // if user clicks on empty area, the menu will not appear
             if (recDisplay.SelectedItems.Count != 1)
             {
-                contextMenuStrip1.Hide();
+                e.Cancel = true;
             }
         }
 

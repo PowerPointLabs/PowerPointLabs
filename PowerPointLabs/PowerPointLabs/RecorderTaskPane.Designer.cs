@@ -38,7 +38,7 @@
             this.recNumber = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.recName = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.recLength = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
-            this.contextMenuStrip1 = new System.Windows.Forms.ContextMenuStrip(this.components);
+            this.recordListMenuStrip = new System.Windows.Forms.ContextMenuStrip(this.components);
             this.playAudio = new System.Windows.Forms.ToolStripMenuItem();
             this.recordAudio = new System.Windows.Forms.ToolStripMenuItem();
             this.removeAudio = new System.Windows.Forms.ToolStripMenuItem();
@@ -52,7 +52,7 @@
             this.stopButton = new System.Windows.Forms.Button();
             this.label1 = new System.Windows.Forms.Label();
             ((System.ComponentModel.ISupportInitialize)(this.soundTrackBar)).BeginInit();
-            this.contextMenuStrip1.SuspendLayout();
+            this.recordListMenuStrip.SuspendLayout();
             this.SuspendLayout();
             // 
             // statusLabel
@@ -118,7 +118,7 @@
             this.recNumber,
             this.recName,
             this.recLength});
-            this.recDisplay.ContextMenuStrip = this.contextMenuStrip1;
+            this.recDisplay.ContextMenuStrip = this.recordListMenuStrip;
             this.recDisplay.FullRowSelect = true;
             this.recDisplay.HideSelection = false;
             this.recDisplay.Location = new System.Drawing.Point(12, 307);
@@ -146,16 +146,16 @@
             this.recLength.Text = "Length";
             this.recLength.Width = 74;
             // 
-            // contextMenuStrip1
+            // recordListMenuStrip
             // 
-            this.contextMenuStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.recordListMenuStrip.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.playAudio,
             this.recordAudio,
             this.removeAudio});
-            this.contextMenuStrip1.Name = "contextMenuStrip1";
-            this.contextMenuStrip1.Size = new System.Drawing.Size(162, 92);
-            this.contextMenuStrip1.Opening += new System.ComponentModel.CancelEventHandler(this.ContextMenuStrip1Opening);
-            this.contextMenuStrip1.ItemClicked += new System.Windows.Forms.ToolStripItemClickedEventHandler(this.ContextMenuStrip1ItemClicked);
+            this.recordListMenuStrip.Name = "contextMenuStrip1";
+            this.recordListMenuStrip.Size = new System.Drawing.Size(162, 92);
+            this.recordListMenuStrip.Opening += new System.ComponentModel.CancelEventHandler(this.ContextMenuStrip1Opening);
+            this.recordListMenuStrip.ItemClicked += new System.Windows.Forms.ToolStripItemClickedEventHandler(this.ContextMenuStrip1ItemClicked);
             // 
             // playAudio
             // 
@@ -288,7 +288,7 @@
             this.Size = new System.Drawing.Size(280, 554);
             this.Load += new System.EventHandler(this.RecorderPane_Load);
             ((System.ComponentModel.ISupportInitialize)(this.soundTrackBar)).EndInit();
-            this.contextMenuStrip1.ResumeLayout(false);
+            this.recordListMenuStrip.ResumeLayout(false);
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -314,7 +314,7 @@
         private System.Windows.Forms.Label scriptDetialLabel;
         private System.Windows.Forms.TextBox scriptDetailTextBox;
         private System.Windows.Forms.Label label1;
-        private System.Windows.Forms.ContextMenuStrip contextMenuStrip1;
+        private System.Windows.Forms.ContextMenuStrip recordListMenuStrip;
         private System.Windows.Forms.ToolStripMenuItem playAudio;
         private System.Windows.Forms.ToolStripMenuItem recordAudio;
         private System.Windows.Forms.ToolStripMenuItem removeAudio;
