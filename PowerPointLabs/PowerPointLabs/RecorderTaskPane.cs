@@ -431,6 +431,8 @@ namespace PowerPointLabs
 
         private void UpdateRecordList(int relativeSlideID)
         {
+            ClearRecordDisplayList();
+
             for (int index = 0; index < _audioList[relativeSlideID].Count; index ++ )
             {
                 var audio = _audioList[relativeSlideID][index];
@@ -498,7 +500,6 @@ namespace PowerPointLabs
             // do it faster
 
             // update the record list view
-            ClearRecordDisplayList();
             recDisplay.BeginUpdate();
             UpdateRecordList(relativeID);
             recDisplay.EndUpdate();
@@ -1291,7 +1292,6 @@ namespace PowerPointLabs
                             _inShowControlBox.GetCurrentStatus() != InShowControl.ButtonStatus.Rec &&
                             relativeID == GetRelativeSlideIndex(PowerPointPresentation.CurrentSlide.ID))
                         {
-                            ClearRecordDisplayList();
                             UpdateRecordList(relativeID);
 
                             // highlight the latest added record
@@ -1651,6 +1651,56 @@ namespace PowerPointLabs
                 if (recordIndex != -1)
                 {
                     PlayButtonClick(null, null);
+                }
+            }
+        }
+
+        private void ContextMenuStrip1Opening(object sender, CancelEventArgs e)
+        {
+            // if user clicks on empty area, the menu will not appear
+            if (recDisplay.SelectedItems.Count != 1)
+            {
+                contextMenuStrip1.Hide();
+            }
+        }
+
+        private void ContextMenuStrip1ItemClicked(object sender, ToolStripItemClickedEventArgs e)
+        {
+            var item = e.ClickedItem;
+
+            if (item.Name.Contains("play"))
+            {
+                if (recDisplay.SelectedItems.Count == 1)
+                {
+                    PlayButtonClick(null, null);
+                }
+            } else
+            if (item.Name.Contains("record"))
+            {
+                if (recDisplay.SelectedItems.Count == 1)
+                {
+                    RecButtonClick(null, null);
+                }
+            } else
+            if (item.Name.Contains("remove"))
+            {
+                if (recDisplay.SelectedItems.Count == 1)
+                {
+                    var currentSlide = PowerPointPresentation.CurrentSlide;
+                    var recordIndex = recDisplay.SelectedIndices[0];
+                    var relativeSlideID = GetRelativeSlideIndex(currentSlide.ID);
+                    var audio = _audioList[relativeSlideID][recordIndex];
+                    var scriptIndex = audio.MatchScriptID;
+
+                    // delete the corresponding audio shape
+                    currentSlide.DeleteShapesWithPrefix(audio.Name);
+
+                    // delete the item in the data structure
+                    _audioList[relativeSlideID].RemoveAt(recordIndex);
+
+                    // update recoder pane
+                    UpdateRecordList(relativeSlideID);
+                    UpdateScriptList(scriptIndex, null, ScriptStatus.Untracked);
                 }
             }
         }
