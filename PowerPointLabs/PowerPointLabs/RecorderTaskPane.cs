@@ -54,30 +54,9 @@ namespace PowerPointLabs
         private const string SpeechShapeFormat = "PowerPointLabs Speech {0}";
         private const string ReopenSpeechFormat = "media{0}.wav";
 
-        private static string TempFolderName
-        {
-            get
-            {
-                string presName = PowerPointPresentation.CurrentPresentationName.GetHashCode().ToString();
-                return @"\PowerPointLabs Temp\" + presName + @"\";
-            }
-        }
-
-        private static string TempFullPath
-        {
-            get
-            {
-                return Path.GetTempPath() + TempFolderName;
-            }
-        }
-
-        private static string TempWaveFileNameFormat
-        {
-            get
-            {
-                return Path.GetTempPath() + TempFolderName + "temp{0}.wav";
-            }
-        }
+        private string _tempFolderName;
+        private string _tempFullPath;
+        private string _tempWaveFileNameFormat;
 
         private readonly string _tempPath = Path.GetTempPath();
 
@@ -676,7 +655,7 @@ namespace PowerPointLabs
 
         private void DeleteTempAudioFiles()
         {
-            var audioFiles = Directory.EnumerateFiles(TempFullPath, "*.wav");
+            var audioFiles = Directory.EnumerateFiles(_tempFullPath, "*.wav");
             var tempAudios = audioFiles.Where(audio => audio.Contains("temp")).ToArray();
 
             foreach (var audio in tempAudios)
@@ -789,7 +768,7 @@ namespace PowerPointLabs
                         var temp = shape.Name.Split(new [] {' '});
                         audio.MatchScriptID = Int32.Parse(temp[2]);
 
-                        audio.SaveName = TempFullPath + String.Format(ReopenSpeechFormat, validSpeechCnt + 1);
+                        audio.SaveName = _tempFullPath + String.Format(ReopenSpeechFormat, validSpeechCnt + 1);
                         audio.Name = shape.Name;
                         audio.Length = AudioHelper.GetAudioLengthString(audio.SaveName);
                         audio.LengthMillis = AudioHelper.GetAudioLength(audio.SaveName);
@@ -821,7 +800,7 @@ namespace PowerPointLabs
         public void InitializeAudioAndScript(PowerPointSlide slide, string[] names, bool forceRefresh)
         {
             string[] audioSaveNames = null;
-            string folderPath = _tempPath + TempFolderName;
+            string folderPath = _tempPath + _tempFolderName;
             
             int slideID = slide.ID;
             int relativeSlideID = GetRelativeSlideIndex(slideID);
@@ -1138,7 +1117,7 @@ namespace PowerPointLabs
             _recordClipCnt = 0;
             _recordTotalLength = 0;
             // construct new save name
-            var tempSaveName = String.Format(TempWaveFileNameFormat, _recordClipCnt);
+            var tempSaveName = String.Format(_tempWaveFileNameFormat, _recordClipCnt);
 
             // start recording
             NStartRecordAudio(tempSaveName, 11025, 16, 1, true);
@@ -1193,7 +1172,7 @@ namespace PowerPointLabs
 
             // start a new recording, name it after clip counter and restart the timer
             //Native.mciSendString("resume sound", null, 0, IntPtr.Zero);
-            var tempSaveName = String.Format(TempWaveFileNameFormat, _recordClipCnt);
+            var tempSaveName = String.Format(_tempWaveFileNameFormat, _recordClipCnt);
             NStartRecordAudio(tempSaveName, 11025, 16, 1, true);
             _timer = new System.Threading.Timer(TimerEvent, null, _resumeWaitingTime, 1000);
         }
@@ -1306,7 +1285,7 @@ namespace PowerPointLabs
                     // position
                     {
                         var saveNameSuffix = " " + scriptIndex.ToString() + " rec.wav";
-                        saveName = TempFullPath + String.Format(SaveNameFormat, relativeID) + saveNameSuffix;
+                        saveName = _tempFullPath + String.Format(SaveNameFormat, relativeID) + saveNameSuffix;
                         
                         // the display name -> which script it corresponds to
                         displayName = String.Format(SpeechShapeFormat, scriptIndex);
@@ -1338,7 +1317,7 @@ namespace PowerPointLabs
                     }
 
                     // save current sound -> rename the temp file to the correct save name
-                    NMergeAudios(TempFullPath, "temp", saveName);
+                    NMergeAudios(_tempFullPath, "temp", saveName);
 
                     // update the script list if not in slide show mode
                     if (_inShowControlBox == null ||
@@ -1746,7 +1725,7 @@ namespace PowerPointLabs
         # endregion
 
         // do when the task pane first initialized
-        public RecorderTaskPane()
+        public RecorderTaskPane(string tempFolderName)
         {
             _audioList = new List<List<Audio>>();
             _scriptList = new List<List<string>>();
@@ -1754,6 +1733,10 @@ namespace PowerPointLabs
             
             _md5ScriptMapper = new Dictionary<string, int>();
             _slideRelativeMapper = new Dictionary<int, int>();
+
+            _tempFolderName = @"\PowerPointLabs Temp\" + tempFolderName + @"\";
+            _tempFullPath = Path.GetTempPath() + _tempFolderName;
+            _tempWaveFileNameFormat = Path.GetTempPath() + _tempFolderName + "temp{0}.wav";
 
             _relativeSlideCounter = 0;
             

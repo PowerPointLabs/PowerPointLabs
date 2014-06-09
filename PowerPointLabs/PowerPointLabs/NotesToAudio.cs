@@ -19,8 +19,8 @@ namespace PowerPointLabs
         {
             get
             {
-                string presName = PowerPointPresentation.CurrentPresentationName.GetHashCode().ToString();
-                return @"\PowerPointLabs Temp\" + presName + @"\";
+                string tempName = Globals.ThisAddIn.GetActiveWindowTempName();
+                return @"\PowerPointLabs Temp\" + tempName + @"\";
             }
         }
 

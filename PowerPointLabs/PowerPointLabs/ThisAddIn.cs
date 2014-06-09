@@ -29,6 +29,7 @@ namespace PowerPointLabs
         
         internal CustomTaskPane ActivateCustomTaskPane;
         internal Dictionary<PowerPoint.DocumentWindow, CustomTaskPane> documentPaneMapper = new Dictionary<PowerPoint.DocumentWindow, CustomTaskPane>();
+        internal Dictionary<PowerPoint.DocumentWindow, string> documentHashcodeMapper = new Dictionary<PowerPoint.DocumentWindow, string>();
         internal bool customTaskPaneInit = false;
         internal InShowControl inShowControlBox;
 
@@ -86,10 +87,13 @@ namespace PowerPointLabs
 
         void SetupRecorderTaskPane(PowerPoint.DocumentWindow wnd)
         {
+            var tempName = wnd.Presentation.Name.GetHashCode().ToString();
             // register the recorder task pane to the CustomTaskPanes collection
-            ActivateCustomTaskPane = CustomTaskPanes.Add(new RecorderTaskPane(), "Record Script", wnd);
+            ActivateCustomTaskPane = CustomTaskPanes.Add(new RecorderTaskPane(tempName), "Record Script", wnd);
+            
             // map the current window with the task pane
             documentPaneMapper[wnd] = ActivateCustomTaskPane;
+            documentHashcodeMapper[wnd] = tempName;
 
             // recorder task pane customization
             // currently recorder pane is always visible since only one pane in the
@@ -97,6 +101,11 @@ namespace PowerPointLabs
             ActivateCustomTaskPane.Visible = false;
             ActivateCustomTaskPane.VisibleChanged += TaskPaneVisibleValueChangedEventHandler;
             ActivateCustomTaskPane.Width = _taskPaneWidth;
+        }
+
+        public string GetActiveWindowTempName()
+        {
+            return documentHashcodeMapper[Application.ActiveWindow];
         }
 
         void TaskPaneVisibleValueChangedEventHandler(object sender, EventArgs e)
@@ -278,17 +287,21 @@ namespace PowerPointLabs
             // remove task pane
             CustomTaskPanes.Remove(documentPaneMapper[Pres.Application.ActiveWindow]);
 
+            // remove entry from mappers
+            documentPaneMapper.Remove(Pres.Application.ActiveWindow);
+            documentHashcodeMapper.Remove(Pres.Application.ActiveWindow);
+
             // if the presentation has been saved before embed, save the presentation
             if (saved == Office.MsoTriState.msoTrue)
             {
                 Pres.Save();
 
                 // delete the temp folder only when user has saved file
-                string tempFolderPath = Path.GetTempPath() + TempFolderNamePrefix + Pres.Name.GetHashCode().ToString() + @"\";
-                if (Directory.Exists(tempFolderPath))
-                {
-                    Directory.Delete(tempFolderPath, true);
-                }
+                //string tempFolderPath = Path.GetTempPath() + TempFolderNamePrefix + Pres.Name.GetHashCode().ToString() + @"\";
+                //if (Directory.Exists(tempFolderPath))
+                //{
+                //    Directory.Delete(tempFolderPath, true);
+                //}
             }
         }
 
