@@ -255,6 +255,13 @@ namespace PowerPointLabs
 
         void ThisAddIn_PresentationClose(PowerPoint.Presentation Pres)
         {
+            var currentWindow = ActivateCustomTaskPane.Window as PowerPoint.DocumentWindow;
+
+            if (currentWindow.Presentation.Name != Pres.Name)
+            {
+                return;
+            }
+
             var saved = Pres.Saved;
 
             // embed all audios once again to preserve the playing sequence
@@ -371,11 +378,17 @@ namespace PowerPointLabs
 
         private void PrepareMediaFiles(PowerPoint.Presentation Pres)
         {
-            string presFullName = Pres.FullName;
             string presName = Pres.Name;
+
+            if (!presName.Contains(".pptx"))
+            {
+                presName = Pres.Name + ".pptx";
+            }
+
             string tempPath = Path.GetTempPath() + TempFolderNamePrefix + Pres.Name + @"\";
             string zipName = presName.Replace(".pptx", ".zip");
             string zipFullPath = tempPath + zipName;
+            string presFullName = Pres.FullName;
 
             // if temp folder doesn't exist, create
             if (!Directory.Exists(tempPath))
@@ -387,6 +400,13 @@ namespace PowerPointLabs
             {
                 Directory.Delete(tempPath, true);
                 Directory.CreateDirectory(tempPath);
+            }
+
+            // check if the file has been saved
+            if (Pres.Path == String.Empty)
+            {
+                Pres.SaveAs(tempPath + presName);
+                presFullName = tempPath + presName;
             }
 
             // copy the file to temp folder and rename to zip
