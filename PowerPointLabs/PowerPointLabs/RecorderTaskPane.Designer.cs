@@ -28,6 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
+            this.components = new System.ComponentModel.Container();
             this.statusLabel = new System.Windows.Forms.Label();
             this.recButton = new System.Windows.Forms.Button();
             this.playButton = new System.Windows.Forms.Button();
@@ -46,7 +47,13 @@
             this.scriptDetailTextBox = new System.Windows.Forms.TextBox();
             this.stopButton = new System.Windows.Forms.Button();
             this.label1 = new System.Windows.Forms.Label();
+            this.contextMenuStrip1 = new System.Windows.Forms.ContextMenuStrip(this.components);
+            this.playAudioToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.autoGenerateToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.recordAudioToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.removeAudioToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             ((System.ComponentModel.ISupportInitialize)(this.soundTrackBar)).BeginInit();
+            this.contextMenuStrip1.SuspendLayout();
             this.SuspendLayout();
             // 
             // statusLabel
@@ -112,6 +119,7 @@
             this.recNumber,
             this.recName,
             this.recLength});
+            this.recDisplay.ContextMenuStrip = this.contextMenuStrip1;
             this.recDisplay.FullRowSelect = true;
             this.recDisplay.HideSelection = false;
             this.recDisplay.Location = new System.Drawing.Point(12, 307);
@@ -231,6 +239,40 @@
             this.label1.TabIndex = 12;
             this.label1.Text = "Audio";
             // 
+            // contextMenuStrip1
+            // 
+            this.contextMenuStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.playAudioToolStripMenuItem,
+            this.autoGenerateToolStripMenuItem,
+            this.recordAudioToolStripMenuItem,
+            this.removeAudioToolStripMenuItem});
+            this.contextMenuStrip1.Name = "contextMenuStrip1";
+            this.contextMenuStrip1.Size = new System.Drawing.Size(162, 92);
+            // 
+            // playAudioToolStripMenuItem
+            // 
+            this.playAudioToolStripMenuItem.Name = "playAudioToolStripMenuItem";
+            this.playAudioToolStripMenuItem.Size = new System.Drawing.Size(161, 22);
+            this.playAudioToolStripMenuItem.Text = "Play Audio";
+            // 
+            // autoGenerateToolStripMenuItem
+            // 
+            this.autoGenerateToolStripMenuItem.Name = "autoGenerateToolStripMenuItem";
+            this.autoGenerateToolStripMenuItem.Size = new System.Drawing.Size(161, 22);
+            this.autoGenerateToolStripMenuItem.Text = "Auto Generate";
+            // 
+            // recordAudioToolStripMenuItem
+            // 
+            this.recordAudioToolStripMenuItem.Name = "recordAudioToolStripMenuItem";
+            this.recordAudioToolStripMenuItem.Size = new System.Drawing.Size(161, 22);
+            this.recordAudioToolStripMenuItem.Text = "Record Audio";
+            // 
+            // removeAudioToolStripMenuItem
+            // 
+            this.removeAudioToolStripMenuItem.Name = "removeAudioToolStripMenuItem";
+            this.removeAudioToolStripMenuItem.Size = new System.Drawing.Size(161, 22);
+            this.removeAudioToolStripMenuItem.Text = "Remove Audio";
+            // 
             // RecorderTaskPane
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
@@ -252,6 +294,7 @@
             this.Size = new System.Drawing.Size(280, 554);
             this.Load += new System.EventHandler(this.RecorderPane_Load);
             ((System.ComponentModel.ISupportInitialize)(this.soundTrackBar)).EndInit();
+            this.contextMenuStrip1.ResumeLayout(false);
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -277,5 +320,10 @@
         private System.Windows.Forms.Label scriptDetialLabel;
         private System.Windows.Forms.TextBox scriptDetailTextBox;
         private System.Windows.Forms.Label label1;
+        private System.Windows.Forms.ContextMenuStrip contextMenuStrip1;
+        private System.Windows.Forms.ToolStripMenuItem playAudioToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem autoGenerateToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem recordAudioToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem removeAudioToolStripMenuItem;
     }
 }
