@@ -19,7 +19,8 @@ namespace PowerPointLabs
         {
             get
             {
-                return @"\PowerPointLabs Temp\" + PowerPointPresentation.CurrentPresentationName + @"\";
+                string presName = PowerPointPresentation.CurrentPresentationName.GetHashCode().ToString();
+                return @"\PowerPointLabs Temp\" + presName + @"\";
             }
         }
 

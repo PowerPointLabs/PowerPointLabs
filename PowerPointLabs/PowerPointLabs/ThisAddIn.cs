@@ -228,7 +228,7 @@ namespace PowerPointLabs
         // within different presentation.
         void ThisAddIn_NewPresentation(PowerPoint.Presentation Pres)
         {
-            string tempFolderPath = Path.GetTempPath() + TempFolderNamePrefix + Pres.Name + @"\";
+            string tempFolderPath = Path.GetTempPath() + TempFolderNamePrefix + Pres.Name.GetHashCode().ToString() + @"\";
             if (Directory.Exists(tempFolderPath))
             {
                 Directory.Delete(tempFolderPath, true);
@@ -241,7 +241,7 @@ namespace PowerPointLabs
         void ThisAddIn_PrensentationOpen(PowerPoint.Presentation Pres)
         {
             // before open, check if the temp folder already exists. If it is, delete it
-            string tempFolderPath = Path.GetTempPath() + TempFolderNamePrefix + Pres.Name + @"\";
+            string tempFolderPath = Path.GetTempPath() + TempFolderNamePrefix + Pres.Name.GetHashCode().ToString() + @"\";
             if (Directory.Exists(tempFolderPath))
             {
                 Directory.Delete(tempFolderPath, true);
@@ -284,7 +284,7 @@ namespace PowerPointLabs
                 Pres.Save();
 
                 // delete the temp folder only when user has saved file
-                string tempFolderPath = Path.GetTempPath() + TempFolderNamePrefix + Pres.Name + @"\";
+                string tempFolderPath = Path.GetTempPath() + TempFolderNamePrefix + Pres.Name.GetHashCode().ToString() + @"\";
                 if (Directory.Exists(tempFolderPath))
                 {
                     Directory.Delete(tempFolderPath, true);
@@ -385,7 +385,7 @@ namespace PowerPointLabs
                 presName = Pres.Name + ".pptx";
             }
 
-            string tempPath = Path.GetTempPath() + TempFolderNamePrefix + Pres.Name + @"\";
+            string tempPath = Path.GetTempPath() + TempFolderNamePrefix + Pres.Name.GetHashCode().ToString() + @"\";
             string zipName = presName.Replace(".pptx", ".zip");
             string zipFullPath = tempPath + zipName;
             string presFullName = Pres.FullName;
