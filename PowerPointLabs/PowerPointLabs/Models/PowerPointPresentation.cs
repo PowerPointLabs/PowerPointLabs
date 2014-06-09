@@ -23,6 +23,11 @@ namespace PowerPointLabs.Models
             }
         }
 
+        public static string CurrentPresentationName
+        {
+            get { return Globals.ThisAddIn.Application.ActivePresentation.Name; }
+        }
+
         public static Selection CurrentSelection
         {
             get

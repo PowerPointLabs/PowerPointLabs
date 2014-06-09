@@ -855,17 +855,18 @@ namespace PowerPointLabs
         # region AudioRecord Button Callbacks
         public void RecManagementClick(Office.IRibbonControl control)
         {
+            var recorder = Globals.ThisAddIn.ActivateCustomTaskPane.Control as RecorderTaskPane;
             // TODO:
             // Handle exception when user clicks the button without selecting any slides
 
             // if currently the pane is hidden, show the pane
-            if (!_recorderPaneVisible)
+            if (!Globals.ThisAddIn.ActivateCustomTaskPane.Visible)
             {
                 // fire the pane visble change event
-                Globals.ThisAddIn.customTaskPane.Visible = true;
+                Globals.ThisAddIn.ActivateCustomTaskPane.Visible = true;
                 
                 // reload the pane
-                Globals.ThisAddIn.recorderTaskPane.RecorderPaneReload();
+                recorder.RecorderPaneReload();
             }
         }
         # endregion
@@ -879,48 +880,58 @@ namespace PowerPointLabs
         public void RemoveAudioClick(Office.IRibbonControl control)
         {
             var currentSlide = PowerPointPresentation.CurrentSlide;
+            var recorderPane = Globals.ThisAddIn.ActivateCustomTaskPane.Control as RecorderTaskPane;
             
             if (_allSlides)
             {
                 NotesToAudio.RemoveAudioFromAllSlides();
-                Globals.ThisAddIn.recorderTaskPane.ClearRecordDataList();
+                recorderPane.ClearRecordDataList();
             }
             else
             {
-                NotesToAudio.RemoveAudioFromCurrentSlide();
-                Globals.ThisAddIn.recorderTaskPane.ClearRecordDataList(currentSlide.ID);
+                try
+                {
+                    NotesToAudio.RemoveAudioFromCurrentSlide();
+                }
+                catch (Exception e)
+                {
+                    MessageBox.Show(e.Message);
+                    throw;
+                }
+                recorderPane.ClearRecordDataList(currentSlide.ID);
             }
 
             // if current list is visible, update the pane immediately
-            if (_recorderPaneVisible)
+            if (Globals.ThisAddIn.ActivateCustomTaskPane.Visible)
             {
-                Globals.ThisAddIn.recorderTaskPane.UpdateLists(currentSlide.ID);
+                recorderPane.UpdateLists(currentSlide.ID);
             }
         }
 
         public void AddAudioClick(Office.IRibbonControl control)
         {
             var currentSlide = PowerPointPresentation.CurrentSlide;
+            var recorderPane = Globals.ThisAddIn.ActivateCustomTaskPane.Control as RecorderTaskPane;
 
             if (_allSlides)
             {
                 var allAudioFiles = NotesToAudio.EmbedAllSlideNotes();
 
                 // initialize all slides' audio
-                Globals.ThisAddIn.recorderTaskPane.InitializeAudioAndScript(allAudioFiles, true);
+                recorderPane.InitializeAudioAndScript(allAudioFiles, true);
             }
             else
             {
                 var audioFiles = NotesToAudio.EmbedCurrentSlideNotes();
 
                 // initialize the current slide's audio
-                Globals.ThisAddIn.recorderTaskPane.InitializeAudioAndScript(currentSlide, audioFiles, true);
+                recorderPane.InitializeAudioAndScript(currentSlide, audioFiles, true);
             }
 
             // if current list is visible, update the pane immediately
-            if (_recorderPaneVisible)
+            if (Globals.ThisAddIn.ActivateCustomTaskPane.Visible)
             {
-                Globals.ThisAddIn.recorderTaskPane.UpdateLists(currentSlide.ID);
+                recorderPane.UpdateLists(currentSlide.ID);
             }
 
             PreviewAnimationsIfChecked();
