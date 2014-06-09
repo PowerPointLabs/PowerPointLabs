@@ -214,7 +214,11 @@ namespace PowerPointLabs
         }
         public void AboutButtonClick(Office.IRibbonControl control)
         {
+<<<<<<< Updated upstream
             System.Windows.Forms.MessageBox.Show("          PowerPointLabs Plugin Version 1.7.2 [Release date: 3 Apr 2014]\n     Developed at School of Computing, National University of Singapore.\n        For more information, visit our website http://PowerPointLabs.info", "About PowerPointLabs");
+=======
+            System.Windows.Forms.MessageBox.Show("          PowerPointLabs Plugin Version 1.7.6 [Release date: 9 Jun 2014]\n     Developed at School of Computing, National University of Singapore.\n        For more information, visit our website http://PowerPointLabs.info", "About PowerPointLabs");
+>>>>>>> Stashed changes
         }
         public void HelpButtonClick(Office.IRibbonControl control)
         {
