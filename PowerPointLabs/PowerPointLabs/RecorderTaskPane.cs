@@ -1628,6 +1628,32 @@ namespace PowerPointLabs
             }
             
         }
+
+        private void RecDisplayDoubleClick(object sender, EventArgs e)
+        {
+            // ensure there is and only 1 item has been selected
+            if (recDisplay.SelectedItems.Count == 1)
+            {
+                PlayButtonClick(null, null);
+            }
+        }
+
+        private void ScriptDisplayDoubleClick(object sender, EventArgs e)
+        {
+            // ensure there is and only 1 item has been selected
+            if (scriptDisplay.SelectedItems.Count == 1)
+            {
+                var index = scriptDisplay.SelectedIndices[0];
+                var relativeID = GetRelativeSlideIndex(PowerPointPresentation.CurrentSlide.ID);
+                var recordIndex = GetRecordIndexFromScriptIndex(relativeID, index);
+                
+                // there is a corresponding record
+                if (recordIndex != -1)
+                {
+                    PlayButtonClick(null, null);
+                }
+            }
+        }
         # endregion
         # endregion
 

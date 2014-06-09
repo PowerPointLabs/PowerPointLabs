@@ -122,6 +122,7 @@
             this.recDisplay.UseCompatibleStateImageBehavior = false;
             this.recDisplay.View = System.Windows.Forms.View.Details;
             this.recDisplay.ItemSelectionChanged += new System.Windows.Forms.ListViewItemSelectionChangedEventHandler(this.RecDisplayItemSelectionChanged);
+            this.recDisplay.DoubleClick += new System.EventHandler(this.RecDisplayDoubleClick);
             // 
             // recNumber
             // 
@@ -153,6 +154,7 @@
             this.scriptDisplay.UseCompatibleStateImageBehavior = false;
             this.scriptDisplay.View = System.Windows.Forms.View.Details;
             this.scriptDisplay.ItemSelectionChanged += new System.Windows.Forms.ListViewItemSelectionChangedEventHandler(this.ScriptDisplayItemSelectionChanged);
+            this.scriptDisplay.DoubleClick += new System.EventHandler(this.ScriptDisplayDoubleClick);
             // 
             // statusColumn
             // 
