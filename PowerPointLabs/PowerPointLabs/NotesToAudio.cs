@@ -15,7 +15,14 @@ namespace PowerPointLabs
 {
     class NotesToAudio
     {
-        private const string TempFolderName = "\\PowerPointLabs Temp\\";
+        private static string TempFolderName
+        {
+            get
+            {
+                return @"\PowerPointLabs Temp\" + PowerPointPresentation.CurrentPresentationName + @"\";
+            }
+        }
+
         private const string SpeechShapePrefix = "PowerPointLabs Speech";
         private const string SpeechShapePrefixOld = "AudioGen Speech";
 

@@ -61,8 +61,10 @@ namespace PowerPointLabs.Views
 
         public void ForceStop()
         {
+            var recorderPane = Globals.ThisAddIn.ActivateCustomTaskPane.Control as RecorderTaskPane;
+
             _status = ButtonStatus.Estop;
-            Globals.ThisAddIn.recorderTaskPane.StopButtonRecordingHandler(_recordStartClick, _recordStartSlide, false);
+            recorderPane.StopButtonRecordingHandler(_recordStartClick, _recordStartSlide, false);
             _status = ButtonStatus.Idle;
         }
 
@@ -73,7 +75,7 @@ namespace PowerPointLabs.Views
 
         private void RecButtonClick(object sender, EventArgs e)
         {
-            var recorderPane = Globals.ThisAddIn.recorderTaskPane;
+            var recorderPane = Globals.ThisAddIn.ActivateCustomTaskPane.Control as RecorderTaskPane;
             var click = _slideShowWindow.View.GetClickIndex();
             var currentSlide = PowerPointSlide.FromSlideFactory(_slideShowWindow.View.Slide);
 
@@ -117,7 +119,7 @@ namespace PowerPointLabs.Views
 
         private void UndoButtonClick(object sender, EventArgs e)
         {
-            var recorderPane = Globals.ThisAddIn.recorderTaskPane;
+            var recorderPane = Globals.ThisAddIn.ActivateCustomTaskPane.Control as RecorderTaskPane;
             var temp = recorderPane.AudioBuffer[_recordStartSlide.Index - 1];
 
             // disable undo since we allow only 1 step undo
