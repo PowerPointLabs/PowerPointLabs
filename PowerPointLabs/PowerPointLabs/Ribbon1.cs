@@ -846,7 +846,7 @@ namespace PowerPointLabs
                 HighlightBulletsText.highlightColor = newHighlightColor;
                 HighlightBulletsText.defaultColor = newDefaultColor;
                 HighlightBulletsBackground.backgroundColor = newBackgroundColor;
-
+                HighlightTextFragments.backgroundColor = newBackgroundColor;
             }
             catch (Exception e)
             {
