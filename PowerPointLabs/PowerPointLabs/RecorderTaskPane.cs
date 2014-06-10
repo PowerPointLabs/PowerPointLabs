@@ -220,19 +220,9 @@ namespace PowerPointLabs
         {
             return _currentLength;
         }
-
-        private string NGetRecordLengthString()
-        {
-            var lengthString = AudioHelper.ConvertMillisToTime(NGetRecordLengthMillis());
-
-            return lengthString;
-        }
         # endregion
 
         # region Helper Functions
-        /// <summary>
-        /// This function will reset the UI to the default state.
-        /// </summary>
         private void ResetRecorder()
         {
             soundTrackBar.Value = 0;
@@ -246,9 +236,6 @@ namespace PowerPointLabs
             _playButtonStatus = RecorderStatus.Idle;
         }
 
-        /// <summary>
-        /// This function will dispose the timer and reset the timer count.
-        /// </summary>
         private void ResetTimer()
         {
             _timerCnt = 0;
@@ -259,11 +246,6 @@ namespace PowerPointLabs
             }
         }
 
-        /// <summary>
-        /// This function will terminate the track bar event and set the track
-        /// bar value to default position
-        /// </summary>
-        /// <param name="soundBarDefaultPos">Default position of the sound bar.</param>
         private void ResetTrackbar(int soundBarDefaultPos)
         {
             if (_trackbarThread != null && _trackbarThread.IsAlive)
@@ -279,10 +261,6 @@ namespace PowerPointLabs
             soundTrackBar.Value = soundBarDefaultPos;
         }
 
-        /// <summary>
-        /// This function will reset all unfinished session, including running
-        /// timers and running sound.
-        /// </summary>
         private void ResetSession()
         {
             // close unfinished sound session, both from wavin and mci
@@ -645,34 +623,47 @@ namespace PowerPointLabs
             ClearScriptDataList(id);
         }
 
-        public void CopySlideToSlide(int oldID, int newID)
+        public List<Audio> CopySlideAudio(int slideID)
         {
-            var oldRelativeID = GetRelativeSlideIndex(oldID);
-            var newRelativeID = GetRelativeSlideIndex(newID);
+            var relativeID = GetRelativeSlideIndex(slideID);
+            var audioList = new List<Audio>(_audioList[relativeID]);
 
-            var audioList = new List<Audio>(_audioList[oldRelativeID]);
-            var scriptList = new List<string>(_scriptList[oldRelativeID]);
+            return audioList;
+        }
 
-            // we only need to copy the old audio list, the script list does not need.
-            // This is because the new script list will be updated when the slide is 
-            // initialized, but audio must be copied since it won't get initialized
-            // during intilaiztion.
-            if (newRelativeID >= _audioList.Count)
+        public List<string> CopySlideScript(int slideID)
+        {
+            var relativeID = GetRelativeSlideIndex(slideID);
+            var scriptList = new List<string>(_scriptList[relativeID]);
+
+            return scriptList;
+        }
+
+        public void PasteSlideAudio(int slideID, List<Audio> audioList)
+        {
+            var relativeID = GetRelativeSlideIndex(slideID);
+
+            if (relativeID >= _audioList.Count)
             {
                 _audioList.Add(audioList);
             }
             else
             {
-                _audioList[newRelativeID] = audioList;
+                _audioList[relativeID] = audioList;
             }
+        }
 
-            if (newRelativeID >= _scriptList.Count)
+        public void PasteSlideScript(int slideID, List<string> scriptList)
+        {
+            var relativeID = GetRelativeSlideIndex(slideID);
+
+            if (relativeID >= _scriptList.Count)
             {
                 _scriptList.Add(scriptList);
             }
             else
             {
-                _scriptList[newRelativeID] = scriptList;
+                _scriptList[relativeID] = scriptList;
             }
         }
 
@@ -792,18 +783,21 @@ namespace PowerPointLabs
                         var scriptIndex = Int32.Parse(temp[2]);
                         var script = _scriptList[relativeID][scriptIndex];
 
-                        var ori = GetScriptIndexFromMD5(script, relativeID, scriptIndex);
                         bool duplicate = false;
 
                         // if current audio has the same script and both auto generated, they will share
                         // the same embedded media file
-                        if (ori != null && audio.Type == Audio.AudioType.Auto)
+                        if (audio.Type == Audio.AudioType.Auto)
                         {
-                            var recordIndex = GetRecordIndexFromScriptIndex(ori.Item1, ori.Item2);
-                            var oriAudio = _audioList[ori.Item1][recordIndex];
+                            // implicilty, only auto gen audios are entertained
+                            var ori = GetScriptIndexFromMD5(script, relativeID, scriptIndex);
 
-                            if (oriAudio.Type == Audio.AudioType.Auto)
+                            // if we have an auto gen audio with exact identical script before
+                            if (ori != null)
                             {
+                                var recordIndex = GetRecordIndexFromScriptIndex(ori.Item1, ori.Item2);
+                                var oriAudio = _audioList[ori.Item1][recordIndex];
+
                                 audio.SaveName = oriAudio.SaveName;
                                 audio.Length = oriAudio.Length;
                                 audio.LengthMillis = oriAudio.LengthMillis;

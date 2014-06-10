@@ -471,6 +471,159 @@ namespace PowerPointLabs
             File.Delete(zipFullPath);
         }
 
+        # region Copy paste handlers
+
+        private PowerPoint.DocumentWindow _copyFromWnd;
+        private PowerPoint.DocumentWindow _pasteToWnd;
+
+        private void AfterPasteEventHandler(PowerPoint.Selection selection)
+        {
+            try
+            {
+                PowerPoint.Slide currentSlide = Application.ActiveWindow.View.Slide as PowerPoint.Slide;
+                string pptName = Application.ActivePresentation.Name;
+                if (selection.Type == PowerPoint.PpSelectionType.ppSelectionShapes
+                    && currentSlide.SlideID != previousSlideForCopyEvent.SlideID
+                    && pptName == previousPptName)
+                {
+                    PowerPoint.ShapeRange pastedShapes = selection.ShapeRange;
+                    List<String> nameListForPastedShapes = new List<string>();
+                    Dictionary<String, String> nameDictForPastedShapes = new Dictionary<string, string>();
+                    List<String> nameListForCopiedShapes = new List<string>();
+                    Regex namePattern = new Regex(@"^[^\[]\D+\s\d+$");
+                    List<PowerPoint.Shape> corruptedShapes = new List<PowerPoint.Shape>();
+
+                    foreach (var shape in copiedShapes)
+                    {
+                        try
+                        {
+                            if (namePattern.IsMatch(shape.Name))
+                            {
+                                shape.Name = "[" + shape.Name + "]";
+                            }
+                            nameListForCopiedShapes.Add(shape.Name);
+                        }
+                        catch
+                        {
+                            //handling corrupted shapes
+                            shape.Copy();
+                            var fixedShape = previousSlideForCopyEvent.Shapes.Paste()[1];
+                            fixedShape.Name = "[" + shape.Name + "]";
+                            fixedShape.Left = shape.Left;
+                            fixedShape.Top = shape.Top;
+                            while (fixedShape.ZOrderPosition > shape.ZOrderPosition)
+                            {
+                                fixedShape.ZOrder(Office.MsoZOrderCmd.msoSendBackward);
+                            }
+                            corruptedShapes.Add(shape);
+                            nameListForCopiedShapes.Add(fixedShape.Name);
+                        }
+                    }
+
+                    for (int i = 0; i < corruptedShapes.Count; i++)
+                    {
+                        corruptedShapes[i].Delete();
+                    }
+
+                    for (int i = 1; i <= pastedShapes.Count; i++)
+                    {
+                        PowerPoint.Shape shape = pastedShapes[i];
+                        string uniqueName = Guid.NewGuid().ToString();
+                        nameDictForPastedShapes[uniqueName] = nameListForCopiedShapes[i - 1];
+                        shape.Name = uniqueName;
+                        nameListForPastedShapes.Add(shape.Name);
+                    }
+                    //Re-select pasted shapes
+                    var range = currentSlide.Shapes.Range(nameListForPastedShapes.ToArray());
+                    foreach (var sh in range)
+                    {
+                        PowerPoint.Shape shape = sh as PowerPoint.Shape;
+                        shape.Name = nameDictForPastedShapes[shape.Name];
+                    }
+                    range.Select();
+                }
+            }
+            catch
+            {
+                //TODO: log in ThisAddIn.cs
+            }
+        }
+
+        private void AfterPasteRecorderEventHandler(PowerPoint.Selection selection)
+        {
+            _pasteToWnd = Application.ActiveWindow;
+
+            if (selection.Type == PowerPoint.PpSelectionType.ppSelectionSlides)
+            {
+                // invalid paste event triggered because of system message loss
+                if (copiedSlides.Count < 1)
+                {
+                    return;
+                }
+
+                var copyFromRecorderPane = documentPaneMapper[_copyFromWnd].Control as RecorderTaskPane;
+                var activeRecorderPane = ActivateCustomTaskPane.Control as RecorderTaskPane;
+                
+                var slideRange = selection.SlideRange;
+                var oriSlide = 0;
+
+                foreach (var sld in slideRange)
+                {
+                    var oldSlide = copiedSlides[oriSlide];
+                    var newSlide = sld as PowerPoint.Slide;
+
+                    activeRecorderPane.PasteSlideAudio(newSlide.SlideID,
+                                                       copyFromRecorderPane.CopySlideAudio(oldSlide.SlideID));
+                    activeRecorderPane.PasteSlideScript(newSlide.SlideID,
+                                                        copyFromRecorderPane.CopySlideScript(oldSlide.SlideID));
+
+                    oriSlide++;
+                }
+
+                // update the lists when all done
+                UpdateRecorderPane(slideRange.Count, slideRange[1].SlideID);
+            }
+        }
+
+        private void AfterCopyEventHandler(PowerPoint.Selection selection)
+        {
+            try
+            {
+                _copyFromWnd = Application.ActiveWindow;
+
+                if (selection.Type == PowerPoint.PpSelectionType.ppSelectionSlides)
+                {
+                    copiedSlides.Clear();
+
+                    foreach (var sld in selection.SlideRange)
+                    {
+                        var slide = sld as PowerPoint.Slide;
+
+                        copiedSlides.Add(slide);
+                    }
+                }
+                else if (selection.Type == PowerPoint.PpSelectionType.ppSelectionShapes)
+                {
+                    copiedShapes.Clear();
+                    previousSlideForCopyEvent = Application.ActiveWindow.View.Slide as PowerPoint.Slide;
+                    previousPptName = Application.ActivePresentation.Name;
+                    foreach (var sh in selection.ShapeRange)
+                    {
+                        var shape = sh as PowerPoint.Shape;
+                        copiedShapes.Add(shape);
+                    }
+                    copiedShapes.Sort((PowerPoint.Shape x, PowerPoint.Shape y) =>
+                    {
+                        return x.Id - y.Id;
+                    });
+                }
+            }
+            catch
+            {
+                //TODO: log in ThisAddIn.cs
+            }
+        }
+        # endregion
 
         #region Tab Activate
 
@@ -526,144 +679,6 @@ namespace PowerPointLabs
         private List<PowerPoint.Slide> copiedSlides = new List<PowerPoint.Slide>();
         private PowerPoint.Slide previousSlideForCopyEvent;
         private string previousPptName;
-
-        private void AfterPasteEventHandler(PowerPoint.Selection selection)
-        {
-            try
-            {
-                PowerPoint.Slide currentSlide = Application.ActiveWindow.View.Slide as PowerPoint.Slide;
-                string pptName = Application.ActivePresentation.Name;
-                if (selection.Type == PowerPoint.PpSelectionType.ppSelectionShapes
-                    && currentSlide.SlideID != previousSlideForCopyEvent.SlideID
-                    && pptName == previousPptName)
-                {
-                    PowerPoint.ShapeRange pastedShapes = selection.ShapeRange;
-                    List<String> nameListForPastedShapes = new List<string>();
-                    Dictionary<String, String> nameDictForPastedShapes = new Dictionary<string, string>();
-                    List<String> nameListForCopiedShapes = new List<string>();
-                    Regex namePattern = new Regex(@"^[^\[]\D+\s\d+$");
-                    List<PowerPoint.Shape> corruptedShapes = new List<PowerPoint.Shape>();
-
-                    foreach (var shape in copiedShapes)
-                    {
-                        try
-                        {
-                            if (namePattern.IsMatch(shape.Name))
-                            {
-                                shape.Name = "[" + shape.Name + "]";
-                            }
-                            nameListForCopiedShapes.Add(shape.Name);
-                        }
-                        catch
-                        {
-                            //handling corrupted shapes
-                            shape.Copy();
-                            var fixedShape = previousSlideForCopyEvent.Shapes.Paste()[1];
-                            fixedShape.Name = "[" + shape.Name + "]";
-                            fixedShape.Left = shape.Left;
-                            fixedShape.Top = shape.Top;
-                            while (fixedShape.ZOrderPosition > shape.ZOrderPosition)
-                            {
-                                fixedShape.ZOrder(Office.MsoZOrderCmd.msoSendBackward);
-                            }
-                            corruptedShapes.Add(shape);
-                            nameListForCopiedShapes.Add(fixedShape.Name);
-                        }
-                    }
-
-                    for (int i = 0; i < corruptedShapes.Count; i++)
-                    {
-                        corruptedShapes[i].Delete();
-                    }
-
-                    for (int i = 1; i <= pastedShapes.Count; i++)
-                    {
-                        PowerPoint.Shape shape = pastedShapes[i];
-                        string uniqueName = Guid.NewGuid().ToString();
-                        nameDictForPastedShapes[uniqueName] = nameListForCopiedShapes[i-1];
-                        shape.Name = uniqueName;
-                        nameListForPastedShapes.Add(shape.Name);
-                    }
-                    //Re-select pasted shapes
-                    var range = currentSlide.Shapes.Range(nameListForPastedShapes.ToArray());
-                    foreach (var sh in range)
-                    {
-                        PowerPoint.Shape shape = sh as PowerPoint.Shape;
-                        shape.Name = nameDictForPastedShapes[shape.Name];
-                    }
-                    range.Select();
-                }
-            }
-            catch
-            {
-                //TODO: log in ThisAddIn.cs
-            }
-        }
-
-        private void AfterPasteRecorderEventHandler(PowerPoint.Selection selection)
-        {
-            if (selection.Type == PowerPoint.PpSelectionType.ppSelectionSlides)
-            {
-                // invalid paste event triggered because of system message loss
-                if (copiedSlides.Count < 1)
-                {
-                    return;
-                }
-
-                var slideRange = selection.SlideRange;
-                var oriSlide = 0;
-
-                foreach (var sld in slideRange)
-                {
-                    var oldID = copiedSlides[oriSlide].SlideID;
-                    var newID = (sld as PowerPoint.Slide).SlideID;
-
-                    (ActivateCustomTaskPane.Control as RecorderTaskPane).CopySlideToSlide(oldID, newID);
-
-                    oriSlide++;
-                }
-
-                // update the lists when all done
-                UpdateRecorderPane(slideRange.Count, slideRange[1].SlideID);
-            }
-        }
-
-        private void AfterCopyEventHandler(PowerPoint.Selection selection)
-        {
-            try
-            {
-                if (selection.Type == PowerPoint.PpSelectionType.ppSelectionSlides)
-                {
-                    copiedSlides.Clear();
-
-                    foreach (var sld in selection.SlideRange)
-                    {
-                        var slide = sld as PowerPoint.Slide;
-
-                        copiedSlides.Add(slide);
-                    }
-                }
-                else if (selection.Type == PowerPoint.PpSelectionType.ppSelectionShapes)
-                {
-                    copiedShapes.Clear();
-                    previousSlideForCopyEvent = Application.ActiveWindow.View.Slide as PowerPoint.Slide;
-                    previousPptName = Application.ActivePresentation.Name;
-                    foreach (var sh in selection.ShapeRange)
-                    {
-                        var shape = sh as PowerPoint.Shape;
-                        copiedShapes.Add(shape);
-                    }
-                    copiedShapes.Sort((PowerPoint.Shape x, PowerPoint.Shape y) =>
-                    {
-                        return x.Id - y.Id;
-                    });
-                }
-            }
-            catch
-            {
-                //TODO: log in ThisAddIn.cs
-            }
-        }
 
         private void SetupDoubleClickHandler()
         {
