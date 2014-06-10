@@ -40,10 +40,13 @@ namespace PowerPointLabs
                 }
 
                 List<PowerPoint.Shape> selectionToAnimate = GetShapesFromLinesInText(currentSlide, selectedText);
+                GroupShapesForAnimation(selectionToAnimate);
 
-                List<PowerPoint.Shape> shapesToAnimate = GetShapesToAnimate(currentSlide, selectionToAnimate);
+                List<PowerPoint.Shape> shapesToAnimate = GetShapesToAnimate(currentSlide);
+                SelectShapes(shapesToAnimate);
 
-                AddAnimationForShapes(shapesToAnimate, currentSlide);
+                RunAnimateInSlide();
+
             }
             catch (Exception e)
             {
@@ -52,8 +55,44 @@ namespace PowerPointLabs
             }
         }
 
-        private static List<PowerPoint.Shape> GetShapesToAnimate(PowerPointSlide currentSlide,
-            List<PowerPoint.Shape> selectionToAnimate)
+        private static void SelectShapes(List<PowerPoint.Shape> shapes)
+        {
+            Globals.ThisAddIn.Application.ActiveWindow.Selection.Unselect();
+
+            foreach (PowerPoint.Shape sh in shapes)
+            {
+                sh.Select(Office.MsoTriState.msoFalse);
+            }
+        }
+
+        private static void RunAnimateInSlide()
+        {
+            bool oldFrameAnimationChecked = AnimateInSlide.frameAnimationChecked;
+            AnimateInSlide.frameAnimationChecked = false;
+            AnimateInSlide.isHighlightBullets = false;
+            AnimateInSlide.isHighlightTextFragments = true;
+            AnimateInSlide.AddAnimationInSlide();
+            AnimateInSlide.frameAnimationChecked = oldFrameAnimationChecked;
+        }
+        private static void GroupShapesForAnimation(List<PowerPoint.Shape> shapes)
+        {
+            if (shapes.Count > 1)
+            {
+                Globals.ThisAddIn.Application.ActiveWindow.Selection.Unselect();
+
+                foreach (PowerPoint.Shape sh in shapes)
+                {
+                    sh.Select(Office.MsoTriState.msoFalse);
+                }
+
+                PowerPoint.Shape groupedShape = Globals.ThisAddIn.Application.ActiveWindow.Selection.ShapeRange.Group();
+                groupedShape.Name = "PPTLabsHighlightTextFragmentsShape" + Guid.NewGuid().ToString();
+            }
+
+            Globals.ThisAddIn.Application.ActiveWindow.Selection.Unselect();
+        }
+
+        private static List<PowerPoint.Shape> GetShapesToAnimate(PowerPointSlide currentSlide)
         {
             List<PowerPoint.Shape> previousFragments = currentSlide.getTextFragments();
             currentSlide.RemoveAnimationsForShapes(previousFragments);
@@ -81,65 +120,13 @@ namespace PowerPointLabs
                 highlightShape.Fill.Transparency = 0.50f;
                 highlightShape.Line.Visible = Office.MsoTriState.msoFalse;
                 highlightShape.ZOrder(Office.MsoZOrderCmd.msoSendToBack);
-                highlightShape.Name = "PPTLabsHighlightTextFragmentsShape" + DateTime.Now.ToString("yyyyMMddHHmmssffff");
+                highlightShape.Name = "PPTLabsHighlightTextFragmentsShape" + Guid.NewGuid().ToString();
                 highlightShape.Tags.Add("HighlightTextFragment", highlightShape.Name);
                 highlightShape.Select(Office.MsoTriState.msoFalse);
                 shapesToAnimate.Add(highlightShape);
             }
 
             return shapesToAnimate;
-        }
-
-        private static void AddAnimationForShapes(List<PowerPoint.Shape> shapesToAnimate,
-            PowerPointSlide currentSlide)
-        {
-            for (int num = 0; num < shapesToAnimate.Count - 1; num++)
-            {
-                PowerPoint.Shape shape1 = shapesToAnimate[num];
-                PowerPoint.Shape shape2 = shapesToAnimate[num + 1];
-
-                if (shape1 == null || shape2 == null)
-                    return;
-
-                if (num == 0)
-                {
-                    PowerPoint.Effect appear = currentSlide.TimeLine.MainSequence.AddEffect(
-                        shape1,
-                        PowerPoint.MsoAnimEffect.msoAnimEffectAppear,
-                        PowerPoint.MsoAnimateByLevel.msoAnimateLevelNone,
-                        PowerPoint.MsoAnimTriggerType.msoAnimTriggerOnPageClick);
-                }
-
-                //if (NeedsFrameAnimation(shape1, shape2))
-                //{
-                //    FrameMotionAnimation.animationType = FrameMotionAnimation.FrameMotionAnimationType.kInSlideAnimate;
-                //    FrameMotionAnimation.AddFrameMotionAnimation(currentSlide, shape1, shape2, 0.5f);
-                //}
-                //else
-                    DefaultMotionAnimation.AddDefaultMotionAnimation(currentSlide,
-                        shape1,
-                        shape2,
-                        0.5f,
-                        PowerPoint.MsoAnimTriggerType.msoAnimTriggerOnPageClick);
-
-                //Transition from shape1 to shape2
-                PowerPoint.Effect shape2Appear = currentSlide.TimeLine.MainSequence.AddEffect(
-                    shape2,
-                    PowerPoint.MsoAnimEffect.msoAnimEffectAppear,
-                    PowerPoint.MsoAnimateByLevel.msoAnimateLevelNone,
-                    PowerPoint.MsoAnimTriggerType.msoAnimTriggerAfterPrevious);
-                PowerPoint.Effect shape1Disappear = currentSlide.TimeLine.MainSequence.AddEffect(
-                    shape1,
-                    PowerPoint.MsoAnimEffect.msoAnimEffectAppear,
-                    PowerPoint.MsoAnimateByLevel.msoAnimateLevelNone,
-                    PowerPoint.MsoAnimTriggerType.msoAnimTriggerAfterPrevious);
-                shape1Disappear.Exit = Office.MsoTriState.msoTrue;
-            }
-        }
-
-        private static void log(string s)
-        {
-            System.Diagnostics.Debug.WriteLine(s);
         }
     }
 }

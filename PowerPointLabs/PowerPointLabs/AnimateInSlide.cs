@@ -14,6 +14,7 @@ namespace PowerPointLabs
         public static float defaultDuration = 0.5f;
         public static bool frameAnimationChecked = false;
         public static bool isHighlightBullets = false;
+        public static bool isHighlightTextFragments = false;
         public static void AddAnimationInSlide()
         {
             try
@@ -23,7 +24,7 @@ namespace PowerPointLabs
 
                 currentSlide.RemoveAnimationsForShapes(selectedShapes.Cast<PowerPoint.Shape>().ToList());
 
-                if (!isHighlightBullets)
+                if (!isHighlightBullets && !isHighlightTextFragments)
                 {
                     currentSlide.RemoveAnimationsForShapes(currentSlide.GetShapesWithPrefix("InSlideAnimateShape"));
                     FormatInSlideAnimateShapes(selectedShapes);
@@ -49,8 +50,17 @@ namespace PowerPointLabs
 
         private static void FormatInSlideAnimateShapes(PowerPoint.ShapeRange shapes)
         {
-            foreach (PowerPoint.Shape sh in shapes)
-                sh.Name = "InSlideAnimateShape" + Guid.NewGuid().ToString();
+            foreach (PowerPoint.Shape sh in shapes) 
+            {
+                if (isHighlightTextFragments)
+                {
+                    sh.Name = "PPTLabsHighlightTextFragmentShape" + Guid.NewGuid().ToString();
+                }
+                else
+                {
+                    sh.Name = "InSlideAnimateShape" + Guid.NewGuid().ToString();
+                }
+            }
         }
 
         private static void InSlideAnimateSingleShape(PowerPointSlide currentSlide, PowerPoint.Shape shapeToAnimate)
