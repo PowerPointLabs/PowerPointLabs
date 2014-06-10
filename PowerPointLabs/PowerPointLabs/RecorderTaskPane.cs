@@ -9,6 +9,7 @@ using System.Linq;
 using System.Security.Cryptography;
 using System.Security.Policy;
 using System.Text;
+using System.Text.RegularExpressions;
 using System.Threading;
 using System.Windows.Forms;
 using Microsoft.Office.Core;
@@ -308,7 +309,13 @@ namespace PowerPointLabs
 
         private string GetMD5(string s)
         {
+            // eliminate spaces
             var str = s.Replace(" ", string.Empty).ToLower();
+            
+            // eliminate trailing period
+            var regex = new Regex(@"\.+");
+            regex.Replace(str, string.Empty);
+            
             var hashcode = _md5.ComputeHash(System.Text.Encoding.UTF8.GetBytes(str));
             var sb = new StringBuilder();
 
