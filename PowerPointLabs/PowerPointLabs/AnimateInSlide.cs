@@ -55,8 +55,15 @@ namespace PowerPointLabs
 
         private static void InSlideAnimateSingleShape(PowerPointSlide currentSlide, PowerPoint.Shape shapeToAnimate)
         {
-            PowerPoint.Effect appear = currentSlide.TimeLine.MainSequence.AddEffect(shapeToAnimate, PowerPoint.MsoAnimEffect.msoAnimEffectAppear, PowerPoint.MsoAnimateByLevel.msoAnimateLevelNone, PowerPoint.MsoAnimTriggerType.msoAnimTriggerOnPageClick);
-            PowerPoint.Effect disappear = currentSlide.TimeLine.MainSequence.AddEffect(shapeToAnimate, PowerPoint.MsoAnimEffect.msoAnimEffectAppear, PowerPoint.MsoAnimateByLevel.msoAnimateLevelNone, PowerPoint.MsoAnimTriggerType.msoAnimTriggerOnPageClick);
+            PowerPoint.Effect appear = currentSlide.TimeLine.MainSequence.AddEffect(
+                shapeToAnimate, 
+                PowerPoint.MsoAnimEffect.msoAnimEffectAppear, 
+                PowerPoint.MsoAnimateByLevel.msoAnimateLevelNone, 
+                PowerPoint.MsoAnimTriggerType.msoAnimTriggerOnPageClick);
+            PowerPoint.Effect disappear = currentSlide.TimeLine.MainSequence.AddEffect(
+                shapeToAnimate, PowerPoint.MsoAnimEffect.msoAnimEffectAppear, 
+                PowerPoint.MsoAnimateByLevel.msoAnimateLevelNone, 
+                PowerPoint.MsoAnimTriggerType.msoAnimTriggerOnPageClick);
             disappear.Exit = Office.MsoTriState.msoTrue;
         }
 
@@ -72,7 +79,11 @@ namespace PowerPointLabs
 
                 if (num == 1)
                 {
-                    PowerPoint.Effect appear = currentSlide.TimeLine.MainSequence.AddEffect(shape1, PowerPoint.MsoAnimEffect.msoAnimEffectAppear, PowerPoint.MsoAnimateByLevel.msoAnimateLevelNone, PowerPoint.MsoAnimTriggerType.msoAnimTriggerOnPageClick);
+                    PowerPoint.Effect appear = currentSlide.TimeLine.MainSequence.AddEffect(
+                        shape1, 
+                        PowerPoint.MsoAnimEffect.msoAnimEffectAppear, 
+                        PowerPoint.MsoAnimateByLevel.msoAnimateLevelNone, 
+                        PowerPoint.MsoAnimTriggerType.msoAnimTriggerOnPageClick);
                 }
 
                 if (NeedsFrameAnimation(shape1, shape2))
@@ -81,11 +92,25 @@ namespace PowerPointLabs
                     FrameMotionAnimation.AddFrameMotionAnimation(currentSlide, shape1, shape2, defaultDuration);
                 }
                 else
-                    DefaultMotionAnimation.AddDefaultMotionAnimation(currentSlide, shape1, shape2, defaultDuration, PowerPoint.MsoAnimTriggerType.msoAnimTriggerOnPageClick);
+                {
+                    DefaultMotionAnimation.AddDefaultMotionAnimation(currentSlide,
+                        shape1,
+                        shape2,
+                        defaultDuration,
+                        PowerPoint.MsoAnimTriggerType.msoAnimTriggerOnPageClick);
+                }
 
                 //Transition from shape1 to shape2
-                PowerPoint.Effect shape2Appear = currentSlide.TimeLine.MainSequence.AddEffect(shape2, PowerPoint.MsoAnimEffect.msoAnimEffectAppear, PowerPoint.MsoAnimateByLevel.msoAnimateLevelNone, PowerPoint.MsoAnimTriggerType.msoAnimTriggerAfterPrevious);
-                PowerPoint.Effect shape1Disappear = currentSlide.TimeLine.MainSequence.AddEffect(shape1, PowerPoint.MsoAnimEffect.msoAnimEffectAppear, PowerPoint.MsoAnimateByLevel.msoAnimateLevelNone, PowerPoint.MsoAnimTriggerType.msoAnimTriggerAfterPrevious);
+                PowerPoint.Effect shape2Appear = currentSlide.TimeLine.MainSequence.AddEffect(
+                    shape2, 
+                    PowerPoint.MsoAnimEffect.msoAnimEffectAppear, 
+                    PowerPoint.MsoAnimateByLevel.msoAnimateLevelNone, 
+                    PowerPoint.MsoAnimTriggerType.msoAnimTriggerAfterPrevious);
+                PowerPoint.Effect shape1Disappear = currentSlide.TimeLine.MainSequence.AddEffect(
+                    shape1, 
+                    PowerPoint.MsoAnimEffect.msoAnimEffectAppear, 
+                    PowerPoint.MsoAnimateByLevel.msoAnimateLevelNone, 
+                    PowerPoint.MsoAnimTriggerType.msoAnimTriggerAfterPrevious);
                 shape1Disappear.Exit = Office.MsoTriState.msoTrue;
             }
         }
