@@ -65,7 +65,10 @@ namespace PowerPointLabs
         private void ThisAddIn_ApplicationOnWindowActivate(PowerPoint.Presentation pres, PowerPoint.DocumentWindow wn)
         {
             // set recorder pane for current window as active recorder pane
-            ActivateCustomTaskPane = documentPaneMapper[wn];
+            if (documentPaneMapper.ContainsKey(wn))
+            {
+                ActivateCustomTaskPane = documentPaneMapper[wn];
+            }
         }
 
         void SetupLogger()
@@ -180,7 +183,14 @@ namespace PowerPointLabs
             ribbon.removeCaptionsEnabled = SlidesInRangeHaveCaptions(SldRange);
 
             // update recorder pane
-            UpdateRecorderPane(SldRange.Count, SldRange[1].SlideID);
+            if (SldRange.Count > 0)
+            {
+                UpdateRecorderPane(SldRange.Count, SldRange[1].SlideID);
+            }
+            else
+            {
+                UpdateRecorderPane(SldRange.Count, -1);
+            }
 
             // in case the recorder is on event
             BreakRecorderEvents();

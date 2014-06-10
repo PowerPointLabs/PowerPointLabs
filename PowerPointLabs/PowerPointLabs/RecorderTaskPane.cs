@@ -741,11 +741,6 @@ namespace PowerPointLabs
 
                     // add the splitted notes into script list
                     _scriptList[relativeID] = splitScript;
-                    // register it in the mapper
-                    for (int i = 0; i < splitScript.Count; i ++ )
-                    {
-                        GetScriptIndexFromMD5(splitScript[i], relativeID, i);
-                    }
                 }
 
                 // mapping the shapes with media files, and set up the audio list
@@ -784,16 +779,42 @@ namespace PowerPointLabs
 
                         // derive matched id from shape name
                         var temp = shape.Name.Split(new [] {' '});
-                        audio.MatchScriptID = Int32.Parse(temp[2]);
+                        var scriptIndex = Int32.Parse(temp[2]);
+                        var script = _scriptList[relativeID][scriptIndex];
 
-                        audio.SaveName = _tempFullPath + String.Format(ReopenSpeechFormat, validSpeechCnt + 1);
+                        var ori = GetScriptIndexFromMD5(script, relativeID, scriptIndex);
+                        bool duplicate = false;
+
+                        // if current audio has the same script and both auto generated, they will share
+                        // the same embedded media file
+                        if (ori != null && audio.Type == Audio.AudioType.Auto)
+                        {
+                            var recordIndex = GetRecordIndexFromScriptIndex(ori.Item1, ori.Item2);
+                            var oriAudio = _audioList[ori.Item1][recordIndex];
+
+                            if (oriAudio.Type == Audio.AudioType.Auto)
+                            {
+                                audio.SaveName = oriAudio.SaveName;
+                                audio.Length = oriAudio.Length;
+                                audio.LengthMillis = oriAudio.LengthMillis;
+
+                                duplicate = true;
+                            }
+                        }
+
+                        if (!duplicate)
+                        {
+                            audio.SaveName = _tempFullPath + String.Format(ReopenSpeechFormat, validSpeechCnt + 1);
+                            audio.Length = AudioHelper.GetAudioLengthString(audio.SaveName);
+                            audio.LengthMillis = AudioHelper.GetAudioLength(audio.SaveName);
+
+                            validSpeechCnt++;
+                        }
+
+                        audio.MatchScriptID = scriptIndex;
                         audio.Name = shape.Name;
-                        audio.Length = AudioHelper.GetAudioLengthString(audio.SaveName);
-                        audio.LengthMillis = AudioHelper.GetAudioLength(audio.SaveName);
 
                         _audioList[slide.Index - 1].Add(audio);
-
-                        validSpeechCnt++;
                     }
                 }
             }
@@ -806,8 +827,9 @@ namespace PowerPointLabs
             foreach (var slide in slides)
             {
                 int audioIndex = 0;
-                
-                foreach (var audio in _audioList[slide.Index - 1])
+                int relativeId = GetRelativeSlideIndex(slide.ID);
+
+                foreach (var audio in _audioList[relativeId])
                 {
                     audio.EmbedOnSlide(slide, audioIndex);
                     audioIndex++;

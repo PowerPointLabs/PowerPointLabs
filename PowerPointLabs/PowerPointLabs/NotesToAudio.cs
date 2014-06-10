@@ -62,7 +62,7 @@ namespace PowerPointLabs
             int numberOfSlides = slides.Count;
             for (int currentSlideIndex = 0; currentSlideIndex < numberOfSlides; currentSlideIndex++)
             {
-                var percentage = (int)Math.Round(((double)currentSlideIndex) / numberOfSlides * 100);
+                var percentage = (int)Math.Round(((double)currentSlideIndex + 1) / numberOfSlides * 100);
                 progressBarForm.UpdateProgress(percentage);
                 progressBarForm.UpdateSlideNumber(currentSlideIndex, numberOfSlides);
 
