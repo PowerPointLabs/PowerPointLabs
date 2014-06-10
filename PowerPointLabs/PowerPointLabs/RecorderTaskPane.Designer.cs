@@ -153,7 +153,7 @@
             this.recordAudio,
             this.removeAudio});
             this.recordListMenuStrip.Name = "contextMenuStrip1";
-            this.recordListMenuStrip.Size = new System.Drawing.Size(162, 92);
+            this.recordListMenuStrip.Size = new System.Drawing.Size(162, 70);
             this.recordListMenuStrip.Opening += new System.ComponentModel.CancelEventHandler(this.ContextMenuStrip1Opening);
             this.recordListMenuStrip.ItemClicked += new System.Windows.Forms.ToolStripItemClickedEventHandler(this.ContextMenuStrip1ItemClicked);
             // 
@@ -271,6 +271,7 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+            this.AutoSize = true;
             this.Controls.Add(this.label1);
             this.Controls.Add(this.scriptDetailTextBox);
             this.Controls.Add(this.scriptDetialLabel);

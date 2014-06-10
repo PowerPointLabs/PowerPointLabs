@@ -27,13 +27,11 @@ namespace PowerPointLabs
     {
         // for hashing the speaker's script
         private MD5 _md5 = MD5.Create();
-        // for all mappers
-        private const int Offset = 1000;
 
         // data structures to track embedded audio information
         
-        // map the text MD5 to record id
-        private Dictionary<string, int> _md5ScriptMapper;
+        // map the text MD5 to (slide, script id)
+        private Dictionary<string, Tuple<int, int>> _md5ScriptMapper;
         // map slide id to relative index
         private Dictionary<int, int> _slideRelativeMapper;
         // this offset is used to map a slide id to relative slide id
@@ -310,8 +308,9 @@ namespace PowerPointLabs
 
         private string GetMD5(string s)
         {
-            var hashcode = _md5.ComputeHash(System.Text.Encoding.UTF8.GetBytes(s));
-            StringBuilder sb = new StringBuilder();
+            var str = s.Replace(" ", string.Empty).ToLower();
+            var hashcode = _md5.ComputeHash(System.Text.Encoding.UTF8.GetBytes(str));
+            var sb = new StringBuilder();
 
             foreach (byte x in hashcode)
             {
@@ -365,6 +364,20 @@ namespace PowerPointLabs
             }
 
             return recordIndex;
+        }
+
+        private Tuple<int, int> GetScriptIndexFromMD5(string script, int relativeID, int scriptIndex)
+        {
+            string md5 = GetMD5(script);
+
+            if (!_md5ScriptMapper.ContainsKey(md5))
+            {
+                _md5ScriptMapper[md5] = new Tuple<int, int>(relativeID, scriptIndex);
+
+                return null;
+            }
+
+            return _md5ScriptMapper[md5];
         }
 
         private Audio GetPlaybackFromList()
@@ -728,6 +741,11 @@ namespace PowerPointLabs
 
                     // add the splitted notes into script list
                     _scriptList[relativeID] = splitScript;
+                    // register it in the mapper
+                    for (int i = 0; i < splitScript.Count; i ++ )
+                    {
+                        GetScriptIndexFromMD5(splitScript[i], relativeID, i);
+                    }
                 }
 
                 // mapping the shapes with media files, and set up the audio list
@@ -838,13 +856,6 @@ namespace PowerPointLabs
             // add the splitted notes into script list
             {
                 _scriptList.Add(splitScript);
-            }
-
-            // map the md5 to script list index, this is used to do reorder
-            for (int i = 0; i < splitScript.Count; i++)
-            {
-                string md5 = GetMD5(splitScript[i]);
-                _md5ScriptMapper[md5] = i;
             }
 
             // if the audio of the selected slide has not been initialized yet,
@@ -1731,7 +1742,7 @@ namespace PowerPointLabs
             _scriptList = new List<List<string>>();
             AudioBuffer = new List<List<Tuple<Audio, int>>>();
             
-            _md5ScriptMapper = new Dictionary<string, int>();
+            _md5ScriptMapper = new Dictionary<string, Tuple<int, int>>();
             _slideRelativeMapper = new Dictionary<int, int>();
 
             _tempFolderName = @"\PowerPointLabs Temp\" + tempFolderName + @"\";

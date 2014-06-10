@@ -264,6 +264,13 @@ namespace PowerPointLabs
 
         void ThisAddIn_PresentationClose(PowerPoint.Presentation Pres)
         {
+            var recorder = ActivateCustomTaskPane.Control as RecorderTaskPane;
+            
+            if (recorder.HasEvent())
+            {
+                recorder.ForceStopEvent();
+            }
+            
             var currentWindow = ActivateCustomTaskPane.Window as PowerPoint.DocumentWindow;
 
             if (currentWindow.Presentation.Name != Pres.Name)
