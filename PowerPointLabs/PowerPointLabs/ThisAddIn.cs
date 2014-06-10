@@ -248,6 +248,7 @@ namespace PowerPointLabs
         void ThisAddIn_NewPresentation(PowerPoint.Presentation Pres)
         {
             string tempFolderPath = Path.GetTempPath() + TempFolderNamePrefix + Pres.Name.GetHashCode().ToString() + @"\";
+            
             if (Directory.Exists(tempFolderPath))
             {
                 Directory.Delete(tempFolderPath, true);
@@ -259,13 +260,6 @@ namespace PowerPointLabs
 
         void ThisAddIn_PrensentationOpen(PowerPoint.Presentation Pres)
         {
-            // before open, check if the temp folder already exists. If it is, delete it
-            string tempFolderPath = Path.GetTempPath() + TempFolderNamePrefix + Pres.Name.GetHashCode().ToString() + @"\";
-            if (Directory.Exists(tempFolderPath))
-            {
-                Directory.Delete(tempFolderPath, true);
-            }
-
             // extract embedded audio files to temp folder
             PrepareMediaFiles(Pres);
             // setup a new recorder pane when an exist file opened
@@ -312,13 +306,6 @@ namespace PowerPointLabs
             if (saved == Office.MsoTriState.msoTrue)
             {
                 Pres.Save();
-
-                // delete the temp folder only when user has saved file
-                //string tempFolderPath = Path.GetTempPath() + TempFolderNamePrefix + Pres.Name.GetHashCode().ToString() + @"\";
-                //if (Directory.Exists(tempFolderPath))
-                //{
-                //    Directory.Delete(tempFolderPath, true);
-                //}
             }
         }
 
@@ -421,18 +408,26 @@ namespace PowerPointLabs
             string presFullName = Pres.FullName;
 
             // if temp folder doesn't exist, create
-            if (!Directory.Exists(tempPath))
+            try
             {
-                Directory.CreateDirectory(tempPath);
+                if (Directory.Exists(tempPath))
+                {
+                    Directory.Delete(tempPath, true);
+                }
             }
-            else
-            // else clear the folder
+            catch (Exception)
             {
-                Directory.Delete(tempPath, true);
+                MessageBox.Show("Restart from Error.");
+                throw;
+            }
+            finally
+            {
                 Directory.CreateDirectory(tempPath);
             }
 
-            // check if the file has been saved
+            // this segment is added to handle "embed on other application" issue. In this
+            // case, file is not saved but has embedded audio already. We need to handle
+            // it specially.
             if (Pres.Path == String.Empty)
             {
                 Pres.SaveAs(tempPath + presName);

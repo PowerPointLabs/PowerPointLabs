@@ -310,13 +310,16 @@ namespace PowerPointLabs
         private string GetMD5(string s)
         {
             // eliminate spaces
-            var str = s.Replace(" ", string.Empty).ToLower();
-            
+            var regex = new Regex(@"\s+");
+            s = regex.Replace(s, string.Empty).ToLower();
+            // eliminate multiple periods
+            regex = new Regex(@"[…\.]+");
+            s = regex.Replace(s, ".");
             // eliminate trailing period
-            var regex = new Regex(@"\.+");
-            regex.Replace(str, string.Empty);
+            regex = new Regex(@"\.$");
+            s = regex.Replace(s, string.Empty);
             
-            var hashcode = _md5.ComputeHash(System.Text.Encoding.UTF8.GetBytes(str));
+            var hashcode = _md5.ComputeHash(System.Text.Encoding.UTF8.GetBytes(s));
             var sb = new StringBuilder();
 
             foreach (byte x in hashcode)
