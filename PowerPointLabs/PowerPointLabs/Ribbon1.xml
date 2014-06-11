@@ -157,10 +157,6 @@
                   getImage="GetRemoveCaptionsImage"
                   getEnabled="OnGetEnabledRemoveCaptions"
                   size="large" />
-          <dialogBoxLauncher>
-            <button id="AutoCaptionDialogBox"
-                    onAction="AutoCaptionDialogButtonPressed"/>
-          </dialogBoxLauncher>
         </group>
         <group id="HighlightBullets"
                label="Highlight Bullets"

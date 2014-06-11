@@ -18,6 +18,15 @@ namespace PowerPointLabs
             }
         }
 
+        public static void EmbedCaptionsOnSelectedSlides()
+        {
+            foreach (PowerPointSlide slide in PowerPointPresentation.SelectedSlides) 
+            {
+                RemoveCaptionsFromSlide(slide);
+                EmbedCaptionsOnSlide(slide);
+            }
+        }
+
         private static void EmbedCaptionsOnSlide(PowerPointSlide s)
         {
             String rawNotes = s.NotesPageText;
@@ -106,6 +115,14 @@ namespace PowerPointLabs
             if (currentSlide != null)
             {
                 RemoveCaptionsFromSlide(currentSlide);
+            }
+        }
+
+        public static void RemoveCaptionsFromSelectedSlides()
+        {
+            foreach (PowerPointSlide slide in PowerPointPresentation.SelectedSlides)
+            {
+                RemoveCaptionsFromSlide(slide);   
             }
         }
 
