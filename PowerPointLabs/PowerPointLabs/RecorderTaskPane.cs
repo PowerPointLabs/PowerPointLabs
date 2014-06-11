@@ -20,6 +20,7 @@ using PowerPointLabs.Models;
 using PowerPointLabs.AudioMisc;
 using PowerPointLabs.Views;
 using NAudio;
+using PowerPointLabs.XMLMisc;
 using Shape = Microsoft.Office.Interop.PowerPoint.Shape;
 
 namespace PowerPointLabs
@@ -56,6 +57,7 @@ namespace PowerPointLabs
         private string _tempFolderName;
         private string _tempFullPath;
         private string _tempWaveFileNameFormat;
+        private string _tempShapAudioXMLFormat;
 
         private readonly string _tempPath = Path.GetTempPath();
 
@@ -352,20 +354,6 @@ namespace PowerPointLabs
             }
 
             return recordIndex;
-        }
-
-        private Tuple<int, int> GetScriptIndexFromMD5(string script, int relativeID, int scriptIndex)
-        {
-            string md5 = GetMD5(script);
-
-            if (!_md5ScriptMapper.ContainsKey(md5))
-            {
-                _md5ScriptMapper[md5] = new Tuple<int, int>(relativeID, scriptIndex);
-
-                return null;
-            }
-
-            return _md5ScriptMapper[md5];
         }
 
         private Audio GetPlaybackFromList()
@@ -722,7 +710,6 @@ namespace PowerPointLabs
             var slides = PowerPointPresentation.Slides.ToList();
             // track the total count of valid speech audio, this helps avoid
             // mixing up other audios with speech audios
-            int validSpeechCnt = 0;
             
             foreach (var slide in slides)
             {
@@ -751,6 +738,12 @@ namespace PowerPointLabs
                 
                 // get all audio shapes
                 var shapes = slide.GetShapesWithMediaType(PpMediaType.ppMediaTypeSound);
+                XmlParser xmlParser = null;
+                
+                if (shapes.Count > 0)
+                {
+                    xmlParser = new XmlParser(string.Format(_tempShapAudioXMLFormat, slide.Index));
+                }
 
                 // iterate through all shapes, skip audios that are not generated speech
                 for (int i = 0, speechOnSlide = 0; i < shapes.Count; i++, speechOnSlide++)
@@ -780,45 +773,24 @@ namespace PowerPointLabs
 
                         // derive matched id from shape name
                         var temp = shape.Name.Split(new [] {' '});
-                        var scriptIndex = Int32.Parse(temp[2]);
-                        var script = _scriptList[relativeID][scriptIndex];
+                        audio.MatchScriptID = Int32.Parse(temp[2]);
 
-                        bool duplicate = false;
-
-                        // if current audio has the same script and both auto generated, they will share
-                        // the same embedded media file
-                        if (audio.Type == Audio.AudioType.Auto)
-                        {
-                            // implicilty, only auto gen audios are entertained
-                            var ori = GetScriptIndexFromMD5(script, relativeID, scriptIndex);
-
-                            // if we have an auto gen audio with exact identical script before
-                            if (ori != null)
-                            {
-                                var recordIndex = GetRecordIndexFromScriptIndex(ori.Item1, ori.Item2);
-                                var oriAudio = _audioList[ori.Item1][recordIndex];
-
-                                audio.SaveName = oriAudio.SaveName;
-                                audio.Length = oriAudio.Length;
-                                audio.LengthMillis = oriAudio.LengthMillis;
-
-                                duplicate = true;
-                            }
-                        }
-
-                        if (!duplicate)
-                        {
-                            audio.SaveName = _tempFullPath + String.Format(ReopenSpeechFormat, validSpeechCnt + 1);
-                            audio.Length = AudioHelper.GetAudioLengthString(audio.SaveName);
-                            audio.LengthMillis = AudioHelper.GetAudioLength(audio.SaveName);
-
-                            validSpeechCnt++;
-                        }
-
-                        audio.MatchScriptID = scriptIndex;
+                        // get corresponding audio
                         audio.Name = shape.Name;
+                        audio.SaveName = _tempFullPath + xmlParser.GetCorrespondingAudio(audio.Name);
+                        audio.Length = AudioHelper.GetAudioLengthString(audio.SaveName);
+                        audio.LengthMillis = AudioHelper.GetAudioLength(audio.SaveName);
 
-                        _audioList[slide.Index - 1].Add(audio);
+                        // maintain a sorted audio list
+                        // Note: here relativeID == slide.Index - 1
+                        if (audio.MatchScriptID >= _audioList[relativeID].Count)
+                        {
+                            _audioList[relativeID].Add(audio);
+                        }
+                        else
+                        {
+                            _audioList[relativeID].Insert(audio.MatchScriptID, audio);
+                        }
                     }
                 }
             }
@@ -1773,7 +1745,8 @@ namespace PowerPointLabs
 
             _tempFolderName = @"\PowerPointLabs Temp\" + tempFolderName + @"\";
             _tempFullPath = Path.GetTempPath() + _tempFolderName;
-            _tempWaveFileNameFormat = Path.GetTempPath() + _tempFolderName + "temp{0}.wav";
+            _tempWaveFileNameFormat = _tempFullPath + "temp{0}.wav";
+            _tempShapAudioXMLFormat = _tempFullPath + "slide{0}.xml";
 
             _relativeSlideCounter = 0;
             

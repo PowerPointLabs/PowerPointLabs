@@ -253,6 +253,10 @@ namespace PowerPointLabs
             {
                 Directory.Delete(tempFolderPath, true);
             }
+            else
+            {
+                Directory.CreateDirectory(tempFolderPath);
+            }
 
             // setup a new recorder pane when an exist file opened
             SetupRecorderTaskPane(Pres.Application.ActiveWindow);
@@ -277,22 +281,10 @@ namespace PowerPointLabs
             
             var currentWindow = ActivateCustomTaskPane.Window as PowerPoint.DocumentWindow;
 
+            // make sure the close event is triggered by the window that the pane belongs to
             if (currentWindow.Presentation.Name != Pres.Name)
             {
                 return;
-            }
-
-            var saved = Pres.Saved;
-
-            // embed all audios once again to preserve the playing sequence
-            try
-            {
-                (ActivateCustomTaskPane.Control as RecorderTaskPane).ShutdownReembed();
-            }
-            catch (Exception e)
-            {
-                MessageBox.Show(e.Message);
-                throw;
             }
 
             // remove task pane
@@ -301,12 +293,6 @@ namespace PowerPointLabs
             // remove entry from mappers
             documentPaneMapper.Remove(Pres.Application.ActiveWindow);
             documentHashcodeMapper.Remove(Pres.Application.ActiveWindow);
-
-            // if the presentation has been saved before embed, save the presentation
-            if (saved == Office.MsoTriState.msoTrue)
-            {
-                Pres.Save();
-            }
         }
 
         private void SlideShowBeginHandler(PowerPoint.SlideShowWindow wn)
