@@ -56,8 +56,7 @@ namespace PowerPointLabs
 
         private bool _allSlides;
         private bool _previewCurrentSlide;
-        private bool _captionsAllSlides;
-
+        
         private List<string> _voiceNames;
 
         private int _voiceSelected = 0;
@@ -888,26 +887,12 @@ namespace PowerPointLabs
 
         public void AddCaptionClick(Office.IRibbonControl control)
         {
-            if (_captionsAllSlides)
-            {
-                NotesToCaptions.EmbedCaptionsOnAllSlides();
-            }
-            else
-            {
-                NotesToCaptions.EmbedCaptionsOnSelectedSlides();
-            }
+            NotesToCaptions.EmbedCaptionsOnSelectedSlides();
         }
 
         public void RemoveCaptionClick(Office.IRibbonControl control)
         {
-            if (_captionsAllSlides)
-            {
-                NotesToCaptions.RemoveCaptionsFromAllSlides();
-            }
-            else
-            {
-                NotesToCaptions.RemoveCaptionsFromSelectedSlides();
-            }
+            NotesToCaptions.RemoveCaptionsFromSelectedSlides();
         }
 
         public void ContextReplaceAudioClick(Office.IRibbonControl control)
@@ -943,26 +928,6 @@ namespace PowerPointLabs
                 NotesToAudio.SetDefaultVoice(voiceName);
                 _voiceSelected = _voiceNames.IndexOf(voiceName);
             }
-        }
-
-        public void AutoCaptionDialogButtonPressed(Office.IRibbonControl control)
-        {
-            try
-            {
-                var dialog = new AutoCaptionDialogBox(_captionsAllSlides);
-                dialog.SettingsHandler += AutoCaptionSettingsChanged;
-                dialog.ShowDialog();
-            }
-            catch (Exception e)
-            {
-                PowerPointLabsGlobals.LogException(e, "AutoCaptionDialogButtonPressed");
-                throw;
-            }
-        }
-
-        public void AutoCaptionSettingsChanged(bool allSlides)
-        {
-            _captionsAllSlides = allSlides;
         }
 
         private void PreviewAnimationsIfChecked()
