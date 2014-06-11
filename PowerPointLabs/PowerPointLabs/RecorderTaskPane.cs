@@ -796,23 +796,6 @@ namespace PowerPointLabs
             }
         }
 
-        public void ShutdownReembed()
-        {
-            var slides = PowerPointPresentation.Slides.ToList();
-
-            foreach (var slide in slides)
-            {
-                int audioIndex = 0;
-                int relativeId = GetRelativeSlideIndex(slide.ID);
-
-                foreach (var audio in _audioList[relativeId])
-                {
-                    audio.EmbedOnSlide(slide, audioIndex);
-                    audioIndex++;
-                }
-            }
-        }
-
         public void InitializeAudioAndScript(PowerPointSlide slide, string[] names, bool forceRefresh)
         {
             string[] audioSaveNames = null;

@@ -35,15 +35,15 @@ namespace PowerPointLabs.XMLMisc
         {
             var doc = XDocument.Load(path);
 
-            foreach (var element in doc.Descendants(_p + "pic"))
+            foreach (var element in doc.Descendants(_p + "spTree"))
             {
-                var audioShape = element.Descendants(_p + "nvPicPr");
+                var audioShape = element.Elements(_p + "pic");
 
                 var data = from item in audioShape
                            select new
                                       {
-                                          name = item.Element(_p + "cNvPr").Attribute("name").Value,
-                                          audioID = item.Element(_p + "nvPr").Element(_a + "audioFile").Attribute(_r + "link").Value
+                                          name = item.Element(_p + "nvPicPr").Element(_p + "cNvPr").Attribute("name").Value,
+                                          audioID = item.Element(_p + "nvPicPr").Element(_p + "nvPr").Element(_a + "audioFile").Attribute(_r + "link").Value
                                       };
 
                 foreach (var entry in data)
