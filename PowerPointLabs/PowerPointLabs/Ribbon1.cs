@@ -217,7 +217,7 @@ namespace PowerPointLabs
         }
         public void AboutButtonClick(Office.IRibbonControl control)
         {
-            System.Windows.Forms.MessageBox.Show("          PowerPointLabs Plugin Version 1.7.7 [Release date: 11 Jun 2014]\n     Developed at School of Computing, National University of Singapore.\n        For more information, visit our website http://PowerPointLabs.info", "About PowerPointLabs");
+            System.Windows.Forms.MessageBox.Show("          PowerPointLabs Plugin Version 1.7.8 [Release date: 11 Jun 2014]\n     Developed at School of Computing, National University of Singapore.\n        For more information, visit our website http://PowerPointLabs.info", "About PowerPointLabs");
         }
         public void HelpButtonClick(Office.IRibbonControl control)
         {
@@ -947,22 +947,6 @@ namespace PowerPointLabs
 
         public void AddCaptionClick(Office.IRibbonControl control)
         {
-            if (_captionsAllSlides)
-            {
-                NotesToCaptions.EmbedCaptionsOnAllSlides();
-                if (PowerPointPresentation.SlidesHaveCaptions(PowerPointPresentation.Slides))
-                {
-                    removeCaptionsEnabled = true;
-                }
-            }
-            else
-            {
-                NotesToCaptions.EmbedCaptionsOnCurrentSlide();
-                if (PowerPointPresentation.CurrentSlide.HasCaptions())
-                {
-                    removeCaptionsEnabled = true;
-                }
-            }
             RefreshRibbonControl("removeCaptions");
 			
             NotesToCaptions.EmbedCaptionsOnSelectedSlides();
@@ -970,14 +954,6 @@ namespace PowerPointLabs
 
         public void RemoveCaptionClick(Office.IRibbonControl control)
         {
-            if (_captionsAllSlides)
-            {
-                NotesToCaptions.RemoveCaptionsFromAllSlides();
-            }
-            else
-            {
-                NotesToCaptions.RemoveCaptionsFromCurrentSlide();
-            }
             removeCaptionsEnabled = false;
             RefreshRibbonControl("removeCaptions");
             NotesToCaptions.RemoveCaptionsFromSelectedSlides();

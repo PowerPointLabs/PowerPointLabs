@@ -27,13 +27,6 @@ namespace PowerPointLabs
 {
     internal partial class RecorderTaskPane : UserControl
     {
-        // for hashing the speaker's script
-        private MD5 _md5 = MD5.Create();
-
-        // data structures to track embedded audio information
-        
-        // map the text MD5 to (slide, script id)
-        private Dictionary<string, Tuple<int, int>> _md5ScriptMapper;
         // map slide id to relative index
         private Dictionary<int, int> _slideRelativeMapper;
         // this offset is used to map a slide id to relative slide id
@@ -52,12 +45,11 @@ namespace PowerPointLabs
         private const string SpeechShapePrefix = "PowerPointLabs Speech";
         private const string SpeechShapePrefixOld = "AudioGen Speech";
         private const string SpeechShapeFormat = "PowerPointLabs Speech {0}";
-        private const string ReopenSpeechFormat = "media{0}.wav";
 
-        private string _tempFolderName;
-        private string _tempFullPath;
-        private string _tempWaveFileNameFormat;
-        private string _tempShapAudioXMLFormat;
+        private readonly string _tempFolderName;
+        private readonly string _tempFullPath;
+        private readonly string _tempWaveFileNameFormat;
+        private readonly string _tempShapAudioXmlFormat;
 
         private readonly string _tempPath = Path.GetTempPath();
 
@@ -81,8 +73,8 @@ namespace PowerPointLabs
 
         # region Recorder Utilities
         // these utilities wrapped NAudio functions
-        private IWaveIn waveInStream;
-        private WaveFileWriter waveFileWriter;
+        private IWaveIn _waveInStream;
+        private WaveFileWriter _waveFileWriter;
         private int _currentLength;
 
         private void WaveInStreamOnDataAvailable(object sender, WaveInEventArgs waveInEventArgs)
@@ -93,20 +85,20 @@ namespace PowerPointLabs
             }
             else
             {
-                if (waveFileWriter != null)
+                if (_waveFileWriter != null)
                 {
-                    waveFileWriter.Write(waveInEventArgs.Buffer, 0, waveInEventArgs.BytesRecorded);
-                    _currentLength = (int)(waveFileWriter.Length * 1000 / waveFileWriter.WaveFormat.AverageBytesPerSecond);
+                    _waveFileWriter.Write(waveInEventArgs.Buffer, 0, waveInEventArgs.BytesRecorded);
+                    _currentLength = (int)(_waveFileWriter.Length * 1000 / _waveFileWriter.WaveFormat.AverageBytesPerSecond);
                 }
             }
         }
 
         private void WaveInStreamOnRecordingStopped(object sender, StoppedEventArgs stoppedEventArgs)
         {
-            if (waveFileWriter != null)
+            if (_waveFileWriter != null)
             {
-                waveFileWriter.Dispose();
-                waveFileWriter = null;
+                _waveFileWriter.Dispose();
+                _waveFileWriter = null;
             }
         }
 
@@ -114,17 +106,22 @@ namespace PowerPointLabs
         {
             _currentLength = 0;
 
-            if (waveInStream != null)
+            if (_waveInStream != null)
             {
-                waveInStream.Dispose();
-                waveInStream = null;
+                _waveInStream.Dispose();
+                _waveInStream = null;
             }
 
-            if (waveFileWriter != null)
+            if (_waveFileWriter != null)
             {
-                waveFileWriter.Dispose();
-                waveFileWriter = null;
+                _waveFileWriter.Dispose();
+                _waveFileWriter = null;
             }
+        }
+
+        private bool NInputDeviceExists()
+        {
+            return WaveIn.DeviceCount > 0;
         }
 
         private void NStartRecordAudio(string fileName, int rate, int bits, int channel, bool isBackground)
@@ -132,28 +129,28 @@ namespace PowerPointLabs
             // prepare wave header and wav output file
             if (isBackground)
             {
-                waveInStream = new WaveInEvent();
+                _waveInStream = new WaveInEvent();
             }
             else
             {
-                waveInStream = new WaveIn();
+                _waveInStream = new WaveIn();
             }
 
-            waveInStream.WaveFormat = new WaveFormat(rate, bits, channel);
-            waveFileWriter = new WaveFileWriter(fileName, waveInStream.WaveFormat);
+            _waveInStream.WaveFormat = new WaveFormat(rate, bits, channel);
+            _waveFileWriter = new WaveFileWriter(fileName, _waveInStream.WaveFormat);
 
-            waveInStream.DataAvailable += WaveInStreamOnDataAvailable;
-            waveInStream.RecordingStopped += WaveInStreamOnRecordingStopped;
+            _waveInStream.DataAvailable += WaveInStreamOnDataAvailable;
+            _waveInStream.RecordingStopped += WaveInStreamOnRecordingStopped;
 
             // start recording here
-            waveInStream.StartRecording();
+            _waveInStream.StartRecording();
         }
 
         private void NStopRecordAudio()
         {
-            if (waveInStream != null)
+            if (_waveInStream != null)
             {
-                waveInStream.StopRecording();
+                _waveInStream.StopRecording();
             }
         }
 
@@ -285,29 +282,6 @@ namespace PowerPointLabs
         {
             // TODO:
             // need to implement
-        }
-
-        private string GetMD5(string s)
-        {
-            // eliminate spaces
-            var regex = new Regex(@"\s+");
-            s = regex.Replace(s, string.Empty).ToLower();
-            // eliminate multiple periods
-            regex = new Regex(@"[…\.]+");
-            s = regex.Replace(s, ".");
-            // eliminate trailing period
-            regex = new Regex(@"\.$");
-            s = regex.Replace(s, string.Empty);
-            
-            var hashcode = _md5.ComputeHash(System.Text.Encoding.UTF8.GetBytes(s));
-            var sb = new StringBuilder();
-
-            foreach (byte x in hashcode)
-            {
-                sb.Append(x.ToString("X2"));
-            }
-
-            return sb.ToString();
         }
 
         private int GetRelativeSlideIndex(int curID)
@@ -742,7 +716,7 @@ namespace PowerPointLabs
                 
                 if (shapes.Count > 0)
                 {
-                    xmlParser = new XmlParser(string.Format(_tempShapAudioXMLFormat, slide.Index));
+                    xmlParser = new XmlParser(string.Format(_tempShapAudioXmlFormat, slide.Index));
                 }
 
                 // iterate through all shapes, skip audios that are not generated speech
@@ -900,7 +874,7 @@ namespace PowerPointLabs
         }
         # endregion
 
-        # region WinForm
+        # region User Control
         private int _resumeWaitingTime;
         private int _playbackLenMillis;
         private int _timerCnt;
@@ -1077,6 +1051,17 @@ namespace PowerPointLabs
         {
             // close unfinished session
             ResetSession();
+
+            // check input device, abort if no input device connected
+            if (!NInputDeviceExists())
+            {
+                MessageBox.Show("No Input Device suitable for the recording.\n" +
+                                "Make sure your computer has a built-in voice picker and has been enabled, " +
+                                "or an external voice input device has been connected.", "Input Device Not Found",
+                                MessageBoxButtons.OK, MessageBoxIcon.Error);
+
+                return;
+            }
 
             // UI settings
             ResetRecorder();
@@ -1723,13 +1708,12 @@ namespace PowerPointLabs
             _scriptList = new List<List<string>>();
             AudioBuffer = new List<List<Tuple<Audio, int>>>();
             
-            _md5ScriptMapper = new Dictionary<string, Tuple<int, int>>();
             _slideRelativeMapper = new Dictionary<int, int>();
 
             _tempFolderName = @"\PowerPointLabs Temp\" + tempFolderName + @"\";
             _tempFullPath = Path.GetTempPath() + _tempFolderName;
             _tempWaveFileNameFormat = _tempFullPath + "temp{0}.wav";
-            _tempShapAudioXMLFormat = _tempFullPath + "slide{0}.xml";
+            _tempShapAudioXmlFormat = _tempFullPath + "slide{0}.xml";
 
             _relativeSlideCounter = 0;
             

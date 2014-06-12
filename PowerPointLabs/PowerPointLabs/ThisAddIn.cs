@@ -35,7 +35,6 @@ namespace PowerPointLabs
 
         private const int _taskPaneWidth = 300;
         private const string TempFolderNamePrefix = @"\PowerPointLabs Temp\";
-        private const string SpeechShapePrefix = "PowerPointLabs Speech";
 
         private void ThisAddIn_Startup(object sender, System.EventArgs e)
         {
@@ -91,8 +90,11 @@ namespace PowerPointLabs
         void SetupRecorderTaskPane(PowerPoint.DocumentWindow wnd)
         {
             var tempName = wnd.Presentation.Name.GetHashCode().ToString();
+            var recorderPane = new RecorderTaskPane(tempName);
+            var width = recorderPane.Width;
+
             // register the recorder task pane to the CustomTaskPanes collection
-            ActivateCustomTaskPane = CustomTaskPanes.Add(new RecorderTaskPane(tempName), "Record Script", wnd);
+            ActivateCustomTaskPane = CustomTaskPanes.Add(recorderPane, "Record Script", wnd);
             
             // map the current window with the task pane
             documentPaneMapper[wnd] = ActivateCustomTaskPane;
@@ -103,7 +105,7 @@ namespace PowerPointLabs
             // custom task pane collection
             ActivateCustomTaskPane.Visible = false;
             ActivateCustomTaskPane.VisibleChanged += TaskPaneVisibleValueChangedEventHandler;
-            ActivateCustomTaskPane.Width = _taskPaneWidth;
+            ActivateCustomTaskPane.Width = width + 20;
         }
 
         public string GetActiveWindowTempName()

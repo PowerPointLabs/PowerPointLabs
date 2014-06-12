@@ -272,6 +272,7 @@
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.AutoSize = true;
+            this.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
             this.Controls.Add(this.label1);
             this.Controls.Add(this.scriptDetailTextBox);
             this.Controls.Add(this.scriptDetialLabel);
@@ -286,7 +287,7 @@
             this.Controls.Add(this.recButton);
             this.Controls.Add(this.statusLabel);
             this.Name = "RecorderTaskPane";
-            this.Size = new System.Drawing.Size(280, 554);
+            this.Size = new System.Drawing.Size(276, 543);
             this.Load += new System.EventHandler(this.RecorderPane_Load);
             ((System.ComponentModel.ISupportInitialize)(this.soundTrackBar)).EndInit();
             this.recordListMenuStrip.ResumeLayout(false);
