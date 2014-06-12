@@ -786,6 +786,12 @@ namespace PowerPointLabs
                         {
                             _audioList[relativeID].Insert(audio.MatchScriptID, audio);
                         }
+
+                        // match id > total script count -> script does not exsit
+                        if (audio.MatchScriptID >= _scriptList[relativeID].Count)
+                        {
+                            audio.MatchScriptID = -1;
+                        }
                     }
                 }
             }
@@ -1278,7 +1284,14 @@ namespace PowerPointLabs
                     {
                         saveName = currentPlayback.SaveName.Replace(".wav", " rec.wav");
                         displayName = currentPlayback.Name;
-                        newRec = AudioHelper.DumpAudio(displayName, saveName, _recordTotalLength, currentPlayback.MatchScriptID);
+                        var matchId = currentPlayback.MatchScriptID;
+                        
+                        if (scriptIndex == -1)
+                        {
+                            matchId = -1;
+                        }
+                        
+                        newRec = AudioHelper.DumpAudio(displayName, saveName, _recordTotalLength, matchId);
 
                         // note down the old record and replace the record list
                         _undoAudioBuffer = _audioList[relativeID][recordIndex];
@@ -1733,7 +1746,11 @@ namespace PowerPointLabs
 
                     // update recoder pane
                     UpdateRecordList(relativeSlideID);
-                    UpdateScriptList(scriptIndex, null, ScriptStatus.Untracked);
+
+                    if (scriptIndex != -1)
+                    {
+                        UpdateScriptList(scriptIndex, null, ScriptStatus.Untracked);
+                    }
                 }
             }
         }
@@ -1760,6 +1777,8 @@ namespace PowerPointLabs
 
             recButton.Image = Properties.Resources.Record;
             playButton.Image = Properties.Resources.Play;
+
+            scriptDetailTextBox.BackColor = Color.FromKnownColor(KnownColor.Control);
 
             // don't allow user to touch trackbar, thus disabled
             soundTrackBar.Enabled = false;
