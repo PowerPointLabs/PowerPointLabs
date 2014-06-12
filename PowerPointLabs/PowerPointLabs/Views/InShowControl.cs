@@ -136,5 +136,23 @@ namespace PowerPointLabs.Views
             // activate the show window to allow user click on the slide show
             _slideShowWindow.Activate();
         }
+
+        private bool InRectangle(Point point, Rectangle rect)
+        {
+            return point.X <= rect.Right && point.X >= rect.Left &&
+                   point.Y >= rect.Top && point.Y <= rect.Bottom;
+        }
+
+        private void InShowControlMouseClick(object sender, MouseEventArgs e)
+        {
+            var control = sender as Control;
+
+            if (InRectangle(control.PointToScreen(e.Location),
+                            undoButton.RectangleToScreen(undoButton.DisplayRectangle))
+                && undoButton.Enabled == false)
+            {
+                _slideShowWindow.Activate();
+            }
+        }
     }
 }

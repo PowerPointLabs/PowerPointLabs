@@ -70,6 +70,7 @@
             this.StartPosition = System.Windows.Forms.FormStartPosition.Manual;
             this.Text = "InShowControl";
             this.TopMost = true;
+            this.MouseClick += new System.Windows.Forms.MouseEventHandler(this.InShowControlMouseClick);
             this.ResumeLayout(false);
 
         }

@@ -97,8 +97,15 @@ namespace PowerPointLabs
         {
             if (_waveFileWriter != null)
             {
-                _waveFileWriter.Dispose();
-                _waveFileWriter = null;
+                try
+                {
+                    _waveFileWriter.Dispose();
+                    _waveFileWriter = null;
+                }
+                catch (Exception)
+                {
+                    // eat the exception
+                }
             }
         }
 
@@ -114,8 +121,15 @@ namespace PowerPointLabs
 
             if (_waveFileWriter != null)
             {
-                _waveFileWriter.Dispose();
-                _waveFileWriter = null;
+                try
+                {
+                    _waveFileWriter.Dispose();
+                    _waveFileWriter = null;
+                }
+                catch (Exception)
+                {
+                    // eat exception locally
+                }
             }
         }
 

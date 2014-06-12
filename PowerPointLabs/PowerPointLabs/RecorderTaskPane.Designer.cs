@@ -239,6 +239,7 @@
             this.scriptDetailTextBox.Location = new System.Drawing.Point(12, 157);
             this.scriptDetailTextBox.Multiline = true;
             this.scriptDetailTextBox.Name = "scriptDetailTextBox";
+            this.scriptDetailTextBox.ReadOnly = true;
             this.scriptDetailTextBox.Size = new System.Drawing.Size(253, 122);
             this.scriptDetailTextBox.TabIndex = 11;
             // 
