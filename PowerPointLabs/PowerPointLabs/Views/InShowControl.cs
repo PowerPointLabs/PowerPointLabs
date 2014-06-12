@@ -87,12 +87,14 @@ namespace PowerPointLabs.Views
                     _recordStartSlide = currentSlide;
 
                     recButton.Text = "Stop and Advance";
+                    recButton.ForeColor = Color.Red;
                     recorderPane.RecButtonIdleHandler();
                     _slideShowWindow.Activate();
                     break;
 
                 case ButtonStatus.Rec:
                     recButton.Text = "Start Recording";
+                    recButton.ForeColor = Color.Black;
 
                     recorderPane.StopButtonRecordingHandler(_recordStartClick, _recordStartSlide, true);
                     _slideShowWindow.Activate();
