@@ -947,9 +947,16 @@ namespace PowerPointLabs
 
         public void AddCaptionClick(Office.IRibbonControl control)
         {
-            RefreshRibbonControl("removeCaptions");
-			
+            foreach (PowerPointSlide slide in PowerPointPresentation.SelectedSlides)
+            {
+                if (slide.NotesPageText.Trim() != "")
+                {
+                    removeCaptionsEnabled = true;
+                    break;
+                }
+            }
             NotesToCaptions.EmbedCaptionsOnSelectedSlides();
+            RefreshRibbonControl("removeCaptions");
         }
 
         public void RemoveCaptionClick(Office.IRibbonControl control)
