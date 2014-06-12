@@ -255,10 +255,8 @@ namespace PowerPointLabs
             {
                 Directory.Delete(tempFolderPath, true);
             }
-            else
-            {
-                Directory.CreateDirectory(tempFolderPath);
-            }
+
+            Directory.CreateDirectory(tempFolderPath);
 
             // setup a new recorder pane when an exist file opened
             SetupRecorderTaskPane(Pres.Application.ActiveWindow);

@@ -362,15 +362,22 @@ namespace PowerPointLabs
             return _audioList[slideID][playbackIndex];
         }
 
-        public Audio GetPlaybackFromList(int scriptIndex, int slideID)
+        private Audio GetPlaybackFromList(int scriptIndex, int slideID)
         {
-            if (scriptIndex == -1 || slideID == -1)
-            {
-                return null;
-            }
-
             var relativeSlideID = GetRelativeSlideIndex(slideID);
-            int recordIndex = GetRecordIndexFromScriptIndex(relativeSlideID, scriptIndex);
+            int recordIndex = -1;
+
+            if (scriptIndex == -1)
+            {
+                if (recDisplay.SelectedItems.Count > 0)
+                {
+                    recordIndex = recDisplay.SelectedIndices[0];
+                }
+            }
+            else
+            {
+                recordIndex = GetRecordIndexFromScriptIndex(relativeSlideID, scriptIndex);
+            }
 
             if (recordIndex != -1)
             {
@@ -1097,7 +1104,16 @@ namespace PowerPointLabs
             if (_inShowControlBox == null ||
                 _inShowControlBox.GetCurrentStatus() == InShowControl.ButtonStatus.Idle)
             {
-                _replaceScriptIndex = scriptDisplay.SelectedIndices[0];
+                // if there's a corresponding script
+                if (scriptDisplay.SelectedIndices.Count > 0)
+                {
+                    _replaceScriptIndex = scriptDisplay.SelectedIndices[0];
+                }
+                else
+                {
+                    _replaceScriptIndex = -1;
+                }
+                
                 _replaceScriptSlide = PowerPointPresentation.CurrentSlide;
             }
 
@@ -1235,16 +1251,26 @@ namespace PowerPointLabs
                     // specially, index == -1 means the record needs to be appended
                     var recordIndex = -1;
 
-                    for (int i = 0; i < _audioList[relativeID].Count; i ++ )
+                    if (scriptIndex == -1)
                     {
-                        var audio = _audioList[relativeID][i];
-                        
-                        if (audio.MatchScriptID >= scriptIndex)
+                        if (recDisplay.SelectedItems.Count > 0)
                         {
-                            recordIndex = i;
-                            break;
+                            recordIndex = recDisplay.SelectedIndices[0];
                         }
                     }
+                    else
+                    {
+                        for (int i = 0; i < _audioList[relativeID].Count; i++)
+                        {
+                            var audio = _audioList[relativeID][i];
+
+                            if (audio.MatchScriptID >= scriptIndex)
+                            {
+                                recordIndex = i;
+                                break;
+                            }
+                        }
+                    } 
 
                     // if current playback != null -> there's a corresponding record for the
                     // script, we can do the replacement;
@@ -1311,9 +1337,9 @@ namespace PowerPointLabs
                     NMergeAudios(_tempFullPath, "temp", saveName);
 
                     // update the script list if not in slide show mode
-                    if (_inShowControlBox == null ||
+                    if (scriptIndex != -1 && (_inShowControlBox == null ||
                         _inShowControlBox.GetCurrentStatus() != InShowControl.ButtonStatus.Rec &&
-                        relativeID == GetRelativeSlideIndex(PowerPointPresentation.CurrentSlide.ID))
+                        relativeID == GetRelativeSlideIndex(PowerPointPresentation.CurrentSlide.ID)))
                     {
                         UpdateScriptList(scriptIndex, null, ScriptStatus.Recorded);
                     }
@@ -1483,8 +1509,7 @@ namespace PowerPointLabs
             if (_recButtonStatus == RecorderStatus.Recording ||
                 _recButtonStatus == RecorderStatus.Pause)
             {
-                StopButtonRecordingHandler(scriptDisplay.SelectedIndices[0],
-                                           PowerPointPresentation.CurrentSlide, false);
+                StopButtonRecordingHandler(_replaceScriptIndex, _replaceScriptSlide, false);
             } else
             if (_playButtonStatus == RecorderStatus.Playing ||
                 _playButtonStatus == RecorderStatus.Pause)
