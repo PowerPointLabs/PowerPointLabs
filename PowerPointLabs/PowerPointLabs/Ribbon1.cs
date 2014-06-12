@@ -1059,14 +1059,16 @@ namespace PowerPointLabs
         {
             try
             {
-                //PowerPoint.ShapeRange selectedShapes = Globals.ThisAddIn.Application.ActiveWindow.Selection.ShapeRange;
-                //Form ColorPickerForm = new ColorPickerForm(selectedShapes);
-                //ColorPickerForm.Show();
-                ColorDialog MyDialog = new ColorDialog();
-                // Keeps the user from selecting a custom color.
-                MyDialog.AllowFullOpen = false;
-                // Allows the user to get help. (The default is false.)
-                MyDialog.ShowHelp = true;
+                ////PowerPoint.ShapeRange selectedShapes = Globals.ThisAddIn.Application.ActiveWindow.Selection.ShapeRange;
+                ////Form ColorPickerForm = new ColorPickerForm(selectedShapes);
+                ////ColorPickerForm.Show();
+                //ColorDialog MyDialog = new ColorDialog();
+                //// Keeps the user from selecting a custom color.
+                //MyDialog.AllowFullOpen = false;
+                //// Allows the user to get help. (The default is false.)
+                //MyDialog.ShowHelp = true;
+                ColorPickerForm colorPickerForm = new ColorPickerForm();
+                colorPickerForm.Show();
             }
             catch (Exception e)
             {
