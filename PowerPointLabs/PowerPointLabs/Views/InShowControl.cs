@@ -154,5 +154,17 @@ namespace PowerPointLabs.Views
                 _slideShowWindow.Activate();
             }
         }
+
+        private void InShowControlMouseDoubleClick(object sender, MouseEventArgs e)
+        {
+            var control = sender as Control;
+
+            if (InRectangle(control.PointToScreen(e.Location),
+                            undoButton.RectangleToScreen(undoButton.DisplayRectangle))
+                && undoButton.Enabled == false)
+            {
+                _slideShowWindow.Activate();
+            }
+        }
     }
 }

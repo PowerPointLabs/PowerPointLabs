@@ -71,6 +71,7 @@
             this.Text = "InShowControl";
             this.TopMost = true;
             this.MouseClick += new System.Windows.Forms.MouseEventHandler(this.InShowControlMouseClick);
+            this.MouseDoubleClick += new System.Windows.Forms.MouseEventHandler(this.InShowControlMouseDoubleClick);
             this.ResumeLayout(false);
 
         }
