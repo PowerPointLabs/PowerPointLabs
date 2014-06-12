@@ -99,7 +99,6 @@ namespace PowerPointLabs.Views
             IntPtr dc = GetDC(IntPtr.Zero);
             this.panel1.BackColor = ColorTranslator.FromWin32(GetPixel(dc, p.X, p.Y));
 
-            this.Activate();
         }
 
         private void panel1_Paint(object sender, PaintEventArgs e)

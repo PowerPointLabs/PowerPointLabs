@@ -51,6 +51,8 @@
             this.ClientSize = new System.Drawing.Size(284, 261);
             this.Controls.Add(this.label1);
             this.Controls.Add(this.panel1);
+            this.MaximizeBox = false;
+            this.MinimizeBox = false;
             this.Name = "ColorPickerForm";
             this.Text = "ColorPickerForm";
             this.Load += new System.EventHandler(this.ColorPickerForm_Load);
