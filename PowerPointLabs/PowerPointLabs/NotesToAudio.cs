@@ -24,8 +24,8 @@ namespace PowerPointLabs
             }
         }
 
-        private const string SpeechShapePrefix = "PowerPointLabs Speech";
-        private const string SpeechShapePrefixOld = "AudioGen Speech";
+        public const string SpeechShapePrefix = "PowerPointLabs Speech";
+        public const string SpeechShapePrefixOld = "AudioGen Speech";
 
         public static void PreviewAnimations()
         {
@@ -49,6 +49,29 @@ namespace PowerPointLabs
             }
 
             return null;
+        }
+
+        public static List<string[]> EmbedSelectedSlideNotes()
+        {
+            var progressBarForm = new ProcessingStatusForm();
+            progressBarForm.Show();
+            var audioList = new List<string[]>();
+
+            var slides = PowerPointPresentation.SelectedSlides.ToList();
+
+            int numberOfSlides = slides.Count;
+            for (int currentSlideIndex = 0; currentSlideIndex < numberOfSlides; currentSlideIndex++)
+            {
+                var percentage = (int)Math.Round(((double)currentSlideIndex + 1) / numberOfSlides * 100);
+                progressBarForm.UpdateProgress(percentage);
+                progressBarForm.UpdateSlideNumber(currentSlideIndex, numberOfSlides);
+
+                var slide = slides[currentSlideIndex];
+                audioList.Add(EmbedSlideNotes(slide));
+            }
+            progressBarForm.Close();
+
+            return audioList;
         }
 
         public static List<string[]> EmbedAllSlideNotes()
@@ -208,6 +231,15 @@ namespace PowerPointLabs
         {
             var slides = PowerPointPresentation.Slides;
             foreach (PowerPointSlide s in slides)
+            {
+                s.DeleteShapesWithPrefix(SpeechShapePrefix);
+                s.DeleteShapesWithPrefix(SpeechShapePrefixOld);
+            }
+        }
+
+        public static void RemoveAudioFromSelectedSlides()
+        {
+            foreach (PowerPointSlide s in PowerPointPresentation.SelectedSlides)
             {
                 s.DeleteShapesWithPrefix(SpeechShapePrefix);
                 s.DeleteShapesWithPrefix(SpeechShapePrefixOld);

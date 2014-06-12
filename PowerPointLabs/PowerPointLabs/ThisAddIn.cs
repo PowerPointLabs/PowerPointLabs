@@ -180,10 +180,23 @@ namespace PowerPointLabs
             return false;
         }
 
+        bool SlidesInRangeHaveAudio(PowerPoint.SlideRange SldRange)
+        {
+            foreach (PowerPoint.Slide slide in SldRange)
+            {
+                PowerPointSlide pptSlide = PowerPointSlide.FromSlideFactory(slide);
+                if (pptSlide.HasAudio())
+                {
+                    return true;
+                }
+            }
+            return false;
+        }
+
         void ThisAddIn_SlideSelectionChanged(PowerPoint.SlideRange SldRange)
         {
             ribbon.removeCaptionsEnabled = SlidesInRangeHaveCaptions(SldRange);
-
+            ribbon.removeAudioEnabled = SlidesInRangeHaveAudio(SldRange);
             // update recorder pane
             if (SldRange.Count > 0)
             {
@@ -241,6 +254,7 @@ namespace PowerPointLabs
             ribbon.RefreshRibbonControl("HighlightBulletsTextButton");
             ribbon.RefreshRibbonControl("HighlightBulletsBackgroundButton");
             ribbon.RefreshRibbonControl("removeCaptions");
+            ribbon.RefreshRibbonControl("removeAudio");
         }
 
         // TODO:

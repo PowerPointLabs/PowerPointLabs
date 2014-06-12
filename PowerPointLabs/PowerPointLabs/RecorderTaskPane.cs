@@ -572,6 +572,14 @@ namespace PowerPointLabs
             }
         }
 
+        public void ClearRecordDataListForSelectedSlides()
+        {
+            foreach (PowerPointSlide slide in PowerPointPresentation.SelectedSlides)
+            {
+                ClearRecordDataList(slide.ID);
+            }
+        }
+
         public void ClearRecordDataList(int id)
         {
             int relativeIndex = GetRelativeSlideIndex(id);

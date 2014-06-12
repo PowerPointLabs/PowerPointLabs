@@ -134,6 +134,7 @@
                   onAction="RemoveAudioClick"
                   supertip="Removes any generated audio that was added using Auto Narrate from the slide(s)."
                   keytip="NR"
+                  getEnabled="OnGetEnabledRemoveAudio"
                   getImage="GetRemoveAudioImage"
                   size="large" />
           <dialogBoxLauncher>
