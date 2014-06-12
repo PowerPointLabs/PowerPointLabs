@@ -33,7 +33,6 @@ namespace PowerPointLabs
         internal bool customTaskPaneInit = false;
         internal InShowControl inShowControlBox;
 
-        private const int _taskPaneWidth = 300;
         private const string TempFolderNamePrefix = @"\PowerPointLabs Temp\";
 
         private void ThisAddIn_Startup(object sender, System.EventArgs e)
@@ -41,6 +40,7 @@ namespace PowerPointLabs
             SetupLogger();
             Trace.TraceInformation(DateTime.Now.ToString("yyyyMMddHHmmss") + ": PowerPointLabs Started");
             ((PowerPoint.EApplication_Event)this.Application).NewPresentation += ThisAddIn_NewPresentation;
+            Application.AfterNewPresentation += ThisAddIn_AfterNewPresentation;
             Application.WindowSelectionChange += ThisAddIn_SelectionChanged;
             Application.SlideSelectionChanged += ThisAddIn_SlideSelectionChanged;
             Application.PresentationClose += ThisAddIn_PresentationClose;
@@ -262,6 +262,14 @@ namespace PowerPointLabs
             SetupRecorderTaskPane(Pres.Application.ActiveWindow);
         }
 
+        // solve new un-modified unsave problem
+        void ThisAddIn_AfterNewPresentation(PowerPoint.Presentation Pres)
+        {
+            //Access the BuiltInDocumentProperties so that the property storage does get created.
+            object o = Pres.BuiltInDocumentProperties;
+            Pres.Saved = Microsoft.Office.Core.MsoTriState.msoTrue;
+        }
+
         void ThisAddIn_PrensentationOpen(PowerPoint.Presentation Pres)
         {
             // extract embedded audio files to temp folder
@@ -287,12 +295,15 @@ namespace PowerPointLabs
                 return;
             }
 
-            // remove task pane
-            CustomTaskPanes.Remove(documentPaneMapper[Pres.Application.ActiveWindow]);
+            if (Pres.Saved == Office.MsoTriState.msoTrue)
+            {
+                // remove task pane
+                CustomTaskPanes.Remove(documentPaneMapper[Pres.Application.ActiveWindow]);
 
-            // remove entry from mappers
-            documentPaneMapper.Remove(Pres.Application.ActiveWindow);
-            documentHashcodeMapper.Remove(Pres.Application.ActiveWindow);
+                // remove entry from mappers
+                documentPaneMapper.Remove(Pres.Application.ActiveWindow);
+                documentHashcodeMapper.Remove(Pres.Application.ActiveWindow);
+            }
         }
 
         private void SlideShowBeginHandler(PowerPoint.SlideShowWindow wn)
