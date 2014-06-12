@@ -38,8 +38,12 @@ namespace PowerPointLabs.XMLMisc
             foreach (var element in doc.Descendants(_p + "spTree"))
             {
                 var audioShape = element.Elements(_p + "pic");
+                var pptSpeechFormat = new Regex("PowerPointLabs|AudioGen Speech \\d+");
 
                 var data = from item in audioShape
+                           where
+                               pptSpeechFormat.IsMatch(item.Element(_p + "nvPicPr").Element(_p + "cNvPr").
+                                                       Attribute("name").Value)
                            select new
                                       {
                                           name = item.Element(_p + "nvPicPr").Element(_p + "cNvPr").Attribute("name").Value,
