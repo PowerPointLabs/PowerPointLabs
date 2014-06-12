@@ -170,6 +170,15 @@
                     onAction="HighlightBulletsDialogBoxPressed"/>
           </dialogBoxLauncher>
         </group>
+        <group id="Color"
+               label="Color"
+               visible="true">
+          <button id="ColorPickerButton"
+                  label="Color Picker"
+                  size="large"
+                  supertip="Opens Custom Color Picker"
+                  onAction="ColorPickerButtonClick"/>
+        </group>
         <group id="PPTLabsHelp"
                label="Help"
                visible="true">

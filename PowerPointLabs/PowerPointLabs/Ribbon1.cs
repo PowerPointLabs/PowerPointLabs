@@ -1054,7 +1054,23 @@ namespace PowerPointLabs
 
         #endregion
 
-
+        #region feature: Color
+        public void ColorPickerButtonClick(Office.IRibbonControl control)
+        {
+            try
+            {
+                PowerPoint.ShapeRange selectedShapes = Globals.ThisAddIn.Application.ActiveWindow.Selection.ShapeRange;
+                Form ColorPickerForm = new ColorPickerForm(selectedShapes);
+                ColorPickerForm.Show();
+            }
+            catch (Exception e)
+            {
+                MessageBox.Show("No Shape Selected", "Invalid Selection");
+                PowerPointLabsGlobals.LogException(e, "ColorPickerButtonClicked");
+                throw;
+            }
+        }
+        #endregion
         private static string GetResourceText(string resourceName)
         {
             Assembly asm = Assembly.GetExecutingAssembly();
