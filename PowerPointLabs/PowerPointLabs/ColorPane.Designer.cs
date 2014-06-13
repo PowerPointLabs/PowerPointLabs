@@ -43,6 +43,10 @@
             this.panel1.Size = new System.Drawing.Size(116, 59);
             this.panel1.TabIndex = 0;
             // 
+            // timer1
+            // 
+            this.timer1.Tick += new System.EventHandler(this.timer1_Tick);
+            // 
             // colorDialog1
             // 
             this.colorDialog1.FullOpen = true;
@@ -55,6 +59,7 @@
             this.button1.TabIndex = 1;
             this.button1.Text = "Eyedropper";
             this.button1.UseVisualStyleBackColor = true;
+            this.button1.Click += new System.EventHandler(this.button1_Click);
             // 
             // button2
             // 
