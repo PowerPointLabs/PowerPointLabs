@@ -253,8 +253,9 @@ namespace PowerPointLabs
             {
                 return;
             }
-            currentSlide.DeleteShapesWithPrefix(SpeechShapePrefix);
-            currentSlide.DeleteShapesWithPrefix(SpeechShapePrefixOld);
+            
+            currentSlide.DeleteShapesWithPrefixTimelineInvariant(SpeechShapePrefix);
+            currentSlide.DeleteShapesWithPrefixTimelineInvariant(SpeechShapePrefixOld);
         }
 
         public static IEnumerable<String> GetVoices()
