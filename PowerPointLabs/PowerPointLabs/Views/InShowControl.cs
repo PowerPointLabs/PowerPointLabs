@@ -61,10 +61,11 @@ namespace PowerPointLabs.Views
 
         public void ForceStop()
         {
-            var recorderPane = Globals.ThisAddIn.ActivateCustomTaskPane.Control as RecorderTaskPane;
+            var recorderPane = Globals.ThisAddIn.GetActivePane(Type.GetType("PowerPointLabs.RecorderTaskPane"));
+            var recorder = recorderPane.Control as RecorderTaskPane;
 
             _status = ButtonStatus.Estop;
-            recorderPane.StopButtonRecordingHandler(_recordStartClick, _recordStartSlide, false);
+            recorder.StopButtonRecordingHandler(_recordStartClick, _recordStartSlide, false);
             _status = ButtonStatus.Idle;
         }
 
@@ -75,7 +76,8 @@ namespace PowerPointLabs.Views
 
         private void RecButtonClick(object sender, EventArgs e)
         {
-            var recorderPane = Globals.ThisAddIn.ActivateCustomTaskPane.Control as RecorderTaskPane;
+            var recorderPane = Globals.ThisAddIn.GetActivePane(Type.GetType("PowerPointLabs.RecorderTaskPane"));
+            var recorder = recorderPane.Control as RecorderTaskPane;
             var click = _slideShowWindow.View.GetClickIndex();
             var currentSlide = PowerPointSlide.FromSlideFactory(_slideShowWindow.View.Slide);
 
@@ -88,7 +90,7 @@ namespace PowerPointLabs.Views
 
                     recButton.Text = "Stop and Advance";
                     recButton.ForeColor = Color.Red;
-                    recorderPane.RecButtonIdleHandler();
+                    recorder.RecButtonIdleHandler();
                     _slideShowWindow.Activate();
                     break;
 
@@ -96,7 +98,7 @@ namespace PowerPointLabs.Views
                     recButton.Text = "Start Recording";
                     recButton.ForeColor = Color.Black;
 
-                    recorderPane.StopButtonRecordingHandler(_recordStartClick, _recordStartSlide, true);
+                    recorder.StopButtonRecordingHandler(_recordStartClick, _recordStartSlide, true);
                     _slideShowWindow.Activate();
 
                     var totalClick = _slideShowWindow.View.GetClickCount();
@@ -121,14 +123,15 @@ namespace PowerPointLabs.Views
 
         private void UndoButtonClick(object sender, EventArgs e)
         {
-            var recorderPane = Globals.ThisAddIn.ActivateCustomTaskPane.Control as RecorderTaskPane;
-            var temp = recorderPane.AudioBuffer[_recordStartSlide.Index - 1];
+            var recorderPane = Globals.ThisAddIn.GetActivePane(Type.GetType("PowerPointLabs.RecorderTaskPane"));
+            var recorder = recorderPane.Control as RecorderTaskPane;
+            var temp = recorder.AudioBuffer[_recordStartSlide.Index - 1];
 
             // disable undo since we allow only 1 step undo
             undoButton.Enabled = false;
 
             // revert back the last action
-            recorderPane.UndoLastRecord(_recordStartClick, _recordStartSlide);
+            recorder.UndoLastRecord(_recordStartClick, _recordStartSlide);
             temp.RemoveAt(temp.Count - 1);
 
             // goto previous slide and click
