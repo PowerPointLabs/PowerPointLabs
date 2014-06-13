@@ -83,6 +83,7 @@ namespace PowerPointLabs.Views
             {
                 case ButtonStatus.Idle:
                     _status = ButtonStatus.Rec;
+                    undoButton.Enabled = false;
                     _recordStartClick = click;
                     _recordStartSlide = currentSlide;
 
@@ -94,6 +95,7 @@ namespace PowerPointLabs.Views
 
                 case ButtonStatus.Rec:
                     recButton.Text = "Start Recording";
+                    undoButton.Enabled = true;
                     recButton.ForeColor = Color.Black;
 
                     recorderPane.StopButtonRecordingHandler(_recordStartClick, _recordStartSlide, true);
