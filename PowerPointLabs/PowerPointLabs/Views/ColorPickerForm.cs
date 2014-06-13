@@ -8,11 +8,72 @@ using System.Text;
 using System.Windows.Forms;
 using PowerPoint = Microsoft.Office.Interop.PowerPoint;
 using System.Runtime.InteropServices;
+using PowerPointLabs.Models;
 
 namespace PowerPointLabs.Views
 {
     public partial class ColorPickerForm : Form
     {
+        [StructLayout(LayoutKind.Sequential)]
+        public struct POINT
+        {
+            public int X;
+            public int Y;
+
+            public POINT(int x, int y)
+            {
+                this.X = x;
+                this.Y = y;
+            }
+        }
+
+        class Win32API
+        {
+            [DllImport("user32.dll")]
+            [return: MarshalAs(UnmanagedType.Bool)]
+            public static extern bool ScreenToClient(IntPtr hWnd, ref POINT lpPoint);
+
+            [DllImport("user32.dll")]
+            [return: MarshalAs(UnmanagedType.Bool)]
+            public static extern bool GetCursorPos(out POINT lpPoint);
+        }
+
+        private POINT GetCursorPosition()
+        {
+            POINT point = new POINT();
+
+            Win32API.GetCursorPos(out point);
+
+            Win32API.ScreenToClient(new IntPtr(Globals.ThisAddIn.Application.ActiveWindow.HWND), ref point);
+
+            return point;
+        }
+        private POINT ConvertScreenPointToSlideCoordinates(POINT point)
+        {
+            // Get the screen coordinates of the upper-left hand corner of the slide.
+            POINT refPointUpperLeft = new POINT(
+                Globals.ThisAddIn.Application.ActiveWindow.PointsToScreenPixelsX(0),
+                Globals.ThisAddIn.Application.ActiveWindow.PointsToScreenPixelsY(0));
+
+            // Get the size of the slide (in points of the slide's coordinate system).
+            var slide = Globals.ThisAddIn.Application.ActiveWindow.View.Slide;
+            var slideWidth = slide.CustomLayout.Width;
+            var slideHeight = slide.CustomLayout.Height;
+
+            // Get the screen coordinates of the bottom-right hand corner of the slide.
+            POINT refPointBottomRight = new POINT(
+                Globals.ThisAddIn.Application.ActiveWindow.PointsToScreenPixelsX(slideWidth),
+                Globals.ThisAddIn.Application.ActiveWindow.PointsToScreenPixelsY(slideHeight));
+
+            // Both reference points have to be converted to the PowerPoint window's coordinate system.
+            Win32API.ScreenToClient(new IntPtr(Globals.ThisAddIn.Application.ActiveWindow.HWND), ref refPointUpperLeft);
+            Win32API.ScreenToClient(new IntPtr(Globals.ThisAddIn.Application.ActiveWindow.HWND), ref refPointBottomRight);
+
+            // Convert the point to the slide's coordinate system (convert the pixel coordinate inside the slide into a 0..1 interval, then scale it up by the slide's point size).
+            return new POINT(
+                (int)Math.Round((double)(point.X - refPointUpperLeft.X) / (refPointBottomRight.X - refPointUpperLeft.X) * slideWidth),
+                (int)Math.Round((double)(point.Y - refPointUpperLeft.Y) / (refPointBottomRight.Y - refPointUpperLeft.Y) * slideHeight));
+        }
         // Refactor this to Native
 
         [DllImport("Gdi32.dll", CallingConvention = CallingConvention.StdCall)]
@@ -36,13 +97,14 @@ namespace PowerPointLabs.Views
             this.timer1.Start();
             //start
             _native = new LMouseListener();
-            _native.RButtonClicked +=
-                 new EventHandler<SysMouseEventInfo>(_native_RButtonClicked);
+            _native.LButtonClicked +=
+                 new EventHandler<SysMouseEventInfo>(_native_LButtonClicked);
+
         }
 
         LMouseListener _native;
 
-        void _native_RButtonClicked(object sender, SysMouseEventInfo e)
+        void _native_LButtonClicked(object sender, SysMouseEventInfo e)
         {
             this.Activate();
             timer1.Stop();
@@ -98,12 +160,10 @@ namespace PowerPointLabs.Views
             Point p = Control.MousePosition;
             IntPtr dc = GetDC(IntPtr.Zero);
             this.panel1.BackColor = ColorTranslator.FromWin32(GetPixel(dc, p.X, p.Y));
-
         }
 
         private void panel1_Paint(object sender, PaintEventArgs e)
         {
-
         }
 
         private void button1_Click(object sender, EventArgs e)
@@ -112,6 +172,24 @@ namespace PowerPointLabs.Views
             colorDialog1.FullOpen = true;
             colorDialog1.ShowDialog();
             
+        }
+
+        private void panel1_Click(object sender, EventArgs e)
+        {
+            System.Diagnostics.Debug.WriteLine("Hello");
+            _native = new LMouseListener();
+            _native.LButtonClicked +=
+                 new EventHandler<SysMouseEventInfo>(_native_LButtonClicked2);
+        }
+        void _native_LButtonClicked2(object sender, SysMouseEventInfo e)
+        {
+            var point = GetCursorPosition();
+            var convertedPoint = this.ConvertScreenPointToSlideCoordinates(point);
+
+            // Insert something at the cursor's location:
+            var slide = Globals.ThisAddIn.Application.ActiveWindow.View.Slide;
+            slide.Shapes.AddShape(Microsoft.Office.Core.MsoAutoShapeType.msoShapeCloud, convertedPoint.X, convertedPoint.Y, 100, 100);
+            _native.Close();
         }
     }
 
@@ -142,7 +220,7 @@ namespace PowerPointLabs.Views
         HookProc CallBack = null;
         IntPtr _hook = IntPtr.Zero;
 
-        public event EventHandler<SysMouseEventInfo> RButtonClicked;
+        public event EventHandler<SysMouseEventInfo> LButtonClicked;
 
         int MouseEvents(int code, IntPtr wParam, IntPtr lParam)
         {
@@ -160,9 +238,9 @@ namespace PowerPointLabs.Views
                     ms = (MSLLHOOKSTRUCT)Marshal.PtrToStructure(lParam, typeof(MSLLHOOKSTRUCT));
                     IntPtr win = WindowFromPoint(ms.pt);
                     string title = GetWindowTextRaw(win);
-                    if (RButtonClicked != null)
+                    if (LButtonClicked != null)
                     {
-                        RButtonClicked(this, new SysMouseEventInfo { WindowTitle = title });
+                        LButtonClicked(this, new SysMouseEventInfo { WindowTitle = title });
                     }
                 }
             }
