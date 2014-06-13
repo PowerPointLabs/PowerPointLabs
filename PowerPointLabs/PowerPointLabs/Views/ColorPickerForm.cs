@@ -105,6 +105,14 @@ namespace PowerPointLabs.Views
         {
 
         }
+
+        private void button1_Click(object sender, EventArgs e)
+        {
+            colorDialog1.Color = panel1.BackColor;
+            colorDialog1.FullOpen = true;
+            colorDialog1.ShowDialog();
+            
+        }
     }
 
     public class SysMouseEventInfo : EventArgs
