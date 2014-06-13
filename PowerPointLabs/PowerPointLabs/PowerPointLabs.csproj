@@ -220,6 +220,7 @@
     <Compile Include="AudioMisc\AudioHelper.cs" />
     <Compile Include="AutoAnimate.cs" />
     <Compile Include="AutoZoom.cs" />
+    <Compile Include="ColorHelper.cs" />
     <Compile Include="ColorPane.cs">
       <SubType>UserControl</SubType>
     </Compile>
