@@ -120,6 +120,42 @@ namespace PowerPointLabs.Models
             return FromSlideFactory(duplicatedSlide);
         }
 
+        public void DeleteShapesWithPrefixTimelineInvariant(string prefix)
+        {
+            var mainSequence = _slide.TimeLine.MainSequence;
+            var effectCnt = 1;
+
+            while (effectCnt <= mainSequence.Count)
+            {
+                var effect = mainSequence[effectCnt];
+
+                if (effect.Shape.Name.StartsWith(prefix))
+                {
+                    // if the shape is triggered on click, delete this may cause problem if the next
+                    // effect is triggered with previous and we want the time sequence to be time
+                    // invariant. To handle it, we need to set the on_prev event to be on_click.
+                    if (effect.Timing.TriggerType == MsoAnimTriggerType.msoAnimTriggerOnPageClick &&
+                        effect.Index + 1 <= mainSequence.Count)
+                    {
+                        var nextEffect = mainSequence[effect.Index + 1];
+
+                        if (nextEffect.Timing.TriggerType == MsoAnimTriggerType.msoAnimTriggerWithPrevious)
+                        {
+                            nextEffect.Timing.TriggerType = MsoAnimTriggerType.msoAnimTriggerOnPageClick;
+                        }
+                    }
+
+                    effect.Delete();
+                }
+                else
+                {
+                    effectCnt++;
+                }
+            }
+
+            DeleteShapesWithPrefix(prefix);
+        }
+
         public void DeleteShapesWithPrefix(string prefix)
         {
             List<Shape> shapes = _slide.Shapes.Cast<Shape>().ToList();

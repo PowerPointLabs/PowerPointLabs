@@ -50,46 +50,24 @@ namespace PowerPointLabs.AudioMisc
         // made as (OnPageClick).
         public void EmbedOnSlide(PowerPointSlide slide, int clickNumber)
         {
-            // to distinguish the new shape with the old shape
-            var shapeName = Name;
             var isOnClick = clickNumber > 0;
+            var shapeName = Name;
 
             if (slide != null)
             {
-                var sequence = slide.TimeLine.MainSequence;
-                var nextClickEffect = sequence.FindFirstAnimationForClick(clickNumber + 1);
-                var onClickEffect = sequence.FindFirstAnimationForClick(clickNumber);
-
-                // embed new shape
+                // embed new shape using two-turn method. In the first turn, embed the shape, name it to
+                // something special to distinguish from the old shape; in the second turn, delete the
+                // old shape using timeline invariant deletion, and rename the new shape to the correct
+                // name.
                 try
                 {
                     var audioShape = AudioHelper.InsertAudioFileOnSlide(slide, SaveName);
-                    
-                    // give a temp name first so that we are able to delete the old shape
-                    // with prefix
                     audioShape.Name = "#";
+                    slide.RemoveAnimationsForShape(audioShape);
 
                     if (isOnClick)
                     {
-                        if (onClickEffect == null || onClickEffect.Shape.Name == shapeName)
-                        {
-                            var newAnimation = sequence.AddEffect(audioShape, MsoAnimEffect.msoAnimEffectMediaPlay);
-                            
-                            if (onClickEffect != null)
-                            {
-                                newAnimation.MoveBefore(onClickEffect);
-                            }
-                        }
-                        else
-                        {
-                            var newAnimation = sequence.AddEffect(audioShape, MsoAnimEffect.msoAnimEffectMediaPlay,
-                                                                  MsoAnimateByLevel.msoAnimateLevelNone,
-                                                                  MsoAnimTriggerType.msoAnimTriggerWithPrevious);
-                            if (nextClickEffect != null)
-                            {
-                                newAnimation.MoveBefore(nextClickEffect);
-                            }
-                        }
+                        slide.SetShapeAsClickTriggered(audioShape, clickNumber, MsoAnimEffect.msoAnimEffectMediaPlay);
                     }
                     else
                     {
@@ -97,9 +75,8 @@ namespace PowerPointLabs.AudioMisc
                     }
 
                     // delete old shape
-                    slide.DeleteShapesWithPrefix(shapeName);
+                    slide.DeleteShapesWithPrefixTimelineInvariant(Name);
 
-                    // rename the new shape
                     audioShape.Name = shapeName;
                 }
                 catch (COMException)
