@@ -265,12 +265,6 @@
       <DependentUpon>AutoZoomDialogBox.cs</DependentUpon>
     </Compile>
     <Compile Include="DefaultMotionAnimation.cs" />
-    <Compile Include="Views\ColorPickerForm.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="Views\ColorPickerForm.Designer.cs">
-      <DependentUpon>ColorPickerForm.cs</DependentUpon>
-    </Compile>
     <Compile Include="Views\Form1.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -354,9 +348,6 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Views\AutoZoomDialogBox.resx">
       <DependentUpon>AutoZoomDialogBox.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Views\ColorPickerForm.resx">
-      <DependentUpon>ColorPickerForm.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Views\Form1.resx">
       <DependentUpon>Form1.cs</DependentUpon>
