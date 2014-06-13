@@ -919,15 +919,15 @@ namespace PowerPointLabs
                 {
                     removeAudioEnabled = true;
                     RefreshRibbonControl("removeAudio");
-                    System.Diagnostics.Debug.WriteLine("Hello");
                     break;
                 }
             }
 
             var allAudioFiles = NotesToAudio.EmbedSelectedSlideNotes();
 
-            // initialize all slides' audio
-            recorderPane.InitializeAudioAndScript(allAudioFiles, true);
+            // initialize selected slides' audio
+            recorderPane.InitializeAudioAndScript(PowerPointPresentation.SelectedSlides.ToList(),
+                                                  allAudioFiles, true);
             
             // if current list is visible, update the pane immediately
             if (Globals.ThisAddIn.ActivateCustomTaskPane.Visible)

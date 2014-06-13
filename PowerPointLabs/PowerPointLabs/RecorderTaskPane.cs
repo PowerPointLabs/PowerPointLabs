@@ -893,12 +893,11 @@ namespace PowerPointLabs
             }
         }
 
-        public void InitializeAudioAndScript(List<string[]> names, bool forceRefresh)
+        public void InitializeAudioAndScript(List<PowerPointSlide> slides, List<string[]> names, bool forceRefresh)
         {
             // TODO:
             // if a slide has been initialized, check if some of the records have been updated
             // currently use forceRefresh to force an entire refresh
-            var slides = PowerPointPresentation.Slides.ToList();
 
             for (int i = 0; i < slides.Count; i ++)
             {
