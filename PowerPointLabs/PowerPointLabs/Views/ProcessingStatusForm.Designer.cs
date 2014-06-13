@@ -65,7 +65,7 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(284, 68);
+            this.ClientSize = new System.Drawing.Size(284, 168);
             this.ControlBox = false;
             this.Controls.Add(this.slideNumber);
             this.Controls.Add(this.label1);

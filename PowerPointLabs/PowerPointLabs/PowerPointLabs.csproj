@@ -38,10 +38,10 @@
     <OldToolsVersion>4.0</OldToolsVersion>
     <VSTO_TrustAssembliesLocation>true</VSTO_TrustAssembliesLocation>
     <BootstrapperEnabled>true</BootstrapperEnabled>
-    <PublishUrl>C:\Users\Raunak\Documents\PowerPoint Labs\</PublishUrl>
+    <PublishUrl>\\psf\Home\Desktop\PowerPointLabs Deploy\</PublishUrl>
     <InstallUrl>http://www.comp.nus.edu.sg/~pptlabs/download/dev/</InstallUrl>
     <TargetCulture>en</TargetCulture>
-    <ApplicationVersion>1.7.6.0</ApplicationVersion>
+    <ApplicationVersion>1.7.9.0</ApplicationVersion>
     <AutoIncrementApplicationRevision>false</AutoIncrementApplicationRevision>
     <UpdateEnabled>true</UpdateEnabled>
     <UpdateInterval>0</UpdateInterval>
@@ -72,11 +72,6 @@
     <BootstrapperPackage Include="Microsoft.Office.PIARedist.2007">
       <Visible>False</Visible>
       <ProductName>Microsoft Office 2007 Primary Interop Assemblies</ProductName>
-      <Install>true</Install>
-    </BootstrapperPackage>
-    <BootstrapperPackage Include="Microsoft.VSTORuntime.4.0">
-      <Visible>False</Visible>
-      <ProductName>Microsoft Visual Studio 2010 Tools for Office Runtime %28x86 and x64%29</ProductName>
       <Install>true</Install>
     </BootstrapperPackage>
     <BootstrapperPackage Include="Microsoft.Windows.Installer.3.1">
@@ -179,6 +174,9 @@
       <EmbedInteropTypes>True</EmbedInteropTypes>
     </Reference>
     <Reference Include="Microsoft.VisualStudio.Tools.Applications.Runtime, Version=10.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL" />
+    <Reference Include="NAudio">
+      <HintPath>..\packages\NAudio.1.7.1\lib\net35\NAudio.dll</HintPath>
+    </Reference>
     <Reference Include="Office, Version=15.0.0.0, Culture=neutral, PublicKeyToken=71e9bce111e9429c, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <EmbedInteropTypes>True</EmbedInteropTypes>
@@ -218,6 +216,8 @@
     can be found.
   -->
   <ItemGroup>
+    <Compile Include="AudioMisc\Audio.cs" />
+    <Compile Include="AudioMisc\AudioHelper.cs" />
     <Compile Include="AutoAnimate.cs" />
     <Compile Include="AutoZoom.cs" />
     <Compile Include="ColorPane.cs">
@@ -238,6 +238,12 @@
     <Compile Include="Models\PowerPointStepBackSlide.cs" />
     <Compile Include="Models\PowerPointZoomToAreaSingleSlide.cs" />
     <Compile Include="PowerPointLabsGlobals.cs" />
+    <Compile Include="RecorderTaskPane.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="RecorderTaskPane.Designer.cs">
+      <DependentUpon>RecorderTaskPane.cs</DependentUpon>
+    </Compile>
     <Compile Include="Views\AboutForm.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -299,17 +305,17 @@
     <Compile Include="SpeechEngine\SynthesisState.cs" />
     <Compile Include="SpeechEngine\TextToSpeech.cs" />
     <Compile Include="Spotlight.cs" />
+    <Compile Include="Views\InShowControl.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Views\InShowControl.Designer.cs">
+      <DependentUpon>InShowControl.cs</DependentUpon>
+    </Compile>
     <Compile Include="Views\SpotlightDialogBox.cs">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="Views\SpotlightDialogBox.Designer.cs">
       <DependentUpon>SpotlightDialogBox.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Views\AutoCaptionDialogBox.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="Views\AutoCaptionDialogBox.Designer.cs">
-      <DependentUpon>AutoCaptionDialogBox.cs</DependentUpon>
     </Compile>
     <Compile Include="Views\AutoNarrateDialogBox.cs">
       <SubType>Form</SubType>
@@ -325,9 +331,19 @@
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="Views\SpeechPlayingForm.Designer.cs" />
+    <Compile Include="XMLMisc\XMLParser.cs" />
+    <Compile Include="ZipStorer.cs" />
     <Compile Include="ZoomToArea.cs" />
     <EmbeddedResource Include="ColorPane.resx">
       <DependentUpon>ColorPane.cs</DependentUpon>
+    </EmbeddedResource>
+    <None Include="packages.config" />
+    <None Include="Resources\Record.png" />
+    <None Include="Resources\Stop.png" />
+    <None Include="Resources\Play.png" />
+    <None Include="Resources\Pause.png" />
+    <EmbeddedResource Include="RecorderTaskPane.resx">
+      <DependentUpon>RecorderTaskPane.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Views\AboutForm.resx">
       <DependentUpon>AboutForm.cs</DependentUpon>
@@ -357,11 +373,11 @@
       <DependentUpon>Resources.resx</DependentUpon>
       <DesignTime>True</DesignTime>
     </Compile>
+    <EmbeddedResource Include="Views\InShowControl.resx">
+      <DependentUpon>InShowControl.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Views\SpotlightDialogBox.resx">
       <DependentUpon>SpotlightDialogBox.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Views\AutoCaptionDialogBox.resx">
-      <DependentUpon>AutoCaptionDialogBox.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Views\AutoNarrateDialogBox.resx">
       <DependentUpon>AutoNarrateDialogBox.cs</DependentUpon>
@@ -534,6 +550,9 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\HighlightBackgroundContext.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Utils\" />
   </ItemGroup>
   <!-- Include the build rules for a C# project. -->
   <PropertyGroup>

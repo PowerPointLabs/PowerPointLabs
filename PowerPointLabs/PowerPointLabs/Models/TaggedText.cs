@@ -35,12 +35,13 @@ namespace PowerPointLabs.Models
             foreach (Match match in matches)
             {
                 String textBefore = _contents.Substring(startIndex, match.Index - startIndex);
-                splitStrings.Add(textBefore);
+                splitStrings.Add(textBefore.Trim());
                 startIndex = match.Index + match.Length;
             }
 
             String remaining = _contents.Substring(startIndex).Trim();
             splitStrings.Add(remaining);
+            
             return splitStrings;
         }
 

@@ -53,11 +53,14 @@ namespace PowerPointLabs
         public bool addAutoMotionEnabled = true;
         public bool reloadAutoMotionEnabled = true;
         public bool reloadSpotlight = true;
+        public bool removeCaptionsEnabled = true;
+        public bool removeAudioEnabled = true;
+        
+        public bool _recorderPaneVisible = false;
+        private bool _firstLoadRecorder = true;
 
-        private bool _allSlides;
         private bool _previewCurrentSlide;
-        private bool _captionsAllSlides;
-
+        
         private List<string> _voiceNames;
 
         private int _voiceSelected = 0;
@@ -214,14 +217,14 @@ namespace PowerPointLabs
         }
         public void AboutButtonClick(Office.IRibbonControl control)
         {
-            System.Windows.Forms.MessageBox.Show("          PowerPointLabs Plugin Version 1.7.6 [Release date: 9 Jun 2014]\n     Developed at School of Computing, National University of Singapore.\n        For more information, visit our website http://PowerPointLabs.info", "About PowerPointLabs");
+            MessageBox.Show("          PowerPointLabs Plugin Version 1.7.9 [Release date: 12 Jun 2014]\n     Developed at School of Computing, National University of Singapore.\n        For more information, visit our website http://PowerPointLabs.info", "About PowerPointLabs");
         }
         public void HelpButtonClick(Office.IRibbonControl control)
         {
             try
             {
                 string myURL = "http://powerpointlabs.info/docs.html";
-                System.Diagnostics.Process.Start(myURL);
+                Process.Start(myURL);
             }
             catch (Exception e)
             {
@@ -691,7 +694,14 @@ namespace PowerPointLabs
         {
             return highlightBulletsEnabled;
         }
-
+        public bool OnGetEnabledRemoveCaptions(Office.IRibbonControl control)
+        {
+            return removeCaptionsEnabled;
+        }
+        public bool OnGetEnabledRemoveAudio(Office.IRibbonControl control)
+        {
+            return removeAudioEnabled;
+        }
         //Edit Name Callbacks
         public void NameEditBtnClick(Office.IRibbonControl control)
         {
@@ -845,6 +855,25 @@ namespace PowerPointLabs
             }
         }
 
+        # region AudioRecord Button Callbacks
+        public void RecManagementClick(Office.IRibbonControl control)
+        {
+            var recorder = Globals.ThisAddIn.ActivateCustomTaskPane.Control as RecorderTaskPane;
+            // TODO:
+            // Handle exception when user clicks the button without selecting any slides
+
+            // if currently the pane is hidden, show the pane
+            if (!Globals.ThisAddIn.ActivateCustomTaskPane.Visible)
+            {
+                // fire the pane visble change event
+                Globals.ThisAddIn.ActivateCustomTaskPane.Visible = true;
+                
+                // reload the pane
+                recorder.RecorderPaneReload();
+            }
+        }
+        # endregion
+
         #region NotesToAudio Button Callbacks
         public void SpeakSelectedTextClick(Office.IRibbonControl control)
         {
@@ -853,25 +882,57 @@ namespace PowerPointLabs
 
         public void RemoveAudioClick(Office.IRibbonControl control)
         {
-            if (_allSlides)
+            var recorderPane = Globals.ThisAddIn.ActivateCustomTaskPane.Control as RecorderTaskPane;
+            
+            try
             {
-                NotesToAudio.RemoveAudioFromAllSlides();
+                NotesToAudio.RemoveAudioFromSelectedSlides();
             }
-            else
+            catch (Exception e)
             {
-                NotesToAudio.RemoveAudioFromCurrentSlide();
+                MessageBox.Show(e.Message);
+                throw;
             }
+            recorderPane.ClearRecordDataListForSelectedSlides();
+
+            // if current list is visible, update the pane immediately
+            if (Globals.ThisAddIn.ActivateCustomTaskPane.Visible)
+            {
+                foreach (PowerPointSlide slide in PowerPointPresentation.SelectedSlides)
+                {
+                    recorderPane.UpdateLists(slide.ID);
+                }
+            }
+
+            removeAudioEnabled = false;
+            RefreshRibbonControl("removeAudio");
         }
 
         public void AddAudioClick(Office.IRibbonControl control)
         {
-            if (_allSlides)
+            var currentSlide = PowerPointPresentation.CurrentSlide;
+            var recorderPane = Globals.ThisAddIn.ActivateCustomTaskPane.Control as RecorderTaskPane;
+
+            foreach (PowerPointSlide slide in PowerPointPresentation.SelectedSlides)
             {
-                NotesToAudio.EmbedAllSlideNotes();
+                if (slide.NotesPageText.Trim() != "")
+                {
+                    removeAudioEnabled = true;
+                    RefreshRibbonControl("removeAudio");
+                    System.Diagnostics.Debug.WriteLine("Hello");
+                    break;
+                }
             }
-            else
+
+            var allAudioFiles = NotesToAudio.EmbedSelectedSlideNotes();
+
+            // initialize all slides' audio
+            recorderPane.InitializeAudioAndScript(allAudioFiles, true);
+            
+            // if current list is visible, update the pane immediately
+            if (Globals.ThisAddIn.ActivateCustomTaskPane.Visible)
             {
-                NotesToAudio.EmbedCurrentSlideNotes();
+                recorderPane.UpdateLists(currentSlide.ID);
             }
 
             PreviewAnimationsIfChecked();
@@ -888,26 +949,23 @@ namespace PowerPointLabs
 
         public void AddCaptionClick(Office.IRibbonControl control)
         {
-            if (_captionsAllSlides)
+            foreach (PowerPointSlide slide in PowerPointPresentation.SelectedSlides)
             {
-                NotesToCaptions.EmbedCaptionsOnAllSlides();
+                if (slide.NotesPageText.Trim() != "")
+                {
+                    removeCaptionsEnabled = true;
+                    break;
+                }
             }
-            else
-            {
-                NotesToCaptions.EmbedCaptionsOnSelectedSlides();
-            }
+            NotesToCaptions.EmbedCaptionsOnSelectedSlides();
+            RefreshRibbonControl("removeCaptions");
         }
 
         public void RemoveCaptionClick(Office.IRibbonControl control)
         {
-            if (_captionsAllSlides)
-            {
-                NotesToCaptions.RemoveCaptionsFromAllSlides();
-            }
-            else
-            {
-                NotesToCaptions.RemoveCaptionsFromSelectedSlides();
-            }
+            removeCaptionsEnabled = false;
+            RefreshRibbonControl("removeCaptions");
+            NotesToCaptions.RemoveCaptionsFromSelectedSlides();
         }
 
         public void ContextReplaceAudioClick(Office.IRibbonControl control)
@@ -922,7 +980,7 @@ namespace PowerPointLabs
         {
             try
             {
-                var dialog = new AutoNarrateDialogBox(_voiceSelected, _voiceNames, _allSlides,
+                var dialog = new AutoNarrateDialogBox(_voiceSelected, _voiceNames,
                     _previewCurrentSlide);
                 dialog.SettingsHandler += AutoNarrateSettingsChanged;
                 dialog.ShowDialog();
@@ -934,35 +992,14 @@ namespace PowerPointLabs
             }
         }
 
-        public void AutoNarrateSettingsChanged(String voiceName, bool allSlides, bool previewCurrentSlide)
+        public void AutoNarrateSettingsChanged(String voiceName, bool previewCurrentSlide)
         {
-            _allSlides = allSlides;
             _previewCurrentSlide = previewCurrentSlide;
             if (!String.IsNullOrWhiteSpace(voiceName))
             {
                 NotesToAudio.SetDefaultVoice(voiceName);
                 _voiceSelected = _voiceNames.IndexOf(voiceName);
             }
-        }
-
-        public void AutoCaptionDialogButtonPressed(Office.IRibbonControl control)
-        {
-            try
-            {
-                var dialog = new AutoCaptionDialogBox(_captionsAllSlides);
-                dialog.SettingsHandler += AutoCaptionSettingsChanged;
-                dialog.ShowDialog();
-            }
-            catch (Exception e)
-            {
-                PowerPointLabsGlobals.LogException(e, "AutoCaptionDialogButtonPressed");
-                throw;
-            }
-        }
-
-        public void AutoCaptionSettingsChanged(bool allSlides)
-        {
-            _captionsAllSlides = allSlides;
         }
 
         private void PreviewAnimationsIfChecked()

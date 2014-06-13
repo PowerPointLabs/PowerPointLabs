@@ -11,7 +11,7 @@ namespace PowerPointLabs.Views
 {
     public partial class AutoNarrateDialogBox : Form
     {
-        public delegate void UpdateSettingsDelegate(String voiceName, bool allSlides, bool preview);
+        public delegate void UpdateSettingsDelegate(String voiceName, bool preview);
         public UpdateSettingsDelegate SettingsHandler;
 
         public AutoNarrateDialogBox()
@@ -20,12 +20,11 @@ namespace PowerPointLabs.Views
             this.ShowInTaskbar = false;
         }
 
-        public AutoNarrateDialogBox(int selectedVoice, List<String> voices, bool allSlides, bool preview) : this()
+        public AutoNarrateDialogBox(int selectedVoice, List<String> voices, bool preview) : this()
         {
             defaultVoice.DataSource = voices;
             defaultVoice.SelectedIndex = selectedVoice;
 
-            this.allSlides.Checked = allSlides;
             this.preview.Checked = preview;
         }
 
@@ -34,10 +33,6 @@ namespace PowerPointLabs.Views
             ToolTip voiceToolTip = new ToolTip();
             voiceToolTip.SetToolTip(defaultVoice, 
                 "The voice to be used when generating synthesized audio. Use [Voice] tags to specify a different voice for a particular section of text.");
-
-            ToolTip allSlidesToolTip = new ToolTip();
-            allSlidesToolTip.SetToolTip(allSlides, 
-                "If checked, audio will be added to or removed from all slides, instead of just the current one.");
 
             ToolTip previewToolTip = new ToolTip();
             previewToolTip.SetToolTip(preview,
@@ -51,7 +46,7 @@ namespace PowerPointLabs.Views
 
         private void ok_Click(object sender, EventArgs e)
         {
-            SettingsHandler(defaultVoice.Text, allSlides.Checked, preview.Checked);
+            SettingsHandler(defaultVoice.Text, preview.Checked);
 
             Close();
         }
