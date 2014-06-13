@@ -120,6 +120,14 @@ namespace PowerPointLabs.Models
             return FromSlideFactory(duplicatedSlide);
         }
 
+        public bool HasAnimationForClick(int click)
+        {
+            var mainSequence = _slide.TimeLine.MainSequence;
+            var effect = mainSequence.FindFirstAnimationForClick(click);
+
+            return effect != null;
+        }
+
         public void DeleteShapesWithPrefixTimelineInvariant(string prefix)
         {
             var mainSequence = _slide.TimeLine.MainSequence;
