@@ -53,12 +53,12 @@ namespace PowerPointLabs
             }
         }
 
-        public Color GetComplementaryColor(Color originalColor)
+        public static Color GetComplementaryColor(Color originalColor)
         {
             return GetColorShiftedByAngle(originalColor, 180.0f);
         }
 
-        public List<Color> GetAnalogousColorsForColor(Color originalColor)
+        public static List<Color> GetAnalogousColorsForColor(Color originalColor)
         {
             List<Color> analogousColors = new List<Color>();
 
@@ -68,7 +68,7 @@ namespace PowerPointLabs
             return analogousColors;
         }
 
-        public List<Color> GetTriadicColorsForColor(Color originalColor)
+        public static List<Color> GetTriadicColorsForColor(Color originalColor)
         {
             List<Color> triadicColors = new List<Color>();
 
@@ -78,7 +78,7 @@ namespace PowerPointLabs
             return triadicColors;
         }
 
-        public List<Color> GetTetradicColorsForColor(Color originalColor)
+        public static List<Color> GetTetradicColorsForColor(Color originalColor)
         {
             List<Color> tetradicColors = new List<Color>();
 
@@ -89,7 +89,7 @@ namespace PowerPointLabs
             return tetradicColors;
         }
 
-        public List<Color> GetSplitComplementaryColorsForColor(Color originalColor)
+        public static List<Color> GetSplitComplementaryColorsForColor(Color originalColor)
         {
             List<Color> splitComplementaryColors = new List<Color>();
 

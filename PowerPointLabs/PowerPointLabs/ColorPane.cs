@@ -59,6 +59,33 @@ namespace PowerPointLabs
             timer1.Stop();
             _native.Close();
         }
+
+        private void GenerateButton_Click(object sender, EventArgs e)
+        {
+            Color selectedColor = panel1.BackColor;
+            Color complementaryColor = ColorHelper.GetComplementaryColor(selectedColor);
+
+            List<Color> analogousColors = ColorHelper.GetAnalogousColorsForColor(selectedColor);
+            AnalogousLighter.BackColor = analogousColors[0];
+            AnalogousDarker.BackColor = analogousColors[1];
+            AnalogousSelected.BackColor = selectedColor;
+
+            List<Color> complementaryColors = ColorHelper.GetSplitComplementaryColorsForColor(selectedColor);
+            ComplementaryLighter.BackColor = complementaryColors[0];
+            ComplementaryDarker.BackColor = complementaryColors[1];
+            ComplementarySelected.BackColor = complementaryColor;
+
+            List<Color> triadicColors = ColorHelper.GetTriadicColorsForColor(selectedColor);
+            TriadicLower.BackColor = triadicColors[0];
+            TriadicHigher.BackColor = triadicColors[1];
+            TriadicSelected.BackColor = selectedColor;
+
+            List<Color> tetradicColors = ColorHelper.GetTetradicColorsForColor(selectedColor);
+            Tetradic1.BackColor = tetradicColors[0];
+            Tetradic2.BackColor = tetradicColors[1];
+            Tetradic3.BackColor = tetradicColors[2];
+            TetradicSelected.BackColor = selectedColor;
+        }
     }
 
     public class SysMouseEventInfo : EventArgs
