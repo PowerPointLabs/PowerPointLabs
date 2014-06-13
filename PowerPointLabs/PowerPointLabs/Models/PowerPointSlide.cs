@@ -509,7 +509,20 @@ namespace PowerPointLabs.Models
         {
             foreach (PowerPoint.Shape shape in this.Shapes)
             {
-                if (shape.Name.Length > 22 && shape.Name.Substring(0, 22).Equals("PowerPointLabs Caption"))
+                if (shape.Name.StartsWith("PowerPointLabs Caption"))
+                {
+                    return true;
+                }
+            }
+            return false;
+        }
+
+        public bool HasAudio()
+        {
+            foreach (PowerPoint.Shape shape in this.Shapes)
+            {
+                if (shape.Name.Contains(NotesToAudio.SpeechShapePrefix) || 
+                    shape.Name.Contains(NotesToAudio.SpeechShapePrefixOld))
                 {
                     return true;
                 }

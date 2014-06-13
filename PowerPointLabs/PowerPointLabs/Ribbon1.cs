@@ -54,11 +54,11 @@ namespace PowerPointLabs
         public bool reloadAutoMotionEnabled = true;
         public bool reloadSpotlight = true;
         public bool removeCaptionsEnabled = true;
+        public bool removeAudioEnabled = true;
         
         public bool _recorderPaneVisible = false;
         private bool _firstLoadRecorder = true;
 
-        private bool _allSlides;
         private bool _previewCurrentSlide;
         
         private List<string> _voiceNames;
@@ -698,6 +698,10 @@ namespace PowerPointLabs
         {
             return removeCaptionsEnabled;
         }
+        public bool OnGetEnabledRemoveAudio(Office.IRibbonControl control)
+        {
+            return removeAudioEnabled;
+        }
         //Edit Name Callbacks
         public void NameEditBtnClick(Office.IRibbonControl control)
         {
@@ -878,33 +882,30 @@ namespace PowerPointLabs
 
         public void RemoveAudioClick(Office.IRibbonControl control)
         {
-            var currentSlide = PowerPointPresentation.CurrentSlide;
             var recorderPane = Globals.ThisAddIn.ActivateCustomTaskPane.Control as RecorderTaskPane;
             
-            if (_allSlides)
+            try
             {
-                NotesToAudio.RemoveAudioFromAllSlides();
-                recorderPane.ClearRecordDataList();
+                NotesToAudio.RemoveAudioFromSelectedSlides();
             }
-            else
+            catch (Exception e)
             {
-                try
-                {
-                    NotesToAudio.RemoveAudioFromCurrentSlide();
-                }
-                catch (Exception e)
-                {
-                    MessageBox.Show(e.Message);
-                    throw;
-                }
-                recorderPane.ClearRecordDataList(currentSlide.ID);
+                MessageBox.Show(e.Message);
+                throw;
             }
+            recorderPane.ClearRecordDataListForSelectedSlides();
 
             // if current list is visible, update the pane immediately
             if (Globals.ThisAddIn.ActivateCustomTaskPane.Visible)
             {
-                recorderPane.UpdateLists(currentSlide.ID);
+                foreach (PowerPointSlide slide in PowerPointPresentation.SelectedSlides)
+                {
+                    recorderPane.UpdateLists(slide.ID);
+                }
             }
+
+            removeAudioEnabled = false;
+            RefreshRibbonControl("removeAudio");
         }
 
         public void AddAudioClick(Office.IRibbonControl control)
@@ -912,21 +913,22 @@ namespace PowerPointLabs
             var currentSlide = PowerPointPresentation.CurrentSlide;
             var recorderPane = Globals.ThisAddIn.ActivateCustomTaskPane.Control as RecorderTaskPane;
 
-            if (_allSlides)
+            foreach (PowerPointSlide slide in PowerPointPresentation.SelectedSlides)
             {
-                var allAudioFiles = NotesToAudio.EmbedAllSlideNotes();
-
-                // initialize all slides' audio
-                recorderPane.InitializeAudioAndScript(allAudioFiles, true);
-            }
-            else
-            {
-                var audioFiles = NotesToAudio.EmbedCurrentSlideNotes();
-
-                // initialize the current slide's audio
-                recorderPane.InitializeAudioAndScript(currentSlide, audioFiles, true);
+                if (slide.NotesPageText.Trim() != "")
+                {
+                    removeAudioEnabled = true;
+                    RefreshRibbonControl("removeAudio");
+                    System.Diagnostics.Debug.WriteLine("Hello");
+                    break;
+                }
             }
 
+            var allAudioFiles = NotesToAudio.EmbedSelectedSlideNotes();
+
+            // initialize all slides' audio
+            recorderPane.InitializeAudioAndScript(allAudioFiles, true);
+            
             // if current list is visible, update the pane immediately
             if (Globals.ThisAddIn.ActivateCustomTaskPane.Visible)
             {
@@ -978,7 +980,7 @@ namespace PowerPointLabs
         {
             try
             {
-                var dialog = new AutoNarrateDialogBox(_voiceSelected, _voiceNames, _allSlides,
+                var dialog = new AutoNarrateDialogBox(_voiceSelected, _voiceNames,
                     _previewCurrentSlide);
                 dialog.SettingsHandler += AutoNarrateSettingsChanged;
                 dialog.ShowDialog();
@@ -990,9 +992,8 @@ namespace PowerPointLabs
             }
         }
 
-        public void AutoNarrateSettingsChanged(String voiceName, bool allSlides, bool previewCurrentSlide)
+        public void AutoNarrateSettingsChanged(String voiceName, bool previewCurrentSlide)
         {
-            _allSlides = allSlides;
             _previewCurrentSlide = previewCurrentSlide;
             if (!String.IsNullOrWhiteSpace(voiceName))
             {
