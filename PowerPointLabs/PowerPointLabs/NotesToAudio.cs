@@ -227,35 +227,13 @@ namespace PowerPointLabs
             }
         }
 
-        public static void RemoveAudioFromAllSlides()
-        {
-            var slides = PowerPointPresentation.Slides;
-            foreach (PowerPointSlide s in slides)
-            {
-                s.DeleteShapesWithPrefix(SpeechShapePrefix);
-                s.DeleteShapesWithPrefix(SpeechShapePrefixOld);
-            }
-        }
-
         public static void RemoveAudioFromSelectedSlides()
         {
             foreach (PowerPointSlide s in PowerPointPresentation.SelectedSlides)
             {
-                s.DeleteShapesWithPrefix(SpeechShapePrefix);
-                s.DeleteShapesWithPrefix(SpeechShapePrefixOld);
+                s.DeleteShapesWithPrefixTimelineInvariant(SpeechShapePrefix);
+                s.DeleteShapesWithPrefixTimelineInvariant(SpeechShapePrefixOld);
             }
-        }
-
-        public static void RemoveAudioFromCurrentSlide()
-        {
-            var currentSlide = PowerPointPresentation.CurrentSlide;
-            if (currentSlide == null)
-            {
-                return;
-            }
-            
-            currentSlide.DeleteShapesWithPrefixTimelineInvariant(SpeechShapePrefix);
-            currentSlide.DeleteShapesWithPrefixTimelineInvariant(SpeechShapePrefixOld);
         }
 
         public static IEnumerable<String> GetVoices()
