@@ -102,34 +102,44 @@ namespace PowerPointLabs
                     _waveFileWriter.Dispose();
                     _waveFileWriter = null;
                 }
-                catch (Exception)
+                catch (Exception e)
                 {
-                    // eat the exception
+                    ErrorDialogWrapper.showDialog("Error when stopping", "File writing stops with error.", e);
                 }
             }
         }
 
         private void NCleanup()
         {
-            _currentLength = 0;
-
-            if (_waveInStream != null)
+            try
             {
-                _waveInStream.Dispose();
-                _waveInStream = null;
+                _currentLength = 0;
+
+                if (_waveInStream != null)
+                {
+                    _waveInStream.Dispose();
+                    _waveInStream = null;
+                }
+
+                if (_waveFileWriter != null)
+                {
+                    try
+                    {
+                        _waveFileWriter.Dispose();
+                        _waveFileWriter = null;
+                    }
+                    catch (Exception e)
+                    {
+                        ErrorDialogWrapper.showDialog("Error when stopping", "File writing stops with error.", e);
+                        // eat exception locally
+                    }
+                }
             }
-
-            if (_waveFileWriter != null)
+            catch (Exception e)
             {
-                try
-                {
-                    _waveFileWriter.Dispose();
-                    _waveFileWriter = null;
-                }
-                catch (Exception)
-                {
-                    // eat exception locally
-                }
+                ErrorDialogWrapper.showDialog("Error when resource releasing",
+                                              "Resources cannot be released successfully.", e);
+                throw;
             }
         }
 
@@ -140,84 +150,108 @@ namespace PowerPointLabs
 
         private void NStartRecordAudio(string fileName, int rate, int bits, int channel, bool isBackground)
         {
-            // prepare wave header and wav output file
-            if (isBackground)
+            try
             {
-                _waveInStream = new WaveInEvent();
+                // prepare wave header and wav output file
+                if (isBackground)
+                {
+                    _waveInStream = new WaveInEvent();
+                }
+                else
+                {
+                    _waveInStream = new WaveIn();
+                }
+
+                _waveInStream.WaveFormat = new WaveFormat(rate, bits, channel);
+                _waveFileWriter = new WaveFileWriter(fileName, _waveInStream.WaveFormat);
+
+                _waveInStream.DataAvailable += WaveInStreamOnDataAvailable;
+                _waveInStream.RecordingStopped += WaveInStreamOnRecordingStopped;
+
+                // start recording here
+                _waveInStream.StartRecording();
             }
-            else
+            catch (Exception e)
             {
-                _waveInStream = new WaveIn();
+                ErrorDialogWrapper.showDialog("Error during recording", "Audio record cannot be started.", e);
+                throw;
             }
-
-            _waveInStream.WaveFormat = new WaveFormat(rate, bits, channel);
-            _waveFileWriter = new WaveFileWriter(fileName, _waveInStream.WaveFormat);
-
-            _waveInStream.DataAvailable += WaveInStreamOnDataAvailable;
-            _waveInStream.RecordingStopped += WaveInStreamOnRecordingStopped;
-
-            // start recording here
-            _waveInStream.StartRecording();
         }
 
         private void NStopRecordAudio()
         {
-            if (_waveInStream != null)
+            try
             {
-                _waveInStream.StopRecording();
+                if (_waveInStream != null)
+                {
+                    _waveInStream.StopRecording();
+                }
+            }
+            catch (Exception e)
+            {
+                ErrorDialogWrapper.showDialog("Error when Stopping", "Audio recording stops with error.", e);
+                throw;
             }
         }
 
         private void NMergeAudios(string[] audios, string outputName)
         {
-            var buffer = new byte[2048];
-            WaveFileWriter writer = null;
-
-            // delete the old file if it exists
-            if (File.Exists(outputName))
+            try
             {
-                File.Delete(outputName);
-            }
+                var buffer = new byte[2048];
+                WaveFileWriter writer = null;
 
-            if (audios.Length == 1)
-            {
-                if (audios[0] != outputName)
+                // delete the old file if it exists
+                if (File.Exists(outputName))
                 {
-                    File.Move(audios[0], outputName);
+                    File.Delete(outputName);
                 }
 
-                return;
-            }
-
-            foreach (var audio in audios)
-            {
-                using (var reader = new WaveFileReader(audio))
+                if (audios.Length == 1)
                 {
-                    if (writer == null)
+                    if (audios[0] != outputName)
                     {
-                        writer = new WaveFileWriter(outputName, reader.WaveFormat);
+                        File.Move(audios[0], outputName);
                     }
-                    else
+
+                    return;
+                }
+
+                foreach (var audio in audios)
+                {
+                    using (var reader = new WaveFileReader(audio))
                     {
-                        if (!reader.WaveFormat.Equals(writer.WaveFormat))
+                        if (writer == null)
                         {
-                            throw new InvalidOperationException("Can't concatenate WAV Files that don't share the same format");
+                            writer = new WaveFileWriter(outputName, reader.WaveFormat);
+                        }
+                        else
+                        {
+                            if (!reader.WaveFormat.Equals(writer.WaveFormat))
+                            {
+                                throw new InvalidOperationException("Can't concatenate WAV Files that don't share the same format");
+                            }
+                        }
+
+                        int read;
+                        while ((read = reader.Read(buffer, 0, buffer.Length)) > 0)
+                        {
+                            writer.Write(buffer, 0, read);
                         }
                     }
 
-                    int read;
-                    while ((read = reader.Read(buffer, 0, buffer.Length)) > 0)
-                    {
-                        writer.Write(buffer, 0, read);
-                    }
+                    File.Delete(audio);
                 }
 
-                File.Delete(audio);
+                if (writer != null)
+                {
+                    writer.Dispose();
+                }
             }
-
-            if (writer != null)
+            catch (Exception e)
             {
-                writer.Dispose();
+                ErrorDialogWrapper.showDialog("Error when Merging", "Audios cannot be merged.", e);
+                throw;
             }
         }
 
@@ -710,98 +744,106 @@ namespace PowerPointLabs
 
         public void SetupListsWhenOpen()
         {
-            var slides = PowerPointPresentation.Slides.ToList();
-            // track the total count of valid speech audio, this helps avoid
-            // mixing up other audios with speech audios
-            
-            foreach (var slide in slides)
+            try
             {
-                // update the slide id to relative id mapper
-                var relativeID = GetRelativeSlideIndex(slide.ID);
+                var slides = PowerPointPresentation.Slides.ToList();
+                // track the total count of valid speech audio, this helps avoid
+                // mixing up other audios with speech audios
 
-                if (_scriptList.Count == relativeID)
+                foreach (var slide in slides)
                 {
-                    _scriptList.Add(new List<string>());
-                }
+                    // update the slide id to relative id mapper
+                    var relativeID = GetRelativeSlideIndex(slide.ID);
 
-                if (slide.NotesPageText != String.Empty)
-                {
-                    // retrieve the tag notes
-                    var taggedNotes = new TaggedText(slide.NotesPageText.Trim());
-                    List<String> splitScript = taggedNotes.SplitByClicks();
-
-                    // add the splitted notes into script list
-                    _scriptList[relativeID] = splitScript;
-                }
-
-                // mapping the shapes with media files, and set up the audio list
-
-                // append a new list of of audios to the current presentatoin audio list
-                _audioList.Add(new List<Audio>());
-                
-                // get all audio shapes
-                var shapes = slide.GetShapesWithMediaType(PpMediaType.ppMediaTypeSound);
-                XmlParser xmlParser = null;
-                
-                if (shapes.Count > 0)
-                {
-                    xmlParser = new XmlParser(string.Format(_tempShapAudioXmlFormat, slide.Index));
-                }
-
-                // iterate through all shapes, skip audios that are not generated speech
-                for (int i = 0, speechOnSlide = 0; i < shapes.Count; i++, speechOnSlide++)
-                {
-                    var shape = shapes[i];
-
-                    // if current audio is a speech, dump it into Audio object
-                    if (shape.Name.Contains(SpeechShapePrefix) ||
-                        shape.Name.Contains(SpeechShapePrefixOld))
+                    if (_scriptList.Count == relativeID)
                     {
-                        var audio = new Audio();
+                        _scriptList.Add(new List<string>());
+                    }
 
-                        // detect audio type
-                        if (shape.MediaFormat.AudioSamplingRate == Audio.GeneratedSamplingRate)
-                        {
-                            audio.Type = Audio.AudioType.Auto;
-                        }
-                        else
-                        if (shape.MediaFormat.AudioSamplingRate == Audio.RecordedSamplingRate)
-                        {
-                            audio.Type = Audio.AudioType.Record;
-                        }
-                        else
-                        {
-                            MessageBox.Show("Unrecognize Embedded Audio");
-                        }
+                    if (slide.NotesPageText != String.Empty)
+                    {
+                        // retrieve the tag notes
+                        var taggedNotes = new TaggedText(slide.NotesPageText.Trim());
+                        List<String> splitScript = taggedNotes.SplitByClicks();
 
-                        // derive matched id from shape name
-                        var temp = shape.Name.Split(new [] {' '});
-                        audio.MatchScriptID = Int32.Parse(temp[2]);
+                        // add the splitted notes into script list
+                        _scriptList[relativeID] = splitScript;
+                    }
 
-                        // get corresponding audio
-                        audio.Name = shape.Name;
-                        audio.SaveName = _tempFullPath + xmlParser.GetCorrespondingAudio(audio.Name);
-                        audio.Length = AudioHelper.GetAudioLengthString(audio.SaveName);
-                        audio.LengthMillis = AudioHelper.GetAudioLength(audio.SaveName);
+                    // mapping the shapes with media files, and set up the audio list
 
-                        // maintain a sorted audio list
-                        // Note: here relativeID == slide.Index - 1
-                        if (audio.MatchScriptID >= _audioList[relativeID].Count)
-                        {
-                            _audioList[relativeID].Add(audio);
-                        }
-                        else
-                        {
-                            _audioList[relativeID].Insert(audio.MatchScriptID, audio);
-                        }
+                    // append a new list of of audios to the current presentatoin audio list
+                    _audioList.Add(new List<Audio>());
 
-                        // match id > total script count -> script does not exsit
-                        if (audio.MatchScriptID >= _scriptList[relativeID].Count)
+                    // get all audio shapes
+                    var shapes = slide.GetShapesWithMediaType(PpMediaType.ppMediaTypeSound);
+                    XmlParser xmlParser = null;
+
+                    if (shapes.Count > 0)
+                    {
+                        xmlParser = new XmlParser(string.Format(_tempShapAudioXmlFormat, slide.Index));
+                    }
+
+                    // iterate through all shapes, skip audios that are not generated speech
+                    for (int i = 0, speechOnSlide = 0; i < shapes.Count; i++, speechOnSlide++)
+                    {
+                        var shape = shapes[i];
+
+                        // if current audio is a speech, dump it into Audio object
+                        if (shape.Name.Contains(SpeechShapePrefix) ||
+                            shape.Name.Contains(SpeechShapePrefixOld))
                         {
-                            audio.MatchScriptID = -1;
+                            var audio = new Audio();
+
+                            // detect audio type
+                            if (shape.MediaFormat.AudioSamplingRate == Audio.GeneratedSamplingRate)
+                            {
+                                audio.Type = Audio.AudioType.Auto;
+                            }
+                            else
+                                if (shape.MediaFormat.AudioSamplingRate == Audio.RecordedSamplingRate)
+                                {
+                                    audio.Type = Audio.AudioType.Record;
+                                }
+                                else
+                                {
+                                    MessageBox.Show("Unrecognize Embedded Audio");
+                                }
+
+                            // derive matched id from shape name
+                            var temp = shape.Name.Split(new[] { ' ' });
+                            audio.MatchScriptID = Int32.Parse(temp[2]);
+
+                            // get corresponding audio
+                            audio.Name = shape.Name;
+                            audio.SaveName = _tempFullPath + xmlParser.GetCorrespondingAudio(audio.Name);
+                            audio.Length = AudioHelper.GetAudioLengthString(audio.SaveName);
+                            audio.LengthMillis = AudioHelper.GetAudioLength(audio.SaveName);
+
+                            // maintain a sorted audio list
+                            // Note: here relativeID == slide.Index - 1
+                            if (audio.MatchScriptID >= _audioList[relativeID].Count)
+                            {
+                                _audioList[relativeID].Add(audio);
+                            }
+                            else
+                            {
+                                _audioList[relativeID].Insert(audio.MatchScriptID, audio);
+                            }
+
+                            // match id > total script count -> script does not exsit
+                            if (audio.MatchScriptID >= _scriptList[relativeID].Count)
+                            {
+                                audio.MatchScriptID = -1;
+                            }
                         }
                     }
                 }
+            }
+            catch (Exception e)
+            {
+                ErrorDialogWrapper.showDialog("Error", "Error during setup", e);
+                throw;
             }
         }
 
@@ -1160,6 +1202,7 @@ namespace PowerPointLabs
             // stop the sound, increase clip counter, add current clip length to
             // total record length and stop the timer
             NStopRecordAudio();
+
             _recordClipCnt++;
             _recordTotalLength += NGetRecordLengthMillis();
             _timer.Dispose();
@@ -1382,7 +1425,8 @@ namespace PowerPointLabs
             }
             catch (Exception e)
             {
-                MessageBox.Show("Record cannot be saved\n" + e.Message);
+                ErrorDialogWrapper.showDialog("Record cannot be saved\n",
+                                              "Error when saving the file", e);
                 throw;
             }
             finally
