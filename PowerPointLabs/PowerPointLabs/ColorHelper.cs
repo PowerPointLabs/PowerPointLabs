@@ -88,5 +88,15 @@ namespace PowerPointLabs
 
             return tetradicColors;
         }
+
+        public List<Color> GetSplitComplementaryColorsForColor(Color originalColor)
+        {
+            List<Color> splitComplementaryColors = new List<Color>();
+
+            splitComplementaryColors.Add(GetColorShiftedByAngle(originalColor, 150.0f));
+            splitComplementaryColors.Add(GetColorShiftedByAngle(originalColor, 210.0f));
+
+            return splitComplementaryColors;
+        }
     }
 }
