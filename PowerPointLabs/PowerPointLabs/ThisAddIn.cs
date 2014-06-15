@@ -641,7 +641,7 @@ namespace PowerPointLabs
             }
             catch (Exception e)
             {
-                ErrorDialogWrapper.ShowDialog("Error when paste slides", "Slide cannot be pasted.", e);
+                //ErrorDialogWrapper.ShowDialog("Error when paste slides", "Slide cannot be pasted.", e);
                 throw;
             }
         }
