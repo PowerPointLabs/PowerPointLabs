@@ -111,7 +111,7 @@ namespace PowerPointLabs
             }
             catch (Exception e)
             {
-                ErrorDialogWrapper.showDialog("Error when setting up panes",
+                ErrorDialogWrapper.ShowDialog("Error when setting up panes",
                                               "Some working panes cannot be loaded successfully.", e);
                 throw;
             }
@@ -288,7 +288,7 @@ namespace PowerPointLabs
             }
             catch (Exception e)
             {
-                ErrorDialogWrapper.showDialog("Error when opening new file",
+                ErrorDialogWrapper.ShowDialog("Error when opening new file",
                                               "New presentation cannot be loaded successfully.", e);
                 throw;
             }
@@ -313,7 +313,7 @@ namespace PowerPointLabs
             }
             catch (Exception e)
             {
-                ErrorDialogWrapper.showDialog("Error opening file.", "File cannot be opened.", e);
+                ErrorDialogWrapper.ShowDialog("Error opening file.", "File cannot be opened.", e);
                 throw;
             }
         }
@@ -456,7 +456,7 @@ namespace PowerPointLabs
                 }
                 catch (Exception e)
                 {
-                    ErrorDialogWrapper.showDialog("Error when creating temp folder", "Temp folder " + tempPath + " cannot be created.", e);
+                    ErrorDialogWrapper.ShowDialog("Error when creating temp folder", "Temp folder " + tempPath + " cannot be created.", e);
                     throw;
                 }
                 finally
@@ -480,7 +480,7 @@ namespace PowerPointLabs
                 }
                 catch (Exception e)
                 {
-                    ErrorDialogWrapper.showDialog("Error when accessing temp folder", "Temp folder " + tempPath + " cannot be accessed." + Directory.Exists(tempPath) + "\n" + Pres.FullName, e);
+                    ErrorDialogWrapper.ShowDialog("Error when accessing temp folder", "Temp folder " + tempPath + " cannot be accessed." + Directory.Exists(tempPath) + "\n" + Pres.FullName, e);
                     throw;
                 }
 
@@ -513,13 +513,13 @@ namespace PowerPointLabs
                 }
                 catch (Exception e)
                 {
-                    ErrorDialogWrapper.showDialog("Error when extracting", "Archived files cannot be retrieved.", e);
+                    ErrorDialogWrapper.ShowDialog("Error when extracting", "Archived files cannot be retrieved.", e);
                     throw;
                 }
             }
             catch (Exception e)
             {
-                ErrorDialogWrapper.showDialog("Error when preparing media files", "Files cannot be linked.", e);
+                ErrorDialogWrapper.ShowDialog("Error when preparing media files", "Files cannot be linked.", e);
                 throw;
             }
         }
@@ -641,7 +641,7 @@ namespace PowerPointLabs
             }
             catch (Exception e)
             {
-                ErrorDialogWrapper.showDialog("Error when paste slides", "Slide cannot be pasted.", e);
+                ErrorDialogWrapper.ShowDialog("Error when paste slides", "Slide cannot be pasted.", e);
                 throw;
             }
         }

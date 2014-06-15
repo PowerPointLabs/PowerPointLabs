@@ -104,7 +104,7 @@ namespace PowerPointLabs
                 }
                 catch (Exception e)
                 {
-                    ErrorDialogWrapper.showDialog("Error when stopping", "File writing stops with error.", e);
+                    ErrorDialogWrapper.ShowDialog("Error when stopping", "File writing stops with error.", e);
                 }
             }
         }
@@ -130,14 +130,14 @@ namespace PowerPointLabs
                     }
                     catch (Exception e)
                     {
-                        ErrorDialogWrapper.showDialog("Error when stopping", "File writing stops with error.", e);
+                        ErrorDialogWrapper.ShowDialog("Error when stopping", "File writing stops with error.", e);
                         // eat exception locally
                     }
                 }
             }
             catch (Exception e)
             {
-                ErrorDialogWrapper.showDialog("Error when resource releasing",
+                ErrorDialogWrapper.ShowDialog("Error when resource releasing",
                                               "Resources cannot be released successfully.", e);
                 throw;
             }
@@ -166,14 +166,14 @@ namespace PowerPointLabs
                 _waveFileWriter = new WaveFileWriter(fileName, _waveInStream.WaveFormat);
 
                 _waveInStream.DataAvailable += WaveInStreamOnDataAvailable;
-                _waveInStream.RecordingStopped += WaveInStreamOnRecordingStopped;
+                //_waveInStream.RecordingStopped += WaveInStreamOnRecordingStopped;
 
                 // start recording here
                 _waveInStream.StartRecording();
             }
             catch (Exception e)
             {
-                ErrorDialogWrapper.showDialog("Error during recording", "Audio record cannot be started.", e);
+                ErrorDialogWrapper.ShowDialog("Error during recording", "Audio record cannot be started.", e);
                 throw;
             }
         }
@@ -189,7 +189,7 @@ namespace PowerPointLabs
             }
             catch (Exception e)
             {
-                ErrorDialogWrapper.showDialog("Error when Stopping", "Audio recording stops with error.", e);
+                ErrorDialogWrapper.ShowDialog("Error when Stopping", "Audio recording stops with error.", e);
                 throw;
             }
         }
@@ -250,7 +250,7 @@ namespace PowerPointLabs
             }
             catch (Exception e)
             {
-                ErrorDialogWrapper.showDialog("Error when Merging", "Audios cannot be merged.", e);
+                ErrorDialogWrapper.ShowDialog("Error when Merging", "Audios cannot be merged.", e);
                 throw;
             }
         }
@@ -842,7 +842,7 @@ namespace PowerPointLabs
             }
             catch (Exception e)
             {
-                ErrorDialogWrapper.showDialog("Error", "Error during setup", e);
+                ErrorDialogWrapper.ShowDialog("Error", "Error during setup", e);
                 throw;
             }
         }
@@ -1425,7 +1425,7 @@ namespace PowerPointLabs
             }
             catch (Exception e)
             {
-                ErrorDialogWrapper.showDialog("Record cannot be saved\n",
+                ErrorDialogWrapper.ShowDialog("Record cannot be saved\n",
                                               "Error when saving the file", e);
                 throw;
             }
