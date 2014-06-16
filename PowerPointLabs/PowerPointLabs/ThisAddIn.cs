@@ -380,6 +380,11 @@ namespace PowerPointLabs
                         foreach (var audio in recorderPane.AudioBuffer[i])
                         {
                             audio.Item1.EmbedOnSlide(slides[i], audio.Item2);
+
+                            if (Globals.ThisAddIn.ribbon.removeAudioEnabled) continue;
+                            
+                            Globals.ThisAddIn.ribbon.removeAudioEnabled = true;
+                            Globals.ThisAddIn.ribbon.RefreshRibbonControl("removeAudio");
                         }
                     }
                 }

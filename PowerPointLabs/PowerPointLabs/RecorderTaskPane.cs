@@ -1411,6 +1411,12 @@ namespace PowerPointLabs
                     if (!buffered)
                     {
                         newRec.EmbedOnSlide(currentSlide, scriptIndex);
+
+                        if (!Globals.ThisAddIn.ribbon.removeAudioEnabled)
+                        {
+                            Globals.ThisAddIn.ribbon.removeAudioEnabled = true;
+                            Globals.ThisAddIn.ribbon.RefreshRibbonControl("removeAudio");
+                        }
                     }
                     else
                     {
