@@ -28,7 +28,6 @@
         /// </summary>
         private void InitializeComponent()
         {
-            this.allSlides = new System.Windows.Forms.CheckBox();
             this.preview = new System.Windows.Forms.CheckBox();
             this.cancel = new System.Windows.Forms.Button();
             this.ok = new System.Windows.Forms.Button();
@@ -36,24 +35,12 @@
             this.label1 = new System.Windows.Forms.Label();
             this.SuspendLayout();
             // 
-            // allSlides
-            // 
-            this.allSlides.AutoSize = true;
-            this.allSlides.Location = new System.Drawing.Point(24, 49);
-            this.allSlides.Margin = new System.Windows.Forms.Padding(4);
-            this.allSlides.Name = "allSlides";
-            this.allSlides.Size = new System.Drawing.Size(87, 21);
-            this.allSlides.TabIndex = 0;
-            this.allSlides.Text = "All Slides";
-            this.allSlides.UseVisualStyleBackColor = true;
-            // 
             // preview
             // 
             this.preview.AutoSize = true;
-            this.preview.Location = new System.Drawing.Point(24, 78);
-            this.preview.Margin = new System.Windows.Forms.Padding(4);
+            this.preview.Location = new System.Drawing.Point(19, 55);
             this.preview.Name = "preview";
-            this.preview.Size = new System.Drawing.Size(79, 21);
+            this.preview.Size = new System.Drawing.Size(64, 17);
             this.preview.TabIndex = 1;
             this.preview.Text = "Preview";
             this.preview.UseVisualStyleBackColor = true;
@@ -61,10 +48,9 @@
             // cancel
             // 
             this.cancel.DialogResult = System.Windows.Forms.DialogResult.Cancel;
-            this.cancel.Location = new System.Drawing.Point(295, 98);
-            this.cancel.Margin = new System.Windows.Forms.Padding(4);
+            this.cancel.Location = new System.Drawing.Point(221, 80);
             this.cancel.Name = "cancel";
-            this.cancel.Size = new System.Drawing.Size(100, 28);
+            this.cancel.Size = new System.Drawing.Size(75, 23);
             this.cancel.TabIndex = 2;
             this.cancel.Text = "Cancel";
             this.cancel.UseVisualStyleBackColor = true;
@@ -72,10 +58,9 @@
             // 
             // ok
             // 
-            this.ok.Location = new System.Drawing.Point(187, 98);
-            this.ok.Margin = new System.Windows.Forms.Padding(4);
+            this.ok.Location = new System.Drawing.Point(140, 80);
             this.ok.Name = "ok";
-            this.ok.Size = new System.Drawing.Size(100, 28);
+            this.ok.Size = new System.Drawing.Size(75, 23);
             this.ok.TabIndex = 3;
             this.ok.Text = "OK";
             this.ok.UseVisualStyleBackColor = true;
@@ -85,36 +70,32 @@
             // 
             this.defaultVoice.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.defaultVoice.FormattingEnabled = true;
-            this.defaultVoice.Location = new System.Drawing.Point(130, 16);
-            this.defaultVoice.Margin = new System.Windows.Forms.Padding(4);
+            this.defaultVoice.Location = new System.Drawing.Point(98, 13);
             this.defaultVoice.Name = "defaultVoice";
-            this.defaultVoice.Size = new System.Drawing.Size(268, 24);
+            this.defaultVoice.Size = new System.Drawing.Size(202, 21);
             this.defaultVoice.TabIndex = 4;
             // 
             // label1
             // 
             this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(21, 19);
-            this.label1.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
+            this.label1.Location = new System.Drawing.Point(16, 15);
             this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(92, 17);
+            this.label1.Size = new System.Drawing.Size(71, 13);
             this.label1.TabIndex = 5;
             this.label1.Text = "Default Voice";
             // 
             // AutoNarrateDialogBox
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
+            this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.CancelButton = this.cancel;
-            this.ClientSize = new System.Drawing.Size(411, 137);
+            this.ClientSize = new System.Drawing.Size(308, 111);
             this.Controls.Add(this.label1);
             this.Controls.Add(this.defaultVoice);
             this.Controls.Add(this.ok);
             this.Controls.Add(this.cancel);
             this.Controls.Add(this.preview);
-            this.Controls.Add(this.allSlides);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog;
-            this.Margin = new System.Windows.Forms.Padding(4);
             this.MaximizeBox = false;
             this.MinimizeBox = false;
             this.Name = "AutoNarrateDialogBox";
@@ -130,7 +111,6 @@
 
         #endregion
 
-        private System.Windows.Forms.CheckBox allSlides;
         private System.Windows.Forms.CheckBox preview;
         private System.Windows.Forms.Button cancel;
         private System.Windows.Forms.Button ok;

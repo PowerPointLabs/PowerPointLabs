@@ -73,6 +73,11 @@ namespace PowerPointLabs.Models
             get { return _slide.Shapes; }
         }
 
+        public int ID
+        {
+            get { return _slide.SlideID; }
+        }
+
         public int Index
         {
             get { return _slide.SlideIndex; }
@@ -112,7 +117,51 @@ namespace PowerPointLabs.Models
         public PowerPointSlide Duplicate()
         {
             Slide duplicatedSlide = _slide.Duplicate()[1];
-            return PowerPointSlide.FromSlideFactory(duplicatedSlide);
+            return FromSlideFactory(duplicatedSlide);
+        }
+
+        public bool HasAnimationForClick(int click)
+        {
+            var mainSequence = _slide.TimeLine.MainSequence;
+            var effect = mainSequence.FindFirstAnimationForClick(click);
+
+            return effect != null;
+        }
+
+        public void DeleteShapesWithPrefixTimelineInvariant(string prefix)
+        {
+            var mainSequence = _slide.TimeLine.MainSequence;
+            var effectCnt = 1;
+
+            while (effectCnt <= mainSequence.Count)
+            {
+                var effect = mainSequence[effectCnt];
+
+                if (effect.Shape.Name.StartsWith(prefix))
+                {
+                    // if the shape is triggered on click, delete this may cause problem if the next
+                    // effect is triggered with previous and we want the time sequence to be time
+                    // invariant. To handle it, we need to set the on_prev event to be on_click.
+                    if (effect.Timing.TriggerType == MsoAnimTriggerType.msoAnimTriggerOnPageClick &&
+                        effect.Index + 1 <= mainSequence.Count)
+                    {
+                        var nextEffect = mainSequence[effect.Index + 1];
+
+                        if (nextEffect.Timing.TriggerType == MsoAnimTriggerType.msoAnimTriggerWithPrevious)
+                        {
+                            nextEffect.Timing.TriggerType = MsoAnimTriggerType.msoAnimTriggerOnPageClick;
+                        }
+                    }
+
+                    effect.Delete();
+                }
+                else
+                {
+                    effectCnt++;
+                }
+            }
+
+            DeleteShapesWithPrefix(prefix);
         }
 
         public void DeleteShapesWithPrefix(string prefix)
@@ -265,6 +314,15 @@ namespace PowerPointLabs.Models
         {
             List<Shape> shapes = _slide.Shapes.Cast<Shape>().ToList();
             List<Shape> matchingShapes = shapes.Where(current => current.Name.StartsWith(prefix)).ToList();
+
+            return matchingShapes;
+        }
+
+        public List<PowerPoint.Shape> GetShapesWithMediaType(PpMediaType type)
+        {
+            List<Shape> shapes = _slide.Shapes.Cast<Shape>().ToList();
+            List<Shape> matchingShapes = shapes.Where(current => current.Type == MsoShapeType.msoMedia &&
+                                                                 current.MediaType == type).ToList();
 
             return matchingShapes;
         }
@@ -489,6 +547,31 @@ namespace PowerPointLabs.Models
         {
             Slide ackSlide = Globals.ThisAddIn.Application.ActivePresentation.Slides.Add(Globals.ThisAddIn.Application.ActivePresentation.Slides.Count + 1, PpSlideLayout.ppLayoutBlank);
             return PowerPointAckSlide.FromSlideFactory(ackSlide);
+        }
+
+        public bool HasCaptions()
+        {
+            foreach (PowerPoint.Shape shape in this.Shapes)
+            {
+                if (shape.Name.StartsWith("PowerPointLabs Caption"))
+                {
+                    return true;
+                }
+            }
+            return false;
+        }
+
+        public bool HasAudio()
+        {
+            foreach (PowerPoint.Shape shape in this.Shapes)
+            {
+                if (shape.Name.Contains(NotesToAudio.SpeechShapePrefix) || 
+                    shape.Name.Contains(NotesToAudio.SpeechShapePrefixOld))
+                {
+                    return true;
+                }
+            }
+            return false;
         }
 
         private Effect AddShapeAsLastAutoplaying(Shape shape, MsoAnimEffect effect)
