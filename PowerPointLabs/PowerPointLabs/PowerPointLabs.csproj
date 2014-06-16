@@ -220,6 +220,13 @@
     <Compile Include="AudioMisc\AudioHelper.cs" />
     <Compile Include="AutoAnimate.cs" />
     <Compile Include="AutoZoom.cs" />
+    <Compile Include="ColorHelper.cs" />
+    <Compile Include="ColorPane.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="ColorPane.Designer.cs">
+      <DependentUpon>ColorPane.cs</DependentUpon>
+    </Compile>
     <Compile Include="ConvertToPicture.cs" />
     <Compile Include="CropToShape.cs" />
     <Compile Include="Views\ErrorDialogWrapper.cs" />
@@ -323,6 +330,9 @@
     <Compile Include="XMLMisc\XMLParser.cs" />
     <Compile Include="ZipStorer.cs" />
     <Compile Include="ZoomToArea.cs" />
+    <EmbeddedResource Include="ColorPane.resx">
+      <DependentUpon>ColorPane.cs</DependentUpon>
+    </EmbeddedResource>
     <None Include="packages.config" />
     <None Include="Resources\Record.png" />
     <None Include="Resources\Stop.png" />
