@@ -52,6 +52,7 @@ namespace PowerPointLabs
             Point p = Control.MousePosition;
             IntPtr dc = GetDC(IntPtr.Zero);
             this.panel1.BackColor = ColorTranslator.FromWin32(GetPixel(dc, p.X, p.Y));
+            UpdatePanelsForColor(panel1.BackColor);
         }
 
         void _native_RButtonClicked(object sender, SysMouseEventInfo e)
@@ -62,7 +63,12 @@ namespace PowerPointLabs
 
         private void GenerateButton_Click(object sender, EventArgs e)
         {
-            Color selectedColor = panel1.BackColor;
+            UpdatePanelsForColor(panel1.BackColor);
+        }
+
+        private void UpdatePanelsForColor(Color selectedColor)
+        {
+            panel1.BackColor = selectedColor;
             Color complementaryColor = ColorHelper.GetComplementaryColor(selectedColor);
 
             List<Color> analogousColors = ColorHelper.GetAnalogousColorsForColor(selectedColor);
