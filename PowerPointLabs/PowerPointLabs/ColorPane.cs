@@ -33,6 +33,11 @@ namespace PowerPointLabs
         public ColorPane()
         {
             InitializeComponent();
+
+            foreach (PowerPoint.Shape s in PowerPointPresentation.CurrentSlide.Shapes)
+            {
+                
+            }
         }
 
         private void button1_Click(object sender, EventArgs e)
@@ -40,8 +45,9 @@ namespace PowerPointLabs
             timer1.Start();
 
             _native = new LMouseListener();
-            _native.RButtonClicked +=
-                 new EventHandler<SysMouseEventInfo>(_native_RButtonClicked);
+            _native.LButtonClicked +=
+                 new EventHandler<SysMouseEventInfo>(_native_LButtonClicked);
+            //DisableMouseClicks();
 
             try
             {
@@ -92,10 +98,11 @@ namespace PowerPointLabs
             ColorSelectedShapesWithColor(selectedColor);
         }
 
-        void _native_RButtonClicked(object sender, SysMouseEventInfo e)
+        void _native_LButtonClicked(object sender, SysMouseEventInfo e)
         {
             timer1.Stop();
             _native.Close();
+            //EnableMouseClicks();
         }
 
         private void GenerateButton_Click(object sender, EventArgs e)
@@ -141,7 +148,44 @@ namespace PowerPointLabs
         {
             panel1.BackColor = (Color)e.Data.GetData(panel1.BackColor.GetType());
         }
+
+        private void DisableMouseClicks()
+        {
+            if (this.Filter == null)
+            {
+                this.Filter = new MouseClickMessageFilter();
+                Application.AddMessageFilter(this.Filter);
+            }
+        }
+
+        private void EnableMouseClicks()
+        {
+            if ((this.Filter != null))
+            {
+                Application.RemoveMessageFilter(this.Filter);
+                this.Filter = null;
+            }
+        }
+
+        private MouseClickMessageFilter Filter;
+
+        private const int LButtonDown = 0x0201;
+
+        public class MouseClickMessageFilter : IMessageFilter
+        {
+
+            public bool PreFilterMessage(ref System.Windows.Forms.Message m)
+            {
+                switch (m.Msg)
+                {
+                    case LButtonDown:
+                        return true;
+                }
+                return false;
+            }
+        } 
     }
+
 
     public class SysMouseEventInfo : EventArgs
     {
@@ -170,7 +214,7 @@ namespace PowerPointLabs
         HookProc CallBack = null;
         IntPtr _hook = IntPtr.Zero;
 
-        public event EventHandler<SysMouseEventInfo> RButtonClicked;
+        public event EventHandler<SysMouseEventInfo> LButtonClicked;
 
         int MouseEvents(int code, IntPtr wParam, IntPtr lParam)
         {
@@ -188,9 +232,9 @@ namespace PowerPointLabs
                     ms = (MSLLHOOKSTRUCT)Marshal.PtrToStructure(lParam, typeof(MSLLHOOKSTRUCT));
                     IntPtr win = WindowFromPoint(ms.pt);
                     string title = GetWindowTextRaw(win);
-                    if (RButtonClicked != null)
+                    if (LButtonClicked != null)
                     {
-                        RButtonClicked(this, new SysMouseEventInfo { WindowTitle = title });
+                        LButtonClicked(this, new SysMouseEventInfo { WindowTitle = title });
                     }
                 }
             }
