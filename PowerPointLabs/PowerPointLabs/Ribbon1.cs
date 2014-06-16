@@ -1054,6 +1054,11 @@ namespace PowerPointLabs
 
         #endregion
 
+        public bool GetVisibilityForCombineShapes(Office.IRibbonControl control)
+        {
+            const string officeVersion2010 = "14.0";
+            return Globals.ThisAddIn.Application.Version == officeVersion2010;
+        }
 
         private static string GetResourceText(string resourceName)
         {
