@@ -7,6 +7,8 @@ using System.Linq;
 using System.Text;
 using System.Windows.Forms;
 using System.Runtime.InteropServices;
+using PowerPoint = Microsoft.Office.Interop.PowerPoint;
+using PowerPointLabs.Models;
 
 namespace PowerPointLabs
 {
@@ -27,6 +29,7 @@ namespace PowerPointLabs
 
         LMouseListener _native;
 
+        PowerPoint.ShapeRange _selectedShapes;
         public ColorPane()
         {
             InitializeComponent();
@@ -39,6 +42,15 @@ namespace PowerPointLabs
             _native = new LMouseListener();
             _native.RButtonClicked +=
                  new EventHandler<SysMouseEventInfo>(_native_RButtonClicked);
+
+            try
+            {
+                _selectedShapes = Globals.ThisAddIn.Application.ActiveWindow.Selection.ShapeRange;
+            }
+            catch (Exception exception)
+            {
+                _selectedShapes = null;
+            }
         }
 
         private void button2_Click(object sender, EventArgs e)
@@ -53,6 +65,31 @@ namespace PowerPointLabs
             IntPtr dc = GetDC(IntPtr.Zero);
             this.panel1.BackColor = ColorTranslator.FromWin32(GetPixel(dc, p.X, p.Y));
             UpdatePanelsForColor(panel1.BackColor);
+            ColorSelectedShapesWithColor(panel1.BackColor);
+        }
+
+        private void ColorSelectedShapesWithColor(Color selectedColor)
+        {
+            if (_selectedShapes != null)
+            {
+                foreach (PowerPoint.Shape s in _selectedShapes)
+                {
+                    var r = selectedColor.R;
+                    var g = selectedColor.G;
+                    var b = selectedColor.B;
+
+                    var rgb = (b << 16) | (g << 8) | (r);
+                    s.Fill.ForeColor.RGB = rgb;
+                }
+            }
+        }
+
+        private void MatchingColorPanel_DoubleClick(object sender, EventArgs e)
+        {
+            Color selectedColor = ((Panel)sender).BackColor;
+
+            UpdatePanelsForColor(selectedColor);
+            ColorSelectedShapesWithColor(selectedColor);
         }
 
         void _native_RButtonClicked(object sender, SysMouseEventInfo e)
@@ -91,6 +128,18 @@ namespace PowerPointLabs
             Tetradic2.BackColor = tetradicColors[1];
             Tetradic3.BackColor = tetradicColors[2];
             TetradicSelected.BackColor = selectedColor;
+        }
+
+        private void AnalogousLighter_MouseDown(object sender, MouseEventArgs e)
+        {
+            DataObject colorObject = new DataObject();
+            colorObject.SetData(AnalogousLighter.BackColor);
+            DoDragDrop(colorObject, DragDropEffects.All);
+        }
+
+        private void panel1_DragDrop(object sender, DragEventArgs e)
+        {
+            panel1.BackColor = (Color)e.Data.GetData(panel1.BackColor.GetType());
         }
     }
 

@@ -40,21 +40,21 @@
             this.AnalogousSelected = new System.Windows.Forms.Panel();
             this.AnalogousDarker = new System.Windows.Forms.Panel();
             this.flowLayoutPanel2 = new System.Windows.Forms.FlowLayoutPanel();
+            this.label2 = new System.Windows.Forms.Label();
             this.ComplementaryLighter = new System.Windows.Forms.Panel();
             this.ComplementarySelected = new System.Windows.Forms.Panel();
             this.ComplementaryDarker = new System.Windows.Forms.Panel();
             this.flowLayoutPanel3 = new System.Windows.Forms.FlowLayoutPanel();
+            this.label3 = new System.Windows.Forms.Label();
             this.TriadicLower = new System.Windows.Forms.Panel();
             this.TriadicSelected = new System.Windows.Forms.Panel();
             this.TriadicHigher = new System.Windows.Forms.Panel();
             this.flowLayoutPanel4 = new System.Windows.Forms.FlowLayoutPanel();
+            this.label4 = new System.Windows.Forms.Label();
             this.Tetradic1 = new System.Windows.Forms.Panel();
             this.TetradicSelected = new System.Windows.Forms.Panel();
             this.Tetradic2 = new System.Windows.Forms.Panel();
             this.Tetradic3 = new System.Windows.Forms.Panel();
-            this.label2 = new System.Windows.Forms.Label();
-            this.label3 = new System.Windows.Forms.Label();
-            this.label4 = new System.Windows.Forms.Label();
             this.GenerateButton = new System.Windows.Forms.Button();
             this.AnalogousColorPanel.SuspendLayout();
             this.flowLayoutPanel2.SuspendLayout();
@@ -64,11 +64,13 @@
             // 
             // panel1
             // 
+            this.panel1.AllowDrop = true;
             this.panel1.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.panel1.Location = new System.Drawing.Point(20, 16);
             this.panel1.Name = "panel1";
             this.panel1.Size = new System.Drawing.Size(75, 47);
             this.panel1.TabIndex = 0;
+            this.panel1.DragDrop += new System.Windows.Forms.DragEventHandler(this.panel1_DragDrop);
             // 
             // timer1
             // 
@@ -127,6 +129,8 @@
             this.AnalogousLighter.Name = "AnalogousLighter";
             this.AnalogousLighter.Size = new System.Drawing.Size(75, 47);
             this.AnalogousLighter.TabIndex = 0;
+            this.AnalogousLighter.DoubleClick += new System.EventHandler(this.MatchingColorPanel_DoubleClick);
+            this.AnalogousLighter.MouseDown += new System.Windows.Forms.MouseEventHandler(this.AnalogousLighter_MouseDown);
             // 
             // AnalogousSelected
             // 
@@ -135,6 +139,7 @@
             this.AnalogousSelected.Name = "AnalogousSelected";
             this.AnalogousSelected.Size = new System.Drawing.Size(75, 47);
             this.AnalogousSelected.TabIndex = 1;
+            this.AnalogousSelected.DoubleClick += new System.EventHandler(this.MatchingColorPanel_DoubleClick);
             // 
             // AnalogousDarker
             // 
@@ -143,6 +148,7 @@
             this.AnalogousDarker.Name = "AnalogousDarker";
             this.AnalogousDarker.Size = new System.Drawing.Size(75, 47);
             this.AnalogousDarker.TabIndex = 1;
+            this.AnalogousDarker.DoubleClick += new System.EventHandler(this.MatchingColorPanel_DoubleClick);
             // 
             // flowLayoutPanel2
             // 
@@ -156,6 +162,16 @@
             this.flowLayoutPanel2.Size = new System.Drawing.Size(256, 112);
             this.flowLayoutPanel2.TabIndex = 4;
             // 
+            // label2
+            // 
+            this.label2.AutoSize = true;
+            this.label2.Font = new System.Drawing.Font("MS Reference Sans Serif", 15.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label2.Location = new System.Drawing.Point(3, 0);
+            this.label2.Name = "label2";
+            this.label2.Size = new System.Drawing.Size(201, 52);
+            this.label2.TabIndex = 6;
+            this.label2.Text = "Complementary Colors";
+            // 
             // ComplementaryLighter
             // 
             this.ComplementaryLighter.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
@@ -163,6 +179,7 @@
             this.ComplementaryLighter.Name = "ComplementaryLighter";
             this.ComplementaryLighter.Size = new System.Drawing.Size(75, 47);
             this.ComplementaryLighter.TabIndex = 0;
+            this.ComplementaryLighter.DoubleClick += new System.EventHandler(this.MatchingColorPanel_DoubleClick);
             // 
             // ComplementarySelected
             // 
@@ -171,6 +188,7 @@
             this.ComplementarySelected.Name = "ComplementarySelected";
             this.ComplementarySelected.Size = new System.Drawing.Size(75, 47);
             this.ComplementarySelected.TabIndex = 1;
+            this.ComplementarySelected.DoubleClick += new System.EventHandler(this.MatchingColorPanel_DoubleClick);
             // 
             // ComplementaryDarker
             // 
@@ -179,6 +197,7 @@
             this.ComplementaryDarker.Name = "ComplementaryDarker";
             this.ComplementaryDarker.Size = new System.Drawing.Size(75, 47);
             this.ComplementaryDarker.TabIndex = 1;
+            this.ComplementaryDarker.DoubleClick += new System.EventHandler(this.MatchingColorPanel_DoubleClick);
             // 
             // flowLayoutPanel3
             // 
@@ -192,6 +211,16 @@
             this.flowLayoutPanel3.Size = new System.Drawing.Size(256, 85);
             this.flowLayoutPanel3.TabIndex = 4;
             // 
+            // label3
+            // 
+            this.label3.AutoSize = true;
+            this.label3.Font = new System.Drawing.Font("MS Reference Sans Serif", 15.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label3.Location = new System.Drawing.Point(3, 0);
+            this.label3.Name = "label3";
+            this.label3.Size = new System.Drawing.Size(195, 26);
+            this.label3.TabIndex = 6;
+            this.label3.Text = "Triadic Colors   ";
+            // 
             // TriadicLower
             // 
             this.TriadicLower.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
@@ -199,6 +228,7 @@
             this.TriadicLower.Name = "TriadicLower";
             this.TriadicLower.Size = new System.Drawing.Size(75, 47);
             this.TriadicLower.TabIndex = 0;
+            this.TriadicLower.DoubleClick += new System.EventHandler(this.MatchingColorPanel_DoubleClick);
             // 
             // TriadicSelected
             // 
@@ -207,6 +237,7 @@
             this.TriadicSelected.Name = "TriadicSelected";
             this.TriadicSelected.Size = new System.Drawing.Size(75, 47);
             this.TriadicSelected.TabIndex = 1;
+            this.TriadicSelected.DoubleClick += new System.EventHandler(this.MatchingColorPanel_DoubleClick);
             // 
             // TriadicHigher
             // 
@@ -215,6 +246,7 @@
             this.TriadicHigher.Name = "TriadicHigher";
             this.TriadicHigher.Size = new System.Drawing.Size(75, 47);
             this.TriadicHigher.TabIndex = 1;
+            this.TriadicHigher.DoubleClick += new System.EventHandler(this.MatchingColorPanel_DoubleClick);
             // 
             // flowLayoutPanel4
             // 
@@ -229,58 +261,6 @@
             this.flowLayoutPanel4.Size = new System.Drawing.Size(256, 138);
             this.flowLayoutPanel4.TabIndex = 4;
             // 
-            // Tetradic1
-            // 
-            this.Tetradic1.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.Tetradic1.Location = new System.Drawing.Point(3, 29);
-            this.Tetradic1.Name = "Tetradic1";
-            this.Tetradic1.Size = new System.Drawing.Size(75, 47);
-            this.Tetradic1.TabIndex = 0;
-            // 
-            // TetradicSelected
-            // 
-            this.TetradicSelected.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.TetradicSelected.Location = new System.Drawing.Point(84, 29);
-            this.TetradicSelected.Name = "TetradicSelected";
-            this.TetradicSelected.Size = new System.Drawing.Size(75, 47);
-            this.TetradicSelected.TabIndex = 1;
-            // 
-            // Tetradic2
-            // 
-            this.Tetradic2.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.Tetradic2.Location = new System.Drawing.Point(165, 29);
-            this.Tetradic2.Name = "Tetradic2";
-            this.Tetradic2.Size = new System.Drawing.Size(75, 47);
-            this.Tetradic2.TabIndex = 1;
-            // 
-            // Tetradic3
-            // 
-            this.Tetradic3.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.Tetradic3.Location = new System.Drawing.Point(3, 82);
-            this.Tetradic3.Name = "Tetradic3";
-            this.Tetradic3.Size = new System.Drawing.Size(75, 47);
-            this.Tetradic3.TabIndex = 2;
-            // 
-            // label2
-            // 
-            this.label2.AutoSize = true;
-            this.label2.Font = new System.Drawing.Font("MS Reference Sans Serif", 15.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label2.Location = new System.Drawing.Point(3, 0);
-            this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(201, 52);
-            this.label2.TabIndex = 6;
-            this.label2.Text = "Complementary Colors";
-            // 
-            // label3
-            // 
-            this.label3.AutoSize = true;
-            this.label3.Font = new System.Drawing.Font("MS Reference Sans Serif", 15.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label3.Location = new System.Drawing.Point(3, 0);
-            this.label3.Name = "label3";
-            this.label3.Size = new System.Drawing.Size(195, 26);
-            this.label3.TabIndex = 6;
-            this.label3.Text = "Triadic Colors   ";
-            // 
             // label4
             // 
             this.label4.AutoSize = true;
@@ -290,6 +270,42 @@
             this.label4.Size = new System.Drawing.Size(187, 26);
             this.label4.TabIndex = 6;
             this.label4.Text = "Tetradic Colors";
+            // 
+            // Tetradic1
+            // 
+            this.Tetradic1.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.Tetradic1.Location = new System.Drawing.Point(3, 29);
+            this.Tetradic1.Name = "Tetradic1";
+            this.Tetradic1.Size = new System.Drawing.Size(75, 47);
+            this.Tetradic1.TabIndex = 0;
+            this.Tetradic1.DoubleClick += new System.EventHandler(this.MatchingColorPanel_DoubleClick);
+            // 
+            // TetradicSelected
+            // 
+            this.TetradicSelected.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.TetradicSelected.Location = new System.Drawing.Point(84, 29);
+            this.TetradicSelected.Name = "TetradicSelected";
+            this.TetradicSelected.Size = new System.Drawing.Size(75, 47);
+            this.TetradicSelected.TabIndex = 1;
+            this.TetradicSelected.DoubleClick += new System.EventHandler(this.MatchingColorPanel_DoubleClick);
+            // 
+            // Tetradic2
+            // 
+            this.Tetradic2.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.Tetradic2.Location = new System.Drawing.Point(165, 29);
+            this.Tetradic2.Name = "Tetradic2";
+            this.Tetradic2.Size = new System.Drawing.Size(75, 47);
+            this.Tetradic2.TabIndex = 1;
+            this.Tetradic2.DoubleClick += new System.EventHandler(this.MatchingColorPanel_DoubleClick);
+            // 
+            // Tetradic3
+            // 
+            this.Tetradic3.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.Tetradic3.Location = new System.Drawing.Point(3, 82);
+            this.Tetradic3.Name = "Tetradic3";
+            this.Tetradic3.Size = new System.Drawing.Size(75, 47);
+            this.Tetradic3.TabIndex = 2;
+            this.Tetradic3.DoubleClick += new System.EventHandler(this.MatchingColorPanel_DoubleClick);
             // 
             // GenerateButton
             // 
