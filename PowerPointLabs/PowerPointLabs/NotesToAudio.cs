@@ -220,8 +220,7 @@ namespace PowerPointLabs
             try
             {
                 var selected = Globals.ThisAddIn.Application.ActiveWindow.Selection.TextRange.Text.Trim();
-                var taggedText = new TaggedText(selected);
-                var splitScript = taggedText.SplitByClicks();
+                var splitScript = (new TaggedText(selected)).SplitByClicks();
 
                 var completeText = string.Empty;
                 var reg = new Regex("\\.+\\s*");
