@@ -78,8 +78,20 @@ namespace PowerPointLabs.Views
         {
             var recorderPane = Globals.ThisAddIn.GetActivePane(Type.GetType("PowerPointLabs.RecorderTaskPane"));
             var recorder = recorderPane.Control as RecorderTaskPane;
-            var click = _slideShowWindow.View.GetClickIndex();
-            var currentSlide = PowerPointSlide.FromSlideFactory(_slideShowWindow.View.Slide);
+            
+            int click;
+            PowerPointSlide currentSlide;
+
+            try
+            {
+                click = _slideShowWindow.View.GetClickIndex();
+                currentSlide = PowerPointSlide.FromSlideFactory(_slideShowWindow.View.Slide);
+            }
+            catch (COMException comException)
+            {
+                MessageBox.Show("Invalid Recording Command");
+                return;
+            }
 
             switch (_status)
             {
