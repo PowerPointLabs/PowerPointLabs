@@ -104,14 +104,21 @@ namespace PowerPointLabs
         void _native_LButtonClicked(object sender, SysMouseEventInfo e)
         {
             _native.Close();
+            UpdateUIForNewColor();
+            timer1.Stop();
+            
+            //EnableMouseClicks();
+        }
+
+        private void UpdateUIForNewColor()
+        {
             _selectedColor = panel1.BackColor;
             brightnessBar.Value = (int)(_selectedColor.GetBrightness() * 240.0f);
             saturationBar.Value = (int)(_selectedColor.GetSaturation() * 240.0f);
             UpdatePanelsForColor(_selectedColor);
             ColorSelectedShapesWithColor(_selectedColor);
-            timer1.Stop();
-            
-            //EnableMouseClicks();
+            DrawSaturationGradient();
+            DrawBrightnessGradient();
         }
 
         protected override void OnPaint(PaintEventArgs paintEvnt)
@@ -240,16 +247,17 @@ namespace PowerPointLabs
             TetradicSelected.BackColor = selectedColor;
         }
 
-        private void AnalogousLighter_MouseDown(object sender, MouseEventArgs e)
+        private void MatchingPanel_MouseDown(object sender, MouseEventArgs e)
         {
             DataObject colorObject = new DataObject();
-            colorObject.SetData(AnalogousLighter.BackColor);
+            colorObject.SetData(((Panel)sender).BackColor);
             DoDragDrop(colorObject, DragDropEffects.All);
         }
 
         private void panel1_DragDrop(object sender, DragEventArgs e)
         {
             panel1.BackColor = (Color)e.Data.GetData(panel1.BackColor.GetType());
+            UpdateUIForNewColor();
         }
 
         private void DisableMouseClicks()
@@ -329,6 +337,18 @@ namespace PowerPointLabs
 
             UpdatePanelsForColor(newColor);
             ColorSelectedShapesWithColor(newColor);
+        }
+
+        private void panel1_DragEnter(object sender, DragEventArgs e)
+        {
+            if (e.Data.GetDataPresent(_selectedColor.GetType().ToString()))
+            {
+                e.Effect = DragDropEffects.All;
+            }
+            else
+            {
+                e.Effect = DragDropEffects.None;
+            }
         }
     }
 

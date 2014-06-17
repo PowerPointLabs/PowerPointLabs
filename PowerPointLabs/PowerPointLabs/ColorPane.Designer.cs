@@ -77,6 +77,7 @@
             this.panel1.Size = new System.Drawing.Size(75, 47);
             this.panel1.TabIndex = 0;
             this.panel1.DragDrop += new System.Windows.Forms.DragEventHandler(this.panel1_DragDrop);
+            this.panel1.DragEnter += new System.Windows.Forms.DragEventHandler(this.panel1_DragEnter);
             // 
             // timer1
             // 
@@ -136,7 +137,7 @@
             this.AnalogousLighter.Size = new System.Drawing.Size(56, 19);
             this.AnalogousLighter.TabIndex = 0;
             this.AnalogousLighter.DoubleClick += new System.EventHandler(this.MatchingColorPanel_DoubleClick);
-            this.AnalogousLighter.MouseDown += new System.Windows.Forms.MouseEventHandler(this.AnalogousLighter_MouseDown);
+            this.AnalogousLighter.MouseDown += new System.Windows.Forms.MouseEventHandler(this.MatchingPanel_MouseDown);
             // 
             // AnalogousSelected
             // 
@@ -146,6 +147,7 @@
             this.AnalogousSelected.Size = new System.Drawing.Size(56, 19);
             this.AnalogousSelected.TabIndex = 1;
             this.AnalogousSelected.DoubleClick += new System.EventHandler(this.MatchingColorPanel_DoubleClick);
+            this.AnalogousSelected.MouseDown += new System.Windows.Forms.MouseEventHandler(this.MatchingPanel_MouseDown);
             // 
             // AnalogousDarker
             // 
@@ -155,6 +157,7 @@
             this.AnalogousDarker.Size = new System.Drawing.Size(56, 19);
             this.AnalogousDarker.TabIndex = 1;
             this.AnalogousDarker.DoubleClick += new System.EventHandler(this.MatchingColorPanel_DoubleClick);
+            this.AnalogousDarker.MouseDown += new System.Windows.Forms.MouseEventHandler(this.MatchingPanel_MouseDown);
             // 
             // flowLayoutPanel2
             // 
@@ -186,6 +189,7 @@
             this.ComplementaryLighter.Size = new System.Drawing.Size(56, 19);
             this.ComplementaryLighter.TabIndex = 0;
             this.ComplementaryLighter.DoubleClick += new System.EventHandler(this.MatchingColorPanel_DoubleClick);
+            this.ComplementaryLighter.MouseDown += new System.Windows.Forms.MouseEventHandler(this.MatchingPanel_MouseDown);
             // 
             // ComplementarySelected
             // 
@@ -195,6 +199,7 @@
             this.ComplementarySelected.Size = new System.Drawing.Size(56, 19);
             this.ComplementarySelected.TabIndex = 1;
             this.ComplementarySelected.DoubleClick += new System.EventHandler(this.MatchingColorPanel_DoubleClick);
+            this.ComplementarySelected.MouseDown += new System.Windows.Forms.MouseEventHandler(this.MatchingPanel_MouseDown);
             // 
             // ComplementaryDarker
             // 
@@ -204,6 +209,7 @@
             this.ComplementaryDarker.Size = new System.Drawing.Size(56, 19);
             this.ComplementaryDarker.TabIndex = 1;
             this.ComplementaryDarker.DoubleClick += new System.EventHandler(this.MatchingColorPanel_DoubleClick);
+            this.ComplementaryDarker.MouseDown += new System.Windows.Forms.MouseEventHandler(this.MatchingPanel_MouseDown);
             // 
             // flowLayoutPanel3
             // 
@@ -235,6 +241,7 @@
             this.TriadicLower.Size = new System.Drawing.Size(56, 19);
             this.TriadicLower.TabIndex = 0;
             this.TriadicLower.DoubleClick += new System.EventHandler(this.MatchingColorPanel_DoubleClick);
+            this.TriadicLower.MouseDown += new System.Windows.Forms.MouseEventHandler(this.MatchingPanel_MouseDown);
             // 
             // TriadicSelected
             // 
@@ -244,6 +251,7 @@
             this.TriadicSelected.Size = new System.Drawing.Size(56, 19);
             this.TriadicSelected.TabIndex = 1;
             this.TriadicSelected.DoubleClick += new System.EventHandler(this.MatchingColorPanel_DoubleClick);
+            this.TriadicSelected.MouseDown += new System.Windows.Forms.MouseEventHandler(this.MatchingPanel_MouseDown);
             // 
             // TriadicHigher
             // 
@@ -253,6 +261,7 @@
             this.TriadicHigher.Size = new System.Drawing.Size(56, 19);
             this.TriadicHigher.TabIndex = 1;
             this.TriadicHigher.DoubleClick += new System.EventHandler(this.MatchingColorPanel_DoubleClick);
+            this.TriadicHigher.MouseDown += new System.Windows.Forms.MouseEventHandler(this.MatchingPanel_MouseDown);
             // 
             // flowLayoutPanel4
             // 
@@ -285,6 +294,7 @@
             this.Tetradic1.Size = new System.Drawing.Size(56, 19);
             this.Tetradic1.TabIndex = 0;
             this.Tetradic1.DoubleClick += new System.EventHandler(this.MatchingColorPanel_DoubleClick);
+            this.Tetradic1.MouseDown += new System.Windows.Forms.MouseEventHandler(this.MatchingPanel_MouseDown);
             // 
             // TetradicSelected
             // 
@@ -294,6 +304,7 @@
             this.TetradicSelected.Size = new System.Drawing.Size(56, 19);
             this.TetradicSelected.TabIndex = 1;
             this.TetradicSelected.DoubleClick += new System.EventHandler(this.MatchingColorPanel_DoubleClick);
+            this.TetradicSelected.MouseDown += new System.Windows.Forms.MouseEventHandler(this.MatchingPanel_MouseDown);
             // 
             // Tetradic2
             // 
@@ -303,6 +314,7 @@
             this.Tetradic2.Size = new System.Drawing.Size(56, 19);
             this.Tetradic2.TabIndex = 1;
             this.Tetradic2.DoubleClick += new System.EventHandler(this.MatchingColorPanel_DoubleClick);
+            this.Tetradic2.MouseDown += new System.Windows.Forms.MouseEventHandler(this.MatchingPanel_MouseDown);
             // 
             // Tetradic3
             // 
@@ -312,6 +324,7 @@
             this.Tetradic3.Size = new System.Drawing.Size(56, 19);
             this.Tetradic3.TabIndex = 2;
             this.Tetradic3.DoubleClick += new System.EventHandler(this.MatchingColorPanel_DoubleClick);
+            this.Tetradic3.MouseDown += new System.Windows.Forms.MouseEventHandler(this.MatchingPanel_MouseDown);
             // 
             // GenerateButton
             // 
