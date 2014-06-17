@@ -1011,6 +1011,8 @@ namespace PowerPointLabs
             var currentSlide = PowerPointPresentation.CurrentSlide;
             if (currentSlide != null)
             {
+                // force to refresh the pane to get the latest update of script note
+                //InitializeAudioAndScript(currentSlide, true);
                 UpdateLists(currentSlide.ID);
             }
         }

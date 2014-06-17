@@ -213,15 +213,19 @@ namespace PowerPointLabs
             var activeWindow = Pres.Application.ActiveWindow;
             var tempName = Pres.Name.GetHashCode().ToString();
 
+            // if we opened a new window, associate panes with the window
+            if (!documentHashcodeMapper.ContainsKey(activeWindow))
+            {
+                // register all task panes when opening documents
+                RegisterTaskPane(new RecorderTaskPane(tempName), "Record Management", activeWindow,
+                                 TaskPaneVisibleValueChangedEventHandler, null);
+                RegisterTaskPane(new ColorPane(), "Color Panel", activeWindow, null, null);
+            }
+
             documentHashcodeMapper[activeWindow] = tempName;
 
             // extract embedded audio files to temp folder
             PrepareMediaFiles(Pres);
-
-            // register all task panes when opening documents
-            RegisterTaskPane(new RecorderTaskPane(tempName), "Record Management", activeWindow,
-                             TaskPaneVisibleValueChangedEventHandler, null);
-            RegisterTaskPane(new ColorPane(), "Color Panel", activeWindow, null, null);
         }
 
         private void ThisAddIn_PresentationClose(PowerPoint.Presentation Pres)
