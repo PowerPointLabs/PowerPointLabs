@@ -9,6 +9,7 @@ using System.Windows.Forms;
 using System.Runtime.InteropServices;
 using PowerPoint = Microsoft.Office.Interop.PowerPoint;
 using PowerPointLabs.Models;
+using System.Drawing.Drawing2D;
 
 namespace PowerPointLabs
 {
@@ -105,11 +106,107 @@ namespace PowerPointLabs
             _native.Close();
             _selectedColor = panel1.BackColor;
             brightnessBar.Value = (int)(_selectedColor.GetBrightness() * 240.0f);
+            saturationBar.Value = (int)(_selectedColor.GetSaturation() * 240.0f);
             UpdatePanelsForColor(_selectedColor);
             ColorSelectedShapesWithColor(_selectedColor);
             timer1.Stop();
+            
             //EnableMouseClicks();
         }
+
+        protected override void OnPaint(PaintEventArgs paintEvnt)
+        {
+            DrawBrightnessGradient();
+            DrawSaturationGradient();
+        }
+
+        private void DrawBrightnessGradient()
+        {
+            var dis = brightnessPanel.DisplayRectangle;
+            var screenRec = brightnessPanel.RectangleToScreen(dis);
+            var rec = brightnessPanel.Parent.RectangleToClient(screenRec);
+            brightnessPanel.Visible = false;
+            LinearGradientBrush brush = new LinearGradientBrush(
+                rec,
+                ColorHelper.ColorFromAhsb(
+                255,
+                _selectedColor.GetHue(),
+                _selectedColor.GetSaturation(),
+                0.00f),
+                ColorHelper.ColorFromAhsb(
+                255,
+                _selectedColor.GetHue(),
+                _selectedColor.GetSaturation(),
+                1.0f),
+                LinearGradientMode.Horizontal);
+            ColorBlend blend = new ColorBlend();
+            Color[] blendColors = {
+                ColorHelper.ColorFromAhsb(
+                255, 
+                _selectedColor.GetHue(),
+                _selectedColor.GetSaturation(),
+                0.0f),
+                _selectedColor,
+                ColorHelper.ColorFromAhsb(
+                255, 
+                _selectedColor.GetHue(),
+                _selectedColor.GetSaturation(),
+                1.0f)};
+            float[] positions = { 0.0f, 0.5f, 1.0f };
+            blend.Colors = blendColors;
+            blend.Positions = positions;
+
+            brush.InterpolationColors = blend;
+
+            using (Graphics g = this.CreateGraphics())
+            {
+                g.FillRectangle(brush, rec);
+            }
+        }
+
+        private void DrawSaturationGradient()
+        {
+            var dis = saturationPanel.DisplayRectangle;
+            var screenRec = saturationPanel.RectangleToScreen(dis);
+            var rec = saturationPanel.Parent.RectangleToClient(screenRec);
+            saturationPanel.Visible = false;
+            LinearGradientBrush brush = new LinearGradientBrush(
+                rec,
+                ColorHelper.ColorFromAhsb(
+                255,
+                _selectedColor.GetHue(),
+                0.0f,
+                _selectedColor.GetBrightness()),
+                ColorHelper.ColorFromAhsb(
+                255,
+                _selectedColor.GetHue(),
+                1.0f,
+                _selectedColor.GetBrightness()),
+                LinearGradientMode.Horizontal);
+            ColorBlend blend = new ColorBlend();
+            Color[] blendColors = {
+                ColorHelper.ColorFromAhsb(
+                255, 
+                _selectedColor.GetHue(),
+                0.0f,
+                _selectedColor.GetBrightness()),
+                _selectedColor,
+                ColorHelper.ColorFromAhsb(
+                255, 
+                _selectedColor.GetHue(),
+                1.0f,
+                _selectedColor.GetBrightness())};
+            float[] positions = { 0.0f, 0.5f, 1.0f };
+            blend.Colors = blendColors;
+            blend.Positions = positions;
+
+            brush.InterpolationColors = blend;
+
+            using (Graphics g = this.CreateGraphics())
+            {
+                g.FillRectangle(brush, rec);
+            }
+        } 
 
         private void GenerateButton_Click(object sender, EventArgs e)
         {
@@ -207,49 +304,31 @@ namespace PowerPointLabs
                 } 
                 catch(Exception exception)
                 {
-                    System.Diagnostics.Debug.WriteLine(exception.StackTrace);
                 }
-                
-                compareHue(newColor, _selectedColor);
-                compareSaturation(newColor, _selectedColor);
 
                 UpdatePanelsForColor(newColor);
                 ColorSelectedShapesWithColor(newColor);
             }
         }
 
-        private void compareColor(Color one, Color two)
+        private void saturationBar_ValueChanged(object sender, EventArgs e)
         {
-            compareHue(one, two);
-            compareSaturation(one, two);
-            compareBrightness(one, two);
-        }
-
-        private static void compareBrightness(Color one, Color two)
-        {
-            if (one.GetBrightness() != two.GetBrightness())
+            float newSaturation = saturationBar.Value / 240.0f;
+            Color newColor = new Color();
+            try
             {
-                System.Diagnostics.Debug.WriteLine("Brightness mismatch: " +
-                    one.GetBrightness() + "\t" + two.GetBrightness());
+                newColor = ColorHelper.ColorFromAhsb(
+                255,
+                _selectedColor.GetHue(),
+                newSaturation,
+                _selectedColor.GetBrightness());
             }
-        }
-
-        private static void compareSaturation(Color one, Color two)
-        {
-            if (one.GetSaturation() != two.GetSaturation())
+            catch (Exception exception)
             {
-                System.Diagnostics.Debug.WriteLine("Saturation mismatch: " +
-                    one.GetSaturation() + "\t" + two.GetSaturation());
             }
-        }
 
-        private static void compareHue(Color one, Color two)
-        {
-            if (one.GetHue() != two.GetHue())
-            {
-                System.Diagnostics.Debug.WriteLine("Hue mismatch: " +
-                    one.GetHue() + "\t" + two.GetHue());
-            }
+            UpdatePanelsForColor(newColor);
+            ColorSelectedShapesWithColor(newColor);
         }
     }
 

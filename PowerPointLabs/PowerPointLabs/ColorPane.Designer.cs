@@ -57,11 +57,15 @@
             this.Tetradic3 = new System.Windows.Forms.Panel();
             this.GenerateButton = new System.Windows.Forms.Button();
             this.brightnessBar = new System.Windows.Forms.TrackBar();
+            this.brightnessPanel = new System.Windows.Forms.Panel();
+            this.saturationPanel = new System.Windows.Forms.Panel();
+            this.saturationBar = new System.Windows.Forms.TrackBar();
             this.AnalogousColorPanel.SuspendLayout();
             this.flowLayoutPanel2.SuspendLayout();
             this.flowLayoutPanel3.SuspendLayout();
             this.flowLayoutPanel4.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.brightnessBar)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.saturationBar)).BeginInit();
             this.SuspendLayout();
             // 
             // panel1
@@ -109,7 +113,7 @@
             this.AnalogousColorPanel.Controls.Add(this.AnalogousLighter);
             this.AnalogousColorPanel.Controls.Add(this.AnalogousSelected);
             this.AnalogousColorPanel.Controls.Add(this.AnalogousDarker);
-            this.AnalogousColorPanel.Location = new System.Drawing.Point(20, 141);
+            this.AnalogousColorPanel.Location = new System.Drawing.Point(20, 249);
             this.AnalogousColorPanel.Name = "AnalogousColorPanel";
             this.AnalogousColorPanel.Size = new System.Drawing.Size(256, 67);
             this.AnalogousColorPanel.TabIndex = 3;
@@ -159,7 +163,7 @@
             this.flowLayoutPanel2.Controls.Add(this.ComplementaryLighter);
             this.flowLayoutPanel2.Controls.Add(this.ComplementarySelected);
             this.flowLayoutPanel2.Controls.Add(this.ComplementaryDarker);
-            this.flowLayoutPanel2.Location = new System.Drawing.Point(20, 214);
+            this.flowLayoutPanel2.Location = new System.Drawing.Point(20, 322);
             this.flowLayoutPanel2.Name = "flowLayoutPanel2";
             this.flowLayoutPanel2.Size = new System.Drawing.Size(256, 59);
             this.flowLayoutPanel2.TabIndex = 4;
@@ -208,7 +212,7 @@
             this.flowLayoutPanel3.Controls.Add(this.TriadicLower);
             this.flowLayoutPanel3.Controls.Add(this.TriadicSelected);
             this.flowLayoutPanel3.Controls.Add(this.TriadicHigher);
-            this.flowLayoutPanel3.Location = new System.Drawing.Point(20, 279);
+            this.flowLayoutPanel3.Location = new System.Drawing.Point(20, 387);
             this.flowLayoutPanel3.Name = "flowLayoutPanel3";
             this.flowLayoutPanel3.Size = new System.Drawing.Size(256, 60);
             this.flowLayoutPanel3.TabIndex = 4;
@@ -258,7 +262,7 @@
             this.flowLayoutPanel4.Controls.Add(this.TetradicSelected);
             this.flowLayoutPanel4.Controls.Add(this.Tetradic2);
             this.flowLayoutPanel4.Controls.Add(this.Tetradic3);
-            this.flowLayoutPanel4.Location = new System.Drawing.Point(20, 345);
+            this.flowLayoutPanel4.Location = new System.Drawing.Point(20, 453);
             this.flowLayoutPanel4.Name = "flowLayoutPanel4";
             this.flowLayoutPanel4.Size = new System.Drawing.Size(256, 67);
             this.flowLayoutPanel4.TabIndex = 4;
@@ -321,7 +325,7 @@
             // 
             // brightnessBar
             // 
-            this.brightnessBar.Location = new System.Drawing.Point(20, 90);
+            this.brightnessBar.Location = new System.Drawing.Point(20, 111);
             this.brightnessBar.Maximum = 240;
             this.brightnessBar.Name = "brightnessBar";
             this.brightnessBar.Size = new System.Drawing.Size(256, 45);
@@ -329,10 +333,39 @@
             this.brightnessBar.TickStyle = System.Windows.Forms.TickStyle.TopLeft;
             this.brightnessBar.ValueChanged += new System.EventHandler(this.brightnessBar_ValueChanged);
             // 
+            // brightnessPanel
+            // 
+            this.brightnessPanel.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.brightnessPanel.Location = new System.Drawing.Point(28, 95);
+            this.brightnessPanel.Name = "brightnessPanel";
+            this.brightnessPanel.Size = new System.Drawing.Size(240, 25);
+            this.brightnessPanel.TabIndex = 7;
+            // 
+            // saturationPanel
+            // 
+            this.saturationPanel.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.saturationPanel.Location = new System.Drawing.Point(29, 162);
+            this.saturationPanel.Name = "saturationPanel";
+            this.saturationPanel.Size = new System.Drawing.Size(240, 25);
+            this.saturationPanel.TabIndex = 9;
+            // 
+            // saturationBar
+            // 
+            this.saturationBar.Location = new System.Drawing.Point(21, 178);
+            this.saturationBar.Maximum = 240;
+            this.saturationBar.Name = "saturationBar";
+            this.saturationBar.Size = new System.Drawing.Size(256, 45);
+            this.saturationBar.TabIndex = 8;
+            this.saturationBar.TickStyle = System.Windows.Forms.TickStyle.TopLeft;
+            this.saturationBar.ValueChanged += new System.EventHandler(this.saturationBar_ValueChanged);
+            // 
             // ColorPane
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+            this.Controls.Add(this.saturationPanel);
+            this.Controls.Add(this.saturationBar);
+            this.Controls.Add(this.brightnessPanel);
             this.Controls.Add(this.brightnessBar);
             this.Controls.Add(this.GenerateButton);
             this.Controls.Add(this.AnalogousColorPanel);
@@ -353,6 +386,7 @@
             this.flowLayoutPanel4.ResumeLayout(false);
             this.flowLayoutPanel4.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.brightnessBar)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.saturationBar)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -388,5 +422,8 @@
         private System.Windows.Forms.Label label4;
         private System.Windows.Forms.Button GenerateButton;
         private System.Windows.Forms.TrackBar brightnessBar;
+        private System.Windows.Forms.Panel brightnessPanel;
+        private System.Windows.Forms.Panel saturationPanel;
+        private System.Windows.Forms.TrackBar saturationBar;
     }
 }
