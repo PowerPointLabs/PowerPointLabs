@@ -1096,15 +1096,11 @@ namespace PowerPointLabs
 
         #endregion
 
-        // TODO:
-        // Potential merge conflicts.
-        // --------------------------------
         public bool GetVisibilityForCombineShapes(Office.IRibbonControl control)
         {
             const string officeVersion2010 = "14.0";
             return Globals.ThisAddIn.Application.Version == officeVersion2010;
         }
-        // --------------------------------
 
         #region feature: Color
         public void ColorPickerButtonClick(Office.IRibbonControl control)

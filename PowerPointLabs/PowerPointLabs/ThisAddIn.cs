@@ -298,8 +298,6 @@ namespace PowerPointLabs
         // within different presentation.
         void ThisAddIn_NewPresentation(PowerPoint.Presentation Pres)
         {
-            try
-
             var activeWindow = Pres.Application.ActiveWindow;
             var tempName = Pres.Name.GetHashCode().ToString();
 
@@ -307,8 +305,6 @@ namespace PowerPointLabs
             
             if (Directory.Exists(tempFolderPath))
             {
-                string tempFolderPath = Path.GetTempPath() + TempFolderNamePrefix + Pres.Name.GetHashCode().ToString() + @"\";
-
                 if (Directory.Exists(tempFolderPath))
                 {
                     Directory.Delete(tempFolderPath, true);
