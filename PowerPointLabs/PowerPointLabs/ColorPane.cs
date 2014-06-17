@@ -14,6 +14,7 @@ namespace PowerPointLabs
 {
     public partial class ColorPane : UserControl
     {
+        private Color _selectedColor;
         [DllImport("Gdi32.dll", CallingConvention = CallingConvention.StdCall)]
         public static extern int GetPixel(
             System.IntPtr hdc,    // handle to DC
@@ -33,11 +34,6 @@ namespace PowerPointLabs
         public ColorPane()
         {
             InitializeComponent();
-
-            foreach (PowerPoint.Shape s in PowerPointPresentation.CurrentSlide.Shapes)
-            {
-                
-            }
         }
 
         private void button1_Click(object sender, EventArgs e)
@@ -49,6 +45,11 @@ namespace PowerPointLabs
                  new EventHandler<SysMouseEventInfo>(_native_LButtonClicked);
             //DisableMouseClicks();
 
+            SelectShapes();
+        }
+
+        private void SelectShapes()
+        {
             try
             {
                 _selectedShapes = Globals.ThisAddIn.Application.ActiveWindow.Selection.ShapeRange;
@@ -76,6 +77,7 @@ namespace PowerPointLabs
 
         private void ColorSelectedShapesWithColor(Color selectedColor)
         {
+            SelectShapes();
             if (_selectedShapes != null)
             {
                 foreach (PowerPoint.Shape s in _selectedShapes)
@@ -100,8 +102,12 @@ namespace PowerPointLabs
 
         void _native_LButtonClicked(object sender, SysMouseEventInfo e)
         {
-            timer1.Stop();
             _native.Close();
+            _selectedColor = panel1.BackColor;
+            brightnessBar.Value = (int)(_selectedColor.GetBrightness() * 239.0f);
+            UpdatePanelsForColor(_selectedColor);
+            ColorSelectedShapesWithColor(_selectedColor);
+            timer1.Stop();
             //EnableMouseClicks();
         }
 
@@ -183,6 +189,24 @@ namespace PowerPointLabs
                 }
                 return false;
             }
+        }
+
+        private void brightnessBar_ValueChanged(object sender, EventArgs e)
+        {
+            if (!timer1.Enabled)
+            {
+                float newBrightness = brightnessBar.Value / 239.0f;
+                
+                Color newColor = ColorHelper.SetBrightness(_selectedColor, newBrightness);
+                
+                if (newColor.GetSaturation() != _selectedColor.GetSaturation())
+                {
+                    newColor = ColorHelper.SetSaturation(newColor, _selectedColor.GetSaturation());
+                }
+
+                UpdatePanelsForColor(newColor);
+                ColorSelectedShapesWithColor(newColor);
+            } 
         } 
     }
 
