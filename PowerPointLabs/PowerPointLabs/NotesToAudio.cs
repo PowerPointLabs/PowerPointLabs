@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Runtime.InteropServices;
+using System.Text.RegularExpressions;
 using System.Windows.Forms;
 using PowerPointLabs.Models;
 using PowerPointLabs.SpeechEngine;
@@ -218,8 +219,19 @@ namespace PowerPointLabs
         {
             try
             {
-                String selected = Globals.ThisAddIn.Application.ActiveWindow.Selection.TextRange.Text.Trim();
-                SpeakText(selected);
+                var selected = Globals.ThisAddIn.Application.ActiveWindow.Selection.TextRange.Text.Trim();
+                var taggedText = new TaggedText(selected);
+                var splitScript = taggedText.SplitByClicks();
+
+                var completeText = string.Empty;
+                var reg = new Regex("\\.+\\s*");
+
+                foreach (var text in splitScript)
+                {
+                    completeText += reg.Replace(text, string.Empty) + ". ";
+                }
+
+                SpeakText(completeText);
             }
             catch (COMException)
             {
