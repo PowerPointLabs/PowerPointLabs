@@ -56,6 +56,12 @@ namespace PowerPointLabs.Views
         public void ForceStop()
         {
             var recorderPane = Globals.ThisAddIn.GetActivePane(Type.GetType("PowerPointLabs.RecorderTaskPane"));
+            
+            if (recorderPane == null)
+            {
+                return;
+            }
+            
             var recorder = recorderPane.Control as RecorderTaskPane;
 
             _status = ButtonStatus.Estop;
