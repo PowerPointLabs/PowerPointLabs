@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Text;
 using System.Windows.Forms;
 
 namespace PowerPointLabs.Views
@@ -17,6 +16,16 @@ namespace PowerPointLabs.Views
         {
             var dialogType = typeof(Form).Assembly.GetType(DialogTypeName);
 
+            if (message == string.Empty)
+            {
+                message = "Something went wrong.";
+            }
+
+            if (!message.EndsWith("."))
+            {
+                message = message + ".";
+            }
+
             // Create dialog instance.
             var dialog = (Form)Activator.CreateInstance(dialogType, new PropertyGrid());
             var completeMsg = message + UserFeedBack + Email;
@@ -26,7 +35,7 @@ namespace PowerPointLabs.Views
             dialogType.GetProperty("Details").SetValue(dialog,
                                                        exception.Message + "\nStack Trace:\n" + exception.StackTrace,
                                                        null);
-            dialogType.GetProperty("Message").SetValue(dialog, completeMsg.ToString(), null);
+            dialogType.GetProperty("Message").SetValue(dialog, completeMsg, null);
 
             return dialog.ShowDialog();
         }

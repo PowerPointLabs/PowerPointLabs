@@ -421,6 +421,22 @@ namespace PowerPointLabs
             return null;
         }
 
+        private void RefreshScriptList(PowerPointSlide slide)
+        {
+            var relativeID = GetRelativeSlideIndex(slide.ID);
+            var taggedNotes = new TaggedText(slide.NotesPageText.Trim());
+            List<String> splitScript = taggedNotes.SplitByClicks();
+
+            if (relativeID >= _scriptList.Count)
+            {
+                _scriptList.Add(splitScript);
+            }
+            else
+            {
+                _scriptList[relativeID] = splitScript;
+            }
+        }
+
         private void UpdateRecordList(int index, string name, string length)
         {
             // change index to 1-base
@@ -1011,6 +1027,7 @@ namespace PowerPointLabs
             var currentSlide = PowerPointPresentation.CurrentSlide;
             if (currentSlide != null)
             {
+                RefreshScriptList(currentSlide);
                 UpdateLists(currentSlide.ID);
             }
         }
@@ -1801,13 +1818,17 @@ namespace PowerPointLabs
                     // delete the item in the data structure
                     _audioList[relativeSlideID].RemoveAt(recordIndex);
 
-                    // update recoder pane
+                    // update audio list
                     UpdateRecordList(relativeSlideID);
 
-                    if (scriptIndex != -1)
+                    // update script list
+                    if (scriptIndex < _scriptList[relativeSlideID].Count)
                     {
                         UpdateScriptList(scriptIndex, null, ScriptStatus.Untracked);
                     }
+
+                    // update current script
+                    scriptDetailTextBox.Text = string.Empty;
                 }
             }
         }

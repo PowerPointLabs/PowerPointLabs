@@ -70,8 +70,20 @@ namespace PowerPointLabs.Views
         private void RecButtonClick(object sender, EventArgs e)
         {
             var recorderPane = Globals.ThisAddIn.ActivateCustomTaskPane.Control as RecorderTaskPane;
-            var click = _slideShowWindow.View.GetClickIndex();
-            var currentSlide = PowerPointSlide.FromSlideFactory(_slideShowWindow.View.Slide);
+            
+            int click;
+            PowerPointSlide currentSlide;
+
+            try
+            {
+                click = _slideShowWindow.View.GetClickIndex();
+                currentSlide = PowerPointSlide.FromSlideFactory(_slideShowWindow.View.Slide);
+            }
+            catch (COMException comException)
+            {
+                MessageBox.Show("Invalid Recording Command");
+                return;
+            }
 
             switch (_status)
             {

@@ -485,7 +485,7 @@ namespace PowerPointLabs
                 }
                 catch (Exception e)
                 {
-                    ErrorDialogWrapper.ShowDialog("Error when accessing temp folder", "Temp folder " + tempPath + " cannot be accessed." + Directory.Exists(tempPath) + "\n" + Pres.FullName, e);
+                    ErrorDialogWrapper.ShowDialog("Error when accessing temp folder", string.Empty, e);
                     throw;
                 }
 
