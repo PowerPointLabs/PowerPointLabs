@@ -322,7 +322,7 @@
             // brightnessBar
             // 
             this.brightnessBar.Location = new System.Drawing.Point(20, 90);
-            this.brightnessBar.Maximum = 239;
+            this.brightnessBar.Maximum = 240;
             this.brightnessBar.Name = "brightnessBar";
             this.brightnessBar.Size = new System.Drawing.Size(256, 45);
             this.brightnessBar.TabIndex = 6;

@@ -104,7 +104,7 @@ namespace PowerPointLabs
         {
             _native.Close();
             _selectedColor = panel1.BackColor;
-            brightnessBar.Value = (int)(_selectedColor.GetBrightness() * 239.0f);
+            brightnessBar.Value = (int)(_selectedColor.GetBrightness() * 240.0f);
             UpdatePanelsForColor(_selectedColor);
             ColorSelectedShapesWithColor(_selectedColor);
             timer1.Stop();
@@ -195,21 +195,63 @@ namespace PowerPointLabs
         {
             if (!timer1.Enabled)
             {
-                float newBrightness = brightnessBar.Value / 239.0f;
-                
-                Color newColor = ColorHelper.SetBrightness(_selectedColor, newBrightness);
-                
-                if (newColor.GetSaturation() != _selectedColor.GetSaturation())
+                float newBrightness = brightnessBar.Value / 240.0f;
+                Color newColor = new Color();
+                try
                 {
-                    newColor = ColorHelper.SetSaturation(newColor, _selectedColor.GetSaturation());
+                    newColor = ColorHelper.ColorFromAhsb(
+                    255,
+                    _selectedColor.GetHue(),
+                    _selectedColor.GetSaturation(),
+                    newBrightness);
+                } 
+                catch(Exception exception)
+                {
+                    System.Diagnostics.Debug.WriteLine(exception.StackTrace);
                 }
+                
+                compareHue(newColor, _selectedColor);
+                compareSaturation(newColor, _selectedColor);
 
                 UpdatePanelsForColor(newColor);
                 ColorSelectedShapesWithColor(newColor);
-            } 
-        } 
-    }
+            }
+        }
 
+        private void compareColor(Color one, Color two)
+        {
+            compareHue(one, two);
+            compareSaturation(one, two);
+            compareBrightness(one, two);
+        }
+
+        private static void compareBrightness(Color one, Color two)
+        {
+            if (one.GetBrightness() != two.GetBrightness())
+            {
+                System.Diagnostics.Debug.WriteLine("Brightness mismatch: " +
+                    one.GetBrightness() + "\t" + two.GetBrightness());
+            }
+        }
+
+        private static void compareSaturation(Color one, Color two)
+        {
+            if (one.GetSaturation() != two.GetSaturation())
+            {
+                System.Diagnostics.Debug.WriteLine("Saturation mismatch: " +
+                    one.GetSaturation() + "\t" + two.GetSaturation());
+            }
+        }
+
+        private static void compareHue(Color one, Color two)
+        {
+            if (one.GetHue() != two.GetHue())
+            {
+                System.Diagnostics.Debug.WriteLine("Hue mismatch: " +
+                    one.GetHue() + "\t" + two.GetHue());
+            }
+        }
+    }
 
     public class SysMouseEventInfo : EventArgs
     {
