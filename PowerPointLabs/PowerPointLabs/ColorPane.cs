@@ -394,7 +394,7 @@ namespace PowerPointLabs
                 {
                 }
 
-                ColorSelectedShapesWithColor(newColor);
+                ColorSelectedShapesWithColor(dataSource.selectedColor);
             }
         }
 

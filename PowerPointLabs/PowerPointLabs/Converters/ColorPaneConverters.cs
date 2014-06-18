@@ -154,8 +154,7 @@ namespace PowerPointLabs.Converters
 
         public object ConvertBack(object value, Type targetType, object parameter, System.Globalization.CultureInfo culture)
         {
-            Color changedColor = (Color)value;
-            return changedColor.GetBrightness();
+            throw new NotImplementedException();
         }
     }
     class selectedColorToSaturationValue : IValueConverter
@@ -168,8 +167,7 @@ namespace PowerPointLabs.Converters
 
         public object ConvertBack(object value, Type targetType, object parameter, System.Globalization.CultureInfo culture)
         {
-            Color changedColor = (Color)value;
-            return changedColor.GetSaturation();
+            throw new NotImplementedException();
         }
     }
 }
