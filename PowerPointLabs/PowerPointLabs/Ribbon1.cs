@@ -56,8 +56,7 @@ namespace PowerPointLabs
         public bool removeCaptionsEnabled = true;
         public bool removeAudioEnabled = true;
         
-        public bool _recorderPaneVisible = false;
-        private bool _firstLoadRecorder = true;
+        public bool RecorderPaneVisible = false;
 
         private bool _previewCurrentSlide;
         

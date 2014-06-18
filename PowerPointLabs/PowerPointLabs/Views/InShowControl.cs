@@ -87,7 +87,7 @@ namespace PowerPointLabs.Views
                 click = _slideShowWindow.View.GetClickIndex();
                 currentSlide = PowerPointSlide.FromSlideFactory(_slideShowWindow.View.Slide);
             }
-            catch (COMException comException)
+            catch (COMException)
             {
                 MessageBox.Show("Invalid Recording Command");
                 return;

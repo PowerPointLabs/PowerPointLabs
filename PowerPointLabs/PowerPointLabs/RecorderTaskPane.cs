@@ -1133,7 +1133,7 @@ namespace PowerPointLabs
                     }
                 }
             }
-            catch (ThreadInterruptedException interrupt)
+            catch (ThreadInterruptedException)
             {
             }
         }
@@ -1429,10 +1429,10 @@ namespace PowerPointLabs
                     {
                         newRec.EmbedOnSlide(currentSlide, scriptIndex);
 
-                        if (!Globals.ThisAddIn.ribbon.removeAudioEnabled)
+                        if (!Globals.ThisAddIn.Ribbon.removeAudioEnabled)
                         {
-                            Globals.ThisAddIn.ribbon.removeAudioEnabled = true;
-                            Globals.ThisAddIn.ribbon.RefreshRibbonControl("removeAudio");
+                            Globals.ThisAddIn.Ribbon.removeAudioEnabled = true;
+                            Globals.ThisAddIn.Ribbon.RefreshRibbonControl("removeAudio");
                         }
                     }
                     else
