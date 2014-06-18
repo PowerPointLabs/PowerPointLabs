@@ -129,32 +129,32 @@ namespace PowerPointLabs
                 finalAngle -= 360.0f;
             }
 
-            Color finalColor = ColorFromHSB(finalAngle, originalColor.GetSaturation(), originalColor.GetBrightness());
+            Color finalColor = ColorFromAhsb(255, finalAngle, originalColor.GetSaturation(), originalColor.GetBrightness());
 
             return finalColor;
         }
 
-        public static Color ColorFromHSB(float hue, float saturation, float value)
-        {
-            int hi = Convert.ToInt32(Math.Floor(hue / 60)) % 6;
-            double f = hue / 60 - Math.Floor(hue / 60);
+        //public static Color ColorFromHSB(float hue, float saturation, float value)
+        //{
+        //    int hi = Convert.ToInt32(Math.Floor(hue / 60)) % 6;
+        //    double f = hue / 60 - Math.Floor(hue / 60);
 
-            value = value * 255;
-            int v = Convert.ToInt32(value);
-            int p = Convert.ToInt32(value * (1 - saturation));
-            int q = Convert.ToInt32(value * (1 - f * saturation));
-            int t = Convert.ToInt32(value * (1 - (1 - f) * saturation));
+        //    value = value * 255;
+        //    int v = Convert.ToInt32(value);
+        //    int p = Convert.ToInt32(value * (1 - saturation));
+        //    int q = Convert.ToInt32(value * (1 - f * saturation));
+        //    int t = Convert.ToInt32(value * (1 - (1 - f) * saturation));
 
-            switch (hi)
-            {
-                case 0: return Color.FromArgb(255, v, t, p);
-                case 1: return Color.FromArgb(255, q, v, p);
-                case 2: return Color.FromArgb(255, p, v, t); 
-                case 3: return Color.FromArgb(255, p, q, v);
-                case 4: return Color.FromArgb(255, t, p, v);
-                default: return Color.FromArgb(255, v, p, q); 
-            }
-        }
+        //    switch (hi)
+        //    {
+        //        case 0: return Color.FromArgb(255, v, t, p);
+        //        case 1: return Color.FromArgb(255, q, v, p);
+        //        case 2: return Color.FromArgb(255, p, v, t); 
+        //        case 3: return Color.FromArgb(255, p, q, v);
+        //        case 4: return Color.FromArgb(255, t, p, v);
+        //        default: return Color.FromArgb(255, v, p, q); 
+        //    }
+        //}
 
         public static Color GetComplementaryColor(Color originalColor)
         {
