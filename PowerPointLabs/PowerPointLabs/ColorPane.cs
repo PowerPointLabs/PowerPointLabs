@@ -10,24 +10,13 @@ using System.Runtime.InteropServices;
 using PowerPoint = Microsoft.Office.Interop.PowerPoint;
 using PowerPointLabs.Models;
 using System.Drawing.Drawing2D;
+using PPExtraEventHelper;
 
 namespace PowerPointLabs
 {
     public partial class ColorPane : UserControl
     {
         private Color _selectedColor;
-        [DllImport("Gdi32.dll", CallingConvention = CallingConvention.StdCall)]
-        public static extern int GetPixel(
-            System.IntPtr hdc,    // handle to DC
-            int nXPos,  // x-coordinate of pixel
-            int nYPos   // y-coordinate of pixel
-        );
-
-        [DllImport("User32.dll", CallingConvention = CallingConvention.StdCall)]
-        public static extern IntPtr GetDC(IntPtr wnd);
-
-        [DllImport("User32.dll", CallingConvention = CallingConvention.StdCall)]
-        public static extern void ReleaseDC(IntPtr dc);
 
         LMouseListener _native;
 
@@ -36,7 +25,12 @@ namespace PowerPointLabs
         public ColorPane()
         {
             InitializeComponent();
-            this.panel2.DataBindings.Add(new Binding("BackColor", dataSource, "selectedColor", false, DataSourceUpdateMode.OnPropertyChanged));
+            this.panel1.DataBindings.Add(new Binding(
+                "BackColor", 
+                dataSource, 
+                "selectedColor", 
+                false, 
+                DataSourceUpdateMode.OnPropertyChanged));
         }
 
         private void button1_Click(object sender, EventArgs e)
@@ -72,11 +66,10 @@ namespace PowerPointLabs
         private void timer1_Tick(object sender, EventArgs e)
         {
             Point p = Control.MousePosition;
-            IntPtr dc = GetDC(IntPtr.Zero);
-            this.panel1.BackColor = ColorTranslator.FromWin32(GetPixel(dc, p.X, p.Y));
+            IntPtr dc = Native.GetDC(IntPtr.Zero);
+            dataSource.selectedColor = ColorTranslator.FromWin32(Native.GetPixel(dc, p.X, p.Y));
             UpdatePanelsForColor(panel1.BackColor);
             ColorSelectedShapesWithColor(panel1.BackColor);
-            dataSource.selectedColor = this.panel1.BackColor;
         }
 
         private void ColorSelectedShapesWithColor(Color selectedColor)
