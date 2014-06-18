@@ -16,6 +16,8 @@ namespace PowerPointLabs
 {
     public partial class ColorPane : UserControl
     {
+        private Color _originalColor;
+
         LMouseListener _native;
 
         PowerPoint.ShapeRange _selectedShapes;
@@ -187,6 +189,7 @@ namespace PowerPointLabs
         void _native_LButtonClicked(object sender, SysMouseEventInfo e)
         {
             _native.Close();
+            _originalColor = panel1.BackColor;
             UpdateUIForNewColor();
             timer1.Stop();
 
@@ -195,20 +198,30 @@ namespace PowerPointLabs
 
         private void UpdateUIForNewColor()
         {
-            brightnessBar.Value = (int)(dataSource.selectedColor.GetBrightness() * 240.0f);
-            saturationBar.Value = (int)(dataSource.selectedColor.GetSaturation() * 240.0f);
+            UpdateBrightnessBar(dataSource.selectedColor);
+            UpdateSaturationBar(dataSource.selectedColor);
             ColorSelectedShapesWithColor(dataSource.selectedColor);
-            DrawSaturationGradient();
-            DrawBrightnessGradient();
+        }
+
+        private void UpdateBrightnessBar(Color color)
+        {
+            brightnessBar.Value = (int)(color.GetBrightness() * 240.0f);
+            DrawBrightnessGradient(color);
+        }
+
+        private void UpdateSaturationBar(Color color)
+        {
+            saturationBar.Value = (int)(color.GetSaturation() * 240.0f);
+            DrawSaturationGradient(color);
         }
 
         protected override void OnPaint(PaintEventArgs paintEvnt)
         {
-            DrawBrightnessGradient();
-            DrawSaturationGradient();
+            DrawBrightnessGradient(dataSource.selectedColor);
+            DrawSaturationGradient(dataSource.selectedColor);
         }
 
-        private void DrawBrightnessGradient()
+        private void DrawBrightnessGradient(Color color)
         {
             var dis = brightnessPanel.DisplayRectangle;
             var screenRec = brightnessPanel.RectangleToScreen(dis);
@@ -218,27 +231,27 @@ namespace PowerPointLabs
                 rec,
                 ColorHelper.ColorFromAhsb(
                 255,
-                dataSource.selectedColor.GetHue(),
-                dataSource.selectedColor.GetSaturation(),
+                color.GetHue(),
+                color.GetSaturation(),
                 0.00f),
                 ColorHelper.ColorFromAhsb(
                 255,
-                dataSource.selectedColor.GetHue(),
-                dataSource.selectedColor.GetSaturation(),
+                color.GetHue(),
+                color.GetSaturation(),
                 1.0f),
                 LinearGradientMode.Horizontal);
             ColorBlend blend = new ColorBlend();
             Color[] blendColors = {
                 ColorHelper.ColorFromAhsb(
                 255, 
-                dataSource.selectedColor.GetHue(),
-                dataSource.selectedColor.GetSaturation(),
+                color.GetHue(),
+                color.GetSaturation(),
                 0.0f),
-                dataSource.selectedColor,
+                color,
                 ColorHelper.ColorFromAhsb(
                 255, 
-                dataSource.selectedColor.GetHue(),
-                dataSource.selectedColor.GetSaturation(),
+                color.GetHue(),
+                color.GetSaturation(),
                 1.0f)};
             float[] positions = { 0.0f, 0.5f, 1.0f };
             blend.Colors = blendColors;
@@ -252,7 +265,7 @@ namespace PowerPointLabs
             }
         }
 
-        private void DrawSaturationGradient()
+        private void DrawSaturationGradient(Color color)
         {
             var dis = saturationPanel.DisplayRectangle;
             var screenRec = saturationPanel.RectangleToScreen(dis);
@@ -262,28 +275,28 @@ namespace PowerPointLabs
                 rec,
                 ColorHelper.ColorFromAhsb(
                 255,
-                dataSource.selectedColor.GetHue(),
+                color.GetHue(),
                 0.0f,
-                dataSource.selectedColor.GetBrightness()),
+                color.GetBrightness()),
                 ColorHelper.ColorFromAhsb(
                 255,
-                dataSource.selectedColor.GetHue(),
+                color.GetHue(),
                 1.0f,
-                dataSource.selectedColor.GetBrightness()),
+                color.GetBrightness()),
                 LinearGradientMode.Horizontal);
             ColorBlend blend = new ColorBlend();
             Color[] blendColors = {
                 ColorHelper.ColorFromAhsb(
                 255, 
-                dataSource.selectedColor.GetHue(),
+                color.GetHue(),
                 0.0f,
-                dataSource.selectedColor.GetBrightness()),
-                dataSource.selectedColor,
+                color.GetBrightness()),
+                color,
                 ColorHelper.ColorFromAhsb(
                 255, 
-                dataSource.selectedColor.GetHue(),
+                color.GetHue(),
                 1.0f,
-                dataSource.selectedColor.GetBrightness())};
+                color.GetBrightness())};
             float[] positions = { 0.0f, 0.5f, 1.0f };
             blend.Colors = blendColors;
             blend.Positions = positions;
@@ -355,9 +368,18 @@ namespace PowerPointLabs
                 {
                     newColor = ColorHelper.ColorFromAhsb(
                     255,
-                    dataSource.selectedColor.GetHue(),
+                    _originalColor.GetHue(),
                     dataSource.selectedColor.GetSaturation(),
                     newBrightness);
+
+                    brightnessBar.ValueChanged -= brightnessBar_ValueChanged;
+                    saturationBar.ValueChanged -= saturationBar_ValueChanged;
+
+                    dataSource.selectedColor = newColor;
+                    UpdateSaturationBar(newColor);
+
+                    brightnessBar.ValueChanged += brightnessBar_ValueChanged;
+                    saturationBar.ValueChanged += saturationBar_ValueChanged;
                 }
                 catch (Exception exception)
                 {
@@ -375,9 +397,18 @@ namespace PowerPointLabs
             {
                 newColor = ColorHelper.ColorFromAhsb(
                 255,
-                dataSource.selectedColor.GetHue(),
+                _originalColor.GetHue(),
                 newSaturation,
                 dataSource.selectedColor.GetBrightness());
+
+                brightnessBar.ValueChanged -= brightnessBar_ValueChanged;
+                saturationBar.ValueChanged -= saturationBar_ValueChanged;
+
+                dataSource.selectedColor = newColor;
+                UpdateBrightnessBar(newColor);
+
+                brightnessBar.ValueChanged += brightnessBar_ValueChanged;
+                saturationBar.ValueChanged += saturationBar_ValueChanged;
             }
             catch (Exception exception)
             {
