@@ -32,9 +32,11 @@ namespace PowerPointLabs
         LMouseListener _native;
 
         PowerPoint.ShapeRange _selectedShapes;
+        ColorDataSource dataSource = new ColorDataSource();
         public ColorPane()
         {
             InitializeComponent();
+            this.panel2.DataBindings.Add(new Binding("BackColor", dataSource, "selectedColor", false, DataSourceUpdateMode.OnPropertyChanged));
         }
 
         private void button1_Click(object sender, EventArgs e)
@@ -74,6 +76,7 @@ namespace PowerPointLabs
             this.panel1.BackColor = ColorTranslator.FromWin32(GetPixel(dc, p.X, p.Y));
             UpdatePanelsForColor(panel1.BackColor);
             ColorSelectedShapesWithColor(panel1.BackColor);
+            dataSource.selectedColor = this.panel1.BackColor;
         }
 
         private void ColorSelectedShapesWithColor(Color selectedColor)

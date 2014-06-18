@@ -60,6 +60,7 @@
             this.brightnessPanel = new System.Windows.Forms.Panel();
             this.saturationPanel = new System.Windows.Forms.Panel();
             this.saturationBar = new System.Windows.Forms.TrackBar();
+            this.panel2 = new System.Windows.Forms.Panel();
             this.AnalogousColorPanel.SuspendLayout();
             this.flowLayoutPanel2.SuspendLayout();
             this.flowLayoutPanel3.SuspendLayout();
@@ -349,7 +350,7 @@
             // brightnessPanel
             // 
             this.brightnessPanel.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.brightnessPanel.Location = new System.Drawing.Point(28, 95);
+            this.brightnessPanel.Location = new System.Drawing.Point(28, 94);
             this.brightnessPanel.Name = "brightnessPanel";
             this.brightnessPanel.Size = new System.Drawing.Size(240, 25);
             this.brightnessPanel.TabIndex = 7;
@@ -372,22 +373,30 @@
             this.saturationBar.TickStyle = System.Windows.Forms.TickStyle.TopLeft;
             this.saturationBar.ValueChanged += new System.EventHandler(this.saturationBar_ValueChanged);
             // 
+            // panel2
+            // 
+            this.panel2.Location = new System.Drawing.Point(86, 541);
+            this.panel2.Name = "panel2";
+            this.panel2.Size = new System.Drawing.Size(123, 48);
+            this.panel2.TabIndex = 10;
+            // 
             // ColorPane
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.Controls.Add(this.saturationPanel);
-            this.Controls.Add(this.saturationBar);
-            this.Controls.Add(this.brightnessPanel);
-            this.Controls.Add(this.brightnessBar);
             this.Controls.Add(this.GenerateButton);
             this.Controls.Add(this.AnalogousColorPanel);
             this.Controls.Add(this.button2);
             this.Controls.Add(this.button1);
             this.Controls.Add(this.flowLayoutPanel4);
+            this.Controls.Add(this.panel2);
             this.Controls.Add(this.flowLayoutPanel3);
             this.Controls.Add(this.flowLayoutPanel2);
             this.Controls.Add(this.panel1);
+            this.Controls.Add(this.saturationPanel);
+            this.Controls.Add(this.brightnessPanel);
+            this.Controls.Add(this.brightnessBar);
+            this.Controls.Add(this.saturationBar);
             this.Name = "ColorPane";
             this.Size = new System.Drawing.Size(304, 635);
             this.AnalogousColorPanel.ResumeLayout(false);
@@ -438,5 +447,6 @@
         private System.Windows.Forms.Panel brightnessPanel;
         private System.Windows.Forms.Panel saturationPanel;
         private System.Windows.Forms.TrackBar saturationBar;
+        private System.Windows.Forms.Panel panel2;
     }
 }

@@ -220,6 +220,7 @@
     <Compile Include="AudioMisc\AudioHelper.cs" />
     <Compile Include="AutoAnimate.cs" />
     <Compile Include="AutoZoom.cs" />
+    <Compile Include="ColorDataSource.cs" />
     <Compile Include="ColorHelper.cs" />
     <Compile Include="ColorPane.cs">
       <SubType>UserControl</SubType>
@@ -333,6 +334,8 @@
       <DependentUpon>ColorPane.cs</DependentUpon>
     </EmbeddedResource>
     <None Include="packages.config" />
+    <None Include="Properties\DataSources\ColorDataSource.datasource" />
+    <None Include="Properties\DataSources\ColorPane.datasource" />
     <None Include="Resources\Record.png" />
     <None Include="Resources\Stop.png" />
     <None Include="Resources\Play.png" />
