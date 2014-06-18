@@ -30,8 +30,6 @@ namespace PowerPointLabs
                                     string> _documentHashcodeMapper = new Dictionary<PowerPoint.DocumentWindow,
                                                                                      string>();
 
-        private bool _shareWnd = false;
-
         public Ribbon1 Ribbon;
 
         # region Powerpoint Application Event Handlers
@@ -207,6 +205,7 @@ namespace PowerPointLabs
             RegisterTaskPane(new RecorderTaskPane(tempName), "Record Management", activeWindow,
                              TaskPaneVisibleValueChangedEventHandler, null);
             RegisterTaskPane(new ColorPane(), "Color Panel", activeWindow, null, null);
+            RegisterTaskPane(new CustomShapePane(), "Custom Shape Management", activeWindow, null, null);
         }
 
         // solve new un-modified unsave problem
@@ -237,6 +236,7 @@ namespace PowerPointLabs
                 RegisterTaskPane(new RecorderTaskPane(tempName), "Record Management", activeWindow,
                                  TaskPaneVisibleValueChangedEventHandler, null);
                 RegisterTaskPane(new ColorPane(), "Color Panel", activeWindow, null, null);
+                RegisterTaskPane(new CustomShapePane(), "Custom Shape Management", activeWindow, null, null);
 
                 _documentHashcodeMapper[activeWindow] = tempName;
             }

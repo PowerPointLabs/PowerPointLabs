@@ -854,7 +854,6 @@ namespace PowerPointLabs
             }
         }
 
-        # region AudioRecord Button Callbacks
         public void RecManagementClick(Office.IRibbonControl control)
         {
             var recorderPane = Globals.ThisAddIn.GetActivePane(Type.GetType("PowerPointLabs.RecorderTaskPane"));
@@ -868,12 +867,23 @@ namespace PowerPointLabs
             {
                 // fire the pane visble change event
                 recorderPane.Visible = true;
-                
+
                 // reload the pane
                 recorder.RecorderPaneReload();
             }
         }
-        # endregion
+
+        public void CustomShapeButtonClick(Office.IRibbonControl control)
+        {
+            var customShapePane = Globals.ThisAddIn.GetActivePane(Type.GetType("PowerPointLabs.CustomShapePane"));
+
+            // if currently the pane is hidden, show the pane
+            if (!customShapePane.Visible)
+            {
+                // fire the pane visble change event
+                customShapePane.Visible = true;
+            }
+        }
 
         #region NotesToAudio Button Callbacks
         public void SpeakSelectedTextClick(Office.IRibbonControl control)

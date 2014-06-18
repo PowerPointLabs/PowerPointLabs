@@ -190,6 +190,15 @@
                   supertip="Opens Custom Color Picker"
                   onAction="ColorPickerButtonClick"/>
         </group>
+        <group id="CustomShape"
+               label="Custom Shape Management"
+               visible="true">
+          <button id="CustomeShapeButton"
+                  label="Custom Shape"
+                  size="large"
+                  supertip="Manage your custom shapes on the fly."
+                  onAction="CustomShapeButtonClick"/>
+        </group>
         <group id="PPTLabsHelp"
                label="Help"
                visible="true">
