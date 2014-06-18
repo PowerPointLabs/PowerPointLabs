@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Drawing;
-using System.Data;
 using System.Linq;
 using System.Text;
 using System.Windows.Forms;
@@ -11,13 +10,12 @@ using PowerPoint = Microsoft.Office.Interop.PowerPoint;
 using PowerPointLabs.Models;
 using System.Drawing.Drawing2D;
 using PPExtraEventHelper;
+using Converters = PowerPointLabs.Converters;
 
 namespace PowerPointLabs
 {
     public partial class ColorPane : UserControl
     {
-        private Color _selectedColor;
-
         LMouseListener _native;
 
         PowerPoint.ShapeRange _selectedShapes;
@@ -25,13 +23,104 @@ namespace PowerPointLabs
         public ColorPane()
         {
             InitializeComponent();
-            this.panel1.DataBindings.Add(new Binding(
-                "BackColor", 
-                dataSource, 
-                "selectedColor", 
-                false, 
-                DataSourceUpdateMode.OnPropertyChanged));
+
+            bindDataToPanels();
+
         }
+
+        #region DataBindings
+        private void bindDataToPanels()
+        {
+            this.panel1.DataBindings.Add(new Binding(
+                "BackColor",
+                dataSource,
+                "selectedColor",
+                false,
+                DataSourceUpdateMode.OnPropertyChanged));
+
+            this.AnalogousSelected.DataBindings.Add(new Binding(
+                "BackColor",
+                dataSource,
+                "selectedColor",
+                false,
+                DataSourceUpdateMode.OnPropertyChanged));
+
+            this.AnalogousLighter.DataBindings.Add(new CustomBinding(
+                "BackColor",
+                dataSource,
+                "selectedColor",
+                new Converters.selectedColorToAnalogousLower()));
+
+            this.AnalogousDarker.DataBindings.Add(new CustomBinding(
+                "BackColor",
+                dataSource,
+                "selectedColor",
+                new Converters.selectedColorToAnalogousHigher()));
+
+            this.ComplementarySelected.DataBindings.Add(new CustomBinding(
+                "BackColor",
+                dataSource,
+                "selectedColor",
+                new Converters.selectedColorToComplementaryColor()));
+
+            this.ComplementaryLighter.DataBindings.Add(new CustomBinding(
+                "BackColor",
+                dataSource,
+                "selectedColor",
+                new Converters.selectedColorToSplitComplementaryLower()));
+
+            this.ComplementaryDarker.DataBindings.Add(new CustomBinding(
+                "BackColor",
+                dataSource,
+                "selectedColor",
+                new Converters.selectedColorToSplitComplementaryHigher()));
+
+            this.TriadicSelected.DataBindings.Add(new Binding(
+                "BackColor",
+                dataSource,
+                "selectedColor",
+                false,
+                DataSourceUpdateMode.OnPropertyChanged));
+
+            this.TriadicLower.DataBindings.Add(new CustomBinding(
+                "BackColor",
+                dataSource,
+                "selectedColor",
+                new Converters.selectedColorToTriadicLower()));
+
+            this.TriadicHigher.DataBindings.Add(new CustomBinding(
+                "BackColor",
+                dataSource,
+                "selectedColor",
+                new Converters.selectedColorToTriadicHigher()));
+
+            this.TetradicSelected.DataBindings.Add(new Binding(
+                "BackColor",
+                dataSource,
+                "selectedColor",
+                false,
+                DataSourceUpdateMode.OnPropertyChanged));
+
+            this.Tetradic1.DataBindings.Add(new CustomBinding(
+                "BackColor",
+                dataSource,
+                "selectedColor",
+                new Converters.selectedColorToTetradicOne()));
+
+            this.Tetradic2.DataBindings.Add(new CustomBinding(
+                            "BackColor",
+                            dataSource,
+                            "selectedColor",
+                            new Converters.selectedColorToTetradicTwo()));
+
+            this.Tetradic3.DataBindings.Add(new CustomBinding(
+                            "BackColor",
+                            dataSource,
+                            "selectedColor",
+                            new Converters.selectedColorToTetradicThree()));
+        }
+
+        #endregion
 
         private void button1_Click(object sender, EventArgs e)
         {
@@ -68,7 +157,6 @@ namespace PowerPointLabs
             Point p = Control.MousePosition;
             IntPtr dc = Native.GetDC(IntPtr.Zero);
             dataSource.selectedColor = ColorTranslator.FromWin32(Native.GetPixel(dc, p.X, p.Y));
-            UpdatePanelsForColor(panel1.BackColor);
             ColorSelectedShapesWithColor(panel1.BackColor);
         }
 
@@ -93,7 +181,6 @@ namespace PowerPointLabs
         {
             Color selectedColor = ((Panel)sender).BackColor;
 
-            UpdatePanelsForColor(selectedColor);
             ColorSelectedShapesWithColor(selectedColor);
         }
 
@@ -102,17 +189,15 @@ namespace PowerPointLabs
             _native.Close();
             UpdateUIForNewColor();
             timer1.Stop();
-            
+
             //EnableMouseClicks();
         }
 
         private void UpdateUIForNewColor()
         {
-            _selectedColor = panel1.BackColor;
-            brightnessBar.Value = (int)(_selectedColor.GetBrightness() * 240.0f);
-            saturationBar.Value = (int)(_selectedColor.GetSaturation() * 240.0f);
-            UpdatePanelsForColor(_selectedColor);
-            ColorSelectedShapesWithColor(_selectedColor);
+            brightnessBar.Value = (int)(dataSource.selectedColor.GetBrightness() * 240.0f);
+            saturationBar.Value = (int)(dataSource.selectedColor.GetSaturation() * 240.0f);
+            ColorSelectedShapesWithColor(dataSource.selectedColor);
             DrawSaturationGradient();
             DrawBrightnessGradient();
         }
@@ -133,27 +218,27 @@ namespace PowerPointLabs
                 rec,
                 ColorHelper.ColorFromAhsb(
                 255,
-                _selectedColor.GetHue(),
-                _selectedColor.GetSaturation(),
+                dataSource.selectedColor.GetHue(),
+                dataSource.selectedColor.GetSaturation(),
                 0.00f),
                 ColorHelper.ColorFromAhsb(
                 255,
-                _selectedColor.GetHue(),
-                _selectedColor.GetSaturation(),
+                dataSource.selectedColor.GetHue(),
+                dataSource.selectedColor.GetSaturation(),
                 1.0f),
                 LinearGradientMode.Horizontal);
             ColorBlend blend = new ColorBlend();
             Color[] blendColors = {
                 ColorHelper.ColorFromAhsb(
                 255, 
-                _selectedColor.GetHue(),
-                _selectedColor.GetSaturation(),
+                dataSource.selectedColor.GetHue(),
+                dataSource.selectedColor.GetSaturation(),
                 0.0f),
-                _selectedColor,
+                dataSource.selectedColor,
                 ColorHelper.ColorFromAhsb(
                 255, 
-                _selectedColor.GetHue(),
-                _selectedColor.GetSaturation(),
+                dataSource.selectedColor.GetHue(),
+                dataSource.selectedColor.GetSaturation(),
                 1.0f)};
             float[] positions = { 0.0f, 0.5f, 1.0f };
             blend.Colors = blendColors;
@@ -177,28 +262,28 @@ namespace PowerPointLabs
                 rec,
                 ColorHelper.ColorFromAhsb(
                 255,
-                _selectedColor.GetHue(),
+                dataSource.selectedColor.GetHue(),
                 0.0f,
-                _selectedColor.GetBrightness()),
+                dataSource.selectedColor.GetBrightness()),
                 ColorHelper.ColorFromAhsb(
                 255,
-                _selectedColor.GetHue(),
+                dataSource.selectedColor.GetHue(),
                 1.0f,
-                _selectedColor.GetBrightness()),
+                dataSource.selectedColor.GetBrightness()),
                 LinearGradientMode.Horizontal);
             ColorBlend blend = new ColorBlend();
             Color[] blendColors = {
                 ColorHelper.ColorFromAhsb(
                 255, 
-                _selectedColor.GetHue(),
+                dataSource.selectedColor.GetHue(),
                 0.0f,
-                _selectedColor.GetBrightness()),
-                _selectedColor,
+                dataSource.selectedColor.GetBrightness()),
+                dataSource.selectedColor,
                 ColorHelper.ColorFromAhsb(
                 255, 
-                _selectedColor.GetHue(),
+                dataSource.selectedColor.GetHue(),
                 1.0f,
-                _selectedColor.GetBrightness())};
+                dataSource.selectedColor.GetBrightness())};
             float[] positions = { 0.0f, 0.5f, 1.0f };
             blend.Colors = blendColors;
             blend.Positions = positions;
@@ -209,38 +294,6 @@ namespace PowerPointLabs
             {
                 g.FillRectangle(brush, rec);
             }
-        } 
-
-        private void GenerateButton_Click(object sender, EventArgs e)
-        {
-            UpdatePanelsForColor(panel1.BackColor);
-        }
-
-        private void UpdatePanelsForColor(Color selectedColor)
-        {
-            panel1.BackColor = selectedColor;
-            Color complementaryColor = ColorHelper.GetComplementaryColor(selectedColor);
-
-            List<Color> analogousColors = ColorHelper.GetAnalogousColorsForColor(selectedColor);
-            AnalogousLighter.BackColor = analogousColors[0];
-            AnalogousDarker.BackColor = analogousColors[1];
-            AnalogousSelected.BackColor = selectedColor;
-
-            List<Color> complementaryColors = ColorHelper.GetSplitComplementaryColorsForColor(selectedColor);
-            ComplementaryLighter.BackColor = complementaryColors[0];
-            ComplementaryDarker.BackColor = complementaryColors[1];
-            ComplementarySelected.BackColor = complementaryColor;
-
-            List<Color> triadicColors = ColorHelper.GetTriadicColorsForColor(selectedColor);
-            TriadicLower.BackColor = triadicColors[0];
-            TriadicHigher.BackColor = triadicColors[1];
-            TriadicSelected.BackColor = selectedColor;
-
-            List<Color> tetradicColors = ColorHelper.GetTetradicColorsForColor(selectedColor);
-            Tetradic1.BackColor = tetradicColors[0];
-            Tetradic2.BackColor = tetradicColors[1];
-            Tetradic3.BackColor = tetradicColors[2];
-            TetradicSelected.BackColor = selectedColor;
         }
 
         private void MatchingPanel_MouseDown(object sender, MouseEventArgs e)
@@ -302,15 +355,14 @@ namespace PowerPointLabs
                 {
                     newColor = ColorHelper.ColorFromAhsb(
                     255,
-                    _selectedColor.GetHue(),
-                    _selectedColor.GetSaturation(),
+                    dataSource.selectedColor.GetHue(),
+                    dataSource.selectedColor.GetSaturation(),
                     newBrightness);
-                } 
-                catch(Exception exception)
+                }
+                catch (Exception exception)
                 {
                 }
 
-                UpdatePanelsForColor(newColor);
                 ColorSelectedShapesWithColor(newColor);
             }
         }
@@ -323,21 +375,20 @@ namespace PowerPointLabs
             {
                 newColor = ColorHelper.ColorFromAhsb(
                 255,
-                _selectedColor.GetHue(),
+                dataSource.selectedColor.GetHue(),
                 newSaturation,
-                _selectedColor.GetBrightness());
+                dataSource.selectedColor.GetBrightness());
             }
             catch (Exception exception)
             {
             }
 
-            UpdatePanelsForColor(newColor);
             ColorSelectedShapesWithColor(newColor);
         }
 
         private void panel1_DragEnter(object sender, DragEventArgs e)
         {
-            if (e.Data.GetDataPresent(_selectedColor.GetType().ToString()))
+            if (e.Data.GetDataPresent(dataSource.selectedColor.GetType().ToString()))
             {
                 e.Effect = DragDropEffects.All;
             }

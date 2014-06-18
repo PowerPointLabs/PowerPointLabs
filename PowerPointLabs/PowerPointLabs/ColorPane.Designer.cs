@@ -55,7 +55,6 @@
             this.TetradicSelected = new System.Windows.Forms.Panel();
             this.Tetradic2 = new System.Windows.Forms.Panel();
             this.Tetradic3 = new System.Windows.Forms.Panel();
-            this.GenerateButton = new System.Windows.Forms.Button();
             this.brightnessBar = new System.Windows.Forms.TrackBar();
             this.brightnessPanel = new System.Windows.Forms.Panel();
             this.saturationPanel = new System.Windows.Forms.Panel();
@@ -326,16 +325,6 @@
             this.Tetradic3.DoubleClick += new System.EventHandler(this.MatchingColorPanel_DoubleClick);
             this.Tetradic3.MouseDown += new System.Windows.Forms.MouseEventHandler(this.MatchingPanel_MouseDown);
             // 
-            // GenerateButton
-            // 
-            this.GenerateButton.Location = new System.Drawing.Point(101, 45);
-            this.GenerateButton.Name = "GenerateButton";
-            this.GenerateButton.Size = new System.Drawing.Size(75, 23);
-            this.GenerateButton.TabIndex = 5;
-            this.GenerateButton.Text = "Generate";
-            this.GenerateButton.UseVisualStyleBackColor = true;
-            this.GenerateButton.Click += new System.EventHandler(this.GenerateButton_Click);
-            // 
             // brightnessBar
             // 
             this.brightnessBar.Location = new System.Drawing.Point(20, 111);
@@ -376,7 +365,6 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.Controls.Add(this.GenerateButton);
             this.Controls.Add(this.AnalogousColorPanel);
             this.Controls.Add(this.button2);
             this.Controls.Add(this.button1);
@@ -433,7 +421,6 @@
         private System.Windows.Forms.Label label2;
         private System.Windows.Forms.Label label3;
         private System.Windows.Forms.Label label4;
-        private System.Windows.Forms.Button GenerateButton;
         private System.Windows.Forms.TrackBar brightnessBar;
         private System.Windows.Forms.Panel brightnessPanel;
         private System.Windows.Forms.Panel saturationPanel;

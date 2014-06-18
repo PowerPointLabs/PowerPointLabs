@@ -182,6 +182,7 @@
       <EmbedInteropTypes>True</EmbedInteropTypes>
       <HintPath>..\..\..\..\..\..\..\..\Program Files (x86)\Microsoft Visual Studio 12.0\Visual Studio Tools for Office\PIA\Office14\Office.dll</HintPath>
     </Reference>
+    <Reference Include="PresentationFramework" />
     <Reference Include="stdole, Version=7.0.3300.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
       <EmbedInteropTypes>True</EmbedInteropTypes>
     </Reference>
@@ -220,6 +221,7 @@
     <Compile Include="AudioMisc\AudioHelper.cs" />
     <Compile Include="AutoAnimate.cs" />
     <Compile Include="AutoZoom.cs" />
+    <Compile Include="CustomBinding.cs" />
     <Compile Include="ColorDataSource.cs" />
     <Compile Include="ColorHelper.cs" />
     <Compile Include="ColorPane.cs">
@@ -228,6 +230,7 @@
     <Compile Include="ColorPane.Designer.cs">
       <DependentUpon>ColorPane.cs</DependentUpon>
     </Compile>
+    <Compile Include="Converters\ColorPaneConverters.cs" />
     <Compile Include="ConvertToPicture.cs" />
     <Compile Include="CropToShape.cs" />
     <Compile Include="FitToSlide.cs" />
