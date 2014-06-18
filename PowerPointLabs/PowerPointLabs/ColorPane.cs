@@ -120,6 +120,17 @@ namespace PowerPointLabs
                             dataSource,
                             "selectedColor",
                             new Converters.selectedColorToTetradicThree()));
+
+            brightnessBar.DataBindings.Add(new CustomBinding(
+                            "Value",
+                            dataSource,
+                            "selectedColor",
+                            new Converters.selectedColorToBrightnessValue()));
+            saturationBar.DataBindings.Add(new CustomBinding(
+                        "Value",
+                        dataSource,
+                        "selectedColor",
+                        new Converters.selectedColorToSaturationValue()));
         }
 
         #endregion
@@ -205,13 +216,11 @@ namespace PowerPointLabs
 
         private void UpdateBrightnessBar(Color color)
         {
-            brightnessBar.Value = (int)(color.GetBrightness() * 240.0f);
             DrawBrightnessGradient(color);
         }
 
         private void UpdateSaturationBar(Color color)
         {
-            saturationBar.Value = (int)(color.GetSaturation() * 240.0f);
             DrawSaturationGradient(color);
         }
 

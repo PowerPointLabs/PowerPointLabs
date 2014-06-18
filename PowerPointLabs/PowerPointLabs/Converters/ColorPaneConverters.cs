@@ -143,4 +143,33 @@ namespace PowerPointLabs.Converters
             throw new NotImplementedException();
         }
     }
+
+    class selectedColorToBrightnessValue : IValueConverter
+    {
+        public object Convert(object value, Type targetType, object parameter, System.Globalization.CultureInfo culture)
+        {
+            Color selectedColor = (Color)value;
+            return (int)(selectedColor.GetBrightness() * 240.0f);
+        }
+
+        public object ConvertBack(object value, Type targetType, object parameter, System.Globalization.CultureInfo culture)
+        {
+            Color changedColor = (Color)value;
+            return changedColor.GetBrightness();
+        }
+    }
+    class selectedColorToSaturationValue : IValueConverter
+    {
+        public object Convert(object value, Type targetType, object parameter, System.Globalization.CultureInfo culture)
+        {
+            Color selectedColor = (Color)value;
+            return (int)(selectedColor.GetSaturation() * 240.0f);
+        }
+
+        public object ConvertBack(object value, Type targetType, object parameter, System.Globalization.CultureInfo culture)
+        {
+            Color changedColor = (Color)value;
+            return changedColor.GetSaturation();
+        }
+    }
 }
