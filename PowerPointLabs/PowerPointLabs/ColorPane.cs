@@ -121,11 +121,54 @@ namespace PowerPointLabs
                             "selectedColor",
                             new Converters.selectedColorToTetradicThree()));
 
+            this.MonoPanel1.DataBindings.Add(new CustomBinding(
+                            "BackColor",
+                            dataSource,
+                            "selectedColor",
+                            new Converters.selectedColorToMonochromaticOne()));
+
+            this.MonoPanel2.DataBindings.Add(new CustomBinding(
+                            "BackColor",
+                            dataSource,
+                            "selectedColor",
+                            new Converters.selectedColorToMonochromaticTwo()));
+
+            this.MonoPanel3.DataBindings.Add(new CustomBinding(
+                            "BackColor",
+                            dataSource,
+                            "selectedColor",
+                            new Converters.selectedColorToMonochromaticThree()));
+
+            this.MonoPanel4.DataBindings.Add(new CustomBinding(
+                            "BackColor",
+                            dataSource,
+                            "selectedColor",
+                            new Converters.selectedColorToMonochromaticFour()));
+
+            this.MonoPanel5.DataBindings.Add(new CustomBinding(
+                            "BackColor",
+                            dataSource,
+                            "selectedColor",
+                            new Converters.selectedColorToMonochromaticFive()));
+
+            this.MonoPanel6.DataBindings.Add(new CustomBinding(
+                            "BackColor",
+                            dataSource,
+                            "selectedColor",
+                            new Converters.selectedColorToMonochromaticSix()));
+
+            this.MonoPanel7.DataBindings.Add(new CustomBinding(
+                            "BackColor",
+                            dataSource,
+                            "selectedColor",
+                            new Converters.selectedColorToMonochromaticSeven()));
+
             brightnessBar.DataBindings.Add(new CustomBinding(
                             "Value",
                             dataSource,
                             "selectedColor",
                             new Converters.selectedColorToBrightnessValue()));
+
             saturationBar.DataBindings.Add(new CustomBinding(
                         "Value",
                         dataSource,
