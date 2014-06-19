@@ -39,6 +39,13 @@ namespace PowerPointLabs
         {
             SetupLogger();
             Trace.TraceInformation(DateTime.Now.ToString("yyyyMMddHHmmss") + ": PowerPointLabs Started");
+            
+            PPMouse.Init(Application);
+            PPCopy.Init(Application);
+            SetupDoubleClickHandler();
+            SetupTabActivateHandler();
+            SetupAfterCopyPasteHandler();
+
             ((PowerPoint.EApplication_Event)this.Application).NewPresentation += ThisAddIn_NewPresentation;
             Application.AfterNewPresentation += ThisAddIn_AfterNewPresentation;
             Application.WindowSelectionChange += ThisAddIn_SelectionChanged;
@@ -50,11 +57,6 @@ namespace PowerPointLabs
 
             Application.SlideShowBegin += SlideShowBeginHandler;
             Application.SlideShowEnd += SlideShowEndHandler;
-            PPMouse.Init(Application);
-            PPCopy.Init(Application);
-            SetupDoubleClickHandler();
-            SetupTabActivateHandler();
-            SetupAfterCopyPasteHandler();
         }
 
         private void ThisAddIn_ApplicationOnWindowDeactivate(PowerPoint.Presentation pres, PowerPoint.DocumentWindow wn)
@@ -532,7 +534,6 @@ namespace PowerPointLabs
         # region Copy paste handlers
 
         private PowerPoint.DocumentWindow _copyFromWnd;
-        private PowerPoint.DocumentWindow _pasteToWnd;
 
         private void AfterPasteEventHandler(PowerPoint.Selection selection)
         {
@@ -609,45 +610,33 @@ namespace PowerPointLabs
 
         private void AfterPasteRecorderEventHandler(PowerPoint.Selection selection)
         {
-            try
+            if (selection.Type == PowerPoint.PpSelectionType.ppSelectionSlides)
             {
-                _pasteToWnd = Application.ActiveWindow;
-
-                if (selection.Type == PowerPoint.PpSelectionType.ppSelectionSlides)
+                // invalid paste event triggered because of system message loss
+                if (copiedSlides.Count < 1)
                 {
-                    // invalid paste event triggered because of system message loss
-                    if (copiedSlides.Count < 1)
-                    {
-                        return;
-                    }
-
-                    var copyFromRecorderPane = documentPaneMapper[_copyFromWnd].Control as RecorderTaskPane;
-                    var activeRecorderPane = ActivateCustomTaskPane.Control as RecorderTaskPane;
-
-                    var slideRange = selection.SlideRange;
-                    var oriSlide = 0;
-
-                    foreach (var sld in slideRange)
-                    {
-                        var oldSlide = copiedSlides[oriSlide];
-                        var newSlide = sld as PowerPoint.Slide;
-
-                        activeRecorderPane.PasteSlideAudio(newSlide.SlideID,
-                                                           copyFromRecorderPane.CopySlideAudio(oldSlide.SlideID));
-                        activeRecorderPane.PasteSlideScript(newSlide.SlideID,
-                                                            copyFromRecorderPane.CopySlideScript(oldSlide.SlideID));
-
-                        oriSlide++;
-                    }
-
-                    // update the lists when all done
-                    UpdateRecorderPane(slideRange.Count, slideRange[1].SlideID);
+                    return;
                 }
-            }
-            catch (Exception e)
-            {
-                //ErrorDialogWrapper.ShowDialog("Error when paste slides", "Slide cannot be pasted.", e);
-                throw;
+
+                var copyFromRecorderPane = documentPaneMapper[_copyFromWnd].Control as RecorderTaskPane;
+                var activeRecorderPane = ActivateCustomTaskPane.Control as RecorderTaskPane;
+
+                var slideRange = selection.SlideRange;
+                var oriSlide = 0;
+
+                foreach (var sld in slideRange)
+                {
+                    var oldSlide = PowerPointSlide.FromSlideFactory(copiedSlides[oriSlide]);
+                    var newSlide = PowerPointSlide.FromSlideFactory(sld as PowerPoint.Slide);
+
+                    activeRecorderPane.PasteSlideAudioAndScript(newSlide,
+                                                                copyFromRecorderPane.CopySlideAudioAndScript(oldSlide));
+
+                    oriSlide++;
+                }
+
+                // update the lists when all done
+                UpdateRecorderPane(slideRange.Count, slideRange[1].SlideID);
             }
         }
 
