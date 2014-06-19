@@ -408,7 +408,7 @@ namespace PowerPointLabs
             DoDragDrop(colorObject, DragDropEffects.All);
         }
 
-        private void panel1_DragDrop(object sender, DragEventArgs e)
+        private void panel_DragDrop(object sender, DragEventArgs e)
         {
             Panel panel = (Panel)sender;
             panel.BackColor = (Color)e.Data.GetData(panel.BackColor.GetType());
@@ -510,7 +510,7 @@ namespace PowerPointLabs
             ColorSelectedShapesWithColor(newColor);
         }
 
-        private void panel1_DragEnter(object sender, DragEventArgs e)
+        private void panel_DragEnter(object sender, DragEventArgs e)
         {
             if (e.Data.GetDataPresent(dataSource.selectedColor.GetType().ToString()))
             {

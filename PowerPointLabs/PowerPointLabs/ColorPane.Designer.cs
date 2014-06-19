@@ -73,7 +73,7 @@
             this.MonoPanel5 = new System.Windows.Forms.Panel();
             this.MonoPanel6 = new System.Windows.Forms.Panel();
             this.MonoPanel7 = new System.Windows.Forms.Panel();
-            this.flowLayoutPanel10 = new System.Windows.Forms.FlowLayoutPanel();
+            this.themeLayoutPanel = new System.Windows.Forms.FlowLayoutPanel();
             this.label6 = new System.Windows.Forms.Label();
             this.flowLayoutPanel11 = new System.Windows.Forms.FlowLayoutPanel();
             this.ThemePanel1 = new System.Windows.Forms.Panel();
@@ -98,7 +98,7 @@
             ((System.ComponentModel.ISupportInitialize)(this.saturationBar)).BeginInit();
             this.flowLayoutPanel1.SuspendLayout();
             this.flowLayoutPanel5.SuspendLayout();
-            this.flowLayoutPanel10.SuspendLayout();
+            this.themeLayoutPanel.SuspendLayout();
             this.flowLayoutPanel11.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -110,8 +110,8 @@
             this.panel1.Name = "panel1";
             this.panel1.Size = new System.Drawing.Size(75, 47);
             this.panel1.TabIndex = 0;
-            this.panel1.DragDrop += new System.Windows.Forms.DragEventHandler(this.panel1_DragDrop);
-            this.panel1.DragEnter += new System.Windows.Forms.DragEventHandler(this.panel1_DragEnter);
+            this.panel1.DragDrop += new System.Windows.Forms.DragEventHandler(this.panel_DragDrop);
+            this.panel1.DragEnter += new System.Windows.Forms.DragEventHandler(this.panel_DragEnter);
             // 
             // timer1
             // 
@@ -512,16 +512,16 @@
             this.MonoPanel7.TabIndex = 5;
             this.MonoPanel7.MouseDown += new System.Windows.Forms.MouseEventHandler(this.MatchingPanel_MouseDown);
             // 
-            // flowLayoutPanel10
+            // themeLayoutPanel
             // 
-            this.flowLayoutPanel10.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.flowLayoutPanel10.Controls.Add(this.label6);
-            this.flowLayoutPanel10.Controls.Add(this.flowLayoutPanel11);
-            this.flowLayoutPanel10.Controls.Add(this.SaveThemeButton);
-            this.flowLayoutPanel10.Location = new System.Drawing.Point(16, 440);
-            this.flowLayoutPanel10.Name = "flowLayoutPanel10";
-            this.flowLayoutPanel10.Size = new System.Drawing.Size(273, 91);
-            this.flowLayoutPanel10.TabIndex = 11;
+            this.themeLayoutPanel.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.themeLayoutPanel.Controls.Add(this.label6);
+            this.themeLayoutPanel.Controls.Add(this.flowLayoutPanel11);
+            this.themeLayoutPanel.Controls.Add(this.SaveThemeButton);
+            this.themeLayoutPanel.Location = new System.Drawing.Point(16, 440);
+            this.themeLayoutPanel.Name = "themeLayoutPanel";
+            this.themeLayoutPanel.Size = new System.Drawing.Size(273, 91);
+            this.themeLayoutPanel.TabIndex = 11;
             // 
             // label6
             // 
@@ -551,93 +551,102 @@
             // 
             // ThemePanel1
             // 
+            this.ThemePanel1.AllowDrop = true;
             this.ThemePanel1.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.ThemePanel1.Location = new System.Drawing.Point(3, 3);
             this.ThemePanel1.Name = "ThemePanel1";
             this.ThemePanel1.Size = new System.Drawing.Size(20, 20);
             this.ThemePanel1.TabIndex = 3;
-            this.ThemePanel1.DragDrop += new System.Windows.Forms.DragEventHandler(this.panel1_DragDrop);
-            this.ThemePanel1.DragEnter += new System.Windows.Forms.DragEventHandler(this.panel1_DragEnter);
+            this.ThemePanel1.DragDrop += new System.Windows.Forms.DragEventHandler(this.panel_DragDrop);
+            this.ThemePanel1.DragEnter += new System.Windows.Forms.DragEventHandler(this.panel_DragEnter);
             // 
             // ThemePanel2
             // 
+            this.ThemePanel2.AllowDrop = true;
             this.ThemePanel2.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.ThemePanel2.Location = new System.Drawing.Point(29, 3);
             this.ThemePanel2.Name = "ThemePanel2";
             this.ThemePanel2.Size = new System.Drawing.Size(20, 20);
             this.ThemePanel2.TabIndex = 4;
-            this.ThemePanel2.DragDrop += new System.Windows.Forms.DragEventHandler(this.panel1_DragDrop);
-            this.ThemePanel2.DragEnter += new System.Windows.Forms.DragEventHandler(this.panel1_DragEnter);
+            this.ThemePanel2.DragDrop += new System.Windows.Forms.DragEventHandler(this.panel_DragDrop);
+            this.ThemePanel2.DragEnter += new System.Windows.Forms.DragEventHandler(this.panel_DragEnter);
             // 
             // ThemePanel3
             // 
+            this.ThemePanel3.AllowDrop = true;
             this.ThemePanel3.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.ThemePanel3.Location = new System.Drawing.Point(55, 3);
             this.ThemePanel3.Name = "ThemePanel3";
             this.ThemePanel3.Size = new System.Drawing.Size(20, 20);
             this.ThemePanel3.TabIndex = 5;
-            this.ThemePanel3.DragDrop += new System.Windows.Forms.DragEventHandler(this.panel1_DragDrop);
-            this.ThemePanel3.DragEnter += new System.Windows.Forms.DragEventHandler(this.panel1_DragEnter);
+            this.ThemePanel3.DragDrop += new System.Windows.Forms.DragEventHandler(this.panel_DragDrop);
+            this.ThemePanel3.DragEnter += new System.Windows.Forms.DragEventHandler(this.panel_DragEnter);
             // 
             // ThemePanel4
             // 
+            this.ThemePanel4.AllowDrop = true;
             this.ThemePanel4.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.ThemePanel4.Location = new System.Drawing.Point(81, 3);
             this.ThemePanel4.Name = "ThemePanel4";
             this.ThemePanel4.Size = new System.Drawing.Size(20, 20);
             this.ThemePanel4.TabIndex = 6;
-            this.ThemePanel4.DragDrop += new System.Windows.Forms.DragEventHandler(this.panel1_DragDrop);
-            this.ThemePanel4.DragEnter += new System.Windows.Forms.DragEventHandler(this.panel1_DragEnter);
+            this.ThemePanel4.DragDrop += new System.Windows.Forms.DragEventHandler(this.panel_DragDrop);
+            this.ThemePanel4.DragEnter += new System.Windows.Forms.DragEventHandler(this.panel_DragEnter);
             // 
             // ThemePanel5
             // 
+            this.ThemePanel5.AllowDrop = true;
             this.ThemePanel5.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.ThemePanel5.Location = new System.Drawing.Point(107, 3);
             this.ThemePanel5.Name = "ThemePanel5";
             this.ThemePanel5.Size = new System.Drawing.Size(20, 20);
             this.ThemePanel5.TabIndex = 7;
-            this.ThemePanel5.DragDrop += new System.Windows.Forms.DragEventHandler(this.panel1_DragDrop);
-            this.ThemePanel5.DragEnter += new System.Windows.Forms.DragEventHandler(this.panel1_DragEnter);
+            this.ThemePanel5.DragDrop += new System.Windows.Forms.DragEventHandler(this.panel_DragDrop);
+            this.ThemePanel5.DragEnter += new System.Windows.Forms.DragEventHandler(this.panel_DragEnter);
             // 
             // ThemePanel6
             // 
+            this.ThemePanel6.AllowDrop = true;
             this.ThemePanel6.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.ThemePanel6.Location = new System.Drawing.Point(133, 3);
             this.ThemePanel6.Name = "ThemePanel6";
             this.ThemePanel6.Size = new System.Drawing.Size(20, 20);
             this.ThemePanel6.TabIndex = 8;
-            this.ThemePanel6.DragDrop += new System.Windows.Forms.DragEventHandler(this.panel1_DragDrop);
-            this.ThemePanel6.DragEnter += new System.Windows.Forms.DragEventHandler(this.panel1_DragEnter);
+            this.ThemePanel6.DragDrop += new System.Windows.Forms.DragEventHandler(this.panel_DragDrop);
+            this.ThemePanel6.DragEnter += new System.Windows.Forms.DragEventHandler(this.panel_DragEnter);
             // 
             // ThemePanel7
             // 
+            this.ThemePanel7.AllowDrop = true;
             this.ThemePanel7.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.ThemePanel7.Location = new System.Drawing.Point(159, 3);
             this.ThemePanel7.Name = "ThemePanel7";
             this.ThemePanel7.Size = new System.Drawing.Size(20, 20);
             this.ThemePanel7.TabIndex = 9;
-            this.ThemePanel7.DragDrop += new System.Windows.Forms.DragEventHandler(this.panel1_DragDrop);
-            this.ThemePanel7.DragEnter += new System.Windows.Forms.DragEventHandler(this.panel1_DragEnter);
+            this.ThemePanel7.DragDrop += new System.Windows.Forms.DragEventHandler(this.panel_DragDrop);
+            this.ThemePanel7.DragEnter += new System.Windows.Forms.DragEventHandler(this.panel_DragEnter);
             // 
             // ThemePanel8
             // 
+            this.ThemePanel8.AllowDrop = true;
             this.ThemePanel8.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.ThemePanel8.Location = new System.Drawing.Point(185, 3);
             this.ThemePanel8.Name = "ThemePanel8";
             this.ThemePanel8.Size = new System.Drawing.Size(20, 20);
             this.ThemePanel8.TabIndex = 10;
-            this.ThemePanel8.DragDrop += new System.Windows.Forms.DragEventHandler(this.panel1_DragDrop);
-            this.ThemePanel8.DragEnter += new System.Windows.Forms.DragEventHandler(this.panel1_DragEnter);
+            this.ThemePanel8.DragDrop += new System.Windows.Forms.DragEventHandler(this.panel_DragDrop);
+            this.ThemePanel8.DragEnter += new System.Windows.Forms.DragEventHandler(this.panel_DragEnter);
             // 
             // ThemePanel9
             // 
+            this.ThemePanel9.AllowDrop = true;
             this.ThemePanel9.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.ThemePanel9.Location = new System.Drawing.Point(211, 3);
             this.ThemePanel9.Name = "ThemePanel9";
             this.ThemePanel9.Size = new System.Drawing.Size(20, 20);
             this.ThemePanel9.TabIndex = 11;
-            this.ThemePanel9.DragDrop += new System.Windows.Forms.DragEventHandler(this.panel1_DragDrop);
-            this.ThemePanel9.DragEnter += new System.Windows.Forms.DragEventHandler(this.panel1_DragEnter);
+            this.ThemePanel9.DragDrop += new System.Windows.Forms.DragEventHandler(this.panel_DragDrop);
+            this.ThemePanel9.DragEnter += new System.Windows.Forms.DragEventHandler(this.panel_DragEnter);
             // 
             // SaveThemeButton
             // 
@@ -652,7 +661,7 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.Controls.Add(this.flowLayoutPanel10);
+            this.Controls.Add(this.themeLayoutPanel);
             this.Controls.Add(this.flowLayoutPanel1);
             this.Controls.Add(this.AnalogousColorPanel);
             this.Controls.Add(this.button2);
@@ -684,8 +693,8 @@
             this.flowLayoutPanel1.ResumeLayout(false);
             this.flowLayoutPanel1.PerformLayout();
             this.flowLayoutPanel5.ResumeLayout(false);
-            this.flowLayoutPanel10.ResumeLayout(false);
-            this.flowLayoutPanel10.PerformLayout();
+            this.themeLayoutPanel.ResumeLayout(false);
+            this.themeLayoutPanel.PerformLayout();
             this.flowLayoutPanel11.ResumeLayout(false);
             this.ResumeLayout(false);
             this.PerformLayout();
@@ -738,7 +747,7 @@
         private System.Windows.Forms.Panel Tetradic3;
         private System.Windows.Forms.Panel MonoPanel6;
         private System.Windows.Forms.Panel MonoPanel7;
-        private System.Windows.Forms.FlowLayoutPanel flowLayoutPanel10;
+        private System.Windows.Forms.FlowLayoutPanel themeLayoutPanel;
         private System.Windows.Forms.Label label6;
         private System.Windows.Forms.FlowLayoutPanel flowLayoutPanel11;
         private System.Windows.Forms.Panel ThemePanel1;
