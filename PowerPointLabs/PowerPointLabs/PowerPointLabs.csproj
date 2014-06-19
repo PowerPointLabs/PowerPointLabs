@@ -222,12 +222,12 @@
     <Compile Include="AutoAnimate.cs" />
     <Compile Include="AutoZoom.cs" />
     <Compile Include="CustomBinding.cs" />
-    <Compile Include="ColorDataSource.cs" />
-    <Compile Include="ColorHelper.cs" />
-    <Compile Include="ColorPane.cs">
+    <Compile Include="Color\ColorDataSource.cs" />
+    <Compile Include="Color\ColorHelper.cs" />
+    <Compile Include="Color\ColorPane.cs">
       <SubType>UserControl</SubType>
     </Compile>
-    <Compile Include="ColorPane.Designer.cs">
+    <Compile Include="Color\ColorPane.Designer.cs">
       <DependentUpon>ColorPane.cs</DependentUpon>
     </Compile>
     <Compile Include="Converters\ColorPaneConverters.cs" />
@@ -333,7 +333,7 @@
     <Compile Include="XMLMisc\XMLParser.cs" />
     <Compile Include="ZipStorer.cs" />
     <Compile Include="ZoomToArea.cs" />
-    <EmbeddedResource Include="ColorPane.resx">
+    <EmbeddedResource Include="Color\ColorPane.resx">
       <DependentUpon>ColorPane.cs</DependentUpon>
     </EmbeddedResource>
     <None Include="packages.config" />
