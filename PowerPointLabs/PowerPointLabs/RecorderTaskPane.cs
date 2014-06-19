@@ -423,17 +423,65 @@ namespace PowerPointLabs
 
         private void RefreshScriptList(PowerPointSlide slide)
         {
-            var relativeID = GetRelativeSlideIndex(slide.ID);
-            var taggedNotes = new TaggedText(slide.NotesPageText.Trim());
-            List<String> splitScript = taggedNotes.SplitByClicks();
+            var relativeSlideID = GetRelativeSlideIndex(slide.ID);
 
-            if (relativeID >= _scriptList.Count)
+            var taggedNotes = new TaggedText(slide.NotesPageText.Trim());
+            var prettyNotes = taggedNotes.ToPrettyString();
+            var splitScript = (new TaggedText(prettyNotes)).SplitByClicks();
+
+            if (relativeSlideID >= _scriptList.Count)
             {
                 _scriptList.Add(splitScript);
             }
             else
             {
-                _scriptList[relativeID] = splitScript;
+                _scriptList[relativeSlideID] = splitScript;
+            }
+        }
+
+        private void RefreshAudioList(PowerPointSlide slide, string[] names)
+        {
+            string[] audioSaveNames;
+            
+            var relativeSlideID = GetRelativeSlideIndex(slide.ID);
+            var tempFolderPath = _tempPath + _tempFolderName;
+
+            if (relativeSlideID >= _audioList.Count)
+            {
+                _audioList.Add(new List<Audio>());
+            }
+            else
+            {
+                _audioList[relativeSlideID].Clear();
+            }
+
+            // if audio names have not been given, retrieve from files.
+            if (names == null)
+            {
+                // retrieve all actual audio files in the slide
+                String fileNameSearchPattern = String.Format(SaveNameFormat, slide.ID);
+
+                if (!Directory.Exists(tempFolderPath))
+                {
+                    Directory.CreateDirectory(tempFolderPath);
+                }
+
+                var filePaths = Directory.EnumerateFiles(tempFolderPath, "*.wav");
+                audioSaveNames = filePaths.Where(path => path.Contains(fileNameSearchPattern)).ToArray();
+            }
+            else
+            {
+                audioSaveNames = names;
+            }
+
+            // construct audio object and put into audio collection
+            for (int i = 0; i < audioSaveNames.Length; i++)
+            {
+                string saveName = audioSaveNames[i];
+                string name = String.Format(SpeechShapeFormat, i);
+                var audio = new Audio(name, saveName, i);
+
+                _audioList[relativeSlideID].Add(audio);
             }
         }
 
@@ -780,7 +828,8 @@ namespace PowerPointLabs
                     {
                         // retrieve the tag notes
                         var taggedNotes = new TaggedText(slide.NotesPageText.Trim());
-                        List<String> splitScript = taggedNotes.SplitByClicks();
+                        var prettyNotes = taggedNotes.ToPrettyString();
+                        var splitScript = (new TaggedText(prettyNotes)).SplitByClicks();
 
                         // add the splitted notes into script list
                         _scriptList[relativeID] = splitScript;
@@ -865,90 +914,18 @@ namespace PowerPointLabs
 
         public void InitializeAudioAndScript(PowerPointSlide slide, string[] names, bool forceRefresh)
         {
-            string[] audioSaveNames = null;
-            string folderPath = _tempPath + _tempFolderName;
-            
-            int slideID = slide.ID;
-            int relativeSlideID = GetRelativeSlideIndex(slideID);
-            bool initialized = _audioList != null && _audioList.Count > relativeSlideID;
+            var relativeSlideID = GetRelativeSlideIndex(slide.ID);
+            var initialized = _audioList != null &&
+                              _audioList.Count > relativeSlideID &&
+                              _audioList[relativeSlideID].Count != 0;
 
-            // check if the selected slide has been initialized before
-            if (initialized)
+            if (initialized && !forceRefresh)
             {
-                // TODO: 
-                // if the slide has been initialized, check if the record has been updated
-
-                // currently using forceRefresh to force an entire refresh
-                if (!forceRefresh)
-                {
-                    return;
-                }
+                return;
             }
 
-            // if the script of the selected slide has not been initialized yet,
-            // we need to sniff the note pane to initialize the script list
-
-            // TODO:
-            // now we assume the first record -> first chunk of note, ect.
-
-            // retrieve the tag notes
-            var taggedNotes = new TaggedText(slide.NotesPageText.Trim());
-            List<String> splitScript = taggedNotes.SplitByClicks();
-
-            // if the slide has been initialized, update the list
-            if (initialized)
-            {
-                _scriptList[relativeSlideID] = splitScript;
-            }
-            else
-            // add the splitted notes into script list
-            {
-                _scriptList.Add(splitScript);
-            }
-
-            // if the audio of the selected slide has not been initialized yet,
-            // we need to put all audio in the current slide into the list.
-            if (!initialized)
-            {
-                _audioList.Add(new List<Audio>());
-            }
-            // else clear the audio collection of current slide
-            // TODO:
-            // obviously we don't need to delete all items in the list, only
-            // those modified items should be replaced.
-            else
-            {
-                _audioList[relativeSlideID].Clear();
-            }
-
-            // if audio names have not been given, retrieve from files.
-            if (names == null)
-            {
-                // retrieve all actual audio files in the slide
-                String fileNameSearchPattern = String.Format(SaveNameFormat, slideID);
-                
-                if (!Directory.Exists(folderPath))
-                {
-                    Directory.CreateDirectory(folderPath);
-                }
-
-                var filePaths = Directory.EnumerateFiles(folderPath, "*.wav");
-                audioSaveNames = filePaths.Where(path => path.Contains(fileNameSearchPattern)).ToArray();
-            }
-            else
-            {
-                audioSaveNames = names;
-            }
-
-            // construct audio object and put into audio collection
-            for (int i = 0; i < audioSaveNames.Length; i++)
-            {
-                string saveName = audioSaveNames[i];
-                string name = String.Format(SpeechShapeFormat, i);
-                var audio = new Audio(name, saveName, i);
-
-                _audioList[relativeSlideID].Add(audio);
-            }
+            RefreshScriptList(slide);
+            RefreshAudioList(slide, names);
         }
 
         public void InitializeAudioAndScript(List<PowerPointSlide> slides, List<string[]> names, bool forceRefresh)

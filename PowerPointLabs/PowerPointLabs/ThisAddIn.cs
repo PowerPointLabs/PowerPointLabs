@@ -42,11 +42,11 @@ namespace PowerPointLabs
             ((PowerPoint.EApplication_Event)this.Application).NewPresentation += ThisAddIn_NewPresentation;
             Application.AfterNewPresentation += ThisAddIn_AfterNewPresentation;
             Application.WindowSelectionChange += ThisAddIn_SelectionChanged;
-            Application.SlideSelectionChanged += ThisAddIn_SlideSelectionChanged;
             Application.PresentationClose += ThisAddIn_PresentationClose;
             Application.PresentationOpen += ThisAddIn_PrensentationOpen;
             Application.WindowActivate += ThisAddIn_ApplicationOnWindowActivate;
             Application.WindowDeactivate += ThisAddIn_ApplicationOnWindowDeactivate;
+            Application.SlideSelectionChanged += ThisAddIn_SlideSelectionChanged;
 
             Application.SlideShowBegin += SlideShowBeginHandler;
             Application.SlideShowEnd += SlideShowEndHandler;
