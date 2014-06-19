@@ -38,6 +38,12 @@ namespace PowerPointLabs
             SetupLogger();
             Trace.TraceInformation(DateTime.Now.ToString("yyyyMMddHHmmss") + ": PowerPointLabs Started");
             
+            PPMouse.Init(Application);
+            PPCopy.Init(Application);
+            SetupDoubleClickHandler();
+            SetupTabActivateHandler();
+            SetupAfterCopyPasteHandler();
+
             // According to MSDN, when more than 1 event are triggered, callback's invoking sequence
             // follows the defining order. I.e. the earlier you defined, the earlier it will be
             // executed.
@@ -59,12 +65,6 @@ namespace PowerPointLabs
 
             // Priority Low: Slide Actions
             Application.SlideSelectionChanged += ThisAddIn_SlideSelectionChanged;
-            
-            PPMouse.Init(Application);
-            PPCopy.Init(Application);
-            SetupDoubleClickHandler();
-            SetupTabActivateHandler();
-            SetupAfterCopyPasteHandler();
         }
 
         private void ThisAddIn_ApplicationOnWindowDeactivate(PowerPoint.Presentation pres, PowerPoint.DocumentWindow wn)
@@ -724,13 +724,8 @@ namespace PowerPointLabs
 
         private void AfterPasteRecorderEventHandler(PowerPoint.Selection selection)
         {
-            try
+            if (selection.Type == PowerPoint.PpSelectionType.ppSelectionSlides)
             {
-                if (selection.Type != PowerPoint.PpSelectionType.ppSelectionSlides)
-                {
-                    return;
-                }
-
                 // invalid paste event triggered because of system message loss
                 if (copiedSlides.Count < 1)
                 {
@@ -739,30 +734,23 @@ namespace PowerPointLabs
 
                 var copyFromRecorderPane = GetPaneFromWindow(Type.GetType("PowerPointLabs.RecorderTaskPane"), _copyFromWnd).Control as RecorderTaskPane;
                 var activeRecorderPane = GetActivePane(Type.GetType("PowerPointLabs.RecorderTaskPane")).Control as RecorderTaskPane;
-                    
+
                 var slideRange = selection.SlideRange;
                 var oriSlide = 0;
 
                 foreach (var sld in slideRange)
                 {
-                    var oldSlide = copiedSlides[oriSlide];
-                    var newSlide = sld as PowerPoint.Slide;
+                    var oldSlide = PowerPointSlide.FromSlideFactory(copiedSlides[oriSlide]);
+                    var newSlide = PowerPointSlide.FromSlideFactory(sld as PowerPoint.Slide);
 
-                    activeRecorderPane.PasteSlideAudio(newSlide.SlideID,
-                                                       copyFromRecorderPane.CopySlideAudio(oldSlide.SlideID));
-                    activeRecorderPane.PasteSlideScript(newSlide.SlideID,
-                                                        copyFromRecorderPane.CopySlideScript(oldSlide.SlideID));
+                    activeRecorderPane.PasteSlideAudioAndScript(newSlide,
+                                                                copyFromRecorderPane.CopySlideAudioAndScript(oldSlide));
 
                     oriSlide++;
                 }
 
                 // update the lists when all done
                 UpdateRecorderPane(slideRange.Count, slideRange[1].SlideID);
-            }
-            catch (Exception)
-            {
-                //ErrorDialogWrapper.ShowDialog("Error when paste slides", "Slide cannot be pasted.", e);
-                throw;
             }
         }
 
@@ -782,6 +770,8 @@ namespace PowerPointLabs
 
                         copiedSlides.Add(slide);
                     }
+
+                    copiedSlides.Sort((x, y) => (x.SlideIndex - y.SlideIndex));
                 }
                 else if (selection.Type == PowerPoint.PpSelectionType.ppSelectionShapes)
                 {
@@ -793,10 +783,7 @@ namespace PowerPointLabs
                         var shape = sh as PowerPoint.Shape;
                         copiedShapes.Add(shape);
                     }
-                    copiedShapes.Sort((PowerPoint.Shape x, PowerPoint.Shape y) =>
-                    {
-                        return x.Id - y.Id;
-                    });
+                    copiedShapes.Sort((PowerPoint.Shape x, PowerPoint.Shape y) => (x.Id - y.Id));
                 }
             }
             catch

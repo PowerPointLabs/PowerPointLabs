@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.IO;
+using System.Text.RegularExpressions;
 using Microsoft.Office.Core;
 using Microsoft.Office.Interop.PowerPoint;
 using Shape = Microsoft.Office.Interop.PowerPoint.Shape;
@@ -310,7 +311,7 @@ namespace PowerPointLabs.Models
             }
         }
 
-        public List<PowerPoint.Shape> GetShapesWithPrefix(string prefix)
+        public List<Shape> GetShapesWithPrefix(string prefix)
         {
             List<Shape> shapes = _slide.Shapes.Cast<Shape>().ToList();
             List<Shape> matchingShapes = shapes.Where(current => current.Name.StartsWith(prefix)).ToList();
@@ -318,11 +319,21 @@ namespace PowerPointLabs.Models
             return matchingShapes;
         }
 
-        public List<PowerPoint.Shape> GetShapesWithMediaType(PpMediaType type)
+        public List<Shape> GetShapesWithMediaType(PpMediaType type, Regex nameRule)
         {
             List<Shape> shapes = _slide.Shapes.Cast<Shape>().ToList();
             List<Shape> matchingShapes = shapes.Where(current => current.Type == MsoShapeType.msoMedia &&
-                                                                 current.MediaType == type).ToList();
+                                                                 current.MediaType == type &&
+                                                                 nameRule.IsMatch(current.Name)).ToList();
+
+            return matchingShapes;
+        }
+
+        public List<Shape> GetShapesWithTypeAndRule(MsoShapeType type, Regex nameRule)
+        {
+            var shapes = _slide.Shapes.Cast<Shape>().ToList();
+            var matchingShapes = shapes.Where(current => current.Type == type &&
+                                              nameRule.IsMatch(current.Name)).ToList();
 
             return matchingShapes;
         }
