@@ -11,6 +11,9 @@ using PowerPointLabs.Models;
 using System.Drawing.Drawing2D;
 using PPExtraEventHelper;
 using Converters = PowerPointLabs.Converters;
+using Microsoft.Office.Interop.PowerPoint;
+using System.IO;
+using System.Runtime.Serialization.Formatters.Binary;
 
 namespace PowerPointLabs
 {
@@ -28,6 +31,43 @@ namespace PowerPointLabs
 
             bindDataToPanels();
 
+            string folderName = System.Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData);
+            System.Diagnostics.Debug.WriteLine(folderName);
+            folderName += @"\PowerPointLabs\themes";
+            System.Diagnostics.Debug.WriteLine(folderName);
+            string fileName = "theme1.dat";
+
+            string filePath = folderName + "\\" + fileName;
+            List<Color> colors = new List<Color>();
+            if (File.Exists(filePath))
+            {
+                System.Diagnostics.Debug.WriteLine("File Exists");
+                Stream openFileStream = File.OpenRead(filePath);
+                BinaryFormatter deserializer = new BinaryFormatter();
+                colors = (List<Color>)deserializer.Deserialize(openFileStream);
+                openFileStream.Close();
+                System.Diagnostics.Debug.WriteLine(colors.Count);
+            }
+            else
+            {
+                if(!Directory.Exists(folderName))
+                {
+                    Directory.CreateDirectory(folderName);
+                    System.Diagnostics.Debug.WriteLine("Creating dir");
+                }
+
+                System.Diagnostics.Debug.WriteLine("No File");
+                List<Color> themeColors = new List<Color>();
+                themeColors.Add(Color.Aqua);
+                themeColors.Add(Color.Beige);
+
+                System.Diagnostics.Debug.WriteLine(filePath);
+
+                Stream fileStream = File.Create(filePath);
+                BinaryFormatter serializer = new BinaryFormatter();
+                serializer.Serialize(fileStream, themeColors);
+                fileStream.Close();
+            }
         }
 
         #region DataBindings
@@ -210,7 +250,7 @@ namespace PowerPointLabs
 
         private void timer1_Tick(object sender, EventArgs e)
         {
-            Point p = Control.MousePosition;
+            System.Drawing.Point p = Control.MousePosition;
             IntPtr dc = Native.GetDC(IntPtr.Zero);
             dataSource.selectedColor = ColorTranslator.FromWin32(Native.GetPixel(dc, p.X, p.Y));
             ColorSelectedShapesWithColor(panel1.BackColor);
@@ -379,7 +419,7 @@ namespace PowerPointLabs
             if (this.Filter == null)
             {
                 this.Filter = new MouseClickMessageFilter();
-                Application.AddMessageFilter(this.Filter);
+                System.Windows.Forms.Application.AddMessageFilter(this.Filter);
             }
         }
 
@@ -387,7 +427,7 @@ namespace PowerPointLabs
         {
             if ((this.Filter != null))
             {
-                Application.RemoveMessageFilter(this.Filter);
+                System.Windows.Forms.Application.RemoveMessageFilter(this.Filter);
                 this.Filter = null;
             }
         }
