@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Text.RegularExpressions;
@@ -68,12 +69,17 @@ namespace PowerPointLabs.XMLMisc
             return shapeFileMapper[name];
         }
 
-        public XmlParser(string path)
+        public XmlParser(string filePath)
         {
             shapeFileMapper = new Dictionary<string, string>();
             audioIDFileMapper = new Dictionary<string, string>();
 
-            LinkShapeAndAudio(path);
+            if (!File.Exists(filePath))
+            {
+                throw new ArgumentException("XML does not exist");
+            }
+
+            LinkShapeAndAudio(filePath);
         }
     }
 }

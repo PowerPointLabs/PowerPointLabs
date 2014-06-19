@@ -51,8 +51,6 @@ namespace PowerPointLabs
         private readonly string _tempWaveFileNameFormat;
         private readonly string _tempShapAudioXmlFormat;
 
-        private readonly string _tempPath = Path.GetTempPath();
-
         private int _recordClipCnt;
         private int _recordTotalLength;
 
@@ -89,22 +87,6 @@ namespace PowerPointLabs
                 {
                     _waveFileWriter.Write(waveInEventArgs.Buffer, 0, waveInEventArgs.BytesRecorded);
                     _currentLength = (int)(_waveFileWriter.Length * 1000 / _waveFileWriter.WaveFormat.AverageBytesPerSecond);
-                }
-            }
-        }
-
-        private void WaveInStreamOnRecordingStopped(object sender, StoppedEventArgs stoppedEventArgs)
-        {
-            if (_waveFileWriter != null)
-            {
-                try
-                {
-                    _waveFileWriter.Dispose();
-                    _waveFileWriter = null;
-                }
-                catch (Exception e)
-                {
-                    ErrorDialogWrapper.ShowDialog("Error when stopping", "File writing stops with error.", e);
                 }
             }
         }
@@ -326,12 +308,6 @@ namespace PowerPointLabs
             stopButton.Enabled = enable;
         }
 
-        private void SetScriptTextBoxScroll()
-        {
-            // TODO:
-            // need to implement
-        }
-
         private int GetRelativeSlideIndex(int curID)
         {
             if (!_slideRelativeMapper.ContainsKey(curID))
@@ -421,19 +397,121 @@ namespace PowerPointLabs
             return null;
         }
 
+        private void MapShapesWithAudio(PowerPointSlide slide)
+        {
+            var relativeSlideID = GetRelativeSlideIndex(slide.ID);
+            XmlParser xmlParser;
+
+            string searchRule = string.Format("^({0}|{1})", SpeechShapePrefixOld, SpeechShapePrefix);
+            var shapes = slide.GetShapesWithMediaType(PpMediaType.ppMediaTypeSound, new Regex(searchRule));
+
+            if (shapes.Count == 0)
+            {
+                return;
+            }
+
+            try
+            {
+                xmlParser = new XmlParser(string.Format(_tempShapAudioXmlFormat, relativeSlideID + 1));
+            }
+            catch (ArgumentException)
+            {
+                // xml does not exist, means this page is either a new page or
+                // created dues to pasting. For either case we do nothing
+                return;
+            }
+
+            // iterate through all shapes, skip audios that are not generated speech
+            foreach (var shape in shapes)
+            {
+                var audio = new Audio();
+
+                // detect audio type
+                switch (shape.MediaFormat.AudioSamplingRate)
+                {
+                    case Audio.GeneratedSamplingRate:
+                        audio.Type = Audio.AudioType.Auto;
+                        break;
+                    case Audio.RecordedSamplingRate:
+                        audio.Type = Audio.AudioType.Record;
+                        break;
+                    default:
+                        MessageBox.Show("Unrecognize Embedded Audio");
+                        break;
+                }
+
+                // derive matched id from shape name
+                var temp = shape.Name.Split(new[] { ' ' });
+                audio.MatchScriptID = Int32.Parse(temp[2]);
+
+                // get corresponding audio
+                audio.Name = shape.Name;
+                audio.SaveName = _tempFullPath + xmlParser.GetCorrespondingAudio(audio.Name);
+                audio.Length = AudioHelper.GetAudioLengthString(audio.SaveName);
+                audio.LengthMillis = AudioHelper.GetAudioLength(audio.SaveName);
+
+                // maintain a sorted audio list
+                // Note: here relativeID == slide.Index - 1
+                if (audio.MatchScriptID >= _audioList[relativeSlideID].Count)
+                {
+                    _audioList[relativeSlideID].Add(audio);
+                }
+                else
+                {
+                    _audioList[relativeSlideID].Insert(audio.MatchScriptID, audio);
+                }
+
+                // match id > total script count -> script does not exsit
+                if (audio.MatchScriptID >= _scriptList[relativeSlideID].Count)
+                {
+                    audio.MatchScriptID = -1;
+                }
+            }
+        }
+
         private void RefreshScriptList(PowerPointSlide slide)
         {
-            var relativeID = GetRelativeSlideIndex(slide.ID);
-            var taggedNotes = new TaggedText(slide.NotesPageText.Trim());
-            List<String> splitScript = taggedNotes.SplitByClicks();
+            var relativeSlideID = GetRelativeSlideIndex(slide.ID);
 
-            if (relativeID >= _scriptList.Count)
+            var taggedNotes = new TaggedText(slide.NotesPageText.Trim());
+            var prettyNotes = taggedNotes.ToPrettyString();
+            var splitScript = (new TaggedText(prettyNotes)).SplitByClicks();
+
+            while (relativeSlideID >= _scriptList.Count)
             {
-                _scriptList.Add(splitScript);
+                _scriptList.Add(new List<string>());
+            }
+
+            _scriptList[relativeSlideID] = splitScript;
+        }
+
+        private void RefreshAudioList(PowerPointSlide slide, string[] names)
+        {
+            var relativeSlideID = GetRelativeSlideIndex(slide.ID);
+
+            while (relativeSlideID >= _audioList.Count)
+            {
+                _audioList.Add(new List<Audio>());
+            }
+
+            _audioList[relativeSlideID].Clear();
+
+            // if audio names have not been given, retrieve from files.
+            if (names == null)
+            {
+                MapShapesWithAudio(slide);
             }
             else
             {
-                _scriptList[relativeID] = splitScript;
+                // construct audio object and put into audio collection
+                for (int i = 0; i < names.Length; i++)
+                {
+                    string saveName = names[i];
+                    string name = String.Format(SpeechShapeFormat, i);
+                    var audio = new Audio(name, saveName, i);
+
+                    _audioList[relativeSlideID].Add(audio);
+                }
             }
         }
 
@@ -664,7 +742,7 @@ namespace PowerPointLabs
             ClearScriptDataList(id);
         }
 
-        public List<Audio> CopySlideAudio(int slideID)
+        private List<Audio> CopySlideAudio(int slideID)
         {
             var relativeID = GetRelativeSlideIndex(slideID);
             var audioList = new List<Audio>(_audioList[relativeID]);
@@ -672,7 +750,7 @@ namespace PowerPointLabs
             return audioList;
         }
 
-        public List<string> CopySlideScript(int slideID)
+        private List<string> CopySlideScript(int slideID)
         {
             var relativeID = GetRelativeSlideIndex(slideID);
             var scriptList = new List<string>(_scriptList[relativeID]);
@@ -680,32 +758,47 @@ namespace PowerPointLabs
             return scriptList;
         }
 
-        public void PasteSlideAudio(int slideID, List<Audio> audioList)
+        public Tuple<List<Audio>, List<string>> CopySlideAudioAndScript(PowerPointSlide slide)
         {
-            var relativeID = GetRelativeSlideIndex(slideID);
+            // before copy, we need to check if the slide has been initialized because
+            // of lazy loading. This may happen when user selects multiple slides and
+            // some of them haven't been initialized.
+            InitializeAudioAndScript(slide, null, false);
 
-            if (relativeID >= _audioList.Count)
-            {
-                _audioList.Add(audioList);
-            }
-            else
-            {
-                _audioList[relativeID] = audioList;
-            }
+            var audio = CopySlideAudio(slide.ID);
+            var script = CopySlideScript(slide.ID);
+
+            return new Tuple<List<Audio>, List<string>>(audio, script);
         }
 
-        public void PasteSlideScript(int slideID, List<string> scriptList)
+        private void PasteSlideAudio(int slideID, List<Audio> audioList)
         {
             var relativeID = GetRelativeSlideIndex(slideID);
 
-            if (relativeID >= _scriptList.Count)
+            while (relativeID >= _audioList.Count)
             {
-                _scriptList.Add(scriptList);
+                _audioList.Add(new List<Audio>());
             }
-            else
+
+            _audioList[relativeID] = audioList;
+        }
+
+        private void PasteSlideScript(int slideID, List<string> scriptList)
+        {
+            var relativeID = GetRelativeSlideIndex(slideID);
+
+            while (relativeID >= _scriptList.Count)
             {
-                _scriptList[relativeID] = scriptList;
+                _scriptList.Add(new List<string>());
             }
+
+            _scriptList[relativeID] = scriptList;
+        }
+
+        public void PasteSlideAudioAndScript(PowerPointSlide slide, Tuple<List<Audio>, List<string>> data)
+        {
+            PasteSlideAudio(slide.ID, data.Item1);
+            PasteSlideScript(slide.ID, data.Item2);
         }
 
         private void DeleteTempAudioFiles()
@@ -763,97 +856,13 @@ namespace PowerPointLabs
             try
             {
                 var slides = PowerPointPresentation.Slides.ToList();
-                // track the total count of valid speech audio, this helps avoid
-                // mixing up other audios with speech audios
 
                 foreach (var slide in slides)
                 {
-                    // update the slide id to relative id mapper
-                    var relativeID = GetRelativeSlideIndex(slide.ID);
-
-                    if (_scriptList.Count == relativeID)
-                    {
-                        _scriptList.Add(new List<string>());
-                    }
-
-                    if (slide.NotesPageText != String.Empty)
-                    {
-                        // retrieve the tag notes
-                        var taggedNotes = new TaggedText(slide.NotesPageText.Trim());
-                        List<String> splitScript = taggedNotes.SplitByClicks();
-
-                        // add the splitted notes into script list
-                        _scriptList[relativeID] = splitScript;
-                    }
-
-                    // mapping the shapes with media files, and set up the audio list
-
-                    // append a new list of of audios to the current presentatoin audio list
-                    _audioList.Add(new List<Audio>());
-
-                    // get all audio shapes
-                    var shapes = slide.GetShapesWithMediaType(PpMediaType.ppMediaTypeSound);
-                    XmlParser xmlParser = null;
-
-                    if (shapes.Count > 0)
-                    {
-                        xmlParser = new XmlParser(string.Format(_tempShapAudioXmlFormat, slide.Index));
-                    }
-
-                    // iterate through all shapes, skip audios that are not generated speech
-                    for (int i = 0, speechOnSlide = 0; i < shapes.Count; i++, speechOnSlide++)
-                    {
-                        var shape = shapes[i];
-
-                        // if current audio is a speech, dump it into Audio object
-                        if (shape.Name.Contains(SpeechShapePrefix) ||
-                            shape.Name.Contains(SpeechShapePrefixOld))
-                        {
-                            var audio = new Audio();
-
-                            // detect audio type
-                            if (shape.MediaFormat.AudioSamplingRate == Audio.GeneratedSamplingRate)
-                            {
-                                audio.Type = Audio.AudioType.Auto;
-                            }
-                            else
-                                if (shape.MediaFormat.AudioSamplingRate == Audio.RecordedSamplingRate)
-                                {
-                                    audio.Type = Audio.AudioType.Record;
-                                }
-                                else
-                                {
-                                    MessageBox.Show("Unrecognize Embedded Audio");
-                                }
-
-                            // derive matched id from shape name
-                            var temp = shape.Name.Split(new[] { ' ' });
-                            audio.MatchScriptID = Int32.Parse(temp[2]);
-
-                            // get corresponding audio
-                            audio.Name = shape.Name;
-                            audio.SaveName = _tempFullPath + xmlParser.GetCorrespondingAudio(audio.Name);
-                            audio.Length = AudioHelper.GetAudioLengthString(audio.SaveName);
-                            audio.LengthMillis = AudioHelper.GetAudioLength(audio.SaveName);
-
-                            // maintain a sorted audio list
-                            // Note: here relativeID == slide.Index - 1
-                            if (audio.MatchScriptID >= _audioList[relativeID].Count)
-                            {
-                                _audioList[relativeID].Add(audio);
-                            }
-                            else
-                            {
-                                _audioList[relativeID].Insert(audio.MatchScriptID, audio);
-                            }
-
-                            // match id > total script count -> script does not exsit
-                            if (audio.MatchScriptID >= _scriptList[relativeID].Count)
-                            {
-                                audio.MatchScriptID = -1;
-                            }
-                        }
-                    }
+                    // because of lazy loading, each slide will not be initialized
+                    // until it is viewed.Therefore we need to remember the original
+                    // slide index to retrieve relationship XMLs.
+                    GetRelativeSlideIndex(slide.ID);
                 }
             }
             catch (Exception e)
@@ -865,98 +874,22 @@ namespace PowerPointLabs
 
         public void InitializeAudioAndScript(PowerPointSlide slide, string[] names, bool forceRefresh)
         {
-            string[] audioSaveNames = null;
-            string folderPath = _tempPath + _tempFolderName;
-            
-            int slideID = slide.ID;
-            int relativeSlideID = GetRelativeSlideIndex(slideID);
-            bool initialized = _audioList != null && _audioList.Count > relativeSlideID;
+            var relativeSlideID = GetRelativeSlideIndex(slide.ID);
+            var initialized = _audioList != null &&
+                              _audioList.Count > relativeSlideID &&
+                              _audioList[relativeSlideID].Count != 0;
 
-            // check if the selected slide has been initialized before
-            if (initialized)
+            if (initialized && !forceRefresh)
             {
-                // TODO: 
-                // if the slide has been initialized, check if the record has been updated
-
-                // currently using forceRefresh to force an entire refresh
-                if (!forceRefresh)
-                {
-                    return;
-                }
+                return;
             }
 
-            // if the script of the selected slide has not been initialized yet,
-            // we need to sniff the note pane to initialize the script list
-
-            // TODO:
-            // now we assume the first record -> first chunk of note, ect.
-
-            // retrieve the tag notes
-            var taggedNotes = new TaggedText(slide.NotesPageText.Trim());
-            List<String> splitScript = taggedNotes.SplitByClicks();
-
-            // if the slide has been initialized, update the list
-            if (initialized)
-            {
-                _scriptList[relativeSlideID] = splitScript;
-            }
-            else
-            // add the splitted notes into script list
-            {
-                _scriptList.Add(splitScript);
-            }
-
-            // if the audio of the selected slide has not been initialized yet,
-            // we need to put all audio in the current slide into the list.
-            if (!initialized)
-            {
-                _audioList.Add(new List<Audio>());
-            }
-            // else clear the audio collection of current slide
-            // TODO:
-            // obviously we don't need to delete all items in the list, only
-            // those modified items should be replaced.
-            else
-            {
-                _audioList[relativeSlideID].Clear();
-            }
-
-            // if audio names have not been given, retrieve from files.
-            if (names == null)
-            {
-                // retrieve all actual audio files in the slide
-                String fileNameSearchPattern = String.Format(SaveNameFormat, slideID);
-                
-                if (!Directory.Exists(folderPath))
-                {
-                    Directory.CreateDirectory(folderPath);
-                }
-
-                var filePaths = Directory.EnumerateFiles(folderPath, "*.wav");
-                audioSaveNames = filePaths.Where(path => path.Contains(fileNameSearchPattern)).ToArray();
-            }
-            else
-            {
-                audioSaveNames = names;
-            }
-
-            // construct audio object and put into audio collection
-            for (int i = 0; i < audioSaveNames.Length; i++)
-            {
-                string saveName = audioSaveNames[i];
-                string name = String.Format(SpeechShapeFormat, i);
-                var audio = new Audio(name, saveName, i);
-
-                _audioList[relativeSlideID].Add(audio);
-            }
+            RefreshScriptList(slide);
+            RefreshAudioList(slide, names);
         }
 
         public void InitializeAudioAndScript(List<PowerPointSlide> slides, List<string[]> names, bool forceRefresh)
         {
-            // TODO:
-            // if a slide has been initialized, check if some of the records have been updated
-            // currently use forceRefresh to force an entire refresh
-
             for (int i = 0; i < slides.Count; i ++)
             {
                 var slide = slides[i];
@@ -1009,6 +942,7 @@ namespace PowerPointLabs
             var currentSlide = PowerPointPresentation.CurrentSlide;
             if (currentSlide != null)
             {
+                InitializeAudioAndScript(currentSlide, null, false);
                 UpdateLists(currentSlide.ID);
             }
         }
@@ -1727,8 +1661,6 @@ namespace PowerPointLabs
                 }
 
                 scriptDetailTextBox.Text = _scriptList[relativeSlideID][e.ItemIndex];
-
-                SetScriptTextBoxScroll();
             }
             else
             {
