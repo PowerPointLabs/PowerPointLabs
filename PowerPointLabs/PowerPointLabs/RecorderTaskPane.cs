@@ -400,6 +400,7 @@ namespace PowerPointLabs
         private void MapShapesWithAudio(PowerPointSlide slide)
         {
             var relativeSlideID = GetRelativeSlideIndex(slide.ID);
+            XmlParser xmlParser;
 
             string searchRule = string.Format("^({0}|{1})", SpeechShapePrefixOld, SpeechShapePrefix);
             var shapes = slide.GetShapesWithMediaType(PpMediaType.ppMediaTypeSound, new Regex(searchRule));
@@ -409,7 +410,16 @@ namespace PowerPointLabs
                 return;
             }
 
-            var xmlParser = new XmlParser(string.Format(_tempShapAudioXmlFormat, relativeSlideID + 1));
+            try
+            {
+                xmlParser = new XmlParser(string.Format(_tempShapAudioXmlFormat, relativeSlideID + 1));
+            }
+            catch (ArgumentException)
+            {
+                // xml does not exist, means this page is either a new page or
+                // created dues to pasting. For either case we do nothing
+                return;
+            }
 
             // iterate through all shapes, skip audios that are not generated speech
             foreach (var shape in shapes)
