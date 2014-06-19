@@ -270,7 +270,11 @@ namespace PowerPointLabs
         private void button2_Click(object sender, EventArgs e)
         {
             colorDialog1.Color = panel1.BackColor;
-            colorDialog1.ShowDialog();
+            if (colorDialog1.ShowDialog() == DialogResult.OK)
+            {
+                _originalColor = colorDialog1.Color;
+                dataSource.selectedColor = colorDialog1.Color;
+            }
         }
 
         private void timer1_Tick(object sender, EventArgs e)
@@ -437,6 +441,7 @@ namespace PowerPointLabs
         {
             Panel panel = (Panel)sender;
             panel.BackColor = (Color)e.Data.GetData(panel.BackColor.GetType());
+            _originalColor = panel.BackColor;
             UpdateUIForNewColor();
         }
 
