@@ -80,6 +80,69 @@ namespace PowerPointLabs
                 false,
                 DataSourceUpdateMode.OnPropertyChanged));
 
+            this.ThemePanel1.DataBindings.Add(new Binding(
+                "BackColor",
+                dataSource,
+                "themeColorOne",
+                false,
+                DataSourceUpdateMode.OnPropertyChanged));
+
+            this.ThemePanel2.DataBindings.Add(new Binding(
+                "BackColor",
+                dataSource,
+                "themeColorTwo",
+                false,
+                DataSourceUpdateMode.OnPropertyChanged));
+
+            this.ThemePanel3.DataBindings.Add(new Binding(
+                "BackColor",
+                dataSource,
+                "themeColorThree",
+                false,
+                DataSourceUpdateMode.OnPropertyChanged));
+            
+            this.ThemePanel4.DataBindings.Add(new Binding(
+                "BackColor",
+                dataSource,
+                "themeColorFour",
+                false,
+                DataSourceUpdateMode.OnPropertyChanged));
+
+            this.ThemePanel5.DataBindings.Add(new Binding(
+                "BackColor",
+                dataSource,
+                "themeColorFive",
+                false,
+                DataSourceUpdateMode.OnPropertyChanged));
+
+            this.ThemePanel6.DataBindings.Add(new Binding(
+                "BackColor",
+                dataSource,
+                "themeColorSix",
+                false,
+                DataSourceUpdateMode.OnPropertyChanged));
+
+            this.ThemePanel7.DataBindings.Add(new Binding(
+                "BackColor",
+                dataSource,
+                "themeColorSeven",
+                false,
+                DataSourceUpdateMode.OnPropertyChanged));
+
+            this.ThemePanel8.DataBindings.Add(new Binding(
+                "BackColor",
+                dataSource,
+                "themeColorEight",
+                false,
+                DataSourceUpdateMode.OnPropertyChanged));
+
+            this.ThemePanel9.DataBindings.Add(new Binding(
+                "BackColor",
+                dataSource,
+                "themeColorNine",
+                false,
+                DataSourceUpdateMode.OnPropertyChanged));
+
             this.AnalogousSelected.DataBindings.Add(new Binding(
                 "BackColor",
                 dataSource,
