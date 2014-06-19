@@ -444,7 +444,6 @@ namespace PowerPointLabs
             string[] audioSaveNames;
             
             var relativeSlideID = GetRelativeSlideIndex(slide.ID);
-            var tempFolderPath = _tempPath + _tempFolderName;
 
             if (relativeSlideID >= _audioList.Count)
             {
@@ -458,30 +457,80 @@ namespace PowerPointLabs
             // if audio names have not been given, retrieve from files.
             if (names == null)
             {
-                // retrieve all actual audio files in the slide
-                String fileNameSearchPattern = String.Format(SaveNameFormat, slide.ID);
+                var shapes = slide.GetShapesWithMediaType(PpMediaType.ppMediaTypeSound);
+                XmlParser xmlParser = null;
 
-                if (!Directory.Exists(tempFolderPath))
+                if (shapes.Count > 0)
                 {
-                    Directory.CreateDirectory(tempFolderPath);
+                    xmlParser = new XmlParser(string.Format(_tempShapAudioXmlFormat, slide.Index));
                 }
 
-                var filePaths = Directory.EnumerateFiles(tempFolderPath, "*.wav");
-                audioSaveNames = filePaths.Where(path => path.Contains(fileNameSearchPattern)).ToArray();
+                // iterate through all shapes, skip audios that are not generated speech
+                for (int i = 0; i < shapes.Count; i++)
+                {
+                    var shape = shapes[i];
+
+                    // if current audio is a speech, dump it into Audio object
+                    if (shape.Name.Contains(SpeechShapePrefix) ||
+                        shape.Name.Contains(SpeechShapePrefixOld))
+                    {
+                        var audio = new Audio();
+
+                        // detect audio type
+                        if (shape.MediaFormat.AudioSamplingRate == Audio.GeneratedSamplingRate)
+                        {
+                            audio.Type = Audio.AudioType.Auto;
+                        }
+                        else
+                            if (shape.MediaFormat.AudioSamplingRate == Audio.RecordedSamplingRate)
+                            {
+                                audio.Type = Audio.AudioType.Record;
+                            }
+                            else
+                            {
+                                MessageBox.Show("Unrecognize Embedded Audio");
+                            }
+
+                        // derive matched id from shape name
+                        var temp = shape.Name.Split(new[] { ' ' });
+                        audio.MatchScriptID = Int32.Parse(temp[2]);
+
+                        // get corresponding audio
+                        audio.Name = shape.Name;
+                        audio.SaveName = _tempFullPath + xmlParser.GetCorrespondingAudio(audio.Name);
+                        audio.Length = AudioHelper.GetAudioLengthString(audio.SaveName);
+                        audio.LengthMillis = AudioHelper.GetAudioLength(audio.SaveName);
+
+                        // maintain a sorted audio list
+                        // Note: here relativeID == slide.Index - 1
+                        if (audio.MatchScriptID >= _audioList[relativeSlideID].Count)
+                        {
+                            _audioList[relativeSlideID].Add(audio);
+                        }
+                        else
+                        {
+                            _audioList[relativeSlideID].Insert(audio.MatchScriptID, audio);
+                        }
+
+                        // match id > total script count -> script does not exsit
+                        if (audio.MatchScriptID >= _scriptList[relativeSlideID].Count)
+                        {
+                            audio.MatchScriptID = -1;
+                        }
+                    }
+                }
             }
             else
             {
-                audioSaveNames = names;
-            }
+                // construct audio object and put into audio collection
+                for (int i = 0; i < names.Length; i++)
+                {
+                    string saveName = names[i];
+                    string name = String.Format(SpeechShapeFormat, i);
+                    var audio = new Audio(name, saveName, i);
 
-            // construct audio object and put into audio collection
-            for (int i = 0; i < audioSaveNames.Length; i++)
-            {
-                string saveName = audioSaveNames[i];
-                string name = String.Format(SpeechShapeFormat, i);
-                var audio = new Audio(name, saveName, i);
-
-                _audioList[relativeSlideID].Add(audio);
+                    _audioList[relativeSlideID].Add(audio);
+                }
             }
         }
 
@@ -850,7 +899,7 @@ namespace PowerPointLabs
                     }
 
                     // iterate through all shapes, skip audios that are not generated speech
-                    for (int i = 0, speechOnSlide = 0; i < shapes.Count; i++, speechOnSlide++)
+                    for (int i = 0; i < shapes.Count; i++)
                     {
                         var shape = shapes[i];
 
