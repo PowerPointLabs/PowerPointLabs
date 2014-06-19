@@ -86,6 +86,9 @@
             this.ThemePanel8 = new System.Windows.Forms.Panel();
             this.ThemePanel9 = new System.Windows.Forms.Panel();
             this.SaveThemeButton = new System.Windows.Forms.Button();
+            this.LoadButton = new System.Windows.Forms.Button();
+            this.saveFileDialog1 = new System.Windows.Forms.SaveFileDialog();
+            this.openFileDialog1 = new System.Windows.Forms.OpenFileDialog();
             this.AnalogousColorPanel.SuspendLayout();
             this.flowLayoutPanel6.SuspendLayout();
             this.flowLayoutPanel2.SuspendLayout();
@@ -518,6 +521,7 @@
             this.themeLayoutPanel.Controls.Add(this.label6);
             this.themeLayoutPanel.Controls.Add(this.flowLayoutPanel11);
             this.themeLayoutPanel.Controls.Add(this.SaveThemeButton);
+            this.themeLayoutPanel.Controls.Add(this.LoadButton);
             this.themeLayoutPanel.Location = new System.Drawing.Point(16, 440);
             this.themeLayoutPanel.Name = "themeLayoutPanel";
             this.themeLayoutPanel.Size = new System.Drawing.Size(273, 91);
@@ -656,6 +660,30 @@
             this.SaveThemeButton.TabIndex = 16;
             this.SaveThemeButton.Text = "Save";
             this.SaveThemeButton.UseVisualStyleBackColor = true;
+            this.SaveThemeButton.Click += new System.EventHandler(this.SaveThemeButton_Click);
+            // 
+            // LoadButton
+            // 
+            this.LoadButton.Location = new System.Drawing.Point(84, 54);
+            this.LoadButton.Name = "LoadButton";
+            this.LoadButton.Size = new System.Drawing.Size(75, 23);
+            this.LoadButton.TabIndex = 17;
+            this.LoadButton.Text = "Load";
+            this.LoadButton.UseVisualStyleBackColor = true;
+            this.LoadButton.Click += new System.EventHandler(this.LoadButton_Click);
+            // 
+            // saveFileDialog1
+            // 
+            this.saveFileDialog1.DefaultExt = "thm";
+            this.saveFileDialog1.Filter = "PPTLabsThemes|*.thm";
+            this.saveFileDialog1.Title = "Save Theme";
+            this.saveFileDialog1.FileOk += new System.ComponentModel.CancelEventHandler(this.saveFileDialog1_FileOk);
+            // 
+            // openFileDialog1
+            // 
+            this.openFileDialog1.DefaultExt = "thm";
+            this.openFileDialog1.Filter = "PPTLabsTheme|*.thm";
+            this.openFileDialog1.Title = "Load Theme";
             // 
             // ColorPane
             // 
@@ -760,5 +788,8 @@
         private System.Windows.Forms.Panel ThemePanel8;
         private System.Windows.Forms.Panel ThemePanel9;
         private System.Windows.Forms.Button SaveThemeButton;
+        private System.Windows.Forms.SaveFileDialog saveFileDialog1;
+        private System.Windows.Forms.Button LoadButton;
+        private System.Windows.Forms.OpenFileDialog openFileDialog1;
     }
 }

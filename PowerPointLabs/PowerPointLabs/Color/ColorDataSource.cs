@@ -2,7 +2,9 @@
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Drawing;
+using System.IO;
 using System.Linq;
+using System.Runtime.Serialization.Formatters.Binary;
 using System.Text;
 
 namespace PowerPointLabs
@@ -189,6 +191,57 @@ namespace PowerPointLabs
             }
         }
         
+        public bool SaveThemeColorsInFile(String filePath)
+        {
+            try
+            {
+                List<Color> themeColors = new List<Color>();
+                themeColors.Add(this.themeColorOne);
+                themeColors.Add(this.themeColorTwo);
+                themeColors.Add(this.themeColorThree);
+                themeColors.Add(this.themeColorFour);
+                themeColors.Add(this.themeColorFive);
+                themeColors.Add(this.themeColorSix);
+                themeColors.Add(this.themeColorSeven);
+                themeColors.Add(this.themeColorEight);
+                themeColors.Add(this.themeColorNine);
+
+                Stream fileStream = File.Create(filePath);
+                BinaryFormatter serializer = new BinaryFormatter();
+                serializer.Serialize(fileStream, themeColors);
+                fileStream.Close();
+            }
+            catch (Exception e)
+            {
+                return false;
+            }
+            return true;
+        }
+
+        public bool LoadThemeColorsFromFile(string filePath)
+        {
+            try
+            {
+                Stream openFileStream = File.OpenRead(filePath);
+                BinaryFormatter deserializer = new BinaryFormatter();
+                List<Color> themeColors = (List<Color>)deserializer.Deserialize(openFileStream);
+                openFileStream.Close();
+                this.themeColorOne = themeColors[0];
+                this.themeColorTwo = themeColors[1];
+                this.themeColorThree = themeColors[2];
+                this.themeColorFour = themeColors[3];
+                this.themeColorFive = themeColors[4];
+                this.themeColorSix = themeColors[5];
+                this.themeColorSeven = themeColors[6];
+                this.themeColorEight = themeColors[7];
+                this.themeColorNine = themeColors[8];
+            }
+            catch (Exception e)
+            {
+                return false;
+            }
+            return true;
+        }
 
         public ColorDataSource()
         {

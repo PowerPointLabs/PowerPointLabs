@@ -30,44 +30,6 @@ namespace PowerPointLabs
             InitializeComponent();
 
             bindDataToPanels();
-
-            string folderName = System.Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData);
-            System.Diagnostics.Debug.WriteLine(folderName);
-            folderName += @"\PowerPointLabs\themes";
-            System.Diagnostics.Debug.WriteLine(folderName);
-            string fileName = "theme1.dat";
-
-            string filePath = folderName + "\\" + fileName;
-            List<Color> colors = new List<Color>();
-            if (File.Exists(filePath))
-            {
-                System.Diagnostics.Debug.WriteLine("File Exists");
-                Stream openFileStream = File.OpenRead(filePath);
-                BinaryFormatter deserializer = new BinaryFormatter();
-                colors = (List<Color>)deserializer.Deserialize(openFileStream);
-                openFileStream.Close();
-                System.Diagnostics.Debug.WriteLine(colors.Count);
-            }
-            else
-            {
-                if(!Directory.Exists(folderName))
-                {
-                    Directory.CreateDirectory(folderName);
-                    System.Diagnostics.Debug.WriteLine("Creating dir");
-                }
-
-                System.Diagnostics.Debug.WriteLine("No File");
-                List<Color> themeColors = new List<Color>();
-                themeColors.Add(Color.Aqua);
-                themeColors.Add(Color.Beige);
-
-                System.Diagnostics.Debug.WriteLine(filePath);
-
-                Stream fileStream = File.Create(filePath);
-                BinaryFormatter serializer = new BinaryFormatter();
-                serializer.Serialize(fileStream, themeColors);
-                fileStream.Close();
-            }
         }
 
         #region DataBindings
@@ -582,6 +544,38 @@ namespace PowerPointLabs
             else
             {
                 e.Effect = DragDropEffects.None;
+            }
+        }
+
+        private void SaveThemeButton_Click(object sender, EventArgs e)
+        {
+            if (saveFileDialog1.ShowDialog() == DialogResult.OK && 
+                dataSource.SaveThemeColorsInFile(saveFileDialog1.FileName))
+            {
+                MessageBox.Show("Theme saved successfully", "Save Complete");
+            } 
+            else
+            {
+                MessageBox.Show("Invalid data entered", "Save Failed");
+            }
+        }
+
+        private void saveFileDialog1_FileOk(object sender, CancelEventArgs e)
+        {
+            System.Diagnostics.Debug.WriteLine(saveFileDialog1.FileName);
+            
+        }
+
+        private void LoadButton_Click(object sender, EventArgs e)
+        {
+            if (openFileDialog1.ShowDialog() == DialogResult.OK &&
+                dataSource.LoadThemeColorsFromFile(openFileDialog1.FileName))
+            {
+                MessageBox.Show("Theme loaded successfully", "Load Complete");
+            }
+            else
+            {
+                MessageBox.Show("Invalid data entered", "Load Failed");
             }
         }
     }
