@@ -410,7 +410,8 @@ namespace PowerPointLabs
 
         private void panel1_DragDrop(object sender, DragEventArgs e)
         {
-            panel1.BackColor = (Color)e.Data.GetData(panel1.BackColor.GetType());
+            Panel panel = (Panel)sender;
+            panel.BackColor = (Color)e.Data.GetData(panel.BackColor.GetType());
             UpdateUIForNewColor();
         }
 

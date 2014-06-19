@@ -73,6 +73,19 @@
             this.MonoPanel5 = new System.Windows.Forms.Panel();
             this.MonoPanel6 = new System.Windows.Forms.Panel();
             this.MonoPanel7 = new System.Windows.Forms.Panel();
+            this.flowLayoutPanel10 = new System.Windows.Forms.FlowLayoutPanel();
+            this.label6 = new System.Windows.Forms.Label();
+            this.flowLayoutPanel11 = new System.Windows.Forms.FlowLayoutPanel();
+            this.ThemePanel1 = new System.Windows.Forms.Panel();
+            this.ThemePanel2 = new System.Windows.Forms.Panel();
+            this.ThemePanel3 = new System.Windows.Forms.Panel();
+            this.ThemePanel4 = new System.Windows.Forms.Panel();
+            this.ThemePanel5 = new System.Windows.Forms.Panel();
+            this.ThemePanel6 = new System.Windows.Forms.Panel();
+            this.ThemePanel7 = new System.Windows.Forms.Panel();
+            this.ThemePanel8 = new System.Windows.Forms.Panel();
+            this.ThemePanel9 = new System.Windows.Forms.Panel();
+            this.SaveThemeButton = new System.Windows.Forms.Button();
             this.AnalogousColorPanel.SuspendLayout();
             this.flowLayoutPanel6.SuspendLayout();
             this.flowLayoutPanel2.SuspendLayout();
@@ -85,6 +98,8 @@
             ((System.ComponentModel.ISupportInitialize)(this.saturationBar)).BeginInit();
             this.flowLayoutPanel1.SuspendLayout();
             this.flowLayoutPanel5.SuspendLayout();
+            this.flowLayoutPanel10.SuspendLayout();
+            this.flowLayoutPanel11.SuspendLayout();
             this.SuspendLayout();
             // 
             // panel1
@@ -131,18 +146,18 @@
             this.AnalogousColorPanel.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.AnalogousColorPanel.Controls.Add(this.label1);
             this.AnalogousColorPanel.Controls.Add(this.flowLayoutPanel6);
-            this.AnalogousColorPanel.Location = new System.Drawing.Point(20, 301);
+            this.AnalogousColorPanel.Location = new System.Drawing.Point(16, 288);
             this.AnalogousColorPanel.Name = "AnalogousColorPanel";
-            this.AnalogousColorPanel.Size = new System.Drawing.Size(263, 67);
+            this.AnalogousColorPanel.Size = new System.Drawing.Size(124, 76);
             this.AnalogousColorPanel.TabIndex = 3;
             // 
             // label1
             // 
             this.label1.AutoSize = true;
-            this.label1.Font = new System.Drawing.Font("MS Reference Sans Serif", 13F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label1.Font = new System.Drawing.Font("Arial", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.label1.Location = new System.Drawing.Point(3, 0);
             this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(181, 23);
+            this.label1.Size = new System.Drawing.Size(96, 38);
             this.label1.TabIndex = 5;
             this.label1.Text = "Analogous Colors";
             // 
@@ -151,9 +166,9 @@
             this.flowLayoutPanel6.Controls.Add(this.AnalogousLighter);
             this.flowLayoutPanel6.Controls.Add(this.AnalogousSelected);
             this.flowLayoutPanel6.Controls.Add(this.AnalogousDarker);
-            this.flowLayoutPanel6.Location = new System.Drawing.Point(3, 26);
+            this.flowLayoutPanel6.Location = new System.Drawing.Point(3, 41);
             this.flowLayoutPanel6.Name = "flowLayoutPanel6";
-            this.flowLayoutPanel6.Size = new System.Drawing.Size(255, 26);
+            this.flowLayoutPanel6.Size = new System.Drawing.Size(85, 26);
             this.flowLayoutPanel6.TabIndex = 12;
             // 
             // AnalogousLighter
@@ -188,18 +203,18 @@
             this.flowLayoutPanel2.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.flowLayoutPanel2.Controls.Add(this.label2);
             this.flowLayoutPanel2.Controls.Add(this.flowLayoutPanel7);
-            this.flowLayoutPanel2.Location = new System.Drawing.Point(20, 374);
+            this.flowLayoutPanel2.Location = new System.Drawing.Point(146, 288);
             this.flowLayoutPanel2.Name = "flowLayoutPanel2";
-            this.flowLayoutPanel2.Size = new System.Drawing.Size(263, 67);
+            this.flowLayoutPanel2.Size = new System.Drawing.Size(143, 76);
             this.flowLayoutPanel2.TabIndex = 4;
             // 
             // label2
             // 
             this.label2.AutoSize = true;
-            this.label2.Font = new System.Drawing.Font("MS Reference Sans Serif", 13F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label2.Font = new System.Drawing.Font("Arial", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.label2.Location = new System.Drawing.Point(3, 0);
             this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(239, 23);
+            this.label2.Size = new System.Drawing.Size(134, 38);
             this.label2.TabIndex = 6;
             this.label2.Text = "Complementary Colors";
             // 
@@ -208,9 +223,9 @@
             this.flowLayoutPanel7.Controls.Add(this.ComplementaryLighter);
             this.flowLayoutPanel7.Controls.Add(this.ComplementarySelected);
             this.flowLayoutPanel7.Controls.Add(this.ComplementaryDarker);
-            this.flowLayoutPanel7.Location = new System.Drawing.Point(3, 26);
+            this.flowLayoutPanel7.Location = new System.Drawing.Point(3, 41);
             this.flowLayoutPanel7.Name = "flowLayoutPanel7";
-            this.flowLayoutPanel7.Size = new System.Drawing.Size(255, 26);
+            this.flowLayoutPanel7.Size = new System.Drawing.Size(120, 26);
             this.flowLayoutPanel7.TabIndex = 13;
             // 
             // ComplementaryLighter
@@ -245,18 +260,18 @@
             this.flowLayoutPanel3.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.flowLayoutPanel3.Controls.Add(this.label3);
             this.flowLayoutPanel3.Controls.Add(this.flowLayoutPanel8);
-            this.flowLayoutPanel3.Location = new System.Drawing.Point(20, 444);
+            this.flowLayoutPanel3.Location = new System.Drawing.Point(16, 370);
             this.flowLayoutPanel3.Name = "flowLayoutPanel3";
-            this.flowLayoutPanel3.Size = new System.Drawing.Size(263, 67);
+            this.flowLayoutPanel3.Size = new System.Drawing.Size(124, 64);
             this.flowLayoutPanel3.TabIndex = 4;
             // 
             // label3
             // 
             this.label3.AutoSize = true;
-            this.label3.Font = new System.Drawing.Font("MS Reference Sans Serif", 13F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label3.Font = new System.Drawing.Font("Arial", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.label3.Location = new System.Drawing.Point(3, 0);
             this.label3.Name = "label3";
-            this.label3.Size = new System.Drawing.Size(147, 23);
+            this.label3.Size = new System.Drawing.Size(115, 19);
             this.label3.TabIndex = 6;
             this.label3.Text = "Triadic Colors";
             // 
@@ -265,9 +280,9 @@
             this.flowLayoutPanel8.Controls.Add(this.TriadicLower);
             this.flowLayoutPanel8.Controls.Add(this.TriadicSelected);
             this.flowLayoutPanel8.Controls.Add(this.TriadicHigher);
-            this.flowLayoutPanel8.Location = new System.Drawing.Point(3, 26);
+            this.flowLayoutPanel8.Location = new System.Drawing.Point(3, 22);
             this.flowLayoutPanel8.Name = "flowLayoutPanel8";
-            this.flowLayoutPanel8.Size = new System.Drawing.Size(255, 26);
+            this.flowLayoutPanel8.Size = new System.Drawing.Size(85, 26);
             this.flowLayoutPanel8.TabIndex = 14;
             // 
             // TriadicLower
@@ -302,18 +317,18 @@
             this.flowLayoutPanel4.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.flowLayoutPanel4.Controls.Add(this.label4);
             this.flowLayoutPanel4.Controls.Add(this.flowLayoutPanel9);
-            this.flowLayoutPanel4.Location = new System.Drawing.Point(20, 517);
+            this.flowLayoutPanel4.Location = new System.Drawing.Point(146, 370);
             this.flowLayoutPanel4.Name = "flowLayoutPanel4";
-            this.flowLayoutPanel4.Size = new System.Drawing.Size(263, 67);
+            this.flowLayoutPanel4.Size = new System.Drawing.Size(143, 64);
             this.flowLayoutPanel4.TabIndex = 4;
             // 
             // label4
             // 
             this.label4.AutoSize = true;
-            this.label4.Font = new System.Drawing.Font("MS Reference Sans Serif", 13F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label4.Font = new System.Drawing.Font("Arial", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.label4.Location = new System.Drawing.Point(3, 0);
             this.label4.Name = "label4";
-            this.label4.Size = new System.Drawing.Size(161, 23);
+            this.label4.Size = new System.Drawing.Size(125, 19);
             this.label4.TabIndex = 6;
             this.label4.Text = "Tetradic Colors";
             // 
@@ -323,9 +338,9 @@
             this.flowLayoutPanel9.Controls.Add(this.TetradicSelected);
             this.flowLayoutPanel9.Controls.Add(this.Tetradic2);
             this.flowLayoutPanel9.Controls.Add(this.Tetradic3);
-            this.flowLayoutPanel9.Location = new System.Drawing.Point(3, 26);
+            this.flowLayoutPanel9.Location = new System.Drawing.Point(3, 22);
             this.flowLayoutPanel9.Name = "flowLayoutPanel9";
-            this.flowLayoutPanel9.Size = new System.Drawing.Size(255, 26);
+            this.flowLayoutPanel9.Size = new System.Drawing.Size(104, 26);
             this.flowLayoutPanel9.TabIndex = 15;
             // 
             // Tetradic1
@@ -366,7 +381,7 @@
             // 
             // brightnessBar
             // 
-            this.brightnessBar.Location = new System.Drawing.Point(20, 111);
+            this.brightnessBar.Location = new System.Drawing.Point(20, 98);
             this.brightnessBar.Maximum = 240;
             this.brightnessBar.Name = "brightnessBar";
             this.brightnessBar.Size = new System.Drawing.Size(256, 45);
@@ -377,7 +392,7 @@
             // brightnessPanel
             // 
             this.brightnessPanel.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.brightnessPanel.Location = new System.Drawing.Point(28, 94);
+            this.brightnessPanel.Location = new System.Drawing.Point(28, 81);
             this.brightnessPanel.Name = "brightnessPanel";
             this.brightnessPanel.Size = new System.Drawing.Size(240, 25);
             this.brightnessPanel.TabIndex = 7;
@@ -385,14 +400,14 @@
             // saturationPanel
             // 
             this.saturationPanel.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.saturationPanel.Location = new System.Drawing.Point(29, 162);
+            this.saturationPanel.Location = new System.Drawing.Point(29, 149);
             this.saturationPanel.Name = "saturationPanel";
             this.saturationPanel.Size = new System.Drawing.Size(240, 25);
             this.saturationPanel.TabIndex = 9;
             // 
             // saturationBar
             // 
-            this.saturationBar.Location = new System.Drawing.Point(21, 178);
+            this.saturationBar.Location = new System.Drawing.Point(21, 165);
             this.saturationBar.Maximum = 240;
             this.saturationBar.Name = "saturationBar";
             this.saturationBar.Size = new System.Drawing.Size(256, 45);
@@ -405,18 +420,18 @@
             this.flowLayoutPanel1.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.flowLayoutPanel1.Controls.Add(this.label5);
             this.flowLayoutPanel1.Controls.Add(this.flowLayoutPanel5);
-            this.flowLayoutPanel1.Location = new System.Drawing.Point(20, 229);
+            this.flowLayoutPanel1.Location = new System.Drawing.Point(16, 216);
             this.flowLayoutPanel1.Name = "flowLayoutPanel1";
-            this.flowLayoutPanel1.Size = new System.Drawing.Size(263, 67);
+            this.flowLayoutPanel1.Size = new System.Drawing.Size(273, 58);
             this.flowLayoutPanel1.TabIndex = 10;
             // 
             // label5
             // 
             this.label5.AutoSize = true;
-            this.label5.Font = new System.Drawing.Font("MS Reference Sans Serif", 13F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label5.Font = new System.Drawing.Font("Arial", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.label5.Location = new System.Drawing.Point(3, 0);
             this.label5.Name = "label5";
-            this.label5.Size = new System.Drawing.Size(230, 23);
+            this.label5.Size = new System.Drawing.Size(183, 19);
             this.label5.TabIndex = 6;
             this.label5.Text = "Monochromatic Colors";
             // 
@@ -429,7 +444,7 @@
             this.flowLayoutPanel5.Controls.Add(this.MonoPanel5);
             this.flowLayoutPanel5.Controls.Add(this.MonoPanel6);
             this.flowLayoutPanel5.Controls.Add(this.MonoPanel7);
-            this.flowLayoutPanel5.Location = new System.Drawing.Point(3, 26);
+            this.flowLayoutPanel5.Location = new System.Drawing.Point(3, 22);
             this.flowLayoutPanel5.Name = "flowLayoutPanel5";
             this.flowLayoutPanel5.Size = new System.Drawing.Size(255, 26);
             this.flowLayoutPanel5.TabIndex = 11;
@@ -497,10 +512,147 @@
             this.MonoPanel7.TabIndex = 5;
             this.MonoPanel7.MouseDown += new System.Windows.Forms.MouseEventHandler(this.MatchingPanel_MouseDown);
             // 
+            // flowLayoutPanel10
+            // 
+            this.flowLayoutPanel10.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.flowLayoutPanel10.Controls.Add(this.label6);
+            this.flowLayoutPanel10.Controls.Add(this.flowLayoutPanel11);
+            this.flowLayoutPanel10.Controls.Add(this.SaveThemeButton);
+            this.flowLayoutPanel10.Location = new System.Drawing.Point(16, 440);
+            this.flowLayoutPanel10.Name = "flowLayoutPanel10";
+            this.flowLayoutPanel10.Size = new System.Drawing.Size(273, 91);
+            this.flowLayoutPanel10.TabIndex = 11;
+            // 
+            // label6
+            // 
+            this.label6.AutoSize = true;
+            this.label6.Font = new System.Drawing.Font("Arial", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label6.Location = new System.Drawing.Point(3, 0);
+            this.label6.Name = "label6";
+            this.label6.Size = new System.Drawing.Size(116, 19);
+            this.label6.TabIndex = 6;
+            this.label6.Text = "Theme Colors";
+            // 
+            // flowLayoutPanel11
+            // 
+            this.flowLayoutPanel11.Controls.Add(this.ThemePanel1);
+            this.flowLayoutPanel11.Controls.Add(this.ThemePanel2);
+            this.flowLayoutPanel11.Controls.Add(this.ThemePanel3);
+            this.flowLayoutPanel11.Controls.Add(this.ThemePanel4);
+            this.flowLayoutPanel11.Controls.Add(this.ThemePanel5);
+            this.flowLayoutPanel11.Controls.Add(this.ThemePanel6);
+            this.flowLayoutPanel11.Controls.Add(this.ThemePanel7);
+            this.flowLayoutPanel11.Controls.Add(this.ThemePanel8);
+            this.flowLayoutPanel11.Controls.Add(this.ThemePanel9);
+            this.flowLayoutPanel11.Location = new System.Drawing.Point(3, 22);
+            this.flowLayoutPanel11.Name = "flowLayoutPanel11";
+            this.flowLayoutPanel11.Size = new System.Drawing.Size(255, 26);
+            this.flowLayoutPanel11.TabIndex = 15;
+            // 
+            // ThemePanel1
+            // 
+            this.ThemePanel1.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.ThemePanel1.Location = new System.Drawing.Point(3, 3);
+            this.ThemePanel1.Name = "ThemePanel1";
+            this.ThemePanel1.Size = new System.Drawing.Size(20, 20);
+            this.ThemePanel1.TabIndex = 3;
+            this.ThemePanel1.DragDrop += new System.Windows.Forms.DragEventHandler(this.panel1_DragDrop);
+            this.ThemePanel1.DragEnter += new System.Windows.Forms.DragEventHandler(this.panel1_DragEnter);
+            // 
+            // ThemePanel2
+            // 
+            this.ThemePanel2.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.ThemePanel2.Location = new System.Drawing.Point(29, 3);
+            this.ThemePanel2.Name = "ThemePanel2";
+            this.ThemePanel2.Size = new System.Drawing.Size(20, 20);
+            this.ThemePanel2.TabIndex = 4;
+            this.ThemePanel2.DragDrop += new System.Windows.Forms.DragEventHandler(this.panel1_DragDrop);
+            this.ThemePanel2.DragEnter += new System.Windows.Forms.DragEventHandler(this.panel1_DragEnter);
+            // 
+            // ThemePanel3
+            // 
+            this.ThemePanel3.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.ThemePanel3.Location = new System.Drawing.Point(55, 3);
+            this.ThemePanel3.Name = "ThemePanel3";
+            this.ThemePanel3.Size = new System.Drawing.Size(20, 20);
+            this.ThemePanel3.TabIndex = 5;
+            this.ThemePanel3.DragDrop += new System.Windows.Forms.DragEventHandler(this.panel1_DragDrop);
+            this.ThemePanel3.DragEnter += new System.Windows.Forms.DragEventHandler(this.panel1_DragEnter);
+            // 
+            // ThemePanel4
+            // 
+            this.ThemePanel4.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.ThemePanel4.Location = new System.Drawing.Point(81, 3);
+            this.ThemePanel4.Name = "ThemePanel4";
+            this.ThemePanel4.Size = new System.Drawing.Size(20, 20);
+            this.ThemePanel4.TabIndex = 6;
+            this.ThemePanel4.DragDrop += new System.Windows.Forms.DragEventHandler(this.panel1_DragDrop);
+            this.ThemePanel4.DragEnter += new System.Windows.Forms.DragEventHandler(this.panel1_DragEnter);
+            // 
+            // ThemePanel5
+            // 
+            this.ThemePanel5.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.ThemePanel5.Location = new System.Drawing.Point(107, 3);
+            this.ThemePanel5.Name = "ThemePanel5";
+            this.ThemePanel5.Size = new System.Drawing.Size(20, 20);
+            this.ThemePanel5.TabIndex = 7;
+            this.ThemePanel5.DragDrop += new System.Windows.Forms.DragEventHandler(this.panel1_DragDrop);
+            this.ThemePanel5.DragEnter += new System.Windows.Forms.DragEventHandler(this.panel1_DragEnter);
+            // 
+            // ThemePanel6
+            // 
+            this.ThemePanel6.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.ThemePanel6.Location = new System.Drawing.Point(133, 3);
+            this.ThemePanel6.Name = "ThemePanel6";
+            this.ThemePanel6.Size = new System.Drawing.Size(20, 20);
+            this.ThemePanel6.TabIndex = 8;
+            this.ThemePanel6.DragDrop += new System.Windows.Forms.DragEventHandler(this.panel1_DragDrop);
+            this.ThemePanel6.DragEnter += new System.Windows.Forms.DragEventHandler(this.panel1_DragEnter);
+            // 
+            // ThemePanel7
+            // 
+            this.ThemePanel7.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.ThemePanel7.Location = new System.Drawing.Point(159, 3);
+            this.ThemePanel7.Name = "ThemePanel7";
+            this.ThemePanel7.Size = new System.Drawing.Size(20, 20);
+            this.ThemePanel7.TabIndex = 9;
+            this.ThemePanel7.DragDrop += new System.Windows.Forms.DragEventHandler(this.panel1_DragDrop);
+            this.ThemePanel7.DragEnter += new System.Windows.Forms.DragEventHandler(this.panel1_DragEnter);
+            // 
+            // ThemePanel8
+            // 
+            this.ThemePanel8.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.ThemePanel8.Location = new System.Drawing.Point(185, 3);
+            this.ThemePanel8.Name = "ThemePanel8";
+            this.ThemePanel8.Size = new System.Drawing.Size(20, 20);
+            this.ThemePanel8.TabIndex = 10;
+            this.ThemePanel8.DragDrop += new System.Windows.Forms.DragEventHandler(this.panel1_DragDrop);
+            this.ThemePanel8.DragEnter += new System.Windows.Forms.DragEventHandler(this.panel1_DragEnter);
+            // 
+            // ThemePanel9
+            // 
+            this.ThemePanel9.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.ThemePanel9.Location = new System.Drawing.Point(211, 3);
+            this.ThemePanel9.Name = "ThemePanel9";
+            this.ThemePanel9.Size = new System.Drawing.Size(20, 20);
+            this.ThemePanel9.TabIndex = 11;
+            this.ThemePanel9.DragDrop += new System.Windows.Forms.DragEventHandler(this.panel1_DragDrop);
+            this.ThemePanel9.DragEnter += new System.Windows.Forms.DragEventHandler(this.panel1_DragEnter);
+            // 
+            // SaveThemeButton
+            // 
+            this.SaveThemeButton.Location = new System.Drawing.Point(3, 54);
+            this.SaveThemeButton.Name = "SaveThemeButton";
+            this.SaveThemeButton.Size = new System.Drawing.Size(75, 23);
+            this.SaveThemeButton.TabIndex = 16;
+            this.SaveThemeButton.Text = "Save";
+            this.SaveThemeButton.UseVisualStyleBackColor = true;
+            // 
             // ColorPane
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+            this.Controls.Add(this.flowLayoutPanel10);
             this.Controls.Add(this.flowLayoutPanel1);
             this.Controls.Add(this.AnalogousColorPanel);
             this.Controls.Add(this.button2);
@@ -514,7 +666,7 @@
             this.Controls.Add(this.brightnessBar);
             this.Controls.Add(this.saturationBar);
             this.Name = "ColorPane";
-            this.Size = new System.Drawing.Size(304, 631);
+            this.Size = new System.Drawing.Size(304, 542);
             this.AnalogousColorPanel.ResumeLayout(false);
             this.AnalogousColorPanel.PerformLayout();
             this.flowLayoutPanel6.ResumeLayout(false);
@@ -532,6 +684,9 @@
             this.flowLayoutPanel1.ResumeLayout(false);
             this.flowLayoutPanel1.PerformLayout();
             this.flowLayoutPanel5.ResumeLayout(false);
+            this.flowLayoutPanel10.ResumeLayout(false);
+            this.flowLayoutPanel10.PerformLayout();
+            this.flowLayoutPanel11.ResumeLayout(false);
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -583,5 +738,18 @@
         private System.Windows.Forms.Panel Tetradic3;
         private System.Windows.Forms.Panel MonoPanel6;
         private System.Windows.Forms.Panel MonoPanel7;
+        private System.Windows.Forms.FlowLayoutPanel flowLayoutPanel10;
+        private System.Windows.Forms.Label label6;
+        private System.Windows.Forms.FlowLayoutPanel flowLayoutPanel11;
+        private System.Windows.Forms.Panel ThemePanel1;
+        private System.Windows.Forms.Panel ThemePanel2;
+        private System.Windows.Forms.Panel ThemePanel3;
+        private System.Windows.Forms.Panel ThemePanel4;
+        private System.Windows.Forms.Panel ThemePanel5;
+        private System.Windows.Forms.Panel ThemePanel6;
+        private System.Windows.Forms.Panel ThemePanel7;
+        private System.Windows.Forms.Panel ThemePanel8;
+        private System.Windows.Forms.Panel ThemePanel9;
+        private System.Windows.Forms.Button SaveThemeButton;
     }
 }
