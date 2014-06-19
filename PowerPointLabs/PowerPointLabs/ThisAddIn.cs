@@ -667,6 +667,8 @@ namespace PowerPointLabs
 
                         copiedSlides.Add(slide);
                     }
+
+                    copiedSlides.Sort((x, y) => (x.SlideIndex - y.SlideIndex));
                 }
                 else if (selection.Type == PowerPoint.PpSelectionType.ppSelectionShapes)
                 {
@@ -678,10 +680,7 @@ namespace PowerPointLabs
                         var shape = sh as PowerPoint.Shape;
                         copiedShapes.Add(shape);
                     }
-                    copiedShapes.Sort((PowerPoint.Shape x, PowerPoint.Shape y) =>
-                    {
-                        return x.Id - y.Id;
-                    });
+                    copiedShapes.Sort((PowerPoint.Shape x, PowerPoint.Shape y) => (x.Id - y.Id));
                 }
             }
             catch
