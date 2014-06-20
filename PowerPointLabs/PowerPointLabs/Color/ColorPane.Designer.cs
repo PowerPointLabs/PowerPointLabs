@@ -32,8 +32,6 @@
             this.panel1 = new System.Windows.Forms.Panel();
             this.timer1 = new System.Windows.Forms.Timer(this.components);
             this.colorDialog1 = new System.Windows.Forms.ColorDialog();
-            this.button1 = new System.Windows.Forms.Button();
-            this.button2 = new System.Windows.Forms.Button();
             this.AnalogousColorPanel = new System.Windows.Forms.FlowLayoutPanel();
             this.label1 = new System.Windows.Forms.Label();
             this.flowLayoutPanel6 = new System.Windows.Forms.FlowLayoutPanel();
@@ -89,6 +87,7 @@
             this.LoadButton = new System.Windows.Forms.Button();
             this.saveFileDialog1 = new System.Windows.Forms.SaveFileDialog();
             this.openFileDialog1 = new System.Windows.Forms.OpenFileDialog();
+            this.button2 = new System.Windows.Forms.Button();
             this.FillEyeDropperButton = new System.Windows.Forms.Button();
             this.LineEyeDropperButton = new System.Windows.Forms.Button();
             this.FontEyeDropperButton = new System.Windows.Forms.Button();
@@ -127,27 +126,6 @@
             // 
             this.colorDialog1.FullOpen = true;
             // 
-            // button1
-            // 
-            this.button1.Location = new System.Drawing.Point(165, 54);
-            this.button1.Name = "button1";
-            this.button1.Size = new System.Drawing.Size(75, 23);
-            this.button1.TabIndex = 1;
-            this.button1.Text = "Eyedropper";
-            this.button1.UseVisualStyleBackColor = true;
-            this.button1.Click += new System.EventHandler(this.button1_Click);
-            // 
-            // button2
-            // 
-            this.button2.BackgroundImage = global::PowerPointLabs.Properties.Resources.Palette_icon;
-            this.button2.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Center;
-            this.button2.Location = new System.Drawing.Point(243, 16);
-            this.button2.Name = "button2";
-            this.button2.Size = new System.Drawing.Size(46, 47);
-            this.button2.TabIndex = 2;
-            this.button2.UseVisualStyleBackColor = true;
-            this.button2.Click += new System.EventHandler(this.button2_Click);
-            // 
             // AnalogousColorPanel
             // 
             this.AnalogousColorPanel.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
@@ -161,10 +139,11 @@
             // label1
             // 
             this.label1.AutoSize = true;
-            this.label1.Font = new System.Drawing.Font("Arial", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label1.BackColor = System.Drawing.SystemColors.ControlLight;
+            this.label1.Font = new System.Drawing.Font("Arial", 11.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.label1.Location = new System.Drawing.Point(3, 0);
             this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(96, 38);
+            this.label1.Size = new System.Drawing.Size(86, 36);
             this.label1.TabIndex = 5;
             this.label1.Text = "Analogous Colors";
             // 
@@ -173,7 +152,7 @@
             this.flowLayoutPanel6.Controls.Add(this.AnalogousLighter);
             this.flowLayoutPanel6.Controls.Add(this.AnalogousSelected);
             this.flowLayoutPanel6.Controls.Add(this.AnalogousDarker);
-            this.flowLayoutPanel6.Location = new System.Drawing.Point(3, 41);
+            this.flowLayoutPanel6.Location = new System.Drawing.Point(3, 39);
             this.flowLayoutPanel6.Name = "flowLayoutPanel6";
             this.flowLayoutPanel6.Size = new System.Drawing.Size(85, 26);
             this.flowLayoutPanel6.TabIndex = 12;
@@ -218,10 +197,11 @@
             // label2
             // 
             this.label2.AutoSize = true;
-            this.label2.Font = new System.Drawing.Font("Arial", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label2.BackColor = System.Drawing.SystemColors.ControlLight;
+            this.label2.Font = new System.Drawing.Font("Arial", 11.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.label2.Location = new System.Drawing.Point(3, 0);
             this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(134, 38);
+            this.label2.Size = new System.Drawing.Size(122, 36);
             this.label2.TabIndex = 6;
             this.label2.Text = "Complementary Colors";
             // 
@@ -230,7 +210,7 @@
             this.flowLayoutPanel7.Controls.Add(this.ComplementaryLighter);
             this.flowLayoutPanel7.Controls.Add(this.ComplementarySelected);
             this.flowLayoutPanel7.Controls.Add(this.ComplementaryDarker);
-            this.flowLayoutPanel7.Location = new System.Drawing.Point(3, 41);
+            this.flowLayoutPanel7.Location = new System.Drawing.Point(3, 39);
             this.flowLayoutPanel7.Name = "flowLayoutPanel7";
             this.flowLayoutPanel7.Size = new System.Drawing.Size(120, 26);
             this.flowLayoutPanel7.TabIndex = 13;
@@ -275,10 +255,11 @@
             // label3
             // 
             this.label3.AutoSize = true;
-            this.label3.Font = new System.Drawing.Font("Arial", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label3.BackColor = System.Drawing.SystemColors.ControlLight;
+            this.label3.Font = new System.Drawing.Font("Arial", 11.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.label3.Location = new System.Drawing.Point(3, 0);
             this.label3.Name = "label3";
-            this.label3.Size = new System.Drawing.Size(115, 19);
+            this.label3.Size = new System.Drawing.Size(107, 18);
             this.label3.TabIndex = 6;
             this.label3.Text = "Triadic Colors";
             // 
@@ -287,7 +268,7 @@
             this.flowLayoutPanel8.Controls.Add(this.TriadicLower);
             this.flowLayoutPanel8.Controls.Add(this.TriadicSelected);
             this.flowLayoutPanel8.Controls.Add(this.TriadicHigher);
-            this.flowLayoutPanel8.Location = new System.Drawing.Point(3, 22);
+            this.flowLayoutPanel8.Location = new System.Drawing.Point(3, 21);
             this.flowLayoutPanel8.Name = "flowLayoutPanel8";
             this.flowLayoutPanel8.Size = new System.Drawing.Size(85, 26);
             this.flowLayoutPanel8.TabIndex = 14;
@@ -332,10 +313,11 @@
             // label4
             // 
             this.label4.AutoSize = true;
-            this.label4.Font = new System.Drawing.Font("Arial", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label4.BackColor = System.Drawing.SystemColors.ControlLight;
+            this.label4.Font = new System.Drawing.Font("Arial", 11.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.label4.Location = new System.Drawing.Point(3, 0);
             this.label4.Name = "label4";
-            this.label4.Size = new System.Drawing.Size(125, 19);
+            this.label4.Size = new System.Drawing.Size(117, 18);
             this.label4.TabIndex = 6;
             this.label4.Text = "Tetradic Colors";
             // 
@@ -345,7 +327,7 @@
             this.flowLayoutPanel9.Controls.Add(this.TetradicSelected);
             this.flowLayoutPanel9.Controls.Add(this.Tetradic2);
             this.flowLayoutPanel9.Controls.Add(this.Tetradic3);
-            this.flowLayoutPanel9.Location = new System.Drawing.Point(3, 22);
+            this.flowLayoutPanel9.Location = new System.Drawing.Point(3, 21);
             this.flowLayoutPanel9.Name = "flowLayoutPanel9";
             this.flowLayoutPanel9.Size = new System.Drawing.Size(104, 26);
             this.flowLayoutPanel9.TabIndex = 15;
@@ -435,10 +417,11 @@
             // label5
             // 
             this.label5.AutoSize = true;
-            this.label5.Font = new System.Drawing.Font("Arial", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label5.BackColor = System.Drawing.SystemColors.ControlLight;
+            this.label5.Font = new System.Drawing.Font("Arial", 11.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.label5.Location = new System.Drawing.Point(3, 0);
             this.label5.Name = "label5";
-            this.label5.Size = new System.Drawing.Size(183, 19);
+            this.label5.Size = new System.Drawing.Size(168, 18);
             this.label5.TabIndex = 6;
             this.label5.Text = "Monochromatic Colors";
             // 
@@ -451,7 +434,7 @@
             this.flowLayoutPanel5.Controls.Add(this.MonoPanel5);
             this.flowLayoutPanel5.Controls.Add(this.MonoPanel6);
             this.flowLayoutPanel5.Controls.Add(this.MonoPanel7);
-            this.flowLayoutPanel5.Location = new System.Drawing.Point(3, 22);
+            this.flowLayoutPanel5.Location = new System.Drawing.Point(3, 21);
             this.flowLayoutPanel5.Name = "flowLayoutPanel5";
             this.flowLayoutPanel5.Size = new System.Drawing.Size(255, 26);
             this.flowLayoutPanel5.TabIndex = 11;
@@ -526,7 +509,6 @@
             this.themeLayoutPanel.Controls.Add(this.flowLayoutPanel11);
             this.themeLayoutPanel.Controls.Add(this.SaveThemeButton);
             this.themeLayoutPanel.Controls.Add(this.LoadButton);
-            this.themeLayoutPanel.Controls.Add(this.button1);
             this.themeLayoutPanel.Location = new System.Drawing.Point(16, 440);
             this.themeLayoutPanel.Name = "themeLayoutPanel";
             this.themeLayoutPanel.Size = new System.Drawing.Size(273, 91);
@@ -535,10 +517,11 @@
             // label6
             // 
             this.label6.AutoSize = true;
-            this.label6.Font = new System.Drawing.Font("Arial", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label6.BackColor = System.Drawing.SystemColors.ControlLight;
+            this.label6.Font = new System.Drawing.Font("Arial", 11.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.label6.Location = new System.Drawing.Point(3, 0);
             this.label6.Name = "label6";
-            this.label6.Size = new System.Drawing.Size(116, 19);
+            this.label6.Size = new System.Drawing.Size(108, 18);
             this.label6.TabIndex = 6;
             this.label6.Text = "Theme Colors";
             // 
@@ -553,7 +536,7 @@
             this.flowLayoutPanel11.Controls.Add(this.ThemePanel7);
             this.flowLayoutPanel11.Controls.Add(this.ThemePanel8);
             this.flowLayoutPanel11.Controls.Add(this.ThemePanel9);
-            this.flowLayoutPanel11.Location = new System.Drawing.Point(3, 22);
+            this.flowLayoutPanel11.Location = new System.Drawing.Point(3, 21);
             this.flowLayoutPanel11.Name = "flowLayoutPanel11";
             this.flowLayoutPanel11.Size = new System.Drawing.Size(255, 26);
             this.flowLayoutPanel11.TabIndex = 15;
@@ -677,7 +660,7 @@
             // 
             // SaveThemeButton
             // 
-            this.SaveThemeButton.Location = new System.Drawing.Point(3, 54);
+            this.SaveThemeButton.Location = new System.Drawing.Point(3, 53);
             this.SaveThemeButton.Name = "SaveThemeButton";
             this.SaveThemeButton.Size = new System.Drawing.Size(75, 23);
             this.SaveThemeButton.TabIndex = 16;
@@ -687,7 +670,7 @@
             // 
             // LoadButton
             // 
-            this.LoadButton.Location = new System.Drawing.Point(84, 54);
+            this.LoadButton.Location = new System.Drawing.Point(84, 53);
             this.LoadButton.Name = "LoadButton";
             this.LoadButton.Size = new System.Drawing.Size(75, 23);
             this.LoadButton.TabIndex = 17;
@@ -707,6 +690,17 @@
             this.openFileDialog1.DefaultExt = "thm";
             this.openFileDialog1.Filter = "PPTLabsTheme|*.thm";
             this.openFileDialog1.Title = "Load Theme";
+            // 
+            // button2
+            // 
+            this.button2.BackgroundImage = global::PowerPointLabs.Properties.Resources.Palette_icon;
+            this.button2.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Center;
+            this.button2.Location = new System.Drawing.Point(243, 16);
+            this.button2.Name = "button2";
+            this.button2.Size = new System.Drawing.Size(46, 47);
+            this.button2.TabIndex = 2;
+            this.button2.UseVisualStyleBackColor = true;
+            this.button2.Click += new System.EventHandler(this.button2_Click);
             // 
             // FillEyeDropperButton
             // 
@@ -792,7 +786,6 @@
         private System.Windows.Forms.Panel panel1;
         private System.Windows.Forms.Timer timer1;
         private System.Windows.Forms.ColorDialog colorDialog1;
-        private System.Windows.Forms.Button button1;
         private System.Windows.Forms.Button button2;
         private System.Windows.Forms.FlowLayoutPanel AnalogousColorPanel;
         private System.Windows.Forms.FlowLayoutPanel flowLayoutPanel2;

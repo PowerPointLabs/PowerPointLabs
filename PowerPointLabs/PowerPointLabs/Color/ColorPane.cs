@@ -246,11 +246,6 @@ namespace PowerPointLabs
 
         #endregion
 
-        private void button1_Click(object sender, EventArgs e)
-        {
-            BeginEyedropping();
-        }
-
         private void BeginEyedropping()
         {
             timer1.Start();
