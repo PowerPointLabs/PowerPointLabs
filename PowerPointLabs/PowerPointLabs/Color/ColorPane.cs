@@ -642,6 +642,26 @@ namespace PowerPointLabs
             _isLineColorSelected = false;
             BeginEyedropping();
         }
+
+        private void ThemePanel_Click(object sender, EventArgs e)
+        {
+            try 
+	        {
+                // Done twice due to multithreading issues with binding
+                panel1.BackColor = ((Panel)sender).BackColor;
+                _originalColor = panel1.BackColor;
+                UpdateUIForNewColor();
+
+                panel1.BackColor = ((Panel)sender).BackColor;
+                _originalColor = panel1.BackColor;
+                UpdateUIForNewColor();
+	        }
+	        catch (Exception ex)
+	        {
+                System.Diagnostics.Debug.WriteLine("Exception: " + ex.StackTrace);
+		        throw;
+	        }         
+        }
     }
 
     public class SysMouseEventInfo : EventArgs

@@ -226,6 +226,7 @@ namespace PowerPointLabs
                 BinaryFormatter deserializer = new BinaryFormatter();
                 List<Color> themeColors = (List<Color>)deserializer.Deserialize(openFileStream);
                 openFileStream.Close();
+
                 this.themeColorOne = themeColors[0];
                 this.themeColorTwo = themeColors[1];
                 this.themeColorThree = themeColors[2];
