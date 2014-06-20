@@ -83,14 +83,14 @@
             this.ThemePanel7 = new System.Windows.Forms.Panel();
             this.ThemePanel8 = new System.Windows.Forms.Panel();
             this.ThemePanel9 = new System.Windows.Forms.Panel();
-            this.SaveThemeButton = new System.Windows.Forms.Button();
-            this.LoadButton = new System.Windows.Forms.Button();
             this.saveFileDialog1 = new System.Windows.Forms.SaveFileDialog();
             this.openFileDialog1 = new System.Windows.Forms.OpenFileDialog();
             this.button2 = new System.Windows.Forms.Button();
             this.FillEyeDropperButton = new System.Windows.Forms.Button();
             this.LineEyeDropperButton = new System.Windows.Forms.Button();
             this.FontEyeDropperButton = new System.Windows.Forms.Button();
+            this.SaveThemeButton = new System.Windows.Forms.Button();
+            this.LoadButton = new System.Windows.Forms.Button();
             this.AnalogousColorPanel.SuspendLayout();
             this.flowLayoutPanel6.SuspendLayout();
             this.flowLayoutPanel2.SuspendLayout();
@@ -511,7 +511,7 @@
             this.themeLayoutPanel.Controls.Add(this.LoadButton);
             this.themeLayoutPanel.Location = new System.Drawing.Point(16, 440);
             this.themeLayoutPanel.Name = "themeLayoutPanel";
-            this.themeLayoutPanel.Size = new System.Drawing.Size(273, 91);
+            this.themeLayoutPanel.Size = new System.Drawing.Size(273, 111);
             this.themeLayoutPanel.TabIndex = 11;
             // 
             // label6
@@ -658,32 +658,11 @@
             this.ThemePanel9.DragDrop += new System.Windows.Forms.DragEventHandler(this.panel_DragDrop);
             this.ThemePanel9.DragEnter += new System.Windows.Forms.DragEventHandler(this.panel_DragEnter);
             // 
-            // SaveThemeButton
-            // 
-            this.SaveThemeButton.Location = new System.Drawing.Point(3, 53);
-            this.SaveThemeButton.Name = "SaveThemeButton";
-            this.SaveThemeButton.Size = new System.Drawing.Size(75, 23);
-            this.SaveThemeButton.TabIndex = 16;
-            this.SaveThemeButton.Text = "Save";
-            this.SaveThemeButton.UseVisualStyleBackColor = true;
-            this.SaveThemeButton.Click += new System.EventHandler(this.SaveThemeButton_Click);
-            // 
-            // LoadButton
-            // 
-            this.LoadButton.Location = new System.Drawing.Point(84, 53);
-            this.LoadButton.Name = "LoadButton";
-            this.LoadButton.Size = new System.Drawing.Size(75, 23);
-            this.LoadButton.TabIndex = 17;
-            this.LoadButton.Text = "Load";
-            this.LoadButton.UseVisualStyleBackColor = true;
-            this.LoadButton.Click += new System.EventHandler(this.LoadButton_Click);
-            // 
             // saveFileDialog1
             // 
             this.saveFileDialog1.DefaultExt = "thm";
             this.saveFileDialog1.Filter = "PPTLabsThemes|*.thm";
             this.saveFileDialog1.Title = "Save Theme";
-            this.saveFileDialog1.FileOk += new System.ComponentModel.CancelEventHandler(this.saveFileDialog1_FileOk);
             // 
             // openFileDialog1
             // 
@@ -735,6 +714,28 @@
             this.FontEyeDropperButton.UseVisualStyleBackColor = true;
             this.FontEyeDropperButton.Click += new System.EventHandler(this.FontEyeDropperButton_Click);
             // 
+            // SaveThemeButton
+            // 
+            this.SaveThemeButton.BackgroundImage = global::PowerPointLabs.Properties.Resources.save_icon;
+            this.SaveThemeButton.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Center;
+            this.SaveThemeButton.Location = new System.Drawing.Point(3, 53);
+            this.SaveThemeButton.Name = "SaveThemeButton";
+            this.SaveThemeButton.Size = new System.Drawing.Size(49, 47);
+            this.SaveThemeButton.TabIndex = 16;
+            this.SaveThemeButton.UseVisualStyleBackColor = true;
+            this.SaveThemeButton.Click += new System.EventHandler(this.SaveThemeButton_Click);
+            // 
+            // LoadButton
+            // 
+            this.LoadButton.BackgroundImage = global::PowerPointLabs.Properties.Resources.down_icon;
+            this.LoadButton.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Center;
+            this.LoadButton.Location = new System.Drawing.Point(58, 53);
+            this.LoadButton.Name = "LoadButton";
+            this.LoadButton.Size = new System.Drawing.Size(49, 47);
+            this.LoadButton.TabIndex = 17;
+            this.LoadButton.UseVisualStyleBackColor = true;
+            this.LoadButton.Click += new System.EventHandler(this.LoadButton_Click);
+            // 
             // ColorPane
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -755,7 +756,7 @@
             this.Controls.Add(this.brightnessBar);
             this.Controls.Add(this.saturationBar);
             this.Name = "ColorPane";
-            this.Size = new System.Drawing.Size(304, 542);
+            this.Size = new System.Drawing.Size(304, 575);
             this.AnalogousColorPanel.ResumeLayout(false);
             this.AnalogousColorPanel.PerformLayout();
             this.flowLayoutPanel6.ResumeLayout(false);

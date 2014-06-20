@@ -338,6 +338,8 @@
     <Compile Include="XMLMisc\XMLParser.cs" />
     <Compile Include="ZipStorer.cs" />
     <Compile Include="ZoomToArea.cs" />
+    <None Include="Resources\down-icon.png" />
+    <None Include="Resources\save-icon.png" />
     <None Include="Resources\Palette-icon.png" />
     <None Include="Resources\Paint-icon.png" />
     <None Include="Resources\Technical-Pen-icon.png" />

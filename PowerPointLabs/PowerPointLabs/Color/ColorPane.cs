@@ -580,17 +580,7 @@ namespace PowerPointLabs
                 dataSource.SaveThemeColorsInFile(saveFileDialog1.FileName))
             {
                 MessageBox.Show("Theme saved successfully", "Save Complete");
-            } 
-            else
-            {
-                MessageBox.Show("Invalid data entered", "Save Failed");
             }
-        }
-
-        private void saveFileDialog1_FileOk(object sender, CancelEventArgs e)
-        {
-            System.Diagnostics.Debug.WriteLine(saveFileDialog1.FileName);
-            
         }
 
         private void LoadButton_Click(object sender, EventArgs e)
@@ -599,10 +589,6 @@ namespace PowerPointLabs
                 dataSource.LoadThemeColorsFromFile(openFileDialog1.FileName))
             {
                 MessageBox.Show("Theme loaded successfully", "Load Complete");
-            }
-            else
-            {
-                MessageBox.Show("Invalid data entered", "Load Failed");
             }
         }
 
