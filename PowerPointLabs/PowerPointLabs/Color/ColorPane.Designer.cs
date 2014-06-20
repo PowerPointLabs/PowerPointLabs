@@ -89,6 +89,9 @@
             this.LoadButton = new System.Windows.Forms.Button();
             this.saveFileDialog1 = new System.Windows.Forms.SaveFileDialog();
             this.openFileDialog1 = new System.Windows.Forms.OpenFileDialog();
+            this.FontEyeDropperButton = new System.Windows.Forms.Button();
+            this.LineEyeDropperButton = new System.Windows.Forms.Button();
+            this.FillEyeDropperButton = new System.Windows.Forms.Button();
             this.AnalogousColorPanel.SuspendLayout();
             this.flowLayoutPanel6.SuspendLayout();
             this.flowLayoutPanel2.SuspendLayout();
@@ -685,10 +688,43 @@
             this.openFileDialog1.Filter = "PPTLabsTheme|*.thm";
             this.openFileDialog1.Title = "Load Theme";
             // 
+            // FontEyeDropperButton
+            // 
+            this.FontEyeDropperButton.Location = new System.Drawing.Point(101, 40);
+            this.FontEyeDropperButton.Name = "FontEyeDropperButton";
+            this.FontEyeDropperButton.Size = new System.Drawing.Size(34, 23);
+            this.FontEyeDropperButton.TabIndex = 12;
+            this.FontEyeDropperButton.Text = "Font";
+            this.FontEyeDropperButton.UseVisualStyleBackColor = true;
+            this.FontEyeDropperButton.Click += new System.EventHandler(this.FontEyeDropperButton_Click);
+            // 
+            // LineEyeDropperButton
+            // 
+            this.LineEyeDropperButton.Location = new System.Drawing.Point(186, 40);
+            this.LineEyeDropperButton.Name = "LineEyeDropperButton";
+            this.LineEyeDropperButton.Size = new System.Drawing.Size(35, 23);
+            this.LineEyeDropperButton.TabIndex = 13;
+            this.LineEyeDropperButton.Text = "Line";
+            this.LineEyeDropperButton.UseVisualStyleBackColor = true;
+            this.LineEyeDropperButton.Click += new System.EventHandler(this.LineEyeDropperButton_Click);
+            // 
+            // FillEyeDropperButton
+            // 
+            this.FillEyeDropperButton.Location = new System.Drawing.Point(226, 40);
+            this.FillEyeDropperButton.Name = "FillEyeDropperButton";
+            this.FillEyeDropperButton.Size = new System.Drawing.Size(35, 23);
+            this.FillEyeDropperButton.TabIndex = 14;
+            this.FillEyeDropperButton.Text = "Fill";
+            this.FillEyeDropperButton.UseVisualStyleBackColor = true;
+            this.FillEyeDropperButton.Click += new System.EventHandler(this.FillEyeDropperButton_Click);
+            // 
             // ColorPane
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+            this.Controls.Add(this.FillEyeDropperButton);
+            this.Controls.Add(this.LineEyeDropperButton);
+            this.Controls.Add(this.FontEyeDropperButton);
             this.Controls.Add(this.themeLayoutPanel);
             this.Controls.Add(this.flowLayoutPanel1);
             this.Controls.Add(this.AnalogousColorPanel);
@@ -791,5 +827,8 @@
         private System.Windows.Forms.SaveFileDialog saveFileDialog1;
         private System.Windows.Forms.Button LoadButton;
         private System.Windows.Forms.OpenFileDialog openFileDialog1;
+        private System.Windows.Forms.Button FontEyeDropperButton;
+        private System.Windows.Forms.Button LineEyeDropperButton;
+        private System.Windows.Forms.Button FillEyeDropperButton;
     }
 }

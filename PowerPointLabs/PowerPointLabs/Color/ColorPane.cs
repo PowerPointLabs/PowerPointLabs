@@ -20,6 +20,9 @@ namespace PowerPointLabs
     public partial class ColorPane : UserControl
     {
         private Color _originalColor;
+        private bool _isFillColorSelected = false;
+        private bool _isFontColorSelected = false;
+        private bool _isLineColorSelected = false;
 
         LMouseListener _native;
 
@@ -245,6 +248,11 @@ namespace PowerPointLabs
 
         private void button1_Click(object sender, EventArgs e)
         {
+            BeginEyedropping();
+        }
+
+        private void BeginEyedropping()
+        {
             timer1.Start();
 
             _native = new LMouseListener();
@@ -297,7 +305,26 @@ namespace PowerPointLabs
                     var b = selectedColor.B;
 
                     var rgb = (b << 16) | (g << 8) | (r);
-                    s.Fill.ForeColor.RGB = rgb;
+                    ColorShapeWithColor(s, rgb);
+                }
+            }
+        }
+
+        private void ColorShapeWithColor(PowerPoint.Shape s, int rgb)
+        {
+            if (_isFillColorSelected)
+            {
+                s.Fill.ForeColor.RGB = rgb;
+            }
+            if (_isLineColorSelected)
+            {
+                s.Line.ForeColor.RGB = rgb;
+            }
+            if (_isFontColorSelected)
+            {
+                if (s.HasTextFrame == Microsoft.Office.Core.MsoTriState.msoTrue)
+                {
+                    s.TextFrame.TextRange.Font.Color.RGB = rgb;
                 }
             }
         }
@@ -582,6 +609,38 @@ namespace PowerPointLabs
             {
                 MessageBox.Show("Invalid data entered", "Load Failed");
             }
+        }
+
+        private void FontEyeDropperButton_Click(object sender, EventArgs e)
+        {
+            _isFontColorSelected = true;
+            _isFillColorSelected = false;
+            _isLineColorSelected = false;
+            BeginEyedropping();
+        }
+
+        private void HighlightEyeDropperButton_Click(object sender, EventArgs e)
+        {
+            _isFontColorSelected = false;
+            _isFillColorSelected = false;
+            _isLineColorSelected = false;
+            BeginEyedropping();
+        }
+
+        private void LineEyeDropperButton_Click(object sender, EventArgs e)
+        {
+            _isFontColorSelected = false;
+            _isFillColorSelected = false;
+            _isLineColorSelected = true;
+            BeginEyedropping();
+        }
+
+        private void FillEyeDropperButton_Click(object sender, EventArgs e)
+        {
+            _isFontColorSelected = false;
+            _isFillColorSelected = true;
+            _isLineColorSelected = false;
+            BeginEyedropping();
         }
     }
 
