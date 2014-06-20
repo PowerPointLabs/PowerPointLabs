@@ -89,9 +89,9 @@
             this.LoadButton = new System.Windows.Forms.Button();
             this.saveFileDialog1 = new System.Windows.Forms.SaveFileDialog();
             this.openFileDialog1 = new System.Windows.Forms.OpenFileDialog();
-            this.FontEyeDropperButton = new System.Windows.Forms.Button();
-            this.LineEyeDropperButton = new System.Windows.Forms.Button();
             this.FillEyeDropperButton = new System.Windows.Forms.Button();
+            this.LineEyeDropperButton = new System.Windows.Forms.Button();
+            this.FontEyeDropperButton = new System.Windows.Forms.Button();
             this.AnalogousColorPanel.SuspendLayout();
             this.flowLayoutPanel6.SuspendLayout();
             this.flowLayoutPanel2.SuspendLayout();
@@ -114,7 +114,7 @@
             this.panel1.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.panel1.Location = new System.Drawing.Point(20, 16);
             this.panel1.Name = "panel1";
-            this.panel1.Size = new System.Drawing.Size(75, 47);
+            this.panel1.Size = new System.Drawing.Size(61, 47);
             this.panel1.TabIndex = 0;
             this.panel1.DragDrop += new System.Windows.Forms.DragEventHandler(this.panel_DragDrop);
             this.panel1.DragEnter += new System.Windows.Forms.DragEventHandler(this.panel_DragEnter);
@@ -129,7 +129,7 @@
             // 
             // button1
             // 
-            this.button1.Location = new System.Drawing.Point(101, 16);
+            this.button1.Location = new System.Drawing.Point(165, 54);
             this.button1.Name = "button1";
             this.button1.Size = new System.Drawing.Size(75, 23);
             this.button1.TabIndex = 1;
@@ -139,11 +139,12 @@
             // 
             // button2
             // 
-            this.button2.Location = new System.Drawing.Point(186, 16);
+            this.button2.BackgroundImage = global::PowerPointLabs.Properties.Resources.Palette_icon;
+            this.button2.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Center;
+            this.button2.Location = new System.Drawing.Point(243, 16);
             this.button2.Name = "button2";
-            this.button2.Size = new System.Drawing.Size(75, 23);
+            this.button2.Size = new System.Drawing.Size(46, 47);
             this.button2.TabIndex = 2;
-            this.button2.Text = "Edit Color";
             this.button2.UseVisualStyleBackColor = true;
             this.button2.Click += new System.EventHandler(this.button2_Click);
             // 
@@ -525,6 +526,7 @@
             this.themeLayoutPanel.Controls.Add(this.flowLayoutPanel11);
             this.themeLayoutPanel.Controls.Add(this.SaveThemeButton);
             this.themeLayoutPanel.Controls.Add(this.LoadButton);
+            this.themeLayoutPanel.Controls.Add(this.button1);
             this.themeLayoutPanel.Location = new System.Drawing.Point(16, 440);
             this.themeLayoutPanel.Name = "themeLayoutPanel";
             this.themeLayoutPanel.Size = new System.Drawing.Size(273, 91);
@@ -706,48 +708,50 @@
             this.openFileDialog1.Filter = "PPTLabsTheme|*.thm";
             this.openFileDialog1.Title = "Load Theme";
             // 
-            // FontEyeDropperButton
+            // FillEyeDropperButton
             // 
-            this.FontEyeDropperButton.Location = new System.Drawing.Point(101, 40);
-            this.FontEyeDropperButton.Name = "FontEyeDropperButton";
-            this.FontEyeDropperButton.Size = new System.Drawing.Size(34, 23);
-            this.FontEyeDropperButton.TabIndex = 12;
-            this.FontEyeDropperButton.Text = "Font";
-            this.FontEyeDropperButton.UseVisualStyleBackColor = true;
-            this.FontEyeDropperButton.Click += new System.EventHandler(this.FontEyeDropperButton_Click);
+            this.FillEyeDropperButton.BackgroundImage = global::PowerPointLabs.Properties.Resources.Paint_icon;
+            this.FillEyeDropperButton.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Center;
+            this.FillEyeDropperButton.Location = new System.Drawing.Point(191, 16);
+            this.FillEyeDropperButton.Name = "FillEyeDropperButton";
+            this.FillEyeDropperButton.Size = new System.Drawing.Size(46, 47);
+            this.FillEyeDropperButton.TabIndex = 14;
+            this.FillEyeDropperButton.UseVisualStyleBackColor = true;
+            this.FillEyeDropperButton.Click += new System.EventHandler(this.FillEyeDropperButton_Click);
             // 
             // LineEyeDropperButton
             // 
-            this.LineEyeDropperButton.Location = new System.Drawing.Point(186, 40);
+            this.LineEyeDropperButton.BackgroundImage = global::PowerPointLabs.Properties.Resources.Technical_Pen_icon;
+            this.LineEyeDropperButton.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Center;
+            this.LineEyeDropperButton.Location = new System.Drawing.Point(139, 16);
             this.LineEyeDropperButton.Name = "LineEyeDropperButton";
-            this.LineEyeDropperButton.Size = new System.Drawing.Size(35, 23);
+            this.LineEyeDropperButton.Size = new System.Drawing.Size(46, 47);
             this.LineEyeDropperButton.TabIndex = 13;
-            this.LineEyeDropperButton.Text = "Line";
             this.LineEyeDropperButton.UseVisualStyleBackColor = true;
             this.LineEyeDropperButton.Click += new System.EventHandler(this.LineEyeDropperButton_Click);
             // 
-            // FillEyeDropperButton
+            // FontEyeDropperButton
             // 
-            this.FillEyeDropperButton.Location = new System.Drawing.Point(226, 40);
-            this.FillEyeDropperButton.Name = "FillEyeDropperButton";
-            this.FillEyeDropperButton.Size = new System.Drawing.Size(35, 23);
-            this.FillEyeDropperButton.TabIndex = 14;
-            this.FillEyeDropperButton.Text = "Fill";
-            this.FillEyeDropperButton.UseVisualStyleBackColor = true;
-            this.FillEyeDropperButton.Click += new System.EventHandler(this.FillEyeDropperButton_Click);
+            this.FontEyeDropperButton.BackgroundImage = global::PowerPointLabs.Properties.Resources.Type_icon;
+            this.FontEyeDropperButton.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Center;
+            this.FontEyeDropperButton.Location = new System.Drawing.Point(87, 16);
+            this.FontEyeDropperButton.Name = "FontEyeDropperButton";
+            this.FontEyeDropperButton.Size = new System.Drawing.Size(46, 47);
+            this.FontEyeDropperButton.TabIndex = 12;
+            this.FontEyeDropperButton.UseVisualStyleBackColor = true;
+            this.FontEyeDropperButton.Click += new System.EventHandler(this.FontEyeDropperButton_Click);
             // 
             // ColorPane
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+            this.Controls.Add(this.button2);
             this.Controls.Add(this.FillEyeDropperButton);
             this.Controls.Add(this.LineEyeDropperButton);
             this.Controls.Add(this.FontEyeDropperButton);
             this.Controls.Add(this.themeLayoutPanel);
             this.Controls.Add(this.flowLayoutPanel1);
             this.Controls.Add(this.AnalogousColorPanel);
-            this.Controls.Add(this.button2);
-            this.Controls.Add(this.button1);
             this.Controls.Add(this.flowLayoutPanel4);
             this.Controls.Add(this.flowLayoutPanel3);
             this.Controls.Add(this.flowLayoutPanel2);

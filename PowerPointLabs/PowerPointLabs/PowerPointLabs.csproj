@@ -243,6 +243,11 @@
     <Compile Include="Models\PowerPointStepBackSlide.cs" />
     <Compile Include="Models\PowerPointZoomToAreaSingleSlide.cs" />
     <Compile Include="PowerPointLabsGlobals.cs" />
+    <Compile Include="Properties\Resources.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Resources.resx</DependentUpon>
+    </Compile>
     <Compile Include="RecorderTaskPane.cs">
       <SubType>UserControl</SubType>
     </Compile>
@@ -333,6 +338,10 @@
     <Compile Include="XMLMisc\XMLParser.cs" />
     <Compile Include="ZipStorer.cs" />
     <Compile Include="ZoomToArea.cs" />
+    <None Include="Resources\Palette-icon.png" />
+    <None Include="Resources\Paint-icon.png" />
+    <None Include="Resources\Technical-Pen-icon.png" />
+    <None Include="Resources\Type-icon.png" />
     <EmbeddedResource Include="Color\ColorPane.resx">
       <DependentUpon>ColorPane.cs</DependentUpon>
     </EmbeddedResource>
@@ -363,14 +372,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
-      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
       <SubType>Designer</SubType>
+      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
     </EmbeddedResource>
-    <Compile Include="Properties\Resources.Designer.cs">
-      <AutoGen>True</AutoGen>
-      <DependentUpon>Resources.resx</DependentUpon>
-      <DesignTime>True</DesignTime>
-    </Compile>
     <EmbeddedResource Include="Views\InShowControl.resx">
       <DependentUpon>InShowControl.cs</DependentUpon>
     </EmbeddedResource>
