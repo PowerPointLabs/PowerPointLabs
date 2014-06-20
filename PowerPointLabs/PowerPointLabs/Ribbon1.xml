@@ -108,7 +108,9 @@
                     onAction="SpotlightDialogButtonPressed"/>
           </dialogBoxLauncher>
         </group>
-        <group id="embedAudio" label="Auto Narrate">
+        <group id="embedAudio"
+               label="Auto Narrate"
+               getVisible="GetEmbedAudioVisiblity">
           <splitButton id="addAudioSplit" size="large">
             <button id="addAudio"
                   label="Add Audio"

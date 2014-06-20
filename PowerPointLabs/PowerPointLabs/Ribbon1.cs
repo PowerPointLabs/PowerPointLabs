@@ -55,9 +55,9 @@ namespace PowerPointLabs
         public bool reloadSpotlight = true;
         public bool removeCaptionsEnabled = true;
         public bool removeAudioEnabled = true;
-        
+
+        public bool _embedAudioVisible = true;
         public bool _recorderPaneVisible = false;
-        private bool _firstLoadRecorder = true;
 
         private bool _previewCurrentSlide;
         
@@ -853,6 +853,11 @@ namespace PowerPointLabs
                 PowerPointLabsGlobals.LogException(e, "HighlightBulletsDialogBoxPressed");
                 throw;
             }
+        }
+
+        public bool GetEmbedAudioVisiblity(Office.IRibbonControl control)
+        {
+            return _embedAudioVisible;
         }
 
         # region AudioRecord Button Callbacks

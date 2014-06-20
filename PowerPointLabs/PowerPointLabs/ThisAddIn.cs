@@ -7,6 +7,7 @@ using System.Linq;
 using System.Runtime.InteropServices;
 using System.Text;
 using System.Text.RegularExpressions;
+using System.Threading.Tasks;
 using System.Windows.Forms;
 using System.Xml.Linq;
 using System.Diagnostics;
@@ -35,7 +36,13 @@ namespace PowerPointLabs
 
         private const string TempFolderNamePrefix = @"\PowerPointLabs Temp\";
 
-        private void ThisAddIn_Startup(object sender, System.EventArgs e)
+        private const string VersionNotCompatibleMsg =
+            "This file is in an old PowerPoint format (PowerPoint 93-2003 Presentation), which is not" +
+            "compatible with PowerPointLabs. Some of the functions in PowerPointLabs may not work well." + "\n\n" +
+            "You are suggested to save this presentation in the new .pptx format using PowerPoint 2010 or " +
+            "PowerPoint 2013.";
+
+        private void ThisAddIn_Startup(object sender, EventArgs e)
         {
             SetupLogger();
             Trace.TraceInformation(DateTime.Now.ToString("yyyyMMddHHmmss") + ": PowerPointLabs Started");
@@ -69,6 +76,15 @@ namespace PowerPointLabs
             if (documentPaneMapper.ContainsKey(wn))
             {
                 ActivateCustomTaskPane = documentPaneMapper[wn];
+            }
+            else
+            {
+                ActivateCustomTaskPane = null;
+            }
+
+            if (pres != null)
+            {
+                ribbon._embedAudioVisible = !pres.Name.EndsWith(".ppt");
             }
         }
 
@@ -126,9 +142,14 @@ namespace PowerPointLabs
 
         void TaskPaneVisibleValueChangedEventHandler(object sender, EventArgs e)
         {
+            if (ActivateCustomTaskPane == null)
+            {
+                return;
+            }
+
             var recorder = ActivateCustomTaskPane.Control as RecorderTaskPane;
-            // hide the pane
             
+            // hide the pane
             if (ActivateCustomTaskPane.Visible)
             {
                 recorder.RecorderPaneClosing();
@@ -309,7 +330,11 @@ namespace PowerPointLabs
             try
             {
                 // extract embedded audio files to temp folder
-                PrepareMediaFiles(Pres);
+                if (!PrepareMediaFiles(Pres))
+                {
+                    return;
+                }
+
                 // setup a new recorder pane when an exist file opened
                 SetupRecorderTaskPane(Pres.Application.ActiveWindow);
             }
@@ -322,6 +347,11 @@ namespace PowerPointLabs
 
         void ThisAddIn_PresentationClose(PowerPoint.Presentation Pres)
         {
+            if (ActivateCustomTaskPane == null)
+            {
+                return;
+            }
+
             var recorder = ActivateCustomTaskPane.Control as RecorderTaskPane;
             
             if (recorder.HasEvent())
@@ -356,6 +386,12 @@ namespace PowerPointLabs
         private void SlideShowEndHandler(PowerPoint.Presentation presentation)
         {
             isInSlideShow = false;
+            
+            if (ActivateCustomTaskPane == null)
+            {
+                return;
+            }
+
             var recorderPane = ActivateCustomTaskPane.Control as RecorderTaskPane;
 
             // force recording session ends
@@ -401,7 +437,13 @@ namespace PowerPointLabs
 
         private void UpdateRecorderPane(int count, int id)
         {
+            if (ActivateCustomTaskPane == null)
+            {
+                return;
+            }
+
             var recorderPane = ActivateCustomTaskPane.Control as RecorderTaskPane;
+
             // if the user has selected none or more than 1 slides, recorder pane should show nothing
             if (count != 1)
             {
@@ -425,6 +467,11 @@ namespace PowerPointLabs
 
         private void BreakRecorderEvents()
         {
+            if (ActivateCustomTaskPane == null)
+            {
+                return;
+            }
+
             var recorderPane = ActivateCustomTaskPane.Control as RecorderTaskPane;
 
             // TODO:
@@ -437,11 +484,18 @@ namespace PowerPointLabs
             }
         }
 
-        private void PrepareMediaFiles(PowerPoint.Presentation Pres)
+        private bool PrepareMediaFiles(PowerPoint.Presentation Pres)
         {
             try
             {
                 string presName = Pres.Name;
+
+                if (presName.EndsWith(".ppt"))
+                {
+                    MessageBox.Show(VersionNotCompatibleMsg);
+
+                    return false;
+                }
 
                 if (!presName.Contains(".pptx"))
                 {
@@ -463,8 +517,7 @@ namespace PowerPointLabs
                 }
                 catch (Exception e)
                 {
-                    ErrorDialogWrapper.ShowDialog("Error when creating temp folder", "Temp folder " + tempPath + " cannot be created.", e);
-                    throw;
+                    ErrorDialogWrapper.ShowDialog("Error when creating temp folder", string.Empty, e);
                 }
                 finally
                 {
@@ -488,7 +541,6 @@ namespace PowerPointLabs
                 catch (Exception e)
                 {
                     ErrorDialogWrapper.ShowDialog("Error when accessing temp folder", string.Empty, e);
-                    throw;
                 }
 
                 // open the zip and extract media files to temp folder
@@ -521,14 +573,14 @@ namespace PowerPointLabs
                 catch (Exception e)
                 {
                     ErrorDialogWrapper.ShowDialog("Error when extracting", "Archived files cannot be retrieved.", e);
-                    throw;
                 }
             }
             catch (Exception e)
             {
                 ErrorDialogWrapper.ShowDialog("Error when preparing media files", "Files cannot be linked.", e);
-                throw;
             }
+
+            return true;
         }
 
         # region Copy paste handlers
@@ -614,6 +666,15 @@ namespace PowerPointLabs
             {
                 // invalid paste event triggered because of system message loss
                 if (copiedSlides.Count < 1)
+                {
+                    return;
+                }
+
+                // if we copied from a presentation without recorder pane or pasted to a
+                // presentation without recorder pane, paste event will not be entertained
+                if (!documentPaneMapper.ContainsKey(_copyFromWnd) ||
+                    documentPaneMapper[_copyFromWnd] == null ||
+                    ActivateCustomTaskPane == null)
                 {
                     return;
                 }
