@@ -868,15 +868,17 @@ namespace PowerPointLabs
                 return;
             }
 
-            var recorder = Globals.ThisAddIn.ActivateCustomTaskPane.Control as RecorderTaskPane;
+            var recorderPane = Globals.ThisAddIn.GetActivePane(Type.GetType("PowerPointLabs.RecorderTaskPane"));
+            var recorder = recorderPane.Control as RecorderTaskPane;
+
             // TODO:
             // Handle exception when user clicks the button without selecting any slides
 
             // if currently the pane is hidden, show the pane
-            if (!Globals.ThisAddIn.ActivateCustomTaskPane.Visible)
+            if (!recorderPane.Visible)
             {
                 // fire the pane visble change event
-                Globals.ThisAddIn.ActivateCustomTaskPane.Visible = true;
+                recorderPane.Visible = true;
                 
                 // reload the pane
                 recorder.RecorderPaneReload();
@@ -897,7 +899,8 @@ namespace PowerPointLabs
                 return;
             }
 
-            var recorderPane = Globals.ThisAddIn.ActivateCustomTaskPane.Control as RecorderTaskPane;
+            var recorderPane = Globals.ThisAddIn.GetActivePane(Type.GetType("PowerPointLabs.RecorderTaskPane"));
+            var recorder = recorderPane.Control as RecorderTaskPane;
             
             try
             {
@@ -908,14 +911,14 @@ namespace PowerPointLabs
                 MessageBox.Show(e.Message);
                 throw;
             }
-            recorderPane.ClearRecordDataListForSelectedSlides();
+            recorder.ClearRecordDataListForSelectedSlides();
 
             // if current list is visible, update the pane immediately
-            if (Globals.ThisAddIn.ActivateCustomTaskPane.Visible)
+            if (recorderPane.Visible)
             {
                 foreach (PowerPointSlide slide in PowerPointPresentation.SelectedSlides)
                 {
-                    recorderPane.UpdateLists(slide.ID);
+                    recorder.UpdateLists(slide.ID);
                 }
             }
 
@@ -931,7 +934,9 @@ namespace PowerPointLabs
             }
 
             var currentSlide = PowerPointPresentation.CurrentSlide;
-            var recorderPane = Globals.ThisAddIn.ActivateCustomTaskPane.Control as RecorderTaskPane;
+
+            var recorderPane = Globals.ThisAddIn.GetActivePane(Type.GetType("PowerPointLabs.RecorderTaskPane"));
+            var recorder = recorderPane.Control as RecorderTaskPane;
 
             foreach (PowerPointSlide slide in PowerPointPresentation.SelectedSlides)
             {
@@ -946,13 +951,13 @@ namespace PowerPointLabs
             var allAudioFiles = NotesToAudio.EmbedSelectedSlideNotes();
 
             // initialize selected slides' audio
-            recorderPane.InitializeAudioAndScript(PowerPointPresentation.SelectedSlides.ToList(),
+            recorder.InitializeAudioAndScript(PowerPointPresentation.SelectedSlides.ToList(),
                                                   allAudioFiles, true);
             
             // if current list is visible, update the pane immediately
-            if (Globals.ThisAddIn.ActivateCustomTaskPane.Visible)
+            if (recorderPane.Visible)
             {
-                recorderPane.UpdateLists(currentSlide.ID);
+                recorder.UpdateLists(currentSlide.ID);
             }
 
             PreviewAnimationsIfChecked();
@@ -1122,6 +1127,40 @@ namespace PowerPointLabs
             return Globals.ThisAddIn.Application.Version == officeVersion2010;
         }
 
+        #region feature: Color
+        public void ColorPickerButtonClick(Office.IRibbonControl control)
+        {
+            try
+            {
+                ////PowerPoint.ShapeRange selectedShapes = Globals.ThisAddIn.Application.ActiveWindow.Selection.ShapeRange;
+                ////Form ColorPickerForm = new ColorPickerForm(selectedShapes);
+                ////ColorPickerForm.Show();
+                //ColorDialog MyDialog = new ColorDialog();
+                //// Keeps the user from selecting a custom color.
+                //MyDialog.AllowFullOpen = false;
+                //// Allows the user to get help. (The default is false.)
+                //MyDialog.ShowHelp = true;
+                //ColorPickerForm colorPickerForm = new ColorPickerForm();
+                //colorPickerForm.Show();
+
+                var colorPane = Globals.ThisAddIn.GetActivePane(Type.GetType("PowerPointLabs.ColorPane"));
+                var color = colorPane.Control as ColorPane;
+
+                // if currently the pane is hidden, show the pane
+                if (!colorPane.Visible)
+                {
+                    // fire the pane visble change event
+                    colorPane.Visible = true;
+                }
+            }
+            catch (Exception e)
+            {
+                MessageBox.Show("No Shape Selected", "Invalid Selection");
+                PowerPointLabsGlobals.LogException(e, "ColorPickerButtonClicked");
+                throw;
+            }
+        }
+        #endregion
         private static string GetResourceText(string resourceName)
         {
             Assembly asm = Assembly.GetExecutingAssembly();

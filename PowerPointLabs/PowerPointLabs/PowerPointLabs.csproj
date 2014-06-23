@@ -182,6 +182,7 @@
       <EmbedInteropTypes>True</EmbedInteropTypes>
       <HintPath>..\..\..\..\..\..\..\..\Program Files (x86)\Microsoft Visual Studio 12.0\Visual Studio Tools for Office\PIA\Office14\Office.dll</HintPath>
     </Reference>
+    <Reference Include="PresentationFramework" />
     <Reference Include="stdole, Version=7.0.3300.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
       <EmbedInteropTypes>True</EmbedInteropTypes>
     </Reference>
@@ -220,6 +221,16 @@
     <Compile Include="AudioMisc\AudioHelper.cs" />
     <Compile Include="AutoAnimate.cs" />
     <Compile Include="AutoZoom.cs" />
+    <Compile Include="CustomBinding.cs" />
+    <Compile Include="Color\ColorDataSource.cs" />
+    <Compile Include="Color\ColorHelper.cs" />
+    <Compile Include="Color\ColorPane.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Color\ColorPane.Designer.cs">
+      <DependentUpon>ColorPane.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Converters\ColorPaneConverters.cs" />
     <Compile Include="ConvertToPicture.cs" />
     <Compile Include="CropToShape.cs" />
     <Compile Include="Views\ErrorDialogWrapper.cs" />
@@ -233,6 +244,11 @@
     <Compile Include="Models\PowerPointStepBackSlide.cs" />
     <Compile Include="Models\PowerPointZoomToAreaSingleSlide.cs" />
     <Compile Include="PowerPointLabsGlobals.cs" />
+    <Compile Include="Properties\Resources.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Resources.resx</DependentUpon>
+    </Compile>
     <Compile Include="RecorderTaskPane.cs">
       <SubType>UserControl</SubType>
     </Compile>
@@ -323,10 +339,21 @@
     <Compile Include="XMLMisc\XMLParser.cs" />
     <Compile Include="ZipStorer.cs" />
     <Compile Include="ZoomToArea.cs" />
+    <None Include="Resources\down-icon.png" />
+    <None Include="Resources\save-icon.png" />
+    <None Include="Resources\Palette-icon.png" />
+    <None Include="Resources\Paint-icon.png" />
+    <None Include="Resources\Technical-Pen-icon.png" />
+    <None Include="Resources\Type-icon.png" />
+    <EmbeddedResource Include="Color\ColorPane.resx">
+      <DependentUpon>ColorPane.cs</DependentUpon>
+    </EmbeddedResource>
     <None Include="packages.config" />
     <Content Include="PowerPointLabs Quick Tutorial.pptx">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
+    <None Include="Properties\DataSources\ColorDataSource.datasource" />
+    <None Include="Properties\DataSources\ColorPane.datasource" />
     <None Include="Resources\Record.png" />
     <None Include="Resources\Stop.png" />
     <None Include="Resources\Play.png" />
@@ -351,14 +378,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
-      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
       <SubType>Designer</SubType>
+      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
     </EmbeddedResource>
-    <Compile Include="Properties\Resources.Designer.cs">
-      <AutoGen>True</AutoGen>
-      <DependentUpon>Resources.resx</DependentUpon>
-      <DesignTime>True</DesignTime>
-    </Compile>
     <EmbeddedResource Include="Views\InShowControl.resx">
       <DependentUpon>InShowControl.cs</DependentUpon>
     </EmbeddedResource>
