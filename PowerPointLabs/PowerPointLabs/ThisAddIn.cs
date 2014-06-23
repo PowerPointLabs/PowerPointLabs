@@ -37,10 +37,11 @@ namespace PowerPointLabs
         private const string TempFolderNamePrefix = @"\PowerPointLabs Temp\";
 
         private const string VersionNotCompatibleMsg =
-            "This file is in an old PowerPoint format (PowerPoint 93-2003 Presentation), which is not" +
-            "compatible with PowerPointLabs. Some of the functions in PowerPointLabs may not work well." + "\n\n" +
-            "You are suggested to save this presentation in the new .pptx format using PowerPoint 2010 or " +
-            "PowerPoint 2013.";
+            "This file is not fully compatible with some features of PowerPointLabs because it is " +
+            "in the outdated .ppt format used by PowerPoint 2007 (and older). If you wish to use the " +
+            "full power of PowerPointLabs to enhance this file, please save in the .pptx format used " +
+            "by PowerPoint 2010 and newer.";
+        private bool _oldVersion;
 
         private void ThisAddIn_Startup(object sender, EventArgs e)
         {
@@ -332,8 +333,11 @@ namespace PowerPointLabs
                 // extract embedded audio files to temp folder
                 if (!PrepareMediaFiles(Pres))
                 {
+                    _oldVersion = true;
                     return;
                 }
+                
+                _oldVersion = false;
 
                 // setup a new recorder pane when an exist file opened
                 SetupRecorderTaskPane(Pres.Application.ActiveWindow);
@@ -492,8 +496,6 @@ namespace PowerPointLabs
 
                 if (presName.EndsWith(".ppt"))
                 {
-                    MessageBox.Show(VersionNotCompatibleMsg);
-
                     return false;
                 }
 
@@ -578,6 +580,17 @@ namespace PowerPointLabs
             catch (Exception e)
             {
                 ErrorDialogWrapper.ShowDialog("Error when preparing media files", "Files cannot be linked.", e);
+            }
+
+            return true;
+        }
+
+        public bool VerifyVersion()
+        {
+            if (_oldVersion)
+            {
+                MessageBox.Show(VersionNotCompatibleMsg);
+                return false;
             }
 
             return true;
