@@ -34,11 +34,23 @@ namespace PowerPointLabs
         {
             InitializeComponent();
 
-            bindDataToPanels();
+            BindDataToPanels();
+
+            InitToolTipControl();
+        }
+
+        private void InitToolTipControl()
+        {
+            toolTip1.SetToolTip(this.FontEyeDropperButton, "EyeDrops Font Color for Selected TextFrames");
+            toolTip1.SetToolTip(this.LineEyeDropperButton, "EyeDrops Line Color for Selected Shapes");
+            toolTip1.SetToolTip(this.FillEyeDropperButton, "EyeDrops Fill Color for Selected Shapes");
+            toolTip1.SetToolTip(this.EditColorButton, "Edits Selected Color");
+            toolTip1.SetToolTip(this.LoadButton, "Load Existing Theme");
+            toolTip1.SetToolTip(this.SaveThemeButton, "Save Current Theme");
         }
 
         #region DataBindings
-        private void bindDataToPanels()
+        private void BindDataToPanels()
         {
             this.panel1.DataBindings.Add(new Binding(
                 "BackColor",
