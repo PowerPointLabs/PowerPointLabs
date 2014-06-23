@@ -585,7 +585,7 @@ namespace PowerPointLabs.Models
             return false;
         }
 
-        private Effect AddShapeAsLastAutoplaying(Shape shape, MsoAnimEffect effect)
+        public Effect AddShapeAsLastAutoplaying(Shape shape, MsoAnimEffect effect)
         {
             Effect addedEffect = _slide.TimeLine.MainSequence.AddEffect(shape, effect,
                 MsoAnimateByLevel.msoAnimateLevelNone, MsoAnimTriggerType.msoAnimTriggerWithPrevious);
