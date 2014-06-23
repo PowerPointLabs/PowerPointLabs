@@ -38,6 +38,8 @@ namespace PowerPointLabs
             BindDataToPanels();
 
             InitToolTipControl();
+
+            ResetThemePanel();
         }
 
         #region ToolTip
@@ -49,6 +51,7 @@ namespace PowerPointLabs
             toolTip1.SetToolTip(this.EditColorButton, "Edits Selected Color");
             toolTip1.SetToolTip(this.LoadButton, "Load Existing Theme");
             toolTip1.SetToolTip(this.SaveThemeButton, "Save Current Theme");
+            toolTip1.SetToolTip(this.ResetThemeButton, "Reset the Current Theme");
         }
         #endregion
 
@@ -297,6 +300,7 @@ namespace PowerPointLabs
 
         private void timer1_Tick(object sender, EventArgs e)
         {
+            Cursor.Current = Cursors.Cross;
             System.Drawing.Point p = Control.MousePosition;
             IntPtr dc = Native.GetDC(IntPtr.Zero);
             dataSource.selectedColor = ColorTranslator.FromWin32(Native.GetPixel(dc, p.X, p.Y));
@@ -376,8 +380,6 @@ namespace PowerPointLabs
             _originalColor = panel1.BackColor;
             UpdateUIForNewColor();
             timer1.Stop();
-            System.Diagnostics.Debug.WriteLine(sender.GetType());
-            //EnableMouseClicks();
         }
 
         private void UpdateUIForNewColor()
@@ -710,6 +712,53 @@ namespace PowerPointLabs
             {
                 StartDragDrop(sender);
             }
+        }
+
+        private void FontEyeDropperButton_MouseDown(object sender, MouseEventArgs e)
+        {
+            _isFontColorSelected = true;
+            _isFillColorSelected = false;
+            _isLineColorSelected = false;
+            BeginEyedropping();
+        }
+
+        private void LineEyeDropperButton_MouseDown(object sender, MouseEventArgs e)
+        {
+            _isFontColorSelected = false;
+            _isFillColorSelected = false;
+            _isLineColorSelected = true;
+            BeginEyedropping();
+        }
+
+        private void FillEyeDropperButton_MouseDown(object sender, MouseEventArgs e)
+        {
+            _isFontColorSelected =false;
+            _isFillColorSelected = true;
+            _isLineColorSelected = false;
+            BeginEyedropping();
+        }
+
+        private void ResetThemeButton_Click(object sender, EventArgs e)
+        {
+            ResetThemePanel();
+        }
+
+        private void ResetThemePanel()
+        {
+            ThemePanel1.BackColor = Color.White;
+            ThemePanel2.BackColor = Color.White;
+            ThemePanel3.BackColor = Color.White;
+            ThemePanel4.BackColor = Color.White;
+            ThemePanel5.BackColor = Color.White;
+            ThemePanel6.BackColor = Color.White;
+            ThemePanel7.BackColor = Color.White;
+            ThemePanel8.BackColor = Color.White;
+            ThemePanel9.BackColor = Color.White;
+        }
+
+        private void ColorPane_Load(object sender, EventArgs e)
+        {
+            ResetThemePanel();
         }
     }
 
