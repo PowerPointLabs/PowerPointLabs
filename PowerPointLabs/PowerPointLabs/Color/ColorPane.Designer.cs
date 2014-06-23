@@ -91,6 +91,8 @@
             this.FillEyeDropperButton = new System.Windows.Forms.Button();
             this.LineEyeDropperButton = new System.Windows.Forms.Button();
             this.FontEyeDropperButton = new System.Windows.Forms.Button();
+            this.label7 = new System.Windows.Forms.Label();
+            this.label8 = new System.Windows.Forms.Label();
             this.AnalogousColorPanel.SuspendLayout();
             this.flowLayoutPanel6.SuspendLayout();
             this.flowLayoutPanel2.SuspendLayout();
@@ -131,7 +133,7 @@
             this.AnalogousColorPanel.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.AnalogousColorPanel.Controls.Add(this.label1);
             this.AnalogousColorPanel.Controls.Add(this.flowLayoutPanel6);
-            this.AnalogousColorPanel.Location = new System.Drawing.Point(16, 288);
+            this.AnalogousColorPanel.Location = new System.Drawing.Point(20, 309);
             this.AnalogousColorPanel.Name = "AnalogousColorPanel";
             this.AnalogousColorPanel.Size = new System.Drawing.Size(124, 76);
             this.AnalogousColorPanel.TabIndex = 3;
@@ -190,7 +192,7 @@
             this.flowLayoutPanel2.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.flowLayoutPanel2.Controls.Add(this.label2);
             this.flowLayoutPanel2.Controls.Add(this.flowLayoutPanel7);
-            this.flowLayoutPanel2.Location = new System.Drawing.Point(146, 288);
+            this.flowLayoutPanel2.Location = new System.Drawing.Point(150, 309);
             this.flowLayoutPanel2.Name = "flowLayoutPanel2";
             this.flowLayoutPanel2.Size = new System.Drawing.Size(143, 76);
             this.flowLayoutPanel2.TabIndex = 4;
@@ -249,7 +251,7 @@
             this.flowLayoutPanel3.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.flowLayoutPanel3.Controls.Add(this.label3);
             this.flowLayoutPanel3.Controls.Add(this.flowLayoutPanel8);
-            this.flowLayoutPanel3.Location = new System.Drawing.Point(16, 370);
+            this.flowLayoutPanel3.Location = new System.Drawing.Point(20, 391);
             this.flowLayoutPanel3.Name = "flowLayoutPanel3";
             this.flowLayoutPanel3.Size = new System.Drawing.Size(124, 64);
             this.flowLayoutPanel3.TabIndex = 4;
@@ -308,7 +310,7 @@
             this.flowLayoutPanel4.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.flowLayoutPanel4.Controls.Add(this.label4);
             this.flowLayoutPanel4.Controls.Add(this.flowLayoutPanel9);
-            this.flowLayoutPanel4.Location = new System.Drawing.Point(146, 370);
+            this.flowLayoutPanel4.Location = new System.Drawing.Point(150, 391);
             this.flowLayoutPanel4.Name = "flowLayoutPanel4";
             this.flowLayoutPanel4.Size = new System.Drawing.Size(143, 64);
             this.flowLayoutPanel4.TabIndex = 4;
@@ -374,7 +376,7 @@
             // 
             // brightnessBar
             // 
-            this.brightnessBar.Location = new System.Drawing.Point(20, 98);
+            this.brightnessBar.Location = new System.Drawing.Point(26, 116);
             this.brightnessBar.Maximum = 240;
             this.brightnessBar.Name = "brightnessBar";
             this.brightnessBar.Size = new System.Drawing.Size(256, 45);
@@ -385,7 +387,7 @@
             // brightnessPanel
             // 
             this.brightnessPanel.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.brightnessPanel.Location = new System.Drawing.Point(28, 81);
+            this.brightnessPanel.Location = new System.Drawing.Point(34, 99);
             this.brightnessPanel.Name = "brightnessPanel";
             this.brightnessPanel.Size = new System.Drawing.Size(240, 25);
             this.brightnessPanel.TabIndex = 7;
@@ -393,14 +395,14 @@
             // saturationPanel
             // 
             this.saturationPanel.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.saturationPanel.Location = new System.Drawing.Point(29, 149);
+            this.saturationPanel.Location = new System.Drawing.Point(34, 178);
             this.saturationPanel.Name = "saturationPanel";
             this.saturationPanel.Size = new System.Drawing.Size(240, 25);
             this.saturationPanel.TabIndex = 9;
             // 
             // saturationBar
             // 
-            this.saturationBar.Location = new System.Drawing.Point(21, 165);
+            this.saturationBar.Location = new System.Drawing.Point(26, 194);
             this.saturationBar.Maximum = 240;
             this.saturationBar.Name = "saturationBar";
             this.saturationBar.Size = new System.Drawing.Size(256, 45);
@@ -413,7 +415,7 @@
             this.flowLayoutPanel1.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.flowLayoutPanel1.Controls.Add(this.label5);
             this.flowLayoutPanel1.Controls.Add(this.flowLayoutPanel5);
-            this.flowLayoutPanel1.Location = new System.Drawing.Point(16, 216);
+            this.flowLayoutPanel1.Location = new System.Drawing.Point(20, 245);
             this.flowLayoutPanel1.Name = "flowLayoutPanel1";
             this.flowLayoutPanel1.Size = new System.Drawing.Size(273, 58);
             this.flowLayoutPanel1.TabIndex = 10;
@@ -514,7 +516,7 @@
             this.themeLayoutPanel.Controls.Add(this.flowLayoutPanel11);
             this.themeLayoutPanel.Controls.Add(this.SaveThemeButton);
             this.themeLayoutPanel.Controls.Add(this.LoadButton);
-            this.themeLayoutPanel.Location = new System.Drawing.Point(16, 440);
+            this.themeLayoutPanel.Location = new System.Drawing.Point(20, 461);
             this.themeLayoutPanel.Name = "themeLayoutPanel";
             this.themeLayoutPanel.Size = new System.Drawing.Size(273, 111);
             this.themeLayoutPanel.TabIndex = 11;
@@ -742,12 +744,38 @@
             this.FontEyeDropperButton.UseVisualStyleBackColor = true;
             this.FontEyeDropperButton.Click += new System.EventHandler(this.FontEyeDropperButton_Click);
             // 
+            // label7
+            // 
+            this.label7.AutoSize = true;
+            this.label7.BackColor = System.Drawing.SystemColors.ControlLight;
+            this.label7.Font = new System.Drawing.Font("Arial", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label7.ForeColor = System.Drawing.SystemColors.ControlText;
+            this.label7.Location = new System.Drawing.Point(20, 80);
+            this.label7.Name = "label7";
+            this.label7.Size = new System.Drawing.Size(74, 16);
+            this.label7.TabIndex = 12;
+            this.label7.Text = "Brightness";
+            // 
+            // label8
+            // 
+            this.label8.AutoSize = true;
+            this.label8.BackColor = System.Drawing.SystemColors.ControlLight;
+            this.label8.Font = new System.Drawing.Font("Arial", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label8.ForeColor = System.Drawing.SystemColors.ControlText;
+            this.label8.Location = new System.Drawing.Point(20, 159);
+            this.label8.Name = "label8";
+            this.label8.Size = new System.Drawing.Size(74, 16);
+            this.label8.TabIndex = 15;
+            this.label8.Text = "Saturation";
+            // 
             // ColorPane
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+            this.Controls.Add(this.label8);
             this.Controls.Add(this.button2);
             this.Controls.Add(this.FillEyeDropperButton);
+            this.Controls.Add(this.label7);
             this.Controls.Add(this.LineEyeDropperButton);
             this.Controls.Add(this.FontEyeDropperButton);
             this.Controls.Add(this.themeLayoutPanel);
@@ -852,5 +880,7 @@
         private System.Windows.Forms.Button FontEyeDropperButton;
         private System.Windows.Forms.Button LineEyeDropperButton;
         private System.Windows.Forms.Button FillEyeDropperButton;
+        private System.Windows.Forms.Label label7;
+        private System.Windows.Forms.Label label8;
     }
 }

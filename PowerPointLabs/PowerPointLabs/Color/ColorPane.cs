@@ -17,8 +17,10 @@ using System.Runtime.Serialization.Formatters.Binary;
 
 namespace PowerPointLabs
 {
+
     public partial class ColorPane : UserControl
     {
+
         private Color _originalColor;
         private bool _isFillColorSelected = false;
         private bool _isFontColorSelected = false;
@@ -253,8 +255,6 @@ namespace PowerPointLabs
             _native = new LMouseListener();
             _native.LButtonClicked +=
                  new EventHandler<SysMouseEventInfo>(_native_LButtonClicked);
-            //DisableMouseClicks();
-
             SelectShapes();
         }
 
@@ -337,7 +337,7 @@ namespace PowerPointLabs
             _originalColor = panel1.BackColor;
             UpdateUIForNewColor();
             timer1.Stop();
-
+            System.Diagnostics.Debug.WriteLine(sender.GetType());
             //EnableMouseClicks();
         }
 
@@ -491,13 +491,16 @@ namespace PowerPointLabs
 
         public class MouseClickMessageFilter : IMessageFilter
         {
-
             public bool PreFilterMessage(ref System.Windows.Forms.Message m)
             {
-                switch (m.Msg)
+                System.Diagnostics.Debug.WriteLine("Mouse Event: ");
+                if (m.Msg == 0x0201 || m.Msg == 0x0202 || m.Msg == 0x0203)
                 {
-                    case LButtonDown:
-                        return true;
+                    return true;
+                }
+                if (m.Msg == 0x0204 || m.Msg == 0x0205 || m.Msg == 0x0206)
+                {
+                    return true;
                 }
                 return false;
             }
@@ -522,6 +525,7 @@ namespace PowerPointLabs
 
                     dataSource.selectedColor = newColor;
                     UpdateSaturationBar(newColor);
+                    UpdateBrightnessBar(newColor);
 
                     brightnessBar.ValueChanged += brightnessBar_ValueChanged;
                     saturationBar.ValueChanged += saturationBar_ValueChanged;
