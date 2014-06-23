@@ -130,6 +130,7 @@
             // 
             // AnalogousColorPanel
             // 
+            this.AnalogousColorPanel.BackColor = System.Drawing.SystemColors.ControlLight;
             this.AnalogousColorPanel.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.AnalogousColorPanel.Controls.Add(this.label1);
             this.AnalogousColorPanel.Controls.Add(this.flowLayoutPanel6);
@@ -189,6 +190,7 @@
             // 
             // flowLayoutPanel2
             // 
+            this.flowLayoutPanel2.BackColor = System.Drawing.SystemColors.ControlLight;
             this.flowLayoutPanel2.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.flowLayoutPanel2.Controls.Add(this.label2);
             this.flowLayoutPanel2.Controls.Add(this.flowLayoutPanel7);
@@ -248,6 +250,7 @@
             // 
             // flowLayoutPanel3
             // 
+            this.flowLayoutPanel3.BackColor = System.Drawing.SystemColors.ControlLight;
             this.flowLayoutPanel3.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.flowLayoutPanel3.Controls.Add(this.label3);
             this.flowLayoutPanel3.Controls.Add(this.flowLayoutPanel8);
@@ -307,6 +310,7 @@
             // 
             // flowLayoutPanel4
             // 
+            this.flowLayoutPanel4.BackColor = System.Drawing.SystemColors.ControlLight;
             this.flowLayoutPanel4.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.flowLayoutPanel4.Controls.Add(this.label4);
             this.flowLayoutPanel4.Controls.Add(this.flowLayoutPanel9);
@@ -412,6 +416,7 @@
             // 
             // flowLayoutPanel1
             // 
+            this.flowLayoutPanel1.BackColor = System.Drawing.SystemColors.ControlLight;
             this.flowLayoutPanel1.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.flowLayoutPanel1.Controls.Add(this.label5);
             this.flowLayoutPanel1.Controls.Add(this.flowLayoutPanel5);
@@ -511,6 +516,7 @@
             // 
             // themeLayoutPanel
             // 
+            this.themeLayoutPanel.BackColor = System.Drawing.SystemColors.ControlLight;
             this.themeLayoutPanel.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.themeLayoutPanel.Controls.Add(this.label6);
             this.themeLayoutPanel.Controls.Add(this.flowLayoutPanel11);
