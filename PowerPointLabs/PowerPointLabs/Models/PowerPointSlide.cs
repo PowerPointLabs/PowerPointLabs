@@ -186,6 +186,24 @@ namespace PowerPointLabs.Models
                 s.Delete();
             }
         }
+
+        public void SetShapeAsAutoplay(Shape shape)
+        {
+            var mainSequence = _slide.TimeLine.MainSequence;
+
+            Effect firstClickEvent = mainSequence.FindFirstAnimationForClick(1);
+            bool hasNoClicksOnSlide = firstClickEvent == null;
+
+            if (hasNoClicksOnSlide)
+            {
+                AddShapeAsLastAutoplaying(shape, MsoAnimEffect.msoAnimEffectFade);
+            }
+            else
+            {
+                InsertAnimationBeforeExisting(shape, firstClickEvent, MsoAnimEffect.msoAnimEffectFade);
+            }
+        }
+
         public void SetAudioAsAutoplay(Shape shape)
         {
             var mainSequence = _slide.TimeLine.MainSequence;

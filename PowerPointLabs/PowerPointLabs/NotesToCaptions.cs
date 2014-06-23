@@ -39,7 +39,7 @@ namespace PowerPointLabs
 
                 if (i == 0)
                 {
-                    s.AddShapeAsLastAutoplaying(captionBox, MsoAnimEffect.msoAnimEffectFade);
+                    s.SetShapeAsAutoplay(captionBox);
                 }
 
                 if (i != 0)
