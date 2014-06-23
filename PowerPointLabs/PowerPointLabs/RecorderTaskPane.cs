@@ -1619,7 +1619,7 @@ namespace PowerPointLabs
                 {
                     scriptDetailTextBox.ForeColor = Color.Red;
                     scriptDetailTextBox.Font = new System.Drawing.Font(scriptDetailTextBox.Font, FontStyle.Bold);
-                    scriptDetailTextBox.Text = "Script Not Written";
+                    scriptDetailTextBox.Text = "No Script Available";
                 }
             }
             else

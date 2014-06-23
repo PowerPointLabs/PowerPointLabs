@@ -863,6 +863,11 @@ namespace PowerPointLabs
         # region AudioRecord Button Callbacks
         public void RecManagementClick(Office.IRibbonControl control)
         {
+            if (!Globals.ThisAddIn.VerifyVersion())
+            {
+                return;
+            }
+
             var recorder = Globals.ThisAddIn.ActivateCustomTaskPane.Control as RecorderTaskPane;
             // TODO:
             // Handle exception when user clicks the button without selecting any slides
@@ -887,6 +892,11 @@ namespace PowerPointLabs
 
         public void RemoveAudioClick(Office.IRibbonControl control)
         {
+            if (!Globals.ThisAddIn.VerifyVersion())
+            {
+                return;
+            }
+
             var recorderPane = Globals.ThisAddIn.ActivateCustomTaskPane.Control as RecorderTaskPane;
             
             try
@@ -915,6 +925,11 @@ namespace PowerPointLabs
 
         public void AddAudioClick(Office.IRibbonControl control)
         {
+            if (!Globals.ThisAddIn.VerifyVersion())
+            {
+                return;
+            }
+
             var currentSlide = PowerPointPresentation.CurrentSlide;
             var recorderPane = Globals.ThisAddIn.ActivateCustomTaskPane.Control as RecorderTaskPane;
 
@@ -945,6 +960,11 @@ namespace PowerPointLabs
 
         public void ContextAddAudioClick(Office.IRibbonControl control)
         {
+            if (!Globals.ThisAddIn.VerifyVersion())
+            {
+                return;
+            }
+
             NotesToAudio.EmbedCurrentSlideNotes();
             PreviewAnimationsIfChecked();
         }
