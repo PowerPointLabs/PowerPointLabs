@@ -37,6 +37,11 @@ namespace PowerPointLabs
                 Shape captionBox = AddCaptionBoxToSlide(currentCaption, s);
                 captionBox.Name = "PowerPointLabs Caption " + i;
 
+                if (i == 0)
+                {
+                    s.SetShapeAsAutoplay(captionBox);
+                }
+
                 if (i != 0)
                 {
                     s.ShowShapeAfterClick(captionBox, i);

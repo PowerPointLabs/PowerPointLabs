@@ -7,6 +7,7 @@ using System.Linq;
 using System.Runtime.InteropServices;
 using System.Text;
 using System.Text.RegularExpressions;
+using System.Threading.Tasks;
 using System.Windows.Forms;
 using System.Diagnostics;
 using Microsoft.Office.Tools;
@@ -31,6 +32,13 @@ namespace PowerPointLabs
                                                                                      string>();
 
         public Ribbon1 Ribbon;
+
+        private const string VersionNotCompatibleMsg =
+            "This file is not fully compatible with some features of PowerPointLabs because it is " +
+            "in the outdated .ppt format used by PowerPoint 2007 (and older). If you wish to use the " +
+            "full power of PowerPointLabs to enhance this file, please save in the .pptx format used " +
+            "by PowerPoint 2010 and newer.";
+        private bool _oldVersion;
 
         # region Powerpoint Application Event Handlers
         private void ThisAddIn_Startup(object sender, EventArgs e)
@@ -73,6 +81,10 @@ namespace PowerPointLabs
 
         private void ThisAddIn_ApplicationOnWindowActivate(PowerPoint.Presentation pres, PowerPoint.DocumentWindow wn)
         {
+            if (pres != null)
+            {
+                Ribbon._embedAudioVisible = !pres.Name.EndsWith(".ppt");
+            }
         }
 
         private void ThisAddIn_SlideSelectionChanged(PowerPoint.SlideRange SldRange)
@@ -230,7 +242,13 @@ namespace PowerPointLabs
             {
                 // extract the media files and relationships to a folder with presentation's
                 // hash code
-                PrepareMediaFiles(Pres, tempPath);
+                if (!PrepareMediaFiles(Pres, tempPath))
+                {
+                    _oldVersion = true;
+                    return;
+                }
+
+                _oldVersion = false;
 
                 // register all task panes when opening documents
                 RegisterTaskPane(new RecorderTaskPane(tempName), "Record Management", activeWindow,
@@ -253,7 +271,13 @@ namespace PowerPointLabs
                 // manually call the setup method of the recorder pane.
                 var oriTempPath = Path.GetTempPath() + TempFolderNamePrefix +
                                   _documentHashcodeMapper[activeWindow] + @"\";
-                PrepareMediaFiles(Pres, oriTempPath);
+                if (!PrepareMediaFiles(Pres, oriTempPath))
+                {
+                    _oldVersion = true;
+                    return;
+                }
+
+                _oldVersion = false;
 
                 var recorderPane = GetActivePane(Type.GetType("PowerPointLabs.RecorderTaskPane"));
                 var recorder = recorderPane.Control as RecorderTaskPane;
@@ -551,11 +575,16 @@ namespace PowerPointLabs
             }
         }
 
-        private void PrepareMediaFiles(PowerPoint.Presentation Pres, string tempPath)
+        private bool PrepareMediaFiles(PowerPoint.Presentation Pres, string tempPath)
         {
             try
             {
                 string presName = Pres.Name;
+
+                if (presName.EndsWith(".ppt"))
+                {
+                    return false;
+                }
 
                 if (!presName.Contains(".pptx"))
                 {
@@ -576,8 +605,7 @@ namespace PowerPointLabs
                 }
                 catch (Exception e)
                 {
-                    ErrorDialogWrapper.ShowDialog("Error when creating temp folder", "Temp folder " + tempPath + " cannot be created.", e);
-                    throw;
+                    ErrorDialogWrapper.ShowDialog("Error when creating temp folder", string.Empty, e);
                 }
                 finally
                 {
@@ -601,7 +629,6 @@ namespace PowerPointLabs
                 catch (Exception e)
                 {
                     ErrorDialogWrapper.ShowDialog("Error when accessing temp folder", string.Empty, e);
-                    throw;
                 }
 
                 // open the zip and extract media files to temp folder
@@ -634,14 +661,25 @@ namespace PowerPointLabs
                 catch (Exception e)
                 {
                     ErrorDialogWrapper.ShowDialog("Error when extracting", "Archived files cannot be retrieved.", e);
-                    throw;
                 }
             }
             catch (Exception e)
             {
                 ErrorDialogWrapper.ShowDialog("Error when preparing media files", "Files cannot be linked.", e);
-                throw;
             }
+
+            return true;
+        }
+
+        public bool VerifyVersion()
+        {
+            if (_oldVersion)
+            {
+                MessageBox.Show(VersionNotCompatibleMsg);
+                return false;
+            }
+
+            return true;
         }
         # endregion
 
@@ -728,6 +766,15 @@ namespace PowerPointLabs
             {
                 // invalid paste event triggered because of system message loss
                 if (copiedSlides.Count < 1)
+                {
+                    return;
+                }
+
+                // if we copied from a presentation without recorder pane or pasted to a
+                // presentation without recorder pane, paste event will not be entertained
+                if (!_documentPaneMapper.ContainsKey(_copyFromWnd) ||
+                    _documentPaneMapper[_copyFromWnd] == null ||
+                    GetActivePane(Type.GetType("PowerPointLabs.RecorderTaskPane")) == null)
                 {
                     return;
                 }

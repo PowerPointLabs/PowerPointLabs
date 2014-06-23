@@ -55,8 +55,9 @@ namespace PowerPointLabs
         public bool reloadSpotlight = true;
         public bool removeCaptionsEnabled = true;
         public bool removeAudioEnabled = true;
-        
-        public bool RecorderPaneVisible = false;
+
+        public bool _embedAudioVisible = true;
+        public bool _recorderPaneVisible = false;
 
         private bool _previewCurrentSlide;
         
@@ -216,7 +217,7 @@ namespace PowerPointLabs
         }
         public void AboutButtonClick(Office.IRibbonControl control)
         {
-            MessageBox.Show("          PowerPointLabs Plugin Version 1.7.13 [Release date: 17 Jun 2014]\n     Developed at School of Computing, National University of Singapore.\n        For more information, visit our website http://PowerPointLabs.info", "About PowerPointLabs");
+            MessageBox.Show("          PowerPointLabs Plugin Version 1.8 [Release date: 23 Jun 2014]\n     Developed at School of Computing, National University of Singapore.\n        For more information, visit our website http://PowerPointLabs.info", "About PowerPointLabs");
         }
         public void HelpButtonClick(Office.IRibbonControl control)
         {
@@ -854,8 +855,18 @@ namespace PowerPointLabs
             }
         }
 
+        public bool GetEmbedAudioVisiblity(Office.IRibbonControl control)
+        {
+            return _embedAudioVisible;
+        }
+
         public void RecManagementClick(Office.IRibbonControl control)
         {
+            if (!Globals.ThisAddIn.VerifyVersion())
+            {
+                return;
+            }
+
             var recorderPane = Globals.ThisAddIn.GetActivePane(Type.GetType("PowerPointLabs.RecorderTaskPane"));
             var recorder = recorderPane.Control as RecorderTaskPane;
 
@@ -893,6 +904,11 @@ namespace PowerPointLabs
 
         public void RemoveAudioClick(Office.IRibbonControl control)
         {
+            if (!Globals.ThisAddIn.VerifyVersion())
+            {
+                return;
+            }
+
             var recorderPane = Globals.ThisAddIn.GetActivePane(Type.GetType("PowerPointLabs.RecorderTaskPane"));
             var recorder = recorderPane.Control as RecorderTaskPane;
             
@@ -922,6 +938,11 @@ namespace PowerPointLabs
 
         public void AddAudioClick(Office.IRibbonControl control)
         {
+            if (!Globals.ThisAddIn.VerifyVersion())
+            {
+                return;
+            }
+
             var currentSlide = PowerPointPresentation.CurrentSlide;
 
             var recorderPane = Globals.ThisAddIn.GetActivePane(Type.GetType("PowerPointLabs.RecorderTaskPane"));
@@ -954,6 +975,11 @@ namespace PowerPointLabs
 
         public void ContextAddAudioClick(Office.IRibbonControl control)
         {
+            if (!Globals.ThisAddIn.VerifyVersion())
+            {
+                return;
+            }
+
             NotesToAudio.EmbedCurrentSlideNotes();
             PreviewAnimationsIfChecked();
         }

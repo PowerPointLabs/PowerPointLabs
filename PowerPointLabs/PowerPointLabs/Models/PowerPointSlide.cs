@@ -186,6 +186,24 @@ namespace PowerPointLabs.Models
                 s.Delete();
             }
         }
+
+        public void SetShapeAsAutoplay(Shape shape)
+        {
+            var mainSequence = _slide.TimeLine.MainSequence;
+
+            Effect firstClickEvent = mainSequence.FindFirstAnimationForClick(1);
+            bool hasNoClicksOnSlide = firstClickEvent == null;
+
+            if (hasNoClicksOnSlide)
+            {
+                AddShapeAsLastAutoplaying(shape, MsoAnimEffect.msoAnimEffectFade);
+            }
+            else
+            {
+                InsertAnimationBeforeExisting(shape, firstClickEvent, MsoAnimEffect.msoAnimEffectFade);
+            }
+        }
+
         public void SetAudioAsAutoplay(Shape shape)
         {
             var mainSequence = _slide.TimeLine.MainSequence;
@@ -585,7 +603,7 @@ namespace PowerPointLabs.Models
             return false;
         }
 
-        private Effect AddShapeAsLastAutoplaying(Shape shape, MsoAnimEffect effect)
+        public Effect AddShapeAsLastAutoplaying(Shape shape, MsoAnimEffect effect)
         {
             Effect addedEffect = _slide.TimeLine.MainSequence.AddEffect(shape, effect,
                 MsoAnimateByLevel.msoAnimateLevelNone, MsoAnimTriggerType.msoAnimTriggerWithPrevious);
