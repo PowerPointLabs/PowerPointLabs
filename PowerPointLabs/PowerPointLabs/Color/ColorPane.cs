@@ -26,6 +26,7 @@ namespace PowerPointLabs
         private bool _isFontColorSelected = false;
         private bool _isLineColorSelected = false;
 
+        private System.Drawing.Point _mouseDownLocation;
         LMouseListener _native;
 
         PowerPoint.ShapeRange _selectedShapes;
@@ -39,6 +40,7 @@ namespace PowerPointLabs
             InitToolTipControl();
         }
 
+        #region ToolTip
         private void InitToolTipControl()
         {
             toolTip1.SetToolTip(this.FontEyeDropperButton, "EyeDrops Font Color for Selected TextFrames");
@@ -48,6 +50,7 @@ namespace PowerPointLabs
             toolTip1.SetToolTip(this.LoadButton, "Load Existing Theme");
             toolTip1.SetToolTip(this.SaveThemeButton, "Save Current Theme");
         }
+        #endregion
 
         #region DataBindings
         private void BindDataToPanels()
@@ -490,6 +493,11 @@ namespace PowerPointLabs
 
         private void MatchingPanel_MouseDown(object sender, MouseEventArgs e)
         {
+            _mouseDownLocation = e.Location;
+        }
+
+        private void StartDragDrop(object sender)
+        {
             DataObject colorObject = new DataObject();
             colorObject.SetData(((Panel)sender).BackColor);
             DoDragDrop(colorObject, DragDropEffects.All);
@@ -690,6 +698,18 @@ namespace PowerPointLabs
             panel1.BackColor = clickedColor;
             _originalColor = clickedColor;
             UpdateUIForNewColor();
+        }
+
+        private void MatchingPanel_MouseMove(object sender, MouseEventArgs e)
+        {
+            int dx = e.X - _mouseDownLocation.X;
+            int dy = e.Y - _mouseDownLocation.Y;
+
+            if (Math.Abs(dx) > ((Panel)sender).Width / 2 ||
+                Math.Abs(dy) > ((Panel)sender).Height / 2)
+            {
+                StartDragDrop(sender);
+            }
         }
     }
 
