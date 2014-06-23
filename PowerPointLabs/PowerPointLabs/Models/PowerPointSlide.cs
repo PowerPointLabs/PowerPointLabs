@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.IO;
+using System.Text.RegularExpressions;
 using Microsoft.Office.Core;
 using Microsoft.Office.Interop.PowerPoint;
 using Shape = Microsoft.Office.Interop.PowerPoint.Shape;
@@ -185,6 +186,24 @@ namespace PowerPointLabs.Models
                 s.Delete();
             }
         }
+
+        public void SetShapeAsAutoplay(Shape shape)
+        {
+            var mainSequence = _slide.TimeLine.MainSequence;
+
+            Effect firstClickEvent = mainSequence.FindFirstAnimationForClick(1);
+            bool hasNoClicksOnSlide = firstClickEvent == null;
+
+            if (hasNoClicksOnSlide)
+            {
+                AddShapeAsLastAutoplaying(shape, MsoAnimEffect.msoAnimEffectFade);
+            }
+            else
+            {
+                InsertAnimationBeforeExisting(shape, firstClickEvent, MsoAnimEffect.msoAnimEffectFade);
+            }
+        }
+
         public void SetAudioAsAutoplay(Shape shape)
         {
             var mainSequence = _slide.TimeLine.MainSequence;
@@ -310,7 +329,7 @@ namespace PowerPointLabs.Models
             }
         }
 
-        public List<PowerPoint.Shape> GetShapesWithPrefix(string prefix)
+        public List<Shape> GetShapesWithPrefix(string prefix)
         {
             List<Shape> shapes = _slide.Shapes.Cast<Shape>().ToList();
             List<Shape> matchingShapes = shapes.Where(current => current.Name.StartsWith(prefix)).ToList();
@@ -318,11 +337,21 @@ namespace PowerPointLabs.Models
             return matchingShapes;
         }
 
-        public List<PowerPoint.Shape> GetShapesWithMediaType(PpMediaType type)
+        public List<Shape> GetShapesWithMediaType(PpMediaType type, Regex nameRule)
         {
             List<Shape> shapes = _slide.Shapes.Cast<Shape>().ToList();
             List<Shape> matchingShapes = shapes.Where(current => current.Type == MsoShapeType.msoMedia &&
-                                                                 current.MediaType == type).ToList();
+                                                                 current.MediaType == type &&
+                                                                 nameRule.IsMatch(current.Name)).ToList();
+
+            return matchingShapes;
+        }
+
+        public List<Shape> GetShapesWithTypeAndRule(MsoShapeType type, Regex nameRule)
+        {
+            var shapes = _slide.Shapes.Cast<Shape>().ToList();
+            var matchingShapes = shapes.Where(current => current.Type == type &&
+                                              nameRule.IsMatch(current.Name)).ToList();
 
             return matchingShapes;
         }
@@ -574,7 +603,7 @@ namespace PowerPointLabs.Models
             return false;
         }
 
-        private Effect AddShapeAsLastAutoplaying(Shape shape, MsoAnimEffect effect)
+        public Effect AddShapeAsLastAutoplaying(Shape shape, MsoAnimEffect effect)
         {
             Effect addedEffect = _slide.TimeLine.MainSequence.AddEffect(shape, effect,
                 MsoAnimateByLevel.msoAnimateLevelNone, MsoAnimTriggerType.msoAnimTriggerWithPrevious);

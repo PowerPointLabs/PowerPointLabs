@@ -1,12 +1,6 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Diagnostics;
 using System.Drawing;
-using System.Linq;
 using System.Runtime.InteropServices;
-using System.Text;
 using System.Windows.Forms;
 using Microsoft.Office.Interop.PowerPoint;
 using PPExtraEventHelper;
@@ -78,13 +72,26 @@ namespace PowerPointLabs.Views
         {
             var recorderPane = Globals.ThisAddIn.GetActivePane(Type.GetType("PowerPointLabs.RecorderTaskPane"));
             var recorder = recorderPane.Control as RecorderTaskPane;
-            var click = _slideShowWindow.View.GetClickIndex();
-            var currentSlide = PowerPointSlide.FromSlideFactory(_slideShowWindow.View.Slide);
+            
+            int click;
+            PowerPointSlide currentSlide;
+
+            try
+            {
+                click = _slideShowWindow.View.GetClickIndex();
+                currentSlide = PowerPointSlide.FromSlideFactory(_slideShowWindow.View.Slide);
+            }
+            catch (COMException comException)
+            {
+                MessageBox.Show("Invalid Recording Command");
+                return;
+            }
 
             switch (_status)
             {
                 case ButtonStatus.Idle:
                     _status = ButtonStatus.Rec;
+                    undoButton.Enabled = false;
                     _recordStartClick = click;
                     _recordStartSlide = currentSlide;
 
@@ -96,6 +103,7 @@ namespace PowerPointLabs.Views
 
                 case ButtonStatus.Rec:
                     recButton.Text = "Start Recording";
+                    undoButton.Enabled = true;
                     recButton.ForeColor = Color.Black;
 
                     recorder.StopButtonRecordingHandler(_recordStartClick, _recordStartSlide, true);

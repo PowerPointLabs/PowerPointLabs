@@ -7,6 +7,7 @@ using System.Linq;
 using System.Runtime.InteropServices;
 using System.Text;
 using System.Text.RegularExpressions;
+using System.Threading.Tasks;
 using System.Windows.Forms;
 using System.Xml.Linq;
 using System.Diagnostics;
@@ -38,26 +39,35 @@ namespace PowerPointLabs
 
         private const string TempFolderNamePrefix = @"\PowerPointLabs Temp\";
 
-        private void ThisAddIn_Startup(object sender, System.EventArgs e)
+        private const string VersionNotCompatibleMsg =
+            "This file is not fully compatible with some features of PowerPointLabs because it is " +
+            "in the outdated .ppt format used by PowerPoint 2007 (and older). If you wish to use the " +
+            "full power of PowerPointLabs to enhance this file, please save in the .pptx format used " +
+            "by PowerPoint 2010 and newer.";
+        private bool _oldVersion;
+
+        private void ThisAddIn_Startup(object sender, EventArgs e)
         {
             SetupLogger();
             Trace.TraceInformation(DateTime.Now.ToString("yyyyMMddHHmmss") + ": PowerPointLabs Started");
-            ((PowerPoint.EApplication_Event)this.Application).NewPresentation += ThisAddIn_NewPresentation;
-            Application.AfterNewPresentation += ThisAddIn_AfterNewPresentation;
-            Application.WindowSelectionChange += ThisAddIn_SelectionChanged;
-            Application.SlideSelectionChanged += ThisAddIn_SlideSelectionChanged;
-            Application.PresentationClose += ThisAddIn_PresentationClose;
-            Application.PresentationOpen += ThisAddIn_PrensentationOpen;
-            Application.WindowActivate += ThisAddIn_ApplicationOnWindowActivate;
-            Application.WindowDeactivate += ThisAddIn_ApplicationOnWindowDeactivate;
-
-            Application.SlideShowBegin += SlideShowBeginHandler;
-            Application.SlideShowEnd += SlideShowEndHandler;
+            
             PPMouse.Init(Application);
             PPCopy.Init(Application);
             SetupDoubleClickHandler();
             SetupTabActivateHandler();
             SetupAfterCopyPasteHandler();
+
+            ((PowerPoint.EApplication_Event)this.Application).NewPresentation += ThisAddIn_NewPresentation;
+            Application.AfterNewPresentation += ThisAddIn_AfterNewPresentation;
+            Application.WindowSelectionChange += ThisAddIn_SelectionChanged;
+            Application.PresentationClose += ThisAddIn_PresentationClose;
+            Application.PresentationOpen += ThisAddIn_PrensentationOpen;
+            Application.WindowActivate += ThisAddIn_ApplicationOnWindowActivate;
+            Application.WindowDeactivate += ThisAddIn_ApplicationOnWindowDeactivate;
+            Application.SlideSelectionChanged += ThisAddIn_SlideSelectionChanged;
+
+            Application.SlideShowBegin += SlideShowBeginHandler;
+            Application.SlideShowEnd += SlideShowEndHandler;
         }
 
         private void ThisAddIn_ApplicationOnWindowDeactivate(PowerPoint.Presentation pres, PowerPoint.DocumentWindow wn)
@@ -66,6 +76,10 @@ namespace PowerPointLabs
 
         private void ThisAddIn_ApplicationOnWindowActivate(PowerPoint.Presentation pres, PowerPoint.DocumentWindow wn)
         {
+            if (pres != null)
+            {
+                ribbon._embedAudioVisible = !pres.Name.EndsWith(".ppt");
+            }
         }
 
         void SetupLogger()
@@ -305,10 +319,11 @@ namespace PowerPointLabs
             
             if (Directory.Exists(tempFolderPath))
             {
-                Directory.Delete(tempFolderPath, true);
+                if (Directory.Exists(tempFolderPath))
+                {
+                    Directory.Delete(tempFolderPath, true);
+                }
             }
-
-            Directory.CreateDirectory(tempFolderPath);
 
             documentHashcodeMapper[activeWindow] = tempName;
             
@@ -336,19 +351,29 @@ namespace PowerPointLabs
             documentHashcodeMapper[activeWindow] = tempName;
 
             // extract embedded audio files to temp folder
-            PrepareMediaFiles(Pres);
+            if (!PrepareMediaFiles(Pres))
+            {
+                _oldVersion = true;
+                return;
+            }
+            
+            _oldVersion = false;
 
             // register all task panes when opening documents
             RegisterTaskPane(new RecorderTaskPane(tempName), "Record Management", activeWindow,
                              TaskPaneVisibleValueChangedEventHandler, null);
             RegisterTaskPane(new ColorPane(), "Color Panel", activeWindow, null, null);
-            // setup a new recorder pane when an exist file opened
-            //SetupRecorderTaskPane(Pres.Application.ActiveWindow);
         }
 
         void ThisAddIn_PresentationClose(PowerPoint.Presentation Pres)
         {
             var recorderPane = GetActivePane(Type.GetType("PowerPointLabs.RecorderTaskPane"));
+
+            if (recorderPane == null)
+            {
+                return;
+            }
+            
             var recorder = recorderPane.Control as RecorderTaskPane;
             
             if (recorder.HasEvent())
@@ -389,6 +414,12 @@ namespace PowerPointLabs
             isInSlideShow = false;
             
             var recorderPane = GetActivePane(Type.GetType("PowerPointLabs.RecorderTaskPane"));
+            
+            if (recorderPane == null)
+            {
+                return;
+            }
+            
             var recorder = recorderPane.Control as RecorderTaskPane;
 
             // force recording session ends
@@ -415,6 +446,11 @@ namespace PowerPointLabs
                         foreach (var audio in recorder.AudioBuffer[i])
                         {
                             audio.Item1.EmbedOnSlide(slides[i], audio.Item2);
+
+                            if (Globals.ThisAddIn.ribbon.removeAudioEnabled) continue;
+                            
+                            Globals.ThisAddIn.ribbon.removeAudioEnabled = true;
+                            Globals.ThisAddIn.ribbon.RefreshRibbonControl("removeAudio");
                         }
                     }
                 }
@@ -430,8 +466,14 @@ namespace PowerPointLabs
         private void UpdateRecorderPane(int count, int id)
         {
             var recorderPane = GetActivePane(Type.GetType("PowerPointLabs.RecorderTaskPane"));
-            var recorder = recorderPane.Control as RecorderTaskPane;
+
+            if (recorderPane == null)
+            {
+                return;
+            }
             
+            var recorder = recorderPane.Control as RecorderTaskPane;
+
             // if the user has selected none or more than 1 slides, recorder pane should show nothing
             if (count != 1)
             {
@@ -456,6 +498,12 @@ namespace PowerPointLabs
         private void BreakRecorderEvents()
         {
             var recorderPane = GetActivePane(Type.GetType("PowerPointLabs.RecorderTaskPane"));
+            
+            if (recorderPane == null)
+            {
+                return;
+            }
+            
             var recorder = recorderPane.Control as RecorderTaskPane;
 
             // TODO:
@@ -468,88 +516,117 @@ namespace PowerPointLabs
             }
         }
 
-        private void PrepareMediaFiles(PowerPoint.Presentation Pres)
+        private bool PrepareMediaFiles(PowerPoint.Presentation Pres)
         {
-            string presName = Pres.Name;
-
-            if (!presName.Contains(".pptx"))
-            {
-                presName = Pres.Name + ".pptx";
-            }
-
-            string tempPath = Path.GetTempPath() + TempFolderNamePrefix + Pres.Name.GetHashCode().ToString() + @"\";
-            string zipName = presName.Replace(".pptx", ".zip");
-            string zipFullPath = tempPath + zipName;
-            string presFullName = Pres.FullName;
-
-            // if temp folder doesn't exist, create
             try
             {
-                if (Directory.Exists(tempPath))
+                string presName = Pres.Name;
+
+                if (presName.EndsWith(".ppt"))
                 {
-                    Directory.Delete(tempPath, true);
+                    return false;
                 }
-            }
-            catch (Exception)
-            {
-                MessageBox.Show("Restart from Error.");
-                throw;
-            }
-            finally
-            {
-                Directory.CreateDirectory(tempPath);
-            }
 
-            // this segment is added to handle "embed on other application" issue. In this
-            // case, file is not saved but has embedded audio already. We need to handle
-            // it specially.
-            if (Pres.Path == String.Empty)
-            {
-                Pres.SaveAs(tempPath + presName);
-                presFullName = tempPath + presName;
-            }
+                if (!presName.Contains(".pptx"))
+                {
+                    presName = Pres.Name + ".pptx";
+                }
 
-            // copy the file to temp folder and rename to zip
-            try
-            {
-                File.Copy(presFullName, zipFullPath);
+                string tempPath = Path.GetTempPath() + TempFolderNamePrefix + Pres.Name.GetHashCode().ToString() + @"\";
+                string zipName = presName.Replace(".pptx", ".zip");
+                string zipFullPath = tempPath + zipName;
+                string presFullName = Pres.FullName;
+
+                // if temp folder doesn't exist, create
+                try
+                {
+                    if (Directory.Exists(tempPath))
+                    {
+                        Directory.Delete(tempPath, true);
+                    }
+                }
+                catch (Exception e)
+                {
+                    ErrorDialogWrapper.ShowDialog("Error when creating temp folder", string.Empty, e);
+                }
+                finally
+                {
+                    Directory.CreateDirectory(tempPath);
+                }
+
+                // this segment is added to handle "embed on other application" issue. In this
+                // case, file is not saved but has embedded audio already. We need to handle
+                // it specially.
+                if (Pres.Path == String.Empty)
+                {
+                    Pres.SaveAs(tempPath + presName);
+                    presFullName = tempPath + presName;
+                }
+
+                // copy the file to temp folder and rename to zip
+                try
+                {
+                    File.Copy(presFullName, zipFullPath);
+                }
+                catch (Exception e)
+                {
+                    ErrorDialogWrapper.ShowDialog("Error when accessing temp folder", string.Empty, e);
+                }
+
+                // open the zip and extract media files to temp folder
+                try
+                {
+                    ZipStorer zip = ZipStorer.Open(zipFullPath, FileAccess.Read);
+
+                    List<ZipStorer.ZipFileEntry> dir = zip.ReadCentralDir();
+                    string pattern = @"slide(\d+)\.xml";
+                    Regex regex = new Regex(pattern);
+
+                    foreach (ZipStorer.ZipFileEntry entry in dir)
+                    {
+                        string name = Path.GetFileName(entry.FilenameInZip);
+                        if (name.Contains(".wav"))
+                        {
+                            zip.ExtractFile(entry, tempPath + name);
+                        }
+                        else if (regex.IsMatch(name))
+                        {
+                            zip.ExtractFile(entry, tempPath + name);
+
+                            //var match = regex.Match(name);
+                        }
+                    }
+
+                    zip.Close();
+                    File.Delete(zipFullPath);
+                }
+                catch (Exception e)
+                {
+                    ErrorDialogWrapper.ShowDialog("Error when extracting", "Archived files cannot be retrieved.", e);
+                }
             }
             catch (Exception e)
             {
-                MessageBox.Show(e.Message);
-                throw;
+                ErrorDialogWrapper.ShowDialog("Error when preparing media files", "Files cannot be linked.", e);
             }
 
-            // open the zip and extract media files to temp folder
-            ZipStorer zip = ZipStorer.Open(zipFullPath, FileAccess.Read);
+            return true;
+        }
 
-            List<ZipStorer.ZipFileEntry> dir = zip.ReadCentralDir();
-            string pattern = @"slide(\d+)\.xml";
-            Regex regex = new Regex(pattern);
-
-            foreach (ZipStorer.ZipFileEntry entry in dir)
+        public bool VerifyVersion()
+        {
+            if (_oldVersion)
             {
-                string name = Path.GetFileName(entry.FilenameInZip);
-                if (name.Contains(".wav"))
-                {
-                    zip.ExtractFile(entry, tempPath + name);
-                }
-                else if (regex.IsMatch(name))
-                {
-                    zip.ExtractFile(entry, tempPath + name);
-
-                    //var match = regex.Match(name);
-                }
+                MessageBox.Show(VersionNotCompatibleMsg);
+                return false;
             }
 
-            zip.Close();
-            File.Delete(zipFullPath);
+            return true;
         }
 
         # region Copy paste handlers
 
         private PowerPoint.DocumentWindow _copyFromWnd;
-        private PowerPoint.DocumentWindow _pasteToWnd;
 
         private void AfterPasteEventHandler(PowerPoint.Selection selection)
         {
@@ -626,8 +703,6 @@ namespace PowerPointLabs
 
         private void AfterPasteRecorderEventHandler(PowerPoint.Selection selection)
         {
-            _pasteToWnd = Application.ActiveWindow;
-
             if (selection.Type == PowerPoint.PpSelectionType.ppSelectionSlides)
             {
                 // invalid paste event triggered because of system message loss
@@ -636,21 +711,28 @@ namespace PowerPointLabs
                     return;
                 }
 
+                // if we copied from a presentation without recorder pane or pasted to a
+                // presentation without recorder pane, paste event will not be entertained
+                if (!documentPaneMapper.ContainsKey(_copyFromWnd) ||
+                    documentPaneMapper[_copyFromWnd] == null ||
+                    GetActivePane(Type.GetType("PowerPointLabs.RecorderTaskPane")) == null)
+                {
+                    return;
+                }
+
                 var copyFromRecorderPane = GetPaneFromWindow(Type.GetType("PowerPointLabs.RecorderTaskPane"), _copyFromWnd).Control as RecorderTaskPane;
                 var activeRecorderPane = GetActivePane(Type.GetType("PowerPointLabs.RecorderTaskPane")).Control as RecorderTaskPane;
-                
+
                 var slideRange = selection.SlideRange;
                 var oriSlide = 0;
 
                 foreach (var sld in slideRange)
                 {
-                    var oldSlide = copiedSlides[oriSlide];
-                    var newSlide = sld as PowerPoint.Slide;
+                    var oldSlide = PowerPointSlide.FromSlideFactory(copiedSlides[oriSlide]);
+                    var newSlide = PowerPointSlide.FromSlideFactory(sld as PowerPoint.Slide);
 
-                    activeRecorderPane.PasteSlideAudio(newSlide.SlideID,
-                                                       copyFromRecorderPane.CopySlideAudio(oldSlide.SlideID));
-                    activeRecorderPane.PasteSlideScript(newSlide.SlideID,
-                                                        copyFromRecorderPane.CopySlideScript(oldSlide.SlideID));
+                    activeRecorderPane.PasteSlideAudioAndScript(newSlide,
+                                                                copyFromRecorderPane.CopySlideAudioAndScript(oldSlide));
 
                     oriSlide++;
                 }
@@ -676,6 +758,8 @@ namespace PowerPointLabs
 
                         copiedSlides.Add(slide);
                     }
+
+                    copiedSlides.Sort((x, y) => (x.SlideIndex - y.SlideIndex));
                 }
                 else if (selection.Type == PowerPoint.PpSelectionType.ppSelectionShapes)
                 {
@@ -687,10 +771,7 @@ namespace PowerPointLabs
                         var shape = sh as PowerPoint.Shape;
                         copiedShapes.Add(shape);
                     }
-                    copiedShapes.Sort((PowerPoint.Shape x, PowerPoint.Shape y) =>
-                    {
-                        return x.Id - y.Id;
-                    });
+                    copiedShapes.Sort((PowerPoint.Shape x, PowerPoint.Shape y) => (x.Id - y.Id));
                 }
             }
             catch
