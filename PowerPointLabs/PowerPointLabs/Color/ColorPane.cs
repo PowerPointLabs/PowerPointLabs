@@ -297,6 +297,7 @@ namespace PowerPointLabs
 
         private void timer1_Tick(object sender, EventArgs e)
         {
+            Cursor.Current = Cursors.Cross;
             System.Drawing.Point p = Control.MousePosition;
             IntPtr dc = Native.GetDC(IntPtr.Zero);
             dataSource.selectedColor = ColorTranslator.FromWin32(Native.GetPixel(dc, p.X, p.Y));
@@ -376,8 +377,6 @@ namespace PowerPointLabs
             _originalColor = panel1.BackColor;
             UpdateUIForNewColor();
             timer1.Stop();
-            System.Diagnostics.Debug.WriteLine(sender.GetType());
-            //EnableMouseClicks();
         }
 
         private void UpdateUIForNewColor()
@@ -710,6 +709,30 @@ namespace PowerPointLabs
             {
                 StartDragDrop(sender);
             }
+        }
+
+        private void FontEyeDropperButton_MouseDown(object sender, MouseEventArgs e)
+        {
+            _isFontColorSelected = true;
+            _isFillColorSelected = false;
+            _isLineColorSelected = false;
+            BeginEyedropping();
+        }
+
+        private void LineEyeDropperButton_MouseDown(object sender, MouseEventArgs e)
+        {
+            _isFontColorSelected = false;
+            _isFillColorSelected = false;
+            _isLineColorSelected = true;
+            BeginEyedropping();
+        }
+
+        private void FillEyeDropperButton_MouseDown(object sender, MouseEventArgs e)
+        {
+            _isFontColorSelected =false;
+            _isFillColorSelected = true;
+            _isLineColorSelected = false;
+            BeginEyedropping();
         }
     }
 

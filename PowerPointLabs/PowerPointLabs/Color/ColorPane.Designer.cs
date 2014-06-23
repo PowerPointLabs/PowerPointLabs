@@ -771,7 +771,7 @@
             this.FillEyeDropperButton.Size = new System.Drawing.Size(46, 47);
             this.FillEyeDropperButton.TabIndex = 14;
             this.FillEyeDropperButton.UseVisualStyleBackColor = true;
-            this.FillEyeDropperButton.Click += new System.EventHandler(this.FillEyeDropperButton_Click);
+            this.FillEyeDropperButton.MouseDown += new System.Windows.Forms.MouseEventHandler(this.FillEyeDropperButton_MouseDown);
             // 
             // LineEyeDropperButton
             // 
@@ -782,7 +782,7 @@
             this.LineEyeDropperButton.Size = new System.Drawing.Size(46, 47);
             this.LineEyeDropperButton.TabIndex = 13;
             this.LineEyeDropperButton.UseVisualStyleBackColor = true;
-            this.LineEyeDropperButton.Click += new System.EventHandler(this.LineEyeDropperButton_Click);
+            this.LineEyeDropperButton.MouseDown += new System.Windows.Forms.MouseEventHandler(this.LineEyeDropperButton_MouseDown);
             // 
             // FontEyeDropperButton
             // 
@@ -793,7 +793,7 @@
             this.FontEyeDropperButton.Size = new System.Drawing.Size(46, 47);
             this.FontEyeDropperButton.TabIndex = 12;
             this.FontEyeDropperButton.UseVisualStyleBackColor = true;
-            this.FontEyeDropperButton.Click += new System.EventHandler(this.FontEyeDropperButton_Click);
+            this.FontEyeDropperButton.MouseDown += new System.Windows.Forms.MouseEventHandler(this.FontEyeDropperButton_MouseDown);
             // 
             // label7
             // 
