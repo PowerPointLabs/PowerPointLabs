@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Runtime.InteropServices;
+using System.Text.RegularExpressions;
 using System.Windows.Forms;
 using PowerPointLabs.Models;
 using PowerPointLabs.SpeechEngine;
@@ -15,8 +16,17 @@ namespace PowerPointLabs
 {
     class NotesToAudio
     {
-        private const string TempFolderName = "\\PowerPointLabs Temp\\";
-        private const string SpeechShapePrefix = "PowerPointLabs Speech";
+        private static string TempFolderName
+        {
+            get
+            {
+                string tempName = Globals.ThisAddIn.GetActiveWindowTempName();
+                return @"\PowerPointLabs Temp\" + tempName + @"\";
+            }
+        }
+
+        public const string SpeechShapePrefix = "PowerPointLabs Speech";
+        public const string SpeechShapePrefixOld = "AudioGen Speech";
 
         public static void PreviewAnimations()
         {
@@ -30,47 +40,100 @@ namespace PowerPointLabs
             }
         }
 
-        public static void EmbedCurrentSlideNotes()
+        public static string[] EmbedCurrentSlideNotes()
         {
             var currentSlide = PowerPointPresentation.CurrentSlide;
+            
             if (currentSlide != null)
             {
-                EmbedSlideNotes(currentSlide);
+                return EmbedSlideNotes(currentSlide);
             }
+
+            return null;
         }
 
-        public static void EmbedAllSlideNotes()
+        public static List<string[]> EmbedSelectedSlideNotes()
         {
-            ProcessingStatusForm progressBarForm = new ProcessingStatusForm();
+            var progressBarForm = new ProcessingStatusForm();
             progressBarForm.Show();
+            var audioList = new List<string[]>();
+
+            var slides = PowerPointPresentation.SelectedSlides.ToList();
+
+            int numberOfSlides = slides.Count;
+            for (int currentSlideIndex = 0; currentSlideIndex < numberOfSlides; currentSlideIndex++)
+            {
+                var percentage = (int)Math.Round(((double)currentSlideIndex + 1) / numberOfSlides * 100);
+                progressBarForm.UpdateProgress(percentage);
+                progressBarForm.UpdateSlideNumber(currentSlideIndex, numberOfSlides);
+
+                var slide = slides[currentSlideIndex];
+                audioList.Add(EmbedSlideNotes(slide));
+            }
+            progressBarForm.Close();
+
+            return audioList;
+        }
+
+        public static List<string[]> EmbedAllSlideNotes()
+        {
+            var progressBarForm = new ProcessingStatusForm();
+            progressBarForm.Show();
+            var audioList = new List<string[]>();
 
             var slides = PowerPointPresentation.Slides.ToList();
 
             int numberOfSlides = slides.Count;
             for (int currentSlideIndex = 0; currentSlideIndex < numberOfSlides; currentSlideIndex++)
             {
-                int percentage = (int)Math.Round(((double)currentSlideIndex) / numberOfSlides * 100);
+                var percentage = (int)Math.Round(((double)currentSlideIndex + 1) / numberOfSlides * 100);
                 progressBarForm.UpdateProgress(percentage);
                 progressBarForm.UpdateSlideNumber(currentSlideIndex, numberOfSlides);
 
                 var slide = slides[currentSlideIndex];
-                EmbedSlideNotes(slide);
+                audioList.Add(EmbedSlideNotes(slide));
             }
             progressBarForm.Close();
+
+            return audioList;
         }
 
-        private static void EmbedSlideNotes(PowerPointSlide slide)
+        /// <summary>
+        /// This function will embed the auto generated speech to the current slide.
+        /// File names of generated audios will be returned.
+        /// </summary>
+        /// <param name="slide">Current slide reference.</param>
+        /// <returns>An array of auto generated audios' name.</returns>
+        private static string[] EmbedSlideNotes(PowerPointSlide slide)
         {
             String folderPath = Path.GetTempPath() + TempFolderName;
+            String fileNameSearchPattern = String.Format("Slide {0} Speech", slide.ID);
+            
             Directory.CreateDirectory(folderPath);
+            
+            // TODO:
+            // obviously deleting all audios in current slide may not a good idea, some lines of script
+            // may still be the same. Check the line first before deleting, if the line has not been
+            // changed, leave the audio.
+
+            // to avoid duplicate records, delete all old audios in the current slide
+            var audiosInCurrentSlide = Directory.GetFiles(folderPath);
+            foreach (var audio in audiosInCurrentSlide)
+            {
+                if (audio.Contains(fileNameSearchPattern))
+                {
+                    File.Delete(audio);
+                }
+            }
 
             bool isSaveSuccessful = OutputSlideNotesToFiles(slide, folderPath);
+            string[] audioFiles = null;
+            
             if (isSaveSuccessful)
             {
                 slide.DeleteShapesWithPrefix(SpeechShapePrefix);
 
-                String fileNameSearchPattern = String.Format("Slide {0} Speech", slide.Index);
-                var audioFiles = GetAudioFilePaths(folderPath, fileNameSearchPattern);
+                audioFiles = GetAudioFilePaths(folderPath, fileNameSearchPattern);
 
                 for (int i = 0; i < audioFiles.Length; i++)
                 {
@@ -99,7 +162,7 @@ namespace PowerPointLabs
                 }
             }
 
-            Directory.Delete(folderPath, true);
+            return audioFiles;
         }
 
         private static Shape InsertAudioFileOnSlide(PowerPointSlide slide, string fileName)
@@ -141,7 +204,7 @@ namespace PowerPointLabs
         {
             try
             {
-                String fileNameFormat = "Slide " + slide.Index + " Speech {0}";
+                String fileNameFormat = "Slide " + slide.ID + " Speech {0}";
                 TextToSpeech.SaveStringToWaveFiles(slide.NotesPageText, folderPath, fileNameFormat);
                 return true;
             }
@@ -156,8 +219,18 @@ namespace PowerPointLabs
         {
             try
             {
-                String selected = Globals.ThisAddIn.Application.ActiveWindow.Selection.TextRange.Text;
-                SpeakText(selected);
+                var selected = Globals.ThisAddIn.Application.ActiveWindow.Selection.TextRange.Text.Trim();
+                var splitScript = (new TaggedText(selected)).SplitByClicks();
+
+                var completeText = string.Empty;
+                var reg = new Regex("\\.+\\s*");
+
+                foreach (var text in splitScript)
+                {
+                    completeText += reg.Replace(text, string.Empty) + ". ";
+                }
+
+                SpeakText(completeText);
             }
             catch (COMException)
             {
@@ -165,23 +238,13 @@ namespace PowerPointLabs
             }
         }
 
-        public static void RemoveAudioFromAllSlides()
+        public static void RemoveAudioFromSelectedSlides()
         {
-            var slides = PowerPointPresentation.Slides;
-            foreach (PowerPointSlide s in slides)
+            foreach (PowerPointSlide s in PowerPointPresentation.SelectedSlides)
             {
-                s.DeleteShapesWithPrefix(SpeechShapePrefix);
+                s.DeleteShapesWithPrefixTimelineInvariant(SpeechShapePrefix);
+                s.DeleteShapesWithPrefixTimelineInvariant(SpeechShapePrefixOld);
             }
-        }
-
-        public static void RemoveAudioFromCurrentSlide()
-        {
-            var currentSlide = PowerPointPresentation.CurrentSlide;
-            if (currentSlide == null)
-            {
-                return;
-            }
-            currentSlide.DeleteShapesWithPrefix(SpeechShapePrefix);
         }
 
         public static IEnumerable<String> GetVoices()

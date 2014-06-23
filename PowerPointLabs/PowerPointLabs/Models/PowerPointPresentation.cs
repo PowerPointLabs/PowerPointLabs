@@ -23,6 +23,11 @@ namespace PowerPointLabs.Models
             }
         }
 
+        public static string CurrentPresentationName
+        {
+            get { return Globals.ThisAddIn.Application.ActivePresentation.Name; }
+        }
+
         public static Selection CurrentSelection
         {
             get
@@ -63,6 +68,18 @@ namespace PowerPointLabs.Models
 
                 return slides;
             }
+        }
+
+        public static bool SlidesHaveCaptions(IEnumerable<PowerPointSlide> slides)
+        {
+            foreach (PowerPointSlide slide in slides)
+            {
+                if (slide.HasCaptions())
+                {
+                    return true;
+                }
+            }
+            return false;
         }
 
         public static int SlideCount

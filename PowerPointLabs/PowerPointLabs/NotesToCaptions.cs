@@ -9,15 +9,6 @@ namespace PowerPointLabs
 {
     class NotesToCaptions
     {
-        public static void EmbedCaptionsOnAllSlides()
-        {
-            foreach (var slide in PowerPointPresentation.Slides)
-            {
-                RemoveCaptionsFromSlide(slide);
-                EmbedCaptionsOnSlide(slide);
-            }
-        }
-
         public static void EmbedCaptionsOnSelectedSlides()
         {
             foreach (PowerPointSlide slide in PowerPointPresentation.SelectedSlides) 
@@ -45,6 +36,11 @@ namespace PowerPointLabs
                 String currentCaption = captionCollection[i];
                 Shape captionBox = AddCaptionBoxToSlide(currentCaption, s);
                 captionBox.Name = "PowerPointLabs Caption " + i;
+
+                if (i == 0)
+                {
+                    s.SetShapeAsAutoplay(captionBox);
+                }
 
                 if (i != 0)
                 {
@@ -138,7 +134,7 @@ namespace PowerPointLabs
         {
             if (slide != null)
             {
-                slide.DeleteShapesWithPrefix("PowerPointLabs Caption ");
+                slide.DeleteShapesWithPrefixTimelineInvariant("PowerPointLabs Caption ");
             }
         }
     }
