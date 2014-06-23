@@ -295,14 +295,38 @@ namespace PowerPointLabs
             {
                 foreach (PowerPoint.Shape s in _selectedShapes)
                 {
-                    var r = selectedColor.R;
-                    var g = selectedColor.G;
-                    var b = selectedColor.B;
+                    try
+                    {
+                        var r = selectedColor.R;
+                        var g = selectedColor.G;
+                        var b = selectedColor.B;
 
-                    var rgb = (b << 16) | (g << 8) | (r);
-                    ColorShapeWithColor(s, rgb);
+                        var rgb = (b << 16) | (g << 8) | (r);
+                        ColorShapeWithColor(s, rgb);
+                    }
+                    catch (Exception e)
+                    {
+                        RecreateCorruptedShape(s);
+                    }  
                 }
             }
+        }
+
+        private static void RecreateCorruptedShape(PowerPoint.Shape s)
+        {
+            s.Copy();
+            Shape newShape = PowerPointPresentation.CurrentSlide.Shapes.Paste()[1];
+
+            newShape.Select();
+
+            newShape.Name = s.Name;
+            newShape.Left = s.Left;
+            newShape.Top = s.Top;
+            while (newShape.ZOrderPosition > s.ZOrderPosition)
+            {
+                newShape.ZOrder(Microsoft.Office.Core.MsoZOrderCmd.msoSendBackward);
+            }
+            s.Delete();
         }
 
         private void ColorShapeWithColor(PowerPoint.Shape s, int rgb)
