@@ -173,7 +173,7 @@
             this.AnalogousLighter.Name = "AnalogousLighter";
             this.AnalogousLighter.Size = new System.Drawing.Size(20, 20);
             this.AnalogousLighter.TabIndex = 2;
-            this.AnalogousLighter.MouseDown += new System.Windows.Forms.MouseEventHandler(this.MatchingPanel_MouseDown);
+            this.AnalogousLighter.Click += new System.EventHandler(this.MatchingPanel_Click);
             // 
             // AnalogousSelected
             // 
@@ -182,7 +182,7 @@
             this.AnalogousSelected.Name = "AnalogousSelected";
             this.AnalogousSelected.Size = new System.Drawing.Size(20, 20);
             this.AnalogousSelected.TabIndex = 3;
-            this.AnalogousSelected.MouseDown += new System.Windows.Forms.MouseEventHandler(this.MatchingPanel_MouseDown);
+            this.AnalogousSelected.Click += new System.EventHandler(this.MatchingPanel_Click);
             // 
             // AnalogousDarker
             // 
@@ -191,7 +191,7 @@
             this.AnalogousDarker.Name = "AnalogousDarker";
             this.AnalogousDarker.Size = new System.Drawing.Size(20, 20);
             this.AnalogousDarker.TabIndex = 4;
-            this.AnalogousDarker.MouseDown += new System.Windows.Forms.MouseEventHandler(this.MatchingPanel_MouseDown);
+            this.AnalogousDarker.Click += new System.EventHandler(this.MatchingPanel_Click);
             // 
             // flowLayoutPanel2
             // 
@@ -233,7 +233,7 @@
             this.ComplementaryLighter.Name = "ComplementaryLighter";
             this.ComplementaryLighter.Size = new System.Drawing.Size(20, 20);
             this.ComplementaryLighter.TabIndex = 2;
-            this.ComplementaryLighter.MouseDown += new System.Windows.Forms.MouseEventHandler(this.MatchingPanel_MouseDown);
+            this.ComplementaryLighter.Click += new System.EventHandler(this.MatchingPanel_Click);
             // 
             // ComplementarySelected
             // 
@@ -242,7 +242,7 @@
             this.ComplementarySelected.Name = "ComplementarySelected";
             this.ComplementarySelected.Size = new System.Drawing.Size(20, 20);
             this.ComplementarySelected.TabIndex = 3;
-            this.ComplementarySelected.MouseDown += new System.Windows.Forms.MouseEventHandler(this.MatchingPanel_MouseDown);
+            this.ComplementarySelected.Click += new System.EventHandler(this.MatchingPanel_Click);
             // 
             // ComplementaryDarker
             // 
@@ -251,7 +251,7 @@
             this.ComplementaryDarker.Name = "ComplementaryDarker";
             this.ComplementaryDarker.Size = new System.Drawing.Size(20, 20);
             this.ComplementaryDarker.TabIndex = 4;
-            this.ComplementaryDarker.MouseDown += new System.Windows.Forms.MouseEventHandler(this.MatchingPanel_MouseDown);
+            this.ComplementaryDarker.Click += new System.EventHandler(this.MatchingPanel_Click);
             // 
             // flowLayoutPanel3
             // 
@@ -293,7 +293,7 @@
             this.TriadicLower.Name = "TriadicLower";
             this.TriadicLower.Size = new System.Drawing.Size(20, 20);
             this.TriadicLower.TabIndex = 2;
-            this.TriadicLower.MouseDown += new System.Windows.Forms.MouseEventHandler(this.MatchingPanel_MouseDown);
+            this.TriadicLower.Click += new System.EventHandler(this.MatchingPanel_Click);
             // 
             // TriadicSelected
             // 
@@ -302,7 +302,7 @@
             this.TriadicSelected.Name = "TriadicSelected";
             this.TriadicSelected.Size = new System.Drawing.Size(20, 20);
             this.TriadicSelected.TabIndex = 3;
-            this.TriadicSelected.MouseDown += new System.Windows.Forms.MouseEventHandler(this.MatchingPanel_MouseDown);
+            this.TriadicSelected.Click += new System.EventHandler(this.MatchingPanel_Click);
             // 
             // TriadicHigher
             // 
@@ -311,7 +311,7 @@
             this.TriadicHigher.Name = "TriadicHigher";
             this.TriadicHigher.Size = new System.Drawing.Size(20, 20);
             this.TriadicHigher.TabIndex = 4;
-            this.TriadicHigher.MouseDown += new System.Windows.Forms.MouseEventHandler(this.MatchingPanel_MouseDown);
+            this.TriadicHigher.Click += new System.EventHandler(this.MatchingPanel_Click);
             // 
             // flowLayoutPanel4
             // 
@@ -354,7 +354,7 @@
             this.Tetradic1.Name = "Tetradic1";
             this.Tetradic1.Size = new System.Drawing.Size(20, 20);
             this.Tetradic1.TabIndex = 3;
-            this.Tetradic1.MouseDown += new System.Windows.Forms.MouseEventHandler(this.MatchingPanel_MouseDown);
+            this.Tetradic1.Click += new System.EventHandler(this.MatchingPanel_Click);
             // 
             // TetradicSelected
             // 
@@ -363,7 +363,7 @@
             this.TetradicSelected.Name = "TetradicSelected";
             this.TetradicSelected.Size = new System.Drawing.Size(20, 20);
             this.TetradicSelected.TabIndex = 4;
-            this.TetradicSelected.MouseDown += new System.Windows.Forms.MouseEventHandler(this.MatchingPanel_MouseDown);
+            this.TetradicSelected.Click += new System.EventHandler(this.MatchingPanel_Click);
             // 
             // Tetradic2
             // 
@@ -372,7 +372,7 @@
             this.Tetradic2.Name = "Tetradic2";
             this.Tetradic2.Size = new System.Drawing.Size(20, 20);
             this.Tetradic2.TabIndex = 5;
-            this.Tetradic2.MouseDown += new System.Windows.Forms.MouseEventHandler(this.MatchingPanel_MouseDown);
+            this.Tetradic2.Click += new System.EventHandler(this.MatchingPanel_Click);
             // 
             // Tetradic3
             // 
@@ -381,7 +381,7 @@
             this.Tetradic3.Name = "Tetradic3";
             this.Tetradic3.Size = new System.Drawing.Size(20, 20);
             this.Tetradic3.TabIndex = 6;
-            this.Tetradic3.MouseDown += new System.Windows.Forms.MouseEventHandler(this.MatchingPanel_MouseDown);
+            this.Tetradic3.Click += new System.EventHandler(this.MatchingPanel_Click);
             // 
             // brightnessBar
             // 
@@ -463,7 +463,7 @@
             this.MonoPanel1.Name = "MonoPanel1";
             this.MonoPanel1.Size = new System.Drawing.Size(20, 20);
             this.MonoPanel1.TabIndex = 0;
-            this.MonoPanel1.MouseDown += new System.Windows.Forms.MouseEventHandler(this.MatchingPanel_MouseDown);
+            this.MonoPanel1.Click += new System.EventHandler(this.MatchingPanel_Click);
             // 
             // MonoPanel2
             // 
@@ -472,7 +472,7 @@
             this.MonoPanel2.Name = "MonoPanel2";
             this.MonoPanel2.Size = new System.Drawing.Size(20, 20);
             this.MonoPanel2.TabIndex = 1;
-            this.MonoPanel2.MouseDown += new System.Windows.Forms.MouseEventHandler(this.MatchingPanel_MouseDown);
+            this.MonoPanel2.Click += new System.EventHandler(this.MatchingPanel_Click);
             // 
             // MonoPanel3
             // 
@@ -481,7 +481,7 @@
             this.MonoPanel3.Name = "MonoPanel3";
             this.MonoPanel3.Size = new System.Drawing.Size(20, 20);
             this.MonoPanel3.TabIndex = 1;
-            this.MonoPanel3.MouseDown += new System.Windows.Forms.MouseEventHandler(this.MatchingPanel_MouseDown);
+            this.MonoPanel3.Click += new System.EventHandler(this.MatchingPanel_Click);
             // 
             // MonoPanel4
             // 
@@ -490,7 +490,7 @@
             this.MonoPanel4.Name = "MonoPanel4";
             this.MonoPanel4.Size = new System.Drawing.Size(20, 20);
             this.MonoPanel4.TabIndex = 2;
-            this.MonoPanel4.MouseDown += new System.Windows.Forms.MouseEventHandler(this.MatchingPanel_MouseDown);
+            this.MonoPanel4.Click += new System.EventHandler(this.MatchingPanel_Click);
             // 
             // MonoPanel5
             // 
@@ -499,7 +499,7 @@
             this.MonoPanel5.Name = "MonoPanel5";
             this.MonoPanel5.Size = new System.Drawing.Size(20, 20);
             this.MonoPanel5.TabIndex = 3;
-            this.MonoPanel5.MouseDown += new System.Windows.Forms.MouseEventHandler(this.MatchingPanel_MouseDown);
+            this.MonoPanel5.Click += new System.EventHandler(this.MatchingPanel_Click);
             // 
             // MonoPanel6
             // 
@@ -508,7 +508,7 @@
             this.MonoPanel6.Name = "MonoPanel6";
             this.MonoPanel6.Size = new System.Drawing.Size(20, 20);
             this.MonoPanel6.TabIndex = 4;
-            this.MonoPanel6.MouseDown += new System.Windows.Forms.MouseEventHandler(this.MatchingPanel_MouseDown);
+            this.MonoPanel6.Click += new System.EventHandler(this.MatchingPanel_Click);
             // 
             // MonoPanel7
             // 
@@ -517,7 +517,7 @@
             this.MonoPanel7.Name = "MonoPanel7";
             this.MonoPanel7.Size = new System.Drawing.Size(20, 20);
             this.MonoPanel7.TabIndex = 5;
-            this.MonoPanel7.MouseDown += new System.Windows.Forms.MouseEventHandler(this.MatchingPanel_MouseDown);
+            this.MonoPanel7.Click += new System.EventHandler(this.MatchingPanel_Click);
             // 
             // themeLayoutPanel
             // 

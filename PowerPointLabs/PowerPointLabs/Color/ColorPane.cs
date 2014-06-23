@@ -681,7 +681,15 @@ namespace PowerPointLabs
 	        {
                 System.Diagnostics.Debug.WriteLine("Exception: " + ex.StackTrace);
 		        throw;
-	        }         
+	        }
+        }
+
+        private void MatchingPanel_Click(object sender, EventArgs e)
+        {
+            Color clickedColor = ((Panel)sender).BackColor;
+            panel1.BackColor = clickedColor;
+            _originalColor = clickedColor;
+            UpdateUIForNewColor();
         }
     }
 
