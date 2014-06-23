@@ -38,6 +38,8 @@ namespace PowerPointLabs
             BindDataToPanels();
 
             InitToolTipControl();
+
+            ResetThemePanel();
         }
 
         #region ToolTip
@@ -49,6 +51,7 @@ namespace PowerPointLabs
             toolTip1.SetToolTip(this.EditColorButton, "Edits Selected Color");
             toolTip1.SetToolTip(this.LoadButton, "Load Existing Theme");
             toolTip1.SetToolTip(this.SaveThemeButton, "Save Current Theme");
+            toolTip1.SetToolTip(this.ResetThemeButton, "Reset the Current Theme");
         }
         #endregion
 
@@ -733,6 +736,29 @@ namespace PowerPointLabs
             _isFillColorSelected = true;
             _isLineColorSelected = false;
             BeginEyedropping();
+        }
+
+        private void ResetThemeButton_Click(object sender, EventArgs e)
+        {
+            ResetThemePanel();
+        }
+
+        private void ResetThemePanel()
+        {
+            ThemePanel1.BackColor = Color.White;
+            ThemePanel2.BackColor = Color.White;
+            ThemePanel3.BackColor = Color.White;
+            ThemePanel4.BackColor = Color.White;
+            ThemePanel5.BackColor = Color.White;
+            ThemePanel6.BackColor = Color.White;
+            ThemePanel7.BackColor = Color.White;
+            ThemePanel8.BackColor = Color.White;
+            ThemePanel9.BackColor = Color.White;
+        }
+
+        private void ColorPane_Load(object sender, EventArgs e)
+        {
+            ResetThemePanel();
         }
     }
 

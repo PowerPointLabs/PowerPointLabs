@@ -85,17 +85,18 @@
             this.ThemePanel9 = new System.Windows.Forms.Panel();
             this.SaveThemeButton = new System.Windows.Forms.Button();
             this.LoadButton = new System.Windows.Forms.Button();
+            this.ResetThemeButton = new System.Windows.Forms.Button();
             this.saveFileDialog1 = new System.Windows.Forms.SaveFileDialog();
             this.openFileDialog1 = new System.Windows.Forms.OpenFileDialog();
-            this.EditColorButton = new System.Windows.Forms.Button();
-            this.FillEyeDropperButton = new System.Windows.Forms.Button();
-            this.LineEyeDropperButton = new System.Windows.Forms.Button();
-            this.FontEyeDropperButton = new System.Windows.Forms.Button();
             this.label7 = new System.Windows.Forms.Label();
             this.label8 = new System.Windows.Forms.Label();
             this.panel2 = new System.Windows.Forms.Panel();
             this.panel3 = new System.Windows.Forms.Panel();
             this.toolTip1 = new System.Windows.Forms.ToolTip(this.components);
+            this.EditColorButton = new System.Windows.Forms.Button();
+            this.FillEyeDropperButton = new System.Windows.Forms.Button();
+            this.LineEyeDropperButton = new System.Windows.Forms.Button();
+            this.FontEyeDropperButton = new System.Windows.Forms.Button();
             this.AnalogousColorPanel.SuspendLayout();
             this.flowLayoutPanel6.SuspendLayout();
             this.flowLayoutPanel2.SuspendLayout();
@@ -567,6 +568,7 @@
             this.themeLayoutPanel.Controls.Add(this.flowLayoutPanel11);
             this.themeLayoutPanel.Controls.Add(this.SaveThemeButton);
             this.themeLayoutPanel.Controls.Add(this.LoadButton);
+            this.themeLayoutPanel.Controls.Add(this.ResetThemeButton);
             this.themeLayoutPanel.Location = new System.Drawing.Point(20, 461);
             this.themeLayoutPanel.Name = "themeLayoutPanel";
             this.themeLayoutPanel.Size = new System.Drawing.Size(273, 111);
@@ -739,6 +741,17 @@
             this.LoadButton.UseVisualStyleBackColor = true;
             this.LoadButton.Click += new System.EventHandler(this.LoadButton_Click);
             // 
+            // ResetThemeButton
+            // 
+            this.ResetThemeButton.BackgroundImage = global::PowerPointLabs.Properties.Resources.delete_icon;
+            this.ResetThemeButton.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Center;
+            this.ResetThemeButton.Location = new System.Drawing.Point(113, 51);
+            this.ResetThemeButton.Name = "ResetThemeButton";
+            this.ResetThemeButton.Size = new System.Drawing.Size(49, 47);
+            this.ResetThemeButton.TabIndex = 18;
+            this.ResetThemeButton.UseVisualStyleBackColor = true;
+            this.ResetThemeButton.Click += new System.EventHandler(this.ResetThemeButton_Click);
+            // 
             // saveFileDialog1
             // 
             this.saveFileDialog1.DefaultExt = "thm";
@@ -750,50 +763,6 @@
             this.openFileDialog1.DefaultExt = "thm";
             this.openFileDialog1.Filter = "PPTLabsTheme|*.thm";
             this.openFileDialog1.Title = "Load Theme";
-            // 
-            // EditColorButton
-            // 
-            this.EditColorButton.BackgroundImage = global::PowerPointLabs.Properties.Resources.Palette_icon;
-            this.EditColorButton.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Center;
-            this.EditColorButton.Location = new System.Drawing.Point(243, 16);
-            this.EditColorButton.Name = "EditColorButton";
-            this.EditColorButton.Size = new System.Drawing.Size(46, 47);
-            this.EditColorButton.TabIndex = 2;
-            this.EditColorButton.UseVisualStyleBackColor = true;
-            this.EditColorButton.Click += new System.EventHandler(this.button2_Click);
-            // 
-            // FillEyeDropperButton
-            // 
-            this.FillEyeDropperButton.BackgroundImage = global::PowerPointLabs.Properties.Resources.Paint_icon;
-            this.FillEyeDropperButton.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Center;
-            this.FillEyeDropperButton.Location = new System.Drawing.Point(191, 16);
-            this.FillEyeDropperButton.Name = "FillEyeDropperButton";
-            this.FillEyeDropperButton.Size = new System.Drawing.Size(46, 47);
-            this.FillEyeDropperButton.TabIndex = 14;
-            this.FillEyeDropperButton.UseVisualStyleBackColor = true;
-            this.FillEyeDropperButton.MouseDown += new System.Windows.Forms.MouseEventHandler(this.FillEyeDropperButton_MouseDown);
-            // 
-            // LineEyeDropperButton
-            // 
-            this.LineEyeDropperButton.BackgroundImage = global::PowerPointLabs.Properties.Resources.Technical_Pen_icon;
-            this.LineEyeDropperButton.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Center;
-            this.LineEyeDropperButton.Location = new System.Drawing.Point(139, 16);
-            this.LineEyeDropperButton.Name = "LineEyeDropperButton";
-            this.LineEyeDropperButton.Size = new System.Drawing.Size(46, 47);
-            this.LineEyeDropperButton.TabIndex = 13;
-            this.LineEyeDropperButton.UseVisualStyleBackColor = true;
-            this.LineEyeDropperButton.MouseDown += new System.Windows.Forms.MouseEventHandler(this.LineEyeDropperButton_MouseDown);
-            // 
-            // FontEyeDropperButton
-            // 
-            this.FontEyeDropperButton.BackgroundImage = global::PowerPointLabs.Properties.Resources.Type_icon;
-            this.FontEyeDropperButton.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Center;
-            this.FontEyeDropperButton.Location = new System.Drawing.Point(87, 16);
-            this.FontEyeDropperButton.Name = "FontEyeDropperButton";
-            this.FontEyeDropperButton.Size = new System.Drawing.Size(46, 47);
-            this.FontEyeDropperButton.TabIndex = 12;
-            this.FontEyeDropperButton.UseVisualStyleBackColor = true;
-            this.FontEyeDropperButton.MouseDown += new System.Windows.Forms.MouseEventHandler(this.FontEyeDropperButton_MouseDown);
             // 
             // label7
             // 
@@ -836,6 +805,53 @@
             this.panel3.Size = new System.Drawing.Size(273, 20);
             this.panel3.TabIndex = 17;
             // 
+            // EditColorButton
+            // 
+            this.EditColorButton.BackgroundImage = global::PowerPointLabs.Properties.Resources.Palette_icon;
+            this.EditColorButton.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Center;
+            this.EditColorButton.Location = new System.Drawing.Point(243, 16);
+            this.EditColorButton.Name = "EditColorButton";
+            this.EditColorButton.Size = new System.Drawing.Size(46, 47);
+            this.EditColorButton.TabIndex = 2;
+            this.EditColorButton.UseVisualStyleBackColor = true;
+            this.EditColorButton.Click += new System.EventHandler(this.button2_Click);
+            // 
+            // FillEyeDropperButton
+            // 
+            this.FillEyeDropperButton.BackgroundImage = global::PowerPointLabs.Properties.Resources.Paint_icon;
+            this.FillEyeDropperButton.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Center;
+            this.FillEyeDropperButton.FlatAppearance.MouseDownBackColor = System.Drawing.SystemColors.Highlight;
+            this.FillEyeDropperButton.Location = new System.Drawing.Point(191, 16);
+            this.FillEyeDropperButton.Name = "FillEyeDropperButton";
+            this.FillEyeDropperButton.Size = new System.Drawing.Size(46, 47);
+            this.FillEyeDropperButton.TabIndex = 14;
+            this.FillEyeDropperButton.UseVisualStyleBackColor = true;
+            this.FillEyeDropperButton.MouseDown += new System.Windows.Forms.MouseEventHandler(this.FillEyeDropperButton_MouseDown);
+            // 
+            // LineEyeDropperButton
+            // 
+            this.LineEyeDropperButton.BackgroundImage = global::PowerPointLabs.Properties.Resources.Technical_Pen_icon;
+            this.LineEyeDropperButton.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Center;
+            this.LineEyeDropperButton.FlatAppearance.MouseDownBackColor = System.Drawing.SystemColors.Highlight;
+            this.LineEyeDropperButton.Location = new System.Drawing.Point(139, 16);
+            this.LineEyeDropperButton.Name = "LineEyeDropperButton";
+            this.LineEyeDropperButton.Size = new System.Drawing.Size(46, 47);
+            this.LineEyeDropperButton.TabIndex = 13;
+            this.LineEyeDropperButton.UseVisualStyleBackColor = true;
+            this.LineEyeDropperButton.MouseDown += new System.Windows.Forms.MouseEventHandler(this.LineEyeDropperButton_MouseDown);
+            // 
+            // FontEyeDropperButton
+            // 
+            this.FontEyeDropperButton.BackgroundImage = global::PowerPointLabs.Properties.Resources.Type_icon;
+            this.FontEyeDropperButton.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Center;
+            this.FontEyeDropperButton.FlatAppearance.MouseDownBackColor = System.Drawing.SystemColors.Highlight;
+            this.FontEyeDropperButton.Location = new System.Drawing.Point(87, 16);
+            this.FontEyeDropperButton.Name = "FontEyeDropperButton";
+            this.FontEyeDropperButton.Size = new System.Drawing.Size(46, 47);
+            this.FontEyeDropperButton.TabIndex = 12;
+            this.FontEyeDropperButton.UseVisualStyleBackColor = true;
+            this.FontEyeDropperButton.MouseDown += new System.Windows.Forms.MouseEventHandler(this.FontEyeDropperButton_MouseDown);
+            // 
             // ColorPane
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -859,6 +875,7 @@
             this.Controls.Add(this.saturationBar);
             this.Name = "ColorPane";
             this.Size = new System.Drawing.Size(304, 575);
+            this.Load += new System.EventHandler(this.ColorPane_Load);
             this.AnalogousColorPanel.ResumeLayout(false);
             this.AnalogousColorPanel.PerformLayout();
             this.flowLayoutPanel6.ResumeLayout(false);
@@ -957,5 +974,6 @@
         private System.Windows.Forms.Panel panel2;
         private System.Windows.Forms.Panel panel3;
         private System.Windows.Forms.ToolTip toolTip1;
+        private System.Windows.Forms.Button ResetThemeButton;
     }
 }
