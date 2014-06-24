@@ -14,6 +14,7 @@ using Converters = PowerPointLabs.Converters;
 using Microsoft.Office.Interop.PowerPoint;
 using System.IO;
 using System.Runtime.Serialization.Formatters.Binary;
+using PowerPointLabs.ColorPicker;
 
 namespace PowerPointLabs
 {
@@ -766,7 +767,12 @@ namespace PowerPointLabs
 
         private void showMoreInformationToolStripMenuItem_Click(object sender, EventArgs e)
         {
+            Color clickedColor = ((Panel)(contextMenuStrip1.SourceControl)).BackColor;
+            ColorInformationDialog dialog = new ColorInformationDialog(clickedColor);
+            if (dialog.ShowDialog() == DialogResult.OK)
+            {
 
+            }
         }
     }
 

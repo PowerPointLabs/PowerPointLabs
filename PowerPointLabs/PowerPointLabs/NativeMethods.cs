@@ -6,17 +6,20 @@ namespace PPExtraEventHelper
 {
     internal class Native
     {
-        [DllImport("Gdi32.dll", CallingConvention = CallingConvention.StdCall)]
+        [DllImport("user32")]
+        public static extern bool HideCaret(IntPtr hWnd);
+
+        [DllImport("gdi32.dll", CallingConvention = CallingConvention.StdCall)]
         public static extern int GetPixel(
             System.IntPtr hdc,    // handle to DC
             int nXPos,  // x-coordinate of pixel
             int nYPos   // y-coordinate of pixel
         );
 
-        [DllImport("User32.dll", CallingConvention = CallingConvention.StdCall)]
+        [DllImport("user32.dll", CallingConvention = CallingConvention.StdCall)]
         public static extern IntPtr GetDC(IntPtr wnd);
 
-        [DllImport("User32.dll", CallingConvention = CallingConvention.StdCall)]
+        [DllImport("user32.dll", CallingConvention = CallingConvention.StdCall)]
         public static extern void ReleaseDC(IntPtr dc);
 
         //Minimum supported client: Vista
