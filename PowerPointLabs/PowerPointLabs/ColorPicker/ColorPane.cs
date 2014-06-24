@@ -769,6 +769,7 @@ namespace PowerPointLabs
         {
             Color clickedColor = ((Panel)(contextMenuStrip1.SourceControl)).BackColor;
             ColorInformationDialog dialog = new ColorInformationDialog(clickedColor);
+            dialog.StartPosition = FormStartPosition.CenterScreen;
             if (dialog.ShowDialog() == DialogResult.OK)
             {
 
