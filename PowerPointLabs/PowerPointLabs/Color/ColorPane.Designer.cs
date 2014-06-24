@@ -170,35 +170,35 @@
             // AnalogousLighter
             // 
             this.AnalogousLighter.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.AnalogousLighter.Cursor = System.Windows.Forms.Cursors.Hand;
             this.AnalogousLighter.Location = new System.Drawing.Point(3, 3);
             this.AnalogousLighter.Name = "AnalogousLighter";
-            this.AnalogousLighter.Size = new System.Drawing.Size(20, 20);
+            this.AnalogousLighter.Size = new System.Drawing.Size(22, 22);
             this.AnalogousLighter.TabIndex = 2;
             this.AnalogousLighter.Click += new System.EventHandler(this.MatchingPanel_Click);
             this.AnalogousLighter.MouseDown += new System.Windows.Forms.MouseEventHandler(this.MatchingPanel_MouseDown);
-            this.AnalogousLighter.MouseMove += new System.Windows.Forms.MouseEventHandler(this.MatchingPanel_MouseMove);
             // 
             // AnalogousSelected
             // 
             this.AnalogousSelected.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.AnalogousSelected.Location = new System.Drawing.Point(29, 3);
+            this.AnalogousSelected.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.AnalogousSelected.Location = new System.Drawing.Point(31, 3);
             this.AnalogousSelected.Name = "AnalogousSelected";
-            this.AnalogousSelected.Size = new System.Drawing.Size(20, 20);
+            this.AnalogousSelected.Size = new System.Drawing.Size(22, 22);
             this.AnalogousSelected.TabIndex = 3;
             this.AnalogousSelected.Click += new System.EventHandler(this.MatchingPanel_Click);
             this.AnalogousSelected.MouseDown += new System.Windows.Forms.MouseEventHandler(this.MatchingPanel_MouseDown);
-            this.AnalogousSelected.MouseMove += new System.Windows.Forms.MouseEventHandler(this.MatchingPanel_MouseMove);
             // 
             // AnalogousDarker
             // 
             this.AnalogousDarker.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.AnalogousDarker.Location = new System.Drawing.Point(55, 3);
+            this.AnalogousDarker.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.AnalogousDarker.Location = new System.Drawing.Point(59, 3);
             this.AnalogousDarker.Name = "AnalogousDarker";
-            this.AnalogousDarker.Size = new System.Drawing.Size(20, 20);
+            this.AnalogousDarker.Size = new System.Drawing.Size(22, 22);
             this.AnalogousDarker.TabIndex = 4;
             this.AnalogousDarker.Click += new System.EventHandler(this.MatchingPanel_Click);
             this.AnalogousDarker.MouseDown += new System.Windows.Forms.MouseEventHandler(this.MatchingPanel_MouseDown);
-            this.AnalogousDarker.MouseMove += new System.Windows.Forms.MouseEventHandler(this.MatchingPanel_MouseMove);
             // 
             // flowLayoutPanel2
             // 
@@ -236,35 +236,35 @@
             // ComplementaryLighter
             // 
             this.ComplementaryLighter.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.ComplementaryLighter.Cursor = System.Windows.Forms.Cursors.Hand;
             this.ComplementaryLighter.Location = new System.Drawing.Point(3, 3);
             this.ComplementaryLighter.Name = "ComplementaryLighter";
-            this.ComplementaryLighter.Size = new System.Drawing.Size(20, 20);
+            this.ComplementaryLighter.Size = new System.Drawing.Size(22, 22);
             this.ComplementaryLighter.TabIndex = 2;
             this.ComplementaryLighter.Click += new System.EventHandler(this.MatchingPanel_Click);
             this.ComplementaryLighter.MouseDown += new System.Windows.Forms.MouseEventHandler(this.MatchingPanel_MouseDown);
-            this.ComplementaryLighter.MouseMove += new System.Windows.Forms.MouseEventHandler(this.MatchingPanel_MouseMove);
             // 
             // ComplementarySelected
             // 
             this.ComplementarySelected.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.ComplementarySelected.Location = new System.Drawing.Point(29, 3);
+            this.ComplementarySelected.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.ComplementarySelected.Location = new System.Drawing.Point(31, 3);
             this.ComplementarySelected.Name = "ComplementarySelected";
-            this.ComplementarySelected.Size = new System.Drawing.Size(20, 20);
+            this.ComplementarySelected.Size = new System.Drawing.Size(22, 22);
             this.ComplementarySelected.TabIndex = 3;
             this.ComplementarySelected.Click += new System.EventHandler(this.MatchingPanel_Click);
             this.ComplementarySelected.MouseDown += new System.Windows.Forms.MouseEventHandler(this.MatchingPanel_MouseDown);
-            this.ComplementarySelected.MouseMove += new System.Windows.Forms.MouseEventHandler(this.MatchingPanel_MouseMove);
             // 
             // ComplementaryDarker
             // 
             this.ComplementaryDarker.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.ComplementaryDarker.Location = new System.Drawing.Point(55, 3);
+            this.ComplementaryDarker.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.ComplementaryDarker.Location = new System.Drawing.Point(59, 3);
             this.ComplementaryDarker.Name = "ComplementaryDarker";
-            this.ComplementaryDarker.Size = new System.Drawing.Size(20, 20);
+            this.ComplementaryDarker.Size = new System.Drawing.Size(22, 22);
             this.ComplementaryDarker.TabIndex = 4;
             this.ComplementaryDarker.Click += new System.EventHandler(this.MatchingPanel_Click);
             this.ComplementaryDarker.MouseDown += new System.Windows.Forms.MouseEventHandler(this.MatchingPanel_MouseDown);
-            this.ComplementaryDarker.MouseMove += new System.Windows.Forms.MouseEventHandler(this.MatchingPanel_MouseMove);
             // 
             // flowLayoutPanel3
             // 
@@ -302,35 +302,35 @@
             // TriadicLower
             // 
             this.TriadicLower.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.TriadicLower.Cursor = System.Windows.Forms.Cursors.Hand;
             this.TriadicLower.Location = new System.Drawing.Point(3, 3);
             this.TriadicLower.Name = "TriadicLower";
-            this.TriadicLower.Size = new System.Drawing.Size(20, 20);
+            this.TriadicLower.Size = new System.Drawing.Size(22, 22);
             this.TriadicLower.TabIndex = 2;
             this.TriadicLower.Click += new System.EventHandler(this.MatchingPanel_Click);
             this.TriadicLower.MouseDown += new System.Windows.Forms.MouseEventHandler(this.MatchingPanel_MouseDown);
-            this.TriadicLower.MouseMove += new System.Windows.Forms.MouseEventHandler(this.MatchingPanel_MouseMove);
             // 
             // TriadicSelected
             // 
             this.TriadicSelected.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.TriadicSelected.Location = new System.Drawing.Point(29, 3);
+            this.TriadicSelected.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.TriadicSelected.Location = new System.Drawing.Point(31, 3);
             this.TriadicSelected.Name = "TriadicSelected";
-            this.TriadicSelected.Size = new System.Drawing.Size(20, 20);
+            this.TriadicSelected.Size = new System.Drawing.Size(22, 22);
             this.TriadicSelected.TabIndex = 3;
             this.TriadicSelected.Click += new System.EventHandler(this.MatchingPanel_Click);
             this.TriadicSelected.MouseDown += new System.Windows.Forms.MouseEventHandler(this.MatchingPanel_MouseDown);
-            this.TriadicSelected.MouseMove += new System.Windows.Forms.MouseEventHandler(this.MatchingPanel_MouseMove);
             // 
             // TriadicHigher
             // 
             this.TriadicHigher.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.TriadicHigher.Location = new System.Drawing.Point(55, 3);
+            this.TriadicHigher.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.TriadicHigher.Location = new System.Drawing.Point(59, 3);
             this.TriadicHigher.Name = "TriadicHigher";
-            this.TriadicHigher.Size = new System.Drawing.Size(20, 20);
+            this.TriadicHigher.Size = new System.Drawing.Size(22, 22);
             this.TriadicHigher.TabIndex = 4;
             this.TriadicHigher.Click += new System.EventHandler(this.MatchingPanel_Click);
             this.TriadicHigher.MouseDown += new System.Windows.Forms.MouseEventHandler(this.MatchingPanel_MouseDown);
-            this.TriadicHigher.MouseMove += new System.Windows.Forms.MouseEventHandler(this.MatchingPanel_MouseMove);
             // 
             // flowLayoutPanel4
             // 
@@ -369,46 +369,45 @@
             // Tetradic1
             // 
             this.Tetradic1.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.Tetradic1.Cursor = System.Windows.Forms.Cursors.Hand;
             this.Tetradic1.Location = new System.Drawing.Point(3, 3);
             this.Tetradic1.Name = "Tetradic1";
-            this.Tetradic1.Size = new System.Drawing.Size(20, 20);
+            this.Tetradic1.Size = new System.Drawing.Size(22, 22);
             this.Tetradic1.TabIndex = 3;
             this.Tetradic1.Click += new System.EventHandler(this.MatchingPanel_Click);
             this.Tetradic1.MouseDown += new System.Windows.Forms.MouseEventHandler(this.MatchingPanel_MouseDown);
-            this.Tetradic1.MouseMove += new System.Windows.Forms.MouseEventHandler(this.MatchingPanel_MouseMove);
             // 
             // TetradicSelected
             // 
             this.TetradicSelected.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.TetradicSelected.Location = new System.Drawing.Point(29, 3);
+            this.TetradicSelected.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.TetradicSelected.Location = new System.Drawing.Point(31, 3);
             this.TetradicSelected.Name = "TetradicSelected";
-            this.TetradicSelected.Size = new System.Drawing.Size(20, 20);
+            this.TetradicSelected.Size = new System.Drawing.Size(22, 22);
             this.TetradicSelected.TabIndex = 4;
             this.TetradicSelected.Click += new System.EventHandler(this.MatchingPanel_Click);
             this.TetradicSelected.MouseDown += new System.Windows.Forms.MouseEventHandler(this.MatchingPanel_MouseDown);
-            this.TetradicSelected.MouseMove += new System.Windows.Forms.MouseEventHandler(this.MatchingPanel_MouseMove);
             // 
             // Tetradic2
             // 
             this.Tetradic2.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.Tetradic2.Location = new System.Drawing.Point(55, 3);
+            this.Tetradic2.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.Tetradic2.Location = new System.Drawing.Point(59, 3);
             this.Tetradic2.Name = "Tetradic2";
-            this.Tetradic2.Size = new System.Drawing.Size(20, 20);
+            this.Tetradic2.Size = new System.Drawing.Size(22, 22);
             this.Tetradic2.TabIndex = 5;
             this.Tetradic2.Click += new System.EventHandler(this.MatchingPanel_Click);
             this.Tetradic2.MouseDown += new System.Windows.Forms.MouseEventHandler(this.MatchingPanel_MouseDown);
-            this.Tetradic2.MouseMove += new System.Windows.Forms.MouseEventHandler(this.MatchingPanel_MouseMove);
             // 
             // Tetradic3
             // 
             this.Tetradic3.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.Tetradic3.Location = new System.Drawing.Point(81, 3);
+            this.Tetradic3.Location = new System.Drawing.Point(3, 31);
             this.Tetradic3.Name = "Tetradic3";
-            this.Tetradic3.Size = new System.Drawing.Size(20, 20);
+            this.Tetradic3.Size = new System.Drawing.Size(22, 22);
             this.Tetradic3.TabIndex = 6;
             this.Tetradic3.Click += new System.EventHandler(this.MatchingPanel_Click);
             this.Tetradic3.MouseDown += new System.Windows.Forms.MouseEventHandler(this.MatchingPanel_MouseDown);
-            this.Tetradic3.MouseMove += new System.Windows.Forms.MouseEventHandler(this.MatchingPanel_MouseMove);
             // 
             // brightnessBar
             // 
@@ -486,79 +485,79 @@
             // MonoPanel1
             // 
             this.MonoPanel1.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.MonoPanel1.Cursor = System.Windows.Forms.Cursors.Hand;
             this.MonoPanel1.Location = new System.Drawing.Point(3, 3);
             this.MonoPanel1.Name = "MonoPanel1";
-            this.MonoPanel1.Size = new System.Drawing.Size(20, 20);
+            this.MonoPanel1.Size = new System.Drawing.Size(22, 22);
             this.MonoPanel1.TabIndex = 0;
             this.MonoPanel1.Click += new System.EventHandler(this.MatchingPanel_Click);
             this.MonoPanel1.MouseDown += new System.Windows.Forms.MouseEventHandler(this.MatchingPanel_MouseDown);
-            this.MonoPanel1.MouseMove += new System.Windows.Forms.MouseEventHandler(this.MatchingPanel_MouseMove);
             // 
             // MonoPanel2
             // 
             this.MonoPanel2.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.MonoPanel2.Location = new System.Drawing.Point(29, 3);
+            this.MonoPanel2.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.MonoPanel2.Location = new System.Drawing.Point(31, 3);
             this.MonoPanel2.Name = "MonoPanel2";
-            this.MonoPanel2.Size = new System.Drawing.Size(20, 20);
+            this.MonoPanel2.Size = new System.Drawing.Size(22, 22);
             this.MonoPanel2.TabIndex = 1;
             this.MonoPanel2.Click += new System.EventHandler(this.MatchingPanel_Click);
             this.MonoPanel2.MouseDown += new System.Windows.Forms.MouseEventHandler(this.MatchingPanel_MouseDown);
-            this.MonoPanel2.MouseMove += new System.Windows.Forms.MouseEventHandler(this.MatchingPanel_MouseMove);
             // 
             // MonoPanel3
             // 
             this.MonoPanel3.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.MonoPanel3.Location = new System.Drawing.Point(55, 3);
+            this.MonoPanel3.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.MonoPanel3.Location = new System.Drawing.Point(59, 3);
             this.MonoPanel3.Name = "MonoPanel3";
-            this.MonoPanel3.Size = new System.Drawing.Size(20, 20);
+            this.MonoPanel3.Size = new System.Drawing.Size(22, 22);
             this.MonoPanel3.TabIndex = 1;
             this.MonoPanel3.Click += new System.EventHandler(this.MatchingPanel_Click);
             this.MonoPanel3.MouseDown += new System.Windows.Forms.MouseEventHandler(this.MatchingPanel_MouseDown);
-            this.MonoPanel3.MouseMove += new System.Windows.Forms.MouseEventHandler(this.MatchingPanel_MouseMove);
             // 
             // MonoPanel4
             // 
             this.MonoPanel4.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.MonoPanel4.Location = new System.Drawing.Point(81, 3);
+            this.MonoPanel4.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.MonoPanel4.Location = new System.Drawing.Point(87, 3);
             this.MonoPanel4.Name = "MonoPanel4";
-            this.MonoPanel4.Size = new System.Drawing.Size(20, 20);
+            this.MonoPanel4.Size = new System.Drawing.Size(22, 22);
             this.MonoPanel4.TabIndex = 2;
             this.MonoPanel4.Click += new System.EventHandler(this.MatchingPanel_Click);
             this.MonoPanel4.MouseDown += new System.Windows.Forms.MouseEventHandler(this.MatchingPanel_MouseDown);
-            this.MonoPanel4.MouseMove += new System.Windows.Forms.MouseEventHandler(this.MatchingPanel_MouseMove);
             // 
             // MonoPanel5
             // 
             this.MonoPanel5.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.MonoPanel5.Location = new System.Drawing.Point(107, 3);
+            this.MonoPanel5.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.MonoPanel5.Location = new System.Drawing.Point(115, 3);
             this.MonoPanel5.Name = "MonoPanel5";
-            this.MonoPanel5.Size = new System.Drawing.Size(20, 20);
+            this.MonoPanel5.Size = new System.Drawing.Size(22, 22);
             this.MonoPanel5.TabIndex = 3;
             this.MonoPanel5.Click += new System.EventHandler(this.MatchingPanel_Click);
             this.MonoPanel5.MouseDown += new System.Windows.Forms.MouseEventHandler(this.MatchingPanel_MouseDown);
-            this.MonoPanel5.MouseMove += new System.Windows.Forms.MouseEventHandler(this.MatchingPanel_MouseMove);
             // 
             // MonoPanel6
             // 
             this.MonoPanel6.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.MonoPanel6.Location = new System.Drawing.Point(133, 3);
+            this.MonoPanel6.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.MonoPanel6.Location = new System.Drawing.Point(143, 3);
             this.MonoPanel6.Name = "MonoPanel6";
-            this.MonoPanel6.Size = new System.Drawing.Size(20, 20);
+            this.MonoPanel6.Size = new System.Drawing.Size(22, 22);
             this.MonoPanel6.TabIndex = 4;
             this.MonoPanel6.Click += new System.EventHandler(this.MatchingPanel_Click);
             this.MonoPanel6.MouseDown += new System.Windows.Forms.MouseEventHandler(this.MatchingPanel_MouseDown);
-            this.MonoPanel6.MouseMove += new System.Windows.Forms.MouseEventHandler(this.MatchingPanel_MouseMove);
             // 
             // MonoPanel7
             // 
             this.MonoPanel7.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.MonoPanel7.Location = new System.Drawing.Point(159, 3);
+            this.MonoPanel7.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.MonoPanel7.Location = new System.Drawing.Point(171, 3);
             this.MonoPanel7.Name = "MonoPanel7";
-            this.MonoPanel7.Size = new System.Drawing.Size(20, 20);
+            this.MonoPanel7.Size = new System.Drawing.Size(22, 22);
             this.MonoPanel7.TabIndex = 5;
             this.MonoPanel7.Click += new System.EventHandler(this.MatchingPanel_Click);
             this.MonoPanel7.MouseDown += new System.Windows.Forms.MouseEventHandler(this.MatchingPanel_MouseDown);
-            this.MonoPanel7.MouseMove += new System.Windows.Forms.MouseEventHandler(this.MatchingPanel_MouseMove);
             // 
             // themeLayoutPanel
             // 
@@ -607,9 +606,10 @@
             this.ThemePanel1.AllowDrop = true;
             this.ThemePanel1.BackColor = System.Drawing.Color.White;
             this.ThemePanel1.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.ThemePanel1.Cursor = System.Windows.Forms.Cursors.Hand;
             this.ThemePanel1.Location = new System.Drawing.Point(3, 3);
             this.ThemePanel1.Name = "ThemePanel1";
-            this.ThemePanel1.Size = new System.Drawing.Size(20, 20);
+            this.ThemePanel1.Size = new System.Drawing.Size(22, 22);
             this.ThemePanel1.TabIndex = 3;
             this.ThemePanel1.Click += new System.EventHandler(this.ThemePanel_Click);
             this.ThemePanel1.DragDrop += new System.Windows.Forms.DragEventHandler(this.panel_DragDrop);
@@ -620,9 +620,10 @@
             this.ThemePanel2.AllowDrop = true;
             this.ThemePanel2.BackColor = System.Drawing.Color.White;
             this.ThemePanel2.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.ThemePanel2.Location = new System.Drawing.Point(29, 3);
+            this.ThemePanel2.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.ThemePanel2.Location = new System.Drawing.Point(31, 3);
             this.ThemePanel2.Name = "ThemePanel2";
-            this.ThemePanel2.Size = new System.Drawing.Size(20, 20);
+            this.ThemePanel2.Size = new System.Drawing.Size(22, 22);
             this.ThemePanel2.TabIndex = 4;
             this.ThemePanel2.Click += new System.EventHandler(this.ThemePanel_Click);
             this.ThemePanel2.DragDrop += new System.Windows.Forms.DragEventHandler(this.panel_DragDrop);
@@ -633,9 +634,10 @@
             this.ThemePanel3.AllowDrop = true;
             this.ThemePanel3.BackColor = System.Drawing.Color.White;
             this.ThemePanel3.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.ThemePanel3.Location = new System.Drawing.Point(55, 3);
+            this.ThemePanel3.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.ThemePanel3.Location = new System.Drawing.Point(59, 3);
             this.ThemePanel3.Name = "ThemePanel3";
-            this.ThemePanel3.Size = new System.Drawing.Size(20, 20);
+            this.ThemePanel3.Size = new System.Drawing.Size(22, 22);
             this.ThemePanel3.TabIndex = 5;
             this.ThemePanel3.Click += new System.EventHandler(this.ThemePanel_Click);
             this.ThemePanel3.DragDrop += new System.Windows.Forms.DragEventHandler(this.panel_DragDrop);
@@ -646,9 +648,10 @@
             this.ThemePanel4.AllowDrop = true;
             this.ThemePanel4.BackColor = System.Drawing.Color.White;
             this.ThemePanel4.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.ThemePanel4.Location = new System.Drawing.Point(81, 3);
+            this.ThemePanel4.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.ThemePanel4.Location = new System.Drawing.Point(87, 3);
             this.ThemePanel4.Name = "ThemePanel4";
-            this.ThemePanel4.Size = new System.Drawing.Size(20, 20);
+            this.ThemePanel4.Size = new System.Drawing.Size(22, 22);
             this.ThemePanel4.TabIndex = 6;
             this.ThemePanel4.Click += new System.EventHandler(this.ThemePanel_Click);
             this.ThemePanel4.DragDrop += new System.Windows.Forms.DragEventHandler(this.panel_DragDrop);
@@ -659,9 +662,10 @@
             this.ThemePanel5.AllowDrop = true;
             this.ThemePanel5.BackColor = System.Drawing.Color.White;
             this.ThemePanel5.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.ThemePanel5.Location = new System.Drawing.Point(107, 3);
+            this.ThemePanel5.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.ThemePanel5.Location = new System.Drawing.Point(115, 3);
             this.ThemePanel5.Name = "ThemePanel5";
-            this.ThemePanel5.Size = new System.Drawing.Size(20, 20);
+            this.ThemePanel5.Size = new System.Drawing.Size(22, 22);
             this.ThemePanel5.TabIndex = 7;
             this.ThemePanel5.Click += new System.EventHandler(this.ThemePanel_Click);
             this.ThemePanel5.DragDrop += new System.Windows.Forms.DragEventHandler(this.panel_DragDrop);
@@ -672,9 +676,10 @@
             this.ThemePanel6.AllowDrop = true;
             this.ThemePanel6.BackColor = System.Drawing.Color.White;
             this.ThemePanel6.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.ThemePanel6.Location = new System.Drawing.Point(133, 3);
+            this.ThemePanel6.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.ThemePanel6.Location = new System.Drawing.Point(143, 3);
             this.ThemePanel6.Name = "ThemePanel6";
-            this.ThemePanel6.Size = new System.Drawing.Size(20, 20);
+            this.ThemePanel6.Size = new System.Drawing.Size(22, 22);
             this.ThemePanel6.TabIndex = 8;
             this.ThemePanel6.Click += new System.EventHandler(this.ThemePanel_Click);
             this.ThemePanel6.DragDrop += new System.Windows.Forms.DragEventHandler(this.panel_DragDrop);
@@ -685,9 +690,10 @@
             this.ThemePanel7.AllowDrop = true;
             this.ThemePanel7.BackColor = System.Drawing.Color.White;
             this.ThemePanel7.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.ThemePanel7.Location = new System.Drawing.Point(159, 3);
+            this.ThemePanel7.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.ThemePanel7.Location = new System.Drawing.Point(171, 3);
             this.ThemePanel7.Name = "ThemePanel7";
-            this.ThemePanel7.Size = new System.Drawing.Size(20, 20);
+            this.ThemePanel7.Size = new System.Drawing.Size(22, 22);
             this.ThemePanel7.TabIndex = 9;
             this.ThemePanel7.Click += new System.EventHandler(this.ThemePanel_Click);
             this.ThemePanel7.DragDrop += new System.Windows.Forms.DragEventHandler(this.panel_DragDrop);
@@ -698,9 +704,10 @@
             this.ThemePanel8.AllowDrop = true;
             this.ThemePanel8.BackColor = System.Drawing.Color.White;
             this.ThemePanel8.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.ThemePanel8.Location = new System.Drawing.Point(185, 3);
+            this.ThemePanel8.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.ThemePanel8.Location = new System.Drawing.Point(199, 3);
             this.ThemePanel8.Name = "ThemePanel8";
-            this.ThemePanel8.Size = new System.Drawing.Size(20, 20);
+            this.ThemePanel8.Size = new System.Drawing.Size(22, 22);
             this.ThemePanel8.TabIndex = 10;
             this.ThemePanel8.Click += new System.EventHandler(this.ThemePanel_Click);
             this.ThemePanel8.DragDrop += new System.Windows.Forms.DragEventHandler(this.panel_DragDrop);
@@ -711,9 +718,10 @@
             this.ThemePanel9.AllowDrop = true;
             this.ThemePanel9.BackColor = System.Drawing.Color.White;
             this.ThemePanel9.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.ThemePanel9.Location = new System.Drawing.Point(211, 3);
+            this.ThemePanel9.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.ThemePanel9.Location = new System.Drawing.Point(227, 3);
             this.ThemePanel9.Name = "ThemePanel9";
-            this.ThemePanel9.Size = new System.Drawing.Size(20, 20);
+            this.ThemePanel9.Size = new System.Drawing.Size(22, 22);
             this.ThemePanel9.TabIndex = 11;
             this.ThemePanel9.Click += new System.EventHandler(this.ThemePanel_Click);
             this.ThemePanel9.DragDrop += new System.Windows.Forms.DragEventHandler(this.panel_DragDrop);
