@@ -97,6 +97,8 @@
             this.FillEyeDropperButton = new System.Windows.Forms.Button();
             this.LineEyeDropperButton = new System.Windows.Forms.Button();
             this.FontEyeDropperButton = new System.Windows.Forms.Button();
+            this.contextMenuStrip1 = new System.Windows.Forms.ContextMenuStrip(this.components);
+            this.showMoreInformationToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.AnalogousColorPanel.SuspendLayout();
             this.flowLayoutPanel6.SuspendLayout();
             this.flowLayoutPanel2.SuspendLayout();
@@ -113,6 +115,7 @@
             this.flowLayoutPanel11.SuspendLayout();
             this.panel2.SuspendLayout();
             this.panel3.SuspendLayout();
+            this.contextMenuStrip1.SuspendLayout();
             this.SuspendLayout();
             // 
             // panel1
@@ -170,6 +173,7 @@
             // AnalogousLighter
             // 
             this.AnalogousLighter.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.AnalogousLighter.ContextMenuStrip = this.contextMenuStrip1;
             this.AnalogousLighter.Cursor = System.Windows.Forms.Cursors.Hand;
             this.AnalogousLighter.Location = new System.Drawing.Point(3, 3);
             this.AnalogousLighter.Name = "AnalogousLighter";
@@ -181,6 +185,7 @@
             // AnalogousSelected
             // 
             this.AnalogousSelected.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.AnalogousSelected.ContextMenuStrip = this.contextMenuStrip1;
             this.AnalogousSelected.Cursor = System.Windows.Forms.Cursors.Hand;
             this.AnalogousSelected.Location = new System.Drawing.Point(31, 3);
             this.AnalogousSelected.Name = "AnalogousSelected";
@@ -192,6 +197,7 @@
             // AnalogousDarker
             // 
             this.AnalogousDarker.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.AnalogousDarker.ContextMenuStrip = this.contextMenuStrip1;
             this.AnalogousDarker.Cursor = System.Windows.Forms.Cursors.Hand;
             this.AnalogousDarker.Location = new System.Drawing.Point(59, 3);
             this.AnalogousDarker.Name = "AnalogousDarker";
@@ -236,6 +242,7 @@
             // ComplementaryLighter
             // 
             this.ComplementaryLighter.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.ComplementaryLighter.ContextMenuStrip = this.contextMenuStrip1;
             this.ComplementaryLighter.Cursor = System.Windows.Forms.Cursors.Hand;
             this.ComplementaryLighter.Location = new System.Drawing.Point(3, 3);
             this.ComplementaryLighter.Name = "ComplementaryLighter";
@@ -247,6 +254,7 @@
             // ComplementarySelected
             // 
             this.ComplementarySelected.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.ComplementarySelected.ContextMenuStrip = this.contextMenuStrip1;
             this.ComplementarySelected.Cursor = System.Windows.Forms.Cursors.Hand;
             this.ComplementarySelected.Location = new System.Drawing.Point(31, 3);
             this.ComplementarySelected.Name = "ComplementarySelected";
@@ -258,6 +266,7 @@
             // ComplementaryDarker
             // 
             this.ComplementaryDarker.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.ComplementaryDarker.ContextMenuStrip = this.contextMenuStrip1;
             this.ComplementaryDarker.Cursor = System.Windows.Forms.Cursors.Hand;
             this.ComplementaryDarker.Location = new System.Drawing.Point(59, 3);
             this.ComplementaryDarker.Name = "ComplementaryDarker";
@@ -302,6 +311,7 @@
             // TriadicLower
             // 
             this.TriadicLower.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.TriadicLower.ContextMenuStrip = this.contextMenuStrip1;
             this.TriadicLower.Cursor = System.Windows.Forms.Cursors.Hand;
             this.TriadicLower.Location = new System.Drawing.Point(3, 3);
             this.TriadicLower.Name = "TriadicLower";
@@ -313,6 +323,7 @@
             // TriadicSelected
             // 
             this.TriadicSelected.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.TriadicSelected.ContextMenuStrip = this.contextMenuStrip1;
             this.TriadicSelected.Cursor = System.Windows.Forms.Cursors.Hand;
             this.TriadicSelected.Location = new System.Drawing.Point(31, 3);
             this.TriadicSelected.Name = "TriadicSelected";
@@ -324,6 +335,7 @@
             // TriadicHigher
             // 
             this.TriadicHigher.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.TriadicHigher.ContextMenuStrip = this.contextMenuStrip1;
             this.TriadicHigher.Cursor = System.Windows.Forms.Cursors.Hand;
             this.TriadicHigher.Location = new System.Drawing.Point(59, 3);
             this.TriadicHigher.Name = "TriadicHigher";
@@ -369,6 +381,7 @@
             // Tetradic1
             // 
             this.Tetradic1.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.Tetradic1.ContextMenuStrip = this.contextMenuStrip1;
             this.Tetradic1.Cursor = System.Windows.Forms.Cursors.Hand;
             this.Tetradic1.Location = new System.Drawing.Point(3, 3);
             this.Tetradic1.Name = "Tetradic1";
@@ -380,6 +393,7 @@
             // TetradicSelected
             // 
             this.TetradicSelected.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.TetradicSelected.ContextMenuStrip = this.contextMenuStrip1;
             this.TetradicSelected.Cursor = System.Windows.Forms.Cursors.Hand;
             this.TetradicSelected.Location = new System.Drawing.Point(31, 3);
             this.TetradicSelected.Name = "TetradicSelected";
@@ -391,6 +405,7 @@
             // Tetradic2
             // 
             this.Tetradic2.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.Tetradic2.ContextMenuStrip = this.contextMenuStrip1;
             this.Tetradic2.Cursor = System.Windows.Forms.Cursors.Hand;
             this.Tetradic2.Location = new System.Drawing.Point(59, 3);
             this.Tetradic2.Name = "Tetradic2";
@@ -485,6 +500,7 @@
             // MonoPanel1
             // 
             this.MonoPanel1.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.MonoPanel1.ContextMenuStrip = this.contextMenuStrip1;
             this.MonoPanel1.Cursor = System.Windows.Forms.Cursors.Hand;
             this.MonoPanel1.Location = new System.Drawing.Point(3, 3);
             this.MonoPanel1.Name = "MonoPanel1";
@@ -496,6 +512,7 @@
             // MonoPanel2
             // 
             this.MonoPanel2.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.MonoPanel2.ContextMenuStrip = this.contextMenuStrip1;
             this.MonoPanel2.Cursor = System.Windows.Forms.Cursors.Hand;
             this.MonoPanel2.Location = new System.Drawing.Point(31, 3);
             this.MonoPanel2.Name = "MonoPanel2";
@@ -507,6 +524,7 @@
             // MonoPanel3
             // 
             this.MonoPanel3.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.MonoPanel3.ContextMenuStrip = this.contextMenuStrip1;
             this.MonoPanel3.Cursor = System.Windows.Forms.Cursors.Hand;
             this.MonoPanel3.Location = new System.Drawing.Point(59, 3);
             this.MonoPanel3.Name = "MonoPanel3";
@@ -518,6 +536,7 @@
             // MonoPanel4
             // 
             this.MonoPanel4.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.MonoPanel4.ContextMenuStrip = this.contextMenuStrip1;
             this.MonoPanel4.Cursor = System.Windows.Forms.Cursors.Hand;
             this.MonoPanel4.Location = new System.Drawing.Point(87, 3);
             this.MonoPanel4.Name = "MonoPanel4";
@@ -529,6 +548,7 @@
             // MonoPanel5
             // 
             this.MonoPanel5.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.MonoPanel5.ContextMenuStrip = this.contextMenuStrip1;
             this.MonoPanel5.Cursor = System.Windows.Forms.Cursors.Hand;
             this.MonoPanel5.Location = new System.Drawing.Point(115, 3);
             this.MonoPanel5.Name = "MonoPanel5";
@@ -540,6 +560,7 @@
             // MonoPanel6
             // 
             this.MonoPanel6.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.MonoPanel6.ContextMenuStrip = this.contextMenuStrip1;
             this.MonoPanel6.Cursor = System.Windows.Forms.Cursors.Hand;
             this.MonoPanel6.Location = new System.Drawing.Point(143, 3);
             this.MonoPanel6.Name = "MonoPanel6";
@@ -551,6 +572,7 @@
             // MonoPanel7
             // 
             this.MonoPanel7.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.MonoPanel7.ContextMenuStrip = this.contextMenuStrip1;
             this.MonoPanel7.Cursor = System.Windows.Forms.Cursors.Hand;
             this.MonoPanel7.Location = new System.Drawing.Point(171, 3);
             this.MonoPanel7.Name = "MonoPanel7";
@@ -606,6 +628,7 @@
             this.ThemePanel1.AllowDrop = true;
             this.ThemePanel1.BackColor = System.Drawing.Color.White;
             this.ThemePanel1.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.ThemePanel1.ContextMenuStrip = this.contextMenuStrip1;
             this.ThemePanel1.Cursor = System.Windows.Forms.Cursors.Hand;
             this.ThemePanel1.Location = new System.Drawing.Point(3, 3);
             this.ThemePanel1.Name = "ThemePanel1";
@@ -620,6 +643,7 @@
             this.ThemePanel2.AllowDrop = true;
             this.ThemePanel2.BackColor = System.Drawing.Color.White;
             this.ThemePanel2.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.ThemePanel2.ContextMenuStrip = this.contextMenuStrip1;
             this.ThemePanel2.Cursor = System.Windows.Forms.Cursors.Hand;
             this.ThemePanel2.Location = new System.Drawing.Point(31, 3);
             this.ThemePanel2.Name = "ThemePanel2";
@@ -634,6 +658,7 @@
             this.ThemePanel3.AllowDrop = true;
             this.ThemePanel3.BackColor = System.Drawing.Color.White;
             this.ThemePanel3.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.ThemePanel3.ContextMenuStrip = this.contextMenuStrip1;
             this.ThemePanel3.Cursor = System.Windows.Forms.Cursors.Hand;
             this.ThemePanel3.Location = new System.Drawing.Point(59, 3);
             this.ThemePanel3.Name = "ThemePanel3";
@@ -648,6 +673,7 @@
             this.ThemePanel4.AllowDrop = true;
             this.ThemePanel4.BackColor = System.Drawing.Color.White;
             this.ThemePanel4.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.ThemePanel4.ContextMenuStrip = this.contextMenuStrip1;
             this.ThemePanel4.Cursor = System.Windows.Forms.Cursors.Hand;
             this.ThemePanel4.Location = new System.Drawing.Point(87, 3);
             this.ThemePanel4.Name = "ThemePanel4";
@@ -662,6 +688,7 @@
             this.ThemePanel5.AllowDrop = true;
             this.ThemePanel5.BackColor = System.Drawing.Color.White;
             this.ThemePanel5.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.ThemePanel5.ContextMenuStrip = this.contextMenuStrip1;
             this.ThemePanel5.Cursor = System.Windows.Forms.Cursors.Hand;
             this.ThemePanel5.Location = new System.Drawing.Point(115, 3);
             this.ThemePanel5.Name = "ThemePanel5";
@@ -676,6 +703,7 @@
             this.ThemePanel6.AllowDrop = true;
             this.ThemePanel6.BackColor = System.Drawing.Color.White;
             this.ThemePanel6.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.ThemePanel6.ContextMenuStrip = this.contextMenuStrip1;
             this.ThemePanel6.Cursor = System.Windows.Forms.Cursors.Hand;
             this.ThemePanel6.Location = new System.Drawing.Point(143, 3);
             this.ThemePanel6.Name = "ThemePanel6";
@@ -690,6 +718,7 @@
             this.ThemePanel7.AllowDrop = true;
             this.ThemePanel7.BackColor = System.Drawing.Color.White;
             this.ThemePanel7.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.ThemePanel7.ContextMenuStrip = this.contextMenuStrip1;
             this.ThemePanel7.Cursor = System.Windows.Forms.Cursors.Hand;
             this.ThemePanel7.Location = new System.Drawing.Point(171, 3);
             this.ThemePanel7.Name = "ThemePanel7";
@@ -704,6 +733,7 @@
             this.ThemePanel8.AllowDrop = true;
             this.ThemePanel8.BackColor = System.Drawing.Color.White;
             this.ThemePanel8.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.ThemePanel8.ContextMenuStrip = this.contextMenuStrip1;
             this.ThemePanel8.Cursor = System.Windows.Forms.Cursors.Hand;
             this.ThemePanel8.Location = new System.Drawing.Point(199, 3);
             this.ThemePanel8.Name = "ThemePanel8";
@@ -718,6 +748,7 @@
             this.ThemePanel9.AllowDrop = true;
             this.ThemePanel9.BackColor = System.Drawing.Color.White;
             this.ThemePanel9.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.ThemePanel9.ContextMenuStrip = this.contextMenuStrip1;
             this.ThemePanel9.Cursor = System.Windows.Forms.Cursors.Hand;
             this.ThemePanel9.Location = new System.Drawing.Point(227, 3);
             this.ThemePanel9.Name = "ThemePanel9";
@@ -860,6 +891,20 @@
             this.FontEyeDropperButton.UseVisualStyleBackColor = true;
             this.FontEyeDropperButton.MouseDown += new System.Windows.Forms.MouseEventHandler(this.FontEyeDropperButton_MouseDown);
             // 
+            // contextMenuStrip1
+            // 
+            this.contextMenuStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.showMoreInformationToolStripMenuItem});
+            this.contextMenuStrip1.Name = "contextMenuStrip1";
+            this.contextMenuStrip1.Size = new System.Drawing.Size(201, 48);
+            // 
+            // showMoreInformationToolStripMenuItem
+            // 
+            this.showMoreInformationToolStripMenuItem.Name = "showMoreInformationToolStripMenuItem";
+            this.showMoreInformationToolStripMenuItem.Size = new System.Drawing.Size(200, 22);
+            this.showMoreInformationToolStripMenuItem.Text = "Show More Information";
+            this.showMoreInformationToolStripMenuItem.Click += new System.EventHandler(this.showMoreInformationToolStripMenuItem_Click);
+            // 
             // ColorPane
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -908,6 +953,7 @@
             this.panel2.PerformLayout();
             this.panel3.ResumeLayout(false);
             this.panel3.PerformLayout();
+            this.contextMenuStrip1.ResumeLayout(false);
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -983,5 +1029,7 @@
         private System.Windows.Forms.Panel panel3;
         private System.Windows.Forms.ToolTip toolTip1;
         private System.Windows.Forms.Button ResetThemeButton;
+        private System.Windows.Forms.ContextMenuStrip contextMenuStrip1;
+        private System.Windows.Forms.ToolStripMenuItem showMoreInformationToolStripMenuItem;
     }
 }

@@ -763,6 +763,11 @@ namespace PowerPointLabs
         {
             ResetThemePanel();
         }
+
+        private void showMoreInformationToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+
+        }
     }
 
     public class SysMouseEventInfo : EventArgs
