@@ -378,6 +378,7 @@ namespace PowerPointLabs
         {
             _native.Close();
             _originalColor = panel1.BackColor;
+            Globals.ThisAddIn.Application.StartNewUndoEntry();
             UpdateUIForNewColor();
             timer1.Stop();
         }
@@ -685,6 +686,7 @@ namespace PowerPointLabs
 
                 panel1.BackColor = ((Panel)sender).BackColor;
                 _originalColor = panel1.BackColor;
+                Globals.ThisAddIn.Application.StartNewUndoEntry();
                 UpdateUIForNewColor();
 	        }
 	        catch (Exception ex)
@@ -699,6 +701,7 @@ namespace PowerPointLabs
             Color clickedColor = ((Panel)sender).BackColor;
             panel1.BackColor = clickedColor;
             _originalColor = clickedColor;
+            Globals.ThisAddIn.Application.StartNewUndoEntry();
             UpdateUIForNewColor();
         }
 
