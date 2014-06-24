@@ -16,7 +16,18 @@ namespace PowerPointLabs
         {
             InitializeComponent();
 
-            // add expandable panels
+            //foreach (var control in motherTableLayoutPanel.Controls)
+            //{
+            //    if (control is Panel)
+            //    {
+            //        var panel = control as Panel;
+            //        var extendedPanel = panel.Controls[0] as ExtendedPanel;
+            //        var rowIndex = motherTableLayoutPanel.GetRow(panel);
+
+            //        motherTableLayoutPanel.RowStyles[rowIndex].Height = extendedPanel.Size.Height*
+            //                                                            extendedPanel.CaptionSize/100;
+            //    }
+            //}
         }
     }
 }
