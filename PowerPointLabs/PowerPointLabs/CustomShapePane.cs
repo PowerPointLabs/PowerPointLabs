@@ -16,26 +16,45 @@ namespace PowerPointLabs
 {
     public partial class CustomShapePane : UserControl
     {
-        private readonly string _tempFolderName;
-        private readonly string _tempFullPath;
-        
         private bool _searchBoxFocused;
+        private List<string> _myShapes;
+        private Panel _selectedPanel;
 
-        public CustomShapePane(string tempFolderName)
+        public CustomShapePane()
         {
             InitializeComponent();
 
-            _tempFolderName = @"\PowerPointLabs Temp\" + tempFolderName + @"\";
-            _tempFullPath = Path.GetTempPath() + _tempFolderName;
+            _myShapes = new List<string>();
             
             _searchBoxFocused = false;
         }
 
-        private void panel1_DoubleClick(object sender, EventArgs e)
+        private bool ThumbNailCallBack()
         {
-            var tempPic = _tempFullPath + "temp.png";
+            return false;
+        }
+
+        public void AddCustomShape(string fileName)
+        {
+            _myShapes.Add(fileName);
+
+            var shapeImage = new Bitmap(fileName);
             
-            panel1.BackgroundImage.Save(tempPic);
+            var newShapeCell = new Panel();
+
+            newShapeCell.Size = new Size(50, 50);
+            newShapeCell.Name = fileName;
+            newShapeCell.BackgroundImage = shapeImage.GetThumbnailImage(50, 50, ThumbNailCallBack,
+                                                                        IntPtr.Zero);
+            newShapeCell.DoubleClick += PanelDoubleClick;
+            newShapeCell.Click += PanelClick;
+
+            myShapeFlowLayout.Controls.Add(newShapeCell);
+        }
+
+        private void PanelDoubleClick(object sender, EventArgs e)
+        {
+            var childPanel = sender as Panel;
 
             var currentSlide = PowerPointPresentation.CurrentSlide;
             var slideWidth = PowerPointPresentation.SlideWidth;
@@ -43,11 +62,23 @@ namespace PowerPointLabs
 
             if (currentSlide != null)
             {
-                currentSlide.InsertPicture(tempPic, MsoTriState.msoFalse, MsoTriState.msoTrue, slideWidth/2,
+                currentSlide.InsertPicture(childPanel.Name, MsoTriState.msoFalse, MsoTriState.msoTrue, slideWidth/2,
                                            slideHeight/2);
             }
+        }
 
-            File.Delete(tempPic);
+        private void PanelClick(object sender, EventArgs e)
+        {
+            var childPanel = sender as Panel;
+
+            // de-highlight the old shape and set current shape as highighted
+            if (_selectedPanel != null)
+            {
+                _selectedPanel.BackColor = Color.Transparent;
+            }
+
+            childPanel.BackColor = Color.FromKnownColor(KnownColor.Highlight);
+            _selectedPanel = childPanel;
         }
 
         # region search box appearance and behaviors
@@ -95,15 +126,5 @@ namespace PowerPointLabs
             }
         }
         # endregion
-
-        private void panel1_Enter(object sender, EventArgs e)
-        {
-            panel1.BackColor = Color.FromKnownColor(KnownColor.Highlight);
-        }
-
-        private void panel1_Leave(object sender, EventArgs e)
-        {
-            panel1.BackColor = Color.FromKnownColor(KnownColor.Control);
-        }
     }
 }

@@ -884,6 +884,7 @@ namespace PowerPointLabs
             }
         }
 
+        # region Custom Shapes
         public void CustomShapeButtonClick(Office.IRibbonControl control)
         {
             var customShapePane = Globals.ThisAddIn.GetActivePane(Type.GetType("PowerPointLabs.CustomShapePane"));
@@ -895,6 +896,29 @@ namespace PowerPointLabs
                 customShapePane.Visible = true;
             }
         }
+
+        public void AddShapeButtonClick(Office.IRibbonControl control)
+        {
+            var selection = PowerPointPresentation.CurrentSelection;
+            var fileName = ConvertToPicture.ConvertAndSave(selection);
+
+            var customShapePane = Globals.ThisAddIn.GetActivePane(Type.GetType("PowerPointLabs.CustomShapePane"));
+
+            if (customShapePane == null)
+            {
+                return;
+            }
+
+            var customShape = customShapePane.Control as CustomShapePane;
+
+            customShape.AddCustomShape(fileName);
+
+            //if (customShapePane.Visible)
+            //{
+                
+            //}
+        }
+        # endregion
 
         #region NotesToAudio Button Callbacks
         public void SpeakSelectedTextClick(Office.IRibbonControl control)

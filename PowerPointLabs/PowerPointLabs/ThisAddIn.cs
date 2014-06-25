@@ -217,7 +217,7 @@ namespace PowerPointLabs
             RegisterTaskPane(new RecorderTaskPane(tempName), "Record Management", activeWindow,
                              TaskPaneVisibleValueChangedEventHandler, null);
             RegisterTaskPane(new ColorPane(), "Color Panel", activeWindow, null, null);
-            RegisterTaskPane(new CustomShapePane(tempName), "Custom Shape Management", activeWindow, null, null);
+            RegisterTaskPane(new CustomShapePane(), "Custom Shape Management", activeWindow, null, null);
         }
 
         // solve new un-modified unsave problem
@@ -254,7 +254,7 @@ namespace PowerPointLabs
                 RegisterTaskPane(new RecorderTaskPane(tempName), "Record Management", activeWindow,
                                  TaskPaneVisibleValueChangedEventHandler, null);
                 RegisterTaskPane(new ColorPane(), "Color Panel", activeWindow, null, null);
-                RegisterTaskPane(new CustomShapePane(tempName), "Custom Shape Management", activeWindow, null, null);
+                RegisterTaskPane(new CustomShapePane(), "Custom Shape Management", activeWindow, null, null);
 
                 _documentHashcodeMapper[activeWindow] = tempName;
             }
@@ -367,11 +367,18 @@ namespace PowerPointLabs
             
             foreach (var pane in panes)
             {
-                var control = pane.Control;
-
-                if (control.GetType() == type)
+                try
                 {
-                    return pane;
+                    var control = pane.Control;
+
+                    if (control.GetType() == type)
+                    {
+                        return pane;
+                    }
+                }
+                catch (Exception)
+                {
+                    return null;
                 }
             }
 

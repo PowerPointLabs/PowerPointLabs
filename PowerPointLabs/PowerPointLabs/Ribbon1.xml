@@ -193,13 +193,17 @@
                   onAction="ColorPickerButtonClick"/>
         </group>
         <group id="CustomShape"
-               label="Custom Shape Management"
+               label="Custom Shapes"
                visible="true">
           <button id="CustomeShapeButton"
-                  label="Custom Shape"
+                  label="Shape Lab"
                   size="large"
                   supertip="Manage your custom shapes on the fly."
                   onAction="CustomShapeButtonClick"/>
+          <button id="AddShapeButton"
+                  label="Add Shape"
+                  size="large"
+                  onAction="AddShapeButtonClick"/>
         </group>
         <group id="PPTLabsHelp"
                label="Help"

@@ -32,7 +32,6 @@ namespace PowerPointLabs
         private void InitializeComponent()
         {
             this.motherTableLayoutPanel = new System.Windows.Forms.TableLayoutPanel();
-            this.extendedPanel3 = new Stepi.UI.ExtendedPanel();
             this.mediaIconPanel = new Stepi.UI.ExtendedPanel();
             this.flowLayoutPanel1 = new System.Windows.Forms.FlowLayoutPanel();
             this.panel1 = new System.Windows.Forms.Panel();
@@ -45,10 +44,11 @@ namespace PowerPointLabs
             this.panel4 = new System.Windows.Forms.Panel();
             this.panel5 = new System.Windows.Forms.Panel();
             this.panel7 = new System.Windows.Forms.Panel();
-            this.button1 = new System.Windows.Forms.Button();
+            this.myShapeFlowLayout = new System.Windows.Forms.FlowLayoutPanel();
             this.motherTableLayoutPanel.SuspendLayout();
             this.mediaIconPanel.SuspendLayout();
             this.flowLayoutPanel1.SuspendLayout();
+            this.myShapePanel.SuspendLayout();
             this.SuspendLayout();
             // 
             // motherTableLayoutPanel
@@ -58,41 +58,19 @@ namespace PowerPointLabs
             this.motherTableLayoutPanel.AutoScroll = true;
             this.motherTableLayoutPanel.ColumnCount = 1;
             this.motherTableLayoutPanel.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            this.motherTableLayoutPanel.Controls.Add(this.extendedPanel3, 0, 2);
             this.motherTableLayoutPanel.Controls.Add(this.mediaIconPanel, 0, 1);
             this.motherTableLayoutPanel.Controls.Add(this.myShapePanel, 0, 0);
             this.motherTableLayoutPanel.Location = new System.Drawing.Point(3, 25);
             this.motherTableLayoutPanel.Margin = new System.Windows.Forms.Padding(0);
+            this.motherTableLayoutPanel.MaximumSize = new System.Drawing.Size(500, 336);
             this.motherTableLayoutPanel.Name = "motherTableLayoutPanel";
-            this.motherTableLayoutPanel.RowCount = 4;
-            this.motherTableLayoutPanel.RowStyles.Add(new System.Windows.Forms.RowStyle());
+            this.motherTableLayoutPanel.RowCount = 3;
             this.motherTableLayoutPanel.RowStyles.Add(new System.Windows.Forms.RowStyle());
             this.motherTableLayoutPanel.RowStyles.Add(new System.Windows.Forms.RowStyle());
             this.motherTableLayoutPanel.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 1F));
             this.motherTableLayoutPanel.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20F));
-            this.motherTableLayoutPanel.Size = new System.Drawing.Size(251, 393);
+            this.motherTableLayoutPanel.Size = new System.Drawing.Size(250, 336);
             this.motherTableLayoutPanel.TabIndex = 0;
-            // 
-            // extendedPanel3
-            // 
-            this.extendedPanel3.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.extendedPanel3.BorderColor = System.Drawing.Color.Gray;
-            this.extendedPanel3.CaptionColorOne = System.Drawing.Color.White;
-            this.extendedPanel3.CaptionColorTwo = System.Drawing.Color.FromArgb(((int)(((byte)(155)))), ((int)(((byte)(255)))), ((int)(((byte)(165)))), ((int)(((byte)(0)))));
-            this.extendedPanel3.CaptionFont = new System.Drawing.Font("SimSun", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.extendedPanel3.CaptionSize = 20;
-            this.extendedPanel3.CaptionText = "Others";
-            this.extendedPanel3.CaptionTextColor = System.Drawing.Color.Black;
-            this.extendedPanel3.DirectionCtrlColor = System.Drawing.Color.DarkGray;
-            this.extendedPanel3.DirectionCtrlHoverColor = System.Drawing.Color.Orange;
-            this.extendedPanel3.Location = new System.Drawing.Point(0, 243);
-            this.extendedPanel3.Margin = new System.Windows.Forms.Padding(0);
-            this.extendedPanel3.Name = "extendedPanel3";
-            this.extendedPanel3.Size = new System.Drawing.Size(251, 122);
-            this.extendedPanel3.State = Stepi.UI.ExtendedPanelState.Collapsed;
-            this.extendedPanel3.TabIndex = 5;
             // 
             // mediaIconPanel
             // 
@@ -109,10 +87,10 @@ namespace PowerPointLabs
             this.mediaIconPanel.Controls.Add(this.flowLayoutPanel1);
             this.mediaIconPanel.DirectionCtrlColor = System.Drawing.Color.DarkGray;
             this.mediaIconPanel.DirectionCtrlHoverColor = System.Drawing.Color.Orange;
-            this.mediaIconPanel.Location = new System.Drawing.Point(0, 131);
+            this.mediaIconPanel.Location = new System.Drawing.Point(0, 213);
             this.mediaIconPanel.Margin = new System.Windows.Forms.Padding(0);
             this.mediaIconPanel.Name = "mediaIconPanel";
-            this.mediaIconPanel.Size = new System.Drawing.Size(251, 112);
+            this.mediaIconPanel.Size = new System.Drawing.Size(250, 112);
             this.mediaIconPanel.State = Stepi.UI.ExtendedPanelState.Collapsed;
             this.mediaIconPanel.TabIndex = 1;
             // 
@@ -125,10 +103,9 @@ namespace PowerPointLabs
             this.flowLayoutPanel1.Controls.Add(this.panel2);
             this.flowLayoutPanel1.Controls.Add(this.panel6);
             this.flowLayoutPanel1.Controls.Add(this.panel3);
-            this.flowLayoutPanel1.Controls.Add(this.button1);
             this.flowLayoutPanel1.Location = new System.Drawing.Point(3, 23);
             this.flowLayoutPanel1.Name = "flowLayoutPanel1";
-            this.flowLayoutPanel1.Size = new System.Drawing.Size(245, 86);
+            this.flowLayoutPanel1.Size = new System.Drawing.Size(244, 86);
             this.flowLayoutPanel1.TabIndex = 1;
             // 
             // panel1
@@ -138,9 +115,7 @@ namespace PowerPointLabs
             this.panel1.Name = "panel1";
             this.panel1.Size = new System.Drawing.Size(32, 32);
             this.panel1.TabIndex = 0;
-            this.panel1.DoubleClick += new System.EventHandler(this.panel1_DoubleClick);
-            this.panel1.Enter += new System.EventHandler(this.panel1_Enter);
-            this.panel1.Leave += new System.EventHandler(this.panel1_Leave);
+            this.panel1.DoubleClick += new System.EventHandler(this.PanelDoubleClick);
             // 
             // panel2
             // 
@@ -178,12 +153,13 @@ namespace PowerPointLabs
             this.myShapePanel.CaptionSize = 20;
             this.myShapePanel.CaptionText = "My Shape";
             this.myShapePanel.CaptionTextColor = System.Drawing.Color.Black;
+            this.myShapePanel.Controls.Add(this.myShapeFlowLayout);
             this.myShapePanel.DirectionCtrlColor = System.Drawing.Color.DarkGray;
             this.myShapePanel.DirectionCtrlHoverColor = System.Drawing.Color.Orange;
             this.myShapePanel.Location = new System.Drawing.Point(0, 0);
             this.myShapePanel.Margin = new System.Windows.Forms.Padding(0);
             this.myShapePanel.Name = "myShapePanel";
-            this.myShapePanel.Size = new System.Drawing.Size(251, 131);
+            this.myShapePanel.Size = new System.Drawing.Size(250, 213);
             this.myShapePanel.State = Stepi.UI.ExtendedPanelState.Collapsed;
             this.myShapePanel.TabIndex = 4;
             // 
@@ -235,14 +211,15 @@ namespace PowerPointLabs
             this.panel7.Size = new System.Drawing.Size(32, 32);
             this.panel7.TabIndex = 5;
             // 
-            // button1
+            // myShapeFlowLayout
             // 
-            this.button1.Location = new System.Drawing.Point(155, 3);
-            this.button1.Name = "button1";
-            this.button1.Size = new System.Drawing.Size(75, 23);
-            this.button1.TabIndex = 3;
-            this.button1.Text = "button1";
-            this.button1.UseVisualStyleBackColor = true;
+            this.myShapeFlowLayout.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.myShapeFlowLayout.Location = new System.Drawing.Point(3, 22);
+            this.myShapeFlowLayout.Name = "myShapeFlowLayout";
+            this.myShapeFlowLayout.Size = new System.Drawing.Size(244, 188);
+            this.myShapeFlowLayout.TabIndex = 1;
             // 
             // CustomShapePane
             // 
@@ -256,6 +233,7 @@ namespace PowerPointLabs
             this.motherTableLayoutPanel.ResumeLayout(false);
             this.mediaIconPanel.ResumeLayout(false);
             this.flowLayoutPanel1.ResumeLayout(false);
+            this.myShapePanel.ResumeLayout(false);
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -266,7 +244,6 @@ namespace PowerPointLabs
         private System.Windows.Forms.TableLayoutPanel motherTableLayoutPanel;
         private System.Windows.Forms.TextBox searchBox;
         private ExtendedPanel myShapePanel;
-        private ExtendedPanel extendedPanel3;
         private ExtendedPanel mediaIconPanel;
         private System.Windows.Forms.LinkLabel linkLabel1;
         private System.Windows.Forms.FlowLayoutPanel flowLayoutPanel1;
@@ -277,7 +254,7 @@ namespace PowerPointLabs
         private System.Windows.Forms.Panel panel4;
         private System.Windows.Forms.Panel panel5;
         private System.Windows.Forms.Panel panel7;
-        private System.Windows.Forms.Button button1;
+        private System.Windows.Forms.FlowLayoutPanel myShapeFlowLayout;
 
     }
 }
