@@ -24,7 +24,9 @@ namespace PowerPointLabs
     {
 
         private Color _originalColor;
-        private bool _isFillColorSelected = false;
+
+        //Defaults is Fill
+        private bool _isFillColorSelected = true;
         private bool _isFontColorSelected = false;
         private bool _isLineColorSelected = false;
 
@@ -665,12 +667,12 @@ namespace PowerPointLabs
         private void MatchingPanel_Click(object sender, EventArgs e)
         {
             Color clickedColor = ((Panel)sender).BackColor;
-            //panel1.BackColor = clickedColor;
-            _originalColor = clickedColor;
-            dataSource.selectedColor = clickedColor;
+            
             Globals.ThisAddIn.Application.StartNewUndoEntry();
-            UpdateUIForNewColor();
+            dataSource.selectedColor = clickedColor;
             ColorSelectedShapesWithColor(clickedColor);
+            _originalColor = clickedColor;
+            UpdateUIForNewColor();
         }
 
         private void MatchingPanel_MouseMove(object sender, MouseEventArgs e)
