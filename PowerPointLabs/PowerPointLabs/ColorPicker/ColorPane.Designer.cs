@@ -89,6 +89,7 @@
             this.SaveThemeButton = new System.Windows.Forms.Button();
             this.LoadButton = new System.Windows.Forms.Button();
             this.ResetThemeButton = new System.Windows.Forms.Button();
+            this.ApplyThemeButton = new System.Windows.Forms.Button();
             this.saveFileDialog1 = new System.Windows.Forms.SaveFileDialog();
             this.openFileDialog1 = new System.Windows.Forms.OpenFileDialog();
             this.label7 = new System.Windows.Forms.Label();
@@ -399,7 +400,7 @@
             this.flowLayoutPanel9.Controls.Add(this.Tetradic3);
             this.flowLayoutPanel9.Location = new System.Drawing.Point(3, 19);
             this.flowLayoutPanel9.Name = "flowLayoutPanel9";
-            this.flowLayoutPanel9.Size = new System.Drawing.Size(104, 26);
+            this.flowLayoutPanel9.Size = new System.Drawing.Size(120, 26);
             this.flowLayoutPanel9.TabIndex = 15;
             // 
             // Tetradic1
@@ -444,12 +445,14 @@
             // Tetradic3
             // 
             this.Tetradic3.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.Tetradic3.Location = new System.Drawing.Point(3, 31);
+            this.Tetradic3.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.Tetradic3.Location = new System.Drawing.Point(87, 3);
             this.Tetradic3.Name = "Tetradic3";
             this.Tetradic3.Size = new System.Drawing.Size(22, 22);
             this.Tetradic3.TabIndex = 6;
             this.Tetradic3.Click += new System.EventHandler(this.MatchingPanel_Click);
             this.Tetradic3.MouseDown += new System.Windows.Forms.MouseEventHandler(this.MatchingPanel_MouseDown);
+            this.Tetradic3.MouseMove += new System.Windows.Forms.MouseEventHandler(this.MatchingPanel_MouseMove);
             // 
             // brightnessBar
             // 
@@ -624,6 +627,7 @@
             this.themeLayoutPanel.Controls.Add(this.SaveThemeButton);
             this.themeLayoutPanel.Controls.Add(this.LoadButton);
             this.themeLayoutPanel.Controls.Add(this.ResetThemeButton);
+            this.themeLayoutPanel.Controls.Add(this.ApplyThemeButton);
             this.themeLayoutPanel.Location = new System.Drawing.Point(20, 461);
             this.themeLayoutPanel.Name = "themeLayoutPanel";
             this.themeLayoutPanel.Size = new System.Drawing.Size(273, 111);
@@ -840,6 +844,16 @@
             this.ResetThemeButton.TabIndex = 18;
             this.ResetThemeButton.UseVisualStyleBackColor = true;
             this.ResetThemeButton.Click += new System.EventHandler(this.ResetThemeButton_Click);
+            // 
+            // ApplyThemeButton
+            // 
+            this.ApplyThemeButton.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Center;
+            this.ApplyThemeButton.Location = new System.Drawing.Point(168, 53);
+            this.ApplyThemeButton.Name = "ApplyThemeButton";
+            this.ApplyThemeButton.Size = new System.Drawing.Size(49, 47);
+            this.ApplyThemeButton.TabIndex = 19;
+            this.ApplyThemeButton.UseVisualStyleBackColor = true;
+            this.ApplyThemeButton.Click += new System.EventHandler(this.ApplyThemeButton_Click);
             // 
             // saveFileDialog1
             // 
@@ -1068,5 +1082,6 @@
         private System.Windows.Forms.ToolStripMenuItem showMoreInformationToolStripMenuItem;
         private System.Windows.Forms.Panel ThemePanel9;
         private System.Windows.Forms.Panel ThemePanel10;
+        private System.Windows.Forms.Button ApplyThemeButton;
     }
 }
