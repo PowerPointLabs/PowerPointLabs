@@ -46,6 +46,7 @@ namespace PowerPointLabs
             newShapeCell.Name = fileName;
             newShapeCell.BackgroundImage = shapeImage.GetThumbnailImage(50, 50, ThumbNailCallBack,
                                                                         IntPtr.Zero);
+            newShapeCell.ContextMenuStrip = contextMenuStrip;
             newShapeCell.DoubleClick += PanelDoubleClick;
             newShapeCell.Click += PanelClick;
 
@@ -79,6 +80,17 @@ namespace PowerPointLabs
 
             childPanel.BackColor = Color.FromKnownColor(KnownColor.Highlight);
             _selectedPanel = childPanel;
+        }
+
+        private void ContextMenuStripItemClicked(object sender, ToolStripItemClickedEventArgs e)
+        {
+            var item = e.ClickedItem;
+
+            if (item.Name.Contains("remove"))
+            {
+                myShapeFlowLayout.Controls.Remove(_selectedPanel);
+                _selectedPanel = null;
+            }
         }
 
         # region search box appearance and behaviors

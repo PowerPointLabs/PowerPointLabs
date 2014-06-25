@@ -31,6 +31,7 @@ namespace PowerPointLabs
         /// </summary>
         private void InitializeComponent()
         {
+            this.components = new System.ComponentModel.Container();
             this.motherTableLayoutPanel = new System.Windows.Forms.TableLayoutPanel();
             this.mediaIconPanel = new Stepi.UI.ExtendedPanel();
             this.flowLayoutPanel1 = new System.Windows.Forms.FlowLayoutPanel();
@@ -39,16 +40,19 @@ namespace PowerPointLabs
             this.panel6 = new System.Windows.Forms.Panel();
             this.panel3 = new System.Windows.Forms.Panel();
             this.myShapePanel = new Stepi.UI.ExtendedPanel();
+            this.myShapeFlowLayout = new System.Windows.Forms.FlowLayoutPanel();
             this.searchBox = new System.Windows.Forms.TextBox();
             this.linkLabel1 = new System.Windows.Forms.LinkLabel();
             this.panel4 = new System.Windows.Forms.Panel();
             this.panel5 = new System.Windows.Forms.Panel();
             this.panel7 = new System.Windows.Forms.Panel();
-            this.myShapeFlowLayout = new System.Windows.Forms.FlowLayoutPanel();
+            this.contextMenuStrip = new System.Windows.Forms.ContextMenuStrip(this.components);
+            this.removeShapeToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.motherTableLayoutPanel.SuspendLayout();
             this.mediaIconPanel.SuspendLayout();
             this.flowLayoutPanel1.SuspendLayout();
             this.myShapePanel.SuspendLayout();
+            this.contextMenuStrip.SuspendLayout();
             this.SuspendLayout();
             // 
             // motherTableLayoutPanel
@@ -163,6 +167,16 @@ namespace PowerPointLabs
             this.myShapePanel.State = Stepi.UI.ExtendedPanelState.Collapsed;
             this.myShapePanel.TabIndex = 4;
             // 
+            // myShapeFlowLayout
+            // 
+            this.myShapeFlowLayout.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.myShapeFlowLayout.Location = new System.Drawing.Point(3, 22);
+            this.myShapeFlowLayout.Name = "myShapeFlowLayout";
+            this.myShapeFlowLayout.Size = new System.Drawing.Size(244, 188);
+            this.myShapeFlowLayout.TabIndex = 1;
+            // 
             // searchBox
             // 
             this.searchBox.Dock = System.Windows.Forms.DockStyle.Top;
@@ -211,15 +225,19 @@ namespace PowerPointLabs
             this.panel7.Size = new System.Drawing.Size(32, 32);
             this.panel7.TabIndex = 5;
             // 
-            // myShapeFlowLayout
+            // contextMenuStrip
             // 
-            this.myShapeFlowLayout.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.myShapeFlowLayout.Location = new System.Drawing.Point(3, 22);
-            this.myShapeFlowLayout.Name = "myShapeFlowLayout";
-            this.myShapeFlowLayout.Size = new System.Drawing.Size(244, 188);
-            this.myShapeFlowLayout.TabIndex = 1;
+            this.contextMenuStrip.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.removeShapeToolStripMenuItem});
+            this.contextMenuStrip.Name = "contextMenuStrip";
+            this.contextMenuStrip.Size = new System.Drawing.Size(164, 48);
+            this.contextMenuStrip.ItemClicked += new System.Windows.Forms.ToolStripItemClickedEventHandler(this.ContextMenuStripItemClicked);
+            // 
+            // removeShapeToolStripMenuItem
+            // 
+            this.removeShapeToolStripMenuItem.Name = "removeShapeToolStripMenuItem";
+            this.removeShapeToolStripMenuItem.Size = new System.Drawing.Size(163, 22);
+            this.removeShapeToolStripMenuItem.Text = "Remove Shape";
             // 
             // CustomShapePane
             // 
@@ -234,6 +252,7 @@ namespace PowerPointLabs
             this.mediaIconPanel.ResumeLayout(false);
             this.flowLayoutPanel1.ResumeLayout(false);
             this.myShapePanel.ResumeLayout(false);
+            this.contextMenuStrip.ResumeLayout(false);
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -255,6 +274,8 @@ namespace PowerPointLabs
         private System.Windows.Forms.Panel panel5;
         private System.Windows.Forms.Panel panel7;
         private System.Windows.Forms.FlowLayoutPanel myShapeFlowLayout;
+        private System.Windows.Forms.ContextMenuStrip contextMenuStrip;
+        private System.Windows.Forms.ToolStripMenuItem removeShapeToolStripMenuItem;
 
     }
 }
