@@ -17,15 +17,12 @@ namespace PowerPointLabs
     public partial class CustomShapePane : UserControl
     {
         private bool _searchBoxFocused;
-        private List<string> _myShapes;
         private Panel _selectedPanel;
 
         public CustomShapePane()
         {
             InitializeComponent();
 
-            _myShapes = new List<string>();
-            
             _searchBoxFocused = false;
         }
 
@@ -36,8 +33,6 @@ namespace PowerPointLabs
 
         public void AddCustomShape(string fileName)
         {
-            _myShapes.Add(fileName);
-
             var shapeImage = new Bitmap(fileName);
             
             var newShapeCell = new Panel();
@@ -86,11 +81,13 @@ namespace PowerPointLabs
         {
             var item = e.ClickedItem;
 
-            if (item.Name.Contains("remove"))
+            if (!item.Name.Contains("remove"))
             {
-                myShapeFlowLayout.Controls.Remove(_selectedPanel);
-                _selectedPanel = null;
+                return;
             }
+
+            myShapeFlowLayout.Controls.Remove(_selectedPanel);
+            _selectedPanel = null;
         }
 
         # region search box appearance and behaviors

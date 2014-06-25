@@ -200,10 +200,6 @@
                   size="large"
                   supertip="Manage your custom shapes on the fly."
                   onAction="CustomShapeButtonClick"/>
-          <button id="AddShapeButton"
-                  label="Add Shape"
-                  size="large"
-                  onAction="AddShapeButtonClick"/>
         </group>
         <group id="PPTLabsHelp"
                label="Help"
@@ -272,6 +268,9 @@
              label ="Convert to Picture"
              getImage="GetConvertToPicMenuImage"
              onAction="ConvertToPictureButtonClick"/>
+      <button id="addCustomShapePictureShape"
+             label ="Add to Custom Shapes"
+             onAction="AddShapeButtonClick"/>
       <button id="cutOutShapeShape"
               label="Crop To Shape"
               getImage="GetCutOutShapeMenuImage"
@@ -299,6 +298,9 @@
              label ="Convert to Picture"
              getImage="GetConvertToPicMenuImage"
              onAction="ConvertToPictureButtonClick"/>
+      <button id="addCustomShapeFreeform"
+             label ="Add to Custom Shapes"
+             onAction="AddShapeButtonClick"/>
       <button id="cutOutShapeFreeform"
               label="Crop To Shape"
               getImage="GetCutOutShapeMenuImage"
@@ -347,6 +349,9 @@
              label ="Convert to Picture"
              getImage="GetConvertToPicMenuImage"
              onAction="ConvertToPictureButtonClick"/>
+      <button id="addCustomShapeChart"
+             label ="Add to Custom Shapes"
+             onAction="AddShapeButtonClick"/>
       <button id="fitToWidthChart"
               label="Fit To Width"
               getImage="GetFitToWidthImage"
@@ -407,6 +412,9 @@
              label ="Convert to Picture"
              getImage="GetConvertToPicMenuImage"
              onAction="ConvertToPictureButtonClick"/>
+      <button id="addCustomShapePictureGroup"
+             label ="Add to Custom Shapes"
+             onAction="AddShapeButtonClick"/>
       <button id="cutOutShapeGroup"
               label="Crop To Shape"
               getImage="GetCutOutShapeMenuImage"
@@ -422,6 +430,9 @@
              label ="Convert to Picture"
              getImage="GetConvertToPicMenuImage"
              onAction="ConvertToPictureButtonClick"/>
+      <button id="addCustomShapeInk"
+             label ="Add to Custom Shapes"
+             onAction="AddShapeButtonClick"/>
     </contextMenu>
     <contextMenu idMso="ContextMenuSmartArtBackground">
       <menuSeparator id="separatorSmartArt"/>
@@ -433,6 +444,9 @@
              label ="Convert to Picture"
              getImage="GetConvertToPicMenuImage"
              onAction="ConvertToPictureButtonClick"/>
+      <button id="addCustomShapeSmartArt"
+             label ="Add to Custom Shapes"
+             onAction="AddShapeButtonClick"/>
     </contextMenu>
     <contextMenu idMso="ContextMenuThumbnail">
       <menuSeparator id="separatorThumbnail"/>

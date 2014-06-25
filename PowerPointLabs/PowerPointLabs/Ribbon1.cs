@@ -912,11 +912,6 @@ namespace PowerPointLabs
             var customShape = customShapePane.Control as CustomShapePane;
 
             customShape.AddCustomShape(fileName);
-
-            //if (customShapePane.Visible)
-            //{
-                
-            //}
         }
         # endregion
 
