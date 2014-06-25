@@ -522,45 +522,6 @@ namespace PowerPointLabs
             UpdateUIForNewColor();
         }
 
-        private void DisableMouseClicks()
-        {
-            if (this.Filter == null)
-            {
-                this.Filter = new MouseClickMessageFilter();
-                System.Windows.Forms.Application.AddMessageFilter(this.Filter);
-            }
-        }
-
-        private void EnableMouseClicks()
-        {
-            if ((this.Filter != null))
-            {
-                System.Windows.Forms.Application.RemoveMessageFilter(this.Filter);
-                this.Filter = null;
-            }
-        }
-
-        private MouseClickMessageFilter Filter;
-
-        private const int LButtonDown = 0x0201;
-
-        public class MouseClickMessageFilter : IMessageFilter
-        {
-            public bool PreFilterMessage(ref System.Windows.Forms.Message m)
-            {
-                System.Diagnostics.Debug.WriteLine("Mouse Event: ");
-                if (m.Msg == 0x0201 || m.Msg == 0x0202 || m.Msg == 0x0203)
-                {
-                    return true;
-                }
-                if (m.Msg == 0x0204 || m.Msg == 0x0205 || m.Msg == 0x0206)
-                {
-                    return true;
-                }
-                return false;
-            }
-        }
-
         private void brightnessBar_ValueChanged(object sender, EventArgs e)
         {
             if (!timer1.Enabled)
@@ -790,10 +751,7 @@ namespace PowerPointLabs
             Color clickedColor = ((Panel)(contextMenuStrip1.SourceControl)).BackColor;
             ColorInformationDialog dialog = new ColorInformationDialog(clickedColor);
             dialog.StartPosition = FormStartPosition.CenterScreen;
-            if (dialog.ShowDialog() == DialogResult.OK)
-            {
-
-            }
+            dialog.ShowDialog();
         }
     }
 
