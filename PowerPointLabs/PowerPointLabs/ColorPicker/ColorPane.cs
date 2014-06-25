@@ -646,12 +646,10 @@ namespace PowerPointLabs
 	        {
                 // Done twice due to multithreading issues with binding
                 Color clickedColor = ((Panel)sender).BackColor;
-                //panel1.BackColor = clickedColor;
                 _originalColor = clickedColor;
                 dataSource.selectedColor = clickedColor;
                 UpdateUIForNewColor();
 
-                panel1.BackColor = clickedColor;
                 _originalColor = clickedColor;
                 dataSource.selectedColor = clickedColor;
                 Globals.ThisAddIn.Application.StartNewUndoEntry();
@@ -669,10 +667,7 @@ namespace PowerPointLabs
             Color clickedColor = ((Panel)sender).BackColor;
             
             Globals.ThisAddIn.Application.StartNewUndoEntry();
-            dataSource.selectedColor = clickedColor;
             ColorSelectedShapesWithColor(clickedColor);
-            _originalColor = clickedColor;
-            UpdateUIForNewColor();
         }
 
         private void MatchingPanel_MouseMove(object sender, MouseEventArgs e)
@@ -801,6 +796,15 @@ namespace PowerPointLabs
         private void ApplyThemeButton_Click(object sender, EventArgs e)
         {
             ApplyCurrentThemeToSlides();
+        }
+
+        private void selectAsMainColorToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            Color clickedColor = ((Panel)contextMenuStrip1.SourceControl).BackColor;
+            dataSource.selectedColor = clickedColor;
+            _originalColor = clickedColor;
+            Globals.ThisAddIn.Application.StartNewUndoEntry();
+            UpdateUIForNewColor();
         }
     }
 

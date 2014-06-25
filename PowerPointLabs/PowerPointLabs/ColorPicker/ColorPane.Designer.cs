@@ -101,6 +101,7 @@
             this.FillEyeDropperButton = new System.Windows.Forms.Button();
             this.LineEyeDropperButton = new System.Windows.Forms.Button();
             this.FontEyeDropperButton = new System.Windows.Forms.Button();
+            this.selectAsMainColorToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.AnalogousColorPanel.SuspendLayout();
             this.flowLayoutPanel6.SuspendLayout();
             this.contextMenuStrip1.SuspendLayout();
@@ -188,9 +189,10 @@
             // contextMenuStrip1
             // 
             this.contextMenuStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.showMoreInformationToolStripMenuItem});
+            this.showMoreInformationToolStripMenuItem,
+            this.selectAsMainColorToolStripMenuItem});
             this.contextMenuStrip1.Name = "contextMenuStrip1";
-            this.contextMenuStrip1.Size = new System.Drawing.Size(201, 26);
+            this.contextMenuStrip1.Size = new System.Drawing.Size(201, 70);
             // 
             // showMoreInformationToolStripMenuItem
             // 
@@ -955,6 +957,13 @@
             this.FontEyeDropperButton.UseVisualStyleBackColor = true;
             this.FontEyeDropperButton.MouseDown += new System.Windows.Forms.MouseEventHandler(this.FontEyeDropperButton_MouseDown);
             // 
+            // selectAsMainColorToolStripMenuItem
+            // 
+            this.selectAsMainColorToolStripMenuItem.Name = "selectAsMainColorToolStripMenuItem";
+            this.selectAsMainColorToolStripMenuItem.Size = new System.Drawing.Size(200, 22);
+            this.selectAsMainColorToolStripMenuItem.Text = "Select As Main Color";
+            this.selectAsMainColorToolStripMenuItem.Click += new System.EventHandler(this.selectAsMainColorToolStripMenuItem_Click);
+            // 
             // ColorPane
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -1083,5 +1092,6 @@
         private System.Windows.Forms.Panel ThemePanel9;
         private System.Windows.Forms.Panel ThemePanel10;
         private System.Windows.Forms.Button ApplyThemeButton;
+        private System.Windows.Forms.ToolStripMenuItem selectAsMainColorToolStripMenuItem;
     }
 }
