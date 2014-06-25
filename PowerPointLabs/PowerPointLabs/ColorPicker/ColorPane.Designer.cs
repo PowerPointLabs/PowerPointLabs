@@ -640,7 +640,7 @@
             this.themeLayoutPanel.Controls.Add(this.ApplyThemeButton);
             this.themeLayoutPanel.Location = new System.Drawing.Point(20, 461);
             this.themeLayoutPanel.Name = "themeLayoutPanel";
-            this.themeLayoutPanel.Size = new System.Drawing.Size(273, 134);
+            this.themeLayoutPanel.Size = new System.Drawing.Size(273, 110);
             this.themeLayoutPanel.TabIndex = 11;
             // 
             // label6
