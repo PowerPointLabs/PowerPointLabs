@@ -98,10 +98,11 @@
             this.panel2 = new System.Windows.Forms.Panel();
             this.panel3 = new System.Windows.Forms.Panel();
             this.toolTip1 = new System.Windows.Forms.ToolTip(this.components);
+            this.EyeDropperButton = new System.Windows.Forms.Button();
+            this.TextCheckBox = new System.Windows.Forms.CheckBox();
+            this.LineCheckBox = new System.Windows.Forms.CheckBox();
             this.EditColorButton = new System.Windows.Forms.Button();
-            this.FillEyeDropperButton = new System.Windows.Forms.Button();
-            this.LineEyeDropperButton = new System.Windows.Forms.Button();
-            this.FontEyeDropperButton = new System.Windows.Forms.Button();
+            this.FillCheckBox = new System.Windows.Forms.CheckBox();
             this.AnalogousColorPanel.SuspendLayout();
             this.flowLayoutPanel6.SuspendLayout();
             this.contextMenuStrip1.SuspendLayout();
@@ -127,7 +128,7 @@
             this.panel1.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.panel1.Location = new System.Drawing.Point(20, 16);
             this.panel1.Name = "panel1";
-            this.panel1.Size = new System.Drawing.Size(61, 47);
+            this.panel1.Size = new System.Drawing.Size(43, 47);
             this.panel1.TabIndex = 0;
             this.panel1.DragDrop += new System.Windows.Forms.DragEventHandler(this.panel_DragDrop);
             this.panel1.DragEnter += new System.Windows.Forms.DragEventHandler(this.panel_DragEnter);
@@ -639,7 +640,7 @@
             this.themeLayoutPanel.Controls.Add(this.ApplyThemeButton);
             this.themeLayoutPanel.Location = new System.Drawing.Point(20, 461);
             this.themeLayoutPanel.Name = "themeLayoutPanel";
-            this.themeLayoutPanel.Size = new System.Drawing.Size(273, 111);
+            this.themeLayoutPanel.Size = new System.Drawing.Size(273, 134);
             this.themeLayoutPanel.TabIndex = 11;
             // 
             // label6
@@ -929,63 +930,80 @@
             this.panel3.Size = new System.Drawing.Size(273, 20);
             this.panel3.TabIndex = 17;
             // 
+            // EyeDropperButton
+            // 
+            this.EyeDropperButton.BackgroundImage = global::PowerPointLabs.Properties.Resources.Eyedropper_icon;
+            this.EyeDropperButton.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Center;
+            this.EyeDropperButton.Location = new System.Drawing.Point(69, 16);
+            this.EyeDropperButton.Name = "EyeDropperButton";
+            this.EyeDropperButton.Size = new System.Drawing.Size(40, 47);
+            this.EyeDropperButton.TabIndex = 23;
+            this.EyeDropperButton.UseVisualStyleBackColor = true;
+            this.EyeDropperButton.MouseDown += new System.Windows.Forms.MouseEventHandler(this.EyeDropperButton_MouseDown);
+            // 
+            // TextCheckBox
+            // 
+            this.TextCheckBox.Appearance = System.Windows.Forms.Appearance.Button;
+            this.TextCheckBox.AutoEllipsis = true;
+            this.TextCheckBox.BackgroundImage = global::PowerPointLabs.Properties.Resources.Type_icon;
+            this.TextCheckBox.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Center;
+            this.TextCheckBox.Location = new System.Drawing.Point(115, 16);
+            this.TextCheckBox.Name = "TextCheckBox";
+            this.TextCheckBox.Size = new System.Drawing.Size(40, 47);
+            this.TextCheckBox.TabIndex = 22;
+            this.TextCheckBox.UseVisualStyleBackColor = true;
+            this.TextCheckBox.CheckedChanged += new System.EventHandler(this.TextCheckBox_CheckedChanged);
+            // 
+            // LineCheckBox
+            // 
+            this.LineCheckBox.Appearance = System.Windows.Forms.Appearance.Button;
+            this.LineCheckBox.AutoEllipsis = true;
+            this.LineCheckBox.BackgroundImage = global::PowerPointLabs.Properties.Resources.Technical_Pen_icon;
+            this.LineCheckBox.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Center;
+            this.LineCheckBox.Location = new System.Drawing.Point(161, 16);
+            this.LineCheckBox.Name = "LineCheckBox";
+            this.LineCheckBox.Size = new System.Drawing.Size(40, 47);
+            this.LineCheckBox.TabIndex = 21;
+            this.LineCheckBox.UseVisualStyleBackColor = true;
+            this.LineCheckBox.CheckedChanged += new System.EventHandler(this.LineCheckBox_CheckedChanged);
+            // 
             // EditColorButton
             // 
             this.EditColorButton.BackgroundImage = global::PowerPointLabs.Properties.Resources.Palette_icon;
             this.EditColorButton.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Center;
-            this.EditColorButton.Location = new System.Drawing.Point(243, 16);
+            this.EditColorButton.Location = new System.Drawing.Point(253, 16);
             this.EditColorButton.Name = "EditColorButton";
-            this.EditColorButton.Size = new System.Drawing.Size(46, 47);
+            this.EditColorButton.Size = new System.Drawing.Size(40, 47);
             this.EditColorButton.TabIndex = 2;
             this.EditColorButton.UseVisualStyleBackColor = true;
             this.EditColorButton.Click += new System.EventHandler(this.button2_Click);
             // 
-            // FillEyeDropperButton
+            // FillCheckBox
             // 
-            this.FillEyeDropperButton.BackgroundImage = global::PowerPointLabs.Properties.Resources.Paint_icon;
-            this.FillEyeDropperButton.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Center;
-            this.FillEyeDropperButton.FlatAppearance.MouseDownBackColor = System.Drawing.SystemColors.Highlight;
-            this.FillEyeDropperButton.Location = new System.Drawing.Point(191, 16);
-            this.FillEyeDropperButton.Name = "FillEyeDropperButton";
-            this.FillEyeDropperButton.Size = new System.Drawing.Size(46, 47);
-            this.FillEyeDropperButton.TabIndex = 14;
-            this.FillEyeDropperButton.UseVisualStyleBackColor = true;
-            this.FillEyeDropperButton.MouseDown += new System.Windows.Forms.MouseEventHandler(this.FillEyeDropperButton_MouseDown);
-            // 
-            // LineEyeDropperButton
-            // 
-            this.LineEyeDropperButton.BackgroundImage = global::PowerPointLabs.Properties.Resources.Technical_Pen_icon;
-            this.LineEyeDropperButton.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Center;
-            this.LineEyeDropperButton.FlatAppearance.MouseDownBackColor = System.Drawing.SystemColors.Highlight;
-            this.LineEyeDropperButton.Location = new System.Drawing.Point(139, 16);
-            this.LineEyeDropperButton.Name = "LineEyeDropperButton";
-            this.LineEyeDropperButton.Size = new System.Drawing.Size(46, 47);
-            this.LineEyeDropperButton.TabIndex = 13;
-            this.LineEyeDropperButton.UseVisualStyleBackColor = true;
-            this.LineEyeDropperButton.MouseDown += new System.Windows.Forms.MouseEventHandler(this.LineEyeDropperButton_MouseDown);
-            // 
-            // FontEyeDropperButton
-            // 
-            this.FontEyeDropperButton.BackgroundImage = global::PowerPointLabs.Properties.Resources.Type_icon;
-            this.FontEyeDropperButton.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Center;
-            this.FontEyeDropperButton.FlatAppearance.MouseDownBackColor = System.Drawing.SystemColors.Highlight;
-            this.FontEyeDropperButton.Location = new System.Drawing.Point(87, 16);
-            this.FontEyeDropperButton.Name = "FontEyeDropperButton";
-            this.FontEyeDropperButton.Size = new System.Drawing.Size(46, 47);
-            this.FontEyeDropperButton.TabIndex = 12;
-            this.FontEyeDropperButton.UseVisualStyleBackColor = true;
-            this.FontEyeDropperButton.MouseDown += new System.Windows.Forms.MouseEventHandler(this.FontEyeDropperButton_MouseDown);
+            this.FillCheckBox.Appearance = System.Windows.Forms.Appearance.Button;
+            this.FillCheckBox.AutoEllipsis = true;
+            this.FillCheckBox.BackgroundImage = global::PowerPointLabs.Properties.Resources.Paint_icon;
+            this.FillCheckBox.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Center;
+            this.FillCheckBox.Checked = true;
+            this.FillCheckBox.CheckState = System.Windows.Forms.CheckState.Checked;
+            this.FillCheckBox.Location = new System.Drawing.Point(207, 16);
+            this.FillCheckBox.Name = "FillCheckBox";
+            this.FillCheckBox.Size = new System.Drawing.Size(40, 47);
+            this.FillCheckBox.TabIndex = 20;
+            this.FillCheckBox.UseVisualStyleBackColor = true;
+            this.FillCheckBox.CheckedChanged += new System.EventHandler(this.FillCheckBox_CheckedChanged);
             // 
             // ColorPane
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+            this.Controls.Add(this.EyeDropperButton);
+            this.Controls.Add(this.TextCheckBox);
+            this.Controls.Add(this.LineCheckBox);
             this.Controls.Add(this.panel3);
             this.Controls.Add(this.panel2);
             this.Controls.Add(this.EditColorButton);
-            this.Controls.Add(this.FillEyeDropperButton);
-            this.Controls.Add(this.LineEyeDropperButton);
-            this.Controls.Add(this.FontEyeDropperButton);
+            this.Controls.Add(this.FillCheckBox);
             this.Controls.Add(this.themeLayoutPanel);
             this.Controls.Add(this.flowLayoutPanel1);
             this.Controls.Add(this.AnalogousColorPanel);
@@ -998,7 +1016,7 @@
             this.Controls.Add(this.brightnessBar);
             this.Controls.Add(this.saturationBar);
             this.Name = "ColorPane";
-            this.Size = new System.Drawing.Size(304, 575);
+            this.Size = new System.Drawing.Size(304, 595);
             this.Load += new System.EventHandler(this.ColorPane_Load);
             this.AnalogousColorPanel.ResumeLayout(false);
             this.AnalogousColorPanel.PerformLayout();
@@ -1090,9 +1108,6 @@
         private System.Windows.Forms.SaveFileDialog saveFileDialog1;
         private System.Windows.Forms.Button LoadButton;
         private System.Windows.Forms.OpenFileDialog openFileDialog1;
-        private System.Windows.Forms.Button FontEyeDropperButton;
-        private System.Windows.Forms.Button LineEyeDropperButton;
-        private System.Windows.Forms.Button FillEyeDropperButton;
         private System.Windows.Forms.Label label7;
         private System.Windows.Forms.Label label8;
         private System.Windows.Forms.Panel panel2;
@@ -1105,5 +1120,9 @@
         private System.Windows.Forms.Panel ThemePanel10;
         private System.Windows.Forms.Button ApplyThemeButton;
         private System.Windows.Forms.ToolStripMenuItem selectAsMainColorToolStripMenuItem;
+        private System.Windows.Forms.CheckBox FillCheckBox;
+        private System.Windows.Forms.CheckBox LineCheckBox;
+        private System.Windows.Forms.CheckBox TextCheckBox;
+        private System.Windows.Forms.Button EyeDropperButton;
     }
 }

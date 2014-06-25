@@ -25,7 +25,6 @@ namespace PowerPointLabs
 
         private Color _originalColor;
 
-        //Defaults is Fill
         private bool _isFillColorSelected = true;
         private bool _isFontColorSelected = false;
         private bool _isLineColorSelected = false;
@@ -49,9 +48,9 @@ namespace PowerPointLabs
         #region ToolTip
         private void InitToolTipControl()
         {
-            toolTip1.SetToolTip(this.FontEyeDropperButton, "EyeDrops Font Color for Selected TextFrames");
-            toolTip1.SetToolTip(this.LineEyeDropperButton, "EyeDrops Line Color for Selected Shapes");
-            toolTip1.SetToolTip(this.FillEyeDropperButton, "EyeDrops Fill Color for Selected Shapes");
+            toolTip1.SetToolTip(this.TextCheckBox, "EyeDrops Font Color for Selected TextFrames");
+            toolTip1.SetToolTip(this.LineCheckBox, "EyeDrops Line Color for Selected Shapes");
+            toolTip1.SetToolTip(this.FillCheckBox, "EyeDrops Fill Color for Selected Shapes");
             toolTip1.SetToolTip(this.EditColorButton, "Edits Selected Color");
             toolTip1.SetToolTip(this.LoadButton, "Load Existing Theme");
             toolTip1.SetToolTip(this.SaveThemeButton, "Save Current Theme");
@@ -608,38 +607,6 @@ namespace PowerPointLabs
             }
         }
 
-        private void FontEyeDropperButton_Click(object sender, EventArgs e)
-        {
-            _isFontColorSelected = true;
-            _isFillColorSelected = false;
-            _isLineColorSelected = false;
-            BeginEyedropping();
-        }
-
-        private void HighlightEyeDropperButton_Click(object sender, EventArgs e)
-        {
-            _isFontColorSelected = false;
-            _isFillColorSelected = false;
-            _isLineColorSelected = false;
-            BeginEyedropping();
-        }
-
-        private void LineEyeDropperButton_Click(object sender, EventArgs e)
-        {
-            _isFontColorSelected = false;
-            _isFillColorSelected = false;
-            _isLineColorSelected = true;
-            BeginEyedropping();
-        }
-
-        private void FillEyeDropperButton_Click(object sender, EventArgs e)
-        {
-            _isFontColorSelected = false;
-            _isFillColorSelected = true;
-            _isLineColorSelected = false;
-            BeginEyedropping();
-        }
-
         private void ThemePanel_Click(object sender, EventArgs e)
         {
             try 
@@ -806,6 +773,27 @@ namespace PowerPointLabs
             Globals.ThisAddIn.Application.StartNewUndoEntry();
             UpdateUIForNewColor();
         }
+
+        private void FillCheckBox_CheckedChanged(object sender, EventArgs e)
+        {
+            _isFillColorSelected = ((CheckBox)sender).Checked;
+        }
+
+        private void LineCheckBox_CheckedChanged(object sender, EventArgs e)
+        {
+            _isLineColorSelected = ((CheckBox)sender).Checked;
+        }
+
+        private void TextCheckBox_CheckedChanged(object sender, EventArgs e)
+        {
+            _isFontColorSelected = ((CheckBox)sender).Checked;
+        }
+
+        private void EyeDropperButton_MouseDown(object sender, MouseEventArgs e)
+        {
+            BeginEyedropping();
+        }
+
     }
 
     public class SysMouseEventInfo : EventArgs
