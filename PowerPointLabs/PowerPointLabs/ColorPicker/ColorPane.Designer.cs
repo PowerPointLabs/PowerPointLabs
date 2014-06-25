@@ -38,6 +38,7 @@
             this.AnalogousLighter = new System.Windows.Forms.Panel();
             this.contextMenuStrip1 = new System.Windows.Forms.ContextMenuStrip(this.components);
             this.showMoreInformationToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.selectAsMainColorToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.AnalogousSelected = new System.Windows.Forms.Panel();
             this.AnalogousDarker = new System.Windows.Forms.Panel();
             this.flowLayoutPanel2 = new System.Windows.Forms.FlowLayoutPanel();
@@ -101,7 +102,6 @@
             this.FillEyeDropperButton = new System.Windows.Forms.Button();
             this.LineEyeDropperButton = new System.Windows.Forms.Button();
             this.FontEyeDropperButton = new System.Windows.Forms.Button();
-            this.selectAsMainColorToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.AnalogousColorPanel.SuspendLayout();
             this.flowLayoutPanel6.SuspendLayout();
             this.contextMenuStrip1.SuspendLayout();
@@ -192,7 +192,7 @@
             this.showMoreInformationToolStripMenuItem,
             this.selectAsMainColorToolStripMenuItem});
             this.contextMenuStrip1.Name = "contextMenuStrip1";
-            this.contextMenuStrip1.Size = new System.Drawing.Size(201, 70);
+            this.contextMenuStrip1.Size = new System.Drawing.Size(201, 48);
             // 
             // showMoreInformationToolStripMenuItem
             // 
@@ -200,6 +200,13 @@
             this.showMoreInformationToolStripMenuItem.Size = new System.Drawing.Size(200, 22);
             this.showMoreInformationToolStripMenuItem.Text = "Show More Information";
             this.showMoreInformationToolStripMenuItem.Click += new System.EventHandler(this.showMoreInformationToolStripMenuItem_Click);
+            // 
+            // selectAsMainColorToolStripMenuItem
+            // 
+            this.selectAsMainColorToolStripMenuItem.Name = "selectAsMainColorToolStripMenuItem";
+            this.selectAsMainColorToolStripMenuItem.Size = new System.Drawing.Size(200, 22);
+            this.selectAsMainColorToolStripMenuItem.Text = "Select As Main Color";
+            this.selectAsMainColorToolStripMenuItem.Click += new System.EventHandler(this.selectAsMainColorToolStripMenuItem_Click);
             // 
             // AnalogousSelected
             // 
@@ -849,6 +856,7 @@
             // 
             // ApplyThemeButton
             // 
+            this.ApplyThemeButton.BackgroundImage = global::PowerPointLabs.Properties.Resources.apply_icon;
             this.ApplyThemeButton.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Center;
             this.ApplyThemeButton.Location = new System.Drawing.Point(168, 53);
             this.ApplyThemeButton.Name = "ApplyThemeButton";
@@ -956,13 +964,6 @@
             this.FontEyeDropperButton.TabIndex = 12;
             this.FontEyeDropperButton.UseVisualStyleBackColor = true;
             this.FontEyeDropperButton.MouseDown += new System.Windows.Forms.MouseEventHandler(this.FontEyeDropperButton_MouseDown);
-            // 
-            // selectAsMainColorToolStripMenuItem
-            // 
-            this.selectAsMainColorToolStripMenuItem.Name = "selectAsMainColorToolStripMenuItem";
-            this.selectAsMainColorToolStripMenuItem.Size = new System.Drawing.Size(200, 22);
-            this.selectAsMainColorToolStripMenuItem.Text = "Select As Main Color";
-            this.selectAsMainColorToolStripMenuItem.Click += new System.EventHandler(this.selectAsMainColorToolStripMenuItem_Click);
             // 
             // ColorPane
             // 

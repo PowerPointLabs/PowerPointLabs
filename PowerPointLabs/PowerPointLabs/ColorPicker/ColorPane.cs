@@ -716,7 +716,7 @@ namespace PowerPointLabs
             try
             {
                 Microsoft.Office.Core.ThemeColorScheme scheme = 
-                    Globals.ThisAddIn.Application.ActivePresentation.Slides[1].ThemeColorScheme;
+                    PowerPointPresentation.CurrentSlide.GetNativeSlide().ThemeColorScheme;
                 
                 ThemePanel1.BackColor = Color.FromArgb(
                     ColorHelper.ReverseRGBToArgb(scheme.Colors(Microsoft.Office.Core.MsoThemeColorSchemeIndex.msoThemeLight1).RGB));
