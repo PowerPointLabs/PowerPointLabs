@@ -52,6 +52,14 @@ namespace PowerPointLabs
 
     class ColorHelper
     {
+        public static int ReverseRGBToArgb(int x)
+        {
+            int R = 0xff & x;
+            int G = (0xff00 & x) >> 8;
+            int B = (0xff0000 & x) >> 16;
+            return (int)(0xff << 24 | R << 16 | G << 8 | B);
+        }
+
         public static Color ColorFromAhsb(int a, float h, float s, float b)
         {
             if (0 == s)

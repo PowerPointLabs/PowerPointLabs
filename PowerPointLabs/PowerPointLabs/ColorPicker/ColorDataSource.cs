@@ -190,6 +190,24 @@ namespace PowerPointLabs
                 }
             }
         }
+
+        private Color themeColorTenValue;
+
+        public Color themeColorTen
+        {
+            get
+            {
+                return themeColorTenValue;
+            }
+            set
+            {
+                if (value != this.themeColorTenValue)
+                {
+                    this.themeColorTenValue = value;
+                    OnPropertyChanged("themeColorTen");
+                }
+            }
+        }
         
         public bool SaveThemeColorsInFile(String filePath)
         {
@@ -205,6 +223,7 @@ namespace PowerPointLabs
                 themeColors.Add(this.themeColorSeven);
                 themeColors.Add(this.themeColorEight);
                 themeColors.Add(this.themeColorNine);
+                themeColors.Add(this.themeColorTen);
 
                 Stream fileStream = File.Create(filePath);
                 BinaryFormatter serializer = new BinaryFormatter();
@@ -236,6 +255,7 @@ namespace PowerPointLabs
                 this.themeColorSeven = themeColors[6];
                 this.themeColorEight = themeColors[7];
                 this.themeColorNine = themeColors[8];
+                this.themeColorTen = themeColors[9];
             }
             catch (Exception e)
             {

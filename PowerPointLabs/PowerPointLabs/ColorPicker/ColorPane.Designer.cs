@@ -85,6 +85,7 @@
             this.ThemePanel7 = new System.Windows.Forms.Panel();
             this.ThemePanel8 = new System.Windows.Forms.Panel();
             this.ThemePanel9 = new System.Windows.Forms.Panel();
+            this.ThemePanel10 = new System.Windows.Forms.Panel();
             this.SaveThemeButton = new System.Windows.Forms.Button();
             this.LoadButton = new System.Windows.Forms.Button();
             this.ResetThemeButton = new System.Windows.Forms.Button();
@@ -651,9 +652,10 @@
             this.flowLayoutPanel11.Controls.Add(this.ThemePanel7);
             this.flowLayoutPanel11.Controls.Add(this.ThemePanel8);
             this.flowLayoutPanel11.Controls.Add(this.ThemePanel9);
+            this.flowLayoutPanel11.Controls.Add(this.ThemePanel10);
             this.flowLayoutPanel11.Location = new System.Drawing.Point(3, 19);
             this.flowLayoutPanel11.Name = "flowLayoutPanel11";
-            this.flowLayoutPanel11.Size = new System.Drawing.Size(255, 26);
+            this.flowLayoutPanel11.Size = new System.Drawing.Size(258, 28);
             this.flowLayoutPanel11.TabIndex = 15;
             // 
             // ThemePanel1
@@ -665,7 +667,7 @@
             this.ThemePanel1.Cursor = System.Windows.Forms.Cursors.Hand;
             this.ThemePanel1.Location = new System.Drawing.Point(3, 3);
             this.ThemePanel1.Name = "ThemePanel1";
-            this.ThemePanel1.Size = new System.Drawing.Size(22, 22);
+            this.ThemePanel1.Size = new System.Drawing.Size(19, 19);
             this.ThemePanel1.TabIndex = 3;
             this.ThemePanel1.Click += new System.EventHandler(this.ThemePanel_Click);
             this.ThemePanel1.DragDrop += new System.Windows.Forms.DragEventHandler(this.panel_DragDrop);
@@ -678,9 +680,9 @@
             this.ThemePanel2.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.ThemePanel2.ContextMenuStrip = this.contextMenuStrip1;
             this.ThemePanel2.Cursor = System.Windows.Forms.Cursors.Hand;
-            this.ThemePanel2.Location = new System.Drawing.Point(31, 3);
+            this.ThemePanel2.Location = new System.Drawing.Point(28, 3);
             this.ThemePanel2.Name = "ThemePanel2";
-            this.ThemePanel2.Size = new System.Drawing.Size(22, 22);
+            this.ThemePanel2.Size = new System.Drawing.Size(19, 19);
             this.ThemePanel2.TabIndex = 4;
             this.ThemePanel2.Click += new System.EventHandler(this.ThemePanel_Click);
             this.ThemePanel2.DragDrop += new System.Windows.Forms.DragEventHandler(this.panel_DragDrop);
@@ -693,9 +695,9 @@
             this.ThemePanel3.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.ThemePanel3.ContextMenuStrip = this.contextMenuStrip1;
             this.ThemePanel3.Cursor = System.Windows.Forms.Cursors.Hand;
-            this.ThemePanel3.Location = new System.Drawing.Point(59, 3);
+            this.ThemePanel3.Location = new System.Drawing.Point(53, 3);
             this.ThemePanel3.Name = "ThemePanel3";
-            this.ThemePanel3.Size = new System.Drawing.Size(22, 22);
+            this.ThemePanel3.Size = new System.Drawing.Size(19, 19);
             this.ThemePanel3.TabIndex = 5;
             this.ThemePanel3.Click += new System.EventHandler(this.ThemePanel_Click);
             this.ThemePanel3.DragDrop += new System.Windows.Forms.DragEventHandler(this.panel_DragDrop);
@@ -708,9 +710,9 @@
             this.ThemePanel4.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.ThemePanel4.ContextMenuStrip = this.contextMenuStrip1;
             this.ThemePanel4.Cursor = System.Windows.Forms.Cursors.Hand;
-            this.ThemePanel4.Location = new System.Drawing.Point(87, 3);
+            this.ThemePanel4.Location = new System.Drawing.Point(78, 3);
             this.ThemePanel4.Name = "ThemePanel4";
-            this.ThemePanel4.Size = new System.Drawing.Size(22, 22);
+            this.ThemePanel4.Size = new System.Drawing.Size(19, 19);
             this.ThemePanel4.TabIndex = 6;
             this.ThemePanel4.Click += new System.EventHandler(this.ThemePanel_Click);
             this.ThemePanel4.DragDrop += new System.Windows.Forms.DragEventHandler(this.panel_DragDrop);
@@ -723,9 +725,9 @@
             this.ThemePanel5.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.ThemePanel5.ContextMenuStrip = this.contextMenuStrip1;
             this.ThemePanel5.Cursor = System.Windows.Forms.Cursors.Hand;
-            this.ThemePanel5.Location = new System.Drawing.Point(115, 3);
+            this.ThemePanel5.Location = new System.Drawing.Point(103, 3);
             this.ThemePanel5.Name = "ThemePanel5";
-            this.ThemePanel5.Size = new System.Drawing.Size(22, 22);
+            this.ThemePanel5.Size = new System.Drawing.Size(19, 19);
             this.ThemePanel5.TabIndex = 7;
             this.ThemePanel5.Click += new System.EventHandler(this.ThemePanel_Click);
             this.ThemePanel5.DragDrop += new System.Windows.Forms.DragEventHandler(this.panel_DragDrop);
@@ -738,9 +740,9 @@
             this.ThemePanel6.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.ThemePanel6.ContextMenuStrip = this.contextMenuStrip1;
             this.ThemePanel6.Cursor = System.Windows.Forms.Cursors.Hand;
-            this.ThemePanel6.Location = new System.Drawing.Point(143, 3);
+            this.ThemePanel6.Location = new System.Drawing.Point(128, 3);
             this.ThemePanel6.Name = "ThemePanel6";
-            this.ThemePanel6.Size = new System.Drawing.Size(22, 22);
+            this.ThemePanel6.Size = new System.Drawing.Size(19, 19);
             this.ThemePanel6.TabIndex = 8;
             this.ThemePanel6.Click += new System.EventHandler(this.ThemePanel_Click);
             this.ThemePanel6.DragDrop += new System.Windows.Forms.DragEventHandler(this.panel_DragDrop);
@@ -753,9 +755,9 @@
             this.ThemePanel7.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.ThemePanel7.ContextMenuStrip = this.contextMenuStrip1;
             this.ThemePanel7.Cursor = System.Windows.Forms.Cursors.Hand;
-            this.ThemePanel7.Location = new System.Drawing.Point(171, 3);
+            this.ThemePanel7.Location = new System.Drawing.Point(153, 3);
             this.ThemePanel7.Name = "ThemePanel7";
-            this.ThemePanel7.Size = new System.Drawing.Size(22, 22);
+            this.ThemePanel7.Size = new System.Drawing.Size(19, 19);
             this.ThemePanel7.TabIndex = 9;
             this.ThemePanel7.Click += new System.EventHandler(this.ThemePanel_Click);
             this.ThemePanel7.DragDrop += new System.Windows.Forms.DragEventHandler(this.panel_DragDrop);
@@ -768,9 +770,9 @@
             this.ThemePanel8.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.ThemePanel8.ContextMenuStrip = this.contextMenuStrip1;
             this.ThemePanel8.Cursor = System.Windows.Forms.Cursors.Hand;
-            this.ThemePanel8.Location = new System.Drawing.Point(199, 3);
+            this.ThemePanel8.Location = new System.Drawing.Point(178, 3);
             this.ThemePanel8.Name = "ThemePanel8";
-            this.ThemePanel8.Size = new System.Drawing.Size(22, 22);
+            this.ThemePanel8.Size = new System.Drawing.Size(19, 19);
             this.ThemePanel8.TabIndex = 10;
             this.ThemePanel8.Click += new System.EventHandler(this.ThemePanel_Click);
             this.ThemePanel8.DragDrop += new System.Windows.Forms.DragEventHandler(this.panel_DragDrop);
@@ -783,19 +785,34 @@
             this.ThemePanel9.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.ThemePanel9.ContextMenuStrip = this.contextMenuStrip1;
             this.ThemePanel9.Cursor = System.Windows.Forms.Cursors.Hand;
-            this.ThemePanel9.Location = new System.Drawing.Point(227, 3);
+            this.ThemePanel9.Location = new System.Drawing.Point(203, 3);
             this.ThemePanel9.Name = "ThemePanel9";
-            this.ThemePanel9.Size = new System.Drawing.Size(22, 22);
+            this.ThemePanel9.Size = new System.Drawing.Size(19, 19);
             this.ThemePanel9.TabIndex = 11;
             this.ThemePanel9.Click += new System.EventHandler(this.ThemePanel_Click);
             this.ThemePanel9.DragDrop += new System.Windows.Forms.DragEventHandler(this.panel_DragDrop);
             this.ThemePanel9.DragEnter += new System.Windows.Forms.DragEventHandler(this.panel_DragEnter);
             // 
+            // ThemePanel10
+            // 
+            this.ThemePanel10.AllowDrop = true;
+            this.ThemePanel10.BackColor = System.Drawing.Color.White;
+            this.ThemePanel10.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.ThemePanel10.ContextMenuStrip = this.contextMenuStrip1;
+            this.ThemePanel10.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.ThemePanel10.Location = new System.Drawing.Point(228, 3);
+            this.ThemePanel10.Name = "ThemePanel10";
+            this.ThemePanel10.Size = new System.Drawing.Size(19, 19);
+            this.ThemePanel10.TabIndex = 11;
+            this.ThemePanel10.Click += new System.EventHandler(this.ThemePanel_Click);
+            this.ThemePanel10.DragDrop += new System.Windows.Forms.DragEventHandler(this.panel_DragDrop);
+            this.ThemePanel10.DragEnter += new System.Windows.Forms.DragEventHandler(this.panel_DragEnter);
+            // 
             // SaveThemeButton
             // 
             this.SaveThemeButton.BackgroundImage = global::PowerPointLabs.Properties.Resources.save_icon;
             this.SaveThemeButton.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Center;
-            this.SaveThemeButton.Location = new System.Drawing.Point(3, 51);
+            this.SaveThemeButton.Location = new System.Drawing.Point(3, 53);
             this.SaveThemeButton.Name = "SaveThemeButton";
             this.SaveThemeButton.Size = new System.Drawing.Size(49, 47);
             this.SaveThemeButton.TabIndex = 16;
@@ -806,7 +823,7 @@
             // 
             this.LoadButton.BackgroundImage = global::PowerPointLabs.Properties.Resources.down_icon;
             this.LoadButton.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Center;
-            this.LoadButton.Location = new System.Drawing.Point(58, 51);
+            this.LoadButton.Location = new System.Drawing.Point(58, 53);
             this.LoadButton.Name = "LoadButton";
             this.LoadButton.Size = new System.Drawing.Size(49, 47);
             this.LoadButton.TabIndex = 17;
@@ -817,7 +834,7 @@
             // 
             this.ResetThemeButton.BackgroundImage = global::PowerPointLabs.Properties.Resources.delete_icon;
             this.ResetThemeButton.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Center;
-            this.ResetThemeButton.Location = new System.Drawing.Point(113, 51);
+            this.ResetThemeButton.Location = new System.Drawing.Point(113, 53);
             this.ResetThemeButton.Name = "ResetThemeButton";
             this.ResetThemeButton.Size = new System.Drawing.Size(49, 47);
             this.ResetThemeButton.TabIndex = 18;
@@ -1034,7 +1051,6 @@
         private System.Windows.Forms.Panel ThemePanel6;
         private System.Windows.Forms.Panel ThemePanel7;
         private System.Windows.Forms.Panel ThemePanel8;
-        private System.Windows.Forms.Panel ThemePanel9;
         private System.Windows.Forms.Button SaveThemeButton;
         private System.Windows.Forms.SaveFileDialog saveFileDialog1;
         private System.Windows.Forms.Button LoadButton;
@@ -1050,5 +1066,7 @@
         private System.Windows.Forms.Button ResetThemeButton;
         private System.Windows.Forms.ContextMenuStrip contextMenuStrip1;
         private System.Windows.Forms.ToolStripMenuItem showMoreInformationToolStripMenuItem;
+        private System.Windows.Forms.Panel ThemePanel9;
+        private System.Windows.Forms.Panel ThemePanel10;
     }
 }
