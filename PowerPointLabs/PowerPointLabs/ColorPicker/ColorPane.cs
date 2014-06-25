@@ -745,18 +745,18 @@ namespace PowerPointLabs
             }
         }
 
-        private void ApplyCurrentThemeToSlides()
+        private void ApplyCurrentThemeToSelectedSlides()
         {
-            foreach (PowerPoint.Slide slide in Globals.ThisAddIn.Application.ActivePresentation.Slides)
+            foreach (PowerPointSlide slide in PowerPointPresentation.SelectedSlides)
             {
                 ApplyCurrentThemeToSlide(slide);
             }
         }
 
-        private void ApplyCurrentThemeToSlide(Slide slide)
+        private void ApplyCurrentThemeToSlide(PowerPointSlide slide)
         {
             Microsoft.Office.Core.ThemeColorScheme scheme = 
-                slide.ThemeColorScheme;
+                slide.GetNativeSlide().ThemeColorScheme;
 
             scheme.Colors(Microsoft.Office.Core.MsoThemeColorSchemeIndex.msoThemeLight1).RGB =
                 ColorHelper.ReverseRGBToArgb((ThemePanel1.BackColor.ToArgb()));
@@ -795,7 +795,7 @@ namespace PowerPointLabs
 
         private void ApplyThemeButton_Click(object sender, EventArgs e)
         {
-            ApplyCurrentThemeToSlides();
+            ApplyCurrentThemeToSelectedSlides();
         }
 
         private void selectAsMainColorToolStripMenuItem_Click(object sender, EventArgs e)
