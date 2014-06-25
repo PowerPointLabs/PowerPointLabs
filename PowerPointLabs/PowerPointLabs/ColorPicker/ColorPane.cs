@@ -758,6 +758,19 @@ namespace PowerPointLabs
             ThemePanel7.BackColor = Color.White;
             ThemePanel8.BackColor = Color.White;
             ThemePanel9.BackColor = Color.White;
+
+            //Microsoft.Office.Core.ThemeColorScheme scheme = Globals.ThisAddIn.Application.ActivePresentation.Slides[1].ThemeColorScheme;
+
+            //ThemePanel1.BackColor = Color.FromArgb(scheme.Colors(Microsoft.Office.Core.MsoThemeColorSchemeIndex.msoThemeDark1).RGB);
+            //ThemePanel2.BackColor = Color.White;
+            //ThemePanel3.BackColor = Color.White;
+            //ThemePanel4.BackColor = Color.White;
+            //ThemePanel5.BackColor = Color.White;
+            //ThemePanel6.BackColor = Color.White;
+            //ThemePanel7.BackColor = Color.White;
+            //ThemePanel8.BackColor = Color.White;
+            //ThemePanel9.BackColor = Color.White;
+
         }
 
         private void ColorPane_Load(object sender, EventArgs e)
