@@ -221,6 +221,12 @@ namespace PowerPointLabs.Models
             }
         }
 
+        public void InsertPicture(string fileName, MsoTriState linkToFile, MsoTriState saveWithDoc, float left,
+                                  float top)
+        {
+            _slide.Shapes.AddPicture(fileName, linkToFile, saveWithDoc, left, top);
+        }
+
         private Effect InsertAnimationBeforeExisting(Shape shape, Effect existing, MsoAnimEffect effect)
         {
             var sequence = _slide.TimeLine.MainSequence;
