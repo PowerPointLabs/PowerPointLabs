@@ -889,29 +889,39 @@ namespace PowerPointLabs
         {
             var customShapePane = Globals.ThisAddIn.GetActivePane(Type.GetType("PowerPointLabs.CustomShapePane"));
 
-            // if currently the pane is hidden, show the pane
-            if (!customShapePane.Visible)
-            {
-                // fire the pane visble change event
-                customShapePane.Visible = true;
-            }
-        }
-
-        public void AddShapeButtonClick(Office.IRibbonControl control)
-        {
-            var selection = PowerPointPresentation.CurrentSelection;
-            var fileName = ConvertToPicture.ConvertAndSave(selection);
-
-            var customShapePane = Globals.ThisAddIn.GetActivePane(Type.GetType("PowerPointLabs.CustomShapePane"));
-
-            if (customShapePane == null)
+            if (customShapePane == null || !(customShapePane.Control is CustomShapePane))
             {
                 return;
             }
 
             var customShape = customShapePane.Control as CustomShapePane;
 
-            customShape.AddCustomShape(fileName);
+            // if currently the pane is hidden, show the pane
+            if (customShapePane.Visible)
+            {
+                return;
+            }
+
+            customShape.PaneReload();
+            customShapePane.Visible = true;
+        }
+
+        public void AddShapeButtonClick(Office.IRibbonControl control)
+        {
+            var selection = PowerPointPresentation.CurrentSelection;
+            
+            var customShapePane = Globals.ThisAddIn.GetActivePane(Type.GetType("PowerPointLabs.CustomShapePane"));
+
+            if (customShapePane == null || !(customShapePane.Control is CustomShapePane))
+            {
+                return;
+            }
+
+            var customShape = customShapePane.Control as CustomShapePane;
+
+            customShape.PaneReload();
+            ConvertToPicture.ConvertAndSave(selection, customShape.CurrentShapeName);
+            customShape.AddCustomShape();
         }
         # endregion
 

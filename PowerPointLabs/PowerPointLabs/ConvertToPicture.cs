@@ -25,18 +25,10 @@ namespace PowerPointLabs
             }
         }
 
-        public static string ConvertAndSave(PowerPoint.Selection selection)
+        public static void ConvertAndSave(PowerPoint.Selection selection, string fileName)
         {
             if (IsSelectionShape(selection))
             {
-                var saveFileDialog = new SaveFileDialog { Filter = ShapeSaveDialogFiler };
-
-                if (saveFileDialog.ShowDialog() != DialogResult.OK)
-                {
-                    return string.Empty;
-                }
-
-                var fileName = saveFileDialog.FileName;
                 var grouped = selection.ShapeRange.Count > 1;
 
                 var shape = GetShapeFromSelection(selection);
@@ -52,12 +44,11 @@ namespace PowerPointLabs
                 {
                     shape.Select();
                 }
-
-                return fileName;
             }
-
-            MessageBox.Show(ErrorTypeNotSupported, ErrorWindowTitle);
-            return string.Empty;
+            else
+            {
+                MessageBox.Show(ErrorTypeNotSupported, ErrorWindowTitle);
+            }
         }
 
         private static void ConvertToPictureForShape(PowerPoint.Shape shape)

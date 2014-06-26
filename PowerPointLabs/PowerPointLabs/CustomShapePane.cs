@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Drawing;
 using System.Drawing.Drawing2D;
+using System.IO;
 using System.Windows.Forms;
 using Microsoft.Office.Core;
 using PPExtraEventHelper;
@@ -10,31 +11,56 @@ namespace PowerPointLabs
 {
     public partial class CustomShapePane : UserControl
     {
-        private bool _searchBoxFocused;
         private Panel _selectedPanel;
+        private int _currentShapeCnt = 0;
+        private bool _firstTimeLoading = true;
+
+        public string CurrentShapeName
+        {
+            get { return ShapeFolderPath + @"\" + _currentShapeCnt + ".wmf"; }
+        }
+
+        public string ShapeFolderPath
+        {
+            get { return Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments) + @"\PowerPointLabs Custom Shapes"; }
+        }
 
         public CustomShapePane()
         {
             InitializeComponent();
-
-            _searchBoxFocused = false;
         }
 
-        public void AddCustomShape(string fileName)
+        public void AddCustomShape()
         {
-            var shapeImage = new Bitmap(fileName);
+            var shapeImage = new Bitmap(CurrentShapeName);
             
             var newShapeCell = new Panel();
 
             newShapeCell.Size = new Size(50, 50);
-            newShapeCell.Name = fileName;
+            newShapeCell.Name = CurrentShapeName;
             newShapeCell.BackgroundImage = CreateThumbnailImage(shapeImage, 50, 50);
             newShapeCell.ContextMenuStrip = contextMenuStrip;
             newShapeCell.DoubleClick += PanelDoubleClick;
             newShapeCell.Click += PanelClick;
 
             myShapeFlowLayout.Controls.Add(newShapeCell);
+
+            _currentShapeCnt++;
         }
+
+        public void PaneReload()
+        {
+            if (!_firstTimeLoading)
+            {
+                return;
+            }
+            
+            _firstTimeLoading = false;
+            PrepareShapes();
+        }
+
+        # region Helper Functions
+        private const string WmfFileNameInvalid = @"Invalid shape name encountered";
 
         private Tuple<Single, Single> ToMiddleOnScreen(Single slideWidth, Single slideHeight,
                                                        Single clientWidth, Single clientHeight)
@@ -85,6 +111,37 @@ namespace PowerPointLabs
 
             return thumbnail;
         }
+
+        private void PrepareFolder()
+        {
+            if (!Directory.Exists(ShapeFolderPath))
+            {
+                Directory.CreateDirectory(ShapeFolderPath);
+            }
+        }
+
+        private void PrepareShapes()
+        {
+            PrepareFolder();
+
+            var wmfFiles = Directory.EnumerateFiles(ShapeFolderPath, "*.wmf");
+
+            foreach (var wmfFile in wmfFiles)
+            {
+                var shapeName = Path.GetFileNameWithoutExtension(wmfFile);
+                
+                if (shapeName == null)
+                {
+                    MessageBox.Show(WmfFileNameInvalid);
+                    continue;
+                }
+
+                _currentShapeCnt = int.Parse(shapeName);
+
+                AddCustomShape();
+            }
+        }
+        # endregion
 
         # region Event Handlers
         private const string PanelNullClickSenderError = @"No shape selected";
@@ -144,12 +201,15 @@ namespace PowerPointLabs
                 return;
             }
 
+            File.Delete(_selectedPanel.Name);
             myShapeFlowLayout.Controls.Remove(_selectedPanel);
             _selectedPanel = null;
         }
         # endregion
 
         # region search box appearance and behaviors
+        /*
+        private bool _searchBoxFocused = false;
         protected override void OnLoad(EventArgs e)
         {
             var searchButton = new Button();
@@ -193,6 +253,7 @@ namespace PowerPointLabs
                 _searchBoxFocused = true;
             }
         }
+        */
         # endregion
     }
 }
