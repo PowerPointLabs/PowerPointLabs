@@ -627,6 +627,7 @@ namespace PowerPointLabs
         # region Copy paste handlers
 
         private PowerPoint.DocumentWindow _copyFromWnd;
+        private Regex _shapeNamePattern = new Regex(@"^[^\[]\D+\s\d+$");
 
         private void AfterPasteEventHandler(PowerPoint.Selection selection)
         {
@@ -642,14 +643,14 @@ namespace PowerPointLabs
                     List<String> nameListForPastedShapes = new List<string>();
                     Dictionary<String, String> nameDictForPastedShapes = new Dictionary<string, string>();
                     List<String> nameListForCopiedShapes = new List<string>();
-                    Regex namePattern = new Regex(@"^[^\[]\D+\s\d+$");
+                    
                     List<PowerPoint.Shape> corruptedShapes = new List<PowerPoint.Shape>();
 
                     foreach (var shape in copiedShapes)
                     {
                         try
                         {
-                            if (namePattern.IsMatch(shape.Name))
+                            if (_shapeNamePattern.IsMatch(shape.Name))
                             {
                                 shape.Name = "[" + shape.Name + "]";
                             }
@@ -680,8 +681,9 @@ namespace PowerPointLabs
                     for (int i = 1; i <= pastedShapes.Count; i++)
                     {
                         PowerPoint.Shape shape = pastedShapes[i];
+                        int matchedShapeIndex = FindMatchedShape(shape);
                         string uniqueName = Guid.NewGuid().ToString();
-                        nameDictForPastedShapes[uniqueName] = nameListForCopiedShapes[i - 1];
+                        nameDictForPastedShapes[uniqueName] = nameListForCopiedShapes[matchedShapeIndex];
                         shape.Name = uniqueName;
                         nameListForPastedShapes.Add(shape.Name);
                     }
@@ -699,6 +701,62 @@ namespace PowerPointLabs
             {
                 //TODO: log in ThisAddIn.cs
             }
+        }
+
+        /// <summary>
+        /// Match the shapes, when they have the same width, height, type, and similar name
+        /// </summary>
+        /// <param name="shape"></param>
+        /// <returns></returns>
+        private int FindMatchedShape(PowerPoint.Shape shape)
+        {
+            for (int i = 0; i < copiedShapes.Count; i++)
+            {
+                if (shape.Width == copiedShapes[i].Width
+                    && shape.Height == copiedShapes[i].Height
+                    && shape.Type == copiedShapes[i].Type
+                    && (shape.Type != Office.MsoShapeType.msoAutoShape || shape.AutoShapeType == copiedShapes[i].AutoShapeType)
+                    && IsSimilarName(shape.Name, copiedShapes[i].Name))
+                {
+                    return i;
+                }
+            }
+            return -1;
+        }
+
+        /// <summary>
+        /// Similar name defi: 
+        /// 1. if they're not default shape name, they must be the exact same
+        /// 2. if they're default shape name, the shape type in the name must be the exact same
+        /// 3. otherwise not similar
+        /// </summary>
+        /// <param name="name1"></param>
+        /// <param name="name2"></param>
+        /// <returns></returns>
+        private bool IsSimilarName(string name1, string name2)
+        {
+            //remove enclosing brackets for name2
+            var nameEnclosedInBrackets = new Regex(@"^\[\D+\s\d+\]$");
+            if (nameEnclosedInBrackets.IsMatch(name2) && name2.Length > 2)
+            {
+                name2 = name2.Substring(1, name2.Length - 2);
+            }
+
+            if (!_shapeNamePattern.IsMatch(name1)
+                && !_shapeNamePattern.IsMatch(name2))
+            {
+                return name1.Equals(name2);
+            }
+
+            if (_shapeNamePattern.IsMatch(name1)
+                && _shapeNamePattern.IsMatch(name2))
+            {
+                var shapeTypeInName = new Regex(@"^[^\[]\D+\s(?=\d+$)");
+                var shapeTypeForName1 = shapeTypeInName.Match(name1).ToString();
+                var shapeTypeForName2 = shapeTypeInName.Match(name2).ToString();
+                return shapeTypeForName1.Equals(shapeTypeForName2);
+            }
+            return false;
         }
 
         private void AfterPasteRecorderEventHandler(PowerPoint.Selection selection)
@@ -771,7 +829,6 @@ namespace PowerPointLabs
                         var shape = sh as PowerPoint.Shape;
                         copiedShapes.Add(shape);
                     }
-                    copiedShapes.Sort((PowerPoint.Shape x, PowerPoint.Shape y) => (x.Id - y.Id));
                 }
             }
             catch
