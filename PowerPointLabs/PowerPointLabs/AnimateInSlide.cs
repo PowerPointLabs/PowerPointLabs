@@ -29,11 +29,15 @@ namespace PowerPointLabs
                     currentSlide.RemoveAnimationsForShapes(currentSlide.GetShapesWithPrefix("InSlideAnimateShape"));
                     FormatInSlideAnimateShapes(selectedShapes);
                 }
-                
+
                 if (selectedShapes.Count == 1)
+                {
                     InSlideAnimateSingleShape(currentSlide, selectedShapes[1]);
+                }
                 else
+                {
                     InSlideAnimateMultiShape(currentSlide, selectedShapes);
+                }
 
                 if (!isHighlightBullets)
                 {
@@ -89,39 +93,71 @@ namespace PowerPointLabs
 
                 if (num == 1)
                 {
-                    PowerPoint.Effect appear = currentSlide.TimeLine.MainSequence.AddEffect(
-                        shape1, 
-                        PowerPoint.MsoAnimEffect.msoAnimEffectAppear, 
-                        PowerPoint.MsoAnimateByLevel.msoAnimateLevelNone, 
-                        PowerPoint.MsoAnimTriggerType.msoAnimTriggerOnPageClick);
+                    if (isHighlightTextFragments)
+                    {
+                        PowerPoint.Effect appear = currentSlide.TimeLine.MainSequence.AddEffect(
+                            shape1,
+                            PowerPoint.MsoAnimEffect.msoAnimEffectFade,
+                            PowerPoint.MsoAnimateByLevel.msoAnimateLevelNone,
+                            PowerPoint.MsoAnimTriggerType.msoAnimTriggerOnPageClick); 
+                    }
+                    else
+                    {
+                        PowerPoint.Effect appear = currentSlide.TimeLine.MainSequence.AddEffect(
+                            shape1,
+                            PowerPoint.MsoAnimEffect.msoAnimEffectAppear,
+                            PowerPoint.MsoAnimateByLevel.msoAnimateLevelNone,
+                            PowerPoint.MsoAnimTriggerType.msoAnimTriggerOnPageClick); 
+                    }
                 }
 
-                if (NeedsFrameAnimation(shape1, shape2))
+                if (!isHighlightTextFragments)
                 {
-                    FrameMotionAnimation.animationType = FrameMotionAnimation.FrameMotionAnimationType.kInSlideAnimate;
-                    FrameMotionAnimation.AddFrameMotionAnimation(currentSlide, shape1, shape2, defaultDuration);
+                    AnimateMovementBetweenShapes(currentSlide, shape1, shape2);
+                }
+
+                if (isHighlightTextFragments)
+                {
+                    //Transition from shape1 to shape2 with movement
+                    PowerPoint.Effect shape2Appear = currentSlide.TimeLine.MainSequence.AddEffect(
+                        shape2,
+                        PowerPoint.MsoAnimEffect.msoAnimEffectFade,
+                        PowerPoint.MsoAnimateByLevel.msoAnimateLevelNone,
+                        PowerPoint.MsoAnimTriggerType.msoAnimTriggerOnPageClick);
                 }
                 else
                 {
-                    DefaultMotionAnimation.AddDefaultMotionAnimation(currentSlide,
-                        shape1,
+                    //Transition from shape1 to shape2 with fade
+                    PowerPoint.Effect shape2Appear = currentSlide.TimeLine.MainSequence.AddEffect(
                         shape2,
-                        defaultDuration,
-                        PowerPoint.MsoAnimTriggerType.msoAnimTriggerOnPageClick);
+                        PowerPoint.MsoAnimEffect.msoAnimEffectAppear,
+                        PowerPoint.MsoAnimateByLevel.msoAnimateLevelNone,
+                        PowerPoint.MsoAnimTriggerType.msoAnimTriggerAfterPrevious);
                 }
-
-                //Transition from shape1 to shape2
-                PowerPoint.Effect shape2Appear = currentSlide.TimeLine.MainSequence.AddEffect(
-                    shape2, 
-                    PowerPoint.MsoAnimEffect.msoAnimEffectAppear, 
-                    PowerPoint.MsoAnimateByLevel.msoAnimateLevelNone, 
-                    PowerPoint.MsoAnimTriggerType.msoAnimTriggerAfterPrevious);
                 PowerPoint.Effect shape1Disappear = currentSlide.TimeLine.MainSequence.AddEffect(
-                    shape1, 
-                    PowerPoint.MsoAnimEffect.msoAnimEffectAppear, 
-                    PowerPoint.MsoAnimateByLevel.msoAnimateLevelNone, 
-                    PowerPoint.MsoAnimTriggerType.msoAnimTriggerAfterPrevious);
+                        shape1,
+                        PowerPoint.MsoAnimEffect.msoAnimEffectAppear,
+                        PowerPoint.MsoAnimateByLevel.msoAnimateLevelNone,
+                        PowerPoint.MsoAnimTriggerType.msoAnimTriggerAfterPrevious);
                 shape1Disappear.Exit = Office.MsoTriState.msoTrue;
+            }
+        }
+
+        private static void AnimateMovementBetweenShapes(PowerPointSlide currentSlide, PowerPoint.Shape shape1, PowerPoint.Shape shape2)
+        {
+            if (NeedsFrameAnimation(shape1, shape2))
+            {
+                FrameMotionAnimation.animationType = FrameMotionAnimation.FrameMotionAnimationType.kInSlideAnimate;
+                FrameMotionAnimation.AddFrameMotionAnimation(currentSlide, shape1, shape2, defaultDuration);
+            }
+            else
+            {
+                DefaultMotionAnimation.AddDefaultMotionAnimation(
+                    currentSlide,
+                    shape1,
+                    shape2,
+                    defaultDuration,
+                    PowerPoint.MsoAnimTriggerType.msoAnimTriggerOnPageClick);
             }
         }
 
