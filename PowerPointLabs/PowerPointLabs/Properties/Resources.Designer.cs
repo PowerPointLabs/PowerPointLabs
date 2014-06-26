@@ -163,9 +163,9 @@ namespace PowerPointLabs.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
-        internal static System.Drawing.Bitmap ColorLab {
+        internal static System.Drawing.Bitmap ColorsLab {
             get {
-                object obj = ResourceManager.GetObject("ColorLab", resourceCulture);
+                object obj = ResourceManager.GetObject("ColorsLab", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }
@@ -466,6 +466,16 @@ namespace PowerPointLabs.Properties {
         internal static System.Drawing.Bitmap save_icon {
             get {
                 object obj = ResourceManager.GetObject("save-icon", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap ShapesLab {
+            get {
+                object obj = ResourceManager.GetObject("ShapesLab", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }

@@ -183,13 +183,13 @@
                     onAction="HighlightBulletsDialogBoxPressed"/>
           </dialogBoxLauncher>
         </group>
-        <group id="Color"
-               label="Color"
+        <group id="Labs"
+               label="Labs"
                visible="true">
           <button id="ColorPickerButton"
-                  label="Color Lab"
+                  label="Colors Lab"
                   size="large"
-                  getImage="GetColorLabImage"
+                  getImage="GetColorsLabImage"
                   supertip="Opens Custom Color Picker"
                   onAction="ColorPickerButtonClick"/>
         </group>

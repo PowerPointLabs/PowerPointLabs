@@ -240,6 +240,11 @@
     <Compile Include="Converters\ColorPaneConverters.cs" />
     <Compile Include="ConvertToPicture.cs" />
     <Compile Include="CropToShape.cs" />
+    <Compile Include="Properties\Resources.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Resources.resx</DependentUpon>
+    </Compile>
     <Compile Include="Views\ErrorDialogWrapper.cs" />
     <Compile Include="FitToSlide.cs" />
     <Compile Include="Models\PowerPointAutoAnimateSlide.cs" />
@@ -251,11 +256,6 @@
     <Compile Include="Models\PowerPointStepBackSlide.cs" />
     <Compile Include="Models\PowerPointZoomToAreaSingleSlide.cs" />
     <Compile Include="PowerPointLabsGlobals.cs" />
-    <Compile Include="Properties\Resources.Designer.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>Resources.resx</DependentUpon>
-    </Compile>
     <Compile Include="RecorderTaskPane.cs">
       <SubType>UserControl</SubType>
     </Compile>
@@ -346,6 +346,8 @@
     <Compile Include="XMLMisc\XMLParser.cs" />
     <Compile Include="ZipStorer.cs" />
     <Compile Include="ZoomToArea.cs" />
+    <None Include="Resources\ShapesLab.png" />
+    <None Include="Resources\ColorsLab.png" />
     <None Include="Resources\ColorLab.png" />
     <None Include="Resources\Eyedropper-icon.png" />
     <None Include="Resources\apply-icon.png" />
