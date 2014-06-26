@@ -305,6 +305,7 @@ namespace PowerPointLabs
             {
                 _originalColor = colorDialog1.Color;
                 dataSource.selectedColor = colorDialog1.Color;
+                UpdateUIForNewColor();
             }
         }
 
