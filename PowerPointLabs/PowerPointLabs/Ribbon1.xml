@@ -168,6 +168,7 @@
           <button id="HighlightTextFragmentsButton"
                   label="Highlight Fragments"
                   size="large"
+                  getImage="GetHighlightWordsImage"
                   supertip="Highlights all the text fragments selected"
                   getEnabled="OnGetEnabledHighlightTextFragments"
                   onAction="HighlightTextFragmentsButtonClick"/>

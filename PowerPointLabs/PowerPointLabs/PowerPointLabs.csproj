@@ -315,6 +315,7 @@
     </Compile>
     <Compile Include="Views\SpeechPlayingForm.Designer.cs" />
     <Compile Include="ZoomToArea.cs" />
+    <None Include="Resources\HighlightWords.png" />
     <EmbeddedResource Include="Views\AboutForm.resx">
       <DependentUpon>AboutForm.cs</DependentUpon>
     </EmbeddedResource>

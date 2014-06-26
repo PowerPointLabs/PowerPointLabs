@@ -361,6 +361,19 @@ namespace PowerPointLabs
             }
         }
 
+        public System.Drawing.Bitmap GetHighlightWordsImage(Office.IRibbonControl control)
+        {
+            try
+            {
+                return new System.Drawing.Bitmap(Properties.Resources.HighlightWords);
+            }
+            catch (Exception e)
+            {
+                PowerPointLabsGlobals.LogException(e, "GetHighlightWordsImage");
+                throw;
+            }
+        }
+
         public System.Drawing.Bitmap GetHighlightBulletsTextContextImage(Office.IRibbonControl control)
         {
             try
