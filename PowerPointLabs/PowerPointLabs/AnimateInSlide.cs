@@ -39,7 +39,7 @@ namespace PowerPointLabs
                     InSlideAnimateMultiShape(currentSlide, selectedShapes);
                 }
 
-                if (!isHighlightBullets)
+                if (!isHighlightBullets && !isHighlightTextFragments)
                 {
                     Globals.ThisAddIn.Application.CommandBars.ExecuteMso("AnimationPreview");
                     PowerPointLabsGlobals.AddAckSlide();
@@ -136,9 +136,9 @@ namespace PowerPointLabs
                 }
                 PowerPoint.Effect shape1Disappear = currentSlide.TimeLine.MainSequence.AddEffect(
                         shape1,
-                        PowerPoint.MsoAnimEffect.msoAnimEffectAppear,
+                        PowerPoint.MsoAnimEffect.msoAnimEffectFade,
                         PowerPoint.MsoAnimateByLevel.msoAnimateLevelNone,
-                        PowerPoint.MsoAnimTriggerType.msoAnimTriggerAfterPrevious);
+                        PowerPoint.MsoAnimTriggerType.msoAnimTriggerWithPrevious);
                 shape1Disappear.Exit = Office.MsoTriState.msoTrue;
             }
         }
