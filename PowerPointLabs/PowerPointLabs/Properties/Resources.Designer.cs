@@ -163,6 +163,16 @@ namespace PowerPointLabs.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
+        internal static System.Drawing.Bitmap ColorLab {
+            get {
+                object obj = ResourceManager.GetObject("ColorLab", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
         internal static System.Drawing.Bitmap ConvertToPicture {
             get {
                 object obj = ResourceManager.GetObject("ConvertToPicture", resourceCulture);

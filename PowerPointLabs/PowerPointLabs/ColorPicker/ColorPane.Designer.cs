@@ -455,6 +455,7 @@
             // Tetradic3
             // 
             this.Tetradic3.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.Tetradic3.ContextMenuStrip = this.contextMenuStrip1;
             this.Tetradic3.Cursor = System.Windows.Forms.Cursors.Hand;
             this.Tetradic3.Location = new System.Drawing.Point(87, 3);
             this.Tetradic3.Name = "Tetradic3";
