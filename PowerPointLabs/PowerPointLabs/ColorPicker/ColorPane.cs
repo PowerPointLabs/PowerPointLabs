@@ -22,18 +22,24 @@ namespace PowerPointLabs
 
     public partial class ColorPane : UserControl
     {
-
+        // Needed to keep track of brightness and saturation
         private Color _originalColor;
 
+        // Fill Selected By Default
         private bool _isFillColorSelected = true;
         private bool _isFontColorSelected = false;
         private bool _isLineColorSelected = false;
 
+        // Keeps track of mouse on mouse down on a matching panel.
+        // Needed to determine drag-drop v/s click
         private System.Drawing.Point _mouseDownLocation;
+        
         LMouseUpListener _native;
 
         PowerPoint.ShapeRange _selectedShapes;
+        
         ColorDataSource dataSource = new ColorDataSource();
+        
         public ColorPane()
         {
             InitializeComponent();
@@ -47,11 +53,15 @@ namespace PowerPointLabs
             // Default color to CornFlowerBlue
             SetDefaultColor(Color.CornflowerBlue);
         }
+        private void ColorPane_Load(object sender, EventArgs e)
+        {
+            ResetThemePanel();
+        }
 
         private void SetDefaultColor(Color color)
         {
-            dataSource.selectedColor = color;
             _originalColor = color;
+            dataSource.selectedColor = color;
             UpdateUIForNewColor();
         }
 
@@ -296,26 +306,12 @@ namespace PowerPointLabs
             SelectShapes();
         }
 
-        private void SelectShapes()
-        {
-            try
-            {
-                _selectedShapes = PowerPointPresentation.CurrentSelection.ShapeRange;
-            }
-            catch (Exception exception)
-            {
-                _selectedShapes = null;
-            }
-        }
-
         private void button2_Click(object sender, EventArgs e)
         {
             colorDialog1.Color = panel1.BackColor;
             if (colorDialog1.ShowDialog() == DialogResult.OK)
             {
-                _originalColor = colorDialog1.Color;
-                dataSource.selectedColor = colorDialog1.Color;
-                UpdateUIForNewColor();
+                SetDefaultColor(colorDialog1.Color);
             }
         }
 
@@ -328,6 +324,18 @@ namespace PowerPointLabs
             ColorSelectedShapesWithColor(panel1.BackColor);
         }
 
+        #region Selection And Coloring Shapes
+        private void SelectShapes()
+        {
+            try
+            {
+                _selectedShapes = PowerPointPresentation.CurrentSelection.ShapeRange;
+            }
+            catch (Exception exception)
+            {
+                _selectedShapes = null;
+            }
+        }
         private void ColorSelectedShapesWithColor(Color selectedColor)
         {
             SelectShapes();
@@ -396,6 +404,7 @@ namespace PowerPointLabs
             UpdateUIForNewColor();
             timer1.Stop();
         }
+        #endregion
 
         private void UpdateUIForNewColor()
         {
@@ -404,20 +413,74 @@ namespace PowerPointLabs
             ColorSelectedShapesWithColor(dataSource.selectedColor);
         }
 
+        #region Brightness and Saturation
         private void UpdateBrightnessBar(Color color)
         {
             DrawBrightnessGradient(color);
         }
 
+        private void brightnessBar_ValueChanged(object sender, EventArgs e)
+        {
+            if (!timer1.Enabled)
+            {
+                float newBrightness = brightnessBar.Value / 240.0f;
+                Color newColor = new Color();
+                try
+                {
+                    newColor = ColorHelper.ColorFromAhsb(
+                    255,
+                    _originalColor.GetHue(),
+                    dataSource.selectedColor.GetSaturation(),
+                    newBrightness);
+
+                    brightnessBar.ValueChanged -= brightnessBar_ValueChanged;
+                    saturationBar.ValueChanged -= saturationBar_ValueChanged;
+
+                    dataSource.selectedColor = newColor;
+                    UpdateSaturationBar(newColor);
+                    UpdateBrightnessBar(newColor);
+
+                    brightnessBar.ValueChanged += brightnessBar_ValueChanged;
+                    saturationBar.ValueChanged += saturationBar_ValueChanged;
+                }
+                catch (Exception exception)
+                {
+                }
+
+                ColorSelectedShapesWithColor(dataSource.selectedColor);
+            }
+        }
+
+        private void saturationBar_ValueChanged(object sender, EventArgs e)
+        {
+            float newSaturation = saturationBar.Value / 240.0f;
+            Color newColor = new Color();
+            try
+            {
+                newColor = ColorHelper.ColorFromAhsb(
+                255,
+                _originalColor.GetHue(),
+                newSaturation,
+                dataSource.selectedColor.GetBrightness());
+
+                brightnessBar.ValueChanged -= brightnessBar_ValueChanged;
+                saturationBar.ValueChanged -= saturationBar_ValueChanged;
+
+                dataSource.selectedColor = newColor;
+                UpdateBrightnessBar(newColor);
+
+                brightnessBar.ValueChanged += brightnessBar_ValueChanged;
+                saturationBar.ValueChanged += saturationBar_ValueChanged;
+            }
+            catch (Exception exception)
+            {
+            }
+
+            ColorSelectedShapesWithColor(newColor);
+        }
         private void UpdateSaturationBar(Color color)
         {
             DrawSaturationGradient(color);
-        }
-
-        protected override void OnPaint(PaintEventArgs paintEvnt)
-        {
-            DrawBrightnessGradient(dataSource.selectedColor);
-            DrawSaturationGradient(dataSource.selectedColor);
         }
 
         private void DrawBrightnessGradient(Color color)
@@ -508,6 +571,15 @@ namespace PowerPointLabs
             }
         }
 
+        protected override void OnPaint(PaintEventArgs paintEvnt)
+        {
+            DrawBrightnessGradient(dataSource.selectedColor);
+            DrawSaturationGradient(dataSource.selectedColor);
+        }
+
+        #endregion
+
+        #region Drag-Drop
         private void MatchingPanel_MouseDown(object sender, MouseEventArgs e)
         {
             _mouseDownLocation = e.Location;
@@ -528,66 +600,6 @@ namespace PowerPointLabs
             UpdateUIForNewColor();
         }
 
-        private void brightnessBar_ValueChanged(object sender, EventArgs e)
-        {
-            if (!timer1.Enabled)
-            {
-                float newBrightness = brightnessBar.Value / 240.0f;
-                Color newColor = new Color();
-                try
-                {
-                    newColor = ColorHelper.ColorFromAhsb(
-                    255,
-                    _originalColor.GetHue(),
-                    dataSource.selectedColor.GetSaturation(),
-                    newBrightness);
-
-                    brightnessBar.ValueChanged -= brightnessBar_ValueChanged;
-                    saturationBar.ValueChanged -= saturationBar_ValueChanged;
-
-                    dataSource.selectedColor = newColor;
-                    UpdateSaturationBar(newColor);
-                    UpdateBrightnessBar(newColor);
-
-                    brightnessBar.ValueChanged += brightnessBar_ValueChanged;
-                    saturationBar.ValueChanged += saturationBar_ValueChanged;
-                }
-                catch (Exception exception)
-                {
-                }
-
-                ColorSelectedShapesWithColor(dataSource.selectedColor);
-            }
-        }
-
-        private void saturationBar_ValueChanged(object sender, EventArgs e)
-        {
-            float newSaturation = saturationBar.Value / 240.0f;
-            Color newColor = new Color();
-            try
-            {
-                newColor = ColorHelper.ColorFromAhsb(
-                255,
-                _originalColor.GetHue(),
-                newSaturation,
-                dataSource.selectedColor.GetBrightness());
-
-                brightnessBar.ValueChanged -= brightnessBar_ValueChanged;
-                saturationBar.ValueChanged -= saturationBar_ValueChanged;
-
-                dataSource.selectedColor = newColor;
-                UpdateBrightnessBar(newColor);
-
-                brightnessBar.ValueChanged += brightnessBar_ValueChanged;
-                saturationBar.ValueChanged += saturationBar_ValueChanged;
-            }
-            catch (Exception exception)
-            {
-            }
-
-            ColorSelectedShapesWithColor(newColor);
-        }
-
         private void panel_DragEnter(object sender, DragEventArgs e)
         {
             if (e.Data.GetDataPresent(dataSource.selectedColor.GetType().ToString()))
@@ -600,6 +612,20 @@ namespace PowerPointLabs
             }
         }
 
+        private void MatchingPanel_MouseMove(object sender, MouseEventArgs e)
+        {
+            int dx = e.X - _mouseDownLocation.X;
+            int dy = e.Y - _mouseDownLocation.Y;
+
+            if (Math.Abs(dx) > ((Panel)sender).Width / 2 ||
+                Math.Abs(dy) > ((Panel)sender).Height / 2)
+            {
+                StartDragDrop(sender);
+            }
+        }
+        #endregion
+
+        #region Theme Functions
         private void SaveThemeButton_Click(object sender, EventArgs e)
         {
             if (saveFileDialog1.ShowDialog() == DialogResult.OK && 
@@ -626,45 +652,14 @@ namespace PowerPointLabs
             ColorSelectedShapesWithColor(clickedColor);
         }
 
-        private void MatchingPanel_MouseMove(object sender, MouseEventArgs e)
-        {
-            int dx = e.X - _mouseDownLocation.X;
-            int dy = e.Y - _mouseDownLocation.Y;
-
-            if (Math.Abs(dx) > ((Panel)sender).Width / 2 ||
-                Math.Abs(dy) > ((Panel)sender).Height / 2)
-            {
-                StartDragDrop(sender);
-            }
-        }
-
-        private void FontEyeDropperButton_MouseDown(object sender, MouseEventArgs e)
-        {
-            _isFontColorSelected = true;
-            _isFillColorSelected = false;
-            _isLineColorSelected = false;
-            BeginEyedropping();
-        }
-
-        private void LineEyeDropperButton_MouseDown(object sender, MouseEventArgs e)
-        {
-            _isFontColorSelected = false;
-            _isFillColorSelected = false;
-            _isLineColorSelected = true;
-            BeginEyedropping();
-        }
-
-        private void FillEyeDropperButton_MouseDown(object sender, MouseEventArgs e)
-        {
-            _isFontColorSelected =false;
-            _isFillColorSelected = true;
-            _isLineColorSelected = false;
-            BeginEyedropping();
-        }
-
         private void ResetThemeButton_Click(object sender, EventArgs e)
         {
             ResetThemePanel();
+        }
+
+        private void ApplyThemeButton_Click(object sender, EventArgs e)
+        {
+            ApplyCurrentThemeToSelectedSlides();
         }
 
         private void ResetThemePanel()
@@ -736,22 +731,15 @@ namespace PowerPointLabs
                 ColorHelper.ReverseRGBToArgb((ThemePanel10.BackColor.ToArgb()));
         }
 
-        private void ColorPane_Load(object sender, EventArgs e)
-        {
-            ResetThemePanel();
-        }
+        #endregion
 
+        #region Context Menu Clicks
         private void showMoreInformationToolStripMenuItem_Click(object sender, EventArgs e)
         {
             Color clickedColor = ((Panel)(contextMenuStrip1.SourceControl)).BackColor;
             ColorInformationDialog dialog = new ColorInformationDialog(clickedColor);
             dialog.StartPosition = FormStartPosition.CenterScreen;
             dialog.ShowDialog();
-        }
-
-        private void ApplyThemeButton_Click(object sender, EventArgs e)
-        {
-            ApplyCurrentThemeToSelectedSlides();
         }
 
         private void selectAsMainColorToolStripMenuItem_Click(object sender, EventArgs e)
@@ -769,7 +757,8 @@ namespace PowerPointLabs
             Globals.ThisAddIn.Application.StartNewUndoEntry();
             UpdateUIForNewColor();
         }
-
+        #endregion
+        #region CheckBoxes Event Handlers
         private void FillCheckBox_CheckedChanged(object sender, EventArgs e)
         {
             _isFillColorSelected = ((CheckBox)sender).Checked;
@@ -784,12 +773,11 @@ namespace PowerPointLabs
         {
             _isFontColorSelected = ((CheckBox)sender).Checked;
         }
-
+        #endregion
         private void EyeDropperButton_MouseDown(object sender, MouseEventArgs e)
         {
             BeginEyedropping();
         }
-
     }
 
     public class SysMouseEventInfo : EventArgs
