@@ -178,6 +178,13 @@
                  supertip="Highlights all the bullet points on the specified slide by highlighting the text background"
                  getEnabled="OnGetEnabledHighlightBullets"
                  onAction="HighlightBulletsBackgroundButtonClick"/>
+          <button id="HighlightTextFragmentsButton"
+                  label="Highlight Fragments"
+                  size="large"
+                  getImage="GetHighlightWordsImage"
+                  supertip="Highlights all the text fragments selected"
+                  getEnabled="OnGetEnabledHighlightTextFragments"
+                  onAction="HighlightTextFragmentsButtonClick"/>
           <dialogBoxLauncher>
             <button id="HighlightBulletsDialogBox"
                     onAction="HighlightBulletsDialogBoxPressed"/>

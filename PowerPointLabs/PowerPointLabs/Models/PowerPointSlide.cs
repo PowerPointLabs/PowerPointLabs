@@ -583,6 +583,31 @@ namespace PowerPointLabs.Models
             return PowerPointAckSlide.FromSlideFactory(ackSlide);
         }
 
+        public bool hasTextFragments()
+        {
+            foreach (Shape sh in _slide.Shapes)
+            {
+                if (sh.Name.StartsWith("PPTLabsHighlightTextFragmentsShape"))
+                {
+                    return true;
+                }
+            }
+            return false;
+        }
+
+        public List<PowerPoint.Shape> getTextFragments()
+        {
+            List<PowerPoint.Shape> fragmentShapes = new List<Shape>();
+            foreach (Shape sh in _slide.Shapes)
+            {
+                if (sh.Name.StartsWith("PPTLabsHighlightTextFragmentsShape"))
+                {
+                    fragmentShapes.Add(sh);
+                }
+            }
+            return fragmentShapes;
+        }
+
         public bool HasCaptions()
         {
             foreach (PowerPoint.Shape shape in this.Shapes)

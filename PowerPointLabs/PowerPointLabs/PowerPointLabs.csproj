@@ -242,6 +242,7 @@
     <Compile Include="CropToShape.cs" />
     <Compile Include="Views\ErrorDialogWrapper.cs" />
     <Compile Include="FitToSlide.cs" />
+    <Compile Include="HighlightTextFragments.cs" />
     <Compile Include="Models\PowerPointAutoAnimateSlide.cs" />
     <Compile Include="Models\PowerPointDeMagnifyingSlide.cs" />
     <Compile Include="Models\PowerPointDrillDownSlide.cs" />
@@ -346,6 +347,7 @@
     <Compile Include="XMLMisc\XMLParser.cs" />
     <Compile Include="ZipStorer.cs" />
     <Compile Include="ZoomToArea.cs" />
+    <None Include="Resources\HighlightWords.png" />
     <None Include="Resources\ColorLab.png" />
     <None Include="Resources\Eyedropper-icon.png" />
     <None Include="Resources\apply-icon.png" />

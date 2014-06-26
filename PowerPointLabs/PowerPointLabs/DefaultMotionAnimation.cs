@@ -13,7 +13,12 @@ namespace PowerPointLabs
     {
         //Use initial shape and final shape to calculate intial and final positions
         //Add motion, resize and rotation animations to initialShape
-        public static void AddDefaultMotionAnimation(PowerPointSlide animationSlide, PowerPoint.Shape initialShape, PowerPoint.Shape finalShape, float duration, PowerPoint.MsoAnimTriggerType trigger)
+        public static void AddDefaultMotionAnimation(
+            PowerPointSlide animationSlide, 
+            PowerPoint.Shape initialShape, 
+            PowerPoint.Shape finalShape, 
+            float duration,
+            PowerPoint.MsoAnimTriggerType trigger)
         {
             float initialX = (initialShape.Left + (initialShape.Width) / 2);
             float initialY = (initialShape.Top + (initialShape.Height) / 2);

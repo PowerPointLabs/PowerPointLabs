@@ -53,8 +53,11 @@ namespace PowerPointLabs
         public bool addAutoMotionEnabled = true;
         public bool reloadAutoMotionEnabled = true;
         public bool reloadSpotlight = true;
+
         public bool removeCaptionsEnabled = true;
         public bool removeAudioEnabled = true;
+
+        public bool highlightTextFragmentsEnabled = true;
 
         public bool _embedAudioVisible = true;
         public bool _recorderPaneVisible = false;
@@ -144,6 +147,26 @@ namespace PowerPointLabs
             catch (Exception e)
             {
                 PowerPointLabsGlobals.LogException(e, "HighlightBulletsTextButtonClick");
+                throw;
+            }
+        }
+
+        public void HighlightTextFragmentsButtonClick(Office.IRibbonControl control)
+        {
+            try
+            {
+                if (Globals.ThisAddIn.Application.ActiveWindow.Selection.Type == PowerPoint.PpSelectionType.ppSelectionShapes)
+                    HighlightTextFragments.userSelection = HighlightTextFragments.HighlightTextSelection.kShapeSelected;
+                else if (Globals.ThisAddIn.Application.ActiveWindow.Selection.Type == PowerPoint.PpSelectionType.ppSelectionText)
+                    HighlightTextFragments.userSelection = HighlightTextFragments.HighlightTextSelection.kTextSelected;
+                else
+                    HighlightTextFragments.userSelection = HighlightTextFragments.HighlightTextSelection.kNoneSelected;
+
+                HighlightTextFragments.AddHighlightedTextFragments();
+            }
+            catch (Exception e)
+            {
+                PowerPointLabsGlobals.LogException(e, "HighlightTextFragmentsButtonClick");
                 throw;
             }
         }
@@ -339,6 +362,19 @@ namespace PowerPointLabs
             catch (Exception e)
             {
                 PowerPointLabsGlobals.LogException(e, "GetHighlightBulletsBackgroundImage");
+                throw;
+            }
+        }
+
+        public System.Drawing.Bitmap GetHighlightWordsImage(Office.IRibbonControl control)
+        {
+            try
+            {
+                return new System.Drawing.Bitmap(Properties.Resources.HighlightWords);
+            }
+            catch (Exception e)
+            {
+                PowerPointLabsGlobals.LogException(e, "GetHighlightWordsImage");
                 throw;
             }
         }
@@ -714,6 +750,10 @@ namespace PowerPointLabs
         {
             return removeAudioEnabled;
         }
+        public bool OnGetEnabledHighlightTextFragments(Office.IRibbonControl control)
+        {
+            return highlightTextFragmentsEnabled;
+        }
         //Edit Name Callbacks
         public void NameEditBtnClick(Office.IRibbonControl control)
         {
@@ -844,7 +884,7 @@ namespace PowerPointLabs
                 HighlightBulletsText.highlightColor = newHighlightColor;
                 HighlightBulletsText.defaultColor = newDefaultColor;
                 HighlightBulletsBackground.backgroundColor = newBackgroundColor;
-
+                HighlightTextFragments.backgroundColor = newBackgroundColor;
             }
             catch (Exception e)
             {
