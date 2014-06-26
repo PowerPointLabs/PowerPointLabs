@@ -36,6 +36,9 @@
             this.label1 = new System.Windows.Forms.Label();
             this.flowLayoutPanel6 = new System.Windows.Forms.FlowLayoutPanel();
             this.AnalogousLighter = new System.Windows.Forms.Panel();
+            this.contextMenuStrip1 = new System.Windows.Forms.ContextMenuStrip(this.components);
+            this.showMoreInformationToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.selectAsMainColorToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.AnalogousSelected = new System.Windows.Forms.Panel();
             this.AnalogousDarker = new System.Windows.Forms.Panel();
             this.flowLayoutPanel2 = new System.Windows.Forms.FlowLayoutPanel();
@@ -83,9 +86,11 @@
             this.ThemePanel7 = new System.Windows.Forms.Panel();
             this.ThemePanel8 = new System.Windows.Forms.Panel();
             this.ThemePanel9 = new System.Windows.Forms.Panel();
+            this.ThemePanel10 = new System.Windows.Forms.Panel();
             this.SaveThemeButton = new System.Windows.Forms.Button();
             this.LoadButton = new System.Windows.Forms.Button();
             this.ResetThemeButton = new System.Windows.Forms.Button();
+            this.ApplyThemeButton = new System.Windows.Forms.Button();
             this.saveFileDialog1 = new System.Windows.Forms.SaveFileDialog();
             this.openFileDialog1 = new System.Windows.Forms.OpenFileDialog();
             this.label7 = new System.Windows.Forms.Label();
@@ -93,12 +98,14 @@
             this.panel2 = new System.Windows.Forms.Panel();
             this.panel3 = new System.Windows.Forms.Panel();
             this.toolTip1 = new System.Windows.Forms.ToolTip(this.components);
+            this.EyeDropperButton = new System.Windows.Forms.Button();
+            this.TextCheckBox = new System.Windows.Forms.CheckBox();
+            this.LineCheckBox = new System.Windows.Forms.CheckBox();
             this.EditColorButton = new System.Windows.Forms.Button();
-            this.FillEyeDropperButton = new System.Windows.Forms.Button();
-            this.LineEyeDropperButton = new System.Windows.Forms.Button();
-            this.FontEyeDropperButton = new System.Windows.Forms.Button();
+            this.FillCheckBox = new System.Windows.Forms.CheckBox();
             this.AnalogousColorPanel.SuspendLayout();
             this.flowLayoutPanel6.SuspendLayout();
+            this.contextMenuStrip1.SuspendLayout();
             this.flowLayoutPanel2.SuspendLayout();
             this.flowLayoutPanel7.SuspendLayout();
             this.flowLayoutPanel3.SuspendLayout();
@@ -121,7 +128,7 @@
             this.panel1.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.panel1.Location = new System.Drawing.Point(20, 16);
             this.panel1.Name = "panel1";
-            this.panel1.Size = new System.Drawing.Size(61, 47);
+            this.panel1.Size = new System.Drawing.Size(43, 47);
             this.panel1.TabIndex = 0;
             this.panel1.DragDrop += new System.Windows.Forms.DragEventHandler(this.panel_DragDrop);
             this.panel1.DragEnter += new System.Windows.Forms.DragEventHandler(this.panel_DragEnter);
@@ -170,6 +177,7 @@
             // AnalogousLighter
             // 
             this.AnalogousLighter.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.AnalogousLighter.ContextMenuStrip = this.contextMenuStrip1;
             this.AnalogousLighter.Cursor = System.Windows.Forms.Cursors.Hand;
             this.AnalogousLighter.Location = new System.Drawing.Point(3, 3);
             this.AnalogousLighter.Name = "AnalogousLighter";
@@ -177,10 +185,34 @@
             this.AnalogousLighter.TabIndex = 2;
             this.AnalogousLighter.Click += new System.EventHandler(this.MatchingPanel_Click);
             this.AnalogousLighter.MouseDown += new System.Windows.Forms.MouseEventHandler(this.MatchingPanel_MouseDown);
+            this.AnalogousLighter.MouseMove += new System.Windows.Forms.MouseEventHandler(this.MatchingPanel_MouseMove);
+            // 
+            // contextMenuStrip1
+            // 
+            this.contextMenuStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.showMoreInformationToolStripMenuItem,
+            this.selectAsMainColorToolStripMenuItem});
+            this.contextMenuStrip1.Name = "contextMenuStrip1";
+            this.contextMenuStrip1.Size = new System.Drawing.Size(201, 48);
+            // 
+            // showMoreInformationToolStripMenuItem
+            // 
+            this.showMoreInformationToolStripMenuItem.Name = "showMoreInformationToolStripMenuItem";
+            this.showMoreInformationToolStripMenuItem.Size = new System.Drawing.Size(200, 22);
+            this.showMoreInformationToolStripMenuItem.Text = "Show More Information";
+            this.showMoreInformationToolStripMenuItem.Click += new System.EventHandler(this.showMoreInformationToolStripMenuItem_Click);
+            // 
+            // selectAsMainColorToolStripMenuItem
+            // 
+            this.selectAsMainColorToolStripMenuItem.Name = "selectAsMainColorToolStripMenuItem";
+            this.selectAsMainColorToolStripMenuItem.Size = new System.Drawing.Size(200, 22);
+            this.selectAsMainColorToolStripMenuItem.Text = "Select As Main Color";
+            this.selectAsMainColorToolStripMenuItem.Click += new System.EventHandler(this.selectAsMainColorToolStripMenuItem_Click);
             // 
             // AnalogousSelected
             // 
             this.AnalogousSelected.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.AnalogousSelected.ContextMenuStrip = this.contextMenuStrip1;
             this.AnalogousSelected.Cursor = System.Windows.Forms.Cursors.Hand;
             this.AnalogousSelected.Location = new System.Drawing.Point(31, 3);
             this.AnalogousSelected.Name = "AnalogousSelected";
@@ -188,10 +220,12 @@
             this.AnalogousSelected.TabIndex = 3;
             this.AnalogousSelected.Click += new System.EventHandler(this.MatchingPanel_Click);
             this.AnalogousSelected.MouseDown += new System.Windows.Forms.MouseEventHandler(this.MatchingPanel_MouseDown);
+            this.AnalogousSelected.MouseMove += new System.Windows.Forms.MouseEventHandler(this.MatchingPanel_MouseMove);
             // 
             // AnalogousDarker
             // 
             this.AnalogousDarker.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.AnalogousDarker.ContextMenuStrip = this.contextMenuStrip1;
             this.AnalogousDarker.Cursor = System.Windows.Forms.Cursors.Hand;
             this.AnalogousDarker.Location = new System.Drawing.Point(59, 3);
             this.AnalogousDarker.Name = "AnalogousDarker";
@@ -199,6 +233,7 @@
             this.AnalogousDarker.TabIndex = 4;
             this.AnalogousDarker.Click += new System.EventHandler(this.MatchingPanel_Click);
             this.AnalogousDarker.MouseDown += new System.Windows.Forms.MouseEventHandler(this.MatchingPanel_MouseDown);
+            this.AnalogousDarker.MouseMove += new System.Windows.Forms.MouseEventHandler(this.MatchingPanel_MouseMove);
             // 
             // flowLayoutPanel2
             // 
@@ -236,6 +271,7 @@
             // ComplementaryLighter
             // 
             this.ComplementaryLighter.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.ComplementaryLighter.ContextMenuStrip = this.contextMenuStrip1;
             this.ComplementaryLighter.Cursor = System.Windows.Forms.Cursors.Hand;
             this.ComplementaryLighter.Location = new System.Drawing.Point(3, 3);
             this.ComplementaryLighter.Name = "ComplementaryLighter";
@@ -243,10 +279,12 @@
             this.ComplementaryLighter.TabIndex = 2;
             this.ComplementaryLighter.Click += new System.EventHandler(this.MatchingPanel_Click);
             this.ComplementaryLighter.MouseDown += new System.Windows.Forms.MouseEventHandler(this.MatchingPanel_MouseDown);
+            this.ComplementaryLighter.MouseMove += new System.Windows.Forms.MouseEventHandler(this.MatchingPanel_MouseMove);
             // 
             // ComplementarySelected
             // 
             this.ComplementarySelected.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.ComplementarySelected.ContextMenuStrip = this.contextMenuStrip1;
             this.ComplementarySelected.Cursor = System.Windows.Forms.Cursors.Hand;
             this.ComplementarySelected.Location = new System.Drawing.Point(31, 3);
             this.ComplementarySelected.Name = "ComplementarySelected";
@@ -254,10 +292,12 @@
             this.ComplementarySelected.TabIndex = 3;
             this.ComplementarySelected.Click += new System.EventHandler(this.MatchingPanel_Click);
             this.ComplementarySelected.MouseDown += new System.Windows.Forms.MouseEventHandler(this.MatchingPanel_MouseDown);
+            this.ComplementarySelected.MouseMove += new System.Windows.Forms.MouseEventHandler(this.MatchingPanel_MouseMove);
             // 
             // ComplementaryDarker
             // 
             this.ComplementaryDarker.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.ComplementaryDarker.ContextMenuStrip = this.contextMenuStrip1;
             this.ComplementaryDarker.Cursor = System.Windows.Forms.Cursors.Hand;
             this.ComplementaryDarker.Location = new System.Drawing.Point(59, 3);
             this.ComplementaryDarker.Name = "ComplementaryDarker";
@@ -265,6 +305,7 @@
             this.ComplementaryDarker.TabIndex = 4;
             this.ComplementaryDarker.Click += new System.EventHandler(this.MatchingPanel_Click);
             this.ComplementaryDarker.MouseDown += new System.Windows.Forms.MouseEventHandler(this.MatchingPanel_MouseDown);
+            this.ComplementaryDarker.MouseMove += new System.Windows.Forms.MouseEventHandler(this.MatchingPanel_MouseMove);
             // 
             // flowLayoutPanel3
             // 
@@ -302,6 +343,7 @@
             // TriadicLower
             // 
             this.TriadicLower.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.TriadicLower.ContextMenuStrip = this.contextMenuStrip1;
             this.TriadicLower.Cursor = System.Windows.Forms.Cursors.Hand;
             this.TriadicLower.Location = new System.Drawing.Point(3, 3);
             this.TriadicLower.Name = "TriadicLower";
@@ -309,10 +351,12 @@
             this.TriadicLower.TabIndex = 2;
             this.TriadicLower.Click += new System.EventHandler(this.MatchingPanel_Click);
             this.TriadicLower.MouseDown += new System.Windows.Forms.MouseEventHandler(this.MatchingPanel_MouseDown);
+            this.TriadicLower.MouseMove += new System.Windows.Forms.MouseEventHandler(this.MatchingPanel_MouseMove);
             // 
             // TriadicSelected
             // 
             this.TriadicSelected.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.TriadicSelected.ContextMenuStrip = this.contextMenuStrip1;
             this.TriadicSelected.Cursor = System.Windows.Forms.Cursors.Hand;
             this.TriadicSelected.Location = new System.Drawing.Point(31, 3);
             this.TriadicSelected.Name = "TriadicSelected";
@@ -320,10 +364,12 @@
             this.TriadicSelected.TabIndex = 3;
             this.TriadicSelected.Click += new System.EventHandler(this.MatchingPanel_Click);
             this.TriadicSelected.MouseDown += new System.Windows.Forms.MouseEventHandler(this.MatchingPanel_MouseDown);
+            this.TriadicSelected.MouseMove += new System.Windows.Forms.MouseEventHandler(this.MatchingPanel_MouseMove);
             // 
             // TriadicHigher
             // 
             this.TriadicHigher.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.TriadicHigher.ContextMenuStrip = this.contextMenuStrip1;
             this.TriadicHigher.Cursor = System.Windows.Forms.Cursors.Hand;
             this.TriadicHigher.Location = new System.Drawing.Point(59, 3);
             this.TriadicHigher.Name = "TriadicHigher";
@@ -331,6 +377,7 @@
             this.TriadicHigher.TabIndex = 4;
             this.TriadicHigher.Click += new System.EventHandler(this.MatchingPanel_Click);
             this.TriadicHigher.MouseDown += new System.Windows.Forms.MouseEventHandler(this.MatchingPanel_MouseDown);
+            this.TriadicHigher.MouseMove += new System.Windows.Forms.MouseEventHandler(this.MatchingPanel_MouseMove);
             // 
             // flowLayoutPanel4
             // 
@@ -363,12 +410,13 @@
             this.flowLayoutPanel9.Controls.Add(this.Tetradic3);
             this.flowLayoutPanel9.Location = new System.Drawing.Point(3, 19);
             this.flowLayoutPanel9.Name = "flowLayoutPanel9";
-            this.flowLayoutPanel9.Size = new System.Drawing.Size(104, 26);
+            this.flowLayoutPanel9.Size = new System.Drawing.Size(120, 26);
             this.flowLayoutPanel9.TabIndex = 15;
             // 
             // Tetradic1
             // 
             this.Tetradic1.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.Tetradic1.ContextMenuStrip = this.contextMenuStrip1;
             this.Tetradic1.Cursor = System.Windows.Forms.Cursors.Hand;
             this.Tetradic1.Location = new System.Drawing.Point(3, 3);
             this.Tetradic1.Name = "Tetradic1";
@@ -376,10 +424,12 @@
             this.Tetradic1.TabIndex = 3;
             this.Tetradic1.Click += new System.EventHandler(this.MatchingPanel_Click);
             this.Tetradic1.MouseDown += new System.Windows.Forms.MouseEventHandler(this.MatchingPanel_MouseDown);
+            this.Tetradic1.MouseMove += new System.Windows.Forms.MouseEventHandler(this.MatchingPanel_MouseMove);
             // 
             // TetradicSelected
             // 
             this.TetradicSelected.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.TetradicSelected.ContextMenuStrip = this.contextMenuStrip1;
             this.TetradicSelected.Cursor = System.Windows.Forms.Cursors.Hand;
             this.TetradicSelected.Location = new System.Drawing.Point(31, 3);
             this.TetradicSelected.Name = "TetradicSelected";
@@ -387,10 +437,12 @@
             this.TetradicSelected.TabIndex = 4;
             this.TetradicSelected.Click += new System.EventHandler(this.MatchingPanel_Click);
             this.TetradicSelected.MouseDown += new System.Windows.Forms.MouseEventHandler(this.MatchingPanel_MouseDown);
+            this.TetradicSelected.MouseMove += new System.Windows.Forms.MouseEventHandler(this.MatchingPanel_MouseMove);
             // 
             // Tetradic2
             // 
             this.Tetradic2.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.Tetradic2.ContextMenuStrip = this.contextMenuStrip1;
             this.Tetradic2.Cursor = System.Windows.Forms.Cursors.Hand;
             this.Tetradic2.Location = new System.Drawing.Point(59, 3);
             this.Tetradic2.Name = "Tetradic2";
@@ -398,16 +450,19 @@
             this.Tetradic2.TabIndex = 5;
             this.Tetradic2.Click += new System.EventHandler(this.MatchingPanel_Click);
             this.Tetradic2.MouseDown += new System.Windows.Forms.MouseEventHandler(this.MatchingPanel_MouseDown);
+            this.Tetradic2.MouseMove += new System.Windows.Forms.MouseEventHandler(this.MatchingPanel_MouseMove);
             // 
             // Tetradic3
             // 
             this.Tetradic3.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.Tetradic3.Location = new System.Drawing.Point(3, 31);
+            this.Tetradic3.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.Tetradic3.Location = new System.Drawing.Point(87, 3);
             this.Tetradic3.Name = "Tetradic3";
             this.Tetradic3.Size = new System.Drawing.Size(22, 22);
             this.Tetradic3.TabIndex = 6;
             this.Tetradic3.Click += new System.EventHandler(this.MatchingPanel_Click);
             this.Tetradic3.MouseDown += new System.Windows.Forms.MouseEventHandler(this.MatchingPanel_MouseDown);
+            this.Tetradic3.MouseMove += new System.Windows.Forms.MouseEventHandler(this.MatchingPanel_MouseMove);
             // 
             // brightnessBar
             // 
@@ -485,6 +540,7 @@
             // MonoPanel1
             // 
             this.MonoPanel1.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.MonoPanel1.ContextMenuStrip = this.contextMenuStrip1;
             this.MonoPanel1.Cursor = System.Windows.Forms.Cursors.Hand;
             this.MonoPanel1.Location = new System.Drawing.Point(3, 3);
             this.MonoPanel1.Name = "MonoPanel1";
@@ -492,10 +548,12 @@
             this.MonoPanel1.TabIndex = 0;
             this.MonoPanel1.Click += new System.EventHandler(this.MatchingPanel_Click);
             this.MonoPanel1.MouseDown += new System.Windows.Forms.MouseEventHandler(this.MatchingPanel_MouseDown);
+            this.MonoPanel1.MouseMove += new System.Windows.Forms.MouseEventHandler(this.MatchingPanel_MouseMove);
             // 
             // MonoPanel2
             // 
             this.MonoPanel2.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.MonoPanel2.ContextMenuStrip = this.contextMenuStrip1;
             this.MonoPanel2.Cursor = System.Windows.Forms.Cursors.Hand;
             this.MonoPanel2.Location = new System.Drawing.Point(31, 3);
             this.MonoPanel2.Name = "MonoPanel2";
@@ -503,10 +561,12 @@
             this.MonoPanel2.TabIndex = 1;
             this.MonoPanel2.Click += new System.EventHandler(this.MatchingPanel_Click);
             this.MonoPanel2.MouseDown += new System.Windows.Forms.MouseEventHandler(this.MatchingPanel_MouseDown);
+            this.MonoPanel2.MouseMove += new System.Windows.Forms.MouseEventHandler(this.MatchingPanel_MouseMove);
             // 
             // MonoPanel3
             // 
             this.MonoPanel3.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.MonoPanel3.ContextMenuStrip = this.contextMenuStrip1;
             this.MonoPanel3.Cursor = System.Windows.Forms.Cursors.Hand;
             this.MonoPanel3.Location = new System.Drawing.Point(59, 3);
             this.MonoPanel3.Name = "MonoPanel3";
@@ -514,10 +574,12 @@
             this.MonoPanel3.TabIndex = 1;
             this.MonoPanel3.Click += new System.EventHandler(this.MatchingPanel_Click);
             this.MonoPanel3.MouseDown += new System.Windows.Forms.MouseEventHandler(this.MatchingPanel_MouseDown);
+            this.MonoPanel3.MouseMove += new System.Windows.Forms.MouseEventHandler(this.MatchingPanel_MouseMove);
             // 
             // MonoPanel4
             // 
             this.MonoPanel4.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.MonoPanel4.ContextMenuStrip = this.contextMenuStrip1;
             this.MonoPanel4.Cursor = System.Windows.Forms.Cursors.Hand;
             this.MonoPanel4.Location = new System.Drawing.Point(87, 3);
             this.MonoPanel4.Name = "MonoPanel4";
@@ -525,10 +587,12 @@
             this.MonoPanel4.TabIndex = 2;
             this.MonoPanel4.Click += new System.EventHandler(this.MatchingPanel_Click);
             this.MonoPanel4.MouseDown += new System.Windows.Forms.MouseEventHandler(this.MatchingPanel_MouseDown);
+            this.MonoPanel4.MouseMove += new System.Windows.Forms.MouseEventHandler(this.MatchingPanel_MouseMove);
             // 
             // MonoPanel5
             // 
             this.MonoPanel5.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.MonoPanel5.ContextMenuStrip = this.contextMenuStrip1;
             this.MonoPanel5.Cursor = System.Windows.Forms.Cursors.Hand;
             this.MonoPanel5.Location = new System.Drawing.Point(115, 3);
             this.MonoPanel5.Name = "MonoPanel5";
@@ -536,10 +600,12 @@
             this.MonoPanel5.TabIndex = 3;
             this.MonoPanel5.Click += new System.EventHandler(this.MatchingPanel_Click);
             this.MonoPanel5.MouseDown += new System.Windows.Forms.MouseEventHandler(this.MatchingPanel_MouseDown);
+            this.MonoPanel5.MouseMove += new System.Windows.Forms.MouseEventHandler(this.MatchingPanel_MouseMove);
             // 
             // MonoPanel6
             // 
             this.MonoPanel6.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.MonoPanel6.ContextMenuStrip = this.contextMenuStrip1;
             this.MonoPanel6.Cursor = System.Windows.Forms.Cursors.Hand;
             this.MonoPanel6.Location = new System.Drawing.Point(143, 3);
             this.MonoPanel6.Name = "MonoPanel6";
@@ -547,10 +613,12 @@
             this.MonoPanel6.TabIndex = 4;
             this.MonoPanel6.Click += new System.EventHandler(this.MatchingPanel_Click);
             this.MonoPanel6.MouseDown += new System.Windows.Forms.MouseEventHandler(this.MatchingPanel_MouseDown);
+            this.MonoPanel6.MouseMove += new System.Windows.Forms.MouseEventHandler(this.MatchingPanel_MouseMove);
             // 
             // MonoPanel7
             // 
             this.MonoPanel7.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.MonoPanel7.ContextMenuStrip = this.contextMenuStrip1;
             this.MonoPanel7.Cursor = System.Windows.Forms.Cursors.Hand;
             this.MonoPanel7.Location = new System.Drawing.Point(171, 3);
             this.MonoPanel7.Name = "MonoPanel7";
@@ -558,6 +626,7 @@
             this.MonoPanel7.TabIndex = 5;
             this.MonoPanel7.Click += new System.EventHandler(this.MatchingPanel_Click);
             this.MonoPanel7.MouseDown += new System.Windows.Forms.MouseEventHandler(this.MatchingPanel_MouseDown);
+            this.MonoPanel7.MouseMove += new System.Windows.Forms.MouseEventHandler(this.MatchingPanel_MouseMove);
             // 
             // themeLayoutPanel
             // 
@@ -568,9 +637,10 @@
             this.themeLayoutPanel.Controls.Add(this.SaveThemeButton);
             this.themeLayoutPanel.Controls.Add(this.LoadButton);
             this.themeLayoutPanel.Controls.Add(this.ResetThemeButton);
+            this.themeLayoutPanel.Controls.Add(this.ApplyThemeButton);
             this.themeLayoutPanel.Location = new System.Drawing.Point(20, 461);
             this.themeLayoutPanel.Name = "themeLayoutPanel";
-            this.themeLayoutPanel.Size = new System.Drawing.Size(273, 111);
+            this.themeLayoutPanel.Size = new System.Drawing.Size(273, 110);
             this.themeLayoutPanel.TabIndex = 11;
             // 
             // label6
@@ -596,9 +666,10 @@
             this.flowLayoutPanel11.Controls.Add(this.ThemePanel7);
             this.flowLayoutPanel11.Controls.Add(this.ThemePanel8);
             this.flowLayoutPanel11.Controls.Add(this.ThemePanel9);
+            this.flowLayoutPanel11.Controls.Add(this.ThemePanel10);
             this.flowLayoutPanel11.Location = new System.Drawing.Point(3, 19);
             this.flowLayoutPanel11.Name = "flowLayoutPanel11";
-            this.flowLayoutPanel11.Size = new System.Drawing.Size(255, 26);
+            this.flowLayoutPanel11.Size = new System.Drawing.Size(258, 28);
             this.flowLayoutPanel11.TabIndex = 15;
             // 
             // ThemePanel1
@@ -606,11 +677,13 @@
             this.ThemePanel1.AllowDrop = true;
             this.ThemePanel1.BackColor = System.Drawing.Color.White;
             this.ThemePanel1.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.ThemePanel1.ContextMenuStrip = this.contextMenuStrip1;
             this.ThemePanel1.Cursor = System.Windows.Forms.Cursors.Hand;
             this.ThemePanel1.Location = new System.Drawing.Point(3, 3);
             this.ThemePanel1.Name = "ThemePanel1";
-            this.ThemePanel1.Size = new System.Drawing.Size(22, 22);
+            this.ThemePanel1.Size = new System.Drawing.Size(19, 19);
             this.ThemePanel1.TabIndex = 3;
+            this.toolTip1.SetToolTip(this.ThemePanel1, "Background 1");
             this.ThemePanel1.Click += new System.EventHandler(this.ThemePanel_Click);
             this.ThemePanel1.DragDrop += new System.Windows.Forms.DragEventHandler(this.panel_DragDrop);
             this.ThemePanel1.DragEnter += new System.Windows.Forms.DragEventHandler(this.panel_DragEnter);
@@ -620,11 +693,13 @@
             this.ThemePanel2.AllowDrop = true;
             this.ThemePanel2.BackColor = System.Drawing.Color.White;
             this.ThemePanel2.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.ThemePanel2.ContextMenuStrip = this.contextMenuStrip1;
             this.ThemePanel2.Cursor = System.Windows.Forms.Cursors.Hand;
-            this.ThemePanel2.Location = new System.Drawing.Point(31, 3);
+            this.ThemePanel2.Location = new System.Drawing.Point(28, 3);
             this.ThemePanel2.Name = "ThemePanel2";
-            this.ThemePanel2.Size = new System.Drawing.Size(22, 22);
+            this.ThemePanel2.Size = new System.Drawing.Size(19, 19);
             this.ThemePanel2.TabIndex = 4;
+            this.toolTip1.SetToolTip(this.ThemePanel2, "Text 1");
             this.ThemePanel2.Click += new System.EventHandler(this.ThemePanel_Click);
             this.ThemePanel2.DragDrop += new System.Windows.Forms.DragEventHandler(this.panel_DragDrop);
             this.ThemePanel2.DragEnter += new System.Windows.Forms.DragEventHandler(this.panel_DragEnter);
@@ -634,11 +709,13 @@
             this.ThemePanel3.AllowDrop = true;
             this.ThemePanel3.BackColor = System.Drawing.Color.White;
             this.ThemePanel3.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.ThemePanel3.ContextMenuStrip = this.contextMenuStrip1;
             this.ThemePanel3.Cursor = System.Windows.Forms.Cursors.Hand;
-            this.ThemePanel3.Location = new System.Drawing.Point(59, 3);
+            this.ThemePanel3.Location = new System.Drawing.Point(53, 3);
             this.ThemePanel3.Name = "ThemePanel3";
-            this.ThemePanel3.Size = new System.Drawing.Size(22, 22);
+            this.ThemePanel3.Size = new System.Drawing.Size(19, 19);
             this.ThemePanel3.TabIndex = 5;
+            this.toolTip1.SetToolTip(this.ThemePanel3, "Background 2");
             this.ThemePanel3.Click += new System.EventHandler(this.ThemePanel_Click);
             this.ThemePanel3.DragDrop += new System.Windows.Forms.DragEventHandler(this.panel_DragDrop);
             this.ThemePanel3.DragEnter += new System.Windows.Forms.DragEventHandler(this.panel_DragEnter);
@@ -648,11 +725,13 @@
             this.ThemePanel4.AllowDrop = true;
             this.ThemePanel4.BackColor = System.Drawing.Color.White;
             this.ThemePanel4.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.ThemePanel4.ContextMenuStrip = this.contextMenuStrip1;
             this.ThemePanel4.Cursor = System.Windows.Forms.Cursors.Hand;
-            this.ThemePanel4.Location = new System.Drawing.Point(87, 3);
+            this.ThemePanel4.Location = new System.Drawing.Point(78, 3);
             this.ThemePanel4.Name = "ThemePanel4";
-            this.ThemePanel4.Size = new System.Drawing.Size(22, 22);
+            this.ThemePanel4.Size = new System.Drawing.Size(19, 19);
             this.ThemePanel4.TabIndex = 6;
+            this.toolTip1.SetToolTip(this.ThemePanel4, "Text 2");
             this.ThemePanel4.Click += new System.EventHandler(this.ThemePanel_Click);
             this.ThemePanel4.DragDrop += new System.Windows.Forms.DragEventHandler(this.panel_DragDrop);
             this.ThemePanel4.DragEnter += new System.Windows.Forms.DragEventHandler(this.panel_DragEnter);
@@ -662,11 +741,13 @@
             this.ThemePanel5.AllowDrop = true;
             this.ThemePanel5.BackColor = System.Drawing.Color.White;
             this.ThemePanel5.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.ThemePanel5.ContextMenuStrip = this.contextMenuStrip1;
             this.ThemePanel5.Cursor = System.Windows.Forms.Cursors.Hand;
-            this.ThemePanel5.Location = new System.Drawing.Point(115, 3);
+            this.ThemePanel5.Location = new System.Drawing.Point(103, 3);
             this.ThemePanel5.Name = "ThemePanel5";
-            this.ThemePanel5.Size = new System.Drawing.Size(22, 22);
+            this.ThemePanel5.Size = new System.Drawing.Size(19, 19);
             this.ThemePanel5.TabIndex = 7;
+            this.toolTip1.SetToolTip(this.ThemePanel5, "Accent 1");
             this.ThemePanel5.Click += new System.EventHandler(this.ThemePanel_Click);
             this.ThemePanel5.DragDrop += new System.Windows.Forms.DragEventHandler(this.panel_DragDrop);
             this.ThemePanel5.DragEnter += new System.Windows.Forms.DragEventHandler(this.panel_DragEnter);
@@ -676,11 +757,13 @@
             this.ThemePanel6.AllowDrop = true;
             this.ThemePanel6.BackColor = System.Drawing.Color.White;
             this.ThemePanel6.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.ThemePanel6.ContextMenuStrip = this.contextMenuStrip1;
             this.ThemePanel6.Cursor = System.Windows.Forms.Cursors.Hand;
-            this.ThemePanel6.Location = new System.Drawing.Point(143, 3);
+            this.ThemePanel6.Location = new System.Drawing.Point(128, 3);
             this.ThemePanel6.Name = "ThemePanel6";
-            this.ThemePanel6.Size = new System.Drawing.Size(22, 22);
+            this.ThemePanel6.Size = new System.Drawing.Size(19, 19);
             this.ThemePanel6.TabIndex = 8;
+            this.toolTip1.SetToolTip(this.ThemePanel6, "Accent 2");
             this.ThemePanel6.Click += new System.EventHandler(this.ThemePanel_Click);
             this.ThemePanel6.DragDrop += new System.Windows.Forms.DragEventHandler(this.panel_DragDrop);
             this.ThemePanel6.DragEnter += new System.Windows.Forms.DragEventHandler(this.panel_DragEnter);
@@ -690,11 +773,13 @@
             this.ThemePanel7.AllowDrop = true;
             this.ThemePanel7.BackColor = System.Drawing.Color.White;
             this.ThemePanel7.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.ThemePanel7.ContextMenuStrip = this.contextMenuStrip1;
             this.ThemePanel7.Cursor = System.Windows.Forms.Cursors.Hand;
-            this.ThemePanel7.Location = new System.Drawing.Point(171, 3);
+            this.ThemePanel7.Location = new System.Drawing.Point(153, 3);
             this.ThemePanel7.Name = "ThemePanel7";
-            this.ThemePanel7.Size = new System.Drawing.Size(22, 22);
+            this.ThemePanel7.Size = new System.Drawing.Size(19, 19);
             this.ThemePanel7.TabIndex = 9;
+            this.toolTip1.SetToolTip(this.ThemePanel7, "Accent 3");
             this.ThemePanel7.Click += new System.EventHandler(this.ThemePanel_Click);
             this.ThemePanel7.DragDrop += new System.Windows.Forms.DragEventHandler(this.panel_DragDrop);
             this.ThemePanel7.DragEnter += new System.Windows.Forms.DragEventHandler(this.panel_DragEnter);
@@ -704,11 +789,13 @@
             this.ThemePanel8.AllowDrop = true;
             this.ThemePanel8.BackColor = System.Drawing.Color.White;
             this.ThemePanel8.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.ThemePanel8.ContextMenuStrip = this.contextMenuStrip1;
             this.ThemePanel8.Cursor = System.Windows.Forms.Cursors.Hand;
-            this.ThemePanel8.Location = new System.Drawing.Point(199, 3);
+            this.ThemePanel8.Location = new System.Drawing.Point(178, 3);
             this.ThemePanel8.Name = "ThemePanel8";
-            this.ThemePanel8.Size = new System.Drawing.Size(22, 22);
+            this.ThemePanel8.Size = new System.Drawing.Size(19, 19);
             this.ThemePanel8.TabIndex = 10;
+            this.toolTip1.SetToolTip(this.ThemePanel8, "Accent 4");
             this.ThemePanel8.Click += new System.EventHandler(this.ThemePanel_Click);
             this.ThemePanel8.DragDrop += new System.Windows.Forms.DragEventHandler(this.panel_DragDrop);
             this.ThemePanel8.DragEnter += new System.Windows.Forms.DragEventHandler(this.panel_DragEnter);
@@ -718,20 +805,38 @@
             this.ThemePanel9.AllowDrop = true;
             this.ThemePanel9.BackColor = System.Drawing.Color.White;
             this.ThemePanel9.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.ThemePanel9.ContextMenuStrip = this.contextMenuStrip1;
             this.ThemePanel9.Cursor = System.Windows.Forms.Cursors.Hand;
-            this.ThemePanel9.Location = new System.Drawing.Point(227, 3);
+            this.ThemePanel9.Location = new System.Drawing.Point(203, 3);
             this.ThemePanel9.Name = "ThemePanel9";
-            this.ThemePanel9.Size = new System.Drawing.Size(22, 22);
+            this.ThemePanel9.Size = new System.Drawing.Size(19, 19);
             this.ThemePanel9.TabIndex = 11;
+            this.toolTip1.SetToolTip(this.ThemePanel9, "Accent 5");
             this.ThemePanel9.Click += new System.EventHandler(this.ThemePanel_Click);
             this.ThemePanel9.DragDrop += new System.Windows.Forms.DragEventHandler(this.panel_DragDrop);
             this.ThemePanel9.DragEnter += new System.Windows.Forms.DragEventHandler(this.panel_DragEnter);
+            // 
+            // ThemePanel10
+            // 
+            this.ThemePanel10.AllowDrop = true;
+            this.ThemePanel10.BackColor = System.Drawing.Color.White;
+            this.ThemePanel10.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.ThemePanel10.ContextMenuStrip = this.contextMenuStrip1;
+            this.ThemePanel10.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.ThemePanel10.Location = new System.Drawing.Point(228, 3);
+            this.ThemePanel10.Name = "ThemePanel10";
+            this.ThemePanel10.Size = new System.Drawing.Size(19, 19);
+            this.ThemePanel10.TabIndex = 11;
+            this.toolTip1.SetToolTip(this.ThemePanel10, "Accent 6");
+            this.ThemePanel10.Click += new System.EventHandler(this.ThemePanel_Click);
+            this.ThemePanel10.DragDrop += new System.Windows.Forms.DragEventHandler(this.panel_DragDrop);
+            this.ThemePanel10.DragEnter += new System.Windows.Forms.DragEventHandler(this.panel_DragEnter);
             // 
             // SaveThemeButton
             // 
             this.SaveThemeButton.BackgroundImage = global::PowerPointLabs.Properties.Resources.save_icon;
             this.SaveThemeButton.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Center;
-            this.SaveThemeButton.Location = new System.Drawing.Point(3, 51);
+            this.SaveThemeButton.Location = new System.Drawing.Point(3, 53);
             this.SaveThemeButton.Name = "SaveThemeButton";
             this.SaveThemeButton.Size = new System.Drawing.Size(49, 47);
             this.SaveThemeButton.TabIndex = 16;
@@ -742,7 +847,7 @@
             // 
             this.LoadButton.BackgroundImage = global::PowerPointLabs.Properties.Resources.down_icon;
             this.LoadButton.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Center;
-            this.LoadButton.Location = new System.Drawing.Point(58, 51);
+            this.LoadButton.Location = new System.Drawing.Point(58, 53);
             this.LoadButton.Name = "LoadButton";
             this.LoadButton.Size = new System.Drawing.Size(49, 47);
             this.LoadButton.TabIndex = 17;
@@ -753,12 +858,24 @@
             // 
             this.ResetThemeButton.BackgroundImage = global::PowerPointLabs.Properties.Resources.delete_icon;
             this.ResetThemeButton.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Center;
-            this.ResetThemeButton.Location = new System.Drawing.Point(113, 51);
+            this.ResetThemeButton.Location = new System.Drawing.Point(113, 53);
             this.ResetThemeButton.Name = "ResetThemeButton";
             this.ResetThemeButton.Size = new System.Drawing.Size(49, 47);
             this.ResetThemeButton.TabIndex = 18;
             this.ResetThemeButton.UseVisualStyleBackColor = true;
             this.ResetThemeButton.Click += new System.EventHandler(this.ResetThemeButton_Click);
+            // 
+            // ApplyThemeButton
+            // 
+            this.ApplyThemeButton.BackgroundImage = global::PowerPointLabs.Properties.Resources.apply_icon;
+            this.ApplyThemeButton.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Center;
+            this.ApplyThemeButton.Location = new System.Drawing.Point(168, 53);
+            this.ApplyThemeButton.Name = "ApplyThemeButton";
+            this.ApplyThemeButton.Size = new System.Drawing.Size(49, 47);
+            this.ApplyThemeButton.TabIndex = 19;
+            this.toolTip1.SetToolTip(this.ApplyThemeButton, "Applies Theme Colors to Selected Slides");
+            this.ApplyThemeButton.UseVisualStyleBackColor = true;
+            this.ApplyThemeButton.Click += new System.EventHandler(this.ApplyThemeButton_Click);
             // 
             // saveFileDialog1
             // 
@@ -813,63 +930,80 @@
             this.panel3.Size = new System.Drawing.Size(273, 20);
             this.panel3.TabIndex = 17;
             // 
+            // EyeDropperButton
+            // 
+            this.EyeDropperButton.BackgroundImage = global::PowerPointLabs.Properties.Resources.Eyedropper_icon;
+            this.EyeDropperButton.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Center;
+            this.EyeDropperButton.Location = new System.Drawing.Point(69, 16);
+            this.EyeDropperButton.Name = "EyeDropperButton";
+            this.EyeDropperButton.Size = new System.Drawing.Size(40, 47);
+            this.EyeDropperButton.TabIndex = 23;
+            this.EyeDropperButton.UseVisualStyleBackColor = true;
+            this.EyeDropperButton.MouseDown += new System.Windows.Forms.MouseEventHandler(this.EyeDropperButton_MouseDown);
+            // 
+            // TextCheckBox
+            // 
+            this.TextCheckBox.Appearance = System.Windows.Forms.Appearance.Button;
+            this.TextCheckBox.AutoEllipsis = true;
+            this.TextCheckBox.BackgroundImage = global::PowerPointLabs.Properties.Resources.Type_icon;
+            this.TextCheckBox.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Center;
+            this.TextCheckBox.Location = new System.Drawing.Point(115, 16);
+            this.TextCheckBox.Name = "TextCheckBox";
+            this.TextCheckBox.Size = new System.Drawing.Size(40, 47);
+            this.TextCheckBox.TabIndex = 22;
+            this.TextCheckBox.UseVisualStyleBackColor = true;
+            this.TextCheckBox.CheckedChanged += new System.EventHandler(this.TextCheckBox_CheckedChanged);
+            // 
+            // LineCheckBox
+            // 
+            this.LineCheckBox.Appearance = System.Windows.Forms.Appearance.Button;
+            this.LineCheckBox.AutoEllipsis = true;
+            this.LineCheckBox.BackgroundImage = global::PowerPointLabs.Properties.Resources.Technical_Pen_icon;
+            this.LineCheckBox.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Center;
+            this.LineCheckBox.Location = new System.Drawing.Point(161, 16);
+            this.LineCheckBox.Name = "LineCheckBox";
+            this.LineCheckBox.Size = new System.Drawing.Size(40, 47);
+            this.LineCheckBox.TabIndex = 21;
+            this.LineCheckBox.UseVisualStyleBackColor = true;
+            this.LineCheckBox.CheckedChanged += new System.EventHandler(this.LineCheckBox_CheckedChanged);
+            // 
             // EditColorButton
             // 
             this.EditColorButton.BackgroundImage = global::PowerPointLabs.Properties.Resources.Palette_icon;
             this.EditColorButton.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Center;
-            this.EditColorButton.Location = new System.Drawing.Point(243, 16);
+            this.EditColorButton.Location = new System.Drawing.Point(253, 16);
             this.EditColorButton.Name = "EditColorButton";
-            this.EditColorButton.Size = new System.Drawing.Size(46, 47);
+            this.EditColorButton.Size = new System.Drawing.Size(40, 47);
             this.EditColorButton.TabIndex = 2;
             this.EditColorButton.UseVisualStyleBackColor = true;
             this.EditColorButton.Click += new System.EventHandler(this.button2_Click);
             // 
-            // FillEyeDropperButton
+            // FillCheckBox
             // 
-            this.FillEyeDropperButton.BackgroundImage = global::PowerPointLabs.Properties.Resources.Paint_icon;
-            this.FillEyeDropperButton.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Center;
-            this.FillEyeDropperButton.FlatAppearance.MouseDownBackColor = System.Drawing.SystemColors.Highlight;
-            this.FillEyeDropperButton.Location = new System.Drawing.Point(191, 16);
-            this.FillEyeDropperButton.Name = "FillEyeDropperButton";
-            this.FillEyeDropperButton.Size = new System.Drawing.Size(46, 47);
-            this.FillEyeDropperButton.TabIndex = 14;
-            this.FillEyeDropperButton.UseVisualStyleBackColor = true;
-            this.FillEyeDropperButton.MouseDown += new System.Windows.Forms.MouseEventHandler(this.FillEyeDropperButton_MouseDown);
-            // 
-            // LineEyeDropperButton
-            // 
-            this.LineEyeDropperButton.BackgroundImage = global::PowerPointLabs.Properties.Resources.Technical_Pen_icon;
-            this.LineEyeDropperButton.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Center;
-            this.LineEyeDropperButton.FlatAppearance.MouseDownBackColor = System.Drawing.SystemColors.Highlight;
-            this.LineEyeDropperButton.Location = new System.Drawing.Point(139, 16);
-            this.LineEyeDropperButton.Name = "LineEyeDropperButton";
-            this.LineEyeDropperButton.Size = new System.Drawing.Size(46, 47);
-            this.LineEyeDropperButton.TabIndex = 13;
-            this.LineEyeDropperButton.UseVisualStyleBackColor = true;
-            this.LineEyeDropperButton.MouseDown += new System.Windows.Forms.MouseEventHandler(this.LineEyeDropperButton_MouseDown);
-            // 
-            // FontEyeDropperButton
-            // 
-            this.FontEyeDropperButton.BackgroundImage = global::PowerPointLabs.Properties.Resources.Type_icon;
-            this.FontEyeDropperButton.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Center;
-            this.FontEyeDropperButton.FlatAppearance.MouseDownBackColor = System.Drawing.SystemColors.Highlight;
-            this.FontEyeDropperButton.Location = new System.Drawing.Point(87, 16);
-            this.FontEyeDropperButton.Name = "FontEyeDropperButton";
-            this.FontEyeDropperButton.Size = new System.Drawing.Size(46, 47);
-            this.FontEyeDropperButton.TabIndex = 12;
-            this.FontEyeDropperButton.UseVisualStyleBackColor = true;
-            this.FontEyeDropperButton.MouseDown += new System.Windows.Forms.MouseEventHandler(this.FontEyeDropperButton_MouseDown);
+            this.FillCheckBox.Appearance = System.Windows.Forms.Appearance.Button;
+            this.FillCheckBox.AutoEllipsis = true;
+            this.FillCheckBox.BackgroundImage = global::PowerPointLabs.Properties.Resources.Paint_icon;
+            this.FillCheckBox.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Center;
+            this.FillCheckBox.Checked = true;
+            this.FillCheckBox.CheckState = System.Windows.Forms.CheckState.Checked;
+            this.FillCheckBox.Location = new System.Drawing.Point(207, 16);
+            this.FillCheckBox.Name = "FillCheckBox";
+            this.FillCheckBox.Size = new System.Drawing.Size(40, 47);
+            this.FillCheckBox.TabIndex = 20;
+            this.FillCheckBox.UseVisualStyleBackColor = true;
+            this.FillCheckBox.CheckedChanged += new System.EventHandler(this.FillCheckBox_CheckedChanged);
             // 
             // ColorPane
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+            this.Controls.Add(this.EyeDropperButton);
+            this.Controls.Add(this.TextCheckBox);
+            this.Controls.Add(this.LineCheckBox);
             this.Controls.Add(this.panel3);
             this.Controls.Add(this.panel2);
             this.Controls.Add(this.EditColorButton);
-            this.Controls.Add(this.FillEyeDropperButton);
-            this.Controls.Add(this.LineEyeDropperButton);
-            this.Controls.Add(this.FontEyeDropperButton);
+            this.Controls.Add(this.FillCheckBox);
             this.Controls.Add(this.themeLayoutPanel);
             this.Controls.Add(this.flowLayoutPanel1);
             this.Controls.Add(this.AnalogousColorPanel);
@@ -882,11 +1016,12 @@
             this.Controls.Add(this.brightnessBar);
             this.Controls.Add(this.saturationBar);
             this.Name = "ColorPane";
-            this.Size = new System.Drawing.Size(304, 575);
+            this.Size = new System.Drawing.Size(304, 595);
             this.Load += new System.EventHandler(this.ColorPane_Load);
             this.AnalogousColorPanel.ResumeLayout(false);
             this.AnalogousColorPanel.PerformLayout();
             this.flowLayoutPanel6.ResumeLayout(false);
+            this.contextMenuStrip1.ResumeLayout(false);
             this.flowLayoutPanel2.ResumeLayout(false);
             this.flowLayoutPanel2.PerformLayout();
             this.flowLayoutPanel7.ResumeLayout(false);
@@ -969,19 +1104,25 @@
         private System.Windows.Forms.Panel ThemePanel6;
         private System.Windows.Forms.Panel ThemePanel7;
         private System.Windows.Forms.Panel ThemePanel8;
-        private System.Windows.Forms.Panel ThemePanel9;
         private System.Windows.Forms.Button SaveThemeButton;
         private System.Windows.Forms.SaveFileDialog saveFileDialog1;
         private System.Windows.Forms.Button LoadButton;
         private System.Windows.Forms.OpenFileDialog openFileDialog1;
-        private System.Windows.Forms.Button FontEyeDropperButton;
-        private System.Windows.Forms.Button LineEyeDropperButton;
-        private System.Windows.Forms.Button FillEyeDropperButton;
         private System.Windows.Forms.Label label7;
         private System.Windows.Forms.Label label8;
         private System.Windows.Forms.Panel panel2;
         private System.Windows.Forms.Panel panel3;
         private System.Windows.Forms.ToolTip toolTip1;
         private System.Windows.Forms.Button ResetThemeButton;
+        private System.Windows.Forms.ContextMenuStrip contextMenuStrip1;
+        private System.Windows.Forms.ToolStripMenuItem showMoreInformationToolStripMenuItem;
+        private System.Windows.Forms.Panel ThemePanel9;
+        private System.Windows.Forms.Panel ThemePanel10;
+        private System.Windows.Forms.Button ApplyThemeButton;
+        private System.Windows.Forms.ToolStripMenuItem selectAsMainColorToolStripMenuItem;
+        private System.Windows.Forms.CheckBox FillCheckBox;
+        private System.Windows.Forms.CheckBox LineCheckBox;
+        private System.Windows.Forms.CheckBox TextCheckBox;
+        private System.Windows.Forms.Button EyeDropperButton;
     }
 }

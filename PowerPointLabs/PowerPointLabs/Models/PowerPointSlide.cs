@@ -37,6 +37,11 @@ namespace PowerPointLabs.Models
             _slide = slide;
         }
 
+        public PowerPoint.Slide GetNativeSlide()
+        {
+            return _slide;
+        }
+
         public static PowerPointSlide FromSlideFactory(Slide slide)
         {
             if (slide == null)

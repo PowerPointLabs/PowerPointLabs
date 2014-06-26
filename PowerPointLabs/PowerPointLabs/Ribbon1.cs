@@ -1155,7 +1155,7 @@ namespace PowerPointLabs
             }
             catch (Exception e)
             {
-                MessageBox.Show("No Shape Selected", "Invalid Selection");
+                ErrorDialogWrapper.ShowDialog("Color Picker Failed", e.Message, e);
                 PowerPointLabsGlobals.LogException(e, "ColorPickerButtonClicked");
                 throw;
             }
