@@ -52,6 +52,7 @@ namespace PPExtraEventHelper
                 if (wParam.ToInt32() == (int)Native.Message.WM_LBUTTONDBLCLK 
                     && !IsReEnteredCallback())
                 {
+                    FindSlideViewWindowRectangle();
                     if (IsMouseWithinSlideViewWindow()
                         && DoubleClick != null)
                     {
