@@ -48,18 +48,30 @@ namespace PowerPointLabs
             myShapeFlowLayout.Controls.Add(newShapeCell);
         }
 
+        private Tuple<Single, Single> ToMiddleOnScreen(Single slideWidth, Single slideHeight,
+                                                       Single clientWidth, Single clientHeight)
+        {
+            return new Tuple<Single, Single>((slideWidth - clientWidth) / 2, (slideHeight - clientHeight) / 2);
+        }
+
+        # region Event Handlers
         private void PanelDoubleClick(object sender, EventArgs e)
         {
             var childPanel = sender as Panel;
 
             var currentSlide = PowerPointPresentation.CurrentSlide;
+            var image = new Bitmap(childPanel.Name);
+            
             var slideWidth = PowerPointPresentation.SlideWidth;
             var slideHeight = PowerPointPresentation.SlideHeight;
+            var clientWidth = (Single)image.Size.Width;
+            var clientHeight = (Single)image.Size.Height;
+
+            var leftTopCorner = ToMiddleOnScreen(slideWidth, slideHeight, clientWidth, clientHeight);
 
             if (currentSlide != null)
             {
-                currentSlide.InsertPicture(childPanel.Name, MsoTriState.msoFalse, MsoTriState.msoTrue, slideWidth/2,
-                                           slideHeight/2);
+                currentSlide.InsertPicture(childPanel.Name, MsoTriState.msoFalse, MsoTriState.msoTrue, leftTopCorner);
             }
         }
 
@@ -89,6 +101,7 @@ namespace PowerPointLabs
             myShapeFlowLayout.Controls.Remove(_selectedPanel);
             _selectedPanel = null;
         }
+        # endregion
 
         # region search box appearance and behaviors
         protected override void OnLoad(EventArgs e)
