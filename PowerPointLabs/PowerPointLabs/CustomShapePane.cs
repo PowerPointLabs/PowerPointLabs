@@ -1,16 +1,10 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
 using System.Drawing;
-using System.Data;
-using System.IO;
-using System.Linq;
-using System.Text;
+using System.Drawing.Drawing2D;
 using System.Windows.Forms;
 using Microsoft.Office.Core;
 using PPExtraEventHelper;
 using PowerPointLabs.Models;
-using Stepi.UI;
 
 namespace PowerPointLabs
 {
@@ -26,11 +20,6 @@ namespace PowerPointLabs
             _searchBoxFocused = false;
         }
 
-        private bool ThumbNailCallBack()
-        {
-            return false;
-        }
-
         public void AddCustomShape(string fileName)
         {
             var shapeImage = new Bitmap(fileName);
@@ -39,8 +28,7 @@ namespace PowerPointLabs
 
             newShapeCell.Size = new Size(50, 50);
             newShapeCell.Name = fileName;
-            newShapeCell.BackgroundImage = shapeImage.GetThumbnailImage(50, 50, ThumbNailCallBack,
-                                                                        IntPtr.Zero);
+            newShapeCell.BackgroundImage = CreateThumbnailImage(shapeImage, 50, 50);
             newShapeCell.ContextMenuStrip = contextMenuStrip;
             newShapeCell.DoubleClick += PanelDoubleClick;
             newShapeCell.Click += PanelClick;
@@ -54,9 +42,65 @@ namespace PowerPointLabs
             return new Tuple<Single, Single>((slideWidth - clientWidth) / 2, (slideHeight - clientHeight) / 2);
         }
 
+        private double CalculateScalingRatio(Size oldSize, Size newSize)
+        {
+            var oldAspectRatio = oldSize.Width / oldSize.Height;
+            var newAspectRatio = newSize.Width / newSize.Height;
+
+            double scalingRatio;
+
+            // when this happens, old image's width should be 
+            if (newAspectRatio >= oldAspectRatio)
+            {
+                scalingRatio = (double)newSize.Width / oldSize.Width;
+            }
+            else
+            {
+                scalingRatio = (double)newSize.Height / oldSize.Height;
+            }
+
+            return scalingRatio;
+        }
+
+        private Bitmap CreateThumbnailImage(Image oriImage, int width, int height)
+        {
+            var scalingRatio = CalculateScalingRatio(oriImage.Size, new Size(width, height));
+
+            // calculate width and height after scaling
+            var scaledWidth = (int)Math.Round(oriImage.Size.Width * scalingRatio);
+            var scaledHeight = (int)Math.Round(oriImage.Size.Height * scalingRatio);
+
+            // calculate left top corner position of the image in the thumbnail
+            var scaledLeft = (width - scaledWidth) / 2;
+            var scaledTop = (height - scaledHeight) / 2;
+
+            // define drawing area
+            var drawingRect = new Rectangle(scaledLeft, scaledTop, scaledWidth, scaledHeight);
+            var thumbnail = new Bitmap(width, height);
+
+            // here we set the thumbnail as the highest quality
+            using (var thumbnailGraphics = Graphics.FromImage(thumbnail))
+            {
+                thumbnailGraphics.CompositingQuality = CompositingQuality.HighQuality;
+                thumbnailGraphics.InterpolationMode = InterpolationMode.HighQualityBicubic;
+                thumbnailGraphics.SmoothingMode = SmoothingMode.HighQuality;
+                thumbnailGraphics.DrawImage(oriImage, drawingRect);
+            }
+
+            return thumbnail;
+        }
+
         # region Event Handlers
+        private const string PanelNullClickSenderError = @"No shape selected";
+
         private void PanelDoubleClick(object sender, EventArgs e)
         {
+            if (sender == null || !(sender is Panel))
+            {
+                MessageBox.Show(PanelNullClickSenderError);
+                return;
+            }
+
             var childPanel = sender as Panel;
 
             var currentSlide = PowerPointPresentation.CurrentSlide;
@@ -77,6 +121,12 @@ namespace PowerPointLabs
 
         private void PanelClick(object sender, EventArgs e)
         {
+            if (sender == null || !(sender is Panel))
+            {
+                MessageBox.Show(PanelNullClickSenderError);
+                return;
+            }
+
             var childPanel = sender as Panel;
 
             // de-highlight the old shape and set current shape as highighted
