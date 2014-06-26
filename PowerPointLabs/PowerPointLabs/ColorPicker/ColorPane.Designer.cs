@@ -939,6 +939,7 @@
             this.EyeDropperButton.Name = "EyeDropperButton";
             this.EyeDropperButton.Size = new System.Drawing.Size(40, 47);
             this.EyeDropperButton.TabIndex = 23;
+            this.toolTip1.SetToolTip(this.EyeDropperButton, "Begin EyeDropping");
             this.EyeDropperButton.UseVisualStyleBackColor = true;
             this.EyeDropperButton.MouseDown += new System.Windows.Forms.MouseEventHandler(this.EyeDropperButton_MouseDown);
             // 
