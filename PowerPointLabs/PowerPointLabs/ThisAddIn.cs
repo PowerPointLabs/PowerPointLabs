@@ -628,6 +628,7 @@ namespace PowerPointLabs
 
         private PowerPoint.DocumentWindow _copyFromWnd;
         private Regex _shapeNamePattern = new Regex(@"^[^\[]\D+\s\d+$");
+        private HashSet<String> isShapeMatchedAlready; 
 
         private void AfterPasteEventHandler(PowerPoint.Selection selection)
         {
@@ -678,6 +679,7 @@ namespace PowerPointLabs
                         corruptedShapes[i].Delete();
                     }
 
+                    isShapeMatchedAlready = new HashSet<string>();
                     for (int i = 1; i <= pastedShapes.Count; i++)
                     {
                         PowerPoint.Shape shape = pastedShapes[i];
@@ -703,25 +705,42 @@ namespace PowerPointLabs
             }
         }
 
-        /// <summary>
-        /// Match the shapes, when they have the same width, height, type, and similar name
-        /// </summary>
-        /// <param name="shape"></param>
-        /// <returns></returns>
         private int FindMatchedShape(PowerPoint.Shape shape)
         {
+            //Strong matching:
             for (int i = 0; i < copiedShapes.Count; i++)
             {
-                if (shape.Width == copiedShapes[i].Width
+                if (IsSimilarShape(shape, copiedShapes[i])
+                    && IsSimilarName(shape.Name, copiedShapes[i].Name)
+                    && shape.Left == copiedShapes[i].Left
                     && shape.Height == copiedShapes[i].Height
-                    && shape.Type == copiedShapes[i].Type
-                    && (shape.Type != Office.MsoShapeType.msoAutoShape || shape.AutoShapeType == copiedShapes[i].AutoShapeType)
-                    && IsSimilarName(shape.Name, copiedShapes[i].Name))
+                    && !isShapeMatchedAlready.Contains(copiedShapes[i].Id.ToString()))
                 {
+                    isShapeMatchedAlready.Add(copiedShapes[i].Id.ToString());
+                    return i;
+                }
+            }
+            //Blur matching:
+            for (int i = 0; i < copiedShapes.Count; i++)
+            {
+                if (IsSimilarShape(shape, copiedShapes[i])
+                    && IsSimilarName(shape.Name, copiedShapes[i].Name)
+                    && !isShapeMatchedAlready.Contains(copiedShapes[i].Id.ToString()))
+                {
+                    isShapeMatchedAlready.Add(copiedShapes[i].Id.ToString());
                     return i;
                 }
             }
             return -1;
+        }
+
+        private bool IsSimilarShape(PowerPoint.Shape shape, PowerPoint.Shape shape2)
+        {
+            return shape.Width == shape2.Width
+                   && shape.Height == shape2.Height
+                   && shape.Type == shape2.Type
+                   && (shape.Type != Office.MsoShapeType.msoAutoShape
+                       || shape.AutoShapeType == shape2.AutoShapeType);
         }
 
         /// <summary>
@@ -737,7 +756,9 @@ namespace PowerPointLabs
         {
             //remove enclosing brackets for name2
             var nameEnclosedInBrackets = new Regex(@"^\[\D+\s\d+\]$");
-            if (nameEnclosedInBrackets.IsMatch(name2) && name2.Length > 2)
+            if (!nameEnclosedInBrackets.IsMatch(name1) 
+                && nameEnclosedInBrackets.IsMatch(name2) 
+                && name2.Length > 2)
             {
                 name2 = name2.Substring(1, name2.Length - 2);
             }
