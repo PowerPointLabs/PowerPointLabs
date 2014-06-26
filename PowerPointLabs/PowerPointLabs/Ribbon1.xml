@@ -187,8 +187,9 @@
                label="Color"
                visible="true">
           <button id="ColorPickerButton"
-                  label="Color Picker"
+                  label="Color Lab"
                   size="large"
+                  getImage="GetColorLabImage"
                   supertip="Opens Custom Color Picker"
                   onAction="ColorPickerButtonClick"/>
         </group>
