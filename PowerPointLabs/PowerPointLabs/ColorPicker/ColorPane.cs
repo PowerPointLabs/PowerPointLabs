@@ -804,17 +804,17 @@ namespace PowerPointLabs
     {
         public LMouseListener()
         {
-            this.CallBack += new HookProc(MouseEvents);
+            this.CallBack += new Native.HookProc(MouseEvents);
             using (System.Diagnostics.Process process = System.Diagnostics.Process.GetCurrentProcess())
             using (System.Diagnostics.ProcessModule module = process.MainModule)
             {
-                IntPtr hModule = GetModuleHandle(module.ModuleName);
-                _hook = SetWindowsHookEx(WH_MOUSE_LL, this.CallBack, hModule, 0);
+                IntPtr hModule = Native.GetModuleHandle(module.ModuleName);
+                _hook = Native.SetWindowsHookEx(WH_MOUSE_LL, this.CallBack, hModule, 0);
             }
         }
         int WH_MOUSE_LL = 14;
         int HC_ACTION = 0;
-        HookProc CallBack = null;
+        Native.HookProc CallBack = null;
         IntPtr _hook = IntPtr.Zero;
 
         public event EventHandler<SysMouseEventInfo> LButtonClicked;
@@ -822,7 +822,7 @@ namespace PowerPointLabs
         int MouseEvents(int code, IntPtr wParam, IntPtr lParam)
         {
             if (code < 0)
-                return CallNextHookEx(_hook, code, wParam, lParam);
+                return Native.CallNextHookEx(_hook, code, wParam, lParam);
 
             if (code == this.HC_ACTION)
             {
@@ -839,7 +839,7 @@ namespace PowerPointLabs
                     }
                 }
             }
-            return CallNextHookEx(_hook, code, wParam, lParam);
+            return Native.CallNextHookEx(_hook, code, wParam, lParam);
         }
 
         public void Close()
@@ -849,8 +849,6 @@ namespace PowerPointLabs
                 Native.UnhookWindowsHookEx(_hook);
             }
         }
-        public delegate int HookProc(int code, IntPtr wParam, IntPtr lParam);
-
         public static string GetWindowTextRaw(IntPtr hwnd)
         {
             // Allocate correct string length first
@@ -859,15 +857,5 @@ namespace PowerPointLabs
             Native.SendMessage(hwnd, (int)Native.Message.WM_GETTEXT, (IntPtr)sb.Capacity, sb);
             return sb.ToString();
         }
-
-        [System.Runtime.InteropServices.DllImport("user32.dll", EntryPoint = "SetWindowsHookEx", SetLastError = true)]
-        public static extern IntPtr SetWindowsHookEx(int idHook, HookProc lpfn, IntPtr hMod, uint dwThreadId);
-
-        [System.Runtime.InteropServices.DllImport("user32.dll")]
-        public static extern int CallNextHookEx(IntPtr hhk, int nCode, IntPtr wParam, IntPtr lParam);
-
-        [System.Runtime.InteropServices.DllImport("kernel32.dll", CharSet = System.Runtime.InteropServices.CharSet.Auto)]
-        public static extern IntPtr GetModuleHandle(string lpModuleName);
-
     }
 }

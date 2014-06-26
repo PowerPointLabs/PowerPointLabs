@@ -6,6 +6,15 @@ namespace PPExtraEventHelper
 {
     internal class Native
     {
+        [DllImport("user32.dll", EntryPoint = "SetWindowsHookEx", SetLastError = true)]
+        public static extern IntPtr SetWindowsHookEx(int idHook, HookProc lpfn, IntPtr hMod, uint dwThreadId);
+
+        [DllImport("user32.dll")]
+        public static extern int CallNextHookEx(IntPtr hhk, int nCode, IntPtr wParam, IntPtr lParam);
+
+        [DllImport("kernel32.dll", CharSet = System.Runtime.InteropServices.CharSet.Auto)]
+        public static extern IntPtr GetModuleHandle(string lpModuleName);
+
         [DllImport("user32.dll")]
         public static extern IntPtr WindowFromPoint(int xPoint, int yPoint);
 
