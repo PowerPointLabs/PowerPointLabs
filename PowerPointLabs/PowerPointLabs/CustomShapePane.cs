@@ -44,13 +44,9 @@ namespace PowerPointLabs
 
         private double CalculateScalingRatio(Size oldSize, Size newSize)
         {
-            var oldAspectRatio = oldSize.Width / oldSize.Height;
-            var newAspectRatio = newSize.Width / newSize.Height;
-
             double scalingRatio;
 
-            // when this happens, old image's width should be 
-            if (newAspectRatio >= oldAspectRatio)
+            if (oldSize.Width >= oldSize.Height)
             {
                 scalingRatio = (double)newSize.Width / oldSize.Width;
             }
