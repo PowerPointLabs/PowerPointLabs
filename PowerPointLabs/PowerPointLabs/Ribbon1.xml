@@ -165,7 +165,7 @@
                label="Highlight Bullets"
                visible="true">
           <button id="HighlightBulletsTextButton"
-                 label ="Highlight Text"
+                 label ="Highlight Points"
                  size ="large"
                  getImage="GetHighlightBulletsTextImage"
                  supertip="Highlights all the bullet points on the specified slide by changing the text color."
@@ -179,7 +179,7 @@
                  getEnabled="OnGetEnabledHighlightBullets"
                  onAction="HighlightBulletsBackgroundButtonClick"/>
           <button id="HighlightTextFragmentsButton"
-                  label="Highlight Fragments"
+                  label="Highlight Text"
                   size="large"
                   getImage="GetHighlightWordsImage"
                   supertip="Highlights all the text fragments selected"
