@@ -134,6 +134,7 @@ namespace PPExtraEventHelper
         internal enum HookType
         {
             WH_MOUSE = 0x7,
+            WH_MOUSE_LL = 14
         }
 
         internal enum Message

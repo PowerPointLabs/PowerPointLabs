@@ -30,7 +30,7 @@ namespace PowerPointLabs
         private bool _isLineColorSelected = false;
 
         private System.Drawing.Point _mouseDownLocation;
-        LMouseListener _native;
+        LMouseUpListener _native;
 
         PowerPoint.ShapeRange _selectedShapes;
         ColorDataSource dataSource = new ColorDataSource();
@@ -43,6 +43,16 @@ namespace PowerPointLabs
             InitToolTipControl();
 
             ResetThemePanel();
+
+            // Default color to CornFlowerBlue
+            SetDefaultColor(Color.CornflowerBlue);
+        }
+
+        private void SetDefaultColor(Color color)
+        {
+            dataSource.selectedColor = color;
+            _originalColor = color;
+            UpdateUIForNewColor();
         }
 
         #region ToolTip
@@ -280,8 +290,8 @@ namespace PowerPointLabs
         {
             timer1.Start();
 
-            _native = new LMouseListener();
-            _native.LButtonClicked +=
+            _native = new LMouseUpListener();
+            _native.LButtonUpClicked +=
                  new EventHandler<SysMouseEventInfo>(_native_LButtonClicked);
             SelectShapes();
         }
@@ -608,28 +618,6 @@ namespace PowerPointLabs
             }
         }
 
-        private void ThemePanel_Click(object sender, EventArgs e)
-        {
-            try 
-	        {
-                // Done twice due to multithreading issues with binding
-                Color clickedColor = ((Panel)sender).BackColor;
-                _originalColor = clickedColor;
-                dataSource.selectedColor = clickedColor;
-                UpdateUIForNewColor();
-
-                _originalColor = clickedColor;
-                dataSource.selectedColor = clickedColor;
-                Globals.ThisAddIn.Application.StartNewUndoEntry();
-                UpdateUIForNewColor();
-	        }
-	        catch (Exception ex)
-	        {
-                System.Diagnostics.Debug.WriteLine("Exception: " + ex.StackTrace);
-		        throw;
-	        }
-        }
-
         private void MatchingPanel_Click(object sender, EventArgs e)
         {
             Color clickedColor = ((Panel)sender).BackColor;
@@ -768,7 +756,14 @@ namespace PowerPointLabs
 
         private void selectAsMainColorToolStripMenuItem_Click(object sender, EventArgs e)
         {
+            // Done twice due to multi-threading issues
+
             Color clickedColor = ((Panel)contextMenuStrip1.SourceControl).BackColor;
+            dataSource.selectedColor = clickedColor;
+            _originalColor = clickedColor;
+            //Globals.ThisAddIn.Application.StartNewUndoEntry();
+            UpdateUIForNewColor();
+
             dataSource.selectedColor = clickedColor;
             _originalColor = clickedColor;
             Globals.ThisAddIn.Application.StartNewUndoEntry();
@@ -801,24 +796,23 @@ namespace PowerPointLabs
     {
         public string WindowTitle { get; set; }
     }
-    public class LMouseListener
+    public class LMouseUpListener
     {
-        public LMouseListener()
+        public LMouseUpListener()
         {
             this.CallBack += new Native.HookProc(MouseEvents);
             using (System.Diagnostics.Process process = System.Diagnostics.Process.GetCurrentProcess())
             using (System.Diagnostics.ProcessModule module = process.MainModule)
             {
                 IntPtr hModule = Native.GetModuleHandle(module.ModuleName);
-                _hook = Native.SetWindowsHookEx(WH_MOUSE_LL, this.CallBack, hModule, 0);
+                _hook = Native.SetWindowsHookEx((int)Native.HookType.WH_MOUSE_LL, this.CallBack, hModule, 0);
             }
         }
-        int WH_MOUSE_LL = 14;
         int HC_ACTION = 0;
         Native.HookProc CallBack = null;
         IntPtr _hook = IntPtr.Zero;
 
-        public event EventHandler<SysMouseEventInfo> LButtonClicked;
+        public event EventHandler<SysMouseEventInfo> LButtonUpClicked;
 
         int MouseEvents(int code, IntPtr wParam, IntPtr lParam)
         {
@@ -834,9 +828,9 @@ namespace PowerPointLabs
                     ms = (Native.MSLLHOOKSTRUCT)Marshal.PtrToStructure(lParam, typeof(Native.MSLLHOOKSTRUCT));
                     IntPtr win = Native.WindowFromPoint(ms.pt);
                     string title = GetWindowTextRaw(win);
-                    if (LButtonClicked != null)
+                    if (LButtonUpClicked != null)
                     {
-                        LButtonClicked(this, new SysMouseEventInfo { WindowTitle = title });
+                        LButtonUpClicked(this, new SysMouseEventInfo { WindowTitle = title });
                     }
                 }
             }
@@ -853,8 +847,8 @@ namespace PowerPointLabs
         public static string GetWindowTextRaw(IntPtr hwnd)
         {
             // Allocate correct string length first
-            //int length = (int)SendMessage(hwnd, (int)WM.WM_GETTEXTLENGTH, IntPtr.Zero, IntPtr.Zero);
-            StringBuilder sb = new StringBuilder(65535);//THIS COULD BE BAD. Maybe you shoudl get the length
+            int length = (int)Native.SendMessage(hwnd, (int)Native.Message.WM_GETTEXTLENGTH, IntPtr.Zero, IntPtr.Zero);
+            StringBuilder sb = new StringBuilder(length);
             Native.SendMessage(hwnd, (int)Native.Message.WM_GETTEXT, (IntPtr)sb.Capacity, sb);
             return sb.ToString();
         }
