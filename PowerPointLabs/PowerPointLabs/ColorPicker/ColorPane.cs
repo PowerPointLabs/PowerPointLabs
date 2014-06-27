@@ -3,17 +3,13 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Drawing;
 using System.Linq;
-using System.Text;
 using System.Windows.Forms;
-using System.Runtime.InteropServices;
 using PowerPoint = Microsoft.Office.Interop.PowerPoint;
 using PowerPointLabs.Models;
 using System.Drawing.Drawing2D;
 using PPExtraEventHelper;
 using Converters = PowerPointLabs.Converters;
 using Microsoft.Office.Interop.PowerPoint;
-using System.IO;
-using System.Runtime.Serialization.Formatters.Binary;
 using PowerPointLabs.ColorPicker;
 using PowerPointLabs.Views;
 
@@ -22,18 +18,27 @@ namespace PowerPointLabs
 
     public partial class ColorPane : UserControl
     {
-
+        // Needed to keep track of brightness and saturation
         private Color _originalColor;
 
+        // Fill Selected By Default
         private bool _isFillColorSelected = true;
         private bool _isFontColorSelected = false;
         private bool _isLineColorSelected = false;
 
+        // Keeps track of mouse on mouse down on a matching panel.
+        // Needed to determine drag-drop v/s click
         private System.Drawing.Point _mouseDownLocation;
-        LMouseListener _native;
+        
+        // Listener for Mouse Up Events (for EyeDropping)
+        LMouseUpListener _native;
 
+        // Shapes to Update
         PowerPoint.ShapeRange _selectedShapes;
+        
+        // Data-bindings datasource
         ColorDataSource dataSource = new ColorDataSource();
+        
         public ColorPane()
         {
             InitializeComponent();
@@ -43,6 +48,20 @@ namespace PowerPointLabs
             InitToolTipControl();
 
             ResetThemePanel();
+
+            // Default color to CornFlowerBlue
+            SetDefaultColor(Color.CornflowerBlue);
+        }
+        private void ColorPane_Load(object sender, EventArgs e)
+        {
+            ResetThemePanel();
+        }
+
+        private void SetDefaultColor(Color color)
+        {
+            _originalColor = color;
+            dataSource.selectedColor = color;
+            UpdateUIForNewColor();
         }
 
         #region ToolTip
@@ -276,26 +295,18 @@ namespace PowerPointLabs
 
         #endregion
 
+        private void EyeDropperButton_MouseDown(object sender, MouseEventArgs e)
+        {
+            BeginEyedropping();
+        }
         private void BeginEyedropping()
         {
             timer1.Start();
 
-            _native = new LMouseListener();
-            _native.LButtonClicked +=
+            _native = new LMouseUpListener();
+            _native.LButtonUpClicked +=
                  new EventHandler<SysMouseEventInfo>(_native_LButtonClicked);
             SelectShapes();
-        }
-
-        private void SelectShapes()
-        {
-            try
-            {
-                _selectedShapes = PowerPointPresentation.CurrentSelection.ShapeRange;
-            }
-            catch (Exception exception)
-            {
-                _selectedShapes = null;
-            }
         }
 
         private void button2_Click(object sender, EventArgs e)
@@ -303,8 +314,7 @@ namespace PowerPointLabs
             colorDialog1.Color = panel1.BackColor;
             if (colorDialog1.ShowDialog() == DialogResult.OK)
             {
-                _originalColor = colorDialog1.Color;
-                dataSource.selectedColor = colorDialog1.Color;
+                SetDefaultColor(colorDialog1.Color);
             }
         }
 
@@ -317,6 +327,18 @@ namespace PowerPointLabs
             ColorSelectedShapesWithColor(panel1.BackColor);
         }
 
+        #region Selection And Coloring Shapes
+        private void SelectShapes()
+        {
+            try
+            {
+                _selectedShapes = PowerPointPresentation.CurrentSelection.ShapeRange;
+            }
+            catch (Exception exception)
+            {
+                _selectedShapes = null;
+            }
+        }
         private void ColorSelectedShapesWithColor(Color selectedColor)
         {
             SelectShapes();
@@ -385,6 +407,7 @@ namespace PowerPointLabs
             UpdateUIForNewColor();
             timer1.Stop();
         }
+        #endregion
 
         private void UpdateUIForNewColor()
         {
@@ -393,20 +416,74 @@ namespace PowerPointLabs
             ColorSelectedShapesWithColor(dataSource.selectedColor);
         }
 
+        #region Brightness and Saturation
         private void UpdateBrightnessBar(Color color)
         {
             DrawBrightnessGradient(color);
         }
 
+        private void brightnessBar_ValueChanged(object sender, EventArgs e)
+        {
+            if (!timer1.Enabled)
+            {
+                float newBrightness = brightnessBar.Value / 240.0f;
+                Color newColor = new Color();
+                try
+                {
+                    newColor = ColorHelper.ColorFromAhsb(
+                    255,
+                    _originalColor.GetHue(),
+                    dataSource.selectedColor.GetSaturation(),
+                    newBrightness);
+
+                    brightnessBar.ValueChanged -= brightnessBar_ValueChanged;
+                    saturationBar.ValueChanged -= saturationBar_ValueChanged;
+
+                    dataSource.selectedColor = newColor;
+                    UpdateSaturationBar(newColor);
+                    UpdateBrightnessBar(newColor);
+
+                    brightnessBar.ValueChanged += brightnessBar_ValueChanged;
+                    saturationBar.ValueChanged += saturationBar_ValueChanged;
+                }
+                catch (Exception exception)
+                {
+                }
+
+                ColorSelectedShapesWithColor(dataSource.selectedColor);
+            }
+        }
+
+        private void saturationBar_ValueChanged(object sender, EventArgs e)
+        {
+            float newSaturation = saturationBar.Value / 240.0f;
+            Color newColor = new Color();
+            try
+            {
+                newColor = ColorHelper.ColorFromAhsb(
+                255,
+                _originalColor.GetHue(),
+                newSaturation,
+                dataSource.selectedColor.GetBrightness());
+
+                brightnessBar.ValueChanged -= brightnessBar_ValueChanged;
+                saturationBar.ValueChanged -= saturationBar_ValueChanged;
+
+                dataSource.selectedColor = newColor;
+                UpdateBrightnessBar(newColor);
+
+                brightnessBar.ValueChanged += brightnessBar_ValueChanged;
+                saturationBar.ValueChanged += saturationBar_ValueChanged;
+            }
+            catch (Exception exception)
+            {
+            }
+
+            ColorSelectedShapesWithColor(newColor);
+        }
         private void UpdateSaturationBar(Color color)
         {
             DrawSaturationGradient(color);
-        }
-
-        protected override void OnPaint(PaintEventArgs paintEvnt)
-        {
-            DrawBrightnessGradient(dataSource.selectedColor);
-            DrawSaturationGradient(dataSource.selectedColor);
         }
 
         private void DrawBrightnessGradient(Color color)
@@ -497,6 +574,15 @@ namespace PowerPointLabs
             }
         }
 
+        protected override void OnPaint(PaintEventArgs paintEvnt)
+        {
+            DrawBrightnessGradient(dataSource.selectedColor);
+            DrawSaturationGradient(dataSource.selectedColor);
+        }
+
+        #endregion
+
+        #region Drag-Drop
         private void MatchingPanel_MouseDown(object sender, MouseEventArgs e)
         {
             _mouseDownLocation = e.Location;
@@ -517,66 +603,6 @@ namespace PowerPointLabs
             UpdateUIForNewColor();
         }
 
-        private void brightnessBar_ValueChanged(object sender, EventArgs e)
-        {
-            if (!timer1.Enabled)
-            {
-                float newBrightness = brightnessBar.Value / 240.0f;
-                Color newColor = new Color();
-                try
-                {
-                    newColor = ColorHelper.ColorFromAhsb(
-                    255,
-                    _originalColor.GetHue(),
-                    dataSource.selectedColor.GetSaturation(),
-                    newBrightness);
-
-                    brightnessBar.ValueChanged -= brightnessBar_ValueChanged;
-                    saturationBar.ValueChanged -= saturationBar_ValueChanged;
-
-                    dataSource.selectedColor = newColor;
-                    UpdateSaturationBar(newColor);
-                    UpdateBrightnessBar(newColor);
-
-                    brightnessBar.ValueChanged += brightnessBar_ValueChanged;
-                    saturationBar.ValueChanged += saturationBar_ValueChanged;
-                }
-                catch (Exception exception)
-                {
-                }
-
-                ColorSelectedShapesWithColor(dataSource.selectedColor);
-            }
-        }
-
-        private void saturationBar_ValueChanged(object sender, EventArgs e)
-        {
-            float newSaturation = saturationBar.Value / 240.0f;
-            Color newColor = new Color();
-            try
-            {
-                newColor = ColorHelper.ColorFromAhsb(
-                255,
-                _originalColor.GetHue(),
-                newSaturation,
-                dataSource.selectedColor.GetBrightness());
-
-                brightnessBar.ValueChanged -= brightnessBar_ValueChanged;
-                saturationBar.ValueChanged -= saturationBar_ValueChanged;
-
-                dataSource.selectedColor = newColor;
-                UpdateBrightnessBar(newColor);
-
-                brightnessBar.ValueChanged += brightnessBar_ValueChanged;
-                saturationBar.ValueChanged += saturationBar_ValueChanged;
-            }
-            catch (Exception exception)
-            {
-            }
-
-            ColorSelectedShapesWithColor(newColor);
-        }
-
         private void panel_DragEnter(object sender, DragEventArgs e)
         {
             if (e.Data.GetDataPresent(dataSource.selectedColor.GetType().ToString()))
@@ -589,6 +615,20 @@ namespace PowerPointLabs
             }
         }
 
+        private void MatchingPanel_MouseMove(object sender, MouseEventArgs e)
+        {
+            int dx = e.X - _mouseDownLocation.X;
+            int dy = e.Y - _mouseDownLocation.Y;
+
+            if (Math.Abs(dx) > ((Panel)sender).Width / 2 ||
+                Math.Abs(dy) > ((Panel)sender).Height / 2)
+            {
+                StartDragDrop(sender);
+            }
+        }
+        #endregion
+
+        #region Theme Functions
         private void SaveThemeButton_Click(object sender, EventArgs e)
         {
             if (saveFileDialog1.ShowDialog() == DialogResult.OK && 
@@ -607,28 +647,6 @@ namespace PowerPointLabs
             }
         }
 
-        private void ThemePanel_Click(object sender, EventArgs e)
-        {
-            try 
-	        {
-                // Done twice due to multithreading issues with binding
-                Color clickedColor = ((Panel)sender).BackColor;
-                _originalColor = clickedColor;
-                dataSource.selectedColor = clickedColor;
-                UpdateUIForNewColor();
-
-                _originalColor = clickedColor;
-                dataSource.selectedColor = clickedColor;
-                Globals.ThisAddIn.Application.StartNewUndoEntry();
-                UpdateUIForNewColor();
-	        }
-	        catch (Exception ex)
-	        {
-                System.Diagnostics.Debug.WriteLine("Exception: " + ex.StackTrace);
-		        throw;
-	        }
-        }
-
         private void MatchingPanel_Click(object sender, EventArgs e)
         {
             Color clickedColor = ((Panel)sender).BackColor;
@@ -637,74 +655,56 @@ namespace PowerPointLabs
             ColorSelectedShapesWithColor(clickedColor);
         }
 
-        private void MatchingPanel_MouseMove(object sender, MouseEventArgs e)
-        {
-            int dx = e.X - _mouseDownLocation.X;
-            int dy = e.Y - _mouseDownLocation.Y;
-
-            if (Math.Abs(dx) > ((Panel)sender).Width / 2 ||
-                Math.Abs(dy) > ((Panel)sender).Height / 2)
-            {
-                StartDragDrop(sender);
-            }
-        }
-
-        private void FontEyeDropperButton_MouseDown(object sender, MouseEventArgs e)
-        {
-            _isFontColorSelected = true;
-            _isFillColorSelected = false;
-            _isLineColorSelected = false;
-            BeginEyedropping();
-        }
-
-        private void LineEyeDropperButton_MouseDown(object sender, MouseEventArgs e)
-        {
-            _isFontColorSelected = false;
-            _isFillColorSelected = false;
-            _isLineColorSelected = true;
-            BeginEyedropping();
-        }
-
-        private void FillEyeDropperButton_MouseDown(object sender, MouseEventArgs e)
-        {
-            _isFontColorSelected =false;
-            _isFillColorSelected = true;
-            _isLineColorSelected = false;
-            BeginEyedropping();
-        }
-
         private void ResetThemeButton_Click(object sender, EventArgs e)
         {
             ResetThemePanel();
+        }
+
+        private void ApplyThemeButton_Click(object sender, EventArgs e)
+        {
+            ApplyCurrentThemeToSelectedSlides();
         }
 
         private void ResetThemePanel()
         {
             try
             {
-                Microsoft.Office.Core.ThemeColorScheme scheme = 
+                if (PowerPointPresentation.SlideCount > 0)
+                {
+                    Microsoft.Office.Core.ThemeColorScheme scheme =
                     PowerPointPresentation.CurrentSlide.GetNativeSlide().ThemeColorScheme;
-                
-                ThemePanel1.BackColor = Color.FromArgb(
-                    ColorHelper.ReverseRGBToArgb(scheme.Colors(Microsoft.Office.Core.MsoThemeColorSchemeIndex.msoThemeLight1).RGB));
-                ThemePanel2.BackColor = Color.FromArgb(
-                    ColorHelper.ReverseRGBToArgb(scheme.Colors(Microsoft.Office.Core.MsoThemeColorSchemeIndex.msoThemeDark1).RGB));
-                ThemePanel3.BackColor = Color.FromArgb(
-                    ColorHelper.ReverseRGBToArgb(scheme.Colors(Microsoft.Office.Core.MsoThemeColorSchemeIndex.msoThemeLight2).RGB));
-                ThemePanel4.BackColor = Color.FromArgb(
-                    ColorHelper.ReverseRGBToArgb(scheme.Colors(Microsoft.Office.Core.MsoThemeColorSchemeIndex.msoThemeDark2).RGB));
-                ThemePanel5.BackColor = Color.FromArgb(
-                    ColorHelper.ReverseRGBToArgb(scheme.Colors(Microsoft.Office.Core.MsoThemeColorSchemeIndex.msoThemeAccent1).RGB));
-                ThemePanel6.BackColor = Color.FromArgb(
-                    ColorHelper.ReverseRGBToArgb(scheme.Colors(Microsoft.Office.Core.MsoThemeColorSchemeIndex.msoThemeAccent2).RGB));
-                ThemePanel7.BackColor = Color.FromArgb(
-                    ColorHelper.ReverseRGBToArgb(scheme.Colors(Microsoft.Office.Core.MsoThemeColorSchemeIndex.msoThemeAccent3).RGB));
-                ThemePanel8.BackColor = Color.FromArgb(
-                    ColorHelper.ReverseRGBToArgb(scheme.Colors(Microsoft.Office.Core.MsoThemeColorSchemeIndex.msoThemeAccent4).RGB));
-                ThemePanel9.BackColor = Color.FromArgb(
-                    ColorHelper.ReverseRGBToArgb(scheme.Colors(Microsoft.Office.Core.MsoThemeColorSchemeIndex.msoThemeAccent5).RGB));
-                ThemePanel10.BackColor = Color.FromArgb(
-                    ColorHelper.ReverseRGBToArgb(scheme.Colors(Microsoft.Office.Core.MsoThemeColorSchemeIndex.msoThemeAccent6).RGB));
+
+                    ThemePanel1.BackColor = Color.FromArgb(
+                        ColorHelper.ReverseRGBToArgb(
+                        scheme.Colors(Microsoft.Office.Core.MsoThemeColorSchemeIndex.msoThemeLight1).RGB));
+                    ThemePanel2.BackColor = Color.FromArgb(
+                        ColorHelper.ReverseRGBToArgb(
+                        scheme.Colors(Microsoft.Office.Core.MsoThemeColorSchemeIndex.msoThemeDark1).RGB));
+                    ThemePanel3.BackColor = Color.FromArgb(
+                        ColorHelper.ReverseRGBToArgb(
+                        scheme.Colors(Microsoft.Office.Core.MsoThemeColorSchemeIndex.msoThemeLight2).RGB));
+                    ThemePanel4.BackColor = Color.FromArgb(
+                        ColorHelper.ReverseRGBToArgb(
+                        scheme.Colors(Microsoft.Office.Core.MsoThemeColorSchemeIndex.msoThemeDark2).RGB));
+                    ThemePanel5.BackColor = Color.FromArgb(
+                        ColorHelper.ReverseRGBToArgb(
+                        scheme.Colors(Microsoft.Office.Core.MsoThemeColorSchemeIndex.msoThemeAccent1).RGB));
+                    ThemePanel6.BackColor = Color.FromArgb(
+                        ColorHelper.ReverseRGBToArgb(
+                        scheme.Colors(Microsoft.Office.Core.MsoThemeColorSchemeIndex.msoThemeAccent2).RGB));
+                    ThemePanel7.BackColor = Color.FromArgb(
+                        ColorHelper.ReverseRGBToArgb(
+                        scheme.Colors(Microsoft.Office.Core.MsoThemeColorSchemeIndex.msoThemeAccent3).RGB));
+                    ThemePanel8.BackColor = Color.FromArgb(
+                        ColorHelper.ReverseRGBToArgb(
+                        scheme.Colors(Microsoft.Office.Core.MsoThemeColorSchemeIndex.msoThemeAccent4).RGB));
+                    ThemePanel9.BackColor = Color.FromArgb(
+                        ColorHelper.ReverseRGBToArgb(
+                        scheme.Colors(Microsoft.Office.Core.MsoThemeColorSchemeIndex.msoThemeAccent5).RGB));
+                    ThemePanel10.BackColor = Color.FromArgb(
+                        ColorHelper.ReverseRGBToArgb(
+                        scheme.Colors(Microsoft.Office.Core.MsoThemeColorSchemeIndex.msoThemeAccent6).RGB));
+                }
             }
             catch (Exception e)
             {
@@ -747,11 +747,9 @@ namespace PowerPointLabs
                 ColorHelper.ReverseRGBToArgb((ThemePanel10.BackColor.ToArgb()));
         }
 
-        private void ColorPane_Load(object sender, EventArgs e)
-        {
-            ResetThemePanel();
-        }
+        #endregion
 
+        #region Context Menu Clicks
         private void showMoreInformationToolStripMenuItem_Click(object sender, EventArgs e)
         {
             Color clickedColor = ((Panel)(contextMenuStrip1.SourceControl)).BackColor;
@@ -760,20 +758,24 @@ namespace PowerPointLabs
             dialog.ShowDialog();
         }
 
-        private void ApplyThemeButton_Click(object sender, EventArgs e)
-        {
-            ApplyCurrentThemeToSelectedSlides();
-        }
-
         private void selectAsMainColorToolStripMenuItem_Click(object sender, EventArgs e)
         {
+            // Done twice due to multi-threading issues
+
             Color clickedColor = ((Panel)contextMenuStrip1.SourceControl).BackColor;
+            dataSource.selectedColor = clickedColor;
+            _originalColor = clickedColor;
+            //Globals.ThisAddIn.Application.StartNewUndoEntry();
+            UpdateUIForNewColor();
+
             dataSource.selectedColor = clickedColor;
             _originalColor = clickedColor;
             Globals.ThisAddIn.Application.StartNewUndoEntry();
             UpdateUIForNewColor();
         }
+        #endregion
 
+        #region CheckBoxes Event Handlers
         private void FillCheckBox_CheckedChanged(object sender, EventArgs e)
         {
             _isFillColorSelected = ((CheckBox)sender).Checked;
@@ -788,134 +790,6 @@ namespace PowerPointLabs
         {
             _isFontColorSelected = ((CheckBox)sender).Checked;
         }
-
-        private void EyeDropperButton_MouseDown(object sender, MouseEventArgs e)
-        {
-            BeginEyedropping();
-        }
-
-    }
-
-    public class SysMouseEventInfo : EventArgs
-    {
-        public string WindowTitle { get; set; }
-    }
-    public class LMouseListener
-    {
-        public LMouseListener()
-        {
-            this.CallBack += new HookProc(MouseEvents);
-            //Module mod = Assembly.GetExecutingAssembly().GetModules()[0];
-            //IntPtr hMod = Marshal.GetHINSTANCE(mod);
-            using (System.Diagnostics.Process process = System.Diagnostics.Process.GetCurrentProcess())
-            using (System.Diagnostics.ProcessModule module = process.MainModule)
-            {
-                IntPtr hModule = GetModuleHandle(module.ModuleName);
-                _hook = SetWindowsHookEx(WH_MOUSE_LL, this.CallBack, hModule, 0);
-                //if (_hook != IntPtr.Zero)
-                //{
-                //    Console.WriteLine("Started");
-                //}
-            }
-        }
-        int WH_MOUSE_LL = 14;
-        int HC_ACTION = 0;
-        HookProc CallBack = null;
-        IntPtr _hook = IntPtr.Zero;
-
-        public event EventHandler<SysMouseEventInfo> LButtonClicked;
-
-        int MouseEvents(int code, IntPtr wParam, IntPtr lParam)
-        {
-            //Console.WriteLine("Called");
-
-            if (code < 0)
-                return CallNextHookEx(_hook, code, wParam, lParam);
-
-            if (code == this.HC_ACTION)
-            {
-                // Left button pressed somewhere
-                if (wParam.ToInt32() == (uint)WM.WM_LBUTTONUP)
-                {
-                    MSLLHOOKSTRUCT ms = new MSLLHOOKSTRUCT();
-                    ms = (MSLLHOOKSTRUCT)Marshal.PtrToStructure(lParam, typeof(MSLLHOOKSTRUCT));
-                    IntPtr win = WindowFromPoint(ms.pt);
-                    string title = GetWindowTextRaw(win);
-                    if (LButtonClicked != null)
-                    {
-                        LButtonClicked(this, new SysMouseEventInfo { WindowTitle = title });
-                    }
-                }
-            }
-            return CallNextHookEx(_hook, code, wParam, lParam);
-        }
-
-        public void Close()
-        {
-            if (_hook != IntPtr.Zero)
-            {
-                UnhookWindowsHookEx(_hook);
-            }
-        }
-        public delegate int HookProc(int code, IntPtr wParam, IntPtr lParam);
-
-        [System.Runtime.InteropServices.DllImport("user32.dll", EntryPoint = "SetWindowsHookEx", SetLastError = true)]
-        public static extern IntPtr SetWindowsHookEx(int idHook, HookProc lpfn, IntPtr hMod, uint dwThreadId);
-
-        [System.Runtime.InteropServices.DllImport("user32.dll")]
-        public static extern int CallNextHookEx(IntPtr hhk, int nCode, IntPtr wParam, IntPtr lParam);
-
-        [System.Runtime.InteropServices.DllImport("kernel32.dll", CharSet = System.Runtime.InteropServices.CharSet.Auto)]
-        public static extern IntPtr GetModuleHandle(string lpModuleName);
-
-        [DllImport("user32.dll")]
-        static extern IntPtr WindowFromPoint(int xPoint, int yPoint);
-
-        [DllImport("user32.dll")]
-        static extern IntPtr WindowFromPoint(POINT Point);
-
-        [DllImport("user32.dll", SetLastError = true)]
-        [return: MarshalAs(UnmanagedType.Bool)]
-        static extern bool UnhookWindowsHookEx(IntPtr hhk);
-
-        [DllImport("user32.dll", CharSet = CharSet.Auto)]
-        static extern IntPtr SendMessage(IntPtr hWnd, UInt32 Msg, IntPtr wParam, [Out] StringBuilder lParam);
-
-        public static string GetWindowTextRaw(IntPtr hwnd)
-        {
-            // Allocate correct string length first
-            //int length = (int)SendMessage(hwnd, (int)WM.WM_GETTEXTLENGTH, IntPtr.Zero, IntPtr.Zero);
-            StringBuilder sb = new StringBuilder(65535);//THIS COULD BE BAD. Maybe you shoudl get the length
-            SendMessage(hwnd, (int)WM.WM_GETTEXT, (IntPtr)sb.Capacity, sb);
-            return sb.ToString();
-        }
-    }
-    [StructLayout(LayoutKind.Sequential)]
-    public struct MSLLHOOKSTRUCT
-    {
-        public POINT pt;
-        public int mouseData;
-        public int flags;
-        public int time;
-        public UIntPtr dwExtraInfo;
-    }
-    enum WM : uint
-    {//all windows messages here
-        WM_LBUTTONUP = 0x0202,
-        WM_GETTEXT = 0x000D,
-        WM_GETTEXTLENGTH = 0x000E
-    }
-
-    [StructLayout(LayoutKind.Sequential)]
-    public struct POINT
-    {
-        public int X;
-        public int Y;
-
-        public POINT(int x, int y)
-        {
-            this.X = x;
-            this.Y = y;
-        }
+        #endregion
     }
 }

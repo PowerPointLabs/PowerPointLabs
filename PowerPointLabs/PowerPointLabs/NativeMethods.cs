@@ -6,6 +6,28 @@ namespace PPExtraEventHelper
 {
     internal class Native
     {
+        [DllImport("user32.dll", EntryPoint = "SetWindowsHookEx", SetLastError = true)]
+        public static extern IntPtr SetWindowsHookEx(int idHook, HookProc lpfn, IntPtr hMod, uint dwThreadId);
+
+        [DllImport("user32.dll")]
+        public static extern int CallNextHookEx(IntPtr hhk, int nCode, IntPtr wParam, IntPtr lParam);
+
+        [DllImport("kernel32.dll", CharSet = System.Runtime.InteropServices.CharSet.Auto)]
+        public static extern IntPtr GetModuleHandle(string lpModuleName);
+
+        [DllImport("user32.dll")]
+        public static extern IntPtr WindowFromPoint(int xPoint, int yPoint);
+
+        [DllImport("user32.dll")]
+        public static extern IntPtr WindowFromPoint(Native.POINT Point);
+
+        [DllImport("user32.dll", SetLastError = true)]
+        [return: MarshalAs(UnmanagedType.Bool)]
+        public static extern bool UnhookWindowsHookEx(IntPtr hhk);
+
+        [DllImport("user32.dll", CharSet = CharSet.Auto)]
+        public static extern IntPtr SendMessage(IntPtr hWnd, UInt32 Msg, IntPtr wParam, [Out] StringBuilder lParam);
+
         [DllImport("user32")]
         public static extern bool HideCaret(IntPtr hWnd);
 
@@ -112,6 +134,7 @@ namespace PPExtraEventHelper
         internal enum HookType
         {
             WH_MOUSE = 0x7,
+            WH_MOUSE_LL = 14
         }
 
         internal enum Message
@@ -121,12 +144,38 @@ namespace PPExtraEventHelper
             WM_DRAWCLIPBOARD = 0x308,
             WM_CHANGECBCHAIN = 0x30D,
             WM_CLIPBOARDUPDATE = 0x031D,
+            WM_LBUTTONUP = 0x0202,
+            WM_GETTEXT = 0x000D,
+            WM_GETTEXTLENGTH = 0x000E
         }
 
         internal enum Event
         {
             EVENT_SYSTEM_MENUEND = 0x5,
             EVENT_OBJECT_CREATE = 0x8000,
+        }
+
+        [StructLayout(LayoutKind.Sequential)]
+        public struct MSLLHOOKSTRUCT
+        {
+            public POINT pt;
+            public int mouseData;
+            public int flags;
+            public int time;
+            public UIntPtr dwExtraInfo;
+        }
+
+        [StructLayout(LayoutKind.Sequential)]
+        public struct POINT
+        {
+            public int X;
+            public int Y;
+
+            public POINT(int x, int y)
+            {
+                this.X = x;
+                this.Y = y;
+            }
         }
     }
 }
