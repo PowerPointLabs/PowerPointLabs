@@ -38,6 +38,9 @@ namespace PowerPointLabs
         
         // Data-bindings datasource
         ColorDataSource dataSource = new ColorDataSource();
+
+        // To reset Saturation on brightness change
+        private float _initialSaturation;
         
         public ColorPane()
         {
@@ -472,7 +475,7 @@ namespace PowerPointLabs
                 dataSource.selectedColor = newColor;
                 UpdateBrightnessBar(newColor);
                 UpdateSaturationBar(newColor);
-
+                
                 brightnessBar.ValueChanged += brightnessBar_ValueChanged;
                 saturationBar.ValueChanged += saturationBar_ValueChanged;
             }
@@ -820,5 +823,41 @@ namespace PowerPointLabs
             _isFontColorSelected = ((CheckBox)sender).Checked;
         }
         #endregion
+
+        private void brightnessBar_MouseUp(object sender, MouseEventArgs e)
+        {
+            try
+            {
+                Color newColor = ColorHelper.ColorFromAhsb(
+                255,
+                _originalColor.GetHue(),
+                _initialSaturation,
+                dataSource.selectedColor.GetBrightness());
+
+                brightnessBar.ValueChanged -= brightnessBar_ValueChanged;
+                saturationBar.ValueChanged -= saturationBar_ValueChanged;
+
+                dataSource.selectedColor = newColor;
+                UpdateBrightnessBar(newColor);
+                UpdateSaturationBar(newColor);
+
+                brightnessBar.ValueChanged += brightnessBar_ValueChanged;
+                saturationBar.ValueChanged += saturationBar_ValueChanged;
+                
+                saturationBar.Enabled = true;
+            }
+            catch (Exception exception)
+            {
+                ErrorDialogWrapper.ShowDialog(
+                    "Invalid Brightness Update", 
+                    exception.Message, 
+                    exception);
+            }
+        }
+
+        private void brightnessBar_MouseDown(object sender, MouseEventArgs e)
+        {
+            _initialSaturation = dataSource.selectedColor.GetSaturation();
+        }
     }
 }
