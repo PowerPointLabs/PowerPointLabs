@@ -87,10 +87,6 @@
             this.ThemePanel8 = new System.Windows.Forms.Panel();
             this.ThemePanel9 = new System.Windows.Forms.Panel();
             this.ThemePanel10 = new System.Windows.Forms.Panel();
-            this.SaveThemeButton = new System.Windows.Forms.Button();
-            this.LoadButton = new System.Windows.Forms.Button();
-            this.ResetThemeButton = new System.Windows.Forms.Button();
-            this.ApplyThemeButton = new System.Windows.Forms.Button();
             this.saveFileDialog1 = new System.Windows.Forms.SaveFileDialog();
             this.openFileDialog1 = new System.Windows.Forms.OpenFileDialog();
             this.label7 = new System.Windows.Forms.Label();
@@ -103,6 +99,11 @@
             this.LineCheckBox = new System.Windows.Forms.CheckBox();
             this.EditColorButton = new System.Windows.Forms.Button();
             this.FillCheckBox = new System.Windows.Forms.CheckBox();
+            this.SaveThemeButton = new System.Windows.Forms.Button();
+            this.LoadButton = new System.Windows.Forms.Button();
+            this.ResetThemeButton = new System.Windows.Forms.Button();
+            this.ApplyThemeButton = new System.Windows.Forms.Button();
+            this.EmptyPanelButton = new System.Windows.Forms.Button();
             this.AnalogousColorPanel.SuspendLayout();
             this.flowLayoutPanel6.SuspendLayout();
             this.contextMenuStrip1.SuspendLayout();
@@ -639,6 +640,7 @@
             this.themeLayoutPanel.Controls.Add(this.LoadButton);
             this.themeLayoutPanel.Controls.Add(this.ResetThemeButton);
             this.themeLayoutPanel.Controls.Add(this.ApplyThemeButton);
+            this.themeLayoutPanel.Controls.Add(this.EmptyPanelButton);
             this.themeLayoutPanel.Location = new System.Drawing.Point(20, 461);
             this.themeLayoutPanel.Name = "themeLayoutPanel";
             this.themeLayoutPanel.Size = new System.Drawing.Size(273, 110);
@@ -833,51 +835,6 @@
             this.ThemePanel10.DragDrop += new System.Windows.Forms.DragEventHandler(this.panel_DragDrop);
             this.ThemePanel10.DragEnter += new System.Windows.Forms.DragEventHandler(this.panel_DragEnter);
             // 
-            // SaveThemeButton
-            // 
-            this.SaveThemeButton.BackgroundImage = global::PowerPointLabs.Properties.Resources.save_icon;
-            this.SaveThemeButton.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Center;
-            this.SaveThemeButton.Location = new System.Drawing.Point(3, 53);
-            this.SaveThemeButton.Name = "SaveThemeButton";
-            this.SaveThemeButton.Size = new System.Drawing.Size(49, 47);
-            this.SaveThemeButton.TabIndex = 16;
-            this.SaveThemeButton.UseVisualStyleBackColor = true;
-            this.SaveThemeButton.Click += new System.EventHandler(this.SaveThemeButton_Click);
-            // 
-            // LoadButton
-            // 
-            this.LoadButton.BackgroundImage = global::PowerPointLabs.Properties.Resources.down_icon;
-            this.LoadButton.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Center;
-            this.LoadButton.Location = new System.Drawing.Point(58, 53);
-            this.LoadButton.Name = "LoadButton";
-            this.LoadButton.Size = new System.Drawing.Size(49, 47);
-            this.LoadButton.TabIndex = 17;
-            this.LoadButton.UseVisualStyleBackColor = true;
-            this.LoadButton.Click += new System.EventHandler(this.LoadButton_Click);
-            // 
-            // ResetThemeButton
-            // 
-            this.ResetThemeButton.BackgroundImage = global::PowerPointLabs.Properties.Resources.delete_icon;
-            this.ResetThemeButton.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Center;
-            this.ResetThemeButton.Location = new System.Drawing.Point(113, 53);
-            this.ResetThemeButton.Name = "ResetThemeButton";
-            this.ResetThemeButton.Size = new System.Drawing.Size(49, 47);
-            this.ResetThemeButton.TabIndex = 18;
-            this.ResetThemeButton.UseVisualStyleBackColor = true;
-            this.ResetThemeButton.Click += new System.EventHandler(this.ResetThemeButton_Click);
-            // 
-            // ApplyThemeButton
-            // 
-            this.ApplyThemeButton.BackgroundImage = global::PowerPointLabs.Properties.Resources.apply_icon;
-            this.ApplyThemeButton.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Center;
-            this.ApplyThemeButton.Location = new System.Drawing.Point(168, 53);
-            this.ApplyThemeButton.Name = "ApplyThemeButton";
-            this.ApplyThemeButton.Size = new System.Drawing.Size(49, 47);
-            this.ApplyThemeButton.TabIndex = 19;
-            this.toolTip1.SetToolTip(this.ApplyThemeButton, "Applies Theme Colors to Selected Slides");
-            this.ApplyThemeButton.UseVisualStyleBackColor = true;
-            this.ApplyThemeButton.Click += new System.EventHandler(this.ApplyThemeButton_Click);
-            // 
             // saveFileDialog1
             // 
             this.saveFileDialog1.DefaultExt = "thm";
@@ -994,6 +951,63 @@
             this.FillCheckBox.TabIndex = 20;
             this.FillCheckBox.UseVisualStyleBackColor = true;
             this.FillCheckBox.CheckedChanged += new System.EventHandler(this.FillCheckBox_CheckedChanged);
+            // 
+            // SaveThemeButton
+            // 
+            this.SaveThemeButton.BackgroundImage = global::PowerPointLabs.Properties.Resources.save_icon;
+            this.SaveThemeButton.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Center;
+            this.SaveThemeButton.Location = new System.Drawing.Point(3, 53);
+            this.SaveThemeButton.Name = "SaveThemeButton";
+            this.SaveThemeButton.Size = new System.Drawing.Size(45, 45);
+            this.SaveThemeButton.TabIndex = 16;
+            this.SaveThemeButton.UseVisualStyleBackColor = true;
+            this.SaveThemeButton.Click += new System.EventHandler(this.SaveThemeButton_Click);
+            // 
+            // LoadButton
+            // 
+            this.LoadButton.BackgroundImage = global::PowerPointLabs.Properties.Resources.down_icon;
+            this.LoadButton.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Center;
+            this.LoadButton.Location = new System.Drawing.Point(54, 53);
+            this.LoadButton.Name = "LoadButton";
+            this.LoadButton.Size = new System.Drawing.Size(45, 45);
+            this.LoadButton.TabIndex = 17;
+            this.LoadButton.UseVisualStyleBackColor = true;
+            this.LoadButton.Click += new System.EventHandler(this.LoadButton_Click);
+            // 
+            // ResetThemeButton
+            // 
+            this.ResetThemeButton.BackgroundImage = global::PowerPointLabs.Properties.Resources.refresh_icon;
+            this.ResetThemeButton.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Center;
+            this.ResetThemeButton.Location = new System.Drawing.Point(105, 53);
+            this.ResetThemeButton.Name = "ResetThemeButton";
+            this.ResetThemeButton.Size = new System.Drawing.Size(45, 45);
+            this.ResetThemeButton.TabIndex = 18;
+            this.ResetThemeButton.UseVisualStyleBackColor = true;
+            this.ResetThemeButton.Click += new System.EventHandler(this.ResetThemeButton_Click);
+            // 
+            // ApplyThemeButton
+            // 
+            this.ApplyThemeButton.BackgroundImage = global::PowerPointLabs.Properties.Resources.apply_icon;
+            this.ApplyThemeButton.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Center;
+            this.ApplyThemeButton.Location = new System.Drawing.Point(156, 53);
+            this.ApplyThemeButton.Name = "ApplyThemeButton";
+            this.ApplyThemeButton.Size = new System.Drawing.Size(45, 45);
+            this.ApplyThemeButton.TabIndex = 19;
+            this.toolTip1.SetToolTip(this.ApplyThemeButton, "Applies Theme Colors to Selected Slides");
+            this.ApplyThemeButton.UseVisualStyleBackColor = true;
+            this.ApplyThemeButton.Click += new System.EventHandler(this.ApplyThemeButton_Click);
+            // 
+            // EmptyPanelButton
+            // 
+            this.EmptyPanelButton.BackgroundImage = global::PowerPointLabs.Properties.Resources.delete_icon;
+            this.EmptyPanelButton.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Center;
+            this.EmptyPanelButton.Location = new System.Drawing.Point(207, 53);
+            this.EmptyPanelButton.Name = "EmptyPanelButton";
+            this.EmptyPanelButton.Size = new System.Drawing.Size(45, 45);
+            this.EmptyPanelButton.TabIndex = 20;
+            this.toolTip1.SetToolTip(this.EmptyPanelButton, "Empties the Theme Panel");
+            this.EmptyPanelButton.UseVisualStyleBackColor = true;
+            this.EmptyPanelButton.Click += new System.EventHandler(this.EmptyPanelButton_Click);
             // 
             // ColorPane
             // 
@@ -1126,5 +1140,6 @@
         private System.Windows.Forms.CheckBox LineCheckBox;
         private System.Windows.Forms.CheckBox TextCheckBox;
         private System.Windows.Forms.Button EyeDropperButton;
+        private System.Windows.Forms.Button EmptyPanelButton;
     }
 }

@@ -346,6 +346,7 @@
     <Compile Include="XMLMisc\XMLParser.cs" />
     <Compile Include="ZipStorer.cs" />
     <Compile Include="ZoomToArea.cs" />
+    <None Include="Resources\refresh-icon.png" />
     <None Include="Resources\ShapesLab.png" />
     <None Include="Resources\ColorsLab.png" />
     <None Include="Resources\ColorLab.png" />

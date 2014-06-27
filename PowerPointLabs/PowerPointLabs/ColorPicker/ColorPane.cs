@@ -713,6 +713,30 @@ namespace PowerPointLabs
             }
         }
 
+        private void EmptyThemePanel()
+        {
+            try
+            {
+                if (PowerPointPresentation.SlideCount > 0)
+                {
+                    ThemePanel1.BackColor = Color.White;
+                    ThemePanel2.BackColor = Color.White;
+                    ThemePanel3.BackColor = Color.White;
+                    ThemePanel4.BackColor = Color.White;
+                    ThemePanel5.BackColor = Color.White;
+                    ThemePanel6.BackColor = Color.White;
+                    ThemePanel7.BackColor = Color.White;
+                    ThemePanel8.BackColor = Color.White;
+                    ThemePanel9.BackColor = Color.White;
+                    ThemePanel10.BackColor = Color.White;
+                }
+            }
+            catch (Exception e)
+            {
+                ErrorDialogWrapper.ShowDialog("Theme Panel Reset Failed", e.Message, e);
+            }
+        }
+
         private void ApplyCurrentThemeToSelectedSlides()
         {
             foreach (PowerPointSlide slide in PowerPointPresentation.SelectedSlides)
@@ -746,6 +770,10 @@ namespace PowerPointLabs
                 ColorHelper.ReverseRGBToArgb((ThemePanel9.BackColor.ToArgb()));
             scheme.Colors(Microsoft.Office.Core.MsoThemeColorSchemeIndex.msoThemeAccent6).RGB =
                 ColorHelper.ReverseRGBToArgb((ThemePanel10.BackColor.ToArgb()));
+        }
+        private void EmptyPanelButton_Click(object sender, EventArgs e)
+        {
+            EmptyThemePanel();
         }
 
         #endregion
