@@ -28,6 +28,10 @@ namespace PowerPointLabs
         public CustomShapePane()
         {
             InitializeComponent();
+
+            int vertScrollWidth = SystemInformation.VerticalScrollBarWidth;
+
+            myShapeFlowLayout.Padding = new Padding(0, 0, vertScrollWidth / 2, 0);
         }
 
         public void AddCustomShape()
@@ -44,6 +48,15 @@ namespace PowerPointLabs
             newShapeCell.Click += PanelClick;
 
             myShapeFlowLayout.Controls.Add(newShapeCell);
+
+            if (myShapeFlowLayout.Controls.Count * 50 < motherTableLayoutPanel.Size.Width - 10)
+            {
+                myShapeFlowLayout.AutoSize = false;
+            }
+            else
+            {
+                myShapeFlowLayout.AutoSize = true;
+            }
 
             _currentShapeCnt++;
         }

@@ -49,7 +49,8 @@ namespace PowerPointLabs
             // 
             this.motherTableLayoutPanel.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.motherTableLayoutPanel.AutoScroll = true;
+            this.motherTableLayoutPanel.AutoSize = true;
+            this.motherTableLayoutPanel.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
             this.motherTableLayoutPanel.ColumnCount = 1;
             this.motherTableLayoutPanel.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
             this.motherTableLayoutPanel.Controls.Add(this.myShapePanel, 0, 0);
@@ -61,7 +62,7 @@ namespace PowerPointLabs
             this.motherTableLayoutPanel.RowStyles.Add(new System.Windows.Forms.RowStyle());
             this.motherTableLayoutPanel.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 1F));
             this.motherTableLayoutPanel.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20F));
-            this.motherTableLayoutPanel.Size = new System.Drawing.Size(250, 221);
+            this.motherTableLayoutPanel.Size = new System.Drawing.Size(250, 91);
             this.motherTableLayoutPanel.TabIndex = 0;
             // 
             // myShapePanel
@@ -69,6 +70,8 @@ namespace PowerPointLabs
             this.myShapePanel.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
+            this.myShapePanel.AutoSize = true;
+            this.myShapePanel.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
             this.myShapePanel.BorderColor = System.Drawing.Color.Gray;
             this.myShapePanel.CaptionColorOne = System.Drawing.Color.White;
             this.myShapePanel.CaptionColorTwo = System.Drawing.Color.FromArgb(((int)(((byte)(155)))), ((int)(((byte)(255)))), ((int)(((byte)(165)))), ((int)(((byte)(0)))));
@@ -82,8 +85,7 @@ namespace PowerPointLabs
             this.myShapePanel.Location = new System.Drawing.Point(0, 0);
             this.myShapePanel.Margin = new System.Windows.Forms.Padding(0);
             this.myShapePanel.Name = "myShapePanel";
-            this.myShapePanel.Size = new System.Drawing.Size(250, 213);
-            this.myShapePanel.State = Stepi.UI.ExtendedPanelState.Collapsed;
+            this.myShapePanel.Size = new System.Drawing.Size(250, 90);
             this.myShapePanel.TabIndex = 4;
             // 
             // myShapeFlowLayout
@@ -91,9 +93,11 @@ namespace PowerPointLabs
             this.myShapeFlowLayout.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
+            this.myShapeFlowLayout.AutoScroll = true;
+            this.myShapeFlowLayout.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
             this.myShapeFlowLayout.Location = new System.Drawing.Point(3, 22);
             this.myShapeFlowLayout.Name = "myShapeFlowLayout";
-            this.myShapeFlowLayout.Size = new System.Drawing.Size(244, 188);
+            this.myShapeFlowLayout.Size = new System.Drawing.Size(244, 62);
             this.myShapeFlowLayout.TabIndex = 1;
             // 
             // panel4
@@ -142,9 +146,11 @@ namespace PowerPointLabs
             this.Name = "CustomShapePane";
             this.Size = new System.Drawing.Size(257, 459);
             this.motherTableLayoutPanel.ResumeLayout(false);
+            this.motherTableLayoutPanel.PerformLayout();
             this.myShapePanel.ResumeLayout(false);
             this.contextMenuStrip.ResumeLayout(false);
             this.ResumeLayout(false);
+            this.PerformLayout();
 
         }
 
