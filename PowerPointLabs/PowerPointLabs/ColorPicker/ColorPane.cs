@@ -471,6 +471,7 @@ namespace PowerPointLabs
 
                 dataSource.selectedColor = newColor;
                 UpdateBrightnessBar(newColor);
+                UpdateSaturationBar(newColor);
 
                 brightnessBar.ValueChanged += brightnessBar_ValueChanged;
                 saturationBar.ValueChanged += saturationBar_ValueChanged;
