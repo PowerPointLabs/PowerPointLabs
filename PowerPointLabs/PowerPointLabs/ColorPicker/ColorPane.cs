@@ -635,7 +635,7 @@ namespace PowerPointLabs
             if (saveFileDialog1.ShowDialog() == DialogResult.OK && 
                 dataSource.SaveThemeColorsInFile(saveFileDialog1.FileName))
             {
-                MessageBox.Show("Theme saved successfully", "Save Complete");
+                // Save Success
             }
         }
 
@@ -644,7 +644,7 @@ namespace PowerPointLabs
             if (openFileDialog1.ShowDialog() == DialogResult.OK &&
                 dataSource.LoadThemeColorsFromFile(openFileDialog1.FileName))
             {
-                MessageBox.Show("Theme loaded successfully", "Load Complete");
+                // Load Success
             }
         }
 
