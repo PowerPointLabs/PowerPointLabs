@@ -295,6 +295,10 @@ namespace PowerPointLabs
 
         #endregion
 
+        private void EyeDropperButton_MouseDown(object sender, MouseEventArgs e)
+        {
+            BeginEyedropping();
+        }
         private void BeginEyedropping()
         {
             timer1.Start();
@@ -665,29 +669,42 @@ namespace PowerPointLabs
         {
             try
             {
-                Microsoft.Office.Core.ThemeColorScheme scheme = 
+                if (PowerPointPresentation.SlideCount > 0)
+                {
+                    Microsoft.Office.Core.ThemeColorScheme scheme =
                     PowerPointPresentation.CurrentSlide.GetNativeSlide().ThemeColorScheme;
-                
-                ThemePanel1.BackColor = Color.FromArgb(
-                    ColorHelper.ReverseRGBToArgb(scheme.Colors(Microsoft.Office.Core.MsoThemeColorSchemeIndex.msoThemeLight1).RGB));
-                ThemePanel2.BackColor = Color.FromArgb(
-                    ColorHelper.ReverseRGBToArgb(scheme.Colors(Microsoft.Office.Core.MsoThemeColorSchemeIndex.msoThemeDark1).RGB));
-                ThemePanel3.BackColor = Color.FromArgb(
-                    ColorHelper.ReverseRGBToArgb(scheme.Colors(Microsoft.Office.Core.MsoThemeColorSchemeIndex.msoThemeLight2).RGB));
-                ThemePanel4.BackColor = Color.FromArgb(
-                    ColorHelper.ReverseRGBToArgb(scheme.Colors(Microsoft.Office.Core.MsoThemeColorSchemeIndex.msoThemeDark2).RGB));
-                ThemePanel5.BackColor = Color.FromArgb(
-                    ColorHelper.ReverseRGBToArgb(scheme.Colors(Microsoft.Office.Core.MsoThemeColorSchemeIndex.msoThemeAccent1).RGB));
-                ThemePanel6.BackColor = Color.FromArgb(
-                    ColorHelper.ReverseRGBToArgb(scheme.Colors(Microsoft.Office.Core.MsoThemeColorSchemeIndex.msoThemeAccent2).RGB));
-                ThemePanel7.BackColor = Color.FromArgb(
-                    ColorHelper.ReverseRGBToArgb(scheme.Colors(Microsoft.Office.Core.MsoThemeColorSchemeIndex.msoThemeAccent3).RGB));
-                ThemePanel8.BackColor = Color.FromArgb(
-                    ColorHelper.ReverseRGBToArgb(scheme.Colors(Microsoft.Office.Core.MsoThemeColorSchemeIndex.msoThemeAccent4).RGB));
-                ThemePanel9.BackColor = Color.FromArgb(
-                    ColorHelper.ReverseRGBToArgb(scheme.Colors(Microsoft.Office.Core.MsoThemeColorSchemeIndex.msoThemeAccent5).RGB));
-                ThemePanel10.BackColor = Color.FromArgb(
-                    ColorHelper.ReverseRGBToArgb(scheme.Colors(Microsoft.Office.Core.MsoThemeColorSchemeIndex.msoThemeAccent6).RGB));
+
+                    ThemePanel1.BackColor = Color.FromArgb(
+                        ColorHelper.ReverseRGBToArgb(
+                        scheme.Colors(Microsoft.Office.Core.MsoThemeColorSchemeIndex.msoThemeLight1).RGB));
+                    ThemePanel2.BackColor = Color.FromArgb(
+                        ColorHelper.ReverseRGBToArgb(
+                        scheme.Colors(Microsoft.Office.Core.MsoThemeColorSchemeIndex.msoThemeDark1).RGB));
+                    ThemePanel3.BackColor = Color.FromArgb(
+                        ColorHelper.ReverseRGBToArgb(
+                        scheme.Colors(Microsoft.Office.Core.MsoThemeColorSchemeIndex.msoThemeLight2).RGB));
+                    ThemePanel4.BackColor = Color.FromArgb(
+                        ColorHelper.ReverseRGBToArgb(
+                        scheme.Colors(Microsoft.Office.Core.MsoThemeColorSchemeIndex.msoThemeDark2).RGB));
+                    ThemePanel5.BackColor = Color.FromArgb(
+                        ColorHelper.ReverseRGBToArgb(
+                        scheme.Colors(Microsoft.Office.Core.MsoThemeColorSchemeIndex.msoThemeAccent1).RGB));
+                    ThemePanel6.BackColor = Color.FromArgb(
+                        ColorHelper.ReverseRGBToArgb(
+                        scheme.Colors(Microsoft.Office.Core.MsoThemeColorSchemeIndex.msoThemeAccent2).RGB));
+                    ThemePanel7.BackColor = Color.FromArgb(
+                        ColorHelper.ReverseRGBToArgb(
+                        scheme.Colors(Microsoft.Office.Core.MsoThemeColorSchemeIndex.msoThemeAccent3).RGB));
+                    ThemePanel8.BackColor = Color.FromArgb(
+                        ColorHelper.ReverseRGBToArgb(
+                        scheme.Colors(Microsoft.Office.Core.MsoThemeColorSchemeIndex.msoThemeAccent4).RGB));
+                    ThemePanel9.BackColor = Color.FromArgb(
+                        ColorHelper.ReverseRGBToArgb(
+                        scheme.Colors(Microsoft.Office.Core.MsoThemeColorSchemeIndex.msoThemeAccent5).RGB));
+                    ThemePanel10.BackColor = Color.FromArgb(
+                        ColorHelper.ReverseRGBToArgb(
+                        scheme.Colors(Microsoft.Office.Core.MsoThemeColorSchemeIndex.msoThemeAccent6).RGB));
+                }
             }
             catch (Exception e)
             {
@@ -774,9 +791,5 @@ namespace PowerPointLabs
             _isFontColorSelected = ((CheckBox)sender).Checked;
         }
         #endregion
-        private void EyeDropperButton_MouseDown(object sender, MouseEventArgs e)
-        {
-            BeginEyedropping();
-        }
     }
 }
