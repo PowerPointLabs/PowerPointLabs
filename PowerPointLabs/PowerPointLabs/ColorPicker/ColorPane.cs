@@ -3,17 +3,13 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Drawing;
 using System.Linq;
-using System.Text;
 using System.Windows.Forms;
-using System.Runtime.InteropServices;
 using PowerPoint = Microsoft.Office.Interop.PowerPoint;
 using PowerPointLabs.Models;
 using System.Drawing.Drawing2D;
 using PPExtraEventHelper;
 using Converters = PowerPointLabs.Converters;
 using Microsoft.Office.Interop.PowerPoint;
-using System.IO;
-using System.Runtime.Serialization.Formatters.Binary;
 using PowerPointLabs.ColorPicker;
 using PowerPointLabs.Views;
 
@@ -34,10 +30,13 @@ namespace PowerPointLabs
         // Needed to determine drag-drop v/s click
         private System.Drawing.Point _mouseDownLocation;
         
+        // Listener for Mouse Up Events (for EyeDropping)
         LMouseUpListener _native;
 
+        // Shapes to Update
         PowerPoint.ShapeRange _selectedShapes;
         
+        // Data-bindings datasource
         ColorDataSource dataSource = new ColorDataSource();
         
         public ColorPane()
@@ -758,6 +757,7 @@ namespace PowerPointLabs
             UpdateUIForNewColor();
         }
         #endregion
+
         #region CheckBoxes Event Handlers
         private void FillCheckBox_CheckedChanged(object sender, EventArgs e)
         {
@@ -777,68 +777,6 @@ namespace PowerPointLabs
         private void EyeDropperButton_MouseDown(object sender, MouseEventArgs e)
         {
             BeginEyedropping();
-        }
-    }
-
-    public class SysMouseEventInfo : EventArgs
-    {
-        public string WindowTitle { get; set; }
-    }
-    public class LMouseUpListener
-    {
-        public LMouseUpListener()
-        {
-            this.CallBack += new Native.HookProc(MouseEvents);
-            using (System.Diagnostics.Process process = System.Diagnostics.Process.GetCurrentProcess())
-            using (System.Diagnostics.ProcessModule module = process.MainModule)
-            {
-                IntPtr hModule = Native.GetModuleHandle(module.ModuleName);
-                _hook = Native.SetWindowsHookEx((int)Native.HookType.WH_MOUSE_LL, this.CallBack, hModule, 0);
-            }
-        }
-        int HC_ACTION = 0;
-        Native.HookProc CallBack = null;
-        IntPtr _hook = IntPtr.Zero;
-
-        public event EventHandler<SysMouseEventInfo> LButtonUpClicked;
-
-        int MouseEvents(int code, IntPtr wParam, IntPtr lParam)
-        {
-            if (code < 0)
-                return Native.CallNextHookEx(_hook, code, wParam, lParam);
-
-            if (code == this.HC_ACTION)
-            {
-                // Left button pressed somewhere
-                if (wParam.ToInt32() == (uint)Native.Message.WM_LBUTTONUP)
-                {
-                    Native.MSLLHOOKSTRUCT ms = new Native.MSLLHOOKSTRUCT();
-                    ms = (Native.MSLLHOOKSTRUCT)Marshal.PtrToStructure(lParam, typeof(Native.MSLLHOOKSTRUCT));
-                    IntPtr win = Native.WindowFromPoint(ms.pt);
-                    string title = GetWindowTextRaw(win);
-                    if (LButtonUpClicked != null)
-                    {
-                        LButtonUpClicked(this, new SysMouseEventInfo { WindowTitle = title });
-                    }
-                }
-            }
-            return Native.CallNextHookEx(_hook, code, wParam, lParam);
-        }
-
-        public void Close()
-        {
-            if (_hook != IntPtr.Zero)
-            {
-                Native.UnhookWindowsHookEx(_hook);
-            }
-        }
-        public static string GetWindowTextRaw(IntPtr hwnd)
-        {
-            // Allocate correct string length first
-            int length = (int)Native.SendMessage(hwnd, (int)Native.Message.WM_GETTEXTLENGTH, IntPtr.Zero, IntPtr.Zero);
-            StringBuilder sb = new StringBuilder(length);
-            Native.SendMessage(hwnd, (int)Native.Message.WM_GETTEXT, (IntPtr)sb.Capacity, sb);
-            return sb.ToString();
         }
     }
 }

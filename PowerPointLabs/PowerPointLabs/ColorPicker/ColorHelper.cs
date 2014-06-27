@@ -142,28 +142,6 @@ namespace PowerPointLabs
             return finalColor;
         }
 
-        //public static Color ColorFromHSB(float hue, float saturation, float value)
-        //{
-        //    int hi = Convert.ToInt32(Math.Floor(hue / 60)) % 6;
-        //    double f = hue / 60 - Math.Floor(hue / 60);
-
-        //    value = value * 255;
-        //    int v = Convert.ToInt32(value);
-        //    int p = Convert.ToInt32(value * (1 - saturation));
-        //    int q = Convert.ToInt32(value * (1 - f * saturation));
-        //    int t = Convert.ToInt32(value * (1 - (1 - f) * saturation));
-
-        //    switch (hi)
-        //    {
-        //        case 0: return Color.FromArgb(255, v, t, p);
-        //        case 1: return Color.FromArgb(255, q, v, p);
-        //        case 2: return Color.FromArgb(255, p, v, t); 
-        //        case 3: return Color.FromArgb(255, p, q, v);
-        //        case 4: return Color.FromArgb(255, t, p, v);
-        //        default: return Color.FromArgb(255, v, p, q); 
-        //    }
-        //}
-
         public static Color GetComplementaryColor(Color originalColor)
         {
             return GetColorShiftedByAngle(originalColor, 180.0f);
@@ -217,9 +195,9 @@ namespace PowerPointLabs
       /// <returns>an adjusted colour</returns>
       public static  Color SetBrightness(Color c, double brightness)
       {
-         HSL hsl = RGB_to_HSL(c);
+         HSL hsl = RGBToHSL(c);
          hsl.L=brightness;
-         return HSL_to_RGB(hsl);
+         return HSLToRGB(hsl);
       }
       
       /// <summary>
@@ -233,9 +211,9 @@ namespace PowerPointLabs
       /// <returns>An adjusted colour</returns>
       public static  Color ModifyBrightness(Color c, double brightness)
       {
-         HSL hsl = RGB_to_HSL(c);
+         HSL hsl = RGBToHSL(c);
          hsl.L*=brightness;
-         return HSL_to_RGB(hsl);
+         return HSLToRGB(hsl);
       }
  
       /// <summary>
@@ -247,9 +225,9 @@ namespace PowerPointLabs
       /// <returns>An adjusted colour</returns>
       public static  Color SetSaturation(Color c, double Saturation)
       {
-         HSL hsl = RGB_to_HSL(c);
+         HSL hsl = RGBToHSL(c);
          hsl.S=Saturation;
-         return HSL_to_RGB(hsl);
+         return HSLToRGB(hsl);
       }
       
       /// <summary>
@@ -263,9 +241,9 @@ namespace PowerPointLabs
       /// <returns>An adjusted colour</returns>
       public static  Color ModifySaturation(Color c, double Saturation)
       {
-         HSL hsl = RGB_to_HSL(c);
+         HSL hsl = RGBToHSL(c);
          hsl.S*=Saturation;
-         return HSL_to_RGB(hsl);
+         return HSLToRGB(hsl);
       }
  
       /// <summary>
@@ -277,9 +255,9 @@ namespace PowerPointLabs
       /// <returns>An adjusted colour</returns>
       public static  Color SetHue(Color c, double Hue)
       {
-         HSL hsl = RGB_to_HSL(c);
+         HSL hsl = RGBToHSL(c);
          hsl.H=Hue;
-         return HSL_to_RGB(hsl);
+         return HSLToRGB(hsl);
       }
       
       /// <summary>
@@ -293,9 +271,9 @@ namespace PowerPointLabs
       /// <returns>An adjusted colour</returns>
       public static  Color ModifyHue(Color c, double Hue)
       {
-         HSL hsl = RGB_to_HSL(c);
+         HSL hsl = RGBToHSL(c);
          hsl.H*=Hue;
-         return HSL_to_RGB(hsl);
+         return HSLToRGB(hsl);
       }
  
       /// <summary>
@@ -304,7 +282,7 @@ namespace PowerPointLabs
       /// <remarks>Adapted from the algoritm in Foley and Van-Dam</remarks>
       /// <param name="hsl">The HSL value</param>
       /// <returns>A Color structure containing the equivalent RGB values</returns>
-      public static Color HSL_to_RGB(HSL hsl)
+      public static Color HSLToRGB(HSL hsl)
       {
          double r=0,g=0,b=0;
          double temp1,temp2;
@@ -360,7 +338,7 @@ namespace PowerPointLabs
       /// <remarks>Takes advantage of whats already built in to .NET by using the Color.GetHue, Color.GetSaturation and Color.GetBrightness methods</remarks>
       /// <param name="c">A Color to convert</param>
       /// <returns>An HSL value</returns>
-      public static HSL RGB_to_HSL (Color c)
+      public static HSL RGBToHSL (Color c)
       {
          HSL hsl =  new HSL();
          
