@@ -1,6 +1,6 @@
 ﻿namespace PowerPointLabs
 {
-    partial class LabeldThumbnail
+    partial class LabeledThumbnail
     {
         /// <summary> 
         /// Required designer variable.
@@ -66,12 +66,12 @@
             this.thumbnailPanel.Size = new System.Drawing.Size(50, 50);
             this.thumbnailPanel.TabIndex = 0;
             // 
-            // LabeldThumbnail
+            // LabeledThumbnail
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.Controls.Add(this.motherPanel);
-            this.Name = "LabeldThumbnail";
+            this.Name = "LabeledThumbnail";
             this.Size = new System.Drawing.Size(115, 50);
             this.motherPanel.ResumeLayout(false);
             this.motherPanel.PerformLayout();

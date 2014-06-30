@@ -32,18 +32,17 @@ namespace PowerPointLabs
         private void InitializeComponent()
         {
             this.components = new System.ComponentModel.Container();
-            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(CustomShapePane));
             this.motherTableLayoutPanel = new System.Windows.Forms.TableLayoutPanel();
             this.myShapePanel = new Stepi.UI.ExtendedPanel();
             this.myShapeFlowLayout = new System.Windows.Forms.FlowLayoutPanel();
             this.panel1 = new System.Windows.Forms.Panel();
-            this.labeldThumbnail1 = new PowerPointLabs.LabeldThumbnail();
             this.panel2 = new System.Windows.Forms.Panel();
             this.panel4 = new System.Windows.Forms.Panel();
             this.panel5 = new System.Windows.Forms.Panel();
             this.panel7 = new System.Windows.Forms.Panel();
             this.contextMenuStrip = new System.Windows.Forms.ContextMenuStrip(this.components);
             this.removeShapeToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.editNameToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.motherTableLayoutPanel.SuspendLayout();
             this.myShapePanel.SuspendLayout();
             this.myShapeFlowLayout.SuspendLayout();
@@ -52,7 +51,8 @@ namespace PowerPointLabs
             // 
             // motherTableLayoutPanel
             // 
-            this.motherTableLayoutPanel.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            this.motherTableLayoutPanel.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.motherTableLayoutPanel.AutoSize = true;
             this.motherTableLayoutPanel.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
@@ -67,13 +67,12 @@ namespace PowerPointLabs
             this.motherTableLayoutPanel.RowStyles.Add(new System.Windows.Forms.RowStyle());
             this.motherTableLayoutPanel.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 1F));
             this.motherTableLayoutPanel.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20F));
-            this.motherTableLayoutPanel.Size = new System.Drawing.Size(383, 91);
+            this.motherTableLayoutPanel.Size = new System.Drawing.Size(383, 83);
             this.motherTableLayoutPanel.TabIndex = 0;
             // 
             // myShapePanel
             // 
-            this.myShapePanel.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Left) 
+            this.myShapePanel.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.myShapePanel.AutoSize = true;
             this.myShapePanel.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
@@ -90,7 +89,7 @@ namespace PowerPointLabs
             this.myShapePanel.Location = new System.Drawing.Point(0, 0);
             this.myShapePanel.Margin = new System.Windows.Forms.Padding(0);
             this.myShapePanel.Name = "myShapePanel";
-            this.myShapePanel.Size = new System.Drawing.Size(383, 90);
+            this.myShapePanel.Size = new System.Drawing.Size(383, 82);
             this.myShapePanel.TabIndex = 4;
             // 
             // myShapeFlowLayout
@@ -101,12 +100,12 @@ namespace PowerPointLabs
             this.myShapeFlowLayout.AutoScroll = true;
             this.myShapeFlowLayout.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
             this.myShapeFlowLayout.Controls.Add(this.panel1);
-            this.myShapeFlowLayout.Controls.Add(this.labeldThumbnail1);
             this.myShapeFlowLayout.Controls.Add(this.panel2);
             this.myShapeFlowLayout.Location = new System.Drawing.Point(3, 22);
+            this.myShapeFlowLayout.Margin = new System.Windows.Forms.Padding(3, 3, 3, 0);
             this.myShapeFlowLayout.MaximumSize = new System.Drawing.Size(500, 500);
             this.myShapeFlowLayout.Name = "myShapeFlowLayout";
-            this.myShapeFlowLayout.Size = new System.Drawing.Size(377, 62);
+            this.myShapeFlowLayout.Size = new System.Drawing.Size(377, 58);
             this.myShapeFlowLayout.TabIndex = 1;
             // 
             // panel1
@@ -115,21 +114,10 @@ namespace PowerPointLabs
             this.panel1.Name = "panel1";
             this.panel1.Size = new System.Drawing.Size(115, 50);
             this.panel1.TabIndex = 0;
-            this.panel1.Click += new System.EventHandler(this.PanelClick);
-            // 
-            // labeldThumbnail1
-            // 
-            this.labeldThumbnail1.ImageToThumbnail = ((System.Drawing.Image)(resources.GetObject("labeldThumbnail1.ImageToThumbnail")));
-            this.labeldThumbnail1.Location = new System.Drawing.Point(124, 3);
-            this.labeldThumbnail1.Name = "labeldThumbnail1";
-            this.labeldThumbnail1.NameLable = "another random pic";
-            this.labeldThumbnail1.Size = new System.Drawing.Size(115, 50);
-            this.labeldThumbnail1.TabIndex = 1;
-            this.labeldThumbnail1.Click += new System.EventHandler(this.LabeldThumbnailClick);
             // 
             // panel2
             // 
-            this.panel2.Location = new System.Drawing.Point(245, 3);
+            this.panel2.Location = new System.Drawing.Point(124, 3);
             this.panel2.Name = "panel2";
             this.panel2.Size = new System.Drawing.Size(115, 50);
             this.panel2.TabIndex = 1;
@@ -161,9 +149,10 @@ namespace PowerPointLabs
             // contextMenuStrip
             // 
             this.contextMenuStrip.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.removeShapeToolStripMenuItem});
+            this.removeShapeToolStripMenuItem,
+            this.editNameToolStripMenuItem});
             this.contextMenuStrip.Name = "contextMenuStrip";
-            this.contextMenuStrip.Size = new System.Drawing.Size(164, 26);
+            this.contextMenuStrip.Size = new System.Drawing.Size(164, 48);
             this.contextMenuStrip.ItemClicked += new System.Windows.Forms.ToolStripItemClickedEventHandler(this.ContextMenuStripItemClicked);
             // 
             // removeShapeToolStripMenuItem
@@ -171,6 +160,12 @@ namespace PowerPointLabs
             this.removeShapeToolStripMenuItem.Name = "removeShapeToolStripMenuItem";
             this.removeShapeToolStripMenuItem.Size = new System.Drawing.Size(163, 22);
             this.removeShapeToolStripMenuItem.Text = "Remove Shape";
+            // 
+            // editNameToolStripMenuItem
+            // 
+            this.editNameToolStripMenuItem.Name = "editNameToolStripMenuItem";
+            this.editNameToolStripMenuItem.Size = new System.Drawing.Size(163, 22);
+            this.editNameToolStripMenuItem.Text = "Edit Name";
             // 
             // CustomShapePane
             // 
@@ -200,8 +195,9 @@ namespace PowerPointLabs
         private System.Windows.Forms.ContextMenuStrip contextMenuStrip;
         private System.Windows.Forms.ToolStripMenuItem removeShapeToolStripMenuItem;
         private System.Windows.Forms.Panel panel1;
-        private LabeldThumbnail labeldThumbnail1;
+        private LabeledThumbnail _labeledThumbnail1;
         private System.Windows.Forms.Panel panel2;
+        private System.Windows.Forms.ToolStripMenuItem editNameToolStripMenuItem;
 
     }
 }

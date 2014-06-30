@@ -11,18 +11,22 @@ namespace PowerPointLabs
 {
     public partial class CustomShapePane : UserControl
     {
-        private LabeldThumbnail _selectedPanel;
-        private int _currentShapeCnt = 0;
+        private const string DefaultShapeNameFormat = @"My Shape Untitled {0}";
+        private const string DefaultShapeFolderName = @"\PowerPointLabs Custom Shapes";
+        
+        private LabeledThumbnail _selectedThumbnail;
+        private int _currentUntitledShapeCnt = 0;
         private bool _firstTimeLoading = true;
 
         public string CurrentShapeName
         {
-            get { return ShapeFolderPath + @"\" + _currentShapeCnt + ".wmf"; }
+            get { return ShapeFolderPath + @"\" +
+                         string.Format(DefaultShapeNameFormat, _currentUntitledShapeCnt) + ".wmf"; }
         }
 
         public string ShapeFolderPath
         {
-            get { return Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments) + @"\PowerPointLabs Custom Shapes"; }
+            get { return Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments) + DefaultShapeFolderName; }
         }
 
         public CustomShapePane()
@@ -36,29 +40,9 @@ namespace PowerPointLabs
 
         public void AddCustomShape()
         {
-            var shapeImage = new Bitmap(CurrentShapeName);
-            
-            var newShapeCell = new Panel();
+            var labeledThumbnail = new LabeledThumbnail();
 
-            newShapeCell.Size = new Size(50, 50);
-            newShapeCell.Name = CurrentShapeName;
-            //newShapeCell.BackgroundImage = CreateThumbnailImage(shapeImage, 50, 50);
-            newShapeCell.ContextMenuStrip = contextMenuStrip;
-            newShapeCell.DoubleClick += PanelDoubleClick;
-            newShapeCell.Click += PanelClick;
-
-            myShapeFlowLayout.Controls.Add(newShapeCell);
-
-            if ((myShapeFlowLayout.Controls.Count + 1) * 56 < motherTableLayoutPanel.Size.Width)
-            {
-                myShapeFlowLayout.AutoSize = false;
-            }
-            else
-            {
-                myShapeFlowLayout.AutoSize = true;
-            }
-
-            _currentShapeCnt++;
+            labeledThumbnail
         }
 
         public void PaneReload()
@@ -105,7 +89,7 @@ namespace PowerPointLabs
                     continue;
                 }
 
-                _currentShapeCnt = int.Parse(shapeName);
+                _currentUntitledShapeCnt = int.Parse(shapeName);
 
                 AddCustomShape();
             }
@@ -115,19 +99,66 @@ namespace PowerPointLabs
         # region Event Handlers
         private const string NoPanelSelectedError = @"No shape selected";
 
-        private void PanelDoubleClick(object sender, EventArgs e)
+        private void ContextMenuStripItemClicked(object sender, ToolStripItemClickedEventArgs e)
         {
-            if (sender == null || !(sender is Panel))
+            var item = e.ClickedItem;
+
+            if (item.Name.Contains("remove"))
+            {
+                if (_selectedThumbnail == null)
+                {
+                    MessageBox.Show(NoPanelSelectedError);
+                    return;
+                }
+
+                File.Delete(_selectedThumbnail.Name);
+                myShapeFlowLayout.Controls.Remove(_selectedThumbnail);
+                _selectedThumbnail = null;
+            } else
+            if (item.Name.Contains("edit"))
+            {
+                if (_selectedThumbnail == null)
+                {
+                    MessageBox.Show(NoPanelSelectedError);
+                    return;
+                }
+
+                _selectedThumbnail.EnableNameEdit();
+            }
+        }
+
+        private void LabeledThumbnailClick(object sender, EventArgs e)
+        {
+            if (sender == null || !(sender is LabeledThumbnail))
             {
                 MessageBox.Show(NoPanelSelectedError);
                 return;
             }
 
-            var childPanel = sender as Panel;
+            var clickedThumbnail = sender as LabeledThumbnail;
+
+            if (_selectedThumbnail != null)
+            {
+                _selectedThumbnail.ToggleHighlight();
+            }
+
+            clickedThumbnail.ToggleHighlight();
+            _selectedThumbnail = clickedThumbnail;
+        }
+
+        private void LabeledThumbnailDoubleClick(object sender, EventArgs e)
+        {
+            if (sender == null || !(sender is LabeledThumbnail))
+            {
+                MessageBox.Show(NoPanelSelectedError);
+                return;
+            }
+
+            var clickedThumbnail = sender as LabeledThumbnail;
 
             var currentSlide = PowerPointPresentation.CurrentSlide;
-            var image = new Bitmap(childPanel.Name);
-            
+            var image = clickedThumbnail.ImageToThumbnail;
+
             var slideWidth = PowerPointPresentation.SlideWidth;
             var slideHeight = PowerPointPresentation.SlideHeight;
             var clientWidth = (Single)image.Size.Width;
@@ -137,66 +168,16 @@ namespace PowerPointLabs
 
             if (currentSlide != null)
             {
-                currentSlide.InsertPicture(childPanel.Name, MsoTriState.msoFalse, MsoTriState.msoTrue, leftTopCorner);
+                currentSlide.InsertPicture(clickedThumbnail.ImagePath, MsoTriState.msoFalse, MsoTriState.msoTrue,
+                                           leftTopCorner);
             }
         }
 
-        private void PanelClick(object sender, EventArgs e)
+        private void OnNameLabelChanged(object sender, EventArgs e)
         {
-            if (sender == null || !(sender is Panel))
-            {
-                MessageBox.Show(NoPanelSelectedError);
-                return;
-            }
-
-            var childPanel = sender as Panel;
-
-            // de-highlight the old shape and set current shape as highighted
-            if (_selectedPanel != null)
-            {
-                _selectedPanel.BackColor = Color.Transparent;
-            }
-
-            childPanel.BackColor = Color.FromKnownColor(KnownColor.Highlight);
-            _selectedPanel = childPanel;
-        }
-
-        private void ContextMenuStripItemClicked(object sender, ToolStripItemClickedEventArgs e)
-        {
-            var item = e.ClickedItem;
-
-            if (!item.Name.Contains("remove"))
-            {
-                return;
-            }
-
-            if (_selectedPanel == null)
-            {
-                MessageBox.Show(NoPanelSelectedError);
-                return;
-            }
-
-            File.Delete(_selectedPanel.Name);
-            myShapeFlowLayout.Controls.Remove(_selectedPanel);
-            _selectedPanel = null;
+            
         }
         # endregion
-
-        private void LabeldThumbnailClick(object sender, EventArgs e)
-        {
-            if (sender == null || !(sender is LabeldThumbnail))
-            {
-                MessageBox.Show(NoPanelSelectedError);
-                return;
-            }
-
-            var clickedThumbnail = sender as LabeldThumbnail;
-
-            if (_selectedPanel != null)
-            {
-                _selectedPanel = clickedThumbnail;
-            }
-        }
 
         # region search box appearance and behaviors
         /*
