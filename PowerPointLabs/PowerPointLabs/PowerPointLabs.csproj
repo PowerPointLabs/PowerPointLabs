@@ -232,6 +232,12 @@
     </Compile>
     <Compile Include="ConvertToPicture.cs" />
     <Compile Include="CropToShape.cs" />
+    <Compile Include="LabeldThumbnail.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="LabeldThumbnail.Designer.cs">
+      <DependentUpon>LabeldThumbnail.cs</DependentUpon>
+    </Compile>
     <Compile Include="CustomShapePane.cs">
       <SubType>UserControl</SubType>
     </Compile>
@@ -350,6 +356,9 @@
     <None Include="Resources\Stop.png" />
     <None Include="Resources\Play.png" />
     <None Include="Resources\Pause.png" />
+    <EmbeddedResource Include="LabeldThumbnail.resx">
+      <DependentUpon>LabeldThumbnail.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="CustomShapePane.resx">
       <DependentUpon>CustomShapePane.cs</DependentUpon>
     </EmbeddedResource>
@@ -557,6 +566,7 @@
     <None Include="Resources\HighlightBackgroundContext.png" />
   </ItemGroup>
   <ItemGroup>
+    <Folder Include="CustomControls\" />
     <Folder Include="Utils\" />
   </ItemGroup>
   <!-- Include the build rules for a C# project. -->

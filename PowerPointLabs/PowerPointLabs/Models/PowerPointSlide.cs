@@ -224,7 +224,7 @@ namespace PowerPointLabs.Models
         public void InsertPicture(string fileName, MsoTriState linkToFile, MsoTriState saveWithDoc,
                                   Tuple<Single, Single> leftTopCorner)
         {
-            _slide.Shapes.AddPicture(fileName, linkToFile, saveWithDoc, leftTopCorner.Item1, leftTopCorner.Item2);
+            _slide.Shapes.AddPicture(fileName, linkToFile, saveWithDoc, leftTopCorner.Item1, leftTopCorner.Item2).Select();
         }
 
         private Effect InsertAnimationBeforeExisting(Shape shape, Effect existing, MsoAnimEffect effect)

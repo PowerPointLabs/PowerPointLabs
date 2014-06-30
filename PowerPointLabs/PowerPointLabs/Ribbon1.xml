@@ -268,7 +268,7 @@
              label ="Convert to Picture"
              getImage="GetConvertToPicMenuImage"
              onAction="ConvertToPictureButtonClick"/>
-      <button id="addCustomShapePictureShape"
+      <button id="addCustomShapeShape"
              label ="Add to Custom Shapes"
              onAction="AddShapeButtonClick"/>
       <button id="cutOutShapeShape"
@@ -338,6 +338,9 @@
               label="Fit To Height"
               getImage="GetFitToHeightImage"
               onAction="FitToHeightClick"/>
+      <button id="addCustomShapePicture"
+              label ="Add to Custom Shapes"
+              onAction="AddShapeButtonClick"/>
     </contextMenu>
     <contextMenu idMso="ContextMenuChartArea">
       <menuSeparator id="separatorChart"/>
@@ -375,6 +378,9 @@
               label="Fit To Height"
               getImage="GetFitToHeightImage"
               onAction="FitToHeightClick"/>
+      <button id="addCustomShapeTable"
+             label ="Add to Custom Shapes"
+             onAction="AddShapeButtonClick"/>
     </contextMenu>
     <contextMenu idMso="ContextMenuObjectsGroup">
       <menuSeparator id="separatorGroup"/>

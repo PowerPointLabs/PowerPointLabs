@@ -11,7 +11,7 @@ namespace PowerPointLabs
 {
     public partial class CustomShapePane : UserControl
     {
-        private Panel _selectedPanel;
+        private LabeldThumbnail _selectedPanel;
         private int _currentShapeCnt = 0;
         private bool _firstTimeLoading = true;
 
@@ -42,14 +42,14 @@ namespace PowerPointLabs
 
             newShapeCell.Size = new Size(50, 50);
             newShapeCell.Name = CurrentShapeName;
-            newShapeCell.BackgroundImage = CreateThumbnailImage(shapeImage, 50, 50);
+            //newShapeCell.BackgroundImage = CreateThumbnailImage(shapeImage, 50, 50);
             newShapeCell.ContextMenuStrip = contextMenuStrip;
             newShapeCell.DoubleClick += PanelDoubleClick;
             newShapeCell.Click += PanelClick;
 
             myShapeFlowLayout.Controls.Add(newShapeCell);
 
-            if (myShapeFlowLayout.Controls.Count * 50 < motherTableLayoutPanel.Size.Width - 10)
+            if ((myShapeFlowLayout.Controls.Count + 1) * 56 < motherTableLayoutPanel.Size.Width)
             {
                 myShapeFlowLayout.AutoSize = false;
             }
@@ -68,8 +68,8 @@ namespace PowerPointLabs
                 return;
             }
             
+            //PrepareShapes();
             _firstTimeLoading = false;
-            PrepareShapes();
         }
 
         # region Helper Functions
@@ -79,50 +79,6 @@ namespace PowerPointLabs
                                                        Single clientWidth, Single clientHeight)
         {
             return new Tuple<Single, Single>((slideWidth - clientWidth) / 2, (slideHeight - clientHeight) / 2);
-        }
-
-        private double CalculateScalingRatio(Size oldSize, Size newSize)
-        {
-            double scalingRatio;
-
-            if (oldSize.Width >= oldSize.Height)
-            {
-                scalingRatio = (double)newSize.Width / oldSize.Width;
-            }
-            else
-            {
-                scalingRatio = (double)newSize.Height / oldSize.Height;
-            }
-
-            return scalingRatio;
-        }
-
-        private Bitmap CreateThumbnailImage(Image oriImage, int width, int height)
-        {
-            var scalingRatio = CalculateScalingRatio(oriImage.Size, new Size(width, height));
-
-            // calculate width and height after scaling
-            var scaledWidth = (int)Math.Round(oriImage.Size.Width * scalingRatio);
-            var scaledHeight = (int)Math.Round(oriImage.Size.Height * scalingRatio);
-
-            // calculate left top corner position of the image in the thumbnail
-            var scaledLeft = (width - scaledWidth) / 2;
-            var scaledTop = (height - scaledHeight) / 2;
-
-            // define drawing area
-            var drawingRect = new Rectangle(scaledLeft, scaledTop, scaledWidth, scaledHeight);
-            var thumbnail = new Bitmap(width, height);
-
-            // here we set the thumbnail as the highest quality
-            using (var thumbnailGraphics = Graphics.FromImage(thumbnail))
-            {
-                thumbnailGraphics.CompositingQuality = CompositingQuality.HighQuality;
-                thumbnailGraphics.InterpolationMode = InterpolationMode.HighQualityBicubic;
-                thumbnailGraphics.SmoothingMode = SmoothingMode.HighQuality;
-                thumbnailGraphics.DrawImage(oriImage, drawingRect);
-            }
-
-            return thumbnail;
         }
 
         private void PrepareFolder()
@@ -157,13 +113,13 @@ namespace PowerPointLabs
         # endregion
 
         # region Event Handlers
-        private const string PanelNullClickSenderError = @"No shape selected";
+        private const string NoPanelSelectedError = @"No shape selected";
 
         private void PanelDoubleClick(object sender, EventArgs e)
         {
             if (sender == null || !(sender is Panel))
             {
-                MessageBox.Show(PanelNullClickSenderError);
+                MessageBox.Show(NoPanelSelectedError);
                 return;
             }
 
@@ -189,7 +145,7 @@ namespace PowerPointLabs
         {
             if (sender == null || !(sender is Panel))
             {
-                MessageBox.Show(PanelNullClickSenderError);
+                MessageBox.Show(NoPanelSelectedError);
                 return;
             }
 
@@ -214,11 +170,33 @@ namespace PowerPointLabs
                 return;
             }
 
+            if (_selectedPanel == null)
+            {
+                MessageBox.Show(NoPanelSelectedError);
+                return;
+            }
+
             File.Delete(_selectedPanel.Name);
             myShapeFlowLayout.Controls.Remove(_selectedPanel);
             _selectedPanel = null;
         }
         # endregion
+
+        private void LabeldThumbnailClick(object sender, EventArgs e)
+        {
+            if (sender == null || !(sender is LabeldThumbnail))
+            {
+                MessageBox.Show(NoPanelSelectedError);
+                return;
+            }
+
+            var clickedThumbnail = sender as LabeldThumbnail;
+
+            if (_selectedPanel != null)
+            {
+                _selectedPanel = clickedThumbnail;
+            }
+        }
 
         # region search box appearance and behaviors
         /*
