@@ -12,6 +12,7 @@ using Converters = PowerPointLabs.Converters;
 using Microsoft.Office.Interop.PowerPoint;
 using PowerPointLabs.ColorPicker;
 using PowerPointLabs.Views;
+using Microsoft.Office.Core;
 
 namespace PowerPointLabs
 {
@@ -369,7 +370,7 @@ namespace PowerPointLabs
         private static void RecreateCorruptedShape(PowerPoint.Shape s)
         {
             s.Copy();
-            Shape newShape = PowerPointPresentation.CurrentSlide.Shapes.Paste()[1];
+            PowerPoint.Shape newShape = PowerPointPresentation.CurrentSlide.Shapes.Paste()[1];
 
             newShape.Select();
 
@@ -397,7 +398,16 @@ namespace PowerPointLabs
             {
                 if (s.HasTextFrame == Microsoft.Office.Core.MsoTriState.msoTrue)
                 {
-                    s.TextFrame.TextRange.Font.Color.RGB = rgb;
+                    if (Globals.ThisAddIn.Application.ActiveWindow.Selection.ShapeRange.HasTextFrame 
+                        == Microsoft.Office.Core.MsoTriState.msoTrue)
+                    {
+                        TextRange selectedText 
+                            = Globals.ThisAddIn.Application.ActiveWindow.Selection.TextRange.TrimText();
+                        if (selectedText.Text != "" && selectedText != null)
+                        {
+                            selectedText.Font.Color.RGB = rgb;
+                        }
+                    }
                 }
             }
         }
