@@ -91,6 +91,6 @@ namespace PowerPointLabs.ColorPicker
             chart1.Series["Series1"].Points[0].YValues[0] = (double)_selectedColor.R * 100 / 255.0f;
             chart1.Series["Series1"].Points[1].YValues[0] = (double)_selectedColor.G * 100 / 255.0f;
             chart1.Series["Series1"].Points[2].YValues[0] = (double)_selectedColor.B * 100 / 255.0f;
-        }
+        } 
     }
 }
