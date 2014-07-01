@@ -980,8 +980,7 @@ namespace PowerPointLabs
                 //
             }
         }
-
-        #endregion
+        # endregion
 
         protected override Microsoft.Office.Core.IRibbonExtensibility CreateRibbonExtensibilityObject()
         {

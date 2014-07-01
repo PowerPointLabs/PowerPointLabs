@@ -3,6 +3,7 @@ using System.Diagnostics;
 using System.Runtime.InteropServices;
 using System.Windows.Forms;
 using System.Drawing;
+using PowerPointLabs;
 using PowerPoint = Microsoft.Office.Interop.PowerPoint;
 
 namespace PPExtraEventHelper
@@ -10,12 +11,22 @@ namespace PPExtraEventHelper
     internal class PPMouse
     {
         private static int hook;
+        private static int _regionHook;
+
         private static bool isInit = false;
+
         private static PowerPoint.Selection selectedRange;
+
         private static IntPtr slideViewWindowHandle;
+
         private static Rectangle slideViewWindowRectangle;
+
         private static Native.HookProc hookProcedure;
+        private static Native.HookProc _regionHookProcedure;
+
         private static double startTimeInMillisecond = CurrentMillisecond();
+
+        private static Native.Point _mousePoint;
 
         public static void Init(PowerPoint.Application application)
         {
@@ -42,8 +53,11 @@ namespace PPExtraEventHelper
         //Delegate
         public delegate void DoubleClickEventDelegate(PowerPoint.Selection selection);
 
+        public delegate void ClickEventDelegate(Point mousePosition);
+
         //Handler
         public static event DoubleClickEventDelegate DoubleClick;
+        public static event ClickEventDelegate Click; 
 
         private static int HookProcedureCallback(int nCode, IntPtr wParam, IntPtr lParam)
         {
@@ -60,6 +74,26 @@ namespace PPExtraEventHelper
                 }
                 UpdateStartTime();  
             }
+            return Native.CallNextHookEx(0, nCode, wParam, lParam);
+        }
+
+        private static int ClickHookProcedureCallback(int nCode, IntPtr wParam, IntPtr lParam)
+        {
+            if (nCode >= 0)
+            {
+                if (wParam.ToInt32() == (int)Native.Message.WM_LBUTTONDOWN ||
+                    wParam.ToInt32() == (int)Native.Message.WM_LBUTTONUP)
+                {
+                    _mousePoint = Native.GetPoint(lParam);
+                    var mousePos = new Point(_mousePoint.x, _mousePoint.y);
+
+                    if (Click != null)
+                    {
+                        Click(mousePos);
+                    }
+                }
+            }
+            
             return Native.CallNextHookEx(0, nCode, wParam, lParam);
         }
 
@@ -97,9 +131,22 @@ namespace PPExtraEventHelper
                 Native.GetWindowThreadProcessId(slideViewWindowHandle, 0));
         }
 
+        public static void StartRegionClickHook()
+        {
+            _regionHookProcedure = ClickHookProcedureCallback;
+            _regionHook = Native.SetWindowsHookEx((int) Native.HookType.WH_MOUSE, _regionHookProcedure, 0,
+                                                  Native.GetWindowThreadProcessId(
+                                                      new IntPtr(Globals.ThisAddIn.Application.HWND), 0));
+        }
+
         public static bool StopHook()
         {
             return Native.UnhookWindowsHookEx(hook);
+        }
+
+        public static bool StopRegionHook()
+        {
+            return Native.UnhookWindowsHookEx(_regionHook);
         }
 
         //for Office 2010, its window structure is like MDIClient --> mdiClass --> paneClassDC (SlideView)

@@ -4,32 +4,17 @@ using System.Drawing.Drawing2D;
 using System.IO;
 using System.Text.RegularExpressions;
 using System.Windows.Forms;
+using PPExtraEventHelper;
 
 namespace PowerPointLabs
 {
     public partial class LabeledThumbnail : UserControl
     {
         private bool _isHighlighted;
+        private bool _isGoodName;
         private Image _imageSource;
         private string _imageSourcePath;
         private string _firstNameAssigned = string.Empty;
-
-        # region Constructors
-        public LabeledThumbnail()
-        {
-            Initialize();
-        }
-
-        public LabeledThumbnail(string imageName, string nameLable)
-        {
-            Initialize();
-
-            NameLable = nameLable;
-
-            var image = new Bitmap(imageName);
-            ImageToThumbnail = CreateThumbnailImage(image, 50, 50);
-        }
-        # endregion
 
         # region Properties
         private const string InvalidCharacterError = @"'\' and '.' are not allowed in the name";
@@ -41,6 +26,7 @@ namespace PowerPointLabs
                 if (Verify(value))
                 {
                     labelTextBox.Text = value;
+                    _isGoodName = true;
 
                     if (_firstNameAssigned == string.Empty)
                     {
@@ -51,6 +37,7 @@ namespace PowerPointLabs
                 {
                     MessageBox.Show(InvalidCharacterError);
                     labelTextBox.SelectAll();
+                    _isGoodName = false;
                 }
             }
         }
@@ -74,6 +61,45 @@ namespace PowerPointLabs
                 _imageSourcePath = value;
                 ImageToThumbnail = new Bitmap(value);
             }
+        }
+        # endregion
+
+        # region Constructors
+        public LabeledThumbnail()
+        {
+            Initialize();
+        }
+
+        public LabeledThumbnail(string imagePath, string nameLable)
+        {
+            Initialize();
+
+            NameLable = nameLable;
+
+            var image = new Bitmap(imagePath);
+            ImageToThumbnail = CreateThumbnailImage(image, 50, 50);
+        }
+        # endregion
+
+        # region API
+        public void StartNameEdit()
+        {
+            labelTextBox.Enabled = true;
+            PPMouse.StartRegionClickHook();
+        }
+
+        public void ToggleHighlight()
+        {
+            if (_isHighlighted)
+            {
+                DeHighlight();
+            }
+            else
+            {
+                Highlight();
+            }
+
+            _isHighlighted = !_isHighlighted;
         }
         # endregion
 
@@ -149,11 +175,19 @@ namespace PowerPointLabs
         {
             InitializeComponent();
 
-            labelTextBox.TextChanged += OnNameLabelChanged;
+            PPMouse.Click += OnClickWhileEditing;
 
             // let user specify the shape name
             labelTextBox.Enabled = true;
             labelTextBox.SelectAll();
+        }
+
+        private bool PointInRectangle(Point point, Rectangle rect)
+        {
+            return point.X > rect.Left &&
+                   point.X < rect.Right &&
+                   point.Y > rect.Top &&
+                   point.Y < rect.Bottom;
         }
 
         private void RenameSource()
@@ -162,7 +196,13 @@ namespace PowerPointLabs
 
             if (oldName != null)
             {
-                ImagePath = ImagePath.Replace(oldName, NameLable);
+                var newPath = ImagePath.Replace(oldName, NameLable);
+
+                // rename the file on disk
+                File.Move(ImagePath, newPath);
+
+                // edit the image path on memory
+                ImagePath = newPath;
             }
         }
 
@@ -174,43 +214,25 @@ namespace PowerPointLabs
         }
         # endregion
 
-        # region API
-        public void ToggleHighlight()
-        {
-            if (_isHighlighted)
-            {
-                DeHighlight();
-            }
-            else
-            {
-                Highlight();
-            }
-
-            _isHighlighted = !_isHighlighted;
-        }
-
-        public void EnableNameEdit()
-        {
-            // TODO: enable lable text box, start left mouse button hook
-        }
-        # endregion
-
         # region Event Handlers
-        // delegates
-        public delegate void NameLabelChangedHandler();
-
-        // handlers
-        public static event NameLabelChangedHandler NameLabelChanged;
-
-        private void OnNameLabelChanged(object sender, EventArgs args)
+        private void OnClickWhileEditing(Point mousePosition)
         {
-            // execute custom event handler if defined
-            if (NameLabelChanged != null)
-            {
-                NameLabelChanged();
-            }
+            var editingArea = labelTextBox.RectangleToScreen(labelTextBox.DisplayRectangle);
 
-            RenameSource();
+            // click outside the editing text box -> finish editing
+            if (!PointInRectangle(mousePosition, editingArea))
+            {
+                NameLable = labelTextBox.Text;
+                
+                // if the name is accepted, end editing session and rename the file
+                if (_isGoodName)
+                {
+                    PPMouse.StopRegionHook();
+                    labelTextBox.Enabled = false;
+
+                    RenameSource();
+                }
+            }
         }
         # endregion
     }

@@ -232,11 +232,11 @@
     </Compile>
     <Compile Include="ConvertToPicture.cs" />
     <Compile Include="CropToShape.cs" />
-    <Compile Include="LabeldThumbnail.cs">
+    <Compile Include="LabeledThumbnail.cs">
       <SubType>UserControl</SubType>
     </Compile>
-    <Compile Include="LabeldThumbnail.Designer.cs">
-      <DependentUpon>LabeldThumbnail.cs</DependentUpon>
+    <Compile Include="LabeledThumbnail.Designer.cs">
+      <DependentUpon>LabeledThumbnail.cs</DependentUpon>
     </Compile>
     <Compile Include="CustomShapePane.cs">
       <SubType>UserControl</SubType>
@@ -356,8 +356,8 @@
     <None Include="Resources\Stop.png" />
     <None Include="Resources\Play.png" />
     <None Include="Resources\Pause.png" />
-    <EmbeddedResource Include="LabeldThumbnail.resx">
-      <DependentUpon>LabeldThumbnail.cs</DependentUpon>
+    <EmbeddedResource Include="LabeledThumbnail.resx">
+      <DependentUpon>LabeledThumbnail.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="CustomShapePane.resx">
       <DependentUpon>CustomShapePane.cs</DependentUpon>

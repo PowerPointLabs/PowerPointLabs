@@ -920,7 +920,7 @@ namespace PowerPointLabs
             var customShape = customShapePane.Control as CustomShapePane;
 
             customShape.PaneReload();
-            ConvertToPicture.ConvertAndSave(selection, customShape.CurrentShapeName);
+            ConvertToPicture.ConvertAndSave(selection, customShape.CurrentShapeFullName);
             customShape.AddCustomShape();
         }
         # endregion

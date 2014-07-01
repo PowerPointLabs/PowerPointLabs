@@ -12,23 +12,32 @@ namespace PowerPointLabs
     public partial class CustomShapePane : UserControl
     {
         private const string DefaultShapeNameFormat = @"My Shape Untitled {0}";
-        private const string DefaultShapeFolderName = @"\PowerPointLabs Custom Shapes";
+        private const string DefaultShapeFolderName = @"\PowerPointLabs Custom Shapes\My Shapes";
         
         private LabeledThumbnail _selectedThumbnail;
+
         private int _currentUntitledShapeCnt = 0;
         private bool _firstTimeLoading = true;
 
-        public string CurrentShapeName
+        # region Properties
+        public string CurrentShapeFullName
         {
             get { return ShapeFolderPath + @"\" +
-                         string.Format(DefaultShapeNameFormat, _currentUntitledShapeCnt) + ".wmf"; }
+                         CurrentShapeNameWithoutExtension + ".wmf"; }
+        }
+
+        public string CurrentShapeNameWithoutExtension
+        {
+            get { return string.Format(DefaultShapeNameFormat, _currentUntitledShapeCnt); }
         }
 
         public string ShapeFolderPath
         {
             get { return Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments) + DefaultShapeFolderName; }
         }
+        # endregion
 
+        # region Constructors
         public CustomShapePane()
         {
             InitializeComponent();
@@ -37,12 +46,25 @@ namespace PowerPointLabs
 
             myShapeFlowLayout.Padding = new Padding(0, 0, vertScrollWidth / 2, 0);
         }
+        # endregion
 
+        # region API
         public void AddCustomShape()
         {
-            var labeledThumbnail = new LabeledThumbnail();
+            if (myShapeFlowLayout.Controls.Contains(_noShapePanel))
+            {
+                myShapeFlowLayout.Controls.Remove(_noShapePanel);
+            }
 
-            labeledThumbnail
+            var labeledThumbnail = new LabeledThumbnail(CurrentShapeFullName, CurrentShapeNameWithoutExtension);
+
+            labeledThumbnail.Click += LabeledThumbnailClick;
+            labeledThumbnail.DoubleClick += LabeledThumbnailDoubleClick;
+
+            myShapeFlowLayout.Controls.Add(labeledThumbnail);
+            myShapeFlowLayout.ScrollControlIntoView(labeledThumbnail);
+
+            labeledThumbnail.StartNameEdit();
         }
 
         public void PaneReload()
@@ -51,19 +73,34 @@ namespace PowerPointLabs
             {
                 return;
             }
-            
-            //PrepareShapes();
+
+            PrepareShapes();
             _firstTimeLoading = false;
         }
+        # endregion
 
         # region Helper Functions
         private const string WmfFileNameInvalid = @"Invalid shape name encountered";
+        private const string NoShapeText = @"No shapes available";
 
-        private Tuple<Single, Single> ToMiddleOnScreen(Single slideWidth, Single slideHeight,
-                                                       Single clientWidth, Single clientHeight)
-        {
-            return new Tuple<Single, Single>((slideWidth - clientWidth) / 2, (slideHeight - clientHeight) / 2);
-        }
+        private readonly Label _noShapeLabel = new Label
+                                                   {
+                                                       AutoSize = true,
+                                                       Font =
+                                                           new Font("Arial", 15.75F, FontStyle.Bold, GraphicsUnit.Point,
+                                                                    0),
+                                                       ForeColor = SystemColors.ButtonShadow,
+                                                       Location = new Point(81, 11),
+                                                       Name = "noShapeLabel",
+                                                       Size = new Size(212, 24),
+                                                       Text = NoShapeText
+                                                   };
+
+        private readonly Panel _noShapePanel = new Panel
+                                                   {
+                                                       Name = "noShapePanel",
+                                                       Size = new Size(362, 46)
+                                                   };
 
         private void PrepareFolder()
         {
@@ -82,7 +119,7 @@ namespace PowerPointLabs
             foreach (var wmfFile in wmfFiles)
             {
                 var shapeName = Path.GetFileNameWithoutExtension(wmfFile);
-                
+
                 if (shapeName == null)
                 {
                     MessageBox.Show(WmfFileNameInvalid);
@@ -93,6 +130,27 @@ namespace PowerPointLabs
 
                 AddCustomShape();
             }
+
+            if (myShapeFlowLayout.Controls.Count == 0)
+            {
+                ShowNoShapeMessage();
+            }
+        }
+            
+        private void ShowNoShapeMessage()
+        {
+            if (_noShapePanel.Controls.Count == 0)
+            {
+                _noShapePanel.Controls.Add(_noShapeLabel);
+            }
+
+            myShapeFlowLayout.Controls.Add(_noShapePanel);
+        }
+
+        private Tuple<Single, Single> ToMiddleOnScreen(Single slideWidth, Single slideHeight,
+                                                       Single clientWidth, Single clientHeight)
+        {
+            return new Tuple<Single, Single>((slideWidth - clientWidth) / 2, (slideHeight - clientHeight) / 2);
         }
         # endregion
 
@@ -114,6 +172,11 @@ namespace PowerPointLabs
                 File.Delete(_selectedThumbnail.Name);
                 myShapeFlowLayout.Controls.Remove(_selectedThumbnail);
                 _selectedThumbnail = null;
+
+                if (myShapeFlowLayout.Controls.Count == 0)
+                {
+                    ShowNoShapeMessage();
+                }
             } else
             if (item.Name.Contains("edit"))
             {
@@ -123,7 +186,7 @@ namespace PowerPointLabs
                     return;
                 }
 
-                _selectedThumbnail.EnableNameEdit();
+                _selectedThumbnail.StartNameEdit();
             }
         }
 
@@ -171,11 +234,6 @@ namespace PowerPointLabs
                 currentSlide.InsertPicture(clickedThumbnail.ImagePath, MsoTriState.msoFalse, MsoTriState.msoTrue,
                                            leftTopCorner);
             }
-        }
-
-        private void OnNameLabelChanged(object sender, EventArgs e)
-        {
-            
         }
         # endregion
 
