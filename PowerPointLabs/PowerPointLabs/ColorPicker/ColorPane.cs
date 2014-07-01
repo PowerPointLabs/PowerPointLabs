@@ -19,13 +19,17 @@ namespace PowerPointLabs
 
     public partial class ColorPane : UserControl
     {
+        // To set eyedropper mode
+        private enum MODE
+        {
+            FILL,
+            LINE,
+            FONT,
+            NONE
+        };
+
         // Needed to keep track of brightness and saturation
         private Color _originalColor;
-
-        // Fill Selected By Default
-        private bool _isFillColorSelected = true;
-        private bool _isFontColorSelected = false;
-        private bool _isLineColorSelected = false;
 
         // Keeps track of mouse on mouse down on a matching panel.
         // Needed to determine drag-drop v/s click
@@ -68,13 +72,38 @@ namespace PowerPointLabs
             UpdateUIForNewColor();
         }
 
+        private void SetMode(MODE mode)
+        {
+            dataSource.isFillColorSelected = false;
+            dataSource.isFontColorSelected = false;
+            dataSource.isLineColorSelected = false;
+            
+            switch (mode)
+            {
+                case MODE.LINE:
+                    dataSource.isLineColorSelected = true;
+                    break;
+                case MODE.FONT:
+                    dataSource.isFontColorSelected = true;
+                    break;
+                case MODE.FILL:
+                    dataSource.isFillColorSelected = true;
+                    break;
+                default:
+                    break;
+            }
+        }
+
+        private void ResetEyeDropperSelectionInDataSource()
+        {
+            dataSource.isFillColorSelected = false;
+            dataSource.isFontColorSelected = false;
+            dataSource.isLineColorSelected = false;
+        }
+
         #region ToolTip
         private void InitToolTipControl()
         {
-            toolTip1.SetToolTip(this.TextCheckBox, "EyeDrops Font Color for Selected TextFrames");
-            toolTip1.SetToolTip(this.LineCheckBox, "EyeDrops Line Color for Selected Shapes");
-            toolTip1.SetToolTip(this.FillCheckBox, "EyeDrops Fill Color for Selected Shapes");
-            toolTip1.SetToolTip(this.EditColorButton, "Edits Selected Color");
             toolTip1.SetToolTip(this.LoadButton, "Load Existing Theme");
             toolTip1.SetToolTip(this.SaveThemeButton, "Save Current Theme");
             toolTip1.SetToolTip(this.ResetThemeButton, "Reset the Current Theme Colors to Current Slide Theme");
@@ -295,14 +324,28 @@ namespace PowerPointLabs
                         dataSource,
                         "selectedColor",
                         new Converters.selectedColorToSaturationValue()));
+
+            FillButton.DataBindings.Add(new CustomBinding(
+                        "BackColor",
+                        dataSource,
+                        "isFillColorSelected",
+                        new Converters.IsActiveBoolToButtonBackColorConverter()));
+            
+            LineButton.DataBindings.Add(new CustomBinding(
+                        "BackColor",
+                        dataSource,
+                        "isLineColorSelected",
+                        new Converters.IsActiveBoolToButtonBackColorConverter()));
+            
+            FontButton.DataBindings.Add(new CustomBinding(
+                        "BackColor",
+                        dataSource,
+                        "isFontColorSelected",
+                        new Converters.IsActiveBoolToButtonBackColorConverter()));
         }
 
         #endregion
 
-        private void EyeDropperButton_MouseDown(object sender, MouseEventArgs e)
-        {
-            BeginEyedropping();
-        }
         private void BeginEyedropping()
         {
             timer1.Start();
@@ -386,15 +429,15 @@ namespace PowerPointLabs
 
         private void ColorShapeWithColor(PowerPoint.Shape s, int rgb)
         {
-            if (_isFillColorSelected)
+            if (dataSource.isFillColorSelected)
             {
                 s.Fill.ForeColor.RGB = rgb;
             }
-            if (_isLineColorSelected)
+            if (dataSource.isLineColorSelected)
             {
                 s.Line.ForeColor.RGB = rgb;
             }
-            if (_isFontColorSelected)
+            if (dataSource.isFontColorSelected)
             {
                 if (s.HasTextFrame == Microsoft.Office.Core.MsoTriState.msoTrue)
                 {
@@ -419,6 +462,7 @@ namespace PowerPointLabs
             Globals.ThisAddIn.Application.StartNewUndoEntry();
             UpdateUIForNewColor();
             timer1.Stop();
+            ResetEyeDropperSelectionInDataSource();
         }
         #endregion
 
@@ -817,23 +861,6 @@ namespace PowerPointLabs
         }
         #endregion
 
-        #region CheckBoxes Event Handlers
-        private void FillCheckBox_CheckedChanged(object sender, EventArgs e)
-        {
-            _isFillColorSelected = ((CheckBox)sender).Checked;
-        }
-
-        private void LineCheckBox_CheckedChanged(object sender, EventArgs e)
-        {
-            _isLineColorSelected = ((CheckBox)sender).Checked;
-        }
-
-        private void TextCheckBox_CheckedChanged(object sender, EventArgs e)
-        {
-            _isFontColorSelected = ((CheckBox)sender).Checked;
-        }
-        #endregion
-
         private void brightnessBar_MouseUp(object sender, MouseEventArgs e)
         {
             try
@@ -868,6 +895,47 @@ namespace PowerPointLabs
         private void brightnessBar_MouseDown(object sender, MouseEventArgs e)
         {
             _initialSaturation = dataSource.selectedColor.GetSaturation();
+        }
+
+        private void EyeDropButton_MouseClick(object sender, MouseEventArgs e)
+        {
+            string buttonName = ((Button)sender).Name;
+
+            SetModeForSenderName(buttonName);
+
+            colorDialog1.Color = dataSource.selectedColor;
+            
+            if (colorDialog1.ShowDialog() == DialogResult.OK)
+            {
+                SetDefaultColor(colorDialog1.Color);
+                ResetEyeDropperSelectionInDataSource();
+            }
+        }
+
+        private void SetModeForSenderName(string buttonName)
+        {
+            switch (buttonName)
+            {
+                case "FillButton":
+                    SetMode(MODE.FILL);
+                    break;
+                case "FontButton":
+                    SetMode(MODE.FONT);
+                    break;
+                case "LineButton":
+                    SetMode(MODE.LINE);
+                    break;
+                default:
+                    SetMode(MODE.NONE);
+                    break;
+            }
+        }
+
+        private void EyeDropButton_MouseDown(object sender, MouseEventArgs e)
+        {
+            string buttonName = ((Button)sender).Name;
+            SetModeForSenderName(buttonName);
+            BeginEyedropping();
         }
     }
 }
