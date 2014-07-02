@@ -61,9 +61,16 @@ namespace PowerPointLabs
         # region API
         public void AddCustomShape()
         {
+            // remove no_shape banner if we have one
             if (myShapeFlowLayout.Controls.Contains(_noShapePanel))
             {
                 myShapeFlowLayout.Controls.Remove(_noShapePanel);
+            }
+
+            // dehighlight the selected labeled thumbnail if we have one
+            if (_selectedThumbnail != null)
+            {
+                _selectedThumbnail.DeHighlight();
             }
 
             var labeledThumbnail = new LabeledThumbnail(CurrentShapeFullName, CurrentShapeNameWithoutExtension);
@@ -96,7 +103,7 @@ namespace PowerPointLabs
         # region Helper Functions
         private const string WmfFileNameInvalid = @"Invalid shape name encountered";
         private const string NoShapeText = @"No shapes available";
-        private const string UntitleShapeRecognizeRegex = @"My Shape Untitled (\d+)";
+        private const string UntitleShapeRecognizeRegex = "My Shape Untitled (\\d+)";
 
         private readonly Label _noShapeLabel = new Label
                                                    {
@@ -214,6 +221,7 @@ namespace PowerPointLabs
             } else
             if (item.Name.Contains("edit"))
             {
+                _selectedThumbnail = sender as LabeledThumbnail;
                 ContextMenuStripEditClicked();
             }
         }
@@ -252,8 +260,10 @@ namespace PowerPointLabs
                 {
                     _selectedThumbnail.FinishNameEdit();
                 }
-
-                _selectedThumbnail.DeHighlight();
+                else
+                {
+                    _selectedThumbnail.DeHighlight();
+                }
             }
 
             clickedThumbnail.Highlight();
@@ -287,9 +297,16 @@ namespace PowerPointLabs
             }
         }
 
-        private void NameChangedNotifyHandler()
+        private void NameChangedNotifyHandler(object sender)
         {
             _currentUntitledShapeCnt++;
+
+            var labeledThumbnail = sender as LabeledThumbnail;
+
+            if (labeledThumbnail == null) return;
+
+            labeledThumbnail.DeHighlight();
+            _selectedThumbnail = null;
         }
         # endregion
 

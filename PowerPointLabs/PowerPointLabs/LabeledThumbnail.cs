@@ -4,7 +4,6 @@ using System.Drawing.Drawing2D;
 using System.IO;
 using System.Text.RegularExpressions;
 using System.Windows.Forms;
-using PPExtraEventHelper;
 
 namespace PowerPointLabs
 {
@@ -14,7 +13,6 @@ namespace PowerPointLabs
         private bool _isGoodName;
         private Image _imageSource;
         private string _imageSourcePath;
-        private string _firstNameAssigned = string.Empty;
 
         public enum Status
         {
@@ -34,11 +32,6 @@ namespace PowerPointLabs
                 {
                     labelTextBox.Text = value;
                     _isGoodName = true;
-
-                    if (_firstNameAssigned == string.Empty)
-                    {
-                        _firstNameAssigned = value;
-                    }
                 }
                 else
                 {
@@ -94,13 +87,6 @@ namespace PowerPointLabs
             motherPanel.BackColor = Color.FromKnownColor(KnownColor.Window);
             thumbnailPanel.BackColor = Color.FromKnownColor(KnownColor.Transparent);
 
-            // if the name provided to the shape is not valid, and user de-focus the
-            // current labled thumbnail, we shoud give the old name to the shape.
-            if (State == Status.Editing && !Verify(NameLable))
-            {
-                NameLable = _firstNameAssigned;
-            }
-
             // dehighlight will hard-disable the text box editing
             labelTextBox.Enabled = false;
             State = Status.Idle;
@@ -130,10 +116,9 @@ namespace PowerPointLabs
             {
                 State = Status.Idle;
 
-                DeHighlight();
                 RenameSource();
                 labelTextBox.Enabled = false;
-                NameChangedNotify();
+                NameChangedNotify(this);
             }
             else
             {
@@ -215,23 +200,16 @@ namespace PowerPointLabs
             foreach (Control control in motherPanel.Controls)
             {
                 control.Click += (sender, e) => Click(this, e);
-                control.DoubleClick += (sender, e) => Click(this, e);
+                control.DoubleClick += (sender, e) => DoubleClick(this, e);
             }
 
             labelTextBox.LostFocus += NameLableLostFocus;
+            labelTextBox.KeyPress += EnterKeyWhileEditing;
 
             // let user specify the shape name
             State = Status.Editing;
             labelTextBox.Enabled = true;
             labelTextBox.SelectAll();
-        }
-
-        private bool PointInRectangle(Point point, Rectangle rect)
-        {
-            return point.X > rect.Left &&
-                   point.X < rect.Right &&
-                   point.Y > rect.Top &&
-                   point.Y < rect.Bottom;
         }
 
         private void RenameSource()
@@ -268,12 +246,20 @@ namespace PowerPointLabs
 
         public delegate void DoubleClickEventDelegate(object sender, EventArgs e);
 
-        public delegate void NameChangedNotifyEventDelegate();
+        public delegate void NameChangedNotifyEventDelegate(object sender);
 
         public new event ClickEventDelegate Click;
         public new event DoubleClickEventDelegate DoubleClick;
-
         public event NameChangedNotifyEventDelegate NameChangedNotify;
+
+        private void EnterKeyWhileEditing(object sender, KeyPressEventArgs e)
+        {
+            if (e.KeyChar == (char)Keys.Return)
+            {
+                FinishNameEdit();
+                e.Handled = true;
+            }
+        }
 
         private void NameLableLostFocus(object sender, EventArgs args)
         {
