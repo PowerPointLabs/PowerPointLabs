@@ -148,7 +148,7 @@
             this.AnalogousColorPanel.Controls.Add(this.flowLayoutPanel6);
             this.AnalogousColorPanel.Location = new System.Drawing.Point(20, 309);
             this.AnalogousColorPanel.Name = "AnalogousColorPanel";
-            this.AnalogousColorPanel.Size = new System.Drawing.Size(124, 76);
+            this.AnalogousColorPanel.Size = new System.Drawing.Size(124, 56);
             this.AnalogousColorPanel.TabIndex = 3;
             // 
             // label1
@@ -159,16 +159,16 @@
             this.label1.ForeColor = System.Drawing.SystemColors.ControlText;
             this.label1.Location = new System.Drawing.Point(3, 0);
             this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(79, 32);
+            this.label1.Size = new System.Drawing.Size(75, 16);
             this.label1.TabIndex = 5;
-            this.label1.Text = "Analogous Colors";
+            this.label1.Text = "Analogous";
             // 
             // flowLayoutPanel6
             // 
             this.flowLayoutPanel6.Controls.Add(this.AnalogousLighter);
             this.flowLayoutPanel6.Controls.Add(this.AnalogousSelected);
             this.flowLayoutPanel6.Controls.Add(this.AnalogousDarker);
-            this.flowLayoutPanel6.Location = new System.Drawing.Point(3, 35);
+            this.flowLayoutPanel6.Location = new System.Drawing.Point(3, 19);
             this.flowLayoutPanel6.Name = "flowLayoutPanel6";
             this.flowLayoutPanel6.Size = new System.Drawing.Size(85, 26);
             this.flowLayoutPanel6.TabIndex = 12;
@@ -242,7 +242,7 @@
             this.flowLayoutPanel2.Controls.Add(this.flowLayoutPanel7);
             this.flowLayoutPanel2.Location = new System.Drawing.Point(150, 309);
             this.flowLayoutPanel2.Name = "flowLayoutPanel2";
-            this.flowLayoutPanel2.Size = new System.Drawing.Size(143, 76);
+            this.flowLayoutPanel2.Size = new System.Drawing.Size(143, 56);
             this.flowLayoutPanel2.TabIndex = 4;
             // 
             // label2
@@ -253,16 +253,16 @@
             this.label2.ForeColor = System.Drawing.SystemColors.ControlText;
             this.label2.Location = new System.Drawing.Point(3, 0);
             this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(113, 32);
+            this.label2.Size = new System.Drawing.Size(109, 16);
             this.label2.TabIndex = 6;
-            this.label2.Text = "Complementary Colors";
+            this.label2.Text = "Complementary";
             // 
             // flowLayoutPanel7
             // 
             this.flowLayoutPanel7.Controls.Add(this.ComplementaryLighter);
             this.flowLayoutPanel7.Controls.Add(this.ComplementarySelected);
             this.flowLayoutPanel7.Controls.Add(this.ComplementaryDarker);
-            this.flowLayoutPanel7.Location = new System.Drawing.Point(3, 35);
+            this.flowLayoutPanel7.Location = new System.Drawing.Point(3, 19);
             this.flowLayoutPanel7.Name = "flowLayoutPanel7";
             this.flowLayoutPanel7.Size = new System.Drawing.Size(120, 26);
             this.flowLayoutPanel7.TabIndex = 13;
@@ -312,7 +312,7 @@
             this.flowLayoutPanel3.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.flowLayoutPanel3.Controls.Add(this.label3);
             this.flowLayoutPanel3.Controls.Add(this.flowLayoutPanel8);
-            this.flowLayoutPanel3.Location = new System.Drawing.Point(20, 391);
+            this.flowLayoutPanel3.Location = new System.Drawing.Point(20, 371);
             this.flowLayoutPanel3.Name = "flowLayoutPanel3";
             this.flowLayoutPanel3.Size = new System.Drawing.Size(124, 64);
             this.flowLayoutPanel3.TabIndex = 4;
@@ -325,9 +325,9 @@
             this.label3.ForeColor = System.Drawing.SystemColors.ControlText;
             this.label3.Location = new System.Drawing.Point(3, 0);
             this.label3.Name = "label3";
-            this.label3.Size = new System.Drawing.Size(95, 16);
+            this.label3.Size = new System.Drawing.Size(51, 16);
             this.label3.TabIndex = 6;
-            this.label3.Text = "Triadic Colors";
+            this.label3.Text = "Triadic";
             // 
             // flowLayoutPanel8
             // 
@@ -384,7 +384,7 @@
             this.flowLayoutPanel4.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.flowLayoutPanel4.Controls.Add(this.label4);
             this.flowLayoutPanel4.Controls.Add(this.flowLayoutPanel9);
-            this.flowLayoutPanel4.Location = new System.Drawing.Point(150, 391);
+            this.flowLayoutPanel4.Location = new System.Drawing.Point(150, 371);
             this.flowLayoutPanel4.Name = "flowLayoutPanel4";
             this.flowLayoutPanel4.Size = new System.Drawing.Size(143, 64);
             this.flowLayoutPanel4.TabIndex = 4;
@@ -397,9 +397,9 @@
             this.label4.ForeColor = System.Drawing.SystemColors.ControlText;
             this.label4.Location = new System.Drawing.Point(3, 0);
             this.label4.Name = "label4";
-            this.label4.Size = new System.Drawing.Size(103, 16);
+            this.label4.Size = new System.Drawing.Size(59, 16);
             this.label4.TabIndex = 6;
-            this.label4.Text = "Tetradic Colors";
+            this.label4.Text = "Tetradic";
             // 
             // flowLayoutPanel9
             // 
@@ -521,9 +521,9 @@
             this.label5.ForeColor = System.Drawing.SystemColors.ControlText;
             this.label5.Location = new System.Drawing.Point(3, 0);
             this.label5.Name = "label5";
-            this.label5.Size = new System.Drawing.Size(150, 16);
+            this.label5.Size = new System.Drawing.Size(106, 16);
             this.label5.TabIndex = 6;
-            this.label5.Text = "Monochromatic Colors";
+            this.label5.Text = "Monochromatic";
             // 
             // flowLayoutPanel5
             // 
