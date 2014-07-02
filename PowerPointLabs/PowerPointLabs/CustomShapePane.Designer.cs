@@ -35,12 +35,10 @@ namespace PowerPointLabs
             this.motherTableLayoutPanel = new System.Windows.Forms.TableLayoutPanel();
             this.myShapePanel = new Stepi.UI.ExtendedPanel();
             this.myShapeFlowLayout = new System.Windows.Forms.FlowLayoutPanel();
-            this.panel4 = new System.Windows.Forms.Panel();
-            this.panel5 = new System.Windows.Forms.Panel();
-            this.panel7 = new System.Windows.Forms.Panel();
             this.contextMenuStrip = new System.Windows.Forms.ContextMenuStrip(this.components);
             this.removeShapeToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.editNameToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.testztextBox = new System.Windows.Forms.TextBox();
             this.motherTableLayoutPanel.SuspendLayout();
             this.myShapePanel.SuspendLayout();
             this.contextMenuStrip.SuspendLayout();
@@ -105,30 +103,6 @@ namespace PowerPointLabs
             this.myShapeFlowLayout.Size = new System.Drawing.Size(377, 58);
             this.myShapeFlowLayout.TabIndex = 1;
             // 
-            // panel4
-            // 
-            this.panel4.BackgroundImage = global::PowerPointLabs.Properties.Resources.Pause;
-            this.panel4.Location = new System.Drawing.Point(3, 3);
-            this.panel4.Name = "panel4";
-            this.panel4.Size = new System.Drawing.Size(32, 32);
-            this.panel4.TabIndex = 3;
-            // 
-            // panel5
-            // 
-            this.panel5.BackgroundImage = global::PowerPointLabs.Properties.Resources.Record;
-            this.panel5.Location = new System.Drawing.Point(41, 3);
-            this.panel5.Name = "panel5";
-            this.panel5.Size = new System.Drawing.Size(32, 32);
-            this.panel5.TabIndex = 4;
-            // 
-            // panel7
-            // 
-            this.panel7.BackgroundImage = global::PowerPointLabs.Properties.Resources.Stop;
-            this.panel7.Location = new System.Drawing.Point(79, 3);
-            this.panel7.Name = "panel7";
-            this.panel7.Size = new System.Drawing.Size(32, 32);
-            this.panel7.TabIndex = 5;
-            // 
             // contextMenuStrip
             // 
             this.contextMenuStrip.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
@@ -150,13 +124,22 @@ namespace PowerPointLabs
             this.editNameToolStripMenuItem.Size = new System.Drawing.Size(163, 22);
             this.editNameToolStripMenuItem.Text = "Edit Name";
             // 
+            // testztextBox
+            // 
+            this.testztextBox.Location = new System.Drawing.Point(116, 199);
+            this.testztextBox.Name = "testztextBox";
+            this.testztextBox.Size = new System.Drawing.Size(100, 21);
+            this.testztextBox.TabIndex = 1;
+            // 
             // CustomShapePane
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+            this.Controls.Add(this.testztextBox);
             this.Controls.Add(this.motherTableLayoutPanel);
             this.Name = "CustomShapePane";
             this.Size = new System.Drawing.Size(390, 459);
+            this.Click += new System.EventHandler(this.CustomShapePaneClick);
             this.motherTableLayoutPanel.ResumeLayout(false);
             this.motherTableLayoutPanel.PerformLayout();
             this.myShapePanel.ResumeLayout(false);
@@ -170,13 +153,11 @@ namespace PowerPointLabs
 
         private System.Windows.Forms.TableLayoutPanel motherTableLayoutPanel;
         private ExtendedPanel myShapePanel;
-        private System.Windows.Forms.Panel panel4;
-        private System.Windows.Forms.Panel panel5;
-        private System.Windows.Forms.Panel panel7;
         private System.Windows.Forms.FlowLayoutPanel myShapeFlowLayout;
         private System.Windows.Forms.ContextMenuStrip contextMenuStrip;
         private System.Windows.Forms.ToolStripMenuItem removeShapeToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem editNameToolStripMenuItem;
+        private System.Windows.Forms.TextBox testztextBox;
 
     }
 }

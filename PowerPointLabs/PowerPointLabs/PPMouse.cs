@@ -26,8 +26,6 @@ namespace PPExtraEventHelper
 
         private static double startTimeInMillisecond = CurrentMillisecond();
 
-        private static Native.Point _mousePoint;
-
         public static void Init(PowerPoint.Application application)
         {
             if (!isInit)
@@ -84,8 +82,8 @@ namespace PPExtraEventHelper
                 if (wParam.ToInt32() == (int)Native.Message.WM_LBUTTONDOWN ||
                     wParam.ToInt32() == (int)Native.Message.WM_LBUTTONUP)
                 {
-                    _mousePoint = Native.GetPoint(lParam);
-                    var mousePos = new Point(_mousePoint.x, _mousePoint.y);
+                    var mousePoint = Native.GetPoint(lParam);
+                    var mousePos = new Point(mousePoint.x, mousePoint.y);
 
                     if (Click != null)
                     {

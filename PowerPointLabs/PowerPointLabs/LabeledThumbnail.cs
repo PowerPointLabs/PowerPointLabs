@@ -16,8 +16,15 @@ namespace PowerPointLabs
         private string _imageSourcePath;
         private string _firstNameAssigned = string.Empty;
 
+        public enum Status
+        {
+            Idle,
+            Editing
+        }
+
         # region Properties
         private const string InvalidCharacterError = @"'\' and '.' are not allowed in the name";
+
         public string NameLable
         {
             get { return labelTextBox.Text; }
@@ -62,6 +69,8 @@ namespace PowerPointLabs
                 ImageToThumbnail = new Bitmap(value);
             }
         }
+
+        public Status State { get; private set; }
         # endregion
 
         # region Constructors
@@ -75,17 +84,61 @@ namespace PowerPointLabs
             Initialize();
 
             NameLable = nameLable;
-
-            var image = new Bitmap(imagePath);
-            ImageToThumbnail = CreateThumbnailImage(image, 50, 50);
+            ImagePath = imagePath;
         }
         # endregion
 
         # region API
+        public void DeHighlight()
+        {
+            motherPanel.BackColor = Color.FromKnownColor(KnownColor.Window);
+            thumbnailPanel.BackColor = Color.FromKnownColor(KnownColor.Transparent);
+
+            // if the name provided to the shape is not valid, and user de-focus the
+            // current labled thumbnail, we shoud give the old name to the shape.
+            if (State == Status.Editing && !Verify(NameLable))
+            {
+                NameLable = _firstNameAssigned;
+            }
+
+            // dehighlight will hard-disable the text box editing
+            labelTextBox.Enabled = false;
+            State = Status.Idle;
+        }
+
+        public void Highlight()
+        {
+            motherPanel.BackColor = Color.FromKnownColor(KnownColor.Highlight);
+            thumbnailPanel.BackColor = Color.FromKnownColor(KnownColor.Highlight);
+        }
+
         public void StartNameEdit()
         {
+            State = Status.Editing;
+            
+            Highlight();
             labelTextBox.Enabled = true;
-            PPMouse.StartRegionClickHook();
+            labelTextBox.Focus();
+            labelTextBox.SelectAll();
+        }
+
+        public void FinishNameEdit()
+        {
+            NameLable = labelTextBox.Text;
+
+            if (_isGoodName)
+            {
+                State = Status.Idle;
+
+                DeHighlight();
+                RenameSource();
+                labelTextBox.Enabled = false;
+                NameChangedNotify();
+            }
+            else
+            {
+                StartNameEdit();
+            }
         }
 
         public void ToggleHighlight()
@@ -152,32 +205,23 @@ namespace PowerPointLabs
             return thumbnail;
         }
 
-        private void DeHighlight()
-        {
-            labelTextBox.BackColor = Color.FromKnownColor(KnownColor.Window);
-            thumbnailPanel.BackColor = Color.FromKnownColor(KnownColor.Transparent);
-
-            // if the name provided to the shape is not valid, and user de-focus the
-            // current labled thumbnail, we shoud give the old name to the shape.
-            if (!Verify(NameLable))
-            {
-                NameLable = _firstNameAssigned;
-            }
-        }
-
-        private void Highlight()
-        {
-            labelTextBox.BackColor = Color.FromKnownColor(KnownColor.Highlight);
-            thumbnailPanel.BackColor = Color.FromKnownColor(KnownColor.Highlight);
-        }
-
         private void Initialize()
         {
             InitializeComponent();
 
-            PPMouse.Click += OnClickWhileEditing;
+            motherPanel.Click += (sender, e) => Click(this, e);
+            motherPanel.DoubleClick += (sender, e) => DoubleClick(this, e);
+            
+            foreach (Control control in motherPanel.Controls)
+            {
+                control.Click += (sender, e) => Click(this, e);
+                control.DoubleClick += (sender, e) => Click(this, e);
+            }
+
+            labelTextBox.LostFocus += NameLableLostFocus;
 
             // let user specify the shape name
+            State = Status.Editing;
             labelTextBox.Enabled = true;
             labelTextBox.SelectAll();
         }
@@ -196,6 +240,11 @@ namespace PowerPointLabs
 
             if (oldName != null)
             {
+                if (oldName == NameLable)
+                {
+                    return;
+                }
+                
                 var newPath = ImagePath.Replace(oldName, NameLable);
 
                 // rename the file on disk
@@ -215,24 +264,20 @@ namespace PowerPointLabs
         # endregion
 
         # region Event Handlers
-        private void OnClickWhileEditing(Point mousePosition)
+        public delegate void ClickEventDelegate(object sender, EventArgs e);
+
+        public delegate void DoubleClickEventDelegate(object sender, EventArgs e);
+
+        public delegate void NameChangedNotifyEventDelegate();
+
+        public new event ClickEventDelegate Click;
+        public new event DoubleClickEventDelegate DoubleClick;
+
+        public event NameChangedNotifyEventDelegate NameChangedNotify;
+
+        private void NameLableLostFocus(object sender, EventArgs args)
         {
-            var editingArea = labelTextBox.RectangleToScreen(labelTextBox.DisplayRectangle);
-
-            // click outside the editing text box -> finish editing
-            if (!PointInRectangle(mousePosition, editingArea))
-            {
-                NameLable = labelTextBox.Text;
-                
-                // if the name is accepted, end editing session and rename the file
-                if (_isGoodName)
-                {
-                    PPMouse.StopRegionHook();
-                    labelTextBox.Enabled = false;
-
-                    RenameSource();
-                }
-            }
+            FinishNameEdit();
         }
         # endregion
     }
