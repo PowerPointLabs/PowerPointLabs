@@ -47,7 +47,7 @@ namespace PowerPointLabs
         // To reset Saturation on brightness change
         private float _initialSaturation;
 
-        // Stores last selected mode
+        // Stores last selected mode (for coloring shapes while not eyedropping)
         private MODE prevMode = MODE.NONE;
         
         public ColorPane()
