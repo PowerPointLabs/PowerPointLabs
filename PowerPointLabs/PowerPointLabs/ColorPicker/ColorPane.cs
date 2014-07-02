@@ -47,9 +47,12 @@ namespace PowerPointLabs
         // To reset Saturation on brightness change
         private float _initialSaturation;
 
-        // Stores last selected mode (for coloring shapes while not eyedropping)
+        // Stores last selected mode
         private MODE prevMode = MODE.NONE;
         
+        // Stores the current selected mode
+        private MODE currMode = MODE.NONE;
+
         public ColorPane()
         {
             InitializeComponent();
@@ -93,13 +96,10 @@ namespace PowerPointLabs
                     dataSource.isFillColorSelected = true;
                     break;
                 default:
+                    currMode = MODE.NONE;
                     break;
             }
-
-            if (mode != MODE.NONE)
-            {
-                prevMode = mode;
-            }
+            UpdateCurrMode();
         }
 
         private void ResetEyeDropperSelectionInDataSource()
@@ -398,7 +398,7 @@ namespace PowerPointLabs
                         var b = selectedColor.B;
 
                         var rgb = (b << 16) | (g << 8) | (r);
-                        ColorShapeWithColor(s, rgb, prevMode);
+                        ColorShapeWithColor(s, rgb, currMode);
                     }
                     catch (Exception e)
                     {
@@ -464,19 +464,24 @@ namespace PowerPointLabs
         }
         #endregion
 
-        private void UpdatePrevMode()
+        private void UpdateCurrMode()
         {
+            if (currMode != MODE.NONE)
+            {
+                prevMode = currMode;
+            }
+
             if (dataSource.isFillColorSelected)
             {
-                prevMode = MODE.FILL;
+                currMode = MODE.FILL;
             }
             else if (dataSource.isFontColorSelected)
             {
-                prevMode = MODE.FONT;
+                currMode = MODE.FONT;
             }
             else if (dataSource.isLineColorSelected)
             {
-                prevMode = MODE.LINE;
+                currMode = MODE.LINE;
             }
         }
 
@@ -913,8 +918,15 @@ namespace PowerPointLabs
 
         private void EyeDropButton_MouseClick(object sender, MouseEventArgs e)
         {
-            string buttonName = ((Button)sender).Name;
-
+            string buttonName = "";
+            if (sender is Button)
+            {
+                buttonName = ((Button)sender).Name;
+            }
+            else if (sender is Panel)
+            {
+                buttonName = ((Panel)sender).Name;
+            }
             SetModeForSenderName(buttonName);
 
             colorDialog1.Color = dataSource.selectedColor;
@@ -922,7 +934,10 @@ namespace PowerPointLabs
             DialogResult result = colorDialog1.ShowDialog();
             if (result == DialogResult.OK)
             {
-                SetDefaultColor(colorDialog1.Color);
+                if (!buttonName.Equals("panel1"))
+                {
+                    SetDefaultColor(colorDialog1.Color);
+                }
                 ResetEyeDropperSelectionInDataSource();
             }
             else if (result == DialogResult.Cancel)
@@ -952,7 +967,15 @@ namespace PowerPointLabs
 
         private void EyeDropButton_MouseDown(object sender, MouseEventArgs e)
         {
-            string buttonName = ((Button)sender).Name;
+            string buttonName = "";
+            if (sender is Button)
+            {
+                buttonName = ((Button)sender).Name;
+            } 
+            else if (sender is Panel)
+            {
+                buttonName = ((Panel)sender).Name;
+            }
             SetModeForSenderName(buttonName);
             BeginEyedropping();
         }

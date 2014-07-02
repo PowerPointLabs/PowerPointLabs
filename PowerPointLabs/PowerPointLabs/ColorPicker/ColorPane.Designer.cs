@@ -134,6 +134,8 @@
             this.panel1.TabIndex = 0;
             this.panel1.DragDrop += new System.Windows.Forms.DragEventHandler(this.panel_DragDrop);
             this.panel1.DragEnter += new System.Windows.Forms.DragEventHandler(this.panel_DragEnter);
+            this.panel1.MouseClick += new System.Windows.Forms.MouseEventHandler(this.EyeDropButton_MouseClick);
+            this.panel1.MouseDown += new System.Windows.Forms.MouseEventHandler(this.EyeDropButton_MouseDown);
             // 
             // timer1
             // 
