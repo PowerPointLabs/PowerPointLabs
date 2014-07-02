@@ -934,10 +934,8 @@ namespace PowerPointLabs
             DialogResult result = colorDialog1.ShowDialog();
             if (result == DialogResult.OK)
             {
-                if (!buttonName.Equals("panel1"))
-                {
-                    SetDefaultColor(colorDialog1.Color);
-                }
+                SetDefaultColor(colorDialog1.Color);
+                
                 ResetEyeDropperSelectionInDataSource();
             }
             else if (result == DialogResult.Cancel)
