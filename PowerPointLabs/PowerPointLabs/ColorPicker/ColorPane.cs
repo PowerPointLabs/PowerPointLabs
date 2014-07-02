@@ -46,6 +46,9 @@ namespace PowerPointLabs
 
         // To reset Saturation on brightness change
         private float _initialSaturation;
+
+        // Stores last selected mode
+        private MODE prevMode = MODE.NONE;
         
         public ColorPane()
         {
@@ -91,6 +94,11 @@ namespace PowerPointLabs
                     break;
                 default:
                     break;
+            }
+
+            if (mode != MODE.NONE)
+            {
+                prevMode = mode;
             }
         }
 
@@ -349,20 +357,10 @@ namespace PowerPointLabs
         private void BeginEyedropping()
         {
             timer1.Start();
-
             _native = new LMouseUpListener();
             _native.LButtonUpClicked +=
                  new EventHandler<SysMouseEventInfo>(_native_LButtonClicked);
             SelectShapes();
-        }
-
-        private void button2_Click(object sender, EventArgs e)
-        {
-            colorDialog1.Color = panel1.BackColor;
-            if (colorDialog1.ShowDialog() == DialogResult.OK)
-            {
-                SetDefaultColor(colorDialog1.Color);
-            }
         }
 
         private void timer1_Tick(object sender, EventArgs e)
@@ -400,7 +398,7 @@ namespace PowerPointLabs
                         var b = selectedColor.B;
 
                         var rgb = (b << 16) | (g << 8) | (r);
-                        ColorShapeWithColor(s, rgb);
+                        ColorShapeWithColor(s, rgb, prevMode);
                     }
                     catch (Exception e)
                     {
@@ -427,31 +425,31 @@ namespace PowerPointLabs
             s.Delete();
         }
 
-        private void ColorShapeWithColor(PowerPoint.Shape s, int rgb)
+        private void ColorShapeWithColor(PowerPoint.Shape s, int rgb, MODE mode)
         {
-            if (dataSource.isFillColorSelected)
+            switch (mode)
             {
-                s.Fill.ForeColor.RGB = rgb;
-            }
-            if (dataSource.isLineColorSelected)
-            {
-                s.Line.ForeColor.RGB = rgb;
-            }
-            if (dataSource.isFontColorSelected)
-            {
-                if (s.HasTextFrame == Microsoft.Office.Core.MsoTriState.msoTrue)
-                {
-                    if (Globals.ThisAddIn.Application.ActiveWindow.Selection.ShapeRange.HasTextFrame 
-                        == Microsoft.Office.Core.MsoTriState.msoTrue)
+                case MODE.FILL:
+                    s.Fill.ForeColor.RGB = rgb;
+                    break;
+                case MODE.LINE:
+                    s.Line.ForeColor.RGB = rgb;
+                    break;
+                case MODE.FONT:
+                    if (s.HasTextFrame == Microsoft.Office.Core.MsoTriState.msoTrue)
                     {
-                        TextRange selectedText 
-                            = Globals.ThisAddIn.Application.ActiveWindow.Selection.TextRange.TrimText();
-                        if (selectedText.Text != "" && selectedText != null)
+                        if (Globals.ThisAddIn.Application.ActiveWindow.Selection.ShapeRange.HasTextFrame
+                            == Microsoft.Office.Core.MsoTriState.msoTrue)
                         {
-                            selectedText.Font.Color.RGB = rgb;
+                            TextRange selectedText
+                                = Globals.ThisAddIn.Application.ActiveWindow.Selection.TextRange.TrimText();
+                            if (selectedText.Text != "" && selectedText != null)
+                            {
+                                selectedText.Font.Color.RGB = rgb;
+                            }
                         }
                     }
-                }
+                    break;
             }
         }
 
@@ -465,6 +463,22 @@ namespace PowerPointLabs
             ResetEyeDropperSelectionInDataSource();
         }
         #endregion
+
+        private void UpdatePrevMode()
+        {
+            if (dataSource.isFillColorSelected)
+            {
+                prevMode = MODE.FILL;
+            }
+            else if (dataSource.isFontColorSelected)
+            {
+                prevMode = MODE.FONT;
+            }
+            else if (dataSource.isLineColorSelected)
+            {
+                prevMode = MODE.LINE;
+            }
+        }
 
         private void UpdateUIForNewColor()
         {
@@ -904,10 +918,15 @@ namespace PowerPointLabs
             SetModeForSenderName(buttonName);
 
             colorDialog1.Color = dataSource.selectedColor;
-            
-            if (colorDialog1.ShowDialog() == DialogResult.OK)
+
+            DialogResult result = colorDialog1.ShowDialog();
+            if (result == DialogResult.OK)
             {
                 SetDefaultColor(colorDialog1.Color);
+                ResetEyeDropperSelectionInDataSource();
+            }
+            else if (result == DialogResult.Cancel)
+            {
                 ResetEyeDropperSelectionInDataSource();
             }
         }
