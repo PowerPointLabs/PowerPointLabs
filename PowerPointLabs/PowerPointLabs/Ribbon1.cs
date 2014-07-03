@@ -217,7 +217,7 @@ namespace PowerPointLabs
         }
         public void AboutButtonClick(Office.IRibbonControl control)
         {
-            MessageBox.Show("          PowerPointLabs Plugin Version 1.8 [Release date: 23 Jun 2014]\n     Developed at School of Computing, National University of Singapore.\n        For more information, visit our website http://PowerPointLabs.info", "About PowerPointLabs");
+            MessageBox.Show("          PowerPointLabs Plugin Version 1.8.1 [Release date: 3 Jul 2014]\n     Developed at School of Computing, National University of Singapore.\n        For more information, visit our website http://PowerPointLabs.info", "About PowerPointLabs");
         }
         public void HelpButtonClick(Office.IRibbonControl control)
         {
@@ -867,6 +867,8 @@ namespace PowerPointLabs
             {
                 return;
             }
+
+            Globals.ThisAddIn.SetupRecorderTaskPane(Globals.ThisAddIn.Application.ActiveWindow);
 
             var recorder = Globals.ThisAddIn.ActivateCustomTaskPane.Control as RecorderTaskPane;
             // TODO:

@@ -106,7 +106,7 @@ namespace PowerPointLabs
             Trace.Listeners.Add(new TextWriterTraceListener(fileName));
         }
 
-        void SetupRecorderTaskPane(PowerPoint.DocumentWindow wnd)
+        public void SetupRecorderTaskPane(PowerPoint.DocumentWindow wnd)
         {
             try
             {
@@ -308,7 +308,7 @@ namespace PowerPointLabs
                 Directory.CreateDirectory(tempFolderPath);
 
                 // setup a new recorder pane when an exist file opened
-                SetupRecorderTaskPane(Pres.Application.ActiveWindow);
+                //SetupRecorderTaskPane(Pres.Application.ActiveWindow);
             }
             catch (Exception e)
             {
@@ -340,7 +340,7 @@ namespace PowerPointLabs
                 _oldVersion = false;
 
                 // setup a new recorder pane when an exist file opened
-                SetupRecorderTaskPane(Pres.Application.ActiveWindow);
+                //SetupRecorderTaskPane(Pres.Application.ActiveWindow);
             }
             catch (Exception e)
             {
@@ -539,6 +539,7 @@ namespace PowerPointLabs
                 try
                 {
                     File.Copy(presFullName, zipFullPath);
+                    File.SetAttributes(zipFullPath, FileAttributes.Normal);
                 }
                 catch (Exception e)
                 {
@@ -570,6 +571,7 @@ namespace PowerPointLabs
                     }
 
                     zip.Close();
+                    File.SetAttributes(zipFullPath, FileAttributes.Normal);
                     File.Delete(zipFullPath);
                 }
                 catch (Exception e)
