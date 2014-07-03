@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Drawing;
 using System.Drawing.Drawing2D;
 using System.IO;
@@ -17,7 +18,7 @@ namespace PowerPointLabs
         
         private LabeledThumbnail _selectedThumbnail;
 
-        private int _currentUntitledShapeCnt = 0;
+        private int _currentUntitledShapeCnt = -1;
         private bool _firstTimeLoading = true;
 
         # region Properties
@@ -43,12 +44,6 @@ namespace PowerPointLabs
         {
             InitializeComponent();
 
-            //testztextBox.LostFocus += (sender, e) =>
-            //                              {
-            //                                  MessageBox.Show("focus lost");
-            //                                  testztextBox.Focus();
-            //                              };
-
             ShowNoShapeMessage();
             //myShapeFlowLayout.AutoSize = true;
             myShapeFlowLayout.Click += FlowlayoutClick;
@@ -59,7 +54,7 @@ namespace PowerPointLabs
         # endregion
 
         # region API
-        public void AddCustomShape()
+        public void AddCustomShape(bool immediateEditing)
         {
             // remove no_shape banner if we have one
             if (myShapeFlowLayout.Controls.Contains(_noShapePanel))
@@ -85,7 +80,10 @@ namespace PowerPointLabs
 
             _selectedThumbnail = labeledThumbnail;
 
-            labeledThumbnail.StartNameEdit();
+            if (immediateEditing)
+            {
+                labeledThumbnail.StartNameEdit();
+            }
         }
 
         public void PaneReload()
@@ -103,7 +101,7 @@ namespace PowerPointLabs
         # region Helper Functions
         private const string WmfFileNameInvalid = @"Invalid shape name encountered";
         private const string NoShapeText = @"No shapes available";
-        private const string UntitleShapeRecognizeRegex = "My Shape Untitled (\\d+)";
+        private const string UntitleShapeRecognizeRegex = @"My Shape Untitled (\d+)";
 
         private readonly Label _noShapeLabel = new Label
                                                    {
@@ -133,7 +131,7 @@ namespace PowerPointLabs
                 return;
             }
 
-            File.Delete(_selectedThumbnail.Name);
+            File.Delete(_selectedThumbnail.NameLable);
             myShapeFlowLayout.Controls.Remove(_selectedThumbnail);
             _selectedThumbnail = null;
 
@@ -152,6 +150,11 @@ namespace PowerPointLabs
             }
 
             _selectedThumbnail.StartNameEdit();
+        }
+
+        private bool IsLastUntitledShape(LabeledThumbnail labeledThumbnail)
+        {
+            return labeledThumbnail.NameLable == string.Format(DefaultShapeNameFormat, _currentUntitledShapeCnt);
         }
 
         private void PrepareFolder()
@@ -182,15 +185,17 @@ namespace PowerPointLabs
                 if (untitleShapeRecognize.IsMatch(shapeName))
                 {
                     var match = untitleShapeRecognize.Match(shapeName);
-                    var untitleShapeId = int.Parse(match.Groups[0].Value);
+                    var untitleShapeId = int.Parse(match.Groups[1].Value);
 
                     _currentUntitledShapeCnt = Math.Max(untitleShapeId, _currentUntitledShapeCnt);
                 }
 
-                AddCustomShape();
+                AddCustomShape(false);
             }
+
+            _currentUntitledShapeCnt++;
         }
-            
+        
         private void ShowNoShapeMessage()
         {
             if (_noShapePanel.Controls.Count == 0)
@@ -221,7 +226,6 @@ namespace PowerPointLabs
             } else
             if (item.Name.Contains("edit"))
             {
-                _selectedThumbnail = sender as LabeledThumbnail;
                 ContextMenuStripEditClicked();
             }
         }
@@ -297,13 +301,33 @@ namespace PowerPointLabs
             }
         }
 
-        private void NameChangedNotifyHandler(object sender)
+        private void NameChangedNotifyHandler(object sender, bool nameChanged)
         {
-            _currentUntitledShapeCnt++;
-
             var labeledThumbnail = sender as LabeledThumbnail;
 
-            if (labeledThumbnail == null) return;
+            // by right, name change only happens when the labeled thumbnail is selected.
+            // Therfore, if the notifier doesn't come from the selected object, something
+            // goes wrong.
+            if (labeledThumbnail == null ||
+                labeledThumbnail != _selectedThumbnail) return;
+
+            // to get the next untitled shape counter, we have several cases to discuss:
+            // 1. Current shape == LastUntitledShape, NameChanged == true:
+            // In this case, the next untitled shape should use the current counter's number
+            // 2. Current shape == LastUntitledShape, NameChanged == false:
+            // In this case, we should increase the current counter by 1.
+            // 3. Current shape != LastUntitledShape:
+            // Don't care.
+            //
+            // It will be fine if we edit the same shape twice while keeping the name unchanged.
+            // This is because the counter will be increased at the first time we edit the shape,
+            // thus the current shape will not be the last untitled shape anymore from second
+            // time onwards.
+            if (!nameChanged &&
+                IsLastUntitledShape(labeledThumbnail))
+            {
+                _currentUntitledShapeCnt++;
+            }
 
             labeledThumbnail.DeHighlight();
             _selectedThumbnail = null;

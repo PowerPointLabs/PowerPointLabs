@@ -38,7 +38,6 @@ namespace PowerPointLabs
             this.contextMenuStrip = new System.Windows.Forms.ContextMenuStrip(this.components);
             this.removeShapeToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.editNameToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.testztextBox = new System.Windows.Forms.TextBox();
             this.motherTableLayoutPanel.SuspendLayout();
             this.myShapePanel.SuspendLayout();
             this.contextMenuStrip.SuspendLayout();
@@ -124,18 +123,10 @@ namespace PowerPointLabs
             this.editNameToolStripMenuItem.Size = new System.Drawing.Size(163, 22);
             this.editNameToolStripMenuItem.Text = "Edit Name";
             // 
-            // testztextBox
-            // 
-            this.testztextBox.Location = new System.Drawing.Point(116, 199);
-            this.testztextBox.Name = "testztextBox";
-            this.testztextBox.Size = new System.Drawing.Size(100, 21);
-            this.testztextBox.TabIndex = 1;
-            // 
             // CustomShapePane
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.Controls.Add(this.testztextBox);
             this.Controls.Add(this.motherTableLayoutPanel);
             this.Name = "CustomShapePane";
             this.Size = new System.Drawing.Size(390, 459);
@@ -157,7 +148,6 @@ namespace PowerPointLabs
         private System.Windows.Forms.ContextMenuStrip contextMenuStrip;
         private System.Windows.Forms.ToolStripMenuItem removeShapeToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem editNameToolStripMenuItem;
-        private System.Windows.Forms.TextBox testztextBox;
 
     }
 }

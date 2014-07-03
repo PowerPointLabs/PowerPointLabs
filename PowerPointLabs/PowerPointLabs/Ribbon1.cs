@@ -921,7 +921,7 @@ namespace PowerPointLabs
 
             customShape.PaneReload();
             ConvertToPicture.ConvertAndSave(selection, customShape.CurrentShapeFullName);
-            customShape.AddCustomShape();
+            customShape.AddCustomShape(true);
         }
         # endregion
 

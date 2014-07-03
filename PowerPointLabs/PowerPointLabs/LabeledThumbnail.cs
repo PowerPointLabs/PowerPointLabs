@@ -112,13 +112,15 @@ namespace PowerPointLabs
         {
             NameLable = labelTextBox.Text;
 
-            if (_isGoodName)
+            bool sameName;
+
+            if (_isGoodName &&
+                RenameSource(out sameName))
             {
                 State = Status.Idle;
 
-                RenameSource();
                 labelTextBox.Enabled = false;
-                NameChangedNotify(this);
+                NameChangedNotify(this, sameName);
             }
             else
             {
@@ -145,6 +147,7 @@ namespace PowerPointLabs
         // for names, we do not allow names involve '\' or '.'
         // Regex = [\\\.]
         private const string InvalidCharsRegex = "[\\\\\\.]";
+        private const string FileNameExistError = "File name is already used";
 
         private double CalculateScalingRatio(Size oldSize, Size newSize)
         {
@@ -212,25 +215,34 @@ namespace PowerPointLabs
             labelTextBox.SelectAll();
         }
 
-        private void RenameSource()
+        private bool RenameSource(out bool sameName)
         {
             var oldName = Path.GetFileNameWithoutExtension(ImagePath);
+            sameName = false;
 
             if (oldName != null)
             {
+                // name doesn't change
                 if (oldName == NameLable)
                 {
-                    return;
+                    sameName = true;
+                    return true;
                 }
                 
                 var newPath = ImagePath.Replace(oldName, NameLable);
 
+                if (File.Exists(newPath))
+                {
+                    MessageBox.Show(FileNameExistError);
+                    return false;
+                }
+
                 // rename the file on disk
                 File.Move(ImagePath, newPath);
-
-                // edit the image path on memory
                 ImagePath = newPath;
             }
+
+            return true;
         }
 
         private bool Verify(string name)
@@ -246,7 +258,7 @@ namespace PowerPointLabs
 
         public delegate void DoubleClickEventDelegate(object sender, EventArgs e);
 
-        public delegate void NameChangedNotifyEventDelegate(object sender);
+        public delegate void NameChangedNotifyEventDelegate(object sender, bool nameChanged);
 
         public new event ClickEventDelegate Click;
         public new event DoubleClickEventDelegate DoubleClick;
