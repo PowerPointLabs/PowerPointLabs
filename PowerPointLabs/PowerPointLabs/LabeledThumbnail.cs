@@ -120,7 +120,7 @@ namespace PowerPointLabs
                 State = Status.Idle;
 
                 labelTextBox.Enabled = false;
-                NameChangedNotify(this, sameName);
+                NameChangedNotify(this, !sameName);
             }
             else
             {
@@ -206,8 +206,9 @@ namespace PowerPointLabs
                 control.DoubleClick += (sender, e) => DoubleClick(this, e);
             }
 
-            labelTextBox.LostFocus += NameLableLostFocus;
+            labelTextBox.EnabledChanged += EnableChangedHandler;
             labelTextBox.KeyPress += EnterKeyWhileEditing;
+            labelTextBox.LostFocus += NameLableLostFocus;
 
             // let user specify the shape name
             State = Status.Editing;
@@ -263,6 +264,14 @@ namespace PowerPointLabs
         public new event ClickEventDelegate Click;
         public new event DoubleClickEventDelegate DoubleClick;
         public event NameChangedNotifyEventDelegate NameChangedNotify;
+
+        private void EnableChangedHandler(object sender, EventArgs e)
+        {
+            if (labelTextBox.Enabled == false)
+            {
+                labelTextBox.BackColor = Color.FromKnownColor(KnownColor.Window);
+            }
+        }
 
         private void EnterKeyWhileEditing(object sender, KeyPressEventArgs e)
         {

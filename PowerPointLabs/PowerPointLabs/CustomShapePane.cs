@@ -14,14 +14,51 @@ namespace PowerPointLabs
     public partial class CustomShapePane : UserControl
     {
         private const string DefaultShapeNameFormat = @"My Shape Untitled {0}";
+        private const string DefaultShapeNameSearchRegex = @"My Shape Untitled (\d+)";
         private const string DefaultShapeFolderName = @"\PowerPointLabs Custom Shapes\My Shapes";
         
         private LabeledThumbnail _selectedThumbnail;
 
-        private int _currentUntitledShapeCnt = -1;
         private bool _firstTimeLoading = true;
 
         # region Properties
+        public string NextDefaultFullName
+        {
+            get { return ShapeFolderPath + @"\" +
+                         NextDefaultNameWithoutExtension + ".wmf"; }
+        }
+
+        public string NextDefaultNameWithoutExtension
+        {
+            get
+            {
+                var temp = 0;
+                var min = myShapeFlowLayout.Controls.Count;
+                var match = new Regex(DefaultShapeNameSearchRegex);
+
+                foreach (Control control in myShapeFlowLayout.Controls)
+                {
+                    if (!(control is LabeledThumbnail)) continue;
+
+                    var labeledThumbnail = control as LabeledThumbnail;
+
+                    if (match.IsMatch(labeledThumbnail.NameLable))
+                    {
+                        var currentCnt = int.Parse(match.Match(labeledThumbnail.NameLable).Groups[1].Value);
+
+                        if (currentCnt - temp != 1)
+                        {
+                            min = Math.Min(min, temp);
+                        }
+                        
+                        temp = currentCnt;
+                    }
+                }
+
+                return string.Format(DefaultShapeNameFormat, min + 1);
+            }
+        }
+
         public string CurrentShapeFullName
         {
             get { return ShapeFolderPath + @"\" +
@@ -30,7 +67,15 @@ namespace PowerPointLabs
 
         public string CurrentShapeNameWithoutExtension
         {
-            get { return string.Format(DefaultShapeNameFormat, _currentUntitledShapeCnt); }
+            get
+            {
+                if (_selectedThumbnail == null)
+                {
+                    return null;
+                }
+
+                return _selectedThumbnail.NameLable;
+            }
         }
 
         public string ShapeFolderPath
@@ -54,7 +99,7 @@ namespace PowerPointLabs
         # endregion
 
         # region API
-        public void AddCustomShape(bool immediateEditing)
+        public void AddCustomShape(string shapeName, string shapeFullName, bool immediateEditing)
         {
             // remove no_shape banner if we have one
             if (myShapeFlowLayout.Controls.Contains(_noShapePanel))
@@ -68,7 +113,7 @@ namespace PowerPointLabs
                 _selectedThumbnail.DeHighlight();
             }
 
-            var labeledThumbnail = new LabeledThumbnail(CurrentShapeFullName, CurrentShapeNameWithoutExtension);
+            var labeledThumbnail = new LabeledThumbnail(shapeFullName, shapeName);
 
             labeledThumbnail.ContextMenuStrip = contextMenuStrip;
             labeledThumbnail.Click += LabeledThumbnailClick;
@@ -101,7 +146,6 @@ namespace PowerPointLabs
         # region Helper Functions
         private const string WmfFileNameInvalid = @"Invalid shape name encountered";
         private const string NoShapeText = @"No shapes available";
-        private const string UntitleShapeRecognizeRegex = @"My Shape Untitled (\d+)";
 
         private readonly Label _noShapeLabel = new Label
                                                    {
@@ -131,7 +175,7 @@ namespace PowerPointLabs
                 return;
             }
 
-            File.Delete(_selectedThumbnail.NameLable);
+            File.Delete(CurrentShapeFullName);
             myShapeFlowLayout.Controls.Remove(_selectedThumbnail);
             _selectedThumbnail = null;
 
@@ -152,11 +196,6 @@ namespace PowerPointLabs
             _selectedThumbnail.StartNameEdit();
         }
 
-        private bool IsLastUntitledShape(LabeledThumbnail labeledThumbnail)
-        {
-            return labeledThumbnail.NameLable == string.Format(DefaultShapeNameFormat, _currentUntitledShapeCnt);
-        }
-
         private void PrepareFolder()
         {
             if (!Directory.Exists(ShapeFolderPath))
@@ -170,7 +209,6 @@ namespace PowerPointLabs
             PrepareFolder();
 
             var wmfFiles = Directory.EnumerateFiles(ShapeFolderPath, "*.wmf");
-            var untitleShapeRecognize = new Regex(UntitleShapeRecognizeRegex);
 
             foreach (var wmfFile in wmfFiles)
             {
@@ -182,18 +220,8 @@ namespace PowerPointLabs
                     continue;
                 }
 
-                if (untitleShapeRecognize.IsMatch(shapeName))
-                {
-                    var match = untitleShapeRecognize.Match(shapeName);
-                    var untitleShapeId = int.Parse(match.Groups[1].Value);
-
-                    _currentUntitledShapeCnt = Math.Max(untitleShapeId, _currentUntitledShapeCnt);
-                }
-
-                AddCustomShape(false);
+                AddCustomShape(shapeName, wmfFile, false);
             }
-
-            _currentUntitledShapeCnt++;
         }
         
         private void ShowNoShapeMessage()
@@ -310,24 +338,6 @@ namespace PowerPointLabs
             // goes wrong.
             if (labeledThumbnail == null ||
                 labeledThumbnail != _selectedThumbnail) return;
-
-            // to get the next untitled shape counter, we have several cases to discuss:
-            // 1. Current shape == LastUntitledShape, NameChanged == true:
-            // In this case, the next untitled shape should use the current counter's number
-            // 2. Current shape == LastUntitledShape, NameChanged == false:
-            // In this case, we should increase the current counter by 1.
-            // 3. Current shape != LastUntitledShape:
-            // Don't care.
-            //
-            // It will be fine if we edit the same shape twice while keeping the name unchanged.
-            // This is because the counter will be increased at the first time we edit the shape,
-            // thus the current shape will not be the last untitled shape anymore from second
-            // time onwards.
-            if (!nameChanged &&
-                IsLastUntitledShape(labeledThumbnail))
-            {
-                _currentUntitledShapeCnt++;
-            }
 
             labeledThumbnail.DeHighlight();
             _selectedThumbnail = null;

@@ -917,11 +917,18 @@ namespace PowerPointLabs
                 return;
             }
 
+            // show pane if not visible
+            if (!customShapePane.Visible)
+            {
+                customShapePane.Visible = true;
+            }
+
             var customShape = customShapePane.Control as CustomShapePane;
 
             customShape.PaneReload();
-            ConvertToPicture.ConvertAndSave(selection, customShape.CurrentShapeFullName);
-            customShape.AddCustomShape(true);
+            ConvertToPicture.ConvertAndSave(selection, customShape.NextDefaultFullName);
+            customShape.AddCustomShape(customShape.NextDefaultNameWithoutExtension, customShape.NextDefaultFullName,
+                                       true);
         }
         # endregion
 
