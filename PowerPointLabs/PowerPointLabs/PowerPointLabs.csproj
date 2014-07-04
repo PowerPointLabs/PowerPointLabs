@@ -244,6 +244,7 @@
     <Compile Include="CustomShapePane.Designer.cs">
       <DependentUpon>CustomShapePane.cs</DependentUpon>
     </Compile>
+    <Compile Include="Views\CustomPaintTextBox.cs" />
     <Compile Include="Views\ErrorDialogWrapper.cs" />
     <Compile Include="FitToSlide.cs" />
     <Compile Include="Models\PowerPointAutoAnimateSlide.cs" />

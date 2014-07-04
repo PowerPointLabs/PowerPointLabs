@@ -41,19 +41,19 @@
             this.motherPanel.Dock = System.Windows.Forms.DockStyle.Fill;
             this.motherPanel.Location = new System.Drawing.Point(0, 0);
             this.motherPanel.Name = "motherPanel";
-            this.motherPanel.Size = new System.Drawing.Size(115, 50);
+            this.motherPanel.Size = new System.Drawing.Size(118, 50);
             this.motherPanel.TabIndex = 2;
             // 
             // labelTextBox
             // 
             this.labelTextBox.BorderStyle = System.Windows.Forms.BorderStyle.None;
-            this.labelTextBox.Cursor = System.Windows.Forms.Cursors.Default;
+            this.labelTextBox.Cursor = System.Windows.Forms.Cursors.IBeam;
             this.labelTextBox.Font = new System.Drawing.Font("SimSun", 10.5F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.labelTextBox.Location = new System.Drawing.Point(50, 4);
+            this.labelTextBox.Location = new System.Drawing.Point(51, 1);
             this.labelTextBox.Margin = new System.Windows.Forms.Padding(0, 3, 0, 3);
             this.labelTextBox.Multiline = true;
             this.labelTextBox.Name = "labelTextBox";
-            this.labelTextBox.Size = new System.Drawing.Size(62, 43);
+            this.labelTextBox.Size = new System.Drawing.Size(65, 48);
             this.labelTextBox.TabIndex = 1;
             // 
             // thumbnailPanel
@@ -72,7 +72,7 @@
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.Controls.Add(this.motherPanel);
             this.Name = "LabeledThumbnail";
-            this.Size = new System.Drawing.Size(115, 50);
+            this.Size = new System.Drawing.Size(118, 50);
             this.motherPanel.ResumeLayout(false);
             this.motherPanel.PerformLayout();
             this.ResumeLayout(false);

@@ -4,11 +4,13 @@ using System.Drawing.Drawing2D;
 using System.IO;
 using System.Text.RegularExpressions;
 using System.Windows.Forms;
+using PowerPointLabs.Views;
 
 namespace PowerPointLabs
 {
     public partial class LabeledThumbnail : UserControl
     {
+        private string _nameLabel;
         private bool _isHighlighted;
         private bool _isGoodName;
         private Image _imageSource;
@@ -25,11 +27,15 @@ namespace PowerPointLabs
 
         public string NameLable
         {
-            get { return labelTextBox.Text; }
+            get
+            {
+                return _nameLabel;
+            }
             set
             {
                 if (Verify(value))
                 {
+                    _nameLabel = value;
                     labelTextBox.Text = value;
                     _isGoodName = true;
                 }
@@ -74,10 +80,7 @@ namespace PowerPointLabs
 
         public LabeledThumbnail(string imagePath, string nameLable)
         {
-            Initialize();
-
-            NameLable = nameLable;
-            ImagePath = imagePath;
+            Initialize(imagePath, nameLable);
         }
         # endregion
 
@@ -100,6 +103,12 @@ namespace PowerPointLabs
 
         public void StartNameEdit()
         {
+            // add the text box
+            if (!motherPanel.Controls.Contains(labelTextBox))
+            {
+                motherPanel.Controls.Add(labelTextBox);
+            }
+
             State = Status.Editing;
             
             Highlight();
@@ -199,21 +208,28 @@ namespace PowerPointLabs
 
             motherPanel.Click += (sender, e) => Click(this, e);
             motherPanel.DoubleClick += (sender, e) => DoubleClick(this, e);
-            
-            foreach (Control control in motherPanel.Controls)
-            {
-                control.Click += (sender, e) => Click(this, e);
-                control.DoubleClick += (sender, e) => DoubleClick(this, e);
-            }
+            motherPanel.Paint += EllipseNameLabelRedraw;
 
+            thumbnailPanel.Click += (sender, e) => Click(this, e);
+            thumbnailPanel.DoubleClick += (sender, e) => DoubleClick(this, e);
+
+            labelTextBox.DoubleClick += (sender, e) => labelTextBox.SelectAll();
             labelTextBox.EnabledChanged += EnableChangedHandler;
             labelTextBox.KeyPress += EnterKeyWhileEditing;
             labelTextBox.LostFocus += NameLableLostFocus;
 
-            // let user specify the shape name
-            State = Status.Editing;
-            labelTextBox.Enabled = true;
-            labelTextBox.SelectAll();
+            var customPaintTextBox = new CustomPaintTextBox(labelTextBox);
+        }
+
+        private void Initialize(string imagePath, string nameLable)
+        {
+            Initialize();
+
+            NameLable = nameLable;
+            ImagePath = imagePath;
+
+            State = Status.Idle;
+            labelTextBox.Enabled = false;
         }
 
         private bool RenameSource(out bool sameName)
@@ -265,11 +281,34 @@ namespace PowerPointLabs
         public new event DoubleClickEventDelegate DoubleClick;
         public event NameChangedNotifyEventDelegate NameChangedNotify;
 
+        private void EllipseNameLabelRedraw(object sender, PaintEventArgs e)
+        {
+            if (!(sender is Panel)) return;
+
+            var panel = sender as Panel;
+            var rect = panel.RectangleToClient(labelTextBox.RectangleToScreen(labelTextBox.ClientRectangle));
+
+            // draw ellipse only when text box is disabled
+            if (labelTextBox.Enabled == false)
+            {
+                TextRenderer.DrawText(e.Graphics, labelTextBox.Text, labelTextBox.Font,
+                rect, Color.Black, Color.Empty,
+                TextFormatFlags.TextBoxControl |
+                TextFormatFlags.WordBreak |
+                TextFormatFlags.EndEllipsis);
+            }
+        }
+
         private void EnableChangedHandler(object sender, EventArgs e)
         {
             if (labelTextBox.Enabled == false)
             {
                 labelTextBox.BackColor = Color.FromKnownColor(KnownColor.Window);
+                labelTextBox.Text = string.Empty;
+            }
+            else
+            {
+                labelTextBox.Text = NameLable;
             }
         }
 

@@ -36,6 +36,11 @@ namespace PowerPointLabs
                 var min = myShapeFlowLayout.Controls.Count;
                 var match = new Regex(DefaultShapeNameSearchRegex);
 
+                if (myShapeFlowLayout.Controls.Contains(_noShapePanel))
+                {
+                    return string.Format(DefaultShapeNameFormat, 1);
+                }
+
                 foreach (Control control in myShapeFlowLayout.Controls)
                 {
                     if (!(control is LabeledThumbnail)) continue;

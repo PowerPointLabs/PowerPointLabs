@@ -1,0 +1,66 @@
+﻿using System.Drawing;
+using System.Windows.Forms;
+
+namespace PowerPointLabs.Views
+{
+    public class CustomPaintTextBox : NativeWindow
+    {
+        private const int WM_PAINT = 0xf;
+
+        private readonly TextBox _parentTextBox;
+        private readonly Bitmap _bitmap;
+        private readonly Graphics _bufferGraphics;
+        private readonly Graphics _textBoxGraphics;
+
+        public CustomPaintTextBox(TextBox textBox)
+        {
+            _parentTextBox = textBox;
+            _bitmap = new Bitmap(textBox.Width, textBox.Height);
+            _bufferGraphics = Graphics.FromImage(_bitmap);
+            _textBoxGraphics = Graphics.FromHwnd(textBox.Handle);
+
+            AssignHandle(textBox.Handle);
+        }
+
+        ~CustomPaintTextBox()
+        {
+            ReleaseHandle();
+        }
+
+        private void CustomPaint()
+        {
+            _bufferGraphics.Clear(Color.Transparent);
+            var labeledThumbnail = _parentTextBox.Parent.Parent as LabeledThumbnail;
+
+            if (labeledThumbnail == null)
+            {
+                return;
+            }
+
+            TextRenderer.DrawText(_bufferGraphics, labeledThumbnail.NameLable, _parentTextBox.Font,
+            _parentTextBox.ClientRectangle, Color.Empty, _parentTextBox.BackColor,
+            TextFormatFlags.TextBoxControl |
+            TextFormatFlags.WordBreak |
+            TextFormatFlags.EndEllipsis);
+            _textBoxGraphics.DrawImageUnscaled(_bitmap, 0, 0);
+        }
+
+        protected override void WndProc(ref Message m)
+        {
+            switch (m.Msg)
+            {
+                case WM_PAINT:
+                    _parentTextBox.Invalidate();
+                    base.WndProc(ref m);
+                    if (_parentTextBox.Enabled == false)
+                    {
+                        CustomPaint();
+                    }
+                    break;
+                default:
+                    base.WndProc(ref m);
+                    break;
+            }
+        }
+    }
+}
