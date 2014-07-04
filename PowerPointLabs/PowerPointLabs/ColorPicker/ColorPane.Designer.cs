@@ -29,6 +29,7 @@
         private void InitializeComponent()
         {
             this.components = new System.ComponentModel.Container();
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(ColorPane));
             this.panel1 = new System.Windows.Forms.Panel();
             this.timer1 = new System.Windows.Forms.Timer(this.components);
             this.colorDialog1 = new System.Windows.Forms.ColorDialog();
@@ -87,7 +88,6 @@
             this.ThemePanel8 = new System.Windows.Forms.Panel();
             this.ThemePanel9 = new System.Windows.Forms.Panel();
             this.ThemePanel10 = new System.Windows.Forms.Panel();
-            this.SaveThemeButton = new System.Windows.Forms.Button();
             this.LoadButton = new System.Windows.Forms.Button();
             this.ResetThemeButton = new System.Windows.Forms.Button();
             this.ApplyThemeButton = new System.Windows.Forms.Button();
@@ -99,11 +99,12 @@
             this.panel2 = new System.Windows.Forms.Panel();
             this.panel3 = new System.Windows.Forms.Panel();
             this.toolTip1 = new System.Windows.Forms.ToolTip(this.components);
-            this.FillButton = new System.Windows.Forms.Button();
-            this.LineButton = new System.Windows.Forms.Button();
-            this.FontButton = new System.Windows.Forms.Button();
             this.flowLayoutPanel10 = new System.Windows.Forms.FlowLayoutPanel();
             this.label9 = new System.Windows.Forms.Label();
+            this.FontButton = new System.Windows.Forms.Button();
+            this.LineButton = new System.Windows.Forms.Button();
+            this.FillButton = new System.Windows.Forms.Button();
+            this.SaveThemeButton = new System.Windows.Forms.Button();
             this.AnalogousColorPanel.SuspendLayout();
             this.flowLayoutPanel6.SuspendLayout();
             this.contextMenuStrip1.SuspendLayout();
@@ -835,46 +836,35 @@
             this.ThemePanel10.DragDrop += new System.Windows.Forms.DragEventHandler(this.panel_DragDrop);
             this.ThemePanel10.DragEnter += new System.Windows.Forms.DragEventHandler(this.panel_DragEnter);
             // 
-            // SaveThemeButton
-            // 
-            this.SaveThemeButton.BackgroundImage = global::PowerPointLabs.Properties.Resources.save_icon;
-            this.SaveThemeButton.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Center;
-            this.SaveThemeButton.Location = new System.Drawing.Point(3, 53);
-            this.SaveThemeButton.Name = "SaveThemeButton";
-            this.SaveThemeButton.Size = new System.Drawing.Size(45, 45);
-            this.SaveThemeButton.TabIndex = 16;
-            this.SaveThemeButton.UseVisualStyleBackColor = true;
-            this.SaveThemeButton.Click += new System.EventHandler(this.SaveThemeButton_Click);
-            // 
             // LoadButton
             // 
-            this.LoadButton.BackgroundImage = global::PowerPointLabs.Properties.Resources.down_icon;
             this.LoadButton.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Center;
-            this.LoadButton.Location = new System.Drawing.Point(54, 53);
+            this.LoadButton.Image = global::PowerPointLabs.Properties.Resources.Load_icon;
+            this.LoadButton.Location = new System.Drawing.Point(53, 53);
             this.LoadButton.Name = "LoadButton";
-            this.LoadButton.Size = new System.Drawing.Size(45, 45);
+            this.LoadButton.Size = new System.Drawing.Size(44, 45);
             this.LoadButton.TabIndex = 17;
             this.LoadButton.UseVisualStyleBackColor = true;
             this.LoadButton.Click += new System.EventHandler(this.LoadButton_Click);
             // 
             // ResetThemeButton
             // 
-            this.ResetThemeButton.BackgroundImage = global::PowerPointLabs.Properties.Resources.refresh_icon;
             this.ResetThemeButton.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Center;
-            this.ResetThemeButton.Location = new System.Drawing.Point(105, 53);
+            this.ResetThemeButton.Image = global::PowerPointLabs.Properties.Resources.Reload_icon;
+            this.ResetThemeButton.Location = new System.Drawing.Point(103, 53);
             this.ResetThemeButton.Name = "ResetThemeButton";
-            this.ResetThemeButton.Size = new System.Drawing.Size(45, 45);
+            this.ResetThemeButton.Size = new System.Drawing.Size(44, 45);
             this.ResetThemeButton.TabIndex = 18;
             this.ResetThemeButton.UseVisualStyleBackColor = true;
             this.ResetThemeButton.Click += new System.EventHandler(this.ResetThemeButton_Click);
             // 
             // ApplyThemeButton
             // 
-            this.ApplyThemeButton.BackgroundImage = global::PowerPointLabs.Properties.Resources.apply_icon;
             this.ApplyThemeButton.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Center;
-            this.ApplyThemeButton.Location = new System.Drawing.Point(156, 53);
+            this.ApplyThemeButton.Image = global::PowerPointLabs.Properties.Resources.Apply_icon;
+            this.ApplyThemeButton.Location = new System.Drawing.Point(153, 53);
             this.ApplyThemeButton.Name = "ApplyThemeButton";
-            this.ApplyThemeButton.Size = new System.Drawing.Size(45, 45);
+            this.ApplyThemeButton.Size = new System.Drawing.Size(44, 45);
             this.ApplyThemeButton.TabIndex = 19;
             this.toolTip1.SetToolTip(this.ApplyThemeButton, "Applies Theme Colors to Selected Slides");
             this.ApplyThemeButton.UseVisualStyleBackColor = true;
@@ -882,11 +872,11 @@
             // 
             // EmptyPanelButton
             // 
-            this.EmptyPanelButton.BackgroundImage = global::PowerPointLabs.Properties.Resources.delete_icon;
             this.EmptyPanelButton.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Center;
-            this.EmptyPanelButton.Location = new System.Drawing.Point(207, 53);
+            this.EmptyPanelButton.Image = global::PowerPointLabs.Properties.Resources.Clear_icon;
+            this.EmptyPanelButton.Location = new System.Drawing.Point(203, 53);
             this.EmptyPanelButton.Name = "EmptyPanelButton";
-            this.EmptyPanelButton.Size = new System.Drawing.Size(45, 45);
+            this.EmptyPanelButton.Size = new System.Drawing.Size(44, 45);
             this.EmptyPanelButton.TabIndex = 20;
             this.toolTip1.SetToolTip(this.EmptyPanelButton, "Empties the Theme Panel");
             this.EmptyPanelButton.UseVisualStyleBackColor = true;
@@ -945,42 +935,6 @@
             this.panel3.Size = new System.Drawing.Size(273, 20);
             this.panel3.TabIndex = 17;
             // 
-            // FillButton
-            // 
-            this.FillButton.BackgroundImage = global::PowerPointLabs.Properties.Resources.Paint_icon;
-            this.FillButton.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Center;
-            this.FillButton.Location = new System.Drawing.Point(248, 16);
-            this.FillButton.Name = "FillButton";
-            this.FillButton.Size = new System.Drawing.Size(45, 45);
-            this.FillButton.TabIndex = 24;
-            this.FillButton.UseVisualStyleBackColor = true;
-            this.FillButton.MouseClick += new System.Windows.Forms.MouseEventHandler(this.EyeDropButton_MouseClick);
-            this.FillButton.MouseDown += new System.Windows.Forms.MouseEventHandler(this.EyeDropButton_MouseDown);
-            // 
-            // LineButton
-            // 
-            this.LineButton.BackgroundImage = global::PowerPointLabs.Properties.Resources.Technical_Pen_icon;
-            this.LineButton.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Center;
-            this.LineButton.Location = new System.Drawing.Point(197, 16);
-            this.LineButton.Name = "LineButton";
-            this.LineButton.Size = new System.Drawing.Size(45, 45);
-            this.LineButton.TabIndex = 25;
-            this.LineButton.UseVisualStyleBackColor = true;
-            this.LineButton.MouseClick += new System.Windows.Forms.MouseEventHandler(this.EyeDropButton_MouseClick);
-            this.LineButton.MouseDown += new System.Windows.Forms.MouseEventHandler(this.EyeDropButton_MouseDown);
-            // 
-            // FontButton
-            // 
-            this.FontButton.BackgroundImage = global::PowerPointLabs.Properties.Resources.Type_icon;
-            this.FontButton.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Center;
-            this.FontButton.Location = new System.Drawing.Point(146, 16);
-            this.FontButton.Name = "FontButton";
-            this.FontButton.Size = new System.Drawing.Size(45, 45);
-            this.FontButton.TabIndex = 26;
-            this.FontButton.UseVisualStyleBackColor = true;
-            this.FontButton.MouseClick += new System.Windows.Forms.MouseEventHandler(this.EyeDropButton_MouseClick);
-            this.FontButton.MouseDown += new System.Windows.Forms.MouseEventHandler(this.EyeDropButton_MouseDown);
-            // 
             // flowLayoutPanel10
             // 
             this.flowLayoutPanel10.BackColor = System.Drawing.SystemColors.ControlLight;
@@ -1006,6 +960,53 @@
             this.label9.Size = new System.Drawing.Size(110, 16);
             this.label9.TabIndex = 11;
             this.label9.Text = "Matching Colors";
+            // 
+            // FontButton
+            // 
+            this.FontButton.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Center;
+            this.FontButton.Image = ((System.Drawing.Image)(resources.GetObject("FontButton.Image")));
+            this.FontButton.Location = new System.Drawing.Point(146, 16);
+            this.FontButton.Name = "FontButton";
+            this.FontButton.Size = new System.Drawing.Size(44, 45);
+            this.FontButton.TabIndex = 26;
+            this.FontButton.UseVisualStyleBackColor = true;
+            this.FontButton.MouseClick += new System.Windows.Forms.MouseEventHandler(this.EyeDropButton_MouseClick);
+            this.FontButton.MouseDown += new System.Windows.Forms.MouseEventHandler(this.EyeDropButton_MouseDown);
+            // 
+            // LineButton
+            // 
+            this.LineButton.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Center;
+            this.LineButton.Image = global::PowerPointLabs.Properties.Resources.LineColor_icon1;
+            this.LineButton.Location = new System.Drawing.Point(197, 16);
+            this.LineButton.Name = "LineButton";
+            this.LineButton.Size = new System.Drawing.Size(44, 45);
+            this.LineButton.TabIndex = 25;
+            this.LineButton.UseVisualStyleBackColor = true;
+            this.LineButton.MouseClick += new System.Windows.Forms.MouseEventHandler(this.EyeDropButton_MouseClick);
+            this.LineButton.MouseDown += new System.Windows.Forms.MouseEventHandler(this.EyeDropButton_MouseDown);
+            // 
+            // FillButton
+            // 
+            this.FillButton.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Center;
+            this.FillButton.Image = global::PowerPointLabs.Properties.Resources.FillColor_icon;
+            this.FillButton.Location = new System.Drawing.Point(248, 16);
+            this.FillButton.Name = "FillButton";
+            this.FillButton.Size = new System.Drawing.Size(44, 45);
+            this.FillButton.TabIndex = 24;
+            this.FillButton.UseVisualStyleBackColor = true;
+            this.FillButton.MouseClick += new System.Windows.Forms.MouseEventHandler(this.EyeDropButton_MouseClick);
+            this.FillButton.MouseDown += new System.Windows.Forms.MouseEventHandler(this.EyeDropButton_MouseDown);
+            // 
+            // SaveThemeButton
+            // 
+            this.SaveThemeButton.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Center;
+            this.SaveThemeButton.Image = global::PowerPointLabs.Properties.Resources.Save_icon;
+            this.SaveThemeButton.Location = new System.Drawing.Point(3, 53);
+            this.SaveThemeButton.Name = "SaveThemeButton";
+            this.SaveThemeButton.Size = new System.Drawing.Size(44, 45);
+            this.SaveThemeButton.TabIndex = 16;
+            this.SaveThemeButton.UseVisualStyleBackColor = true;
+            this.SaveThemeButton.Click += new System.EventHandler(this.SaveThemeButton_Click);
             // 
             // ColorPane
             // 
