@@ -126,6 +126,7 @@ namespace PPExtraEventHelper
 
         internal enum Message
         {
+            WM_PAINT = 0xf,
             WM_COMMAND = 0x111,
             WM_LBUTTONDOWN = 0x0201,
             WM_LBUTTONUP = 0x0202,

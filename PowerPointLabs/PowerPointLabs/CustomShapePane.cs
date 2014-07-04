@@ -1,12 +1,9 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Drawing;
-using System.Drawing.Drawing2D;
 using System.IO;
 using System.Text.RegularExpressions;
 using System.Windows.Forms;
 using Microsoft.Office.Core;
-using PPExtraEventHelper;
 using PowerPointLabs.Models;
 
 namespace PowerPointLabs
@@ -33,13 +30,8 @@ namespace PowerPointLabs
             get
             {
                 var temp = 0;
-                var min = myShapeFlowLayout.Controls.Count;
+                var min = int.MaxValue;
                 var match = new Regex(DefaultShapeNameSearchRegex);
-
-                if (myShapeFlowLayout.Controls.Contains(_noShapePanel))
-                {
-                    return string.Format(DefaultShapeNameFormat, 1);
-                }
 
                 foreach (Control control in myShapeFlowLayout.Controls)
                 {
@@ -58,6 +50,11 @@ namespace PowerPointLabs
                         
                         temp = currentCnt;
                     }
+                }
+
+                if (min == int.MaxValue)
+                {
+                    return string.Format(DefaultShapeNameFormat, temp + 1);
                 }
 
                 return string.Format(DefaultShapeNameFormat, min + 1);

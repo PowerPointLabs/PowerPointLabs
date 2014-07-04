@@ -1,12 +1,11 @@
 ﻿using System.Drawing;
 using System.Windows.Forms;
+using PPExtraEventHelper;
 
 namespace PowerPointLabs.Views
 {
     public class CustomPaintTextBox : NativeWindow
     {
-        private const int WM_PAINT = 0xf;
-
         private readonly TextBox _parentTextBox;
         private readonly Bitmap _bitmap;
         private readonly Graphics _bufferGraphics;
@@ -49,7 +48,7 @@ namespace PowerPointLabs.Views
         {
             switch (m.Msg)
             {
-                case WM_PAINT:
+                case (int)Native.Message.WM_PAINT:
                     _parentTextBox.Invalidate();
                     base.WndProc(ref m);
                     if (_parentTextBox.Enabled == false)

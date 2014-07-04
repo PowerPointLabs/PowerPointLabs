@@ -10,10 +10,13 @@ namespace PowerPointLabs
 {
     public partial class LabeledThumbnail : UserControl
     {
-        private string _nameLabel;
+        private bool _nameFinishHandled;
         private bool _isHighlighted;
         private bool _isGoodName;
+        
         private Image _imageSource;
+        
+        private string _nameLabel;
         private string _imageSourcePath;
 
         public enum Status
@@ -23,7 +26,7 @@ namespace PowerPointLabs
         }
 
         # region Properties
-        private const string InvalidCharacterError = @"'\' and '.' are not allowed in the name";
+        private const string InvalidCharacterError = @"Empty name, '\' and '.' are not allowed for the name";
 
         public string NameLable
         {
@@ -109,6 +112,7 @@ namespace PowerPointLabs
                 motherPanel.Controls.Add(labelTextBox);
             }
 
+            _nameFinishHandled = false;
             State = Status.Editing;
             
             Highlight();
@@ -119,6 +123,13 @@ namespace PowerPointLabs
 
         public void FinishNameEdit()
         {
+            // since messagebox will trigger LostFocus event, this method
+            // has chance to be triggered mulitple times. To avoid this,
+            // a flag will be set on the first time the function is called,
+            // and skip the function by checking if the flag has been set.
+            if (_nameFinishHandled) return;
+
+            _nameFinishHandled = true;
             NameLable = labelTextBox.Text;
 
             bool sameName;
@@ -211,7 +222,7 @@ namespace PowerPointLabs
             motherPanel.Paint += EllipseNameLabelRedraw;
 
             thumbnailPanel.Click += (sender, e) => Click(this, e);
-            thumbnailPanel.DoubleClick += (sender, e) => DoubleClick(this, e);
+            thumbnailPanel.DoubleClick += ThumbnailPanelDoubleClick;
 
             labelTextBox.DoubleClick += (sender, e) => labelTextBox.SelectAll();
             labelTextBox.EnabledChanged += EnableChangedHandler;
@@ -272,9 +283,7 @@ namespace PowerPointLabs
 
         # region Event Handlers
         public delegate void ClickEventDelegate(object sender, EventArgs e);
-
         public delegate void DoubleClickEventDelegate(object sender, EventArgs e);
-
         public delegate void NameChangedNotifyEventDelegate(object sender, bool nameChanged);
 
         public new event ClickEventDelegate Click;
@@ -324,6 +333,17 @@ namespace PowerPointLabs
         private void NameLableLostFocus(object sender, EventArgs args)
         {
             FinishNameEdit();
+        }
+
+        private void ThumbnailPanelDoubleClick(object sender, EventArgs e)
+        {
+            if (State == Status.Editing)
+            {
+                labelTextBox.SelectAll();
+                return;
+            }
+
+            DoubleClick(this, e);
         }
         # endregion
     }
