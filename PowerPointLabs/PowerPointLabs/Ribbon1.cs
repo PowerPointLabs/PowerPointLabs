@@ -867,7 +867,9 @@ namespace PowerPointLabs
                 return;
             }
 
-            var recorderPane = Globals.ThisAddIn.GetActivePane(Type.GetType("PowerPointLabs.RecorderTaskPane"));
+            Globals.ThisAddIn.RegisterRecorderPane(Globals.ThisAddIn.Application.ActivePresentation);
+
+            var recorderPane = Globals.ThisAddIn.GetActivePane(typeof(RecorderTaskPane));
             var recorder = recorderPane.Control as RecorderTaskPane;
 
             // TODO:
@@ -887,7 +889,9 @@ namespace PowerPointLabs
         # region Custom Shapes
         public void CustomShapeButtonClick(Office.IRibbonControl control)
         {
-            var customShapePane = Globals.ThisAddIn.GetActivePane(Type.GetType("PowerPointLabs.CustomShapePane"));
+            Globals.ThisAddIn.RegisterCustomPane(Globals.ThisAddIn.Application.ActivePresentation);
+            
+            var customShapePane = Globals.ThisAddIn.GetActivePane(typeof(CustomShapePane));
 
             if (customShapePane == null || !(customShapePane.Control is CustomShapePane))
             {
@@ -908,9 +912,11 @@ namespace PowerPointLabs
 
         public void AddShapeButtonClick(Office.IRibbonControl control)
         {
+            Globals.ThisAddIn.RegisterCustomPane(Globals.ThisAddIn.Application.ActivePresentation);
+
             var selection = PowerPointPresentation.CurrentSelection;
             
-            var customShapePane = Globals.ThisAddIn.GetActivePane(Type.GetType("PowerPointLabs.CustomShapePane"));
+            var customShapePane = Globals.ThisAddIn.GetActivePane(typeof(CustomShapePane));
 
             if (customShapePane == null || !(customShapePane.Control is CustomShapePane))
             {
@@ -945,7 +951,7 @@ namespace PowerPointLabs
                 return;
             }
 
-            var recorderPane = Globals.ThisAddIn.GetActivePane(Type.GetType("PowerPointLabs.RecorderTaskPane"));
+            var recorderPane = Globals.ThisAddIn.GetActivePane(typeof(RecorderTaskPane));
             var recorder = recorderPane.Control as RecorderTaskPane;
             
             try
@@ -981,7 +987,7 @@ namespace PowerPointLabs
 
             var currentSlide = PowerPointPresentation.CurrentSlide;
 
-            var recorderPane = Globals.ThisAddIn.GetActivePane(Type.GetType("PowerPointLabs.RecorderTaskPane"));
+            var recorderPane = Globals.ThisAddIn.GetActivePane(typeof(RecorderTaskPane));
             var recorder = recorderPane.Control as RecorderTaskPane;
 
             foreach (PowerPointSlide slide in PowerPointPresentation.SelectedSlides)
@@ -1189,7 +1195,9 @@ namespace PowerPointLabs
                 //ColorPickerForm colorPickerForm = new ColorPickerForm();
                 //colorPickerForm.Show();
 
-                var colorPane = Globals.ThisAddIn.GetActivePane(Type.GetType("PowerPointLabs.ColorPane"));
+                Globals.ThisAddIn.RegisterColorPane(Globals.ThisAddIn.Application.ActivePresentation);
+
+                var colorPane = Globals.ThisAddIn.GetActivePane(typeof(ColorPane));
                 var color = colorPane.Control as ColorPane;
 
                 // if currently the pane is hidden, show the pane

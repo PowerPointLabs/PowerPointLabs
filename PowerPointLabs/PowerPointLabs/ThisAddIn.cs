@@ -196,7 +196,6 @@ namespace PowerPointLabs
 
         private void ThisAddIn_NewPresentation(PowerPoint.Presentation Pres)
         {
-            var activeWindow = Pres.Application.ActiveWindow;
             var tempName = Pres.Name.GetHashCode().ToString();
 
             string tempFolderPath = Path.GetTempPath() + TempFolderNamePrefix + tempName + @"\";
@@ -210,14 +209,6 @@ namespace PowerPointLabs
 
                 Directory.CreateDirectory(tempFolderPath);
             }
-
-            _documentHashcodeMapper[activeWindow] = tempName;
-
-            // register all task panes when new document opens
-            RegisterTaskPane(new RecorderTaskPane(tempName), "Record Management", activeWindow,
-                             TaskPaneVisibleValueChangedEventHandler, null);
-            RegisterTaskPane(new ColorPane(), "Color Panel", activeWindow, null, null);
-            RegisterTaskPane(new CustomShapePane(), "Custom Shape Management", activeWindow, null, null);
         }
 
         // solve new un-modified unsave problem
@@ -249,14 +240,6 @@ namespace PowerPointLabs
                 }
 
                 _oldVersion = false;
-
-                // register all task panes when opening documents
-                RegisterTaskPane(new RecorderTaskPane(tempName), "Record Management", activeWindow,
-                                 TaskPaneVisibleValueChangedEventHandler, null);
-                RegisterTaskPane(new ColorPane(), "Color Panel", activeWindow, null, null);
-                RegisterTaskPane(new CustomShapePane(), "Custom Shape Management", activeWindow, null, null);
-
-                _documentHashcodeMapper[activeWindow] = tempName;
             }
             else
             {
@@ -333,24 +316,7 @@ namespace PowerPointLabs
         }
         # endregion
 
-        # region Helper Functions
-        private void SetupLogger()
-        {
-            // The folder for the roaming current user 
-            string folder = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData);
-
-            // Combine the base folder with your specific folder....
-            string specificFolder = Path.Combine(folder, "PowerPointLabs");
-
-            // Check if folder exists and if not, create it
-            if (!Directory.Exists(specificFolder))
-                Directory.CreateDirectory(specificFolder);
-            string fileName = Path.Combine(specificFolder, "PowerPointLabs_Log_1.log");
-
-            Trace.AutoFlush = true;
-            Trace.Listeners.Add(new TextWriterTraceListener(fileName));
-        }
-
+        # region API
         public CustomTaskPane GetActivePane(Type type)
         {
             return GetPaneFromWindow(type, Application.ActiveWindow);
@@ -364,7 +330,7 @@ namespace PowerPointLabs
             }
 
             var panes = _documentPaneMapper[window];
-            
+
             foreach (var pane in panes)
             {
                 try
@@ -388,6 +354,67 @@ namespace PowerPointLabs
         public string GetActiveWindowTempName()
         {
             return _documentHashcodeMapper[Application.ActiveWindow];
+        }
+
+        public void RegisterRecorderPane(PowerPoint.Presentation presentation)
+        {
+            if (GetActivePane(typeof(RecorderTaskPane)) != null)
+            {
+                return;
+            }
+
+            var activeWindow = presentation.Application.ActiveWindow;
+            var tempName = presentation.Name.GetHashCode().ToString();
+
+            _documentHashcodeMapper[activeWindow] = tempName;
+
+            RegisterTaskPane(new RecorderTaskPane(tempName), "Record Management", activeWindow,
+                             TaskPaneVisibleValueChangedEventHandler, null);
+        }
+
+        public void RegisterColorPane(PowerPoint.Presentation presentation)
+        {
+            if (GetActivePane(typeof(ColorPane)) != null)
+            {
+                return;
+            }
+
+            var activeWindow = presentation.Application.ActiveWindow;
+
+            TaskPaneSetup(presentation);
+            RegisterTaskPane(new ColorPane(), "Color Panel", activeWindow, null, null);
+        }
+
+        public void RegisterCustomPane(PowerPoint.Presentation presentation)
+        {
+            if (GetActivePane(typeof(CustomShapePane)) != null)
+            {
+                return;
+            }
+
+            var activeWindow = presentation.Application.ActiveWindow;
+            
+            TaskPaneSetup(presentation);
+            RegisterTaskPane(new CustomShapePane(), "Shapes Lab", activeWindow, null, null);
+        }
+        # endregion
+
+        # region Helper Functions
+        private void SetupLogger()
+        {
+            // The folder for the roaming current user 
+            string folder = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData);
+
+            // Combine the base folder with your specific folder....
+            string specificFolder = Path.Combine(folder, "PowerPointLabs");
+
+            // Check if folder exists and if not, create it
+            if (!Directory.Exists(specificFolder))
+                Directory.CreateDirectory(specificFolder);
+            string fileName = Path.Combine(specificFolder, "PowerPointLabs_Log_1.log");
+
+            Trace.AutoFlush = true;
+            Trace.Listeners.Add(new TextWriterTraceListener(fileName));
         }
 
         private void RegisterTaskPane(UserControl control, string title, PowerPoint.DocumentWindow wnd,
@@ -423,6 +450,14 @@ namespace PowerPointLabs
             {
                 taskPane.DockPositionChanged += dockPositionChangeEventHandler;
             }
+        }
+
+        private void TaskPaneSetup(PowerPoint.Presentation presentation)
+        {
+            var activeWindow = presentation.Application.ActiveWindow;
+            var tempName = presentation.Name.GetHashCode().ToString();
+
+            _documentHashcodeMapper[activeWindow] = tempName;
         }
 
         private void TaskPaneVisibleValueChangedEventHandler(object sender, EventArgs e)

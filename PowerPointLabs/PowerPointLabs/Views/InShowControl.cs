@@ -55,7 +55,7 @@ namespace PowerPointLabs.Views
 
         public void ForceStop()
         {
-            var recorderPane = Globals.ThisAddIn.GetActivePane(Type.GetType("PowerPointLabs.RecorderTaskPane"));
+            var recorderPane = Globals.ThisAddIn.GetActivePane(typeof(RecorderTaskPane));
             
             if (recorderPane == null)
             {
@@ -76,7 +76,7 @@ namespace PowerPointLabs.Views
 
         private void RecButtonClick(object sender, EventArgs e)
         {
-            var recorderPane = Globals.ThisAddIn.GetActivePane(Type.GetType("PowerPointLabs.RecorderTaskPane"));
+            var recorderPane = Globals.ThisAddIn.GetActivePane(typeof(RecorderTaskPane));
             var recorder = recorderPane.Control as RecorderTaskPane;
             
             int click;
@@ -137,7 +137,7 @@ namespace PowerPointLabs.Views
 
         private void UndoButtonClick(object sender, EventArgs e)
         {
-            var recorderPane = Globals.ThisAddIn.GetActivePane(Type.GetType("PowerPointLabs.RecorderTaskPane"));
+            var recorderPane = Globals.ThisAddIn.GetActivePane(typeof(RecorderTaskPane));
             var recorder = recorderPane.Control as RecorderTaskPane;
             var temp = recorder.AudioBuffer[_recordStartSlide.Index - 1];
 
