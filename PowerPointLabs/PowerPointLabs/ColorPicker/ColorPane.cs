@@ -115,6 +115,9 @@ namespace PowerPointLabs
             toolTip1.SetToolTip(this.LoadButton, "Load Existing Theme");
             toolTip1.SetToolTip(this.SaveThemeButton, "Save Current Theme");
             toolTip1.SetToolTip(this.ResetThemeButton, "Reset the Current Theme Colors to Current Slide Theme");
+            toolTip1.SetToolTip(this.FontButton, "Font Color\r\nMouseDown + Drag to EyeDrop\r\nClick to Edit");
+            toolTip1.SetToolTip(this.LineButton, "Shape Line Color\r\nMouseDown + Drag to EyeDrop\r\nClick to Edit");
+            toolTip1.SetToolTip(this.FillButton, "Shape Fill Color\r\nMouseDown + Drag to EyeDrop\r\nClick to Edit");
         }
         #endregion
 

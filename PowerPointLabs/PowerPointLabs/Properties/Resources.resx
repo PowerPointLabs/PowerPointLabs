@@ -247,9 +247,6 @@
   <data name="RemoveCaption" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\RemoveCaption.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
-  <data name="Saturation_icon" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\Saturation-icon.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
   <data name="ConvertToPicture" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\ConvertToPicture.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
@@ -261,9 +258,6 @@
   </data>
   <data name="AddAnimation" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\AddAnimation.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
-  <data name="Brightness_icon" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\Brightness-icon.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
   <data name="LineColor_icon1" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\LineColor_icon.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
@@ -285,5 +279,11 @@
   </data>
   <data name="Reload_icon" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\Reload_icon.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="Brightness_icon_25x25" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Brightness-icon_25x25.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="Saturation_icon_18x18" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Saturation-icon_18x18.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
 </root>

@@ -88,23 +88,21 @@
             this.ThemePanel8 = new System.Windows.Forms.Panel();
             this.ThemePanel9 = new System.Windows.Forms.Panel();
             this.ThemePanel10 = new System.Windows.Forms.Panel();
-            this.LoadButton = new System.Windows.Forms.Button();
-            this.ResetThemeButton = new System.Windows.Forms.Button();
-            this.ApplyThemeButton = new System.Windows.Forms.Button();
-            this.EmptyPanelButton = new System.Windows.Forms.Button();
             this.saveFileDialog1 = new System.Windows.Forms.SaveFileDialog();
             this.openFileDialog1 = new System.Windows.Forms.OpenFileDialog();
-            this.label7 = new System.Windows.Forms.Label();
-            this.label8 = new System.Windows.Forms.Label();
-            this.panel2 = new System.Windows.Forms.Panel();
-            this.panel3 = new System.Windows.Forms.Panel();
             this.toolTip1 = new System.Windows.Forms.ToolTip(this.components);
             this.flowLayoutPanel10 = new System.Windows.Forms.FlowLayoutPanel();
             this.label9 = new System.Windows.Forms.Label();
+            this.panel3 = new System.Windows.Forms.Panel();
+            this.panel2 = new System.Windows.Forms.Panel();
             this.FontButton = new System.Windows.Forms.Button();
             this.LineButton = new System.Windows.Forms.Button();
             this.FillButton = new System.Windows.Forms.Button();
             this.SaveThemeButton = new System.Windows.Forms.Button();
+            this.LoadButton = new System.Windows.Forms.Button();
+            this.ResetThemeButton = new System.Windows.Forms.Button();
+            this.ApplyThemeButton = new System.Windows.Forms.Button();
+            this.EmptyPanelButton = new System.Windows.Forms.Button();
             this.AnalogousColorPanel.SuspendLayout();
             this.flowLayoutPanel6.SuspendLayout();
             this.contextMenuStrip1.SuspendLayout();
@@ -120,8 +118,6 @@
             this.flowLayoutPanel5.SuspendLayout();
             this.themeLayoutPanel.SuspendLayout();
             this.flowLayoutPanel11.SuspendLayout();
-            this.panel2.SuspendLayout();
-            this.panel3.SuspendLayout();
             this.flowLayoutPanel10.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -468,7 +464,7 @@
             // 
             // brightnessBar
             // 
-            this.brightnessBar.Location = new System.Drawing.Point(26, 116);
+            this.brightnessBar.Location = new System.Drawing.Point(44, 117);
             this.brightnessBar.Maximum = 240;
             this.brightnessBar.Name = "brightnessBar";
             this.brightnessBar.Size = new System.Drawing.Size(256, 45);
@@ -481,7 +477,7 @@
             // brightnessPanel
             // 
             this.brightnessPanel.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.brightnessPanel.Location = new System.Drawing.Point(34, 99);
+            this.brightnessPanel.Location = new System.Drawing.Point(52, 100);
             this.brightnessPanel.Name = "brightnessPanel";
             this.brightnessPanel.Size = new System.Drawing.Size(240, 25);
             this.brightnessPanel.TabIndex = 7;
@@ -489,14 +485,14 @@
             // saturationPanel
             // 
             this.saturationPanel.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.saturationPanel.Location = new System.Drawing.Point(34, 178);
+            this.saturationPanel.Location = new System.Drawing.Point(53, 164);
             this.saturationPanel.Name = "saturationPanel";
             this.saturationPanel.Size = new System.Drawing.Size(240, 25);
             this.saturationPanel.TabIndex = 9;
             // 
             // saturationBar
             // 
-            this.saturationBar.Location = new System.Drawing.Point(26, 194);
+            this.saturationBar.Location = new System.Drawing.Point(45, 180);
             this.saturationBar.Maximum = 240;
             this.saturationBar.Name = "saturationBar";
             this.saturationBar.Size = new System.Drawing.Size(256, 45);
@@ -836,6 +832,111 @@
             this.ThemePanel10.DragDrop += new System.Windows.Forms.DragEventHandler(this.panel_DragDrop);
             this.ThemePanel10.DragEnter += new System.Windows.Forms.DragEventHandler(this.panel_DragEnter);
             // 
+            // saveFileDialog1
+            // 
+            this.saveFileDialog1.DefaultExt = "thm";
+            this.saveFileDialog1.Filter = "PPTLabsThemes|*.thm";
+            this.saveFileDialog1.Title = "Save Theme";
+            // 
+            // openFileDialog1
+            // 
+            this.openFileDialog1.DefaultExt = "thm";
+            this.openFileDialog1.Filter = "PPTLabsTheme|*.thm";
+            this.openFileDialog1.Title = "Load Theme";
+            // 
+            // flowLayoutPanel10
+            // 
+            this.flowLayoutPanel10.BackColor = System.Drawing.SystemColors.ControlLight;
+            this.flowLayoutPanel10.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.flowLayoutPanel10.Controls.Add(this.label9);
+            this.flowLayoutPanel10.Controls.Add(this.flowLayoutPanel1);
+            this.flowLayoutPanel10.Controls.Add(this.AnalogousColorPanel);
+            this.flowLayoutPanel10.Controls.Add(this.flowLayoutPanel2);
+            this.flowLayoutPanel10.Controls.Add(this.flowLayoutPanel3);
+            this.flowLayoutPanel10.Controls.Add(this.flowLayoutPanel4);
+            this.flowLayoutPanel10.Location = new System.Drawing.Point(20, 229);
+            this.flowLayoutPanel10.Name = "flowLayoutPanel10";
+            this.flowLayoutPanel10.Size = new System.Drawing.Size(273, 226);
+            this.flowLayoutPanel10.TabIndex = 27;
+            // 
+            // label9
+            // 
+            this.label9.AutoSize = true;
+            this.label9.Font = new System.Drawing.Font("Arial", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label9.Location = new System.Drawing.Point(3, 0);
+            this.label9.Margin = new System.Windows.Forms.Padding(3, 0, 3, 10);
+            this.label9.Name = "label9";
+            this.label9.Size = new System.Drawing.Size(110, 16);
+            this.label9.TabIndex = 11;
+            this.label9.Text = "Matching Colors";
+            // 
+            // panel3
+            // 
+            this.panel3.BackgroundImage = global::PowerPointLabs.Properties.Resources.Saturation_icon_18x18;
+            this.panel3.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Center;
+            this.panel3.Location = new System.Drawing.Point(20, 164);
+            this.panel3.Name = "panel3";
+            this.panel3.Size = new System.Drawing.Size(25, 25);
+            this.panel3.TabIndex = 29;
+            this.toolTip1.SetToolTip(this.panel3, "Saturation");
+            // 
+            // panel2
+            // 
+            this.panel2.BackgroundImage = global::PowerPointLabs.Properties.Resources.Brightness_icon_25x25;
+            this.panel2.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Center;
+            this.panel2.Location = new System.Drawing.Point(19, 100);
+            this.panel2.Name = "panel2";
+            this.panel2.Size = new System.Drawing.Size(25, 25);
+            this.panel2.TabIndex = 28;
+            this.toolTip1.SetToolTip(this.panel2, "Brightness");
+            // 
+            // FontButton
+            // 
+            this.FontButton.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Center;
+            this.FontButton.Image = ((System.Drawing.Image)(resources.GetObject("FontButton.Image")));
+            this.FontButton.Location = new System.Drawing.Point(146, 16);
+            this.FontButton.Name = "FontButton";
+            this.FontButton.Size = new System.Drawing.Size(44, 45);
+            this.FontButton.TabIndex = 26;
+            this.FontButton.UseVisualStyleBackColor = true;
+            this.FontButton.MouseClick += new System.Windows.Forms.MouseEventHandler(this.EyeDropButton_MouseClick);
+            this.FontButton.MouseDown += new System.Windows.Forms.MouseEventHandler(this.EyeDropButton_MouseDown);
+            // 
+            // LineButton
+            // 
+            this.LineButton.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Center;
+            this.LineButton.Image = global::PowerPointLabs.Properties.Resources.LineColor_icon;
+            this.LineButton.Location = new System.Drawing.Point(197, 16);
+            this.LineButton.Name = "LineButton";
+            this.LineButton.Size = new System.Drawing.Size(44, 45);
+            this.LineButton.TabIndex = 25;
+            this.LineButton.UseVisualStyleBackColor = true;
+            this.LineButton.MouseClick += new System.Windows.Forms.MouseEventHandler(this.EyeDropButton_MouseClick);
+            this.LineButton.MouseDown += new System.Windows.Forms.MouseEventHandler(this.EyeDropButton_MouseDown);
+            // 
+            // FillButton
+            // 
+            this.FillButton.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Center;
+            this.FillButton.Image = global::PowerPointLabs.Properties.Resources.FillColor_icon;
+            this.FillButton.Location = new System.Drawing.Point(248, 16);
+            this.FillButton.Name = "FillButton";
+            this.FillButton.Size = new System.Drawing.Size(44, 45);
+            this.FillButton.TabIndex = 24;
+            this.FillButton.UseVisualStyleBackColor = true;
+            this.FillButton.MouseClick += new System.Windows.Forms.MouseEventHandler(this.EyeDropButton_MouseClick);
+            this.FillButton.MouseDown += new System.Windows.Forms.MouseEventHandler(this.EyeDropButton_MouseDown);
+            // 
+            // SaveThemeButton
+            // 
+            this.SaveThemeButton.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Center;
+            this.SaveThemeButton.Image = global::PowerPointLabs.Properties.Resources.Save_icon;
+            this.SaveThemeButton.Location = new System.Drawing.Point(3, 53);
+            this.SaveThemeButton.Name = "SaveThemeButton";
+            this.SaveThemeButton.Size = new System.Drawing.Size(44, 45);
+            this.SaveThemeButton.TabIndex = 16;
+            this.SaveThemeButton.UseVisualStyleBackColor = true;
+            this.SaveThemeButton.Click += new System.EventHandler(this.SaveThemeButton_Click);
+            // 
             // LoadButton
             // 
             this.LoadButton.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Center;
@@ -882,142 +983,16 @@
             this.EmptyPanelButton.UseVisualStyleBackColor = true;
             this.EmptyPanelButton.Click += new System.EventHandler(this.EmptyPanelButton_Click);
             // 
-            // saveFileDialog1
-            // 
-            this.saveFileDialog1.DefaultExt = "thm";
-            this.saveFileDialog1.Filter = "PPTLabsThemes|*.thm";
-            this.saveFileDialog1.Title = "Save Theme";
-            // 
-            // openFileDialog1
-            // 
-            this.openFileDialog1.DefaultExt = "thm";
-            this.openFileDialog1.Filter = "PPTLabsTheme|*.thm";
-            this.openFileDialog1.Title = "Load Theme";
-            // 
-            // label7
-            // 
-            this.label7.AutoSize = true;
-            this.label7.Font = new System.Drawing.Font("Arial", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label7.ForeColor = System.Drawing.SystemColors.ControlText;
-            this.label7.Location = new System.Drawing.Point(1, 1);
-            this.label7.Name = "label7";
-            this.label7.Size = new System.Drawing.Size(74, 16);
-            this.label7.TabIndex = 12;
-            this.label7.Text = "Brightness";
-            // 
-            // label8
-            // 
-            this.label8.AutoSize = true;
-            this.label8.BackColor = System.Drawing.SystemColors.ControlLight;
-            this.label8.Font = new System.Drawing.Font("Arial", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label8.ForeColor = System.Drawing.SystemColors.ControlText;
-            this.label8.Location = new System.Drawing.Point(1, 1);
-            this.label8.Name = "label8";
-            this.label8.Size = new System.Drawing.Size(74, 16);
-            this.label8.TabIndex = 15;
-            this.label8.Text = "Saturation";
-            // 
-            // panel2
-            // 
-            this.panel2.BackColor = System.Drawing.SystemColors.ControlLight;
-            this.panel2.Controls.Add(this.label7);
-            this.panel2.Location = new System.Drawing.Point(20, 69);
-            this.panel2.Name = "panel2";
-            this.panel2.Size = new System.Drawing.Size(273, 20);
-            this.panel2.TabIndex = 16;
-            // 
-            // panel3
-            // 
-            this.panel3.BackColor = System.Drawing.SystemColors.ControlLight;
-            this.panel3.Controls.Add(this.label8);
-            this.panel3.Location = new System.Drawing.Point(20, 148);
-            this.panel3.Name = "panel3";
-            this.panel3.Size = new System.Drawing.Size(273, 20);
-            this.panel3.TabIndex = 17;
-            // 
-            // flowLayoutPanel10
-            // 
-            this.flowLayoutPanel10.BackColor = System.Drawing.SystemColors.ControlLight;
-            this.flowLayoutPanel10.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.flowLayoutPanel10.Controls.Add(this.label9);
-            this.flowLayoutPanel10.Controls.Add(this.flowLayoutPanel1);
-            this.flowLayoutPanel10.Controls.Add(this.AnalogousColorPanel);
-            this.flowLayoutPanel10.Controls.Add(this.flowLayoutPanel2);
-            this.flowLayoutPanel10.Controls.Add(this.flowLayoutPanel3);
-            this.flowLayoutPanel10.Controls.Add(this.flowLayoutPanel4);
-            this.flowLayoutPanel10.Location = new System.Drawing.Point(20, 229);
-            this.flowLayoutPanel10.Name = "flowLayoutPanel10";
-            this.flowLayoutPanel10.Size = new System.Drawing.Size(273, 226);
-            this.flowLayoutPanel10.TabIndex = 27;
-            // 
-            // label9
-            // 
-            this.label9.AutoSize = true;
-            this.label9.Font = new System.Drawing.Font("Arial", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label9.Location = new System.Drawing.Point(3, 0);
-            this.label9.Margin = new System.Windows.Forms.Padding(3, 0, 3, 10);
-            this.label9.Name = "label9";
-            this.label9.Size = new System.Drawing.Size(110, 16);
-            this.label9.TabIndex = 11;
-            this.label9.Text = "Matching Colors";
-            // 
-            // FontButton
-            // 
-            this.FontButton.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Center;
-            this.FontButton.Image = ((System.Drawing.Image)(resources.GetObject("FontButton.Image")));
-            this.FontButton.Location = new System.Drawing.Point(146, 16);
-            this.FontButton.Name = "FontButton";
-            this.FontButton.Size = new System.Drawing.Size(44, 45);
-            this.FontButton.TabIndex = 26;
-            this.FontButton.UseVisualStyleBackColor = true;
-            this.FontButton.MouseClick += new System.Windows.Forms.MouseEventHandler(this.EyeDropButton_MouseClick);
-            this.FontButton.MouseDown += new System.Windows.Forms.MouseEventHandler(this.EyeDropButton_MouseDown);
-            // 
-            // LineButton
-            // 
-            this.LineButton.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Center;
-            this.LineButton.Image = global::PowerPointLabs.Properties.Resources.LineColor_icon1;
-            this.LineButton.Location = new System.Drawing.Point(197, 16);
-            this.LineButton.Name = "LineButton";
-            this.LineButton.Size = new System.Drawing.Size(44, 45);
-            this.LineButton.TabIndex = 25;
-            this.LineButton.UseVisualStyleBackColor = true;
-            this.LineButton.MouseClick += new System.Windows.Forms.MouseEventHandler(this.EyeDropButton_MouseClick);
-            this.LineButton.MouseDown += new System.Windows.Forms.MouseEventHandler(this.EyeDropButton_MouseDown);
-            // 
-            // FillButton
-            // 
-            this.FillButton.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Center;
-            this.FillButton.Image = global::PowerPointLabs.Properties.Resources.FillColor_icon;
-            this.FillButton.Location = new System.Drawing.Point(248, 16);
-            this.FillButton.Name = "FillButton";
-            this.FillButton.Size = new System.Drawing.Size(44, 45);
-            this.FillButton.TabIndex = 24;
-            this.FillButton.UseVisualStyleBackColor = true;
-            this.FillButton.MouseClick += new System.Windows.Forms.MouseEventHandler(this.EyeDropButton_MouseClick);
-            this.FillButton.MouseDown += new System.Windows.Forms.MouseEventHandler(this.EyeDropButton_MouseDown);
-            // 
-            // SaveThemeButton
-            // 
-            this.SaveThemeButton.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Center;
-            this.SaveThemeButton.Image = global::PowerPointLabs.Properties.Resources.Save_icon;
-            this.SaveThemeButton.Location = new System.Drawing.Point(3, 53);
-            this.SaveThemeButton.Name = "SaveThemeButton";
-            this.SaveThemeButton.Size = new System.Drawing.Size(44, 45);
-            this.SaveThemeButton.TabIndex = 16;
-            this.SaveThemeButton.UseVisualStyleBackColor = true;
-            this.SaveThemeButton.Click += new System.EventHandler(this.SaveThemeButton_Click);
-            // 
             // ColorPane
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+            this.Controls.Add(this.panel3);
+            this.Controls.Add(this.panel2);
             this.Controls.Add(this.flowLayoutPanel10);
             this.Controls.Add(this.FontButton);
             this.Controls.Add(this.LineButton);
             this.Controls.Add(this.FillButton);
-            this.Controls.Add(this.panel3);
-            this.Controls.Add(this.panel2);
             this.Controls.Add(this.themeLayoutPanel);
             this.Controls.Add(this.panel1);
             this.Controls.Add(this.saturationPanel);
@@ -1048,10 +1023,6 @@
             this.themeLayoutPanel.ResumeLayout(false);
             this.themeLayoutPanel.PerformLayout();
             this.flowLayoutPanel11.ResumeLayout(false);
-            this.panel2.ResumeLayout(false);
-            this.panel2.PerformLayout();
-            this.panel3.ResumeLayout(false);
-            this.panel3.PerformLayout();
             this.flowLayoutPanel10.ResumeLayout(false);
             this.flowLayoutPanel10.PerformLayout();
             this.ResumeLayout(false);
@@ -1118,10 +1089,6 @@
         private System.Windows.Forms.SaveFileDialog saveFileDialog1;
         private System.Windows.Forms.Button LoadButton;
         private System.Windows.Forms.OpenFileDialog openFileDialog1;
-        private System.Windows.Forms.Label label7;
-        private System.Windows.Forms.Label label8;
-        private System.Windows.Forms.Panel panel2;
-        private System.Windows.Forms.Panel panel3;
         private System.Windows.Forms.ToolTip toolTip1;
         private System.Windows.Forms.Button ResetThemeButton;
         private System.Windows.Forms.ContextMenuStrip contextMenuStrip1;
@@ -1136,5 +1103,7 @@
         private System.Windows.Forms.Button FontButton;
         private System.Windows.Forms.FlowLayoutPanel flowLayoutPanel10;
         private System.Windows.Forms.Label label9;
+        private System.Windows.Forms.Panel panel2;
+        private System.Windows.Forms.Panel panel3;
     }
 }

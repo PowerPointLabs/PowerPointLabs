@@ -346,6 +346,13 @@
     <Compile Include="XMLMisc\XMLParser.cs" />
     <Compile Include="ZipStorer.cs" />
     <Compile Include="ZoomToArea.cs" />
+    <None Include="Resources\Saturation-icon_18x18.png" />
+    <None Include="Resources\Saturation-icon_20x20.png" />
+    <None Include="Resources\Saturation-icon_23x23.png" />
+    <None Include="Resources\Saturation-icon_25x25.png" />
+    <None Include="Resources\Brightness-icon_25x25.png" />
+    <None Include="Resources\Saturation_icon.png" />
+    <None Include="Resources\Brightness_icon.png" />
     <None Include="Resources\Load_icon.png" />
     <None Include="Resources\Clear_icon.png" />
     <None Include="Resources\Apply_icon.png" />

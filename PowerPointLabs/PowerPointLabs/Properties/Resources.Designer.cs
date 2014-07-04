@@ -153,9 +153,9 @@ namespace PowerPointLabs.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
-        internal static System.Drawing.Bitmap Brightness_icon {
+        internal static System.Drawing.Bitmap Brightness_icon_25x25 {
             get {
-                object obj = ResourceManager.GetObject("Brightness_icon", resourceCulture);
+                object obj = ResourceManager.GetObject("Brightness_icon_25x25", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }
@@ -483,9 +483,9 @@ namespace PowerPointLabs.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
-        internal static System.Drawing.Bitmap Saturation_icon {
+        internal static System.Drawing.Bitmap Saturation_icon_18x18 {
             get {
-                object obj = ResourceManager.GetObject("Saturation_icon", resourceCulture);
+                object obj = ResourceManager.GetObject("Saturation_icon_18x18", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }
