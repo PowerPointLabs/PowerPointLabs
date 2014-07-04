@@ -37,8 +37,10 @@ namespace PowerPointLabs.Views
             }
 
             TextRenderer.DrawText(_bufferGraphics, labeledThumbnail.NameLable, _parentTextBox.Font,
-            _parentTextBox.ClientRectangle, Color.Empty, _parentTextBox.BackColor,
+            _parentTextBox.ClientRectangle, _parentTextBox.ForeColor, _parentTextBox.BackColor,
             TextFormatFlags.TextBoxControl |
+            TextFormatFlags.VerticalCenter |
+            TextFormatFlags.HorizontalCenter |
             TextFormatFlags.WordBreak |
             TextFormatFlags.EndEllipsis);
             _textBoxGraphics.DrawImageUnscaled(_bitmap, 0, 0);

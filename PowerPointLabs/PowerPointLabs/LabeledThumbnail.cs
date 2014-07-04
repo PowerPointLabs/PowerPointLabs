@@ -92,6 +92,8 @@ namespace PowerPointLabs
         {
             motherPanel.BackColor = Color.FromKnownColor(KnownColor.Window);
             thumbnailPanel.BackColor = Color.FromKnownColor(KnownColor.Transparent);
+            labelTextBox.BackColor = Color.FromKnownColor(KnownColor.Window);
+            labelTextBox.ForeColor = Color.Black;
 
             // dehighlight will hard-disable the text box editing
             labelTextBox.Enabled = false;
@@ -102,6 +104,12 @@ namespace PowerPointLabs
         {
             motherPanel.BackColor = Color.FromKnownColor(KnownColor.Highlight);
             thumbnailPanel.BackColor = Color.FromKnownColor(KnownColor.Highlight);
+
+            if (!labelTextBox.Enabled)
+            {
+                labelTextBox.BackColor = Color.FromKnownColor(KnownColor.Highlight);
+                labelTextBox.ForeColor = Color.White;
+            }
         }
 
         public void StartNameEdit()
@@ -317,6 +325,8 @@ namespace PowerPointLabs
             }
             else
             {
+                labelTextBox.BackColor = Color.FromKnownColor(KnownColor.Window);
+                labelTextBox.ForeColor = Color.Black;
                 labelTextBox.Text = NameLable;
             }
         }
