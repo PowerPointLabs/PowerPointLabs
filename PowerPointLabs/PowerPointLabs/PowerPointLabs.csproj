@@ -244,6 +244,7 @@
     <Compile Include="CustomShapePane.Designer.cs">
       <DependentUpon>CustomShapePane.cs</DependentUpon>
     </Compile>
+    <Compile Include="TextCollection.cs" />
     <Compile Include="Views\CustomPaintTextBox.cs" />
     <Compile Include="Views\ErrorDialogWrapper.cs" />
     <Compile Include="FitToSlide.cs" />
@@ -343,11 +344,11 @@
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="Views\SpeechPlayingForm.Designer.cs" />
-    <Compile Include="Views\PrepareDialog.cs">
+    <Compile Include="Views\LoadingDialog.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Views\PrepareDialog.Designer.cs">
-      <DependentUpon>PrepareDialog.cs</DependentUpon>
+    <Compile Include="Views\LoadingDialog.Designer.cs">
+      <DependentUpon>LoadingDialog.cs</DependentUpon>
     </Compile>
     <Compile Include="XMLMisc\XMLParser.cs" />
     <Compile Include="ZipStorer.cs" />
@@ -355,8 +356,8 @@
     <EmbeddedResource Include="ColorPane.resx">
       <DependentUpon>ColorPane.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Views\PrepareDialog.resx">
-      <DependentUpon>PrepareDialog.cs</DependentUpon>
+    <EmbeddedResource Include="Views\LoadingDialog.resx">
+      <DependentUpon>LoadingDialog.cs</DependentUpon>
     </EmbeddedResource>
     <None Include="packages.config" />
     <Content Include="PowerPointLabs Quick Tutorial.pptx">

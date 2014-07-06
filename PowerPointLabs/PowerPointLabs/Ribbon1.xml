@@ -25,21 +25,21 @@
                   label="Add Animation Slide"
                   size="large"
                   getImage="GetAddAnimationImage"
-                  supertip="Adds a slide with animations to create an animated transition from the currently selected slide to the next slide."
+                  getSupertip="GetAddAnimationButtonSupertip"
                   getEnabled="OnGetEnabledAddAutoMotion"
                   onAction="AddAnimationButtonClick"/>
           <button id="ReloadButton"
                   label ="Recreate Animation"
                   size ="large"
                   getImage="GetReloadAnimationImage"
-                  supertip="Recreates an existing animation slide with new animations.&#13;&#13;To activate, select the original slide or the animation slide (added previously) and click this button."
+                  getSupertip="GetReloadButtonSupertip"
                   getEnabled="OnGetEnabledReloadAutoMotion"
                   onAction="ReloadButtonClick"/>
           <button id="InSlideAnimateButton"
                    label="Animate In Slide"
                    size="large"
                    getImage="GetInSlideAnimationImage"
-                   supertip="Moves a shape around the slide in multiple steps.&#13;&#13;To activate, copy the shape to locations where you want it to stop, select the copies in the order you want them to appear, and click this button"
+                   getSupertip="GetInSlideAnimateButtonSupertip"
                    getEnabled="OnGetEnabledAddInSlide"
                    onAction="AddInSlideAnimationButtonClick"/>
           <dialogBoxLauncher>
@@ -54,21 +54,21 @@
                  label ="Drill Down"
                  size ="large"
                  getImage="GetZoomInImage"
-                 supertip="Adds a slide with animations to create a zoom-in effect from the currently selected shape to the next slide.&#13;&#13;To activate, select a rectangle shape on the slide that you want to drill down from and click on this button."
+                 getSupertip="GetAddZoomInButtonSupertip"
                  getEnabled="OnGetEnabledZoomButton"
                  onAction="AddZoomInButtonClick"/>
           <button id="AddZoomOutButton"
                  label ="Step Back"
                  size ="large"
                  getImage="GetZoomOutImage"
-                 supertip="Adds a slide with animations to create a zoom-out effect from the previous slide to the currently selected shape.&#13;&#13;To activate, select a rectangle shape on the slide that you want to step back to and click on this button."
+                 getSupertip="GetAddZoomOutButtonSupertip"
                  getEnabled="OnGetEnabledZoomButton"
                  onAction="AddZoomOutButtonClick"/>
           <button id="ZoomToAreaButton"
                  label ="Zoom To Area"
                  size ="large"
                  getImage="GetZoomToAreaImage"
-                 supertip="Zoom into an area of a slide or image.&#13;&#13;To activate, place a rectangle shape on the portion that you want to magnify and click on this button.&#13;&#13;This feature works best with high-resolution images."
+                 getSupertip="GetZoomToAreaButtonSupertip"
                  getEnabled="OnGetEnabledZoomButton"
                  onAction="ZoomBtnClick"/>
           <dialogBoxLauncher>
@@ -83,7 +83,7 @@
                   label ="Crop To Shape"
                   size ="large"
                   getImage="GetCropShapeImage"
-                  supertip="Crop a picture according to your selected shape(s).&#13;&#13;To activate, draw a shape upon the picture you want to crop, select the shape, and then click on this button."
+                  getSupertip="GetMoveCropShapeButtonSupertip"
                   onAction="CropShapeButtonClick"/>
         </group>
         <group id="SpotLightGroup"
@@ -92,14 +92,14 @@
           <button   id="AddSpotlightButton"
                    label="Create Spotlight"
                    size="large"
-                   supertip="Creates a spotlight effect for a selected shape.&#13;&#13;To activate, draw a shape to match the spotlight you want, select the shape, and click this button."
+                   getSupertip="GetAddSpotlightButtonSupertip"
                    getImage="GetSpotlightImage"
                    getEnabled="OnGetEnabledSpotlight"
                    onAction="SpotlightBtnClick"/>
           <button id="ReloadSpotlightButton"
                   label ="Recreate Spotlight"
                   size ="large"
-                  supertip="Adjusts the transparency and edges of an existing spotlight.&#13;&#13;To activate, set the transparency level and soft edges width, select the existing spotlight shape, and click this button."
+                  getSupertip="GetReloadSpotlightButtonSupertip"
                   getImage="GetReloadSpotlightImage"
                   getEnabled="OnGetEnabledReloadSpotlight"
                   onAction="ReloadSpotlightButtonClick"/>
@@ -112,29 +112,29 @@
                label="Auto Narrate"
                >
           <splitButton id="addAudioSplit" size="large">
-            <button id="addAudio"
+            <button id="AddAudioButton"
                   label="Add Audio"
                   onAction="AddAudioClick"
                   keytip="NA"
-                  supertip="Generates synthesized audio from text in the Speaker Notes pane, and adds it to the slide(s).&#13;&#13;To add audios for multiple slides, select the slides first (e.g. Ctrl+A to select all slides, Ctrl+click to select only some slides) before clicking the 'Add Audio' button."
+                  getSupertip="GetAddAudioButtonSupertip"
                   getImage="GetAddAudioImage" />
             <menu id="menu">
-              <button id="generateRecord"
+              <button id="GenerateRecordButton"
                       label="Generate Audio Automatically"
                       onAction="AddAudioClick"
                       keytip="NA"
-                      supertip="Generates synthesized audio from text in the Speaker Notes pane, and adds it to the slide(s)."/>
-              <button id="addRecord"
+                      getSupertip="GetGenerateRecordButtonSupertip"/>
+              <button id="AddRecordButton"
                       label="Record Audio Manually"
                       onAction="RecManagementClick"
                       keytip="NA"
-                      supertip="Use this option to record audio manually to replace the generated audio."/>
+                      getSupertip="GetAddRecordButtonSupertip"/>
             </menu>
           </splitButton>
-          <button id="removeAudio"
+          <button id="RemoveAudioButton"
                   label="Remove Audio"
                   onAction="RemoveAudioClick"
-                  supertip="Removes any generated audio that was added using Auto Narrate from the slide(s).&#13;&#13;To remove audios for multiple slides, select the slides first (e.g. Ctrl+A to select all slides, Ctrl+click to select only some slides) before clicking the 'Remove Audio' button."
+                  getSupertip="GetRemoveAudioButtonSupertip"
                   keytip="NR"
                   getEnabled="OnGetEnabledRemoveAudio"
                   getImage="GetRemoveAudioImage"
@@ -145,17 +145,17 @@
           </dialogBoxLauncher>
         </group>
         <group id="embedCaptions" label="Auto Captions">
-          <button id="addCaptions"
+          <button id="AddCaptionsButton"
                   label="Add Captions"
                   keytip="CA"
-                  supertip="Generates movie-style subtitles from text in the Speaker Notes pane, and adds it to the slide(s).&#13;&#13;To add captions for multiple slides, select the slides first (e.g. Ctrl+A to select all slides, Ctrl+click to select only some slides) before clicking the 'Add Captions' button."
+                  getSupertip="GetAddCaptionsButtonSupertip"
                   onAction="AddCaptionClick"
                   getImage="GetAddCaptionsImage"
                   size="large" />
-          <button id="removeCaptions"
+          <button id="RemoveCaptionsButton"
                   label="Remove Captions"
                   keytip="CR"
-                  supertip="Removes any captions that were added using Auto Captions from the slide(s).&#13;&#13;To remove captions for multiple slides, select the slides first (e.g. Ctrl+A to select all slides, Ctrl+click to select only some slides) before clicking the 'Remove Captions' button."
+                  getSupertip="GetRemoveCaptionsButtonSupertip"
                   onAction="RemoveCaptionClick"
                   getImage="GetRemoveCaptionsImage"
                   getEnabled="OnGetEnabledRemoveCaptions"
@@ -168,14 +168,14 @@
                  label ="Highlight Text"
                  size ="large"
                  getImage="GetHighlightBulletsTextImage"
-                 supertip="Highlights all the bullet points on the specified slide by changing the text color."
+                 getSupertip="GetHighlightBulletsTextButtonSupertip"
                  getEnabled="OnGetEnabledHighlightBullets"
                  onAction="HighlightBulletsTextButtonClick"/>
           <button id="HighlightBulletsBackgroundButton"
                  label ="Highlight Background"
                  size ="large"
                  getImage="GetHighlightBulletsBackgroundImage"
-                 supertip="Highlights all the bullet points on the specified slide by highlighting the text background"
+                 getSupertip="GetHighlightBulletsBackgroundButtonSupertip"
                  getEnabled="OnGetEnabledHighlightBullets"
                  onAction="HighlightBulletsBackgroundButtonClick"/>
           <dialogBoxLauncher>
@@ -189,7 +189,7 @@
           <button id="ColorPickerButton"
                   label="Color Picker"
                   size="large"
-                  supertip="Opens Custom Color Picker"
+                  getSupertip="GetColorPickerButtonSupertip"
                   onAction="ColorPickerButtonClick"/>
         </group>
         <group id="CustomShape"
@@ -198,7 +198,7 @@
           <button id="CustomeShapeButton"
                   label="Shape Lab"
                   size="large"
-                  supertip="Manage your custom shapes on the fly."
+                  getSupertip="GetCustomeShapeButtonSupertip"
                   onAction="CustomShapeButtonClick"/>
         </group>
         <group id="PPTLabsHelp"
@@ -208,19 +208,19 @@
                   label="Help"
                   size="large"
                   getImage="GetHelpImage"
-                  supertip="Click this to visit PowerPointLabs help page in our website."
+                  getSupertip="GetHelpButtonSupertip"
                   onAction="HelpButtonClick"/>
           <button id="FeedbackButton"
                   label="Report Issues/ Send Feedback"
                   size="large"
                   getImage="GetFeedbackImage"
-                  supertip="Click this to email us problem reports or other feedback. "
+                  getSupertip="GetFeedbackButtonSupertip"
                   onAction="FeedbackButtonClick"/>
-          <button id="aboutButton"
+          <button id="AboutButton"
                   label="About"
                   size="large"
                   getImage="GetAboutImage"
-                  supertip="Information about the PowerPointLabs plugin."
+                  getSupertip="GetAboutButtonSupertip"
                   onAction="AboutButtonClick"/>
         </group>
       </tab>

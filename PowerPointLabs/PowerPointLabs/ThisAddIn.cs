@@ -23,21 +23,15 @@ namespace PowerPointLabs
     public partial class ThisAddIn
     {
         private const string TempFolderNamePrefix = @"\PowerPointLabs Temp\";
-        
+
         private readonly Dictionary<PowerPoint.DocumentWindow,
                                     List<CustomTaskPane>> _documentPaneMapper = new Dictionary<PowerPoint.DocumentWindow,
                                                                                                List<CustomTaskPane>>();
         private readonly Dictionary<PowerPoint.DocumentWindow,
                                     string> _documentHashcodeMapper = new Dictionary<PowerPoint.DocumentWindow,
                                                                                      string>();
-
         public Ribbon1 Ribbon;
 
-        private const string VersionNotCompatibleMsg =
-            "This file is not fully compatible with some features of PowerPointLabs because it is " +
-            "in the outdated .ppt format used by PowerPoint 2007 (and older). If you wish to use the " +
-            "full power of PowerPointLabs to enhance this file, please save in the .pptx format used " +
-            "by PowerPoint 2010 and newer.";
         private bool _oldVersion;
 
         # region Powerpoint Application Event Handlers
@@ -262,7 +256,7 @@ namespace PowerPointLabs
 
                 _oldVersion = false;
 
-                var recorderPane = GetActivePane(Type.GetType("PowerPointLabs.RecorderTaskPane"));
+                var recorderPane = GetActivePane(typeof(RecorderTaskPane));
                 var recorder = recorderPane.Control as RecorderTaskPane;
 
                 recorder.SetupListsWhenOpen();
@@ -271,7 +265,7 @@ namespace PowerPointLabs
 
         private void ThisAddIn_PresentationClose(PowerPoint.Presentation Pres)
         {
-            var recorderPane = GetActivePane(Type.GetType("PowerPointLabs.RecorderTaskPane"));
+            var recorderPane = GetActivePane(typeof(RecorderTaskPane));
 
             if (recorderPane == null)
             {
@@ -468,7 +462,7 @@ namespace PowerPointLabs
 
         private void TaskPaneVisibleValueChangedEventHandler(object sender, EventArgs e)
         {
-            var recorderPane = GetActivePane(Type.GetType("PowerPointLabs.RecorderTaskPane"));
+            var recorderPane = GetActivePane(typeof(RecorderTaskPane));
 
             if (recorderPane == null)
             {
@@ -519,7 +513,7 @@ namespace PowerPointLabs
         {
             isInSlideShow = false;
             
-            var recorderPane = GetActivePane(Type.GetType("PowerPointLabs.RecorderTaskPane"));
+            var recorderPane = GetActivePane(typeof(RecorderTaskPane));
 
             if (recorderPane == null)
             {
@@ -571,7 +565,7 @@ namespace PowerPointLabs
 
         private void UpdateRecorderPane(int count, int id)
         {
-            var recorderPane = GetActivePane(Type.GetType("PowerPointLabs.RecorderTaskPane"));
+            var recorderPane = GetActivePane(typeof(RecorderTaskPane));
             
             // if there's no active pane associated with the current window, return
             if (recorderPane == null)
@@ -604,7 +598,7 @@ namespace PowerPointLabs
 
         private void BreakRecorderEvents()
         {
-            var recorderPane = GetActivePane(Type.GetType("PowerPointLabs.RecorderTaskPane"));
+            var recorderPane = GetActivePane(typeof(RecorderTaskPane));
 
             if (recorderPane == null)
             {
@@ -653,7 +647,7 @@ namespace PowerPointLabs
                 }
                 catch (Exception e)
                 {
-                    ErrorDialogWrapper.ShowDialog("Error when creating temp folder", string.Empty, e);
+                    ErrorDialogWrapper.ShowDialog(TextCollection.CreatTempFolderErrorMsg, string.Empty, e);
                 }
                 finally
                 {
@@ -676,7 +670,7 @@ namespace PowerPointLabs
                 }
                 catch (Exception e)
                 {
-                    ErrorDialogWrapper.ShowDialog("Error when accessing temp folder", string.Empty, e);
+                    ErrorDialogWrapper.ShowDialog(TextCollection.AccessTempFolderErrorMsg, string.Empty, e);
                 }
 
                 // open the zip and extract media files to temp folder
@@ -708,12 +702,12 @@ namespace PowerPointLabs
                 }
                 catch (Exception e)
                 {
-                    ErrorDialogWrapper.ShowDialog("Error when extracting", "Archived files cannot be retrieved.", e);
+                    ErrorDialogWrapper.ShowDialog(TextCollection.ExtraErrorMsg, "Archived files cannot be retrieved.", e);
                 }
             }
             catch (Exception e)
             {
-                ErrorDialogWrapper.ShowDialog("Error when preparing media files", "Files cannot be linked.", e);
+                ErrorDialogWrapper.ShowDialog(TextCollection.PrepareMediaErrorMsg, "Files cannot be linked.", e);
             }
 
             return true;
@@ -723,7 +717,7 @@ namespace PowerPointLabs
         {
             if (_oldVersion)
             {
-                MessageBox.Show(VersionNotCompatibleMsg);
+                MessageBox.Show(TextCollection.VersionNotCompatibleMsg);
                 return false;
             }
 
@@ -822,13 +816,13 @@ namespace PowerPointLabs
                 // presentation without recorder pane, paste event will not be entertained
                 if (!_documentPaneMapper.ContainsKey(_copyFromWnd) ||
                     _documentPaneMapper[_copyFromWnd] == null ||
-                    GetActivePane(Type.GetType("PowerPointLabs.RecorderTaskPane")) == null)
+                    GetActivePane(typeof(RecorderTaskPane)) == null)
                 {
                     return;
                 }
 
-                var copyFromRecorderPane = GetPaneFromWindow(Type.GetType("PowerPointLabs.RecorderTaskPane"), _copyFromWnd).Control as RecorderTaskPane;
-                var activeRecorderPane = GetActivePane(Type.GetType("PowerPointLabs.RecorderTaskPane")).Control as RecorderTaskPane;
+                var copyFromRecorderPane = GetPaneFromWindow(typeof(RecorderTaskPane), _copyFromWnd).Control as RecorderTaskPane;
+                var activeRecorderPane = GetActivePane(typeof(RecorderTaskPane)).Control as RecorderTaskPane;
 
                 var slideRange = selection.SlideRange;
                 var oriSlide = 0;
