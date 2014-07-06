@@ -421,6 +421,10 @@ namespace PowerPointLabs
                                       EventHandler visibleChangeEventHandler,
                                       EventHandler dockPositionChangeEventHandler)
         {
+            var loadingDialog = new LoadingDialog();
+            loadingDialog.Show();
+            loadingDialog.Refresh();
+
             // note down the control's width
             var width = control.Width;
 
@@ -450,6 +454,8 @@ namespace PowerPointLabs
             {
                 taskPane.DockPositionChanged += dockPositionChangeEventHandler;
             }
+
+            loadingDialog.Dispose();
         }
 
         private void TaskPaneSetup(PowerPoint.Presentation presentation)

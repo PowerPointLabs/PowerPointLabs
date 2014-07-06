@@ -43,6 +43,7 @@ namespace PowerPointLabs.Views
             TextFormatFlags.HorizontalCenter |
             TextFormatFlags.WordBreak |
             TextFormatFlags.EndEllipsis);
+
             _textBoxGraphics.DrawImageUnscaled(_bitmap, 0, 0);
         }
 

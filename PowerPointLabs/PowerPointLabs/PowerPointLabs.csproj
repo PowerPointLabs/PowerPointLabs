@@ -343,11 +343,20 @@
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="Views\SpeechPlayingForm.Designer.cs" />
+    <Compile Include="Views\PrepareDialog.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Views\PrepareDialog.Designer.cs">
+      <DependentUpon>PrepareDialog.cs</DependentUpon>
+    </Compile>
     <Compile Include="XMLMisc\XMLParser.cs" />
     <Compile Include="ZipStorer.cs" />
     <Compile Include="ZoomToArea.cs" />
     <EmbeddedResource Include="ColorPane.resx">
       <DependentUpon>ColorPane.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Views\PrepareDialog.resx">
+      <DependentUpon>PrepareDialog.cs</DependentUpon>
     </EmbeddedResource>
     <None Include="packages.config" />
     <Content Include="PowerPointLabs Quick Tutorial.pptx">
