@@ -1075,7 +1075,7 @@ namespace PowerPointLabs
             }
 
             removeAudioEnabled = false;
-            RefreshRibbonControl("removeAudio");
+            RefreshRibbonControl("RemoveAudioButton");
         }
 
         public void AddAudioClick(Office.IRibbonControl control)
@@ -1095,7 +1095,7 @@ namespace PowerPointLabs
                 if (slide.NotesPageText.Trim() != "")
                 {
                     removeAudioEnabled = true;
-                    RefreshRibbonControl("removeAudio");
+                    RefreshRibbonControl("RemoveAudioButton");
                     break;
                 }
             }
@@ -1140,13 +1140,13 @@ namespace PowerPointLabs
                 }
             }
             NotesToCaptions.EmbedCaptionsOnSelectedSlides();
-            RefreshRibbonControl("removeCaptions");
+            RefreshRibbonControl("RemoveCaptionsButton");
         }
 
         public void RemoveCaptionClick(Office.IRibbonControl control)
         {
             removeCaptionsEnabled = false;
-            RefreshRibbonControl("removeCaptions");
+            RefreshRibbonControl("RemoveCaptionsButton");
             NotesToCaptions.RemoveCaptionsFromSelectedSlides();
         }
 

@@ -55,5 +55,25 @@
             "in the outdated .ppt format used by PowerPoint 2007 (and older). If you wish to use the " +
             "full power of PowerPointLabs to enhance this file, please save in the .pptx format used " +
             "by PowerPoint 2010 and newer.";
+
+        public const string RecorderInitialTimer = "00:00:00";
+        public const string RecorderReadyStatusLabel = "Ready.";
+        public const string RecorderRecordingStatusLabel = "Recording...";
+        public const string RecorderPlayingStatusLabel = "Playing...";
+        public const string RecorderPauseStatusLabel = "Pause";
+        public const string RecorderUnrecognizeAudio = "Unrecognize Embedded Audio";
+        public const string RecorderScriptStatusNoAudio = "No Audio";
+        public const string RecorderWndMessageError = "Fatal error";
+        public const string RecorderNoScriptDetail = "No Script Available";
+        public const string RecorderNoInputDeviceMsg = "No Input Device suitable for the recording.\n" +
+                                                       "Make sure your computer has a built-in voice picker and has been enabled, " +
+                                                       "or an external voice input device has been connected.";
+        public const string RecorderNoInputDeviceMsgBoxTitle = "Input Device Not Found";
+        public const string RecorderSaveRecordMsg = "Do you want to save the record?";
+        public const string RecorderSaveRecordMsgBoxTitle = "Save Record";
+        public const string RecorderReplaceRecordMsgFormat = "Do you want to replace\n{0}\nwith current record?";
+        public const string RecorderReplaceRecordMsgBoxTitle = "Replacement";
+        public const string RecorderNoRecordToPlayError = "No record to play back. Please record first.";
+        public const string RecorderInvalidOperation = "Invalid Operation";
     }
 }

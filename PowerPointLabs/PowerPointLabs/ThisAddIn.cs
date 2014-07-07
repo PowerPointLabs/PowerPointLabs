@@ -141,8 +141,8 @@ namespace PowerPointLabs
             Ribbon.RefreshRibbonControl("ReloadSpotlightButton");
             Ribbon.RefreshRibbonControl("HighlightBulletsTextButton");
             Ribbon.RefreshRibbonControl("HighlightBulletsBackgroundButton");
-            Ribbon.RefreshRibbonControl("removeCaptions");
-            Ribbon.RefreshRibbonControl("removeAudio");
+            Ribbon.RefreshRibbonControl("RemoveCaptionsButton");
+            Ribbon.RefreshRibbonControl("RemoveAudioButton");
         }
 
         private void ThisAddIn_SelectionChanged(PowerPoint.Selection Sel)
@@ -550,7 +550,7 @@ namespace PowerPointLabs
                             if (Globals.ThisAddIn.Ribbon.removeAudioEnabled) continue;
                             
                             Globals.ThisAddIn.Ribbon.removeAudioEnabled = true;
-                            Globals.ThisAddIn.Ribbon.RefreshRibbonControl("removeAudio");
+                            Globals.ThisAddIn.Ribbon.RefreshRibbonControl("RemoveAudioButton");
                         }
                     }
                 }
