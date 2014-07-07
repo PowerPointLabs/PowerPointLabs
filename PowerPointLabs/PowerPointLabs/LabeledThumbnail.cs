@@ -26,8 +26,6 @@ namespace PowerPointLabs
         }
 
         # region Properties
-        private const string InvalidCharacterError = @"Empty name, '\' and '.' are not allowed for the name";
-
         public string NameLable
         {
             get
@@ -44,7 +42,7 @@ namespace PowerPointLabs
                 }
                 else
                 {
-                    MessageBox.Show(InvalidCharacterError);
+                    MessageBox.Show(TextCollection.LabeledThumbnailInvalidCharacterError);
                     labelTextBox.SelectAll();
                     _isGoodName = false;
                 }
@@ -175,7 +173,6 @@ namespace PowerPointLabs
         // for names, we do not allow names involve '\' or '.'
         // Regex = [\\\.]
         private const string InvalidCharsRegex = "[\\\\\\.]";
-        private const string FileNameExistError = "File name is already used";
 
         private double CalculateScalingRatio(Size oldSize, Size newSize)
         {
@@ -269,7 +266,7 @@ namespace PowerPointLabs
 
                 if (File.Exists(newPath))
                 {
-                    MessageBox.Show(FileNameExistError);
+                    MessageBox.Show(TextCollection.LabeledThumbnailFileNameExistError);
                     return false;
                 }
 

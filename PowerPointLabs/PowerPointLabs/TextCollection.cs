@@ -75,5 +75,11 @@
         public const string RecorderReplaceRecordMsgBoxTitle = "Replacement";
         public const string RecorderNoRecordToPlayError = "No record to play back. Please record first.";
         public const string RecorderInvalidOperation = "Invalid Operation";
+
+        public const string CustomShapeWmfFileNameInvalid = "Invalid shape name encountered";
+        public const string CustomShapeNoShapeText = "No shapes available";
+
+        public const string LabeledThumbnailInvalidCharacterError = @"Empty name, '\' and '.' are not allowed for the name";
+        public const string LabeledThumbnailFileNameExistError = "File name is already used";
     }
 }

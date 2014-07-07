@@ -146,9 +146,6 @@ namespace PowerPointLabs
         # endregion
 
         # region Helper Functions
-        private const string WmfFileNameInvalid = @"Invalid shape name encountered";
-        private const string NoShapeText = @"No shapes available";
-
         private readonly Label _noShapeLabel = new Label
                                                    {
                                                        AutoSize = true,
@@ -159,7 +156,7 @@ namespace PowerPointLabs
                                                        Location = new Point(81, 11),
                                                        Name = "noShapeLabel",
                                                        Size = new Size(212, 24),
-                                                       Text = NoShapeText
+                                                       Text = TextCollection.CustomShapeNoShapeText
                                                    };
 
         private readonly Panel _noShapePanel = new Panel
@@ -218,7 +215,7 @@ namespace PowerPointLabs
 
                 if (shapeName == null)
                 {
-                    MessageBox.Show(WmfFileNameInvalid);
+                    MessageBox.Show(TextCollection.CustomShapeWmfFileNameInvalid);
                     continue;
                 }
 
