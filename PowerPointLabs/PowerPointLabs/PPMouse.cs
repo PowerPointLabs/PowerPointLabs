@@ -3,6 +3,7 @@ using System.Diagnostics;
 using System.Runtime.InteropServices;
 using System.Windows.Forms;
 using System.Drawing;
+using PowerPointLabs;
 using PowerPoint = Microsoft.Office.Interop.PowerPoint;
 using System.Text;
 
@@ -11,11 +12,17 @@ namespace PPExtraEventHelper
     internal class PPMouse
     {
         private static int hook;
+
         private static bool isInit = false;
+
         private static PowerPoint.Selection selectedRange;
+
         private static IntPtr slideViewWindowHandle;
+
         private static Rectangle slideViewWindowRectangle;
+
         private static Native.HookProc hookProcedure;
+
         private static double startTimeInMillisecond = CurrentMillisecond();
 
         public static void Init(PowerPoint.Application application)

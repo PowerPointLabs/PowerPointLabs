@@ -1,4 +1,4 @@
-﻿namespace PowerPointLabs
+﻿namespace PowerPointLabs.Views
 {
     partial class HighlightBulletsDialogBox
     {

@@ -289,7 +289,7 @@
             this.Controls.Add(this.statusLabel);
             this.Name = "RecorderTaskPane";
             this.Size = new System.Drawing.Size(276, 543);
-            this.Load += new System.EventHandler(this.RecorderPane_Load);
+            this.Load += new System.EventHandler(this.RecorderPaneLoad);
             ((System.ComponentModel.ISupportInitialize)(this.soundTrackBar)).EndInit();
             this.recordListMenuStrip.ResumeLayout(false);
             this.ResumeLayout(false);

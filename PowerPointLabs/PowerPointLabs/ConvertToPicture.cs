@@ -9,6 +9,7 @@ namespace PowerPointLabs
     {
         private const string ErrorTypeNotSupported = "Convert to Picture only supports Shapes and Charts.";
         private const string ErrorWindowTitle = "Unable to Convert to Picture";
+        private const string ShapeSaveDialogFiler = "Windows Metafile|*.wmf";
 
         public static void Convert(PowerPoint.Selection selection)
         {
@@ -24,7 +25,33 @@ namespace PowerPointLabs
             }
         }
 
-        public static PowerPoint.Shape ConvertToPictureForShape(PowerPoint.Shape shape)
+        public static void ConvertAndSave(PowerPoint.Selection selection, string fileName)
+        {
+            if (IsSelectionShape(selection))
+            {
+                var grouped = selection.ShapeRange.Count > 1;
+
+                var shape = GetShapeFromSelection(selection);
+                shape = CutPasteShape(shape);
+                shape.Export(fileName, PowerPoint.PpShapeFormat.ppShapeFormatWMF, 0, 0,
+                             PowerPoint.PpExportMode.ppScaleXY);
+
+                if (grouped)
+                {
+                    shape.Ungroup().Select();
+                }
+                else
+                {
+                    shape.Select();
+                }
+            }
+            else
+            {
+                MessageBox.Show(ErrorTypeNotSupported, ErrorWindowTitle);
+            }
+        }
+
+        private static void ConvertToPictureForShape(PowerPoint.Shape shape)
         {
             float rotation = 0;
             try
@@ -47,7 +74,6 @@ namespace PowerPointLabs
             pic.Top = y + (height - pic.Height) / 2;
             pic.Rotation = rotation;
             pic.Select();
-            return pic;
         }
 
         public static System.Drawing.Bitmap GetConvertToPicMenuImage(Office.IRibbonControl control)

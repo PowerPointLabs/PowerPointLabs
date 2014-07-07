@@ -9,43 +9,32 @@ using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using System.Windows.Forms;
-using System.Xml.Linq;
 using System.Diagnostics;
 using Microsoft.Office.Tools;
 using PPExtraEventHelper;
 using System.IO.Compression;
 using PowerPointLabs.Models;
 using PowerPointLabs.Views;
-using PowerPointLabs.XMLMisc;
 using PowerPoint = Microsoft.Office.Interop.PowerPoint;
 using Office = Microsoft.Office.Core;
-using System.Deployment.Application;
 
 namespace PowerPointLabs
 {
     public partial class ThisAddIn
     {
-        public Ribbon1 ribbon;
-        public ArrayList indicators = new ArrayList();
-        
-        internal Dictionary<PowerPoint.DocumentWindow,
-                            List<CustomTaskPane>> documentPaneMapper = new Dictionary<PowerPoint.DocumentWindow,
-                                                                                      List<CustomTaskPane>>();
-        internal Dictionary<PowerPoint.DocumentWindow,
-                            string> documentHashcodeMapper = new Dictionary<PowerPoint.DocumentWindow,
-                                                                            string>();
-        internal bool customTaskPaneInit = false;
-        internal InShowControl inShowControlBox;
-
         private const string TempFolderNamePrefix = @"\PowerPointLabs Temp\";
 
-        private const string VersionNotCompatibleMsg =
-            "This file is not fully compatible with some features of PowerPointLabs because it is " +
-            "in the outdated .ppt format used by PowerPoint 2007 (and older). If you wish to use the " +
-            "full power of PowerPointLabs to enhance this file, please save in the .pptx format used " +
-            "by PowerPoint 2010 and newer.";
+        private readonly Dictionary<PowerPoint.DocumentWindow,
+                                    List<CustomTaskPane>> _documentPaneMapper = new Dictionary<PowerPoint.DocumentWindow,
+                                                                                               List<CustomTaskPane>>();
+        private readonly Dictionary<PowerPoint.DocumentWindow,
+                                    string> _documentHashcodeMapper = new Dictionary<PowerPoint.DocumentWindow,
+                                                                                     string>();
+        public Ribbon1 Ribbon;
+
         private bool _oldVersion;
 
+        # region Powerpoint Application Event Handlers
         private void ThisAddIn_Startup(object sender, EventArgs e)
         {
             SetupLogger();
@@ -57,17 +46,27 @@ namespace PowerPointLabs
             SetupTabActivateHandler();
             SetupAfterCopyPasteHandler();
 
+            // According to MSDN, when more than 1 event are triggered, callback's invoking sequence
+            // follows the defining order. I.e. the earlier you defined, the earlier it will be
+            // executed.
+
+            // Here, we want the priority to be: Application action > Window action > Slide action
+
+            // Priority High: Application Actions
             ((PowerPoint.EApplication_Event)this.Application).NewPresentation += ThisAddIn_NewPresentation;
             Application.AfterNewPresentation += ThisAddIn_AfterNewPresentation;
-            Application.WindowSelectionChange += ThisAddIn_SelectionChanged;
-            Application.PresentationClose += ThisAddIn_PresentationClose;
             Application.PresentationOpen += ThisAddIn_PrensentationOpen;
+            Application.PresentationClose += ThisAddIn_PresentationClose;
+
+            // Priority Mid: Window Actions
             Application.WindowActivate += ThisAddIn_ApplicationOnWindowActivate;
             Application.WindowDeactivate += ThisAddIn_ApplicationOnWindowDeactivate;
-            Application.SlideSelectionChanged += ThisAddIn_SlideSelectionChanged;
-
+            Application.WindowSelectionChange += ThisAddIn_SelectionChanged;
             Application.SlideShowBegin += SlideShowBeginHandler;
             Application.SlideShowEnd += SlideShowEndHandler;
+
+            // Priority Low: Slide Actions
+            Application.SlideSelectionChanged += ThisAddIn_SlideSelectionChanged;
         }
 
         private void ThisAddIn_ApplicationOnWindowDeactivate(PowerPoint.Presentation pres, PowerPoint.DocumentWindow wn)
@@ -78,174 +77,14 @@ namespace PowerPointLabs
         {
             if (pres != null)
             {
-                ribbon._embedAudioVisible = !pres.Name.EndsWith(".ppt");
+                Ribbon._embedAudioVisible = !pres.Name.EndsWith(".ppt");
             }
         }
 
-        void SetupLogger()
+        private void ThisAddIn_SlideSelectionChanged(PowerPoint.SlideRange SldRange)
         {
-            // The folder for the roaming current user 
-            string folder = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData);
-
-            // Combine the base folder with your specific folder....
-            string specificFolder = Path.Combine(folder, "PowerPointLabs");
-
-            // Check if folder exists and if not, create it
-            if (!Directory.Exists(specificFolder))
-                Directory.CreateDirectory(specificFolder);
-            string fileName = Path.Combine(specificFolder, "PowerPointLabs_Log_1.log");
-
-            Trace.AutoFlush = true;
-            Trace.Listeners.Add(new TextWriterTraceListener(fileName));
-        }
-
-        public CustomTaskPane GetActivePane(Type type)
-        {
-            return GetPaneFromWindow(type, Application.ActiveWindow);
-        }
-
-        public CustomTaskPane GetPaneFromWindow(Type type, PowerPoint.DocumentWindow window)
-        {
-            var panes = documentPaneMapper[window];
-            
-            foreach (var pane in panes)
-            {
-                var control = pane.Control;
-
-                if (control.GetType() == type)
-                {
-                    return pane;
-                }
-            }
-
-            return null;
-        }
-
-        void RegisterTaskPane(UserControl control, string title, PowerPoint.DocumentWindow wnd,
-                              EventHandler visibleChangeEventHandler,
-                              EventHandler dockPositionChangeEventHandler)
-        {
-            // note down the control's width
-            var width = control.Width;
-
-            // register the user control to the CustomTaskPanes collection and set it as
-            // current active task pane;
-            var taskPane = CustomTaskPanes.Add(control, title, wnd);
-
-            // map the current window with the task pane
-            if (!documentPaneMapper.ContainsKey(wnd))
-            {
-                documentPaneMapper[wnd] = new List<CustomTaskPane>();
-            }
-
-            documentPaneMapper[wnd].Add(taskPane);
-
-            // task pane UI setup
-            taskPane.Visible = false;
-            taskPane.Width = width + 20;
-
-            // event handlers register
-            if (visibleChangeEventHandler != null)
-            {
-                taskPane.VisibleChanged += visibleChangeEventHandler;
-            }
-
-            if (dockPositionChangeEventHandler != null)
-            {
-                taskPane.DockPositionChanged += dockPositionChangeEventHandler;
-            }
-        }
-
-        public string GetActiveWindowTempName()
-        {
-            return documentHashcodeMapper[Application.ActiveWindow];
-        }
-
-        void TaskPaneVisibleValueChangedEventHandler(object sender, EventArgs e)
-        {
-            var recorderPane = GetActivePane(Type.GetType("PowerPointLabs.RecorderTaskPane"));
-            var recorder = recorderPane.Control as RecorderTaskPane;
-
-            // trigger close form event when closing hide the pane
-            if (recorderPane.Visible)
-            {
-                recorder.RecorderPaneClosing();
-            }
-        }
-
-        void ThisAddIn_SelectionChanged(PowerPoint.Selection Sel)
-        {
-            ribbon.spotlightEnabled = false;
-            ribbon.inSlideEnabled = false;
-            ribbon.zoomButtonEnabled = false;
-            if (Sel.Type == PowerPoint.PpSelectionType.ppSelectionShapes)
-            {
-                PowerPoint.Shape sh = Sel.ShapeRange[1];
-                if (sh.Type == Office.MsoShapeType.msoAutoShape || sh.Type == Office.MsoShapeType.msoFreeform || sh.Type == Office.MsoShapeType.msoTextBox || sh.Type == Office.MsoShapeType.msoPlaceholder
-                    || sh.Type == Office.MsoShapeType.msoCallout || sh.Type == Office.MsoShapeType.msoInk || sh.Type == Office.MsoShapeType.msoGroup)
-                {
-                    ribbon.spotlightEnabled = true;
-                }
-                if ((sh.Type == Office.MsoShapeType.msoAutoShape && sh.AutoShapeType == Office.MsoAutoShapeType.msoShapeRectangle) || sh.Type == Office.MsoShapeType.msoPicture)
-                {
-                    ribbon.zoomButtonEnabled = true;
-                }
-                if (Sel.ShapeRange.Count > 1)
-                {
-                    foreach (PowerPoint.Shape tempShape in Sel.ShapeRange)
-                    {
-                        if (sh.Type == tempShape.Type)
-                        {
-                            ribbon.inSlideEnabled = true;
-                            ribbon.zoomButtonEnabled = true;
-                        }
-                        if (sh.Type == Office.MsoShapeType.msoAutoShape && sh.AutoShapeType != tempShape.AutoShapeType)
-                        {
-                            ribbon.inSlideEnabled = false;
-                            ribbon.zoomButtonEnabled = false;
-                            break;
-                        }
-                    }
-                }
-            }
-
-            ribbon.RefreshRibbonControl("AddSpotlightButton");
-            ribbon.RefreshRibbonControl("InSlideAnimateButton");
-            ribbon.RefreshRibbonControl("AddZoomInButton");
-            ribbon.RefreshRibbonControl("AddZoomOutButton");
-            ribbon.RefreshRibbonControl("ZoomToAreaButton");
-        }
-
-        bool SlidesInRangeHaveCaptions(PowerPoint.SlideRange SldRange)
-        {
-            foreach (PowerPoint.Slide slide in SldRange)
-            {
-                PowerPointSlide pptSlide = PowerPointSlide.FromSlideFactory(slide);
-                if (pptSlide.HasCaptions())
-                {
-                    return true;
-                }
-            }
-            return false;
-        }
-
-        bool SlidesInRangeHaveAudio(PowerPoint.SlideRange SldRange)
-        {
-            foreach (PowerPoint.Slide slide in SldRange)
-            {
-                PowerPointSlide pptSlide = PowerPointSlide.FromSlideFactory(slide);
-                if (pptSlide.HasAudio())
-                {
-                    return true;
-                }
-            }
-            return false;
-        }
-
-        void ThisAddIn_SlideSelectionChanged(PowerPoint.SlideRange SldRange)
-        {
-            ribbon.removeCaptionsEnabled = SlidesInRangeHaveCaptions(SldRange);
-            ribbon.removeAudioEnabled = SlidesInRangeHaveAudio(SldRange);
+            Ribbon.removeCaptionsEnabled = SlidesInRangeHaveCaptions(SldRange);
+            Ribbon.removeAudioEnabled = SlidesInRangeHaveAudio(SldRange);
             // update recorder pane
             if (SldRange.Count > 0)
             {
@@ -258,19 +97,19 @@ namespace PowerPointLabs
 
             // in case the recorder is on event
             BreakRecorderEvents();
-            
+
             // ribbon function init
-            ribbon.addAutoMotionEnabled = true;
-            ribbon.reloadAutoMotionEnabled = true;
-            ribbon.reloadSpotlight = true;
-            ribbon.highlightBulletsEnabled = true;
+            Ribbon.addAutoMotionEnabled = true;
+            Ribbon.reloadAutoMotionEnabled = true;
+            Ribbon.reloadSpotlight = true;
+            Ribbon.highlightBulletsEnabled = true;
 
             if (SldRange.Count != 1)
             {
-                ribbon.addAutoMotionEnabled = false;
-                ribbon.reloadAutoMotionEnabled = false;
-                ribbon.reloadSpotlight = false;
-                ribbon.highlightBulletsEnabled = false;
+                Ribbon.addAutoMotionEnabled = false;
+                Ribbon.reloadAutoMotionEnabled = false;
+                Ribbon.reloadSpotlight = false;
+                Ribbon.highlightBulletsEnabled = false;
             }
             else
             {
@@ -292,90 +131,149 @@ namespace PowerPointLabs
                     || ((tmp.Name.StartsWith("PPSlideMulti"))
                     && ((prev.Name.StartsWith("PPSlideAnimated"))
                     || (next.Name.StartsWith("PPSlideAnimated"))))))
-                    ribbon.reloadAutoMotionEnabled = false;
+                    Ribbon.reloadAutoMotionEnabled = false;
                 if (!(tmp.Name.Contains("PPTLabsSpotlight")))
-                    ribbon.reloadSpotlight = false;
+                    Ribbon.reloadSpotlight = false;
             }
 
-            ribbon.RefreshRibbonControl("AddAnimationButton");
-            ribbon.RefreshRibbonControl("ReloadButton");
-            ribbon.RefreshRibbonControl("ReloadSpotlightButton");
-            ribbon.RefreshRibbonControl("HighlightBulletsTextButton");
-            ribbon.RefreshRibbonControl("HighlightBulletsBackgroundButton");
-            ribbon.RefreshRibbonControl("removeCaptions");
-            ribbon.RefreshRibbonControl("removeAudio");
+            Ribbon.RefreshRibbonControl("AddAnimationButton");
+            Ribbon.RefreshRibbonControl("ReloadButton");
+            Ribbon.RefreshRibbonControl("ReloadSpotlightButton");
+            Ribbon.RefreshRibbonControl("HighlightBulletsTextButton");
+            Ribbon.RefreshRibbonControl("HighlightBulletsBackgroundButton");
+            Ribbon.RefreshRibbonControl("RemoveCaptionsButton");
+            Ribbon.RefreshRibbonControl("RemoveAudioButton");
         }
 
-        // TODO:
-        // Each new presentation should be assigned a UID, this will be used
-        // to distinguish different audio files with same slide number but
-        // within different presentation.
-        void ThisAddIn_NewPresentation(PowerPoint.Presentation Pres)
+        private void ThisAddIn_SelectionChanged(PowerPoint.Selection Sel)
         {
-            var activeWindow = Pres.Application.ActiveWindow;
+            Ribbon.spotlightEnabled = false;
+            Ribbon.inSlideEnabled = false;
+            Ribbon.zoomButtonEnabled = false;
+            if (Sel.Type == PowerPoint.PpSelectionType.ppSelectionShapes)
+            {
+                PowerPoint.Shape sh = Sel.ShapeRange[1];
+                if (sh.Type == Office.MsoShapeType.msoAutoShape || sh.Type == Office.MsoShapeType.msoFreeform || sh.Type == Office.MsoShapeType.msoTextBox || sh.Type == Office.MsoShapeType.msoPlaceholder
+                    || sh.Type == Office.MsoShapeType.msoCallout || sh.Type == Office.MsoShapeType.msoInk || sh.Type == Office.MsoShapeType.msoGroup)
+                {
+                    Ribbon.spotlightEnabled = true;
+                }
+                if ((sh.Type == Office.MsoShapeType.msoAutoShape && sh.AutoShapeType == Office.MsoAutoShapeType.msoShapeRectangle) || sh.Type == Office.MsoShapeType.msoPicture)
+                {
+                    Ribbon.zoomButtonEnabled = true;
+                }
+                if (Sel.ShapeRange.Count > 1)
+                {
+                    foreach (PowerPoint.Shape tempShape in Sel.ShapeRange)
+                    {
+                        if (sh.Type == tempShape.Type)
+                        {
+                            Ribbon.inSlideEnabled = true;
+                            Ribbon.zoomButtonEnabled = true;
+                        }
+                        if (sh.Type == Office.MsoShapeType.msoAutoShape && sh.AutoShapeType != tempShape.AutoShapeType)
+                        {
+                            Ribbon.inSlideEnabled = false;
+                            Ribbon.zoomButtonEnabled = false;
+                            break;
+                        }
+                    }
+                }
+            }
+
+            Ribbon.RefreshRibbonControl("AddSpotlightButton");
+            Ribbon.RefreshRibbonControl("InSlideAnimateButton");
+            Ribbon.RefreshRibbonControl("AddZoomInButton");
+            Ribbon.RefreshRibbonControl("AddZoomOutButton");
+            Ribbon.RefreshRibbonControl("ZoomToAreaButton");
+        }
+
+        private void ThisAddIn_NewPresentation(PowerPoint.Presentation Pres)
+        {
             var tempName = Pres.Name.GetHashCode().ToString();
 
             string tempFolderPath = Path.GetTempPath() + TempFolderNamePrefix + tempName + @"\";
-            
+
             if (Directory.Exists(tempFolderPath))
             {
                 if (Directory.Exists(tempFolderPath))
                 {
                     Directory.Delete(tempFolderPath, true);
                 }
-            }
 
-            documentHashcodeMapper[activeWindow] = tempName;
-            
-            // register all task panes when new document opens
-            RegisterTaskPane(new RecorderTaskPane(tempName), "Record Management", activeWindow,
-                             TaskPaneVisibleValueChangedEventHandler, null);
-            RegisterTaskPane(new ColorPane(), "Color Panel", activeWindow, null, null);
-            // setup a new recorder pane when an exist file opened
-            //SetupRecorderTaskPane(Pres.Application.ActiveWindow);
+                Directory.CreateDirectory(tempFolderPath);
+            }
         }
 
         // solve new un-modified unsave problem
-        void ThisAddIn_AfterNewPresentation(PowerPoint.Presentation Pres)
+        private void ThisAddIn_AfterNewPresentation(PowerPoint.Presentation Pres)
         {
             //Access the BuiltInDocumentProperties so that the property storage does get created.
             object o = Pres.BuiltInDocumentProperties;
             Pres.Saved = Microsoft.Office.Core.MsoTriState.msoTrue;
         }
 
-        void ThisAddIn_PrensentationOpen(PowerPoint.Presentation Pres)
+        private void ThisAddIn_PrensentationOpen(PowerPoint.Presentation Pres)
         {
             var activeWindow = Pres.Application.ActiveWindow;
             var tempName = Pres.Name.GetHashCode().ToString();
+            var tempPath = Path.GetTempPath() + TempFolderNamePrefix + tempName + @"\";
 
-            documentHashcodeMapper[activeWindow] = tempName;
+            // as long as an existing file is opened, we need to extract embedded
+            // audio files and relationship XMLs to temp folder
 
-            // extract embedded audio files to temp folder
-            if (!PrepareMediaFiles(Pres))
+            // if we opened a new window, register and associate panes with the window
+            if (!_documentHashcodeMapper.ContainsKey(activeWindow))
             {
-                _oldVersion = true;
-                return;
-            }
-            
-            _oldVersion = false;
+                // extract the media files and relationships to a folder with presentation's
+                // hash code
+                if (!PrepareMediaFiles(Pres, tempPath))
+                {
+                    _oldVersion = true;
+                    return;
+                }
 
-            // register all task panes when opening documents
-            RegisterTaskPane(new RecorderTaskPane(tempName), "Record Management", activeWindow,
-                             TaskPaneVisibleValueChangedEventHandler, null);
-            RegisterTaskPane(new ColorPane(), "Color Panel", activeWindow, null, null);
+                _oldVersion = false;
+            }
+            else
+            {
+                // this case happens when we create a new blank presentation, and open
+                // an exisiting file immediately. The exsiting file shares the same
+                // window with the blank presentation, but the blank presentation has
+                // gone without triggering ApplicationClose event. Instead,
+                // ApplicationOpen and SlideSlectionChange events are triggered.
+
+                // to deal with this special case, we need to prepare media files and
+                // xml relationships to the folder belongs to the blank presentation, and
+                // manually call the setup method of the recorder pane.
+                var oriTempPath = Path.GetTempPath() + TempFolderNamePrefix +
+                                  _documentHashcodeMapper[activeWindow] + @"\";
+                if (!PrepareMediaFiles(Pres, oriTempPath))
+                {
+                    _oldVersion = true;
+                    return;
+                }
+
+                _oldVersion = false;
+
+                var recorderPane = GetActivePane(typeof(RecorderTaskPane));
+                var recorder = recorderPane.Control as RecorderTaskPane;
+
+                recorder.SetupListsWhenOpen();
+            }
         }
 
-        void ThisAddIn_PresentationClose(PowerPoint.Presentation Pres)
+        private void ThisAddIn_PresentationClose(PowerPoint.Presentation Pres)
         {
-            var recorderPane = GetActivePane(Type.GetType("PowerPointLabs.RecorderTaskPane"));
+            var recorderPane = GetActivePane(typeof(RecorderTaskPane));
 
             if (recorderPane == null)
             {
                 return;
             }
-            
+
             var recorder = recorderPane.Control as RecorderTaskPane;
-            
+
             if (recorder.HasEvent())
             {
                 recorder.ForceStopEvent();
@@ -392,16 +290,219 @@ namespace PowerPointLabs
             if (Pres.Saved == Office.MsoTriState.msoTrue)
             {
                 // remove task pane
-                var activePanes = documentPaneMapper[Pres.Application.ActiveWindow];
+                var activePanes = _documentPaneMapper[Pres.Application.ActiveWindow];
                 foreach (var pane in activePanes)
                 {
                     CustomTaskPanes.Remove(pane);
                 }
 
                 // remove entry from mappers
-                documentPaneMapper.Remove(Pres.Application.ActiveWindow);
-                documentHashcodeMapper.Remove(Pres.Application.ActiveWindow);
+                _documentPaneMapper.Remove(Pres.Application.ActiveWindow);
+                _documentHashcodeMapper.Remove(Pres.Application.ActiveWindow);
             }
+        }
+
+        private void ThisAddIn_Shutdown(object sender, EventArgs e)
+        {
+            PPMouse.StopHook();
+            Trace.TraceInformation(DateTime.Now.ToString("yyyyMMddHHmmss") + ": PowerPointLabs Exiting");
+            Trace.Close();
+        }
+        # endregion
+
+        # region API
+        public CustomTaskPane GetActivePane(Type type)
+        {
+            return GetPaneFromWindow(type, Application.ActiveWindow);
+        }
+
+        public CustomTaskPane GetPaneFromWindow(Type type, PowerPoint.DocumentWindow window)
+        {
+            if (!_documentPaneMapper.ContainsKey(window))
+            {
+                return null;
+            }
+
+            var panes = _documentPaneMapper[window];
+
+            foreach (var pane in panes)
+            {
+                try
+                {
+                    var control = pane.Control;
+
+                    if (control.GetType() == type)
+                    {
+                        return pane;
+                    }
+                }
+
+                catch (Exception)
+                {
+                    return null;
+                }
+            }
+
+            return null;
+        }
+
+        public string GetActiveWindowTempName()
+        {
+            return _documentHashcodeMapper[Application.ActiveWindow];
+        }
+
+        public void RegisterRecorderPane(PowerPoint.Presentation presentation)
+        {
+            if (GetActivePane(typeof(RecorderTaskPane)) != null)
+            {
+                return;
+            }
+
+            var activeWindow = presentation.Application.ActiveWindow;
+            var tempName = presentation.Name.GetHashCode().ToString();
+
+            _documentHashcodeMapper[activeWindow] = tempName;
+
+            RegisterTaskPane(new RecorderTaskPane(tempName), "Record Management", activeWindow,
+                             TaskPaneVisibleValueChangedEventHandler, null);
+        }
+
+        public void RegisterColorPane(PowerPoint.Presentation presentation)
+        {
+            if (GetActivePane(typeof(ColorPane)) != null)
+            {
+                return;
+            }
+
+            var activeWindow = presentation.Application.ActiveWindow;
+
+            TaskPaneSetup(presentation);
+            RegisterTaskPane(new ColorPane(), "Color Panel", activeWindow, null, null);
+        }
+
+        public void RegisterCustomPane(PowerPoint.Presentation presentation)
+        {
+            if (GetActivePane(typeof(CustomShapePane)) != null)
+            {
+                return;
+            }
+
+            var activeWindow = presentation.Application.ActiveWindow;
+            
+            TaskPaneSetup(presentation);
+            RegisterTaskPane(new CustomShapePane(), "Shapes Lab", activeWindow, null, null);
+        }
+        # endregion
+
+        # region Helper Functions
+        private void SetupLogger()
+        {
+            // The folder for the roaming current user 
+            string folder = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData);
+
+            // Combine the base folder with your specific folder....
+            string specificFolder = Path.Combine(folder, "PowerPointLabs");
+
+            // Check if folder exists and if not, create it
+            if (!Directory.Exists(specificFolder))
+                Directory.CreateDirectory(specificFolder);
+            string fileName = Path.Combine(specificFolder, "PowerPointLabs_Log_1.log");
+
+            Trace.AutoFlush = true;
+            Trace.Listeners.Add(new TextWriterTraceListener(fileName));
+        }
+
+        private void RegisterTaskPane(UserControl control, string title, PowerPoint.DocumentWindow wnd,
+                                      EventHandler visibleChangeEventHandler,
+                                      EventHandler dockPositionChangeEventHandler)
+        {
+            var loadingDialog = new LoadingDialog();
+            loadingDialog.Show();
+            loadingDialog.Refresh();
+
+            // note down the control's width
+            var width = control.Width;
+
+            // register the user control to the CustomTaskPanes collection and set it as
+            // current active task pane;
+            var taskPane = CustomTaskPanes.Add(control, title, wnd);
+
+            // map the current window with the task pane
+            if (!_documentPaneMapper.ContainsKey(wnd))
+            {
+                _documentPaneMapper[wnd] = new List<CustomTaskPane>();
+            }
+
+            _documentPaneMapper[wnd].Add(taskPane);
+
+            // task pane UI setup
+            taskPane.Visible = false;
+            taskPane.Width = width + 20;
+
+            // event handlers register
+            if (visibleChangeEventHandler != null)
+            {
+                taskPane.VisibleChanged += visibleChangeEventHandler;
+            }
+
+            if (dockPositionChangeEventHandler != null)
+            {
+                taskPane.DockPositionChanged += dockPositionChangeEventHandler;
+            }
+
+            loadingDialog.Dispose();
+        }
+
+        private void TaskPaneSetup(PowerPoint.Presentation presentation)
+        {
+            var activeWindow = presentation.Application.ActiveWindow;
+            var tempName = presentation.Name.GetHashCode().ToString();
+
+            _documentHashcodeMapper[activeWindow] = tempName;
+        }
+
+        private void TaskPaneVisibleValueChangedEventHandler(object sender, EventArgs e)
+        {
+            var recorderPane = GetActivePane(typeof(RecorderTaskPane));
+
+            if (recorderPane == null)
+            {
+                return;
+            }
+
+            var recorder = recorderPane.Control as RecorderTaskPane;
+
+            // trigger close form event when closing hide the pane
+            if (recorderPane.Visible)
+            {
+                recorder.RecorderPaneClosing();
+            }
+        }
+
+        private bool SlidesInRangeHaveCaptions(PowerPoint.SlideRange SldRange)
+        {
+            foreach (PowerPoint.Slide slide in SldRange)
+            {
+                PowerPointSlide pptSlide = PowerPointSlide.FromSlideFactory(slide);
+                if (pptSlide.HasCaptions())
+                {
+                    return true;
+                }
+            }
+            return false;
+        }
+
+        private bool SlidesInRangeHaveAudio(PowerPoint.SlideRange SldRange)
+        {
+            foreach (PowerPoint.Slide slide in SldRange)
+            {
+                PowerPointSlide pptSlide = PowerPointSlide.FromSlideFactory(slide);
+                if (pptSlide.HasAudio())
+                {
+                    return true;
+                }
+            }
+            return false;
         }
 
         private void SlideShowBeginHandler(PowerPoint.SlideShowWindow wn)
@@ -413,13 +514,13 @@ namespace PowerPointLabs
         {
             isInSlideShow = false;
             
-            var recorderPane = GetActivePane(Type.GetType("PowerPointLabs.RecorderTaskPane"));
-            
+            var recorderPane = GetActivePane(typeof(RecorderTaskPane));
+
             if (recorderPane == null)
             {
                 return;
             }
-            
+
             var recorder = recorderPane.Control as RecorderTaskPane;
 
             // force recording session ends
@@ -447,10 +548,10 @@ namespace PowerPointLabs
                         {
                             audio.Item1.EmbedOnSlide(slides[i], audio.Item2);
 
-                            if (Globals.ThisAddIn.ribbon.removeAudioEnabled) continue;
+                            if (Globals.ThisAddIn.Ribbon.removeAudioEnabled) continue;
                             
-                            Globals.ThisAddIn.ribbon.removeAudioEnabled = true;
-                            Globals.ThisAddIn.ribbon.RefreshRibbonControl("removeAudio");
+                            Globals.ThisAddIn.Ribbon.removeAudioEnabled = true;
+                            Globals.ThisAddIn.Ribbon.RefreshRibbonControl("RemoveAudioButton");
                         }
                     }
                 }
@@ -465,8 +566,9 @@ namespace PowerPointLabs
 
         private void UpdateRecorderPane(int count, int id)
         {
-            var recorderPane = GetActivePane(Type.GetType("PowerPointLabs.RecorderTaskPane"));
-
+            var recorderPane = GetActivePane(typeof(RecorderTaskPane));
+            
+            // if there's no active pane associated with the current window, return
             if (recorderPane == null)
             {
                 return;
@@ -497,13 +599,13 @@ namespace PowerPointLabs
 
         private void BreakRecorderEvents()
         {
-            var recorderPane = GetActivePane(Type.GetType("PowerPointLabs.RecorderTaskPane"));
-            
+            var recorderPane = GetActivePane(typeof(RecorderTaskPane));
+
             if (recorderPane == null)
             {
                 return;
             }
-            
+
             var recorder = recorderPane.Control as RecorderTaskPane;
 
             // TODO:
@@ -516,7 +618,7 @@ namespace PowerPointLabs
             }
         }
 
-        private bool PrepareMediaFiles(PowerPoint.Presentation Pres)
+        private bool PrepareMediaFiles(PowerPoint.Presentation Pres, string tempPath)
         {
             try
             {
@@ -532,10 +634,9 @@ namespace PowerPointLabs
                     presName = Pres.Name + ".pptx";
                 }
 
-                string tempPath = Path.GetTempPath() + TempFolderNamePrefix + Pres.Name.GetHashCode().ToString() + @"\";
-                string zipName = presName.Replace(".pptx", ".zip");
-                string zipFullPath = tempPath + zipName;
-                string presFullName = Pres.FullName;
+                var zipName = presName.Replace(".pptx", ".zip");
+                var zipFullPath = tempPath + zipName;
+                var presFullName = Pres.FullName;
 
                 // if temp folder doesn't exist, create
                 try
@@ -547,7 +648,7 @@ namespace PowerPointLabs
                 }
                 catch (Exception e)
                 {
-                    ErrorDialogWrapper.ShowDialog("Error when creating temp folder", string.Empty, e);
+                    ErrorDialogWrapper.ShowDialog(TextCollection.CreatTempFolderErrorMsg, string.Empty, e);
                 }
                 finally
                 {
@@ -570,7 +671,15 @@ namespace PowerPointLabs
                 }
                 catch (Exception e)
                 {
-                    ErrorDialogWrapper.ShowDialog("Error when accessing temp folder", string.Empty, e);
+                    ErrorDialogWrapper.ShowDialog(TextCollection.AccessTempFolderErrorMsg, string.Empty, e);
+                }
+
+                var fileInfo = new FileInfo(zipFullPath);
+                
+                // if there's nothing inside the zip file, we do nothing
+                if (fileInfo.Length == 0)
+                {
+                    return true;
                 }
 
                 // open the zip and extract media files to temp folder
@@ -602,12 +711,12 @@ namespace PowerPointLabs
                 }
                 catch (Exception e)
                 {
-                    ErrorDialogWrapper.ShowDialog("Error when extracting", "Archived files cannot be retrieved.", e);
+                    ErrorDialogWrapper.ShowDialog(TextCollection.ExtraErrorMsg, "Archived files cannot be retrieved.", e);
                 }
             }
             catch (Exception e)
             {
-                ErrorDialogWrapper.ShowDialog("Error when preparing media files", "Files cannot be linked.", e);
+                ErrorDialogWrapper.ShowDialog(TextCollection.PrepareMediaErrorMsg, "Files cannot be linked.", e);
             }
 
             return true;
@@ -617,12 +726,13 @@ namespace PowerPointLabs
         {
             if (_oldVersion)
             {
-                MessageBox.Show(VersionNotCompatibleMsg);
+                MessageBox.Show(TextCollection.VersionNotCompatibleMsg);
                 return false;
             }
 
             return true;
         }
+        # endregion
 
         # region Copy paste handlers
 
@@ -792,15 +902,15 @@ namespace PowerPointLabs
 
                 // if we copied from a presentation without recorder pane or pasted to a
                 // presentation without recorder pane, paste event will not be entertained
-                if (!documentPaneMapper.ContainsKey(_copyFromWnd) ||
-                    documentPaneMapper[_copyFromWnd] == null ||
-                    GetActivePane(Type.GetType("PowerPointLabs.RecorderTaskPane")) == null)
+                if (!_documentPaneMapper.ContainsKey(_copyFromWnd) ||
+                    _documentPaneMapper[_copyFromWnd] == null ||
+                    GetActivePane(typeof(RecorderTaskPane)) == null)
                 {
                     return;
                 }
 
-                var copyFromRecorderPane = GetPaneFromWindow(Type.GetType("PowerPointLabs.RecorderTaskPane"), _copyFromWnd).Control as RecorderTaskPane;
-                var activeRecorderPane = GetActivePane(Type.GetType("PowerPointLabs.RecorderTaskPane")).Control as RecorderTaskPane;
+                var copyFromRecorderPane = GetPaneFromWindow(typeof(RecorderTaskPane), _copyFromWnd).Control as RecorderTaskPane;
+                var activeRecorderPane = GetActivePane(typeof(RecorderTaskPane)).Control as RecorderTaskPane;
 
                 var slideRange = selection.SlideRange;
                 var oriSlide = 0;
@@ -992,20 +1102,12 @@ namespace PowerPointLabs
                 //
             }
         }
-
-        #endregion
-
-        private void ThisAddIn_Shutdown(object sender, System.EventArgs e)
-        {
-            PPExtraEventHelper.PPMouse.StopHook();
-            Trace.TraceInformation(DateTime.Now.ToString("yyyyMMddHHmmss") + ": PowerPointLabs Exiting");
-            Trace.Close();
-        }
+        # endregion
 
         protected override Microsoft.Office.Core.IRibbonExtensibility CreateRibbonExtensibilityObject()
         {
-            ribbon = new Ribbon1();
-            return ribbon;
+            Ribbon = new Ribbon1();
+            return Ribbon;
         }
 
         #region VSTO generated code

@@ -209,6 +209,106 @@ namespace PowerPointLabs
             }
         }
 
+        // Supertips Callbacks
+        public string GetAddAnimationButtonSupertip(Office.IRibbonControl control)
+        {
+            return TextCollection.AddAnimationButtonSupertip;
+        }
+        public string GetReloadButtonSupertip(Office.IRibbonControl control)
+        {
+            return TextCollection.ReloadButtonSupertip;
+        }
+        public string GetInSlideAnimateButtonSupertip(Office.IRibbonControl control)
+        {
+            return TextCollection.InSlideAnimateButtonSupertip;
+        }
+        
+        public string GetAddZoomInButtonSupertip(Office.IRibbonControl control)
+        {
+            return TextCollection.AddZoomInButtonSupertip;
+        }
+        public string GetAddZoomOutButtonSupertip(Office.IRibbonControl control)
+        {
+            return TextCollection.AddZoomOutButtonSupertip;
+        }
+        public string GetZoomToAreaButtonSupertip(Office.IRibbonControl control)
+        {
+            return TextCollection.ZoomToAreaButtonSupertip;
+        }
+        
+        public string GetMoveCropShapeButtonSupertip(Office.IRibbonControl control)
+        {
+            return TextCollection.MoveCropShapeButtonSupertip;
+        }
+        
+        public string GetAddSpotlightButtonSupertip(Office.IRibbonControl control)
+        {
+            return TextCollection.AddSpotlightButtonSupertip;
+        }
+        public string GetReloadSpotlightButtonSupertip(Office.IRibbonControl control)
+        {
+            return TextCollection.ReloadSpotlightButtonSupertip;
+        }
+        
+        public string GetAddAudioButtonSupertip(Office.IRibbonControl control)
+        {
+            return TextCollection.AddAudioButtonSupertip;
+        }
+        public string GetGenerateRecordButtonSupertip(Office.IRibbonControl control)
+        {
+            return TextCollection.GenerateRecordButtonSupertip;
+        }
+        public string GetAddRecordButtonSupertip(Office.IRibbonControl control)
+        {
+            return TextCollection.AddRecordButtonSupertip;
+        }
+        public string GetRemoveAudioButtonSupertip(Office.IRibbonControl control)
+        {
+            return TextCollection.RemoveAudioButtonSupertip;
+        }
+        
+        public string GetAddCaptionsButtonSupertip(Office.IRibbonControl control)
+        {
+            return TextCollection.AddCaptionsButtonSupertip;
+        }
+        public string GetRemoveCaptionsButtonSupertip(Office.IRibbonControl control)
+        {
+            return TextCollection.RemoveCaptionsButtonSupertip;
+        }
+        
+        public string GetHighlightBulletsTextButtonSupertip(Office.IRibbonControl control)
+        {
+            return TextCollection.HighlightBulletsTextButtonSupertip;
+        }
+        public string GetHighlightBulletsBackgroundButtonSupertip(Office.IRibbonControl control)
+        {
+            return TextCollection.HighlightBulletsBackgroundButtonSupertip;
+        }
+        
+        public string GetColorPickerButtonSupertip(Office.IRibbonControl control)
+        {
+            return TextCollection.ColorPickerButtonSupertip;
+        }
+        
+        public string GetCustomeShapeButtonSupertip(Office.IRibbonControl control)
+        {
+            return TextCollection.CustomeShapeButtonSupertip;
+        }
+        
+        public string GetHelpButtonSupertip(Office.IRibbonControl control)
+        {
+            return TextCollection.HelpButtonSupertip;
+        }
+        public string GetFeedbackButtonSupertip(Office.IRibbonControl control)
+        {
+            return TextCollection.FeedbackButtonSupertip;
+        }
+        public string GetAboutButtonSupertip(Office.IRibbonControl control)
+        {
+            return TextCollection.AboutButtonSupertip;
+        }
+
+
         //Button Click Callbacks        
         public void AddAnimationButtonClick(Office.IRibbonControl control)
         {
@@ -240,7 +340,7 @@ namespace PowerPointLabs
         }
         public void AboutButtonClick(Office.IRibbonControl control)
         {
-            MessageBox.Show("          PowerPointLabs Plugin Version 1.8.5 [Release date: 27 Jun 2014]\n     Developed at School of Computing, National University of Singapore.\n        For more information, visit our website http://PowerPointLabs.info", "About PowerPointLabs");
+            MessageBox.Show(TextCollection.AboutInfo, "About PowerPointLabs");
         }
         public void HelpButtonClick(Office.IRibbonControl control)
         {
@@ -912,7 +1012,6 @@ namespace PowerPointLabs
             return _embedAudioVisible;
         }
 
-        # region AudioRecord Button Callbacks
         public void RecManagementClick(Office.IRibbonControl control)
         {
             if (!Globals.ThisAddIn.VerifyVersion())
@@ -920,7 +1019,9 @@ namespace PowerPointLabs
                 return;
             }
 
-            var recorderPane = Globals.ThisAddIn.GetActivePane(Type.GetType("PowerPointLabs.RecorderTaskPane"));
+            Globals.ThisAddIn.RegisterRecorderPane(Globals.ThisAddIn.Application.ActivePresentation);
+
+            var recorderPane = Globals.ThisAddIn.GetActivePane(typeof(RecorderTaskPane));
             var recorder = recorderPane.Control as RecorderTaskPane;
 
             // TODO:
@@ -931,10 +1032,61 @@ namespace PowerPointLabs
             {
                 // fire the pane visble change event
                 recorderPane.Visible = true;
-                
+
                 // reload the pane
                 recorder.RecorderPaneReload();
             }
+        }
+
+        # region Custom Shapes
+        public void CustomShapeButtonClick(Office.IRibbonControl control)
+        {
+            Globals.ThisAddIn.RegisterCustomPane(Globals.ThisAddIn.Application.ActivePresentation);
+            
+            var customShapePane = Globals.ThisAddIn.GetActivePane(typeof(CustomShapePane));
+
+            if (customShapePane == null || !(customShapePane.Control is CustomShapePane))
+            {
+                return;
+            }
+
+            var customShape = customShapePane.Control as CustomShapePane;
+
+            // if currently the pane is hidden, show the pane
+            if (customShapePane.Visible)
+            {
+                return;
+            }
+
+            customShape.PaneReload();
+            customShapePane.Visible = true;
+        }
+
+        public void AddShapeButtonClick(Office.IRibbonControl control)
+        {
+            Globals.ThisAddIn.RegisterCustomPane(Globals.ThisAddIn.Application.ActivePresentation);
+
+            var selection = PowerPointPresentation.CurrentSelection;
+            
+            var customShapePane = Globals.ThisAddIn.GetActivePane(typeof(CustomShapePane));
+
+            if (customShapePane == null || !(customShapePane.Control is CustomShapePane))
+            {
+                return;
+            }
+
+            // show pane if not visible
+            if (!customShapePane.Visible)
+            {
+                customShapePane.Visible = true;
+            }
+
+            var customShape = customShapePane.Control as CustomShapePane;
+
+            customShape.PaneReload();
+            ConvertToPicture.ConvertAndSave(selection, customShape.NextDefaultFullName);
+            customShape.AddCustomShape(customShape.NextDefaultNameWithoutExtension, customShape.NextDefaultFullName,
+                                       true);
         }
         # endregion
 
@@ -951,7 +1103,7 @@ namespace PowerPointLabs
                 return;
             }
 
-            var recorderPane = Globals.ThisAddIn.GetActivePane(Type.GetType("PowerPointLabs.RecorderTaskPane"));
+            var recorderPane = Globals.ThisAddIn.GetActivePane(typeof(RecorderTaskPane));
             var recorder = recorderPane.Control as RecorderTaskPane;
             
             try
@@ -975,7 +1127,7 @@ namespace PowerPointLabs
             }
 
             removeAudioEnabled = false;
-            RefreshRibbonControl("removeAudio");
+            RefreshRibbonControl("RemoveAudioButton");
         }
 
         public void AddAudioClick(Office.IRibbonControl control)
@@ -987,7 +1139,7 @@ namespace PowerPointLabs
 
             var currentSlide = PowerPointPresentation.CurrentSlide;
 
-            var recorderPane = Globals.ThisAddIn.GetActivePane(Type.GetType("PowerPointLabs.RecorderTaskPane"));
+            var recorderPane = Globals.ThisAddIn.GetActivePane(typeof(RecorderTaskPane));
             var recorder = recorderPane.Control as RecorderTaskPane;
 
             foreach (PowerPointSlide slide in PowerPointPresentation.SelectedSlides)
@@ -995,7 +1147,7 @@ namespace PowerPointLabs
                 if (slide.NotesPageText.Trim() != "")
                 {
                     removeAudioEnabled = true;
-                    RefreshRibbonControl("removeAudio");
+                    RefreshRibbonControl("RemoveAudioButton");
                     break;
                 }
             }
@@ -1040,13 +1192,13 @@ namespace PowerPointLabs
                 }
             }
             NotesToCaptions.EmbedCaptionsOnSelectedSlides();
-            RefreshRibbonControl("removeCaptions");
+            RefreshRibbonControl("RemoveCaptionsButton");
         }
 
         public void RemoveCaptionClick(Office.IRibbonControl control)
         {
             removeCaptionsEnabled = false;
-            RefreshRibbonControl("removeCaptions");
+            RefreshRibbonControl("RemoveCaptionsButton");
             NotesToCaptions.RemoveCaptionsFromSelectedSlides();
         }
 
@@ -1195,7 +1347,9 @@ namespace PowerPointLabs
                 //ColorPickerForm colorPickerForm = new ColorPickerForm();
                 //colorPickerForm.Show();
 
-                var colorPane = Globals.ThisAddIn.GetActivePane(Type.GetType("PowerPointLabs.ColorPane"));
+                Globals.ThisAddIn.RegisterColorPane(Globals.ThisAddIn.Application.ActivePresentation);
+
+                var colorPane = Globals.ThisAddIn.GetActivePane(typeof(ColorPane));
                 var color = colorPane.Control as ColorPane;
 
                 // if currently the pane is hidden, show the pane
@@ -1213,6 +1367,7 @@ namespace PowerPointLabs
             }
         }
         #endregion
+
         private static string GetResourceText(string resourceName)
         {
             Assembly asm = Assembly.GetExecutingAssembly();

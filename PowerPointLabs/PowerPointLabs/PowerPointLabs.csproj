@@ -162,6 +162,9 @@
   -->
   <ItemGroup>
     <Reference Include="Accessibility" />
+    <Reference Include="ExtendedPanel">
+      <HintPath>Dependency\ExtendedPanel.dll</HintPath>
+    </Reference>
     <Reference Include="Microsoft.Office.Interop.PowerPoint, Version=15.0.0.0, Culture=neutral, PublicKeyToken=71e9bce111e9429c, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <EmbedInteropTypes>True</EmbedInteropTypes>
@@ -245,6 +248,20 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
+    <Compile Include="LabeledThumbnail.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="LabeledThumbnail.Designer.cs">
+      <DependentUpon>LabeledThumbnail.cs</DependentUpon>
+    </Compile>
+    <Compile Include="CustomShapePane.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="CustomShapePane.Designer.cs">
+      <DependentUpon>CustomShapePane.cs</DependentUpon>
+    </Compile>
+    <Compile Include="TextCollection.cs" />
+    <Compile Include="Views\CustomPaintTextBox.cs" />
     <Compile Include="Views\ErrorDialogWrapper.cs" />
     <Compile Include="FitToSlide.cs" />
     <Compile Include="HighlightTextFragments.cs" />
@@ -344,6 +361,12 @@
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="Views\SpeechPlayingForm.Designer.cs" />
+    <Compile Include="Views\LoadingDialog.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Views\LoadingDialog.Designer.cs">
+      <DependentUpon>LoadingDialog.cs</DependentUpon>
+    </Compile>
     <Compile Include="XMLMisc\XMLParser.cs" />
     <Compile Include="ZipStorer.cs" />
     <Compile Include="ZoomToArea.cs" />
@@ -365,6 +388,9 @@
     <EmbeddedResource Include="ColorPicker\ColorPane.resx">
       <DependentUpon>ColorPane.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="Views\LoadingDialog.resx">
+      <DependentUpon>LoadingDialog.cs</DependentUpon>
+    </EmbeddedResource>
     <None Include="packages.config" />
     <Content Include="PowerPointLabs Quick Tutorial.pptx">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
@@ -375,6 +401,12 @@
     <None Include="Resources\Stop.png" />
     <None Include="Resources\Play.png" />
     <None Include="Resources\Pause.png" />
+    <EmbeddedResource Include="LabeledThumbnail.resx">
+      <DependentUpon>LabeledThumbnail.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="CustomShapePane.resx">
+      <DependentUpon>CustomShapePane.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="RecorderTaskPane.resx">
       <DependentUpon>RecorderTaskPane.cs</DependentUpon>
     </EmbeddedResource>
@@ -574,6 +606,7 @@
     <None Include="Resources\HighlightBackgroundContext.png" />
   </ItemGroup>
   <ItemGroup>
+    <Folder Include="CustomControls\" />
     <Folder Include="Utils\" />
   </ItemGroup>
   <!-- Include the build rules for a C# project. -->

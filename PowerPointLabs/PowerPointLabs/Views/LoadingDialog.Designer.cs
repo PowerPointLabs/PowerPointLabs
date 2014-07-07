@@ -1,6 +1,6 @@
 ﻿namespace PowerPointLabs.Views
 {
-    partial class AboutForm
+    partial class LoadingDialog
     {
         /// <summary>
         /// Required designer variable.
@@ -28,33 +28,39 @@
         /// </summary>
         private void InitializeComponent()
         {
-            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(AboutForm));
+            this.label1 = new System.Windows.Forms.Label();
             this.SuspendLayout();
             // 
-            // AboutForm
+            // label1
             // 
-            this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.None;
-            this.AutoValidate = System.Windows.Forms.AutoValidate.Disable;
-            this.BackColor = System.Drawing.SystemColors.Window;
-            this.CausesValidation = false;
-            resources.ApplyResources(this, "$this");
+            this.label1.AutoSize = true;
+            this.label1.ForeColor = System.Drawing.Color.Black;
+            this.label1.Location = new System.Drawing.Point(21, 25);
+            this.label1.Name = "label1";
+            this.label1.Size = new System.Drawing.Size(143, 12);
+            this.label1.TabIndex = 0;
+            this.label1.Text = "Loading, please wait...";
+            // 
+            // PrepareDialog
+            // 
+            this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
+            this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+            this.ClientSize = new System.Drawing.Size(186, 66);
             this.ControlBox = false;
-            this.KeyPreview = true;
-            this.MaximizeBox = false;
-            this.MinimizeBox = false;
-            this.Name = "AboutForm";
-            this.ShowIcon = false;
+            this.Controls.Add(this.label1);
+            this.Name = "PrepareDialog";
             this.ShowInTaskbar = false;
+            this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
+            this.Text = "Loading...";
+            this.TopMost = true;
             this.ResumeLayout(false);
+            this.PerformLayout();
 
         }
 
         #endregion
 
-
-
-
-
+        private System.Windows.Forms.Label label1;
 
 
     }
