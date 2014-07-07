@@ -11,6 +11,60 @@ namespace PowerPointLabs
 {
     class ColorDataSource : INotifyPropertyChanged
     {
+        private bool isFillColorSelectedValue;
+
+        public bool isFillColorSelected
+        {
+            get
+            {
+                return isFillColorSelectedValue;
+            }
+            set
+            {
+                if (value != this.isFillColorSelectedValue)
+                {
+                    this.isFillColorSelectedValue = value;
+                    OnPropertyChanged("isFillColorSelected");
+                }
+            }
+        }
+
+        private bool isFontColorSelectedValue;
+
+        public bool isFontColorSelected
+        {
+            get
+            {
+                return isFontColorSelectedValue;
+            }
+            set
+            {
+                if (value != this.isFontColorSelectedValue)
+                {
+                    this.isFontColorSelectedValue = value;
+                    OnPropertyChanged("isFontColorSelected");
+                }
+            }
+        }
+
+        private bool isLineColorSelectedValue;
+
+        public bool isLineColorSelected
+        {
+            get
+            {
+                return isLineColorSelectedValue;
+            }
+            set
+            {
+                if (value != this.isLineColorSelectedValue)
+                {
+                    this.isLineColorSelectedValue = value;
+                    OnPropertyChanged("isLineColorSelected");
+                }
+            }
+        }
+
         private Color selectedColorValue;
 
         public Color selectedColor

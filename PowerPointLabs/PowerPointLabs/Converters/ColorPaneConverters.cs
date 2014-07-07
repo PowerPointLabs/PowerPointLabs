@@ -296,4 +296,22 @@ namespace PowerPointLabs.Converters
             throw new NotImplementedException();
         }
     }
+
+    class IsActiveBoolToButtonBackColorConverter : IValueConverter
+    {
+        public object Convert(object value, Type targetType, object parameter, System.Globalization.CultureInfo culture)
+        {
+            bool isActive = (bool)value;
+            if (isActive)
+            {
+                return SystemColors.ActiveCaption;
+            }
+            return SystemColors.Control;
+        }
+
+        public object ConvertBack(object value, Type targetType, object parameter, System.Globalization.CultureInfo culture)
+        {
+            throw new NotImplementedException();
+        }
+    }
 }

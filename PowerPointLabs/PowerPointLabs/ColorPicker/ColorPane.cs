@@ -12,19 +12,24 @@ using Converters = PowerPointLabs.Converters;
 using Microsoft.Office.Interop.PowerPoint;
 using PowerPointLabs.ColorPicker;
 using PowerPointLabs.Views;
+using Microsoft.Office.Core;
 
 namespace PowerPointLabs
 {
 
     public partial class ColorPane : UserControl
     {
+        // To set eyedropper mode
+        private enum MODE
+        {
+            FILL,
+            LINE,
+            FONT,
+            NONE
+        };
+
         // Needed to keep track of brightness and saturation
         private Color _originalColor;
-
-        // Fill Selected By Default
-        private bool _isFillColorSelected = true;
-        private bool _isFontColorSelected = false;
-        private bool _isLineColorSelected = false;
 
         // Keeps track of mouse on mouse down on a matching panel.
         // Needed to determine drag-drop v/s click
@@ -38,7 +43,16 @@ namespace PowerPointLabs
         
         // Data-bindings datasource
         ColorDataSource dataSource = new ColorDataSource();
+
+        // To reset Saturation on brightness change
+        private float _initialSaturation;
+
+        // Stores last selected mode
+        private MODE prevMode = MODE.NONE;
         
+        // Stores the current selected mode
+        private MODE currMode = MODE.NONE;
+
         public ColorPane()
         {
             InitializeComponent();
@@ -64,16 +78,46 @@ namespace PowerPointLabs
             UpdateUIForNewColor();
         }
 
+        private void SetMode(MODE mode)
+        {
+            dataSource.isFillColorSelected = false;
+            dataSource.isFontColorSelected = false;
+            dataSource.isLineColorSelected = false;
+            
+            switch (mode)
+            {
+                case MODE.LINE:
+                    dataSource.isLineColorSelected = true;
+                    break;
+                case MODE.FONT:
+                    dataSource.isFontColorSelected = true;
+                    break;
+                case MODE.FILL:
+                    dataSource.isFillColorSelected = true;
+                    break;
+                default:
+                    currMode = MODE.NONE;
+                    break;
+            }
+            UpdateCurrMode();
+        }
+
+        private void ResetEyeDropperSelectionInDataSource()
+        {
+            dataSource.isFillColorSelected = false;
+            dataSource.isFontColorSelected = false;
+            dataSource.isLineColorSelected = false;
+        }
+
         #region ToolTip
         private void InitToolTipControl()
         {
-            toolTip1.SetToolTip(this.TextCheckBox, "EyeDrops Font Color for Selected TextFrames");
-            toolTip1.SetToolTip(this.LineCheckBox, "EyeDrops Line Color for Selected Shapes");
-            toolTip1.SetToolTip(this.FillCheckBox, "EyeDrops Fill Color for Selected Shapes");
-            toolTip1.SetToolTip(this.EditColorButton, "Edits Selected Color");
             toolTip1.SetToolTip(this.LoadButton, "Load Existing Theme");
             toolTip1.SetToolTip(this.SaveThemeButton, "Save Current Theme");
             toolTip1.SetToolTip(this.ResetThemeButton, "Reset the Current Theme Colors to Current Slide Theme");
+            toolTip1.SetToolTip(this.FontButton, "Font Color\r\nMouseDown + Drag to EyeDrop\r\nClick to Edit");
+            toolTip1.SetToolTip(this.LineButton, "Shape Line Color\r\nMouseDown + Drag to EyeDrop\r\nClick to Edit");
+            toolTip1.SetToolTip(this.FillButton, "Shape Fill Color\r\nMouseDown + Drag to EyeDrop\r\nClick to Edit");
         }
         #endregion
 
@@ -291,31 +335,35 @@ namespace PowerPointLabs
                         dataSource,
                         "selectedColor",
                         new Converters.selectedColorToSaturationValue()));
+
+            FillButton.DataBindings.Add(new CustomBinding(
+                        "BackColor",
+                        dataSource,
+                        "isFillColorSelected",
+                        new Converters.IsActiveBoolToButtonBackColorConverter()));
+            
+            LineButton.DataBindings.Add(new CustomBinding(
+                        "BackColor",
+                        dataSource,
+                        "isLineColorSelected",
+                        new Converters.IsActiveBoolToButtonBackColorConverter()));
+            
+            FontButton.DataBindings.Add(new CustomBinding(
+                        "BackColor",
+                        dataSource,
+                        "isFontColorSelected",
+                        new Converters.IsActiveBoolToButtonBackColorConverter()));
         }
 
         #endregion
 
-        private void EyeDropperButton_MouseDown(object sender, MouseEventArgs e)
-        {
-            BeginEyedropping();
-        }
         private void BeginEyedropping()
         {
             timer1.Start();
-
             _native = new LMouseUpListener();
             _native.LButtonUpClicked +=
                  new EventHandler<SysMouseEventInfo>(_native_LButtonClicked);
             SelectShapes();
-        }
-
-        private void button2_Click(object sender, EventArgs e)
-        {
-            colorDialog1.Color = panel1.BackColor;
-            if (colorDialog1.ShowDialog() == DialogResult.OK)
-            {
-                SetDefaultColor(colorDialog1.Color);
-            }
         }
 
         private void timer1_Tick(object sender, EventArgs e)
@@ -353,7 +401,7 @@ namespace PowerPointLabs
                         var b = selectedColor.B;
 
                         var rgb = (b << 16) | (g << 8) | (r);
-                        ColorShapeWithColor(s, rgb);
+                        ColorShapeWithColor(s, rgb, currMode);
                     }
                     catch (Exception)
                     {
@@ -366,7 +414,7 @@ namespace PowerPointLabs
         private static void RecreateCorruptedShape(PowerPoint.Shape s)
         {
             s.Copy();
-            Shape newShape = PowerPointPresentation.CurrentSlide.Shapes.Paste()[1];
+            PowerPoint.Shape newShape = PowerPointPresentation.CurrentSlide.Shapes.Paste()[1];
 
             newShape.Select();
 
@@ -380,22 +428,31 @@ namespace PowerPointLabs
             s.Delete();
         }
 
-        private void ColorShapeWithColor(PowerPoint.Shape s, int rgb)
+        private void ColorShapeWithColor(PowerPoint.Shape s, int rgb, MODE mode)
         {
-            if (_isFillColorSelected)
+            switch (mode)
             {
-                s.Fill.ForeColor.RGB = rgb;
-            }
-            if (_isLineColorSelected)
-            {
-                s.Line.ForeColor.RGB = rgb;
-            }
-            if (_isFontColorSelected)
-            {
-                if (s.HasTextFrame == Microsoft.Office.Core.MsoTriState.msoTrue)
-                {
-                    s.TextFrame.TextRange.Font.Color.RGB = rgb;
-                }
+                case MODE.FILL:
+                    s.Fill.ForeColor.RGB = rgb;
+                    break;
+                case MODE.LINE:
+                    s.Line.ForeColor.RGB = rgb;
+                    break;
+                case MODE.FONT:
+                    if (s.HasTextFrame == Microsoft.Office.Core.MsoTriState.msoTrue)
+                    {
+                        if (Globals.ThisAddIn.Application.ActiveWindow.Selection.ShapeRange.HasTextFrame
+                            == Microsoft.Office.Core.MsoTriState.msoTrue)
+                        {
+                            TextRange selectedText
+                                = Globals.ThisAddIn.Application.ActiveWindow.Selection.TextRange.TrimText();
+                            if (selectedText.Text != "" && selectedText != null)
+                            {
+                                selectedText.Font.Color.RGB = rgb;
+                            }
+                        }
+                    }
+                    break;
             }
         }
 
@@ -406,8 +463,30 @@ namespace PowerPointLabs
             Globals.ThisAddIn.Application.StartNewUndoEntry();
             UpdateUIForNewColor();
             timer1.Stop();
+            ResetEyeDropperSelectionInDataSource();
         }
         #endregion
+
+        private void UpdateCurrMode()
+        {
+            if (currMode != MODE.NONE)
+            {
+                prevMode = currMode;
+            }
+
+            if (dataSource.isFillColorSelected)
+            {
+                currMode = MODE.FILL;
+            }
+            else if (dataSource.isFontColorSelected)
+            {
+                currMode = MODE.FONT;
+            }
+            else if (dataSource.isLineColorSelected)
+            {
+                currMode = MODE.LINE;
+            }
+        }
 
         private void UpdateUIForNewColor()
         {
@@ -471,7 +550,8 @@ namespace PowerPointLabs
 
                 dataSource.selectedColor = newColor;
                 UpdateBrightnessBar(newColor);
-
+                UpdateSaturationBar(newColor);
+                
                 brightnessBar.ValueChanged += brightnessBar_ValueChanged;
                 saturationBar.ValueChanged += saturationBar_ValueChanged;
             }
@@ -634,7 +714,7 @@ namespace PowerPointLabs
             if (saveFileDialog1.ShowDialog() == DialogResult.OK && 
                 dataSource.SaveThemeColorsInFile(saveFileDialog1.FileName))
             {
-                MessageBox.Show("Theme saved successfully", "Save Complete");
+                // Save Success
             }
         }
 
@@ -643,7 +723,7 @@ namespace PowerPointLabs
             if (openFileDialog1.ShowDialog() == DialogResult.OK &&
                 dataSource.LoadThemeColorsFromFile(openFileDialog1.FileName))
             {
-                MessageBox.Show("Theme loaded successfully", "Load Complete");
+                // Load Success
             }
         }
 
@@ -712,6 +792,30 @@ namespace PowerPointLabs
             }
         }
 
+        private void EmptyThemePanel()
+        {
+            try
+            {
+                if (PowerPointPresentation.SlideCount > 0)
+                {
+                    ThemePanel1.BackColor = Color.White;
+                    ThemePanel2.BackColor = Color.White;
+                    ThemePanel3.BackColor = Color.White;
+                    ThemePanel4.BackColor = Color.White;
+                    ThemePanel5.BackColor = Color.White;
+                    ThemePanel6.BackColor = Color.White;
+                    ThemePanel7.BackColor = Color.White;
+                    ThemePanel8.BackColor = Color.White;
+                    ThemePanel9.BackColor = Color.White;
+                    ThemePanel10.BackColor = Color.White;
+                }
+            }
+            catch (Exception e)
+            {
+                ErrorDialogWrapper.ShowDialog("Theme Panel Reset Failed", e.Message, e);
+            }
+        }
+
         private void ApplyCurrentThemeToSelectedSlides()
         {
             foreach (PowerPointSlide slide in PowerPointPresentation.SelectedSlides)
@@ -746,6 +850,10 @@ namespace PowerPointLabs
             scheme.Colors(Microsoft.Office.Core.MsoThemeColorSchemeIndex.msoThemeAccent6).RGB =
                 ColorHelper.ReverseRGBToArgb((ThemePanel10.BackColor.ToArgb()));
         }
+        private void EmptyPanelButton_Click(object sender, EventArgs e)
+        {
+            EmptyThemePanel();
+        }
 
         #endregion
 
@@ -755,7 +863,7 @@ namespace PowerPointLabs
             Color clickedColor = ((Panel)(contextMenuStrip1.SourceControl)).BackColor;
             ColorInformationDialog dialog = new ColorInformationDialog(clickedColor);
             dialog.StartPosition = FormStartPosition.CenterScreen;
-            dialog.ShowDialog();
+            dialog.Show();
         }
 
         private void selectAsMainColorToolStripMenuItem_Click(object sender, EventArgs e)
@@ -775,21 +883,102 @@ namespace PowerPointLabs
         }
         #endregion
 
-        #region CheckBoxes Event Handlers
-        private void FillCheckBox_CheckedChanged(object sender, EventArgs e)
+        private void brightnessBar_MouseUp(object sender, MouseEventArgs e)
         {
-            _isFillColorSelected = ((CheckBox)sender).Checked;
+            try
+            {
+                Color newColor = ColorHelper.ColorFromAhsb(
+                255,
+                _originalColor.GetHue(),
+                _initialSaturation,
+                dataSource.selectedColor.GetBrightness());
+
+                brightnessBar.ValueChanged -= brightnessBar_ValueChanged;
+                saturationBar.ValueChanged -= saturationBar_ValueChanged;
+
+                dataSource.selectedColor = newColor;
+                UpdateBrightnessBar(newColor);
+                UpdateSaturationBar(newColor);
+
+                brightnessBar.ValueChanged += brightnessBar_ValueChanged;
+                saturationBar.ValueChanged += saturationBar_ValueChanged;
+                
+                saturationBar.Enabled = true;
+            }
+            catch (Exception exception)
+            {
+                ErrorDialogWrapper.ShowDialog(
+                    "Invalid Brightness Update", 
+                    exception.Message, 
+                    exception);
+            }
         }
 
-        private void LineCheckBox_CheckedChanged(object sender, EventArgs e)
+        private void brightnessBar_MouseDown(object sender, MouseEventArgs e)
         {
-            _isLineColorSelected = ((CheckBox)sender).Checked;
+            _initialSaturation = dataSource.selectedColor.GetSaturation();
         }
 
-        private void TextCheckBox_CheckedChanged(object sender, EventArgs e)
+        private void EyeDropButton_MouseClick(object sender, MouseEventArgs e)
         {
-            _isFontColorSelected = ((CheckBox)sender).Checked;
+            string buttonName = "";
+            if (sender is Button)
+            {
+                buttonName = ((Button)sender).Name;
+            }
+            else if (sender is Panel)
+            {
+                buttonName = ((Panel)sender).Name;
+            }
+            SetModeForSenderName(buttonName);
+
+            colorDialog1.Color = dataSource.selectedColor;
+
+            DialogResult result = colorDialog1.ShowDialog();
+            if (result == DialogResult.OK)
+            {
+                SetDefaultColor(colorDialog1.Color);
+                
+                ResetEyeDropperSelectionInDataSource();
+            }
+            else if (result == DialogResult.Cancel)
+            {
+                ResetEyeDropperSelectionInDataSource();
+            }
         }
-        #endregion
+
+        private void SetModeForSenderName(string buttonName)
+        {
+            switch (buttonName)
+            {
+                case "FillButton":
+                    SetMode(MODE.FILL);
+                    break;
+                case "FontButton":
+                    SetMode(MODE.FONT);
+                    break;
+                case "LineButton":
+                    SetMode(MODE.LINE);
+                    break;
+                default:
+                    SetMode(MODE.NONE);
+                    break;
+            }
+        }
+
+        private void EyeDropButton_MouseDown(object sender, MouseEventArgs e)
+        {
+            string buttonName = "";
+            if (sender is Button)
+            {
+                buttonName = ((Button)sender).Name;
+            } 
+            else if (sender is Panel)
+            {
+                buttonName = ((Panel)sender).Name;
+            }
+            SetModeForSenderName(buttonName);
+            BeginEyedropping();
+        }
     }
 }
