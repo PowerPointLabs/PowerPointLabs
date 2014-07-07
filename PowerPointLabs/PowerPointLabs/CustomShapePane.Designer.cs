@@ -62,13 +62,14 @@ namespace PowerPointLabs
             this.motherTableLayoutPanel.RowStyles.Add(new System.Windows.Forms.RowStyle());
             this.motherTableLayoutPanel.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 1F));
             this.motherTableLayoutPanel.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20F));
-            this.motherTableLayoutPanel.Size = new System.Drawing.Size(383, 83);
+            this.motherTableLayoutPanel.Size = new System.Drawing.Size(410, 83);
             this.motherTableLayoutPanel.TabIndex = 0;
             // 
             // myShapePanel
             // 
             this.myShapePanel.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
+            this.myShapePanel.Animation = Stepi.UI.Animation.No;
             this.myShapePanel.AutoSize = true;
             this.myShapePanel.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
             this.myShapePanel.BorderColor = System.Drawing.Color.Gray;
@@ -84,7 +85,7 @@ namespace PowerPointLabs
             this.myShapePanel.Location = new System.Drawing.Point(0, 0);
             this.myShapePanel.Margin = new System.Windows.Forms.Padding(0);
             this.myShapePanel.Name = "myShapePanel";
-            this.myShapePanel.Size = new System.Drawing.Size(383, 82);
+            this.myShapePanel.Size = new System.Drawing.Size(410, 82);
             this.myShapePanel.TabIndex = 4;
             // 
             // myShapeFlowLayout
@@ -92,14 +93,13 @@ namespace PowerPointLabs
             this.myShapeFlowLayout.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.myShapeFlowLayout.AutoScroll = true;
             this.myShapeFlowLayout.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
             this.myShapeFlowLayout.Location = new System.Drawing.Point(3, 22);
             this.myShapeFlowLayout.Margin = new System.Windows.Forms.Padding(3, 3, 3, 0);
-            this.myShapeFlowLayout.MaximumSize = new System.Drawing.Size(500, 500);
+            this.myShapeFlowLayout.MaximumSize = new System.Drawing.Size(700, 500);
             this.myShapeFlowLayout.MinimumSize = new System.Drawing.Size(120, 50);
             this.myShapeFlowLayout.Name = "myShapeFlowLayout";
-            this.myShapeFlowLayout.Size = new System.Drawing.Size(377, 58);
+            this.myShapeFlowLayout.Size = new System.Drawing.Size(404, 58);
             this.myShapeFlowLayout.TabIndex = 1;
             // 
             // contextMenuStrip
@@ -129,7 +129,7 @@ namespace PowerPointLabs
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.Controls.Add(this.motherTableLayoutPanel);
             this.Name = "CustomShapePane";
-            this.Size = new System.Drawing.Size(390, 459);
+            this.Size = new System.Drawing.Size(417, 459);
             this.Click += new System.EventHandler(this.CustomShapePaneClick);
             this.motherTableLayoutPanel.ResumeLayout(false);
             this.motherTableLayoutPanel.PerformLayout();

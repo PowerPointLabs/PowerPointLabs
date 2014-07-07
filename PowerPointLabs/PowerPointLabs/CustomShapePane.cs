@@ -92,23 +92,14 @@ namespace PowerPointLabs
             InitializeComponent();
 
             ShowNoShapeMessage();
-            //myShapeFlowLayout.AutoSize = true;
+            myShapeFlowLayout.AutoSize = true;
             myShapeFlowLayout.Click += FlowlayoutClick;
-
-            var vertScrollWidth = SystemInformation.VerticalScrollBarWidth;
-            myShapeFlowLayout.Padding = new Padding(0, 0, vertScrollWidth / 2, 0);
         }
         # endregion
 
         # region API
         public void AddCustomShape(string shapeName, string shapeFullName, bool immediateEditing)
         {
-            // remove no_shape banner if we have one
-            if (myShapeFlowLayout.Controls.Contains(_noShapePanel))
-            {
-                myShapeFlowLayout.Controls.Remove(_noShapePanel);
-            }
-
             // dehighlight the selected labeled thumbnail if we have one
             if (_selectedThumbnail != null)
             {
@@ -123,6 +114,12 @@ namespace PowerPointLabs
             labeledThumbnail.NameChangedNotify += NameChangedNotifyHandler;
 
             myShapeFlowLayout.Controls.Add(labeledThumbnail);
+
+            if (myShapeFlowLayout.Controls.Contains(_noShapePanel))
+            {
+                myShapeFlowLayout.Controls.Remove(_noShapePanel);
+            }
+
             myShapeFlowLayout.ScrollControlIntoView(labeledThumbnail);
 
             _selectedThumbnail = labeledThumbnail;
@@ -195,6 +192,29 @@ namespace PowerPointLabs
             _selectedThumbnail.StartNameEdit();
         }
 
+        private int FindControlIndex(string name)
+        {
+            if (myShapeFlowLayout.Controls.Contains(_noShapePanel))
+            {
+                return -1;
+            }
+
+            var totalControl = myShapeFlowLayout.Controls.Count;
+
+            for (var i = 0; i < totalControl; i ++)
+            {
+                var control = myShapeFlowLayout.Controls[i] as LabeledThumbnail;
+                
+                if (control != null &&
+                    string.Compare(control.NameLable, name) >= 0)
+                {
+                    return i;
+                }
+            }
+
+            return totalControl;
+        }
+
         private void PrepareFolder()
         {
             if (!Directory.Exists(ShapeFolderPath))
@@ -220,6 +240,12 @@ namespace PowerPointLabs
                 }
 
                 AddCustomShape(shapeName, wmfFile, false);
+            }
+
+            if (_selectedThumbnail != null)
+            {
+                _selectedThumbnail.DeHighlight();
+                _selectedThumbnail = null;
             }
         }
         
@@ -338,8 +364,19 @@ namespace PowerPointLabs
             if (labeledThumbnail == null ||
                 labeledThumbnail != _selectedThumbnail) return;
 
-            labeledThumbnail.DeHighlight();
-            _selectedThumbnail = null;
+            var index = FindControlIndex(labeledThumbnail.NameLable);
+
+            // if the current control is the only control or something goes wrong, don't need
+            // to reorder
+            if (index == -1 ||
+                index >= myShapeFlowLayout.Controls.Count)
+            {
+                return;
+            }
+
+            myShapeFlowLayout.Controls.SetChildIndex(labeledThumbnail, index);
+            myShapeFlowLayout.ScrollControlIntoView(labeledThumbnail);
+            labeledThumbnail.Highlight();
         }
         # endregion
 
