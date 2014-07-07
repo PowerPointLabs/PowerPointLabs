@@ -565,6 +565,18 @@ namespace PowerPointLabs
                 throw;
             }
         }
+        public System.Drawing.Bitmap GetShapesLabImage(Office.IRibbonControl control)
+        {
+            try
+            {
+                return new System.Drawing.Bitmap(Properties.Resources.ShapesLab);
+            }
+            catch (Exception e)
+            {
+                PowerPointLabsGlobals.LogException(e, "GetShapesLabImage");
+                throw;
+            }
+        }
         public System.Drawing.Bitmap GetColorsLabImage(Office.IRibbonControl control)
         {
             try

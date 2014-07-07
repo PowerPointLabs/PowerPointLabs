@@ -334,7 +334,7 @@ namespace PowerPointLabs
             {
                 _selectedShapes = PowerPointPresentation.CurrentSelection.ShapeRange;
             }
-            catch (Exception exception)
+            catch (Exception)
             {
                 _selectedShapes = null;
             }
@@ -355,7 +355,7 @@ namespace PowerPointLabs
                         var rgb = (b << 16) | (g << 8) | (r);
                         ColorShapeWithColor(s, rgb);
                     }
-                    catch (Exception e)
+                    catch (Exception)
                     {
                         RecreateCorruptedShape(s);
                     }  
@@ -446,7 +446,7 @@ namespace PowerPointLabs
                     brightnessBar.ValueChanged += brightnessBar_ValueChanged;
                     saturationBar.ValueChanged += saturationBar_ValueChanged;
                 }
-                catch (Exception exception)
+                catch (Exception)
                 {
                 }
 
@@ -475,7 +475,7 @@ namespace PowerPointLabs
                 brightnessBar.ValueChanged += brightnessBar_ValueChanged;
                 saturationBar.ValueChanged += saturationBar_ValueChanged;
             }
-            catch (Exception exception)
+            catch (Exception)
             {
             }
 

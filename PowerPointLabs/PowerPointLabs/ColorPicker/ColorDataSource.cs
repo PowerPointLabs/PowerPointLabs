@@ -230,7 +230,7 @@ namespace PowerPointLabs
                 serializer.Serialize(fileStream, themeColors);
                 fileStream.Close();
             }
-            catch (Exception e)
+            catch (Exception)
             {
                 return false;
             }
@@ -257,7 +257,7 @@ namespace PowerPointLabs
                 this.themeColorNine = themeColors[8];
                 this.themeColorTen = themeColors[9];
             }
-            catch (Exception e)
+            catch (Exception)
             {
                 return false;
             }

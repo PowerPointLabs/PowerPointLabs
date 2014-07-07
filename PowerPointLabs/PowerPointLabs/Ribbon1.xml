@@ -199,13 +199,10 @@
                   getImage="GetColorsLabImage"
                   getSupertip="GetColorPickerButtonSupertip"
                   onAction="ColorPickerButtonClick"/>
-        </group>
-        <group id="CustomShape"
-               label="Custom Shapes"
-               visible="true">
           <button id="CustomeShapeButton"
                   label="Shape Lab"
                   size="large"
+                  getImage="GetShapesLabImage"
                   getSupertip="GetCustomeShapeButtonSupertip"
                   onAction="CustomShapeButtonClick"/>
         </group>
