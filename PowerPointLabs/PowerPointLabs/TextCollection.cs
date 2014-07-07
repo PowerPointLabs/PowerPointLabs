@@ -44,7 +44,7 @@
         public const string AboutButtonSupertip = @"Information about the PowerPointLabs plugin.";
 
         public const string AboutInfo =
-            @"          PowerPointLabs Plugin Version 1.8 [Release date: 23 Jun 2014]\n     Developed at School of Computing, National University of Singapore.\n        For more information, visit our website http://PowerPointLabs.info";
+            @"          PowerPointLabs Plugin Version 1.8.6 [Release date: 7 Jul 2014]\n     Developed at School of Computing, National University of Singapore.\n        For more information, visit our website http://PowerPointLabs.info";
 
         public const string AccessTempFolderErrorMsg = "Error when accessing temp folder";
         public const string CreatTempFolderErrorMsg = "Error when creating temp folder";
