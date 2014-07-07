@@ -673,6 +673,14 @@ namespace PowerPointLabs
                     ErrorDialogWrapper.ShowDialog(TextCollection.AccessTempFolderErrorMsg, string.Empty, e);
                 }
 
+                var fileInfo = new FileInfo(zipFullPath);
+                
+                // if there's nothing inside the zip file, we do nothing
+                if (fileInfo.Length == 0)
+                {
+                    return true;
+                }
+
                 // open the zip and extract media files to temp folder
                 try
                 {
