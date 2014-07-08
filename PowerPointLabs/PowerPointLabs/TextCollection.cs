@@ -6,33 +6,45 @@
         public const string AddAnimationButtonSupertip =
             "Adds a slide with animations to create an animated transition from the currently selected slide to the next slide.";
         public const string ReloadButtonSupertip =
-            "Recreates an existing animation slide with new animations.\n\nTo activate, select the original slide or the animation slide (added previously) and click this button.";
+            "Recreates an existing animation slide with new animations.\n\n" +
+            "To activate, select the original slide or the animation slide (added previously) and click this button.";
         public const string InSlideAnimateButtonSupertip =
-            "Moves a shape around the slide in multiple steps.\n\nTo activate, copy the shape to locations where you want it to stop, select the copies in the order you want them to appear, and click this button";
+            "Moves a shape around the slide in multiple steps.\n\n" +
+            "To activate, copy the shape to locations where you want it to stop, select the copies in the order you want them to appear, and click this button";
         public const string AddZoomInButtonSupertip =
-            "Adds a slide with animations to create a zoom-in effect from the currently selected shape to the next slide.\n\nTo activate, select a rectangle shape on the slide that you want to drill down from and click on this button.";
+            "Adds a slide with animations to create a zoom-in effect from the currently selected shape to the next slide.\n\n" +
+            "To activate, select a rectangle shape on the slide that you want to drill down from and click on this button.";
         public const string AddZoomOutButtonSupertip =
-            "Adds a slide with animations to create a zoom-out effect from the previous slide to the currently selected shape.\n\nTo activate, select a rectangle shape on the slide that you want to step back to and click on this button.";
+            "Adds a slide with animations to create a zoom-out effect from the previous slide to the currently selected shape.\n\n" +
+            "To activate, select a rectangle shape on the slide that you want to step back to and click on this button.";
         public const string ZoomToAreaButtonSupertip =
-            "Zoom into an area of a slide or image.\n\nTo activate, place a rectangle shape on the portion that you want to magnify and click on this button.\n\nThis feature works best with high-resolution images.";
+            "Zoom into an area of a slide or image.\n\nTo activate, place a rectangle shape on the portion that you want to magnify and click on this button.\n\n" +
+            "This feature works best with high-resolution images.";
         public const string MoveCropShapeButtonSupertip =
-            "Crop a picture according to your selected shape(s).\n\nTo activate, draw a shape upon the picture you want to crop, select the shape, and then click on this button.";
+            "Crop a picture according to your selected shape(s).\n\n" +
+            "To activate, draw a shape upon the picture you want to crop, select the shape, and then click on this button.";
         public const string AddSpotlightButtonSupertip =
-            "Creates a spotlight effect for a selected shape.\n\nTo activate, draw a shape to match the spotlight you want, select the shape, and click this button.";
+            "Creates a spotlight effect for a selected shape.\n\n" +
+            "To activate, draw a shape to match the spotlight you want, select the shape, and click this button.";
         public const string ReloadSpotlightButtonSupertip =
-            "Adjusts the transparency and edges of an existing spotlight.\n\nTo activate, set the transparency level and soft edges width, select the existing spotlight shape, and click this button.";
+            "Adjusts the transparency and edges of an existing spotlight.\n\n" +
+            "To activate, set the transparency level and soft edges width, select the existing spotlight shape, and click this button.";
         public const string AddAudioButtonSupertip =
-            "Generates synthesized audio from text in the Speaker Notes pane, and adds it to the slide(s).\n\nTo add audios for multiple slides, select the slides first (e.g. Ctrl+A to select all slides, Ctrl+click to select only some slides) before clicking the 'Add Audio' button.";
+            "Generates synthesized audio from text in the Speaker Notes pane, and adds it to the slide(s).\n\n" +
+            "To add audios for multiple slides, select the slides first (e.g. Ctrl+A to select all slides, Ctrl+click to select only some slides) before clicking the 'Add Audio' button.";
         public const string GenerateRecordButtonSupertip =
             "Generates synthesized audio from text in the Speaker Notes pane, and adds it to the slide(s).";
         public const string AddRecordButtonSupertip =
             "Use this option to record audio manually to replace the generated audio.";
         public const string RemoveAudioButtonSupertip =
-            "Removes any generated audio that was added using Auto Narrate from the slide(s).\n\nTo remove audios for multiple slides, select the slides first (e.g. Ctrl+A to select all slides, Ctrl+click to select only some slides) before clicking the 'Remove Audio' button.";
+            "Removes any generated audio that was added using Auto Narrate from the slide(s).\n\n" +
+            "To remove audios for multiple slides, select the slides first (e.g. Ctrl+A to select all slides, Ctrl+click to select only some slides) before clicking the 'Remove Audio' button.";
         public const string AddCaptionsButtonSupertip =
-            "Generates movie-style subtitles from text in the Speaker Notes pane, and adds it to the slide(s).\n\nTo add captions for multiple slides, select the slides first (e.g. Ctrl+A to select all slides, Ctrl+click to select only some slides) before clicking the 'Add Captions' button.";
+            "Generates movie-style subtitles from text in the Speaker Notes pane, and adds it to the slide(s).\n\n" +
+            "To add captions for multiple slides, select the slides first (e.g. Ctrl+A to select all slides, Ctrl+click to select only some slides) before clicking the 'Add Captions' button.";
         public const string RemoveCaptionsButtonSupertip =
-            "Removes any captions that were added using Auto Captions from the slide(s).\n\nTo remove captions for multiple slides, select the slides first (e.g. Ctrl+A to select all slides, Ctrl+click to select only some slides) before clicking the 'Remove Captions' button.";
+            "Removes any captions that were added using Auto Captions from the slide(s).\n\n" +
+            "To remove captions for multiple slides, select the slides first (e.g. Ctrl+A to select all slides, Ctrl+click to select only some slides) before clicking the 'Remove Captions' button.";
         public const string HighlightBulletsTextButtonSupertip =
             "Highlights all the bullet points on the specified slide by changing the text color.";
         public const string HighlightBulletsBackgroundButtonSupertip =
@@ -44,7 +56,7 @@
         public const string AboutButtonSupertip = @"Information about the PowerPointLabs plugin.";
 
         public const string AboutInfo =
-            @"          PowerPointLabs Plugin Version 1.8.6 [Release date: 7 Jul 2014]\n     Developed at School of Computing, National University of Singapore.\n        For more information, visit our website http://PowerPointLabs.info";
+            "          PowerPointLabs Plugin Version 1.8.6 [Release date: 7 Jul 2014]\n     Developed at School of Computing, National University of Singapore.\n        For more information, visit our website http://PowerPointLabs.info";
 
         public const string AccessTempFolderErrorMsg = "Error when accessing temp folder";
         public const string CreatTempFolderErrorMsg = "Error when creating temp folder";
