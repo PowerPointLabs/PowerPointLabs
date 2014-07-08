@@ -668,6 +668,7 @@ namespace PowerPointLabs
                 try
                 {
                     File.Copy(presFullName, zipFullPath);
+                    File.SetAttributes(zipFullPath, FileAttributes.Normal);
                 }
                 catch (Exception e)
                 {
@@ -707,6 +708,7 @@ namespace PowerPointLabs
                     }
 
                     zip.Close();
+                    File.SetAttributes(zipFullPath, FileAttributes.Normal);
                     File.Delete(zipFullPath);
                 }
                 catch (Exception e)
