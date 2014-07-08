@@ -53,11 +53,8 @@ namespace PowerPointLabs
         public bool addAutoMotionEnabled = true;
         public bool reloadAutoMotionEnabled = true;
         public bool reloadSpotlight = true;
-
         public bool removeCaptionsEnabled = true;
         public bool removeAudioEnabled = true;
-
-        public bool highlightTextFragmentsEnabled = true;
 
         public bool _embedAudioVisible = true;
         public bool _recorderPaneVisible = false;
@@ -147,26 +144,6 @@ namespace PowerPointLabs
             catch (Exception e)
             {
                 PowerPointLabsGlobals.LogException(e, "HighlightBulletsTextButtonClick");
-                throw;
-            }
-        }
-
-        public void HighlightTextFragmentsButtonClick(Office.IRibbonControl control)
-        {
-            try
-            {
-                if (Globals.ThisAddIn.Application.ActiveWindow.Selection.Type == PowerPoint.PpSelectionType.ppSelectionShapes)
-                    HighlightTextFragments.userSelection = HighlightTextFragments.HighlightTextSelection.kShapeSelected;
-                else if (Globals.ThisAddIn.Application.ActiveWindow.Selection.Type == PowerPoint.PpSelectionType.ppSelectionText)
-                    HighlightTextFragments.userSelection = HighlightTextFragments.HighlightTextSelection.kTextSelected;
-                else
-                    HighlightTextFragments.userSelection = HighlightTextFragments.HighlightTextSelection.kNoneSelected;
-
-                HighlightTextFragments.AddHighlightedTextFragments();
-            }
-            catch (Exception e)
-            {
-                PowerPointLabsGlobals.LogException(e, "HighlightTextFragmentsButtonClick");
                 throw;
             }
         }
@@ -466,19 +443,6 @@ namespace PowerPointLabs
             }
         }
 
-        public System.Drawing.Bitmap GetHighlightWordsImage(Office.IRibbonControl control)
-        {
-            try
-            {
-                return new System.Drawing.Bitmap(Properties.Resources.HighlightWords);
-            }
-            catch (Exception e)
-            {
-                PowerPointLabsGlobals.LogException(e, "GetHighlightWordsImage");
-                throw;
-            }
-        }
-
         public System.Drawing.Bitmap GetHighlightBulletsTextContextImage(Office.IRibbonControl control)
         {
             try
@@ -562,30 +526,6 @@ namespace PowerPointLabs
             catch (Exception e)
             {
                 PowerPointLabsGlobals.LogException(e, "GetCropShapeImage");
-                throw;
-            }
-        }
-        public System.Drawing.Bitmap GetShapesLabImage(Office.IRibbonControl control)
-        {
-            try
-            {
-                return new System.Drawing.Bitmap(Properties.Resources.ShapesLab);
-            }
-            catch (Exception e)
-            {
-                PowerPointLabsGlobals.LogException(e, "GetShapesLabImage");
-                throw;
-            }
-        }
-        public System.Drawing.Bitmap GetColorsLabImage(Office.IRibbonControl control)
-        {
-            try
-            {
-                return new System.Drawing.Bitmap(Properties.Resources.ColorsLab);
-            }
-            catch (Exception e)
-            {
-                PowerPointLabsGlobals.LogException(e, "GetColorsLabImage");
                 throw;
             }
         }
@@ -862,10 +802,6 @@ namespace PowerPointLabs
         {
             return removeAudioEnabled;
         }
-        public bool OnGetEnabledHighlightTextFragments(Office.IRibbonControl control)
-        {
-            return highlightTextFragmentsEnabled;
-        }
         //Edit Name Callbacks
         public void NameEditBtnClick(Office.IRibbonControl control)
         {
@@ -996,7 +932,7 @@ namespace PowerPointLabs
                 HighlightBulletsText.highlightColor = newHighlightColor;
                 HighlightBulletsText.defaultColor = newDefaultColor;
                 HighlightBulletsBackground.backgroundColor = newBackgroundColor;
-                HighlightTextFragments.backgroundColor = newBackgroundColor;
+
             }
             catch (Exception e)
             {
@@ -1080,7 +1016,7 @@ namespace PowerPointLabs
             Globals.ThisAddIn.RegisterCustomPane(prensentation);
 
             var selection = PowerPointPresentation.CurrentSelection;
-            
+
             var customShapePane = Globals.ThisAddIn.GetActivePane(typeof(CustomShapePane));
 
             if (customShapePane == null || !(customShapePane.Control is CustomShapePane))
@@ -1386,7 +1322,7 @@ namespace PowerPointLabs
             }
             catch (Exception e)
             {
-                ErrorDialogWrapper.ShowDialog("Color Picker Failed", e.Message, e);
+                MessageBox.Show("No Shape Selected", "Invalid Selection");
                 PowerPointLabsGlobals.LogException(e, "ColorPickerButtonClicked");
                 throw;
             }

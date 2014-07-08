@@ -5,11 +5,6 @@ namespace PowerPointLabs.Views
 {
     class ErrorDialogWrapper
     {
-        private const string UserFeedBack =
-            @" Help us fix the problem by emailing ";
-
-        private const string Email = @"pptlabs@comp.nus.edu.sg";
-
         private const string DialogTypeName = "System.Windows.Forms.PropertyGridInternal.GridErrorDlg";
 
         public static DialogResult ShowDialog(string title, string message, Exception exception)
@@ -28,7 +23,7 @@ namespace PowerPointLabs.Views
 
             // Create dialog instance.
             var dialog = (Form)Activator.CreateInstance(dialogType, new PropertyGrid());
-            var completeMsg = message + UserFeedBack + Email;
+            var completeMsg = message + TextCollection.UserFeedBack + TextCollection.Email;
 
             // Populate relevant properties on the dialog instance.
             dialog.Text = title;
