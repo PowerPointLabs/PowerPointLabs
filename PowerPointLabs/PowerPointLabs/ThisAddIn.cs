@@ -509,7 +509,16 @@ namespace PowerPointLabs
                 string zipFullPath = tempPath + zipName;
                 string presFullName = Pres.FullName;
 
-                // if temp folder doesn't exist, create
+                // before we do everything, check if there's an undelete old zip file
+                // due to some error
+                if (File.Exists(zipFullPath))
+                {
+                    File.SetAttributes(zipFullPath, FileAttributes.Normal);
+                    File.Delete(zipFullPath);
+                }
+
+                // if temp folder exists, delete then create in case 2 different files
+                // share the same name
                 try
                 {
                     if (Directory.Exists(tempPath))
