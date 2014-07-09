@@ -224,7 +224,6 @@ namespace PowerPointLabs
 
             motherPanel.MouseDown += (sender, e) => Click(this, e);
             motherPanel.DoubleClick += (sender, e) => DoubleClick(this, e);
-            motherPanel.Paint += EllipseNameLabelRedraw;
 
             thumbnailPanel.MouseDown += (sender, e) => Click(this, e);
             thumbnailPanel.DoubleClick += ThumbnailPanelDoubleClick;
@@ -294,24 +293,6 @@ namespace PowerPointLabs
         public new event ClickEventDelegate Click;
         public new event DoubleClickEventDelegate DoubleClick;
         public event NameChangedNotifyEventDelegate NameChangedNotify;
-
-        private void EllipseNameLabelRedraw(object sender, PaintEventArgs e)
-        {
-            if (!(sender is Panel)) return;
-
-            var panel = sender as Panel;
-            var rect = panel.RectangleToClient(labelTextBox.RectangleToScreen(labelTextBox.ClientRectangle));
-
-            // draw ellipse only when text box is disabled
-            if (labelTextBox.Enabled == false)
-            {
-                TextRenderer.DrawText(e.Graphics, labelTextBox.Text, labelTextBox.Font,
-                rect, Color.Black, Color.Empty,
-                TextFormatFlags.TextBoxControl |
-                TextFormatFlags.WordBreak |
-                TextFormatFlags.EndEllipsis);
-            }
-        }
 
         private void EnableChangedHandler(object sender, EventArgs e)
         {
