@@ -317,10 +317,8 @@ namespace PowerPointLabs
                 {
                     _selectedThumbnail.FinishNameEdit();
                 }
-                else
-                {
-                    _selectedThumbnail.DeHighlight();
-                }
+
+                _selectedThumbnail.DeHighlight();
             }
 
             clickedThumbnail.Highlight();
