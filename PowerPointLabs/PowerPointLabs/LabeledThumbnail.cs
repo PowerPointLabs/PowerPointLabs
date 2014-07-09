@@ -222,11 +222,11 @@ namespace PowerPointLabs
         {
             InitializeComponent();
 
-            motherPanel.Click += (sender, e) => Click(this, e);
+            motherPanel.MouseDown += (sender, e) => Click(this, e);
             motherPanel.DoubleClick += (sender, e) => DoubleClick(this, e);
             motherPanel.Paint += EllipseNameLabelRedraw;
 
-            thumbnailPanel.Click += (sender, e) => Click(this, e);
+            thumbnailPanel.MouseDown += (sender, e) => Click(this, e);
             thumbnailPanel.DoubleClick += ThumbnailPanelDoubleClick;
 
             labelTextBox.DoubleClick += (sender, e) => labelTextBox.SelectAll();
