@@ -196,7 +196,7 @@
                label="Custom Shapes"
                visible="true">
           <button id="CustomeShapeButton"
-                  label="Shape Lab"
+                  label="Shapes Lab"
                   size="large"
                   getSupertip="GetCustomeShapeButtonSupertip"
                   onAction="CustomShapeButtonClick"/>
