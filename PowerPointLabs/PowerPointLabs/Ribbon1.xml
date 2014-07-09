@@ -109,8 +109,7 @@
           </dialogBoxLauncher>
         </group>
         <group id="embedAudio"
-               label="Auto Narrate"
-               >
+               label="Auto Narrate">
           <splitButton id="addAudioSplit" size="large">
             <button id="AddAudioButton"
                   label="Add Audio"
