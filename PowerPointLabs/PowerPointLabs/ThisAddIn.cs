@@ -363,6 +363,7 @@ namespace PowerPointLabs
 
         public void InitializeShapeGallery()
         {
+            // achieves singleton ShapePresentation
             if (ShapePresentation != null) return;
 
             ShapePresentation = new PowerPointShapeGalleryPresentation(DefaultShapeMasterFolderName,

@@ -150,9 +150,17 @@ namespace PowerPointLabs.Models
             return slideFromFactory;
         }
 
+        // TODO: need to be verified
         public void RemoveSlide(string name)
         {
-            // TODO: to be implemented
+            foreach (var slide in Slides)
+            {
+                if (slide.Name == name)
+                {
+                    Slides.Remove(slide);
+                    break;
+                }
+            }
         }
 
         public void RemoveSlide(int index)

@@ -176,6 +176,17 @@ namespace PowerPointLabs.Models
             }
         }
 
+        public void DeleteShapeWithRule(Regex regex)
+        {
+            List<Shape> shapes = _slide.Shapes.Cast<Shape>().ToList();
+
+            var matchingShapes = shapes.Where(current => regex.IsMatch(current.Name));
+            foreach (Shape s in matchingShapes)
+            {
+                s.Delete();
+            }
+        }
+
         public void DeleteAllShapes()
         {
             List<Shape> shapes = _slide.Shapes.Cast<Shape>().ToList();
@@ -349,6 +360,14 @@ namespace PowerPointLabs.Models
             List<Shape> matchingShapes = shapes.Where(current => current.Type == MsoShapeType.msoMedia &&
                                                                  current.MediaType == type &&
                                                                  nameRule.IsMatch(current.Name)).ToList();
+
+            return matchingShapes;
+        }
+
+        public List<Shape> GetShapesWithRule(Regex nameRule)
+        {
+            var shapes = _slide.Shapes.Cast<Shape>().ToList();
+            var matchingShapes = shapes.Where(current => nameRule.IsMatch(current.Name)).ToList();
 
             return matchingShapes;
         }

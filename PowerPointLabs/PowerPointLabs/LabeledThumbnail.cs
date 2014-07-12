@@ -138,15 +138,15 @@ namespace PowerPointLabs
             _nameFinishHandled = true;
             NameLable = labelTextBox.Text;
 
-            bool sameName;
+            var oldName = Path.GetFileNameWithoutExtension(ImagePath);
 
             if (_isGoodName &&
-                RenameSource(out sameName))
+                !IsDuplicateName(oldName))
             {
                 State = Status.Idle;
 
                 labelTextBox.Enabled = false;
-                NameChangedNotify(this, !sameName);
+                NameEditFinish(this, oldName);
             }
             else
             {
@@ -247,31 +247,14 @@ namespace PowerPointLabs
             labelTextBox.Enabled = false;
         }
 
-        private bool RenameSource(out bool sameName)
+        private bool IsDuplicateName(string oldName)
         {
-            var oldName = Path.GetFileNameWithoutExtension(ImagePath);
-            sameName = false;
+            var newPath = ImagePath.Replace(oldName, NameLable);
 
-            if (oldName != null)
+            if (File.Exists(newPath))
             {
-                // name doesn't change
-                if (oldName == NameLable)
-                {
-                    sameName = true;
-                    return true;
-                }
-                
-                var newPath = ImagePath.Replace(oldName, NameLable);
-
-                if (File.Exists(newPath))
-                {
-                    MessageBox.Show(TextCollection.LabeledThumbnailFileNameExistError);
-                    return false;
-                }
-
-                // rename the file on disk
-                File.Move(ImagePath, newPath);
-                ImagePath = newPath;
+                MessageBox.Show(TextCollection.LabeledThumbnailFileNameExistError);
+                return false;
             }
 
             return true;
@@ -288,11 +271,11 @@ namespace PowerPointLabs
         # region Event Handlers
         public delegate void ClickEventDelegate(object sender, EventArgs e);
         public delegate void DoubleClickEventDelegate(object sender, EventArgs e);
-        public delegate void NameChangedNotifyEventDelegate(object sender, bool nameChanged);
+        public delegate void NameEditFinishEventDelegate(object sender, string oldName);
 
         public new event ClickEventDelegate Click;
         public new event DoubleClickEventDelegate DoubleClick;
-        public event NameChangedNotifyEventDelegate NameChangedNotify;
+        public event NameEditFinishEventDelegate NameEditFinish;
 
         private void EnableChangedHandler(object sender, EventArgs e)
         {

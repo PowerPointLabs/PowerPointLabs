@@ -6,7 +6,6 @@ using System.IO;
 using System.Linq;
 using System.Text.RegularExpressions;
 using System.Windows.Forms;
-using Microsoft.Office.Core;
 using PowerPointLabs.Models;
 using Font = System.Drawing.Font;
 using Point = System.Drawing.Point;
@@ -28,7 +27,7 @@ namespace PowerPointLabs
         public string NextDefaultFullName
         {
             get { return ShapeFolderPath + @"\" +
-                         NextDefaultNameWithoutExtension + ".wmf"; }
+                         NextDefaultNameWithoutExtension + ".png"; }
         }
 
         public string NextDefaultNameWithoutExtension
@@ -74,7 +73,7 @@ namespace PowerPointLabs
         public string CurrentShapeFullName
         {
             get { return ShapeFolderPath + @"\" +
-                         CurrentShapeNameWithoutExtension + ".wmf"; }
+                         CurrentShapeNameWithoutExtension + ".png"; }
         }
 
         public string CurrentShapeNameWithoutExtension
@@ -124,7 +123,7 @@ namespace PowerPointLabs
             labeledThumbnail.ContextMenuStrip = contextMenuStrip;
             labeledThumbnail.Click += LabeledThumbnailClick;
             labeledThumbnail.DoubleClick += LabeledThumbnailDoubleClick;
-            labeledThumbnail.NameChangedNotify += NameChangedNotifyHandler;
+            labeledThumbnail.NameEditFinish += NameEditFinishHandler;
 
             myShapeFlowLayout.Controls.Add(labeledThumbnail);
 
@@ -184,7 +183,11 @@ namespace PowerPointLabs
                 return;
             }
 
+            // remove shape from disk and shape gallery
             File.Delete(CurrentShapeFullName);
+            Globals.ThisAddIn.ShapePresentation.RemoveShape(CurrentShapeNameWithoutExtension);
+
+            // remove shape from task pane
             myShapeFlowLayout.Controls.Remove(_selectedThumbnail);
             _selectedThumbnail = null;
 
@@ -272,6 +275,19 @@ namespace PowerPointLabs
             DehighlightSelected();
         }
 
+        private void RenameThumbnail(string oldName, LabeledThumbnail labeledThumbnail)
+        {
+            if (oldName != labeledThumbnail.NameLable)
+            {
+                var newPath = labeledThumbnail.ImagePath.Replace(oldName, labeledThumbnail.NameLable);
+
+                File.Move(labeledThumbnail.ImagePath, newPath);
+                labeledThumbnail.ImagePath = newPath;
+
+                Globals.ThisAddIn.ShapePresentation.RenameShape(oldName, labeledThumbnail.NameLable);
+            }
+        }
+
         private void ReorderThumbnail(LabeledThumbnail labeledThumbnail)
         {
             var index = FindControlIndex(labeledThumbnail.NameLable);
@@ -295,12 +311,6 @@ namespace PowerPointLabs
             }
 
             myShapeFlowLayout.Controls.Add(_noShapePanel);
-        }
-
-        private Tuple<Single, Single> ToMiddleOnScreen(Single slideWidth, Single slideHeight,
-                                                       Single clientWidth, Single clientHeight)
-        {
-            return new Tuple<Single, Single>((slideWidth - clientWidth) / 2, (slideHeight - clientHeight) / 2);
         }
         # endregion
 
@@ -372,24 +382,14 @@ namespace PowerPointLabs
 
             var clickedThumbnail = sender as LabeledThumbnail;
 
+            var shapeName = clickedThumbnail.NameLable;
             var currentSlide = PowerPointCurrentPresentationInfo.CurrentSlide;
-            var image = clickedThumbnail.ImageToThumbnail;
-
-            var slideWidth = PowerPointCurrentPresentationInfo.SlideWidth;
-            var slideHeight = PowerPointCurrentPresentationInfo.SlideHeight;
-            var clientWidth = (Single)image.Size.Width;
-            var clientHeight = (Single)image.Size.Height;
-
-            var leftTopCorner = ToMiddleOnScreen(slideWidth, slideHeight, clientWidth, clientHeight);
-
-            if (currentSlide != null)
-            {
-                currentSlide.InsertPicture(clickedThumbnail.ImagePath, MsoTriState.msoFalse, MsoTriState.msoTrue,
-                                           leftTopCorner);
-            }
+            
+            Globals.ThisAddIn.ShapePresentation.CopyShape(shapeName);
+            currentSlide.Shapes.Paste();
         }
 
-        private void NameChangedNotifyHandler(object sender, bool nameChanged)
+        private void NameEditFinishHandler(object sender, string oldName)
         {
             var labeledThumbnail = sender as LabeledThumbnail;
 
@@ -398,6 +398,9 @@ namespace PowerPointLabs
             // goes wrong.
             if (labeledThumbnail == null ||
                 labeledThumbnail != _selectedThumbnail) return;
+
+            // if name changed, rename the shape in shape gallery and the file on disk
+            RenameThumbnail(oldName, labeledThumbnail);
 
             ReorderThumbnail(labeledThumbnail);
 

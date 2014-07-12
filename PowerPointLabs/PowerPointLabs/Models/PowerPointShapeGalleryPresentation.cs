@@ -2,7 +2,9 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Text.RegularExpressions;
 using System.Windows.Forms;
+using Microsoft.Office.Core;
 using Microsoft.Office.Interop.PowerPoint;
 
 namespace PowerPointLabs.Models
@@ -63,6 +65,15 @@ namespace PowerPointLabs.Models
             pastedShape.Name = name;
         }
 
+        public void CopyShape(string name)
+        {
+            var shapes = _defaultCategory.GetShapesWithPrefix(name);
+
+            if (shapes.Count != 1) return;
+            
+            shapes[0].Copy();
+        }
+
         public void RemoveCategory(string name)
         {
             if (_defaultCategory.Name == name)
@@ -85,6 +96,21 @@ namespace PowerPointLabs.Models
             _categoryNameIndexMapper.Remove(Slides[index].Name);
             
             RemoveSlide(index);
+        }
+
+        public void RemoveShape(string name)
+        {
+            _defaultCategory.DeleteShapeWithRule(new Regex(name));
+        }
+
+        public void RenameShape(string oldName, string newName)
+        {
+            var shapes = _defaultCategory.GetShapesWithRule(new Regex(oldName));
+
+            foreach (var shape in shapes)
+            {
+                shape.Name = newName;
+            }
         }
 
         public void SetDefaultCategory(string name)
