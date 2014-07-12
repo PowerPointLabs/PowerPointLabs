@@ -45,7 +45,7 @@ namespace PowerPointLabs
         {
             try
             {
-                PowerPointSlide lastSlide = PowerPointPresentation.Slides.Last();
+                PowerPointSlide lastSlide = PowerPointCurrentPresentationInfo.Slides.Last();
                 if (!lastSlide.isAckSlide())
                     lastSlide.CreateAckSlide();
             }
@@ -61,8 +61,8 @@ namespace PowerPointLabs
             shapeToMove.LockAspectRatio = Office.MsoTriState.msoFalse;
             shapeToMove.Left = 0;
             shapeToMove.Top = 0;
-            shapeToMove.Width = PowerPointPresentation.SlideWidth;
-            shapeToMove.Height = PowerPointPresentation.SlideHeight;
+            shapeToMove.Width = PowerPointCurrentPresentationInfo.SlideWidth;
+            shapeToMove.Height = PowerPointCurrentPresentationInfo.SlideHeight;
         }
 
         public static void CopyShapePosition(PowerPoint.Shape shapeToCopy, ref PowerPoint.Shape shapeToMove)

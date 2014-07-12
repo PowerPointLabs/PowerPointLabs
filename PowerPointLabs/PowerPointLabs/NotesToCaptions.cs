@@ -11,7 +11,7 @@ namespace PowerPointLabs
     {
         public static void EmbedCaptionsOnSelectedSlides()
         {
-            foreach (PowerPointSlide slide in PowerPointPresentation.SelectedSlides) 
+            foreach (PowerPointSlide slide in PowerPointCurrentPresentationInfo.SelectedSlides) 
             {
                 RemoveCaptionsFromSlide(slide);
                 EmbedCaptionsOnSlide(slide);
@@ -77,8 +77,8 @@ namespace PowerPointLabs
 
         private static Shape AddCaptionBoxToSlide(string caption, PowerPointSlide s)
         {
-            float slideWidth = PowerPointPresentation.SlideWidth;
-            float slideHeight = PowerPointPresentation.SlideHeight;
+            float slideWidth = PowerPointCurrentPresentationInfo.SlideWidth;
+            float slideHeight = PowerPointCurrentPresentationInfo.SlideHeight;
             
             Shape textBox = s.Shapes.AddTextbox(MsoTextOrientation.msoTextOrientationHorizontal, 0, slideHeight - 100,
                 slideWidth, 100);
@@ -97,7 +97,7 @@ namespace PowerPointLabs
 
         public static void EmbedCaptionsOnCurrentSlide()
         {
-            var currentSlide = PowerPointPresentation.CurrentSlide;
+            var currentSlide = PowerPointCurrentPresentationInfo.CurrentSlide;
             if (currentSlide != null)
             {
                 RemoveCaptionsFromSlide(currentSlide);
@@ -107,7 +107,7 @@ namespace PowerPointLabs
 
         public static void RemoveCaptionsFromCurrentSlide()
         {
-            var currentSlide = PowerPointPresentation.CurrentSlide;
+            var currentSlide = PowerPointCurrentPresentationInfo.CurrentSlide;
             if (currentSlide != null)
             {
                 RemoveCaptionsFromSlide(currentSlide);
@@ -116,7 +116,7 @@ namespace PowerPointLabs
 
         public static void RemoveCaptionsFromSelectedSlides()
         {
-            foreach (PowerPointSlide slide in PowerPointPresentation.SelectedSlides)
+            foreach (PowerPointSlide slide in PowerPointCurrentPresentationInfo.SelectedSlides)
             {
                 RemoveCaptionsFromSlide(slide);   
             }
@@ -124,7 +124,7 @@ namespace PowerPointLabs
 
         public static void RemoveCaptionsFromAllSlides()
         {
-            foreach (PowerPointSlide s in PowerPointPresentation.Slides)
+            foreach (PowerPointSlide s in PowerPointCurrentPresentationInfo.Slides)
             {
                 RemoveCaptionsFromSlide(s);
             }

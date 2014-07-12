@@ -2,7 +2,13 @@
 {
     internal class TextCollection
     {
-        // Button Supertips
+        # region URLs
+        public const string FeedbackUrl = "http://powerpointlabs.info/contact.html";
+        public const string HelpDocumentUrl = "http://powerpointlabs.info/docs.html";
+        public const string PowerPointLabsWebsiteUrl = "http://PowerPointLabs.info";
+        # endregion
+
+        # region Ribbon XML
         public const string AddAnimationButtonSupertip =
             "Adds a slide with animations to create an animated transition from the currently selected slide to the next slide.";
         public const string ReloadButtonSupertip =
@@ -54,10 +60,15 @@
         public const string HelpButtonSupertip = @"Click this to visit PowerPointLabs help page in our website.";
         public const string FeedbackButtonSupertip = @"Click this to email us problem reports or other feedback. ";
         public const string AboutButtonSupertip = @"Information about the PowerPointLabs plugin.";
+        # endregion
 
+        # region Ribbon
         public const string AboutInfo =
-            "          PowerPointLabs Plugin Version 1.8.6 [Release date: 7 Jul 2014]\n     Developed at School of Computing, National University of Singapore.\n        For more information, visit our website http://PowerPointLabs.info";
+            "          PowerPointLabs Plugin Version 1.8.6 [Release date: 7 Jul 2014]\n     Developed at School of Computing, National University of Singapore.\n        For more information, visit our website " + PowerPointLabsWebsiteUrl;
+        public const string AboutInfoTitle = "About PowerPointLabs";
+        # endregion
 
+        # region ThisAddIn
         public const string AccessTempFolderErrorMsg = "Error when accessing temp folder";
         public const string CreatTempFolderErrorMsg = "Error when creating temp folder";
         public const string ExtraErrorMsg = "Error when extracting";
@@ -67,7 +78,14 @@
             "in the outdated .ppt format used by PowerPoint 2007 (and older). If you wish to use the " +
             "full power of PowerPointLabs to enhance this file, please save in the .pptx format used " +
             "by PowerPoint 2010 and newer.";
+        # endregion 
 
+        # region ConvertToPicture
+        public const string ErrorTypeNotSupported = "Convert to Picture only supports Shapes and Charts.";
+        public const string ErrorWindowTitle = "Unable to Convert to Picture";
+        # endregion
+
+        # region Task Pane - Recorder
         public const string RecorderInitialTimer = "00:00:00";
         public const string RecorderReadyStatusLabel = "Ready.";
         public const string RecorderRecordingStatusLabel = "Recording...";
@@ -87,14 +105,22 @@
         public const string RecorderReplaceRecordMsgBoxTitle = "Replacement";
         public const string RecorderNoRecordToPlayError = "No record to play back. Please record first.";
         public const string RecorderInvalidOperation = "Invalid Operation";
+        # endregion
 
+        # region Task Pane - Custom Shape
         public const string CustomShapeWmfFileNameInvalid = "Invalid shape name encountered";
         public const string CustomShapeNoShapeText = "No shapes available";
+        public const string CustomShapeNoPanelSelectedError = "No shape selected";
+        # endregion
 
+        # region Control - Labeled Thumbnail 
         public const string LabeledThumbnailInvalidCharacterError = @"Empty name, '\' and '.' are not allowed for the name";
         public const string LabeledThumbnailFileNameExistError = "File name is already used";
+        # endregion
 
+        # region Error Dialog
         public const string UserFeedBack = " Help us fix the problem by emailing ";
         public const string Email = @"pptlabs@comp.nus.edu.sg";
+        # endregion
     }
 }

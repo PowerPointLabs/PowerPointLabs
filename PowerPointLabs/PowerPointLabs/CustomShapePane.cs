@@ -1,10 +1,15 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Drawing;
+using System.Globalization;
 using System.IO;
+using System.Linq;
 using System.Text.RegularExpressions;
 using System.Windows.Forms;
 using Microsoft.Office.Core;
 using PowerPointLabs.Models;
+using Font = System.Drawing.Font;
+using Point = System.Drawing.Point;
 
 namespace PowerPointLabs
 {
@@ -12,11 +17,12 @@ namespace PowerPointLabs
     {
         private const string DefaultShapeNameFormat = @"My Shape Untitled {0}";
         private const string DefaultShapeNameSearchRegex = @"My Shape Untitled (\d+)";
-        private const string DefaultShapeFolderName = @"\PowerPointLabs Custom Shapes\My Shapes";
         
         private LabeledThumbnail _selectedThumbnail;
 
         private bool _firstTimeLoading = true;
+
+        private readonly AtomicNumberStringCompare _stringComparer = new AtomicNumberStringCompare();
 
         # region Properties
         public string NextDefaultFullName
@@ -61,6 +67,10 @@ namespace PowerPointLabs
             }
         }
 
+        public List<string> Categories { get; private set; }
+
+        public string CurrentCategory { get; set; }
+
         public string CurrentShapeFullName
         {
             get { return ShapeFolderPath + @"\" +
@@ -80,16 +90,23 @@ namespace PowerPointLabs
             }
         }
 
+        public string ShapeRootFolderPath { get; private set; }
+
         public string ShapeFolderPath
         {
-            get { return Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments) + DefaultShapeFolderName; }
+            get { return ShapeRootFolderPath + @"\" + CurrentCategory; }
         }
         # endregion
 
         # region Constructors
-        public CustomShapePane()
+        public CustomShapePane(string shapeRootFolderPath, string defaultShapeCategoryName)
         {
             InitializeComponent();
+
+            ShapeRootFolderPath = shapeRootFolderPath;
+
+            CurrentCategory = defaultShapeCategoryName;
+            Categories = new List<string> {CurrentCategory};
 
             ShowNoShapeMessage();
             myShapeFlowLayout.AutoSize = true;
@@ -100,11 +117,7 @@ namespace PowerPointLabs
         # region API
         public void AddCustomShape(string shapeName, string shapeFullName, bool immediateEditing)
         {
-            // dehighlight the selected labeled thumbnail if we have one
-            if (_selectedThumbnail != null)
-            {
-                _selectedThumbnail.DeHighlight();
-            }
+            DehighlightSelected();
 
             var labeledThumbnail = new LabeledThumbnail(shapeFullName, shapeName);
 
@@ -162,12 +175,12 @@ namespace PowerPointLabs
                                                        Size = new Size(362, 50),
                                                        Margin = new Padding(0, 0, 0, 0)
                                                    };
-
+        
         private void ContextMenuStripRemoveClicked()
         {
             if (_selectedThumbnail == null)
             {
-                MessageBox.Show(NoPanelSelectedError);
+                MessageBox.Show(TextCollection.CustomShapeNoPanelSelectedError);
                 return;
             }
 
@@ -185,11 +198,19 @@ namespace PowerPointLabs
         {
             if (_selectedThumbnail == null)
             {
-                MessageBox.Show(NoPanelSelectedError);
+                MessageBox.Show(TextCollection.CustomShapeNoPanelSelectedError);
                 return;
             }
 
             _selectedThumbnail.StartNameEdit();
+        }
+
+        private void DehighlightSelected()
+        {
+            if (_selectedThumbnail == null) return;
+            
+            _selectedThumbnail.DeHighlight();
+            _selectedThumbnail = null;
         }
 
         private int FindControlIndex(string name)
@@ -206,13 +227,19 @@ namespace PowerPointLabs
                 var control = myShapeFlowLayout.Controls[i] as LabeledThumbnail;
                 
                 if (control != null &&
-                    string.Compare(control.NameLable, name) >= 0)
+                    _stringComparer.Compare(control.NameLable, name) >= 0)
                 {
                     return i;
                 }
             }
 
             return totalControl;
+        }
+
+        private void FocusSelected()
+        {
+            myShapeFlowLayout.ScrollControlIntoView(_selectedThumbnail);
+            _selectedThumbnail.Highlight();
         }
 
         private void PrepareFolder()
@@ -227,11 +254,11 @@ namespace PowerPointLabs
         {
             PrepareFolder();
 
-            var wmfFiles = Directory.EnumerateFiles(ShapeFolderPath, "*.wmf");
+            var shapes = Directory.EnumerateFiles(ShapeFolderPath, "*.png").OrderBy(item => item, _stringComparer);
 
-            foreach (var wmfFile in wmfFiles)
+            foreach (var shape in shapes)
             {
-                var shapeName = Path.GetFileNameWithoutExtension(wmfFile);
+                var shapeName = Path.GetFileNameWithoutExtension(shape);
 
                 if (shapeName == null)
                 {
@@ -239,16 +266,27 @@ namespace PowerPointLabs
                     continue;
                 }
 
-                AddCustomShape(shapeName, wmfFile, false);
+                AddCustomShape(shapeName, shape, false);
             }
 
-            if (_selectedThumbnail != null)
-            {
-                _selectedThumbnail.DeHighlight();
-                _selectedThumbnail = null;
-            }
+            DehighlightSelected();
         }
-        
+
+        private void ReorderThumbnail(LabeledThumbnail labeledThumbnail)
+        {
+            var index = FindControlIndex(labeledThumbnail.NameLable);
+
+            // if the current control is the only control or something goes wrong, don't need
+            // to reorder
+            if (index == -1 ||
+                index >= myShapeFlowLayout.Controls.Count)
+            {
+                return;
+            }
+
+            myShapeFlowLayout.Controls.SetChildIndex(labeledThumbnail, index);
+        }
+
         private void ShowNoShapeMessage()
         {
             if (_noShapePanel.Controls.Count == 0)
@@ -267,7 +305,6 @@ namespace PowerPointLabs
         # endregion
 
         # region Event Handlers
-        private const string NoPanelSelectedError = @"No shape selected";
 
         private void ContextMenuStripItemClicked(object sender, ToolStripItemClickedEventArgs e)
         {
@@ -305,7 +342,7 @@ namespace PowerPointLabs
         {
             if (sender == null || !(sender is LabeledThumbnail))
             {
-                MessageBox.Show(NoPanelSelectedError);
+                MessageBox.Show(TextCollection.CustomShapeNoPanelSelectedError);
                 return;
             }
 
@@ -329,17 +366,17 @@ namespace PowerPointLabs
         {
             if (sender == null || !(sender is LabeledThumbnail))
             {
-                MessageBox.Show(NoPanelSelectedError);
+                MessageBox.Show(TextCollection.CustomShapeNoPanelSelectedError);
                 return;
             }
 
             var clickedThumbnail = sender as LabeledThumbnail;
 
-            var currentSlide = PowerPointPresentation.CurrentSlide;
+            var currentSlide = PowerPointCurrentPresentationInfo.CurrentSlide;
             var image = clickedThumbnail.ImageToThumbnail;
 
-            var slideWidth = PowerPointPresentation.SlideWidth;
-            var slideHeight = PowerPointPresentation.SlideHeight;
+            var slideWidth = PowerPointCurrentPresentationInfo.SlideWidth;
+            var slideHeight = PowerPointCurrentPresentationInfo.SlideHeight;
             var clientWidth = (Single)image.Size.Width;
             var clientHeight = (Single)image.Size.Height;
 
@@ -362,19 +399,54 @@ namespace PowerPointLabs
             if (labeledThumbnail == null ||
                 labeledThumbnail != _selectedThumbnail) return;
 
-            var index = FindControlIndex(labeledThumbnail.NameLable);
+            ReorderThumbnail(labeledThumbnail);
 
-            // if the current control is the only control or something goes wrong, don't need
-            // to reorder
-            if (index == -1 ||
-                index >= myShapeFlowLayout.Controls.Count)
+            FocusSelected();
+        }
+        # endregion
+
+        # region Comparer
+        public class AtomicNumberStringCompare : IComparer<string>
+        {
+            public int Compare(string thisString, string otherString)
             {
-                return;
-            }
+                // some characters + number
+                var pattern = new Regex(@"([^\d]+)(\d+)");
+                var thisStringMatch = pattern.Match(thisString);
+                var otherStringMatch = pattern.Match(otherString);
 
-            myShapeFlowLayout.Controls.SetChildIndex(labeledThumbnail, index);
-            myShapeFlowLayout.ScrollControlIntoView(labeledThumbnail);
-            labeledThumbnail.Highlight();
+                // specially compare the pattern, after run out of the pattern, compare
+                // 2 strings normally
+                while (thisStringMatch.Success &&
+                       otherStringMatch.Success)
+                {
+                    var thisStringPart = thisStringMatch.Groups[1].Value;
+                    var thisNumPart = int.Parse(thisStringMatch.Groups[2].Value);
+
+                    var otherStringPart = otherStringMatch.Groups[1].Value;
+                    var otherNumPart = int.Parse(otherStringMatch.Groups[2].Value);
+
+                    // if string part is not the same, we can tell the diff
+                    if (!string.Equals(thisStringPart, otherStringPart))
+                    {
+                        break;
+                    }
+
+                    // if string part is the same but number part is different, we can
+                    // tell the diff
+                    if (thisNumPart != otherNumPart)
+                    {
+                        return thisNumPart - otherNumPart;
+                    }
+
+                    // two parts are identical, find next match
+                    thisStringMatch.NextMatch();
+                    otherStringMatch.NextMatch();
+                }
+
+                // case sensitive comparing, invariant for cultures
+                return string.Compare(thisString, otherString, false, CultureInfo.InvariantCulture);
+            }
         }
         # endregion
 
