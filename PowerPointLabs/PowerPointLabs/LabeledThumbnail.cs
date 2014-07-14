@@ -14,10 +14,7 @@ namespace PowerPointLabs
         private bool _isHighlighted;
         private bool _isGoodName;
         
-        private Image _imageSource;
-        
         private string _nameLabel;
-        private string _imageSourcePath;
 
         public enum Status
         {
@@ -49,26 +46,7 @@ namespace PowerPointLabs
             }
         }
 
-        public Image ImageToThumbnail
-        {
-            get { return _imageSource; }
-            
-            private set
-            {
-                _imageSource = value;
-                thumbnailPanel.BackgroundImage = CreateThumbnailImage(value, 50, 50);
-            }
-        }
-
-        public string ImagePath
-        {
-            get { return _imageSourcePath; }
-            set
-            {
-                _imageSourcePath = value;
-                ImageToThumbnail = new Bitmap(value);
-            }
-        }
+        public string ImagePath { get; set; }
 
         public Status State { get; private set; }
         # endregion
@@ -122,6 +100,7 @@ namespace PowerPointLabs
             State = Status.Editing;
             
             Highlight();
+
             labelTextBox.Enabled = true;
             labelTextBox.Focus();
             labelTextBox.SelectAll();
@@ -243,21 +222,33 @@ namespace PowerPointLabs
             NameLable = nameLable;
             ImagePath = imagePath;
 
+            thumbnailPanel.BackgroundImage = CreateThumbnailImage(new Bitmap(ImagePath), 50, 50);
+            
+            // critical line, we need to free the reference to the image immediately after we've
+            // finished thumbnail generation, else we could not modify (rename/ delete) the
+            // image.
+            GC.Collect();
+
             State = Status.Idle;
             labelTextBox.Enabled = false;
         }
 
         private bool IsDuplicateName(string oldName)
         {
+            // if the name hasn't changed, we don't need to check for duplicate name
+            // since the default name/ old name is confirmed unique.
+            if (oldName == NameLable) return false;
+
             var newPath = ImagePath.Replace(oldName, NameLable);
 
+            // if the new name has been used, the new name is not allowed
             if (File.Exists(newPath))
             {
                 MessageBox.Show(TextCollection.LabeledThumbnailFileNameExistError);
-                return false;
+                return true;
             }
 
-            return true;
+            return false;
         }
 
         private bool Verify(string name)

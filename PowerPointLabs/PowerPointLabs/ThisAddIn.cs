@@ -20,6 +20,7 @@ namespace PowerPointLabs
     public partial class ThisAddIn
     {
         private const string TempFolderNamePrefix = @"\PowerPointLabs Temp\";
+
         private readonly string _defaultShapeMasterFolderPrefix =
             Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments);
         private const string DefaultShapeMasterFolderName = @"\PowerPointLabs Custom Shapes";
@@ -366,10 +367,13 @@ namespace PowerPointLabs
             // achieves singleton ShapePresentation
             if (ShapePresentation != null) return;
 
-            ShapePresentation = new PowerPointShapeGalleryPresentation(DefaultShapeMasterFolderName,
-                                                                       ShapeGalleryPptxName);
+            ShapePresentation =
+                new PowerPointShapeGalleryPresentation(_defaultShapeMasterFolderPrefix + DefaultShapeMasterFolderName,
+                                                       ShapeGalleryPptxName);
+
             ShapePresentation.Open(withWindow: false, focus: false);
             ShapePresentation.AddCategory(DefaultShapeCategoryName);
+            ShapePresentation.Save();
         }
 
         public void RegisterRecorderPane(PowerPoint.Presentation presentation)

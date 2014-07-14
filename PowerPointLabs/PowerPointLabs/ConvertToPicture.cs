@@ -29,8 +29,8 @@ namespace PowerPointLabs
 
                 var shape = GetShapeFromSelection(selection);
                 shape = CutPasteShape(shape);
-                shape.Export(fileName, PowerPoint.PpShapeFormat.ppShapeFormatPNG, 0, 0,
-                             PowerPoint.PpExportMode.ppScaleXY);
+                shape.Export(fileName, PowerPoint.PpShapeFormat.ppShapeFormatPNG,
+                             ExportMode: PowerPoint.PpExportMode.ppScaleXY);
 
                 if (grouped)
                 {

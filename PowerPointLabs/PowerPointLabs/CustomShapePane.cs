@@ -183,9 +183,12 @@ namespace PowerPointLabs
                 return;
             }
 
+            // remove shape from shape gallery
+            Globals.ThisAddIn.ShapePresentation.RemoveShape(CurrentShapeNameWithoutExtension);
+            Globals.ThisAddIn.ShapePresentation.Save();
+
             // remove shape from disk and shape gallery
             File.Delete(CurrentShapeFullName);
-            Globals.ThisAddIn.ShapePresentation.RemoveShape(CurrentShapeNameWithoutExtension);
 
             // remove shape from task pane
             myShapeFlowLayout.Controls.Remove(_selectedThumbnail);
@@ -277,15 +280,14 @@ namespace PowerPointLabs
 
         private void RenameThumbnail(string oldName, LabeledThumbnail labeledThumbnail)
         {
-            if (oldName != labeledThumbnail.NameLable)
-            {
-                var newPath = labeledThumbnail.ImagePath.Replace(oldName, labeledThumbnail.NameLable);
+            if (oldName == labeledThumbnail.NameLable) return;
 
-                File.Move(labeledThumbnail.ImagePath, newPath);
-                labeledThumbnail.ImagePath = newPath;
+            var newPath = labeledThumbnail.ImagePath.Replace(oldName, labeledThumbnail.NameLable);
 
-                Globals.ThisAddIn.ShapePresentation.RenameShape(oldName, labeledThumbnail.NameLable);
-            }
+            File.Move(labeledThumbnail.ImagePath, newPath);
+            labeledThumbnail.ImagePath = newPath;
+
+            Globals.ThisAddIn.ShapePresentation.RenameShape(oldName, labeledThumbnail.NameLable);
         }
 
         private void ReorderThumbnail(LabeledThumbnail labeledThumbnail)
@@ -315,7 +317,6 @@ namespace PowerPointLabs
         # endregion
 
         # region Event Handlers
-
         private void ContextMenuStripItemClicked(object sender, ToolStripItemClickedEventArgs e)
         {
             var item = e.ClickedItem;
@@ -386,7 +387,7 @@ namespace PowerPointLabs
             var currentSlide = PowerPointCurrentPresentationInfo.CurrentSlide;
             
             Globals.ThisAddIn.ShapePresentation.CopyShape(shapeName);
-            currentSlide.Shapes.Paste();
+            currentSlide.Shapes.Paste().Select();
         }
 
         private void NameEditFinishHandler(object sender, string oldName)
@@ -402,8 +403,10 @@ namespace PowerPointLabs
             // if name changed, rename the shape in shape gallery and the file on disk
             RenameThumbnail(oldName, labeledThumbnail);
 
+            // put the labeled thumbnail to correct position
             ReorderThumbnail(labeledThumbnail);
 
+            // select the thumbnail and scroll into view
             FocusSelected();
         }
         # endregion
@@ -443,8 +446,8 @@ namespace PowerPointLabs
                     }
 
                     // two parts are identical, find next match
-                    thisStringMatch.NextMatch();
-                    otherStringMatch.NextMatch();
+                    thisStringMatch = thisStringMatch.NextMatch();
+                    otherStringMatch = otherStringMatch.NextMatch();
                 }
 
                 // case sensitive comparing, invariant for cultures

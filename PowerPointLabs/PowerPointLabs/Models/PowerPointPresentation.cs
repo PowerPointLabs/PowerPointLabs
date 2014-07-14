@@ -27,7 +27,7 @@ namespace PowerPointLabs.Models
             {
                 foreach (Presentation presentation in Globals.ThisAddIn.Application.Presentations)
                 {
-                    if (presentation.FullName == FullName)
+                    if (presentation.Name == Name + ".pptx")
                     {
                         Presentation = presentation;
                         return true;
@@ -128,13 +128,13 @@ namespace PowerPointLabs.Models
         # endregion
 
         # region API
-        public PowerPointSlide AddSlide(PpSlideLayout layout = PpSlideLayout.ppLayoutBlank, string name = "")
+        public PowerPointSlide AddSlide(PpSlideLayout layout = PpSlideLayout.ppLayoutText, string name = "")
         {
             if (!Opened)
             {
                 return null;
             }
-            
+
             var customLayout = Presentation.SlideMaster.CustomLayouts[layout];
             var newSlide = Presentation.Slides.AddSlide(SlideCount + 1, customLayout);
 

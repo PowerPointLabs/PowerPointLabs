@@ -983,7 +983,6 @@ namespace PowerPointLabs
         # region Custom Shapes
         public void CustomShapeButtonClick(Office.IRibbonControl control)
         {
-            Globals.ThisAddIn.InitializeShapeGallery();
             Globals.ThisAddIn.RegisterCustomShapePane(Globals.ThisAddIn.Application.ActivePresentation);
             
             var customShapePane = Globals.ThisAddIn.GetActivePane(typeof(CustomShapePane));
@@ -1003,12 +1002,12 @@ namespace PowerPointLabs
 
             customShape.PaneReload();
             customShapePane.Visible = true;
+
+            Globals.ThisAddIn.InitializeShapeGallery();
         }
 
         public void AddShapeButtonClick(Office.IRibbonControl control)
         {
-            Globals.ThisAddIn.InitializeShapeGallery();
-
             var prensentation = Globals.ThisAddIn.Application.ActivePresentation;
             Globals.ThisAddIn.RegisterCustomShapePane(prensentation);
 
@@ -1034,6 +1033,8 @@ namespace PowerPointLabs
                                     prensentation.Path != string.Empty;
 
             customShape.PaneReload();
+
+            Globals.ThisAddIn.InitializeShapeGallery();
 
             var shapeName = customShape.NextDefaultNameWithoutExtension;
             var shapeFullName = customShape.NextDefaultFullName;

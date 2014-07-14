@@ -38,13 +38,14 @@ namespace PowerPointLabs.Models
 
         public void AddShape(Selection selection, string name)
         {
-            selection.Copy();
+            selection.ShapeRange.Copy();
 
-            var pastedShape = _defaultCategory.Shapes.Paste();
+            var pastedShapeRange = _defaultCategory.Shapes.Paste();
+            var pastedShape = pastedShapeRange[1];
 
-            if (pastedShape.Count > 1)
+            if (pastedShapeRange.Count > 1)
             {
-                pastedShape.Group();
+                pastedShape = pastedShapeRange.Group();
             }
 
             pastedShape.Name = name;
@@ -55,11 +56,12 @@ namespace PowerPointLabs.Models
             selection.Copy();
 
             var categorySlide = Slides[_categoryNameIndexMapper[category]];
-            var pastedShape = categorySlide.Shapes.Paste();
+            var pastedShapeRange = categorySlide.Shapes.Paste();
+            var pastedShape = pastedShapeRange[1];
 
-            if (pastedShape.Count > 1)
+            if (pastedShapeRange.Count > 1)
             {
-                pastedShape.Group();
+                pastedShape = pastedShapeRange.Group();
             }
 
             pastedShape.Name = name;
