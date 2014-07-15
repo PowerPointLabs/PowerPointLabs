@@ -90,7 +90,7 @@ namespace PowerPointLabs.Models
 
         public void CopyShape(string name)
         {
-            var shapes = _defaultCategory.GetShapesWithPrefix(name);
+            var shapes = _defaultCategory.GetShapesWithRule(new Regex(name + "$"));
 
             if (shapes.Count != 1) return;
             
@@ -170,7 +170,7 @@ namespace PowerPointLabs.Models
 
         public void RenameShape(string oldName, string newName)
         {
-            var shapes = _defaultCategory.GetShapesWithRule(new Regex(oldName));
+            var shapes = _defaultCategory.GetShapesWithRule(new Regex(oldName + "$"));
 
             foreach (var shape in shapes)
             {
