@@ -7,6 +7,7 @@ namespace PowerPointLabs.Models
 {
     class PowerPointShapeGalleryPresentation : PowerPointPresentation
     {
+        private const string ShapeGalleryFileExtension = ".pptlabsshapes";
         private PowerPointSlide _defaultCategory;
 
         private readonly Dictionary<string, int> _categoryNameIndexMapper = new Dictionary<string, int>();
@@ -78,6 +79,15 @@ namespace PowerPointLabs.Models
             pastedShape.Name = name;
         }
 
+        public override void Close()
+        {
+            base.Close();
+
+            var shapeGalleryFileName = FullName.Replace(".pptx", ShapeGalleryFileExtension);
+
+            File.Move(FullName, shapeGalleryFileName);
+        }
+
         public void CopyShape(string name)
         {
             var shapes = _defaultCategory.GetShapesWithPrefix(name);
@@ -90,6 +100,13 @@ namespace PowerPointLabs.Models
         public override void Open(bool readOnly = false, bool untitled = false,
                                   bool withWindow = true, bool focus = true)
         {
+            var shapeGalleryFileName = FullName.Replace(".pptx", ShapeGalleryFileExtension);
+
+            if (File.Exists(shapeGalleryFileName))
+            {
+                File.Move(shapeGalleryFileName, FullName);
+            }
+
             base.Open(readOnly, untitled, withWindow, focus);
 
             if (SlideCount > 0)

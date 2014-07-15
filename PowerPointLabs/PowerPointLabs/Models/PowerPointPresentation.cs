@@ -207,7 +207,7 @@ namespace PowerPointLabs.Models
             return true;
         }
 
-        public void Close()
+        public virtual void Close()
         {
             Presentation.Close();
             Presentation = null;
