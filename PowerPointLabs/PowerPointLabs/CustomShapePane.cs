@@ -268,7 +268,7 @@ namespace PowerPointLabs
 
                 if (shapeName == null)
                 {
-                    MessageBox.Show(TextCollection.CustomShapeWmfFileNameInvalid);
+                    MessageBox.Show(TextCollection.CustomShapeFileNameInvalid);
                     continue;
                 }
 

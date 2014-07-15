@@ -170,6 +170,7 @@ namespace PowerPointLabs.Models
             List<Shape> shapes = _slide.Shapes.Cast<Shape>().ToList();
 
             var matchingShapes = shapes.Where(current => current.Name.StartsWith(prefix));
+            
             foreach (Shape s in matchingShapes)
             {
                 s.Delete();

@@ -108,7 +108,7 @@
         # endregion
 
         # region Task Pane - Custom Shape
-        public const string CustomShapeWmfFileNameInvalid = "Invalid shape name encountered";
+        public const string CustomShapeFileNameInvalid = "Invalid shape name encountered";
         public const string CustomShapeNoShapeText = "No shapes available";
         public const string CustomShapeNoPanelSelectedError = "No shape selected";
         # endregion

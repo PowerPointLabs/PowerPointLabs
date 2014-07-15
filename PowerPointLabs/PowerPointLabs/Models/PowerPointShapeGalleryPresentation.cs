@@ -1,10 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
+﻿using System.Collections.Generic;
+using System.IO;
 using System.Text.RegularExpressions;
-using System.Windows.Forms;
-using Microsoft.Office.Core;
 using Microsoft.Office.Interop.PowerPoint;
 
 namespace PowerPointLabs.Models
@@ -37,6 +33,11 @@ namespace PowerPointLabs.Models
             }
 
             var newSlide = AddSlide(name: name);
+
+            // ppLayoutBlank causes an error, so we use ppLayoutText instead and manually remove the
+            // place holders
+            newSlide.DeleteShapeWithRule(new Regex(@"Title \d+"));
+            newSlide.DeleteShapeWithRule(new Regex(@"Content Placeholder \d+"));
 
             _categoryNameIndexMapper[name] = Slides.Count;
 
@@ -93,10 +94,31 @@ namespace PowerPointLabs.Models
 
             if (SlideCount > 0)
             {
-                foreach (var slide in Slides)
+                foreach (var category in Slides)
                 {
-                    _categoryNameIndexMapper[slide.Name] = slide.Index;
+                    _categoryNameIndexMapper[category.Name] = category.Index;
+
+                    // this is to handle the case when user deletes the .png image manually but
+                    // ShapeGallery.pptx isn't updated
+                    var shapeCnt = 1;
+                    
+                    while (shapeCnt <= category.Shapes.Count)
+                    {
+                        var shape = category.Shapes[shapeCnt];
+                        var shapePath = Path + @"\" + category.Name + @"\" + shape.Name + ".png";
+
+                        if (!File.Exists(shapePath))
+                        {
+                            shape.Delete();
+                        }
+                        else
+                        {
+                            shapeCnt++;
+                        }
+                    }
                 }
+
+                Save();
             }
         }
 
