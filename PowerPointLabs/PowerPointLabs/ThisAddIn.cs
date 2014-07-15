@@ -262,6 +262,12 @@ namespace PowerPointLabs
                 _oldVersion = false;
 
                 var recorderPane = GetActivePane(typeof(RecorderTaskPane));
+
+                if (recorderPane == null)
+                {
+                    return;
+                }
+
                 var recorder = recorderPane.Control as RecorderTaskPane;
 
                 if (recorder == null)

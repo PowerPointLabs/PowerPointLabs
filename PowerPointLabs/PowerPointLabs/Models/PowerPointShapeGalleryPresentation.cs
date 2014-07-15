@@ -26,6 +26,16 @@ namespace PowerPointLabs.Models
         # region API
         public void AddCategory(string name, bool setAsDefault = true)
         {
+            if (_categoryNameIndexMapper.ContainsKey(name))
+            {
+                if (setAsDefault)
+                {
+                    _defaultCategory = Slides[_categoryNameIndexMapper[name] - 1];
+                }
+
+                return;
+            }
+
             var newSlide = AddSlide(name: name);
 
             _categoryNameIndexMapper[name] = Slides.Count;
@@ -74,6 +84,19 @@ namespace PowerPointLabs.Models
             if (shapes.Count != 1) return;
             
             shapes[0].Copy();
+        }
+
+        public override void Open(bool readOnly = false, bool untitled = false, bool withWindow = true, bool focus = true)
+        {
+            base.Open(readOnly, untitled, withWindow, focus);
+
+            if (SlideCount > 0)
+            {
+                foreach (var slide in Slides)
+                {
+                    _categoryNameIndexMapper[slide.Name] = slide.Index;
+                }
+            }
         }
 
         public void RemoveCategory(string name)

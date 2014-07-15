@@ -10,6 +10,7 @@ namespace PowerPointLabs.Models
         # region Properties
 
         private List<PowerPointSlide> _slides;
+        private string _name;
 
         public string FullName
         {
@@ -19,7 +20,25 @@ namespace PowerPointLabs.Models
             }
         }
 
-        public string Name { get; set; }
+        public string FullNameNoExtension
+        {
+            get
+            {
+                return Path + @"\" + NameNoExtension;
+            }
+        }
+
+        public string Name
+        {
+            get { return _name; }
+            set
+            {
+                NameNoExtension = value;
+                _name = value + ".pptx";
+            }
+        }
+
+        public string NameNoExtension { get; private set; }
 
         public bool Opened
         {
@@ -27,7 +46,7 @@ namespace PowerPointLabs.Models
             {
                 foreach (Presentation presentation in Globals.ThisAddIn.Application.Presentations)
                 {
-                    if (presentation.Name == Name + ".pptx")
+                    if (presentation.Name == Name)
                     {
                         Presentation = presentation;
                         return true;
@@ -170,7 +189,7 @@ namespace PowerPointLabs.Models
 
         public bool Create(bool withWidow, bool focus)
         {
-            if (File.Exists(Name))
+            if (File.Exists(FullName))
             {
                 return false;
             }
@@ -178,7 +197,7 @@ namespace PowerPointLabs.Models
             var workingWindow = Globals.ThisAddIn.Application.ActiveWindow;
 
             Presentation = Globals.ThisAddIn.Application.Presentations.Add(BoolToMsoTriState(withWidow));
-            Presentation.SaveAs(FullName);
+            Presentation.SaveAs(FullNameNoExtension);
 
             if (!focus)
             {
@@ -194,7 +213,7 @@ namespace PowerPointLabs.Models
             Presentation = null;
         }
 
-        public void Open(bool readOnly = false, bool untitled = false, bool withWindow = true, bool focus = true)
+        public virtual void Open(bool readOnly = false, bool untitled = false, bool withWindow = true, bool focus = true)
         {
             if (Opened)
             {
@@ -208,7 +227,7 @@ namespace PowerPointLabs.Models
 
             var workingWindow = Globals.ThisAddIn.Application.ActiveWindow;
 
-            Presentation = Globals.ThisAddIn.Application.Presentations.Open(Name, BoolToMsoTriState(readOnly),
+            Presentation = Globals.ThisAddIn.Application.Presentations.Open(FullName, BoolToMsoTriState(readOnly),
                                                                             BoolToMsoTriState(untitled),
                                                                             BoolToMsoTriState(withWindow));
 
