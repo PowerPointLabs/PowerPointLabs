@@ -64,7 +64,7 @@
 
         # region Ribbon
         public const string AboutInfo =
-            "          PowerPointLabs Plugin Version 1.8.6 [Release date: 7 Jul 2014]\n     Developed at School of Computing, National University of Singapore.\n        For more information, visit our website " + PowerPointLabsWebsiteUrl;
+            "          PowerPointLabs Plugin Version 1.8.7 [Release date: 15 Jul 2014]\n     Developed at School of Computing, National University of Singapore.\n        For more information, visit our website " + PowerPointLabsWebsiteUrl;
         public const string AboutInfoTitle = "About PowerPointLabs";
         # endregion
 

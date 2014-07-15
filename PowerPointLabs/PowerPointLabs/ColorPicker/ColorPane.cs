@@ -380,7 +380,7 @@ namespace PowerPointLabs
         {
             try
             {
-                _selectedShapes = PowerPointPresentation.CurrentSelection.ShapeRange;
+                _selectedShapes = PowerPointCurrentPresentationInfo.CurrentSelection.ShapeRange;
             }
             catch (Exception)
             {
@@ -414,7 +414,7 @@ namespace PowerPointLabs
         private static void RecreateCorruptedShape(PowerPoint.Shape s)
         {
             s.Copy();
-            PowerPoint.Shape newShape = PowerPointPresentation.CurrentSlide.Shapes.Paste()[1];
+            PowerPoint.Shape newShape = PowerPointCurrentPresentationInfo.CurrentSlide.Shapes.Paste()[1];
 
             newShape.Select();
 
@@ -749,10 +749,10 @@ namespace PowerPointLabs
         {
             try
             {
-                if (PowerPointPresentation.SlideCount > 0)
+                if (PowerPointCurrentPresentationInfo.SlideCount > 0)
                 {
                     Microsoft.Office.Core.ThemeColorScheme scheme =
-                    PowerPointPresentation.CurrentSlide.GetNativeSlide().ThemeColorScheme;
+                    PowerPointCurrentPresentationInfo.CurrentSlide.GetNativeSlide().ThemeColorScheme;
 
                     ThemePanel1.BackColor = Color.FromArgb(
                         ColorHelper.ReverseRGBToArgb(
@@ -796,7 +796,7 @@ namespace PowerPointLabs
         {
             try
             {
-                if (PowerPointPresentation.SlideCount > 0)
+                if (PowerPointCurrentPresentationInfo.SlideCount > 0)
                 {
                     ThemePanel1.BackColor = Color.White;
                     ThemePanel2.BackColor = Color.White;
@@ -818,7 +818,7 @@ namespace PowerPointLabs
 
         private void ApplyCurrentThemeToSelectedSlides()
         {
-            foreach (PowerPointSlide slide in PowerPointPresentation.SelectedSlides)
+            foreach (PowerPointSlide slide in PowerPointCurrentPresentationInfo.SelectedSlides)
             {
                 ApplyCurrentThemeToSlide(slide);
             }

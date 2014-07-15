@@ -621,8 +621,6 @@ namespace PowerPointLabs
             {
                 return;
             }
-            
-            var recorder = recorderPane.Control as RecorderTaskPane;
 
             // if the user has selected none or more than 1 slides, recorder pane should show nothing
             if (count != 1)
@@ -888,26 +886,26 @@ namespace PowerPointLabs
         private int FindMatchedShape(PowerPoint.Shape shape)
         {
             //Strong matching:
-            for (int i = 0; i < copiedShapes.Count; i++)
+            for (int i = 0; i < _copiedShapes.Count; i++)
             {
-                if (IsSimilarShape(shape, copiedShapes[i])
-                    && IsSimilarName(shape.Name, copiedShapes[i].Name)
-                    && shape.Left == copiedShapes[i].Left
-                    && shape.Height == copiedShapes[i].Height
-                    && !isShapeMatchedAlready.Contains(copiedShapes[i].Id.ToString()))
+                if (IsSimilarShape(shape, _copiedShapes[i])
+                    && IsSimilarName(shape.Name, _copiedShapes[i].Name)
+                    && shape.Left == _copiedShapes[i].Left
+                    && shape.Height == _copiedShapes[i].Height
+                    && !isShapeMatchedAlready.Contains(_copiedShapes[i].Id.ToString()))
                 {
-                    isShapeMatchedAlready.Add(copiedShapes[i].Id.ToString());
+                    isShapeMatchedAlready.Add(_copiedShapes[i].Id.ToString());
                     return i;
                 }
             }
             //Blur matching:
-            for (int i = 0; i < copiedShapes.Count; i++)
+            for (int i = 0; i < _copiedShapes.Count; i++)
             {
-                if (IsSimilarShape(shape, copiedShapes[i])
-                    && IsSimilarName(shape.Name, copiedShapes[i].Name)
-                    && !isShapeMatchedAlready.Contains(copiedShapes[i].Id.ToString()))
+                if (IsSimilarShape(shape, _copiedShapes[i])
+                    && IsSimilarName(shape.Name, _copiedShapes[i].Name)
+                    && !isShapeMatchedAlready.Contains(_copiedShapes[i].Id.ToString()))
                 {
-                    isShapeMatchedAlready.Add(copiedShapes[i].Id.ToString());
+                    isShapeMatchedAlready.Add(_copiedShapes[i].Id.ToString());
                     return i;
                 }
             }

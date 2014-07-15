@@ -41,7 +41,7 @@
     <PublishUrl>\\psf\Home\Desktop\PowerPointLabs Deploy\</PublishUrl>
     <InstallUrl>http://www.comp.nus.edu.sg/~pptlabs/download/dev/</InstallUrl>
     <TargetCulture>en</TargetCulture>
-    <ApplicationVersion>1.8.6.2</ApplicationVersion>
+    <ApplicationVersion>1.8.7.0</ApplicationVersion>
     <AutoIncrementApplicationRevision>false</AutoIncrementApplicationRevision>
     <UpdateEnabled>true</UpdateEnabled>
     <UpdateInterval>0</UpdateInterval>
