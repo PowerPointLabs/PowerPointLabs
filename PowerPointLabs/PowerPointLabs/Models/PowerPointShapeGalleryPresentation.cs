@@ -86,7 +86,8 @@ namespace PowerPointLabs.Models
             shapes[0].Copy();
         }
 
-        public override void Open(bool readOnly = false, bool untitled = false, bool withWindow = true, bool focus = true)
+        public override void Open(bool readOnly = false, bool untitled = false,
+                                  bool withWindow = true, bool focus = true)
         {
             base.Open(readOnly, untitled, withWindow, focus);
 

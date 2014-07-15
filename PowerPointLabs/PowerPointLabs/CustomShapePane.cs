@@ -288,6 +288,7 @@ namespace PowerPointLabs
             labeledThumbnail.ImagePath = newPath;
 
             Globals.ThisAddIn.ShapePresentation.RenameShape(oldName, labeledThumbnail.NameLable);
+            Globals.ThisAddIn.ShapePresentation.Save();
         }
 
         private void ReorderThumbnail(LabeledThumbnail labeledThumbnail)
