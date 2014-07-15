@@ -687,6 +687,16 @@ namespace PowerPointLabs
                 var zipFullPath = tempPath + zipName;
                 var presFullName = pres.FullName;
 
+                // before we do everything, check if there's an undelete old zip file
+                // due to some error
+                if (File.Exists(zipFullPath))
+                {
+                    File.SetAttributes(zipFullPath, FileAttributes.Normal);
+                    File.Delete(zipFullPath);
+                }
+
+                // if temp folder exists, delete then create in case 2 different files
+                // share the same name
                 PrepareTempFolder(tempPath);
 
                 // this segment is added to handle "embed on other application" issue. In this
