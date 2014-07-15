@@ -41,14 +41,14 @@ namespace PowerPointLabs
         //Add motion and resize animations to shapeToZoom
         public static void AddDrillDownMotionAnimation(PowerPointSlide animationSlide, PowerPoint.Shape shapeToZoom, PowerPoint.Shape referenceShape, float duration, PowerPoint.MsoAnimTriggerType trigger)
         {
-            float finalWidth = PowerPointPresentation.SlideWidth;
+            float finalWidth = PowerPointCurrentPresentationInfo.SlideWidth;
             float initialWidth = referenceShape.Width;
-            float finalHeight = PowerPointPresentation.SlideHeight;
+            float finalHeight = PowerPointCurrentPresentationInfo.SlideHeight;
             float initialHeight = referenceShape.Height;
 
-            float finalX = (PowerPointPresentation.SlideWidth / 2) * (finalWidth / initialWidth);
+            float finalX = (PowerPointCurrentPresentationInfo.SlideWidth / 2) * (finalWidth / initialWidth);
             float initialX = (referenceShape.Left + (referenceShape.Width) / 2) * (finalWidth / initialWidth);
-            float finalY = (PowerPointPresentation.SlideHeight / 2) * (finalHeight / initialHeight);
+            float finalY = (PowerPointCurrentPresentationInfo.SlideHeight / 2) * (finalHeight / initialHeight);
             float initialY = (referenceShape.Top + (referenceShape.Height) / 2) * (finalHeight / initialHeight);
 
             AddMotionAnimation(animationSlide, shapeToZoom, initialX, initialY, finalX, finalY, duration, ref trigger);
@@ -102,10 +102,10 @@ namespace PowerPointLabs
 
                 //Create VML path for the motion path
                 //This path needs to be a curved path to allow the user to edit points
-                float point1X = ((finalX - initialX) / 2f) / PowerPointPresentation.SlideWidth;
-                float point1Y = ((finalY - initialY) / 2f) / PowerPointPresentation.SlideHeight;
-                float point2X = (finalX - initialX) / PowerPointPresentation.SlideWidth;
-                float point2Y = (finalY - initialY) / PowerPointPresentation.SlideHeight;
+                float point1X = ((finalX - initialX) / 2f) / PowerPointCurrentPresentationInfo.SlideWidth;
+                float point1Y = ((finalY - initialY) / 2f) / PowerPointCurrentPresentationInfo.SlideHeight;
+                float point2X = (finalX - initialX) / PowerPointCurrentPresentationInfo.SlideWidth;
+                float point2Y = (finalY - initialY) / PowerPointCurrentPresentationInfo.SlideHeight;
                 motion.MotionEffect.Path = "M 0 0 C " + point1X + " " + point1Y + " " + point1X + " " + point1Y + " " + point2X + " " + point2Y + " E";
                 effectMotion.Timing.SmoothStart = Office.MsoTriState.msoFalse;
                 effectMotion.Timing.SmoothEnd = Office.MsoTriState.msoFalse;

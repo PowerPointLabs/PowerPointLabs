@@ -38,43 +38,38 @@ namespace PowerPointLabs
     [ComVisible(true)]
     public class Ribbon1 : Office.IRibbonExtensibility
     {
-        private Office.IRibbonUI ribbon;
+        private Office.IRibbonUI _ribbon;
         
-        public bool frameAnimationChecked = false;
-        public bool backgroundZoomChecked = true;
-        public bool multiSlideZoomChecked = false;
-        public bool spotlightDelete = true;
-        public float defaultDuration = 0.5f;
-        
-        public bool spotlightEnabled = false;
-        public bool inSlideEnabled = false;
-        public bool zoomButtonEnabled = false;
-        public bool highlightBulletsEnabled = true;
-        public bool addAutoMotionEnabled = true;
-        public bool reloadAutoMotionEnabled = true;
-        public bool reloadSpotlight = true;
+        public bool FrameAnimationChecked = false;
+        public bool BackgroundZoomChecked = true;
+        public bool MultiSlideZoomChecked = false;
+        public bool SpotlightDelete = true;
+        public float DefaultDuration = 0.5f;
 
-        public bool removeCaptionsEnabled = true;
-        public bool removeAudioEnabled = true;
+        public bool SpotlightEnabled = false;
+        public bool InSlideEnabled = false;
+        public bool ZoomButtonEnabled = false;
+        public bool HighlightBulletsEnabled = true;
+        public bool AddAutoMotionEnabled = true;
+        public bool ReloadAutoMotionEnabled = true;
+        public bool ReloadSpotlight = true;
+        public bool RemoveCaptionsEnabled = true;
+        public bool RemoveAudioEnabled = true;
 
         public bool highlightTextFragmentsEnabled = true;
 
-        public bool _embedAudioVisible = true;
-        public bool _recorderPaneVisible = false;
+        public bool EmbedAudioVisible = true;
+        public bool RecorderPaneVisible = false;
 
         private bool _previewCurrentSlide;
         
         private List<string> _voiceNames;
 
-        private int _voiceSelected = 0;
-
-        public Ribbon1()
-        {
-        }
+        private int _voiceSelected;
 
         #region IRibbonExtensibility Members
 
-        public string GetCustomUI(string ribbonID)
+        public string GetCustomUI(string ribbonId)
         {
             return GetResourceText("PowerPointLabs.Ribbon1.xml");
         }
@@ -84,19 +79,19 @@ namespace PowerPointLabs
         #region Ribbon Callbacks
         //Create callback methods here. For more information about adding callback methods, select the Ribbon XML item in Solution Explorer and then press F1
 
-        public void Ribbon_Load(Office.IRibbonUI ribbonUI)
+        public void RibbonLoad(Office.IRibbonUI ribbonUi)
         {
-            this.ribbon = ribbonUI;
+            _ribbon = ribbonUi;
 
             SetVoicesFromInstalledOptions();
             SetCoreVoicesToSelections();
         }
 
-        public void RefreshRibbonControl(String controlID)
+        public void RefreshRibbonControl(String controlId)
         {
             try
             {
-                ribbon.InvalidateControl(controlID);
+                _ribbon.InvalidateControl(controlId);
             }
             catch (Exception e)
             {
@@ -340,14 +335,13 @@ namespace PowerPointLabs
         }
         public void AboutButtonClick(Office.IRibbonControl control)
         {
-            MessageBox.Show(TextCollection.AboutInfo, "About PowerPointLabs");
+            MessageBox.Show(TextCollection.AboutInfo, TextCollection.AboutInfoTitle);
         }
         public void HelpButtonClick(Office.IRibbonControl control)
         {
             try
             {
-                string myURL = "http://powerpointlabs.info/docs.html";
-                Process.Start(myURL);
+                Process.Start(TextCollection.HelpDocumentUrl);
             }
             catch (Exception e)
             {
@@ -359,8 +353,7 @@ namespace PowerPointLabs
         {
             try
             {
-                string myURL = "http://powerpointlabs.info/contact.html";
-                System.Diagnostics.Process.Start(myURL);
+                Process.Start(TextCollection.FeedbackUrl);
             }
             catch (Exception e)
             {
@@ -393,11 +386,11 @@ namespace PowerPointLabs
             }
         }
 
-        public System.Drawing.Bitmap GetAddAnimationImage(Office.IRibbonControl control)
+        public Bitmap GetAddAnimationImage(Office.IRibbonControl control)
         {
             try
             {
-                return new System.Drawing.Bitmap(Properties.Resources.AddAnimation);
+                return new Bitmap(Properties.Resources.AddAnimation);
             }
             catch (Exception e)
             {
@@ -405,11 +398,11 @@ namespace PowerPointLabs
                 throw;
             }
         }
-        public System.Drawing.Bitmap GetReloadAnimationImage(Office.IRibbonControl control)
+        public Bitmap GetReloadAnimationImage(Office.IRibbonControl control)
         {
             try
             {
-                return new System.Drawing.Bitmap(Properties.Resources.ReloadAnimation);
+                return new Bitmap(Properties.Resources.ReloadAnimation);
             }
             catch (Exception e)
             {
@@ -417,11 +410,11 @@ namespace PowerPointLabs
                 throw;
             }
         }
-        public System.Drawing.Bitmap GetSpotlightImage(Office.IRibbonControl control)
+        public Bitmap GetSpotlightImage(Office.IRibbonControl control)
         {
             try
             {
-                return new System.Drawing.Bitmap(Properties.Resources.Spotlight);
+                return new Bitmap(Properties.Resources.Spotlight);
             }
             catch (Exception e)
             {
@@ -429,11 +422,11 @@ namespace PowerPointLabs
                 throw;
             }
         }
-        public System.Drawing.Bitmap GetReloadSpotlightImage(Office.IRibbonControl control)
+        public Bitmap GetReloadSpotlightImage(Office.IRibbonControl control)
         {
             try
             {
-                return new System.Drawing.Bitmap(Properties.Resources.ReloadSpotlight);
+                return new Bitmap(Properties.Resources.ReloadSpotlight);
             }
             catch (Exception e)
             {
@@ -441,11 +434,11 @@ namespace PowerPointLabs
                 throw;
             }
         }
-        public System.Drawing.Bitmap GetHighlightBulletsTextImage(Office.IRibbonControl control)
+        public Bitmap GetHighlightBulletsTextImage(Office.IRibbonControl control)
         {
             try
             {
-                return new System.Drawing.Bitmap(Properties.Resources.HighlightText);
+                return new Bitmap(Properties.Resources.HighlightText);
             }
             catch (Exception e)
             {
@@ -453,11 +446,11 @@ namespace PowerPointLabs
                 throw;
             }
         }
-        public System.Drawing.Bitmap GetHighlightBulletsBackgroundImage(Office.IRibbonControl control)
+        public Bitmap GetHighlightBulletsBackgroundImage(Office.IRibbonControl control)
         {
             try
             {
-                return new System.Drawing.Bitmap(Properties.Resources.HighlightBackground);
+                return new Bitmap(Properties.Resources.HighlightBackground);
             }
             catch (Exception e)
             {
@@ -466,7 +459,7 @@ namespace PowerPointLabs
             }
         }
 
-        public System.Drawing.Bitmap GetHighlightWordsImage(Office.IRibbonControl control)
+        public Bitmap GetHighlightWordsImage(Office.IRibbonControl control)
         {
             try
             {
@@ -479,11 +472,11 @@ namespace PowerPointLabs
             }
         }
 
-        public System.Drawing.Bitmap GetHighlightBulletsTextContextImage(Office.IRibbonControl control)
+        public Bitmap GetHighlightBulletsTextContextImage(Office.IRibbonControl control)
         {
             try
             {
-                return new System.Drawing.Bitmap(Properties.Resources.HighlightTextContext);
+                return new Bitmap(Properties.Resources.HighlightTextContext);
             }
             catch (Exception e)
             {
@@ -491,11 +484,11 @@ namespace PowerPointLabs
                 throw;
             }
         }
-        public System.Drawing.Bitmap GetHighlightBulletsBackgroundContextImage(Office.IRibbonControl control)
+        public Bitmap GetHighlightBulletsBackgroundContextImage(Office.IRibbonControl control)
         {
             try
             {
-                return new System.Drawing.Bitmap(Properties.Resources.HighlightBackgroundContext);
+                return new Bitmap(Properties.Resources.HighlightBackgroundContext);
             }
             catch (Exception e)
             {
@@ -504,11 +497,11 @@ namespace PowerPointLabs
             }
         }
 
-        public System.Drawing.Bitmap GetZoomInImage(Office.IRibbonControl control)
+        public Bitmap GetZoomInImage(Office.IRibbonControl control)
         {
             try
             {
-                return new System.Drawing.Bitmap(Properties.Resources.ZoomIn);
+                return new Bitmap(Properties.Resources.ZoomIn);
             }
             catch (Exception e)
             {
@@ -517,11 +510,11 @@ namespace PowerPointLabs
             }
         }
 
-        public System.Drawing.Bitmap GetZoomOutImage(Office.IRibbonControl control)
+        public Bitmap GetZoomOutImage(Office.IRibbonControl control)
         {
             try
             {
-                return new System.Drawing.Bitmap(Properties.Resources.ZoomOut);
+                return new Bitmap(Properties.Resources.ZoomOut);
             }
             catch (Exception e)
             {
@@ -529,11 +522,11 @@ namespace PowerPointLabs
                 throw;
             }
         }
-        public System.Drawing.Bitmap GetZoomToAreaImage(Office.IRibbonControl control)
+        public Bitmap GetZoomToAreaImage(Office.IRibbonControl control)
         {
             try
             {
-                return new System.Drawing.Bitmap(Properties.Resources.ZoomToArea);
+                return new Bitmap(Properties.Resources.ZoomToArea);
             }
             catch (Exception e)
             {
@@ -541,11 +534,11 @@ namespace PowerPointLabs
                 throw;
             }
         }
-        public System.Drawing.Bitmap GetZoomToAreaContextImage(Office.IRibbonControl control)
+        public Bitmap GetZoomToAreaContextImage(Office.IRibbonControl control)
         {
             try
             {
-                return new System.Drawing.Bitmap(Properties.Resources.ZoomToAreaContext);
+                return new Bitmap(Properties.Resources.ZoomToAreaContext);
             }
             catch (Exception e)
             {
@@ -553,11 +546,11 @@ namespace PowerPointLabs
                 throw;
             }
         }
-        public System.Drawing.Bitmap GetCropShapeImage(Office.IRibbonControl control)
+        public Bitmap GetCropShapeImage(Office.IRibbonControl control)
         {
             try
             {
-                return new System.Drawing.Bitmap(Properties.Resources.CutOutShape);
+                return new Bitmap(Properties.Resources.CutOutShape);
             }
             catch (Exception e)
             {
@@ -565,7 +558,8 @@ namespace PowerPointLabs
                 throw;
             }
         }
-        public System.Drawing.Bitmap GetShapesLabImage(Office.IRibbonControl control)
+
+        public Bitmap GetShapesLabImage(Office.IRibbonControl control)
         {
             try
             {
@@ -577,7 +571,7 @@ namespace PowerPointLabs
                 throw;
             }
         }
-        public System.Drawing.Bitmap GetColorsLabImage(Office.IRibbonControl control)
+        public Bitmap GetColorsLabImage(Office.IRibbonControl control)
         {
             try
             {
@@ -589,11 +583,12 @@ namespace PowerPointLabs
                 throw;
             }
         }
-        public System.Drawing.Bitmap GetAboutImage(Office.IRibbonControl control)
+
+        public Bitmap GetAboutImage(Office.IRibbonControl control)
         {
             try
             {
-                return new System.Drawing.Bitmap(Properties.Resources.About);
+                return new Bitmap(Properties.Resources.About);
             }
             catch (Exception e)
             {
@@ -601,11 +596,11 @@ namespace PowerPointLabs
                 throw;
             }
         }
-        public System.Drawing.Bitmap GetHelpImage(Office.IRibbonControl control)
+        public Bitmap GetHelpImage(Office.IRibbonControl control)
         {
             try
             {
-                return new System.Drawing.Bitmap(Properties.Resources.Help);
+                return new Bitmap(Properties.Resources.Help);
             }
             catch (Exception e)
             {
@@ -613,11 +608,11 @@ namespace PowerPointLabs
                 throw;
             }
         }
-        public System.Drawing.Bitmap GetFeedbackImage(Office.IRibbonControl control)
+        public Bitmap GetFeedbackImage(Office.IRibbonControl control)
         {
             try
             {
-                return new System.Drawing.Bitmap(Properties.Resources.Feedback);
+                return new Bitmap(Properties.Resources.Feedback);
             }
             catch (Exception e)
             {
@@ -625,11 +620,11 @@ namespace PowerPointLabs
                 throw;
             }
         }
-        public System.Drawing.Bitmap GetAddAudioImage(Office.IRibbonControl control)
+        public Bitmap GetAddAudioImage(Office.IRibbonControl control)
         {
             try
             {
-                return new System.Drawing.Bitmap(Properties.Resources.AddAudio);
+                return new Bitmap(Properties.Resources.AddAudio);
             }
             catch (Exception e)
             {
@@ -637,11 +632,11 @@ namespace PowerPointLabs
                 throw;
             }
         }
-        public System.Drawing.Bitmap GetRemoveAudioImage(Office.IRibbonControl control)
+        public Bitmap GetRemoveAudioImage(Office.IRibbonControl control)
         {
             try
             {
-                return new System.Drawing.Bitmap(Properties.Resources.RemoveAudio);
+                return new Bitmap(Properties.Resources.RemoveAudio);
             }
             catch (Exception e)
             {
@@ -649,11 +644,11 @@ namespace PowerPointLabs
                 throw;
             }
         }
-        public System.Drawing.Bitmap GetAddCaptionsImage(Office.IRibbonControl control)
+        public Bitmap GetAddCaptionsImage(Office.IRibbonControl control)
         {
             try
             {
-                return new System.Drawing.Bitmap(Properties.Resources.AddCaption);
+                return new Bitmap(Properties.Resources.AddCaption);
             }
             catch (Exception e)
             {
@@ -661,11 +656,11 @@ namespace PowerPointLabs
                 throw;
             }
         }
-        public System.Drawing.Bitmap GetRemoveCaptionsImage(Office.IRibbonControl control)
+        public Bitmap GetRemoveCaptionsImage(Office.IRibbonControl control)
         {
             try
             {
-                return new System.Drawing.Bitmap(Properties.Resources.RemoveCaption);
+                return new Bitmap(Properties.Resources.RemoveCaption);
             }
             catch (Exception e)
             {
@@ -674,11 +669,11 @@ namespace PowerPointLabs
             }
         }
 
-        public System.Drawing.Bitmap GetAddAudioContextImage(Office.IRibbonControl control)
+        public Bitmap GetAddAudioContextImage(Office.IRibbonControl control)
         {
             try
             {
-                return new System.Drawing.Bitmap(Properties.Resources.AddNarrationContext);
+                return new Bitmap(Properties.Resources.AddNarrationContext);
             }
             catch (Exception e)
             {
@@ -686,11 +681,11 @@ namespace PowerPointLabs
                 throw;
             }
         }
-        public System.Drawing.Bitmap GetPreviewNarrationContextImage(Office.IRibbonControl control)
+        public Bitmap GetPreviewNarrationContextImage(Office.IRibbonControl control)
         {
             try
             {
-                return new System.Drawing.Bitmap(Properties.Resources.SpeakTextContext);
+                return new Bitmap(Properties.Resources.SpeakTextContext);
             }
             catch (Exception e)
             {
@@ -698,11 +693,11 @@ namespace PowerPointLabs
                 throw;
             }
         }
-        public System.Drawing.Bitmap GetInSlideAnimationImage(Office.IRibbonControl control)
+        public Bitmap GetInSlideAnimationImage(Office.IRibbonControl control)
         {
             try
             {
-                return new System.Drawing.Bitmap(Properties.Resources.InSlideAnimation);
+                return new Bitmap(Properties.Resources.InSlideAnimation);
             }
             catch (Exception e)
             {
@@ -710,11 +705,11 @@ namespace PowerPointLabs
                 throw;
             }
         }
-        public System.Drawing.Bitmap GetAddAnimationContextImage(Office.IRibbonControl control)
+        public Bitmap GetAddAnimationContextImage(Office.IRibbonControl control)
         {
             try
             {
-                return new System.Drawing.Bitmap(Properties.Resources.AddAnimationContext);
+                return new Bitmap(Properties.Resources.AddAnimationContext);
             }
             catch (Exception e)
             {
@@ -722,11 +717,11 @@ namespace PowerPointLabs
                 throw;
             }
         }
-        public System.Drawing.Bitmap GetReloadAnimationContextImage(Office.IRibbonControl control)
+        public Bitmap GetReloadAnimationContextImage(Office.IRibbonControl control)
         {
             try
             {
-                return new System.Drawing.Bitmap(Properties.Resources.ReloadAnimationContext);
+                return new Bitmap(Properties.Resources.ReloadAnimationContext);
             }
             catch (Exception e)
             {
@@ -734,11 +729,11 @@ namespace PowerPointLabs
                 throw;
             }
         }
-        public System.Drawing.Bitmap GetAddSpotlightContextImage(Office.IRibbonControl control)
+        public Bitmap GetAddSpotlightContextImage(Office.IRibbonControl control)
         {
             try
             {
-                return new System.Drawing.Bitmap(Properties.Resources.AddSpotlightContext);
+                return new Bitmap(Properties.Resources.AddSpotlightContext);
             }
             catch (Exception e)
             {
@@ -746,11 +741,11 @@ namespace PowerPointLabs
                 throw;
             }
         }
-        public System.Drawing.Bitmap GetEditNameContextImage(Office.IRibbonControl control)
+        public Bitmap GetEditNameContextImage(Office.IRibbonControl control)
         {
             try
             {
-                return new System.Drawing.Bitmap(Properties.Resources.EditNameContext);
+                return new Bitmap(Properties.Resources.EditNameContext);
             }
             catch (Exception e)
             {
@@ -758,11 +753,11 @@ namespace PowerPointLabs
                 throw;
             }
         }
-        public System.Drawing.Bitmap GetInSlideAnimationContextImage(Office.IRibbonControl control)
+        public Bitmap GetInSlideAnimationContextImage(Office.IRibbonControl control)
         {
             try
             {
-                return new System.Drawing.Bitmap(Properties.Resources.InSlideContext);
+                return new Bitmap(Properties.Resources.InSlideContext);
             }
             catch (Exception e)
             {
@@ -770,11 +765,11 @@ namespace PowerPointLabs
                 throw;
             }
         }
-        public System.Drawing.Bitmap GetZoomInContextImage(Office.IRibbonControl control)
+        public Bitmap GetZoomInContextImage(Office.IRibbonControl control)
         {
             try
             {
-                return new System.Drawing.Bitmap(Properties.Resources.ZoomInContext);
+                return new Bitmap(Properties.Resources.ZoomInContext);
             }
             catch (Exception e)
             {
@@ -782,11 +777,11 @@ namespace PowerPointLabs
                 throw;
             }
         }
-        public System.Drawing.Bitmap GetZoomOutContextImage(Office.IRibbonControl control)
+        public Bitmap GetZoomOutContextImage(Office.IRibbonControl control)
         {
             try
             {
-                return new System.Drawing.Bitmap(Properties.Resources.ZoomOutContext);
+                return new Bitmap(Properties.Resources.ZoomOutContext);
             }
             catch (Exception e)
             {
@@ -800,11 +795,11 @@ namespace PowerPointLabs
             {
                 if (pressed)
                 {
-                    backgroundZoomChecked = true;
+                    BackgroundZoomChecked = true;
                 }
                 else
                 {
-                    backgroundZoomChecked = false;
+                    BackgroundZoomChecked = false;
                 }
             }
             catch (Exception e)
@@ -817,7 +812,7 @@ namespace PowerPointLabs
         {
             try
             {
-                return backgroundZoomChecked;
+                return BackgroundZoomChecked;
             }
             catch (Exception e)
             {
@@ -828,39 +823,39 @@ namespace PowerPointLabs
         //Control Enabled Callbacks
         public bool OnGetEnabledSpotlight(Office.IRibbonControl control)
         {
-            return spotlightEnabled;
+            return SpotlightEnabled;
         }
         public bool OnGetEnabledReloadSpotlight(Office.IRibbonControl control)
         {
-            return reloadSpotlight;
+            return ReloadSpotlight;
         }
         public bool OnGetEnabledAddAutoMotion(Office.IRibbonControl control)
         {
-            return addAutoMotionEnabled;
+            return AddAutoMotionEnabled;
         }
         public bool OnGetEnabledReloadAutoMotion(Office.IRibbonControl control)
         {
-            return reloadAutoMotionEnabled;
+            return ReloadAutoMotionEnabled;
         }
         public bool OnGetEnabledAddInSlide(Office.IRibbonControl control)
         {
-            return inSlideEnabled;
+            return InSlideEnabled;
         }
         public bool OnGetEnabledZoomButton(Office.IRibbonControl control)
         {
-            return zoomButtonEnabled;
+            return ZoomButtonEnabled;
         }
         public bool OnGetEnabledHighlightBullets(Office.IRibbonControl control)
         {
-            return highlightBulletsEnabled;
+            return HighlightBulletsEnabled;
         }
         public bool OnGetEnabledRemoveCaptions(Office.IRibbonControl control)
         {
-            return removeCaptionsEnabled;
+            return RemoveCaptionsEnabled;
         }
         public bool OnGetEnabledRemoveAudio(Office.IRibbonControl control)
         {
-            return removeAudioEnabled;
+            return RemoveAudioEnabled;
         }
         public bool OnGetEnabledHighlightTextFragments(Office.IRibbonControl control)
         {
@@ -871,7 +866,7 @@ namespace PowerPointLabs
         {
             try
             {
-                PowerPoint.Shape selectedShape = (PowerPoint.Shape)Globals.ThisAddIn.Application.ActiveWindow.Selection.ShapeRange[1];
+                PowerPoint.Shape selectedShape = Globals.ThisAddIn.Application.ActiveWindow.Selection.ShapeRange[1];
                 Form1 editForm = new Form1(this, selectedShape.Name);
                 editForm.ShowDialog();
             }
@@ -885,7 +880,7 @@ namespace PowerPointLabs
         {
             try
             {
-                PowerPoint.Shape selectedShape = (PowerPoint.Shape)Globals.ThisAddIn.Application.ActiveWindow.Selection.ShapeRange[1];
+                PowerPoint.Shape selectedShape = Globals.ThisAddIn.Application.ActiveWindow.Selection.ShapeRange[1];
                 selectedShape.Name = newName;
             }
             catch (Exception e)
@@ -899,7 +894,7 @@ namespace PowerPointLabs
         {
             try
             {
-                AutoAnimateDialogBox dialog = new AutoAnimateDialogBox(defaultDuration, frameAnimationChecked);
+                AutoAnimateDialogBox dialog = new AutoAnimateDialogBox(DefaultDuration, FrameAnimationChecked);
                 dialog.SettingsHandler += AnimationPropertiesEdited;
                 dialog.ShowDialog();
             }
@@ -914,8 +909,8 @@ namespace PowerPointLabs
         {
             try
             {
-                defaultDuration = newDuration;
-                frameAnimationChecked = newFrameChecked;
+                DefaultDuration = newDuration;
+                FrameAnimationChecked = newFrameChecked;
                 AnimateInSlide.defaultDuration = newDuration;
                 AnimateInSlide.frameAnimationChecked = newFrameChecked;
                 AutoAnimate.defaultDuration = newDuration;
@@ -932,7 +927,7 @@ namespace PowerPointLabs
         {
             try
             {
-                AutoZoomDialogBox dialog = new AutoZoomDialogBox(backgroundZoomChecked, multiSlideZoomChecked);
+                AutoZoomDialogBox dialog = new AutoZoomDialogBox(BackgroundZoomChecked, MultiSlideZoomChecked);
                 dialog.SettingsHandler += ZoomPropertiesEdited;
                 dialog.ShowDialog();
             }
@@ -947,8 +942,8 @@ namespace PowerPointLabs
         {
             try
             {
-                backgroundZoomChecked = backgroundChecked;
-                multiSlideZoomChecked = multiSlideChecked;
+                BackgroundZoomChecked = backgroundChecked;
+                MultiSlideZoomChecked = multiSlideChecked;
                 AutoZoom.backgroundZoomChecked = backgroundChecked;
                 ZoomToArea.backgroundZoomChecked = backgroundChecked;
                 ZoomToArea.multiSlideZoomChecked = multiSlideChecked;
@@ -1021,7 +1016,7 @@ namespace PowerPointLabs
 
         public bool GetEmbedAudioVisiblity(Office.IRibbonControl control)
         {
-            return _embedAudioVisible;
+            return EmbedAudioVisible;
         }
 
         public void RecManagementClick(Office.IRibbonControl control)
@@ -1040,7 +1035,7 @@ namespace PowerPointLabs
             // Handle exception when user clicks the button without selecting any slides
 
             // if currently the pane is hidden, show the pane
-            if (!recorderPane.Visible)
+            if (recorder != null && !recorderPane.Visible)
             {
                 // fire the pane visble change event
                 recorderPane.Visible = true;
@@ -1053,7 +1048,7 @@ namespace PowerPointLabs
         # region Custom Shapes
         public void CustomShapeButtonClick(Office.IRibbonControl control)
         {
-            Globals.ThisAddIn.RegisterCustomPane(Globals.ThisAddIn.Application.ActivePresentation);
+            Globals.ThisAddIn.RegisterCustomShapePane(Globals.ThisAddIn.Application.ActivePresentation);
             
             var customShapePane = Globals.ThisAddIn.GetActivePane(typeof(CustomShapePane));
 
@@ -1072,14 +1067,17 @@ namespace PowerPointLabs
 
             customShape.PaneReload();
             customShapePane.Visible = true;
+
+            Globals.ThisAddIn.InitializeShapeGallery();
         }
 
         public void AddShapeButtonClick(Office.IRibbonControl control)
         {
-            Globals.ThisAddIn.RegisterCustomPane(Globals.ThisAddIn.Application.ActivePresentation);
+            var prensentation = Globals.ThisAddIn.Application.ActivePresentation;
+            Globals.ThisAddIn.RegisterCustomShapePane(prensentation);
 
-            var selection = PowerPointPresentation.CurrentSelection;
-            
+            var selection = PowerPointCurrentPresentationInfo.CurrentSelection;
+
             var customShapePane = Globals.ThisAddIn.GetActivePane(typeof(CustomShapePane));
 
             if (customShapePane == null || !(customShapePane.Control is CustomShapePane))
@@ -1095,10 +1093,30 @@ namespace PowerPointLabs
 
             var customShape = customShapePane.Control as CustomShapePane;
 
+            // see below for explanation
+            var presentationSaved = prensentation.Saved == Office.MsoTriState.msoTrue &&
+                                    prensentation.Path != string.Empty;
+
             customShape.PaneReload();
-            ConvertToPicture.ConvertAndSave(selection, customShape.NextDefaultFullName);
-            customShape.AddCustomShape(customShape.NextDefaultNameWithoutExtension, customShape.NextDefaultFullName,
-                                       true);
+
+            Globals.ThisAddIn.InitializeShapeGallery();
+
+            var shapeName = customShape.NextDefaultNameWithoutExtension;
+            var shapeFullName = customShape.NextDefaultFullName;
+            // add the selection into pane and save it as .png locally
+            ConvertToPicture.ConvertAndSave(selection, shapeFullName);
+            customShape.AddCustomShape(shapeName, shapeFullName, true);
+
+            Globals.ThisAddIn.ShapePresentation.AddShape(selection, shapeName);
+            Globals.ThisAddIn.ShapePresentation.Save();
+
+            // since we group and then ungroup the shape, document has been modified.
+            // if the presentation has been saved before the group->ungroup, we can save
+            // the file; else we leave it.
+            if (presentationSaved)
+            {
+                Globals.ThisAddIn.Application.ActivePresentation.Save();
+            }
         }
         # endregion
 
@@ -1114,9 +1132,6 @@ namespace PowerPointLabs
             {
                 return;
             }
-
-            var recorderPane = Globals.ThisAddIn.GetActivePane(typeof(RecorderTaskPane));
-            var recorder = recorderPane.Control as RecorderTaskPane;
             
             try
             {
@@ -1127,18 +1142,24 @@ namespace PowerPointLabs
                 MessageBox.Show(e.Message);
                 throw;
             }
+
+            var recorderPane = Globals.ThisAddIn.GetActivePane(typeof(RecorderTaskPane));
+            var recorder = recorderPane.Control as RecorderTaskPane;
+
+            if (recorder == null) return;
+
             recorder.ClearRecordDataListForSelectedSlides();
 
             // if current list is visible, update the pane immediately
             if (recorderPane.Visible)
             {
-                foreach (PowerPointSlide slide in PowerPointPresentation.SelectedSlides)
+                foreach (PowerPointSlide slide in PowerPointCurrentPresentationInfo.SelectedSlides)
                 {
                     recorder.UpdateLists(slide.ID);
                 }
             }
 
-            removeAudioEnabled = false;
+            RemoveAudioEnabled = false;
             RefreshRibbonControl("RemoveAudioButton");
         }
 
@@ -1149,16 +1170,13 @@ namespace PowerPointLabs
                 return;
             }
 
-            var currentSlide = PowerPointPresentation.CurrentSlide;
+            var currentSlide = PowerPointCurrentPresentationInfo.CurrentSlide;
 
-            var recorderPane = Globals.ThisAddIn.GetActivePane(typeof(RecorderTaskPane));
-            var recorder = recorderPane.Control as RecorderTaskPane;
-
-            foreach (PowerPointSlide slide in PowerPointPresentation.SelectedSlides)
+            foreach (PowerPointSlide slide in PowerPointCurrentPresentationInfo.SelectedSlides)
             {
                 if (slide.NotesPageText.Trim() != "")
                 {
-                    removeAudioEnabled = true;
+                    RemoveAudioEnabled = true;
                     RefreshRibbonControl("RemoveAudioButton");
                     break;
                 }
@@ -1166,8 +1184,13 @@ namespace PowerPointLabs
 
             var allAudioFiles = NotesToAudio.EmbedSelectedSlideNotes();
 
+            var recorderPane = Globals.ThisAddIn.GetActivePane(typeof(RecorderTaskPane));
+            var recorder = recorderPane.Control as RecorderTaskPane;
+
+            if (recorder == null) return;
+
             // initialize selected slides' audio
-            recorder.InitializeAudioAndScript(PowerPointPresentation.SelectedSlides.ToList(),
+            recorder.InitializeAudioAndScript(PowerPointCurrentPresentationInfo.SelectedSlides.ToList(),
                                                   allAudioFiles, true);
             
             // if current list is visible, update the pane immediately
@@ -1195,11 +1218,11 @@ namespace PowerPointLabs
 
         public void AddCaptionClick(Office.IRibbonControl control)
         {
-            foreach (PowerPointSlide slide in PowerPointPresentation.SelectedSlides)
+            foreach (PowerPointSlide slide in PowerPointCurrentPresentationInfo.SelectedSlides)
             {
                 if (slide.NotesPageText.Trim() != "")
                 {
-                    removeCaptionsEnabled = true;
+                    RemoveCaptionsEnabled = true;
                     break;
                 }
             }
@@ -1209,7 +1232,7 @@ namespace PowerPointLabs
 
         public void RemoveCaptionClick(Office.IRibbonControl control)
         {
-            removeCaptionsEnabled = false;
+            RemoveCaptionsEnabled = false;
             RefreshRibbonControl("RemoveCaptionsButton");
             NotesToCaptions.RemoveCaptionsFromSelectedSlides();
         }
@@ -1285,22 +1308,22 @@ namespace PowerPointLabs
 
         public void FitToWidthClick(Office.IRibbonControl control)
         {
-            var selectedShape = PowerPointPresentation.CurrentSelection.ShapeRange[1];
+            var selectedShape = PowerPointCurrentPresentationInfo.CurrentSelection.ShapeRange[1];
             FitToSlide.FitToWidth(selectedShape);
         }
 
         public void FitToHeightClick(Office.IRibbonControl control)
         {
-            var selectedShape = PowerPointPresentation.CurrentSelection.ShapeRange[1];
+            var selectedShape = PowerPointCurrentPresentationInfo.CurrentSelection.ShapeRange[1];
             FitToSlide.FitToHeight(selectedShape);
         }
 
-        public System.Drawing.Bitmap GetFitToWidthImage(Office.IRibbonControl control)
+        public Bitmap GetFitToWidthImage(Office.IRibbonControl control)
         {
             return FitToSlide.GetFitToWidthImage(control);
         }
 
-        public System.Drawing.Bitmap GetFitToHeightImage(Office.IRibbonControl control)
+        public Bitmap GetFitToHeightImage(Office.IRibbonControl control)
         {
             return FitToSlide.GetFitToHeightImage(control);
         }
@@ -1311,11 +1334,11 @@ namespace PowerPointLabs
 
         public void CropShapeButtonClick(Office.IRibbonControl control)
         {
-            var selection = PowerPointPresentation.CurrentSelection;
+            var selection = PowerPointCurrentPresentationInfo.CurrentSelection;
             CropToShape.Crop(selection);
         }
 
-        public System.Drawing.Bitmap GetCutOutShapeMenuImage(Office.IRibbonControl control)
+        public Bitmap GetCutOutShapeMenuImage(Office.IRibbonControl control)
         {
             return CropToShape.GetCutOutShapeMenuImage(control);
         }
@@ -1326,11 +1349,11 @@ namespace PowerPointLabs
 
         public void ConvertToPictureButtonClick(Office.IRibbonControl control)
         {
-            var selection = PowerPointPresentation.CurrentSelection;
+            var selection = PowerPointCurrentPresentationInfo.CurrentSelection;
             ConvertToPicture.Convert(selection);
         }
 
-        public System.Drawing.Bitmap GetConvertToPicMenuImage(Office.IRibbonControl control)
+        public Bitmap GetConvertToPicMenuImage(Office.IRibbonControl control)
         {
             return ConvertToPicture.GetConvertToPicMenuImage(control);
         }

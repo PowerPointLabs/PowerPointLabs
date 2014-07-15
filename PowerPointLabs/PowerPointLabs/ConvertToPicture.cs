@@ -7,10 +7,6 @@ namespace PowerPointLabs
 {
     class ConvertToPicture
     {
-        private const string ErrorTypeNotSupported = "Convert to Picture only supports Shapes and Charts.";
-        private const string ErrorWindowTitle = "Unable to Convert to Picture";
-        private const string ShapeSaveDialogFiler = "Windows Metafile|*.wmf";
-
         public static void Convert(PowerPoint.Selection selection)
         {
             if (IsSelectionShape(selection))
@@ -21,7 +17,7 @@ namespace PowerPointLabs
             }
             else
             {
-                MessageBox.Show(ErrorTypeNotSupported, ErrorWindowTitle);
+                MessageBox.Show(TextCollection.ErrorTypeNotSupported, TextCollection.ErrorWindowTitle);
             }
         }
 
@@ -33,8 +29,8 @@ namespace PowerPointLabs
 
                 var shape = GetShapeFromSelection(selection);
                 shape = CutPasteShape(shape);
-                shape.Export(fileName, PowerPoint.PpShapeFormat.ppShapeFormatWMF, 0, 0,
-                             PowerPoint.PpExportMode.ppScaleXY);
+                shape.Export(fileName, PowerPoint.PpShapeFormat.ppShapeFormatPNG,
+                             ExportMode: PowerPoint.PpExportMode.ppScaleXY);
 
                 if (grouped)
                 {
@@ -47,7 +43,7 @@ namespace PowerPointLabs
             }
             else
             {
-                MessageBox.Show(ErrorTypeNotSupported, ErrorWindowTitle);
+                MessageBox.Show(TextCollection.ErrorTypeNotSupported, TextCollection.ErrorWindowTitle);
             }
         }
 

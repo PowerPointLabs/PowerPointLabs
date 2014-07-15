@@ -14,10 +14,7 @@ namespace PowerPointLabs
         private bool _isHighlighted;
         private bool _isGoodName;
         
-        private Image _imageSource;
-        
         private string _nameLabel;
-        private string _imageSourcePath;
 
         public enum Status
         {
@@ -49,26 +46,7 @@ namespace PowerPointLabs
             }
         }
 
-        public Image ImageToThumbnail
-        {
-            get { return _imageSource; }
-            
-            private set
-            {
-                _imageSource = value;
-                thumbnailPanel.BackgroundImage = CreateThumbnailImage(value, 50, 50);
-            }
-        }
-
-        public string ImagePath
-        {
-            get { return _imageSourcePath; }
-            set
-            {
-                _imageSourcePath = value;
-                ImageToThumbnail = new Bitmap(value);
-            }
-        }
+        public string ImagePath { get; set; }
 
         public Status State { get; private set; }
         # endregion
@@ -122,6 +100,7 @@ namespace PowerPointLabs
             State = Status.Editing;
             
             Highlight();
+
             labelTextBox.Enabled = true;
             labelTextBox.Focus();
             labelTextBox.SelectAll();
@@ -138,15 +117,15 @@ namespace PowerPointLabs
             _nameFinishHandled = true;
             NameLable = labelTextBox.Text;
 
-            bool sameName;
+            var oldName = Path.GetFileNameWithoutExtension(ImagePath);
 
             if (_isGoodName &&
-                RenameSource(out sameName))
+                !IsDuplicateName(oldName))
             {
                 State = Status.Idle;
 
                 labelTextBox.Enabled = false;
-                NameChangedNotify(this, !sameName);
+                NameEditFinish(this, oldName);
             }
             else
             {
@@ -222,11 +201,10 @@ namespace PowerPointLabs
         {
             InitializeComponent();
 
-            motherPanel.Click += (sender, e) => Click(this, e);
+            motherPanel.MouseDown += (sender, e) => Click(this, e);
             motherPanel.DoubleClick += (sender, e) => DoubleClick(this, e);
-            motherPanel.Paint += EllipseNameLabelRedraw;
 
-            thumbnailPanel.Click += (sender, e) => Click(this, e);
+            thumbnailPanel.MouseDown += (sender, e) => Click(this, e);
             thumbnailPanel.DoubleClick += ThumbnailPanelDoubleClick;
 
             labelTextBox.DoubleClick += (sender, e) => labelTextBox.SelectAll();
@@ -244,38 +222,33 @@ namespace PowerPointLabs
             NameLable = nameLable;
             ImagePath = imagePath;
 
+            thumbnailPanel.BackgroundImage = CreateThumbnailImage(new Bitmap(ImagePath), 50, 50);
+            
+            // critical line, we need to free the reference to the image immediately after we've
+            // finished thumbnail generation, else we could not modify (rename/ delete) the
+            // image.
+            GC.Collect();
+
             State = Status.Idle;
             labelTextBox.Enabled = false;
         }
 
-        private bool RenameSource(out bool sameName)
+        private bool IsDuplicateName(string oldName)
         {
-            var oldName = Path.GetFileNameWithoutExtension(ImagePath);
-            sameName = false;
+            // if the name hasn't changed, we don't need to check for duplicate name
+            // since the default name/ old name is confirmed unique.
+            if (oldName == NameLable) return false;
 
-            if (oldName != null)
+            var newPath = ImagePath.Replace(oldName, NameLable);
+
+            // if the new name has been used, the new name is not allowed
+            if (File.Exists(newPath))
             {
-                // name doesn't change
-                if (oldName == NameLable)
-                {
-                    sameName = true;
-                    return true;
-                }
-                
-                var newPath = ImagePath.Replace(oldName, NameLable);
-
-                if (File.Exists(newPath))
-                {
-                    MessageBox.Show(TextCollection.LabeledThumbnailFileNameExistError);
-                    return false;
-                }
-
-                // rename the file on disk
-                File.Move(ImagePath, newPath);
-                ImagePath = newPath;
+                MessageBox.Show(TextCollection.LabeledThumbnailFileNameExistError);
+                return true;
             }
 
-            return true;
+            return false;
         }
 
         private bool Verify(string name)
@@ -289,29 +262,11 @@ namespace PowerPointLabs
         # region Event Handlers
         public delegate void ClickEventDelegate(object sender, EventArgs e);
         public delegate void DoubleClickEventDelegate(object sender, EventArgs e);
-        public delegate void NameChangedNotifyEventDelegate(object sender, bool nameChanged);
+        public delegate void NameEditFinishEventDelegate(object sender, string oldName);
 
         public new event ClickEventDelegate Click;
         public new event DoubleClickEventDelegate DoubleClick;
-        public event NameChangedNotifyEventDelegate NameChangedNotify;
-
-        private void EllipseNameLabelRedraw(object sender, PaintEventArgs e)
-        {
-            if (!(sender is Panel)) return;
-
-            var panel = sender as Panel;
-            var rect = panel.RectangleToClient(labelTextBox.RectangleToScreen(labelTextBox.ClientRectangle));
-
-            // draw ellipse only when text box is disabled
-            if (labelTextBox.Enabled == false)
-            {
-                TextRenderer.DrawText(e.Graphics, labelTextBox.Text, labelTextBox.Font,
-                rect, Color.Black, Color.Empty,
-                TextFormatFlags.TextBoxControl |
-                TextFormatFlags.WordBreak |
-                TextFormatFlags.EndEllipsis);
-            }
-        }
+        public event NameEditFinishEventDelegate NameEditFinish;
 
         private void EnableChangedHandler(object sender, EventArgs e)
         {

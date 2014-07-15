@@ -3,9 +3,9 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Diagnostics;
 using System.Drawing;
+using System.Globalization;
 using System.IO;
 using System.Linq;
-using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading;
 using System.Windows.Forms;
@@ -347,7 +347,7 @@ namespace PowerPointLabs
 
         private Audio GetPlaybackFromList()
         {
-            var relativeSlideId = GetRelativeSlideIndex(PowerPointPresentation.CurrentSlide.ID);
+            var relativeSlideId = GetRelativeSlideIndex(PowerPointCurrentPresentationInfo.CurrentSlide.ID);
             int playbackIndex = -1;
             
             if (recDisplay.SelectedIndices.Count != 0)
@@ -513,7 +513,7 @@ namespace PowerPointLabs
             // add the latest record to the list
             if (index > recDisplay.Items.Count)
             {
-                ListViewItem item = recDisplay.Items.Add(index.ToString());
+                ListViewItem item = recDisplay.Items.Add(index.ToString(CultureInfo.InvariantCulture));
                 item.SubItems.Add(name);
                 item.SubItems.Add(length);
             }
@@ -541,7 +541,7 @@ namespace PowerPointLabs
             {
                 var audio = _audioList[relativeSlideId][index];
 
-                ListViewItem item = recDisplay.Items.Add((index + 1).ToString());
+                ListViewItem item = recDisplay.Items.Add((index + 1).ToString(CultureInfo.InvariantCulture));
                 item.SubItems.Add(audio.Name);
                 item.SubItems.Add(audio.Length);
             }
@@ -693,7 +693,7 @@ namespace PowerPointLabs
 
         public void ClearRecordDataListForSelectedSlides()
         {
-            foreach (PowerPointSlide slide in PowerPointPresentation.SelectedSlides)
+            foreach (PowerPointSlide slide in PowerPointCurrentPresentationInfo.SelectedSlides)
             {
                 ClearRecordDataList(slide.ID);
             }
@@ -846,7 +846,7 @@ namespace PowerPointLabs
         {
             try
             {
-                var slides = PowerPointPresentation.Slides.ToList();
+                var slides = PowerPointCurrentPresentationInfo.Slides.ToList();
 
                 foreach (var slide in slides)
                 {
@@ -910,10 +910,10 @@ namespace PowerPointLabs
         // delgates to make thread safe control calls
         private delegate void SetLabelTextCallBack(Label label, string text);
         private delegate void SetTrackbarCallBack(TrackBar bar, int pos);
-        private delegate void MciSendStringCallBack(string mciCommand,
-                                                    StringBuilder mciRetInfo,
-                                                    int infoLen,
-                                                    IntPtr callBack);
+        //private delegate void MciSendStringCallBack(string mciCommand,
+        //                                            StringBuilder mciRetInfo,
+        //                                            int infoLen,
+        //                                            IntPtr callBack);
 
         // call when the pane becomes visible for the first time
         private void RecorderPaneLoad(object sender, EventArgs e)
@@ -930,7 +930,7 @@ namespace PowerPointLabs
             // been selected
             SetAllRecorderButtonState(false);
 
-            var currentSlide = PowerPointPresentation.CurrentSlide;
+            var currentSlide = PowerPointCurrentPresentationInfo.CurrentSlide;
             if (currentSlide != null)
             {
                 InitializeAudioAndScript(currentSlide, null, false);
@@ -949,7 +949,7 @@ namespace PowerPointLabs
             // been selected
             SetAllRecorderButtonState(false);
 
-            var currentSlide = PowerPointPresentation.CurrentSlide;
+            var currentSlide = PowerPointCurrentPresentationInfo.CurrentSlide;
             if (currentSlide != null)
             {
                 RefreshScriptList(currentSlide);
@@ -1004,30 +1004,32 @@ namespace PowerPointLabs
             }
         }
 
-        private void ThreadSafeMci(string mciCommand,
-                                   StringBuilder mciRetInfo,
-                                   int infoLen,
-                                   IntPtr callBack)
-        {
-            if (InvokeRequired)
-            {
-                MciSendStringCallBack mciCallBack = ThreadSafeMci;
-                Invoke(mciCallBack, new object[]
-                                        {
-                                            mciCommand,
-                                            mciRetInfo,
-                                            infoLen,
-                                            callBack
-                                        });
-            }
-            else
-            {
-                Native.mciSendString(mciCommand,
-                              mciRetInfo,
-                              infoLen,
-                              callBack);
-            }
-        }
+        // ThreadSafeMci not in use for now
+
+        //private void ThreadSafeMci(string mciCommand,
+        //                           StringBuilder mciRetInfo,
+        //                           int infoLen,
+        //                           IntPtr callBack)
+        //{
+        //    if (InvokeRequired)
+        //    {
+        //        MciSendStringCallBack mciCallBack = ThreadSafeMci;
+        //        Invoke(mciCallBack, new object[]
+        //                                {
+        //                                    mciCommand,
+        //                                    mciRetInfo,
+        //                                    infoLen,
+        //                                    callBack
+        //                                });
+        //    }
+        //    else
+        //    {
+        //        Native.mciSendString(mciCommand,
+        //                      mciRetInfo,
+        //                      infoLen,
+        //                      callBack);
+        //    }
+        //}
         # endregion
 
         # region Timer and Trackbar Regualr Event Handlers
@@ -1109,7 +1111,7 @@ namespace PowerPointLabs
                     _replaceScriptIndex = -1;
                 }
                 
-                _replaceScriptSlide = PowerPointPresentation.CurrentSlide;
+                _replaceScriptSlide = PowerPointCurrentPresentationInfo.CurrentSlide;
             }
 
             // change the status to recording status
@@ -1297,7 +1299,7 @@ namespace PowerPointLabs
                         // null ptr exception.
                         if (_inShowControlBox == null ||
                             _inShowControlBox.GetCurrentStatus() != InShowControl.ButtonStatus.Rec &&
-                            relativeSlideId == GetRelativeSlideIndex(PowerPointPresentation.CurrentSlide.ID))
+                            relativeSlideId == GetRelativeSlideIndex(PowerPointCurrentPresentationInfo.CurrentSlide.ID))
                         {
                             UpdateRecordList(recordIndex, displayName, newRec.Length);
                         }
@@ -1330,7 +1332,7 @@ namespace PowerPointLabs
                         // update the whole record display list if not in slide show mode
                         if (_inShowControlBox == null ||
                             _inShowControlBox.GetCurrentStatus() != InShowControl.ButtonStatus.Rec &&
-                            relativeSlideId == GetRelativeSlideIndex(PowerPointPresentation.CurrentSlide.ID))
+                            relativeSlideId == GetRelativeSlideIndex(PowerPointCurrentPresentationInfo.CurrentSlide.ID))
                         {
                             UpdateRecordList(relativeSlideId);
 
@@ -1345,7 +1347,7 @@ namespace PowerPointLabs
                     // update the script list if not in slide show mode
                     if (scriptIndex != -1 && (_inShowControlBox == null ||
                         _inShowControlBox.GetCurrentStatus() != InShowControl.ButtonStatus.Rec &&
-                        relativeSlideId == GetRelativeSlideIndex(PowerPointPresentation.CurrentSlide.ID)))
+                        relativeSlideId == GetRelativeSlideIndex(PowerPointCurrentPresentationInfo.CurrentSlide.ID)))
                     {
                         UpdateScriptList(scriptIndex, null, ScriptStatus.Recorded);
                     }
@@ -1355,9 +1357,9 @@ namespace PowerPointLabs
                     {
                         newRec.EmbedOnSlide(currentSlide, scriptIndex);
 
-                        if (!Globals.ThisAddIn.Ribbon.removeAudioEnabled)
+                        if (!Globals.ThisAddIn.Ribbon.RemoveAudioEnabled)
                         {
-                            Globals.ThisAddIn.Ribbon.removeAudioEnabled = true;
+                            Globals.ThisAddIn.Ribbon.RemoveAudioEnabled = true;
                             Globals.ThisAddIn.Ribbon.RefreshRibbonControl("RemoveAudioButton");
                         }
                     }
@@ -1563,14 +1565,14 @@ namespace PowerPointLabs
             slideShowButton.Enabled = false;
 
             // get current slide number
-            var slideIndex = PowerPointPresentation.CurrentSlide.Index;
+            var slideIndex = PowerPointCurrentPresentationInfo.CurrentSlide.Index;
             
             // set the starting slide and start the slide show
             var slideShowSettings = Globals.ThisAddIn.Application.ActivePresentation.SlideShowSettings;
             
             // start from the selected slide
             slideShowSettings.StartingSlide = slideIndex;
-            slideShowSettings.EndingSlide = PowerPointPresentation.SlideCount;
+            slideShowSettings.EndingSlide = PowerPointCurrentPresentationInfo.SlideCount;
             slideShowSettings.RangeType = PpSlideShowRangeType.ppShowSlideRange;
             
             // get the slideShowWindow and slideShowView object
@@ -1589,7 +1591,7 @@ namespace PowerPointLabs
 
         private void RecDisplayItemSelectionChanged(object sender, ListViewItemSelectionChangedEventArgs e)
         {
-            int relativeSlideId = GetRelativeSlideIndex(PowerPointPresentation.CurrentSlide.ID);
+            int relativeSlideId = GetRelativeSlideIndex(PowerPointCurrentPresentationInfo.CurrentSlide.ID);
             int corresIndex = _audioList[relativeSlideId][e.ItemIndex].MatchScriptID;
 
             // if some record is selected, enable the record button
@@ -1635,7 +1637,7 @@ namespace PowerPointLabs
 
         private void ScriptDisplayItemSelectionChanged(object sender, ListViewItemSelectionChangedEventArgs e)
         {
-            int relativeSlideId = GetRelativeSlideIndex(PowerPointPresentation.CurrentSlide.ID);
+            int relativeSlideId = GetRelativeSlideIndex(PowerPointCurrentPresentationInfo.CurrentSlide.ID);
             int corresIndex = GetRecordIndexFromScriptIndex(relativeSlideId, e.ItemIndex);
 
             if (e.IsSelected)
@@ -1688,7 +1690,7 @@ namespace PowerPointLabs
             if (scriptDisplay.SelectedItems.Count == 1)
             {
                 var index = scriptDisplay.SelectedIndices[0];
-                var relativeSlideId = GetRelativeSlideIndex(PowerPointPresentation.CurrentSlide.ID);
+                var relativeSlideId = GetRelativeSlideIndex(PowerPointCurrentPresentationInfo.CurrentSlide.ID);
                 var recordIndex = GetRecordIndexFromScriptIndex(relativeSlideId, index);
                 
                 // there is a corresponding record
@@ -1730,7 +1732,7 @@ namespace PowerPointLabs
             {
                 if (recDisplay.SelectedItems.Count == 1)
                 {
-                    var currentSlide = PowerPointPresentation.CurrentSlide;
+                    var currentSlide = PowerPointCurrentPresentationInfo.CurrentSlide;
                     var recordIndex = recDisplay.SelectedIndices[0];
                     var relativeSlideId = GetRelativeSlideIndex(currentSlide.ID);
                     var audio = _audioList[relativeSlideId][recordIndex];

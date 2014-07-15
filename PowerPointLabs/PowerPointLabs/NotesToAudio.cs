@@ -42,7 +42,7 @@ namespace PowerPointLabs
 
         public static string[] EmbedCurrentSlideNotes()
         {
-            var currentSlide = PowerPointPresentation.CurrentSlide;
+            var currentSlide = PowerPointCurrentPresentationInfo.CurrentSlide;
             
             if (currentSlide != null)
             {
@@ -58,7 +58,7 @@ namespace PowerPointLabs
             progressBarForm.Show();
             var audioList = new List<string[]>();
 
-            var slides = PowerPointPresentation.SelectedSlides.ToList();
+            var slides = PowerPointCurrentPresentationInfo.SelectedSlides.ToList();
 
             int numberOfSlides = slides.Count;
             for (int currentSlideIndex = 0; currentSlideIndex < numberOfSlides; currentSlideIndex++)
@@ -81,7 +81,7 @@ namespace PowerPointLabs
             progressBarForm.Show();
             var audioList = new List<string[]>();
 
-            var slides = PowerPointPresentation.Slides.ToList();
+            var slides = PowerPointCurrentPresentationInfo.Slides.ToList();
 
             int numberOfSlides = slides.Count;
             for (int currentSlideIndex = 0; currentSlideIndex < numberOfSlides; currentSlideIndex++)
@@ -167,7 +167,7 @@ namespace PowerPointLabs
 
         private static Shape InsertAudioFileOnSlide(PowerPointSlide slide, string fileName)
         {
-            float slideWidth = PowerPointPresentation.SlideWidth;
+            float slideWidth = PowerPointCurrentPresentationInfo.SlideWidth;
 
             Shape audioShape = slide.Shapes.AddMediaObject2(fileName, MsoTriState.msoFalse, MsoTriState.msoTrue, slideWidth + 20);
             slide.RemoveAnimationsForShape(audioShape);
@@ -240,7 +240,7 @@ namespace PowerPointLabs
 
         public static void RemoveAudioFromSelectedSlides()
         {
-            foreach (PowerPointSlide s in PowerPointPresentation.SelectedSlides)
+            foreach (PowerPointSlide s in PowerPointCurrentPresentationInfo.SelectedSlides)
             {
                 s.DeleteShapesWithPrefixTimelineInvariant(SpeechShapePrefix);
                 s.DeleteShapesWithPrefixTimelineInvariant(SpeechShapePrefixOld);
@@ -274,7 +274,7 @@ namespace PowerPointLabs
             {
                 var selectedFile = audioPicker.FileName;
 
-                PowerPointSlide currentSlide = PowerPointPresentation.CurrentSlide;
+                PowerPointSlide currentSlide = PowerPointCurrentPresentationInfo.CurrentSlide;
                 Shape newAudio = InsertAudioFileOnSlide(currentSlide, selectedFile);
 
                 currentSlide.TransferAnimation(selectedShape[1], newAudio);

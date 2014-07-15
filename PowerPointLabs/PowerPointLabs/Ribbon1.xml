@@ -1,5 +1,5 @@
 ﻿<?xml version="1.0" encoding="UTF-8"?>
-<customUI xmlns="http://schemas.microsoft.com/office/2009/07/customui" onLoad="Ribbon_Load">
+<customUI xmlns="http://schemas.microsoft.com/office/2009/07/customui" onLoad="RibbonLoad">
   <ribbon>
     <contextualTabs>
       <tabSet idMso="TabSetDrawingTools">
@@ -109,8 +109,7 @@
           </dialogBoxLauncher>
         </group>
         <group id="embedAudio"
-               label="Auto Narrate"
-               >
+               label="Auto Narrate">
           <splitButton id="addAudioSplit" size="large">
             <button id="AddAudioButton"
                   label="Add Audio"
@@ -200,7 +199,7 @@
                   getSupertip="GetColorPickerButtonSupertip"
                   onAction="ColorPickerButtonClick"/>
           <button id="CustomeShapeButton"
-                  label="Shape Lab"
+                  label="Shapes Lab"
                   size="large"
                   getImage="GetShapesLabImage"
                   getSupertip="GetCustomeShapeButtonSupertip"

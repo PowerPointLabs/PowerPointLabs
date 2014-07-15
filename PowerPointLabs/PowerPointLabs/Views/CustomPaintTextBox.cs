@@ -40,7 +40,7 @@ namespace PowerPointLabs.Views
             _parentTextBox.ClientRectangle, _parentTextBox.ForeColor, _parentTextBox.BackColor,
             TextFormatFlags.TextBoxControl |
             TextFormatFlags.VerticalCenter |
-            TextFormatFlags.HorizontalCenter |
+            TextFormatFlags.Left |
             TextFormatFlags.WordBreak |
             TextFormatFlags.EndEllipsis);
 

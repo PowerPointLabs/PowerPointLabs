@@ -56,10 +56,10 @@ namespace PowerPointLabs
             float initialWidth = initialShape.Width;
             float initialHeight = initialShape.Height;
 
-            float finalX = PowerPointPresentation.SlideWidth / 2;
-            float finalY = PowerPointPresentation.SlideHeight / 2;
-            float finalWidth = PowerPointPresentation.SlideWidth;
-            float finalHeight = PowerPointPresentation.SlideHeight;
+            float finalX = PowerPointCurrentPresentationInfo.SlideWidth / 2;
+            float finalY = PowerPointCurrentPresentationInfo.SlideHeight / 2;
+            float finalWidth = PowerPointCurrentPresentationInfo.SlideWidth;
+            float finalHeight = PowerPointCurrentPresentationInfo.SlideHeight;
 
             int numFrames = 10;
             float duration = numFrames * 0.04f;

@@ -133,9 +133,9 @@ namespace PowerPointLabs
         private static void CreateFillInBackground(PowerPoint.Shape shape, Bitmap slideImage)
         {
             float horizontalRatio =
-                (float)(GetDesiredExportWidth() / PowerPointPresentation.SlideWidth);
+                (float)(GetDesiredExportWidth() / PowerPointCurrentPresentationInfo.SlideWidth);
             float verticalRatio =
-                (float)(GetDesiredExportHeight() / PowerPointPresentation.SlideHeight);
+                (float)(GetDesiredExportHeight() / PowerPointCurrentPresentationInfo.SlideHeight);
             var croppedImage = KiCut(slideImage,
                 shape.Left * horizontalRatio,
                 shape.Top * verticalRatio,
@@ -249,8 +249,8 @@ namespace PowerPointLabs
             //-1 and +1 for better user experience
             bool cond1 = shape.Left >= -1;
             bool cond2 = shape.Top >= -1;
-            bool cond3 = shape.Left + shape.Width <= PowerPointPresentation.SlideWidth + 1;
-            bool cond4 = shape.Top + shape.Height <= PowerPointPresentation.SlideHeight + 1;
+            bool cond3 = shape.Left + shape.Width <= PowerPointCurrentPresentationInfo.SlideWidth + 1;
+            bool cond4 = shape.Top + shape.Height <= PowerPointCurrentPresentationInfo.SlideHeight + 1;
             return cond1 && cond2 && cond3 && cond4;
         }
 

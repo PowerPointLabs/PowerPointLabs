@@ -24,14 +24,14 @@ namespace PowerPointLabs
             try
             {
                 //Get References of current and next slides
-                var currentSlide = PowerPointPresentation.CurrentSlide as PowerPointSlide;
-                if (currentSlide == null || currentSlide.Index == PowerPointPresentation.SlideCount)
+                var currentSlide = PowerPointCurrentPresentationInfo.CurrentSlide as PowerPointSlide;
+                if (currentSlide == null || currentSlide.Index == PowerPointCurrentPresentationInfo.SlideCount)
                 {
                    System.Windows.Forms.MessageBox.Show("Please select the correct slide", "Unable to Add Animations");
                    return;
                 }
 
-                PowerPointSlide nextSlide = PowerPointPresentation.Slides.ElementAt(currentSlide.Index);
+                PowerPointSlide nextSlide = PowerPointCurrentPresentationInfo.Slides.ElementAt(currentSlide.Index);
                 if (!GetMatchingShapeDetails(currentSlide, nextSlide))
                 {
                     System.Windows.Forms.MessageBox.Show("No matching Shapes were found on the next slide", "Animation Not Added");
@@ -52,27 +52,27 @@ namespace PowerPointLabs
         {
             try
             {
-                var selectedSlide = PowerPointPresentation.CurrentSlide as PowerPointSlide;
+                var selectedSlide = PowerPointCurrentPresentationInfo.CurrentSlide as PowerPointSlide;
                 PowerPointSlide currentSlide = null, animatedSlide = null, nextSlide = null;
 
                 if (selectedSlide.Name.StartsWith("PPSlideAnimated"))
                 {
-                    nextSlide = PowerPointPresentation.Slides.ElementAt(selectedSlide.Index);
-                    currentSlide = PowerPointPresentation.Slides.ElementAt(selectedSlide.Index - 2);
+                    nextSlide = PowerPointCurrentPresentationInfo.Slides.ElementAt(selectedSlide.Index);
+                    currentSlide = PowerPointCurrentPresentationInfo.Slides.ElementAt(selectedSlide.Index - 2);
                     animatedSlide = selectedSlide;
                     ManageSlidesForReload(currentSlide, nextSlide, animatedSlide);
                 }
                 else if (selectedSlide.Name.StartsWith("PPSlideStart"))
                 {
-                    animatedSlide = PowerPointPresentation.Slides.ElementAt(selectedSlide.Index);
-                    nextSlide = PowerPointPresentation.Slides.ElementAt(selectedSlide.Index + 1);
+                    animatedSlide = PowerPointCurrentPresentationInfo.Slides.ElementAt(selectedSlide.Index);
+                    nextSlide = PowerPointCurrentPresentationInfo.Slides.ElementAt(selectedSlide.Index + 1);
                     currentSlide = selectedSlide;
                     ManageSlidesForReload(currentSlide, nextSlide, animatedSlide);
                 }
                 else if (selectedSlide.Name.StartsWith("PPSlideEnd"))
                 {
-                    animatedSlide = PowerPointPresentation.Slides.ElementAt(selectedSlide.Index - 2);
-                    currentSlide = PowerPointPresentation.Slides.ElementAt(selectedSlide.Index - 3);
+                    animatedSlide = PowerPointCurrentPresentationInfo.Slides.ElementAt(selectedSlide.Index - 2);
+                    currentSlide = PowerPointCurrentPresentationInfo.Slides.ElementAt(selectedSlide.Index - 3);
                     nextSlide = selectedSlide;
                     ManageSlidesForReload(currentSlide, nextSlide, animatedSlide);
                 }
@@ -80,17 +80,17 @@ namespace PowerPointLabs
                 {
                     if (selectedSlide.Index > 2)
                     {
-                        animatedSlide = PowerPointPresentation.Slides.ElementAt(selectedSlide.Index - 2);
-                        currentSlide = PowerPointPresentation.Slides.ElementAt(selectedSlide.Index - 3);
+                        animatedSlide = PowerPointCurrentPresentationInfo.Slides.ElementAt(selectedSlide.Index - 2);
+                        currentSlide = PowerPointCurrentPresentationInfo.Slides.ElementAt(selectedSlide.Index - 3);
                         nextSlide = selectedSlide;
                         if (animatedSlide.Name.StartsWith("PPSlideAnimated"))
                             ManageSlidesForReload(currentSlide, nextSlide, animatedSlide);
                     }
 
-                    if (selectedSlide.Index < PowerPointPresentation.SlideCount - 1)
+                    if (selectedSlide.Index < PowerPointCurrentPresentationInfo.SlideCount - 1)
                     {
-                        animatedSlide = PowerPointPresentation.Slides.ElementAt(selectedSlide.Index);
-                        nextSlide = PowerPointPresentation.Slides.ElementAt(selectedSlide.Index + 1);
+                        animatedSlide = PowerPointCurrentPresentationInfo.Slides.ElementAt(selectedSlide.Index);
+                        nextSlide = PowerPointCurrentPresentationInfo.Slides.ElementAt(selectedSlide.Index + 1);
                         currentSlide = selectedSlide;
                         if (animatedSlide.Name.StartsWith("PPSlideAnimated"))
                             ManageSlidesForReload(currentSlide, nextSlide, animatedSlide);

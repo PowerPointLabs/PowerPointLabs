@@ -274,12 +274,12 @@ namespace PowerPointLabs.Models
             PowerPoint.Shape referenceShape = _slide.Shapes.Paste()[1];
             referenceShape.LockAspectRatio = Office.MsoTriState.msoTrue;
             if (referenceShape.Width > referenceShape.Height)
-                referenceShape.Width = PowerPointPresentation.SlideWidth;
+                referenceShape.Width = PowerPointCurrentPresentationInfo.SlideWidth;
             else
-                referenceShape.Height = PowerPointPresentation.SlideHeight;
+                referenceShape.Height = PowerPointCurrentPresentationInfo.SlideHeight;
 
-            referenceShape.Left = (PowerPointPresentation.SlideWidth / 2) - (referenceShape.Width / 2);
-            referenceShape.Top = (PowerPointPresentation.SlideHeight / 2) - (referenceShape.Height / 2);
+            referenceShape.Left = (PowerPointCurrentPresentationInfo.SlideWidth / 2) - (referenceShape.Width / 2);
+            referenceShape.Top = (PowerPointCurrentPresentationInfo.SlideHeight / 2) - (referenceShape.Height / 2);
             
             return referenceShape;
         }
@@ -293,8 +293,8 @@ namespace PowerPointLabs.Models
 
             shapeToZoom.PictureFormat.CropLeft += zoomShape.Left;
             shapeToZoom.PictureFormat.CropTop += zoomShape.Top;
-            shapeToZoom.PictureFormat.CropRight += (PowerPointPresentation.SlideWidth - (zoomShape.Left + zoomShape.Width));
-            shapeToZoom.PictureFormat.CropBottom += (PowerPointPresentation.SlideHeight - (zoomShape.Top + zoomShape.Height));
+            shapeToZoom.PictureFormat.CropRight += (PowerPointCurrentPresentationInfo.SlideWidth - (zoomShape.Left + zoomShape.Width));
+            shapeToZoom.PictureFormat.CropBottom += (PowerPointCurrentPresentationInfo.SlideHeight - (zoomShape.Top + zoomShape.Height));
 
             PowerPointLabsGlobals.CopyShapePosition(zoomShape, ref shapeToZoom);
             return shapeToZoom;
@@ -341,7 +341,7 @@ namespace PowerPointLabs.Models
             PowerPointSlide zoomSlideCopy = this.Duplicate();
             Globals.ThisAddIn.Application.ActiveWindow.View.GotoSlide(zoomSlideCopy.Index);
 
-            PowerPoint.Shape cropShape = zoomSlideCopy.Shapes.AddShape(Office.MsoAutoShapeType.msoShapeRectangle, 0, 0, PowerPointPresentation.SlideWidth - 0.01f, PowerPointPresentation.SlideHeight - 0.01f);
+            PowerPoint.Shape cropShape = zoomSlideCopy.Shapes.AddShape(Office.MsoAutoShapeType.msoShapeRectangle, 0, 0, PowerPointCurrentPresentationInfo.SlideWidth - 0.01f, PowerPointCurrentPresentationInfo.SlideHeight - 0.01f);
             cropShape.Select();
             PowerPoint.Selection sel = Globals.ThisAddIn.Application.ActiveWindow.Selection;
             PowerPoint.Shape croppedShape = CropToShape.Crop(sel);
