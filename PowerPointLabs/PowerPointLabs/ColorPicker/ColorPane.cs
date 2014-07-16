@@ -37,6 +37,8 @@ namespace PowerPointLabs
 
         // Shapes to Update
         PowerPoint.ShapeRange _selectedShapes;
+
+        PowerPoint.TextRange _selectedText;
         
         // Data-bindings datasource
         ColorDataSource dataSource = new ColorDataSource();
@@ -360,20 +362,27 @@ namespace PowerPointLabs
             try
             {
                 var selection = PowerPointPresentation.CurrentSelection;
-                if (selection != null && selection.Type == PpSelectionType.ppSelectionShapes)
+                if (selection == null) return;
+
+                if (selection.Type == PpSelectionType.ppSelectionShapes)
                 {
                     _selectedShapes = selection.ShapeRange;
+                } else if (selection.Type == PpSelectionType.ppSelectionText)
+                {
+                    _selectedText = selection.TextRange;
                 }
             }
             catch (Exception exception)
             {
                 _selectedShapes = null;
+                _selectedText = null;
             }
         }
         private void ColorSelectedShapesWithColor(HSLColor selectedColor)
         {
             SelectShapes();
-            if (_selectedShapes != null)
+            if (_selectedShapes != null
+                && PowerPointPresentation.CurrentSelection.Type == PpSelectionType.ppSelectionShapes)
             {
                 foreach (PowerPoint.Shape s in _selectedShapes)
                 {
@@ -391,6 +400,22 @@ namespace PowerPointLabs
                         RecreateCorruptedShape(s);
                     }  
                 }
+            }
+            if (_selectedText != null
+                && PowerPointPresentation.CurrentSelection.Type == PpSelectionType.ppSelectionText)
+            {
+                try
+                {
+                    var r = ((Color)selectedColor).R;
+                    var g = ((Color)selectedColor).G;
+                    var b = ((Color)selectedColor).B;
+
+                    var rgb = (b << 16) | (g << 8) | (r);
+                    ColorShapeWithColor(_selectedText, rgb, currMode);
+                }
+                catch (Exception e)
+                {
+                }  
             }
         }
 
@@ -422,20 +447,43 @@ namespace PowerPointLabs
                     s.Line.ForeColor.RGB = rgb;
                     break;
                 case MODE.FONT:
-                    if (s.HasTextFrame == Microsoft.Office.Core.MsoTriState.msoTrue)
-                    {
-                        if (Globals.ThisAddIn.Application.ActiveWindow.Selection.ShapeRange.HasTextFrame
-                            == Microsoft.Office.Core.MsoTriState.msoTrue)
-                        {
-                            TextRange selectedText
-                                = Globals.ThisAddIn.Application.ActiveWindow.Selection.TextRange.TrimText();
-                            if (selectedText.Text != "" && selectedText != null)
-                            {
-                                selectedText.Font.Color.RGB = rgb;
-                            }
-                        }
-                    }
+                    ColorShapeFontWithColor(s, rgb);
                     break;
+            }
+        }
+
+        private static void ColorShapeFontWithColor(PowerPoint.Shape s, int rgb)
+        {
+            if (s.HasTextFrame == Microsoft.Office.Core.MsoTriState.msoTrue)
+            {
+                if (Globals.ThisAddIn.Application.ActiveWindow.Selection.ShapeRange.HasTextFrame
+                    == Microsoft.Office.Core.MsoTriState.msoTrue)
+                {
+                    TextRange selectedText
+                        = Globals.ThisAddIn.Application.ActiveWindow.Selection.TextRange.TrimText();
+                    if (selectedText.Text != "" && selectedText != null)
+                    {
+                        selectedText.Font.Color.RGB = rgb;
+                    }
+                    else
+                    {
+                        s.TextFrame.TextRange.TrimText().Font.Color.RGB = rgb;
+                    }
+                }
+            }
+        }
+
+        private void ColorShapeWithColor(PowerPoint.TextRange text, int rgb, MODE mode)
+        {
+            var frame = text.Parent as PowerPoint.TextFrame;
+            var selectedShape = frame.Parent as PowerPoint.Shape;
+            if (mode != MODE.NONE)
+            {
+                ColorShapeWithColor(selectedShape, rgb, mode);
+            }
+            else
+            {
+                ColorShapeFontWithColor(selectedShape, rgb);
             }
         }
 
