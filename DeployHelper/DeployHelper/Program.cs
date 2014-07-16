@@ -235,6 +235,9 @@ namespace DeployHelper
             _versionMinor = versionDetails[1];
             _versionBuild = versionDetails[2];
             _versionRevision = versionDetails[3];
+            Console.Write("You are going to deploy PowerPointLabs ver.");
+            ConsoleWriteWithColor(_version, ConsoleColor.Yellow);
+            Console.WriteLine("");
         }
 
         private static void LoadCurrentVsto()
