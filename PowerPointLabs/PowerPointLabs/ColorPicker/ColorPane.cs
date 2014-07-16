@@ -28,9 +28,6 @@ namespace PowerPointLabs
             NONE
         };
 
-        // Needed to keep track of brightness and saturation
-        private HSLColor _originalColor;
-
         // Keeps track of mouse on mouse down on a matching panel.
         // Needed to determine drag-drop v/s click
         private System.Drawing.Point _mouseDownLocation;
@@ -43,9 +40,6 @@ namespace PowerPointLabs
         
         // Data-bindings datasource
         ColorDataSource dataSource = new ColorDataSource();
-
-        // To reset Saturation on brightness change
-        private float _initialSaturation;
 
         // Stores last selected mode
         private MODE prevMode = MODE.NONE;
@@ -73,7 +67,6 @@ namespace PowerPointLabs
 
         private void SetDefaultColor(Color color)
         {
-            _originalColor = color;
             dataSource.selectedColor = color;
             UpdateUIForNewColor();
         }
@@ -445,7 +438,6 @@ namespace PowerPointLabs
         void _native_LButtonClicked(object sender, SysMouseEventInfo e)
         {
             _native.Close();
-            _originalColor = panel1.BackColor;
             Globals.ThisAddIn.Application.StartNewUndoEntry();
             UpdateUIForNewColor();
             timer1.Stop();
@@ -653,7 +645,6 @@ namespace PowerPointLabs
         {
             Panel panel = (Panel)sender;
             panel.BackColor = (Color)e.Data.GetData(panel.BackColor.GetType());
-            _originalColor = panel.BackColor;
             UpdateUIForNewColor();
         }
 
@@ -731,33 +722,52 @@ namespace PowerPointLabs
                     ThemePanel1.BackColor = Color.FromArgb(
                         ColorHelper.ReverseRGBToArgb(
                         scheme.Colors(Microsoft.Office.Core.MsoThemeColorSchemeIndex.msoThemeLight1).RGB));
+                    dataSource.themeColorOne = ThemePanel1.BackColor;
+
                     ThemePanel2.BackColor = Color.FromArgb(
                         ColorHelper.ReverseRGBToArgb(
                         scheme.Colors(Microsoft.Office.Core.MsoThemeColorSchemeIndex.msoThemeDark1).RGB));
+                    dataSource.themeColorTwo = ThemePanel2.BackColor;
+
                     ThemePanel3.BackColor = Color.FromArgb(
                         ColorHelper.ReverseRGBToArgb(
                         scheme.Colors(Microsoft.Office.Core.MsoThemeColorSchemeIndex.msoThemeLight2).RGB));
+                    dataSource.themeColorThree = ThemePanel3.BackColor;
+
                     ThemePanel4.BackColor = Color.FromArgb(
                         ColorHelper.ReverseRGBToArgb(
                         scheme.Colors(Microsoft.Office.Core.MsoThemeColorSchemeIndex.msoThemeDark2).RGB));
+                    dataSource.themeColorFour = ThemePanel4.BackColor;
+
                     ThemePanel5.BackColor = Color.FromArgb(
                         ColorHelper.ReverseRGBToArgb(
                         scheme.Colors(Microsoft.Office.Core.MsoThemeColorSchemeIndex.msoThemeAccent1).RGB));
+                    dataSource.themeColorFive = ThemePanel5.BackColor;
+
                     ThemePanel6.BackColor = Color.FromArgb(
                         ColorHelper.ReverseRGBToArgb(
                         scheme.Colors(Microsoft.Office.Core.MsoThemeColorSchemeIndex.msoThemeAccent2).RGB));
+                    dataSource.themeColorSix = ThemePanel6.BackColor;
+
                     ThemePanel7.BackColor = Color.FromArgb(
                         ColorHelper.ReverseRGBToArgb(
                         scheme.Colors(Microsoft.Office.Core.MsoThemeColorSchemeIndex.msoThemeAccent3).RGB));
+                    dataSource.themeColorSeven = ThemePanel7.BackColor;
+
                     ThemePanel8.BackColor = Color.FromArgb(
                         ColorHelper.ReverseRGBToArgb(
                         scheme.Colors(Microsoft.Office.Core.MsoThemeColorSchemeIndex.msoThemeAccent4).RGB));
+                    dataSource.themeColorEight = ThemePanel8.BackColor;
+
                     ThemePanel9.BackColor = Color.FromArgb(
                         ColorHelper.ReverseRGBToArgb(
                         scheme.Colors(Microsoft.Office.Core.MsoThemeColorSchemeIndex.msoThemeAccent5).RGB));
+                    dataSource.themeColorNine = ThemePanel9.BackColor;
+
                     ThemePanel10.BackColor = Color.FromArgb(
                         ColorHelper.ReverseRGBToArgb(
                         scheme.Colors(Microsoft.Office.Core.MsoThemeColorSchemeIndex.msoThemeAccent6).RGB));
+                    dataSource.themeColorTen = ThemePanel10.BackColor;
                 }
             }
             catch (Exception e)
@@ -846,36 +856,14 @@ namespace PowerPointLabs
 
             Color clickedColor = ((Panel)contextMenuStrip1.SourceControl).BackColor;
             dataSource.selectedColor = clickedColor;
-            _originalColor = clickedColor;
             //Globals.ThisAddIn.Application.StartNewUndoEntry();
             UpdateUIForNewColor();
 
             dataSource.selectedColor = clickedColor;
-            _originalColor = clickedColor;
             Globals.ThisAddIn.Application.StartNewUndoEntry();
             UpdateUIForNewColor();
         }
         #endregion
-
-        private void brightnessBar_MouseUp(object sender, MouseEventArgs e)
-        {
-            try
-            {
-                saturationBar.Enabled = true;
-            }
-            catch (Exception exception)
-            {
-                ErrorDialogWrapper.ShowDialog(
-                    "Invalid Brightness Update", 
-                    exception.Message, 
-                    exception);
-            }
-        }
-
-        private void brightnessBar_MouseDown(object sender, MouseEventArgs e)
-        {
-            _initialSaturation = (float)dataSource.selectedColor.Saturation;
-        }
 
         private void EyeDropButton_MouseClick(object sender, MouseEventArgs e)
         {
