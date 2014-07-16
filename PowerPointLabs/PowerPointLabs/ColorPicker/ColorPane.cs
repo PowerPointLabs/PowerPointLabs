@@ -653,6 +653,46 @@ namespace PowerPointLabs
             {
                 dataSource.selectedColor = panel.BackColor;
             }
+            if (panel.Equals(ThemePanel1))
+            {
+                dataSource.themeColorOne = panel.BackColor;
+            }
+            if (panel.Equals(ThemePanel2))
+            {
+                dataSource.themeColorTwo = panel.BackColor;
+            }
+            if (panel.Equals(ThemePanel3))
+            {
+                dataSource.themeColorThree = panel.BackColor;
+            }
+            if (panel.Equals(ThemePanel4))
+            {
+                dataSource.themeColorFour = panel.BackColor;
+            }
+            if (panel.Equals(ThemePanel5))
+            {
+                dataSource.themeColorFive = panel.BackColor;
+            }
+            if (panel.Equals(ThemePanel6))
+            {
+                dataSource.themeColorSix = panel.BackColor;
+            }
+            if (panel.Equals(ThemePanel7))
+            {
+                dataSource.themeColorSeven = panel.BackColor;
+            }
+            if (panel.Equals(ThemePanel8))
+            {
+                dataSource.themeColorEight = panel.BackColor;
+            }
+            if (panel.Equals(ThemePanel9))
+            {
+                dataSource.themeColorNine = panel.BackColor;
+            }
+            if (panel.Equals(ThemePanel10))
+            {
+                dataSource.themeColorTen = panel.BackColor;
+            }
             UpdateUIForNewColor();
         }
 
@@ -792,15 +832,34 @@ namespace PowerPointLabs
                 if (PowerPointPresentation.SlideCount > 0)
                 {
                     ThemePanel1.BackColor = Color.White;
+                    dataSource.themeColorOne = ThemePanel1.BackColor;
+
                     ThemePanel2.BackColor = Color.White;
+                    dataSource.themeColorTwo = ThemePanel1.BackColor;
+
                     ThemePanel3.BackColor = Color.White;
+                    dataSource.themeColorThree = ThemePanel1.BackColor;
+
                     ThemePanel4.BackColor = Color.White;
+                    dataSource.themeColorFour = ThemePanel1.BackColor;
+
                     ThemePanel5.BackColor = Color.White;
+                    dataSource.themeColorFive = ThemePanel1.BackColor;
+
                     ThemePanel6.BackColor = Color.White;
+                    dataSource.themeColorSix = ThemePanel1.BackColor;
+
                     ThemePanel7.BackColor = Color.White;
+                    dataSource.themeColorSeven = ThemePanel1.BackColor;
+
                     ThemePanel8.BackColor = Color.White;
+                    dataSource.themeColorEight = ThemePanel1.BackColor;
+
                     ThemePanel9.BackColor = Color.White;
+                    dataSource.themeColorNine = ThemePanel1.BackColor;
+
                     ThemePanel10.BackColor = Color.White;
+                    dataSource.themeColorTen = ThemePanel1.BackColor;
                 }
             }
             catch (Exception e)
