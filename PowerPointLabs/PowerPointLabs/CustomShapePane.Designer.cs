@@ -32,75 +32,16 @@ namespace PowerPointLabs
         private void InitializeComponent()
         {
             this.components = new System.ComponentModel.Container();
-            this.motherTableLayoutPanel = new System.Windows.Forms.TableLayoutPanel();
-            this.myShapePanel = new Stepi.UI.ExtendedPanel();
-            this.myShapeFlowLayout = new System.Windows.Forms.FlowLayoutPanel();
             this.contextMenuStrip = new System.Windows.Forms.ContextMenuStrip(this.components);
             this.removeShapeToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.editNameToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.motherTableLayoutPanel.SuspendLayout();
-            this.myShapePanel.SuspendLayout();
+            this.tabControl1 = new System.Windows.Forms.TabControl();
+            this.myShapeFlowLayout = new System.Windows.Forms.FlowLayoutPanel();
+            this.tabPage1 = new System.Windows.Forms.TabPage();
             this.contextMenuStrip.SuspendLayout();
+            this.tabControl1.SuspendLayout();
+            this.tabPage1.SuspendLayout();
             this.SuspendLayout();
-            // 
-            // motherTableLayoutPanel
-            // 
-            this.motherTableLayoutPanel.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.motherTableLayoutPanel.AutoSize = true;
-            this.motherTableLayoutPanel.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
-            this.motherTableLayoutPanel.ColumnCount = 1;
-            this.motherTableLayoutPanel.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            this.motherTableLayoutPanel.Controls.Add(this.myShapePanel, 0, 0);
-            this.motherTableLayoutPanel.Location = new System.Drawing.Point(3, 0);
-            this.motherTableLayoutPanel.Margin = new System.Windows.Forms.Padding(0);
-            this.motherTableLayoutPanel.MaximumSize = new System.Drawing.Size(500, 500);
-            this.motherTableLayoutPanel.MinimumSize = new System.Drawing.Size(120, 50);
-            this.motherTableLayoutPanel.Name = "motherTableLayoutPanel";
-            this.motherTableLayoutPanel.RowCount = 2;
-            this.motherTableLayoutPanel.RowStyles.Add(new System.Windows.Forms.RowStyle());
-            this.motherTableLayoutPanel.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 1F));
-            this.motherTableLayoutPanel.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20F));
-            this.motherTableLayoutPanel.Size = new System.Drawing.Size(410, 83);
-            this.motherTableLayoutPanel.TabIndex = 0;
-            // 
-            // myShapePanel
-            // 
-            this.myShapePanel.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.myShapePanel.Animation = Stepi.UI.Animation.No;
-            this.myShapePanel.AutoSize = true;
-            this.myShapePanel.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
-            this.myShapePanel.BorderColor = System.Drawing.Color.Gray;
-            this.myShapePanel.CaptionColorOne = System.Drawing.Color.White;
-            this.myShapePanel.CaptionColorTwo = System.Drawing.Color.FromArgb(((int)(((byte)(155)))), ((int)(((byte)(255)))), ((int)(((byte)(165)))), ((int)(((byte)(0)))));
-            this.myShapePanel.CaptionFont = new System.Drawing.Font("SimSun", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.myShapePanel.CaptionSize = 20;
-            this.myShapePanel.CaptionText = "My Shape";
-            this.myShapePanel.CaptionTextColor = System.Drawing.Color.Black;
-            this.myShapePanel.Controls.Add(this.myShapeFlowLayout);
-            this.myShapePanel.DirectionCtrlColor = System.Drawing.Color.DarkGray;
-            this.myShapePanel.DirectionCtrlHoverColor = System.Drawing.Color.Orange;
-            this.myShapePanel.Location = new System.Drawing.Point(0, 0);
-            this.myShapePanel.Margin = new System.Windows.Forms.Padding(0);
-            this.myShapePanel.Name = "myShapePanel";
-            this.myShapePanel.Size = new System.Drawing.Size(410, 82);
-            this.myShapePanel.TabIndex = 4;
-            // 
-            // myShapeFlowLayout
-            // 
-            this.myShapeFlowLayout.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.myShapeFlowLayout.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
-            this.myShapeFlowLayout.Location = new System.Drawing.Point(3, 22);
-            this.myShapeFlowLayout.Margin = new System.Windows.Forms.Padding(3, 3, 3, 0);
-            this.myShapeFlowLayout.MaximumSize = new System.Drawing.Size(700, 500);
-            this.myShapeFlowLayout.MinimumSize = new System.Drawing.Size(120, 50);
-            this.myShapeFlowLayout.Name = "myShapeFlowLayout";
-            this.myShapeFlowLayout.Size = new System.Drawing.Size(404, 58);
-            this.myShapeFlowLayout.TabIndex = 1;
             // 
             // contextMenuStrip
             // 
@@ -123,31 +64,64 @@ namespace PowerPointLabs
             this.editNameToolStripMenuItem.Size = new System.Drawing.Size(163, 22);
             this.editNameToolStripMenuItem.Text = "Edit Name";
             // 
+            // tabControl1
+            // 
+            this.tabControl1.Controls.Add(this.tabPage1);
+            this.tabControl1.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.tabControl1.Location = new System.Drawing.Point(0, 0);
+            this.tabControl1.Name = "tabControl1";
+            this.tabControl1.SelectedIndex = 0;
+            this.tabControl1.Size = new System.Drawing.Size(417, 499);
+            this.tabControl1.TabIndex = 5;
+            // 
+            // myShapeFlowLayout
+            // 
+            this.myShapeFlowLayout.AutoScroll = true;
+            this.myShapeFlowLayout.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
+            this.myShapeFlowLayout.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.myShapeFlowLayout.Location = new System.Drawing.Point(3, 3);
+            this.myShapeFlowLayout.Margin = new System.Windows.Forms.Padding(0);
+            this.myShapeFlowLayout.MaximumSize = new System.Drawing.Size(700, 500);
+            this.myShapeFlowLayout.MinimumSize = new System.Drawing.Size(120, 50);
+            this.myShapeFlowLayout.Name = "myShapeFlowLayout";
+            this.myShapeFlowLayout.Size = new System.Drawing.Size(399, 463);
+            this.myShapeFlowLayout.TabIndex = 1;
+            // 
+            // tabPage1
+            // 
+            this.tabPage1.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
+            this.tabPage1.Controls.Add(this.myShapeFlowLayout);
+            this.tabPage1.Location = new System.Drawing.Point(4, 22);
+            this.tabPage1.Name = "tabPage1";
+            this.tabPage1.Padding = new System.Windows.Forms.Padding(3);
+            this.tabPage1.Size = new System.Drawing.Size(409, 473);
+            this.tabPage1.TabIndex = 0;
+            this.tabPage1.Text = "My Shapes";
+            this.tabPage1.UseVisualStyleBackColor = true;
+            // 
             // CustomShapePane
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.Controls.Add(this.motherTableLayoutPanel);
+            this.Controls.Add(this.tabControl1);
             this.Name = "CustomShapePane";
-            this.Size = new System.Drawing.Size(417, 459);
+            this.Size = new System.Drawing.Size(417, 499);
             this.Click += new System.EventHandler(this.CustomShapePaneClick);
-            this.motherTableLayoutPanel.ResumeLayout(false);
-            this.motherTableLayoutPanel.PerformLayout();
-            this.myShapePanel.ResumeLayout(false);
             this.contextMenuStrip.ResumeLayout(false);
+            this.tabControl1.ResumeLayout(false);
+            this.tabPage1.ResumeLayout(false);
             this.ResumeLayout(false);
-            this.PerformLayout();
 
         }
 
         #endregion
 
-        private System.Windows.Forms.TableLayoutPanel motherTableLayoutPanel;
-        private ExtendedPanel myShapePanel;
-        private System.Windows.Forms.FlowLayoutPanel myShapeFlowLayout;
         private System.Windows.Forms.ContextMenuStrip contextMenuStrip;
         private System.Windows.Forms.ToolStripMenuItem removeShapeToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem editNameToolStripMenuItem;
+        private System.Windows.Forms.TabControl tabControl1;
+        private System.Windows.Forms.TabPage tabPage1;
+        private System.Windows.Forms.FlowLayoutPanel myShapeFlowLayout;
 
     }
 }

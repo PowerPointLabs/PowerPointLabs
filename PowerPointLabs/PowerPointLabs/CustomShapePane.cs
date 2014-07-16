@@ -89,6 +89,27 @@ namespace PowerPointLabs
             }
         }
 
+        public List<string> Shapes
+        {
+            get
+            {
+                var shapeList = new List<string>();
+
+                if (myShapeFlowLayout.Controls.Count == 0 ||
+                    myShapeFlowLayout.Controls.Contains(_noShapePanel))
+                {
+                    return shapeList;
+                }
+
+                foreach (LabeledThumbnail labelThumbnail in myShapeFlowLayout.Controls)
+                {
+                    shapeList.Add(labelThumbnail.NameLable);
+                }
+
+                return shapeList;
+            }
+        }
+
         public string ShapeRootFolderPath { get; private set; }
 
         public string ShapeFolderPath
@@ -227,19 +248,38 @@ namespace PowerPointLabs
             }
 
             var totalControl = myShapeFlowLayout.Controls.Count;
+            var thisControlPosition = -1;
 
             for (var i = 0; i < totalControl; i ++)
             {
                 var control = myShapeFlowLayout.Controls[i] as LabeledThumbnail;
-                
-                if (control != null &&
-                    _stringComparer.Compare(control.NameLable, name) >= 0)
+
+                if (control == null) continue;
+
+                // skip itself
+                if (control.NameLable == name)
                 {
+                    thisControlPosition = i;
+                    continue;
+                }
+                
+                if (_stringComparer.Compare(control.NameLable, name) > 0)
+                {
+                    // next control's name still bigger than current control, do not
+                    // need to reorder
+                    if (thisControlPosition != -1 &&
+                        i - 1 == thisControlPosition)
+                    {
+                        return thisControlPosition;
+                    }
+                    
+                    // current control should replace control at position i and move all
+                    // the controls behind back by 1
                     return i;
                 }
             }
 
-            return totalControl;
+            return totalControl - 1;
         }
 
         private void FocusSelected()
@@ -282,7 +322,7 @@ namespace PowerPointLabs
         {
             if (oldName == labeledThumbnail.NameLable) return;
 
-            var newPath = labeledThumbnail.ImagePath.Replace(oldName, labeledThumbnail.NameLable);
+            var newPath = labeledThumbnail.ImagePath.Replace(@"\" + oldName, @"\" + labeledThumbnail.NameLable);
 
             File.Move(labeledThumbnail.ImagePath, newPath);
             labeledThumbnail.ImagePath = newPath;
