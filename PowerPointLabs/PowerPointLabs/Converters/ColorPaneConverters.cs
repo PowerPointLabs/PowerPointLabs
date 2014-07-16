@@ -5,11 +5,29 @@ using PowerPointLabs.ColorPicker;
 
 namespace PowerPointLabs.Converters
 {
+    class HSLColorToRGBColor : IValueConverter
+    {
+        public object Convert(object value, Type targetType, object parameter, System.Globalization.CultureInfo culture)
+        {
+            Color selectedColor = (HSLColor) value;
+            return Color.FromArgb(255,
+                    selectedColor.R,
+                    selectedColor.G,
+                    selectedColor.B);
+        }
+
+        public object ConvertBack(object value, Type targetType, object parameter, System.Globalization.CultureInfo culture)
+        {
+            throw new NotImplementedException();
+        }
+    }
+
     class selectedColorToAnalogousLower : IValueConverter
     {
         public object Convert(object value, Type targetType, object parameter, System.Globalization.CultureInfo culture)
         {
-            return ColorHelper.GetColorShiftedByAngle((HSLColor)value, -30.0f);
+            var selectedColor = (HSLColor)value;
+            return ColorHelper.GetColorShiftedByAngle(selectedColor, -30.0f);
         }
 
         public object ConvertBack(object value, Type targetType, object parameter, System.Globalization.CultureInfo culture)
@@ -17,11 +35,13 @@ namespace PowerPointLabs.Converters
             throw new NotImplementedException();
         }
     }
+
     class selectedColorToAnalogousHigher : IValueConverter
     {
         public object Convert(object value, Type targetType, object parameter, System.Globalization.CultureInfo culture)
         {
-            return ColorHelper.GetColorShiftedByAngle((HSLColor)value, 30.0f);
+            var selectedColor = (HSLColor)value;
+            return ColorHelper.GetColorShiftedByAngle(selectedColor, 30.0f);
         }
 
         public object ConvertBack(object value, Type targetType, object parameter, System.Globalization.CultureInfo culture)
@@ -29,11 +49,13 @@ namespace PowerPointLabs.Converters
             throw new NotImplementedException();
         }
     }
+
     class selectedColorToComplementaryColor : IValueConverter
     {
         public object Convert(object value, Type targetType, object parameter, System.Globalization.CultureInfo culture)
         {
-            return ColorHelper.GetColorShiftedByAngle((HSLColor)value, 180.0f);
+            var selectedColor = (HSLColor)value;
+            return ColorHelper.GetColorShiftedByAngle(selectedColor, 180.0f);
         }
 
         public object ConvertBack(object value, Type targetType, object parameter, System.Globalization.CultureInfo culture)
@@ -46,7 +68,8 @@ namespace PowerPointLabs.Converters
     {
         public object Convert(object value, Type targetType, object parameter, System.Globalization.CultureInfo culture)
         {
-            return ColorHelper.GetColorShiftedByAngle((HSLColor)value, 150.0f);
+            var selectedColor = (HSLColor)value;
+            return ColorHelper.GetColorShiftedByAngle(selectedColor, 150.0f);
         }
 
         public object ConvertBack(object value, Type targetType, object parameter, System.Globalization.CultureInfo culture)
@@ -59,7 +82,8 @@ namespace PowerPointLabs.Converters
     {
         public object Convert(object value, Type targetType, object parameter, System.Globalization.CultureInfo culture)
         {
-            return ColorHelper.GetColorShiftedByAngle((HSLColor)value, 210.0f);
+            var selectedColor = (HSLColor)value;
+            return ColorHelper.GetColorShiftedByAngle(selectedColor, 210.0f);
         }
 
         public object ConvertBack(object value, Type targetType, object parameter, System.Globalization.CultureInfo culture)
@@ -72,7 +96,8 @@ namespace PowerPointLabs.Converters
     {
         public object Convert(object value, Type targetType, object parameter, System.Globalization.CultureInfo culture)
         {
-            return ColorHelper.GetColorShiftedByAngle((HSLColor)value, -120.0f);
+            var selectedColor = (HSLColor)value;
+            return ColorHelper.GetColorShiftedByAngle(selectedColor, -120.0f);
         }
 
         public object ConvertBack(object value, Type targetType, object parameter, System.Globalization.CultureInfo culture)
@@ -85,7 +110,8 @@ namespace PowerPointLabs.Converters
     {
         public object Convert(object value, Type targetType, object parameter, System.Globalization.CultureInfo culture)
         {
-            return ColorHelper.GetColorShiftedByAngle((HSLColor)value, 120.0f);
+            var selectedColor = (HSLColor)value;
+            return ColorHelper.GetColorShiftedByAngle(selectedColor, 120.0f);
         }
 
         public object ConvertBack(object value, Type targetType, object parameter, System.Globalization.CultureInfo culture)
@@ -98,7 +124,8 @@ namespace PowerPointLabs.Converters
     {
         public object Convert(object value, Type targetType, object parameter, System.Globalization.CultureInfo culture)
         {
-            return ColorHelper.GetColorShiftedByAngle((HSLColor)value, 90.0f);
+            var selectedColor = (HSLColor)value;
+            return ColorHelper.GetColorShiftedByAngle(selectedColor, 90.0f);
         }
 
         public object ConvertBack(object value, Type targetType, object parameter, System.Globalization.CultureInfo culture)
@@ -111,7 +138,8 @@ namespace PowerPointLabs.Converters
     {
         public object Convert(object value, Type targetType, object parameter, System.Globalization.CultureInfo culture)
         {
-            return ColorHelper.GetColorShiftedByAngle((HSLColor)value, 180.0f);
+            var selectedColor = (HSLColor)value;
+            return ColorHelper.GetColorShiftedByAngle(selectedColor, 180.0f);
         }
 
         public object ConvertBack(object value, Type targetType, object parameter, System.Globalization.CultureInfo culture)
@@ -123,7 +151,8 @@ namespace PowerPointLabs.Converters
     {
         public object Convert(object value, Type targetType, object parameter, System.Globalization.CultureInfo culture)
         {
-            return ColorHelper.GetColorShiftedByAngle((HSLColor)value, 270.0f);
+            var selectedColor = (HSLColor)value;
+            return ColorHelper.GetColorShiftedByAngle(selectedColor, 270.0f);
         }
 
         public object ConvertBack(object value, Type targetType, object parameter, System.Globalization.CultureInfo culture)
@@ -136,11 +165,12 @@ namespace PowerPointLabs.Converters
     {
         public object Convert(object value, Type targetType, object parameter, System.Globalization.CultureInfo culture)
         {
-            HSLColor selectedColor = (HSLColor)value;
-            return new HSLColor(
-                selectedColor.Hue,
-                selectedColor.Saturation,
-                0.80f * 240);
+            var selectedColor = (HSLColor) value;
+            Color convertedColor = new HSLColor(selectedColor.Hue, selectedColor.Saturation, 0.80f*240);
+            return Color.FromArgb(255,
+                convertedColor.R,
+                convertedColor.G,
+                convertedColor.B);
         }
 
         public object ConvertBack(object value, Type targetType, object parameter, System.Globalization.CultureInfo culture)
@@ -153,11 +183,12 @@ namespace PowerPointLabs.Converters
     {
         public object Convert(object value, Type targetType, object parameter, System.Globalization.CultureInfo culture)
         {
-            HSLColor selectedColor = (HSLColor)value;
-            return new HSLColor(
-                selectedColor.Hue,
-                selectedColor.Saturation,
-                0.70f * 240);
+            var selectedColor = (HSLColor) value;
+            Color convertedColor = new HSLColor(selectedColor.Hue, selectedColor.Saturation, 0.70f * 240);
+            return Color.FromArgb(255,
+                convertedColor.R,
+                convertedColor.G,
+                convertedColor.B);
         }
 
         public object ConvertBack(object value, Type targetType, object parameter, System.Globalization.CultureInfo culture)
@@ -170,11 +201,12 @@ namespace PowerPointLabs.Converters
     {
         public object Convert(object value, Type targetType, object parameter, System.Globalization.CultureInfo culture)
         {
-            HSLColor selectedColor = (HSLColor)value;
-            return new HSLColor(
-                selectedColor.Hue,
-                selectedColor.Saturation,
-                0.60f * 240);
+            var selectedColor = (HSLColor)value;
+            Color convertedColor = new HSLColor(selectedColor.Hue, selectedColor.Saturation, 0.60f * 240);
+            return Color.FromArgb(255,
+                convertedColor.R,
+                convertedColor.G,
+                convertedColor.B);
         }
 
         public object ConvertBack(object value, Type targetType, object parameter, System.Globalization.CultureInfo culture)
@@ -187,11 +219,12 @@ namespace PowerPointLabs.Converters
     {
         public object Convert(object value, Type targetType, object parameter, System.Globalization.CultureInfo culture)
         {
-            HSLColor selectedColor = (HSLColor)value;
-            return new HSLColor(
-                selectedColor.Hue,
-                selectedColor.Saturation,
-                0.50f * 240);
+            var selectedColor = (HSLColor)value;
+            Color convertedColor = new HSLColor(selectedColor.Hue, selectedColor.Saturation, 0.50f * 240);
+            return Color.FromArgb(255,
+                convertedColor.R,
+                convertedColor.G,
+                convertedColor.B);
         }
 
         public object ConvertBack(object value, Type targetType, object parameter, System.Globalization.CultureInfo culture)
@@ -204,11 +237,12 @@ namespace PowerPointLabs.Converters
     {
         public object Convert(object value, Type targetType, object parameter, System.Globalization.CultureInfo culture)
         {
-            HSLColor selectedColor = (HSLColor)value;
-            return new HSLColor(
-                selectedColor.Hue,
-                selectedColor.Saturation,
-                0.40f * 240);
+            var selectedColor = (HSLColor)value;
+            Color convertedColor = new HSLColor(selectedColor.Hue, selectedColor.Saturation, 0.40f * 240);
+            return Color.FromArgb(255,
+                convertedColor.R,
+                convertedColor.G,
+                convertedColor.B);
         }
 
         public object ConvertBack(object value, Type targetType, object parameter, System.Globalization.CultureInfo culture)
@@ -221,11 +255,12 @@ namespace PowerPointLabs.Converters
     {
         public object Convert(object value, Type targetType, object parameter, System.Globalization.CultureInfo culture)
         {
-            HSLColor selectedColor = (HSLColor)value;
-            return new HSLColor(
-                selectedColor.Hue,
-                selectedColor.Saturation,
-                0.30f * 240);
+            var selectedColor = (HSLColor)value;
+            Color convertedColor = new HSLColor(selectedColor.Hue, selectedColor.Saturation, 0.30f * 240);
+            return Color.FromArgb(255,
+                convertedColor.R,
+                convertedColor.G,
+                convertedColor.B);
         }
 
         public object ConvertBack(object value, Type targetType, object parameter, System.Globalization.CultureInfo culture)
@@ -239,10 +274,11 @@ namespace PowerPointLabs.Converters
         public object Convert(object value, Type targetType, object parameter, System.Globalization.CultureInfo culture)
         {
             var selectedColor = (HSLColor)value;
-            return new HSLColor(
-                selectedColor.Hue,
-                selectedColor.Saturation,
-                0.20f * 240);
+            Color convertedColor = new HSLColor(selectedColor.Hue, selectedColor.Saturation, 0.20f * 240);
+            return Color.FromArgb(255,
+                convertedColor.R,
+                convertedColor.G,
+                convertedColor.B);
         }
 
         public object ConvertBack(object value, Type targetType, object parameter, System.Globalization.CultureInfo culture)

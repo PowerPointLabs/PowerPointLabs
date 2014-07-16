@@ -124,89 +124,77 @@ namespace PowerPointLabs
         #region DataBindings
         private void BindDataToPanels()
         {
-            this.panel1.DataBindings.Add(new Binding(
+            this.panel1.DataBindings.Add(new CustomBinding(
                 "BackColor",
                 dataSource,
                 "selectedColor",
-                false,
-                DataSourceUpdateMode.OnPropertyChanged));
+                new Converters.HSLColorToRGBColor()));
 
-            this.ThemePanel1.DataBindings.Add(new Binding(
+            this.ThemePanel1.DataBindings.Add(new CustomBinding(
                 "BackColor",
                 dataSource,
                 "themeColorOne",
-                false,
-                DataSourceUpdateMode.OnPropertyChanged));
+                new Converters.HSLColorToRGBColor()));
 
-            this.ThemePanel2.DataBindings.Add(new Binding(
+            this.ThemePanel2.DataBindings.Add(new CustomBinding(
                 "BackColor",
                 dataSource,
                 "themeColorTwo",
-                false,
-                DataSourceUpdateMode.OnPropertyChanged));
+                new Converters.HSLColorToRGBColor()));
 
-            this.ThemePanel3.DataBindings.Add(new Binding(
+            this.ThemePanel3.DataBindings.Add(new CustomBinding(
                 "BackColor",
                 dataSource,
                 "themeColorThree",
-                false,
-                DataSourceUpdateMode.OnPropertyChanged));
-            
-            this.ThemePanel4.DataBindings.Add(new Binding(
+                new Converters.HSLColorToRGBColor()));
+
+            this.ThemePanel4.DataBindings.Add(new CustomBinding(
                 "BackColor",
                 dataSource,
                 "themeColorFour",
-                false,
-                DataSourceUpdateMode.OnPropertyChanged));
+                new Converters.HSLColorToRGBColor()));
 
-            this.ThemePanel5.DataBindings.Add(new Binding(
+            this.ThemePanel5.DataBindings.Add(new CustomBinding(
                 "BackColor",
                 dataSource,
                 "themeColorFive",
-                false,
-                DataSourceUpdateMode.OnPropertyChanged));
+                new Converters.HSLColorToRGBColor()));
 
-            this.ThemePanel6.DataBindings.Add(new Binding(
+            this.ThemePanel6.DataBindings.Add(new CustomBinding(
                 "BackColor",
                 dataSource,
                 "themeColorSix",
-                false,
-                DataSourceUpdateMode.OnPropertyChanged));
+                new Converters.HSLColorToRGBColor()));
 
-            this.ThemePanel7.DataBindings.Add(new Binding(
+            this.ThemePanel7.DataBindings.Add(new CustomBinding(
                 "BackColor",
                 dataSource,
                 "themeColorSeven",
-                false,
-                DataSourceUpdateMode.OnPropertyChanged));
+                new Converters.HSLColorToRGBColor()));
 
-            this.ThemePanel8.DataBindings.Add(new Binding(
+            this.ThemePanel8.DataBindings.Add(new CustomBinding(
                 "BackColor",
                 dataSource,
                 "themeColorEight",
-                false,
-                DataSourceUpdateMode.OnPropertyChanged));
+                new Converters.HSLColorToRGBColor()));
 
-            this.ThemePanel9.DataBindings.Add(new Binding(
+            this.ThemePanel9.DataBindings.Add(new CustomBinding(
                 "BackColor",
                 dataSource,
                 "themeColorNine",
-                false,
-                DataSourceUpdateMode.OnPropertyChanged));
+                new Converters.HSLColorToRGBColor()));
 
-            this.ThemePanel10.DataBindings.Add(new Binding(
+            this.ThemePanel10.DataBindings.Add(new CustomBinding(
                 "BackColor",
                 dataSource,
                 "themeColorTen",
-                false,
-                DataSourceUpdateMode.OnPropertyChanged));
+                new Converters.HSLColorToRGBColor()));
 
-            this.AnalogousSelected.DataBindings.Add(new Binding(
+            this.AnalogousSelected.DataBindings.Add(new CustomBinding(
                 "BackColor",
                 dataSource,
                 "selectedColor",
-                false,
-                DataSourceUpdateMode.OnPropertyChanged));
+                new Converters.HSLColorToRGBColor()));
 
             this.AnalogousLighter.DataBindings.Add(new CustomBinding(
                 "BackColor",
@@ -238,12 +226,11 @@ namespace PowerPointLabs
                 "selectedColor",
                 new Converters.selectedColorToSplitComplementaryHigher()));
 
-            this.TriadicSelected.DataBindings.Add(new Binding(
+            this.TriadicSelected.DataBindings.Add(new CustomBinding(
                 "BackColor",
                 dataSource,
                 "selectedColor",
-                false,
-                DataSourceUpdateMode.OnPropertyChanged));
+                new Converters.HSLColorToRGBColor()));
 
             this.TriadicLower.DataBindings.Add(new CustomBinding(
                 "BackColor",
@@ -257,12 +244,11 @@ namespace PowerPointLabs
                 "selectedColor",
                 new Converters.selectedColorToTriadicHigher()));
 
-            this.TetradicSelected.DataBindings.Add(new Binding(
+            this.TetradicSelected.DataBindings.Add(new CustomBinding(
                 "BackColor",
                 dataSource,
                 "selectedColor",
-                false,
-                DataSourceUpdateMode.OnPropertyChanged));
+                new Converters.HSLColorToRGBColor()));
 
             this.Tetradic1.DataBindings.Add(new CustomBinding(
                 "BackColor",
@@ -329,6 +315,12 @@ namespace PowerPointLabs
                             dataSource,
                             "selectedColor",
                             new Converters.selectedColorToBrightnessValue()));
+
+            saturationBar.DataBindings.Add(new CustomBinding(
+                            "Value",
+                            dataSource,
+                            "selectedColor",
+                            new Converters.selectedColorToSaturationValue()));
 
             FillButton.DataBindings.Add(new CustomBinding(
                         "BackColor",
@@ -882,7 +874,7 @@ namespace PowerPointLabs
 
         private void brightnessBar_MouseDown(object sender, MouseEventArgs e)
         {
-            _initialSaturation = (float) dataSource.selectedColor.Saturation;
+            _initialSaturation = (float)dataSource.selectedColor.Saturation;
         }
 
         private void EyeDropButton_MouseClick(object sender, MouseEventArgs e)

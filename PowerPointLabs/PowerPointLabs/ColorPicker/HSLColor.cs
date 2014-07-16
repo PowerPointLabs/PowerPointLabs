@@ -56,7 +56,7 @@ namespace PowerPointLabs
         public static implicit operator Color(HSLColor hslColor)
         {
             double r = 0, g = 0, b = 0;
-            if (hslColor.luminosity != 0)
+            if (hslColor != null && hslColor.luminosity != 0)
             {
                 if (hslColor.saturation == 0)
                     r = g = b = hslColor.luminosity;

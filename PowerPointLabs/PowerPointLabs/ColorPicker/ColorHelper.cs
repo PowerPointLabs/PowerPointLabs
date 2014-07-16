@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Drawing;
 
 namespace PowerPointLabs.ColorPicker
 {
@@ -12,7 +13,7 @@ namespace PowerPointLabs.ColorPicker
             return (int)(0xff << 24 | R << 16 | G << 8 | B);
         }
 
-        public static HSLColor GetColorShiftedByAngle(HSLColor originalColor, float angle)
+        public static Color GetColorShiftedByAngle(HSLColor originalColor, float angle)
         {
             if (angle < 0)
             {
@@ -29,19 +30,22 @@ namespace PowerPointLabs.ColorPicker
             {
                 finalAngle -= 360.0f;
             }
-            var finalColor = new HSLColor(finalAngle, originalColor.Saturation, originalColor.Luminosity);
+            Color finalColor = new HSLColor(finalAngle, originalColor.Saturation, originalColor.Luminosity);
 
-            return finalColor;
+            return Color.FromArgb(255,
+                    finalColor.R,
+                    finalColor.G,
+                    finalColor.B);
         }
 
-        public static HSLColor GetComplementaryColor(HSLColor originalColor)
+        public static Color GetComplementaryColor(HSLColor originalColor)
         {
             return GetColorShiftedByAngle(originalColor, 180.0f);
         }
 
-        public static List<HSLColor> GetAnalogousColorsForColor(HSLColor originalColor)
+        public static List<Color> GetAnalogousColorsForColor(HSLColor originalColor)
         {
-            var analogousColors = new List<HSLColor>
+            var analogousColors = new List<Color>
             {
                 GetColorShiftedByAngle(originalColor, -30.0f),
                 GetColorShiftedByAngle(originalColor, 30.0f)
@@ -50,9 +54,9 @@ namespace PowerPointLabs.ColorPicker
             return analogousColors;
         }
 
-        public static List<HSLColor> GetTriadicColorsForColor(HSLColor originalColor)
+        public static List<Color> GetTriadicColorsForColor(HSLColor originalColor)
         {
-            var triadicColors = new List<HSLColor>
+            var triadicColors = new List<Color>
             {
                 GetColorShiftedByAngle(originalColor, -120.0f),
                 GetColorShiftedByAngle(originalColor, 120.0f)
@@ -61,9 +65,9 @@ namespace PowerPointLabs.ColorPicker
             return triadicColors;
         }
 
-        public static List<HSLColor> GetTetradicColorsForColor(HSLColor originalColor)
+        public static List<Color> GetTetradicColorsForColor(HSLColor originalColor)
         {
-            var tetradicColors = new List<HSLColor>
+            var tetradicColors = new List<Color>
             {
                 GetColorShiftedByAngle(originalColor, -90.0f),
                 GetColorShiftedByAngle(originalColor, 90.0f),
@@ -73,9 +77,9 @@ namespace PowerPointLabs.ColorPicker
             return tetradicColors;
         }
 
-        public static List<HSLColor> GetSplitComplementaryColorsForColor(HSLColor originalColor)
+        public static List<Color> GetSplitComplementaryColorsForColor(HSLColor originalColor)
         {
-            var splitComplementaryColors = new List<HSLColor>
+            var splitComplementaryColors = new List<Color>
             {
                 GetColorShiftedByAngle(originalColor, 150.0f),
                 GetColorShiftedByAngle(originalColor, 210.0f)
