@@ -360,7 +360,7 @@ namespace PowerPointLabs
             try
             {
                 var selection = PowerPointPresentation.CurrentSelection;
-                if (selection != null && selection.Type != PpSelectionType.ppSelectionNone)
+                if (selection != null && selection.Type == PpSelectionType.ppSelectionShapes)
                 {
                     _selectedShapes = selection.ShapeRange;
                 }

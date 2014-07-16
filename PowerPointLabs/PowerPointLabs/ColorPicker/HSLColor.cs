@@ -6,6 +6,7 @@ namespace PowerPointLabs
     /// <summary>
     /// taken from: http://richnewman.wordpress.com/about/code-listings-and-diagrams/hslcolor-class/
     /// </summary>
+    [Serializable]
     public class HSLColor
     {
         // Private data members below are on scale 0-1
