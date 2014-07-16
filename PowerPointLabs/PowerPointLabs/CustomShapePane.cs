@@ -163,6 +163,16 @@ namespace PowerPointLabs
             }
         }
 
+        public void RemoveCustomShape(string shapeName)
+        {
+            
+        }
+
+        public void RenameCustomShape(string oldShapeName, string newShapeName)
+        {
+            
+        }
+
         public void PaneReload()
         {
             if (!_firstTimeLoading)

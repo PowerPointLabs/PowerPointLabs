@@ -133,6 +133,13 @@ namespace PowerPointLabs
             }
         }
 
+        public void RenameWithoutEdit(string newName)
+        {
+            labelTextBox.Enabled = true;
+            NameLable = newName;
+            labelTextBox.Enabled = false;
+        }
+
         public void ToggleHighlight()
         {
             if (_isHighlighted)
