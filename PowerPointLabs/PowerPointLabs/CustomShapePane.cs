@@ -303,17 +303,30 @@ namespace PowerPointLabs
                 
                 if (_stringComparer.Compare(control.NameLable, name) > 0)
                 {
-                    // next control's name still bigger than current control, do not
-                    // need to reorder
+                    // immediate next control's name is still bigger than current control, do
+                    // not need to reorder
                     if (thisControlPosition != -1 &&
                         i - 1 == thisControlPosition)
                     {
                         return thisControlPosition;
                     }
                     
-                    // current control should replace control at position i and move all
-                    // the controls behind back by 1
-                    return i;
+                    // now we have 2 cases:
+                    // 1. the replace position is before the current position;
+                    // 2. the replace position is behind the current position.
+                    // For case 1, we just need to set the current control's index to replace
+                    // position, Windows Form will handle the rest of control's order;
+                    // For case 2, we need to set the current control's index to replace position - 1,
+                    // this is because the shapes behind will move forward by 1 when the current
+                    // shape is moved.
+                    if (thisControlPosition == -1)
+                    {
+                        // case 1, we haven't encountered the current control yet
+                        return i;
+                    }
+
+                    // case 2, we have encountered the current control
+                    return i - 1;
                 }
             }
 

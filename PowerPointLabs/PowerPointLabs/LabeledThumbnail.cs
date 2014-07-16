@@ -39,7 +39,10 @@ namespace PowerPointLabs
                 }
                 else
                 {
-                    MessageBox.Show(TextCollection.LabeledThumbnailInvalidCharacterError);
+                    MessageBox.Show(value.Length > 255
+                                        ? TextCollection.LabeledThumbnailTooLongNameError
+                                        : TextCollection.LabeledThumbnailInvalidCharacterError);
+
                     labelTextBox.SelectAll();
                     _isGoodName = false;
                 }
@@ -156,9 +159,19 @@ namespace PowerPointLabs
         # endregion
 
         # region Helper Functions
-        // for names, we do not allow names involve '\' or '.'
-        // Regex = [\\\.]
-        private const string InvalidCharsRegex = "[\\\\\\.]";
+        // for names, we do not allow name involves
+        // < (less than)
+        // > (greater than)
+        // : (colon)
+        // " (double quote)
+        // / (forward slash)
+        // \ (backslash)
+        // | (vertical bar or pipe)
+        // ? (question mark)
+        // * (asterisk)
+
+        // Regex = [<>:"/\\|?*]
+        private const string InvalidCharsRegex = "[<>:\"/\\\\|?*]";
 
         private double CalculateScalingRatio(Size oldSize, Size newSize)
         {
@@ -262,7 +275,9 @@ namespace PowerPointLabs
         {
             var invalidChars = new Regex(InvalidCharsRegex);
             
-            return !(string.IsNullOrWhiteSpace(name) || invalidChars.IsMatch(name));
+            return !(string.IsNullOrWhiteSpace(name) ||
+                     invalidChars.IsMatch(name) ||
+                     name.Length > 255);
         }
         # endregion
 
