@@ -228,6 +228,7 @@
     <Compile Include="ColorPicker\ColorInformationDialog.Designer.cs">
       <DependentUpon>ColorInformationDialog.cs</DependentUpon>
     </Compile>
+    <Compile Include="ColorPicker\HSLColor.cs" />
     <Compile Include="CustomBinding.cs" />
     <Compile Include="ColorPicker\ColorDataSource.cs" />
     <Compile Include="ColorPicker\ColorHelper.cs" />

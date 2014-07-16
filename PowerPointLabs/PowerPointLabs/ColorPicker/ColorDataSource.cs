@@ -1,11 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel;
-using System.Drawing;
 using System.IO;
-using System.Linq;
 using System.Runtime.Serialization.Formatters.Binary;
-using System.Text;
 
 namespace PowerPointLabs
 {
@@ -65,9 +62,9 @@ namespace PowerPointLabs
             }
         }
 
-        private Color selectedColorValue;
+        private HSLColor selectedColorValue;
 
-        public Color selectedColor
+        public HSLColor selectedColor
         {       
             get 
             { 
@@ -83,9 +80,9 @@ namespace PowerPointLabs
             }
         }
 
-        private Color themeColorOneValue;
+        private HSLColor themeColorOneValue;
 
-        public Color themeColorOne
+        public HSLColor themeColorOne
         {
             get
             {
@@ -101,9 +98,9 @@ namespace PowerPointLabs
             }
         }
 
-        private Color themeColorTwoValue;
+        private HSLColor themeColorTwoValue;
 
-        public Color themeColorTwo
+        public HSLColor themeColorTwo
         {
             get
             {
@@ -119,9 +116,9 @@ namespace PowerPointLabs
             }
         }
 
-        private Color themeColorThreeValue;
+        private HSLColor themeColorThreeValue;
 
-        public Color themeColorThree
+        public HSLColor themeColorThree
         {
             get
             {
@@ -137,9 +134,9 @@ namespace PowerPointLabs
             }
         }
 
-        private Color themeColorFourValue;
+        private HSLColor themeColorFourValue;
 
-        public Color themeColorFour
+        public HSLColor themeColorFour
         {
             get
             {
@@ -155,9 +152,9 @@ namespace PowerPointLabs
             }
         }
 
-        private Color themeColorFiveValue;
+        private HSLColor themeColorFiveValue;
 
-        public Color themeColorFive
+        public HSLColor themeColorFive
         {
             get
             {
@@ -173,9 +170,9 @@ namespace PowerPointLabs
             }
         }
 
-        private Color themeColorSixValue;
+        private HSLColor themeColorSixValue;
 
-        public Color themeColorSix
+        public HSLColor themeColorSix
         {
             get
             {
@@ -191,9 +188,9 @@ namespace PowerPointLabs
             }
         }
 
-        private Color themeColorSevenValue;
+        private HSLColor themeColorSevenValue;
 
-        public Color themeColorSeven
+        public HSLColor themeColorSeven
         {
             get
             {
@@ -209,9 +206,9 @@ namespace PowerPointLabs
             }
         }
 
-        private Color themeColorEightValue;
+        private HSLColor themeColorEightValue;
 
-        public Color themeColorEight
+        public HSLColor themeColorEight
         {
             get
             {
@@ -227,9 +224,9 @@ namespace PowerPointLabs
             }
         }
 
-        private Color themeColorNineValue;
+        private HSLColor themeColorNineValue;
 
-        public Color themeColorNine
+        public HSLColor themeColorNine
         {
             get
             {
@@ -245,9 +242,9 @@ namespace PowerPointLabs
             }
         }
 
-        private Color themeColorTenValue;
+        private HSLColor themeColorTenValue;
 
-        public Color themeColorTen
+        public HSLColor themeColorTen
         {
             get
             {
@@ -267,7 +264,7 @@ namespace PowerPointLabs
         {
             try
             {
-                List<Color> themeColors = new List<Color>();
+                List<HSLColor> themeColors = new List<HSLColor>();
                 themeColors.Add(this.themeColorOne);
                 themeColors.Add(this.themeColorTwo);
                 themeColors.Add(this.themeColorThree);
@@ -297,7 +294,7 @@ namespace PowerPointLabs
             {
                 Stream openFileStream = File.OpenRead(filePath);
                 BinaryFormatter deserializer = new BinaryFormatter();
-                List<Color> themeColors = (List<Color>)deserializer.Deserialize(openFileStream);
+                List<HSLColor> themeColors = (List<HSLColor>)deserializer.Deserialize(openFileStream);
                 openFileStream.Close();
 
                 this.themeColorOne = themeColors[0];
