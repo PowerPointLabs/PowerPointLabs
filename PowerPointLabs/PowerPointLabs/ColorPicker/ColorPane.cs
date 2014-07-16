@@ -649,12 +649,17 @@ namespace PowerPointLabs
         {
             Panel panel = (Panel)sender;
             panel.BackColor = (Color)e.Data.GetData(panel.BackColor.GetType());
+            if (panel.Equals(panel1))
+            {
+                dataSource.selectedColor = panel.BackColor;
+            }
             UpdateUIForNewColor();
         }
 
         private void panel_DragEnter(object sender, DragEventArgs e)
         {
-            if (e.Data.GetDataPresent(dataSource.selectedColor.GetType().ToString()))
+            String colorTypeName = Color.Red.GetType().ToString();
+            if (e.Data.GetDataPresent(colorTypeName))
             {
                 e.Effect = DragDropEffects.All;
             }
