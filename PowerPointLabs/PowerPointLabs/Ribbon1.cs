@@ -1,12 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Drawing;
-using System.Drawing.Imaging;
 using System.IO;
 using System.Linq;
 using System.Reflection;
 using System.Runtime.InteropServices;
-using System.Text;
 using System.Diagnostics;
 using System.Windows.Forms;
 using PowerPointLabs.Models;
@@ -14,7 +12,7 @@ using PowerPointLabs.Views;
 using Office = Microsoft.Office.Core;
 using PowerPoint = Microsoft.Office.Interop.PowerPoint;
 
-// TODO:  Follow these steps to enable the Ribbon (XML) item:
+// Follow these steps to enable the Ribbon (XML) item:
 
 // 1: Copy the following code block into the ThisAddin, ThisWorkbook, or ThisDocument class.
 
@@ -732,14 +730,7 @@ namespace PowerPointLabs
         {
             try
             {
-                if (pressed)
-                {
-                    BackgroundZoomChecked = true;
-                }
-                else
-                {
-                    BackgroundZoomChecked = false;
-                }
+                BackgroundZoomChecked = pressed;
             }
             catch (Exception e)
             {
@@ -802,7 +793,7 @@ namespace PowerPointLabs
             try
             {
                 PowerPoint.Shape selectedShape = Globals.ThisAddIn.Application.ActiveWindow.Selection.ShapeRange[1];
-                Form1 editForm = new Form1(this, selectedShape.Name);
+                var editForm = new Form1(this, selectedShape.Name);
                 editForm.ShowDialog();
             }
             catch (Exception e)
@@ -829,7 +820,7 @@ namespace PowerPointLabs
         {
             try
             {
-                AutoAnimateDialogBox dialog = new AutoAnimateDialogBox(DefaultDuration, FrameAnimationChecked);
+                var dialog = new AutoAnimateDialogBox(DefaultDuration, FrameAnimationChecked);
                 dialog.SettingsHandler += AnimationPropertiesEdited;
                 dialog.ShowDialog();
             }
@@ -862,7 +853,7 @@ namespace PowerPointLabs
         {
             try
             {
-                AutoZoomDialogBox dialog = new AutoZoomDialogBox(BackgroundZoomChecked, MultiSlideZoomChecked);
+                var dialog = new AutoZoomDialogBox(BackgroundZoomChecked, MultiSlideZoomChecked);
                 dialog.SettingsHandler += ZoomPropertiesEdited;
                 dialog.ShowDialog();
             }
@@ -894,7 +885,7 @@ namespace PowerPointLabs
         {
             try
             {
-                SpotlightDialogBox dialog = new SpotlightDialogBox(Spotlight.defaultTransparency, Spotlight.defaultSoftEdges);
+                var dialog = new SpotlightDialogBox(Spotlight.defaultTransparency, Spotlight.defaultSoftEdges);
                 dialog.SettingsHandler += SpotlightPropertiesEdited;
                 dialog.ShowDialog();
             }
@@ -938,7 +929,7 @@ namespace PowerPointLabs
         {
             try
             {
-                HighlightBulletsDialogBox dialog = new HighlightBulletsDialogBox(HighlightBulletsText.highlightColor, HighlightBulletsText.defaultColor, HighlightBulletsBackground.backgroundColor);
+                var dialog = new HighlightBulletsDialogBox(HighlightBulletsText.highlightColor, HighlightBulletsText.defaultColor, HighlightBulletsBackground.backgroundColor);
                 dialog.SettingsHandler += HighlightBulletsPropertiesEdited;
                 dialog.ShowDialog();
             }
@@ -1045,8 +1036,7 @@ namespace PowerPointLabs
             Globals.ThisAddIn.ShapePresentation.AddShape(selection, shapeName);
             Globals.ThisAddIn.ShapePresentation.Save();
 
-            // we need to sync the added shape across all opening presentation shape lab panel
-            //SyncShapes();
+            Globals.ThisAddIn.SyncShapeAdd(shapeName, shapeFullName);
 
             // since we group and then ungroup the shape, document has been modified.
             // if the presentation has been saved before the group->ungroup, we can save
@@ -1056,22 +1046,6 @@ namespace PowerPointLabs
                 Globals.ThisAddIn.Application.ActivePresentation.Save();
             }
         }
-
-        //private void SyncShapes()
-        //{
-        //    foreach (PowerPoint.DocumentWindow window in Globals.ThisAddIn.Application.Windows)
-        //    {
-        //        var shapePane = Globals.ThisAddIn.GetPaneFromWindow(typeof(CustomShapePane), window);
-
-        //        if (shapePane == null) continue;
-
-        //        var shapeControl = shapePane.Control as CustomShapePane;
-
-        //        if (shapeControl == null) continue;
-
-        //        //shapeControl.AddCustomShape(shapeName, shapeFullName, false);
-        //    }
-        //}
         # endregion
 
         #region NotesToAudio Button Callbacks

@@ -440,11 +440,11 @@ namespace PowerPointLabs
                                     DefaultShapeCategoryName), "Shapes Lab", activeWindow, null, null);
         }
 
-        public void SyncShapeAdd(PowerPoint.DocumentWindow thisWindow, string shapeName, string shapeFullName)
+        public void SyncShapeAdd(string shapeName, string shapeFullName)
         {
             foreach (PowerPoint.DocumentWindow window in Globals.ThisAddIn.Application.Windows)
             {
-                if (window == thisWindow) continue;
+                if (window == Application.ActiveWindow) continue;
 
                 var shapePaneControl = GetControlFromWindow(typeof(CustomShapePane), window) as CustomShapePane;
 
@@ -454,11 +454,11 @@ namespace PowerPointLabs
             }
         }
 
-        public void SyncShapeRemove(PowerPoint.DocumentWindow thisWindow,  string shapeName)
+        public void SyncShapeRemove(string shapeName)
         {
             foreach (PowerPoint.DocumentWindow window in Globals.ThisAddIn.Application.Windows)
             {
-                if (window == thisWindow) continue;
+                if (window == Application.ActiveWindow) continue;
 
                 var shapePaneControl = GetControlFromWindow(typeof(CustomShapePane), window) as CustomShapePane;
 
@@ -468,11 +468,11 @@ namespace PowerPointLabs
             }
         }
 
-        public void SyncShapeRename(PowerPoint.DocumentWindow thisWindow, string shapeOldName, string shapeNewName)
+        public void SyncShapeRename(string shapeOldName, string shapeNewName)
         {
             foreach (PowerPoint.DocumentWindow window in Globals.ThisAddIn.Application.Windows)
             {
-                if (window == thisWindow) continue;
+                if (window == Application.ActiveWindow) continue;
 
                 var shapePaneControl = GetControlFromWindow(typeof(CustomShapePane), window) as CustomShapePane;
 

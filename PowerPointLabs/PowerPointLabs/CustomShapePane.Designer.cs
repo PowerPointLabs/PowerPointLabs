@@ -1,4 +1,5 @@
 ﻿using System.Drawing;
+using System.Windows.Forms;
 using Stepi.UI;
 
 namespace PowerPointLabs
@@ -123,5 +124,24 @@ namespace PowerPointLabs
         private System.Windows.Forms.TabPage tabPage1;
         private System.Windows.Forms.FlowLayoutPanel myShapeFlowLayout;
 
+        private readonly Label _noShapeLabel = new Label
+        {
+            AutoSize = true,
+            Font =
+                new Font("Arial", 15.75F, FontStyle.Bold, GraphicsUnit.Point,
+                         0),
+            ForeColor = SystemColors.ButtonShadow,
+            Location = new Point(81, 11),
+            Name = "noShapeLabel",
+            Size = new Size(212, 24),
+            Text = TextCollection.CustomShapeNoShapeText
+        };
+
+        private readonly Panel _noShapePanel = new Panel
+        {
+            Name = "noShapePanel",
+            Size = new Size(362, 50),
+            Margin = new Padding(0, 0, 0, 0)
+        };
     }
 }

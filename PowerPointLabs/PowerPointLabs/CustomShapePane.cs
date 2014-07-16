@@ -1,14 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Drawing;
 using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Text.RegularExpressions;
 using System.Windows.Forms;
 using PowerPointLabs.Models;
-using Font = System.Drawing.Font;
-using Point = System.Drawing.Point;
 
 namespace PowerPointLabs
 {
@@ -101,10 +98,8 @@ namespace PowerPointLabs
                     return shapeList;
                 }
 
-                foreach (LabeledThumbnail labelThumbnail in myShapeFlowLayout.Controls)
-                {
-                    shapeList.Add(labelThumbnail.NameLable);
-                }
+                shapeList.AddRange(from LabeledThumbnail labelThumbnail in myShapeFlowLayout.Controls
+                                   select labelThumbnail.NameLable);
 
                 return shapeList;
             }
@@ -139,9 +134,8 @@ namespace PowerPointLabs
         {
             DehighlightSelected();
 
-            var labeledThumbnail = new LabeledThumbnail(shapeFullName, shapeName);
+            var labeledThumbnail = new LabeledThumbnail(shapeFullName, shapeName) {ContextMenuStrip = contextMenuStrip};
 
-            labeledThumbnail.ContextMenuStrip = contextMenuStrip;
             labeledThumbnail.Click += LabeledThumbnailClick;
             labeledThumbnail.DoubleClick += LabeledThumbnailDoubleClick;
             labeledThumbnail.NameEditFinish += NameEditFinishHandler;
@@ -161,16 +155,52 @@ namespace PowerPointLabs
             {
                 labeledThumbnail.StartNameEdit();
             }
+            else
+            {
+                // the shape must be sorted immediately since the name has been
+                // setteled
+                ReorderThumbnail(labeledThumbnail);
+            }
         }
 
         public void RemoveCustomShape(string shapeName)
         {
-            
+            var labeledThumbnail = FindLabeledThumbnail(shapeName);
+
+            if (labeledThumbnail == null)
+            {
+                return;
+            }
+
+            // free selected thumbnail
+            if (labeledThumbnail == _selectedThumbnail)
+            {
+                _selectedThumbnail = null;
+            }
+
+            myShapeFlowLayout.Controls.Remove(labeledThumbnail);
         }
 
         public void RenameCustomShape(string oldShapeName, string newShapeName)
         {
-            
+            var labeledThumbnail = FindLabeledThumbnail(oldShapeName);
+
+            if (labeledThumbnail == null)
+            {
+                return;
+            }
+
+            labeledThumbnail.RenameWithoutEdit(newShapeName);
+
+            // renaming will possibly change the relative shape order, therefore we need
+            // to reorder the labeled thumbnail
+            ReorderThumbnail(labeledThumbnail);
+
+            // highlight the thumbnail again in case it is the selected shape
+            if (labeledThumbnail == _selectedThumbnail)
+            {
+                labeledThumbnail.Highlight();
+            }
         }
 
         public void PaneReload()
@@ -186,26 +216,6 @@ namespace PowerPointLabs
         # endregion
 
         # region Helper Functions
-        private readonly Label _noShapeLabel = new Label
-                                                   {
-                                                       AutoSize = true,
-                                                       Font =
-                                                           new Font("Arial", 15.75F, FontStyle.Bold, GraphicsUnit.Point,
-                                                                    0),
-                                                       ForeColor = SystemColors.ButtonShadow,
-                                                       Location = new Point(81, 11),
-                                                       Name = "noShapeLabel",
-                                                       Size = new Size(212, 24),
-                                                       Text = TextCollection.CustomShapeNoShapeText
-                                                   };
-
-        private readonly Panel _noShapePanel = new Panel
-                                                   {
-                                                       Name = "noShapePanel",
-                                                       Size = new Size(362, 50),
-                                                       Margin = new Padding(0, 0, 0, 0)
-                                                   };
-        
         private void ContextMenuStripRemoveClicked()
         {
             if (_selectedThumbnail == null)
@@ -213,6 +223,8 @@ namespace PowerPointLabs
                 MessageBox.Show(TextCollection.CustomShapeNoPanelSelectedError);
                 return;
             }
+
+            var removedShapename = _selectedThumbnail.NameLable;
 
             // remove shape from shape gallery
             Globals.ThisAddIn.ShapePresentation.RemoveShape(CurrentShapeNameWithoutExtension);
@@ -224,6 +236,9 @@ namespace PowerPointLabs
             // remove shape from task pane
             myShapeFlowLayout.Controls.Remove(_selectedThumbnail);
             _selectedThumbnail = null;
+
+            // sync shape removing among all task panes
+            Globals.ThisAddIn.SyncShapeRemove(removedShapename);
 
             if (myShapeFlowLayout.Controls.Count == 0)
             {
@@ -250,7 +265,20 @@ namespace PowerPointLabs
             _selectedThumbnail = null;
         }
 
-        private int FindControlIndex(string name)
+        private LabeledThumbnail FindLabeledThumbnail(string name)
+        {
+            if (myShapeFlowLayout.Controls.Count == 0 ||
+                myShapeFlowLayout.Controls.Contains(_noShapePanel))
+            {
+                return null;
+            }
+
+            return
+                myShapeFlowLayout.Controls.Cast<LabeledThumbnail>().FirstOrDefault(
+                    labeledThumbnail => labeledThumbnail.NameLable == name);
+        }
+
+        private int FindLabeledThumbnailIndex(string name)
         {
             if (myShapeFlowLayout.Controls.Contains(_noShapePanel))
             {
@@ -339,11 +367,13 @@ namespace PowerPointLabs
 
             Globals.ThisAddIn.ShapePresentation.RenameShape(oldName, labeledThumbnail.NameLable);
             Globals.ThisAddIn.ShapePresentation.Save();
+
+            Globals.ThisAddIn.SyncShapeRename(oldName, labeledThumbnail.NameLable);
         }
 
         private void ReorderThumbnail(LabeledThumbnail labeledThumbnail)
         {
-            var index = FindControlIndex(labeledThumbnail.NameLable);
+            var index = FindLabeledThumbnailIndex(labeledThumbnail.NameLable);
 
             // if the current control is the only control or something goes wrong, don't need
             // to reorder
