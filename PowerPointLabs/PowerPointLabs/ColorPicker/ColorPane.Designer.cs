@@ -471,8 +471,6 @@
             this.brightnessBar.TabIndex = 6;
             this.brightnessBar.TickStyle = System.Windows.Forms.TickStyle.TopLeft;
             this.brightnessBar.ValueChanged += new System.EventHandler(this.brightnessBar_ValueChanged);
-            this.brightnessBar.MouseDown += new System.Windows.Forms.MouseEventHandler(this.brightnessBar_MouseDown);
-            this.brightnessBar.MouseUp += new System.Windows.Forms.MouseEventHandler(this.brightnessBar_MouseUp);
             // 
             // brightnessPanel
             // 

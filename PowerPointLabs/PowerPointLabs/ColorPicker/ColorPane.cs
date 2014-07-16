@@ -359,7 +359,11 @@ namespace PowerPointLabs
         {
             try
             {
-                _selectedShapes = PowerPointPresentation.CurrentSelection.ShapeRange;
+                var selection = PowerPointPresentation.CurrentSelection;
+                if (selection != null && selection.Type != PpSelectionType.ppSelectionNone)
+                {
+                    _selectedShapes = selection.ShapeRange;
+                }
             }
             catch (Exception exception)
             {
