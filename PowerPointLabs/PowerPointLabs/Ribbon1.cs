@@ -1045,6 +1045,9 @@ namespace PowerPointLabs
             Globals.ThisAddIn.ShapePresentation.AddShape(selection, shapeName);
             Globals.ThisAddIn.ShapePresentation.Save();
 
+            // we need to sync the added shape across all opening presentation shape lab panel
+            //SyncShapes();
+
             // since we group and then ungroup the shape, document has been modified.
             // if the presentation has been saved before the group->ungroup, we can save
             // the file; else we leave it.
@@ -1053,6 +1056,22 @@ namespace PowerPointLabs
                 Globals.ThisAddIn.Application.ActivePresentation.Save();
             }
         }
+
+        //private void SyncShapes()
+        //{
+        //    foreach (PowerPoint.DocumentWindow window in Globals.ThisAddIn.Application.Windows)
+        //    {
+        //        var shapePane = Globals.ThisAddIn.GetPaneFromWindow(typeof(CustomShapePane), window);
+
+        //        if (shapePane == null) continue;
+
+        //        var shapeControl = shapePane.Control as CustomShapePane;
+
+        //        if (shapeControl == null) continue;
+
+        //        //shapeControl.AddCustomShape(shapeName, shapeFullName, false);
+        //    }
+        //}
         # endregion
 
         #region NotesToAudio Button Callbacks

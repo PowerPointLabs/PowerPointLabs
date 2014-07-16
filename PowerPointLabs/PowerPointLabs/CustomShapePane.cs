@@ -89,6 +89,27 @@ namespace PowerPointLabs
             }
         }
 
+        public List<string> Shapes
+        {
+            get
+            {
+                var shapeList = new List<string>();
+
+                if (myShapeFlowLayout.Controls.Count == 0 ||
+                    myShapeFlowLayout.Controls.Contains(_noShapePanel))
+                {
+                    return shapeList;
+                }
+
+                foreach (LabeledThumbnail labelThumbnail in myShapeFlowLayout.Controls)
+                {
+                    shapeList.Add(labelThumbnail.NameLable);
+                }
+
+                return shapeList;
+            }
+        }
+
         public string ShapeRootFolderPath { get; private set; }
 
         public string ShapeFolderPath
@@ -231,9 +252,13 @@ namespace PowerPointLabs
             for (var i = 0; i < totalControl; i ++)
             {
                 var control = myShapeFlowLayout.Controls[i] as LabeledThumbnail;
+
+                if (control == null) continue;
+
+                // skip itself
+                if (control.NameLable == name) continue;
                 
-                if (control != null &&
-                    _stringComparer.Compare(control.NameLable, name) >= 0)
+                if (_stringComparer.Compare(control.NameLable, name) > 0)
                 {
                     return i;
                 }
