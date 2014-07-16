@@ -869,21 +869,6 @@ namespace PowerPointLabs
         {
             try
             {
-                Color newColor = new HSLColor(
-                _originalColor.Hue,
-                _initialSaturation,
-                (float)dataSource.selectedColor.Luminosity);
-
-                brightnessBar.ValueChanged -= brightnessBar_ValueChanged;
-                saturationBar.ValueChanged -= saturationBar_ValueChanged;
-
-                dataSource.selectedColor = newColor;
-                UpdateBrightnessBar(newColor);
-                UpdateSaturationBar(newColor);
-
-                brightnessBar.ValueChanged += brightnessBar_ValueChanged;
-                saturationBar.ValueChanged += saturationBar_ValueChanged;
-                
                 saturationBar.Enabled = true;
             }
             catch (Exception exception)
