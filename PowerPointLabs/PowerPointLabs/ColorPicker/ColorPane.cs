@@ -936,7 +936,14 @@ namespace PowerPointLabs
             DialogResult result = colorDialog1.ShowDialog();
             if (result == DialogResult.OK)
             {
-                ColorSelectedShapesWithColor(colorDialog1.Color);
+                if (currMode == MODE.NONE)
+                {
+                    SetDefaultColor(colorDialog1.Color);
+                }
+                else
+                {
+                    ColorSelectedShapesWithColor(colorDialog1.Color);
+                }
                 ResetEyeDropperSelectionInDataSource();
             }
             else if (result == DialogResult.Cancel)
