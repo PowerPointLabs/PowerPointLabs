@@ -525,6 +525,7 @@ namespace PowerPointLabs
                     ColorSelectedShapesWithColor(_pickedColor);
                 }
             }
+            _timerCounter = 0;
             ResetEyeDropperSelectionInDataSource();
         }
         #endregion
@@ -828,7 +829,7 @@ namespace PowerPointLabs
         private void MatchingPanel_Click(object sender, EventArgs e)
         {
             Color clickedColor = ((Panel)sender).BackColor;
-            
+            dataSource.selectedColor = clickedColor;
             Globals.ThisAddIn.Application.StartNewUndoEntry();
         }
 
@@ -1024,6 +1025,8 @@ namespace PowerPointLabs
 
         private void EyeDropButton_MouseDown(object sender, MouseEventArgs e)
         {
+            if (e.Button != MouseButtons.Left) return;
+
             string buttonName = "";
             if (sender is Button)
             {
@@ -1035,11 +1038,6 @@ namespace PowerPointLabs
             }
             SetModeForSenderName(buttonName);
             BeginEyedropping();
-        }
-
-        private void ApplyThemeButton_Click(object sender, EventArgs e)
-        {
-
         }
     }
 }
