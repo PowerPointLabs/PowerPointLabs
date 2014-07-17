@@ -37,11 +37,12 @@ namespace PowerPointLabs
         private const string TempFolderNamePrefix = @"\PowerPointLabs Temp\";
 
         private const string VersionNotCompatibleMsg =
-            "This file is not fully compatible with some features of PowerPointLabs because it is " +
-            "in the outdated .ppt format used by PowerPoint 2007 (and older). If you wish to use the " +
+            "This file is not fully compatible with some features of PowerPointLabs because of 2 possible " +
+            "reasons:\n1. It's in the outdated .ppt format used by PowerPoint 2007 (and older),\n2. It's " +
+            "stored on Cloud service (not supported by PowerPointLabs yet).\nIf you wish to use the " +
             "full power of PowerPointLabs to enhance this file, please save in the .pptx format used " +
             "by PowerPoint 2010 and newer.";
-        private bool _oldVersion;
+        private bool _versionWrong;
 
         private void ThisAddIn_Startup(object sender, EventArgs e)
         {
@@ -333,14 +334,11 @@ namespace PowerPointLabs
                 // extract embedded audio files to temp folder
                 if (!PrepareMediaFiles(Pres))
                 {
-                    _oldVersion = true;
+                    _versionWrong = true;
                     return;
                 }
                 
-                _oldVersion = false;
-
-                // setup a new recorder pane when an exist file opened
-                //SetupRecorderTaskPane(Pres.Application.ActiveWindow);
+                _versionWrong = false;
             }
             catch (Exception e)
             {
@@ -493,8 +491,10 @@ namespace PowerPointLabs
             try
             {
                 string presName = Pres.Name;
+                var invalidCharRegex = new Regex("[<>:\"/\\\\|?*]");
 
-                if (presName.EndsWith(".ppt"))
+                if (presName.EndsWith(".ppt") ||
+                    invalidCharRegex.IsMatch(presName))
                 {
                     return false;
                 }
@@ -598,7 +598,7 @@ namespace PowerPointLabs
 
         public bool VerifyVersion()
         {
-            if (_oldVersion)
+            if (_versionWrong)
             {
                 MessageBox.Show(VersionNotCompatibleMsg);
                 return false;
