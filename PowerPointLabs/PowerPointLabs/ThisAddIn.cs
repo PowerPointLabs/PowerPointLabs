@@ -725,11 +725,11 @@ namespace PowerPointLabs
         {
             try
             {
-                string presName = Pres.Name;
+                string presName = pres.Name;
                 var invalidCharRegex = new Regex("[<>:\"/\\\\|?*]");
 
                 if (presName.EndsWith(".ppt") ||
-                    invalidCharRegex.IsMatch(Pres.FullName))
+                    invalidCharRegex.IsMatch(pres.FullName))
                 {
                     return false;
                 }
