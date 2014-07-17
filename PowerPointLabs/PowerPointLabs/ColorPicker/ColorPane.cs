@@ -382,7 +382,7 @@ namespace PowerPointLabs
         {
             SelectShapes();
             if (_selectedShapes != null
-                && PowerPointPresentation.CurrentSelection.Type == PpSelectionType.ppSelectionShapes)
+                && PowerPointCurrentPresentationInfo.CurrentSelection.Type == PpSelectionType.ppSelectionShapes)
             {
                 foreach (PowerPoint.Shape s in _selectedShapes)
                 {
@@ -402,7 +402,7 @@ namespace PowerPointLabs
                 }
             }
             if (_selectedText != null
-                && PowerPointPresentation.CurrentSelection.Type == PpSelectionType.ppSelectionText)
+                && PowerPointCurrentPresentationInfo.CurrentSelection.Type == PpSelectionType.ppSelectionText)
             {
                 try
                 {
