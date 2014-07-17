@@ -987,7 +987,7 @@
             this.groupBox2.Size = new System.Drawing.Size(275, 109);
             this.groupBox2.TabIndex = 31;
             this.groupBox2.TabStop = false;
-            this.groupBox2.Text = "Favorite Colors";
+            this.groupBox2.Text = "Your Favorite Colors";
             // 
             // ColorPane
             // 
