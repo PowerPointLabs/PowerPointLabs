@@ -711,6 +711,7 @@ namespace PowerPointLabs
         #region Drag-Drop
         private void MatchingPanel_MouseDown(object sender, MouseEventArgs e)
         {
+            if (e.Button != MouseButtons.Left) return;
             _mouseDownLocation = e.Location;
         }
 
@@ -787,6 +788,8 @@ namespace PowerPointLabs
 
         private void MatchingPanel_MouseMove(object sender, MouseEventArgs e)
         {
+            if (e.Button != MouseButtons.Left) return;
+
             int dx = e.X - _mouseDownLocation.X;
             int dy = e.Y - _mouseDownLocation.Y;
 
