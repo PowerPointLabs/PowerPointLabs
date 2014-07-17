@@ -76,7 +76,6 @@
             this.MonoPanel6 = new System.Windows.Forms.Panel();
             this.MonoPanel7 = new System.Windows.Forms.Panel();
             this.themeLayoutPanel = new System.Windows.Forms.FlowLayoutPanel();
-            this.label6 = new System.Windows.Forms.Label();
             this.flowLayoutPanel11 = new System.Windows.Forms.FlowLayoutPanel();
             this.ThemePanel1 = new System.Windows.Forms.Panel();
             this.ThemePanel2 = new System.Windows.Forms.Panel();
@@ -88,10 +87,10 @@
             this.ThemePanel8 = new System.Windows.Forms.Panel();
             this.ThemePanel9 = new System.Windows.Forms.Panel();
             this.ThemePanel10 = new System.Windows.Forms.Panel();
+            this.label6 = new System.Windows.Forms.Label();
             this.SaveThemeButton = new System.Windows.Forms.Button();
             this.LoadButton = new System.Windows.Forms.Button();
             this.ResetThemeButton = new System.Windows.Forms.Button();
-            this.ApplyThemeButton = new System.Windows.Forms.Button();
             this.EmptyPanelButton = new System.Windows.Forms.Button();
             this.saveFileDialog1 = new System.Windows.Forms.SaveFileDialog();
             this.openFileDialog1 = new System.Windows.Forms.OpenFileDialog();
@@ -638,23 +637,11 @@
             this.themeLayoutPanel.Controls.Add(this.SaveThemeButton);
             this.themeLayoutPanel.Controls.Add(this.LoadButton);
             this.themeLayoutPanel.Controls.Add(this.ResetThemeButton);
-            this.themeLayoutPanel.Controls.Add(this.ApplyThemeButton);
             this.themeLayoutPanel.Controls.Add(this.EmptyPanelButton);
             this.themeLayoutPanel.Location = new System.Drawing.Point(2, 19);
             this.themeLayoutPanel.Name = "themeLayoutPanel";
             this.themeLayoutPanel.Size = new System.Drawing.Size(271, 87);
             this.themeLayoutPanel.TabIndex = 11;
-            // 
-            // label6
-            // 
-            this.label6.AutoSize = true;
-            this.label6.BackColor = System.Drawing.SystemColors.Window;
-            this.label6.Font = new System.Drawing.Font("Arial", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label6.ForeColor = System.Drawing.SystemColors.ControlText;
-            this.label6.Location = new System.Drawing.Point(267, 0);
-            this.label6.Name = "label6";
-            this.label6.Size = new System.Drawing.Size(0, 16);
-            this.label6.TabIndex = 6;
             // 
             // flowLayoutPanel11
             // 
@@ -834,6 +821,17 @@
             this.ThemePanel10.DragDrop += new System.Windows.Forms.DragEventHandler(this.panel_DragDrop);
             this.ThemePanel10.DragEnter += new System.Windows.Forms.DragEventHandler(this.panel_DragEnter);
             // 
+            // label6
+            // 
+            this.label6.AutoSize = true;
+            this.label6.BackColor = System.Drawing.SystemColors.Window;
+            this.label6.Font = new System.Drawing.Font("Arial", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label6.ForeColor = System.Drawing.SystemColors.ControlText;
+            this.label6.Location = new System.Drawing.Point(267, 0);
+            this.label6.Name = "label6";
+            this.label6.Size = new System.Drawing.Size(0, 16);
+            this.label6.TabIndex = 6;
+            // 
             // SaveThemeButton
             // 
             this.SaveThemeButton.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Center;
@@ -867,23 +865,11 @@
             this.ResetThemeButton.UseVisualStyleBackColor = true;
             this.ResetThemeButton.Click += new System.EventHandler(this.ResetThemeButton_Click);
             // 
-            // ApplyThemeButton
-            // 
-            this.ApplyThemeButton.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Center;
-            this.ApplyThemeButton.Image = global::PowerPointLabs.Properties.Resources.Apply_icon;
-            this.ApplyThemeButton.Location = new System.Drawing.Point(153, 37);
-            this.ApplyThemeButton.Name = "ApplyThemeButton";
-            this.ApplyThemeButton.Size = new System.Drawing.Size(44, 45);
-            this.ApplyThemeButton.TabIndex = 19;
-            this.toolTip1.SetToolTip(this.ApplyThemeButton, "Applies Theme Colors to Selected Slides");
-            this.ApplyThemeButton.UseVisualStyleBackColor = true;
-            this.ApplyThemeButton.Click += new System.EventHandler(this.ApplyThemeButton_Click);
-            // 
             // EmptyPanelButton
             // 
             this.EmptyPanelButton.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Center;
             this.EmptyPanelButton.Image = global::PowerPointLabs.Properties.Resources.Clear_icon;
-            this.EmptyPanelButton.Location = new System.Drawing.Point(203, 37);
+            this.EmptyPanelButton.Location = new System.Drawing.Point(153, 37);
             this.EmptyPanelButton.Name = "EmptyPanelButton";
             this.EmptyPanelButton.Size = new System.Drawing.Size(44, 45);
             this.EmptyPanelButton.TabIndex = 20;
@@ -1001,7 +987,7 @@
             this.groupBox2.Size = new System.Drawing.Size(275, 109);
             this.groupBox2.TabIndex = 31;
             this.groupBox2.TabStop = false;
-            this.groupBox2.Text = "Theme Colors";
+            this.groupBox2.Text = "Favorite Colors";
             // 
             // ColorPane
             // 
@@ -1021,7 +1007,6 @@
             this.Controls.Add(this.saturationBar);
             this.Name = "ColorPane";
             this.Size = new System.Drawing.Size(304, 883);
-            this.Load += new System.EventHandler(this.ColorPane_Load);
             this.AnalogousColorPanel.ResumeLayout(false);
             this.AnalogousColorPanel.PerformLayout();
             this.flowLayoutPanel6.ResumeLayout(false);
@@ -1117,7 +1102,6 @@
         private System.Windows.Forms.ToolStripMenuItem showMoreInformationToolStripMenuItem;
         private System.Windows.Forms.Panel ThemePanel9;
         private System.Windows.Forms.Panel ThemePanel10;
-        private System.Windows.Forms.Button ApplyThemeButton;
         private System.Windows.Forms.ToolStripMenuItem selectAsMainColorToolStripMenuItem;
         private System.Windows.Forms.Button EmptyPanelButton;
         private System.Windows.Forms.Button FillButton;

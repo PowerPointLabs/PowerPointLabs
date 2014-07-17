@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Drawing;
+using System.IO;
 using System.Linq;
 using System.Windows.Forms;
 using PowerPoint = Microsoft.Office.Interop.PowerPoint;
@@ -51,6 +52,9 @@ namespace PowerPointLabs
         // Stores the current selected mode
         private MODE currMode = MODE.NONE;
 
+        private String _defaultThemeColorDirectory = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments),
+            "PowerPointLabs.defaultThemeColor.thm");
+
         public ColorPane()
         {
             InitializeComponent();
@@ -59,14 +63,15 @@ namespace PowerPointLabs
 
             InitToolTipControl();
 
-            ResetThemePanel();
+            LoadThemePanel();
 
             // Default color to CornFlowerBlue
             SetDefaultColor(Color.CornflowerBlue);
         }
-        private void ColorPane_Load(object sender, EventArgs e)
+
+        public void SaveDefaultColorPaneThemeColors()
         {
-            ResetThemePanel();
+            dataSource.SaveThemeColorsInFile(_defaultThemeColorDirectory);
         }
 
         private void SetDefaultColor(Color color)
@@ -793,12 +798,21 @@ namespace PowerPointLabs
         #endregion
 
         #region Theme Functions
+        private void LoadThemePanel()
+        {
+            Boolean isSuccessful = dataSource.LoadThemeColorsFromFile(_defaultThemeColorDirectory);
+            if (!isSuccessful)
+            {
+                EmptyThemePanel();
+            }
+        }
+
         private void SaveThemeButton_Click(object sender, EventArgs e)
         {
             if (saveFileDialog1.ShowDialog() == DialogResult.OK && 
                 dataSource.SaveThemeColorsInFile(saveFileDialog1.FileName))
             {
-                // Save Success
+                SaveDefaultColorPaneThemeColors();
             }
         }
 
@@ -807,7 +821,7 @@ namespace PowerPointLabs
             if (openFileDialog1.ShowDialog() == DialogResult.OK &&
                 dataSource.LoadThemeColorsFromFile(openFileDialog1.FileName))
             {
-                // Load Success
+                SaveDefaultColorPaneThemeColors();
             }
         }
 
@@ -823,70 +837,11 @@ namespace PowerPointLabs
             ResetThemePanel();
         }
 
-        private void ApplyThemeButton_Click(object sender, EventArgs e)
-        {
-            ApplyCurrentThemeToSelectedSlides();
-        }
-
         private void ResetThemePanel()
         {
             try
             {
-                if (PowerPointPresentation.SlideCount > 0)
-                {
-                    Microsoft.Office.Core.ThemeColorScheme scheme =
-                    PowerPointPresentation.CurrentSlide.GetNativeSlide().ThemeColorScheme;
-
-                    ThemePanel1.BackColor = Color.FromArgb(
-                        ColorHelper.ReverseRGBToArgb(
-                        scheme.Colors(Microsoft.Office.Core.MsoThemeColorSchemeIndex.msoThemeLight1).RGB));
-                    dataSource.themeColorOne = ThemePanel1.BackColor;
-
-                    ThemePanel2.BackColor = Color.FromArgb(
-                        ColorHelper.ReverseRGBToArgb(
-                        scheme.Colors(Microsoft.Office.Core.MsoThemeColorSchemeIndex.msoThemeDark1).RGB));
-                    dataSource.themeColorTwo = ThemePanel2.BackColor;
-
-                    ThemePanel3.BackColor = Color.FromArgb(
-                        ColorHelper.ReverseRGBToArgb(
-                        scheme.Colors(Microsoft.Office.Core.MsoThemeColorSchemeIndex.msoThemeLight2).RGB));
-                    dataSource.themeColorThree = ThemePanel3.BackColor;
-
-                    ThemePanel4.BackColor = Color.FromArgb(
-                        ColorHelper.ReverseRGBToArgb(
-                        scheme.Colors(Microsoft.Office.Core.MsoThemeColorSchemeIndex.msoThemeDark2).RGB));
-                    dataSource.themeColorFour = ThemePanel4.BackColor;
-
-                    ThemePanel5.BackColor = Color.FromArgb(
-                        ColorHelper.ReverseRGBToArgb(
-                        scheme.Colors(Microsoft.Office.Core.MsoThemeColorSchemeIndex.msoThemeAccent1).RGB));
-                    dataSource.themeColorFive = ThemePanel5.BackColor;
-
-                    ThemePanel6.BackColor = Color.FromArgb(
-                        ColorHelper.ReverseRGBToArgb(
-                        scheme.Colors(Microsoft.Office.Core.MsoThemeColorSchemeIndex.msoThemeAccent2).RGB));
-                    dataSource.themeColorSix = ThemePanel6.BackColor;
-
-                    ThemePanel7.BackColor = Color.FromArgb(
-                        ColorHelper.ReverseRGBToArgb(
-                        scheme.Colors(Microsoft.Office.Core.MsoThemeColorSchemeIndex.msoThemeAccent3).RGB));
-                    dataSource.themeColorSeven = ThemePanel7.BackColor;
-
-                    ThemePanel8.BackColor = Color.FromArgb(
-                        ColorHelper.ReverseRGBToArgb(
-                        scheme.Colors(Microsoft.Office.Core.MsoThemeColorSchemeIndex.msoThemeAccent4).RGB));
-                    dataSource.themeColorEight = ThemePanel8.BackColor;
-
-                    ThemePanel9.BackColor = Color.FromArgb(
-                        ColorHelper.ReverseRGBToArgb(
-                        scheme.Colors(Microsoft.Office.Core.MsoThemeColorSchemeIndex.msoThemeAccent5).RGB));
-                    dataSource.themeColorNine = ThemePanel9.BackColor;
-
-                    ThemePanel10.BackColor = Color.FromArgb(
-                        ColorHelper.ReverseRGBToArgb(
-                        scheme.Colors(Microsoft.Office.Core.MsoThemeColorSchemeIndex.msoThemeAccent6).RGB));
-                    dataSource.themeColorTen = ThemePanel10.BackColor;
-                }
+                LoadThemePanel();
             }
             catch (Exception e)
             {
@@ -937,40 +892,6 @@ namespace PowerPointLabs
             }
         }
 
-        private void ApplyCurrentThemeToSelectedSlides()
-        {
-            foreach (PowerPointSlide slide in PowerPointPresentation.SelectedSlides)
-            {
-                ApplyCurrentThemeToSlide(slide);
-            }
-        }
-
-        private void ApplyCurrentThemeToSlide(PowerPointSlide slide)
-        {
-            Microsoft.Office.Core.ThemeColorScheme scheme = 
-                slide.GetNativeSlide().ThemeColorScheme;
-
-            scheme.Colors(Microsoft.Office.Core.MsoThemeColorSchemeIndex.msoThemeLight1).RGB =
-                ColorHelper.ReverseRGBToArgb((ThemePanel1.BackColor.ToArgb()));
-            scheme.Colors(Microsoft.Office.Core.MsoThemeColorSchemeIndex.msoThemeDark1).RGB =
-                ColorHelper.ReverseRGBToArgb((ThemePanel2.BackColor.ToArgb()));
-            scheme.Colors(Microsoft.Office.Core.MsoThemeColorSchemeIndex.msoThemeLight2).RGB =
-                ColorHelper.ReverseRGBToArgb((ThemePanel3.BackColor.ToArgb()));
-            scheme.Colors(Microsoft.Office.Core.MsoThemeColorSchemeIndex.msoThemeDark2).RGB =
-                ColorHelper.ReverseRGBToArgb((ThemePanel4.BackColor.ToArgb()));
-            scheme.Colors(Microsoft.Office.Core.MsoThemeColorSchemeIndex.msoThemeAccent1).RGB =
-                ColorHelper.ReverseRGBToArgb((ThemePanel5.BackColor.ToArgb()));
-            scheme.Colors(Microsoft.Office.Core.MsoThemeColorSchemeIndex.msoThemeAccent2).RGB =
-                ColorHelper.ReverseRGBToArgb((ThemePanel6.BackColor.ToArgb()));
-            scheme.Colors(Microsoft.Office.Core.MsoThemeColorSchemeIndex.msoThemeAccent3).RGB =
-                ColorHelper.ReverseRGBToArgb((ThemePanel7.BackColor.ToArgb()));
-            scheme.Colors(Microsoft.Office.Core.MsoThemeColorSchemeIndex.msoThemeAccent4).RGB =
-                ColorHelper.ReverseRGBToArgb((ThemePanel8.BackColor.ToArgb()));
-            scheme.Colors(Microsoft.Office.Core.MsoThemeColorSchemeIndex.msoThemeAccent5).RGB =
-                ColorHelper.ReverseRGBToArgb((ThemePanel9.BackColor.ToArgb()));
-            scheme.Colors(Microsoft.Office.Core.MsoThemeColorSchemeIndex.msoThemeAccent6).RGB =
-                ColorHelper.ReverseRGBToArgb((ThemePanel10.BackColor.ToArgb()));
-        }
         private void EmptyPanelButton_Click(object sender, EventArgs e)
         {
             EmptyThemePanel();
@@ -1107,6 +1028,11 @@ namespace PowerPointLabs
             }
             SetModeForSenderName(buttonName);
             BeginEyedropping();
+        }
+
+        private void ApplyThemeButton_Click(object sender, EventArgs e)
+        {
+
         }
     }
 }
