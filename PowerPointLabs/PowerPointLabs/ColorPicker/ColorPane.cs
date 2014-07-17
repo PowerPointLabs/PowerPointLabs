@@ -347,6 +347,7 @@ namespace PowerPointLabs
 
         private int _timerCounter = 0;
         private const int TIMER_COUNTER_THRESHOLD = 2;
+        private Cursor eyeDropperCursor = new Cursor(new MemoryStream(Properties.Resources.EyeDropper));
 
         private void BeginEyedropping()
         {
@@ -366,17 +367,18 @@ namespace PowerPointLabs
                 return;
             }
             _timerCounter++;
-            Cursor.Current = Cursors.Cross;
-            System.Drawing.Point p = Control.MousePosition;
-            IntPtr dc = Native.GetDC(IntPtr.Zero);
+
+            Cursor.Current = eyeDropperCursor;
+            System.Drawing.Point mousePos = Control.MousePosition;
+            IntPtr deviceContext = Native.GetDC(IntPtr.Zero);
             if (currMode == MODE.NONE)
             {
-                dataSource.selectedColor = ColorTranslator.FromWin32(Native.GetPixel(dc, p.X, p.Y));
+                dataSource.selectedColor = ColorTranslator.FromWin32(Native.GetPixel(deviceContext, mousePos.X, mousePos.Y));
                 ColorSelectedShapesWithColor(panel1.BackColor);
             }
             else
             {
-                _pickedColor = ColorTranslator.FromWin32(Native.GetPixel(dc, p.X, p.Y));
+                _pickedColor = ColorTranslator.FromWin32(Native.GetPixel(deviceContext, mousePos.X, mousePos.Y));
                 ColorSelectedShapesWithColor(_pickedColor);
             }
         }
