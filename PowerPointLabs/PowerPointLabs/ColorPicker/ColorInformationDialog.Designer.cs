@@ -43,7 +43,7 @@
             this.selectedColorPanel.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.selectedColorPanel.Location = new System.Drawing.Point(12, 12);
             this.selectedColorPanel.Name = "selectedColorPanel";
-            this.selectedColorPanel.Size = new System.Drawing.Size(118, 68);
+            this.selectedColorPanel.Size = new System.Drawing.Size(138, 68);
             this.selectedColorPanel.TabIndex = 0;
             // 
             // hexTextBox
@@ -54,7 +54,7 @@
             this.hexTextBox.Location = new System.Drawing.Point(12, 86);
             this.hexTextBox.Name = "hexTextBox";
             this.hexTextBox.ReadOnly = true;
-            this.hexTextBox.Size = new System.Drawing.Size(118, 27);
+            this.hexTextBox.Size = new System.Drawing.Size(138, 27);
             this.hexTextBox.TabIndex = 3;
             // 
             // rgbTextBox
@@ -65,7 +65,7 @@
             this.rgbTextBox.Location = new System.Drawing.Point(12, 118);
             this.rgbTextBox.Name = "rgbTextBox";
             this.rgbTextBox.ReadOnly = true;
-            this.rgbTextBox.Size = new System.Drawing.Size(118, 27);
+            this.rgbTextBox.Size = new System.Drawing.Size(138, 27);
             this.rgbTextBox.TabIndex = 4;
             // 
             // HSLTextBox
@@ -76,14 +76,14 @@
             this.HSLTextBox.Location = new System.Drawing.Point(12, 150);
             this.HSLTextBox.Name = "HSLTextBox";
             this.HSLTextBox.ReadOnly = true;
-            this.HSLTextBox.Size = new System.Drawing.Size(118, 27);
+            this.HSLTextBox.Size = new System.Drawing.Size(138, 27);
             this.HSLTextBox.TabIndex = 5;
             // 
             // statusStrip1
             // 
             this.statusStrip1.Location = new System.Drawing.Point(0, 186);
             this.statusStrip1.Name = "statusStrip1";
-            this.statusStrip1.Size = new System.Drawing.Size(142, 22);
+            this.statusStrip1.Size = new System.Drawing.Size(162, 22);
             this.statusStrip1.SizingGrip = false;
             this.statusStrip1.TabIndex = 6;
             // 
@@ -99,7 +99,7 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(142, 208);
+            this.ClientSize = new System.Drawing.Size(162, 208);
             this.Controls.Add(this.label1);
             this.Controls.Add(this.statusStrip1);
             this.Controls.Add(this.HSLTextBox);
@@ -107,9 +107,9 @@
             this.Controls.Add(this.hexTextBox);
             this.Controls.Add(this.selectedColorPanel);
             this.MaximizeBox = false;
-            this.MaximumSize = new System.Drawing.Size(158, 246);
+            this.MaximumSize = new System.Drawing.Size(178, 246);
             this.MinimizeBox = false;
-            this.MinimumSize = new System.Drawing.Size(158, 246);
+            this.MinimumSize = new System.Drawing.Size(178, 246);
             this.Name = "ColorInformationDialog";
             this.ShowIcon = false;
             this.Text = "Color Info";

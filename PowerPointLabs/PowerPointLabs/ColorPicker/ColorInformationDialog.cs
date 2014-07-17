@@ -24,7 +24,7 @@ namespace PowerPointLabs.ColorPicker
         private void textBox_Enter(object sender, EventArgs e)
         {
             var textBox = (TextBox) sender;
-            Clipboard.SetText(textBox.Text);
+            Clipboard.SetText(textBox.Text.Substring(5));
             if (textBox.Equals(HSLTextBox))
             {
                 label1.Text = "HSL value copied";
@@ -37,8 +37,6 @@ namespace PowerPointLabs.ColorPicker
             {
                 label1.Text = "HEX value copied";
             }
-            statusStrip1.Refresh();
-            textBox.SelectAll();
         }
 
         private void SetUpUI()
@@ -59,14 +57,14 @@ namespace PowerPointLabs.ColorPicker
 
         private void UpdateHSLTextBox()
         {
-            HSLTextBox.Text = String.Format("HSL({0}, {1}, {2})", (int)_selectedColor.Hue,
+            HSLTextBox.Text = String.Format("HSL: {0}, {1}, {2}", (int)_selectedColor.Hue,
             (int) (_selectedColor.Saturation), (int) (_selectedColor.Luminosity));
             HSLTextBox.Enter += textBox_Enter;
         }
 
         private void UpdateRGBTextBox()
         {
-            rgbTextBox.Text = String.Format("RGB({0}, {1}, {2})", ((Color)_selectedColor).R,
+            rgbTextBox.Text = String.Format("RGB: {0}, {1}, {2}", ((Color)_selectedColor).R,
             ((Color)_selectedColor).G, ((Color)_selectedColor).B);
             rgbTextBox.Enter += textBox_Enter;
         }
@@ -74,7 +72,7 @@ namespace PowerPointLabs.ColorPicker
         private void UpdateHexTextBox()
         {
             byte[] rgbArray = { ((Color)_selectedColor).R, ((Color)_selectedColor).G, ((Color)_selectedColor).B };
-            hexTextBox.Text = "#" + ByteArrayToString(rgbArray);
+            hexTextBox.Text = "HEX: #" + ByteArrayToString(rgbArray);
             hexTextBox.Enter += textBox_Enter;
         }
 
