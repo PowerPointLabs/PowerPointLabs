@@ -27,7 +27,7 @@ namespace PowerPointLabs
         private const string DefaultShapeCategoryName = @"My Shapes";
         private const string ShapeGalleryPptxName = @"ShapeGallery";
         
-        private bool _oldVersion;
+        private bool _versionWrong;
 
         private readonly Dictionary<PowerPoint.DocumentWindow,
                                     List<CustomTaskPane>> _documentPaneMapper = new Dictionary<PowerPoint.DocumentWindow,
@@ -233,11 +233,11 @@ namespace PowerPointLabs
                 // hash code
                 if (!PrepareMediaFiles(pres, tempPath))
                 {
-                    _oldVersion = true;
+                    _versionWrong = true;
                     return;
                 }
 
-                _oldVersion = false;
+                _versionWrong = false;
             }
             else
             {
@@ -255,11 +255,11 @@ namespace PowerPointLabs
                 
                 if (!PrepareMediaFiles(pres, oriTempPath))
                 {
-                    _oldVersion = true;
+                    _versionWrong = true;
                     return;
                 }
 
-                _oldVersion = false;
+                _versionWrong = false;
 
                 var recorderPane = GetActivePane(typeof(RecorderTaskPane));
 
@@ -725,9 +725,11 @@ namespace PowerPointLabs
         {
             try
             {
-                string presName = pres.Name;
+                string presName = Pres.Name;
+                var invalidCharRegex = new Regex("[<>:\"/\\\\|?*]");
 
-                if (presName.EndsWith(".ppt"))
+                if (presName.EndsWith(".ppt") ||
+                    invalidCharRegex.IsMatch(Pres.FullName))
                 {
                     return false;
                 }
@@ -846,7 +848,7 @@ namespace PowerPointLabs
 
         public bool VerifyVersion()
         {
-            if (_oldVersion)
+            if (_versionWrong)
             {
                 MessageBox.Show(TextCollection.VersionNotCompatibleMsg);
                 return false;
