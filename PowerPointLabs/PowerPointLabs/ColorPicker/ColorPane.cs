@@ -494,6 +494,10 @@ namespace PowerPointLabs
                         {
                             selectedText.Font.Color.RGB = rgb;
                         }
+                        else
+                        {
+                            s.TextFrame.TextRange.TrimText().Font.Color.RGB = rgb;
+                        }
                     }
                     else if (PowerPointPresentation.CurrentSelection.Type == PpSelectionType.ppSelectionShapes)
                     {
@@ -995,9 +999,15 @@ namespace PowerPointLabs
                         {
                             var selectedText
                                 = Globals.ThisAddIn.Application.ActiveWindow.Selection.TextRange.TrimText();
-                            if (selectedText.Text != "" && selectedText != null)
+                            if (selectedText != null && selectedText.Text != "")
                             {
                                 return Color.FromArgb(ColorHelper.ReverseRGBToArgb(selectedText.Font.Color.RGB));
+                            }
+                            else
+                            {
+                                return
+                                Color.FromArgb(
+                                    ColorHelper.ReverseRGBToArgb(selectedShape.TextFrame.TextRange.Font.Color.RGB));
                             }
                         }
                         else if (PowerPointPresentation.CurrentSelection.Type == PpSelectionType.ppSelectionShapes)
