@@ -107,6 +107,8 @@ namespace PowerPointLabs
             labelTextBox.Enabled = true;
             labelTextBox.Focus();
             labelTextBox.SelectAll();
+
+            SetToolTip("Editing...");
         }
 
         public void FinishNameEdit()
@@ -129,6 +131,8 @@ namespace PowerPointLabs
 
                 labelTextBox.Enabled = false;
                 NameEditFinish(this, oldName);
+
+                SetToolTip(NameLable);
             }
             else
             {
@@ -141,6 +145,8 @@ namespace PowerPointLabs
             labelTextBox.Enabled = true;
             NameLable = newName;
             labelTextBox.Enabled = false;
+
+            SetToolTip(NameLable);
         }
 
         public void ToggleHighlight()
@@ -240,8 +246,9 @@ namespace PowerPointLabs
             Initialize();
 
             NameLable = nameLable;
-            ImagePath = imagePath;
+            SetToolTip(NameLable);
 
+            ImagePath = imagePath;
             thumbnailPanel.BackgroundImage = CreateThumbnailImage(new Bitmap(ImagePath), 50, 50);
             
             // critical line, we need to free the reference to the image immediately after we've
@@ -269,6 +276,12 @@ namespace PowerPointLabs
             }
 
             return false;
+        }
+
+        private void SetToolTip(string toolTip)
+        {
+            nameLabelToolTip.SetToolTip(motherPanel, toolTip);
+            nameLabelToolTip.SetToolTip(thumbnailPanel, toolTip);
         }
 
         private bool Verify(string name)

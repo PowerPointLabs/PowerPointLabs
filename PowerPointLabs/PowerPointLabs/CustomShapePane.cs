@@ -422,6 +422,10 @@ namespace PowerPointLabs
             if (item.Name.Contains("edit"))
             {
                 ContextMenuStripEditClicked();
+            } else
+            if (item.Name.Contains("add"))
+            {
+                LabeledThumbnailDoubleClick(_selectedThumbnail, null);
             }
         }
 
