@@ -494,7 +494,7 @@ namespace PowerPointLabs
                 var invalidCharRegex = new Regex("[<>:\"/\\\\|?*]");
 
                 if (presName.EndsWith(".ppt") ||
-                    invalidCharRegex.IsMatch(presName))
+                    invalidCharRegex.IsMatch(Pres.FullName))
                 {
                     return false;
                 }
