@@ -39,7 +39,10 @@ namespace PowerPointLabs
                 }
                 else
                 {
-                    MessageBox.Show(TextCollection.LabeledThumbnailInvalidCharacterError);
+                    MessageBox.Show(value.Length > 255
+                                        ? TextCollection.LabeledThumbnailTooLongNameError
+                                        : TextCollection.LabeledThumbnailInvalidCharacterError);
+
                     labelTextBox.SelectAll();
                     _isGoodName = false;
                 }
@@ -104,6 +107,8 @@ namespace PowerPointLabs
             labelTextBox.Enabled = true;
             labelTextBox.Focus();
             labelTextBox.SelectAll();
+
+            SetToolTip("Editing...");
         }
 
         public void FinishNameEdit()
@@ -126,11 +131,22 @@ namespace PowerPointLabs
 
                 labelTextBox.Enabled = false;
                 NameEditFinish(this, oldName);
+
+                SetToolTip(NameLable);
             }
             else
             {
                 StartNameEdit();
             }
+        }
+
+        public void RenameWithoutEdit(string newName)
+        {
+            labelTextBox.Enabled = true;
+            NameLable = newName;
+            labelTextBox.Enabled = false;
+
+            SetToolTip(NameLable);
         }
 
         public void ToggleHighlight()
@@ -149,9 +165,19 @@ namespace PowerPointLabs
         # endregion
 
         # region Helper Functions
-        // for names, we do not allow names involve '\' or '.'
-        // Regex = [\\\.]
-        private const string InvalidCharsRegex = "[\\\\\\.]";
+        // for names, we do not allow name involves
+        // < (less than)
+        // > (greater than)
+        // : (colon)
+        // " (double quote)
+        // / (forward slash)
+        // \ (backslash)
+        // | (vertical bar or pipe)
+        // ? (question mark)
+        // * (asterisk)
+
+        // Regex = [<>:"/\\|?*]
+        private const string InvalidCharsRegex = "[<>:\"/\\\\|?*]";
 
         private double CalculateScalingRatio(Size oldSize, Size newSize)
         {
@@ -220,8 +246,9 @@ namespace PowerPointLabs
             Initialize();
 
             NameLable = nameLable;
-            ImagePath = imagePath;
+            SetToolTip(NameLable);
 
+            ImagePath = imagePath;
             thumbnailPanel.BackgroundImage = CreateThumbnailImage(new Bitmap(ImagePath), 50, 50);
             
             // critical line, we need to free the reference to the image immediately after we've
@@ -251,11 +278,19 @@ namespace PowerPointLabs
             return false;
         }
 
+        private void SetToolTip(string toolTip)
+        {
+            nameLabelToolTip.SetToolTip(motherPanel, toolTip);
+            nameLabelToolTip.SetToolTip(thumbnailPanel, toolTip);
+        }
+
         private bool Verify(string name)
         {
             var invalidChars = new Regex(InvalidCharsRegex);
             
-            return !(string.IsNullOrWhiteSpace(name) || invalidChars.IsMatch(name));
+            return !(string.IsNullOrWhiteSpace(name) ||
+                     invalidChars.IsMatch(name) ||
+                     name.Length > 255);
         }
         # endregion
 

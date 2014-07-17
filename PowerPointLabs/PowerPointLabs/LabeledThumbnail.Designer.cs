@@ -28,9 +28,11 @@
         /// </summary>
         private void InitializeComponent()
         {
+            this.components = new System.ComponentModel.Container();
             this.motherPanel = new System.Windows.Forms.Panel();
             this.labelTextBox = new System.Windows.Forms.TextBox();
             this.thumbnailPanel = new System.Windows.Forms.Panel();
+            this.nameLabelToolTip = new System.Windows.Forms.ToolTip(this.components);
             this.motherPanel.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -66,6 +68,10 @@
             this.thumbnailPanel.Size = new System.Drawing.Size(50, 50);
             this.thumbnailPanel.TabIndex = 0;
             // 
+            // nameLabelToolTip
+            // 
+            this.nameLabelToolTip.ShowAlways = true;
+            // 
             // LabeledThumbnail
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
@@ -84,6 +90,7 @@
         private System.Windows.Forms.Panel motherPanel;
         private System.Windows.Forms.TextBox labelTextBox;
         private System.Windows.Forms.Panel thumbnailPanel;
+        private System.Windows.Forms.ToolTip nameLabelToolTip;
 
     }
 }

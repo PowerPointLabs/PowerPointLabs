@@ -329,9 +329,23 @@ namespace PowerPointLabs
         # endregion
 
         # region API
+        public Control GetActiveControl(Type type)
+        {
+            var taskPane = GetActivePane(type);
+
+            return taskPane == null ? null : taskPane.Control;
+        }
+
         public CustomTaskPane GetActivePane(Type type)
         {
             return GetPaneFromWindow(type, Application.ActiveWindow);
+        }
+
+        public Control GetControlFromWindow(Type type, PowerPoint.DocumentWindow window)
+        {
+            var taskPane = GetPaneFromWindow(typeof(CustomShapePane), window);
+            
+            return taskPane == null ? null : taskPane.Control;
         }
 
         public CustomTaskPane GetPaneFromWindow(Type type, PowerPoint.DocumentWindow window)
@@ -425,6 +439,48 @@ namespace PowerPointLabs
             RegisterTaskPane(
                 new CustomShapePane(_defaultShapeMasterFolderPrefix + DefaultShapeMasterFolderName,
                                     DefaultShapeCategoryName), "Shapes Lab", activeWindow, null, null);
+        }
+
+        public void SyncShapeAdd(string shapeName, string shapeFullName)
+        {
+            foreach (PowerPoint.DocumentWindow window in Globals.ThisAddIn.Application.Windows)
+            {
+                if (window == Application.ActiveWindow) continue;
+
+                var shapePaneControl = GetControlFromWindow(typeof(CustomShapePane), window) as CustomShapePane;
+
+                if (shapePaneControl == null) continue;
+
+                shapePaneControl.AddCustomShape(shapeName, shapeFullName, false);
+            }
+        }
+
+        public void SyncShapeRemove(string shapeName)
+        {
+            foreach (PowerPoint.DocumentWindow window in Globals.ThisAddIn.Application.Windows)
+            {
+                if (window == Application.ActiveWindow) continue;
+
+                var shapePaneControl = GetControlFromWindow(typeof(CustomShapePane), window) as CustomShapePane;
+
+                if (shapePaneControl == null) continue;
+
+                shapePaneControl.RemoveCustomShape(shapeName);
+            }
+        }
+
+        public void SyncShapeRename(string shapeOldName, string shapeNewName)
+        {
+            foreach (PowerPoint.DocumentWindow window in Globals.ThisAddIn.Application.Windows)
+            {
+                if (window == Application.ActiveWindow) continue;
+
+                var shapePaneControl = GetControlFromWindow(typeof(CustomShapePane), window) as CustomShapePane;
+
+                if (shapePaneControl == null) continue;
+
+                shapePaneControl.RenameCustomShape(shapeOldName, shapeNewName);
+            }
         }
         # endregion
 

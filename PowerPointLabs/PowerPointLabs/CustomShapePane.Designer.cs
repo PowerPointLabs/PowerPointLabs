@@ -1,4 +1,5 @@
 ﻿using System.Drawing;
+using System.Windows.Forms;
 using Stepi.UI;
 
 namespace PowerPointLabs
@@ -33,11 +34,12 @@ namespace PowerPointLabs
         {
             this.components = new System.ComponentModel.Container();
             this.contextMenuStrip = new System.Windows.Forms.ContextMenuStrip(this.components);
-            this.removeShapeToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.addToSlideToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.editNameToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.removeShapeToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.tabControl1 = new System.Windows.Forms.TabControl();
-            this.myShapeFlowLayout = new System.Windows.Forms.FlowLayoutPanel();
             this.tabPage1 = new System.Windows.Forms.TabPage();
+            this.myShapeFlowLayout = new System.Windows.Forms.FlowLayoutPanel();
             this.contextMenuStrip.SuspendLayout();
             this.tabControl1.SuspendLayout();
             this.tabPage1.SuspendLayout();
@@ -46,23 +48,30 @@ namespace PowerPointLabs
             // contextMenuStrip
             // 
             this.contextMenuStrip.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.removeShapeToolStripMenuItem,
-            this.editNameToolStripMenuItem});
+            this.addToSlideToolStripMenuItem,
+            this.editNameToolStripMenuItem,
+            this.removeShapeToolStripMenuItem});
             this.contextMenuStrip.Name = "contextMenuStrip";
-            this.contextMenuStrip.Size = new System.Drawing.Size(164, 48);
+            this.contextMenuStrip.Size = new System.Drawing.Size(164, 70);
             this.contextMenuStrip.ItemClicked += new System.Windows.Forms.ToolStripItemClickedEventHandler(this.ContextMenuStripItemClicked);
             // 
-            // removeShapeToolStripMenuItem
+            // addToSlideToolStripMenuItem
             // 
-            this.removeShapeToolStripMenuItem.Name = "removeShapeToolStripMenuItem";
-            this.removeShapeToolStripMenuItem.Size = new System.Drawing.Size(163, 22);
-            this.removeShapeToolStripMenuItem.Text = "Remove Shape";
+            this.addToSlideToolStripMenuItem.Name = "addToSlideToolStripMenuItem";
+            this.addToSlideToolStripMenuItem.Size = new System.Drawing.Size(163, 22);
+            this.addToSlideToolStripMenuItem.Text = "Add to Slide";
             // 
             // editNameToolStripMenuItem
             // 
             this.editNameToolStripMenuItem.Name = "editNameToolStripMenuItem";
             this.editNameToolStripMenuItem.Size = new System.Drawing.Size(163, 22);
             this.editNameToolStripMenuItem.Text = "Edit Name";
+            // 
+            // removeShapeToolStripMenuItem
+            // 
+            this.removeShapeToolStripMenuItem.Name = "removeShapeToolStripMenuItem";
+            this.removeShapeToolStripMenuItem.Size = new System.Drawing.Size(163, 22);
+            this.removeShapeToolStripMenuItem.Text = "Remove Shape";
             // 
             // tabControl1
             // 
@@ -73,6 +82,18 @@ namespace PowerPointLabs
             this.tabControl1.SelectedIndex = 0;
             this.tabControl1.Size = new System.Drawing.Size(417, 499);
             this.tabControl1.TabIndex = 5;
+            // 
+            // tabPage1
+            // 
+            this.tabPage1.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
+            this.tabPage1.Controls.Add(this.myShapeFlowLayout);
+            this.tabPage1.Location = new System.Drawing.Point(4, 22);
+            this.tabPage1.Name = "tabPage1";
+            this.tabPage1.Padding = new System.Windows.Forms.Padding(3);
+            this.tabPage1.Size = new System.Drawing.Size(409, 473);
+            this.tabPage1.TabIndex = 0;
+            this.tabPage1.Text = "My Saved Shapes";
+            this.tabPage1.UseVisualStyleBackColor = true;
             // 
             // myShapeFlowLayout
             // 
@@ -86,18 +107,6 @@ namespace PowerPointLabs
             this.myShapeFlowLayout.Name = "myShapeFlowLayout";
             this.myShapeFlowLayout.Size = new System.Drawing.Size(399, 463);
             this.myShapeFlowLayout.TabIndex = 1;
-            // 
-            // tabPage1
-            // 
-            this.tabPage1.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
-            this.tabPage1.Controls.Add(this.myShapeFlowLayout);
-            this.tabPage1.Location = new System.Drawing.Point(4, 22);
-            this.tabPage1.Name = "tabPage1";
-            this.tabPage1.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPage1.Size = new System.Drawing.Size(409, 473);
-            this.tabPage1.TabIndex = 0;
-            this.tabPage1.Text = "My Shapes";
-            this.tabPage1.UseVisualStyleBackColor = true;
             // 
             // CustomShapePane
             // 
@@ -123,5 +132,25 @@ namespace PowerPointLabs
         private System.Windows.Forms.TabPage tabPage1;
         private System.Windows.Forms.FlowLayoutPanel myShapeFlowLayout;
 
+        private readonly Label _noShapeLabel = new Label
+        {
+            AutoSize = true,
+            Font =
+                new Font("Arial", 15.75F, FontStyle.Bold, GraphicsUnit.Point,
+                         0),
+            ForeColor = SystemColors.ButtonShadow,
+            Location = new Point(81, 11),
+            Name = "noShapeLabel",
+            Size = new Size(212, 24),
+            Text = TextCollection.CustomShapeNoShapeText
+        };
+
+        private readonly Panel _noShapePanel = new Panel
+        {
+            Name = "noShapePanel",
+            Size = new Size(362, 50),
+            Margin = new Padding(0, 0, 0, 0)
+        };
+        private ToolStripMenuItem addToSlideToolStripMenuItem;
     }
 }

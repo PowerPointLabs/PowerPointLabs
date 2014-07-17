@@ -114,7 +114,8 @@
         # endregion
 
         # region Control - Labeled Thumbnail 
-        public const string LabeledThumbnailInvalidCharacterError = @"Empty name, '\' and '.' are not allowed for the name";
+        public const string LabeledThumbnailTooLongNameError = "Name's length cannot exceed 255";
+        public const string LabeledThumbnailInvalidCharacterError = "Empty name, '<', '>', ':', '\"', '/', '\\', '|', '?', and '*' are not allowed for the name";
         public const string LabeledThumbnailFileNameExistError = "File name is already used";
         # endregion
 
