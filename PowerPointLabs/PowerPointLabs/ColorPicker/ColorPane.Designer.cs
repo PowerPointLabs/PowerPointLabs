@@ -88,21 +88,23 @@
             this.ThemePanel8 = new System.Windows.Forms.Panel();
             this.ThemePanel9 = new System.Windows.Forms.Panel();
             this.ThemePanel10 = new System.Windows.Forms.Panel();
-            this.saveFileDialog1 = new System.Windows.Forms.SaveFileDialog();
-            this.openFileDialog1 = new System.Windows.Forms.OpenFileDialog();
-            this.toolTip1 = new System.Windows.Forms.ToolTip(this.components);
-            this.flowLayoutPanel10 = new System.Windows.Forms.FlowLayoutPanel();
-            this.label9 = new System.Windows.Forms.Label();
-            this.panel3 = new System.Windows.Forms.Panel();
-            this.panel2 = new System.Windows.Forms.Panel();
-            this.FontButton = new System.Windows.Forms.Button();
-            this.LineButton = new System.Windows.Forms.Button();
-            this.FillButton = new System.Windows.Forms.Button();
             this.SaveThemeButton = new System.Windows.Forms.Button();
             this.LoadButton = new System.Windows.Forms.Button();
             this.ResetThemeButton = new System.Windows.Forms.Button();
             this.ApplyThemeButton = new System.Windows.Forms.Button();
             this.EmptyPanelButton = new System.Windows.Forms.Button();
+            this.saveFileDialog1 = new System.Windows.Forms.SaveFileDialog();
+            this.openFileDialog1 = new System.Windows.Forms.OpenFileDialog();
+            this.toolTip1 = new System.Windows.Forms.ToolTip(this.components);
+            this.panel3 = new System.Windows.Forms.Panel();
+            this.panel2 = new System.Windows.Forms.Panel();
+            this.flowLayoutPanel10 = new System.Windows.Forms.FlowLayoutPanel();
+            this.label9 = new System.Windows.Forms.Label();
+            this.FontButton = new System.Windows.Forms.Button();
+            this.LineButton = new System.Windows.Forms.Button();
+            this.FillButton = new System.Windows.Forms.Button();
+            this.groupBox1 = new System.Windows.Forms.GroupBox();
+            this.groupBox2 = new System.Windows.Forms.GroupBox();
             this.AnalogousColorPanel.SuspendLayout();
             this.flowLayoutPanel6.SuspendLayout();
             this.contextMenuStrip1.SuspendLayout();
@@ -119,15 +121,17 @@
             this.themeLayoutPanel.SuspendLayout();
             this.flowLayoutPanel11.SuspendLayout();
             this.flowLayoutPanel10.SuspendLayout();
+            this.groupBox1.SuspendLayout();
+            this.groupBox2.SuspendLayout();
             this.SuspendLayout();
             // 
             // panel1
             // 
             this.panel1.AllowDrop = true;
             this.panel1.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.panel1.Location = new System.Drawing.Point(20, 16);
+            this.panel1.Location = new System.Drawing.Point(19, 14);
             this.panel1.Name = "panel1";
-            this.panel1.Size = new System.Drawing.Size(75, 47);
+            this.panel1.Size = new System.Drawing.Size(75, 45);
             this.panel1.TabIndex = 0;
             this.panel1.DragDrop += new System.Windows.Forms.DragEventHandler(this.panel_DragDrop);
             this.panel1.DragEnter += new System.Windows.Forms.DragEventHandler(this.panel_DragEnter);
@@ -144,10 +148,10 @@
             // 
             // AnalogousColorPanel
             // 
-            this.AnalogousColorPanel.BackColor = System.Drawing.SystemColors.ControlLight;
+            this.AnalogousColorPanel.BackColor = System.Drawing.SystemColors.Window;
             this.AnalogousColorPanel.Controls.Add(this.label1);
             this.AnalogousColorPanel.Controls.Add(this.flowLayoutPanel6);
-            this.AnalogousColorPanel.Location = new System.Drawing.Point(3, 93);
+            this.AnalogousColorPanel.Location = new System.Drawing.Point(3, 67);
             this.AnalogousColorPanel.Name = "AnalogousColorPanel";
             this.AnalogousColorPanel.Size = new System.Drawing.Size(124, 56);
             this.AnalogousColorPanel.TabIndex = 3;
@@ -155,7 +159,7 @@
             // label1
             // 
             this.label1.AutoSize = true;
-            this.label1.BackColor = System.Drawing.SystemColors.ControlLight;
+            this.label1.BackColor = System.Drawing.SystemColors.Window;
             this.label1.Font = new System.Drawing.Font("Arial", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.label1.ForeColor = System.Drawing.SystemColors.ControlText;
             this.label1.Location = new System.Drawing.Point(3, 0);
@@ -237,10 +241,10 @@
             // 
             // flowLayoutPanel2
             // 
-            this.flowLayoutPanel2.BackColor = System.Drawing.SystemColors.ControlLight;
+            this.flowLayoutPanel2.BackColor = System.Drawing.SystemColors.Window;
             this.flowLayoutPanel2.Controls.Add(this.label2);
             this.flowLayoutPanel2.Controls.Add(this.flowLayoutPanel7);
-            this.flowLayoutPanel2.Location = new System.Drawing.Point(133, 93);
+            this.flowLayoutPanel2.Location = new System.Drawing.Point(133, 67);
             this.flowLayoutPanel2.Name = "flowLayoutPanel2";
             this.flowLayoutPanel2.Size = new System.Drawing.Size(128, 56);
             this.flowLayoutPanel2.TabIndex = 4;
@@ -248,7 +252,7 @@
             // label2
             // 
             this.label2.AutoSize = true;
-            this.label2.BackColor = System.Drawing.SystemColors.ControlLight;
+            this.label2.BackColor = System.Drawing.SystemColors.Window;
             this.label2.Font = new System.Drawing.Font("Arial", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.label2.ForeColor = System.Drawing.SystemColors.ControlText;
             this.label2.Location = new System.Drawing.Point(3, 0);
@@ -308,18 +312,18 @@
             // 
             // flowLayoutPanel3
             // 
-            this.flowLayoutPanel3.BackColor = System.Drawing.SystemColors.ControlLight;
+            this.flowLayoutPanel3.BackColor = System.Drawing.SystemColors.Window;
             this.flowLayoutPanel3.Controls.Add(this.label3);
             this.flowLayoutPanel3.Controls.Add(this.flowLayoutPanel8);
-            this.flowLayoutPanel3.Location = new System.Drawing.Point(3, 155);
+            this.flowLayoutPanel3.Location = new System.Drawing.Point(3, 129);
             this.flowLayoutPanel3.Name = "flowLayoutPanel3";
-            this.flowLayoutPanel3.Size = new System.Drawing.Size(124, 64);
+            this.flowLayoutPanel3.Size = new System.Drawing.Size(124, 56);
             this.flowLayoutPanel3.TabIndex = 4;
             // 
             // label3
             // 
             this.label3.AutoSize = true;
-            this.label3.BackColor = System.Drawing.SystemColors.ControlLight;
+            this.label3.BackColor = System.Drawing.SystemColors.Window;
             this.label3.Font = new System.Drawing.Font("Arial", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.label3.ForeColor = System.Drawing.SystemColors.ControlText;
             this.label3.Location = new System.Drawing.Point(3, 0);
@@ -379,18 +383,18 @@
             // 
             // flowLayoutPanel4
             // 
-            this.flowLayoutPanel4.BackColor = System.Drawing.SystemColors.ControlLight;
+            this.flowLayoutPanel4.BackColor = System.Drawing.SystemColors.Window;
             this.flowLayoutPanel4.Controls.Add(this.label4);
             this.flowLayoutPanel4.Controls.Add(this.flowLayoutPanel9);
-            this.flowLayoutPanel4.Location = new System.Drawing.Point(133, 155);
+            this.flowLayoutPanel4.Location = new System.Drawing.Point(133, 129);
             this.flowLayoutPanel4.Name = "flowLayoutPanel4";
-            this.flowLayoutPanel4.Size = new System.Drawing.Size(128, 64);
+            this.flowLayoutPanel4.Size = new System.Drawing.Size(128, 56);
             this.flowLayoutPanel4.TabIndex = 4;
             // 
             // label4
             // 
             this.label4.AutoSize = true;
-            this.label4.BackColor = System.Drawing.SystemColors.ControlLight;
+            this.label4.BackColor = System.Drawing.SystemColors.Window;
             this.label4.Font = new System.Drawing.Font("Arial", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.label4.ForeColor = System.Drawing.SystemColors.ControlText;
             this.label4.Location = new System.Drawing.Point(3, 0);
@@ -464,20 +468,18 @@
             // 
             // brightnessBar
             // 
-            this.brightnessBar.Location = new System.Drawing.Point(44, 117);
+            this.brightnessBar.Location = new System.Drawing.Point(44, 97);
             this.brightnessBar.Maximum = 240;
             this.brightnessBar.Name = "brightnessBar";
             this.brightnessBar.Size = new System.Drawing.Size(256, 45);
             this.brightnessBar.TabIndex = 6;
             this.brightnessBar.TickStyle = System.Windows.Forms.TickStyle.TopLeft;
             this.brightnessBar.ValueChanged += new System.EventHandler(this.brightnessBar_ValueChanged);
-            this.brightnessBar.MouseDown += new System.Windows.Forms.MouseEventHandler(this.brightnessBar_MouseDown);
-            this.brightnessBar.MouseUp += new System.Windows.Forms.MouseEventHandler(this.brightnessBar_MouseUp);
             // 
             // brightnessPanel
             // 
             this.brightnessPanel.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.brightnessPanel.Location = new System.Drawing.Point(52, 100);
+            this.brightnessPanel.Location = new System.Drawing.Point(52, 80);
             this.brightnessPanel.Name = "brightnessPanel";
             this.brightnessPanel.Size = new System.Drawing.Size(240, 25);
             this.brightnessPanel.TabIndex = 7;
@@ -485,14 +487,14 @@
             // saturationPanel
             // 
             this.saturationPanel.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.saturationPanel.Location = new System.Drawing.Point(53, 164);
+            this.saturationPanel.Location = new System.Drawing.Point(53, 144);
             this.saturationPanel.Name = "saturationPanel";
             this.saturationPanel.Size = new System.Drawing.Size(240, 25);
             this.saturationPanel.TabIndex = 9;
             // 
             // saturationBar
             // 
-            this.saturationBar.Location = new System.Drawing.Point(45, 180);
+            this.saturationBar.Location = new System.Drawing.Point(45, 160);
             this.saturationBar.Maximum = 240;
             this.saturationBar.Name = "saturationBar";
             this.saturationBar.Size = new System.Drawing.Size(256, 45);
@@ -502,10 +504,10 @@
             // 
             // flowLayoutPanel1
             // 
-            this.flowLayoutPanel1.BackColor = System.Drawing.SystemColors.ControlLight;
+            this.flowLayoutPanel1.BackColor = System.Drawing.SystemColors.Window;
             this.flowLayoutPanel1.Controls.Add(this.label5);
             this.flowLayoutPanel1.Controls.Add(this.flowLayoutPanel5);
-            this.flowLayoutPanel1.Location = new System.Drawing.Point(3, 29);
+            this.flowLayoutPanel1.Location = new System.Drawing.Point(3, 3);
             this.flowLayoutPanel1.Name = "flowLayoutPanel1";
             this.flowLayoutPanel1.Size = new System.Drawing.Size(258, 58);
             this.flowLayoutPanel1.TabIndex = 10;
@@ -513,7 +515,7 @@
             // label5
             // 
             this.label5.AutoSize = true;
-            this.label5.BackColor = System.Drawing.SystemColors.ControlLight;
+            this.label5.BackColor = System.Drawing.SystemColors.Window;
             this.label5.Font = new System.Drawing.Font("Arial", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.label5.ForeColor = System.Drawing.SystemColors.ControlText;
             this.label5.Location = new System.Drawing.Point(3, 0);
@@ -524,6 +526,7 @@
             // 
             // flowLayoutPanel5
             // 
+            this.flowLayoutPanel5.BackColor = System.Drawing.SystemColors.Window;
             this.flowLayoutPanel5.Controls.Add(this.MonoPanel1);
             this.flowLayoutPanel5.Controls.Add(this.MonoPanel2);
             this.flowLayoutPanel5.Controls.Add(this.MonoPanel3);
@@ -533,7 +536,7 @@
             this.flowLayoutPanel5.Controls.Add(this.MonoPanel7);
             this.flowLayoutPanel5.Location = new System.Drawing.Point(3, 19);
             this.flowLayoutPanel5.Name = "flowLayoutPanel5";
-            this.flowLayoutPanel5.Size = new System.Drawing.Size(255, 26);
+            this.flowLayoutPanel5.Size = new System.Drawing.Size(255, 31);
             this.flowLayoutPanel5.TabIndex = 11;
             // 
             // MonoPanel1
@@ -629,34 +632,33 @@
             // 
             // themeLayoutPanel
             // 
-            this.themeLayoutPanel.BackColor = System.Drawing.SystemColors.ControlLight;
-            this.themeLayoutPanel.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.themeLayoutPanel.Controls.Add(this.label6);
+            this.themeLayoutPanel.BackColor = System.Drawing.SystemColors.Window;
             this.themeLayoutPanel.Controls.Add(this.flowLayoutPanel11);
+            this.themeLayoutPanel.Controls.Add(this.label6);
             this.themeLayoutPanel.Controls.Add(this.SaveThemeButton);
             this.themeLayoutPanel.Controls.Add(this.LoadButton);
             this.themeLayoutPanel.Controls.Add(this.ResetThemeButton);
             this.themeLayoutPanel.Controls.Add(this.ApplyThemeButton);
             this.themeLayoutPanel.Controls.Add(this.EmptyPanelButton);
-            this.themeLayoutPanel.Location = new System.Drawing.Point(20, 461);
+            this.themeLayoutPanel.Location = new System.Drawing.Point(2, 19);
             this.themeLayoutPanel.Name = "themeLayoutPanel";
-            this.themeLayoutPanel.Size = new System.Drawing.Size(273, 110);
+            this.themeLayoutPanel.Size = new System.Drawing.Size(271, 87);
             this.themeLayoutPanel.TabIndex = 11;
             // 
             // label6
             // 
             this.label6.AutoSize = true;
-            this.label6.BackColor = System.Drawing.SystemColors.ControlLight;
+            this.label6.BackColor = System.Drawing.SystemColors.Window;
             this.label6.Font = new System.Drawing.Font("Arial", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.label6.ForeColor = System.Drawing.SystemColors.ControlText;
-            this.label6.Location = new System.Drawing.Point(3, 0);
+            this.label6.Location = new System.Drawing.Point(267, 0);
             this.label6.Name = "label6";
-            this.label6.Size = new System.Drawing.Size(96, 16);
+            this.label6.Size = new System.Drawing.Size(0, 16);
             this.label6.TabIndex = 6;
-            this.label6.Text = "Theme Colors";
             // 
             // flowLayoutPanel11
             // 
+            this.flowLayoutPanel11.BackColor = System.Drawing.SystemColors.Window;
             this.flowLayoutPanel11.Controls.Add(this.ThemePanel1);
             this.flowLayoutPanel11.Controls.Add(this.ThemePanel2);
             this.flowLayoutPanel11.Controls.Add(this.ThemePanel3);
@@ -667,7 +669,7 @@
             this.flowLayoutPanel11.Controls.Add(this.ThemePanel8);
             this.flowLayoutPanel11.Controls.Add(this.ThemePanel9);
             this.flowLayoutPanel11.Controls.Add(this.ThemePanel10);
-            this.flowLayoutPanel11.Location = new System.Drawing.Point(3, 19);
+            this.flowLayoutPanel11.Location = new System.Drawing.Point(3, 3);
             this.flowLayoutPanel11.Name = "flowLayoutPanel11";
             this.flowLayoutPanel11.Size = new System.Drawing.Size(258, 28);
             this.flowLayoutPanel11.TabIndex = 15;
@@ -832,6 +834,63 @@
             this.ThemePanel10.DragDrop += new System.Windows.Forms.DragEventHandler(this.panel_DragDrop);
             this.ThemePanel10.DragEnter += new System.Windows.Forms.DragEventHandler(this.panel_DragEnter);
             // 
+            // SaveThemeButton
+            // 
+            this.SaveThemeButton.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Center;
+            this.SaveThemeButton.Image = global::PowerPointLabs.Properties.Resources.Save_icon;
+            this.SaveThemeButton.Location = new System.Drawing.Point(3, 37);
+            this.SaveThemeButton.Name = "SaveThemeButton";
+            this.SaveThemeButton.Size = new System.Drawing.Size(44, 45);
+            this.SaveThemeButton.TabIndex = 16;
+            this.SaveThemeButton.UseVisualStyleBackColor = true;
+            this.SaveThemeButton.Click += new System.EventHandler(this.SaveThemeButton_Click);
+            // 
+            // LoadButton
+            // 
+            this.LoadButton.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Center;
+            this.LoadButton.Image = global::PowerPointLabs.Properties.Resources.Load_icon;
+            this.LoadButton.Location = new System.Drawing.Point(53, 37);
+            this.LoadButton.Name = "LoadButton";
+            this.LoadButton.Size = new System.Drawing.Size(44, 45);
+            this.LoadButton.TabIndex = 17;
+            this.LoadButton.UseVisualStyleBackColor = true;
+            this.LoadButton.Click += new System.EventHandler(this.LoadButton_Click);
+            // 
+            // ResetThemeButton
+            // 
+            this.ResetThemeButton.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Center;
+            this.ResetThemeButton.Image = global::PowerPointLabs.Properties.Resources.Reload_icon;
+            this.ResetThemeButton.Location = new System.Drawing.Point(103, 37);
+            this.ResetThemeButton.Name = "ResetThemeButton";
+            this.ResetThemeButton.Size = new System.Drawing.Size(44, 45);
+            this.ResetThemeButton.TabIndex = 18;
+            this.ResetThemeButton.UseVisualStyleBackColor = true;
+            this.ResetThemeButton.Click += new System.EventHandler(this.ResetThemeButton_Click);
+            // 
+            // ApplyThemeButton
+            // 
+            this.ApplyThemeButton.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Center;
+            this.ApplyThemeButton.Image = global::PowerPointLabs.Properties.Resources.Apply_icon;
+            this.ApplyThemeButton.Location = new System.Drawing.Point(153, 37);
+            this.ApplyThemeButton.Name = "ApplyThemeButton";
+            this.ApplyThemeButton.Size = new System.Drawing.Size(44, 45);
+            this.ApplyThemeButton.TabIndex = 19;
+            this.toolTip1.SetToolTip(this.ApplyThemeButton, "Applies Theme Colors to Selected Slides");
+            this.ApplyThemeButton.UseVisualStyleBackColor = true;
+            this.ApplyThemeButton.Click += new System.EventHandler(this.ApplyThemeButton_Click);
+            // 
+            // EmptyPanelButton
+            // 
+            this.EmptyPanelButton.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Center;
+            this.EmptyPanelButton.Image = global::PowerPointLabs.Properties.Resources.Clear_icon;
+            this.EmptyPanelButton.Location = new System.Drawing.Point(203, 37);
+            this.EmptyPanelButton.Name = "EmptyPanelButton";
+            this.EmptyPanelButton.Size = new System.Drawing.Size(44, 45);
+            this.EmptyPanelButton.TabIndex = 20;
+            this.toolTip1.SetToolTip(this.EmptyPanelButton, "Empties the Theme Panel");
+            this.EmptyPanelButton.UseVisualStyleBackColor = true;
+            this.EmptyPanelButton.Click += new System.EventHandler(this.EmptyPanelButton_Click);
+            // 
             // saveFileDialog1
             // 
             this.saveFileDialog1.DefaultExt = "thm";
@@ -844,37 +903,11 @@
             this.openFileDialog1.Filter = "PPTLabsTheme|*.thm";
             this.openFileDialog1.Title = "Load Theme";
             // 
-            // flowLayoutPanel10
-            // 
-            this.flowLayoutPanel10.BackColor = System.Drawing.SystemColors.ControlLight;
-            this.flowLayoutPanel10.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.flowLayoutPanel10.Controls.Add(this.label9);
-            this.flowLayoutPanel10.Controls.Add(this.flowLayoutPanel1);
-            this.flowLayoutPanel10.Controls.Add(this.AnalogousColorPanel);
-            this.flowLayoutPanel10.Controls.Add(this.flowLayoutPanel2);
-            this.flowLayoutPanel10.Controls.Add(this.flowLayoutPanel3);
-            this.flowLayoutPanel10.Controls.Add(this.flowLayoutPanel4);
-            this.flowLayoutPanel10.Location = new System.Drawing.Point(20, 229);
-            this.flowLayoutPanel10.Name = "flowLayoutPanel10";
-            this.flowLayoutPanel10.Size = new System.Drawing.Size(273, 226);
-            this.flowLayoutPanel10.TabIndex = 27;
-            // 
-            // label9
-            // 
-            this.label9.AutoSize = true;
-            this.label9.Font = new System.Drawing.Font("Arial", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label9.Location = new System.Drawing.Point(3, 0);
-            this.label9.Margin = new System.Windows.Forms.Padding(3, 0, 3, 10);
-            this.label9.Name = "label9";
-            this.label9.Size = new System.Drawing.Size(110, 16);
-            this.label9.TabIndex = 11;
-            this.label9.Text = "Matching Colors";
-            // 
             // panel3
             // 
             this.panel3.BackgroundImage = global::PowerPointLabs.Properties.Resources.Saturation_icon_18x18;
             this.panel3.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Center;
-            this.panel3.Location = new System.Drawing.Point(20, 164);
+            this.panel3.Location = new System.Drawing.Point(20, 144);
             this.panel3.Name = "panel3";
             this.panel3.Size = new System.Drawing.Size(25, 25);
             this.panel3.TabIndex = 29;
@@ -884,17 +917,41 @@
             // 
             this.panel2.BackgroundImage = global::PowerPointLabs.Properties.Resources.Brightness_icon_25x25;
             this.panel2.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Center;
-            this.panel2.Location = new System.Drawing.Point(19, 100);
+            this.panel2.Location = new System.Drawing.Point(19, 80);
             this.panel2.Name = "panel2";
             this.panel2.Size = new System.Drawing.Size(25, 25);
             this.panel2.TabIndex = 28;
             this.toolTip1.SetToolTip(this.panel2, "Brightness");
             // 
+            // flowLayoutPanel10
+            // 
+            this.flowLayoutPanel10.BackColor = System.Drawing.SystemColors.Window;
+            this.flowLayoutPanel10.Controls.Add(this.flowLayoutPanel1);
+            this.flowLayoutPanel10.Controls.Add(this.label9);
+            this.flowLayoutPanel10.Controls.Add(this.AnalogousColorPanel);
+            this.flowLayoutPanel10.Controls.Add(this.flowLayoutPanel2);
+            this.flowLayoutPanel10.Controls.Add(this.flowLayoutPanel3);
+            this.flowLayoutPanel10.Controls.Add(this.flowLayoutPanel4);
+            this.flowLayoutPanel10.Location = new System.Drawing.Point(1, 19);
+            this.flowLayoutPanel10.Name = "flowLayoutPanel10";
+            this.flowLayoutPanel10.Size = new System.Drawing.Size(272, 191);
+            this.flowLayoutPanel10.TabIndex = 27;
+            // 
+            // label9
+            // 
+            this.label9.AutoSize = true;
+            this.label9.Font = new System.Drawing.Font("Arial", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label9.Location = new System.Drawing.Point(267, 0);
+            this.label9.Margin = new System.Windows.Forms.Padding(3, 0, 3, 10);
+            this.label9.Name = "label9";
+            this.label9.Size = new System.Drawing.Size(0, 16);
+            this.label9.TabIndex = 11;
+            // 
             // FontButton
             // 
             this.FontButton.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Center;
             this.FontButton.Image = ((System.Drawing.Image)(resources.GetObject("FontButton.Image")));
-            this.FontButton.Location = new System.Drawing.Point(146, 16);
+            this.FontButton.Location = new System.Drawing.Point(146, 14);
             this.FontButton.Name = "FontButton";
             this.FontButton.Size = new System.Drawing.Size(44, 45);
             this.FontButton.TabIndex = 26;
@@ -906,7 +963,7 @@
             // 
             this.LineButton.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Center;
             this.LineButton.Image = global::PowerPointLabs.Properties.Resources.LineColor_icon;
-            this.LineButton.Location = new System.Drawing.Point(197, 16);
+            this.LineButton.Location = new System.Drawing.Point(197, 14);
             this.LineButton.Name = "LineButton";
             this.LineButton.Size = new System.Drawing.Size(44, 45);
             this.LineButton.TabIndex = 25;
@@ -918,7 +975,7 @@
             // 
             this.FillButton.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Center;
             this.FillButton.Image = global::PowerPointLabs.Properties.Resources.FillColor_icon;
-            this.FillButton.Location = new System.Drawing.Point(248, 16);
+            this.FillButton.Location = new System.Drawing.Point(248, 14);
             this.FillButton.Name = "FillButton";
             this.FillButton.Size = new System.Drawing.Size(44, 45);
             this.FillButton.TabIndex = 24;
@@ -926,74 +983,37 @@
             this.FillButton.MouseClick += new System.Windows.Forms.MouseEventHandler(this.EyeDropButton_MouseClick);
             this.FillButton.MouseDown += new System.Windows.Forms.MouseEventHandler(this.EyeDropButton_MouseDown);
             // 
-            // SaveThemeButton
+            // groupBox1
             // 
-            this.SaveThemeButton.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Center;
-            this.SaveThemeButton.Image = global::PowerPointLabs.Properties.Resources.Save_icon;
-            this.SaveThemeButton.Location = new System.Drawing.Point(3, 53);
-            this.SaveThemeButton.Name = "SaveThemeButton";
-            this.SaveThemeButton.Size = new System.Drawing.Size(44, 45);
-            this.SaveThemeButton.TabIndex = 16;
-            this.SaveThemeButton.UseVisualStyleBackColor = true;
-            this.SaveThemeButton.Click += new System.EventHandler(this.SaveThemeButton_Click);
+            this.groupBox1.Controls.Add(this.flowLayoutPanel10);
+            this.groupBox1.Location = new System.Drawing.Point(19, 200);
+            this.groupBox1.Name = "groupBox1";
+            this.groupBox1.Size = new System.Drawing.Size(274, 216);
+            this.groupBox1.TabIndex = 30;
+            this.groupBox1.TabStop = false;
+            this.groupBox1.Text = "Matching Colors";
             // 
-            // LoadButton
+            // groupBox2
             // 
-            this.LoadButton.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Center;
-            this.LoadButton.Image = global::PowerPointLabs.Properties.Resources.Load_icon;
-            this.LoadButton.Location = new System.Drawing.Point(53, 53);
-            this.LoadButton.Name = "LoadButton";
-            this.LoadButton.Size = new System.Drawing.Size(44, 45);
-            this.LoadButton.TabIndex = 17;
-            this.LoadButton.UseVisualStyleBackColor = true;
-            this.LoadButton.Click += new System.EventHandler(this.LoadButton_Click);
-            // 
-            // ResetThemeButton
-            // 
-            this.ResetThemeButton.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Center;
-            this.ResetThemeButton.Image = global::PowerPointLabs.Properties.Resources.Reload_icon;
-            this.ResetThemeButton.Location = new System.Drawing.Point(103, 53);
-            this.ResetThemeButton.Name = "ResetThemeButton";
-            this.ResetThemeButton.Size = new System.Drawing.Size(44, 45);
-            this.ResetThemeButton.TabIndex = 18;
-            this.ResetThemeButton.UseVisualStyleBackColor = true;
-            this.ResetThemeButton.Click += new System.EventHandler(this.ResetThemeButton_Click);
-            // 
-            // ApplyThemeButton
-            // 
-            this.ApplyThemeButton.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Center;
-            this.ApplyThemeButton.Image = global::PowerPointLabs.Properties.Resources.Apply_icon;
-            this.ApplyThemeButton.Location = new System.Drawing.Point(153, 53);
-            this.ApplyThemeButton.Name = "ApplyThemeButton";
-            this.ApplyThemeButton.Size = new System.Drawing.Size(44, 45);
-            this.ApplyThemeButton.TabIndex = 19;
-            this.toolTip1.SetToolTip(this.ApplyThemeButton, "Applies Theme Colors to Selected Slides");
-            this.ApplyThemeButton.UseVisualStyleBackColor = true;
-            this.ApplyThemeButton.Click += new System.EventHandler(this.ApplyThemeButton_Click);
-            // 
-            // EmptyPanelButton
-            // 
-            this.EmptyPanelButton.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Center;
-            this.EmptyPanelButton.Image = global::PowerPointLabs.Properties.Resources.Clear_icon;
-            this.EmptyPanelButton.Location = new System.Drawing.Point(203, 53);
-            this.EmptyPanelButton.Name = "EmptyPanelButton";
-            this.EmptyPanelButton.Size = new System.Drawing.Size(44, 45);
-            this.EmptyPanelButton.TabIndex = 20;
-            this.toolTip1.SetToolTip(this.EmptyPanelButton, "Empties the Theme Panel");
-            this.EmptyPanelButton.UseVisualStyleBackColor = true;
-            this.EmptyPanelButton.Click += new System.EventHandler(this.EmptyPanelButton_Click);
+            this.groupBox2.Controls.Add(this.themeLayoutPanel);
+            this.groupBox2.Location = new System.Drawing.Point(18, 422);
+            this.groupBox2.Name = "groupBox2";
+            this.groupBox2.Size = new System.Drawing.Size(275, 109);
+            this.groupBox2.TabIndex = 31;
+            this.groupBox2.TabStop = false;
+            this.groupBox2.Text = "Theme Colors";
             // 
             // ColorPane
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+            this.Controls.Add(this.groupBox2);
+            this.Controls.Add(this.groupBox1);
             this.Controls.Add(this.panel3);
             this.Controls.Add(this.panel2);
-            this.Controls.Add(this.flowLayoutPanel10);
             this.Controls.Add(this.FontButton);
             this.Controls.Add(this.LineButton);
             this.Controls.Add(this.FillButton);
-            this.Controls.Add(this.themeLayoutPanel);
             this.Controls.Add(this.panel1);
             this.Controls.Add(this.saturationPanel);
             this.Controls.Add(this.brightnessPanel);
@@ -1025,6 +1045,8 @@
             this.flowLayoutPanel11.ResumeLayout(false);
             this.flowLayoutPanel10.ResumeLayout(false);
             this.flowLayoutPanel10.PerformLayout();
+            this.groupBox1.ResumeLayout(false);
+            this.groupBox2.ResumeLayout(false);
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -1105,5 +1127,7 @@
         private System.Windows.Forms.Label label9;
         private System.Windows.Forms.Panel panel2;
         private System.Windows.Forms.Panel panel3;
+        private System.Windows.Forms.GroupBox groupBox1;
+        private System.Windows.Forms.GroupBox groupBox2;
     }
 }

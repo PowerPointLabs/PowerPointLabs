@@ -28,9 +28,6 @@ namespace PowerPointLabs
             NONE
         };
 
-        // Needed to keep track of brightness and saturation
-        private Color _originalColor;
-
         // Keeps track of mouse on mouse down on a matching panel.
         // Needed to determine drag-drop v/s click
         private System.Drawing.Point _mouseDownLocation;
@@ -40,12 +37,11 @@ namespace PowerPointLabs
 
         // Shapes to Update
         PowerPoint.ShapeRange _selectedShapes;
+
+        PowerPoint.TextRange _selectedText;
         
         // Data-bindings datasource
         ColorDataSource dataSource = new ColorDataSource();
-
-        // To reset Saturation on brightness change
-        private float _initialSaturation;
 
         // Stores last selected mode
         private MODE prevMode = MODE.NONE;
@@ -73,7 +69,6 @@ namespace PowerPointLabs
 
         private void SetDefaultColor(Color color)
         {
-            _originalColor = color;
             dataSource.selectedColor = color;
             UpdateUIForNewColor();
         }
@@ -124,89 +119,77 @@ namespace PowerPointLabs
         #region DataBindings
         private void BindDataToPanels()
         {
-            this.panel1.DataBindings.Add(new Binding(
+            this.panel1.DataBindings.Add(new CustomBinding(
                 "BackColor",
                 dataSource,
                 "selectedColor",
-                false,
-                DataSourceUpdateMode.OnPropertyChanged));
+                new Converters.HSLColorToRGBColor()));
 
-            this.ThemePanel1.DataBindings.Add(new Binding(
+            this.ThemePanel1.DataBindings.Add(new CustomBinding(
                 "BackColor",
                 dataSource,
                 "themeColorOne",
-                false,
-                DataSourceUpdateMode.OnPropertyChanged));
+                new Converters.HSLColorToRGBColor()));
 
-            this.ThemePanel2.DataBindings.Add(new Binding(
+            this.ThemePanel2.DataBindings.Add(new CustomBinding(
                 "BackColor",
                 dataSource,
                 "themeColorTwo",
-                false,
-                DataSourceUpdateMode.OnPropertyChanged));
+                new Converters.HSLColorToRGBColor()));
 
-            this.ThemePanel3.DataBindings.Add(new Binding(
+            this.ThemePanel3.DataBindings.Add(new CustomBinding(
                 "BackColor",
                 dataSource,
                 "themeColorThree",
-                false,
-                DataSourceUpdateMode.OnPropertyChanged));
-            
-            this.ThemePanel4.DataBindings.Add(new Binding(
+                new Converters.HSLColorToRGBColor()));
+
+            this.ThemePanel4.DataBindings.Add(new CustomBinding(
                 "BackColor",
                 dataSource,
                 "themeColorFour",
-                false,
-                DataSourceUpdateMode.OnPropertyChanged));
+                new Converters.HSLColorToRGBColor()));
 
-            this.ThemePanel5.DataBindings.Add(new Binding(
+            this.ThemePanel5.DataBindings.Add(new CustomBinding(
                 "BackColor",
                 dataSource,
                 "themeColorFive",
-                false,
-                DataSourceUpdateMode.OnPropertyChanged));
+                new Converters.HSLColorToRGBColor()));
 
-            this.ThemePanel6.DataBindings.Add(new Binding(
+            this.ThemePanel6.DataBindings.Add(new CustomBinding(
                 "BackColor",
                 dataSource,
                 "themeColorSix",
-                false,
-                DataSourceUpdateMode.OnPropertyChanged));
+                new Converters.HSLColorToRGBColor()));
 
-            this.ThemePanel7.DataBindings.Add(new Binding(
+            this.ThemePanel7.DataBindings.Add(new CustomBinding(
                 "BackColor",
                 dataSource,
                 "themeColorSeven",
-                false,
-                DataSourceUpdateMode.OnPropertyChanged));
+                new Converters.HSLColorToRGBColor()));
 
-            this.ThemePanel8.DataBindings.Add(new Binding(
+            this.ThemePanel8.DataBindings.Add(new CustomBinding(
                 "BackColor",
                 dataSource,
                 "themeColorEight",
-                false,
-                DataSourceUpdateMode.OnPropertyChanged));
+                new Converters.HSLColorToRGBColor()));
 
-            this.ThemePanel9.DataBindings.Add(new Binding(
+            this.ThemePanel9.DataBindings.Add(new CustomBinding(
                 "BackColor",
                 dataSource,
                 "themeColorNine",
-                false,
-                DataSourceUpdateMode.OnPropertyChanged));
+                new Converters.HSLColorToRGBColor()));
 
-            this.ThemePanel10.DataBindings.Add(new Binding(
+            this.ThemePanel10.DataBindings.Add(new CustomBinding(
                 "BackColor",
                 dataSource,
                 "themeColorTen",
-                false,
-                DataSourceUpdateMode.OnPropertyChanged));
+                new Converters.HSLColorToRGBColor()));
 
-            this.AnalogousSelected.DataBindings.Add(new Binding(
+            this.AnalogousSelected.DataBindings.Add(new CustomBinding(
                 "BackColor",
                 dataSource,
                 "selectedColor",
-                false,
-                DataSourceUpdateMode.OnPropertyChanged));
+                new Converters.HSLColorToRGBColor()));
 
             this.AnalogousLighter.DataBindings.Add(new CustomBinding(
                 "BackColor",
@@ -238,12 +221,11 @@ namespace PowerPointLabs
                 "selectedColor",
                 new Converters.selectedColorToSplitComplementaryHigher()));
 
-            this.TriadicSelected.DataBindings.Add(new Binding(
+            this.TriadicSelected.DataBindings.Add(new CustomBinding(
                 "BackColor",
                 dataSource,
                 "selectedColor",
-                false,
-                DataSourceUpdateMode.OnPropertyChanged));
+                new Converters.HSLColorToRGBColor()));
 
             this.TriadicLower.DataBindings.Add(new CustomBinding(
                 "BackColor",
@@ -257,12 +239,11 @@ namespace PowerPointLabs
                 "selectedColor",
                 new Converters.selectedColorToTriadicHigher()));
 
-            this.TetradicSelected.DataBindings.Add(new Binding(
+            this.TetradicSelected.DataBindings.Add(new CustomBinding(
                 "BackColor",
                 dataSource,
                 "selectedColor",
-                false,
-                DataSourceUpdateMode.OnPropertyChanged));
+                new Converters.HSLColorToRGBColor()));
 
             this.Tetradic1.DataBindings.Add(new CustomBinding(
                 "BackColor",
@@ -331,10 +312,10 @@ namespace PowerPointLabs
                             new Converters.selectedColorToBrightnessValue()));
 
             saturationBar.DataBindings.Add(new CustomBinding(
-                        "Value",
-                        dataSource,
-                        "selectedColor",
-                        new Converters.selectedColorToSaturationValue()));
+                            "Value",
+                            dataSource,
+                            "selectedColor",
+                            new Converters.selectedColorToSaturationValue()));
 
             FillButton.DataBindings.Add(new CustomBinding(
                         "BackColor",
@@ -380,25 +361,36 @@ namespace PowerPointLabs
         {
             try
             {
-                _selectedShapes = PowerPointCurrentPresentationInfo.CurrentSelection.ShapeRange;
+                var selection = PowerPointCurrentPresentationInfo.CurrentSelection;
+                if (selection == null) return;
+
+                if (selection.Type == PpSelectionType.ppSelectionShapes)
+                {
+                    _selectedShapes = selection.ShapeRange;
+                } else if (selection.Type == PpSelectionType.ppSelectionText)
+                {
+                    _selectedText = selection.TextRange;
+                }
             }
             catch (Exception)
             {
                 _selectedShapes = null;
+                _selectedText = null;
             }
         }
-        private void ColorSelectedShapesWithColor(Color selectedColor)
+        private void ColorSelectedShapesWithColor(HSLColor selectedColor)
         {
             SelectShapes();
-            if (_selectedShapes != null)
+            if (_selectedShapes != null
+                && PowerPointPresentation.CurrentSelection.Type == PpSelectionType.ppSelectionShapes)
             {
                 foreach (PowerPoint.Shape s in _selectedShapes)
                 {
                     try
                     {
-                        var r = selectedColor.R;
-                        var g = selectedColor.G;
-                        var b = selectedColor.B;
+                        var r = ((Color)selectedColor).R;
+                        var g = ((Color)selectedColor).G;
+                        var b = ((Color)selectedColor).B;
 
                         var rgb = (b << 16) | (g << 8) | (r);
                         ColorShapeWithColor(s, rgb, currMode);
@@ -408,6 +400,22 @@ namespace PowerPointLabs
                         RecreateCorruptedShape(s);
                     }  
                 }
+            }
+            if (_selectedText != null
+                && PowerPointPresentation.CurrentSelection.Type == PpSelectionType.ppSelectionText)
+            {
+                try
+                {
+                    var r = ((Color)selectedColor).R;
+                    var g = ((Color)selectedColor).G;
+                    var b = ((Color)selectedColor).B;
+
+                    var rgb = (b << 16) | (g << 8) | (r);
+                    ColorShapeWithColor(_selectedText, rgb, currMode);
+                }
+                catch (Exception e)
+                {
+                }  
             }
         }
 
@@ -439,27 +447,49 @@ namespace PowerPointLabs
                     s.Line.ForeColor.RGB = rgb;
                     break;
                 case MODE.FONT:
-                    if (s.HasTextFrame == Microsoft.Office.Core.MsoTriState.msoTrue)
-                    {
-                        if (Globals.ThisAddIn.Application.ActiveWindow.Selection.ShapeRange.HasTextFrame
-                            == Microsoft.Office.Core.MsoTriState.msoTrue)
-                        {
-                            TextRange selectedText
-                                = Globals.ThisAddIn.Application.ActiveWindow.Selection.TextRange.TrimText();
-                            if (selectedText.Text != "" && selectedText != null)
-                            {
-                                selectedText.Font.Color.RGB = rgb;
-                            }
-                        }
-                    }
+                    ColorShapeFontWithColor(s, rgb);
                     break;
+            }
+        }
+
+        private static void ColorShapeFontWithColor(PowerPoint.Shape s, int rgb)
+        {
+            if (s.HasTextFrame == Microsoft.Office.Core.MsoTriState.msoTrue)
+            {
+                if (Globals.ThisAddIn.Application.ActiveWindow.Selection.ShapeRange.HasTextFrame
+                    == Microsoft.Office.Core.MsoTriState.msoTrue)
+                {
+                    TextRange selectedText
+                        = Globals.ThisAddIn.Application.ActiveWindow.Selection.TextRange.TrimText();
+                    if (selectedText.Text != "" && selectedText != null)
+                    {
+                        selectedText.Font.Color.RGB = rgb;
+                    }
+                    else
+                    {
+                        s.TextFrame.TextRange.TrimText().Font.Color.RGB = rgb;
+                    }
+                }
+            }
+        }
+
+        private void ColorShapeWithColor(PowerPoint.TextRange text, int rgb, MODE mode)
+        {
+            var frame = text.Parent as PowerPoint.TextFrame;
+            var selectedShape = frame.Parent as PowerPoint.Shape;
+            if (mode != MODE.NONE)
+            {
+                ColorShapeWithColor(selectedShape, rgb, mode);
+            }
+            else
+            {
+                ColorShapeFontWithColor(selectedShape, rgb);
             }
         }
 
         void _native_LButtonClicked(object sender, SysMouseEventInfo e)
         {
             _native.Close();
-            _originalColor = panel1.BackColor;
             Globals.ThisAddIn.Application.StartNewUndoEntry();
             UpdateUIForNewColor();
             timer1.Stop();
@@ -496,7 +526,7 @@ namespace PowerPointLabs
         }
 
         #region Brightness and Saturation
-        private void UpdateBrightnessBar(Color color)
+        private void UpdateBrightnessBar(HSLColor color)
         {
             DrawBrightnessGradient(color);
         }
@@ -505,15 +535,13 @@ namespace PowerPointLabs
         {
             if (!timer1.Enabled)
             {
-                float newBrightness = brightnessBar.Value / 240.0f;
-                Color newColor = new Color();
+                float newBrightness = brightnessBar.Value;
+                var newColor = new HSLColor();
                 try
                 {
-                    newColor = ColorHelper.ColorFromAhsb(
-                    255,
-                    _originalColor.GetHue(),
-                    dataSource.selectedColor.GetSaturation(),
-                    newBrightness);
+                    newColor.Hue = dataSource.selectedColor.Hue;
+                    newColor.Saturation = dataSource.selectedColor.Saturation;
+                    newColor.Luminosity = newBrightness;
 
                     brightnessBar.ValueChanged -= brightnessBar_ValueChanged;
                     saturationBar.ValueChanged -= saturationBar_ValueChanged;
@@ -535,15 +563,13 @@ namespace PowerPointLabs
 
         private void saturationBar_ValueChanged(object sender, EventArgs e)
         {
-            float newSaturation = saturationBar.Value / 240.0f;
-            Color newColor = new Color();
+            float newSaturation = saturationBar.Value;
+            var newColor = new HSLColor();
             try
             {
-                newColor = ColorHelper.ColorFromAhsb(
-                255,
-                _originalColor.GetHue(),
-                newSaturation,
-                dataSource.selectedColor.GetBrightness());
+                newColor.Hue = dataSource.selectedColor.Hue;
+                newColor.Saturation = newSaturation;
+                newColor.Luminosity = dataSource.selectedColor.Luminosity;
 
                 brightnessBar.ValueChanged -= brightnessBar_ValueChanged;
                 saturationBar.ValueChanged -= saturationBar_ValueChanged;
@@ -561,12 +587,12 @@ namespace PowerPointLabs
 
             ColorSelectedShapesWithColor(newColor);
         }
-        private void UpdateSaturationBar(Color color)
+        private void UpdateSaturationBar(HSLColor color)
         {
             DrawSaturationGradient(color);
         }
 
-        private void DrawBrightnessGradient(Color color)
+        private void DrawBrightnessGradient(HSLColor color)
         {
             var dis = brightnessPanel.DisplayRectangle;
             var screenRec = brightnessPanel.RectangleToScreen(dis);
@@ -574,30 +600,26 @@ namespace PowerPointLabs
             brightnessPanel.Visible = false;
             LinearGradientBrush brush = new LinearGradientBrush(
                 rec,
-                ColorHelper.ColorFromAhsb(
-                255,
-                color.GetHue(),
-                color.GetSaturation(),
-                0.00f),
-                ColorHelper.ColorFromAhsb(
-                255,
-                color.GetHue(),
-                color.GetSaturation(),
-                1.0f),
+                new HSLColor(
+                color.Hue,
+                color.Saturation,
+                0),
+                new HSLColor(
+                color.Hue,
+                color.Saturation,
+                240),
                 LinearGradientMode.Horizontal);
             ColorBlend blend = new ColorBlend();
             Color[] blendColors = {
-                ColorHelper.ColorFromAhsb(
-                255, 
-                color.GetHue(),
-                color.GetSaturation(),
-                0.0f),
+                new HSLColor(
+                color.Hue,
+                color.Saturation,
+                0),
                 color,
-                ColorHelper.ColorFromAhsb(
-                255, 
-                color.GetHue(),
-                color.GetSaturation(),
-                1.0f)};
+                new HSLColor(
+                color.Hue,
+                color.Saturation,
+                240)};
             float[] positions = { 0.0f, 0.5f, 1.0f };
             blend.Colors = blendColors;
             blend.Positions = positions;
@@ -610,7 +632,7 @@ namespace PowerPointLabs
             }
         }
 
-        private void DrawSaturationGradient(Color color)
+        private void DrawSaturationGradient(HSLColor color)
         {
             var dis = saturationPanel.DisplayRectangle;
             var screenRec = saturationPanel.RectangleToScreen(dis);
@@ -618,30 +640,26 @@ namespace PowerPointLabs
             saturationPanel.Visible = false;
             LinearGradientBrush brush = new LinearGradientBrush(
                 rec,
-                ColorHelper.ColorFromAhsb(
-                255,
-                color.GetHue(),
-                0.0f,
-                color.GetBrightness()),
-                ColorHelper.ColorFromAhsb(
-                255,
-                color.GetHue(),
-                1.0f,
-                color.GetBrightness()),
+                new HSLColor(
+                color.Hue,
+                0,
+                color.Luminosity),
+                new HSLColor(
+                color.Hue,
+                240,
+                color.Luminosity),
                 LinearGradientMode.Horizontal);
             ColorBlend blend = new ColorBlend();
             Color[] blendColors = {
-                ColorHelper.ColorFromAhsb(
-                255, 
-                color.GetHue(),
-                0.0f,
-                color.GetBrightness()),
+                new HSLColor(
+                color.Hue,
+                0,
+                color.Luminosity),
                 color,
-                ColorHelper.ColorFromAhsb(
-                255, 
-                color.GetHue(),
-                1.0f,
-                color.GetBrightness())};
+                new HSLColor(
+                color.Hue,
+                240,
+                color.Luminosity)};
             float[] positions = { 0.0f, 0.5f, 1.0f };
             blend.Colors = blendColors;
             blend.Positions = positions;
@@ -679,13 +697,57 @@ namespace PowerPointLabs
         {
             Panel panel = (Panel)sender;
             panel.BackColor = (Color)e.Data.GetData(panel.BackColor.GetType());
-            _originalColor = panel.BackColor;
+            if (panel.Equals(panel1))
+            {
+                dataSource.selectedColor = panel.BackColor;
+            }
+            if (panel.Equals(ThemePanel1))
+            {
+                dataSource.themeColorOne = panel.BackColor;
+            }
+            if (panel.Equals(ThemePanel2))
+            {
+                dataSource.themeColorTwo = panel.BackColor;
+            }
+            if (panel.Equals(ThemePanel3))
+            {
+                dataSource.themeColorThree = panel.BackColor;
+            }
+            if (panel.Equals(ThemePanel4))
+            {
+                dataSource.themeColorFour = panel.BackColor;
+            }
+            if (panel.Equals(ThemePanel5))
+            {
+                dataSource.themeColorFive = panel.BackColor;
+            }
+            if (panel.Equals(ThemePanel6))
+            {
+                dataSource.themeColorSix = panel.BackColor;
+            }
+            if (panel.Equals(ThemePanel7))
+            {
+                dataSource.themeColorSeven = panel.BackColor;
+            }
+            if (panel.Equals(ThemePanel8))
+            {
+                dataSource.themeColorEight = panel.BackColor;
+            }
+            if (panel.Equals(ThemePanel9))
+            {
+                dataSource.themeColorNine = panel.BackColor;
+            }
+            if (panel.Equals(ThemePanel10))
+            {
+                dataSource.themeColorTen = panel.BackColor;
+            }
             UpdateUIForNewColor();
         }
 
         private void panel_DragEnter(object sender, DragEventArgs e)
         {
-            if (e.Data.GetDataPresent(dataSource.selectedColor.GetType().ToString()))
+            String colorTypeName = Color.Red.GetType().ToString();
+            if (e.Data.GetDataPresent(colorTypeName))
             {
                 e.Effect = DragDropEffects.All;
             }
@@ -757,33 +819,52 @@ namespace PowerPointLabs
                     ThemePanel1.BackColor = Color.FromArgb(
                         ColorHelper.ReverseRGBToArgb(
                         scheme.Colors(Microsoft.Office.Core.MsoThemeColorSchemeIndex.msoThemeLight1).RGB));
+                    dataSource.themeColorOne = ThemePanel1.BackColor;
+
                     ThemePanel2.BackColor = Color.FromArgb(
                         ColorHelper.ReverseRGBToArgb(
                         scheme.Colors(Microsoft.Office.Core.MsoThemeColorSchemeIndex.msoThemeDark1).RGB));
+                    dataSource.themeColorTwo = ThemePanel2.BackColor;
+
                     ThemePanel3.BackColor = Color.FromArgb(
                         ColorHelper.ReverseRGBToArgb(
                         scheme.Colors(Microsoft.Office.Core.MsoThemeColorSchemeIndex.msoThemeLight2).RGB));
+                    dataSource.themeColorThree = ThemePanel3.BackColor;
+
                     ThemePanel4.BackColor = Color.FromArgb(
                         ColorHelper.ReverseRGBToArgb(
                         scheme.Colors(Microsoft.Office.Core.MsoThemeColorSchemeIndex.msoThemeDark2).RGB));
+                    dataSource.themeColorFour = ThemePanel4.BackColor;
+
                     ThemePanel5.BackColor = Color.FromArgb(
                         ColorHelper.ReverseRGBToArgb(
                         scheme.Colors(Microsoft.Office.Core.MsoThemeColorSchemeIndex.msoThemeAccent1).RGB));
+                    dataSource.themeColorFive = ThemePanel5.BackColor;
+
                     ThemePanel6.BackColor = Color.FromArgb(
                         ColorHelper.ReverseRGBToArgb(
                         scheme.Colors(Microsoft.Office.Core.MsoThemeColorSchemeIndex.msoThemeAccent2).RGB));
+                    dataSource.themeColorSix = ThemePanel6.BackColor;
+
                     ThemePanel7.BackColor = Color.FromArgb(
                         ColorHelper.ReverseRGBToArgb(
                         scheme.Colors(Microsoft.Office.Core.MsoThemeColorSchemeIndex.msoThemeAccent3).RGB));
+                    dataSource.themeColorSeven = ThemePanel7.BackColor;
+
                     ThemePanel8.BackColor = Color.FromArgb(
                         ColorHelper.ReverseRGBToArgb(
                         scheme.Colors(Microsoft.Office.Core.MsoThemeColorSchemeIndex.msoThemeAccent4).RGB));
+                    dataSource.themeColorEight = ThemePanel8.BackColor;
+
                     ThemePanel9.BackColor = Color.FromArgb(
                         ColorHelper.ReverseRGBToArgb(
                         scheme.Colors(Microsoft.Office.Core.MsoThemeColorSchemeIndex.msoThemeAccent5).RGB));
+                    dataSource.themeColorNine = ThemePanel9.BackColor;
+
                     ThemePanel10.BackColor = Color.FromArgb(
                         ColorHelper.ReverseRGBToArgb(
                         scheme.Colors(Microsoft.Office.Core.MsoThemeColorSchemeIndex.msoThemeAccent6).RGB));
+                    dataSource.themeColorTen = ThemePanel10.BackColor;
                 }
             }
             catch (Exception e)
@@ -799,15 +880,34 @@ namespace PowerPointLabs
                 if (PowerPointCurrentPresentationInfo.SlideCount > 0)
                 {
                     ThemePanel1.BackColor = Color.White;
+                    dataSource.themeColorOne = ThemePanel1.BackColor;
+
                     ThemePanel2.BackColor = Color.White;
+                    dataSource.themeColorTwo = ThemePanel1.BackColor;
+
                     ThemePanel3.BackColor = Color.White;
+                    dataSource.themeColorThree = ThemePanel1.BackColor;
+
                     ThemePanel4.BackColor = Color.White;
+                    dataSource.themeColorFour = ThemePanel1.BackColor;
+
                     ThemePanel5.BackColor = Color.White;
+                    dataSource.themeColorFive = ThemePanel1.BackColor;
+
                     ThemePanel6.BackColor = Color.White;
+                    dataSource.themeColorSix = ThemePanel1.BackColor;
+
                     ThemePanel7.BackColor = Color.White;
+                    dataSource.themeColorSeven = ThemePanel1.BackColor;
+
                     ThemePanel8.BackColor = Color.White;
+                    dataSource.themeColorEight = ThemePanel1.BackColor;
+
                     ThemePanel9.BackColor = Color.White;
+                    dataSource.themeColorNine = ThemePanel1.BackColor;
+
                     ThemePanel10.BackColor = Color.White;
+                    dataSource.themeColorTen = ThemePanel1.BackColor;
                 }
             }
             catch (Exception e)
@@ -872,52 +972,14 @@ namespace PowerPointLabs
 
             Color clickedColor = ((Panel)contextMenuStrip1.SourceControl).BackColor;
             dataSource.selectedColor = clickedColor;
-            _originalColor = clickedColor;
             //Globals.ThisAddIn.Application.StartNewUndoEntry();
             UpdateUIForNewColor();
 
             dataSource.selectedColor = clickedColor;
-            _originalColor = clickedColor;
             Globals.ThisAddIn.Application.StartNewUndoEntry();
             UpdateUIForNewColor();
         }
         #endregion
-
-        private void brightnessBar_MouseUp(object sender, MouseEventArgs e)
-        {
-            try
-            {
-                Color newColor = ColorHelper.ColorFromAhsb(
-                255,
-                _originalColor.GetHue(),
-                _initialSaturation,
-                dataSource.selectedColor.GetBrightness());
-
-                brightnessBar.ValueChanged -= brightnessBar_ValueChanged;
-                saturationBar.ValueChanged -= saturationBar_ValueChanged;
-
-                dataSource.selectedColor = newColor;
-                UpdateBrightnessBar(newColor);
-                UpdateSaturationBar(newColor);
-
-                brightnessBar.ValueChanged += brightnessBar_ValueChanged;
-                saturationBar.ValueChanged += saturationBar_ValueChanged;
-                
-                saturationBar.Enabled = true;
-            }
-            catch (Exception exception)
-            {
-                ErrorDialogWrapper.ShowDialog(
-                    "Invalid Brightness Update", 
-                    exception.Message, 
-                    exception);
-            }
-        }
-
-        private void brightnessBar_MouseDown(object sender, MouseEventArgs e)
-        {
-            _initialSaturation = dataSource.selectedColor.GetSaturation();
-        }
 
         private void EyeDropButton_MouseClick(object sender, MouseEventArgs e)
         {
