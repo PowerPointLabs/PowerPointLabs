@@ -43,6 +43,8 @@ namespace PowerPointLabs
         // Data-bindings datasource
         ColorDataSource dataSource = new ColorDataSource();
 
+        private Color _pickedColor;
+
         // Stores last selected mode
         private MODE prevMode = MODE.NONE;
         
@@ -338,8 +340,12 @@ namespace PowerPointLabs
 
         #endregion
 
+        private int _timerCounter = 0;
+        private const int TIMER_COUNTER_THRESHOLD = 2;
+
         private void BeginEyedropping()
         {
+            _timerCounter = 0;
             timer1.Start();
             _native = new LMouseUpListener();
             _native.LButtonUpClicked +=
@@ -349,11 +355,25 @@ namespace PowerPointLabs
 
         private void timer1_Tick(object sender, EventArgs e)
         {
+            if (_timerCounter < TIMER_COUNTER_THRESHOLD)
+            {
+                _timerCounter++;
+                return;
+            }
+            _timerCounter++;
             Cursor.Current = Cursors.Cross;
             System.Drawing.Point p = Control.MousePosition;
             IntPtr dc = Native.GetDC(IntPtr.Zero);
-            dataSource.selectedColor = ColorTranslator.FromWin32(Native.GetPixel(dc, p.X, p.Y));
-            ColorSelectedShapesWithColor(panel1.BackColor);
+            if (currMode == MODE.NONE)
+            {
+                dataSource.selectedColor = ColorTranslator.FromWin32(Native.GetPixel(dc, p.X, p.Y));
+                ColorSelectedShapesWithColor(panel1.BackColor);
+            }
+            else
+            {
+                _pickedColor = ColorTranslator.FromWin32(Native.GetPixel(dc, p.X, p.Y));
+                ColorSelectedShapesWithColor(_pickedColor);
+            }
         }
 
         #region Selection And Coloring Shapes
@@ -490,9 +510,16 @@ namespace PowerPointLabs
         void _native_LButtonClicked(object sender, SysMouseEventInfo e)
         {
             _native.Close();
-            Globals.ThisAddIn.Application.StartNewUndoEntry();
-            UpdateUIForNewColor();
             timer1.Stop();
+            if (_timerCounter >= TIMER_COUNTER_THRESHOLD)
+            {
+                Globals.ThisAddIn.Application.StartNewUndoEntry();
+                UpdateUIForNewColor();
+                if (currMode != MODE.NONE)
+                {
+                    ColorSelectedShapesWithColor(_pickedColor);
+                }
+            }
             ResetEyeDropperSelectionInDataSource();
         }
         #endregion
@@ -522,7 +549,6 @@ namespace PowerPointLabs
         {
             UpdateBrightnessBar(dataSource.selectedColor);
             UpdateSaturationBar(dataSource.selectedColor);
-            ColorSelectedShapesWithColor(dataSource.selectedColor);
         }
 
         #region Brightness and Saturation
@@ -556,8 +582,6 @@ namespace PowerPointLabs
                 catch (Exception exception)
                 {
                 }
-
-                ColorSelectedShapesWithColor(dataSource.selectedColor);
             }
         }
 
@@ -584,8 +608,6 @@ namespace PowerPointLabs
             catch (Exception exception)
             {
             }
-
-            ColorSelectedShapesWithColor(newColor);
         }
         private void UpdateSaturationBar(HSLColor color)
         {
@@ -794,7 +816,6 @@ namespace PowerPointLabs
             Color clickedColor = ((Panel)sender).BackColor;
             
             Globals.ThisAddIn.Application.StartNewUndoEntry();
-            ColorSelectedShapesWithColor(clickedColor);
         }
 
         private void ResetThemeButton_Click(object sender, EventArgs e)
@@ -968,12 +989,7 @@ namespace PowerPointLabs
 
         private void selectAsMainColorToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            // Done twice due to multi-threading issues
-
             Color clickedColor = ((Panel)contextMenuStrip1.SourceControl).BackColor;
-            dataSource.selectedColor = clickedColor;
-            //Globals.ThisAddIn.Application.StartNewUndoEntry();
-            UpdateUIForNewColor();
 
             dataSource.selectedColor = clickedColor;
             Globals.ThisAddIn.Application.StartNewUndoEntry();
@@ -994,19 +1010,69 @@ namespace PowerPointLabs
             }
             SetModeForSenderName(buttonName);
 
-            colorDialog1.Color = dataSource.selectedColor;
+            colorDialog1.Color = GetSelectedShapeColor();
 
             DialogResult result = colorDialog1.ShowDialog();
             if (result == DialogResult.OK)
             {
-                SetDefaultColor(colorDialog1.Color);
-                
+                ColorSelectedShapesWithColor(colorDialog1.Color);
                 ResetEyeDropperSelectionInDataSource();
             }
             else if (result == DialogResult.Cancel)
             {
                 ResetEyeDropperSelectionInDataSource();
             }
+        }
+
+        private Color GetSelectedShapeColor()
+        {
+            SelectShapes();
+            if (_selectedShapes == null && _selectedText == null)
+                return dataSource.selectedColor;
+
+            if (PowerPointPresentation.CurrentSelection.Type == PpSelectionType.ppSelectionShapes)
+            {
+                return GetSelectedShapeColor(_selectedShapes[1]);
+            }
+            if (PowerPointPresentation.CurrentSelection.Type == PpSelectionType.ppSelectionText)
+            {
+                var frame = _selectedText.Parent as PowerPoint.TextFrame;
+                var selectedShape = frame.Parent as PowerPoint.Shape;
+                return GetSelectedShapeColor(selectedShape);
+            }
+
+            return dataSource.selectedColor;
+        }
+
+        private Color GetSelectedShapeColor(PowerPoint.Shape selectedShapes)
+        {
+            switch (currMode)
+            {
+                case MODE.FILL:
+                    return Color.FromArgb(ColorHelper.ReverseRGBToArgb(selectedShapes.Fill.ForeColor.RGB));
+                    break;
+                case MODE.LINE:
+                    return Color.FromArgb(ColorHelper.ReverseRGBToArgb(selectedShapes.Line.ForeColor.RGB));
+                    break;
+                case MODE.FONT:
+                    if (selectedShapes.HasTextFrame == Microsoft.Office.Core.MsoTriState.msoTrue
+                        && Globals.ThisAddIn.Application.ActiveWindow.Selection.ShapeRange.HasTextFrame
+                        == Microsoft.Office.Core.MsoTriState.msoTrue)
+                    {
+                        var selectedText
+                            = Globals.ThisAddIn.Application.ActiveWindow.Selection.TextRange.TrimText();
+                        if (selectedText.Text != "" && selectedText != null)
+                        {
+                            return Color.FromArgb(ColorHelper.ReverseRGBToArgb(selectedText.Font.Color.RGB));
+                        }
+                        else
+                        {
+                            return Color.FromArgb(ColorHelper.ReverseRGBToArgb(selectedShapes.TextFrame.TextRange.Font.Color.RGB));
+                        }
+                    }
+                    break;
+            }
+            return dataSource.selectedColor;
         }
 
         private void SetModeForSenderName(string buttonName)
