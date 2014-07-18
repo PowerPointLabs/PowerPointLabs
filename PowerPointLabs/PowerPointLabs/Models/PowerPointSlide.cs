@@ -175,6 +175,18 @@ namespace PowerPointLabs.Models
             List<Shape> shapes = _slide.Shapes.Cast<Shape>().ToList();
 
             var matchingShapes = shapes.Where(current => current.Name.StartsWith(prefix));
+            
+            foreach (Shape s in matchingShapes)
+            {
+                s.Delete();
+            }
+        }
+
+        public void DeleteShapeWithRule(Regex regex)
+        {
+            List<Shape> shapes = _slide.Shapes.Cast<Shape>().ToList();
+
+            var matchingShapes = shapes.Where(current => regex.IsMatch(current.Name));
             foreach (Shape s in matchingShapes)
             {
                 s.Delete();
@@ -224,6 +236,12 @@ namespace PowerPointLabs.Models
             {
                 InsertAnimationBeforeExisting(shape, firstClickEvent, MsoAnimEffect.msoAnimEffectMediaPlay);
             }
+        }
+
+        public void InsertPicture(string fileName, MsoTriState linkToFile, MsoTriState saveWithDoc,
+                                  Tuple<Single, Single> leftTopCorner)
+        {
+            _slide.Shapes.AddPicture(fileName, linkToFile, saveWithDoc, leftTopCorner.Item1, leftTopCorner.Item2).Select();
         }
 
         private Effect InsertAnimationBeforeExisting(Shape shape, Effect existing, MsoAnimEffect effect)
@@ -352,6 +370,14 @@ namespace PowerPointLabs.Models
             return matchingShapes;
         }
 
+        public List<Shape> GetShapesWithRule(Regex nameRule)
+        {
+            var shapes = _slide.Shapes.Cast<Shape>().ToList();
+            var matchingShapes = shapes.Where(current => nameRule.IsMatch(current.Name)).ToList();
+
+            return matchingShapes;
+        }
+
         public List<Shape> GetShapesWithTypeAndRule(MsoShapeType type, Regex nameRule)
         {
             var shapes = _slide.Shapes.Cast<Shape>().ToList();
@@ -466,9 +492,9 @@ namespace PowerPointLabs.Models
         {
             String tempFileName = Path.GetTempFileName();
             Properties.Resources.Indicator.Save(tempFileName);
-            Shape indicatorShape = _slide.Shapes.AddPicture(tempFileName, Office.MsoTriState.msoFalse, Office.MsoTriState.msoTrue, PowerPointPresentation.SlideWidth - 120, 0, 120, 84);
+            Shape indicatorShape = _slide.Shapes.AddPicture(tempFileName, Office.MsoTriState.msoFalse, Office.MsoTriState.msoTrue, PowerPointCurrentPresentationInfo.SlideWidth - 120, 0, 120, 84);
 
-            indicatorShape.Left = PowerPointPresentation.SlideWidth - 120;
+            indicatorShape.Left = PowerPointCurrentPresentationInfo.SlideWidth - 120;
             indicatorShape.Top = 0;
             indicatorShape.Width = 120;
             indicatorShape.Height = 84;
@@ -511,8 +537,8 @@ namespace PowerPointLabs.Models
                         int count = path.Length;
                         float xVal = Convert.ToSingle(path[count - 3]);
                         float yVal = Convert.ToSingle(path[count - 2]);
-                        sh.Left += (xVal * PowerPointPresentation.SlideWidth);
-                        sh.Top += (yVal * PowerPointPresentation.SlideHeight);
+                        sh.Left += (xVal * PowerPointCurrentPresentationInfo.SlideWidth);
+                        sh.Top += (yVal * PowerPointCurrentPresentationInfo.SlideHeight);
                     }
                 }
             }
@@ -583,6 +609,31 @@ namespace PowerPointLabs.Models
             return PowerPointAckSlide.FromSlideFactory(ackSlide);
         }
 
+        public bool hasTextFragments()
+        {
+            foreach (Shape sh in _slide.Shapes)
+            {
+                if (sh.Name.StartsWith("PPTLabsHighlightTextFragmentsShape"))
+                {
+                    return true;
+                }
+            }
+            return false;
+        }
+
+        public List<PowerPoint.Shape> getTextFragments()
+        {
+            List<PowerPoint.Shape> fragmentShapes = new List<Shape>();
+            foreach (Shape sh in _slide.Shapes)
+            {
+                if (sh.Name.StartsWith("PPTLabsHighlightTextFragmentsShape"))
+                {
+                    fragmentShapes.Add(sh);
+                }
+            }
+            return fragmentShapes;
+        }
+
         public bool HasCaptions()
         {
             foreach (PowerPoint.Shape shape in this.Shapes)
@@ -627,14 +678,14 @@ namespace PowerPointLabs.Models
 
         private bool IsNextSlideTransitionBlacklisted()
         {
-            bool isLastSlide = _slide.SlideIndex == PowerPointPresentation.SlideCount;
+            bool isLastSlide = _slide.SlideIndex == PowerPointCurrentPresentationInfo.SlideCount;
             if (isLastSlide)
             {
                 return false;
             }
 
             // Indexes are from 1, while the slide collection starts from 0.
-            PowerPointSlide nextSlide = PowerPointPresentation.Slides.ElementAt(Index);
+            PowerPointSlide nextSlide = PowerPointCurrentPresentationInfo.Slides.ElementAt(Index);
             switch (nextSlide.Transition.EntryEffect)
             {
                 case PpEntryEffect.ppEffectCoverUp:

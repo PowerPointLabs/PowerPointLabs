@@ -7,9 +7,6 @@ namespace PowerPointLabs
 {
     class ConvertToPicture
     {
-        private const string ErrorTypeNotSupported = "Convert to Picture only supports Shapes and Charts.";
-        private const string ErrorWindowTitle = "Unable to Convert to Picture";
-
         public static void Convert(PowerPoint.Selection selection)
         {
             if (IsSelectionShape(selection))
@@ -20,11 +17,37 @@ namespace PowerPointLabs
             }
             else
             {
-                MessageBox.Show(ErrorTypeNotSupported, ErrorWindowTitle);
+                MessageBox.Show(TextCollection.ErrorTypeNotSupported, TextCollection.ErrorWindowTitle);
             }
         }
 
-        public static PowerPoint.Shape ConvertToPictureForShape(PowerPoint.Shape shape)
+        public static void ConvertAndSave(PowerPoint.Selection selection, string fileName)
+        {
+            if (IsSelectionShape(selection))
+            {
+                var grouped = selection.ShapeRange.Count > 1;
+
+                var shape = GetShapeFromSelection(selection);
+                shape = CutPasteShape(shape);
+                shape.Export(fileName, PowerPoint.PpShapeFormat.ppShapeFormatPNG,
+                             ExportMode: PowerPoint.PpExportMode.ppScaleXY);
+
+                if (grouped)
+                {
+                    shape.Ungroup().Select();
+                }
+                else
+                {
+                    shape.Select();
+                }
+            }
+            else
+            {
+                MessageBox.Show(TextCollection.ErrorTypeNotSupported, TextCollection.ErrorWindowTitle);
+            }
+        }
+
+        private static void ConvertToPictureForShape(PowerPoint.Shape shape)
         {
             float rotation = 0;
             try
@@ -47,7 +70,6 @@ namespace PowerPointLabs
             pic.Top = y + (height - pic.Height) / 2;
             pic.Rotation = rotation;
             pic.Select();
-            return pic;
         }
 
         public static System.Drawing.Bitmap GetConvertToPicMenuImage(Office.IRibbonControl control)

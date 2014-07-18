@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Drawing;
 using System.Runtime.InteropServices;
 using System.Text;
 
@@ -106,6 +107,24 @@ namespace PPExtraEventHelper
 
         internal delegate int HookProc(int nCode, IntPtr wParam, IntPtr lParam);
 
+        internal delegate int RegionHookProc(Rectangle region, int nCode, IntPtr wParam, IntPtr lParam);
+
+        internal static Point GetPoint(IntPtr lParam)
+        {
+            var uLParam = GetUncheckedInt(lParam);
+            
+            // cast to long first so that it's 64-bit compatible
+            var x = unchecked((short)(long)uLParam);
+            var y = unchecked((short)((long)uLParam >> 16));
+
+            return new Point(x, y);
+        }
+
+        private static uint GetUncheckedInt(IntPtr ptr)
+        {
+            return unchecked(IntPtr.Size == 8 ? (uint)ptr.ToInt64() : (uint)ptr.ToInt32());
+        }
+
         [StructLayout(LayoutKind.Sequential)]
         internal struct RECT
         {
@@ -129,6 +148,13 @@ namespace PPExtraEventHelper
         {
             internal int x;
             internal int y;
+
+            internal Point() {}
+            internal Point(int _x, int _y)
+            {
+                x = _x;
+                y = _y;
+            }
         }
 
         internal enum HookType
@@ -139,12 +165,15 @@ namespace PPExtraEventHelper
 
         internal enum Message
         {
+            WM_PAINT = 0xf,
             WM_COMMAND = 0x111,
+            WM_LBUTTONDOWN = 0x0201,
+            WM_LBUTTONUP = 0x0202,
             WM_LBUTTONDBLCLK = 0x0203,
+            WM_PARENTNOTIFY = 0x0210,
             WM_DRAWCLIPBOARD = 0x308,
             WM_CHANGECBCHAIN = 0x30D,
             WM_CLIPBOARDUPDATE = 0x031D,
-            WM_LBUTTONUP = 0x0202,
             WM_GETTEXT = 0x000D,
             WM_GETTEXTLENGTH = 0x000E
         }

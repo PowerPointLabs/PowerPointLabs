@@ -14,27 +14,32 @@ namespace PowerPointLabs
         public static float defaultDuration = 0.5f;
         public static bool frameAnimationChecked = false;
         public static bool isHighlightBullets = false;
+        public static bool isHighlightTextFragments = false;
         public static void AddAnimationInSlide()
         {
             try
             {
-                var currentSlide = PowerPointPresentation.CurrentSlide as PowerPointSlide;
+                var currentSlide = PowerPointCurrentPresentationInfo.CurrentSlide as PowerPointSlide;
                 var selectedShapes = Globals.ThisAddIn.Application.ActiveWindow.Selection.ShapeRange as PowerPoint.ShapeRange;
 
                 currentSlide.RemoveAnimationsForShapes(selectedShapes.Cast<PowerPoint.Shape>().ToList());
 
-                if (!isHighlightBullets)
+                if (!isHighlightBullets && !isHighlightTextFragments)
                 {
                     currentSlide.RemoveAnimationsForShapes(currentSlide.GetShapesWithPrefix("InSlideAnimateShape"));
                     FormatInSlideAnimateShapes(selectedShapes);
                 }
-                
-                if (selectedShapes.Count == 1)
-                    InSlideAnimateSingleShape(currentSlide, selectedShapes[1]);
-                else
-                    InSlideAnimateMultiShape(currentSlide, selectedShapes);
 
-                if (!isHighlightBullets)
+                if (selectedShapes.Count == 1)
+                {
+                    InSlideAnimateSingleShape(currentSlide, selectedShapes[1]);
+                }
+                else
+                {
+                    InSlideAnimateMultiShape(currentSlide, selectedShapes);
+                }
+
+                if (!isHighlightBullets && !isHighlightTextFragments)
                 {
                     Globals.ThisAddIn.Application.CommandBars.ExecuteMso("AnimationPreview");
                     PowerPointLabsGlobals.AddAckSlide();
@@ -49,14 +54,30 @@ namespace PowerPointLabs
 
         private static void FormatInSlideAnimateShapes(PowerPoint.ShapeRange shapes)
         {
-            foreach (PowerPoint.Shape sh in shapes)
-                sh.Name = "InSlideAnimateShape" + Guid.NewGuid().ToString();
+            foreach (PowerPoint.Shape sh in shapes) 
+            {
+                if (isHighlightTextFragments)
+                {
+                    sh.Name = "PPTLabsHighlightTextFragmentShape" + Guid.NewGuid().ToString();
+                }
+                else
+                {
+                    sh.Name = "InSlideAnimateShape" + Guid.NewGuid().ToString();
+                }
+            }
         }
 
         private static void InSlideAnimateSingleShape(PowerPointSlide currentSlide, PowerPoint.Shape shapeToAnimate)
         {
-            PowerPoint.Effect appear = currentSlide.TimeLine.MainSequence.AddEffect(shapeToAnimate, PowerPoint.MsoAnimEffect.msoAnimEffectAppear, PowerPoint.MsoAnimateByLevel.msoAnimateLevelNone, PowerPoint.MsoAnimTriggerType.msoAnimTriggerOnPageClick);
-            PowerPoint.Effect disappear = currentSlide.TimeLine.MainSequence.AddEffect(shapeToAnimate, PowerPoint.MsoAnimEffect.msoAnimEffectAppear, PowerPoint.MsoAnimateByLevel.msoAnimateLevelNone, PowerPoint.MsoAnimTriggerType.msoAnimTriggerOnPageClick);
+            PowerPoint.Effect appear = currentSlide.TimeLine.MainSequence.AddEffect(
+                shapeToAnimate, 
+                PowerPoint.MsoAnimEffect.msoAnimEffectAppear, 
+                PowerPoint.MsoAnimateByLevel.msoAnimateLevelNone, 
+                PowerPoint.MsoAnimTriggerType.msoAnimTriggerOnPageClick);
+            PowerPoint.Effect disappear = currentSlide.TimeLine.MainSequence.AddEffect(
+                shapeToAnimate, PowerPoint.MsoAnimEffect.msoAnimEffectAppear, 
+                PowerPoint.MsoAnimateByLevel.msoAnimateLevelNone, 
+                PowerPoint.MsoAnimTriggerType.msoAnimTriggerOnPageClick);
             disappear.Exit = Office.MsoTriState.msoTrue;
         }
 
@@ -72,21 +93,71 @@ namespace PowerPointLabs
 
                 if (num == 1)
                 {
-                    PowerPoint.Effect appear = currentSlide.TimeLine.MainSequence.AddEffect(shape1, PowerPoint.MsoAnimEffect.msoAnimEffectAppear, PowerPoint.MsoAnimateByLevel.msoAnimateLevelNone, PowerPoint.MsoAnimTriggerType.msoAnimTriggerOnPageClick);
+                    if (isHighlightTextFragments)
+                    {
+                        PowerPoint.Effect appear = currentSlide.TimeLine.MainSequence.AddEffect(
+                            shape1,
+                            PowerPoint.MsoAnimEffect.msoAnimEffectFade,
+                            PowerPoint.MsoAnimateByLevel.msoAnimateLevelNone,
+                            PowerPoint.MsoAnimTriggerType.msoAnimTriggerOnPageClick); 
+                    }
+                    else
+                    {
+                        PowerPoint.Effect appear = currentSlide.TimeLine.MainSequence.AddEffect(
+                            shape1,
+                            PowerPoint.MsoAnimEffect.msoAnimEffectAppear,
+                            PowerPoint.MsoAnimateByLevel.msoAnimateLevelNone,
+                            PowerPoint.MsoAnimTriggerType.msoAnimTriggerOnPageClick); 
+                    }
                 }
 
-                if (NeedsFrameAnimation(shape1, shape2))
+                if (!isHighlightTextFragments)
                 {
-                    FrameMotionAnimation.animationType = FrameMotionAnimation.FrameMotionAnimationType.kInSlideAnimate;
-                    FrameMotionAnimation.AddFrameMotionAnimation(currentSlide, shape1, shape2, defaultDuration);
+                    AnimateMovementBetweenShapes(currentSlide, shape1, shape2);
+                }
+
+                if (isHighlightTextFragments)
+                {
+                    //Transition from shape1 to shape2 with movement
+                    PowerPoint.Effect shape2Appear = currentSlide.TimeLine.MainSequence.AddEffect(
+                        shape2,
+                        PowerPoint.MsoAnimEffect.msoAnimEffectFade,
+                        PowerPoint.MsoAnimateByLevel.msoAnimateLevelNone,
+                        PowerPoint.MsoAnimTriggerType.msoAnimTriggerOnPageClick);
                 }
                 else
-                    DefaultMotionAnimation.AddDefaultMotionAnimation(currentSlide, shape1, shape2, defaultDuration, PowerPoint.MsoAnimTriggerType.msoAnimTriggerOnPageClick);
-
-                //Transition from shape1 to shape2
-                PowerPoint.Effect shape2Appear = currentSlide.TimeLine.MainSequence.AddEffect(shape2, PowerPoint.MsoAnimEffect.msoAnimEffectAppear, PowerPoint.MsoAnimateByLevel.msoAnimateLevelNone, PowerPoint.MsoAnimTriggerType.msoAnimTriggerAfterPrevious);
-                PowerPoint.Effect shape1Disappear = currentSlide.TimeLine.MainSequence.AddEffect(shape1, PowerPoint.MsoAnimEffect.msoAnimEffectAppear, PowerPoint.MsoAnimateByLevel.msoAnimateLevelNone, PowerPoint.MsoAnimTriggerType.msoAnimTriggerAfterPrevious);
+                {
+                    //Transition from shape1 to shape2 with fade
+                    PowerPoint.Effect shape2Appear = currentSlide.TimeLine.MainSequence.AddEffect(
+                        shape2,
+                        PowerPoint.MsoAnimEffect.msoAnimEffectAppear,
+                        PowerPoint.MsoAnimateByLevel.msoAnimateLevelNone,
+                        PowerPoint.MsoAnimTriggerType.msoAnimTriggerAfterPrevious);
+                }
+                PowerPoint.Effect shape1Disappear = currentSlide.TimeLine.MainSequence.AddEffect(
+                        shape1,
+                        PowerPoint.MsoAnimEffect.msoAnimEffectFade,
+                        PowerPoint.MsoAnimateByLevel.msoAnimateLevelNone,
+                        PowerPoint.MsoAnimTriggerType.msoAnimTriggerWithPrevious);
                 shape1Disappear.Exit = Office.MsoTriState.msoTrue;
+            }
+        }
+
+        private static void AnimateMovementBetweenShapes(PowerPointSlide currentSlide, PowerPoint.Shape shape1, PowerPoint.Shape shape2)
+        {
+            if (NeedsFrameAnimation(shape1, shape2))
+            {
+                FrameMotionAnimation.animationType = FrameMotionAnimation.FrameMotionAnimationType.kInSlideAnimate;
+                FrameMotionAnimation.AddFrameMotionAnimation(currentSlide, shape1, shape2, defaultDuration);
+            }
+            else
+            {
+                DefaultMotionAnimation.AddDefaultMotionAnimation(
+                    currentSlide,
+                    shape1,
+                    shape2,
+                    defaultDuration,
+                    PowerPoint.MsoAnimTriggerType.msoAnimTriggerOnPageClick);
             }
         }
 

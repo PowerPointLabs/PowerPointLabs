@@ -27,7 +27,7 @@ namespace PowerPointLabs
         {
             try
             {
-                var currentSlide = PowerPointPresentation.CurrentSlide as PowerPointSlide;
+                var currentSlide = PowerPointCurrentPresentationInfo.CurrentSlide as PowerPointSlide;
                 PowerPoint.ShapeRange selectedShapes = Globals.ThisAddIn.Application.ActiveWindow.Selection.ShapeRange;
                 
                 var addedSlide = currentSlide.CreateSpotlightSlide() as PowerPointSpotlightSlide;
@@ -60,7 +60,7 @@ namespace PowerPointLabs
         {
             try
             {
-                var currentSlide = PowerPointPresentation.CurrentSlide as PowerPointSpotlightSlide;
+                var currentSlide = PowerPointCurrentPresentationInfo.CurrentSlide as PowerPointSpotlightSlide;
                 if (currentSlide.isSpotlightSlide())
                 {
                     PowerPoint.Shape spotlightPicture = null;

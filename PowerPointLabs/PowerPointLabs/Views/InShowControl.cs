@@ -55,7 +55,13 @@ namespace PowerPointLabs.Views
 
         public void ForceStop()
         {
-            var recorderPane = Globals.ThisAddIn.GetActivePane(Type.GetType("PowerPointLabs.RecorderTaskPane"));
+            var recorderPane = Globals.ThisAddIn.GetActivePane(typeof(RecorderTaskPane));
+            
+            if (recorderPane == null)
+            {
+                return;
+            }
+            
             var recorder = recorderPane.Control as RecorderTaskPane;
 
             _status = ButtonStatus.Estop;
@@ -70,7 +76,7 @@ namespace PowerPointLabs.Views
 
         private void RecButtonClick(object sender, EventArgs e)
         {
-            var recorderPane = Globals.ThisAddIn.GetActivePane(Type.GetType("PowerPointLabs.RecorderTaskPane"));
+            var recorderPane = Globals.ThisAddIn.GetActivePane(typeof(RecorderTaskPane));
             var recorder = recorderPane.Control as RecorderTaskPane;
             
             int click;
@@ -81,7 +87,7 @@ namespace PowerPointLabs.Views
                 click = _slideShowWindow.View.GetClickIndex();
                 currentSlide = PowerPointSlide.FromSlideFactory(_slideShowWindow.View.Slide);
             }
-            catch (COMException comException)
+            catch (COMException)
             {
                 MessageBox.Show("Invalid Recording Command");
                 return;
@@ -131,7 +137,7 @@ namespace PowerPointLabs.Views
 
         private void UndoButtonClick(object sender, EventArgs e)
         {
-            var recorderPane = Globals.ThisAddIn.GetActivePane(Type.GetType("PowerPointLabs.RecorderTaskPane"));
+            var recorderPane = Globals.ThisAddIn.GetActivePane(typeof(RecorderTaskPane));
             var recorder = recorderPane.Control as RecorderTaskPane;
             var temp = recorder.AudioBuffer[_recordStartSlide.Index - 1];
 

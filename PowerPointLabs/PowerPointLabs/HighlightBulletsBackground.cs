@@ -19,7 +19,7 @@ namespace PowerPointLabs
         {
             try
             {
-                var currentSlide = PowerPointPresentation.CurrentSlide as PowerPointSlide;
+                var currentSlide = PowerPointCurrentPresentationInfo.CurrentSlide as PowerPointSlide;
                 currentSlide.Name = "PPTLabsHighlightBulletsSlide" + DateTime.Now.ToString("yyyyMMddHHmmssffff");
 
                 PowerPoint.ShapeRange selectedShapes = null;

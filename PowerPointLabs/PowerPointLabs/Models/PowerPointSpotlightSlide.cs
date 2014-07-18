@@ -101,7 +101,7 @@ namespace PowerPointLabs.Models
             //export formatted spotlight picture to a temp folder
             spotlightPicture.Export(dirOfRenderedPicture, PowerPoint.PpShapeFormat.ppShapeFormatPNG);
             //then add the exported new picture back
-            var renderedPicture = PowerPointPresentation.CurrentSlide.Shapes.AddPicture(
+            var renderedPicture = PowerPointCurrentPresentationInfo.CurrentSlide.Shapes.AddPicture(
                 dirOfRenderedPicture, Office.MsoTriState.msoFalse, Office.MsoTriState.msoTrue,
                 spotlightPicture.Left, spotlightPicture.Top, spotlightPicture.Width, spotlightPicture.Height);
 
@@ -122,17 +122,17 @@ namespace PowerPointLabs.Models
             {
                 shapeToCrop.PictureFormat.CropLeft += (0.0f - shapeToCrop.Left);
             }
-            if (shapeToCrop.Left + shapeToCrop.Width > PowerPointPresentation.SlideWidth)
+            if (shapeToCrop.Left + shapeToCrop.Width > PowerPointCurrentPresentationInfo.SlideWidth)
             {
-                shapeToCrop.PictureFormat.CropRight += (shapeToCrop.Left + shapeToCrop.Width - PowerPointPresentation.SlideWidth);
+                shapeToCrop.PictureFormat.CropRight += (shapeToCrop.Left + shapeToCrop.Width - PowerPointCurrentPresentationInfo.SlideWidth);
             }
             if (shapeToCrop.Top < 0)
             {
                 shapeToCrop.PictureFormat.CropTop += (0.0f - shapeToCrop.Top);
             }
-            if (shapeToCrop.Top + shapeToCrop.Height > PowerPointPresentation.SlideHeight)
+            if (shapeToCrop.Top + shapeToCrop.Height > PowerPointCurrentPresentationInfo.SlideHeight)
             {
-                shapeToCrop.PictureFormat.CropBottom += (shapeToCrop.Top + shapeToCrop.Height - PowerPointPresentation.SlideHeight);
+                shapeToCrop.PictureFormat.CropBottom += (shapeToCrop.Top + shapeToCrop.Height - PowerPointCurrentPresentationInfo.SlideHeight);
             }
         }
 
@@ -146,7 +146,7 @@ namespace PowerPointLabs.Models
 
         private void AddRectangleShape()
         {
-            PowerPoint.Shape rectangleShape = this.Shapes.AddShape(Office.MsoAutoShapeType.msoShapeRectangle, (-1 * Spotlight.defaultSoftEdges), (-1 * Spotlight.defaultSoftEdges), (PowerPointPresentation.SlideWidth + (2.0f * Spotlight.defaultSoftEdges)), (PowerPointPresentation.SlideHeight + (2.0f * Spotlight.defaultSoftEdges)));
+            PowerPoint.Shape rectangleShape = this.Shapes.AddShape(Office.MsoAutoShapeType.msoShapeRectangle, (-1 * Spotlight.defaultSoftEdges), (-1 * Spotlight.defaultSoftEdges), (PowerPointCurrentPresentationInfo.SlideWidth + (2.0f * Spotlight.defaultSoftEdges)), (PowerPointCurrentPresentationInfo.SlideHeight + (2.0f * Spotlight.defaultSoftEdges)));
             rectangleShape.Fill.ForeColor.RGB = 0x000000;
             rectangleShape.Fill.Transparency = Spotlight.defaultTransparency;
             rectangleShape.Line.Visible = Office.MsoTriState.msoFalse;

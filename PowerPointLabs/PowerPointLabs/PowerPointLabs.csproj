@@ -41,7 +41,7 @@
     <PublishUrl>\\psf\Home\Desktop\PowerPointLabs Deploy\</PublishUrl>
     <InstallUrl>http://www.comp.nus.edu.sg/~pptlabs/download/dev/</InstallUrl>
     <TargetCulture>en</TargetCulture>
-    <ApplicationVersion>1.8.1.0</ApplicationVersion>
+    <ApplicationVersion>1.8.9.0</ApplicationVersion>
     <AutoIncrementApplicationRevision>false</AutoIncrementApplicationRevision>
     <UpdateEnabled>true</UpdateEnabled>
     <UpdateInterval>0</UpdateInterval>
@@ -162,6 +162,13 @@
   -->
   <ItemGroup>
     <Reference Include="Accessibility" />
+    <Reference Include="DocumentFormat.OpenXml, Version=2.5.5631.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>C:\Program Files\Open XML SDK\V2.5\lib\DocumentFormat.OpenXml.dll</HintPath>
+    </Reference>
+    <Reference Include="ExtendedPanel">
+      <HintPath>Dependency\ExtendedPanel.dll</HintPath>
+    </Reference>
     <Reference Include="Microsoft.Office.Interop.PowerPoint, Version=15.0.0.0, Culture=neutral, PublicKeyToken=71e9bce111e9429c, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <EmbedInteropTypes>True</EmbedInteropTypes>
@@ -198,6 +205,7 @@
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="Microsoft.CSharp" />
+    <Reference Include="WindowsBase" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="Microsoft.Office.Tools.v4.0.Framework, Version=10.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL" />
@@ -246,8 +254,25 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
+    <Compile Include="LabeledThumbnail.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="LabeledThumbnail.Designer.cs">
+      <DependentUpon>LabeledThumbnail.cs</DependentUpon>
+    </Compile>
+    <Compile Include="CustomShapePane.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="CustomShapePane.Designer.cs">
+      <DependentUpon>CustomShapePane.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Models\PowerPointPresentation.cs" />
+    <Compile Include="Models\PowerPointShapeGalleryPresentation.cs" />
+    <Compile Include="TextCollection.cs" />
+    <Compile Include="Views\CustomPaintTextBox.cs" />
     <Compile Include="Views\ErrorDialogWrapper.cs" />
     <Compile Include="FitToSlide.cs" />
+    <Compile Include="HighlightTextFragments.cs" />
     <Compile Include="Models\PowerPointAutoAnimateSlide.cs" />
     <Compile Include="Models\PowerPointDeMagnifyingSlide.cs" />
     <Compile Include="Models\PowerPointDrillDownSlide.cs" />
@@ -299,7 +324,7 @@
     <Compile Include="Views\HighlightBulletsDialogBox.Designer.cs">
       <DependentUpon>HighlightBulletsDialogBox.cs</DependentUpon>
     </Compile>
-    <Compile Include="Models\PowerPointPresentation.cs" />
+    <Compile Include="Models\PowerPointCurrentPresentationInfo.cs" />
     <Compile Include="Models\PowerPointSlide.cs" />
     <Compile Include="Models\PowerPointSpotlightSlide.cs" />
     <Compile Include="Models\TaggedText.cs" />
@@ -344,12 +369,19 @@
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="Views\SpeechPlayingForm.Designer.cs" />
+    <Compile Include="Views\LoadingDialog.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Views\LoadingDialog.Designer.cs">
+      <DependentUpon>LoadingDialog.cs</DependentUpon>
+    </Compile>
     <Compile Include="XMLMisc\XMLParser.cs" />
     <Compile Include="ZipStorer.cs" />
     <Compile Include="ZoomToArea.cs" />
     <None Include="Resources\ClosedHand.cur" />
     <None Include="Resources\OpenHand.cur" />
     <None Include="Resources\EyeDropper.cur" />
+    <None Include="Resources\HighlightWords.png" />
     <None Include="Resources\Saturation-icon_18x18.png" />
     <None Include="Resources\Saturation-icon_20x20.png" />
     <None Include="Resources\Saturation-icon_23x23.png" />
@@ -376,7 +408,6 @@
     <None Include="Resources\refresh-icon.png" />
     <None Include="Resources\ShapesLab.png" />
     <None Include="Resources\ColorsLab.png" />
-    <None Include="Resources\ColorLab.png" />
     <None Include="Resources\Eyedropper-icon.png" />
     <None Include="Resources\apply-icon.png" />
     <None Include="Resources\delete-icon.png" />
@@ -392,6 +423,9 @@
     <EmbeddedResource Include="ColorPicker\ColorPane.resx">
       <DependentUpon>ColorPane.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="Views\LoadingDialog.resx">
+      <DependentUpon>LoadingDialog.cs</DependentUpon>
+    </EmbeddedResource>
     <None Include="packages.config" />
     <Content Include="PowerPointLabs Quick Tutorial.pptx">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
@@ -402,6 +436,12 @@
     <None Include="Resources\Stop.png" />
     <None Include="Resources\Play.png" />
     <None Include="Resources\Pause.png" />
+    <EmbeddedResource Include="LabeledThumbnail.resx">
+      <DependentUpon>LabeledThumbnail.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="CustomShapePane.resx">
+      <DependentUpon>CustomShapePane.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="RecorderTaskPane.resx">
       <DependentUpon>RecorderTaskPane.cs</DependentUpon>
     </EmbeddedResource>
@@ -601,6 +641,7 @@
     <None Include="Resources\HighlightBackgroundContext.png" />
   </ItemGroup>
   <ItemGroup>
+    <Folder Include="CustomControls\" />
     <Folder Include="Utils\" />
   </ItemGroup>
   <!-- Include the build rules for a C# project. -->

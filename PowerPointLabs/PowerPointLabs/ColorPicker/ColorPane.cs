@@ -438,7 +438,7 @@ namespace PowerPointLabs
         {
             try
             {
-                var selection = PowerPointPresentation.CurrentSelection;
+                var selection = PowerPointCurrentPresentationInfo.CurrentSelection;
                 if (selection == null) return;
 
                 if (selection.Type == PpSelectionType.ppSelectionShapes)
@@ -454,7 +454,7 @@ namespace PowerPointLabs
                     _selectedText = null;
                 }
             }
-            catch (Exception exception)
+            catch (Exception)
             {
                 _selectedShapes = null;
                 _selectedText = null;
@@ -464,7 +464,7 @@ namespace PowerPointLabs
         {
             SelectShapes();
             if (_selectedShapes != null
-                && PowerPointPresentation.CurrentSelection.Type == PpSelectionType.ppSelectionShapes)
+                && PowerPointCurrentPresentationInfo.CurrentSelection.Type == PpSelectionType.ppSelectionShapes)
             {
                 foreach (PowerPoint.Shape s in _selectedShapes)
                 {
@@ -477,14 +477,14 @@ namespace PowerPointLabs
                         var rgb = (b << 16) | (g << 8) | (r);
                         ColorShapeWithColor(s, rgb, currMode);
                     }
-                    catch (Exception e)
+                    catch (Exception)
                     {
                         RecreateCorruptedShape(s);
                     }  
                 }
             }
             if (_selectedText != null
-                && PowerPointPresentation.CurrentSelection.Type == PpSelectionType.ppSelectionText)
+                && PowerPointCurrentPresentationInfo.CurrentSelection.Type == PpSelectionType.ppSelectionText)
             {
                 try
                 {
@@ -504,7 +504,7 @@ namespace PowerPointLabs
         private static void RecreateCorruptedShape(PowerPoint.Shape s)
         {
             s.Copy();
-            PowerPoint.Shape newShape = PowerPointPresentation.CurrentSlide.Shapes.Paste()[1];
+            PowerPoint.Shape newShape = PowerPointCurrentPresentationInfo.CurrentSlide.Shapes.Paste()[1];
 
             newShape.Select();
 
@@ -541,7 +541,7 @@ namespace PowerPointLabs
                 if (Globals.ThisAddIn.Application.ActiveWindow.Selection.ShapeRange.HasTextFrame
                     == Microsoft.Office.Core.MsoTriState.msoTrue)
                 {
-                    if (PowerPointPresentation.CurrentSelection.Type == PpSelectionType.ppSelectionText)
+                    if (PowerPointCurrentPresentationInfo.CurrentSelection.Type == PpSelectionType.ppSelectionText)
                     {
                         TextRange selectedText
                             = Globals.ThisAddIn.Application.ActiveWindow.Selection.TextRange.TrimText();
@@ -554,7 +554,7 @@ namespace PowerPointLabs
                             s.TextFrame.TextRange.TrimText().Font.Color.RGB = rgb;
                         }
                     }
-                    else if (PowerPointPresentation.CurrentSelection.Type == PpSelectionType.ppSelectionShapes)
+                    else if (PowerPointCurrentPresentationInfo.CurrentSelection.Type == PpSelectionType.ppSelectionShapes)
                     {
                         s.TextFrame.TextRange.TrimText().Font.Color.RGB = rgb;
                     }
@@ -647,7 +647,7 @@ namespace PowerPointLabs
                     brightnessBar.ValueChanged += brightnessBar_ValueChanged;
                     saturationBar.ValueChanged += saturationBar_ValueChanged;
                 }
-                catch (Exception exception)
+                catch (Exception)
                 {
                 }
             }
@@ -673,7 +673,7 @@ namespace PowerPointLabs
                 brightnessBar.ValueChanged += brightnessBar_ValueChanged;
                 saturationBar.ValueChanged += saturationBar_ValueChanged;
             }
-            catch (Exception exception)
+            catch (Exception)
             {
             }
         }
@@ -936,7 +936,7 @@ namespace PowerPointLabs
         {
             try
             {
-                if (PowerPointPresentation.SlideCount > 0)
+                if (PowerPointCurrentPresentationInfo.SlideCount > 0)
                 {
                     dataSource.themeColorOne = Color.White;
                     dataSource.themeColorTwo = Color.White;
@@ -1024,11 +1024,11 @@ namespace PowerPointLabs
             if (_selectedShapes == null && _selectedText == null)
                 return dataSource.selectedColor;
 
-            if (PowerPointPresentation.CurrentSelection.Type == PpSelectionType.ppSelectionShapes)
+            if (PowerPointCurrentPresentationInfo.CurrentSelection.Type == PpSelectionType.ppSelectionShapes)
             {
                 return GetSelectedShapeColor(_selectedShapes);
             }
-            if (PowerPointPresentation.CurrentSelection.Type == PpSelectionType.ppSelectionText)
+            if (PowerPointCurrentPresentationInfo.CurrentSelection.Type == PpSelectionType.ppSelectionText)
             {
                 var frame = _selectedText.Parent as PowerPoint.TextFrame;
                 var selectedShape = frame.Parent as PowerPoint.Shape;
@@ -1071,7 +1071,7 @@ namespace PowerPointLabs
                         && Globals.ThisAddIn.Application.ActiveWindow.Selection.ShapeRange.HasTextFrame
                         == Microsoft.Office.Core.MsoTriState.msoTrue)
                     {
-                        if (PowerPointPresentation.CurrentSelection.Type == PpSelectionType.ppSelectionText)
+                        if (PowerPointCurrentPresentationInfo.CurrentSelection.Type == PpSelectionType.ppSelectionText)
                         {
                             var selectedText
                                 = Globals.ThisAddIn.Application.ActiveWindow.Selection.TextRange.TrimText();
@@ -1086,7 +1086,7 @@ namespace PowerPointLabs
                                     ColorHelper.ReverseRGBToArgb(selectedShape.TextFrame.TextRange.Font.Color.RGB));
                             }
                         }
-                        else if (PowerPointPresentation.CurrentSelection.Type == PpSelectionType.ppSelectionShapes)
+                        else if (PowerPointCurrentPresentationInfo.CurrentSelection.Type == PpSelectionType.ppSelectionShapes)
                         {
                             return
                                 Color.FromArgb(

@@ -28,14 +28,30 @@ namespace PPExtraEventHelper
                 try
                 {
                     nextHandle = Native.SetClipboardViewer(instance.Handle);
+                    //if fails to set up clipboardViewer, re-try 5 times
+                    for (int i = 0; i < 5; i++)
+                    {
+                        if (!nextHandle.Equals(IntPtr.Zero)) break;
+                        nextHandle = Native.SetClipboardViewer(instance.Handle);
+                    }
                     isSuccessful = Native.AddClipboardFormatListener(instance.Handle);
+                    //if fails to set up clipboardFormatListener, re-try 5 times
+                    for (int i = 0; i < 5; i++)
+                    {
+                        if (isSuccessful) break;
+                        isSuccessful = Native.AddClipboardFormatListener(instance.Handle);
+                    }
+
                     handle = instance.Handle;
                     application.WindowSelectionChange += (selection) =>
                     {
                         selectedRange = selection;
-                        if (!isSuccessful)
+                        if (nextHandle.Equals(IntPtr.Zero))
                         {
                             nextHandle = Native.SetClipboardViewer(instance.Handle);
+                        }
+                        if (!isSuccessful)
+                        {
                             isSuccessful = Native.AddClipboardFormatListener(instance.Handle);
                         }
                     };
@@ -57,9 +73,12 @@ namespace PPExtraEventHelper
 
         protected override void Dispose(bool disposing)
         {
-            if (isSuccessful)
+            if (!nextHandle.Equals(IntPtr.Zero))
             {
                 Native.ChangeClipboardChain(handle, nextHandle);
+            }
+            if (isSuccessful)
+            {
                 Native.RemoveClipboardFormatListener(handle);
             }
         }
@@ -98,29 +117,15 @@ namespace PPExtraEventHelper
                 {
                     if (isCopyEvent)
                     {
-                        PREVENT_FINITE_LOOP_BEGIN();
                         PPCopy.AfterCopy(selectedRange);
-                        PREVENT_FINITE_LOOP_END();
                     }
-                    else//PasteEvent
+                    else //PasteEvent
                     {
-                        PREVENT_FINITE_LOOP_BEGIN();
                         PPCopy.AfterPaste(selectedRange);
-                        PREVENT_FINITE_LOOP_END();
                     }
                     isCopyEvent = false;
                 }
             }
-        }
-
-        private static void PREVENT_FINITE_LOOP_BEGIN()
-        {
-            Native.RemoveClipboardFormatListener(handle);
-        }
-
-        private static void PREVENT_FINITE_LOOP_END()
-        {
-            isSuccessful = Native.AddClipboardFormatListener(instance.Handle);
         }
     }
 }
