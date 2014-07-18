@@ -130,7 +130,7 @@
             this.panel1.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.panel1.Location = new System.Drawing.Point(19, 14);
             this.panel1.Name = "panel1";
-            this.panel1.Size = new System.Drawing.Size(75, 45);
+            this.panel1.Size = new System.Drawing.Size(45, 45);
             this.panel1.TabIndex = 0;
             this.panel1.DragDrop += new System.Windows.Forms.DragEventHandler(this.panel_DragDrop);
             this.panel1.DragEnter += new System.Windows.Forms.DragEventHandler(this.panel_DragEnter);
@@ -672,7 +672,6 @@
             this.ThemePanel1.Name = "ThemePanel1";
             this.ThemePanel1.Size = new System.Drawing.Size(19, 19);
             this.ThemePanel1.TabIndex = 3;
-            this.toolTip1.SetToolTip(this.ThemePanel1, "Background 1");
             this.ThemePanel1.Click += new System.EventHandler(this.MatchingPanel_Click);
             this.ThemePanel1.DragDrop += new System.Windows.Forms.DragEventHandler(this.panel_DragDrop);
             this.ThemePanel1.DragEnter += new System.Windows.Forms.DragEventHandler(this.panel_DragEnter);
@@ -688,7 +687,6 @@
             this.ThemePanel2.Name = "ThemePanel2";
             this.ThemePanel2.Size = new System.Drawing.Size(19, 19);
             this.ThemePanel2.TabIndex = 4;
-            this.toolTip1.SetToolTip(this.ThemePanel2, "Text 1");
             this.ThemePanel2.Click += new System.EventHandler(this.MatchingPanel_Click);
             this.ThemePanel2.DragDrop += new System.Windows.Forms.DragEventHandler(this.panel_DragDrop);
             this.ThemePanel2.DragEnter += new System.Windows.Forms.DragEventHandler(this.panel_DragEnter);
@@ -704,7 +702,6 @@
             this.ThemePanel3.Name = "ThemePanel3";
             this.ThemePanel3.Size = new System.Drawing.Size(19, 19);
             this.ThemePanel3.TabIndex = 5;
-            this.toolTip1.SetToolTip(this.ThemePanel3, "Background 2");
             this.ThemePanel3.Click += new System.EventHandler(this.MatchingPanel_Click);
             this.ThemePanel3.DragDrop += new System.Windows.Forms.DragEventHandler(this.panel_DragDrop);
             this.ThemePanel3.DragEnter += new System.Windows.Forms.DragEventHandler(this.panel_DragEnter);
@@ -720,7 +717,6 @@
             this.ThemePanel4.Name = "ThemePanel4";
             this.ThemePanel4.Size = new System.Drawing.Size(19, 19);
             this.ThemePanel4.TabIndex = 6;
-            this.toolTip1.SetToolTip(this.ThemePanel4, "Text 2");
             this.ThemePanel4.Click += new System.EventHandler(this.MatchingPanel_Click);
             this.ThemePanel4.DragDrop += new System.Windows.Forms.DragEventHandler(this.panel_DragDrop);
             this.ThemePanel4.DragEnter += new System.Windows.Forms.DragEventHandler(this.panel_DragEnter);
@@ -736,7 +732,6 @@
             this.ThemePanel5.Name = "ThemePanel5";
             this.ThemePanel5.Size = new System.Drawing.Size(19, 19);
             this.ThemePanel5.TabIndex = 7;
-            this.toolTip1.SetToolTip(this.ThemePanel5, "Accent 1");
             this.ThemePanel5.Click += new System.EventHandler(this.MatchingPanel_Click);
             this.ThemePanel5.DragDrop += new System.Windows.Forms.DragEventHandler(this.panel_DragDrop);
             this.ThemePanel5.DragEnter += new System.Windows.Forms.DragEventHandler(this.panel_DragEnter);
@@ -752,7 +747,6 @@
             this.ThemePanel6.Name = "ThemePanel6";
             this.ThemePanel6.Size = new System.Drawing.Size(19, 19);
             this.ThemePanel6.TabIndex = 8;
-            this.toolTip1.SetToolTip(this.ThemePanel6, "Accent 2");
             this.ThemePanel6.Click += new System.EventHandler(this.MatchingPanel_Click);
             this.ThemePanel6.DragDrop += new System.Windows.Forms.DragEventHandler(this.panel_DragDrop);
             this.ThemePanel6.DragEnter += new System.Windows.Forms.DragEventHandler(this.panel_DragEnter);
@@ -768,7 +762,6 @@
             this.ThemePanel7.Name = "ThemePanel7";
             this.ThemePanel7.Size = new System.Drawing.Size(19, 19);
             this.ThemePanel7.TabIndex = 9;
-            this.toolTip1.SetToolTip(this.ThemePanel7, "Accent 3");
             this.ThemePanel7.Click += new System.EventHandler(this.MatchingPanel_Click);
             this.ThemePanel7.DragDrop += new System.Windows.Forms.DragEventHandler(this.panel_DragDrop);
             this.ThemePanel7.DragEnter += new System.Windows.Forms.DragEventHandler(this.panel_DragEnter);
@@ -784,7 +777,6 @@
             this.ThemePanel8.Name = "ThemePanel8";
             this.ThemePanel8.Size = new System.Drawing.Size(19, 19);
             this.ThemePanel8.TabIndex = 10;
-            this.toolTip1.SetToolTip(this.ThemePanel8, "Accent 4");
             this.ThemePanel8.Click += new System.EventHandler(this.MatchingPanel_Click);
             this.ThemePanel8.DragDrop += new System.Windows.Forms.DragEventHandler(this.panel_DragDrop);
             this.ThemePanel8.DragEnter += new System.Windows.Forms.DragEventHandler(this.panel_DragEnter);
@@ -800,7 +792,6 @@
             this.ThemePanel9.Name = "ThemePanel9";
             this.ThemePanel9.Size = new System.Drawing.Size(19, 19);
             this.ThemePanel9.TabIndex = 11;
-            this.toolTip1.SetToolTip(this.ThemePanel9, "Accent 5");
             this.ThemePanel9.Click += new System.EventHandler(this.MatchingPanel_Click);
             this.ThemePanel9.DragDrop += new System.Windows.Forms.DragEventHandler(this.panel_DragDrop);
             this.ThemePanel9.DragEnter += new System.Windows.Forms.DragEventHandler(this.panel_DragEnter);
@@ -816,7 +807,6 @@
             this.ThemePanel10.Name = "ThemePanel10";
             this.ThemePanel10.Size = new System.Drawing.Size(19, 19);
             this.ThemePanel10.TabIndex = 11;
-            this.toolTip1.SetToolTip(this.ThemePanel10, "Accent 6");
             this.ThemePanel10.Click += new System.EventHandler(this.MatchingPanel_Click);
             this.ThemePanel10.DragDrop += new System.Windows.Forms.DragEventHandler(this.panel_DragDrop);
             this.ThemePanel10.DragEnter += new System.Windows.Forms.DragEventHandler(this.panel_DragEnter);
@@ -897,7 +887,6 @@
             this.panel3.Name = "panel3";
             this.panel3.Size = new System.Drawing.Size(25, 25);
             this.panel3.TabIndex = 29;
-            this.toolTip1.SetToolTip(this.panel3, "Saturation");
             // 
             // panel2
             // 
@@ -907,7 +896,6 @@
             this.panel2.Name = "panel2";
             this.panel2.Size = new System.Drawing.Size(25, 25);
             this.panel2.TabIndex = 28;
-            this.toolTip1.SetToolTip(this.panel2, "Brightness");
             // 
             // flowLayoutPanel10
             // 
@@ -987,7 +975,7 @@
             this.groupBox2.Size = new System.Drawing.Size(275, 109);
             this.groupBox2.TabIndex = 31;
             this.groupBox2.TabStop = false;
-            this.groupBox2.Text = "Your Favorite Colors";
+            this.groupBox2.Text = "Favorites";
             // 
             // ColorPane
             // 

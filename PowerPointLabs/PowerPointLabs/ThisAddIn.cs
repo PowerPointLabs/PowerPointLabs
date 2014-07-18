@@ -330,7 +330,7 @@ namespace PowerPointLabs
             // register all task panes when new document opens
             RegisterTaskPane(new RecorderTaskPane(tempName), "Record Management", activeWindow,
                              TaskPaneVisibleValueChangedEventHandler, null);
-            RegisterTaskPane(new ColorPane(), "Color Panel", activeWindow, null, null);
+            RegisterTaskPane(new ColorPane(), "Colors Lab", activeWindow, null, null);
             // setup a new recorder pane when an exist file opened
             //SetupRecorderTaskPane(Pres.Application.ActiveWindow);
         }
@@ -362,7 +362,7 @@ namespace PowerPointLabs
             // register all task panes when opening documents
             RegisterTaskPane(new RecorderTaskPane(tempName), "Record Management", activeWindow,
                              TaskPaneVisibleValueChangedEventHandler, null);
-            RegisterTaskPane(new ColorPane(), "Color Panel", activeWindow, null, null);
+            RegisterTaskPane(new ColorPane(), "Colors Lab", activeWindow, null, null);
         }
 
         void ThisAddIn_PresentationClose(PowerPoint.Presentation Pres)

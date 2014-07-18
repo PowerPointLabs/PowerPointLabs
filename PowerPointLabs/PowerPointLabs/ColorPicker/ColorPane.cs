@@ -114,12 +114,59 @@ namespace PowerPointLabs
         #region ToolTip
         private void InitToolTipControl()
         {
-            toolTip1.SetToolTip(this.LoadButton, "Load Existing Theme");
-            toolTip1.SetToolTip(this.SaveThemeButton, "Save Current Theme");
-            toolTip1.SetToolTip(this.ResetThemeButton, "Reset the Current Theme Colors to Current Slide Theme");
-            toolTip1.SetToolTip(this.FontButton, "Font Color\r\nMouseDown + Drag to EyeDrop\r\nClick to Edit");
-            toolTip1.SetToolTip(this.LineButton, "Shape Line Color\r\nMouseDown + Drag to EyeDrop\r\nClick to Edit");
-            toolTip1.SetToolTip(this.FillButton, "Shape Fill Color\r\nMouseDown + Drag to EyeDrop\r\nClick to Edit");
+            //TODO: mode these strings into the const class
+            toolTip1.SetToolTip(panel1, "Use this to choose main color: " +
+                                        "\r\nDrag the button to pick a color from an area in the screen, " +
+                                        "\r\nor click the button to choose a color from the Color dialog.");
+            toolTip1.SetToolTip(this.FontButton, "Change FONT color of selected shapes: " +
+                                                 "\r\nDrag the button to pick a color from an area in the screen, " +
+                                                 "\r\nor click the button to choose a color from the Color dialog.");
+            toolTip1.SetToolTip(this.LineButton, "Change LINE color of selected shapes: " +
+                                                 "\r\nDrag the button to pick a color from an area in the screen, " +
+                                                 "\r\nor click the button to choose a color from the Color dialog.");
+            toolTip1.SetToolTip(this.FillButton, "Change FILL color of selected shapes: " +
+                                                 "\r\nDrag the button to pick a color from an area in the screen, " +
+                                                 "\r\nor click the button to choose a color from the Color dialog.");
+            toolTip1.SetToolTip(panel2, "Move the slider to adjust the main color’s brightness.");
+            toolTip1.SetToolTip(panel3, "Move the slider to adjust the main color’s saturation.");
+            toolTip1.SetToolTip(this.SaveThemeButton, "Save the favorite colors.");
+            toolTip1.SetToolTip(this.LoadButton, "Load existing favorite colors.");
+            toolTip1.SetToolTip(this.ResetThemeButton, "Reset the current favorite colors to your last loaded ones.");
+            toolTip1.SetToolTip(this.EmptyPanelButton, "Empty the favorite colors.");
+            String colorRectangleToolTip =
+                "Click the color to select it as main color. You can drag-and-drop these colors into the favorites panel.";
+            String themeColorRectangleToolTip =
+                "Click the color to select it as main color.";
+            toolTip1.SetToolTip(this.ThemePanel1, themeColorRectangleToolTip);
+            toolTip1.SetToolTip(this.ThemePanel2, themeColorRectangleToolTip);
+            toolTip1.SetToolTip(this.ThemePanel3, themeColorRectangleToolTip);
+            toolTip1.SetToolTip(this.ThemePanel4, themeColorRectangleToolTip);
+            toolTip1.SetToolTip(this.ThemePanel5, themeColorRectangleToolTip);
+            toolTip1.SetToolTip(this.ThemePanel6, themeColorRectangleToolTip);
+            toolTip1.SetToolTip(this.ThemePanel7, themeColorRectangleToolTip);
+            toolTip1.SetToolTip(this.ThemePanel8, themeColorRectangleToolTip);
+            toolTip1.SetToolTip(this.ThemePanel9, themeColorRectangleToolTip);
+            toolTip1.SetToolTip(this.ThemePanel10, themeColorRectangleToolTip);
+            toolTip1.SetToolTip(this.MonoPanel1, colorRectangleToolTip);
+            toolTip1.SetToolTip(this.MonoPanel2, colorRectangleToolTip);
+            toolTip1.SetToolTip(this.MonoPanel3, colorRectangleToolTip);
+            toolTip1.SetToolTip(this.MonoPanel4, colorRectangleToolTip);
+            toolTip1.SetToolTip(this.MonoPanel5, colorRectangleToolTip);
+            toolTip1.SetToolTip(this.MonoPanel6, colorRectangleToolTip);
+            toolTip1.SetToolTip(this.MonoPanel7, colorRectangleToolTip);
+            toolTip1.SetToolTip(this.AnalogousLighter, colorRectangleToolTip);
+            toolTip1.SetToolTip(this.AnalogousSelected, colorRectangleToolTip);
+            toolTip1.SetToolTip(this.AnalogousDarker, colorRectangleToolTip);
+            toolTip1.SetToolTip(this.ComplementaryLighter, colorRectangleToolTip);
+            toolTip1.SetToolTip(this.ComplementarySelected, colorRectangleToolTip);
+            toolTip1.SetToolTip(this.ComplementaryDarker, colorRectangleToolTip);
+            toolTip1.SetToolTip(this.TriadicLower, colorRectangleToolTip);
+            toolTip1.SetToolTip(this.TriadicSelected, colorRectangleToolTip);
+            toolTip1.SetToolTip(this.TriadicHigher, colorRectangleToolTip);
+            toolTip1.SetToolTip(this.Tetradic1, colorRectangleToolTip);
+            toolTip1.SetToolTip(this.Tetradic2, colorRectangleToolTip);
+            toolTip1.SetToolTip(this.Tetradic3, colorRectangleToolTip);
+            toolTip1.SetToolTip(this.TetradicSelected, colorRectangleToolTip);
         }
         #endregion
 
@@ -351,16 +398,19 @@ namespace PowerPointLabs
 
         private void BeginEyedropping()
         {
+            if (!VerifyIsShapeSelected()) return;
+
             _timerCounter = 0;
             timer1.Start();
             _native = new LMouseUpListener();
             _native.LButtonUpClicked +=
-                 new EventHandler<SysMouseEventInfo>(_native_LButtonClicked);
-            SelectShapes();
+                new EventHandler<SysMouseEventInfo>(_native_LButtonClicked);
         }
 
         private void timer1_Tick(object sender, EventArgs e)
         {
+            //this is to ensure that EyeDropper tool feature doesn't
+            //affect Color Dialog tool feature
             if (_timerCounter < TIMER_COUNTER_THRESHOLD)
             {
                 _timerCounter++;
@@ -397,6 +447,11 @@ namespace PowerPointLabs
                 } else if (selection.Type == PpSelectionType.ppSelectionText)
                 {
                     _selectedText = selection.TextRange;
+                }
+                else
+                {
+                    _selectedShapes = null;
+                    _selectedText = null;
                 }
             }
             catch (Exception exception)
@@ -521,6 +576,8 @@ namespace PowerPointLabs
         {
             _native.Close();
             timer1.Stop();
+            //this is to ensure that EyeDropper tool feature doesn't
+            //affect Color Dialog tool feature
             if (_timerCounter >= TIMER_COUNTER_THRESHOLD)
             {
                 Globals.ThisAddIn.Application.StartNewUndoEntry();
@@ -921,6 +978,8 @@ namespace PowerPointLabs
             }
             SetModeForSenderName(buttonName);
 
+            if (!VerifyIsShapeSelected()) return;
+
             colorDialog1.Color = GetSelectedShapeColor();
 
             DialogResult result = colorDialog1.ShowDialog();
@@ -1056,6 +1115,18 @@ namespace PowerPointLabs
             }
             SetModeForSenderName(buttonName);
             BeginEyedropping();
+        }
+
+        private Boolean VerifyIsShapeSelected()
+        {
+            SelectShapes();
+            if (_selectedShapes == null && _selectedText == null && currMode != MODE.NONE)
+            {
+                //TODO: move this string to the const file
+                MessageBox.Show("To use this feature, you may need to select at least one shape.", "Colors Lab");
+                return false;
+            }
+            return true;
         }
     }
 }
