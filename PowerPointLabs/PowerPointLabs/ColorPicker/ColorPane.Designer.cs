@@ -76,7 +76,6 @@
             this.MonoPanel6 = new System.Windows.Forms.Panel();
             this.MonoPanel7 = new System.Windows.Forms.Panel();
             this.themeLayoutPanel = new System.Windows.Forms.FlowLayoutPanel();
-            this.label6 = new System.Windows.Forms.Label();
             this.flowLayoutPanel11 = new System.Windows.Forms.FlowLayoutPanel();
             this.ThemePanel1 = new System.Windows.Forms.Panel();
             this.ThemePanel2 = new System.Windows.Forms.Panel();
@@ -88,10 +87,10 @@
             this.ThemePanel8 = new System.Windows.Forms.Panel();
             this.ThemePanel9 = new System.Windows.Forms.Panel();
             this.ThemePanel10 = new System.Windows.Forms.Panel();
+            this.label6 = new System.Windows.Forms.Label();
             this.SaveThemeButton = new System.Windows.Forms.Button();
             this.LoadButton = new System.Windows.Forms.Button();
             this.ResetThemeButton = new System.Windows.Forms.Button();
-            this.ApplyThemeButton = new System.Windows.Forms.Button();
             this.EmptyPanelButton = new System.Windows.Forms.Button();
             this.saveFileDialog1 = new System.Windows.Forms.SaveFileDialog();
             this.openFileDialog1 = new System.Windows.Forms.OpenFileDialog();
@@ -131,7 +130,7 @@
             this.panel1.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.panel1.Location = new System.Drawing.Point(19, 14);
             this.panel1.Name = "panel1";
-            this.panel1.Size = new System.Drawing.Size(75, 45);
+            this.panel1.Size = new System.Drawing.Size(45, 45);
             this.panel1.TabIndex = 0;
             this.panel1.DragDrop += new System.Windows.Forms.DragEventHandler(this.panel_DragDrop);
             this.panel1.DragEnter += new System.Windows.Forms.DragEventHandler(this.panel_DragEnter);
@@ -189,7 +188,9 @@
             this.AnalogousLighter.TabIndex = 2;
             this.AnalogousLighter.Click += new System.EventHandler(this.MatchingPanel_Click);
             this.AnalogousLighter.MouseDown += new System.Windows.Forms.MouseEventHandler(this.MatchingPanel_MouseDown);
+            this.AnalogousLighter.MouseEnter += new System.EventHandler(this.MatchingPanel_MouseEnter);
             this.AnalogousLighter.MouseMove += new System.Windows.Forms.MouseEventHandler(this.MatchingPanel_MouseMove);
+            this.AnalogousLighter.MouseUp += new System.Windows.Forms.MouseEventHandler(this.MatchingPanel_MouseUp);
             // 
             // contextMenuStrip1
             // 
@@ -224,7 +225,9 @@
             this.AnalogousSelected.TabIndex = 3;
             this.AnalogousSelected.Click += new System.EventHandler(this.MatchingPanel_Click);
             this.AnalogousSelected.MouseDown += new System.Windows.Forms.MouseEventHandler(this.MatchingPanel_MouseDown);
+            this.AnalogousSelected.MouseEnter += new System.EventHandler(this.MatchingPanel_MouseEnter);
             this.AnalogousSelected.MouseMove += new System.Windows.Forms.MouseEventHandler(this.MatchingPanel_MouseMove);
+            this.AnalogousSelected.MouseUp += new System.Windows.Forms.MouseEventHandler(this.MatchingPanel_MouseUp);
             // 
             // AnalogousDarker
             // 
@@ -237,7 +240,9 @@
             this.AnalogousDarker.TabIndex = 4;
             this.AnalogousDarker.Click += new System.EventHandler(this.MatchingPanel_Click);
             this.AnalogousDarker.MouseDown += new System.Windows.Forms.MouseEventHandler(this.MatchingPanel_MouseDown);
+            this.AnalogousDarker.MouseEnter += new System.EventHandler(this.MatchingPanel_MouseEnter);
             this.AnalogousDarker.MouseMove += new System.Windows.Forms.MouseEventHandler(this.MatchingPanel_MouseMove);
+            this.AnalogousDarker.MouseUp += new System.Windows.Forms.MouseEventHandler(this.MatchingPanel_MouseUp);
             // 
             // flowLayoutPanel2
             // 
@@ -282,7 +287,9 @@
             this.ComplementaryLighter.TabIndex = 2;
             this.ComplementaryLighter.Click += new System.EventHandler(this.MatchingPanel_Click);
             this.ComplementaryLighter.MouseDown += new System.Windows.Forms.MouseEventHandler(this.MatchingPanel_MouseDown);
+            this.ComplementaryLighter.MouseEnter += new System.EventHandler(this.MatchingPanel_MouseEnter);
             this.ComplementaryLighter.MouseMove += new System.Windows.Forms.MouseEventHandler(this.MatchingPanel_MouseMove);
+            this.ComplementaryLighter.MouseUp += new System.Windows.Forms.MouseEventHandler(this.MatchingPanel_MouseUp);
             // 
             // ComplementarySelected
             // 
@@ -295,7 +302,9 @@
             this.ComplementarySelected.TabIndex = 3;
             this.ComplementarySelected.Click += new System.EventHandler(this.MatchingPanel_Click);
             this.ComplementarySelected.MouseDown += new System.Windows.Forms.MouseEventHandler(this.MatchingPanel_MouseDown);
+            this.ComplementarySelected.MouseEnter += new System.EventHandler(this.MatchingPanel_MouseEnter);
             this.ComplementarySelected.MouseMove += new System.Windows.Forms.MouseEventHandler(this.MatchingPanel_MouseMove);
+            this.ComplementarySelected.MouseUp += new System.Windows.Forms.MouseEventHandler(this.MatchingPanel_MouseUp);
             // 
             // ComplementaryDarker
             // 
@@ -308,7 +317,9 @@
             this.ComplementaryDarker.TabIndex = 4;
             this.ComplementaryDarker.Click += new System.EventHandler(this.MatchingPanel_Click);
             this.ComplementaryDarker.MouseDown += new System.Windows.Forms.MouseEventHandler(this.MatchingPanel_MouseDown);
+            this.ComplementaryDarker.MouseEnter += new System.EventHandler(this.MatchingPanel_MouseEnter);
             this.ComplementaryDarker.MouseMove += new System.Windows.Forms.MouseEventHandler(this.MatchingPanel_MouseMove);
+            this.ComplementaryDarker.MouseUp += new System.Windows.Forms.MouseEventHandler(this.MatchingPanel_MouseUp);
             // 
             // flowLayoutPanel3
             // 
@@ -353,7 +364,9 @@
             this.TriadicLower.TabIndex = 2;
             this.TriadicLower.Click += new System.EventHandler(this.MatchingPanel_Click);
             this.TriadicLower.MouseDown += new System.Windows.Forms.MouseEventHandler(this.MatchingPanel_MouseDown);
+            this.TriadicLower.MouseEnter += new System.EventHandler(this.MatchingPanel_MouseEnter);
             this.TriadicLower.MouseMove += new System.Windows.Forms.MouseEventHandler(this.MatchingPanel_MouseMove);
+            this.TriadicLower.MouseUp += new System.Windows.Forms.MouseEventHandler(this.MatchingPanel_MouseUp);
             // 
             // TriadicSelected
             // 
@@ -366,7 +379,9 @@
             this.TriadicSelected.TabIndex = 3;
             this.TriadicSelected.Click += new System.EventHandler(this.MatchingPanel_Click);
             this.TriadicSelected.MouseDown += new System.Windows.Forms.MouseEventHandler(this.MatchingPanel_MouseDown);
+            this.TriadicSelected.MouseEnter += new System.EventHandler(this.MatchingPanel_MouseEnter);
             this.TriadicSelected.MouseMove += new System.Windows.Forms.MouseEventHandler(this.MatchingPanel_MouseMove);
+            this.TriadicSelected.MouseUp += new System.Windows.Forms.MouseEventHandler(this.MatchingPanel_MouseUp);
             // 
             // TriadicHigher
             // 
@@ -379,7 +394,9 @@
             this.TriadicHigher.TabIndex = 4;
             this.TriadicHigher.Click += new System.EventHandler(this.MatchingPanel_Click);
             this.TriadicHigher.MouseDown += new System.Windows.Forms.MouseEventHandler(this.MatchingPanel_MouseDown);
+            this.TriadicHigher.MouseEnter += new System.EventHandler(this.MatchingPanel_MouseEnter);
             this.TriadicHigher.MouseMove += new System.Windows.Forms.MouseEventHandler(this.MatchingPanel_MouseMove);
+            this.TriadicHigher.MouseUp += new System.Windows.Forms.MouseEventHandler(this.MatchingPanel_MouseUp);
             // 
             // flowLayoutPanel4
             // 
@@ -425,7 +442,9 @@
             this.Tetradic1.TabIndex = 3;
             this.Tetradic1.Click += new System.EventHandler(this.MatchingPanel_Click);
             this.Tetradic1.MouseDown += new System.Windows.Forms.MouseEventHandler(this.MatchingPanel_MouseDown);
+            this.Tetradic1.MouseEnter += new System.EventHandler(this.MatchingPanel_MouseEnter);
             this.Tetradic1.MouseMove += new System.Windows.Forms.MouseEventHandler(this.MatchingPanel_MouseMove);
+            this.Tetradic1.MouseUp += new System.Windows.Forms.MouseEventHandler(this.MatchingPanel_MouseUp);
             // 
             // TetradicSelected
             // 
@@ -438,7 +457,9 @@
             this.TetradicSelected.TabIndex = 4;
             this.TetradicSelected.Click += new System.EventHandler(this.MatchingPanel_Click);
             this.TetradicSelected.MouseDown += new System.Windows.Forms.MouseEventHandler(this.MatchingPanel_MouseDown);
+            this.TetradicSelected.MouseEnter += new System.EventHandler(this.MatchingPanel_MouseEnter);
             this.TetradicSelected.MouseMove += new System.Windows.Forms.MouseEventHandler(this.MatchingPanel_MouseMove);
+            this.TetradicSelected.MouseUp += new System.Windows.Forms.MouseEventHandler(this.MatchingPanel_MouseUp);
             // 
             // Tetradic2
             // 
@@ -451,7 +472,9 @@
             this.Tetradic2.TabIndex = 5;
             this.Tetradic2.Click += new System.EventHandler(this.MatchingPanel_Click);
             this.Tetradic2.MouseDown += new System.Windows.Forms.MouseEventHandler(this.MatchingPanel_MouseDown);
+            this.Tetradic2.MouseEnter += new System.EventHandler(this.MatchingPanel_MouseEnter);
             this.Tetradic2.MouseMove += new System.Windows.Forms.MouseEventHandler(this.MatchingPanel_MouseMove);
+            this.Tetradic2.MouseUp += new System.Windows.Forms.MouseEventHandler(this.MatchingPanel_MouseUp);
             // 
             // Tetradic3
             // 
@@ -464,7 +487,9 @@
             this.Tetradic3.TabIndex = 6;
             this.Tetradic3.Click += new System.EventHandler(this.MatchingPanel_Click);
             this.Tetradic3.MouseDown += new System.Windows.Forms.MouseEventHandler(this.MatchingPanel_MouseDown);
+            this.Tetradic3.MouseEnter += new System.EventHandler(this.MatchingPanel_MouseEnter);
             this.Tetradic3.MouseMove += new System.Windows.Forms.MouseEventHandler(this.MatchingPanel_MouseMove);
+            this.Tetradic3.MouseUp += new System.Windows.Forms.MouseEventHandler(this.MatchingPanel_MouseUp);
             // 
             // brightnessBar
             // 
@@ -543,14 +568,16 @@
             // 
             this.MonoPanel1.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.MonoPanel1.ContextMenuStrip = this.contextMenuStrip1;
-            this.MonoPanel1.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.MonoPanel1.Cursor = System.Windows.Forms.Cursors.Default;
             this.MonoPanel1.Location = new System.Drawing.Point(3, 3);
             this.MonoPanel1.Name = "MonoPanel1";
             this.MonoPanel1.Size = new System.Drawing.Size(22, 22);
             this.MonoPanel1.TabIndex = 0;
             this.MonoPanel1.Click += new System.EventHandler(this.MatchingPanel_Click);
             this.MonoPanel1.MouseDown += new System.Windows.Forms.MouseEventHandler(this.MatchingPanel_MouseDown);
+            this.MonoPanel1.MouseEnter += new System.EventHandler(this.MatchingPanel_MouseEnter);
             this.MonoPanel1.MouseMove += new System.Windows.Forms.MouseEventHandler(this.MatchingPanel_MouseMove);
+            this.MonoPanel1.MouseUp += new System.Windows.Forms.MouseEventHandler(this.MatchingPanel_MouseUp);
             // 
             // MonoPanel2
             // 
@@ -563,7 +590,9 @@
             this.MonoPanel2.TabIndex = 1;
             this.MonoPanel2.Click += new System.EventHandler(this.MatchingPanel_Click);
             this.MonoPanel2.MouseDown += new System.Windows.Forms.MouseEventHandler(this.MatchingPanel_MouseDown);
+            this.MonoPanel2.MouseEnter += new System.EventHandler(this.MatchingPanel_MouseEnter);
             this.MonoPanel2.MouseMove += new System.Windows.Forms.MouseEventHandler(this.MatchingPanel_MouseMove);
+            this.MonoPanel2.MouseUp += new System.Windows.Forms.MouseEventHandler(this.MatchingPanel_MouseUp);
             // 
             // MonoPanel3
             // 
@@ -576,7 +605,9 @@
             this.MonoPanel3.TabIndex = 1;
             this.MonoPanel3.Click += new System.EventHandler(this.MatchingPanel_Click);
             this.MonoPanel3.MouseDown += new System.Windows.Forms.MouseEventHandler(this.MatchingPanel_MouseDown);
+            this.MonoPanel3.MouseEnter += new System.EventHandler(this.MatchingPanel_MouseEnter);
             this.MonoPanel3.MouseMove += new System.Windows.Forms.MouseEventHandler(this.MatchingPanel_MouseMove);
+            this.MonoPanel3.MouseUp += new System.Windows.Forms.MouseEventHandler(this.MatchingPanel_MouseUp);
             // 
             // MonoPanel4
             // 
@@ -589,7 +620,9 @@
             this.MonoPanel4.TabIndex = 2;
             this.MonoPanel4.Click += new System.EventHandler(this.MatchingPanel_Click);
             this.MonoPanel4.MouseDown += new System.Windows.Forms.MouseEventHandler(this.MatchingPanel_MouseDown);
+            this.MonoPanel4.MouseEnter += new System.EventHandler(this.MatchingPanel_MouseEnter);
             this.MonoPanel4.MouseMove += new System.Windows.Forms.MouseEventHandler(this.MatchingPanel_MouseMove);
+            this.MonoPanel4.MouseUp += new System.Windows.Forms.MouseEventHandler(this.MatchingPanel_MouseUp);
             // 
             // MonoPanel5
             // 
@@ -602,7 +635,9 @@
             this.MonoPanel5.TabIndex = 3;
             this.MonoPanel5.Click += new System.EventHandler(this.MatchingPanel_Click);
             this.MonoPanel5.MouseDown += new System.Windows.Forms.MouseEventHandler(this.MatchingPanel_MouseDown);
+            this.MonoPanel5.MouseEnter += new System.EventHandler(this.MatchingPanel_MouseEnter);
             this.MonoPanel5.MouseMove += new System.Windows.Forms.MouseEventHandler(this.MatchingPanel_MouseMove);
+            this.MonoPanel5.MouseUp += new System.Windows.Forms.MouseEventHandler(this.MatchingPanel_MouseUp);
             // 
             // MonoPanel6
             // 
@@ -615,7 +650,9 @@
             this.MonoPanel6.TabIndex = 4;
             this.MonoPanel6.Click += new System.EventHandler(this.MatchingPanel_Click);
             this.MonoPanel6.MouseDown += new System.Windows.Forms.MouseEventHandler(this.MatchingPanel_MouseDown);
+            this.MonoPanel6.MouseEnter += new System.EventHandler(this.MatchingPanel_MouseEnter);
             this.MonoPanel6.MouseMove += new System.Windows.Forms.MouseEventHandler(this.MatchingPanel_MouseMove);
+            this.MonoPanel6.MouseUp += new System.Windows.Forms.MouseEventHandler(this.MatchingPanel_MouseUp);
             // 
             // MonoPanel7
             // 
@@ -628,7 +665,9 @@
             this.MonoPanel7.TabIndex = 5;
             this.MonoPanel7.Click += new System.EventHandler(this.MatchingPanel_Click);
             this.MonoPanel7.MouseDown += new System.Windows.Forms.MouseEventHandler(this.MatchingPanel_MouseDown);
+            this.MonoPanel7.MouseEnter += new System.EventHandler(this.MatchingPanel_MouseEnter);
             this.MonoPanel7.MouseMove += new System.Windows.Forms.MouseEventHandler(this.MatchingPanel_MouseMove);
+            this.MonoPanel7.MouseUp += new System.Windows.Forms.MouseEventHandler(this.MatchingPanel_MouseUp);
             // 
             // themeLayoutPanel
             // 
@@ -638,23 +677,11 @@
             this.themeLayoutPanel.Controls.Add(this.SaveThemeButton);
             this.themeLayoutPanel.Controls.Add(this.LoadButton);
             this.themeLayoutPanel.Controls.Add(this.ResetThemeButton);
-            this.themeLayoutPanel.Controls.Add(this.ApplyThemeButton);
             this.themeLayoutPanel.Controls.Add(this.EmptyPanelButton);
             this.themeLayoutPanel.Location = new System.Drawing.Point(2, 19);
             this.themeLayoutPanel.Name = "themeLayoutPanel";
             this.themeLayoutPanel.Size = new System.Drawing.Size(271, 87);
             this.themeLayoutPanel.TabIndex = 11;
-            // 
-            // label6
-            // 
-            this.label6.AutoSize = true;
-            this.label6.BackColor = System.Drawing.SystemColors.Window;
-            this.label6.Font = new System.Drawing.Font("Arial", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label6.ForeColor = System.Drawing.SystemColors.ControlText;
-            this.label6.Location = new System.Drawing.Point(267, 0);
-            this.label6.Name = "label6";
-            this.label6.Size = new System.Drawing.Size(0, 16);
-            this.label6.TabIndex = 6;
             // 
             // flowLayoutPanel11
             // 
@@ -685,7 +712,6 @@
             this.ThemePanel1.Name = "ThemePanel1";
             this.ThemePanel1.Size = new System.Drawing.Size(19, 19);
             this.ThemePanel1.TabIndex = 3;
-            this.toolTip1.SetToolTip(this.ThemePanel1, "Background 1");
             this.ThemePanel1.Click += new System.EventHandler(this.MatchingPanel_Click);
             this.ThemePanel1.DragDrop += new System.Windows.Forms.DragEventHandler(this.panel_DragDrop);
             this.ThemePanel1.DragEnter += new System.Windows.Forms.DragEventHandler(this.panel_DragEnter);
@@ -701,7 +727,6 @@
             this.ThemePanel2.Name = "ThemePanel2";
             this.ThemePanel2.Size = new System.Drawing.Size(19, 19);
             this.ThemePanel2.TabIndex = 4;
-            this.toolTip1.SetToolTip(this.ThemePanel2, "Text 1");
             this.ThemePanel2.Click += new System.EventHandler(this.MatchingPanel_Click);
             this.ThemePanel2.DragDrop += new System.Windows.Forms.DragEventHandler(this.panel_DragDrop);
             this.ThemePanel2.DragEnter += new System.Windows.Forms.DragEventHandler(this.panel_DragEnter);
@@ -717,7 +742,6 @@
             this.ThemePanel3.Name = "ThemePanel3";
             this.ThemePanel3.Size = new System.Drawing.Size(19, 19);
             this.ThemePanel3.TabIndex = 5;
-            this.toolTip1.SetToolTip(this.ThemePanel3, "Background 2");
             this.ThemePanel3.Click += new System.EventHandler(this.MatchingPanel_Click);
             this.ThemePanel3.DragDrop += new System.Windows.Forms.DragEventHandler(this.panel_DragDrop);
             this.ThemePanel3.DragEnter += new System.Windows.Forms.DragEventHandler(this.panel_DragEnter);
@@ -733,7 +757,6 @@
             this.ThemePanel4.Name = "ThemePanel4";
             this.ThemePanel4.Size = new System.Drawing.Size(19, 19);
             this.ThemePanel4.TabIndex = 6;
-            this.toolTip1.SetToolTip(this.ThemePanel4, "Text 2");
             this.ThemePanel4.Click += new System.EventHandler(this.MatchingPanel_Click);
             this.ThemePanel4.DragDrop += new System.Windows.Forms.DragEventHandler(this.panel_DragDrop);
             this.ThemePanel4.DragEnter += new System.Windows.Forms.DragEventHandler(this.panel_DragEnter);
@@ -749,7 +772,6 @@
             this.ThemePanel5.Name = "ThemePanel5";
             this.ThemePanel5.Size = new System.Drawing.Size(19, 19);
             this.ThemePanel5.TabIndex = 7;
-            this.toolTip1.SetToolTip(this.ThemePanel5, "Accent 1");
             this.ThemePanel5.Click += new System.EventHandler(this.MatchingPanel_Click);
             this.ThemePanel5.DragDrop += new System.Windows.Forms.DragEventHandler(this.panel_DragDrop);
             this.ThemePanel5.DragEnter += new System.Windows.Forms.DragEventHandler(this.panel_DragEnter);
@@ -765,7 +787,6 @@
             this.ThemePanel6.Name = "ThemePanel6";
             this.ThemePanel6.Size = new System.Drawing.Size(19, 19);
             this.ThemePanel6.TabIndex = 8;
-            this.toolTip1.SetToolTip(this.ThemePanel6, "Accent 2");
             this.ThemePanel6.Click += new System.EventHandler(this.MatchingPanel_Click);
             this.ThemePanel6.DragDrop += new System.Windows.Forms.DragEventHandler(this.panel_DragDrop);
             this.ThemePanel6.DragEnter += new System.Windows.Forms.DragEventHandler(this.panel_DragEnter);
@@ -781,7 +802,6 @@
             this.ThemePanel7.Name = "ThemePanel7";
             this.ThemePanel7.Size = new System.Drawing.Size(19, 19);
             this.ThemePanel7.TabIndex = 9;
-            this.toolTip1.SetToolTip(this.ThemePanel7, "Accent 3");
             this.ThemePanel7.Click += new System.EventHandler(this.MatchingPanel_Click);
             this.ThemePanel7.DragDrop += new System.Windows.Forms.DragEventHandler(this.panel_DragDrop);
             this.ThemePanel7.DragEnter += new System.Windows.Forms.DragEventHandler(this.panel_DragEnter);
@@ -797,7 +817,6 @@
             this.ThemePanel8.Name = "ThemePanel8";
             this.ThemePanel8.Size = new System.Drawing.Size(19, 19);
             this.ThemePanel8.TabIndex = 10;
-            this.toolTip1.SetToolTip(this.ThemePanel8, "Accent 4");
             this.ThemePanel8.Click += new System.EventHandler(this.MatchingPanel_Click);
             this.ThemePanel8.DragDrop += new System.Windows.Forms.DragEventHandler(this.panel_DragDrop);
             this.ThemePanel8.DragEnter += new System.Windows.Forms.DragEventHandler(this.panel_DragEnter);
@@ -813,7 +832,6 @@
             this.ThemePanel9.Name = "ThemePanel9";
             this.ThemePanel9.Size = new System.Drawing.Size(19, 19);
             this.ThemePanel9.TabIndex = 11;
-            this.toolTip1.SetToolTip(this.ThemePanel9, "Accent 5");
             this.ThemePanel9.Click += new System.EventHandler(this.MatchingPanel_Click);
             this.ThemePanel9.DragDrop += new System.Windows.Forms.DragEventHandler(this.panel_DragDrop);
             this.ThemePanel9.DragEnter += new System.Windows.Forms.DragEventHandler(this.panel_DragEnter);
@@ -829,10 +847,20 @@
             this.ThemePanel10.Name = "ThemePanel10";
             this.ThemePanel10.Size = new System.Drawing.Size(19, 19);
             this.ThemePanel10.TabIndex = 11;
-            this.toolTip1.SetToolTip(this.ThemePanel10, "Accent 6");
             this.ThemePanel10.Click += new System.EventHandler(this.MatchingPanel_Click);
             this.ThemePanel10.DragDrop += new System.Windows.Forms.DragEventHandler(this.panel_DragDrop);
             this.ThemePanel10.DragEnter += new System.Windows.Forms.DragEventHandler(this.panel_DragEnter);
+            // 
+            // label6
+            // 
+            this.label6.AutoSize = true;
+            this.label6.BackColor = System.Drawing.SystemColors.Window;
+            this.label6.Font = new System.Drawing.Font("Arial", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label6.ForeColor = System.Drawing.SystemColors.ControlText;
+            this.label6.Location = new System.Drawing.Point(267, 0);
+            this.label6.Name = "label6";
+            this.label6.Size = new System.Drawing.Size(0, 16);
+            this.label6.TabIndex = 6;
             // 
             // SaveThemeButton
             // 
@@ -867,23 +895,11 @@
             this.ResetThemeButton.UseVisualStyleBackColor = true;
             this.ResetThemeButton.Click += new System.EventHandler(this.ResetThemeButton_Click);
             // 
-            // ApplyThemeButton
-            // 
-            this.ApplyThemeButton.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Center;
-            this.ApplyThemeButton.Image = global::PowerPointLabs.Properties.Resources.Apply_icon;
-            this.ApplyThemeButton.Location = new System.Drawing.Point(153, 37);
-            this.ApplyThemeButton.Name = "ApplyThemeButton";
-            this.ApplyThemeButton.Size = new System.Drawing.Size(44, 45);
-            this.ApplyThemeButton.TabIndex = 19;
-            this.toolTip1.SetToolTip(this.ApplyThemeButton, "Applies Theme Colors to Selected Slides");
-            this.ApplyThemeButton.UseVisualStyleBackColor = true;
-            this.ApplyThemeButton.Click += new System.EventHandler(this.ApplyThemeButton_Click);
-            // 
             // EmptyPanelButton
             // 
             this.EmptyPanelButton.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Center;
             this.EmptyPanelButton.Image = global::PowerPointLabs.Properties.Resources.Clear_icon;
-            this.EmptyPanelButton.Location = new System.Drawing.Point(203, 37);
+            this.EmptyPanelButton.Location = new System.Drawing.Point(153, 37);
             this.EmptyPanelButton.Name = "EmptyPanelButton";
             this.EmptyPanelButton.Size = new System.Drawing.Size(44, 45);
             this.EmptyPanelButton.TabIndex = 20;
@@ -911,7 +927,6 @@
             this.panel3.Name = "panel3";
             this.panel3.Size = new System.Drawing.Size(25, 25);
             this.panel3.TabIndex = 29;
-            this.toolTip1.SetToolTip(this.panel3, "Saturation");
             // 
             // panel2
             // 
@@ -921,7 +936,6 @@
             this.panel2.Name = "panel2";
             this.panel2.Size = new System.Drawing.Size(25, 25);
             this.panel2.TabIndex = 28;
-            this.toolTip1.SetToolTip(this.panel2, "Brightness");
             // 
             // flowLayoutPanel10
             // 
@@ -1001,7 +1015,7 @@
             this.groupBox2.Size = new System.Drawing.Size(275, 109);
             this.groupBox2.TabIndex = 31;
             this.groupBox2.TabStop = false;
-            this.groupBox2.Text = "Theme Colors";
+            this.groupBox2.Text = "Favorites";
             // 
             // ColorPane
             // 
@@ -1021,7 +1035,6 @@
             this.Controls.Add(this.saturationBar);
             this.Name = "ColorPane";
             this.Size = new System.Drawing.Size(304, 883);
-            this.Load += new System.EventHandler(this.ColorPane_Load);
             this.AnalogousColorPanel.ResumeLayout(false);
             this.AnalogousColorPanel.PerformLayout();
             this.flowLayoutPanel6.ResumeLayout(false);
@@ -1117,7 +1130,6 @@
         private System.Windows.Forms.ToolStripMenuItem showMoreInformationToolStripMenuItem;
         private System.Windows.Forms.Panel ThemePanel9;
         private System.Windows.Forms.Panel ThemePanel10;
-        private System.Windows.Forms.Button ApplyThemeButton;
         private System.Windows.Forms.ToolStripMenuItem selectAsMainColorToolStripMenuItem;
         private System.Windows.Forms.Button EmptyPanelButton;
         private System.Windows.Forms.Button FillButton;

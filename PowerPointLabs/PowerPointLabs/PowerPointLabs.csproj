@@ -379,6 +379,9 @@
     <Compile Include="ZipStorer.cs" />
     <Compile Include="ZoomToArea.cs" />
     <None Include="Resources\AddToCustomShapes.png" />
+    <None Include="Resources\ClosedHand.cur" />
+    <None Include="Resources\OpenHand.cur" />
+    <None Include="Resources\EyeDropper.cur" />
     <None Include="Resources\HighlightWords.png" />
     <None Include="Resources\Saturation-icon_18x18.png" />
     <None Include="Resources\Saturation-icon_20x20.png" />

@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Drawing;
+using System.IO;
 using System.Linq;
 using System.Windows.Forms;
 using PowerPoint = Microsoft.Office.Interop.PowerPoint;
@@ -43,11 +44,16 @@ namespace PowerPointLabs
         // Data-bindings datasource
         ColorDataSource dataSource = new ColorDataSource();
 
+        private Color _pickedColor;
+
         // Stores last selected mode
         private MODE prevMode = MODE.NONE;
         
         // Stores the current selected mode
         private MODE currMode = MODE.NONE;
+
+        private String _defaultThemeColorDirectory = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments),
+            "PowerPointLabs.defaultThemeColor.thm");
 
         public ColorPane()
         {
@@ -57,14 +63,15 @@ namespace PowerPointLabs
 
             InitToolTipControl();
 
-            ResetThemePanel();
+            LoadThemePanel();
 
             // Default color to CornFlowerBlue
             SetDefaultColor(Color.CornflowerBlue);
         }
-        private void ColorPane_Load(object sender, EventArgs e)
+
+        public void SaveDefaultColorPaneThemeColors()
         {
-            ResetThemePanel();
+            dataSource.SaveThemeColorsInFile(_defaultThemeColorDirectory);
         }
 
         private void SetDefaultColor(Color color)
@@ -107,12 +114,59 @@ namespace PowerPointLabs
         #region ToolTip
         private void InitToolTipControl()
         {
-            toolTip1.SetToolTip(this.LoadButton, "Load Existing Theme");
-            toolTip1.SetToolTip(this.SaveThemeButton, "Save Current Theme");
-            toolTip1.SetToolTip(this.ResetThemeButton, "Reset the Current Theme Colors to Current Slide Theme");
-            toolTip1.SetToolTip(this.FontButton, "Font Color\r\nMouseDown + Drag to EyeDrop\r\nClick to Edit");
-            toolTip1.SetToolTip(this.LineButton, "Shape Line Color\r\nMouseDown + Drag to EyeDrop\r\nClick to Edit");
-            toolTip1.SetToolTip(this.FillButton, "Shape Fill Color\r\nMouseDown + Drag to EyeDrop\r\nClick to Edit");
+            //TODO: mode these strings into the const class
+            toolTip1.SetToolTip(panel1, "Use this to choose main color: " +
+                                        "\r\nDrag the button to pick a color from an area in the screen, " +
+                                        "\r\nor click the button to choose a color from the Color dialog.");
+            toolTip1.SetToolTip(this.FontButton, "Change FONT color of selected shapes: " +
+                                                 "\r\nDrag the button to pick a color from an area in the screen, " +
+                                                 "\r\nor click the button to choose a color from the Color dialog.");
+            toolTip1.SetToolTip(this.LineButton, "Change LINE color of selected shapes: " +
+                                                 "\r\nDrag the button to pick a color from an area in the screen, " +
+                                                 "\r\nor click the button to choose a color from the Color dialog.");
+            toolTip1.SetToolTip(this.FillButton, "Change FILL color of selected shapes: " +
+                                                 "\r\nDrag the button to pick a color from an area in the screen, " +
+                                                 "\r\nor click the button to choose a color from the Color dialog.");
+            toolTip1.SetToolTip(panel2, "Move the slider to adjust the main color’s brightness.");
+            toolTip1.SetToolTip(panel3, "Move the slider to adjust the main color’s saturation.");
+            toolTip1.SetToolTip(this.SaveThemeButton, "Save the favorite colors.");
+            toolTip1.SetToolTip(this.LoadButton, "Load existing favorite colors.");
+            toolTip1.SetToolTip(this.ResetThemeButton, "Reset the current favorite colors to your last loaded ones.");
+            toolTip1.SetToolTip(this.EmptyPanelButton, "Empty the favorite colors.");
+            String colorRectangleToolTip =
+                "Click the color to select it as main color. You can drag-and-drop these colors into the favorites panel.";
+            String themeColorRectangleToolTip =
+                "Click the color to select it as main color.";
+            toolTip1.SetToolTip(this.ThemePanel1, themeColorRectangleToolTip);
+            toolTip1.SetToolTip(this.ThemePanel2, themeColorRectangleToolTip);
+            toolTip1.SetToolTip(this.ThemePanel3, themeColorRectangleToolTip);
+            toolTip1.SetToolTip(this.ThemePanel4, themeColorRectangleToolTip);
+            toolTip1.SetToolTip(this.ThemePanel5, themeColorRectangleToolTip);
+            toolTip1.SetToolTip(this.ThemePanel6, themeColorRectangleToolTip);
+            toolTip1.SetToolTip(this.ThemePanel7, themeColorRectangleToolTip);
+            toolTip1.SetToolTip(this.ThemePanel8, themeColorRectangleToolTip);
+            toolTip1.SetToolTip(this.ThemePanel9, themeColorRectangleToolTip);
+            toolTip1.SetToolTip(this.ThemePanel10, themeColorRectangleToolTip);
+            toolTip1.SetToolTip(this.MonoPanel1, colorRectangleToolTip);
+            toolTip1.SetToolTip(this.MonoPanel2, colorRectangleToolTip);
+            toolTip1.SetToolTip(this.MonoPanel3, colorRectangleToolTip);
+            toolTip1.SetToolTip(this.MonoPanel4, colorRectangleToolTip);
+            toolTip1.SetToolTip(this.MonoPanel5, colorRectangleToolTip);
+            toolTip1.SetToolTip(this.MonoPanel6, colorRectangleToolTip);
+            toolTip1.SetToolTip(this.MonoPanel7, colorRectangleToolTip);
+            toolTip1.SetToolTip(this.AnalogousLighter, colorRectangleToolTip);
+            toolTip1.SetToolTip(this.AnalogousSelected, colorRectangleToolTip);
+            toolTip1.SetToolTip(this.AnalogousDarker, colorRectangleToolTip);
+            toolTip1.SetToolTip(this.ComplementaryLighter, colorRectangleToolTip);
+            toolTip1.SetToolTip(this.ComplementarySelected, colorRectangleToolTip);
+            toolTip1.SetToolTip(this.ComplementaryDarker, colorRectangleToolTip);
+            toolTip1.SetToolTip(this.TriadicLower, colorRectangleToolTip);
+            toolTip1.SetToolTip(this.TriadicSelected, colorRectangleToolTip);
+            toolTip1.SetToolTip(this.TriadicHigher, colorRectangleToolTip);
+            toolTip1.SetToolTip(this.Tetradic1, colorRectangleToolTip);
+            toolTip1.SetToolTip(this.Tetradic2, colorRectangleToolTip);
+            toolTip1.SetToolTip(this.Tetradic3, colorRectangleToolTip);
+            toolTip1.SetToolTip(this.TetradicSelected, colorRectangleToolTip);
         }
         #endregion
 
@@ -338,22 +392,45 @@ namespace PowerPointLabs
 
         #endregion
 
+        private int _timerCounter = 0;
+        private const int TIMER_COUNTER_THRESHOLD = 2;
+        private Cursor eyeDropperCursor = new Cursor(new MemoryStream(Properties.Resources.EyeDropper));
+
         private void BeginEyedropping()
         {
+            if (!VerifyIsShapeSelected()) return;
+
+            _timerCounter = 0;
             timer1.Start();
             _native = new LMouseUpListener();
             _native.LButtonUpClicked +=
-                 new EventHandler<SysMouseEventInfo>(_native_LButtonClicked);
-            SelectShapes();
+                new EventHandler<SysMouseEventInfo>(_native_LButtonClicked);
         }
 
         private void timer1_Tick(object sender, EventArgs e)
         {
-            Cursor.Current = Cursors.Cross;
-            System.Drawing.Point p = Control.MousePosition;
-            IntPtr dc = Native.GetDC(IntPtr.Zero);
-            dataSource.selectedColor = ColorTranslator.FromWin32(Native.GetPixel(dc, p.X, p.Y));
-            ColorSelectedShapesWithColor(panel1.BackColor);
+            //this is to ensure that EyeDropper tool feature doesn't
+            //affect Color Dialog tool feature
+            if (_timerCounter < TIMER_COUNTER_THRESHOLD)
+            {
+                _timerCounter++;
+                return;
+            }
+            _timerCounter++;
+
+            Cursor.Current = eyeDropperCursor;
+            System.Drawing.Point mousePos = Control.MousePosition;
+            IntPtr deviceContext = Native.GetDC(IntPtr.Zero);
+            if (currMode == MODE.NONE)
+            {
+                dataSource.selectedColor = ColorTranslator.FromWin32(Native.GetPixel(deviceContext, mousePos.X, mousePos.Y));
+                ColorSelectedShapesWithColor(panel1.BackColor);
+            }
+            else
+            {
+                _pickedColor = ColorTranslator.FromWin32(Native.GetPixel(deviceContext, mousePos.X, mousePos.Y));
+                ColorSelectedShapesWithColor(_pickedColor);
+            }
         }
 
         #region Selection And Coloring Shapes
@@ -370,6 +447,11 @@ namespace PowerPointLabs
                 } else if (selection.Type == PpSelectionType.ppSelectionText)
                 {
                     _selectedText = selection.TextRange;
+                }
+                else
+                {
+                    _selectedShapes = null;
+                    _selectedText = null;
                 }
             }
             catch (Exception)
@@ -459,13 +541,20 @@ namespace PowerPointLabs
                 if (Globals.ThisAddIn.Application.ActiveWindow.Selection.ShapeRange.HasTextFrame
                     == Microsoft.Office.Core.MsoTriState.msoTrue)
                 {
-                    TextRange selectedText
-                        = Globals.ThisAddIn.Application.ActiveWindow.Selection.TextRange.TrimText();
-                    if (selectedText.Text != "" && selectedText != null)
+                    if (PowerPointCurrentPresentationInfo.CurrentSelection.Type == PpSelectionType.ppSelectionText)
                     {
-                        selectedText.Font.Color.RGB = rgb;
+                        TextRange selectedText
+                            = Globals.ThisAddIn.Application.ActiveWindow.Selection.TextRange.TrimText();
+                        if (selectedText.Text != "" && selectedText != null)
+                        {
+                            selectedText.Font.Color.RGB = rgb;
+                        }
+                        else
+                        {
+                            s.TextFrame.TextRange.TrimText().Font.Color.RGB = rgb;
+                        }
                     }
-                    else
+                    else if (PowerPointCurrentPresentationInfo.CurrentSelection.Type == PpSelectionType.ppSelectionShapes)
                     {
                         s.TextFrame.TextRange.TrimText().Font.Color.RGB = rgb;
                     }
@@ -481,18 +570,24 @@ namespace PowerPointLabs
             {
                 ColorShapeWithColor(selectedShape, rgb, mode);
             }
-            else
-            {
-                ColorShapeFontWithColor(selectedShape, rgb);
-            }
         }
 
         void _native_LButtonClicked(object sender, SysMouseEventInfo e)
         {
             _native.Close();
-            Globals.ThisAddIn.Application.StartNewUndoEntry();
-            UpdateUIForNewColor();
             timer1.Stop();
+            //this is to ensure that EyeDropper tool feature doesn't
+            //affect Color Dialog tool feature
+            if (_timerCounter >= TIMER_COUNTER_THRESHOLD)
+            {
+                Globals.ThisAddIn.Application.StartNewUndoEntry();
+                UpdateUIForNewColor();
+                if (currMode != MODE.NONE)
+                {
+                    ColorSelectedShapesWithColor(_pickedColor);
+                }
+            }
+            _timerCounter = 0;
             ResetEyeDropperSelectionInDataSource();
         }
         #endregion
@@ -522,7 +617,6 @@ namespace PowerPointLabs
         {
             UpdateBrightnessBar(dataSource.selectedColor);
             UpdateSaturationBar(dataSource.selectedColor);
-            ColorSelectedShapesWithColor(dataSource.selectedColor);
         }
 
         #region Brightness and Saturation
@@ -556,8 +650,6 @@ namespace PowerPointLabs
                 catch (Exception)
                 {
                 }
-
-                ColorSelectedShapesWithColor(dataSource.selectedColor);
             }
         }
 
@@ -584,8 +676,6 @@ namespace PowerPointLabs
             catch (Exception)
             {
             }
-
-            ColorSelectedShapesWithColor(newColor);
         }
         private void UpdateSaturationBar(HSLColor color)
         {
@@ -681,9 +771,27 @@ namespace PowerPointLabs
         #endregion
 
         #region Drag-Drop
+        private Cursor openHandCursor = new Cursor(new MemoryStream(Properties.Resources.OpenHand));
+        private Cursor closedHandCursor = new Cursor(new MemoryStream(Properties.Resources.ClosedHand));
+
+        private void MatchingPanel_MouseEnter(object sender, EventArgs e)
+        {
+            Panel panel = sender as Panel;
+            panel.Cursor = openHandCursor;
+        }
+
+        private void MatchingPanel_MouseUp(object sender, MouseEventArgs e)
+        {
+            Panel panel = sender as Panel;
+            panel.Cursor = openHandCursor;
+        }
+
         private void MatchingPanel_MouseDown(object sender, MouseEventArgs e)
         {
+            if (e.Button != MouseButtons.Left) return;
             _mouseDownLocation = e.Location;
+            Panel panel = sender as Panel;
+            panel.Cursor = closedHandCursor;
         }
 
         private void StartDragDrop(object sender)
@@ -759,6 +867,8 @@ namespace PowerPointLabs
 
         private void MatchingPanel_MouseMove(object sender, MouseEventArgs e)
         {
+            if (e.Button != MouseButtons.Left) return;
+
             int dx = e.X - _mouseDownLocation.X;
             int dy = e.Y - _mouseDownLocation.Y;
 
@@ -771,12 +881,21 @@ namespace PowerPointLabs
         #endregion
 
         #region Theme Functions
+        private void LoadThemePanel()
+        {
+            Boolean isSuccessful = dataSource.LoadThemeColorsFromFile(_defaultThemeColorDirectory);
+            if (!isSuccessful)
+            {
+                EmptyThemePanel();
+            }
+        }
+
         private void SaveThemeButton_Click(object sender, EventArgs e)
         {
             if (saveFileDialog1.ShowDialog() == DialogResult.OK && 
                 dataSource.SaveThemeColorsInFile(saveFileDialog1.FileName))
             {
-                // Save Success
+                SaveDefaultColorPaneThemeColors();
             }
         }
 
@@ -785,16 +904,15 @@ namespace PowerPointLabs
             if (openFileDialog1.ShowDialog() == DialogResult.OK &&
                 dataSource.LoadThemeColorsFromFile(openFileDialog1.FileName))
             {
-                // Load Success
+                SaveDefaultColorPaneThemeColors();
             }
         }
 
         private void MatchingPanel_Click(object sender, EventArgs e)
         {
             Color clickedColor = ((Panel)sender).BackColor;
-            
+            dataSource.selectedColor = clickedColor;
             Globals.ThisAddIn.Application.StartNewUndoEntry();
-            ColorSelectedShapesWithColor(clickedColor);
         }
 
         private void ResetThemeButton_Click(object sender, EventArgs e)
@@ -802,70 +920,11 @@ namespace PowerPointLabs
             ResetThemePanel();
         }
 
-        private void ApplyThemeButton_Click(object sender, EventArgs e)
-        {
-            ApplyCurrentThemeToSelectedSlides();
-        }
-
         private void ResetThemePanel()
         {
             try
             {
-                if (PowerPointCurrentPresentationInfo.SlideCount > 0)
-                {
-                    Microsoft.Office.Core.ThemeColorScheme scheme =
-                    PowerPointCurrentPresentationInfo.CurrentSlide.GetNativeSlide().ThemeColorScheme;
-
-                    ThemePanel1.BackColor = Color.FromArgb(
-                        ColorHelper.ReverseRGBToArgb(
-                        scheme.Colors(Microsoft.Office.Core.MsoThemeColorSchemeIndex.msoThemeLight1).RGB));
-                    dataSource.themeColorOne = ThemePanel1.BackColor;
-
-                    ThemePanel2.BackColor = Color.FromArgb(
-                        ColorHelper.ReverseRGBToArgb(
-                        scheme.Colors(Microsoft.Office.Core.MsoThemeColorSchemeIndex.msoThemeDark1).RGB));
-                    dataSource.themeColorTwo = ThemePanel2.BackColor;
-
-                    ThemePanel3.BackColor = Color.FromArgb(
-                        ColorHelper.ReverseRGBToArgb(
-                        scheme.Colors(Microsoft.Office.Core.MsoThemeColorSchemeIndex.msoThemeLight2).RGB));
-                    dataSource.themeColorThree = ThemePanel3.BackColor;
-
-                    ThemePanel4.BackColor = Color.FromArgb(
-                        ColorHelper.ReverseRGBToArgb(
-                        scheme.Colors(Microsoft.Office.Core.MsoThemeColorSchemeIndex.msoThemeDark2).RGB));
-                    dataSource.themeColorFour = ThemePanel4.BackColor;
-
-                    ThemePanel5.BackColor = Color.FromArgb(
-                        ColorHelper.ReverseRGBToArgb(
-                        scheme.Colors(Microsoft.Office.Core.MsoThemeColorSchemeIndex.msoThemeAccent1).RGB));
-                    dataSource.themeColorFive = ThemePanel5.BackColor;
-
-                    ThemePanel6.BackColor = Color.FromArgb(
-                        ColorHelper.ReverseRGBToArgb(
-                        scheme.Colors(Microsoft.Office.Core.MsoThemeColorSchemeIndex.msoThemeAccent2).RGB));
-                    dataSource.themeColorSix = ThemePanel6.BackColor;
-
-                    ThemePanel7.BackColor = Color.FromArgb(
-                        ColorHelper.ReverseRGBToArgb(
-                        scheme.Colors(Microsoft.Office.Core.MsoThemeColorSchemeIndex.msoThemeAccent3).RGB));
-                    dataSource.themeColorSeven = ThemePanel7.BackColor;
-
-                    ThemePanel8.BackColor = Color.FromArgb(
-                        ColorHelper.ReverseRGBToArgb(
-                        scheme.Colors(Microsoft.Office.Core.MsoThemeColorSchemeIndex.msoThemeAccent4).RGB));
-                    dataSource.themeColorEight = ThemePanel8.BackColor;
-
-                    ThemePanel9.BackColor = Color.FromArgb(
-                        ColorHelper.ReverseRGBToArgb(
-                        scheme.Colors(Microsoft.Office.Core.MsoThemeColorSchemeIndex.msoThemeAccent5).RGB));
-                    dataSource.themeColorNine = ThemePanel9.BackColor;
-
-                    ThemePanel10.BackColor = Color.FromArgb(
-                        ColorHelper.ReverseRGBToArgb(
-                        scheme.Colors(Microsoft.Office.Core.MsoThemeColorSchemeIndex.msoThemeAccent6).RGB));
-                    dataSource.themeColorTen = ThemePanel10.BackColor;
-                }
+                LoadThemePanel();
             }
             catch (Exception e)
             {
@@ -879,35 +938,16 @@ namespace PowerPointLabs
             {
                 if (PowerPointCurrentPresentationInfo.SlideCount > 0)
                 {
-                    ThemePanel1.BackColor = Color.White;
-                    dataSource.themeColorOne = ThemePanel1.BackColor;
-
-                    ThemePanel2.BackColor = Color.White;
-                    dataSource.themeColorTwo = ThemePanel1.BackColor;
-
-                    ThemePanel3.BackColor = Color.White;
-                    dataSource.themeColorThree = ThemePanel1.BackColor;
-
-                    ThemePanel4.BackColor = Color.White;
-                    dataSource.themeColorFour = ThemePanel1.BackColor;
-
-                    ThemePanel5.BackColor = Color.White;
-                    dataSource.themeColorFive = ThemePanel1.BackColor;
-
-                    ThemePanel6.BackColor = Color.White;
-                    dataSource.themeColorSix = ThemePanel1.BackColor;
-
-                    ThemePanel7.BackColor = Color.White;
-                    dataSource.themeColorSeven = ThemePanel1.BackColor;
-
-                    ThemePanel8.BackColor = Color.White;
-                    dataSource.themeColorEight = ThemePanel1.BackColor;
-
-                    ThemePanel9.BackColor = Color.White;
-                    dataSource.themeColorNine = ThemePanel1.BackColor;
-
-                    ThemePanel10.BackColor = Color.White;
-                    dataSource.themeColorTen = ThemePanel1.BackColor;
+                    dataSource.themeColorOne = Color.White;
+                    dataSource.themeColorTwo = Color.White;
+                    dataSource.themeColorThree = Color.White;
+                    dataSource.themeColorFour = Color.White;
+                    dataSource.themeColorFive = Color.White;
+                    dataSource.themeColorSix = Color.White;
+                    dataSource.themeColorSeven = Color.White;
+                    dataSource.themeColorEight = Color.White;
+                    dataSource.themeColorNine = Color.White;
+                    dataSource.themeColorTen = Color.White;
                 }
             }
             catch (Exception e)
@@ -916,40 +956,6 @@ namespace PowerPointLabs
             }
         }
 
-        private void ApplyCurrentThemeToSelectedSlides()
-        {
-            foreach (PowerPointSlide slide in PowerPointCurrentPresentationInfo.SelectedSlides)
-            {
-                ApplyCurrentThemeToSlide(slide);
-            }
-        }
-
-        private void ApplyCurrentThemeToSlide(PowerPointSlide slide)
-        {
-            Microsoft.Office.Core.ThemeColorScheme scheme = 
-                slide.GetNativeSlide().ThemeColorScheme;
-
-            scheme.Colors(Microsoft.Office.Core.MsoThemeColorSchemeIndex.msoThemeLight1).RGB =
-                ColorHelper.ReverseRGBToArgb((ThemePanel1.BackColor.ToArgb()));
-            scheme.Colors(Microsoft.Office.Core.MsoThemeColorSchemeIndex.msoThemeDark1).RGB =
-                ColorHelper.ReverseRGBToArgb((ThemePanel2.BackColor.ToArgb()));
-            scheme.Colors(Microsoft.Office.Core.MsoThemeColorSchemeIndex.msoThemeLight2).RGB =
-                ColorHelper.ReverseRGBToArgb((ThemePanel3.BackColor.ToArgb()));
-            scheme.Colors(Microsoft.Office.Core.MsoThemeColorSchemeIndex.msoThemeDark2).RGB =
-                ColorHelper.ReverseRGBToArgb((ThemePanel4.BackColor.ToArgb()));
-            scheme.Colors(Microsoft.Office.Core.MsoThemeColorSchemeIndex.msoThemeAccent1).RGB =
-                ColorHelper.ReverseRGBToArgb((ThemePanel5.BackColor.ToArgb()));
-            scheme.Colors(Microsoft.Office.Core.MsoThemeColorSchemeIndex.msoThemeAccent2).RGB =
-                ColorHelper.ReverseRGBToArgb((ThemePanel6.BackColor.ToArgb()));
-            scheme.Colors(Microsoft.Office.Core.MsoThemeColorSchemeIndex.msoThemeAccent3).RGB =
-                ColorHelper.ReverseRGBToArgb((ThemePanel7.BackColor.ToArgb()));
-            scheme.Colors(Microsoft.Office.Core.MsoThemeColorSchemeIndex.msoThemeAccent4).RGB =
-                ColorHelper.ReverseRGBToArgb((ThemePanel8.BackColor.ToArgb()));
-            scheme.Colors(Microsoft.Office.Core.MsoThemeColorSchemeIndex.msoThemeAccent5).RGB =
-                ColorHelper.ReverseRGBToArgb((ThemePanel9.BackColor.ToArgb()));
-            scheme.Colors(Microsoft.Office.Core.MsoThemeColorSchemeIndex.msoThemeAccent6).RGB =
-                ColorHelper.ReverseRGBToArgb((ThemePanel10.BackColor.ToArgb()));
-        }
         private void EmptyPanelButton_Click(object sender, EventArgs e)
         {
             EmptyThemePanel();
@@ -968,12 +974,7 @@ namespace PowerPointLabs
 
         private void selectAsMainColorToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            // Done twice due to multi-threading issues
-
             Color clickedColor = ((Panel)contextMenuStrip1.SourceControl).BackColor;
-            dataSource.selectedColor = clickedColor;
-            //Globals.ThisAddIn.Application.StartNewUndoEntry();
-            UpdateUIForNewColor();
 
             dataSource.selectedColor = clickedColor;
             Globals.ThisAddIn.Application.StartNewUndoEntry();
@@ -994,19 +995,107 @@ namespace PowerPointLabs
             }
             SetModeForSenderName(buttonName);
 
-            colorDialog1.Color = dataSource.selectedColor;
+            if (!VerifyIsShapeSelected()) return;
+
+            colorDialog1.Color = GetSelectedShapeColor();
 
             DialogResult result = colorDialog1.ShowDialog();
             if (result == DialogResult.OK)
             {
-                SetDefaultColor(colorDialog1.Color);
-                
+                if (currMode == MODE.NONE)
+                {
+                    SetDefaultColor(colorDialog1.Color);
+                }
+                else
+                {
+                    ColorSelectedShapesWithColor(colorDialog1.Color);
+                }
                 ResetEyeDropperSelectionInDataSource();
             }
             else if (result == DialogResult.Cancel)
             {
                 ResetEyeDropperSelectionInDataSource();
             }
+        }
+
+        private Color GetSelectedShapeColor()
+        {
+            SelectShapes();
+            if (_selectedShapes == null && _selectedText == null)
+                return dataSource.selectedColor;
+
+            if (PowerPointCurrentPresentationInfo.CurrentSelection.Type == PpSelectionType.ppSelectionShapes)
+            {
+                return GetSelectedShapeColor(_selectedShapes);
+            }
+            if (PowerPointCurrentPresentationInfo.CurrentSelection.Type == PpSelectionType.ppSelectionText)
+            {
+                var frame = _selectedText.Parent as PowerPoint.TextFrame;
+                var selectedShape = frame.Parent as PowerPoint.Shape;
+                return GetSelectedShapeColor(selectedShape);
+            }
+
+            return dataSource.selectedColor;
+        }
+
+        private Color GetSelectedShapeColor(PowerPoint.ShapeRange selectedShapes)
+        {
+            Color colorToReturn = Color.Empty;
+            foreach (var selectedShape in selectedShapes)
+            {
+                Color color = GetSelectedShapeColor(selectedShape as PowerPoint.Shape);
+                if (colorToReturn.Equals(Color.Empty))
+                {
+                    colorToReturn = color;
+                }
+                else if(!colorToReturn.Equals(color))
+                {
+                    return Color.Black;
+                }
+            }
+            return colorToReturn;
+        }
+
+        private Color GetSelectedShapeColor(PowerPoint.Shape selectedShape)
+        {
+            switch (currMode)
+            {
+                case MODE.FILL:
+                    return Color.FromArgb(ColorHelper.ReverseRGBToArgb(selectedShape.Fill.ForeColor.RGB));
+                    break;
+                case MODE.LINE:
+                    return Color.FromArgb(ColorHelper.ReverseRGBToArgb(selectedShape.Line.ForeColor.RGB));
+                    break;
+                case MODE.FONT:
+                    if (selectedShape.HasTextFrame == Microsoft.Office.Core.MsoTriState.msoTrue
+                        && Globals.ThisAddIn.Application.ActiveWindow.Selection.ShapeRange.HasTextFrame
+                        == Microsoft.Office.Core.MsoTriState.msoTrue)
+                    {
+                        if (PowerPointCurrentPresentationInfo.CurrentSelection.Type == PpSelectionType.ppSelectionText)
+                        {
+                            var selectedText
+                                = Globals.ThisAddIn.Application.ActiveWindow.Selection.TextRange.TrimText();
+                            if (selectedText != null && selectedText.Text != "")
+                            {
+                                return Color.FromArgb(ColorHelper.ReverseRGBToArgb(selectedText.Font.Color.RGB));
+                            }
+                            else
+                            {
+                                return
+                                Color.FromArgb(
+                                    ColorHelper.ReverseRGBToArgb(selectedShape.TextFrame.TextRange.Font.Color.RGB));
+                            }
+                        }
+                        else if (PowerPointCurrentPresentationInfo.CurrentSelection.Type == PpSelectionType.ppSelectionShapes)
+                        {
+                            return
+                                Color.FromArgb(
+                                    ColorHelper.ReverseRGBToArgb(selectedShape.TextFrame.TextRange.Font.Color.RGB));
+                        }
+                    }
+                    break;
+            }
+            return dataSource.selectedColor;
         }
 
         private void SetModeForSenderName(string buttonName)
@@ -1030,6 +1119,8 @@ namespace PowerPointLabs
 
         private void EyeDropButton_MouseDown(object sender, MouseEventArgs e)
         {
+            if (e.Button != MouseButtons.Left) return;
+
             string buttonName = "";
             if (sender is Button)
             {
@@ -1041,6 +1132,18 @@ namespace PowerPointLabs
             }
             SetModeForSenderName(buttonName);
             BeginEyedropping();
+        }
+
+        private Boolean VerifyIsShapeSelected()
+        {
+            SelectShapes();
+            if (_selectedShapes == null && _selectedText == null && currMode != MODE.NONE)
+            {
+                //TODO: move this string to the const file
+                MessageBox.Show("To use this feature, you may need to select at least one shape.", "Colors Lab");
+                return false;
+            }
+            return true;
         }
     }
 }

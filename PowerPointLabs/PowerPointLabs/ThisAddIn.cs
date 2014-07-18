@@ -285,6 +285,14 @@ namespace PowerPointLabs
 
         private void ThisAddInPresentationClose(PowerPoint.Presentation pres)
         {
+            var colorPane = GetActivePane(typeof(ColorPane));
+
+            if (colorPane != null)
+            {
+                var colorLabs = colorPane.Control as ColorPane;
+                if (colorLabs != null) colorLabs.SaveDefaultColorPaneThemeColors();
+            }
+
             var recorderPane = GetActivePane(typeof(RecorderTaskPane));
 
             if (recorderPane != null)
