@@ -64,7 +64,7 @@
 
         # region Ribbon
         public const string AboutInfo =
-            "          PowerPointLabs Plugin Version 1.8.6 [Release date: 7 Jul 2014]\n     Developed at School of Computing, National University of Singapore.\n        For more information, visit our website " + PowerPointLabsWebsiteUrl;
+            "          PowerPointLabs Plugin Version 1.8.10 [Release date: 18 Jul 2014]\n     Developed at School of Computing, National University of Singapore.\n        For more information, visit our website " + PowerPointLabsWebsiteUrl;
         public const string AboutInfoTitle = "About PowerPointLabs";
         # endregion
 
@@ -78,6 +78,14 @@
             "in the outdated .ppt format used by PowerPoint 2007 (and older). If you wish to use the " +
             "full power of PowerPointLabs to enhance this file, please save in the .pptx format used " +
             "by PowerPoint 2010 and newer.";
+        public const string TabActivateErrorTitle = "Unable to activate 'Double Click to Open Property' feature";
+        public const string TabActivateErrorDescription =
+            "To activate 'Double Click to Open Property' feature, you need to enable 'Home' tab " +
+            "in Options -> Customize Ribbon -> Main Tabs -> tick the checkbox of 'Home' -> click OK but" +
+            "ton to save.";
+        public const string ShapesLabTaskPanelTitle = "Shapes Lab";
+        public const string ColorsLabTaskPanelTitle = "Colors Lab";
+        public const string RecManagementPanelTitle = "Record Management";
         # endregion 
 
         # region ConvertToPicture

@@ -81,7 +81,9 @@ namespace PowerPointLabs
         {
             // in this case, we are closing the last client presentation, therefore we
             // we can close the shape gallery
-            if (_isClosing && Application.Presentations.Count == 2 &&
+            if (_isClosing &&
+                Application.Presentations.Count == 2 &&
+                ShapePresentation != null &&
                 ShapePresentation.Opened)
             {
                 ShapePresentation.Close();
@@ -285,6 +287,14 @@ namespace PowerPointLabs
 
         private void ThisAddInPresentationClose(PowerPoint.Presentation pres)
         {
+            var colorPane = GetActivePane(typeof(ColorPane));
+
+            if (colorPane != null)
+            {
+                var colorLabs = colorPane.Control as ColorPane;
+                if (colorLabs != null) colorLabs.SaveDefaultColorPaneThemeColors();
+            }
+
             var recorderPane = GetActivePane(typeof(RecorderTaskPane));
 
             if (recorderPane != null)
@@ -309,16 +319,26 @@ namespace PowerPointLabs
 
             if (pres.Saved == Office.MsoTriState.msoTrue)
             {
-                // remove task pane
+                _isClosing = true;
+
+                if (_documentHashcodeMapper.ContainsKey(pres.Application.ActiveWindow))
+                {
+                    _documentHashcodeMapper.Remove(pres.Application.ActiveWindow);
+                }
+
+                // if there exists some task panes, remove them
+                if (!_documentPaneMapper.ContainsKey(pres.Application.ActiveWindow))
+                {
+                    return;
+                }
+
                 var activePanes = _documentPaneMapper[pres.Application.ActiveWindow];
                 foreach (var pane in activePanes)
                 {
                     CustomTaskPanes.Remove(pane);
                 }
 
-                // remove entry from mappers
                 _documentPaneMapper.Remove(pres.Application.ActiveWindow);
-                _documentHashcodeMapper.Remove(pres.Application.ActiveWindow);
             }
             else
             {
@@ -369,7 +389,7 @@ namespace PowerPointLabs
         public Control GetControlFromWindow(Type type, PowerPoint.DocumentWindow window)
         {
             var taskPane = GetPaneFromWindow(typeof(CustomShapePane), window);
-            
+
             return taskPane == null ? null : taskPane.Control;
         }
 
@@ -393,6 +413,7 @@ namespace PowerPointLabs
                         return pane;
                     }
                 }
+
                 catch (Exception)
                 {
                     return null;
@@ -433,7 +454,7 @@ namespace PowerPointLabs
 
             _documentHashcodeMapper[activeWindow] = tempName;
 
-            RegisterTaskPane(new RecorderTaskPane(tempName), "Record Management", activeWindow,
+            RegisterTaskPane(new RecorderTaskPane(tempName), TextCollection.RecManagementPanelTitle, activeWindow,
                              TaskPaneVisibleValueChangedEventHandler, null);
         }
 
@@ -447,7 +468,7 @@ namespace PowerPointLabs
             var activeWindow = presentation.Application.ActiveWindow;
 
             TaskPaneSetup(presentation);
-            RegisterTaskPane(new ColorPane(), "Color Panel", activeWindow, null, null);
+            RegisterTaskPane(new ColorPane(), TextCollection.ColorsLabTaskPanelTitle, activeWindow, null, null);
         }
 
         public void RegisterCustomShapePane(PowerPoint.Presentation presentation)
@@ -462,7 +483,8 @@ namespace PowerPointLabs
             TaskPaneSetup(presentation);
             RegisterTaskPane(
                 new CustomShapePane(_defaultShapeMasterFolderPrefix + DefaultShapeMasterFolderName,
-                                    DefaultShapeCategoryName), "Shapes Lab", activeWindow, null, null);
+                                    DefaultShapeCategoryName), TextCollection.ShapesLabTaskPanelTitle, activeWindow,
+                                    null, null);
         }
 
         public void SyncShapeAdd(string shapeName, string shapeFullName)
@@ -885,8 +907,8 @@ namespace PowerPointLabs
         # region Copy paste handlers
 
         private PowerPoint.DocumentWindow _copyFromWnd;
-        private Regex _shapeNamePattern = new Regex(@"^[^\[]\D+\s\d+$");
-        private HashSet<String> isShapeMatchedAlready;
+        private readonly Regex _shapeNamePattern = new Regex(@"^[^\[]\D+\s\d+$");
+        private HashSet<String> _isShapeMatchedAlready;
 
         private void AfterPasteEventHandler(PowerPoint.Selection selection)
         {
@@ -940,7 +962,8 @@ namespace PowerPointLabs
                         corruptedShapes[i].Delete();
                     }
 
-                    isShapeMatchedAlready = new HashSet<string>();
+                    _isShapeMatchedAlready = new HashSet<string>();
+
                     for (int i = 1; i <= pastedShapes.Count; i++)
                     {
                         PowerPoint.Shape shape = pastedShapes[i];
@@ -974,9 +997,10 @@ namespace PowerPointLabs
                     && IsSimilarName(shape.Name, _copiedShapes[i].Name)
                     && shape.Left == _copiedShapes[i].Left
                     && shape.Height == _copiedShapes[i].Height
-                    && !isShapeMatchedAlready.Contains(_copiedShapes[i].Id.ToString()))
+                    && !_isShapeMatchedAlready.Contains(_copiedShapes[i].Id.ToString()))
                 {
-                    isShapeMatchedAlready.Add(_copiedShapes[i].Id.ToString());
+                    _isShapeMatchedAlready.Add(_copiedShapes[i].Id.ToString());
+
                     return i;
                 }
             }
@@ -985,9 +1009,10 @@ namespace PowerPointLabs
             {
                 if (IsSimilarShape(shape, _copiedShapes[i])
                     && IsSimilarName(shape.Name, _copiedShapes[i].Name)
-                    && !isShapeMatchedAlready.Contains(_copiedShapes[i].Id.ToString()))
+                    && !_isShapeMatchedAlready.Contains(_copiedShapes[i].Id.ToString()))
                 {
-                    isShapeMatchedAlready.Add(_copiedShapes[i].Id.ToString());
+                    _isShapeMatchedAlready.Add(_copiedShapes[i].Id.ToString());
+
                     return i;
                 }
             }
@@ -1156,12 +1181,8 @@ namespace PowerPointLabs
                 _eventHook = IntPtr.Zero;
             }
             if (eventType == (uint)Native.Event.EVENT_SYSTEM_MENUEND)
-            {
-                string description = "To activate 'Double Click to Open Property' feature, you need to enable 'Home' tab " +
-                              "in Options -> Customize Ribbon -> Main Tabs -> tick the checkbox of 'Home' -> click OK but" +
-                              "ton to save.";
-                string title = "Unable to activate 'Double Click to Open Property' feature";
-                MessageBox.Show(description, title);
+            {                
+                MessageBox.Show(TextCollection.TabActivateErrorDescription, TextCollection.TabActivateErrorTitle);
             }
         }
 
@@ -1171,6 +1192,7 @@ namespace PowerPointLabs
 
         private const string OfficeVersion2013 = "15.0";
         private const string OfficeVersion2010 = "14.0";
+        private const string ShortcutAltHO = "%ho";
 
         private const int CommandOpenBackgroundFormat = 0x8F;
 
@@ -1242,7 +1264,6 @@ namespace PowerPointLabs
             {
                 if (!_isInSlideShow)
                 {
-                    string Shortcut_Alt_H_O = "%ho";
                     if (_eventHook == IntPtr.Zero)
                     {
                         //Check whether Home tab is enabled or not
@@ -1255,7 +1276,7 @@ namespace PowerPointLabs
                             0,
                             0);
                     }
-                    SendKeys.Send(Shortcut_Alt_H_O);
+                    SendKeys.Send(ShortcutAltHO);
                 }
             }
             catch (InvalidOperationException)

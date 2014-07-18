@@ -43,7 +43,7 @@ namespace PowerPointLabs
         public bool MultiSlideZoomChecked = false;
         public bool SpotlightDelete = true;
         public float DefaultDuration = 0.5f;
-        
+
         public bool SpotlightEnabled = false;
         public bool InSlideEnabled = false;
         public bool ZoomButtonEnabled = false;
@@ -53,6 +53,8 @@ namespace PowerPointLabs
         public bool ReloadSpotlight = true;
         public bool RemoveCaptionsEnabled = true;
         public bool RemoveAudioEnabled = true;
+
+        public bool highlightTextFragmentsEnabled = true;
 
         public bool EmbedAudioVisible = true;
         public bool RecorderPaneVisible = false;
@@ -138,6 +140,26 @@ namespace PowerPointLabs
             catch (Exception e)
             {
                 PowerPointLabsGlobals.LogException(e, "HighlightBulletsTextButtonClick");
+                throw;
+            }
+        }
+
+        public void HighlightTextFragmentsButtonClick(Office.IRibbonControl control)
+        {
+            try
+            {
+                if (Globals.ThisAddIn.Application.ActiveWindow.Selection.Type == PowerPoint.PpSelectionType.ppSelectionShapes)
+                    HighlightTextFragments.userSelection = HighlightTextFragments.HighlightTextSelection.kShapeSelected;
+                else if (Globals.ThisAddIn.Application.ActiveWindow.Selection.Type == PowerPoint.PpSelectionType.ppSelectionText)
+                    HighlightTextFragments.userSelection = HighlightTextFragments.HighlightTextSelection.kTextSelected;
+                else
+                    HighlightTextFragments.userSelection = HighlightTextFragments.HighlightTextSelection.kNoneSelected;
+
+                HighlightTextFragments.AddHighlightedTextFragments();
+            }
+            catch (Exception e)
+            {
+                PowerPointLabsGlobals.LogException(e, "HighlightTextFragmentsButtonClick");
                 throw;
             }
         }
@@ -435,6 +457,19 @@ namespace PowerPointLabs
             }
         }
 
+        public Bitmap GetHighlightWordsImage(Office.IRibbonControl control)
+        {
+            try
+            {
+                return new System.Drawing.Bitmap(Properties.Resources.HighlightWords);
+            }
+            catch (Exception e)
+            {
+                PowerPointLabsGlobals.LogException(e, "GetHighlightWordsImage");
+                throw;
+            }
+        }
+
         public Bitmap GetHighlightBulletsTextContextImage(Office.IRibbonControl control)
         {
             try
@@ -521,6 +556,32 @@ namespace PowerPointLabs
                 throw;
             }
         }
+
+        public Bitmap GetShapesLabImage(Office.IRibbonControl control)
+        {
+            try
+            {
+                return new System.Drawing.Bitmap(Properties.Resources.ShapesLab);
+            }
+            catch (Exception e)
+            {
+                PowerPointLabsGlobals.LogException(e, "GetShapesLabImage");
+                throw;
+            }
+        }
+        public Bitmap GetColorsLabImage(Office.IRibbonControl control)
+        {
+            try
+            {
+                return new System.Drawing.Bitmap(Properties.Resources.ColorsLab);
+            }
+            catch (Exception e)
+            {
+                PowerPointLabsGlobals.LogException(e, "GetColorsLabImage");
+                throw;
+            }
+        }
+
         public Bitmap GetAboutImage(Office.IRibbonControl control)
         {
             try
@@ -726,6 +787,18 @@ namespace PowerPointLabs
                 throw;
             }
         }
+        public Bitmap GetAddToCustomShapeContextImage(Office.IRibbonControl control)
+        {
+            try
+            {
+                return new Bitmap(Properties.Resources.AddToCustomShapes);
+            }
+            catch (Exception e)
+            {
+                PowerPointLabsGlobals.LogException(e, "GetZoomOutContextImage");
+                throw;
+            }
+        }
         public void ZoomStyleChanged(Office.IRibbonControl control, bool pressed)
         {
             try
@@ -786,6 +859,10 @@ namespace PowerPointLabs
         public bool OnGetEnabledRemoveAudio(Office.IRibbonControl control)
         {
             return RemoveAudioEnabled;
+        }
+        public bool OnGetEnabledHighlightTextFragments(Office.IRibbonControl control)
+        {
+            return highlightTextFragmentsEnabled;
         }
         //Edit Name Callbacks
         public void NameEditBtnClick(Office.IRibbonControl control)
@@ -917,7 +994,7 @@ namespace PowerPointLabs
                 HighlightBulletsText.highlightColor = newHighlightColor;
                 HighlightBulletsText.defaultColor = newDefaultColor;
                 HighlightBulletsBackground.backgroundColor = newBackgroundColor;
-
+                HighlightTextFragments.backgroundColor = newBackgroundColor;
             }
             catch (Exception e)
             {
@@ -1324,7 +1401,7 @@ namespace PowerPointLabs
             }
             catch (Exception e)
             {
-                MessageBox.Show("No Shape Selected", "Invalid Selection");
+                ErrorDialogWrapper.ShowDialog("Color Picker Failed", e.Message, e);
                 PowerPointLabsGlobals.LogException(e, "ColorPickerButtonClicked");
                 throw;
             }

@@ -164,7 +164,7 @@
                label="Highlight Bullets"
                visible="true">
           <button id="HighlightBulletsTextButton"
-                 label ="Highlight Text"
+                 label ="Highlight Points"
                  size ="large"
                  getImage="GetHighlightBulletsTextImage"
                  getSupertip="GetHighlightBulletsTextButtonSupertip"
@@ -177,26 +177,31 @@
                  getSupertip="GetHighlightBulletsBackgroundButtonSupertip"
                  getEnabled="OnGetEnabledHighlightBullets"
                  onAction="HighlightBulletsBackgroundButtonClick"/>
+          <button id="HighlightTextFragmentsButton"
+                  label="Highlight Text"
+                  size="large"
+                  getImage="GetHighlightWordsImage"
+                  supertip="Highlights all the text fragments selected"
+                  getEnabled="OnGetEnabledHighlightTextFragments"
+                  onAction="HighlightTextFragmentsButtonClick"/>
           <dialogBoxLauncher>
             <button id="HighlightBulletsDialogBox"
                     onAction="HighlightBulletsDialogBoxPressed"/>
           </dialogBoxLauncher>
         </group>
-        <group id="Color"
-               label="Color"
+        <group id="Labs"
+               label="Labs"
                visible="true">
           <button id="ColorPickerButton"
-                  label="Color Picker"
+                  label="Colors Lab"
                   size="large"
+                  getImage="GetColorsLabImage"
                   getSupertip="GetColorPickerButtonSupertip"
                   onAction="ColorPickerButtonClick"/>
-        </group>
-        <group id="CustomShape"
-               label="Custom Shapes"
-               visible="true">
           <button id="CustomeShapeButton"
                   label="Shapes Lab"
                   size="large"
+                  getImage="GetShapesLabImage"
                   getSupertip="GetCustomeShapeButtonSupertip"
                   onAction="CustomShapeButtonClick"/>
         </group>
@@ -268,7 +273,8 @@
              getImage="GetConvertToPicMenuImage"
              onAction="ConvertToPictureButtonClick"/>
       <button id="addCustomShapeShape"
-             label ="Add to Custom Shapes"
+             label ="Add to Shapes Lab"
+             getImage="GetAddToCustomShapeContextImage"
              onAction="AddShapeButtonClick"/>
       <button id="cutOutShapeShape"
               label="Crop To Shape"
@@ -298,7 +304,8 @@
              getImage="GetConvertToPicMenuImage"
              onAction="ConvertToPictureButtonClick"/>
       <button id="addCustomShapeFreeform"
-             label ="Add to Custom Shapes"
+             label ="Add to Shapes Lab"
+             getImage="GetAddToCustomShapeContextImage"
              onAction="AddShapeButtonClick"/>
       <button id="cutOutShapeFreeform"
               label="Crop To Shape"
@@ -338,7 +345,8 @@
               getImage="GetFitToHeightImage"
               onAction="FitToHeightClick"/>
       <button id="addCustomShapePicture"
-              label ="Add to Custom Shapes"
+              label ="Add to Shapes Lab"
+              getImage="GetAddToCustomShapeContextImage"
               onAction="AddShapeButtonClick"/>
     </contextMenu>
     <contextMenu idMso="ContextMenuChartArea">
@@ -352,7 +360,8 @@
              getImage="GetConvertToPicMenuImage"
              onAction="ConvertToPictureButtonClick"/>
       <button id="addCustomShapeChart"
-             label ="Add to Custom Shapes"
+             label ="Add to Shapes Lab"
+             getImage="GetAddToCustomShapeContextImage"
              onAction="AddShapeButtonClick"/>
       <button id="fitToWidthChart"
               label="Fit To Width"
@@ -378,7 +387,8 @@
               getImage="GetFitToHeightImage"
               onAction="FitToHeightClick"/>
       <button id="addCustomShapeTable"
-             label ="Add to Custom Shapes"
+             label ="Add to Shapes Lab"
+             getImage="GetAddToCustomShapeContextImage"
              onAction="AddShapeButtonClick"/>
     </contextMenu>
     <contextMenu idMso="ContextMenuObjectsGroup">
@@ -418,7 +428,8 @@
              getImage="GetConvertToPicMenuImage"
              onAction="ConvertToPictureButtonClick"/>
       <button id="addCustomShapePictureGroup"
-             label ="Add to Custom Shapes"
+             label ="Add to Shapes Lab"
+             getImage="GetAddToCustomShapeContextImage"
              onAction="AddShapeButtonClick"/>
       <button id="cutOutShapeGroup"
               label="Crop To Shape"
@@ -436,7 +447,8 @@
              getImage="GetConvertToPicMenuImage"
              onAction="ConvertToPictureButtonClick"/>
       <button id="addCustomShapeInk"
-             label ="Add to Custom Shapes"
+             label ="Add to Shapes Lab"
+             getImage="GetAddToCustomShapeContextImage"
              onAction="AddShapeButtonClick"/>
     </contextMenu>
     <contextMenu idMso="ContextMenuSmartArtBackground">
@@ -450,7 +462,8 @@
              getImage="GetConvertToPicMenuImage"
              onAction="ConvertToPictureButtonClick"/>
       <button id="addCustomShapeSmartArt"
-             label ="Add to Custom Shapes"
+             label ="Add to Shapes Lab"
+             getImage="GetAddToCustomShapeContextImage"
              onAction="AddShapeButtonClick"/>
     </contextMenu>
     <contextMenu idMso="ContextMenuThumbnail">

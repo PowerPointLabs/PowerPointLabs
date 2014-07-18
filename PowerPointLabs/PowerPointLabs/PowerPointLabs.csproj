@@ -39,9 +39,9 @@
     <VSTO_TrustAssembliesLocation>true</VSTO_TrustAssembliesLocation>
     <BootstrapperEnabled>true</BootstrapperEnabled>
     <PublishUrl>\\psf\Home\Desktop\PowerPointLabs Deploy\</PublishUrl>
-    <InstallUrl>http://www.comp.nus.edu.sg/~pptlabs/download-78563/</InstallUrl>
+    <InstallUrl>http://www.comp.nus.edu.sg/~pptlabs/download/dev/</InstallUrl>
     <TargetCulture>en</TargetCulture>
-    <ApplicationVersion>1.8.0.3</ApplicationVersion>
+    <ApplicationVersion>1.8.10.0</ApplicationVersion>
     <AutoIncrementApplicationRevision>false</AutoIncrementApplicationRevision>
     <UpdateEnabled>true</UpdateEnabled>
     <UpdateInterval>0</UpdateInterval>
@@ -189,6 +189,7 @@
       <EmbedInteropTypes>True</EmbedInteropTypes>
       <HintPath>..\..\..\..\..\..\..\..\Program Files (x86)\Microsoft Visual Studio 12.0\Visual Studio Tools for Office\PIA\Office14\Office.dll</HintPath>
     </Reference>
+    <Reference Include="PresentationFramework" />
     <Reference Include="stdole, Version=7.0.3300.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
       <EmbedInteropTypes>True</EmbedInteropTypes>
     </Reference>
@@ -198,6 +199,7 @@
     <Reference Include="System.Drawing" />
     <Reference Include="System.Speech" />
     <Reference Include="System.Windows.Forms" />
+    <Reference Include="System.Windows.Forms.DataVisualization" />
     <Reference Include="System.Xml" />
     <Reference Include="System.Core" />
     <Reference Include="System.Xml.Linq" />
@@ -228,15 +230,30 @@
     <Compile Include="AudioMisc\AudioHelper.cs" />
     <Compile Include="AutoAnimate.cs" />
     <Compile Include="AutoZoom.cs" />
-    <Compile Include="ColorHelper.cs" />
-    <Compile Include="ColorPane.cs">
+    <Compile Include="ColorPicker\ColorInformationDialog.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="ColorPicker\ColorInformationDialog.Designer.cs">
+      <DependentUpon>ColorInformationDialog.cs</DependentUpon>
+    </Compile>
+    <Compile Include="ColorPicker\HSLColor.cs" />
+    <Compile Include="CustomBinding.cs" />
+    <Compile Include="ColorPicker\ColorDataSource.cs" />
+    <Compile Include="ColorPicker\ColorHelper.cs" />
+    <Compile Include="ColorPicker\ColorPane.cs">
       <SubType>UserControl</SubType>
     </Compile>
-    <Compile Include="ColorPane.Designer.cs">
+    <Compile Include="ColorPicker\ColorPane.Designer.cs">
       <DependentUpon>ColorPane.cs</DependentUpon>
     </Compile>
+    <Compile Include="Converters\ColorPaneConverters.cs" />
     <Compile Include="ConvertToPicture.cs" />
     <Compile Include="CropToShape.cs" />
+    <Compile Include="Properties\Resources.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Resources.resx</DependentUpon>
+    </Compile>
     <Compile Include="LabeledThumbnail.cs">
       <SubType>UserControl</SubType>
     </Compile>
@@ -255,6 +272,7 @@
     <Compile Include="Views\CustomPaintTextBox.cs" />
     <Compile Include="Views\ErrorDialogWrapper.cs" />
     <Compile Include="FitToSlide.cs" />
+    <Compile Include="HighlightTextFragments.cs" />
     <Compile Include="Models\PowerPointAutoAnimateSlide.cs" />
     <Compile Include="Models\PowerPointDeMagnifyingSlide.cs" />
     <Compile Include="Models\PowerPointDrillDownSlide.cs" />
@@ -360,7 +378,50 @@
     <Compile Include="XMLMisc\XMLParser.cs" />
     <Compile Include="ZipStorer.cs" />
     <Compile Include="ZoomToArea.cs" />
-    <EmbeddedResource Include="ColorPane.resx">
+    <None Include="Resources\AddToCustomShapes.png" />
+    <None Include="Resources\ClosedHand.cur" />
+    <None Include="Resources\OpenHand.cur" />
+    <None Include="Resources\EyeDropper.cur" />
+    <None Include="Resources\HighlightWords.png" />
+    <None Include="Resources\Saturation-icon_18x18.png" />
+    <None Include="Resources\Saturation-icon_20x20.png" />
+    <None Include="Resources\Saturation-icon_23x23.png" />
+    <None Include="Resources\Saturation-icon_25x25.png" />
+    <None Include="Resources\Brightness-icon_25x25.png" />
+    <None Include="Resources\Saturation_icon.png" />
+    <None Include="Resources\Brightness_icon.png" />
+    <None Include="Resources\Load_icon.png" />
+    <None Include="Resources\Clear_icon.png" />
+    <None Include="Resources\Apply_icon.png" />
+    <None Include="Resources\Reload_icon.png" />
+    <None Include="Resources\Save_icon.png" />
+    <None Include="Resources\FillColor_icon.png" />
+    <None Include="Resources\LineColor_icon.png" />
+    <None Include="Resources\TextColor_icon.png" />
+    <None Include="Resources\Saturation-icon.png" />
+    <None Include="Resources\Reload-icon.png" />
+    <None Include="Resources\Load-icon.png" />
+    <None Include="Resources\LineColor-Icon.png" />
+    <None Include="Resources\Fill-icon.png" />
+    <None Include="Resources\Clear-icon.png" />
+    <None Include="Resources\Brightness-icon.png" />
+    <None Include="Resources\TextColor-icon.png" />
+    <None Include="Resources\refresh-icon.png" />
+    <None Include="Resources\ShapesLab.png" />
+    <None Include="Resources\ColorsLab.png" />
+    <None Include="Resources\Eyedropper-icon.png" />
+    <None Include="Resources\apply-icon.png" />
+    <None Include="Resources\delete-icon.png" />
+    <None Include="Resources\down-icon.png" />
+    <None Include="Resources\save-icon.png" />
+    <None Include="Resources\Palette-icon.png" />
+    <None Include="Resources\Paint-icon.png" />
+    <None Include="Resources\Technical-Pen-icon.png" />
+    <None Include="Resources\Type-icon.png" />
+    <EmbeddedResource Include="ColorPicker\ColorInformationDialog.resx">
+      <DependentUpon>ColorInformationDialog.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="ColorPicker\ColorPane.resx">
       <DependentUpon>ColorPane.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Views\LoadingDialog.resx">
@@ -370,6 +431,8 @@
     <Content Include="PowerPointLabs Quick Tutorial.pptx">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
+    <None Include="Properties\DataSources\ColorDataSource.datasource" />
+    <None Include="Properties\DataSources\ColorPane.datasource" />
     <None Include="Resources\Record.png" />
     <None Include="Resources\Stop.png" />
     <None Include="Resources\Play.png" />
@@ -400,14 +463,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
-      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
       <SubType>Designer</SubType>
+      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
     </EmbeddedResource>
-    <Compile Include="Properties\Resources.Designer.cs">
-      <AutoGen>True</AutoGen>
-      <DependentUpon>Resources.resx</DependentUpon>
-      <DesignTime>True</DesignTime>
-    </Compile>
     <EmbeddedResource Include="Views\InShowControl.resx">
       <DependentUpon>InShowControl.cs</DependentUpon>
     </EmbeddedResource>

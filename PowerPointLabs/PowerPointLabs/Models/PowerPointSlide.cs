@@ -37,6 +37,11 @@ namespace PowerPointLabs.Models
             _slide = slide;
         }
 
+        public PowerPoint.Slide GetNativeSlide()
+        {
+            return _slide;
+        }
+
         public static PowerPointSlide FromSlideFactory(Slide slide)
         {
             if (slide == null)
@@ -602,6 +607,31 @@ namespace PowerPointLabs.Models
         {
             Slide ackSlide = Globals.ThisAddIn.Application.ActivePresentation.Slides.Add(Globals.ThisAddIn.Application.ActivePresentation.Slides.Count + 1, PpSlideLayout.ppLayoutBlank);
             return PowerPointAckSlide.FromSlideFactory(ackSlide);
+        }
+
+        public bool hasTextFragments()
+        {
+            foreach (Shape sh in _slide.Shapes)
+            {
+                if (sh.Name.StartsWith("PPTLabsHighlightTextFragmentsShape"))
+                {
+                    return true;
+                }
+            }
+            return false;
+        }
+
+        public List<PowerPoint.Shape> getTextFragments()
+        {
+            List<PowerPoint.Shape> fragmentShapes = new List<Shape>();
+            foreach (Shape sh in _slide.Shapes)
+            {
+                if (sh.Name.StartsWith("PPTLabsHighlightTextFragmentsShape"))
+                {
+                    fragmentShapes.Add(sh);
+                }
+            }
+            return fragmentShapes;
         }
 
         public bool HasCaptions()
