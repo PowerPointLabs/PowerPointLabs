@@ -690,14 +690,8 @@ namespace PowerPointLabs
             brightnessPanel.Visible = false;
             LinearGradientBrush brush = new LinearGradientBrush(
                 rec,
-                new HSLColor(
-                color.Hue,
-                color.Saturation,
-                0),
-                new HSLColor(
-                color.Hue,
-                color.Saturation,
-                240),
+                Color.Transparent,
+                Color.Transparent,
                 LinearGradientMode.Horizontal);
             ColorBlend blend = new ColorBlend();
             Color[] blendColors = {
@@ -705,7 +699,10 @@ namespace PowerPointLabs
                 color.Hue,
                 color.Saturation,
                 0),
-                color,
+                new HSLColor(
+                color.Hue,
+                color.Saturation,
+                120),
                 new HSLColor(
                 color.Hue,
                 color.Saturation,
@@ -730,14 +727,8 @@ namespace PowerPointLabs
             saturationPanel.Visible = false;
             LinearGradientBrush brush = new LinearGradientBrush(
                 rec,
-                new HSLColor(
-                color.Hue,
-                0,
-                color.Luminosity),
-                new HSLColor(
-                color.Hue,
-                240,
-                color.Luminosity),
+                Color.Transparent,
+                Color.Transparent,
                 LinearGradientMode.Horizontal);
             ColorBlend blend = new ColorBlend();
             Color[] blendColors = {
@@ -745,7 +736,10 @@ namespace PowerPointLabs
                 color.Hue,
                 0,
                 color.Luminosity),
-                color,
+                new HSLColor(
+                color.Hue,
+                120,
+                color.Luminosity),
                 new HSLColor(
                 color.Hue,
                 240,
