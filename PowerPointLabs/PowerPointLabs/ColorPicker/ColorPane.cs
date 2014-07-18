@@ -527,6 +527,7 @@ namespace PowerPointLabs
                     break;
                 case MODE.LINE:
                     s.Line.ForeColor.RGB = rgb;
+                    s.Line.Visible = MsoTriState.msoTrue;
                     break;
                 case MODE.FONT:
                     ColorShapeFontWithColor(s, rgb);
