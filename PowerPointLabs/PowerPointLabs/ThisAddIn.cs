@@ -317,6 +317,8 @@ namespace PowerPointLabs
 
             if (pres.Saved == Office.MsoTriState.msoTrue)
             {
+                _isClosing = true;
+
                 if (_documentHashcodeMapper.ContainsKey(pres.Application.ActiveWindow))
                 {
                     _documentHashcodeMapper.Remove(pres.Application.ActiveWindow);
