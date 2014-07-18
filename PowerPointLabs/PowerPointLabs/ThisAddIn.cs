@@ -12,6 +12,7 @@ using PPExtraEventHelper;
 using System.IO.Compression;
 using PowerPointLabs.Models;
 using PowerPointLabs.Views;
+using MessageBox = System.Windows.Forms.MessageBox;
 using PowerPoint = Microsoft.Office.Interop.PowerPoint;
 using Office = Microsoft.Office.Core;
 
@@ -28,6 +29,7 @@ namespace PowerPointLabs
         private const string ShapeGalleryPptxName = @"ShapeGallery";
         
         private bool _versionWrong;
+        private bool _isClosingFile;
 
         private readonly Dictionary<PowerPoint.DocumentWindow,
                                     List<CustomTaskPane>> _documentPaneMapper = new Dictionary<PowerPoint.DocumentWindow,
@@ -77,12 +79,9 @@ namespace PowerPointLabs
 
         private void ThisAddInApplicationOnWindowDeactivate(PowerPoint.Presentation pres, PowerPoint.DocumentWindow wn)
         {
-            // in this case, we are closing the last client presentation, therefore we
-            // we can close the shape gallery
-            if (Application.Presentations.Count == 2 &&
-                ShapePresentation.Opened)
+            if (_isClosingFile)
             {
-                ShapePresentation.Close();
+                CloseShapeGalleryPresentation();
             }
         }
 
@@ -91,6 +90,8 @@ namespace PowerPointLabs
             if (pres != null)
             {
                 Ribbon.EmbedAudioVisible = !pres.Name.EndsWith(".ppt");
+
+                _isClosingFile = false;
             }
         }
 
@@ -283,41 +284,27 @@ namespace PowerPointLabs
         {
             var recorderPane = GetActivePane(typeof(RecorderTaskPane));
 
-            if (recorderPane == null)
+            if (recorderPane != null)
             {
-                return;
-            }
+                var recorder = recorderPane.Control as RecorderTaskPane;
 
-            var recorder = recorderPane.Control as RecorderTaskPane;
-
-            if (recorder != null &&
+                if (recorder != null &&
                 recorder.HasEvent())
-            {
-                recorder.ForceStopEvent();
-            }
-
-            var currentWindow = recorderPane.Window as PowerPoint.DocumentWindow;
-
-            // make sure the close event is triggered by the window that the pane belongs to
-            if (currentWindow != null &&
-                currentWindow.Presentation.Name != pres.Name)
-            {
-                return;
-            }
-
-            if (pres.Saved == Office.MsoTriState.msoTrue)
-            {
-                // remove task pane
-                var activePanes = _documentPaneMapper[pres.Application.ActiveWindow];
-                foreach (var pane in activePanes)
                 {
-                    CustomTaskPanes.Remove(pane);
+                    recorder.ForceStopEvent();
                 }
-
-                // remove entry from mappers
-                _documentPaneMapper.Remove(pres.Application.ActiveWindow);
-                _documentHashcodeMapper.Remove(pres.Application.ActiveWindow);
             }
+
+            //var currentWindow = recorderPane.Window as PowerPoint.DocumentWindow;
+
+            //// make sure the close event is triggered by the window that the pane belongs to
+            //if (currentWindow != null &&
+            //    currentWindow.Presentation.Name != pres.Name)
+            //{
+            //    return;
+            //}
+
+            FinishUp(pres);
         }
 
         private void ThisAddInShutdown(object sender, EventArgs e)
@@ -486,6 +473,66 @@ namespace PowerPointLabs
 
         # region Helper Functions
         private const string SlideXmlSearchPattern = @"slide(\d+)\.xml";
+
+        private void CloseShapeGalleryPresentation()
+        {
+            if (Application.Presentations.Count == 2 &&
+                ShapePresentation.Opened)
+            {
+                ShapePresentation.Close();
+            }
+        }
+
+        private void FinishUp(PowerPoint.Presentation pres)
+        {
+            if (pres.Saved == Office.MsoTriState.msoTrue)
+            {
+                // remove task pane
+                if (!_documentPaneMapper.ContainsKey(pres.Application.ActiveWindow)) return;
+
+                var activePanes = _documentPaneMapper[pres.Application.ActiveWindow];
+                foreach (var pane in activePanes)
+                {
+                    CustomTaskPanes.Remove(pane);
+                }
+
+                // remove entry from mappers
+                _documentPaneMapper.Remove(pres.Application.ActiveWindow);
+                _documentHashcodeMapper.Remove(pres.Application.ActiveWindow);
+
+                // close shape gallery
+                CloseShapeGalleryPresentation();
+            }
+            else
+                if (pres.Saved == Office.MsoTriState.msoFalse)
+                {
+                    var savePrompt =
+                        MessageBox.Show(
+                            string.Format("Do you want to save the changes you made to {0}?",
+                                          pres.Application.ActiveWindow.Caption), Globals.ThisAddIn.Application.Name,
+                            MessageBoxButtons.YesNoCancel, MessageBoxIcon.Warning, MessageBoxDefaultButton.Button1);
+
+                    switch (savePrompt)
+                    {
+                        case DialogResult.Yes:
+                            _isClosingFile = true;
+                            // Save is the default choice, so press enter will trigger "Save"
+                            SendKeys.Send("{ENTER}");
+                            break;
+                        case DialogResult.No:
+                            _isClosingFile = true;
+                            // Shortcut key for Don't save is 'n', therefore sending "N" will
+                            // trigger "Don't Save"
+                            SendKeys.Send("N");
+                            break;
+                        default:
+                            // Pressing "Esc" will cancel the dialog, which is equivalent to
+                            // choose "Cancel"
+                            SendKeys.Send("{ESC}");
+                            break;
+                    }
+                }
+        }
         
         private void SetupLogger()
         {
