@@ -81,7 +81,9 @@ namespace PowerPointLabs
         {
             // in this case, we are closing the last client presentation, therefore we
             // we can close the shape gallery
-            if (_isClosing && Application.Presentations.Count == 2 &&
+            if (_isClosing &&
+                Application.Presentations.Count == 2 &&
+                ShapePresentation != null &&
                 ShapePresentation.Opened)
             {
                 ShapePresentation.Close();
