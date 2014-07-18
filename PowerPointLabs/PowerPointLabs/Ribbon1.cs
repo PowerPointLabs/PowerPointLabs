@@ -1111,10 +1111,11 @@ namespace PowerPointLabs
             Globals.ThisAddIn.ShapePresentation.AddShape(selection, shapeName);
             Globals.ThisAddIn.ShapePresentation.Save();
 
-            Globals.ThisAddIn.SyncShapeAdd(shapeName, shapeFullName);
-
             // add the selection into pane and save it as .png locally
             ConvertToPicture.ConvertAndSave(selection, shapeFullName);
+
+            // sync the shape among all opening panels
+            Globals.ThisAddIn.SyncShapeAdd(shapeName, shapeFullName);
 
             // since we group and then ungroup the shape, document has been modified.
             // if the presentation has been saved before the group->ungroup, we can save

@@ -81,13 +81,13 @@ namespace PowerPointLabs
 
         public void Highlight()
         {
-            motherPanel.BackColor = Color.FromKnownColor(KnownColor.Highlight);
-            thumbnailPanel.BackColor = Color.FromKnownColor(KnownColor.Highlight);
+            motherPanel.BackColor = Color.FromKnownColor(KnownColor.LightBlue);
+            thumbnailPanel.BackColor = Color.FromKnownColor(KnownColor.LightBlue);
 
             if (!labelTextBox.Enabled)
             {
-                labelTextBox.BackColor = Color.FromKnownColor(KnownColor.Highlight);
-                labelTextBox.ForeColor = Color.White;
+                labelTextBox.BackColor = Color.FromKnownColor(KnownColor.LightBlue);
+                //labelTextBox.ForeColor = Color.White;
             }
         }
 
