@@ -1106,14 +1106,15 @@ namespace PowerPointLabs
 
             var shapeName = customShape.NextDefaultNameWithoutExtension;
             var shapeFullName = customShape.NextDefaultFullName;
-            // add the selection into pane and save it as .png locally
-            ConvertToPicture.ConvertAndSave(selection, shapeFullName);
-            customShape.AddCustomShape(shapeName, shapeFullName, true);
-
+            
+            // add shape into shape gallery first to reduce flicker
             Globals.ThisAddIn.ShapePresentation.AddShape(selection, shapeName);
             Globals.ThisAddIn.ShapePresentation.Save();
 
             Globals.ThisAddIn.SyncShapeAdd(shapeName, shapeFullName);
+
+            // add the selection into pane and save it as .png locally
+            ConvertToPicture.ConvertAndSave(selection, shapeFullName);
 
             // since we group and then ungroup the shape, document has been modified.
             // if the presentation has been saved before the group->ungroup, we can save
@@ -1122,6 +1123,9 @@ namespace PowerPointLabs
             {
                 Globals.ThisAddIn.Application.ActivePresentation.Save();
             }
+
+            // finally, add the shape into the panel and waiting for name editing
+            customShape.AddCustomShape(shapeName, shapeFullName, true);
         }
         # endregion
 

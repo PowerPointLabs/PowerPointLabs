@@ -963,6 +963,7 @@ namespace PowerPointLabs
                     }
 
                     _isShapeMatchedAlready = new HashSet<string>();
+
                     for (int i = 1; i <= pastedShapes.Count; i++)
                     {
                         PowerPoint.Shape shape = pastedShapes[i];
@@ -999,6 +1000,7 @@ namespace PowerPointLabs
                     && !_isShapeMatchedAlready.Contains(_copiedShapes[i].Id.ToString()))
                 {
                     _isShapeMatchedAlready.Add(_copiedShapes[i].Id.ToString());
+
                     return i;
                 }
             }
@@ -1010,6 +1012,7 @@ namespace PowerPointLabs
                     && !_isShapeMatchedAlready.Contains(_copiedShapes[i].Id.ToString()))
                 {
                     _isShapeMatchedAlready.Add(_copiedShapes[i].Id.ToString());
+
                     return i;
                 }
             }
