@@ -188,7 +188,9 @@
             this.AnalogousLighter.TabIndex = 2;
             this.AnalogousLighter.Click += new System.EventHandler(this.MatchingPanel_Click);
             this.AnalogousLighter.MouseDown += new System.Windows.Forms.MouseEventHandler(this.MatchingPanel_MouseDown);
+            this.AnalogousLighter.MouseEnter += new System.EventHandler(this.MatchingPanel_MouseEnter);
             this.AnalogousLighter.MouseMove += new System.Windows.Forms.MouseEventHandler(this.MatchingPanel_MouseMove);
+            this.AnalogousLighter.MouseUp += new System.Windows.Forms.MouseEventHandler(this.MatchingPanel_MouseUp);
             // 
             // contextMenuStrip1
             // 
@@ -223,7 +225,9 @@
             this.AnalogousSelected.TabIndex = 3;
             this.AnalogousSelected.Click += new System.EventHandler(this.MatchingPanel_Click);
             this.AnalogousSelected.MouseDown += new System.Windows.Forms.MouseEventHandler(this.MatchingPanel_MouseDown);
+            this.AnalogousSelected.MouseEnter += new System.EventHandler(this.MatchingPanel_MouseEnter);
             this.AnalogousSelected.MouseMove += new System.Windows.Forms.MouseEventHandler(this.MatchingPanel_MouseMove);
+            this.AnalogousSelected.MouseUp += new System.Windows.Forms.MouseEventHandler(this.MatchingPanel_MouseUp);
             // 
             // AnalogousDarker
             // 
@@ -236,7 +240,9 @@
             this.AnalogousDarker.TabIndex = 4;
             this.AnalogousDarker.Click += new System.EventHandler(this.MatchingPanel_Click);
             this.AnalogousDarker.MouseDown += new System.Windows.Forms.MouseEventHandler(this.MatchingPanel_MouseDown);
+            this.AnalogousDarker.MouseEnter += new System.EventHandler(this.MatchingPanel_MouseEnter);
             this.AnalogousDarker.MouseMove += new System.Windows.Forms.MouseEventHandler(this.MatchingPanel_MouseMove);
+            this.AnalogousDarker.MouseUp += new System.Windows.Forms.MouseEventHandler(this.MatchingPanel_MouseUp);
             // 
             // flowLayoutPanel2
             // 
@@ -281,7 +287,9 @@
             this.ComplementaryLighter.TabIndex = 2;
             this.ComplementaryLighter.Click += new System.EventHandler(this.MatchingPanel_Click);
             this.ComplementaryLighter.MouseDown += new System.Windows.Forms.MouseEventHandler(this.MatchingPanel_MouseDown);
+            this.ComplementaryLighter.MouseEnter += new System.EventHandler(this.MatchingPanel_MouseEnter);
             this.ComplementaryLighter.MouseMove += new System.Windows.Forms.MouseEventHandler(this.MatchingPanel_MouseMove);
+            this.ComplementaryLighter.MouseUp += new System.Windows.Forms.MouseEventHandler(this.MatchingPanel_MouseUp);
             // 
             // ComplementarySelected
             // 
@@ -294,7 +302,9 @@
             this.ComplementarySelected.TabIndex = 3;
             this.ComplementarySelected.Click += new System.EventHandler(this.MatchingPanel_Click);
             this.ComplementarySelected.MouseDown += new System.Windows.Forms.MouseEventHandler(this.MatchingPanel_MouseDown);
+            this.ComplementarySelected.MouseEnter += new System.EventHandler(this.MatchingPanel_MouseEnter);
             this.ComplementarySelected.MouseMove += new System.Windows.Forms.MouseEventHandler(this.MatchingPanel_MouseMove);
+            this.ComplementarySelected.MouseUp += new System.Windows.Forms.MouseEventHandler(this.MatchingPanel_MouseUp);
             // 
             // ComplementaryDarker
             // 
@@ -307,7 +317,9 @@
             this.ComplementaryDarker.TabIndex = 4;
             this.ComplementaryDarker.Click += new System.EventHandler(this.MatchingPanel_Click);
             this.ComplementaryDarker.MouseDown += new System.Windows.Forms.MouseEventHandler(this.MatchingPanel_MouseDown);
+            this.ComplementaryDarker.MouseEnter += new System.EventHandler(this.MatchingPanel_MouseEnter);
             this.ComplementaryDarker.MouseMove += new System.Windows.Forms.MouseEventHandler(this.MatchingPanel_MouseMove);
+            this.ComplementaryDarker.MouseUp += new System.Windows.Forms.MouseEventHandler(this.MatchingPanel_MouseUp);
             // 
             // flowLayoutPanel3
             // 
@@ -352,7 +364,9 @@
             this.TriadicLower.TabIndex = 2;
             this.TriadicLower.Click += new System.EventHandler(this.MatchingPanel_Click);
             this.TriadicLower.MouseDown += new System.Windows.Forms.MouseEventHandler(this.MatchingPanel_MouseDown);
+            this.TriadicLower.MouseEnter += new System.EventHandler(this.MatchingPanel_MouseEnter);
             this.TriadicLower.MouseMove += new System.Windows.Forms.MouseEventHandler(this.MatchingPanel_MouseMove);
+            this.TriadicLower.MouseUp += new System.Windows.Forms.MouseEventHandler(this.MatchingPanel_MouseUp);
             // 
             // TriadicSelected
             // 
@@ -365,7 +379,9 @@
             this.TriadicSelected.TabIndex = 3;
             this.TriadicSelected.Click += new System.EventHandler(this.MatchingPanel_Click);
             this.TriadicSelected.MouseDown += new System.Windows.Forms.MouseEventHandler(this.MatchingPanel_MouseDown);
+            this.TriadicSelected.MouseEnter += new System.EventHandler(this.MatchingPanel_MouseEnter);
             this.TriadicSelected.MouseMove += new System.Windows.Forms.MouseEventHandler(this.MatchingPanel_MouseMove);
+            this.TriadicSelected.MouseUp += new System.Windows.Forms.MouseEventHandler(this.MatchingPanel_MouseUp);
             // 
             // TriadicHigher
             // 
@@ -378,7 +394,9 @@
             this.TriadicHigher.TabIndex = 4;
             this.TriadicHigher.Click += new System.EventHandler(this.MatchingPanel_Click);
             this.TriadicHigher.MouseDown += new System.Windows.Forms.MouseEventHandler(this.MatchingPanel_MouseDown);
+            this.TriadicHigher.MouseEnter += new System.EventHandler(this.MatchingPanel_MouseEnter);
             this.TriadicHigher.MouseMove += new System.Windows.Forms.MouseEventHandler(this.MatchingPanel_MouseMove);
+            this.TriadicHigher.MouseUp += new System.Windows.Forms.MouseEventHandler(this.MatchingPanel_MouseUp);
             // 
             // flowLayoutPanel4
             // 
@@ -424,7 +442,9 @@
             this.Tetradic1.TabIndex = 3;
             this.Tetradic1.Click += new System.EventHandler(this.MatchingPanel_Click);
             this.Tetradic1.MouseDown += new System.Windows.Forms.MouseEventHandler(this.MatchingPanel_MouseDown);
+            this.Tetradic1.MouseEnter += new System.EventHandler(this.MatchingPanel_MouseEnter);
             this.Tetradic1.MouseMove += new System.Windows.Forms.MouseEventHandler(this.MatchingPanel_MouseMove);
+            this.Tetradic1.MouseUp += new System.Windows.Forms.MouseEventHandler(this.MatchingPanel_MouseUp);
             // 
             // TetradicSelected
             // 
@@ -437,7 +457,9 @@
             this.TetradicSelected.TabIndex = 4;
             this.TetradicSelected.Click += new System.EventHandler(this.MatchingPanel_Click);
             this.TetradicSelected.MouseDown += new System.Windows.Forms.MouseEventHandler(this.MatchingPanel_MouseDown);
+            this.TetradicSelected.MouseEnter += new System.EventHandler(this.MatchingPanel_MouseEnter);
             this.TetradicSelected.MouseMove += new System.Windows.Forms.MouseEventHandler(this.MatchingPanel_MouseMove);
+            this.TetradicSelected.MouseUp += new System.Windows.Forms.MouseEventHandler(this.MatchingPanel_MouseUp);
             // 
             // Tetradic2
             // 
@@ -450,7 +472,9 @@
             this.Tetradic2.TabIndex = 5;
             this.Tetradic2.Click += new System.EventHandler(this.MatchingPanel_Click);
             this.Tetradic2.MouseDown += new System.Windows.Forms.MouseEventHandler(this.MatchingPanel_MouseDown);
+            this.Tetradic2.MouseEnter += new System.EventHandler(this.MatchingPanel_MouseEnter);
             this.Tetradic2.MouseMove += new System.Windows.Forms.MouseEventHandler(this.MatchingPanel_MouseMove);
+            this.Tetradic2.MouseUp += new System.Windows.Forms.MouseEventHandler(this.MatchingPanel_MouseUp);
             // 
             // Tetradic3
             // 
@@ -463,7 +487,9 @@
             this.Tetradic3.TabIndex = 6;
             this.Tetradic3.Click += new System.EventHandler(this.MatchingPanel_Click);
             this.Tetradic3.MouseDown += new System.Windows.Forms.MouseEventHandler(this.MatchingPanel_MouseDown);
+            this.Tetradic3.MouseEnter += new System.EventHandler(this.MatchingPanel_MouseEnter);
             this.Tetradic3.MouseMove += new System.Windows.Forms.MouseEventHandler(this.MatchingPanel_MouseMove);
+            this.Tetradic3.MouseUp += new System.Windows.Forms.MouseEventHandler(this.MatchingPanel_MouseUp);
             // 
             // brightnessBar
             // 
@@ -542,14 +568,16 @@
             // 
             this.MonoPanel1.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.MonoPanel1.ContextMenuStrip = this.contextMenuStrip1;
-            this.MonoPanel1.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.MonoPanel1.Cursor = System.Windows.Forms.Cursors.Default;
             this.MonoPanel1.Location = new System.Drawing.Point(3, 3);
             this.MonoPanel1.Name = "MonoPanel1";
             this.MonoPanel1.Size = new System.Drawing.Size(22, 22);
             this.MonoPanel1.TabIndex = 0;
             this.MonoPanel1.Click += new System.EventHandler(this.MatchingPanel_Click);
             this.MonoPanel1.MouseDown += new System.Windows.Forms.MouseEventHandler(this.MatchingPanel_MouseDown);
+            this.MonoPanel1.MouseEnter += new System.EventHandler(this.MatchingPanel_MouseEnter);
             this.MonoPanel1.MouseMove += new System.Windows.Forms.MouseEventHandler(this.MatchingPanel_MouseMove);
+            this.MonoPanel1.MouseUp += new System.Windows.Forms.MouseEventHandler(this.MatchingPanel_MouseUp);
             // 
             // MonoPanel2
             // 
@@ -562,7 +590,9 @@
             this.MonoPanel2.TabIndex = 1;
             this.MonoPanel2.Click += new System.EventHandler(this.MatchingPanel_Click);
             this.MonoPanel2.MouseDown += new System.Windows.Forms.MouseEventHandler(this.MatchingPanel_MouseDown);
+            this.MonoPanel2.MouseEnter += new System.EventHandler(this.MatchingPanel_MouseEnter);
             this.MonoPanel2.MouseMove += new System.Windows.Forms.MouseEventHandler(this.MatchingPanel_MouseMove);
+            this.MonoPanel2.MouseUp += new System.Windows.Forms.MouseEventHandler(this.MatchingPanel_MouseUp);
             // 
             // MonoPanel3
             // 
@@ -575,7 +605,9 @@
             this.MonoPanel3.TabIndex = 1;
             this.MonoPanel3.Click += new System.EventHandler(this.MatchingPanel_Click);
             this.MonoPanel3.MouseDown += new System.Windows.Forms.MouseEventHandler(this.MatchingPanel_MouseDown);
+            this.MonoPanel3.MouseEnter += new System.EventHandler(this.MatchingPanel_MouseEnter);
             this.MonoPanel3.MouseMove += new System.Windows.Forms.MouseEventHandler(this.MatchingPanel_MouseMove);
+            this.MonoPanel3.MouseUp += new System.Windows.Forms.MouseEventHandler(this.MatchingPanel_MouseUp);
             // 
             // MonoPanel4
             // 
@@ -588,7 +620,9 @@
             this.MonoPanel4.TabIndex = 2;
             this.MonoPanel4.Click += new System.EventHandler(this.MatchingPanel_Click);
             this.MonoPanel4.MouseDown += new System.Windows.Forms.MouseEventHandler(this.MatchingPanel_MouseDown);
+            this.MonoPanel4.MouseEnter += new System.EventHandler(this.MatchingPanel_MouseEnter);
             this.MonoPanel4.MouseMove += new System.Windows.Forms.MouseEventHandler(this.MatchingPanel_MouseMove);
+            this.MonoPanel4.MouseUp += new System.Windows.Forms.MouseEventHandler(this.MatchingPanel_MouseUp);
             // 
             // MonoPanel5
             // 
@@ -601,7 +635,9 @@
             this.MonoPanel5.TabIndex = 3;
             this.MonoPanel5.Click += new System.EventHandler(this.MatchingPanel_Click);
             this.MonoPanel5.MouseDown += new System.Windows.Forms.MouseEventHandler(this.MatchingPanel_MouseDown);
+            this.MonoPanel5.MouseEnter += new System.EventHandler(this.MatchingPanel_MouseEnter);
             this.MonoPanel5.MouseMove += new System.Windows.Forms.MouseEventHandler(this.MatchingPanel_MouseMove);
+            this.MonoPanel5.MouseUp += new System.Windows.Forms.MouseEventHandler(this.MatchingPanel_MouseUp);
             // 
             // MonoPanel6
             // 
@@ -614,7 +650,9 @@
             this.MonoPanel6.TabIndex = 4;
             this.MonoPanel6.Click += new System.EventHandler(this.MatchingPanel_Click);
             this.MonoPanel6.MouseDown += new System.Windows.Forms.MouseEventHandler(this.MatchingPanel_MouseDown);
+            this.MonoPanel6.MouseEnter += new System.EventHandler(this.MatchingPanel_MouseEnter);
             this.MonoPanel6.MouseMove += new System.Windows.Forms.MouseEventHandler(this.MatchingPanel_MouseMove);
+            this.MonoPanel6.MouseUp += new System.Windows.Forms.MouseEventHandler(this.MatchingPanel_MouseUp);
             // 
             // MonoPanel7
             // 
@@ -627,7 +665,9 @@
             this.MonoPanel7.TabIndex = 5;
             this.MonoPanel7.Click += new System.EventHandler(this.MatchingPanel_Click);
             this.MonoPanel7.MouseDown += new System.Windows.Forms.MouseEventHandler(this.MatchingPanel_MouseDown);
+            this.MonoPanel7.MouseEnter += new System.EventHandler(this.MatchingPanel_MouseEnter);
             this.MonoPanel7.MouseMove += new System.Windows.Forms.MouseEventHandler(this.MatchingPanel_MouseMove);
+            this.MonoPanel7.MouseUp += new System.Windows.Forms.MouseEventHandler(this.MatchingPanel_MouseUp);
             // 
             // themeLayoutPanel
             // 

@@ -181,6 +181,16 @@ namespace PowerPointLabs.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized resource of type System.Byte[].
+        /// </summary>
+        internal static byte[] ClosedHand {
+            get {
+                object obj = ResourceManager.GetObject("ClosedHand", resourceCulture);
+                return ((byte[])(obj));
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
         internal static System.Drawing.Bitmap ColorsLab {
@@ -397,6 +407,16 @@ namespace PowerPointLabs.Properties {
             get {
                 object obj = ResourceManager.GetObject("Logo", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Byte[].
+        /// </summary>
+        internal static byte[] OpenHand {
+            get {
+                object obj = ResourceManager.GetObject("OpenHand", resourceCulture);
+                return ((byte[])(obj));
             }
         }
         

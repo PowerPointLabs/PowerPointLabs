@@ -771,10 +771,27 @@ namespace PowerPointLabs
         #endregion
 
         #region Drag-Drop
+        private Cursor openHandCursor = new Cursor(new MemoryStream(Properties.Resources.OpenHand));
+        private Cursor closedHandCursor = new Cursor(new MemoryStream(Properties.Resources.ClosedHand));
+
+        private void MatchingPanel_MouseEnter(object sender, EventArgs e)
+        {
+            Panel panel = sender as Panel;
+            panel.Cursor = openHandCursor;
+        }
+
+        private void MatchingPanel_MouseUp(object sender, MouseEventArgs e)
+        {
+            Panel panel = sender as Panel;
+            panel.Cursor = openHandCursor;
+        }
+
         private void MatchingPanel_MouseDown(object sender, MouseEventArgs e)
         {
             if (e.Button != MouseButtons.Left) return;
             _mouseDownLocation = e.Location;
+            Panel panel = sender as Panel;
+            panel.Cursor = closedHandCursor;
         }
 
         private void StartDragDrop(object sender)
