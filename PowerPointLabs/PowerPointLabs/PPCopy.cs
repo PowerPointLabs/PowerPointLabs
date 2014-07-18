@@ -110,20 +110,27 @@ namespace PPExtraEventHelper
             }
             else if (m.Msg == (int)Native.Message.WM_CLIPBOARDUPDATE)
             {
-                if (selectedRange != null
-                    && selectedRange.Type != PowerPoint.PpSelectionType.ppSelectionNone
-                    && AfterCopy != null
-                    && AfterPaste != null)
+                try
                 {
-                    if (isCopyEvent)
+                    if (selectedRange != null
+                        && selectedRange.Type != PowerPoint.PpSelectionType.ppSelectionNone
+                        && AfterCopy != null
+                        && AfterPaste != null)
                     {
-                        PPCopy.AfterCopy(selectedRange);
+                        if (isCopyEvent)
+                        {
+                            AfterCopy(selectedRange);
+                        }
+                        else //PasteEvent
+                        {
+                            AfterPaste(selectedRange);
+                        }
+                        isCopyEvent = false;
                     }
-                    else //PasteEvent
-                    {
-                        PPCopy.AfterPaste(selectedRange);
-                    }
-                    isCopyEvent = false;
+                }
+                catch (Exception)
+                {
+                    
                 }
             }
         }

@@ -273,7 +273,8 @@
              getImage="GetConvertToPicMenuImage"
              onAction="ConvertToPictureButtonClick"/>
       <button id="addCustomShapeShape"
-             label ="Add to Custom Shapes"
+             label ="Add to Shapes Lab"
+             getImage="GetAddToCustomShapeContextImage"
              onAction="AddShapeButtonClick"/>
       <button id="cutOutShapeShape"
               label="Crop To Shape"
@@ -303,7 +304,8 @@
              getImage="GetConvertToPicMenuImage"
              onAction="ConvertToPictureButtonClick"/>
       <button id="addCustomShapeFreeform"
-             label ="Add to Custom Shapes"
+             label ="Add to Shapes Lab"
+             getImage="GetAddToCustomShapeContextImage"
              onAction="AddShapeButtonClick"/>
       <button id="cutOutShapeFreeform"
               label="Crop To Shape"
@@ -343,7 +345,8 @@
               getImage="GetFitToHeightImage"
               onAction="FitToHeightClick"/>
       <button id="addCustomShapePicture"
-              label ="Add to Custom Shapes"
+              label ="Add to Shapes Lab"
+              getImage="GetAddToCustomShapeContextImage"
               onAction="AddShapeButtonClick"/>
     </contextMenu>
     <contextMenu idMso="ContextMenuChartArea">
@@ -357,7 +360,8 @@
              getImage="GetConvertToPicMenuImage"
              onAction="ConvertToPictureButtonClick"/>
       <button id="addCustomShapeChart"
-             label ="Add to Custom Shapes"
+             label ="Add to Shapes Lab"
+             getImage="GetAddToCustomShapeContextImage"
              onAction="AddShapeButtonClick"/>
       <button id="fitToWidthChart"
               label="Fit To Width"
@@ -383,7 +387,8 @@
               getImage="GetFitToHeightImage"
               onAction="FitToHeightClick"/>
       <button id="addCustomShapeTable"
-             label ="Add to Custom Shapes"
+             label ="Add to Shapes Lab"
+             getImage="GetAddToCustomShapeContextImage"
              onAction="AddShapeButtonClick"/>
     </contextMenu>
     <contextMenu idMso="ContextMenuObjectsGroup">
@@ -423,7 +428,8 @@
              getImage="GetConvertToPicMenuImage"
              onAction="ConvertToPictureButtonClick"/>
       <button id="addCustomShapePictureGroup"
-             label ="Add to Custom Shapes"
+             label ="Add to Shapes Lab"
+             getImage="GetAddToCustomShapeContextImage"
              onAction="AddShapeButtonClick"/>
       <button id="cutOutShapeGroup"
               label="Crop To Shape"
@@ -441,7 +447,8 @@
              getImage="GetConvertToPicMenuImage"
              onAction="ConvertToPictureButtonClick"/>
       <button id="addCustomShapeInk"
-             label ="Add to Custom Shapes"
+             label ="Add to Shapes Lab"
+             getImage="GetAddToCustomShapeContextImage"
              onAction="AddShapeButtonClick"/>
     </contextMenu>
     <contextMenu idMso="ContextMenuSmartArtBackground">
@@ -455,7 +462,8 @@
              getImage="GetConvertToPicMenuImage"
              onAction="ConvertToPictureButtonClick"/>
       <button id="addCustomShapeSmartArt"
-             label ="Add to Custom Shapes"
+             label ="Add to Shapes Lab"
+             getImage="GetAddToCustomShapeContextImage"
              onAction="AddShapeButtonClick"/>
     </contextMenu>
     <contextMenu idMso="ContextMenuThumbnail">

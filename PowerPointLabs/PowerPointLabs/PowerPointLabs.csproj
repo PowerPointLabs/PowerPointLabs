@@ -378,6 +378,7 @@
     <Compile Include="XMLMisc\XMLParser.cs" />
     <Compile Include="ZipStorer.cs" />
     <Compile Include="ZoomToArea.cs" />
+    <None Include="Resources\AddToCustomShapes.png" />
     <None Include="Resources\HighlightWords.png" />
     <None Include="Resources\Saturation-icon_18x18.png" />
     <None Include="Resources\Saturation-icon_20x20.png" />

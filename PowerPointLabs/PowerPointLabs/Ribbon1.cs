@@ -787,6 +787,18 @@ namespace PowerPointLabs
                 throw;
             }
         }
+        public Bitmap GetAddToCustomShapeContextImage(Office.IRibbonControl control)
+        {
+            try
+            {
+                return new Bitmap(Properties.Resources.AddToCustomShapes);
+            }
+            catch (Exception e)
+            {
+                PowerPointLabsGlobals.LogException(e, "GetZoomOutContextImage");
+                throw;
+            }
+        }
         public void ZoomStyleChanged(Office.IRibbonControl control, bool pressed)
         {
             try
