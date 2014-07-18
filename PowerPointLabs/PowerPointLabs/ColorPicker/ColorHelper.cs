@@ -23,14 +23,14 @@ namespace PowerPointLabs.ColorPicker
                 }
             }
 
-            var baseAngle = (float) originalColor.Hue;
-            var finalAngle = baseAngle + (angle % 360);
+            var baseAngle = (float) originalColor.Hue / 240.0f * 360.0f;
+            var finalAngle = baseAngle + angle;
             
             if (finalAngle > 360.0f)
             {
                 finalAngle -= 360.0f;
             }
-            Color finalColor = new HSLColor(finalAngle, originalColor.Saturation, originalColor.Luminosity);
+            Color finalColor = new HSLColor(finalAngle / 360.0f * 240.0f, originalColor.Saturation, originalColor.Luminosity);
 
             return Color.FromArgb(255,
                     finalColor.R,
