@@ -147,7 +147,6 @@
             // 
             // AnalogousColorPanel
             // 
-            this.AnalogousColorPanel.BackColor = System.Drawing.SystemColors.Window;
             this.AnalogousColorPanel.Controls.Add(this.label1);
             this.AnalogousColorPanel.Controls.Add(this.flowLayoutPanel6);
             this.AnalogousColorPanel.Location = new System.Drawing.Point(3, 67);
@@ -158,7 +157,6 @@
             // label1
             // 
             this.label1.AutoSize = true;
-            this.label1.BackColor = System.Drawing.SystemColors.Window;
             this.label1.Font = new System.Drawing.Font("Arial", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.label1.ForeColor = System.Drawing.SystemColors.ControlText;
             this.label1.Location = new System.Drawing.Point(3, 0);
@@ -246,7 +244,6 @@
             // 
             // flowLayoutPanel2
             // 
-            this.flowLayoutPanel2.BackColor = System.Drawing.SystemColors.Window;
             this.flowLayoutPanel2.Controls.Add(this.label2);
             this.flowLayoutPanel2.Controls.Add(this.flowLayoutPanel7);
             this.flowLayoutPanel2.Location = new System.Drawing.Point(133, 67);
@@ -257,7 +254,6 @@
             // label2
             // 
             this.label2.AutoSize = true;
-            this.label2.BackColor = System.Drawing.SystemColors.Window;
             this.label2.Font = new System.Drawing.Font("Arial", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.label2.ForeColor = System.Drawing.SystemColors.ControlText;
             this.label2.Location = new System.Drawing.Point(3, 0);
@@ -323,7 +319,6 @@
             // 
             // flowLayoutPanel3
             // 
-            this.flowLayoutPanel3.BackColor = System.Drawing.SystemColors.Window;
             this.flowLayoutPanel3.Controls.Add(this.label3);
             this.flowLayoutPanel3.Controls.Add(this.flowLayoutPanel8);
             this.flowLayoutPanel3.Location = new System.Drawing.Point(3, 129);
@@ -334,7 +329,6 @@
             // label3
             // 
             this.label3.AutoSize = true;
-            this.label3.BackColor = System.Drawing.SystemColors.Window;
             this.label3.Font = new System.Drawing.Font("Arial", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.label3.ForeColor = System.Drawing.SystemColors.ControlText;
             this.label3.Location = new System.Drawing.Point(3, 0);
@@ -400,7 +394,6 @@
             // 
             // flowLayoutPanel4
             // 
-            this.flowLayoutPanel4.BackColor = System.Drawing.SystemColors.Window;
             this.flowLayoutPanel4.Controls.Add(this.label4);
             this.flowLayoutPanel4.Controls.Add(this.flowLayoutPanel9);
             this.flowLayoutPanel4.Location = new System.Drawing.Point(133, 129);
@@ -411,7 +404,6 @@
             // label4
             // 
             this.label4.AutoSize = true;
-            this.label4.BackColor = System.Drawing.SystemColors.Window;
             this.label4.Font = new System.Drawing.Font("Arial", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.label4.ForeColor = System.Drawing.SystemColors.ControlText;
             this.label4.Location = new System.Drawing.Point(3, 0);
@@ -529,7 +521,6 @@
             // 
             // flowLayoutPanel1
             // 
-            this.flowLayoutPanel1.BackColor = System.Drawing.SystemColors.Window;
             this.flowLayoutPanel1.Controls.Add(this.label5);
             this.flowLayoutPanel1.Controls.Add(this.flowLayoutPanel5);
             this.flowLayoutPanel1.Location = new System.Drawing.Point(3, 3);
@@ -540,7 +531,6 @@
             // label5
             // 
             this.label5.AutoSize = true;
-            this.label5.BackColor = System.Drawing.SystemColors.Window;
             this.label5.Font = new System.Drawing.Font("Arial", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.label5.ForeColor = System.Drawing.SystemColors.ControlText;
             this.label5.Location = new System.Drawing.Point(3, 0);
@@ -551,7 +541,6 @@
             // 
             // flowLayoutPanel5
             // 
-            this.flowLayoutPanel5.BackColor = System.Drawing.SystemColors.Window;
             this.flowLayoutPanel5.Controls.Add(this.MonoPanel1);
             this.flowLayoutPanel5.Controls.Add(this.MonoPanel2);
             this.flowLayoutPanel5.Controls.Add(this.MonoPanel3);
@@ -671,7 +660,6 @@
             // 
             // themeLayoutPanel
             // 
-            this.themeLayoutPanel.BackColor = System.Drawing.SystemColors.Window;
             this.themeLayoutPanel.Controls.Add(this.flowLayoutPanel11);
             this.themeLayoutPanel.Controls.Add(this.label6);
             this.themeLayoutPanel.Controls.Add(this.SaveThemeButton);
@@ -685,7 +673,6 @@
             // 
             // flowLayoutPanel11
             // 
-            this.flowLayoutPanel11.BackColor = System.Drawing.SystemColors.Window;
             this.flowLayoutPanel11.Controls.Add(this.ThemePanel1);
             this.flowLayoutPanel11.Controls.Add(this.ThemePanel2);
             this.flowLayoutPanel11.Controls.Add(this.ThemePanel3);
@@ -854,7 +841,6 @@
             // label6
             // 
             this.label6.AutoSize = true;
-            this.label6.BackColor = System.Drawing.SystemColors.Window;
             this.label6.Font = new System.Drawing.Font("Arial", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.label6.ForeColor = System.Drawing.SystemColors.ControlText;
             this.label6.Location = new System.Drawing.Point(267, 0);
@@ -939,7 +925,6 @@
             // 
             // flowLayoutPanel10
             // 
-            this.flowLayoutPanel10.BackColor = System.Drawing.SystemColors.Window;
             this.flowLayoutPanel10.Controls.Add(this.flowLayoutPanel1);
             this.flowLayoutPanel10.Controls.Add(this.label9);
             this.flowLayoutPanel10.Controls.Add(this.AnalogousColorPanel);
