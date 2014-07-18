@@ -12,6 +12,7 @@ using PPExtraEventHelper;
 using System.IO.Compression;
 using PowerPointLabs.Models;
 using PowerPointLabs.Views;
+using MessageBox = System.Windows.Forms.MessageBox;
 using PowerPoint = Microsoft.Office.Interop.PowerPoint;
 using Office = Microsoft.Office.Core;
 
@@ -26,8 +27,9 @@ namespace PowerPointLabs
         private const string DefaultShapeMasterFolderName = @"\PowerPointLabs Custom Shapes";
         private const string DefaultShapeCategoryName = @"My Shapes";
         private const string ShapeGalleryPptxName = @"ShapeGallery";
-        
-        private bool _oldVersion;
+
+        private bool _versionWrong;
+        private bool _isClosing;
 
         private readonly Dictionary<PowerPoint.DocumentWindow,
                                     List<CustomTaskPane>> _documentPaneMapper = new Dictionary<PowerPoint.DocumentWindow,
@@ -37,7 +39,7 @@ namespace PowerPointLabs
                                                                                      string>();
 
         internal PowerPointShapeGalleryPresentation ShapePresentation;
-        
+
         public Ribbon1 Ribbon;
 
         # region Powerpoint Application Event Handlers
@@ -45,7 +47,7 @@ namespace PowerPointLabs
         {
             SetupLogger();
             Trace.TraceInformation(DateTime.Now.ToString("yyyyMMddHHmmss") + ": PowerPointLabs Started");
-            
+
             PPMouse.Init(Application);
             PPCopy.Init(Application);
             SetupDoubleClickHandler();
@@ -79,7 +81,7 @@ namespace PowerPointLabs
         {
             // in this case, we are closing the last client presentation, therefore we
             // we can close the shape gallery
-            if (Application.Presentations.Count == 2 &&
+            if (_isClosing && Application.Presentations.Count == 2 &&
                 ShapePresentation.Opened)
             {
                 ShapePresentation.Close();
@@ -91,6 +93,8 @@ namespace PowerPointLabs
             if (pres != null)
             {
                 Ribbon.EmbedAudioVisible = !pres.Name.EndsWith(".ppt");
+
+                _isClosing = false;
             }
         }
 
@@ -233,11 +237,11 @@ namespace PowerPointLabs
                 // hash code
                 if (!PrepareMediaFiles(pres, tempPath))
                 {
-                    _oldVersion = true;
+                    _versionWrong = true;
                     return;
                 }
 
-                _oldVersion = false;
+                _versionWrong = false;
             }
             else
             {
@@ -252,14 +256,14 @@ namespace PowerPointLabs
                 // manually call the setup method of the recorder pane.
                 var oriTempPath = Path.GetTempPath() + TempFolderNamePrefix +
                                   _documentHashcodeMapper[activeWindow] + @"\";
-                
+
                 if (!PrepareMediaFiles(pres, oriTempPath))
                 {
-                    _oldVersion = true;
+                    _versionWrong = true;
                     return;
                 }
 
-                _oldVersion = false;
+                _versionWrong = false;
 
                 var recorderPane = GetActivePane(typeof(RecorderTaskPane));
 
@@ -283,27 +287,25 @@ namespace PowerPointLabs
         {
             var recorderPane = GetActivePane(typeof(RecorderTaskPane));
 
-            if (recorderPane == null)
+            if (recorderPane != null)
             {
-                return;
-            }
+                var recorder = recorderPane.Control as RecorderTaskPane;
 
-            var recorder = recorderPane.Control as RecorderTaskPane;
-
-            if (recorder != null &&
+                if (recorder != null &&
                 recorder.HasEvent())
-            {
-                recorder.ForceStopEvent();
+                {
+                    recorder.ForceStopEvent();
+                }
             }
 
-            var currentWindow = recorderPane.Window as PowerPoint.DocumentWindow;
+            //var currentWindow = recorderPane.Window as PowerPoint.DocumentWindow;
 
-            // make sure the close event is triggered by the window that the pane belongs to
-            if (currentWindow != null &&
-                currentWindow.Presentation.Name != pres.Name)
-            {
-                return;
-            }
+            //// make sure the close event is triggered by the window that the pane belongs to
+            //if (currentWindow != null &&
+            //    currentWindow.Presentation.Name != pres.Name)
+            //{
+            //    return;
+            //}
 
             if (pres.Saved == Office.MsoTriState.msoTrue)
             {
@@ -317,6 +319,29 @@ namespace PowerPointLabs
                 // remove entry from mappers
                 _documentPaneMapper.Remove(pres.Application.ActiveWindow);
                 _documentHashcodeMapper.Remove(pres.Application.ActiveWindow);
+            }
+            else
+            {
+                var prompt =
+                    MessageBox.Show(string.Format("Do you want to save {0}", pres.Application.ActiveWindow.Caption),
+                                    Application.Name,
+                                    MessageBoxButtons.YesNoCancel, MessageBoxIcon.Warning,
+                                    MessageBoxDefaultButton.Button1);
+
+                switch (prompt)
+                {
+                    case DialogResult.Yes:
+                        _isClosing = true;
+                        SendKeys.Send("{ENTER}");
+                        break;
+                    case DialogResult.No:
+                        _isClosing = true;
+                        SendKeys.Send("N");
+                        break;
+                    default:
+                        SendKeys.Send("{ESC}");
+                        break;
+                }
             }
         }
 
@@ -433,7 +458,7 @@ namespace PowerPointLabs
             }
 
             var activeWindow = presentation.Application.ActiveWindow;
-            
+
             TaskPaneSetup(presentation);
             RegisterTaskPane(
                 new CustomShapePane(_defaultShapeMasterFolderPrefix + DefaultShapeMasterFolderName,
@@ -485,7 +510,7 @@ namespace PowerPointLabs
 
         # region Helper Functions
         private const string SlideXmlSearchPattern = @"slide(\d+)\.xml";
-        
+
         private void SetupLogger()
         {
             // The folder for the roaming current user 
@@ -604,7 +629,7 @@ namespace PowerPointLabs
         private void SlideShowEndHandler(PowerPoint.Presentation presentation)
         {
             _isInSlideShow = false;
-            
+
             var recorderPane = GetActivePane(typeof(RecorderTaskPane));
 
             if (recorderPane == null)
@@ -645,7 +670,7 @@ namespace PowerPointLabs
                             audio.Item1.EmbedOnSlide(slides[i], audio.Item2);
 
                             if (Globals.ThisAddIn.Ribbon.RemoveAudioEnabled) continue;
-                            
+
                             Globals.ThisAddIn.Ribbon.RemoveAudioEnabled = true;
                             Globals.ThisAddIn.Ribbon.RefreshRibbonControl("RemoveAudioButton");
                         }
@@ -663,7 +688,7 @@ namespace PowerPointLabs
         private void UpdateRecorderPane(int count, int id)
         {
             var recorderPane = GetActivePane(typeof(RecorderTaskPane));
-            
+
             // if there's no active pane associated with the current window, return
             if (recorderPane == null)
             {
@@ -676,7 +701,7 @@ namespace PowerPointLabs
             {
                 return;
             }
-            
+
             // if the user has selected none or more than 1 slides, recorder pane should show nothing
             if (count != 1)
             {
@@ -725,8 +750,10 @@ namespace PowerPointLabs
             try
             {
                 string presName = pres.Name;
+                var invalidCharRegex = new Regex("[<>:\"/\\\\|?*]");
 
-                if (presName.EndsWith(".ppt"))
+                if (presName.EndsWith(".ppt") ||
+                    invalidCharRegex.IsMatch(pres.FullName))
                 {
                     return false;
                 }
@@ -740,6 +767,16 @@ namespace PowerPointLabs
                 var zipFullPath = tempPath + zipName;
                 var presFullName = pres.FullName;
 
+                // before we do everything, check if there's an undelete old zip file
+                // due to some error
+                if (File.Exists(zipFullPath))
+                {
+                    File.SetAttributes(zipFullPath, FileAttributes.Normal);
+                    File.Delete(zipFullPath);
+                }
+
+                // if temp folder exists, delete then create in case 2 different files
+                // share the same name
                 PrepareTempFolder(tempPath);
 
                 // this segment is added to handle "embed on other application" issue. In this
@@ -755,6 +792,7 @@ namespace PowerPointLabs
                 try
                 {
                     File.Copy(presFullName, zipFullPath);
+                    File.SetAttributes(zipFullPath, FileAttributes.Normal);
                 }
                 catch (Exception e)
                 {
@@ -762,7 +800,7 @@ namespace PowerPointLabs
                 }
 
                 var fileInfo = new FileInfo(zipFullPath);
-                
+
                 // if there's nothing inside the zip file, we do nothing
                 if (fileInfo.Length == 0)
                 {
@@ -796,6 +834,7 @@ namespace PowerPointLabs
                     }
 
                     zip.Close();
+                    File.SetAttributes(zipFullPath, FileAttributes.Normal);
                     File.Delete(zipFullPath);
                 }
                 catch (Exception e)
@@ -833,7 +872,7 @@ namespace PowerPointLabs
 
         public bool VerifyVersion()
         {
-            if (_oldVersion)
+            if (_versionWrong)
             {
                 MessageBox.Show(TextCollection.VersionNotCompatibleMsg);
                 return false;
@@ -846,6 +885,8 @@ namespace PowerPointLabs
         # region Copy paste handlers
 
         private PowerPoint.DocumentWindow _copyFromWnd;
+        private Regex _shapeNamePattern = new Regex(@"^[^\[]\D+\s\d+$");
+        private HashSet<String> isShapeMatchedAlready;
 
         private void AfterPasteEventHandler(PowerPoint.Selection selection)
         {
@@ -860,6 +901,7 @@ namespace PowerPointLabs
                     && pptName == _previousPptName)
                 {
                     PowerPoint.ShapeRange pastedShapes = selection.ShapeRange;
+
                     var nameListForPastedShapes = new List<string>();
                     var nameDictForPastedShapes = new Dictionary<string, string>();
                     var nameListForCopiedShapes = new List<string>();
@@ -870,7 +912,7 @@ namespace PowerPointLabs
                     {
                         try
                         {
-                            if (namePattern.IsMatch(shape.Name))
+                            if (_shapeNamePattern.IsMatch(shape.Name))
                             {
                                 shape.Name = "[" + shape.Name + "]";
                             }
@@ -898,11 +940,13 @@ namespace PowerPointLabs
                         corruptedShapes[i].Delete();
                     }
 
+                    isShapeMatchedAlready = new HashSet<string>();
                     for (int i = 1; i <= pastedShapes.Count; i++)
                     {
                         PowerPoint.Shape shape = pastedShapes[i];
+                        int matchedShapeIndex = FindMatchedShape(shape);
                         string uniqueName = Guid.NewGuid().ToString();
-                        nameDictForPastedShapes[uniqueName] = nameListForCopiedShapes[i - 1];
+                        nameDictForPastedShapes[uniqueName] = nameListForCopiedShapes[matchedShapeIndex];
                         shape.Name = uniqueName;
                         nameListForPastedShapes.Add(shape.Name);
                     }
@@ -919,6 +963,81 @@ namespace PowerPointLabs
             {
                 //TODO: log in ThisAddIn.cs
             }
+        }
+
+        private int FindMatchedShape(PowerPoint.Shape shape)
+        {
+            //Strong matching:
+            for (int i = 0; i < _copiedShapes.Count; i++)
+            {
+                if (IsSimilarShape(shape, _copiedShapes[i])
+                    && IsSimilarName(shape.Name, _copiedShapes[i].Name)
+                    && shape.Left == _copiedShapes[i].Left
+                    && shape.Height == _copiedShapes[i].Height
+                    && !isShapeMatchedAlready.Contains(_copiedShapes[i].Id.ToString()))
+                {
+                    isShapeMatchedAlready.Add(_copiedShapes[i].Id.ToString());
+                    return i;
+                }
+            }
+            //Blur matching:
+            for (int i = 0; i < _copiedShapes.Count; i++)
+            {
+                if (IsSimilarShape(shape, _copiedShapes[i])
+                    && IsSimilarName(shape.Name, _copiedShapes[i].Name)
+                    && !isShapeMatchedAlready.Contains(_copiedShapes[i].Id.ToString()))
+                {
+                    isShapeMatchedAlready.Add(_copiedShapes[i].Id.ToString());
+                    return i;
+                }
+            }
+            return -1;
+        }
+
+        private bool IsSimilarShape(PowerPoint.Shape shape, PowerPoint.Shape shape2)
+        {
+            return shape.Width == shape2.Width
+                   && shape.Height == shape2.Height
+                   && shape.Type == shape2.Type
+                   && (shape.Type != Office.MsoShapeType.msoAutoShape
+                       || shape.AutoShapeType == shape2.AutoShapeType);
+        }
+
+        /// <summary>
+        /// Similar name defi: 
+        /// 1. if they're not default shape name, they must be the exact same
+        /// 2. if they're default shape name, the shape type in the name must be the exact same
+        /// 3. otherwise not similar
+        /// </summary>
+        /// <param name="name1"></param>
+        /// <param name="name2"></param>
+        /// <returns></returns>
+        private bool IsSimilarName(string name1, string name2)
+        {
+            //remove enclosing brackets for name2
+            var nameEnclosedInBrackets = new Regex(@"^\[\D+\s\d+\]$");
+            if (!nameEnclosedInBrackets.IsMatch(name1)
+                && nameEnclosedInBrackets.IsMatch(name2)
+                && name2.Length > 2)
+            {
+                name2 = name2.Substring(1, name2.Length - 2);
+            }
+
+            if (!_shapeNamePattern.IsMatch(name1)
+                && !_shapeNamePattern.IsMatch(name2))
+            {
+                return name1.Equals(name2);
+            }
+
+            if (_shapeNamePattern.IsMatch(name1)
+                && _shapeNamePattern.IsMatch(name2))
+            {
+                var shapeTypeInName = new Regex(@"^[^\[]\D+\s(?=\d+$)");
+                var shapeTypeForName1 = shapeTypeInName.Match(name1).ToString();
+                var shapeTypeForName2 = shapeTypeInName.Match(name2).ToString();
+                return shapeTypeForName1.Equals(shapeTypeForName2);
+            }
+            return false;
         }
 
         private void AfterPasteRecorderEventHandler(PowerPoint.Selection selection)
@@ -941,7 +1060,7 @@ namespace PowerPointLabs
                 }
 
                 var copyFromRecorderPane =
-                    GetPaneFromWindow(typeof (RecorderTaskPane), _copyFromWnd).Control as RecorderTaskPane;
+                    GetPaneFromWindow(typeof(RecorderTaskPane), _copyFromWnd).Control as RecorderTaskPane;
                 var activeRecorderPane = GetActivePane(typeof(RecorderTaskPane)).Control as RecorderTaskPane;
 
                 if (activeRecorderPane == null ||
@@ -998,6 +1117,7 @@ namespace PowerPointLabs
                         var shape = sh as PowerPoint.Shape;
                         _copiedShapes.Add(shape);
                     }
+
                     _copiedShapes.Sort((x, y) => (x.Id - y.Id));
                 }
             }
@@ -1051,7 +1171,7 @@ namespace PowerPointLabs
 
         private const string OfficeVersion2013 = "15.0";
         private const string OfficeVersion2010 = "14.0";
-        
+
         private const int CommandOpenBackgroundFormat = 0x8F;
 
         private bool _isInSlideShow;
@@ -1106,7 +1226,7 @@ namespace PowerPointLabs
                 var selectedShapes = selection.ShapeRange;
                 Native.SendMessage(
                     Process.GetCurrentProcess().MainWindowHandle,
-                    (uint) Native.Message.WM_COMMAND,
+                    (uint)Native.Message.WM_COMMAND,
                     new IntPtr(CommandOpenBackgroundFormat),
                     IntPtr.Zero
                     );
@@ -1127,11 +1247,11 @@ namespace PowerPointLabs
                     {
                         //Check whether Home tab is enabled or not
                         _eventHook = Native.SetWinEventHook(
-                            (uint) Native.Event.EVENT_SYSTEM_MENUEND,
-                            (uint) Native.Event.EVENT_OBJECT_CREATE,
+                            (uint)Native.Event.EVENT_SYSTEM_MENUEND,
+                            (uint)Native.Event.EVENT_OBJECT_CREATE,
                             IntPtr.Zero,
                             _tabActivate,
-                            (uint) Process.GetCurrentProcess().Id,
+                            (uint)Process.GetCurrentProcess().Id,
                             0,
                             0);
                     }
