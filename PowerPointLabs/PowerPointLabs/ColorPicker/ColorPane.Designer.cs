@@ -128,9 +128,9 @@
             // 
             this.panel1.AllowDrop = true;
             this.panel1.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.panel1.Location = new System.Drawing.Point(19, 14);
+            this.panel1.Location = new System.Drawing.Point(19, 15);
             this.panel1.Name = "panel1";
-            this.panel1.Size = new System.Drawing.Size(45, 45);
+            this.panel1.Size = new System.Drawing.Size(44, 43);
             this.panel1.TabIndex = 0;
             this.panel1.DragDrop += new System.Windows.Forms.DragEventHandler(this.panel_DragDrop);
             this.panel1.DragEnter += new System.Windows.Forms.DragEventHandler(this.panel_DragEnter);
@@ -157,11 +157,11 @@
             // label1
             // 
             this.label1.AutoSize = true;
-            this.label1.Font = new System.Drawing.Font("Arial", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label1.Font = new System.Drawing.Font("Tahoma", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.label1.ForeColor = System.Drawing.SystemColors.ControlText;
             this.label1.Location = new System.Drawing.Point(3, 0);
             this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(75, 16);
+            this.label1.Size = new System.Drawing.Size(67, 16);
             this.label1.TabIndex = 5;
             this.label1.Text = "Analogous";
             // 
@@ -254,11 +254,11 @@
             // label2
             // 
             this.label2.AutoSize = true;
-            this.label2.Font = new System.Drawing.Font("Arial", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label2.Font = new System.Drawing.Font("Tahoma", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.label2.ForeColor = System.Drawing.SystemColors.ControlText;
             this.label2.Location = new System.Drawing.Point(3, 0);
             this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(109, 16);
+            this.label2.Size = new System.Drawing.Size(98, 16);
             this.label2.TabIndex = 6;
             this.label2.Text = "Complementary";
             // 
@@ -329,11 +329,11 @@
             // label3
             // 
             this.label3.AutoSize = true;
-            this.label3.Font = new System.Drawing.Font("Arial", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label3.Font = new System.Drawing.Font("Tahoma", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.label3.ForeColor = System.Drawing.SystemColors.ControlText;
             this.label3.Location = new System.Drawing.Point(3, 0);
             this.label3.Name = "label3";
-            this.label3.Size = new System.Drawing.Size(51, 16);
+            this.label3.Size = new System.Drawing.Size(47, 16);
             this.label3.TabIndex = 6;
             this.label3.Text = "Triadic";
             // 
@@ -404,11 +404,11 @@
             // label4
             // 
             this.label4.AutoSize = true;
-            this.label4.Font = new System.Drawing.Font("Arial", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label4.Font = new System.Drawing.Font("Tahoma", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.label4.ForeColor = System.Drawing.SystemColors.ControlText;
             this.label4.Location = new System.Drawing.Point(3, 0);
             this.label4.Name = "label4";
-            this.label4.Size = new System.Drawing.Size(59, 16);
+            this.label4.Size = new System.Drawing.Size(55, 16);
             this.label4.TabIndex = 6;
             this.label4.Text = "Tetradic";
             // 
@@ -531,11 +531,11 @@
             // label5
             // 
             this.label5.AutoSize = true;
-            this.label5.Font = new System.Drawing.Font("Arial", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label5.Font = new System.Drawing.Font("Tahoma", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.label5.ForeColor = System.Drawing.SystemColors.ControlText;
             this.label5.Location = new System.Drawing.Point(3, 0);
             this.label5.Name = "label5";
-            this.label5.Size = new System.Drawing.Size(106, 16);
+            this.label5.Size = new System.Drawing.Size(95, 16);
             this.label5.TabIndex = 6;
             this.label5.Text = "Monochromatic";
             // 
@@ -950,7 +950,7 @@
             // 
             this.FontButton.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Center;
             this.FontButton.Image = ((System.Drawing.Image)(resources.GetObject("FontButton.Image")));
-            this.FontButton.Location = new System.Drawing.Point(146, 14);
+            this.FontButton.Location = new System.Drawing.Point(74, 14);
             this.FontButton.Name = "FontButton";
             this.FontButton.Size = new System.Drawing.Size(44, 45);
             this.FontButton.TabIndex = 26;
@@ -962,7 +962,7 @@
             // 
             this.LineButton.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Center;
             this.LineButton.Image = global::PowerPointLabs.Properties.Resources.LineColor_icon;
-            this.LineButton.Location = new System.Drawing.Point(197, 14);
+            this.LineButton.Location = new System.Drawing.Point(125, 14);
             this.LineButton.Name = "LineButton";
             this.LineButton.Size = new System.Drawing.Size(44, 45);
             this.LineButton.TabIndex = 25;
@@ -974,7 +974,7 @@
             // 
             this.FillButton.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Center;
             this.FillButton.Image = global::PowerPointLabs.Properties.Resources.FillColor_icon;
-            this.FillButton.Location = new System.Drawing.Point(248, 14);
+            this.FillButton.Location = new System.Drawing.Point(176, 14);
             this.FillButton.Name = "FillButton";
             this.FillButton.Size = new System.Drawing.Size(44, 45);
             this.FillButton.TabIndex = 24;
@@ -985,6 +985,7 @@
             // groupBox1
             // 
             this.groupBox1.Controls.Add(this.flowLayoutPanel10);
+            this.groupBox1.Font = new System.Drawing.Font("Tahoma", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.groupBox1.Location = new System.Drawing.Point(19, 200);
             this.groupBox1.Name = "groupBox1";
             this.groupBox1.Size = new System.Drawing.Size(274, 216);
@@ -995,6 +996,7 @@
             // groupBox2
             // 
             this.groupBox2.Controls.Add(this.themeLayoutPanel);
+            this.groupBox2.Font = new System.Drawing.Font("Tahoma", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.groupBox2.Location = new System.Drawing.Point(18, 422);
             this.groupBox2.Name = "groupBox2";
             this.groupBox2.Size = new System.Drawing.Size(275, 109);
