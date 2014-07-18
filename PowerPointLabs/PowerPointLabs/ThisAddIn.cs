@@ -27,9 +27,9 @@ namespace PowerPointLabs
         private const string DefaultShapeMasterFolderName = @"\PowerPointLabs Custom Shapes";
         private const string DefaultShapeCategoryName = @"My Shapes";
         private const string ShapeGalleryPptxName = @"ShapeGallery";
-        
+
         private bool _versionWrong;
-        private bool _isClosingFile;
+        private bool _isClosing;
 
         private readonly Dictionary<PowerPoint.DocumentWindow,
                                     List<CustomTaskPane>> _documentPaneMapper = new Dictionary<PowerPoint.DocumentWindow,
@@ -39,7 +39,7 @@ namespace PowerPointLabs
                                                                                      string>();
 
         internal PowerPointShapeGalleryPresentation ShapePresentation;
-        
+
         public Ribbon1 Ribbon;
 
         # region Powerpoint Application Event Handlers
@@ -47,7 +47,7 @@ namespace PowerPointLabs
         {
             SetupLogger();
             Trace.TraceInformation(DateTime.Now.ToString("yyyyMMddHHmmss") + ": PowerPointLabs Started");
-            
+
             PPMouse.Init(Application);
             PPCopy.Init(Application);
             SetupDoubleClickHandler();
@@ -79,9 +79,12 @@ namespace PowerPointLabs
 
         private void ThisAddInApplicationOnWindowDeactivate(PowerPoint.Presentation pres, PowerPoint.DocumentWindow wn)
         {
-            if (_isClosingFile)
+            // in this case, we are closing the last client presentation, therefore we
+            // we can close the shape gallery
+            if (_isClosing && Application.Presentations.Count == 2 &&
+                ShapePresentation.Opened)
             {
-                CloseShapeGalleryPresentation();
+                ShapePresentation.Close();
             }
         }
 
@@ -91,7 +94,7 @@ namespace PowerPointLabs
             {
                 Ribbon.EmbedAudioVisible = !pres.Name.EndsWith(".ppt");
 
-                _isClosingFile = false;
+                _isClosing = false;
             }
         }
 
@@ -253,7 +256,7 @@ namespace PowerPointLabs
                 // manually call the setup method of the recorder pane.
                 var oriTempPath = Path.GetTempPath() + TempFolderNamePrefix +
                                   _documentHashcodeMapper[activeWindow] + @"\";
-                
+
                 if (!PrepareMediaFiles(pres, oriTempPath))
                 {
                     _versionWrong = true;
@@ -304,7 +307,42 @@ namespace PowerPointLabs
             //    return;
             //}
 
-            FinishUp(pres);
+            if (pres.Saved == Office.MsoTriState.msoTrue)
+            {
+                // remove task pane
+                var activePanes = _documentPaneMapper[pres.Application.ActiveWindow];
+                foreach (var pane in activePanes)
+                {
+                    CustomTaskPanes.Remove(pane);
+                }
+
+                // remove entry from mappers
+                _documentPaneMapper.Remove(pres.Application.ActiveWindow);
+                _documentHashcodeMapper.Remove(pres.Application.ActiveWindow);
+            }
+            else
+            {
+                var prompt =
+                    MessageBox.Show(string.Format("Do you want to save {0}", pres.Application.ActiveWindow.Caption),
+                                    Application.Name,
+                                    MessageBoxButtons.YesNoCancel, MessageBoxIcon.Warning,
+                                    MessageBoxDefaultButton.Button1);
+
+                switch (prompt)
+                {
+                    case DialogResult.Yes:
+                        _isClosing = true;
+                        SendKeys.Send("{ENTER}");
+                        break;
+                    case DialogResult.No:
+                        _isClosing = true;
+                        SendKeys.Send("N");
+                        break;
+                    default:
+                        SendKeys.Send("{ESC}");
+                        break;
+                }
+            }
         }
 
         private void ThisAddInShutdown(object sender, EventArgs e)
@@ -331,7 +369,7 @@ namespace PowerPointLabs
         public Control GetControlFromWindow(Type type, PowerPoint.DocumentWindow window)
         {
             var taskPane = GetPaneFromWindow(typeof(CustomShapePane), window);
-            
+
             return taskPane == null ? null : taskPane.Control;
         }
 
@@ -421,7 +459,7 @@ namespace PowerPointLabs
             }
 
             var activeWindow = presentation.Application.ActiveWindow;
-            
+
             TaskPaneSetup(presentation);
             RegisterTaskPane(
                 new CustomShapePane(_defaultShapeMasterFolderPrefix + DefaultShapeMasterFolderName,
@@ -474,66 +512,6 @@ namespace PowerPointLabs
         # region Helper Functions
         private const string SlideXmlSearchPattern = @"slide(\d+)\.xml";
 
-        private void CloseShapeGalleryPresentation()
-        {
-            if (Application.Presentations.Count == 2 &&
-                ShapePresentation.Opened)
-            {
-                ShapePresentation.Close();
-            }
-        }
-
-        private void FinishUp(PowerPoint.Presentation pres)
-        {
-            if (pres.Saved == Office.MsoTriState.msoTrue)
-            {
-                // remove task pane
-                if (!_documentPaneMapper.ContainsKey(pres.Application.ActiveWindow)) return;
-
-                var activePanes = _documentPaneMapper[pres.Application.ActiveWindow];
-                foreach (var pane in activePanes)
-                {
-                    CustomTaskPanes.Remove(pane);
-                }
-
-                // remove entry from mappers
-                _documentPaneMapper.Remove(pres.Application.ActiveWindow);
-                _documentHashcodeMapper.Remove(pres.Application.ActiveWindow);
-
-                // close shape gallery
-                CloseShapeGalleryPresentation();
-            }
-            else
-                if (pres.Saved == Office.MsoTriState.msoFalse)
-                {
-                    var savePrompt =
-                        MessageBox.Show(
-                            string.Format("Do you want to save the changes you made to {0}?",
-                                          pres.Application.ActiveWindow.Caption), Globals.ThisAddIn.Application.Name,
-                            MessageBoxButtons.YesNoCancel, MessageBoxIcon.Warning, MessageBoxDefaultButton.Button1);
-
-                    switch (savePrompt)
-                    {
-                        case DialogResult.Yes:
-                            _isClosingFile = true;
-                            // Save is the default choice, so press enter will trigger "Save"
-                            SendKeys.Send("{ENTER}");
-                            break;
-                        case DialogResult.No:
-                            _isClosingFile = true;
-                            // Shortcut key for Don't save is 'n', therefore sending "N" will
-                            // trigger "Don't Save"
-                            SendKeys.Send("N");
-                            break;
-                        default:
-                            // Pressing "Esc" will cancel the dialog, which is equivalent to
-                            // choose "Cancel"
-                            SendKeys.Send("{ESC}");
-                            break;
-                    }
-                }
-        }
-        
         private void SetupLogger()
         {
             // The folder for the roaming current user 
@@ -652,7 +630,7 @@ namespace PowerPointLabs
         private void SlideShowEndHandler(PowerPoint.Presentation presentation)
         {
             _isInSlideShow = false;
-            
+
             var recorderPane = GetActivePane(typeof(RecorderTaskPane));
 
             if (recorderPane == null)
@@ -693,7 +671,7 @@ namespace PowerPointLabs
                             audio.Item1.EmbedOnSlide(slides[i], audio.Item2);
 
                             if (Globals.ThisAddIn.Ribbon.RemoveAudioEnabled) continue;
-                            
+
                             Globals.ThisAddIn.Ribbon.RemoveAudioEnabled = true;
                             Globals.ThisAddIn.Ribbon.RefreshRibbonControl("RemoveAudioButton");
                         }
@@ -711,7 +689,7 @@ namespace PowerPointLabs
         private void UpdateRecorderPane(int count, int id)
         {
             var recorderPane = GetActivePane(typeof(RecorderTaskPane));
-            
+
             // if there's no active pane associated with the current window, return
             if (recorderPane == null)
             {
@@ -823,7 +801,7 @@ namespace PowerPointLabs
                 }
 
                 var fileInfo = new FileInfo(zipFullPath);
-                
+
                 // if there's nothing inside the zip file, we do nothing
                 if (fileInfo.Length == 0)
                 {
@@ -909,7 +887,7 @@ namespace PowerPointLabs
 
         private PowerPoint.DocumentWindow _copyFromWnd;
         private Regex _shapeNamePattern = new Regex(@"^[^\[]\D+\s\d+$");
-        private HashSet<String> isShapeMatchedAlready; 
+        private HashSet<String> isShapeMatchedAlready;
 
         private void AfterPasteEventHandler(PowerPoint.Selection selection)
         {
@@ -1039,8 +1017,8 @@ namespace PowerPointLabs
         {
             //remove enclosing brackets for name2
             var nameEnclosedInBrackets = new Regex(@"^\[\D+\s\d+\]$");
-            if (!nameEnclosedInBrackets.IsMatch(name1) 
-                && nameEnclosedInBrackets.IsMatch(name2) 
+            if (!nameEnclosedInBrackets.IsMatch(name1)
+                && nameEnclosedInBrackets.IsMatch(name2)
                 && name2.Length > 2)
             {
                 name2 = name2.Substring(1, name2.Length - 2);
@@ -1083,7 +1061,7 @@ namespace PowerPointLabs
                 }
 
                 var copyFromRecorderPane =
-                    GetPaneFromWindow(typeof (RecorderTaskPane), _copyFromWnd).Control as RecorderTaskPane;
+                    GetPaneFromWindow(typeof(RecorderTaskPane), _copyFromWnd).Control as RecorderTaskPane;
                 var activeRecorderPane = GetActivePane(typeof(RecorderTaskPane)).Control as RecorderTaskPane;
 
                 if (activeRecorderPane == null ||
@@ -1194,7 +1172,7 @@ namespace PowerPointLabs
 
         private const string OfficeVersion2013 = "15.0";
         private const string OfficeVersion2010 = "14.0";
-        
+
         private const int CommandOpenBackgroundFormat = 0x8F;
 
         private bool _isInSlideShow;
@@ -1249,7 +1227,7 @@ namespace PowerPointLabs
                 var selectedShapes = selection.ShapeRange;
                 Native.SendMessage(
                     Process.GetCurrentProcess().MainWindowHandle,
-                    (uint) Native.Message.WM_COMMAND,
+                    (uint)Native.Message.WM_COMMAND,
                     new IntPtr(CommandOpenBackgroundFormat),
                     IntPtr.Zero
                     );
@@ -1270,11 +1248,11 @@ namespace PowerPointLabs
                     {
                         //Check whether Home tab is enabled or not
                         _eventHook = Native.SetWinEventHook(
-                            (uint) Native.Event.EVENT_SYSTEM_MENUEND,
-                            (uint) Native.Event.EVENT_OBJECT_CREATE,
+                            (uint)Native.Event.EVENT_SYSTEM_MENUEND,
+                            (uint)Native.Event.EVENT_OBJECT_CREATE,
                             IntPtr.Zero,
                             _tabActivate,
-                            (uint) Process.GetCurrentProcess().Id,
+                            (uint)Process.GetCurrentProcess().Id,
                             0,
                             0);
                     }
