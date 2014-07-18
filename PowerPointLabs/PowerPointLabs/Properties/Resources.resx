@@ -286,6 +286,15 @@
   <data name="Saturation_icon_18x18" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\Saturation-icon_18x18.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
+  <data name="EyeDropper" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\EyeDropper.cur;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="OpenHand" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\OpenHand.cur;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="ClosedHand" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\ClosedHand.cur;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
   <data name="HighlightWords" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\HighlightWords.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>

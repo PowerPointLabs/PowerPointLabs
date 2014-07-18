@@ -281,6 +281,14 @@ namespace PowerPointLabs
 
         private void ThisAddInPresentationClose(PowerPoint.Presentation pres)
         {
+            var colorPane = GetActivePane(typeof(ColorPane));
+
+            if (colorPane != null)
+            {
+                var colorLabs = colorPane.Control as ColorPane;
+                if (colorLabs != null) colorLabs.SaveDefaultColorPaneThemeColors();
+            }
+
             var recorderPane = GetActivePane(typeof(RecorderTaskPane));
 
             if (recorderPane == null)
@@ -423,7 +431,7 @@ namespace PowerPointLabs
             var activeWindow = presentation.Application.ActiveWindow;
 
             TaskPaneSetup(presentation);
-            RegisterTaskPane(new ColorPane(), "Color Panel", activeWindow, null, null);
+            RegisterTaskPane(new ColorPane(), "Colors Lab", activeWindow, null, null);
         }
 
         public void RegisterCustomShapePane(PowerPoint.Presentation presentation)
