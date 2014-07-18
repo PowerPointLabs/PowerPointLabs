@@ -403,7 +403,8 @@ namespace PowerPointLabs
         {
             if (_noShapePanel.Controls.Count == 0)
             {
-                _noShapePanel.Controls.Add(_noShapeLabel);
+                _noShapePanel.Controls.Add(_noShapeLabelFirstLine);
+                _noShapePanel.Controls.Add(_noShapeLabelSecondLine);
             }
 
             myShapeFlowLayout.Controls.Add(_noShapePanel);

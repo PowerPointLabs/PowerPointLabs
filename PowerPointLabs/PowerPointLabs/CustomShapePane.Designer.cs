@@ -132,7 +132,7 @@ namespace PowerPointLabs
         private System.Windows.Forms.TabPage tabPage1;
         private System.Windows.Forms.FlowLayoutPanel myShapeFlowLayout;
 
-        private readonly Label _noShapeLabel = new Label
+        private readonly Label _noShapeLabelFirstLine = new Label
         {
             AutoSize = true,
             Font =
@@ -142,13 +142,26 @@ namespace PowerPointLabs
             Location = new Point(81, 11),
             Name = "noShapeLabel",
             Size = new Size(212, 24),
-            Text = TextCollection.CustomShapeNoShapeText
+            Text = TextCollection.CustomShapeNoShapeTextFirstLine
+        };
+
+        private readonly Label _noShapeLabelSecondLine = new Label
+        {
+            AutoSize = true,
+            Font =
+                new Font("Arial", 10F, FontStyle.Bold, GraphicsUnit.Point,
+                         0),
+            ForeColor = SystemColors.ButtonShadow,
+            Location = new Point(11, 41),
+            Name = "noShapeLabel",
+            Size = new Size(242, 24),
+            Text = TextCollection.CustomShapeNoShapeTextSecondLine
         };
 
         private readonly Panel _noShapePanel = new Panel
         {
             Name = "noShapePanel",
-            Size = new Size(362, 50),
+            Size = new Size(392, 100),
             Margin = new Padding(0, 0, 0, 0)
         };
         private ToolStripMenuItem addToSlideToolStripMenuItem;

@@ -26,19 +26,33 @@ namespace PowerPointLabs
             if (IsSelectionShape(selection))
             {
                 var grouped = selection.ShapeRange.Count > 1;
-
                 var shape = GetShapeFromSelection(selection);
-                shape = CutPasteShape(shape);
                 shape.Export(fileName, PowerPoint.PpShapeFormat.ppShapeFormatPNG,
                              ExportMode: PowerPoint.PpExportMode.ppScaleXY);
 
-                if (grouped)
+                try
                 {
-                    shape.Ungroup().Select();
+                    if (grouped)
+                    {
+                        shape.Ungroup().Select();
+                    }
+                    else
+                    {
+                        shape.Select();
+                    }
                 }
-                else
+                catch (Exception)
                 {
-                    shape.Select();
+                    shape = CutPasteShape(shape);
+
+                    if (grouped)
+                    {
+                        shape.Ungroup().Select();
+                    }
+                    else
+                    {
+                        shape.Select();
+                    }
                 }
             }
             else
