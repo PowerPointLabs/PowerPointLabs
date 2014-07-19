@@ -773,9 +773,11 @@ namespace PowerPointLabs
             {
                 string presName = pres.Name;
                 var invalidCharRegex = new Regex("[<>:\"/\\\\|?*]");
+                var invalidPathRegex = new Regex("^[hH]ttp:");
 
                 if (presName.EndsWith(".ppt") ||
-                    invalidCharRegex.IsMatch(pres.FullName))
+                    invalidCharRegex.IsMatch(presName) ||
+                    invalidPathRegex.IsMatch(pres.Path))
                 {
                     return false;
                 }
