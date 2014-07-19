@@ -463,12 +463,17 @@ namespace PowerPointLabs
                 if (_selectedThumbnail.State == LabeledThumbnail.Status.Editing)
                 {
                     _selectedThumbnail.FinishNameEdit();
+                } else
+                if (_selectedThumbnail == clickedThumbnail)
+                {
+                    _selectedThumbnail.StartNameEdit();
                 }
 
                 _selectedThumbnail.DeHighlight();
             }
 
             clickedThumbnail.Highlight();
+
             _selectedThumbnail = clickedThumbnail;
         }
 

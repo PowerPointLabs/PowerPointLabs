@@ -73,10 +73,6 @@ namespace PowerPointLabs
             thumbnailPanel.BackColor = Color.FromKnownColor(KnownColor.Transparent);
             labelTextBox.BackColor = Color.FromKnownColor(KnownColor.Window);
             labelTextBox.ForeColor = Color.Black;
-
-            // dehighlight will hard-disable the text box editing
-            labelTextBox.Enabled = false;
-            State = Status.Idle;
         }
 
         public void Highlight()
@@ -147,20 +143,6 @@ namespace PowerPointLabs
             labelTextBox.Enabled = false;
 
             SetToolTip(NameLable);
-        }
-
-        public void ToggleHighlight()
-        {
-            if (_isHighlighted)
-            {
-                DeHighlight();
-            }
-            else
-            {
-                Highlight();
-            }
-
-            _isHighlighted = !_isHighlighted;
         }
         # endregion
 
