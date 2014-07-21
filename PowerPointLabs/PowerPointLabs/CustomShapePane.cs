@@ -456,11 +456,6 @@ namespace PowerPointLabs
                 return;
             }
 
-            if (MouseButtons != MouseButtons.Left)
-            {
-                return;
-            }
-
             var clickedThumbnail = sender as LabeledThumbnail;
 
             if (_selectedThumbnail != null)
