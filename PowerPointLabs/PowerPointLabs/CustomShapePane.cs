@@ -456,6 +456,11 @@ namespace PowerPointLabs
                 return;
             }
 
+            if (MouseButtons != MouseButtons.Left)
+            {
+                return;
+            }
+
             var clickedThumbnail = sender as LabeledThumbnail;
 
             if (_selectedThumbnail != null)
@@ -463,11 +468,12 @@ namespace PowerPointLabs
                 if (_selectedThumbnail.State == LabeledThumbnail.Status.Editing)
                 {
                     _selectedThumbnail.FinishNameEdit();
-                } else
-                if (_selectedThumbnail == clickedThumbnail)
-                {
-                    _selectedThumbnail.StartNameEdit();
                 }
+                //else
+                //if (_selectedThumbnail == clickedThumbnail)
+                //{
+                //    _selectedThumbnail.StartNameEdit();
+                //}
 
                 _selectedThumbnail.DeHighlight();
             }
@@ -490,8 +496,15 @@ namespace PowerPointLabs
             var shapeName = clickedThumbnail.NameLable;
             var currentSlide = PowerPointCurrentPresentationInfo.CurrentSlide;
             
-            Globals.ThisAddIn.ShapePresentation.CopyShape(shapeName);
-            currentSlide.Shapes.Paste().Select();
+            if (currentSlide != null)
+            {
+                Globals.ThisAddIn.ShapePresentation.CopyShape(shapeName);
+                currentSlide.Shapes.Paste().Select();
+            }
+            else
+            {
+                MessageBox.Show(TextCollection.CustomShapeViewTypeNotSupported);
+            }
         }
 
         private void NameEditFinishHandler(object sender, string oldName)

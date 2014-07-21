@@ -11,7 +11,6 @@ namespace PowerPointLabs
     public partial class LabeledThumbnail : UserControl
     {
         private bool _nameFinishHandled;
-        private bool _isHighlighted;
         private bool _isGoodName;
         
         private string _nameLabel;

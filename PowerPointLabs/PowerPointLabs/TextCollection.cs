@@ -120,6 +120,7 @@
         public const string CustomShapeNoShapeTextFirstLine = "No shapes saved yet.";
         public const string CustomShapeNoShapeTextSecondLine = "Right-click any object in the slides to save it in this panel.";
         public const string CustomShapeNoPanelSelectedError = "No shape selected";
+        public const string CustomShapeViewTypeNotSupported = "Shapes Lab does not support current view type.";
         # endregion
 
         # region Control - Labeled Thumbnail 

@@ -123,7 +123,6 @@ namespace PowerPointLabs
                 throw;
             }
         }
-
         public void HighlightBulletsTextButtonClick(Office.IRibbonControl control)
         {
             try
@@ -143,7 +142,6 @@ namespace PowerPointLabs
                 throw;
             }
         }
-
         public void HighlightTextFragmentsButtonClick(Office.IRibbonControl control)
         {
             try
@@ -202,7 +200,7 @@ namespace PowerPointLabs
             }
         }
 
-        // Supertips Callbacks
+        # region Supertips
         public string GetAddAnimationButtonSupertip(Office.IRibbonControl control)
         {
             return TextCollection.AddAnimationButtonSupertip;
@@ -300,7 +298,7 @@ namespace PowerPointLabs
         {
             return TextCollection.AboutButtonSupertip;
         }
-
+        # endregion
 
         //Button Click Callbacks        
         public void AddAnimationButtonClick(Office.IRibbonControl control)
@@ -384,6 +382,7 @@ namespace PowerPointLabs
             }
         }
 
+        # region Icons
         public Bitmap GetAddAnimationImage(Office.IRibbonControl control)
         {
             try
@@ -799,6 +798,8 @@ namespace PowerPointLabs
                 throw;
             }
         }
+        # endregion
+
         public void ZoomStyleChanged(Office.IRibbonControl control, bool pressed)
         {
             try
@@ -823,7 +824,8 @@ namespace PowerPointLabs
                 throw;
             }
         }
-        //Control Enabled Callbacks
+
+        # region Control Enable
         public bool OnGetEnabledSpotlight(Office.IRibbonControl control)
         {
             return SpotlightEnabled;
@@ -864,6 +866,8 @@ namespace PowerPointLabs
         {
             return highlightTextFragmentsEnabled;
         }
+        # endregion
+
         //Edit Name Callbacks
         public void NameEditBtnClick(Office.IRibbonControl control)
         {
