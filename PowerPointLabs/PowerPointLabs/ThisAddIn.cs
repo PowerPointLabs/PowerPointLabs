@@ -773,8 +773,10 @@ namespace PowerPointLabs
             {
                 string presName = pres.Name;
                 var invalidCharRegex = new Regex("[<>:\"/\\\\|?*]");
-                var invalidPathRegex = new Regex("^[hH]ttp:");
+                var invalidPathRegex = new Regex("^[hH]ttps?:");
 
+                // if file name contains invalid characters or the file comes from
+                // internet, skip the process
                 if (presName.EndsWith(".ppt") ||
                     invalidCharRegex.IsMatch(presName) ||
                     invalidPathRegex.IsMatch(pres.Path))
@@ -787,7 +789,7 @@ namespace PowerPointLabs
                     presName = pres.Name + ".pptx";
                 }
 
-                var zipName = presName.Replace(".pptx", ".zip");
+                const string zipName = "tempZip.zip";
                 var zipFullPath = tempPath + zipName;
                 var presFullName = pres.FullName;
 
