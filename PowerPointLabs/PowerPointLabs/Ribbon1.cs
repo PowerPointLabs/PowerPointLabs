@@ -1072,8 +1072,8 @@ namespace PowerPointLabs
                 return;
             }
 
-            customShape.PaneReload();
             customShapePane.Visible = true;
+            customShape.PaneReload();
 
             Globals.ThisAddIn.InitializeShapeGallery();
         }
