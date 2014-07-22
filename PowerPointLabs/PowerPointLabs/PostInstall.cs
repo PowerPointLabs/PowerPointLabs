@@ -1,11 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using Microsoft.VisualStudio.Tools.Applications.Deployment;
-using Microsoft.VisualStudio.Tools.Applications;
-using System.IO;
-using System.Windows.Forms;
+﻿using Microsoft.VisualStudio.Tools.Applications.Deployment;
 
 namespace PowerPointLabs
 {
@@ -16,7 +9,7 @@ namespace PowerPointLabs
     {
         public void Execute(AddInPostDeploymentActionArgs args)
         {
-            string sourceFile = "http://www.comp.nus.edu.sg/~pptlabs/samples/tutorial.pptx";
+            const string sourceFile = TextCollection.QuickTutorialLink;
 
             switch (args.InstallationStatus)
             {
