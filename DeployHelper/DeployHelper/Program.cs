@@ -30,7 +30,7 @@ using WinSCP;
 //  3. Copy DeployHelper.exe, DeployHelper.conf, WinSCP.exe and WinSCPnet.dll from the output folder to the publish folder
 //
 //  4. Copy PowerPointLabs.zip to the publish folder and extract it HERE; make sure the publish folder contains ReadMe.txt, 
-//  setup.bat, PowerPointLabs Quick Tutorial.pptx, and folder data.
+//  setup.bat, and folder data.
 //
 //  5. Run DeployHelper.exe and follow the instructions.
 //
@@ -53,7 +53,7 @@ namespace DeployHelper
             PrepareWelcomeInfo();
             try
             {
-                //Reference on What It Does
+                //Reference on What It Does: make ClickOnce support PostInstall functionality
                 //http://msdn.microsoft.com/en-us/library/vstudio/dd465291(v=vs.100).aspx
                 //Walkthrough: Copying a Document to the End User Computer after a ClickOnce Installation
                 ReadConfig();
@@ -81,7 +81,7 @@ namespace DeployHelper
         private const string ErrorNoManifest = "Can't Find Manifest For This Version.";
         private const string ErrorInvalidKeyOrMageDir = "Invalid Mage or Key Directory.";
         private const string ErrorZipFilesMissing = "Some files to zip are missing. Are data folder," + 
-            " readme.txt, setup.bat, and quick tutorial inside your publish folder?";
+            " readme.txt, and setup.bat inside your publish folder?";
         private const string ErrorNetworkFailed = "Can't Connect The Server.";
 
         private const string DonePatched = "Patched.";
@@ -117,7 +117,7 @@ namespace DeployHelper
             Console.Write("2. Is there newer version of ");
             ConsoleWriteWithColor("Pptlabs tutorial", ConsoleColor.Yellow);
             Console.WriteLine("? If there is," +
-                              " you need to update it in the Pptlabs project and in the zip file as well");
+                              " you need to update it in the web server.");
             Console.WriteLine("Press any key to continue");
             Console.ReadKey();
         }
@@ -450,17 +450,15 @@ namespace DeployHelper
 
         private static void SetupZipFolder()
         {
-            //copy folder data, ReadMe.txt, PowerPointLabs Quick Tutorial.pptx, and setup.bat
+            //copy folder data, ReadMe.txt, and setup.bat
             //into the powerPointLabsZipFolder; zip them together to produce PowerPointLabs.zip
             //source:
             var dirDataFolder = DirCurrent + @"\data\";
             var dirReadMe = DirCurrent + @"\ReadMe.txt";
-            var dirQuickTutorial = DirCurrent + @"\PowerPointLabs Quick Tutorial.pptx";
             var dirSetupBat = DirCurrent + @"\setup.bat";
             //dest:
             var dirZipDataFolder = DirPptLabsZipFolder + @"\data\";
             var dirZipReadMe = DirPptLabsZipFolder + @"\ReadMe.txt";
-            var dirZipQuickTutorial = DirPptLabsZipFolder + @"\PowerPointLabs Quick Tutorial.pptx";
             var dirZipSetupBat = DirPptLabsZipFolder + @"\setup.bat";
 
             //if dir not set up yet, then need to create them first
@@ -471,7 +469,6 @@ namespace DeployHelper
             {
                 CopyFolder(dirDataFolder, dirZipDataFolder, IsOverWritten);
                 File.Copy(dirReadMe, dirZipReadMe, IsOverWritten);
-                File.Copy(dirQuickTutorial, dirZipQuickTutorial, IsOverWritten);
                 File.Copy(dirSetupBat, dirZipSetupBat, IsOverWritten);
             }
             catch

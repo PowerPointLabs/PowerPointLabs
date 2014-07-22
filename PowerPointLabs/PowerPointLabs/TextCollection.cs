@@ -62,6 +62,16 @@
         public const string AboutButtonSupertip = @"Information about the PowerPointLabs plugin.";
         # endregion
 
+        # region Quick Tutorial Download Link
+
+        //for release ver
+//        public const string QuickTutorialLink = "http://www.comp.nus.edu.sg/~pptlabs/samples/tutorial.pptx";
+
+        //for dev ver
+        public const string QuickTutorialLink = "http://www.comp.nus.edu.sg/~pptlabs/samples/dev/tutorial.pptx";
+        
+        # endregion
+
         # region Ribbon
         public const string AboutInfo =
             "          PowerPointLabs Plugin Version 1.8.10 [Release date: 21 Jul 2014]\n     Developed at School of Computing, National University of Singapore.\n        For more information, visit our website " + PowerPointLabsWebsiteUrl;
