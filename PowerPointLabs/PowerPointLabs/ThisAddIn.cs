@@ -20,15 +20,18 @@ namespace PowerPointLabs
 {
     public partial class ThisAddIn
     {
-        private const string TempFolderNamePrefix = @"\PowerPointLabs Temp\";
-
         private readonly string _defaultShapeMasterFolderPrefix =
             Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments);
+        
+        private const string SlideXmlSearchPattern = @"slide(\d+)\.xml";
+        private const string TempFolderNamePrefix = @"\PowerPointLabs Temp\";
         private const string DefaultShapeMasterFolderName = @"\PowerPointLabs Custom Shapes";
         private const string DefaultShapeCategoryName = @"My Shapes";
         private const string ShapeGalleryPptxName = @"ShapeGallery";
+        private const string TempZipName = "tempZip.zip";
 
         private bool _versionWrong;
+        private bool _noPathAssociate;
         private bool _isClosing;
 
         private readonly Dictionary<PowerPoint.DocumentWindow,
@@ -229,6 +232,17 @@ namespace PowerPointLabs
             var tempName = pres.Name.GetHashCode().ToString(CultureInfo.InvariantCulture);
             var tempPath = Path.GetTempPath() + TempFolderNamePrefix + tempName + @"\";
 
+            // first we need to check if the presentation has a valid presentation name and version
+            if (!IsValidPresentation(pres)) return;
+
+            // prepare a temp folder to store media data
+            PrepareTempFolder(tempPath);
+
+            var presFullName = pres.FullName;
+
+            // in case of embedded slides, we need to regulate the file name and full name
+            RegulatePresentationName(pres, tempPath, ref presFullName);
+
             // as long as an existing file is opened, we need to extract embedded
             // audio files and relationship XMLs to temp folder
 
@@ -237,13 +251,7 @@ namespace PowerPointLabs
             {
                 // extract the media files and relationships to a folder with presentation's
                 // hash code
-                if (!PrepareMediaFiles(pres, tempPath))
-                {
-                    _versionWrong = true;
-                    return;
-                }
-
-                _versionWrong = false;
+                PrepareMediaFiles(presFullName, tempPath);
             }
             else
             {
@@ -253,28 +261,15 @@ namespace PowerPointLabs
                 // gone without triggering ApplicationClose event. Instead,
                 // ApplicationOpen and SlideSlectionChange events are triggered.
 
-                // to deal with this special case, we need to prepare media files and
-                // xml relationships to the folder belongs to the blank presentation, and
+                // to deal with this special case, we need to put media files and
+                // xml relationships into the folder belongs to the blank presentation, and
                 // manually call the setup method of the recorder pane.
                 var oriTempPath = Path.GetTempPath() + TempFolderNamePrefix +
                                   _documentHashcodeMapper[activeWindow] + @"\";
 
-                if (!PrepareMediaFiles(pres, oriTempPath))
-                {
-                    _versionWrong = true;
-                    return;
-                }
+                PrepareMediaFiles(presFullName, oriTempPath);
 
-                _versionWrong = false;
-
-                var recorderPane = GetActivePane(typeof(RecorderTaskPane));
-
-                if (recorderPane == null)
-                {
-                    return;
-                }
-
-                var recorder = recorderPane.Control as RecorderTaskPane;
+                var recorder = GetActiveControl(typeof(RecorderTaskPane)) as RecorderTaskPane;
 
                 if (recorder == null)
                 {
@@ -287,26 +282,8 @@ namespace PowerPointLabs
 
         private void ThisAddInPresentationClose(PowerPoint.Presentation pres)
         {
-            var colorPane = GetActivePane(typeof(ColorPane));
-
-            if (colorPane != null)
-            {
-                var colorLabs = colorPane.Control as ColorPane;
-                if (colorLabs != null) colorLabs.SaveDefaultColorPaneThemeColors();
-            }
-
-            var recorderPane = GetActivePane(typeof(RecorderTaskPane));
-
-            if (recorderPane != null)
-            {
-                var recorder = recorderPane.Control as RecorderTaskPane;
-
-                if (recorder != null &&
-                recorder.HasEvent())
-                {
-                    recorder.ForceStopEvent();
-                }
-            }
+            ShutDownColorPane();
+            ShutDownRecorderPane();
 
             //var currentWindow = recorderPane.Window as PowerPoint.DocumentWindow;
 
@@ -316,6 +293,12 @@ namespace PowerPointLabs
             //{
             //    return;
             //}
+
+            if (_noPathAssociate)
+            {
+                _isClosing = true;
+                return;
+            }
 
             if (pres.Saved == Office.MsoTriState.msoTrue)
             {
@@ -327,18 +310,7 @@ namespace PowerPointLabs
                 }
 
                 // if there exists some task panes, remove them
-                if (!_documentPaneMapper.ContainsKey(pres.Application.ActiveWindow))
-                {
-                    return;
-                }
-
-                var activePanes = _documentPaneMapper[pres.Application.ActiveWindow];
-                foreach (var pane in activePanes)
-                {
-                    CustomTaskPanes.Remove(pane);
-                }
-
-                _documentPaneMapper.Remove(pres.Application.ActiveWindow);
+                RemoveTaskPanes(pres.Application.ActiveWindow);
             }
             else
             {
@@ -528,11 +500,20 @@ namespace PowerPointLabs
                 shapePaneControl.RenameCustomShape(shapeOldName, shapeNewName);
             }
         }
+
+        public bool VerifyVersion()
+        {
+            if (_versionWrong)
+            {
+                MessageBox.Show(TextCollection.VersionNotCompatibleMsg);
+                return false;
+            }
+
+            return true;
+        }
         # endregion
 
         # region Helper Functions
-        private const string SlideXmlSearchPattern = @"slide(\d+)\.xml";
-
         private void SetupLogger()
         {
             // The folder for the roaming current user 
@@ -548,6 +529,27 @@ namespace PowerPointLabs
 
             Trace.AutoFlush = true;
             Trace.Listeners.Add(new TextWriterTraceListener(fileName));
+        }
+
+        private void ShutDownRecorderPane()
+        {
+            var recorder = GetActiveControl(typeof(RecorderTaskPane)) as RecorderTaskPane;
+
+            if (recorder != null &&
+                recorder.HasEvent())
+            {
+                recorder.ForceStopEvent();
+            }
+        }
+
+        private void ShutDownColorPane()
+        {
+            var colorPane = GetActivePane(typeof(ColorPane));
+
+            if (colorPane == null) return;
+
+            var colorLabs = colorPane.Control as ColorPane;
+            if (colorLabs != null) colorLabs.SaveDefaultColorPaneThemeColors();
         }
 
         private void RegisterTaskPane(UserControl control, string title, PowerPoint.DocumentWindow wnd,
@@ -589,6 +591,49 @@ namespace PowerPointLabs
             }
 
             loadingDialog.Dispose();
+        }
+
+        private void RemoveTaskPanes(PowerPoint.DocumentWindow activeWindow)
+        {
+            if (!_documentPaneMapper.ContainsKey(activeWindow))
+            {
+                return;
+            }
+
+            var activePanes = _documentPaneMapper[activeWindow];
+            foreach (var pane in activePanes)
+            {
+                CustomTaskPanes.Remove(pane);
+            }
+
+            _documentPaneMapper.Remove(activeWindow);
+        }
+
+        private void RegulatePresentationName(PowerPoint.Presentation pres, string tempPath, ref string presFullName)
+        {
+            // this function is used to handle "embed on other application" issue. In this case,
+            // all of presentation name, path and full name do not match the usual rule: name is 
+            // "Untitled", path is empty string and full name is "slide in XX application". We need
+            // to regulate these fields properly.
+
+            var presName = pres.Name;
+
+            if (!presName.Contains(".pptx"))
+            {
+                presName += ".pptx";
+            }
+
+            if (pres.Path == String.Empty)
+            {
+                pres.SaveAs(tempPath + presName);
+                presFullName = tempPath + presName;
+
+                _noPathAssociate = true;
+            }
+            else
+            {
+                _noPathAssociate = false;
+            }
         }
 
         private void TaskPaneSetup(PowerPoint.Presentation presentation)
@@ -652,14 +697,7 @@ namespace PowerPointLabs
         {
             _isInSlideShow = false;
 
-            var recorderPane = GetActivePane(typeof(RecorderTaskPane));
-
-            if (recorderPane == null)
-            {
-                return;
-            }
-
-            var recorder = recorderPane.Control as RecorderTaskPane;
+            var recorder = GetActiveControl(typeof(RecorderTaskPane)) as RecorderTaskPane;
 
             if (recorder == null)
             {
@@ -707,6 +745,35 @@ namespace PowerPointLabs
             Application.ActivePresentation.SlideShowSettings.RangeType = PowerPoint.PpSlideShowRangeType.ppShowAll;
         }
 
+        private bool IsValidPresentation(PowerPoint.Presentation pres)
+        {
+            var presName = pres.Name;
+            var invalidCharRegex = new Regex("[<>:\"/\\\\|?*]");
+            var invalidPathRegex = new Regex("^[hH]ttps?:");
+
+            // TODO: split version verification and name verification
+            // if file name contains invalid characters or the file comes from
+            // internet, skip the process
+
+            _versionWrong = (presName.EndsWith(".ppt") ||
+                             invalidCharRegex.IsMatch(presName) ||
+                             invalidPathRegex.IsMatch(pres.Path));
+
+            return !_versionWrong;
+        }
+
+        private bool IsEmptyFile(string filePath)
+        {
+            if (File.Exists(filePath))
+            {
+                return false;
+            }
+
+            var fileInfo = new FileInfo(filePath);
+
+            return fileInfo.Length == 0;
+        }
+
         private void UpdateRecorderPane(int count, int id)
         {
             var recorderPane = GetActivePane(typeof(RecorderTaskPane));
@@ -745,16 +812,72 @@ namespace PowerPointLabs
             }
         }
 
+        private void FileAttributeSafeDelete(string filePath)
+        {
+            if (!File.Exists(filePath)) return;
+
+            try
+            {
+                File.SetAttributes(filePath, FileAttributes.Normal);
+                File.Delete(filePath);
+            }
+            catch (Exception e)
+            {
+                ErrorDialogWrapper.ShowDialog(TextCollection.AccessTempFolderErrorMsg, string.Empty, e);
+            }
+        }
+
+        private void FileAttributeSafeCopy(string sourcePath, string destPath)
+        {
+            if (!File.Exists(sourcePath)) return;
+
+            // copy the file to temp folder and rename to zip
+            try
+            {
+                File.Copy(sourcePath, destPath);
+                File.SetAttributes(destPath, FileAttributes.Normal);
+            }
+            catch (Exception e)
+            {
+                ErrorDialogWrapper.ShowDialog(TextCollection.AccessTempFolderErrorMsg, string.Empty, e);
+            }
+        }
+
+        private void ExtractMediaFiles(string zipFullPath, string tempPath)
+        {
+            try
+            {
+                var zip = ZipStorer.Open(zipFullPath, FileAccess.Read);
+                var dir = zip.ReadCentralDir();
+
+                var regex = new Regex(SlideXmlSearchPattern);
+
+                foreach (var entry in dir)
+                {
+                    var name = Path.GetFileName(entry.FilenameInZip);
+
+                    if (name == null) continue;
+
+                    if (name.Contains(".wav") ||
+                        regex.IsMatch(name))
+                    {
+                        zip.ExtractFile(entry, tempPath + name);
+                    }
+                }
+
+                zip.Close();
+                
+                FileAttributeSafeDelete(zipFullPath);
+            }
+            catch (Exception e)
+            {
+                ErrorDialogWrapper.ShowDialog(TextCollection.ExtraErrorMsg, "Archived files cannot be retrieved.", e);
+            }
+        }
+
         private void BreakRecorderEvents()
         {
-            var recorderPane = GetActivePane(typeof(RecorderTaskPane));
-
-            if (recorderPane == null)
-            {
-                return;
-            }
-
-            var recorder = recorderPane.Control as RecorderTaskPane;
+            var recorder = GetActiveControl(typeof(RecorderTaskPane)) as RecorderTaskPane;
 
             // TODO:
             // Slide change event will interrupt mci device behaviour before
@@ -767,113 +890,25 @@ namespace PowerPointLabs
             }
         }
 
-        private bool PrepareMediaFiles(PowerPoint.Presentation pres, string tempPath)
+        private void PrepareMediaFiles(string presFullName, string tempPath)
         {
             try
             {
-                string presName = pres.Name;
-                var invalidCharRegex = new Regex("[<>:\"/\\\\|?*]");
-                var invalidPathRegex = new Regex("^[hH]ttps?:");
+                if (IsEmptyFile(presFullName)) return;
 
-                // if file name contains invalid characters or the file comes from
-                // internet, skip the process
-                if (presName.EndsWith(".ppt") ||
-                    invalidCharRegex.IsMatch(presName) ||
-                    invalidPathRegex.IsMatch(pres.Path))
-                {
-                    return false;
-                }
-
-                if (!presName.Contains(".pptx"))
-                {
-                    presName = pres.Name + ".pptx";
-                }
-
-                const string zipName = "tempZip.zip";
-                var zipFullPath = tempPath + zipName;
-                var presFullName = pres.FullName;
+                var zipFullPath = tempPath + TempZipName;
 
                 // before we do everything, check if there's an undelete old zip file
                 // due to some error
-                if (File.Exists(zipFullPath))
-                {
-                    File.SetAttributes(zipFullPath, FileAttributes.Normal);
-                    File.Delete(zipFullPath);
-                }
+                FileAttributeSafeDelete(zipFullPath);
+                FileAttributeSafeCopy(presFullName, zipFullPath);
 
-                // if temp folder exists, delete then create in case 2 different files
-                // share the same name
-                PrepareTempFolder(tempPath);
-
-                // this segment is added to handle "embed on other application" issue. In this
-                // case, file is not saved but has embedded audio already. We need to handle
-                // it specially.
-                if (pres.Path == String.Empty)
-                {
-                    pres.SaveAs(tempPath + presName);
-                    presFullName = tempPath + presName;
-                }
-
-                // copy the file to temp folder and rename to zip
-                try
-                {
-                    File.Copy(presFullName, zipFullPath);
-                    File.SetAttributes(zipFullPath, FileAttributes.Normal);
-                }
-                catch (Exception e)
-                {
-                    ErrorDialogWrapper.ShowDialog(TextCollection.AccessTempFolderErrorMsg, string.Empty, e);
-                }
-
-                var fileInfo = new FileInfo(zipFullPath);
-
-                // if there's nothing inside the zip file, we do nothing
-                if (fileInfo.Length == 0)
-                {
-                    return true;
-                }
-
-                // open the zip and extract media files to temp folder
-                try
-                {
-                    var zip = ZipStorer.Open(zipFullPath, FileAccess.Read);
-                    var dir = zip.ReadCentralDir();
-
-                    var regex = new Regex(SlideXmlSearchPattern);
-
-                    foreach (var entry in dir)
-                    {
-                        var name = Path.GetFileName(entry.FilenameInZip);
-
-                        if (name == null) continue;
-
-                        if (name.Contains(".wav"))
-                        {
-                            zip.ExtractFile(entry, tempPath + name);
-                        }
-                        else if (regex.IsMatch(name))
-                        {
-                            zip.ExtractFile(entry, tempPath + name);
-
-                            //var match = regex.Match(name);
-                        }
-                    }
-
-                    zip.Close();
-                    File.SetAttributes(zipFullPath, FileAttributes.Normal);
-                    File.Delete(zipFullPath);
-                }
-                catch (Exception e)
-                {
-                    ErrorDialogWrapper.ShowDialog(TextCollection.ExtraErrorMsg, "Archived files cannot be retrieved.", e);
-                }
+                ExtractMediaFiles(zipFullPath, tempPath);
             }
             catch (Exception e)
             {
                 ErrorDialogWrapper.ShowDialog(TextCollection.PrepareMediaErrorMsg, "Files cannot be linked.", e);
             }
-
-            return true;
         }
 
         private void PrepareTempFolder(string tempPath)
@@ -894,17 +929,6 @@ namespace PowerPointLabs
             {
                 Directory.CreateDirectory(tempPath);
             }
-        }
-
-        public bool VerifyVersion()
-        {
-            if (_versionWrong)
-            {
-                MessageBox.Show(TextCollection.VersionNotCompatibleMsg);
-                return false;
-            }
-
-            return true;
         }
         # endregion
 

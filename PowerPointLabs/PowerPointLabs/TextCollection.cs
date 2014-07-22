@@ -129,6 +129,12 @@
         public const string LabeledThumbnailFileNameExistError = "File name is already used";
         # endregion
 
+        # region Control - SlideShow Recorder Control
+        public const string InShowControlInvalidRecCommandError = "Invalid Recording Command";
+        public const string InShowControlRecButtonIdleText = "Stop and Advance";
+        public const string InShowControlRecButtonRecText = "Start Recording";
+        # endregion
+
         # region Error Dialog
         public const string UserFeedBack = " Help us fix the problem by emailing ";
         public const string Email = @"pptlabs@comp.nus.edu.sg";

@@ -1582,7 +1582,7 @@ namespace PowerPointLabs
             slideShowWindow.View.PointerType = PpSlideShowPointerType.ppSlideShowPointerArrow;
 
             // init the in-show control
-            _inShowControlBox = new InShowControl();
+            _inShowControlBox = new InShowControl(this);
             _inShowControlBox.Show();
 
             // activate the show
