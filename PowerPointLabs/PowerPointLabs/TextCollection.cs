@@ -62,6 +62,16 @@
         public const string AboutButtonSupertip = @"Information about the PowerPointLabs plugin.";
         # endregion
 
+        # region Quick Tutorial Download Link
+
+        //for release ver
+//        public const string QuickTutorialLink = "http://www.comp.nus.edu.sg/~pptlabs/samples/tutorial.pptx";
+
+        //for dev ver
+        public const string QuickTutorialLink = "http://www.comp.nus.edu.sg/~pptlabs/samples/dev/tutorial.pptx";
+        
+        # endregion
+
         # region Ribbon
         public const string AboutInfo =
             "          PowerPointLabs Plugin Version 1.8.10 [Release date: 21 Jul 2014]\n     Developed at School of Computing, National University of Singapore.\n        For more information, visit our website " + PowerPointLabsWebsiteUrl;
@@ -88,6 +98,21 @@
         public const string RecManagementPanelTitle = "Record Management";
         # endregion 
 
+        # region CropToShape
+
+        public class CropToShapeText
+        {
+            //------------ Msg -------------
+            public const string ErrorMessageForSelectionCountZero = "To use 'Crop To Shape', please select at least one shape.";
+            public const string ErrorMessageForSelectionNonShape = "'Crop To Shape' only supports shape objects.";
+            public const string ErrorMessageForExceedSlideBound = "Please ensure your shape is within the slide.";
+            public const string ErrorMessageForRotationNonZero = "In the current version, the 'Crop To Shape' feature does not" +
+                                                                  " work if the shape is rotated";
+            public const string ErrorMessageForUndefined = "Undefined error in 'Crop To Shape'.";
+        }
+
+        # endregion
+
         # region ConvertToPicture
         public const string ErrorTypeNotSupported = "Convert to Picture only supports Shapes and Charts.";
         public const string ErrorWindowTitle = "Unable to Convert to Picture";
@@ -113,6 +138,38 @@
         public const string RecorderReplaceRecordMsgBoxTitle = "Replacement";
         public const string RecorderNoRecordToPlayError = "No record to play back. Please record first.";
         public const string RecorderInvalidOperation = "Invalid Operation";
+        # endregion
+
+        # region Task Pane - Colors Lab
+
+        public class ColorsLabText
+        {
+            //----------- Tooltips -----------
+            public const string MainColorBoxTooltips = "Use this to choose main color: " +
+                                       "\r\nDrag the button to pick a color from an area in the screen, " +
+                                       "\r\nor click the button to choose a color from the Color dialog.";
+            public const string FontColorButtonTooltips = "Change FONT color of selected shapes: " +
+                                                     "\r\nDrag the button to pick a color from an area in the screen, " +
+                                                     "\r\nor click the button to choose a color from the Color dialog.";
+            public const string LineColorButtonTooltips = "Change LINE color of selected shapes: " +
+                                                     "\r\nDrag the button to pick a color from an area in the screen, " +
+                                                     "\r\nor click the button to choose a color from the Color dialog.";
+            public const string FillColorButtonTooltips = "Change FILL color of selected shapes: " +
+                                                     "\r\nDrag the button to pick a color from an area in the screen, " +
+                                                     "\r\nor click the button to choose a color from the Color dialog.";
+            public const string BrightnessSliderTooltips = "Move the slider to adjust the main color’s brightness.";
+            public const string SaturationSliderTooltips = "Move the slider to adjust the main color’s saturation.";
+            public const string SaveFavoriteColorsButtonTooltips = "Save the favorite colors.";
+            public const string LoadFavoriteColorsButtonTooltips = "Load existing favorite colors.";
+            public const string ResetFavoriteColorsButtonTooltips = "Reset the current favorite colors to your last loaded ones.";
+            public const string EmptyFavoriteColorsButtonTooltips = "Empty the favorite colors.";
+            public const string ColorRectangleTooltips = "Click the color to select it as main color. You can drag-and-drop these colors into the favorites panel.";
+            public const string ThemeColorRectangleTooltips = "Click the color to select it as main color.";
+
+            //------------ Msg ------------
+            public const string InfoHowToActivateFeature = "To use this feature, you may need to select at least one shape.";
+        }
+        
         # endregion
 
         # region Task Pane - Custom Shape
