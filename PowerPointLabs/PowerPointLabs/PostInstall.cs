@@ -16,16 +16,14 @@ namespace PowerPointLabs
     {
         public void Execute(AddInPostDeploymentActionArgs args)
         {
-            string dataDirectory = @"PowerPointLabs Quick Tutorial.pptx";
-            string sourcePath = args.AddInPath;
-            string sourceFile = System.IO.Path.Combine(sourcePath, dataDirectory);
+            string sourceFile = "http://www.comp.nus.edu.sg/~pptlabs/samples/tutorial.pptx";
 
             switch (args.InstallationStatus)
             {
                 case AddInInstallationStatus.InitialInstall:
                     try
                     {
-                        System.Diagnostics.Process.Start(sourceFile);
+                        System.Diagnostics.Process.Start("POWERPNT", sourceFile);
                     }
                     catch
                     {
