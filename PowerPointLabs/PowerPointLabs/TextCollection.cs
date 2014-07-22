@@ -115,6 +115,38 @@
         public const string RecorderInvalidOperation = "Invalid Operation";
         # endregion
 
+        # region Task Pane - Colors Lab
+
+        public class ColorsLabText
+        {
+            //----------- Tooltips -----------
+            public const string MainColorBoxTooltips = "Use this to choose main color: " +
+                                       "\r\nDrag the button to pick a color from an area in the screen, " +
+                                       "\r\nor click the button to choose a color from the Color dialog.";
+            public const string FontColorButtonTooltips = "Change FONT color of selected shapes: " +
+                                                     "\r\nDrag the button to pick a color from an area in the screen, " +
+                                                     "\r\nor click the button to choose a color from the Color dialog.";
+            public const string LineColorButtonTooltips = "Change LINE color of selected shapes: " +
+                                                     "\r\nDrag the button to pick a color from an area in the screen, " +
+                                                     "\r\nor click the button to choose a color from the Color dialog.";
+            public const string FillColorButtonTooltips = "Change FILL color of selected shapes: " +
+                                                     "\r\nDrag the button to pick a color from an area in the screen, " +
+                                                     "\r\nor click the button to choose a color from the Color dialog.";
+            public const string BrightnessSliderTooltips = "Move the slider to adjust the main color’s brightness.";
+            public const string SaturationSliderTooltips = "Move the slider to adjust the main color’s saturation.";
+            public const string SaveFavoriteColorsButtonTooltips = "Save the favorite colors.";
+            public const string LoadFavoriteColorsButtonTooltips = "Load existing favorite colors.";
+            public const string ResetFavoriteColorsButtonTooltips = "Reset the current favorite colors to your last loaded ones.";
+            public const string EmptyFavoriteColorsButtonTooltips = "Empty the favorite colors.";
+            public const string ColorRectangleTooltips = "Click the color to select it as main color. You can drag-and-drop these colors into the favorites panel.";
+            public const string ThemeColorRectangleTooltips = "Click the color to select it as main color.";
+
+            //------------ Msg ------------
+            public const string InfoHowToActivateFeature = "To use this feature, you may need to select at least one shape.";
+        }
+        
+        # endregion
+
         # region Task Pane - Custom Shape
         public const string CustomShapeFileNameInvalid = "Invalid shape name encountered";
         public const string CustomShapeNoShapeTextFirstLine = "No shapes saved yet.";

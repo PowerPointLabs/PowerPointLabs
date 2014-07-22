@@ -114,29 +114,18 @@ namespace PowerPointLabs
         #region ToolTip
         private void InitToolTipControl()
         {
-            //TODO: mode these strings into the const class
-            toolTip1.SetToolTip(panel1, "Use this to choose main color: " +
-                                        "\r\nDrag the button to pick a color from an area in the screen, " +
-                                        "\r\nor click the button to choose a color from the Color dialog.");
-            toolTip1.SetToolTip(this.FontButton, "Change FONT color of selected shapes: " +
-                                                 "\r\nDrag the button to pick a color from an area in the screen, " +
-                                                 "\r\nor click the button to choose a color from the Color dialog.");
-            toolTip1.SetToolTip(this.LineButton, "Change LINE color of selected shapes: " +
-                                                 "\r\nDrag the button to pick a color from an area in the screen, " +
-                                                 "\r\nor click the button to choose a color from the Color dialog.");
-            toolTip1.SetToolTip(this.FillButton, "Change FILL color of selected shapes: " +
-                                                 "\r\nDrag the button to pick a color from an area in the screen, " +
-                                                 "\r\nor click the button to choose a color from the Color dialog.");
-            toolTip1.SetToolTip(panel2, "Move the slider to adjust the main color’s brightness.");
-            toolTip1.SetToolTip(panel3, "Move the slider to adjust the main color’s saturation.");
-            toolTip1.SetToolTip(this.SaveThemeButton, "Save the favorite colors.");
-            toolTip1.SetToolTip(this.LoadButton, "Load existing favorite colors.");
-            toolTip1.SetToolTip(this.ResetThemeButton, "Reset the current favorite colors to your last loaded ones.");
-            toolTip1.SetToolTip(this.EmptyPanelButton, "Empty the favorite colors.");
-            String colorRectangleToolTip =
-                "Click the color to select it as main color. You can drag-and-drop these colors into the favorites panel.";
-            String themeColorRectangleToolTip =
-                "Click the color to select it as main color.";
+            toolTip1.SetToolTip(panel1, TextCollection.ColorsLabText.MainColorBoxTooltips);
+            toolTip1.SetToolTip(this.FontButton, TextCollection.ColorsLabText.FontColorButtonTooltips);
+            toolTip1.SetToolTip(this.LineButton, TextCollection.ColorsLabText.LineColorButtonTooltips);
+            toolTip1.SetToolTip(this.FillButton, TextCollection.ColorsLabText.FillColorButtonTooltips);
+            toolTip1.SetToolTip(panel2, TextCollection.ColorsLabText.BrightnessSliderTooltips);
+            toolTip1.SetToolTip(panel3, TextCollection.ColorsLabText.SaturationSliderTooltips);
+            toolTip1.SetToolTip(this.SaveThemeButton, TextCollection.ColorsLabText.SaveFavoriteColorsButtonTooltips);
+            toolTip1.SetToolTip(this.LoadButton, TextCollection.ColorsLabText.LoadFavoriteColorsButtonTooltips);
+            toolTip1.SetToolTip(this.ResetThemeButton, TextCollection.ColorsLabText.ResetFavoriteColorsButtonTooltips);
+            toolTip1.SetToolTip(this.EmptyPanelButton, TextCollection.ColorsLabText.EmptyFavoriteColorsButtonTooltips);
+            const string colorRectangleToolTip = TextCollection.ColorsLabText.ColorRectangleTooltips;
+            const string themeColorRectangleToolTip = TextCollection.ColorsLabText.ThemeColorRectangleTooltips;
             toolTip1.SetToolTip(this.ThemePanel1, themeColorRectangleToolTip);
             toolTip1.SetToolTip(this.ThemePanel2, themeColorRectangleToolTip);
             toolTip1.SetToolTip(this.ThemePanel3, themeColorRectangleToolTip);
@@ -1134,8 +1123,7 @@ namespace PowerPointLabs
             SelectShapes();
             if (_selectedShapes == null && _selectedText == null && currMode != MODE.NONE)
             {
-                //TODO: move this string to the const file
-                MessageBox.Show("To use this feature, you may need to select at least one shape.", "Colors Lab");
+                MessageBox.Show(TextCollection.ColorsLabText.InfoHowToActivateFeature, "Colors Lab");
                 return false;
             }
             return true;
