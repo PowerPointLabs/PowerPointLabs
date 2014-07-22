@@ -433,9 +433,6 @@
       <DependentUpon>LoadingDialog.cs</DependentUpon>
     </EmbeddedResource>
     <None Include="packages.config" />
-    <Content Include="PowerPointLabs Quick Tutorial.pptx">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
     <None Include="Properties\DataSources\ColorDataSource.datasource" />
     <None Include="Properties\DataSources\ColorPane.datasource" />
     <None Include="Resources\Record.png" />
