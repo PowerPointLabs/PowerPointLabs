@@ -234,6 +234,8 @@
     <Compile Include="AudioMisc\Audio.cs" />
     <Compile Include="AudioMisc\AudioHelper.cs" />
     <Compile Include="AutoAnimate.cs" />
+    <Compile Include="AutoUpdate\Downloader.cs" />
+    <Compile Include="AutoUpdate\Updater.cs" />
     <Compile Include="AutoZoom.cs" />
     <Compile Include="ColorPicker\ColorInformationDialog.cs">
       <SubType>Form</SubType>

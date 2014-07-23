@@ -8,6 +8,7 @@ using System.Text.RegularExpressions;
 using System.Windows.Forms;
 using System.Diagnostics;
 using Microsoft.Office.Tools;
+using PowerPointLabs.AutoUpdate;
 using PPExtraEventHelper;
 using System.IO.Compression;
 using PowerPointLabs.Models;
@@ -50,6 +51,8 @@ namespace PowerPointLabs
         {
             SetupLogger();
             Trace.TraceInformation(DateTime.Now.ToString("yyyyMMddHHmmss") + ": PowerPointLabs Started");
+
+            new Updater().TryUpdate();
 
             PPMouse.Init(Application);
             PPCopy.Init(Application);

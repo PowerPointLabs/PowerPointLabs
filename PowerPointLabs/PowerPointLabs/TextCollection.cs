@@ -78,8 +78,17 @@
         # endregion
 
         # region Ribbon
+
+        public enum VersionType { Dev, Release }
+
+        //TODO: a better way to handle this?
+        //To be updated for every publish
+        public const VersionType ReleaseType = VersionType.Dev;
+        public const string CurrentVersion = "1.8.10.5";
+        public const string ReleaseDate = "21 Jul 2014";
+
         public const string AboutInfo =
-            "          PowerPointLabs Plugin Version 1.8.10 [Release date: 21 Jul 2014]\n     Developed at School of Computing, National University of Singapore.\n        For more information, visit our website " + PowerPointLabsWebsiteUrl;
+            "          PowerPointLabs Plugin Version " + CurrentVersion + " [Release date: " + ReleaseDate + "]\n     Developed at School of Computing, National University of Singapore.\n        For more information, visit our website " + PowerPointLabsWebsiteUrl;
         public const string AboutInfoTitle = "About PowerPointLabs";
         # endregion
 
