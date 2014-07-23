@@ -181,7 +181,7 @@
                   label="Highlight Text"
                   size="large"
                   getImage="GetHighlightWordsImage"
-                  supertip="Highlights all the text fragments selected"
+                  getSupertip="GetHighlightTextFragmentsButtonSupertip"
                   getEnabled="OnGetEnabledHighlightTextFragments"
                   onAction="HighlightTextFragmentsButtonClick"/>
           <dialogBoxLauncher>

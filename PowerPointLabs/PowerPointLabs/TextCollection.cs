@@ -52,9 +52,14 @@
             "Removes any captions that were added using Auto Captions from the slide(s).\n\n" +
             "To remove captions for multiple slides, select the slides first (e.g. Ctrl+A to select all slides, Ctrl+click to select only some slides) before clicking the 'Remove Captions' button.";
         public const string HighlightBulletsTextButtonSupertip =
-            "Highlights all the bullet points on the specified slide by changing the text color.";
+            "Highlights all the bullet points on the specified slide by changing the text color.\n\n" +
+            "To activate, select some text in bullet format in the current slide and click on this button.";
         public const string HighlightBulletsBackgroundButtonSupertip =
-            "Highlights all the bullet points on the specified slide by highlighting the text background";
+            "Highlights all the bullet points on the specified slide by highlighting the text background.\n\n" +
+            "To activate, select some text in bullet format in the current slide and click on this button.";
+        public const string HighlightTextFragmentsButtonSupertip =
+            "Highlights all the text fragments selected.\n\n" +
+            "To activate, select the text you want to highlight and click on this button.";
         public const string ColorPickerButtonSupertip = @"Opens Custom Color Picker";
         public const string CustomeShapeButtonSupertip = @"Manage your custom shapes on the fly.";
         public const string HelpButtonSupertip = @"Click this to visit PowerPointLabs help page in our website.";

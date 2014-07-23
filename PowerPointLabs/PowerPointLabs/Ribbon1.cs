@@ -275,6 +275,11 @@ namespace PowerPointLabs
         {
             return TextCollection.HighlightBulletsBackgroundButtonSupertip;
         }
+
+        public string GetHighlightTextFragmentsButtonSupertip(Office.IRibbonControl control)
+        {
+            return TextCollection.HighlightTextFragmentsButtonSupertip;
+        }
         
         public string GetColorPickerButtonSupertip(Office.IRibbonControl control)
         {
