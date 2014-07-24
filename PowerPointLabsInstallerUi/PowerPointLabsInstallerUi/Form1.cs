@@ -8,7 +8,7 @@ namespace PowerPointLabsInstallerUi
 {
     public partial class Form1 : Form
     {
-        private readonly string _installerZipAddress = Path.Combine(Directory.GetCurrentDirectory(), "data.zip");
+        private readonly string _installerZipAddress = Application.StartupPath + "\\data.zip";
         private const string TextButtonClose = "Close";
         private const string TextButtonRunning = "Running...";
 
