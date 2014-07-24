@@ -195,7 +195,7 @@
         # region Install and Update related
 
         public const string QuickTutorialFileName = "Tutorial.pptx";
-        public const string VstoName = "PowerPointLabs.vsto";
+        public const string VstoName = "PowerPointLabsInstaller.vsto";
         public const string InstallerName = "PowerPointLabsInstaller.zip";
 
         # endregion
