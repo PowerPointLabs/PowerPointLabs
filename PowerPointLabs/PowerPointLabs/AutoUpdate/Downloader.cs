@@ -50,8 +50,15 @@ namespace PowerPointLabs.AutoUpdate
             if (_downloadAddress == "" || _destAddress == "") 
                 return;
 
-            _client.DownloadFile(_downloadAddress, _destAddress);
-            OnAfterDownload();
+            try
+            {
+                _client.DownloadFile(_downloadAddress, _destAddress);
+                OnAfterDownload();
+            }
+            catch (Exception e)
+            {
+                PowerPointLabsGlobals.LogException(e, "StartDownload");
+            }
         }
     }
 }
