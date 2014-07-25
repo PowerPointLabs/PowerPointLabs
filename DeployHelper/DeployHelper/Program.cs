@@ -43,6 +43,7 @@ using WinSCP;
 //  Have a nice day :)
 //
 //TODO: add testing
+//TODO: make it OOP.. hard to maintain
 #endregion
 namespace DeployHelper
 {
@@ -91,7 +92,7 @@ namespace DeployHelper
         private const string DoneUploaded = "Uploaded.";
 
         private const string InfoEnterPassword = "Enter SFTP password: ";
-        private const string InfoFileUploading = "Uploading files...";
+        private const string InfoFileUploading = "Uploading files";
         private const string InfoChooseVersion = "Which version to upload? [dev|release]: ";
 
         private const string VarDev = "dev";
@@ -187,11 +188,45 @@ namespace DeployHelper
         private static string _versionRevision;
         private static XmlDocument _currentVsto;
 
+        private static string _releaseType;
+        private static string _installerType;
+
         private static void ReadConfig()
         {
             InitConfig();
             InitVersion();
             InitDir();
+            PrintDeployInfo();
+        }
+
+        //TODO: Refactor this
+        private static void PrintDeployInfo()
+        {
+            Console.Write("You are going to deploy PowerPointLabs\r\nversion: ");
+            ConsoleWriteWithColor(_version, ConsoleColor.Yellow);
+            Console.WriteLine("");
+
+            var currentConfig = new XmlDocument();
+            try
+            {
+                currentConfig.Load(_dirBuild + "\\PowerPointLabs.dll.config.deploy");
+
+                var vstoNode = currentConfig.GetElementsByTagName("value");
+                _releaseType = vstoNode[0].InnerText;
+                _installerType = vstoNode[1].InnerText;
+
+                Console.Write("Release Type: ");
+                ConsoleWriteWithColor(_releaseType, ConsoleColor.Yellow);
+                Console.WriteLine("");
+
+                Console.Write("Installer Type: ");
+                ConsoleWriteWithColor(_installerType, ConsoleColor.Yellow);
+                Console.WriteLine("");
+            }
+            catch
+            {
+                Console.WriteLine("Can't find any config information.");
+            }
         }
 
         private static void InitConfig()
@@ -235,9 +270,6 @@ namespace DeployHelper
             _versionMinor = versionDetails[1];
             _versionBuild = versionDetails[2];
             _versionRevision = versionDetails[3];
-            Console.Write("You are going to deploy PowerPointLabs ver.");
-            ConsoleWriteWithColor(_version, ConsoleColor.Yellow);
-            Console.WriteLine("");
         }
 
         private static void LoadCurrentVsto()
@@ -436,19 +468,72 @@ namespace DeployHelper
         #endregion
         #region Produce Zip
 
-        private static readonly string DirPptLabsZipPath = DirCurrent + @"\PowerPointLabs.zip";
-        private static readonly string DirPptLabsZipFolder = DirCurrent + @"\PowerPointLabs";
+        private static string DirPptLabsZipPath = DirCurrent + @"\PowerPointLabs.zip";
+        private static string _dirPptLabsZipFolder;
 
+        //TODO: refactor this
         private static void ProduceZip()
         {
             Console.WriteLine("Zipping...");
-            SetupBinExe();
-            SetupZipFolder();
-            CreateZipFile();
+            if (_installerType == null || _installerType == "online")
+            {
+                _dirPptLabsZipFolder = DirCurrent + @"\PowerPointLabs";
+                SetupBinExe();
+                SetupZipFolderForOnlineInstaller();
+                CreateZipFileForOnlineInstaller();
+            } else if (_installerType == "offline")
+            {
+                _dirPptLabsZipFolder = DirCurrent + @"\PowerPointLabsInstaller";
+                //if dir not set up yet, then need to create them first
+                var dataFolder = _dirPptLabsZipFolder + "\\data";
+                CreateDirectory(_dirPptLabsZipFolder);
+                CreateDirectory(dataFolder);
+
+                try
+                {
+                    File.Copy(DirCurrent + "\\PowerPointLabsInstallerUi.exe",
+                        _dirPptLabsZipFolder + "\\setup.exe", IsOverWritten);
+
+                    File.Copy(DirVsto, dataFolder + "\\PowerPointLabs.vsto", IsOverWritten);
+                    File.Copy(DirCurrent + "\\setup.exe", dataFolder + "\\setup.exe", IsOverWritten);
+
+                    var dirAppFilesInLocalPath = dataFolder + "\\Application Files";
+                    var dirNewestVerFolder = dirAppFilesInLocalPath + "\\" + _dirNameNewestVer;
+
+                    CreateDirectory(dirAppFilesInLocalPath);
+                    CreateDirectory(dirNewestVerFolder);
+                    CopyFolder(_dirBuild, dirNewestVerFolder, IsOverWritten);
+
+                    var dirPptLabsDataZipPath = _dirPptLabsZipFolder + "\\data.zip";
+                    var dirPptLabsInstallerZipPath = DirCurrent + "\\PowerPointLabsInstaller.zip";
+                    DirPptLabsZipPath = dirPptLabsInstallerZipPath;
+                    //remove the old zip file, if any
+                    if (File.Exists(dirPptLabsDataZipPath))
+                    {
+                        File.Delete(dirPptLabsDataZipPath);
+                    }
+                    if (File.Exists(dirPptLabsInstallerZipPath))
+                    {
+                        File.Delete(dirPptLabsInstallerZipPath);
+                    }
+                    System.IO.Compression.ZipFile.CreateFromDirectory(dataFolder, dirPptLabsDataZipPath);
+                    Directory.Delete(dataFolder, true);
+                    System.IO.Compression.ZipFile.CreateFromDirectory(_dirPptLabsZipFolder, dirPptLabsInstallerZipPath);
+                }
+                catch
+                {
+                    DisplayWarning(ErrorZipFilesMissing);
+                }
+            }
+            else
+            {
+                Console.WriteLine("Invalid installer type found.");
+                throw new Exception();
+            }
             DisplayDone(DoneZipped);
         }
 
-        private static void SetupZipFolder()
+        private static void SetupZipFolderForOnlineInstaller()
         {
             //copy folder data, ReadMe.txt, and setup.bat
             //into the powerPointLabsZipFolder; zip them together to produce PowerPointLabs.zip
@@ -457,12 +542,12 @@ namespace DeployHelper
             var dirReadMe = DirCurrent + @"\ReadMe.txt";
             var dirSetupBat = DirCurrent + @"\setup.bat";
             //dest:
-            var dirZipDataFolder = DirPptLabsZipFolder + @"\data\";
-            var dirZipReadMe = DirPptLabsZipFolder + @"\ReadMe.txt";
-            var dirZipSetupBat = DirPptLabsZipFolder + @"\setup.bat";
+            var dirZipDataFolder = _dirPptLabsZipFolder + @"\data\";
+            var dirZipReadMe = _dirPptLabsZipFolder + @"\ReadMe.txt";
+            var dirZipSetupBat = _dirPptLabsZipFolder + @"\setup.bat";
 
             //if dir not set up yet, then need to create them first
-            CreateDirectory(DirPptLabsZipFolder);
+            CreateDirectory(_dirPptLabsZipFolder);
             CreateDirectory(dirZipDataFolder);
 
             try
@@ -485,14 +570,14 @@ namespace DeployHelper
             File.Copy(setupExeDirectory, destSetupExeDirectory, IsOverWritten);
         }
 
-        private static void CreateZipFile()
+        private static void CreateZipFileForOnlineInstaller()
         {
             //remove the old zip file, if any
             if (File.Exists(DirPptLabsZipPath))
             {
                 File.Delete(DirPptLabsZipPath);
             }
-            System.IO.Compression.ZipFile.CreateFromDirectory(DirPptLabsZipFolder, DirPptLabsZipPath);
+            System.IO.Compression.ZipFile.CreateFromDirectory(_dirPptLabsZipFolder, DirPptLabsZipPath);
         }
 
         private static void CreateDirectory(string path)
@@ -507,8 +592,8 @@ namespace DeployHelper
 
         private static readonly string DirLocalPathToUpload = DirCurrent + @"\PowerPointLabs_upload";
         private static readonly string DirAppFilesInLocalPath = DirLocalPathToUpload + @"\Application Files";
-        private static readonly string ZipPathToUpload = DirLocalPathToUpload + @"\PowerPointLabs.zip";
-        private static readonly string VstoPathToUpload = DirLocalPathToUpload + @"\PowerPointLabs.vsto";
+        private static string ZipPathToUpload = DirLocalPathToUpload + @"\PowerPointLabs.zip";
+        private static string VstoPathToUpload = DirLocalPathToUpload + @"\PowerPointLabs.vsto";
 
         private const Boolean IsToRemoveAfterUpload = true;
 
@@ -526,8 +611,11 @@ namespace DeployHelper
                     var dirNewestVerFolder = DirAppFilesInLocalPath + "\\" + _dirNameNewestVer;
 
                     CreateDirectory(DirLocalPathToUpload);
-                    CreateDirectory(DirAppFilesInLocalPath);
-                    CreateDirectory(dirNewestVerFolder);
+                    if (_installerType == null || _installerType == "online")
+                    {
+                        CreateDirectory(DirAppFilesInLocalPath);
+                        CreateDirectory(dirNewestVerFolder);
+                    }
 
                     Console.WriteLine("Connecting the server...");
                     session.Open(sessionOptions);
@@ -541,9 +629,20 @@ namespace DeployHelper
                         ConstructRemoteFolder(session, remotePath, transferOptions);
 
                         // Copy files into DirLocalPathToUpload
-                        CopyFolder(_dirBuild, dirNewestVerFolder, IsOverWritten);
-                        File.Copy(DirPptLabsZipPath, ZipPathToUpload, IsOverWritten);
-                        File.Copy(DirVsto, VstoPathToUpload, IsOverWritten);
+                        if (_installerType == null || _installerType == "online")
+                        {
+                            CopyFolder(_dirBuild, dirNewestVerFolder, IsOverWritten);
+                            File.Copy(DirPptLabsZipPath, ZipPathToUpload, IsOverWritten);
+                            File.Copy(DirVsto, VstoPathToUpload, IsOverWritten);
+                        }
+                        else if (_installerType == "offline")
+                        {
+                            ZipPathToUpload = DirLocalPathToUpload + @"\PowerPointLabsInstaller.zip";
+                            File.Copy(DirCurrent + "\\PowerPointLabsInstaller.zip", ZipPathToUpload, IsOverWritten);
+                            VstoPathToUpload = DirLocalPathToUpload + @"\PowerPointLabsInstaller.vsto";
+                            File.Copy(DirVsto, VstoPathToUpload, IsOverWritten);
+                        }
+                        File.Copy(DirCurrent + "\\Tutorial.pptx", DirLocalPathToUpload + "\\Tutorial.pptx", IsOverWritten);
 
                         Console.WriteLine("Uploading...");
                         UploadLocalFile(session, remotePath, transferOptions);
@@ -608,21 +707,32 @@ namespace DeployHelper
 
         private static string SetupRemotePath()
         {
-            Console.Write(InfoChooseVersion);
-            var versionToUpload = Console.ReadLine();
-            string remotePath;
-            switch (versionToUpload)
+            string versionToUpload;
+            if (_releaseType != null)
             {
-                case VarDev:
-                    remotePath = _configDevPath;
-                    break;
-                case VarRelease:
-                    remotePath = _configReleasePath;
-                    _isReleased = true;
-                    break;
-                default:
-                    remotePath = _configDevPath;
-                    break;
+                versionToUpload = _releaseType;
+            }
+            else
+            {
+                Console.Write(InfoChooseVersion);
+                versionToUpload = Console.ReadLine();
+            }
+            string remotePath = null;
+            while (remotePath == null)
+            {
+                switch (versionToUpload)
+                {
+                    case VarDev:
+                        remotePath = _configDevPath;
+                        break;
+                    case VarRelease:
+                        remotePath = _configReleasePath;
+                        _isReleased = true;
+                        break;
+                    default:
+                        Console.WriteLine("Incorrect release type!");
+                        break;
+                }
             }
             return remotePath;
         }
@@ -657,7 +767,7 @@ namespace DeployHelper
 
         private static void CleanUp()
         {
-            Directory.Delete(DirPptLabsZipFolder, IsSubDirectoryToDelete);
+            Directory.Delete(_dirPptLabsZipFolder, IsSubDirectoryToDelete);
             Directory.Delete(DirLocalPathToUpload, IsSubDirectoryToDelete);
             File.Delete(DirPptLabsZipPath);
         }
