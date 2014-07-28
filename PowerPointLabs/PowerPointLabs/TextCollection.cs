@@ -9,6 +9,7 @@
         # endregion
 
         # region Ribbon XML
+        # region Supertips
         public const string AddAnimationButtonSupertip =
             "Adds a slide with animations to create an animated transition from the currently selected slide to the next slide.";
         public const string ReloadButtonSupertip =
@@ -17,6 +18,7 @@
         public const string InSlideAnimateButtonSupertip =
             "Moves a shape around the slide in multiple steps.\n\n" +
             "To activate, copy the shape to locations where you want it to stop, select the copies in the order you want them to appear, and click this button";
+        
         public const string AddZoomInButtonSupertip =
             "Adds a slide with animations to create a zoom-in effect from the currently selected shape to the next slide.\n\n" +
             "To activate, select a rectangle shape on the slide that you want to drill down from and click on this button.";
@@ -26,6 +28,7 @@
         public const string ZoomToAreaButtonSupertip =
             "Zoom into an area of a slide or image.\n\nTo activate, place a rectangle shape on the portion that you want to magnify and click on this button.\n\n" +
             "This feature works best with high-resolution images.";
+        
         public const string MoveCropShapeButtonSupertip =
             "Crop a picture according to your selected shape(s).\n\n" +
             "To activate, draw a shape upon the picture you want to crop, select the shape, and then click on this button.";
@@ -65,6 +68,77 @@
         public const string HelpButtonSupertip = @"Click this to visit PowerPointLabs help page in our website.";
         public const string FeedbackButtonSupertip = @"Click this to email us problem reports or other feedback. ";
         public const string AboutButtonSupertip = @"Information about the PowerPointLabs plugin.";
+        # endregion
+
+        # region Tab Labels
+        public const string PowerPointLabsAddInsTabLabel = "PowerPointLabs";
+        # endregion
+
+        # region Button Labels
+        public const string CombineShapesLabel = "Combine Shapes";
+
+        public const string AutoAnimateGroupLabel = "Auto Animate";
+        public const string AddAnimationButtonLabel = "Add Animation Slide";
+        public const string AddAnimationReloadButtonLabel = "Recreate Animation";
+        public const string AddAnimationInSlideAnimateButtonLabel = "Animate In Slide";
+
+        public const string AutoZoomGroupLabel = "Auto Zoom";
+        public const string AddZoomInButtonLabel = "Drill Down";
+        public const string AddZoomOutButtonLabel = "Step Back";
+        public const string ZoomToAreaButtonLabel = "Zoom To Area";
+
+        public const string AutoCropGroupLabel = "Auto Crop";
+        public const string MoveCropShapeButtonLabel = "Crop To Shape";
+
+        public const string SpotLightGroupLabel = "Spotlight";
+        public const string AddSpotlightButtonLabel = "Create Spotlight";
+        public const string ReloadSpotlightButtonLabel = "Recreate Spotlight";
+
+        public const string EmbedAudioGroupLabel = "Auto Narrate";
+        public const string AddAudioButtonLabel = "Add Audio";
+        public const string GenerateRecordButtonLabel = "Generate Audio Automatically";
+        public const string AddRecordButtonLabel = "Record Audio Manually";
+        public const string RemoveAudioButtonLabel = "Remove Audio";
+
+        public const string EmbedCaptionGroupLabel = "Auto Captions";
+        public const string AddCaptionsButtonLabel = "Add Captions";
+        public const string RemoveCaptionsButtonLabel = "Remove Captions";
+
+        public const string HighlightBulletsGroupLabel = "Highlight Bullets";
+        public const string HighlightBulletsTextButtonLabel = "Highlight Points";
+        public const string HighlightBulletsBackgroundButtonLabel = "Highlight Background";
+        public const string HighlightTextFragmentsButtonLabel = "Highlight Text";
+
+        public const string LabsGroupLabel = "Labs";
+        public const string ColorPickerButtonLabel = "Colors Lab";
+        public const string CustomeShapeButtonLabel = "Shapes Lab";
+
+        public const string PPTLabsHelpGroupLabel = "Help";
+        public const string HelpButtonLabel = "Help";
+        public const string FeedbackButtonLabel = "Report Issues/ Send Feedback";
+        public const string AboutButtonLabel = "About";
+        # endregion
+
+        # region Context Menu Labels
+        public const string NameEditShapeLabel = "Edit Name";
+        public const string SpotlightShapeLabel = "Add Spotlight";
+        public const string ZoomInContextMenuLabel = "Drill Down";
+        public const string ZoomOutContextMenuLabel = "Step Back";
+        public const string ZoomToAreaContextMenuLabel = "Zoom To Area";
+        public const string HighlightBulletsMenuShapeLabel = "Highlight Bullets";
+        public const string HighlightBulletsTextShapeLabel = "Highlight Text";
+        public const string HighlightBulletsBackgroundShapeLabel = "Highlight Background";
+        public const string ConvertToPictureShapeLabel = "Convert to Picture";
+        public const string AddCustomShapeShapeLabel = "Add to Shapes Lab";
+        public const string CutOutShapeShapeLabel = "Crop To Shape";
+        public const string FitToWidthShapeLabel = "Fit To Width";
+        public const string FitToHeightShapeLabel = "Fit To Height";
+        public const string InSlideAnimateGroupLabel = "Animate In-Slide";
+        public const string ApplyAutoMotionThumbnailLabel = "Add Animation Slide";
+        public const string ContextSpeakSelectedTextLabel = "Speak Selected Text";
+        public const string ContextAddCurrentSlideLabel = "Add Audio (Current Slide)";
+        public const string ContextReplaceAudioLabel = "Replace Audio";
+        # endregion
         # endregion
 
         # region Quick Tutorial Download Link

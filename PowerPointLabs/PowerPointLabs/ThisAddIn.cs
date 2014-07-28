@@ -26,8 +26,9 @@ namespace PowerPointLabs
         private const string SlideXmlSearchPattern = @"slide(\d+)\.xml";
         private const string TempFolderNamePrefix = @"\PowerPointLabs Temp\";
         private const string DefaultShapeMasterFolderName = @"\PowerPointLabs Custom Shapes";
-        private const string DefaultShapeCategoryName = @"My Shapes";
-        private const string ShapeGalleryPptxName = @"ShapeGallery";
+        private const string DefaultShapeCategoryName = "My Shapes";
+        private const string ShapeGalleryPptxName = "ShapeGallery";
+        private const string ShapeGalleryFileExtension = ".pptlabsshapes";
         private const string TempZipName = "tempZip.zip";
 
         private bool _versionWrong;
