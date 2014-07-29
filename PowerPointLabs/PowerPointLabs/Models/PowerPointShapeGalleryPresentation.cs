@@ -1,5 +1,4 @@
 ﻿using System.Collections.Generic;
-using System.Drawing;
 using System.IO;
 using System.Linq;
 using System.Text.RegularExpressions;
@@ -11,6 +10,8 @@ namespace PowerPointLabs.Models
     class PowerPointShapeGalleryPresentation : PowerPointPresentation
     {
         private const string ShapeGalleryFileExtension = ".pptlabsshapes";
+        private const string DuplicateShapeSuffixFormat = "(recovered shape {0})";
+        
         private PowerPointSlide _defaultCategory;
 
         private readonly Dictionary<string, int> _categoryNameIndexMapper = new Dictionary<string, int>();
@@ -179,10 +180,10 @@ namespace PowerPointLabs.Models
             // 2. more png than shapes inside pptx (shapes for short);
             // 3. more shapes than png.
 
-            SelfConsistencyCheck();
+            ConsistencyCheckSelf();
 
-            var shapeLost = ShapeToPngConsistencyCheck(pngShapes);
-            var pngLost = PngToShapeConsistencyCheck(pngShapes);
+            var shapeLost = ConsistencyCheckShapeToPng(pngShapes);
+            var pngLost = ConsistencyCheckPngToShape(pngShapes);
 
             if (shapeLost || pngLost)
             {
@@ -191,7 +192,7 @@ namespace PowerPointLabs.Models
             }
         }
 
-        private bool PngToShapeConsistencyCheck(List<string> pngShapes)
+        private bool ConsistencyCheckPngToShape(IEnumerable<string> pngShapes)
         {
             // if inconsistency is found, we delete the extra pngs
             var shapeLost = false;
@@ -206,6 +207,76 @@ namespace PowerPointLabs.Models
                 {
                     shapeLost = true;
                     File.Delete(pngShape);
+                }
+            }
+
+            return shapeLost;
+        }
+
+        private void ConsistencyCheckSelf()
+        {
+            // if inconsistency is found, we keep all the shapes but:
+            // 1. append "(recovered shape X)" to the shape name, X is the relative index
+            // 2. export the shape as .png
+            foreach (var category in Slides)
+            {
+                _categoryNameIndexMapper[category.Name] = category.Index;
+
+                var shapeHash = new Dictionary<string, int>();
+                var shapes = category.Shapes.Cast<Shape>().ToList();
+                var duplicateShapeNames = new List<string>();
+
+                foreach (var shape in shapes)
+                {
+                    if (shapeHash.Count == 0 ||
+                        !shapeHash.ContainsKey(shape.Name))
+                    {
+                        shapeHash[shape.Name] = 1;
+                    }
+                    else
+                    {
+                        duplicateShapeNames.Add(shape.Name);
+                        var index = (shapeHash[shape.Name] += 1);
+
+                        RenameAndExportDuplicateShape(shape, index);
+                    }
+                }
+
+                foreach (var lastShapeName in duplicateShapeNames)
+                {
+                    var lastShapeRegex = new Regex("^" + lastShapeName + "$");
+                    var lastShape = category.GetShapesWithRule(lastShapeRegex)[0];
+
+                    RenameAndExportDuplicateShape(lastShape, 1);
+                }
+            }
+        }
+
+        private bool ConsistencyCheckShapeToPng(List<string> pngShapes)
+        {
+            // if inconsistency is found, we delete the extra shape
+            var shapeLost = false;
+
+            foreach (var category in Slides)
+            {
+                // this is to handle the case when user deletes the .png image manually but
+                // ShapeGallery.pptx isn't updated
+                var shapeCnt = 1;
+
+                while (shapeCnt <= category.Shapes.Count)
+                {
+                    var shape = category.Shapes[shapeCnt];
+                    var shapePath = ShapeFolderPath + @"\" + shape.Name + ".png";
+
+                    if (!pngShapes.Contains(shapePath))
+                    {
+                        shape.Delete();
+                        shapeLost = true;
+                    }
+                    else
+                    {
+                        shapeCnt++;
+                    }
                 }
             }
 
@@ -237,60 +308,13 @@ namespace PowerPointLabs.Models
             File.SetAttributes(shapeGalleryFileName, FileAttributes.ReadOnly);
         }
 
-        private void SelfConsistencyCheck()
+        private void RenameAndExportDuplicateShape(Shape shape, int index)
         {
-            // if inconsistency is found, we keep the top-most z-order shape and delete all the rest
-            foreach (var category in Slides)
-            {
-                _categoryNameIndexMapper[category.Name] = category.Index;
+            shape.Name += string.Format(DuplicateShapeSuffixFormat, index);
 
-                var shapeHash = new HashSet<string>();
-                var shapes = category.Shapes.Cast<Shape>().ToList();
+            var shapeExportPath = ShapeFolderPath + @"\" + shape.Name + ".png";
 
-                foreach (var shape in shapes)
-                {
-                    if (shapeHash.Count == 0 ||
-                        !shapeHash.Contains(shape.Name))
-                    {
-                        shapeHash.Add(shape.Name);
-                    }
-                    else
-                    {
-                        shape.Delete();
-                    }
-                }
-            }
-        }
-
-        private bool ShapeToPngConsistencyCheck(List<string> pngShapes)
-        {
-            // if inconsistency is found, we delete the extra shape
-            var shapeLost = false;
-
-            foreach (var category in Slides)
-            {
-                // this is to handle the case when user deletes the .png image manually but
-                // ShapeGallery.pptx isn't updated
-                var shapeCnt = 1;
-
-                while (shapeCnt <= category.Shapes.Count)
-                {
-                    var shape = category.Shapes[shapeCnt];
-                    var shapePath = ShapeFolderPath + @"\" + shape.Name + ".png";
-
-                    if (!pngShapes.Contains(shapePath))
-                    {
-                        shape.Delete();
-                        shapeLost = true;
-                    }
-                    else
-                    {
-                        shapeCnt++;
-                    }
-                }
-            }
-
-            return shapeLost;
+            shape.Export(shapeExportPath, PpShapeFormat.ppShapeFormatPNG, ExportMode: PpExportMode.ppScaleXY);
         }
         # endregion
     }

@@ -1576,13 +1576,20 @@ namespace PowerPointLabs
             var customShape = customShapePane.Control as CustomShapePane;
 
             Globals.ThisAddIn.InitializeShapeGallery(customShape.ShapeFolderPath);
-
-            // see below for explanation
-            var presentationSaved = prensentation.ReadOnly == Office.MsoTriState.msoFalse &&
-                                    prensentation.Saved == Office.MsoTriState.msoTrue &&
-                                    prensentation.Path != string.Empty;
-
             customShape.PaneReload();
+
+            // to determine if a presentation needs to be saved, we check 3 things:
+            // 1. if the presentation is readonly;
+            // 2. if the presentation contains a valid saving path;
+            // 3. if the presentation has been saved.
+            //
+            // The only case we can save the presentation is:
+            // The presentation is writable (readonly = false), contains a valid saving
+            // path (valid path = true), and it has been saved (therefore all programmatical
+            // changes can be saved without triggering a save dialog).
+            var presentationSaved = prensentation.ReadOnly == Office.MsoTriState.msoFalse &&
+                                    prensentation.Path != string.Empty &&
+                                    prensentation.Saved == Office.MsoTriState.msoTrue;
 
             var shapeName = customShape.NextDefaultNameWithoutExtension;
             var shapeFullName = customShape.NextDefaultFullName;
