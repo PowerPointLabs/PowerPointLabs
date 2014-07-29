@@ -1541,6 +1541,8 @@ namespace PowerPointLabs
 
             var customShape = customShapePane.Control as CustomShapePane;
 
+            Globals.ThisAddIn.InitializeShapeGallery(customShape.ShapeFolderPath);
+
             // if currently the pane is hidden, show the pane
             if (customShapePane.Visible)
             {
@@ -1549,8 +1551,6 @@ namespace PowerPointLabs
 
             customShapePane.Visible = true;
             customShape.PaneReload();
-
-            Globals.ThisAddIn.InitializeShapeGallery();
         }
 
         public void AddShapeButtonClick(Office.IRibbonControl control)
@@ -1575,13 +1575,14 @@ namespace PowerPointLabs
 
             var customShape = customShapePane.Control as CustomShapePane;
 
+            Globals.ThisAddIn.InitializeShapeGallery(customShape.ShapeFolderPath);
+
             // see below for explanation
-            var presentationSaved = prensentation.Saved == Office.MsoTriState.msoTrue &&
+            var presentationSaved = prensentation.ReadOnly == Office.MsoTriState.msoFalse &&
+                                    prensentation.Saved == Office.MsoTriState.msoTrue &&
                                     prensentation.Path != string.Empty;
 
             customShape.PaneReload();
-
-            Globals.ThisAddIn.InitializeShapeGallery();
 
             var shapeName = customShape.NextDefaultNameWithoutExtension;
             var shapeFullName = customShape.NextDefaultFullName;

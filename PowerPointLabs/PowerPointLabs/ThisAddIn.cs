@@ -401,14 +401,14 @@ namespace PowerPointLabs
             return _documentHashcodeMapper[Application.ActiveWindow];
         }
 
-        public void InitializeShapeGallery()
+        public void InitializeShapeGallery(string shapeFolderPath)
         {
             // achieves singleton ShapePresentation
             if (ShapePresentation != null) return;
 
             ShapePresentation =
                 new PowerPointShapeGalleryPresentation(_defaultShapeMasterFolderPrefix + DefaultShapeMasterFolderName,
-                                                       ShapeGalleryPptxName);
+                                                       ShapeGalleryPptxName, shapeFolderPath);
 
             ShapePresentation.Open(withWindow: false, focus: false);
             ShapePresentation.AddCategory(DefaultShapeCategoryName);
@@ -813,13 +813,13 @@ namespace PowerPointLabs
             }
         }
 
-        private void FileAttributeSafeDelete(string filePath)
+        private void FileDeleteWithAttribute(string filePath, FileAttributes fileAttributes = FileAttributes.Normal)
         {
             if (!File.Exists(filePath)) return;
 
             try
             {
-                File.SetAttributes(filePath, FileAttributes.Normal);
+                File.SetAttributes(filePath, fileAttributes);
                 File.Delete(filePath);
             }
             catch (Exception e)
@@ -828,7 +828,8 @@ namespace PowerPointLabs
             }
         }
 
-        private void FileAttributeSafeCopy(string sourcePath, string destPath)
+        private void FileCopyWithAttribute(string sourcePath, string destPath,
+                                           FileAttributes fileAttributes = FileAttributes.Normal)
         {
             if (!File.Exists(sourcePath)) return;
 
@@ -836,7 +837,7 @@ namespace PowerPointLabs
             try
             {
                 File.Copy(sourcePath, destPath);
-                File.SetAttributes(destPath, FileAttributes.Normal);
+                File.SetAttributes(destPath, fileAttributes);
             }
             catch (Exception e)
             {
@@ -868,7 +869,7 @@ namespace PowerPointLabs
 
                 zip.Close();
                 
-                FileAttributeSafeDelete(zipFullPath);
+                FileDeleteWithAttribute(zipFullPath);
             }
             catch (Exception e)
             {
@@ -901,8 +902,8 @@ namespace PowerPointLabs
 
                 // before we do everything, check if there's an undelete old zip file
                 // due to some error
-                FileAttributeSafeDelete(zipFullPath);
-                FileAttributeSafeCopy(presFullName, zipFullPath);
+                FileDeleteWithAttribute(zipFullPath);
+                FileCopyWithAttribute(presFullName, zipFullPath);
 
                 ExtractMediaFiles(zipFullPath, tempPath);
             }

@@ -177,6 +177,11 @@
         public const string RecManagementPanelTitle = "Record Management";
         # endregion 
 
+        # region ShapeGalleryPresentation
+        public const string ShapeCorruptedError =
+            "There're some corrupted shapes in Shapes Lab due to unknown reasons. They have been deleted automatically.";
+        # endregion
+
         # region CropToShape
 
         public class CropToShapeText

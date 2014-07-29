@@ -387,6 +387,11 @@ namespace PowerPointLabs.Models
             return matchingShapes;
         }
 
+        public bool HasShapeWithRule(Regex nameRule)
+        {
+            return GetShapesWithRule(nameRule).Count > 0;
+        }
+
         public PowerPointSlide CreateSpotlightSlide()
         {
             Slide duplicatedSlide = _slide.Duplicate()[1];
