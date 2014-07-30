@@ -162,11 +162,15 @@
         public const string CreatTempFolderErrorMsg = "Error when creating temp folder";
         public const string ExtraErrorMsg = "Error when extracting";
         public const string PrepareMediaErrorMsg = "Error when preparing media files";
-        public const string VersionNotCompatibleMsg =
+        public const string VersionNotCompatibleErrorMsg =
             "This file is not fully compatible with some features of PowerPointLabs because it is " +
             "in the outdated .ppt format used by PowerPoint 2007 (and older). If you wish to use the " +
             "full power of PowerPointLabs to enhance this file, please save in the .pptx format used " +
             "by PowerPoint 2010 and newer.";
+        public const string OnlinePresentationNotCompatibleErrorMsg =
+            "This file is not fully compatible with some features of PowerPointLabs because it is on " +
+            "an online address. If you wish to use the full power of PowerPointLabs to enhance this " +
+            "file, please save the file locally.";
         public const string TabActivateErrorTitle = "Unable to activate 'Double Click to Open Property' feature";
         public const string TabActivateErrorDescription =
             "To activate 'Double Click to Open Property' feature, you need to enable 'Home' tab " +

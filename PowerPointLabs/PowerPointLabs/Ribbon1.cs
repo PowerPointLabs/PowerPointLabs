@@ -1255,12 +1255,18 @@ namespace PowerPointLabs
 
         public void RecManagementClick(Office.IRibbonControl control)
         {
-            if (!Globals.ThisAddIn.VerifyVersion())
+            var currentPresentation = Globals.ThisAddIn.Application.ActivePresentation;
+
+            if (!IsValidPresentation(currentPresentation))
             {
                 return;
             }
 
-            Globals.ThisAddIn.RegisterRecorderPane(Globals.ThisAddIn.Application.ActivePresentation);
+            // prepare media files
+            var tempPath = Globals.ThisAddIn.PrepareTempFolder(currentPresentation);
+            Globals.ThisAddIn.PrepareMediaFiles(currentPresentation, tempPath);
+
+            Globals.ThisAddIn.RegisterRecorderPane(currentPresentation);
 
             var recorderPane = Globals.ThisAddIn.GetActivePane(typeof(RecorderTaskPane));
             var recorder = recorderPane.Control as RecorderTaskPane;
@@ -1279,6 +1285,23 @@ namespace PowerPointLabs
             }
         }
 
+        private bool IsValidPresentation(PowerPoint.Presentation pres)
+        {
+            if (!Globals.ThisAddIn.VerifyVersion(pres))
+            {
+                MessageBox.Show(TextCollection.VersionNotCompatibleErrorMsg);
+                return false;
+            }
+
+            if (!Globals.ThisAddIn.VerifyOnLocal(pres))
+            {
+                MessageBox.Show(TextCollection.OnlinePresentationNotCompatibleErrorMsg);
+                return false;
+            }
+
+            return true;
+        }
+
         #region NotesToAudio Button Callbacks
         public void SpeakSelectedTextClick(Office.IRibbonControl control)
         {
@@ -1287,11 +1310,6 @@ namespace PowerPointLabs
 
         public void RemoveAudioClick(Office.IRibbonControl control)
         {
-            if (!Globals.ThisAddIn.VerifyVersion())
-            {
-                return;
-            }
-            
             try
             {
                 NotesToAudio.RemoveAudioFromSelectedSlides();
@@ -1324,11 +1342,6 @@ namespace PowerPointLabs
 
         public void AddAudioClick(Office.IRibbonControl control)
         {
-            if (!Globals.ThisAddIn.VerifyVersion())
-            {
-                return;
-            }
-
             var currentSlide = PowerPointCurrentPresentationInfo.CurrentSlide;
 
             foreach (PowerPointSlide slide in PowerPointCurrentPresentationInfo.SelectedSlides)
@@ -1363,11 +1376,6 @@ namespace PowerPointLabs
 
         public void ContextAddAudioClick(Office.IRibbonControl control)
         {
-            if (!Globals.ThisAddIn.VerifyVersion())
-            {
-                return;
-            }
-
             NotesToAudio.EmbedCurrentSlideNotes();
             PreviewAnimationsIfChecked();
         }
