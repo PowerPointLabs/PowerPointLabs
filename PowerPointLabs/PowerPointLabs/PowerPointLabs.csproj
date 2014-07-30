@@ -313,6 +313,7 @@
       <DependentUpon>AutoZoomDialogBox.cs</DependentUpon>
     </Compile>
     <Compile Include="DefaultMotionAnimation.cs" />
+    <Compile Include="Views\FolderDialogLauncher.cs" />
     <Compile Include="Views\Form1.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -353,6 +354,12 @@
     </Compile>
     <Compile Include="Views\InShowControl.Designer.cs">
       <DependentUpon>InShowControl.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Views\ShapesLabSetting.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Views\ShapesLabSetting.Designer.cs">
+      <DependentUpon>ShapesLabSetting.cs</DependentUpon>
     </Compile>
     <Compile Include="Views\SpotlightDialogBox.cs">
       <SubType>Form</SubType>
@@ -470,6 +477,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Views\InShowControl.resx">
       <DependentUpon>InShowControl.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Views\ShapesLabSetting.resx">
+      <DependentUpon>ShapesLabSetting.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Views\SpotlightDialogBox.resx">
       <DependentUpon>SpotlightDialogBox.cs</DependentUpon>

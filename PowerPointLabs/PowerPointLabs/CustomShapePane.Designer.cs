@@ -33,27 +33,30 @@ namespace PowerPointLabs
         private void InitializeComponent()
         {
             this.components = new System.ComponentModel.Container();
-            this.contextMenuStrip = new System.Windows.Forms.ContextMenuStrip(this.components);
+            this.shapeContextMenuStrip = new System.Windows.Forms.ContextMenuStrip(this.components);
             this.addToSlideToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.editNameToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.removeShapeToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.tabControl1 = new System.Windows.Forms.TabControl();
+            this.tabControl = new System.Windows.Forms.TabControl();
             this.tabPage1 = new System.Windows.Forms.TabPage();
             this.myShapeFlowLayout = new System.Windows.Forms.FlowLayoutPanel();
-            this.contextMenuStrip.SuspendLayout();
-            this.tabControl1.SuspendLayout();
+            this.flowlayoutContextMenuStrip = new System.Windows.Forms.ContextMenuStrip(this.components);
+            this.settingsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.shapeContextMenuStrip.SuspendLayout();
+            this.tabControl.SuspendLayout();
             this.tabPage1.SuspendLayout();
+            this.flowlayoutContextMenuStrip.SuspendLayout();
             this.SuspendLayout();
             // 
-            // contextMenuStrip
+            // shapeContextMenuStrip
             // 
-            this.contextMenuStrip.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.shapeContextMenuStrip.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.addToSlideToolStripMenuItem,
             this.editNameToolStripMenuItem,
             this.removeShapeToolStripMenuItem});
-            this.contextMenuStrip.Name = "contextMenuStrip";
-            this.contextMenuStrip.Size = new System.Drawing.Size(164, 70);
-            this.contextMenuStrip.ItemClicked += new System.Windows.Forms.ToolStripItemClickedEventHandler(this.ContextMenuStripItemClicked);
+            this.shapeContextMenuStrip.Name = "contextMenuStrip";
+            this.shapeContextMenuStrip.Size = new System.Drawing.Size(164, 70);
+            this.shapeContextMenuStrip.ItemClicked += new System.Windows.Forms.ToolStripItemClickedEventHandler(this.ThumbnailContextMenuStripItemClicked);
             // 
             // addToSlideToolStripMenuItem
             // 
@@ -73,15 +76,15 @@ namespace PowerPointLabs
             this.removeShapeToolStripMenuItem.Size = new System.Drawing.Size(163, 22);
             this.removeShapeToolStripMenuItem.Text = "Remove Shape";
             // 
-            // tabControl1
+            // tabControl
             // 
-            this.tabControl1.Controls.Add(this.tabPage1);
-            this.tabControl1.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.tabControl1.Location = new System.Drawing.Point(0, 0);
-            this.tabControl1.Name = "tabControl1";
-            this.tabControl1.SelectedIndex = 0;
-            this.tabControl1.Size = new System.Drawing.Size(417, 499);
-            this.tabControl1.TabIndex = 5;
+            this.tabControl.Controls.Add(this.tabPage1);
+            this.tabControl.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.tabControl.Location = new System.Drawing.Point(0, 0);
+            this.tabControl.Name = "tabControl";
+            this.tabControl.SelectedIndex = 0;
+            this.tabControl.Size = new System.Drawing.Size(417, 499);
+            this.tabControl.TabIndex = 5;
             // 
             // tabPage1
             // 
@@ -99,6 +102,7 @@ namespace PowerPointLabs
             // 
             this.myShapeFlowLayout.AutoScroll = true;
             this.myShapeFlowLayout.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
+            this.myShapeFlowLayout.ContextMenuStrip = this.flowlayoutContextMenuStrip;
             this.myShapeFlowLayout.Dock = System.Windows.Forms.DockStyle.Fill;
             this.myShapeFlowLayout.Location = new System.Drawing.Point(3, 3);
             this.myShapeFlowLayout.Margin = new System.Windows.Forms.Padding(0);
@@ -108,27 +112,42 @@ namespace PowerPointLabs
             this.myShapeFlowLayout.Size = new System.Drawing.Size(399, 463);
             this.myShapeFlowLayout.TabIndex = 1;
             // 
+            // flowlayoutContextMenuStrip
+            // 
+            this.flowlayoutContextMenuStrip.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.settingsToolStripMenuItem});
+            this.flowlayoutContextMenuStrip.Name = "flowlayoutContextMenuStrip";
+            this.flowlayoutContextMenuStrip.Size = new System.Drawing.Size(153, 48);
+            this.flowlayoutContextMenuStrip.ItemClicked += new System.Windows.Forms.ToolStripItemClickedEventHandler(this.FlowlayoutContextMenuStripItemClicked);
+            // 
+            // settingsToolStripMenuItem
+            // 
+            this.settingsToolStripMenuItem.Name = "settingsToolStripMenuItem";
+            this.settingsToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.settingsToolStripMenuItem.Text = "Settings";
+            // 
             // CustomShapePane
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.Controls.Add(this.tabControl1);
+            this.Controls.Add(this.tabControl);
             this.Name = "CustomShapePane";
             this.Size = new System.Drawing.Size(417, 499);
             this.Click += new System.EventHandler(this.CustomShapePaneClick);
-            this.contextMenuStrip.ResumeLayout(false);
-            this.tabControl1.ResumeLayout(false);
+            this.shapeContextMenuStrip.ResumeLayout(false);
+            this.tabControl.ResumeLayout(false);
             this.tabPage1.ResumeLayout(false);
+            this.flowlayoutContextMenuStrip.ResumeLayout(false);
             this.ResumeLayout(false);
 
         }
 
         #endregion
 
-        private System.Windows.Forms.ContextMenuStrip contextMenuStrip;
+        private System.Windows.Forms.ContextMenuStrip shapeContextMenuStrip;
         private System.Windows.Forms.ToolStripMenuItem removeShapeToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem editNameToolStripMenuItem;
-        private System.Windows.Forms.TabControl tabControl1;
+        private System.Windows.Forms.TabControl tabControl;
         private System.Windows.Forms.TabPage tabPage1;
         private System.Windows.Forms.FlowLayoutPanel myShapeFlowLayout;
 
@@ -165,5 +184,7 @@ namespace PowerPointLabs
             Margin = new Padding(0, 0, 0, 0)
         };
         private ToolStripMenuItem addToSlideToolStripMenuItem;
+        private ContextMenuStrip flowlayoutContextMenuStrip;
+        private ToolStripMenuItem settingsToolStripMenuItem;
     }
 }

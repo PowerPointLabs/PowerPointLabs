@@ -6,6 +6,7 @@ using System.Linq;
 using System.Text.RegularExpressions;
 using System.Windows.Forms;
 using PowerPointLabs.Models;
+using PowerPointLabs.Views;
 
 namespace PowerPointLabs
 {
@@ -13,10 +14,19 @@ namespace PowerPointLabs
     {
         private const string DefaultShapeNameFormat = @"My Shape Untitled {0}";
         private const string DefaultShapeNameSearchRegex = @"My Shape Untitled (\d+)";
+
+        // TODO: this number comes from trial and error, we'd better to take system setting as reference
+        private const int DoubleClickTimeSpan = 180;
         
         private LabeledThumbnail _selectedThumbnail;
 
         private bool _firstTimeLoading = true;
+        private bool _firstClick = true;
+        private bool _clickOnSelected;
+
+        private int _clicks;
+
+        private readonly Timer _timer;
 
         private readonly AtomicNumberStringCompare _stringComparer = new AtomicNumberStringCompare();
 
@@ -123,7 +133,11 @@ namespace PowerPointLabs
             CurrentCategory = defaultShapeCategoryName;
             Categories = new List<string> {CurrentCategory};
 
+            _timer = new Timer { Interval = DoubleClickTimeSpan };
+            _timer.Tick += TimerTickHandler;
+
             ShowNoShapeMessage();
+            
             myShapeFlowLayout.AutoSize = true;
             myShapeFlowLayout.Click += FlowlayoutClick;
         }
@@ -134,7 +148,7 @@ namespace PowerPointLabs
         {
             DehighlightSelected();
 
-            var labeledThumbnail = new LabeledThumbnail(shapeFullName, shapeName) {ContextMenuStrip = contextMenuStrip};
+            var labeledThumbnail = new LabeledThumbnail(shapeFullName, shapeName) {ContextMenuStrip = shapeContextMenuStrip};
 
             labeledThumbnail.Click += LabeledThumbnailClick;
             labeledThumbnail.DoubleClick += LabeledThumbnailDoubleClick;
@@ -216,6 +230,13 @@ namespace PowerPointLabs
         # endregion
 
         # region Helper Functions
+        private void ClickTimerReset()
+        {
+            _clicks = 0;
+            _clickOnSelected = false;
+            _firstClick = true;
+        }
+
         private void ContextMenuStripRemoveClicked()
         {
             if (_selectedThumbnail == null)
@@ -255,6 +276,17 @@ namespace PowerPointLabs
             }
 
             _selectedThumbnail.StartNameEdit();
+        }
+
+        private void ContextMenuStripSettingsClicked()
+        {
+            var settingDialog = new ShapesLabSetting(ShapeRootFolderPath);
+
+            settingDialog.ShowDialog();
+
+            if (settingDialog.UserOption == ShapesLabSetting.Option.Ok)
+            {
+            }
         }
 
         private void DehighlightSelected()
@@ -333,6 +365,28 @@ namespace PowerPointLabs
             return totalControl - 1;
         }
 
+        private void FirstClickOnThumbnail(LabeledThumbnail clickedThumbnail)
+        {
+            if (_selectedThumbnail != null)
+            {
+                if (_selectedThumbnail.State == LabeledThumbnail.Status.Editing)
+                {
+                    _selectedThumbnail.FinishNameEdit();
+                }
+                else
+                    if (_selectedThumbnail == clickedThumbnail)
+                    {
+                        _clickOnSelected = true;
+                    }
+
+                _selectedThumbnail.DeHighlight();
+            }
+
+            clickedThumbnail.Highlight();
+
+            _selectedThumbnail = clickedThumbnail;
+        }
+
         private void FocusSelected()
         {
             myShapeFlowLayout.ScrollControlIntoView(_selectedThumbnail);
@@ -352,7 +406,7 @@ namespace PowerPointLabs
             PrepareFolder();
 
             var shapes = Directory.EnumerateFiles(ShapeFolderPath, "*.png").OrderBy(item => item, _stringComparer);
-
+            
             foreach (var shape in shapes)
             {
                 var shapeName = Path.GetFileNameWithoutExtension(shape);
@@ -412,24 +466,6 @@ namespace PowerPointLabs
         # endregion
 
         # region Event Handlers
-        private void ContextMenuStripItemClicked(object sender, ToolStripItemClickedEventArgs e)
-        {
-            var item = e.ClickedItem;
-
-            if (item.Name.Contains("remove"))
-            {
-                ContextMenuStripRemoveClicked();
-            } else
-            if (item.Name.Contains("edit"))
-            {
-                ContextMenuStripEditClicked();
-            } else
-            if (item.Name.Contains("add"))
-            {
-                LabeledThumbnailDoubleClick(_selectedThumbnail, null);
-            }
-        }
-
         private void CustomShapePaneClick(object sender, EventArgs e)
         {
             if (_selectedThumbnail != null &&
@@ -448,6 +484,16 @@ namespace PowerPointLabs
             }
         }
 
+        private void FlowlayoutContextMenuStripItemClicked(object sender, ToolStripItemClickedEventArgs e)
+        {
+            var item = e.ClickedItem;
+
+            if (item.Name.Contains("settings"))
+            {
+                ContextMenuStripSettingsClicked();
+            }
+        }
+
         private void LabeledThumbnailClick(object sender, EventArgs e)
         {
             if (sender == null || !(sender is LabeledThumbnail))
@@ -456,26 +502,17 @@ namespace PowerPointLabs
                 return;
             }
 
-            var clickedThumbnail = sender as LabeledThumbnail;
+            _clicks++;
 
-            if (_selectedThumbnail != null)
-            {
-                if (_selectedThumbnail.State == LabeledThumbnail.Status.Editing)
-                {
-                    _selectedThumbnail.FinishNameEdit();
-                }
-                //else
-                //if (_selectedThumbnail == clickedThumbnail)
-                //{
-                //    _selectedThumbnail.StartNameEdit();
-                //}
+            // only first click will be entertained
+            if (!_firstClick) return;
 
-                _selectedThumbnail.DeHighlight();
-            }
+            _firstClick = false;
 
-            clickedThumbnail.Highlight();
+            FirstClickOnThumbnail(sender as LabeledThumbnail);
 
-            _selectedThumbnail = clickedThumbnail;
+            // wait for potential second click
+            _timer.Start();
         }
 
         private void LabeledThumbnailDoubleClick(object sender, EventArgs e)
@@ -520,6 +557,40 @@ namespace PowerPointLabs
 
             // select the thumbnail and scroll into view
             FocusSelected();
+        }
+
+        private void ThumbnailContextMenuStripItemClicked(object sender, ToolStripItemClickedEventArgs e)
+        {
+            var item = e.ClickedItem;
+
+            if (item.Name.Contains("remove"))
+            {
+                ContextMenuStripRemoveClicked();
+            }
+            else
+            if (item.Name.Contains("edit"))
+            {
+                ContextMenuStripEditClicked();
+            }
+            else
+            if (item.Name.Contains("add"))
+            {
+                LabeledThumbnailDoubleClick(_selectedThumbnail, null);
+            }
+        }
+
+        private void TimerTickHandler(object sender, EventArgs args)
+        {
+            _timer.Stop();
+
+            // if we got only 1 click in 0.1s, we take it as a single click
+            if (_clicks == 1 &&
+                _clickOnSelected)
+            {
+                _selectedThumbnail.StartNameEdit();
+            }
+
+            ClickTimerReset();
         }
         # endregion
 
