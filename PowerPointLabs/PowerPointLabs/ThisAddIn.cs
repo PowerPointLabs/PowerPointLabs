@@ -213,9 +213,11 @@ namespace PowerPointLabs
 
         private void ThisAddInNewPresentation(PowerPoint.Presentation pres)
         {
+            var activeWindow = pres.Application.ActiveWindow;
             var tempName = pres.Name.GetHashCode().ToString(CultureInfo.InvariantCulture);
             var tempFolderPath = Path.GetTempPath() + TempFolderNamePrefix + tempName + @"\";
 
+            _documentHashcodeMapper[activeWindow] = tempName;
             PrepareTempFolder(tempFolderPath);
         }
 
@@ -247,9 +249,11 @@ namespace PowerPointLabs
             // as long as an existing file is opened, we need to extract embedded
             // audio files and relationship XMLs to temp folder
 
-            // if we opened a new window, register and associate panes with the window
+            // if we opened a new window, register the window with its name
             if (!_documentHashcodeMapper.ContainsKey(activeWindow))
             {
+                _documentHashcodeMapper[activeWindow] = tempName;
+
                 // extract the media files and relationships to a folder with presentation's
                 // hash code
                 PrepareMediaFiles(presFullName, tempPath);
@@ -418,6 +422,47 @@ namespace PowerPointLabs
             ShapePresentation.Save();
         }
 
+        public void PrepareMediaFiles(string presFullName, string tempPath)
+        {
+            try
+            {
+                if (IsEmptyFile(presFullName)) return;
+
+                var zipFullPath = tempPath + TempZipName;
+
+                // before we do everything, check if there's an undelete old zip file
+                // due to some error
+                FileDeleteWithAttribute(zipFullPath);
+                FileCopyWithAttribute(presFullName, zipFullPath);
+
+                ExtractMediaFiles(zipFullPath, tempPath);
+            }
+            catch (Exception e)
+            {
+                ErrorDialogWrapper.ShowDialog(TextCollection.PrepareMediaErrorMsg, "Files cannot be linked.", e);
+            }
+        }
+
+        public void PrepareTempFolder(string tempPath)
+        {
+            // if temp folder doesn't exist, create
+            try
+            {
+                if (Directory.Exists(tempPath))
+                {
+                    Directory.Delete(tempPath, true);
+                }
+            }
+            catch (Exception e)
+            {
+                ErrorDialogWrapper.ShowDialog(TextCollection.CreatTempFolderErrorMsg, string.Empty, e);
+            }
+            finally
+            {
+                Directory.CreateDirectory(tempPath);
+            }
+        }
+
         public void RegisterRecorderPane(PowerPoint.Presentation presentation)
         {
             if (GetActivePane(typeof(RecorderTaskPane)) != null)
@@ -427,8 +472,6 @@ namespace PowerPointLabs
 
             var activeWindow = presentation.Application.ActiveWindow;
             var tempName = presentation.Name.GetHashCode().ToString(CultureInfo.InvariantCulture);
-
-            _documentHashcodeMapper[activeWindow] = tempName;
 
             RegisterTaskPane(new RecorderTaskPane(tempName), TextCollection.RecManagementPanelTitle, activeWindow,
                              TaskPaneVisibleValueChangedEventHandler, null);
@@ -443,7 +486,6 @@ namespace PowerPointLabs
 
             var activeWindow = presentation.Application.ActiveWindow;
 
-            TaskPaneSetup(presentation);
             RegisterTaskPane(new ColorPane(), TextCollection.ColorsLabTaskPanelTitle, activeWindow, null, null);
         }
 
@@ -456,7 +498,6 @@ namespace PowerPointLabs
 
             var activeWindow = presentation.Application.ActiveWindow;
 
-            TaskPaneSetup(presentation);
             RegisterTaskPane(
                 new CustomShapePane(_defaultShapeMasterFolderPrefix + DefaultShapeMasterFolderName,
                                     DefaultShapeCategoryName), TextCollection.ShapesLabTaskPanelTitle, activeWindow,
@@ -638,14 +679,6 @@ namespace PowerPointLabs
             {
                 _noPathAssociate = false;
             }
-        }
-
-        private void TaskPaneSetup(PowerPoint.Presentation presentation)
-        {
-            var activeWindow = presentation.Application.ActiveWindow;
-            var tempName = presentation.Name.GetHashCode().ToString(CultureInfo.InvariantCulture);
-
-            _documentHashcodeMapper[activeWindow] = tempName;
         }
 
         private void TaskPaneVisibleValueChangedEventHandler(object sender, EventArgs e)
@@ -892,47 +925,6 @@ namespace PowerPointLabs
                 recorder.HasEvent())
             {
                 recorder.ForceStopEvent();
-            }
-        }
-
-        private void PrepareMediaFiles(string presFullName, string tempPath)
-        {
-            try
-            {
-                if (IsEmptyFile(presFullName)) return;
-
-                var zipFullPath = tempPath + TempZipName;
-
-                // before we do everything, check if there's an undelete old zip file
-                // due to some error
-                FileDeleteWithAttribute(zipFullPath);
-                FileCopyWithAttribute(presFullName, zipFullPath);
-
-                ExtractMediaFiles(zipFullPath, tempPath);
-            }
-            catch (Exception e)
-            {
-                ErrorDialogWrapper.ShowDialog(TextCollection.PrepareMediaErrorMsg, "Files cannot be linked.", e);
-            }
-        }
-
-        private void PrepareTempFolder(string tempPath)
-        {
-            // if temp folder doesn't exist, create
-            try
-            {
-                if (Directory.Exists(tempPath))
-                {
-                    Directory.Delete(tempPath, true);
-                }
-            }
-            catch (Exception e)
-            {
-                ErrorDialogWrapper.ShowDialog(TextCollection.CreatTempFolderErrorMsg, string.Empty, e);
-            }
-            finally
-            {
-                Directory.CreateDirectory(tempPath);
             }
         }
         # endregion
