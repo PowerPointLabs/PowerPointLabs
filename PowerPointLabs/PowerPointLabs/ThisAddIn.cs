@@ -265,6 +265,9 @@ namespace PowerPointLabs
                 // to deal with this special case, we need to put media files and
                 // xml relationships into the folder belongs to the blank presentation, and
                 // manually call the setup method of the recorder pane.
+
+                // this case also happens when we open a presentation (programmatically)
+                // without a window.
                 var oriTempPath = Path.GetTempPath() + TempFolderNamePrefix +
                                   _documentHashcodeMapper[activeWindow] + @"\";
 

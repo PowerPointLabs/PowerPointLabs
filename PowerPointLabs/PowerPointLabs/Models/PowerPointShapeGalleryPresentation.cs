@@ -99,7 +99,7 @@ namespace PowerPointLabs.Models
 
         public void CopyShape(string name)
         {
-            var shapes = _defaultCategory.GetShapesWithRule(new Regex("^" + name + "$"));
+            var shapes = _defaultCategory.GetShapeWithName(name);
 
             if (shapes.Count != 1) return;
             
@@ -147,7 +147,7 @@ namespace PowerPointLabs.Models
 
         public void RenameShape(string oldName, string newName)
         {
-            var shapes = _defaultCategory.GetShapesWithRule(new Regex("^" + oldName + "$"));
+            var shapes = _defaultCategory.GetShapeWithName(oldName);
 
             foreach (var shape in shapes)
             {
@@ -173,19 +173,18 @@ namespace PowerPointLabs.Models
         {
             if (SlideCount < 1) return;
 
-            var pngShapes = Directory.EnumerateFiles(ShapeFolderPath, "*.png").ToList();
-
             // here we need to check 3 cases:
             // 1. self consistency check (if there are any duplicate names);
             // 2. more png than shapes inside pptx (shapes for short);
             // 3. more shapes than png.
 
-            ConsistencyCheckSelf();
+            var shapeDuplicate = ConsistencyCheckSelf();
 
+            var pngShapes = Directory.EnumerateFiles(ShapeFolderPath, "*.png").ToList();
             var shapeLost = ConsistencyCheckShapeToPng(pngShapes);
             var pngLost = ConsistencyCheckPngToShape(pngShapes);
 
-            if (shapeLost || pngLost)
+            if (shapeDuplicate || shapeLost || pngLost)
             {
                 MessageBox.Show(TextCollection.ShapeCorruptedError);
                 Save();
@@ -200,8 +199,7 @@ namespace PowerPointLabs.Models
             foreach (var pngShape in pngShapes)
             {
                 var shapeName = System.IO.Path.GetFileNameWithoutExtension(pngShape);
-                var shapeNameRegex = new Regex("^" + shapeName + "$");
-                var found = Slides.Any(category => category.HasShapeWithRule(shapeNameRegex));
+                var found = Slides.Any(category => category.HasShapeWithSameName(shapeName));
 
                 if (!found)
                 {
@@ -213,8 +211,10 @@ namespace PowerPointLabs.Models
             return shapeLost;
         }
 
-        private void ConsistencyCheckSelf()
+        private bool ConsistencyCheckSelf()
         {
+            var shapeDuplicate = false;
+
             // if inconsistency is found, we keep all the shapes but:
             // 1. append "(recovered shape X)" to the shape name, X is the relative index
             // 2. export the shape as .png
@@ -235,21 +235,31 @@ namespace PowerPointLabs.Models
                     }
                     else
                     {
-                        duplicateShapeNames.Add(shape.Name);
                         var index = (shapeHash[shape.Name] += 1);
+
+                        // add to collection only if this shape is the first duplicate shape
+                        if (index == 2)
+                        {
+                            duplicateShapeNames.Add(shape.Name);
+                        }
 
                         RenameAndExportDuplicateShape(shape, index);
                     }
                 }
 
+                shapeDuplicate = shapeDuplicate || duplicateShapeNames.Count > 0;
+
                 foreach (var lastShapeName in duplicateShapeNames)
                 {
-                    var lastShapeRegex = new Regex("^" + lastShapeName + "$");
-                    var lastShape = category.GetShapesWithRule(lastShapeRegex)[0];
+                    var lastShapePath = ShapeFolderPath + @"\" + lastShapeName + ".png";
+                    var lastShape = category.GetShapeWithName(lastShapeName)[0];
 
+                    File.Delete(lastShapePath);
                     RenameAndExportDuplicateShape(lastShape, 1);
                 }
             }
+
+            return shapeDuplicate;
         }
 
         private bool ConsistencyCheckShapeToPng(List<string> pngShapes)
