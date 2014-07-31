@@ -177,7 +177,7 @@
 
         # region ShapeGalleryPresentation
         public const string ShapeCorruptedError =
-            "There're some corrupted shapes in Shapes Lab due to unknown reasons. They have been deleted automatically.";
+            "Some shapes in the Shapes Lab were corrupted, and have been deleted automatically.";
         # endregion
 
         # region CropToShape
