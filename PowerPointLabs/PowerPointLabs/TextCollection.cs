@@ -196,7 +196,7 @@
 
         # region ConvertToPicture
         public const string ErrorTypeNotSupported = "Convert to Picture only supports Shapes and Charts.";
-        public const string ErrorWindowTitle = "Unable to Convert to Picture";
+        public const string ErrorWindowTitle = "Convert to Picture: Unsupported Object";
         # endregion
 
         # region Task Pane - Recorder
