@@ -163,9 +163,8 @@
             "the .ppt format. If you wish to use all features, please resave the " +
             "presentation with the .pptx format.";
         public const string OnlinePresentationNotCompatibleErrorMsg =
-            "This file is not fully compatible with some features of PowerPointLabs because it is on " +
-            "an online address. If you wish to use the full power of PowerPointLabs to enhance this " +
-            "file, please save the file locally.";
+        	"Some features of PowerPointLabs do not work with online presentations. " +
+        	"If you wish to use all features, please save the file locally.";
         public const string TabActivateErrorTitle = "Unable to activate 'Double Click to Open Property' feature";
         public const string TabActivateErrorDescription =
             "To activate 'Double Click to Open Property' feature, you need to enable 'Home' tab " +
