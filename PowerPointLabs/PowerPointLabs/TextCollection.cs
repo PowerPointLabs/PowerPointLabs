@@ -34,7 +34,7 @@
             "To activate, draw one or more shapes upon the picture to crop, select the shape(s), then click this button.";
         public const string AddSpotlightButtonSupertip =
             "Creates a spotlight effect for a selected shape.\n\n" +
-            "To activate, draw a shape to match the spotlight you want, select the shape, and click this button.";
+            "To activate, draw a shape that the spotlight should outline, select it, then click this button.";
         public const string ReloadSpotlightButtonSupertip =
             "Adjusts the transparency and edges of an existing spotlight.\n\n" +
             "To activate, set the transparency level and soft edges width, select the existing spotlight shape, and click this button.";
