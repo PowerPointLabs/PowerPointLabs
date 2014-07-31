@@ -51,14 +51,14 @@
         public const string RemoveCaptionsButtonSupertip =
             "Removes captions added using Auto Captions from the selected slides.";
         public const string HighlightBulletsTextButtonSupertip =
-            "Highlights all the bullet points on the specified slide by changing the text color.\n\n" +
-            "To activate, select some text in bullet format in the current slide and click on this button.";
+            "Highlights selected bullet points by changing the text's color.\n\n" +
+            "To activate, select the bullet points to highlight, then click this button.";
         public const string HighlightBulletsBackgroundButtonSupertip =
-            "Highlights all the bullet points on the specified slide by highlighting the text background.\n\n" +
-            "To activate, select some text in bullet format in the current slide and click on this button.";
+            "Highlights selected bullet points by changing the text's background color.\n\n" +
+            "To activate, select the bullet points to highlight, then click this button.";
         public const string HighlightTextFragmentsButtonSupertip =
-            "Highlights all the text fragments selected.\n\n" +
-            "To activate, select the text you want to highlight and click on this button.";
+            "Highlights the selected text fragments.\n\n" +
+            "To activate, select the text to highlight, then click this button.";
         public const string ColorPickerButtonSupertip = @"Opens Custom Color Picker";
         public const string CustomeShapeButtonSupertip = @"Manage your custom shapes."; // Custome -> Custom?
         public const string HelpButtonSupertip = @"Click this to visit PowerPointLabs help page in our website.";
