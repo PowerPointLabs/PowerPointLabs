@@ -64,7 +64,7 @@
             "Highlights all the text fragments selected.\n\n" +
             "To activate, select the text you want to highlight and click on this button.";
         public const string ColorPickerButtonSupertip = @"Opens Custom Color Picker";
-        public const string CustomeShapeButtonSupertip = @"Manage your custom shapes on the fly."; // Custome -> Custom?
+        public const string CustomeShapeButtonSupertip = @"Manage your custom shapes."; // Custome -> Custom?
         public const string HelpButtonSupertip = @"Click this to visit PowerPointLabs help page in our website.";
         public const string FeedbackButtonSupertip = @"Click this to email us problem reports or other feedback. ";
         public const string AboutButtonSupertip = @"Information about the PowerPointLabs plugin.";
