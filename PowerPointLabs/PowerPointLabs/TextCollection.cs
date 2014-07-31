@@ -39,8 +39,8 @@
             "Adjusts the transparency and edges of an existing spotlight.\n\n" +
             "To activate, set the transparency level and soft edges width, select the existing spotlight shape, then click this button.";
         public const string AddAudioButtonSupertip =
-            "Generates synthesized audio from text in the Speaker Notes pane, and adds it to the slide(s).\n\n" +
-            "To add audio for multiple slides, select the slides using Ctrl+A or by Ctrl+clicking on them, then click this button.";
+            "Generates synthesized audio from text in a slide's Speaker Notes pane.\n\n" +
+            "This will be done for all selected slides.";
         public const string GenerateRecordButtonSupertip =
             "Generates synthesized audio from text in the Speaker Notes pane, and adds it to the slide(s).";
         public const string AddRecordButtonSupertip =
