@@ -262,9 +262,9 @@
         # endregion
 
         # region Control - Labeled Thumbnail 
-        public const string LabeledThumbnailTooLongNameError = "Name's length cannot exceed 255";
-        public const string LabeledThumbnailInvalidCharacterError = "Empty name, '<', '>', ':', '\"', '/', '\\', '|', '?', and '*' are not allowed for the name";
-        public const string LabeledThumbnailFileNameExistError = "File name is already used";
+        public const string LabeledThumbnailTooLongNameError = "The name's length cannot be more than 255 characters.";
+        public const string LabeledThumbnailInvalidCharacterError = "The name cannot be empty, or contain the following characters:'<', '>', ':', '\"', '/', '\\', '|', '?', or '*'.";
+        public const string LabeledThumbnailFileNameExistError = "A file already exists with that name.";
         # endregion
 
         # region Control - SlideShow Recorder Control
