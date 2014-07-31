@@ -11,7 +11,7 @@
         # region Ribbon XML
         # region Supertips
         public const string AddAnimationButtonSupertip =
-            "Adds a slide with animations to create an animated transition from the currently selected slide to the next slide.";
+            "Creates an animation slide to transition from the currently selected slide to the next slide.";
         public const string ReloadButtonSupertip =
             "Recreates an existing animation slide with new animations.\n\n" +
             "To activate, select the original slide or the animation slide and click this button.";
