@@ -159,10 +159,9 @@
         public const string ExtraErrorMsg = "Error when extracting";
         public const string PrepareMediaErrorMsg = "Error when preparing media files";
         public const string VersionNotCompatibleErrorMsg =
-            "This file is not fully compatible with some features of PowerPointLabs because it is " +
-            "in the .ppt format used by PowerPoint 2003 (and older). If you wish to use the " +
-            "full power of PowerPointLabs to enhance this file, please save it in the .pptx format used " +
-            "by PowerPoint 2007 and newer.";
+            "Some features of PowerPointLabs do not work with presentations saved in " +
+            "the .ppt format. If you wish to use all features, please resave the " +
+            "presentation with the .pptx format.";
         public const string OnlinePresentationNotCompatibleErrorMsg =
             "This file is not fully compatible with some features of PowerPointLabs because it is on " +
             "an online address. If you wish to use the full power of PowerPointLabs to enhance this " +
