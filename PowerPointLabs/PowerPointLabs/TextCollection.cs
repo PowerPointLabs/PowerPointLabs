@@ -20,10 +20,10 @@
             "To activate, copy the shape to locations where you want it to stop, select the copies in the order you want them to appear, and click this button";
         
         public const string AddZoomInButtonSupertip =
-            "Adds a slide with animations to create a zoom-in effect from the currently selected shape to the next slide.\n\n" +
+            "Creates an animation slide with a zoom-in effect from the currently selected shape to the next slide.\n\n" +
             "To activate, select a rectangle shape on the slide that you want to drill down from and click on this button.";
         public const string AddZoomOutButtonSupertip =
-            "Adds a slide with animations to create a zoom-out effect from the previous slide to the currently selected shape.\n\n" +
+            "Creates an animation slide with a zoom-out effect from the previous slide to the currently selected shape.\n\n" +
             "To activate, select a rectangle shape on the slide that you want to step back to and click on this button.";
         public const string ZoomToAreaButtonSupertip =
             "Zoom into an area of a slide or image.\n\nTo activate, place a rectangle shape on the portion that you want to magnify and click on this button.\n\n" +
