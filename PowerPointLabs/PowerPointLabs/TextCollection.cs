@@ -160,11 +160,11 @@
         public const string PrepareMediaErrorMsg = "Error when preparing media files";
         public const string VersionNotCompatibleErrorMsg =
             "Some features of PowerPointLabs do not work with presentations saved in " +
-            "the .ppt format. If you wish to use all features, please resave the " +
+            "the .ppt format. To use them, please resave the " +
             "presentation with the .pptx format.";
         public const string OnlinePresentationNotCompatibleErrorMsg =
         	"Some features of PowerPointLabs do not work with online presentations. " +
-        	"If you wish to use all features, please save the file locally.";
+        	"To use them, please save the file locally.";
         public const string TabActivateErrorTitle = "Unable to activate 'Double Click to Open Property' feature";
         public const string TabActivateErrorDescription =
             "To activate 'Double Click to Open Property' feature, you need to enable 'Home' tab " +
