@@ -39,21 +39,17 @@
             "Adjusts the transparency and edges of an existing spotlight.\n\n" +
             "To activate, set the transparency level and soft edges width, select the existing spotlight shape, then click this button.";
         public const string AddAudioButtonSupertip =
-            "Generates synthesized audio from text in a slide's Speaker Notes pane.\n\n" +
-            "This will be done for all selected slides.";
+            "Creates synthesized narration from text in the Speaker Notes pane of the selected slides.";
         public const string GenerateRecordButtonSupertip =
-            "Generates synthesized audio from text in a slide's Speaker Notes pane.";
+            "Creates synthesized narration from text in a slide's Speaker Notes pane.";
         public const string AddRecordButtonSupertip =
-            "Use this option to record audio manually to replace the generated audio.";
+            "Manually record audio to replace synthesized narration.";
         public const string RemoveAudioButtonSupertip =
-            "Removes any generated audio that was added using Auto Narrate from the slide(s).\n\n" +
-            "To remove audios for multiple slides, select the slides first (e.g. Ctrl+A to select all slides, Ctrl+click to select only some slides) before clicking the 'Remove Audio' button.";
+            "Removes synthesized audio added using Auto Narrate from the selected slides."; 
         public const string AddCaptionsButtonSupertip =
-            "Generates movie-style subtitles from text in the Speaker Notes pane, and adds it to the slide(s).\n\n" +
-            "To add captions for multiple slides, select the slides first (e.g. Ctrl+A to select all slides, Ctrl+click to select only some slides) before clicking the 'Add Captions' button.";
+            "Creates movie-style subtitles from text in the Speaker Notes pane, and adds it to the selected slides.";
         public const string RemoveCaptionsButtonSupertip =
-            "Removes any captions that were added using Auto Captions from the slide(s).\n\n" +
-            "To remove captions for multiple slides, select the slides first (e.g. Ctrl+A to select all slides, Ctrl+click to select only some slides) before clicking the 'Remove Captions' button.";
+            "Removes captions added using Auto Captions from the selected slides.";
         public const string HighlightBulletsTextButtonSupertip =
             "Highlights all the bullet points on the specified slide by changing the text color.\n\n" +
             "To activate, select some text in bullet format in the current slide and click on this button.";
