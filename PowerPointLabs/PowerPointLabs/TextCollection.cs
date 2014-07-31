@@ -14,7 +14,7 @@
             "Adds a slide with animations to create an animated transition from the currently selected slide to the next slide.";
         public const string ReloadButtonSupertip =
             "Recreates an existing animation slide with new animations.\n\n" +
-            "To activate, select the original slide or the animation slide (added previously) and click this button.";
+            "To activate, select the original slide or the animation slide and click this button.";
         public const string InSlideAnimateButtonSupertip =
             "Moves a shape around the slide in multiple steps.\n\n" +
             "To activate, copy the shape to locations where you want it to stop, select the copies in the order you want them to appear, and click this button";
