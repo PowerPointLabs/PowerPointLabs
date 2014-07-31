@@ -5,6 +5,7 @@ using System.Drawing;
 using System.IO;
 using System.Linq;
 using System.Windows.Forms;
+using PowerPointLabs.DataSources;
 using PowerPoint = Microsoft.Office.Interop.PowerPoint;
 using PowerPointLabs.Models;
 using System.Drawing.Drawing2D;

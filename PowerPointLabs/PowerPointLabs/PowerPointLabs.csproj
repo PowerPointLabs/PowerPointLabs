@@ -243,7 +243,7 @@
     </Compile>
     <Compile Include="ColorPicker\HSLColor.cs" />
     <Compile Include="CustomBinding.cs" />
-    <Compile Include="ColorPicker\ColorDataSource.cs" />
+    <Compile Include="DataSources\ColorDataSource.cs" />
     <Compile Include="ColorPicker\ColorHelper.cs" />
     <Compile Include="ColorPicker\ColorPane.cs">
       <SubType>UserControl</SubType>
@@ -254,6 +254,7 @@
     <Compile Include="Converters\ColorPaneConverters.cs" />
     <Compile Include="ConvertToPicture.cs" />
     <Compile Include="CropToShape.cs" />
+    <Compile Include="DataSources\ShapesLabSettingsDataSource.cs" />
     <Compile Include="Properties\Resources.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>

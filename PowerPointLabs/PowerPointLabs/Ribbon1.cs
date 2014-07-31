@@ -1549,7 +1549,7 @@ namespace PowerPointLabs
 
             var customShape = customShapePane.Control as CustomShapePane;
 
-            Globals.ThisAddIn.InitializeShapeGallery(customShape.ShapeFolderPath);
+            Globals.ThisAddIn.InitializeShapeGallery(customShape.CurrentShapeFolderPath);
 
             // if currently the pane is hidden, show the pane
             if (customShapePane.Visible)
@@ -1583,7 +1583,7 @@ namespace PowerPointLabs
 
             var customShape = customShapePane.Control as CustomShapePane;
 
-            Globals.ThisAddIn.InitializeShapeGallery(customShape.ShapeFolderPath);
+            Globals.ThisAddIn.InitializeShapeGallery(customShape.CurrentShapeFolderPath);
             customShape.PaneReload();
 
             // to determine if a presentation needs to be saved, we check 3 things:

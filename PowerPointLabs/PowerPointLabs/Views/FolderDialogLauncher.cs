@@ -4,6 +4,9 @@ using PPExtraEventHelper;
 
 namespace PowerPointLabs.Views
 {
+    // this class is taken from
+    // http://stackoverflow.com/questions/6942150/why-folderbrowserdialog-dialog-does-not-scroll-to-selected-folder
+    // with a bit refactoring.
     static class FolderDialogLauncher
     {
         /// <summary>
@@ -51,8 +54,12 @@ namespace PowerPointLabs.Views
         {
             var timer = sender as Timer;
 
+            if (timer == null) return;
+
             if (_retries > 0)
             {
+                // retry 10 times until the dialog handle is created since we have no
+                // means to override wndproc of FolderBrowswerDialog to find handle.
                 --_retries;
                 var hwndDlg = Native.FindWindow(null, TopLevelSearchString);
                 if (hwndDlg != IntPtr.Zero)
@@ -79,11 +86,15 @@ namespace PowerPointLabs.Views
             }
             else
             {
-                //  We failed to find the Tree View control.
+                //  We failed to find the Tree View control window.
                 //
                 //  As a fall back (and this is an UberUgly hack), we will send
                 //  some fake keystrokes to the application in an attempt to force
                 //  the Tree View to scroll to the selected item.
+                //
+                //  This method may not always work. On some laggy machine or virtual
+                //  machine, key strokes may not reach the dialog successfully, either
+                //  partly or entirely lost.
                 timer.Stop();
                 SendKeys.Send("{TAB}{TAB}{DOWN}{UP}");
             }

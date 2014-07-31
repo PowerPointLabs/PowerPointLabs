@@ -240,6 +240,12 @@ namespace PowerPointLabs
 
         private void ThisAddInPresentationClose(PowerPoint.Presentation pres)
         {
+            // special case: if we are closing ShapeGallery.pptx, no other action will be done
+            if (pres.Name.Contains(ShapeGalleryPptxName))
+            {
+                return;
+            }
+
             ShutDownColorPane();
             ShutDownRecorderPane();
 

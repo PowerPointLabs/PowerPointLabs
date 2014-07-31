@@ -261,7 +261,12 @@
         public const string CustomShapeViewTypeNotSupported = "Shapes Lab does not support the current view type.";
         # endregion
 
-        # region Control - Labeled Thumbnail 
+        # region Control - ShapesLabSetting
+        public const string FolderDialogDescription = "Select the directory that you want to use as the default.";
+        public const string FolderNonEmptyErrorMsg = "Please select an empty folder as default saving folder.";
+        # endregion
+
+        # region Control - Labeled Thumbnail
         public const string LabeledThumbnailTooLongNameError = "The name's length cannot be more than 255 characters.";
         public const string LabeledThumbnailInvalidCharacterError = "The name cannot be empty, or contain the following characters:'<', '>', ':', '\"', '/', '\\', '|', '?', or '*'.";
         public const string LabeledThumbnailFileNameExistError = "A file already exists with that name.";

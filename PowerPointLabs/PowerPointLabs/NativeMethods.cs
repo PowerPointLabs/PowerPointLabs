@@ -13,7 +13,7 @@ namespace PPExtraEventHelper
         [DllImport("user32.dll")]
         public static extern int CallNextHookEx(IntPtr hhk, int nCode, IntPtr wParam, IntPtr lParam);
 
-        [DllImport("kernel32.dll", CharSet = System.Runtime.InteropServices.CharSet.Auto)]
+        [DllImport("kernel32.dll", CharSet = CharSet.Auto)]
         public static extern IntPtr GetModuleHandle(string lpModuleName);
 
         [DllImport("user32.dll")]

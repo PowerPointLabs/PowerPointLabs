@@ -71,20 +71,17 @@ namespace PowerPointLabs.Models
         {
             get
             {
-                if (_slides == null)
+                var slides = new List<PowerPointSlide>();
+
+                var interopSlides = Presentation.Slides;
+
+                foreach (Slide interopSlide in interopSlides)
                 {
-                    _slides = new List<PowerPointSlide>();
-
-                    var interopSlides = Presentation.Slides;
-
-                    foreach (Slide interopSlide in interopSlides)
-                    {
-                        var s = PowerPointSlide.FromSlideFactory(interopSlide);
-                        _slides.Add(s);
-                    }
+                    var s = PowerPointSlide.FromSlideFactory(interopSlide);
+                    slides.Add(s);
                 }
 
-                return _slides;
+                return slides;
             }
         }
 

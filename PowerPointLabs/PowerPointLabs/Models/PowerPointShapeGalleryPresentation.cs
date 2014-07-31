@@ -94,6 +94,7 @@ namespace PowerPointLabs.Models
         {
             base.Close();
 
+            _categoryNameIndexMapper.Clear();
             RetrieveShapeGalleryFile();
         }
 
@@ -113,6 +114,7 @@ namespace PowerPointLabs.Models
 
             base.Open(readOnly, untitled, withWindow, focus);
 
+            PrepareCategories();
             ConsistencyCheck();
         }
 
@@ -291,6 +293,13 @@ namespace PowerPointLabs.Models
             }
 
             return shapeLost;
+        }
+
+        private void PrepareCategories()
+        {
+            if (SlideCount < 1) return;
+
+            _defaultCategory = Slides[0];
         }
 
         private void RetrievePptxFile()

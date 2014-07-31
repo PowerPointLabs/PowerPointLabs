@@ -15,8 +15,11 @@ namespace PowerPointLabs
         private const string DefaultShapeNameFormat = @"My Shape Untitled {0}";
         private const string DefaultShapeNameSearchRegex = @"My Shape Untitled (\d+)";
 
-        // TODO: this number comes from trial and error, we'd better to take system setting as reference
-        private const int DoubleClickTimeSpan = 180;
+        private readonly string _shapeRootFolderPathConfigFile =
+            Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), "PowerPointLabs",
+                         "shapeRootFolder.config");
+
+        private readonly int _doubleClickTimeSpan = SystemInformation.DoubleClickTime;
         
         private LabeledThumbnail _selectedThumbnail;
 
@@ -34,7 +37,7 @@ namespace PowerPointLabs
         # region Properties
         public string NextDefaultFullName
         {
-            get { return ShapeFolderPath + @"\" +
+            get { return CurrentShapeFolderPath + @"\" +
                          NextDefaultNameWithoutExtension + ".png"; }
         }
 
@@ -80,7 +83,7 @@ namespace PowerPointLabs
 
         public string CurrentShapeFullName
         {
-            get { return ShapeFolderPath + @"\" +
+            get { return CurrentShapeFolderPath + @"\" +
                          CurrentShapeNameWithoutExtension + ".png"; }
         }
 
@@ -118,7 +121,7 @@ namespace PowerPointLabs
 
         public string ShapeRootFolderPath { get; private set; }
 
-        public string ShapeFolderPath
+        public string CurrentShapeFolderPath
         {
             get { return ShapeRootFolderPath + @"\" + CurrentCategory; }
         }
@@ -134,7 +137,7 @@ namespace PowerPointLabs
             CurrentCategory = defaultShapeCategoryName;
             Categories = new List<string> {CurrentCategory};
 
-            _timer = new Timer { Interval = DoubleClickTimeSpan };
+            _timer = new Timer { Interval = _doubleClickTimeSpan };
             _timer.Tick += TimerTickHandler;
 
             ShowNoShapeMessage();
@@ -288,6 +291,47 @@ namespace PowerPointLabs
 
             if (settingDialog.UserOption == ShapesLabSetting.Option.Ok)
             {
+                var newPath = settingDialog.DefaultSavingPath;
+
+                MigrateShapeFolder(ShapeRootFolderPath, newPath);
+                ShapeRootFolderPath = newPath;
+
+                if (!File.Exists(_shapeRootFolderPathConfigFile))
+                {
+                    File.Create(_shapeRootFolderPathConfigFile);
+                }
+                
+                File.WriteAllText(_shapeRootFolderPathConfigFile, newPath);
+            }
+        }
+
+        private void CopyFolder(string oldPath, string newPath)
+        {
+            // create subfolder during recursions
+            if (!Directory.Exists(newPath))
+            {
+                Directory.CreateDirectory(newPath);
+            }
+
+            // copy files in a folder first
+            var files = Directory.GetFiles(oldPath);
+
+            foreach (var file in files)
+            {
+                var name = Path.GetFileName(file);
+                var dest = Path.Combine(newPath, name);
+                File.Copy(file, dest);
+            }
+
+            // then recursively copy contents in subfolders
+            var folders = Directory.GetDirectories(oldPath);
+
+            foreach (var folder in folders)
+            {
+                var name = Path.GetFileName(folder);
+                var dest = Path.Combine(newPath, name);
+
+                CopyFolder(folder, dest);
             }
         }
 
@@ -395,11 +439,35 @@ namespace PowerPointLabs
             _selectedThumbnail.Highlight();
         }
 
+        private void MigrateShapeFolder(string oldPath, string newPath)
+        {
+            var loadingDialog = new LoadingDialog();
+            loadingDialog.Show();
+            loadingDialog.Refresh();
+
+            // close the opening presentation
+            if (Globals.ThisAddIn.ShapePresentation.Opened)
+            {
+                Globals.ThisAddIn.ShapePresentation.Close();
+            }
+
+            CopyFolder(oldPath, newPath);
+            ShapeRootFolderPath = newPath;
+
+            // modify shape gallery presentation's path and name, then open it
+            Globals.ThisAddIn.ShapePresentation.Path = newPath;
+            Globals.ThisAddIn.ShapePresentation.ShapeFolderPath = CurrentShapeFolderPath;
+
+            Globals.ThisAddIn.ShapePresentation.Open(withWindow: false, focus: false);
+
+            loadingDialog.Dispose();
+        }
+
         private void PrepareFolder()
         {
-            if (!Directory.Exists(ShapeFolderPath))
+            if (!Directory.Exists(CurrentShapeFolderPath))
             {
-                Directory.CreateDirectory(ShapeFolderPath);
+                Directory.CreateDirectory(CurrentShapeFolderPath);
             }
         }
 
@@ -407,7 +475,7 @@ namespace PowerPointLabs
         {
             PrepareFolder();
 
-            var shapes = Directory.EnumerateFiles(ShapeFolderPath, "*.png").OrderBy(item => item, _stringComparer);
+            var shapes = Directory.EnumerateFiles(CurrentShapeFolderPath, "*.png").OrderBy(item => item, _stringComparer);
             
             foreach (var shape in shapes)
             {

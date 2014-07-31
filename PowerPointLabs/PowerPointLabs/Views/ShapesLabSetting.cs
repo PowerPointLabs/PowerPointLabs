@@ -1,21 +1,20 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
 using System.Drawing;
 using System.IO;
 using System.Linq;
-using System.Text;
 using System.Windows.Forms;
+using PowerPointLabs.DataSources;
 
 namespace PowerPointLabs.Views
 {
     public partial class ShapesLabSetting : Form
     {
-        # region Properties
-        public string DefaultShapeSavingPath { get; set; }
-        
+        # region Properties and Bindings
         public Option UserOption { get; private set; }
+
+        public string DefaultSavingPath { get; set; }
+
+        private readonly ShapesLabSettingsDataSource _settingsDataSource = new ShapesLabSettingsDataSource();
         # endregion
 
         # region Constructors
@@ -23,11 +22,13 @@ namespace PowerPointLabs.Views
         {
             InitializeComponent();
 
-            DefaultShapeSavingPath = defaultPath;
+            _settingsDataSource.DefaultSavingPath = defaultPath;
+
+            DataBindings.Add("DefaultSavingPath", _settingsDataSource, "DefaultSavingPath");
 
             pathBox.ReadOnly = true;
             pathBox.BackColor = Color.FromKnownColor(KnownColor.Window);
-            pathBox.Text = DefaultShapeSavingPath;
+            pathBox.DataBindings.Add("Text", _settingsDataSource, "DefaultSavingPath");
         }
         # endregion
 
@@ -45,11 +46,38 @@ namespace PowerPointLabs.Views
             var folderDialog = new FolderBrowserDialog
                                    {
                                        ShowNewFolderButton = true,
-                                       SelectedPath = DefaultShapeSavingPath,
-                                       Description = "Select the directory that you want to use as the default."
+                                       SelectedPath = _settingsDataSource.DefaultSavingPath,
+                                       Description = TextCollection.FolderDialogDescription
                                    };
 
-            var result = FolderDialogLauncher.ShowFolderBrowser(folderDialog);
+            var selectEmptyFolder = false;
+
+            // loop until user chooses an empty folder, or click "Cancel" button
+            while (!selectEmptyFolder)
+            {
+                // this launcher will scroll the view to selected path
+                var result = FolderDialogLauncher.ShowFolderBrowser(folderDialog);
+
+                if (result == DialogResult.OK)
+                {
+                    var newPath = folderDialog.SelectedPath;
+                
+                    if (!IsDirectoryEmpty(newPath))
+                    {
+                        MessageBox.Show(TextCollection.FolderNonEmptyErrorMsg);
+                    }
+                    else
+                    {
+                        selectEmptyFolder = true;
+                        _settingsDataSource.DefaultSavingPath = newPath;
+                    }
+                }
+                else
+                {
+                    // if user cancel the dialog, break the loop
+                    break;
+                }
+            }
         }
 
         private void CancelButtonClick(object sender, EventArgs e)
@@ -68,6 +96,10 @@ namespace PowerPointLabs.Views
         # endregion
 
         # region Helper Functions
+        private bool IsDirectoryEmpty(string path)
+        {
+            return !Directory.EnumerateFileSystemEntries(path).Any();
+        }
         # endregion
     }
 }
