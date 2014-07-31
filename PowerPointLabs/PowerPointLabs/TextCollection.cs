@@ -14,19 +14,19 @@
             "Creates an animation slide to transition from the currently selected slide to the next slide.";
         public const string ReloadButtonSupertip =
             "Recreates an existing animation slide with new animations.\n\n" +
-            "To activate, select the original slide or the animation slide and click this button.";
+            "To activate, select the original slide or the animation slide then click this button.";
         public const string InSlideAnimateButtonSupertip =
             "Moves a shape around the slide in multiple steps.\n\n" +
-            "To activate, copy the shape to locations where it should stop, select the copies in the order they should appear, and click this button";
+            "To activate, copy the shape to locations where it should stop, select the copies in the order they should appear, then click this button";
         
         public const string AddZoomInButtonSupertip =
             "Creates an animation slide with a zoom-in effect from the currently selected shape to the next slide.\n\n" +
-            "To activate, select a rectangle shape on the slide to drill down from and click this button.";
+            "To activate, select a rectangle shape on the slide to drill down from, then click this button.";
         public const string AddZoomOutButtonSupertip =
             "Creates an animation slide with a zoom-out effect from the previous slide to the currently selected shape.\n\n" +
-            "To activate, select a rectangle shape on the slide to step back to and click this button.";
+            "To activate, select a rectangle shape on the slide to step back to, then click this button.";
         public const string ZoomToAreaButtonSupertip =
-            "Zoom into an area of a slide or image.\n\nTo activate, place a rectangle shape on the portion to magnify and click this button.\n\n" +
+            "Zoom into an area of a slide or image.\n\nTo activate, place a rectangle shape on the portion to magnify, then click this button.\n\n" +
             "This feature works best with high-resolution images.";
         
         public const string MoveCropShapeButtonSupertip =
