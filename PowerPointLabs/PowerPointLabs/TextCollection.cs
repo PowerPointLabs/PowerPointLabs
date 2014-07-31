@@ -30,8 +30,8 @@
             "This feature works best with high-resolution images.";
         
         public const string MoveCropShapeButtonSupertip =
-            "Crop a picture according to your selected shape(s).\n\n" +
-            "To activate, draw a shape upon the picture you want to crop, select the shape, and then click on this button.";
+            "Crop a picture to a custom shape.\n\n" +
+            "To activate, draw one or more shapes upon the picture to crop, select the shape(s), then click this button.";
         public const string AddSpotlightButtonSupertip =
             "Creates a spotlight effect for a selected shape.\n\n" +
             "To activate, draw a shape to match the spotlight you want, select the shape, and click this button.";
