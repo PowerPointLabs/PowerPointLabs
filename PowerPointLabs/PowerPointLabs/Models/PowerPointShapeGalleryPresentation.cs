@@ -142,7 +142,7 @@ namespace PowerPointLabs.Models
 
         public void RemoveShape(string name)
         {
-            _defaultCategory.DeleteShapeWithRule(new Regex("^" + name + "$"));
+            _defaultCategory.DeleteShapeWithName(name);
         }
 
         public void RenameShape(string oldName, string newName)

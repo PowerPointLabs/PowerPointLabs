@@ -193,6 +193,17 @@ namespace PowerPointLabs.Models
             }
         }
 
+        public void DeleteShapeWithName(string name)
+        {
+            List<Shape> shapes = _slide.Shapes.Cast<Shape>().ToList();
+            var matchingShapes = shapes.Where(current => current.Name == name);
+
+            foreach (var s in matchingShapes)
+            {
+                s.Delete();
+            }
+        }
+
         public void DeleteAllShapes()
         {
             List<Shape> shapes = _slide.Shapes.Cast<Shape>().ToList();
