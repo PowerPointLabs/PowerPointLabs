@@ -164,9 +164,9 @@
         public const string PrepareMediaErrorMsg = "Error when preparing media files";
         public const string VersionNotCompatibleErrorMsg =
             "This file is not fully compatible with some features of PowerPointLabs because it is " +
-            "in the outdated .ppt format used by PowerPoint 2007 (and older). If you wish to use the " +
-            "full power of PowerPointLabs to enhance this file, please save in the .pptx format used " +
-            "by PowerPoint 2010 and newer.";
+            "in the .ppt format used by PowerPoint 2003 (and older). If you wish to use the " +
+            "full power of PowerPointLabs to enhance this file, please save it in the .pptx format used " +
+            "by PowerPoint 2007 and newer.";
         public const string OnlinePresentationNotCompatibleErrorMsg =
             "This file is not fully compatible with some features of PowerPointLabs because it is on " +
             "an online address. If you wish to use the full power of PowerPointLabs to enhance this " +
