@@ -21,12 +21,12 @@
         
         public const string AddZoomInButtonSupertip =
             "Creates an animation slide with a zoom-in effect from the currently selected shape to the next slide.\n\n" +
-            "To activate, select a rectangle shape on the slide to drill down from and click on this button.";
+            "To activate, select a rectangle shape on the slide to drill down from and click this button.";
         public const string AddZoomOutButtonSupertip =
             "Creates an animation slide with a zoom-out effect from the previous slide to the currently selected shape.\n\n" +
-            "To activate, select a rectangle shape on the slide to step back to and click on this button.";
+            "To activate, select a rectangle shape on the slide to step back to and click this button.";
         public const string ZoomToAreaButtonSupertip =
-            "Zoom into an area of a slide or image.\n\nTo activate, place a rectangle shape on the portion to magnify and click on this button.\n\n" +
+            "Zoom into an area of a slide or image.\n\nTo activate, place a rectangle shape on the portion to magnify and click this button.\n\n" +
             "This feature works best with high-resolution images.";
         
         public const string MoveCropShapeButtonSupertip =
