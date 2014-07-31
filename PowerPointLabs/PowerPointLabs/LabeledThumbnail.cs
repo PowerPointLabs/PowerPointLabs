@@ -276,7 +276,7 @@ namespace PowerPointLabs
         # endregion
 
         # region Event Handlers
-        public delegate void ClickEventDelegate(object sender, EventArgs e);
+        public delegate void ClickEventDelegate(object sender, MouseEventArgs e);
         public delegate void DoubleClickEventDelegate(object sender, EventArgs e);
         public delegate void NameEditFinishEventDelegate(object sender, string oldName);
 

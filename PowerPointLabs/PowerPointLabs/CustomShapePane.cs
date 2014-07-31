@@ -23,6 +23,7 @@ namespace PowerPointLabs
         private bool _firstTimeLoading = true;
         private bool _firstClick = true;
         private bool _clickOnSelected;
+        private bool _isLeftButton;
 
         private int _clicks;
 
@@ -235,6 +236,7 @@ namespace PowerPointLabs
             _clicks = 0;
             _clickOnSelected = false;
             _firstClick = true;
+            _isLeftButton = false;
         }
 
         private void ContextMenuStripRemoveClicked()
@@ -494,7 +496,7 @@ namespace PowerPointLabs
             }
         }
 
-        private void LabeledThumbnailClick(object sender, EventArgs e)
+        private void LabeledThumbnailClick(object sender, MouseEventArgs e)
         {
             if (sender == null || !(sender is LabeledThumbnail))
             {
@@ -508,10 +510,11 @@ namespace PowerPointLabs
             if (!_firstClick) return;
 
             _firstClick = false;
+            _isLeftButton = e.Button == MouseButtons.Left;
 
             FirstClickOnThumbnail(sender as LabeledThumbnail);
 
-            // wait for potential second click
+            // if it's left button click, we need to wait for potential second click
             _timer.Start();
         }
 
@@ -583,8 +586,9 @@ namespace PowerPointLabs
         {
             _timer.Stop();
 
-            // if we got only 1 click in 0.1s, we take it as a single click
+            // if we got only 1 click in a threshold value, we take it as a single click
             if (_clicks == 1 &&
+                _isLeftButton &&
                 _clickOnSelected)
             {
                 _selectedThumbnail.StartNameEdit();
