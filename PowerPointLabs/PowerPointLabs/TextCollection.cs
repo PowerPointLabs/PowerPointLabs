@@ -185,11 +185,10 @@
         public class CropToShapeText
         {
             //------------ Msg -------------
-            public const string ErrorMessageForSelectionCountZero = "To use 'Crop To Shape', please select at least one shape.";
+            public const string ErrorMessageForSelectionCountZero = "'Crop To Shape' requires at least one shape to be selected.";
             public const string ErrorMessageForSelectionNonShape = "'Crop To Shape' only supports shape objects.";
-            public const string ErrorMessageForExceedSlideBound = "Please ensure your shape is within the slide.";
-            public const string ErrorMessageForRotationNonZero = "In the current version, the 'Crop To Shape' feature does not" +
-                                                                  " work if the shape is rotated";
+            public const string ErrorMessageForExceedSlideBound = "The selected shape needs to be within the slide's boundaries.";
+            public const string ErrorMessageForRotationNonZero = "'Crop To Shape' does not currently support rotated shapes.";
             public const string ErrorMessageForUndefined = "Undefined error in 'Crop To Shape'.";
         }
 
