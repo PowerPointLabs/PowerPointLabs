@@ -37,7 +37,7 @@
             "To activate, draw a shape that the spotlight should outline, select it, then click this button.";
         public const string ReloadSpotlightButtonSupertip =
             "Adjusts the transparency and edges of an existing spotlight.\n\n" +
-            "To activate, set the transparency level and soft edges width, select the existing spotlight shape, and click this button.";
+            "To activate, set the transparency level and soft edges width, select the existing spotlight shape, then click this button.";
         public const string AddAudioButtonSupertip =
             "Generates synthesized audio from text in the Speaker Notes pane, and adds it to the slide(s).\n\n" +
             "To add audios for multiple slides, select the slides first (e.g. Ctrl+A to select all slides, Ctrl+click to select only some slides) before clicking the 'Add Audio' button.";
