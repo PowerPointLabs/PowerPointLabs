@@ -42,7 +42,7 @@
             "Generates synthesized audio from text in a slide's Speaker Notes pane.\n\n" +
             "This will be done for all selected slides.";
         public const string GenerateRecordButtonSupertip =
-            "Generates synthesized audio from text in the Speaker Notes pane, and adds it to the slide(s).";
+            "Generates synthesized audio from text in a slide's Speaker Notes pane.";
         public const string AddRecordButtonSupertip =
             "Use this option to record audio manually to replace the generated audio.";
         public const string RemoveAudioButtonSupertip =
