@@ -301,6 +301,10 @@ namespace PowerPointLabs
                 }
                 
                 File.WriteAllText(_shapeRootFolderPathConfigFile, newPath);
+
+                MessageBox.Show("Default saving path has been changed to \n" + newPath +
+                                "\nAll shapes have been moved to the new location.", "Success", MessageBoxButtons.OK,
+                                MessageBoxIcon.Information);
             }
         }
 
@@ -450,7 +454,7 @@ namespace PowerPointLabs
                 Globals.ThisAddIn.ShapePresentation.Close();
             }
 
-            CopyFolder(oldPath, newPath);
+            MoveFolder(oldPath, newPath);
             ShapeRootFolderPath = newPath;
 
             // modify shape gallery presentation's path and name, then open it
@@ -460,6 +464,33 @@ namespace PowerPointLabs
             Globals.ThisAddIn.ShapePresentation.Open(withWindow: false, focus: false);
 
             loadingDialog.Dispose();
+        }
+
+        private void MoveFolder(string oldPath, string newPath)
+        {
+            CopyFolder(oldPath, newPath);
+
+            NormalizeFiles(oldPath);
+            Directory.Delete(oldPath, true);
+        }
+
+        private void NormalizeFiles(string path)
+        {
+            // copy files in a folder first
+            var files = Directory.GetFiles(path);
+
+            foreach (var file in files)
+            {
+                File.SetAttributes(file, FileAttributes.Normal);
+            }
+
+            // then recursively copy contents in subfolders
+            var folders = Directory.GetDirectories(path);
+
+            foreach (var folder in folders)
+            {
+                NormalizeFiles(folder);
+            }
         }
 
         private void PrepareFolder()
