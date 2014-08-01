@@ -48,8 +48,17 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Cleaner.cs" />
+    <Compile Include="ConfigReader.cs" />
+    <Compile Include="DeployUploader.cs" />
+    <Compile Include="InstallerPackager.cs" />
+    <Compile Include="ManifestEditor.cs" />
+    <Compile Include="ManifestManager.cs" />
+    <Compile Include="ManifestSignee.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="TextCollection.cs" />
+    <Compile Include="Util.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="DeployHelper.conf" />
