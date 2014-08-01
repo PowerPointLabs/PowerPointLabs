@@ -22,13 +22,13 @@ namespace PowerPointLabs
     {
         private readonly string _defaultShapeMasterFolderPrefix =
             Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments);
-        
+
+        private const string AppLogName = "PowerPointLabs_Log_1.log"; 
         private const string SlideXmlSearchPattern = @"slide(\d+)\.xml";
         private const string TempFolderNamePrefix = @"\PowerPointLabs Temp\";
         private const string DefaultShapeMasterFolderName = @"\PowerPointLabs Custom Shapes";
         private const string DefaultShapeCategoryName = "My Shapes";
         private const string ShapeGalleryPptxName = "ShapeGallery";
-        private const string ShapeGalleryFileExtension = ".pptlabsshapes";
         private const string TempZipName = "tempZip.zip";
 
         private bool _noPathAssociate;
@@ -42,6 +42,11 @@ namespace PowerPointLabs
                                                                                      string>();
 
         internal PowerPointShapeGalleryPresentation ShapePresentation;
+
+        public readonly string ShapeRootFolderConfigFileName = "shapeRootFolder.config";
+
+        public readonly string AppDataFolder =
+            Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), "PowerPointLabs");
 
         public Ribbon1 Ribbon;
 
@@ -369,9 +374,19 @@ namespace PowerPointLabs
             // achieves singleton ShapePresentation
             if (ShapePresentation != null) return;
 
+            var shapeRootFolderPathConfigFile = Path.Combine(AppDataFolder, ShapeRootFolderConfigFileName);
+            var shapeRootFolderPath = _defaultShapeMasterFolderPrefix + DefaultShapeMasterFolderName;
+
+            if (File.Exists(shapeRootFolderPathConfigFile))
+            {
+                using (var reader = new StreamReader(shapeRootFolderPathConfigFile))
+                {
+                    shapeRootFolderPath = reader.ReadLine();
+                }
+            }
+
             ShapePresentation =
-                new PowerPointShapeGalleryPresentation(_defaultShapeMasterFolderPrefix + DefaultShapeMasterFolderName,
-                                                       ShapeGalleryPptxName, shapeFolderPath);
+                new PowerPointShapeGalleryPresentation(shapeRootFolderPath, ShapeGalleryPptxName, shapeFolderPath);
 
             ShapePresentation.Open(withWindow: false, focus: false);
             ShapePresentation.AddCategory(DefaultShapeCategoryName);
@@ -454,7 +469,7 @@ namespace PowerPointLabs
             RegisterTaskPane(new ColorPane(), TextCollection.ColorsLabTaskPanelTitle, activeWindow, null, null);
         }
 
-        public void RegisterCustomShapePane(PowerPoint.Presentation presentation)
+        public void RegisterShapesLabPane(PowerPoint.Presentation presentation)
         {
             if (GetActivePane(typeof(CustomShapePane)) != null)
             {
@@ -462,11 +477,20 @@ namespace PowerPointLabs
             }
 
             var activeWindow = presentation.Application.ActiveWindow;
+            var shapeRootFolderPathConfigFile = Path.Combine(AppDataFolder, ShapeRootFolderConfigFileName);
+            var shapeRootFolderPath = _defaultShapeMasterFolderPrefix + DefaultShapeMasterFolderName;
+
+            if (File.Exists(shapeRootFolderPathConfigFile))
+            {
+                using (var reader = new StreamReader(shapeRootFolderPathConfigFile))
+                {
+                    shapeRootFolderPath = reader.ReadLine();
+                }
+            }
 
             RegisterTaskPane(
-                new CustomShapePane(_defaultShapeMasterFolderPrefix + DefaultShapeMasterFolderName,
-                                    DefaultShapeCategoryName), TextCollection.ShapesLabTaskPanelTitle, activeWindow,
-                                    null, null);
+                new CustomShapePane(shapeRootFolderPath, DefaultShapeCategoryName),
+                TextCollection.ShapesLabTaskPanelTitle, activeWindow, null, null);
         }
 
         public void SyncShapeAdd(string shapeName, string shapeFullName)
@@ -527,19 +551,14 @@ namespace PowerPointLabs
         # region Helper Functions
         private void SetupLogger()
         {
-            // The folder for the roaming current user 
-            string folder = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData);
-
-            // Combine the base folder with your specific folder....
-            string specificFolder = Path.Combine(folder, "PowerPointLabs");
-
             // Check if folder exists and if not, create it
-            if (!Directory.Exists(specificFolder))
-                Directory.CreateDirectory(specificFolder);
-            string fileName = Path.Combine(specificFolder, "PowerPointLabs_Log_1.log");
+            if (!Directory.Exists(AppDataFolder))
+                Directory.CreateDirectory(AppDataFolder);
+
+            var logPath = Path.Combine(AppDataFolder, AppLogName);
 
             Trace.AutoFlush = true;
-            Trace.Listeners.Add(new TextWriterTraceListener(fileName));
+            Trace.Listeners.Add(new TextWriterTraceListener(logPath));
         }
 
         private void ShutDownRecorderPane()

@@ -1538,7 +1538,7 @@ namespace PowerPointLabs
         # region feature: Shapes Lab
         public void CustomShapeButtonClick(Office.IRibbonControl control)
         {
-            Globals.ThisAddIn.RegisterCustomShapePane(Globals.ThisAddIn.Application.ActivePresentation);
+            Globals.ThisAddIn.RegisterShapesLabPane(Globals.ThisAddIn.Application.ActivePresentation);
 
             var customShapePane = Globals.ThisAddIn.GetActivePane(typeof(CustomShapePane));
 
@@ -1564,7 +1564,7 @@ namespace PowerPointLabs
         public void AddShapeButtonClick(Office.IRibbonControl control)
         {
             var prensentation = Globals.ThisAddIn.Application.ActivePresentation;
-            Globals.ThisAddIn.RegisterCustomShapePane(prensentation);
+            Globals.ThisAddIn.RegisterShapesLabPane(prensentation);
 
             var selection = PowerPointCurrentPresentationInfo.CurrentSelection;
 

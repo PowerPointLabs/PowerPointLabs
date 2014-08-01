@@ -15,9 +15,8 @@ namespace PowerPointLabs
         private const string DefaultShapeNameFormat = @"My Shape Untitled {0}";
         private const string DefaultShapeNameSearchRegex = @"My Shape Untitled (\d+)";
 
-        private readonly string _shapeRootFolderPathConfigFile =
-            Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), "PowerPointLabs",
-                         "shapeRootFolder.config");
+        private readonly string _shapeRootFolderPathConfigFile = Path.Combine(Globals.ThisAddIn.AppDataFolder,
+                                                                              Globals.ThisAddIn.ShapeRootFolderConfigFileName);
 
         private readonly int _doubleClickTimeSpan = SystemInformation.DoubleClickTime;
         
