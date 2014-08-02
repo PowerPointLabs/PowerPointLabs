@@ -130,6 +130,7 @@ namespace PowerPointLabs
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+            this.ContextMenuStrip = this.flowlayoutContextMenuStrip;
             this.Controls.Add(this.tabControl);
             this.Name = "CustomShapePane";
             this.Size = new System.Drawing.Size(417, 499);
