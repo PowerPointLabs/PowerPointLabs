@@ -1,4 +1,5 @@
-﻿using Microsoft.VisualStudio.Tools.Applications.Deployment;
+﻿using System.Windows.Forms;
+using Microsoft.VisualStudio.Tools.Applications.Deployment;
 
 namespace PowerPointLabs
 {
@@ -9,14 +10,26 @@ namespace PowerPointLabs
     {
         public void Execute(AddInPostDeploymentActionArgs args)
         {
-            const string sourceFile = TextCollection.QuickTutorialLink;
+            var sourceFile = "";
+            switch (Properties.Settings.Default.ReleaseType)
+            {
+                case "dev":
+                    sourceFile = Properties.Settings.Default.DevAddr + TextCollection.QuickTutorialFileName;
+                    break;
+                case "release":
+                    sourceFile = Properties.Settings.Default.ReleaseAddr + TextCollection.QuickTutorialFileName;
+                    break;
+            }
 
             switch (args.InstallationStatus)
             {
                 case AddInInstallationStatus.InitialInstall:
                     try
                     {
-                        System.Diagnostics.Process.Start("POWERPNT", sourceFile);
+                        if (sourceFile != "")
+                        {
+                            System.Diagnostics.Process.Start("POWERPNT", sourceFile);
+                        }
                     }
                     catch
                     {

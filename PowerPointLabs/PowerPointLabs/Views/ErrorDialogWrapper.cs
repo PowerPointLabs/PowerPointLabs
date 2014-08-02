@@ -28,7 +28,10 @@ namespace PowerPointLabs.Views
             // Populate relevant properties on the dialog instance.
             dialog.Text = title;
             dialogType.GetProperty("Details").SetValue(dialog,
-                                                       exception.Message + "\nStack Trace:\n" + exception.StackTrace,
+                                                       exception.GetType() + "\r\n" +
+                                                       exception.Message + "\r\n" +
+                                                       "Stack Trace:\r\n" + 
+                                                       exception.StackTrace,
                                                        null);
             dialogType.GetProperty("Message").SetValue(dialog, completeMsg, null);
 
