@@ -193,6 +193,17 @@ namespace PowerPointLabs.Models
             }
         }
 
+        public void DeleteShapeWithName(string name)
+        {
+            List<Shape> shapes = _slide.Shapes.Cast<Shape>().ToList();
+            var matchingShapes = shapes.Where(current => current.Name == name);
+
+            foreach (var s in matchingShapes)
+            {
+                s.Delete();
+            }
+        }
+
         public void DeleteAllShapes()
         {
             List<Shape> shapes = _slide.Shapes.Cast<Shape>().ToList();
@@ -360,6 +371,14 @@ namespace PowerPointLabs.Models
             return matchingShapes;
         }
 
+        public List<Shape> GetShapeWithName(string name)
+        {
+            List<Shape> shapes = _slide.Shapes.Cast<Shape>().ToList();
+            List<Shape> matchingShapes = shapes.Where(current => current.Name == name).ToList();
+
+            return matchingShapes;
+        }
+
         public List<Shape> GetShapesWithMediaType(PpMediaType type, Regex nameRule)
         {
             List<Shape> shapes = _slide.Shapes.Cast<Shape>().ToList();
@@ -385,6 +404,19 @@ namespace PowerPointLabs.Models
                                               nameRule.IsMatch(current.Name)).ToList();
 
             return matchingShapes;
+        }
+
+        public bool HasShapeWithRule(Regex nameRule)
+        {
+            return GetShapesWithRule(nameRule).Count > 0;
+        }
+
+        public bool HasShapeWithSameName(string name)
+        {
+            List<Shape> shapes = _slide.Shapes.Cast<Shape>().ToList();
+            List<Shape> matchingShapes = shapes.Where(current => current.Name == name).ToList();
+
+            return matchingShapes.Count != 0;
         }
 
         public PowerPointSlide CreateSpotlightSlide()

@@ -34,7 +34,7 @@ namespace PowerPointLabs.Properties {
         
         [global::System.Configuration.ApplicationScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("offline")]
+        [global::System.Configuration.DefaultSettingValueAttribute("online")]
         public string InstallerType {
             get {
                 return ((string)(this["InstallerType"]));
@@ -43,7 +43,7 @@ namespace PowerPointLabs.Properties {
         
         [global::System.Configuration.ApplicationScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("1.8.10.3")]
+        [global::System.Configuration.DefaultSettingValueAttribute("1.8.11.1")]
         public string Version {
             get {
                 return ((string)(this["Version"]));
@@ -52,7 +52,7 @@ namespace PowerPointLabs.Properties {
         
         [global::System.Configuration.ApplicationScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("21 Jul 2014")]
+        [global::System.Configuration.DefaultSettingValueAttribute("01 Aug 2014")]
         public string ReleaseDate {
             get {
                 return ((string)(this["ReleaseDate"]));
@@ -61,7 +61,7 @@ namespace PowerPointLabs.Properties {
         
         [global::System.Configuration.ApplicationScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("http://www.comp.nus.edu.sg/~pptlabs/download_testDeploy/dev/")]
+        [global::System.Configuration.DefaultSettingValueAttribute("http://www.comp.nus.edu.sg/~pptlabs/download-78563/")]
         public string ReleaseAddr {
             get {
                 return ((string)(this["ReleaseAddr"]));
@@ -70,7 +70,7 @@ namespace PowerPointLabs.Properties {
         
         [global::System.Configuration.ApplicationScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("http://www.comp.nus.edu.sg/~pptlabs/download_testDeploy/dev/")]
+        [global::System.Configuration.DefaultSettingValueAttribute("http://www.comp.nus.edu.sg/~pptlabs/download/dev/")]
         public string DevAddr {
             get {
                 return ((string)(this["DevAddr"]));

@@ -230,12 +230,14 @@ namespace PowerPointLabs
             SetToolTip(NameLable);
 
             ImagePath = imagePath;
-            thumbnailPanel.BackgroundImage = CreateThumbnailImage(new Bitmap(ImagePath), 50, 50);
-            
+
             // critical line, we need to free the reference to the image immediately after we've
             // finished thumbnail generation, else we could not modify (rename/ delete) the
-            // image.
-            GC.Collect();
+            // image. Therefore, we use using keyword to ensure a collection.
+            using (var bitmap = new Bitmap(ImagePath))
+            {
+                thumbnailPanel.BackgroundImage = CreateThumbnailImage(bitmap, 50, 50);
+            }
 
             State = Status.Idle;
             labelTextBox.Enabled = false;
@@ -276,7 +278,7 @@ namespace PowerPointLabs
         # endregion
 
         # region Event Handlers
-        public delegate void ClickEventDelegate(object sender, EventArgs e);
+        public delegate void ClickEventDelegate(object sender, MouseEventArgs e);
         public delegate void DoubleClickEventDelegate(object sender, EventArgs e);
         public delegate void NameEditFinishEventDelegate(object sender, string oldName);
 

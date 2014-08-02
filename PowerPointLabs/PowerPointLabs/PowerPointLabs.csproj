@@ -38,10 +38,10 @@
     <OldToolsVersion>4.0</OldToolsVersion>
     <VSTO_TrustAssembliesLocation>true</VSTO_TrustAssembliesLocation>
     <BootstrapperEnabled>true</BootstrapperEnabled>
-    <PublishUrl>C:\Users\Giki\Desktop\pptlabsPublish\</PublishUrl>
+    <PublishUrl>\\psf\Home\Desktop\PowerPointLabs Deploy\</PublishUrl>
     <InstallUrl>http://www.comp.nus.edu.sg/~pptlabs/download/dev/</InstallUrl>
     <TargetCulture>en</TargetCulture>
-    <ApplicationVersion>1.8.10.3</ApplicationVersion>
+    <ApplicationVersion>1.8.11.0</ApplicationVersion>
     <AutoIncrementApplicationRevision>false</AutoIncrementApplicationRevision>
     <UpdateEnabled>true</UpdateEnabled>
     <UpdateInterval>0</UpdateInterval>
@@ -76,7 +76,7 @@
     </BootstrapperPackage>
     <BootstrapperPackage Include="Microsoft.VSTORuntime.4.0">
       <Visible>False</Visible>
-      <ProductName>Microsoft Visual Studio 2010 Tools for Office Runtime %28x86 and x64%29</ProductName>
+      <ProductName>Microsoft Visual Studio 2010 Tools for Office Runtime %28x86 和 x64%29语言包 - 简体中文</ProductName>
       <Install>true</Install>
     </BootstrapperPackage>
     <BootstrapperPackage Include="Microsoft.Windows.Installer.3.1">
@@ -245,7 +245,7 @@
     </Compile>
     <Compile Include="ColorPicker\HSLColor.cs" />
     <Compile Include="CustomBinding.cs" />
-    <Compile Include="ColorPicker\ColorDataSource.cs" />
+    <Compile Include="DataSources\ColorDataSource.cs" />
     <Compile Include="ColorPicker\ColorHelper.cs" />
     <Compile Include="ColorPicker\ColorPane.cs">
       <SubType>UserControl</SubType>
@@ -256,6 +256,7 @@
     <Compile Include="Converters\ColorPaneConverters.cs" />
     <Compile Include="ConvertToPicture.cs" />
     <Compile Include="CropToShape.cs" />
+    <Compile Include="DataSources\ShapesLabSettingsDataSource.cs" />
     <Compile Include="Properties\Resources.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -315,6 +316,7 @@
       <DependentUpon>AutoZoomDialogBox.cs</DependentUpon>
     </Compile>
     <Compile Include="DefaultMotionAnimation.cs" />
+    <Compile Include="Views\FolderDialogLauncher.cs" />
     <Compile Include="Views\Form1.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -355,6 +357,12 @@
     </Compile>
     <Compile Include="Views\InShowControl.Designer.cs">
       <DependentUpon>InShowControl.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Views\ShapesLabSetting.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Views\ShapesLabSetting.Designer.cs">
+      <DependentUpon>ShapesLabSetting.cs</DependentUpon>
     </Compile>
     <Compile Include="Views\SpotlightDialogBox.cs">
       <SubType>Form</SubType>
@@ -473,6 +481,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Views\InShowControl.resx">
       <DependentUpon>InShowControl.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Views\ShapesLabSetting.resx">
+      <DependentUpon>ShapesLabSetting.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Views\SpotlightDialogBox.resx">
       <DependentUpon>SpotlightDialogBox.cs</DependentUpon>

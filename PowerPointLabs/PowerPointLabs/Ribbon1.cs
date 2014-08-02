@@ -54,7 +54,7 @@ namespace PowerPointLabs
         public bool RemoveCaptionsEnabled = true;
         public bool RemoveAudioEnabled = true;
 
-        public bool highlightTextFragmentsEnabled = true;
+        public bool HighlightTextFragmentsEnabled = true;
 
         public bool EmbedAudioVisible = true;
         public bool RecorderPaneVisible = false;
@@ -305,6 +305,228 @@ namespace PowerPointLabs
         }
         # endregion
 
+        # region Button Labels
+        public string GetPowerPointLabsAddInsTabLabel(Office.IRibbonControl control)
+        {
+            return TextCollection.PowerPointLabsAddInsTabLabel;
+        }
+
+        public string GetCombineShapesLabel(Office.IRibbonControl control)
+        {
+            return TextCollection.CombineShapesLabel;
+        }
+
+        public string GetAutoAnimateGroupLabel(Office.IRibbonControl control)
+        {
+            return TextCollection.AutoAnimateGroupLabel;
+        }
+        public string GetAddAnimationButtonLabel(Office.IRibbonControl control)
+        {
+            return TextCollection.AddAnimationButtonLabel;
+        }
+        public string GetReloadButtonLabel(Office.IRibbonControl control)
+        {
+            return TextCollection.AddAnimationReloadButtonLabel;
+        }
+        public string GetInSlideAnimateButtonLabel(Office.IRibbonControl control)
+        {
+            return TextCollection.AddAnimationInSlideAnimateButtonLabel;
+        }
+
+        public string GetAutoZoomGroupLabel(Office.IRibbonControl control)
+        {
+            return TextCollection.AutoZoomGroupLabel;
+        }
+        public string GetAddZoomInButtonLabel(Office.IRibbonControl control)
+        {
+            return TextCollection.AddZoomInButtonLabel;
+        }
+        public string GetAddZoomOutButtonLabel(Office.IRibbonControl control)
+        {
+            return TextCollection.AddZoomOutButtonLabel;
+        }
+        public string GetZoomToAreaButtonLabel(Office.IRibbonControl control)
+        {
+            return TextCollection.ZoomToAreaButtonLabel;
+        }
+
+        public string GetAutoCropGroupLabel(Office.IRibbonControl control)
+        {
+            return TextCollection.AutoCropGroupLabel;
+        }
+        public string GetMoveCropShapeButtonLabel(Office.IRibbonControl control)
+        {
+            return TextCollection.MoveCropShapeButtonLabel;
+        }
+
+        public string GetSpotLightGroupLabel(Office.IRibbonControl control)
+        {
+            return TextCollection.SpotLightGroupLabel;
+        }
+        public string GetAddSpotlightButtonLabel(Office.IRibbonControl control)
+        {
+            return TextCollection.AddSpotlightButtonLabel;
+        }
+        public string GetReloadSpotlightButtonLabel(Office.IRibbonControl control)
+        {
+            return TextCollection.ReloadSpotlightButtonLabel;
+        }
+
+        public string GetEmbedAudioGroupLabel(Office.IRibbonControl control)
+        {
+            return TextCollection.EmbedAudioGroupLabel;
+        }
+        public string GetAddAudioButtonLabel(Office.IRibbonControl control)
+        {
+            return TextCollection.AddAudioButtonLabel;
+        }
+        public string GetGenerateRecordButtonLabel(Office.IRibbonControl control)
+        {
+            return TextCollection.GenerateRecordButtonLabel;
+        }
+        public string GetAddRecordButtonLabel(Office.IRibbonControl control)
+        {
+            return TextCollection.AddRecordButtonLabel;
+        }
+        public string GetRemoveAudioButtonLabel(Office.IRibbonControl control)
+        {
+            return TextCollection.RemoveAudioButtonLabel;
+        }
+
+        public string GetEmbedCaptionGroupLabel(Office.IRibbonControl control)
+        {
+            return TextCollection.EmbedCaptionGroupLabel;
+        }
+        public string GetAddCaptionsButtonLabel(Office.IRibbonControl control)
+        {
+            return TextCollection.AddCaptionsButtonLabel;
+        }
+        public string GetRemoveCaptionsButtonLabel(Office.IRibbonControl control)
+        {
+            return TextCollection.RemoveCaptionsButtonLabel;
+        }
+
+        public string GetHighlightBulletsGroupLabel(Office.IRibbonControl control)
+        {
+            return TextCollection.HighlightBulletsGroupLabel;
+        }
+        public string GetHighlightBulletsTextButtonLabel(Office.IRibbonControl control)
+        {
+            return TextCollection.HighlightBulletsTextButtonLabel;
+        }
+        public string GetHighlightBulletsBackgroundButtonLabel(Office.IRibbonControl control)
+        {
+            return TextCollection.HighlightBulletsBackgroundButtonLabel;
+        }
+        public string GetHighlightTextFragmentsButtonLabel(Office.IRibbonControl control)
+        {
+            return TextCollection.HighlightTextFragmentsButtonLabel;
+        }
+        
+        public string GetLabsGroupLabel(Office.IRibbonControl control)
+        {
+            return TextCollection.LabsGroupLabel;
+        }
+        public string GetColorPickerButtonLabel(Office.IRibbonControl control)
+        {
+            return TextCollection.ColorPickerButtonLabel;
+        }
+        public string GetCustomeShapeButtonLabel(Office.IRibbonControl control)
+        {
+            return TextCollection.CustomeShapeButtonLabel;
+        }
+
+        public string GetPPTLabsHelpGroupLabel(Office.IRibbonControl control)
+        {
+            return TextCollection.PPTLabsHelpGroupLabel;
+        }
+        public string GetHelpButtonLabel(Office.IRibbonControl control)
+        {
+            return TextCollection.HelpButtonLabel;
+        }
+        public string GetFeedbackButtonLabel(Office.IRibbonControl control)
+        {
+            return TextCollection.FeedbackButtonLabel;
+        }
+        public string GetAboutButtonLabel(Office.IRibbonControl control)
+        {
+            return TextCollection.AboutButtonLabel;
+        }
+
+        public string GetNameEditShapeLabel(Office.IRibbonControl control)
+        {
+            return TextCollection.NameEditShapeLabel;
+        }
+        public string GetSpotlightShapeLabel(Office.IRibbonControl control)
+        {
+            return TextCollection.SpotlightShapeLabel;
+        }
+        public string GetZoomInContextMenuLabel(Office.IRibbonControl control)
+        {
+            return TextCollection.ZoomInContextMenuLabel;
+        }
+        public string GetZoomOutContextMenuLabel(Office.IRibbonControl control)
+        {
+            return TextCollection.ZoomOutContextMenuLabel;
+        }
+        public string GetZoomToAreaContextMenuLabel(Office.IRibbonControl control)
+        {
+            return TextCollection.ZoomToAreaContextMenuLabel;
+        }
+        public string GetHighlightBulletsMenuShapeLabel(Office.IRibbonControl control)
+        {
+            return TextCollection.HighlightBulletsMenuShapeLabel;
+        }
+        public string GetHighlightBulletsBackgroundShapeLabel(Office.IRibbonControl control)
+        {
+            return TextCollection.HighlightBulletsBackgroundShapeLabel;
+        }
+        public string GetHighlightBulletsTextShapeLabel(Office.IRibbonControl control)
+        {
+            return TextCollection.HighlightBulletsTextShapeLabel;
+        }
+        public string GetConvertToPictureShapeLabel(Office.IRibbonControl control)
+        {
+            return TextCollection.ConvertToPictureShapeLabel;
+        }
+        public string GetAddCustomShapeShapeLabel(Office.IRibbonControl control)
+        {
+            return TextCollection.AddCustomShapeShapeLabel;
+        }
+        public string GetCutOutShapeShapeLabel(Office.IRibbonControl control)
+        {
+            return TextCollection.CutOutShapeShapeLabel;
+        }
+        public string GetFitToWidthShapeLabel(Office.IRibbonControl control)
+        {
+            return TextCollection.FitToWidthShapeLabel;
+        }
+        public string GetFitToHeightShapeLabel(Office.IRibbonControl control)
+        {
+            return TextCollection.FitToHeightShapeLabel;
+        }
+        public string GetInSlideAnimateGroupLabel(Office.IRibbonControl control)
+        {
+            return TextCollection.InSlideAnimateGroupLabel;
+        }
+        public string GetApplyAutoMotionThumbnailLabel(Office.IRibbonControl control)
+        {
+            return TextCollection.ApplyAutoMotionThumbnailLabel;
+        }
+        public string GetContextSpeakSelectedTextLabel(Office.IRibbonControl control)
+        {
+            return TextCollection.ContextSpeakSelectedTextLabel;
+        }
+        public string GetContextAddCurrentSlideLabel(Office.IRibbonControl control)
+        {
+            return TextCollection.ContextAddCurrentSlideLabel;
+        }
+        public string GetContextReplaceAudioLabel(Office.IRibbonControl control)
+        {
+            return TextCollection.ContextReplaceAudioLabel;
+        }
+        # endregion
+
         //Button Click Callbacks        
         public void AddAnimationButtonClick(Office.IRibbonControl control)
         {
@@ -387,7 +609,7 @@ namespace PowerPointLabs
             }
         }
 
-        # region Icons
+        # region Icon Getters
         public Bitmap GetAddAnimationImage(Office.IRibbonControl control)
         {
             try
@@ -869,7 +1091,7 @@ namespace PowerPointLabs
         }
         public bool OnGetEnabledHighlightTextFragments(Office.IRibbonControl control)
         {
-            return highlightTextFragmentsEnabled;
+            return HighlightTextFragmentsEnabled;
         }
         # endregion
 
@@ -1033,12 +1255,18 @@ namespace PowerPointLabs
 
         public void RecManagementClick(Office.IRibbonControl control)
         {
-            if (!Globals.ThisAddIn.VerifyVersion())
+            var currentPresentation = Globals.ThisAddIn.Application.ActivePresentation;
+
+            if (!IsValidPresentation(currentPresentation))
             {
                 return;
             }
 
-            Globals.ThisAddIn.RegisterRecorderPane(Globals.ThisAddIn.Application.ActivePresentation);
+            // prepare media files
+            var tempPath = Globals.ThisAddIn.PrepareTempFolder(currentPresentation);
+            Globals.ThisAddIn.PrepareMediaFiles(currentPresentation, tempPath);
+
+            Globals.ThisAddIn.RegisterRecorderPane(currentPresentation);
 
             var recorderPane = Globals.ThisAddIn.GetActivePane(typeof(RecorderTaskPane));
             var recorder = recorderPane.Control as RecorderTaskPane;
@@ -1057,87 +1285,22 @@ namespace PowerPointLabs
             }
         }
 
-        # region Custom Shapes
-        public void CustomShapeButtonClick(Office.IRibbonControl control)
+        private bool IsValidPresentation(PowerPoint.Presentation pres)
         {
-            Globals.ThisAddIn.RegisterCustomShapePane(Globals.ThisAddIn.Application.ActivePresentation);
-            
-            var customShapePane = Globals.ThisAddIn.GetActivePane(typeof(CustomShapePane));
-
-            if (customShapePane == null || !(customShapePane.Control is CustomShapePane))
+            if (!Globals.ThisAddIn.VerifyVersion(pres))
             {
-                return;
+                MessageBox.Show(TextCollection.VersionNotCompatibleErrorMsg);
+                return false;
             }
 
-            var customShape = customShapePane.Control as CustomShapePane;
-
-            // if currently the pane is hidden, show the pane
-            if (customShapePane.Visible)
+            if (!Globals.ThisAddIn.VerifyOnLocal(pres))
             {
-                return;
+                MessageBox.Show(TextCollection.OnlinePresentationNotCompatibleErrorMsg);
+                return false;
             }
 
-            customShapePane.Visible = true;
-            customShape.PaneReload();
-
-            Globals.ThisAddIn.InitializeShapeGallery();
+            return true;
         }
-
-        public void AddShapeButtonClick(Office.IRibbonControl control)
-        {
-            var prensentation = Globals.ThisAddIn.Application.ActivePresentation;
-            Globals.ThisAddIn.RegisterCustomShapePane(prensentation);
-
-            var selection = PowerPointCurrentPresentationInfo.CurrentSelection;
-
-            var customShapePane = Globals.ThisAddIn.GetActivePane(typeof(CustomShapePane));
-
-            if (customShapePane == null || !(customShapePane.Control is CustomShapePane))
-            {
-                return;
-            }
-
-            // show pane if not visible
-            if (!customShapePane.Visible)
-            {
-                customShapePane.Visible = true;
-            }
-
-            var customShape = customShapePane.Control as CustomShapePane;
-
-            // see below for explanation
-            var presentationSaved = prensentation.Saved == Office.MsoTriState.msoTrue &&
-                                    prensentation.Path != string.Empty;
-
-            customShape.PaneReload();
-
-            Globals.ThisAddIn.InitializeShapeGallery();
-
-            var shapeName = customShape.NextDefaultNameWithoutExtension;
-            var shapeFullName = customShape.NextDefaultFullName;
-            
-            // add shape into shape gallery first to reduce flicker
-            Globals.ThisAddIn.ShapePresentation.AddShape(selection, shapeName);
-            Globals.ThisAddIn.ShapePresentation.Save();
-
-            // add the selection into pane and save it as .png locally
-            ConvertToPicture.ConvertAndSave(selection, shapeFullName);
-
-            // sync the shape among all opening panels
-            Globals.ThisAddIn.SyncShapeAdd(shapeName, shapeFullName);
-
-            // since we group and then ungroup the shape, document has been modified.
-            // if the presentation has been saved before the group->ungroup, we can save
-            // the file; else we leave it.
-            if (presentationSaved)
-            {
-                Globals.ThisAddIn.Application.ActivePresentation.Save();
-            }
-
-            // finally, add the shape into the panel and waiting for name editing
-            customShape.AddCustomShape(shapeName, shapeFullName, true);
-        }
-        # endregion
 
         #region NotesToAudio Button Callbacks
         public void SpeakSelectedTextClick(Office.IRibbonControl control)
@@ -1147,11 +1310,6 @@ namespace PowerPointLabs
 
         public void RemoveAudioClick(Office.IRibbonControl control)
         {
-            if (!Globals.ThisAddIn.VerifyVersion())
-            {
-                return;
-            }
-            
             try
             {
                 NotesToAudio.RemoveAudioFromSelectedSlides();
@@ -1184,11 +1342,6 @@ namespace PowerPointLabs
 
         public void AddAudioClick(Office.IRibbonControl control)
         {
-            if (!Globals.ThisAddIn.VerifyVersion())
-            {
-                return;
-            }
-
             var currentSlide = PowerPointCurrentPresentationInfo.CurrentSlide;
 
             foreach (PowerPointSlide slide in PowerPointCurrentPresentationInfo.SelectedSlides)
@@ -1223,11 +1376,6 @@ namespace PowerPointLabs
 
         public void ContextAddAudioClick(Office.IRibbonControl control)
         {
-            if (!Globals.ThisAddIn.VerifyVersion())
-            {
-                return;
-            }
-
             NotesToAudio.EmbedCurrentSlideNotes();
             PreviewAnimationsIfChecked();
         }
@@ -1379,13 +1527,105 @@ namespace PowerPointLabs
 
         #endregion
 
+        # region feature: CombineShapes
         public bool GetVisibilityForCombineShapes(Office.IRibbonControl control)
         {
             const string officeVersion2010 = "14.0";
             return Globals.ThisAddIn.Application.Version == officeVersion2010;
         }
+        # endregion
 
-        #region feature: Color
+        # region feature: Shapes Lab
+        public void CustomShapeButtonClick(Office.IRibbonControl control)
+        {
+            Globals.ThisAddIn.RegisterShapesLabPane(Globals.ThisAddIn.Application.ActivePresentation);
+
+            var customShapePane = Globals.ThisAddIn.GetActivePane(typeof(CustomShapePane));
+
+            if (customShapePane == null || !(customShapePane.Control is CustomShapePane))
+            {
+                return;
+            }
+
+            var customShape = customShapePane.Control as CustomShapePane;
+
+            Globals.ThisAddIn.InitializeShapeGallery(customShape.CurrentShapeFolderPath);
+
+            // if currently the pane is hidden, show the pane
+            if (customShapePane.Visible)
+            {
+                return;
+            }
+
+            customShapePane.Visible = true;
+            customShape.PaneReload();
+        }
+
+        public void AddShapeButtonClick(Office.IRibbonControl control)
+        {
+            var prensentation = Globals.ThisAddIn.Application.ActivePresentation;
+            Globals.ThisAddIn.RegisterShapesLabPane(prensentation);
+
+            var selection = PowerPointCurrentPresentationInfo.CurrentSelection;
+
+            var customShapePane = Globals.ThisAddIn.GetActivePane(typeof(CustomShapePane));
+
+            if (customShapePane == null || !(customShapePane.Control is CustomShapePane))
+            {
+                return;
+            }
+
+            // show pane if not visible
+            if (!customShapePane.Visible)
+            {
+                customShapePane.Visible = true;
+            }
+
+            var customShape = customShapePane.Control as CustomShapePane;
+
+            Globals.ThisAddIn.InitializeShapeGallery(customShape.CurrentShapeFolderPath);
+            customShape.PaneReload();
+
+            // to determine if a presentation needs to be saved, we check 3 things:
+            // 1. if the presentation is readonly;
+            // 2. if the presentation contains a valid saving path;
+            // 3. if the presentation has been saved.
+            //
+            // The only case we can save the presentation is:
+            // The presentation is writable (readonly = false), contains a valid saving
+            // path (valid path = true), and it has been saved (therefore all programmatical
+            // changes can be saved without triggering a save dialog).
+            var presentationSaved = prensentation.ReadOnly == Office.MsoTriState.msoFalse &&
+                                    prensentation.Path != string.Empty &&
+                                    prensentation.Saved == Office.MsoTriState.msoTrue;
+
+            var shapeName = customShape.NextDefaultNameWithoutExtension;
+            var shapeFullName = customShape.NextDefaultFullName;
+
+            // add shape into shape gallery first to reduce flicker
+            Globals.ThisAddIn.ShapePresentation.AddShape(selection, shapeName);
+            Globals.ThisAddIn.ShapePresentation.Save();
+
+            // add the selection into pane and save it as .png locally
+            ConvertToPicture.ConvertAndSave(selection, shapeFullName);
+
+            // sync the shape among all opening panels
+            Globals.ThisAddIn.SyncShapeAdd(shapeName, shapeFullName);
+
+            // since we group and then ungroup the shape, document has been modified.
+            // if the presentation has been saved before the group->ungroup, we can save
+            // the file; else we leave it.
+            if (presentationSaved)
+            {
+                Globals.ThisAddIn.Application.ActivePresentation.Save();
+            }
+
+            // finally, add the shape into the panel and waiting for name editing
+            customShape.AddCustomShape(shapeName, shapeFullName, true);
+        }
+        # endregion
+
+        #region feature: Colors Lab
         public void ColorPickerButtonClick(Office.IRibbonControl control)
         {
             try
