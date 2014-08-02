@@ -13,7 +13,7 @@ namespace PowerPointLabs
     public partial class CustomShapePane : UserControl
     {
         private const string DefaultShapeNameFormat = @"My Shape Untitled {0}";
-        private const string DefaultShapeNameSearchRegex = @"My Shape Untitled (\d+)";
+        private const string DefaultShapeNameSearchRegex = @"^My Shape Untitled (\d+)$";
 
         private readonly string _shapeRootFolderPathConfigFile = Path.Combine(Globals.ThisAddIn.AppDataFolder,
                                                                               Globals.ThisAddIn.ShapeRootFolderConfigFileName);
@@ -577,10 +577,16 @@ namespace PowerPointLabs
 
         private void FlowlayoutClick(object sender, EventArgs e)
         {
-            if (_selectedThumbnail != null &&
-                _selectedThumbnail.State == LabeledThumbnail.Status.Editing)
+            if (_selectedThumbnail != null)
             {
-                _selectedThumbnail.FinishNameEdit();
+                if (_selectedThumbnail.State == LabeledThumbnail.Status.Editing)
+                {
+                    _selectedThumbnail.FinishNameEdit();
+                }
+                else
+                {
+                    DehighlightSelected();
+                }
             }
         }
 
