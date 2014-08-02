@@ -259,6 +259,13 @@
         public const string CustomShapeNoShapeTextSecondLine = "Right-click any object on a slide to save it in this panel.";
         public const string CustomShapeNoPanelSelectedError = "No shape selected.";
         public const string CustomShapeViewTypeNotSupported = "Shapes Lab does not support the current view type.";
+        public const string CustomeShapeSaveLocationChangedSuccessFormat =
+            "Default saving path has been changed to \n{0}\nAll shapes have been moved to the new location.";
+        public const string CustomShapeSaveLocationChangedSuccessTitle = "Success";
+        public const string CustomShapeSaveLocationError =
+            "An error occured during folder migrating. This is possibily because of the " +
+            "new location is from an unsupported storage service, e.g. Dropbox, Skydrive, etc.\n\n" +
+            "You are suggested to change a location as default shape saving location.";
         # endregion
 
         # region Control - ShapesLabSetting
