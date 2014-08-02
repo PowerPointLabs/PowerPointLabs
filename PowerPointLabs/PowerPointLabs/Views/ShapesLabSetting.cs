@@ -4,6 +4,7 @@ using System.IO;
 using System.Linq;
 using System.Windows.Forms;
 using PowerPointLabs.DataSources;
+using PowerPointLabs.Utils;
 
 namespace PowerPointLabs.Views
 {
@@ -61,8 +62,8 @@ namespace PowerPointLabs.Views
                 if (result == DialogResult.OK)
                 {
                     var newPath = folderDialog.SelectedPath;
-                
-                    if (!IsDirectoryEmpty(newPath))
+
+                    if (!FileAndDirTask.IsDirectoryEmpty(newPath))
                     {
                         MessageBox.Show(TextCollection.FolderNonEmptyErrorMsg);
                     }
@@ -92,13 +93,6 @@ namespace PowerPointLabs.Views
             UserOption = Option.Ok;
 
             Dispose();
-        }
-        # endregion
-
-        # region Helper Functions
-        private bool IsDirectoryEmpty(string path)
-        {
-            return !Directory.EnumerateFileSystemEntries(path).Any();
         }
         # endregion
     }

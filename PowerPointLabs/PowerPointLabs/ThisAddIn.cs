@@ -12,6 +12,7 @@ using PowerPointLabs.AutoUpdate;
 using PPExtraEventHelper;
 using System.IO.Compression;
 using PowerPointLabs.Models;
+using PowerPointLabs.Utils;
 using PowerPointLabs.Views;
 using MessageBox = System.Windows.Forms.MessageBox;
 using PowerPoint = Microsoft.Office.Interop.PowerPoint;
@@ -402,8 +403,8 @@ namespace PowerPointLabs
 
                 // before we do everything, check if there's an undelete old zip file
                 // due to some error
-                FileDeleteWithAttribute(zipFullPath);
-                FileCopyWithAttribute(presFullName, zipFullPath);
+                FileAndDirTask.FileDeleteWithAttribute(zipFullPath);
+                FileAndDirTask.FileCopyWithAttribute(presFullName, zipFullPath);
 
                 ExtractMediaFiles(zipFullPath, tempPath);
             }
@@ -826,38 +827,6 @@ namespace PowerPointLabs
             return tempPath;
         }
 
-        private void FileDeleteWithAttribute(string filePath, FileAttributes fileAttributes = FileAttributes.Normal)
-        {
-            if (!File.Exists(filePath)) return;
-
-            try
-            {
-                File.SetAttributes(filePath, fileAttributes);
-                File.Delete(filePath);
-            }
-            catch (Exception e)
-            {
-                ErrorDialogWrapper.ShowDialog(TextCollection.AccessTempFolderErrorMsg, string.Empty, e);
-            }
-        }
-
-        private void FileCopyWithAttribute(string sourcePath, string destPath,
-                                           FileAttributes fileAttributes = FileAttributes.Normal)
-        {
-            if (!File.Exists(sourcePath)) return;
-
-            // copy the file to temp folder and rename to zip
-            try
-            {
-                File.Copy(sourcePath, destPath);
-                File.SetAttributes(destPath, fileAttributes);
-            }
-            catch (Exception e)
-            {
-                ErrorDialogWrapper.ShowDialog(TextCollection.AccessTempFolderErrorMsg, string.Empty, e);
-            }
-        }
-
         private void ExtractMediaFiles(string zipFullPath, string tempPath)
         {
             try
@@ -882,7 +851,7 @@ namespace PowerPointLabs
 
                 zip.Close();
                 
-                FileDeleteWithAttribute(zipFullPath);
+                FileAndDirTask.FileDeleteWithAttribute(zipFullPath);
             }
             catch (Exception e)
             {

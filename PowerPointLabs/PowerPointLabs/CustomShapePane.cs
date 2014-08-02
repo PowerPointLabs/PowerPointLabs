@@ -6,6 +6,7 @@ using System.Linq;
 using System.Text.RegularExpressions;
 using System.Windows.Forms;
 using PowerPointLabs.Models;
+using PowerPointLabs.Utils;
 using PowerPointLabs.Views;
 
 namespace PowerPointLabs
@@ -292,49 +293,24 @@ namespace PowerPointLabs
             {
                 var newPath = settingDialog.DefaultSavingPath;
 
-                MigrateShapeFolder(ShapeRootFolderPath, newPath);
+                if (!MigrateShapeFolder(ShapeRootFolderPath, newPath))
+                {
+                    return;
+                }
+
                 ShapeRootFolderPath = newPath;
 
                 if (!File.Exists(_shapeRootFolderPathConfigFile))
                 {
                     File.Create(_shapeRootFolderPathConfigFile);
                 }
-                
+
                 File.WriteAllText(_shapeRootFolderPathConfigFile, newPath);
 
-                MessageBox.Show("Default saving path has been changed to \n" + newPath +
-                                "\nAll shapes have been moved to the new location.", "Success", MessageBoxButtons.OK,
-                                MessageBoxIcon.Information);
-            }
-        }
-
-        private void CopyFolder(string oldPath, string newPath)
-        {
-            // create subfolder during recursions
-            if (!Directory.Exists(newPath))
-            {
-                Directory.CreateDirectory(newPath);
-            }
-
-            // copy files in a folder first
-            var files = Directory.GetFiles(oldPath);
-
-            foreach (var file in files)
-            {
-                var name = Path.GetFileName(file);
-                var dest = Path.Combine(newPath, name);
-                File.Copy(file, dest);
-            }
-
-            // then recursively copy contents in subfolders
-            var folders = Directory.GetDirectories(oldPath);
-
-            foreach (var folder in folders)
-            {
-                var name = Path.GetFileName(folder);
-                var dest = Path.Combine(newPath, name);
-
-                CopyFolder(folder, dest);
+                MessageBox.Show(
+                    string.Format(TextCollection.CustomeShapeSaveLocationChangedSuccessFormat, newPath),
+                    TextCollection.CustomShapeSaveLocationChangedSuccessTitle, MessageBoxButtons.OK,
+                    MessageBoxIcon.Information);
             }
         }
 
@@ -442,7 +418,7 @@ namespace PowerPointLabs
             _selectedThumbnail.Highlight();
         }
 
-        private void MigrateShapeFolder(string oldPath, string newPath)
+        private bool MigrateShapeFolder(string oldPath, string newPath)
         {
             var loadingDialog = new LoadingDialog();
             loadingDialog.Show();
@@ -454,43 +430,26 @@ namespace PowerPointLabs
                 Globals.ThisAddIn.ShapePresentation.Close();
             }
 
-            MoveFolder(oldPath, newPath);
-            ShapeRootFolderPath = newPath;
-
-            // modify shape gallery presentation's path and name, then open it
-            Globals.ThisAddIn.ShapePresentation.Path = newPath;
-            Globals.ThisAddIn.ShapePresentation.ShapeFolderPath = CurrentShapeFolderPath;
-
-            Globals.ThisAddIn.ShapePresentation.Open(withWindow: false, focus: false);
+            var migrateSuccess = FileAndDirTask.MoveFolder(oldPath, newPath);
 
             loadingDialog.Dispose();
-        }
 
-        private void MoveFolder(string oldPath, string newPath)
-        {
-            CopyFolder(oldPath, newPath);
-
-            NormalizeFiles(oldPath);
-            Directory.Delete(oldPath, true);
-        }
-
-        private void NormalizeFiles(string path)
-        {
-            // copy files in a folder first
-            var files = Directory.GetFiles(path);
-
-            foreach (var file in files)
+            if (!migrateSuccess)
             {
-                File.SetAttributes(file, FileAttributes.Normal);
+                MessageBox.Show(TextCollection.CustomShapeSaveLocationError);
+            }
+            else
+            {
+                ShapeRootFolderPath = newPath;
+
+                // modify shape gallery presentation's path and name, then open it
+                Globals.ThisAddIn.ShapePresentation.Path = newPath;
+                Globals.ThisAddIn.ShapePresentation.ShapeFolderPath = CurrentShapeFolderPath;
+
+                Globals.ThisAddIn.ShapePresentation.Open(withWindow: false, focus: false);
             }
 
-            // then recursively copy contents in subfolders
-            var folders = Directory.GetDirectories(path);
-
-            foreach (var folder in folders)
-            {
-                NormalizeFiles(folder);
-            }
+            return migrateSuccess;
         }
 
         private void PrepareFolder()
