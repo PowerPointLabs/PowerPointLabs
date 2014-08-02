@@ -26,46 +26,32 @@ namespace DeployHelper
 
         private void SignVsto()
         {
-            try
+            var process = new Process
             {
-                var process = new Process
+                StartInfo =
                 {
-                    StartInfo =
-                    {
-                        FileName = _mageDirectory,
-                        Arguments = _argsForSignVsto,
-                        WindowStyle = ProcessWindowStyle.Hidden
-                    }
-                };
-                process.Start();
-                process.WaitForExit();
-            }
-            catch (Exception e)
-            {
-                Util.DisplayWarning(TextCollection.Const.ErrorInvalidKeyOrMageDir, e);
-            }
+                    FileName = _mageDirectory,
+                    Arguments = _argsForSignVsto,
+                    WindowStyle = ProcessWindowStyle.Hidden
+                }
+            };
+            process.Start();
+            process.WaitForExit();
         }
 
         private void SignManifest()
         {
-            try
+            var process = new Process
             {
-                var process = new Process
+                StartInfo =
                 {
-                    StartInfo =
-                    {
-                        FileName = _mageDirectory,
-                        Arguments = _argsForSignManifest,
-                        WindowStyle = ProcessWindowStyle.Hidden
-                    }
-                };
-                process.Start();
-                process.WaitForExit();
-            }
-            catch (Exception e)
-            {
-                Util.DisplayWarning(TextCollection.Const.ErrorInvalidKeyOrMageDir, e);
-            }
+                    FileName = _mageDirectory,
+                    Arguments = _argsForSignManifest,
+                    WindowStyle = ProcessWindowStyle.Hidden
+                }
+            };
+            process.Start();
+            process.WaitForExit();
         }
 
         #endregion

@@ -1,4 +1,5 @@
 ﻿using System;
+using System.IO;
 using System.Xml;
 
 namespace DeployHelper
@@ -14,15 +15,18 @@ namespace DeployHelper
         public ManifestEditor(String manifestDirectory)
         {
             Console.WriteLine("Patching...");
-            try
+            _manifestDirectory = manifestDirectory;
+
+            VerifyManifestExist();
+            _manifest.Load(manifestDirectory);
+            _manifestBackup.Load(manifestDirectory);
+        }
+
+        private void VerifyManifestExist()
+        {
+            if (!File.Exists(_manifestDirectory))
             {
-                _manifestDirectory = manifestDirectory;
-                _manifest.Load(manifestDirectory);
-                _manifestBackup.Load(manifestDirectory);
-            }
-            catch (Exception e)
-            {
-                Util.DisplayWarning(TextCollection.Const.ErrorNoManifest, e);
+                throw new FileNotFoundException();
             }
         }
 

@@ -29,47 +29,8 @@ namespace DeployHelper
             public const string VarRelease = "release";
 
             public const Boolean IsOverWritten = true;
-        }
-
-        #endregion
-
-        # region To be init
-        public class Config
-        {
-            public static readonly string DirCurrent = Environment.CurrentDirectory;
-            public static readonly string DirVsto = DirCurrent + @"\PowerPointLabs.vsto";
-            public static readonly string DirConfig = DirCurrent + @"\DeployHelper.conf";
-
-            //currentFolder\Application Files\PowerPointLabs_A_B_C_D\
-            public static string DirBuild;
-
-            //currentFolder\Application Files\PowerPointLabs_A_B_C_D\PowerPointLabs.dll.manifest
-            public static string DirBuildManifest;
-
-            //currentFolder\Application Files\PowerPointLabs_A_B_C_D\PowerPointLabs.dll.config.deploy
-            public static string DirBuildConfig;
-
-            //currentFolder\Application Files\PowerPointLabs_A_B_C_D\PowerPointLabs.vsto
-            public static string DirBuildVsto;
-
-            //PowerPointLabs_A_B_C_D
-            public static string DirBuildName;
-
-            public static string ConfigDirMage;
-            public static string ConfigDirKey;
-            public static string ConfigSftpAddress;
-            public static string ConfigSftpUser;
-            public static string ConfigDevPath;
-            public static string ConfigReleasePath;
-
-            public static string Version;
-            public static string VersionMajor;
-            public static string VersionMinor;
-            public static string VersionBuild;
-            public static string VersionRevision;
-
-            public static string ReleaseType;
-            public static string InstallerType;
+            public const Boolean IsSubDirectoryToDelete = true;
+            public const Boolean IsToRemoveAfterUpload = true;
         }
 
         # endregion

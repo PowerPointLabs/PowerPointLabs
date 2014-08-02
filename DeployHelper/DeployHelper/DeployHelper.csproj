@@ -48,16 +48,24 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Cleaner.cs" />
     <Compile Include="ConfigReader.cs" />
+    <Compile Include="DeployConfig.cs" />
     <Compile Include="DeployUploader.cs" />
     <Compile Include="InstallerPackager.cs" />
     <Compile Include="ManifestEditor.cs" />
     <Compile Include="ManifestManager.cs" />
     <Compile Include="ManifestSignee.cs" />
+    <Compile Include="Packager\OfflineInstallerPackager.cs" />
+    <Compile Include="Packager\OnlineInstallerPackager.cs" />
+    <Compile Include="Packager\AbstractPackager.cs" />
+    <Compile Include="Packager\PackagerFactory.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="TextCollection.cs" />
+    <Compile Include="Uploader\AbstractUploader.cs" />
+    <Compile Include="Uploader\OfflineInstallerUploader.cs" />
+    <Compile Include="Uploader\OnlineInstallerUploader.cs" />
+    <Compile Include="Uploader\UploaderFactory.cs" />
     <Compile Include="Util.cs" />
   </ItemGroup>
   <ItemGroup>

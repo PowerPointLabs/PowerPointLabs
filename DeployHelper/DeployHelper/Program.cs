@@ -21,14 +21,24 @@
 //  - Dev path is the installation folder path on the server for dev version PowerPointLabs
 //  - Release path is the installation folder path on the server for release version PowerPointLabs
 //
-//  2. Publish PowerPointlabs; inside the publish folder, it should have setup.exe, PowerPointLabs.vsto, and folder Application Files
+//  2. Publish PowerPointlabs; inside the publish folder, it should have setup.exe, PowerPointLabs.vsto, and folder 'Application Files'
 //  
 //  3. Copy DeployHelper.exe, DeployHelper.conf, WinSCP.exe and WinSCPnet.dll from the output folder to the publish folder
 //
-//  4. Copy PowerPointLabs.zip to the publish folder and extract it HERE; make sure the publish folder contains ReadMe.txt, 
-//  setup.bat, and folder data.
+//  4. Create a folder 'online', put Tutorial.pptx, registry.reg, PowerPointLabsOnline.SED and setup.bat inside it.
 //
-//  5. Run DeployHelper.exe and follow the instructions.
+//  - 4.1. If it's dev version, put dev version's Tutorial.pptx; if it's release version, put release version's one
+//  - 4.2. PowerPointLabsOnline.SED is the file used by IExpress to pack the installer, it can be found in our google drive share folder;
+//         you may have to update the directory folder specified in this SED file.
+//
+//  5. Create a folder 'offline', put Tutorial.pptx, PowerPointLabsOffline.SED and setup.exe inside it.
+//
+//  - 5.1. If it's dev version, put dev version's Tutorial.pptx; if it's release version, put release version's one
+//  - 5.2. PowerPointLabsOffline.SED is the file used by IExpress to pack the installer, it can be found in our google drive share folder;
+//         you may have to update the directory folder specified in this SED file.
+//  - 5.3. setup.exe is the offline installer UI program, you can get it by compiling PowerPointLabsInstallerUi project.
+//
+//  6. Run DeployHelper.exe and follow the instructions.
 //
 //  For the next time
 //
@@ -51,12 +61,9 @@ namespace DeployHelper
             {
                 # region Init
 
-                var currentDirectory = TextCollection.Config.DirCurrent;
-                var configDirectory = TextCollection.Config.DirConfig;
-                var vstoDirectory = TextCollection.Config.DirVsto;
-                new ConfigReader(currentDirectory, configDirectory, vstoDirectory)
+                var config = new ConfigReader()
                     .ReadConfig()
-                    .WriteToTextCollection();
+                    .ToDeployConfig();
 
                 # endregion
 
@@ -64,15 +71,14 @@ namespace DeployHelper
 
                 //Reference on What It Does: make ClickOnce support PostInstall functionality
                 //http://msdn.microsoft.com/en-us/library/vstudio/dd465291(v=vs.100).aspx
-                new ManifestManager().EditManifest();
+                new ManifestManager(config).EditManifest();
 
                 # endregion
 
-                new InstallerPackager(TextCollection.Config.InstallerType)
+                new InstallerPackager(config)
                     .ProducePackage();
-                new DeployUploader(TextCollection.Config.ReleaseType, TextCollection.Config.InstallerType)
+                new DeployUploader(config)
                     .SftpUpload();
-                new Cleaner().CleanUp();
                 Util.DisplayEndMessage();
             }
             catch

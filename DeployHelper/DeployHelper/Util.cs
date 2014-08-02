@@ -1,9 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.IO;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace DeployHelper
 {
@@ -83,18 +79,7 @@ namespace DeployHelper
         public static void DisplayEndMessage()
         {
             DisplayDone("All Done!");
-            if (TextCollection.Config.ReleaseType == "release")
-            {
-                PrepareEndMessage();
-            }
             Console.WriteLine("Have a nice day :)");
-        }
-
-        private static void PrepareEndMessage()
-        {
-            Console.Write("Remember to merge from dev branch into ");
-            ConsoleWriteWithColor("release ", ConsoleColor.Yellow);
-            Console.WriteLine("branch.");
         }
 
         #endregion

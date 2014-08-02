@@ -34,6 +34,13 @@ namespace DeployHelper
         private static string _releaseType;
         private static string _installerType;
 
+        public ConfigReader()
+        {
+            _currentDirectory = DeployConfig.DirCurrent;
+            _configDirectory = DeployConfig.DirConfig;
+            _vstoDirectory = DeployConfig.DirVsto;
+        }
+
         public ConfigReader(string currentDirectory, string configDirectory, string vstoDirectory)
         {
             _currentDirectory = currentDirectory;
@@ -77,29 +84,33 @@ namespace DeployHelper
                 "InstallerType: " + _installerType + "\r\n";
         }
 
-        public void WriteToTextCollection()
+        public DeployConfig ToDeployConfig()
         {
-            TextCollection.Config.ConfigDirMage = _configDirMage;
-            TextCollection.Config.ConfigDirKey = _configDirKey;
-            TextCollection.Config.ConfigSftpAddress = _configSftpAddress;
-            TextCollection.Config.ConfigSftpUser = _configSftpUser;
-            TextCollection.Config.ConfigDevPath = _configDevPath;
-            TextCollection.Config.ConfigReleasePath = _configReleasePath;
+            var config = new DeployConfig
+            {
+                ConfigDirMage = _configDirMage,
+                ConfigDirKey = _configDirKey,
+                ConfigSftpAddress = _configSftpAddress,
+                ConfigSftpUser = _configSftpUser,
+                ConfigDevPath = _configDevPath,
+                ConfigReleasePath = _configReleasePath,
 
-            TextCollection.Config.Version = _version;
-            TextCollection.Config.VersionMajor = _versionMajor;
-            TextCollection.Config.VersionMinor = _versionMinor;
-            TextCollection.Config.VersionBuild = _versionBuild;
-            TextCollection.Config.VersionRevision = _versionRevision;
+                Version = _version,
+                VersionMajor = _versionMajor,
+                VersionMinor = _versionMinor,
+                VersionBuild = _versionBuild,
+                VersionRevision = _versionRevision,
 
-            TextCollection.Config.DirBuildName = _dirBuildName;
-            TextCollection.Config.DirBuild = _dirBuild;
-            TextCollection.Config.DirBuildManifest = _dirBuildManifest;
-            TextCollection.Config.DirBuildVsto = _dirBuildVsto;
-            TextCollection.Config.DirBuildConfig = _dirBuildConfig;
+                DirBuild = _dirBuild,
+                DirBuildName = _dirBuildName,
+                DirBuildManifest = _dirBuildManifest,
+                DirBuildVsto = _dirBuildVsto,
+                DirBuildConfig = _dirBuildConfig,
 
-            TextCollection.Config.ReleaseType = _releaseType;
-            TextCollection.Config.InstallerType = _installerType;
+                ReleaseType = _releaseType,
+                InstallerType = _installerType
+            };
+            return config;
         }
 
         private void InitConfigVariables()
@@ -165,11 +176,11 @@ namespace DeployHelper
         private void InitDeployInfo()
         {
             PrintInfo("You are going to deploy PowerPointLabs\r\n" +
-                      "version: ", TextCollection.Config.Version);
+                      "version: ", _version);
             try
             {
                 var currentConfig = new XmlDocument();
-                currentConfig.Load(TextCollection.Config.DirBuildConfig);
+                currentConfig.Load(_dirBuildConfig);
 
                 var vstoNode = currentConfig.GetElementsByTagName("value");
                 _releaseType = vstoNode[0].InnerText;
