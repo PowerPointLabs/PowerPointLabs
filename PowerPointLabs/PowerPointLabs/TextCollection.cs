@@ -137,19 +137,10 @@
         # endregion
         # endregion
 
-        # region Quick Tutorial Download Link
-
-        //for release ver
-//        public const string QuickTutorialLink = "http://www.comp.nus.edu.sg/~pptlabs/samples/tutorial.pptx";
-
-        //for dev ver
-        public const string QuickTutorialLink = "http://www.comp.nus.edu.sg/~pptlabs/samples/dev/tutorial.pptx";
-        
-        # endregion
-
         # region Ribbon
-        public const string AboutInfo =
-            "          PowerPointLabs Plugin Version 1.8.11 [Release date: 1 Aug 2014]\n     Developed at School of Computing, National University of Singapore.\n        For more information, visit our website " + PowerPointLabsWebsiteUrl;
+        public static readonly string AboutInfo =
+            "          PowerPointLabs Plugin Version " + Properties.Settings.Default.Version + " [Release date: " + Properties.Settings.Default.ReleaseDate + "]\n     Developed at School of Computing, National University of Singapore.\n        For more information, visit our website " + PowerPointLabsWebsiteUrl;
+
         public const string AboutInfoTitle = "About PowerPointLabs";
         # endregion
 
@@ -281,6 +272,14 @@
         # region Error Dialog
         public const string UserFeedBack = " Help us fix the problem by emailing ";
         public const string Email = @"pptlabs@comp.nus.edu.sg";
+        # endregion
+
+        # region Install and Update related
+
+        public const string QuickTutorialFileName = "Tutorial.pptx";
+        public const string VstoName = "PowerPointLabsInstaller.vsto";
+        public const string InstallerName = "PowerPointLabsInstaller.zip";
+
         # endregion
     }
 }
