@@ -383,7 +383,12 @@ namespace PowerPointLabs
             ShapePresentation =
                 new PowerPointShapeGalleryPresentation(shapeRootFolderPath, ShapeGalleryPptxName, shapeFolderPath);
 
-            ShapePresentation.Open(withWindow: false, focus: false);
+            if (!ShapePresentation.Open(withWindow: false, focus: false))
+            {
+                MessageBox.Show(TextCollection.ShapeGalleryInitErrorMsg);
+                return;
+            }
+
             ShapePresentation.AddCategory(DefaultShapeCategoryName);
             ShapePresentation.Save();
         }
@@ -497,7 +502,15 @@ namespace PowerPointLabs
                 using (var reader = new StreamReader(shapeRootFolderPathConfigFile))
                 {
                     shapeRootFolderPath = reader.ReadLine();
+                    reader.Close();
                 }
+            }
+
+            // create a directory under specified location if the location does not exist
+            if (shapeRootFolderPath != null &&
+                !Directory.Exists(shapeRootFolderPath))
+            {
+                Directory.CreateDirectory(shapeRootFolderPath);
             }
 
             return shapeRootFolderPath;

@@ -218,13 +218,19 @@ namespace PowerPointLabs.Models
                 return false;
             }
 
+            // if the file doesn't exist, create and open the file then return
+            if (Create(withWindow, focus))
+            {
+                return true;
+            }
+
             var workingWindow = Globals.ThisAddIn.Application.ActiveWindow;
 
             try
             {
                 Presentation = Globals.ThisAddIn.Application.Presentations.Open(FullName, BoolToMsoTriState(readOnly),
-                                                                                    BoolToMsoTriState(untitled),
-                                                                                    BoolToMsoTriState(withWindow));
+                                                                                BoolToMsoTriState(untitled),
+                                                                                BoolToMsoTriState(withWindow));
             }
             catch (System.Exception)
             {

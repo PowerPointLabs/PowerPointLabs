@@ -9,6 +9,7 @@ namespace PowerPointLabs.Utils
     public static class FileAndDirTask
     {
         private const string FolderThumbnailFile = "Thumbs.db";
+
         # region Folder Operations
         public static bool CopyFolder(string oldPath, string newPath)
         {

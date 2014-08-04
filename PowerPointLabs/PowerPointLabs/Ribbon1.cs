@@ -1586,6 +1586,13 @@ namespace PowerPointLabs
             Globals.ThisAddIn.InitializeShapeGallery(customShape.CurrentShapeFolderPath);
             customShape.PaneReload();
 
+            // first of all we check if the shape gallery has been opened correctly
+            if (!Globals.ThisAddIn.ShapePresentation.Opened)
+            {
+                MessageBox.Show(TextCollection.ShapeGalleryInitErrorMsg);
+                return;
+            }
+
             // to determine if a presentation needs to be saved, we check 3 things:
             // 1. if the presentation is readonly;
             // 2. if the presentation contains a valid saving path;

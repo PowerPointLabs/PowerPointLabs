@@ -233,7 +233,7 @@ namespace PowerPointLabs
             
             PrepareShapes();
 
-            Native.SendMessage(myShapeFlowLayout.Handle, (uint)Native.Message.WM_SETREDRAW, new IntPtr(1), IntPtr.Zero);
+            Native.SendMessage(myShapeFlowLayout.Handle, (uint) Native.Message.WM_SETREDRAW, new IntPtr(1), IntPtr.Zero);
             myShapeFlowLayout.Refresh();
 
             _firstTimeLoading = false;

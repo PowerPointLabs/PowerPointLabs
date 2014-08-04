@@ -156,6 +156,9 @@
         public const string OnlinePresentationNotCompatibleErrorMsg =
         	"Some features of PowerPointLabs do not work with online presentations. " +
         	"To use them, please save the file locally.";
+        public const string ShapeGalleryInitErrorMsg =
+            "Could not connect to shape database from your default location.\n\n" +
+            "To check your default location, right click on the panel and select 'Settings' option.";
         public const string TabActivateErrorTitle = "Unable to activate 'Double Click to Open Property' feature";
         public const string TabActivateErrorDescription =
             "To activate 'Double Click to Open Property' feature, you need to enable 'Home' tab " +
