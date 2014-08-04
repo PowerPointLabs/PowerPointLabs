@@ -688,7 +688,7 @@ namespace PowerPointLabs
             var recorder = recorderPane.Control as RecorderTaskPane;
 
             // trigger close form event when closing hide the pane
-            if (recorder != null && recorderPane.Visible)
+            if (recorder != null && !recorderPane.Visible)
             {
                 recorder.RecorderPaneClosing();
             }

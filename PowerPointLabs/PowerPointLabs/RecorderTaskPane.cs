@@ -960,6 +960,11 @@ namespace PowerPointLabs
         // disable timer and thread when the pane is closed
         public void RecorderPaneClosing()
         {
+            if (HasEvent())
+            {
+                ForceStopEvent();
+            }
+
             // before closing, clean up all unfinished sessions
             AudioHelper.CloseAudio();
 
@@ -1558,6 +1563,11 @@ namespace PowerPointLabs
 
         private void SlideShowButtonClick(object sender, EventArgs e)
         {
+            if (HasEvent())
+            {
+                ForceStopEvent();
+            }
+
             // clear audio buffer
             AudioBuffer.Clear();
 
