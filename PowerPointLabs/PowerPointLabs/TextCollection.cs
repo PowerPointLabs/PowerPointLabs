@@ -168,7 +168,7 @@
 
         # region ShapeGalleryPresentation
         public const string ShapeCorruptedError =
-            "Some shapes in the Shapes Lab were corrupted, and have been deleted automatically.";
+            "Some shapes in the Shapes Lab were corrupted, but some of the them are recovered.";
         # endregion
 
         # region CropToShape
@@ -253,10 +253,13 @@
         public const string CustomeShapeSaveLocationChangedSuccessFormat =
             "Default saving path has been changed to \n{0}\nAll shapes have been moved to the new location.";
         public const string CustomShapeSaveLocationChangedSuccessTitle = "Success";
-        public const string CustomShapeSaveLocationError =
-            "An error occured during folder migrating. This is possibily because of the " +
-            "new location is from an unsupported storage service, e.g. Dropbox, Skydrive, etc.\n\n" +
-            "You are suggested to change a location as default shape saving location.";
+        public const string CustomShapeMigrationError =
+            "The folder cannot be migrated entirely. Please check if your destination loaction forbids this action.";
+        public const string CustomShapeOriginalFolderDeletionError =
+            "The original folder could not be deleted because some of the files in folder is still in use. You could " +
+            "try to delete this folder manually when those files are closed.";
+        public const string CustomShapeMigratingDialogTitle = "Migrating...";
+        public const string CustomShapeMigratingDialogContent = "Shapes are being migrated, please wait...";
         # endregion
 
         # region Control - ShapesLabSetting
@@ -274,6 +277,11 @@
         public const string InShowControlInvalidRecCommandError = "Invalid Recording Command";
         public const string InShowControlRecButtonIdleText = "Stop and Advance";
         public const string InShowControlRecButtonRecText = "Start Recording";
+        # endregion
+
+        #region Control - Loading Dialog
+        public const string LoadingDialogDefaultTitle = "Loading...";
+        public const string LoadingDialogDefaultContent = "Loading, please wait...";
         # endregion
 
         # region Error Dialog
