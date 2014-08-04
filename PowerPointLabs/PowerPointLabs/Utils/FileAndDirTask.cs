@@ -105,7 +105,14 @@ namespace PowerPointLabs.Utils
 
             if (deleteSuccess)
             {
-                Directory.Delete(path);
+                try
+                {
+                    Directory.Delete(path);
+                }
+                catch (Exception)
+                {
+                    deleteSuccess = false;
+                }
             }
 
             return deleteSuccess;
