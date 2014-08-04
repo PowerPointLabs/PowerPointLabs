@@ -228,7 +228,13 @@ namespace PowerPointLabs
                 return;
             }
 
+            Native.SendMessage(myShapeFlowLayout.Handle, (uint) Native.Message.WM_SETREDRAW, IntPtr.Zero, IntPtr.Zero);
+            
             PrepareShapes();
+
+            Native.SendMessage(myShapeFlowLayout.Handle, (uint)Native.Message.WM_SETREDRAW, new IntPtr(1), IntPtr.Zero);
+            myShapeFlowLayout.Refresh();
+
             _firstTimeLoading = false;
         }
         # endregion

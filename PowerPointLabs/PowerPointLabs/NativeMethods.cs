@@ -171,6 +171,7 @@ namespace PPExtraEventHelper
 
         internal enum Message
         {
+            WM_SETREDRAW = 0XB,
             WM_PAINT = 0xf,
             WM_COMMAND = 0x111,
             WM_LBUTTONDOWN = 0x0201,
