@@ -8,6 +8,8 @@ namespace PowerPointLabs.Utils
 {
     public static class FileAndDirTask
     {
+        private const string FolderThumbnailFile = "Thumbs.db";
+        # region Folder Operations
         public static bool CopyFolder(string oldPath, string newPath)
         {
             var copySuccess = true;
@@ -27,16 +29,23 @@ namespace PowerPointLabs.Utils
 
                 // ignore thumb.db
                 if (name == null ||
-                    name == "thumb.db") continue;
+                    name == FolderThumbnailFile) continue;
 
                 var dest = Path.Combine(newPath, name);
 
                 try
                 {
                     var fileAttribute = File.GetAttributes(file);
-                    File.SetAttributes(file, FileAttributes.Normal);
-                    File.Copy(file, dest);
-                    File.SetAttributes(dest, fileAttribute);
+                    
+                    try
+                    {
+                        File.SetAttributes(file, FileAttributes.Normal);
+                    }
+                    catch (Exception)
+                    {
+                    }
+                    
+                    CopyFile(file, dest, fileAttribute);
                 }
                 catch (Exception)
                 {
@@ -61,37 +70,45 @@ namespace PowerPointLabs.Utils
             return copySuccess;
         }
 
-        public static void FileDeleteWithAttribute(string filePath,
-                                                   FileAttributes fileAttributes = FileAttributes.Normal)
+        public static bool DeleteFolder(string path)
         {
-            if (!File.Exists(filePath)) return;
+            var deleteSuccess = true;
+            // copy files in a folder first
+            var files = Directory.GetFiles(path);
 
-            try
+            foreach (var file in files)
             {
-                File.SetAttributes(filePath, fileAttributes);
-                File.Delete(filePath);
-            }
-            catch (Exception e)
-            {
-                ErrorDialogWrapper.ShowDialog(TextCollection.AccessTempFolderErrorMsg, string.Empty, e);
-            }
-        }
+                var name = Path.GetFileName(file);
 
-        public static void FileCopyWithAttribute(string sourcePath, string destPath,
-                                                 FileAttributes fileAttributes = FileAttributes.Normal)
-        {
-            if (!File.Exists(sourcePath)) return;
+                if (name == null) continue;
 
-            // copy the file to temp folder and rename to zip
-            try
-            {
-                File.Copy(sourcePath, destPath);
-                File.SetAttributes(destPath, fileAttributes);
+                try
+                {
+                    DeleteFile(file);
+                }
+                catch (Exception)
+                {
+                    deleteSuccess = false;
+                }
             }
-            catch (Exception e)
+
+            var folders = Directory.GetDirectories(path);
+
+            foreach (var folder in folders)
             {
-                ErrorDialogWrapper.ShowDialog(TextCollection.AccessTempFolderErrorMsg, string.Empty, e);
+                var name = Path.GetFileName(folder);
+
+                if (name == null) continue;
+
+                deleteSuccess = deleteSuccess && DeleteFolder(folder);
             }
+
+            if (deleteSuccess)
+            {
+                Directory.Delete(path);
+            }
+
+            return deleteSuccess;
         }
 
         public static bool IsDirectoryEmpty(string path)
@@ -101,24 +118,14 @@ namespace PowerPointLabs.Utils
 
         public static bool MoveFolder(string oldPath, string newPath)
         {
-            if (!CopyFolder(oldPath, newPath))
-            {
-                return false;
-            }
-
-            try
-            {
-                NormalizeFolder(oldPath);
-                Directory.Delete(oldPath, true);
-            }
-            catch (Exception)
-            {
-                return false;
-            }
-
-            return true;
+            return CopyFolder(oldPath, newPath) && DeleteFolder(oldPath);
         }
 
+        /// <summary>
+        /// This function sets attribute of all files in a folder and its sub-folder 
+        /// to normal.
+        /// </summary>
+        /// <param name="path">The folder's location.</param>
         public static void NormalizeFolder(string path)
         {
             // copy files in a folder first
@@ -137,5 +144,33 @@ namespace PowerPointLabs.Utils
                 NormalizeFolder(folder);
             }
         }
+        # endregion
+
+        # region File Operations
+        /// <summary>
+        /// This function is an integration of copy-without-attribute and copy-with-attribute.
+        /// If fileAttribute is not set explicitly, the file is copying without attribute, else
+        /// the specified attribute will be set after the file has been copied.
+        /// </summary>
+        /// <param name="sourcePath"></param>
+        /// <param name="destPath"></param>
+        /// <param name="fileAttribute"></param>
+        public static void CopyFile(string sourcePath, string destPath,
+                                        FileAttributes fileAttribute = FileAttributes.Normal)
+        {
+            if (!File.Exists(sourcePath)) return;
+
+            File.Copy(sourcePath, destPath);
+            File.SetAttributes(destPath, fileAttribute);
+        }
+
+        public static void DeleteFile(string filePath)
+        {
+            if (!File.Exists(filePath)) return;
+
+            File.SetAttributes(filePath, FileAttributes.Normal);
+            File.Delete(filePath);
+        }
+        # endregion
     }
 }

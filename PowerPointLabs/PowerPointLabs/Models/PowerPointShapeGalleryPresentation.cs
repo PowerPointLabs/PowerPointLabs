@@ -107,15 +107,20 @@ namespace PowerPointLabs.Models
             shapes[0].Copy();
         }
 
-        public override void Open(bool readOnly = false, bool untitled = false,
+        public override bool Open(bool readOnly = false, bool untitled = false,
                                   bool withWindow = true, bool focus = true)
         {
             RetrievePptxFile();
 
-            base.Open(readOnly, untitled, withWindow, focus);
+            // if we can't even open the file, return false
+            if (!base.Open(readOnly, untitled, withWindow, focus))
+            {
+                return false;
+            }
 
             PrepareCategories();
-            ConsistencyCheck();
+            
+            return ConsistencyCheck();
         }
 
         public void RemoveCategory(string name)
@@ -171,9 +176,10 @@ namespace PowerPointLabs.Models
         # endregion
 
         # region Helper Function
-        private void ConsistencyCheck()
+        private bool ConsistencyCheck()
         {
-            if (SlideCount < 1) return;
+            // if there's no slide, the file is always valid
+            if (SlideCount < 1) return true;
 
             // here we need to check 3 cases:
             // 1. self consistency check (if there are any duplicate names);
@@ -190,7 +196,11 @@ namespace PowerPointLabs.Models
             {
                 MessageBox.Show(TextCollection.ShapeCorruptedError);
                 Save();
+
+                return false;
             }
+
+            return true;
         }
 
         private bool ConsistencyCheckPngToShape(IEnumerable<string> pngShapes)

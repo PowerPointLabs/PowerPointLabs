@@ -45,7 +45,7 @@ namespace PowerPointLabs
 
         internal PowerPointShapeGalleryPresentation ShapePresentation;
 
-        public readonly string ShapeRootFolderConfigFileName = "shapeRootFolder.config";
+        public readonly string ShapeRootFolderConfigFileName = "ShapeRootFolder.config";
 
         public readonly string AppDataFolder =
             Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), "PowerPointLabs");
@@ -403,8 +403,15 @@ namespace PowerPointLabs
 
                 // before we do everything, check if there's an undelete old zip file
                 // due to some error
-                FileAndDirTask.FileDeleteWithAttribute(zipFullPath);
-                FileAndDirTask.FileCopyWithAttribute(presFullName, zipFullPath);
+                try
+                {
+                    FileAndDirTask.DeleteFile(zipFullPath);
+                    FileAndDirTask.CopyFile(presFullName, zipFullPath);
+                }
+                catch (Exception e)
+                {
+                    ErrorDialogWrapper.ShowDialog(TextCollection.AccessTempFolderErrorMsg, string.Empty, e);
+                }
 
                 ExtractMediaFiles(zipFullPath, tempPath);
             }
@@ -484,7 +491,8 @@ namespace PowerPointLabs
             var shapeRootFolderPathConfigFile = Path.Combine(AppDataFolder, ShapeRootFolderConfigFileName);
             var shapeRootFolderPath = _defaultShapeMasterFolderPrefix + DefaultShapeMasterFolderName;
 
-            if (File.Exists(shapeRootFolderPathConfigFile))
+            if (File.Exists(shapeRootFolderPathConfigFile) &&
+                (new FileInfo(shapeRootFolderPathConfigFile)).Length != 0)
             {
                 using (var reader = new StreamReader(shapeRootFolderPathConfigFile))
                 {
@@ -851,7 +859,7 @@ namespace PowerPointLabs
 
                 zip.Close();
                 
-                FileAndDirTask.FileDeleteWithAttribute(zipFullPath);
+                FileAndDirTask.DeleteFile(zipFullPath);
             }
             catch (Exception e)
             {

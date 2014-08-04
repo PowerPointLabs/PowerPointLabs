@@ -5,6 +5,7 @@ using System.IO;
 using System.Linq;
 using System.Text.RegularExpressions;
 using System.Windows.Forms;
+using PPExtraEventHelper;
 using PowerPointLabs.Models;
 using PowerPointLabs.Utils;
 using PowerPointLabs.Views;
@@ -221,9 +222,9 @@ namespace PowerPointLabs
             }
         }
 
-        public void PaneReload()
+        public void PaneReload(bool forceReload = false)
         {
-            if (!_firstTimeLoading)
+            if (!_firstTimeLoading && !forceReload)
             {
                 return;
             }
@@ -306,12 +307,11 @@ namespace PowerPointLabs
 
                 ShapeRootFolderPath = newPath;
 
-                if (!File.Exists(_shapeRootFolderPathConfigFile))
+                using (var fileWriter = File.CreateText(_shapeRootFolderPathConfigFile))
                 {
-                    File.Create(_shapeRootFolderPathConfigFile);
+                    fileWriter.WriteLine(newPath);
+                    fileWriter.Close();
                 }
-
-                File.WriteAllText(_shapeRootFolderPathConfigFile, newPath);
 
                 MessageBox.Show(
                     string.Format(TextCollection.CustomeShapeSaveLocationChangedSuccessFormat, newPath),
@@ -426,7 +426,8 @@ namespace PowerPointLabs
 
         private bool MigrateShapeFolder(string oldPath, string newPath)
         {
-            var loadingDialog = new LoadingDialog();
+            var loadingDialog = new LoadingDialog(TextCollection.CustomShapeMigratingDialogTitle,
+                                                  TextCollection.CustomShapeMigratingDialogContent);
             loadingDialog.Show();
             loadingDialog.Refresh();
 
@@ -436,26 +437,39 @@ namespace PowerPointLabs
                 Globals.ThisAddIn.ShapePresentation.Close();
             }
 
-            var migrateSuccess = FileAndDirTask.MoveFolder(oldPath, newPath);
+            // migration only cares about if the folder has been copied to the new location entirely.
+            if (!FileAndDirTask.CopyFolder(oldPath, newPath))
+            {
+                loadingDialog.Dispose();
+
+                MessageBox.Show(TextCollection.CustomShapeMigrationError);
+
+                return false;
+            }
+
+            // now we will try our best to delete the original folder, but this is not guaranteed
+            // because some of the using files, such as some opening shapes, and the evil thumb.db
+            if (!FileAndDirTask.DeleteFolder(oldPath))
+            {
+                MessageBox.Show(TextCollection.CustomShapeOriginalFolderDeletionError);
+            }
 
             loadingDialog.Dispose();
 
-            if (!migrateSuccess)
-            {
-                MessageBox.Show(TextCollection.CustomShapeSaveLocationError);
-            }
-            else
-            {
-                ShapeRootFolderPath = newPath;
+            ShapeRootFolderPath = newPath;
 
-                // modify shape gallery presentation's path and name, then open it
-                Globals.ThisAddIn.ShapePresentation.Path = newPath;
-                Globals.ThisAddIn.ShapePresentation.ShapeFolderPath = CurrentShapeFolderPath;
+            // modify shape gallery presentation's path and name, then open it
+            Globals.ThisAddIn.ShapePresentation.Path = newPath;
+            Globals.ThisAddIn.ShapePresentation.ShapeFolderPath = CurrentShapeFolderPath;
 
-                Globals.ThisAddIn.ShapePresentation.Open(withWindow: false, focus: false);
+            // if there's some lost during shape gallery opening, we must forece reload the pane
+            // to reflect the latest change
+            if (!Globals.ThisAddIn.ShapePresentation.Open(withWindow: false, focus: false))
+            {
+                PaneReload(true);
             }
 
-            return migrateSuccess;
+            return true;
         }
 
         private void PrepareFolder()
@@ -471,7 +485,7 @@ namespace PowerPointLabs
             PrepareFolder();
 
             var shapes = Directory.EnumerateFiles(CurrentShapeFolderPath, "*.png").OrderBy(item => item, _stringComparer);
-            
+
             foreach (var shape in shapes)
             {
                 var shapeName = Path.GetFileNameWithoutExtension(shape);

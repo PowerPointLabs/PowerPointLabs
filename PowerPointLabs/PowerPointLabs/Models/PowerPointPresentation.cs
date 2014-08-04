@@ -211,28 +211,32 @@ namespace PowerPointLabs.Models
             Presentation = null;
         }
 
-        public virtual void Open(bool readOnly = false, bool untitled = false, bool withWindow = true, bool focus = true)
+        public virtual bool Open(bool readOnly = false, bool untitled = false, bool withWindow = true, bool focus = true)
         {
             if (Opened)
             {
-                return;
-            }
-
-            if (Create(withWindow, focus))
-            {
-                return;
+                return false;
             }
 
             var workingWindow = Globals.ThisAddIn.Application.ActiveWindow;
 
-            Presentation = Globals.ThisAddIn.Application.Presentations.Open(FullName, BoolToMsoTriState(readOnly),
-                                                                            BoolToMsoTriState(untitled),
-                                                                            BoolToMsoTriState(withWindow));
+            try
+            {
+                Presentation = Globals.ThisAddIn.Application.Presentations.Open(FullName, BoolToMsoTriState(readOnly),
+                                                                                    BoolToMsoTriState(untitled),
+                                                                                    BoolToMsoTriState(withWindow));
+            }
+            catch (System.Exception)
+            {
+                return false;
+            }
 
             if (!focus)
             {
                 workingWindow.Activate();
             }
+
+            return true;
         }
 
         public void Save()
