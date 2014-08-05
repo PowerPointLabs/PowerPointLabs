@@ -1611,7 +1611,6 @@ namespace PowerPointLabs
 
             // add shape into shape gallery first to reduce flicker
             Globals.ThisAddIn.ShapePresentation.AddShape(selection, shapeName);
-            Globals.ThisAddIn.ShapePresentation.Save();
 
             // add the selection into pane and save it as .png locally
             ConvertToPicture.ConvertAndSave(selection, shapeFullName);

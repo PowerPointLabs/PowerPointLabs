@@ -12,6 +12,8 @@ namespace PowerPointLabs.Models
     {
         private const string ShapeGalleryFileExtension = ".pptlabsshapes";
         private const string DuplicateShapeSuffixFormat = "(recovered shape {0})";
+
+        private const int MaxUndoAmount = 20;
         
         private PowerPointSlide _defaultCategory;
 
@@ -58,6 +60,9 @@ namespace PowerPointLabs.Models
             {
                 _defaultCategory = newSlide;
             }
+
+            Save();
+            ActionProtection();
         }
 
         public void AddShape(Selection selection, string name)
@@ -73,6 +78,9 @@ namespace PowerPointLabs.Models
             }
 
             pastedShape.Name = name;
+
+            Save();
+            ActionProtection();
         }
 
         public void AddShape(Selection selection, string category, string name)
@@ -89,14 +97,24 @@ namespace PowerPointLabs.Models
             }
 
             pastedShape.Name = name;
+
+            Save();
+            ActionProtection();
         }
 
         public override void Close()
         {
             base.Close();
 
-            _categoryNameIndexMapper.Clear();
-            RetrieveShapeGalleryFile();
+            try
+            {
+                _categoryNameIndexMapper.Clear();
+                RetrieveShapeGalleryFile();
+            }
+            catch (System.Exception)
+            {
+                MessageBox.Show("Error");
+            }
         }
 
         public void CopyShape(string name)
@@ -134,6 +152,9 @@ namespace PowerPointLabs.Models
             _categoryNameIndexMapper.Remove(name);
 
             RemoveSlide(name);
+
+            Save();
+            ActionProtection();
         }
 
         public void RemoveCategory(int index)
@@ -146,11 +167,17 @@ namespace PowerPointLabs.Models
             _categoryNameIndexMapper.Remove(Slides[index].Name);
             
             RemoveSlide(index);
+
+            Save();
+            ActionProtection();
         }
 
         public void RemoveShape(string name)
         {
             _defaultCategory.DeleteShapeWithName(name);
+            
+            Save();
+            ActionProtection();
         }
 
         public void RenameShape(string oldName, string newName)
@@ -161,6 +188,9 @@ namespace PowerPointLabs.Models
             {
                 shape.Name = newName;
             }
+
+            Save();
+            ActionProtection();
         }
 
         public void SetDefaultCategory(string name)
@@ -177,6 +207,14 @@ namespace PowerPointLabs.Models
         # endregion
 
         # region Helper Function
+        private void ActionProtection()
+        {
+            for (var i = 0; i < MaxUndoAmount; i ++)
+            {
+                Presentation.Slides[1].Background.Fill.BackColor = Presentation.Slides[1].Background.Fill.BackColor;
+            }
+        }
+
         private bool ConsistencyCheck()
         {
             // if there's no slide, the file is always valid

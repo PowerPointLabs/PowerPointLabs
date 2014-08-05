@@ -261,7 +261,6 @@ namespace PowerPointLabs
 
             // remove shape from shape gallery
             Globals.ThisAddIn.ShapePresentation.RemoveShape(CurrentShapeNameWithoutExtension);
-            Globals.ThisAddIn.ShapePresentation.Save();
 
             // remove shape from disk and shape gallery
             File.Delete(CurrentShapeFullName);
@@ -462,7 +461,7 @@ namespace PowerPointLabs
             Globals.ThisAddIn.ShapePresentation.Path = newPath;
             Globals.ThisAddIn.ShapePresentation.ShapeFolderPath = CurrentShapeFolderPath;
 
-            // if there's some lost during shape gallery opening, we must forece reload the pane
+            // if there's some lost during shape gallery opening, we must force reload the pane
             // to reflect the latest change
             if (!Globals.ThisAddIn.ShapePresentation.Open(withWindow: false, focus: false))
             {
@@ -512,7 +511,6 @@ namespace PowerPointLabs
             labeledThumbnail.ImagePath = newPath;
 
             Globals.ThisAddIn.ShapePresentation.RenameShape(oldName, labeledThumbnail.NameLable);
-            Globals.ThisAddIn.ShapePresentation.Save();
 
             Globals.ThisAddIn.SyncShapeRename(oldName, labeledThumbnail.NameLable);
         }
