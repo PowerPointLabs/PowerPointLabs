@@ -26,7 +26,6 @@ namespace PowerPointLabs
 
                 if (!isHighlightBullets && !isHighlightTextFragments)
                 {
-                    currentSlide.RemoveAnimationsForShapes(currentSlide.GetShapesWithPrefix("InSlideAnimateShape"));
                     FormatInSlideAnimateShapes(selectedShapes);
                 }
 
