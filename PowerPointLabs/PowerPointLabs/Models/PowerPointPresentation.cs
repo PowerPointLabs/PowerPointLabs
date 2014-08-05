@@ -211,7 +211,7 @@ namespace PowerPointLabs.Models
             Presentation.Close();
             Presentation = null;
 
-            Trace.TraceInformation("Presentation " + NameNoExtension + "is closed.");
+            Trace.TraceInformation("Presentation " + NameNoExtension + " is closed.");
         }
 
         public virtual bool Open(bool readOnly = false, bool untitled = false, bool withWindow = true, bool focus = true)

@@ -99,7 +99,7 @@ namespace PowerPointLabs
                 ShapePresentation.Opened)
             {
                 ShapePresentation.Close();
-                Trace.TraceInformation("Share Gallery closed.");
+                Trace.TraceInformation("Share Gallery terminated.");
             }
         }
 

@@ -370,7 +370,7 @@ namespace PowerPointLabs.Models
             // set the file as a visible readonly .pptlabsshapes file.
             var shapeGalleryFileName = FullName.Replace(".pptx", ShapeGalleryFileExtension);
 
-            Trace.TraceInformation(FullName + ", " + shapeGalleryFileName);
+            Trace.TraceInformation("FullName = " + FullName + ", Name = " + shapeGalleryFileName);
 
             File.Move(FullName, shapeGalleryFileName);
 
