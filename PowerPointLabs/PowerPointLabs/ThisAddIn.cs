@@ -99,6 +99,7 @@ namespace PowerPointLabs
                 ShapePresentation.Opened)
             {
                 ShapePresentation.Close();
+                Trace.TraceInformation("Share Gallery closed.");
             }
         }
 
@@ -383,8 +384,11 @@ namespace PowerPointLabs
             ShapePresentation =
                 new PowerPointShapeGalleryPresentation(shapeRootFolderPath, ShapeGalleryPptxName, shapeFolderPath);
 
-            if (!ShapePresentation.Open(withWindow: false, focus: false))
+            if (!ShapePresentation.Open(withWindow: false, focus: false) &&
+                !ShapePresentation.Opened)
             {
+                // if the presentation gets some error during opening, and the error could not
+                // be resolved by consistency check, prompt the user about the error
                 MessageBox.Show(TextCollection.ShapeGalleryInitErrorMsg);
                 return;
             }

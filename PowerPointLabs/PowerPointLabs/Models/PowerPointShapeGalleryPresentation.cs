@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Text.RegularExpressions;
@@ -330,6 +331,8 @@ namespace PowerPointLabs.Models
         {
             // set the file as a visible readonly .pptlabsshapes file.
             var shapeGalleryFileName = FullName.Replace(".pptx", ShapeGalleryFileExtension);
+
+            Trace.TraceInformation(FullName + ", " + shapeGalleryFileName);
 
             File.Move(FullName, shapeGalleryFileName);
 

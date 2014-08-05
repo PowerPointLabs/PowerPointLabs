@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Diagnostics;
 using System.IO;
 using System.Windows.Forms;
 using Microsoft.Office.Core;
@@ -209,6 +210,8 @@ namespace PowerPointLabs.Models
         {
             Presentation.Close();
             Presentation = null;
+
+            Trace.TraceInformation("Presentation " + NameNoExtension + "is closed.");
         }
 
         public virtual bool Open(bool readOnly = false, bool untitled = false, bool withWindow = true, bool focus = true)
