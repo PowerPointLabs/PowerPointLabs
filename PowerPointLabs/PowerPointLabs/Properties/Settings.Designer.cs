@@ -43,7 +43,7 @@ namespace PowerPointLabs.Properties {
         
         [global::System.Configuration.ApplicationScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("1.8.12.1")]
+        [global::System.Configuration.DefaultSettingValueAttribute("1.8.12.2")]
         public string Version {
             get {
                 return ((string)(this["Version"]));
