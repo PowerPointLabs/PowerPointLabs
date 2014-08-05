@@ -32,6 +32,10 @@ namespace PowerPointLabs
         private const string DefaultShapeCategoryName = "My Shapes";
         private const string ShapeGalleryPptxName = "ShapeGallery";
         private const string TempZipName = "tempZip.zip";
+        private const string OfficeVersion2013 = "15.0";
+        private const string OfficeVersion2010 = "14.0";
+
+        private string _deactivatedPresFullName;
 
         private bool _noPathAssociate;
         private bool _isClosing;
@@ -91,6 +95,11 @@ namespace PowerPointLabs
 
         private void ThisAddInApplicationOnWindowDeactivate(PowerPoint.Presentation pres, PowerPoint.DocumentWindow wn)
         {
+            Trace.TraceInformation("Shape Gallery terminating...");
+            Trace.TraceInformation(string.Format("Is Closing = {0}, Count = {1}", _isClosing, Application.Presentations.Count));
+
+            _deactivatedPresFullName = pres.FullName;
+            
             // in this case, we are closing the last client presentation, therefore we
             // we can close the shape gallery
             if (_isClosing &&
@@ -99,7 +108,7 @@ namespace PowerPointLabs
                 ShapePresentation.Opened)
             {
                 ShapePresentation.Close();
-                Trace.TraceInformation("Share Gallery terminated.");
+                Trace.TraceInformation("Shape Gallery terminated.");
             }
         }
 
@@ -250,6 +259,17 @@ namespace PowerPointLabs
 
         private void ThisAddInPresentationClose(PowerPoint.Presentation pres)
         {
+            Trace.TraceInformation("Closing " + pres.Name);
+
+            if (Application.Version == OfficeVersion2010 &&
+                _deactivatedPresFullName == pres.FullName &&
+                Application.Presentations.Count == 2 &&
+                ShapePresentation != null &&
+                ShapePresentation.Opened)
+            {
+                ShapePresentation.Close();
+            }
+
             // special case: if we are closing ShapeGallery.pptx, no other action will be done
             if (pres.Name.Contains(ShapeGalleryPptxName))
             {
@@ -276,6 +296,8 @@ namespace PowerPointLabs
 
             if (pres.Saved == Office.MsoTriState.msoTrue)
             {
+                Trace.TraceInformation("Presentation saved.");
+
                 _isClosing = true;
 
                 if (_documentHashcodeMapper.ContainsKey(pres.Application.ActiveWindow))
@@ -1184,9 +1206,6 @@ namespace PowerPointLabs
         #endregion
 
         #region Double Click to Open Property Window
-
-        private const string OfficeVersion2013 = "15.0";
-        private const string OfficeVersion2010 = "14.0";
         private const string ShortcutAltHO = "%ho";
 
         private const int CommandOpenBackgroundFormat = 0x8F;
