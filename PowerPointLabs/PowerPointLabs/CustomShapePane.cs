@@ -231,10 +231,14 @@ namespace PowerPointLabs
 
             Native.SendMessage(myShapeFlowLayout.Handle, (uint) Native.Message.WM_SETREDRAW, IntPtr.Zero, IntPtr.Zero);
             
+            // emptize the panel and load shapes from folder
+            myShapeFlowLayout.Controls.Clear();
             PrepareShapes();
 
             Native.SendMessage(myShapeFlowLayout.Handle, (uint) Native.Message.WM_SETREDRAW, new IntPtr(1), IntPtr.Zero);
             myShapeFlowLayout.Refresh();
+
+            Refresh();
 
             _firstTimeLoading = false;
         }
@@ -453,8 +457,6 @@ namespace PowerPointLabs
                 MessageBox.Show(TextCollection.CustomShapeOriginalFolderDeletionError);
             }
 
-            loadingDialog.Dispose();
-
             ShapeRootFolderPath = newPath;
 
             // modify shape gallery presentation's path and name, then open it
@@ -463,10 +465,14 @@ namespace PowerPointLabs
 
             // if there's some lost during shape gallery opening, we must force reload the pane
             // to reflect the latest change
-            if (!Globals.ThisAddIn.ShapePresentation.Open(withWindow: false, focus: false))
-            {
-                PaneReload(true);
-            }
+            //if (!Globals.ThisAddIn.ShapePresentation.Open(withWindow: false, focus: false))
+            //{
+            //    PaneReload(true);
+            //}
+
+            Globals.ThisAddIn.ShapePresentation.Open(withWindow: false, focus: false);
+            PaneReload(true);
+            loadingDialog.Dispose();
 
             return true;
         }
