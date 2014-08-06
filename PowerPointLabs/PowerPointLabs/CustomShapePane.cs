@@ -145,6 +145,7 @@ namespace PowerPointLabs
             
             myShapeFlowLayout.AutoSize = true;
             myShapeFlowLayout.Click += FlowlayoutClick;
+            myShapeFlowLayout.MouseEnter += (s, e) => myShapeFlowLayout.Focus();
         }
         # endregion
 
