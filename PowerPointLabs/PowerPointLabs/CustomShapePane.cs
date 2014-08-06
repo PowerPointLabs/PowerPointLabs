@@ -140,8 +140,6 @@ namespace PowerPointLabs
 
             _timer = new Timer { Interval = _doubleClickTimeSpan };
             _timer.Tick += TimerTickHandler;
-
-            ShowNoShapeMessage();
             
             myShapeFlowLayout.AutoSize = true;
             myShapeFlowLayout.Click += FlowlayoutClick;
@@ -505,6 +503,11 @@ namespace PowerPointLabs
                 AddCustomShape(shapeName, shape, false);
             }
 
+            if (myShapeFlowLayout.Controls.Count == 0)
+            {
+                ShowNoShapeMessage();
+            }
+
             DehighlightSelected();
         }
 
@@ -572,6 +575,8 @@ namespace PowerPointLabs
                     DehighlightSelected();
                 }
             }
+
+            myShapeFlowLayout.Focus();
         }
 
         private void FlowlayoutContextMenuStripItemClicked(object sender, ToolStripItemClickedEventArgs e)
