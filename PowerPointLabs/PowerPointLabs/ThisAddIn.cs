@@ -250,6 +250,8 @@ namespace PowerPointLabs
             var activeWindow = pres.Application.ActiveWindow;
             var tempName = pres.Name.GetHashCode().ToString(CultureInfo.InvariantCulture);
 
+            _noPathAssociate = pres.Path == string.Empty;
+
             // if we opened a new window, register the window with its name
             if (!_documentHashcodeMapper.ContainsKey(activeWindow))
             {
@@ -702,16 +704,10 @@ namespace PowerPointLabs
                 presName += ".pptx";
             }
 
-            if (pres.Path == String.Empty)
+            if (_noPathAssociate)
             {
                 pres.SaveAs(tempPath + presName);
                 presFullName = tempPath + presName;
-
-                _noPathAssociate = true;
-            }
-            else
-            {
-                _noPathAssociate = false;
             }
         }
 
