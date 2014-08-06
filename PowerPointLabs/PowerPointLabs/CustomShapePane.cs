@@ -131,6 +131,7 @@ namespace PowerPointLabs
         # region Constructors
         public CustomShapePane(string shapeRootFolderPath, string defaultShapeCategoryName)
         {
+            SetStyle(ControlStyles.UserPaint | ControlStyles.DoubleBuffer | ControlStyles.AllPaintingInWmPaint, true);
             InitializeComponent();
 
             ShapeRootFolderPath = shapeRootFolderPath;

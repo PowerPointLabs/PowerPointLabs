@@ -69,7 +69,7 @@ namespace PowerPointLabs
         public void DeHighlight()
         {
             motherPanel.BackColor = Color.FromKnownColor(KnownColor.Window);
-            thumbnailPanel.BackColor = Color.FromKnownColor(KnownColor.Transparent);
+            thumbnailPanel.BackColor = Color.FromKnownColor(KnownColor.Window);
             labelTextBox.BackColor = Color.FromKnownColor(KnownColor.Window);
             labelTextBox.ForeColor = Color.Black;
         }
