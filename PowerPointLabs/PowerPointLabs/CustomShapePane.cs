@@ -143,7 +143,14 @@ namespace PowerPointLabs
             
             myShapeFlowLayout.AutoSize = true;
             myShapeFlowLayout.Click += FlowlayoutClick;
-            myShapeFlowLayout.MouseEnter += (s, e) => myShapeFlowLayout.Focus();
+            myShapeFlowLayout.MouseEnter += (s, e) =>
+                                                {
+                                                    if (_selectedThumbnail != null &&
+                                                        _selectedThumbnail.State != LabeledThumbnail.Status.Editing)
+                                                    {
+                                                        myShapeFlowLayout.Focus();
+                                                    }
+                                                };
         }
         # endregion
 
@@ -601,6 +608,8 @@ namespace PowerPointLabs
 
             // only first click will be entertained
             if (!_firstClick) return;
+
+            myShapeFlowLayout.Focus();
 
             _firstClick = false;
             _isLeftButton = e.Button == MouseButtons.Left;
