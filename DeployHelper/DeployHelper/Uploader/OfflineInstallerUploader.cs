@@ -11,6 +11,10 @@ namespace DeployHelper.Uploader
             File.Copy(DeployConfig.DirOfflineInstallerFolder + @"\PowerPointLabsInstaller.exe",
                 DeployConfig.DirLocalPathToUpload + @"\PowerPointLabsInstaller.exe", 
                 TextCollection.Const.IsOverWritten);
+            //offline installer zip
+            File.Copy(DeployConfig.DirOfflineInstallerFolder + @"\data.zip",
+                DeployConfig.DirLocalPathToUpload + @"\PowerPointLabsInstaller.zip",
+                TextCollection.Const.IsOverWritten);
             //vsto file
             File.Copy(DeployConfig.DirVsto, 
                 DeployConfig.DirLocalPathToUpload + @"\PowerPointLabsInstaller.vsto", 

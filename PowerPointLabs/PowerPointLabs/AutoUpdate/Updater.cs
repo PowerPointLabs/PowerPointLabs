@@ -12,8 +12,6 @@ namespace PowerPointLabs.AutoUpdate
         private readonly string _offlineInstallerAddress;
         private readonly string _destVstoAddress = Path.Combine(Path.GetTempPath(), TextCollection.VstoName);
         private readonly string _destOfflineInstallerAddress = Path.Combine(Path.GetTempPath(), TextCollection.InstallerName);
-        private readonly string _destOfflineInstallerDataAddress = Path.Combine(Path.GetTempPath(), 
-                                @"PowerPointLabsInstaller\data.zip");
 
         public Updater()
         {
@@ -73,7 +71,6 @@ namespace PowerPointLabs.AutoUpdate
         private void AfterInstallerDownloadHandler()
         {
             Unzip(_destOfflineInstallerAddress);
-            Unzip(_destOfflineInstallerDataAddress);
             //No need to run it, ppt will auto exec it when run next time
         }
 
