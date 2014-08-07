@@ -38,13 +38,14 @@ namespace PowerPointLabs
             this.editNameToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.removeShapeToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.tabControl = new System.Windows.Forms.TabControl();
-            this.tabPage1 = new System.Windows.Forms.TabPage();
+            this.defaultPage = new System.Windows.Forms.TabPage();
             this.myShapeFlowLayout = new System.Windows.Forms.FlowLayoutPanel();
             this.flowlayoutContextMenuStrip = new System.Windows.Forms.ContextMenuStrip(this.components);
             this.settingsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.addMorePageButton = new System.Windows.Forms.TabPage();
             this.shapeContextMenuStrip.SuspendLayout();
             this.tabControl.SuspendLayout();
-            this.tabPage1.SuspendLayout();
+            this.defaultPage.SuspendLayout();
             this.flowlayoutContextMenuStrip.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -78,7 +79,8 @@ namespace PowerPointLabs
             // 
             // tabControl
             // 
-            this.tabControl.Controls.Add(this.tabPage1);
+            this.tabControl.Controls.Add(this.defaultPage);
+            this.tabControl.Controls.Add(this.addMorePageButton);
             this.tabControl.Dock = System.Windows.Forms.DockStyle.Fill;
             this.tabControl.Location = new System.Drawing.Point(0, 0);
             this.tabControl.Name = "tabControl";
@@ -86,17 +88,17 @@ namespace PowerPointLabs
             this.tabControl.Size = new System.Drawing.Size(417, 499);
             this.tabControl.TabIndex = 5;
             // 
-            // tabPage1
+            // defaultPage
             // 
-            this.tabPage1.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
-            this.tabPage1.Controls.Add(this.myShapeFlowLayout);
-            this.tabPage1.Location = new System.Drawing.Point(4, 22);
-            this.tabPage1.Name = "tabPage1";
-            this.tabPage1.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPage1.Size = new System.Drawing.Size(409, 473);
-            this.tabPage1.TabIndex = 0;
-            this.tabPage1.Text = "My Saved Shapes";
-            this.tabPage1.UseVisualStyleBackColor = true;
+            this.defaultPage.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
+            this.defaultPage.Controls.Add(this.myShapeFlowLayout);
+            this.defaultPage.Location = new System.Drawing.Point(4, 22);
+            this.defaultPage.Name = "defaultPage";
+            this.defaultPage.Padding = new System.Windows.Forms.Padding(3);
+            this.defaultPage.Size = new System.Drawing.Size(409, 473);
+            this.defaultPage.TabIndex = 0;
+            this.defaultPage.Text = "My Saved Shapes";
+            this.defaultPage.UseVisualStyleBackColor = true;
             // 
             // myShapeFlowLayout
             // 
@@ -117,14 +119,25 @@ namespace PowerPointLabs
             this.flowlayoutContextMenuStrip.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.settingsToolStripMenuItem});
             this.flowlayoutContextMenuStrip.Name = "flowlayoutContextMenuStrip";
-            this.flowlayoutContextMenuStrip.Size = new System.Drawing.Size(153, 48);
+            this.flowlayoutContextMenuStrip.Size = new System.Drawing.Size(123, 26);
             this.flowlayoutContextMenuStrip.ItemClicked += new System.Windows.Forms.ToolStripItemClickedEventHandler(this.FlowlayoutContextMenuStripItemClicked);
             // 
             // settingsToolStripMenuItem
             // 
             this.settingsToolStripMenuItem.Name = "settingsToolStripMenuItem";
-            this.settingsToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.settingsToolStripMenuItem.Size = new System.Drawing.Size(122, 22);
             this.settingsToolStripMenuItem.Text = "Settings";
+            // 
+            // addMorePageButton
+            // 
+            this.addMorePageButton.Location = new System.Drawing.Point(4, 22);
+            this.addMorePageButton.Name = "addMorePageButton";
+            this.addMorePageButton.Padding = new System.Windows.Forms.Padding(3);
+            this.addMorePageButton.Size = new System.Drawing.Size(409, 473);
+            this.addMorePageButton.TabIndex = 1;
+            this.addMorePageButton.Text = "Add...";
+            this.addMorePageButton.UseVisualStyleBackColor = true;
+            this.addMorePageButton.Click += new System.EventHandler(this.addMorePageButton_Click);
             // 
             // CustomShapePane
             // 
@@ -137,7 +150,7 @@ namespace PowerPointLabs
             this.Click += new System.EventHandler(this.CustomShapePaneClick);
             this.shapeContextMenuStrip.ResumeLayout(false);
             this.tabControl.ResumeLayout(false);
-            this.tabPage1.ResumeLayout(false);
+            this.defaultPage.ResumeLayout(false);
             this.flowlayoutContextMenuStrip.ResumeLayout(false);
             this.ResumeLayout(false);
 
@@ -149,7 +162,7 @@ namespace PowerPointLabs
         private System.Windows.Forms.ToolStripMenuItem removeShapeToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem editNameToolStripMenuItem;
         private System.Windows.Forms.TabControl tabControl;
-        private System.Windows.Forms.TabPage tabPage1;
+        private System.Windows.Forms.TabPage defaultPage;
         private System.Windows.Forms.FlowLayoutPanel myShapeFlowLayout;
 
         private readonly Label _noShapeLabelFirstLine = new Label
@@ -187,5 +200,6 @@ namespace PowerPointLabs
         private ToolStripMenuItem addToSlideToolStripMenuItem;
         private ContextMenuStrip flowlayoutContextMenuStrip;
         private ToolStripMenuItem settingsToolStripMenuItem;
+        private TabPage addMorePageButton;
     }
 }
