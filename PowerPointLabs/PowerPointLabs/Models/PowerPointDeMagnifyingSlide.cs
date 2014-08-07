@@ -34,12 +34,12 @@ namespace PowerPointLabs.Models
                 //Zoom stored shape to fit slide
                 zoomSlideCroppedShapes.LockAspectRatio = Office.MsoTriState.msoTrue;
                 if (zoomSlideCroppedShapes.Width > zoomSlideCroppedShapes.Height)
-                    zoomSlideCroppedShapes.Width = PowerPointPresentation.SlideWidth;
+                    zoomSlideCroppedShapes.Width = PowerPointCurrentPresentationInfo.SlideWidth;
                 else
-                    zoomSlideCroppedShapes.Height = PowerPointPresentation.SlideHeight;
+                    zoomSlideCroppedShapes.Height = PowerPointCurrentPresentationInfo.SlideHeight;
 
-                zoomSlideCroppedShapes.Left = (PowerPointPresentation.SlideWidth / 2) - (zoomSlideCroppedShapes.Width / 2);
-                zoomSlideCroppedShapes.Top = (PowerPointPresentation.SlideHeight / 2) - (zoomSlideCroppedShapes.Height / 2);
+                zoomSlideCroppedShapes.Left = (PowerPointCurrentPresentationInfo.SlideWidth / 2) - (zoomSlideCroppedShapes.Width / 2);
+                zoomSlideCroppedShapes.Top = (PowerPointCurrentPresentationInfo.SlideHeight / 2) - (zoomSlideCroppedShapes.Height / 2);
 
                 DefaultMotionAnimation.AddDefaultMotionAnimation(this, zoomSlideCroppedShapes, zoomShape, 0.5f, PowerPoint.MsoAnimTriggerType.msoAnimTriggerWithPrevious);
 
@@ -150,12 +150,12 @@ namespace PowerPointLabs.Models
             PowerPoint.Shape referenceShape = _slide.Shapes.Paste()[1];
             referenceShape.LockAspectRatio = Office.MsoTriState.msoTrue;
             if (referenceShape.Width > referenceShape.Height)
-                referenceShape.Width = PowerPointPresentation.SlideWidth;
+                referenceShape.Width = PowerPointCurrentPresentationInfo.SlideWidth;
             else
-                referenceShape.Height = PowerPointPresentation.SlideHeight;
+                referenceShape.Height = PowerPointCurrentPresentationInfo.SlideHeight;
 
-            referenceShape.Left = (PowerPointPresentation.SlideWidth / 2) - (referenceShape.Width / 2);
-            referenceShape.Top = (PowerPointPresentation.SlideHeight / 2) - (referenceShape.Height / 2);
+            referenceShape.Left = (PowerPointCurrentPresentationInfo.SlideWidth / 2) - (referenceShape.Width / 2);
+            referenceShape.Top = (PowerPointCurrentPresentationInfo.SlideHeight / 2) - (referenceShape.Height / 2);
 
             return referenceShape;
         }
@@ -171,8 +171,8 @@ namespace PowerPointLabs.Models
             {
                 zoomSlideCroppedShapes.PictureFormat.CropLeft += zoomShape.Left;
                 zoomSlideCroppedShapes.PictureFormat.CropTop += zoomShape.Top;
-                zoomSlideCroppedShapes.PictureFormat.CropRight += (PowerPointPresentation.SlideWidth - (zoomShape.Left + zoomShape.Width));
-                zoomSlideCroppedShapes.PictureFormat.CropBottom += (PowerPointPresentation.SlideHeight - (zoomShape.Top + zoomShape.Height));
+                zoomSlideCroppedShapes.PictureFormat.CropRight += (PowerPointCurrentPresentationInfo.SlideWidth - (zoomShape.Left + zoomShape.Width));
+                zoomSlideCroppedShapes.PictureFormat.CropBottom += (PowerPointCurrentPresentationInfo.SlideHeight - (zoomShape.Top + zoomShape.Height));
 
                 PowerPointLabsGlobals.CopyShapePosition(zoomShape, ref zoomSlideCroppedShapes);
             }

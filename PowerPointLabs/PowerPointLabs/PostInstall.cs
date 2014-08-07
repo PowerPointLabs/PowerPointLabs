@@ -1,11 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
+﻿using System.Windows.Forms;
 using Microsoft.VisualStudio.Tools.Applications.Deployment;
-using Microsoft.VisualStudio.Tools.Applications;
-using System.IO;
-using System.Windows.Forms;
 
 namespace PowerPointLabs
 {
@@ -16,16 +10,26 @@ namespace PowerPointLabs
     {
         public void Execute(AddInPostDeploymentActionArgs args)
         {
-            string dataDirectory = @"PowerPointLabs Quick Tutorial.pptx";
-            string sourcePath = args.AddInPath;
-            string sourceFile = System.IO.Path.Combine(sourcePath, dataDirectory);
+            var sourceFile = "";
+            switch (Properties.Settings.Default.ReleaseType)
+            {
+                case "dev":
+                    sourceFile = Properties.Settings.Default.DevAddr + TextCollection.QuickTutorialFileName;
+                    break;
+                case "release":
+                    sourceFile = Properties.Settings.Default.ReleaseAddr + TextCollection.QuickTutorialFileName;
+                    break;
+            }
 
             switch (args.InstallationStatus)
             {
                 case AddInInstallationStatus.InitialInstall:
                     try
                     {
-                        System.Diagnostics.Process.Start(sourceFile);
+                        if (sourceFile != "")
+                        {
+                            System.Diagnostics.Process.Start("POWERPNT", sourceFile);
+                        }
                     }
                     catch
                     {

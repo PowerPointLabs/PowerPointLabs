@@ -20,12 +20,11 @@ namespace PowerPointLabs
         private const int ErrorCodeForExceedSlideBound = 2;
         private const int ErrorCodeForRotationNonZero = 3;
 
-        private const string ErrorMessageForSelectionCountZero = "To use 'Crop To Shape', please select at least one shape.";
-        private const string ErrorMessageForSelectionNonShape = "'Crop To Shape' only supports shape objects.";
-        private const string ErrorMessageForExceedSlideBound = "Please ensure your shape is within the slide.";
-        private const string ErrorMessageForRotationNonZero = "In the current version, the 'Crop To Shape' feature does not" +
-                                                              " work if the shape is rotated";
-        private const string ErrorMessageForUndefined = "Undefined error in 'Crop To Shape'.";
+        private const string ErrorMessageForSelectionCountZero = TextCollection.CropToShapeText.ErrorMessageForSelectionCountZero;
+        private const string ErrorMessageForSelectionNonShape = TextCollection.CropToShapeText.ErrorMessageForSelectionNonShape;
+        private const string ErrorMessageForExceedSlideBound = TextCollection.CropToShapeText.ErrorMessageForExceedSlideBound;
+        private const string ErrorMessageForRotationNonZero = TextCollection.CropToShapeText.ErrorMessageForRotationNonZero;
+        private const string ErrorMessageForUndefined = TextCollection.CropToShapeText.ErrorMessageForUndefined;
 
         private const string MessageBoxTitle = "Unable to crop";
 
@@ -133,9 +132,9 @@ namespace PowerPointLabs
         private static void CreateFillInBackground(PowerPoint.Shape shape, Bitmap slideImage)
         {
             float horizontalRatio =
-                (float)(GetDesiredExportWidth() / PowerPointPresentation.SlideWidth);
+                (float)(GetDesiredExportWidth() / PowerPointCurrentPresentationInfo.SlideWidth);
             float verticalRatio =
-                (float)(GetDesiredExportHeight() / PowerPointPresentation.SlideHeight);
+                (float)(GetDesiredExportHeight() / PowerPointCurrentPresentationInfo.SlideHeight);
             var croppedImage = KiCut(slideImage,
                 shape.Left * horizontalRatio,
                 shape.Top * verticalRatio,
@@ -249,8 +248,8 @@ namespace PowerPointLabs
             //-1 and +1 for better user experience
             bool cond1 = shape.Left >= -1;
             bool cond2 = shape.Top >= -1;
-            bool cond3 = shape.Left + shape.Width <= PowerPointPresentation.SlideWidth + 1;
-            bool cond4 = shape.Top + shape.Height <= PowerPointPresentation.SlideHeight + 1;
+            bool cond3 = shape.Left + shape.Width <= PowerPointCurrentPresentationInfo.SlideWidth + 1;
+            bool cond4 = shape.Top + shape.Height <= PowerPointCurrentPresentationInfo.SlideHeight + 1;
             return cond1 && cond2 && cond3 && cond4;
         }
 

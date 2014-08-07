@@ -17,10 +17,10 @@ namespace PowerPointLabs
         {
             try
             {
-                var currentSlide = PowerPointPresentation.CurrentSlide as PowerPointSlide;
+                var currentSlide = PowerPointCurrentPresentationInfo.CurrentSlide as PowerPointSlide;
                 PowerPoint.Shape selectedShape = Globals.ThisAddIn.Application.ActiveWindow.Selection.ShapeRange[1];
 
-                if (currentSlide == null || currentSlide.Index == PowerPointPresentation.SlideCount)
+                if (currentSlide == null || currentSlide.Index == PowerPointCurrentPresentationInfo.SlideCount)
                 {
                     System.Windows.Forms.MessageBox.Show("Please select the correct slide", "Unable to Add Animations");
                     return;
@@ -79,7 +79,7 @@ namespace PowerPointLabs
         {
             try
             {
-                var currentSlide = PowerPointPresentation.CurrentSlide as PowerPointSlide;
+                var currentSlide = PowerPointCurrentPresentationInfo.CurrentSlide as PowerPointSlide;
                 PowerPoint.Shape selectedShape = Globals.ThisAddIn.Application.ActiveWindow.Selection.ShapeRange[1];
 
                 if (currentSlide == null || currentSlide.Index == 1)
@@ -153,11 +153,11 @@ namespace PowerPointLabs
         //Delete previously added drill down slides
         private static PowerPointSlide GetNextSlide(PowerPointSlide currentSlide)
         {
-            PowerPointSlide nextSlide = PowerPointPresentation.Slides.ElementAt(currentSlide.Index);
+            PowerPointSlide nextSlide = PowerPointCurrentPresentationInfo.Slides.ElementAt(currentSlide.Index);
             PowerPointSlide tempSlide = nextSlide;
-            while (nextSlide.Name.Contains("PPTLabsZoomIn") && nextSlide.Index < PowerPointPresentation.SlideCount)
+            while (nextSlide.Name.Contains("PPTLabsZoomIn") && nextSlide.Index < PowerPointCurrentPresentationInfo.SlideCount)
             {
-                nextSlide = PowerPointPresentation.Slides.ElementAt(tempSlide.Index);
+                nextSlide = PowerPointCurrentPresentationInfo.Slides.ElementAt(tempSlide.Index);
                 tempSlide.Delete();
             }
             nextSlide.Transition.EntryEffect = PowerPoint.PpEntryEffect.ppEffectFadeSmoothly;
@@ -168,11 +168,11 @@ namespace PowerPointLabs
         //Delete previously added step back slides
         private static PowerPointSlide GetPreviousSlide(PowerPointSlide currentSlide)
         {
-            PowerPointSlide previousSlide = PowerPointPresentation.Slides.ElementAt(currentSlide.Index - 2);
+            PowerPointSlide previousSlide = PowerPointCurrentPresentationInfo.Slides.ElementAt(currentSlide.Index - 2);
             PowerPointSlide tempSlide = previousSlide;
             while (previousSlide.Name.Contains("PPTLabsZoomOut") && previousSlide.Index > 1)
             {
-                previousSlide = PowerPointPresentation.Slides.ElementAt(tempSlide.Index - 2);
+                previousSlide = PowerPointCurrentPresentationInfo.Slides.ElementAt(tempSlide.Index - 2);
                 tempSlide.Delete();
             }
 
@@ -308,10 +308,10 @@ namespace PowerPointLabs
             PowerPoint.Shape shapeGroup = selection.Group();
 
             shapeGroup.LockAspectRatio = Office.MsoTriState.msoFalse;
-            shapeGroup.Left = (PowerPointPresentation.SlideWidth / 2) - ((previousSlidePicture.Left + (previousSlidePicture.Width) / 2) * PowerPointPresentation.SlideWidth / previousSlidePicture.Width);
-            shapeGroup.Top = (PowerPointPresentation.SlideHeight / 2) - ((previousSlidePicture.Top + (previousSlidePicture.Height) / 2) * PowerPointPresentation.SlideHeight / previousSlidePicture.Height);
-            shapeGroup.Width = PowerPointPresentation.SlideWidth * PowerPointPresentation.SlideWidth / previousSlidePicture.Width;
-            shapeGroup.Height = PowerPointPresentation.SlideHeight * PowerPointPresentation.SlideHeight / previousSlidePicture.Height;
+            shapeGroup.Left = (PowerPointCurrentPresentationInfo.SlideWidth / 2) - ((previousSlidePicture.Left + (previousSlidePicture.Width) / 2) * PowerPointCurrentPresentationInfo.SlideWidth / previousSlidePicture.Width);
+            shapeGroup.Top = (PowerPointCurrentPresentationInfo.SlideHeight / 2) - ((previousSlidePicture.Top + (previousSlidePicture.Height) / 2) * PowerPointCurrentPresentationInfo.SlideHeight / previousSlidePicture.Height);
+            shapeGroup.Width = PowerPointCurrentPresentationInfo.SlideWidth * PowerPointCurrentPresentationInfo.SlideWidth / previousSlidePicture.Width;
+            shapeGroup.Height = PowerPointCurrentPresentationInfo.SlideHeight * PowerPointCurrentPresentationInfo.SlideHeight / previousSlidePicture.Height;
 
             shapeGroup.Left += (0 - previousSlidePictureCopy.Left);
             shapeGroup.Top += (0 - previousSlidePictureCopy.Top);

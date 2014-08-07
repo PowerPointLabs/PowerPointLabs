@@ -32,19 +32,19 @@ namespace PowerPointLabs.Models
             //Create zoomed-in version of the part of the slide specified by zoom shape
             zoomSlideCroppedShapes.PictureFormat.CropLeft += zoomShape.Left;
             zoomSlideCroppedShapes.PictureFormat.CropTop += zoomShape.Top;
-            zoomSlideCroppedShapes.PictureFormat.CropRight += (PowerPointPresentation.SlideWidth - (zoomShape.Left + zoomShape.Width));
-            zoomSlideCroppedShapes.PictureFormat.CropBottom += (PowerPointPresentation.SlideHeight - (zoomShape.Top + zoomShape.Height));
+            zoomSlideCroppedShapes.PictureFormat.CropRight += (PowerPointCurrentPresentationInfo.SlideWidth - (zoomShape.Left + zoomShape.Width));
+            zoomSlideCroppedShapes.PictureFormat.CropBottom += (PowerPointCurrentPresentationInfo.SlideHeight - (zoomShape.Top + zoomShape.Height));
 
             PowerPointLabsGlobals.CopyShapePosition(zoomShape, ref zoomSlideCroppedShapes);
 
             zoomSlideCroppedShapes.LockAspectRatio = Office.MsoTriState.msoTrue;
             if (zoomSlideCroppedShapes.Width > zoomSlideCroppedShapes.Height)
-                zoomSlideCroppedShapes.Width = PowerPointPresentation.SlideWidth;
+                zoomSlideCroppedShapes.Width = PowerPointCurrentPresentationInfo.SlideWidth;
             else
-                zoomSlideCroppedShapes.Height = PowerPointPresentation.SlideHeight;
+                zoomSlideCroppedShapes.Height = PowerPointCurrentPresentationInfo.SlideHeight;
 
-            zoomSlideCroppedShapes.Left = (PowerPointPresentation.SlideWidth / 2) - (zoomSlideCroppedShapes.Width / 2);
-            zoomSlideCroppedShapes.Top = (PowerPointPresentation.SlideHeight / 2) - (zoomSlideCroppedShapes.Height / 2);
+            zoomSlideCroppedShapes.Left = (PowerPointCurrentPresentationInfo.SlideWidth / 2) - (zoomSlideCroppedShapes.Width / 2);
+            zoomSlideCroppedShapes.Top = (PowerPointCurrentPresentationInfo.SlideHeight / 2) - (zoomSlideCroppedShapes.Height / 2);
 
             zoomSlideCroppedShapes.PictureFormat.CropLeft = 0;
             zoomSlideCroppedShapes.PictureFormat.CropTop = 0;

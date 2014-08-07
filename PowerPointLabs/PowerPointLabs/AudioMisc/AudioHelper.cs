@@ -145,7 +145,7 @@ namespace PowerPointLabs.AudioMisc
 
         public static Shape InsertAudioFileOnSlide(PowerPointSlide slide, string fileName)
         {
-            float slideWidth = PowerPointPresentation.SlideWidth;
+            float slideWidth = PowerPointCurrentPresentationInfo.SlideWidth;
 
             Shape audioShape = slide.Shapes.AddMediaObject2(fileName, MsoTriState.msoFalse, MsoTriState.msoTrue, slideWidth + 20);
             slide.RemoveAnimationsForShape(audioShape);
