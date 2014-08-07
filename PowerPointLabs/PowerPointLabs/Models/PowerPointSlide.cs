@@ -66,11 +66,27 @@ namespace PowerPointLabs.Models
                     return String.Empty;
                 }
 
-                IEnumerable<Shape> notesPagePlaceholders = _slide.NotesPage.Shapes.Placeholders.Cast<Shape>();
-                Shape notesPageBody = notesPagePlaceholders.FirstOrDefault(shape => shape.PlaceholderFormat.Type == PpPlaceholderType.ppPlaceholderBody);
+                var notesPagePlaceholders = _slide.NotesPage.Shapes.Placeholders.Cast<Shape>();
+                var notesPageBody = notesPagePlaceholders.FirstOrDefault(shape => shape.PlaceholderFormat.Type == PpPlaceholderType.ppPlaceholderBody);
 
                 String notesText = notesPageBody != null ? notesPageBody.TextFrame.TextRange.Text : String.Empty;
                 return notesText;
+            }
+
+            set
+            {
+                if (_slide == null || _slide.HasNotesPage == MsoTriState.msoFalse)
+                {
+                    return;
+                }
+
+                var notesPagePlaceholders = _slide.NotesPage.Shapes.Placeholders.Cast<Shape>();
+                var notesPageBody = notesPagePlaceholders.FirstOrDefault(shape => shape.PlaceholderFormat.Type == PpPlaceholderType.ppPlaceholderBody);
+
+                if (notesPageBody != null)
+                {
+                    notesPageBody.TextFrame.TextRange.Text = value;
+                }
             }
         }
 

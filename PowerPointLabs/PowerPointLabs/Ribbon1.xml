@@ -161,6 +161,11 @@
                   getImage="GetRemoveCaptionsImage"
                   getEnabled="OnGetEnabledRemoveCaptions"
                   size="large" />
+           <button id="RemoveAllNotesButton"
+                  getLabel="GetRemoveAllNotesButtonLabel"
+                  getSupertip="GetRemoveAllNotesButtonSupertip"
+                  onAction="RemoveAllNotesClick"
+                  size="large" />
         </group>
         <group id="HighlightBullets"
                getLabel="GetHighlightBulletsGroupLabel"
