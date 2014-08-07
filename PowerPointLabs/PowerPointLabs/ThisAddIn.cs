@@ -234,6 +234,9 @@ namespace PowerPointLabs
             var activeWindow = pres.Application.ActiveWindow;
             var tempName = pres.Name.GetHashCode().ToString(CultureInfo.InvariantCulture);
 
+            // new unsaved document window does not have path associated
+            _noPathAssociate = true;
+
             _documentHashcodeMapper[activeWindow] = tempName;
         }
 
