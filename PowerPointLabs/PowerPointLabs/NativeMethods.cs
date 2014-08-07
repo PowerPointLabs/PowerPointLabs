@@ -189,7 +189,9 @@ namespace PPExtraEventHelper
             TVM_SELECTITEM = (TV_FIRST + 11),
             TVM_GETNEXTITEM = (TV_FIRST + 10),
             TVM_GETITEM = (TV_FIRST + 12),
-            TVM_ENSUREVISIBLE = (TV_FIRST + 20)
+            TVM_ENSUREVISIBLE = (TV_FIRST + 20),
+
+            WS_EX_COMPOSITED = 0x02000000
         }
 
         internal enum Event

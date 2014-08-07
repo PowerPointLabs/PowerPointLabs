@@ -1504,7 +1504,7 @@ namespace PowerPointLabs
         }
         # endregion
 
-        # region UI Control Events
+        # region Event Handlers
         private void RecButtonClick(object sender, EventArgs e)
         {
             switch (_recButtonStatus)
@@ -1768,10 +1768,20 @@ namespace PowerPointLabs
                 }
             }
         }
+
+        protected override CreateParams CreateParams
+        {
+            get
+            {
+                var createParams = base.CreateParams;
+                createParams.ExStyle |= (int)Native.Message.WS_EX_COMPOSITED;  // Turn on WS_EX_COMPOSITED
+                return createParams;
+            }
+        }
         # endregion
         # endregion
 
-        // do when the task pane first initialized
+        # region Constructor
         public RecorderTaskPane(string tempFolderName)
         {
             _audioList = new List<List<Audio>>();
@@ -1797,6 +1807,7 @@ namespace PowerPointLabs
             // don't allow user to touch trackbar, thus disabled
             soundTrackBar.Enabled = false;
         }
+        # endregion
 
         protected override void WndProc(ref Message m)
         {
