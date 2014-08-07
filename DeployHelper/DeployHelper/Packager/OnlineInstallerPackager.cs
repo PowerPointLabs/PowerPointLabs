@@ -1,4 +1,5 @@
 ﻿using System.IO;
+using System.IO.Compression;
 
 namespace DeployHelper.Packager
 {
@@ -18,6 +19,22 @@ namespace DeployHelper.Packager
             //into this
             //  \online\PowerPointLabs.exe  (package, to be sent to user)
             RunIExpress(DeployConfig.DirOnlineInstallerFolder);
+            //Turn IExpress package exe to zip
+            if (File.Exists(DeployConfig.DirOnlineInstallerFolder + @"\PowerPointLabs.exe"))
+            {
+                var installerZip =
+                    ZipStorer.Create(DeployConfig.DirOnlineInstallerFolder + @"\PowerPointLabs.zip",
+                        "PowerPointLabs Online Installer");
+                installerZip.AddFile(ZipStorer.Compression.Store,
+                    DeployConfig.DirOnlineInstallerFolder + @"\PowerPointLabs.exe"
+                    , "setup.exe"
+                    , "");
+                installerZip.Close();
+            }
+            else
+            {
+                Util.DisplayWarning("IExpress package fails to produce", new FileNotFoundException());
+            }
         }
     }
 }
