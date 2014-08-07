@@ -59,6 +59,7 @@
     <Compile Include="Packager\OnlineInstallerPackager.cs" />
     <Compile Include="Packager\AbstractPackager.cs" />
     <Compile Include="Packager\PackagerFactory.cs" />
+    <Compile Include="ZipStorer.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="TextCollection.cs" />

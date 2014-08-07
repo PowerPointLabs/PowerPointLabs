@@ -7,13 +7,13 @@ namespace DeployHelper.Uploader
         public override void Prepare()
         {
             Util.CreateDirectory(DeployConfig.DirLocalPathToUpload);
-            //offline installer exe
-            File.Copy(DeployConfig.DirOfflineInstallerFolder + @"\PowerPointLabsInstaller.exe",
-                DeployConfig.DirLocalPathToUpload + @"\PowerPointLabsInstaller.exe", 
+            //offline installer exe zip
+            File.Copy(DeployConfig.DirOfflineInstallerFolder + @"\PowerPointLabsInstaller.zip",
+                DeployConfig.DirLocalPathToUpload + @"\PowerPointLabsInstaller.zip", 
                 TextCollection.Const.IsOverWritten);
-            //offline installer zip
+            //offline installer data zip
             File.Copy(DeployConfig.DirOfflineInstallerFolder + @"\data.zip",
-                DeployConfig.DirLocalPathToUpload + @"\PowerPointLabsInstaller.zip",
+                DeployConfig.DirLocalPathToUpload + @"\data.zip",
                 TextCollection.Const.IsOverWritten);
             //vsto file
             File.Copy(DeployConfig.DirVsto, 
