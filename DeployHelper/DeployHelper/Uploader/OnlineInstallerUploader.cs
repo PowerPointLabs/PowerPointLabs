@@ -15,9 +15,9 @@ namespace DeployHelper.Uploader
 
             //build folder
             Util.CopyFolder(Config.DirBuild, buildNameDirectory, TextCollection.Const.IsOverWritten);
-            //installer exe
-            File.Copy(DeployConfig.DirOnlineInstallerFolder + @"\PowerPointLabs.exe",
-                DeployConfig.DirLocalPathToUpload + @"\PowerPointLabs.exe", 
+            //installer exe zip
+            File.Copy(DeployConfig.DirOnlineInstallerFolder + @"\PowerPointLabs.zip",
+                DeployConfig.DirLocalPathToUpload + @"\PowerPointLabs.zip", 
                 TextCollection.Const.IsOverWritten);
             //vsto file
             File.Copy(DeployConfig.DirVsto,

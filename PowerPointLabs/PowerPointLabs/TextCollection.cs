@@ -296,7 +296,7 @@
 
         public const string QuickTutorialFileName = "Tutorial.pptx";
         public const string VstoName = "PowerPointLabsInstaller.vsto";
-        public const string InstallerName = "PowerPointLabsInstaller.zip";
+        public const string InstallerName = "data.zip";
 
         # endregion
     }
