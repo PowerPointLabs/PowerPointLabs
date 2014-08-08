@@ -1,12 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Drawing;
 using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Text.RegularExpressions;
 using System.Windows.Forms;
-using PPExtraEventHelper;
 using PowerPointLabs.Models;
 using PowerPointLabs.Utils;
 using PowerPointLabs.Views;
@@ -29,8 +27,6 @@ namespace PowerPointLabs
         private bool _firstClick = true;
         private bool _clickOnSelected;
         private bool _isLeftButton;
-
-        private readonly Size _controlSize = new Size(417, 499);
 
         private int _clicks;
 
@@ -238,15 +234,12 @@ namespace PowerPointLabs
             {
                 return;
             }
-
-            Width = _controlSize.Width + 4;
-            //Graphics.SuspendDrawing(myShapeFlowLayout);
             
             // emptize the panel and load shapes from folder
             myShapeFlowLayout.Controls.Clear();
             PrepareShapes();
-
-            //Graphics.ResumeDrawing(myShapeFlowLayout);
+            // scroll the view to show the first item
+            myShapeFlowLayout.ScrollControlIntoView(myShapeFlowLayout.Controls[0]);
 
             _firstTimeLoading = false;
         }
@@ -427,6 +420,8 @@ namespace PowerPointLabs
             clickedThumbnail.Highlight();
 
             _selectedThumbnail = clickedThumbnail;
+
+            myShapeFlowLayout.ScrollControlIntoView(_selectedThumbnail);
         }
 
         private void FocusSelected()

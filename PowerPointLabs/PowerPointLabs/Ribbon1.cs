@@ -1571,7 +1571,13 @@ namespace PowerPointLabs
                 "After Visible: " +
                 string.Format("Pane Width = {0}, Pane Height = {1}, Control Width = {2}, Control Height {3}",
                               customShapePane.Width, customShapePane.Height, customShape.Width, customShape.Height));
-            
+
+            // if the user is using office 2010, adjust control's width
+            if (Globals.ThisAddIn.Application.Version == "14.0")
+            {
+                customShape.Width = customShapePane.Width - 16;
+            }
+
             customShape.PaneReload();
         }
 
