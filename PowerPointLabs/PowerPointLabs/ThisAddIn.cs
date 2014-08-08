@@ -647,9 +647,19 @@ namespace PowerPointLabs
             // note down the control's width
             var width = control.Width;
 
+            Trace.TraceInformation(
+                "Before Registered: " +
+                string.Format("Control Width = {0}, Control Height {1}",
+                              control.Width, control.Height));
+
             // register the user control to the CustomTaskPanes collection and set it as
             // current active task pane;
             var taskPane = CustomTaskPanes.Add(control, title, wnd);
+
+            Trace.TraceInformation(
+                "After Registered: " +
+                string.Format("Pane Width = {0}, Pane Height = {1}, Control Width = {2}, Control Height {3}",
+                              taskPane.Width, taskPane.Height, control.Width, control.Height));
 
             // map the current window with the task pane
             if (!_documentPaneMapper.ContainsKey(wnd))
@@ -662,6 +672,11 @@ namespace PowerPointLabs
             // task pane UI setup
             taskPane.Visible = false;
             taskPane.Width = width + 20;
+
+            Trace.TraceInformation(
+                "After Pane Width Change: " +
+                string.Format("Pane Width = {0}, Pane Height = {1}, Control Width = {2}, Control Height {3}",
+                              taskPane.Width, taskPane.Height, control.Width, control.Height));
 
             // event handlers register
             if (visibleChangeEventHandler != null)

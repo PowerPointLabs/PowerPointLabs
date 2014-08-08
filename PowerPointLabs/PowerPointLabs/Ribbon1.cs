@@ -1551,16 +1551,27 @@ namespace PowerPointLabs
 
             Globals.ThisAddIn.InitializeShapeGallery(customShape.CurrentShapeFolderPath);
 
+            Trace.TraceInformation(
+                "Before Visible: " +
+                string.Format("Pane Width = {0}, Pane Height = {1}, Control Width = {2}, Control Height {3}",
+                              customShapePane.Width, customShapePane.Height, customShape.Width, customShape.Height));
+
             // if currently the pane is hidden, show the pane
             if (customShapePane.Visible)
             {
+                Trace.TraceInformation(
+                    "In Visible: " +
+                    string.Format("Pane Width = {0}, Pane Height = {1}, Control Width = {2}, Control Height {3}",
+                                  customShapePane.Width, customShapePane.Height, customShape.Width, customShape.Height));
                 return;
             }
 
             customShapePane.Visible = true;
             Trace.TraceInformation(
+                "After Visible: " +
                 string.Format("Pane Width = {0}, Pane Height = {1}, Control Width = {2}, Control Height {3}",
                               customShapePane.Width, customShapePane.Height, customShape.Width, customShape.Height));
+            
             customShape.PaneReload();
         }
 
