@@ -238,8 +238,11 @@ namespace PowerPointLabs
             // emptize the panel and load shapes from folder
             myShapeFlowLayout.Controls.Clear();
             PrepareShapes();
-            // scroll the view to show the first item
+            
+            // scroll the view to show the first item, and focus the flowlayout to enable
+            // scroll if applicable
             myShapeFlowLayout.ScrollControlIntoView(myShapeFlowLayout.Controls[0]);
+            myShapeFlowLayout.Focus();
 
             _firstTimeLoading = false;
         }
