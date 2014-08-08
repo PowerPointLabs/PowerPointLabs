@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Drawing;
 using System.Globalization;
 using System.IO;
 using System.Linq;
@@ -28,6 +29,8 @@ namespace PowerPointLabs
         private bool _firstClick = true;
         private bool _clickOnSelected;
         private bool _isLeftButton;
+
+        private readonly Size _controlSize = new Size(417, 499);
 
         private int _clicks;
 
@@ -236,16 +239,14 @@ namespace PowerPointLabs
                 return;
             }
 
-            Native.SendMessage(myShapeFlowLayout.Handle, (uint) Native.Message.WM_SETREDRAW, IntPtr.Zero, IntPtr.Zero);
+            Width = _controlSize.Width + 4;
+            //Graphics.SuspendDrawing(myShapeFlowLayout);
             
             // emptize the panel and load shapes from folder
             myShapeFlowLayout.Controls.Clear();
             PrepareShapes();
 
-            Native.SendMessage(myShapeFlowLayout.Handle, (uint) Native.Message.WM_SETREDRAW, new IntPtr(1), IntPtr.Zero);
-            myShapeFlowLayout.Refresh();
-
-            Refresh();
+            //Graphics.ResumeDrawing(myShapeFlowLayout);
 
             _firstTimeLoading = false;
         }
