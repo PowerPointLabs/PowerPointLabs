@@ -449,7 +449,7 @@ namespace PowerPointLabs
             }
 
             // migration only cares about if the folder has been copied to the new location entirely.
-            if (!FileAndDirTask.CopyFolder(oldPath, newPath))
+            if (!FileDir.CopyFolder(oldPath, newPath))
             {
                 loadingDialog.Dispose();
 
@@ -460,7 +460,7 @@ namespace PowerPointLabs
 
             // now we will try our best to delete the original folder, but this is not guaranteed
             // because some of the using files, such as some opening shapes, and the evil thumb.db
-            if (!FileAndDirTask.DeleteFolder(oldPath))
+            if (!FileDir.DeleteFolder(oldPath))
             {
                 MessageBox.Show(TextCollection.CustomShapeOriginalFolderDeletionError);
             }

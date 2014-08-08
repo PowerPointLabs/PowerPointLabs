@@ -441,8 +441,8 @@ namespace PowerPointLabs
                 // due to some error
                 try
                 {
-                    FileAndDirTask.DeleteFile(zipFullPath);
-                    FileAndDirTask.CopyFile(presFullName, zipFullPath);
+                    FileDir.DeleteFile(zipFullPath);
+                    FileDir.CopyFile(presFullName, zipFullPath);
                 }
                 catch (Exception e)
                 {
@@ -897,7 +897,7 @@ namespace PowerPointLabs
 
                 zip.Close();
                 
-                FileAndDirTask.DeleteFile(zipFullPath);
+                FileDir.DeleteFile(zipFullPath);
             }
             catch (Exception e)
             {

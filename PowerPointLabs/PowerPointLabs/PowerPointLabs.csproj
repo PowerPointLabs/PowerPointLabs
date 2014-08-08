@@ -273,7 +273,8 @@
     <Compile Include="Models\PowerPointShapeGalleryPresentation.cs" />
     <Compile Include="Settings.cs" />
     <Compile Include="TextCollection.cs" />
-    <Compile Include="Utils\FileAndDirTask.cs" />
+    <Compile Include="Utils\FileDir.cs" />
+    <Compile Include="Utils\Graphics.cs" />
     <Compile Include="Views\CustomPaintTextBox.cs" />
     <Compile Include="Views\ErrorDialogWrapper.cs" />
     <Compile Include="FitToSlide.cs" />
