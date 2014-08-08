@@ -1559,21 +1559,13 @@ namespace PowerPointLabs
             // if currently the pane is hidden, show the pane
             if (customShapePane.Visible)
             {
-                Trace.TraceInformation(
-                    "In Visible: " +
-                    string.Format("Pane Width = {0}, Pane Height = {1}, Control Width = {2}, Control Height {3}",
-                                  customShapePane.Width, customShapePane.Height, customShape.Width, customShape.Height));
                 return;
             }
 
             customShapePane.Visible = true;
-            Trace.TraceInformation(
-                "After Visible: " +
-                string.Format("Pane Width = {0}, Pane Height = {1}, Control Width = {2}, Control Height {3}",
-                              customShapePane.Width, customShapePane.Height, customShape.Width, customShape.Height));
 
             // if the user is using office 2010, adjust control's width
-            if (Globals.ThisAddIn.Application.Version == "14.0")
+            if (Globals.ThisAddIn.Application.Version == Globals.ThisAddIn.OfficeVersion2010)
             {
                 customShape.Width = customShapePane.Width - 16;
             }

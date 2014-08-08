@@ -32,8 +32,6 @@ namespace PowerPointLabs
         private const string DefaultShapeCategoryName = "My Shapes";
         private const string ShapeGalleryPptxName = "ShapeGallery";
         private const string TempZipName = "tempZip.zip";
-        private const string OfficeVersion2013 = "15.0";
-        private const string OfficeVersion2010 = "14.0";
 
         private string _deactivatedPresFullName;
 
@@ -48,6 +46,9 @@ namespace PowerPointLabs
                                                                                      string>();
 
         internal PowerPointShapeGalleryPresentation ShapePresentation;
+
+        public readonly string OfficeVersion2013 = "15.0";
+        public readonly string OfficeVersion2010 = "14.0";
 
         public readonly string ShapeRootFolderConfigFileName = "ShapeRootFolder.config";
 
