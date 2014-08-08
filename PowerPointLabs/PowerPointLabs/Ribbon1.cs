@@ -1558,6 +1558,9 @@ namespace PowerPointLabs
             }
 
             customShapePane.Visible = true;
+            Trace.TraceInformation(
+                string.Format("Pane Width = {0}, Pane Height = {1}, Control Width = {2}, Control Height {3}",
+                              customShapePane.Width, customShapePane.Height, customShape.Width, customShape.Height));
             customShape.PaneReload();
         }
 
