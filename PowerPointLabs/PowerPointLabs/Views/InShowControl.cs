@@ -9,7 +9,7 @@ using Point = System.Drawing.Point;
 
 namespace PowerPointLabs.Views
 {
-    public partial class InShowControl : Form
+    internal partial class InShowControl : Form
     {
         public enum ButtonStatus
         {
@@ -19,12 +19,13 @@ namespace PowerPointLabs.Views
         }
 
         private ButtonStatus _status;
-        private SlideShowWindow _slideShowWindow;
-        private int _startingSlide;
+        private readonly SlideShowWindow _slideShowWindow;
+        private readonly int _startingSlide;
+        private readonly RecorderTaskPane _recorder;
         private int _recordStartClick;
         private PowerPointSlide _recordStartSlide;
 
-        public InShowControl()
+        public InShowControl(RecorderTaskPane recorder)
         {
             InitializeComponent();
             
@@ -34,9 +35,10 @@ namespace PowerPointLabs.Views
 
             _slideShowWindow = Globals.ThisAddIn.Application.ActivePresentation.SlideShowWindow;
             _startingSlide = Globals.ThisAddIn.Application.ActivePresentation.SlideShowSettings.StartingSlide;
+            _recorder = recorder;
 
             // get slide show window
-            IntPtr slideShowWindow = new IntPtr(_slideShowWindow.HWND);
+            var slideShowWindow = new IntPtr(_slideShowWindow.HWND);
             
             Native.RECT rec;
             Native.GetWindowRect(new HandleRef(new object(), slideShowWindow), out rec);
@@ -55,18 +57,12 @@ namespace PowerPointLabs.Views
 
         public void ForceStop()
         {
-            var recorderPane = Globals.ThisAddIn.GetActivePane(typeof(RecorderTaskPane));
-            
-            if (recorderPane == null)
+            if (_recorder != null)
             {
-                return;
+                _status = ButtonStatus.Estop;
+                _recorder.StopButtonRecordingHandler(_recordStartClick, _recordStartSlide, false);
+                _status = ButtonStatus.Idle;
             }
-            
-            var recorder = recorderPane.Control as RecorderTaskPane;
-
-            _status = ButtonStatus.Estop;
-            recorder.StopButtonRecordingHandler(_recordStartClick, _recordStartSlide, false);
-            _status = ButtonStatus.Idle;
         }
 
         private int GetRelativeSlideIndex(int index)
@@ -76,8 +72,7 @@ namespace PowerPointLabs.Views
 
         private void RecButtonClick(object sender, EventArgs e)
         {
-            var recorderPane = Globals.ThisAddIn.GetActivePane(typeof(RecorderTaskPane));
-            var recorder = recorderPane.Control as RecorderTaskPane;
+            if (_recorder == null) return;
             
             int click;
             PowerPointSlide currentSlide;
@@ -89,7 +84,7 @@ namespace PowerPointLabs.Views
             }
             catch (COMException)
             {
-                MessageBox.Show("Invalid Recording Command");
+                MessageBox.Show(TextCollection.InShowControlInvalidRecCommandError);
                 return;
             }
 
@@ -101,18 +96,18 @@ namespace PowerPointLabs.Views
                     _recordStartClick = click;
                     _recordStartSlide = currentSlide;
 
-                    recButton.Text = "Stop and Advance";
+                    recButton.Text = TextCollection.InShowControlRecButtonIdleText;
                     recButton.ForeColor = Color.Red;
-                    recorder.RecButtonIdleHandler();
+                    _recorder.RecButtonIdleHandler();
                     _slideShowWindow.Activate();
                     break;
 
                 case ButtonStatus.Rec:
-                    recButton.Text = "Start Recording";
+                    recButton.Text = TextCollection.InShowControlRecButtonRecText;
                     undoButton.Enabled = true;
                     recButton.ForeColor = Color.Black;
 
-                    recorder.StopButtonRecordingHandler(_recordStartClick, _recordStartSlide, true);
+                    _recorder.StopButtonRecordingHandler(_recordStartClick, _recordStartSlide, true);
                     _slideShowWindow.Activate();
 
                     var totalClick = _slideShowWindow.View.GetClickCount();
@@ -137,15 +132,15 @@ namespace PowerPointLabs.Views
 
         private void UndoButtonClick(object sender, EventArgs e)
         {
-            var recorderPane = Globals.ThisAddIn.GetActivePane(typeof(RecorderTaskPane));
-            var recorder = recorderPane.Control as RecorderTaskPane;
-            var temp = recorder.AudioBuffer[_recordStartSlide.Index - 1];
+            if (_recorder == null) return;
+
+            var temp = _recorder.AudioBuffer[_recordStartSlide.Index - 1];
 
             // disable undo since we allow only 1 step undo
             undoButton.Enabled = false;
 
             // revert back the last action
-            recorder.UndoLastRecord(_recordStartClick, _recordStartSlide);
+            _recorder.UndoLastRecord(_recordStartClick, _recordStartSlide);
             temp.RemoveAt(temp.Count - 1);
 
             // goto previous slide and click
@@ -166,7 +161,8 @@ namespace PowerPointLabs.Views
         {
             var control = sender as Control;
 
-            if (InRectangle(control.PointToScreen(e.Location),
+            if (control != null &&
+                InRectangle(control.PointToScreen(e.Location),
                             undoButton.RectangleToScreen(undoButton.DisplayRectangle))
                 && undoButton.Enabled == false)
             {
@@ -178,9 +174,10 @@ namespace PowerPointLabs.Views
         {
             var control = sender as Control;
 
-            if (InRectangle(control.PointToScreen(e.Location),
-                            undoButton.RectangleToScreen(undoButton.DisplayRectangle))
-                && undoButton.Enabled == false)
+            if (control != null &&
+                InRectangle(control.PointToScreen(e.Location),
+                            undoButton.RectangleToScreen(undoButton.DisplayRectangle)) &&
+                undoButton.Enabled == false)
             {
                 _slideShowWindow.Activate();
             }

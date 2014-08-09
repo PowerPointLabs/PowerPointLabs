@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Drawing;
-using System.Drawing.Drawing2D;
 using System.IO;
 using System.Text.RegularExpressions;
 using System.Windows.Forms;
@@ -11,7 +10,6 @@ namespace PowerPointLabs
     public partial class LabeledThumbnail : UserControl
     {
         private bool _nameFinishHandled;
-        private bool _isHighlighted;
         private bool _isGoodName;
         
         private string _nameLabel;
@@ -70,13 +68,9 @@ namespace PowerPointLabs
         public void DeHighlight()
         {
             motherPanel.BackColor = Color.FromKnownColor(KnownColor.Window);
-            thumbnailPanel.BackColor = Color.FromKnownColor(KnownColor.Transparent);
+            thumbnailPanel.BackColor = Color.FromKnownColor(KnownColor.Window);
             labelTextBox.BackColor = Color.FromKnownColor(KnownColor.Window);
             labelTextBox.ForeColor = Color.Black;
-
-            // dehighlight will hard-disable the text box editing
-            labelTextBox.Enabled = false;
-            State = Status.Idle;
         }
 
         public void Highlight()
@@ -148,20 +142,6 @@ namespace PowerPointLabs
 
             SetToolTip(NameLable);
         }
-
-        public void ToggleHighlight()
-        {
-            if (_isHighlighted)
-            {
-                DeHighlight();
-            }
-            else
-            {
-                Highlight();
-            }
-
-            _isHighlighted = !_isHighlighted;
-        }
         # endregion
 
         # region Helper Functions
@@ -178,50 +158,6 @@ namespace PowerPointLabs
 
         // Regex = [<>:"/\\|?*]
         private const string InvalidCharsRegex = "[<>:\"/\\\\|?*]";
-
-        private double CalculateScalingRatio(Size oldSize, Size newSize)
-        {
-            double scalingRatio;
-
-            if (oldSize.Width >= oldSize.Height)
-            {
-                scalingRatio = (double)newSize.Width / oldSize.Width;
-            }
-            else
-            {
-                scalingRatio = (double)newSize.Height / oldSize.Height;
-            }
-
-            return scalingRatio;
-        }
-
-        private Bitmap CreateThumbnailImage(Image oriImage, int width, int height)
-        {
-            var scalingRatio = CalculateScalingRatio(oriImage.Size, new Size(width, height));
-
-            // calculate width and height after scaling
-            var scaledWidth = (int)Math.Round(oriImage.Size.Width * scalingRatio);
-            var scaledHeight = (int)Math.Round(oriImage.Size.Height * scalingRatio);
-
-            // calculate left top corner position of the image in the thumbnail
-            var scaledLeft = (width - scaledWidth) / 2;
-            var scaledTop = (height - scaledHeight) / 2;
-
-            // define drawing area
-            var drawingRect = new Rectangle(scaledLeft, scaledTop, scaledWidth, scaledHeight);
-            var thumbnail = new Bitmap(width, height);
-
-            // here we set the thumbnail as the highest quality
-            using (var thumbnailGraphics = Graphics.FromImage(thumbnail))
-            {
-                thumbnailGraphics.CompositingQuality = CompositingQuality.HighQuality;
-                thumbnailGraphics.InterpolationMode = InterpolationMode.HighQualityBicubic;
-                thumbnailGraphics.SmoothingMode = SmoothingMode.HighQuality;
-                thumbnailGraphics.DrawImage(oriImage, drawingRect);
-            }
-
-            return thumbnail;
-        }
 
         private void Initialize()
         {
@@ -249,12 +185,14 @@ namespace PowerPointLabs
             SetToolTip(NameLable);
 
             ImagePath = imagePath;
-            thumbnailPanel.BackgroundImage = CreateThumbnailImage(new Bitmap(ImagePath), 50, 50);
-            
+
             // critical line, we need to free the reference to the image immediately after we've
             // finished thumbnail generation, else we could not modify (rename/ delete) the
-            // image.
-            GC.Collect();
+            // image. Therefore, we use using keyword to ensure a collection.
+            using (var bitmap = new Bitmap(ImagePath))
+            {
+                thumbnailPanel.BackgroundImage = Utils.Graphics.CreateThumbnailImage(bitmap, 50, 50);
+            }
 
             State = Status.Idle;
             labelTextBox.Enabled = false;
@@ -295,7 +233,7 @@ namespace PowerPointLabs
         # endregion
 
         # region Event Handlers
-        public delegate void ClickEventDelegate(object sender, EventArgs e);
+        public delegate void ClickEventDelegate(object sender, MouseEventArgs e);
         public delegate void DoubleClickEventDelegate(object sender, EventArgs e);
         public delegate void NameEditFinishEventDelegate(object sender, string oldName);
 

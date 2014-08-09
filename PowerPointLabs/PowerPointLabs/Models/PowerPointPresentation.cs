@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Diagnostics;
 using System.IO;
 using System.Windows.Forms;
 using Microsoft.Office.Core;
@@ -71,20 +72,17 @@ namespace PowerPointLabs.Models
         {
             get
             {
-                if (_slides == null)
+                var slides = new List<PowerPointSlide>();
+
+                var interopSlides = Presentation.Slides;
+
+                foreach (Slide interopSlide in interopSlides)
                 {
-                    _slides = new List<PowerPointSlide>();
-
-                    var interopSlides = Presentation.Slides;
-
-                    foreach (Slide interopSlide in interopSlides)
-                    {
-                        var s = PowerPointSlide.FromSlideFactory(interopSlide);
-                        _slides.Add(s);
-                    }
+                    var s = PowerPointSlide.FromSlideFactory(interopSlide);
+                    slides.Add(s);
                 }
 
-                return _slides;
+                return slides;
             }
         }
 
@@ -212,30 +210,42 @@ namespace PowerPointLabs.Models
         {
             Presentation.Close();
             Presentation = null;
+
+            Trace.TraceInformation("Presentation " + NameNoExtension + " is closed.");
         }
 
-        public virtual void Open(bool readOnly = false, bool untitled = false, bool withWindow = true, bool focus = true)
+        public virtual bool Open(bool readOnly = false, bool untitled = false, bool withWindow = true, bool focus = true)
         {
             if (Opened)
             {
-                return;
+                return false;
             }
 
+            // if the file doesn't exist, create and open the file then return
             if (Create(withWindow, focus))
             {
-                return;
+                return true;
             }
 
             var workingWindow = Globals.ThisAddIn.Application.ActiveWindow;
 
-            Presentation = Globals.ThisAddIn.Application.Presentations.Open(FullName, BoolToMsoTriState(readOnly),
-                                                                            BoolToMsoTriState(untitled),
-                                                                            BoolToMsoTriState(withWindow));
+            try
+            {
+                Presentation = Globals.ThisAddIn.Application.Presentations.Open(FullName, BoolToMsoTriState(readOnly),
+                                                                                BoolToMsoTriState(untitled),
+                                                                                BoolToMsoTriState(withWindow));
+            }
+            catch (System.Exception)
+            {
+                return false;
+            }
 
             if (!focus)
             {
                 workingWindow.Activate();
             }
+
+            return true;
         }
 
         public void Save()

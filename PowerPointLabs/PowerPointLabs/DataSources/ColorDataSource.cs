@@ -1,11 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel;
-using System.Drawing;
 using System.IO;
 using System.Runtime.Serialization.Formatters.Binary;
 
-namespace PowerPointLabs
+namespace PowerPointLabs.DataSources
 {
     class ColorDataSource : INotifyPropertyChanged
     {

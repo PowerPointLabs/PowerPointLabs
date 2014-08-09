@@ -13,7 +13,7 @@ namespace PPExtraEventHelper
         [DllImport("user32.dll")]
         public static extern int CallNextHookEx(IntPtr hhk, int nCode, IntPtr wParam, IntPtr lParam);
 
-        [DllImport("kernel32.dll", CharSet = System.Runtime.InteropServices.CharSet.Auto)]
+        [DllImport("kernel32.dll", CharSet = CharSet.Auto)]
         public static extern IntPtr GetModuleHandle(string lpModuleName);
 
         [DllImport("user32.dll")]
@@ -42,6 +42,9 @@ namespace PPExtraEventHelper
         [DllImport("user32.dll", CallingConvention = CallingConvention.StdCall)]
         public static extern IntPtr GetDC(IntPtr wnd);
 
+        [DllImport("user32.dll")]
+        public static extern IntPtr GetDlgItem(IntPtr hDlg, int nIDDlgItem);
+
         [DllImport("user32.dll", CallingConvention = CallingConvention.StdCall)]
         public static extern void ReleaseDC(IntPtr dc);
 
@@ -67,6 +70,9 @@ namespace PPExtraEventHelper
         internal static extern int GetWindowThreadProcessId(IntPtr hwnd, int ID);
 
         [DllImport("user32.dll", SetLastError = true)]
+        public static extern IntPtr FindWindow(string lpClassName, string lpWindowName);
+
+        [DllImport("user32.dll", SetLastError = true)]
         internal static extern IntPtr FindWindowEx(IntPtr hwndParent, IntPtr hwndChildAfter, string lpszClass, string lpszWindow);
 
         [DllImport("user32.dll")]
@@ -74,7 +80,7 @@ namespace PPExtraEventHelper
         internal static extern bool GetWindowRect(HandleRef hWnd, out RECT lpRect);
 
         [DllImport("user32.dll", CharSet = CharSet.Auto)]
-        internal static extern int SendMessage(IntPtr hWnd, uint msg, IntPtr wParam, IntPtr lParam);
+        internal static extern IntPtr SendMessage(IntPtr hWnd, uint msg, IntPtr wParam, IntPtr lParam);
 
         [DllImport("user32.dll", SetLastError = true)]
         internal static extern bool PostMessage(IntPtr hWnd, uint Msg, IntPtr wParam, IntPtr lParam);
@@ -165,6 +171,7 @@ namespace PPExtraEventHelper
 
         internal enum Message
         {
+            WM_SETREDRAW = 0XB,
             WM_PAINT = 0xf,
             WM_COMMAND = 0x111,
             WM_LBUTTONDOWN = 0x0201,
@@ -175,7 +182,16 @@ namespace PPExtraEventHelper
             WM_CHANGECBCHAIN = 0x30D,
             WM_CLIPBOARDUPDATE = 0x031D,
             WM_GETTEXT = 0x000D,
-            WM_GETTEXTLENGTH = 0x000E
+            WM_GETTEXTLENGTH = 0x000E,
+
+            TVGN_CARET = 0x9,
+            TV_FIRST = 0x1100,
+            TVM_SELECTITEM = (TV_FIRST + 11),
+            TVM_GETNEXTITEM = (TV_FIRST + 10),
+            TVM_GETITEM = (TV_FIRST + 12),
+            TVM_ENSUREVISIBLE = (TV_FIRST + 20),
+
+            WS_EX_COMPOSITED = 0x02000000
         }
 
         internal enum Event

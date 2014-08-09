@@ -26,7 +26,6 @@ namespace PowerPointLabs
 
                 if (!isHighlightBullets && !isHighlightTextFragments)
                 {
-                    currentSlide.RemoveAnimationsForShapes(currentSlide.GetShapesWithPrefix("InSlideAnimateShape"));
                     FormatInSlideAnimateShapes(selectedShapes);
                 }
 
@@ -90,26 +89,6 @@ namespace PowerPointLabs
 
                 if (shape1 == null || shape2 == null)
                     return;
-
-                if (num == 1)
-                {
-                    if (isHighlightTextFragments)
-                    {
-                        PowerPoint.Effect appear = currentSlide.TimeLine.MainSequence.AddEffect(
-                            shape1,
-                            PowerPoint.MsoAnimEffect.msoAnimEffectFade,
-                            PowerPoint.MsoAnimateByLevel.msoAnimateLevelNone,
-                            PowerPoint.MsoAnimTriggerType.msoAnimTriggerOnPageClick); 
-                    }
-                    else
-                    {
-                        PowerPoint.Effect appear = currentSlide.TimeLine.MainSequence.AddEffect(
-                            shape1,
-                            PowerPoint.MsoAnimEffect.msoAnimEffectAppear,
-                            PowerPoint.MsoAnimateByLevel.msoAnimateLevelNone,
-                            PowerPoint.MsoAnimTriggerType.msoAnimTriggerOnPageClick); 
-                    }
-                }
 
                 if (!isHighlightTextFragments)
                 {

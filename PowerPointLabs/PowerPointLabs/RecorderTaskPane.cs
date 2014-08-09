@@ -960,6 +960,11 @@ namespace PowerPointLabs
         // disable timer and thread when the pane is closed
         public void RecorderPaneClosing()
         {
+            if (HasEvent())
+            {
+                ForceStopEvent();
+            }
+
             // before closing, clean up all unfinished sessions
             AudioHelper.CloseAudio();
 
@@ -1499,7 +1504,7 @@ namespace PowerPointLabs
         }
         # endregion
 
-        # region UI Control Events
+        # region Event Handlers
         private void RecButtonClick(object sender, EventArgs e)
         {
             switch (_recButtonStatus)
@@ -1558,6 +1563,11 @@ namespace PowerPointLabs
 
         private void SlideShowButtonClick(object sender, EventArgs e)
         {
+            if (HasEvent())
+            {
+                ForceStopEvent();
+            }
+
             // clear audio buffer
             AudioBuffer.Clear();
 
@@ -1582,7 +1592,7 @@ namespace PowerPointLabs
             slideShowWindow.View.PointerType = PpSlideShowPointerType.ppSlideShowPointerArrow;
 
             // init the in-show control
-            _inShowControlBox = new InShowControl();
+            _inShowControlBox = new InShowControl(this);
             _inShowControlBox.Show();
 
             // activate the show
@@ -1758,10 +1768,20 @@ namespace PowerPointLabs
                 }
             }
         }
+
+        protected override CreateParams CreateParams
+        {
+            get
+            {
+                var createParams = base.CreateParams;
+                createParams.ExStyle |= (int)Native.Message.WS_EX_COMPOSITED;  // Turn on WS_EX_COMPOSITED
+                return createParams;
+            }
+        }
         # endregion
         # endregion
 
-        // do when the task pane first initialized
+        # region Constructor
         public RecorderTaskPane(string tempFolderName)
         {
             _audioList = new List<List<Audio>>();
@@ -1787,6 +1807,7 @@ namespace PowerPointLabs
             // don't allow user to touch trackbar, thus disabled
             soundTrackBar.Enabled = false;
         }
+        # endregion
 
         protected override void WndProc(ref Message m)
         {

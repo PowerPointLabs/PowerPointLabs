@@ -60,7 +60,7 @@
             // 
             // thumbnailPanel
             // 
-            this.thumbnailPanel.BackColor = System.Drawing.Color.Transparent;
+            //this.thumbnailPanel.BackColor = System.Drawing.Color.Transparent;
             this.thumbnailPanel.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Center;
             this.thumbnailPanel.Location = new System.Drawing.Point(0, 0);
             this.thumbnailPanel.Margin = new System.Windows.Forms.Padding(0, 3, 0, 3);

@@ -38,10 +38,10 @@
     <OldToolsVersion>4.0</OldToolsVersion>
     <VSTO_TrustAssembliesLocation>true</VSTO_TrustAssembliesLocation>
     <BootstrapperEnabled>true</BootstrapperEnabled>
-    <PublishUrl>\\psf\Home\Desktop\PowerPointLabs Deploy\</PublishUrl>
+    <PublishUrl>C:\Users\nevets\Desktop\PowerPointLabsPublish\</PublishUrl>
     <InstallUrl>http://www.comp.nus.edu.sg/~pptlabs/download/dev/</InstallUrl>
     <TargetCulture>en</TargetCulture>
-    <ApplicationVersion>1.8.10.0</ApplicationVersion>
+    <ApplicationVersion>1.9.0.3</ApplicationVersion>
     <AutoIncrementApplicationRevision>false</AutoIncrementApplicationRevision>
     <UpdateEnabled>true</UpdateEnabled>
     <UpdateInterval>0</UpdateInterval>
@@ -229,6 +229,8 @@
     <Compile Include="AudioMisc\Audio.cs" />
     <Compile Include="AudioMisc\AudioHelper.cs" />
     <Compile Include="AutoAnimate.cs" />
+    <Compile Include="AutoUpdate\Downloader.cs" />
+    <Compile Include="AutoUpdate\Updater.cs" />
     <Compile Include="AutoZoom.cs" />
     <Compile Include="ColorPicker\ColorInformationDialog.cs">
       <SubType>Form</SubType>
@@ -238,7 +240,7 @@
     </Compile>
     <Compile Include="ColorPicker\HSLColor.cs" />
     <Compile Include="CustomBinding.cs" />
-    <Compile Include="ColorPicker\ColorDataSource.cs" />
+    <Compile Include="DataSources\ColorDataSource.cs" />
     <Compile Include="ColorPicker\ColorHelper.cs" />
     <Compile Include="ColorPicker\ColorPane.cs">
       <SubType>UserControl</SubType>
@@ -249,6 +251,7 @@
     <Compile Include="Converters\ColorPaneConverters.cs" />
     <Compile Include="ConvertToPicture.cs" />
     <Compile Include="CropToShape.cs" />
+    <Compile Include="DataSources\ShapesLabSettingsDataSource.cs" />
     <Compile Include="Properties\Resources.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -268,7 +271,10 @@
     </Compile>
     <Compile Include="Models\PowerPointPresentation.cs" />
     <Compile Include="Models\PowerPointShapeGalleryPresentation.cs" />
+    <Compile Include="Settings.cs" />
     <Compile Include="TextCollection.cs" />
+    <Compile Include="Utils\FileDir.cs" />
+    <Compile Include="Utils\Graphics.cs" />
     <Compile Include="Views\CustomPaintTextBox.cs" />
     <Compile Include="Views\ErrorDialogWrapper.cs" />
     <Compile Include="FitToSlide.cs" />
@@ -308,6 +314,7 @@
       <DependentUpon>AutoZoomDialogBox.cs</DependentUpon>
     </Compile>
     <Compile Include="DefaultMotionAnimation.cs" />
+    <Compile Include="Views\FolderDialogLauncher.cs" />
     <Compile Include="Views\Form1.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -349,6 +356,12 @@
     <Compile Include="Views\InShowControl.Designer.cs">
       <DependentUpon>InShowControl.cs</DependentUpon>
     </Compile>
+    <Compile Include="Views\ShapesLabSetting.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Views\ShapesLabSetting.Designer.cs">
+      <DependentUpon>ShapesLabSetting.cs</DependentUpon>
+    </Compile>
     <Compile Include="Views\SpotlightDialogBox.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -378,6 +391,7 @@
     <Compile Include="XMLMisc\XMLParser.cs" />
     <Compile Include="ZipStorer.cs" />
     <Compile Include="ZoomToArea.cs" />
+    <None Include="app.config" />
     <None Include="Resources\AddToCustomShapes.png" />
     <None Include="Resources\ClosedHand.cur" />
     <None Include="Resources\OpenHand.cur" />
@@ -428,9 +442,6 @@
       <DependentUpon>LoadingDialog.cs</DependentUpon>
     </EmbeddedResource>
     <None Include="packages.config" />
-    <Content Include="PowerPointLabs Quick Tutorial.pptx">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
     <None Include="Properties\DataSources\ColorDataSource.datasource" />
     <None Include="Properties\DataSources\ColorPane.datasource" />
     <None Include="Resources\Record.png" />
@@ -468,6 +479,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Views\InShowControl.resx">
       <DependentUpon>InShowControl.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Views\ShapesLabSetting.resx">
+      <DependentUpon>ShapesLabSetting.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Views\SpotlightDialogBox.resx">
       <DependentUpon>SpotlightDialogBox.cs</DependentUpon>
@@ -643,7 +657,6 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="CustomControls\" />
-    <Folder Include="Utils\" />
   </ItemGroup>
   <!-- Include the build rules for a C# project. -->
   <PropertyGroup>

@@ -6,24 +6,38 @@ using System.Linq;
 using System.Text.RegularExpressions;
 using System.Windows.Forms;
 using PowerPointLabs.Models;
+using PowerPointLabs.Utils;
+using PowerPointLabs.Views;
 
 namespace PowerPointLabs
 {
     public partial class CustomShapePane : UserControl
     {
         private const string DefaultShapeNameFormat = @"My Shape Untitled {0}";
-        private const string DefaultShapeNameSearchRegex = @"My Shape Untitled (\d+)";
+        private const string DefaultShapeNameSearchRegex = @"^My Shape Untitled (\d+)$";
+
+        private readonly string _shapeRootFolderPathConfigFile = Path.Combine(Globals.ThisAddIn.AppDataFolder,
+                                                                              Globals.ThisAddIn.ShapeRootFolderConfigFileName);
+
+        private readonly int _doubleClickTimeSpan = SystemInformation.DoubleClickTime;
         
         private LabeledThumbnail _selectedThumbnail;
 
         private bool _firstTimeLoading = true;
+        private bool _firstClick = true;
+        private bool _clickOnSelected;
+        private bool _isLeftButton;
+
+        private int _clicks;
+
+        private readonly Timer _timer;
 
         private readonly AtomicNumberStringCompare _stringComparer = new AtomicNumberStringCompare();
 
         # region Properties
         public string NextDefaultFullName
         {
-            get { return ShapeFolderPath + @"\" +
+            get { return CurrentShapeFolderPath + @"\" +
                          NextDefaultNameWithoutExtension + ".png"; }
         }
 
@@ -69,7 +83,7 @@ namespace PowerPointLabs
 
         public string CurrentShapeFullName
         {
-            get { return ShapeFolderPath + @"\" +
+            get { return CurrentShapeFolderPath + @"\" +
                          CurrentShapeNameWithoutExtension + ".png"; }
         }
 
@@ -107,7 +121,7 @@ namespace PowerPointLabs
 
         public string ShapeRootFolderPath { get; private set; }
 
-        public string ShapeFolderPath
+        public string CurrentShapeFolderPath
         {
             get { return ShapeRootFolderPath + @"\" + CurrentCategory; }
         }
@@ -116,6 +130,7 @@ namespace PowerPointLabs
         # region Constructors
         public CustomShapePane(string shapeRootFolderPath, string defaultShapeCategoryName)
         {
+            SetStyle(ControlStyles.UserPaint | ControlStyles.DoubleBuffer | ControlStyles.AllPaintingInWmPaint, true);
             InitializeComponent();
 
             ShapeRootFolderPath = shapeRootFolderPath;
@@ -123,9 +138,19 @@ namespace PowerPointLabs
             CurrentCategory = defaultShapeCategoryName;
             Categories = new List<string> {CurrentCategory};
 
-            ShowNoShapeMessage();
+            _timer = new Timer { Interval = _doubleClickTimeSpan };
+            _timer.Tick += TimerTickHandler;
+            
             myShapeFlowLayout.AutoSize = true;
             myShapeFlowLayout.Click += FlowlayoutClick;
+            myShapeFlowLayout.MouseEnter += (s, e) =>
+                                                {
+                                                    if (_selectedThumbnail != null &&
+                                                        _selectedThumbnail.State != LabeledThumbnail.Status.Editing)
+                                                    {
+                                                        myShapeFlowLayout.Focus();
+                                                    }
+                                                };
         }
         # endregion
 
@@ -134,7 +159,7 @@ namespace PowerPointLabs
         {
             DehighlightSelected();
 
-            var labeledThumbnail = new LabeledThumbnail(shapeFullName, shapeName) {ContextMenuStrip = contextMenuStrip};
+            var labeledThumbnail = new LabeledThumbnail(shapeFullName, shapeName) {ContextMenuStrip = shapeContextMenuStrip};
 
             labeledThumbnail.Click += LabeledThumbnailClick;
             labeledThumbnail.DoubleClick += LabeledThumbnailDoubleClick;
@@ -203,19 +228,35 @@ namespace PowerPointLabs
             }
         }
 
-        public void PaneReload()
+        public void PaneReload(bool forceReload = false)
         {
-            if (!_firstTimeLoading)
+            if (!_firstTimeLoading && !forceReload)
             {
                 return;
             }
-
+            
+            // emptize the panel and load shapes from folder
+            myShapeFlowLayout.Controls.Clear();
             PrepareShapes();
+            
+            // scroll the view to show the first item, and focus the flowlayout to enable
+            // scroll if applicable
+            myShapeFlowLayout.ScrollControlIntoView(myShapeFlowLayout.Controls[0]);
+            myShapeFlowLayout.Focus();
+
             _firstTimeLoading = false;
         }
         # endregion
 
         # region Helper Functions
+        private void ClickTimerReset()
+        {
+            _clicks = 0;
+            _clickOnSelected = false;
+            _firstClick = true;
+            _isLeftButton = false;
+        }
+
         private void ContextMenuStripRemoveClicked()
         {
             if (_selectedThumbnail == null)
@@ -228,7 +269,6 @@ namespace PowerPointLabs
 
             // remove shape from shape gallery
             Globals.ThisAddIn.ShapePresentation.RemoveShape(CurrentShapeNameWithoutExtension);
-            Globals.ThisAddIn.ShapePresentation.Save();
 
             // remove shape from disk and shape gallery
             File.Delete(CurrentShapeFullName);
@@ -255,6 +295,36 @@ namespace PowerPointLabs
             }
 
             _selectedThumbnail.StartNameEdit();
+        }
+
+        private void ContextMenuStripSettingsClicked()
+        {
+            var settingDialog = new ShapesLabSetting(ShapeRootFolderPath);
+
+            settingDialog.ShowDialog();
+
+            if (settingDialog.UserOption == ShapesLabSetting.Option.Ok)
+            {
+                var newPath = settingDialog.DefaultSavingPath;
+
+                if (!MigrateShapeFolder(ShapeRootFolderPath, newPath))
+                {
+                    return;
+                }
+
+                ShapeRootFolderPath = newPath;
+
+                using (var fileWriter = File.CreateText(_shapeRootFolderPathConfigFile))
+                {
+                    fileWriter.WriteLine(newPath);
+                    fileWriter.Close();
+                }
+
+                MessageBox.Show(
+                    string.Format(TextCollection.CustomeShapeSaveLocationChangedSuccessFormat, newPath),
+                    TextCollection.CustomShapeSaveLocationChangedSuccessTitle, MessageBoxButtons.OK,
+                    MessageBoxIcon.Information);
+            }
         }
 
         private void DehighlightSelected()
@@ -333,17 +403,91 @@ namespace PowerPointLabs
             return totalControl - 1;
         }
 
+        private void FirstClickOnThumbnail(LabeledThumbnail clickedThumbnail)
+        {
+            if (_selectedThumbnail != null)
+            {
+                if (_selectedThumbnail.State == LabeledThumbnail.Status.Editing)
+                {
+                    _selectedThumbnail.FinishNameEdit();
+                }
+                else
+                    if (_selectedThumbnail == clickedThumbnail)
+                    {
+                        _clickOnSelected = true;
+                    }
+
+                _selectedThumbnail.DeHighlight();
+            }
+
+            clickedThumbnail.Highlight();
+
+            _selectedThumbnail = clickedThumbnail;
+
+            myShapeFlowLayout.ScrollControlIntoView(_selectedThumbnail);
+        }
+
         private void FocusSelected()
         {
             myShapeFlowLayout.ScrollControlIntoView(_selectedThumbnail);
             _selectedThumbnail.Highlight();
         }
 
+        private bool MigrateShapeFolder(string oldPath, string newPath)
+        {
+            var loadingDialog = new LoadingDialog(TextCollection.CustomShapeMigratingDialogTitle,
+                                                  TextCollection.CustomShapeMigratingDialogContent);
+            loadingDialog.Show();
+            loadingDialog.Refresh();
+
+            // close the opening presentation
+            if (Globals.ThisAddIn.ShapePresentation.Opened)
+            {
+                Globals.ThisAddIn.ShapePresentation.Close();
+            }
+
+            // migration only cares about if the folder has been copied to the new location entirely.
+            if (!FileDir.CopyFolder(oldPath, newPath))
+            {
+                loadingDialog.Dispose();
+
+                MessageBox.Show(TextCollection.CustomShapeMigrationError);
+
+                return false;
+            }
+
+            // now we will try our best to delete the original folder, but this is not guaranteed
+            // because some of the using files, such as some opening shapes, and the evil thumb.db
+            if (!FileDir.DeleteFolder(oldPath))
+            {
+                MessageBox.Show(TextCollection.CustomShapeOriginalFolderDeletionError);
+            }
+
+            ShapeRootFolderPath = newPath;
+
+            // modify shape gallery presentation's path and name, then open it
+            Globals.ThisAddIn.ShapePresentation.Path = newPath;
+            Globals.ThisAddIn.ShapePresentation.ShapeFolderPath = CurrentShapeFolderPath;
+
+            // if there's some lost during shape gallery opening, we must force reload the pane
+            // to reflect the latest change
+            //if (!Globals.ThisAddIn.ShapePresentation.Open(withWindow: false, focus: false))
+            //{
+            //    PaneReload(true);
+            //}
+
+            Globals.ThisAddIn.ShapePresentation.Open(withWindow: false, focus: false);
+            PaneReload(true);
+            loadingDialog.Dispose();
+
+            return true;
+        }
+
         private void PrepareFolder()
         {
-            if (!Directory.Exists(ShapeFolderPath))
+            if (!Directory.Exists(CurrentShapeFolderPath))
             {
-                Directory.CreateDirectory(ShapeFolderPath);
+                Directory.CreateDirectory(CurrentShapeFolderPath);
             }
         }
 
@@ -351,7 +495,7 @@ namespace PowerPointLabs
         {
             PrepareFolder();
 
-            var shapes = Directory.EnumerateFiles(ShapeFolderPath, "*.png").OrderBy(item => item, _stringComparer);
+            var shapes = Directory.EnumerateFiles(CurrentShapeFolderPath, "*.png").OrderBy(item => item, _stringComparer);
 
             foreach (var shape in shapes)
             {
@@ -364,6 +508,11 @@ namespace PowerPointLabs
                 }
 
                 AddCustomShape(shapeName, shape, false);
+            }
+
+            if (myShapeFlowLayout.Controls.Count == 0)
+            {
+                ShowNoShapeMessage();
             }
 
             DehighlightSelected();
@@ -379,7 +528,6 @@ namespace PowerPointLabs
             labeledThumbnail.ImagePath = newPath;
 
             Globals.ThisAddIn.ShapePresentation.RenameShape(oldName, labeledThumbnail.NameLable);
-            Globals.ThisAddIn.ShapePresentation.Save();
 
             Globals.ThisAddIn.SyncShapeRename(oldName, labeledThumbnail.NameLable);
         }
@@ -412,24 +560,6 @@ namespace PowerPointLabs
         # endregion
 
         # region Event Handlers
-        private void ContextMenuStripItemClicked(object sender, ToolStripItemClickedEventArgs e)
-        {
-            var item = e.ClickedItem;
-
-            if (item.Name.Contains("remove"))
-            {
-                ContextMenuStripRemoveClicked();
-            } else
-            if (item.Name.Contains("edit"))
-            {
-                ContextMenuStripEditClicked();
-            } else
-            if (item.Name.Contains("add"))
-            {
-                LabeledThumbnailDoubleClick(_selectedThumbnail, null);
-            }
-        }
-
         private void CustomShapePaneClick(object sender, EventArgs e)
         {
             if (_selectedThumbnail != null &&
@@ -441,14 +571,32 @@ namespace PowerPointLabs
 
         private void FlowlayoutClick(object sender, EventArgs e)
         {
-            if (_selectedThumbnail != null &&
-                _selectedThumbnail.State == LabeledThumbnail.Status.Editing)
+            if (_selectedThumbnail != null)
             {
-                _selectedThumbnail.FinishNameEdit();
+                if (_selectedThumbnail.State == LabeledThumbnail.Status.Editing)
+                {
+                    _selectedThumbnail.FinishNameEdit();
+                }
+                else
+                {
+                    DehighlightSelected();
+                }
+            }
+
+            myShapeFlowLayout.Focus();
+        }
+
+        private void FlowlayoutContextMenuStripItemClicked(object sender, ToolStripItemClickedEventArgs e)
+        {
+            var item = e.ClickedItem;
+
+            if (item.Name.Contains("settings"))
+            {
+                ContextMenuStripSettingsClicked();
             }
         }
 
-        private void LabeledThumbnailClick(object sender, EventArgs e)
+        private void LabeledThumbnailClick(object sender, MouseEventArgs e)
         {
             if (sender == null || !(sender is LabeledThumbnail))
             {
@@ -456,20 +604,20 @@ namespace PowerPointLabs
                 return;
             }
 
-            var clickedThumbnail = sender as LabeledThumbnail;
+            _clicks++;
 
-            if (_selectedThumbnail != null)
-            {
-                if (_selectedThumbnail.State == LabeledThumbnail.Status.Editing)
-                {
-                    _selectedThumbnail.FinishNameEdit();
-                }
+            // only first click will be entertained
+            if (!_firstClick) return;
 
-                _selectedThumbnail.DeHighlight();
-            }
+            myShapeFlowLayout.Focus();
 
-            clickedThumbnail.Highlight();
-            _selectedThumbnail = clickedThumbnail;
+            _firstClick = false;
+            _isLeftButton = e.Button == MouseButtons.Left;
+
+            FirstClickOnThumbnail(sender as LabeledThumbnail);
+
+            // if it's left button click, we need to wait for potential second click
+            _timer.Start();
         }
 
         private void LabeledThumbnailDoubleClick(object sender, EventArgs e)
@@ -485,8 +633,15 @@ namespace PowerPointLabs
             var shapeName = clickedThumbnail.NameLable;
             var currentSlide = PowerPointCurrentPresentationInfo.CurrentSlide;
             
-            Globals.ThisAddIn.ShapePresentation.CopyShape(shapeName);
-            currentSlide.Shapes.Paste().Select();
+            if (currentSlide != null)
+            {
+                Globals.ThisAddIn.ShapePresentation.CopyShape(shapeName);
+                currentSlide.Shapes.Paste().Select();
+            }
+            else
+            {
+                MessageBox.Show(TextCollection.CustomShapeViewTypeNotSupported);
+            }
         }
 
         private void NameEditFinishHandler(object sender, string oldName)
@@ -507,6 +662,51 @@ namespace PowerPointLabs
 
             // select the thumbnail and scroll into view
             FocusSelected();
+        }
+
+        private void ThumbnailContextMenuStripItemClicked(object sender, ToolStripItemClickedEventArgs e)
+        {
+            var item = e.ClickedItem;
+
+            if (item.Name.Contains("remove"))
+            {
+                ContextMenuStripRemoveClicked();
+            }
+            else
+            if (item.Name.Contains("edit"))
+            {
+                ContextMenuStripEditClicked();
+            }
+            else
+            if (item.Name.Contains("add"))
+            {
+                LabeledThumbnailDoubleClick(_selectedThumbnail, null);
+            }
+        }
+
+        private void TimerTickHandler(object sender, EventArgs args)
+        {
+            _timer.Stop();
+
+            // if we got only 1 click in a threshold value, we take it as a single click
+            if (_clicks == 1 &&
+                _isLeftButton &&
+                _clickOnSelected)
+            {
+                _selectedThumbnail.StartNameEdit();
+            }
+
+            ClickTimerReset();
+        }
+
+        protected override CreateParams CreateParams
+        {
+            get
+            {
+                CreateParams cp = base.CreateParams;
+                cp.ExStyle |= 0x02000000;  // Turn on WS_EX_COMPOSITED
+                return cp;
+            }
         }
         # endregion
 

@@ -1,19 +1,20 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
-using System.Linq;
-using System.Text;
 using System.Windows.Forms;
 
 namespace PowerPointLabs.Views
 {
     public partial class LoadingDialog : Form
     {
-        public LoadingDialog()
+        public LoadingDialog(string title = TextCollection.LoadingDialogDefaultTitle,
+                             string content = TextCollection.LoadingDialogDefaultContent)
+
         {
             InitializeComponent();
+
+            Text = title;
+            contentLabel.Text = content;
+
+            Width = Math.Max(contentLabel.Width + 2*contentLabel.Location.X, ClientSize.Width);
         }
     }
 }
