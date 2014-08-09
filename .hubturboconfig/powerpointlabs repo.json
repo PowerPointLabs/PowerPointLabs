@@ -4,12 +4,10 @@
     "type."
   ],
   "openStatusLabels": [
-    "status.open",
     "status.accepted",
     "status.ongoing"
   ],
   "closedStatusLabels": [
-    "status.closed",
     "status.invalid",
     "status.wontfix",
     "status.duplicate",
