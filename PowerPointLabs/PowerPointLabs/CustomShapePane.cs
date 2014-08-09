@@ -755,6 +755,11 @@ namespace PowerPointLabs
         }
         # endregion
 
+        private void addMorePageButton_Click(object sender, EventArgs e)
+        {
+            MessageBox.Show("asdf");
+        }
+
         # region search box appearance and behaviors
         /*
         private bool _searchBoxFocused = false;
