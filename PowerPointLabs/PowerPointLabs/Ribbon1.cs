@@ -1551,6 +1551,11 @@ namespace PowerPointLabs
 
             Globals.ThisAddIn.InitializeShapeGallery(customShape.CurrentShapeFolderPath);
 
+            Trace.TraceInformation(
+                "Before Visible: " +
+                string.Format("Pane Width = {0}, Pane Height = {1}, Control Width = {2}, Control Height {3}",
+                              customShapePane.Width, customShapePane.Height, customShape.Width, customShape.Height));
+
             // if currently the pane is hidden, show the pane
             if (customShapePane.Visible)
             {
@@ -1558,6 +1563,13 @@ namespace PowerPointLabs
             }
 
             customShapePane.Visible = true;
+
+            // if the user is using office 2010, adjust control's width
+            if (Globals.ThisAddIn.Application.Version == Globals.ThisAddIn.OfficeVersion2010)
+            {
+                customShape.Width = customShapePane.Width - 16;
+            }
+
             customShape.PaneReload();
         }
 

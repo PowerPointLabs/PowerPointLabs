@@ -32,8 +32,6 @@ namespace PowerPointLabs
         private const string DefaultShapeCategoryName = "My Shapes";
         private const string ShapeGalleryPptxName = "ShapeGallery";
         private const string TempZipName = "tempZip.zip";
-        private const string OfficeVersion2013 = "15.0";
-        private const string OfficeVersion2010 = "14.0";
 
         private string _deactivatedPresFullName;
 
@@ -48,6 +46,9 @@ namespace PowerPointLabs
                                                                                      string>();
 
         internal PowerPointShapeGalleryPresentation ShapePresentation;
+
+        public readonly string OfficeVersion2013 = "15.0";
+        public readonly string OfficeVersion2010 = "14.0";
 
         public readonly string ShapeRootFolderConfigFileName = "ShapeRootFolder.config";
 
@@ -441,8 +442,8 @@ namespace PowerPointLabs
                 // due to some error
                 try
                 {
-                    FileAndDirTask.DeleteFile(zipFullPath);
-                    FileAndDirTask.CopyFile(presFullName, zipFullPath);
+                    FileDir.DeleteFile(zipFullPath);
+                    FileDir.CopyFile(presFullName, zipFullPath);
                 }
                 catch (Exception e)
                 {
@@ -662,6 +663,11 @@ namespace PowerPointLabs
             // task pane UI setup
             taskPane.Visible = false;
             taskPane.Width = width + 20;
+
+            Trace.TraceInformation(
+                "After Pane Width Change: " +
+                string.Format("Pane Width = {0}, Pane Height = {1}, Control Width = {2}, Control Height {3}",
+                              taskPane.Width, taskPane.Height, control.Width, control.Height));
 
             // event handlers register
             if (visibleChangeEventHandler != null)
@@ -897,7 +903,7 @@ namespace PowerPointLabs
 
                 zip.Close();
                 
-                FileAndDirTask.DeleteFile(zipFullPath);
+                FileDir.DeleteFile(zipFullPath);
             }
             catch (Exception e)
             {

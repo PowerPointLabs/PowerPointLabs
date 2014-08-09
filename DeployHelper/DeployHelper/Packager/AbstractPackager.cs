@@ -17,20 +17,10 @@ namespace DeployHelper.Packager
         protected void RunIExpress(string folderDirectory)
         {
             //use provided SED file, package the data bundle using iexpress.exe
-            var iexpressSedDirectory = "";
-            var fileNames = Directory.EnumerateFiles(folderDirectory);
-            foreach (var fileName in fileNames)
+            var iexpressSedDirectory = folderDirectory + @"\PowerPointLabsOffline.SED";
+            if (!File.Exists(iexpressSedDirectory))
             {
-                if (!fileName.ToLower().EndsWith("sed"))
-                    continue;
-
-                iexpressSedDirectory = fileName;
-                break;
-            }
-
-            if (iexpressSedDirectory.Trim() == "")
-            {
-                throw new InvalidDataException("Cannot find SED file to run IExpress");
+                iexpressSedDirectory = folderDirectory + @"\PowerPointLabsOnline.SED";
             }
 
             //command: iexpress /N "SED_Directory"
@@ -39,7 +29,7 @@ namespace DeployHelper.Packager
                 StartInfo =
                 {
                     FileName = "iexpress",
-                    Arguments = "/N " + iexpressSedDirectory + "",
+                    Arguments = "/N " + iexpressSedDirectory,
                     WindowStyle = ProcessWindowStyle.Hidden
                 }
             };

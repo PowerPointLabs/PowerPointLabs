@@ -5,7 +5,6 @@ using System.IO;
 using System.Linq;
 using System.Text.RegularExpressions;
 using System.Windows.Forms;
-using PPExtraEventHelper;
 using PowerPointLabs.Models;
 using PowerPointLabs.Utils;
 using PowerPointLabs.Views;
@@ -235,17 +234,15 @@ namespace PowerPointLabs
             {
                 return;
             }
-
-            Native.SendMessage(myShapeFlowLayout.Handle, (uint) Native.Message.WM_SETREDRAW, IntPtr.Zero, IntPtr.Zero);
             
             // emptize the panel and load shapes from folder
             myShapeFlowLayout.Controls.Clear();
             PrepareShapes();
-
-            Native.SendMessage(myShapeFlowLayout.Handle, (uint) Native.Message.WM_SETREDRAW, new IntPtr(1), IntPtr.Zero);
-            myShapeFlowLayout.Refresh();
-
-            Refresh();
+            
+            // scroll the view to show the first item, and focus the flowlayout to enable
+            // scroll if applicable
+            myShapeFlowLayout.ScrollControlIntoView(myShapeFlowLayout.Controls[0]);
+            myShapeFlowLayout.Focus();
 
             _firstTimeLoading = false;
         }
@@ -426,6 +423,8 @@ namespace PowerPointLabs
             clickedThumbnail.Highlight();
 
             _selectedThumbnail = clickedThumbnail;
+
+            myShapeFlowLayout.ScrollControlIntoView(_selectedThumbnail);
         }
 
         private void FocusSelected()
@@ -448,7 +447,7 @@ namespace PowerPointLabs
             }
 
             // migration only cares about if the folder has been copied to the new location entirely.
-            if (!FileAndDirTask.CopyFolder(oldPath, newPath))
+            if (!FileDir.CopyFolder(oldPath, newPath))
             {
                 loadingDialog.Dispose();
 
@@ -459,7 +458,7 @@ namespace PowerPointLabs
 
             // now we will try our best to delete the original folder, but this is not guaranteed
             // because some of the using files, such as some opening shapes, and the evil thumb.db
-            if (!FileAndDirTask.DeleteFolder(oldPath))
+            if (!FileDir.DeleteFolder(oldPath))
             {
                 MessageBox.Show(TextCollection.CustomShapeOriginalFolderDeletionError);
             }

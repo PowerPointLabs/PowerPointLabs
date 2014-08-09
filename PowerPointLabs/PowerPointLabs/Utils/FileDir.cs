@@ -6,7 +6,7 @@ using PowerPointLabs.Views;
 
 namespace PowerPointLabs.Utils
 {
-    public static class FileAndDirTask
+    public static class FileDir
     {
         private const string FolderThumbnailFile = "Thumbs.db";
 
