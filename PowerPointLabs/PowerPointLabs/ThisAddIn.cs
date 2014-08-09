@@ -1238,6 +1238,11 @@ namespace PowerPointLabs
         {
             try
             {
+                if (selection.Type == PowerPoint.PpSelectionType.ppSelectionNone)
+                {
+                    TrySelectTransparentShape();
+                }
+
                 if (selection.Type == PowerPoint.PpSelectionType.ppSelectionShapes)
                 {
                     if (Application.Version == OfficeVersion2013)
@@ -1255,6 +1260,33 @@ namespace PowerPointLabs
                 string logText = "DoubleClickEventHandler" + ": " + e.Message + ": " + e.StackTrace;
                 Trace.TraceError(DateTime.Now.ToString("yyyyMMddHHmmss") + ": " + logText);
             }
+        }
+
+        private void TrySelectTransparentShape()
+        {
+            var shapesInCurrentSlide = PowerPointCurrentPresentationInfo.CurrentSlide.Shapes;
+            foreach (PowerPoint.Shape shape in shapesInCurrentSlide)
+            {
+                if (IsMouseWithinShape(shape))
+                {
+                    shape.Select();
+                    break;
+                }
+            }
+        }
+
+        private bool IsMouseWithinShape(PowerPoint.Shape sh)
+        {
+            float x = Cursor.Position.X;
+            float y = Cursor.Position.Y;
+            int left = Application.ActiveWindow.PointsToScreenPixelsX(sh.Left);
+            int top = Application.ActiveWindow.PointsToScreenPixelsY(sh.Top);
+            int right = Application.ActiveWindow.PointsToScreenPixelsX(sh.Left + sh.Width);
+            int bottom = Application.ActiveWindow.PointsToScreenPixelsY(sh.Top + sh.Height);
+            return x > left
+                && x < right
+                && y > top
+                && y < bottom;
         }
 
         //For office 2013 only:
