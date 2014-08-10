@@ -1264,15 +1264,23 @@ namespace PowerPointLabs
 
         private void TrySelectTransparentShape()
         {
+            if (PowerPointCurrentPresentationInfo.CurrentSlide == null) return;
+
+            PowerPoint.Shape overlappingShape = null;
+            int overlappingShapeZIndex = -1;
+
             var shapesInCurrentSlide = PowerPointCurrentPresentationInfo.CurrentSlide.Shapes;
             foreach (PowerPoint.Shape shape in shapesInCurrentSlide)
             {
-                if (IsMouseWithinShape(shape))
+                if (IsMouseWithinShape(shape)
+                    && shape.ZOrderPosition > overlappingShapeZIndex)
                 {
-                    shape.Select();
-                    break;
+                    overlappingShape = shape;
+                    overlappingShapeZIndex = shape.ZOrderPosition;
                 }
             }
+            if(overlappingShape != null)
+                overlappingShape.Select();
         }
 
         private bool IsMouseWithinShape(PowerPoint.Shape sh)
