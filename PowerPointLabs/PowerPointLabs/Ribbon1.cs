@@ -1564,12 +1564,7 @@ namespace PowerPointLabs
 
             customShapePane.Visible = true;
 
-            // if the user is using office 2010, adjust control's width
-            if (Globals.ThisAddIn.Application.Version == Globals.ThisAddIn.OfficeVersion2010)
-            {
-                customShape.Width = customShapePane.Width - 16;
-            }
-
+            customShape.Width = customShapePane.Width - 16;
             customShape.PaneReload();
         }
 
@@ -1596,6 +1591,8 @@ namespace PowerPointLabs
             var customShape = customShapePane.Control as CustomShapePane;
 
             Globals.ThisAddIn.InitializeShapeGallery(customShape.CurrentShapeFolderPath);
+            
+            customShape.Width = customShapePane.Width - 16;
             customShape.PaneReload();
 
             // first of all we check if the shape gallery has been opened correctly
