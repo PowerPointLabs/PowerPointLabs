@@ -342,6 +342,7 @@ namespace PowerPointLabs
         private void ThisAddInShutdown(object sender, EventArgs e)
         {
             PPMouse.StopHook();
+            PPCopy.StopHook();
             Trace.TraceInformation(DateTime.Now.ToString("yyyyMMddHHmmss") + ": PowerPointLabs Exiting");
             Trace.Close();
         }
