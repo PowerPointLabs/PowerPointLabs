@@ -41,10 +41,6 @@ namespace PPExtraEventHelper
                     application.WindowSelectionChange += (selection) =>
                     {
                         selectedRange = selection;
-                        if (nextHandle.Equals(IntPtr.Zero))
-                        {
-                            nextHandle = Native.SetClipboardViewer(instance.Handle);
-                        }
                         if (!isSuccessful)
                         {
                             isSuccessful = Native.AddClipboardFormatListener(instance.Handle);
@@ -76,10 +72,7 @@ namespace PPExtraEventHelper
 
         protected override void Dispose(bool disposing)
         {
-            if (!nextHandle.Equals(IntPtr.Zero))
-            {
-                Native.ChangeClipboardChain(handle, nextHandle);
-            }
+            Native.ChangeClipboardChain(handle, nextHandle);
             if (isSuccessful)
             {
                 Native.RemoveClipboardFormatListener(handle);
