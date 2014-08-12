@@ -5,6 +5,7 @@ using System.IO;
 using System.Linq;
 using System.Text.RegularExpressions;
 using System.Windows.Forms;
+using PPExtraEventHelper;
 using PowerPointLabs.Models;
 using PowerPointLabs.Utils;
 using PowerPointLabs.Views;
@@ -703,9 +704,16 @@ namespace PowerPointLabs
         {
             get
             {
-                CreateParams cp = base.CreateParams;
-                cp.ExStyle |= 0x02000000;  // Turn on WS_EX_COMPOSITED
-                return cp;
+                var createParams = base.CreateParams;
+
+                // do this optimization only for office 2010 since painting speed on 2013 is
+                // really slow
+                if (Globals.ThisAddIn.Application.Version == Globals.ThisAddIn.OfficeVersion2010)
+                {
+                    createParams.ExStyle |= (int)Native.Message.WS_EX_COMPOSITED;  // Turn on WS_EX_COMPOSITED
+                }
+
+                return createParams;
             }
         }
         # endregion
