@@ -87,7 +87,7 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(341, 114);
+            this.ClientSize = new System.Drawing.Size(341, 137);
             this.ControlBox = false;
             this.Controls.Add(this.browseButton);
             this.Controls.Add(this.pathBox);
