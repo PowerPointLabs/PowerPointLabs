@@ -235,10 +235,20 @@ namespace PowerPointLabs
             {
                 return;
             }
+
+            if (Globals.ThisAddIn.Application.Version == Globals.ThisAddIn.OfficeVersion2013)
+            {
+                Graphics.SuspendDrawing(myShapeFlowLayout);
+            }
             
             // emptize the panel and load shapes from folder
             myShapeFlowLayout.Controls.Clear();
             PrepareShapes();
+
+            if (Globals.ThisAddIn.Application.Version == Globals.ThisAddIn.OfficeVersion2013)
+            {
+                Graphics.ResumeDrawing(myShapeFlowLayout);
+            }
             
             // scroll the view to show the first item, and focus the flowlayout to enable
             // scroll if applicable
