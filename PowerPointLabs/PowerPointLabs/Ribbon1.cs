@@ -1563,6 +1563,11 @@ namespace PowerPointLabs
 
             Globals.ThisAddIn.InitializeShapeGallery(customShape.CurrentShapeFolderPath);
 
+            Trace.TraceInformation(
+                "Before Visible: " +
+                string.Format("Pane Width = {0}, Pane Height = {1}, Control Width = {2}, Control Height {3}",
+                              customShapePane.Width, customShapePane.Height, customShape.Width, customShape.Height));
+
             // if currently the pane is hidden, show the pane
             if (customShapePane.Visible)
             {
@@ -1570,6 +1575,8 @@ namespace PowerPointLabs
             }
 
             customShapePane.Visible = true;
+
+            customShape.Width = customShapePane.Width - 16;
             customShape.PaneReload();
         }
 
@@ -1596,6 +1603,8 @@ namespace PowerPointLabs
             var customShape = customShapePane.Control as CustomShapePane;
 
             Globals.ThisAddIn.InitializeShapeGallery(customShape.CurrentShapeFolderPath);
+            
+            customShape.Width = customShapePane.Width - 16;
             customShape.PaneReload();
 
             // first of all we check if the shape gallery has been opened correctly

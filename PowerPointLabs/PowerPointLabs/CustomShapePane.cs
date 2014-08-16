@@ -235,17 +235,15 @@ namespace PowerPointLabs
             {
                 return;
             }
-
-            Native.SendMessage(myShapeFlowLayout.Handle, (uint) Native.Message.WM_SETREDRAW, IntPtr.Zero, IntPtr.Zero);
             
             // emptize the panel and load shapes from folder
             myShapeFlowLayout.Controls.Clear();
             PrepareShapes();
-
-            Native.SendMessage(myShapeFlowLayout.Handle, (uint) Native.Message.WM_SETREDRAW, new IntPtr(1), IntPtr.Zero);
-            myShapeFlowLayout.Refresh();
-
-            Refresh();
+            
+            // scroll the view to show the first item, and focus the flowlayout to enable
+            // scroll if applicable
+            myShapeFlowLayout.ScrollControlIntoView(myShapeFlowLayout.Controls[0]);
+            myShapeFlowLayout.Focus();
 
             _firstTimeLoading = false;
         }
@@ -426,6 +424,8 @@ namespace PowerPointLabs
             clickedThumbnail.Highlight();
 
             _selectedThumbnail = clickedThumbnail;
+
+            myShapeFlowLayout.ScrollControlIntoView(_selectedThumbnail);
         }
 
         private void FocusSelected()
@@ -448,7 +448,7 @@ namespace PowerPointLabs
             }
 
             // migration only cares about if the folder has been copied to the new location entirely.
-            if (!FileAndDirTask.CopyFolder(oldPath, newPath))
+            if (!FileDir.CopyFolder(oldPath, newPath))
             {
                 loadingDialog.Dispose();
 
@@ -459,7 +459,7 @@ namespace PowerPointLabs
 
             // now we will try our best to delete the original folder, but this is not guaranteed
             // because some of the using files, such as some opening shapes, and the evil thumb.db
-            if (!FileAndDirTask.DeleteFolder(oldPath))
+            if (!FileDir.DeleteFolder(oldPath))
             {
                 MessageBox.Show(TextCollection.CustomShapeOriginalFolderDeletionError);
             }
@@ -704,9 +704,16 @@ namespace PowerPointLabs
         {
             get
             {
-                CreateParams cp = base.CreateParams;
-                cp.ExStyle |= 0x02000000;  // Turn on WS_EX_COMPOSITED
-                return cp;
+                var createParams = base.CreateParams;
+
+                // do this optimization only for office 2010 since painting speed on 2013 is
+                // really slow
+                if (Globals.ThisAddIn.Application.Version == Globals.ThisAddIn.OfficeVersion2010)
+                {
+                    createParams.ExStyle |= (int)Native.Message.WS_EX_COMPOSITED;  // Turn on WS_EX_COMPOSITED
+                }
+
+                return createParams;
             }
         }
         # endregion

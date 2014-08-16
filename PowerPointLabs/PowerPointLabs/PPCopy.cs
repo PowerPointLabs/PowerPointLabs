@@ -18,6 +18,7 @@ namespace PPExtraEventHelper
         private static IntPtr nextHandle;
         private static bool isFirstTimeEnter = true;
         private static bool isCopyEvent = false;
+        private static bool isDisposed = false;
 
         public static void Init(PowerPoint.Application application)
         {
@@ -28,12 +29,6 @@ namespace PPExtraEventHelper
                 try
                 {
                     nextHandle = Native.SetClipboardViewer(instance.Handle);
-                    //if fails to set up clipboardViewer, re-try 5 times
-                    for (int i = 0; i < 5; i++)
-                    {
-                        if (!nextHandle.Equals(IntPtr.Zero)) break;
-                        nextHandle = Native.SetClipboardViewer(instance.Handle);
-                    }
                     isSuccessful = Native.AddClipboardFormatListener(instance.Handle);
                     //if fails to set up clipboardFormatListener, re-try 5 times
                     for (int i = 0; i < 5; i++)
@@ -46,10 +41,6 @@ namespace PPExtraEventHelper
                     application.WindowSelectionChange += (selection) =>
                     {
                         selectedRange = selection;
-                        if (nextHandle.Equals(IntPtr.Zero))
-                        {
-                            nextHandle = Native.SetClipboardViewer(instance.Handle);
-                        }
                         if (!isSuccessful)
                         {
                             isSuccessful = Native.AddClipboardFormatListener(instance.Handle);
@@ -71,16 +62,22 @@ namespace PPExtraEventHelper
 
         public static event CopyEventDelegate AfterPaste;
 
+        public static void StopHook()
+        {
+            if (isDisposed) return;
+
+            isDisposed = true;
+            instance.Dispose(true);
+        }
+
         protected override void Dispose(bool disposing)
         {
-            if (!nextHandle.Equals(IntPtr.Zero))
-            {
-                Native.ChangeClipboardChain(handle, nextHandle);
-            }
+            Native.ChangeClipboardChain(handle, nextHandle);
             if (isSuccessful)
             {
                 Native.RemoveClipboardFormatListener(handle);
             }
+            base.Dispose(disposing);
         }
 
         protected override void WndProc(ref Message m)
@@ -107,6 +104,7 @@ namespace PPExtraEventHelper
                 {
                     isFirstTimeEnter = false;
                 }
+                Native.SendMessage(nextHandle, (uint)m.Msg, m.WParam, m.LParam);
             }
             else if (m.Msg == (int)Native.Message.WM_CLIPBOARDUPDATE)
             {

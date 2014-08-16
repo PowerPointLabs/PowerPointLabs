@@ -30,7 +30,7 @@
     <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
     <TargetFrameworkProfile>Client</TargetFrameworkProfile>
     <DefineConstants>VSTO40</DefineConstants>
-    <IsWebBootstrapper>True</IsWebBootstrapper>
+    <IsWebBootstrapper>False</IsWebBootstrapper>
     <FileUpgradeFlags>
     </FileUpgradeFlags>
     <UpgradeBackupLocation>
@@ -39,9 +39,9 @@
     <VSTO_TrustAssembliesLocation>true</VSTO_TrustAssembliesLocation>
     <BootstrapperEnabled>true</BootstrapperEnabled>
     <PublishUrl>C:\Users\nevets\Desktop\PowerPointLabsPublish\</PublishUrl>
-    <InstallUrl>http://www.comp.nus.edu.sg/~pptlabs/download/dev/</InstallUrl>
+    <InstallUrl />
     <TargetCulture>en</TargetCulture>
-    <ApplicationVersion>1.9.0.1</ApplicationVersion>
+    <ApplicationVersion>1.9.0.3</ApplicationVersion>
     <AutoIncrementApplicationRevision>false</AutoIncrementApplicationRevision>
     <UpdateEnabled>true</UpdateEnabled>
     <UpdateInterval>0</UpdateInterval>
@@ -273,7 +273,8 @@
     <Compile Include="Models\PowerPointShapeGalleryPresentation.cs" />
     <Compile Include="Settings.cs" />
     <Compile Include="TextCollection.cs" />
-    <Compile Include="Utils\FileAndDirTask.cs" />
+    <Compile Include="Utils\FileDir.cs" />
+    <Compile Include="Utils\Graphics.cs" />
     <Compile Include="Views\CustomPaintTextBox.cs" />
     <Compile Include="Views\ErrorDialogWrapper.cs" />
     <Compile Include="FitToSlide.cs" />

@@ -63,7 +63,7 @@ namespace PowerPointLabs.Views
                 {
                     var newPath = folderDialog.SelectedPath;
 
-                    if (!FileAndDirTask.IsDirectoryEmpty(newPath))
+                    if (!FileDir.IsDirectoryEmpty(newPath))
                     {
                         MessageBox.Show(TextCollection.FolderNonEmptyErrorMsg);
                     }
