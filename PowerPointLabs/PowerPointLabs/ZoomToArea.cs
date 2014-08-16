@@ -12,7 +12,7 @@ namespace PowerPointLabs
     class ZoomToArea
     {
         public static bool backgroundZoomChecked = true;
-        public static bool multiSlideZoomChecked = false;
+        public static bool multiSlideZoomChecked = true;
 
         public static void AddZoomToArea()
         {
