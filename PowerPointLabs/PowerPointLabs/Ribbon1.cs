@@ -1550,7 +1550,10 @@ namespace PowerPointLabs
         # region Feature: Shapes Lab
         public void CustomShapeButtonClick(Office.IRibbonControl control)
         {
-            Globals.ThisAddIn.RegisterShapesLabPane(Globals.ThisAddIn.Application.ActivePresentation);
+            var prensentation = Globals.ThisAddIn.Application.ActivePresentation;
+            
+            Globals.ThisAddIn.InitializeShapeGallery();
+            Globals.ThisAddIn.RegisterShapesLabPane(prensentation, Globals.ThisAddIn.ShapePresentation.Categories);
 
             var customShapePane = Globals.ThisAddIn.GetActivePane(typeof(CustomShapePane));
 
@@ -1560,8 +1563,6 @@ namespace PowerPointLabs
             }
 
             var customShape = customShapePane.Control as CustomShapePane;
-
-            Globals.ThisAddIn.InitializeShapeGallery(customShape.CurrentShapeFolderPath);
 
             Trace.TraceInformation(
                 "Before Visible: " +
@@ -1583,7 +1584,9 @@ namespace PowerPointLabs
         public void AddShapeButtonClick(Office.IRibbonControl control)
         {
             var prensentation = Globals.ThisAddIn.Application.ActivePresentation;
-            Globals.ThisAddIn.RegisterShapesLabPane(prensentation);
+
+            Globals.ThisAddIn.InitializeShapeGallery();
+            Globals.ThisAddIn.RegisterShapesLabPane(prensentation, Globals.ThisAddIn.ShapePresentation.Categories);
 
             var selection = PowerPointCurrentPresentationInfo.CurrentSelection;
 
@@ -1601,8 +1604,6 @@ namespace PowerPointLabs
             }
 
             var customShape = customShapePane.Control as CustomShapePane;
-
-            Globals.ThisAddIn.InitializeShapeGallery(customShape.CurrentShapeFolderPath);
             
             customShape.Width = customShapePane.Width - 16;
             customShape.PaneReload();

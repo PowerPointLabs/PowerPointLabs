@@ -29,7 +29,7 @@ namespace PowerPointLabs
         private const string SlideXmlSearchPattern = @"slide(\d+)\.xml";
         private const string TempFolderNamePrefix = @"\PowerPointLabs Temp\";
         private const string DefaultShapeMasterFolderName = @"\PowerPointLabs Custom Shapes";
-        private const string DefaultShapeCategoryName = "My Shapes";
+        private const string DefaultShapeCategoryName = "My Saved Shapes";
         private const string ShapeGalleryPptxName = "ShapeGallery";
         private const string TempZipName = "tempZip.zip";
 
@@ -403,7 +403,7 @@ namespace PowerPointLabs
             return _documentHashcodeMapper[Application.ActiveWindow];
         }
 
-        public void InitializeShapeGallery(string shapeFolderPath)
+        public void InitializeShapeGallery()
         {
             // achieves singleton ShapePresentation
             if (ShapePresentation != null) return;
@@ -411,7 +411,7 @@ namespace PowerPointLabs
             var shapeRootFolderPath = RetriveConfigShapeRootFolder();
 
             ShapePresentation =
-                new PowerPointShapeGalleryPresentation(shapeRootFolderPath, ShapeGalleryPptxName, shapeFolderPath);
+                new PowerPointShapeGalleryPresentation(shapeRootFolderPath, ShapeGalleryPptxName);
 
             if (!ShapePresentation.Open(withWindow: false, focus: false) &&
                 !ShapePresentation.Opened)
@@ -422,6 +422,9 @@ namespace PowerPointLabs
                 return;
             }
 
+            if (ShapePresentation.HasCategory(DefaultShapeCategoryName)) return;
+
+            // add 
             ShapePresentation.AddCategory(DefaultShapeCategoryName);
             ShapePresentation.Save();
         }
@@ -509,7 +512,7 @@ namespace PowerPointLabs
             RegisterTaskPane(new ColorPane(), TextCollection.ColorsLabTaskPanelTitle, activeWindow, null, null);
         }
 
-        public void RegisterShapesLabPane(PowerPoint.Presentation presentation)
+        public void RegisterShapesLabPane(PowerPoint.Presentation presentation, List<string> shapeCategories)
         {
             if (GetActivePane(typeof(CustomShapePane)) != null)
             {
@@ -520,7 +523,7 @@ namespace PowerPointLabs
             var shapeRootFolderPath = RetriveConfigShapeRootFolder();
 
             RegisterTaskPane(
-                new CustomShapePane(shapeRootFolderPath, DefaultShapeCategoryName),
+                new CustomShapePane(shapeRootFolderPath, DefaultShapeCategoryName, shapeCategories),
                 TextCollection.ShapesLabTaskPanelTitle, activeWindow, null, null);
         }
 

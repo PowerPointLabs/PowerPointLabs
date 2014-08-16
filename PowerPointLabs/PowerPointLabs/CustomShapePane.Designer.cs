@@ -41,7 +41,7 @@ namespace PowerPointLabs
             this.settingsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.myShapeFlowLayout = new System.Windows.Forms.FlowLayoutPanel();
             this.label1 = new System.Windows.Forms.Label();
-            this.comboBox1 = new System.Windows.Forms.ComboBox();
+            this.categoryBox = new System.Windows.Forms.ComboBox();
             this.flowPanelHolder = new System.Windows.Forms.Panel();
             this.shapeContextMenuStrip.SuspendLayout();
             this.flowlayoutContextMenuStrip.SuspendLayout();
@@ -112,13 +112,15 @@ namespace PowerPointLabs
             this.label1.TabIndex = 2;
             this.label1.Text = "Category";
             // 
-            // comboBox1
+            // categoryBox
             // 
-            this.comboBox1.FormattingEnabled = true;
-            this.comboBox1.Location = new System.Drawing.Point(72, 17);
-            this.comboBox1.Name = "comboBox1";
-            this.comboBox1.Size = new System.Drawing.Size(316, 20);
-            this.comboBox1.TabIndex = 3;
+            this.categoryBox.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.categoryBox.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.categoryBox.Location = new System.Drawing.Point(72, 17);
+            this.categoryBox.Name = "categoryBox";
+            this.categoryBox.Size = new System.Drawing.Size(316, 20);
+            this.categoryBox.TabIndex = 3;
             // 
             // flowPanelHolder
             // 
@@ -136,7 +138,7 @@ namespace PowerPointLabs
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ContextMenuStrip = this.flowlayoutContextMenuStrip;
             this.Controls.Add(this.flowPanelHolder);
-            this.Controls.Add(this.comboBox1);
+            this.Controls.Add(this.categoryBox);
             this.Controls.Add(this.label1);
             this.Name = "CustomShapePane";
             this.Size = new System.Drawing.Size(417, 552);
@@ -192,7 +194,7 @@ namespace PowerPointLabs
         private ToolStripMenuItem settingsToolStripMenuItem;
         private FlowLayoutPanel myShapeFlowLayout;
         private Label label1;
-        private ComboBox comboBox1;
+        private ComboBox categoryBox;
         private Panel flowPanelHolder;
     }
 }

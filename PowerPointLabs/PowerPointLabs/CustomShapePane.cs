@@ -21,15 +21,16 @@ namespace PowerPointLabs
                                                                               Globals.ThisAddIn.ShapeRootFolderConfigFileName);
 
         private readonly int _doubleClickTimeSpan = SystemInformation.DoubleClickTime;
-        
-        private LabeledThumbnail _selectedThumbnail;
+        private int _clicks;
 
         private bool _firstTimeLoading = true;
         private bool _firstClick = true;
         private bool _clickOnSelected;
         private bool _isLeftButton;
 
-        private int _clicks;
+        private readonly BindingSource _categoryBinding;
+
+        private LabeledThumbnail _selectedThumbnail;
 
         private readonly Timer _timer;
 
@@ -129,7 +130,7 @@ namespace PowerPointLabs
         # endregion
 
         # region Constructors
-        public CustomShapePane(string shapeRootFolderPath, string defaultShapeCategoryName)
+        public CustomShapePane(string shapeRootFolderPath, string defaultShapeCategoryName, List<string> categories)
         {
             SetStyle(ControlStyles.UserPaint | ControlStyles.DoubleBuffer | ControlStyles.AllPaintingInWmPaint, true);
             InitializeComponent();
@@ -137,7 +138,9 @@ namespace PowerPointLabs
             ShapeRootFolderPath = shapeRootFolderPath;
 
             CurrentCategory = defaultShapeCategoryName;
-            Categories = new List<string> {CurrentCategory};
+            Categories = new List<string>(categories);
+            _categoryBinding = new BindingSource {DataSource = Categories};
+            categoryBox.DataSource = _categoryBinding;
 
             _timer = new Timer { Interval = _doubleClickTimeSpan };
             _timer.Tick += TimerTickHandler;
@@ -236,6 +239,7 @@ namespace PowerPointLabs
                 return;
             }
 
+            // double buffer starts
             if (Globals.ThisAddIn.Application.Version == Globals.ThisAddIn.OfficeVersion2013)
             {
                 Graphics.SuspendDrawing(myShapeFlowLayout);
@@ -245,6 +249,7 @@ namespace PowerPointLabs
             myShapeFlowLayout.Controls.Clear();
             PrepareShapes();
 
+            // double buffer ends
             if (Globals.ThisAddIn.Application.Version == Globals.ThisAddIn.OfficeVersion2013)
             {
                 Graphics.ResumeDrawing(myShapeFlowLayout);
@@ -478,7 +483,6 @@ namespace PowerPointLabs
 
             // modify shape gallery presentation's path and name, then open it
             Globals.ThisAddIn.ShapePresentation.Path = newPath;
-            Globals.ThisAddIn.ShapePresentation.ShapeFolderPath = CurrentShapeFolderPath;
 
             // if there's some lost during shape gallery opening, we must force reload the pane
             // to reflect the latest change
@@ -772,11 +776,6 @@ namespace PowerPointLabs
             }
         }
         # endregion
-
-        private void addMorePageButton_Click(object sender, EventArgs e)
-        {
-            MessageBox.Show("asdf");
-        }
 
         # region search box appearance and behaviors
         /*
