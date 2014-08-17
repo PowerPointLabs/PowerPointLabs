@@ -138,8 +138,8 @@ namespace PowerPointLabs
             ShapeRootFolderPath = shapeRootFolderPath;
 
             CurrentCategory = defaultShapeCategoryName;
-            Categories = new List<string>(categories);
-            _categoryBinding = new BindingSource {DataSource = Categories};
+            //Categories = new List<string>(categories);
+            _categoryBinding = new BindingSource {DataSource = Globals.ThisAddIn.ShapePresentation.Categories};
             categoryBox.DataSource = _categoryBinding;
 
             _timer = new Timer { Interval = _doubleClickTimeSpan };
@@ -248,17 +248,17 @@ namespace PowerPointLabs
             // emptize the panel and load shapes from folder
             myShapeFlowLayout.Controls.Clear();
             PrepareShapes();
+            
+            // scroll the view to show the first item, and focus the flowlayout to enable
+            // scroll if applicable
+            myShapeFlowLayout.ScrollControlIntoView(myShapeFlowLayout.Controls[0]);
+            myShapeFlowLayout.Focus();
 
             // double buffer ends
             if (Globals.ThisAddIn.Application.Version == Globals.ThisAddIn.OfficeVersion2013)
             {
                 Graphics.ResumeDrawing(myShapeFlowLayout);
             }
-            
-            // scroll the view to show the first item, and focus the flowlayout to enable
-            // scroll if applicable
-            myShapeFlowLayout.ScrollControlIntoView(myShapeFlowLayout.Controls[0]);
-            myShapeFlowLayout.Focus();
 
             _firstTimeLoading = false;
         }
@@ -483,15 +483,9 @@ namespace PowerPointLabs
 
             // modify shape gallery presentation's path and name, then open it
             Globals.ThisAddIn.ShapePresentation.Path = newPath;
-
-            // if there's some lost during shape gallery opening, we must force reload the pane
-            // to reflect the latest change
-            //if (!Globals.ThisAddIn.ShapePresentation.Open(withWindow: false, focus: false))
-            //{
-            //    PaneReload(true);
-            //}
-
             Globals.ThisAddIn.ShapePresentation.Open(withWindow: false, focus: false);
+            Globals.ThisAddIn.ShapePresentation.DefaultCategory = CurrentCategory;
+
             PaneReload(true);
             loadingDialog.Dispose();
 

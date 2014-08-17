@@ -22,6 +22,17 @@ namespace PowerPointLabs.Models
 
         # region Properties
         public List<string> Categories { get; private set; }
+        public string DefaultCategory
+        {
+            get { return _defaultCategory.Name; }
+            set
+            {
+                if (_categoryNameIndexMapper.ContainsKey(value))
+                {
+                    _defaultCategory = Slides[_categoryNameIndexMapper[value] - 1];
+                }
+            }
+        }
         public bool IsImportedFile { get; set; }
         # endregion
 
@@ -188,18 +199,6 @@ namespace PowerPointLabs.Models
 
             Save();
             ActionProtection();
-        }
-
-        public void SetDefaultCategory(string name)
-        {
-            foreach (var slide in Slides)
-            {
-                if (slide.Name == name)
-                {
-                    _defaultCategory = slide;
-                    break;
-                }
-            }
         }
         # endregion
 
