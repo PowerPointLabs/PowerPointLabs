@@ -38,13 +38,17 @@ namespace PowerPointLabs
             this.editNameToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.removeShapeToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.flowlayoutContextMenuStrip = new System.Windows.Forms.ContextMenuStrip(this.components);
+            this.addCategoryToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.settingsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.myShapeFlowLayout = new System.Windows.Forms.FlowLayoutPanel();
             this.label1 = new System.Windows.Forms.Label();
             this.categoryBox = new System.Windows.Forms.ComboBox();
+            this.categoryBoxMenuStrip = new System.Windows.Forms.ContextMenuStrip(this.components);
+            this.removeToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.flowPanelHolder = new System.Windows.Forms.Panel();
             this.shapeContextMenuStrip.SuspendLayout();
             this.flowlayoutContextMenuStrip.SuspendLayout();
+            this.categoryBoxMenuStrip.SuspendLayout();
             this.flowPanelHolder.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -79,15 +83,22 @@ namespace PowerPointLabs
             // flowlayoutContextMenuStrip
             // 
             this.flowlayoutContextMenuStrip.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.addCategoryToolStripMenuItem,
             this.settingsToolStripMenuItem});
             this.flowlayoutContextMenuStrip.Name = "flowlayoutContextMenuStrip";
-            this.flowlayoutContextMenuStrip.Size = new System.Drawing.Size(123, 26);
+            this.flowlayoutContextMenuStrip.Size = new System.Drawing.Size(158, 48);
             this.flowlayoutContextMenuStrip.ItemClicked += new System.Windows.Forms.ToolStripItemClickedEventHandler(this.FlowlayoutContextMenuStripItemClicked);
+            // 
+            // addCategoryToolStripMenuItem
+            // 
+            this.addCategoryToolStripMenuItem.Name = "addCategoryToolStripMenuItem";
+            this.addCategoryToolStripMenuItem.Size = new System.Drawing.Size(157, 22);
+            this.addCategoryToolStripMenuItem.Text = "Add Category";
             // 
             // settingsToolStripMenuItem
             // 
             this.settingsToolStripMenuItem.Name = "settingsToolStripMenuItem";
-            this.settingsToolStripMenuItem.Size = new System.Drawing.Size(122, 22);
+            this.settingsToolStripMenuItem.Size = new System.Drawing.Size(157, 22);
             this.settingsToolStripMenuItem.Text = "Settings";
             // 
             // myShapeFlowLayout
@@ -116,11 +127,26 @@ namespace PowerPointLabs
             // 
             this.categoryBox.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
+            this.categoryBox.ContextMenuStrip = this.categoryBoxMenuStrip;
             this.categoryBox.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.categoryBox.Location = new System.Drawing.Point(72, 17);
             this.categoryBox.Name = "categoryBox";
             this.categoryBox.Size = new System.Drawing.Size(316, 20);
             this.categoryBox.TabIndex = 3;
+            this.categoryBox.SelectedIndexChanged += new System.EventHandler(this.CategoryBoxSelectedIndexChanged);
+            // 
+            // categoryBoxMenuStrip
+            // 
+            this.categoryBoxMenuStrip.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.removeToolStripMenuItem});
+            this.categoryBoxMenuStrip.Name = "categoryBoxMenuStrip";
+            this.categoryBoxMenuStrip.Size = new System.Drawing.Size(124, 26);
+            // 
+            // removeToolStripMenuItem
+            // 
+            this.removeToolStripMenuItem.Name = "removeToolStripMenuItem";
+            this.removeToolStripMenuItem.Size = new System.Drawing.Size(123, 22);
+            this.removeToolStripMenuItem.Text = "Remove";
             // 
             // flowPanelHolder
             // 
@@ -145,6 +171,7 @@ namespace PowerPointLabs
             this.Click += new System.EventHandler(this.CustomShapePaneClick);
             this.shapeContextMenuStrip.ResumeLayout(false);
             this.flowlayoutContextMenuStrip.ResumeLayout(false);
+            this.categoryBoxMenuStrip.ResumeLayout(false);
             this.flowPanelHolder.ResumeLayout(false);
             this.ResumeLayout(false);
             this.PerformLayout();
@@ -196,5 +223,8 @@ namespace PowerPointLabs
         private Label label1;
         private ComboBox categoryBox;
         private Panel flowPanelHolder;
+        private ToolStripMenuItem addCategoryToolStripMenuItem;
+        private ContextMenuStrip categoryBoxMenuStrip;
+        private ToolStripMenuItem removeToolStripMenuItem;
     }
 }

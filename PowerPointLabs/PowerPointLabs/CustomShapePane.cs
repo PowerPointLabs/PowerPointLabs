@@ -130,7 +130,7 @@ namespace PowerPointLabs
         # endregion
 
         # region Constructors
-        public CustomShapePane(string shapeRootFolderPath, string defaultShapeCategoryName, List<string> categories)
+        public CustomShapePane(string shapeRootFolderPath, string defaultShapeCategoryName)
         {
             SetStyle(ControlStyles.UserPaint | ControlStyles.DoubleBuffer | ControlStyles.AllPaintingInWmPaint, true);
             InitializeComponent();
@@ -138,8 +138,8 @@ namespace PowerPointLabs
             ShapeRootFolderPath = shapeRootFolderPath;
 
             CurrentCategory = defaultShapeCategoryName;
-            //Categories = new List<string>(categories);
-            _categoryBinding = new BindingSource {DataSource = Globals.ThisAddIn.ShapePresentation.Categories};
+            Categories = new List<string>(Globals.ThisAddIn.ShapePresentation.Categories);
+            _categoryBinding = new BindingSource { DataSource = Categories };
             categoryBox.DataSource = _categoryBinding;
 
             _timer = new Timer { Interval = _doubleClickTimeSpan };
@@ -311,6 +311,27 @@ namespace PowerPointLabs
             }
 
             _selectedThumbnail.StartNameEdit();
+        }
+
+        private void ContextMenuStripAddCategoryClicked()
+        {
+            var addCategoryDialog = new ShapesLabAddCategoryForm();
+
+            addCategoryDialog.ShowDialog();
+
+            if (addCategoryDialog.UserOption == ShapesLabAddCategoryForm.Option.Ok)
+            {
+                var categoryName = addCategoryDialog.CategoryName;
+
+                Globals.ThisAddIn.ShapePresentation.AddCategory(categoryName);
+                Globals.ThisAddIn.ShapePresentation.Save();
+
+                CurrentCategory = categoryName;
+                _categoryBinding.Add(categoryName);
+
+                categoryBox.SelectedIndex = _categoryBinding.Count - 1;
+                PaneReload(true);
+            }
         }
 
         private void ContextMenuStripSettingsClicked()
@@ -569,6 +590,19 @@ namespace PowerPointLabs
         # endregion
 
         # region Event Handlers
+        private void CategoryBoxSelectedIndexChanged(object sender, EventArgs e)
+        {
+            var selectedIndex = categoryBox.SelectedIndex;
+            var selectedCategory = _categoryBinding[selectedIndex].ToString();
+
+            if (selectedCategory != CurrentCategory)
+            {
+                CurrentCategory = selectedCategory;
+                Globals.ThisAddIn.ShapePresentation.DefaultCategory = selectedCategory;
+                PaneReload(true);
+            }
+        }
+
         private void CustomShapePaneClick(object sender, EventArgs e)
         {
             if (_selectedThumbnail != null &&
@@ -602,6 +636,10 @@ namespace PowerPointLabs
             if (item.Name.Contains("settings"))
             {
                 ContextMenuStripSettingsClicked();
+            } else
+            if (item.Name.Contains("addCategory"))
+            {
+                ContextMenuStripAddCategoryClicked();
             }
         }
 

@@ -517,7 +517,7 @@ namespace PowerPointLabs
             RegisterTaskPane(new ColorPane(), TextCollection.ColorsLabTaskPanelTitle, activeWindow, null, null);
         }
 
-        public void RegisterShapesLabPane(PowerPoint.Presentation presentation, List<string> shapeCategories)
+        public void RegisterShapesLabPane(PowerPoint.Presentation presentation)
         {
             if (GetActivePane(typeof(CustomShapePane)) != null)
             {
@@ -528,7 +528,7 @@ namespace PowerPointLabs
             var shapeRootFolderPath = RetriveConfigShapeRootFolder();
 
             RegisterTaskPane(
-                new CustomShapePane(shapeRootFolderPath, DefaultShapeCategoryName, shapeCategories),
+                new CustomShapePane(shapeRootFolderPath, DefaultShapeCategoryName),
                 TextCollection.ShapesLabTaskPanelTitle, activeWindow, null, null);
         }
 

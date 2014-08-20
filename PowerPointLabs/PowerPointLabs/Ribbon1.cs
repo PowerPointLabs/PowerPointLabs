@@ -1553,7 +1553,7 @@ namespace PowerPointLabs
             var prensentation = Globals.ThisAddIn.Application.ActivePresentation;
             
             Globals.ThisAddIn.InitializeShapeGallery();
-            Globals.ThisAddIn.RegisterShapesLabPane(prensentation, Globals.ThisAddIn.ShapePresentation.Categories);
+            Globals.ThisAddIn.RegisterShapesLabPane(prensentation);
 
             var customShapePane = Globals.ThisAddIn.GetActivePane(typeof(CustomShapePane));
 
@@ -1586,7 +1586,7 @@ namespace PowerPointLabs
             var prensentation = Globals.ThisAddIn.Application.ActivePresentation;
 
             Globals.ThisAddIn.InitializeShapeGallery();
-            Globals.ThisAddIn.RegisterShapesLabPane(prensentation, Globals.ThisAddIn.ShapePresentation.Categories);
+            Globals.ThisAddIn.RegisterShapesLabPane(prensentation);
 
             var selection = PowerPointCurrentPresentationInfo.CurrentSelection;
 
@@ -1597,16 +1597,16 @@ namespace PowerPointLabs
                 return;
             }
 
+            var customShape = customShapePane.Control as CustomShapePane;
+
             // show pane if not visible
             if (!customShapePane.Visible)
             {
                 customShapePane.Visible = true;
-            }
 
-            var customShape = customShapePane.Control as CustomShapePane;
-            
-            customShape.Width = customShapePane.Width - 16;
-            customShape.PaneReload();
+                customShape.Width = customShapePane.Width - 16;
+                customShape.PaneReload();
+            }
 
             // first of all we check if the shape gallery has been opened correctly
             if (!Globals.ThisAddIn.ShapePresentation.Opened)
