@@ -228,15 +228,21 @@ namespace PowerPointLabs.Models
             foreach (var category in Slides)
             {
                 var shapeFolderPath = Path + @"\" + category.Name;
+
+                // check if we have a corresponding category directory in the Path
+                ConsistencyCheckCategorySlideToLocal(category);
+
                 var pngShapes = Directory.EnumerateFiles(shapeFolderPath, "*.png").ToList();
 
                 shapeLost = shapeLost || ConsistencyCheckShapeToPng(pngShapes, category);
                 pngLost = pngLost || ConsistencyCheckPngToShape(pngShapes, category);
             }
 
+            var categoryInShapeGalleryLost = ConsistencyCheckCategoryLocalToSlide();
+
             Save();
 
-            if (shapeDuplicate || shapeLost)
+            if (shapeDuplicate || shapeLost || categoryInShapeGalleryLost)
             {
                 MessageBox.Show(TextCollection.ShapeCorruptedError);
 
@@ -251,6 +257,40 @@ namespace PowerPointLabs.Models
             }
 
             return true;
+        }
+
+        private bool ConsistencyCheckCategoryLocalToSlide()
+        {
+            var categoriesOnDisk = Directory.EnumerateDirectories(Path).ToList();
+            var categoryLost = false;
+
+            foreach (var categoryPath in categoriesOnDisk)
+            {
+                var categoryName = System.IO.Path.GetDirectoryName(categoryPath);
+
+                if (Slides.All(category => category.Name != categoryName))
+                {
+                    FileDir.DeleteFolder(categoryPath);
+                }
+
+                categoryLost = true;
+            }
+
+            return categoryLost;
+        }
+
+        private void ConsistencyCheckCategorySlideToLocal(PowerPointSlide category)
+        {
+            var categoryFolderPath = Path + @"\" + category.Name;
+
+            // the category is some how lost on the disk, regenerate the category
+            if (!Directory.Exists(categoryFolderPath))
+            {
+                // create the directory
+                Directory.CreateDirectory(categoryFolderPath);
+                // since shape reconstruction will be taken care of during ConsistencyCheckShapeToPng(),
+                // we do not need to generate the shapes here
+            }
         }
 
         private bool ConsistencyCheckPngToShape(IEnumerable<string> pngShapes, PowerPointSlide category)
