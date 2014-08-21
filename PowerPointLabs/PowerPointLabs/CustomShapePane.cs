@@ -273,6 +273,56 @@ namespace PowerPointLabs
             _isLeftButton = false;
         }
 
+        private void ContextMenuStripAddCategoryClicked()
+        {
+            var addCategoryDialog = new ShapesLabAddCategoryForm();
+
+            addCategoryDialog.ShowDialog();
+
+            if (addCategoryDialog.UserOption == ShapesLabAddCategoryForm.Option.Ok)
+            {
+                var categoryName = addCategoryDialog.CategoryName;
+
+                Globals.ThisAddIn.ShapePresentation.AddCategory(categoryName);
+
+                CurrentCategory = categoryName;
+                _categoryBinding.Add(categoryName);
+
+                categoryBox.SelectedIndex = _categoryBinding.Count - 1;
+                PaneReload(true);
+            }
+        }
+
+        private void ContextMenuStripEditClicked()
+        {
+            if (_selectedThumbnail == null)
+            {
+                MessageBox.Show(TextCollection.CustomShapeNoPanelSelectedError);
+                return;
+            }
+
+            _selectedThumbnail.StartNameEdit();
+        }
+
+        private void ContextMenuStripRemoveCategoryClicked()
+        {
+            // remove the last category will not be entertained
+            if (_categoryBinding.Count == 1)
+            {
+                MessageBox.Show(TextCollection.CustomShapeRemoveLastCategoryError);
+                return;
+            }
+
+            var categoryIndex = categoryBox.SelectedIndex;
+            
+            _categoryBinding.RemoveAt(categoryIndex);
+            // by default select the first category
+            categoryBox.SelectedIndex = 0;
+
+            Globals.ThisAddIn.ShapePresentation.RemoveCategory(categoryIndex);
+            Globals.ThisAddIn.ShapePresentation.DefaultCategory = _categoryBinding[0].ToString();
+        }
+
         private void ContextMenuStripRemoveClicked()
         {
             if (_selectedThumbnail == null)
@@ -299,38 +349,6 @@ namespace PowerPointLabs
             if (myShapeFlowLayout.Controls.Count == 0)
             {
                 ShowNoShapeMessage();
-            }
-        }
-
-        private void ContextMenuStripEditClicked()
-        {
-            if (_selectedThumbnail == null)
-            {
-                MessageBox.Show(TextCollection.CustomShapeNoPanelSelectedError);
-                return;
-            }
-
-            _selectedThumbnail.StartNameEdit();
-        }
-
-        private void ContextMenuStripAddCategoryClicked()
-        {
-            var addCategoryDialog = new ShapesLabAddCategoryForm();
-
-            addCategoryDialog.ShowDialog();
-
-            if (addCategoryDialog.UserOption == ShapesLabAddCategoryForm.Option.Ok)
-            {
-                var categoryName = addCategoryDialog.CategoryName;
-
-                Globals.ThisAddIn.ShapePresentation.AddCategory(categoryName);
-                Globals.ThisAddIn.ShapePresentation.Save();
-
-                CurrentCategory = categoryName;
-                _categoryBinding.Add(categoryName);
-
-                categoryBox.SelectedIndex = _categoryBinding.Count - 1;
-                PaneReload(true);
             }
         }
 
@@ -640,6 +658,10 @@ namespace PowerPointLabs
             if (item.Name.Contains("addCategory"))
             {
                 ContextMenuStripAddCategoryClicked();
+            } else
+            if (item.Name.Contains("removeCategory"))
+            {
+                ContextMenuStripRemoveCategoryClicked();
             }
         }
 

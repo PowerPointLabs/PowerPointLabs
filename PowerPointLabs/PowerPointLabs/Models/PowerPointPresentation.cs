@@ -10,8 +10,6 @@ namespace PowerPointLabs.Models
     internal class PowerPointPresentation
     {
         # region Properties
-
-        private List<PowerPointSlide> _slides;
         private string _name;
 
         public string FullName
@@ -171,11 +169,13 @@ namespace PowerPointLabs.Models
         // TODO: need to be verified
         public void RemoveSlide(string name)
         {
-            foreach (var slide in Slides)
+            var slides = Presentation.Slides;
+
+            foreach (Slide slide in slides)
             {
                 if (slide.Name == name)
                 {
-                    Slides.Remove(slide);
+                    slide.Delete();
                     break;
                 }
             }
@@ -183,7 +183,7 @@ namespace PowerPointLabs.Models
 
         public void RemoveSlide(int index)
         {
-            Slides.RemoveAt(index);
+            Presentation.Slides[index].Delete();
         }
 
         public bool Create(bool withWidow, bool focus)

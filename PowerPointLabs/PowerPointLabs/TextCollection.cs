@@ -262,7 +262,7 @@
         
         # endregion
 
-        # region Task Pane - Custom Shape
+        # region Task Pane - Shapes Lab
         public const string CustomShapeFileNameInvalid = "Invalid shape name.";
         public const string CustomShapeNoShapeTextFirstLine = "No shapes saved yet.";
         public const string CustomShapeNoShapeTextSecondLine = "Right-click any object on a slide to save it in this panel.";
@@ -278,6 +278,7 @@
             "try to delete this folder manually when those files are closed.";
         public const string CustomShapeMigratingDialogTitle = "Migrating...";
         public const string CustomShapeMigratingDialogContent = "Shapes are being migrated, please wait...";
+        public const string CustomShapeRemoveLastCategoryError = "Removing the last category is not allowed.";
         # endregion
 
         # region Control - ShapesLabSetting
