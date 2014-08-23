@@ -1357,6 +1357,9 @@ namespace PowerPointLabs
             var allAudioFiles = NotesToAudio.EmbedSelectedSlideNotes();
 
             var recorderPane = Globals.ThisAddIn.GetActivePane(typeof(RecorderTaskPane));
+
+            if (recorderPane == null) return;
+
             var recorder = recorderPane.Control as RecorderTaskPane;
 
             if (recorder == null) return;
