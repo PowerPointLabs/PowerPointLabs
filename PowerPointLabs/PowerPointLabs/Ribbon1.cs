@@ -1253,38 +1253,6 @@ namespace PowerPointLabs
             return EmbedAudioVisible;
         }
 
-        public void RecManagementClick(Office.IRibbonControl control)
-        {
-            var currentPresentation = Globals.ThisAddIn.Application.ActivePresentation;
-
-            if (!IsValidPresentation(currentPresentation))
-            {
-                return;
-            }
-
-            // prepare media files
-            var tempPath = Globals.ThisAddIn.PrepareTempFolder(currentPresentation);
-            Globals.ThisAddIn.PrepareMediaFiles(currentPresentation, tempPath);
-
-            Globals.ThisAddIn.RegisterRecorderPane(currentPresentation);
-
-            var recorderPane = Globals.ThisAddIn.GetActivePane(typeof(RecorderTaskPane));
-            var recorder = recorderPane.Control as RecorderTaskPane;
-
-            // TODO:
-            // Handle exception when user clicks the button without selecting any slides
-
-            // if currently the pane is hidden, show the pane
-            if (recorder != null && !recorderPane.Visible)
-            {
-                // fire the pane visble change event
-                recorderPane.Visible = true;
-
-                // reload the pane
-                recorder.RecorderPaneReload();
-            }
-        }
-
         private bool IsValidPresentation(PowerPoint.Presentation pres)
         {
             if (!Globals.ThisAddIn.VerifyVersion(pres))
@@ -1473,6 +1441,40 @@ namespace PowerPointLabs
         }
 
         #endregion
+
+        # region feature: Auto-Narrate Management
+        public void RecManagementClick(Office.IRibbonControl control)
+        {
+            var currentPresentation = Globals.ThisAddIn.Application.ActivePresentation;
+
+            if (!IsValidPresentation(currentPresentation))
+            {
+                return;
+            }
+
+            // prepare media files
+            var tempPath = Globals.ThisAddIn.PrepareTempFolder(currentPresentation);
+            Globals.ThisAddIn.PrepareMediaFiles(currentPresentation, tempPath);
+
+            Globals.ThisAddIn.RegisterRecorderPane(currentPresentation);
+
+            var recorderPane = Globals.ThisAddIn.GetActivePane(typeof(RecorderTaskPane));
+            var recorder = recorderPane.Control as RecorderTaskPane;
+
+            // TODO:
+            // Handle exception when user clicks the button without selecting any slides
+
+            // if currently the pane is hidden, show the pane
+            if (recorder != null && !recorderPane.Visible)
+            {
+                // fire the pane visble change event
+                recorderPane.Visible = true;
+
+                // reload the pane
+                recorder.RecorderPaneReload();
+            }
+        }
+        # endregion
 
         #region feature: Fit To Slide | Fit To Width | Fit To Height
 
