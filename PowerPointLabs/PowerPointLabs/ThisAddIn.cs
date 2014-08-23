@@ -35,7 +35,6 @@ namespace PowerPointLabs
 
         private string _deactivatedPresFullName;
 
-        private bool _noPathAssociate;
         private bool _isClosing;
 
         private readonly Dictionary<PowerPoint.DocumentWindow,
@@ -44,6 +43,10 @@ namespace PowerPointLabs
         private readonly Dictionary<PowerPoint.DocumentWindow,
                                     string> _documentHashcodeMapper = new Dictionary<PowerPoint.DocumentWindow,
                                                                                      string>();
+
+        private readonly Dictionary<PowerPoint.DocumentWindow,
+            bool> _documentPathAssociateMapper = new Dictionary<PowerPoint.DocumentWindow,
+                bool>();
 
         internal PowerPointShapeGalleryPresentation ShapePresentation;
 
@@ -236,8 +239,7 @@ namespace PowerPointLabs
             var tempName = pres.Name.GetHashCode().ToString(CultureInfo.InvariantCulture);
 
             // new unsaved document window does not have path associated
-            _noPathAssociate = true;
-
+            _documentPathAssociateMapper[activeWindow] = true;
             _documentHashcodeMapper[activeWindow] = tempName;
         }
 
@@ -254,7 +256,10 @@ namespace PowerPointLabs
             var activeWindow = pres.Application.ActiveWindow;
             var tempName = pres.Name.GetHashCode().ToString(CultureInfo.InvariantCulture);
 
-            _noPathAssociate = pres.Path == string.Empty;
+            if (!_documentPathAssociateMapper.ContainsKey(activeWindow))
+            {
+                _documentPathAssociateMapper[activeWindow] = pres.Path == string.Empty;
+            }
 
             // if we opened a new window, register the window with its name
             if (!_documentHashcodeMapper.ContainsKey(activeWindow))
@@ -285,18 +290,15 @@ namespace PowerPointLabs
             ShutDownColorPane();
             ShutDownRecorderPane();
 
-            //var currentWindow = recorderPane.Window as PowerPoint.DocumentWindow;
+            // find the document that holds the presentation with pres.Name
+            var associatedWindow = pres.Windows[1];
 
-            //// make sure the close event is triggered by the window that the pane belongs to
-            //if (currentWindow != null &&
-            //    currentWindow.Presentation.Name != pres.Name)
-            //{
-            //    return;
-            //}
-
-            if (_noPathAssociate)
+            // TODO: need to map from name to window!!!
+            if (_documentPathAssociateMapper.ContainsKey(associatedWindow) &&
+                _documentPathAssociateMapper[associatedWindow])
             {
-                _isClosing = true;
+                CleanUp(associatedWindow);
+
                 return;
             }
 
@@ -304,33 +306,26 @@ namespace PowerPointLabs
             {
                 Trace.TraceInformation("Presentation saved.");
 
-                _isClosing = true;
-
-                if (_documentHashcodeMapper.ContainsKey(pres.Application.ActiveWindow))
-                {
-                    _documentHashcodeMapper.Remove(pres.Application.ActiveWindow);
-                }
-
-                // if there exists some task panes, remove them
-                RemoveTaskPanes(pres.Application.ActiveWindow);
+                CleanUp(associatedWindow);
             }
             else
             {
                 var prompt =
-                    MessageBox.Show(string.Format("Do you want to save {0}", pres.Application.ActiveWindow.Caption),
+                    MessageBox.Show(string.Format("Do you want to save {0}", associatedWindow.Caption),
                                     Application.Name,
                                     MessageBoxButtons.YesNoCancel, MessageBoxIcon.Warning,
                                     MessageBoxDefaultButton.Button1);
 
+                // TODO: send key to associate window handle!!!
                 switch (prompt)
                 {
                     case DialogResult.Yes:
-                        _isClosing = true;
                         SendKeys.Send("{ENTER}");
+                        CleanUp(associatedWindow);
                         break;
                     case DialogResult.No:
-                        _isClosing = true;
                         SendKeys.Send("N");
+                        CleanUp(associatedWindow);
                         break;
                     default:
                         SendKeys.Send("{ESC}");
@@ -429,13 +424,17 @@ namespace PowerPointLabs
         public void PrepareMediaFiles(PowerPoint.Presentation pres, string tempPath)
         {
             var presFullName = pres.FullName;
+            var presName = pres.Name;
 
             // in case of embedded slides, we need to regulate the file name and full name
-            RegulatePresentationName(pres, tempPath, ref presFullName);
+            RegulatePresentationName(pres, tempPath, ref presName, ref presFullName);
 
             try
             {
-                if (IsEmptyFile(presFullName)) return;
+                if (IsEmptyFile(presFullName))
+                {
+                    return;
+                }
 
                 var zipFullPath = tempPath + TempZipName;
 
@@ -461,7 +460,13 @@ namespace PowerPointLabs
 
         public string PrepareTempFolder(PowerPoint.Presentation pres)
         {
-            var tempPath = GetPresentationTempFolder(pres);
+            var presName = pres.Name;
+            var presFullName = pres.FullName;
+            
+            // here presFullName makes no use, just to fit in the signature
+            RegulatePresentationName(pres, null, ref presName, ref presFullName);
+
+            var tempPath = GetPresentationTempFolder(presName);
 
             // if temp folder doesn't exist, create
             try
@@ -700,23 +705,25 @@ namespace PowerPointLabs
             _documentPaneMapper.Remove(activeWindow);
         }
 
-        private void RegulatePresentationName(PowerPoint.Presentation pres, string tempPath, ref string presFullName)
+        private void RegulatePresentationName(PowerPoint.Presentation pres, string tempPath, ref string presName, ref string presFullName)
         {
             // this function is used to handle "embed on other application" issue. In this case,
             // all of presentation name, path and full name do not match the usual rule: name is 
             // "Untitled", path is empty string and full name is "slide in XX application". We need
             // to regulate these fields properly.
 
-            var presName = pres.Name;
-
             if (!presName.Contains(".pptx"))
             {
                 presName += ".pptx";
             }
 
-            if (_noPathAssociate)
+            var associatedWindow = pres.Windows[1];
+
+            if (_documentPathAssociateMapper.ContainsKey(associatedWindow) &&
+                _documentPathAssociateMapper[associatedWindow] &&
+                !string.IsNullOrEmpty(tempPath))
             {
-                pres.SaveAs(tempPath + presName);
+                pres.SaveCopyAs(tempPath + presName);
                 presFullName = tempPath + presName;
             }
         }
@@ -824,7 +831,7 @@ namespace PowerPointLabs
 
         private bool IsEmptyFile(string filePath)
         {
-            if (File.Exists(filePath))
+            if (!File.Exists(filePath))
             {
                 return false;
             }
@@ -872,12 +879,27 @@ namespace PowerPointLabs
             }
         }
 
-        private string GetPresentationTempFolder(PowerPoint.Presentation pres)
+        private string GetPresentationTempFolder(string presName)
         {
-            var tempName = pres.Name.GetHashCode().ToString(CultureInfo.InvariantCulture);
+            var tempName = presName.GetHashCode().ToString(CultureInfo.InvariantCulture);
             var tempPath = Path.GetTempPath() + TempFolderNamePrefix + tempName + @"\";
 
             return tempPath;
+        }
+
+        private void CleanUp(PowerPoint.DocumentWindow associatedWindow)
+        {
+            _isClosing = true;
+
+            _documentPathAssociateMapper.Remove(associatedWindow);
+
+            if (_documentHashcodeMapper.ContainsKey(associatedWindow))
+            {
+                _documentHashcodeMapper.Remove(associatedWindow);
+            }
+
+            // if there exists some task panes, remove them
+            RemoveTaskPanes(associatedWindow);
         }
 
         private void ExtractMediaFiles(string zipFullPath, string tempPath)
