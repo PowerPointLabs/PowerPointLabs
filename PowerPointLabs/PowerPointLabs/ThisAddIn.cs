@@ -291,10 +291,20 @@ namespace PowerPointLabs
             ShutDownRecorderPane();
 
             // find the document that holds the presentation with pres.Name
-            var associatedWindow = pres.Windows[1];
+            // special case will be embedded slide. in this case pres.Windows return exception
+            PowerPoint.DocumentWindow associatedWindow;
 
-            // TODO: need to map from name to window!!!
-            if (_documentPathAssociateMapper.ContainsKey(associatedWindow) &&
+            try
+            {
+                associatedWindow = pres.Windows[1];
+            }
+            catch (Exception)
+            {
+                associatedWindow = null;
+            }
+
+            if (associatedWindow != null &&
+                _documentPathAssociateMapper.ContainsKey(associatedWindow) &&
                 _documentPathAssociateMapper[associatedWindow])
             {
                 CleanUp(associatedWindow);
@@ -705,7 +715,8 @@ namespace PowerPointLabs
             _documentPaneMapper.Remove(activeWindow);
         }
 
-        private void RegulatePresentationName(PowerPoint.Presentation pres, string tempPath, ref string presName, ref string presFullName)
+        private void RegulatePresentationName(PowerPoint.Presentation pres, string tempPath, ref string presName,
+                                              ref string presFullName)
         {
             // this function is used to handle "embed on other application" issue. In this case,
             // all of presentation name, path and full name do not match the usual rule: name is 
@@ -938,10 +949,6 @@ namespace PowerPointLabs
         {
             var recorder = GetActiveControl(typeof(RecorderTaskPane)) as RecorderTaskPane;
 
-            // TODO:
-            // Slide change event will interrupt mci device behaviour before
-            // the event raised. Now we discard the record, we may want to
-            // take this record by some means.
             if (recorder != null &&
                 recorder.HasEvent())
             {
