@@ -40,7 +40,6 @@ namespace PowerPointLabs
         private const string SpeechShapePrefixOld = "AudioGen Speech";
         private const string SpeechShapeFormat = "PowerPointLabs Speech {0}";
 
-        private readonly string _tempFolderName;
         private readonly string _tempFullPath;
         private readonly string _tempWaveFileNameFormat;
         private readonly string _tempShapAudioXmlFormat;
@@ -1782,7 +1781,7 @@ namespace PowerPointLabs
         # endregion
 
         # region Constructor
-        public RecorderTaskPane(string tempFolderName)
+        public RecorderTaskPane(string tempFullPath)
         {
             _audioList = new List<List<Audio>>();
             _scriptList = new List<List<string>>();
@@ -1790,8 +1789,7 @@ namespace PowerPointLabs
             
             _slideRelativeMapper = new Dictionary<int, int>();
 
-            _tempFolderName = @"\PowerPointLabs Temp\" + tempFolderName + @"\";
-            _tempFullPath = Path.GetTempPath() + _tempFolderName;
+            _tempFullPath = tempFullPath;
             _tempWaveFileNameFormat = _tempFullPath + "temp{0}.wav";
             _tempShapAudioXmlFormat = _tempFullPath + "slide{0}.xml";
 

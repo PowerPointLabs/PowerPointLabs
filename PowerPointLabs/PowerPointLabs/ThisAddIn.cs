@@ -300,11 +300,10 @@ namespace PowerPointLabs
             }
             catch (Exception)
             {
-                associatedWindow = null;
+                return;
             }
 
-            if (associatedWindow != null &&
-                _documentPathAssociateMapper.ContainsKey(associatedWindow) &&
+            if (_documentPathAssociateMapper.ContainsKey(associatedWindow) &&
                 _documentPathAssociateMapper[associatedWindow])
             {
                 CleanUp(associatedWindow);
@@ -498,17 +497,14 @@ namespace PowerPointLabs
             return tempPath;
         }
 
-        public void RegisterRecorderPane(PowerPoint.Presentation presentation)
+        public void RegisterRecorderPane(PowerPoint.DocumentWindow activeWindow, string tempFullPath)
         {
             if (GetActivePane(typeof(RecorderTaskPane)) != null)
             {
                 return;
             }
 
-            var activeWindow = presentation.Application.ActiveWindow;
-            var tempName = presentation.Name.GetHashCode().ToString(CultureInfo.InvariantCulture);
-
-            RegisterTaskPane(new RecorderTaskPane(tempName), TextCollection.RecManagementPanelTitle, activeWindow,
+            RegisterTaskPane(new RecorderTaskPane(tempFullPath), TextCollection.RecManagementPanelTitle, activeWindow,
                              TaskPaneVisibleValueChangedEventHandler, null);
         }
 
@@ -728,9 +724,19 @@ namespace PowerPointLabs
                 presName += ".pptx";
             }
 
-            var associatedWindow = pres.Windows[1];
+            PowerPoint.DocumentWindow associatedWindow;
 
-            if (_documentPathAssociateMapper.ContainsKey(associatedWindow) &&
+            try
+            {
+                associatedWindow = pres.Windows[1];
+            }
+            catch (Exception)
+            {
+                associatedWindow = null;
+            }
+
+            if (associatedWindow != null &&
+                _documentPathAssociateMapper.ContainsKey(associatedWindow) &&
                 _documentPathAssociateMapper[associatedWindow] &&
                 !string.IsNullOrEmpty(tempPath))
             {
