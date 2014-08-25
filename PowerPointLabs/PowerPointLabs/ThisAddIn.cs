@@ -329,12 +329,12 @@ namespace PowerPointLabs
                 switch (prompt)
                 {
                     case DialogResult.Yes:
-                        SendKeys.Send("{ENTER}");
                         CleanUp(associatedWindow);
+                        SendKeys.Send("{ENTER}");
                         break;
                     case DialogResult.No:
-                        SendKeys.Send("N");
                         CleanUp(associatedWindow);
+                        SendKeys.Send("N");
                         break;
                     default:
                         SendKeys.Send("{ESC}");
