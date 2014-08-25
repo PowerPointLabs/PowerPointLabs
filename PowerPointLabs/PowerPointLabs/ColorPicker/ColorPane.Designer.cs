@@ -136,6 +136,7 @@
             this.panel1.DragEnter += new System.Windows.Forms.DragEventHandler(this.panel_DragEnter);
             this.panel1.MouseClick += new System.Windows.Forms.MouseEventHandler(this.EyeDropButton_MouseClick);
             this.panel1.MouseDown += new System.Windows.Forms.MouseEventHandler(this.EyeDropButton_MouseDown);
+            this.panel1.MouseEnter += new System.EventHandler(this.EyeDropButton_MouseEnter);
             // 
             // timer1
             // 
@@ -957,6 +958,7 @@
             this.FontButton.UseVisualStyleBackColor = true;
             this.FontButton.MouseClick += new System.Windows.Forms.MouseEventHandler(this.EyeDropButton_MouseClick);
             this.FontButton.MouseDown += new System.Windows.Forms.MouseEventHandler(this.EyeDropButton_MouseDown);
+            this.FontButton.MouseEnter += new System.EventHandler(this.EyeDropButton_MouseEnter);
             // 
             // LineButton
             // 
@@ -969,6 +971,7 @@
             this.LineButton.UseVisualStyleBackColor = true;
             this.LineButton.MouseClick += new System.Windows.Forms.MouseEventHandler(this.EyeDropButton_MouseClick);
             this.LineButton.MouseDown += new System.Windows.Forms.MouseEventHandler(this.EyeDropButton_MouseDown);
+            this.LineButton.MouseEnter += new System.EventHandler(this.EyeDropButton_MouseEnter);
             // 
             // FillButton
             // 
@@ -981,6 +984,7 @@
             this.FillButton.UseVisualStyleBackColor = true;
             this.FillButton.MouseClick += new System.Windows.Forms.MouseEventHandler(this.EyeDropButton_MouseClick);
             this.FillButton.MouseDown += new System.Windows.Forms.MouseEventHandler(this.EyeDropButton_MouseDown);
+            this.FillButton.MouseEnter += new System.EventHandler(this.EyeDropButton_MouseEnter);
             // 
             // groupBox1
             // 
