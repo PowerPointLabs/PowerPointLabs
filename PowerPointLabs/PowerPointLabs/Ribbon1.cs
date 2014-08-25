@@ -1391,6 +1391,9 @@ namespace PowerPointLabs
             var allAudioFiles = NotesToAudio.EmbedSelectedSlideNotes();
 
             var recorderPane = Globals.ThisAddIn.GetActivePane(typeof(RecorderTaskPane));
+
+            if (recorderPane == null) return;
+
             var recorder = recorderPane.Control as RecorderTaskPane;
 
             if (recorder == null) return;
@@ -1458,13 +1461,10 @@ namespace PowerPointLabs
             var tempPath = Globals.ThisAddIn.PrepareTempFolder(currentPresentation);
             Globals.ThisAddIn.PrepareMediaFiles(currentPresentation, tempPath);
 
-            Globals.ThisAddIn.RegisterRecorderPane(currentPresentation);
+            Globals.ThisAddIn.RegisterRecorderPane(currentPresentation.Windows[1], tempPath);
 
             var recorderPane = Globals.ThisAddIn.GetActivePane(typeof(RecorderTaskPane));
             var recorder = recorderPane.Control as RecorderTaskPane;
-
-            // TODO:
-            // Handle exception when user clicks the button without selecting any slides
 
             // if currently the pane is hidden, show the pane
             if (recorder != null && !recorderPane.Visible)
