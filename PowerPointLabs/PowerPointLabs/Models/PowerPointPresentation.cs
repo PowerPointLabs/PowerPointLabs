@@ -183,7 +183,8 @@ namespace PowerPointLabs.Models
 
         public void RemoveSlide(int index)
         {
-            Presentation.Slides[index].Delete();
+            // here we need to change the 0-based index to 1-based index!!!
+            Presentation.Slides[index + 1].Delete();
         }
 
         public bool Create(bool withWidow, bool focus)
