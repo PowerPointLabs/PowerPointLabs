@@ -120,6 +120,7 @@ namespace PowerPointLabs.Models
 
         public void CopyShape(string name)
         {
+            // copy a shape with name in the default category
             var shapes = _defaultCategory.GetShapeWithName(name);
 
             if (shapes.Count != 1) return;
@@ -130,6 +131,20 @@ namespace PowerPointLabs.Models
         public bool HasCategory(string name)
         {
             return _categoryNameIndexMapper.ContainsKey(name);
+        }
+
+        public void MoveShape(string name, string categoryName)
+        {
+            if (!_categoryNameIndexMapper.ContainsKey(categoryName)) return;
+
+            // move a shape with name from default category to another category
+            var shapes = _defaultCategory.GetShapeWithName(name);
+            var destCategory = Slides[_categoryNameIndexMapper[categoryName]];
+
+            if (shapes.Count != 1) return;
+
+            shapes[0].Cut();
+            destCategory.Shapes.Paste();
         }
 
         public override bool Open(bool readOnly = false, bool untitled = false,

@@ -304,6 +304,17 @@ namespace PowerPointLabs
             _selectedThumbnail.StartNameEdit();
         }
 
+        private void ContextMenuStripMoveClicked()
+        {
+            if (_selectedThumbnail == null)
+            {
+                MessageBox.Show(TextCollection.CustomShapeNoPanelSelectedError);
+                return;
+            }
+
+            // move shape in ShapeGallery to correct place
+        }
+
         private void ContextMenuStripRemoveCategoryClicked()
         {
             // remove the last category will not be entertained
@@ -734,6 +745,27 @@ namespace PowerPointLabs
 
             // select the thumbnail and scroll into view
             FocusSelected();
+        }
+
+        private void MoveContextMenuStripOnEvent(object sender, EventArgs e)
+        {
+            if (moveShapeToolStripMenuItem.DropDownItems.Count == 0)
+            {
+                foreach (var category in Categories)
+                {
+                    if (category != CurrentCategory)
+                    {
+                        moveShapeToolStripMenuItem.DropDownItems.Add(category);
+                    }
+                }
+            }
+
+            moveShapeToolStripMenuItem.ShowDropDown();
+        }
+
+        private void MoveContextMenuStripLeaveEvent(object sender, EventArgs e)
+        {
+            moveShapeToolStripMenuItem.HideDropDown();
         }
 
         private void ThumbnailContextMenuStripItemClicked(object sender, ToolStripItemClickedEventArgs e)
