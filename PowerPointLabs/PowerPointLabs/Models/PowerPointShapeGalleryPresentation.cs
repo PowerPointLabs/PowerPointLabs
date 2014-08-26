@@ -234,8 +234,9 @@ namespace PowerPointLabs.Models
 
                 var pngShapes = Directory.EnumerateFiles(shapeFolderPath, "*.png").ToList();
 
-                shapeLost = shapeLost || ConsistencyCheckShapeToPng(pngShapes, category);
-                pngLost = pngLost || ConsistencyCheckPngToShape(pngShapes, category);
+                // critical: OR with itself at the end to avoid early truncate
+                shapeLost = ConsistencyCheckShapeToPng(pngShapes, category) || shapeLost;
+                pngLost = ConsistencyCheckPngToShape(pngShapes, category) || pngLost;
             }
 
             var categoryInShapeGalleryLost = ConsistencyCheckCategoryLocalToSlide();
