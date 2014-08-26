@@ -266,14 +266,14 @@ namespace PowerPointLabs.Models
 
             foreach (var categoryPath in categoriesOnDisk)
             {
-                var categoryName = System.IO.Path.GetDirectoryName(categoryPath);
+                var categoryName = new DirectoryInfo(categoryPath).Name;
 
                 if (Slides.All(category => category.Name != categoryName))
                 {
                     FileDir.DeleteFolder(categoryPath);
-                }
 
-                categoryLost = true;
+                    categoryLost = true;
+                }
             }
 
             return categoryLost;
