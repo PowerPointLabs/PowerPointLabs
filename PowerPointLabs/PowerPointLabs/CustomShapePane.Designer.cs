@@ -82,7 +82,6 @@ namespace PowerPointLabs
             this.moveShapeToolStripMenuItem.Text = "Move Shape To";
             this.moveShapeToolStripMenuItem.Click += new System.EventHandler(this.MoveContextMenuStripOnEvent);
             this.moveShapeToolStripMenuItem.MouseEnter += new System.EventHandler(this.MoveContextMenuStripOnEvent);
-            this.moveShapeToolStripMenuItem.MouseLeave += new System.EventHandler(this.MoveContextMenuStripLeaveEvent);
             // 
             // removeShapeToolStripMenuItem
             // 

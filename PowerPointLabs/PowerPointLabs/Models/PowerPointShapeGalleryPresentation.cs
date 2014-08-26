@@ -145,6 +145,9 @@ namespace PowerPointLabs.Models
 
             shapes[0].Cut();
             destCategory.Shapes.Paste();
+
+            Save();
+            ActionProtection();
         }
 
         public override bool Open(bool readOnly = false, bool untitled = false,
@@ -195,6 +198,20 @@ namespace PowerPointLabs.Models
             ActionProtection();
         }
 
+        public void RemoveCategory()
+        {
+            var index = _categoryNameIndexMapper[_defaultCategory.Name];
+            
+            Categories.RemoveAt(index);
+
+            RemoveSlide(index);
+
+            _categoryNameIndexMapper.Remove(_defaultCategory.Name);
+
+            Save();
+            ActionProtection();
+        }
+
         public void RemoveShape(string name)
         {
             _defaultCategory.DeleteShapeWithName(name);
@@ -211,6 +228,19 @@ namespace PowerPointLabs.Models
             {
                 shape.Name = newName;
             }
+
+            Save();
+            ActionProtection();
+        }
+
+        public void RenameCategory(string newName)
+        {
+            var index = _categoryNameIndexMapper[_defaultCategory.Name];
+
+            _categoryNameIndexMapper.Remove(_defaultCategory.Name);
+
+            _defaultCategory.Name = newName;
+            _categoryNameIndexMapper[newName] = index;
 
             Save();
             ActionProtection();

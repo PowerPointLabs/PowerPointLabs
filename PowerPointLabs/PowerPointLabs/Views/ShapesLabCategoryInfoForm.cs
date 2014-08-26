@@ -10,7 +10,7 @@ using System.Windows.Forms;
 
 namespace PowerPointLabs.Views
 {
-    public partial class ShapesLabAddCategoryForm : Form
+    public partial class ShapesLabCategoryInfoForm : Form
     {
         private const string InvalidCharsRegex = "[<>:\"/\\\\|?*]";
 
@@ -21,7 +21,7 @@ namespace PowerPointLabs.Views
         # endregion
 
         # region Constructor
-        public ShapesLabAddCategoryForm()
+        public ShapesLabCategoryInfoForm()
         {
             InitializeComponent();
 

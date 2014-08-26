@@ -1,6 +1,6 @@
 ﻿namespace PowerPointLabs.Views
 {
-    partial class ShapesLabAddCategoryForm
+    partial class ShapesLabCategoryInfoForm
     {
         /// <summary>
         /// Required designer variable.
