@@ -314,13 +314,16 @@ namespace PowerPointLabs
             }
 
             var categoryIndex = categoryBox.SelectedIndex;
+            var categoryName = _categoryBinding[categoryIndex].ToString();
+            var categoryPath = Path.Combine(Globals.ThisAddIn.ShapePresentation.Path, categoryName);
             
             _categoryBinding.RemoveAt(categoryIndex);
-            // by default select the first category
-            categoryBox.SelectedIndex = 0;
 
+            // remoev category in shape gallery
             Globals.ThisAddIn.ShapePresentation.RemoveCategory(categoryIndex);
-            Globals.ThisAddIn.ShapePresentation.DefaultCategory = _categoryBinding[0].ToString();
+            Globals.ThisAddIn.ShapePresentation.DefaultCategory = categoryName;
+
+            FileDir.DeleteFolder(categoryPath);
         }
 
         private void ContextMenuStripRemoveClicked()
