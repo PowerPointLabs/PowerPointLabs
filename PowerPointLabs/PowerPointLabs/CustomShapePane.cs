@@ -173,6 +173,8 @@ namespace PowerPointLabs
                                                     }
                                                 };
 
+            // add a dummy entry to show right arrow
+            moveShapeToolStripMenuItem.DropDownItems.Add("");
             foreach (ToolStripMenuItem contextMenu in shapeContextMenuStrip.Items)
             {
                 if (contextMenu.Text != "Move Shape To")
@@ -226,13 +228,8 @@ namespace PowerPointLabs
                 return;
             }
 
-            // free selected thumbnail
-            if (labeledThumbnail == _selectedThumbnail)
-            {
-                _selectedThumbnail = null;
-            }
-
-            myShapeFlowLayout.Controls.Remove(labeledThumbnail);
+            // remove shape from task pane
+            RemoveThumbnail(labeledThumbnail);
         }
 
         public void RenameCustomShape(string oldShapeName, string newShapeName)
@@ -347,8 +344,19 @@ namespace PowerPointLabs
             // remove category on the disk
             FileDir.DeleteFolder(categoryPath);
 
-            // this will trigger SelectedIndexChanged event, thus calling at the very end
             _categoryBinding.RemoveAt(categoryIndex);
+            // RemoveAt may NOT change the index, so we need to manually set the default category here
+
+            if (Globals.ThisAddIn.ShapePresentation.DefaultCategory == null)
+            {
+                categoryIndex = categoryBox.SelectedIndex;
+                categoryName = _categoryBinding[categoryIndex].ToString();
+
+                CurrentCategory = categoryName;
+                Globals.ThisAddIn.ShapePresentation.DefaultCategory = categoryName;
+
+                PaneReload(true);
+            }
         }
 
         private void ContextMenuStripRemoveClicked()
@@ -368,16 +376,10 @@ namespace PowerPointLabs
             File.Delete(CurrentShapeFullName);
 
             // remove shape from task pane
-            myShapeFlowLayout.Controls.Remove(_selectedThumbnail);
-            _selectedThumbnail = null;
+            RemoveThumbnail(_selectedThumbnail);
 
             // sync shape removing among all task panes
             Globals.ThisAddIn.SyncShapeRemove(removedShapename);
-
-            if (myShapeFlowLayout.Controls.Count == 0)
-            {
-                ShowNoShapeMessage();
-            }
         }
 
         private void ContextMenuStripRenameCategoryClicked()
@@ -621,6 +623,21 @@ namespace PowerPointLabs
             DehighlightSelected();
         }
 
+        private void RemoveThumbnail(LabeledThumbnail thumbnail)
+        {
+            if (thumbnail == _selectedThumbnail)
+            {
+                _selectedThumbnail = null;
+            }
+
+            myShapeFlowLayout.Controls.Remove(thumbnail);
+
+            if (myShapeFlowLayout.Controls.Count == 0)
+            {
+                ShowNoShapeMessage();
+            }
+        }
+
         private void RenameThumbnail(string oldName, LabeledThumbnail labeledThumbnail)
         {
             if (oldName == labeledThumbnail.NameLable) return;
@@ -826,10 +843,15 @@ namespace PowerPointLabs
             // move shape in ShapeGallery to correct place
             Globals.ThisAddIn.ShapePresentation.MoveShape(shapeName, categoryName);
             // move shape on the disk to correct place
-            var oriPath = Path.Combine(CurrentShapeFolderPath, shapeName);
-            var destPath = Path.Combine(ShapeRootFolderPath, categoryName, shapeName);
+            var oriPath = Path.Combine(CurrentShapeFolderPath, shapeName) + ".png";
+            var destPath = Path.Combine(ShapeRootFolderPath, categoryName, shapeName) + ".png";
             
             File.Move(oriPath, destPath);
+
+            // remove the thumbnail on the pane
+            RemoveThumbnail(_selectedThumbnail);
+
+            Globals.ThisAddIn.SyncShapeRemove(shapeName);
         }
 
         private void ThumbnailContextMenuStripItemClicked(object sender, ToolStripItemClickedEventArgs e)

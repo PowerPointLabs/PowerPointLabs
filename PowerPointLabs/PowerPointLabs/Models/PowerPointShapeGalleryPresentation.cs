@@ -18,19 +18,24 @@ namespace PowerPointLabs.Models
         
         private PowerPointSlide _defaultCategory;
 
-        private readonly Dictionary<string, int> _categoryNameIndexMapper = new Dictionary<string, int>();
+        //private readonly Dictionary<string, int> _categoryNameIndexMapper = new Dictionary<string, int>();
 
         # region Properties
         public List<string> Categories { get; private set; }
         public string DefaultCategory
         {
-            get { return _defaultCategory.Name; }
+            get
+            {
+                if (_defaultCategory == null)
+                {
+                    return null;
+                }
+
+                return _defaultCategory.Name;
+            }
             set
             {
-                if (_categoryNameIndexMapper.ContainsKey(value))
-                {
-                    _defaultCategory = Slides[_categoryNameIndexMapper[value] - 1];
-                }
+                FindCategoryIndex(value, true);
             }
         }
         public bool IsImportedFile { get; set; }
@@ -44,13 +49,11 @@ namespace PowerPointLabs.Models
         # region API
         public void AddCategory(string name, bool setAsDefault = true)
         {
-            if (_categoryNameIndexMapper.ContainsKey(name))
-            {
-                if (setAsDefault)
-                {
-                    _defaultCategory = Slides[_categoryNameIndexMapper[name] - 1];
-                }
+            var index = FindCategoryIndex(name, setAsDefault);
 
+            // the category already exists
+            if (index != -1)
+            {
                 return;
             }
 
@@ -61,7 +64,6 @@ namespace PowerPointLabs.Models
             newSlide.DeleteShapeWithRule(new Regex(@"^Title \d+$"));
             newSlide.DeleteShapeWithRule(new Regex(@"^Content Placeholder \d+$"));
 
-            _categoryNameIndexMapper[name] = Slides.Count;
             Categories.Add(name);
 
             if (setAsDefault)
@@ -95,7 +97,8 @@ namespace PowerPointLabs.Models
         {
             selection.Copy();
 
-            var categorySlide = Slides[_categoryNameIndexMapper[category]];
+            var categoryIndex = FindCategoryIndex(category);
+            var categorySlide = Slides[categoryIndex - 1];
             var pastedShapeRange = categorySlide.Shapes.Paste();
             var pastedShape = pastedShapeRange[1];
 
@@ -114,7 +117,6 @@ namespace PowerPointLabs.Models
         {
             base.Close();
 
-            _categoryNameIndexMapper.Clear();
             RetrieveShapeGalleryFile();
         }
 
@@ -130,16 +132,18 @@ namespace PowerPointLabs.Models
 
         public bool HasCategory(string name)
         {
-            return _categoryNameIndexMapper.ContainsKey(name);
+            return Slides.Any(category => category.Name == name);
         }
 
         public void MoveShape(string name, string categoryName)
         {
-            if (!_categoryNameIndexMapper.ContainsKey(categoryName)) return;
+            var index = FindCategoryIndex(categoryName);
+
+            if (index == -1) return;
 
             // move a shape with name from default category to another category
             var shapes = _defaultCategory.GetShapeWithName(name);
-            var destCategory = Slides[_categoryNameIndexMapper[categoryName]];
+            var destCategory = Slides[index - 1];
 
             if (shapes.Count != 1) return;
 
@@ -173,7 +177,6 @@ namespace PowerPointLabs.Models
                 _defaultCategory = null;
             }
 
-            _categoryNameIndexMapper.Remove(name);
             Categories.Remove(name);
 
             RemoveSlide(name);
@@ -184,12 +187,11 @@ namespace PowerPointLabs.Models
 
         public void RemoveCategory(int index)
         {
-            if (_defaultCategory.Name == Slides[index].Name)
+            if (_defaultCategory.Name == Slides[index - 1].Name)
             {
                 _defaultCategory = null;
             }
 
-            _categoryNameIndexMapper.Remove(Slides[index].Name);
             Categories.RemoveAt(index);
             
             RemoveSlide(index);
@@ -200,13 +202,14 @@ namespace PowerPointLabs.Models
 
         public void RemoveCategory()
         {
-            var index = _categoryNameIndexMapper[_defaultCategory.Name];
+            // we need to change the index to 0-based in order to remove from Categories
+            var index = FindCategoryIndex(_defaultCategory.Name) - 1;
+
+            _defaultCategory = null;
             
             Categories.RemoveAt(index);
 
             RemoveSlide(index);
-
-            _categoryNameIndexMapper.Remove(_defaultCategory.Name);
 
             Save();
             ActionProtection();
@@ -235,12 +238,7 @@ namespace PowerPointLabs.Models
 
         public void RenameCategory(string newName)
         {
-            var index = _categoryNameIndexMapper[_defaultCategory.Name];
-
-            _categoryNameIndexMapper.Remove(_defaultCategory.Name);
-
             _defaultCategory.Name = newName;
-            _categoryNameIndexMapper[newName] = index;
 
             Save();
             ActionProtection();
@@ -433,6 +431,26 @@ namespace PowerPointLabs.Models
             return shapeLost;
         }
 
+        private int FindCategoryIndex(string categoryName, bool setAsDefault = false)
+        {
+            var index = -1;
+
+            foreach (var category in Slides)
+            {
+                if (category.Name == categoryName)
+                {
+                    index = category.Index;
+
+                    if (setAsDefault)
+                    {
+                        _defaultCategory = category;
+                    }
+                }
+            }
+
+            return index;
+        }
+
         private void PrepareCategories()
         {
             if (SlideCount < 1) return;
@@ -449,7 +467,6 @@ namespace PowerPointLabs.Models
             // record each slide in index-name mapper
             foreach (var category in Slides)
             {
-                _categoryNameIndexMapper[category.Name] = category.Index;
                 Categories.Add(category.Name);
 
                 if (category.Index == 0)
