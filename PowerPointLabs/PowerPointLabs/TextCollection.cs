@@ -2,6 +2,12 @@
 {
     internal class TextCollection
     {
+        # region Common Error
+        public const string ErrorNameTooLong = "The name's length cannot be more than 255 characters.";
+        public const string ErrorInvalidCharacter = "The name cannot be empty, or contain the following characters:'<', '>', ':', '\"', '/', '\\', '|', '?', or '*'.";
+        public const string ErrorFileNameExist = "A file already exists with that name.";
+        # endregion
+
         # region URLs
         public const string FeedbackUrl = "http://powerpointlabs.info/contact.html";
         public const string HelpDocumentUrl = "http://powerpointlabs.info/docs.html";
@@ -256,7 +262,7 @@
         
         # endregion
 
-        # region Task Pane - Custom Shape
+        # region Task Pane - Shapes Lab
         public const string CustomShapeFileNameInvalid = "Invalid shape name.";
         public const string CustomShapeNoShapeTextFirstLine = "No shapes saved yet.";
         public const string CustomShapeNoShapeTextSecondLine = "Right-click any object on a slide to save it in this panel.";
@@ -272,17 +278,12 @@
             "try to delete this folder manually when those files are closed.";
         public const string CustomShapeMigratingDialogTitle = "Migrating...";
         public const string CustomShapeMigratingDialogContent = "Shapes are being migrated, please wait...";
+        public const string CustomShapeRemoveLastCategoryError = "Removing the last category is not allowed.";
         # endregion
 
         # region Control - ShapesLabSetting
         public const string FolderDialogDescription = "Select the directory that you want to use as the default.";
         public const string FolderNonEmptyErrorMsg = "Please select an empty folder as default saving folder.";
-        # endregion
-
-        # region Control - Labeled Thumbnail
-        public const string LabeledThumbnailTooLongNameError = "The name's length cannot be more than 255 characters.";
-        public const string LabeledThumbnailInvalidCharacterError = "The name cannot be empty, or contain the following characters:'<', '>', ':', '\"', '/', '\\', '|', '?', or '*'.";
-        public const string LabeledThumbnailFileNameExistError = "A file already exists with that name.";
         # endregion
 
         # region Control - SlideShow Recorder Control

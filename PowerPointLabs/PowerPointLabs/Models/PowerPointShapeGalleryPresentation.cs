@@ -5,6 +5,7 @@ using System.Linq;
 using System.Text.RegularExpressions;
 using System.Windows.Forms;
 using Microsoft.Office.Interop.PowerPoint;
+using PowerPointLabs.Utils;
 
 namespace PowerPointLabs.Models
 {
@@ -17,33 +18,40 @@ namespace PowerPointLabs.Models
         
         private PowerPointSlide _defaultCategory;
 
-        private readonly Dictionary<string, int> _categoryNameIndexMapper = new Dictionary<string, int>();
-
         # region Properties
-        public string ShapeFolderPath { get; set; }
+        public List<string> Categories { get; private set; }
+        public string DefaultCategory
+        {
+            get
+            {
+                if (_defaultCategory == null)
+                {
+                    return null;
+                }
+
+                return _defaultCategory.Name;
+            }
+            set
+            {
+                FindCategoryIndex(value, true);
+            }
+        }
+        public bool IsImportedFile { get; set; }
         # endregion
 
         # region Constructor
-        public PowerPointShapeGalleryPresentation(string path, string name, string shapeFolderPath) : base(path, name)
-        {
-            ShapeFolderPath = shapeFolderPath;
-        }
-        public PowerPointShapeGalleryPresentation(Presentation presentation, string shapeFolderPath) : base(presentation)
-        {
-            ShapeFolderPath = shapeFolderPath;
-        }
+        public PowerPointShapeGalleryPresentation(string path, string name) : base(path, name) {}
+        public PowerPointShapeGalleryPresentation(Presentation presentation) : base(presentation) {}
         # endregion
 
         # region API
         public void AddCategory(string name, bool setAsDefault = true)
         {
-            if (_categoryNameIndexMapper.ContainsKey(name))
-            {
-                if (setAsDefault)
-                {
-                    _defaultCategory = Slides[_categoryNameIndexMapper[name] - 1];
-                }
+            var index = FindCategoryIndex(name, setAsDefault);
 
+            // the category already exists
+            if (index != -1)
+            {
                 return;
             }
 
@@ -54,7 +62,7 @@ namespace PowerPointLabs.Models
             newSlide.DeleteShapeWithRule(new Regex(@"^Title \d+$"));
             newSlide.DeleteShapeWithRule(new Regex(@"^Content Placeholder \d+$"));
 
-            _categoryNameIndexMapper[name] = Slides.Count;
+            Categories.Add(name);
 
             if (setAsDefault)
             {
@@ -87,7 +95,8 @@ namespace PowerPointLabs.Models
         {
             selection.Copy();
 
-            var categorySlide = Slides[_categoryNameIndexMapper[category]];
+            var categoryIndex = FindCategoryIndex(category);
+            var categorySlide = Slides[categoryIndex - 1];
             var pastedShapeRange = categorySlide.Shapes.Paste();
             var pastedShape = pastedShapeRange[1];
 
@@ -106,24 +115,41 @@ namespace PowerPointLabs.Models
         {
             base.Close();
 
-            try
-            {
-                _categoryNameIndexMapper.Clear();
-                RetrieveShapeGalleryFile();
-            }
-            catch (System.Exception)
-            {
-                MessageBox.Show("Error");
-            }
+            RetrieveShapeGalleryFile();
         }
 
         public void CopyShape(string name)
         {
+            // copy a shape with name in the default category
             var shapes = _defaultCategory.GetShapeWithName(name);
 
             if (shapes.Count != 1) return;
             
             shapes[0].Copy();
+        }
+
+        public bool HasCategory(string name)
+        {
+            return Slides.Any(category => category.Name == name);
+        }
+
+        public void MoveShape(string name, string categoryName)
+        {
+            var index = FindCategoryIndex(categoryName);
+
+            if (index == -1) return;
+
+            // move a shape with name from default category to another category
+            var shapes = _defaultCategory.GetShapeWithName(name);
+            var destCategory = Slides[index - 1];
+
+            if (shapes.Count != 1) return;
+
+            shapes[0].Cut();
+            destCategory.Shapes.Paste();
+
+            Save();
+            ActionProtection();
         }
 
         public override bool Open(bool readOnly = false, bool untitled = false,
@@ -149,7 +175,7 @@ namespace PowerPointLabs.Models
                 _defaultCategory = null;
             }
 
-            _categoryNameIndexMapper.Remove(name);
+            Categories.Remove(name);
 
             RemoveSlide(name);
 
@@ -159,13 +185,28 @@ namespace PowerPointLabs.Models
 
         public void RemoveCategory(int index)
         {
-            if (_defaultCategory.Name == Slides[index].Name)
+            if (_defaultCategory.Name == Slides[index - 1].Name)
             {
                 _defaultCategory = null;
             }
 
-            _categoryNameIndexMapper.Remove(Slides[index].Name);
+            Categories.RemoveAt(index);
             
+            RemoveSlide(index);
+
+            Save();
+            ActionProtection();
+        }
+
+        public void RemoveCategory()
+        {
+            // we need to change the index to 0-based in order to remove from Categories
+            var index = FindCategoryIndex(_defaultCategory.Name) - 1;
+
+            _defaultCategory = null;
+            
+            Categories.RemoveAt(index);
+
             RemoveSlide(index);
 
             Save();
@@ -193,16 +234,12 @@ namespace PowerPointLabs.Models
             ActionProtection();
         }
 
-        public void SetDefaultCategory(string name)
+        public void RenameCategory(string newName)
         {
-            foreach (var slide in Slides)
-            {
-                if (slide.Name == name)
-                {
-                    _defaultCategory = slide;
-                    break;
-                }
-            }
+            _defaultCategory.Name = newName;
+
+            Save();
+            ActionProtection();
         }
         # endregion
 
@@ -226,15 +263,37 @@ namespace PowerPointLabs.Models
             // 3. more shapes than png.
 
             var shapeDuplicate = ConsistencyCheckSelf();
+            var shapeLost = false;
+            var pngLost = false;
 
-            var pngShapes = Directory.EnumerateFiles(ShapeFolderPath, "*.png").ToList();
-            var shapeLost = ConsistencyCheckShapeToPng(pngShapes);
-            var pngLost = ConsistencyCheckPngToShape(pngShapes);
+            foreach (var category in Slides)
+            {
+                var shapeFolderPath = Path + @"\" + category.Name;
 
-            if (shapeDuplicate || shapeLost || pngLost)
+                // check if we have a corresponding category directory in the Path
+                ConsistencyCheckCategorySlideToLocal(category);
+
+                var pngShapes = Directory.EnumerateFiles(shapeFolderPath, "*.png").ToList();
+
+                // critical: OR with itself at the end to avoid early truncate
+                shapeLost = ConsistencyCheckShapeToPng(pngShapes, category) || shapeLost;
+                pngLost = ConsistencyCheckPngToShape(pngShapes, category) || pngLost;
+            }
+
+            var categoryInShapeGalleryLost = ConsistencyCheckCategoryLocalToSlide();
+
+            Save();
+
+            if (shapeDuplicate || shapeLost || categoryInShapeGalleryLost)
             {
                 MessageBox.Show(TextCollection.ShapeCorruptedError);
-                Save();
+
+                return false;
+            }
+
+            if (pngLost && !IsImportedFile)
+            {
+                MessageBox.Show(TextCollection.ShapeCorruptedError);
 
                 return false;
             }
@@ -242,7 +301,41 @@ namespace PowerPointLabs.Models
             return true;
         }
 
-        private bool ConsistencyCheckPngToShape(IEnumerable<string> pngShapes)
+        private bool ConsistencyCheckCategoryLocalToSlide()
+        {
+            var categoriesOnDisk = Directory.EnumerateDirectories(Path).ToList();
+            var categoryLost = false;
+
+            foreach (var categoryPath in categoriesOnDisk)
+            {
+                var categoryName = new DirectoryInfo(categoryPath).Name;
+
+                if (Slides.All(category => category.Name != categoryName))
+                {
+                    FileDir.DeleteFolder(categoryPath);
+
+                    categoryLost = true;
+                }
+            }
+
+            return categoryLost;
+        }
+
+        private void ConsistencyCheckCategorySlideToLocal(PowerPointSlide category)
+        {
+            var categoryFolderPath = Path + @"\" + category.Name;
+
+            // the category is some how lost on the disk, regenerate the category
+            if (!Directory.Exists(categoryFolderPath))
+            {
+                // create the directory
+                Directory.CreateDirectory(categoryFolderPath);
+                // since shape reconstruction will be taken care of during ConsistencyCheckShapeToPng(),
+                // we do not need to generate the shapes here
+            }
+        }
+
+        private bool ConsistencyCheckPngToShape(IEnumerable<string> pngShapes, PowerPointSlide category)
         {
             // if inconsistency is found, we delete the extra pngs
             var shapeLost = false;
@@ -250,7 +343,7 @@ namespace PowerPointLabs.Models
             foreach (var pngShape in pngShapes)
             {
                 var shapeName = System.IO.Path.GetFileNameWithoutExtension(pngShape);
-                var found = Slides.Any(category => category.HasShapeWithSameName(shapeName));
+                var found = category.HasShapeWithSameName(shapeName);
 
                 if (!found)
                 {
@@ -271,11 +364,11 @@ namespace PowerPointLabs.Models
             // 2. export the shape as .png
             foreach (var category in Slides)
             {
-                _categoryNameIndexMapper[category.Name] = category.Index;
-
                 var shapeHash = new Dictionary<string, int>();
                 var shapes = category.Shapes.Cast<Shape>().ToList();
                 var duplicateShapeNames = new List<string>();
+
+                var shapeFolderPath = Path + @"\" + category.Name;
 
                 foreach (var shape in shapes)
                 {
@@ -294,7 +387,7 @@ namespace PowerPointLabs.Models
                             duplicateShapeNames.Add(shape.Name);
                         }
 
-                        RenameAndExportDuplicateShape(shape, index);
+                        RenameAndExportDuplicateShape(shape, index, shapeFolderPath);
                     }
                 }
 
@@ -302,53 +395,83 @@ namespace PowerPointLabs.Models
 
                 foreach (var lastShapeName in duplicateShapeNames)
                 {
-                    var lastShapePath = ShapeFolderPath + @"\" + lastShapeName + ".png";
+                    var lastShapePath = shapeFolderPath + @"\" + lastShapeName + ".png";
                     var lastShape = category.GetShapeWithName(lastShapeName)[0];
 
                     File.Delete(lastShapePath);
-                    RenameAndExportDuplicateShape(lastShape, 1);
+                    RenameAndExportDuplicateShape(lastShape, 1, shapeFolderPath);
                 }
             }
 
             return shapeDuplicate;
         }
 
-        private bool ConsistencyCheckShapeToPng(List<string> pngShapes)
+        private bool ConsistencyCheckShapeToPng(List<string> pngShapes, PowerPointSlide category)
         {
-            // if inconsistency is found, we delete the extra shape
+            // if inconsistency is found, we export the extra shape to .png
             var shapeLost = false;
+            var shapeFolderPath = Path + @"\" + category.Name;
 
-            foreach (var category in Slides)
+            // this is to handle 2 cases:
+            // 1. user deleted the .png shape accidentally;
+            // 2. the file is imported
+            foreach (Shape shape in category.Shapes)
             {
-                // this is to handle the case when user deletes the .png image manually but
-                // ShapeGallery.pptx isn't updated
-                var shapeCnt = 1;
+                var shapePath = shapeFolderPath + @"\" + shape.Name + ".png";
 
-                while (shapeCnt <= category.Shapes.Count)
+                if (!pngShapes.Contains(shapePath))
                 {
-                    var shape = category.Shapes[shapeCnt];
-                    var shapePath = ShapeFolderPath + @"\" + shape.Name + ".png";
-
-                    if (!pngShapes.Contains(shapePath))
-                    {
-                        shape.Delete();
-                        shapeLost = true;
-                    }
-                    else
-                    {
-                        shapeCnt++;
-                    }
+                    Graphics.ExportShape(shape, shapePath);
+                    shapeLost = true;
                 }
             }
 
             return shapeLost;
         }
 
+        private int FindCategoryIndex(string categoryName, bool setAsDefault = false)
+        {
+            var index = -1;
+
+            foreach (var category in Slides)
+            {
+                if (category.Name == categoryName)
+                {
+                    index = category.Index;
+
+                    if (setAsDefault)
+                    {
+                        _defaultCategory = category;
+                    }
+                }
+            }
+
+            return index;
+        }
+
         private void PrepareCategories()
         {
             if (SlideCount < 1) return;
 
-            _defaultCategory = Slides[0];
+            if (Categories != null)
+            {
+                Categories.Clear();
+            }
+            else
+            {
+                Categories = new List<string>();
+            }
+
+            // record each slide in index-name mapper
+            foreach (var category in Slides)
+            {
+                Categories.Add(category.Name);
+
+                if (category.Index == 0)
+                {
+                    _defaultCategory = category;
+                }
+            }
         }
 
         private void RetrievePptxFile()
@@ -378,13 +501,13 @@ namespace PowerPointLabs.Models
             File.SetAttributes(shapeGalleryFileName, FileAttributes.ReadOnly);
         }
 
-        private void RenameAndExportDuplicateShape(Shape shape, int index)
+        private void RenameAndExportDuplicateShape(Shape shape, int index, string shapeFolderPath)
         {
             shape.Name += string.Format(DuplicateShapeSuffixFormat, index);
 
-            var shapeExportPath = ShapeFolderPath + @"\" + shape.Name + ".png";
+            var shapeExportPath = shapeFolderPath + @"\" + shape.Name + ".png";
 
-            shape.Export(shapeExportPath, PpShapeFormat.ppShapeFormatPNG, ExportMode: PpExportMode.ppScaleXY);
+            Graphics.ExportShape(shape, shapeExportPath);
         }
         # endregion
     }

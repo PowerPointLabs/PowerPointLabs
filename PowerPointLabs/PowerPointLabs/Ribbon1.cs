@@ -1391,6 +1391,9 @@ namespace PowerPointLabs
             var allAudioFiles = NotesToAudio.EmbedSelectedSlideNotes();
 
             var recorderPane = Globals.ThisAddIn.GetActivePane(typeof(RecorderTaskPane));
+
+            if (recorderPane == null) return;
+
             var recorder = recorderPane.Control as RecorderTaskPane;
 
             if (recorder == null) return;
@@ -1458,13 +1461,10 @@ namespace PowerPointLabs
             var tempPath = Globals.ThisAddIn.PrepareTempFolder(currentPresentation);
             Globals.ThisAddIn.PrepareMediaFiles(currentPresentation, tempPath);
 
-            Globals.ThisAddIn.RegisterRecorderPane(currentPresentation);
+            Globals.ThisAddIn.RegisterRecorderPane(currentPresentation.Windows[1], tempPath);
 
             var recorderPane = Globals.ThisAddIn.GetActivePane(typeof(RecorderTaskPane));
             var recorder = recorderPane.Control as RecorderTaskPane;
-
-            // TODO:
-            // Handle exception when user clicks the button without selecting any slides
 
             // if currently the pane is hidden, show the pane
             if (recorder != null && !recorderPane.Visible)
@@ -1550,7 +1550,10 @@ namespace PowerPointLabs
         # region Feature: Shapes Lab
         public void CustomShapeButtonClick(Office.IRibbonControl control)
         {
-            Globals.ThisAddIn.RegisterShapesLabPane(Globals.ThisAddIn.Application.ActivePresentation);
+            var prensentation = Globals.ThisAddIn.Application.ActivePresentation;
+            
+            Globals.ThisAddIn.InitializeShapeGallery();
+            Globals.ThisAddIn.RegisterShapesLabPane(prensentation);
 
             var customShapePane = Globals.ThisAddIn.GetActivePane(typeof(CustomShapePane));
 
@@ -1560,8 +1563,6 @@ namespace PowerPointLabs
             }
 
             var customShape = customShapePane.Control as CustomShapePane;
-
-            Globals.ThisAddIn.InitializeShapeGallery(customShape.CurrentShapeFolderPath);
 
             Trace.TraceInformation(
                 "Before Visible: " +
@@ -1583,6 +1584,8 @@ namespace PowerPointLabs
         public void AddShapeButtonClick(Office.IRibbonControl control)
         {
             var prensentation = Globals.ThisAddIn.Application.ActivePresentation;
+
+            Globals.ThisAddIn.InitializeShapeGallery();
             Globals.ThisAddIn.RegisterShapesLabPane(prensentation);
 
             var selection = PowerPointCurrentPresentationInfo.CurrentSelection;
@@ -1594,18 +1597,16 @@ namespace PowerPointLabs
                 return;
             }
 
+            var customShape = customShapePane.Control as CustomShapePane;
+
             // show pane if not visible
             if (!customShapePane.Visible)
             {
                 customShapePane.Visible = true;
+
+                customShape.Width = customShapePane.Width - 16;
+                customShape.PaneReload();
             }
-
-            var customShape = customShapePane.Control as CustomShapePane;
-
-            Globals.ThisAddIn.InitializeShapeGallery(customShape.CurrentShapeFolderPath);
-            
-            customShape.Width = customShapePane.Width - 16;
-            customShape.PaneReload();
 
             // first of all we check if the shape gallery has been opened correctly
             if (!Globals.ThisAddIn.ShapePresentation.Opened)
@@ -1637,7 +1638,7 @@ namespace PowerPointLabs
             ConvertToPicture.ConvertAndSave(selection, shapeFullName);
 
             // sync the shape among all opening panels
-            Globals.ThisAddIn.SyncShapeAdd(shapeName, shapeFullName);
+            Globals.ThisAddIn.SyncShapeAdd(shapeName, shapeFullName, customShape.CurrentCategory);
 
             // since we group and then ungroup the shape, document has been modified.
             // if the presentation has been saved before the group->ungroup, we can save
