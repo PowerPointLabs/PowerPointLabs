@@ -568,7 +568,7 @@ namespace PowerPointLabs
             return shapeRootFolderPath;
         }
 
-        public void SyncShapeAdd(string shapeName, string shapeFullName)
+        public void SyncShapeAdd(string shapeName, string shapeFullName, string category)
         {
             foreach (PowerPoint.DocumentWindow window in Globals.ThisAddIn.Application.Windows)
             {
@@ -576,13 +576,15 @@ namespace PowerPointLabs
 
                 var shapePaneControl = GetControlFromWindow(typeof(CustomShapePane), window) as CustomShapePane;
 
-                if (shapePaneControl == null) continue;
-
-                shapePaneControl.AddCustomShape(shapeName, shapeFullName, false);
+                if (shapePaneControl != null &&
+                    shapePaneControl.CurrentCategory == category)
+                {
+                    shapePaneControl.AddCustomShape(shapeName, shapeFullName, false);
+                }
             }
         }
 
-        public void SyncShapeRemove(string shapeName)
+        public void SyncShapeRemove(string shapeName, string category)
         {
             foreach (PowerPoint.DocumentWindow window in Globals.ThisAddIn.Application.Windows)
             {
@@ -590,13 +592,15 @@ namespace PowerPointLabs
 
                 var shapePaneControl = GetControlFromWindow(typeof(CustomShapePane), window) as CustomShapePane;
 
-                if (shapePaneControl == null) continue;
-
-                shapePaneControl.RemoveCustomShape(shapeName);
+                if (shapePaneControl != null &&
+                    shapePaneControl.CurrentCategory == category)
+                {
+                    shapePaneControl.RemoveCustomShape(shapeName);
+                }
             }
         }
 
-        public void SyncShapeRename(string shapeOldName, string shapeNewName)
+        public void SyncShapeRename(string shapeOldName, string shapeNewName, string category)
         {
             foreach (PowerPoint.DocumentWindow window in Globals.ThisAddIn.Application.Windows)
             {
@@ -604,9 +608,11 @@ namespace PowerPointLabs
 
                 var shapePaneControl = GetControlFromWindow(typeof(CustomShapePane), window) as CustomShapePane;
 
-                if (shapePaneControl == null) continue;
-
-                shapePaneControl.RenameCustomShape(shapeOldName, shapeNewName);
+                if (shapePaneControl != null &&
+                    shapePaneControl.CurrentCategory == category)
+                {
+                    shapePaneControl.RenameCustomShape(shapeOldName, shapeNewName);
+                }
             }
         }
 

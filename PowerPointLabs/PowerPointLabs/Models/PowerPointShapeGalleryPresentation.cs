@@ -18,8 +18,6 @@ namespace PowerPointLabs.Models
         
         private PowerPointSlide _defaultCategory;
 
-        //private readonly Dictionary<string, int> _categoryNameIndexMapper = new Dictionary<string, int>();
-
         # region Properties
         public List<string> Categories { get; private set; }
         public string DefaultCategory

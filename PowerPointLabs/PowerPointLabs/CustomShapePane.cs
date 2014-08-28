@@ -186,11 +186,11 @@ namespace PowerPointLabs
         # endregion
 
         # region API
-        public void AddCustomShape(string shapeName, string shapeFullName, bool immediateEditing)
+        public void AddCustomShape(string shapeName, string shapePath, bool immediateEditing)
         {
             DehighlightSelected();
 
-            var labeledThumbnail = new LabeledThumbnail(shapeFullName, shapeName) {ContextMenuStrip = shapeContextMenuStrip};
+            var labeledThumbnail = new LabeledThumbnail(shapePath, shapeName) { ContextMenuStrip = shapeContextMenuStrip };
 
             labeledThumbnail.Click += LabeledThumbnailClick;
             labeledThumbnail.DoubleClick += LabeledThumbnailDoubleClick;
@@ -379,7 +379,7 @@ namespace PowerPointLabs
             RemoveThumbnail(_selectedThumbnail);
 
             // sync shape removing among all task panes
-            Globals.ThisAddIn.SyncShapeRemove(removedShapename);
+            Globals.ThisAddIn.SyncShapeRemove(removedShapename, CurrentCategory);
         }
 
         private void ContextMenuStripRenameCategoryClicked()
@@ -649,7 +649,7 @@ namespace PowerPointLabs
 
             Globals.ThisAddIn.ShapePresentation.RenameShape(oldName, labeledThumbnail.NameLable);
 
-            Globals.ThisAddIn.SyncShapeRename(oldName, labeledThumbnail.NameLable);
+            Globals.ThisAddIn.SyncShapeRename(oldName, labeledThumbnail.NameLable, CurrentCategory);
         }
 
         private void ReorderThumbnail(LabeledThumbnail labeledThumbnail)
@@ -840,18 +840,30 @@ namespace PowerPointLabs
             var categoryName = item.Text;
             var shapeName = _selectedThumbnail.NameLable;
 
-            // move shape in ShapeGallery to correct place
-            Globals.ThisAddIn.ShapePresentation.MoveShape(shapeName, categoryName);
-            // move shape on the disk to correct place
             var oriPath = Path.Combine(CurrentShapeFolderPath, shapeName) + ".png";
             var destPath = Path.Combine(ShapeRootFolderPath, categoryName, shapeName) + ".png";
+
+            // if we have an identical name in the destination category, we won't allow
+            // moving
+            if (File.Exists(destPath))
+            {
+                MessageBox.Show(string.Format("{0} exists in {1}. Please rename your shape before moving.", shapeName,
+                                              categoryName));
+
+                return;
+            }
+
+            // move shape in ShapeGallery to correct place
+            Globals.ThisAddIn.ShapePresentation.MoveShape(shapeName, categoryName);
             
+            // move shape on the disk to correct place
             File.Move(oriPath, destPath);
 
             // remove the thumbnail on the pane
             RemoveThumbnail(_selectedThumbnail);
 
-            Globals.ThisAddIn.SyncShapeRemove(shapeName);
+            Globals.ThisAddIn.SyncShapeRemove(shapeName, CurrentCategory);
+            Globals.ThisAddIn.SyncShapeAdd(shapeName, destPath, categoryName);
         }
 
         private void ThumbnailContextMenuStripItemClicked(object sender, ToolStripItemClickedEventArgs e)

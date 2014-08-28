@@ -1638,7 +1638,7 @@ namespace PowerPointLabs
             ConvertToPicture.ConvertAndSave(selection, shapeFullName);
 
             // sync the shape among all opening panels
-            Globals.ThisAddIn.SyncShapeAdd(shapeName, shapeFullName);
+            Globals.ThisAddIn.SyncShapeAdd(shapeName, shapeFullName, customShape.CurrentCategory);
 
             // since we group and then ungroup the shape, document has been modified.
             // if the presentation has been saved before the group->ungroup, we can save
