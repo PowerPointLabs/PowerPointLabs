@@ -24,8 +24,6 @@ namespace PowerPointLabs.Views
         public ShapesLabCategoryInfoForm()
         {
             InitializeComponent();
-
-            categoryNameBox.KeyPress += CategoryNameBoxKeyPress;
         }
         # endregion
 
@@ -63,9 +61,9 @@ namespace PowerPointLabs.Views
             Dispose();
         }
 
-        private void CategoryNameBoxKeyPress(object sender, KeyPressEventArgs e)
+        private void CategoryNameBoxKeyDown(object sender, KeyEventArgs e)
         {
-            if (e.KeyChar == (char)Keys.Return)
+            if (e.KeyValue == (char)Keys.Return)
             {
                 e.Handled = true;
                 OkButtonClick(sender, null);

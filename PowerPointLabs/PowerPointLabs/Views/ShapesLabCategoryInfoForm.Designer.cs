@@ -40,7 +40,7 @@
             this.categoryNameBox.Name = "categoryNameBox";
             this.categoryNameBox.Size = new System.Drawing.Size(181, 21);
             this.categoryNameBox.TabIndex = 0;
-            this.categoryNameBox.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.CategoryNameBoxKeyPress);
+            this.categoryNameBox.KeyDown += new System.Windows.Forms.KeyEventHandler(this.CategoryNameBoxKeyDown);
             // 
             // label1
             // 
@@ -71,7 +71,7 @@
             this.cancelButton.UseVisualStyleBackColor = true;
             this.cancelButton.Click += new System.EventHandler(this.CancelButtonClick);
             // 
-            // ShapesLabAddCategoryForm
+            // ShapesLabCategoryInfoForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
@@ -82,7 +82,7 @@
             this.Controls.Add(this.label1);
             this.Controls.Add(this.categoryNameBox);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog;
-            this.Name = "ShapesLabAddCategoryForm";
+            this.Name = "ShapesLabCategoryInfoForm";
             this.Text = "Category Information";
             this.ResumeLayout(false);
             this.PerformLayout();

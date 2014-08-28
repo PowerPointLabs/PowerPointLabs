@@ -356,11 +356,11 @@
     <Compile Include="Views\InShowControl.Designer.cs">
       <DependentUpon>InShowControl.cs</DependentUpon>
     </Compile>
-    <Compile Include="Views\ShapesLabAddCategoryForm.cs">
+    <Compile Include="Views\ShapesLabCategoryInfoForm.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Views\ShapesLabAddCategoryForm.Designer.cs">
-      <DependentUpon>ShapesLabAddCategoryForm.cs</DependentUpon>
+    <Compile Include="Views\ShapesLabCategoryInfoForm.Designer.cs">
+      <DependentUpon>ShapesLabCategoryInfoForm.cs</DependentUpon>
     </Compile>
     <Compile Include="Views\ShapesLabSetting.cs">
       <SubType>Form</SubType>
@@ -486,8 +486,8 @@
     <EmbeddedResource Include="Views\InShowControl.resx">
       <DependentUpon>InShowControl.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Views\ShapesLabAddCategoryForm.resx">
-      <DependentUpon>ShapesLabAddCategoryForm.cs</DependentUpon>
+    <EmbeddedResource Include="Views\ShapesLabCategoryInfoForm.resx">
+      <DependentUpon>ShapesLabCategoryInfoForm.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Views\ShapesLabSetting.resx">
       <DependentUpon>ShapesLabSetting.cs</DependentUpon>
