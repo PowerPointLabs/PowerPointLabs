@@ -66,6 +66,9 @@ namespace PPExtraEventHelper
         [DllImport("user32.dll")]
         internal static extern IntPtr ChangeClipboardChain(IntPtr hwnd, IntPtr hWndNext);
 
+        [DllImport("user32.DLL")]
+        internal static extern bool SetForegroundWindow(IntPtr hWnd);
+
         [DllImport("user32.dll", CallingConvention = CallingConvention.StdCall, CharSet = CharSet.Auto)]
         internal static extern int GetWindowThreadProcessId(IntPtr hwnd, int ID);
 
@@ -82,7 +85,7 @@ namespace PPExtraEventHelper
         [DllImport("user32.dll", CharSet = CharSet.Auto)]
         internal static extern IntPtr SendMessage(IntPtr hWnd, uint msg, IntPtr wParam, IntPtr lParam);
 
-        [DllImport("user32.dll", SetLastError = true)]
+        [DllImport("user32.dll", EntryPoint = "PostMessageA")]
         internal static extern bool PostMessage(IntPtr hWnd, uint Msg, IntPtr wParam, IntPtr lParam);
 
         [DllImport("user32.dll", CallingConvention = CallingConvention.StdCall, CharSet = CharSet.Auto)]
@@ -95,6 +98,9 @@ namespace PPExtraEventHelper
         internal static extern int CallNextHookEx(int idHook, int nCode, IntPtr wParam, IntPtr lParam);
 
         [DllImport("user32.dll")]
+        internal static extern byte VkKeyScan(char key);
+
+        [DllImport("user32.dll")]
         internal static extern IntPtr SetWinEventHook(uint eventMin, uint eventMax, IntPtr
            hmodWinEventProc, WinEventDelegate lpfnWinEventProc, uint idProcess,
            uint idThread, uint dwFlags);
@@ -103,7 +109,7 @@ namespace PPExtraEventHelper
         internal static extern bool UnhookWinEvent(IntPtr hWinEventHook);
 
         [DllImport("winmm.dll")]
-        internal static extern int mciSendString(string mciCommand,
+        internal static extern int MciSendString(string mciCommand,
                                                 StringBuilder mciRetInfo,
                                                 int infoLen,
                                                 IntPtr callBack);
@@ -173,6 +179,7 @@ namespace PPExtraEventHelper
         {
             WM_SETREDRAW = 0XB,
             WM_PAINT = 0xf,
+            WM_KEYDOWN = 0x100,
             WM_COMMAND = 0x111,
             WM_LBUTTONDOWN = 0x0201,
             WM_LBUTTONUP = 0x0202,
@@ -192,6 +199,12 @@ namespace PPExtraEventHelper
             TVM_ENSUREVISIBLE = (TV_FIRST + 20),
 
             WS_EX_COMPOSITED = 0x02000000
+        }
+
+        internal enum VirutalKey
+        {
+            VK_RETURN = 0x0D,
+          	VK_ESCAPE =	0x1B
         }
 
         internal enum Event

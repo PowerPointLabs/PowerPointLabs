@@ -40,7 +40,7 @@ namespace PowerPointLabs
         
         public bool FrameAnimationChecked = false;
         public bool BackgroundZoomChecked = true;
-        public bool MultiSlideZoomChecked = false;
+        public bool MultiSlideZoomChecked = true;
         public bool SpotlightDelete = true;
         public float DefaultDuration = 0.5f;
 

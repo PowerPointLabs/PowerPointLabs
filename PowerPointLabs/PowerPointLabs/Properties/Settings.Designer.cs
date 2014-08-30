@@ -25,7 +25,7 @@ namespace PowerPointLabs.Properties {
         
         [global::System.Configuration.ApplicationScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("release")]
+        [global::System.Configuration.DefaultSettingValueAttribute("dev")]
         public string ReleaseType {
             get {
                 return ((string)(this["ReleaseType"]));
@@ -43,7 +43,7 @@ namespace PowerPointLabs.Properties {
         
         [global::System.Configuration.ApplicationScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("1.9.0.2")]
+        [global::System.Configuration.DefaultSettingValueAttribute("1.9.2.1")]
         public string Version {
             get {
                 return ((string)(this["Version"]));
@@ -52,7 +52,7 @@ namespace PowerPointLabs.Properties {
         
         [global::System.Configuration.ApplicationScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("12 Aug 2014")]
+        [global::System.Configuration.DefaultSettingValueAttribute("31 Aug 2014")]
         public string ReleaseDate {
             get {
                 return ((string)(this["ReleaseDate"]));

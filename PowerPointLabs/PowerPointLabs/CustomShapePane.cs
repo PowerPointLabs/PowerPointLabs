@@ -152,6 +152,8 @@ namespace PowerPointLabs
             SetStyle(ControlStyles.UserPaint | ControlStyles.DoubleBuffer | ControlStyles.AllPaintingInWmPaint, true);
             InitializeComponent();
 
+            InitializeContextMenu();
+
             ShapeRootFolderPath = shapeRootFolderPath;
 
             CurrentCategory = defaultShapeCategoryName;
@@ -172,16 +174,6 @@ namespace PowerPointLabs
                                                         myShapeFlowLayout.Focus();
                                                     }
                                                 };
-
-            // add a dummy entry to show right arrow
-            moveShapeToolStripMenuItem.DropDownItems.Add("");
-            foreach (ToolStripMenuItem contextMenu in shapeContextMenuStrip.Items)
-            {
-                if (contextMenu.Text != "Move Shape To")
-                {
-                    contextMenu.MouseEnter += MoveContextMenuStripLeaveEvent;
-                }
-            }
         }
         # endregion
 
@@ -545,6 +537,37 @@ namespace PowerPointLabs
             _selectedThumbnail.Highlight();
         }
 
+        private void InitializeContextMenu()
+        {
+            addToSlideToolStripMenuItem.Text = TextCollection.CustomShapeShapeContextStripAddToSlide;
+            editNameToolStripMenuItem.Text = TextCollection.CustomShapeShapeContextStripEditName;
+            moveShapeToolStripMenuItem.Text = TextCollection.CustomShapeShapeContextStripMoveShape;
+            removeShapeToolStripMenuItem.Text = TextCollection.CustomShapeShapeContextStripRemoveShape;
+            copyToToolStripMenuItem.Text = TextCollection.CustomShapeShapeContextStripCopyShape;
+
+            addCategoryToolStripMenuItem.Text = TextCollection.CustomShapeCategoryContextStripAddCategory;
+            removeCategoryToolStripMenuItem.Text = TextCollection.CustomShapeCategoryContextStripRemoveCategory;
+            renameCategoryToolStripMenuItem.Text = TextCollection.CustomShapeCategoryContextStripRenameCategory;
+            settingsToolStripMenuItem.Text = TextCollection.CustomShapeCategoryContextStripCategorySettings;
+            
+            // add a dummy entry to show right arrow
+            moveShapeToolStripMenuItem.DropDownItems.Add("");
+            copyToToolStripMenuItem.DropDownItems.Add("");
+
+            foreach (ToolStripMenuItem contextMenu in shapeContextMenuStrip.Items)
+            {
+                if (contextMenu.Text != TextCollection.CustomShapeShapeContextStripMoveShape)
+                {
+                    contextMenu.MouseEnter += MoveContextMenuStripLeaveEvent;
+                }
+                
+                if (contextMenu.Text != TextCollection.CustomShapeShapeContextStripCopyShape)
+                {
+                    contextMenu.MouseEnter += CopyContextMenuStripLeaveEvent;
+                }
+            }
+        }
+
         private bool MigrateShapeFolder(string oldPath, string newPath)
         {
             var loadingDialog = new LoadingDialog(TextCollection.CustomShapeMigratingDialogTitle,
@@ -693,6 +716,65 @@ namespace PowerPointLabs
             }
         }
 
+        private void CopyContextMenuStripLeaveEvent(object sender, EventArgs e)
+        {
+            copyToToolStripMenuItem.HideDropDown();
+        }
+
+        private void CopyContextMenuStripOnEvent(object sender, EventArgs e)
+        {
+            if (copyToToolStripMenuItem.Tag != null &&
+                (string)copyToToolStripMenuItem.Tag == CurrentCategory)
+            {
+                copyToToolStripMenuItem.ShowDropDown();
+                return;
+            }
+
+            copyToToolStripMenuItem.DropDownItems.Clear();
+
+            foreach (string category in _categoryBinding.List)
+            {
+                if (category != CurrentCategory)
+                {
+                    var item = copyToToolStripMenuItem.DropDownItems.Add(category);
+                    item.Click += CopyContextMenuStripSubMenuClick;
+                }
+            }
+
+            copyToToolStripMenuItem.ShowDropDown();
+        }
+
+        private void CopyContextMenuStripSubMenuClick(object sender, EventArgs e)
+        {
+            var item = sender as ToolStripItem;
+
+            if (item == null) return;
+
+            var categoryName = item.Text;
+            var shapeName = _selectedThumbnail.NameLable;
+
+            var oriPath = Path.Combine(CurrentShapeFolderPath, shapeName) + ".png";
+            var destPath = Path.Combine(ShapeRootFolderPath, categoryName, shapeName) + ".png";
+
+            // if we have an identical name in the destination category, we won't allow
+            // moving
+            if (File.Exists(destPath))
+            {
+                MessageBox.Show(string.Format("{0} exists in {1}. Please rename your shape before moving.", shapeName,
+                                              categoryName));
+
+                return;
+            }
+
+            // move shape in ShapeGallery to correct place
+            Globals.ThisAddIn.ShapePresentation.CopyShape(shapeName, categoryName);
+
+            // move shape on the disk to correct place
+            File.Copy(oriPath, destPath);
+
+            Globals.ThisAddIn.SyncShapeAdd(shapeName, destPath, categoryName);
+        }
+
         private void CustomShapePaneClick(object sender, EventArgs e)
         {
             if (_selectedThumbnail != null &&
@@ -781,7 +863,7 @@ namespace PowerPointLabs
             
             if (currentSlide != null)
             {
-                Globals.ThisAddIn.ShapePresentation.CopyShape(shapeName);
+                Globals.ThisAddIn.ShapePresentation.RetriveShape(shapeName);
                 currentSlide.Shapes.Paste().Select();
             }
             else
@@ -817,6 +899,13 @@ namespace PowerPointLabs
 
         private void MoveContextMenuStripOnEvent(object sender, EventArgs e)
         {
+            if (moveShapeToolStripMenuItem.Tag != null &&
+                (string)moveShapeToolStripMenuItem.Tag == CurrentCategory)
+            {
+                moveShapeToolStripMenuItem.ShowDropDown();
+                return;
+            }
+
             moveShapeToolStripMenuItem.DropDownItems.Clear();
 
             foreach (string category in _categoryBinding.List)

@@ -279,6 +279,17 @@
         public const string CustomShapeMigratingDialogTitle = "Migrating...";
         public const string CustomShapeMigratingDialogContent = "Shapes are being migrated, please wait...";
         public const string CustomShapeRemoveLastCategoryError = "Removing the last category is not allowed.";
+        
+        public const string CustomShapeShapeContextStripAddToSlide = "Add To Slide";
+        public const string CustomShapeShapeContextStripEditName = "Edit Name";
+        public const string CustomShapeShapeContextStripMoveShape = "Move Shape To";
+        public const string CustomShapeShapeContextStripRemoveShape = "Remove Shape";
+        public const string CustomShapeShapeContextStripCopyShape = "Copy To";
+
+        public const string CustomShapeCategoryContextStripAddCategory = "Add Category";
+        public const string CustomShapeCategoryContextStripRemoveCategory = "Remove Category";
+        public const string CustomShapeCategoryContextStripRenameCategory = "Rename Category";
+        public const string CustomShapeCategoryContextStripCategorySettings = "Settings";
         # endregion
 
         # region Control - ShapesLabSetting
