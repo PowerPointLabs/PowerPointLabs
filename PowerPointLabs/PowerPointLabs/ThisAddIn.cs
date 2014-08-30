@@ -319,13 +319,15 @@ namespace PowerPointLabs
             }
             else
             {
+                var handle = Native.FindWindow("PPTFrameClass", pres.Name + " - Microsoft PowerPoint");
                 var prompt =
                     MessageBox.Show(string.Format("Do you want to save {0}", associatedWindow.Caption),
                                     Application.Name,
                                     MessageBoxButtons.YesNoCancel, MessageBoxIcon.Warning,
                                     MessageBoxDefaultButton.Button1);
 
-                // TODO: send key to associate window handle!!!
+                Native.SetForegroundWindow(handle);
+
                 switch (prompt)
                 {
                     case DialogResult.Yes:
