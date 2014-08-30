@@ -118,14 +118,23 @@ namespace PowerPointLabs.Models
             RetrieveShapeGalleryFile();
         }
 
-        public void CopyShape(string name)
+        public void CopyShape(string name, string categoryName)
         {
-            // copy a shape with name in the default category
+            var index = FindCategoryIndex(categoryName);
+
+            if (index == -1) return;
+
+            // move a shape with name from default category to another category
             var shapes = _defaultCategory.GetShapeWithName(name);
+            var destCategory = Slides[index - 1];
 
             if (shapes.Count != 1) return;
-            
+
             shapes[0].Copy();
+            destCategory.Shapes.Paste();
+
+            Save();
+            ActionProtection();
         }
 
         public bool HasCategory(string name)
@@ -240,6 +249,16 @@ namespace PowerPointLabs.Models
 
             Save();
             ActionProtection();
+        }
+
+        public void RetriveShape(string name)
+        {
+            // copy a shape with name in the default category
+            var shapes = _defaultCategory.GetShapeWithName(name);
+
+            if (shapes.Count != 1) return;
+
+            shapes[0].Copy();
         }
         # endregion
 

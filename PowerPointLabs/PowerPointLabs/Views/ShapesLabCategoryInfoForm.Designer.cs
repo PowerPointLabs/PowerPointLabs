@@ -83,6 +83,7 @@
             this.Controls.Add(this.categoryNameBox);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog;
             this.Name = "ShapesLabCategoryInfoForm";
+            this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Category Information";
             this.ResumeLayout(false);
             this.PerformLayout();
