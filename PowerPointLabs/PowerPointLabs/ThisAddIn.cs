@@ -122,6 +122,15 @@ namespace PowerPointLabs
             {
                 Ribbon.EmbedAudioVisible = !pres.Name.EndsWith(".ppt");
 
+                var customShape = GetActiveControl(typeof(CustomShapePane)) as CustomShapePane;
+
+                // make sure ShapeGallery's default category is consistent with current presentation
+                if (customShape != null)
+                {
+                    var currentCategory = customShape.CurrentCategory;
+                    ShapePresentation.DefaultCategory = currentCategory;
+                }
+
                 _isClosing = false;
             }
         }
