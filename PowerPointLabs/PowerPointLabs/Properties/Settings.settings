@@ -9,10 +9,10 @@
       <Value Profile="(Default)">offline</Value>
     </Setting>
     <Setting Name="Version" Type="System.String" Scope="Application">
-      <Value Profile="(Default)">1.9.1.0</Value>
+      <Value Profile="(Default)">1.9.2.0</Value>
     </Setting>
     <Setting Name="ReleaseDate" Type="System.String" Scope="Application">
-      <Value Profile="(Default)">29 Aug 2014</Value>
+      <Value Profile="(Default)">31 Aug 2014</Value>
     </Setting>
     <Setting Name="ReleaseAddr" Type="System.String" Scope="Application">
       <Value Profile="(Default)">http://www.comp.nus.edu.sg/~pptlabs/download-78563/</Value>
