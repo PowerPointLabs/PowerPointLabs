@@ -22,14 +22,9 @@ namespace PowerPointLabs
 {
     public partial class ThisAddIn
     {
-        private readonly string _defaultShapeMasterFolderPrefix =
-            Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments);
-
         private const string AppLogName = "PowerPointLabs_Log_1.log"; 
         private const string SlideXmlSearchPattern = @"slide(\d+)\.xml";
         private const string TempFolderNamePrefix = @"\PowerPointLabs Temp\";
-        private const string DefaultShapeMasterFolderName = @"\PowerPointLabs Custom Shapes";
-        private const string DefaultShapeCategoryName = "My Shapes";
         private const string ShapeGalleryPptxName = "ShapeGallery";
         private const string TempZipName = "tempZip.zip";
 
@@ -48,14 +43,14 @@ namespace PowerPointLabs
             bool> _documentPathAssociateMapper = new Dictionary<PowerPoint.DocumentWindow,
                 bool>();
 
+        internal ShapesLabConfig ShapesLabConfigs;
+
         internal PowerPointShapeGalleryPresentation ShapePresentation;
 
         public readonly string OfficeVersion2013 = "15.0";
         public readonly string OfficeVersion2010 = "14.0";
 
-        public readonly string ShapeRootFolderConfigFileName = "ShapeRootFolder.config";
-
-        public readonly string AppDataFolder =
+        public static string AppDataFolder =
             Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), "PowerPointLabs");
 
         public Ribbon1 Ribbon;
@@ -111,6 +106,11 @@ namespace PowerPointLabs
                 ShapePresentation != null &&
                 ShapePresentation.Opened)
             {
+                if (string.IsNullOrEmpty(ShapesLabConfigs.DefaultCategory))
+                {
+                    ShapesLabConfigs.DefaultCategory = ShapePresentation.Categories[0];
+                }
+
                 ShapePresentation.Close();
                 Trace.TraceInformation("Shape Gallery terminated.");
             }
@@ -423,7 +423,7 @@ namespace PowerPointLabs
             // achieves singleton ShapePresentation
             if (ShapePresentation != null) return;
 
-            var shapeRootFolderPath = RetriveConfigShapeRootFolder();
+            var shapeRootFolderPath = ShapesLabConfigs.ShapeRootFolder;
 
             ShapePresentation =
                 new PowerPointShapeGalleryPresentation(shapeRootFolderPath, ShapeGalleryPptxName);
@@ -437,16 +437,30 @@ namespace PowerPointLabs
                 return;
             }
 
-            if (ShapePresentation.HasCategory(DefaultShapeCategoryName))
+            if (ShapePresentation.HasCategory(ShapesLabConfigs.DefaultCategory))
             {
-                ShapePresentation.DefaultCategory = DefaultShapeCategoryName;
+                ShapePresentation.DefaultCategory = ShapesLabConfigs.DefaultCategory;
 
                 return;
             }
 
-            // add the default shape category
-            ShapePresentation.AddCategory(DefaultShapeCategoryName);
+            // if we do not have the default category, add it to ShapeGallery
+            ShapePresentation.AddCategory(ShapesLabConfigs.DefaultCategory);
             ShapePresentation.Save();
+        }
+
+        public void InitializeShapesLabConfig()
+        {
+            // if ShapesLabConfig has already been intialized, do nothing
+            if (ShapesLabConfigs != null) return;
+
+            ShapesLabConfigs = new ShapesLabConfig(AppDataFolder);
+
+            // create a directory under specified location if the location does not exist
+            if (!Directory.Exists(ShapesLabConfigs.ShapeRootFolder))
+            {
+                Directory.CreateDirectory(ShapesLabConfigs.ShapeRootFolder);
+            }
         }
 
         public void PrepareMediaFiles(PowerPoint.Presentation pres, string tempPath)
@@ -547,36 +561,10 @@ namespace PowerPointLabs
             }
 
             var activeWindow = presentation.Application.ActiveWindow;
-            var shapeRootFolderPath = RetriveConfigShapeRootFolder();
 
             RegisterTaskPane(
-                new CustomShapePane(shapeRootFolderPath, DefaultShapeCategoryName),
+                new CustomShapePane(ShapesLabConfigs.ShapeRootFolder, ShapesLabConfigs.DefaultCategory),
                 TextCollection.ShapesLabTaskPanelTitle, activeWindow, null, null);
-        }
-
-        public string RetriveConfigShapeRootFolder()
-        {
-            var shapeRootFolderPathConfigFile = Path.Combine(AppDataFolder, ShapeRootFolderConfigFileName);
-            var shapeRootFolderPath = _defaultShapeMasterFolderPrefix + DefaultShapeMasterFolderName;
-
-            if (File.Exists(shapeRootFolderPathConfigFile) &&
-                (new FileInfo(shapeRootFolderPathConfigFile)).Length != 0)
-            {
-                using (var reader = new StreamReader(shapeRootFolderPathConfigFile))
-                {
-                    shapeRootFolderPath = reader.ReadLine();
-                    reader.Close();
-                }
-            }
-
-            // create a directory under specified location if the location does not exist
-            if (shapeRootFolderPath != null &&
-                !Directory.Exists(shapeRootFolderPath))
-            {
-                Directory.CreateDirectory(shapeRootFolderPath);
-            }
-
-            return shapeRootFolderPath;
         }
 
         public void SyncShapeAdd(string shapeName, string shapeFullName, string category)
