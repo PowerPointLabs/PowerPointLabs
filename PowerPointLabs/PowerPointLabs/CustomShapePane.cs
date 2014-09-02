@@ -17,9 +17,6 @@ namespace PowerPointLabs
         private const string DefaultShapeNameFormat = @"My Shape Untitled {0}";
         private const string DefaultShapeNameSearchRegex = @"^My Shape Untitled (\d+)$";
 
-        private readonly string _shapeRootFolderPathConfigFile = Path.Combine(Globals.ThisAddIn.AppDataFolder,
-                                                                              Globals.ThisAddIn.ShapeRootFolderConfigFileName);
-
         private readonly int _doubleClickTimeSpan = SystemInformation.DoubleClickTime;
         private int _clicks;
 
@@ -27,6 +24,7 @@ namespace PowerPointLabs
         private bool _firstClick = true;
         private bool _clickOnSelected;
         private bool _isLeftButton;
+        private bool _isIndexChangeRedraw = true;
 
         private readonly BindingSource _categoryBinding;
 
@@ -160,6 +158,15 @@ namespace PowerPointLabs
             Categories = new List<string>(Globals.ThisAddIn.ShapePresentation.Categories);
             _categoryBinding = new BindingSource { DataSource = Categories };
             categoryBox.DataSource = _categoryBinding;
+
+            for (var i = 0; i < Categories.Count; i ++)
+            {
+                if (Categories[i] == defaultShapeCategoryName)
+                {
+                    categoryBox.SelectedIndex = i;
+                    break;
+                }
+            }
 
             _timer = new Timer { Interval = _doubleClickTimeSpan };
             _timer.Tick += TimerTickHandler;
@@ -303,7 +310,6 @@ namespace PowerPointLabs
                 _categoryBinding.Add(categoryName);
 
                 categoryBox.SelectedIndex = _categoryBinding.Count - 1;
-                PaneReload(true);
             }
         }
 
@@ -401,6 +407,25 @@ namespace PowerPointLabs
             }
         }
 
+        private void ContextMenuStripSetAsDefaultCategoryClicked()
+        {
+            Globals.ThisAddIn.ShapesLabConfigs.DefaultCategory = CurrentCategory;
+
+            var categoryIndex = categoryBox.SelectedIndex;
+            var firstCategory = (string)_categoryBinding[0];
+
+            _isIndexChangeRedraw = false;
+
+            _categoryBinding[0] = CurrentCategory;
+            _categoryBinding[categoryIndex] = firstCategory;
+
+            categoryBox.SelectedIndex = 0;
+
+            _isIndexChangeRedraw = true;
+
+            MessageBox.Show(CurrentCategory + " has been set as default category.");
+        }
+
         private void ContextMenuStripSettingsClicked()
         {
             var settingDialog = new ShapesLabSetting(ShapeRootFolderPath);
@@ -416,13 +441,7 @@ namespace PowerPointLabs
                     return;
                 }
 
-                ShapeRootFolderPath = newPath;
-
-                using (var fileWriter = File.CreateText(_shapeRootFolderPathConfigFile))
-                {
-                    fileWriter.WriteLine(newPath);
-                    fileWriter.Close();
-                }
+                Globals.ThisAddIn.ShapesLabConfigs.ShapeRootFolder = newPath;
 
                 MessageBox.Show(
                     string.Format(TextCollection.CustomeShapeSaveLocationChangedSuccessFormat, newPath),
@@ -548,6 +567,7 @@ namespace PowerPointLabs
             addCategoryToolStripMenuItem.Text = TextCollection.CustomShapeCategoryContextStripAddCategory;
             removeCategoryToolStripMenuItem.Text = TextCollection.CustomShapeCategoryContextStripRemoveCategory;
             renameCategoryToolStripMenuItem.Text = TextCollection.CustomShapeCategoryContextStripRenameCategory;
+            setAsDefaultToolStripMenuItem.Text = TextCollection.CustomShapeCategoryContextStripSetAsDefaultCategory;
             settingsToolStripMenuItem.Text = TextCollection.CustomShapeCategoryContextStripCategorySettings;
             
             // add a dummy entry to show right arrow
@@ -712,7 +732,7 @@ namespace PowerPointLabs
             {
                 CurrentCategory = selectedCategory;
                 Globals.ThisAddIn.ShapePresentation.DefaultCategory = selectedCategory;
-                PaneReload(true);
+                PaneReload(_isIndexChangeRedraw);
             }
         }
 
@@ -816,11 +836,14 @@ namespace PowerPointLabs
             if (item.Name.Contains("removeCategory"))
             {
                 ContextMenuStripRemoveCategoryClicked();
-            }
-            else
+            } else
             if (item.Name.Contains("renameCategory"))
             {
                 ContextMenuStripRenameCategoryClicked();
+            } else
+            if (item.Name.Contains("setAsDefault"))
+            {
+                ContextMenuStripSetAsDefaultCategoryClicked();
             }
         }
 

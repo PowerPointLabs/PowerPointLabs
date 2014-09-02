@@ -245,6 +245,7 @@ namespace PowerPointLabs.Models
 
         public void RenameCategory(string newName)
         {
+            Categories[_defaultCategory.Index - 1] = newName;
             _defaultCategory.Name = newName;
 
             Save();

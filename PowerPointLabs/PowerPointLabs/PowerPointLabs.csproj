@@ -272,6 +272,7 @@
     <Compile Include="Models\PowerPointPresentation.cs" />
     <Compile Include="Models\PowerPointShapeGalleryPresentation.cs" />
     <Compile Include="Settings.cs" />
+    <Compile Include="ShapesLabConfig.cs" />
     <Compile Include="TextCollection.cs" />
     <Compile Include="Utils\FileDir.cs" />
     <Compile Include="Utils\Graphics.cs" />

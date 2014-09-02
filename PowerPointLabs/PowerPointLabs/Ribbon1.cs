@@ -1552,6 +1552,7 @@ namespace PowerPointLabs
         {
             var prensentation = Globals.ThisAddIn.Application.ActivePresentation;
             
+            Globals.ThisAddIn.InitializeShapesLabConfig();
             Globals.ThisAddIn.InitializeShapeGallery();
             Globals.ThisAddIn.RegisterShapesLabPane(prensentation);
 
@@ -1585,6 +1586,7 @@ namespace PowerPointLabs
         {
             var prensentation = Globals.ThisAddIn.Application.ActivePresentation;
 
+            Globals.ThisAddIn.InitializeShapesLabConfig();
             Globals.ThisAddIn.InitializeShapeGallery();
             Globals.ThisAddIn.RegisterShapesLabPane(prensentation);
 
