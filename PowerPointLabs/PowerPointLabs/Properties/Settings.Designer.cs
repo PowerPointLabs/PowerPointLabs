@@ -34,7 +34,7 @@ namespace PowerPointLabs.Properties {
         
         [global::System.Configuration.ApplicationScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("offline")]
+        [global::System.Configuration.DefaultSettingValueAttribute("online")]
         public string InstallerType {
             get {
                 return ((string)(this["InstallerType"]));
@@ -52,7 +52,7 @@ namespace PowerPointLabs.Properties {
         
         [global::System.Configuration.ApplicationScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("31 Aug 2014")]
+        [global::System.Configuration.DefaultSettingValueAttribute("03 Sep 2014")]
         public string ReleaseDate {
             get {
                 return ((string)(this["ReleaseDate"]));
