@@ -306,7 +306,6 @@ namespace PowerPointLabs
 
                 Globals.ThisAddIn.ShapePresentation.AddCategory(categoryName);
 
-                CurrentCategory = categoryName;
                 _categoryBinding.Add(categoryName);
 
                 categoryBox.SelectedIndex = _categoryBinding.Count - 1;
@@ -336,6 +335,20 @@ namespace PowerPointLabs
             var categoryIndex = categoryBox.SelectedIndex;
             var categoryName = _categoryBinding[categoryIndex].ToString();
             var categoryPath = Path.Combine(ShapeRootFolderPath, categoryName);
+            var isDefaultCategory = Globals.ThisAddIn.ShapesLabConfigs.DefaultCategory == CurrentCategory;
+
+            if (isDefaultCategory)
+            {
+                var result =
+                    MessageBox.Show(TextCollection.CustomShapeRemoveDefaultCategoryMessage,
+                                    TextCollection.CustomShapeRemoveDefaultCategoryCaption,
+                                    MessageBoxButtons.OKCancel);
+
+                if (result == DialogResult.Cancel)
+                {
+                    return;
+                }
+            }
 
             // remove current category in shape gallery
             Globals.ThisAddIn.ShapePresentation.RemoveCategory();
@@ -343,8 +356,8 @@ namespace PowerPointLabs
             FileDir.DeleteFolder(categoryPath);
 
             _categoryBinding.RemoveAt(categoryIndex);
+            
             // RemoveAt may NOT change the index, so we need to manually set the default category here
-
             if (Globals.ThisAddIn.ShapePresentation.DefaultCategory == null)
             {
                 categoryIndex = categoryBox.SelectedIndex;
@@ -354,6 +367,11 @@ namespace PowerPointLabs
                 Globals.ThisAddIn.ShapePresentation.DefaultCategory = categoryName;
 
                 PaneReload(true);
+            }
+
+            if (isDefaultCategory)
+            {
+                Globals.ThisAddIn.ShapesLabConfigs.DefaultCategory = (string)_categoryBinding[0];
             }
         }
 
@@ -390,6 +408,12 @@ namespace PowerPointLabs
             {
                 var categoryName = categoryInfoDialog.CategoryName;
 
+                // if current category is the default category, change ShapeConfig
+                if (Globals.ThisAddIn.ShapesLabConfigs.DefaultCategory == CurrentCategory)
+                {
+                    Globals.ThisAddIn.ShapesLabConfigs.DefaultCategory = categoryName;
+                }
+
                 // rename the category in ShapeGallery
                 Globals.ThisAddIn.ShapePresentation.RenameCategory(categoryName);
                 
@@ -401,9 +425,14 @@ namespace PowerPointLabs
                     Directory.Move(CurrentShapeFolderPath, newPath);
                 } catch (Exception) {}
 
+                //TODO: check if this statement triggers SelectedIndexChange
+
                 // rename the category in combo box
                 var categoryIndex = categoryBox.SelectedIndex;
                 _categoryBinding[categoryIndex] = categoryName;
+
+                // update current category reference
+                CurrentCategory = categoryName;
             }
         }
 
@@ -423,7 +452,7 @@ namespace PowerPointLabs
 
             _isIndexChangeRedraw = true;
 
-            MessageBox.Show(CurrentCategory + " has been set as default category.");
+            MessageBox.Show(string.Format(TextCollection.CustomeShapeSetAsDefaultCategorySuccessFormat, CurrentCategory));
         }
 
         private void ContextMenuStripSettingsClicked()
@@ -728,12 +757,9 @@ namespace PowerPointLabs
             var selectedIndex = categoryBox.SelectedIndex;
             var selectedCategory = _categoryBinding[selectedIndex].ToString();
 
-            if (selectedCategory != CurrentCategory)
-            {
-                CurrentCategory = selectedCategory;
-                Globals.ThisAddIn.ShapePresentation.DefaultCategory = selectedCategory;
-                PaneReload(_isIndexChangeRedraw);
-            }
+            CurrentCategory = selectedCategory;
+            Globals.ThisAddIn.ShapePresentation.DefaultCategory = selectedCategory;
+            PaneReload(_isIndexChangeRedraw);
         }
 
         private void CopyContextMenuStripLeaveEvent(object sender, EventArgs e)

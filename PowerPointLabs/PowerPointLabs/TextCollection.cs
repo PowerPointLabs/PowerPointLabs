@@ -270,6 +270,7 @@
         public const string CustomShapeViewTypeNotSupported = "Shapes Lab does not support the current view type.";
         public const string CustomeShapeSaveLocationChangedSuccessFormat =
             "Default saving path has been changed to \n{0}\nAll shapes have been moved to the new location.";
+        public const string CustomeShapeSetAsDefaultCategorySuccessFormat = "{0} has been set as default category.";
         public const string CustomShapeSaveLocationChangedSuccessTitle = "Success";
         public const string CustomShapeMigrationError =
             "The folder cannot be migrated entirely. Please check if your destination loaction forbids this action.";
@@ -279,6 +280,10 @@
         public const string CustomShapeMigratingDialogTitle = "Migrating...";
         public const string CustomShapeMigratingDialogContent = "Shapes are being migrated, please wait...";
         public const string CustomShapeRemoveLastCategoryError = "Removing the last category is not allowed.";
+        public const string CustomShapeRemoveDefaultCategoryMessage =
+            "You are removing your default category. After removing this category, the first category will be made " +
+            "as default category. Continue?";
+        public const string CustomShapeRemoveDefaultCategoryCaption = "Removing Default Category";
         
         public const string CustomShapeShapeContextStripAddToSlide = "Add To Slide";
         public const string CustomShapeShapeContextStripEditName = "Edit Name";
