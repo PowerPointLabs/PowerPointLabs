@@ -40,17 +40,12 @@ namespace PowerPointLabs.Views
         {
             var categoryName = categoryNameBox.Text;
 
-            if (Verify(categoryName))
+            if (VerifyName(categoryName) &&
+                VerifyCategory(categoryName))
             {
                 CategoryName = categoryNameBox.Text;
                 UserOption = Option.Ok;
                 Dispose();
-            }
-            else
-            {
-                MessageBox.Show(categoryName.Length > 255
-                                    ? TextCollection.ErrorNameTooLong
-                                    : TextCollection.ErrorInvalidCharacter);
             }
         }
 
@@ -72,13 +67,35 @@ namespace PowerPointLabs.Views
         # endregion
 
         # region Helper Functions
-        private bool Verify(string name)
+        private bool VerifyName(string name)
         {
-            var invalidChars = new Regex(InvalidCharsRegex);
+            if (name.Length > 255)
+            {
+                MessageBox.Show(TextCollection.ErrorNameTooLong);
+                return false;
+            }
 
-            return !(string.IsNullOrWhiteSpace(name) ||
-                     invalidChars.IsMatch(name) ||
-                     name.Length > 255);
+            var invalidChars = new Regex(InvalidCharsRegex);
+            
+            if (string.IsNullOrWhiteSpace(name) ||
+                invalidChars.IsMatch(name))
+            {
+                MessageBox.Show(TextCollection.ErrorInvalidCharacter);
+                return false;
+            }
+
+            return true;
+        }
+
+        private bool VerifyCategory(string name)
+        {
+            if (Globals.ThisAddIn.ShapePresentation.HasCategory(name))
+            {
+                MessageBox.Show(TextCollection.CustomShapeDuplicateCategoryNameError);
+                return false;
+            }
+
+            return true;
         }
         # endregion
     }

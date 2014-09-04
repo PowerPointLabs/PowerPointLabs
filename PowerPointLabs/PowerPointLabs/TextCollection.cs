@@ -280,6 +280,7 @@
         public const string CustomShapeMigratingDialogTitle = "Migrating...";
         public const string CustomShapeMigratingDialogContent = "Shapes are being migrated, please wait...";
         public const string CustomShapeRemoveLastCategoryError = "Removing the last category is not allowed.";
+        public const string CustomShapeDuplicateCategoryNameError = "The name has already been used.";
         public const string CustomShapeRemoveDefaultCategoryMessage =
             "You are removing your default category. After removing this category, the first category will be made " +
             "as default category. Continue?";
@@ -289,7 +290,7 @@
         public const string CustomShapeShapeContextStripEditName = "Edit Name";
         public const string CustomShapeShapeContextStripMoveShape = "Move Shape To";
         public const string CustomShapeShapeContextStripRemoveShape = "Remove Shape";
-        public const string CustomShapeShapeContextStripCopyShape = "Copy To";
+        public const string CustomShapeShapeContextStripCopyShape = "Copy Shape To";
 
         public const string CustomShapeCategoryContextStripAddCategory = "Add Category";
         public const string CustomShapeCategoryContextStripRemoveCategory = "Remove Category";
