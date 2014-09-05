@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Drawing;
 using System.Globalization;
 using System.IO;
 using System.Linq;
@@ -9,6 +10,7 @@ using PPExtraEventHelper;
 using PowerPointLabs.Models;
 using PowerPointLabs.Utils;
 using PowerPointLabs.Views;
+using Graphics = PowerPointLabs.Utils.Graphics;
 
 namespace PowerPointLabs
 {
@@ -425,8 +427,6 @@ namespace PowerPointLabs
                     Directory.Move(CurrentShapeFolderPath, newPath);
                 } catch (Exception) {}
 
-                //TODO: check if this statement triggers SelectedIndexChange
-
                 // rename the category in combo box
                 var categoryIndex = categoryBox.SelectedIndex;
                 _categoryBinding[categoryIndex] = categoryName;
@@ -440,17 +440,7 @@ namespace PowerPointLabs
         {
             Globals.ThisAddIn.ShapesLabConfigs.DefaultCategory = CurrentCategory;
 
-            var categoryIndex = categoryBox.SelectedIndex;
-            var firstCategory = (string)_categoryBinding[0];
-
-            _isIndexChangeRedraw = false;
-
-            _categoryBinding[0] = CurrentCategory;
-            _categoryBinding[categoryIndex] = firstCategory;
-
-            categoryBox.SelectedIndex = 0;
-
-            _isIndexChangeRedraw = true;
+            categoryBox.Refresh();
 
             MessageBox.Show(string.Format(TextCollection.CustomeShapeSetAsDefaultCategorySuccessFormat, CurrentCategory));
         }
@@ -760,6 +750,29 @@ namespace PowerPointLabs
             CurrentCategory = selectedCategory;
             Globals.ThisAddIn.ShapePresentation.DefaultCategory = selectedCategory;
             PaneReload(_isIndexChangeRedraw);
+        }
+
+        private void CategoryBoxOwnerDraw(object sender, DrawItemEventArgs e)
+        {
+            var comboBox = sender as ComboBox;
+
+            if (comboBox == null ||
+                e.Index == -1) return;
+
+            var font = comboBox.Font;
+            var text = (string)_categoryBinding[e.Index];
+
+            if (text == Globals.ThisAddIn.ShapesLabConfigs.DefaultCategory)
+            {
+                text += " (default)";
+                font = new Font(font, FontStyle.Bold);
+            }
+
+            using (var brush = new SolidBrush(e.ForeColor))
+            {
+                e.DrawBackground();
+                e.Graphics.DrawString(text, font, brush, e.Bounds);
+            }
         }
 
         private void CopyContextMenuStripLeaveEvent(object sender, EventArgs e)
