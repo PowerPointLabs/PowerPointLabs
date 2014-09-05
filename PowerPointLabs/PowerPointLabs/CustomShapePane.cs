@@ -756,7 +756,8 @@ namespace PowerPointLabs
         {
             var comboBox = sender as ComboBox;
 
-            if (comboBox == null) return;
+            if (comboBox == null ||
+                e.Index == -1) return;
 
             var font = comboBox.Font;
             var text = (string)_categoryBinding[e.Index];
