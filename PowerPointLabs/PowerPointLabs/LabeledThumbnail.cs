@@ -38,8 +38,8 @@ namespace PowerPointLabs
                 else
                 {
                     MessageBox.Show(value.Length > 255
-                                        ? TextCollection.LabeledThumbnailTooLongNameError
-                                        : TextCollection.LabeledThumbnailInvalidCharacterError);
+                                        ? TextCollection.ErrorNameTooLong
+                                        : TextCollection.ErrorInvalidCharacter);
 
                     labelTextBox.SelectAll();
                     _isGoodName = false;
@@ -209,7 +209,7 @@ namespace PowerPointLabs
             // if the new name has been used, the new name is not allowed
             if (File.Exists(newPath))
             {
-                MessageBox.Show(TextCollection.LabeledThumbnailFileNameExistError);
+                MessageBox.Show(TextCollection.ErrorFileNameExist);
                 return true;
             }
 

@@ -2,6 +2,7 @@
 using System.Drawing;
 using System.Drawing.Drawing2D;
 using System.Windows.Forms;
+using Microsoft.Office.Interop.PowerPoint;
 using PPExtraEventHelper;
 
 namespace PowerPointLabs.Utils
@@ -35,6 +36,14 @@ namespace PowerPointLabs.Utils
             }
 
             return thumbnail;
+        }
+
+        public static void ExportShape(Shape shape, string exportPath,
+                                       int scaledWidth = 0, int scaledHeight = 0,
+                                       PpShapeFormat shapeFormat = PpShapeFormat.ppShapeFormatPNG,
+                                       PpExportMode exportMode = PpExportMode.ppScaleXY)
+        {
+            shape.Export(exportPath, shapeFormat, scaledWidth, scaledHeight, exportMode);
         }
 
         public static void SuspendDrawing(Control control)

@@ -40,7 +40,7 @@ namespace PowerPointLabs
         
         public bool FrameAnimationChecked = false;
         public bool BackgroundZoomChecked = true;
-        public bool MultiSlideZoomChecked = false;
+        public bool MultiSlideZoomChecked = true;
         public bool SpotlightDelete = true;
         public float DefaultDuration = 0.5f;
 
@@ -266,6 +266,10 @@ namespace PowerPointLabs
         {
             return TextCollection.RemoveCaptionsButtonSupertip;
         }
+        public string GetRemoveAllNotesButtonSupertip(Office.IRibbonControl control)
+        {
+            return TextCollection.RemoveAllNotesButtonSupertip;
+        }
         
         public string GetHighlightBulletsTextButtonSupertip(Office.IRibbonControl control)
         {
@@ -404,6 +408,10 @@ namespace PowerPointLabs
         public string GetRemoveCaptionsButtonLabel(Office.IRibbonControl control)
         {
             return TextCollection.RemoveCaptionsButtonLabel;
+        }
+        public string GetRemoveAllNotesButtonLabel(Office.IRibbonControl control)
+        {
+            return TextCollection.RemoveAllNotesButtonLabel;
         }
 
         public string GetHighlightBulletsGroupLabel(Office.IRibbonControl control)
@@ -1270,10 +1278,203 @@ namespace PowerPointLabs
             return true;
         }
 
-        #region NotesToAudio Button Callbacks
-        public void SpeakSelectedTextClick(Office.IRibbonControl control)
+        private void PreviewAnimationsIfChecked()
         {
-            NotesToAudio.SpeakSelectedText();
+            if (_previewCurrentSlide)
+            {
+                NotesToAudio.PreviewAnimations();
+            }
+        }
+
+        private void SetCoreVoicesToSelections()
+        {
+            string defaultVoice = GetSelectedVoiceOrNull();
+            NotesToAudio.SetDefaultVoice(defaultVoice);
+        }
+
+        private string GetSelectedVoiceOrNull()
+        {
+            string selectedVoice = null;
+            try
+            {
+                selectedVoice = _voiceNames.ToArray()[_voiceSelected];
+            }
+            catch (IndexOutOfRangeException)
+            {
+                // No voices are installed.
+                // (It should be impossible for the index to be out of range otherwise.)
+            }
+            return selectedVoice;
+        }
+
+        #endregion
+
+        #region Feature: Fit To Slide | Fit To Width | Fit To Height
+
+        public void FitToWidthClick(Office.IRibbonControl control)
+        {
+            var selectedShape = PowerPointCurrentPresentationInfo.CurrentSelection.ShapeRange[1];
+            FitToSlide.FitToWidth(selectedShape);
+        }
+
+        public void FitToHeightClick(Office.IRibbonControl control)
+        {
+            var selectedShape = PowerPointCurrentPresentationInfo.CurrentSelection.ShapeRange[1];
+            FitToSlide.FitToHeight(selectedShape);
+        }
+
+        public Bitmap GetFitToWidthImage(Office.IRibbonControl control)
+        {
+            return FitToSlide.GetFitToWidthImage(control);
+        }
+
+        public Bitmap GetFitToHeightImage(Office.IRibbonControl control)
+        {
+            return FitToSlide.GetFitToHeightImage(control);
+        }
+
+        #endregion
+
+        #region Feature: Crop to Shape
+
+        public void CropShapeButtonClick(Office.IRibbonControl control)
+        {
+            var selection = PowerPointCurrentPresentationInfo.CurrentSelection;
+            CropToShape.Crop(selection);
+        }
+
+        public Bitmap GetCutOutShapeMenuImage(Office.IRibbonControl control)
+        {
+            return CropToShape.GetCutOutShapeMenuImage(control);
+        }
+
+        #endregion
+
+        #region Feature: Convert to Picture
+
+        public void ConvertToPictureButtonClick(Office.IRibbonControl control)
+        {
+            var selection = PowerPointCurrentPresentationInfo.CurrentSelection;
+            ConvertToPicture.Convert(selection);
+        }
+
+        public Bitmap GetConvertToPicMenuImage(Office.IRibbonControl control)
+        {
+            return ConvertToPicture.GetConvertToPicMenuImage(control);
+        }
+
+        #endregion
+
+        # region Feature: Combine Shapes
+        public bool GetVisibilityForCombineShapes(Office.IRibbonControl control)
+        {
+            const string officeVersion2010 = "14.0";
+            return Globals.ThisAddIn.Application.Version == officeVersion2010;
+        }
+        # endregion
+
+        # region Feature: Auto Narration
+        public void AddAudioClick(Office.IRibbonControl control)
+        {
+            var currentSlide = PowerPointCurrentPresentationInfo.CurrentSlide;
+
+            foreach (PowerPointSlide slide in PowerPointCurrentPresentationInfo.SelectedSlides)
+            {
+                if (slide.NotesPageText.Trim() != "")
+                {
+                    RemoveAudioEnabled = true;
+                    RefreshRibbonControl("RemoveAudioButton");
+                    break;
+                }
+            }
+
+            var allAudioFiles = NotesToAudio.EmbedSelectedSlideNotes();
+
+            var recorderPane = Globals.ThisAddIn.GetActivePane(typeof(RecorderTaskPane));
+
+            if (recorderPane == null) return;
+
+            var recorder = recorderPane.Control as RecorderTaskPane;
+
+            if (recorder == null) return;
+
+            // initialize selected slides' audio
+            recorder.InitializeAudioAndScript(PowerPointCurrentPresentationInfo.SelectedSlides.ToList(),
+                                                  allAudioFiles, true);
+
+            // if current list is visible, update the pane immediately
+            if (recorderPane.Visible)
+            {
+                recorder.UpdateLists(currentSlide.ID);
+            }
+
+            PreviewAnimationsIfChecked();
+        }
+
+        public void AutoNarrateDialogButtonPressed(Office.IRibbonControl control)
+        {
+            try
+            {
+                var dialog = new AutoNarrateDialogBox(_voiceSelected, _voiceNames,
+                    _previewCurrentSlide);
+                dialog.SettingsHandler += AutoNarrateSettingsChanged;
+                dialog.ShowDialog();
+            }
+            catch (Exception e)
+            {
+                PowerPointLabsGlobals.LogException(e, "AutoNarrateDialogButtonPressed");
+                throw;
+            }
+        }
+
+        public void AutoNarrateSettingsChanged(String voiceName, bool previewCurrentSlide)
+        {
+            _previewCurrentSlide = previewCurrentSlide;
+            if (!String.IsNullOrWhiteSpace(voiceName))
+            {
+                NotesToAudio.SetDefaultVoice(voiceName);
+                _voiceSelected = _voiceNames.IndexOf(voiceName);
+            }
+        }
+
+        public void ContextAddAudioClick(Office.IRibbonControl control)
+        {
+            NotesToAudio.EmbedCurrentSlideNotes();
+            PreviewAnimationsIfChecked();
+        }
+
+        public void ContextReplaceAudioClick(Office.IRibbonControl control)
+        {
+            NotesToAudio.ReplaceSelectedAudio();
+        }
+
+        public void RecManagementClick(Office.IRibbonControl control)
+        {
+            var currentPresentation = Globals.ThisAddIn.Application.ActivePresentation;
+
+            if (!IsValidPresentation(currentPresentation))
+            {
+                return;
+            }
+
+            // prepare media files
+            var tempPath = Globals.ThisAddIn.PrepareTempFolder(currentPresentation);
+            Globals.ThisAddIn.PrepareMediaFiles(currentPresentation, tempPath);
+
+            Globals.ThisAddIn.RegisterRecorderPane(currentPresentation.Windows[1], tempPath);
+
+            var recorderPane = Globals.ThisAddIn.GetActivePane(typeof(RecorderTaskPane));
+            var recorder = recorderPane.Control as RecorderTaskPane;
+
+            // if currently the pane is hidden, show the pane
+            if (recorder != null && !recorderPane.Visible)
+            {
+                // fire the pane visble change event
+                recorderPane.Visible = true;
+
+                // reload the pane
+                recorder.RecorderPaneReload();
+            }
         }
 
         public void RemoveAudioClick(Office.IRibbonControl control)
@@ -1308,52 +1509,13 @@ namespace PowerPointLabs
             RefreshRibbonControl("RemoveAudioButton");
         }
 
-        public void AddAudioClick(Office.IRibbonControl control)
+        public void SpeakSelectedTextClick(Office.IRibbonControl control)
         {
-            var currentSlide = PowerPointCurrentPresentationInfo.CurrentSlide;
-
-            foreach (PowerPointSlide slide in PowerPointCurrentPresentationInfo.SelectedSlides)
-            {
-                if (slide.NotesPageText.Trim() != "")
-                {
-                    RemoveAudioEnabled = true;
-                    RefreshRibbonControl("RemoveAudioButton");
-                    break;
-                }
-            }
-
-            var allAudioFiles = NotesToAudio.EmbedSelectedSlideNotes();
-
-            var recorderPane = Globals.ThisAddIn.GetActivePane(typeof(RecorderTaskPane));
-
-            if (recorderPane == null) return;
-
-            var recorder = recorderPane.Control as RecorderTaskPane;
-
-            if (recorder == null) return;
-
-            // initialize selected slides' audio
-            recorder.InitializeAudioAndScript(PowerPointCurrentPresentationInfo.SelectedSlides.ToList(),
-                                                  allAudioFiles, true);
-            
-            // if current list is visible, update the pane immediately
-            if (recorderPane.Visible)
-            {
-                recorder.UpdateLists(currentSlide.ID);
-            }
-
-            PreviewAnimationsIfChecked();
+            NotesToAudio.SpeakSelectedText();
         }
+        # endregion
 
-        public void ContextAddAudioClick(Office.IRibbonControl control)
-        {
-            NotesToAudio.EmbedCurrentSlideNotes();
-            PreviewAnimationsIfChecked();
-        }
-        #endregion
-
-        #region NotesToCaptions Button Callbacks
-
+        # region Feature: Auto Caption
         public void AddCaptionClick(Office.IRibbonControl control)
         {
             foreach (PowerPointSlide slide in PowerPointCurrentPresentationInfo.SelectedSlides)
@@ -1364,6 +1526,7 @@ namespace PowerPointLabs
                     break;
                 }
             }
+
             NotesToCaptions.EmbedCaptionsOnSelectedSlides();
             RefreshRibbonControl("RemoveCaptionsButton");
         }
@@ -1375,172 +1538,23 @@ namespace PowerPointLabs
             NotesToCaptions.RemoveCaptionsFromSelectedSlides();
         }
 
-        public void ContextReplaceAudioClick(Office.IRibbonControl control)
+        public void RemoveAllNotesClick(Office.IRibbonControl control)
         {
-            NotesToAudio.ReplaceSelectedAudio();
-        }
-
-        #endregion
-
-        #region NotesToAudio/Caption Helpers
-        public void AutoNarrateDialogButtonPressed(Office.IRibbonControl control)
-        {
-            try
+            foreach (var slide in PowerPointCurrentPresentationInfo.SelectedSlides)
             {
-                var dialog = new AutoNarrateDialogBox(_voiceSelected, _voiceNames,
-                    _previewCurrentSlide);
-                dialog.SettingsHandler += AutoNarrateSettingsChanged;
-                dialog.ShowDialog();
-            }
-            catch (Exception e)
-            {
-                PowerPointLabsGlobals.LogException(e, "AutoNarrateDialogButtonPressed");
-                throw;
-            }
-        }
-
-        public void AutoNarrateSettingsChanged(String voiceName, bool previewCurrentSlide)
-        {
-            _previewCurrentSlide = previewCurrentSlide;
-            if (!String.IsNullOrWhiteSpace(voiceName))
-            {
-                NotesToAudio.SetDefaultVoice(voiceName);
-                _voiceSelected = _voiceNames.IndexOf(voiceName);
-            }
-        }
-
-        private void PreviewAnimationsIfChecked()
-        {
-            if (_previewCurrentSlide)
-            {
-                NotesToAudio.PreviewAnimations();
-            }
-        }
-
-        #endregion
-
-        private void SetCoreVoicesToSelections()
-        {
-            string defaultVoice = GetSelectedVoiceOrNull();
-            NotesToAudio.SetDefaultVoice(defaultVoice);
-        }
-
-        private string GetSelectedVoiceOrNull()
-        {
-            string selectedVoice = null;
-            try
-            {
-                selectedVoice = _voiceNames.ToArray()[_voiceSelected];
-            }
-            catch (IndexOutOfRangeException)
-            {
-                // No voices are installed.
-                // (It should be impossible for the index to be out of range otherwise.)
-            }
-            return selectedVoice;
-        }
-
-        #endregion
-
-        # region feature: Auto-Narrate Management
-        public void RecManagementClick(Office.IRibbonControl control)
-        {
-            var currentPresentation = Globals.ThisAddIn.Application.ActivePresentation;
-
-            if (!IsValidPresentation(currentPresentation))
-            {
-                return;
-            }
-
-            // prepare media files
-            var tempPath = Globals.ThisAddIn.PrepareTempFolder(currentPresentation);
-            Globals.ThisAddIn.PrepareMediaFiles(currentPresentation, tempPath);
-
-            Globals.ThisAddIn.RegisterRecorderPane(currentPresentation.Windows[1], tempPath);
-
-            var recorderPane = Globals.ThisAddIn.GetActivePane(typeof(RecorderTaskPane));
-            var recorder = recorderPane.Control as RecorderTaskPane;
-
-            // if currently the pane is hidden, show the pane
-            if (recorder != null && !recorderPane.Visible)
-            {
-                // fire the pane visble change event
-                recorderPane.Visible = true;
-
-                // reload the pane
-                recorder.RecorderPaneReload();
+                slide.NotesPageText = string.Empty;
             }
         }
         # endregion
 
-        #region feature: Fit To Slide | Fit To Width | Fit To Height
-
-        public void FitToWidthClick(Office.IRibbonControl control)
-        {
-            var selectedShape = PowerPointCurrentPresentationInfo.CurrentSelection.ShapeRange[1];
-            FitToSlide.FitToWidth(selectedShape);
-        }
-
-        public void FitToHeightClick(Office.IRibbonControl control)
-        {
-            var selectedShape = PowerPointCurrentPresentationInfo.CurrentSelection.ShapeRange[1];
-            FitToSlide.FitToHeight(selectedShape);
-        }
-
-        public Bitmap GetFitToWidthImage(Office.IRibbonControl control)
-        {
-            return FitToSlide.GetFitToWidthImage(control);
-        }
-
-        public Bitmap GetFitToHeightImage(Office.IRibbonControl control)
-        {
-            return FitToSlide.GetFitToHeightImage(control);
-        }
-
-        #endregion
-
-        #region feature: Crop to Shape
-
-        public void CropShapeButtonClick(Office.IRibbonControl control)
-        {
-            var selection = PowerPointCurrentPresentationInfo.CurrentSelection;
-            CropToShape.Crop(selection);
-        }
-
-        public Bitmap GetCutOutShapeMenuImage(Office.IRibbonControl control)
-        {
-            return CropToShape.GetCutOutShapeMenuImage(control);
-        }
-
-        #endregion
-
-        #region feature: Convert to Picture
-
-        public void ConvertToPictureButtonClick(Office.IRibbonControl control)
-        {
-            var selection = PowerPointCurrentPresentationInfo.CurrentSelection;
-            ConvertToPicture.Convert(selection);
-        }
-
-        public Bitmap GetConvertToPicMenuImage(Office.IRibbonControl control)
-        {
-            return ConvertToPicture.GetConvertToPicMenuImage(control);
-        }
-
-        #endregion
-
-        # region feature: CombineShapes
-        public bool GetVisibilityForCombineShapes(Office.IRibbonControl control)
-        {
-            const string officeVersion2010 = "14.0";
-            return Globals.ThisAddIn.Application.Version == officeVersion2010;
-        }
-        # endregion
-
-        # region feature: Shapes Lab
+        # region Feature: Shapes Lab
         public void CustomShapeButtonClick(Office.IRibbonControl control)
         {
-            Globals.ThisAddIn.RegisterShapesLabPane(Globals.ThisAddIn.Application.ActivePresentation);
+            var prensentation = Globals.ThisAddIn.Application.ActivePresentation;
+            
+            Globals.ThisAddIn.InitializeShapesLabConfig();
+            Globals.ThisAddIn.InitializeShapeGallery();
+            Globals.ThisAddIn.RegisterShapesLabPane(prensentation);
 
             var customShapePane = Globals.ThisAddIn.GetActivePane(typeof(CustomShapePane));
 
@@ -1550,8 +1564,6 @@ namespace PowerPointLabs
             }
 
             var customShape = customShapePane.Control as CustomShapePane;
-
-            Globals.ThisAddIn.InitializeShapeGallery(customShape.CurrentShapeFolderPath);
 
             Trace.TraceInformation(
                 "Before Visible: " +
@@ -1573,6 +1585,9 @@ namespace PowerPointLabs
         public void AddShapeButtonClick(Office.IRibbonControl control)
         {
             var prensentation = Globals.ThisAddIn.Application.ActivePresentation;
+
+            Globals.ThisAddIn.InitializeShapesLabConfig();
+            Globals.ThisAddIn.InitializeShapeGallery();
             Globals.ThisAddIn.RegisterShapesLabPane(prensentation);
 
             var selection = PowerPointCurrentPresentationInfo.CurrentSelection;
@@ -1584,18 +1599,16 @@ namespace PowerPointLabs
                 return;
             }
 
+            var customShape = customShapePane.Control as CustomShapePane;
+
             // show pane if not visible
             if (!customShapePane.Visible)
             {
                 customShapePane.Visible = true;
+
+                customShape.Width = customShapePane.Width - 16;
+                customShape.PaneReload();
             }
-
-            var customShape = customShapePane.Control as CustomShapePane;
-
-            Globals.ThisAddIn.InitializeShapeGallery(customShape.CurrentShapeFolderPath);
-            
-            customShape.Width = customShapePane.Width - 16;
-            customShape.PaneReload();
 
             // first of all we check if the shape gallery has been opened correctly
             if (!Globals.ThisAddIn.ShapePresentation.Opened)
@@ -1627,7 +1640,7 @@ namespace PowerPointLabs
             ConvertToPicture.ConvertAndSave(selection, shapeFullName);
 
             // sync the shape among all opening panels
-            Globals.ThisAddIn.SyncShapeAdd(shapeName, shapeFullName);
+            Globals.ThisAddIn.SyncShapeAdd(shapeName, shapeFullName, customShape.CurrentCategory);
 
             // since we group and then ungroup the shape, document has been modified.
             // if the presentation has been saved before the group->ungroup, we can save
@@ -1642,7 +1655,7 @@ namespace PowerPointLabs
         }
         # endregion
 
-        #region feature: Colors Lab
+        #region Feature: Colors Lab
         public void ColorPickerButtonClick(Office.IRibbonControl control)
         {
             try

@@ -26,6 +26,8 @@ namespace PowerPointLabs
                     return;
                 }
 
+                //Pick up the border and shadow style, to be applied to zoomed shape
+                selectedShape.PickUp();
                 PrepareZoomShape(currentSlide, ref selectedShape);
                 PowerPointSlide nextSlide = GetNextSlide(currentSlide);
                 if (nextSlide.Shapes.Count == 0)
@@ -37,6 +39,7 @@ namespace PowerPointLabs
                 if (backgroundZoomChecked)
                 {
                     nextSlidePicture = GetNextSlidePictureWithBackground(currentSlide, nextSlide);
+                    nextSlidePicture.Apply();
                     PrepareNextSlidePicture(currentSlide, selectedShape, ref nextSlidePicture);
 
                     addedSlide = (PowerPointDrillDownSlide)currentSlide.CreateDrillDownSlide();
@@ -44,6 +47,7 @@ namespace PowerPointLabs
                     
                     currentSlide.Copy();
                     shapeToZoom = addedSlide.Shapes.PasteSpecial(PowerPoint.PpPasteDataType.ppPastePNG)[1];
+                    shapeToZoom.Apply();
                     PowerPointLabsGlobals.FitShapeToSlide(ref shapeToZoom);
                     shapeToZoom.ZOrder(Office.MsoZOrderCmd.msoBringToFront);
 
@@ -54,9 +58,11 @@ namespace PowerPointLabs
                 {
                     PowerPoint.Shape pictureOnNextSlide = null;
                     nextSlidePicture = GetNextSlidePictureWithoutBackground(currentSlide, nextSlide, ref pictureOnNextSlide);
+                    nextSlidePicture.Apply();
                     PrepareNextSlidePicture(currentSlide, selectedShape, ref nextSlidePicture);
                     addedSlide = (PowerPointDrillDownSlide)currentSlide.CreateDrillDownSlide();
                     shapeToZoom = addedSlide.GetShapeWithSameIDAndName(nextSlidePicture);
+                    shapeToZoom.Apply();
                     addedSlide.DeleteShapeAnimations(shapeToZoom);
 
                     addedSlide.PrepareForDrillDown();
@@ -88,6 +94,8 @@ namespace PowerPointLabs
                     return;
                 }
 
+                //Pick up the border and shadow style, to be applied to zoomed shape
+                selectedShape.PickUp();
                 PrepareZoomShape(currentSlide, ref selectedShape);
                 PowerPointSlide previousSlide = GetPreviousSlide(currentSlide);
                 if (previousSlide.Shapes.Count == 0)
@@ -99,12 +107,14 @@ namespace PowerPointLabs
                 if (backgroundZoomChecked)
                 {
                     previousSlidePicture = GetPreviousSlidePictureWithBackground(currentSlide, previousSlide);
+                    previousSlidePicture.Apply();
                     PreparePreviousSlidePicture(currentSlide, selectedShape, ref previousSlidePicture);
 
                     addedSlide = (PowerPointStepBackSlide)previousSlide.CreateStepBackSlide();
                     addedSlide.DeleteAllShapes();
 
                     shapeToZoom = GetStepBackWithBackgroundShapeToZoom(currentSlide, addedSlide, previousSlidePicture);
+                    shapeToZoom.Apply();
 
                     addedSlide.PrepareForStepBack();
                     addedSlide.AddStepBackAnimation(shapeToZoom, previousSlidePicture);
@@ -115,8 +125,10 @@ namespace PowerPointLabs
                     addedSlide.DeleteAllShapes();
 
                     shapeToZoom = GetStepBackWithoutBackgroundShapeToZoom(currentSlide, addedSlide, previousSlide);
+                    shapeToZoom.Apply();
                     shapeToZoom.Copy();
                     previousSlidePicture = currentSlide.Shapes.PasteSpecial(PowerPoint.PpPasteDataType.ppPastePNG)[1];
+                    previousSlidePicture.Apply();
                     PreparePreviousSlidePicture(currentSlide, selectedShape, ref previousSlidePicture);
 
                     addedSlide.PrepareForStepBack();
