@@ -30,7 +30,7 @@
     <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
     <TargetFrameworkProfile>Client</TargetFrameworkProfile>
     <DefineConstants>VSTO40</DefineConstants>
-    <IsWebBootstrapper>False</IsWebBootstrapper>
+    <IsWebBootstrapper>True</IsWebBootstrapper>
     <FileUpgradeFlags>
     </FileUpgradeFlags>
     <UpgradeBackupLocation>
@@ -39,9 +39,9 @@
     <VSTO_TrustAssembliesLocation>true</VSTO_TrustAssembliesLocation>
     <BootstrapperEnabled>true</BootstrapperEnabled>
     <PublishUrl>C:\Users\nevets\Desktop\PowerPointLabsPublish\</PublishUrl>
-    <InstallUrl />
+    <InstallUrl>http://www.comp.nus.edu.sg/~pptlabs/download-78563/</InstallUrl>
     <TargetCulture>en</TargetCulture>
-    <ApplicationVersion>1.9.0.4</ApplicationVersion>
+    <ApplicationVersion>1.10.0.0</ApplicationVersion>
     <AutoIncrementApplicationRevision>false</AutoIncrementApplicationRevision>
     <UpdateEnabled>true</UpdateEnabled>
     <UpdateInterval>0</UpdateInterval>
@@ -272,6 +272,7 @@
     <Compile Include="Models\PowerPointPresentation.cs" />
     <Compile Include="Models\PowerPointShapeGalleryPresentation.cs" />
     <Compile Include="Settings.cs" />
+    <Compile Include="ShapesLabConfig.cs" />
     <Compile Include="TextCollection.cs" />
     <Compile Include="Utils\FileDir.cs" />
     <Compile Include="Utils\Graphics.cs" />
@@ -355,6 +356,12 @@
     </Compile>
     <Compile Include="Views\InShowControl.Designer.cs">
       <DependentUpon>InShowControl.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Views\ShapesLabCategoryInfoForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Views\ShapesLabCategoryInfoForm.Designer.cs">
+      <DependentUpon>ShapesLabCategoryInfoForm.cs</DependentUpon>
     </Compile>
     <Compile Include="Views\ShapesLabSetting.cs">
       <SubType>Form</SubType>
@@ -479,6 +486,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Views\InShowControl.resx">
       <DependentUpon>InShowControl.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Views\ShapesLabCategoryInfoForm.resx">
+      <DependentUpon>ShapesLabCategoryInfoForm.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Views\ShapesLabSetting.resx">
       <DependentUpon>ShapesLabSetting.cs</DependentUpon>

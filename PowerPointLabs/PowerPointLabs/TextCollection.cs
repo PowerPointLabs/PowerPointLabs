@@ -2,6 +2,12 @@
 {
     internal class TextCollection
     {
+        # region Common Error
+        public const string ErrorNameTooLong = "The name's length cannot be more than 255 characters.";
+        public const string ErrorInvalidCharacter = "The name cannot be empty, or contain the following characters:'<', '>', ':', '\"', '/', '\\', '|', '?', or '*'.";
+        public const string ErrorFileNameExist = "A file already exists with that name.";
+        # endregion
+
         # region URLs
         public const string FeedbackUrl = "http://powerpointlabs.info/contact.html";
         public const string HelpDocumentUrl = "http://powerpointlabs.info/docs.html";
@@ -32,12 +38,14 @@
         public const string MoveCropShapeButtonSupertip =
             "Crop a picture to a custom shape.\n\n" +
             "To activate, draw one or more shapes upon the picture to crop, select the shape(s), then click this button.";
+        
         public const string AddSpotlightButtonSupertip =
             "Creates a spotlight effect for a selected shape.\n\n" +
             "To activate, draw a shape that the spotlight should outline, select it, then click this button.";
         public const string ReloadSpotlightButtonSupertip =
             "Adjusts the transparency and edges of an existing spotlight.\n\n" +
             "To activate, set the transparency level and soft edges width, select the existing spotlight shape, then click this button.";
+        
         public const string AddAudioButtonSupertip =
             "Creates synthesized narration from text in the Speaker Notes pane of the selected slides.";
         public const string GenerateRecordButtonSupertip =
@@ -46,10 +54,13 @@
             "Manually record audio to replace synthesized narration.";
         public const string RemoveAudioButtonSupertip =
             "Removes synthesized audio added using Auto Narrate from the selected slides."; 
+        
         public const string AddCaptionsButtonSupertip =
             "Creates movie-style subtitles from text in the Speaker Notes pane, and adds it to the selected slides.";
         public const string RemoveCaptionsButtonSupertip =
             "Removes captions added using Auto Captions from the selected slides.";
+        public const string RemoveAllNotesButtonSupertip = "Remove notes from note pane of selected slides.";
+        
         public const string HighlightBulletsTextButtonSupertip =
             "Highlights selected bullet points by changing the text's color.\n\n" +
             "To activate, select the bullet points to highlight, then click this button.";
@@ -59,8 +70,11 @@
         public const string HighlightTextFragmentsButtonSupertip =
             "Highlights the selected text fragments.\n\n" +
             "To activate, select the text to highlight, then click this button.";
+        
         public const string ColorPickerButtonSupertip = @"Opens Custom Color Picker";
+        
         public const string CustomeShapeButtonSupertip = @"Manage your custom shapes."; // Custome -> Custom?
+        
         public const string HelpButtonSupertip = @"Click this to visit PowerPointLabs help page in our website.";
         public const string FeedbackButtonSupertip = @"Click this to email us problem reports or other feedback. ";
         public const string AboutButtonSupertip = @"Information about the PowerPointLabs plugin.";
@@ -99,6 +113,7 @@
         public const string EmbedCaptionGroupLabel = "Auto Captions";
         public const string AddCaptionsButtonLabel = "Add Captions";
         public const string RemoveCaptionsButtonLabel = "Remove Captions";
+        public const string RemoveAllNotesButtonLabel = "Remove All Notes";
 
         public const string HighlightBulletsGroupLabel = "Highlight Bullets";
         public const string HighlightBulletsTextButtonLabel = "Highlight Points";
@@ -247,7 +262,7 @@
         
         # endregion
 
-        # region Task Pane - Custom Shape
+        # region Task Pane - Shapes Lab
         public const string CustomShapeFileNameInvalid = "Invalid shape name.";
         public const string CustomShapeNoShapeTextFirstLine = "No shapes saved yet.";
         public const string CustomShapeNoShapeTextSecondLine = "Right-click any object on a slide to save it in this panel.";
@@ -255,6 +270,7 @@
         public const string CustomShapeViewTypeNotSupported = "Shapes Lab does not support the current view type.";
         public const string CustomeShapeSaveLocationChangedSuccessFormat =
             "Default saving path has been changed to \n{0}\nAll shapes have been moved to the new location.";
+        public const string CustomeShapeSetAsDefaultCategorySuccessFormat = "{0} has been set as default category.";
         public const string CustomShapeSaveLocationChangedSuccessTitle = "Success";
         public const string CustomShapeMigrationError =
             "The folder cannot be migrated entirely. Please check if your destination loaction forbids this action.";
@@ -263,17 +279,29 @@
             "try to delete this folder manually when those files are closed.";
         public const string CustomShapeMigratingDialogTitle = "Migrating...";
         public const string CustomShapeMigratingDialogContent = "Shapes are being migrated, please wait...";
+        public const string CustomShapeRemoveLastCategoryError = "Removing the last category is not allowed.";
+        public const string CustomShapeDuplicateCategoryNameError = "The name has already been used.";
+        public const string CustomShapeRemoveDefaultCategoryMessage =
+            "You are removing your default category. After removing this category, the first category will be made " +
+            "as default category. Continue?";
+        public const string CustomShapeRemoveDefaultCategoryCaption = "Removing Default Category";
+        
+        public const string CustomShapeShapeContextStripAddToSlide = "Add To Slide";
+        public const string CustomShapeShapeContextStripEditName = "Edit Name";
+        public const string CustomShapeShapeContextStripMoveShape = "Move Shape To";
+        public const string CustomShapeShapeContextStripRemoveShape = "Remove Shape";
+        public const string CustomShapeShapeContextStripCopyShape = "Copy Shape To";
+
+        public const string CustomShapeCategoryContextStripAddCategory = "Add Category";
+        public const string CustomShapeCategoryContextStripRemoveCategory = "Remove Category";
+        public const string CustomShapeCategoryContextStripRenameCategory = "Rename Category";
+        public const string CustomShapeCategoryContextStripSetAsDefaultCategory = "Set as Default";
+        public const string CustomShapeCategoryContextStripCategorySettings = "Settings";
         # endregion
 
         # region Control - ShapesLabSetting
         public const string FolderDialogDescription = "Select the directory that you want to use as the default.";
         public const string FolderNonEmptyErrorMsg = "Please select an empty folder as default saving folder.";
-        # endregion
-
-        # region Control - Labeled Thumbnail
-        public const string LabeledThumbnailTooLongNameError = "The name's length cannot be more than 255 characters.";
-        public const string LabeledThumbnailInvalidCharacterError = "The name cannot be empty, or contain the following characters:'<', '>', ':', '\"', '/', '\\', '|', '?', or '*'.";
-        public const string LabeledThumbnailFileNameExistError = "A file already exists with that name.";
         # endregion
 
         # region Control - SlideShow Recorder Control

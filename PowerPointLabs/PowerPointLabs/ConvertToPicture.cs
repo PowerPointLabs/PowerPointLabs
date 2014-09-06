@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Windows.Forms;
+using PowerPointLabs.Utils;
 using Office = Microsoft.Office.Core;
 using PowerPoint = Microsoft.Office.Interop.PowerPoint;
 
@@ -27,8 +28,7 @@ namespace PowerPointLabs
             {
                 var grouped = selection.ShapeRange.Count > 1;
                 var shape = GetShapeFromSelection(selection);
-                shape.Export(fileName, PowerPoint.PpShapeFormat.ppShapeFormatPNG,
-                             ExportMode: PowerPoint.PpExportMode.ppScaleXY);
+                Graphics.ExportShape(shape, fileName);
 
                 try
                 {

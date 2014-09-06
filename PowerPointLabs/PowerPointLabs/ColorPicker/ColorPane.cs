@@ -759,6 +759,19 @@ namespace PowerPointLabs
         private Cursor openHandCursor = new Cursor(new MemoryStream(Properties.Resources.OpenHand));
         private Cursor closedHandCursor = new Cursor(new MemoryStream(Properties.Resources.ClosedHand));
 
+        private void EyeDropButton_MouseEnter(object sender, EventArgs e)
+        {
+            if (sender is Button)
+            {
+                Button button = sender as Button;
+                button.Cursor = openHandCursor;
+            } else if (sender is Panel)
+            {
+                Panel panel = sender as Panel;
+                panel.Cursor = openHandCursor;
+            }
+        }
+
         private void MatchingPanel_MouseEnter(object sender, EventArgs e)
         {
             Panel panel = sender as Panel;
