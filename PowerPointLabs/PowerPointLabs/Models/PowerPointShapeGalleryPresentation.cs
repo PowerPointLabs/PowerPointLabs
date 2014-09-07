@@ -40,8 +40,14 @@ namespace PowerPointLabs.Models
         # endregion
 
         # region Constructor
-        public PowerPointShapeGalleryPresentation(string path, string name) : base(path, name) {}
-        public PowerPointShapeGalleryPresentation(Presentation presentation) : base(presentation) {}
+        public PowerPointShapeGalleryPresentation(string path, string name) : base(path, name)
+        {
+            Categories = new List<string>();
+        }
+        public PowerPointShapeGalleryPresentation(Presentation presentation) : base(presentation)
+        {
+            Categories = new List<string>();
+        }
         # endregion
 
         # region API
@@ -473,14 +479,7 @@ namespace PowerPointLabs.Models
         {
             if (SlideCount < 1) return;
 
-            if (Categories != null)
-            {
-                Categories.Clear();
-            }
-            else
-            {
-                Categories = new List<string>();
-            }
+            Categories.Clear();
 
             // record each slide in index-name mapper
             foreach (var category in Slides)
