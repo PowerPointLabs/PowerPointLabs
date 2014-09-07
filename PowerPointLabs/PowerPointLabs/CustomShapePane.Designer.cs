@@ -142,13 +142,13 @@ namespace PowerPointLabs
             this.myShapeFlowLayout.Margin = new System.Windows.Forms.Padding(0);
             this.myShapeFlowLayout.MinimumSize = new System.Drawing.Size(120, 50);
             this.myShapeFlowLayout.Name = "myShapeFlowLayout";
-            this.myShapeFlowLayout.Size = new System.Drawing.Size(411, 476);
+            this.myShapeFlowLayout.Size = new System.Drawing.Size(415, 476);
             this.myShapeFlowLayout.TabIndex = 1;
             // 
             // label1
             // 
             this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(4, 20);
+            this.label1.Location = new System.Drawing.Point(19, 20);
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(53, 12);
             this.label1.TabIndex = 2;
@@ -160,9 +160,9 @@ namespace PowerPointLabs
             | System.Windows.Forms.AnchorStyles.Right)));
             this.categoryBox.DrawMode = System.Windows.Forms.DrawMode.OwnerDrawFixed;
             this.categoryBox.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.categoryBox.Location = new System.Drawing.Point(75, 17);
+            this.categoryBox.Location = new System.Drawing.Point(88, 17);
             this.categoryBox.Name = "categoryBox";
-            this.categoryBox.Size = new System.Drawing.Size(339, 22);
+            this.categoryBox.Size = new System.Drawing.Size(314, 22);
             this.categoryBox.TabIndex = 3;
             this.categoryBox.DrawItem += new System.Windows.Forms.DrawItemEventHandler(this.CategoryBoxOwnerDraw);
             this.categoryBox.SelectedIndexChanged += new System.EventHandler(this.CategoryBoxSelectedIndexChanged);
@@ -174,7 +174,7 @@ namespace PowerPointLabs
             this.flowPanelHolder.Controls.Add(this.myShapeFlowLayout);
             this.flowPanelHolder.Location = new System.Drawing.Point(3, 43);
             this.flowPanelHolder.Name = "flowPanelHolder";
-            this.flowPanelHolder.Size = new System.Drawing.Size(411, 476);
+            this.flowPanelHolder.Size = new System.Drawing.Size(415, 476);
             this.flowPanelHolder.TabIndex = 4;
             // 
             // CustomShapePane
@@ -186,7 +186,7 @@ namespace PowerPointLabs
             this.Controls.Add(this.categoryBox);
             this.Controls.Add(this.label1);
             this.Name = "CustomShapePane";
-            this.Size = new System.Drawing.Size(417, 552);
+            this.Size = new System.Drawing.Size(421, 552);
             this.Click += new System.EventHandler(this.CustomShapePaneClick);
             this.shapeContextMenuStrip.ResumeLayout(false);
             this.flowlayoutContextMenuStrip.ResumeLayout(false);

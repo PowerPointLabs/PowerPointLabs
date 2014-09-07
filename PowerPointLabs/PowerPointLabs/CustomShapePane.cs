@@ -26,7 +26,6 @@ namespace PowerPointLabs
         private bool _firstClick = true;
         private bool _clickOnSelected;
         private bool _isLeftButton;
-        private bool _isIndexChangeRedraw = true;
 
         private readonly BindingSource _categoryBinding;
 
@@ -749,7 +748,7 @@ namespace PowerPointLabs
 
             CurrentCategory = selectedCategory;
             Globals.ThisAddIn.ShapePresentation.DefaultCategory = selectedCategory;
-            PaneReload(_isIndexChangeRedraw);
+            PaneReload(true);
         }
 
         private void CategoryBoxOwnerDraw(object sender, DrawItemEventArgs e)
