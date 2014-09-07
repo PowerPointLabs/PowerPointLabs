@@ -444,7 +444,7 @@ namespace PowerPointLabs
                 return;
             }
 
-            // if we do not have the default category, add it to ShapeGallery
+            // if we do not have the default category, create and add it to ShapeGallery
             ShapePresentation.AddCategory(ShapesLabConfigs.DefaultCategory);
             ShapePresentation.Save();
         }
@@ -677,6 +677,10 @@ namespace PowerPointLabs
             // current active task pane;
             var taskPane = CustomTaskPanes.Add(control, title, wnd);
 
+            // task pane UI setup
+            taskPane.Visible = false;
+            taskPane.Width = width + 20;
+
             // map the current window with the task pane
             if (!_documentPaneMapper.ContainsKey(wnd))
             {
@@ -684,10 +688,6 @@ namespace PowerPointLabs
             }
 
             _documentPaneMapper[wnd].Add(taskPane);
-
-            // task pane UI setup
-            taskPane.Visible = false;
-            taskPane.Width = width + 20;
 
             Trace.TraceInformation(
                 "After Pane Width Change: " +
