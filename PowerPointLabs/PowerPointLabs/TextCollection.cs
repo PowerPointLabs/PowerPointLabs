@@ -295,6 +295,7 @@
         public const string CustomShapeCategoryContextStripAddCategory = "Add Category";
         public const string CustomShapeCategoryContextStripRemoveCategory = "Remove Category";
         public const string CustomShapeCategoryContextStripRenameCategory = "Rename Category";
+        public const string CustomShapeCategoryContextStripImportCategory = "Import Category";
         public const string CustomShapeCategoryContextStripSetAsDefaultCategory = "Set as Default";
         public const string CustomShapeCategoryContextStripCategorySettings = "Settings";
         # endregion

@@ -49,6 +49,7 @@ namespace PowerPointLabs
             this.label1 = new System.Windows.Forms.Label();
             this.categoryBox = new System.Windows.Forms.ComboBox();
             this.flowPanelHolder = new System.Windows.Forms.Panel();
+            this.importCategoryToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.shapeContextMenuStrip.SuspendLayout();
             this.flowlayoutContextMenuStrip.SuspendLayout();
             this.flowPanelHolder.SuspendLayout();
@@ -102,35 +103,41 @@ namespace PowerPointLabs
             this.removeCategoryToolStripMenuItem,
             this.renameCategoryToolStripMenuItem,
             this.setAsDefaultToolStripMenuItem,
+            this.importCategoryToolStripMenuItem,
             this.settingsToolStripMenuItem});
             this.flowlayoutContextMenuStrip.Name = "flowlayoutContextMenuStrip";
-            this.flowlayoutContextMenuStrip.Size = new System.Drawing.Size(69, 114);
+            this.flowlayoutContextMenuStrip.Size = new System.Drawing.Size(174, 158);
             this.flowlayoutContextMenuStrip.ItemClicked += new System.Windows.Forms.ToolStripItemClickedEventHandler(this.FlowlayoutContextMenuStripItemClicked);
             // 
             // addCategoryToolStripMenuItem
             // 
             this.addCategoryToolStripMenuItem.Name = "addCategoryToolStripMenuItem";
-            this.addCategoryToolStripMenuItem.Size = new System.Drawing.Size(68, 22);
+            this.addCategoryToolStripMenuItem.Size = new System.Drawing.Size(173, 22);
             // 
             // removeCategoryToolStripMenuItem
             // 
             this.removeCategoryToolStripMenuItem.Name = "removeCategoryToolStripMenuItem";
-            this.removeCategoryToolStripMenuItem.Size = new System.Drawing.Size(68, 22);
+            this.removeCategoryToolStripMenuItem.Size = new System.Drawing.Size(173, 22);
             // 
             // renameCategoryToolStripMenuItem
             // 
             this.renameCategoryToolStripMenuItem.Name = "renameCategoryToolStripMenuItem";
-            this.renameCategoryToolStripMenuItem.Size = new System.Drawing.Size(68, 22);
+            this.renameCategoryToolStripMenuItem.Size = new System.Drawing.Size(173, 22);
             // 
             // setAsDefaultToolStripMenuItem
             // 
             this.setAsDefaultToolStripMenuItem.Name = "setAsDefaultToolStripMenuItem";
-            this.setAsDefaultToolStripMenuItem.Size = new System.Drawing.Size(68, 22);
+            this.setAsDefaultToolStripMenuItem.Size = new System.Drawing.Size(173, 22);
+            // 
+            // importCategoryToolStripMenuItem
+            // 
+            this.importCategoryToolStripMenuItem.Name = "importCategoryToolStripMenuItem";
+            this.importCategoryToolStripMenuItem.Size = new System.Drawing.Size(173, 22);
             // 
             // settingsToolStripMenuItem
             // 
             this.settingsToolStripMenuItem.Name = "settingsToolStripMenuItem";
-            this.settingsToolStripMenuItem.Size = new System.Drawing.Size(68, 22);
+            this.settingsToolStripMenuItem.Size = new System.Drawing.Size(173, 22);
             // 
             // myShapeFlowLayout
             // 
@@ -247,5 +254,6 @@ namespace PowerPointLabs
         private ToolStripMenuItem renameCategoryToolStripMenuItem;
         private ToolStripMenuItem copyToToolStripMenuItem;
         private ToolStripMenuItem setAsDefaultToolStripMenuItem;
+        private ToolStripMenuItem importCategoryToolStripMenuItem;
     }
 }
