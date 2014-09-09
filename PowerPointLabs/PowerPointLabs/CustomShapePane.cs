@@ -772,6 +772,9 @@ namespace PowerPointLabs
                 e.DrawBackground();
                 e.Graphics.DrawString(text, font, brush, e.Bounds);
             }
+
+            int desiredWidth = Width - label1.Width - 60;
+            comboBox.Width = desiredWidth > 0 ? desiredWidth : 0;
         }
 
         private void CopyContextMenuStripLeaveEvent(object sender, EventArgs e)
