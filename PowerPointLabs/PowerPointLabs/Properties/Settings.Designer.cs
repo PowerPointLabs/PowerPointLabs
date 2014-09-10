@@ -25,7 +25,7 @@ namespace PowerPointLabs.Properties {
         
         [global::System.Configuration.ApplicationScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("dev")]
+        [global::System.Configuration.DefaultSettingValueAttribute("release")]
         public string ReleaseType {
             get {
                 return ((string)(this["ReleaseType"]));
