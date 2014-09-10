@@ -183,6 +183,11 @@ namespace PowerPointLabs.Models
             return ConsistencyCheck();
         }
 
+        public void AppendCategoryFromClipBoard()
+        {
+            Presentation.Slides.Paste();
+        }
+
         public void RemoveCategory(string name)
         {
             if (_defaultCategory.Name == name)
@@ -267,6 +272,12 @@ namespace PowerPointLabs.Models
 
             shapes[0].Copy();
         }
+
+        public void RetriveCategory(string name)
+        {
+            var index = FindCategoryIndex(name);
+            Slides[index - 1].Copy();
+        }
         # endregion
 
         # region Helper Function
@@ -301,7 +312,7 @@ namespace PowerPointLabs.Models
 
                 var pngShapes = Directory.EnumerateFiles(shapeFolderPath, "*.png").ToList();
 
-                // critical: OR with itself at the end to avoid early truncate
+                // critical: OR with itself at the end to avoid early termination
                 shapeLost = ConsistencyCheckShapeToPng(pngShapes, category) || shapeLost;
                 pngLost = ConsistencyCheckPngToShape(pngShapes, category) || pngLost;
             }
@@ -310,14 +321,8 @@ namespace PowerPointLabs.Models
 
             Save();
 
-            if (shapeDuplicate || shapeLost || categoryInShapeGalleryLost)
-            {
-                MessageBox.Show(TextCollection.ShapeCorruptedError);
-
-                return false;
-            }
-
-            if (pngLost && !IsImportedFile)
+            if ((shapeDuplicate || shapeLost || categoryInShapeGalleryLost || pngLost) &&
+                !IsImportedFile)
             {
                 MessageBox.Show(TextCollection.ShapeCorruptedError);
 
@@ -338,9 +343,8 @@ namespace PowerPointLabs.Models
 
                 if (Slides.All(category => category.Name != categoryName))
                 {
-                    FileDir.DeleteFolder(categoryPath);
-
                     categoryLost = true;
+                    break;
                 }
             }
 

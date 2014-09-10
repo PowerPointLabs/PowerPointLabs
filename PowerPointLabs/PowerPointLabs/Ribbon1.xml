@@ -477,10 +477,12 @@
     </contextMenu>
     <contextMenu idMso="ContextMenuThumbnail">
       <menuSeparator id="separatorThumbnail"/>
+      <button id="editNameThumbnail"
+              getLabel="GetEditNameThumbnailLabel"
+              onAction="EditNameThumbnailButtonClick"/>
       <button id="applyAutoMotionThumbnail"
               getLabel="GetApplyAutoMotionThumbnailLabel"
               getImage="GetAddAnimationContextImage"
-              getEnabled="OnGetEnabledAddAutoMotion"
               onAction="AddAnimationButtonClick"/>
       <button id="reloadAutoMotionThumbnail"
               getLabel="GetReloadButtonLabel"

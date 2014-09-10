@@ -18,6 +18,7 @@ namespace PowerPointLabs
     {
         private const string DefaultShapeNameFormat = @"My Shape Untitled {0}";
         private const string DefaultShapeNameSearchRegex = @"^My Shape Untitled (\d+)$";
+        private const string ShapeFileDialogFilter = "PowerPointLabs Shapes File|*.pptlabsshapes";
 
         private readonly int _doubleClickTimeSpan = SystemInformation.DoubleClickTime;
         private int _clicks;
@@ -322,6 +323,59 @@ namespace PowerPointLabs
             }
 
             _selectedThumbnail.StartNameEdit();
+        }
+
+        private void ContextMenuStripImportCategoryClicked()
+        {
+            var fileDialog = new OpenFileDialog
+                                 {
+                                     Filter = ShapeFileDialogFilter,
+                                     Multiselect = false
+                                 };
+            fileDialog.ShowDialog();
+
+            var importFilePath = fileDialog.FileName;
+            var importFileName = new FileInfo(importFilePath).Name;
+            var importFileCopyPath = Path.Combine(ShapeRootFolderPath, importFileName);
+            var sameFolder = true;
+
+            // copy the file to the current shape root if the file is not under root 
+            if (!File.Exists(importFileCopyPath))
+            {
+                File.Copy(importFilePath, importFileCopyPath);
+                sameFolder = false;
+            }
+
+            // open the file as an imported file
+            var importShapeGallery = new PowerPointShapeGalleryPresentation(ShapeRootFolderPath, importFileName) { IsImportedFile = true };
+            
+            if (!importShapeGallery.Open(withWindow: false, focus: false) &&
+                !importShapeGallery.Opened)
+            {
+                MessageBox.Show("Import File could not be opened.");
+            }
+            else
+            {
+                // copy all shapes in the import shape gallery to current shape gallery
+                foreach (var importCategory in importShapeGallery.Categories)
+                {
+                    if (!Globals.ThisAddIn.ShapePresentation.HasCategory(importCategory))
+                    {
+                        importShapeGallery.RetriveCategory(importCategory);
+                        Globals.ThisAddIn.ShapePresentation.AppendCategoryFromClipBoard();
+                    }
+                }
+            }
+
+            importShapeGallery.Close();
+
+            // delete the import file copy
+            if (!sameFolder)
+            {
+                File.Delete(importFileCopyPath);
+            }
+
+            MessageBox.Show("Successfully imported");
         }
 
         private void ContextMenuStripRemoveCategoryClicked()
@@ -886,6 +940,11 @@ namespace PowerPointLabs
             if (item.Name.Contains("setAsDefault"))
             {
                 ContextMenuStripSetAsDefaultCategoryClicked();
+            }
+            else
+            if (item.Name.Contains("import"))
+            {
+                ContextMenuStripImportCategoryClicked();
             }
         }
 
