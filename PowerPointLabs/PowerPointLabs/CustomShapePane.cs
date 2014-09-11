@@ -28,6 +28,11 @@ namespace PowerPointLabs
         private bool _clickOnSelected;
         private bool _isLeftButton;
 
+        private bool _isPanelMouseDown;
+        private bool _isPanelDrawingFinish;
+        private Point _startPosition;
+        private Point _curPosition;
+
         private readonly BindingSource _categoryBinding;
 
         private LabeledThumbnail _selectedThumbnail;
@@ -183,6 +188,21 @@ namespace PowerPointLabs
                                                         myShapeFlowLayout.Focus();
                                                     }
                                                 };
+            myShapeFlowLayout.MouseDown += (s, e) =>
+                                               {
+                                                   _isPanelMouseDown = true;
+                                                   _isPanelDrawingFinish = false;
+                                                   _startPosition = e.Location;
+                                               };
+            myShapeFlowLayout.MouseUp += (s, e) =>
+                                             {
+                                                 _isPanelMouseDown = false;
+                                                 _isPanelDrawingFinish = true;
+                                                 myShapeFlowLayout.Invalidate();
+                                             };
+            myShapeFlowLayout.MouseMove += FlowLayoutMouseMoveHandler;
+
+            myShapeFlowLayout.Paint += FlowLayoutPaintHandler;
         }
         # endregion
 
@@ -522,6 +542,14 @@ namespace PowerPointLabs
             }
         }
 
+        private Rectangle CreateRect(Point loc1, Point loc2)
+        {
+            var size = new Size(Math.Abs(loc2.X - loc1.X), Math.Abs(loc2.Y - loc1.Y));
+            var rect = new Rectangle(new Point(Math.Min(loc1.X, loc2.X), Math.Min(loc1.Y, loc2.Y)), size);
+
+            return rect;
+        }
+
         private void DehighlightSelected()
         {
             if (_selectedThumbnail == null) return;
@@ -659,6 +687,35 @@ namespace PowerPointLabs
                     contextMenu.MouseEnter += CopyContextMenuStripLeaveEvent;
                 }
             }
+        }
+
+        private bool IsIntersect(Rectangle rect1, Rectangle rect2)
+        {
+            Rectangle leftRect, rightRect;
+
+            if (rect1.Left < rect2.Left)
+            {
+                leftRect = rect1;
+                rightRect = rect2;
+            }
+            else
+            {
+                leftRect = rect2;
+                rightRect = rect1;
+            }
+
+            if (rightRect.Left > leftRect.Right)
+            {
+                return false;
+            }
+
+            if (leftRect.Top > rightRect.Bottom ||
+            rightRect.Top > leftRect.Bottom)
+            {
+                return false;
+            }
+
+            return true;
         }
 
         private bool MigrateShapeFolder(string oldPath, string newPath)
@@ -945,6 +1002,59 @@ namespace PowerPointLabs
             if (item.Name.Contains("import"))
             {
                 ContextMenuStripImportCategoryClicked();
+            }
+        }
+
+        private void FlowLayoutMouseMoveHandler(object sender, MouseEventArgs e)
+        {
+            if (_isPanelMouseDown)
+            {
+                _curPosition = e.Location;
+                var rect = CreateRect(_curPosition, _startPosition);
+                
+                foreach (Control control in myShapeFlowLayout.Controls)
+                {
+                    if (!(control is LabeledThumbnail)) continue;
+
+                    var labeledThumbnail = control as LabeledThumbnail;
+                    var labeledThumbnailRect =
+                        myShapeFlowLayout.RectangleToClient(
+                            labeledThumbnail.RectangleToScreen(labeledThumbnail.ClientRectangle));
+
+                    if (IsIntersect(labeledThumbnailRect, rect))
+                    {
+                        labeledThumbnail.Highlight();
+                    }
+                    else
+                    {
+                        labeledThumbnail.DeHighlight();
+                    }
+                }
+
+                myShapeFlowLayout.Invalidate();
+            }
+        }
+
+        private void FlowLayoutPaintHandler(object sender, PaintEventArgs e)
+        {
+            if (_isPanelMouseDown)
+            {
+                var rect = CreateRect(_curPosition, _startPosition);
+
+                using (var brush = new SolidBrush(Color.FromArgb(100, 0, 0, 255)))
+                {
+                    e.Graphics.FillRectangle(brush, rect);
+                }
+
+                using (var pen = new Pen(Color.FromArgb(200, 0, 0, 255)))
+                {
+                    e.Graphics.DrawRectangle(pen, rect);
+                }
+            }
+
+            if (_isPanelDrawingFinish)
+            {
+                e.Graphics.Clear(myShapeFlowLayout.BackColor);
             }
         }
 
