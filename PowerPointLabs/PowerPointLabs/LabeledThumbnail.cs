@@ -21,6 +21,8 @@ namespace PowerPointLabs
         }
 
         # region Properties
+        public bool Highlighed { get; set; }
+
         public string NameLable
         {
             get
@@ -71,6 +73,8 @@ namespace PowerPointLabs
             thumbnailPanel.BackColor = Color.FromKnownColor(KnownColor.Window);
             labelTextBox.BackColor = Color.FromKnownColor(KnownColor.Window);
             labelTextBox.ForeColor = Color.Black;
+
+            Highlighed = false;
         }
 
         public void Highlight()
@@ -83,6 +87,8 @@ namespace PowerPointLabs
                 labelTextBox.BackColor = Color.FromKnownColor(KnownColor.LightBlue);
                 //labelTextBox.ForeColor = Color.White;
             }
+
+            Highlighed = true;
         }
 
         public void StartNameEdit()
