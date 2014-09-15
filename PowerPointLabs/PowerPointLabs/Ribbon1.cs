@@ -517,10 +517,6 @@ namespace PowerPointLabs
         {
             return TextCollection.InSlideAnimateGroupLabel;
         }
-        public string GetEditNameThumbnailLabel(Office.IRibbonControl control)
-        {
-            return TextCollection.EditNameThumbnailLabel;
-        }
         public string GetApplyAutoMotionThumbnailLabel(Office.IRibbonControl control)
         {
             return TextCollection.ApplyAutoMotionThumbnailLabel;
@@ -1133,18 +1129,6 @@ namespace PowerPointLabs
             {
                 PowerPointLabsGlobals.LogException(e, "ShapeNameEdited");
                 throw;
-            }
-        }
-        public void EditNameThumbnailButtonClick(Office.IRibbonControl control)
-        {
-            var slideNameEditDialog = new SlideNameEditDialog();
-            slideNameEditDialog.ShowDialog();
-
-            if (slideNameEditDialog.UserOption == SlideNameEditDialog.Option.Ok)
-            {
-                var name = slideNameEditDialog.SlideName;
-
-                PowerPointCurrentPresentationInfo.CurrentSlide.Name = name;
             }
         }
 

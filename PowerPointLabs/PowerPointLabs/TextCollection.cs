@@ -146,7 +146,6 @@
         public const string FitToHeightShapeLabel = "Fit To Height";
         public const string InSlideAnimateGroupLabel = "Animate In-Slide";
         public const string ApplyAutoMotionThumbnailLabel = "Add Animation Slide";
-        public const string EditNameThumbnailLabel = "Edit Slide Name";
         public const string ContextSpeakSelectedTextLabel = "Speak Selected Text";
         public const string ContextAddCurrentSlideLabel = "Add Audio (Current Slide)";
         public const string ContextReplaceAudioLabel = "Replace Audio";
@@ -315,10 +314,6 @@
         #region Control - Loading Dialog
         public const string LoadingDialogDefaultTitle = "Loading...";
         public const string LoadingDialogDefaultContent = "Loading, please wait...";
-        # endregion
-
-        # region Control - Slide Name Edit Dialog
-        public const string SlideNameEditDuplicateSlideNameError = "Slide name has been used.";
         # endregion
 
         # region Error Dialog
