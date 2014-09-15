@@ -33,6 +33,8 @@ namespace PowerPointLabs
         private Point _startPosition;
         private Point _curPosition;
 
+        private SelectionRectangle _selectRect = new SelectionRectangle();
+
         private readonly BindingSource _categoryBinding;
 
         private LabeledThumbnail _selectedThumbnail;
@@ -193,16 +195,20 @@ namespace PowerPointLabs
                                                    _isPanelMouseDown = true;
                                                    _isPanelDrawingFinish = false;
                                                    _startPosition = e.Location;
+                                                   _selectRect.Location = myShapeFlowLayout.PointToScreen(e.Location);
+                                                   _selectRect.BringToFront();
+                                                   _selectRect.Show();
                                                };
             myShapeFlowLayout.MouseUp += (s, e) =>
                                              {
                                                  _isPanelMouseDown = false;
                                                  _isPanelDrawingFinish = true;
                                                  myShapeFlowLayout.Invalidate();
+                                                 _selectRect.Hide();
                                              };
             myShapeFlowLayout.MouseMove += FlowLayoutMouseMoveHandler;
 
-            myShapeFlowLayout.Paint += FlowLayoutPaintHandler;
+            //myShapeFlowLayout.Paint += FlowLayoutPaintHandler;
         }
         # endregion
 
@@ -544,6 +550,9 @@ namespace PowerPointLabs
 
         private Rectangle CreateRect(Point loc1, Point loc2)
         {
+            RegulateSelectionRectPoint(ref loc1);
+            RegulateSelectionRectPoint(ref loc2);
+
             var size = new Size(Math.Abs(loc2.X - loc1.X), Math.Abs(loc2.Y - loc1.Y));
             var rect = new Rectangle(new Point(Math.Min(loc1.X, loc2.X), Math.Min(loc1.Y, loc2.Y)), size);
 
@@ -689,35 +698,6 @@ namespace PowerPointLabs
             }
         }
 
-        private bool IsIntersect(Rectangle rect1, Rectangle rect2)
-        {
-            Rectangle leftRect, rightRect;
-
-            if (rect1.Left < rect2.Left)
-            {
-                leftRect = rect1;
-                rightRect = rect2;
-            }
-            else
-            {
-                leftRect = rect2;
-                rightRect = rect1;
-            }
-
-            if (rightRect.Left > leftRect.Right)
-            {
-                return false;
-            }
-
-            if (leftRect.Top > rightRect.Bottom ||
-            rightRect.Top > leftRect.Bottom)
-            {
-                return false;
-            }
-
-            return true;
-        }
-
         private bool MigrateShapeFolder(string oldPath, string newPath)
         {
             var loadingDialog = new LoadingDialog(TextCollection.CustomShapeMigratingDialogTitle,
@@ -794,6 +774,29 @@ namespace PowerPointLabs
             }
 
             DehighlightSelected();
+        }
+
+        private void RegulateSelectionRectPoint(ref Point p)
+        {
+            if (p.X < 0)
+            {
+                p.X = 0;
+            }
+            else
+                if (p.X > myShapeFlowLayout.Width)
+                {
+                    p.X = myShapeFlowLayout.Width;
+                }
+
+            if (p.Y < 0)
+            {
+                p.Y = 0;
+            }
+            else
+                if (p.Y > myShapeFlowLayout.Height)
+                {
+                    p.Y = myShapeFlowLayout.Height;
+                }
         }
 
         private void RemoveThumbnail(LabeledThumbnail thumbnail)
@@ -1011,6 +1014,9 @@ namespace PowerPointLabs
             {
                 _curPosition = e.Location;
                 var rect = CreateRect(_curPosition, _startPosition);
+
+                _selectRect.Size = rect.Size;
+                _selectRect.Location = myShapeFlowLayout.PointToScreen(rect.Location);
                 
                 foreach (Control control in myShapeFlowLayout.Controls)
                 {
@@ -1021,7 +1027,7 @@ namespace PowerPointLabs
                         myShapeFlowLayout.RectangleToClient(
                             labeledThumbnail.RectangleToScreen(labeledThumbnail.ClientRectangle));
 
-                    if (IsIntersect(labeledThumbnailRect, rect))
+                    if (labeledThumbnailRect.IntersectsWith(rect))
                     {
                         labeledThumbnail.Highlight();
                     }
