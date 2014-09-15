@@ -381,12 +381,6 @@
     <Compile Include="Views\ShapesLabSetting.Designer.cs">
       <DependentUpon>ShapesLabSetting.cs</DependentUpon>
     </Compile>
-    <Compile Include="Views\SlideNameEditDialog.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="Views\SlideNameEditDialog.Designer.cs">
-      <DependentUpon>SlideNameEditDialog.cs</DependentUpon>
-    </Compile>
     <Compile Include="Views\SpotlightDialogBox.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -513,9 +507,6 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Views\ShapesLabSetting.resx">
       <DependentUpon>ShapesLabSetting.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Views\SlideNameEditDialog.resx">
-      <DependentUpon>SlideNameEditDialog.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Views\SpotlightDialogBox.resx">
       <DependentUpon>SpotlightDialogBox.cs</DependentUpon>

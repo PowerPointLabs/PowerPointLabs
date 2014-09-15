@@ -33,7 +33,7 @@ namespace PowerPointLabs
         private Point _startPosition;
         private Point _curPosition;
 
-        private SelectionRectangle _selectRect = new SelectionRectangle();
+        private readonly SelectionRectangle _selectRect = new SelectionRectangle();
 
         private readonly BindingSource _categoryBinding;
 
@@ -182,30 +182,9 @@ namespace PowerPointLabs
             
             myShapeFlowLayout.AutoSize = true;
             myShapeFlowLayout.Click += FlowlayoutClick;
-            myShapeFlowLayout.MouseEnter += (s, e) =>
-                                                {
-                                                    if (_selectedThumbnail != null &&
-                                                        _selectedThumbnail.State != LabeledThumbnail.Status.Editing)
-                                                    {
-                                                        myShapeFlowLayout.Focus();
-                                                    }
-                                                };
-            myShapeFlowLayout.MouseDown += (s, e) =>
-                                               {
-                                                   _isPanelMouseDown = true;
-                                                   _isPanelDrawingFinish = false;
-                                                   _startPosition = e.Location;
-                                                   _selectRect.Location = myShapeFlowLayout.PointToScreen(e.Location);
-                                                   _selectRect.BringToFront();
-                                                   _selectRect.Show();
-                                               };
-            myShapeFlowLayout.MouseUp += (s, e) =>
-                                             {
-                                                 _isPanelMouseDown = false;
-                                                 _isPanelDrawingFinish = true;
-                                                 myShapeFlowLayout.Invalidate();
-                                                 _selectRect.Hide();
-                                             };
+            myShapeFlowLayout.MouseEnter += FlowLayoutMouseEnterHandler;
+            myShapeFlowLayout.MouseDown += FlowLayoutMouseDownHandler;
+            myShapeFlowLayout.MouseUp += FlowLayoutMouseUpHandler;
             myShapeFlowLayout.MouseMove += FlowLayoutMouseMoveHandler;
 
             //myShapeFlowLayout.Paint += FlowLayoutPaintHandler;
@@ -378,7 +357,7 @@ namespace PowerPointLabs
             if (!importShapeGallery.Open(withWindow: false, focus: false) &&
                 !importShapeGallery.Opened)
             {
-                MessageBox.Show("Import File could not be opened.");
+                MessageBox.Show(TextCollection.CustomShapeImportFileError);
             }
             else
             {
@@ -401,7 +380,7 @@ namespace PowerPointLabs
                 File.Delete(importFileCopyPath);
             }
 
-            MessageBox.Show("Successfully imported");
+            MessageBox.Show(TextCollection.CustomShapeImportSuccess);
         }
 
         private void ContextMenuStripRemoveCategoryClicked()
@@ -1008,6 +987,25 @@ namespace PowerPointLabs
             }
         }
 
+        private void FlowLayoutMouseDownHandler(object sender, MouseEventArgs e)
+        {
+            _isPanelMouseDown = true;
+            _isPanelDrawingFinish = false;
+            _startPosition = e.Location;
+            _selectRect.Location = myShapeFlowLayout.PointToScreen(e.Location);
+            _selectRect.BringToFront();
+            _selectRect.Show();
+        }
+
+        private void FlowLayoutMouseEnterHandler(object sender, EventArgs e)
+        {
+            if (_selectedThumbnail != null &&
+                _selectedThumbnail.State != LabeledThumbnail.Status.Editing)
+            {
+                myShapeFlowLayout.Focus();
+            }
+        }
+
         private void FlowLayoutMouseMoveHandler(object sender, MouseEventArgs e)
         {
             if (_isPanelMouseDown)
@@ -1039,6 +1037,14 @@ namespace PowerPointLabs
 
                 myShapeFlowLayout.Invalidate();
             }
+        }
+
+        private void FlowLayoutMouseUpHandler(object sender, MouseEventArgs e)
+        {
+            _isPanelMouseDown = false;
+            _isPanelDrawingFinish = true;
+            myShapeFlowLayout.Invalidate();
+            _selectRect.Hide();
         }
 
         private void FlowLayoutPaintHandler(object sender, PaintEventArgs e)
