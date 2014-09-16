@@ -671,10 +671,9 @@ namespace PowerPointLabs
                 {
                     _selectedThumbnail.Remove(clickedThumbnail);
                 }
-
-                _selectedThumbnail.Insert(0, clickedThumbnail);
             }
 
+            _selectedThumbnail.Insert(0, clickedThumbnail);
             FocusSelected();
         }
 
@@ -966,6 +965,8 @@ namespace PowerPointLabs
 
             var categoryName = item.Text;
 
+            Graphics.SuspendDrawing(myShapeFlowLayout);
+
             foreach (var thumbnail in _selectedThumbnail)
             {
                 var shapeName = thumbnail.NameLable;
@@ -993,6 +994,7 @@ namespace PowerPointLabs
                 Globals.ThisAddIn.SyncShapeAdd(shapeName, destPath, categoryName);
             }
 
+            Graphics.ResumeDrawing(myShapeFlowLayout);
             _selectedThumbnail.Clear();
         }
 
@@ -1236,6 +1238,8 @@ namespace PowerPointLabs
 
             var categoryName = item.Text;
 
+            Graphics.SuspendDrawing(myShapeFlowLayout);
+
             foreach (var thumbnail in _selectedThumbnail)
             {
                 var shapeName = thumbnail.NameLable;
@@ -1266,6 +1270,7 @@ namespace PowerPointLabs
                 Globals.ThisAddIn.SyncShapeAdd(shapeName, destPath, categoryName);
             }
 
+            Graphics.ResumeDrawing(myShapeFlowLayout);
             _selectedThumbnail.Clear();
         }
 
