@@ -641,40 +641,42 @@ namespace PowerPointLabs
             // as default.
 
             // common part, end editing
-            if (_selectedThumbnail != null &&
-                _selectedThumbnail.Count != 0)
+            if (_selectedThumbnail != null)
             {
-                if (_selectedThumbnail[0].State == LabeledThumbnail.Status.Editing)
+                if (_selectedThumbnail.Count != 0)
                 {
-                    _selectedThumbnail[0].FinishNameEdit();
-                }
-                else
-                if (_selectedThumbnail[0] == clickedThumbnail)
-                {
-                    _clickOnSelected = true;
-                }
-
-                if (!_selectedThumbnail.Contains(clickedThumbnail) ||
-                    MouseButtons == MouseButtons.Left)
-                {
-                    foreach (var thumbnail in _selectedThumbnail)
+                    if (_selectedThumbnail[0].State == LabeledThumbnail.Status.Editing)
                     {
-                        thumbnail.DeHighlight();
+                        _selectedThumbnail[0].FinishNameEdit();
                     }
+                    else
+                        if (_selectedThumbnail[0] == clickedThumbnail)
+                        {
+                            _clickOnSelected = true;
+                        }
 
-                    _selectedThumbnail.Clear();
+                    if (!_selectedThumbnail.Contains(clickedThumbnail) ||
+                        MouseButtons == MouseButtons.Left)
+                    {
+                        foreach (var thumbnail in _selectedThumbnail)
+                        {
+                            thumbnail.DeHighlight();
+                        }
 
-                    clickedThumbnail.Highlight();
+                        _selectedThumbnail.Clear();
+
+                        clickedThumbnail.Highlight();
+                    }
+                    else
+                        if (MouseButtons == MouseButtons.Right)
+                        {
+                            _selectedThumbnail.Remove(clickedThumbnail);
+                        }
                 }
-                else
-                if (MouseButtons == MouseButtons.Right)
-                {
-                    _selectedThumbnail.Remove(clickedThumbnail);
-                }
-            }
 
-            _selectedThumbnail.Insert(0, clickedThumbnail);
-            FocusSelected();
+                _selectedThumbnail.Insert(0, clickedThumbnail);
+                FocusSelected();
+            }   
         }
 
         private void FlowlayoutClick()
