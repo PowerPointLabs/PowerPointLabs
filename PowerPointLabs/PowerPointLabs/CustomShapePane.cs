@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Drawing;
-using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Text.RegularExpressions;
@@ -41,7 +40,7 @@ namespace PowerPointLabs
 
         private readonly Timer _timer;
 
-        private readonly AtomicNumberStringCompare _stringComparer = new AtomicNumberStringCompare();
+        private readonly Comparers.AtomicNumberStringCompare _stringComparer = new Comparers.AtomicNumberStringCompare();
 
         # region Properties
         public string NextDefaultFullName
@@ -336,13 +335,21 @@ namespace PowerPointLabs
         {
             var fileDialog = new OpenFileDialog
                                  {
+                                     FileName = ShapeRootFolderPath,
                                      Filter = ShapeFileDialogFilter,
                                      Multiselect = false
                                  };
-            fileDialog.ShowDialog();
+            
+            flowlayoutContextMenuStrip.Hide();
+
+            if (fileDialog.ShowDialog() == DialogResult.Cancel)
+            {
+                return;
+            }
 
             var importFilePath = fileDialog.FileName;
             var importFileName = new FileInfo(importFilePath).Name;
+            var importFileNameNoExtension = importFileName.Substring(0, importFileName.LastIndexOf('.'));
             var importFileCopyPath = Path.Combine(ShapeRootFolderPath, importFileName);
             var sameFolder = true;
 
@@ -354,7 +361,9 @@ namespace PowerPointLabs
             }
 
             // open the file as an imported file
-            var importShapeGallery = new PowerPointShapeGalleryPresentation(ShapeRootFolderPath, importFileName) { IsImportedFile = true };
+            var importShapeGallery = new PowerPointShapeGalleryPresentation(ShapeRootFolderPath,
+                                                                            importFileNameNoExtension)
+                                         {IsImportedFile = true};
             
             if (!importShapeGallery.Open(withWindow: false, focus: false) &&
                 !importShapeGallery.Opened)
@@ -369,7 +378,9 @@ namespace PowerPointLabs
                     if (!Globals.ThisAddIn.ShapePresentation.HasCategory(importCategory))
                     {
                         importShapeGallery.RetriveCategory(importCategory);
-                        Globals.ThisAddIn.ShapePresentation.AppendCategoryFromClipBoard();
+                        Globals.ThisAddIn.ShapePresentation.AppendCategoryFromClipBoard(importCategory);
+                        _categoryBinding.Add(importCategory);
+                        Categories.Add(importCategory);
                     }
                 }
             }
@@ -379,7 +390,7 @@ namespace PowerPointLabs
             // delete the import file copy
             if (!sameFolder)
             {
-                File.Delete(importFileCopyPath);
+                FileDir.DeleteFile(importFileCopyPath);
             }
 
             MessageBox.Show(TextCollection.CustomShapeImportSuccess);
@@ -1309,51 +1320,6 @@ namespace PowerPointLabs
             }
 
             ClickTimerReset();
-        }
-        # endregion
-
-        # region Comparer
-        public class AtomicNumberStringCompare : IComparer<string>
-        {
-            public int Compare(string thisString, string otherString)
-            {
-                // some characters + number
-                var pattern = new Regex(@"([^\d]+)(\d+)");
-                var thisStringMatch = pattern.Match(thisString);
-                var otherStringMatch = pattern.Match(otherString);
-
-                // specially compare the pattern, after run out of the pattern, compare
-                // 2 strings normally
-                while (thisStringMatch.Success &&
-                       otherStringMatch.Success)
-                {
-                    var thisStringPart = thisStringMatch.Groups[1].Value;
-                    var thisNumPart = int.Parse(thisStringMatch.Groups[2].Value);
-
-                    var otherStringPart = otherStringMatch.Groups[1].Value;
-                    var otherNumPart = int.Parse(otherStringMatch.Groups[2].Value);
-
-                    // if string part is not the same, we can tell the diff
-                    if (!string.Equals(thisStringPart, otherStringPart))
-                    {
-                        break;
-                    }
-
-                    // if string part is the same but number part is different, we can
-                    // tell the diff
-                    if (thisNumPart != otherNumPart)
-                    {
-                        return thisNumPart - otherNumPart;
-                    }
-
-                    // two parts are identical, find next match
-                    thisStringMatch = thisStringMatch.NextMatch();
-                    otherStringMatch = otherStringMatch.NextMatch();
-                }
-
-                // case sensitive comparing, invariant for cultures
-                return string.Compare(thisString, otherString, false, CultureInfo.InvariantCulture);
-            }
         }
         # endregion
 

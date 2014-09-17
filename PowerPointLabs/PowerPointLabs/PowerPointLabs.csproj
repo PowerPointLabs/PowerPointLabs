@@ -280,6 +280,7 @@
     <Compile Include="Settings.cs" />
     <Compile Include="ShapesLabConfig.cs" />
     <Compile Include="TextCollection.cs" />
+    <Compile Include="Utils\Comparers.cs" />
     <Compile Include="Utils\FileDir.cs" />
     <Compile Include="Utils\Graphics.cs" />
     <Compile Include="Views\CustomPaintTextBox.cs" />

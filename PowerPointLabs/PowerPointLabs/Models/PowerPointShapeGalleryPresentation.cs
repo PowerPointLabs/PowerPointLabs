@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System.Collections;
+using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
@@ -178,14 +179,19 @@ namespace PowerPointLabs.Models
                 return false;
             }
 
-            PrepareCategories();
-            
             return ConsistencyCheck();
         }
 
-        public void AppendCategoryFromClipBoard()
+        public void AppendCategoryFromClipBoard(string categoryName)
         {
-            Presentation.Slides.Paste();
+            var slide = Presentation.Slides.Paste()[1];
+
+            // after paste, slide name will be corrupted, we need to rename it
+            slide.Name = categoryName;
+            Categories.Add(categoryName);
+            
+            Save();
+            ActionProtection();
         }
 
         public void RemoveCategory(string name)
@@ -292,44 +298,7 @@ namespace PowerPointLabs.Models
         private bool ConsistencyCheck()
         {
             // if there's no slide, the file is always valid
-            if (SlideCount < 1) return true;
-
-            // here we need to check 3 cases:
-            // 1. self consistency check (if there are any duplicate names);
-            // 2. more png than shapes inside pptx (shapes for short);
-            // 3. more shapes than png.
-
-            var shapeDuplicate = ConsistencyCheckSelf();
-            var shapeLost = false;
-            var pngLost = false;
-
-            foreach (var category in Slides)
-            {
-                var shapeFolderPath = Path + @"\" + category.Name;
-
-                // check if we have a corresponding category directory in the Path
-                ConsistencyCheckCategorySlideToLocal(category);
-
-                var pngShapes = Directory.EnumerateFiles(shapeFolderPath, "*.png").ToList();
-
-                // critical: OR with itself at the end to avoid early termination
-                shapeLost = ConsistencyCheckShapeToPng(pngShapes, category) || shapeLost;
-                pngLost = ConsistencyCheckPngToShape(pngShapes, category) || pngLost;
-            }
-
-            var categoryInShapeGalleryLost = ConsistencyCheckCategoryLocalToSlide();
-
-            Save();
-
-            if ((shapeDuplicate || shapeLost || categoryInShapeGalleryLost || pngLost) &&
-                !IsImportedFile)
-            {
-                MessageBox.Show(TextCollection.ShapeCorruptedError);
-
-                return false;
-            }
-
-            return true;
+            return SlideCount < 1 || InitSlideCategories();
         }
 
         private bool ConsistencyCheckCategoryLocalToSlide()
@@ -351,9 +320,10 @@ namespace PowerPointLabs.Models
             return categoryLost;
         }
 
-        private void ConsistencyCheckCategorySlideToLocal(PowerPointSlide category)
+        private string ConsistencyCheckCategorySlideToLocal(PowerPointSlide category)
         {
-            var categoryFolderPath = Path + @"\" + category.Name;
+            var categoryFolderPath = System.IO.Path.Combine(Path, category.Name);
+            var newCategoryPath = categoryFolderPath;
 
             // the category is some how lost on the disk, regenerate the category
             if (!Directory.Exists(categoryFolderPath))
@@ -363,6 +333,20 @@ namespace PowerPointLabs.Models
                 // since shape reconstruction will be taken care of during ConsistencyCheckShapeToPng(),
                 // we do not need to generate the shapes here
             }
+            else
+            {
+                if (IsImportedFile)
+                {
+                    while (Directory.Exists(newCategoryPath))
+                    {
+                        newCategoryPath += " new";
+                    }
+
+                    Directory.CreateDirectory(newCategoryPath);
+                }
+            }
+
+            return newCategoryPath;
         }
 
         private bool ConsistencyCheckPngToShape(IEnumerable<string> pngShapes, PowerPointSlide category)
@@ -436,11 +420,10 @@ namespace PowerPointLabs.Models
             return shapeDuplicate;
         }
 
-        private bool ConsistencyCheckShapeToPng(List<string> pngShapes, PowerPointSlide category)
+        private bool ConsistencyCheckShapeToPng(List<string> pngShapes, PowerPointSlide category, string shapeFolderPath)
         {
             // if inconsistency is found, we export the extra shape to .png
             var shapeLost = false;
-            var shapeFolderPath = Path + @"\" + category.Name;
 
             // this is to handle 2 cases:
             // 1. user deleted the .png shape accidentally;
@@ -479,9 +462,37 @@ namespace PowerPointLabs.Models
             return index;
         }
 
-        private void PrepareCategories()
+        private bool InitSlideCategories()
         {
-            if (SlideCount < 1) return;
+            if (SlideCount < 1) return true;
+
+            // here we need to check 3 cases:
+            // 1. self consistency check (if there are any duplicate names);
+            // 2. more png than shapes inside pptx (shapes for short);
+            // 3. more shapes than png.
+
+            var shapeDuplicate = ConsistencyCheckSelf();
+            var shapeLost = false;
+            var pngLost = false;
+
+            foreach (var category in Slides)
+            {
+                // check if we have a corresponding category directory in the Path
+                var shapeFolderPath = ConsistencyCheckCategorySlideToLocal(category);
+                var finalCategoryName = new DirectoryInfo(shapeFolderPath).Name;
+
+                var pngShapes = Directory.EnumerateFiles(shapeFolderPath, "*.png").ToList();
+
+                // critical: OR with itself at the end to avoid early termination
+                shapeLost = ConsistencyCheckShapeToPng(pngShapes, category, shapeFolderPath) || shapeLost;
+                pngLost = ConsistencyCheckPngToShape(pngShapes, category) || pngLost;
+
+                category.Name = finalCategoryName;
+            }
+
+            var categoryInShapeGalleryLost = ConsistencyCheckCategoryLocalToSlide();
+
+            Save();
 
             Categories.Clear();
 
@@ -495,6 +506,16 @@ namespace PowerPointLabs.Models
                     _defaultCategory = category;
                 }
             }
+
+            if ((shapeDuplicate || shapeLost || categoryInShapeGalleryLost || pngLost) &&
+                !IsImportedFile)
+            {
+                MessageBox.Show(TextCollection.ShapeCorruptedError);
+
+                return false;
+            }
+
+            return true;
         }
 
         private void RetrievePptxFile()
