@@ -53,35 +53,12 @@ namespace PowerPointLabs
         {
             get
             {
-                var temp = 0;
-                var min = int.MaxValue;
-                var match = new Regex(DefaultShapeNameSearchRegex);
+                var labelNames =
+                    myShapeFlowLayout.Controls.OfType<LabeledThumbnail>().Select(control => control.NameLable).ToList();
 
-                foreach (Control control in myShapeFlowLayout.Controls)
-                {
-                    if (!(control is LabeledThumbnail)) continue;
+                var nextNum = Common.NextDefaultNumber(labelNames, new Regex(DefaultShapeNameSearchRegex));
 
-                    var labeledThumbnail = control as LabeledThumbnail;
-
-                    if (match.IsMatch(labeledThumbnail.NameLable))
-                    {
-                        var currentCnt = int.Parse(match.Match(labeledThumbnail.NameLable).Groups[1].Value);
-
-                        if (currentCnt - temp != 1)
-                        {
-                            min = Math.Min(min, temp);
-                        }
-                        
-                        temp = currentCnt;
-                    }
-                }
-
-                if (min == int.MaxValue)
-                {
-                    return string.Format(DefaultShapeNameFormat, temp + 1);
-                }
-
-                return string.Format(DefaultShapeNameFormat, min + 1);
+                return string.Format(DefaultShapeNameFormat, nextNum + 1);
             }
         }
 
@@ -378,7 +355,7 @@ namespace PowerPointLabs
                     if (!Globals.ThisAddIn.ShapePresentation.HasCategory(importCategory))
                     {
                         importShapeGallery.RetriveCategory(importCategory);
-                        Globals.ThisAddIn.ShapePresentation.AppendCategoryFromClipBoard(importCategory);
+                        Globals.ThisAddIn.ShapePresentation.AppendCategoryFromClipBoard();
                         _categoryBinding.Add(importCategory);
                         Categories.Add(importCategory);
                     }
