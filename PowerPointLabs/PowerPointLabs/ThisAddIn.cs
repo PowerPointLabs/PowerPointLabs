@@ -1005,10 +1005,6 @@ namespace PowerPointLabs
                     {
                         try
                         {
-                            if (_shapeNamePattern.IsMatch(shape.Name))
-                            {
-                                shape.Name = "[" + shape.Name + "]";
-                            }
                             nameListForCopiedShapes.Add(shape.Name);
                         }
                         catch
@@ -1016,7 +1012,6 @@ namespace PowerPointLabs
                             //handling corrupted shapes
                             shape.Copy();
                             var fixedShape = _previousSlideForCopyEvent.Shapes.Paste()[1];
-                            fixedShape.Name = "[" + shape.Name + "]";
                             fixedShape.Left = shape.Left;
                             fixedShape.Top = shape.Top;
                             while (fixedShape.ZOrderPosition > shape.ZOrderPosition)
