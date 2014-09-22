@@ -76,7 +76,7 @@ namespace PowerPointLabs.Models
             newSlide.DeleteShapeWithRule(new Regex(@"^Content Placeholder \d+$"));
 
             var categoryNameBox = newSlide.Shapes.AddTextbox(MsoTextOrientation.msoTextOrientationHorizontal, 0, 0, 0, 0);
-            categoryNameBox.TextFrame.TextRange.Text = name;
+            categoryNameBox.TextFrame.TextRange.Text = string.Format(CategoryNameFormat, name);
 
             Categories.Add(name);
             _categoryNameBoxCollection.Add(categoryNameBox);
@@ -196,7 +196,7 @@ namespace PowerPointLabs.Models
         {
             var slide = Presentation.Slides.Paste()[1];
             var categoryNameBox = RetrieveCategoryNameBox(PowerPointSlide.FromSlideFactory(slide));
-            var categoryName = categoryNameBox.TextFrame.TextRange.Text;
+            var categoryName = RetrieveCategoryName(categoryNameBox);
 
             // after paste, slide name will be corrupted, we need to rename it
             slide.Name = categoryName;
@@ -294,7 +294,7 @@ namespace PowerPointLabs.Models
             ActionProtection();
         }
 
-        public void RetriveShape(string name)
+        public void RetrieveShape(string name)
         {
             // copy a shape with name in the default category
             var shapes = _defaultCategory.GetShapeWithName(name);
@@ -304,7 +304,7 @@ namespace PowerPointLabs.Models
             shapes[0].Copy();
         }
 
-        public void RetriveCategory(string name)
+        public void RetrieveCategory(string name)
         {
             var index = FindCategoryIndex(name);
             Slides[index - 1].Copy();
@@ -332,24 +332,24 @@ namespace PowerPointLabs.Models
 
             if (categoryNameBox != null)
             {
-                category.Name = categoryNameBox.TextFrame.TextRange.Text;
+                category.Name = RetrieveCategoryName(categoryNameBox);
             }
             else
             {
                 // if we do not have a name box inside, we have 2 cases:
                 // 1. slide.Name has been configured (old ShapeGallery file);
-                // 2. slide.Name is default.
+                // 2. slide.Name is default (user didn't specify a name).
 
                 // for either case, we need to add a new text box into the slie.
                 // For case 1, the text of category box should be slide.Name;
                 // For case 2, the text of category box should be next untitled name.
 
                 categoryNameBox = category.Shapes.AddTextbox(MsoTextOrientation.msoTextOrientationHorizontal, 0, 0,
-                                                             0, 0);
+                                                             SlideWidth, 0);
 
                 var defaultSlideNameRegex = new Regex(DefaultSlideNameSearchPattern);
 
-                if (!defaultSlideNameRegex.IsMatch(category.Name))
+                if (defaultSlideNameRegex.IsMatch(category.Name))
                 {
                     untitledCategoryCnt++;
                     
@@ -357,7 +357,7 @@ namespace PowerPointLabs.Models
                     category.Name = string.Format(CategoryNameFormat, untitledName);
                 }
 
-                categoryNameBox.TextFrame.TextRange.Text = category.Name;
+                categoryNameBox.TextFrame.TextRange.Text = string.Format(CategoryNameFormat, category.Name);
             }
 
             _categoryNameBoxCollection.Add(categoryNameBox);
@@ -565,15 +565,14 @@ namespace PowerPointLabs.Models
                 shapeLost = ConsistencyCheckShapeToPng(pngShapes, category, shapeFolderPath) || shapeLost;
                 pngLost = ConsistencyCheckPngToShape(pngShapes, category) || pngLost;
 
-                category.Name = finalCategoryName;
-                categoryNameBox.TextFrame.TextRange.Text = finalCategoryName;
-
-                Categories.Add(category.Name);
-
-                if (category.Index == 0)
+                // update names only when the name gets changed
+                if (category.Name != finalCategoryName)
                 {
-                    _defaultCategory = category;
+                    category.Name = finalCategoryName;
+                    categoryNameBox.TextFrame.TextRange.Text = string.Format(CategoryNameFormat, finalCategoryName);
                 }
+
+                Categories.Add(finalCategoryName);
             }
 
             var categoryInShapeGalleryLost = ConsistencyCheckCategoryLocalToSlide();
@@ -591,6 +590,15 @@ namespace PowerPointLabs.Models
             return true;
         }
 
+        private string RetrieveCategoryName(Shape categoryNameBox)
+        {
+            var categoryNamePattern = new Regex(CategoryNameBoxSearchPattern);
+            var namePatternMatch = categoryNamePattern.Match(categoryNameBox.TextFrame.TextRange.Text);
+            var categoryName = namePatternMatch.Groups[1].Value;
+
+            return categoryName;
+        }
+
         private Shape RetrieveCategoryNameBox(PowerPointSlide slide)
         {
             var nameBoxCandidate = slide.GetShapesWithTypeAndRule(MsoShapeType.msoTextBox, new Regex(".+"));
@@ -601,10 +609,9 @@ namespace PowerPointLabs.Models
             }
 
             var categoryNamePattern = new Regex(CategoryNameBoxSearchPattern);
-            var categoryNameBoxes =
-                nameBoxCandidate.FindAll(x => categoryNamePattern.IsMatch(x.TextFrame.TextRange.Text));
 
-            return categoryNameBoxes.FirstOrDefault(x => x.TextFrame.TextRange.Text == slide.Name);
+            // return the first match name box
+            return nameBoxCandidate.FirstOrDefault(x => categoryNamePattern.IsMatch(x.TextFrame.TextRange.Text));
         }
 
         private void RetrievePptxFile()

@@ -58,7 +58,7 @@ namespace PowerPointLabs
 
                 var nextNum = Common.NextDefaultNumber(labelNames, new Regex(DefaultShapeNameSearchRegex));
 
-                return string.Format(DefaultShapeNameFormat, nextNum + 1);
+                return string.Format(DefaultShapeNameFormat, nextNum);
             }
         }
 
@@ -352,13 +352,9 @@ namespace PowerPointLabs
                 // copy all shapes in the import shape gallery to current shape gallery
                 foreach (var importCategory in importShapeGallery.Categories)
                 {
-                    if (!Globals.ThisAddIn.ShapePresentation.HasCategory(importCategory))
-                    {
-                        importShapeGallery.RetriveCategory(importCategory);
-                        Globals.ThisAddIn.ShapePresentation.AppendCategoryFromClipBoard();
-                        _categoryBinding.Add(importCategory);
-                        Categories.Add(importCategory);
-                    }
+                    importShapeGallery.RetrieveCategory(importCategory);
+                    Globals.ThisAddIn.ShapePresentation.AppendCategoryFromClipBoard();
+                    _categoryBinding.Add(importCategory);
                 }
             }
 
@@ -493,6 +489,7 @@ namespace PowerPointLabs
             Globals.ThisAddIn.ShapesLabConfigs.DefaultCategory = CurrentCategory;
 
             categoryBox.Refresh();
+            flowlayoutContextMenuStrip.Hide();
 
             MessageBox.Show(string.Format(TextCollection.CustomeShapeSetAsDefaultCategorySuccessFormat, CurrentCategory));
         }
@@ -1162,7 +1159,7 @@ namespace PowerPointLabs
             
             if (currentSlide != null)
             {
-                Globals.ThisAddIn.ShapePresentation.RetriveShape(shapeName);
+                Globals.ThisAddIn.ShapePresentation.RetrieveShape(shapeName);
                 currentSlide.Shapes.Paste().Select();
             }
             else
