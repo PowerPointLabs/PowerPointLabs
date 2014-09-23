@@ -94,7 +94,7 @@ namespace PowerPointLabs
 
         private void ThisAddInApplicationOnWindowDeactivate(PowerPoint.Presentation pres, PowerPoint.DocumentWindow wn)
         {
-            Trace.TraceInformation("Shape Gallery terminating...");
+            Trace.TraceInformation(pres.Name + " terminating...");
             Trace.TraceInformation(string.Format("Is Closing = {0}, Count = {1}", _isClosing, Application.Presentations.Count));
 
             _deactivatedPresFullName = pres.FullName;

@@ -29,9 +29,9 @@
         private void InitializeComponent()
         {
             this.components = new System.ComponentModel.Container();
-            this.motherPanel = new System.Windows.Forms.Panel();
+            this.motherPanel = new PowerPointLabs.BufferedPanel();
             this.labelTextBox = new System.Windows.Forms.TextBox();
-            this.thumbnailPanel = new System.Windows.Forms.Panel();
+            this.thumbnailPanel = new PowerPointLabs.BufferedPanel();
             this.nameLabelToolTip = new System.Windows.Forms.ToolTip(this.components);
             this.motherPanel.SuspendLayout();
             this.SuspendLayout();
@@ -87,10 +87,9 @@
 
         #endregion
 
-        private System.Windows.Forms.Panel motherPanel;
+        private PowerPointLabs.BufferedPanel motherPanel;
         private System.Windows.Forms.TextBox labelTextBox;
-        private System.Windows.Forms.Panel thumbnailPanel;
+        private PowerPointLabs.BufferedPanel thumbnailPanel;
         private System.Windows.Forms.ToolTip nameLabelToolTip;
-
     }
 }

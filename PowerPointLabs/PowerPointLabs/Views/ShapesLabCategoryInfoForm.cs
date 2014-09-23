@@ -21,9 +21,15 @@ namespace PowerPointLabs.Views
         # endregion
 
         # region Constructor
-        public ShapesLabCategoryInfoForm()
+        public ShapesLabCategoryInfoForm(string intialName)
         {
             InitializeComponent();
+
+            if (!string.IsNullOrEmpty(intialName))
+            {
+                categoryNameBox.Text = intialName;
+                categoryNameBox.SelectAll();
+            }
         }
         # endregion
 

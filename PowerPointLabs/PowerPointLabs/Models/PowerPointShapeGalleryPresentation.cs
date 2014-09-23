@@ -4,8 +4,10 @@ using System.IO;
 using System.Linq;
 using System.Text.RegularExpressions;
 using System.Windows.Forms;
+using Microsoft.Office.Core;
 using Microsoft.Office.Interop.PowerPoint;
 using PowerPointLabs.Utils;
+using Shape = Microsoft.Office.Interop.PowerPoint.Shape;
 
 namespace PowerPointLabs.Models
 {
@@ -13,10 +15,15 @@ namespace PowerPointLabs.Models
     {
         private const string ShapeGalleryFileExtension = ".pptlabsshapes";
         private const string DuplicateShapeSuffixFormat = "(recovered shape {0})";
+        private const string DefaultSlideNameSearchPattern = "[Ss]lide ?\\d+";
+        private const string UntitledCategoryNameFormat = "Untitled Category {0}";
+        private const string CategoryNameFormat = "Category: {0}";
+        private const string CategoryNameBoxSearchPattern = "[Cc]ategory: *([^<>:\"/\\\\|?*]+)";
 
         private const int MaxUndoAmount = 20;
         
         private PowerPointSlide _defaultCategory;
+        private readonly List<Shape> _categoryNameBoxCollection = new List<Shape>();
 
         # region Properties
         public List<string> Categories { get; private set; }
@@ -68,7 +75,11 @@ namespace PowerPointLabs.Models
             newSlide.DeleteShapeWithRule(new Regex(@"^Title \d+$"));
             newSlide.DeleteShapeWithRule(new Regex(@"^Content Placeholder \d+$"));
 
+            var categoryNameBox = newSlide.Shapes.AddTextbox(MsoTextOrientation.msoTextOrientationHorizontal, 0, 0, 0, 0);
+            categoryNameBox.TextFrame.TextRange.Text = string.Format(CategoryNameFormat, name);
+
             Categories.Add(name);
+            _categoryNameBoxCollection.Add(categoryNameBox);
 
             if (setAsDefault)
             {
@@ -178,20 +189,40 @@ namespace PowerPointLabs.Models
                 return false;
             }
 
-            PrepareCategories();
-            
             return ConsistencyCheck();
+        }
+
+        public void AppendCategoryFromClipBoard()
+        {
+            var slide = Presentation.Slides.Paste()[1];
+            var categoryNameBox = RetrieveCategoryNameBox(PowerPointSlide.FromSlideFactory(slide));
+            var categoryName = RetrieveCategoryName(categoryNameBox);
+
+            // after paste, slide name will be corrupted, we need to rename it
+            slide.Name = categoryName;
+            Categories.Add(categoryName);
+            _categoryNameBoxCollection.Add(categoryNameBox);
+            
+            Save();
+            ActionProtection();
         }
 
         public void RemoveCategory(string name)
         {
+            if (!Categories.Contains(name))
+            {
+                return;
+            }
+
             if (_defaultCategory.Name == name)
             {
                 _defaultCategory = null;
             }
 
-            Categories.Remove(name);
+            var index = FindCategoryIndex(name) - 1;
 
+            Categories.Remove(name);
+            _categoryNameBoxCollection.RemoveAt(index);
             RemoveSlide(name);
 
             Save();
@@ -206,6 +237,7 @@ namespace PowerPointLabs.Models
             }
 
             Categories.RemoveAt(index);
+            _categoryNameBoxCollection.RemoveAt(index);
             
             RemoveSlide(index);
 
@@ -221,6 +253,7 @@ namespace PowerPointLabs.Models
             _defaultCategory = null;
             
             Categories.RemoveAt(index);
+            _categoryNameBoxCollection.RemoveAt(index);
 
             RemoveSlide(index);
 
@@ -254,11 +287,14 @@ namespace PowerPointLabs.Models
             Categories[_defaultCategory.Index - 1] = newName;
             _defaultCategory.Name = newName;
 
+            var categoryNameBox = _categoryNameBoxCollection[_defaultCategory.Index - 1];
+            categoryNameBox.TextFrame.TextRange.Text = string.Format(CategoryNameFormat, newName);
+
             Save();
             ActionProtection();
         }
 
-        public void RetriveShape(string name)
+        public void RetrieveShape(string name)
         {
             // copy a shape with name in the default category
             var shapes = _defaultCategory.GetShapeWithName(name);
@@ -266,6 +302,12 @@ namespace PowerPointLabs.Models
             if (shapes.Count != 1) return;
 
             shapes[0].Copy();
+        }
+
+        public void RetrieveCategory(string name)
+        {
+            var index = FindCategoryIndex(name);
+            Slides[index - 1].Copy();
         }
         # endregion
 
@@ -281,50 +323,46 @@ namespace PowerPointLabs.Models
         private bool ConsistencyCheck()
         {
             // if there's no slide, the file is always valid
-            if (SlideCount < 1) return true;
+            return SlideCount < 1 || InitCategories();
+        }
 
-            // here we need to check 3 cases:
-            // 1. self consistency check (if there are any duplicate names);
-            // 2. more png than shapes inside pptx (shapes for short);
-            // 3. more shapes than png.
+        private Shape ConsistencyCheckCategoryNameBox(PowerPointSlide category, ref int untitledCategoryCnt)
+        {
+            var categoryNameBox = RetrieveCategoryNameBox(category);
 
-            var shapeDuplicate = ConsistencyCheckSelf();
-            var shapeLost = false;
-            var pngLost = false;
-
-            foreach (var category in Slides)
+            if (categoryNameBox != null)
             {
-                var shapeFolderPath = Path + @"\" + category.Name;
+                category.Name = RetrieveCategoryName(categoryNameBox);
+            }
+            else
+            {
+                // if we do not have a name box inside, we have 2 cases:
+                // 1. slide.Name has been configured (old ShapeGallery file);
+                // 2. slide.Name is default (user didn't specify a name).
 
-                // check if we have a corresponding category directory in the Path
-                ConsistencyCheckCategorySlideToLocal(category);
+                // for either case, we need to add a new text box into the slie.
+                // For case 1, the text of category box should be slide.Name;
+                // For case 2, the text of category box should be next untitled name.
 
-                var pngShapes = Directory.EnumerateFiles(shapeFolderPath, "*.png").ToList();
+                categoryNameBox = category.Shapes.AddTextbox(MsoTextOrientation.msoTextOrientationHorizontal, 0, 0,
+                                                             SlideWidth, 0);
 
-                // critical: OR with itself at the end to avoid early truncate
-                shapeLost = ConsistencyCheckShapeToPng(pngShapes, category) || shapeLost;
-                pngLost = ConsistencyCheckPngToShape(pngShapes, category) || pngLost;
+                var defaultSlideNameRegex = new Regex(DefaultSlideNameSearchPattern);
+
+                if (defaultSlideNameRegex.IsMatch(category.Name))
+                {
+                    untitledCategoryCnt++;
+                    
+                    var untitledName = string.Format(UntitledCategoryNameFormat, untitledCategoryCnt);
+                    category.Name = untitledName;
+                }
+
+                categoryNameBox.TextFrame.TextRange.Text = string.Format(CategoryNameFormat, category.Name);
             }
 
-            var categoryInShapeGalleryLost = ConsistencyCheckCategoryLocalToSlide();
-
-            Save();
-
-            if (shapeDuplicate || shapeLost || categoryInShapeGalleryLost)
-            {
-                MessageBox.Show(TextCollection.ShapeCorruptedError);
-
-                return false;
-            }
-
-            if (pngLost && !IsImportedFile)
-            {
-                MessageBox.Show(TextCollection.ShapeCorruptedError);
-
-                return false;
-            }
-
-            return true;
+            _categoryNameBoxCollection.Add(categoryNameBox);
+            
+            return categoryNameBox;
         }
 
         private bool ConsistencyCheckCategoryLocalToSlide()
@@ -338,18 +376,18 @@ namespace PowerPointLabs.Models
 
                 if (Slides.All(category => category.Name != categoryName))
                 {
-                    FileDir.DeleteFolder(categoryPath);
-
                     categoryLost = true;
+                    break;
                 }
             }
 
             return categoryLost;
         }
 
-        private void ConsistencyCheckCategorySlideToLocal(PowerPointSlide category)
+        private string ConsistencyCheckCategorySlideToLocal(PowerPointSlide category)
         {
-            var categoryFolderPath = Path + @"\" + category.Name;
+            var categoryFolderPath = System.IO.Path.Combine(Path, category.Name);
+            var newCategoryPath = categoryFolderPath;
 
             // the category is some how lost on the disk, regenerate the category
             if (!Directory.Exists(categoryFolderPath))
@@ -359,6 +397,24 @@ namespace PowerPointLabs.Models
                 // since shape reconstruction will be taken care of during ConsistencyCheckShapeToPng(),
                 // we do not need to generate the shapes here
             }
+            else
+            {
+                if (IsImportedFile)
+                {
+                    var duplicateCnt = 1;
+                    var oriCategoryName = newCategoryPath;
+
+                    while (Directory.Exists(newCategoryPath))
+                    {
+                        newCategoryPath = oriCategoryName + " " + duplicateCnt;
+                        duplicateCnt++;
+                    }
+
+                    Directory.CreateDirectory(newCategoryPath);
+                }
+            }
+
+            return newCategoryPath;
         }
 
         private bool ConsistencyCheckPngToShape(IEnumerable<string> pngShapes, PowerPointSlide category)
@@ -432,17 +488,23 @@ namespace PowerPointLabs.Models
             return shapeDuplicate;
         }
 
-        private bool ConsistencyCheckShapeToPng(List<string> pngShapes, PowerPointSlide category)
+        private bool ConsistencyCheckShapeToPng(List<string> pngShapes, PowerPointSlide category, string shapeFolderPath)
         {
             // if inconsistency is found, we export the extra shape to .png
             var shapeLost = false;
-            var shapeFolderPath = Path + @"\" + category.Name;
 
             // this is to handle 2 cases:
             // 1. user deleted the .png shape accidentally;
             // 2. the file is imported
             foreach (Shape shape in category.Shapes)
             {
+                // skip category name box
+                if (shape.Type == MsoShapeType.msoTextBox &&
+                    _categoryNameBoxCollection.Contains(shape))
+                {
+                    continue;
+                }
+
                 var shapePath = shapeFolderPath + @"\" + shape.Name + ".png";
 
                 if (!pngShapes.Contains(shapePath))
@@ -475,22 +537,81 @@ namespace PowerPointLabs.Models
             return index;
         }
 
-        private void PrepareCategories()
+        private bool InitCategories()
         {
-            if (SlideCount < 1) return;
+            if (SlideCount < 1) return true;
 
-            Categories.Clear();
+            // here we need to check 3 cases:
+            // 1. self consistency check (if there are any duplicate names);
+            // 2. more png than shapes inside pptx (shapes for short);
+            // 3. more shapes than png.
 
-            // record each slide in index-name mapper
+            var shapeDuplicate = ConsistencyCheckSelf();
+            var shapeLost = false;
+            var pngLost = false;
+            var untitledCategoryCnt = 0;
+
             foreach (var category in Slides)
             {
-                Categories.Add(category.Name);
+                var categoryNameBox = ConsistencyCheckCategoryNameBox(category, ref untitledCategoryCnt);
 
-                if (category.Index == 0)
+                // check if we have a corresponding category directory in the Path
+                var shapeFolderPath = ConsistencyCheckCategorySlideToLocal(category);
+                var finalCategoryName = new DirectoryInfo(shapeFolderPath).Name;
+
+                var pngShapes = Directory.EnumerateFiles(shapeFolderPath, "*.png").ToList();
+
+                // critical: OR with itself at the end to avoid early termination
+                shapeLost = ConsistencyCheckShapeToPng(pngShapes, category, shapeFolderPath) || shapeLost;
+                pngLost = ConsistencyCheckPngToShape(pngShapes, category) || pngLost;
+
+                // update names only when the name gets changed
+                if (category.Name != finalCategoryName)
                 {
-                    _defaultCategory = category;
+                    category.Name = finalCategoryName;
+                    categoryNameBox.TextFrame.TextRange.Text = string.Format(CategoryNameFormat, finalCategoryName);
                 }
+
+                Categories.Add(finalCategoryName);
             }
+
+            var categoryInShapeGalleryLost = ConsistencyCheckCategoryLocalToSlide();
+
+            Save();
+
+            if ((shapeDuplicate || shapeLost || categoryInShapeGalleryLost || pngLost) &&
+                !IsImportedFile)
+            {
+                MessageBox.Show(TextCollection.ShapeCorruptedError);
+
+                return false;
+            }
+
+            return true;
+        }
+
+        private string RetrieveCategoryName(Shape categoryNameBox)
+        {
+            var categoryNamePattern = new Regex(CategoryNameBoxSearchPattern);
+            var namePatternMatch = categoryNamePattern.Match(categoryNameBox.TextFrame.TextRange.Text);
+            var categoryName = namePatternMatch.Groups[1].Value;
+
+            return categoryName;
+        }
+
+        private Shape RetrieveCategoryNameBox(PowerPointSlide slide)
+        {
+            var nameBoxCandidate = slide.GetShapesWithTypeAndRule(MsoShapeType.msoTextBox, new Regex(".+"));
+
+            if (nameBoxCandidate.Count == 0)
+            {
+                return null;
+            }
+
+            var categoryNamePattern = new Regex(CategoryNameBoxSearchPattern);
+
+            // return the first match name box
+            return nameBoxCandidate.FirstOrDefault(x => categoryNamePattern.IsMatch(x.TextFrame.TextRange.Text));
         }
 
         private void RetrievePptxFile()
@@ -501,10 +622,11 @@ namespace PowerPointLabs.Models
             {
                 File.SetAttributes(shapeGalleryFileName, FileAttributes.Normal);
                 File.Move(shapeGalleryFileName, FullName);
-
-                // to reduce the chance that user opens the shape gallery file, we make the pptx file hidden
-                File.SetAttributes(FullName, FileAttributes.Hidden);
             }
+
+            // to reduce the chance that user opens the shape gallery file, we make the pptx file hidden
+            File.SetAttributes(FullName, FileAttributes.Normal);
+            File.SetAttributes(FullName, FileAttributes.Hidden);
         }
 
         private void RetrieveShapeGalleryFile()

@@ -240,6 +240,12 @@
     </Compile>
     <Compile Include="ColorPicker\HSLColor.cs" />
     <Compile Include="CustomBinding.cs" />
+    <Compile Include="CustomControls\BufferedFlowLayoutPanel.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="CustomControls\BufferedPanel.cs">
+      <SubType>Component</SubType>
+    </Compile>
     <Compile Include="DataSources\ColorDataSource.cs" />
     <Compile Include="ColorPicker\ColorHelper.cs" />
     <Compile Include="ColorPicker\ColorPane.cs">
@@ -274,6 +280,8 @@
     <Compile Include="Settings.cs" />
     <Compile Include="ShapesLabConfig.cs" />
     <Compile Include="TextCollection.cs" />
+    <Compile Include="Utils\Common.cs" />
+    <Compile Include="Utils\Comparers.cs" />
     <Compile Include="Utils\FileDir.cs" />
     <Compile Include="Utils\Graphics.cs" />
     <Compile Include="Views\CustomPaintTextBox.cs" />
@@ -356,6 +364,12 @@
     </Compile>
     <Compile Include="Views\InShowControl.Designer.cs">
       <DependentUpon>InShowControl.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Views\SelectionRectangle.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Views\SelectionRectangle.Designer.cs">
+      <DependentUpon>SelectionRectangle.cs</DependentUpon>
     </Compile>
     <Compile Include="Views\ShapesLabCategoryInfoForm.cs">
       <SubType>Form</SubType>
@@ -486,6 +500,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Views\InShowControl.resx">
       <DependentUpon>InShowControl.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Views\SelectionRectangle.resx">
+      <DependentUpon>SelectionRectangle.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Views\ShapesLabCategoryInfoForm.resx">
       <DependentUpon>ShapesLabCategoryInfoForm.cs</DependentUpon>
@@ -665,9 +682,7 @@
   <ItemGroup>
     <None Include="Resources\HighlightBackgroundContext.png" />
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="CustomControls\" />
-  </ItemGroup>
+  <ItemGroup />
   <!-- Include the build rules for a C# project. -->
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
