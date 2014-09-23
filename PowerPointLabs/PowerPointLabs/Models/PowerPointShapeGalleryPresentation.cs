@@ -16,9 +16,9 @@ namespace PowerPointLabs.Models
         private const string ShapeGalleryFileExtension = ".pptlabsshapes";
         private const string DuplicateShapeSuffixFormat = "(recovered shape {0})";
         private const string DefaultSlideNameSearchPattern = "[Ss]lide ?\\d+";
-        private const string UntitledCategoryNameFormat = "Category: Untitled Category {0}";
+        private const string UntitledCategoryNameFormat = "Untitled Category {0}";
         private const string CategoryNameFormat = "Category: {0}";
-        private const string CategoryNameBoxSearchPattern = "[Cc]ategory: ([^<>:\"/\\\\|?*]+)";
+        private const string CategoryNameBoxSearchPattern = "[Cc]ategory: *([^<>:\"/\\\\|?*]+)";
 
         private const int MaxUndoAmount = 20;
         
@@ -354,7 +354,7 @@ namespace PowerPointLabs.Models
                     untitledCategoryCnt++;
                     
                     var untitledName = string.Format(UntitledCategoryNameFormat, untitledCategoryCnt);
-                    category.Name = string.Format(CategoryNameFormat, untitledName);
+                    category.Name = untitledName;
                 }
 
                 categoryNameBox.TextFrame.TextRange.Text = string.Format(CategoryNameFormat, category.Name);
@@ -622,10 +622,11 @@ namespace PowerPointLabs.Models
             {
                 File.SetAttributes(shapeGalleryFileName, FileAttributes.Normal);
                 File.Move(shapeGalleryFileName, FullName);
-
-                // to reduce the chance that user opens the shape gallery file, we make the pptx file hidden
-                File.SetAttributes(FullName, FileAttributes.Hidden);
             }
+
+            // to reduce the chance that user opens the shape gallery file, we make the pptx file hidden
+            File.SetAttributes(FullName, FileAttributes.Normal);
+            File.SetAttributes(FullName, FileAttributes.Hidden);
         }
 
         private void RetrieveShapeGalleryFile()

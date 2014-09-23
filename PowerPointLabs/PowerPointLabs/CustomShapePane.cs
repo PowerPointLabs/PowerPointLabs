@@ -17,7 +17,8 @@ namespace PowerPointLabs
     {
         private const string DefaultShapeNameFormat = @"My Shape Untitled {0}";
         private const string DefaultShapeNameSearchRegex = @"^My Shape Untitled (\d+)$";
-        private const string ShapeFileDialogFilter = "PowerPointLabs Shapes File|*.pptlabsshapes";
+        private const string ShapeFileDialogFilter =
+            "PowerPointLabs Shapes File|*.pptlabsshapes;*.pptx";
 
         private readonly int _doubleClickTimeSpan = SystemInformation.DoubleClickTime;
         private int _clicks;
@@ -281,7 +282,7 @@ namespace PowerPointLabs
 
         private void ContextMenuStripAddCategoryClicked()
         {
-            var categoryInfoDialog = new ShapesLabCategoryInfoForm();
+            var categoryInfoDialog = new ShapesLabCategoryInfoForm(string.Empty);
 
             categoryInfoDialog.ShowDialog();
 
@@ -295,6 +296,8 @@ namespace PowerPointLabs
 
                 categoryBox.SelectedIndex = _categoryBinding.Count - 1;
             }
+
+            myShapeFlowLayout.Focus();
         }
 
         private void ContextMenuStripEditClicked()
@@ -312,7 +315,6 @@ namespace PowerPointLabs
         {
             var fileDialog = new OpenFileDialog
                                  {
-                                     FileName = ShapeRootFolderPath,
                                      Filter = ShapeFileDialogFilter,
                                      Multiselect = false
                                  };
@@ -363,6 +365,11 @@ namespace PowerPointLabs
             // delete the import file copy
             if (!sameFolder)
             {
+                if (importFileCopyPath.EndsWith(".pptx"))
+                {
+                    importFileCopyPath = importFileCopyPath.Replace(".pptx", ".pptlabsshapes");
+                }
+
                 FileDir.DeleteFile(importFileCopyPath);
             }
 
@@ -450,7 +457,7 @@ namespace PowerPointLabs
 
         private void ContextMenuStripRenameCategoryClicked()
         {
-            var categoryInfoDialog = new ShapesLabCategoryInfoForm();
+            var categoryInfoDialog = new ShapesLabCategoryInfoForm(CurrentCategory);
 
             categoryInfoDialog.ShowDialog();
 
@@ -473,7 +480,10 @@ namespace PowerPointLabs
                 try
                 {
                     Directory.Move(CurrentShapeFolderPath, newPath);
-                } catch (Exception) {}
+                } catch (Exception)
+                {
+                    // this may occur when the newCategoryName.tolower() == oldCategoryName.tolower()
+                }
 
                 // rename the category in combo box
                 var categoryIndex = categoryBox.SelectedIndex;
@@ -482,6 +492,8 @@ namespace PowerPointLabs
                 // update current category reference
                 CurrentCategory = categoryName;
             }
+
+            myShapeFlowLayout.Focus();
         }
 
         private void ContextMenuStripSetAsDefaultCategoryClicked()
