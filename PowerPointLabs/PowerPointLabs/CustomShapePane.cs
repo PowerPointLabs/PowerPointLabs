@@ -635,53 +635,34 @@ namespace PowerPointLabs
 
         private void FirstClickOnThumbnail(LabeledThumbnail clickedThumbnail)
         {
-            // here we have 2 cases when multiple selection is enabled:
-            //
-            // Left Click:
-            // finish editing if we have, dehighlight all selected labels and highlight
-            // clicked label;
-            //
-            // Right Click:
-            // finish editing if we have, keep all highlight and set the clicked label
-            // as default.
-
-            // common part, end editing
             if (_selectedThumbnail != null)
             {
                 if (_selectedThumbnail.Count != 0)
                 {
+                    // this flag doesn't apply for multi selection, thus turn off
+                    _clickOnSelected = false;
+
+                    // common part, end editing
                     if (_selectedThumbnail[0].State == LabeledThumbnail.Status.Editing)
                     {
                         _selectedThumbnail[0].FinishNameEdit();
                     }
                     else
-                        if (_selectedThumbnail[0] == clickedThumbnail)
-                        {
-                            _clickOnSelected = true;
-                        }
-
-                    if (!_selectedThumbnail.Contains(clickedThumbnail) ||
-                        MouseButtons == MouseButtons.Left)
+                    if (_selectedThumbnail[0] == clickedThumbnail)
                     {
-                        foreach (var thumbnail in _selectedThumbnail)
-                        {
-                            thumbnail.DeHighlight();
-                        }
-
-                        _selectedThumbnail.Clear();
-
-                        clickedThumbnail.Highlight();
+                        _clickOnSelected = true;
                     }
-                    else
-                        if (MouseButtons == MouseButtons.Right)
-                        {
-                            _selectedThumbnail.Remove(clickedThumbnail);
-                        }
-                }
 
-                _selectedThumbnail.Insert(0, clickedThumbnail);
-                FocusSelected();
-            }   
+                    MultiSelectClickHandler(clickedThumbnail);
+                }
+                else
+                {
+                    clickedThumbnail.Highlight();
+
+                    _selectedThumbnail.Insert(0, clickedThumbnail);
+                    FocusSelected();
+                }
+            }
         }
 
         private void FlowlayoutClick()
@@ -782,6 +763,43 @@ namespace PowerPointLabs
             loadingDialog.Dispose();
 
             return true;
+        }
+
+        private void MultiSelectClickHandler(LabeledThumbnail clickedThumbnail)
+        {
+            if (MouseButtons != MouseButtons.Left) return;
+
+            // if Ctrl key is not holding, i.e. not doing multi-selecting, all highlighed
+            // thumbnail should be dehighlighted
+            if (!ModifierKeys.HasFlag(Keys.Control))
+            {
+                foreach (var thumbnail in _selectedThumbnail)
+                {
+                    thumbnail.DeHighlight();
+                }
+
+                _selectedThumbnail.Clear();
+            }
+
+            if (!_selectedThumbnail.Contains(clickedThumbnail))
+            {
+                // highlight the thumbnail and add the clicked thumbnail to the collection
+                clickedThumbnail.Highlight();
+
+                _selectedThumbnail.Insert(0, clickedThumbnail);
+                FocusSelected();
+            }
+            else
+            {
+                // turn off the highlighting if the clicked thumbnail is currently highlighted
+                if (ModifierKeys.HasFlag(Keys.Control))
+                {
+                    clickedThumbnail.DeHighlight();
+
+                    _clickOnSelected = false;
+                    _selectedThumbnail.Remove(clickedThumbnail);
+                }
+            }
         }
 
         private void PrepareFolder()

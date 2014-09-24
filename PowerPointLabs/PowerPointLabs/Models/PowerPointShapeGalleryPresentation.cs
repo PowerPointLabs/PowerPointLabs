@@ -443,14 +443,14 @@ namespace PowerPointLabs.Models
 
             // if inconsistency is found, we keep all the shapes but:
             // 1. append "(recovered shape X)" to the shape name, X is the relative index
-            // 2. export the shape as .png
+            // <del>2. export the shape as .png</del>
+            // point 2 is not needed, becuase all no-png shapes will be exported during ConsistencyCheckShapeToPng,
+            // and no-shape png will be deleted during ConsistencyCheckPngToShape.
             foreach (var category in Slides)
             {
                 var shapeHash = new Dictionary<string, int>();
                 var shapes = category.Shapes.Cast<Shape>().ToList();
                 var duplicateShapeNames = new List<string>();
-
-                var shapeFolderPath = Path + @"\" + category.Name;
 
                 foreach (var shape in shapes)
                 {
@@ -469,19 +469,17 @@ namespace PowerPointLabs.Models
                             duplicateShapeNames.Add(shape.Name);
                         }
 
-                        RenameAndExportDuplicateShape(shape, index, shapeFolderPath);
+                        shape.Name += string.Format(DuplicateShapeSuffixFormat, index);
                     }
                 }
 
-                shapeDuplicate = shapeDuplicate || duplicateShapeNames.Count > 0;
+                shapeDuplicate = duplicateShapeNames.Count > 0;
 
                 foreach (var lastShapeName in duplicateShapeNames)
                 {
-                    var lastShapePath = shapeFolderPath + @"\" + lastShapeName + ".png";
                     var lastShape = category.GetShapeWithName(lastShapeName)[0];
 
-                    File.Delete(lastShapePath);
-                    RenameAndExportDuplicateShape(lastShape, 1, shapeFolderPath);
+                    lastShape.Name += string.Format(DuplicateShapeSuffixFormat, 1);
                 }
             }
 
@@ -643,15 +641,6 @@ namespace PowerPointLabs.Models
 
             File.SetAttributes(shapeGalleryFileName, FileAttributes.Normal);
             File.SetAttributes(shapeGalleryFileName, FileAttributes.ReadOnly);
-        }
-
-        private void RenameAndExportDuplicateShape(Shape shape, int index, string shapeFolderPath)
-        {
-            shape.Name += string.Format(DuplicateShapeSuffixFormat, index);
-
-            var shapeExportPath = shapeFolderPath + @"\" + shape.Name + ".png";
-
-            Graphics.ExportShape(shape, shapeExportPath);
         }
         # endregion
     }
