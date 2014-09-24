@@ -374,7 +374,7 @@ namespace PowerPointLabs.Models
             {
                 var categoryName = new DirectoryInfo(categoryPath).Name;
 
-                if (Slides.All(category => category.Name != categoryName))
+                if (Slides.All(category => category.Name.ToLower() != categoryName.ToLower()))
                 {
                     categoryLost = true;
                     break;
