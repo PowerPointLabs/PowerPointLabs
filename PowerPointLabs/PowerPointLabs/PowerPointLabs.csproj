@@ -39,9 +39,9 @@
     <VSTO_TrustAssembliesLocation>true</VSTO_TrustAssembliesLocation>
     <BootstrapperEnabled>true</BootstrapperEnabled>
     <PublishUrl>C:\Users\nevets\Desktop\PowerPointLabsPublish\</PublishUrl>
-    <InstallUrl>http://www.comp.nus.edu.sg/~pptlabs/download-78563/</InstallUrl>
+    <InstallUrl>http://www.comp.nus.edu.sg/~pptlabs/download/dev/</InstallUrl>
     <TargetCulture>en</TargetCulture>
-    <ApplicationVersion>1.10.0.0</ApplicationVersion>
+    <ApplicationVersion>1.10.1.1</ApplicationVersion>
     <AutoIncrementApplicationRevision>false</AutoIncrementApplicationRevision>
     <UpdateEnabled>true</UpdateEnabled>
     <UpdateInterval>0</UpdateInterval>

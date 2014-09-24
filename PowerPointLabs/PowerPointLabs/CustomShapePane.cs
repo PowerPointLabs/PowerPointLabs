@@ -437,8 +437,11 @@ namespace PowerPointLabs
                 return;
             }
 
-            foreach (var thumbnail in _selectedThumbnail)
+            Graphics.SuspendDrawing(myShapeFlowLayout);
+
+            while (_selectedThumbnail.Count > 0)
             {
+                var thumbnail = _selectedThumbnail[0];
                 var removedShapename = thumbnail.NameLable;
 
                 // remove shape from shape gallery
@@ -452,7 +455,12 @@ namespace PowerPointLabs
 
                 // sync shape removing among all task panes
                 Globals.ThisAddIn.SyncShapeRemove(removedShapename, CurrentCategory);
+
+                // remove from selected collection
+                _selectedThumbnail.RemoveAt(0);
             }
+
+            Graphics.ResumeDrawing(myShapeFlowLayout);
         }
 
         private void ContextMenuStripRenameCategoryClicked()
