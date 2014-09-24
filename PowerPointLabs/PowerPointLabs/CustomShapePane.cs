@@ -19,6 +19,7 @@ namespace PowerPointLabs
         private const string DefaultShapeNameSearchRegex = @"^My Shape Untitled (\d+)$";
         private const string ShapeFileDialogFilter =
             "PowerPointLabs Shapes File|*.pptlabsshapes;*.pptx";
+        private const string ImportFileCopyName = "import.pptx";
 
         private readonly int _doubleClickTimeSpan = SystemInformation.DoubleClickTime;
         private int _clicks;
@@ -327,9 +328,8 @@ namespace PowerPointLabs
             }
 
             var importFilePath = fileDialog.FileName;
-            var importFileName = new FileInfo(importFilePath).Name;
-            var importFileNameNoExtension = importFileName.Substring(0, importFileName.LastIndexOf('.'));
-            var importFileCopyPath = Path.Combine(ShapeRootFolderPath, importFileName);
+            var importFileNameNoExtension = ImportFileCopyName.Substring(0, ImportFileCopyName.LastIndexOf('.'));
+            var importFileCopyPath = Path.Combine(ShapeRootFolderPath, ImportFileCopyName);
             var sameFolder = true;
 
             // copy the file to the current shape root if the file is not under root 
