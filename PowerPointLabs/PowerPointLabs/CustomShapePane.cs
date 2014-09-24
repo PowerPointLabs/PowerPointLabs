@@ -648,6 +648,8 @@ namespace PowerPointLabs
             // common part, end editing
             if (_selectedThumbnail != null)
             {
+                var dontAdd = false;
+
                 if (_selectedThumbnail.Count != 0)
                 {
                     if (_selectedThumbnail[0].State == LabeledThumbnail.Status.Editing)
@@ -655,33 +657,50 @@ namespace PowerPointLabs
                         _selectedThumbnail[0].FinishNameEdit();
                     }
                     else
-                        if (_selectedThumbnail[0] == clickedThumbnail)
-                        {
-                            _clickOnSelected = true;
-                        }
-
-                    if (!_selectedThumbnail.Contains(clickedThumbnail) ||
-                        MouseButtons == MouseButtons.Left)
+                    if (_selectedThumbnail[0] == clickedThumbnail)
                     {
-                        foreach (var thumbnail in _selectedThumbnail)
-                        {
-                            thumbnail.DeHighlight();
-                        }
-
-                        _selectedThumbnail.Clear();
-
-                        clickedThumbnail.Highlight();
+                        _clickOnSelected = true;
                     }
-                    else
-                        if (MouseButtons == MouseButtons.Right)
+
+                    if (MouseButtons == MouseButtons.Left)
+                    {
+                        if (!_selectedThumbnail.Contains(clickedThumbnail))
                         {
-                            _selectedThumbnail.Remove(clickedThumbnail);
+                            if (!ModifierKeys.HasFlag(Keys.Control))
+                            {
+                                foreach (var thumbnail in _selectedThumbnail)
+                                {
+                                    thumbnail.DeHighlight();
+                                }
+
+                                _selectedThumbnail.Clear();
+                            }
+
+                            clickedThumbnail.Highlight();
                         }
+                        else
+                        {
+                            if (ModifierKeys.HasFlag(Keys.Control))
+                            {
+                                clickedThumbnail.DeHighlight();
+
+                                dontAdd = true;
+                                _selectedThumbnail.Remove(clickedThumbnail);
+                            }
+                        }
+                    } else
+                    if (MouseButtons == MouseButtons.Right)
+                    {
+                        _selectedThumbnail.Remove(clickedThumbnail);
+                    }
                 }
 
-                _selectedThumbnail.Insert(0, clickedThumbnail);
-                FocusSelected();
-            }   
+                if (!dontAdd)
+                {
+                    _selectedThumbnail.Insert(0, clickedThumbnail);
+                    FocusSelected();
+                }
+            }
         }
 
         private void FlowlayoutClick()
