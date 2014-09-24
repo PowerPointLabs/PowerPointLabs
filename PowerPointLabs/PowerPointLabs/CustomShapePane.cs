@@ -281,6 +281,24 @@ namespace PowerPointLabs
             _isLeftButton = false;
         }
 
+        private void ContextMenuStripAddClicked()
+        {
+            var currentSlide = PowerPointCurrentPresentationInfo.CurrentSlide;
+
+            if (currentSlide == null)
+            {
+                MessageBox.Show(TextCollection.CustomShapeViewTypeNotSupported);
+                return;
+            }
+
+            // all selected shape will be added to the slide
+            foreach (var shapeName in _selectedThumbnail.Select(thumbnail => thumbnail.NameLable))
+            {
+                Globals.ThisAddIn.ShapePresentation.RetrieveShape(shapeName);
+                currentSlide.Shapes.Paste();
+            }
+        }
+
         private void ContextMenuStripAddCategoryClicked()
         {
             var categoryInfoDialog = new ShapesLabCategoryInfoForm(string.Empty);
@@ -309,6 +327,13 @@ namespace PowerPointLabs
                 return;
             }
 
+            // dehighlight all thumbnails except the first one
+            while (_selectedThumbnail.Count > 1)
+            {
+                _selectedThumbnail[1].DeHighlight();
+                _selectedThumbnail.RemoveAt(1);
+            }
+            
             _selectedThumbnail[0].StartNameEdit();
         }
 
@@ -767,6 +792,15 @@ namespace PowerPointLabs
 
         private void MultiSelectClickHandler(LabeledThumbnail clickedThumbnail)
         {
+            if (MouseButtons == MouseButtons.Right &&
+                _selectedThumbnail.Contains(clickedThumbnail))
+            {
+                _selectedThumbnail.Remove(clickedThumbnail);
+                _selectedThumbnail.Insert(0, clickedThumbnail);
+
+                return;
+            }
+
             if (MouseButtons != MouseButtons.Left) return;
 
             // if Ctrl key is not holding, i.e. not doing multi-selecting, all highlighed
@@ -1315,7 +1349,7 @@ namespace PowerPointLabs
             else
             if (item.Name.Contains("add"))
             {
-                LabeledThumbnailDoubleClick(_selectedThumbnail, null);
+                ContextMenuStripAddClicked();
             }
         }
 
