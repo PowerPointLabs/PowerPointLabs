@@ -624,9 +624,12 @@ namespace PowerPointLabs.Models
                 File.Move(shapeGalleryFileName, FullName);
             }
 
-            // to reduce the chance that user opens the shape gallery file, we make the pptx file hidden
-            File.SetAttributes(FullName, FileAttributes.Normal);
-            File.SetAttributes(FullName, FileAttributes.Hidden);
+            if (File.Exists(FullName))
+            {
+                // to reduce the chance that user opens the shape gallery file, we make the pptx file hidden
+                File.SetAttributes(FullName, FileAttributes.Normal);
+                File.SetAttributes(FullName, FileAttributes.Hidden);
+            }
         }
 
         private void RetrieveShapeGalleryFile()
