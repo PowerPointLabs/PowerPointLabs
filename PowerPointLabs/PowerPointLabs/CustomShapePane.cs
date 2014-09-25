@@ -38,7 +38,8 @@ namespace PowerPointLabs
 
         private readonly BindingSource _categoryBinding;
 
-        private List<LabeledThumbnail> _selectedThumbnail;
+        private List<LabeledThumbnail> _selectedThumbnail = new List<LabeledThumbnail>();
+        private List<LabeledThumbnail> _selectingThumbnail = new List<LabeledThumbnail>();
 
         private readonly Timer _timer;
 
@@ -139,8 +140,6 @@ namespace PowerPointLabs
             InitializeComponent();
 
             InitializeContextMenu();
-
-            _selectedThumbnail = new List<LabeledThumbnail>();
 
             ShapeRootFolderPath = shapeRootFolderPath;
 
@@ -1095,15 +1094,21 @@ namespace PowerPointLabs
 
         private void FlowLayoutMouseDownHandler(object sender, MouseEventArgs e)
         {
-            FlowlayoutClick();
+            if (!ModifierKeys.HasFlag(Keys.Control))
+            {
+                FlowlayoutClick();
+            }
 
             _isPanelMouseDown = true;
             _isPanelDrawingFinish = false;
             _startPosition = e.Location;
+
             _selectRect.Location = myShapeFlowLayout.PointToScreen(e.Location);
             _selectRect.Size = new Size(0, 0);
             _selectRect.BringToFront();
             _selectRect.Show();
+
+            _selectingThumbnail.Clear();
         }
 
         private void FlowLayoutMouseEnterHandler(object sender, EventArgs e)
@@ -1137,18 +1142,18 @@ namespace PowerPointLabs
 
                     if (labeledThumbnailRect.IntersectsWith(rect))
                     {
-                        if (!_selectedThumbnail.Contains(labeledThumbnail))
+                        if (!_selectingThumbnail.Contains(labeledThumbnail))
                         {
-                            labeledThumbnail.Highlight();
-                            _selectedThumbnail.Add(labeledThumbnail);
+                            labeledThumbnail.ToggleHighlight();
+                            _selectingThumbnail.Add(labeledThumbnail);
                         }
                     }
                     else
                     {
-                        if (labeledThumbnail.Highlighed)
+                        if (_selectingThumbnail.Contains(labeledThumbnail))
                         {
-                            labeledThumbnail.DeHighlight();
-                            _selectedThumbnail.Remove(labeledThumbnail);
+                            labeledThumbnail.ToggleHighlight();
+                            _selectingThumbnail.Remove(labeledThumbnail);
                         }
                     }
                 }
@@ -1162,6 +1167,18 @@ namespace PowerPointLabs
             _isPanelMouseDown = false;
             _isPanelDrawingFinish = true;
             _selectRect.Hide();
+
+            foreach (var thumbnail in _selectingThumbnail)
+            {
+                if (_selectedThumbnail.Contains(thumbnail))
+                {
+                    _selectedThumbnail.Remove(thumbnail);
+                }
+                else
+                {
+                    _selectedThumbnail.Add(thumbnail);
+                }
+            }
 
             if (_selectedThumbnail.Count != 0)
             {
