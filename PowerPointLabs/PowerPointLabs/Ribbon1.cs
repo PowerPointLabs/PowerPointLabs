@@ -7,10 +7,12 @@ using System.Reflection;
 using System.Runtime.InteropServices;
 using System.Diagnostics;
 using System.Windows.Forms;
+using ImageProcessor.Imaging.Filters;
 using PowerPointLabs.Models;
 using PowerPointLabs.Views;
 using Office = Microsoft.Office.Core;
 using PowerPoint = Microsoft.Office.Interop.PowerPoint;
+using ImageProcessor;
 
 // Follow these steps to enable the Ribbon (XML) item:
 
@@ -1696,23 +1698,105 @@ namespace PowerPointLabs
         public void MagnifyGlassEffectClick(Office.IRibbonControl control)
         {
             var selection = PowerPointCurrentPresentationInfo.CurrentSelection;
+            var croppedShape = CropToShape.Crop(selection);
 
-            try
-            {
-                CropToShape.Crop(selection).Select();
-                selection = PowerPointCurrentPresentationInfo.CurrentSelection;
+            if (croppedShape == null) return;
 
-                ConvertToPicture.Convert(selection);
-                selection = PowerPointCurrentPresentationInfo.CurrentSelection;
-
-                selection.ShapeRange[1].ScaleHeight(1.5f, Office.MsoTriState.msoTrue, Office.MsoScaleFrom.msoScaleFromMiddle);
-                selection.ShapeRange[1].ScaleWidth(1.5f, Office.MsoTriState.msoTrue, Office.MsoScaleFrom.msoScaleFromMiddle);
-            }
-            catch (Exception e)
-            {
-                MessageBox.Show(e.Message);
-            }
+            croppedShape.Height *= 2;
+            croppedShape.Width *= 2;
         }
+
+        public void BlurBackgroundEffectClick(Office.IRibbonControl control)
+        {
+            BackgroundManipulation(null);
+        }
+
+        public void GreyScaleBackgroundEffectClick(Office.IRibbonControl control)
+        {
+            BackgroundManipulation(MatrixFilters.GreyScale);
+        }
+
+        public void BlackWhiteBackgroundEffectClick(Office.IRibbonControl control)
+        {
+            BackgroundManipulation(MatrixFilters.BlackWhite);
+        }
+
+        public void GohamBackgroundEffectClick(Office.IRibbonControl control)
+        {
+            BackgroundManipulation(MatrixFilters.Gotham);
+        }
+
+        public void SepiaBackgroundEffectClick(Office.IRibbonControl control)
+        {
+            BackgroundManipulation(MatrixFilters.Sepia);
+        }
+
+        private void BackgroundManipulation(IMatrixFilter filter)
+        {
+            var selection = PowerPointCurrentPresentationInfo.CurrentSelection;
+            var croppedShape = CropToShape.Crop(selection);
+
+            if (croppedShape == null) return;
+
+            //croppedShape.Left -= 12;
+            //croppedShape.Top -= 12;
+
+            // soften cropped shape's edge
+            if (filter == null)
+            {
+                croppedShape.SoftEdge.Type = Office.MsoSoftEdgeType.msoSoftEdgeType3;
+            }
+            else
+            {
+                croppedShape.SoftEdge.Type = Office.MsoSoftEdgeType.msoSoftEdgeType5;
+            }
+
+            var shapes = PowerPointCurrentPresentationInfo.CurrentSlide.Shapes;
+            var picture =
+                shapes.Cast<PowerPoint.Shape>().FirstOrDefault(shape => shape.Type == Office.MsoShapeType.msoPicture);
+
+            if (picture == null) return;
+
+            var picSaveTempPath = Path.Combine(Path.GetTempPath(), "temp.bmp");
+
+            picture.Export(picSaveTempPath, PowerPoint.PpShapeFormat.ppShapeFormatBMP,
+                           ExportMode: PowerPoint.PpExportMode.ppScaleXY);
+
+            using (var imageFactory = new ImageFactory())
+            {
+                var image = imageFactory.Load(picSaveTempPath).GaussianBlur(10);
+
+                if (filter != null)
+                {
+                    image = image.Filter(filter);
+                }
+
+                image.Save(picSaveTempPath);
+            }
+
+            // update the picture
+            // TODO: see if we are able to upate the picture without deleting it
+            // TODO: take care of link-to-file, save-with-doc properties
+            var picZOrder = picture.ZOrderPosition;
+            var picHeight = picture.Height;
+            var picWidth = picture.Width;
+            var picLeft = picture.Left;
+            var picTop = picture.Top;
+
+            picture.Delete();
+            var newPic = shapes.AddPicture(picSaveTempPath, Office.MsoTriState.msoFalse, Office.MsoTriState.msoTrue,
+                                           picLeft, picTop,
+                                           picWidth, picHeight);
+
+            while (newPic.ZOrderPosition > picZOrder)
+            {
+                newPic.ZOrder(Office.MsoZOrderCmd.msoSendBackward);
+            }
+
+            // delete the temp file
+            File.Delete(picSaveTempPath);
+        }
+
         # endregion
 
         private static string GetResourceText(string resourceName)

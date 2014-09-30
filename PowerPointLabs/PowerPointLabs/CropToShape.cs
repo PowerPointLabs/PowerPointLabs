@@ -38,7 +38,13 @@ namespace PowerPointLabs
                 VerifyIsSelectionValid(selection);
                 var shape = GetShapeForSelection(selection);
                 TakeScreenshotProxy(shape);
-                return FillInShapeWithScreenshot(shape);
+                var filledShape = FillInShapeWithScreenshot(shape);
+
+                // recover location shift due to pasting
+                filledShape.Left -= 12;
+                filledShape.Top -= 12;
+
+                return filledShape;
             }
             catch (Exception e)
             {
@@ -75,6 +81,7 @@ namespace PowerPointLabs
             //'Cut-Paste' is a common workaround method for this issue
             rangeOriginal.Cut();
             rangeOriginal = PowerPointLabsGlobals.GetCurrentSlide().Shapes.Paste();
+
             var rangeCopy = MakeCopyForShapeRange(rangeOriginal);
             var ungroupedRangeCopy = UngroupAllForShapeRange(rangeCopy);
 
@@ -93,6 +100,7 @@ namespace PowerPointLabs
                 mergedShape.Delete();
                 ThrowErrorCode(ErrorCodeForExceedSlideBound);
             }
+
             return mergedShape;
         }
 
