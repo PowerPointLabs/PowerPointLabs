@@ -1692,6 +1692,29 @@ namespace PowerPointLabs
         }
         #endregion
 
+        # region Feature: Effects Lab
+        public void MagnifyGlassEffectClick(Office.IRibbonControl control)
+        {
+            var selection = PowerPointCurrentPresentationInfo.CurrentSelection;
+
+            try
+            {
+                CropToShape.Crop(selection).Select();
+                selection = PowerPointCurrentPresentationInfo.CurrentSelection;
+
+                ConvertToPicture.Convert(selection);
+                selection = PowerPointCurrentPresentationInfo.CurrentSelection;
+
+                selection.ShapeRange[1].ScaleHeight(1.5f, Office.MsoTriState.msoTrue, Office.MsoScaleFrom.msoScaleFromMiddle);
+                selection.ShapeRange[1].ScaleWidth(1.5f, Office.MsoTriState.msoTrue, Office.MsoScaleFrom.msoScaleFromMiddle);
+            }
+            catch (Exception e)
+            {
+                MessageBox.Show(e.Message);
+            }
+        }
+        # endregion
+
         private static string GetResourceText(string resourceName)
         {
             Assembly asm = Assembly.GetExecutingAssembly();
