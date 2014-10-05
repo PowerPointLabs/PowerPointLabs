@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Drawing;
 using System.Linq;
 using System.Text;
 using System.Runtime.InteropServices;
@@ -13,6 +14,7 @@ namespace PowerPointLabs
     {
         public static float defaultSoftEdges = 10;
         public static float defaultTransparency = 0.7f;
+        public static System.Drawing.Color defaultColor = Color.Black;
         public static Dictionary<String, float> softEdgesMapping = new Dictionary<string, float>
         {
             {"None", 0},
