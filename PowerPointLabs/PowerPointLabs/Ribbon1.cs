@@ -1201,7 +1201,8 @@ namespace PowerPointLabs
         {
             try
             {
-                var dialog = new SpotlightDialogBox(Spotlight.defaultTransparency, Spotlight.defaultSoftEdges);
+                var dialog = new SpotlightDialogBox(Spotlight.defaultTransparency, Spotlight.defaultSoftEdges,
+                    Spotlight.defaultColor);
                 dialog.SettingsHandler += SpotlightPropertiesEdited;
                 dialog.ShowDialog();
             }
@@ -1212,12 +1213,13 @@ namespace PowerPointLabs
             }
         }
 
-        public void SpotlightPropertiesEdited(float newTransparency, float newSoftEdge)
+        public void SpotlightPropertiesEdited(float newTransparency, float newSoftEdge, Color newColor)
         {
             try
             {
                 Spotlight.defaultTransparency = newTransparency;
                 Spotlight.defaultSoftEdges = newSoftEdge;
+                Spotlight.defaultColor = newColor;
             }
             catch (Exception e)
             {
