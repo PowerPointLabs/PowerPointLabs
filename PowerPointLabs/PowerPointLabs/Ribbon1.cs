@@ -697,7 +697,7 @@ namespace PowerPointLabs
         {
             try
             {
-                return new System.Drawing.Bitmap(Properties.Resources.HighlightWords);
+                return new Bitmap(Properties.Resources.HighlightWords);
             }
             catch (Exception e)
             {
@@ -1380,14 +1380,10 @@ namespace PowerPointLabs
         {
             var currentSlide = PowerPointCurrentPresentationInfo.CurrentSlide;
 
-            foreach (PowerPointSlide slide in PowerPointCurrentPresentationInfo.SelectedSlides)
+            if (PowerPointCurrentPresentationInfo.SelectedSlides.Any(slide => slide.NotesPageText.Trim() != ""))
             {
-                if (slide.NotesPageText.Trim() != "")
-                {
-                    RemoveAudioEnabled = true;
-                    RefreshRibbonControl("RemoveAudioButton");
-                    break;
-                }
+                RemoveAudioEnabled = true;
+                RefreshRibbonControl("RemoveAudioButton");
             }
 
             var allAudioFiles = NotesToAudio.EmbedSelectedSlideNotes();
@@ -1662,21 +1658,9 @@ namespace PowerPointLabs
         {
             try
             {
-                ////PowerPoint.ShapeRange selectedShapes = Globals.ThisAddIn.Application.ActiveWindow.Selection.ShapeRange;
-                ////Form ColorPickerForm = new ColorPickerForm(selectedShapes);
-                ////ColorPickerForm.Show();
-                //ColorDialog MyDialog = new ColorDialog();
-                //// Keeps the user from selecting a custom color.
-                //MyDialog.AllowFullOpen = false;
-                //// Allows the user to get help. (The default is false.)
-                //MyDialog.ShowHelp = true;
-                //ColorPickerForm colorPickerForm = new ColorPickerForm();
-                //colorPickerForm.Show();
-
                 Globals.ThisAddIn.RegisterColorPane(Globals.ThisAddIn.Application.ActivePresentation);
 
                 var colorPane = Globals.ThisAddIn.GetActivePane(typeof(ColorPane));
-                var color = colorPane.Control as ColorPane;
 
                 // if currently the pane is hidden, show the pane
                 if (!colorPane.Visible)
@@ -1698,12 +1682,22 @@ namespace PowerPointLabs
         public void MagnifyGlassEffectClick(Office.IRibbonControl control)
         {
             var selection = PowerPointCurrentPresentationInfo.CurrentSelection;
-            var croppedShape = CropToShape.Crop(selection);
 
-            if (croppedShape == null) return;
+            if (selection.ShapeRange.Count > 1)
+            {
+                MessageBox.Show("Only one magnify area is allowed.");
+                
+                return;
+            }
 
-            croppedShape.Height *= 2;
-            croppedShape.Width *= 2;
+            var croppedShape = CropToShape.Crop(selection, 1.5);
+
+            croppedShape.ThreeD.BevelTopType = Office.MsoBevelType.msoBevelCircle;
+            croppedShape.ThreeD.BevelBottomInset = 12;
+            croppedShape.ThreeD.BevelBottomDepth = 3;
+            croppedShape.ThreeD.BevelBottomType = Office.MsoBevelType.msoBevelNone;
+            croppedShape.ThreeD.PresetLighting = Office.MsoLightRigType.msoLightRigBalanced;
+            croppedShape.ThreeD.LightAngle = 145;
         }
 
         public void BlurBackgroundEffectClick(Office.IRibbonControl control)
@@ -1734,39 +1728,37 @@ namespace PowerPointLabs
         private void BackgroundManipulation(IMatrixFilter filter)
         {
             var selection = PowerPointCurrentPresentationInfo.CurrentSelection;
+            
+            // soften cropped shape's edge
+            if (filter == null)
+            {
+                selection.ShapeRange.SoftEdge.Type = Office.MsoSoftEdgeType.msoSoftEdgeType3;
+            }
+            else
+            {
+                selection.ShapeRange.SoftEdge.Type = Office.MsoSoftEdgeType.msoSoftEdgeType5;
+            }
+
             var croppedShape = CropToShape.Crop(selection);
 
             if (croppedShape == null) return;
 
-            //croppedShape.Left -= 12;
-            //croppedShape.Top -= 12;
-
-            // soften cropped shape's edge
-            if (filter == null)
-            {
-                croppedShape.SoftEdge.Type = Office.MsoSoftEdgeType.msoSoftEdgeType3;
-            }
-            else
-            {
-                croppedShape.SoftEdge.Type = Office.MsoSoftEdgeType.msoSoftEdgeType5;
-            }
+            croppedShape.Left -= 12;
+            croppedShape.Top -= 12;
 
             var shapes = PowerPointCurrentPresentationInfo.CurrentSlide.Shapes;
-            var picture =
-                shapes.Cast<PowerPoint.Shape>().FirstOrDefault(shape => shape.Type == Office.MsoShapeType.msoPicture);
 
-            if (picture == null) return;
-
-            var picSaveTempPath = Path.Combine(Path.GetTempPath(), "temp.bmp");
-
-            picture.Export(picSaveTempPath, PowerPoint.PpShapeFormat.ppShapeFormatBMP,
-                           ExportMode: PowerPoint.PpExportMode.ppScaleXY);
+            var picSaveTempPath = Path.Combine(Path.GetTempPath(), "slide.png");
 
             using (var imageFactory = new ImageFactory())
             {
-                var image = imageFactory.Load(picSaveTempPath).GaussianBlur(10);
-
-                if (filter != null)
+                var image = imageFactory.Load(picSaveTempPath);
+                
+                if (filter == null)
+                {
+                    image = image.GaussianBlur(10);
+                }
+                else
                 {
                     image = image.Filter(filter);
                 }
@@ -1774,27 +1766,15 @@ namespace PowerPointLabs
                 image.Save(picSaveTempPath);
             }
 
-            // update the picture
-            // TODO: see if we are able to upate the picture without deleting it
-            // TODO: take care of link-to-file, save-with-doc properties
-            var picZOrder = picture.ZOrderPosition;
-            var picHeight = picture.Height;
-            var picWidth = picture.Width;
-            var picLeft = picture.Left;
-            var picTop = picture.Top;
-
-            picture.Delete();
             var newPic = shapes.AddPicture(picSaveTempPath, Office.MsoTriState.msoFalse, Office.MsoTriState.msoTrue,
-                                           picLeft, picTop,
-                                           picWidth, picHeight);
+                                           0, 0,
+                                           PowerPointCurrentPresentationInfo.SlideWidth,
+                                           PowerPointCurrentPresentationInfo.SlideHeight);
 
-            while (newPic.ZOrderPosition > picZOrder)
+            while (newPic.ZOrderPosition > croppedShape.ZOrderPosition)
             {
                 newPic.ZOrder(Office.MsoZOrderCmd.msoSendBackward);
             }
-
-            // delete the temp file
-            File.Delete(picSaveTempPath);
         }
 
         # endregion
