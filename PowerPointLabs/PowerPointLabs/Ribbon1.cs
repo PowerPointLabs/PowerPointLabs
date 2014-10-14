@@ -1695,15 +1695,7 @@ namespace PowerPointLabs
             croppedShape.Left -= 12;
             croppedShape.Top -= 12;
 
-            croppedShape.ThreeD.BevelTopType = Office.MsoBevelType.msoBevelCircle;
-            croppedShape.ThreeD.BevelBottomInset = 12;
-            croppedShape.ThreeD.BevelBottomDepth = 3;
-            croppedShape.ThreeD.BevelBottomType = Office.MsoBevelType.msoBevelNone;
-            croppedShape.ThreeD.PresetLighting = Office.MsoLightRigType.msoLightRigBalanced;
-            croppedShape.ThreeD.LightAngle = 145;
-
-            croppedShape.ScaleHeight(1.4f, Office.MsoTriState.msoTrue, Office.MsoScaleFrom.msoScaleFromMiddle);
-            croppedShape.ScaleWidth(1.4f, Office.MsoTriState.msoTrue, Office.MsoScaleFrom.msoScaleFromMiddle);
+            MagnifyGlassEffect(croppedShape, 1.4f);
         }
 
         public void BlurBackgroundEffectClick(Office.IRibbonControl control)
@@ -1738,12 +1730,35 @@ namespace PowerPointLabs
             TransparentEffect(selection.ShapeRange);
         }
 
+        private void MagnifyGlassEffect(PowerPoint.Shape shape, float ratio)
+        {
+            shape.ThreeD.BevelTopType = Office.MsoBevelType.msoBevelCircle;
+            shape.ThreeD.BevelBottomInset = 12;
+            shape.ThreeD.BevelBottomDepth = 3;
+            shape.ThreeD.BevelBottomType = Office.MsoBevelType.msoBevelNone;
+            shape.ThreeD.PresetLighting = Office.MsoLightRigType.msoLightRigBalanced;
+            shape.ThreeD.LightAngle = 145;
+
+            var delta = 0.5f * (ratio - 1);
+
+            shape.Left -= delta * shape.Width;
+            shape.Top -= delta * shape.Height;
+
+            shape.Width *= ratio;
+            shape.Height *= ratio;
+        }
+
         private void BackgroundManipulation(IMatrixFilter filter)
         {
+            var loadingDialog = new LoadingDialog("Processing...", "Processing, please wait...");
+
+            loadingDialog.Show();
+            loadingDialog.Refresh();
+
             var selection = PowerPointCurrentPresentationInfo.CurrentSelection;
             
             // soften cropped shape's edge
-            selection.ShapeRange.SoftEdge.Type = Office.MsoSoftEdgeType.msoSoftEdgeType5;
+            selection.ShapeRange.SoftEdge.Type = Office.MsoSoftEdgeType.msoSoftEdgeType4;
 
             var croppedShape = CropToShape.Crop(selection);
 
@@ -1760,14 +1775,7 @@ namespace PowerPointLabs
             {
                 var image = imageFactory.Load(picSaveTempPath);
                 
-                if (filter == null)
-                {
-                    image = image.GaussianBlur(20);
-                }
-                else
-                {
-                    image = image.Filter(filter);
-                }
+                image = filter == null ? image.GaussianBlur(20) : image.Filter(filter);
 
                 image.Save(picSaveTempPath);
             }
@@ -1781,6 +1789,8 @@ namespace PowerPointLabs
             {
                 newPic.ZOrder(Office.MsoZOrderCmd.msoSendBackward);
             }
+
+            loadingDialog.Dispose();
         }
 
         private void TransparentEffect(PowerPoint.ShapeRange shapeRange)
