@@ -578,13 +578,6 @@
               getImage="GetAddAudioContextImage"
               onAction="ContextAddAudioClick"/>
     </contextMenu>
-    <contextMenu idMso="ContextMenuAudio">
-      <menuSeparator id="separatorShapes"/>
-      <button id="contextReplaceAudio"
-              getLabel="GetContextReplaceAudioLabel"
-              imageMso="NoAudioStyle"
-              onAction="ContextReplaceAudioClick"/>
-    </contextMenu>
   </contextMenus>
 </customUI>
 

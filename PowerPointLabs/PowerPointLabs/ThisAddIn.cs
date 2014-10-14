@@ -305,6 +305,14 @@ namespace PowerPointLabs
 
             try
             {
+                Trace.TraceInformation("Total Windows at Close Stage " + pres.Windows.Count);
+                Trace.TraceInformation("Windows are: ");
+
+                foreach (PowerPoint.DocumentWindow window in pres.Windows)
+                {
+                    Trace.TraceInformation(window.Presentation.Name);
+                }
+
                 associatedWindow = pres.Windows[1];
             }
             catch (Exception)

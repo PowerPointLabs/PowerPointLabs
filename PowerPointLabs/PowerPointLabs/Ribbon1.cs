@@ -1690,7 +1690,10 @@ namespace PowerPointLabs
                 return;
             }
 
-            var croppedShape = CropToShape.Crop(selection, 1.5);
+            var croppedShape = CropToShape.Crop(selection, 1.4);
+
+            croppedShape.Left -= 12;
+            croppedShape.Top -= 12;
 
             croppedShape.ThreeD.BevelTopType = Office.MsoBevelType.msoBevelCircle;
             croppedShape.ThreeD.BevelBottomInset = 12;
