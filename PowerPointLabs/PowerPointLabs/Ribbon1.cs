@@ -1733,14 +1733,7 @@ namespace PowerPointLabs
             var selection = PowerPointCurrentPresentationInfo.CurrentSelection;
             
             // soften cropped shape's edge
-            if (filter == null)
-            {
-                selection.ShapeRange.SoftEdge.Type = Office.MsoSoftEdgeType.msoSoftEdgeType3;
-            }
-            else
-            {
-                selection.ShapeRange.SoftEdge.Type = Office.MsoSoftEdgeType.msoSoftEdgeType5;
-            }
+            selection.ShapeRange.SoftEdge.Type = Office.MsoSoftEdgeType.msoSoftEdgeType5;
 
             var croppedShape = CropToShape.Crop(selection);
 
@@ -1759,7 +1752,7 @@ namespace PowerPointLabs
                 
                 if (filter == null)
                 {
-                    image = image.GaussianBlur(10);
+                    image = image.GaussianBlur(20);
                 }
                 else
                 {

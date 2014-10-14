@@ -320,6 +320,8 @@ namespace PowerPointLabs
                 return;
             }
 
+            Trace.TraceInformation("Closing associated window...");
+
             if (_documentPathAssociateMapper.ContainsKey(associatedWindow) &&
                 _documentPathAssociateMapper[associatedWindow])
             {
