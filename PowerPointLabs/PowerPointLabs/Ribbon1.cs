@@ -7,10 +7,12 @@ using System.Reflection;
 using System.Runtime.InteropServices;
 using System.Diagnostics;
 using System.Windows.Forms;
+using ImageProcessor.Imaging.Filters;
 using PowerPointLabs.Models;
 using PowerPointLabs.Views;
 using Office = Microsoft.Office.Core;
 using PowerPoint = Microsoft.Office.Interop.PowerPoint;
+using ImageProcessor;
 
 // Follow these steps to enable the Ribbon (XML) item:
 
@@ -695,7 +697,7 @@ namespace PowerPointLabs
         {
             try
             {
-                return new System.Drawing.Bitmap(Properties.Resources.HighlightWords);
+                return new Bitmap(Properties.Resources.HighlightWords);
             }
             catch (Exception e)
             {
@@ -1380,14 +1382,10 @@ namespace PowerPointLabs
         {
             var currentSlide = PowerPointCurrentPresentationInfo.CurrentSlide;
 
-            foreach (PowerPointSlide slide in PowerPointCurrentPresentationInfo.SelectedSlides)
+            if (PowerPointCurrentPresentationInfo.SelectedSlides.Any(slide => slide.NotesPageText.Trim() != ""))
             {
-                if (slide.NotesPageText.Trim() != "")
-                {
-                    RemoveAudioEnabled = true;
-                    RefreshRibbonControl("RemoveAudioButton");
-                    break;
-                }
+                RemoveAudioEnabled = true;
+                RefreshRibbonControl("RemoveAudioButton");
             }
 
             var allAudioFiles = NotesToAudio.EmbedSelectedSlideNotes();
@@ -1662,21 +1660,9 @@ namespace PowerPointLabs
         {
             try
             {
-                ////PowerPoint.ShapeRange selectedShapes = Globals.ThisAddIn.Application.ActiveWindow.Selection.ShapeRange;
-                ////Form ColorPickerForm = new ColorPickerForm(selectedShapes);
-                ////ColorPickerForm.Show();
-                //ColorDialog MyDialog = new ColorDialog();
-                //// Keeps the user from selecting a custom color.
-                //MyDialog.AllowFullOpen = false;
-                //// Allows the user to get help. (The default is false.)
-                //MyDialog.ShowHelp = true;
-                //ColorPickerForm colorPickerForm = new ColorPickerForm();
-                //colorPickerForm.Show();
-
                 Globals.ThisAddIn.RegisterColorPane(Globals.ThisAddIn.Application.ActivePresentation);
 
                 var colorPane = Globals.ThisAddIn.GetActivePane(typeof(ColorPane));
-                var color = colorPane.Control as ColorPane;
 
                 // if currently the pane is hidden, show the pane
                 if (!colorPane.Visible)
@@ -1699,22 +1685,182 @@ namespace PowerPointLabs
         {
             var selection = PowerPointCurrentPresentationInfo.CurrentSelection;
 
-            try
+            if (selection.ShapeRange.Count > 1)
             {
-                CropToShape.Crop(selection).Select();
-                selection = PowerPointCurrentPresentationInfo.CurrentSelection;
-
-                ConvertToPicture.Convert(selection);
-                selection = PowerPointCurrentPresentationInfo.CurrentSelection;
-
-                selection.ShapeRange[1].ScaleHeight(1.5f, Office.MsoTriState.msoTrue, Office.MsoScaleFrom.msoScaleFromMiddle);
-                selection.ShapeRange[1].ScaleWidth(1.5f, Office.MsoTriState.msoTrue, Office.MsoScaleFrom.msoScaleFromMiddle);
+                MessageBox.Show("Only one magnify area is allowed.");
+                
+                return;
             }
-            catch (Exception e)
+
+            var croppedShape = CropToShape.Crop(selection);
+
+            croppedShape.Left -= 12;
+            croppedShape.Top -= 12;
+
+            MagnifyGlassEffect(croppedShape, 1.4f);
+        }
+
+        public void BlurBackgroundEffectClick(Office.IRibbonControl control)
+        {
+            BackgroundManipulation(null);
+        }
+
+        public void GreyScaleBackgroundEffectClick(Office.IRibbonControl control)
+        {
+            BackgroundManipulation(MatrixFilters.GreyScale);
+        }
+
+        public void BlackWhiteBackgroundEffectClick(Office.IRibbonControl control)
+        {
+            BackgroundManipulation(MatrixFilters.BlackWhite);
+        }
+
+        public void GohamBackgroundEffectClick(Office.IRibbonControl control)
+        {
+            BackgroundManipulation(MatrixFilters.Gotham);
+        }
+
+        public void SepiaBackgroundEffectClick(Office.IRibbonControl control)
+        {
+            BackgroundManipulation(MatrixFilters.Sepia);
+        }
+
+        public void TransparentEffectClick(Office.IRibbonControl control)
+        {
+            var selection = PowerPointCurrentPresentationInfo.CurrentSelection;
+
+            TransparentEffect(selection.ShapeRange);
+        }
+
+        private void MagnifyGlassEffect(PowerPoint.Shape shape, float ratio)
+        {
+            shape.ThreeD.BevelTopType = Office.MsoBevelType.msoBevelCircle;
+            shape.ThreeD.BevelBottomInset = 12;
+            shape.ThreeD.BevelBottomDepth = 3;
+            shape.ThreeD.BevelBottomType = Office.MsoBevelType.msoBevelNone;
+            shape.ThreeD.PresetLighting = Office.MsoLightRigType.msoLightRigBalanced;
+            shape.ThreeD.LightAngle = 145;
+
+            var delta = 0.5f * (ratio - 1);
+
+            shape.Left -= delta * shape.Width;
+            shape.Top -= delta * shape.Height;
+
+            shape.Width *= ratio;
+            shape.Height *= ratio;
+        }
+
+        private void BackgroundManipulation(IMatrixFilter filter)
+        {
+            var loadingDialog = new LoadingDialog("Processing...", "Processing, please wait...");
+
+            loadingDialog.Show();
+            loadingDialog.Refresh();
+
+            var selection = PowerPointCurrentPresentationInfo.CurrentSelection;
+            
+            // soften cropped shape's edge
+            selection.ShapeRange.SoftEdge.Type = Office.MsoSoftEdgeType.msoSoftEdgeType4;
+
+            var croppedShape = CropToShape.Crop(selection);
+
+            if (croppedShape == null) return;
+
+            croppedShape.Left -= 12;
+            croppedShape.Top -= 12;
+
+            var shapes = PowerPointCurrentPresentationInfo.CurrentSlide.Shapes;
+
+            var picSaveTempPath = Path.Combine(Path.GetTempPath(), "slide.png");
+
+            using (var imageFactory = new ImageFactory())
             {
-                MessageBox.Show(e.Message);
+                var image = imageFactory.Load(picSaveTempPath);
+                
+                image = filter == null ? image.GaussianBlur(20) : image.Filter(filter);
+
+                image.Save(picSaveTempPath);
+            }
+
+            var newPic = shapes.AddPicture(picSaveTempPath, Office.MsoTriState.msoFalse, Office.MsoTriState.msoTrue,
+                                           0, 0,
+                                           PowerPointCurrentPresentationInfo.SlideWidth,
+                                           PowerPointCurrentPresentationInfo.SlideHeight);
+
+            while (newPic.ZOrderPosition > croppedShape.ZOrderPosition)
+            {
+                newPic.ZOrder(Office.MsoZOrderCmd.msoSendBackward);
+            }
+
+            loadingDialog.Dispose();
+        }
+
+        private void TransparentEffect(PowerPoint.ShapeRange shapeRange)
+        {
+            foreach (PowerPoint.Shape shape in shapeRange)
+            {
+                if (shape.Type == Office.MsoShapeType.msoGroup)
+                {
+                    var subShapeRange = shape.Ungroup();
+                    TransparentEffect(subShapeRange);
+                    subShapeRange.Group();
+                } else
+                if (shape.Type == Office.MsoShapeType.msoPicture)
+                {
+                    PictureTransparencyHandler(shape);
+                } else
+                if (IsTransparentableShape(shape))
+                {
+                    ShapeTransparencyHandler(shape);
+                }
             }
         }
+
+        private bool IsTransparentableShape(PowerPoint.Shape shape)
+        {
+            return shape.Type == Office.MsoShapeType.msoAutoShape ||
+                   shape.Type == Office.MsoShapeType.msoFreeform;
+
+        }
+
+        private void PictureTransparencyHandler(PowerPoint.Shape picture)
+        {
+            var tempPicPath = Path.Combine(Path.GetTempPath(), "tempPic.png");
+
+            picture.Export(tempPicPath, PowerPoint.PpShapeFormat.ppShapeFormatPNG, 0, 0,
+                           PowerPoint.PpExportMode.ppScaleXY);
+
+            var shapeHolder =
+                PowerPointCurrentPresentationInfo.CurrentSlide.Shapes.AddShape(
+                    Office.MsoAutoShapeType.msoShapeRectangle,
+                    picture.Left,
+                    picture.Top,
+                    picture.Width,
+                    picture.Height);
+
+            var oriZOrder = picture.ZOrderPosition;
+
+            picture.Delete();
+
+            // move shape holder to original z-order
+            while (shapeHolder.ZOrderPosition > oriZOrder)
+            {
+                shapeHolder.ZOrder(Office.MsoZOrderCmd.msoSendBackward);
+            }
+
+            shapeHolder.Line.Visible = Office.MsoTriState.msoFalse;
+            shapeHolder.Fill.UserPicture(tempPicPath);
+            shapeHolder.Fill.Transparency = 0.5f;
+
+            File.Delete(tempPicPath);
+        }
+
+        private void ShapeTransparencyHandler(PowerPoint.Shape shape)
+        {
+            shape.Fill.Transparency = 0.5f;
+            shape.Line.Transparency = 0.5f;
+        }
+
         # endregion
 
         private static string GetResourceText(string resourceName)
