@@ -6,7 +6,7 @@
       <Value Profile="(Default)">dev</Value>
     </Setting>
     <Setting Name="InstallerType" Type="System.String" Scope="Application">
-      <Value Profile="(Default)">online</Value>
+      <Value Profile="(Default)">offline</Value>
     </Setting>
     <Setting Name="Version" Type="System.String" Scope="Application">
       <Value Profile="(Default)">1.10.3.0</Value>
