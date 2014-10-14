@@ -226,6 +226,10 @@
               <gallery idMso="PictureArtisticEffectsGallery"/>
             <menuSeparator id="mySeparator"
                            title="More Effects"/>
+            <button id="transparentEffect"
+                    label="Transparent"
+                    imageMso="HappyFace"
+                    onAction="TransparentEffectClick"/>
             <button id="magnifyGlassEffect"
                     label="Magnify Glass"
                     imageMso="HappyFace"

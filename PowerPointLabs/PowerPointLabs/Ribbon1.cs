@@ -1690,7 +1690,7 @@ namespace PowerPointLabs
                 return;
             }
 
-            var croppedShape = CropToShape.Crop(selection, 1.4);
+            var croppedShape = CropToShape.Crop(selection);
 
             croppedShape.Left -= 12;
             croppedShape.Top -= 12;
@@ -1701,6 +1701,9 @@ namespace PowerPointLabs
             croppedShape.ThreeD.BevelBottomType = Office.MsoBevelType.msoBevelNone;
             croppedShape.ThreeD.PresetLighting = Office.MsoLightRigType.msoLightRigBalanced;
             croppedShape.ThreeD.LightAngle = 145;
+
+            croppedShape.ScaleHeight(1.4f, Office.MsoTriState.msoTrue, Office.MsoScaleFrom.msoScaleFromMiddle);
+            croppedShape.ScaleWidth(1.4f, Office.MsoTriState.msoTrue, Office.MsoScaleFrom.msoScaleFromMiddle);
         }
 
         public void BlurBackgroundEffectClick(Office.IRibbonControl control)
@@ -1726,6 +1729,13 @@ namespace PowerPointLabs
         public void SepiaBackgroundEffectClick(Office.IRibbonControl control)
         {
             BackgroundManipulation(MatrixFilters.Sepia);
+        }
+
+        public void TransparentEffectClick(Office.IRibbonControl control)
+        {
+            var selection = PowerPointCurrentPresentationInfo.CurrentSelection;
+
+            TransparentEffect(selection.ShapeRange);
         }
 
         private void BackgroundManipulation(IMatrixFilter filter)
@@ -1771,6 +1781,72 @@ namespace PowerPointLabs
             {
                 newPic.ZOrder(Office.MsoZOrderCmd.msoSendBackward);
             }
+        }
+
+        private void TransparentEffect(PowerPoint.ShapeRange shapeRange)
+        {
+            foreach (PowerPoint.Shape shape in shapeRange)
+            {
+                if (shape.Type == Office.MsoShapeType.msoGroup)
+                {
+                    var subShapeRange = shape.Ungroup();
+                    TransparentEffect(subShapeRange);
+                    subShapeRange.Group();
+                } else
+                if (shape.Type == Office.MsoShapeType.msoPicture)
+                {
+                    PictureTransparencyHandler(shape);
+                } else
+                if (IsTransparentableShape(shape))
+                {
+                    ShapeTransparencyHandler(shape);
+                }
+            }
+        }
+
+        private bool IsTransparentableShape(PowerPoint.Shape shape)
+        {
+            return shape.Type == Office.MsoShapeType.msoAutoShape ||
+                   shape.Type == Office.MsoShapeType.msoFreeform;
+
+        }
+
+        private void PictureTransparencyHandler(PowerPoint.Shape picture)
+        {
+            var tempPicPath = Path.Combine(Path.GetTempPath(), "tempPic.png");
+
+            picture.Export(tempPicPath, PowerPoint.PpShapeFormat.ppShapeFormatPNG, 0, 0,
+                           PowerPoint.PpExportMode.ppScaleXY);
+
+            var shapeHolder =
+                PowerPointCurrentPresentationInfo.CurrentSlide.Shapes.AddShape(
+                    Office.MsoAutoShapeType.msoShapeRectangle,
+                    picture.Left,
+                    picture.Top,
+                    picture.Width,
+                    picture.Height);
+
+            var oriZOrder = picture.ZOrderPosition;
+
+            picture.Delete();
+
+            // move shape holder to original z-order
+            while (shapeHolder.ZOrderPosition > oriZOrder)
+            {
+                shapeHolder.ZOrder(Office.MsoZOrderCmd.msoSendBackward);
+            }
+
+            shapeHolder.Line.Visible = Office.MsoTriState.msoFalse;
+            shapeHolder.Fill.UserPicture(tempPicPath);
+            shapeHolder.Fill.Transparency = 0.5f;
+
+            File.Delete(tempPicPath);
+        }
+
+        private void ShapeTransparencyHandler(PowerPoint.Shape shape)
+        {
+            shape.Fill.Transparency = 0.5f;
+            shape.Line.Transparency = 0.5f;
         }
 
         # endregion
