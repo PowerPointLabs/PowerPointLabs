@@ -58,6 +58,13 @@ namespace PowerPointLabs.Utils
         }
         # endregion
 
+        # region Color API
+        public static int ConvertArgbToNativeRgb(Color argb)
+        {
+            return (argb.B << 16) | (argb.G << 8) | argb.R;
+        }
+        # endregion
+
         # region Helper Functions
         private static double CalculateScalingRatio(Size oldSize, Size newSize)
         {

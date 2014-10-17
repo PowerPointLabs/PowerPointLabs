@@ -201,13 +201,13 @@
         <group id="Labs"
                getLabel="GetLabsGroupLabel"
                visible="true">
-          <button id="ColorPickerButton"
+          <button id="ColorsLabButton"
                   getLabel="GetColorPickerButtonLabel"
                   size="large"
                   getImage="GetColorsLabImage"
                   getSupertip="GetColorPickerButtonSupertip"
                   onAction="ColorPickerButtonClick"/>
-          <button id="CustomeShapeButton"
+          <button id="ShapesLabButton"
                   getLabel="GetCustomeShapeButtonLabel"
                   size="large"
                   getImage="GetShapesLabImage"
@@ -480,7 +480,6 @@
       <button id="applyAutoMotionThumbnail"
               getLabel="GetApplyAutoMotionThumbnailLabel"
               getImage="GetAddAnimationContextImage"
-              getEnabled="OnGetEnabledAddAutoMotion"
               onAction="AddAnimationButtonClick"/>
       <button id="reloadAutoMotionThumbnail"
               getLabel="GetReloadButtonLabel"
@@ -512,13 +511,6 @@
               getLabel="GetContextAddCurrentSlideLabel"
               getImage="GetAddAudioContextImage"
               onAction="ContextAddAudioClick"/>
-    </contextMenu>
-    <contextMenu idMso="ContextMenuAudio">
-      <menuSeparator id="separatorShapes"/>
-      <button id="contextReplaceAudio"
-              getLabel="GetContextReplaceAudioLabel"
-              imageMso="NoAudioStyle"
-              onAction="ContextReplaceAudioClick"/>
     </contextMenu>
   </contextMenus>
 </customUI>

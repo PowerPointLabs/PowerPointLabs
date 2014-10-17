@@ -30,7 +30,7 @@
     <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
     <TargetFrameworkProfile>Client</TargetFrameworkProfile>
     <DefineConstants>VSTO40</DefineConstants>
-    <IsWebBootstrapper>False</IsWebBootstrapper>
+    <IsWebBootstrapper>True</IsWebBootstrapper>
     <FileUpgradeFlags>
     </FileUpgradeFlags>
     <UpgradeBackupLocation>
@@ -39,9 +39,9 @@
     <VSTO_TrustAssembliesLocation>true</VSTO_TrustAssembliesLocation>
     <BootstrapperEnabled>true</BootstrapperEnabled>
     <PublishUrl>C:\Users\nevets\Desktop\PowerPointLabsPublish\</PublishUrl>
-    <InstallUrl />
+    <InstallUrl>http://www.comp.nus.edu.sg/~pptlabs/download/dev/</InstallUrl>
     <TargetCulture>en</TargetCulture>
-    <ApplicationVersion>1.10.0.2</ApplicationVersion>
+    <ApplicationVersion>1.10.2.0</ApplicationVersion>
     <AutoIncrementApplicationRevision>false</AutoIncrementApplicationRevision>
     <UpdateEnabled>true</UpdateEnabled>
     <UpdateInterval>0</UpdateInterval>
@@ -169,6 +169,9 @@
     <Reference Include="ExtendedPanel">
       <HintPath>Dependency\ExtendedPanel.dll</HintPath>
     </Reference>
+    <Reference Include="ImageProcessor">
+      <HintPath>..\packages\ImageProcessor.1.9.5.0\lib\ImageProcessor.dll</HintPath>
+    </Reference>
     <Reference Include="Microsoft.Office.Interop.PowerPoint, Version=15.0.0.0, Culture=neutral, PublicKeyToken=71e9bce111e9429c, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <EmbedInteropTypes>True</EmbedInteropTypes>
@@ -240,6 +243,12 @@
     </Compile>
     <Compile Include="ColorPicker\HSLColor.cs" />
     <Compile Include="CustomBinding.cs" />
+    <Compile Include="CustomControls\BufferedFlowLayoutPanel.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="CustomControls\BufferedPanel.cs">
+      <SubType>Component</SubType>
+    </Compile>
     <Compile Include="DataSources\ColorDataSource.cs" />
     <Compile Include="ColorPicker\ColorHelper.cs" />
     <Compile Include="ColorPicker\ColorPane.cs">
@@ -274,6 +283,8 @@
     <Compile Include="Settings.cs" />
     <Compile Include="ShapesLabConfig.cs" />
     <Compile Include="TextCollection.cs" />
+    <Compile Include="Utils\Common.cs" />
+    <Compile Include="Utils\Comparers.cs" />
     <Compile Include="Utils\FileDir.cs" />
     <Compile Include="Utils\Graphics.cs" />
     <Compile Include="Views\CustomPaintTextBox.cs" />
@@ -356,6 +367,12 @@
     </Compile>
     <Compile Include="Views\InShowControl.Designer.cs">
       <DependentUpon>InShowControl.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Views\SelectionRectangle.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Views\SelectionRectangle.Designer.cs">
+      <DependentUpon>SelectionRectangle.cs</DependentUpon>
     </Compile>
     <Compile Include="Views\ShapesLabCategoryInfoForm.cs">
       <SubType>Form</SubType>
@@ -486,6 +503,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Views\InShowControl.resx">
       <DependentUpon>InShowControl.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Views\SelectionRectangle.resx">
+      <DependentUpon>SelectionRectangle.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Views\ShapesLabCategoryInfoForm.resx">
       <DependentUpon>ShapesLabCategoryInfoForm.cs</DependentUpon>
@@ -665,9 +685,7 @@
   <ItemGroup>
     <None Include="Resources\HighlightBackgroundContext.png" />
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="CustomControls\" />
-  </ItemGroup>
+  <ItemGroup />
   <!-- Include the build rules for a C# project. -->
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>

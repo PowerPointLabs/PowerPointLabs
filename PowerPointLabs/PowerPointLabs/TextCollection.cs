@@ -285,6 +285,8 @@
             "You are removing your default category. After removing this category, the first category will be made " +
             "as default category. Continue?";
         public const string CustomShapeRemoveDefaultCategoryCaption = "Removing Default Category";
+        public const string CustomShapeImportFileError = "Import File could not be opened.";
+        public const string CustomShapeImportSuccess = "Successfully imported";
         
         public const string CustomShapeShapeContextStripAddToSlide = "Add To Slide";
         public const string CustomShapeShapeContextStripEditName = "Edit Name";
@@ -295,6 +297,7 @@
         public const string CustomShapeCategoryContextStripAddCategory = "Add Category";
         public const string CustomShapeCategoryContextStripRemoveCategory = "Remove Category";
         public const string CustomShapeCategoryContextStripRenameCategory = "Rename Category";
+        public const string CustomShapeCategoryContextStripImportCategory = "Import Category";
         public const string CustomShapeCategoryContextStripSetAsDefaultCategory = "Set as Default";
         public const string CustomShapeCategoryContextStripCategorySettings = "Settings";
         # endregion
