@@ -91,6 +91,18 @@ namespace PowerPointLabs
             Highlighed = true;
         }
 
+        public void ToggleHighlight()
+        {
+            if (Highlighed)
+            {
+                DeHighlight();
+            }
+            else
+            {
+                Highlight();
+            }
+        }
+
         public void StartNameEdit()
         {
             // add the text box

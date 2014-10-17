@@ -31,14 +31,16 @@ namespace PowerPointLabs
         private static readonly string SlidePicture = Path.GetTempPath() + @"\slide.png";
         private static readonly string FillInBackgroundPicture = Path.GetTempPath() + @"\currentFillInBg.png";
 
-        public static PowerPoint.Shape Crop(PowerPoint.Selection selection)
+        public static PowerPoint.Shape Crop(PowerPoint.Selection selection, double magnifyRatio = 1.0)
         {
             try
             {
                 VerifyIsSelectionValid(selection);
                 var shape = GetShapeForSelection(selection);
                 TakeScreenshotProxy(shape);
-                return FillInShapeWithScreenshot(shape);
+                var filledShape = FillInShapeWithScreenshot(shape, magnifyRatio);
+
+                return filledShape;
             }
             catch (Exception e)
             {
@@ -75,6 +77,7 @@ namespace PowerPointLabs
             //'Cut-Paste' is a common workaround method for this issue
             rangeOriginal.Cut();
             rangeOriginal = PowerPointLabsGlobals.GetCurrentSlide().Shapes.Paste();
+
             var rangeCopy = MakeCopyForShapeRange(rangeOriginal);
             var ungroupedRangeCopy = UngroupAllForShapeRange(rangeCopy);
 
@@ -93,14 +96,15 @@ namespace PowerPointLabs
                 mergedShape.Delete();
                 ThrowErrorCode(ErrorCodeForExceedSlideBound);
             }
+
             return mergedShape;
         }
 
-        private static PowerPoint.Shape FillInShapeWithScreenshot(PowerPoint.Shape shape)
+        private static PowerPoint.Shape FillInShapeWithScreenshot(PowerPoint.Shape shape, double magnifyRatio = 1.0)
         {
             if (shape.Type != Office.MsoShapeType.msoGroup)
             {
-                CreateFillInBackgroundForShape(shape);
+                CreateFillInBackgroundForShape(shape, magnifyRatio);
                 shape.Fill.UserPicture(FillInBackgroundPicture);
             }
             else
@@ -121,15 +125,15 @@ namespace PowerPointLabs
             return shapeToReturn;
         }
 
-        private static void CreateFillInBackgroundForShape(PowerPoint.Shape shape)
+        private static void CreateFillInBackgroundForShape(PowerPoint.Shape shape, double magnifyRatio = 1.0)
         {
             using (var slideImage = (Bitmap)Image.FromFile(SlidePicture))
             {
-                CreateFillInBackground(shape, slideImage);
+                CreateFillInBackground(shape, slideImage, magnifyRatio);
             }
         }
 
-        private static void CreateFillInBackground(PowerPoint.Shape shape, Bitmap slideImage)
+        private static void CreateFillInBackground(PowerPoint.Shape shape, Bitmap slideImage, double magnifyRatio = 1.0)
         {
             float horizontalRatio =
                 (float)(GetDesiredExportWidth() / PowerPointCurrentPresentationInfo.SlideWidth);
@@ -139,22 +143,31 @@ namespace PowerPointLabs
                 shape.Left * horizontalRatio,
                 shape.Top * verticalRatio,
                 shape.Width * horizontalRatio,
-                shape.Height * verticalRatio);
+                shape.Height * verticalRatio,
+                magnifyRatio);
             croppedImage.Save(FillInBackgroundPicture, ImageFormat.Png);
         }
 
-        private static Bitmap KiCut(Bitmap original, float startX, float startY, float width, float height)
+        private static Bitmap KiCut(Bitmap original, float startX, float startY, float width, float height,
+                                    double magnifyRatio = 1.0)
         {
             if (original == null) return null;
             if (startX >= original.Width || startY >= original.Height) return null;
             try
             {
                 var outputImage = new Bitmap((int)width, (int)height, PixelFormat.Format24bppRgb);
+                
+                var inverseRatio = 1 / magnifyRatio;
+                
+                var newWidth = width * inverseRatio;
+                var newHeight = height * inverseRatio;
+                var newY = startY + (1 - inverseRatio) / 2 * width;
+                var newX = startX + (1 - inverseRatio) / 2 * width;
 
                 var inputGraphics = Graphics.FromImage(outputImage);
                 inputGraphics.DrawImage(original,
                     new Rectangle(0, 0, (int)width, (int)height),
-                    new Rectangle((int)startX, (int)startY, (int)width, (int)height),
+                    new Rectangle((int)newX, (int)newY, (int)newWidth, (int)newHeight),
                     GraphicsUnit.Pixel);
                 inputGraphics.Dispose();
 
