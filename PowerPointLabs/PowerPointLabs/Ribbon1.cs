@@ -1685,7 +1685,20 @@ namespace PowerPointLabs
         {
             var selection = PowerPointCurrentPresentationInfo.CurrentSelection;
 
-            if (selection.ShapeRange.Count > 1)
+            PowerPoint.ShapeRange shapeRange;
+
+            try
+            {
+                shapeRange = selection.ShapeRange;
+            }
+            catch (Exception)
+            {
+                MessageBox.Show("Please select an area to magnify.");
+
+                return;
+            }
+
+            if (shapeRange.Count > 1)
             {
                 MessageBox.Show("Only one magnify area is allowed.");
                 
@@ -1734,13 +1747,6 @@ namespace PowerPointLabs
 
         private void MagnifyGlassEffect(PowerPoint.Shape shape, float ratio)
         {
-            shape.ThreeD.BevelTopType = Office.MsoBevelType.msoBevelCircle;
-            shape.ThreeD.BevelBottomInset = 12;
-            shape.ThreeD.BevelBottomDepth = 3;
-            shape.ThreeD.BevelBottomType = Office.MsoBevelType.msoBevelNone;
-            shape.ThreeD.PresetLighting = Office.MsoLightRigType.msoLightRigBalanced;
-            shape.ThreeD.LightAngle = 145;
-
             var delta = 0.5f * (ratio - 1);
 
             shape.Left -= delta * shape.Width;
@@ -1748,6 +1754,23 @@ namespace PowerPointLabs
 
             shape.Width *= ratio;
             shape.Height *= ratio;
+
+            shape.Shadow.Visible = Office.MsoTriState.msoTrue;
+            shape.Shadow.Style = Office.MsoShadowStyle.msoShadowStyleOuterShadow;
+            shape.Shadow.Transparency = 0.6f;
+            shape.Shadow.Size = 102f;
+            shape.Shadow.Blur = 5;
+            shape.Shadow.OffsetX = 0;
+            shape.Shadow.OffsetY = 2f;
+
+            shape.ThreeD.BevelTopType = Office.MsoBevelType.msoBevelCircle;
+            shape.ThreeD.BevelTopInset = 15;
+            shape.ThreeD.BevelTopDepth = 3;
+            shape.ThreeD.BevelBottomType = Office.MsoBevelType.msoBevelNone;
+            shape.ThreeD.PresetLighting = Office.MsoLightRigType.msoLightRigBalanced;
+            shape.ThreeD.LightAngle = 145;
+
+            shape.LockAspectRatio = Office.MsoTriState.msoTrue;
         }
 
         private void BackgroundManipulation(IMatrixFilter filter)
@@ -1758,13 +1781,32 @@ namespace PowerPointLabs
             loadingDialog.Refresh();
 
             var selection = PowerPointCurrentPresentationInfo.CurrentSelection;
-            
+            PowerPoint.ShapeRange shapeRange = null;
+
+            try
+            {
+                shapeRange = selection.ShapeRange;
+            }
+            catch (Exception)
+            {
+                loadingDialog.Dispose();
+                MessageBox.Show("Please select a shape.");
+
+                return;
+            }
+
             // soften cropped shape's edge
-            selection.ShapeRange.SoftEdge.Type = Office.MsoSoftEdgeType.msoSoftEdgeType4;
+            shapeRange.SoftEdge.Type = Office.MsoSoftEdgeType.msoSoftEdgeType4;
 
-            var croppedShape = CropToShape.Crop(selection);
+            PowerPoint.Shape croppedShape = null;
 
-            if (croppedShape == null) return;
+            croppedShape = CropToShape.Crop(selection);
+
+            if (croppedShape == null)
+            {
+                loadingDialog.Dispose();
+                return;
+            }
 
             croppedShape.Left -= 12;
             croppedShape.Top -= 12;
@@ -1820,7 +1862,6 @@ namespace PowerPointLabs
         {
             return shape.Type == Office.MsoShapeType.msoAutoShape ||
                    shape.Type == Office.MsoShapeType.msoFreeform;
-
         }
 
         private void PictureTransparencyHandler(PowerPoint.Shape picture)
