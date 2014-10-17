@@ -1787,9 +1787,9 @@ namespace PowerPointLabs
             }
             catch (Exception)
             {
+                loadingDialog.Dispose();
                 MessageBox.Show("Please select a shape.");
 
-                loadingDialog.Dispose();
                 return;
             }
 
