@@ -13,7 +13,7 @@ namespace PowerPointLabs
     class Spotlight
     {
         public static float defaultSoftEdges = 10;
-        public static float defaultTransparency = 0.7f;
+        public static float defaultTransparency = 0.25f;
         public static System.Drawing.Color defaultColor = Color.Black;
         public static Dictionary<String, float> softEdgesMapping = new Dictionary<string, float>
         {
