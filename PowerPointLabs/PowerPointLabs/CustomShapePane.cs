@@ -379,7 +379,6 @@ namespace PowerPointLabs
                 else
                 {
                     Trace.TraceInformation("Retrieving Category from " + importShapeGallery.Presentation.Name);
-                    Trace.TraceInformation("Retrieving Category from " + importShapeGallery.Presentation.Name);
                     Trace.TraceInformation("Total Slides = " + importShapeGallery.Presentation.Slides.Count);
 
                     // copy all shapes in the import shape gallery to current shape gallery
