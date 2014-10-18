@@ -385,7 +385,13 @@ namespace PowerPointLabs
                     foreach (var importCategory in importShapeGallery.Categories)
                     {
                         importShapeGallery.RetrieveCategory(importCategory);
-                        Globals.ThisAddIn.ShapePresentation.AppendCategoryFromClipBoard();
+                        
+                        if (!Globals.ThisAddIn.ShapePresentation.AppendCategoryFromClipBoard())
+                        {
+                            MessageBox.Show("Your computer does not support this feature.");
+                            return;
+                        }
+
                         _categoryBinding.Add(importCategory);
                     }
                 }

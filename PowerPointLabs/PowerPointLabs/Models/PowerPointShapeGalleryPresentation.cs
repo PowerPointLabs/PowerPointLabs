@@ -192,9 +192,22 @@ namespace PowerPointLabs.Models
             return ConsistencyCheck();
         }
 
-        public void AppendCategoryFromClipBoard()
+        public bool AppendCategoryFromClipBoard()
         {
-            var slide = Presentation.Slides.Paste()[1];
+            Trace.TraceInformation("Appending from clipboard...");
+            Trace.TraceInformation("Total slide in ShapeGallery = " + Presentation.Slides.Count);
+
+            var slideRange = Presentation.Slides.Paste();
+
+            if (slideRange == null)
+            {
+                Trace.TraceInformation("Slide Range is null!");
+                return false;
+            }
+
+            Trace.TraceInformation("Slide Range = " + slideRange.Count);
+
+            var slide = slideRange[1];
             var categoryNameBox = RetrieveCategoryNameBox(PowerPointSlide.FromSlideFactory(slide));
             var categoryName = RetrieveCategoryName(categoryNameBox);
 
@@ -205,6 +218,8 @@ namespace PowerPointLabs.Models
             
             Save();
             ActionProtection();
+
+            return true;
         }
 
         public void RemoveCategory(string name)
