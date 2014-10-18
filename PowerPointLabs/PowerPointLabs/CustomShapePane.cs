@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Drawing;
 using System.IO;
 using System.Linq;
@@ -367,37 +368,50 @@ namespace PowerPointLabs
             var importShapeGallery = new PowerPointShapeGalleryPresentation(ShapeRootFolderPath,
                                                                             importFileNameNoExtension)
                                          {IsImportedFile = true};
-            
-            if (!importShapeGallery.Open(withWindow: false, focus: false) &&
-                !importShapeGallery.Opened)
+
+            try
             {
-                MessageBox.Show(TextCollection.CustomShapeImportFileError);
-            }
-            else
-            {
-                // copy all shapes in the import shape gallery to current shape gallery
-                foreach (var importCategory in importShapeGallery.Categories)
+                if (!importShapeGallery.Open(withWindow: false, focus: false) &&
+                    !importShapeGallery.Opened)
                 {
-                    importShapeGallery.RetrieveCategory(importCategory);
-                    Globals.ThisAddIn.ShapePresentation.AppendCategoryFromClipBoard();
-                    _categoryBinding.Add(importCategory);
+                    MessageBox.Show(TextCollection.CustomShapeImportFileError);
                 }
-            }
-
-            importShapeGallery.Close();
-
-            // delete the import file copy
-            if (!sameFolder)
-            {
-                if (importFileCopyPath.EndsWith(".pptx"))
+                else
                 {
-                    importFileCopyPath = importFileCopyPath.Replace(".pptx", ".pptlabsshapes");
+                    Trace.TraceInformation("Retrieving Category from " + importShapeGallery.Presentation.Name);
+                    Trace.TraceInformation("Retrieving Category from " + importShapeGallery.Presentation.Name);
+                    Trace.TraceInformation("Total Slides = " + importShapeGallery.Presentation.Slides.Count);
+
+                    // copy all shapes in the import shape gallery to current shape gallery
+                    foreach (var importCategory in importShapeGallery.Categories)
+                    {
+                        importShapeGallery.RetrieveCategory(importCategory);
+                        Globals.ThisAddIn.ShapePresentation.AppendCategoryFromClipBoard();
+                        _categoryBinding.Add(importCategory);
+                    }
                 }
 
-                FileDir.DeleteFile(importFileCopyPath);
+                MessageBox.Show(TextCollection.CustomShapeImportSuccess);
             }
+            catch (Exception e)
+            {
+                ErrorDialogWrapper.ShowDialog("Error", e.Message, e);
+            }
+            finally
+            {
+                importShapeGallery.Close();
 
-            MessageBox.Show(TextCollection.CustomShapeImportSuccess);
+                // delete the import file copy
+                if (!sameFolder)
+                {
+                    if (importFileCopyPath.EndsWith(".pptx"))
+                    {
+                        importFileCopyPath = importFileCopyPath.Replace(".pptx", ".pptlabsshapes");
+                    }
+
+                    FileDir.DeleteFile(importFileCopyPath);
+                }
+            }
         }
 
         private void ContextMenuStripRemoveCategoryClicked()

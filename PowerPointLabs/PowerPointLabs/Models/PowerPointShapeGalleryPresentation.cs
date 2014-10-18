@@ -307,7 +307,8 @@ namespace PowerPointLabs.Models
         public void RetrieveCategory(string name)
         {
             var index = FindCategoryIndex(name);
-            Slides[index - 1].Copy();
+            Trace.TraceInformation("Index = " + index);
+            Presentation.Slides[index - 1].Copy();
         }
         # endregion
 
