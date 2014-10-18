@@ -72,8 +72,7 @@ namespace PowerPointLabs.Models
 
             // ppLayoutBlank causes an error, so we use ppLayoutText instead and manually remove the
             // place holders
-            newSlide.DeleteShapeWithRule(new Regex(@"^Title \d+$"));
-            newSlide.DeleteShapeWithRule(new Regex(@"^Content Placeholder \d+$"));
+            newSlide.DeleteAllShapes();
 
             var categoryNameBox = newSlide.Shapes.AddTextbox(MsoTextOrientation.msoTextOrientationHorizontal, 0, 0, 0, 0);
             categoryNameBox.TextFrame.TextRange.Text = string.Format(CategoryNameFormat, name);
@@ -192,27 +191,34 @@ namespace PowerPointLabs.Models
             return ConsistencyCheck();
         }
 
-        public bool AppendCategoryFromClipBoard()
+        public bool AppendCategoryFromClipBoard(string categoryName)
         {
             Trace.TraceInformation("Appending from clipboard...");
             Trace.TraceInformation("Total slide in ShapeGallery = " + Presentation.Slides.Count);
 
-            var slideRange = Presentation.Slides.Paste();
+            //var slideRange = Presentation.Slides.Paste();
 
-            if (slideRange == null)
-            {
-                Trace.TraceInformation("Slide Range is null!");
-                return false;
-            }
+            //if (slideRange == null)
+            //{
+            //    Trace.TraceInformation("Slide Range is null!");
+            //    return false;
+            //}
 
-            Trace.TraceInformation("Slide Range = " + slideRange.Count);
+            //Trace.TraceInformation("Slide Range = " + slideRange.Count);
 
-            var slide = slideRange[1];
-            var categoryNameBox = RetrieveCategoryNameBox(PowerPointSlide.FromSlideFactory(slide));
-            var categoryName = RetrieveCategoryName(categoryNameBox);
+            //var slide = slideRange[1];
+            //var categoryNameBox = RetrieveCategoryNameBox(slide);
+            //var categoryName = RetrieveCategoryName(categoryNameBox);
 
-            // after paste, slide name will be corrupted, we need to rename it
-            slide.Name = categoryName;
+            //// after paste, slide name will be corrupted, we need to rename it
+            //slide.Name = categoryName;
+            //Categories.Add(categoryName);
+            //_categoryNameBoxCollection.Add(categoryNameBox);
+
+            var slide = AddSlide(name: categoryName);
+            slide.Shapes.Paste();
+
+            var categoryNameBox = RetrieveCategoryNameBox(slide);
             Categories.Add(categoryName);
             _categoryNameBoxCollection.Add(categoryNameBox);
             
@@ -323,7 +329,7 @@ namespace PowerPointLabs.Models
         {
             var index = FindCategoryIndex(name);
             Trace.TraceInformation("Index = " + index);
-            Presentation.Slides[index].Copy();
+            Presentation.Slides[index].Shapes.Range().Copy();
         }
         # endregion
 
