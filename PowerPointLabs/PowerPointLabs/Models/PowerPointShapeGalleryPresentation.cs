@@ -72,8 +72,7 @@ namespace PowerPointLabs.Models
 
             // ppLayoutBlank causes an error, so we use ppLayoutText instead and manually remove the
             // place holders
-            newSlide.DeleteShapeWithRule(new Regex(@"^Title \d+$"));
-            newSlide.DeleteShapeWithRule(new Regex(@"^Content Placeholder \d+$"));
+            newSlide.DeleteAllShapes();
 
             var categoryNameBox = newSlide.Shapes.AddTextbox(MsoTextOrientation.msoTextOrientationHorizontal, 0, 0, 0, 0);
             categoryNameBox.TextFrame.TextRange.Text = string.Format(CategoryNameFormat, name);

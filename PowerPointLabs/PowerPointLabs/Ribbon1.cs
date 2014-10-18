@@ -1778,38 +1778,19 @@ namespace PowerPointLabs
             loadingDialog.Show();
             loadingDialog.Refresh();
 
-            var selection = PowerPointCurrentPresentationInfo.CurrentSelection;
-            PowerPoint.ShapeRange shapeRange = null;
-
             try
             {
-                shapeRange = selection.ShapeRange;
+                if (!MakeFrontImage())
+                {
+                    loadingDialog.Dispose();
+                    return;
+                }
             }
             catch (Exception)
             {
                 loadingDialog.Dispose();
                 MessageBox.Show("Please select a shape.");
-
-                return;
             }
-
-            // soften cropped shape's edge
-            shapeRange.SoftEdge.Type = Office.MsoSoftEdgeType.msoSoftEdgeType4;
-
-            PowerPoint.Shape croppedShape = null;
-
-            croppedShape = CropToShape.Crop(selection);
-
-            if (croppedShape == null)
-            {
-                loadingDialog.Dispose();
-                return;
-            }
-
-            croppedShape.Left -= 12;
-            croppedShape.Top -= 12;
-
-            var shapes = PowerPointCurrentPresentationInfo.CurrentSlide.Shapes;
 
             var picSaveTempPath = Path.Combine(Path.GetTempPath(), "slide.png");
 
@@ -1822,17 +1803,44 @@ namespace PowerPointLabs
                 image.Save(picSaveTempPath);
             }
 
+            PowerPointCurrentPresentationInfo.CurrentSlide.Copy();
+            var curSlideIndex = PowerPointCurrentPresentationInfo.CurrentSlide.Index;
+            var newSlide =
+                PowerPointSlide.FromSlideFactory(
+                    PowerPointCurrentPresentationInfo.CurrentPresentation.Slides.Paste(curSlideIndex)[1]);
+
+            var shapes = newSlide.Shapes;
             var newPic = shapes.AddPicture(picSaveTempPath, Office.MsoTriState.msoFalse, Office.MsoTriState.msoTrue,
                                            0, 0,
                                            PowerPointCurrentPresentationInfo.SlideWidth,
                                            PowerPointCurrentPresentationInfo.SlideHeight);
 
-            while (newPic.ZOrderPosition > croppedShape.ZOrderPosition)
-            {
-                newPic.ZOrder(Office.MsoZOrderCmd.msoSendBackward);
-            }
+            newPic.ZOrder(Office.MsoZOrderCmd.msoSendToBack);
 
             loadingDialog.Dispose();
+        }
+
+        private bool MakeFrontImage()
+        {
+            var selection = PowerPointCurrentPresentationInfo.CurrentSelection;
+            PowerPoint.ShapeRange shapeRange = null;
+
+            shapeRange = selection.ShapeRange;
+
+            // soften cropped shape's edge
+            shapeRange.SoftEdge.Type = Office.MsoSoftEdgeType.msoSoftEdgeType4;
+
+            var croppedShape = CropToShape.Crop(selection);
+
+            if (croppedShape == null)
+            {
+                return false;
+            }
+
+            croppedShape.Left -= 12;
+            croppedShape.Top -= 12;
+
+            return true;
         }
 
         private void TransparentEffect(PowerPoint.ShapeRange shapeRange)
@@ -1866,8 +1874,7 @@ namespace PowerPointLabs
         {
             var tempPicPath = Path.Combine(Path.GetTempPath(), "tempPic.png");
 
-            picture.Export(tempPicPath, PowerPoint.PpShapeFormat.ppShapeFormatPNG, 0, 0,
-                           PowerPoint.PpExportMode.ppScaleXY);
+            Utils.Graphics.ExportShape(picture, tempPicPath);
 
             var shapeHolder =
                 PowerPointCurrentPresentationInfo.CurrentSlide.Shapes.AddShape(

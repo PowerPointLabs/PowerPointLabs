@@ -4,11 +4,16 @@ using System.Drawing.Drawing2D;
 using System.Windows.Forms;
 using Microsoft.Office.Interop.PowerPoint;
 using PPExtraEventHelper;
+using PowerPointLabs.Models;
 
 namespace PowerPointLabs.Utils
 {
     public static class Graphics
     {
+        # region Const
+        public const float PictureExportingRatio = 96.0f / 72.0f;
+        # endregion
+
         # region API
         public static Bitmap CreateThumbnailImage(Image oriImage, int width, int height)
         {
@@ -38,12 +43,20 @@ namespace PowerPointLabs.Utils
             return thumbnail;
         }
 
-        public static void ExportShape(Shape shape, string exportPath,
-                                       int scaledWidth = 0, int scaledHeight = 0,
-                                       PpShapeFormat shapeFormat = PpShapeFormat.ppShapeFormatPNG,
-                                       PpExportMode exportMode = PpExportMode.ppScaleXY)
+        public static void ExportShape(Shape shape, string exportPath)
         {
-            shape.Export(exportPath, shapeFormat, scaledWidth, scaledHeight, exportMode);
+            var slideWidth = (int)PowerPointCurrentPresentationInfo.SlideWidth;
+            var slideHeight = (int)PowerPointCurrentPresentationInfo.SlideHeight;
+
+            shape.Export(exportPath, PpShapeFormat.ppShapeFormatPNG, slideWidth, slideHeight, PpExportMode.ppScaleToFit);
+        }
+
+        public static void ExportSlide(Slide slide, string exportPath)
+        {
+            slide.Export(exportPath,
+                         "PNG",
+                         (int) GetDesiredExportWidth(),
+                         (int) GetDesiredExportHeight());
         }
 
         public static void SuspendDrawing(Control control)
@@ -80,6 +93,18 @@ namespace PowerPointLabs.Utils
             }
 
             return scalingRatio;
+        }
+
+        private static double GetDesiredExportWidth()
+        {
+            // Powerpoint displays at 72 dpi, while the picture stores in 96 dpi.
+            return PowerPointCurrentPresentationInfo.SlideWidth / 72.0 * 96.0;
+        }
+
+        private static double GetDesiredExportHeight()
+        {
+            // Powerpoint displays at 72 dpi, while the picture stores in 96 dpi.
+            return PowerPointCurrentPresentationInfo.SlideHeight / 72.0 * 96.0;
         }
         # endregion
     }
