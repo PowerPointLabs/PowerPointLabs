@@ -97,13 +97,6 @@
                    getImage="GetSpotlightImage"
                    getEnabled="OnGetEnabledSpotlight"
                    onAction="SpotlightBtnClick"/>
-          <button id="ReloadSpotlightButton"
-                  getLabel ="GetReloadSpotlightButtonLabel"
-                  size ="large"
-                  getSupertip="GetReloadSpotlightButtonSupertip"
-                  getImage="GetReloadSpotlightImage"
-                  getEnabled="OnGetEnabledReloadSpotlight"
-                  onAction="ReloadSpotlightButtonClick"/>
           <dialogBoxLauncher>
             <button id ="SpotlightDialogBox"
                     onAction="SpotlightDialogButtonPressed"/>
