@@ -216,6 +216,7 @@ namespace PowerPointLabs.Models
             //_categoryNameBoxCollection.Add(categoryNameBox);
 
             var slide = AddSlide(name: categoryName);
+            slide.DeleteAllShapes();
             slide.Shapes.Paste();
 
             var categoryNameBox = RetrieveCategoryNameBox(slide);
