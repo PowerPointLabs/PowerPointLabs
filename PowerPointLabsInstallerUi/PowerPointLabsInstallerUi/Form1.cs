@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 using System.IO.Compression;
@@ -11,6 +12,8 @@ namespace PowerPointLabsInstallerUi
         private readonly string _installerZipAddress = Application.StartupPath + "\\data.zip";
         private const string TextButtonClose = "Close";
         private const string TextButtonRunning = "Running...";
+        private const string ErrorWindowTitle = "PowerPointLabs Installer";
+        private const string UrlForVstoRuntim = "http://www.microsoft.com/en-us/download/details.aspx?id=44074";
 
         public Form1()
         {
@@ -21,10 +24,41 @@ namespace PowerPointLabsInstallerUi
         {
             if (button1.Text != TextButtonClose)
             {
+                if (!IsVstoRuntimeValid())
+                {
+                    var dialogResult = MessageBox.Show(
+                        "In order to install our add-in successfully, you may have to first install " +
+                        "Visual Studio 2010 Tools for Office (VSTO) Runtime from Microsoft.\n\n" +
+                        "Click Yes button to download it, or click No button to continue installation anyway.",
+                        ErrorWindowTitle,
+                        MessageBoxButtons.YesNoCancel, MessageBoxIcon.Error);
+                    if (dialogResult == DialogResult.Yes)
+                    {
+                        Process.Start(UrlForVstoRuntim);
+                        return;
+                    }
+                    else if (dialogResult == DialogResult.Cancel)
+                    {
+                        return;
+                    }
+                } 
+                else if (!IsVstoConfigValid())
+                {
+                    var vstoConfigDir = GetVstoConfigDir();
+                    if (MessageBox.Show(
+                        "In order to install our add-in successfully, you may have to first back-up and remove " +
+                        "the corrupted configuration file located at \n" + vstoConfigDir + "\n\n" +
+                        "After remove it, click OK button to continue.",
+                        ErrorWindowTitle, 
+                        MessageBoxButtons.OKCancel, MessageBoxIcon.Error)
+                        == DialogResult.Cancel)
+                    {
+                        return;
+                    }
+                }
+                
                 button1.Enabled = false;
                 button1.Text = TextButtonRunning;
-
-                
                 Boolean isUnzipSuccessful = UnzipInstaller(_installerZipAddress);
                 if (isUnzipSuccessful)
                 {
@@ -39,6 +73,81 @@ namespace PowerPointLabsInstallerUi
                 Close();
             }
         }
+
+        private static bool IsVstoRuntimeValid()
+        {
+            var runtimeExistList = new List<bool>();
+            Boolean result = false;
+
+            var directoriesForProgramFiles = GetProgramFilesDirectories();
+            foreach(string dir in directoriesForProgramFiles)
+            {
+                var directoryForVstoRuntime = Path.Combine(dir, @"Common Files\Microsoft Shared\VSTO\10.0");
+                runtimeExistList.Add(Directory.Exists(directoryForVstoRuntime));
+            }
+            //if VSTO runtime folder does not exist --> invalid
+            foreach (var isRuntimeExist in runtimeExistList)
+            {
+                result = result || isRuntimeExist;
+            }
+            return result;
+        }
+
+        private static bool IsVstoConfigValid()
+        {
+            var configExistList = new List<bool>();
+            Boolean result = false;
+
+            var directoriesForProgramFiles = GetProgramFilesDirectories();
+            foreach (string dir in directoriesForProgramFiles)
+            {
+                var directoryForVstoConfig = Path.Combine(dir, 
+                    @"Common Files\Microsoft Shared\VSTO\10.0\VSTOInstaller.exe.Config");
+                configExistList.Add(File.Exists(directoryForVstoConfig));
+            }
+            foreach (var isConfigExist in configExistList)
+            {
+                result = result || isConfigExist;
+            }
+            //if VSTO config file exists --> invalid
+            return !result;
+        }
+
+        private static string GetVstoConfigDir()
+        {
+            var directoriesForProgramFiles = GetProgramFilesDirectories();
+            foreach (string dir in directoriesForProgramFiles)
+            {
+                var directoryForVstoConfig = Path.Combine(dir,
+                    @"Common Files\Microsoft Shared\VSTO\10.0\VSTOInstaller.exe.Config");
+                if (File.Exists(directoryForVstoConfig))
+                {
+                    return directoryForVstoConfig;
+                }
+            }
+            return "";
+        }
+
+        private static List<string> GetProgramFilesDirectories()
+        {
+            var result = new List<string>();
+            //For 64-bit Windows
+            if (8 == IntPtr.Size
+                || (!String.IsNullOrEmpty(Environment.GetEnvironmentVariable("PROCESSOR_ARCHITEW6432"))))
+            {
+                //C:\Program Files(x86)
+                result.Add(Environment.GetEnvironmentVariable("ProgramFiles(x86)"));
+                //C:\Program Files
+                result.Add(Environment.GetEnvironmentVariable("ProgramW6432"));
+            }
+            //For 32-bit Windows
+            else
+            {
+                //C:\Program Files
+                result.Add(Environment.GetEnvironmentVariable("ProgramFiles"));
+            }
+            return result;
+        } 
 
         private static void RunInstaller()
         {
