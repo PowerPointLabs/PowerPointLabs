@@ -34,7 +34,7 @@ namespace PowerPointLabs.Properties {
         
         [global::System.Configuration.ApplicationScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("offline")]
+        [global::System.Configuration.DefaultSettingValueAttribute("online")]
         public string InstallerType {
             get {
                 return ((string)(this["InstallerType"]));
