@@ -94,7 +94,7 @@ namespace PowerPointLabs
 
         private void ThisAddInApplicationOnWindowDeactivate(PowerPoint.Presentation pres, PowerPoint.DocumentWindow wn)
         {
-            Trace.TraceInformation("Shape Gallery terminating...");
+            Trace.TraceInformation(pres.Name + " terminating...");
             Trace.TraceInformation(string.Format("Is Closing = {0}, Count = {1}", _isClosing, Application.Presentations.Count));
 
             _deactivatedPresFullName = pres.FullName;
@@ -305,12 +305,22 @@ namespace PowerPointLabs
 
             try
             {
+                Trace.TraceInformation("Total Windows at Close Stage " + pres.Windows.Count);
+                Trace.TraceInformation("Windows are: ");
+
+                foreach (PowerPoint.DocumentWindow window in pres.Windows)
+                {
+                    Trace.TraceInformation(window.Presentation.Name);
+                }
+
                 associatedWindow = pres.Windows[1];
             }
             catch (Exception)
             {
                 return;
             }
+
+            Trace.TraceInformation("Closing associated window...");
 
             if (_documentPathAssociateMapper.ContainsKey(associatedWindow) &&
                 _documentPathAssociateMapper[associatedWindow])
