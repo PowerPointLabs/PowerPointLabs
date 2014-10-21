@@ -82,6 +82,10 @@ namespace PowerPointLabs
             var ungroupedRangeCopy = UngroupAllForShapeRange(rangeCopy);
 
             var mergedShape = ungroupedRangeCopy[1];
+            foreach (PowerPoint.Shape shape in ungroupedRangeCopy)
+            {
+                shape.Name = shape.Name.Substring(0, 10);
+            }
             if (ungroupedRangeCopy.Count > 1)
             {
                 mergedShape = ungroupedRangeCopy.Group();
