@@ -258,6 +258,7 @@
     <Compile Include="ConvertToPicture.cs" />
     <Compile Include="CropToShape.cs" />
     <Compile Include="DataSources\ShapesLabSettingsDataSource.cs" />
+    <Compile Include="Models\PowerPointBgEffectSlide.cs" />
     <Compile Include="Properties\Resources.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>

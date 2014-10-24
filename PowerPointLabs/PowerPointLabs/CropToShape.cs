@@ -36,41 +36,61 @@ namespace PowerPointLabs
             try
             {
                 VerifyIsSelectionValid(selection);
-                var shape = GetShapeForSelection(selection);
-                TakeScreenshotProxy(shape);
-                var filledShape = FillInShapeWithScreenshot(shape, magnifyRatio);
-
-                return filledShape;
             }
             catch (Exception e)
             {
                 MessageBox.Show(GetErrorMessageForErrorCode(e.Message), MessageBoxTitle);
                 return null;
             }
+
+            return Crop(selection.ShapeRange);
+        }
+
+        public static PowerPoint.Shape Crop(PowerPoint.ShapeRange shapeRange, double magnifyRatio = 1.0)
+        {
+            if (!VerifyIsShapeRangeValid(shapeRange)) return null;
+
+            var shape = GetShapeForSelection(shapeRange);
+            TakeScreenshotProxy(shape);
+            var filledShape = FillInShapeWithScreenshot(shape, magnifyRatio);
+
+            return filledShape;
+        }
+
+        public static bool VerifyIsShapeRangeValid(PowerPoint.ShapeRange shapeRange)
+        {
+            try
+            {
+                if (shapeRange.Count < 1)
+                {
+                    ThrowErrorCode(ErrorCodeForSelectionCountZero);
+                }
+
+                if (!IsShapeForSelection(shapeRange))
+                {
+                    ThrowErrorCode(ErrorCodeForSelectionNonShape);
+                }
+
+                return true;
+            }
+            catch (Exception e)
+            {
+                MessageBox.Show(GetErrorMessageForErrorCode(e.Message), MessageBoxTitle);
+                return false;
+            }
         }
 
         private static void VerifyIsSelectionValid(PowerPoint.Selection selection)
         {
-            if (selection.Type == PowerPoint.PpSelectionType.ppSelectionShapes)
-            {
-                if (selection.ShapeRange.Count < 1)
-                {
-                    ThrowErrorCode(ErrorCodeForSelectionCountZero);
-                }
-                if (!IsShapeForSelection(selection))
-                {
-                    ThrowErrorCode(ErrorCodeForSelectionNonShape);
-                }
-            }
-            else
+            if (selection.Type != PowerPoint.PpSelectionType.ppSelectionShapes)
             {
                 ThrowErrorCode(ErrorCodeForSelectionCountZero);
             }
         }
 
-        private static PowerPoint.Shape GetShapeForSelection(PowerPoint.Selection selection)
+        private static PowerPoint.Shape GetShapeForSelection(PowerPoint.ShapeRange shapeRange)
         {
-            var rangeOriginal = selection.ShapeRange;
+            var rangeOriginal = shapeRange;
             //some shapes in the selection cannot be used due to 
             //Powerpoint's 'Delete-Undo' issue: when a shape got deleted or cut programmatically, and users undo,
             //then we can only read the shape's name/width/height/left/top.. for others, it'll throw an exception
@@ -139,15 +159,11 @@ namespace PowerPointLabs
 
         private static void CreateFillInBackground(PowerPoint.Shape shape, Bitmap slideImage, double magnifyRatio = 1.0)
         {
-            float horizontalRatio =
-                (float)(GetDesiredExportWidth() / PowerPointCurrentPresentationInfo.SlideWidth);
-            float verticalRatio =
-                (float)(GetDesiredExportHeight() / PowerPointCurrentPresentationInfo.SlideHeight);
             var croppedImage = KiCut(slideImage,
-                shape.Left * horizontalRatio,
-                shape.Top * verticalRatio,
-                shape.Width * horizontalRatio,
-                shape.Height * verticalRatio,
+                shape.Left * Utils.Graphics.PictureExportingRatio,
+                shape.Top * Utils.Graphics.PictureExportingRatio,
+                shape.Width * Utils.Graphics.PictureExportingRatio,
+                shape.Height * Utils.Graphics.PictureExportingRatio,
                 magnifyRatio);
             croppedImage.Save(FillInBackgroundPicture, ImageFormat.Png);
         }
@@ -186,35 +202,8 @@ namespace PowerPointLabs
         private static void TakeScreenshotProxy(PowerPoint.Shape shape)
         {
             shape.Visible = Office.MsoTriState.msoFalse;
-            TakeScreenshot();
+            Utils.Graphics.ExportSlide(PowerPointLabsGlobals.GetCurrentSlide(), SlidePicture);
             shape.Visible = Office.MsoTriState.msoTrue;
-        }
-
-        private static void TakeScreenshot()
-        {
-            PowerPointLabsGlobals.GetCurrentSlide()
-                .Export(SlidePicture, 
-                        "PNG",
-                        (int)GetDesiredExportWidth(), 
-                        (int)GetDesiredExportHeight());
-        }
-
-        /// <summary>
-        /// Powerpoint displays at 72 dpi, while the picture stores in 96 dpi.
-        /// </summary>
-        /// <returns></returns>
-        private static double GetDesiredExportWidth()
-        {
-            return Globals.ThisAddIn.Application.ActivePresentation.PageSetup.SlideWidth / 72.0 * 96.0;
-        }
-
-        /// <summary>
-        /// Powerpoint displays at 72 dpi, while the picture stores in 96 dpi.
-        /// </summary>
-        /// <returns></returns>
-        private static double GetDesiredExportHeight()
-        {
-            return Globals.ThisAddIn.Application.ActivePresentation.PageSetup.SlideHeight / 72.0 * 96.0;
         }
 
         private static PowerPoint.ShapeRange MakeCopyForShapeRange(PowerPoint.ShapeRange rangeOriginal)
@@ -322,9 +311,8 @@ namespace PowerPointLabs
             }
         }
 
-        private static bool IsShapeForSelection(PowerPoint.Selection sel)
+        private static bool IsShapeForSelection(PowerPoint.ShapeRange shapeRange)
         {
-            var shapeRange = sel.ShapeRange;
             return (from PowerPoint.Shape shape in shapeRange select shape).All(IsShape);
         }
 

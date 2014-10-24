@@ -6,6 +6,11 @@ namespace PowerPointLabs.Models
 {
     class PowerPointCurrentPresentationInfo
     {
+        public static Presentation CurrentPresentation
+        {
+            get { return Globals.ThisAddIn.Application.ActivePresentation; }
+        }
+
         public static PowerPointSlide CurrentSlide
         {
             get

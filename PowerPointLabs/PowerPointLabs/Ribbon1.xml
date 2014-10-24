@@ -242,10 +242,10 @@
                       label="Black and White"
                       imageMso="HappyFace"
                       onAction="BlackWhiteBackgroundEffectClick"/>
-              <button id="GohamBackgroundEffect"
-                      label="Goham"
+              <button id="GothamBackgroundEffect"
+                      label="Gotham"
                       imageMso="HappyFace"
-                      onAction="GohamBackgroundEffectClick"/>
+                      onAction="GothamBackgroundEffectClick"/>
               <button id="SepiaBackgroundEffect"
                       label="Sepia"
                       imageMso="HappyFace"

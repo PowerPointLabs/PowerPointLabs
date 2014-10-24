@@ -1715,27 +1715,47 @@ namespace PowerPointLabs
 
         public void BlurBackgroundEffectClick(Office.IRibbonControl control)
         {
-            BackgroundManipulation(null);
+            var effectSlide = GenerateEffectSlide();
+            
+            if (effectSlide == null) return;
+            
+            effectSlide.BlurBackground();
         }
 
         public void GreyScaleBackgroundEffectClick(Office.IRibbonControl control)
         {
-            BackgroundManipulation(MatrixFilters.GreyScale);
+            var effectSlide = GenerateEffectSlide();
+
+            if (effectSlide == null) return;
+
+            effectSlide.GreyScaleBackground();
         }
 
         public void BlackWhiteBackgroundEffectClick(Office.IRibbonControl control)
         {
-            BackgroundManipulation(MatrixFilters.BlackWhite);
+            var effectSlide = GenerateEffectSlide();
+
+            if (effectSlide == null) return;
+
+            effectSlide.BlackWhiteBackground();
         }
 
-        public void GohamBackgroundEffectClick(Office.IRibbonControl control)
+        public void GothamBackgroundEffectClick(Office.IRibbonControl control)
         {
-            BackgroundManipulation(MatrixFilters.Gotham);
+            var effectSlide = GenerateEffectSlide();
+
+            if (effectSlide == null) return;
+
+            effectSlide.GothamBackground();
         }
 
         public void SepiaBackgroundEffectClick(Office.IRibbonControl control)
         {
-            BackgroundManipulation(MatrixFilters.Sepia);
+            var effectSlide = GenerateEffectSlide();
+
+            if (effectSlide == null) return;
+
+            effectSlide.SepiaBackground();
         }
 
         public void TransparentEffectClick(Office.IRibbonControl control)
@@ -1773,68 +1793,26 @@ namespace PowerPointLabs
             shape.LockAspectRatio = Office.MsoTriState.msoTrue;
         }
 
-        private void BackgroundManipulation(IMatrixFilter filter)
+        private PowerPointBgEffectSlide GenerateEffectSlide()
         {
-            var loadingDialog = new LoadingDialog("Processing...", "Processing, please wait...");
-
-            loadingDialog.Show();
-            loadingDialog.Refresh();
-
+            var curSlide = PowerPointCurrentPresentationInfo.CurrentSlide;
             var selection = PowerPointCurrentPresentationInfo.CurrentSelection;
-            PowerPoint.ShapeRange shapeRange = null;
 
             try
             {
-                shapeRange = selection.ShapeRange;
+                var shapeRange = selection.ShapeRange;
+                shapeRange.Cut();
+
+                var effectSlide =
+                    PowerPointBgEffectSlide.FromSlideFactory(curSlide.GetNativeSlide()) as PowerPointBgEffectSlide;
+
+                return effectSlide;
             }
             catch (Exception)
             {
-                loadingDialog.Dispose();
-                MessageBox.Show("Please select a shape.");
-
-                return;
+                MessageBox.Show("Please select a shape");
+                return null;
             }
-
-            // soften cropped shape's edge
-            shapeRange.SoftEdge.Type = Office.MsoSoftEdgeType.msoSoftEdgeType4;
-
-            PowerPoint.Shape croppedShape = null;
-
-            croppedShape = CropToShape.Crop(selection);
-
-            if (croppedShape == null)
-            {
-                loadingDialog.Dispose();
-                return;
-            }
-
-            croppedShape.Left -= 12;
-            croppedShape.Top -= 12;
-
-            var shapes = PowerPointCurrentPresentationInfo.CurrentSlide.Shapes;
-
-            var picSaveTempPath = Path.Combine(Path.GetTempPath(), "slide.png");
-
-            using (var imageFactory = new ImageFactory())
-            {
-                var image = imageFactory.Load(picSaveTempPath);
-                
-                image = filter == null ? image.GaussianBlur(20) : image.Filter(filter);
-
-                image.Save(picSaveTempPath);
-            }
-
-            var newPic = shapes.AddPicture(picSaveTempPath, Office.MsoTriState.msoFalse, Office.MsoTriState.msoTrue,
-                                           0, 0,
-                                           PowerPointCurrentPresentationInfo.SlideWidth,
-                                           PowerPointCurrentPresentationInfo.SlideHeight);
-
-            while (newPic.ZOrderPosition > croppedShape.ZOrderPosition)
-            {
-                newPic.ZOrder(Office.MsoZOrderCmd.msoSendBackward);
-            }
-
-            loadingDialog.Dispose();
         }
 
         private void TransparentEffect(PowerPoint.ShapeRange shapeRange)
@@ -1868,8 +1846,7 @@ namespace PowerPointLabs
         {
             var tempPicPath = Path.Combine(Path.GetTempPath(), "tempPic.png");
 
-            picture.Export(tempPicPath, PowerPoint.PpShapeFormat.ppShapeFormatPNG, 0, 0,
-                           PowerPoint.PpExportMode.ppScaleXY);
+            Utils.Graphics.ExportShape(picture, tempPicPath);
 
             var shapeHolder =
                 PowerPointCurrentPresentationInfo.CurrentSlide.Shapes.AddShape(
