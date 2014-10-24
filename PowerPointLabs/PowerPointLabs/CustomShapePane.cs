@@ -283,6 +283,8 @@ namespace PowerPointLabs
 
         private void ContextMenuStripAddClicked()
         {
+            Globals.ThisAddIn.Application.StartNewUndoEntry();
+
             var currentSlide = PowerPointCurrentPresentationInfo.CurrentSlide;
 
             if (currentSlide == null)
@@ -1267,6 +1269,8 @@ namespace PowerPointLabs
             
             if (currentSlide != null)
             {
+                Globals.ThisAddIn.Application.StartNewUndoEntry();
+
                 Globals.ThisAddIn.ShapePresentation.RetrieveShape(shapeName);
                 currentSlide.Shapes.Paste().Select();
             }

@@ -1683,6 +1683,8 @@ namespace PowerPointLabs
         # region Feature: Effects Lab
         public void MagnifyGlassEffectClick(Office.IRibbonControl control)
         {
+            Globals.ThisAddIn.Application.StartNewUndoEntry();
+
             var selection = PowerPointCurrentPresentationInfo.CurrentSelection;
 
             PowerPoint.ShapeRange shapeRange;
@@ -1715,6 +1717,8 @@ namespace PowerPointLabs
 
         public void BlurBackgroundEffectClick(Office.IRibbonControl control)
         {
+            Globals.ThisAddIn.Application.StartNewUndoEntry();
+
             var effectSlide = GenerateEffectSlide();
             
             if (effectSlide == null) return;
@@ -1724,6 +1728,8 @@ namespace PowerPointLabs
 
         public void GreyScaleBackgroundEffectClick(Office.IRibbonControl control)
         {
+            Globals.ThisAddIn.Application.StartNewUndoEntry();
+
             var effectSlide = GenerateEffectSlide();
 
             if (effectSlide == null) return;
@@ -1733,6 +1739,8 @@ namespace PowerPointLabs
 
         public void BlackWhiteBackgroundEffectClick(Office.IRibbonControl control)
         {
+            Globals.ThisAddIn.Application.StartNewUndoEntry();
+
             var effectSlide = GenerateEffectSlide();
 
             if (effectSlide == null) return;
@@ -1742,6 +1750,8 @@ namespace PowerPointLabs
 
         public void GothamBackgroundEffectClick(Office.IRibbonControl control)
         {
+            Globals.ThisAddIn.Application.StartNewUndoEntry();
+
             var effectSlide = GenerateEffectSlide();
 
             if (effectSlide == null) return;
@@ -1751,6 +1761,8 @@ namespace PowerPointLabs
 
         public void SepiaBackgroundEffectClick(Office.IRibbonControl control)
         {
+            Globals.ThisAddIn.Application.StartNewUndoEntry();
+
             var effectSlide = GenerateEffectSlide();
 
             if (effectSlide == null) return;
@@ -1760,6 +1772,8 @@ namespace PowerPointLabs
 
         public void TransparentEffectClick(Office.IRibbonControl control)
         {
+            Globals.ThisAddIn.Application.StartNewUndoEntry();
+
             var selection = PowerPointCurrentPresentationInfo.CurrentSelection;
 
             TransparentEffect(selection.ShapeRange);
