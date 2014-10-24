@@ -36,56 +36,55 @@ namespace PowerPointLabs
             try
             {
                 VerifyIsSelectionValid(selection);
-
-                return Crop(selection.ShapeRange);
             }
             catch (Exception e)
             {
                 MessageBox.Show(GetErrorMessageForErrorCode(e.Message), MessageBoxTitle);
                 return null;
             }
+
+            return Crop(selection.ShapeRange);
         }
 
         public static PowerPoint.Shape Crop(PowerPoint.ShapeRange shapeRange, double magnifyRatio = 1.0)
         {
+            if (!VerifyIsShapeRangeValid(shapeRange)) return null;
+
+            var shape = GetShapeForSelection(shapeRange);
+            TakeScreenshotProxy(shape);
+            var filledShape = FillInShapeWithScreenshot(shape, magnifyRatio);
+
+            return filledShape;
+        }
+
+        public static bool VerifyIsShapeRangeValid(PowerPoint.ShapeRange shapeRange)
+        {
             try
             {
-                VerifyIsShapeRangeValid(shapeRange);
-                var shape = GetShapeForSelection(shapeRange);
-                TakeScreenshotProxy(shape);
-                var filledShape = FillInShapeWithScreenshot(shape, magnifyRatio);
+                if (shapeRange.Count < 1)
+                {
+                    ThrowErrorCode(ErrorCodeForSelectionCountZero);
+                }
 
-                return filledShape;
+                if (!IsShapeForSelection(shapeRange))
+                {
+                    ThrowErrorCode(ErrorCodeForSelectionNonShape);
+                }
+
+                return true;
             }
             catch (Exception e)
             {
                 MessageBox.Show(GetErrorMessageForErrorCode(e.Message), MessageBoxTitle);
-                return null;
+                return false;
             }
         }
 
         private static void VerifyIsSelectionValid(PowerPoint.Selection selection)
         {
-            if (selection.Type == PowerPoint.PpSelectionType.ppSelectionShapes)
-            {
-                VerifyIsShapeRangeValid(selection.ShapeRange);
-            }
-            else
+            if (selection.Type != PowerPoint.PpSelectionType.ppSelectionShapes)
             {
                 ThrowErrorCode(ErrorCodeForSelectionCountZero);
-            }
-        }
-
-        private static void VerifyIsShapeRangeValid(PowerPoint.ShapeRange shapeRange)
-        {
-            if (shapeRange.Count < 1)
-            {
-                ThrowErrorCode(ErrorCodeForSelectionCountZero);
-            }
-
-            if (!IsShapeForSelection(shapeRange))
-            {
-                ThrowErrorCode(ErrorCodeForSelectionNonShape);
             }
         }
 

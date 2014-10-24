@@ -26,20 +26,33 @@ namespace PowerPointLabs.Models
                 return null;
             }
 
+            // here we cut-paste the shape to get a reference of those shapes
+            var oriShapeRange = refSlide.Shapes.Paste();
+
+            if (!CropToShape.VerifyIsShapeRangeValid(oriShapeRange))
+            {
+                return null;
+            }
+
             // TODO: make use of PowerPointLabs.Presentation Model!!!
             var curPresentation = PowerPointCurrentPresentationInfo.CurrentPresentation;
+            var curSlideIndex = PowerPointCurrentPresentationInfo.CurrentSlide.Index;
             var customLayout = curPresentation.SlideMaster.CustomLayouts[PpSlideLayout.ppLayoutText];
-            var rawSlide = curPresentation.Slides.AddSlide(curPresentation.Slides.Count, customLayout);
+            var rawSlide = curPresentation.Slides.AddSlide(curSlideIndex + 1, customLayout);
             var newSlide = PowerPointSlide.FromSlideFactory(rawSlide);
 
             newSlide.DeleteAllShapes();
 
             // get a copy of original cover shapes
             var copyShapeRange = newSlide.Shapes.Paste();
-            var oriShapeRange = refSlide.Shapes.Paste();
             
             // crop in the original slide and put into clipboard
-            MakeFrontImage(oriShapeRange).Cut();
+            var croppedShape = MakeFrontImage(oriShapeRange);
+
+            if (croppedShape == null) return null;
+
+            croppedShape.Cut();
+
             // swap the uncropped shapes and cropped shapes
             var pastedCrop = newSlide.Shapes.Paste();
             
