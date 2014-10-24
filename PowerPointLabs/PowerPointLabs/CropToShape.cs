@@ -36,7 +36,22 @@ namespace PowerPointLabs
             try
             {
                 VerifyIsSelectionValid(selection);
-                var shape = GetShapeForSelection(selection);
+
+                return Crop(selection.ShapeRange);
+            }
+            catch (Exception e)
+            {
+                MessageBox.Show(GetErrorMessageForErrorCode(e.Message), MessageBoxTitle);
+                return null;
+            }
+        }
+
+        public static PowerPoint.Shape Crop(PowerPoint.ShapeRange shapeRange, double magnifyRatio = 1.0)
+        {
+            try
+            {
+                VerifyIsShapeRangeValid(shapeRange);
+                var shape = GetShapeForSelection(shapeRange);
                 TakeScreenshotProxy(shape);
                 var filledShape = FillInShapeWithScreenshot(shape, magnifyRatio);
 
@@ -53,14 +68,7 @@ namespace PowerPointLabs
         {
             if (selection.Type == PowerPoint.PpSelectionType.ppSelectionShapes)
             {
-                if (selection.ShapeRange.Count < 1)
-                {
-                    ThrowErrorCode(ErrorCodeForSelectionCountZero);
-                }
-                if (!IsShapeForSelection(selection))
-                {
-                    ThrowErrorCode(ErrorCodeForSelectionNonShape);
-                }
+                VerifyIsShapeRangeValid(selection.ShapeRange);
             }
             else
             {
@@ -68,9 +76,22 @@ namespace PowerPointLabs
             }
         }
 
-        private static PowerPoint.Shape GetShapeForSelection(PowerPoint.Selection selection)
+        private static void VerifyIsShapeRangeValid(PowerPoint.ShapeRange shapeRange)
         {
-            var rangeOriginal = selection.ShapeRange;
+            if (shapeRange.Count < 1)
+            {
+                ThrowErrorCode(ErrorCodeForSelectionCountZero);
+            }
+
+            if (!IsShapeForSelection(shapeRange))
+            {
+                ThrowErrorCode(ErrorCodeForSelectionNonShape);
+            }
+        }
+
+        private static PowerPoint.Shape GetShapeForSelection(PowerPoint.ShapeRange shapeRange)
+        {
+            var rangeOriginal = shapeRange;
             //some shapes in the selection cannot be used due to 
             //Powerpoint's 'Delete-Undo' issue: when a shape got deleted or cut programmatically, and users undo,
             //then we can only read the shape's name/width/height/left/top.. for others, it'll throw an exception
@@ -287,9 +308,8 @@ namespace PowerPointLabs
             }
         }
 
-        private static bool IsShapeForSelection(PowerPoint.Selection sel)
+        private static bool IsShapeForSelection(PowerPoint.ShapeRange shapeRange)
         {
-            var shapeRange = sel.ShapeRange;
             return (from PowerPoint.Shape shape in shapeRange select shape).All(IsShape);
         }
 
