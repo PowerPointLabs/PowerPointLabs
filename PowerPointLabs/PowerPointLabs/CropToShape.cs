@@ -27,6 +27,7 @@ namespace PowerPointLabs
         private const string ErrorMessageForUndefined = TextCollection.CropToShapeText.ErrorMessageForUndefined;
 
         private const string MessageBoxTitle = "Unable to crop";
+        private const int ShapeNameLengthLimit = 32;
 
         private static readonly string SlidePicture = Path.GetTempPath() + @"\slide.png";
         private static readonly string FillInBackgroundPicture = Path.GetTempPath() + @"\currentFillInBg.png";
@@ -104,7 +105,7 @@ namespace PowerPointLabs
             var mergedShape = ungroupedRangeCopy[1];
             foreach (PowerPoint.Shape shape in ungroupedRangeCopy)
             {
-                shape.Name = shape.Name.Substring(0, 10);
+                shape.Name = shape.Name.Substring(0, ShapeNameLengthLimit);
             }
             if (ungroupedRangeCopy.Count > 1)
             {
