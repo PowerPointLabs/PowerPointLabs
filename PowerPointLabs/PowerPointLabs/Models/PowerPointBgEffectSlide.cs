@@ -2,8 +2,6 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using System.Text;
-using System.Windows.Forms;
 using ImageProcessor;
 using ImageProcessor.Imaging.Filters;
 using Core = Microsoft.Office.Core;
@@ -13,6 +11,8 @@ namespace PowerPointLabs.Models
 {
     class PowerPointBgEffectSlide : PowerPointSlide
     {
+        private static readonly string AnimatedBackgroundPath = Path.Combine(Path.GetTempPath(), "animatedSlide.png");
+
         # region Constructor
         private PowerPointBgEffectSlide(Slide slide) : base(slide)
         {
@@ -35,7 +35,7 @@ namespace PowerPointLabs.Models
             }
 
             // TODO: make use of PowerPointLabs.Presentation Model!!!
-            // add new slide into presentation slides collection
+            // add new blank slide into current slides collection
             var curPresentation = PowerPointCurrentPresentationInfo.CurrentPresentation;
             var curSlideIndex = PowerPointCurrentPresentationInfo.CurrentSlide.Index;
             var customLayout = curPresentation.SlideMaster.CustomLayouts[PpSlideLayout.ppLayoutText];
@@ -46,6 +46,15 @@ namespace PowerPointLabs.Models
 
             // get a copy of original cover shapes
             var copyShapeRange = newSlide.Shapes.Paste();
+            
+            // make the range invisible before animated the slide
+            oriShapeRange.Visible = Core.MsoTriState.msoFalse;
+            copyShapeRange.Visible = Core.MsoTriState.msoFalse;
+
+            MakeAnimatedBackground(newSlide, refSlide);
+
+            copyShapeRange.Visible = Core.MsoTriState.msoCTrue;
+            oriShapeRange.Visible = Core.MsoTriState.msoCTrue;
             
             // crop in the original slide and put into clipboard
             var croppedShape = MakeFrontImage(oriShapeRange);
@@ -71,31 +80,51 @@ namespace PowerPointLabs.Models
         # region API
         public void BlurBackground()
         {
-            MakeBackgroundImage(null);
+            AddBackgroundImage(null);
         }
 
         public void GreyScaleBackground()
         {
-            MakeBackgroundImage(MatrixFilters.GreyScale);
+            AddBackgroundImage(MatrixFilters.GreyScale);
         }
 
         public void BlackWhiteBackground()
         {
-            MakeBackgroundImage(MatrixFilters.BlackWhite);
+            AddBackgroundImage(MatrixFilters.BlackWhite);
         }
 
         public void SepiaBackground()
         {
-            MakeBackgroundImage(MatrixFilters.Sepia);
+            AddBackgroundImage(MatrixFilters.Sepia);
         }
 
         public void GothamBackground()
         {
-            MakeBackgroundImage(MatrixFilters.Gotham);
+            AddBackgroundImage(MatrixFilters.Gotham);
         }
         # endregion
 
         # region Helper Functions
+        private void AddBackgroundImage(IMatrixFilter filter)
+        {
+            using (var imageFactory = new ImageFactory())
+            {
+                var image = imageFactory.Load(AnimatedBackgroundPath);
+
+                image = filter == null ? image.GaussianBlur(20) : image.Filter(filter);
+
+                image.Save(AnimatedBackgroundPath);
+            }
+
+            var newBackground = Shapes.AddPicture(AnimatedBackgroundPath, Core.MsoTriState.msoFalse,
+                                                  Core.MsoTriState.msoTrue,
+                                                  0, 0,
+                                                  PowerPointCurrentPresentationInfo.SlideWidth,
+                                                  PowerPointCurrentPresentationInfo.SlideHeight);
+
+            newBackground.ZOrder(Core.MsoZOrderCmd.msoSendToBack);
+        }
+
         private static Shape MakeFrontImage(ShapeRange shapeRange)
         {
             // soften cropped shape's edge
@@ -104,25 +133,22 @@ namespace PowerPointLabs.Models
             return CropToShape.Crop(shapeRange);
         }
 
-        private void MakeBackgroundImage(IMatrixFilter filter)
+        private static void MakeAnimatedBackground(PowerPointSlide curSlide, Slide refSlide)
         {
-            var bgPicSaveTempPath = Path.Combine(Path.GetTempPath(), "slide.png");
+            // copy all shapes from ref slide to current slide
+            refSlide.Shapes.Range().Copy();
+            var copiedShapes = curSlide.Shapes.Paste();
 
-            using (var imageFactory = new ImageFactory())
+            foreach (var shape in copiedShapes.Cast<Shape>().Where(curSlide.HasExitAnimation))
             {
-                var image = imageFactory.Load(bgPicSaveTempPath);
-
-                image = filter == null ? image.GaussianBlur(20) : image.Filter(filter);
-
-                image.Save(bgPicSaveTempPath);
+                shape.Delete();
             }
 
-            var newBackground = Shapes.AddPicture(bgPicSaveTempPath, Core.MsoTriState.msoFalse, Core.MsoTriState.msoTrue,
-                                                  0, 0,
-                                                  PowerPointCurrentPresentationInfo.SlideWidth,
-                                                  PowerPointCurrentPresentationInfo.SlideHeight);
+            curSlide.MoveMotionAnimation();
 
-            newBackground.ZOrder(Core.MsoZOrderCmd.msoSendToBack);
+            Utils.Graphics.ExportSlide(curSlide, AnimatedBackgroundPath);
+            
+            copiedShapes.Delete();
         }
         # endregion
     }

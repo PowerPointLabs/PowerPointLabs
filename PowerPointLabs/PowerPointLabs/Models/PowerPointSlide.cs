@@ -13,7 +13,7 @@ using PowerPoint = Microsoft.Office.Interop.PowerPoint;
 
 namespace PowerPointLabs.Models
 {
-    class PowerPointSlide
+    public class PowerPointSlide
     {
         protected readonly Slide _slide;
         private List<PowerPoint.MsoAnimEffect> entryEffects = new List<PowerPoint.MsoAnimEffect>()

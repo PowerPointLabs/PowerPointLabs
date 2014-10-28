@@ -59,6 +59,11 @@ namespace PowerPointLabs.Utils
                          (int) GetDesiredExportHeight());
         }
 
+        public static void ExportSlide(PowerPointSlide slide, string exportPath)
+        {
+            ExportSlide(slide.GetNativeSlide(), exportPath);
+        }
+
         public static void SuspendDrawing(Control control)
         {
             Native.SendMessage(control.Handle, (uint) Native.Message.WM_SETREDRAW, IntPtr.Zero, IntPtr.Zero);
