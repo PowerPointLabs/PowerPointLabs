@@ -27,7 +27,6 @@ namespace PowerPointLabs
         private const string ErrorMessageForUndefined = TextCollection.CropToShapeText.ErrorMessageForUndefined;
 
         private const string MessageBoxTitle = "Unable to crop";
-        private const int ShapeNameLengthLimit = 32;
 
         private static readonly string SlidePicture = Path.GetTempPath() + @"\slide.png";
         private static readonly string FillInBackgroundPicture = Path.GetTempPath() + @"\currentFillInBg.png";
@@ -49,13 +48,21 @@ namespace PowerPointLabs
 
         public static PowerPoint.Shape Crop(PowerPoint.ShapeRange shapeRange, double magnifyRatio = 1.0)
         {
-            if (!VerifyIsShapeRangeValid(shapeRange)) return null;
+            try
+            {
+                if (!VerifyIsShapeRangeValid(shapeRange)) return null;
 
-            var shape = GetShapeForSelection(shapeRange);
-            TakeScreenshotProxy(shape);
-            var filledShape = FillInShapeWithScreenshot(shape, magnifyRatio);
+                var shape = GetShapeForSelection(shapeRange);
+                TakeScreenshotProxy(shape);
+                var filledShape = FillInShapeWithScreenshot(shape, magnifyRatio);
 
-            return filledShape;
+                return filledShape;
+            }
+            catch (Exception e)
+            {
+                MessageBox.Show(GetErrorMessageForErrorCode(e.Message), MessageBoxTitle);
+                return null;
+            }
         }
 
         public static bool VerifyIsShapeRangeValid(PowerPoint.ShapeRange shapeRange)
@@ -103,10 +110,6 @@ namespace PowerPointLabs
             var ungroupedRangeCopy = UngroupAllForShapeRange(rangeCopy);
 
             var mergedShape = ungroupedRangeCopy[1];
-            foreach (PowerPoint.Shape shape in ungroupedRangeCopy)
-            {
-                shape.Name = shape.Name.Substring(0, ShapeNameLengthLimit);
-            }
             if (ungroupedRangeCopy.Count > 1)
             {
                 mergedShape = ungroupedRangeCopy.Group();
