@@ -48,13 +48,21 @@ namespace PowerPointLabs
 
         public static PowerPoint.Shape Crop(PowerPoint.ShapeRange shapeRange, double magnifyRatio = 1.0)
         {
-            if (!VerifyIsShapeRangeValid(shapeRange)) return null;
+            try
+            {
+                if (!VerifyIsShapeRangeValid(shapeRange)) return null;
 
-            var shape = GetShapeForSelection(shapeRange);
-            TakeScreenshotProxy(shape);
-            var filledShape = FillInShapeWithScreenshot(shape, magnifyRatio);
+                var shape = GetShapeForSelection(shapeRange);
+                TakeScreenshotProxy(shape);
+                var filledShape = FillInShapeWithScreenshot(shape, magnifyRatio);
 
-            return filledShape;
+                return filledShape;
+            }
+            catch (Exception e)
+            {
+                MessageBox.Show(GetErrorMessageForErrorCode(e.Message), MessageBoxTitle);
+                return null;
+            }
         }
 
         public static bool VerifyIsShapeRangeValid(PowerPoint.ShapeRange shapeRange)

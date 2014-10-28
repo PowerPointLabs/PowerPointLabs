@@ -35,6 +35,7 @@ namespace PowerPointLabs.Models
             }
 
             // TODO: make use of PowerPointLabs.Presentation Model!!!
+            // add new slide into presentation slides collection
             var curPresentation = PowerPointCurrentPresentationInfo.CurrentPresentation;
             var curSlideIndex = PowerPointCurrentPresentationInfo.CurrentSlide.Index;
             var customLayout = curPresentation.SlideMaster.CustomLayouts[PpSlideLayout.ppLayoutText];
