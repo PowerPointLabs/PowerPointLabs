@@ -748,10 +748,6 @@ namespace PowerPointLabs
             setAsDefaultToolStripMenuItem.Text = TextCollection.CustomShapeCategoryContextStripSetAsDefaultCategory;
             settingsToolStripMenuItem.Text = TextCollection.CustomShapeCategoryContextStripCategorySettings;
             importCategoryToolStripMenuItem.Text = TextCollection.CustomShapeCategoryContextStripImportCategory;
-            
-            // add a dummy entry to show right arrow
-            moveShapeToolStripMenuItem.DropDownItems.Add("");
-            copyToToolStripMenuItem.DropDownItems.Add("");
 
             foreach (ToolStripMenuItem contextMenu in shapeContextMenuStrip.Items)
             {
@@ -1015,13 +1011,6 @@ namespace PowerPointLabs
 
         private void CopyContextMenuStripOnEvent(object sender, EventArgs e)
         {
-            if (copyToToolStripMenuItem.Tag != null &&
-                (string)copyToToolStripMenuItem.Tag == CurrentCategory)
-            {
-                copyToToolStripMenuItem.ShowDropDown();
-                return;
-            }
-
             copyToToolStripMenuItem.DropDownItems.Clear();
 
             foreach (string category in _categoryBinding.List)
@@ -1308,13 +1297,6 @@ namespace PowerPointLabs
 
         private void MoveContextMenuStripOnEvent(object sender, EventArgs e)
         {
-            if (moveShapeToolStripMenuItem.Tag != null &&
-                (string)moveShapeToolStripMenuItem.Tag == CurrentCategory)
-            {
-                moveShapeToolStripMenuItem.ShowDropDown();
-                return;
-            }
-
             moveShapeToolStripMenuItem.DropDownItems.Clear();
 
             foreach (string category in _categoryBinding.List)
@@ -1390,6 +1372,27 @@ namespace PowerPointLabs
             if (item.Name.Contains("add"))
             {
                 ContextMenuStripAddClicked();
+            }
+        }
+
+        private void ThumbnailContextMenuStripOpening(object sender, System.ComponentModel.CancelEventArgs e)
+        {
+            if (Categories.Count < 2)
+            {
+                moveShapeToolStripMenuItem.Enabled = false;
+                copyToToolStripMenuItem.Enabled = false;
+
+                moveShapeToolStripMenuItem.DropDownItems.Clear();
+                copyToToolStripMenuItem.DropDownItems.Clear();
+            }
+            else
+            {
+                moveShapeToolStripMenuItem.Enabled = true;
+                copyToToolStripMenuItem.Enabled = true;
+
+                // add a dummy entry to show right arrow
+                moveShapeToolStripMenuItem.DropDownItems.Add("");
+                copyToToolStripMenuItem.DropDownItems.Add("");
             }
         }
 
