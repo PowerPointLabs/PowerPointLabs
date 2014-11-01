@@ -35,23 +35,20 @@ namespace PowerPointLabs.Models
             }
 
             // TODO: make use of PowerPointLabs.Presentation Model!!!
-            // add new blank slide into current slides collection
-            var curPresentation = PowerPointCurrentPresentationInfo.CurrentPresentation;
-            var curSlideIndex = PowerPointCurrentPresentationInfo.CurrentSlide.Index;
-            var customLayout = curPresentation.SlideMaster.CustomLayouts[PpSlideLayout.ppLayoutText];
-            var rawSlide = curPresentation.Slides.AddSlide(curSlideIndex + 1, customLayout);
-            var newSlide = PowerPointSlide.FromSlideFactory(rawSlide);
-
-            newSlide.DeleteAllShapes();
-
+            // cut the original shape cover again and duplicate the slide
+            // here the slide will be duplicated without the original shape cover
+            oriShapeRange.Cut();
+            var newSlide = PowerPointSlide.FromSlideFactory(refSlide.Duplicate()[1]);
+            
             // get a copy of original cover shapes
             var copyShapeRange = newSlide.Shapes.Paste();
+            // paste the original shape cover back
+            oriShapeRange = refSlide.Shapes.Paste();
             
             // make the range invisible before animated the slide
-            oriShapeRange.Visible = Core.MsoTriState.msoFalse;
             copyShapeRange.Visible = Core.MsoTriState.msoFalse;
 
-            MakeAnimatedBackground(newSlide, refSlide);
+            MakeAnimatedBackground(newSlide);
 
             copyShapeRange.Visible = Core.MsoTriState.msoCTrue;
             oriShapeRange.Visible = Core.MsoTriState.msoCTrue;
@@ -73,7 +70,7 @@ namespace PowerPointLabs.Models
             copyShapeRange.Cut();
             refSlide.Shapes.Paste().Select();
 
-            return new PowerPointBgEffectSlide(rawSlide);
+            return new PowerPointBgEffectSlide(newSlide.GetNativeSlide());
         }
         # endregion
 
@@ -133,13 +130,9 @@ namespace PowerPointLabs.Models
             return CropToShape.Crop(shapeRange);
         }
 
-        private static void MakeAnimatedBackground(PowerPointSlide curSlide, Slide refSlide)
+        private static void MakeAnimatedBackground(PowerPointSlide curSlide)
         {
-            // copy all shapes from ref slide to current slide
-            refSlide.Shapes.Range().Copy();
-            var copiedShapes = curSlide.Shapes.Paste();
-
-            foreach (var shape in copiedShapes.Cast<Shape>().Where(curSlide.HasExitAnimation))
+            foreach (var shape in curSlide.Shapes.Cast<Shape>().Where(curSlide.HasExitAnimation))
             {
                 shape.Delete();
             }
@@ -147,8 +140,13 @@ namespace PowerPointLabs.Models
             curSlide.MoveMotionAnimation();
 
             Utils.Graphics.ExportSlide(curSlide, AnimatedBackgroundPath);
+
+            var visibleShape = curSlide.Shapes.Cast<Shape>().Where(x => x.Visible == Core.MsoTriState.msoTrue).ToList();
             
-            copiedShapes.Delete();
+            foreach (var shape in visibleShape)
+            {
+                shape.Delete();
+            }
         }
         # endregion
     }
