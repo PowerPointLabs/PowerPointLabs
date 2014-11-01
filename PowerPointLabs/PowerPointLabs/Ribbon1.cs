@@ -818,6 +818,67 @@ namespace PowerPointLabs
             }
         }
 
+        public Bitmap GetEffectsLabImage(Office.IRibbonControl control)
+        {
+            try
+            {
+                return new System.Drawing.Bitmap(Properties.Resources.EffectsLab);
+            }
+            catch (Exception e)
+            {
+                PowerPointLabsGlobals.LogException(e, "GetEffectsLabImage");
+                throw;
+            }
+        }
+        public Bitmap GetMakeTransparentImage(Office.IRibbonControl control)
+        {
+            try
+            {
+                return new System.Drawing.Bitmap(Properties.Resources.MakeTransparent);
+            }
+            catch (Exception e)
+            {
+                PowerPointLabsGlobals.LogException(e, "GetMakeTransparentImage");
+                throw;
+            }
+        }
+        public Bitmap GetMagnifyImage(Office.IRibbonControl control)
+        {
+            try
+            {
+                return new System.Drawing.Bitmap(Properties.Resources.Magnify);
+            }
+            catch (Exception e)
+            {
+                PowerPointLabsGlobals.LogException(e, "GetMagnifyImage");
+                throw;
+            }
+        }
+        public Bitmap GetBlurRemainderImage(Office.IRibbonControl control)
+        {
+            try
+            {
+                return new System.Drawing.Bitmap(Properties.Resources.BlurRemainder);
+            }
+            catch (Exception e)
+            {
+                PowerPointLabsGlobals.LogException(e, "GetBlurRemainderImage");
+                throw;
+            }
+        }
+        public Bitmap GetRecolorRemainderImage(Office.IRibbonControl control)
+        {
+            try
+            {
+                return new System.Drawing.Bitmap(Properties.Resources.RecolorRemainder);
+            }
+            catch (Exception e)
+            {
+                PowerPointLabsGlobals.LogException(e, "GetRecolorRemainderImage");
+                throw;
+            }
+        }
+
         public Bitmap GetAboutImage(Office.IRibbonControl control)
         {
             try
