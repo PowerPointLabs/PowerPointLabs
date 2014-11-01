@@ -1768,12 +1768,22 @@ namespace PowerPointLabs
                 return;
             }
 
-            var croppedShape = CropToShape.Crop(selection);
+            try
+            {
+                var croppedShape = CropToShape.Crop(selection, handleError: false);
 
-            croppedShape.Left -= 12;
-            croppedShape.Top -= 12;
+                croppedShape.Left -= 12;
+                croppedShape.Top -= 12;
 
-            MagnifyGlassEffect(croppedShape, 1.4f);
+                MagnifyGlassEffect(croppedShape, 1.4f);
+            }
+            catch (Exception e)
+            {
+                var errorMessage = CropToShape.GetErrorMessageForErrorCode(e.Message);
+                errorMessage = errorMessage.Replace("Crop To Shape", "Magnify");
+
+                MessageBox.Show(errorMessage);
+            }
         }
 
         public void BlurBackgroundEffectClick(Office.IRibbonControl control)
@@ -1883,9 +1893,14 @@ namespace PowerPointLabs
 
                 return effectSlide;
             }
-            catch (Exception)
+            catch (COMException e)
             {
                 MessageBox.Show("Please select a shape");
+                return null;
+            }
+            catch (Exception e)
+            {
+                ErrorDialogWrapper.ShowDialog("Error", e.Message, e);
                 return null;
             }
         }

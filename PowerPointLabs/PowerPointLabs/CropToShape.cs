@@ -31,7 +31,8 @@ namespace PowerPointLabs
         private static readonly string SlidePicture = Path.GetTempPath() + @"\slide.png";
         private static readonly string FillInBackgroundPicture = Path.GetTempPath() + @"\currentFillInBg.png";
 
-        public static PowerPoint.Shape Crop(PowerPoint.Selection selection, double magnifyRatio = 1.0)
+        public static PowerPoint.Shape Crop(PowerPoint.Selection selection, double magnifyRatio = 1.0,
+                                            bool handleError = true)
         {
             try
             {
@@ -39,14 +40,20 @@ namespace PowerPointLabs
             }
             catch (Exception e)
             {
-                MessageBox.Show(GetErrorMessageForErrorCode(e.Message), MessageBoxTitle);
-                return null;
+                if (handleError)
+                {
+                    MessageBox.Show(GetErrorMessageForErrorCode(e.Message), MessageBoxTitle);
+                    return null;
+                }
+
+                throw;
             }
 
-            return Crop(selection.ShapeRange);
+            return Crop(selection.ShapeRange, handleError: handleError);
         }
 
-        public static PowerPoint.Shape Crop(PowerPoint.ShapeRange shapeRange, double magnifyRatio = 1.0)
+        public static PowerPoint.Shape Crop(PowerPoint.ShapeRange shapeRange, double magnifyRatio = 1.0,
+                                            bool handleError = true)
         {
             try
             {
@@ -60,12 +67,17 @@ namespace PowerPointLabs
             }
             catch (Exception e)
             {
-                MessageBox.Show(GetErrorMessageForErrorCode(e.Message), MessageBoxTitle);
-                return null;
+                if (handleError)
+                {
+                    MessageBox.Show(GetErrorMessageForErrorCode(e.Message), MessageBoxTitle);
+                    return null;
+                }
+
+                throw;
             }
         }
 
-        public static bool VerifyIsShapeRangeValid(PowerPoint.ShapeRange shapeRange)
+        private static bool VerifyIsShapeRangeValid(PowerPoint.ShapeRange shapeRange)
         {
             try
             {
@@ -217,7 +229,7 @@ namespace PowerPointLabs
             //When shape's name is the default one, its copy's name will be different (e.g. index got changed).
             //When shape's name is not the default one, its copy's name will be the same as the original shape's
             //use Guid here to ensure that name is unique
-            var appendString = Guid.NewGuid().ToString();
+            var appendString = Guid.NewGuid().ToString() + "temp";
             ModifyNameForShapeRange(rangeOriginal, appendString);
 
             rangeOriginal.Copy();
@@ -263,7 +275,7 @@ namespace PowerPointLabs
             return cond1 && cond2 && cond3 && cond4;
         }
 
-        private static PowerPoint.ShapeRange UngroupAllForShapeRange(IEnumerable range)
+        public static PowerPoint.ShapeRange UngroupAllForShapeRange(IEnumerable range, bool remove = true)
         {
             var ungroupedShapeNames = new List<string>();
             var queue = new Queue<PowerPoint.Shape>();
@@ -285,12 +297,20 @@ namespace PowerPointLabs
                 }
                 else if ((int)shape.Rotation != 0)
                 {
-                    RemoveShapesForUngroupAll(shape, ungroupedShapeNames, queue);
+                    if (remove)
+                    {
+                        RemoveShapesForUngroupAll(shape, ungroupedShapeNames, queue);
+                    }
+
                     ThrowErrorCode(ErrorCodeForRotationNonZero);
                 }
                 else if (!IsShape(shape))
                 {
-                    RemoveShapesForUngroupAll(shape, ungroupedShapeNames, queue);
+                    if (remove)
+                    {
+                        RemoveShapesForUngroupAll(shape, ungroupedShapeNames, queue);
+                    }
+
                     ThrowErrorCode(ErrorCodeForSelectionNonShape);
                 }
                 else
@@ -334,7 +354,7 @@ namespace PowerPointLabs
 
         private static void IgnoreExceptionThrown(){}
 
-        private static string GetErrorMessageForErrorCode(string errorCode)
+        public static string GetErrorMessageForErrorCode(string errorCode)
         {
             var errorCodeInteger = -1;
             try
