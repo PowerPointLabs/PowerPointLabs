@@ -689,7 +689,18 @@
   <ItemGroup>
     <None Include="Resources\HighlightBackgroundContext.png" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <None Include="Resources\EffectsLab.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\BlurRemainder.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\RecolorRemainder.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\MakeTransparent.png" />
+  </ItemGroup>
   <!-- Include the build rules for a C# project. -->
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
