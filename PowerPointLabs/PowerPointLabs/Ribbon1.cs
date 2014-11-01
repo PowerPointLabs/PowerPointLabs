@@ -1889,8 +1889,16 @@ namespace PowerPointLabs
 
         private void ShapeTransparencyHandler(PowerPoint.Shape shape)
         {
-            shape.Fill.Transparency = 0.5f;
             shape.Line.Transparency = 0.5f;
+
+            try
+            {
+                shape.Fill.Transparency = 0.5f;
+            }
+            catch (Exception e)
+            {
+                return;
+            }
         }
 
         # endregion
