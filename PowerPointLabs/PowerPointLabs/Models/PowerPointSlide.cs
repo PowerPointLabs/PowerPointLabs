@@ -748,7 +748,9 @@ namespace PowerPointLabs.Models
 
         private static void DeleteEffectsForShape(Shape shape, IEnumerable<Effect> mainEffects)
         {
-            foreach (Effect e in mainEffects.Where(e => e.Shape.Equals(shape)))
+            var shapeToDeleteList = mainEffects.Where(e => e.Shape.Equals(shape)).ToList();
+            
+            foreach (Effect e in shapeToDeleteList)
             {
                 e.Delete();
             }
