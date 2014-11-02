@@ -1891,6 +1891,8 @@ namespace PowerPointLabs
                 var effectSlide =
                     PowerPointBgEffectSlide.FromSlideFactory(curSlide.GetNativeSlide()) as PowerPointBgEffectSlide;
 
+                PowerPointLabsGlobals.AddAckSlide();
+
                 return effectSlide;
             }
             catch (COMException e)
