@@ -20,6 +20,11 @@ namespace PowerPointLabs.Models
             AddPowerPointLabsIndicator().ZOrder(Core.MsoZOrderCmd.msoBringToFront);
         }
 
+        public static PowerPointSlide FromSlideFactory(PowerPointSlide refSlide)
+        {
+            return FromSlideFactory(refSlide.GetNativeSlide());
+        }
+
         public new static PowerPointSlide FromSlideFactory(Slide refSlide)
         {
             if (refSlide == null)
@@ -29,6 +34,12 @@ namespace PowerPointLabs.Models
 
             // here we cut-paste the shape to get a reference of those shapes
             var oriShapeRange = refSlide.Shapes.Paste();
+
+            // preprocess the shapes, eliminate animations for shapes
+            foreach (Shape shape in oriShapeRange)
+            {
+                PowerPointSlide.FromSlideFactory(refSlide).RemoveAnimationsForShape(shape);
+            }
 
             // TODO: make use of PowerPointLabs.Presentation Model!!!
             // cut the original shape cover again and duplicate the slide
@@ -48,56 +59,8 @@ namespace PowerPointLabs.Models
 
             copyShapeRange.Visible = Core.MsoTriState.msoCTrue;
             oriShapeRange.Visible = Core.MsoTriState.msoCTrue;
-            
-            try
-            {
-                // crop in the original slide and put into clipboard
-                var croppedShape = MakeFrontImage(oriShapeRange);
 
-                croppedShape.Cut();
-
-                // swap the uncropped shapes and cropped shapes
-                var pastedCrop = newSlide.Shapes.Paste();
-
-                // calibrate pasted shapes
-                pastedCrop.Left -= 12;
-                pastedCrop.Top -= 12;
-
-                copyShapeRange.Cut();
-                oriShapeRange = refSlide.Shapes.Paste();
-
-                oriShapeRange.Fill.ForeColor.RGB = 0xaaaaaa;
-                oriShapeRange.Fill.Transparency = 0.7f;
-                oriShapeRange.Line.Visible = Core.MsoTriState.msoTrue;
-                oriShapeRange.Line.ForeColor.RGB = 0x000000;
-
-                Utils.Graphics.MakeShapeViewTimeInvisible(oriShapeRange, refSlide);
-
-                oriShapeRange.Select();
-
-                // finally add transition to the new slide
-                newSlide.Transition.EntryEffect = PpEntryEffect.ppEffectFade;
-
-                return new PowerPointBgEffectSlide(newSlide.GetNativeSlide());
-            }
-            catch (Exception e)
-            {
-                var errorMessage = CropToShape.GetErrorMessageForErrorCode(e.Message);
-                errorMessage = errorMessage.Replace("Crop To Shape", "Blur/Recolor Remainder");
-
-                foreach (var shape in refSlide.Shapes.Cast<Shape>().Where(IsOldShape).ToList())
-                {
-                    shape.Delete();
-                }
-
-                copyShapeRange.Cut();
-                refSlide.Shapes.Paste().Select();
-                newSlide.Delete();
-
-                MessageBox.Show(errorMessage);
-
-                return null;
-            }
+            return PrepareForeground(oriShapeRange, copyShapeRange, refSlide, newSlide);
         }
         # endregion
 
@@ -151,7 +114,10 @@ namespace PowerPointLabs.Models
 
         private static Shape MakeFrontImage(ShapeRange shapeRange)
         {
-            shapeRange.SoftEdge.Type = Core.MsoSoftEdgeType.msoSoftEdgeType5;
+            foreach (Shape shape in shapeRange)
+            {
+                shape.SoftEdge.Radius = Math.Min(shape.Width, shape.Height) * 0.15f;
+            }
 
             var croppedShape = CropToShape.Crop(shapeRange, handleError: false);
 
@@ -182,6 +148,60 @@ namespace PowerPointLabs.Models
             // TODO: use more sophisticated way to determine if a shape is an old shape
             return shape.Name.Length > 20 &&
                    shape.Name.Contains("temp");
+        }
+
+        private static PowerPointBgEffectSlide PrepareForeground(ShapeRange oriShapeRange, ShapeRange copyShapeRange,
+                                                                 Slide refSlide, PowerPointSlide newSlide)
+        {
+            try
+            {
+                // crop in the original slide and put into clipboard
+                var croppedShape = MakeFrontImage(oriShapeRange);
+
+                croppedShape.Cut();
+
+                // swap the uncropped shapes and cropped shapes
+                var pastedCrop = newSlide.Shapes.Paste();
+
+                // calibrate pasted shapes
+                pastedCrop.Left -= 12;
+                pastedCrop.Top -= 12;
+
+                copyShapeRange.Cut();
+                oriShapeRange = refSlide.Shapes.Paste();
+
+                oriShapeRange.Fill.ForeColor.RGB = 0xaaaaaa;
+                oriShapeRange.Fill.Transparency = 0.7f;
+                oriShapeRange.Line.Visible = Core.MsoTriState.msoTrue;
+                oriShapeRange.Line.ForeColor.RGB = 0x000000;
+
+                Utils.Graphics.MakeShapeViewTimeInvisible(oriShapeRange, refSlide);
+
+                oriShapeRange.Select();
+
+                // finally add transition to the new slide
+                newSlide.Transition.EntryEffect = PpEntryEffect.ppEffectFadeSmoothly;
+
+                return new PowerPointBgEffectSlide(newSlide.GetNativeSlide());
+            }
+            catch (Exception e)
+            {
+                var errorMessage = CropToShape.GetErrorMessageForErrorCode(e.Message);
+                errorMessage = errorMessage.Replace("Crop To Shape", "Blur/Recolor Remainder");
+
+                foreach (var shape in refSlide.Shapes.Cast<Shape>().Where(IsOldShape).ToList())
+                {
+                    shape.Delete();
+                }
+
+                copyShapeRange.Cut();
+                refSlide.Shapes.Paste().Select();
+                newSlide.Delete();
+
+                MessageBox.Show(errorMessage);
+
+                return null;
+            }
         }
         # endregion
     }

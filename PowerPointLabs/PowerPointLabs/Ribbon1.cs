@@ -1889,7 +1889,7 @@ namespace PowerPointLabs
                 shapeRange.Cut();
 
                 var effectSlide =
-                    PowerPointBgEffectSlide.FromSlideFactory(curSlide.GetNativeSlide()) as PowerPointBgEffectSlide;
+                    PowerPointBgEffectSlide.FromSlideFactory(curSlide) as PowerPointBgEffectSlide;
 
                 PowerPointLabsGlobals.AddAckSlide();
 
