@@ -15,6 +15,69 @@ namespace PowerPointLabs.Utils
         # endregion
 
         # region API
+        # region Shape
+        public static void ExportShape(Shape shape, string exportPath)
+        {
+            var slideWidth = (int)PowerPointCurrentPresentationInfo.SlideWidth;
+            var slideHeight = (int)PowerPointCurrentPresentationInfo.SlideHeight;
+
+            shape.Export(exportPath, PpShapeFormat.ppShapeFormatPNG, slideWidth, slideHeight, PpExportMode.ppScaleToFit);
+        }
+
+        public static void MakeShapeViewTimeInvisible(Shape shape, Slide curSlide)
+        {
+            var sequence = curSlide.TimeLine.MainSequence;
+
+            var effectAppear = sequence.AddEffect(shape, MsoAnimEffect.msoAnimEffectAppear,
+                                                  MsoAnimateByLevel.msoAnimateLevelNone,
+                                                  MsoAnimTriggerType.msoAnimTriggerWithPrevious);
+            effectAppear.Timing.Duration = 0;
+
+            var effectDisappear = sequence.AddEffect(shape, MsoAnimEffect.msoAnimEffectAppear,
+                                                     MsoAnimateByLevel.msoAnimateLevelNone,
+                                                     MsoAnimTriggerType.msoAnimTriggerWithPrevious);
+            effectDisappear.Exit = Microsoft.Office.Core.MsoTriState.msoTrue;
+            effectDisappear.Timing.Duration = 0;
+
+            effectAppear.MoveTo(1);
+            effectDisappear.MoveTo(2);
+        }
+
+        public static void MakeShapeViewTimeInvisible(Shape shape, PowerPointSlide curSlide)
+        {
+            MakeShapeViewTimeInvisible(shape, curSlide.GetNativeSlide());
+        }
+
+        public static void MakeShapeViewTimeInvisible(ShapeRange shapeRange, Slide curSlide)
+        {
+            foreach (Shape shape in shapeRange)
+            {
+                MakeShapeViewTimeInvisible(shape, curSlide);
+            }
+        }
+
+        public static void MakeShapeViewTimeInvisible(ShapeRange shapeRange, PowerPointSlide curSlide)
+        {
+            MakeShapeViewTimeInvisible(shapeRange, curSlide.GetNativeSlide());
+        }
+        # endregion
+
+        # region Slide
+        public static void ExportSlide(Slide slide, string exportPath)
+        {
+            slide.Export(exportPath,
+                         "PNG",
+                         (int) GetDesiredExportWidth(),
+                         (int) GetDesiredExportHeight());
+        }
+
+        public static void ExportSlide(PowerPointSlide slide, string exportPath)
+        {
+            ExportSlide(slide.GetNativeSlide(), exportPath);
+        }
+        # endregion
+
+        # region Bitmap
         public static Bitmap CreateThumbnailImage(Image oriImage, int width, int height)
         {
             var scalingRatio = CalculateScalingRatio(oriImage.Size, new Size(width, height));
@@ -42,28 +105,9 @@ namespace PowerPointLabs.Utils
 
             return thumbnail;
         }
+        # endregion
 
-        public static void ExportShape(Shape shape, string exportPath)
-        {
-            var slideWidth = (int)PowerPointCurrentPresentationInfo.SlideWidth;
-            var slideHeight = (int)PowerPointCurrentPresentationInfo.SlideHeight;
-
-            shape.Export(exportPath, PpShapeFormat.ppShapeFormatPNG, slideWidth, slideHeight, PpExportMode.ppScaleToFit);
-        }
-
-        public static void ExportSlide(Slide slide, string exportPath)
-        {
-            slide.Export(exportPath,
-                         "PNG",
-                         (int) GetDesiredExportWidth(),
-                         (int) GetDesiredExportHeight());
-        }
-
-        public static void ExportSlide(PowerPointSlide slide, string exportPath)
-        {
-            ExportSlide(slide.GetNativeSlide(), exportPath);
-        }
-
+        # region GDI+
         public static void SuspendDrawing(Control control)
         {
             Native.SendMessage(control.Handle, (uint) Native.Message.WM_SETREDRAW, IntPtr.Zero, IntPtr.Zero);
@@ -74,6 +118,7 @@ namespace PowerPointLabs.Utils
             Native.SendMessage(control.Handle, (uint) Native.Message.WM_SETREDRAW, new IntPtr(1), IntPtr.Zero);
             control.Refresh();
         }
+        # endregion
         # endregion
 
         # region Color API

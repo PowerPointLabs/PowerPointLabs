@@ -548,16 +548,7 @@ namespace PowerPointLabs.Models
             indicatorShape.Height = 84;
             indicatorShape.Name = "PPIndicator" + DateTime.Now.ToString("yyyyMMddHHmmssffff");
 
-            PowerPoint.Effect effectAppear = null;
-            PowerPoint.Effect effectDisappear = null;
-            PowerPoint.Sequence sequence = _slide.TimeLine.MainSequence;
-
-            effectAppear = sequence.AddEffect(indicatorShape, PowerPoint.MsoAnimEffect.msoAnimEffectAppear, PowerPoint.MsoAnimateByLevel.msoAnimateLevelNone, PowerPoint.MsoAnimTriggerType.msoAnimTriggerWithPrevious);
-            effectAppear.Timing.Duration = 0;
-
-            effectDisappear = sequence.AddEffect(indicatorShape, PowerPoint.MsoAnimEffect.msoAnimEffectAppear, PowerPoint.MsoAnimateByLevel.msoAnimateLevelNone, PowerPoint.MsoAnimTriggerType.msoAnimTriggerWithPrevious);
-            effectDisappear.Exit = Office.MsoTriState.msoTrue;
-            effectDisappear.Timing.Duration = 0;
+            Utils.Graphics.MakeShapeViewTimeInvisible(indicatorShape, _slide);
 
             return indicatorShape;
         }

@@ -49,9 +49,9 @@ namespace PowerPointLabs.Models
             copyShapeRange.Visible = Core.MsoTriState.msoCTrue;
             oriShapeRange.Visible = Core.MsoTriState.msoCTrue;
             
-            // crop in the original slide and put into clipboard
             try
             {
+                // crop in the original slide and put into clipboard
                 var croppedShape = MakeFrontImage(oriShapeRange);
 
                 croppedShape.Cut();
@@ -64,7 +64,19 @@ namespace PowerPointLabs.Models
                 pastedCrop.Top -= 12;
 
                 copyShapeRange.Cut();
-                refSlide.Shapes.Paste().Select();
+                oriShapeRange = refSlide.Shapes.Paste();
+
+                oriShapeRange.Fill.ForeColor.RGB = 0xaaaaaa;
+                oriShapeRange.Fill.Transparency = 0.7f;
+                oriShapeRange.Line.Visible = Core.MsoTriState.msoTrue;
+                oriShapeRange.Line.ForeColor.RGB = 0x000000;
+
+                Utils.Graphics.MakeShapeViewTimeInvisible(oriShapeRange, refSlide);
+
+                oriShapeRange.Select();
+
+                // finally add transition to the new slide
+                newSlide.Transition.EntryEffect = PpEntryEffect.ppEffectFade;
 
                 return new PowerPointBgEffectSlide(newSlide.GetNativeSlide());
             }
