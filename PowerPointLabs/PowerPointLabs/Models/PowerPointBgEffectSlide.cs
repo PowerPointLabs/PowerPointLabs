@@ -116,7 +116,7 @@ namespace PowerPointLabs.Models
         {
             foreach (Shape shape in shapeRange)
             {
-                shape.SoftEdge.Radius = Math.Min(shape.Width, shape.Height) * 0.15f;
+                shape.SoftEdge.Radius = Math.Min(Math.Min(shape.Width, shape.Height) * 0.15f, 10f);
             }
 
             var croppedShape = CropToShape.Crop(shapeRange, handleError: false);
