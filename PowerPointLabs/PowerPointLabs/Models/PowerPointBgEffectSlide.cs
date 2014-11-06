@@ -181,6 +181,7 @@ namespace PowerPointLabs.Models
 
                 // finally add transition to the new slide
                 newSlide.Transition.EntryEffect = PpEntryEffect.ppEffectFadeSmoothly;
+                newSlide.Transition.Duration = 0.5f;
 
                 return new PowerPointBgEffectSlide(newSlide.GetNativeSlide());
             }
