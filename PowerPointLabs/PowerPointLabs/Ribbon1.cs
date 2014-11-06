@@ -1921,6 +1921,10 @@ namespace PowerPointLabs
                 {
                     PictureTransparencyHandler(shape);
                 } else
+                if (shape.Type == Office.MsoShapeType.msoLine)
+                {
+                    LineTransparencyHandler(shape);
+                } else
                 if (IsTransparentableShape(shape))
                 {
                     ShapeTransparencyHandler(shape);
@@ -1936,6 +1940,10 @@ namespace PowerPointLabs
 
         private void PictureTransparencyHandler(PowerPoint.Shape picture)
         {
+            var rotation = picture.Rotation;
+
+            picture.Rotation = 0;
+
             var tempPicPath = Path.Combine(Path.GetTempPath(), "tempPic.png");
 
             Utils.Graphics.ExportShape(picture, tempPicPath);
@@ -1962,21 +1970,20 @@ namespace PowerPointLabs
             shapeHolder.Fill.UserPicture(tempPicPath);
             shapeHolder.Fill.Transparency = 0.5f;
 
+            shapeHolder.Rotation = rotation;
+
             File.Delete(tempPicPath);
+        }
+
+        private void LineTransparencyHandler(PowerPoint.Shape shape)
+        {
+            shape.Line.Transparency = 0.5f;
         }
 
         private void ShapeTransparencyHandler(PowerPoint.Shape shape)
         {
+            shape.Fill.Transparency = 0.5f;
             shape.Line.Transparency = 0.5f;
-
-            try
-            {
-                shape.Fill.Transparency = 0.5f;
-            }
-            catch (Exception e)
-            {
-                return;
-            }
         }
 
         # endregion
