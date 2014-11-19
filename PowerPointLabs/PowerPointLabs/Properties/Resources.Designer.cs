@@ -163,6 +163,16 @@ namespace PowerPointLabs.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
+        internal static System.Drawing.Bitmap BlurRemainder {
+            get {
+                object obj = ResourceManager.GetObject("BlurRemainder", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
         internal static System.Drawing.Bitmap Brightness_icon_25x25 {
             get {
                 object obj = ResourceManager.GetObject("Brightness_icon_25x25", resourceCulture);
@@ -246,6 +256,16 @@ namespace PowerPointLabs.Properties {
         internal static System.Drawing.Bitmap EditNameContext {
             get {
                 object obj = ResourceManager.GetObject("EditNameContext", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap EffectsLab {
+            get {
+                object obj = ResourceManager.GetObject("EffectsLab", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }
@@ -431,6 +451,26 @@ namespace PowerPointLabs.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap Magnify {
+            get {
+                object obj = ResourceManager.GetObject("Magnify", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap MakeTransparent {
+            get {
+                object obj = ResourceManager.GetObject("MakeTransparent", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized resource of type System.Byte[].
         /// </summary>
         internal static byte[] OpenHand {
@@ -456,6 +496,16 @@ namespace PowerPointLabs.Properties {
         internal static System.Drawing.Bitmap Play {
             get {
                 object obj = ResourceManager.GetObject("Play", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap RecolorRemainder {
+            get {
+                object obj = ResourceManager.GetObject("RecolorRemainder", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }

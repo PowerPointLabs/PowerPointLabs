@@ -41,7 +41,7 @@
     <PublishUrl>C:\Users\nevets\Desktop\PowerPointLabsPublish\</PublishUrl>
     <InstallUrl />
     <TargetCulture>en</TargetCulture>
-    <ApplicationVersion>1.10.2.2</ApplicationVersion>
+    <ApplicationVersion>1.11.0.0</ApplicationVersion>
     <AutoIncrementApplicationRevision>false</AutoIncrementApplicationRevision>
     <UpdateEnabled>true</UpdateEnabled>
     <UpdateInterval>0</UpdateInterval>
@@ -171,9 +171,6 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>C:\Program Files\Open XML SDK\V2.5\lib\DocumentFormat.OpenXml.dll</HintPath>
     </Reference>
-    <Reference Include="ExtendedPanel">
-      <HintPath>Dependency\ExtendedPanel.dll</HintPath>
-    </Reference>
     <Reference Include="ImageProcessor">
       <HintPath>..\packages\ImageProcessor.1.9.5.0\lib\ImageProcessor.dll</HintPath>
     </Reference>
@@ -266,6 +263,7 @@
     <Compile Include="ConvertToPicture.cs" />
     <Compile Include="CropToShape.cs" />
     <Compile Include="DataSources\ShapesLabSettingsDataSource.cs" />
+    <Compile Include="Models\PowerPointBgEffectSlide.cs" />
     <Compile Include="Properties\Resources.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -691,7 +689,18 @@
   <ItemGroup>
     <None Include="Resources\HighlightBackgroundContext.png" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <None Include="Resources\EffectsLab.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\BlurRemainder.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\RecolorRemainder.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\MakeTransparent.png" />
+  </ItemGroup>
   <!-- Include the build rules for a C# project. -->
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>

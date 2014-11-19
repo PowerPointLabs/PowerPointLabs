@@ -1028,7 +1028,7 @@ namespace PowerPointLabs
         //    }
         //    else
         //    {
-        //        Native.MciSendString(mciCommand,
+        //        Native.mciSendString(mciCommand,
         //                      mciRetInfo,
         //                      infoLen,
         //                      callBack);
@@ -1399,7 +1399,7 @@ namespace PowerPointLabs
         {
             // change play button status, update play button text, update
             // status label and reset all sessions
-            Native.MciSendString("stop sound", null, 0, IntPtr.Zero);
+            Native.mciSendString("stop sound", null, 0, IntPtr.Zero);
 
             // UI settings
             ResetSession();
@@ -1451,7 +1451,7 @@ namespace PowerPointLabs
 
                 // start play back
                 AudioHelper.OpenAudio(playback.SaveName);
-                Native.MciSendString("play sound notify", null, 0, Handle);
+                Native.mciSendString("play sound notify", null, 0, Handle);
             }
         }
 
@@ -1466,7 +1466,7 @@ namespace PowerPointLabs
             playButton.Image = Properties.Resources.Play;
 
             // pause the sound, timer and trackbar
-            Native.MciSendString("pause sound", null, 0, IntPtr.Zero);
+            Native.mciSendString("pause sound", null, 0, IntPtr.Zero);
             _timer.Dispose();
             _stopwatch.Stop();
             _trackbarThread.Interrupt();
@@ -1496,7 +1496,7 @@ namespace PowerPointLabs
             playButton.Image = Properties.Resources.Pause;
 
             // resume recording, restart the timer and continue the track bar
-            Native.MciSendString("resume sound", null, 0, IntPtr.Zero);
+            Native.mciSendString("resume sound", null, 0, IntPtr.Zero);
             _timer = new System.Threading.Timer(TimerEvent, null, _resumeWaitingTime, 1000);
             _trackbarThread = new Thread(TrackbarEvent);
             _trackbarThread.Start();
