@@ -196,25 +196,6 @@ namespace PowerPointLabs.Models
             Trace.TraceInformation("Appending from clipboard...");
             Trace.TraceInformation("Total slide in ShapeGallery = " + Presentation.Slides.Count);
 
-            //var slideRange = Presentation.Slides.Paste();
-
-            //if (slideRange == null)
-            //{
-            //    Trace.TraceInformation("Slide Range is null!");
-            //    return false;
-            //}
-
-            //Trace.TraceInformation("Slide Range = " + slideRange.Count);
-
-            //var slide = slideRange[1];
-            //var categoryNameBox = RetrieveCategoryNameBox(slide);
-            //var categoryName = RetrieveCategoryName(categoryNameBox);
-
-            //// after paste, slide name will be corrupted, we need to rename it
-            //slide.Name = categoryName;
-            //Categories.Add(categoryName);
-            //_categoryNameBoxCollection.Add(categoryNameBox);
-
             var slide = AddSlide(name: categoryName);
             slide.DeleteAllShapes();
             slide.Shapes.Paste();

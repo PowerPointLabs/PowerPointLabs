@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Drawing;
 using System.Linq;
 using System.Windows.Forms;
 
@@ -19,14 +20,14 @@ namespace PowerPointLabs.Views
         };
         private float lastTransparency;
 
-        public delegate void UpdateSettingsDelegate(float spotlightTransparency, float softEdge);
+        public delegate void UpdateSettingsDelegate(float spotlightTransparency, float softEdge, Color newColor);
         public UpdateSettingsDelegate SettingsHandler;
         public SpotlightDialogBox()
         {
             InitializeComponent();
         }
 
-        public SpotlightDialogBox(float defaultTransparency, float defaultSoftEdge)
+        public SpotlightDialogBox(float defaultTransparency, float defaultSoftEdge, Color defaultColor)
             : this()
         {
             this.textBox1.Text = defaultTransparency.ToString("P0");
@@ -36,6 +37,7 @@ namespace PowerPointLabs.Views
             this.comboBox1.Items.AddRange(keys);
             float[] values = softEdgesMapping.Values.ToArray();
             this.comboBox1.SelectedIndex = Array.IndexOf(values, defaultSoftEdge);
+            panel1.BackColor = defaultColor;
         }
 
         private void SpotlightDialogBox_Load(object sender, EventArgs e)
@@ -77,13 +79,24 @@ namespace PowerPointLabs.Views
                 text = text.Substring(0, text.IndexOf('%'));
             }
 
-            SettingsHandler(float.Parse(text) / 100, softEdgesMapping[(String)this.comboBox1.SelectedItem]);
+            SettingsHandler(float.Parse(text) / 100, softEdgesMapping[(String)this.comboBox1.SelectedItem], panel1.BackColor);
             this.Close();
         }
 
         private void button2_Click(object sender, EventArgs e)
         {
             this.Close();
+        }
+
+        private void panel1_Click(object sender, EventArgs e)
+        {
+            colorDialog1.Color = panel1.BackColor;
+            colorDialog1.FullOpen = true;
+            DialogResult result = colorDialog1.ShowDialog();
+            if (result == DialogResult.OK)
+            {
+                panel1.BackColor = colorDialog1.Color;
+            }
         }
     }
 }

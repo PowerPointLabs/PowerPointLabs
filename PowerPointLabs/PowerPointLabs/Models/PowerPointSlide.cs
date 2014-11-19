@@ -13,7 +13,7 @@ using PowerPoint = Microsoft.Office.Interop.PowerPoint;
 
 namespace PowerPointLabs.Models
 {
-    class PowerPointSlide
+    public class PowerPointSlide
     {
         protected readonly Slide _slide;
         private List<PowerPoint.MsoAnimEffect> entryEffects = new List<PowerPoint.MsoAnimEffect>()
@@ -548,16 +548,7 @@ namespace PowerPointLabs.Models
             indicatorShape.Height = 84;
             indicatorShape.Name = "PPIndicator" + DateTime.Now.ToString("yyyyMMddHHmmssffff");
 
-            PowerPoint.Effect effectAppear = null;
-            PowerPoint.Effect effectDisappear = null;
-            PowerPoint.Sequence sequence = _slide.TimeLine.MainSequence;
-
-            effectAppear = sequence.AddEffect(indicatorShape, PowerPoint.MsoAnimEffect.msoAnimEffectAppear, PowerPoint.MsoAnimateByLevel.msoAnimateLevelNone, PowerPoint.MsoAnimTriggerType.msoAnimTriggerWithPrevious);
-            effectAppear.Timing.Duration = 0;
-
-            effectDisappear = sequence.AddEffect(indicatorShape, PowerPoint.MsoAnimEffect.msoAnimEffectAppear, PowerPoint.MsoAnimateByLevel.msoAnimateLevelNone, PowerPoint.MsoAnimTriggerType.msoAnimTriggerWithPrevious);
-            effectDisappear.Exit = Office.MsoTriState.msoTrue;
-            effectDisappear.Timing.Duration = 0;
+            Utils.Graphics.MakeShapeViewTimeInvisible(indicatorShape, _slide);
 
             return indicatorShape;
         }
@@ -757,7 +748,9 @@ namespace PowerPointLabs.Models
 
         private static void DeleteEffectsForShape(Shape shape, IEnumerable<Effect> mainEffects)
         {
-            foreach (Effect e in mainEffects.Where(e => e.Shape.Equals(shape)))
+            var shapeToDeleteList = mainEffects.Where(e => e.Shape.Equals(shape)).ToList();
+            
+            foreach (Effect e in shapeToDeleteList)
             {
                 e.Delete();
             }

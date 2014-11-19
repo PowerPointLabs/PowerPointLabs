@@ -54,23 +54,23 @@ namespace PowerPointLabs.AudioMisc
 
         public static void OpenNewAudio()
         {
-            Native.MciSendString("open new type waveaudio alias sound", null, 0, IntPtr.Zero);
+            Native.mciSendString("open new type waveaudio alias sound", null, 0, IntPtr.Zero);
         }
 
         public static void OpenAudio(string name)
         {
-            int x = Native.MciSendString("open \"" + name + "\" alias sound", null, 0, IntPtr.Zero);
+            int x = Native.mciSendString("open \"" + name + "\" alias sound", null, 0, IntPtr.Zero);
         }
 
         public static void CloseAudio()
         {
-            Native.MciSendString("close sound", null, 0, IntPtr.Zero);
+            Native.mciSendString("close sound", null, 0, IntPtr.Zero);
         }
 
         public static int GetAudioLength()
         {
             mciRetInfo = new StringBuilder(MCI_RET_INFO_BUF_LEN);
-            int x = Native.MciSendString("status sound length", mciRetInfo, MCI_RET_INFO_BUF_LEN, IntPtr.Zero);
+            int x = Native.mciSendString("status sound length", mciRetInfo, MCI_RET_INFO_BUF_LEN, IntPtr.Zero);
             return Int32.Parse(mciRetInfo.ToString());
         }
 
@@ -101,7 +101,7 @@ namespace PowerPointLabs.AudioMisc
         public static int GetAudioCurrentPosition()
         {
             mciRetInfo = new StringBuilder(MCI_RET_INFO_BUF_LEN);
-            Native.MciSendString("status sound position", mciRetInfo, MCI_RET_INFO_BUF_LEN, IntPtr.Zero);
+            Native.mciSendString("status sound position", mciRetInfo, MCI_RET_INFO_BUF_LEN, IntPtr.Zero);
             return Int32.Parse(mciRetInfo.ToString());
         }
 
