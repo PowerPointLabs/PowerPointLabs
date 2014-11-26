@@ -16,6 +16,7 @@
 
         # region Ribbon XML
         # region Supertips
+        # region Auto Animation
         public const string AddAnimationButtonSupertip =
             "Creates an animation slide to transition from the currently selected slide to the next slide.";
         public const string ReloadButtonSupertip =
@@ -24,7 +25,9 @@
         public const string InSlideAnimateButtonSupertip =
             "Moves a shape around the slide in multiple steps.\n\n" +
             "To activate, copy the shape to locations where it should stop, select the copies in the order they should appear, then click this button";
-        
+        # endregion
+
+        # region Auto Zoom
         public const string AddZoomInButtonSupertip =
             "Creates an animation slide with a zoom-in effect from the currently selected shape to the next slide.\n\n" +
             "To activate, select a rectangle shape on the slide to drill down from, then click this button.";
@@ -34,18 +37,21 @@
         public const string ZoomToAreaButtonSupertip =
             "Zoom into an area of a slide or image.\n\nTo activate, place a rectangle shape on the portion to magnify, then click this button.\n\n" +
             "This feature works best with high-resolution images.";
-        
+        # endregion
+
+        # region Auto Crop
         public const string MoveCropShapeButtonSupertip =
             "Crop a picture to a custom shape.\n\n" +
             "To activate, draw one or more shapes upon the picture to crop, select the shape(s), then click this button.";
-        
+        # endregion
+
+        # region Spotlight
         public const string AddSpotlightButtonSupertip =
             "Creates a spotlight effect for a selected shape.\n\n" +
             "To activate, draw a shape that the spotlight should outline, select it, then click this button.";
-        public const string ReloadSpotlightButtonSupertip =
-            "Adjusts the transparency and edges of an existing spotlight.\n\n" +
-            "To activate, set the transparency level and soft edges width, select the existing spotlight shape, then click this button.";
-        
+        # endregion
+
+        # region Auto Narrate
         public const string AddAudioButtonSupertip =
             "Creates synthesized narration from text in the Speaker Notes pane of the selected slides.";
         public const string GenerateRecordButtonSupertip =
@@ -53,14 +59,18 @@
         public const string AddRecordButtonSupertip =
             "Manually record audio to replace synthesized narration.";
         public const string RemoveAudioButtonSupertip =
-            "Removes synthesized audio added using Auto Narrate from the selected slides."; 
-        
+            "Removes synthesized audio added using Auto Narrate from the selected slides.";
+        # endregion
+
+        # region Auto Caption
         public const string AddCaptionsButtonSupertip =
             "Creates movie-style subtitles from text in the Speaker Notes pane, and adds it to the selected slides.";
         public const string RemoveCaptionsButtonSupertip =
             "Removes captions added using Auto Captions from the selected slides.";
         public const string RemoveAllNotesButtonSupertip = "Remove notes from note pane of selected slides.";
-        
+        # endregion
+
+        # region Highlight Bullets
         public const string HighlightBulletsTextButtonSupertip =
             "Highlights selected bullet points by changing the text's color.\n\n" +
             "To activate, select the bullet points to highlight, then click this button.";
@@ -70,14 +80,31 @@
         public const string HighlightTextFragmentsButtonSupertip =
             "Highlights the selected text fragments.\n\n" +
             "To activate, select the text to highlight, then click this button.";
-        
+        # endregion
+
+        # region Labs
+        # region Colors Lab
         public const string ColorPickerButtonSupertip = @"Opens Custom Color Picker";
-        
-        public const string CustomeShapeButtonSupertip = @"Manage your custom shapes."; // Custome -> Custom?
-        
+        # endregion
+
+        # region Shapes Lab
+        public const string CustomeShapeButtonSupertip = @"Manage your custom shapes.";
+        # endregion
+
+        # region Effects Lab
+        public const string EffectsLabMenuSupertip = @"Apply elegant effects on shapes.";
+        public const string EffectsLabMakeTransparentSupertip = @"Adjust transparency of pictures or shapes.";
+        public const string EffectsLabMagnifyGlassSupertip = @"Enlarge a small detail on the slide.";
+        public const string EffectsLabBlurRemainderSupertip = @"Blur slide background to focus attention on an area.";
+        public const string EffectsLabColorizeRemainderSupertip = @"Recolor only an area of a slide to focus attention.";
+        # endregion
+        # endregion
+
+        # region Help
         public const string HelpButtonSupertip = @"Click this to visit PowerPointLabs help page in our website.";
         public const string FeedbackButtonSupertip = @"Click this to email us problem reports or other feedback. ";
         public const string AboutButtonSupertip = @"Information about the PowerPointLabs plugin.";
+        # endregion
         # endregion
 
         # region Tab Labels
@@ -123,6 +150,11 @@
         public const string LabsGroupLabel = "Labs";
         public const string ColorPickerButtonLabel = "Colors Lab";
         public const string CustomeShapeButtonLabel = "Shapes Lab";
+        public const string EffectsLabButtonLabel = "Effects Lab";
+        public const string EffectsLabMakeTransparentButtonLabel = "Make Transparent";
+        public const string EffectsLabMagnifyGlassButtonLabel = "Magnifying Glass";
+        public const string EffectsLabBlurRemainderButtonLabel = "Blur Remainder";
+        public const string EffectsLabRecolorRemainderButtonLabel = "Recolor Remainder";
 
         public const string PPTLabsHelpGroupLabel = "Help";
         public const string HelpButtonLabel = "Help";
@@ -300,6 +332,10 @@
         public const string CustomShapeCategoryContextStripImportCategory = "Import Library";
         public const string CustomShapeCategoryContextStripSetAsDefaultCategory = "Set as Default Category";
         public const string CustomShapeCategoryContextStripCategorySettings = "Shapes Lab Settings";
+        # endregion
+
+        # region Task Pane - Effects Lab
+
         # endregion
 
         # region Control - ShapesLabSetting

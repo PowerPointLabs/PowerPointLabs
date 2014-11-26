@@ -296,6 +296,27 @@ namespace PowerPointLabs
         {
             return TextCollection.CustomeShapeButtonSupertip;
         }
+
+        public string GetEffectsLabSupertip(Office.IRibbonControl control)
+        {
+            return TextCollection.EffectsLabMenuSupertip;
+        }
+        public string GetEffectsLabMakeTransparentSupertip(Office.IRibbonControl control)
+        {
+            return TextCollection.EffectsLabMakeTransparentSupertip;
+        }
+        public string GetEffectsLabMagnifyGlassSupertip(Office.IRibbonControl control)
+        {
+            return TextCollection.EffectsLabMagnifyGlassSupertip;
+        }
+        public string GetEffectsLabBlurBackgroundSupertip(Office.IRibbonControl control)
+        {
+            return TextCollection.EffectsLabBlurRemainderSupertip;
+        }
+        public string GetEffectsLabColorizeBackgroundSupertip(Office.IRibbonControl control)
+        {
+            return TextCollection.EffectsLabColorizeRemainderSupertip;
+        }
         
         public string GetHelpButtonSupertip(Office.IRibbonControl control)
         {
@@ -444,6 +465,26 @@ namespace PowerPointLabs
         public string GetCustomeShapeButtonLabel(Office.IRibbonControl control)
         {
             return TextCollection.CustomeShapeButtonLabel;
+        }
+        public string GetEffectsLabButtonLabel(Office.IRibbonControl control)
+        {
+            return TextCollection.EffectsLabButtonLabel;
+        }
+        public string GetEffectsLabMakeTransparentButtonLabel(Office.IRibbonControl control)
+        {
+            return TextCollection.EffectsLabMakeTransparentButtonLabel;
+        }
+        public string GetEffectsLabMagnifyGlassButtonLabel(Office.IRibbonControl control)
+        {
+            return TextCollection.EffectsLabMagnifyGlassButtonLabel;
+        }
+        public string GetEffectsLabBlurRemainderButtonLabel(Office.IRibbonControl control)
+        {
+            return TextCollection.EffectsLabBlurRemainderSupertip;
+        }
+        public string GetEffectsLabRecolorRemainderButtonLabel(Office.IRibbonControl control)
+        {
+            return TextCollection.EffectsLabRecolorRemainderButtonLabel;
         }
 
         public string GetPPTLabsHelpGroupLabel(Office.IRibbonControl control)
