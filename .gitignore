@@ -17,3 +17,5 @@ obj/
 Thumbs.db
 
 _ReSharper*/
+
+*.pfx
