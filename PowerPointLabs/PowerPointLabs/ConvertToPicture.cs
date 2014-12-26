@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Windows.Forms;
+using PowerPointLabs.Models;
 using PowerPointLabs.Utils;
 using Office = Microsoft.Office.Core;
 using PowerPoint = Microsoft.Office.Interop.PowerPoint;
@@ -26,34 +27,17 @@ namespace PowerPointLabs
         {
             if (IsSelectionShape(selection))
             {
-                var grouped = selection.ShapeRange.Count > 1;
-                var shape = GetShapeFromSelection(selection);
+                // When the user select multiple shapes, we need to group it before we export
+                // it. In case some of, or all of the shapes are animated, we need to duplicate
+                // the shapes for export since group will ruin the animation effects.
+
+                selection.ShapeRange.Copy();
+                
+                var duplicate = PowerPointCurrentPresentationInfo.CurrentSlide.Shapes.Paste();
+                var shape = GetShapeFromSelection(duplicate);
+                
                 Graphics.ExportShape(shape, fileName);
-
-                try
-                {
-                    if (grouped)
-                    {
-                        shape.Ungroup().Select();
-                    }
-                    else
-                    {
-                        shape.Select();
-                    }
-                }
-                catch (Exception)
-                {
-                    shape = CutPasteShape(shape);
-
-                    if (grouped)
-                    {
-                        shape.Ungroup().Select();
-                    }
-                    else
-                    {
-                        shape.Select();
-                    }
-                }
+                duplicate.Delete();
             }
             else
             {
@@ -116,8 +100,13 @@ namespace PowerPointLabs
 
         private static PowerPoint.Shape GetShapeFromSelection(PowerPoint.Selection selection)
         {
-            PowerPoint.Shape shape = 
-                selection.ShapeRange.Count > 1 ? selection.ShapeRange.Group() : selection.ShapeRange[1];
+            return GetShapeFromSelection(selection.ShapeRange);
+        }
+
+        private static PowerPoint.Shape GetShapeFromSelection(PowerPoint.ShapeRange shapeRange)
+        {
+            PowerPoint.Shape shape =
+                shapeRange.Count > 1 ? shapeRange.Group() : shapeRange[1];
             return shape;
         }
 

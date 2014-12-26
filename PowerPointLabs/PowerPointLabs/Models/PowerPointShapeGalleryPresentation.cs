@@ -19,6 +19,9 @@ namespace PowerPointLabs.Models
         private const string UntitledCategoryNameFormat = "Untitled Category {0}";
         private const string CategoryNameFormat = "Category: {0}";
         private const string CategoryNameBoxSearchPattern = "[Cc]ategory: *([^<>:\"/\\\\|?*]+)";
+        private const string GroupSelectionNameFormat = "Group {0} Seq_{1}";
+        private const string NameSearchPattern = "^Group {0} Seq_(\\d+)$|^{1}$";
+        private const string GroupSelectionNamePattern = "^Group ([\\w\\s]+) Seq_(\\d+)$";
 
         private const int MaxUndoAmount = 20;
         
@@ -94,14 +97,13 @@ namespace PowerPointLabs.Models
             selection.ShapeRange.Copy();
 
             var pastedShapeRange = _defaultCategory.Shapes.Paste();
-            var pastedShape = pastedShapeRange[1];
 
-            if (pastedShapeRange.Count > 1)
+            for (int nameCount = 1; nameCount <= pastedShapeRange.Count; nameCount ++)
             {
-                pastedShape = pastedShapeRange.Group();
-            }
+                var shape = pastedShapeRange[nameCount];
 
-            pastedShape.Name = name;
+                shape.Name = string.Format(GroupSelectionNameFormat, name, nameCount);
+            }
 
             Save();
             ActionProtection();
@@ -114,14 +116,13 @@ namespace PowerPointLabs.Models
             var categoryIndex = FindCategoryIndex(category);
             var categorySlide = Slides[categoryIndex - 1];
             var pastedShapeRange = categorySlide.Shapes.Paste();
-            var pastedShape = pastedShapeRange[1];
 
-            if (pastedShapeRange.Count > 1)
+            for (int nameCount = 1; nameCount <= pastedShapeRange.Count; nameCount++)
             {
-                pastedShape = pastedShapeRange.Group();
-            }
+                var shape = pastedShapeRange[nameCount];
 
-            pastedShape.Name = name;
+                shape.Name = string.Format(GroupSelectionNameFormat, name, nameCount);
+            }
 
             Save();
             ActionProtection();
@@ -140,13 +141,11 @@ namespace PowerPointLabs.Models
 
             if (index == -1) return;
 
-            // move a shape with name from default category to another category
-            var shapes = _defaultCategory.GetShapeWithName(name);
+            // copy a shape with name from default category to another category
+            var shapes = _defaultCategory.GetShapesWithRule(GenereateNameSearchPattern(name));
             var destCategory = Slides[index - 1];
 
-            if (shapes.Count != 1) return;
-
-            shapes[0].Copy();
+            _defaultCategory.Shapes.Range(shapes.Select(item => item.Name).ToArray()).Copy();
             destCategory.Shapes.Paste();
 
             Save();
@@ -165,12 +164,10 @@ namespace PowerPointLabs.Models
             if (index == -1) return;
 
             // move a shape with name from default category to another category
-            var shapes = _defaultCategory.GetShapeWithName(name);
+            var shapes = _defaultCategory.GetShapesWithRule(GenereateNameSearchPattern(name));
             var destCategory = Slides[index - 1];
 
-            if (shapes.Count != 1) return;
-
-            shapes[0].Cut();
+            _defaultCategory.Shapes.Range(shapes.Select(item => item.Name).ToArray()).Copy();
             destCategory.Shapes.Paste();
 
             Save();
@@ -266,7 +263,7 @@ namespace PowerPointLabs.Models
 
         public void RemoveShape(string name)
         {
-            _defaultCategory.DeleteShapeWithName(name);
+            _defaultCategory.DeleteShapeWithRule(GenereateNameSearchPattern(name));
             
             Save();
             ActionProtection();
@@ -274,11 +271,13 @@ namespace PowerPointLabs.Models
 
         public void RenameShape(string oldName, string newName)
         {
-            var shapes = _defaultCategory.GetShapeWithName(oldName);
+            var nameRegex = GenereateNameSearchPattern(oldName);
+            var replaceRegex = new Regex(oldName);
+            var shapes = _defaultCategory.GetShapesWithRule(nameRegex);
 
             foreach (var shape in shapes)
             {
-                shape.Name = newName;
+                shape.Name = replaceRegex.Replace(shape.Name, newName);
             }
 
             Save();
@@ -299,12 +298,9 @@ namespace PowerPointLabs.Models
 
         public void RetrieveShape(string name)
         {
-            // copy a shape with name in the default category
-            var shapes = _defaultCategory.GetShapeWithName(name);
+            var shapes = _defaultCategory.GetShapesWithRule(GenereateNameSearchPattern(name));
 
-            if (shapes.Count != 1) return;
-
-            shapes[0].Copy();
+            _defaultCategory.Shapes.Range(shapes.Select(item => item.Name).ToArray()).Copy();
         }
 
         public void RetrieveCategory(string name)
@@ -429,7 +425,8 @@ namespace PowerPointLabs.Models
             foreach (var pngShape in pngShapes)
             {
                 var shapeName = System.IO.Path.GetFileNameWithoutExtension(pngShape);
-                var found = category.HasShapeWithSameName(shapeName);
+                var searchPattern = GenereateNameSearchPattern(shapeName);
+                var found = category.HasShapeWithRule(searchPattern);
 
                 if (!found)
                 {
@@ -494,6 +491,7 @@ namespace PowerPointLabs.Models
         {
             // if inconsistency is found, we export the extra shape to .png
             var shapeLost = false;
+            var groupSelectNamePattern = new Regex(GroupSelectionNamePattern);
 
             // this is to handle 2 cases:
             // 1. user deleted the .png shape accidentally;
@@ -507,7 +505,15 @@ namespace PowerPointLabs.Models
                     continue;
                 }
 
-                var shapePath = shapeFolderPath + @"\" + shape.Name + ".png";
+                var name = shape.Name;
+
+                //check for sequence grouped shape
+                if (groupSelectNamePattern.IsMatch(name))
+                {
+                    name = groupSelectNamePattern.Match(name).Groups[1].Value;
+                }
+
+                var shapePath = shapeFolderPath + @"\" + name + ".png";
 
                 if (!pngShapes.Contains(shapePath))
                 {
@@ -537,6 +543,12 @@ namespace PowerPointLabs.Models
             }
 
             return index;
+        }
+
+        private Regex GenereateNameSearchPattern(string name)
+        {
+            var searchPattern = string.Format(NameSearchPattern, name, name);
+            return new Regex(searchPattern);
         }
 
         private bool InitCategories()
