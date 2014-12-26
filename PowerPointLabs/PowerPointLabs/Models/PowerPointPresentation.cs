@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
+using System.Linq;
 using System.Windows.Forms;
 using Microsoft.Office.Core;
 using Microsoft.Office.Interop.PowerPoint;
@@ -44,16 +45,9 @@ namespace PowerPointLabs.Models
         {
             get
             {
-                foreach (Presentation presentation in Globals.ThisAddIn.Application.Presentations)
-                {
-                    if (presentation.Name == Name)
-                    {
-                        Presentation = presentation;
-                        return true;
-                    }
-                }
-
-                return false;
+                return
+                    Globals.ThisAddIn.Application.Presentations.Cast<Presentation>().Any(
+                        presentation => presentation.Name == Name);
             }
         }
 

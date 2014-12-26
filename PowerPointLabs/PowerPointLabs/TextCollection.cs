@@ -318,6 +318,9 @@
             "as default category. Continue?";
         public const string CustomShapeRemoveDefaultCategoryCaption = "Removing Default Category";
         public const string CustomShapeImportFileError = "Import File could not be opened.";
+        public const string CustomShapeImportAppendCategoryError = "Your computer does not support this feature.";
+        public const string CustomShapeImportSingleCategoryErrorFormat =
+            "{0} contains multiple categories. Try \"Import Category\" instead.";
         public const string CustomShapeImportSuccess = "Successfully imported";
         
         public const string CustomShapeShapeContextStripAddToSlide = "Add To Slide";
@@ -330,6 +333,7 @@
         public const string CustomShapeCategoryContextStripRemoveCategory = "Remove Category";
         public const string CustomShapeCategoryContextStripRenameCategory = "Rename Category";
         public const string CustomShapeCategoryContextStripImportCategory = "Import Library";
+        public const string CustomShapeCategoryContextStripImportShapes = "Import Shapes";
         public const string CustomShapeCategoryContextStripSetAsDefaultCategory = "Set as Default Category";
         public const string CustomShapeCategoryContextStripCategorySettings = "Shapes Lab Settings";
         # endregion

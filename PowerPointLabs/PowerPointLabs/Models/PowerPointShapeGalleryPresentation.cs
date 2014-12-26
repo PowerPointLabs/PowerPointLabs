@@ -28,6 +28,8 @@ namespace PowerPointLabs.Models
         private PowerPointSlide _defaultCategory;
         private readonly List<Shape> _categoryNameBoxCollection = new List<Shape>();
 
+        private string _tempSingleShapeSlideName;
+
         # region Properties
         public List<string> Categories { get; private set; }
         public string DefaultCategory
@@ -47,6 +49,7 @@ namespace PowerPointLabs.Models
             }
         }
         public bool IsImportedFile { get; set; }
+        public string ImportToCategory { get; set; }
         # endregion
 
         # region Constructor
@@ -132,6 +135,8 @@ namespace PowerPointLabs.Models
         {
             base.Close();
 
+            Slides[0].Name = _tempSingleShapeSlideName;
+
             RetrieveShapeGalleryFile();
         }
 
@@ -185,14 +190,22 @@ namespace PowerPointLabs.Models
                 return false;
             }
 
+            if (!string.IsNullOrEmpty(ImportToCategory))
+            {
+                if (Presentation.Slides.Count != 1)
+                {
+                    return false;
+                }
+
+                _tempSingleShapeSlideName = Presentation.Slides[1].Name;
+                Slides[0].Name = ImportToCategory;
+            }
+
             return ConsistencyCheck();
         }
 
         public bool AppendCategoryFromClipBoard(string categoryName)
         {
-            Trace.TraceInformation("Appending from clipboard...");
-            Trace.TraceInformation("Total slide in ShapeGallery = " + Presentation.Slides.Count);
-
             var slide = AddSlide(name: categoryName);
             slide.DeleteAllShapes();
             slide.Shapes.Paste();
@@ -306,7 +319,6 @@ namespace PowerPointLabs.Models
         public void RetrieveCategory(string name)
         {
             var index = FindCategoryIndex(name);
-            Trace.TraceInformation("Index = " + index);
             Presentation.Slides[index].Shapes.Range().Copy();
         }
         # endregion
@@ -392,10 +404,10 @@ namespace PowerPointLabs.Models
             // the category is some how lost on the disk, regenerate the category
             if (!Directory.Exists(categoryFolderPath))
             {
-                // create the directory
+                // create the directory, since shape reconstruction will be taken care
+                // of during ConsistencyCheckShapeToPng(), we do not need to generate
+                // the shapes here
                 Directory.CreateDirectory(categoryFolderPath);
-                // since shape reconstruction will be taken care of during ConsistencyCheckShapeToPng(),
-                // we do not need to generate the shapes here
             }
             else
             {
