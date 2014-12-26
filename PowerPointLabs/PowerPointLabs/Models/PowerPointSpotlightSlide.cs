@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Drawing;
 using System.IO;
 using System.Linq;
 using System.Text;
@@ -147,7 +148,7 @@ namespace PowerPointLabs.Models
         private void AddRectangleShape()
         {
             PowerPoint.Shape rectangleShape = this.Shapes.AddShape(Office.MsoAutoShapeType.msoShapeRectangle, (-1 * Spotlight.defaultSoftEdges), (-1 * Spotlight.defaultSoftEdges), (PowerPointCurrentPresentationInfo.SlideWidth + (2.0f * Spotlight.defaultSoftEdges)), (PowerPointCurrentPresentationInfo.SlideHeight + (2.0f * Spotlight.defaultSoftEdges)));
-            rectangleShape.Fill.ForeColor.RGB = 0x000000;
+            rectangleShape.Fill.ForeColor.RGB = ColorTranslator.ToWin32(Spotlight.defaultColor);
             rectangleShape.Fill.Transparency = Spotlight.defaultTransparency;
             rectangleShape.Line.Visible = Office.MsoTriState.msoFalse;
             rectangleShape.Name = "SpotlightShape1";

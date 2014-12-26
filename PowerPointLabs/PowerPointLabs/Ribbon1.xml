@@ -97,13 +97,6 @@
                    getImage="GetSpotlightImage"
                    getEnabled="OnGetEnabledSpotlight"
                    onAction="SpotlightBtnClick"/>
-          <button id="ReloadSpotlightButton"
-                  getLabel ="GetReloadSpotlightButtonLabel"
-                  size ="large"
-                  getSupertip="GetReloadSpotlightButtonSupertip"
-                  getImage="GetReloadSpotlightImage"
-                  getEnabled="OnGetEnabledReloadSpotlight"
-                  onAction="ReloadSpotlightButtonClick"/>
           <dialogBoxLauncher>
             <button id ="SpotlightDialogBox"
                     onAction="SpotlightDialogButtonPressed"/>
@@ -213,6 +206,53 @@
                   getImage="GetShapesLabImage"
                   getSupertip="GetCustomeShapeButtonSupertip"
                   onAction="CustomShapeButtonClick"/>
+          <menu id="EffectLabsMenu"
+                getLabel="GetEffectsLabButtonLabel"
+                getImage="GetEffectsLabImage"
+                getSupertip="GetEffectsLabSupertip"
+                size="large">
+            <menuSeparator id="effectSeparator"
+                           title="Builtin Effects"/>
+              <gallery idMso="PictureSharpenSoftenGallery"/>
+              <gallery idMso="PictureBrightnessAndContrastGallery"/>
+              <gallery idMso="PictureEffectsSoftEdgesGallery"/>
+              <gallery idMso="PictureRecolorGallery"/>
+              <gallery idMso="PictureArtisticEffectsGallery"/>
+            <menuSeparator id="mySeparator"
+                           title="New Effects"/>
+            <button id="transparentEffect"
+                    getLabel="GetEffectsLabMakeTransparentButtonLabel"
+                    getImage="GetMakeTransparentImage"
+                    getSupertip="GetEffectsLabMakeTransparentSupertip"
+                    onAction="TransparentEffectClick"/>
+            <button id="magnifyGlassEffect"
+                    getLabel="GetEffectsLabMagnifyGlassButtonLabel"
+                    getImage="GetMagnifyImage"
+                    getSupertip="GetEffectsLabMagnifyGlassSupertip"
+                    onAction="MagnifyGlassEffectClick"/>
+            <button id="blurBackgroundEffect"
+                    getLabel="GetEffectsLabBlurRemainderButtonLabel"
+                    getImage="GetBlurRemainderImage"
+                    getSupertip="GetEffectsLabBlurBackgroundSupertip"
+                    onAction="BlurBackgroundEffectClick"/>
+            <menu id="colorizeBackgroundEffect"
+                getLabel="GetEffectsLabRecolorRemainderButtonLabel"
+                getSupertip="GetEffectsLabColorizeBackgroundSupertip"
+                getImage="GetRecolorRemainderImage">
+              <button id="greyScaleBackgroundEffect"
+                      label="Grey Scale"
+                      onAction="GreyScaleBackgroundEffectClick"/>
+              <button id="BlackWhiteBackgroundEffect"
+                      label="Black and White"
+                      onAction="BlackWhiteBackgroundEffectClick"/>
+              <button id="GothamBackgroundEffect"
+                      label="Gotham"
+                      onAction="GothamBackgroundEffectClick"/>
+              <button id="SepiaBackgroundEffect"
+                      label="Sepia"
+                      onAction="SepiaBackgroundEffectClick"/>
+            </menu>
+          </menu>
         </group>
         <group id="PPTLabsHelp"
                getLabel="GetPPTLabsHelpGroupLabel"
