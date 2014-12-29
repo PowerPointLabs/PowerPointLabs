@@ -345,7 +345,8 @@ namespace PowerPointLabs
             var fileDialog = new OpenFileDialog
                                  {
                                      Filter = ShapeFileDialogFilter,
-                                     Multiselect = false
+                                     Multiselect = false,
+                                     Title = TextCollection.CustomShapeImportLibraryFileDialogTitle
                                  };
             
             flowlayoutContextMenuStrip.Hide();
@@ -365,7 +366,8 @@ namespace PowerPointLabs
             var fileDialog = new OpenFileDialog
                                  {
                                      Filter = ShapeFileDialogFilter,
-                                     Multiselect = true
+                                     Multiselect = true,
+                                     Title = TextCollection.CustomShapeImportShapeFileDialogTitle
                                  };
 
             flowlayoutContextMenuStrip.Hide();
@@ -375,12 +377,9 @@ namespace PowerPointLabs
                 return;
             }
 
-            bool importSuccess = true;
-
-            foreach (var fileName in fileDialog.FileNames)
-            {
-                importSuccess = ImportShapes(fileName, false) && importSuccess;
-            }
+            var importSuccess = fileDialog.FileNames.Aggregate(true,
+                                                               (current, fileName) =>
+                                                               ImportShapes(fileName, false) && current);
 
             if (!importSuccess) return;
             

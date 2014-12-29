@@ -13,6 +13,14 @@ namespace PowerPointLabs.Models
 {
     class PowerPointShapeGalleryPresentation : PowerPointPresentation
     {
+        /************************************************************************
+         * Some General Concerns
+         * 
+         * 1. Be careful when using PowerPointPresentation.Slides property. The
+         * implementation requires O(n) time to access an item, instead of O(1).
+         * Therefore, when features in PowerPointSlide is not required, access
+         * slides via PowerPointPresentation.Presentation.Slides.
+         ************************************************************************/
         private const string ShapeGalleryFileExtension = ".pptlabsshapes";
         private const string DuplicateShapeSuffixFormat = "(recovered shape {0})";
         private const string DefaultSlideNameSearchPattern = "[Ss]lide ?\\d+";
@@ -107,7 +115,6 @@ namespace PowerPointLabs.Models
 
         public void AddShape(Selection selection, string name, string category = "", bool fromClipBoard = false)
         {
-            //TODO: add shape from clipboard
             if (!fromClipBoard)
             {
                 selection.ShapeRange.Copy();
@@ -123,11 +130,21 @@ namespace PowerPointLabs.Models
 
             var pastedShapeRange = categorySlide.Shapes.Paste();
 
-            for (int nameCount = 1; nameCount <= pastedShapeRange.Count; nameCount ++)
+            if (!fromClipBoard)
             {
-                var shape = pastedShapeRange[nameCount];
+                if (pastedShapeRange.Count > 1)
+                {
+                    for (int nameCount = 1; nameCount <= pastedShapeRange.Count; nameCount++)
+                    {
+                        var shape = pastedShapeRange[nameCount];
 
-                shape.Name = string.Format(GroupSelectionNameFormat, name, nameCount);
+                        shape.Name = string.Format(GroupSelectionNameFormat, name, nameCount);
+                    }
+                }
+                else
+                {
+                    pastedShapeRange[1].Name = name;
+                } 
             }
 
             Save();
@@ -212,7 +229,12 @@ namespace PowerPointLabs.Models
                 _tempSingleShapeSlideName = null;
             }
 
-            return ConsistencyCheck();
+            if (!ConsistencyCheck()) return false;
+
+            // set default category to be the first slide
+            _defaultCategory = PowerPointSlide.FromSlideFactory(Presentation.Slides[1]);
+
+            return true;
         }
 
         public void RemoveCategory(string name)
@@ -348,13 +370,17 @@ namespace PowerPointLabs.Models
             }
             else
             {
-                // if we do not have a name box inside, we have 2 cases:
+                // if we do not have a name box inside, we have 3 cases:
                 // 1. slide.Name has been configured (old ShapeGallery file);
                 // 2. slide.Name is default (user didn't specify a name).
+                // 3. slide is chosen from ImportShape feature
 
-                // for either case, we need to add a new text box into the slie.
+                // for case 1 & 2, we need to add a new text box into the slie.
                 // For case 1, the text of category box should be slide.Name;
-                // For case 2, the text of category box should be next untitled name.
+                // For case 2, the text of category box should be next untitled name;
+                // For case 3, we do not need to add the category box
+
+                if (!string.IsNullOrEmpty(ImportToCategory)) return null;
 
                 categoryNameBox = category.Shapes.AddTextbox(MsoTextOrientation.msoTextOrientationHorizontal, 0, 0,
                                                              SlideWidth, 0);
@@ -594,8 +620,9 @@ namespace PowerPointLabs.Models
                 shapeLost = ConsistencyCheckShapeToPng(pngShapes, category, shapeFolderPath) || shapeLost;
                 pngLost = ConsistencyCheckPngToShape(pngShapes, category) || pngLost;
 
-                // update names only when the name gets changed
-                if (category.Name != finalCategoryName)
+                // update names only when the name gets changed, and not ImportToCategory (i.e. importing a library)
+                if (category.Name != finalCategoryName &&
+                    string.IsNullOrEmpty(ImportToCategory))
                 {
                     category.Name = finalCategoryName;
                     categoryNameBox.TextFrame.TextRange.Text = string.Format(CategoryNameFormat, finalCategoryName);

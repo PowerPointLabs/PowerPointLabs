@@ -322,6 +322,9 @@
         public const string CustomShapeImportSingleCategoryErrorFormat =
             "{0} contains multiple categories. Try \"Import Category\" instead.";
         public const string CustomShapeImportSuccess = "Successfully imported";
+
+        public const string CustomShapeImportShapeFileDialogTitle = "Import Shapes";
+        public const string CustomShapeImportLibraryFileDialogTitle = "Import Library";
         
         public const string CustomShapeShapeContextStripAddToSlide = "Add To Slide";
         public const string CustomShapeShapeContextStripEditName = "Edit Name";
