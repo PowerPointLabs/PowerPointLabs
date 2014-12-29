@@ -356,6 +356,8 @@ namespace PowerPointLabs
             }
 
             ImportShapes(fileDialog.FileName, true);
+
+            MessageBox.Show(TextCollection.CustomShapeImportSuccess);
         }
 
         private void ContextMenuStripImportShapesClicked()
@@ -373,12 +375,17 @@ namespace PowerPointLabs
                 return;
             }
 
+            bool importSuccess = true;
+
             foreach (var fileName in fileDialog.FileNames)
             {
-                ImportShapes(fileName, false);
+                importSuccess = ImportShapes(fileName, false) && importSuccess;
             }
 
+            if (!importSuccess) return;
+            
             PaneReload(true);
+            MessageBox.Show(TextCollection.CustomShapeImportSuccess);
         }
 
         private void ContextMenuStripRemoveCategoryClicked()
@@ -724,7 +731,7 @@ namespace PowerPointLabs
             }
         }
 
-        private void ImportShapes(string importFilePath, bool fromCategory)
+        private bool ImportShapes(string importFilePath, bool fromCategory)
         {
             var importShapeGallery = PrepareImportGallery(importFilePath, fromCategory);
 
@@ -743,7 +750,7 @@ namespace PowerPointLabs
                         MessageBox.Show(
                             string.Format(TextCollection.CustomShapeImportSingleCategoryErrorFormat,
                                           importShapeGallery.Name));
-                        return;
+                        return false;
                     }
 
                     // copy all shapes in the import shape gallery to current shape gallery
@@ -752,23 +759,25 @@ namespace PowerPointLabs
                         if (fromCategory)
                         {
                             importShapeGallery.RetrieveCategory(importCategory);
-                            
-                            if (!Globals.ThisAddIn.ShapePresentation.AppendCategoryFromClipBoard(importCategory))
-                            {
-                                MessageBox.Show(TextCollection.CustomShapeImportAppendCategoryError);
-                                return;
-                            }
+
+                            Globals.ThisAddIn.ShapePresentation.AddCategory(importCategory, false, true);
 
                             _categoryBinding.Add(importCategory);
                         }
+                        else
+                        {
+                            importShapeGallery.RetrieveAllShape();
+
+                            Globals.ThisAddIn.ShapePresentation.AddShape(null, "", fromClipBoard: true);
+                        }
                     }
                 }
-
-                MessageBox.Show(TextCollection.CustomShapeImportSuccess);
             }
             catch (Exception e)
             {
                 ErrorDialogWrapper.ShowDialog("Error", e.Message, e);
+
+                return false;
             }
             finally
             {
@@ -777,6 +786,8 @@ namespace PowerPointLabs
                 // delete the import file copy
                 FileDir.DeleteFile(Path.Combine(ShapeRootFolderPath, ImportFileNameNoExtension + ".pptlabsshapes"));
             }
+
+            return true;
         }
 
         private bool MigrateShapeFolder(string oldPath, string newPath)
