@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
@@ -19,7 +20,7 @@ namespace PowerPointLabs.Models
          * 1. Be careful when using PowerPointPresentation.Slides property. The
          * implementation requires O(n) time to access an item, instead of O(1).
          * Therefore, when features in PowerPointSlide is not required, access
-         * slides via PowerPointPresentation.Presentation.Slides.
+         * slides via PowerPointPresentation.Presentation.Slides;
          ************************************************************************/
         private const string ShapeGalleryFileExtension = ".pptlabsshapes";
         private const string DuplicateShapeSuffixFormat = "(recovered shape {0})";
@@ -113,7 +114,7 @@ namespace PowerPointLabs.Models
             ActionProtection();
         }
 
-        public void AddShape(Selection selection, string name, string category = "", bool fromClipBoard = false)
+        public string AddShape(Selection selection, string name, string category = "", bool fromClipBoard = false)
         {
             if (!fromClipBoard)
             {
@@ -125,7 +126,21 @@ namespace PowerPointLabs.Models
             if (!string.IsNullOrEmpty(category))
             {
                 var categoryIndex = FindCategoryIndex(category);
+
+                if (categoryIndex == -1) return string.Empty;
+
                 categorySlide = Slides[categoryIndex - 1];
+            }
+
+            // check if the name has been used, if used, name it to the next available name
+            var shapeWithSameName = categorySlide.GetShapesWithRule(GenereateNameSearchPattern(name))
+                                                 .Select(item => item.Name)
+                                                 .ToList();
+
+            if (shapeWithSameName.Count != 0)
+            {
+                shapeWithSameName = PrepareNames(shapeWithSameName);
+                name = Common.NextAvailableName(shapeWithSameName, new Regex(string.Format("({0}) (\\d+)", name)));
             }
 
             var pastedShapeRange = categorySlide.Shapes.Paste();
@@ -149,6 +164,8 @@ namespace PowerPointLabs.Models
 
             Save();
             ActionProtection();
+
+            return name;
         }
 
         public override void Close()
@@ -163,7 +180,25 @@ namespace PowerPointLabs.Models
             RetrieveShapeGalleryFile();
         }
 
-        public void CopyShape(string name, string categoryName)
+        public void CopyCategory(string name)
+        {
+            var index = FindCategoryIndex(name);
+            Presentation.Slides[index].Shapes.Range().Copy();
+        }
+
+        public void CopyShape(string name)
+        {
+            var shapes = _defaultCategory.GetShapesWithRule(GenereateNameSearchPattern(name));
+
+            _defaultCategory.Shapes.Range(shapes.Select(item => item.Name).ToArray()).Copy();
+        }
+
+        public void CopyShape(IEnumerable<string> nameList)
+        {
+            _defaultCategory.Shapes.Range(nameList.ToArray()).Copy();
+        }
+
+        public void CopyShapeToCategory(string name, string categoryName)
         {
             var index = FindCategoryIndex(categoryName);
 
@@ -185,7 +220,7 @@ namespace PowerPointLabs.Models
             return Slides.Any(category => category.Name == name);
         }
 
-        public void MoveShape(string name, string categoryName)
+        public void MoveShapeToCategory(string name, string categoryName)
         {
             var index = FindCategoryIndex(categoryName);
 
@@ -324,24 +359,6 @@ namespace PowerPointLabs.Models
 
             Save();
             ActionProtection();
-        }
-
-        public void RetrieveShape(string name)
-        {
-            var shapes = _defaultCategory.GetShapesWithRule(GenereateNameSearchPattern(name));
-
-            _defaultCategory.Shapes.Range(shapes.Select(item => item.Name).ToArray()).Copy();
-        }
-
-        public void RetrieveAllShape()
-        {
-            _defaultCategory.Shapes.Range().Copy();
-        }
-
-        public void RetrieveCategory(string name)
-        {
-            var index = FindCategoryIndex(name);
-            Presentation.Slides[index].Shapes.Range().Copy();
         }
         # endregion
 
@@ -588,7 +605,8 @@ namespace PowerPointLabs.Models
 
         private Regex GenereateNameSearchPattern(string name)
         {
-            var searchPattern = string.Format(NameSearchPattern, name, name);
+            var skippedName = Common.SkipRegexCharacter(name);
+            var searchPattern = string.Format(NameSearchPattern, skippedName, skippedName);
             return new Regex(searchPattern);
         }
 
@@ -644,6 +662,11 @@ namespace PowerPointLabs.Models
             }
 
             return true;
+        }
+
+        private List<string> PrepareNames(List<string> nameList)
+        {
+            return null;
         }
 
         private string RetrieveCategoryName(Shape categoryNameBox)

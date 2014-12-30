@@ -1663,13 +1663,12 @@ namespace PowerPointLabs
                 return;
             }
 
-            var shapeName = customShape.NextDefaultNameWithoutExtension;
-            var shapeFullName = customShape.NextDefaultFullName;
-
             // add shape into shape gallery first to reduce flicker
-            Globals.ThisAddIn.ShapePresentation.AddShape(selection, shapeName);
+            var shapeName = Globals.ThisAddIn.ShapePresentation.AddShape(selection,
+                                                                         TextCollection.CustomShapeDefaultShapeName);
 
             // add the selection into pane and save it as .png locally
+            var shapeFullName = Path.Combine(customShape.CurrentShapeFolderPath, shapeName);
             ConvertToPicture.ConvertAndSave(selection, shapeFullName);
 
             // sync the shape among all opening panels

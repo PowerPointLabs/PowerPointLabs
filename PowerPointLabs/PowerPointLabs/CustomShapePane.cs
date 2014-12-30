@@ -16,8 +16,6 @@ namespace PowerPointLabs
 {
     public partial class CustomShapePane : UserControl
     {
-        private const string DefaultShapeNameFormat = @"My Shape Untitled {0}";
-        private const string DefaultShapeNameSearchRegex = @"^My Shape Untitled (\d+)$";
         private const string ShapeFileDialogFilter =
             "PowerPointLabs Shapes File|*.pptlabsshapes;*.pptx";
         private const string ImportFileNameNoExtension = "import";
@@ -48,25 +46,6 @@ namespace PowerPointLabs
         private readonly Comparers.AtomicNumberStringCompare _stringComparer = new Comparers.AtomicNumberStringCompare();
 
         # region Properties
-        public string NextDefaultFullName
-        {
-            get { return CurrentShapeFolderPath + @"\" +
-                         NextDefaultNameWithoutExtension + ".png"; }
-        }
-
-        public string NextDefaultNameWithoutExtension
-        {
-            get
-            {
-                var labelNames =
-                    myShapeFlowLayout.Controls.OfType<LabeledThumbnail>().Select(control => control.NameLable).ToList();
-
-                var nextNum = Common.NextDefaultNumber(labelNames, new Regex(DefaultShapeNameSearchRegex));
-
-                return string.Format(DefaultShapeNameFormat, nextNum);
-            }
-        }
-
         public List<string> Categories { get; private set; }
 
         public string CurrentCategory { get; set; }
@@ -295,11 +274,8 @@ namespace PowerPointLabs
             }
 
             // all selected shape will be added to the slide
-            foreach (var shapeName in _selectedThumbnail.Select(thumbnail => thumbnail.NameLable))
-            {
-                Globals.ThisAddIn.ShapePresentation.RetrieveShape(shapeName);
-                currentSlide.Shapes.Paste();
-            }
+            Globals.ThisAddIn.ShapePresentation.CopyShape(_selectedThumbnail.Select(thumbnail => thumbnail.NameLable));
+            currentSlide.Shapes.Paste();
         }
 
         private void ContextMenuStripAddCategoryClicked()
@@ -757,7 +733,7 @@ namespace PowerPointLabs
                     {
                         if (fromCategory)
                         {
-                            importShapeGallery.RetrieveCategory(importCategory);
+                            importShapeGallery.CopyCategory(importCategory);
 
                             Globals.ThisAddIn.ShapePresentation.AddCategory(importCategory, false, true);
 
@@ -765,9 +741,11 @@ namespace PowerPointLabs
                         }
                         else
                         {
-                            importShapeGallery.RetrieveAllShape();
+                            var shapeName = importShapeGallery.Slides[0].Shapes[1].Name;
 
-                            Globals.ThisAddIn.ShapePresentation.AddShape(null, "", fromClipBoard: true);
+                            importShapeGallery.CopyShape(shapeName);
+
+                            Globals.ThisAddIn.ShapePresentation.AddShape(null, shapeName, fromClipBoard: true);
                         }
                     }
                 }
@@ -1105,7 +1083,7 @@ namespace PowerPointLabs
                 }
 
                 // move shape in ShapeGallery to correct place
-                Globals.ThisAddIn.ShapePresentation.CopyShape(shapeName, categoryName);
+                Globals.ThisAddIn.ShapePresentation.CopyShapeToCategory(shapeName, categoryName);
 
                 // move shape on the disk to correct place
                 File.Copy(oriPath, destPath);
@@ -1314,7 +1292,7 @@ namespace PowerPointLabs
             {
                 Globals.ThisAddIn.Application.StartNewUndoEntry();
 
-                Globals.ThisAddIn.ShapePresentation.RetrieveShape(shapeName);
+                Globals.ThisAddIn.ShapePresentation.CopyShape(shapeName);
                 currentSlide.Shapes.Paste().Select();
             }
             else
@@ -1393,7 +1371,7 @@ namespace PowerPointLabs
                 }
 
                 // move shape in ShapeGallery to correct place
-                Globals.ThisAddIn.ShapePresentation.MoveShape(shapeName, categoryName);
+                Globals.ThisAddIn.ShapePresentation.MoveShapeToCategory(shapeName, categoryName);
 
                 // move shape on the disk to correct place
                 File.Move(oriPath, destPath);

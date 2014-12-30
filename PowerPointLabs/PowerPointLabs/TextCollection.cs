@@ -295,6 +295,8 @@
         # endregion
 
         # region Task Pane - Shapes Lab
+        public const string CustomShapeDefaultShapeName = "My Shape Untitled";
+
         public const string CustomShapeFileNameInvalid = "Invalid shape name.";
         public const string CustomShapeNoShapeTextFirstLine = "No shapes saved yet.";
         public const string CustomShapeNoShapeTextSecondLine = "Right-click any object on a slide to save it in this panel.";
