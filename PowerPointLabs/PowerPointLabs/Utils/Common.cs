@@ -1,19 +1,18 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using System.Text.RegularExpressions;
 
 namespace PowerPointLabs.Utils
 {
     public static class Common
     {
-        public static string NextAvailableName(List<string> nameList, Regex namePattern)
+        public static string NextAvailableName(List<string> nameList, string name)
         {
-            var nameFormat = string.Empty;
-            var substitueString = string.Format("$1 {0}", NextDefaultNumber(nameList, namePattern, ref nameFormat));
-
-            return namePattern.Replace(nameFormat, substitueString);
+            return string.Format("{0} {1}", name,
+                                 NextDefaultNumber(nameList.OrderBy(item => item,
+                                                   new Comparers.AtomicNumberStringCompare()).ToList(),
+                                                   name));
         }
 
         public static string SkipRegexCharacter(string str)
@@ -24,41 +23,29 @@ namespace PowerPointLabs.Utils
         }
 
         # region Helper Function
-        private static int NextDefaultNumber(IEnumerable<string> nameList, Regex namePattern, ref string nameFormat)
+        private static int NextDefaultNumber(List<string> nameList, string name)
         {
-            var defaultPattern = new Regex(@"^(\.+) (\d+)$");
+            var namePattern = new Regex(string.Format("{0}(?: (\\d+))*", name));
+            var min = 0;
 
-            var temp = 0;
-            var min = int.MaxValue;
-
-            if (namePattern == null)
+            if (!string.IsNullOrEmpty(namePattern.Match(nameList[0]).Groups[1].Value))
             {
-                namePattern = defaultPattern;
+                return min;
             }
 
-            foreach (var name in nameList.Where(name => namePattern.IsMatch(name)))
+            for (var i = 1; i < nameList.Count; i ++)
             {
-                if (nameFormat == string.Empty)
+                var currentCnt = int.Parse(namePattern.Match(nameList[i]).Groups[1].Value);
+
+                if (currentCnt != min + 1)
                 {
-                    nameFormat = namePattern.Match(name).Groups[1].Value;
+                    return min + 1;
                 }
 
-                var currentCnt = int.Parse(namePattern.Match(name).Groups[2].Value);
-
-                if (currentCnt - temp != 1)
-                {
-                    min = Math.Min(min, temp);
-                }
-
-                temp = currentCnt;
+                min++;
             }
 
-            if (min == int.MaxValue)
-            {
-                return temp + 1;
-            }
-
-            return min;
+            return min + 1;
         }
         # endregion
     }

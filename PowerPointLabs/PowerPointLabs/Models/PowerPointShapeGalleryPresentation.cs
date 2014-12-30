@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
@@ -24,13 +23,14 @@ namespace PowerPointLabs.Models
          ************************************************************************/
         private const string ShapeGalleryFileExtension = ".pptlabsshapes";
         private const string DuplicateShapeSuffixFormat = "(recovered shape {0})";
-        private const string DefaultSlideNameSearchPattern = "[Ss]lide ?\\d+";
+        private const string DefaultSlideNameSearchPattern = @"[Ss]lide ?\d+";
         private const string UntitledCategoryNameFormat = "Untitled Category {0}";
         private const string CategoryNameFormat = "Category: {0}";
         private const string CategoryNameBoxSearchPattern = "[Cc]ategory: *([^<>:\"/\\\\|?*]+)";
         private const string GroupSelectionNameFormat = "Group {0} Seq_{1}";
-        private const string NameSearchPattern = "^Group {0} Seq_(\\d+)$|^{1}$";
-        private const string GroupSelectionNamePattern = "^Group ([\\w\\s]+) Seq_(\\d+)$";
+        private const string NameSearchPattern = @"^Group {0} Seq_(\d+)$|^{1}$";
+        private const string GroupSelectionNamePattern = @"^Group ([\w\s]+) Seq_(\d+)$";
+        private const string NameExtractionPattern = @"^Group (name(?: \d+)*) Seq_\d+$|^(name(?: \d+)*)$";
 
         private const int MaxUndoAmount = 20;
         
@@ -133,14 +133,15 @@ namespace PowerPointLabs.Models
             }
 
             // check if the name has been used, if used, name it to the next available name
-            var shapeWithSameName = categorySlide.GetShapesWithRule(GenereateNameSearchPattern(name))
-                                                 .Select(item => item.Name)
-                                                 .ToList();
-
-            if (shapeWithSameName.Count != 0)
+            if (categorySlide.HasShapeWithRule(GenereateNameSearchPattern(name)))
             {
-                shapeWithSameName = PrepareNames(shapeWithSameName);
-                name = Common.NextAvailableName(shapeWithSameName, new Regex(string.Format("({0}) (\\d+)", name)));
+                var nameExtractionRegex = new Regex(NameExtractionPattern);
+                var qualifiedShapeNames = categorySlide.GetShapesWithRule(nameExtractionRegex)
+                                                       .Select(item => item.Name)
+                                                       .ToList();
+
+                var nameList = PrepareNames(qualifiedShapeNames);
+                name = Common.NextAvailableName(nameList, name);
             }
 
             var pastedShapeRange = categorySlide.Shapes.Paste();
@@ -664,9 +665,17 @@ namespace PowerPointLabs.Models
             return true;
         }
 
-        private List<string> PrepareNames(List<string> nameList)
+        private List<string> PrepareNames(IEnumerable<string> nameList)
         {
-            return null;
+            var nameExtractionRegex = new Regex(NameExtractionPattern);
+            var newList = nameList.Select(name => nameExtractionRegex.Match(name))
+                                  .Select(match => !string.IsNullOrEmpty(match.Groups[1].Value) ?
+                                                   match.Groups[1].Value :
+                                                   match.Groups[2].Value)
+                                  .Distinct()
+                                  .ToList();
+
+            return newList;
         }
 
         private string RetrieveCategoryName(Shape categoryNameBox)

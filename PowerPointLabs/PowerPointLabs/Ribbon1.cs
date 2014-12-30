@@ -1668,7 +1668,7 @@ namespace PowerPointLabs
                                                                          TextCollection.CustomShapeDefaultShapeName);
 
             // add the selection into pane and save it as .png locally
-            var shapeFullName = Path.Combine(customShape.CurrentShapeFolderPath, shapeName);
+            var shapeFullName = Path.Combine(customShape.CurrentShapeFolderPath, shapeName + ".png");
             ConvertToPicture.ConvertAndSave(selection, shapeFullName);
 
             // sync the shape among all opening panels
