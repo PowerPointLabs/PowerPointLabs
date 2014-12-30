@@ -9,10 +9,10 @@ namespace PowerPointLabs.Utils
     {
         public static string NextAvailableName(List<string> nameList, string name)
         {
-            return string.Format("{0} {1}", name,
-                                 NextDefaultNumber(nameList.OrderBy(item => item,
-                                                   new Comparers.AtomicNumberStringCompare()).ToList(),
-                                                   name));
+            var orderedNameList = nameList.OrderBy(item => item, new Comparers.AtomicNumberStringCompare()).ToList();
+            var nextDefaultNumber = NextDefaultNumber(orderedNameList, name);
+
+            return string.Format("{0} {1}", name, nextDefaultNumber);
         }
 
         public static string SkipRegexCharacter(string str)

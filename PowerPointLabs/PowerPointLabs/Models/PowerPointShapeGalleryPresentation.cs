@@ -30,7 +30,7 @@ namespace PowerPointLabs.Models
         private const string GroupSelectionNameFormat = "Group {0} Seq_{1}";
         private const string NameSearchPattern = @"^Group {0} Seq_(\d+)$|^{1}$";
         private const string GroupSelectionNamePattern = @"^Group ([\w\s]+) Seq_(\d+)$";
-        private const string NameExtractionPattern = @"^Group (name(?: \d+)*) Seq_\d+$|^(name(?: \d+)*)$";
+        private const string NameExtractionPatternFormat = @"^Group ({0}(?: \d+)*) Seq_\d+$|^({1}(?: \d+)*)$";
 
         private const int MaxUndoAmount = 20;
         
@@ -135,12 +135,15 @@ namespace PowerPointLabs.Models
             // check if the name has been used, if used, name it to the next available name
             if (categorySlide.HasShapeWithRule(GenereateNameSearchPattern(name)))
             {
-                var nameExtractionRegex = new Regex(NameExtractionPattern);
-                var qualifiedShapeNames = categorySlide.GetShapesWithRule(nameExtractionRegex)
-                                                       .Select(item => item.Name)
-                                                       .ToList();
+                var nameExtractionRegex = new Regex(string.Format(NameExtractionPatternFormat, name, name));
+                var nameList = categorySlide.GetShapesWithRule(nameExtractionRegex)
+                                            .Select(item => nameExtractionRegex.Match(item.Name))
+                                            .Select(match => !string.IsNullOrEmpty(match.Groups[1].Value)
+                                                             ? match.Groups[1].Value
+                                                             : match.Groups[2].Value)
+                                            .Distinct()
+                                            .ToList();
 
-                var nameList = PrepareNames(qualifiedShapeNames);
                 name = Common.NextAvailableName(nameList, name);
             }
 
@@ -663,19 +666,6 @@ namespace PowerPointLabs.Models
             }
 
             return true;
-        }
-
-        private List<string> PrepareNames(IEnumerable<string> nameList)
-        {
-            var nameExtractionRegex = new Regex(NameExtractionPattern);
-            var newList = nameList.Select(name => nameExtractionRegex.Match(name))
-                                  .Select(match => !string.IsNullOrEmpty(match.Groups[1].Value) ?
-                                                   match.Groups[1].Value :
-                                                   match.Groups[2].Value)
-                                  .Distinct()
-                                  .ToList();
-
-            return newList;
         }
 
         private string RetrieveCategoryName(Shape categoryNameBox)
