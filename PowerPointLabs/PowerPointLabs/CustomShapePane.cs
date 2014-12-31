@@ -874,17 +874,13 @@ namespace PowerPointLabs
                 File.Copy(importFilePath, importFileCopyPath);
             }
 
-            // open the file as an imported file
+            // init the file as an imported file
             var importShapeGallery = new PowerPointShapeGalleryPresentation(ShapeRootFolderPath,
                                                                             ImportFileNameNoExtension)
                                          {
-                                             IsImportedFile = true
+                                             IsImportedFile = true,
+                                             ImportToCategory = fromCategory ? string.Empty : CurrentCategory
                                          };
-
-            if (!fromCategory)
-            {
-                importShapeGallery.ImportToCategory = CurrentCategory;
-            }
 
             return importShapeGallery;
         }

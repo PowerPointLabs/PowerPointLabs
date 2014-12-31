@@ -21,16 +21,16 @@ namespace PowerPointLabs.Models
          * Therefore, when features in PowerPointSlide is not required, access
          * slides via PowerPointPresentation.Presentation.Slides;
          ************************************************************************/
-        private const string ShapeGalleryFileExtension = ".pptlabsshapes";
-        private const string DuplicateShapeSuffixFormat = "(recovered shape {0})";
-        private const string DefaultSlideNameSearchPattern = @"[Ss]lide ?\d+";
-        private const string UntitledCategoryNameFormat = "Untitled Category {0}";
-        private const string CategoryNameFormat = "Category: {0}";
         private const string CategoryNameBoxSearchPattern = "[Cc]ategory: *([^<>:\"/\\\\|?*]+)";
+        private const string CategoryNameFormat = "Category: {0}";
+        private const string DefaultSlideNameSearchPattern = @"[Ss]lide ?\d+";
+        private const string DuplicateShapeSuffixFormat = "(recovered shape {0})";
         private const string GroupSelectionNameFormat = "Group {0} Seq_{1}";
-        private const string NameSearchPattern = @"^Group {0} Seq_(\d+)$|^{1}$";
         private const string GroupSelectionNamePattern = @"^Group ([\w\s]+) Seq_(\d+)$";
+        private const string NameSearchPattern = @"^Group {0} Seq_(\d+)$|^{1}$";
         private const string NameExtractionPatternFormat = @"^Group ({0}(?: \d+)*) Seq_\d+$|^({1}(?: \d+)*)$";
+        private const string ShapeGalleryFileExtension = ".pptlabsshapes";
+        private const string UntitledCategoryNameFormat = "Untitled Category {0}";
 
         private const int MaxUndoAmount = 20;
         
@@ -41,6 +41,7 @@ namespace PowerPointLabs.Models
 
         # region Properties
         public List<string> Categories { get; private set; }
+
         public string DefaultCategory
         {
             get
@@ -57,8 +58,10 @@ namespace PowerPointLabs.Models
                 FindCategoryIndex(value, true);
             }
         }
-        public bool IsImportedFile { get; set; }
+
         public string ImportToCategory { get; set; }
+
+        public bool IsImportedFile { get; set; }
         # endregion
 
         # region Constructor
@@ -149,21 +152,18 @@ namespace PowerPointLabs.Models
 
             var pastedShapeRange = categorySlide.Shapes.Paste();
 
-            if (!fromClipBoard)
+            if (pastedShapeRange.Count > 1)
             {
-                if (pastedShapeRange.Count > 1)
+                for (var nameCount = 1; nameCount <= pastedShapeRange.Count; nameCount++)
                 {
-                    for (int nameCount = 1; nameCount <= pastedShapeRange.Count; nameCount++)
-                    {
-                        var shape = pastedShapeRange[nameCount];
+                    var shape = pastedShapeRange[nameCount];
 
-                        shape.Name = string.Format(GroupSelectionNameFormat, name, nameCount);
-                    }
+                    shape.Name = string.Format(GroupSelectionNameFormat, name, nameCount);
                 }
-                else
-                {
-                    pastedShapeRange[1].Name = name;
-                } 
+            }
+            else
+            {
+                pastedShapeRange[1].Name = name;
             }
 
             Save();
