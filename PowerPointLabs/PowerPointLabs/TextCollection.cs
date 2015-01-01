@@ -92,11 +92,11 @@
         # endregion
 
         # region Effects Lab
-        public const string EffectsLabMenuSupertip = @"Apply elegant effects on shapes.";
-        public const string EffectsLabMakeTransparentSupertip = @"Adjust transparency of pictures or shapes.";
-        public const string EffectsLabMagnifyGlassSupertip = @"Enlarge a small detail on the slide.";
-        public const string EffectsLabBlurRemainderSupertip = @"Blur slide background to focus attention on an area.";
-        public const string EffectsLabColorizeRemainderSupertip = @"Recolor only an area of a slide to focus attention.";
+        public const string EffectsLabMenuSupertip = @"Apply elegant effects to shapes.";
+        public const string EffectsLabMakeTransparentSupertip = @"Adjust the transparency of pictures or shapes.";
+        public const string EffectsLabMagnifyGlassSupertip = @"Magnify a small area or detail on the slide.";
+        public const string EffectsLabBlurRemainderSupertip = @"Draw attention to an area of the slide by blurring everything else.";
+        public const string EffectsLabColorizeRemainderSupertip = @"Recolor an area of a slide to attract attention to it.";
         # endregion
         # endregion
 
