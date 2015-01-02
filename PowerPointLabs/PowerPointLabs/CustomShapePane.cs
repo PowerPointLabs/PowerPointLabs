@@ -6,11 +6,14 @@ using System.IO;
 using System.Linq;
 using System.Text.RegularExpressions;
 using System.Windows.Forms;
+using Microsoft.Office.Interop.PowerPoint;
 using PPExtraEventHelper;
 using PowerPointLabs.Models;
 using PowerPointLabs.Utils;
 using PowerPointLabs.Views;
+using Font = System.Drawing.Font;
 using Graphics = PowerPointLabs.Utils.Graphics;
+using Point = System.Drawing.Point;
 
 namespace PowerPointLabs
 {
@@ -706,9 +709,9 @@ namespace PowerPointLabs
             }
         }
 
-        private bool ImportShapes(string importFilePath, bool fromCategory)
+        private bool ImportShapes(string importFilePath, bool fromLibrary)
         {
-            var importShapeGallery = PrepareImportGallery(importFilePath, fromCategory);
+            var importShapeGallery = PrepareImportGallery(importFilePath, fromLibrary);
 
             try
             {
@@ -720,7 +723,7 @@ namespace PowerPointLabs
                 {
                     // if user trys to import shapes but the file contains multiple categories,
                     // stop processing and warn the user
-                    if (!fromCategory && importShapeGallery.Categories.Count > 1)
+                    if (!fromLibrary && importShapeGallery.Categories.Count > 1)
                     {
                         MessageBox.Show(
                             string.Format(TextCollection.CustomShapeImportSingleCategoryErrorFormat,
@@ -729,24 +732,13 @@ namespace PowerPointLabs
                     }
 
                     // copy all shapes in the import shape gallery to current shape gallery
-                    foreach (var importCategory in importShapeGallery.Categories)
+                    if (fromLibrary)
                     {
-                        if (fromCategory)
-                        {
-                            importShapeGallery.CopyCategory(importCategory);
-
-                            Globals.ThisAddIn.ShapePresentation.AddCategory(importCategory, false, true);
-
-                            _categoryBinding.Add(importCategory);
-                        }
-                        else
-                        {
-                            var shapeName = importShapeGallery.Slides[0].Shapes[1].Name;
-
-                            importShapeGallery.CopyShape(shapeName);
-
-                            Globals.ThisAddIn.ShapePresentation.AddShape(null, shapeName, fromClipBoard: true);
-                        }
+                        ImportShapesFromLibrary(importShapeGallery);
+                    }
+                    else
+                    {
+                        ImportShapesFromSingleShape(importShapeGallery);
                     }
                 }
             }
@@ -765,6 +757,42 @@ namespace PowerPointLabs
             }
 
             return true;
+        }
+
+        private void ImportShapesFromLibrary(PowerPointShapeGalleryPresentation importShapeGallery)
+        {
+            foreach (var importCategory in importShapeGallery.Categories)
+            {
+                importShapeGallery.CopyCategory(importCategory);
+
+                Globals.ThisAddIn.ShapePresentation.AddCategory(importCategory, false, true);
+
+                _categoryBinding.Add(importCategory);
+            }
+        }
+
+        private void ImportShapesFromSingleShape(PowerPointShapeGalleryPresentation importShapeGallery)
+        {
+            var shapeRange = importShapeGallery.Slides[0].Shapes.Range();
+
+            if (shapeRange.Count < 1) return;
+
+            var shapeName = shapeRange[1].Name;
+
+            if (shapeRange.Count > 1)
+            {
+                shapeName = TextCollection.CustomShapeDefaultShapeName;
+                importShapeGallery.CopyShape();
+            }
+            else
+            {
+                importShapeGallery.CopyShape(shapeName);
+            }
+
+            shapeName = Globals.ThisAddIn.ShapePresentation.AddShape(null, shapeName, fromClipBoard: true);
+            var exportPath = Path.Combine(CurrentShapeFolderPath, shapeName + ".png");
+
+            Graphics.ExportShape(shapeRange, exportPath);
         }
 
         private bool MigrateShapeFolder(string oldPath, string newPath)
@@ -1363,7 +1391,7 @@ namespace PowerPointLabs
                     MessageBox.Show(string.Format("{0} exists in {1}. Please rename your shape before moving.", shapeName,
                                                   categoryName));
 
-                    return;
+                    break;
                 }
 
                 // move shape in ShapeGallery to correct place

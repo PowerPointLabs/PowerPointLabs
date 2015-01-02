@@ -24,7 +24,7 @@ namespace PowerPointLabs.Models
         private const string CategoryNameBoxSearchPattern = "[Cc]ategory: *([^<>:\"/\\\\|?*]+)";
         private const string CategoryNameFormat = "Category: {0}";
         private const string DefaultSlideNameSearchPattern = @"[Ss]lide ?\d+";
-        private const string DuplicateShapeSuffixFormat = "(recovered shape {0})";
+        private const string DuplicateShapeSuffixFormat = "(duplicate shape {0})";
         private const string GroupSelectionNameFormat = "Group {0} Seq_{1}";
         private const string GroupSelectionNamePattern = @"^Group ([\w\s]+) Seq_(\d+)$";
         private const string NameSearchPattern = @"^Group {0} Seq_(\d+)$|^{1}$";
@@ -36,8 +36,6 @@ namespace PowerPointLabs.Models
         
         private PowerPointSlide _defaultCategory;
         private readonly List<Shape> _categoryNameBoxCollection = new List<Shape>();
-
-        private string _tempSingleShapeSlideName;
 
         # region Properties
         public List<string> Categories { get; private set; }
@@ -174,11 +172,6 @@ namespace PowerPointLabs.Models
 
         public override void Close()
         {
-            if (!string.IsNullOrEmpty(_tempSingleShapeSlideName))
-            {
-                Slides[0].Name = _tempSingleShapeSlideName;
-            }
-
             base.Close();
 
             RetrieveShapeGalleryFile();
@@ -188,6 +181,11 @@ namespace PowerPointLabs.Models
         {
             var index = FindCategoryIndex(name);
             Presentation.Slides[index].Shapes.Range().Copy();
+        }
+
+        public void CopyShape()
+        {
+            _defaultCategory.Shapes.Range().Copy();
         }
 
         public void CopyShape(string name)
@@ -234,7 +232,7 @@ namespace PowerPointLabs.Models
             var shapes = _defaultCategory.GetShapesWithRule(GenereateNameSearchPattern(name));
             var destCategory = Slides[index - 1];
 
-            _defaultCategory.Shapes.Range(shapes.Select(item => item.Name).ToArray()).Copy();
+            _defaultCategory.Shapes.Range(shapes.Select(item => item.Name).ToArray()).Cut();
             destCategory.Shapes.Paste();
 
             Save();
@@ -250,22 +248,6 @@ namespace PowerPointLabs.Models
             if (!base.Open(readOnly, untitled, withWindow, focus))
             {
                 return false;
-            }
-
-            if (!string.IsNullOrEmpty(ImportToCategory))
-            {
-                if (Presentation.Slides.Count != 1 ||
-                    Presentation.Slides[1].Shapes.Count != 1)
-                {
-                    return false;
-                }
-
-                _tempSingleShapeSlideName = Presentation.Slides[1].Name;
-                Slides[0].Name = ImportToCategory;
-            }
-            else
-            {
-                _tempSingleShapeSlideName = null;
             }
 
             if (!ConsistencyCheck()) return false;
@@ -377,8 +359,11 @@ namespace PowerPointLabs.Models
 
         private bool ConsistencyCheck()
         {
-            // if there's no slide, the file is always valid
-            return SlideCount < 1 || InitCategories();
+            // if the opening ShapeGallery is a single shape file, or if there's no slide,
+            // the file is always valid
+            return (IsImportedFile && !string.IsNullOrEmpty(ImportToCategory)) ||
+                   SlideCount < 1 ||
+                   InitCategories();
         }
 
         private Shape ConsistencyCheckCategoryNameBox(PowerPointSlide category, ref int untitledCategoryCnt)
@@ -394,15 +379,10 @@ namespace PowerPointLabs.Models
                 // if we do not have a name box inside, we have 3 cases:
                 // 1. slide.Name has been configured (old ShapeGallery file);
                 // 2. slide.Name is default (user didn't specify a name).
-                // 3. slide is chosen from ImportShape feature
 
                 // for case 1 & 2, we need to add a new text box into the slie.
                 // For case 1, the text of category box should be slide.Name;
                 // For case 2, the text of category box should be next untitled name;
-                // For case 3, we do not need to add the category box
-
-                if (!string.IsNullOrEmpty(ImportToCategory)) return null;
-
                 categoryNameBox = category.Shapes.AddTextbox(MsoTextOrientation.msoTextOrientationHorizontal, 0, 0,
                                                              SlideWidth, 0);
 
@@ -458,8 +438,9 @@ namespace PowerPointLabs.Models
             }
             else
             {
-                if (IsImportedFile &&
-                    string.IsNullOrEmpty(ImportToCategory))
+                // in case some of categories to be imported have the same name as those
+                // already exist categories
+                if (IsImportedFile)
                 {
                     var duplicateCnt = 1;
                     var oriCategoryName = newCategoryPath;
@@ -489,8 +470,7 @@ namespace PowerPointLabs.Models
                 var searchPattern = GenereateNameSearchPattern(shapeName);
                 var found = category.HasShapeWithRule(searchPattern);
 
-                if (!found &&
-                    string.IsNullOrEmpty(ImportToCategory))
+                if (!found)
                 {
                     shapeLost = true;
                     File.Delete(pngShape);
@@ -504,11 +484,15 @@ namespace PowerPointLabs.Models
         {
             var shapeDuplicate = false;
 
-            // if inconsistency is found, we keep all the shapes but:
-            // 1. append "(recovered shape X)" to the shape name, X is the relative index
-            // <del>2. export the shape as .png</del>
-            // point 2 is not needed, becuase all no-png shapes will be exported during ConsistencyCheckShapeToPng,
-            // and no-shape png will be deleted during ConsistencyCheckPngToShape.
+            // we have 3 cases here:
+            // 1. Open ShapeGallery;
+            // 2. Open a ShapeGallery via ImportCategory;
+
+            // For both cases, if inconsistency is found, we keep all the shapes but
+            // append "(recovered shape X)" to the shape name, X is the relative index
+            // Note: point 2 is not needed, becuase all no-png shapes will be exported
+            // during ConsistencyCheckShapeToPng, and pngs without a corresponding shape
+            // will be deleted during ConsistencyCheckPngToShape.
             foreach (var category in Slides)
             {
                 var shapeHash = new Dictionary<string, int>();
@@ -616,8 +600,6 @@ namespace PowerPointLabs.Models
 
         private bool InitCategories()
         {
-            if (SlideCount < 1) return true;
-
             // here we need to check 3 cases:
             // 1. self consistency check (if there are any duplicate names);
             // 2. more png than shapes inside pptx (shapes for short);
@@ -642,9 +624,8 @@ namespace PowerPointLabs.Models
                 shapeLost = ConsistencyCheckShapeToPng(pngShapes, category, shapeFolderPath) || shapeLost;
                 pngLost = ConsistencyCheckPngToShape(pngShapes, category) || pngLost;
 
-                // update names only when the name gets changed, and not ImportToCategory (i.e. importing a library)
-                if (category.Name != finalCategoryName &&
-                    string.IsNullOrEmpty(ImportToCategory))
+                // update names only when the name gets changed
+                if (category.Name != finalCategoryName)
                 {
                     category.Name = finalCategoryName;
                     categoryNameBox.TextFrame.TextRange.Text = string.Format(CategoryNameFormat, finalCategoryName);

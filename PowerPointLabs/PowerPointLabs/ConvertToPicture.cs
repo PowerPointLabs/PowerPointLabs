@@ -27,17 +27,7 @@ namespace PowerPointLabs
         {
             if (IsSelectionShape(selection))
             {
-                // When the user select multiple shapes, we need to group it before we export
-                // it. In case some of, or all of the shapes are animated, we need to duplicate
-                // the shapes for export since group will ruin the animation effects.
-
-                selection.ShapeRange.Copy();
-                
-                var duplicate = PowerPointCurrentPresentationInfo.CurrentSlide.Shapes.Paste();
-                var shape = GetShapeFromSelection(duplicate);
-                
-                Graphics.ExportShape(shape, fileName);
-                duplicate.Delete();
+                Graphics.ExportShape(selection.ShapeRange, fileName);
             }
             else
             {
