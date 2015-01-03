@@ -109,10 +109,10 @@ namespace PPExtraEventHelper
         internal static extern bool UnhookWinEvent(IntPtr hWinEventHook);
 
         [DllImport("winmm.dll")]
-        internal static extern int MciSendString(string mciCommand,
-                                                StringBuilder mciRetInfo,
-                                                int infoLen,
-                                                IntPtr callBack);
+        internal static extern int mciSendString(string mciCommand,
+                                                 StringBuilder mciRetInfo,
+                                                 int infoLen,
+                                                 IntPtr callBack);
 
         internal delegate void WinEventDelegate(IntPtr hWinEventHook, uint eventType,
         IntPtr hwnd, int idObject, int idChild, uint dwEventThread, uint dwmsEventTime);

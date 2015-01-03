@@ -191,19 +191,23 @@ namespace PowerPointLabs.Models
             return ConsistencyCheck();
         }
 
-        public void AppendCategoryFromClipBoard()
+        public bool AppendCategoryFromClipBoard(string categoryName)
         {
-            var slide = Presentation.Slides.Paste()[1];
-            var categoryNameBox = RetrieveCategoryNameBox(PowerPointSlide.FromSlideFactory(slide));
-            var categoryName = RetrieveCategoryName(categoryNameBox);
+            Trace.TraceInformation("Appending from clipboard...");
+            Trace.TraceInformation("Total slide in ShapeGallery = " + Presentation.Slides.Count);
 
-            // after paste, slide name will be corrupted, we need to rename it
-            slide.Name = categoryName;
+            var slide = AddSlide(name: categoryName);
+            slide.DeleteAllShapes();
+            slide.Shapes.Paste();
+
+            var categoryNameBox = RetrieveCategoryNameBox(slide);
             Categories.Add(categoryName);
             _categoryNameBoxCollection.Add(categoryNameBox);
             
             Save();
             ActionProtection();
+
+            return true;
         }
 
         public void RemoveCategory(string name)
@@ -306,7 +310,8 @@ namespace PowerPointLabs.Models
         public void RetrieveCategory(string name)
         {
             var index = FindCategoryIndex(name);
-            Slides[index - 1].Copy();
+            Trace.TraceInformation("Index = " + index);
+            Presentation.Slides[index].Shapes.Range().Copy();
         }
         # endregion
 

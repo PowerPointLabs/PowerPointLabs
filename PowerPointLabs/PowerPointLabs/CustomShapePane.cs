@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Drawing;
 using System.IO;
 using System.Linq;
@@ -282,6 +283,8 @@ namespace PowerPointLabs
 
         private void ContextMenuStripAddClicked()
         {
+            Globals.ThisAddIn.Application.StartNewUndoEntry();
+
             var currentSlide = PowerPointCurrentPresentationInfo.CurrentSlide;
 
             if (currentSlide == null)
@@ -367,37 +370,55 @@ namespace PowerPointLabs
             var importShapeGallery = new PowerPointShapeGalleryPresentation(ShapeRootFolderPath,
                                                                             importFileNameNoExtension)
                                          {IsImportedFile = true};
-            
-            if (!importShapeGallery.Open(withWindow: false, focus: false) &&
-                !importShapeGallery.Opened)
+
+            try
             {
-                MessageBox.Show(TextCollection.CustomShapeImportFileError);
-            }
-            else
-            {
-                // copy all shapes in the import shape gallery to current shape gallery
-                foreach (var importCategory in importShapeGallery.Categories)
+                if (!importShapeGallery.Open(withWindow: false, focus: false) &&
+                    !importShapeGallery.Opened)
                 {
-                    importShapeGallery.RetrieveCategory(importCategory);
-                    Globals.ThisAddIn.ShapePresentation.AppendCategoryFromClipBoard();
-                    _categoryBinding.Add(importCategory);
+                    MessageBox.Show(TextCollection.CustomShapeImportFileError);
+                }
+                else
+                {
+                    Trace.TraceInformation("Retrieving Category from " + importShapeGallery.Presentation.Name);
+                    Trace.TraceInformation("Total Slides = " + importShapeGallery.Presentation.Slides.Count);
+
+                    // copy all shapes in the import shape gallery to current shape gallery
+                    foreach (var importCategory in importShapeGallery.Categories)
+                    {
+                        importShapeGallery.RetrieveCategory(importCategory);
+
+                        if (!Globals.ThisAddIn.ShapePresentation.AppendCategoryFromClipBoard(importCategory))
+                        {
+                            MessageBox.Show("Your computer does not support this feature.");
+                            return;
+                        }
+
+                        _categoryBinding.Add(importCategory);
+                    }
+                }
+
+                MessageBox.Show(TextCollection.CustomShapeImportSuccess);
+            }
+            catch (Exception e)
+            {
+                ErrorDialogWrapper.ShowDialog("Error", e.Message, e);
+            }
+            finally
+            {
+                importShapeGallery.Close();
+
+                // delete the import file copy
+                if (!sameFolder)
+                {
+                    if (importFileCopyPath.EndsWith(".pptx"))
+                    {
+                        importFileCopyPath = importFileCopyPath.Replace(".pptx", ".pptlabsshapes");
+                    }
+
+                    FileDir.DeleteFile(importFileCopyPath);
                 }
             }
-
-            importShapeGallery.Close();
-
-            // delete the import file copy
-            if (!sameFolder)
-            {
-                if (importFileCopyPath.EndsWith(".pptx"))
-                {
-                    importFileCopyPath = importFileCopyPath.Replace(".pptx", ".pptlabsshapes");
-                }
-
-                FileDir.DeleteFile(importFileCopyPath);
-            }
-
-            MessageBox.Show(TextCollection.CustomShapeImportSuccess);
         }
 
         private void ContextMenuStripRemoveCategoryClicked()
@@ -727,10 +748,6 @@ namespace PowerPointLabs
             setAsDefaultToolStripMenuItem.Text = TextCollection.CustomShapeCategoryContextStripSetAsDefaultCategory;
             settingsToolStripMenuItem.Text = TextCollection.CustomShapeCategoryContextStripCategorySettings;
             importCategoryToolStripMenuItem.Text = TextCollection.CustomShapeCategoryContextStripImportCategory;
-            
-            // add a dummy entry to show right arrow
-            moveShapeToolStripMenuItem.DropDownItems.Add("");
-            copyToToolStripMenuItem.DropDownItems.Add("");
 
             foreach (ToolStripMenuItem contextMenu in shapeContextMenuStrip.Items)
             {
@@ -994,13 +1011,6 @@ namespace PowerPointLabs
 
         private void CopyContextMenuStripOnEvent(object sender, EventArgs e)
         {
-            if (copyToToolStripMenuItem.Tag != null &&
-                (string)copyToToolStripMenuItem.Tag == CurrentCategory)
-            {
-                copyToToolStripMenuItem.ShowDropDown();
-                return;
-            }
-
             copyToToolStripMenuItem.DropDownItems.Clear();
 
             foreach (string category in _categoryBinding.List)
@@ -1248,6 +1258,8 @@ namespace PowerPointLabs
             
             if (currentSlide != null)
             {
+                Globals.ThisAddIn.Application.StartNewUndoEntry();
+
                 Globals.ThisAddIn.ShapePresentation.RetrieveShape(shapeName);
                 currentSlide.Shapes.Paste().Select();
             }
@@ -1285,13 +1297,6 @@ namespace PowerPointLabs
 
         private void MoveContextMenuStripOnEvent(object sender, EventArgs e)
         {
-            if (moveShapeToolStripMenuItem.Tag != null &&
-                (string)moveShapeToolStripMenuItem.Tag == CurrentCategory)
-            {
-                moveShapeToolStripMenuItem.ShowDropDown();
-                return;
-            }
-
             moveShapeToolStripMenuItem.DropDownItems.Clear();
 
             foreach (string category in _categoryBinding.List)
@@ -1367,6 +1372,27 @@ namespace PowerPointLabs
             if (item.Name.Contains("add"))
             {
                 ContextMenuStripAddClicked();
+            }
+        }
+
+        private void ThumbnailContextMenuStripOpening(object sender, System.ComponentModel.CancelEventArgs e)
+        {
+            if (Categories.Count < 2)
+            {
+                moveShapeToolStripMenuItem.Enabled = false;
+                copyToToolStripMenuItem.Enabled = false;
+
+                moveShapeToolStripMenuItem.DropDownItems.Clear();
+                copyToToolStripMenuItem.DropDownItems.Clear();
+            }
+            else
+            {
+                moveShapeToolStripMenuItem.Enabled = true;
+                copyToToolStripMenuItem.Enabled = true;
+
+                // add a dummy entry to show right arrow
+                moveShapeToolStripMenuItem.DropDownItems.Add("");
+                copyToToolStripMenuItem.DropDownItems.Add("");
             }
         }
 

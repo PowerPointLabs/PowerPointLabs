@@ -296,6 +296,27 @@ namespace PowerPointLabs
         {
             return TextCollection.CustomeShapeButtonSupertip;
         }
+
+        public string GetEffectsLabSupertip(Office.IRibbonControl control)
+        {
+            return TextCollection.EffectsLabMenuSupertip;
+        }
+        public string GetEffectsLabMakeTransparentSupertip(Office.IRibbonControl control)
+        {
+            return TextCollection.EffectsLabMakeTransparentSupertip;
+        }
+        public string GetEffectsLabMagnifyGlassSupertip(Office.IRibbonControl control)
+        {
+            return TextCollection.EffectsLabMagnifyGlassSupertip;
+        }
+        public string GetEffectsLabBlurBackgroundSupertip(Office.IRibbonControl control)
+        {
+            return TextCollection.EffectsLabBlurRemainderSupertip;
+        }
+        public string GetEffectsLabColorizeBackgroundSupertip(Office.IRibbonControl control)
+        {
+            return TextCollection.EffectsLabColorizeRemainderSupertip;
+        }
         
         public string GetHelpButtonSupertip(Office.IRibbonControl control)
         {
@@ -444,6 +465,26 @@ namespace PowerPointLabs
         public string GetCustomeShapeButtonLabel(Office.IRibbonControl control)
         {
             return TextCollection.CustomeShapeButtonLabel;
+        }
+        public string GetEffectsLabButtonLabel(Office.IRibbonControl control)
+        {
+            return TextCollection.EffectsLabButtonLabel;
+        }
+        public string GetEffectsLabMakeTransparentButtonLabel(Office.IRibbonControl control)
+        {
+            return TextCollection.EffectsLabMakeTransparentButtonLabel;
+        }
+        public string GetEffectsLabMagnifyGlassButtonLabel(Office.IRibbonControl control)
+        {
+            return TextCollection.EffectsLabMagnifyGlassButtonLabel;
+        }
+        public string GetEffectsLabBlurRemainderButtonLabel(Office.IRibbonControl control)
+        {
+            return TextCollection.EffectsLabBlurRemainderSupertip;
+        }
+        public string GetEffectsLabRecolorRemainderButtonLabel(Office.IRibbonControl control)
+        {
+            return TextCollection.EffectsLabRecolorRemainderButtonLabel;
         }
 
         public string GetPPTLabsHelpGroupLabel(Office.IRibbonControl control)
@@ -814,6 +855,67 @@ namespace PowerPointLabs
             catch (Exception e)
             {
                 PowerPointLabsGlobals.LogException(e, "GetColorsLabImage");
+                throw;
+            }
+        }
+
+        public Bitmap GetEffectsLabImage(Office.IRibbonControl control)
+        {
+            try
+            {
+                return new System.Drawing.Bitmap(Properties.Resources.EffectsLab);
+            }
+            catch (Exception e)
+            {
+                PowerPointLabsGlobals.LogException(e, "GetEffectsLabImage");
+                throw;
+            }
+        }
+        public Bitmap GetMakeTransparentImage(Office.IRibbonControl control)
+        {
+            try
+            {
+                return new System.Drawing.Bitmap(Properties.Resources.MakeTransparent);
+            }
+            catch (Exception e)
+            {
+                PowerPointLabsGlobals.LogException(e, "GetMakeTransparentImage");
+                throw;
+            }
+        }
+        public Bitmap GetMagnifyImage(Office.IRibbonControl control)
+        {
+            try
+            {
+                return new System.Drawing.Bitmap(Properties.Resources.Magnify);
+            }
+            catch (Exception e)
+            {
+                PowerPointLabsGlobals.LogException(e, "GetMagnifyImage");
+                throw;
+            }
+        }
+        public Bitmap GetBlurRemainderImage(Office.IRibbonControl control)
+        {
+            try
+            {
+                return new System.Drawing.Bitmap(Properties.Resources.BlurRemainder);
+            }
+            catch (Exception e)
+            {
+                PowerPointLabsGlobals.LogException(e, "GetBlurRemainderImage");
+                throw;
+            }
+        }
+        public Bitmap GetRecolorRemainderImage(Office.IRibbonControl control)
+        {
+            try
+            {
+                return new System.Drawing.Bitmap(Properties.Resources.RecolorRemainder);
+            }
+            catch (Exception e)
+            {
+                PowerPointLabsGlobals.LogException(e, "GetRecolorRemainderImage");
                 throw;
             }
         }
@@ -1203,7 +1305,8 @@ namespace PowerPointLabs
         {
             try
             {
-                var dialog = new SpotlightDialogBox(Spotlight.defaultTransparency, Spotlight.defaultSoftEdges);
+                var dialog = new SpotlightDialogBox(Spotlight.defaultTransparency, Spotlight.defaultSoftEdges,
+                    Spotlight.defaultColor);
                 dialog.SettingsHandler += SpotlightPropertiesEdited;
                 dialog.ShowDialog();
             }
@@ -1214,12 +1317,13 @@ namespace PowerPointLabs
             }
         }
 
-        public void SpotlightPropertiesEdited(float newTransparency, float newSoftEdge)
+        public void SpotlightPropertiesEdited(float newTransparency, float newSoftEdge, Color newColor)
         {
             try
             {
                 Spotlight.defaultTransparency = newTransparency;
                 Spotlight.defaultSoftEdges = newSoftEdge;
+                Spotlight.defaultColor = newColor;
             }
             catch (Exception e)
             {
@@ -1681,6 +1785,8 @@ namespace PowerPointLabs
         # region Feature: Effects Lab
         public void MagnifyGlassEffectClick(Office.IRibbonControl control)
         {
+            Globals.ThisAddIn.Application.StartNewUndoEntry();
+
             var selection = PowerPointCurrentPresentationInfo.CurrentSelection;
 
             PowerPoint.ShapeRange shapeRange;
@@ -1703,16 +1809,28 @@ namespace PowerPointLabs
                 return;
             }
 
-            var croppedShape = CropToShape.Crop(selection);
+            try
+            {
+                var croppedShape = CropToShape.Crop(selection, handleError: false);
 
-            croppedShape.Left -= 12;
-            croppedShape.Top -= 12;
+                croppedShape.Left -= 12;
+                croppedShape.Top -= 12;
 
-            MagnifyGlassEffect(croppedShape, 1.4f);
+                MagnifyGlassEffect(croppedShape, 1.4f);
+            }
+            catch (Exception e)
+            {
+                var errorMessage = CropToShape.GetErrorMessageForErrorCode(e.Message);
+                errorMessage = errorMessage.Replace("Crop To Shape", "Magnify");
+
+                MessageBox.Show(errorMessage);
+            }
         }
 
         public void BlurBackgroundEffectClick(Office.IRibbonControl control)
         {
+            Globals.ThisAddIn.Application.StartNewUndoEntry();
+
             var effectSlide = GenerateEffectSlide();
             
             if (effectSlide == null) return;
@@ -1722,6 +1840,8 @@ namespace PowerPointLabs
 
         public void GreyScaleBackgroundEffectClick(Office.IRibbonControl control)
         {
+            Globals.ThisAddIn.Application.StartNewUndoEntry();
+
             var effectSlide = GenerateEffectSlide();
 
             if (effectSlide == null) return;
@@ -1731,6 +1851,8 @@ namespace PowerPointLabs
 
         public void BlackWhiteBackgroundEffectClick(Office.IRibbonControl control)
         {
+            Globals.ThisAddIn.Application.StartNewUndoEntry();
+
             var effectSlide = GenerateEffectSlide();
 
             if (effectSlide == null) return;
@@ -1740,6 +1862,8 @@ namespace PowerPointLabs
 
         public void GothamBackgroundEffectClick(Office.IRibbonControl control)
         {
+            Globals.ThisAddIn.Application.StartNewUndoEntry();
+
             var effectSlide = GenerateEffectSlide();
 
             if (effectSlide == null) return;
@@ -1749,6 +1873,8 @@ namespace PowerPointLabs
 
         public void SepiaBackgroundEffectClick(Office.IRibbonControl control)
         {
+            Globals.ThisAddIn.Application.StartNewUndoEntry();
+
             var effectSlide = GenerateEffectSlide();
 
             if (effectSlide == null) return;
@@ -1758,6 +1884,8 @@ namespace PowerPointLabs
 
         public void TransparentEffectClick(Office.IRibbonControl control)
         {
+            Globals.ThisAddIn.Application.StartNewUndoEntry();
+
             var selection = PowerPointCurrentPresentationInfo.CurrentSelection;
 
             TransparentEffect(selection.ShapeRange);
@@ -1802,13 +1930,20 @@ namespace PowerPointLabs
                 shapeRange.Cut();
 
                 var effectSlide =
-                    PowerPointBgEffectSlide.FromSlideFactory(curSlide.GetNativeSlide()) as PowerPointBgEffectSlide;
+                    PowerPointBgEffectSlide.FromSlideFactory(curSlide) as PowerPointBgEffectSlide;
+
+                PowerPointLabsGlobals.AddAckSlide();
 
                 return effectSlide;
             }
-            catch (Exception)
+            catch (COMException e)
             {
                 MessageBox.Show("Please select a shape");
+                return null;
+            }
+            catch (Exception e)
+            {
+                ErrorDialogWrapper.ShowDialog("Error", e.Message, e);
                 return null;
             }
         }
@@ -1827,6 +1962,10 @@ namespace PowerPointLabs
                 {
                     PictureTransparencyHandler(shape);
                 } else
+                if (shape.Type == Office.MsoShapeType.msoLine)
+                {
+                    LineTransparencyHandler(shape);
+                } else
                 if (IsTransparentableShape(shape))
                 {
                     ShapeTransparencyHandler(shape);
@@ -1842,6 +1981,10 @@ namespace PowerPointLabs
 
         private void PictureTransparencyHandler(PowerPoint.Shape picture)
         {
+            var rotation = picture.Rotation;
+
+            picture.Rotation = 0;
+
             var tempPicPath = Path.Combine(Path.GetTempPath(), "tempPic.png");
 
             Utils.Graphics.ExportShape(picture, tempPicPath);
@@ -1868,7 +2011,14 @@ namespace PowerPointLabs
             shapeHolder.Fill.UserPicture(tempPicPath);
             shapeHolder.Fill.Transparency = 0.5f;
 
+            shapeHolder.Rotation = rotation;
+
             File.Delete(tempPicPath);
+        }
+
+        private void LineTransparencyHandler(PowerPoint.Shape shape)
+        {
+            shape.Line.Transparency = 0.5f;
         }
 
         private void ShapeTransparencyHandler(PowerPoint.Shape shape)

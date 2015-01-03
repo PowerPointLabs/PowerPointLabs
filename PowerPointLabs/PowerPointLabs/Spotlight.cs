@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Drawing;
 using System.Linq;
 using System.Text;
 using System.Runtime.InteropServices;
@@ -12,7 +13,8 @@ namespace PowerPointLabs
     class Spotlight
     {
         public static float defaultSoftEdges = 10;
-        public static float defaultTransparency = 0.7f;
+        public static float defaultTransparency = 0.25f;
+        public static System.Drawing.Color defaultColor = Color.Black;
         public static Dictionary<String, float> softEdgesMapping = new Dictionary<string, float>
         {
             {"None", 0},
@@ -148,18 +150,7 @@ namespace PowerPointLabs
             spotShape.Line.Visible = Office.MsoTriState.msoTrue;
             spotShape.Line.ForeColor.RGB = 0x000000;
 
-            PowerPoint.Effect effectAppear = null;
-            PowerPoint.Effect effectDisappear = null;
-
-            PowerPoint.Sequence sequence = currentSlide.TimeLine.MainSequence;
-            effectAppear = sequence.AddEffect(spotShape, PowerPoint.MsoAnimEffect.msoAnimEffectAppear, PowerPoint.MsoAnimateByLevel.msoAnimateLevelNone, PowerPoint.MsoAnimTriggerType.msoAnimTriggerWithPrevious);
-            effectAppear.Timing.Duration = 0;
-            effectAppear.MoveTo(1);
-
-            effectDisappear = sequence.AddEffect(spotShape, PowerPoint.MsoAnimEffect.msoAnimEffectAppear, PowerPoint.MsoAnimateByLevel.msoAnimateLevelNone, PowerPoint.MsoAnimTriggerType.msoAnimTriggerWithPrevious);
-            effectDisappear.Exit = Office.MsoTriState.msoTrue;
-            effectDisappear.Timing.Duration = 0;
-            effectDisappear.MoveTo(2);
+            Utils.Graphics.MakeShapeViewTimeInvisible(spotShape, currentSlide);
         }
         
         private static void CreateSpotlightDuplicate(PowerPoint.Shape spotlightShape)
