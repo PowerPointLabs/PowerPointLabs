@@ -197,7 +197,15 @@ namespace PowerPointLabs.Models
 
         public void CopyShape(IEnumerable<string> nameList)
         {
-            _defaultCategory.Shapes.Range(nameList.ToArray()).Copy();
+            var fullList = new List<string>();
+
+            foreach (var name in nameList)
+            {
+                fullList.AddRange(_defaultCategory.GetShapesWithRule(GenereateNameSearchPattern(name))
+                                                  .Select(item => item.Name));
+            }
+
+            _defaultCategory.Shapes.Range(fullList.ToArray()).Copy();
         }
 
         public void CopyShapeToCategory(string name, string categoryName)
