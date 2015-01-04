@@ -328,6 +328,8 @@ namespace PowerPointLabs
                                      Title = TextCollection.CustomShapeImportLibraryFileDialogTitle
                                  };
 
+            flowlayoutContextMenuStrip.Hide();
+
             if (fileDialog.ShowDialog() == DialogResult.Cancel)
             {
                 return;
@@ -346,6 +348,8 @@ namespace PowerPointLabs
                                      Multiselect = true,
                                      Title = TextCollection.CustomShapeImportShapeFileDialogTitle
                                  };
+
+            flowlayoutContextMenuStrip.Hide();
 
             if (fileDialog.ShowDialog() == DialogResult.Cancel)
             {
