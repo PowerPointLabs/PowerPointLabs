@@ -327,8 +327,6 @@ namespace PowerPointLabs
                                      Multiselect = false,
                                      Title = TextCollection.CustomShapeImportLibraryFileDialogTitle
                                  };
-            
-            flowlayoutContextMenuStrip.Hide();
 
             if (fileDialog.ShowDialog() == DialogResult.Cancel)
             {
@@ -348,8 +346,6 @@ namespace PowerPointLabs
                                      Multiselect = true,
                                      Title = TextCollection.CustomShapeImportShapeFileDialogTitle
                                  };
-
-            flowlayoutContextMenuStrip.Hide();
 
             if (fileDialog.ShowDialog() == DialogResult.Cancel)
             {
@@ -499,7 +495,6 @@ namespace PowerPointLabs
             Globals.ThisAddIn.ShapesLabConfigs.DefaultCategory = CurrentCategory;
 
             categoryBox.Refresh();
-            flowlayoutContextMenuStrip.Hide();
 
             MessageBox.Show(string.Format(TextCollection.CustomeShapeSetAsDefaultCategorySuccessFormat, CurrentCategory));
         }
@@ -1284,6 +1279,11 @@ namespace PowerPointLabs
             }
 
             _clicks++;
+
+            if (flowlayoutContextMenuStrip.Visible)
+            {
+                flowlayoutContextMenuStrip.Hide();
+            }
 
             // only first click will be entertained
             if (!_firstClick) return;
