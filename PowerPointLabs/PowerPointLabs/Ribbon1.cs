@@ -238,11 +238,7 @@ namespace PowerPointLabs
         {
             return TextCollection.AddSpotlightButtonSupertip;
         }
-        public string GetReloadSpotlightButtonSupertip(Office.IRibbonControl control)
-        {
-            return TextCollection.ReloadSpotlightButtonSupertip;
-        }
-        
+
         public string GetAddAudioButtonSupertip(Office.IRibbonControl control)
         {
             return TextCollection.AddAudioButtonSupertip;
@@ -480,7 +476,7 @@ namespace PowerPointLabs
         }
         public string GetEffectsLabBlurRemainderButtonLabel(Office.IRibbonControl control)
         {
-            return TextCollection.EffectsLabBlurRemainderSupertip;
+            return TextCollection.EffectsLabBlurRemainderButtonLabel;
         }
         public string GetEffectsLabRecolorRemainderButtonLabel(Office.IRibbonControl control)
         {
