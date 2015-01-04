@@ -620,33 +620,32 @@ namespace PowerPointLabs
 
         private void FirstClickOnThumbnail(LabeledThumbnail clickedThumbnail)
         {
-            if (_selectedThumbnail != null)
+            if (_selectedThumbnail == null) return;
+
+            if (_selectedThumbnail.Count != 0)
             {
-                if (_selectedThumbnail.Count != 0)
+                // this flag doesn't apply for multi selection, thus turn off
+                _clickOnSelected = false;
+
+                // common part, end editing
+                if (_selectedThumbnail[0].State == LabeledThumbnail.Status.Editing)
                 {
-                    // this flag doesn't apply for multi selection, thus turn off
-                    _clickOnSelected = false;
-
-                    // common part, end editing
-                    if (_selectedThumbnail[0].State == LabeledThumbnail.Status.Editing)
-                    {
-                        _selectedThumbnail[0].FinishNameEdit();
-                    }
-                    else
-                    if (_selectedThumbnail[0] == clickedThumbnail)
-                    {
-                        _clickOnSelected = true;
-                    }
-
-                    MultiSelectClickHandler(clickedThumbnail);
+                    _selectedThumbnail[0].FinishNameEdit();
                 }
                 else
+                if (_selectedThumbnail[0] == clickedThumbnail)
                 {
-                    clickedThumbnail.Highlight();
-
-                    _selectedThumbnail.Insert(0, clickedThumbnail);
-                    FocusSelected();
+                    _clickOnSelected = true;
                 }
+
+                MultiSelectClickHandler(clickedThumbnail);
+            }
+            else
+            {
+                clickedThumbnail.Highlight();
+
+                _selectedThumbnail.Insert(0, clickedThumbnail);
+                FocusSelected();
             }
         }
 
@@ -835,16 +834,23 @@ namespace PowerPointLabs
 
         private void MultiSelectClickHandler(LabeledThumbnail clickedThumbnail)
         {
-            if (MouseButtons == MouseButtons.Right &&
-                _selectedThumbnail.Contains(clickedThumbnail))
+            if (MouseButtons != MouseButtons.Left &&
+                MouseButtons != MouseButtons.Right) return;
+
+            // for right click, if selection > 1, the context menu should appear with selection
+            // remained, else we should change the focus. Specially, when selection > 1, some of
+            // the options in the context menu serves for the clicked item, such as rename.
+            if (MouseButtons == MouseButtons.Right)
             {
-                _selectedThumbnail.Remove(clickedThumbnail);
-                _selectedThumbnail.Insert(0, clickedThumbnail);
+                if (_selectedThumbnail.Count > 1 &&
+                    _selectedThumbnail.Contains(clickedThumbnail))
+                {
+                    _selectedThumbnail.Remove(clickedThumbnail);
+                    _selectedThumbnail.Insert(0, clickedThumbnail);
 
-                return;
+                    return;
+                }
             }
-
-            if (MouseButtons != MouseButtons.Left) return;
 
             // if Ctrl key is not holding, i.e. not doing multi-selecting, all highlighed
             // thumbnail should be dehighlighted
