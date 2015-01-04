@@ -141,6 +141,14 @@ namespace PowerPointLabs.Models
             {
                 shape.Delete();
             }
+
+            var placeHolders =
+                curSlide.Shapes.Cast<Shape>().Where(x => x.Type == Core.MsoShapeType.msoPlaceholder).ToList();
+
+            foreach (var placeHolder in placeHolders)
+            {
+                placeHolder.Delete();
+            }
         }
 
         private static bool IsOldShape(Shape shape)
@@ -166,6 +174,12 @@ namespace PowerPointLabs.Models
                 // calibrate pasted shapes
                 pastedCrop.Left -= 12;
                 pastedCrop.Top -= 12;
+
+                // ungroup front image if necessary
+                if (pastedCrop[1].Type == Core.MsoShapeType.msoGroup)
+                {
+                    pastedCrop[1].Ungroup();
+                }
 
                 copyShapeRange.Cut();
                 oriShapeRange = refSlide.Shapes.Paste();

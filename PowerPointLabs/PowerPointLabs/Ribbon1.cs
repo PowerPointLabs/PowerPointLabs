@@ -238,11 +238,7 @@ namespace PowerPointLabs
         {
             return TextCollection.AddSpotlightButtonSupertip;
         }
-        public string GetReloadSpotlightButtonSupertip(Office.IRibbonControl control)
-        {
-            return TextCollection.ReloadSpotlightButtonSupertip;
-        }
-        
+
         public string GetAddAudioButtonSupertip(Office.IRibbonControl control)
         {
             return TextCollection.AddAudioButtonSupertip;
@@ -480,7 +476,7 @@ namespace PowerPointLabs
         }
         public string GetEffectsLabBlurRemainderButtonLabel(Office.IRibbonControl control)
         {
-            return TextCollection.EffectsLabBlurRemainderSupertip;
+            return TextCollection.EffectsLabBlurRemainderButtonLabel;
         }
         public string GetEffectsLabRecolorRemainderButtonLabel(Office.IRibbonControl control)
         {
@@ -1958,6 +1954,10 @@ namespace PowerPointLabs
                     TransparentEffect(subShapeRange);
                     subShapeRange.Group();
                 } else
+                if (shape.Type == Office.MsoShapeType.msoPlaceholder)
+                {
+                    PlaceholderTransparencyHandler(shape);
+                } else
                 if (shape.Type == Office.MsoShapeType.msoPicture)
                 {
                     PictureTransparencyHandler(shape);
@@ -2014,6 +2014,13 @@ namespace PowerPointLabs
             shapeHolder.Rotation = rotation;
 
             File.Delete(tempPicPath);
+        }
+
+        private void PlaceholderTransparencyHandler(PowerPoint.Shape picture)
+        {
+            PictureTransparencyHandler(picture);
+
+            PowerPointCurrentPresentationInfo.CurrentSlide.Shapes.Placeholders[2].Delete();
         }
 
         private void LineTransparencyHandler(PowerPoint.Shape shape)
