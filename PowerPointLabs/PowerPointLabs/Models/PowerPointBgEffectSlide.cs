@@ -141,6 +141,14 @@ namespace PowerPointLabs.Models
             {
                 shape.Delete();
             }
+
+            var placeHolders =
+                curSlide.Shapes.Cast<Shape>().Where(x => x.Type == Core.MsoShapeType.msoPlaceholder).ToList();
+
+            foreach (var placeHolder in placeHolders)
+            {
+                placeHolder.Delete();
+            }
         }
 
         private static bool IsOldShape(Shape shape)
