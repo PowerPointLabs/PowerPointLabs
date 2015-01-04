@@ -167,6 +167,12 @@ namespace PowerPointLabs.Models
                 pastedCrop.Left -= 12;
                 pastedCrop.Top -= 12;
 
+                // ungroup front image if necessary
+                if (pastedCrop[1].Type == Core.MsoShapeType.msoGroup)
+                {
+                    pastedCrop[1].Ungroup();
+                }
+
                 copyShapeRange.Cut();
                 oriShapeRange = refSlide.Shapes.Paste();
 
