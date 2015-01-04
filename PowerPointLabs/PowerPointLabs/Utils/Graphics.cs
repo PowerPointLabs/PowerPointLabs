@@ -21,7 +21,17 @@ namespace PowerPointLabs.Utils
             var slideWidth = (int)PowerPointCurrentPresentationInfo.SlideWidth;
             var slideHeight = (int)PowerPointCurrentPresentationInfo.SlideHeight;
 
-            shape.Export(exportPath, PpShapeFormat.ppShapeFormatPNG, slideWidth, slideHeight, PpExportMode.ppScaleToFit);
+            shape.Export(exportPath, PpShapeFormat.ppShapeFormatPNG, slideWidth,
+                         slideHeight, PpExportMode.ppScaleToFit);
+        }
+
+        public static void ExportShape(ShapeRange shapeRange, string exportPath)
+        {
+            var slideWidth = (int)PowerPointCurrentPresentationInfo.SlideWidth;
+            var slideHeight = (int)PowerPointCurrentPresentationInfo.SlideHeight;
+
+            shapeRange.Export(exportPath, PpShapeFormat.ppShapeFormatPNG, slideWidth,
+                              slideHeight, PpExportMode.ppScaleToFit);
         }
 
         public static void MakeShapeViewTimeInvisible(Shape shape, Slide curSlide)

@@ -1648,8 +1648,40 @@ namespace PowerPointLabs
         # region Feature: Shapes Lab
         public void CustomShapeButtonClick(Office.IRibbonControl control)
         {
+            InitCustomShapePane();
+        }
+
+        public void AddShapeButtonClick(Office.IRibbonControl control)
+        {
+            var customShape = InitCustomShapePane();
+            var selection = PowerPointCurrentPresentationInfo.CurrentSelection;
+
+            // first of all we check if the shape gallery has been opened correctly
+            if (!Globals.ThisAddIn.ShapePresentation.Opened)
+            {
+                MessageBox.Show(TextCollection.ShapeGalleryInitErrorMsg);
+                return;
+            }
+
+            // add shape into shape gallery first to reduce flicker
+            var shapeName = Globals.ThisAddIn.ShapePresentation.AddShape(selection,
+                                                                         TextCollection.CustomShapeDefaultShapeName);
+
+            // add the selection into pane and save it as .png locally
+            var shapeFullName = Path.Combine(customShape.CurrentShapeFolderPath, shapeName + ".png");
+            ConvertToPicture.ConvertAndSave(selection, shapeFullName);
+
+            // sync the shape among all opening panels
+            Globals.ThisAddIn.SyncShapeAdd(shapeName, shapeFullName, customShape.CurrentCategory);
+
+            // finally, add the shape into the panel and waiting for name editing
+            customShape.AddCustomShape(shapeName, shapeFullName, true);
+        }
+
+        private static CustomShapePane InitCustomShapePane()
+        {
             var prensentation = Globals.ThisAddIn.Application.ActivePresentation;
-            
+
             Globals.ThisAddIn.InitializeShapesLabConfig();
             Globals.ThisAddIn.InitializeShapeGallery();
             Globals.ThisAddIn.RegisterShapesLabPane(prensentation);
@@ -1658,7 +1690,7 @@ namespace PowerPointLabs
 
             if (customShapePane == null || !(customShapePane.Control is CustomShapePane))
             {
-                return;
+                return null;
             }
 
             var customShape = customShapePane.Control as CustomShapePane;
@@ -1669,37 +1701,6 @@ namespace PowerPointLabs
                               customShapePane.Width, customShapePane.Height, customShape.Width, customShape.Height));
 
             // if currently the pane is hidden, show the pane
-            if (customShapePane.Visible)
-            {
-                return;
-            }
-
-            customShapePane.Visible = true;
-
-            customShape.Width = customShapePane.Width - 16;
-            customShape.PaneReload();
-        }
-
-        public void AddShapeButtonClick(Office.IRibbonControl control)
-        {
-            var prensentation = Globals.ThisAddIn.Application.ActivePresentation;
-
-            Globals.ThisAddIn.InitializeShapesLabConfig();
-            Globals.ThisAddIn.InitializeShapeGallery();
-            Globals.ThisAddIn.RegisterShapesLabPane(prensentation);
-
-            var selection = PowerPointCurrentPresentationInfo.CurrentSelection;
-
-            var customShapePane = Globals.ThisAddIn.GetActivePane(typeof(CustomShapePane));
-
-            if (customShapePane == null || !(customShapePane.Control is CustomShapePane))
-            {
-                return;
-            }
-
-            var customShape = customShapePane.Control as CustomShapePane;
-
-            // show pane if not visible
             if (!customShapePane.Visible)
             {
                 customShapePane.Visible = true;
@@ -1708,48 +1709,7 @@ namespace PowerPointLabs
                 customShape.PaneReload();
             }
 
-            // first of all we check if the shape gallery has been opened correctly
-            if (!Globals.ThisAddIn.ShapePresentation.Opened)
-            {
-                MessageBox.Show(TextCollection.ShapeGalleryInitErrorMsg);
-                return;
-            }
-
-            // to determine if a presentation needs to be saved, we check 3 things:
-            // 1. if the presentation is readonly;
-            // 2. if the presentation contains a valid saving path;
-            // 3. if the presentation has been saved.
-            //
-            // The only case we can save the presentation is:
-            // The presentation is writable (readonly = false), contains a valid saving
-            // path (valid path = true), and it has been saved (therefore all programmatical
-            // changes can be saved without triggering a save dialog).
-            var presentationSaved = prensentation.ReadOnly == Office.MsoTriState.msoFalse &&
-                                    prensentation.Path != string.Empty &&
-                                    prensentation.Saved == Office.MsoTriState.msoTrue;
-
-            var shapeName = customShape.NextDefaultNameWithoutExtension;
-            var shapeFullName = customShape.NextDefaultFullName;
-
-            // add shape into shape gallery first to reduce flicker
-            Globals.ThisAddIn.ShapePresentation.AddShape(selection, shapeName);
-
-            // add the selection into pane and save it as .png locally
-            ConvertToPicture.ConvertAndSave(selection, shapeFullName);
-
-            // sync the shape among all opening panels
-            Globals.ThisAddIn.SyncShapeAdd(shapeName, shapeFullName, customShape.CurrentCategory);
-
-            // since we group and then ungroup the shape, document has been modified.
-            // if the presentation has been saved before the group->ungroup, we can save
-            // the file; else we leave it.
-            if (presentationSaved)
-            {
-                Globals.ThisAddIn.Application.ActivePresentation.Save();
-            }
-
-            // finally, add the shape into the panel and waiting for name editing
-            customShape.AddCustomShape(shapeName, shapeFullName, true);
+            return customShape;
         }
         # endregion
 

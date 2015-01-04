@@ -4,7 +4,7 @@ using Microsoft.Office.Interop.PowerPoint;
 
 namespace PowerPointLabs.Models
 {
-    class PowerPointCurrentPresentationInfo
+    internal class PowerPointCurrentPresentationInfo
     {
         public static Presentation CurrentPresentation
         {
