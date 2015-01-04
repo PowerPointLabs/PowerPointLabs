@@ -1954,6 +1954,10 @@ namespace PowerPointLabs
                     TransparentEffect(subShapeRange);
                     subShapeRange.Group();
                 } else
+                if (shape.Type == Office.MsoShapeType.msoPlaceholder)
+                {
+                    PlaceholderTransparencyHandler(shape);
+                } else
                 if (shape.Type == Office.MsoShapeType.msoPicture)
                 {
                     PictureTransparencyHandler(shape);
@@ -2010,6 +2014,13 @@ namespace PowerPointLabs
             shapeHolder.Rotation = rotation;
 
             File.Delete(tempPicPath);
+        }
+
+        private void PlaceholderTransparencyHandler(PowerPoint.Shape picture)
+        {
+            PictureTransparencyHandler(picture);
+
+            PowerPointCurrentPresentationInfo.CurrentSlide.Shapes.Placeholders[2].Delete();
         }
 
         private void LineTransparencyHandler(PowerPoint.Shape shape)
