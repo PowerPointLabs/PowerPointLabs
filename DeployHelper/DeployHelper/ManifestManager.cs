@@ -21,12 +21,8 @@ namespace DeployHelper
             if (!IsPatched())
             {
                 ModifyManifest();
-                Sign();
             }
-            else
-            {
-                Util.DisplayDone(TextCollection.Const.DonePatchedAlready);
-            }
+            Sign();
         }
 
         private void ModifyManifest()
@@ -47,14 +43,17 @@ namespace DeployHelper
             {
                 VerifyKeyFileExist();
                 _signee.Sign();
+                if (!_signee.IsSuccessful())
+                {
+                    throw new Exception();
+                }
                 //overwrite build vsto file with resigned new vsto file
                 File.Copy(DeployConfig.DirVsto, _config.DirBuildVsto, TextCollection.Const.IsOverWritten);
                 Util.DisplayDone(TextCollection.Const.DonePatched);
             }
             catch (Exception e)
             {
-                _editor.RestoreManifest();
-                Util.DisplayWarning(TextCollection.Const.ErrorInvalidKeyOrMageDir, e);
+                Util.DisplayWarning(TextCollection.Const.ErrorInvalidKeyOrMageDirOrPassword, e);
             }
         }
 

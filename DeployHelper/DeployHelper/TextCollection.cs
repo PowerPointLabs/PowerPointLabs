@@ -11,7 +11,7 @@ namespace DeployHelper
             public const string ErrorNoConfig = "Can't Find Config.";
             public const string ErrorNoVsto = "Can't Find VSTO.";
             public const string ErrorNoManifest = "Can't Find Manifest For This Version.";
-            public const string ErrorInvalidKeyOrMageDir = "Invalid Mage or Key Directory.";
+            public const string ErrorInvalidKeyOrMageDirOrPassword = "Invalid Mage, Key Directory or incorrect cert password.";
             public const string ErrorZipFilesMissing = "Some files to zip are missing.";
             public const string ErrorNetworkFailed = "Can't Connect The Server.";
 
