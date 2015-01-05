@@ -21,6 +21,7 @@ namespace DeployHelper
             public const string DoneSftpConnected = "SFTP Connected.";
             public const string DoneUploaded = "Uploaded.";
 
+            public const string InfoEnterCertificatePassword = "Enter Certificate password: ";
             public const string InfoEnterPassword = "Enter SFTP password: ";
             public const string InfoFileUploading = "Uploading files";
             public const string InfoChooseVersion = "Which version to upload? [dev|release]: ";

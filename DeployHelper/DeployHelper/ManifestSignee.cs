@@ -11,11 +11,22 @@ namespace DeployHelper
         private readonly string _argsForSignVsto;
         private readonly string _mageDirectory;
 
-        public ManifestSignee(String argsForSignManifest, String argsForSignVsto, String mageDirectory)
+        public ManifestSignee(DeployConfig config)
         {
+            Console.Write(TextCollection.Const.InfoEnterCertificatePassword);
+            var password = Console.ReadLine();
+            var argsForSignManifest =
+                "-sign " + Util.AddQuote(config.DirBuildManifest) +
+                " -certfile " + Util.AddQuote(config.ConfigDirKey) +
+                " -pwd " + Util.AddQuote(password);
+            var argsForSignVsto =
+                "-update " + Util.AddQuote(DeployConfig.DirVsto) +
+                " -appmanifest " + Util.AddQuote(config.DirBuildManifest) +
+                " -certfile " + Util.AddQuote(config.ConfigDirKey) +
+                " -pwd " + Util.AddQuote(password);
             _argsForSignManifest = argsForSignManifest;
             _argsForSignVsto = argsForSignVsto;
-            _mageDirectory = mageDirectory;
+            _mageDirectory = config.ConfigDirMage;
         }
 
         public void Sign()

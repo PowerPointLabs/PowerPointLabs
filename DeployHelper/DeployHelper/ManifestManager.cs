@@ -13,15 +13,7 @@ namespace DeployHelper
         {
             _config = config;
             _editor = new ManifestEditor(_config.DirBuildManifest);
-
-            var argsForSignManifest =
-                "-sign " + Util.AddQuote(_config.DirBuildManifest) +
-                " -certfile " + Util.AddQuote(_config.ConfigDirKey);
-            var argsForSignVsto =
-                "-update " + Util.AddQuote(DeployConfig.DirVsto) +
-                " -appmanifest " + Util.AddQuote(_config.DirBuildManifest) +
-                " -certfile " + Util.AddQuote(_config.ConfigDirKey);
-            _signee = new ManifestSignee(argsForSignManifest, argsForSignVsto, _config.ConfigDirMage);
+            _signee = new ManifestSignee(_config);
         }
 
         public void EditManifest()
