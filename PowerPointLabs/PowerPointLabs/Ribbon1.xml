@@ -253,6 +253,17 @@
                       onAction="SepiaBackgroundEffectClick"/>
             </menu>
           </menu>
+          <menu id="AgendaLabsMenu"
+                getLabel="GetAgendaLabButtonLabel"
+                getSupertip="GetAgendaLabSupertip"
+                imageMso="HappyFace"
+                size="large">
+            <button id="bulletPoint"
+                    imageMso="HappyFace"
+                    getLabel="GetAgendaLabBulletPointButtonLabel"
+                    getSupertip="GetAgendaLabBulletPointSupertip"
+                    onAction="BulletPointAgendaClick"/>
+          </menu>
         </group>
         <group id="PPTLabsHelp"
                getLabel="GetPPTLabsHelpGroupLabel"

@@ -41,6 +41,22 @@ namespace PowerPointLabs.Models
             }
         }
 
+        public static List<string> Sections
+        {
+            get
+            {
+                var sectionProperty = CurrentPresentation.SectionProperties;
+                var sectionNames = new List<string>();
+
+                for (var i = 1; i <= sectionProperty.Count; i++)
+                {
+                    sectionNames.Add(sectionProperty.Name(i));
+                }
+
+                return sectionNames;
+            }
+        }
+
         public static IEnumerable<PowerPointSlide> Slides
         {
             get

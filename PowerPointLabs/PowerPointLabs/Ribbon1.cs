@@ -313,6 +313,11 @@ namespace PowerPointLabs
         {
             return TextCollection.EffectsLabColorizeRemainderSupertip;
         }
+
+        public string GetAgendaLabBulletPointSupertip(Office.IRibbonControl control)
+        {
+            return TextCollection.AgendaLabBulletPointSupertip;
+        }
         
         public string GetHelpButtonSupertip(Office.IRibbonControl control)
         {
@@ -462,6 +467,7 @@ namespace PowerPointLabs
         {
             return TextCollection.CustomeShapeButtonLabel;
         }
+
         public string GetEffectsLabButtonLabel(Office.IRibbonControl control)
         {
             return TextCollection.EffectsLabButtonLabel;
@@ -481,6 +487,15 @@ namespace PowerPointLabs
         public string GetEffectsLabRecolorRemainderButtonLabel(Office.IRibbonControl control)
         {
             return TextCollection.EffectsLabRecolorRemainderButtonLabel;
+        }
+
+        public string GetAgendaLabButtonLabel(Office.IRibbonControl control)
+        {
+            return TextCollection.AgendaLabButtonLabel;
+        }
+        public string GetAgendaLabBulletPointButtonLabel(Office.IRibbonControl control)
+        {
+            return TextCollection.AgendaLabBulletPointButtonLabel;
         }
 
         public string GetPPTLabsHelpGroupLabel(Office.IRibbonControl control)
@@ -1994,6 +2009,13 @@ namespace PowerPointLabs
             shape.Line.Transparency = 0.5f;
         }
 
+        # endregion
+
+        # region Feature: Agenda Lab
+        public void BulletPointAgendaClick(Office.IRibbonControl control)
+        {
+            AgendaLab.GenerateAgenda(AgendaLab.AgendaType.Bullet);
+        }
         # endregion
 
         private static string GetResourceText(string resourceName)

@@ -226,6 +226,7 @@
     can be found.
   -->
   <ItemGroup>
+    <Compile Include="AgendaLab.cs" />
     <Compile Include="AudioMisc\Audio.cs" />
     <Compile Include="AudioMisc\AudioHelper.cs" />
     <Compile Include="AutoAnimate.cs" />
