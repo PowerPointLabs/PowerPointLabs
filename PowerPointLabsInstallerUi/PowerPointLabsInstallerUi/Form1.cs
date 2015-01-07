@@ -4,6 +4,7 @@ using System.Diagnostics;
 using System.IO;
 using System.IO.Compression;
 using System.Windows.Forms;
+using System.Web;
 
 namespace PowerPointLabsInstallerUi
 {
@@ -20,6 +21,16 @@ namespace PowerPointLabsInstallerUi
             InitializeComponent();
         }
 
+        /// <summary>
+        /// If there are special characters (eg é) present in the install path,
+        /// the offline installer (ClickOnce) will fail to install. Thus need to download and install online installer instead.
+        /// </summary>
+        /// <returns></returns>
+        private bool IsSpecialCharPresentInInstallPath()
+        {
+            return HttpUtility.UrlPathEncode(Path.GetTempPath()) != Path.GetTempPath();
+        }
+
         private void button1_Click(object sender, EventArgs e)
         {
             if (button1.Text != TextButtonClose)
@@ -27,9 +38,9 @@ namespace PowerPointLabsInstallerUi
                 if (!IsVstoRuntimeValid())
                 {
                     var dialogResult = MessageBox.Show(
-                        "In order to install our add-in successfully, you may have to first install " +
+                        "For the PowerPointLabs to work properly, your computer needs to have " +
                         "Visual Studio 2010 Tools for Office (VSTO) Runtime from Microsoft.\n\n" +
-                        "Click Yes button to download it, or click No button to continue installation anyway.",
+                        "Click Yes button to download it, or click No button to continue the installation anyway.",
                         ErrorWindowTitle,
                         MessageBoxButtons.YesNoCancel, MessageBoxIcon.Error);
                     if (dialogResult == DialogResult.Yes)
@@ -46,9 +57,9 @@ namespace PowerPointLabsInstallerUi
                 {
                     var vstoConfigDir = GetVstoConfigDir();
                     if (MessageBox.Show(
-                        "In order to install our add-in successfully, you may have to first back-up and remove " +
-                        "the corrupted configuration file located at \n" + vstoConfigDir + "\n\n" +
-                        "After remove it, click OK button to continue.",
+                        "In order to install our add-in, you need to rename the file [VSTOInstaller.exe.Config] in the folder" +
+                        "\n[" + vstoConfigDir + "]\n to the new filename [VSTOInstaller.exe.Config.backup]\n\n" +
+                        "After that, click OK button to continue.",
                         ErrorWindowTitle, 
                         MessageBoxButtons.OKCancel, MessageBoxIcon.Error)
                         == DialogResult.Cancel)
