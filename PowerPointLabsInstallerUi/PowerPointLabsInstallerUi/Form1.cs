@@ -15,6 +15,10 @@ namespace PowerPointLabsInstallerUi
         private const string TextButtonRunning = "Running...";
         private const string ErrorWindowTitle = "PowerPointLabs Installer";
         private const string UrlForVstoRuntim = "http://www.microsoft.com/en-us/download/details.aspx?id=44074";
+        private const string UrlForPptlabsOnlineInstaller = "http://www.comp.nus.edu.sg/~pptlabs/download-78563/PowerPointLabs.zip";
+
+        private readonly string _onlineInstallerZipAddress = Path.Combine(Path.GetTempPath(),
+            @"PowerPointLabsInstaller\olInstaller.zip");
 
         public Form1()
         {
@@ -31,10 +35,16 @@ namespace PowerPointLabsInstallerUi
             return HttpUtility.UrlPathEncode(Path.GetTempPath()) != Path.GetTempPath();
         }
 
+        /// <summary>
+        /// main behavior
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void button1_Click(object sender, EventArgs e)
         {
             if (button1.Text != TextButtonClose)
             {
+                //detection for VSTO runtime + its config
                 if (!IsVstoRuntimeValid())
                 {
                     var dialogResult = MessageBox.Show(
@@ -68,21 +78,55 @@ namespace PowerPointLabsInstallerUi
                     }
                 }
                 
+                //run installation files
                 button1.Enabled = false;
                 button1.Text = TextButtonRunning;
-                Boolean isUnzipSuccessful = UnzipInstaller(_installerZipAddress);
-                if (isUnzipSuccessful)
+                if (IsSpecialCharPresentInInstallPath())
                 {
-                    RunInstaller();
+                    //download and run online installer
+                    new Downloader()
+                        .Get(UrlForPptlabsOnlineInstaller, _onlineInstallerZipAddress)
+                        .After(AfterOnlineInstallerDownload)
+                        .WhenFail(WhenDownloadFailure)
+                        .Start();
                 }
-
-                button1.Enabled = true;
-                button1.Text = TextButtonClose;
+                else
+                {
+                    //normal offline installer
+                    Boolean isUnzipSuccessful = UnzipInstaller(_installerZipAddress);
+                    if (isUnzipSuccessful)
+                    {
+                        RunInstaller();
+                    }
+                    button1.Enabled = true;
+                    button1.Text = TextButtonClose;
+                }
             }
             else
             {
                 Close();
             }
+        }
+
+        private void AfterOnlineInstallerDownload()
+        {
+            //unzip online installer
+            var isUnzipSuccessful = UnzipInstaller(_onlineInstallerZipAddress);
+            //then run it
+            if (isUnzipSuccessful)
+            {
+                MessageBox.Show("In order to install our add-in, please click 'yes' button to allow changes.", 
+                    "PowerPointLabs Installer");
+                RunInstaller();
+            }
+            button1.Enabled = true;
+            button1.Text = TextButtonClose;
+        }
+
+        private void WhenDownloadFailure()
+        {
+            button1.Enabled = true;
+            button1.Text = TextButtonClose;
         }
 
         private static bool IsVstoRuntimeValid()
