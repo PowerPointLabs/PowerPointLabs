@@ -9,6 +9,8 @@ namespace DeployHelper
         public class Const
         {
             public const string ErrorNoConfig = "Can't Find Config.";
+            public const string ErrorInvalidConfig = "Invalid Config.";
+            public const string ErrorInvalidInstallationFolderUrl = "Invalid Installation Folder Url, please check your publish page.";
             public const string ErrorNoVsto = "Can't Find VSTO.";
             public const string ErrorNoManifest = "Can't Find Manifest For This Version.";
             public const string ErrorInvalidKeyOrMageDirOrPassword = "Invalid Mage, Key Directory or incorrect cert password.";

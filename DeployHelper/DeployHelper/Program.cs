@@ -64,6 +64,7 @@ namespace DeployHelper
                 var config = new ConfigReader()
                     .ReadConfig()
                     .ToDeployConfig();
+                config.VerifyConfig();
 
                 # endregion
 
