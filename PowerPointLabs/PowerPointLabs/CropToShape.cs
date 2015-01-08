@@ -127,15 +127,7 @@ namespace PowerPointLabs
                 mergedShape = ungroupedRangeCopy.Group();
             }
 
-            if (IsWithinSlide(mergedShape))
-            {
-                rangeOriginal.Delete();
-            }
-            else
-            {
-                mergedShape.Delete();
-                ThrowErrorCode(ErrorCodeForExceedSlideBound);
-            }
+            rangeOriginal.Delete();
 
             return mergedShape;
         }
@@ -191,7 +183,7 @@ namespace PowerPointLabs
             if (startX >= original.Width || startY >= original.Height) return null;
             try
             {
-                var outputImage = new Bitmap((int)width, (int)height, PixelFormat.Format24bppRgb);
+                var outputImage = new Bitmap((int)width, (int)height, PixelFormat.Format32bppArgb);
                 
                 var inverseRatio = 1 / magnifyRatio;
                 
