@@ -168,7 +168,7 @@ namespace PowerPointLabs
             else
             {
                 PowerPoint.Slide tmp = sldRange[1];
-                PowerPoint.Presentation presentation = Globals.ThisAddIn.Application.ActivePresentation;
+                PowerPoint.Presentation presentation = PowerPointPresentation.Current.Presentation;
                 int slideIndex = tmp.SlideIndex;
                 PowerPoint.Slide next = tmp;
                 PowerPoint.Slide prev = tmp;
@@ -843,7 +843,7 @@ namespace PowerPointLabs
             // if audio buffer is not empty, render the effects
             if (recorder.AudioBuffer.Count != 0)
             {
-                var slides = PowerPointCurrentPresentationInfo.Slides.ToList();
+                var slides = PowerPointPresentation.Current.Slides.ToList();
 
                 for (int i = 0; i < recorder.AudioBuffer.Count; i++)
                 {

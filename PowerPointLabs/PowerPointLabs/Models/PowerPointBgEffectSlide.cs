@@ -106,8 +106,8 @@ namespace PowerPointLabs.Models
             var newBackground = Shapes.AddPicture(AnimatedBackgroundPath, Core.MsoTriState.msoFalse,
                                                   Core.MsoTriState.msoTrue,
                                                   0, 0,
-                                                  PowerPointCurrentPresentationInfo.SlideWidth,
-                                                  PowerPointCurrentPresentationInfo.SlideHeight);
+                                                  PowerPointPresentation.Current.SlideWidth,
+                                                  PowerPointPresentation.Current.SlideHeight);
 
             newBackground.ZOrder(Core.MsoZOrderCmd.msoSendToBack);
         }
