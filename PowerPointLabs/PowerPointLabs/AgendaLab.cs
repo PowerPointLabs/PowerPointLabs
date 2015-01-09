@@ -70,14 +70,16 @@ namespace PowerPointLabs
             var sectionEndIndex = FindSectionEnd(section);
 
             var newSlide =
-                PowerPointSlide.FromSlideFactory(
-                    PowerPointCurrentPresentationInfo.CurrentPresentation.Slides.Add(isEnd ? sectionEndIndex : 1,
-                                                                                     PpSlideLayout.ppLayoutText));
+                PowerPointSlide.FromSlideFactory(PowerPointPresentation.Current
+                                                                       .Presentation
+                                                                       .Slides
+                                                                       .Add(isEnd ? sectionEndIndex : 1,
+                                                                            PpSlideLayout.ppLayoutText));
 
             newSlide.Name = string.Format(PptLabsAgendaSlideNameFormat, type, isEnd ? "Start" : "End", section);
             newSlide.Transition.EntryEffect = PpEntryEffect.ppEffectFadeSmoothly;
             newSlide.Transition.Duration = 0.25f;
-            
+
             if (!isEnd)
             {
                 newSlide.GetNativeSlide().MoveToSectionStart(sectionIndex);
@@ -109,7 +111,7 @@ namespace PowerPointLabs
 
             textRange.Text = _agendaText;
 
-            for (var i = 1; i < relativeSectionIndex; i ++ )
+            for (var i = 1; i < relativeSectionIndex; i++)
             {
                 textRange.Paragraphs(i).Font.Color.RGB = PowerPointLabsGlobals.CreateRGB(Color.Gray);
             }
@@ -132,7 +134,7 @@ namespace PowerPointLabs
 
         private static int FindSectionEnd(int sectionIndex)
         {
-            var sectionProperties = PowerPointCurrentPresentationInfo.CurrentPresentation.SectionProperties;
+            var sectionProperties = PowerPointPresentation.Current.Presentation.SectionProperties;
 
             return sectionProperties.FirstSlide(sectionIndex) + sectionProperties.SlidesCount(sectionIndex);
         }
@@ -146,27 +148,25 @@ namespace PowerPointLabs
 
         private static int FindSectionStart(int sectionIndex)
         {
-            var sectionProperties = PowerPointCurrentPresentationInfo.CurrentPresentation.SectionProperties;
+            var sectionProperties = PowerPointPresentation.Current.Presentation.SectionProperties;
 
             return sectionProperties.FirstSlide(sectionIndex);
         }
 
         private static int FindSectionIndex(string section)
         {
-            return PowerPointCurrentPresentationInfo.Sections.FindIndex(name => name == section);
+            return PowerPointPresentation.Current.Sections.FindIndex(name => name == section);
         }
 
         private static AgendaType FindSyncReference(out PowerPointSlide startRef, out PowerPointSlide endRef)
         {
-            var curPresentation = PowerPointCurrentPresentationInfo.CurrentPresentation;
-
             // the first meaningful section is the second section
-            startRef = PowerPointSlide.FromSlideFactory(curPresentation.Slides[FindSectionStart(2)]);
-            endRef = PowerPointSlide.FromSlideFactory(curPresentation.Slides[FindSectionEnd(2)]);
+            startRef = PowerPointPresentation.Current.Slides[FindSectionStart(2) - 1];
+            endRef = PowerPointPresentation.Current.Slides[FindSectionEnd(2) - 1];
 
             var typeSearchRegex = new Regex(PptLabsAgendaSlideTypeSearchPattern);
 
-            return (AgendaType) Enum.Parse(typeof(AgendaType), typeSearchRegex.Match(startRef.Name).Groups[1].Value);
+            return (AgendaType)Enum.Parse(typeof(AgendaType), typeSearchRegex.Match(startRef.Name).Groups[1].Value);
         }
 
         private static void GenerateBeamAgenda()
@@ -176,7 +176,7 @@ namespace PowerPointLabs
 
         private static void GenerateBulletAgenda()
         {
-            var sections = PowerPointCurrentPresentationInfo.Sections.Skip(1).ToList();
+            var sections = PowerPointPresentation.Current.Sections.Skip(1).ToList();
 
             if (sections.Count == 0)
             {
