@@ -211,14 +211,14 @@
                 getImage="GetEffectsLabImage"
                 getSupertip="GetEffectsLabSupertip"
                 size="large">
-            <menuSeparator id="effectSeparator"
+            <menuSeparator id="builtinEffectSeparator"
                            title="Builtin Effects"/>
               <gallery idMso="PictureSharpenSoftenGallery"/>
               <gallery idMso="PictureBrightnessAndContrastGallery"/>
               <gallery idMso="PictureEffectsSoftEdgesGallery"/>
               <gallery idMso="PictureRecolorGallery"/>
               <gallery idMso="PictureArtisticEffectsGallery"/>
-            <menuSeparator id="mySeparator"
+            <menuSeparator id="newEffectSeparator"
                            title="New Effects"/>
             <button id="transparentEffect"
                     getLabel="GetEffectsLabMakeTransparentButtonLabel"
@@ -263,6 +263,12 @@
                     getLabel="GetAgendaLabBulletPointButtonLabel"
                     getSupertip="GetAgendaLabBulletPointSupertip"
                     onAction="BulletPointAgendaClick"/>
+            <menuSeparator id="updateAgendaseparator" />
+            <button id="udpateAgenda"
+                    imageMso="HappyFace"
+                    getLabel="GetAgendaLabUpdateAgendaButtonLabel"
+                    getSupertip="GetAgendaLabUpdateAgendaSupertip"
+                    onAction="UpdateAgendaClick"/>
           </menu>
         </group>
         <group id="PPTLabsHelp"

@@ -318,6 +318,10 @@ namespace PowerPointLabs
         {
             return TextCollection.AgendaLabBulletPointSupertip;
         }
+        public string GetAgendaLabUpdateAgendaSupertip(Office.IRibbonControl control)
+        {
+            return TextCollection.AgendaLabUpdateAgendaSupertip;
+        }
         
         public string GetHelpButtonSupertip(Office.IRibbonControl control)
         {
@@ -496,6 +500,10 @@ namespace PowerPointLabs
         public string GetAgendaLabBulletPointButtonLabel(Office.IRibbonControl control)
         {
             return TextCollection.AgendaLabBulletPointButtonLabel;
+        }
+        public string GetAgendaLabUpdateAgendaButtonLabel(Office.IRibbonControl control)
+        {
+            return TextCollection.AgendaLabUpdateAgendaButtonLabel;
         }
 
         public string GetPPTLabsHelpGroupLabel(Office.IRibbonControl control)
@@ -2015,6 +2023,11 @@ namespace PowerPointLabs
         public void BulletPointAgendaClick(Office.IRibbonControl control)
         {
             AgendaLab.GenerateAgenda(AgendaLab.AgendaType.Bullet);
+        }
+
+        public void UpdateAgendaClick(Office.IRibbonControl control)
+        {
+            AgendaLab.UpdateAgenda();
         }
         # endregion
 

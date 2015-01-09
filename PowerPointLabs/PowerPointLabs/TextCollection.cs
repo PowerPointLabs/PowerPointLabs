@@ -101,6 +101,7 @@
 
         # region Agenda Lab
         public const string AgendaLabBulletPointSupertip = "Generate an agenda in bullet point form.";
+        public const string AgendaLabUpdateAgendaSupertip = "Update agenda's content and synchronize layout and format.";
         # endregion
         # endregion
 
@@ -187,6 +188,7 @@
         # region Agenda Lab
         public const string AgendaLabButtonLabel = "Agenda Lab";
         public const string AgendaLabBulletPointButtonLabel = "Bullet Point";
+        public const string AgendaLabUpdateAgendaButtonLabel = "Update Agenda";
         # endregion
         # endregion
 
