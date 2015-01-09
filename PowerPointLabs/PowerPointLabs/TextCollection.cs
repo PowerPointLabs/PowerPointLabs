@@ -101,7 +101,7 @@
 
         # region Agenda Lab
         public const string AgendaLabBulletPointSupertip = "Generate an agenda in bullet point form.";
-        public const string AgendaLabUpdateAgendaSupertip = "Update agenda's content and synchronize layout and format.";
+        public const string AgendaLabUpdateAgendaSupertip = "Synchronize agenda's layout and format.";
         # endregion
         # endregion
 
@@ -276,6 +276,11 @@
         # region ConvertToPicture
         public const string ErrorTypeNotSupported = "Convert to Picture only supports Shapes and Charts.";
         public const string ErrorWindowTitle = "Convert to Picture: Unsupported Object";
+        # endregion
+
+        # region Agenda Lab
+        public const string AgendaLabNoSectionError = "Please group slides into sections before generating agenda.";
+        public const string AgendaLabSingleSectionError = "You are suggested to make more than one section to make the presentation flow clearer.";
         # endregion
 
         # region Task Pane - Recorder

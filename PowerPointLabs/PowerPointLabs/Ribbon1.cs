@@ -2027,7 +2027,7 @@ namespace PowerPointLabs
 
         public void UpdateAgendaClick(Office.IRibbonControl control)
         {
-            AgendaLab.UpdateAgenda();
+            AgendaLab.SyncrhonizeAgenda();
         }
         # endregion
 

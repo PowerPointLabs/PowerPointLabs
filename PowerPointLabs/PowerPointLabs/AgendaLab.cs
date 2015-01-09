@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
-using System.Text;
+using System.Text.RegularExpressions;
 using System.Windows.Forms;
 using PowerPointLabs.Models;
 using Microsoft.Office.Interop.PowerPoint;
@@ -12,12 +12,14 @@ namespace PowerPointLabs
     internal static class AgendaLab
     {
         private const string PptLabsAgendaSlideNameFormat = "PptLabs{0}Agenda{1}Slide {2}";
+        private const string PptLabsAgendaSlideTypeSearchPattern = @"PptLabs(\w+)Agenda(?:Start|End)Slide";
 
         private static string _agendaText;
 
         # region Enum
         public enum AgendaType
         {
+            Beam,
             Bullet,
             Visual
         };
@@ -28,6 +30,9 @@ namespace PowerPointLabs
         {
             switch (type)
             {
+                case AgendaType.Beam:
+                    GenerateBeamAgenda();
+                    break;
                 case AgendaType.Bullet:
                     GenerateBulletAgenda();
                     break;
@@ -37,9 +42,24 @@ namespace PowerPointLabs
             }
         }
 
-        public static void UpdateAgenda()
+        public static void SyncrhonizeAgenda()
         {
-            throw new NotImplementedException();
+            // find the agenda for the first section as reference
+            PowerPointSlide startRef;
+            PowerPointSlide endRef;
+
+            var type = FindSyncReference(out startRef, out endRef);
+
+            switch (type)
+            {
+                case AgendaType.Beam:
+                    break;
+                case AgendaType.Bullet:
+                    SyncAgendaBulletType(startRef, endRef);
+                    break;
+                case AgendaType.Visual:
+                    break;
+            }
         }
         # endregion
 
@@ -49,11 +69,10 @@ namespace PowerPointLabs
             var sectionIndex = FindSectionIndex(section) + 1;
             var sectionEndIndex = FindSectionEnd(section);
 
-            var newSlide = PowerPointSlide.FromSlideFactory(Globals.ThisAddIn
-                                                                   .Application
-                                                                   .ActivePresentation
-                                                                   .Slides.Add(isEnd ? sectionEndIndex : 1,
-                                                                               PpSlideLayout.ppLayoutText));
+            var newSlide =
+                PowerPointSlide.FromSlideFactory(
+                    PowerPointCurrentPresentationInfo.CurrentPresentation.Slides.Add(isEnd ? sectionEndIndex : 1,
+                                                                                     PpSlideLayout.ppLayoutText));
 
             newSlide.Name = string.Format(PptLabsAgendaSlideNameFormat, type, isEnd ? "Start" : "End", section);
             newSlide.Transition.EntryEffect = PpEntryEffect.ppEffectFadeSmoothly;
@@ -99,12 +118,37 @@ namespace PowerPointLabs
                 PowerPointLabsGlobals.CreateRGB(isEnd ? Color.Gray : Color.Red);
         }
 
+        private static void SyncAgendaBulletType(PowerPointSlide startRef, PowerPointSlide endRef)
+        {
+            throw new NotImplementedException();
+        }
+
         private static int FindSectionEnd(string section)
         {
-            var sectionProperties = PowerPointCurrentPresentationInfo.CurrentPresentation.SectionProperties;
             var sectionIndex = FindSectionIndex(section) + 1;
 
+            return FindSectionEnd(sectionIndex);
+        }
+
+        private static int FindSectionEnd(int sectionIndex)
+        {
+            var sectionProperties = PowerPointCurrentPresentationInfo.CurrentPresentation.SectionProperties;
+
             return sectionProperties.FirstSlide(sectionIndex) + sectionProperties.SlidesCount(sectionIndex);
+        }
+
+        private static int FindSectionStart(string section)
+        {
+            var sectionIndex = FindSectionIndex(section) + 1;
+
+            return FindSectionStart(sectionIndex);
+        }
+
+        private static int FindSectionStart(int sectionIndex)
+        {
+            var sectionProperties = PowerPointCurrentPresentationInfo.CurrentPresentation.SectionProperties;
+
+            return sectionProperties.FirstSlide(sectionIndex);
         }
 
         private static int FindSectionIndex(string section)
@@ -112,10 +156,41 @@ namespace PowerPointLabs
             return PowerPointCurrentPresentationInfo.Sections.FindIndex(name => name == section);
         }
 
+        private static AgendaType FindSyncReference(out PowerPointSlide startRef, out PowerPointSlide endRef)
+        {
+            var curPresentation = PowerPointCurrentPresentationInfo.CurrentPresentation;
+
+            // the first meaningful section is the second section
+            startRef = PowerPointSlide.FromSlideFactory(curPresentation.Slides[FindSectionStart(2)]);
+            endRef = PowerPointSlide.FromSlideFactory(curPresentation.Slides[FindSectionEnd(2)]);
+
+            var typeSearchRegex = new Regex(PptLabsAgendaSlideTypeSearchPattern);
+
+            return (AgendaType) Enum.Parse(typeof(AgendaType), typeSearchRegex.Match(startRef.Name).Groups[1].Value);
+        }
+
+        private static void GenerateBeamAgenda()
+        {
+            throw new NotImplementedException();
+        }
+
         private static void GenerateBulletAgenda()
         {
-            // need to use '\r' as paragraph indicator, not '\n'!
             var sections = PowerPointCurrentPresentationInfo.Sections.Skip(1).ToList();
+
+            if (sections.Count == 0)
+            {
+                MessageBox.Show(TextCollection.AgendaLabNoSectionError);
+                return;
+            }
+
+            if (sections.Count == 1)
+            {
+                MessageBox.Show(TextCollection.AgendaLabNoSectionError);
+                return;
+            }
+
+            // need to use '\r' as paragraph indicator, not '\n'!
             _agendaText = sections.Aggregate((current, next) => current + "\r" + next);
 
             Globals.ThisAddIn.Application.StartNewUndoEntry();
