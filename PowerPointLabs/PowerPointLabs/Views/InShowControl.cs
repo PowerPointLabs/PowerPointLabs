@@ -33,8 +33,8 @@ namespace PowerPointLabs.Views
             BackColor = Color.Magenta;
             TransparencyKey = Color.Magenta;
 
-            _slideShowWindow = Globals.ThisAddIn.Application.ActivePresentation.SlideShowWindow;
-            _startingSlide = Globals.ThisAddIn.Application.ActivePresentation.SlideShowSettings.StartingSlide;
+            _slideShowWindow = PowerPointPresentation.Current.Presentation.SlideShowWindow;
+            _startingSlide = PowerPointPresentation.Current.Presentation.SlideShowSettings.StartingSlide;
             _recorder = recorder;
 
             // get slide show window

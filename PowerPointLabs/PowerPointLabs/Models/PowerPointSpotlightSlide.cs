@@ -123,17 +123,17 @@ namespace PowerPointLabs.Models
             {
                 shapeToCrop.PictureFormat.CropLeft += (0.0f - shapeToCrop.Left);
             }
-            if (shapeToCrop.Left + shapeToCrop.Width > PowerPointCurrentPresentationInfo.SlideWidth)
+            if (shapeToCrop.Left + shapeToCrop.Width > PowerPointPresentation.Current.SlideWidth)
             {
-                shapeToCrop.PictureFormat.CropRight += (shapeToCrop.Left + shapeToCrop.Width - PowerPointCurrentPresentationInfo.SlideWidth);
+                shapeToCrop.PictureFormat.CropRight += (shapeToCrop.Left + shapeToCrop.Width - PowerPointPresentation.Current.SlideWidth);
             }
             if (shapeToCrop.Top < 0)
             {
                 shapeToCrop.PictureFormat.CropTop += (0.0f - shapeToCrop.Top);
             }
-            if (shapeToCrop.Top + shapeToCrop.Height > PowerPointCurrentPresentationInfo.SlideHeight)
+            if (shapeToCrop.Top + shapeToCrop.Height > PowerPointPresentation.Current.SlideHeight)
             {
-                shapeToCrop.PictureFormat.CropBottom += (shapeToCrop.Top + shapeToCrop.Height - PowerPointCurrentPresentationInfo.SlideHeight);
+                shapeToCrop.PictureFormat.CropBottom += (shapeToCrop.Top + shapeToCrop.Height - PowerPointPresentation.Current.SlideHeight);
             }
         }
 
@@ -147,7 +147,7 @@ namespace PowerPointLabs.Models
 
         private void AddRectangleShape()
         {
-            PowerPoint.Shape rectangleShape = this.Shapes.AddShape(Office.MsoAutoShapeType.msoShapeRectangle, (-1 * Spotlight.defaultSoftEdges), (-1 * Spotlight.defaultSoftEdges), (PowerPointCurrentPresentationInfo.SlideWidth + (2.0f * Spotlight.defaultSoftEdges)), (PowerPointCurrentPresentationInfo.SlideHeight + (2.0f * Spotlight.defaultSoftEdges)));
+            PowerPoint.Shape rectangleShape = Shapes.AddShape(Office.MsoAutoShapeType.msoShapeRectangle, (-1 * Spotlight.defaultSoftEdges), (-1 * Spotlight.defaultSoftEdges), (PowerPointPresentation.Current.SlideWidth + (2.0f * Spotlight.defaultSoftEdges)), (PowerPointPresentation.Current.SlideHeight + (2.0f * Spotlight.defaultSoftEdges)));
             rectangleShape.Fill.ForeColor.RGB = ColorTranslator.ToWin32(Spotlight.defaultColor);
             rectangleShape.Fill.Transparency = Spotlight.defaultTransparency;
             rectangleShape.Line.Visible = Office.MsoTriState.msoFalse;

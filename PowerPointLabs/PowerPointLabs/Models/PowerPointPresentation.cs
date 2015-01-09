@@ -13,6 +13,14 @@ namespace PowerPointLabs.Models
         # region Properties
         private string _name;
 
+        public static PowerPointPresentation Current
+        {
+            get
+            {
+                return new PowerPointPresentation(Globals.ThisAddIn.Application.ActivePresentation);
+            }
+        }
+
         public string FullName
         {
             get
@@ -58,6 +66,22 @@ namespace PowerPointLabs.Models
         public bool Saved
         {
             get { return Presentation.Saved == MsoTriState.msoTrue; }
+        }
+
+        public List<string> Sections
+        {
+            get
+            {
+                var sectionProperty = Presentation.SectionProperties;
+                var sectionNames = new List<string>();
+
+                for (var i = 1; i <= sectionProperty.Count; i++)
+                {
+                    sectionNames.Add(sectionProperty.Name(i));
+                }
+
+                return sectionNames;
+            }
         }
 
         public List<PowerPointSlide> Slides

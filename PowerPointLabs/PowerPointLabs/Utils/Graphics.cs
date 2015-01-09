@@ -18,8 +18,8 @@ namespace PowerPointLabs.Utils
         # region Shape
         public static void ExportShape(Shape shape, string exportPath)
         {
-            var slideWidth = (int)PowerPointCurrentPresentationInfo.SlideWidth;
-            var slideHeight = (int)PowerPointCurrentPresentationInfo.SlideHeight;
+            var slideWidth = (int)PowerPointPresentation.Current.SlideWidth;
+            var slideHeight = (int)PowerPointPresentation.Current.SlideHeight;
 
             shape.Export(exportPath, PpShapeFormat.ppShapeFormatPNG, slideWidth,
                          slideHeight, PpExportMode.ppScaleToFit);
@@ -27,8 +27,8 @@ namespace PowerPointLabs.Utils
 
         public static void ExportShape(ShapeRange shapeRange, string exportPath)
         {
-            var slideWidth = (int)PowerPointCurrentPresentationInfo.SlideWidth;
-            var slideHeight = (int)PowerPointCurrentPresentationInfo.SlideHeight;
+            var slideWidth = (int)PowerPointPresentation.Current.SlideWidth;
+            var slideHeight = (int)PowerPointPresentation.Current.SlideHeight;
 
             shapeRange.Export(exportPath, PpShapeFormat.ppShapeFormatPNG, slideWidth,
                               slideHeight, PpExportMode.ppScaleToFit);
@@ -158,13 +158,13 @@ namespace PowerPointLabs.Utils
         private static double GetDesiredExportWidth()
         {
             // Powerpoint displays at 72 dpi, while the picture stores in 96 dpi.
-            return PowerPointCurrentPresentationInfo.SlideWidth / 72.0 * 96.0;
+            return PowerPointPresentation.Current.SlideWidth / 72.0 * 96.0;
         }
 
         private static double GetDesiredExportHeight()
         {
             // Powerpoint displays at 72 dpi, while the picture stores in 96 dpi.
-            return PowerPointCurrentPresentationInfo.SlideHeight / 72.0 * 96.0;
+            return PowerPointPresentation.Current.SlideHeight / 72.0 * 96.0;
         }
         # endregion
     }

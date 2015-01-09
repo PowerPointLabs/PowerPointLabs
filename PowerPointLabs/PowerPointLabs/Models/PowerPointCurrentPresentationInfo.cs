@@ -6,11 +6,6 @@ namespace PowerPointLabs.Models
 {
     internal class PowerPointCurrentPresentationInfo
     {
-        public static Presentation CurrentPresentation
-        {
-            get { return Globals.ThisAddIn.Application.ActivePresentation; }
-        }
-
         public static PowerPointSlide CurrentSlide
         {
             get
@@ -28,33 +23,11 @@ namespace PowerPointLabs.Models
             }
         }
 
-        public static string CurrentPresentationName
-        {
-            get { return Globals.ThisAddIn.Application.ActivePresentation.Name; }
-        }
-
         public static Selection CurrentSelection
         {
             get
             {
                 return Globals.ThisAddIn.Application.ActiveWindow.Selection;
-            }
-        }
-
-        public static IEnumerable<PowerPointSlide> Slides
-        {
-            get
-            {
-                var interopSlides = Globals.ThisAddIn.Application.ActivePresentation.Slides;
-                List<PowerPointSlide> slides = new List<PowerPointSlide>();
-
-                foreach (Slide interopSlide in interopSlides)
-                {
-                    PowerPointSlide s = PowerPointSlide.FromSlideFactory(interopSlide);
-                    slides.Add(s);
-                }
-
-                return slides;
             }
         }
 
@@ -72,41 +45,6 @@ namespace PowerPointLabs.Models
                 }
 
                 return slides;
-            }
-        }
-
-        public static bool SlidesHaveCaptions(IEnumerable<PowerPointSlide> slides)
-        {
-            foreach (PowerPointSlide slide in slides)
-            {
-                if (slide.HasCaptions())
-                {
-                    return true;
-                }
-            }
-            return false;
-        }
-
-        public static int SlideCount
-        {
-            get { return Globals.ThisAddIn.Application.ActivePresentation.Slides.Count; }
-        }
-
-        public static float SlideWidth
-        {
-            get
-            {
-                var dimensions = Globals.ThisAddIn.Application.ActivePresentation.PageSetup;
-                return dimensions.SlideWidth;
-            }
-        }
-
-        public static float SlideHeight
-        {
-            get
-            {
-                var dimensions = Globals.ThisAddIn.Application.ActivePresentation.PageSetup;
-                return dimensions.SlideHeight;
             }
         }
     }

@@ -1548,7 +1548,7 @@ namespace PowerPointLabs
 
         public void RecManagementClick(Office.IRibbonControl control)
         {
-            var currentPresentation = Globals.ThisAddIn.Application.ActivePresentation;
+            var currentPresentation = PowerPointPresentation.Current.Presentation;
 
             if (!IsValidPresentation(currentPresentation))
             {
@@ -1680,7 +1680,7 @@ namespace PowerPointLabs
 
         private static CustomShapePane InitCustomShapePane()
         {
-            var prensentation = Globals.ThisAddIn.Application.ActivePresentation;
+            var prensentation = PowerPointPresentation.Current.Presentation;
 
             Globals.ThisAddIn.InitializeShapesLabConfig();
             Globals.ThisAddIn.InitializeShapeGallery();
@@ -1718,7 +1718,7 @@ namespace PowerPointLabs
         {
             try
             {
-                Globals.ThisAddIn.RegisterColorPane(Globals.ThisAddIn.Application.ActivePresentation);
+                Globals.ThisAddIn.RegisterColorPane(PowerPointPresentation.Current.Presentation);
 
                 var colorPane = Globals.ThisAddIn.GetActivePane(typeof(ColorPane));
 

@@ -845,7 +845,7 @@ namespace PowerPointLabs
         {
             try
             {
-                var slides = PowerPointCurrentPresentationInfo.Slides.ToList();
+                var slides = PowerPointPresentation.Current.Slides.ToList();
 
                 foreach (var slide in slides)
                 {
@@ -1577,11 +1577,11 @@ namespace PowerPointLabs
             var slideIndex = PowerPointCurrentPresentationInfo.CurrentSlide.Index;
             
             // set the starting slide and start the slide show
-            var slideShowSettings = Globals.ThisAddIn.Application.ActivePresentation.SlideShowSettings;
+            var slideShowSettings = PowerPointPresentation.Current.Presentation.SlideShowSettings;
             
             // start from the selected slide
             slideShowSettings.StartingSlide = slideIndex;
-            slideShowSettings.EndingSlide = PowerPointCurrentPresentationInfo.SlideCount;
+            slideShowSettings.EndingSlide = PowerPointPresentation.Current.SlideCount;
             slideShowSettings.RangeType = PpSlideShowRangeType.ppShowSlideRange;
             
             // get the slideShowWindow and slideShowView object

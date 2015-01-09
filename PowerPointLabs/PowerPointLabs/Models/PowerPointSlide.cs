@@ -449,7 +449,6 @@ namespace PowerPointLabs.Models
 
         public PowerPointSlide CreateDrillDownSlide()
         {
-            //Slide addedSlide = Globals.ThisAddIn.Application.ActivePresentation.Slides.AddSlide(_slide.SlideIndex + 1, _slide.CustomLayout);
             Slide duplicatedSlide = _slide.Duplicate()[1];
             return PowerPointDrillDownSlide.FromSlideFactory(duplicatedSlide);
         }
@@ -540,9 +539,9 @@ namespace PowerPointLabs.Models
         {
             String tempFileName = Path.GetTempFileName();
             Properties.Resources.Indicator.Save(tempFileName);
-            Shape indicatorShape = _slide.Shapes.AddPicture(tempFileName, Office.MsoTriState.msoFalse, Office.MsoTriState.msoTrue, PowerPointCurrentPresentationInfo.SlideWidth - 120, 0, 120, 84);
+            Shape indicatorShape = _slide.Shapes.AddPicture(tempFileName, Office.MsoTriState.msoFalse, Office.MsoTriState.msoTrue, PowerPointPresentation.Current.SlideWidth - 120, 0, 120, 84);
 
-            indicatorShape.Left = PowerPointCurrentPresentationInfo.SlideWidth - 120;
+            indicatorShape.Left = PowerPointPresentation.Current.SlideWidth - 120;
             indicatorShape.Top = 0;
             indicatorShape.Width = 120;
             indicatorShape.Height = 84;
@@ -576,8 +575,8 @@ namespace PowerPointLabs.Models
                         int count = path.Length;
                         float xVal = Convert.ToSingle(path[count - 3]);
                         float yVal = Convert.ToSingle(path[count - 2]);
-                        sh.Left += (xVal * PowerPointCurrentPresentationInfo.SlideWidth);
-                        sh.Top += (yVal * PowerPointCurrentPresentationInfo.SlideHeight);
+                        sh.Left += (xVal * PowerPointPresentation.Current.SlideWidth);
+                        sh.Top += (yVal * PowerPointPresentation.Current.SlideHeight);
                     }
                 }
             }
@@ -644,7 +643,7 @@ namespace PowerPointLabs.Models
 
         public PowerPointSlide CreateAckSlide()
         {
-            Slide ackSlide = Globals.ThisAddIn.Application.ActivePresentation.Slides.Add(Globals.ThisAddIn.Application.ActivePresentation.Slides.Count + 1, PpSlideLayout.ppLayoutBlank);
+            Slide ackSlide = PowerPointPresentation.Current.Presentation.Slides.Add(PowerPointPresentation.Current.SlideCount + 1, PpSlideLayout.ppLayoutBlank);
             return PowerPointAckSlide.FromSlideFactory(ackSlide);
         }
 
@@ -717,14 +716,14 @@ namespace PowerPointLabs.Models
 
         private bool IsNextSlideTransitionBlacklisted()
         {
-            bool isLastSlide = _slide.SlideIndex == PowerPointCurrentPresentationInfo.SlideCount;
+            bool isLastSlide = _slide.SlideIndex == PowerPointPresentation.Current.SlideCount;
             if (isLastSlide)
             {
                 return false;
             }
 
             // Indexes are from 1, while the slide collection starts from 0.
-            PowerPointSlide nextSlide = PowerPointCurrentPresentationInfo.Slides.ElementAt(Index);
+            PowerPointSlide nextSlide = PowerPointPresentation.Current.Slides[Index];
             switch (nextSlide.Transition.EntryEffect)
             {
                 case PpEntryEffect.ppEffectCoverUp:

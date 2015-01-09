@@ -27,25 +27,11 @@ namespace PowerPointLabs
             Log(methodName + ": " + e.Message + ": " + e.StackTrace, "Error");
         }
 
-        public static PowerPoint.Slide GetCurrentSlide()
-        {
-            try
-            {
-                PowerPoint.Presentation presentation = Globals.ThisAddIn.Application.ActivePresentation;
-                return Globals.ThisAddIn.Application.ActiveWindow.View.Slide;
-            }
-            catch (Exception e)
-            {
-                PowerPointLabsGlobals.LogException(e, "GetCurrentSlide");
-                throw;
-            }
-        }
-
         public static void AddAckSlide()
         {
             try
             {
-                PowerPointSlide lastSlide = PowerPointCurrentPresentationInfo.Slides.Last();
+                PowerPointSlide lastSlide = PowerPointPresentation.Current.Slides.Last();
                 if (!lastSlide.isAckSlide())
                     lastSlide.CreateAckSlide();
             }
@@ -61,8 +47,8 @@ namespace PowerPointLabs
             shapeToMove.LockAspectRatio = Office.MsoTriState.msoFalse;
             shapeToMove.Left = 0;
             shapeToMove.Top = 0;
-            shapeToMove.Width = PowerPointCurrentPresentationInfo.SlideWidth;
-            shapeToMove.Height = PowerPointCurrentPresentationInfo.SlideHeight;
+            shapeToMove.Width = PowerPointPresentation.Current.SlideWidth;
+            shapeToMove.Height = PowerPointPresentation.Current.SlideHeight;
         }
 
         public static void CopyShapePosition(PowerPoint.Shape shapeToCopy, ref PowerPoint.Shape shapeToMove)
