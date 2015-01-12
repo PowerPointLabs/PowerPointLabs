@@ -55,6 +55,8 @@ namespace PowerPointLabs
         public bool ReloadSpotlight = true;
         public bool RemoveCaptionsEnabled = true;
         public bool RemoveAudioEnabled = true;
+        public bool UpdateAgendaEnabled = true;
+        public bool RemoveAgendaEnabled = true;
 
         public bool HighlightTextFragmentsEnabled = true;
 
@@ -322,6 +324,10 @@ namespace PowerPointLabs
         {
             return TextCollection.AgendaLabUpdateAgendaSupertip;
         }
+        public string GetAgendaLabRemoveAgendaSupertip(Office.IRibbonControl control)
+        {
+            return TextCollection.AgendaLabRemoveAgendaSupertip;
+        }
         
         public string GetHelpButtonSupertip(Office.IRibbonControl control)
         {
@@ -504,6 +510,10 @@ namespace PowerPointLabs
         public string GetAgendaLabUpdateAgendaButtonLabel(Office.IRibbonControl control)
         {
             return TextCollection.AgendaLabUpdateAgendaButtonLabel;
+        }
+        public string GetAgendaLabRemoveAgendaButtonLabel(Office.IRibbonControl control)
+        {
+            return TextCollection.AgendaLabRemoveAgendaButtonLabel;
         }
 
         public string GetPPTLabsHelpGroupLabel(Office.IRibbonControl control)
@@ -1223,6 +1233,14 @@ namespace PowerPointLabs
         public bool OnGetEnabledHighlightTextFragments(Office.IRibbonControl control)
         {
             return HighlightTextFragmentsEnabled;
+        }
+        public bool OnGetEnabledUpdateAgenda(Office.IRibbonControl control)
+        {
+            return UpdateAgendaEnabled;
+        }
+        public bool OnGetEnabledRemoveAgenda(Office.IRibbonControl control)
+        {
+            return RemoveAgendaEnabled;
         }
         # endregion
 
@@ -2022,12 +2040,50 @@ namespace PowerPointLabs
         # region Feature: Agenda Lab
         public void BulletPointAgendaClick(Office.IRibbonControl control)
         {
+            Globals.ThisAddIn.Application.StartNewUndoEntry();
+
             AgendaLab.GenerateAgenda(AgendaLab.AgendaType.Bullet);
+
+            UpdateAgendaEnabled = true;
+            RemoveAgendaEnabled = true;
+
+            RefreshRibbonControl("udpateAgenda");
+            RefreshRibbonControl("removeAgenda");
+        }
+
+        public void RemoveAgendaClick(Office.IRibbonControl control)
+        {
+            Globals.ThisAddIn.Application.StartNewUndoEntry();
+
+            if (RemoveAgendaEnabled)
+            {
+                AgendaLab.RemoveAgenda();
+
+                UpdateAgendaEnabled = false;
+                RemoveAgendaEnabled = false;
+
+                RefreshRibbonControl("udpateAgenda");
+                RefreshRibbonControl("removeAgenda");
+            }
+            else
+            {
+                RemoveAgendaEnabled = true;
+                RefreshRibbonControl("removeAgenda");
+            }
         }
 
         public void UpdateAgendaClick(Office.IRibbonControl control)
         {
-            AgendaLab.SyncrhonizeAgenda();
+            Globals.ThisAddIn.Application.StartNewUndoEntry();
+
+            if (UpdateAgendaEnabled)
+            {
+                AgendaLab.SyncrhonizeAgenda();
+            }
+            else
+            {
+                RefreshRibbonControl("udpateAgenda");
+            }
         }
         # endregion
 

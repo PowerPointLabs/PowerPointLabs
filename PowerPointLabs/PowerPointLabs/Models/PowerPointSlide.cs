@@ -16,6 +16,7 @@ namespace PowerPointLabs.Models
     public class PowerPointSlide
     {
         protected readonly Slide _slide;
+
         private List<PowerPoint.MsoAnimEffect> entryEffects = new List<PowerPoint.MsoAnimEffect>()
         {
             PowerPoint.MsoAnimEffect.msoAnimEffectAppear, PowerPoint.MsoAnimEffect.msoAnimEffectBlinds, PowerPoint.MsoAnimEffect.msoAnimEffectBox,
@@ -105,9 +106,32 @@ namespace PowerPointLabs.Models
             get { return _slide.SlideIndex; }
         }
 
+        public Design Design
+        {
+            get { return _slide.Design; }
+            set { _slide.Design = value; }
+        }
+
+        public PpSlideLayout Layout
+        {
+            get { return _slide.Layout; }
+            set { _slide.Layout = value; }
+        }
+
         public SlideShowTransition Transition
         {
             get { return _slide.SlideShowTransition; }
+            set
+            {
+                // deep copy set-able fields
+                _slide.SlideShowTransition.AdvanceOnClick = value.AdvanceOnClick;
+                _slide.SlideShowTransition.AdvanceOnTime = value.AdvanceOnTime;
+                _slide.SlideShowTransition.AdvanceTime = value.AdvanceTime;
+                _slide.SlideShowTransition.Duration = value.Duration;
+                _slide.SlideShowTransition.EntryEffect = value.EntryEffect;
+                _slide.SlideShowTransition.Hidden = value.Hidden;
+                _slide.SlideShowTransition.Speed = value.Speed;
+            }
         }
 
         public TimeLine TimeLine

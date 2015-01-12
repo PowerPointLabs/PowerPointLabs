@@ -263,9 +263,16 @@
                     getLabel="GetAgendaLabBulletPointButtonLabel"
                     getSupertip="GetAgendaLabBulletPointSupertip"
                     onAction="BulletPointAgendaClick"/>
-            <menuSeparator id="updateAgendaseparator" />
+            <menuSeparator id="miscAgendaseparator" />
+            <button id="removeAgenda"
+                    imageMso="HappyFace"
+                    getEnabled="OnGetEnabledRemoveAgenda"
+                    getLabel="GetAgendaLabRemoveAgendaButtonLabel"
+                    getSupertip="GetAgendaLabRemoveAgendaSupertip"
+                    onAction="RemoveAgendaClick"/>
             <button id="udpateAgenda"
                     imageMso="HappyFace"
+                    getEnabled="OnGetEnabledUpdateAgenda"
                     getLabel="GetAgendaLabUpdateAgendaButtonLabel"
                     getSupertip="GetAgendaLabUpdateAgendaSupertip"
                     onAction="UpdateAgendaClick"/>
