@@ -2100,7 +2100,15 @@ namespace PowerPointLabs
 
         public void VisualAgendaClick(Office.IRibbonControl control)
         {
+            Globals.ThisAddIn.Application.StartNewUndoEntry();
+
             AgendaLab.GenerateAgenda(AgendaLab.AgendaType.Visual);
+
+            UpdateAgendaEnabled = true;
+            RemoveAgendaEnabled = true;
+
+            RefreshRibbonControl("udpateAgenda");
+            RefreshRibbonControl("removeAgenda");
         }
         # endregion
 

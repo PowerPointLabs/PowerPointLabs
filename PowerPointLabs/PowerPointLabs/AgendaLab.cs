@@ -24,7 +24,7 @@ namespace PowerPointLabs
 
         private static readonly Regex AgendaSlideSearchPattern = new Regex(PptLabsAgendaSlideTypeSearchPattern);
 
-        private static readonly string SlideCapturePath = Path.Combine(Path.GetTempPath(), "PowerPointLabs");
+        private static readonly string SlideCapturePath = Path.Combine(Path.GetTempPath(), "PowerPointLabs Temp");
 
         private static string _agendaText;
 
@@ -42,7 +42,10 @@ namespace PowerPointLabs
         {
             get
             {
-                return PowerPointPresentation.Current.Slides.Any(slide => AgendaSlideSearchPattern.IsMatch(slide.Name));
+                var presentation = PowerPointPresentation.Current;
+
+                return presentation.Slides.Any(slide => AgendaSlideSearchPattern.IsMatch(slide.Name)) ||
+                       presentation.Sections.Any(section => section == PptLabsAgendaSectionName);
             }
         }
         # endregion
@@ -189,17 +192,18 @@ namespace PowerPointLabs
 
         private static void AddAgendaSlideVisualType(List<string> sections)
         {
-            // TODO: integrate these 2 parts together!!!
+            // TODO: integrate these 3 parts together!!!
 
             // add a new section before the first section and rename to PptLabsAgendaSectionName
             var index = FindSectionStart(sections[0]);
             var currentPresentation = PowerPointPresentation.Current.Presentation;
             var sectionProperties = currentPresentation.SectionProperties;
             var slide = PowerPointSlide.FromSlideFactory(currentPresentation.Slides
-                                                                            .Add(index - 1,
+                                                                            .Add(index,
                                                                                  PpSlideLayout.ppLayoutTitleOnly));
 
-            sectionProperties.AddBeforeSlide(index - 1, PptLabsAgendaSectionName);
+            slide.Name = string.Format(PptLabsAgendaSlideNameFormat, AgendaType.Visual, "", sections[0]);
+            sectionProperties.AddBeforeSlide(index, PptLabsAgendaSectionName);
 
             // generate slide shapes in the canvas area
             PrepareVisualAgendaSlideShapes(slide, sections);
@@ -210,34 +214,50 @@ namespace PowerPointLabs
             // generate drill down slide, and clean up current slide by deleting drill down
             // shape and recover original slide shape visibility
             AutoZoom.AddDrillDownAnimation(slideShape, slide);
-            slide.GetShapesWithRule(new Regex("PPTLabsZoomIn"))[0].Delete();
+            slide.GetShapesWithRule(new Regex("PPTZoomIn"))[0].Delete();
             slideShape.Visible = MsoTriState.msoTrue;
 
             // copy current slide for the next agenda section
             slide.Copy();
 
             // generate agenda for the rest of the sections
-            foreach (var section in sections.Skip(1))
+            for (var i = 1; i <= sections.Count; i ++)
             {
+                var sectionName = i < sections.Count ? sections[i] : sections[i - 1];
+                var prevSectionName = sections[i - 1];
+
                 // add a new section before the first section and rename to PptLabsAgendaSectionName
-                index = FindSectionStart(section);
-                slide = PowerPointSlide.FromSlideFactory(currentPresentation.Slides.Paste(index - 1)[1]);
+                index = i < sections.Count ? FindSectionStart(sectionName) : PowerPointPresentation.Current.SlideCount;
+                slide = PowerPointSlide.FromSlideFactory(currentPresentation.Slides.Paste(index)[1]);
 
-                sectionProperties.AddBeforeSlide(index - 1, PptLabsAgendaSectionName);
+                slide.Name = string.Format(PptLabsAgendaSlideNameFormat, AgendaType.Visual, "", i < sections.Count ? sectionName : "EndOfAgenda");
+                var newSectionIndex = sectionProperties.AddBeforeSlide(index, PptLabsAgendaSectionName);
 
-                // get the shape that represent current slide
-                slideShape = slide.GetShapeWithName(section)[0];
+                // get the shape that represent previous slide, change the fillup picture to
+                // the end of slide picture
+                var sectionEndName = string.Format("{0} End.png", prevSectionName);
+
+                slideShape = slide.GetShapeWithName(prevSectionName)[0];
+                slideShape.Fill.UserPicture(Path.Combine(SlideCapturePath, sectionEndName));
 
                 // add step back effect  and clean up current slide by deleting step back
                 // shape and recover original slide shape visibility
                 AutoZoom.AddStepBackAnimation(slideShape, slide);
-                slide.GetShapesWithRule(new Regex("PPTLabsZoomIn"))[0].Delete();
+                slide.GetShapesWithRule(new Regex("PPTZoomOut"))[0].Delete();
                 slideShape.Visible = MsoTriState.msoTrue;
+
+                // move the step back slide to the section
+                currentPresentation.Slides[index].MoveToSectionStart(newSectionIndex);
+
+                if (i == sections.Count) break;
+
+                // get the shape that represent current slide
+                slideShape = slide.GetShapeWithName(sectionName)[0];
 
                 // add drill down effect and clean up current slide by deleting drill down
                 // shape and recover original slide shape visibility
                 AutoZoom.AddDrillDownAnimation(slideShape, slide);
-                slide.GetShapesWithRule(new Regex("PPTLabsZoomIn"))[0].Delete();
+                slide.GetShapesWithRule(new Regex("PPTZoomIn"))[0].Delete();
                 slideShape.Visible = MsoTriState.msoTrue;
 
                 slide.Copy();
@@ -318,6 +338,11 @@ namespace PowerPointLabs
 
         private static void PrepareVisualAgendaSlideCapture(IEnumerable<string> sections)
         {
+            if (!Directory.Exists(SlideCapturePath))
+            {
+                Directory.CreateDirectory(SlideCapturePath);
+            }
+
             var slides = PowerPointPresentation.Current.Slides;
 
             foreach (var section in sections)
