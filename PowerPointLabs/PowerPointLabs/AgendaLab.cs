@@ -1,10 +1,14 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Drawing;
+using System.IO;
 using System.Linq;
 using System.Text.RegularExpressions;
 using System.Windows.Forms;
+using Microsoft.Office.Core;
 using PowerPointLabs.Models;
 using Microsoft.Office.Interop.PowerPoint;
+using Shape = Microsoft.Office.Interop.PowerPoint.Shape;
 
 namespace PowerPointLabs
 {
@@ -14,6 +18,13 @@ namespace PowerPointLabs
         private const string PptLabsAgendaTitleShapeName = "PptLabsAgendaTitle";
         private const string PptLabsAgendaContentShapeName = "PptLabsAgendaContent";
         private const string PptLabsAgendaSlideTypeSearchPattern = @"PptLabs(\w+)Agenda(?:Start|End)Slide";
+        private const string PptLabsAgendaSectionName = "PptLabsAgendaSection";
+
+        private const float VisualAgendaItemMargin = 0.05f;
+
+        private static readonly Regex AgendaSlideSearchPattern = new Regex(PptLabsAgendaSlideTypeSearchPattern);
+
+        private static readonly string SlideCapturePath = Path.Combine(Path.GetTempPath(), "PowerPointLabs");
 
         private static string _agendaText;
 
@@ -31,9 +42,7 @@ namespace PowerPointLabs
         {
             get
             {
-                var agendaSlideSearchPattern = new Regex(PptLabsAgendaSlideTypeSearchPattern);
-
-                return PowerPointPresentation.Current.Slides.Any(slide => agendaSlideSearchPattern.IsMatch(slide.Name));
+                return PowerPointPresentation.Current.Slides.Any(slide => AgendaSlideSearchPattern.IsMatch(slide.Name));
             }
         }
         # endregion
@@ -41,31 +50,70 @@ namespace PowerPointLabs
         # region API
         public static void GenerateAgenda(AgendaType type)
         {
+            // agenda exists in current presentation
+            if (PowerPointPresentation.Current.Slides.Any(slide => AgendaSlideSearchPattern.IsMatch(slide.Name)))
+            {
+                var confirm = MessageBox.Show(TextCollection.AgendaLabAgendaExistError,
+                                              TextCollection.AgendaLabAgendaExistErrorCaption,
+                                              MessageBoxButtons.OKCancel);
+
+                if (confirm == DialogResult.OK)
+                {
+                    RemoveAgenda();
+                }
+                else
+                {
+                    return;
+                }
+            }
+
+            // validate section information
+            var sections = PowerPointPresentation.Current.Sections.Skip(1).ToList();
+
+            if (sections.Count == 0)
+            {
+                MessageBox.Show(TextCollection.AgendaLabNoSectionError);
+                return;
+            }
+
+            if (sections.Count == 1)
+            {
+                MessageBox.Show(TextCollection.AgendaLabNoSectionError);
+                return;
+            }
+
             switch (type)
             {
                 case AgendaType.Beam:
                     GenerateBeamAgenda();
                     break;
                 case AgendaType.Bullet:
-                    GenerateBulletAgenda();
+                    GenerateBulletAgenda(sections);
                     break;
                 case AgendaType.Visual:
-                    GenerateVisualAgenda();
+                    GenerateVisualAgenda(sections);
                     break;
             }
         }
 
         public static void RemoveAgenda()
         {
-            var slides = PowerPointPresentation.Current.Slides;
-            var generatedAgendaNamePattern = new Regex(PptLabsAgendaSlideTypeSearchPattern);
+            var sectionProperties = PowerPointPresentation.Current.Presentation.SectionProperties;
+            var section = PowerPointPresentation.Current.Sections;
 
-            foreach (var slide in slides)
+            for (var i = section.Count; i >= 1; i --)
             {
-                if (generatedAgendaNamePattern.IsMatch(slide.Name))
+                if (section[i - 1] == PptLabsAgendaSectionName)
                 {
-                    slide.Delete();
+                    sectionProperties.Delete(i, true);
                 }
+            }
+
+            var slides = PowerPointPresentation.Current.Slides;
+
+            foreach (var slide in slides.Where(slide => AgendaSlideSearchPattern.IsMatch(slide.Name)))
+            {
+                slide.Delete();
             }
         }
 
@@ -93,42 +141,31 @@ namespace PowerPointLabs
         # endregion
 
         # region Helper Functions
-        private static void AddAgendaSlide(AgendaType type, string section, bool isEnd)
+        private static void AddAgendaSlideBulletType(string section, bool isEnd)
         {
             var sectionIndex = FindSectionIndex(section);
             var sectionEndIndex = FindSectionEnd(section);
 
-            var newSlide =
+            var slide =
                 PowerPointSlide.FromSlideFactory(PowerPointPresentation.Current
                                                                        .Presentation
                                                                        .Slides
                                                                        .Add(isEnd ? sectionEndIndex + 1 : 1,
                                                                             PpSlideLayout.ppLayoutText));
 
-            newSlide.Name = string.Format(PptLabsAgendaSlideNameFormat, type, isEnd ? "End" : "Start", section);
-            newSlide.Transition.EntryEffect = PpEntryEffect.ppEffectFadeSmoothly;
-            newSlide.Transition.Duration = 0.25f;
+            slide.Name = string.Format(PptLabsAgendaSlideNameFormat, AgendaType.Bullet,
+                                          isEnd ? "End" : "Start", section);
+            slide.Transition.EntryEffect = PpEntryEffect.ppEffectFadeSmoothly;
+            slide.Transition.Duration = 0.25f;
 
-            newSlide.Shapes.Placeholders[1].Name = PptLabsAgendaTitleShapeName;
-            newSlide.Shapes.Placeholders[2].Name = PptLabsAgendaContentShapeName;
+            slide.Shapes.Placeholders[1].Name = PptLabsAgendaTitleShapeName;
+            slide.Shapes.Placeholders[2].Name = PptLabsAgendaContentShapeName;
 
             if (!isEnd)
             {
-                newSlide.GetNativeSlide().MoveToSectionStart(sectionIndex);
+                slide.GetNativeSlide().MoveToSectionStart(sectionIndex);
             }
 
-            switch (type)
-            {
-                case AgendaType.Bullet:
-                    AddAgendaSlideBulletType(newSlide, section, isEnd);
-                    break;
-                case AgendaType.Visual:
-                    break;
-            }
-        }
-
-        private static void AddAgendaSlideBulletType(PowerPointSlide slide, string section, bool isEnd)
-        {
             // set title
             slide.Shapes.Placeholders[1].TextFrame.TextRange.Text = "Agenda";
 
@@ -137,7 +174,7 @@ namespace PowerPointLabs
             var textRange = contentPlaceHolder.TextFrame.TextRange;
 
             // since we skip the default section, relative section index should be substracted by 1
-            var relativeSectionIndex = FindSectionIndex(section) - 1;
+            var relativeSectionIndex = sectionIndex - 1;
 
             textRange.Text = _agendaText;
 
@@ -148,6 +185,63 @@ namespace PowerPointLabs
 
             textRange.Paragraphs(relativeSectionIndex).Font.Color.RGB =
                 PowerPointLabsGlobals.CreateRGB(isEnd ? Color.Gray : Color.Red);
+        }
+
+        private static void AddAgendaSlideVisualType(List<string> sections)
+        {
+            // TODO: integrate these 2 parts together!!!
+
+            // add a new section before the first section and rename to PptLabsAgendaSectionName
+            var index = FindSectionStart(sections[0]);
+            var currentPresentation = PowerPointPresentation.Current.Presentation;
+            var sectionProperties = currentPresentation.SectionProperties;
+            var slide = PowerPointSlide.FromSlideFactory(currentPresentation.Slides
+                                                                            .Add(index - 1,
+                                                                                 PpSlideLayout.ppLayoutTitleOnly));
+
+            sectionProperties.AddBeforeSlide(index - 1, PptLabsAgendaSectionName);
+
+            // generate slide shapes in the canvas area
+            PrepareVisualAgendaSlideShapes(slide, sections);
+
+            // get the shape that represent current slide
+            var slideShape = slide.GetShapeWithName(sections[0])[0];
+
+            // generate drill down slide, and clean up current slide by deleting drill down
+            // shape and recover original slide shape visibility
+            AutoZoom.AddDrillDownAnimation(slideShape, slide);
+            slide.GetShapesWithRule(new Regex("PPTLabsZoomIn"))[0].Delete();
+            slideShape.Visible = MsoTriState.msoTrue;
+
+            // copy current slide for the next agenda section
+            slide.Copy();
+
+            // generate agenda for the rest of the sections
+            foreach (var section in sections.Skip(1))
+            {
+                // add a new section before the first section and rename to PptLabsAgendaSectionName
+                index = FindSectionStart(section);
+                slide = PowerPointSlide.FromSlideFactory(currentPresentation.Slides.Paste(index - 1)[1]);
+
+                sectionProperties.AddBeforeSlide(index - 1, PptLabsAgendaSectionName);
+
+                // get the shape that represent current slide
+                slideShape = slide.GetShapeWithName(section)[0];
+
+                // add step back effect  and clean up current slide by deleting step back
+                // shape and recover original slide shape visibility
+                AutoZoom.AddStepBackAnimation(slideShape, slide);
+                slide.GetShapesWithRule(new Regex("PPTLabsZoomIn"))[0].Delete();
+                slideShape.Visible = MsoTriState.msoTrue;
+
+                // add drill down effect and clean up current slide by deleting drill down
+                // shape and recover original slide shape visibility
+                AutoZoom.AddDrillDownAnimation(slideShape, slide);
+                slide.GetShapesWithRule(new Regex("PPTLabsZoomIn"))[0].Delete();
+                slideShape.Visible = MsoTriState.msoTrue;
+
+                slide.Copy();
+            }
         }
 
         private static int FindSectionEnd(string section)
@@ -192,9 +286,9 @@ namespace PowerPointLabs
             startRef = PowerPointPresentation.Current.Slides[FindSectionStart(2) - 1];
             endRef = PowerPointPresentation.Current.Slides[FindSectionEnd(2) - 1];
 
-            var typeSearchRegex = new Regex(PptLabsAgendaSlideTypeSearchPattern);
+            var type = AgendaSlideSearchPattern.Match(startRef.Name).Groups[1].Value;
 
-            return (AgendaType)Enum.Parse(typeof(AgendaType), typeSearchRegex.Match(startRef.Name).Groups[1].Value);
+            return (AgendaType)Enum.Parse(typeof(AgendaType), type);
         }
 
         private static void GenerateBeamAgenda()
@@ -202,35 +296,90 @@ namespace PowerPointLabs
             throw new NotImplementedException();
         }
 
-        private static void GenerateBulletAgenda()
+        private static void GenerateBulletAgenda(List<string> sections)
         {
-            var sections = PowerPointPresentation.Current.Sections.Skip(1).ToList();
-
-            if (sections.Count == 0)
-            {
-                MessageBox.Show(TextCollection.AgendaLabNoSectionError);
-                return;
-            }
-
-            if (sections.Count == 1)
-            {
-                MessageBox.Show(TextCollection.AgendaLabNoSectionError);
-                return;
-            }
-
             // need to use '\r' as paragraph indicator, not '\n'!
+            // must end with '\r' to make the last line a paragraph!
             _agendaText = sections.Aggregate((current, next) => current + "\r" + next) + "\r";
 
             foreach (var section in sections)
             {
-                AddAgendaSlide(AgendaType.Bullet, section, false);
-                AddAgendaSlide(AgendaType.Bullet, section, true);
+                AddAgendaSlideBulletType(section, false);
+                AddAgendaSlideBulletType(section, true);
             }
         }
 
-        private static void GenerateVisualAgenda()
+        private static void GenerateVisualAgenda(List<string> sections)
         {
-            throw new NotImplementedException();
+            PrepareVisualAgendaSlideCapture(sections);
+
+            AddAgendaSlideVisualType(sections);
+        }
+
+        private static void PrepareVisualAgendaSlideCapture(IEnumerable<string> sections)
+        {
+            var slides = PowerPointPresentation.Current.Slides;
+
+            foreach (var section in sections)
+            {
+                var sectionStartSlide = slides[FindSectionStart(section) - 1];
+                var sectionEndSlide = slides[FindSectionEnd(section) - 1];
+                var animatedEndSlide = sectionEndSlide.Duplicate();
+
+                foreach (var shape in animatedEndSlide.Shapes.Cast<Shape>().Where(animatedEndSlide.HasExitAnimation))
+                {
+                    shape.Delete();
+                }
+
+                animatedEndSlide.MoveMotionAnimation();
+
+                var sectionStartName = string.Format("{0} Start.png", section);
+                var sectionEndName = string.Format("{0} End.png", section);
+
+                Utils.Graphics.ExportSlide(sectionStartSlide, Path.Combine(SlideCapturePath, sectionStartName));
+                Utils.Graphics.ExportSlide(animatedEndSlide, Path.Combine(SlideCapturePath, sectionEndName));
+
+                animatedEndSlide.Delete();
+            }
+        }
+
+        private static void PrepareVisualAgendaSlideShapes(PowerPointSlide slide, List<string> sections)
+        {
+            var titleBar = slide.Shapes.Placeholders[1];
+
+            titleBar.Name = PptLabsAgendaTitleShapeName;
+            titleBar.TextFrame.TextRange.Text = "Agenda";
+
+            var slideWidth = PowerPointPresentation.Current.SlideWidth;
+            var slideHeight = PowerPointPresentation.Current.SlideHeight;
+            var aspectRatio = slideWidth / slideHeight;
+            var epsilon = slideHeight * 0.02f;
+
+            var canvasLeft = titleBar.Left;
+            var canvasTop = titleBar.Top + titleBar.Height + epsilon;
+            var canvasWidth = titleBar.Width;
+            var canvasHeight = canvasWidth / aspectRatio;
+
+            var itemCount = sections.Count;
+            var itemCanvasWidth = canvasWidth / itemCount;
+            var itemWidth = itemCanvasWidth * (1 - 2 * VisualAgendaItemMargin);
+            var itemHeight = itemWidth / aspectRatio;
+            var itemTop = canvasTop + (canvasHeight - itemHeight) / 2;
+            
+            for (var i = 0; i < itemCount; i ++)
+            {
+                var itemLeft = canvasLeft + i*itemCanvasWidth + itemCanvasWidth * VisualAgendaItemMargin;
+
+                var shape = slide.Shapes.AddShape(MsoAutoShapeType.msoShapeRectangle,
+                                                  itemLeft, itemTop,
+                                                  itemWidth, itemHeight);
+
+                shape.Name = sections[i];
+                shape.Line.Visible = MsoTriState.msoFalse;
+
+                var slideCaptureName = string.Format("{0} Start.png", shape.Name);
+                shape.Fill.UserPicture(Path.Combine(SlideCapturePath, slideCaptureName));
+            }
         }
 
         private static void SyncAgendaBulletType(PowerPointSlide startRef, PowerPointSlide endRef)
@@ -321,7 +470,8 @@ namespace PowerPointLabs
             // syncronize extra shapes
             var extraShapes = refSlide.Shapes.Cast<Shape>()
                                              .Where(shape => shape.Name != PptLabsAgendaTitleShapeName &&
-                                                             shape.Name != PptLabsAgendaContentShapeName)
+                                                             shape.Name != PptLabsAgendaContentShapeName &&
+                                                             !candidate.HasShapeWithSameName(shape.Name))
                                              .Select(shape => shape.Name)
                                              .ToArray();
 

@@ -258,11 +258,16 @@
                 getSupertip="GetAgendaLabSupertip"
                 imageMso="HappyFace"
                 size="large">
-            <button id="bulletPoint"
+            <button id="bulletPointAgenda"
                     imageMso="HappyFace"
                     getLabel="GetAgendaLabBulletPointButtonLabel"
                     getSupertip="GetAgendaLabBulletPointSupertip"
                     onAction="BulletPointAgendaClick"/>
+            <button id="visualAgenda"
+                    imageMso="HappyFace"
+                    getLabel="GetAgendaLabVisualAgendaButtonLabel"
+                    getSupertip="GetAgendaLabVisualAgendaSupertip"
+                    onAction="VisualAgendaClick"/>
             <menuSeparator id="miscAgendaseparator" />
             <button id="removeAgenda"
                     imageMso="HappyFace"

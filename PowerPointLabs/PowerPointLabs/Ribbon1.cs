@@ -316,9 +316,17 @@ namespace PowerPointLabs
             return TextCollection.EffectsLabColorizeRemainderSupertip;
         }
 
+        public string GetAgendaLabSupertip(Office.IRibbonControl control)
+        {
+            return TextCollection.AgendaLabSupertip;
+        }
         public string GetAgendaLabBulletPointSupertip(Office.IRibbonControl control)
         {
             return TextCollection.AgendaLabBulletPointSupertip;
+        }
+        public string GetAgendaLabVisualAgendaSupertip(Office.IRibbonControl control)
+        {
+            return TextCollection.AgendaLabVisualAgendaSupertip;
         }
         public string GetAgendaLabUpdateAgendaSupertip(Office.IRibbonControl control)
         {
@@ -506,6 +514,10 @@ namespace PowerPointLabs
         public string GetAgendaLabBulletPointButtonLabel(Office.IRibbonControl control)
         {
             return TextCollection.AgendaLabBulletPointButtonLabel;
+        }
+        public string GetAgendaLabVisualAgendaButtonLabel(Office.IRibbonControl control)
+        {
+            return TextCollection.AgendaLabVisualAgendaButtonLabel;
         }
         public string GetAgendaLabUpdateAgendaButtonLabel(Office.IRibbonControl control)
         {
@@ -2084,6 +2096,11 @@ namespace PowerPointLabs
             {
                 RefreshRibbonControl("udpateAgenda");
             }
+        }
+
+        public void VisualAgendaClick(Office.IRibbonControl control)
+        {
+            AgendaLab.GenerateAgenda(AgendaLab.AgendaType.Visual);
         }
         # endregion
 

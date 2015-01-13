@@ -15,11 +15,14 @@ namespace PowerPointLabs
 
         public static void AddDrillDownAnimation()
         {
+            AddDrillDownAnimation(Globals.ThisAddIn.Application.ActiveWindow.Selection.ShapeRange[1],
+                                  PowerPointCurrentPresentationInfo.CurrentSlide);
+        }
+
+        public static void AddDrillDownAnimation(PowerPoint.Shape selectedShape, PowerPointSlide currentSlide)
+        {
             try
             {
-                var currentSlide = PowerPointCurrentPresentationInfo.CurrentSlide as PowerPointSlide;
-                PowerPoint.Shape selectedShape = Globals.ThisAddIn.Application.ActiveWindow.Selection.ShapeRange[1];
-
                 if (currentSlide == null || currentSlide.Index == PowerPointPresentation.Current.SlideCount)
                 {
                     System.Windows.Forms.MessageBox.Show("Please select the correct slide", "Unable to Add Animations");
@@ -44,7 +47,7 @@ namespace PowerPointLabs
 
                     addedSlide = (PowerPointDrillDownSlide)currentSlide.CreateDrillDownSlide();
                     addedSlide.DeleteAllShapes();
-                    
+
                     currentSlide.Copy();
                     shapeToZoom = addedSlide.Shapes.PasteSpecial(PowerPoint.PpPasteDataType.ppPastePNG)[1];
                     shapeToZoom.Apply();
@@ -83,11 +86,14 @@ namespace PowerPointLabs
 
         public static void AddStepBackAnimation()
         {
+            AddStepBackAnimation(Globals.ThisAddIn.Application.ActiveWindow.Selection.ShapeRange[1],
+                                 PowerPointCurrentPresentationInfo.CurrentSlide);
+        }
+
+        public static void AddStepBackAnimation(PowerPoint.Shape selectedShape, PowerPointSlide currentSlide)
+        {
             try
             {
-                var currentSlide = PowerPointCurrentPresentationInfo.CurrentSlide as PowerPointSlide;
-                PowerPoint.Shape selectedShape = Globals.ThisAddIn.Application.ActiveWindow.Selection.ShapeRange[1];
-
                 if (currentSlide == null || currentSlide.Index == 1)
                 {
                     System.Windows.Forms.MessageBox.Show("Please select the correct slide", "Unable to Add Animations");
