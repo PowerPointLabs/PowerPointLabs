@@ -4,6 +4,7 @@ using System.Diagnostics;
 using System.IO;
 using System.IO.Compression;
 using System.Windows.Forms;
+using System.Web;
 
 namespace PowerPointLabsInstallerUi
 {
@@ -14,22 +15,42 @@ namespace PowerPointLabsInstallerUi
         private const string TextButtonRunning = "Running...";
         private const string ErrorWindowTitle = "PowerPointLabs Installer";
         private const string UrlForVstoRuntim = "http://www.microsoft.com/en-us/download/details.aspx?id=44074";
+        private const string UrlForPptlabsOnlineInstaller = "http://www.comp.nus.edu.sg/~pptlabs/download-78563/PowerPointLabs.zip";
+
+        private readonly string _onlineInstallerZipAddress = Path.Combine(Path.GetTempPath(),
+            @"PowerPointLabsInstaller\olInstaller.zip");
 
         public Form1()
         {
             InitializeComponent();
         }
 
+        /// <summary>
+        /// If there are special characters (eg é) present in the install path,
+        /// the offline installer (ClickOnce) will fail to install. Thus need to download and install online installer instead.
+        /// </summary>
+        /// <returns></returns>
+        private bool IsSpecialCharPresentInInstallPath()
+        {
+            return HttpUtility.UrlPathEncode(Path.GetTempPath()) != Path.GetTempPath();
+        }
+
+        /// <summary>
+        /// main behavior
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void button1_Click(object sender, EventArgs e)
         {
             if (button1.Text != TextButtonClose)
             {
+                //detection for VSTO runtime + its config
                 if (!IsVstoRuntimeValid())
                 {
                     var dialogResult = MessageBox.Show(
-                        "In order to install our add-in successfully, you may have to first install " +
+                        "For the PowerPointLabs to work properly, your computer needs to have " +
                         "Visual Studio 2010 Tools for Office (VSTO) Runtime from Microsoft.\n\n" +
-                        "Click Yes button to download it, or click No button to continue installation anyway.",
+                        "Click Yes button to download it, or click No button to continue the installation anyway.",
                         ErrorWindowTitle,
                         MessageBoxButtons.YesNoCancel, MessageBoxIcon.Error);
                     if (dialogResult == DialogResult.Yes)
@@ -46,9 +67,9 @@ namespace PowerPointLabsInstallerUi
                 {
                     var vstoConfigDir = GetVstoConfigDir();
                     if (MessageBox.Show(
-                        "In order to install our add-in successfully, you may have to first back-up and remove " +
-                        "the corrupted configuration file located at \n" + vstoConfigDir + "\n\n" +
-                        "After remove it, click OK button to continue.",
+                        "In order to install our add-in, you need to rename the file [VSTOInstaller.exe.Config] in the folder" +
+                        "\n[" + vstoConfigDir + "]\n to the new filename [VSTOInstaller.exe.Config.backup]\n\n" +
+                        "After that, click OK button to continue.",
                         ErrorWindowTitle, 
                         MessageBoxButtons.OKCancel, MessageBoxIcon.Error)
                         == DialogResult.Cancel)
@@ -57,21 +78,55 @@ namespace PowerPointLabsInstallerUi
                     }
                 }
                 
+                //run installation files
                 button1.Enabled = false;
                 button1.Text = TextButtonRunning;
-                Boolean isUnzipSuccessful = UnzipInstaller(_installerZipAddress);
-                if (isUnzipSuccessful)
+                if (IsSpecialCharPresentInInstallPath())
                 {
-                    RunInstaller();
+                    //download and run online installer
+                    new Downloader()
+                        .Get(UrlForPptlabsOnlineInstaller, _onlineInstallerZipAddress)
+                        .After(AfterOnlineInstallerDownload)
+                        .WhenFail(WhenDownloadFailure)
+                        .Start();
                 }
-
-                button1.Enabled = true;
-                button1.Text = TextButtonClose;
+                else
+                {
+                    //normal offline installer
+                    Boolean isUnzipSuccessful = UnzipInstaller(_installerZipAddress);
+                    if (isUnzipSuccessful)
+                    {
+                        RunInstaller();
+                    }
+                    button1.Enabled = true;
+                    button1.Text = TextButtonClose;
+                }
             }
             else
             {
                 Close();
             }
+        }
+
+        private void AfterOnlineInstallerDownload()
+        {
+            //unzip online installer
+            var isUnzipSuccessful = UnzipInstaller(_onlineInstallerZipAddress);
+            //then run it
+            if (isUnzipSuccessful)
+            {
+                MessageBox.Show("In order to install our add-in, please click 'yes' button to allow changes.", 
+                    "PowerPointLabs Installer");
+                RunInstaller();
+            }
+            button1.Enabled = true;
+            button1.Text = TextButtonClose;
+        }
+
+        private void WhenDownloadFailure()
+        {
+            button1.Enabled = true;
+            button1.Text = TextButtonClose;
         }
 
         private static bool IsVstoRuntimeValid()
