@@ -281,6 +281,11 @@
                     getLabel="GetAgendaLabUpdateAgendaButtonLabel"
                     getSupertip="GetAgendaLabUpdateAgendaSupertip"
                     onAction="UpdateAgendaClick"/>
+            <button id="agendaSettings"
+                    imageMso="HappyFace"
+                    getLabel="GetAgendaLabAgendaSettingsButtonLabel"
+                    getSupertip="GetAgendaLabAgendaSettingsSupertip"
+                    onAction="AgendaSettingsClick"/>
           </menu>
         </group>
         <group id="PPTLabsHelp"

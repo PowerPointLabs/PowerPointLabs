@@ -8,6 +8,7 @@ using System.Windows.Forms;
 using Microsoft.Office.Core;
 using PowerPointLabs.Models;
 using Microsoft.Office.Interop.PowerPoint;
+using PowerPointLabs.Views;
 using Shape = Microsoft.Office.Interop.PowerPoint.Shape;
 
 namespace PowerPointLabs
@@ -28,16 +29,54 @@ namespace PowerPointLabs
 
         private static string _agendaText;
 
+        private static Color _bulletDefaultColor = Color.Black;
+        private static Color _bulletHighlightColor = Color.Red;
+        private static Color _bulletDimColor = Color.Gray;
+
         # region Enum
         public enum AgendaType
         {
-            Beam,
+            None,
             Bullet,
+            Beam,
             Visual
         };
         # endregion
 
+        /*********************************************************
+         * Note:
+         * The implementation of CurrentAgendaType is O(n),
+         * bear this in mind when design functions. E.g. 
+         * FindSectionEndSlide is totally fine with only the first
+         * argument and check CurrentAgendaType in the function.
+         * But taking type as the second argument allows the 
+         * developer to get CurrentAgendaType before the function.
+         * This is useful when CurrentAgendaType is frequently used
+         * in a certain region, which reduces the overhead.
+         * 
+         * See SyncrhonizeAgenda() for more usage details.
+         *********************************************************/
         # region Properties
+        public static AgendaType CurrentAgendaType
+        {
+            get
+            {
+                var agendaSlide = PowerPointPresentation.Current
+                                                        .Slides
+                                                        .FirstOrDefault(slide => AgendaSlideSearchPattern.
+                                                                                 IsMatch(slide.Name));
+
+                if (agendaSlide == null)
+                {
+                    return AgendaType.None;
+                }
+
+                var type = AgendaSlideSearchPattern.Match(agendaSlide.Name).Groups[1].Value;
+
+                return (AgendaType)Enum.Parse(typeof(AgendaType), type);
+            }
+        }
+
         public static bool HasAgenda
         {
             get
@@ -51,6 +90,16 @@ namespace PowerPointLabs
         # endregion
 
         # region API
+        public static void AgendaLabSettings()
+        {
+            var settingDialog = new BulletAgendaSettingsDialog(_bulletHighlightColor,
+                                                               _bulletDimColor,
+                                                               _bulletDefaultColor);
+
+            settingDialog.SettingsHandler += UpdateColorScheme;
+            settingDialog.ShowDialog();
+        }
+
         public static void GenerateAgenda(AgendaType type)
         {
             // agenda exists in current presentation
@@ -123,24 +172,23 @@ namespace PowerPointLabs
         public static void SyncrhonizeAgenda()
         {
             // find the agenda for the first section as reference
-            PowerPointSlide refSlide;
-
-            var type = FindSyncReference(out refSlide);
-            var sectionCount = PowerPointPresentation.Current.Sections.Count;
+            var sections = PowerPointPresentation.Current.Sections;
+            var type = CurrentAgendaType;
+            var refSlide = FindSectionStartSlide(sections[1], type);
 
             // Section 1: default section, skip
             // Section 2 start: use as reference
             // Section 2_end - end: need to be synced
-
-            for (var i = 2; i <= sectionCount; i++)
+            for (var i = 2; i <= sections.Count; i++)
             {
-                var startAgenda = i == 2 ? null : PowerPointPresentation.Current.Slides[FindSectionStart(i) - 1];
-                var endAgenda = PowerPointPresentation.Current.Slides[FindSectionEnd(i) - 1];
+                var section = sections[i - 1];
+                var startAgenda = i == 2 ? null : FindSectionStartSlide(section, type);
+                var endAgenda = FindSectionEndSlide(section, type);
 
                 SyncSingleAgendaGeneral(refSlide, startAgenda);
                 SyncSingleAgendaGeneral(refSlide, endAgenda);
 
-                switch (type)
+                switch (CurrentAgendaType)
                 {
                     case AgendaType.Beam:
                         break;
@@ -169,6 +217,10 @@ namespace PowerPointLabs
                                                                        .Slides
                                                                        .Add(isEnd ? sectionEndIndex + 1 : 1,
                                                                             PpSlideLayout.ppLayoutText));
+            if (!isEnd)
+            {
+                slide.GetNativeSlide().MoveToSectionStart(sectionIndex);
+            }
 
             slide.Name = string.Format(PptLabsAgendaSlideNameFormat, AgendaType.Bullet,
                                           isEnd ? "End" : "Start", section);
@@ -178,30 +230,16 @@ namespace PowerPointLabs
             slide.Shapes.Placeholders[1].Name = PptLabsAgendaTitleShapeName;
             slide.Shapes.Placeholders[2].Name = PptLabsAgendaContentShapeName;
 
-            if (!isEnd)
-            {
-                slide.GetNativeSlide().MoveToSectionStart(sectionIndex);
-            }
-
             // set title
             slide.Shapes.Placeholders[1].TextFrame.TextRange.Text = "Agenda";
 
             // set agenda content
             var contentPlaceHolder = slide.Shapes.Placeholders[2];
             var textRange = contentPlaceHolder.TextFrame.TextRange;
+            var focusColor = isEnd ? _bulletDimColor : _bulletHighlightColor;
 
-            // since we skip the default section, relative section index should be substracted by 1
-            var relativeSectionIndex = sectionIndex - 1;
-
-            textRange.Text = _agendaText;
-
-            for (var i = 1; i < relativeSectionIndex; i++)
-            {
-                textRange.Paragraphs(i).Font.Color.RGB = PowerPointLabsGlobals.CreateRGB(Color.Gray);
-            }
-
-            textRange.Paragraphs(relativeSectionIndex).Font.Color.RGB =
-                PowerPointLabsGlobals.CreateRGB(isEnd ? Color.Gray : Color.Red);
+            // since section index is 1-based, focus section index should be substracted by 1
+            RecolorTextRange(textRange, sectionIndex - 1, focusColor);
         }
 
         private static void AddAgendaSlideVisualType(List<string> sections)
@@ -293,6 +331,13 @@ namespace PowerPointLabs
             return sectionProperties.FirstSlide(sectionIndex) + sectionProperties.SlidesCount(sectionIndex) - 1;
         }
 
+        private static PowerPointSlide FindSectionEndSlide(string section, AgendaType type)
+        {
+            var slideName = string.Format(PptLabsAgendaSlideNameFormat, type, "End", section);
+
+            return PowerPointPresentation.Current.Slides.FirstOrDefault(slide => slide.Name == slideName);
+        }
+
         private static int FindSectionStart(string section)
         {
             var sectionIndex = FindSectionIndex(section);
@@ -308,20 +353,17 @@ namespace PowerPointLabs
             return sectionProperties.FirstSlide(sectionIndex);
         }
 
+        private static PowerPointSlide FindSectionStartSlide(string section, AgendaType type)
+        {
+            var slideName = string.Format(PptLabsAgendaSlideNameFormat, type, "Start", section);
+
+            return PowerPointPresentation.Current.Slides.FirstOrDefault(slide => slide.Name == slideName);
+        }
+
         private static int FindSectionIndex(string section)
         {
             // here the return value is 1-based!
             return PowerPointPresentation.Current.Sections.FindIndex(name => name == section) + 1;
-        }
-
-        private static AgendaType FindSyncReference(out PowerPointSlide startRef)
-        {
-            // the first meaningful section is the second section
-            startRef = PowerPointPresentation.Current.Slides[FindSectionStart(2) - 1];
-
-            var type = AgendaSlideSearchPattern.Match(startRef.Name).Groups[1].Value;
-
-            return (AgendaType)Enum.Parse(typeof(AgendaType), type);
         }
 
         private static void GenerateBeamAgenda()
@@ -418,6 +460,20 @@ namespace PowerPointLabs
                 var slideCaptureName = string.Format("{0} Start.png", shape.Name);
                 shape.Fill.UserPicture(Path.Combine(SlideCapturePath, slideCaptureName));
             }
+        }
+
+        private static void RecolorTextRange(TextRange textRange, int focusIndex, Color focusColor)
+        {
+            textRange.Font.Color.RGB = PowerPointLabsGlobals.CreateRGB(_bulletDefaultColor);
+
+            textRange.Text = _agendaText;
+
+            for (var i = 1; i < focusIndex; i++)
+            {
+                textRange.Paragraphs(i).Font.Color.RGB = PowerPointLabsGlobals.CreateRGB(_bulletDimColor);
+            }
+
+            textRange.Paragraphs(focusIndex).Font.Color.RGB = PowerPointLabsGlobals.CreateRGB(focusColor);
         }
 
         private static void SyncShape(Shape refShape, Shape candidateShape,
@@ -518,6 +574,40 @@ namespace PowerPointLabs
                 var candidateShape = candidate.GetShapeWithName(refShape.Name)[0];
 
                 SyncShape(refShape, candidateShape);
+            }
+        }
+
+        private static void UpdateColorScheme(PowerPointSlide slide, string section, bool isEnd)
+        {
+            var contentPlaceHolder = slide.GetShapeWithName(PptLabsAgendaContentShapeName)[0];
+            var textRange = contentPlaceHolder.TextFrame.TextRange;
+            var focusIndex = FindSectionIndex(section) - 1;
+            var focusColor = isEnd ? _bulletDimColor : _bulletHighlightColor;
+
+            RecolorTextRange(textRange, focusIndex, focusColor);
+        }
+        # endregion
+
+        # region Event Handler
+        private static void UpdateColorScheme(Color highlightColor, Color dimColor, Color defaultColor)
+        {
+            _bulletHighlightColor = highlightColor;
+            _bulletDimColor = dimColor;
+            _bulletDefaultColor = defaultColor;
+
+            var sections = PowerPointPresentation.Current.Sections;
+            var type = CurrentAgendaType;
+
+            if (type != AgendaType.Bullet) return;
+
+            // skip the default section
+            foreach (var section in sections.Skip(1))
+            {
+                var startAgenda = FindSectionStartSlide(section, type);
+                var endAgenda = FindSectionEndSlide(section, type);
+
+                UpdateColorScheme(startAgenda, section, false);
+                UpdateColorScheme(endAgenda, section, true);
             }
         }
         # endregion

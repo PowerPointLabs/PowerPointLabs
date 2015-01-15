@@ -336,6 +336,10 @@ namespace PowerPointLabs
         {
             return TextCollection.AgendaLabRemoveAgendaSupertip;
         }
+        public string GetAgendaLabAgendaSettingsSupertip(Office.IRibbonControl control)
+        {
+            return TextCollection.AgendaLabAgendaSettingsSupertip;
+        }
         
         public string GetHelpButtonSupertip(Office.IRibbonControl control)
         {
@@ -526,6 +530,10 @@ namespace PowerPointLabs
         public string GetAgendaLabRemoveAgendaButtonLabel(Office.IRibbonControl control)
         {
             return TextCollection.AgendaLabRemoveAgendaButtonLabel;
+        }
+        public string GetAgendaLabAgendaSettingsButtonLabel(Office.IRibbonControl control)
+        {
+            return TextCollection.AgendaLabAgendaSettingsButtonLabel;
         }
 
         public string GetPPTLabsHelpGroupLabel(Office.IRibbonControl control)
@@ -2109,6 +2117,11 @@ namespace PowerPointLabs
 
             RefreshRibbonControl("udpateAgenda");
             RefreshRibbonControl("removeAgenda");
+        }
+
+        public void AgendaSettingsClick(Office.IRibbonControl control)
+        {
+            AgendaLab.AgendaLabSettings();
         }
         # endregion
 
