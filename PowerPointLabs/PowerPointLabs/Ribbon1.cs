@@ -313,6 +313,31 @@ namespace PowerPointLabs
         {
             return TextCollection.EffectsLabColorizeRemainderSupertip;
         }
+
+        public string GetAgendaLabSupertip(Office.IRibbonControl control)
+        {
+            return TextCollection.AgendaLabSupertip;
+        }
+        public string GetAgendaLabBulletPointSupertip(Office.IRibbonControl control)
+        {
+            return TextCollection.AgendaLabBulletPointSupertip;
+        }
+        public string GetAgendaLabVisualAgendaSupertip(Office.IRibbonControl control)
+        {
+            return TextCollection.AgendaLabVisualAgendaSupertip;
+        }
+        public string GetAgendaLabUpdateAgendaSupertip(Office.IRibbonControl control)
+        {
+            return TextCollection.AgendaLabUpdateAgendaSupertip;
+        }
+        public string GetAgendaLabRemoveAgendaSupertip(Office.IRibbonControl control)
+        {
+            return TextCollection.AgendaLabRemoveAgendaSupertip;
+        }
+        public string GetAgendaLabAgendaSettingsSupertip(Office.IRibbonControl control)
+        {
+            return TextCollection.AgendaLabAgendaSettingsSupertip;
+        }
         
         public string GetHelpButtonSupertip(Office.IRibbonControl control)
         {
@@ -462,6 +487,7 @@ namespace PowerPointLabs
         {
             return TextCollection.CustomeShapeButtonLabel;
         }
+
         public string GetEffectsLabButtonLabel(Office.IRibbonControl control)
         {
             return TextCollection.EffectsLabButtonLabel;
@@ -481,6 +507,31 @@ namespace PowerPointLabs
         public string GetEffectsLabRecolorRemainderButtonLabel(Office.IRibbonControl control)
         {
             return TextCollection.EffectsLabRecolorRemainderButtonLabel;
+        }
+
+        public string GetAgendaLabButtonLabel(Office.IRibbonControl control)
+        {
+            return TextCollection.AgendaLabButtonLabel;
+        }
+        public string GetAgendaLabBulletPointButtonLabel(Office.IRibbonControl control)
+        {
+            return TextCollection.AgendaLabBulletPointButtonLabel;
+        }
+        public string GetAgendaLabVisualAgendaButtonLabel(Office.IRibbonControl control)
+        {
+            return TextCollection.AgendaLabVisualAgendaButtonLabel;
+        }
+        public string GetAgendaLabUpdateAgendaButtonLabel(Office.IRibbonControl control)
+        {
+            return TextCollection.AgendaLabUpdateAgendaButtonLabel;
+        }
+        public string GetAgendaLabRemoveAgendaButtonLabel(Office.IRibbonControl control)
+        {
+            return TextCollection.AgendaLabRemoveAgendaButtonLabel;
+        }
+        public string GetAgendaLabAgendaSettingsButtonLabel(Office.IRibbonControl control)
+        {
+            return TextCollection.AgendaLabAgendaSettingsButtonLabel;
         }
 
         public string GetPPTLabsHelpGroupLabel(Office.IRibbonControl control)
@@ -1994,6 +2045,41 @@ namespace PowerPointLabs
             shape.Line.Transparency = 0.5f;
         }
 
+        # endregion
+
+        # region Feature: Agenda Lab
+        public void BulletPointAgendaClick(Office.IRibbonControl control)
+        {
+            Globals.ThisAddIn.Application.StartNewUndoEntry();
+
+            AgendaLab.GenerateAgenda(AgendaLab.AgendaType.Bullet);
+        }
+
+        public void RemoveAgendaClick(Office.IRibbonControl control)
+        {
+            Globals.ThisAddIn.Application.StartNewUndoEntry();
+
+            AgendaLab.RemoveAgenda();
+        }
+
+        public void UpdateAgendaClick(Office.IRibbonControl control)
+        {
+            Globals.ThisAddIn.Application.StartNewUndoEntry();
+
+            AgendaLab.SyncrhonizeAgenda();
+        }
+
+        public void VisualAgendaClick(Office.IRibbonControl control)
+        {
+            Globals.ThisAddIn.Application.StartNewUndoEntry();
+
+            AgendaLab.GenerateAgenda(AgendaLab.AgendaType.Visual);
+        }
+
+        public void AgendaSettingsClick(Office.IRibbonControl control)
+        {
+            AgendaLab.AgendaLabSettings();
+        }
         # endregion
 
         private static string GetResourceText(string resourceName)

@@ -137,8 +137,11 @@ namespace PowerPointLabs
 
         private void ThisAddInSlideSelectionChanged(PowerPoint.SlideRange sldRange)
         {
+            // TODO: doing range sweep to check these var may affect performance, consider initializing these
+            // TODO: variables only at program starts
             Ribbon.RemoveCaptionsEnabled = SlidesInRangeHaveCaptions(sldRange);
             Ribbon.RemoveAudioEnabled = SlidesInRangeHaveAudio(sldRange);
+
             // update recorder pane
             if (sldRange.Count > 0)
             {

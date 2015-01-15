@@ -226,6 +226,7 @@
     can be found.
   -->
   <ItemGroup>
+    <Compile Include="AgendaLab.cs" />
     <Compile Include="AudioMisc\Audio.cs" />
     <Compile Include="AudioMisc\AudioHelper.cs" />
     <Compile Include="AutoAnimate.cs" />
@@ -285,6 +286,12 @@
     <Compile Include="Utils\Comparers.cs" />
     <Compile Include="Utils\FileDir.cs" />
     <Compile Include="Utils\Graphics.cs" />
+    <Compile Include="Views\BulletAgendaSettingsDialog.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Views\BulletAgendaSettingsDialog.Designer.cs">
+      <DependentUpon>BulletAgendaSettingsDialog.cs</DependentUpon>
+    </Compile>
     <Compile Include="Views\CustomPaintTextBox.cs" />
     <Compile Include="Views\ErrorDialogWrapper.cs" />
     <Compile Include="FitToSlide.cs" />
@@ -461,6 +468,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="ColorPicker\ColorPane.resx">
       <DependentUpon>ColorPane.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Views\BulletAgendaSettingsDialog.resx">
+      <DependentUpon>BulletAgendaSettingsDialog.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Views\LoadingDialog.resx">
       <DependentUpon>LoadingDialog.cs</DependentUpon>
