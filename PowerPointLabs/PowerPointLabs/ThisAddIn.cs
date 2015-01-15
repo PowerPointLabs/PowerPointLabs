@@ -141,8 +141,6 @@ namespace PowerPointLabs
             // TODO: variables only at program starts
             Ribbon.RemoveCaptionsEnabled = SlidesInRangeHaveCaptions(sldRange);
             Ribbon.RemoveAudioEnabled = SlidesInRangeHaveAudio(sldRange);
-            Ribbon.UpdateAgendaEnabled = AgendaLab.HasAgenda;
-            Ribbon.RemoveAgendaEnabled = AgendaLab.HasAgenda;
 
             // update recorder pane
             if (sldRange.Count > 0)

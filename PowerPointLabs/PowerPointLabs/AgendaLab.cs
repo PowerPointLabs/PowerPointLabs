@@ -76,17 +76,6 @@ namespace PowerPointLabs
                 return (AgendaType)Enum.Parse(typeof(AgendaType), type);
             }
         }
-
-        public static bool HasAgenda
-        {
-            get
-            {
-                var presentation = PowerPointPresentation.Current;
-
-                return presentation.Slides.Any(slide => AgendaSlideSearchPattern.IsMatch(slide.Name)) ||
-                       presentation.Sections.Any(section => section == PptLabsAgendaSectionName);
-            }
-        }
         # endregion
 
         # region API
@@ -150,6 +139,12 @@ namespace PowerPointLabs
 
         public static void RemoveAgenda()
         {
+            if (CurrentAgendaType == AgendaType.None)
+            {
+                MessageBox.Show(TextCollection.AgendaLabNoAgendaError);
+                return;
+            }
+
             var sectionProperties = PowerPointPresentation.Current.Presentation.SectionProperties;
             var section = PowerPointPresentation.Current.Sections;
 
@@ -171,9 +166,16 @@ namespace PowerPointLabs
 
         public static void SyncrhonizeAgenda()
         {
+            var type = CurrentAgendaType;
+
+            if (type == AgendaType.None)
+            {
+                MessageBox.Show(TextCollection.AgendaLabNoAgendaError);
+                return;
+            }
+
             // find the agenda for the first section as reference
             var sections = PowerPointPresentation.Current.Sections;
-            var type = CurrentAgendaType;
             var refSlide = FindSectionStartSlide(sections[1], type);
 
             // Section 1: default section, skip

@@ -55,8 +55,6 @@ namespace PowerPointLabs
         public bool ReloadSpotlight = true;
         public bool RemoveCaptionsEnabled = true;
         public bool RemoveAudioEnabled = true;
-        public bool UpdateAgendaEnabled = true;
-        public bool RemoveAgendaEnabled = true;
 
         public bool HighlightTextFragmentsEnabled = true;
 
@@ -1254,14 +1252,6 @@ namespace PowerPointLabs
         {
             return HighlightTextFragmentsEnabled;
         }
-        public bool OnGetEnabledUpdateAgenda(Office.IRibbonControl control)
-        {
-            return UpdateAgendaEnabled;
-        }
-        public bool OnGetEnabledRemoveAgenda(Office.IRibbonControl control)
-        {
-            return RemoveAgendaEnabled;
-        }
         # endregion
 
         //Edit Name Callbacks
@@ -2063,47 +2053,20 @@ namespace PowerPointLabs
             Globals.ThisAddIn.Application.StartNewUndoEntry();
 
             AgendaLab.GenerateAgenda(AgendaLab.AgendaType.Bullet);
-
-            UpdateAgendaEnabled = true;
-            RemoveAgendaEnabled = true;
-
-            RefreshRibbonControl("udpateAgenda");
-            RefreshRibbonControl("removeAgenda");
         }
 
         public void RemoveAgendaClick(Office.IRibbonControl control)
         {
             Globals.ThisAddIn.Application.StartNewUndoEntry();
 
-            if (RemoveAgendaEnabled)
-            {
-                AgendaLab.RemoveAgenda();
-
-                UpdateAgendaEnabled = false;
-                RemoveAgendaEnabled = false;
-
-                RefreshRibbonControl("udpateAgenda");
-                RefreshRibbonControl("removeAgenda");
-            }
-            else
-            {
-                RemoveAgendaEnabled = true;
-                RefreshRibbonControl("removeAgenda");
-            }
+            AgendaLab.RemoveAgenda();
         }
 
         public void UpdateAgendaClick(Office.IRibbonControl control)
         {
             Globals.ThisAddIn.Application.StartNewUndoEntry();
 
-            if (UpdateAgendaEnabled)
-            {
-                AgendaLab.SyncrhonizeAgenda();
-            }
-            else
-            {
-                RefreshRibbonControl("udpateAgenda");
-            }
+            AgendaLab.SyncrhonizeAgenda();
         }
 
         public void VisualAgendaClick(Office.IRibbonControl control)
@@ -2111,12 +2074,6 @@ namespace PowerPointLabs
             Globals.ThisAddIn.Application.StartNewUndoEntry();
 
             AgendaLab.GenerateAgenda(AgendaLab.AgendaType.Visual);
-
-            UpdateAgendaEnabled = true;
-            RemoveAgendaEnabled = true;
-
-            RefreshRibbonControl("udpateAgenda");
-            RefreshRibbonControl("removeAgenda");
         }
 
         public void AgendaSettingsClick(Office.IRibbonControl control)

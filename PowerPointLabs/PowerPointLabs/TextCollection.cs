@@ -292,6 +292,7 @@
         public const string AgendaLabSingleSectionError = "You are suggested to make more than one section to make the presentation flow clearer.";
         public const string AgendaLabAgendaExistError = "Agenda already exists. By confirm this dialog agenda will be regenerated. Do you want to proceed?";
         public const string AgendaLabAgendaExistErrorCaption = "Confirm Update";
+        public const string AgendaLabNoAgendaError = "There's no generated agenda.";
         # endregion
 
         # region Task Pane - Recorder
