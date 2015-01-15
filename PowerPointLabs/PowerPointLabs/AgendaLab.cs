@@ -123,22 +123,36 @@ namespace PowerPointLabs
         public static void SyncrhonizeAgenda()
         {
             // find the agenda for the first section as reference
-            PowerPointSlide startRef;
-            PowerPointSlide endRef;
+            PowerPointSlide refSlide;
 
-            var type = FindSyncReference(out startRef, out endRef);
+            var type = FindSyncReference(out refSlide);
+            var sectionCount = PowerPointPresentation.Current.Sections.Count;
 
-            SyncAgendaGeneral(startRef, endRef);
+            // Section 1: default section, skip
+            // Section 2 start: use as reference
+            // Section 2_end - end: need to be synced
 
-            switch (type)
+            for (var i = 2; i <= sectionCount; i++)
             {
-                case AgendaType.Beam:
-                    break;
-                case AgendaType.Bullet:
-                    SyncAgendaBulletType(startRef, endRef);
-                    break;
-                case AgendaType.Visual:
-                    break;
+                var startAgenda = i == 2 ? null : PowerPointPresentation.Current.Slides[FindSectionStart(i) - 1];
+                var endAgenda = PowerPointPresentation.Current.Slides[FindSectionEnd(i) - 1];
+
+                SyncSingleAgendaGeneral(refSlide, startAgenda);
+                SyncSingleAgendaGeneral(refSlide, endAgenda);
+
+                switch (type)
+                {
+                    case AgendaType.Beam:
+                        break;
+                    case AgendaType.Bullet:
+                        SyncSingleAgendaBullet(refSlide, startAgenda);
+                        SyncSingleAgendaBullet(refSlide, endAgenda);
+                        break;
+                    case AgendaType.Visual:
+                        SyncSingleAgendaVisual(refSlide, startAgenda);
+                        SyncSingleAgendaVisual(refSlide, endAgenda);
+                        break;
+                }
             }
         }
         # endregion
@@ -300,11 +314,10 @@ namespace PowerPointLabs
             return PowerPointPresentation.Current.Sections.FindIndex(name => name == section) + 1;
         }
 
-        private static AgendaType FindSyncReference(out PowerPointSlide startRef, out PowerPointSlide endRef)
+        private static AgendaType FindSyncReference(out PowerPointSlide startRef)
         {
             // the first meaningful section is the second section
             startRef = PowerPointPresentation.Current.Slides[FindSectionStart(2) - 1];
-            endRef = PowerPointPresentation.Current.Slides[FindSectionEnd(2) - 1];
 
             var type = AgendaSlideSearchPattern.Match(startRef.Name).Groups[1].Value;
 
@@ -407,72 +420,24 @@ namespace PowerPointLabs
             }
         }
 
-        private static void SyncAgendaBulletType(PowerPointSlide startRef, PowerPointSlide endRef)
+        private static void SyncShape(Shape refShape, Shape candidateShape,
+                                      bool pickupFormat = true, bool pickupText = true)
         {
-            // in this step, we should sync:
-            // 1. Content position;
-            // 2. Content format.
-            var sectionCount = PowerPointPresentation.Current.Sections.Count;
+            candidateShape.Left = refShape.Left;
+            candidateShape.Top = refShape.Top;
+            candidateShape.Width = refShape.Width;
+            candidateShape.Height = refShape.Height;
 
-            // Section 1: default section, skip
-            // Section 2: use as reference
-            // Section 3 - end: need to be sync
-            for (var i = 3; i <= sectionCount; i++)
+            if (pickupText &&
+                refShape.HasTextFrame == MsoTriState.msoTrue &&
+                candidateShape.HasTextFrame == MsoTriState.msoTrue)
             {
-                var startAgenda = PowerPointPresentation.Current.Slides[FindSectionStart(i) - 1];
-                var endAgenda = PowerPointPresentation.Current.Slides[FindSectionEnd(i) - 1];
+                var refParagraphCount = refShape.TextFrame2.TextRange.Paragraphs.Count;
+                var candidateParagraphCount = candidateShape.TextFrame2.TextRange.Paragraphs.Count;
+                var refTextRange = refShape.TextFrame.TextRange;
+                var candidateTextRange = candidateShape.TextFrame.TextRange;
 
-                startAgenda.Layout = startRef.Layout;
-                endAgenda.Layout = endRef.Layout;
-
-                SyncSingleAgendaBullet(startRef, startAgenda);
-                SyncSingleAgendaBullet(endRef, endAgenda);
-            }
-        }
-
-        private static void SyncAgendaGeneral(PowerPointSlide startRef, PowerPointSlide endRef)
-        {
-            // in this step, we should sync:
-            // 1. Layout
-            // 2. Design;
-            // 3. Transition;
-            // 4. Shapes;
-            // 5. Title Position
-            // 6. TitleText
-            var sectionCount = PowerPointPresentation.Current.Sections.Count;
-
-            // Section 1: default section, skip
-            // Section 2: use as reference
-            // Section 3 - end: need to be sync
-            for (var i = 3; i <= sectionCount; i++)
-            {
-                var startAgenda = PowerPointPresentation.Current.Slides[FindSectionStart(i) - 1];
-                var endAgenda = PowerPointPresentation.Current.Slides[FindSectionEnd(i) - 1];
-
-                startAgenda.Layout = startRef.Layout;
-                endAgenda.Layout = endRef.Layout;
-
-                SyncSingleAgendaGeneral(startRef, startAgenda);
-                SyncSingleAgendaGeneral(endRef, endAgenda);
-            }
-        }
-
-        private static void SyncSingleAgendaBullet(PowerPointSlide refSlide, PowerPointSlide candidate)
-        {
-            var refContentShape = refSlide.GetShapeWithName(PptLabsAgendaContentShapeName)[0];
-            var candidateContentShape = candidate.GetShapeWithName(PptLabsAgendaContentShapeName)[0];
-
-            candidateContentShape.Left = refContentShape.Left;
-            candidateContentShape.Width = refContentShape.Width;
-
-            var refParagraphCount = refContentShape.TextFrame2.TextRange.Paragraphs.Count;
-            var candidateParagraphCount = candidateContentShape.TextFrame2.TextRange.Paragraphs.Count;
-            var refTextRange = refContentShape.TextFrame.TextRange;
-            var candidateTextRange = candidateContentShape.TextFrame.TextRange;
-
-            if (refParagraphCount == candidateParagraphCount)
-            {
-                for (var i = 1; i <= refParagraphCount; i++)
+                for (var i = 1; i <= refParagraphCount && i <= candidateParagraphCount; i++)
                 {
                     var refParagraph = refTextRange.Paragraphs(i);
                     var candidateParagraph = candidateTextRange.Paragraphs(i);
@@ -485,56 +450,74 @@ namespace PowerPointLabs
                     newCandidateRange.Font.Color.RGB = candidateColor;
                 }
             }
+
+            if (pickupFormat)
+            {
+                refShape.PickUp();
+                candidateShape.Apply();
+            }
+        }
+
+        private static void SyncSingleAgendaBullet(PowerPointSlide refSlide, PowerPointSlide candidate)
+        {
+            if (refSlide == null || candidate == null)
+            {
+                return;
+            }
+
+            var refContentShape = refSlide.GetShapeWithName(PptLabsAgendaContentShapeName)[0];
+            var candidateContentShape = candidate.GetShapeWithName(PptLabsAgendaContentShapeName)[0];
+
+            SyncShape(refContentShape, candidateContentShape, false);
+        }
+
+        private static void SyncSingleAgendaVisual(PowerPointSlide refSlide, PowerPointSlide candidate)
+        {
+            if (refSlide == null || candidate == null)
+            {
+                return;
+            }
         }
 
         private static void SyncSingleAgendaGeneral(PowerPointSlide refSlide, PowerPointSlide candidate)
         {
+            // in this step, we should sync:
+            // 1. Layout
+            // 2. Design;
+            // -3. Transition; -> this is no longer synced because each agenda may have different transition
+            // 4. Shapes and their position, text;
+
+            if (refSlide == null || candidate == null)
+            {
+                return;
+            }
+
+            candidate.Layout = refSlide.Layout;
             candidate.Design = refSlide.Design;
             candidate.Transition = refSlide.Transition;
 
-            // syncronize extra shapes
+            // syncronize extra shapes in reference slide
             var extraShapes = refSlide.Shapes.Cast<Shape>()
-                                             .Where(shape => shape.Name != PptLabsAgendaTitleShapeName &&
-                                                             shape.Name != PptLabsAgendaContentShapeName &&
-                                                             !candidate.HasShapeWithSameName(shape.Name))
+                                             .Where(shape => !candidate.HasShapeWithSameName(shape.Name))
                                              .Select(shape => shape.Name)
                                              .ToArray();
 
-            try
+            if (extraShapes.Length != 0)
             {
-                if (extraShapes.Length != 0)
-                {
-                    refSlide.Shapes.Range(extraShapes).Copy();
-                    candidate.Shapes.Paste();
-                }
-            }
-            catch (Exception e)
-            {
-                MessageBox.Show(e.Message);
-                throw;
-            }
-
-            // syncronize title textbox
-            var refTitleShape = refSlide.GetShapeWithName(PptLabsAgendaTitleShapeName)[0];
-            var candidateTitleShape = candidate.GetShapeWithName(PptLabsAgendaTitleShapeName)[0];
-
-            if (refTitleShape == null && candidateTitleShape != null)
-            {
-                candidateTitleShape.Delete();
-            } else
-            if (refTitleShape != null && candidateTitleShape == null)
-            {
-                refTitleShape.Copy();
+                refSlide.Shapes.Range(extraShapes).Copy();
                 candidate.Shapes.Paste();
-            } else
-            if (refTitleShape != null)
-            {
-                candidateTitleShape.Left = refTitleShape.Left;
-                candidateTitleShape.Width = refTitleShape.Width;
-                candidateTitleShape.TextFrame.TextRange.Text = refTitleShape.TextFrame.TextRange.Text;
+            }
 
-                refTitleShape.PickUp();
-                candidateTitleShape.Apply();
+            // syncronize shapes position and size, except bullet content
+            var sameShapes = refSlide.Shapes.Cast<Shape>()
+                                            .Where(shape => shape.Name != PptLabsAgendaContentShapeName &&
+                                                            candidate.HasShapeWithSameName(shape.Name));
+
+            foreach (var refShape in sameShapes)
+            {
+                var candidateShape = candidate.GetShapeWithName(refShape.Name)[0];
+
+                SyncShape(refShape, candidateShape);
             }
         }
         # endregion
