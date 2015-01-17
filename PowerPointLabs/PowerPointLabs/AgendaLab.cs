@@ -79,7 +79,7 @@ namespace PowerPointLabs
         # endregion
 
         # region API
-        public static void AgendaLabSettings()
+        public static void BulletAgendaSettings()
         {
             var settingDialog = new BulletAgendaSettingsDialog(_bulletHighlightColor,
                                                                _bulletDimColor,
@@ -109,7 +109,7 @@ namespace PowerPointLabs
             }
 
             // validate section information
-            var sections = PowerPointPresentation.Current.Sections.Skip(1).ToList();
+            var sections = PowerPointPresentation.Current.Sections;
 
             if (sections.Count == 0)
             {
@@ -119,9 +119,11 @@ namespace PowerPointLabs
 
             if (sections.Count == 1)
             {
-                MessageBox.Show(TextCollection.AgendaLabNoSectionError);
+                MessageBox.Show(TextCollection.AgendaLabSingleSectionError);
                 return;
             }
+
+            sections = sections.Skip(1).ToList();
 
             switch (type)
             {
@@ -238,7 +240,7 @@ namespace PowerPointLabs
             // set agenda content
             var contentPlaceHolder = slide.Shapes.Placeholders[2];
             var textRange = contentPlaceHolder.TextFrame.TextRange;
-            var focusColor = isEnd ? _bulletDimColor : _bulletHighlightColor;
+            var focusColor = _bulletHighlightColor;
 
             // since section index is 1-based, focus section index should be substracted by 1
             RecolorTextRange(textRange, sectionIndex - 1, focusColor);

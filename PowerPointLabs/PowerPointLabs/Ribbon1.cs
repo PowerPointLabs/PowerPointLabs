@@ -338,6 +338,10 @@ namespace PowerPointLabs
         {
             return TextCollection.AgendaLabAgendaSettingsSupertip;
         }
+        public string GetAgendaLabBulletAgendaSettingsSupertip(Office.IRibbonControl control)
+        {
+            return TextCollection.AgendaLabBulletAgendaSettingsSupertip;
+        }
         
         public string GetHelpButtonSupertip(Office.IRibbonControl control)
         {
@@ -532,6 +536,10 @@ namespace PowerPointLabs
         public string GetAgendaLabAgendaSettingsButtonLabel(Office.IRibbonControl control)
         {
             return TextCollection.AgendaLabAgendaSettingsButtonLabel;
+        }
+        public string GetAgendaLabBulletAgendaSettingsButtonLabel(Office.IRibbonControl control)
+        {
+            return TextCollection.AgendaLabBulletAgendaSettingsButtonLabel;
         }
 
         public string GetPPTLabsHelpGroupLabel(Office.IRibbonControl control)
@@ -2055,6 +2063,11 @@ namespace PowerPointLabs
             AgendaLab.GenerateAgenda(AgendaLab.AgendaType.Bullet);
         }
 
+        public void BulletAgendaSettingsClick(Office.IRibbonControl control)
+        {
+            AgendaLab.BulletAgendaSettings();
+        }
+
         public void RemoveAgendaClick(Office.IRibbonControl control)
         {
             Globals.ThisAddIn.Application.StartNewUndoEntry();
@@ -2074,11 +2087,6 @@ namespace PowerPointLabs
             Globals.ThisAddIn.Application.StartNewUndoEntry();
 
             AgendaLab.GenerateAgenda(AgendaLab.AgendaType.Visual);
-        }
-
-        public void AgendaSettingsClick(Office.IRibbonControl control)
-        {
-            AgendaLab.AgendaLabSettings();
         }
         # endregion
 
