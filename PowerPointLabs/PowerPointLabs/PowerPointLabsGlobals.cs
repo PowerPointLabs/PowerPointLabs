@@ -70,26 +70,6 @@ namespace PowerPointLabs
             CopyShapePosition(shapeToCopy, ref shapeToMove);
         }
 
-        public static int CreateRGB(Color color)
-        {
-            // initial value
-            int rgb = 0;
-
-            // swap
-            int red = color.B;
-            int blue = color.R;
-            int green = color.G;
-
-            // create the newColor
-            Color newColor = Color.FromArgb(red, green, blue);
-
-            // set the return value
-            rgb = newColor.ToArgb();
-
-            // return value
-            return rgb;
-        }
-
         public static float GetMinimumRotation(float fromAngle, float toAngle)
         {
             fromAngle = Normalize(fromAngle);

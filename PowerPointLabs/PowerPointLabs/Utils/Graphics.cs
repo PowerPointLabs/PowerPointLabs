@@ -129,13 +129,13 @@ namespace PowerPointLabs.Utils
             control.Refresh();
         }
         # endregion
-        # endregion
 
-        # region Color API
-        public static int ConvertArgbToNativeRgb(Color argb)
+        # region Color
+        public static int ConvertColorToRgb(Color argb)
         {
             return (argb.B << 16) | (argb.G << 8) | argb.R;
         }
+        # endregion
         # endregion
 
         # region Helper Functions
