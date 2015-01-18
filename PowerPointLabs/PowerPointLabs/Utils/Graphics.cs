@@ -1,10 +1,14 @@
 ﻿using System;
 using System.Drawing;
 using System.Drawing.Drawing2D;
+using System.Linq;
 using System.Windows.Forms;
+using Microsoft.Office.Core;
 using Microsoft.Office.Interop.PowerPoint;
 using PPExtraEventHelper;
 using PowerPointLabs.Models;
+using Shape = Microsoft.Office.Interop.PowerPoint.Shape;
+using ShapeRange = Microsoft.Office.Interop.PowerPoint.ShapeRange;
 
 namespace PowerPointLabs.Utils
 {
@@ -34,6 +38,43 @@ namespace PowerPointLabs.Utils
                               slideHeight, PpExportMode.ppScaleToFit);
         }
 
+        public static bool IsSamePosition(Shape refShape, Shape candidateShape,
+                                          bool exactMatch = true, float blurRadius = float.Epsilon)
+        {
+            if (exactMatch)
+            {
+                blurRadius = float.Epsilon;
+            }
+
+            return refShape != null &&
+                   candidateShape != null &&
+                   Math.Abs(refShape.Left - candidateShape.Left) < blurRadius &&
+                   Math.Abs(refShape.Top - candidateShape.Top) < blurRadius;
+        }
+
+        public static bool IsSameSize(Shape refShape, Shape candidateShape,
+                                      bool exactMatch = true, float blurRadius = float.Epsilon)
+        {
+            if (exactMatch)
+            {
+                blurRadius = float.Epsilon;
+            }
+
+            return refShape != null &&
+                   candidateShape != null && 
+                   Math.Abs(refShape.Width - candidateShape.Width) < blurRadius &&
+                   Math.Abs(refShape.Height - candidateShape.Height) < blurRadius;
+        }
+
+        public static bool IsSameType(Shape refShape, Shape candidateShape)
+        {
+            return refShape != null &&
+                   candidateShape != null && 
+                   refShape.Type == candidateShape.Type &&
+                   (refShape.Type != MsoShapeType.msoAutoShape ||
+                   refShape.AutoShapeType == candidateShape.AutoShapeType);
+        }
+
         public static void MakeShapeViewTimeInvisible(Shape shape, Slide curSlide)
         {
             var sequence = curSlide.TimeLine.MainSequence;
@@ -46,7 +87,7 @@ namespace PowerPointLabs.Utils
             var effectDisappear = sequence.AddEffect(shape, MsoAnimEffect.msoAnimEffectAppear,
                                                      MsoAnimateByLevel.msoAnimateLevelNone,
                                                      MsoAnimTriggerType.msoAnimTriggerWithPrevious);
-            effectDisappear.Exit = Microsoft.Office.Core.MsoTriState.msoTrue;
+            effectDisappear.Exit = MsoTriState.msoTrue;
             effectDisappear.Timing.Duration = 0;
 
             effectAppear.MoveTo(1);
@@ -69,6 +110,72 @@ namespace PowerPointLabs.Utils
         public static void MakeShapeViewTimeInvisible(ShapeRange shapeRange, PowerPointSlide curSlide)
         {
             MakeShapeViewTimeInvisible(shapeRange, curSlide.GetNativeSlide());
+        }
+
+        public static void SyncShape(Shape refShape, Shape candidateShape,
+                                     bool pickupFormat = true, bool pickupText = true)
+        {
+            // unlock aspect ratio to enable size tweak
+            var candidateLockRatio = candidateShape.LockAspectRatio;
+            candidateShape.LockAspectRatio = MsoTriState.msoFalse;
+
+            candidateShape.Left = refShape.Left;
+            candidateShape.Top = refShape.Top;
+            candidateShape.Width = refShape.Width;
+            candidateShape.Height = refShape.Height;
+
+            candidateShape.LockAspectRatio = candidateLockRatio;
+
+            if (pickupText &&
+                refShape.HasTextFrame == MsoTriState.msoTrue &&
+                candidateShape.HasTextFrame == MsoTriState.msoTrue)
+            {
+                var refParagraphCount = refShape.TextFrame2.TextRange.Paragraphs.Count;
+                var candidateParagraphCount = candidateShape.TextFrame2.TextRange.Paragraphs.Count;
+                var refTextRange = refShape.TextFrame.TextRange;
+                var candidateTextRange = candidateShape.TextFrame.TextRange;
+
+                for (var i = 1; i <= refParagraphCount && i <= candidateParagraphCount; i++)
+                {
+                    var refParagraph = refTextRange.Paragraphs(i);
+                    var candidateParagraph = candidateTextRange.Paragraphs(i);
+                    var candidateColor = candidateParagraph.Font.Color.RGB;
+
+                    refParagraph.Copy();
+
+                    var newCandidateRange = candidateParagraph.PasteSpecial();
+
+                    newCandidateRange.Font.Color.RGB = candidateColor;
+                }
+            }
+
+            if (pickupFormat)
+            {
+                refShape.PickUp();
+                candidateShape.Apply();
+            }
+        }
+
+        public static void SyncShapeRange(ShapeRange refShapeRange, ShapeRange candidateShapeRange)
+        {
+            // all names of identical shapes should be consistent
+            if (refShapeRange.Count != candidateShapeRange.Count)
+            {
+                return;
+            }
+
+            foreach (var shape in candidateShapeRange)
+            {
+                var candidateShape = shape as Shape;
+                var refShape = refShapeRange.Cast<Shape>().FirstOrDefault(item => IsSameType(item, candidateShape) &&
+                                                                                  IsSamePosition(item, candidateShape,
+                                                                                                 false, 15) &&
+                                                                                  IsSameSize(item, candidateShape));
+
+                if (candidateShape == null || refShape == null) continue;
+
+                candidateShape.Name = refShape.Name;
+            }
         }
         # endregion
 
