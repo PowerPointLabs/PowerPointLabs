@@ -143,7 +143,7 @@
             this.Name = "BulletAgendaSettingsDialog";
             this.ShowInTaskbar = false;
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
-            this.Text = "BulletAgendaSettingsDialog";
+            this.Text = "Bullet Agenda Settings";
             ((System.ComponentModel.ISupportInitialize)(this.dimColorBox)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.higlightColorBox)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.defaultColorBox)).EndInit();
