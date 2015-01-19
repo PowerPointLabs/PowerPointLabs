@@ -29,6 +29,8 @@ namespace PowerPointLabs
 
         private static string _agendaText;
 
+        private static bool _hasBeamAgenda;
+
         private static Color _bulletDefaultColor = Color.Black;
         private static Color _bulletHighlightColor = Color.Red;
         private static Color _bulletDimColor = Color.Gray;
@@ -61,6 +63,11 @@ namespace PowerPointLabs
         {
             get
             {
+                if (_hasBeamAgenda)
+                {
+                    return AgendaType.Beam;
+                }
+
                 var agendaSlide = PowerPointPresentation.Current
                                                         .Slides
                                                         .FirstOrDefault(slide => AgendaSlideSearchPattern.
@@ -130,7 +137,7 @@ namespace PowerPointLabs
             switch (type)
             {
                 case AgendaType.Beam:
-                    GenerateBeamAgenda();
+                    GenerateBeamAgenda(sections);
                     break;
                 case AgendaType.Bullet:
                     GenerateBulletAgenda(sections);
@@ -143,28 +150,25 @@ namespace PowerPointLabs
 
         public static void RemoveAgenda()
         {
-            if (CurrentAgendaType == AgendaType.None)
+            var type = CurrentAgendaType;
+
+            if (type == AgendaType.None)
             {
                 MessageBox.Show(TextCollection.AgendaLabNoAgendaError);
                 return;
             }
 
-            var sectionProperties = PowerPointPresentation.Current.Presentation.SectionProperties;
-            var section = PowerPointPresentation.Current.Sections;
-
-            for (var i = section.Count; i >= 1; i --)
+            switch (type)
             {
-                if (section[i - 1] == PptLabsAgendaSectionName)
-                {
-                    sectionProperties.Delete(i, true);
-                }
-            }
-
-            var slides = PowerPointPresentation.Current.Slides;
-
-            foreach (var slide in slides.Where(slide => AgendaSlideSearchPattern.IsMatch(slide.Name)))
-            {
-                slide.Delete();
+                case AgendaType.Beam:
+                    RemoveBeamAgenda();
+                    break;
+                case AgendaType.Bullet:
+                    RemoveBulletAgenda();
+                    break;
+                case AgendaType.Visual:
+                    RemoveVisualAgenda();
+                    break;
             }
         }
 
@@ -225,6 +229,15 @@ namespace PowerPointLabs
         # endregion
 
         # region Helper Functions
+        private static void AddAgendaSlideBeamType(string section, PowerPointSlide slide)
+        {
+            slide.Shapes.Paste();
+
+            var currentTextBox = slide.GetShapeWithName(section)[0];
+
+            currentTextBox.TextFrame.TextRange.Font.Bold = MsoTriState.msoTrue;
+        }
+
         private static void AddAgendaSlideBulletType(string section, bool isEnd)
         {
             var sectionIndex = FindSectionIndex(section);
@@ -364,9 +377,40 @@ namespace PowerPointLabs
             return PowerPointPresentation.Current.Sections.FindIndex(name => name == section) + 1;
         }
 
-        private static void GenerateBeamAgenda()
+        private static string FindSlideSection(PowerPointSlide slide)
         {
-            throw new NotImplementedException();
+            var sections = PowerPointPresentation.Current.Sections;
+
+            for (var i = 0; i < sections.Count; i ++)
+            {
+                var sectionStart = FindSectionStart(sections[i]);
+                
+                if (sectionStart == slide.Index)
+                {
+                    return sections[i];
+                }
+
+                if (sectionStart > slide.Index)
+                {
+                    return sections[i - 1];
+                }
+            }
+
+            return sections[sections.Count - 1];
+        }
+
+        private static void GenerateBeamAgenda(List<string> sections)
+        {
+            var selectedSlides = PowerPointCurrentPresentationInfo.SelectedSlides.ToList();
+
+            PrepareBeamAgendaShapes(sections, selectedSlides[0]);
+
+            foreach (var slide in selectedSlides)
+            {
+                AddAgendaSlideBeamType(FindSlideSection(slide), slide);
+            }
+
+            _hasBeamAgenda = true;
         }
 
         private static void GenerateBulletAgenda(List<string> sections)
@@ -454,6 +498,26 @@ namespace PowerPointLabs
             }
         }
 
+        private static void PrepareBeamAgendaShapes(List<string> sections, PowerPointSlide refSlide)
+        {
+            var lastLeft = 0.0f;
+
+            foreach (var section in sections)
+            {
+                var textBox = refSlide.Shapes.AddTextbox(MsoTextOrientation.msoTextOrientationHorizontal,
+                                                         lastLeft, 0, 0, 0);
+                
+                textBox.Name = section;
+                textBox.TextFrame.AutoSize = PpAutoSize.ppAutoSizeShapeToFitText;
+                textBox.TextFrame.WordWrap = MsoTriState.msoFalse;
+                textBox.TextFrame.TextRange.Text = section;
+
+                lastLeft += textBox.Width;
+            }
+
+            refSlide.Shapes.Range(sections.ToArray()).Cut();
+        }
+
         private static void PrepareVisualAgendaSlideCapture(IEnumerable<string> sections)
         {
             if (!Directory.Exists(SlideCapturePath))
@@ -537,6 +601,45 @@ namespace PowerPointLabs
             }
 
             textRange.Paragraphs(focusIndex).Font.Color.RGB = Utils.Graphics.ConvertColorToRgb(focusColor);
+        }
+
+        private static void RemoveBeamAgenda()
+        {
+            var selectedSlides = PowerPointCurrentPresentationInfo.SelectedSlides;
+            var sections = PowerPointPresentation.Current.Sections;
+            var shapeSearchPattern = sections.Skip(1).Aggregate(sections[0], (current, next) => current + "|" + next);
+            var shapeSearchRegex = new Regex(shapeSearchPattern);
+
+            foreach (var selectedSlide in selectedSlides)
+            {
+                selectedSlide.DeleteShapeWithRule(shapeSearchRegex);
+            }
+
+            _hasBeamAgenda = false;
+        }
+
+        private static void RemoveBulletAgenda()
+        {
+            var slides = PowerPointPresentation.Current.Slides;
+
+            foreach (var slide in slides.Where(slide => AgendaSlideSearchPattern.IsMatch(slide.Name)))
+            {
+                slide.Delete();
+            }
+        }
+
+        private static void RemoveVisualAgenda()
+        {
+            var sectionProperties = PowerPointPresentation.Current.Presentation.SectionProperties;
+            var section = PowerPointPresentation.Current.Sections;
+
+            for (var i = section.Count; i >= 1; i--)
+            {
+                if (section[i - 1] == PptLabsAgendaSectionName)
+                {
+                    sectionProperties.Delete(i, true);
+                }
+            }
         }
 
         private static void SyncAgendaBullet(PowerPointSlide refSlide, PowerPointSlide start, PowerPointSlide end)

@@ -326,6 +326,10 @@ namespace PowerPointLabs
         {
             return TextCollection.AgendaLabVisualAgendaSupertip;
         }
+        public string GetAgendaLabBeamAgendaSupertip(Office.IRibbonControl control)
+        {
+            return TextCollection.AgendaLabBeamAgendaSupertip;
+        }
         public string GetAgendaLabUpdateAgendaSupertip(Office.IRibbonControl control)
         {
             return TextCollection.AgendaLabUpdateAgendaSupertip;
@@ -524,6 +528,10 @@ namespace PowerPointLabs
         public string GetAgendaLabVisualAgendaButtonLabel(Office.IRibbonControl control)
         {
             return TextCollection.AgendaLabVisualAgendaButtonLabel;
+        }
+        public string GetAgendaLabBeamAgendaButtonLabel(Office.IRibbonControl control)
+        {
+            return TextCollection.AgendaLabBeamAgendaButtonLabel;
         }
         public string GetAgendaLabUpdateAgendaButtonLabel(Office.IRibbonControl control)
         {
@@ -2056,11 +2064,25 @@ namespace PowerPointLabs
         # endregion
 
         # region Feature: Agenda Lab
+        public void BeamAgendaClick(Office.IRibbonControl control)
+        {
+            Globals.ThisAddIn.Application.StartNewUndoEntry();
+
+            AgendaLab.GenerateAgenda(AgendaLab.AgendaType.Beam);
+        }
+
         public void BulletPointAgendaClick(Office.IRibbonControl control)
         {
             Globals.ThisAddIn.Application.StartNewUndoEntry();
 
             AgendaLab.GenerateAgenda(AgendaLab.AgendaType.Bullet);
+        }
+
+        public void VisualAgendaClick(Office.IRibbonControl control)
+        {
+            Globals.ThisAddIn.Application.StartNewUndoEntry();
+
+            AgendaLab.GenerateAgenda(AgendaLab.AgendaType.Visual);
         }
 
         public void BulletAgendaSettingsClick(Office.IRibbonControl control)
@@ -2080,13 +2102,6 @@ namespace PowerPointLabs
             Globals.ThisAddIn.Application.StartNewUndoEntry();
 
             AgendaLab.SyncrhonizeAgenda();
-        }
-
-        public void VisualAgendaClick(Office.IRibbonControl control)
-        {
-            Globals.ThisAddIn.Application.StartNewUndoEntry();
-
-            AgendaLab.GenerateAgenda(AgendaLab.AgendaType.Visual);
         }
         # endregion
 
