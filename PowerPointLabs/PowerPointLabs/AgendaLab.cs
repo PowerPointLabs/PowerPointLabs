@@ -9,9 +9,7 @@ using Microsoft.Office.Core;
 using Microsoft.Office.Interop.PowerPoint;
 using PowerPointLabs.Models;
 using PowerPointLabs.Views;
-using PowerPointLabs.Utils;
 using Shape = Microsoft.Office.Interop.PowerPoint.Shape;
-using ShapeRange = Microsoft.Office.Interop.PowerPoint.ShapeRange;
 
 namespace PowerPointLabs
 {
@@ -83,6 +81,8 @@ namespace PowerPointLabs
         # region API
         public static void BulletAgendaSettings()
         {
+            PickupColorSettings();
+
             var settingDialog = new BulletAgendaSettingsDialog(_bulletHighlightColor,
                                                                _bulletDimColor,
                                                                _bulletDefaultColor);
@@ -419,6 +419,39 @@ namespace PowerPointLabs
             var index = slide.Index;
             // move the step back slide to the section
             PowerPointPresentation.Current.Presentation.Slides[index - 1].MoveToSectionStart(sectionIndex);
+        }
+
+        private static void PickupColorSettings()
+        {
+            var type = CurrentAgendaType;
+
+            if (type != AgendaType.Bullet) return;
+
+            var curSlide = PowerPointCurrentPresentationInfo.CurrentSlide;
+            var sectionNameSearchPatternFormat = string.Format(PptLabsAgendaSlideNameFormat, "Bullet",
+                                                               "(?:Start|End)", "(\\w+)");
+            var sectionNameSearchPattern = new Regex(sectionNameSearchPatternFormat);
+
+            if (!sectionNameSearchPattern.IsMatch(curSlide.Name)) return;
+
+            var sectionName = sectionNameSearchPattern.Match(curSlide.Name).Groups[1].Value;
+            var sectionIndex = FindSectionIndex(sectionName) - 2;
+            var contentPlaceHolder = curSlide.GetShapeWithName(PptLabsAgendaContentShapeName)[0];
+            var paragraphs = contentPlaceHolder.TextFrame2.TextRange
+                                               .Paragraphs.Cast<TextRange2>()
+                                               .Where(paragraph => paragraph.ParagraphFormat.IndentLevel == 1).ToList();
+
+            _bulletHighlightColor = Utils.Graphics.ConvertRgbToColor(paragraphs[sectionIndex].Font.Fill.ForeColor.RGB);
+            
+            if (sectionIndex > 0)
+            {
+                _bulletDimColor = Utils.Graphics.ConvertRgbToColor(paragraphs[sectionIndex - 1].Font.Fill.ForeColor.RGB);
+            }
+
+            if (sectionIndex < paragraphs.Count - 1)
+            {
+                _bulletDefaultColor = Utils.Graphics.ConvertRgbToColor(paragraphs[sectionIndex + 1].Font.Fill.ForeColor.RGB);
+            }
         }
 
         private static void PrepareVisualAgendaSlideCapture(IEnumerable<string> sections)

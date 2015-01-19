@@ -9,6 +9,7 @@ using PPExtraEventHelper;
 using PowerPointLabs.Models;
 using Shape = Microsoft.Office.Interop.PowerPoint.Shape;
 using ShapeRange = Microsoft.Office.Interop.PowerPoint.ShapeRange;
+using TextFrame2 = Microsoft.Office.Interop.PowerPoint.TextFrame2;
 
 namespace PowerPointLabs.Utils
 {
@@ -179,6 +180,19 @@ namespace PowerPointLabs.Utils
         }
         # endregion
 
+        # region Text
+        public static TextRange ConvertTextRange2ToTextRange(TextRange2 textRange2)
+        {
+            var textFrame2 = textRange2.Parent as TextFrame2;
+
+            if (textFrame2 == null) return null;
+
+            var shape = textFrame2.Parent as Shape;
+
+            return shape == null ? null : shape.TextFrame.TextRange;
+        }
+        # endregion
+
         # region Slide
         public static void ExportSlide(Slide slide, string exportPath)
         {
@@ -241,6 +255,11 @@ namespace PowerPointLabs.Utils
         public static int ConvertColorToRgb(Color argb)
         {
             return (argb.B << 16) | (argb.G << 8) | argb.R;
+        }
+
+        public static Color ConvertRgbToColor(int rgb)
+        {
+            return Color.FromArgb(rgb & 255, (rgb >> 8) & 255, (rgb >> 16) & 255);
         }
         # endregion
         # endregion
