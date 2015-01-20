@@ -315,6 +315,11 @@ namespace PowerPointLabs
             }
         }
 
+        private static string CreateInDocHyperLink(PowerPointSlide slide)
+        {
+            return slide.ID + "," + slide.Index + "," + slide.Name;
+        }
+
         private static int FindSectionEnd(string section)
         {
             var sectionIndex = FindSectionIndex(section);
@@ -360,15 +365,21 @@ namespace PowerPointLabs
 
         private static PowerPointSlide FindSectionStartSlide(string section, AgendaType type)
         {
+            var curPresentation = PowerPointPresentation.Current;
+            var slides = curPresentation.Slides;
+
             if (type == AgendaType.Beam)
             {
-                return null;
+                var sectionProperties = curPresentation.Presentation.SectionProperties;
+                var sectionIndex = FindSectionIndex(section);
+
+                return slides[sectionProperties.FirstSlide(sectionIndex) - 1];
             }
 
             var slideName = string.Format(PptLabsAgendaSlideNameFormat, type, 
                                           type == AgendaType.Visual ? string.Empty : "Start", section);
 
-            return PowerPointPresentation.Current.Slides.FirstOrDefault(slide => slide.Name == slideName);
+            return slides.FirstOrDefault(slide => slide.Name == slideName);
         }
 
         private static int FindSectionIndex(string section)
@@ -511,6 +522,12 @@ namespace PowerPointLabs
                 textBox.TextFrame.AutoSize = PpAutoSize.ppAutoSizeShapeToFitText;
                 textBox.TextFrame.WordWrap = MsoTriState.msoFalse;
                 textBox.TextFrame.TextRange.Text = section;
+
+                var mouseOnClickAction = textBox.ActionSettings[PpMouseActivation.ppMouseClick];
+
+                mouseOnClickAction.Action = PpActionType.ppActionNamedSlideShow;
+                mouseOnClickAction.Hyperlink.Address = null;
+                mouseOnClickAction.Hyperlink.SubAddress = CreateInDocHyperLink(FindSectionStartSlide(section, AgendaType.Beam));
 
                 lastLeft += textBox.Width;
             }
