@@ -233,6 +233,8 @@ namespace PowerPointLabs
         {
             slide.Shapes.Paste();
 
+            if (section.Contains("Default")) return;
+
             var currentTextBox = slide.GetShapeWithName(section)[0];
 
             currentTextBox.TextFrame.TextRange.Font.Bold = MsoTriState.msoTrue;
@@ -279,7 +281,7 @@ namespace PowerPointLabs
             var currentPresentation = PowerPointPresentation.Current.Presentation;
             var sectionProperties = currentPresentation.SectionProperties;
 
-            for (var i = 0; i <= sections.Count; i ++)
+            for (var i = 0; i <= sections.Count; i++)
             {
                 var sectionName = i < sections.Count ? sections[i] : sections[i - 1];
                 var prevSectionName = i == 0 ? string.Empty : sections[i - 1];
@@ -301,16 +303,16 @@ namespace PowerPointLabs
                     PrepareVisualAgendaSlideShapes(slide, sections);
                 }
 
+                if (i > 0)
+                {
+                    GenerateVisualAgendaSlideZoomOut(slide, prevSectionName, newSectionIndex);
+                }
+
                 if (i < sections.Count)
                 {
                     GenerateVisualAgendaSlideZoomIn(slide, sectionName);
 
                     slide.Copy();
-                }
-
-                if (i > 0)
-                {
-                    GenerateVisualAgendaSlideZoomOut(slide, prevSectionName, newSectionIndex);
                 }
             }
         }
