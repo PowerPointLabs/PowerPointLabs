@@ -118,6 +118,9 @@ namespace PowerPointLabs.Utils
         {
             // unlock aspect ratio to enable size tweak
             var candidateLockRatio = candidateShape.LockAspectRatio;
+            
+            candidateShape.Rotation = refShape.Rotation;
+
             candidateShape.LockAspectRatio = MsoTriState.msoFalse;
 
             candidateShape.Left = refShape.Left;
