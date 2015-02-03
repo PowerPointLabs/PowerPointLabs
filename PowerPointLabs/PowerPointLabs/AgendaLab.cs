@@ -478,28 +478,15 @@ namespace PowerPointLabs
             PowerPointPresentation.Current.Presentation.Slides[index - 1].MoveToSectionStart(sectionIndex);
         }
 
-        private static void PickupColorSettings()
+        private static void PickupColorFromSlide(PowerPointSlide slide, int sectionIndex)
         {
-            var type = CurrentAgendaType;
-
-            if (type != AgendaType.Bullet) return;
-
-            var curSlide = PowerPointCurrentPresentationInfo.CurrentSlide;
-            var sectionNameSearchPatternFormat = string.Format(PptLabsAgendaSlideNameFormat, "Bullet",
-                                                               "(?:Start|End)", "(\\w+)");
-            var sectionNameSearchPattern = new Regex(sectionNameSearchPatternFormat);
-
-            if (!sectionNameSearchPattern.IsMatch(curSlide.Name)) return;
-
-            var sectionName = sectionNameSearchPattern.Match(curSlide.Name).Groups[1].Value;
-            var sectionIndex = FindSectionIndex(sectionName) - 2;
-            var contentPlaceHolder = curSlide.GetShapeWithName(PptLabsAgendaContentShapeName)[0];
+            var contentPlaceHolder = slide.GetShapeWithName(PptLabsAgendaContentShapeName)[0];
             var paragraphs = contentPlaceHolder.TextFrame2.TextRange
                                                .Paragraphs.Cast<TextRange2>()
                                                .Where(paragraph => paragraph.ParagraphFormat.IndentLevel == 1).ToList();
 
             _bulletHighlightColor = Utils.Graphics.ConvertRgbToColor(paragraphs[sectionIndex].Font.Fill.ForeColor.RGB);
-            
+
             if (sectionIndex > 0)
             {
                 _bulletDimColor = Utils.Graphics.ConvertRgbToColor(paragraphs[sectionIndex - 1].Font.Fill.ForeColor.RGB);
@@ -508,6 +495,31 @@ namespace PowerPointLabs
             if (sectionIndex < paragraphs.Count - 1)
             {
                 _bulletDefaultColor = Utils.Graphics.ConvertRgbToColor(paragraphs[sectionIndex + 1].Font.Fill.ForeColor.RGB);
+            }
+        }
+
+        private static void PickupColorSettings()
+        {
+            var type = CurrentAgendaType;
+
+            if (type != AgendaType.Bullet) return;
+
+            var slides = PowerPointPresentation.Current.Slides;
+            var sectionNameSearchPatternFormat = string.Format(PptLabsAgendaSlideNameFormat, "Bullet",
+                                                               "(?:Start|End)", "(\\w+)");
+            var sectionNameSearchPattern = new Regex(sectionNameSearchPatternFormat);
+            var slideCandidates = slides.Where(slide => sectionNameSearchPattern.IsMatch(slide.Name));
+
+            //TODO: what if the color scheme is not the same across the presentation?
+
+            foreach (var slide in slideCandidates)
+            {
+                var sectionName = sectionNameSearchPattern.Match(slide.Name).Groups[1].Value;
+                var sectionIndex = FindSectionIndex(sectionName) - 2;
+
+                if (!sectionNameSearchPattern.IsMatch(slide.Name)) return;
+
+                PickupColorFromSlide(slide, sectionIndex);
             }
         }
 
