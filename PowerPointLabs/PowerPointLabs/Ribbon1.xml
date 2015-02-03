@@ -292,6 +292,21 @@
                       getLabel="GetAgendaLabBulletAgendaSettingsButtonLabel"
                       getSupertip="GetAgendaLabBulletAgendaSettingsSupertip"
                       onAction="BulletAgendaSettingsClick"/>
+              <menu id="beamAgendaSettings"
+                    label="Beam Agenda Settings">
+                <button id="beamTopButton"
+                        label="Top"
+                        onAction="BeamAgendaTopStyleClick"/>
+                <button id="beamLeftButton"
+                        label="Left"
+                        onAction="BeamAgendaLeftStyleClick"/>
+                <button id="beamBottomButton"
+                        label="Bottom"
+                        onAction="BeamAgendaBottomStyleClick"/>
+                <button id="beamRightButton"
+                        label="Right"
+                        onAction="BeamAgendaRightStyleClick"/>
+              </menu>
             </menu>
           </menu>
         </group>

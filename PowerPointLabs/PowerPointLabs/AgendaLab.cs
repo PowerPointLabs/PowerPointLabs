@@ -31,37 +31,43 @@ namespace PowerPointLabs
 
         private static string _agendaText;
 
-        private static bool _hasBeamAgenda;
-
         private static Color _bulletDefaultColor = Color.Black;
         private static Color _bulletHighlightColor = Color.Red;
         private static Color _bulletDimColor = Color.Gray;
 
         # region Enum
-        public enum AgendaType
+        public enum Type
         {
             None,
             Bullet,
             Beam,
             Visual
         };
+
+        public enum Direction
+        {
+            Top,
+            Left,
+            Bottom,
+            Right
+        };
         # endregion
 
         /*********************************************************
          * Note:
-         * The implementation of CurrentAgendaType is O(n),
+         * The implementation of CurrentType is O(n),
          * bear this in mind when design functions. E.g. 
          * FindSectionEndSlide is totally fine with only the first
-         * argument and check CurrentAgendaType in the function.
+         * argument and check CurrentType in the function.
          * But taking type as the second argument allows the 
-         * developer to get CurrentAgendaType before the function.
-         * This is useful when CurrentAgendaType is frequently used
+         * developer to get CurrentType before the function.
+         * This is useful when CurrentType is frequently used
          * in a certain region, which reduces the overhead.
          * 
          * See SyncrhonizeAgenda() for more usage details.
          *********************************************************/
         # region Properties
-        public static AgendaType CurrentAgendaType
+        public static Type CurrentType
         {
             get
             {
@@ -73,18 +79,20 @@ namespace PowerPointLabs
                     {
                         var type = AgendaSlideSearchPattern.Match(slide.Name).Groups[1].Value;
 
-                        return (AgendaType)Enum.Parse(typeof(AgendaType), type);
+                        return (Type)Enum.Parse(typeof(Type), type);
                     }
 
                     if (slide.GetShapeWithName(PptLabsAgendaBeamShapeName).Count != 0)
                     {
-                        return AgendaType.Beam;
+                        return Type.Beam;
                     }
                 }
 
-                return AgendaType.None;
+                return Type.None;
             }
         }
+
+        public static Direction BeamDirection { get; set; }
         # endregion
 
         # region API
@@ -100,7 +108,7 @@ namespace PowerPointLabs
             settingDialog.ShowDialog();
         }
 
-        public static void GenerateAgenda(AgendaType type)
+        public static void GenerateAgenda(Type type)
         {
             // agenda exists in current presentation
             if (PowerPointPresentation.Current.Slides.Any(slide => AgendaSlideSearchPattern.IsMatch(slide.Name)))
@@ -138,13 +146,13 @@ namespace PowerPointLabs
 
             switch (type)
             {
-                case AgendaType.Beam:
+                case Type.Beam:
                     GenerateBeamAgenda(sections);
                     break;
-                case AgendaType.Bullet:
+                case Type.Bullet:
                     GenerateBulletAgenda(sections);
                     break;
-                case AgendaType.Visual:
+                case Type.Visual:
                     GenerateVisualAgenda(sections);
                     break;
             }
@@ -152,9 +160,9 @@ namespace PowerPointLabs
 
         public static void RemoveAgenda()
         {
-            var type = CurrentAgendaType;
+            var type = CurrentType;
 
-            if (type == AgendaType.None)
+            if (type == Type.None)
             {
                 MessageBox.Show(TextCollection.AgendaLabNoAgendaError);
                 return;
@@ -162,13 +170,13 @@ namespace PowerPointLabs
 
             switch (type)
             {
-                case AgendaType.Beam:
+                case Type.Beam:
                     RemoveBeamAgenda();
                     break;
-                case AgendaType.Bullet:
+                case Type.Bullet:
                     RemoveBulletAgenda();
                     break;
-                case AgendaType.Visual:
+                case Type.Visual:
                     RemoveVisualAgenda();
                     break;
             }
@@ -176,9 +184,9 @@ namespace PowerPointLabs
 
         public static void SyncrhonizeAgenda()
         {
-            var type = CurrentAgendaType;
+            var type = CurrentType;
 
-            if (type == AgendaType.None)
+            if (type == Type.None)
             {
                 MessageBox.Show(TextCollection.AgendaLabNoAgendaError);
                 return;
@@ -191,7 +199,7 @@ namespace PowerPointLabs
             var refSlide = FindSectionStartSlide(sections[0], type);
 
             // specially, we need to sync the end-of-agend slide for visual type
-            if (type == AgendaType.Visual)
+            if (type == Type.Visual)
             {
                 // delete all generated transition slides
                 foreach (var slide in currentPresentation.Slides.Where(slide => slide.Name.Contains("PPTLabsZoom")))
@@ -215,18 +223,28 @@ namespace PowerPointLabs
                 var startAgenda = i == 0 ? null : FindSectionStartSlide(section, type);
                 var endAgenda = FindSectionEndSlide(section, type);
 
-                switch (CurrentAgendaType)
+                switch (CurrentType)
                 {
-                    case AgendaType.Beam:
+                    case Type.Beam:
                         break;
-                    case AgendaType.Bullet:
+                    case Type.Bullet:
                         SyncAgendaBullet(refSlide, startAgenda, endAgenda);
                         break;
-                    case AgendaType.Visual:
+                    case Type.Visual:
                         SyncAgendaVisual(refSlide, endAgenda, sections, i);
                         break;
                 }
             }
+        }
+
+        public static void UpdateBeamAgendaStyle(Direction direction)
+        {
+            BeamDirection = direction;
+
+            if (CurrentType != Type.Beam) return;
+
+            RemoveAgenda();
+            GenerateAgenda(Type.Beam);
         }
         # endregion
 
@@ -263,7 +281,7 @@ namespace PowerPointLabs
                 slide.GetNativeSlide().MoveToSectionStart(sectionIndex);
             }
 
-            slide.Name = string.Format(PptLabsAgendaSlideNameFormat, AgendaType.Bullet,
+            slide.Name = string.Format(PptLabsAgendaSlideNameFormat, Type.Bullet,
                                           isEnd ? "End" : "Start", section);
             slide.Transition.EntryEffect = PpEntryEffect.ppEffectFadeSmoothly;
             slide.Transition.Duration = 0.25f;
@@ -299,7 +317,7 @@ namespace PowerPointLabs
                                            currentPresentation.Slides.Paste(index)[1];
                 var slide = PowerPointSlide.FromSlideFactory(nativeSlide);
 
-                slide.Name = string.Format(PptLabsAgendaSlideNameFormat, AgendaType.Visual,
+                slide.Name = string.Format(PptLabsAgendaSlideNameFormat, Type.Visual,
                                            string.Empty, i < sections.Count ? sectionName : "EndOfAgenda");
                 var newSectionIndex = sectionProperties.AddBeforeSlide(index, PptLabsAgendaSectionName);
 
@@ -344,15 +362,15 @@ namespace PowerPointLabs
             return sectionProperties.FirstSlide(sectionIndex) + sectionProperties.SlidesCount(sectionIndex) - 1;
         }
 
-        private static PowerPointSlide FindSectionEndSlide(string section, AgendaType type)
+        private static PowerPointSlide FindSectionEndSlide(string section, Type type)
         {
-            if (type == AgendaType.Beam)
+            if (type == Type.Beam)
             {
                 return null;
             }
 
             var slideName = string.Format(PptLabsAgendaSlideNameFormat, type,
-                                          type == AgendaType.Visual ? string.Empty : "End", section);
+                                          type == Type.Visual ? string.Empty : "End", section);
 
             return PowerPointPresentation.Current.Slides.FirstOrDefault(slide => slide.Name == slideName);
         }
@@ -372,12 +390,12 @@ namespace PowerPointLabs
             return sectionProperties.FirstSlide(sectionIndex);
         }
 
-        private static PowerPointSlide FindSectionStartSlide(string section, AgendaType type)
+        private static PowerPointSlide FindSectionStartSlide(string section, Type type)
         {
             var curPresentation = PowerPointPresentation.Current;
             var slides = curPresentation.Slides;
 
-            if (type == AgendaType.Beam)
+            if (type == Type.Beam)
             {
                 var sectionProperties = curPresentation.Presentation.SectionProperties;
                 var sectionIndex = FindSectionIndex(section);
@@ -386,7 +404,7 @@ namespace PowerPointLabs
             }
 
             var slideName = string.Format(PptLabsAgendaSlideNameFormat, type, 
-                                          type == AgendaType.Visual ? string.Empty : "Start", section);
+                                          type == Type.Visual ? string.Empty : "Start", section);
 
             return slides.FirstOrDefault(slide => slide.Name == slideName);
         }
@@ -505,9 +523,9 @@ namespace PowerPointLabs
 
         private static void PickupColorSettings()
         {
-            var type = CurrentAgendaType;
+            var type = CurrentType;
 
-            if (type != AgendaType.Bullet) return;
+            if (type != Type.Bullet) return;
 
             var slides = PowerPointPresentation.Current.Slides;
             var sectionNameSearchPatternFormat = string.Format(PptLabsAgendaSlideNameFormat, "Bullet",
@@ -533,11 +551,23 @@ namespace PowerPointLabs
             var lastLeft = 0.0f;
             var lastTop = 0.0f;
             var slideWidth = PowerPointPresentation.Current.SlideWidth;
+            var slideHeight = PowerPointPresentation.Current.SlideHeight;
 
             // add beam background
-            var background = refSlide.Shapes.AddShape(MsoAutoShapeType.msoShapeRectangle, 0, 0, slideWidth, 0);
+            var background = refSlide.Shapes.AddShape(MsoAutoShapeType.msoShapeRectangle, 0, 0, 0, 0);
             background.Name = PptLabsAgendaBeamBackgroundName;
             background.Line.Visible = MsoTriState.msoFalse;
+
+            var horizontal = BeamDirection == Direction.Top || BeamDirection == Direction.Bottom;
+
+            if (horizontal)
+            {
+                background.Width = slideWidth;
+            }
+            else
+            {
+                background.Height = slideHeight;
+            }
 
             foreach (var section in sections)
             {
@@ -553,22 +583,42 @@ namespace PowerPointLabs
 
                 mouseOnClickAction.Action = PpActionType.ppActionNamedSlideShow;
                 mouseOnClickAction.Hyperlink.Address = null;
-                mouseOnClickAction.Hyperlink.SubAddress = CreateInDocHyperLink(FindSectionStartSlide(section, AgendaType.Beam));
+                mouseOnClickAction.Hyperlink.SubAddress = CreateInDocHyperLink(FindSectionStartSlide(section, Type.Beam));
 
-                lastLeft += textBox.Width;
-
-                if (lastLeft >= slideWidth)
+                if (horizontal)
                 {
-                    lastLeft = 0;
+                    lastLeft += textBox.Width;
+
+                    if (lastLeft >= slideWidth)
+                    {
+                        lastLeft = 0;
+                        lastTop += textBox.Height;
+
+                        textBox.Left = 0;
+                        textBox.Top = lastTop;
+                    }
+
+                    if (background.Height < lastTop + textBox.Height)
+                    {
+                        background.Height = lastTop + textBox.Height;
+                    }
+                } else
+                {
                     lastTop += textBox.Height;
-                    
-                    textBox.Left = 0;
-                    textBox.Top = lastTop;
-                }
 
-                if (background.Height < lastTop + textBox.Height)
-                {
-                    background.Height = lastTop + textBox.Height;
+                    if (lastTop >= slideHeight)
+                    {
+                        lastTop = 0;
+                        lastLeft += textBox.Width;
+
+                        textBox.Top = 0;
+                        textBox.Left = lastLeft;
+                    }
+
+                    if (background.Width < lastLeft + textBox.Width)
+                    {
+                        background.Width = lastLeft + textBox.Width;
+                    }
                 }
             }
 
@@ -578,6 +628,16 @@ namespace PowerPointLabs
 
             var group = refSlide.Shapes.Range(copyRange.ToArray()).Group();
             group.Name = PptLabsAgendaBeamShapeName;
+
+            if (BeamDirection == Direction.Bottom)
+            {
+                group.Top = slideHeight - group.Height;
+            } else
+            if (BeamDirection == Direction.Right)
+            {
+                group.Left = slideWidth - group.Width;
+            }
+
             group.Cut();
         }
 
@@ -802,9 +862,9 @@ namespace PowerPointLabs
             _bulletDefaultColor = defaultColor;
 
             var sections = PowerPointPresentation.Current.Sections;
-            var type = CurrentAgendaType;
+            var type = CurrentType;
 
-            if (type != AgendaType.Bullet) return;
+            if (type != Type.Bullet) return;
 
             // skip the default section
             foreach (var section in sections.Skip(1))
