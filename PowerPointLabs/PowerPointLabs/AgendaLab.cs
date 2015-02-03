@@ -24,6 +24,7 @@ namespace PowerPointLabs
         private const string PptLabsAgendaBeamShapeName = "PptLabsAgendaBeamShape";
 
         private const float VisualAgendaItemMargin = 0.05f;
+        private const float BeamAgendaItemMargin = 3f;
 
         private static readonly Regex AgendaSlideSearchPattern = new Regex(PptLabsAgendaSlideTypeSearchPattern);
 
@@ -111,7 +112,7 @@ namespace PowerPointLabs
         public static void GenerateAgenda(Type type)
         {
             // agenda exists in current presentation
-            if (PowerPointPresentation.Current.Slides.Any(slide => AgendaSlideSearchPattern.IsMatch(slide.Name)))
+            if (CurrentType != Type.None)
             {
                 var confirm = MessageBox.Show(TextCollection.AgendaLabAgendaExistError,
                                               TextCollection.AgendaLabAgendaExistErrorCaption,
@@ -342,6 +343,52 @@ namespace PowerPointLabs
             }
         }
 
+        // TODO: combine these two functions, use anchorSide and movingSide to indicate left and top
+        private static void AdjustBeamItemHorizontal(ref float lastLeft, ref float lastTop, ref float widest,
+                                                     float delta, Shape item, Shape background)
+        {
+            if (lastLeft >= PowerPointPresentation.Current.SlideWidth)
+            {
+                lastLeft = 0;
+                lastTop += item.Height;
+
+                item.Top = lastTop;
+            }
+
+            item.Left = Math.Max(lastLeft, lastLeft + (delta - item.Width) / 2f);
+
+            if (item.Width > widest)
+            {
+                widest = item.Width;
+            }
+
+            lastLeft += Math.Max(item.Width, delta);
+
+            if (background.Height < lastTop + item.Height)
+            {
+                background.Height = lastTop + item.Height;
+            }
+        }
+
+        private static void AdjustBeamItemVertical(ref float lastLeft, ref float lastTop, Shape item, Shape background)
+        {
+            lastTop += item.Height;
+
+            if (lastTop >= PowerPointPresentation.Current.SlideHeight)
+            {
+                lastTop = 0;
+                lastLeft += item.Width;
+
+                item.Top = 0;
+                item.Left = lastLeft;
+            }
+
+            if (background.Width < lastLeft + item.Width)
+            {
+                background.Width = lastLeft + item.Width;
+            }
+        }
+
         private static string CreateInDocHyperLink(PowerPointSlide slide)
         {
             return slide.ID + "," + slide.Index + "," + slide.Name;
@@ -546,6 +593,44 @@ namespace PowerPointLabs
             }
         }
 
+        private static Shape PrepareBeamAgendaBackground(PowerPointSlide slide, bool horizontal)
+        {
+            var background = slide.Shapes.AddShape(MsoAutoShapeType.msoShapeRectangle, 0, 0, 0, 0);
+            background.Name = PptLabsAgendaBeamBackgroundName;
+            background.Line.Visible = MsoTriState.msoFalse;
+
+            if (horizontal)
+            {
+                background.Width = PowerPointPresentation.Current.SlideWidth;
+            }
+            else
+            {
+                background.Height = PowerPointPresentation.Current.SlideHeight;
+            }
+
+            return background;
+        }
+
+        private static Shape PrepareBeamAgendaBeamItem(PowerPointSlide slide, float lastLeft,
+                                                       float lastTop, string section)
+        {
+            var textBox = slide.Shapes.AddTextbox(MsoTextOrientation.msoTextOrientationHorizontal,
+                                                  lastLeft, lastTop, 0, 0);
+
+            textBox.Name = section;
+            textBox.TextFrame.AutoSize = PpAutoSize.ppAutoSizeShapeToFitText;
+            textBox.TextFrame.WordWrap = MsoTriState.msoFalse;
+            textBox.TextFrame.TextRange.Text = section;
+
+            var mouseOnClickAction = textBox.ActionSettings[PpMouseActivation.ppMouseClick];
+
+            mouseOnClickAction.Action = PpActionType.ppActionNamedSlideShow;
+            mouseOnClickAction.Hyperlink.Address = null;
+            mouseOnClickAction.Hyperlink.SubAddress = CreateInDocHyperLink(FindSectionStartSlide(section, Type.Beam));
+
+            return textBox;
+        }
+
         private static void PrepareBeamAgendaShapes(List<string> sections, PowerPointSlide refSlide)
         {
             var lastLeft = 0.0f;
@@ -553,72 +638,37 @@ namespace PowerPointLabs
             var slideWidth = PowerPointPresentation.Current.SlideWidth;
             var slideHeight = PowerPointPresentation.Current.SlideHeight;
 
-            // add beam background
-            var background = refSlide.Shapes.AddShape(MsoAutoShapeType.msoShapeRectangle, 0, 0, 0, 0);
-            background.Name = PptLabsAgendaBeamBackgroundName;
-            background.Line.Visible = MsoTriState.msoFalse;
-
             var horizontal = BeamDirection == Direction.Top || BeamDirection == Direction.Bottom;
-
-            if (horizontal)
-            {
-                background.Width = slideWidth;
-            }
-            else
-            {
-                background.Height = slideHeight;
-            }
+            var background = PrepareBeamAgendaBackground(refSlide, horizontal);
+            var widest = 0.0f;
 
             foreach (var section in sections)
             {
-                var textBox = refSlide.Shapes.AddTextbox(MsoTextOrientation.msoTextOrientationHorizontal,
-                                                         lastLeft, lastTop, 0, 0);
-                
-                textBox.Name = section;
-                textBox.TextFrame.AutoSize = PpAutoSize.ppAutoSizeShapeToFitText;
-                textBox.TextFrame.WordWrap = MsoTriState.msoFalse;
-                textBox.TextFrame.TextRange.Text = section;
-
-                var mouseOnClickAction = textBox.ActionSettings[PpMouseActivation.ppMouseClick];
-
-                mouseOnClickAction.Action = PpActionType.ppActionNamedSlideShow;
-                mouseOnClickAction.Hyperlink.Address = null;
-                mouseOnClickAction.Hyperlink.SubAddress = CreateInDocHyperLink(FindSectionStartSlide(section, Type.Beam));
+                var textBox = PrepareBeamAgendaBeamItem(refSlide, lastLeft, lastTop, section);
 
                 if (horizontal)
                 {
-                    lastLeft += textBox.Width;
-
-                    if (lastLeft >= slideWidth)
-                    {
-                        lastLeft = 0;
-                        lastTop += textBox.Height;
-
-                        textBox.Left = 0;
-                        textBox.Top = lastTop;
-                    }
-
-                    if (background.Height < lastTop + textBox.Height)
-                    {
-                        background.Height = lastTop + textBox.Height;
-                    }
+                    AdjustBeamItemHorizontal(ref lastLeft, ref lastTop, ref widest, 0, textBox, background);
                 } else
                 {
-                    lastTop += textBox.Height;
+                    AdjustBeamItemVertical(ref lastLeft, ref lastTop, textBox, background);
+                }
+            }
 
-                    if (lastTop >= slideHeight)
-                    {
-                        lastTop = 0;
-                        lastLeft += textBox.Width;
+            // for horizontal case, we need to evenly distribute every item
+            if (horizontal)
+            {
+                background.Height = 0;
+                lastLeft = 0;
+                lastTop = 0;
 
-                        textBox.Top = 0;
-                        textBox.Left = lastLeft;
-                    }
+                var delta = Math.Max(widest, slideWidth / sections.Count);
 
-                    if (background.Width < lastLeft + textBox.Width)
-                    {
-                        background.Width = lastLeft + textBox.Width;
-                    }
+                foreach (var section in sections)
+                {
+                    var textBox = refSlide.GetShapeWithName(section)[0];
+
+                    AdjustBeamItemHorizontal(ref lastLeft, ref lastTop, ref widest, delta, textBox, background);
                 }
             }
 
