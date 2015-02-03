@@ -20,6 +20,8 @@ namespace PowerPointLabs
         private const string PptLabsAgendaContentShapeName = "PptLabsAgendaContent";
         private const string PptLabsAgendaSlideTypeSearchPattern = @"PptLabs(\w+)Agenda(?:Start|End)?Slide";
         private const string PptLabsAgendaSectionName = "PptLabsAgendaSection";
+        private const string PptLabsAgendaBeamBackgroundName = "PptLabsAgendaBeamBackground";
+        private const string PptLabsAgendaBeamShapeName = "PptLabsAgendaBeamShape";
 
         private const float VisualAgendaItemMargin = 0.05f;
 
@@ -63,24 +65,24 @@ namespace PowerPointLabs
         {
             get
             {
-                if (_hasBeamAgenda)
+                var slides = PowerPointPresentation.Current.Slides;
+
+                foreach (var slide in slides)
                 {
-                    return AgendaType.Beam;
+                    if (AgendaSlideSearchPattern.IsMatch(slide.Name))
+                    {
+                        var type = AgendaSlideSearchPattern.Match(slide.Name).Groups[1].Value;
+
+                        return (AgendaType)Enum.Parse(typeof(AgendaType), type);
+                    }
+
+                    if (slide.GetShapeWithName(PptLabsAgendaBeamShapeName).Count != 0)
+                    {
+                        return AgendaType.Beam;
+                    }
                 }
 
-                var agendaSlide = PowerPointPresentation.Current
-                                                        .Slides
-                                                        .FirstOrDefault(slide => AgendaSlideSearchPattern.
-                                                                                 IsMatch(slide.Name));
-
-                if (agendaSlide == null)
-                {
-                    return AgendaType.None;
-                }
-
-                var type = AgendaSlideSearchPattern.Match(agendaSlide.Name).Groups[1].Value;
-
-                return (AgendaType)Enum.Parse(typeof(AgendaType), type);
+                return AgendaType.None;
             }
         }
         # endregion
@@ -231,13 +233,18 @@ namespace PowerPointLabs
         # region Helper Functions
         private static void AddAgendaSlideBeamType(string section, PowerPointSlide slide)
         {
-            slide.Shapes.Paste();
+            var beams = slide.Shapes.Paste()[1].Ungroup();
 
-            if (section.Contains("Default")) return;
+            var currentTextBox = beams.Cast<Shape>().FirstOrDefault(box => box.TextFrame
+                                                                              .TextRange
+                                                                              .Text == section);
 
-            var currentTextBox = slide.GetShapeWithName(section)[0];
+            if (currentTextBox != null)
+            {
+                currentTextBox.TextFrame.TextRange.Font.Bold = MsoTriState.msoTrue;
+            }
 
-            currentTextBox.TextFrame.TextRange.Font.Bold = MsoTriState.msoTrue;
+            beams.Group().Name = PptLabsAgendaBeamShapeName;
         }
 
         private static void AddAgendaSlideBulletType(string section, bool isEnd)
@@ -422,8 +429,6 @@ namespace PowerPointLabs
             {
                 AddAgendaSlideBeamType(FindSlideSection(slide), slide);
             }
-
-            _hasBeamAgenda = true;
         }
 
         private static void GenerateBulletAgenda(List<string> sections)
@@ -526,11 +531,18 @@ namespace PowerPointLabs
         private static void PrepareBeamAgendaShapes(List<string> sections, PowerPointSlide refSlide)
         {
             var lastLeft = 0.0f;
+            var lastTop = 0.0f;
+            var slideWidth = PowerPointPresentation.Current.SlideWidth;
+
+            // add beam background
+            var background = refSlide.Shapes.AddShape(MsoAutoShapeType.msoShapeRectangle, 0, 0, slideWidth, 0);
+            background.Name = PptLabsAgendaBeamBackgroundName;
+            background.Line.Visible = MsoTriState.msoFalse;
 
             foreach (var section in sections)
             {
                 var textBox = refSlide.Shapes.AddTextbox(MsoTextOrientation.msoTextOrientationHorizontal,
-                                                         lastLeft, 0, 0, 0);
+                                                         lastLeft, lastTop, 0, 0);
                 
                 textBox.Name = section;
                 textBox.TextFrame.AutoSize = PpAutoSize.ppAutoSizeShapeToFitText;
@@ -544,9 +556,29 @@ namespace PowerPointLabs
                 mouseOnClickAction.Hyperlink.SubAddress = CreateInDocHyperLink(FindSectionStartSlide(section, AgendaType.Beam));
 
                 lastLeft += textBox.Width;
+
+                if (lastLeft >= slideWidth)
+                {
+                    lastLeft = 0;
+                    lastTop += textBox.Height;
+                    
+                    textBox.Left = 0;
+                    textBox.Top = lastTop;
+                }
+
+                if (background.Height < lastTop + textBox.Height)
+                {
+                    background.Height = lastTop + textBox.Height;
+                }
             }
 
-            refSlide.Shapes.Range(sections.ToArray()).Cut();
+            var copyRange = new List<string>();
+            copyRange.AddRange(sections);
+            copyRange.Add(PptLabsAgendaBeamBackgroundName);
+
+            var group = refSlide.Shapes.Range(copyRange.ToArray()).Group();
+            group.Name = PptLabsAgendaBeamShapeName;
+            group.Cut();
         }
 
         private static void PrepareVisualAgendaSlideCapture(IEnumerable<string> sections)
@@ -637,16 +669,11 @@ namespace PowerPointLabs
         private static void RemoveBeamAgenda()
         {
             var selectedSlides = PowerPointCurrentPresentationInfo.SelectedSlides;
-            var sections = PowerPointPresentation.Current.Sections;
-            var shapeSearchPattern = sections.Skip(1).Aggregate(sections[0], (current, next) => current + "|" + next);
-            var shapeSearchRegex = new Regex(shapeSearchPattern);
 
             foreach (var selectedSlide in selectedSlides)
             {
-                selectedSlide.DeleteShapeWithRule(shapeSearchRegex);
+                selectedSlide.DeleteShapeWithName(PptLabsAgendaBeamShapeName);
             }
-
-            _hasBeamAgenda = false;
         }
 
         private static void RemoveBulletAgenda()
