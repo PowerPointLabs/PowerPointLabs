@@ -297,6 +297,8 @@
         public const string AgendaLabAgendaExistError = "Agenda already exists. By confirm this dialog agenda will be regenerated. Do you want to proceed?";
         public const string AgendaLabAgendaExistErrorCaption = "Confirm Update";
         public const string AgendaLabNoAgendaError = "There's no generated agenda.";
+        public const string AgendaLabLoadingDialogTitle = "Generating...";
+        public const string AgendaLabLoadingDialogContent = "Agenda is generating, please wait...";
         # endregion
 
         # region Task Pane - Recorder

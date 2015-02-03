@@ -145,6 +145,10 @@ namespace PowerPointLabs
 
             sections = sections.Skip(1).ToList();
 
+            var loadingDialog = new LoadingDialog(TextCollection.AgendaLabLoadingDialogTitle,
+                                                  TextCollection.AgendaLabLoadingDialogContent);
+            loadingDialog.Show();
+
             switch (type)
             {
                 case Type.Beam:
@@ -157,6 +161,8 @@ namespace PowerPointLabs
                     GenerateVisualAgenda(sections);
                     break;
             }
+
+            loadingDialog.Dispose();
         }
 
         public static void RemoveAgenda()
@@ -343,7 +349,6 @@ namespace PowerPointLabs
             }
         }
 
-        // TODO: combine these two functions, use anchorSide and movingSide to indicate left and top
         private static void AdjustBeamItemHorizontal(ref float lastLeft, ref float lastTop, ref float widest,
                                                      float delta, Shape item, Shape background)
         {
