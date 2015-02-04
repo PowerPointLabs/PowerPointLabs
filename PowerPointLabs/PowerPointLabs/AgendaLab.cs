@@ -24,7 +24,8 @@ namespace PowerPointLabs
         private const string PptLabsAgendaBeamShapeName = "PptLabsAgendaBeamShape";
 
         private const float VisualAgendaItemMargin = 0.05f;
-        private const float BeamAgendaItemMargin = 3f;
+
+        private static LoadingDialog _loadDialog = new LoadingDialog();
 
         private static readonly Regex AgendaSlideSearchPattern = new Regex(PptLabsAgendaSlideTypeSearchPattern);
 
@@ -65,7 +66,7 @@ namespace PowerPointLabs
          * This is useful when CurrentType is frequently used
          * in a certain region, which reduces the overhead.
          * 
-         * See SyncrhonizeAgenda() for more usage details.
+         * See SynchronizeAgenda() for more usage details.
          *********************************************************/
         # region Properties
         public static Type CurrentType
@@ -109,7 +110,7 @@ namespace PowerPointLabs
             settingDialog.ShowDialog();
         }
 
-        public static void GenerateAgenda(Type type)
+        public static void GenerateAgenda(Type type, bool showLoadingDialog = true)
         {
             // agenda exists in current presentation
             if (CurrentType != Type.None)
@@ -145,9 +146,13 @@ namespace PowerPointLabs
 
             sections = sections.Skip(1).ToList();
 
-            var loadingDialog = new LoadingDialog(TextCollection.AgendaLabLoadingDialogTitle,
-                                                  TextCollection.AgendaLabLoadingDialogContent);
-            loadingDialog.Show();
+            if (showLoadingDialog)
+            {
+                _loadDialog = new LoadingDialog(TextCollection.AgendaLabLoadingDialogTitle,
+                                                TextCollection.AgendaLabLoadingDialogContent);
+                _loadDialog.Show();
+                _loadDialog.Refresh();
+            }
 
             switch (type)
             {
@@ -162,7 +167,10 @@ namespace PowerPointLabs
                     break;
             }
 
-            loadingDialog.Dispose();
+            if (showLoadingDialog)
+            {
+                _loadDialog.Dispose();
+            }
         }
 
         public static void RemoveAgenda()
@@ -189,8 +197,27 @@ namespace PowerPointLabs
             }
         }
 
-        public static void SyncrhonizeAgenda()
+        /***********************************************************************************
+         * Basically, sync will not only sync the format across all agenda slides, but
+         * the content will also be adjusted to fit the current context. To achieve this,
+         * we simply remove all slides and regenerate the slides before we proceed.
+         * However, there are some details that should be noted:
+         * 1. Reference finding mechanism is different for Beam style;
+         * 2. After foudn the reference slide, we need to cut it to the clipboard;
+         * 3. Before we remove all agenda, we should pick up color settings in case we are
+         *    dealing with bullet agenda;
+         * 4. Before we re-generate the agenda, we should paste the reference slide somewhere.
+         *    In our implementation, we chose to duplicate the first slide in the first section
+         *    then paste the reference slide in between. This will prevent generating incorrect
+         *    transition when visual style is used.
+         * The procedure stated above is encapsulated in PrepareSyncAgenda().
+         *************************************************************************************/
+        public static void SynchronizeAgenda()
         {
+            _loadDialog = new LoadingDialog("Synchronizing...", "Agenda is getting synchronized, please wait...");
+            _loadDialog.Show();
+            _loadDialog.Refresh();
+
             var type = CurrentType;
 
             if (type == Type.None)
@@ -203,7 +230,27 @@ namespace PowerPointLabs
             var currentPresentation = PowerPointPresentation.Current;
             var sections = currentPresentation.Sections.Where(section =>
                                                               section != PptLabsAgendaSectionName).Skip(1).ToList();
-            var refSlide = FindSectionStartSlide(sections[0], type);
+            var refSlide = FindReferenceSlide(type, sections[0]);
+
+            if (type == Type.Bullet)
+            {
+                PickupColorSettings();
+            }
+
+            refSlide.GetNativeSlide().Cut();
+
+            RemoveAgenda();
+
+            var firstSlide = PowerPointPresentation.Current.Slides[FindSectionIndex(sections[0])];
+            var dupSlide = firstSlide.Duplicate();
+            
+            refSlide = PowerPointSlide.FromSlideFactory(currentPresentation.Presentation.Slides.Paste(dupSlide.Index)[1]);
+
+            // regenerate slides
+            GenerateAgenda(type, false);
+
+            // delete help slides
+            dupSlide.Delete();
 
             // specially, we need to sync the end-of-agend slide for visual type
             if (type == Type.Visual)
@@ -220,20 +267,15 @@ namespace PowerPointLabs
                 SyncAgendaVisual(refSlide, endOfAgenda, sections, sections.Count);
             }
 
-            // here the section info is 0-based
-            // Section 0 start: use as reference
-            // Section 0_end - end: need to be synced
-
+            // here the section info is 0-based, and all sections need to be synced
             for (var i = 0; i < sections.Count; i++)
             {
                 var section = sections[i];
-                var startAgenda = i == 0 ? null : FindSectionStartSlide(section, type);
+                var startAgenda = FindSectionStartSlide(section, type);
                 var endAgenda = FindSectionEndSlide(section, type);
 
                 switch (CurrentType)
                 {
-                    case Type.Beam:
-                        break;
                     case Type.Bullet:
                         SyncAgendaBullet(refSlide, startAgenda, endAgenda);
                         break;
@@ -242,6 +284,9 @@ namespace PowerPointLabs
                         break;
                 }
             }
+
+            refSlide.Delete();
+            _loadDialog.Dispose();
         }
 
         public static void UpdateBeamAgendaStyle(Direction direction)
@@ -399,6 +444,19 @@ namespace PowerPointLabs
             return slide.ID + "," + slide.Index + "," + slide.Name;
         }
 
+        private static PowerPointSlide FindReferenceSlide(Type type, string firstSection)
+        {
+            if (type == Type.Beam)
+            {
+                var slides = PowerPointPresentation.Current.Slides;
+
+                return slides.FirstOrDefault(slide => slide.GetShapeWithName(PptLabsAgendaBeamShapeName).Count != 0 ||
+                                                      slide.GetShapeWithName(PptLabsAgendaBeamBackgroundName).Count != 0);
+            }
+
+            return FindSectionStartSlide(firstSection, type);
+        }
+
         private static int FindSectionEnd(string section)
         {
             var sectionIndex = FindSectionIndex(section);
@@ -553,23 +611,40 @@ namespace PowerPointLabs
             PowerPointPresentation.Current.Presentation.Slides[index - 1].MoveToSectionStart(sectionIndex);
         }
 
-        private static void PickupColorFromSlide(PowerPointSlide slide, int sectionIndex)
+        private static void PickupColorFromSlide(PowerPointSlide slide)
         {
             var contentPlaceHolder = slide.GetShapeWithName(PptLabsAgendaContentShapeName)[0];
             var paragraphs = contentPlaceHolder.TextFrame2.TextRange
                                                .Paragraphs.Cast<TextRange2>()
                                                .Where(paragraph => paragraph.ParagraphFormat.IndentLevel == 1).ToList();
 
-            _bulletHighlightColor = Utils.Graphics.ConvertRgbToColor(paragraphs[sectionIndex].Font.Fill.ForeColor.RGB);
+            _bulletHighlightColor = Utils.Graphics.ConvertRgbToColor(paragraphs[0].Font.Fill.ForeColor.RGB);
+            
+            var state = 0;
 
-            if (sectionIndex > 0)
+            for (var i = 1; i < paragraphs.Count; i ++ )
             {
-                _bulletDimColor = Utils.Graphics.ConvertRgbToColor(paragraphs[sectionIndex - 1].Font.Fill.ForeColor.RGB);
-            }
+                var paraColor = Utils.Graphics.ConvertRgbToColor(paragraphs[i].Font.Fill.ForeColor.RGB);
+                
+                if (state == 0)
+                {
+                    if (paraColor != _bulletHighlightColor)
+                    {
+                        _bulletDimColor = _bulletHighlightColor;
+                        _bulletHighlightColor = paraColor;
+                        state = 1;
+                    }
+                } else
+                if (state == 1)
+                {
+                    if (paraColor == _bulletHighlightColor)
+                    {
+                        _bulletHighlightColor = _bulletDimColor;
+                    }
 
-            if (sectionIndex < paragraphs.Count - 1)
-            {
-                _bulletDefaultColor = Utils.Graphics.ConvertRgbToColor(paragraphs[sectionIndex + 1].Font.Fill.ForeColor.RGB);
+                    _bulletDefaultColor = paraColor;
+                    break;
+                }
             }
         }
 
@@ -587,14 +662,9 @@ namespace PowerPointLabs
 
             //TODO: what if the color scheme is not the same across the presentation?
 
-            foreach (var slide in slideCandidates)
+            foreach (var slide in slideCandidates.Where(candidate => sectionNameSearchPattern.IsMatch(candidate.Name)))
             {
-                var sectionName = sectionNameSearchPattern.Match(slide.Name).Groups[1].Value;
-                var sectionIndex = FindSectionIndex(sectionName) - 2;
-
-                if (!sectionNameSearchPattern.IsMatch(slide.Name)) return;
-
-                PickupColorFromSlide(slide, sectionIndex);
+                PickupColorFromSlide(slide);
             }
         }
 
@@ -694,6 +764,11 @@ namespace PowerPointLabs
             }
 
             group.Cut();
+        }
+
+        private static void PrepareSyncAgenda()
+        {
+            
         }
 
         private static void PrepareVisualAgendaSlideCapture(IEnumerable<string> sections)
@@ -813,6 +888,20 @@ namespace PowerPointLabs
                     sectionProperties.Delete(i, true);
                 }
             }
+        }
+
+        private static void SyncAgendaBeam()
+        {
+            // find reference slide first
+            //foreach (var slide in slides)
+            //{
+            //    if (slide == refSlide) continue;
+                
+            //    if (isBeamAgendaSlide(slide))
+            //    {
+            //        var 
+            //    }
+            //}
         }
 
         private static void SyncAgendaBullet(PowerPointSlide refSlide, PowerPointSlide start, PowerPointSlide end)

@@ -2101,7 +2101,7 @@ namespace PowerPointLabs
         {
             Globals.ThisAddIn.Application.StartNewUndoEntry();
 
-            AgendaLab.SyncrhonizeAgenda();
+            AgendaLab.SynchronizeAgenda();
         }
 
         public void BeamAgendaTopStyleClick(Office.IRibbonControl control)
