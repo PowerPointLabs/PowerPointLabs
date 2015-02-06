@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
+using System.Linq;
 using System.Windows.Forms;
 using Microsoft.Office.Core;
 using Microsoft.Office.Interop.PowerPoint;
@@ -11,6 +12,14 @@ namespace PowerPointLabs.Models
     {
         # region Properties
         private string _name;
+
+        public static PowerPointPresentation Current
+        {
+            get
+            {
+                return new PowerPointPresentation(Globals.ThisAddIn.Application.ActivePresentation);
+            }
+        }
 
         public string FullName
         {
@@ -44,16 +53,9 @@ namespace PowerPointLabs.Models
         {
             get
             {
-                foreach (Presentation presentation in Globals.ThisAddIn.Application.Presentations)
-                {
-                    if (presentation.Name == Name)
-                    {
-                        Presentation = presentation;
-                        return true;
-                    }
-                }
-
-                return false;
+                return
+                    Globals.ThisAddIn.Application.Presentations.Cast<Presentation>().Any(
+                        presentation => presentation.Name == Name);
             }
         }
 
@@ -64,6 +66,22 @@ namespace PowerPointLabs.Models
         public bool Saved
         {
             get { return Presentation.Saved == MsoTriState.msoTrue; }
+        }
+
+        public List<string> Sections
+        {
+            get
+            {
+                var sectionProperty = Presentation.SectionProperties;
+                var sectionNames = new List<string>();
+
+                for (var i = 1; i <= sectionProperty.Count; i++)
+                {
+                    sectionNames.Add(sectionProperty.Name(i));
+                }
+
+                return sectionNames;
+            }
         }
 
         public List<PowerPointSlide> Slides

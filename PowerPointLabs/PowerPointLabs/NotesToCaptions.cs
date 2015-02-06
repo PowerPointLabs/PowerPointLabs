@@ -77,8 +77,8 @@ namespace PowerPointLabs
 
         private static Shape AddCaptionBoxToSlide(string caption, PowerPointSlide s)
         {
-            float slideWidth = PowerPointCurrentPresentationInfo.SlideWidth;
-            float slideHeight = PowerPointCurrentPresentationInfo.SlideHeight;
+            float slideWidth = PowerPointPresentation.Current.SlideWidth;
+            float slideHeight = PowerPointPresentation.Current.SlideHeight;
             
             Shape textBox = s.Shapes.AddTextbox(MsoTextOrientation.msoTextOrientationHorizontal, 0, slideHeight - 100,
                 slideWidth, 100);
@@ -124,7 +124,7 @@ namespace PowerPointLabs
 
         public static void RemoveCaptionsFromAllSlides()
         {
-            foreach (PowerPointSlide s in PowerPointCurrentPresentationInfo.Slides)
+            foreach (PowerPointSlide s in PowerPointPresentation.Current.Slides)
             {
                 RemoveCaptionsFromSlide(s);
             }

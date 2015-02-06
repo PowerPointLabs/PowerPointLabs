@@ -134,28 +134,28 @@ namespace PowerPointLabs
             if (zoomShape.Width > zoomShape.Height)
             {
                 zoomShapeCopy.Width = zoomShape.Width;
-                zoomShapeCopy.Height = PowerPointCurrentPresentationInfo.SlideHeight * zoomShapeCopy.Width / PowerPointCurrentPresentationInfo.SlideWidth;
+                zoomShapeCopy.Height = PowerPointPresentation.Current.SlideHeight * zoomShapeCopy.Width / PowerPointPresentation.Current.SlideWidth;
             }
             else
             {
                 zoomShapeCopy.Height = zoomShape.Height;
-                zoomShapeCopy.Width = Globals.ThisAddIn.Application.ActivePresentation.PageSetup.SlideWidth * zoomShapeCopy.Height / Globals.ThisAddIn.Application.ActivePresentation.PageSetup.SlideHeight;
+                zoomShapeCopy.Width = PowerPointPresentation.Current.SlideWidth * zoomShapeCopy.Height / PowerPointPresentation.Current.SlideHeight;
             }
             PowerPointLabsGlobals.CopyShapePosition(zoomShape, ref zoomShapeCopy);
 
-            if (zoomShapeCopy.Width > PowerPointCurrentPresentationInfo.SlideWidth)
-                zoomShapeCopy.Width = PowerPointCurrentPresentationInfo.SlideWidth;
-            if (zoomShapeCopy.Height > PowerPointCurrentPresentationInfo.SlideHeight)
-                zoomShapeCopy.Height = PowerPointCurrentPresentationInfo.SlideHeight;
+            if (zoomShapeCopy.Width > PowerPointPresentation.Current.SlideWidth)
+                zoomShapeCopy.Width = PowerPointPresentation.Current.SlideWidth;
+            if (zoomShapeCopy.Height > PowerPointPresentation.Current.SlideHeight)
+                zoomShapeCopy.Height = PowerPointPresentation.Current.SlideHeight;
 
             if (zoomShapeCopy.Left < 0)
                 zoomShapeCopy.Left = 0;
-            if (zoomShapeCopy.Left + zoomShapeCopy.Width > PowerPointCurrentPresentationInfo.SlideWidth)
-                zoomShapeCopy.Left = PowerPointCurrentPresentationInfo.SlideWidth - zoomShapeCopy.Width;
+            if (zoomShapeCopy.Left + zoomShapeCopy.Width > PowerPointPresentation.Current.SlideWidth)
+                zoomShapeCopy.Left = PowerPointPresentation.Current.SlideWidth - zoomShapeCopy.Width;
             if (zoomShapeCopy.Top < 0)
                 zoomShapeCopy.Top = 0;
-            if (zoomShapeCopy.Top + zoomShapeCopy.Height > PowerPointCurrentPresentationInfo.SlideHeight)
-                zoomShapeCopy.Top = PowerPointCurrentPresentationInfo.SlideHeight - zoomShapeCopy.Height;
+            if (zoomShapeCopy.Top + zoomShapeCopy.Height > PowerPointPresentation.Current.SlideHeight)
+                zoomShapeCopy.Top = PowerPointPresentation.Current.SlideHeight - zoomShapeCopy.Height;
 
             return zoomShapeCopy;
         }
@@ -173,16 +173,15 @@ namespace PowerPointLabs
 
         private static void DeleteExistingZoomToAreaSlides(PowerPointSlide currentSlide)
         {
-            if (currentSlide.Name.Contains("PPTLabsZoomToAreaSlide") && currentSlide.Index != PowerPointCurrentPresentationInfo.SlideCount)
+            if (currentSlide.Name.Contains("PPTLabsZoomToAreaSlide") && currentSlide.Index != PowerPointPresentation.Current.SlideCount)
             {
-                PowerPointSlide nextSlide = PowerPointCurrentPresentationInfo.Slides.ElementAt(currentSlide.Index);
-                PowerPointSlide tempSlide = null;
+                PowerPointSlide nextSlide = PowerPointPresentation.Current.Slides[currentSlide.Index];
                 while ((nextSlide.Name.Contains("PPTLabsMagnifyingSlide") || (nextSlide.Name.Contains("PPTLabsMagnifiedSlide"))
                        || (nextSlide.Name.Contains("PPTLabsDeMagnifyingSlide")) || (nextSlide.Name.Contains("PPTLabsMagnifiedPanSlide"))
-                       || (nextSlide.Name.Contains("PPTLabsMagnifyingSingleSlide"))) && nextSlide.Index < PowerPointCurrentPresentationInfo.SlideCount)
+                       || (nextSlide.Name.Contains("PPTLabsMagnifyingSingleSlide"))) && nextSlide.Index < PowerPointPresentation.Current.SlideCount)
                 {
-                    tempSlide = nextSlide;
-                    nextSlide = PowerPointCurrentPresentationInfo.Slides.ElementAt(tempSlide.Index);
+                    PowerPointSlide tempSlide = nextSlide;
+                    nextSlide = PowerPointPresentation.Current.Slides[tempSlide.Index];
                     tempSlide.Delete();
                 }
             }

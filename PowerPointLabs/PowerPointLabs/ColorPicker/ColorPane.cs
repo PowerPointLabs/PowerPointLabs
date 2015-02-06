@@ -934,7 +934,7 @@ namespace PowerPointLabs
         {
             try
             {
-                if (PowerPointCurrentPresentationInfo.SlideCount > 0)
+                if (PowerPointPresentation.Current.SlideCount > 0)
                 {
                     dataSource.themeColorOne = Color.White;
                     dataSource.themeColorTwo = Color.White;

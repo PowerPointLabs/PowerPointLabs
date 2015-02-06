@@ -211,14 +211,14 @@
                 getImage="GetEffectsLabImage"
                 getSupertip="GetEffectsLabSupertip"
                 size="large">
-            <menuSeparator id="effectSeparator"
+            <menuSeparator id="builtinEffectSeparator"
                            title="Builtin Effects"/>
               <gallery idMso="PictureSharpenSoftenGallery"/>
               <gallery idMso="PictureBrightnessAndContrastGallery"/>
               <gallery idMso="PictureEffectsSoftEdgesGallery"/>
               <gallery idMso="PictureRecolorGallery"/>
               <gallery idMso="PictureArtisticEffectsGallery"/>
-            <menuSeparator id="mySeparator"
+            <menuSeparator id="newEffectSeparator"
                            title="New Effects"/>
             <button id="transparentEffect"
                     getLabel="GetEffectsLabMakeTransparentButtonLabel"
@@ -252,6 +252,38 @@
                       label="Sepia"
                       onAction="SepiaBackgroundEffectClick"/>
             </menu>
+          </menu>
+          <menu id="AgendaLabsMenu"
+                getLabel="GetAgendaLabButtonLabel"
+                getSupertip="GetAgendaLabSupertip"
+                imageMso="HappyFace"
+                size="large">
+            <button id="bulletPointAgenda"
+                    imageMso="HappyFace"
+                    getLabel="GetAgendaLabBulletPointButtonLabel"
+                    getSupertip="GetAgendaLabBulletPointSupertip"
+                    onAction="BulletPointAgendaClick"/>
+            <button id="visualAgenda"
+                    imageMso="HappyFace"
+                    getLabel="GetAgendaLabVisualAgendaButtonLabel"
+                    getSupertip="GetAgendaLabVisualAgendaSupertip"
+                    onAction="VisualAgendaClick"/>
+            <menuSeparator id="miscAgendaseparator" />
+            <button id="removeAgenda"
+                    imageMso="HappyFace"
+                    getLabel="GetAgendaLabRemoveAgendaButtonLabel"
+                    getSupertip="GetAgendaLabRemoveAgendaSupertip"
+                    onAction="RemoveAgendaClick"/>
+            <button id="udpateAgenda"
+                    imageMso="HappyFace"
+                    getLabel="GetAgendaLabUpdateAgendaButtonLabel"
+                    getSupertip="GetAgendaLabUpdateAgendaSupertip"
+                    onAction="UpdateAgendaClick"/>
+            <button id="agendaSettings"
+                    imageMso="HappyFace"
+                    getLabel="GetAgendaLabAgendaSettingsButtonLabel"
+                    getSupertip="GetAgendaLabAgendaSettingsSupertip"
+                    onAction="AgendaSettingsClick"/>
           </menu>
         </group>
         <group id="PPTLabsHelp"

@@ -16,6 +16,7 @@ namespace PowerPointLabs.Models
     public class PowerPointSlide
     {
         protected readonly Slide _slide;
+
         private List<PowerPoint.MsoAnimEffect> entryEffects = new List<PowerPoint.MsoAnimEffect>()
         {
             PowerPoint.MsoAnimEffect.msoAnimEffectAppear, PowerPoint.MsoAnimEffect.msoAnimEffectBlinds, PowerPoint.MsoAnimEffect.msoAnimEffectBox,
@@ -105,9 +106,32 @@ namespace PowerPointLabs.Models
             get { return _slide.SlideIndex; }
         }
 
+        public Design Design
+        {
+            get { return _slide.Design; }
+            set { _slide.Design = value; }
+        }
+
+        public PpSlideLayout Layout
+        {
+            get { return _slide.Layout; }
+            set { _slide.Layout = value; }
+        }
+
         public SlideShowTransition Transition
         {
             get { return _slide.SlideShowTransition; }
+            set
+            {
+                // deep copy set-able fields
+                _slide.SlideShowTransition.AdvanceOnClick = value.AdvanceOnClick;
+                _slide.SlideShowTransition.AdvanceOnTime = value.AdvanceOnTime;
+                _slide.SlideShowTransition.AdvanceTime = value.AdvanceTime;
+                _slide.SlideShowTransition.Duration = value.Duration;
+                _slide.SlideShowTransition.EntryEffect = value.EntryEffect;
+                _slide.SlideShowTransition.Hidden = value.Hidden;
+                _slide.SlideShowTransition.Speed = value.Speed;
+            }
         }
 
         public TimeLine TimeLine
@@ -449,7 +473,6 @@ namespace PowerPointLabs.Models
 
         public PowerPointSlide CreateDrillDownSlide()
         {
-            //Slide addedSlide = Globals.ThisAddIn.Application.ActivePresentation.Slides.AddSlide(_slide.SlideIndex + 1, _slide.CustomLayout);
             Slide duplicatedSlide = _slide.Duplicate()[1];
             return PowerPointDrillDownSlide.FromSlideFactory(duplicatedSlide);
         }
@@ -540,9 +563,9 @@ namespace PowerPointLabs.Models
         {
             String tempFileName = Path.GetTempFileName();
             Properties.Resources.Indicator.Save(tempFileName);
-            Shape indicatorShape = _slide.Shapes.AddPicture(tempFileName, Office.MsoTriState.msoFalse, Office.MsoTriState.msoTrue, PowerPointCurrentPresentationInfo.SlideWidth - 120, 0, 120, 84);
+            Shape indicatorShape = _slide.Shapes.AddPicture(tempFileName, Office.MsoTriState.msoFalse, Office.MsoTriState.msoTrue, PowerPointPresentation.Current.SlideWidth - 120, 0, 120, 84);
 
-            indicatorShape.Left = PowerPointCurrentPresentationInfo.SlideWidth - 120;
+            indicatorShape.Left = PowerPointPresentation.Current.SlideWidth - 120;
             indicatorShape.Top = 0;
             indicatorShape.Width = 120;
             indicatorShape.Height = 84;
@@ -576,8 +599,8 @@ namespace PowerPointLabs.Models
                         int count = path.Length;
                         float xVal = Convert.ToSingle(path[count - 3]);
                         float yVal = Convert.ToSingle(path[count - 2]);
-                        sh.Left += (xVal * PowerPointCurrentPresentationInfo.SlideWidth);
-                        sh.Top += (yVal * PowerPointCurrentPresentationInfo.SlideHeight);
+                        sh.Left += (xVal * PowerPointPresentation.Current.SlideWidth);
+                        sh.Top += (yVal * PowerPointPresentation.Current.SlideHeight);
                     }
                 }
             }
@@ -644,7 +667,7 @@ namespace PowerPointLabs.Models
 
         public PowerPointSlide CreateAckSlide()
         {
-            Slide ackSlide = Globals.ThisAddIn.Application.ActivePresentation.Slides.Add(Globals.ThisAddIn.Application.ActivePresentation.Slides.Count + 1, PpSlideLayout.ppLayoutBlank);
+            Slide ackSlide = PowerPointPresentation.Current.Presentation.Slides.Add(PowerPointPresentation.Current.SlideCount + 1, PpSlideLayout.ppLayoutBlank);
             return PowerPointAckSlide.FromSlideFactory(ackSlide);
         }
 
@@ -717,14 +740,14 @@ namespace PowerPointLabs.Models
 
         private bool IsNextSlideTransitionBlacklisted()
         {
-            bool isLastSlide = _slide.SlideIndex == PowerPointCurrentPresentationInfo.SlideCount;
+            bool isLastSlide = _slide.SlideIndex == PowerPointPresentation.Current.SlideCount;
             if (isLastSlide)
             {
                 return false;
             }
 
             // Indexes are from 1, while the slide collection starts from 0.
-            PowerPointSlide nextSlide = PowerPointCurrentPresentationInfo.Slides.ElementAt(Index);
+            PowerPointSlide nextSlide = PowerPointPresentation.Current.Slides[Index];
             switch (nextSlide.Transition.EntryEffect)
             {
                 case PpEntryEffect.ppEffectCoverUp:

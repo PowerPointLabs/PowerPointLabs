@@ -44,6 +44,7 @@ namespace PowerPointLabs
             this.renameCategoryToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.setAsDefaultToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.importCategoryToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.importShapesToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.settingsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.label1 = new System.Windows.Forms.Label();
             this.categoryBox = new System.Windows.Forms.ComboBox();
@@ -63,38 +64,38 @@ namespace PowerPointLabs
             this.copyToToolStripMenuItem,
             this.removeShapeToolStripMenuItem});
             this.shapeContextMenuStrip.Name = "contextMenuStrip";
-            this.shapeContextMenuStrip.Size = new System.Drawing.Size(153, 136);
+            this.shapeContextMenuStrip.Size = new System.Drawing.Size(68, 114);
             this.shapeContextMenuStrip.Opening += new System.ComponentModel.CancelEventHandler(this.ThumbnailContextMenuStripOpening);
             this.shapeContextMenuStrip.ItemClicked += new System.Windows.Forms.ToolStripItemClickedEventHandler(this.ThumbnailContextMenuStripItemClicked);
             // 
             // addToSlideToolStripMenuItem
-            // 
+            // m
             this.addToSlideToolStripMenuItem.Name = "addToSlideToolStripMenuItem";
-            this.addToSlideToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.addToSlideToolStripMenuItem.Size = new System.Drawing.Size(67, 22);
             // 
             // editNameToolStripMenuItem
             // 
             this.editNameToolStripMenuItem.Name = "editNameToolStripMenuItem";
-            this.editNameToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.editNameToolStripMenuItem.Size = new System.Drawing.Size(67, 22);
             // 
             // moveShapeToolStripMenuItem
             // 
             this.moveShapeToolStripMenuItem.Name = "moveShapeToolStripMenuItem";
-            this.moveShapeToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.moveShapeToolStripMenuItem.Size = new System.Drawing.Size(67, 22);
             this.moveShapeToolStripMenuItem.Click += new System.EventHandler(this.MoveContextMenuStripOnEvent);
             this.moveShapeToolStripMenuItem.MouseEnter += new System.EventHandler(this.MoveContextMenuStripOnEvent);
             // 
             // copyToToolStripMenuItem
             // 
             this.copyToToolStripMenuItem.Name = "copyToToolStripMenuItem";
-            this.copyToToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.copyToToolStripMenuItem.Size = new System.Drawing.Size(67, 22);
             this.copyToToolStripMenuItem.Click += new System.EventHandler(this.CopyContextMenuStripOnEvent);
             this.copyToToolStripMenuItem.MouseEnter += new System.EventHandler(this.CopyContextMenuStripOnEvent);
             // 
             // removeShapeToolStripMenuItem
             // 
             this.removeShapeToolStripMenuItem.Name = "removeShapeToolStripMenuItem";
-            this.removeShapeToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.removeShapeToolStripMenuItem.Size = new System.Drawing.Size(67, 22);
             // 
             // flowlayoutContextMenuStrip
             // 
@@ -104,40 +105,46 @@ namespace PowerPointLabs
             this.renameCategoryToolStripMenuItem,
             this.setAsDefaultToolStripMenuItem,
             this.importCategoryToolStripMenuItem,
+            this.importShapesToolStripMenuItem,
             this.settingsToolStripMenuItem});
             this.flowlayoutContextMenuStrip.Name = "flowlayoutContextMenuStrip";
-            this.flowlayoutContextMenuStrip.Size = new System.Drawing.Size(68, 136);
+            this.flowlayoutContextMenuStrip.Size = new System.Drawing.Size(153, 180);
             this.flowlayoutContextMenuStrip.ItemClicked += new System.Windows.Forms.ToolStripItemClickedEventHandler(this.FlowlayoutContextMenuStripItemClicked);
             // 
             // addCategoryToolStripMenuItem
             // 
             this.addCategoryToolStripMenuItem.Name = "addCategoryToolStripMenuItem";
-            this.addCategoryToolStripMenuItem.Size = new System.Drawing.Size(67, 22);
+            this.addCategoryToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
             // 
             // removeCategoryToolStripMenuItem
             // 
             this.removeCategoryToolStripMenuItem.Name = "removeCategoryToolStripMenuItem";
-            this.removeCategoryToolStripMenuItem.Size = new System.Drawing.Size(67, 22);
+            this.removeCategoryToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
             // 
             // renameCategoryToolStripMenuItem
             // 
             this.renameCategoryToolStripMenuItem.Name = "renameCategoryToolStripMenuItem";
-            this.renameCategoryToolStripMenuItem.Size = new System.Drawing.Size(67, 22);
+            this.renameCategoryToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
             // 
             // setAsDefaultToolStripMenuItem
             // 
             this.setAsDefaultToolStripMenuItem.Name = "setAsDefaultToolStripMenuItem";
-            this.setAsDefaultToolStripMenuItem.Size = new System.Drawing.Size(67, 22);
+            this.setAsDefaultToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
             // 
             // importCategoryToolStripMenuItem
             // 
             this.importCategoryToolStripMenuItem.Name = "importCategoryToolStripMenuItem";
-            this.importCategoryToolStripMenuItem.Size = new System.Drawing.Size(67, 22);
+            this.importCategoryToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            // 
+            // importShapesToolStripMenuItem
+            // 
+            this.importShapesToolStripMenuItem.Name = "importShapesToolStripMenuItem";
+            this.importShapesToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
             // 
             // settingsToolStripMenuItem
             // 
             this.settingsToolStripMenuItem.Name = "settingsToolStripMenuItem";
-            this.settingsToolStripMenuItem.Size = new System.Drawing.Size(67, 22);
+            this.settingsToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
             // 
             // label1
             // 
@@ -255,5 +262,6 @@ namespace PowerPointLabs
         private ToolStripMenuItem setAsDefaultToolStripMenuItem;
         private ToolStripMenuItem importCategoryToolStripMenuItem;
         private BufferedFlowLayoutPanel myShapeFlowLayout;
+        private ToolStripMenuItem importShapesToolStripMenuItem;
     }
 }
