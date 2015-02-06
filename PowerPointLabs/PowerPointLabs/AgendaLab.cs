@@ -554,7 +554,10 @@ namespace PowerPointLabs
 
         private static void GenerateBeamAgenda(List<string> sections)
         {
-            var selectedSlides = PowerPointCurrentPresentationInfo.SelectedSlides.ToList();
+            var firstSectionIndex = FindSectionIndex(sections[0]);
+            var selectedSlides = PowerPointCurrentPresentationInfo.SelectedSlides
+                                                                  .Where(slide => slide.Index >= firstSectionIndex)
+                                                                  .ToList();
 
             PrepareBeamAgendaShapes(sections, selectedSlides[0]);
 
