@@ -249,8 +249,14 @@ namespace PowerPointLabs
             // regenerate slides
             GenerateAgenda(type, false);
 
-            // delete help slides
+            // delete protect slide
             dupSlide.Delete();
+
+            if (type == Type.Beam)
+            {
+                SyncAgendaBeam(refSlide);
+                return;
+            }
 
             // specially, we need to sync the end-of-agend slide for visual type
             if (type == Type.Visual)
@@ -766,11 +772,6 @@ namespace PowerPointLabs
             group.Cut();
         }
 
-        private static void PrepareSyncAgenda()
-        {
-            
-        }
-
         private static void PrepareVisualAgendaSlideCapture(IEnumerable<string> sections)
         {
             if (!Directory.Exists(SlideCapturePath))
@@ -856,13 +857,27 @@ namespace PowerPointLabs
             textRange.Paragraphs(focusIndex).Font.Color.RGB = Utils.Graphics.ConvertColorToRgb(focusColor);
         }
 
-        private static void RemoveBeamAgenda()
+        private static void RemoveBeamAgenda(bool all = false)
         {
-            var selectedSlides = PowerPointCurrentPresentationInfo.SelectedSlides;
-
-            foreach (var selectedSlide in selectedSlides)
+            if (!all)
             {
-                selectedSlide.DeleteShapeWithName(PptLabsAgendaBeamShapeName);
+                var selectedSlides = PowerPointCurrentPresentationInfo.SelectedSlides;
+
+                foreach (var selectedSlide in selectedSlides)
+                {
+                    selectedSlide.DeleteShapeWithName(PptLabsAgendaBeamShapeName);
+                }
+            }
+            else
+            {
+                var slides = PowerPointPresentation.Current.Slides;
+
+                foreach (var slide in slides.Where(slide => slide.GetShapeWithName(PptLabsAgendaBeamShapeName).Count != 0 ||
+                                                   slide.GetShapeWithName(PptLabsAgendaBeamBackgroundName).Count != 0))
+                {
+                    // TODO: to recognize ungrouped shpaes
+                    slide.DeleteShapeWithName(PptLabsAgendaBeamShapeName);
+                }
             }
         }
 
@@ -890,18 +905,30 @@ namespace PowerPointLabs
             }
         }
 
-        private static void SyncAgendaBeam()
+        private static void SyncAgendaBeam(PowerPointSlide refSlide)
         {
-            // find reference slide first
-            //foreach (var slide in slides)
-            //{
-            //    if (slide == refSlide) continue;
+            var slides = PowerPointPresentation.Current.Slides;
+
+            // TODO: what if the user ungroup the shape and then regroup? The name will be different then
+            foreach (var slide in slides)
+            {
+                if (slide == refSlide) continue;
+
+                var groupShape = slide.GetShapeWithName(PptLabsAgendaBeamShapeName);
+                var isBeamAgenda = groupShape.Count != 0 ||
+                                   slide.GetShapeWithName(PptLabsAgendaBeamBackgroundName).Count != 0;
+
+                if (!isBeamAgenda) continue;
                 
-            //    if (isBeamAgendaSlide(slide))
-            //    {
-            //        var 
-            //    }
-            //}
+                if (groupShape.Count != 0)
+                {
+                    var shapes = groupShape[0].Ungroup();
+
+                    SyncSingleAgendaGeneral(refSlide, slide);
+
+                    shapes.Group();
+                }
+            }
         }
 
         private static void SyncAgendaBullet(PowerPointSlide refSlide, PowerPointSlide start, PowerPointSlide end)
@@ -939,7 +966,7 @@ namespace PowerPointLabs
             var refContentShape = refSlide.GetShapeWithName(PptLabsAgendaContentShapeName)[0];
             var candidateContentShape = candidate.GetShapeWithName(PptLabsAgendaContentShapeName)[0];
 
-            Utils.Graphics.SyncShape(refContentShape, candidateContentShape, false);
+            Utils.Graphics.SyncShape(refContentShape, candidateContentShape, false, false);
         }
 
         private static void SyncSingleAgendaGeneral(PowerPointSlide refSlide, PowerPointSlide candidate)

@@ -114,23 +114,14 @@ namespace PowerPointLabs.Utils
         }
 
         public static void SyncShape(Shape refShape, Shape candidateShape,
-                                     bool pickupFormat = true, bool pickupText = true)
+                                     bool pickupShapeFormat = true, bool pickupTextContent = true,
+                                     bool pickupTextFormat = true)
         {
-            // unlock aspect ratio to enable size tweak
-            var candidateLockRatio = candidateShape.LockAspectRatio;
-            
-            candidateShape.Rotation = refShape.Rotation;
+            SyncShapeRotation(refShape, candidateShape);
+            SyncShapeSize(refShape, candidateShape);
+            SyncShapeLocation(refShape, candidateShape);
 
-            candidateShape.LockAspectRatio = MsoTriState.msoFalse;
-
-            candidateShape.Left = refShape.Left;
-            candidateShape.Top = refShape.Top;
-            candidateShape.Width = refShape.Width;
-            candidateShape.Height = refShape.Height;
-
-            candidateShape.LockAspectRatio = candidateLockRatio;
-
-            if (pickupText &&
+            if ((pickupTextContent || pickupTextFormat) &&
                 refShape.HasTextFrame == MsoTriState.msoTrue &&
                 candidateShape.HasTextFrame == MsoTriState.msoTrue)
             {
@@ -143,17 +134,23 @@ namespace PowerPointLabs.Utils
                 {
                     var refParagraph = refTextRange.Paragraphs(i);
                     var candidateParagraph = candidateTextRange.Paragraphs(i);
+                    var candidateText = candidateParagraph.Text.TrimEnd('\r');
                     var candidateColor = candidateParagraph.Font.Color.RGB;
 
                     refParagraph.Copy();
 
                     var newCandidateRange = candidateParagraph.PasteSpecial();
 
+                    if (!pickupTextContent)
+                    {
+                        newCandidateRange.Text = candidateText;
+                    }
+
                     newCandidateRange.Font.Color.RGB = candidateColor;
                 }
             }
 
-            if (pickupFormat)
+            if (pickupShapeFormat)
             {
                 refShape.PickUp();
                 candidateShape.Apply();
@@ -294,6 +291,30 @@ namespace PowerPointLabs.Utils
         {
             // Powerpoint displays at 72 dpi, while the picture stores in 96 dpi.
             return PowerPointPresentation.Current.SlideHeight / 72.0 * 96.0;
+        }
+
+        private static void SyncShapeLocation(Shape refShape, Shape candidateShape)
+        {
+            candidateShape.Left = refShape.Left;
+            candidateShape.Top = refShape.Top;
+        }
+
+        private static void SyncShapeRotation(Shape refShape, Shape candidateShape)
+        {
+            candidateShape.Rotation = refShape.Rotation;
+        }
+
+        private static void SyncShapeSize(Shape refShape, Shape candidateShape)
+        {
+            // unlock aspect ratio to enable size tweak
+            var candidateLockRatio = candidateShape.LockAspectRatio;
+
+            candidateShape.LockAspectRatio = MsoTriState.msoFalse;
+
+            candidateShape.Width = refShape.Width;
+            candidateShape.Height = refShape.Height;
+
+            candidateShape.LockAspectRatio = candidateLockRatio;
         }
         # endregion
     }
