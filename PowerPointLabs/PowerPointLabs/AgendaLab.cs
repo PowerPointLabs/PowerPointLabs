@@ -407,11 +407,10 @@ namespace PowerPointLabs
             {
                 lastLeft = 0;
                 lastTop += item.Height;
-
-                item.Top = lastTop;
             }
 
             item.Left = Math.Max(lastLeft, lastLeft + (delta - item.Width) / 2f);
+            item.Top = lastTop;
 
             if (item.Width > widest)
             {
