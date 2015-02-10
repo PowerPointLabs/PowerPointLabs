@@ -57,7 +57,7 @@ namespace PowerPointLabs
         {
             try
             {
-                if (!VerifyIsShapeRangeValid(shapeRange)) return null;
+                if (!VerifyIsShapeRangeValid(shapeRange, handleError)) return null;
 
                 var shape = GetShapeForSelection(shapeRange);
                 TakeScreenshotProxy(shape);
@@ -77,7 +77,7 @@ namespace PowerPointLabs
             }
         }
 
-        private static bool VerifyIsShapeRangeValid(PowerPoint.ShapeRange shapeRange)
+        private static bool VerifyIsShapeRangeValid(PowerPoint.ShapeRange shapeRange, bool handleError)
         {
             try
             {
@@ -95,8 +95,13 @@ namespace PowerPointLabs
             }
             catch (Exception e)
             {
-                MessageBox.Show(GetErrorMessageForErrorCode(e.Message), MessageBoxTitle);
-                return false;
+                if (handleError)
+                {
+                    MessageBox.Show(GetErrorMessageForErrorCode(e.Message), MessageBoxTitle);
+                    return false;
+                }
+
+                throw;
             }
         }
 

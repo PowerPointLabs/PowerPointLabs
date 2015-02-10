@@ -60,7 +60,19 @@ namespace PowerPointLabs.Models
             copyShapeRange.Visible = Core.MsoTriState.msoCTrue;
             oriShapeRange.Visible = Core.MsoTriState.msoCTrue;
 
-            return PrepareForeground(oriShapeRange, copyShapeRange, refSlide, newSlide);
+            PowerPointBgEffectSlide bgEffectSlide = null;
+
+            try
+            {
+                bgEffectSlide = PrepareForeground(oriShapeRange, copyShapeRange, refSlide, newSlide);
+            }
+            catch (InvalidOperationException e)
+            {
+                refSlide.Delete();
+                throw new InvalidOperationException(e.Message);
+            }
+
+            return bgEffectSlide;
         }
         # endregion
 
@@ -151,13 +163,6 @@ namespace PowerPointLabs.Models
             }
         }
 
-        private static bool IsOldShape(Shape shape)
-        {
-            // TODO: use more sophisticated way to determine if a shape is an old shape
-            return shape.Name.Length > 20 &&
-                   shape.Name.Contains("temp");
-        }
-
         private static PowerPointBgEffectSlide PrepareForeground(ShapeRange oriShapeRange, ShapeRange copyShapeRange,
                                                                  Slide refSlide, PowerPointSlide newSlide)
         {
@@ -204,18 +209,9 @@ namespace PowerPointLabs.Models
                 var errorMessage = CropToShape.GetErrorMessageForErrorCode(e.Message);
                 errorMessage = errorMessage.Replace("Crop To Shape", "Blur/Recolor Remainder");
 
-                foreach (var shape in refSlide.Shapes.Cast<Shape>().Where(IsOldShape).ToList())
-                {
-                    shape.Delete();
-                }
-
-                copyShapeRange.Cut();
-                refSlide.Shapes.Paste().Select();
                 newSlide.Delete();
 
-                MessageBox.Show(errorMessage);
-
-                return null;
+                throw new InvalidOperationException(errorMessage);
             }
         }
         # endregion
