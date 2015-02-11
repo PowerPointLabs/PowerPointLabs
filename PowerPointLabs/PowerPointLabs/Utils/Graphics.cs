@@ -114,12 +114,15 @@ namespace PowerPointLabs.Utils
         }
 
         public static void SyncShape(Shape refShape, Shape candidateShape,
-                                     bool pickupShapeFormat = true, bool pickupTextContent = true,
-                                     bool pickupTextFormat = true)
+                                     bool pickupShapeBasic = true, bool pickupShapeFormat = true,
+                                     bool pickupTextContent = true, bool pickupTextFormat = true)
         {
-            SyncShapeRotation(refShape, candidateShape);
-            SyncShapeSize(refShape, candidateShape);
-            SyncShapeLocation(refShape, candidateShape);
+            if (pickupShapeBasic)
+            {
+                SyncShapeRotation(refShape, candidateShape);
+                SyncShapeSize(refShape, candidateShape);
+                SyncShapeLocation(refShape, candidateShape);
+            }
 
             if ((pickupTextContent || pickupTextFormat) &&
                 refShape.HasTextFrame == MsoTriState.msoTrue &&

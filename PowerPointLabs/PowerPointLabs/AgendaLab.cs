@@ -84,7 +84,15 @@ namespace PowerPointLabs
                         return (Type)Enum.Parse(typeof(Type), type);
                     }
 
-                    if (slide.GetShapeWithName(PptLabsAgendaBeamShapeName).Count != 0)
+                    // here we try to find the first occurance, or potential occurance of beam type agenda.
+                    // A potential occurance of beam type agenda is a slide that contains a group shape which
+                    // contains a shape with PptLabsAgendaBeamBackgroundName as name. We need to do this since
+                    // a user may want to ungroup a beam agenda and change the item's format, after he re-group
+                    // the shape, the original name will be changed, and thus need to be renamed for easier
+                    // recognition.
+                    var beamShape = FindBeamShape(slide);
+
+                    if (beamShape != null)
                     {
                         return Type.Beam;
                     }
@@ -110,10 +118,11 @@ namespace PowerPointLabs
             settingDialog.ShowDialog();
         }
 
-        public static void GenerateAgenda(Type type, bool showLoadingDialog = true)
+        public static void GenerateAgenda(Type type, bool showLoadingDialog = true, bool confirmDelete = true,
+                                          List<int> beamId = null)
         {
             // agenda exists in current presentation
-            if (CurrentType != Type.None)
+            if (confirmDelete && CurrentType != Type.None)
             {
                 var confirm = MessageBox.Show(TextCollection.AgendaLabAgendaExistError,
                                               TextCollection.AgendaLabAgendaExistErrorCaption,
@@ -157,7 +166,7 @@ namespace PowerPointLabs
             switch (type)
             {
                 case Type.Beam:
-                    GenerateBeamAgenda(sections);
+                    GenerateBeamAgenda(sections, beamId);
                     break;
                 case Type.Bullet:
                     GenerateBulletAgenda(sections);
@@ -173,7 +182,7 @@ namespace PowerPointLabs
             }
         }
 
-        public static void RemoveAgenda()
+        public static void RemoveAgenda(bool all = false)
         {
             var type = CurrentType;
 
@@ -186,7 +195,7 @@ namespace PowerPointLabs
             switch (type)
             {
                 case Type.Beam:
-                    RemoveBeamAgenda();
+                    RemoveBeamAgenda(all);
                     break;
                 case Type.Bullet:
                     RemoveBulletAgenda();
@@ -214,9 +223,9 @@ namespace PowerPointLabs
          *************************************************************************************/
         public static void SynchronizeAgenda()
         {
-            _loadDialog = new LoadingDialog("Synchronizing...", "Agenda is getting synchronized, please wait...");
-            _loadDialog.Show();
-            _loadDialog.Refresh();
+//            _loadDialog = new LoadingDialog("Synchronizing...", "Agenda is getting synchronized, please wait...");
+//            _loadDialog.Show();
+//            _loadDialog.Refresh();
 
             var type = CurrentType;
 
@@ -230,33 +239,24 @@ namespace PowerPointLabs
             var currentPresentation = PowerPointPresentation.Current;
             var sections = currentPresentation.Sections.Where(section =>
                                                               section != PptLabsAgendaSectionName).Skip(1).ToList();
+
+            // ref object will be PowerPointSlide for Bullet and Visual type, while a
+            // Tuple<Shape, Shape> for Beam type
             var refSlide = FindReferenceSlide(type, sections[0]);
 
-            if (type == Type.Bullet)
-            {
-                PickupColorSettings();
-            }
-
-            refSlide.GetNativeSlide().Cut();
-
-            RemoveAgenda();
-
-            var firstSlide = PowerPointPresentation.Current.Slides[FindSectionIndex(sections[0])];
-            var dupSlide = firstSlide.Duplicate();
-            
-            refSlide = PowerPointSlide.FromSlideFactory(currentPresentation.Presentation.Slides.Paste(dupSlide.Index)[1]);
-
-            // regenerate slides
-            GenerateAgenda(type, false);
-
-            // delete protect slide
-            dupSlide.Delete();
+            PrepareSync(type, ref refSlide);
 
             if (type == Type.Beam)
             {
+                // for refslide, we need to record which section the refslide is in so that
+                // we could distinguish highlight item from normal item. Also, we need to 
+                // rename the shape here since copy-paste slide will clear slide's name
                 SyncAgendaBeam(refSlide);
+                refSlide.Delete();
                 return;
             }
+
+            // TODO: aggregate SyncAgendaVisual and SyncAgendaBullet, this Sync function too long
 
             // specially, we need to sync the end-of-agend slide for visual type
             if (type == Type.Visual)
@@ -292,7 +292,7 @@ namespace PowerPointLabs
             }
 
             refSlide.Delete();
-            _loadDialog.Dispose();
+//            _loadDialog.Dispose();
         }
 
         public static void UpdateBeamAgendaStyle(Direction direction)
@@ -449,14 +449,30 @@ namespace PowerPointLabs
             return slide.ID + "," + slide.Index + "," + slide.Name;
         }
 
+        private static Shape FindBeamShape(PowerPointSlide slide)
+        {
+            var grouped = slide.GetShapesWithTypeAndRule(MsoShapeType.msoGroup, new Regex(".+"));
+            var beamShape = grouped.FirstOrDefault(shape => shape.Name == PptLabsAgendaBeamShapeName) ??
+                            grouped.FirstOrDefault(shape => shape.GroupItems
+                                                                 .Cast<Shape>()
+                                                                 .Any(subItem => subItem.Name == PptLabsAgendaBeamBackgroundName));
+
+            if (beamShape != null &&
+                beamShape.Name != PptLabsAgendaBeamShapeName)
+            {
+                beamShape.Name = PptLabsAgendaBeamShapeName;
+            }
+
+            return beamShape;
+        }
+
         private static PowerPointSlide FindReferenceSlide(Type type, string firstSection)
         {
             if (type == Type.Beam)
             {
                 var slides = PowerPointPresentation.Current.Slides;
 
-                return slides.FirstOrDefault(slide => slide.GetShapeWithName(PptLabsAgendaBeamShapeName).Count != 0 ||
-                                                      slide.GetShapeWithName(PptLabsAgendaBeamBackgroundName).Count != 0);
+                return slides.FirstOrDefault(slide => slide.GetShapeWithName(PptLabsAgendaBeamShapeName).Count != 0);
             }
 
             return FindSectionStartSlide(firstSection, type);
@@ -552,12 +568,23 @@ namespace PowerPointLabs
             return sections[sections.Count - 1];
         }
 
-        private static void GenerateBeamAgenda(List<string> sections)
+        private static void GenerateBeamAgenda(List<string> sections, List<int> beamId = null)
         {
             var firstSectionIndex = FindSectionIndex(sections[0]);
-            var selectedSlides = PowerPointCurrentPresentationInfo.SelectedSlides
+            var slides = PowerPointPresentation.Current.Slides;
+            List<PowerPointSlide> selectedSlides;
+
+            if (beamId == null)
+            {
+                selectedSlides = PowerPointCurrentPresentationInfo.SelectedSlides
                                                                   .Where(slide => slide.Index >= firstSectionIndex)
                                                                   .ToList();
+            } else
+            {
+                selectedSlides = beamId.Select(id => slides.FirstOrDefault(slide => slide.ID == id)).ToList();
+            }
+
+            if (selectedSlides.Count < 1) return;
 
             PrepareBeamAgendaShapes(sections, selectedSlides[0]);
 
@@ -668,8 +695,6 @@ namespace PowerPointLabs
             var sectionNameSearchPattern = new Regex(sectionNameSearchPatternFormat);
             var slideCandidates = slides.Where(slide => sectionNameSearchPattern.IsMatch(slide.Name));
 
-            //TODO: what if the color scheme is not the same across the presentation?
-
             foreach (var slide in slideCandidates.Where(candidate => sectionNameSearchPattern.IsMatch(candidate.Name)))
             {
                 PickupColorFromSlide(slide);
@@ -774,6 +799,39 @@ namespace PowerPointLabs
             group.Cut();
         }
 
+        private static void PrepareSync(Type type, ref PowerPointSlide refSlide)
+        {
+            var slides = PowerPointPresentation.Current.Presentation.Slides;
+            var refSection = FindSlideSection(refSlide);
+            // specially handle the beam type removing since we need to update all old slides, but we need
+            // to know who are the old slides. Here we record down their id for later reference.
+            var beamSlideId =
+                PowerPointPresentation.Current.Slides.Where(slide => FindBeamShape(slide) != null).Select(
+                    slide => slide.ID).ToList();
+            
+            refSlide.GetNativeSlide().Copy();
+            RemoveAgenda(true);
+            refSlide = PowerPointSlide.FromSlideFactory(slides.Paste(1)[1]);
+
+            if (type == Type.Beam)
+            {
+                refSlide.Name = refSection;
+                
+                // regenerate slides, do not show loading dialog, do not confirm deletion, but generate only
+                // for sepcific id
+                GenerateAgenda(type, false, false, beamSlideId);
+            } else
+            {
+                if (type == Type.Bullet)
+                {
+                    PickupColorSettings();
+                }
+
+                // regenerate slides, do not show loading dialog, do not confirm deletion
+                GenerateAgenda(type, false, false);
+            }
+        }
+
         private static void PrepareVisualAgendaSlideCapture(IEnumerable<string> sections)
         {
             if (!Directory.Exists(SlideCapturePath))
@@ -861,24 +919,16 @@ namespace PowerPointLabs
 
         private static void RemoveBeamAgenda(bool all = false)
         {
-            if (!all)
-            {
-                var selectedSlides = PowerPointCurrentPresentationInfo.SelectedSlides;
+            var selectedSlides = all ? PowerPointPresentation.Current.Slides : 
+                                       PowerPointCurrentPresentationInfo.SelectedSlides;
 
-                foreach (var selectedSlide in selectedSlides)
-                {
-                    selectedSlide.DeleteShapeWithName(PptLabsAgendaBeamShapeName);
-                }
-            }
-            else
+            foreach (var selectedSlide in selectedSlides)
             {
-                var slides = PowerPointPresentation.Current.Slides;
+                var beamShape = FindBeamShape(selectedSlide);
 
-                foreach (var slide in slides.Where(slide => slide.GetShapeWithName(PptLabsAgendaBeamShapeName).Count != 0 ||
-                                                   slide.GetShapeWithName(PptLabsAgendaBeamBackgroundName).Count != 0))
+                if (beamShape != null)
                 {
-                    // TODO: to recognize ungrouped shpaes
-                    slide.DeleteShapeWithName(PptLabsAgendaBeamShapeName);
+                    beamShape.Delete();
                 }
             }
         }
@@ -909,26 +959,48 @@ namespace PowerPointLabs
 
         private static void SyncAgendaBeam(PowerPointSlide refSlide)
         {
-            var slides = PowerPointPresentation.Current.Slides;
+            var slides = PowerPointPresentation.Current.Slides.Skip(refSlide.Index);
+            var refBeamShape = FindBeamShape(refSlide);
+            var refSubIems = refBeamShape.GroupItems.Cast<Shape>().ToList();
+            var refHighlight = refSubIems.FirstOrDefault(shape => shape.Name == refSlide.Name);
+            var refNormal = refSubIems.FirstOrDefault(shape => shape.Name != refSlide.Name &&
+                                                               shape.Name != PptLabsAgendaBeamBackgroundName);
 
-            // TODO: what if the user ungroup the shape and then regroup? The name will be different then
             foreach (var slide in slides)
             {
-                if (slide == refSlide) continue;
+                var beamShape = FindBeamShape(slide);
 
-                var groupShape = slide.GetShapeWithName(PptLabsAgendaBeamShapeName);
-                var isBeamAgenda = groupShape.Count != 0 ||
-                                   slide.GetShapeWithName(PptLabsAgendaBeamBackgroundName).Count != 0;
-
-                if (!isBeamAgenda) continue;
+                if (beamShape == null) continue;
                 
-                if (groupShape.Count != 0)
+                try
                 {
-                    var shapes = groupShape[0].Ungroup();
+                    Utils.Graphics.SyncShape(refBeamShape, beamShape, pickupShapeFormat: false);
 
-                    SyncSingleAgendaGeneral(refSlide, slide);
+                    var subItems = beamShape.GroupItems.Cast<Shape>().ToList();
+                    var section = FindSlideSection(slide);
 
-                    shapes.Group();
+                    foreach (var item in subItems)
+                    {
+                        var correspond = refSubIems.FirstOrDefault(shape => shape.Name == item.Name);
+
+                        Utils.Graphics.SyncShape(correspond, item, pickupTextContent: false);
+
+                        if (item.Name == section)
+                        {
+                            // sync highlight item
+                            Utils.Graphics.SyncShape(refHighlight, item, pickupTextContent: false, pickupShapeBasic: false);
+                        }
+                        else
+                        if (item.Name == refSlide.Name)
+                        {
+                            // remove highlight item format and change to normal
+                            Utils.Graphics.SyncShape(refNormal, item, pickupTextContent: false, pickupShapeBasic: false);
+                        }
+                    }
+                }
+                catch (Exception e)
+                {
+                    MessageBox.Show(e.Message);
                 }
             }
         }
@@ -968,7 +1040,7 @@ namespace PowerPointLabs
             var refContentShape = refSlide.GetShapeWithName(PptLabsAgendaContentShapeName)[0];
             var candidateContentShape = candidate.GetShapeWithName(PptLabsAgendaContentShapeName)[0];
 
-            Utils.Graphics.SyncShape(refContentShape, candidateContentShape, false, false);
+            Utils.Graphics.SyncShape(refContentShape, candidateContentShape, pickupShapeFormat: false, pickupTextContent: false);
         }
 
         private static void SyncSingleAgendaGeneral(PowerPointSlide refSlide, PowerPointSlide candidate)
