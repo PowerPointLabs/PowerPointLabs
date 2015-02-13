@@ -1930,26 +1930,49 @@ namespace PowerPointLabs
         {
             var curSlide = PowerPointCurrentPresentationInfo.CurrentSlide;
             var selection = PowerPointCurrentPresentationInfo.CurrentSelection;
+            PowerPointSlide dupSlide = null;
 
             try
             {
                 var shapeRange = selection.ShapeRange;
+
+                if (shapeRange.Count != 0)
+                {
+                    dupSlide = curSlide.Duplicate();
+                }
+
                 shapeRange.Cut();
 
                 var effectSlide =
                     PowerPointBgEffectSlide.FromSlideFactory(curSlide) as PowerPointBgEffectSlide;
 
+                dupSlide.Delete();
                 PowerPointLabsGlobals.AddAckSlide();
 
                 return effectSlide;
             }
-            catch (COMException e)
+            catch (InvalidOperationException e)
             {
+                MessageBox.Show(e.Message);
+                return null;
+            }
+            catch (COMException)
+            {
+                if (dupSlide != null)
+                {
+                    dupSlide.Delete();
+                }
+
                 MessageBox.Show("Please select a shape");
                 return null;
             }
             catch (Exception e)
             {
+                if (dupSlide != null)
+                {
+                    dupSlide.Delete();
+                }
+                
                 ErrorDialogWrapper.ShowDialog("Error", e.Message, e);
                 return null;
             }
