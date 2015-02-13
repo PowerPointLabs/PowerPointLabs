@@ -292,7 +292,7 @@
                       getLabel="GetAgendaLabBulletAgendaSettingsButtonLabel"
                       getSupertip="GetAgendaLabBulletAgendaSettingsSupertip"
                       onAction="BulletAgendaSettingsClick"/>
-              <menu id="beamAgendaSettings"
+              <!--<menu id="beamAgendaSettings"
                     label="Beam Agenda Settings">
                 <button id="beamTopButton"
                         label="Top"
@@ -306,7 +306,7 @@
                 <button id="beamRightButton"
                         label="Right"
                         onAction="BeamAgendaRightStyleClick"/>
-              </menu>
+              </menu>-->
             </menu>
           </menu>
         </group>
