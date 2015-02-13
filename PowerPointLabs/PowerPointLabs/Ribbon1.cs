@@ -326,6 +326,10 @@ namespace PowerPointLabs
         {
             return TextCollection.AgendaLabVisualAgendaSupertip;
         }
+        public string GetAgendaLabBeamAgendaSupertip(Office.IRibbonControl control)
+        {
+            return TextCollection.AgendaLabBeamAgendaSupertip;
+        }
         public string GetAgendaLabUpdateAgendaSupertip(Office.IRibbonControl control)
         {
             return TextCollection.AgendaLabUpdateAgendaSupertip;
@@ -337,6 +341,10 @@ namespace PowerPointLabs
         public string GetAgendaLabAgendaSettingsSupertip(Office.IRibbonControl control)
         {
             return TextCollection.AgendaLabAgendaSettingsSupertip;
+        }
+        public string GetAgendaLabBulletAgendaSettingsSupertip(Office.IRibbonControl control)
+        {
+            return TextCollection.AgendaLabBulletAgendaSettingsSupertip;
         }
         
         public string GetHelpButtonSupertip(Office.IRibbonControl control)
@@ -521,6 +529,10 @@ namespace PowerPointLabs
         {
             return TextCollection.AgendaLabVisualAgendaButtonLabel;
         }
+        public string GetAgendaLabBeamAgendaButtonLabel(Office.IRibbonControl control)
+        {
+            return TextCollection.AgendaLabBeamAgendaButtonLabel;
+        }
         public string GetAgendaLabUpdateAgendaButtonLabel(Office.IRibbonControl control)
         {
             return TextCollection.AgendaLabUpdateAgendaButtonLabel;
@@ -532,6 +544,10 @@ namespace PowerPointLabs
         public string GetAgendaLabAgendaSettingsButtonLabel(Office.IRibbonControl control)
         {
             return TextCollection.AgendaLabAgendaSettingsButtonLabel;
+        }
+        public string GetAgendaLabBulletAgendaSettingsButtonLabel(Office.IRibbonControl control)
+        {
+            return TextCollection.AgendaLabBulletAgendaSettingsButtonLabel;
         }
 
         public string GetPPTLabsHelpGroupLabel(Office.IRibbonControl control)
@@ -2071,11 +2087,30 @@ namespace PowerPointLabs
         # endregion
 
         # region Feature: Agenda Lab
+        public void BeamAgendaClick(Office.IRibbonControl control)
+        {
+            Globals.ThisAddIn.Application.StartNewUndoEntry();
+
+            AgendaLab.GenerateAgenda(AgendaLab.Type.Beam);
+        }
+
         public void BulletPointAgendaClick(Office.IRibbonControl control)
         {
             Globals.ThisAddIn.Application.StartNewUndoEntry();
 
-            AgendaLab.GenerateAgenda(AgendaLab.AgendaType.Bullet);
+            AgendaLab.GenerateAgenda(AgendaLab.Type.Bullet);
+        }
+
+        public void VisualAgendaClick(Office.IRibbonControl control)
+        {
+            Globals.ThisAddIn.Application.StartNewUndoEntry();
+
+            AgendaLab.GenerateAgenda(AgendaLab.Type.Visual);
+        }
+
+        public void BulletAgendaSettingsClick(Office.IRibbonControl control)
+        {
+            AgendaLab.BulletAgendaSettings();
         }
 
         public void RemoveAgendaClick(Office.IRibbonControl control)
@@ -2089,19 +2124,27 @@ namespace PowerPointLabs
         {
             Globals.ThisAddIn.Application.StartNewUndoEntry();
 
-            AgendaLab.SyncrhonizeAgenda();
+            AgendaLab.SynchronizeAgenda();
         }
 
-        public void VisualAgendaClick(Office.IRibbonControl control)
+        public void BeamAgendaTopStyleClick(Office.IRibbonControl control)
         {
-            Globals.ThisAddIn.Application.StartNewUndoEntry();
-
-            AgendaLab.GenerateAgenda(AgendaLab.AgendaType.Visual);
+            AgendaLab.UpdateBeamAgendaStyle(AgendaLab.Direction.Top);
         }
 
-        public void AgendaSettingsClick(Office.IRibbonControl control)
+        public void BeamAgendaLeftStyleClick(Office.IRibbonControl control)
         {
-            AgendaLab.AgendaLabSettings();
+            AgendaLab.UpdateBeamAgendaStyle(AgendaLab.Direction.Left);
+        }
+
+        public void BeamAgendaRightStyleClick(Office.IRibbonControl control)
+        {
+            AgendaLab.UpdateBeamAgendaStyle(AgendaLab.Direction.Right);
+        }
+
+        public void BeamAgendaBottomStyleClick(Office.IRibbonControl control)
+        {
+            AgendaLab.UpdateBeamAgendaStyle(AgendaLab.Direction.Bottom);
         }
         # endregion
 

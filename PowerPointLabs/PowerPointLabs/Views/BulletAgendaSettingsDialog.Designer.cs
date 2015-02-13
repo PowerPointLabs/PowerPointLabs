@@ -44,7 +44,7 @@
             // highLightLabel
             // 
             this.highLightLabel.AutoSize = true;
-            this.highLightLabel.Location = new System.Drawing.Point(12, 15);
+            this.highLightLabel.Location = new System.Drawing.Point(12, 17);
             this.highLightLabel.Name = "highLightLabel";
             this.highLightLabel.Size = new System.Drawing.Size(95, 12);
             this.highLightLabel.TabIndex = 0;
@@ -53,7 +53,7 @@
             // dimColorLabel
             // 
             this.dimColorLabel.AutoSize = true;
-            this.dimColorLabel.Location = new System.Drawing.Point(12, 47);
+            this.dimColorLabel.Location = new System.Drawing.Point(12, 49);
             this.dimColorLabel.Name = "dimColorLabel";
             this.dimColorLabel.Size = new System.Drawing.Size(59, 12);
             this.dimColorLabel.TabIndex = 1;
@@ -104,7 +104,7 @@
             // defaultColorLabel
             // 
             this.defaultColorLabel.AutoSize = true;
-            this.defaultColorLabel.Location = new System.Drawing.Point(14, 83);
+            this.defaultColorLabel.Location = new System.Drawing.Point(12, 82);
             this.defaultColorLabel.Name = "defaultColorLabel";
             this.defaultColorLabel.Size = new System.Drawing.Size(83, 12);
             this.defaultColorLabel.TabIndex = 6;
@@ -143,7 +143,7 @@
             this.Name = "BulletAgendaSettingsDialog";
             this.ShowInTaskbar = false;
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
-            this.Text = "BulletAgendaSettingsDialog";
+            this.Text = "Bullet Agenda Settings";
             ((System.ComponentModel.ISupportInitialize)(this.dimColorBox)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.higlightColorBox)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.defaultColorBox)).EndInit();

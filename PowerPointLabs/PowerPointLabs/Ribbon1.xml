@@ -263,11 +263,16 @@
                     getLabel="GetAgendaLabBulletPointButtonLabel"
                     getSupertip="GetAgendaLabBulletPointSupertip"
                     onAction="BulletPointAgendaClick"/>
-            <button id="visualAgenda"
+            <!--<button id="visualAgenda"
                     imageMso="HappyFace"
                     getLabel="GetAgendaLabVisualAgendaButtonLabel"
                     getSupertip="GetAgendaLabVisualAgendaSupertip"
-                    onAction="VisualAgendaClick"/>
+                    onAction="VisualAgendaClick"/>-->
+            <button id="beamAgenda"
+                    imageMso="HappyFace"
+                    getLabel="GetAgendaLabBeamAgendaButtonLabel"
+                    getSupertip="GetAgendaLabBeamAgendaSupertip"
+                    onAction="BeamAgendaClick"/>
             <menuSeparator id="miscAgendaseparator" />
             <button id="removeAgenda"
                     imageMso="HappyFace"
@@ -279,11 +284,30 @@
                     getLabel="GetAgendaLabUpdateAgendaButtonLabel"
                     getSupertip="GetAgendaLabUpdateAgendaSupertip"
                     onAction="UpdateAgendaClick"/>
-            <button id="agendaSettings"
-                    imageMso="HappyFace"
-                    getLabel="GetAgendaLabAgendaSettingsButtonLabel"
-                    getSupertip="GetAgendaLabAgendaSettingsSupertip"
-                    onAction="AgendaSettingsClick"/>
+            <menu id="agendaSettings"
+                  imageMso="HappyFace"
+                  getLabel="GetAgendaLabAgendaSettingsButtonLabel"
+                  getSupertip="GetAgendaLabAgendaSettingsSupertip">
+              <button id="bulletAgendaSettings"
+                      getLabel="GetAgendaLabBulletAgendaSettingsButtonLabel"
+                      getSupertip="GetAgendaLabBulletAgendaSettingsSupertip"
+                      onAction="BulletAgendaSettingsClick"/>
+              <!--<menu id="beamAgendaSettings"
+                    label="Beam Agenda Settings">
+                <button id="beamTopButton"
+                        label="Top"
+                        onAction="BeamAgendaTopStyleClick"/>
+                <button id="beamLeftButton"
+                        label="Left"
+                        onAction="BeamAgendaLeftStyleClick"/>
+                <button id="beamBottomButton"
+                        label="Bottom"
+                        onAction="BeamAgendaBottomStyleClick"/>
+                <button id="beamRightButton"
+                        label="Right"
+                        onAction="BeamAgendaRightStyleClick"/>
+              </menu>-->
+            </menu>
           </menu>
         </group>
         <group id="PPTLabsHelp"
