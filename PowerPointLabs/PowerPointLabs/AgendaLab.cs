@@ -808,10 +808,19 @@ namespace PowerPointLabs
             var beamSlideId =
                 PowerPointPresentation.Current.Slides.Where(slide => FindBeamShape(slide) != null).Select(
                     slide => slide.ID).ToList();
+
+            // pick up color setting before we remove the agenda when the type is bullet
+            if (type == Type.Bullet)
+            {
+                PickupColorSettings();
+            }
             
             refSlide.GetNativeSlide().Copy();
+            var tempRefSlide = PowerPointSlide.FromSlideFactory(slides.Paste(1)[1]);
+            tempRefSlide.Design = refSlide.Design;
+
             RemoveAgenda(true);
-            refSlide = PowerPointSlide.FromSlideFactory(slides.Paste(1)[1]);
+            refSlide = tempRefSlide;
 
             if (type == Type.Beam)
             {
@@ -822,11 +831,6 @@ namespace PowerPointLabs
                 GenerateAgenda(type, false, false, beamSlideId);
             } else
             {
-                if (type == Type.Bullet)
-                {
-                    PickupColorSettings();
-                }
-
                 // regenerate slides, do not show loading dialog, do not confirm deletion
                 GenerateAgenda(type, false, false);
             }
