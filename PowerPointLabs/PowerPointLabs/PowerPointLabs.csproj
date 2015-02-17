@@ -41,7 +41,7 @@
     <PublishUrl>C:\Users\nevets\Desktop\PowerPointLabsPublish\</PublishUrl>
     <InstallUrl>http://www.comp.nus.edu.sg/~pptlabs/download/dev/</InstallUrl>
     <TargetCulture>en</TargetCulture>
-    <ApplicationVersion>2.0.0.0</ApplicationVersion>
+    <ApplicationVersion>2.2.0.0</ApplicationVersion>
     <AutoIncrementApplicationRevision>false</AutoIncrementApplicationRevision>
     <UpdateEnabled>true</UpdateEnabled>
     <UpdateInterval>0</UpdateInterval>
@@ -705,6 +705,27 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\MakeTransparent.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\AgendaLab.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\AgendaRemove.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\AgendaSettings.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\AgendaSidebar.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\AgendaSync.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\VisualAgenda.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\TextAgenda.png" />
   </ItemGroup>
   <!-- Include the build rules for a C# project. -->
   <PropertyGroup>
