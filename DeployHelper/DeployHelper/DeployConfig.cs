@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Diagnostics;
+using System.IO;
 
 namespace DeployHelper
 {
@@ -42,5 +44,49 @@ namespace DeployHelper
 
         public string ReleaseType;
         public string InstallerType;
+        public string ConfigVersion;
+        public string ReleaseAddress;
+        public string DevAddress;
+
+        public void VerifyConfig()
+        {
+            if (ReleaseType != "release" && ReleaseType != "dev")
+            {
+                Util.DisplayWarning(TextCollection.Const.ErrorInvalidConfig + " Release type not correct.", new Exception());
+            }
+
+            if (InstallerType != "online" && InstallerType != "offline")
+            {
+                Util.DisplayWarning(TextCollection.Const.ErrorInvalidConfig + " Installer type not correct.", new Exception());
+            }
+
+//            if (Version != ConfigVersion)
+//            {
+//                Util.DisplayWarning(TextCollection.Const.ErrorInvalidConfig + " Version number different.", new Exception());
+//            }
+
+            //auto-correct installation folder url
+            string argForInstallationFolderUrl = "-url=";
+            if (ReleaseType == "release" && InstallerType == "online")
+            {
+                argForInstallationFolderUrl += ReleaseAddress;
+            }
+            else if (ReleaseType == "dev" && InstallerType == "online")
+            {
+                argForInstallationFolderUrl += DevAddress;
+            }
+
+            var process = new Process
+            {
+                StartInfo =
+                {
+                    FileName = Path.Combine(DirCurrent, "setup.exe"),
+                    Arguments = argForInstallationFolderUrl,
+                    WindowStyle = ProcessWindowStyle.Hidden
+                }
+            };
+            process.Start();
+            process.WaitForExit();
+        }
     }
 }

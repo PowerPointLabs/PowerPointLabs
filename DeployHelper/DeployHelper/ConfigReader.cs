@@ -33,6 +33,9 @@ namespace DeployHelper
 
         private static string _releaseType;
         private static string _installerType;
+        private static string _configVersion;
+        private static string _releaseAddress;
+        private static string _devAddress;
 
         public ConfigReader()
         {
@@ -107,8 +110,11 @@ namespace DeployHelper
                 DirBuildVsto = _dirBuildVsto,
                 DirBuildConfig = _dirBuildConfig,
 
-                ReleaseType = _releaseType,
-                InstallerType = _installerType
+                ReleaseType = _releaseType.ToLower(),
+                InstallerType = _installerType.ToLower(),
+                ConfigVersion = _configVersion,
+                ReleaseAddress = _releaseAddress,
+                DevAddress = _devAddress
             };
             return config;
         }
@@ -185,6 +191,9 @@ namespace DeployHelper
                 var vstoNode = currentConfig.GetElementsByTagName("value");
                 _releaseType = vstoNode[0].InnerText;
                 _installerType = vstoNode[1].InnerText;
+                _configVersion = vstoNode[2].InnerText;
+                _releaseAddress = vstoNode[4].InnerText;
+                _devAddress = vstoNode[5].InnerText;
 
                 PrintInfo("Release Type: ", _releaseType);
                 PrintInfo("Installer Type: ", _installerType);
