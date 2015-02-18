@@ -223,9 +223,9 @@ namespace PowerPointLabs
          *************************************************************************************/
         public static void SynchronizeAgenda()
         {
-//            _loadDialog = new LoadingDialog("Synchronizing...", "Agenda is getting synchronized, please wait...");
-//            _loadDialog.Show();
-//            _loadDialog.Refresh();
+            _loadDialog = new LoadingDialog("Synchronizing...", "Agenda is getting synchronized, please wait...");
+            _loadDialog.Show();
+            _loadDialog.Refresh();
 
             var type = CurrentType;
 
@@ -240,59 +240,25 @@ namespace PowerPointLabs
             var sections = currentPresentation.Sections.Where(section =>
                                                               section != PptLabsAgendaSectionName).Skip(1).ToList();
 
-            // ref object will be PowerPointSlide for Bullet and Visual type, while a
-            // Tuple<Shape, Shape> for Beam type
             var refSlide = FindReferenceSlide(type, sections[0]);
 
             PrepareSync(type, ref refSlide);
 
-            if (type == Type.Beam)
+            switch (type)
             {
-                // for refslide, we need to record which section the refslide is in so that
-                // we could distinguish highlight item from normal item. Also, we need to 
-                // rename the shape here since copy-paste slide will clear slide's name
-                SyncAgendaBeam(refSlide);
-                refSlide.Delete();
-                return;
-            }
-
-            // TODO: aggregate SyncAgendaVisual and SyncAgendaBullet, this Sync function too long
-
-            // specially, we need to sync the end-of-agend slide for visual type
-            if (type == Type.Visual)
-            {
-                // delete all generated transition slides
-                foreach (var slide in currentPresentation.Slides.Where(slide => slide.Name.Contains("PPTLabsZoom")))
-                {
-                    slide.Delete();
-                }
-
-                var endOfAgenda = currentPresentation.Slides
-                                                     .FirstOrDefault(slide => slide.Name.Contains("EndOfAgenda"));
-
-                SyncAgendaVisual(refSlide, endOfAgenda, sections, sections.Count);
-            }
-
-            // here the section info is 0-based, and all sections need to be synced
-            for (var i = 0; i < sections.Count; i++)
-            {
-                var section = sections[i];
-                var startAgenda = FindSectionStartSlide(section, type);
-                var endAgenda = FindSectionEndSlide(section, type);
-
-                switch (CurrentType)
-                {
-                    case Type.Bullet:
-                        SyncAgendaBullet(refSlide, startAgenda, endAgenda);
-                        break;
-                    case Type.Visual:
-                        SyncAgendaVisual(refSlide, endAgenda, sections, i);
-                        break;
-                }
+                case Type.Beam:
+                    SyncAgendaBeam(refSlide);
+                    break;
+                case Type.Bullet:
+                    SyncAgendaBullet(sections, refSlide);
+                    break;
+                case Type.Visual:
+                    SyncAgendaVisual(sections, refSlide);
+                    break;
             }
 
             refSlide.Delete();
-//            _loadDialog.Dispose();
+            _loadDialog.Dispose();
         }
 
         public static void UpdateBeamAgendaStyle(Direction direction)
@@ -963,6 +929,10 @@ namespace PowerPointLabs
 
         private static void SyncAgendaBeam(PowerPointSlide refSlide)
         {
+            // for refslide, we need to record which section the refslide is in so that
+            // we could distinguish highlight item from normal item. Also, we need to 
+            // rename the shape here since copy-paste slide will clear slide's name
+
             var slides = PowerPointPresentation.Current.Slides.Skip(refSlide.Index);
             var refBeamShape = FindBeamShape(refSlide);
             var refSubIems = refBeamShape.GroupItems.Cast<Shape>().ToList();
@@ -975,62 +945,72 @@ namespace PowerPointLabs
                 var beamShape = FindBeamShape(slide);
 
                 if (beamShape == null) continue;
-                
-                try
+
+                Utils.Graphics.SyncShape(refBeamShape, beamShape, pickupShapeFormat: false);
+
+                var subItems = beamShape.GroupItems.Cast<Shape>().ToList();
+                var section = FindSlideSection(slide);
+
+                foreach (var item in subItems)
                 {
-                    Utils.Graphics.SyncShape(refBeamShape, beamShape, pickupShapeFormat: false);
+                    var correspond = refSubIems.FirstOrDefault(shape => shape.Name == item.Name);
 
-                    var subItems = beamShape.GroupItems.Cast<Shape>().ToList();
-                    var section = FindSlideSection(slide);
+                    Utils.Graphics.SyncShape(correspond, item, pickupTextContent: false);
 
-                    foreach (var item in subItems)
+                    if (item.Name == section)
                     {
-                        var correspond = refSubIems.FirstOrDefault(shape => shape.Name == item.Name);
-
-                        Utils.Graphics.SyncShape(correspond, item, pickupTextContent: false);
-
-                        if (item.Name == section)
-                        {
-                            // sync highlight item
-                            Utils.Graphics.SyncShape(refHighlight, item, pickupTextContent: false, pickupShapeBasic: false);
-                        }
-                        else
+                        // sync highlight item
+                        Utils.Graphics.SyncShape(refHighlight, item, pickupTextContent: false, pickupShapeBasic: false);
+                    }
+                    else
                         if (item.Name == refSlide.Name)
                         {
                             // remove highlight item format and change to normal
                             Utils.Graphics.SyncShape(refNormal, item, pickupTextContent: false, pickupShapeBasic: false);
                         }
-                    }
-                }
-                catch (Exception e)
-                {
-                    MessageBox.Show(e.Message);
                 }
             }
         }
 
-        private static void SyncAgendaBullet(PowerPointSlide refSlide, PowerPointSlide start, PowerPointSlide end)
+        private static void SyncAgendaBullet(List<string> sections, PowerPointSlide refSlide)
         {
-            SyncSingleAgendaGeneral(refSlide, start);
-            SyncSingleAgendaGeneral(refSlide, end);
+            foreach (var section in sections)
+            {
+                var start = FindSectionStartSlide(section, Type.Bullet);
+                var end = FindSectionEndSlide(section, Type.Bullet);
 
-            SyncSingleAgendaBullet(refSlide, start);
-            SyncSingleAgendaBullet(refSlide, end);
+                SyncSingleAgendaGeneral(refSlide, start);
+                SyncSingleAgendaGeneral(refSlide, end);
+
+                SyncSingleAgendaBullet(refSlide, start);
+                SyncSingleAgendaBullet(refSlide, end);
+            }
         }
 
-        private static void SyncAgendaVisual(PowerPointSlide refSlide, PowerPointSlide candidateSlide,
-                                             List<string> sections, int sectionIndex)
+        private static void SyncAgendaVisual(List<string> sections, PowerPointSlide refSlide)
         {
-            SyncSingleAgendaGeneral(refSlide, candidateSlide);
+            var currentPresentation = PowerPointPresentation.Current;
 
-            if (sectionIndex < sections.Count)
+            // delete all generated transition slides
+            foreach (var slide in currentPresentation.Slides.Where(slide => slide.Name.Contains("PPTLabsZoom")))
             {
-                GenerateVisualAgendaSlideZoomIn(candidateSlide, sections[sectionIndex]);
+                slide.Delete();
             }
 
-            if (sectionIndex > 0)
+            var endOfAgenda = currentPresentation.Slides
+                                                 .FirstOrDefault(slide => slide.Name.Contains("EndOfAgenda"));
+            var sectionCount = sections.Count;
+
+            SyncSingleAgendaGeneral(refSlide, endOfAgenda);
+            SyncSingleAgendaVisual(endOfAgenda, sections, sectionCount);
+
+            for (var i = 0; i < sectionCount; i++)
             {
-                GenerateVisualAgendaSlideZoomOut(candidateSlide, sections[sectionIndex - 1], (sectionIndex + 1) * 2);
+                var section = sections[i];
+                var endAgenda = FindSectionEndSlide(section, Type.Visual);
+
+                SyncSingleAgendaGeneral(refSlide, endAgenda);
+                SyncSingleAgendaVisual(endAgenda, sections, i);
             }
         }
 
@@ -1045,6 +1025,19 @@ namespace PowerPointLabs
             var candidateContentShape = candidate.GetShapeWithName(PptLabsAgendaContentShapeName)[0];
 
             Utils.Graphics.SyncShape(refContentShape, candidateContentShape, pickupShapeFormat: false, pickupTextContent: false);
+        }
+
+        private static void SyncSingleAgendaVisual(PowerPointSlide candidate, List<string> sections, int sectionIndex)
+        {
+            if (sectionIndex < sections.Count)
+            {
+                GenerateVisualAgendaSlideZoomIn(candidate, sections[sectionIndex]);
+            }
+
+            if (sectionIndex > 0)
+            {
+                GenerateVisualAgendaSlideZoomOut(candidate, sections[sectionIndex - 1], (sectionIndex + 1) * 2);
+            }
         }
 
         private static void SyncSingleAgendaGeneral(PowerPointSlide refSlide, PowerPointSlide candidate)
