@@ -22,6 +22,7 @@ namespace PowerPointLabs
         private const string PptLabsAgendaSectionName = "PptLabsAgendaSection";
         private const string PptLabsAgendaBeamBackgroundName = "PptLabsAgendaBeamBackground";
         private const string PptLabsAgendaBeamShapeName = "PptLabsAgendaBeamShape";
+        private const string PptLabsAgendaBeamHighlight = "PptLabsAgendaBeamHighlight";
 
         private const float VisualAgendaItemMargin = 0.05f;
 
@@ -32,6 +33,8 @@ namespace PowerPointLabs
         private static readonly string SlideCapturePath = Path.Combine(Path.GetTempPath(), "PowerPointLabs Temp");
 
         private static string _agendaText;
+
+        private static bool _beamOutdated;
 
         private static Color _bulletDefaultColor = Color.Black;
         private static Color _bulletHighlightColor = Color.Red;
@@ -182,7 +185,7 @@ namespace PowerPointLabs
             }
         }
 
-        public static void RemoveAgenda(bool all = false)
+        public static void RemoveAgenda(List<PowerPointSlide> candidates = null)
         {
             var type = CurrentType;
 
@@ -195,7 +198,8 @@ namespace PowerPointLabs
             switch (type)
             {
                 case Type.Beam:
-                    RemoveBeamAgenda(all);
+                    if (candidates == null) candidates = PowerPointCurrentPresentationInfo.SelectedSlides.ToList();
+                    RemoveBeamAgenda(candidates);
                     break;
                 case Type.Bullet:
                     RemoveBulletAgenda();
@@ -242,7 +246,14 @@ namespace PowerPointLabs
 
             var refSlide = FindReferenceSlide(type, sections[0]);
 
-            PrepareSync(type, ref refSlide);
+            try
+            {
+                PrepareSync(type, ref refSlide);
+            }
+            catch (Exception e)
+            {
+                MessageBox.Show(e.Message);
+            }
 
             switch (type)
             {
@@ -284,6 +295,7 @@ namespace PowerPointLabs
             if (currentTextBox != null)
             {
                 currentTextBox.TextFrame.TextRange.Font.Bold = MsoTriState.msoTrue;
+                currentTextBox.Name += " " + PptLabsAgendaBeamHighlight;
             }
 
             beams.Group().Name = PptLabsAgendaBeamShapeName;
@@ -410,9 +422,33 @@ namespace PowerPointLabs
             }
         }
 
+        private static void CheckBeamUpdate(PowerPointSlide refSlide, string refSection)
+        {
+            var beamShape = refSlide.GetShapeWithName(PptLabsAgendaBeamShapeName)[0];
+
+            // check if the section names have changed
+            var sections = PowerPointPresentation.Current.Sections.Skip(1);
+            var beamItems = beamShape.GroupItems.Cast<Shape>().ToList();
+
+            _beamOutdated = sections.Count(section => beamItems.All(item => item.Name != section && item.Name != section + " " + PptLabsAgendaBeamHighlight)) != 0;
+
+            refSlide.Name = refSection;
+        }
+
         private static string CreateInDocHyperLink(PowerPointSlide slide)
         {
             return slide.ID + "," + slide.Index + "," + slide.Name;
+        }
+
+        private static Shape FindBeamHighlight(List<Shape> beamItems)
+        {
+            return beamItems.FirstOrDefault(shape => shape.Name.EndsWith(PptLabsAgendaBeamHighlight));
+        }
+
+        private static Shape FindBeamNormal(List<Shape> beamItems)
+        {
+            return beamItems.FirstOrDefault(shape => !shape.Name.EndsWith(PptLabsAgendaBeamHighlight) &&
+                                                     shape.Name != PptLabsAgendaBeamBackgroundName);
         }
 
         private static Shape FindBeamShape(PowerPointSlide slide)
@@ -767,13 +803,11 @@ namespace PowerPointLabs
 
         private static void PrepareSync(Type type, ref PowerPointSlide refSlide)
         {
-            var slides = PowerPointPresentation.Current.Presentation.Slides;
+            var slides = PowerPointPresentation.Current.Slides;
             var refSection = FindSlideSection(refSlide);
             // specially handle the beam type removing since we need to update all old slides, but we need
             // to know who are the old slides. Here we record down their id for later reference.
-            var beamSlideId =
-                PowerPointPresentation.Current.Slides.Where(slide => FindBeamShape(slide) != null).Select(
-                    slide => slide.ID).ToList();
+            var beamSlideId = slides.Where(slide => FindBeamShape(slide) != null).Select(slide => slide.ID).ToList();
 
             // pick up color setting before we remove the agenda when the type is bullet
             if (type == Type.Bullet)
@@ -782,24 +816,20 @@ namespace PowerPointLabs
             }
             
             refSlide.GetNativeSlide().Copy();
-            var tempRefSlide = PowerPointSlide.FromSlideFactory(slides.Paste(1)[1]);
-            tempRefSlide.Design = refSlide.Design;
-
-            RemoveAgenda(true);
-            refSlide = tempRefSlide;
+            var refDesign = refSlide.Design;
+            refSlide = PowerPointSlide.FromSlideFactory(PowerPointPresentation.Current.Presentation.Slides.Paste(1)[1]);
+            refSlide.Design = refDesign;
 
             if (type == Type.Beam)
             {
-                refSlide.Name = refSection;
-                
-                // regenerate slides, do not show loading dialog, do not confirm deletion, but generate only
-                // for sepcific id
-                GenerateAgenda(type, false, false, beamSlideId);
-            } else
-            {
-                // regenerate slides, do not show loading dialog, do not confirm deletion
-                GenerateAgenda(type, false, false);
+                CheckBeamUpdate(refSlide, refSection);
             }
+
+            RemoveAgenda(slides);
+
+            // regenerate slides, do not show loading dialog, do not confirm deletion, for beam type, 
+            // generate only for sepcific id
+            GenerateAgenda(type, false, false, beamSlideId);
         }
 
         private static void PrepareVisualAgendaSlideCapture(IEnumerable<string> sections)
@@ -887,14 +917,11 @@ namespace PowerPointLabs
             textRange.Paragraphs(focusIndex).Font.Color.RGB = Utils.Graphics.ConvertColorToRgb(focusColor);
         }
 
-        private static void RemoveBeamAgenda(bool all = false)
+        private static void RemoveBeamAgenda(List<PowerPointSlide> candidates)
         {
-            var selectedSlides = all ? PowerPointPresentation.Current.Slides : 
-                                       PowerPointCurrentPresentationInfo.SelectedSlides;
-
-            foreach (var selectedSlide in selectedSlides)
+            foreach (var candidate in candidates)
             {
-                var beamShape = FindBeamShape(selectedSlide);
+                var beamShape = FindBeamShape(candidate);
 
                 if (beamShape != null)
                 {
@@ -929,16 +956,12 @@ namespace PowerPointLabs
 
         private static void SyncAgendaBeam(PowerPointSlide refSlide)
         {
-            // for refslide, we need to record which section the refslide is in so that
-            // we could distinguish highlight item from normal item. Also, we need to 
-            // rename the shape here since copy-paste slide will clear slide's name
-
             var slides = PowerPointPresentation.Current.Slides.Skip(refSlide.Index);
             var refBeamShape = FindBeamShape(refSlide);
             var refSubIems = refBeamShape.GroupItems.Cast<Shape>().ToList();
-            var refHighlight = refSubIems.FirstOrDefault(shape => shape.Name == refSlide.Name);
-            var refNormal = refSubIems.FirstOrDefault(shape => shape.Name != refSlide.Name &&
-                                                               shape.Name != PptLabsAgendaBeamBackgroundName);
+            var refHighlight = FindBeamHighlight(refSubIems);
+            var refNormal = FindBeamNormal(refSubIems);
+            var refBackground = refSubIems.FirstOrDefault(shape => shape.Name == PptLabsAgendaBeamBackgroundName);
 
             foreach (var slide in slides)
             {
@@ -953,21 +976,30 @@ namespace PowerPointLabs
 
                 foreach (var item in subItems)
                 {
-                    var correspond = refSubIems.FirstOrDefault(shape => shape.Name == item.Name);
-
-                    Utils.Graphics.SyncShape(correspond, item, pickupTextContent: false);
-
-                    if (item.Name == section)
+                    // specially deal with the background shape
+                    if (item.Name == PptLabsAgendaBeamBackgroundName)
                     {
-                        // sync highlight item
-                        Utils.Graphics.SyncShape(refHighlight, item, pickupTextContent: false, pickupShapeBasic: false);
+                        Utils.Graphics.SyncShape(refBackground, item, pickupTextContent: false);
                     }
                     else
-                        if (item.Name == refSlide.Name)
+                    {
+                        // for all items, we have 2 cases:
+                        // 1. if the sections have not been changed, we follow the reference for the layout and format;
+                        // 2. if the sections have been changed, we follow only the format, but not the layout
+                        var itemText = item.TextFrame.TextRange.Text;
+
+                        if (!_beamOutdated)
                         {
-                            // remove highlight item format and change to normal
-                            Utils.Graphics.SyncShape(refNormal, item, pickupTextContent: false, pickupShapeBasic: false);
+                            var oldItem = refSubIems.FirstOrDefault(shape => shape.TextFrame.TextRange.Text == itemText);
+
+                            // pick up layout first
+                            Utils.Graphics.SyncShape(oldItem, item, pickupShapeFormat: false,
+                                                     pickupTextContent: false, pickupTextFormat: false);
                         }
+
+                        Utils.Graphics.SyncShape(itemText == section ? refHighlight : refNormal, item,
+                                                 pickupShapeBasic: false, pickupTextContent: false);
+                    }
                 }
             }
         }
