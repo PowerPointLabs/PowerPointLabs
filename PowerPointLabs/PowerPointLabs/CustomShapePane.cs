@@ -150,7 +150,7 @@ namespace PowerPointLabs
             myShapeFlowLayout.MouseUp += FlowLayoutMouseUpHandler;
             myShapeFlowLayout.MouseMove += FlowLayoutMouseMoveHandler;
 
-            //myShapeFlowLayout.Paint += FlowLayoutPaintHandler;
+            singleShapeDownloadLink.LinkClicked += (s, e) => Process.Start(TextCollection.SingleShapeDownloadUrl);
         }
         # endregion
 
