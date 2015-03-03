@@ -983,6 +983,91 @@ namespace PowerPointLabs
             }
         }
 
+        public Bitmap GetAgendaLabImage(Office.IRibbonControl control)
+        {
+            try
+            {
+                return new Bitmap(Properties.Resources.AgendaLab);
+            }
+            catch (Exception e)
+            {
+                PowerPointLabsGlobals.LogException(e, "GetAgendaLabImage");
+                throw;
+            }
+        }
+        public Bitmap GetAgendaTextImage(Office.IRibbonControl control)
+        {
+            try
+            {
+                return new Bitmap(Properties.Resources.AgendaText);
+            }
+            catch (Exception e)
+            {
+                PowerPointLabsGlobals.LogException(e, "GetAgendaTextImage");
+                throw;
+            }
+        }
+        public Bitmap GetAgendaVisualImage(Office.IRibbonControl control)
+        {
+            try
+            {
+                return new Bitmap(Properties.Resources.AgendaVisual);
+            }
+            catch (Exception e)
+            {
+                PowerPointLabsGlobals.LogException(e, "GetAgendaVisualImage");
+                throw;
+            }
+        }
+        public Bitmap GetAgendaSidebarImage(Office.IRibbonControl control)
+        {
+            try
+            {
+                return new Bitmap(Properties.Resources.AgendaSidebar);
+            }
+            catch (Exception e)
+            {
+                PowerPointLabsGlobals.LogException(e, "GetAgendaSidebarImage");
+                throw;
+            }
+        }
+        public Bitmap GetAgendaRemoveImage(Office.IRibbonControl control)
+        {
+            try
+            {
+                return new Bitmap(Properties.Resources.AgendaRemove);
+            }
+            catch (Exception e)
+            {
+                PowerPointLabsGlobals.LogException(e, "GetAgendaRemoveImage");
+                throw;
+            }
+        }
+        public Bitmap GetAgendaSyncImage(Office.IRibbonControl control)
+        {
+            try
+            {
+                return new Bitmap(Properties.Resources.AgendaSync);
+            }
+            catch (Exception e)
+            {
+                PowerPointLabsGlobals.LogException(e, "GetAgendaSyncImage");
+                throw;
+            }
+        }
+        public Bitmap GetAgendaSettingsImage(Office.IRibbonControl control)
+        {
+            try
+            {
+                return new Bitmap(Properties.Resources.AgendaSettings);
+            }
+            catch (Exception e)
+            {
+                PowerPointLabsGlobals.LogException(e, "GetAgendaSettingsImage");
+                throw;
+            }
+        }
+
         public Bitmap GetAboutImage(Office.IRibbonControl control)
         {
             try
