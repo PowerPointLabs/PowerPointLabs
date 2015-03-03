@@ -381,7 +381,7 @@ namespace PowerPointLabs
         private static void AdjustBeamItemHorizontal(ref float lastLeft, ref float lastTop, ref float widest,
                                                      float delta, Shape item, Shape background)
         {
-            if (lastLeft >= PowerPointPresentation.Current.SlideWidth)
+            if (lastLeft + delta > PowerPointPresentation.Current.SlideWidth)
             {
                 lastLeft = 0;
                 lastTop += item.Height;
@@ -572,7 +572,7 @@ namespace PowerPointLabs
 
         private static void GenerateBeamAgenda(List<string> sections, List<int> beamId = null)
         {
-            var firstSectionIndex = FindSectionIndex(sections[0]);
+            var firstSectionIndex = FindSectionStart(FindSectionIndex(sections[0]));
             var slides = PowerPointPresentation.Current.Slides;
             List<PowerPointSlide> selectedSlides;
 
@@ -958,49 +958,10 @@ namespace PowerPointLabs
         {
             var slides = PowerPointPresentation.Current.Slides.Skip(refSlide.Index);
             var refBeamShape = FindBeamShape(refSlide);
-            var refSubIems = refBeamShape.GroupItems.Cast<Shape>().ToList();
-            var refHighlight = FindBeamHighlight(refSubIems);
-            var refNormal = FindBeamNormal(refSubIems);
-            var refBackground = refSubIems.FirstOrDefault(shape => shape.Name == PptLabsAgendaBeamBackgroundName);
 
             foreach (var slide in slides)
             {
-                var beamShape = FindBeamShape(slide);
-
-                if (beamShape == null) continue;
-
-                Utils.Graphics.SyncShape(refBeamShape, beamShape, pickupShapeFormat: false);
-
-                var subItems = beamShape.GroupItems.Cast<Shape>().ToList();
-                var section = FindSlideSection(slide);
-
-                foreach (var item in subItems)
-                {
-                    // specially deal with the background shape
-                    if (item.Name == PptLabsAgendaBeamBackgroundName)
-                    {
-                        Utils.Graphics.SyncShape(refBackground, item, pickupTextContent: false);
-                    }
-                    else
-                    {
-                        // for all items, we have 2 cases:
-                        // 1. if the sections have not been changed, we follow the reference for the layout and format;
-                        // 2. if the sections have been changed, we follow only the format, but not the layout
-                        var itemText = item.TextFrame.TextRange.Text;
-
-                        if (!_beamOutdated)
-                        {
-                            var oldItem = refSubIems.FirstOrDefault(shape => shape.TextFrame.TextRange.Text == itemText);
-
-                            // pick up layout first
-                            Utils.Graphics.SyncShape(oldItem, item, pickupShapeFormat: false,
-                                                     pickupTextContent: false, pickupTextFormat: false);
-                        }
-
-                        Utils.Graphics.SyncShape(itemText == section ? refHighlight : refNormal, item,
-                                                 pickupShapeBasic: false, pickupTextContent: false);
-                    }
-                }
+                SyncSingleAgendaBeam(slide, refBeamShape);
             }
         }
 
@@ -1043,6 +1004,74 @@ namespace PowerPointLabs
 
                 SyncSingleAgendaGeneral(refSlide, endAgenda);
                 SyncSingleAgendaVisual(endAgenda, sections, i);
+            }
+        }
+
+        private static void SyncSingleAgendaBeam(PowerPointSlide slide, Shape refBeamShape)
+        {
+            var refSubIems = refBeamShape.GroupItems.Cast<Shape>().ToList();
+            var refHighlight = FindBeamHighlight(refSubIems);
+            var refNormal = FindBeamNormal(refSubIems);
+            var refBackground = refSubIems.FirstOrDefault(shape => shape.Name == PptLabsAgendaBeamBackgroundName);
+            var beamShape = FindBeamShape(slide);
+
+            if (beamShape == null) return;
+
+            Utils.Graphics.SyncShape(refBeamShape, beamShape, pickupShapeFormat: false);
+
+            var subItems = beamShape.GroupItems.Cast<Shape>().ToList();
+            var section = FindSlideSection(slide);
+            var widest = 0f;
+
+            foreach (var item in subItems)
+            {
+                // specially deal with the background shape
+                if (item.Name == PptLabsAgendaBeamBackgroundName)
+                {
+                    Utils.Graphics.SyncShape(refBackground, item, pickupTextContent: false);
+                    item.Width = PowerPointPresentation.Current.SlideWidth;
+                }
+                else
+                {
+                    // for all items, we have 2 cases:
+                    // 1. if the sections have not been changed, we follow the reference for the layout and format;
+                    // 2. if the sections have been changed, we follow only the format, but not the layout
+                    var itemText = item.TextFrame.TextRange.Text;
+
+                    if (!_beamOutdated)
+                    {
+                        var oldItem = refSubIems.FirstOrDefault(shape => shape.TextFrame.TextRange.Text == itemText);
+
+                        // pick up layout first
+                        Utils.Graphics.SyncShape(oldItem, item, pickupShapeFormat: false,
+                                                 pickupTextContent: false, pickupTextFormat: false);
+                    }
+
+                    Utils.Graphics.SyncShape(itemText == section ? refHighlight : refNormal, item,
+                                             pickupShapeBasic: false, pickupTextContent: false);
+
+                    widest = Math.Max(widest, item.Width);
+                }
+            }
+
+            if (_beamOutdated)
+            {
+                var lastLeft = 0f;
+                var lastTop = 0f;
+
+                var delta = Math.Max(widest, PowerPointPresentation.Current.SlideWidth / (subItems.Count - 1));
+                var background = subItems.FirstOrDefault(shape => shape.Name == PptLabsAgendaBeamBackgroundName);
+
+                if (background != null)
+                {
+                    background.Height = 0;
+                }
+
+                foreach (var item in subItems.Where(shape => shape.Name != PptLabsAgendaBeamBackgroundName))
+                {
+                    // TODO: adjust previous line when lastTop increases
+                    AdjustBeamItemHorizontal(ref lastLeft, ref lastTop, ref widest, delta, item, background);
+                }
             }
         }
 

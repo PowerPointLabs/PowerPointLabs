@@ -263,11 +263,11 @@
                     getLabel="GetAgendaLabBulletPointButtonLabel"
                     getSupertip="GetAgendaLabBulletPointSupertip"
                     onAction="BulletPointAgendaClick"/>
-            <!--<button id="visualAgenda"
+            <button id="visualAgenda"
                     getImage="GetAgendaVisualImage"
                     getLabel="GetAgendaLabVisualAgendaButtonLabel"
                     getSupertip="GetAgendaLabVisualAgendaSupertip"
-                    onAction="VisualAgendaClick"/>-->
+                    onAction="VisualAgendaClick"/>
             <button id="beamAgenda"
                     getImage="GetAgendaSidebarImage"
                     getLabel="GetAgendaLabBeamAgendaButtonLabel"
