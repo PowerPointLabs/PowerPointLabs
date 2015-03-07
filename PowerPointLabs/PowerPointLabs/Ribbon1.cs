@@ -504,6 +504,10 @@ namespace PowerPointLabs
         {
             return TextCollection.EffectsLabBlurRemainderButtonLabel;
         }
+        public string GetEffectsLabBlurAllButtonLabel(Office.IRibbonControl control)
+        {
+            return TextCollection.EffectsLabBlurAllButtonLabel;
+        }
         public string GetEffectsLabRecolorRemainderButtonLabel(Office.IRibbonControl control)
         {
             return TextCollection.EffectsLabRecolorRemainderButtonLabel;
@@ -1834,6 +1838,17 @@ namespace PowerPointLabs
             }
         }
 
+        public void BlurAllBackgroundEffectClick(Office.IRibbonControl control)
+        {
+            Globals.ThisAddIn.Application.StartNewUndoEntry();
+
+            var effectSlide = GenerateEffectSlide(false);
+
+            if (effectSlide == null) return;
+
+            effectSlide.BlurBackground();
+        }
+
         public void BlurBackgroundEffectClick(Office.IRibbonControl control)
         {
             Globals.ThisAddIn.Application.StartNewUndoEntry();
@@ -1926,7 +1941,7 @@ namespace PowerPointLabs
             shape.LockAspectRatio = Office.MsoTriState.msoTrue;
         }
 
-        private PowerPointBgEffectSlide GenerateEffectSlide()
+        private PowerPointBgEffectSlide GenerateEffectSlide(bool selectIsCover = true)
         {
             var curSlide = PowerPointCurrentPresentationInfo.CurrentSlide;
             var selection = PowerPointCurrentPresentationInfo.CurrentSelection;
@@ -1943,10 +1958,13 @@ namespace PowerPointLabs
 
                 shapeRange.Cut();
 
-                var effectSlide =
-                    PowerPointBgEffectSlide.FromSlideFactory(curSlide) as PowerPointBgEffectSlide;
+                var effectSlide = PowerPointBgEffectSlide.BgEffectFactory(curSlide.GetNativeSlide(), selectIsCover);
 
-                dupSlide.Delete();
+                if (dupSlide != null)
+                {
+                    dupSlide.Delete();
+                }
+                
                 PowerPointLabsGlobals.AddAckSlide();
 
                 return effectSlide;
