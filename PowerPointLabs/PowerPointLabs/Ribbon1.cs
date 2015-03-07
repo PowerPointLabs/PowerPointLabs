@@ -60,6 +60,9 @@ namespace PowerPointLabs
 
         public bool EmbedAudioVisible = true;
         public bool RecorderPaneVisible = false;
+        
+        // TODO: if this really need public
+        private bool _effectsLabSelectionIsCover = true;
 
         private bool _previewCurrentSlide;
         
@@ -1838,17 +1841,6 @@ namespace PowerPointLabs
             }
         }
 
-        public void BlurAllBackgroundEffectClick(Office.IRibbonControl control)
-        {
-            Globals.ThisAddIn.Application.StartNewUndoEntry();
-
-            var effectSlide = GenerateEffectSlide(false);
-
-            if (effectSlide == null) return;
-
-            effectSlide.BlurBackground();
-        }
-
         public void BlurBackgroundEffectClick(Office.IRibbonControl control)
         {
             Globals.ThisAddIn.Application.StartNewUndoEntry();
@@ -1913,6 +1905,14 @@ namespace PowerPointLabs
             TransparentEffect(selection.ShapeRange);
         }
 
+        public void EffectsLabSettingsButtonClick(Office.IRibbonControl control)
+        {
+            var effectsLabSettingsDialog = new EffectsLabSettings(_effectsLabSelectionIsCover);
+            effectsLabSettingsDialog.SettingsHandler += EffectsLabSettingChangedHandler;
+            effectsLabSettingsDialog.ShowDialog();
+            effectsLabSettingsDialog.Dispose();
+        }
+
         private void MagnifyGlassEffect(PowerPoint.Shape shape, float ratio)
         {
             var delta = 0.5f * (ratio - 1);
@@ -1941,7 +1941,7 @@ namespace PowerPointLabs
             shape.LockAspectRatio = Office.MsoTriState.msoTrue;
         }
 
-        private PowerPointBgEffectSlide GenerateEffectSlide(bool selectIsCover = true)
+        private PowerPointBgEffectSlide GenerateEffectSlide()
         {
             var curSlide = PowerPointCurrentPresentationInfo.CurrentSlide;
             var selection = PowerPointCurrentPresentationInfo.CurrentSelection;
@@ -1958,7 +1958,7 @@ namespace PowerPointLabs
 
                 shapeRange.Cut();
 
-                var effectSlide = PowerPointBgEffectSlide.BgEffectFactory(curSlide.GetNativeSlide(), selectIsCover);
+                var effectSlide = PowerPointBgEffectSlide.BgEffectFactory(curSlide.GetNativeSlide(), _effectsLabSelectionIsCover);
 
                 if (dupSlide != null)
                 {
@@ -2086,6 +2086,10 @@ namespace PowerPointLabs
             shape.Line.Transparency = 0.5f;
         }
 
+        private void EffectsLabSettingChangedHandler(bool isCover)
+        {
+            _effectsLabSelectionIsCover = isCover;
+        }
         # endregion
 
         # region Feature: Agenda Lab

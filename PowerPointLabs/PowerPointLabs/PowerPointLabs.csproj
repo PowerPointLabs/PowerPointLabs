@@ -293,6 +293,12 @@
       <DependentUpon>BulletAgendaSettingsDialog.cs</DependentUpon>
     </Compile>
     <Compile Include="Views\CustomPaintTextBox.cs" />
+    <Compile Include="Views\EffectsLabSettings.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Views\EffectsLabSettings.Designer.cs">
+      <DependentUpon>EffectsLabSettings.cs</DependentUpon>
+    </Compile>
     <Compile Include="Views\ErrorDialogWrapper.cs" />
     <Compile Include="FitToSlide.cs" />
     <Compile Include="HighlightTextFragments.cs" />
@@ -471,6 +477,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Views\BulletAgendaSettingsDialog.resx">
       <DependentUpon>BulletAgendaSettingsDialog.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Views\EffectsLabSettings.resx">
+      <DependentUpon>EffectsLabSettings.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Views\LoadingDialog.resx">
       <DependentUpon>LoadingDialog.cs</DependentUpon>
