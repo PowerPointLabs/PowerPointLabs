@@ -430,12 +430,7 @@
     <None Include="Resources\EyeDropper.cur" />
     <None Include="Resources\HighlightWords.png" />
     <None Include="Resources\Saturation-icon_18x18.png" />
-    <None Include="Resources\Saturation-icon_20x20.png" />
-    <None Include="Resources\Saturation-icon_23x23.png" />
-    <None Include="Resources\Saturation-icon_25x25.png" />
     <None Include="Resources\Brightness-icon_25x25.png" />
-    <None Include="Resources\Saturation_icon.png" />
-    <None Include="Resources\Brightness_icon.png" />
     <None Include="Resources\Load_icon.png" />
     <None Include="Resources\Clear_icon.png" />
     <None Include="Resources\Apply_icon.png" />
@@ -444,22 +439,12 @@
     <None Include="Resources\FillColor_icon.png" />
     <None Include="Resources\LineColor_icon.png" />
     <None Include="Resources\TextColor_icon.png" />
-    <None Include="Resources\Saturation-icon.png" />
-    <None Include="Resources\Reload-icon.png" />
-    <None Include="Resources\Load-icon.png" />
-    <None Include="Resources\LineColor-Icon.png" />
-    <None Include="Resources\Fill-icon.png" />
-    <None Include="Resources\Clear-icon.png" />
-    <None Include="Resources\Brightness-icon.png" />
-    <None Include="Resources\TextColor-icon.png" />
     <None Include="Resources\refresh-icon.png" />
     <None Include="Resources\ShapesLab.png" />
     <None Include="Resources\ColorsLab.png" />
     <None Include="Resources\Eyedropper-icon.png" />
-    <None Include="Resources\apply-icon.png" />
     <None Include="Resources\delete-icon.png" />
     <None Include="Resources\down-icon.png" />
-    <None Include="Resources\save-icon.png" />
     <None Include="Resources\Palette-icon.png" />
     <None Include="Resources\Paint-icon.png" />
     <None Include="Resources\Technical-Pen-icon.png" />
@@ -669,9 +654,6 @@
     <None Include="Resources\CutOutShapeMenu.png" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="Resources\MagnifyContext.png" />
-  </ItemGroup>
-  <ItemGroup>
     <None Include="Resources\Magnify.png" />
   </ItemGroup>
   <ItemGroup>
@@ -721,12 +703,6 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\AgendaSync.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Resources\VisualAgenda.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Resources\TextAgenda.png" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\AgendaText.png" />
