@@ -1145,12 +1145,12 @@ namespace PowerPointLabs
             }
         }
 
-        private static void UpdateColorScheme(PowerPointSlide slide, string section, bool isEnd)
+        private static void UpdateColorScheme(PowerPointSlide slide, string section)
         {
             var contentPlaceHolder = slide.GetShapeWithName(PptLabsAgendaContentShapeName)[0];
             var textRange = contentPlaceHolder.TextFrame.TextRange;
             var focusIndex = FindSectionIndex(section) - 1;
-            var focusColor = isEnd ? _bulletDimColor : _bulletHighlightColor;
+            var focusColor = _bulletHighlightColor;
 
             RecolorTextRange(textRange, focusIndex, focusColor);
         }
@@ -1163,6 +1163,8 @@ namespace PowerPointLabs
             _bulletDimColor = dimColor;
             _bulletDefaultColor = defaultColor;
 
+            // TODO: take care of section update
+
             var sections = PowerPointPresentation.Current.Sections;
             var type = CurrentType;
 
@@ -1174,8 +1176,8 @@ namespace PowerPointLabs
                 var startAgenda = FindSectionStartSlide(section, type);
                 var endAgenda = FindSectionEndSlide(section, type);
 
-                UpdateColorScheme(startAgenda, section, false);
-                UpdateColorScheme(endAgenda, section, true);
+                UpdateColorScheme(startAgenda, section);
+                UpdateColorScheme(endAgenda, section);
             }
         }
         # endregion
