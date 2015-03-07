@@ -246,14 +246,7 @@ namespace PowerPointLabs
 
             var refSlide = FindReferenceSlide(type, sections[0]);
 
-            try
-            {
-                PrepareSync(type, ref refSlide);
-            }
-            catch (Exception e)
-            {
-                MessageBox.Show(e.Message);
-            }
+            PrepareSync(type, ref refSlide);
 
             switch (type)
             {
@@ -427,10 +420,16 @@ namespace PowerPointLabs
             var beamShape = refSlide.GetShapeWithName(PptLabsAgendaBeamShapeName)[0];
 
             // check if the section names have changed
-            var sections = PowerPointPresentation.Current.Sections.Skip(1);
+            var sections = PowerPointPresentation.Current.Sections.Skip(1).ToList();
             var beamItems = beamShape.GroupItems.Cast<Shape>().ToList();
 
-            _beamOutdated = sections.Count(section => beamItems.All(item => item.Name != section && item.Name != section + " " + PptLabsAgendaBeamHighlight)) != 0;
+            _beamOutdated = sections.Count != beamItems.Count ||
+                            sections.Count(
+                                section =>
+                                beamItems.All(
+                                    item =>
+                                    item.Name != section && item.Name != section + " " + PptLabsAgendaBeamHighlight)) !=
+                            0;
 
             refSlide.Name = refSection;
         }
