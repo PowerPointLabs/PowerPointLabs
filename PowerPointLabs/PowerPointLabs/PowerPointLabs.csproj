@@ -261,11 +261,6 @@
     <Compile Include="CropToShape.cs" />
     <Compile Include="DataSources\ShapesLabSettingsDataSource.cs" />
     <Compile Include="Models\PowerPointBgEffectSlide.cs" />
-    <Compile Include="Properties\Resources.Designer.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>Resources.resx</DependentUpon>
-    </Compile>
     <Compile Include="LabeledThumbnail.cs">
       <SubType>UserControl</SubType>
     </Compile>
@@ -280,6 +275,11 @@
     </Compile>
     <Compile Include="Models\PowerPointPresentation.cs" />
     <Compile Include="Models\PowerPointShapeGalleryPresentation.cs" />
+    <Compile Include="Properties\Resources.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Resources.resx</DependentUpon>
+    </Compile>
     <Compile Include="Settings.cs" />
     <Compile Include="ShapesLabConfig.cs" />
     <Compile Include="TextCollection.cs" />
@@ -727,6 +727,12 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\TextAgenda.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\AgendaText.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\AgendaVisual.png" />
   </ItemGroup>
   <!-- Include the build rules for a C# project. -->
   <PropertyGroup>
