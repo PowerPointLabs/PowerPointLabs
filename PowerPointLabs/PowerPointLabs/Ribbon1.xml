@@ -230,7 +230,7 @@
                     getImage="GetMagnifyImage"
                     getSupertip="GetEffectsLabMagnifyGlassSupertip"
                     onAction="MagnifyGlassEffectClick"/>
-            <button id="blurBackgroundEffect"
+            <button id="blurRemainderEffect"
                     getLabel="GetEffectsLabBlurRemainderButtonLabel"
                     getImage="GetBlurRemainderImage"
                     getSupertip="GetEffectsLabBlurBackgroundSupertip"
@@ -252,6 +252,11 @@
                       label="Sepia"
                       onAction="SepiaBackgroundEffectClick"/>
             </menu>
+            <menuSeparator id="effectSettingsSeparator"/>
+            <button id="effectsLabSettings"
+                    label="Effects Lab Settings"
+                    imageMso="HappyFace"
+                    onAction="EffectsLabSettingsButtonClick"/>
           </menu>
           <menu id="AgendaLabsMenu"
                 getLabel="GetAgendaLabButtonLabel"

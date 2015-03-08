@@ -20,12 +20,7 @@ namespace PowerPointLabs.Models
             AddPowerPointLabsIndicator().ZOrder(Core.MsoZOrderCmd.msoBringToFront);
         }
 
-        public static PowerPointSlide FromSlideFactory(PowerPointSlide refSlide)
-        {
-            return FromSlideFactory(refSlide.GetNativeSlide());
-        }
-
-        public new static PowerPointSlide FromSlideFactory(Slide refSlide)
+        public static PowerPointBgEffectSlide BgEffectFactory(Slide refSlide, bool coverShape = true)
         {
             if (refSlide == null)
             {
@@ -38,14 +33,14 @@ namespace PowerPointLabs.Models
             // preprocess the shapes, eliminate animations for shapes
             foreach (Shape shape in oriShapeRange)
             {
-                PowerPointSlide.FromSlideFactory(refSlide).RemoveAnimationsForShape(shape);
+                FromSlideFactory(refSlide).RemoveAnimationsForShape(shape);
             }
 
             // TODO: make use of PowerPointLabs.Presentation Model!!!
             // cut the original shape cover again and duplicate the slide
             // here the slide will be duplicated without the original shape cover
             oriShapeRange.Cut();
-            var newSlide = PowerPointSlide.FromSlideFactory(refSlide.Duplicate()[1]);
+            var newSlide = FromSlideFactory(refSlide.Duplicate()[1]);
             
             // get a copy of original cover shapes
             var copyShapeRange = newSlide.Shapes.Paste();
@@ -60,11 +55,17 @@ namespace PowerPointLabs.Models
             copyShapeRange.Visible = Core.MsoTriState.msoCTrue;
             oriShapeRange.Visible = Core.MsoTriState.msoCTrue;
 
-            PowerPointBgEffectSlide bgEffectSlide = null;
+            newSlide.Transition.EntryEffect = PpEntryEffect.ppEffectFadeSmoothly;
+            newSlide.Transition.Duration = 0.5f;
+
+            var bgEffectSlide = new PowerPointBgEffectSlide(newSlide.GetNativeSlide());
 
             try
             {
-                bgEffectSlide = PrepareForeground(oriShapeRange, copyShapeRange, refSlide, newSlide);
+                if (coverShape)
+                {
+                    bgEffectSlide = PrepareForeground(oriShapeRange, copyShapeRange, refSlide, newSlide);
+                }
             }
             catch (InvalidOperationException e)
             {
@@ -77,6 +78,11 @@ namespace PowerPointLabs.Models
         # endregion
 
         # region API
+        public void BlurAllBackground()
+        {
+            AddBackgroundImage(null);
+        }
+
         public void BlurBackground()
         {
             AddBackgroundImage(null);

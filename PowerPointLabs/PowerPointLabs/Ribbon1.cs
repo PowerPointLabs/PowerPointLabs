@@ -60,6 +60,9 @@ namespace PowerPointLabs
 
         public bool EmbedAudioVisible = true;
         public bool RecorderPaneVisible = false;
+        
+        // TODO: if this really need public
+        private bool _effectsLabSelectionIsCover = true;
 
         private bool _previewCurrentSlide;
         
@@ -511,6 +514,10 @@ namespace PowerPointLabs
         public string GetEffectsLabBlurRemainderButtonLabel(Office.IRibbonControl control)
         {
             return TextCollection.EffectsLabBlurRemainderButtonLabel;
+        }
+        public string GetEffectsLabBlurAllButtonLabel(Office.IRibbonControl control)
+        {
+            return TextCollection.EffectsLabBlurAllButtonLabel;
         }
         public string GetEffectsLabRecolorRemainderButtonLabel(Office.IRibbonControl control)
         {
@@ -1999,6 +2006,14 @@ namespace PowerPointLabs
             TransparentEffect(selection.ShapeRange);
         }
 
+        public void EffectsLabSettingsButtonClick(Office.IRibbonControl control)
+        {
+            var effectsLabSettingsDialog = new EffectsLabSettings(_effectsLabSelectionIsCover);
+            effectsLabSettingsDialog.SettingsHandler += EffectsLabSettingChangedHandler;
+            effectsLabSettingsDialog.ShowDialog();
+            effectsLabSettingsDialog.Dispose();
+        }
+
         private void MagnifyGlassEffect(PowerPoint.Shape shape, float ratio)
         {
             var delta = 0.5f * (ratio - 1);
@@ -2044,10 +2059,13 @@ namespace PowerPointLabs
 
                 shapeRange.Cut();
 
-                var effectSlide =
-                    PowerPointBgEffectSlide.FromSlideFactory(curSlide) as PowerPointBgEffectSlide;
+                var effectSlide = PowerPointBgEffectSlide.BgEffectFactory(curSlide.GetNativeSlide(), _effectsLabSelectionIsCover);
 
-                dupSlide.Delete();
+                if (dupSlide != null)
+                {
+                    dupSlide.Delete();
+                }
+                
                 PowerPointLabsGlobals.AddAckSlide();
 
                 return effectSlide;
@@ -2169,6 +2187,10 @@ namespace PowerPointLabs
             shape.Line.Transparency = 0.5f;
         }
 
+        private void EffectsLabSettingChangedHandler(bool isCover)
+        {
+            _effectsLabSelectionIsCover = isCover;
+        }
         # endregion
 
         # region Feature: Agenda Lab
