@@ -246,14 +246,7 @@ namespace PowerPointLabs
 
             var refSlide = FindReferenceSlide(type, sections[0]);
 
-            try
-            {
-                PrepareSync(type, ref refSlide);
-            }
-            catch (Exception e)
-            {
-                MessageBox.Show(e.Message);
-            }
+            PrepareSync(type, ref refSlide);
 
             switch (type)
             {
@@ -427,10 +420,16 @@ namespace PowerPointLabs
             var beamShape = refSlide.GetShapeWithName(PptLabsAgendaBeamShapeName)[0];
 
             // check if the section names have changed
-            var sections = PowerPointPresentation.Current.Sections.Skip(1);
+            var sections = PowerPointPresentation.Current.Sections.Skip(1).ToList();
             var beamItems = beamShape.GroupItems.Cast<Shape>().ToList();
 
-            _beamOutdated = sections.Count(section => beamItems.All(item => item.Name != section && item.Name != section + " " + PptLabsAgendaBeamHighlight)) != 0;
+            _beamOutdated = sections.Count != beamItems.Count ||
+                            sections.Count(
+                                section =>
+                                beamItems.All(
+                                    item =>
+                                    item.Name != section && item.Name != section + " " + PptLabsAgendaBeamHighlight)) !=
+                            0;
 
             refSlide.Name = refSection;
         }
@@ -1146,12 +1145,12 @@ namespace PowerPointLabs
             }
         }
 
-        private static void UpdateColorScheme(PowerPointSlide slide, string section, bool isEnd)
+        private static void UpdateColorScheme(PowerPointSlide slide, string section)
         {
             var contentPlaceHolder = slide.GetShapeWithName(PptLabsAgendaContentShapeName)[0];
             var textRange = contentPlaceHolder.TextFrame.TextRange;
             var focusIndex = FindSectionIndex(section) - 1;
-            var focusColor = isEnd ? _bulletDimColor : _bulletHighlightColor;
+            var focusColor = _bulletHighlightColor;
 
             RecolorTextRange(textRange, focusIndex, focusColor);
         }
@@ -1164,6 +1163,8 @@ namespace PowerPointLabs
             _bulletDimColor = dimColor;
             _bulletDefaultColor = defaultColor;
 
+            // TODO: take care of section update
+
             var sections = PowerPointPresentation.Current.Sections;
             var type = CurrentType;
 
@@ -1175,8 +1176,8 @@ namespace PowerPointLabs
                 var startAgenda = FindSectionStartSlide(section, type);
                 var endAgenda = FindSectionEndSlide(section, type);
 
-                UpdateColorScheme(startAgenda, section, false);
-                UpdateColorScheme(endAgenda, section, true);
+                UpdateColorScheme(startAgenda, section);
+                UpdateColorScheme(endAgenda, section);
             }
         }
         # endregion
