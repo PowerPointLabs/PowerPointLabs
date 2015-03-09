@@ -431,7 +431,12 @@ namespace PowerPointLabs
                 var selection = PowerPointCurrentPresentationInfo.CurrentSelection;
                 if (selection == null) return;
 
-                if (selection.Type == PpSelectionType.ppSelectionShapes)
+                if (selection.Type == PpSelectionType.ppSelectionShapes &&
+                    selection.HasChildShapeRange)
+                {
+                    _selectedShapes = selection.ChildShapeRange;
+                }
+                else if (selection.Type == PpSelectionType.ppSelectionShapes)
                 {
                     _selectedShapes = selection.ShapeRange;
                 } else if (selection.Type == PpSelectionType.ppSelectionText)
