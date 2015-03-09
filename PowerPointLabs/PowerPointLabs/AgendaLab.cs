@@ -1108,6 +1108,13 @@ namespace PowerPointLabs
 
         private static void SyncSingleAgendaVisual(PowerPointSlide candidate, List<string> sections, int sectionIndex)
         {
+            if (sectionIndex == 0)
+            {
+                var shape = candidate.GetShapeWithName(PptLabsAgendaVisualItemPrefix + sections[0])[0];
+                var endSlideName = string.Format("{0} Start.png", sections[0]);
+                shape.Fill.UserPicture(Path.Combine(SlideCapturePath, endSlideName));
+            }
+
             for (var i = 0; i < sectionIndex; i ++)
             {
                 var shape = candidate.GetShapeWithName(PptLabsAgendaVisualItemPrefix + sections[i])[0];
