@@ -19,7 +19,7 @@ namespace PowerPointLabs
         private const string PptLabsAgendaTitleShapeName = "PptLabsAgendaTitle";
         private const string PptLabsAgendaContentShapeName = "PptLabsAgendaContent";
         private const string PptLabsAgendaSlideTypeSearchPattern = @"PptLabs(\w+)Agenda(?:Start|End)?Slide";
-        private const string PptLabsAgendaSectionName = "PptLabsAgendaSection";
+        private const string PptLabsAgendaVisualSectionName = "PptLabsAgendaVisualSection";
         private const string PptLabsAgendaBeamBackgroundName = "PptLabsAgendaBeamBackground";
         private const string PptLabsAgendaBeamShapeName = "PptLabsAgendaBeamShape";
         private const string PptLabsAgendaBeamHighlight = "PptLabsAgendaBeamHighlight";
@@ -242,10 +242,13 @@ namespace PowerPointLabs
             // find the agenda for the first section as reference
             var currentPresentation = PowerPointPresentation.Current;
             var sections = currentPresentation.Sections.Where(section =>
-                                                              section != PptLabsAgendaSectionName).Skip(1).ToList();
+                                                              section != PptLabsAgendaVisualSectionName).Skip(1).ToList();
 
             var refSlide = FindReferenceSlide(type, sections[0]);
 
+            // refSlide will be copied and pasted to the beginning of the presentation as a
+            // format reference, and all agenda slides will be deleted and regenerated to take
+            // sections change into account. It needs to be deleted after sync has been done.
             PrepareSync(type, ref refSlide);
 
             switch (type)
@@ -340,7 +343,7 @@ namespace PowerPointLabs
                 var sectionName = i < sections.Count ? sections[i] : sections[i - 1];
                 var prevSectionName = i == 0 ? string.Empty : sections[i - 1];
 
-                // add a new section before the first section and rename to PptLabsAgendaSectionName
+                // add a new section before the first section and rename to PptLabsAgendaVisualSectionName
                 var index = i < sections.Count ? FindSectionStart(sectionName) : PowerPointPresentation.Current.SlideCount;
                 var nativeSlide = i == 0 ? currentPresentation.Slides.Add(index, PpSlideLayout.ppLayoutTitleOnly) :
                                            currentPresentation.Slides.Paste(index)[1];
@@ -348,7 +351,7 @@ namespace PowerPointLabs
 
                 slide.Name = string.Format(PptLabsAgendaSlideNameFormat, Type.Visual,
                                            string.Empty, i < sections.Count ? sectionName : "EndOfAgenda");
-                var newSectionIndex = sectionProperties.AddBeforeSlide(index, PptLabsAgendaSectionName);
+                var newSectionIndex = sectionProperties.AddBeforeSlide(index, PptLabsAgendaVisualSectionName);
 
                 // if we are in the first agenda section, generate slide shapes in the canvas area,
                 // else we should generate step back effect
@@ -814,7 +817,7 @@ namespace PowerPointLabs
             group.Cut();
         }
 
-        private static void PrepareSync(Type type, ref PowerPointSlide refSlide)
+        private static void PrepareSync(Type type, ref PowerPointSlide refSlide, bool pickupColorSettings = true)
         {
             var slides = PowerPointPresentation.Current.Slides;
             var refSection = FindSlideSection(refSlide);
@@ -823,7 +826,7 @@ namespace PowerPointLabs
             var beamSlideId = slides.Where(slide => FindBeamShape(slide) != null).Select(slide => slide.ID).ToList();
 
             // pick up color setting before we remove the agenda when the type is bullet
-            if (type == Type.Bullet)
+            if (type == Type.Bullet && pickupColorSettings)
             {
                 PickupColorSettings();
             }
@@ -961,7 +964,7 @@ namespace PowerPointLabs
 
             for (var i = section.Count; i >= 1; i--)
             {
-                if (section[i - 1] == PptLabsAgendaSectionName)
+                if (section[i - 1] == PptLabsAgendaVisualSectionName)
                 {
                     sectionProperties.Delete(i, true);
                 }
@@ -1159,41 +1162,28 @@ namespace PowerPointLabs
                 Utils.Graphics.SyncShape(refShape, candidateShape);
             }
         }
-
-        private static void UpdateColorScheme(PowerPointSlide slide, string section)
-        {
-            var contentPlaceHolder = slide.GetShapeWithName(PptLabsAgendaContentShapeName)[0];
-            var textRange = contentPlaceHolder.TextFrame.TextRange;
-            var focusIndex = FindSectionIndex(section) - 1;
-            var focusColor = _bulletHighlightColor;
-
-            RecolorTextRange(textRange, focusIndex, focusColor);
-        }
         # endregion
 
         # region Event Handler
         private static void UpdateColorScheme(Color highlightColor, Color dimColor, Color defaultColor)
         {
+            // change color settings
             _bulletHighlightColor = highlightColor;
             _bulletDimColor = dimColor;
             _bulletDefaultColor = defaultColor;
 
-            // TODO: take care of section update
-
-            var sections = PowerPointPresentation.Current.Sections;
+            var sections = PowerPointPresentation.Current.Sections.Skip(1).ToList();
             var type = CurrentType;
 
             if (type != Type.Bullet) return;
 
-            // skip the default section
-            foreach (var section in sections.Skip(1))
-            {
-                var startAgenda = FindSectionStartSlide(section, type);
-                var endAgenda = FindSectionEndSlide(section, type);
+            // take care of the section update
+            var refSlide = FindReferenceSlide(type, sections[0]);
+            PrepareSync(type, ref refSlide, pickupColorSettings: false);
 
-                UpdateColorScheme(startAgenda, section);
-                UpdateColorScheme(endAgenda, section);
-            }
+            SyncAgendaBullet(sections, refSlide);
+
+            refSlide.Delete();
         }
         # endregion
     }
