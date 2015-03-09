@@ -431,7 +431,12 @@ namespace PowerPointLabs
                 var selection = PowerPointCurrentPresentationInfo.CurrentSelection;
                 if (selection == null) return;
 
-                if (selection.Type == PpSelectionType.ppSelectionShapes)
+                if (selection.Type == PpSelectionType.ppSelectionShapes &&
+                    selection.HasChildShapeRange)
+                {
+                    _selectedShapes = selection.ChildShapeRange;
+                }
+                else if (selection.Type == PpSelectionType.ppSelectionShapes)
                 {
                     _selectedShapes = selection.ShapeRange;
                 } else if (selection.Type == PpSelectionType.ppSelectionText)
@@ -977,6 +982,22 @@ namespace PowerPointLabs
             dataSource.selectedColor = clickedColor;
             Globals.ThisAddIn.Application.StartNewUndoEntry();
             UpdateUIForNewColor();
+        }
+
+        private void addToFavoritesToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            Color clickedColor = ((Panel)contextMenuStrip1.SourceControl).BackColor;
+
+            dataSource.themeColorTen = dataSource.themeColorNine;
+            dataSource.themeColorNine = dataSource.themeColorEight;
+            dataSource.themeColorEight = dataSource.themeColorSeven;
+            dataSource.themeColorSeven = dataSource.themeColorSix;
+            dataSource.themeColorSix = dataSource.themeColorFive;
+            dataSource.themeColorFive = dataSource.themeColorFour;
+            dataSource.themeColorFour = dataSource.themeColorThree;
+            dataSource.themeColorThree = dataSource.themeColorTwo;
+            dataSource.themeColorTwo = dataSource.themeColorOne;
+            dataSource.themeColorOne = clickedColor;
         }
         #endregion
 
