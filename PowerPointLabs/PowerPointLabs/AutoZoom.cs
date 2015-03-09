@@ -25,7 +25,7 @@ namespace PowerPointLabs
             {
                 if (currentSlide == null || currentSlide.Index == PowerPointPresentation.Current.SlideCount)
                 {
-                    System.Windows.Forms.MessageBox.Show("Please select the correct slide", "Unable to Add Animations");
+                    System.Windows.Forms.MessageBox.Show("No next slide is found. Please select the correct slide", "Unable to Add Animations");
                     return;
                 }
 
@@ -33,8 +33,6 @@ namespace PowerPointLabs
                 selectedShape.PickUp();
                 PrepareZoomShape(currentSlide, ref selectedShape);
                 PowerPointSlide nextSlide = GetNextSlide(currentSlide);
-                if (nextSlide.Shapes.Count == 0)
-                    return;
 
                 PowerPoint.Shape nextSlidePicture = null, shapeToZoom = null;
                 PowerPointDrillDownSlide addedSlide = null;
@@ -96,7 +94,7 @@ namespace PowerPointLabs
             {
                 if (currentSlide == null || currentSlide.Index == 1)
                 {
-                    System.Windows.Forms.MessageBox.Show("Please select the correct slide", "Unable to Add Animations");
+                    System.Windows.Forms.MessageBox.Show("No previous slide is found. Please select the correct slide", "Unable to Add Animations");
                     return;
                 }
 
@@ -104,8 +102,6 @@ namespace PowerPointLabs
                 selectedShape.PickUp();
                 PrepareZoomShape(currentSlide, ref selectedShape);
                 PowerPointSlide previousSlide = GetPreviousSlide(currentSlide);
-                if (previousSlide.Shapes.Count == 0)
-                    return;
 
                 PowerPoint.Shape previousSlidePicture = null, shapeToZoom = null;
                 PowerPointStepBackSlide addedSlide = null;
