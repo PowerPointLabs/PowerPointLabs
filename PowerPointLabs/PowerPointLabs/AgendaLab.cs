@@ -20,6 +20,7 @@ namespace PowerPointLabs
         private const string PptLabsAgendaContentShapeName = "PptLabsAgendaContent";
         private const string PptLabsAgendaSlideTypeSearchPattern = @"PptLabs(\w+)Agenda(?:Start|End)?Slide";
         private const string PptLabsAgendaVisualSectionName = "PptLabsAgendaVisualSection";
+        private const string PptLabsAgendaVisualItemPrefix = "PptLabsAgendaVisualItem";
         private const string PptLabsAgendaBeamBackgroundName = "PptLabsAgendaBeamBackground";
         private const string PptLabsAgendaBeamShapeName = "PptLabsAgendaBeamShape";
         private const string PptLabsAgendaBeamHighlight = "PptLabsAgendaBeamHighlight";
@@ -227,10 +228,6 @@ namespace PowerPointLabs
          *************************************************************************************/
         public static void SynchronizeAgenda()
         {
-            _loadDialog = new LoadingDialog("Synchronizing...", "Agenda is getting synchronized, please wait...");
-            _loadDialog.Show();
-            _loadDialog.Refresh();
-
             var type = CurrentType;
 
             if (type == Type.None)
@@ -238,6 +235,10 @@ namespace PowerPointLabs
                 MessageBox.Show(TextCollection.AgendaLabNoAgendaError);
                 return;
             }
+
+            _loadDialog = new LoadingDialog("Synchronizing...", "Agenda is getting synchronized, please wait...");
+            _loadDialog.Show();
+            _loadDialog.Refresh();
 
             // find the agenda for the first section as reference
             var currentPresentation = PowerPointPresentation.Current;
@@ -635,7 +636,7 @@ namespace PowerPointLabs
         private static void GenerateVisualAgendaSlideZoomIn(PowerPointSlide slide, string sectionName)
         {
             // get the shape that represent current slide
-            var slideShape = slide.GetShapeWithName(sectionName)[0];
+            var slideShape = slide.GetShapeWithName(PptLabsAgendaVisualItemPrefix + sectionName)[0];
 
             // add drill down effect and clean up current slide by deleting drill down
             // shape and recover original slide shape visibility
@@ -649,7 +650,7 @@ namespace PowerPointLabs
             // get the shape that represent previous slide, change the fillup picture to
             // the end of slide picture
             var sectionEndName = string.Format("{0} End.png", sectionName);
-            var slideShape = slide.GetShapeWithName(sectionName)[0];
+            var slideShape = slide.GetShapeWithName(PptLabsAgendaVisualItemPrefix + sectionName)[0];
 
             slideShape.Fill.UserPicture(Path.Combine(SlideCapturePath, sectionEndName));
 
@@ -911,10 +912,10 @@ namespace PowerPointLabs
                                                   itemLeft, itemTop,
                                                   itemWidth, itemHeight);
 
-                shape.Name = sections[i];
+                shape.Name = PptLabsAgendaVisualItemPrefix + sections[i];
                 shape.Line.Visible = MsoTriState.msoFalse;
 
-                var slideCaptureName = string.Format("{0} Start.png", shape.Name);
+                var slideCaptureName = string.Format("{0} Start.png", sections[i]);
                 shape.Fill.UserPicture(Path.Combine(SlideCapturePath, slideCaptureName));
             }
         }
@@ -1107,6 +1108,13 @@ namespace PowerPointLabs
 
         private static void SyncSingleAgendaVisual(PowerPointSlide candidate, List<string> sections, int sectionIndex)
         {
+            for (var i = 0; i < sectionIndex; i ++)
+            {
+                var shape = candidate.GetShapeWithName(PptLabsAgendaVisualItemPrefix + sections[i])[0];
+                var endSlideName = string.Format("{0} End.png", sections[i]);
+                shape.Fill.UserPicture(Path.Combine(SlideCapturePath, endSlideName));
+            }
+            
             if (sectionIndex < sections.Count)
             {
                 GenerateVisualAgendaSlideZoomIn(candidate, sections[sectionIndex]);
