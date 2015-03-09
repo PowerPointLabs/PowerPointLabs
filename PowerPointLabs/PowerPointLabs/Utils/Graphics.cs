@@ -21,6 +21,13 @@ namespace PowerPointLabs.Utils
 
         # region API
         # region Shape
+        public static Shape CorruptionCorrection(Shape shape, PowerPointSlide ownerSlide)
+        {
+            // in case of random corruption of shape, cut-paste a shape before using its property
+            shape.Cut();
+            return ownerSlide.Shapes.Paste()[1];
+        }
+
         public static void ExportShape(Shape shape, string exportPath)
         {
             var slideWidth = (int)PowerPointPresentation.Current.SlideWidth;
@@ -37,6 +44,20 @@ namespace PowerPointLabs.Utils
 
             shapeRange.Export(exportPath, PpShapeFormat.ppShapeFormatPNG, slideWidth,
                               slideHeight, PpExportMode.ppScaleToFit);
+        }
+
+        public static bool IsCorrupted(Shape shape)
+        {
+            try
+            {
+                var tryGet = shape.Parent;
+
+                return false;
+            }
+            catch (Exception)
+            {
+                return true;
+            }
         }
 
         public static bool IsSamePosition(Shape refShape, Shape candidateShape,

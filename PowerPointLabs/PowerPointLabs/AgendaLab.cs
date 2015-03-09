@@ -453,6 +453,20 @@ namespace PowerPointLabs
         private static Shape FindBeamShape(PowerPointSlide slide)
         {
             var grouped = slide.GetShapesWithTypeAndRule(MsoShapeType.msoGroup, new Regex(".+"));
+
+            if (grouped == null || grouped.Count == 0)
+            {
+                return null;
+            }
+
+            for (var i = 0; i < grouped.Count; i++)
+            {
+                if (Utils.Graphics.IsCorrupted(grouped[i]))
+                {
+                    grouped[i] = Utils.Graphics.CorruptionCorrection(grouped[i], slide);
+                }
+            }
+
             var beamShape = grouped.FirstOrDefault(shape => shape.Name == PptLabsAgendaBeamShapeName) ??
                             grouped.FirstOrDefault(shape => shape.GroupItems
                                                                  .Cast<Shape>()
