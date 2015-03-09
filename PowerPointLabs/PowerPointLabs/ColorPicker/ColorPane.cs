@@ -983,6 +983,22 @@ namespace PowerPointLabs
             Globals.ThisAddIn.Application.StartNewUndoEntry();
             UpdateUIForNewColor();
         }
+
+        private void addToFavoritesToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            Color clickedColor = ((Panel)contextMenuStrip1.SourceControl).BackColor;
+
+            dataSource.themeColorTen = dataSource.themeColorNine;
+            dataSource.themeColorNine = dataSource.themeColorEight;
+            dataSource.themeColorEight = dataSource.themeColorSeven;
+            dataSource.themeColorSeven = dataSource.themeColorSix;
+            dataSource.themeColorSix = dataSource.themeColorFive;
+            dataSource.themeColorFive = dataSource.themeColorFour;
+            dataSource.themeColorFour = dataSource.themeColorThree;
+            dataSource.themeColorThree = dataSource.themeColorTwo;
+            dataSource.themeColorTwo = dataSource.themeColorOne;
+            dataSource.themeColorOne = clickedColor;
+        }
         #endregion
 
         private void EyeDropButton_MouseClick(object sender, MouseEventArgs e)
