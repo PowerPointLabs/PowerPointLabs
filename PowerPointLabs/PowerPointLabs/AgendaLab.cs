@@ -333,7 +333,7 @@ namespace PowerPointLabs
         private static void AddAgendaSlideVisualType(List<string> sections)
         {
             var currentPresentation = PowerPointPresentation.Current.Presentation;
-            var sectionProperties = currentPresentation.SectionProperties;
+            var sectionProperties = PowerPointPresentation.Current.SectionProperties;
 
             for (var i = 0; i <= sections.Count; i++)
             {
@@ -503,7 +503,7 @@ namespace PowerPointLabs
         private static int FindSectionEnd(int sectionIndex)
         {
             // here the sectionIndex is 1-based!
-            var sectionProperties = PowerPointPresentation.Current.Presentation.SectionProperties;
+            var sectionProperties = PowerPointPresentation.Current.SectionProperties;
 
             return sectionProperties.FirstSlide(sectionIndex) + sectionProperties.SlidesCount(sectionIndex) - 1;
         }
@@ -531,7 +531,7 @@ namespace PowerPointLabs
         private static int FindSectionStart(int sectionIndex)
         {
             // here the sectionIndex is 1-based!
-            var sectionProperties = PowerPointPresentation.Current.Presentation.SectionProperties;
+            var sectionProperties = PowerPointPresentation.Current.SectionProperties;
 
             return sectionProperties.FirstSlide(sectionIndex);
         }
@@ -543,7 +543,7 @@ namespace PowerPointLabs
 
             if (type == Type.Beam)
             {
-                var sectionProperties = curPresentation.Presentation.SectionProperties;
+                var sectionProperties = curPresentation.SectionProperties;
                 var sectionIndex = FindSectionIndex(section);
 
                 return slides[sectionProperties.FirstSlide(sectionIndex) - 1];
@@ -955,8 +955,9 @@ namespace PowerPointLabs
 
         private static void RemoveVisualAgenda()
         {
-            var sectionProperties = PowerPointPresentation.Current.Presentation.SectionProperties;
-            var section = PowerPointPresentation.Current.Sections;
+            var curPresentation = PowerPointPresentation.Current;
+            var sectionProperties = curPresentation.SectionProperties;
+            var section = curPresentation.Sections;
 
             for (var i = section.Count; i >= 1; i--)
             {

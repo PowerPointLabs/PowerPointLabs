@@ -68,6 +68,11 @@ namespace PowerPointLabs.Models
             get { return Presentation.Saved == MsoTriState.msoTrue; }
         }
 
+        public SectionProperties SectionProperties
+        {
+            get { return Presentation.SectionProperties; }
+        }
+
         public List<string> Sections
         {
             get
