@@ -296,7 +296,7 @@
         # region Agenda Lab
         public const string AgendaLabNoSectionError = "Please group slides into sections before generating agenda.";
         public const string AgendaLabSingleSectionError = "Agenda Lab requires slides to be divided into two or more sections.";
-        public const string AgendaLabEmptySectionError = "";
+        public const string AgendaLabEmptySectionError = "Presentation contains empty section(s). Please fill them up or remove them.";
         public const string AgendaLabAgendaExistError = "Agenda already exists. By confirm this dialog agenda will be regenerated. Do you want to proceed?";
         public const string AgendaLabAgendaExistErrorCaption = "Confirm Update";
         public const string AgendaLabNoAgendaError = "There's no generated agenda.";
