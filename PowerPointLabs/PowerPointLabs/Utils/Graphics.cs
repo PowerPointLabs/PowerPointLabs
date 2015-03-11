@@ -154,9 +154,9 @@ namespace PowerPointLabs.Utils
                 var refTextRange = refShape.TextFrame.TextRange;
                 var candidateTextRange = candidateShape.TextFrame.TextRange;
 
-                for (var i = 1; i <= refParagraphCount && i <= candidateParagraphCount; i++)
+                for (var i = 1; i <= candidateParagraphCount; i++)
                 {
-                    var refParagraph = refTextRange.Paragraphs(i);
+                    var refParagraph = refTextRange.Paragraphs(i < refParagraphCount ? i : refParagraphCount);
                     var candidateParagraph = candidateTextRange.Paragraphs(i);
                     var candidateText = candidateParagraph.Text.TrimEnd('\r');
                     var candidateColor = candidateParagraph.Font.Color.RGB;
