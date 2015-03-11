@@ -216,11 +216,7 @@ namespace PowerPointLabs
          *************************************************************************************/
         public static void SynchronizeAgenda()
         {
-            if (!SectionValidation())
-            {
-                MessageBox.Show(TextCollection.AgendaLabEmptySectionError);
-                return;
-            }
+            if (!SectionValidation()) return;
 
             var type = CurrentType;
 
@@ -239,7 +235,7 @@ namespace PowerPointLabs
             var sections = currentPresentation.Sections.Where(section =>
                                                               section != PptLabsAgendaVisualSectionName).Skip(1).ToList();
 
-            var refSlide = FindReferenceSlide(type, sections[0]);
+            var refSlide = FindReferenceSlide(type);
 
             // refSlide will be copied and pasted to the beginning of the presentation as a
             // format reference, and all agenda slides will be deleted and regenerated to take
@@ -514,16 +510,18 @@ namespace PowerPointLabs
             return beamShape;
         }
 
-        private static PowerPointSlide FindReferenceSlide(Type type, string firstSection)
+        private static PowerPointSlide FindReferenceSlide(Type type)
         {
+            var slides = PowerPointPresentation.Current.Slides;
+
             if (type == Type.Beam)
             {
-                var slides = PowerPointPresentation.Current.Slides;
-
                 return slides.FirstOrDefault(slide => slide.GetShapeWithName(PptLabsAgendaBeamShapeName).Count != 0);
             }
 
-            return FindSectionStartSlide(firstSection, type);
+            var generatedSlideName = string.Format("PptLabs{0}Agenda", type);
+
+            return slides.FirstOrDefault(slide => slide.Name.Contains(generatedSlideName));
         }
 
         private static int FindSectionEnd(string section)
@@ -1250,7 +1248,7 @@ namespace PowerPointLabs
             if (type != Type.Bullet) return;
 
             // take care of the section update
-            var refSlide = FindReferenceSlide(type, sections[0]);
+            var refSlide = FindReferenceSlide(type);
             PrepareSync(type, ref refSlide, pickupColorSettings: false);
 
             SyncAgendaBullet(sections, refSlide);
