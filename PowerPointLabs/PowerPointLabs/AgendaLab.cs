@@ -455,8 +455,14 @@ namespace PowerPointLabs
         private static void CheckVisualUpdate(PowerPointSlide refSlide)
         {
             var visualItems =
-                refSlide.GetShapesWithPrefix(PptLabsAgendaVisualItemPrefix).Select(shape => shape.Name).OrderBy(x => x);
-            var sections = PowerPointPresentation.Current.Sections.Skip(1).OrderBy(x => x).ToList();
+                refSlide.GetShapesWithPrefix(PptLabsAgendaVisualItemPrefix)
+                        .Select(shape => shape.Name.Substring(PptLabsAgendaVisualItemPrefix.Length))
+                        .OrderBy(x => x);
+            var sections = PowerPointPresentation.Current
+                                                 .Sections
+                                                 .Skip(1)
+                                                 .Where(section => section != PptLabsAgendaVisualSectionName)
+                                                 .OrderBy(x => x).ToList();
 
             _agendaOutdated = !sections.SequenceEqual(visualItems);
         }
