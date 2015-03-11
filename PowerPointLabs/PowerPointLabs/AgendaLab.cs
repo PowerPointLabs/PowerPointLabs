@@ -35,7 +35,7 @@ namespace PowerPointLabs
 
         private static string _agendaText;
 
-        private static bool _beamOutdated;
+        private static bool _agendaOutdated;
 
         private static Color _bulletDefaultColor = Color.Black;
         private static Color _bulletHighlightColor = Color.Red;
@@ -143,21 +143,9 @@ namespace PowerPointLabs
             }
 
             // validate section information
-            var sections = PowerPointPresentation.Current.Sections;
+            if (!SectionValidation()) return;
 
-            if (sections.Count == 0)
-            {
-                MessageBox.Show(TextCollection.AgendaLabNoSectionError);
-                return;
-            }
-
-            if (sections.Count == 1)
-            {
-                MessageBox.Show(TextCollection.AgendaLabSingleSectionError);
-                return;
-            }
-
-            sections = sections.Skip(1).ToList();
+            var sections = PowerPointPresentation.Current.Sections.Skip(1).ToList();
 
             if (showLoadingDialog)
             {
@@ -228,6 +216,12 @@ namespace PowerPointLabs
          *************************************************************************************/
         public static void SynchronizeAgenda()
         {
+            if (!SectionValidation())
+            {
+                MessageBox.Show(TextCollection.AgendaLabEmptySectionError);
+                return;
+            }
+
             var type = CurrentType;
 
             if (type == Type.None)
@@ -419,23 +413,52 @@ namespace PowerPointLabs
             }
         }
 
+        private static void CheckAgendaUpdate(Type type, PowerPointSlide refSlide, string refSection)
+        {
+            switch (type)
+            {
+                case Type.Beam:
+                    CheckBeamUpdate(refSlide, refSection);
+                    break;
+                case Type.Visual:
+                    CheckVisualUpdate(refSlide);
+                    break;
+            }
+        }
+
         private static void CheckBeamUpdate(PowerPointSlide refSlide, string refSection)
         {
             var beamShape = refSlide.GetShapeWithName(PptLabsAgendaBeamShapeName)[0];
 
             // check if the section names have changed
-            var sections = PowerPointPresentation.Current.Sections.Skip(1).ToList();
-            var beamItems = beamShape.GroupItems.Cast<Shape>().ToList();
+            var sections = PowerPointPresentation.Current.Sections.Skip(1).OrderBy(x => x).ToList();
+            var beamItems = beamShape.GroupItems.Cast<Shape>()
+                                                .Select(shape => shape.Name)
+                                                .Where(name => name != PptLabsAgendaBeamBackgroundName)
+                                                .OrderBy(x => x).ToList();
 
-            _beamOutdated = sections.Count != beamItems.Count ||
-                            sections.Count(
-                                section =>
-                                beamItems.All(
-                                    item =>
-                                    item.Name != section && item.Name != section + " " + PptLabsAgendaBeamHighlight)) !=
-                            0;
+            for (var i = 0; i < beamItems.Count; i ++)
+            {
+                if (beamItems[i].EndsWith(PptLabsAgendaBeamHighlight))
+                {
+                    var totalLen = beamItems[i].Length;
+                    var suffixLen = PptLabsAgendaBeamHighlight.Length;
+                    beamItems[i] = beamItems[i].Remove(totalLen - suffixLen - 1, suffixLen + 1);
+                }
+            }
+
+            _agendaOutdated = !sections.SequenceEqual(beamItems);
 
             refSlide.Name = refSection;
+        }
+
+        private static void CheckVisualUpdate(PowerPointSlide refSlide)
+        {
+            var visualItems =
+                refSlide.GetShapesWithPrefix(PptLabsAgendaVisualItemPrefix).Select(shape => shape.Name).OrderBy(x => x);
+            var sections = PowerPointPresentation.Current.Sections.Skip(1).OrderBy(x => x).ToList();
+
+            _agendaOutdated = !sections.SequenceEqual(visualItems);
         }
 
         private static string CreateInDocHyperLink(PowerPointSlide slide)
@@ -837,10 +860,7 @@ namespace PowerPointLabs
             refSlide = PowerPointSlide.FromSlideFactory(PowerPointPresentation.Current.Presentation.Slides.Paste(1)[1]);
             refSlide.Design = refDesign;
 
-            if (type == Type.Beam)
-            {
-                CheckBeamUpdate(refSlide, refSection);
-            }
+            CheckAgendaUpdate(type, refSlide, refSection);
 
             RemoveAgenda(slides);
 
@@ -972,6 +992,31 @@ namespace PowerPointLabs
             }
         }
 
+        private static bool SectionValidation()
+        {
+            var sections = PowerPointPresentation.Current.Sections;
+
+            if (sections.Count == 0)
+            {
+                MessageBox.Show(TextCollection.AgendaLabNoSectionError);
+                return false;
+            }
+
+            if (sections.Count == 1)
+            {
+                MessageBox.Show(TextCollection.AgendaLabSingleSectionError);
+                return false;
+            }
+
+            if (PowerPointPresentation.Current.HasEmptySection)
+            {
+                MessageBox.Show(TextCollection.AgendaLabEmptySectionError);
+                return false;
+            }
+
+            return true;
+        }
+
         private static void SyncAgendaBeam(PowerPointSlide refSlide)
         {
             var slides = PowerPointPresentation.Current.Slides.Skip(refSlide.Index);
@@ -990,8 +1035,8 @@ namespace PowerPointLabs
                 var start = FindSectionStartSlide(section, Type.Bullet);
                 var end = FindSectionEndSlide(section, Type.Bullet);
 
-                SyncSingleAgendaGeneral(refSlide, start);
-                SyncSingleAgendaGeneral(refSlide, end);
+                SyncSingleAgendaGeneral(refSlide, start, Type.Bullet);
+                SyncSingleAgendaGeneral(refSlide, end, Type.Bullet);
 
                 SyncSingleAgendaBullet(refSlide, start);
                 SyncSingleAgendaBullet(refSlide, end);
@@ -1012,7 +1057,7 @@ namespace PowerPointLabs
                                                  .FirstOrDefault(slide => slide.Name.Contains("EndOfAgenda"));
             var sectionCount = sections.Count;
 
-            SyncSingleAgendaGeneral(refSlide, endOfAgenda);
+            SyncSingleAgendaGeneral(refSlide, endOfAgenda, Type.Visual);
             SyncSingleAgendaVisual(endOfAgenda, sections, sectionCount);
 
             for (var i = 0; i < sectionCount; i++)
@@ -1020,7 +1065,7 @@ namespace PowerPointLabs
                 var section = sections[i];
                 var endAgenda = FindSectionEndSlide(section, Type.Visual);
 
-                SyncSingleAgendaGeneral(refSlide, endAgenda);
+                SyncSingleAgendaGeneral(refSlide, endAgenda, Type.Visual);
                 SyncSingleAgendaVisual(endAgenda, sections, i);
             }
         }
@@ -1056,7 +1101,7 @@ namespace PowerPointLabs
                     // 2. if the sections have been changed, we follow only the format, but not the layout
                     var itemText = item.TextFrame.TextRange.Text;
 
-                    if (!_beamOutdated)
+                    if (!_agendaOutdated)
                     {
                         var oldItem = refSubIems.FirstOrDefault(shape => shape.TextFrame.TextRange.Text == itemText);
 
@@ -1072,7 +1117,7 @@ namespace PowerPointLabs
                 }
             }
 
-            if (_beamOutdated)
+            if (_agendaOutdated)
             {
                 var lastLeft = 0f;
                 var lastTop = 0f;
@@ -1133,7 +1178,7 @@ namespace PowerPointLabs
             }
         }
 
-        private static void SyncSingleAgendaGeneral(PowerPointSlide refSlide, PowerPointSlide candidate)
+        private static void SyncSingleAgendaGeneral(PowerPointSlide refSlide, PowerPointSlide candidate, Type type)
         {
             // in this step, we should sync:
             // 1. Layout
@@ -1150,9 +1195,10 @@ namespace PowerPointLabs
             candidate.Layout = refSlide.Layout;
             candidate.Design = refSlide.Design;
 
-            // syncronize extra shapes in reference slide
+            // syncronize extra shapes other than visual items in reference slide
             var extraShapes = refSlide.Shapes.Cast<Shape>()
-                                             .Where(shape => !candidate.HasShapeWithSameName(shape.Name))
+                                             .Where(shape => !candidate.HasShapeWithSameName(shape.Name) &&
+                                                             !shape.Name.Contains(PptLabsAgendaVisualItemPrefix))
                                              .Select(shape => shape.Name)
                                              .ToArray();
 
@@ -1165,16 +1211,21 @@ namespace PowerPointLabs
                 Utils.Graphics.SyncShapeRange(refShapes, copiedShapes);
             }
 
-            // syncronize shapes position and size, except bullet content
-            var sameShapes = refSlide.Shapes.Cast<Shape>()
-                                            .Where(shape => shape.Name != PptLabsAgendaContentShapeName &&
-                                                            candidate.HasShapeWithSameName(shape.Name));
-
-            foreach (var refShape in sameShapes)
+            // sync shape with same name only for bullet agenda, or visual agenda that is still up to date
+            if (type == Type.Bullet ||
+               (type == Type.Visual && !_agendaOutdated))
             {
-                var candidateShape = candidate.GetShapeWithName(refShape.Name)[0];
+                // syncronize shapes position and size, except bullet content
+                var sameShapes = refSlide.Shapes.Cast<Shape>()
+                                                .Where(shape => shape.Name != PptLabsAgendaContentShapeName &&
+                                                                candidate.HasShapeWithSameName(shape.Name));
 
-                Utils.Graphics.SyncShape(refShape, candidateShape);
+                foreach (var refShape in sameShapes)
+                {
+                    var candidateShape = candidate.GetShapeWithName(refShape.Name)[0];
+
+                    Utils.Graphics.SyncShape(refShape, candidateShape);
+                }
             }
         }
         # endregion

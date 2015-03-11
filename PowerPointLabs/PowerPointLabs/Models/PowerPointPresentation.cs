@@ -37,6 +37,24 @@ namespace PowerPointLabs.Models
             }
         }
 
+        public bool HasEmptySection
+        {
+            get
+            {
+                var sectionProperties = SectionProperties;
+
+                for (var i = 1; i <= sectionProperties.Count; i ++)
+                {
+                    if (sectionProperties.SlidesCount(i) == 0)
+                    {
+                        return true;
+                    }
+                }
+
+                return false;
+            }
+        }
+
         public string Name
         {
             get { return _name; }
