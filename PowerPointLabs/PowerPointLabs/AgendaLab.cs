@@ -77,6 +77,11 @@ namespace PowerPointLabs
         {
             get
             {
+                if (PowerPointPresentation.Current.SectionProperties.Count == 0)
+                {
+                    return Type.None;
+                }
+
                 var slides = PowerPointPresentation.Current.Slides;
 
                 foreach (var slide in slides)
@@ -216,8 +221,6 @@ namespace PowerPointLabs
          *************************************************************************************/
         public static void SynchronizeAgenda()
         {
-            if (!SectionValidation()) return;
-
             var type = CurrentType;
 
             if (type == Type.None)
@@ -225,6 +228,8 @@ namespace PowerPointLabs
                 MessageBox.Show(TextCollection.AgendaLabNoAgendaError);
                 return;
             }
+
+            if (!SectionValidation()) return;
 
             _loadDialog = new LoadingDialog("Synchronizing...", "Agenda is getting synchronized, please wait...");
             _loadDialog.Show();
