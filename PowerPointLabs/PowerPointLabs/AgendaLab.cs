@@ -202,6 +202,8 @@ namespace PowerPointLabs
                     RemoveVisualAgenda();
                     break;
             }
+
+            PowerPointPresentation.Current.RemoveAckSlide();
         }
 
         /***********************************************************************************
@@ -978,12 +980,7 @@ namespace PowerPointLabs
 
         private static void RemoveBulletAgenda()
         {
-            var slides = PowerPointPresentation.Current.Slides;
-
-            foreach (var slide in slides.Where(slide => AgendaSlideSearchPattern.IsMatch(slide.Name)))
-            {
-                slide.Delete();
-            }
+            PowerPointPresentation.Current.RemoveSlide(AgendaSlideSearchPattern, true);
         }
 
         private static void RemoveVisualAgenda()
@@ -992,13 +989,23 @@ namespace PowerPointLabs
             var sectionProperties = curPresentation.SectionProperties;
             var section = curPresentation.Sections;
 
+            // to avoid accidentally deleting merged presentation slides, we could not
+            // simply search for Visual Agenda Sections and delete them. Instead, we
+            // delete all Visual Agenda Sections without deleting slides first, then
+            // delete all transitions slides manually.
+
+            // delete all generated sections without deleting the slides first
             for (var i = section.Count; i >= 1; i--)
             {
                 if (section[i - 1] == PptLabsAgendaVisualSectionName)
                 {
-                    sectionProperties.Delete(i, true);
+                    sectionProperties.Delete(i, false);
                 }
             }
+
+            // delete all transition slides
+            var nameSearchRegex = new Regex("PptLabsVisualAgenda|PPTLabsZoom");
+            PowerPointPresentation.Current.RemoveSlide(nameSearchRegex, true);
         }
 
         private static bool SectionValidation()

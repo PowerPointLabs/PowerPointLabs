@@ -2,6 +2,7 @@
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
+using System.Text.RegularExpressions;
 using System.Windows.Forms;
 using Microsoft.Office.Core;
 using Microsoft.Office.Interop.PowerPoint;
@@ -207,19 +208,32 @@ namespace PowerPointLabs.Models
             return slideFromFactory;
         }
 
-        // TODO: need to be verified
-        public void RemoveSlide(string name)
+        public void RemoveAckSlide()
         {
-            var slides = Presentation.Slides;
-
-            foreach (Slide slide in slides)
+            if (Presentation.Slides[SlideCount].Name.Contains("PPAck"))
             {
-                if (slide.Name == name)
+                Presentation.Slides[SlideCount].Delete();
+            }
+        }
+
+        public void RemoveSlide(Regex rule, bool deleteAll)
+        {
+            var slides = Presentation.Slides.Cast<Slide>().Where(slide => rule.IsMatch(slide.Name)).ToList();
+
+            foreach (var slide in slides)
+            {
+                slide.Delete();
+
+                if (!deleteAll)
                 {
-                    slide.Delete();
                     break;
                 }
             }
+        }
+
+        public void RemoveSlide(string name, bool deleteAll)
+        {
+            RemoveSlide(new Regex("^" + name + "$"), deleteAll);
         }
 
         public void RemoveSlide(int index)

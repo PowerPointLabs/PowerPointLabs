@@ -286,7 +286,7 @@ namespace PowerPointLabs.Models
 
             Categories.Remove(name);
             _categoryNameBoxCollection.RemoveAt(index);
-            RemoveSlide(name);
+            RemoveSlide(name, false);
 
             Save();
             ActionProtection();
