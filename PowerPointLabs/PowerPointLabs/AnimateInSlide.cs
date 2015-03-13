@@ -41,7 +41,7 @@ namespace PowerPointLabs
                 if (!isHighlightBullets && !isHighlightTextFragments)
                 {
                     Globals.ThisAddIn.Application.CommandBars.ExecuteMso("AnimationPreview");
-                    PowerPointLabsGlobals.AddAckSlide();
+                    PowerPointPresentation.Current.AddAckSlide();
                 }
             }
             catch (Exception e)

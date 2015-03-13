@@ -73,7 +73,7 @@ namespace PowerPointLabs
 
                 Globals.ThisAddIn.Application.ActiveWindow.View.GotoSlide(addedSlide.Index);
                 Globals.ThisAddIn.Application.CommandBars.ExecuteMso("AnimationPreview");
-                PowerPointLabsGlobals.AddAckSlide();
+                PowerPointPresentation.Current.AddAckSlide();
             }
             catch (Exception e)
             {
@@ -141,7 +141,7 @@ namespace PowerPointLabs
                 currentSlide.Transition.Duration = 0.25f;
                 Globals.ThisAddIn.Application.ActiveWindow.View.GotoSlide(addedSlide.Index);
                 Globals.ThisAddIn.Application.CommandBars.ExecuteMso("AnimationPreview");
-                PowerPointLabsGlobals.AddAckSlide();
+                PowerPointPresentation.Current.AddAckSlide();
             }
             catch (Exception e)
             {

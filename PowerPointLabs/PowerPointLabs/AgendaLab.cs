@@ -173,7 +173,7 @@ namespace PowerPointLabs
                     break;
             }
 
-            PowerPointLabsGlobals.AddAckSlide();
+            PowerPointPresentation.Current.AddAckSlide();
 
             if (showLoadingDialog)
             {

@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
@@ -186,6 +187,24 @@ namespace PowerPointLabs.Models
         # endregion
 
         # region API
+        public void AddAckSlide()
+        {
+            try
+            {
+                var lastSlide = Slides.Last();
+                
+                if (!lastSlide.isAckSlide())
+                {
+                    lastSlide.CreateAckSlide();
+                }
+            }
+            catch (Exception e)
+            {
+                PowerPointLabsGlobals.LogException(e, "AddAckSlide");
+                throw;
+            }
+        }
+
         public PowerPointSlide AddSlide(PpSlideLayout layout = PpSlideLayout.ppLayoutText, string name = "")
         {
             if (!Opened)

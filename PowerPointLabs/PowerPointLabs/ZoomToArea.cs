@@ -32,7 +32,7 @@ namespace PowerPointLabs
 
                 Globals.ThisAddIn.Application.ActiveWindow.View.GotoSlide(currentSlide.Index);
                 PostFormatSelectedShapes(ref selectedShapes);
-                PowerPointLabsGlobals.AddAckSlide();   
+                PowerPointPresentation.Current.AddAckSlide();   
             }
             catch (Exception e)
             {

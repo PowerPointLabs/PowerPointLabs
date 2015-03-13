@@ -81,7 +81,7 @@ namespace PowerPointLabs
                         isFirstShape = false;
                     }
                 }
-                PowerPointLabsGlobals.AddAckSlide();
+                PowerPointPresentation.Current.AddAckSlide();
             }
             catch (Exception e)
             {

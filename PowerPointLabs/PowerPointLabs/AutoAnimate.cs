@@ -130,7 +130,7 @@ namespace PowerPointLabs
             PrepareNextSlide(nextSlide);
             addedSlide.AddAutoAnimation(currentSlideShapes, nextSlideShapes, matchingShapeIDs);
             Globals.ThisAddIn.Application.CommandBars.ExecuteMso("AnimationPreview");
-            PowerPointLabsGlobals.AddAckSlide();
+            PowerPointPresentation.Current.AddAckSlide();
 
             progressForm.Visible = false;
         }

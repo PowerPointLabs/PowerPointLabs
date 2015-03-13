@@ -2066,7 +2066,7 @@ namespace PowerPointLabs
                     dupSlide.Delete();
                 }
                 
-                PowerPointLabsGlobals.AddAckSlide();
+                PowerPointPresentation.Current.AddAckSlide();
 
                 return effectSlide;
             }

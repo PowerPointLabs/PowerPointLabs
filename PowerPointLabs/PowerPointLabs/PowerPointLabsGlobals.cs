@@ -27,21 +27,6 @@ namespace PowerPointLabs
             Log(methodName + ": " + e.Message + ": " + e.StackTrace, "Error");
         }
 
-        public static void AddAckSlide()
-        {
-            try
-            {
-                PowerPointSlide lastSlide = PowerPointPresentation.Current.Slides.Last();
-                if (!lastSlide.isAckSlide())
-                    lastSlide.CreateAckSlide();
-            }
-            catch (Exception e)
-            {
-                PowerPointLabsGlobals.LogException(e, "AddAckSlide");
-                throw;
-            }
-        }
-
         public static void FitShapeToSlide(ref PowerPoint.Shape shapeToMove)
         {
             shapeToMove.LockAspectRatio = Office.MsoTriState.msoFalse;

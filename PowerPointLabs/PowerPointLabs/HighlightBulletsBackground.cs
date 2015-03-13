@@ -60,7 +60,7 @@ namespace PowerPointLabs
                     AnimateInSlide.isHighlightBullets = true;
                     AnimateInSlide.AddAnimationInSlide();
                     AnimateInSlide.frameAnimationChecked = oldValue;
-                    PowerPointLabsGlobals.AddAckSlide();
+                    PowerPointPresentation.Current.AddAckSlide();
                 }
                 Globals.ThisAddIn.Application.ActiveWindow.Selection.Unselect();
             }
