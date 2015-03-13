@@ -11,8 +11,10 @@ using PowerPoint = Microsoft.Office.Interop.PowerPoint;
 
 namespace PowerPointLabs
 {
+    // TODO: this class should not even exist
     class PowerPointLabsGlobals
     {
+        // TODO: put these two functions somewhere else but not here
         public static void Log(string logText, string type)
         {
             if (type.Equals("Info"))
@@ -27,15 +29,7 @@ namespace PowerPointLabs
             Log(methodName + ": " + e.Message + ": " + e.StackTrace, "Error");
         }
 
-        public static void FitShapeToSlide(ref PowerPoint.Shape shapeToMove)
-        {
-            shapeToMove.LockAspectRatio = Office.MsoTriState.msoFalse;
-            shapeToMove.Left = 0;
-            shapeToMove.Top = 0;
-            shapeToMove.Width = PowerPointPresentation.Current.SlideWidth;
-            shapeToMove.Height = PowerPointPresentation.Current.SlideHeight;
-        }
-
+        // TODO: the following three functions must be renamed, the function name does not match what the function does
         public static void CopyShapePosition(PowerPoint.Shape shapeToCopy, ref PowerPoint.Shape shapeToMove)
         {
             shapeToMove.Left = shapeToCopy.Left + (shapeToCopy.Width / 2) - (shapeToMove.Width / 2);
@@ -69,7 +63,7 @@ namespace PowerPointLabs
                 return rotation2;
         }
 
-        public static float Normalize(float i)
+        private static float Normalize(float i)
         {
             //find effective angle
             float d = Math.Abs(i) % 360.0f;

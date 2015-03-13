@@ -46,6 +46,15 @@ namespace PowerPointLabs.Utils
                               slideHeight, PpExportMode.ppScaleToFit);
         }
 
+        public static void FitShapeToSlide(ref Shape shapeToMove)
+        {
+            shapeToMove.LockAspectRatio = MsoTriState.msoFalse;
+            shapeToMove.Left = 0;
+            shapeToMove.Top = 0;
+            shapeToMove.Width = PowerPointPresentation.Current.SlideWidth;
+            shapeToMove.Height = PowerPointPresentation.Current.SlideHeight;
+        }
+
         public static bool IsCorrupted(Shape shape)
         {
             try

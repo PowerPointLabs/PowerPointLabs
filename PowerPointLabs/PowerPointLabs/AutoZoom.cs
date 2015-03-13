@@ -49,7 +49,7 @@ namespace PowerPointLabs
                     currentSlide.Copy();
                     shapeToZoom = addedSlide.Shapes.PasteSpecial(PowerPoint.PpPasteDataType.ppPastePNG)[1];
                     shapeToZoom.Apply();
-                    PowerPointLabsGlobals.FitShapeToSlide(ref shapeToZoom);
+                    Utils.Graphics.FitShapeToSlide(ref shapeToZoom);
                     shapeToZoom.ZOrder(Office.MsoZOrderCmd.msoBringToFront);
 
                     addedSlide.PrepareForDrillDown();
@@ -310,7 +310,7 @@ namespace PowerPointLabs
         {
             currentSlide.Copy();
             PowerPoint.Shape currentSlideCopy = addedSlide.Shapes.PasteSpecial(PowerPoint.PpPasteDataType.ppPastePNG)[1];
-            PowerPointLabsGlobals.FitShapeToSlide(ref currentSlideCopy);
+            Utils.Graphics.FitShapeToSlide(ref currentSlideCopy);
 
             previousSlidePicture.Copy();
             PowerPoint.Shape previousSlidePictureCopy = addedSlide.Shapes.Paste()[1];

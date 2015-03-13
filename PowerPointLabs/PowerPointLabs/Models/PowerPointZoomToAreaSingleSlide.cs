@@ -76,7 +76,7 @@ namespace PowerPointLabs.Models
             {
                 //First Shape, add zoom in animation
                 PowerPoint.Shape shapeToZoom = zoomSlideCroppedShapes.Duplicate()[1];
-                PowerPointLabsGlobals.FitShapeToSlide(ref shapeToZoom);
+                Utils.Graphics.FitShapeToSlide(ref shapeToZoom);
                 shapeToZoom.Name = "PPTLabsMagnifyingAreaSlide" + DateTime.Now.ToString("yyyyMMddHHmmssffff");
 
                 PowerPoint.Shape referenceShape = GetReferenceShape(zoomShape);
@@ -304,7 +304,7 @@ namespace PowerPointLabs.Models
         private PowerPoint.Shape GetShapeToZoomWithBackground(PowerPoint.Shape zoomShape)
         {
             PowerPoint.Shape shapeToZoom = zoomSlideCroppedShapes.Duplicate()[1];
-            PowerPointLabsGlobals.FitShapeToSlide(ref shapeToZoom);
+            Utils.Graphics.FitShapeToSlide(ref shapeToZoom);
             shapeToZoom.Name = "PPTLabsDeMagnifyAreaSlide" + DateTime.Now.ToString("yyyyMMddHHmmssffff");
 
             PowerPoint.Shape referenceShape = GetReferenceShape(zoomShape);
@@ -349,7 +349,7 @@ namespace PowerPointLabs.Models
 
             zoomSlideCroppedShapes = _slide.Shapes.PasteSpecial(PowerPoint.PpPasteDataType.ppPastePNG)[1];
             zoomSlideCroppedShapes.Name = "PPTLabsZoomGroup" + DateTime.Now.ToString("yyyyMMddHHmmssffff");
-            PowerPointLabsGlobals.FitShapeToSlide(ref zoomSlideCroppedShapes);
+            Utils.Graphics.FitShapeToSlide(ref zoomSlideCroppedShapes);
             zoomSlideCopy.Delete();
         }
 
