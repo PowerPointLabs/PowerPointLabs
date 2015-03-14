@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Drawing;
 using System.IO;
 using System.Linq;
+using System.Runtime.InteropServices;
 using System.Text.RegularExpressions;
 using System.Windows.Forms;
 using Microsoft.Office.Core;
@@ -127,9 +128,10 @@ namespace PowerPointLabs
             settingDialog.ShowDialog();
         }
 
-        public static void GenerateAgenda(Type type, bool showLoadingDialog = true, bool confirmDelete = true,
-                                          List<int> beamId = null)
+        public static void GenerateAgenda(Type type, bool showLoadingDialog = true, bool confirmDelete = true)
         {
+            var selectedSlides = PowerPointCurrentPresentationInfo.SelectedSlides.ToList();
+
             // agenda exists in current presentation
             if (confirmDelete && CurrentType != Type.None)
             {
@@ -163,7 +165,7 @@ namespace PowerPointLabs
             switch (type)
             {
                 case Type.Beam:
-                    GenerateBeamAgenda(sections, beamId);
+                    GenerateBeamAgenda(sections, selectedSlides);
                     break;
                 case Type.Bullet:
                     GenerateBulletAgenda(sections);
@@ -175,13 +177,25 @@ namespace PowerPointLabs
 
             PowerPointPresentation.Current.AddAckSlide();
 
+            try
+            {
+                selectedSlides[0].GetNativeSlide().Select();
+            }
+            catch (COMException)
+            {
+                // if the first selected slide has been somehow deleted, we select the first
+                // slide of the deck instead.
+                // TODO: handle the exception more accurately, now COMException is too vague
+                PowerPointPresentation.Current.Slides[0].GetNativeSlide().Select();
+            }
+
             if (showLoadingDialog)
             {
                 _loadDialog.Dispose();
             }
         }
 
-        public static void RemoveAgenda(List<PowerPointSlide> candidates = null)
+        public static void RemoveAgenda(bool removeAll = false)
         {
             var type = CurrentType;
 
@@ -191,11 +205,13 @@ namespace PowerPointLabs
                 return;
             }
 
+            var selectedSlides = PowerPointCurrentPresentationInfo.SelectedSlides.ToList();
+            var slides = PowerPointPresentation.Current.Slides;
+
             switch (type)
             {
                 case Type.Beam:
-                    if (candidates == null) candidates = PowerPointCurrentPresentationInfo.SelectedSlides.ToList();
-                    RemoveBeamAgenda(candidates);
+                    RemoveBeamAgenda(removeAll ? slides : selectedSlides);
                     break;
                 case Type.Bullet:
                     RemoveBulletAgenda();
@@ -206,6 +222,15 @@ namespace PowerPointLabs
             }
 
             PowerPointPresentation.Current.RemoveAckSlide();
+
+            try
+            {
+                selectedSlides[0].GetNativeSlide().Select();
+            }
+            catch (COMException)
+            {
+                slides[0].GetNativeSlide().Select();
+            }
         }
 
         /***********************************************************************************
@@ -623,27 +648,16 @@ namespace PowerPointLabs
             return sections[sections.Count - 1];
         }
 
-        private static void GenerateBeamAgenda(List<string> sections, List<int> beamId = null)
+        private static void GenerateBeamAgenda(List<string> sections, List<PowerPointSlide> selectedSlides)
         {
             var firstSectionIndex = FindSectionStart(FindSectionIndex(sections[0]));
-            var slides = PowerPointPresentation.Current.Slides;
-            List<PowerPointSlide> selectedSlides;
+            var slides = selectedSlides.Where(slide => slide.Index >= firstSectionIndex).ToList();
 
-            if (beamId == null)
-            {
-                selectedSlides = PowerPointCurrentPresentationInfo.SelectedSlides
-                                                                  .Where(slide => slide.Index >= firstSectionIndex)
-                                                                  .ToList();
-            } else
-            {
-                selectedSlides = beamId.Select(id => slides.FirstOrDefault(slide => slide.ID == id)).ToList();
-            }
+            if (slides.Count < 1) return;
 
-            if (selectedSlides.Count < 1) return;
+            PrepareBeamAgendaShapes(sections, slides[0]);
 
-            PrepareBeamAgendaShapes(sections, selectedSlides[0]);
-
-            foreach (var slide in selectedSlides)
+            foreach (var slide in slides)
             {
                 AddAgendaSlideBeamType(FindSlideSection(slide), slide);
             }
@@ -877,11 +891,11 @@ namespace PowerPointLabs
 
             CheckAgendaUpdate(type, refSlide, refSection);
 
-            RemoveAgenda(slides);
+            RemoveAgenda(true);
 
             // regenerate slides, do not show loading dialog, do not confirm deletion, for beam type, 
             // generate only for sepcific id
-            GenerateAgenda(type, false, false, beamSlideId);
+            GenerateAgenda(type, false, false);
         }
 
         private static void PrepareVisualAgendaSlideCapture(IEnumerable<string> sections)
