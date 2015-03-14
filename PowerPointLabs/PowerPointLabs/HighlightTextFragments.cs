@@ -97,7 +97,7 @@ namespace PowerPointLabs
 
         private static List<PowerPoint.Shape> GetShapesToAnimate(PowerPointSlide currentSlide)
         {
-            List<PowerPoint.Shape> previousFragments = currentSlide.getTextFragments();
+            List<PowerPoint.Shape> previousFragments = currentSlide.GetTextFragments();
             currentSlide.RemoveAnimationsForShapes(previousFragments);
 
             previousFragments.Reverse();

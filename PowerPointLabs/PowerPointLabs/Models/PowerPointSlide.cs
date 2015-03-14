@@ -683,7 +683,7 @@ namespace PowerPointLabs.Models
             return false;
         }
 
-        public List<PowerPoint.Shape> getTextFragments()
+        public List<PowerPoint.Shape> GetTextFragments()
         {
             List<PowerPoint.Shape> fragmentShapes = new List<Shape>();
             foreach (Shape sh in _slide.Shapes)
