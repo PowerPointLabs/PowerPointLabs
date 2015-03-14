@@ -290,7 +290,7 @@ namespace PowerPointLabs
 
             if (currentTextBox != null)
             {
-                currentTextBox.TextFrame.TextRange.Font.Bold = MsoTriState.msoTrue;
+                currentTextBox.TextFrame.TextRange.Font.Color.RGB = Utils.Graphics.ConvertColorToRgb(Color.Yellow);
                 currentTextBox.Name += " " + PptLabsAgendaBeamHighlight;
             }
 
@@ -761,6 +761,7 @@ namespace PowerPointLabs
             var background = slide.Shapes.AddShape(MsoAutoShapeType.msoShapeRectangle, 0, 0, 0, 0);
             background.Name = PptLabsAgendaBeamBackgroundName;
             background.Line.Visible = MsoTriState.msoFalse;
+            background.Fill.ForeColor.RGB = Utils.Graphics.ConvertColorToRgb(Color.Black);
 
             if (horizontal)
             {
@@ -784,6 +785,7 @@ namespace PowerPointLabs
             textBox.TextFrame.AutoSize = PpAutoSize.ppAutoSizeShapeToFitText;
             textBox.TextFrame.WordWrap = MsoTriState.msoFalse;
             textBox.TextFrame.TextRange.Text = section;
+            textBox.TextFrame.TextRange.Font.Color.RGB = Utils.Graphics.ConvertColorToRgb(Color.White);
 
             var mouseOnClickAction = textBox.ActionSettings[PpMouseActivation.ppMouseClick];
 
