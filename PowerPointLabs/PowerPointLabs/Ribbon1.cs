@@ -7,12 +7,10 @@ using System.Reflection;
 using System.Runtime.InteropServices;
 using System.Diagnostics;
 using System.Windows.Forms;
-using ImageProcessor.Imaging.Filters;
 using PowerPointLabs.Models;
 using PowerPointLabs.Views;
 using Office = Microsoft.Office.Core;
 using PowerPoint = Microsoft.Office.Interop.PowerPoint;
-using ImageProcessor;
 
 // Follow these steps to enable the Ribbon (XML) item:
 
