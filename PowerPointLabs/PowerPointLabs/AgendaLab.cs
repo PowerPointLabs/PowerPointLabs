@@ -161,6 +161,11 @@ namespace PowerPointLabs
             _loadDialog.Show();
             _loadDialog.Refresh();
 
+            var curWindow = Globals.ThisAddIn.Application.ActiveWindow;
+            var oldViewType = curWindow.ViewType;
+
+            curWindow.ViewType = PpViewType.ppViewNormal;
+
             switch (type)
             {
                 case Type.Beam:
@@ -176,6 +181,7 @@ namespace PowerPointLabs
 
             PowerPointPresentation.Current.AddAckSlide();
 
+            curWindow.ViewType = oldViewType;
             SelectOriginalSlide(selectedSlides.Count > 0 ? selectedSlides[0] : slides[0], slides[0]);
 
             _loadDialog.Dispose();
@@ -251,6 +257,11 @@ namespace PowerPointLabs
             _loadDialog.Show();
             _loadDialog.Refresh();
 
+            var curWindow = Globals.ThisAddIn.Application.ActiveWindow;
+            var oldViewType = curWindow.ViewType;
+
+            curWindow.ViewType = PpViewType.ppViewNormal;
+
             // find the agenda for the first section as reference
             var currentPresentation = PowerPointPresentation.Current;
             var sections = currentPresentation.Sections.Where(section =>
@@ -282,6 +293,7 @@ namespace PowerPointLabs
 
             refSlide.Delete();
 
+            curWindow.ViewType = oldViewType;
             SelectOriginalSlide(selectedSlides[0], PowerPointPresentation.Current.Slides[0]);
             _loadDialog.Dispose();
         }
