@@ -16,6 +16,7 @@ namespace PowerPointLabs
 {
     internal static class AgendaLab
     {
+        private const string PptLabsAgendaSlideReferenceName = "PptLabsAgendaSlideReference";
         private const string PptLabsAgendaSlideNameFormat = "PptLabs{0}Agenda{1}Slide {2}";
         private const string PptLabsAgendaTitleShapeName = "PptLabsAgendaTitle";
         private const string PptLabsAgendaContentShapeName = "PptLabsAgendaContent";
@@ -218,21 +219,6 @@ namespace PowerPointLabs
             SelectOriginalSlide(selectedSlides.Count > 0 ? selectedSlides[0] : slides[0], slides[0]);
         }
 
-        /***********************************************************************************
-         * Basically, sync will not only sync the format across all agenda slides, but
-         * the content will also be adjusted to fit the current context. To achieve this,
-         * we simply remove all slides and regenerate the slides before we proceed.
-         * However, there are some details that should be noted:
-         * 1. Reference finding mechanism is different for Beam style;
-         * 2. After foudn the reference slide, we need to cut it to the clipboard;
-         * 3. Before we remove all agenda, we should pick up color settings in case we are
-         *    dealing with bullet agenda;
-         * 4. Before we re-generate the agenda, we should paste the reference slide somewhere.
-         *    In our implementation, we chose to duplicate the first slide in the first section
-         *    then paste the reference slide in between. This will prevent generating incorrect
-         *    transition when visual style is used.
-         * The procedure stated above is encapsulated in PrepareSyncAgenda().
-         *************************************************************************************/
         public static void SynchronizeAgenda()
         {
             var type = CurrentType;
@@ -269,6 +255,11 @@ namespace PowerPointLabs
 
             var refSlide = FindReferenceSlide(type);
 
+            if (refSlide.Name != PptLabsAgendaSlideReferenceName)
+            {
+                MessageBox.Show(TextCollection.AgendaLabNoReferenceError);
+            }
+
             // refSlide will be copied and pasted to the beginning of the presentation as a
             // format reference, and all agenda slides will be deleted and regenerated to take
             // sections change into account. It needs to be deleted after sync has been done.
@@ -291,7 +282,7 @@ namespace PowerPointLabs
                     break;
             }
 
-            refSlide.Delete();
+            SyncAgendaRef(refSlide);
 
             curWindow.ViewType = oldViewType;
             SelectOriginalSlide(selectedSlides[0], PowerPointPresentation.Current.Slides[0]);
@@ -317,7 +308,7 @@ namespace PowerPointLabs
             beams.Group().Name = PptLabsAgendaBeamShapeName;
         }
 
-        private static void AddAgendaSlideBulletType(string section, bool isEnd)
+        private static void AddAgendaSlideBulletType(string section, bool isEnd, bool isRef)
         {
             var sectionIndex = FindSectionIndex(section);
             var sectionEndIndex = FindSectionEnd(section);
@@ -326,15 +317,9 @@ namespace PowerPointLabs
                 PowerPointSlide.FromSlideFactory(PowerPointPresentation.Current
                                                                        .Presentation
                                                                        .Slides
-                                                                       .Add(isEnd ? sectionEndIndex + 1 : 1,
+                                                                       .Add(isEnd && !isRef ? sectionEndIndex + 1 : 1,
                                                                             PpSlideLayout.ppLayoutText));
-            if (!isEnd)
-            {
-                slide.GetNativeSlide().MoveToSectionStart(sectionIndex);
-            }
 
-            slide.Name = string.Format(PptLabsAgendaSlideNameFormat, Type.Bullet,
-                                          isEnd ? "End" : "Start", section);
             slide.Transition.EntryEffect = PpEntryEffect.ppEffectFadeSmoothly;
             slide.Transition.Duration = 0.25f;
 
@@ -343,20 +328,47 @@ namespace PowerPointLabs
 
             // set title
             slide.Shapes.Placeholders[1].TextFrame.TextRange.Text = "Agenda";
-
-            // set agenda content
+            
             var contentPlaceHolder = slide.Shapes.Placeholders[2];
             var textRange = contentPlaceHolder.TextFrame.TextRange;
-            var focusColor = _bulletHighlightColor;
 
-            // since section index is 1-based, focus section index should be substracted by 1
-            RecolorTextRange(textRange, sectionIndex - 1, focusColor);
+            if (!isRef)
+            {
+                slide.Name = string.Format(PptLabsAgendaSlideNameFormat, Type.Bullet, isEnd ? "End" : "Start", section);
+
+                // since section index is 1-based, focus section index should be substracted by 1
+                RecolorTextRange(textRange, sectionIndex - 1);
+
+                if (!isEnd)
+                {
+                    slide.GetNativeSlide().MoveToSectionStart(sectionIndex);
+                }
+            }
+            else
+            {
+                slide.Name = PptLabsAgendaSlideReferenceName;
+                slide.Hidden = true;
+                
+                RecolorTextRange(textRange, 2);
+            }
         }
 
-        private static void AddAgendaSlideVisualType(List<string> sections)
+        private static void AddAgendaSlideVisualType(List<string> sections, bool isRef)
         {
             var currentPresentation = PowerPointPresentation.Current.Presentation;
             var sectionProperties = PowerPointPresentation.Current.SectionProperties;
+
+            if (isRef)
+            {
+                var slide = PowerPointSlide.FromSlideFactory(currentPresentation.Slides.Add(1, PpSlideLayout.ppLayoutTitleOnly));
+                
+                slide.Name = PptLabsAgendaSlideReferenceName;
+                slide.Hidden = true;
+
+                PrepareVisualAgendaSlideShapes(slide, sections);
+
+                return;
+            }
 
             for (var i = 0; i <= sections.Count; i++)
             {
@@ -542,19 +554,17 @@ namespace PowerPointLabs
         private static PowerPointSlide FindReferenceSlide(Type type)
         {
             var slides = PowerPointPresentation.Current.Slides;
-
-            if (type == Type.Beam)
-            {
-                return slides.FirstOrDefault(slide => slide.GetShapeWithName(PptLabsAgendaBeamShapeName).Count != 0);
-            }
-
             var generatedSlideName = string.Format("PptLabs{0}Agenda", type);
 
-            return slides.FirstOrDefault(slide => slide.Name.Contains(generatedSlideName));
+            return slides.FirstOrDefault(slide => type == Type.Beam ? slide.GetShapeWithName(PptLabsAgendaBeamShapeName).Count != 0 :
+                                                                      slide.Name == PptLabsAgendaSlideReferenceName ||
+                                                                      slide.Name.Contains(generatedSlideName));
         }
 
         private static int FindSectionEnd(string section)
         {
+            if (string.IsNullOrEmpty(section)) return -1;
+
             var sectionIndex = FindSectionIndex(section);
 
             return FindSectionEnd(sectionIndex);
@@ -583,6 +593,8 @@ namespace PowerPointLabs
 
         private static int FindSectionStart(string section)
         {
+            if (string.IsNullOrEmpty(section)) return -1;
+
             var sectionIndex = FindSectionIndex(section);
 
             return FindSectionStart(sectionIndex);
@@ -617,6 +629,8 @@ namespace PowerPointLabs
 
         private static int FindSectionIndex(string section)
         {
+            if (string.IsNullOrEmpty(section)) return -1;
+
             // here the return value is 1-based!
             return PowerPointPresentation.Current.Sections.FindIndex(name => name == section) + 1;
         }
@@ -660,14 +674,18 @@ namespace PowerPointLabs
 
         private static void GenerateBulletAgenda(List<string> sections)
         {
+            _agendaText = TextCollection.AgendaLabReferenceSlideContent;
+
+            AddAgendaSlideBulletType(string.Empty, false, true);
+
             // need to use '\r' as paragraph indicator, not '\n'!
             // must end with '\r' to make the last line a paragraph!
             _agendaText = sections.Aggregate((current, next) => current + "\r" + next) + "\r";
 
             foreach (var section in sections)
             {
-                AddAgendaSlideBulletType(section, false);
-                AddAgendaSlideBulletType(section, true);
+                AddAgendaSlideBulletType(section, false, false);
+                AddAgendaSlideBulletType(section, true, false);
             }
         }
 
@@ -675,7 +693,8 @@ namespace PowerPointLabs
         {
             PrepareVisualAgendaSlideCapture(sections);
 
-            AddAgendaSlideVisualType(sections);
+            AddAgendaSlideVisualType(sections, true);
+            AddAgendaSlideVisualType(sections, false);
         }
 
         private static void GenerateVisualAgendaSlideZoomIn(PowerPointSlide slide, string sectionName)
@@ -874,11 +893,14 @@ namespace PowerPointLabs
             {
                 PickupColorSettings();
             }
-            
-            refSlide.GetNativeSlide().Copy();
-            var refDesign = refSlide.Design;
-            refSlide = PowerPointSlide.FromSlideFactory(PowerPointPresentation.Current.Presentation.Slides.Paste(1)[1]);
-            refSlide.Design = refDesign;
+
+            if (refSlide.Name != PptLabsAgendaSlideReferenceName)
+            {
+                refSlide.GetNativeSlide().Copy();
+                var refDesign = refSlide.Design;
+                refSlide = PowerPointSlide.FromSlideFactory(PowerPointPresentation.Current.Presentation.Slides.Paste(1)[1]);
+                refSlide.Design = refDesign;
+            }
 
             CheckAgendaUpdate(type, refSlide, refSection);
 
@@ -957,7 +979,7 @@ namespace PowerPointLabs
             }
         }
 
-        private static void RecolorTextRange(TextRange textRange, int focusIndex, Color focusColor)
+        private static void RecolorTextRange(TextRange textRange, int focusIndex)
         {
             textRange.Font.Color.RGB = Utils.Graphics.ConvertColorToRgb(_bulletDefaultColor);
 
@@ -968,7 +990,7 @@ namespace PowerPointLabs
                 textRange.Paragraphs(i).Font.Color.RGB = Utils.Graphics.ConvertColorToRgb(_bulletDimColor);
             }
 
-            textRange.Paragraphs(focusIndex).Font.Color.RGB = Utils.Graphics.ConvertColorToRgb(focusColor);
+            textRange.Paragraphs(focusIndex).Font.Color.RGB = Utils.Graphics.ConvertColorToRgb(_bulletHighlightColor);
         }
 
         private static void RemoveBeamAgenda(List<PowerPointSlide> candidates)
@@ -1073,6 +1095,18 @@ namespace PowerPointLabs
 
                 SyncSingleAgendaBullet(refSlide, start);
                 SyncSingleAgendaBullet(refSlide, end);
+            }
+        }
+
+        private static void SyncAgendaRef(PowerPointSlide refSlide)
+        {
+            if (refSlide.Name != PptLabsAgendaSlideReferenceName)
+            {
+                refSlide.Hidden = true;
+            }
+            else
+            {
+                // TODO: sync the latest ref with the previous ref
             }
         }
 

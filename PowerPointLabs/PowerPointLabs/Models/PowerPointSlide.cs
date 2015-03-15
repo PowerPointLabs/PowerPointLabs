@@ -143,6 +143,12 @@ namespace PowerPointLabs.Models
             set { _slide.Name = value; }
         }
 
+        public bool Hidden
+        {
+            get { return Transition.Hidden == MsoTriState.msoTrue; }
+            set { Transition.Hidden = value ? MsoTriState.msoTrue : MsoTriState.msoFalse; }
+        }
+
         public void Delete()
         {
             _slide.Delete();

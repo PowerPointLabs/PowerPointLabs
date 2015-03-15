@@ -295,7 +295,8 @@
 
         # region Agenda Lab
         public const string AgendaLabNoSectionError = "Please group slides into sections before generating agenda.";
-        public const string AgendaLabNoSelectionError = "Please select at least one slide to generate agenda.";
+        public const string AgendaLabNoSelectionError = "Please select at least one slide to generate / synchronize agenda.";
+        public const string AgendaLabNoReferenceError = "Reference slide is not found. The first agenda slide will be taken as reference.";
         public const string AgendaLabSingleSectionError = "Agenda Lab requires slides to be divided into two or more sections.";
         public const string AgendaLabEmptySectionError = "Presentation contains empty section(s). Please fill them up or remove them.";
         public const string AgendaLabAgendaExistError = "Agenda already exists. By confirm this dialog agenda will be regenerated. Do you want to proceed?";
@@ -303,6 +304,7 @@
         public const string AgendaLabNoAgendaError = "There's no generated agenda.";
         public const string AgendaLabLoadingDialogTitle = "Generating...";
         public const string AgendaLabLoadingDialogContent = "Agenda is generating, please wait...";
+        public const string AgendaLabReferenceSlideContent = "Configure dim bullet format here\rConfigure highlight bullet format here\rConfigure default bullet format here\r";
         # endregion
 
         # region Task Pane - Recorder
