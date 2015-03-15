@@ -35,13 +35,17 @@ namespace PowerPointLabs.Models
         {
             get
             {
-                var interopSlides = Globals.ThisAddIn.Application.ActiveWindow.Selection.SlideRange;
-                List<PowerPointSlide> slides = new List<PowerPointSlide>();
+                var slides = new List<PowerPointSlide>();
 
-                foreach (Slide interopSlide in interopSlides)
+                if (CurrentSelection.Type == PpSelectionType.ppSelectionSlides)
                 {
-                    PowerPointSlide s = PowerPointSlide.FromSlideFactory(interopSlide);
-                    slides.Add(s);
+                    var interopSlides = Globals.ThisAddIn.Application.ActiveWindow.Selection.SlideRange;
+
+                    foreach (Slide interopSlide in interopSlides)
+                    {
+                        PowerPointSlide s = PowerPointSlide.FromSlideFactory(interopSlide);
+                        slides.Add(s);
+                    }
                 }
 
                 return slides;

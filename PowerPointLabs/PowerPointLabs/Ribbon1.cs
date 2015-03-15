@@ -2233,26 +2233,6 @@ namespace PowerPointLabs
 
             AgendaLab.SynchronizeAgenda();
         }
-
-        public void BeamAgendaTopStyleClick(Office.IRibbonControl control)
-        {
-            AgendaLab.UpdateBeamAgendaStyle(AgendaLab.Direction.Top);
-        }
-
-        public void BeamAgendaLeftStyleClick(Office.IRibbonControl control)
-        {
-            AgendaLab.UpdateBeamAgendaStyle(AgendaLab.Direction.Left);
-        }
-
-        public void BeamAgendaRightStyleClick(Office.IRibbonControl control)
-        {
-            AgendaLab.UpdateBeamAgendaStyle(AgendaLab.Direction.Right);
-        }
-
-        public void BeamAgendaBottomStyleClick(Office.IRibbonControl control)
-        {
-            AgendaLab.UpdateBeamAgendaStyle(AgendaLab.Direction.Bottom);
-        }
         # endregion
 
         private static string GetResourceText(string resourceName)

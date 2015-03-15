@@ -128,39 +128,38 @@ namespace PowerPointLabs
             settingDialog.ShowDialog();
         }
 
-        public static void GenerateAgenda(Type type, bool showLoadingDialog = true, bool confirmDelete = true)
+        public static void GenerateAgenda(Type type)
         {
-            var selectedSlides = PowerPointCurrentPresentationInfo.SelectedSlides.ToList();
-
             // agenda exists in current presentation
-            if (confirmDelete && CurrentType != Type.None)
+            if (CurrentType != Type.None)
             {
                 var confirm = MessageBox.Show(TextCollection.AgendaLabAgendaExistError,
                                               TextCollection.AgendaLabAgendaExistErrorCaption,
                                               MessageBoxButtons.OKCancel);
 
-                if (confirm == DialogResult.OK)
-                {
-                    RemoveAgenda();
-                }
-                else
-                {
-                    return;
-                }
+                if (confirm != DialogResult.OK) return;
+
+                RemoveAgenda();
             }
 
             // validate section information
             if (!SectionValidation()) return;
 
+            var selectedSlides = PowerPointCurrentPresentationInfo.SelectedSlides.ToList();
+            var slides = PowerPointPresentation.Current.Slides;
+
+            if (type == Type.Beam && selectedSlides.Count == 0)
+            {
+                MessageBox.Show(TextCollection.AgendaLabNoSelectionError);
+                return;
+            }
+
             var sections = PowerPointPresentation.Current.Sections.Skip(1).ToList();
 
-            if (showLoadingDialog)
-            {
-                _loadDialog = new LoadingDialog(TextCollection.AgendaLabLoadingDialogTitle,
+            _loadDialog = new LoadingDialog(TextCollection.AgendaLabLoadingDialogTitle,
                                                 TextCollection.AgendaLabLoadingDialogContent);
-                _loadDialog.Show();
-                _loadDialog.Refresh();
-            }
+            _loadDialog.Show();
+            _loadDialog.Refresh();
 
             switch (type)
             {
@@ -177,25 +176,12 @@ namespace PowerPointLabs
 
             PowerPointPresentation.Current.AddAckSlide();
 
-            try
-            {
-                selectedSlides[0].GetNativeSlide().Select();
-            }
-            catch (COMException)
-            {
-                // if the first selected slide has been somehow deleted, we select the first
-                // slide of the deck instead.
-                // TODO: handle the exception more accurately, now COMException is too vague
-                PowerPointPresentation.Current.Slides[0].GetNativeSlide().Select();
-            }
+            SelectOriginalSlide(selectedSlides.Count > 0 ? selectedSlides[0] : slides[0], slides[0]);
 
-            if (showLoadingDialog)
-            {
-                _loadDialog.Dispose();
-            }
+            _loadDialog.Dispose();
         }
 
-        public static void RemoveAgenda(bool removeAll = false)
+        public static void RemoveAgenda()
         {
             var type = CurrentType;
 
@@ -211,7 +197,7 @@ namespace PowerPointLabs
             switch (type)
             {
                 case Type.Beam:
-                    RemoveBeamAgenda(removeAll ? slides : selectedSlides);
+                    RemoveBeamAgenda(selectedSlides);
                     break;
                 case Type.Bullet:
                     RemoveBulletAgenda();
@@ -223,14 +209,7 @@ namespace PowerPointLabs
 
             PowerPointPresentation.Current.RemoveAckSlide();
 
-            try
-            {
-                selectedSlides[0].GetNativeSlide().Select();
-            }
-            catch (COMException)
-            {
-                slides[0].GetNativeSlide().Select();
-            }
+            SelectOriginalSlide(selectedSlides.Count > 0 ? selectedSlides[0] : slides[0], slides[0]);
         }
 
         /***********************************************************************************
@@ -260,6 +239,14 @@ namespace PowerPointLabs
 
             if (!SectionValidation()) return;
 
+            var selectedSlides = PowerPointCurrentPresentationInfo.SelectedSlides.ToList();
+
+            if (type == Type.Beam && selectedSlides.Count == 0)
+            {
+                MessageBox.Show(TextCollection.AgendaLabNoSelectionError);
+                return;
+            }
+
             _loadDialog = new LoadingDialog("Synchronizing...", "Agenda is getting synchronized, please wait...");
             _loadDialog.Show();
             _loadDialog.Refresh();
@@ -276,31 +263,27 @@ namespace PowerPointLabs
             // sections change into account. It needs to be deleted after sync has been done.
             PrepareSync(type, ref refSlide);
 
+            // regenerate slides and sync accordingly
             switch (type)
             {
                 case Type.Beam:
-                    SyncAgendaBeam(refSlide);
+                    GenerateBeamAgenda(sections, selectedSlides);
+                    SyncAgendaBeam(refSlide, selectedSlides);
                     break;
                 case Type.Bullet:
+                    GenerateBulletAgenda(sections);
                     SyncAgendaBullet(sections, refSlide);
                     break;
                 case Type.Visual:
+                    GenerateVisualAgenda(sections);
                     SyncAgendaVisual(sections, refSlide);
                     break;
             }
 
             refSlide.Delete();
+
+            SelectOriginalSlide(selectedSlides[0], PowerPointPresentation.Current.Slides[0]);
             _loadDialog.Dispose();
-        }
-
-        public static void UpdateBeamAgendaStyle(Direction direction)
-        {
-            BeamDirection = direction;
-
-            if (CurrentType != Type.Beam) return;
-
-            RemoveAgenda();
-            GenerateAgenda(Type.Beam);
         }
         # endregion
 
@@ -870,16 +853,12 @@ namespace PowerPointLabs
             group.Cut();
         }
 
-        private static void PrepareSync(Type type, ref PowerPointSlide refSlide, bool pickupColorSettings = true)
+        private static void PrepareSync(Type type, ref PowerPointSlide refSlide)
         {
-            var slides = PowerPointPresentation.Current.Slides;
             var refSection = FindSlideSection(refSlide);
-            // specially handle the beam type removing since we need to update all old slides, but we need
-            // to know who are the old slides. Here we record down their id for later reference.
-            var beamSlideId = slides.Where(slide => FindBeamShape(slide) != null).Select(slide => slide.ID).ToList();
 
             // pick up color setting before we remove the agenda when the type is bullet
-            if (type == Type.Bullet && pickupColorSettings)
+            if (type == Type.Bullet)
             {
                 PickupColorSettings();
             }
@@ -891,11 +870,7 @@ namespace PowerPointLabs
 
             CheckAgendaUpdate(type, refSlide, refSection);
 
-            RemoveAgenda(true);
-
-            // regenerate slides, do not show loading dialog, do not confirm deletion, for beam type, 
-            // generate only for sepcific id
-            GenerateAgenda(type, false, false);
+            RemoveAgenda();
         }
 
         private static void PrepareVisualAgendaSlideCapture(IEnumerable<string> sections)
@@ -1051,9 +1026,20 @@ namespace PowerPointLabs
             return true;
         }
 
-        private static void SyncAgendaBeam(PowerPointSlide refSlide)
+        private static void SelectOriginalSlide(PowerPointSlide oriSlide, PowerPointSlide defSlide)
         {
-            var slides = PowerPointPresentation.Current.Slides.Skip(refSlide.Index);
+            try
+            {
+                oriSlide.GetNativeSlide().Select();
+            }
+            catch (COMException)
+            {
+                defSlide.GetNativeSlide().Select();
+            }
+        }
+
+        private static void SyncAgendaBeam(PowerPointSlide refSlide, List<PowerPointSlide> slides)
+        {
             var refBeamShape = FindBeamShape(refSlide);
 
             foreach (var slide in slides)
@@ -1267,11 +1253,6 @@ namespace PowerPointLabs
         # region Event Handler
         private static void UpdateColorScheme(Color highlightColor, Color dimColor, Color defaultColor)
         {
-            // change color settings
-            _bulletHighlightColor = highlightColor;
-            _bulletDimColor = dimColor;
-            _bulletDefaultColor = defaultColor;
-
             var sections = PowerPointPresentation.Current.Sections.Skip(1).ToList();
             var type = CurrentType;
 
@@ -1279,8 +1260,14 @@ namespace PowerPointLabs
 
             // take care of the section update
             var refSlide = FindReferenceSlide(type);
-            PrepareSync(type, ref refSlide, pickupColorSettings: false);
+            PrepareSync(type, ref refSlide);
+            
+            // update color settings
+            _bulletHighlightColor = highlightColor;
+            _bulletDimColor = dimColor;
+            _bulletDefaultColor = defaultColor;
 
+            GenerateBulletAgenda(sections);
             SyncAgendaBullet(sections, refSlide);
 
             refSlide.Delete();
