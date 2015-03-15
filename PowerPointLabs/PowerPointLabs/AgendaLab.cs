@@ -950,6 +950,7 @@ namespace PowerPointLabs
 
                 shape.Name = PptLabsAgendaVisualItemPrefix + sections[i];
                 shape.Line.Visible = MsoTriState.msoFalse;
+                shape.LockAspectRatio = MsoTriState.msoTrue;
 
                 var slideCaptureName = string.Format("{0} Start.png", sections[i]);
                 shape.Fill.UserPicture(Path.Combine(SlideCapturePath, slideCaptureName));
