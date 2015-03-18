@@ -239,10 +239,6 @@ namespace PowerPointLabs
                 return;
             }
 
-            _loadDialog = new LoadingDialog("Synchronizing...", "Agenda is getting synchronized, please wait...");
-            _loadDialog.Show();
-            _loadDialog.Refresh();
-
             var curWindow = Globals.ThisAddIn.Application.ActiveWindow;
             var oldViewType = curWindow.ViewType;
 
@@ -260,6 +256,10 @@ namespace PowerPointLabs
                 MessageBox.Show(TextCollection.AgendaLabNoReferenceError);
             }
 
+            _loadDialog = new LoadingDialog("Synchronizing...", "Agenda is getting synchronized, please wait...");
+            _loadDialog.Show();
+            _loadDialog.Refresh();
+
             // refSlide will be copied and pasted to the beginning of the presentation as a
             // format reference, and all agenda slides will be deleted and regenerated to take
             // sections change into account. It needs to be deleted after sync has been done.
@@ -273,7 +273,6 @@ namespace PowerPointLabs
                     SyncAgendaBeam(refSlide, selectedSlides);
                     break;
                 case Type.Bullet:
-                    GenerateBulletAgenda(sections);
                     SyncAgendaBullet(sections, refSlide);
                     break;
                 case Type.Visual:
@@ -284,9 +283,19 @@ namespace PowerPointLabs
 
             SyncAgendaRef(refSlide);
 
-            curWindow.ViewType = oldViewType;
-            SelectOriginalSlide(selectedSlides[0], PowerPointPresentation.Current.Slides[0]);
-            _loadDialog.Dispose();
+            try
+            {
+                curWindow.ViewType = oldViewType;
+                SelectOriginalSlide(selectedSlides[0], PowerPointPresentation.Current.Slides[0]);
+            }
+            catch (Exception)
+            {
+                
+            }
+            finally
+            {
+                _loadDialog.Dispose();
+            }
         }
         # endregion
 
@@ -331,6 +340,8 @@ namespace PowerPointLabs
             
             var contentPlaceHolder = slide.Shapes.Placeholders[2];
             var textRange = contentPlaceHolder.TextFrame.TextRange;
+
+            textRange.Text = _agendaText;
 
             if (!isRef)
             {
@@ -406,6 +417,11 @@ namespace PowerPointLabs
             }
         }
 
+        private static void AddSlideLink(object obj, PowerPointSlide slide, Type type)
+        {
+            // TODO: implement this feature
+        }
+
         private static void AdjustBeamItemHorizontal(ref float lastLeft, ref float lastTop, ref float widest,
                                                      float delta, Shape item, Shape background)
         {
@@ -455,15 +471,18 @@ namespace PowerPointLabs
             switch (type)
             {
                 case Type.Beam:
-                    CheckBeamUpdate(refSlide, refSection);
+                    CheckBeamAgendaUpdate(refSlide, refSection);
+                    break;
+                case Type.Bullet:
+                    CheckBulletAgendaUpdate();
                     break;
                 case Type.Visual:
-                    CheckVisualUpdate(refSlide);
+                    CheckVisualAgendaUpdate(refSlide);
                     break;
             }
         }
 
-        private static void CheckBeamUpdate(PowerPointSlide refSlide, string refSection)
+        private static void CheckBeamAgendaUpdate(PowerPointSlide refSlide, string refSection)
         {
             var beamShape = refSlide.GetShapeWithName(PptLabsAgendaBeamShapeName)[0];
 
@@ -489,7 +508,29 @@ namespace PowerPointLabs
             refSlide.Name = refSection;
         }
 
-        private static void CheckVisualUpdate(PowerPointSlide refSlide)
+        private static void CheckBulletAgendaUpdate()
+        {
+            var sections = PowerPointPresentation.Current
+                                                 .Sections
+                                                 .Skip(1)
+                                                 .OrderBy(x => x)
+                                                 .ToArray();
+
+            if (_agendaText != null)
+            {
+                var oldSections = _agendaText.Split('\r').OrderBy(x => x);
+
+                _agendaOutdated = !sections.SequenceEqual(oldSections);
+            }
+
+            if (_agendaText == null || _agendaOutdated)
+            {
+                _agendaOutdated = true;
+                _agendaText = sections.Aggregate((current, next) => current + "\r" + next) + "\r";
+            }
+        }
+
+        private static void CheckVisualAgendaUpdate(PowerPointSlide refSlide)
         {
             var visualItems =
                 refSlide.GetShapesWithPrefix(PptLabsAgendaVisualItemPrefix)
@@ -903,8 +944,6 @@ namespace PowerPointLabs
             }
 
             CheckAgendaUpdate(type, refSlide, refSection);
-
-            RemoveAgenda();
         }
 
         private static void PrepareVisualAgendaSlideCapture(IEnumerable<string> sections)
@@ -982,8 +1021,6 @@ namespace PowerPointLabs
         private static void RecolorTextRange(TextRange textRange, int focusIndex)
         {
             textRange.Font.Color.RGB = Utils.Graphics.ConvertColorToRgb(_bulletDefaultColor);
-
-            textRange.Text = _agendaText;
 
             for (var i = 1; i < focusIndex; i++)
             {
@@ -1085,10 +1122,25 @@ namespace PowerPointLabs
 
         private static void SyncAgendaBullet(List<string> sections, PowerPointSlide refSlide)
         {
-            foreach (var section in sections)
+            for (var i = 0; i < sections.Count; i ++)
             {
+                var section = sections[i];
+
                 var start = FindSectionStartSlide(section, Type.Bullet);
                 var end = FindSectionEndSlide(section, Type.Bullet);
+
+                // change section's agenda content if agenda has expired, else sync with ref direcly
+                if (_agendaOutdated)
+                {
+                    var startContentHolder = start.GetShapeWithName(PptLabsAgendaContentShapeName)[0];
+                    var endContentHolder = end.GetShapeWithName(PptLabsAgendaContentShapeName)[0];
+
+                    startContentHolder.TextFrame.TextRange.Text = _agendaText;
+                    endContentHolder.TextFrame.TextRange.Text = _agendaText;
+
+                    RecolorTextRange(startContentHolder.TextFrame.TextRange, i + 1);
+                    RecolorTextRange(endContentHolder.TextFrame.TextRange, i + 1);
+                }
 
                 SyncSingleAgendaGeneral(refSlide, start, Type.Bullet);
                 SyncSingleAgendaGeneral(refSlide, end, Type.Bullet);
