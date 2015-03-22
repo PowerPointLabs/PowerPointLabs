@@ -941,6 +941,8 @@ namespace PowerPointLabs
                 var refDesign = refSlide.Design;
                 refSlide = PowerPointSlide.FromSlideFactory(PowerPointPresentation.Current.Presentation.Slides.Paste(1)[1]);
                 refSlide.Design = refDesign;
+                refSlide.Name = PptLabsAgendaSlideReferenceName;
+                refSlide.Hidden = true;
             }
 
             CheckAgendaUpdate(type, refSlide, refSection);
