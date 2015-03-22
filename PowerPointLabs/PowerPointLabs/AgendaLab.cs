@@ -1099,8 +1099,8 @@ namespace PowerPointLabs
                 SyncSingleAgendaGeneral(refSlide, start, Type.Bullet);
                 SyncSingleAgendaGeneral(refSlide, end, Type.Bullet);
 
-                SyncSingleAgendaBullet(refSlide, start);
-                SyncSingleAgendaBullet(refSlide, end);
+                SyncSingleAgendaBullet(refSlide, start, i + 1);
+                SyncSingleAgendaBullet(refSlide, end, i + 1);
             }
         }
 
@@ -1211,7 +1211,7 @@ namespace PowerPointLabs
             }
         }
 
-        private static void SyncSingleAgendaBullet(PowerPointSlide refSlide, PowerPointSlide candidate)
+        private static void SyncSingleAgendaBullet(PowerPointSlide refSlide, PowerPointSlide candidate, int focusIndex)
         {
             if (refSlide == null || candidate == null)
             {
@@ -1221,7 +1221,10 @@ namespace PowerPointLabs
             var refContentShape = refSlide.GetShapeWithName(PptLabsAgendaContentShapeName)[0];
             var candidateContentShape = candidate.GetShapeWithName(PptLabsAgendaContentShapeName)[0];
 
-            Utils.Graphics.SyncShape(refContentShape, candidateContentShape, pickupShapeFormat: false, pickupTextContent: false);
+            Utils.Graphics.SyncShape(refContentShape, candidateContentShape,
+                                     pickupTextContent: false, pickupTextFormat: false);
+
+            ReformatTextRange(candidateContentShape.TextFrame2.TextRange, focusIndex);
         }
 
         private static void SyncSingleAgendaVisual(PowerPointSlide candidate, List<string> sections, int sectionIndex)
