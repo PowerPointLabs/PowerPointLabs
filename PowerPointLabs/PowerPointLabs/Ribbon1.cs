@@ -2213,11 +2213,6 @@ namespace PowerPointLabs
             AgendaLab.GenerateAgenda(AgendaLab.Type.Visual);
         }
 
-        public void BulletAgendaSettingsClick(Office.IRibbonControl control)
-        {
-            AgendaLab.BulletAgendaSettings();
-        }
-
         public void RemoveAgendaClick(Office.IRibbonControl control)
         {
             Globals.ThisAddIn.Application.StartNewUndoEntry();

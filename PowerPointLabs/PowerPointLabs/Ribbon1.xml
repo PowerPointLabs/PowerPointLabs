@@ -289,30 +289,6 @@
                     getLabel="GetAgendaLabUpdateAgendaButtonLabel"
                     getSupertip="GetAgendaLabUpdateAgendaSupertip"
                     onAction="UpdateAgendaClick"/>
-            <menu id="agendaSettings"
-                  getImage="GetAgendaSettingsImage"
-                  getLabel="GetAgendaLabAgendaSettingsButtonLabel"
-                  getSupertip="GetAgendaLabAgendaSettingsSupertip">
-              <button id="bulletAgendaSettings"
-                      getLabel="GetAgendaLabBulletAgendaSettingsButtonLabel"
-                      getSupertip="GetAgendaLabBulletAgendaSettingsSupertip"
-                      onAction="BulletAgendaSettingsClick"/>
-              <!--<menu id="beamAgendaSettings"
-                    label="Beam Agenda Settings">
-                <button id="beamTopButton"
-                        label="Top"
-                        onAction="BeamAgendaTopStyleClick"/>
-                <button id="beamLeftButton"
-                        label="Left"
-                        onAction="BeamAgendaLeftStyleClick"/>
-                <button id="beamBottomButton"
-                        label="Bottom"
-                        onAction="BeamAgendaBottomStyleClick"/>
-                <button id="beamRightButton"
-                        label="Right"
-                        onAction="BeamAgendaRightStyleClick"/>
-              </menu>-->
-            </menu>
           </menu>
         </group>
         <group id="PPTLabsHelp"

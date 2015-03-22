@@ -59,9 +59,7 @@ namespace PowerPointLabs.Utils
         {
             try
             {
-                var tryGet = shape.Parent;
-
-                return false;
+                return shape.Parent == null;
             }
             catch (Exception)
             {
@@ -160,26 +158,15 @@ namespace PowerPointLabs.Utils
             {
                 var refParagraphCount = refShape.TextFrame2.TextRange.Paragraphs.Count;
                 var candidateParagraphCount = candidateShape.TextFrame2.TextRange.Paragraphs.Count;
-                var refTextRange = refShape.TextFrame.TextRange;
-                var candidateTextRange = candidateShape.TextFrame.TextRange;
+                var refTextRange = refShape.TextFrame2.TextRange;
+                var candidateTextRange = candidateShape.TextFrame2.TextRange;
 
                 for (var i = 1; i <= candidateParagraphCount; i++)
                 {
-                    var refParagraph = refTextRange.Paragraphs(i < refParagraphCount ? i : refParagraphCount);
-                    var candidateParagraph = candidateTextRange.Paragraphs(i);
-                    var candidateText = candidateParagraph.Text.TrimEnd('\r');
-                    var candidateColor = candidateParagraph.Font.Color.RGB;
+                    var refParagraph = refTextRange.Paragraphs[i < refParagraphCount ? i : refParagraphCount];
+                    var candidateParagraph = candidateTextRange.Paragraphs[i];
 
-                    refParagraph.Copy();
-
-                    var newCandidateRange = candidateParagraph.PasteSpecial();
-
-                    if (!pickupTextContent)
-                    {
-                        newCandidateRange.Text = candidateText;
-                    }
-
-                    newCandidateRange.Font.Color.RGB = candidateColor;
+                    SyncTextRange(refParagraph, candidateParagraph, pickupTextContent, pickupTextFormat);
                 }
             }
 
@@ -209,6 +196,25 @@ namespace PowerPointLabs.Utils
                 if (candidateShape == null || refShape == null) continue;
 
                 candidateShape.Name = refShape.Name;
+            }
+        }
+
+        public static void SyncTextRange(TextRange2 refTextRange, TextRange2 candidateTextRange,
+                                         bool pickupTextContent = true, bool pickupTextFormat = true)
+        {
+            var candidateText = candidateTextRange.Text.TrimEnd('\r');
+            var newCandidateRange = candidateTextRange;
+
+            if (pickupTextFormat)
+            {
+                // pick up format using copy-paste, since we could not deep copy the format
+                refTextRange.Copy();
+                newCandidateRange = candidateTextRange.PasteSpecial(MsoClipboardFormat.msoClipboardFormatNative);
+            }
+
+            if (!pickupTextContent)
+            {
+                newCandidateRange.Text = candidateText;
             }
         }
         # endregion

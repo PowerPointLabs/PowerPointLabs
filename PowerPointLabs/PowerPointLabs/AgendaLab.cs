@@ -39,9 +39,9 @@ namespace PowerPointLabs
 
         private static bool _agendaOutdated;
 
-        private static Color _bulletDefaultColor = Color.Black;
-        private static Color _bulletHighlightColor = Color.Red;
-        private static Color _bulletDimColor = Color.Gray;
+        private static TextRange2 _bulletDefaultFormat;
+        private static TextRange2 _bulletHighlightFormat;
+        private static TextRange2 _bulletDimFormat;
 
         # region Enum
         public enum Type
@@ -117,18 +117,6 @@ namespace PowerPointLabs
         # endregion
 
         # region API
-        public static void BulletAgendaSettings()
-        {
-            PickupColorSettings();
-
-            var settingDialog = new BulletAgendaSettingsDialog(_bulletHighlightColor,
-                                                               _bulletDimColor,
-                                                               _bulletDefaultColor);
-
-            settingDialog.SettingsHandler += UpdateColorScheme;
-            settingDialog.ShowDialog();
-        }
-
         public static void GenerateAgenda(Type type)
         {
             // agenda exists in current presentation
@@ -339,7 +327,7 @@ namespace PowerPointLabs
             slide.Shapes.Placeholders[1].TextFrame.TextRange.Text = "Agenda";
             
             var contentPlaceHolder = slide.Shapes.Placeholders[2];
-            var textRange = contentPlaceHolder.TextFrame.TextRange;
+            var textRange = contentPlaceHolder.TextFrame2.TextRange;
 
             textRange.Text = _agendaText;
 
@@ -348,7 +336,7 @@ namespace PowerPointLabs
                 slide.Name = string.Format(PptLabsAgendaSlideNameFormat, Type.Bullet, isEnd ? "End" : "Start", section);
 
                 // since section index is 1-based, focus section index should be substracted by 1
-                RecolorTextRange(textRange, sectionIndex - 1);
+                ReformatTextRange(textRange, sectionIndex - 1);
 
                 if (!isEnd)
                 {
@@ -360,7 +348,11 @@ namespace PowerPointLabs
                 slide.Name = PptLabsAgendaSlideReferenceName;
                 slide.Hidden = true;
                 
-                RecolorTextRange(textRange, 2);
+                PickupBulletFormats();
+
+                _bulletDimFormat.Font.Fill.ForeColor.RGB = Utils.Graphics.ConvertColorToRgb(Color.Gray);
+                _bulletHighlightFormat.Font.Fill.ForeColor.RGB = Utils.Graphics.ConvertColorToRgb(Color.Red);
+                _bulletDefaultFormat.Font.Fill.ForeColor.RGB = Utils.Graphics.ConvertColorToRgb(Color.Black);
             }
         }
 
@@ -510,15 +502,13 @@ namespace PowerPointLabs
 
         private static void CheckBulletAgendaUpdate()
         {
-            var sections = PowerPointPresentation.Current
-                                                 .Sections
-                                                 .Skip(1)
-                                                 .OrderBy(x => x)
-                                                 .ToArray();
+            var skippedSections = PowerPointPresentation.Current.Sections.Skip(1).ToList();
+            var newSectionString = skippedSections.Aggregate((current, next) => current + "\r" + next) + "\r";
+            var sections = skippedSections.OrderBy(x => x).ToArray();
 
             if (_agendaText != null)
             {
-                var oldSections = _agendaText.Split('\r').OrderBy(x => x);
+                var oldSections = _agendaText.Trim().Split('\r').OrderBy(x => x);
 
                 _agendaOutdated = !sections.SequenceEqual(oldSections);
             }
@@ -526,7 +516,7 @@ namespace PowerPointLabs
             if (_agendaText == null || _agendaOutdated)
             {
                 _agendaOutdated = true;
-                _agendaText = sections.Aggregate((current, next) => current + "\r" + next) + "\r";
+                _agendaText = newSectionString;
             }
         }
 
@@ -770,59 +760,16 @@ namespace PowerPointLabs
             PowerPointPresentation.Current.Presentation.Slides[index - 1].MoveToSectionStart(sectionIndex);
         }
 
-        private static void PickupColorFromSlide(PowerPointSlide slide)
+        private static void PickupBulletFormats()
         {
-            var contentPlaceHolder = slide.GetShapeWithName(PptLabsAgendaContentShapeName)[0];
+            var refSlide = FindReferenceSlide(Type.Bullet);
+            var contentPlaceHolder = refSlide.GetShapeWithName(PptLabsAgendaContentShapeName)[0];
             var paragraphs = contentPlaceHolder.TextFrame2.TextRange
-                                               .Paragraphs.Cast<TextRange2>()
-                                               .Where(paragraph => paragraph.ParagraphFormat.IndentLevel == 1).ToList();
+                                               .Paragraphs.Cast<TextRange2>().ToList();
 
-            _bulletHighlightColor = Utils.Graphics.ConvertRgbToColor(paragraphs[0].Font.Fill.ForeColor.RGB);
-            
-            var state = 0;
-
-            for (var i = 1; i < paragraphs.Count; i ++ )
-            {
-                var paraColor = Utils.Graphics.ConvertRgbToColor(paragraphs[i].Font.Fill.ForeColor.RGB);
-                
-                if (state == 0)
-                {
-                    if (paraColor != _bulletHighlightColor)
-                    {
-                        _bulletDimColor = _bulletHighlightColor;
-                        _bulletHighlightColor = paraColor;
-                        state = 1;
-                    }
-                } else
-                if (state == 1)
-                {
-                    if (paraColor == _bulletHighlightColor)
-                    {
-                        _bulletHighlightColor = _bulletDimColor;
-                    }
-
-                    _bulletDefaultColor = paraColor;
-                    break;
-                }
-            }
-        }
-
-        private static void PickupColorSettings()
-        {
-            var type = CurrentType;
-
-            if (type != Type.Bullet) return;
-
-            var slides = PowerPointPresentation.Current.Slides;
-            var sectionNameSearchPatternFormat = string.Format(PptLabsAgendaSlideNameFormat, "Bullet",
-                                                               "(?:Start|End)", "(\\w+)");
-            var sectionNameSearchPattern = new Regex(sectionNameSearchPatternFormat);
-            var slideCandidates = slides.Where(slide => sectionNameSearchPattern.IsMatch(slide.Name));
-
-            foreach (var slide in slideCandidates.Where(candidate => sectionNameSearchPattern.IsMatch(candidate.Name)))
-            {
-                PickupColorFromSlide(slide);
-            }
+            _bulletDimFormat = paragraphs[0];
+            _bulletHighlightFormat = paragraphs[1];
+            _bulletDefaultFormat = paragraphs[2];
         }
 
         private static Shape PrepareBeamAgendaBackground(PowerPointSlide slide, bool horizontal)
@@ -929,12 +876,6 @@ namespace PowerPointLabs
         {
             var refSection = FindSlideSection(refSlide);
 
-            // pick up color setting before we remove the agenda when the type is bullet
-            if (type == Type.Bullet)
-            {
-                PickupColorSettings();
-            }
-
             if (refSlide.Name != PptLabsAgendaSlideReferenceName)
             {
                 refSlide.GetNativeSlide().Copy();
@@ -943,6 +884,12 @@ namespace PowerPointLabs
                 refSlide.Design = refDesign;
                 refSlide.Name = PptLabsAgendaSlideReferenceName;
                 refSlide.Hidden = true;
+            }
+
+            // pick up color setting when the type is bullet
+            if (type == Type.Bullet)
+            {
+                PickupBulletFormats();
             }
 
             CheckAgendaUpdate(type, refSlide, refSection);
@@ -1020,16 +967,21 @@ namespace PowerPointLabs
             }
         }
 
-        private static void RecolorTextRange(TextRange textRange, int focusIndex)
+        private static void ReformatTextRange(TextRange2 textRange, int focusIndex)
         {
-            textRange.Font.Color.RGB = Utils.Graphics.ConvertColorToRgb(_bulletDefaultColor);
-
-            for (var i = 1; i < focusIndex; i++)
+            for (var i = 1; i <= textRange.Paragraphs.Count; i++)
             {
-                textRange.Paragraphs(i).Font.Color.RGB = Utils.Graphics.ConvertColorToRgb(_bulletDimColor);
-            }
+                var curPara = textRange.Paragraphs[i];
 
-            textRange.Paragraphs(focusIndex).Font.Color.RGB = Utils.Graphics.ConvertColorToRgb(_bulletHighlightColor);
+                if (i == focusIndex)
+                {
+                    Utils.Graphics.SyncTextRange(_bulletHighlightFormat, curPara, pickupTextContent: false);
+                } else
+                {
+                    Utils.Graphics.SyncTextRange(i < focusIndex ? _bulletDimFormat : _bulletDefaultFormat, curPara,
+                                                 pickupTextContent: false);
+                }
+            }
         }
 
         private static void RemoveBeamAgenda(List<PowerPointSlide> candidates)
@@ -1140,8 +1092,8 @@ namespace PowerPointLabs
                     startContentHolder.TextFrame.TextRange.Text = _agendaText;
                     endContentHolder.TextFrame.TextRange.Text = _agendaText;
 
-                    RecolorTextRange(startContentHolder.TextFrame.TextRange, i + 1);
-                    RecolorTextRange(endContentHolder.TextFrame.TextRange, i + 1);
+                    ReformatTextRange(startContentHolder.TextFrame2.TextRange, i + 1);
+                    ReformatTextRange(endContentHolder.TextFrame2.TextRange, i + 1);
                 }
 
                 SyncSingleAgendaGeneral(refSlide, start, Type.Bullet);
@@ -1348,30 +1300,6 @@ namespace PowerPointLabs
                     Utils.Graphics.SyncShape(refShape, candidateShape);
                 }
             }
-        }
-        # endregion
-
-        # region Event Handler
-        private static void UpdateColorScheme(Color highlightColor, Color dimColor, Color defaultColor)
-        {
-            var sections = PowerPointPresentation.Current.Sections.Skip(1).ToList();
-            var type = CurrentType;
-
-            if (type != Type.Bullet) return;
-
-            // take care of the section update
-            var refSlide = FindReferenceSlide(type);
-            PrepareSync(type, ref refSlide);
-            
-            // update color settings
-            _bulletHighlightColor = highlightColor;
-            _bulletDimColor = dimColor;
-            _bulletDefaultColor = defaultColor;
-
-            GenerateBulletAgenda(sections);
-            SyncAgendaBullet(sections, refSlide);
-
-            refSlide.Delete();
         }
         # endregion
     }
