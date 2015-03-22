@@ -229,10 +229,7 @@ namespace PowerPointLabs.Models
 
         public void RemoveAckSlide()
         {
-            if (Presentation.Slides[SlideCount].Name.Contains("PPAck"))
-            {
-                Presentation.Slides[SlideCount].Delete();
-            }
+            RemoveSlide(new Regex("PPAck"), true);
         }
 
         public void RemoveSlide(Regex rule, bool deleteAll)

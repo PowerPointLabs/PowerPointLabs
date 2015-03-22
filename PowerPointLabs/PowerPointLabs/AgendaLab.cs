@@ -49,7 +49,8 @@ namespace PowerPointLabs
             None,
             Bullet,
             Beam,
-            Visual
+            Visual,
+            Mixed
         };
 
         public enum Direction
@@ -248,6 +249,8 @@ namespace PowerPointLabs
             _loadDialog.Show();
             _loadDialog.Refresh();
 
+            PowerPointPresentation.Current.RemoveAckSlide();
+
             // refSlide will be copied and pasted to the beginning of the presentation as a
             // format reference, and all agenda slides will be deleted and regenerated to take
             // sections change into account. It needs to be deleted after sync has been done.
@@ -273,6 +276,7 @@ namespace PowerPointLabs
 
             try
             {
+                PowerPointPresentation.Current.AddAckSlide();
                 curWindow.ViewType = oldViewType;
                 SelectOriginalSlide(selectedSlides[0], PowerPointPresentation.Current.Slides[0]);
             }
@@ -305,7 +309,7 @@ namespace PowerPointLabs
             beams.Group().Name = PptLabsAgendaBeamShapeName;
         }
 
-        private static void AddAgendaSlideBulletType(string section, bool isEnd, bool isRef)
+        private static PowerPointSlide AddAgendaSlideBulletType(string section, bool isEnd, PowerPointSlide refSlide)
         {
             var sectionIndex = FindSectionIndex(section);
             var sectionEndIndex = FindSectionEnd(section);
@@ -314,7 +318,7 @@ namespace PowerPointLabs
                 PowerPointSlide.FromSlideFactory(PowerPointPresentation.Current
                                                                        .Presentation
                                                                        .Slides
-                                                                       .Add(isEnd && !isRef ? sectionEndIndex + 1 : 1,
+                                                                       .Add(isEnd && refSlide != null ? sectionEndIndex + 1 : 1,
                                                                             PpSlideLayout.ppLayoutText));
 
             slide.Transition.EntryEffect = PpEntryEffect.ppEffectFadeSmoothly;
@@ -331,9 +335,10 @@ namespace PowerPointLabs
 
             textRange.Text = _agendaText;
 
-            if (!isRef)
+            if (refSlide != null)
             {
                 slide.Name = string.Format(PptLabsAgendaSlideNameFormat, Type.Bullet, isEnd ? "End" : "Start", section);
+                slide.Design = refSlide.Design;
 
                 // since section index is 1-based, focus section index should be substracted by 1
                 ReformatTextRange(textRange, sectionIndex - 1);
@@ -354,6 +359,8 @@ namespace PowerPointLabs
                 _bulletHighlightFormat.Font.Fill.ForeColor.RGB = Utils.Graphics.ConvertColorToRgb(Color.Red);
                 _bulletDefaultFormat.Font.Fill.ForeColor.RGB = Utils.Graphics.ConvertColorToRgb(Color.Black);
             }
+
+            return slide;
         }
 
         private static void AddAgendaSlideVisualType(List<string> sections, bool isRef)
@@ -611,15 +618,30 @@ namespace PowerPointLabs
 
         private static PowerPointSlide FindSectionEndSlide(string section, Type type)
         {
-            if (type == Type.Beam)
+            // the function will return the end agenda slide if the first slide of the requested
+            // section is an agenda slide, else it will return null. It also modify the name of the
+            // end slide to adapt the section's name change.
+
+            if (type == Type.Beam) return null;
+
+            var curPresentation = PowerPointPresentation.Current;
+            var slides = curPresentation.Slides;
+            var sectionProperties = curPresentation.SectionProperties;
+            var sectionIndex = FindSectionIndex(section);
+            var endSlide = slides[sectionProperties.FirstSlide(sectionIndex) +
+                                  sectionProperties.SlidesCount(sectionIndex) - 2];
+
+            if (AgendaSlideSearchPattern.IsMatch(endSlide.Name))
             {
-                return null;
+                endSlide.Name = string.Format(PptLabsAgendaSlideNameFormat, type,
+                                      type == Type.Visual ? string.Empty : "End", section);
+            }
+            else
+            {
+                endSlide = null;
             }
 
-            var slideName = string.Format(PptLabsAgendaSlideNameFormat, type,
-                                          type == Type.Visual ? string.Empty : "End", section);
-
-            return PowerPointPresentation.Current.Slides.FirstOrDefault(slide => slide.Name == slideName);
+            return endSlide;
         }
 
         private static int FindSectionStart(string section)
@@ -641,21 +663,28 @@ namespace PowerPointLabs
 
         private static PowerPointSlide FindSectionStartSlide(string section, Type type)
         {
+            // the function will return the start agenda slide if the first slide of the requested
+            // section is an agenda slide, else it will return null. It also modify the name of the
+            // start slide to adapt the section's name change.
+            if (type == Type.Beam) return null;
+
             var curPresentation = PowerPointPresentation.Current;
             var slides = curPresentation.Slides;
+            var sectionProperties = curPresentation.SectionProperties;
+            var sectionIndex = FindSectionIndex(section);
+            var startSlide = slides[sectionProperties.FirstSlide(sectionIndex) - 1];
 
-            if (type == Type.Beam)
+            if (AgendaSlideSearchPattern.IsMatch(startSlide.Name))
             {
-                var sectionProperties = curPresentation.SectionProperties;
-                var sectionIndex = FindSectionIndex(section);
-
-                return slides[sectionProperties.FirstSlide(sectionIndex) - 1];
+                startSlide.Name = string.Format(PptLabsAgendaSlideNameFormat, type,
+                                      type == Type.Visual ? string.Empty : "Start", section);
+            }
+            else
+            {
+                startSlide = null;
             }
 
-            var slideName = string.Format(PptLabsAgendaSlideNameFormat, type, 
-                                          type == Type.Visual ? string.Empty : "Start", section);
-
-            return slides.FirstOrDefault(slide => slide.Name == slideName);
+            return startSlide;
         }
 
         private static int FindSectionIndex(string section)
@@ -707,7 +736,7 @@ namespace PowerPointLabs
         {
             _agendaText = TextCollection.AgendaLabReferenceSlideContent;
 
-            AddAgendaSlideBulletType(string.Empty, false, true);
+            var refSlide = AddAgendaSlideBulletType(string.Empty, false, null);
 
             // need to use '\r' as paragraph indicator, not '\n'!
             // must end with '\r' to make the last line a paragraph!
@@ -715,8 +744,8 @@ namespace PowerPointLabs
 
             foreach (var section in sections)
             {
-                AddAgendaSlideBulletType(section, false, false);
-                AddAgendaSlideBulletType(section, true, false);
+                AddAgendaSlideBulletType(section, false, refSlide);
+                AddAgendaSlideBulletType(section, true, refSlide);
             }
         }
 
@@ -1083,24 +1112,8 @@ namespace PowerPointLabs
                 var start = FindSectionStartSlide(section, Type.Bullet);
                 var end = FindSectionEndSlide(section, Type.Bullet);
 
-                // change section's agenda content if agenda has expired, else sync with ref direcly
-                if (_agendaOutdated)
-                {
-                    var startContentHolder = start.GetShapeWithName(PptLabsAgendaContentShapeName)[0];
-                    var endContentHolder = end.GetShapeWithName(PptLabsAgendaContentShapeName)[0];
-
-                    startContentHolder.TextFrame.TextRange.Text = _agendaText;
-                    endContentHolder.TextFrame.TextRange.Text = _agendaText;
-
-                    ReformatTextRange(startContentHolder.TextFrame2.TextRange, i + 1);
-                    ReformatTextRange(endContentHolder.TextFrame2.TextRange, i + 1);
-                }
-
-                SyncSingleAgendaGeneral(refSlide, start, Type.Bullet);
-                SyncSingleAgendaGeneral(refSlide, end, Type.Bullet);
-
-                SyncSingleAgendaBullet(refSlide, start, i + 1);
-                SyncSingleAgendaBullet(refSlide, end, i + 1);
+                SyncSingleAgendaBullet(refSlide, start, section, false, i + 1);
+                SyncSingleAgendaBullet(refSlide, end, section, true, i + 1);
             }
         }
 
@@ -1211,20 +1224,29 @@ namespace PowerPointLabs
             }
         }
 
-        private static void SyncSingleAgendaBullet(PowerPointSlide refSlide, PowerPointSlide candidate, int focusIndex)
+        private static void SyncSingleAgendaBullet(PowerPointSlide refSlide, PowerPointSlide candidate,
+                                                   string section, bool isEnd, int focusIndex)
         {
-            if (refSlide == null || candidate == null)
+            // if this is a new section, we need to generate a new agenda slide, else we need to check
+            // if the slide's content is outdated. If so, we need to update the content and reformat it
+            // according to the refslide.
+            var refContentHolder = refSlide.GetShapeWithName(PptLabsAgendaContentShapeName)[0];
+            var contentHolder = (candidate ?? AddAgendaSlideBulletType(section, isEnd, refSlide)).GetShapeWithName(PptLabsAgendaContentShapeName)[0];
+
+            if (_agendaOutdated)
             {
-                return;
+                contentHolder.TextFrame.TextRange.Text = _agendaText;
             }
 
-            var refContentShape = refSlide.GetShapeWithName(PptLabsAgendaContentShapeName)[0];
-            var candidateContentShape = candidate.GetShapeWithName(PptLabsAgendaContentShapeName)[0];
+            // after syncing the content, we need to take care of the general slide settings
+            SyncSingleAgendaGeneral(refSlide, candidate, Type.Bullet);
 
-            Utils.Graphics.SyncShape(refContentShape, candidateContentShape,
+            // then we sync the content holder without modifying the content
+            Utils.Graphics.SyncShape(refContentHolder, contentHolder,
                                      pickupTextContent: false, pickupTextFormat: false);
 
-            ReformatTextRange(candidateContentShape.TextFrame2.TextRange, focusIndex);
+            // finally recolor the bullets
+            ReformatTextRange(contentHolder.TextFrame2.TextRange, focusIndex);
         }
 
         private static void SyncSingleAgendaVisual(PowerPointSlide candidate, List<string> sections, int sectionIndex)
