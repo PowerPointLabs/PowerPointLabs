@@ -240,7 +240,7 @@ namespace PowerPointLabs
 
             var refSlide = FindReferenceSlide(type);
 
-            if (refSlide.Name != PptLabsAgendaSlideReferenceName)
+            if (refSlide.Name != PptLabsAgendaSlideReferenceName && type != Type.Beam)
             {
                 MessageBox.Show(TextCollection.AgendaLabNoReferenceError);
             }
@@ -249,7 +249,8 @@ namespace PowerPointLabs
             _loadDialog.Show();
             _loadDialog.Refresh();
 
-            PowerPointPresentation.Current.RemoveAckSlide();
+            selectedSlides.RemoveAll(slide => slide.isAckSlide());
+            currentPresentation.RemoveAckSlide();
 
             // refSlide will be copied and pasted to the beginning of the presentation as a
             // format reference, and all agenda slides will be deleted and regenerated to take
@@ -260,8 +261,10 @@ namespace PowerPointLabs
             switch (type)
             {
                 case Type.Beam:
+                    RemoveBeamAgenda(selectedSlides);
                     GenerateBeamAgenda(sections, selectedSlides);
                     SyncAgendaBeam(refSlide, selectedSlides);
+                    refSlide.Delete();
                     break;
                 case Type.Bullet:
                     SyncAgendaBullet(sections, refSlide);
@@ -623,14 +626,15 @@ namespace PowerPointLabs
             // section is an agenda slide, else it will return null. It also modify the name of the
             // end slide to adapt the section's name change.
 
-            if (type == Type.Beam) return null;
-
             var curPresentation = PowerPointPresentation.Current;
             var slides = curPresentation.Slides;
             var sectionProperties = curPresentation.SectionProperties;
             var sectionIndex = FindSectionIndex(section);
             var endSlide = slides[sectionProperties.FirstSlide(sectionIndex) +
                                   sectionProperties.SlidesCount(sectionIndex) - 2];
+            
+            // return the slide immediately, don't need to be changed
+            if (type == Type.Beam) return endSlide;
 
             if (AgendaSlideSearchPattern.IsMatch(endSlide.Name))
             {
@@ -667,13 +671,14 @@ namespace PowerPointLabs
             // the function will return the start agenda slide if the first slide of the requested
             // section is an agenda slide, else it will return null. It also modify the name of the
             // start slide to adapt the section's name change.
-            if (type == Type.Beam) return null;
-
             var curPresentation = PowerPointPresentation.Current;
             var slides = curPresentation.Slides;
             var sectionProperties = curPresentation.SectionProperties;
             var sectionIndex = FindSectionIndex(section);
             var startSlide = slides[sectionProperties.FirstSlide(sectionIndex) - 1];
+
+            // return the slide immediately, don't need to be changed
+            if (type == Type.Beam) return startSlide;
 
             if (AgendaSlideSearchPattern.IsMatch(startSlide.Name))
             {
@@ -1020,11 +1025,18 @@ namespace PowerPointLabs
         {
             foreach (var candidate in candidates)
             {
-                var beamShape = FindBeamShape(candidate);
-
-                if (beamShape != null)
+                try
                 {
-                    beamShape.Delete();
+                    var beamShape = FindBeamShape(candidate);
+
+                    if (beamShape != null)
+                    {
+                        beamShape.Delete();
+                    }
+                }
+                catch (Exception)
+                {
+                    // do nothing
                 }
             }
         }
