@@ -267,12 +267,9 @@ namespace PowerPointLabs
                     SyncAgendaBullet(sections, refSlide);
                     break;
                 case Type.Visual:
-                    GenerateVisualAgenda(sections);
-                    SyncAgendaVisual(sections, refSlide);
+                    SyncAgendaVisual(sections.Where(section => section != PptLabsAgendaVisualSectionName).ToList(), refSlide);
                     break;
             }
-
-            SyncAgendaRef(refSlide);
 
             try
             {
@@ -363,12 +360,12 @@ namespace PowerPointLabs
             return slide;
         }
 
-        private static void AddAgendaSlideVisualType(List<string> sections, bool isRef)
+        private static PowerPointSlide AddAgendaSlideVisualType(List<string> sections, PowerPointSlide refSlide)
         {
             var currentPresentation = PowerPointPresentation.Current.Presentation;
             var sectionProperties = PowerPointPresentation.Current.SectionProperties;
 
-            if (isRef)
+            if (refSlide == null)
             {
                 var slide = PowerPointSlide.FromSlideFactory(currentPresentation.Slides.Add(1, PpSlideLayout.ppLayoutTitleOnly));
                 
@@ -377,7 +374,7 @@ namespace PowerPointLabs
 
                 PrepareVisualAgendaSlideShapes(slide, sections);
 
-                return;
+                return slide;
             }
 
             for (var i = 0; i <= sections.Count; i++)
@@ -391,8 +388,10 @@ namespace PowerPointLabs
                                            currentPresentation.Slides.Paste(index)[1];
                 var slide = PowerPointSlide.FromSlideFactory(nativeSlide);
 
+                slide.Design = refSlide.Design;
                 slide.Name = string.Format(PptLabsAgendaSlideNameFormat, Type.Visual,
                                            string.Empty, i < sections.Count ? sectionName : "EndOfAgenda");
+
                 var newSectionIndex = sectionProperties.AddBeforeSlide(index, PptLabsAgendaVisualSectionName);
 
                 // if we are in the first agenda section, generate slide shapes in the canvas area,
@@ -414,6 +413,8 @@ namespace PowerPointLabs
                     slide.Copy();
                 }
             }
+
+            return null;
         }
 
         private static void AddSlideLink(object obj, PowerPointSlide slide, Type type)
@@ -547,12 +548,12 @@ namespace PowerPointLabs
             return slide.ID + "," + slide.Index + "," + slide.Name;
         }
 
-        private static Shape FindBeamHighlight(List<Shape> beamItems)
+        private static Shape FindBeamHighlight(IEnumerable<Shape> beamItems)
         {
             return beamItems.FirstOrDefault(shape => shape.Name.EndsWith(PptLabsAgendaBeamHighlight));
         }
 
-        private static Shape FindBeamNormal(List<Shape> beamItems)
+        private static Shape FindBeamNormal(IEnumerable<Shape> beamItems)
         {
             return beamItems.FirstOrDefault(shape => !shape.Name.EndsWith(PptLabsAgendaBeamHighlight) &&
                                                      shape.Name != PptLabsAgendaBeamBackgroundName);
@@ -717,7 +718,7 @@ namespace PowerPointLabs
             return sections[sections.Count - 1];
         }
 
-        private static void GenerateBeamAgenda(List<string> sections, List<PowerPointSlide> selectedSlides)
+        private static void GenerateBeamAgenda(List<string> sections, IEnumerable<PowerPointSlide> selectedSlides)
         {
             var firstSectionIndex = FindSectionStart(FindSectionIndex(sections[0]));
             var slides = selectedSlides.Where(slide => slide.Index >= firstSectionIndex).ToList();
@@ -754,8 +755,15 @@ namespace PowerPointLabs
         {
             PrepareVisualAgendaSlideCapture(sections);
 
-            AddAgendaSlideVisualType(sections, true);
-            AddAgendaSlideVisualType(sections, false);
+            var refSlide = FindReferenceSlide(Type.Visual);
+
+            if (refSlide == null || refSlide.Name != PptLabsAgendaSlideReferenceName)
+            {
+                // if we do not have legacy template, create a new refslide 
+                refSlide = AddAgendaSlideVisualType(sections, null);
+            }
+
+            SyncAgendaVisual(sections, refSlide);
         }
 
         private static void GenerateVisualAgendaSlideZoomIn(PowerPointSlide slide, string sectionName)
@@ -1008,7 +1016,7 @@ namespace PowerPointLabs
             }
         }
 
-        private static void RemoveBeamAgenda(List<PowerPointSlide> candidates)
+        private static void RemoveBeamAgenda(IEnumerable<PowerPointSlide> candidates)
         {
             foreach (var candidate in candidates)
             {
@@ -1088,7 +1096,7 @@ namespace PowerPointLabs
             }
         }
 
-        private static void SyncAgendaBeam(PowerPointSlide refSlide, List<PowerPointSlide> slides)
+        private static void SyncAgendaBeam(PowerPointSlide refSlide, IEnumerable<PowerPointSlide> slides)
         {
             var refBeamShape = FindBeamShape(refSlide);
 
@@ -1114,26 +1122,16 @@ namespace PowerPointLabs
             }
         }
 
-        private static void SyncAgendaRef(PowerPointSlide refSlide)
-        {
-            if (refSlide.Name != PptLabsAgendaSlideReferenceName)
-            {
-                refSlide.Hidden = true;
-            }
-            else
-            {
-                // TODO: sync the latest ref with the previous ref
-            }
-        }
-
         private static void SyncAgendaVisual(List<string> sections, PowerPointSlide refSlide)
         {
             var currentPresentation = PowerPointPresentation.Current;
 
             // delete all generated transition slides
-            foreach (var slide in currentPresentation.Slides.Where(slide => slide.Name.Contains("PPTLabsZoom")))
+            PowerPointPresentation.Current.RemoveSlide(new Regex("PPTLabsZoom"), true);
+
+            for (var i = 0; i < sections.Count; i ++)
             {
-                slide.Delete();
+                var firstSlide = FindSectionStartSlide(sections[i], Type.Visual);
             }
 
             var endOfAgenda = currentPresentation.Slides
