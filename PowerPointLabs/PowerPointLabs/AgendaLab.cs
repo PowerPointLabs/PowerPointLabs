@@ -736,17 +736,18 @@ namespace PowerPointLabs
         {
             _agendaText = TextCollection.AgendaLabReferenceSlideContent;
 
-            var refSlide = AddAgendaSlideBulletType(string.Empty, false, null);
+            var refSlide = FindReferenceSlide(Type.Bullet);
 
-            // need to use '\r' as paragraph indicator, not '\n'!
-            // must end with '\r' to make the last line a paragraph!
+            if (refSlide == null || refSlide.Name != PptLabsAgendaSlideReferenceName)
+            {
+                // if we do not have legacy template, create a new refslide 
+                refSlide = AddAgendaSlideBulletType(string.Empty, false, null);
+            }
+
+            // here we invoke sync logic, since it's the same behavior as sync
             _agendaText = sections.Aggregate((current, next) => current + "\r" + next) + "\r";
 
-            foreach (var section in sections)
-            {
-                AddAgendaSlideBulletType(section, false, refSlide);
-                AddAgendaSlideBulletType(section, true, refSlide);
-            }
+            SyncAgendaBullet(sections, refSlide);
         }
 
         private static void GenerateVisualAgenda(List<string> sections)
@@ -913,12 +914,6 @@ namespace PowerPointLabs
                 refSlide.Design = refDesign;
                 refSlide.Name = PptLabsAgendaSlideReferenceName;
                 refSlide.Hidden = true;
-            }
-
-            // pick up color setting when the type is bullet
-            if (type == Type.Bullet)
-            {
-                PickupBulletFormats();
             }
 
             CheckAgendaUpdate(type, refSlide, refSection);
@@ -1105,6 +1100,8 @@ namespace PowerPointLabs
 
         private static void SyncAgendaBullet(List<string> sections, PowerPointSlide refSlide)
         {
+            PickupBulletFormats();
+
             for (var i = 0; i < sections.Count; i ++)
             {
                 var section = sections[i];
