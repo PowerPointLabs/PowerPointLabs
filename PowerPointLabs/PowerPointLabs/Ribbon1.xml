@@ -272,6 +272,7 @@
                     getImage="GetAgendaVisualImage"
                     getLabel="GetAgendaLabVisualAgendaButtonLabel"
                     getSupertip="GetAgendaLabVisualAgendaSupertip"
+                    enabled="false"
                     onAction="VisualAgendaClick"/>
             <button id="beamAgenda"
                     getImage="GetAgendaSidebarImage"
