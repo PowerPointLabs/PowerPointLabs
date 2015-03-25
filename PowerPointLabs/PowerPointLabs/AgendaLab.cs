@@ -26,6 +26,7 @@ namespace PowerPointLabs
         private const string PptLabsAgendaBeamBackgroundName = "PptLabsAgendaBeamBackground";
         private const string PptLabsAgendaBeamShapeName = "PptLabsAgendaBeamShape";
         private const string PptLabsAgendaBeamHighlight = "PptLabsAgendaBeamHighlight";
+        private const string PptLabsAgendaBulletLinkShape = "PptLabsAgendaBulletLinkShape";
 
         private const float VisualAgendaItemMargin = 0.05f;
 
@@ -257,32 +258,33 @@ namespace PowerPointLabs
             // sections change into account. It needs to be deleted after sync has been done.
             PrepareSync(type, ref refSlide);
 
-            // regenerate slides and sync accordingly
-            switch (type)
-            {
-                case Type.Beam:
-                    RemoveBeamAgenda(selectedSlides);
-                    GenerateBeamAgenda(sections, selectedSlides);
-                    SyncAgendaBeam(refSlide, selectedSlides);
-                    refSlide.Delete();
-                    break;
-                case Type.Bullet:
-                    SyncAgendaBullet(sections, refSlide);
-                    break;
-                case Type.Visual:
-                    SyncAgendaVisual(sections.Where(section => section != PptLabsAgendaVisualSectionName).ToList(), refSlide);
-                    break;
-            }
-
             try
             {
+                // regenerate slides and sync accordingly
+                switch (type)
+                {
+                    case Type.Beam:
+                        RemoveBeamAgenda(selectedSlides);
+                        GenerateBeamAgenda(sections, selectedSlides);
+                        SyncAgendaBeam(refSlide, selectedSlides);
+                        refSlide.Delete();
+                        break;
+                    case Type.Bullet:
+                        SyncAgendaBullet(sections, refSlide);
+                        break;
+                    case Type.Visual:
+                        SyncAgendaVisual(sections.Where(section => section != PptLabsAgendaVisualSectionName).ToList(), refSlide);
+                        break;
+                }
+
                 PowerPointPresentation.Current.AddAckSlide();
                 curWindow.ViewType = oldViewType;
-                SelectOriginalSlide(selectedSlides[0], PowerPointPresentation.Current.Slides[0]);
+                SelectOriginalSlide(selectedSlides.Count == 0 ? null : selectedSlides[0],
+                                    PowerPointPresentation.Current.Slides[0]);
             }
-            catch (Exception)
+            catch (Exception e)
             {
-                
+                ErrorDialogWrapper.ShowDialog("Unexpected error", e.Message, e);
             }
             finally
             {
@@ -420,9 +422,30 @@ namespace PowerPointLabs
             return null;
         }
 
-        private static void AddSlideLink(object obj, PowerPointSlide slide, Type type)
+        private static void AddLinkBulletAgenda(PowerPointSlide slide)
         {
-            // TODO: implement this feature
+            slide.DeleteShapesWithPrefix(PptLabsAgendaBulletLinkShape);
+
+            var contentHolder = slide.GetShapeWithName(PptLabsAgendaContentShapeName)[0];
+            var textRange = contentHolder.TextFrame2.TextRange;
+
+            for (var i = 1; i <= textRange.Paragraphs.Count; i++)
+            {
+                var curPara = textRange.Paragraphs[i];
+                var boundBox = slide.Shapes.AddShape(MsoAutoShapeType.msoShapeRectangle,
+                                                     curPara.BoundLeft, curPara.BoundTop,
+                                                     curPara.BoundWidth, curPara.BoundHeight);
+                var mouseOnClickAction = boundBox.ActionSettings[PpMouseActivation.ppMouseClick];
+
+                mouseOnClickAction.Action = PpActionType.ppActionNamedSlideShow;
+                mouseOnClickAction.Hyperlink.Address = null;
+                mouseOnClickAction.Hyperlink.SubAddress = CreateInDocHyperLink(FindSectionStartSlide(curPara.Text, Type.None));
+
+                boundBox.Name = PptLabsAgendaBulletLinkShape + curPara.Text.Trim();
+                boundBox.Fill.Transparency = 1f;
+                boundBox.Line.Transparency = 1f;
+                boundBox.Visible = MsoTriState.msoFalse;
+            }
         }
 
         private static void AdjustBeamItemHorizontal(ref float lastLeft, ref float lastTop, ref float widest,
@@ -674,11 +697,16 @@ namespace PowerPointLabs
             var curPresentation = PowerPointPresentation.Current;
             var slides = curPresentation.Slides;
             var sectionProperties = curPresentation.SectionProperties;
-            var sectionIndex = FindSectionIndex(section);
+            var sectionIndex = FindSectionIndex(section.Trim());
+
+            if (sectionIndex < 1) return null;
+
             var startSlide = slides[sectionProperties.FirstSlide(sectionIndex) - 1];
 
-            // return the slide immediately, don't need to be changed
-            if (type == Type.Beam) return startSlide;
+            // if it's beam type or none type, return the slide immediately. None type should be
+            // used if the user wants to return the first slide of each section regardless if
+            // it's an agenda slide.
+            if (type == Type.Beam || type == Type.None) return startSlide;
 
             if (AgendaSlideSearchPattern.IsMatch(startSlide.Name))
             {
@@ -1098,6 +1126,12 @@ namespace PowerPointLabs
 
         private static void SelectOriginalSlide(PowerPointSlide oriSlide, PowerPointSlide defSlide)
         {
+            if (oriSlide == null)
+            {
+                defSlide.GetNativeSlide().Select();
+                return;
+            }
+
             try
             {
                 oriSlide.GetNativeSlide().Select();
@@ -1131,6 +1165,12 @@ namespace PowerPointLabs
 
                 SyncSingleAgendaBullet(refSlide, start, section, false, i + 1);
                 SyncSingleAgendaBullet(refSlide, end, section, true, i + 1);
+            }
+
+            foreach (var section in sections)
+            {
+                AddLinkBulletAgenda(FindSectionStartSlide(section, Type.Bullet));
+                AddLinkBulletAgenda(FindSectionEndSlide(section, Type.Bullet));
             }
         }
 
@@ -1238,7 +1278,7 @@ namespace PowerPointLabs
             // if the slide's content is outdated. If so, we need to update the content and reformat it
             // according to the refslide.
             var refContentHolder = refSlide.GetShapeWithName(PptLabsAgendaContentShapeName)[0];
-            var contentHolder = (candidate ?? AddAgendaSlideBulletType(section, isEnd, refSlide)).GetShapeWithName(PptLabsAgendaContentShapeName)[0];
+            var contentHolder = (candidate ?? (candidate = AddAgendaSlideBulletType(section, isEnd, refSlide))).GetShapeWithName(PptLabsAgendaContentShapeName)[0];
 
             if (_agendaOutdated)
             {
@@ -1330,6 +1370,48 @@ namespace PowerPointLabs
                     var candidateShape = candidate.GetShapeWithName(refShape.Name)[0];
 
                     Utils.Graphics.SyncShape(refShape, candidateShape);
+                }
+            }
+        }
+        # endregion
+
+        # region Event Handlers
+        public static void SlideShowBeginHandler()
+        {
+            var type = CurrentType;
+
+            if (type != Type.Bullet) return;
+
+            var slides =
+                PowerPointPresentation.Current.Slides.Where(slide => AgendaSlideSearchPattern.IsMatch(slide.Name));
+
+            foreach (var slide in slides)
+            {
+                var linkShapes = slide.GetShapesWithPrefix(PptLabsAgendaBulletLinkShape);
+
+                foreach (var linkShape in linkShapes)
+                {
+                    linkShape.Visible = MsoTriState.msoTrue;
+                }
+            }
+        }
+
+        public static void SlideShowEndHandler()
+        {
+            var type = CurrentType;
+
+            if (type != Type.Bullet) return;
+
+            var slides =
+                PowerPointPresentation.Current.Slides.Where(slide => AgendaSlideSearchPattern.IsMatch(slide.Name));
+
+            foreach (var slide in slides)
+            {
+                var linkShapes = slide.GetShapesWithPrefix(PptLabsAgendaBulletLinkShape);
+
+                foreach (var linkShape in linkShapes)
+                {
+                    linkShape.Visible = MsoTriState.msoFalse;
                 }
             }
         }
