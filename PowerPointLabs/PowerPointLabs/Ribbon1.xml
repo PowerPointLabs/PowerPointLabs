@@ -255,7 +255,7 @@
             <menuSeparator id="effectSettingsSeparator"/>
             <button id="effectsLabSettings"
                     label="Effects Lab Settings"
-                    imageMso="HappyFace"
+                    getImage="GetEffectsLabSettingsImage"
                     onAction="EffectsLabSettingsButtonClick"/>
           </menu>
           <menu id="AgendaLabsMenu"
@@ -272,7 +272,6 @@
                     getImage="GetAgendaVisualImage"
                     getLabel="GetAgendaLabVisualAgendaButtonLabel"
                     getSupertip="GetAgendaLabVisualAgendaSupertip"
-                    enabled="false"
                     onAction="VisualAgendaClick"/>
             <button id="beamAgenda"
                     getImage="GetAgendaSidebarImage"

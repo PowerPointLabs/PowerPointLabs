@@ -987,6 +987,18 @@ namespace PowerPointLabs
                 throw;
             }
         }
+        public Bitmap GetEffectsLabSettingsImage(Office.IRibbonControl control)
+        {
+            try
+            {
+                return new System.Drawing.Bitmap(Properties.Resources.AgendaSettings);
+            }
+            catch (Exception e)
+            {
+                PowerPointLabsGlobals.LogException(e, "GetRecolorRemainderImage");
+                throw;
+            }
+        }
 
         public Bitmap GetAgendaLabImage(Office.IRibbonControl control)
         {
