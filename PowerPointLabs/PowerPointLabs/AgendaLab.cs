@@ -425,6 +425,24 @@ namespace PowerPointLabs
             }
         }
 
+        private static void AddLinkVisualAgenda(PowerPointSlide slide)
+        {
+            var previews = slide.GetShapesWithPrefix(PptLabsAgendaVisualItemPrefix);
+            var slides = PowerPointPresentation.Current.Slides;
+
+            foreach (var preview in previews)
+            {
+                var sectionName = preview.Name.Substring(PptLabsAgendaVisualItemPrefix.Length);
+                var secAbsoluteIndex = FindSectionAbsoluteIndex(sectionName);
+                var secStartIndex = FindSectionStart(secAbsoluteIndex);
+                var mouseOnClickAction = preview.ActionSettings[PpMouseActivation.ppMouseClick];
+
+                mouseOnClickAction.Action = PpActionType.ppActionNamedSlideShow;
+                mouseOnClickAction.Hyperlink.Address = null;
+                mouseOnClickAction.Hyperlink.SubAddress = CreateInDocHyperLink(slides[secStartIndex - 2]);
+            }
+        }
+
         private static void AdjustBeamItemHorizontal(ref float lastLeft, ref float lastTop, ref float widest,
                                                      float delta, Shape item, Shape background)
         {
@@ -1212,6 +1230,14 @@ namespace PowerPointLabs
 
                 SyncSingleAgendaGeneral(refSlide, candidate, Type.Visual);
                 SyncSingleAgendaVisual(candidate, sections, i);
+            }
+
+            var agendas =
+                PowerPointPresentation.Current.Slides.Where(slide => AgendaSlideSearchPattern.IsMatch(slide.Name));
+
+            foreach (var agenda in agendas)
+            {
+                AddLinkVisualAgenda(agenda);
             }
         }
 
