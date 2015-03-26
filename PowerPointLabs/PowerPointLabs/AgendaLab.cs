@@ -853,9 +853,9 @@ namespace PowerPointLabs
 
             var index = slide.Index;
 
-            // move the step back slide to the section
-            PowerPointPresentation.Current.Presentation.Slides[index - 1]
-                                          .MoveToSectionStart(FindSectionAbsoluteIndex(PptLabsAgendaVisualSectionName));
+            // move the step back slide to the first slide of the section
+            PowerPointPresentation.Current.Presentation.Slides[index - 1].MoveTo(index);
+            slide.MoveTo(index);
         }
 
         private static void PickupBulletFormats()
@@ -1088,7 +1088,7 @@ namespace PowerPointLabs
                 }
                 catch (Exception)
                 {
-                    // do nothing
+                    // TODO: I cannot remember the reason for this empty catch block.....
                 }
             }
         }
@@ -1200,11 +1200,12 @@ namespace PowerPointLabs
 
         private static void SyncAgendaVisual(List<string> sections, PowerPointSlide refSlide)
         {
-            var sectionProperties = PowerPointPresentation.Current.SectionProperties;
-            var slides = PowerPointPresentation.Current.Slides;
-
             // delete all generated transition slides
             PowerPointPresentation.Current.RemoveSlide(new Regex("PPTLabsZoom"), true);
+
+            // get a copy of slides and sections after the transition slides are deleted
+            var sectionProperties = PowerPointPresentation.Current.SectionProperties;
+            var slides = PowerPointPresentation.Current.Slides;
 
             for (var i = sections.Count; i >= 0; i --)
             {
@@ -1221,14 +1222,14 @@ namespace PowerPointLabs
                 {
                     candidate = sectionProperties.SlidesCount(genSectionIndex) == 0
                                     ? AddAgendaSlideVisualType(sections, refSlide, genSlideIndex, i)
-                                    : slides[genSlideIndex];
+                                    : slides[genSlideIndex - 2];
                 } else
                 {
                     candidate = AddAgendaSlideVisualType(sections, refSlide, genSlideIndex, i);
                     sectionProperties.AddBeforeSlide(candidate.Index, PptLabsAgendaVisualSectionName);
                 }
 
-                SyncSingleAgendaGeneral(refSlide, candidate, Type.Visual);
+                SyncSingleAgendaGeneral(refSlide, candidate);
                 SyncSingleAgendaVisual(candidate, sections, i);
             }
 
@@ -1328,7 +1329,7 @@ namespace PowerPointLabs
             }
 
             // after syncing the content, we need to take care of the general slide settings
-            SyncSingleAgendaGeneral(refSlide, candidate, Type.Bullet);
+            SyncSingleAgendaGeneral(refSlide, candidate);
 
             // then we sync the content holder without modifying the content
             Utils.Graphics.SyncShape(refContentHolder, contentHolder,
@@ -1371,14 +1372,8 @@ namespace PowerPointLabs
             }
         }
 
-        private static void SyncSingleAgendaGeneral(PowerPointSlide refSlide, PowerPointSlide candidate, Type type)
+        private static void SyncSingleAgendaGeneral(PowerPointSlide refSlide, PowerPointSlide candidate)
         {
-            // in this step, we should sync:
-            // 1. Layout
-            // 2. Design;
-            // -3. Transition; -> this is no longer synced because each agenda may have different transition
-            // 4. Shapes and their position, text;
-
             if (refSlide == null || candidate == null ||
                 refSlide == candidate)
             {
@@ -1404,21 +1399,16 @@ namespace PowerPointLabs
                 Utils.Graphics.SyncShapeRange(refShapes, copiedShapes);
             }
 
-            // sync shape with same name only for bullet agenda, or visual agenda that is still up to date
-            if (type == Type.Bullet ||
-               (type == Type.Visual && !_agendaOutdated))
+            // syncronize shapes position and size, except bullet content
+            var sameShapes = refSlide.Shapes.Cast<Shape>()
+                                            .Where(shape => shape.Name != PptLabsAgendaContentShapeName &&
+                                                            candidate.HasShapeWithSameName(shape.Name));
+
+            foreach (var refShape in sameShapes)
             {
-                // syncronize shapes position and size, except bullet content
-                var sameShapes = refSlide.Shapes.Cast<Shape>()
-                                                .Where(shape => shape.Name != PptLabsAgendaContentShapeName &&
-                                                                candidate.HasShapeWithSameName(shape.Name));
+                var candidateShape = candidate.GetShapeWithName(refShape.Name)[0];
 
-                foreach (var refShape in sameShapes)
-                {
-                    var candidateShape = candidate.GetShapeWithName(refShape.Name)[0];
-
-                    Utils.Graphics.SyncShape(refShape, candidateShape);
-                }
+                Utils.Graphics.SyncShape(refShape, candidateShape);
             }
         }
         # endregion
