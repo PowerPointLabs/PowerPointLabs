@@ -4,7 +4,6 @@ using System.Diagnostics;
 using System.IO;
 using System.IO.Compression;
 using System.Windows.Forms;
-using System.Web;
 
 namespace PowerPointLabsInstallerUi
 {
@@ -31,7 +30,7 @@ namespace PowerPointLabsInstallerUi
                 (IsSpecialCharPresentInInstallPath() 
                     ? Path.GetPathRoot(Environment.SystemDirectory) 
                     : Path.GetTempPath()),
-                @"\PowerPointLabsInstaller");
+                @"PowerPointLabsInstaller");
         }
 
         /// <summary>
@@ -41,7 +40,7 @@ namespace PowerPointLabsInstallerUi
         /// <returns></returns>
         private bool IsSpecialCharPresentInInstallPath()
         {
-            return HttpUtility.UrlPathEncode(Path.GetTempPath()) != Path.GetTempPath();
+            return new Uri(Path.GetTempPath()).AbsolutePath.Replace("/", "\\") != Path.GetTempPath();
         }
 
         /// <summary>
