@@ -20,14 +20,23 @@ namespace PowerPointLabsInstallerUi
         private readonly string _onlineInstallerZipAddress = Path.Combine(Path.GetTempPath(),
             @"PowerPointLabsInstaller\olInstaller.zip");
 
+        private readonly string _targetInstallFolder;
+
         public Form1()
         {
             InitializeComponent();
+
+            // handle special char case for EURO user
+            _targetInstallFolder = Path.Combine(
+                (IsSpecialCharPresentInInstallPath() 
+                    ? Path.GetPathRoot(Environment.SystemDirectory) 
+                    : Path.GetTempPath()),
+                @"\PowerPointLabsInstaller");
         }
 
         /// <summary>
         /// If there are special characters (eg é) present in the install path,
-        /// the offline installer (ClickOnce) will fail to install. Thus need to download and install online installer instead.
+        /// the offline installer (ClickOnce) will fail to install. Thus need to install it to the root path.
         /// </summary>
         /// <returns></returns>
         private bool IsSpecialCharPresentInInstallPath()
@@ -81,26 +90,15 @@ namespace PowerPointLabsInstallerUi
                 //run installation files
                 button1.Enabled = false;
                 button1.Text = TextButtonRunning;
-                if (IsSpecialCharPresentInInstallPath())
+
+                //normal offline installer
+                Boolean isUnzipSuccessful = UnzipInstaller(_installerZipAddress);
+                if (isUnzipSuccessful)
                 {
-                    //download and run online installer
-                    new Downloader()
-                        .Get(UrlForPptlabsOnlineInstaller, _onlineInstallerZipAddress)
-                        .After(AfterOnlineInstallerDownload)
-                        .WhenFail(WhenDownloadFailure)
-                        .Start();
+                    RunInstaller();
                 }
-                else
-                {
-                    //normal offline installer
-                    Boolean isUnzipSuccessful = UnzipInstaller(_installerZipAddress);
-                    if (isUnzipSuccessful)
-                    {
-                        RunInstaller();
-                    }
-                    button1.Enabled = true;
-                    button1.Text = TextButtonClose;
-                }
+                button1.Enabled = true;
+                button1.Text = TextButtonClose;
             }
             else
             {
@@ -204,7 +202,7 @@ namespace PowerPointLabsInstallerUi
             return result;
         } 
 
-        private static void RunInstaller()
+        private void RunInstaller()
         {
             try
             {
@@ -212,7 +210,7 @@ namespace PowerPointLabsInstallerUi
                 {
                     StartInfo =
                     {
-                        FileName = Path.Combine(Path.GetTempPath(), @"PowerPointLabsInstaller\setup.exe"),
+                        FileName = Path.Combine(_targetInstallFolder, "setup.exe"),
                         WindowStyle = ProcessWindowStyle.Hidden
                     }
                 };
@@ -235,7 +233,7 @@ namespace PowerPointLabsInstallerUi
                 foreach (var file in zipDir)
                 {
                     installerZip.ExtractFile(file,
-                        Path.Combine(Path.GetTempPath(), @"PowerPointLabsInstaller\" + file.FilenameInZip));
+                        Path.Combine(_targetInstallFolder, file.FilenameInZip));
                 }
                 installerZip.Close();
                 return true;
