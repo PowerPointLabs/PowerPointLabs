@@ -253,9 +253,6 @@ namespace PowerPointLabs
             selectedSlides.RemoveAll(slide => slide.isAckSlide());
             currentPresentation.RemoveAckSlide();
 
-            // refSlide will be copied and pasted to the beginning of the presentation as a
-            // format reference, and all agenda slides will be deleted and regenerated to take
-            // sections change into account. It needs to be deleted after sync has been done.
             PrepareSync(type, ref refSlide);
 
             try
@@ -273,6 +270,7 @@ namespace PowerPointLabs
                         SyncAgendaBullet(sections, refSlide);
                         break;
                     case Type.Visual:
+                        CheckAgendaUpdate(Type.Visual, refSlide, "");
                         SyncAgendaVisual(sections, refSlide);
                         break;
                 }
@@ -535,6 +533,8 @@ namespace PowerPointLabs
             var newSectionString = skippedSections.Aggregate((current, next) => current + "\r" + next) + "\r";
             var sections = skippedSections.OrderBy(x => x).ToArray();
 
+            // TODO: check if the reference slide is at the very first
+
             if (_agendaText != null)
             {
                 var oldSections = _agendaText.Trim().Split('\r').OrderBy(x => x);
@@ -551,7 +551,11 @@ namespace PowerPointLabs
 
         private static void CheckVisualAgendaUpdate(PowerPointSlide refSlide)
         {
+            // delete all generated transition slides
+            PowerPointPresentation.Current.RemoveSlide(new Regex("PPTLabsZoom"), true);
+
             var visualItems = refSlide.GetShapesWithPrefix(PptLabsAgendaVisualItemPrefix).ToList();
+            var sectionProperties = PowerPointPresentation.Current.SectionProperties;
             var sections = PowerPointPresentation.Current.Sections
                                                          .Skip(1)
                                                          .Where(section => section != PptLabsAgendaVisualSectionName)
@@ -564,10 +568,14 @@ namespace PowerPointLabs
                 var sectionName = item.Name.Substring(PptLabsAgendaVisualItemPrefix.Length);
                 var corresSection = sections.FirstOrDefault(section => section == sectionName);
                 
-                // remove outdated preview and update current previews
+                // remove outdated preview and corresponding agenda slide, and update current previews
                 if (corresSection == null)
                 {
                     item.Delete();
+
+                    var corresAgendaName = string.Format(PptLabsAgendaSlideNameFormat, Type.Visual, string.Empty,
+                                                         sectionName);
+                    PowerPointPresentation.Current.RemoveSlide(corresAgendaName, false);
                 } else
                 {
                     sections.Remove(corresSection);
@@ -599,6 +607,16 @@ namespace PowerPointLabs
                 {
                     itemLeft = 0;
                     itemTop += itemHeight;
+                }
+            }
+
+            var slides = PowerPointPresentation.Current.Slides;
+
+            for (var i = 0; i < slides.Count; i ++)
+            {
+                if (AgendaSlideSearchPattern.IsMatch(slides[i].Name))
+                {
+                    sectionProperties.AddBeforeSlide(i + 1, PptLabsAgendaVisualSectionName);
                 }
             }
         }
@@ -1200,12 +1218,10 @@ namespace PowerPointLabs
 
         private static void SyncAgendaVisual(List<string> sections, PowerPointSlide refSlide)
         {
-            // delete all generated transition slides
-            PowerPointPresentation.Current.RemoveSlide(new Regex("PPTLabsZoom"), true);
-
             // get a copy of slides and sections after the transition slides are deleted
             var sectionProperties = PowerPointPresentation.Current.SectionProperties;
             var slides = PowerPointPresentation.Current.Slides;
+            var isGen = true;
 
             for (var i = sections.Count; i >= 0; i --)
             {
@@ -1218,11 +1234,14 @@ namespace PowerPointLabs
 
                 PowerPointSlide candidate;
 
+                if (genSectionName != PptLabsAgendaVisualSectionName && !isGen) continue;
+
                 if (genSectionName == PptLabsAgendaVisualSectionName)
                 {
                     candidate = sectionProperties.SlidesCount(genSectionIndex) == 0
                                     ? AddAgendaSlideVisualType(sections, refSlide, genSlideIndex, i)
                                     : slides[genSlideIndex - 2];
+                    isGen = false;
                 } else
                 {
                     candidate = AddAgendaSlideVisualType(sections, refSlide, genSlideIndex, i);
