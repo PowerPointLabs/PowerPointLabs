@@ -137,8 +137,11 @@ namespace PowerPointLabs
 
         private void ThisAddInSlideSelectionChanged(PowerPoint.SlideRange sldRange)
         {
+            // TODO: doing range sweep to check these var may affect performance, consider initializing these
+            // TODO: variables only at program starts
             Ribbon.RemoveCaptionsEnabled = SlidesInRangeHaveCaptions(sldRange);
             Ribbon.RemoveAudioEnabled = SlidesInRangeHaveAudio(sldRange);
+
             // update recorder pane
             if (sldRange.Count > 0)
             {
@@ -168,7 +171,7 @@ namespace PowerPointLabs
             else
             {
                 PowerPoint.Slide tmp = sldRange[1];
-                PowerPoint.Presentation presentation = Globals.ThisAddIn.Application.ActivePresentation;
+                PowerPoint.Presentation presentation = PowerPointPresentation.Current.Presentation;
                 int slideIndex = tmp.SlideIndex;
                 PowerPoint.Slide next = tmp;
                 PowerPoint.Slide prev = tmp;
@@ -815,6 +818,7 @@ namespace PowerPointLabs
         private void SlideShowBeginHandler(PowerPoint.SlideShowWindow wn)
         {
             _isInSlideShow = true;
+            AgendaLab.SlideShowBeginHandler();
         }
 
         private void SlideShowEndHandler(PowerPoint.Presentation presentation)
@@ -825,6 +829,7 @@ namespace PowerPointLabs
 
             if (recorder == null)
             {
+                AgendaLab.SlideShowEndHandler();
                 return;
             }
 
@@ -843,21 +848,20 @@ namespace PowerPointLabs
             // if audio buffer is not empty, render the effects
             if (recorder.AudioBuffer.Count != 0)
             {
-                var slides = PowerPointCurrentPresentationInfo.Slides.ToList();
+                var slides = PowerPointPresentation.Current.Slides.ToList();
 
-                for (int i = 0; i < recorder.AudioBuffer.Count; i++)
+                for (var i = 0; i < recorder.AudioBuffer.Count; i++)
                 {
-                    if (recorder.AudioBuffer[i].Count != 0)
+                    if (recorder.AudioBuffer[i].Count == 0) continue;
+
+                    foreach (var audio in recorder.AudioBuffer[i])
                     {
-                        foreach (var audio in recorder.AudioBuffer[i])
-                        {
-                            audio.Item1.EmbedOnSlide(slides[i], audio.Item2);
+                        audio.Item1.EmbedOnSlide(slides[i], audio.Item2);
 
-                            if (Globals.ThisAddIn.Ribbon.RemoveAudioEnabled) continue;
+                        if (Globals.ThisAddIn.Ribbon.RemoveAudioEnabled) continue;
 
-                            Globals.ThisAddIn.Ribbon.RemoveAudioEnabled = true;
-                            Globals.ThisAddIn.Ribbon.RefreshRibbonControl("RemoveAudioButton");
-                        }
+                        Globals.ThisAddIn.Ribbon.RemoveAudioEnabled = true;
+                        Globals.ThisAddIn.Ribbon.RefreshRibbonControl("RemoveAudioButton");
                     }
                 }
             }
@@ -867,6 +871,8 @@ namespace PowerPointLabs
 
             // change back the slide range settings
             Application.ActivePresentation.SlideShowSettings.RangeType = PowerPoint.PpSlideShowRangeType.ppShowAll;
+
+            AgendaLab.SlideShowEndHandler();
         }
 
         private bool IsEmptyFile(string filePath)

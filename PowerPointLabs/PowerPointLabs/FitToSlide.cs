@@ -15,7 +15,7 @@ namespace PowerPointLabs
             float shapeSizeRatio = GetSizeRatio(selectedShape);
             float resizeFactor = GetResizeFactorForFitToHeight(selectedShape);
 
-            selectedShape.Height = PowerPointCurrentPresentationInfo.SlideHeight / resizeFactor;
+            selectedShape.Height = PowerPointPresentation.Current.SlideHeight / resizeFactor;
             selectedShape.Width = selectedShape.Height / shapeSizeRatio;
             MoveToCenterForFitToHeight(selectedShape);
             AdjustPositionForFitToHeight(selectedShape);
@@ -26,7 +26,7 @@ namespace PowerPointLabs
             float shapeSizeRatio = GetSizeRatio(selectedShape);
             float resizeFactor = GetResizeFactorForFitToWidth(selectedShape);
 
-            selectedShape.Height = PowerPointCurrentPresentationInfo.SlideWidth / resizeFactor;
+            selectedShape.Height = PowerPointPresentation.Current.SlideWidth / resizeFactor;
             selectedShape.Width = selectedShape.Height / shapeSizeRatio;
             MoveToCenterForFitToWidth(selectedShape);
             AdjustPositionForFitToWidth(selectedShape);
@@ -34,7 +34,7 @@ namespace PowerPointLabs
 
         private static void MoveToCenterForFitToHeight(PowerPoint.Shape selectedShape)
         {
-            selectedShape.Left = (PowerPointCurrentPresentationInfo.SlideWidth - selectedShape.Width)/2;
+            selectedShape.Left = (PowerPointPresentation.Current.SlideWidth - selectedShape.Width) / 2;
             selectedShape.Top = TopMost;
         }
 
@@ -63,7 +63,7 @@ namespace PowerPointLabs
 
         private static void MoveToCenterForFitToWidth(PowerPoint.Shape selectedShape)
         {
-            selectedShape.Top = (PowerPointCurrentPresentationInfo.SlideHeight - selectedShape.Height)/2;
+            selectedShape.Top = (PowerPointPresentation.Current.SlideHeight - selectedShape.Height) / 2;
             selectedShape.Left = LeftMost;
         }
 

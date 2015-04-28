@@ -57,7 +57,7 @@ namespace PowerPointLabs
         {
             try
             {
-                if (!VerifyIsShapeRangeValid(shapeRange)) return null;
+                if (!VerifyIsShapeRangeValid(shapeRange, handleError)) return null;
 
                 var shape = GetShapeForSelection(shapeRange);
                 TakeScreenshotProxy(shape);
@@ -77,7 +77,7 @@ namespace PowerPointLabs
             }
         }
 
-        private static bool VerifyIsShapeRangeValid(PowerPoint.ShapeRange shapeRange)
+        private static bool VerifyIsShapeRangeValid(PowerPoint.ShapeRange shapeRange, bool handleError)
         {
             try
             {
@@ -95,8 +95,13 @@ namespace PowerPointLabs
             }
             catch (Exception e)
             {
-                MessageBox.Show(GetErrorMessageForErrorCode(e.Message), MessageBoxTitle);
-                return false;
+                if (handleError)
+                {
+                    MessageBox.Show(GetErrorMessageForErrorCode(e.Message), MessageBoxTitle);
+                    return false;
+                }
+
+                throw;
             }
         }
 
@@ -116,7 +121,7 @@ namespace PowerPointLabs
             //then we can only read the shape's name/width/height/left/top.. for others, it'll throw an exception
             //'Cut-Paste' is a common workaround method for this issue
             rangeOriginal.Cut();
-            rangeOriginal = PowerPointLabsGlobals.GetCurrentSlide().Shapes.Paste();
+            rangeOriginal = PowerPointCurrentPresentationInfo.CurrentSlide.Shapes.Paste();
 
             var rangeCopy = MakeCopyForShapeRange(rangeOriginal);
             var ungroupedRangeCopy = UngroupAllForShapeRange(rangeCopy);
@@ -127,15 +132,7 @@ namespace PowerPointLabs
                 mergedShape = ungroupedRangeCopy.Group();
             }
 
-            if (IsWithinSlide(mergedShape))
-            {
-                rangeOriginal.Delete();
-            }
-            else
-            {
-                mergedShape.Delete();
-                ThrowErrorCode(ErrorCodeForExceedSlideBound);
-            }
+            rangeOriginal.Delete();
 
             return mergedShape;
         }
@@ -160,7 +157,7 @@ namespace PowerPointLabs
             }
             shape.Line.Visible = Office.MsoTriState.msoFalse;
             shape.Copy();
-            var shapeToReturn = PowerPointLabsGlobals.GetCurrentSlide().Shapes.Paste()[1];
+            var shapeToReturn = PowerPointCurrentPresentationInfo.CurrentSlide.Shapes.Paste()[1];
             shape.Delete();
             return shapeToReturn;
         }
@@ -191,7 +188,7 @@ namespace PowerPointLabs
             if (startX >= original.Width || startY >= original.Height) return null;
             try
             {
-                var outputImage = new Bitmap((int)width, (int)height, PixelFormat.Format24bppRgb);
+                var outputImage = new Bitmap((int)width, (int)height, PixelFormat.Format32bppArgb);
                 
                 var inverseRatio = 1 / magnifyRatio;
                 
@@ -218,7 +215,7 @@ namespace PowerPointLabs
         private static void TakeScreenshotProxy(PowerPoint.Shape shape)
         {
             shape.Visible = Office.MsoTriState.msoFalse;
-            Utils.Graphics.ExportSlide(PowerPointLabsGlobals.GetCurrentSlide(), SlidePicture);
+            Utils.Graphics.ExportSlide(PowerPointCurrentPresentationInfo.CurrentSlide, SlidePicture);
             shape.Visible = Office.MsoTriState.msoTrue;
         }
 
@@ -233,7 +230,7 @@ namespace PowerPointLabs
             ModifyNameForShapeRange(rangeOriginal, appendString);
 
             rangeOriginal.Copy();
-            var rangeCopy = PowerPointLabsGlobals.GetCurrentSlide().Shapes.Paste();
+            var rangeCopy = PowerPointCurrentPresentationInfo.CurrentSlide.Shapes.Paste();
             AdjustSamePositionForShapeRange(rangeOriginal, rangeCopy);
 
             appendString = "_Copy";
@@ -270,8 +267,8 @@ namespace PowerPointLabs
             //-1 and +1 for better user experience
             bool cond1 = shape.Left >= -1;
             bool cond2 = shape.Top >= -1;
-            bool cond3 = shape.Left + shape.Width <= PowerPointCurrentPresentationInfo.SlideWidth + 1;
-            bool cond4 = shape.Top + shape.Height <= PowerPointCurrentPresentationInfo.SlideHeight + 1;
+            bool cond3 = shape.Left + shape.Width <= PowerPointPresentation.Current.SlideWidth + 1;
+            bool cond4 = shape.Top + shape.Height <= PowerPointPresentation.Current.SlideHeight + 1;
             return cond1 && cond2 && cond3 && cond4;
         }
 
@@ -319,7 +316,7 @@ namespace PowerPointLabs
                     ungroupedShapeNames.Add(shape.Name);
                 }
             }
-            return PowerPointLabsGlobals.GetCurrentSlide().Shapes.Range(ungroupedShapeNames.ToArray());
+            return PowerPointCurrentPresentationInfo.CurrentSlide.Shapes.Range(ungroupedShapeNames.ToArray());
         }
 
         private static void RemoveShapesForUngroupAll(PowerPoint.Shape shape, List<string> ungroupedShapes, Queue<PowerPoint.Shape> queue)
@@ -327,7 +324,7 @@ namespace PowerPointLabs
             shape.Delete();
             if (ungroupedShapes.Count > 0)
             {
-                PowerPointLabsGlobals.GetCurrentSlide().Shapes.Range(ungroupedShapes.ToArray()).Delete();
+                PowerPointCurrentPresentationInfo.CurrentSlide.Shapes.Range(ungroupedShapes.ToArray()).Delete();
             }
             while (queue.Count != 0)
             {

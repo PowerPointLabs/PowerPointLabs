@@ -49,7 +49,7 @@ namespace PowerPointLabs
                 addedSlide.PrepareForSpotlight();
                 addedSlide.AddSpotlightEffect(spotlightShapes);
                 currentSlide.DeleteShapesWithPrefix("SpotlightShape");
-                PowerPointLabsGlobals.AddAckSlide();
+                PowerPointPresentation.Current.AddAckSlide();
             }
             catch (Exception e)
             {
@@ -104,7 +104,7 @@ namespace PowerPointLabs
 
                         currentSlide.PrepareForSpotlight();
                         currentSlide.AddSpotlightEffect(spotlightShapes);
-                        PowerPointLabsGlobals.AddAckSlide();
+                        PowerPointPresentation.Current.AddAckSlide();
                     }
                 }
                 else

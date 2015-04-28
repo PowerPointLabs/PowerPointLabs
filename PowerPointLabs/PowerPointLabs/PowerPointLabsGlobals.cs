@@ -11,8 +11,10 @@ using PowerPoint = Microsoft.Office.Interop.PowerPoint;
 
 namespace PowerPointLabs
 {
+    // TODO: this class should not even exist
     class PowerPointLabsGlobals
     {
+        // TODO: put these two functions somewhere else but not here
         public static void Log(string logText, string type)
         {
             if (type.Equals("Info"))
@@ -27,44 +29,7 @@ namespace PowerPointLabs
             Log(methodName + ": " + e.Message + ": " + e.StackTrace, "Error");
         }
 
-        public static PowerPoint.Slide GetCurrentSlide()
-        {
-            try
-            {
-                PowerPoint.Presentation presentation = Globals.ThisAddIn.Application.ActivePresentation;
-                return Globals.ThisAddIn.Application.ActiveWindow.View.Slide;
-            }
-            catch (Exception e)
-            {
-                PowerPointLabsGlobals.LogException(e, "GetCurrentSlide");
-                throw;
-            }
-        }
-
-        public static void AddAckSlide()
-        {
-            try
-            {
-                PowerPointSlide lastSlide = PowerPointCurrentPresentationInfo.Slides.Last();
-                if (!lastSlide.isAckSlide())
-                    lastSlide.CreateAckSlide();
-            }
-            catch (Exception e)
-            {
-                PowerPointLabsGlobals.LogException(e, "AddAckSlide");
-                throw;
-            }
-        }
-
-        public static void FitShapeToSlide(ref PowerPoint.Shape shapeToMove)
-        {
-            shapeToMove.LockAspectRatio = Office.MsoTriState.msoFalse;
-            shapeToMove.Left = 0;
-            shapeToMove.Top = 0;
-            shapeToMove.Width = PowerPointCurrentPresentationInfo.SlideWidth;
-            shapeToMove.Height = PowerPointCurrentPresentationInfo.SlideHeight;
-        }
-
+        // TODO: the following three functions must be renamed, the function name does not match what the function does
         public static void CopyShapePosition(PowerPoint.Shape shapeToCopy, ref PowerPoint.Shape shapeToMove)
         {
             shapeToMove.Left = shapeToCopy.Left + (shapeToCopy.Width / 2) - (shapeToMove.Width / 2);
@@ -84,26 +49,6 @@ namespace PowerPointLabs
             CopyShapePosition(shapeToCopy, ref shapeToMove);
         }
 
-        public static int CreateRGB(Color color)
-        {
-            // initial value
-            int rgb = 0;
-
-            // swap
-            int red = color.B;
-            int blue = color.R;
-            int green = color.G;
-
-            // create the newColor
-            Color newColor = Color.FromArgb(red, green, blue);
-
-            // set the return value
-            rgb = newColor.ToArgb();
-
-            // return value
-            return rgb;
-        }
-
         public static float GetMinimumRotation(float fromAngle, float toAngle)
         {
             fromAngle = Normalize(fromAngle);
@@ -118,7 +63,7 @@ namespace PowerPointLabs
                 return rotation2;
         }
 
-        public static float Normalize(float i)
+        private static float Normalize(float i)
         {
             //find effective angle
             float d = Math.Abs(i) % 360.0f;

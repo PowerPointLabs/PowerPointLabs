@@ -81,7 +81,7 @@ namespace PowerPointLabs
                         isFirstShape = false;
                     }
                 }
-                PowerPointLabsGlobals.AddAckSlide();
+                PowerPointPresentation.Current.AddAckSlide();
             }
             catch (Exception e)
             {
@@ -97,7 +97,7 @@ namespace PowerPointLabs
 
             //Highlight Color appear
             PowerPoint.Effect firstHighlightAppear = sequence[addedEffectsStart];
-            firstHighlightAppear.EffectParameters.Color2.RGB = PowerPointLabsGlobals.CreateRGB(highlightColor);
+            firstHighlightAppear.EffectParameters.Color2.RGB = Utils.Graphics.ConvertColorToRgb(highlightColor);
             firstHighlightAppear.Timing.Duration = 0.01f;
             firstHighlightAppear.Timing.TriggerType = isFirstShape ? PowerPoint.MsoAnimTriggerType.msoAnimTriggerOnPageClick : PowerPoint.MsoAnimTriggerType.msoAnimTriggerAfterPrevious;
 
@@ -105,18 +105,18 @@ namespace PowerPointLabs
             for (int i = 2, j = 1; i < finalEffectCount; i += 2, j++)
             {
                 PowerPoint.Effect nextHighlightAppear = sequence[addedEffectsStart - 1 + i];
-                nextHighlightAppear.EffectParameters.Color2.RGB = PowerPointLabsGlobals.CreateRGB(highlightColor);
+                nextHighlightAppear.EffectParameters.Color2.RGB = Utils.Graphics.ConvertColorToRgb(highlightColor);
                 nextHighlightAppear.Timing.Duration = 0.01f;
 
                 PowerPoint.Effect firstHighlightDisappear = sequence[addedEffectsStart - 1 + countCopy + j];
-                firstHighlightDisappear.EffectParameters.Color2.RGB = PowerPointLabsGlobals.CreateRGB(defaultColor);
+                firstHighlightDisappear.EffectParameters.Color2.RGB = Utils.Graphics.ConvertColorToRgb(defaultColor);
                 firstHighlightDisappear.Timing.Duration = 0.01f;
                 firstHighlightDisappear.MoveTo(addedEffectsStart + i);
                 firstHighlightDisappear.Timing.TriggerType = PowerPoint.MsoAnimTriggerType.msoAnimTriggerWithPrevious;
             }
 
             PowerPoint.Effect lastHighlightDisappear = sequence[sequence.Count];
-            lastHighlightDisappear.EffectParameters.Color2.RGB = PowerPointLabsGlobals.CreateRGB(defaultColor);
+            lastHighlightDisappear.EffectParameters.Color2.RGB = Utils.Graphics.ConvertColorToRgb(defaultColor);
             lastHighlightDisappear.Timing.Duration = 0.01f;
             lastHighlightDisappear.Timing.TriggerType = PowerPoint.MsoAnimTriggerType.msoAnimTriggerOnPageClick;
         }

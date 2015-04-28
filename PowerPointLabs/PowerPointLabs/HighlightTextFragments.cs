@@ -97,7 +97,7 @@ namespace PowerPointLabs
 
         private static List<PowerPoint.Shape> GetShapesToAnimate(PowerPointSlide currentSlide)
         {
-            List<PowerPoint.Shape> previousFragments = currentSlide.getTextFragments();
+            List<PowerPoint.Shape> previousFragments = currentSlide.GetTextFragments();
             currentSlide.RemoveAnimationsForShapes(previousFragments);
 
             previousFragments.Reverse();
@@ -119,7 +119,7 @@ namespace PowerPointLabs
                     line.BoundHeight);
 
                 highlightShape.Adjustments[1] = 0.25f;
-                highlightShape.Fill.ForeColor.RGB = PowerPointLabsGlobals.CreateRGB(backgroundColor);
+                highlightShape.Fill.ForeColor.RGB = Utils.Graphics.ConvertColorToRgb(backgroundColor);
                 highlightShape.Fill.Transparency = 0.50f;
                 highlightShape.Line.Visible = Office.MsoTriState.msoFalse;
                 highlightShape.ZOrder(Office.MsoZOrderCmd.msoSendToBack);

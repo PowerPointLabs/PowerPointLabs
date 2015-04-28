@@ -60,7 +60,7 @@ namespace PowerPointLabs
                     AnimateInSlide.isHighlightBullets = true;
                     AnimateInSlide.AddAnimationInSlide();
                     AnimateInSlide.frameAnimationChecked = oldValue;
-                    PowerPointLabsGlobals.AddAckSlide();
+                    PowerPointPresentation.Current.AddAckSlide();
                 }
                 Globals.ThisAddIn.Application.ActiveWindow.Selection.Unselect();
             }
@@ -86,7 +86,7 @@ namespace PowerPointLabs
                     {
                         PowerPoint.Shape highlightShape = currentSlide.Shapes.AddShape(Office.MsoAutoShapeType.msoShapeRoundedRectangle, paragraph.BoundLeft, paragraph.BoundTop, paragraph.BoundWidth, paragraph.BoundHeight);
                         highlightShape.Adjustments[1] = 0.25f;
-                        highlightShape.Fill.ForeColor.RGB = PowerPointLabsGlobals.CreateRGB(backgroundColor);
+                        highlightShape.Fill.ForeColor.RGB = Utils.Graphics.ConvertColorToRgb(backgroundColor);
                         highlightShape.Fill.Transparency = 0.50f;
                         highlightShape.Line.Visible = Office.MsoTriState.msoFalse;
                         highlightShape.ZOrder(Office.MsoZOrderCmd.msoSendToBack);

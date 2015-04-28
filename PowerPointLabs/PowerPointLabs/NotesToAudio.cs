@@ -81,7 +81,7 @@ namespace PowerPointLabs
             progressBarForm.Show();
             var audioList = new List<string[]>();
 
-            var slides = PowerPointCurrentPresentationInfo.Slides.ToList();
+            var slides = PowerPointPresentation.Current.Slides;
 
             int numberOfSlides = slides.Count;
             for (int currentSlideIndex = 0; currentSlideIndex < numberOfSlides; currentSlideIndex++)
@@ -167,7 +167,7 @@ namespace PowerPointLabs
 
         private static Shape InsertAudioFileOnSlide(PowerPointSlide slide, string fileName)
         {
-            float slideWidth = PowerPointCurrentPresentationInfo.SlideWidth;
+            float slideWidth = PowerPointPresentation.Current.SlideWidth;
 
             Shape audioShape = slide.Shapes.AddMediaObject2(fileName, MsoTriState.msoFalse, MsoTriState.msoTrue, slideWidth + 20);
             slide.RemoveAnimationsForShape(audioShape);

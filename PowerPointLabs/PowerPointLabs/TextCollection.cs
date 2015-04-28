@@ -12,10 +12,12 @@
         public const string FeedbackUrl = "http://powerpointlabs.info/contact.html";
         public const string HelpDocumentUrl = "http://powerpointlabs.info/docs.html";
         public const string PowerPointLabsWebsiteUrl = "http://PowerPointLabs.info";
+        public const string SingleShapeDownloadUrl = "http://www.comp.nus.edu.sg/~pptlabs/gallery.html";
         # endregion
 
         # region Ribbon XML
         # region Supertips
+        # region Auto Animation
         public const string AddAnimationButtonSupertip =
             "Creates an animation slide to transition from the currently selected slide to the next slide.";
         public const string ReloadButtonSupertip =
@@ -24,7 +26,9 @@
         public const string InSlideAnimateButtonSupertip =
             "Moves a shape around the slide in multiple steps.\n\n" +
             "To activate, copy the shape to locations where it should stop, select the copies in the order they should appear, then click this button";
-        
+        # endregion
+
+        # region Auto Zoom
         public const string AddZoomInButtonSupertip =
             "Creates an animation slide with a zoom-in effect from the currently selected shape to the next slide.\n\n" +
             "To activate, select a rectangle shape on the slide to drill down from, then click this button.";
@@ -34,18 +38,21 @@
         public const string ZoomToAreaButtonSupertip =
             "Zoom into an area of a slide or image.\n\nTo activate, place a rectangle shape on the portion to magnify, then click this button.\n\n" +
             "This feature works best with high-resolution images.";
-        
+        # endregion
+
+        # region Auto Crop
         public const string MoveCropShapeButtonSupertip =
             "Crop a picture to a custom shape.\n\n" +
             "To activate, draw one or more shapes upon the picture to crop, select the shape(s), then click this button.";
-        
+        # endregion
+
+        # region Spotlight
         public const string AddSpotlightButtonSupertip =
             "Creates a spotlight effect for a selected shape.\n\n" +
             "To activate, draw a shape that the spotlight should outline, select it, then click this button.";
-        public const string ReloadSpotlightButtonSupertip =
-            "Adjusts the transparency and edges of an existing spotlight.\n\n" +
-            "To activate, set the transparency level and soft edges width, select the existing spotlight shape, then click this button.";
-        
+        # endregion
+
+        # region Auto Narrate
         public const string AddAudioButtonSupertip =
             "Creates synthesized narration from text in the Speaker Notes pane of the selected slides.";
         public const string GenerateRecordButtonSupertip =
@@ -53,14 +60,18 @@
         public const string AddRecordButtonSupertip =
             "Manually record audio to replace synthesized narration.";
         public const string RemoveAudioButtonSupertip =
-            "Removes synthesized audio added using Auto Narrate from the selected slides."; 
-        
+            "Removes synthesized audio added using Auto Narrate from the selected slides.";
+        # endregion
+
+        # region Auto Caption
         public const string AddCaptionsButtonSupertip =
             "Creates movie-style subtitles from text in the Speaker Notes pane, and adds it to the selected slides.";
         public const string RemoveCaptionsButtonSupertip =
             "Removes captions added using Auto Captions from the selected slides.";
         public const string RemoveAllNotesButtonSupertip = "Remove notes from note pane of selected slides.";
-        
+        # endregion
+
+        # region Highlight Points
         public const string HighlightBulletsTextButtonSupertip =
             "Highlights selected bullet points by changing the text's color.\n\n" +
             "To activate, select the bullet points to highlight, then click this button.";
@@ -70,14 +81,44 @@
         public const string HighlightTextFragmentsButtonSupertip =
             "Highlights the selected text fragments.\n\n" +
             "To activate, select the text to highlight, then click this button.";
-        
+        # endregion
+
+        # region Labs
+        # region Colors Lab
         public const string ColorPickerButtonSupertip = @"Opens Custom Color Picker";
-        
-        public const string CustomeShapeButtonSupertip = @"Manage your custom shapes."; // Custome -> Custom?
-        
+        # endregion
+
+        # region Shapes Lab
+        public const string CustomeShapeButtonSupertip = @"Manage your custom shapes.";
+        # endregion
+
+        # region Effects Lab
+        public const string EffectsLabMenuSupertip = @"Apply elegant effects to shapes.";
+        public const string EffectsLabMakeTransparentSupertip = @"Adjust the transparency of pictures or shapes.";
+        public const string EffectsLabMagnifyGlassSupertip = @"Magnify a small area or detail on the slide.";
+        public const string EffectsLabBlurRemainderSupertip = @"Draw attention to an area of the slide by blurring everything else.";
+        public const string EffectsLabColorizeRemainderSupertip = @"Recolor an area of a slide to attract attention to it.";
+        # endregion
+
+        # region Agenda Lab
+        public const string AgendaLabSupertip = "Generate professional-look agenda automatically.\n\n To use this feature, you need " +
+                                                "to group up your into appropriate sections. Each section will be used as one item in " +
+                                                "the agenda.";
+        public const string AgendaLabBulletPointSupertip = "Generate an agenda in bullet point style.";
+        public const string AgendaLabVisualAgendaSupertip = "Generate an agenda in visual style.";
+        public const string AgendaLabBeamAgendaSupertip = "Generate agenda side bar for selected slides.";
+        public const string AgendaLabUpdateAgendaSupertip = "Synchronize agenda's layout and format with the first slide.";
+        public const string AgendaLabRemoveAgendaSupertip = "Remove agenda generated by PowerPointLabs.";
+        public const string AgendaLabAgendaSettingsSupertip = "Configure agenda settings.";
+        public const string AgendaLabBulletAgendaSettingsSupertip = "Set color scheme for Bullet Agenda.";
+        # endregion
+        # endregion
+
+        # region Help
         public const string HelpButtonSupertip = @"Click this to visit PowerPointLabs help page in our website.";
         public const string FeedbackButtonSupertip = @"Click this to email us problem reports or other feedback. ";
         public const string AboutButtonSupertip = @"Information about the PowerPointLabs plugin.";
+        # endregion
         # endregion
 
         # region Tab Labels
@@ -87,47 +128,91 @@
         # region Button Labels
         public const string CombineShapesLabel = "Combine Shapes";
 
+        # region Auto Animation
         public const string AutoAnimateGroupLabel = "Auto Animate";
         public const string AddAnimationButtonLabel = "Add Animation Slide";
         public const string AddAnimationReloadButtonLabel = "Recreate Animation";
         public const string AddAnimationInSlideAnimateButtonLabel = "Animate In Slide";
+        # endregion
 
+        # region Auto Zoom
         public const string AutoZoomGroupLabel = "Auto Zoom";
         public const string AddZoomInButtonLabel = "Drill Down";
         public const string AddZoomOutButtonLabel = "Step Back";
         public const string ZoomToAreaButtonLabel = "Zoom To Area";
+        # endregion
 
+        # region Auto Crop
         public const string AutoCropGroupLabel = "Auto Crop";
         public const string MoveCropShapeButtonLabel = "Crop To Shape";
+        # endregion
 
+        # region Spotlight
         public const string SpotLightGroupLabel = "Spotlight";
         public const string AddSpotlightButtonLabel = "Create Spotlight";
         public const string ReloadSpotlightButtonLabel = "Recreate Spotlight";
+        # endregion
 
+        # region Auto Narration
         public const string EmbedAudioGroupLabel = "Auto Narrate";
         public const string AddAudioButtonLabel = "Add Audio";
         public const string GenerateRecordButtonLabel = "Generate Audio Automatically";
         public const string AddRecordButtonLabel = "Record Audio Manually";
         public const string RemoveAudioButtonLabel = "Remove Audio";
+        # endregion
 
+        # region Auto Caption
         public const string EmbedCaptionGroupLabel = "Auto Captions";
         public const string AddCaptionsButtonLabel = "Add Captions";
         public const string RemoveCaptionsButtonLabel = "Remove Captions";
         public const string RemoveAllNotesButtonLabel = "Remove All Notes";
+        # endregion
 
+        # region Highlight Points
         public const string HighlightBulletsGroupLabel = "Highlight Bullets";
         public const string HighlightBulletsTextButtonLabel = "Highlight Points";
         public const string HighlightBulletsBackgroundButtonLabel = "Highlight Background";
         public const string HighlightTextFragmentsButtonLabel = "Highlight Text";
+        # endregion
 
+        # region Labs
         public const string LabsGroupLabel = "Labs";
-        public const string ColorPickerButtonLabel = "Colors Lab";
-        public const string CustomeShapeButtonLabel = "Shapes Lab";
 
+        # region Colors Lab
+        public const string ColorPickerButtonLabel = "Colors Lab";
+        # endregion
+
+        # region Shapes Lab
+        public const string CustomeShapeButtonLabel = "Shapes Lab";
+        # endregion
+
+        # region Effects Lab
+        public const string EffectsLabButtonLabel = "Effects Lab";
+        public const string EffectsLabMakeTransparentButtonLabel = "Make Transparent";
+        public const string EffectsLabMagnifyGlassButtonLabel = "Magnifying Glass";
+        public const string EffectsLabBlurRemainderButtonLabel = "Blur Remainder";
+        public const string EffectsLabBlurAllButtonLabel = "Blur All Except Selected";
+        public const string EffectsLabRecolorRemainderButtonLabel = "Recolor Remainder";
+        # endregion
+
+        # region Agenda Lab
+        public const string AgendaLabButtonLabel = "Agenda Lab";
+        public const string AgendaLabBulletPointButtonLabel = "Agenda slides (text)";
+        public const string AgendaLabVisualAgendaButtonLabel = "Agenda slides (visual)";
+        public const string AgendaLabBeamAgendaButtonLabel = "Agenda sidebar";
+        public const string AgendaLabUpdateAgendaButtonLabel = "Syncronize Agenda";
+        public const string AgendaLabRemoveAgendaButtonLabel = "Remove Agenda";
+        public const string AgendaLabAgendaSettingsButtonLabel = "Agenda Settings";
+        public const string AgendaLabBulletAgendaSettingsButtonLabel = "Bullet Agenda Settings";
+        # endregion
+        # endregion
+
+        # region Help
         public const string PPTLabsHelpGroupLabel = "Help";
         public const string HelpButtonLabel = "Help";
         public const string FeedbackButtonLabel = "Report Issues/ Send Feedback";
         public const string AboutButtonLabel = "About";
+        # endregion
         # endregion
 
         # region Context Menu Labels
@@ -173,7 +258,7 @@
         	"To use them, please save the file locally.";
         public const string ShapeGalleryInitErrorMsg =
             "Could not connect to shape database from your default location.\n\n" +
-            "To check your default location, right click on the panel and select 'Settings' option.";
+            "To check your default location, right click on the Shapes Lab's panel and select 'Settings' option.";
         public const string TabActivateErrorTitle = "Unable to activate 'Double Click to Open Property' feature";
         public const string TabActivateErrorDescription =
             "To activate 'Double Click to Open Property' feature, you need to enable 'Home' tab " +
@@ -206,6 +291,20 @@
         # region ConvertToPicture
         public const string ErrorTypeNotSupported = "Convert to Picture only supports Shapes and Charts.";
         public const string ErrorWindowTitle = "Convert to Picture: Unsupported Object";
+        # endregion
+
+        # region Agenda Lab
+        public const string AgendaLabNoSectionError = "Please group slides into sections before generating agenda.";
+        public const string AgendaLabNoSelectionError = "Please select at least one slide to generate / synchronize agenda.";
+        public const string AgendaLabNoReferenceError = "Reference slide is not found. The first agenda slide will be taken as reference.";
+        public const string AgendaLabSingleSectionError = "Agenda Lab requires slides to be divided into two or more sections.";
+        public const string AgendaLabEmptySectionError = "Presentation contains empty section(s). Please fill them up or remove them.";
+        public const string AgendaLabAgendaExistError = "Agenda already exists. By confirm this dialog agenda will be regenerated. Do you want to proceed?";
+        public const string AgendaLabAgendaExistErrorCaption = "Confirm Update";
+        public const string AgendaLabNoAgendaError = "There's no generated agenda.";
+        public const string AgendaLabLoadingDialogTitle = "Generating...";
+        public const string AgendaLabLoadingDialogContent = "Agenda is generating, please wait...";
+        public const string AgendaLabReferenceSlideContent = "Visited bullet format\rHighlight bullet format\rUnvisited bullet format\r";
         # endregion
 
         # region Task Pane - Recorder
@@ -263,6 +362,8 @@
         # endregion
 
         # region Task Pane - Shapes Lab
+        public const string CustomShapeDefaultShapeName = "My Shape Untitled";
+
         public const string CustomShapeFileNameInvalid = "Invalid shape name.";
         public const string CustomShapeNoShapeTextFirstLine = "No shapes saved yet.";
         public const string CustomShapeNoShapeTextSecondLine = "Right-click any object on a slide to save it in this panel.";
@@ -286,7 +387,13 @@
             "as default category. Continue?";
         public const string CustomShapeRemoveDefaultCategoryCaption = "Removing Default Category";
         public const string CustomShapeImportFileError = "Import File could not be opened.";
+        public const string CustomShapeImportAppendCategoryError = "Your computer does not support this feature.";
+        public const string CustomShapeImportSingleCategoryErrorFormat =
+            "{0} contains multiple categories. Try \"Import Category\" instead.";
         public const string CustomShapeImportSuccess = "Successfully imported";
+
+        public const string CustomShapeImportShapeFileDialogTitle = "Import Shapes";
+        public const string CustomShapeImportLibraryFileDialogTitle = "Import Library";
         
         public const string CustomShapeShapeContextStripAddToSlide = "Add To Slide";
         public const string CustomShapeShapeContextStripEditName = "Edit Name";
@@ -298,6 +405,7 @@
         public const string CustomShapeCategoryContextStripRemoveCategory = "Remove Category";
         public const string CustomShapeCategoryContextStripRenameCategory = "Rename Category";
         public const string CustomShapeCategoryContextStripImportCategory = "Import Library";
+        public const string CustomShapeCategoryContextStripImportShapes = "Import Shapes";
         public const string CustomShapeCategoryContextStripSetAsDefaultCategory = "Set as Default Category";
         public const string CustomShapeCategoryContextStripCategorySettings = "Shapes Lab Settings";
         # endregion

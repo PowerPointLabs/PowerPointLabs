@@ -30,7 +30,7 @@
     <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
     <TargetFrameworkProfile>Client</TargetFrameworkProfile>
     <DefineConstants>VSTO40</DefineConstants>
-    <IsWebBootstrapper>False</IsWebBootstrapper>
+    <IsWebBootstrapper>True</IsWebBootstrapper>
     <FileUpgradeFlags>
     </FileUpgradeFlags>
     <UpgradeBackupLocation>
@@ -38,10 +38,10 @@
     <OldToolsVersion>4.0</OldToolsVersion>
     <VSTO_TrustAssembliesLocation>true</VSTO_TrustAssembliesLocation>
     <BootstrapperEnabled>true</BootstrapperEnabled>
-    <PublishUrl>C:\Users\nevets\Desktop\PowerPointLabsPublish\</PublishUrl>
-    <InstallUrl />
+    <PublishUrl>C:\Users\User\Desktop\PowerPointLabsPublish\</PublishUrl>
+    <InstallUrl>http://www.comp.nus.edu.sg/~pptlabs/download/dev/</InstallUrl>
     <TargetCulture>en</TargetCulture>
-    <ApplicationVersion>1.11.0.0</ApplicationVersion>
+    <ApplicationVersion>2.4.0.0</ApplicationVersion>
     <AutoIncrementApplicationRevision>false</AutoIncrementApplicationRevision>
     <UpdateEnabled>true</UpdateEnabled>
     <UpdateInterval>0</UpdateInterval>
@@ -72,11 +72,6 @@
     <BootstrapperPackage Include="Microsoft.Office.PIARedist.2007">
       <Visible>False</Visible>
       <ProductName>Microsoft Office 2007 Primary Interop Assemblies</ProductName>
-      <Install>true</Install>
-    </BootstrapperPackage>
-    <BootstrapperPackage Include="Microsoft.VSTORuntime.4.0">
-      <Visible>False</Visible>
-      <ProductName>Microsoft Visual Studio 2010 Tools for Office Runtime %28x86 and x64%29</ProductName>
       <Install>true</Install>
     </BootstrapperPackage>
     <BootstrapperPackage Include="Microsoft.Windows.Installer.3.1">
@@ -117,6 +112,7 @@
     <DefineConstants>$(DefineConstants);DEBUG;TRACE</DefineConstants>
     <WarningLevel>4</WarningLevel>
     <Prefer32Bit>false</Prefer32Bit>
+    <CodeAnalysisRuleSet>ExtendedDesignGuidelineRules.ruleset</CodeAnalysisRuleSet>
   </PropertyGroup>
   <!--
     This section defines properties that are set when the "Release" configuration is selected.
@@ -157,10 +153,10 @@
     <SignManifests>true</SignManifests>
   </PropertyGroup>
   <PropertyGroup>
-    <ManifestKeyFile>PowerPointLabs_1_TemporaryKey.pfx</ManifestKeyFile>
+    <ManifestKeyFile>PowerPointLabs_TemporaryKey.pfx</ManifestKeyFile>
   </PropertyGroup>
   <PropertyGroup>
-    <ManifestCertificateThumbprint>D50A6AE886D7F437355E9C59CFBD0F8659B8D447</ManifestCertificateThumbprint>
+    <ManifestCertificateThumbprint>23F4E75F0C69E93AD38794F02FCA95ABAD89EFBB</ManifestCertificateThumbprint>
   </PropertyGroup>
   <!--
     This section specifies references for the project.
@@ -231,6 +227,7 @@
     can be found.
   -->
   <ItemGroup>
+    <Compile Include="AgendaLab.cs" />
     <Compile Include="AudioMisc\Audio.cs" />
     <Compile Include="AudioMisc\AudioHelper.cs" />
     <Compile Include="AutoAnimate.cs" />
@@ -264,11 +261,6 @@
     <Compile Include="CropToShape.cs" />
     <Compile Include="DataSources\ShapesLabSettingsDataSource.cs" />
     <Compile Include="Models\PowerPointBgEffectSlide.cs" />
-    <Compile Include="Properties\Resources.Designer.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>Resources.resx</DependentUpon>
-    </Compile>
     <Compile Include="LabeledThumbnail.cs">
       <SubType>UserControl</SubType>
     </Compile>
@@ -283,14 +275,26 @@
     </Compile>
     <Compile Include="Models\PowerPointPresentation.cs" />
     <Compile Include="Models\PowerPointShapeGalleryPresentation.cs" />
+    <Compile Include="Properties\Resources.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Resources.resx</DependentUpon>
+    </Compile>
     <Compile Include="Settings.cs" />
     <Compile Include="ShapesLabConfig.cs" />
     <Compile Include="TextCollection.cs" />
     <Compile Include="Utils\Common.cs" />
     <Compile Include="Utils\Comparers.cs" />
+    <Compile Include="Utils\Extensions.cs" />
     <Compile Include="Utils\FileDir.cs" />
     <Compile Include="Utils\Graphics.cs" />
     <Compile Include="Views\CustomPaintTextBox.cs" />
+    <Compile Include="Views\EffectsLabSettings.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Views\EffectsLabSettings.Designer.cs">
+      <DependentUpon>EffectsLabSettings.cs</DependentUpon>
+    </Compile>
     <Compile Include="Views\ErrorDialogWrapper.cs" />
     <Compile Include="FitToSlide.cs" />
     <Compile Include="HighlightTextFragments.cs" />
@@ -420,18 +424,14 @@
     <Compile Include="ZoomToArea.cs" />
     <None Include="app.config" />
     <None Include="PowerPointLabs_1_TemporaryKey.pfx" />
+    <None Include="PowerPointLabs_TemporaryKey.pfx" />
     <None Include="Resources\AddToCustomShapes.png" />
     <None Include="Resources\ClosedHand.cur" />
     <None Include="Resources\OpenHand.cur" />
     <None Include="Resources\EyeDropper.cur" />
     <None Include="Resources\HighlightWords.png" />
     <None Include="Resources\Saturation-icon_18x18.png" />
-    <None Include="Resources\Saturation-icon_20x20.png" />
-    <None Include="Resources\Saturation-icon_23x23.png" />
-    <None Include="Resources\Saturation-icon_25x25.png" />
     <None Include="Resources\Brightness-icon_25x25.png" />
-    <None Include="Resources\Saturation_icon.png" />
-    <None Include="Resources\Brightness_icon.png" />
     <None Include="Resources\Load_icon.png" />
     <None Include="Resources\Clear_icon.png" />
     <None Include="Resources\Apply_icon.png" />
@@ -440,22 +440,12 @@
     <None Include="Resources\FillColor_icon.png" />
     <None Include="Resources\LineColor_icon.png" />
     <None Include="Resources\TextColor_icon.png" />
-    <None Include="Resources\Saturation-icon.png" />
-    <None Include="Resources\Reload-icon.png" />
-    <None Include="Resources\Load-icon.png" />
-    <None Include="Resources\LineColor-Icon.png" />
-    <None Include="Resources\Fill-icon.png" />
-    <None Include="Resources\Clear-icon.png" />
-    <None Include="Resources\Brightness-icon.png" />
-    <None Include="Resources\TextColor-icon.png" />
     <None Include="Resources\refresh-icon.png" />
     <None Include="Resources\ShapesLab.png" />
     <None Include="Resources\ColorsLab.png" />
     <None Include="Resources\Eyedropper-icon.png" />
-    <None Include="Resources\apply-icon.png" />
     <None Include="Resources\delete-icon.png" />
     <None Include="Resources\down-icon.png" />
-    <None Include="Resources\save-icon.png" />
     <None Include="Resources\Palette-icon.png" />
     <None Include="Resources\Paint-icon.png" />
     <None Include="Resources\Technical-Pen-icon.png" />
@@ -465,6 +455,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="ColorPicker\ColorPane.resx">
       <DependentUpon>ColorPane.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Views\EffectsLabSettings.resx">
+      <DependentUpon>EffectsLabSettings.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Views\LoadingDialog.resx">
       <DependentUpon>LoadingDialog.cs</DependentUpon>
@@ -525,7 +518,6 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Views\ProcessingStatusForm.resx" />
     <EmbeddedResource Include="Views\SpeechPlayingForm.resx" />
-    <None Include="PowerPointLabs_TemporaryKey.pfx" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
@@ -663,9 +655,6 @@
     <None Include="Resources\CutOutShapeMenu.png" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="Resources\MagnifyContext.png" />
-  </ItemGroup>
-  <ItemGroup>
     <None Include="Resources\Magnify.png" />
   </ItemGroup>
   <ItemGroup>
@@ -700,6 +689,27 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\MakeTransparent.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\AgendaLab.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\AgendaRemove.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\AgendaSettings.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\AgendaSidebar.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\AgendaSync.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\AgendaText.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\AgendaVisual.png" />
   </ItemGroup>
   <!-- Include the build rules for a C# project. -->
   <PropertyGroup>

@@ -4,13 +4,8 @@ using Microsoft.Office.Interop.PowerPoint;
 
 namespace PowerPointLabs.Models
 {
-    class PowerPointCurrentPresentationInfo
+    internal class PowerPointCurrentPresentationInfo
     {
-        public static Presentation CurrentPresentation
-        {
-            get { return Globals.ThisAddIn.Application.ActivePresentation; }
-        }
-
         public static PowerPointSlide CurrentSlide
         {
             get
@@ -28,11 +23,6 @@ namespace PowerPointLabs.Models
             }
         }
 
-        public static string CurrentPresentationName
-        {
-            get { return Globals.ThisAddIn.Application.ActivePresentation.Name; }
-        }
-
         public static Selection CurrentSelection
         {
             get
@@ -41,72 +31,24 @@ namespace PowerPointLabs.Models
             }
         }
 
-        public static IEnumerable<PowerPointSlide> Slides
-        {
-            get
-            {
-                var interopSlides = Globals.ThisAddIn.Application.ActivePresentation.Slides;
-                List<PowerPointSlide> slides = new List<PowerPointSlide>();
-
-                foreach (Slide interopSlide in interopSlides)
-                {
-                    PowerPointSlide s = PowerPointSlide.FromSlideFactory(interopSlide);
-                    slides.Add(s);
-                }
-
-                return slides;
-            }
-        }
-
         public static IEnumerable<PowerPointSlide> SelectedSlides
         {
             get
             {
-                var interopSlides = Globals.ThisAddIn.Application.ActiveWindow.Selection.SlideRange;
-                List<PowerPointSlide> slides = new List<PowerPointSlide>();
+                var slides = new List<PowerPointSlide>();
 
-                foreach (Slide interopSlide in interopSlides)
+                if (CurrentSelection.Type == PpSelectionType.ppSelectionSlides)
                 {
-                    PowerPointSlide s = PowerPointSlide.FromSlideFactory(interopSlide);
-                    slides.Add(s);
+                    var interopSlides = Globals.ThisAddIn.Application.ActiveWindow.Selection.SlideRange;
+
+                    foreach (Slide interopSlide in interopSlides)
+                    {
+                        PowerPointSlide s = PowerPointSlide.FromSlideFactory(interopSlide);
+                        slides.Add(s);
+                    }
                 }
 
                 return slides;
-            }
-        }
-
-        public static bool SlidesHaveCaptions(IEnumerable<PowerPointSlide> slides)
-        {
-            foreach (PowerPointSlide slide in slides)
-            {
-                if (slide.HasCaptions())
-                {
-                    return true;
-                }
-            }
-            return false;
-        }
-
-        public static int SlideCount
-        {
-            get { return Globals.ThisAddIn.Application.ActivePresentation.Slides.Count; }
-        }
-
-        public static float SlideWidth
-        {
-            get
-            {
-                var dimensions = Globals.ThisAddIn.Application.ActivePresentation.PageSetup;
-                return dimensions.SlideWidth;
-            }
-        }
-
-        public static float SlideHeight
-        {
-            get
-            {
-                var dimensions = Globals.ThisAddIn.Application.ActivePresentation.PageSetup;
-                return dimensions.SlideHeight;
             }
         }
     }

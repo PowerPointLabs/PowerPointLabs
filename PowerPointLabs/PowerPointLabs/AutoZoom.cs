@@ -15,14 +15,17 @@ namespace PowerPointLabs
 
         public static void AddDrillDownAnimation()
         {
+            AddDrillDownAnimation(Globals.ThisAddIn.Application.ActiveWindow.Selection.ShapeRange[1],
+                                  PowerPointCurrentPresentationInfo.CurrentSlide);
+        }
+
+        public static void AddDrillDownAnimation(PowerPoint.Shape selectedShape, PowerPointSlide currentSlide)
+        {
             try
             {
-                var currentSlide = PowerPointCurrentPresentationInfo.CurrentSlide as PowerPointSlide;
-                PowerPoint.Shape selectedShape = Globals.ThisAddIn.Application.ActiveWindow.Selection.ShapeRange[1];
-
-                if (currentSlide == null || currentSlide.Index == PowerPointCurrentPresentationInfo.SlideCount)
+                if (currentSlide == null || currentSlide.Index == PowerPointPresentation.Current.SlideCount)
                 {
-                    System.Windows.Forms.MessageBox.Show("Please select the correct slide", "Unable to Add Animations");
+                    System.Windows.Forms.MessageBox.Show("No next slide is found. Please select the correct slide", "Unable to Add Animations");
                     return;
                 }
 
@@ -30,8 +33,6 @@ namespace PowerPointLabs
                 selectedShape.PickUp();
                 PrepareZoomShape(currentSlide, ref selectedShape);
                 PowerPointSlide nextSlide = GetNextSlide(currentSlide);
-                if (nextSlide.Shapes.Count == 0)
-                    return;
 
                 PowerPoint.Shape nextSlidePicture = null, shapeToZoom = null;
                 PowerPointDrillDownSlide addedSlide = null;
@@ -44,11 +45,11 @@ namespace PowerPointLabs
 
                     addedSlide = (PowerPointDrillDownSlide)currentSlide.CreateDrillDownSlide();
                     addedSlide.DeleteAllShapes();
-                    
+
                     currentSlide.Copy();
                     shapeToZoom = addedSlide.Shapes.PasteSpecial(PowerPoint.PpPasteDataType.ppPastePNG)[1];
                     shapeToZoom.Apply();
-                    PowerPointLabsGlobals.FitShapeToSlide(ref shapeToZoom);
+                    Utils.Graphics.FitShapeToSlide(ref shapeToZoom);
                     shapeToZoom.ZOrder(Office.MsoZOrderCmd.msoBringToFront);
 
                     addedSlide.PrepareForDrillDown();
@@ -72,7 +73,7 @@ namespace PowerPointLabs
 
                 Globals.ThisAddIn.Application.ActiveWindow.View.GotoSlide(addedSlide.Index);
                 Globals.ThisAddIn.Application.CommandBars.ExecuteMso("AnimationPreview");
-                PowerPointLabsGlobals.AddAckSlide();
+                PowerPointPresentation.Current.AddAckSlide();
             }
             catch (Exception e)
             {
@@ -83,14 +84,17 @@ namespace PowerPointLabs
 
         public static void AddStepBackAnimation()
         {
+            AddStepBackAnimation(Globals.ThisAddIn.Application.ActiveWindow.Selection.ShapeRange[1],
+                                 PowerPointCurrentPresentationInfo.CurrentSlide);
+        }
+
+        public static void AddStepBackAnimation(PowerPoint.Shape selectedShape, PowerPointSlide currentSlide)
+        {
             try
             {
-                var currentSlide = PowerPointCurrentPresentationInfo.CurrentSlide as PowerPointSlide;
-                PowerPoint.Shape selectedShape = Globals.ThisAddIn.Application.ActiveWindow.Selection.ShapeRange[1];
-
                 if (currentSlide == null || currentSlide.Index == 1)
                 {
-                    System.Windows.Forms.MessageBox.Show("Please select the correct slide", "Unable to Add Animations");
+                    System.Windows.Forms.MessageBox.Show("No previous slide is found. Please select the correct slide", "Unable to Add Animations");
                     return;
                 }
 
@@ -98,8 +102,6 @@ namespace PowerPointLabs
                 selectedShape.PickUp();
                 PrepareZoomShape(currentSlide, ref selectedShape);
                 PowerPointSlide previousSlide = GetPreviousSlide(currentSlide);
-                if (previousSlide.Shapes.Count == 0)
-                    return;
 
                 PowerPoint.Shape previousSlidePicture = null, shapeToZoom = null;
                 PowerPointStepBackSlide addedSlide = null;
@@ -139,7 +141,7 @@ namespace PowerPointLabs
                 currentSlide.Transition.Duration = 0.25f;
                 Globals.ThisAddIn.Application.ActiveWindow.View.GotoSlide(addedSlide.Index);
                 Globals.ThisAddIn.Application.CommandBars.ExecuteMso("AnimationPreview");
-                PowerPointLabsGlobals.AddAckSlide();
+                PowerPointPresentation.Current.AddAckSlide();
             }
             catch (Exception e)
             {
@@ -165,11 +167,11 @@ namespace PowerPointLabs
         //Delete previously added drill down slides
         private static PowerPointSlide GetNextSlide(PowerPointSlide currentSlide)
         {
-            PowerPointSlide nextSlide = PowerPointCurrentPresentationInfo.Slides.ElementAt(currentSlide.Index);
+            PowerPointSlide nextSlide = PowerPointPresentation.Current.Slides[currentSlide.Index];
             PowerPointSlide tempSlide = nextSlide;
-            while (nextSlide.Name.Contains("PPTLabsZoomIn") && nextSlide.Index < PowerPointCurrentPresentationInfo.SlideCount)
+            while (nextSlide.Name.Contains("PPTLabsZoomIn") && nextSlide.Index < PowerPointPresentation.Current.SlideCount)
             {
-                nextSlide = PowerPointCurrentPresentationInfo.Slides.ElementAt(tempSlide.Index);
+                nextSlide = PowerPointPresentation.Current.Slides[tempSlide.Index];
                 tempSlide.Delete();
             }
             nextSlide.Transition.EntryEffect = PowerPoint.PpEntryEffect.ppEffectFadeSmoothly;
@@ -180,11 +182,11 @@ namespace PowerPointLabs
         //Delete previously added step back slides
         private static PowerPointSlide GetPreviousSlide(PowerPointSlide currentSlide)
         {
-            PowerPointSlide previousSlide = PowerPointCurrentPresentationInfo.Slides.ElementAt(currentSlide.Index - 2);
+            PowerPointSlide previousSlide = PowerPointPresentation.Current.Slides[currentSlide.Index - 2];
             PowerPointSlide tempSlide = previousSlide;
             while (previousSlide.Name.Contains("PPTLabsZoomOut") && previousSlide.Index > 1)
             {
-                previousSlide = PowerPointCurrentPresentationInfo.Slides.ElementAt(tempSlide.Index - 2);
+                previousSlide = PowerPointPresentation.Current.Slides[tempSlide.Index - 2];
                 tempSlide.Delete();
             }
 
@@ -308,7 +310,7 @@ namespace PowerPointLabs
         {
             currentSlide.Copy();
             PowerPoint.Shape currentSlideCopy = addedSlide.Shapes.PasteSpecial(PowerPoint.PpPasteDataType.ppPastePNG)[1];
-            PowerPointLabsGlobals.FitShapeToSlide(ref currentSlideCopy);
+            Utils.Graphics.FitShapeToSlide(ref currentSlideCopy);
 
             previousSlidePicture.Copy();
             PowerPoint.Shape previousSlidePictureCopy = addedSlide.Shapes.Paste()[1];
@@ -320,10 +322,10 @@ namespace PowerPointLabs
             PowerPoint.Shape shapeGroup = selection.Group();
 
             shapeGroup.LockAspectRatio = Office.MsoTriState.msoFalse;
-            shapeGroup.Left = (PowerPointCurrentPresentationInfo.SlideWidth / 2) - ((previousSlidePicture.Left + (previousSlidePicture.Width) / 2) * PowerPointCurrentPresentationInfo.SlideWidth / previousSlidePicture.Width);
-            shapeGroup.Top = (PowerPointCurrentPresentationInfo.SlideHeight / 2) - ((previousSlidePicture.Top + (previousSlidePicture.Height) / 2) * PowerPointCurrentPresentationInfo.SlideHeight / previousSlidePicture.Height);
-            shapeGroup.Width = PowerPointCurrentPresentationInfo.SlideWidth * PowerPointCurrentPresentationInfo.SlideWidth / previousSlidePicture.Width;
-            shapeGroup.Height = PowerPointCurrentPresentationInfo.SlideHeight * PowerPointCurrentPresentationInfo.SlideHeight / previousSlidePicture.Height;
+            shapeGroup.Left = (PowerPointPresentation.Current.SlideWidth / 2) - ((previousSlidePicture.Left + (previousSlidePicture.Width) / 2) * PowerPointPresentation.Current.SlideWidth / previousSlidePicture.Width);
+            shapeGroup.Top = (PowerPointPresentation.Current.SlideHeight / 2) - ((previousSlidePicture.Top + (previousSlidePicture.Height) / 2) * PowerPointPresentation.Current.SlideHeight / previousSlidePicture.Height);
+            shapeGroup.Width = PowerPointPresentation.Current.SlideWidth * PowerPointPresentation.Current.SlideWidth / previousSlidePicture.Width;
+            shapeGroup.Height = PowerPointPresentation.Current.SlideHeight * PowerPointPresentation.Current.SlideHeight / previousSlidePicture.Height;
 
             shapeGroup.Left += (0 - previousSlidePictureCopy.Left);
             shapeGroup.Top += (0 - previousSlidePictureCopy.Top);

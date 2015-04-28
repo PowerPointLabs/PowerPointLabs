@@ -44,11 +44,13 @@ namespace PowerPointLabs
             this.renameCategoryToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.setAsDefaultToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.importCategoryToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.importShapesToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.settingsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.label1 = new System.Windows.Forms.Label();
             this.categoryBox = new System.Windows.Forms.ComboBox();
             this.flowPanelHolder = new System.Windows.Forms.Panel();
             this.myShapeFlowLayout = new PowerPointLabs.BufferedFlowLayoutPanel();
+            this.singleShapeDownloadLink = new System.Windows.Forms.LinkLabel();
             this.shapeContextMenuStrip.SuspendLayout();
             this.flowlayoutContextMenuStrip.SuspendLayout();
             this.flowPanelHolder.SuspendLayout();
@@ -63,38 +65,38 @@ namespace PowerPointLabs
             this.copyToToolStripMenuItem,
             this.removeShapeToolStripMenuItem});
             this.shapeContextMenuStrip.Name = "contextMenuStrip";
-            this.shapeContextMenuStrip.Size = new System.Drawing.Size(153, 136);
+            this.shapeContextMenuStrip.Size = new System.Drawing.Size(68, 114);
             this.shapeContextMenuStrip.Opening += new System.ComponentModel.CancelEventHandler(this.ThumbnailContextMenuStripOpening);
             this.shapeContextMenuStrip.ItemClicked += new System.Windows.Forms.ToolStripItemClickedEventHandler(this.ThumbnailContextMenuStripItemClicked);
             // 
             // addToSlideToolStripMenuItem
             // 
             this.addToSlideToolStripMenuItem.Name = "addToSlideToolStripMenuItem";
-            this.addToSlideToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.addToSlideToolStripMenuItem.Size = new System.Drawing.Size(67, 22);
             // 
             // editNameToolStripMenuItem
             // 
             this.editNameToolStripMenuItem.Name = "editNameToolStripMenuItem";
-            this.editNameToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.editNameToolStripMenuItem.Size = new System.Drawing.Size(67, 22);
             // 
             // moveShapeToolStripMenuItem
             // 
             this.moveShapeToolStripMenuItem.Name = "moveShapeToolStripMenuItem";
-            this.moveShapeToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.moveShapeToolStripMenuItem.Size = new System.Drawing.Size(67, 22);
             this.moveShapeToolStripMenuItem.Click += new System.EventHandler(this.MoveContextMenuStripOnEvent);
             this.moveShapeToolStripMenuItem.MouseEnter += new System.EventHandler(this.MoveContextMenuStripOnEvent);
             // 
             // copyToToolStripMenuItem
             // 
             this.copyToToolStripMenuItem.Name = "copyToToolStripMenuItem";
-            this.copyToToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.copyToToolStripMenuItem.Size = new System.Drawing.Size(67, 22);
             this.copyToToolStripMenuItem.Click += new System.EventHandler(this.CopyContextMenuStripOnEvent);
             this.copyToToolStripMenuItem.MouseEnter += new System.EventHandler(this.CopyContextMenuStripOnEvent);
             // 
             // removeShapeToolStripMenuItem
             // 
             this.removeShapeToolStripMenuItem.Name = "removeShapeToolStripMenuItem";
-            this.removeShapeToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.removeShapeToolStripMenuItem.Size = new System.Drawing.Size(67, 22);
             // 
             // flowlayoutContextMenuStrip
             // 
@@ -104,9 +106,10 @@ namespace PowerPointLabs
             this.renameCategoryToolStripMenuItem,
             this.setAsDefaultToolStripMenuItem,
             this.importCategoryToolStripMenuItem,
+            this.importShapesToolStripMenuItem,
             this.settingsToolStripMenuItem});
             this.flowlayoutContextMenuStrip.Name = "flowlayoutContextMenuStrip";
-            this.flowlayoutContextMenuStrip.Size = new System.Drawing.Size(68, 136);
+            this.flowlayoutContextMenuStrip.Size = new System.Drawing.Size(68, 158);
             this.flowlayoutContextMenuStrip.ItemClicked += new System.Windows.Forms.ToolStripItemClickedEventHandler(this.FlowlayoutContextMenuStripItemClicked);
             // 
             // addCategoryToolStripMenuItem
@@ -134,6 +137,11 @@ namespace PowerPointLabs
             this.importCategoryToolStripMenuItem.Name = "importCategoryToolStripMenuItem";
             this.importCategoryToolStripMenuItem.Size = new System.Drawing.Size(67, 22);
             // 
+            // importShapesToolStripMenuItem
+            // 
+            this.importShapesToolStripMenuItem.Name = "importShapesToolStripMenuItem";
+            this.importShapesToolStripMenuItem.Size = new System.Drawing.Size(67, 22);
+            // 
             // settingsToolStripMenuItem
             // 
             this.settingsToolStripMenuItem.Name = "settingsToolStripMenuItem";
@@ -143,7 +151,7 @@ namespace PowerPointLabs
             // 
             this.label1.AutoSize = true;
             this.label1.Font = new System.Drawing.Font("Verdana", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label1.Location = new System.Drawing.Point(19, 19);
+            this.label1.Location = new System.Drawing.Point(19, 21);
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(60, 13);
             this.label1.TabIndex = 2;
@@ -155,9 +163,9 @@ namespace PowerPointLabs
             | System.Windows.Forms.AnchorStyles.Right)));
             this.categoryBox.DrawMode = System.Windows.Forms.DrawMode.OwnerDrawFixed;
             this.categoryBox.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.categoryBox.Location = new System.Drawing.Point(88, 17);
+            this.categoryBox.Location = new System.Drawing.Point(88, 18);
             this.categoryBox.Name = "categoryBox";
-            this.categoryBox.Size = new System.Drawing.Size(314, 22);
+            this.categoryBox.Size = new System.Drawing.Size(314, 21);
             this.categoryBox.TabIndex = 3;
             this.categoryBox.DrawItem += new System.Windows.Forms.DrawItemEventHandler(this.CategoryBoxOwnerDraw);
             this.categoryBox.SelectedIndexChanged += new System.EventHandler(this.CategoryBoxSelectedIndexChanged);
@@ -167,9 +175,9 @@ namespace PowerPointLabs
             this.flowPanelHolder.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.flowPanelHolder.Controls.Add(this.myShapeFlowLayout);
-            this.flowPanelHolder.Location = new System.Drawing.Point(3, 43);
+            this.flowPanelHolder.Location = new System.Drawing.Point(3, 47);
             this.flowPanelHolder.Name = "flowPanelHolder";
-            this.flowPanelHolder.Size = new System.Drawing.Size(415, 476);
+            this.flowPanelHolder.Size = new System.Drawing.Size(415, 516);
             this.flowPanelHolder.TabIndex = 4;
             // 
             // myShapeFlowLayout
@@ -179,21 +187,34 @@ namespace PowerPointLabs
             this.myShapeFlowLayout.ContextMenuStrip = this.flowlayoutContextMenuStrip;
             this.myShapeFlowLayout.Dock = System.Windows.Forms.DockStyle.Fill;
             this.myShapeFlowLayout.Location = new System.Drawing.Point(0, 0);
-            this.myShapeFlowLayout.MinimumSize = new System.Drawing.Size(120, 50);
+            this.myShapeFlowLayout.MinimumSize = new System.Drawing.Size(120, 54);
             this.myShapeFlowLayout.Name = "myShapeFlowLayout";
-            this.myShapeFlowLayout.Size = new System.Drawing.Size(415, 476);
+            this.myShapeFlowLayout.Size = new System.Drawing.Size(415, 516);
             this.myShapeFlowLayout.TabIndex = 2;
+            // 
+            // singleShapeDownloadLink
+            // 
+            this.singleShapeDownloadLink.AutoSize = true;
+            this.singleShapeDownloadLink.Location = new System.Drawing.Point(3, 566);
+            this.singleShapeDownloadLink.Name = "singleShapeDownloadLink";
+            this.singleShapeDownloadLink.Size = new System.Drawing.Size(114, 13);
+            this.singleShapeDownloadLink.TabIndex = 5;
+            this.singleShapeDownloadLink.TabStop = true;
+            this.singleShapeDownloadLink.Text = "Find more shapes here";
+            this.singleShapeDownloadLink.Visible = false;
+            this.singleShapeDownloadLink.VisitedLinkColor = System.Drawing.Color.Blue;
             // 
             // CustomShapePane
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
+            this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ContextMenuStrip = this.flowlayoutContextMenuStrip;
+            this.Controls.Add(this.singleShapeDownloadLink);
             this.Controls.Add(this.flowPanelHolder);
             this.Controls.Add(this.categoryBox);
             this.Controls.Add(this.label1);
             this.Name = "CustomShapePane";
-            this.Size = new System.Drawing.Size(421, 552);
+            this.Size = new System.Drawing.Size(421, 598);
             this.Click += new System.EventHandler(this.CustomShapePaneClick);
             this.shapeContextMenuStrip.ResumeLayout(false);
             this.flowlayoutContextMenuStrip.ResumeLayout(false);
@@ -255,5 +276,7 @@ namespace PowerPointLabs
         private ToolStripMenuItem setAsDefaultToolStripMenuItem;
         private ToolStripMenuItem importCategoryToolStripMenuItem;
         private BufferedFlowLayoutPanel myShapeFlowLayout;
+        private ToolStripMenuItem importShapesToolStripMenuItem;
+        private LinkLabel singleShapeDownloadLink;
     }
 }

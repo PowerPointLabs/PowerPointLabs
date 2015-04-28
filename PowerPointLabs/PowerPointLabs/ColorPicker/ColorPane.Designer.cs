@@ -104,6 +104,7 @@
             this.FillButton = new System.Windows.Forms.Button();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
             this.groupBox2 = new System.Windows.Forms.GroupBox();
+            this.addToFavoritesToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.AnalogousColorPanel.SuspendLayout();
             this.flowLayoutPanel6.SuspendLayout();
             this.contextMenuStrip1.SuspendLayout();
@@ -195,9 +196,10 @@
             // 
             this.contextMenuStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.showMoreInformationToolStripMenuItem,
-            this.selectAsMainColorToolStripMenuItem});
+            this.selectAsMainColorToolStripMenuItem,
+            this.addToFavoritesToolStripMenuItem});
             this.contextMenuStrip1.Name = "contextMenuStrip1";
-            this.contextMenuStrip1.Size = new System.Drawing.Size(201, 48);
+            this.contextMenuStrip1.Size = new System.Drawing.Size(201, 92);
             // 
             // showMoreInformationToolStripMenuItem
             // 
@@ -1008,6 +1010,13 @@
             this.groupBox2.TabStop = false;
             this.groupBox2.Text = "Favorites";
             // 
+            // addToFavoritesToolStripMenuItem
+            // 
+            this.addToFavoritesToolStripMenuItem.Name = "addToFavoritesToolStripMenuItem";
+            this.addToFavoritesToolStripMenuItem.Size = new System.Drawing.Size(200, 22);
+            this.addToFavoritesToolStripMenuItem.Text = "Add to Favorites";
+            this.addToFavoritesToolStripMenuItem.Click += new System.EventHandler(this.addToFavoritesToolStripMenuItem_Click);
+            // 
             // ColorPane
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -1132,5 +1141,6 @@
         private System.Windows.Forms.Panel panel3;
         private System.Windows.Forms.GroupBox groupBox1;
         private System.Windows.Forms.GroupBox groupBox2;
+        private System.Windows.Forms.ToolStripMenuItem addToFavoritesToolStripMenuItem;
     }
 }
