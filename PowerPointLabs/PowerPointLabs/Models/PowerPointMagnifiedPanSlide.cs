@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using Office = Microsoft.Office.Core;
 using PowerPoint = Microsoft.Office.Interop.PowerPoint;
 
@@ -29,8 +28,9 @@ namespace PowerPointLabs.Models
         public void AddZoomToAreaAnimation(PowerPointSlide slideToPanFrom, PowerPointSlide slideToPanTo)
         {
             PrepareForZoomToArea(slideToPanFrom, slideToPanTo);
-            FrameMotionAnimation.animationType = FrameMotionAnimation.FrameMotionAnimationType.kAutoAnimate;
-            FrameMotionAnimation.AddZoomToAreaPanFrameMotionAnimation(this, panShapeFrom, panShapeTo);
+            DefaultMotionAnimation.AddZoomToAreaPanAnimation(this, panShapeFrom, panShapeTo, PowerPoint.MsoAnimTriggerType.msoAnimTriggerAfterPrevious);
+            DefaultMotionAnimation.PreloadShape(this, panShapeFrom);
+            
             indicatorShape.ZOrder(Office.MsoZOrderCmd.msoBringToFront);
         }
 

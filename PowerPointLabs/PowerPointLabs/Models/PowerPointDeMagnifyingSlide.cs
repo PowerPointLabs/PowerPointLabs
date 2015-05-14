@@ -1,7 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using Office = Microsoft.Office.Core;
 using PowerPoint = Microsoft.Office.Interop.PowerPoint;
 
@@ -68,10 +66,10 @@ namespace PowerPointLabs.Models
             else
             {
                 GetShapeToZoomWithBackground(zoomShape);
-                FrameMotionAnimation.animationType = FrameMotionAnimation.FrameMotionAnimationType.kZoomToAreaDeMagnify;
-                FrameMotionAnimation.AddStepBackFrameMotionAnimation(this, zoomSlideCroppedShapes);
-                lastEffect = _slide.TimeLine.MainSequence[_slide.TimeLine.MainSequence.Count];
-
+                var lastDisappearEffect = DefaultMotionAnimation.AddZoomOutMotionAnimation(this,
+                    zoomSlideCroppedShapes, PowerPoint.MsoAnimTriggerType.msoAnimTriggerWithPrevious);
+                DefaultMotionAnimation.PreloadShape(this, zoomSlideCroppedShapes);
+                
                 //Add appear animations to existing shapes
                 bool isFirst = true;
                 PowerPoint.Effect effectFade = null;
@@ -89,12 +87,11 @@ namespace PowerPointLabs.Models
                         isFirst = false;
                     }
                 }
-
+                
                 //Move last frame disappear animation to end 
-                lastEffect.MoveTo(_slide.TimeLine.MainSequence.Count);
-                lastEffect.Timing.TriggerType = PowerPoint.MsoAnimTriggerType.msoAnimTriggerWithPrevious;
-                lastEffect.Timing.TriggerDelayTime = 0.0f;
-                lastEffect.Timing.Duration = 0.01f;
+                lastDisappearEffect.MoveTo(_slide.TimeLine.MainSequence.Count);
+                lastDisappearEffect.Timing.TriggerType = PowerPoint.MsoAnimTriggerType.msoAnimTriggerWithPrevious;
+                lastDisappearEffect.Timing.TriggerDelayTime = 0.01f;
             }
 
             indicatorShape.ZOrder(Office.MsoZOrderCmd.msoBringToFront);

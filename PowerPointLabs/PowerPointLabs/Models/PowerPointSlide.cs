@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.IO;
 using System.Text.RegularExpressions;
@@ -357,6 +358,65 @@ namespace PowerPointLabs.Models
                 effect.Exit = MsoTriState.msoTrue;
             }
         }
+        
+        /// <summary>
+        /// Translates the x and y coordinates a VML Path String (obtained from MotionEffect.Path) by a specified amount.
+        /// TODO: Not sure whether it works with any VML path string yet. Need to verify. It seems to. Idea: the numerical (non-alphabetical) values alternate between x and y coordinates. I translate every value this eay by either xShift or yShift.
+        /// </summary>
+        public string TranslateVmlPath(string path, float xShift, float yShift)
+        {
+            string[] splitPath = path.Split(' ');
+            bool isXCoordinate = true;
+            for (int i = 0; i < splitPath.Length; ++i)
+            {
+                string token = splitPath[i].Trim();
+                if (token.Length <= 1 && char.IsLetter(token, 0)) continue;
+
+                float val = float.Parse(token);
+                if (isXCoordinate)
+                {
+                    val += xShift;
+                    isXCoordinate = false;
+                }
+                else
+                {
+                    val += yShift;
+                    isXCoordinate = true;
+                }
+                splitPath[i] = val.ToString();
+            }
+            return string.Join(" ", splitPath);
+        }
+
+        /// <summary>
+        /// Changes the Left, Top coordinates and Width, Height of the shape while maintaining the positions of motion paths. 
+        /// </summary>
+        public void RelocateShapeWithoutPath(Shape shape, float newLeft, float newTop, float newWidth, float newHeight)
+        {
+            float originalLeft = shape.Left;
+            float originalTop = shape.Top;
+            float originalWidth = shape.Width;
+            float originalHeight = shape.Height;
+            shape.Left = newLeft;
+            shape.Top = newTop;
+            shape.Width = newWidth;
+            shape.Height = newHeight;
+
+            var effects = TimeLine.MainSequence.Cast<Effect>();
+            // TODO: Generalize to paths other than msoAnimEffectPathDown?
+            effects = effects.Where(e => e.Shape.Equals(shape) && e.EffectType == MsoAnimEffect.msoAnimEffectPathDown).ToList();
+
+            float xShift = (originalLeft - newLeft) + (originalWidth - newWidth) / 2;
+            float yShift = (originalTop - newTop) + (originalHeight - newHeight) / 2;
+            xShift /= PowerPointPresentation.Current.SlideWidth;
+            yShift /= PowerPointPresentation.Current.SlideHeight;
+
+            foreach (var effect in effects)
+            {
+                var motionEffect = effect.Behaviors[1].MotionEffect;
+                motionEffect.Path = TranslateVmlPath(motionEffect.Path, xShift, yShift);
+            }
+        }
 
         public void TransferAnimation(Shape source, Shape destination)
         {
@@ -540,6 +600,21 @@ namespace PowerPointLabs.Models
                         return true;
             }
             return false;
+        }
+
+        /// <summary>
+        /// Returns the index of the first effect in the slide that belongs to the shape.
+        /// </summary>
+        public int IndexOfFirstEffect(Shape shape)
+        {
+            Sequence sequence = _slide.TimeLine.MainSequence;
+            for (int i = 1; i <= sequence.Count; i++)
+            {
+                Effect effect = sequence[i];
+                if (effect.Shape.Name == shape.Name && effect.Shape.Id == shape.Id)
+                    return i;
+            }
+            return -1;
         }
 
         protected void DeleteSlideNotes()
