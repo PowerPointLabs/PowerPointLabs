@@ -1,8 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Runtime.InteropServices;
 using PowerPointLabs.Models;
 using Office = Microsoft.Office.Core;
 using PowerPoint = Microsoft.Office.Interop.PowerPoint;
@@ -46,28 +44,43 @@ namespace PowerPointLabs
                     addedSlide = (PowerPointDrillDownSlide)currentSlide.CreateDrillDownSlide();
                     addedSlide.DeleteAllShapes();
 
+                    nextSlidePicture.Copy();
+                    shapeToZoom = addedSlide.Shapes.Paste()[1];
+                    addedSlide.DeleteShapeAnimations(shapeToZoom);
+
                     currentSlide.Copy();
-                    shapeToZoom = addedSlide.Shapes.PasteSpecial(PowerPoint.PpPasteDataType.ppPastePNG)[1];
-                    shapeToZoom.Apply();
-                    Utils.Graphics.FitShapeToSlide(ref shapeToZoom);
-                    shapeToZoom.ZOrder(Office.MsoZOrderCmd.msoBringToFront);
+                    var backgroundShape = addedSlide.Shapes.PasteSpecial(PowerPoint.PpPasteDataType.ppPastePNG)[1];
+                    backgroundShape.Apply();
+                    Utils.Graphics.FitShapeToSlide(ref backgroundShape);
+                    backgroundShape.ZOrder(Office.MsoZOrderCmd.msoSendBackward);
+                    backgroundShape.Name = "PPTZoomInShape" + DateTime.Now.ToString("yyyyMMddHHmmssffff");
 
                     addedSlide.PrepareForDrillDown();
-                    addedSlide.AddDrillDownAnimation(shapeToZoom, nextSlidePicture);
+                    addedSlide.AddDrillDownAnimationBackground(backgroundShape, shapeToZoom, nextSlidePicture);
                 }
                 else
                 {
                     PowerPoint.Shape pictureOnNextSlide = null;
-                    nextSlidePicture = GetNextSlidePictureWithoutBackground(currentSlide, nextSlide, ref pictureOnNextSlide);
+                    nextSlidePicture = GetNextSlidePictureWithoutBackground(currentSlide, nextSlide, out pictureOnNextSlide);
                     nextSlidePicture.Apply();
                     PrepareNextSlidePicture(currentSlide, selectedShape, ref nextSlidePicture);
+
                     addedSlide = (PowerPointDrillDownSlide)currentSlide.CreateDrillDownSlide();
-                    shapeToZoom = addedSlide.GetShapeWithSameIDAndName(nextSlidePicture);
-                    shapeToZoom.Apply();
+                    addedSlide.DeleteAllShapes();
+
+                    nextSlidePicture.Copy();
+                    shapeToZoom = addedSlide.Shapes.Paste()[1];
                     addedSlide.DeleteShapeAnimations(shapeToZoom);
 
+                    currentSlide.Copy();
+                    var backgroundShape = addedSlide.Shapes.PasteSpecial(PowerPoint.PpPasteDataType.ppPastePNG)[1];
+                    backgroundShape.Apply();
+                    Utils.Graphics.FitShapeToSlide(ref backgroundShape);
+                    backgroundShape.ZOrder(Office.MsoZOrderCmd.msoSendBackward);
+                    backgroundShape.Name = "PPTZoomInShape" + DateTime.Now.ToString("yyyyMMddHHmmssffff");
+
                     addedSlide.PrepareForDrillDown();
-                    addedSlide.AddDrillDownAnimation(shapeToZoom, pictureOnNextSlide);
+                    addedSlide.AddDrillDownAnimationNoBackground(backgroundShape, shapeToZoom, pictureOnNextSlide);
                     pictureOnNextSlide.Delete();
                 }
 
@@ -115,11 +128,12 @@ namespace PowerPointLabs
                     addedSlide = (PowerPointStepBackSlide)previousSlide.CreateStepBackSlide();
                     addedSlide.DeleteAllShapes();
 
-                    shapeToZoom = GetStepBackWithBackgroundShapeToZoom(currentSlide, addedSlide, previousSlidePicture);
+                    PowerPoint.Shape backgroundShape = null;
+                    shapeToZoom = GetStepBackWithBackgroundShapeToZoom(currentSlide, addedSlide, previousSlidePicture, out backgroundShape);
                     shapeToZoom.Apply();
 
                     addedSlide.PrepareForStepBack();
-                    addedSlide.AddStepBackAnimation(shapeToZoom, previousSlidePicture);
+                    addedSlide.AddStepBackAnimationBackground(shapeToZoom, backgroundShape, previousSlidePicture);
                 }
                 else
                 {
@@ -134,7 +148,7 @@ namespace PowerPointLabs
                     PreparePreviousSlidePicture(currentSlide, selectedShape, ref previousSlidePicture);
 
                     addedSlide.PrepareForStepBack();
-                    addedSlide.AddStepBackAnimation(shapeToZoom, previousSlidePicture);
+                    addedSlide.AddStepBackAnimationNonBackground(shapeToZoom, previousSlidePicture);
                 }
 
                 currentSlide.Transition.EntryEffect = PowerPoint.PpEntryEffect.ppEffectFadeSmoothly;
@@ -194,7 +208,7 @@ namespace PowerPointLabs
         }
 
         //Return picture copy of next slide where shapes with exit animations have been deleted
-        private static PowerPoint.Shape GetNextSlidePictureWithoutBackground(PowerPointSlide currentSlide, PowerPointSlide nextSlide, ref PowerPoint.Shape pictureOnNextSlide)
+        private static PowerPoint.Shape GetNextSlidePictureWithoutBackground(PowerPointSlide currentSlide, PowerPointSlide nextSlide, out PowerPoint.Shape pictureOnNextSlide)
         {
             Globals.ThisAddIn.Application.ActiveWindow.Selection.Unselect();
             Globals.ThisAddIn.Application.ActiveWindow.View.GotoSlide(nextSlide.Index);
@@ -306,33 +320,33 @@ namespace PowerPointLabs
         }
 
 
-        private static PowerPoint.Shape GetStepBackWithBackgroundShapeToZoom(PowerPointSlide currentSlide, PowerPointSlide addedSlide, PowerPoint.Shape previousSlidePicture)
+        private static PowerPoint.Shape GetStepBackWithBackgroundShapeToZoom(PowerPointSlide currentSlide, PowerPointSlide addedSlide, PowerPoint.Shape previousSlidePicture, out PowerPoint.Shape backgroundShape)
         {
             currentSlide.Copy();
             PowerPoint.Shape currentSlideCopy = addedSlide.Shapes.PasteSpecial(PowerPoint.PpPasteDataType.ppPastePNG)[1];
             Utils.Graphics.FitShapeToSlide(ref currentSlideCopy);
+            currentSlideCopy.Name = "PPTZoomOutShape" + DateTime.Now.ToString("yyyyMMddHHmmssffff");
 
             previousSlidePicture.Copy();
             PowerPoint.Shape previousSlidePictureCopy = addedSlide.Shapes.Paste()[1];
 
             Globals.ThisAddIn.Application.ActiveWindow.View.GotoSlide(addedSlide.Index);
-            currentSlideCopy.Select();
-            previousSlidePictureCopy.Select(Office.MsoTriState.msoFalse);
-            PowerPoint.ShapeRange selection = Globals.ThisAddIn.Application.ActiveWindow.Selection.ShapeRange;
-            PowerPoint.Shape shapeGroup = selection.Group();
 
-            shapeGroup.LockAspectRatio = Office.MsoTriState.msoFalse;
-            shapeGroup.Left = (PowerPointPresentation.Current.SlideWidth / 2) - ((previousSlidePicture.Left + (previousSlidePicture.Width) / 2) * PowerPointPresentation.Current.SlideWidth / previousSlidePicture.Width);
-            shapeGroup.Top = (PowerPointPresentation.Current.SlideHeight / 2) - ((previousSlidePicture.Top + (previousSlidePicture.Height) / 2) * PowerPointPresentation.Current.SlideHeight / previousSlidePicture.Height);
-            shapeGroup.Width = PowerPointPresentation.Current.SlideWidth * PowerPointPresentation.Current.SlideWidth / previousSlidePicture.Width;
-            shapeGroup.Height = PowerPointPresentation.Current.SlideHeight * PowerPointPresentation.Current.SlideHeight / previousSlidePicture.Height;
+            // Scale everything up by this ratio.
+            float ratio = PowerPointPresentation.Current.SlideWidth / previousSlidePictureCopy.Width;
 
-            shapeGroup.Left += (0 - previousSlidePictureCopy.Left);
-            shapeGroup.Top += (0 - previousSlidePictureCopy.Top);
+            currentSlideCopy.Width *= ratio;
+            currentSlideCopy.Height *= ratio;
+            currentSlideCopy.Left = -ratio * previousSlidePictureCopy.Left;
+            currentSlideCopy.Top = -ratio * previousSlidePictureCopy.Top;
 
-            shapeGroup.ZOrder(Office.MsoZOrderCmd.msoBringToFront);
+            // for some reason height is locked to width, so we only need to change width here.
+            previousSlidePictureCopy.Width *= ratio;
+            previousSlidePictureCopy.Left = 0;
+            previousSlidePictureCopy.Top = 0;
 
-            return shapeGroup;
+            backgroundShape = currentSlideCopy;
+            return previousSlidePictureCopy;
         }
 
         private static PowerPoint.Shape GetStepBackWithoutBackgroundShapeToZoom(PowerPointSlide currentSlide, PowerPointSlide addedSlide, PowerPointSlide previousSlide)

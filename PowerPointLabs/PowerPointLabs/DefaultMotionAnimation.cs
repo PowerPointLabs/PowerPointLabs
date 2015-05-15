@@ -142,13 +142,17 @@ namespace PowerPointLabs
         /// <summary>
         /// Preloads a shape within the slide to reduce lag. Call after the animations for the shape have been created.
         /// </summary>
-        public static void PreloadShape(PowerPointSlide animationSlide, PowerPoint.Shape shape)
+        public static void PreloadShape(PowerPointSlide animationSlide, PowerPoint.Shape shape, bool addCoverImage=true)
         {
             // The cover image is used to cover the screen while the preloading happens behind the cover image.
-            PowerPoint.Shape coverImage = shape.Duplicate()[1];
-            coverImage.Left = shape.Left;
-            coverImage.Top = shape.Top;
-            animationSlide.RemoveAnimationsForShape(coverImage);
+            PowerPoint.Shape coverImage = null;
+            if (addCoverImage)
+            {
+                coverImage = shape.Duplicate()[1];
+                coverImage.Left = shape.Left;
+                coverImage.Top = shape.Top;
+                animationSlide.RemoveAnimationsForShape(coverImage);
+            }
 
             float originalWidth = shape.Width;
             float originalHeight = shape.Height;
@@ -165,12 +169,16 @@ namespace PowerPointLabs
             var effectResize = AddResizeAnimation(animationSlide, shape, shape.Width, shape.Height, originalWidth, originalHeight, 0, ref trigger);
 
             // Make "cover" image disappear after preload.
-            var sequence = animationSlide.TimeLine.MainSequence;
-            var effectDisappear = sequence.AddEffect(coverImage, PowerPoint.MsoAnimEffect.msoAnimEffectFade,
-                PowerPoint.MsoAnimateByLevel.msoAnimateLevelNone,
-                PowerPoint.MsoAnimTriggerType.msoAnimTriggerWithPrevious);
-            effectDisappear.Exit = Office.MsoTriState.msoTrue;
-            effectDisappear.Timing.Duration = 0.01f;
+            PowerPoint.Effect effectDisappear = null;
+            if (addCoverImage)
+            {
+                var sequence = animationSlide.TimeLine.MainSequence;
+                effectDisappear = sequence.AddEffect(coverImage, PowerPoint.MsoAnimEffect.msoAnimEffectFade,
+                    PowerPoint.MsoAnimateByLevel.msoAnimateLevelNone,
+                    PowerPoint.MsoAnimTriggerType.msoAnimTriggerWithPrevious);
+                effectDisappear.Exit = Office.MsoTriState.msoTrue;
+                effectDisappear.Timing.Duration = 0.01f;
+            }
 
 
             int firstEffectIndex = animationSlide.IndexOfFirstEffect(shape);
@@ -178,6 +186,25 @@ namespace PowerPointLabs
             if (effectDisappear != null) effectDisappear.MoveTo(firstEffectIndex);
             if (effectResize != null) effectResize.MoveTo(firstEffectIndex);
             if (effectMotion != null) effectMotion.MoveTo(firstEffectIndex);
+        }
+
+        /// <summary>
+        /// Creates a cover image from a copy of the shape to obstruct the viewer while preloading images in the background.
+        /// </summary>
+        public static void DuplicateAsCoverImage(PowerPointSlide animationSlide, PowerPoint.Shape shape)
+        {
+            var coverImage = shape.Duplicate()[1];
+            coverImage.Left = shape.Left;
+            coverImage.Top = shape.Top;
+            animationSlide.RemoveAnimationsForShape(coverImage);
+
+            var sequence = animationSlide.TimeLine.MainSequence;
+            var effectDisappear = sequence.AddEffect(coverImage, PowerPoint.MsoAnimEffect.msoAnimEffectFade,
+                PowerPoint.MsoAnimateByLevel.msoAnimateLevelNone,
+                PowerPoint.MsoAnimTriggerType.msoAnimTriggerWithPrevious);
+            effectDisappear.Exit = Office.MsoTriState.msoTrue;
+            effectDisappear.Timing.Duration = 0.01f;
+            effectDisappear.MoveTo(1);
         }
 
         private static PowerPoint.Effect AddMotionAnimation(PowerPointSlide animationSlide, PowerPoint.Shape animationShape, float initialX, float initialY, float finalX, float finalY, float duration, ref PowerPoint.MsoAnimTriggerType trigger)
