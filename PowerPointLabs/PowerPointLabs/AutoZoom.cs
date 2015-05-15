@@ -49,7 +49,7 @@ namespace PowerPointLabs
                     addedSlide.DeleteShapeAnimations(shapeToZoom);
 
                     currentSlide.Copy();
-                    var backgroundShape = addedSlide.Shapes.Paste()[1];
+                    var backgroundShape = addedSlide.Shapes.PasteSpecial(PowerPoint.PpPasteDataType.ppPastePNG)[1];
                     backgroundShape.Apply();
                     Utils.Graphics.FitShapeToSlide(ref backgroundShape);
                     backgroundShape.ZOrder(Office.MsoZOrderCmd.msoSendBackward);
@@ -73,7 +73,7 @@ namespace PowerPointLabs
                     addedSlide.DeleteShapeAnimations(shapeToZoom);
 
                     currentSlide.Copy();
-                    var backgroundShape = addedSlide.Shapes.Paste()[1];
+                    var backgroundShape = addedSlide.Shapes.PasteSpecial(PowerPoint.PpPasteDataType.ppPastePNG)[1];
                     backgroundShape.Apply();
                     Utils.Graphics.FitShapeToSlide(ref backgroundShape);
                     backgroundShape.ZOrder(Office.MsoZOrderCmd.msoSendBackward);
