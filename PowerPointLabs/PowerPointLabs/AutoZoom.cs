@@ -1,8 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Runtime.InteropServices;
 using PowerPointLabs.Models;
 using Office = Microsoft.Office.Core;
 using PowerPoint = Microsoft.Office.Interop.PowerPoint;
@@ -46,14 +44,19 @@ namespace PowerPointLabs
                     addedSlide = (PowerPointDrillDownSlide)currentSlide.CreateDrillDownSlide();
                     addedSlide.DeleteAllShapes();
 
+                    nextSlidePicture.Copy();
+                    shapeToZoom = addedSlide.Shapes.Paste()[1];
+                    addedSlide.DeleteShapeAnimations(shapeToZoom);
+
                     currentSlide.Copy();
-                    shapeToZoom = addedSlide.Shapes.PasteSpecial(PowerPoint.PpPasteDataType.ppPastePNG)[1];
-                    shapeToZoom.Apply();
-                    Utils.Graphics.FitShapeToSlide(ref shapeToZoom);
-                    shapeToZoom.ZOrder(Office.MsoZOrderCmd.msoBringToFront);
+                    var backgroundShape = addedSlide.Shapes.Paste()[1];
+                    backgroundShape.Apply();
+                    Utils.Graphics.FitShapeToSlide(ref backgroundShape);
+                    backgroundShape.ZOrder(Office.MsoZOrderCmd.msoSendBackward);
+                    backgroundShape.Name = "PPTZoomInShape" + DateTime.Now.ToString("yyyyMMddHHmmssffff");
 
                     addedSlide.PrepareForDrillDown();
-                    addedSlide.AddDrillDownAnimation(shapeToZoom, nextSlidePicture);
+                    addedSlide.AddDrillDownAnimationBackground(backgroundShape, shapeToZoom, nextSlidePicture);
                 }
                 else
                 {
@@ -61,13 +64,23 @@ namespace PowerPointLabs
                     nextSlidePicture = GetNextSlidePictureWithoutBackground(currentSlide, nextSlide, ref pictureOnNextSlide);
                     nextSlidePicture.Apply();
                     PrepareNextSlidePicture(currentSlide, selectedShape, ref nextSlidePicture);
+
                     addedSlide = (PowerPointDrillDownSlide)currentSlide.CreateDrillDownSlide();
-                    shapeToZoom = addedSlide.GetShapeWithSameIDAndName(nextSlidePicture);
-                    shapeToZoom.Apply();
+                    addedSlide.DeleteAllShapes();
+
+                    nextSlidePicture.Copy();
+                    shapeToZoom = addedSlide.Shapes.Paste()[1];
                     addedSlide.DeleteShapeAnimations(shapeToZoom);
 
+                    currentSlide.Copy();
+                    var backgroundShape = addedSlide.Shapes.Paste()[1];
+                    backgroundShape.Apply();
+                    Utils.Graphics.FitShapeToSlide(ref backgroundShape);
+                    backgroundShape.ZOrder(Office.MsoZOrderCmd.msoSendBackward);
+                    backgroundShape.Name = "PPTZoomInShape" + DateTime.Now.ToString("yyyyMMddHHmmssffff");
+
                     addedSlide.PrepareForDrillDown();
-                    addedSlide.AddDrillDownAnimation(shapeToZoom, pictureOnNextSlide);
+                    addedSlide.AddDrillDownAnimationNoBackground(backgroundShape, shapeToZoom, pictureOnNextSlide);
                     pictureOnNextSlide.Delete();
                 }
 
