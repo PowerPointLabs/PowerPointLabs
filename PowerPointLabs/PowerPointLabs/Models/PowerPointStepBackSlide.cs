@@ -29,16 +29,21 @@ namespace PowerPointLabs.Models
             ManageSlideTransitions();
         }
 
-        public void AddStepBackAnimation(PowerPoint.Shape shapeToZoom, PowerPoint.Shape referenceShape)
+        public void AddStepBackAnimationBackground(PowerPoint.Shape shapeToZoom, PowerPoint.Shape backgroundShape, PowerPoint.Shape referenceShape)
         {
             PowerPoint.Shape indicatorShape = AddPowerPointLabsIndicator();
-            if (AutoZoom.backgroundZoomChecked)
-            {
-                FrameMotionAnimation.animationType = FrameMotionAnimation.FrameMotionAnimationType.kStepBackWithBackground;
-                FrameMotionAnimation.AddStepBackFrameMotionAnimation(this, shapeToZoom);
-            }
-            else
-                DefaultMotionAnimation.AddStepBackMotionAnimation(this, shapeToZoom, referenceShape, 0.5f, PowerPoint.MsoAnimTriggerType.msoAnimTriggerWithPrevious);
+            DefaultMotionAnimation.AddStepBackMotionAnimation(this, shapeToZoom, referenceShape, 0.5f, PowerPoint.MsoAnimTriggerType.msoAnimTriggerWithPrevious);
+            DefaultMotionAnimation.AddStepBackMotionAnimation(this, backgroundShape, shapeToZoom, 0.5f, PowerPoint.MsoAnimTriggerType.msoAnimTriggerWithPrevious);
+            
+            DefaultMotionAnimation.PreloadShape(this, backgroundShape, false);
+            DefaultMotionAnimation.DuplicateAsCoverImage(this, shapeToZoom);
+            indicatorShape.ZOrder(Office.MsoZOrderCmd.msoBringToFront);
+        }
+
+        public void AddStepBackAnimationNonBackground(PowerPoint.Shape shapeToZoom, PowerPoint.Shape referenceShape)
+        {
+            PowerPoint.Shape indicatorShape = AddPowerPointLabsIndicator();
+            DefaultMotionAnimation.AddStepBackMotionAnimation(this, shapeToZoom, referenceShape, 0.5f, PowerPoint.MsoAnimTriggerType.msoAnimTriggerWithPrevious);
             indicatorShape.ZOrder(Office.MsoZOrderCmd.msoBringToFront);
         }
 
