@@ -13,7 +13,7 @@ using PowerPoint = Microsoft.Office.Interop.PowerPoint;
 
 namespace PowerPointLabs
 {
-    class CropToShape
+    public class CropToShape
     {
         private const int ErrorCodeForSelectionCountZero = 0;
         private const int ErrorCodeForSelectionNonShape = 1;

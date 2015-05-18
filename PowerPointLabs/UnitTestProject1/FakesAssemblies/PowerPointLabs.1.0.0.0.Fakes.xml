@@ -1,0 +1,41 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>PowerPointLabs.1.0.0.0.Fakes</name>
+    </assembly>
+    <members>
+        <member name="T:PowerPointLabs.Models.Fakes.ShimPowerPointCurrentPresentationInfo">
+            <summary>Shim type of PowerPointLabs.Models.PowerPointCurrentPresentationInfo</summary>
+        </member>
+        <member name="M:PowerPointLabs.Models.Fakes.ShimPowerPointCurrentPresentationInfo.#ctor">
+            <summary>Initializes a new shim instance</summary>
+        </member>
+        <member name="M:PowerPointLabs.Models.Fakes.ShimPowerPointCurrentPresentationInfo.#ctor(PowerPointLabs.Models.PowerPointCurrentPresentationInfo)">
+            <summary>Initializes a new shim for the given instance</summary>
+        </member>
+        <member name="M:PowerPointLabs.Models.Fakes.ShimPowerPointCurrentPresentationInfo.BehaveAsCurrent">
+            <summary>Assigns the &apos;Current&apos; behavior for all methods of the shimmed type</summary>
+        </member>
+        <member name="M:PowerPointLabs.Models.Fakes.ShimPowerPointCurrentPresentationInfo.BehaveAsNotImplemented">
+            <summary>Assigns the &apos;NotImplemented&apos; behavior for all methods of the shimmed type</summary>
+        </member>
+        <member name="P:PowerPointLabs.Models.Fakes.ShimPowerPointCurrentPresentationInfo.Behavior">
+            <summary>Assigns the behavior for all methods of the shimmed type</summary>
+        </member>
+        <member name="P:PowerPointLabs.Models.Fakes.ShimPowerPointCurrentPresentationInfo.Constructor">
+            <summary>Sets the shim of PowerPointCurrentPresentationInfo.PowerPointCurrentPresentationInfo()</summary>
+        </member>
+        <member name="P:PowerPointLabs.Models.Fakes.ShimPowerPointCurrentPresentationInfo.CurrentSelectionGet">
+            <summary>Sets the shim of PowerPointCurrentPresentationInfo.get_CurrentSelection()</summary>
+        </member>
+        <member name="P:PowerPointLabs.Models.Fakes.ShimPowerPointCurrentPresentationInfo.CurrentSlideGet">
+            <summary>Sets the shim of PowerPointCurrentPresentationInfo.get_CurrentSlide()</summary>
+        </member>
+        <member name="P:PowerPointLabs.Models.Fakes.ShimPowerPointCurrentPresentationInfo.SelectedSlidesGet">
+            <summary>Sets the shim of PowerPointCurrentPresentationInfo.get_SelectedSlides()</summary>
+        </member>
+        <member name="T:PowerPointLabs.Models.Fakes.ShimPowerPointCurrentPresentationInfo.AllInstances">
+            <summary>Define shims for all instances members</summary>
+        </member>
+    </members>
+</doc>
