@@ -127,6 +127,7 @@ namespace PowerPointLabs.Models
 
             Globals.ThisAddIn.Application.ActiveWindow.View.GotoSlide(_slide.SlideIndex);
             zoomSlideCroppedShapes.Select();
+            zoomShapeCopy.Visible = Office.MsoTriState.msoTrue;
             zoomShapeCopy.Select(Office.MsoTriState.msoFalse);
             PowerPoint.ShapeRange selection = Globals.ThisAddIn.Application.ActiveWindow.Selection.ShapeRange;
             PowerPoint.Shape groupShape = selection.Group();
