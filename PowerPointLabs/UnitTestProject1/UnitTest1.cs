@@ -30,6 +30,14 @@ namespace UnitTestProject1
                 Assert.AreEqual(DialogResult.No, r);
                 var sel = PowerPointLabs.Models.PowerPointCurrentPresentationInfo.CurrentSelection;
                 Assert.AreEqual(PowerPoint.PpSelectionType.ppSelectionShapes, sel.Type);
+
+                // Crop to shape
+                var mockSel = new Mock<PowerPoint.Selection>();
+                mockSel.Setup(selection => selection.Type).Returns(PowerPoint.PpSelectionType.ppSelectionNone);
+                System.Windows.Forms.Fakes.ShimMessageBox.ShowStringString = (s, s1) => DialogResult.OK;
+
+                var result = PowerPointLabs.CropToShape.Crop(mockSel.Object);
+                Assert.AreEqual(null, result);
             }
         }
     }
