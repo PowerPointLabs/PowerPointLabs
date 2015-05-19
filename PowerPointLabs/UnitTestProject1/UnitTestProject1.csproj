@@ -60,8 +60,9 @@
     <Reference Include="Office, Version=15.0.0.0, Culture=neutral, PublicKeyToken=71e9bce111e9429c, processorArchitecture=MSIL">
       <EmbedInteropTypes>True</EmbedInteropTypes>
     </Reference>
-    <Reference Include="PowerPointLabs">
-      <HintPath>..\PowerPointLabs\bin\Release\PowerPointLabs.dll</HintPath>
+    <Reference Include="PowerPointLabs, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\PowerPointLabs\bin\Debug\PowerPointLabs.dll</HintPath>
     </Reference>
     <Reference Include="PowerPointLabs.1.0.0.0.Fakes">
       <HintPath>FakesAssemblies\PowerPointLabs.1.0.0.0.Fakes.dll</HintPath>
@@ -118,6 +119,15 @@
   </Choose>
   <Import Project="$(VSToolsPath)\TeamTest\Microsoft.TestTools.targets" Condition="Exists('$(VSToolsPath)\TeamTest\Microsoft.TestTools.targets')" />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <PropertyGroup>
+    <PreBuildEvent>copy "$(SolutionDir)\PowerPointLabs\PowerPointLabs.csproj" "$(SolutionDir)\PowerPointLabs\PowerPointLabs.csproj.bak"
+$(SolutionDir)\PowerPointLabs\fart.exe -i "$(SolutionDir)\PowerPointLabs\PowerPointLabs.csproj" "EmbedInteropTypes&gt;True" "EmbedInteropTypes&gt;False"
+MSBuild "$(SolutionDir)\PowerPointLabs\PowerPointLabs.csproj"</PreBuildEvent>
+  </PropertyGroup>
+  <PropertyGroup>
+    <PostBuildEvent>del "$(SolutionDir)\PowerPointLabs\PowerPointLabs.csproj"
+rename "$(SolutionDir)\PowerPointLabs\PowerPointLabs.csproj.bak" PowerPointLabs.csproj</PostBuildEvent>
+  </PropertyGroup>
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
   <Target Name="BeforeBuild">
