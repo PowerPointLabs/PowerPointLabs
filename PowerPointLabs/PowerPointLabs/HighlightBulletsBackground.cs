@@ -1,9 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Drawing;
-using System.Runtime.InteropServices;
 using PowerPointLabs.Models;
 using Office = Microsoft.Office.Core;
 using PowerPoint = Microsoft.Office.Interop.PowerPoint;
@@ -89,7 +86,7 @@ namespace PowerPointLabs
                         highlightShape.Fill.ForeColor.RGB = Utils.Graphics.ConvertColorToRgb(backgroundColor);
                         highlightShape.Fill.Transparency = 0.50f;
                         highlightShape.Line.Visible = Office.MsoTriState.msoFalse;
-                        highlightShape.ZOrder(Office.MsoZOrderCmd.msoSendToBack);
+                        Utils.Graphics.MoveZToJustBehind(highlightShape, sh);
                         highlightShape.Name = "PPTLabsHighlightBackgroundShape" + DateTime.Now.ToString("yyyyMMddHHmmssffff");
                         highlightShape.Tags.Add("HighlightBackground", sh.Name);
                         highlightShape.Select(Office.MsoTriState.msoFalse);

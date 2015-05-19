@@ -217,6 +217,67 @@ namespace PowerPointLabs.Utils
                 newCandidateRange.Text = candidateText;
             }
         }
+
+        /// <summary>
+        /// Moves shiftShape forward/backward until it is just behind destinationShape
+        /// </summary>
+        public static void MoveZToJustBehind(Shape shiftShape, Shape destinationShape)
+        {
+            // Step 1: Shift forward until it overshoots destination.
+            while (shiftShape.ZOrderPosition < destinationShape.ZOrderPosition)
+            {
+                int currentValue = shiftShape.ZOrderPosition;
+                shiftShape.ZOrder(MsoZOrderCmd.msoBringForward);
+                if (shiftShape.ZOrderPosition == currentValue)
+                {
+                    // Break if no change. Guards against infinite loops.
+                    break;
+                }
+            }
+
+            // Step 2: Shift backward until it overshoots destination.
+            while (shiftShape.ZOrderPosition > destinationShape.ZOrderPosition)
+            {
+                int currentValue = shiftShape.ZOrderPosition;
+                shiftShape.ZOrder(MsoZOrderCmd.msoSendBackward);
+                if (shiftShape.ZOrderPosition == currentValue)
+                {
+                    // Break if no change. Guards against infinite loops.
+                    break;
+                }
+            }
+        }
+
+        /// <summary>
+        /// Moves shiftShape forward/backward until it is just in front of destinationShape
+        /// </summary>
+        public static void MoveZToJustInFront(Shape shiftShape, Shape destinationShape)
+        {
+            // Step 1: Shift backward until it overshoots destination.
+            while (shiftShape.ZOrderPosition > destinationShape.ZOrderPosition)
+            {
+                int currentValue = shiftShape.ZOrderPosition;
+                shiftShape.ZOrder(MsoZOrderCmd.msoSendBackward);
+                if (shiftShape.ZOrderPosition == currentValue)
+                {
+                    // Break if no change. Guards against infinite loops.
+                    break;
+                }
+            }
+
+            // Step 2: Shift forward until it overshoots destination.
+            while (shiftShape.ZOrderPosition < destinationShape.ZOrderPosition)
+            {
+                int currentValue = shiftShape.ZOrderPosition;
+                shiftShape.ZOrder(MsoZOrderCmd.msoBringForward);
+                if (shiftShape.ZOrderPosition == currentValue)
+                {
+                    // Break if no change. Guards against infinite loops.
+                    break;
+                }
+            }
+        }
+
         # endregion
 
         # region Text
