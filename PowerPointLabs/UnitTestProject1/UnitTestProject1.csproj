@@ -120,13 +120,13 @@
   <Import Project="$(VSToolsPath)\TeamTest\Microsoft.TestTools.targets" Condition="Exists('$(VSToolsPath)\TeamTest\Microsoft.TestTools.targets')" />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
-    <PreBuildEvent>copy "$(SolutionDir)\PowerPointLabs\PowerPointLabs.csproj" "$(SolutionDir)\PowerPointLabs\PowerPointLabs.csproj.bak"
-$(SolutionDir)\PowerPointLabs\fart.exe -i "$(SolutionDir)\PowerPointLabs\PowerPointLabs.csproj" "EmbedInteropTypes&gt;True" "EmbedInteropTypes&gt;False"
-MSBuild "$(SolutionDir)\PowerPointLabs\PowerPointLabs.csproj"</PreBuildEvent>
+    <PreBuildEvent>copy "$(SolutionDir)\PowerPointLabs\PowerPointLabs.csproj" "$(SolutionDir)\PowerPointLabs\PowerPointLabs_UT.csproj"
+$(SolutionDir)\PowerPointLabs\fart.exe -i "$(SolutionDir)\PowerPointLabs\PowerPointLabs_UT.csproj" "EmbedInteropTypes&gt;True" "EmbedInteropTypes&gt;False"
+MSBuild "$(SolutionDir)\PowerPointLabs\PowerPointLabs_UT.csproj"</PreBuildEvent>
   </PropertyGroup>
   <PropertyGroup>
-    <PostBuildEvent>del "$(SolutionDir)\PowerPointLabs\PowerPointLabs.csproj"
-rename "$(SolutionDir)\PowerPointLabs\PowerPointLabs.csproj.bak" PowerPointLabs.csproj</PostBuildEvent>
+    <PostBuildEvent>
+    </PostBuildEvent>
   </PropertyGroup>
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
