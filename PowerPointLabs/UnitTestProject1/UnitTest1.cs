@@ -30,6 +30,7 @@ namespace UnitTestProject1
                 Assert.AreEqual(DialogResult.No, r);
                 var sel = PowerPointLabs.Models.PowerPointCurrentPresentationInfo.CurrentSelection;
                 Assert.AreEqual(PowerPoint.PpSelectionType.ppSelectionShapes, sel.Type);
+                PowerPointLabs.Fakes.ShimPowerPointLabsGlobals.LogStringString = (s, s1) => { };
             }
         }
     }
