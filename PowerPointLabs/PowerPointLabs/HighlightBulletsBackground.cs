@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Drawing;
 using PowerPointLabs.Models;
 using Office = Microsoft.Office.Core;
@@ -23,7 +24,7 @@ namespace PowerPointLabs
                 Office.TextRange2 selectedText = null;
 
                 //Get shapes to consider for animation
-                switch (userSelection)
+                switch (userSelection) // TODO: Make it work for selected shapes.
                 {
                     case HighlightBackgroundSelection.kShapeSelected:
                         selectedShapes = Globals.ThisAddIn.Application.ActiveWindow.Selection.ShapeRange;
@@ -72,29 +73,75 @@ namespace PowerPointLabs
         private static bool AddNewShapesToAnimate(PowerPointSlide currentSlide, List<PowerPoint.Shape> shapesToUse, Office.TextRange2 selectedText)
         {
             bool anySelected = false;
-            foreach (PowerPoint.Shape sh in shapesToUse)
+
+            foreach (var sh in shapesToUse)
             {
-                if (!sh.Name.Contains("HighlightBackgroundShape"))
-                    sh.Name = "HighlightBackgroundShape" + Guid.NewGuid().ToString();
-                foreach (Office.TextRange2 paragraph in sh.TextFrame2.TextRange.Paragraphs)
+                sh.Name = "HighlightBackgroundShape" + Guid.NewGuid();
+            }
+
+            if (userSelection == HighlightBackgroundSelection.kTextSelected)
+            {
+                foreach (var sh in shapesToUse)
                 {
-                    if ((userSelection != HighlightBackgroundSelection.kTextSelected) && (paragraph.ParagraphFormat.Bullet.Visible == Office.MsoTriState.msoTrue && paragraph.TrimText().Length > 0)
-                        || ((userSelection == HighlightBackgroundSelection.kTextSelected) && (!((selectedText.Start + selectedText.Length < paragraph.Start) || (selectedText.Start > paragraph.Start + paragraph.Length - 1)) && paragraph.TrimText().Length > 0)))
+                    foreach (Office.TextRange2 paragraph in sh.TextFrame2.TextRange.Paragraphs)
                     {
-                        PowerPoint.Shape highlightShape = currentSlide.Shapes.AddShape(Office.MsoAutoShapeType.msoShapeRoundedRectangle, paragraph.BoundLeft, paragraph.BoundTop, paragraph.BoundWidth, paragraph.BoundHeight);
-                        highlightShape.Adjustments[1] = 0.25f;
-                        highlightShape.Fill.ForeColor.RGB = Utils.Graphics.ConvertColorToRgb(backgroundColor);
-                        highlightShape.Fill.Transparency = 0.50f;
-                        highlightShape.Line.Visible = Office.MsoTriState.msoFalse;
-                        Utils.Graphics.MoveZToJustBehind(highlightShape, sh);
-                        highlightShape.Name = "PPTLabsHighlightBackgroundShape" + DateTime.Now.ToString("yyyyMMddHHmmssffff");
-                        highlightShape.Tags.Add("HighlightBackground", sh.Name);
-                        highlightShape.Select(Office.MsoTriState.msoFalse);
-                        anySelected = true;
+                        if (paragraph.Start <= selectedText.Start + selectedText.Length
+                            && selectedText.Start <= paragraph.Start + paragraph.Length - 1
+                            && paragraph.TrimText().Length > 0)
+                        {
+                            GenerateHighlightShape(currentSlide, paragraph, sh);
+                            anySelected = true;
+                        }
+                    }
+                }
+            }
+            else
+            {
+                foreach (var sh in shapesToUse)
+                {
+                    bool anySelectedForShape = false;
+                    foreach (Office.TextRange2 paragraph in sh.TextFrame2.TextRange.Paragraphs)
+                    {
+                        if (paragraph.ParagraphFormat.Bullet.Visible == Office.MsoTriState.msoTrue
+                            && paragraph.TrimText().Length > 0)
+                        {
+                            GenerateHighlightShape(currentSlide, paragraph, sh);
+                            anySelected = true;
+                            anySelectedForShape = true;
+                        }
+                    }
+                    if (anySelectedForShape)
+                    {
+                        continue;
+                    }
+                    foreach (Office.TextRange2 paragraph in sh.TextFrame2.TextRange.Paragraphs)
+                    {
+                        if (paragraph.TrimText().Length > 0)
+                        {
+                            GenerateHighlightShape(currentSlide, paragraph, sh);
+                            anySelected = true;
+                        }
                     }
                 }
             }
             return anySelected;
+        }
+
+        private static void GenerateHighlightShape(PowerPointSlide currentSlide, Office.TextRange2 paragraph, PowerPoint.Shape sh)
+        {
+            var highlightShape = currentSlide.Shapes.AddShape(Office.MsoAutoShapeType.msoShapeRoundedRectangle,
+                                                            paragraph.BoundLeft,
+                                                            paragraph.BoundTop,
+                                                            paragraph.BoundWidth,
+                                                            paragraph.BoundHeight);
+            highlightShape.Adjustments[1] = 0.25f;
+            highlightShape.Fill.ForeColor.RGB = Utils.Graphics.ConvertColorToRgb(backgroundColor);
+            highlightShape.Fill.Transparency = 0.50f;
+            highlightShape.Line.Visible = Office.MsoTriState.msoFalse;
+            Utils.Graphics.MoveZToJustBehind(highlightShape, sh);
+            highlightShape.Name = "PPTLabsHighlightBackgroundShape" + DateTime.Now.ToString("yyyyMMddHHmmssffff");
+            highlightShape.Tags.Add("HighlightBackground", sh.Name);
+            highlightShape.Select(Office.MsoTriState.msoFalse);
         }
 
         private static void SelectOldShapesToAnimate(PowerPointSlide currentSlide, List<PowerPoint.Shape> shapesToUse)
@@ -149,13 +196,11 @@ namespace PowerPointLabs
             {
                 if (sh.Name.Contains("PPTLabsHighlightBackgroundShape"))
                     continue;
-                if (userSelection != HighlightBackgroundSelection.kTextSelected)
+                if (userSelection == HighlightBackgroundSelection.kTextSelected)
                 {
-                    if (sh.HasTextFrame == Office.MsoTriState.msoTrue && sh.TextFrame2.HasText == Office.MsoTriState.msoTrue
-                    && sh.TextFrame2.TextRange.ParagraphFormat.Bullet.Visible == Office.MsoTriState.msoTrue
-                    && sh.TextFrame2.TextRange.ParagraphFormat.Bullet.Type != Office.MsoBulletType.msoBulletNone)
+                    if (sh.HasTextFrame == Office.MsoTriState.msoTrue && sh.TextFrame2.HasText == Office.MsoTriState.msoTrue)
                     {
-                        currentSlide.DeleteShapeAnimations(sh);    
+                        currentSlide.DeleteShapeAnimations(sh);
                         shapesToUse.Add(sh);
                     }
                 }
