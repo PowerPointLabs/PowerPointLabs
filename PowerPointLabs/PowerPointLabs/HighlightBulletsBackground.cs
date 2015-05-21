@@ -24,7 +24,7 @@ namespace PowerPointLabs
                 Office.TextRange2 selectedText = null;
 
                 //Get shapes to consider for animation
-                switch (userSelection) // TODO: Make it work for selected shapes.
+                switch (userSelection)
                 {
                     case HighlightBackgroundSelection.kShapeSelected:
                         selectedShapes = Globals.ThisAddIn.Application.ActiveWindow.Selection.ShapeRange;
@@ -184,11 +184,12 @@ namespace PowerPointLabs
                     sh.Delete();
         }
 
-        /*Get shapes to use for animation.
-         * If user does not select anything: Select shapes which have bullet points
-         * If user selects some shapes: Keep shapes from user selection which have bullet points
-         * If user selects some text: Keep shapes used to store text
-         */
+        /// <summary>
+        /// Get shapes to use for animation.
+        /// If user does not select anything: Select shapes which have bullet points
+        /// If user selects some shapes: Keep shapes from user selection which have bullet points
+        /// If user selects some text: Keep shapes used to store text
+        /// </summary>
         private static List<PowerPoint.Shape> GetShapesToUse(PowerPointSlide currentSlide, PowerPoint.ShapeRange shapes)
         {
             List<PowerPoint.Shape> shapesToUse = new List<PowerPoint.Shape>();
@@ -196,21 +197,10 @@ namespace PowerPointLabs
             {
                 if (sh.Name.Contains("PPTLabsHighlightBackgroundShape"))
                     continue;
-                if (userSelection == HighlightBackgroundSelection.kTextSelected)
+                if (sh.HasTextFrame == Office.MsoTriState.msoTrue && sh.TextFrame2.HasText == Office.MsoTriState.msoTrue)
                 {
-                    if (sh.HasTextFrame == Office.MsoTriState.msoTrue && sh.TextFrame2.HasText == Office.MsoTriState.msoTrue)
-                    {
-                        currentSlide.DeleteShapeAnimations(sh);
-                        shapesToUse.Add(sh);
-                    }
-                }
-                else
-                {
-                    if (sh.HasTextFrame == Office.MsoTriState.msoTrue && sh.TextFrame2.HasText == Office.MsoTriState.msoTrue)
-                    {
-                        currentSlide.DeleteShapeAnimations(sh);
-                        shapesToUse.Add(sh);
-                    }
+                    currentSlide.DeleteShapeAnimations(sh);
+                    shapesToUse.Add(sh);
                 }
             }
             return shapesToUse;
