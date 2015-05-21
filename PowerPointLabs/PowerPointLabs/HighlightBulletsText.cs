@@ -25,30 +25,33 @@ namespace PowerPointLabs
                 Office.TextRange2 selectedText = null;
 
                 //Get shapes to consider for animation
+                List<PowerPoint.Shape> shapesToUse = null;
                 switch (userSelection)
                 {
                     case HighlightTextSelection.kShapeSelected:
                         selectedShapes = Globals.ThisAddIn.Application.ActiveWindow.Selection.ShapeRange;
+                        shapesToUse = GetShapesToUse(currentSlide, selectedShapes);
                         break;
                     case HighlightTextSelection.kTextSelected:
                         selectedShapes = Globals.ThisAddIn.Application.ActiveWindow.Selection.ShapeRange;
                         selectedText = Globals.ThisAddIn.Application.ActiveWindow.Selection.TextRange2.TrimText();
+                        shapesToUse = GetShapesToUse(currentSlide, selectedShapes);
                         break;
                     case HighlightTextSelection.kNoneSelected:
                         currentSlide.DeleteShapesWithPrefix("PPIndicator");
                         currentSlide.DeleteShapesWithPrefix("PPTLabsHighlightBackgroundShape");
-                        selectedShapes = currentSlide.Shapes.Range();
+                        shapesToUse = GetAllUsableShapesInSlide(currentSlide);
                         break;
                     default:
                         break;
                 }
-
-                List<PowerPoint.Shape> shapesToUse = GetShapesToUse(currentSlide, selectedShapes);
+                
                 if (currentSlide.Name.Contains("PPTLabsHighlightBulletsSlide"))
                     ProcessExistingHighlightSlide(currentSlide, shapesToUse);
 
-                if (shapesToUse.Count == 0)
+                if (shapesToUse == null || shapesToUse.Count == 0)
                     return;
+
                 currentSlide.Name = "PPTLabsHighlightBulletsSlide" + DateTime.Now.ToString("yyyyMMddHHmmssffff");
 
                 PowerPoint.Sequence sequence = currentSlide.TimeLine.MainSequence;
@@ -288,15 +291,56 @@ namespace PowerPointLabs
         /// </summary>
         private static List<PowerPoint.Shape> GetShapesToUse(PowerPointSlide currentSlide, PowerPoint.ShapeRange selectedShapes)
         {
-            List<PowerPoint.Shape> shapesToUse = new List<PowerPoint.Shape>();
-            foreach (PowerPoint.Shape sh in selectedShapes)
+            return selectedShapes.Cast<PowerPoint.Shape>()
+                                .Where(HasText)
+                                .ToList();
+        }
+
+        /// <summary>
+        /// Get all shapes in slide to use for animation.
+        /// If there are text boxes with bullet points, returns only the text boxes with bullet points.
+        /// If there are no text boxes with bullet points, returns everything.
+        /// </summary>
+        private static List<PowerPoint.Shape> GetAllUsableShapesInSlide(PowerPointSlide currentSlide)
+        {
+            var selectedShapes = currentSlide.Shapes.Range().Cast<PowerPoint.Shape>().ToArray();
+
+            var usableShapesWithBullets = selectedShapes
+                                            .Where(sh => HasText(sh)
+                                                        && HasBullets(sh))
+                                            .ToList();
+
+            var allUsableShapes = selectedShapes
+                                    .Where(HasText)
+                                    .ToList();
+
+            if (usableShapesWithBullets.Count == 0)
             {
-                if (sh.HasTextFrame == Office.MsoTriState.msoTrue && sh.TextFrame2.HasText == Office.MsoTriState.msoTrue)
-                {
-                    shapesToUse.Add(sh);
-                }
+                return allUsableShapes;
             }
-            return shapesToUse;
+            return usableShapesWithBullets;
+        }
+
+        /// <summary>
+        /// Returns true iff shape (assuming has text) has bullet points.
+        /// Duplicate method in HighlightBulletsBackground.cs
+        /// </summary>
+        private static bool HasBullets(PowerPoint.Shape shape)
+        {
+            return shape.TextFrame2.TextRange.ParagraphFormat.Bullet.Visible == Office.MsoTriState.msoTrue &&
+                   shape.TextFrame2.TextRange.ParagraphFormat.Bullet.Type != Office.MsoBulletType.msoBulletNone;
+
+        }
+
+        /// <summary>
+        /// Returns true iff shape has a text frame.
+        /// Duplicate method in HighlightBulletsBackground.cs
+        /// </summary>
+        private static bool HasText(PowerPoint.Shape shape)
+        {
+            return shape.HasTextFrame == Office.MsoTriState.msoTrue &&
+                   shape.TextFrame2.HasText == Office.MsoTriState.msoTrue;
+
         }
     }
 }
