@@ -304,7 +304,7 @@
         public const string AgendaLabNoAgendaError = "There's no generated agenda.";
         public const string AgendaLabLoadingDialogTitle = "Generating...";
         public const string AgendaLabLoadingDialogContent = "Agenda is generating, please wait...";
-        public const string AgendaLabReferenceSlideContent = "Visited bullet format\rHighlight bullet format\rUnvisited bullet format\r";
+        public const string AgendaLabReferenceSlideContent = "Visited bullet format\rHighlighted bullet format\rUnvisited bullet format\r";
         # endregion
 
         # region Task Pane - Recorder
