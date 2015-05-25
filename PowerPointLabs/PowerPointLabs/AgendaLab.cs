@@ -206,6 +206,7 @@ namespace PowerPointLabs
             }
 
             PowerPointPresentation.Current.RemoveAckSlide();
+            PowerPointPresentation.Current.RemoveSlide(new Regex(PptLabsAgendaSlideReferenceName), true);
 
             SelectOriginalSlide(selectedSlides.Count > 0 ? selectedSlides[0] : slides[0], slides[0]);
         }
