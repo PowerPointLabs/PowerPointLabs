@@ -497,6 +497,30 @@ namespace PowerPointLabs
             }
         }
 
+        private static void AdjustBulletTemplateContent(int totalSection)
+        {
+            var refSlide = FindReferenceSlide(Type.Bullet);
+
+            // post process bullet points
+            var contentHolder = refSlide.GetShapeWithName(PptLabsAgendaContentShapeName)[0];
+            var textRange = contentHolder.TextFrame2.TextRange;
+
+            while (textRange.Paragraphs.Count < totalSection)
+            {
+                textRange.InsertAfter("\r ");
+            }
+
+            while (textRange.Paragraphs.Count > 3 && textRange.Paragraphs.Count > totalSection)
+            {
+                textRange.Paragraphs[textRange.Paragraphs.Count].Delete();
+            }
+
+            for (var i = 4; i <= textRange.Paragraphs.Count; i++)
+            {
+                textRange.Paragraphs[i].ParagraphFormat.Bullet.Type = MsoBulletType.msoBulletNone;
+            }
+        }
+
         private static void CheckAgendaUpdate(Type type, PowerPointSlide refSlide, string refSection)
         {
             switch (type)
@@ -834,6 +858,11 @@ namespace PowerPointLabs
         private static void GenerateBulletAgenda(List<string> sections)
         {
             _agendaText = TextCollection.AgendaLabReferenceSlideContent;
+
+            for (var i = 4; i < sections.Count; i++)
+            {
+                _agendaText += "\r ";
+            }
 
             var refSlide = FindReferenceSlide(Type.Bullet);
 
@@ -1208,6 +1237,8 @@ namespace PowerPointLabs
 
         private static void SyncAgendaBullet(List<string> sections, PowerPointSlide refSlide)
         {
+            AdjustBulletTemplateContent(sections.Count);
+
             PickupBulletFormats();
 
             for (var i = 0; i < sections.Count; i ++)
