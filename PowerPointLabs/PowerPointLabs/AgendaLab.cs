@@ -1445,10 +1445,22 @@ namespace PowerPointLabs
             foreach (var slide in slides)
             {
                 var linkShapes = slide.GetShapesWithPrefix(PptLabsAgendaBulletLinkShape);
+                var contentHolder = slide.GetShapeWithName(PptLabsAgendaContentShapeName)[0];
+                var textRange = contentHolder.TextFrame2.TextRange;
 
-                foreach (var linkShape in linkShapes)
+                if (linkShapes.Count == 0) return;
+
+                for (var i = 1; i <= textRange.Paragraphs.Count; i++)
                 {
-                    linkShape.Visible = MsoTriState.msoTrue;
+                    var shape = linkShapes[i - 1];
+                    var curPara = textRange.Paragraphs[i];
+
+                    shape.Left = curPara.BoundLeft;
+                    shape.Top = curPara.BoundTop;
+                    shape.Width = curPara.BoundWidth;
+                    shape.Height = curPara.BoundHeight;
+
+                    shape.Visible = MsoTriState.msoTrue;
                 }
             }
         }
