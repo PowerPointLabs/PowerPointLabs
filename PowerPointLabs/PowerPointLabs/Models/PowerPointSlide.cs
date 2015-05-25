@@ -249,6 +249,15 @@ namespace PowerPointLabs.Models
             }
         }
 
+        public void DeleteHiddenShapes()
+        {
+            _slide.Shapes
+                .Cast<Shape>()
+                .Where(sh => sh.Visible == MsoTriState.msoFalse)
+                .ToList()
+                .ForEach(sh => sh.Delete());
+        }
+
         public void DeleteAllShapes()
         {
             List<Shape> shapes = _slide.Shapes.Cast<Shape>().ToList();

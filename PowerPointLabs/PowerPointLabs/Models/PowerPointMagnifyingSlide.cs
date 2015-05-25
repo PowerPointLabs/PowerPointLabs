@@ -15,6 +15,7 @@ namespace PowerPointLabs.Models
         private PowerPointMagnifyingSlide(PowerPoint.Slide slide) : base(slide)
         {
             _slide.Name = "PPTLabsMagnifyingSlide" + DateTime.Now.ToString("yyyyMMddHHmmssffff");
+            DeleteHiddenShapes();
         }
 
         new public static PowerPointSlide FromSlideFactory(PowerPoint.Slide slide)
