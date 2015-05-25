@@ -16,7 +16,8 @@ namespace PowerPointLabs
 {
     internal static class AgendaLab
     {
-        private const string PptLabsAgendaSlideReferenceName = "PptLabsAgendaSlideReference";
+        public const string PptLabsAgendaSlideReferenceName = "PptLabsAgendaSlideReference";
+
         private const string PptLabsAgendaSlideNameFormat = "PptLabs{0}Agenda{1}Slide {2}";
         private const string PptLabsAgendaTitleShapeName = "PptLabsAgendaTitle";
         private const string PptLabsAgendaContentShapeName = "PptLabsAgendaContent";
@@ -212,10 +213,22 @@ namespace PowerPointLabs
         public static void SynchronizeAgenda()
         {
             var type = CurrentType;
+            var refSlide = FindReferenceSlide(type);
 
             if (type == Type.None)
             {
-                MessageBox.Show(TextCollection.AgendaLabNoAgendaError);
+                // no reference slide
+                if (refSlide.Name != PptLabsAgendaSlideReferenceName)
+                {
+                    MessageBox.Show(TextCollection.AgendaLabNoAgendaError);
+                    return;
+                }
+
+                // we have a reference slide, trigger generate process
+                var genType = refSlide.GetShapesWithPrefix(PptLabsAgendaVisualItemPrefix).Count > 0
+                               ? Type.Visual
+                               : Type.Bullet;
+                GenerateAgenda(genType);
                 return;
             }
 
@@ -238,8 +251,6 @@ namespace PowerPointLabs
             var currentPresentation = PowerPointPresentation.Current;
             var sections = currentPresentation.Sections.Where(section =>
                                                               section != PptLabsAgendaVisualSectionName).Skip(1).ToList();
-
-            var refSlide = FindReferenceSlide(type);
 
             if (refSlide.Name != PptLabsAgendaSlideReferenceName && type != Type.Beam)
             {

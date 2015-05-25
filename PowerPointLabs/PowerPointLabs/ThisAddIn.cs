@@ -1062,6 +1062,19 @@ namespace PowerPointLabs
                         shape.Name = nameDictForPastedShapes[shape.Name];
                     }
                     range.Select();
+                } else
+                if (selection.Type == PowerPoint.PpSelectionType.ppSelectionSlides)
+                {
+                    var pastedSlides = selection.SlideRange.Cast<PowerPoint.Slide>().OrderBy(x => x.SlideIndex).ToList();
+
+                    for (var i = 0; i < pastedSlides.Count; i ++)
+                    {
+                        if (_copiedSlides[i].Name == AgendaLab.PptLabsAgendaSlideReferenceName)
+                        {
+                            pastedSlides[i].Name = _copiedSlides[i].Name;
+                            pastedSlides[i].Design = _copiedSlides[i].Design;
+                        }
+                    }
                 }
             }
             catch
