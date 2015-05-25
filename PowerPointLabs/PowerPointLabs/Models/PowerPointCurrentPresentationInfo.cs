@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Runtime.InteropServices;
 using Microsoft.Office.Interop.PowerPoint;
 
@@ -37,15 +38,19 @@ namespace PowerPointLabs.Models
             {
                 var slides = new List<PowerPointSlide>();
 
-                if (CurrentSelection.Type == PpSelectionType.ppSelectionSlides)
+                try
                 {
                     var interopSlides = Globals.ThisAddIn.Application.ActiveWindow.Selection.SlideRange;
 
                     foreach (Slide interopSlide in interopSlides)
                     {
-                        PowerPointSlide s = PowerPointSlide.FromSlideFactory(interopSlide);
+                        var s = PowerPointSlide.FromSlideFactory(interopSlide);
                         slides.Add(s);
                     }
+                }
+                catch (COMException)
+                {
+                    return null;
                 }
 
                 return slides;
