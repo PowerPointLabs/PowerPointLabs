@@ -174,7 +174,8 @@ namespace PowerPointLabs
             PowerPointPresentation.Current.AddAckSlide();
 
             curWindow.ViewType = oldViewType;
-            SelectOriginalSlide(selectedSlides.Count > 0 ? selectedSlides[0] : slides[0], slides[0]);
+            var firstSlide = PowerPointPresentation.Current.FirstSlide;
+            SelectOriginalSlide(selectedSlides.Count > 0 ? selectedSlides[0] : firstSlide, firstSlide);
 
             _loadDialog.Dispose();
         }
@@ -208,7 +209,8 @@ namespace PowerPointLabs
             PowerPointPresentation.Current.RemoveAckSlide();
             PowerPointPresentation.Current.RemoveSlide(new Regex(PptLabsAgendaSlideReferenceName), true);
 
-            SelectOriginalSlide(selectedSlides.Count > 0 ? selectedSlides[0] : slides[0], slides[0]);
+            var firstSlide = PowerPointPresentation.Current.FirstSlide;
+            SelectOriginalSlide(selectedSlides.Count > 0 ? selectedSlides[0] : firstSlide, firstSlide);
         }
 
         public static void SynchronizeAgenda()
@@ -1221,7 +1223,10 @@ namespace PowerPointLabs
             }
             catch (COMException)
             {
-                defSlide.GetNativeSlide().Select();
+                if (defSlide != null)
+                {
+                    defSlide.GetNativeSlide().Select();
+                }
             }
         }
 

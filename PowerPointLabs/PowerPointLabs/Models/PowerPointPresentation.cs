@@ -109,6 +109,19 @@ namespace PowerPointLabs.Models
             }
         }
 
+        public PowerPointSlide FirstSlide
+        {
+            get
+            {
+                var slides = Presentation.Slides;
+                if (slides.Count > 0)
+                {
+                    return PowerPointSlide.FromSlideFactory(slides[1]);
+                }
+                return null;
+            }
+        }
+
         public List<PowerPointSlide> Slides
         {
             get
