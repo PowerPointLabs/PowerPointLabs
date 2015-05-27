@@ -152,28 +152,42 @@ namespace PowerPointLabs.Utils
                 SyncShapeLocation(refShape, candidateShape);
             }
 
-            if ((pickupTextContent || pickupTextFormat) &&
-                refShape.HasTextFrame == MsoTriState.msoTrue &&
-                candidateShape.HasTextFrame == MsoTriState.msoTrue)
-            {
-                var refParagraphCount = refShape.TextFrame2.TextRange.Paragraphs.Count;
-                var candidateParagraphCount = candidateShape.TextFrame2.TextRange.Paragraphs.Count;
-                var refTextRange = refShape.TextFrame2.TextRange;
-                var candidateTextRange = candidateShape.TextFrame2.TextRange;
-
-                for (var i = 1; i <= candidateParagraphCount; i++)
-                {
-                    var refParagraph = refTextRange.Paragraphs[i < refParagraphCount ? i : refParagraphCount];
-                    var candidateParagraph = candidateTextRange.Paragraphs[i];
-
-                    SyncTextRange(refParagraph, candidateParagraph, pickupTextContent, pickupTextFormat);
-                }
-            }
 
             if (pickupShapeFormat)
             {
                 refShape.PickUp();
                 candidateShape.Apply();
+            }
+
+            if ((pickupTextContent || pickupTextFormat) &&
+                refShape.HasTextFrame == MsoTriState.msoTrue &&
+                candidateShape.HasTextFrame == MsoTriState.msoTrue)
+            {
+                var refTextRange = refShape.TextFrame2.TextRange;
+                var candidateTextRange = candidateShape.TextFrame2.TextRange;
+
+                if (pickupTextContent)
+                {
+                    candidateTextRange.Text = refTextRange.Text;
+                }
+
+                var refParagraphCount = refShape.TextFrame2.TextRange.Paragraphs.Count;
+                var candidateParagraphCount = candidateShape.TextFrame2.TextRange.Paragraphs.Count;
+
+                if (refParagraphCount > 0)
+                {
+                    string originalText = candidateTextRange.Text;
+                    SyncTextRange(refTextRange.Paragraphs[refParagraphCount], candidateTextRange);
+                    candidateTextRange.Text = originalText;
+                }
+
+                for (var i = 1; i <= candidateParagraphCount; i++)
+                {
+                    var refParagraph = refTextRange.Paragraphs[i <= refParagraphCount ? i : refParagraphCount];
+                    var candidateParagraph = candidateTextRange.Paragraphs[i];
+
+                    SyncTextRange(refParagraph, candidateParagraph, pickupTextContent, pickupTextFormat);
+                }
             }
         }
 
