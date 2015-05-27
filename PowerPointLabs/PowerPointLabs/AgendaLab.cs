@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Drawing;
 using System.IO;
 using System.Linq;
@@ -217,11 +218,12 @@ namespace PowerPointLabs
         {
             var type = CurrentType;
             var refSlide = FindReferenceSlide(type);
+            Debug.WriteLine(type);
 
             if (type == Type.None)
             {
                 // no reference slide
-                if (refSlide.Name != PptLabsAgendaSlideReferenceName)
+                if (refSlide == null || refSlide.Name != PptLabsAgendaSlideReferenceName)
                 {
                     MessageBox.Show(TextCollection.AgendaLabNoAgendaError);
                     return;
