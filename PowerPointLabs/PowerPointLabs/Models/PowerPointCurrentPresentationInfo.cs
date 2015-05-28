@@ -50,7 +50,7 @@ namespace PowerPointLabs.Models
                 }
                 catch (COMException)
                 {
-                    return null;
+                    return new List<PowerPointSlide>();
                 }
 
                 return slides;
