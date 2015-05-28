@@ -14,6 +14,8 @@ namespace PowerPointLabs.Models
 {
     public class PowerPointSlide
     {
+        private const string PptLabsIndicatorShapeName = "PPTIndicator";
+
         protected readonly Slide _slide;
 
         private List<MsoAnimEffect> entryEffects = new List<MsoAnimEffect>()
@@ -32,6 +34,7 @@ namespace PowerPointLabs.Models
             MsoAnimEffect.msoAnimEffectSpiral, MsoAnimEffect.msoAnimEffectWhip
         };
 
+
         protected PowerPointSlide(Slide slide)
         {
             _slide = slide;
@@ -42,19 +45,26 @@ namespace PowerPointLabs.Models
             return _slide;
         }
 
-        public static PowerPointSlide FromSlideFactory(Slide slide)
+        public static PowerPointSlide FromSlideFactory(Slide slide, bool includeIndicator = false)
         {
             if (slide == null)
             {
                 return null;
             }
 
+            PowerPointSlide powerPointSlide;
             if (slide.Name.Contains("PPTLabsSpotlight"))
-                return PowerPointSpotlightSlide.FromSlideFactory(slide);
+                powerPointSlide = PowerPointSpotlightSlide.FromSlideFactory(slide);
             else if (slide.Name.Contains("PPTLabsAck"))
-                return PowerPointAckSlide.FromSlideFactory(slide);
+                powerPointSlide = PowerPointAckSlide.FromSlideFactory(slide);
             else
-                return new PowerPointSlide(slide);
+                powerPointSlide = new PowerPointSlide(slide);
+
+            if (includeIndicator)
+            {
+                powerPointSlide.AddPowerPointLabsIndicator();
+            }
+            return powerPointSlide;
         }
 
         public String NotesPageText
@@ -648,11 +658,32 @@ namespace PowerPointLabs.Models
             indicatorShape.Top = 0;
             indicatorShape.Width = 120;
             indicatorShape.Height = 84;
-            indicatorShape.Name = "PPIndicator" + DateTime.Now.ToString("yyyyMMddHHmmssffff");
+            indicatorShape.Name = PptLabsIndicatorShapeName + DateTime.Now.ToString("yyyyMMddHHmmssffff");
 
             Utils.Graphics.MakeShapeViewTimeInvisible(indicatorShape, _slide);
 
             return indicatorShape;
+        }
+
+        public void HideIndicator()
+        {
+            _slide.Shapes.Cast<Shape>()
+                        .Where(IsIndicator)
+                        .ToList()
+                        .ForEach(shape => shape.Visible = MsoTriState.msoFalse);
+        }
+
+        public void ShowIndicator()
+        {
+            _slide.Shapes.Cast<Shape>()
+                        .Where(IsIndicator)
+                        .ToList()
+                        .ForEach(shape => shape.Visible = MsoTriState.msoTrue);
+        }
+
+        public static bool IsIndicator(Shape shape)
+        {
+            return shape.Name.StartsWith(PptLabsIndicatorShapeName);
         }
 
         protected void RemoveSlideTransitions()

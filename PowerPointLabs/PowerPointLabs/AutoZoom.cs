@@ -35,6 +35,7 @@ namespace PowerPointLabs
                 PowerPoint.Shape nextSlidePicture = null, shapeToZoom = null;
                 PowerPointDrillDownSlide addedSlide = null;
 
+                currentSlide.HideIndicator();
                 if (backgroundZoomChecked)
                 {
                     nextSlidePicture = GetNextSlidePictureWithBackground(currentSlide, nextSlide);
@@ -83,6 +84,7 @@ namespace PowerPointLabs
                     addedSlide.AddDrillDownAnimationNoBackground(backgroundShape, shapeToZoom, pictureOnNextSlide);
                     pictureOnNextSlide.Delete();
                 }
+                currentSlide.ShowIndicator();
 
                 Globals.ThisAddIn.Application.ActiveWindow.View.GotoSlide(addedSlide.Index);
                 Globals.ThisAddIn.Application.CommandBars.ExecuteMso("AnimationPreview");
@@ -119,6 +121,7 @@ namespace PowerPointLabs
                 PowerPoint.Shape previousSlidePicture = null, shapeToZoom = null;
                 PowerPointStepBackSlide addedSlide = null;
 
+                currentSlide.HideIndicator();
                 if (backgroundZoomChecked)
                 {
                     previousSlidePicture = GetPreviousSlidePictureWithBackground(currentSlide, previousSlide);
@@ -150,6 +153,7 @@ namespace PowerPointLabs
                     addedSlide.PrepareForStepBack();
                     addedSlide.AddStepBackAnimationNonBackground(shapeToZoom, previousSlidePicture);
                 }
+                currentSlide.ShowIndicator();
 
                 currentSlide.Transition.EntryEffect = PowerPoint.PpEntryEffect.ppEffectFadeSmoothly;
                 currentSlide.Transition.Duration = 0.25f;

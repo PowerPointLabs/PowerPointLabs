@@ -335,7 +335,8 @@ namespace PowerPointLabs
                                                                        .Presentation
                                                                        .Slides
                                                                        .Add(isEnd && refSlide != null ? sectionEndIndex + 1 : 1,
-                                                                            PpSlideLayout.ppLayoutText));
+                                                                            PpSlideLayout.ppLayoutText)
+                                                                            , includeIndicator: true);
 
             slide.Transition.EntryEffect = PpEntryEffect.ppEffectFadeSmoothly;
             slide.Transition.Duration = 0.25f;
@@ -383,7 +384,7 @@ namespace PowerPointLabs
                                                                 int slideIndex, int relativeSectionIndex)
         {
             var currentPresentation = PowerPointPresentation.Current.Presentation;
-            var slide = PowerPointSlide.FromSlideFactory(currentPresentation.Slides.Add(1, PpSlideLayout.ppLayoutTitleOnly));
+            var slide = PowerPointSlide.FromSlideFactory(currentPresentation.Slides.Add(1, PpSlideLayout.ppLayoutTitleOnly), includeIndicator: true);
 
             PrepareVisualAgendaSlideShapes(slide, sections);
 
@@ -1455,7 +1456,8 @@ namespace PowerPointLabs
             // syncronize extra shapes other than visual items in reference slide
             var extraShapes = refSlide.Shapes.Cast<Shape>()
                                              .Where(shape => !candidate.HasShapeWithSameName(shape.Name) &&
-                                                             !shape.Name.Contains(PptLabsAgendaVisualItemPrefix))
+                                                             !shape.Name.Contains(PptLabsAgendaVisualItemPrefix) &&
+                                                             !PowerPointSlide.IsIndicator(shape))
                                              .Select(shape => shape.Name)
                                              .ToArray();
 
@@ -1471,6 +1473,7 @@ namespace PowerPointLabs
             // syncronize shapes position and size, except bullet content
             var sameShapes = refSlide.Shapes.Cast<Shape>()
                                             .Where(shape => shape.Name != PptLabsAgendaContentShapeName &&
+                                                            !PowerPointSlide.IsIndicator(shape) &&
                                                             candidate.HasShapeWithSameName(shape.Name));
 
             foreach (var refShape in sameShapes)
