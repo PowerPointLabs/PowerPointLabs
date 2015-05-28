@@ -146,6 +146,12 @@ namespace PowerPointLabs
                 return;
             }
 
+            if (HasDuplicateSectionName())
+            {
+                MessageBox.Show(TextCollection.AgendaLabDuplicateSectionError);
+                return;
+            }
+
             var sections = PowerPointPresentation.Current.Sections.Skip(1).ToList();
 
             _loadDialog = new LoadingDialog(TextCollection.AgendaLabLoadingDialogTitle,
@@ -1405,6 +1411,21 @@ namespace PowerPointLabs
 
             // finally recolor the bullets
             ReformatTextRange(contentHolder.TextFrame2.TextRange, focusIndex);
+        }
+
+        private static bool HasDuplicateSectionName()
+        {
+            var sections = PowerPointPresentation.Current.Sections;
+            var names = new HashSet<string>();
+            foreach (var section in sections)
+            {
+                if (names.Contains(section))
+                {
+                    return true;
+                }
+                names.Add(section);
+            }
+            return false;
         }
 
         private static void SyncSingleAgendaVisual(PowerPointSlide candidate, List<string> sections, int sectionIndex)
