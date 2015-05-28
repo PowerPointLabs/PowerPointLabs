@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.Drawing;
 using System.IO;
 using System.Linq;
@@ -218,7 +217,6 @@ namespace PowerPointLabs
         {
             var type = CurrentType;
             var refSlide = FindReferenceSlide(type);
-            Debug.WriteLine(type);
 
             if (type == Type.None)
             {
