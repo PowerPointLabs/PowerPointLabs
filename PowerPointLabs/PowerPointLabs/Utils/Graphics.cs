@@ -216,19 +216,29 @@ namespace PowerPointLabs.Utils
         public static void SyncTextRange(TextRange2 refTextRange, TextRange2 candidateTextRange,
                                          bool pickupTextContent = true, bool pickupTextFormat = true)
         {
+            bool originallyHadNewLine = candidateTextRange.Text.EndsWith("\r");
+            bool lostTheNewLine = false;
+
             var candidateText = candidateTextRange.Text.TrimEnd('\r');
-            var newCandidateRange = candidateTextRange;
 
             if (pickupTextFormat)
             {
                 // pick up format using copy-paste, since we could not deep copy the format
                 refTextRange.Copy();
-                newCandidateRange = candidateTextRange.PasteSpecial(MsoClipboardFormat.msoClipboardFormatNative);
+                candidateTextRange.PasteSpecial(MsoClipboardFormat.msoClipboardFormatNative);
+                lostTheNewLine = !candidateTextRange.Text.EndsWith("\r");
             }
 
             if (!pickupTextContent)
             {
-                newCandidateRange.Text = candidateText;
+                candidateTextRange.Text = candidateText;
+
+                // Handling an uncommon edge case. If we are not copying paragraph content, only format,
+                // Sometimes (when the reference paragraph doesn't end with a newline), the newline will be lost after copy.
+                if (originallyHadNewLine && lostTheNewLine)
+                {
+                    candidateTextRange.Text = candidateTextRange.Text + "\r";
+                }
             }
         }
 
