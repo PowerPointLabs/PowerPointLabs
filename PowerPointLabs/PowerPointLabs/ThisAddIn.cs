@@ -1069,7 +1069,7 @@ namespace PowerPointLabs
 
                     for (var i = 0; i < pastedSlides.Count; i ++)
                     {
-                        if (_copiedSlides[i].Name == AgendaLab.PptLabsAgendaSlideReferenceName)
+                        if (AgendaLab.AgendaSlide.IsReferenceslide(_copiedSlides[i]))
                         {
                             pastedSlides[i].Name = _copiedSlides[i].Name;
                             pastedSlides[i].Design = _copiedSlides[i].Design;

@@ -4,7 +4,6 @@ using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Text.RegularExpressions;
-using System.Windows.Forms;
 using Microsoft.Office.Core;
 using Microsoft.Office.Interop.PowerPoint;
 
@@ -243,6 +242,21 @@ namespace PowerPointLabs.Models
         public void RemoveAckSlide()
         {
             RemoveSlide(new Regex("PPAck"), true);
+        }
+
+        public void RemoveSlide(Func<Slide, bool> condition, bool deleteAll)
+        {
+            var slides = Presentation.Slides.Cast<Slide>().Where(condition).ToList();
+
+            foreach (var slide in slides)
+            {
+                slide.Delete();
+
+                if (!deleteAll)
+                {
+                    break;
+                }
+            }
         }
 
         public void RemoveSlide(Regex rule, bool deleteAll)

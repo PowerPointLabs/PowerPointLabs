@@ -16,24 +16,20 @@ namespace PowerPointLabs
 {
     internal static class AgendaLab
     {
-        public const string PptLabsAgendaSlideReferenceName = "PptLabsAgendaSlideReference";
-
-        private const string PptLabsAgendaSlideNameFormat = "PptLabs{0}Agenda{1}Slide {2}";
         private const string PptLabsAgendaTitleShapeName = "PptLabsAgendaTitle";
         private const string PptLabsAgendaContentShapeName = "PptLabsAgendaContent";
-        private const string PptLabsAgendaSlideTypeSearchPattern = @"PptLabs(\w+)Agenda(?:Start|End)?Slide";
+        private const string PptLabsAgendaBulletLinkShape = "PptLabsAgendaBulletLinkShape";
+
         private const string PptLabsAgendaVisualSectionName = "PptLabsAgendaVisualSection";
         private const string PptLabsAgendaVisualItemPrefix = "PptLabsAgendaVisualItem";
+
         private const string PptLabsAgendaBeamBackgroundName = "PptLabsAgendaBeamBackground";
         private const string PptLabsAgendaBeamShapeName = "PptLabsAgendaBeamShape";
         private const string PptLabsAgendaBeamHighlight = "PptLabsAgendaBeamHighlight";
-        private const string PptLabsAgendaBulletLinkShape = "PptLabsAgendaBulletLinkShape";
 
         private const float VisualAgendaItemMargin = 0.05f;
 
         private static LoadingDialog _loadDialog = new LoadingDialog();
-
-        private static readonly Regex AgendaSlideSearchPattern = new Regex(PptLabsAgendaSlideTypeSearchPattern);
 
         private static readonly string SlideCapturePath = Path.Combine(Path.GetTempPath(), "PowerPointLabs Temp");
 
@@ -45,6 +41,152 @@ namespace PowerPointLabs
         private static TextRange2 _bulletHighlightFormat;
         private static TextRange2 _bulletDimFormat;
 
+        # region AgendaSlide class for Encoding/Decoding names
+        /// <summary>
+        /// An AgendaSlide object carries slide metadata.
+        /// </summary>
+        public class AgendaSlide
+        {
+            private static readonly string[] Delim = {"_&_"};
+            private const string Prefix = "PptLabsAgenda";
+
+            public readonly Type AgendaType;
+            public readonly Purpose SlidePurpose;
+            public readonly string Section;
+
+            private AgendaSlide(Type type, Purpose purpose, string section)
+            {
+                AgendaType = type;
+                SlidePurpose = purpose;
+                Section = section;
+            }
+
+            /// <summary>
+            /// Universal Encode function used for all Agenda Slides.
+            /// Packs a set of agenda slide properties to a slide name. Paired with the Decode function.
+            /// </summary>
+            public static string Encode(Type agendaType, Purpose slidePurpose, string section)
+            {
+                string[] parameters = {Prefix, agendaType.ToString(), slidePurpose.ToString(), section};
+                return string.Join(Delim[0], parameters);
+            }
+
+            /// <summary>
+            /// Universal Encode function used for all Agenda Slides.
+            /// Unpacks a slide name into a set of slide properties. Paired wit hthe Encode function.
+            /// </summary>
+            public static AgendaSlide Decode(string slide)
+            {
+                string[] parameters = slide.Split(Delim, StringSplitOptions.None);
+
+                if (parameters[0] != Prefix) return null;
+                if (parameters.Length != 4) return null;
+
+                Type type;
+                Purpose purpose;
+                if (!Enum.TryParse(parameters[1], out type)) return null;
+                if (!Enum.TryParse(parameters[2], out purpose)) return null;
+                string section = parameters[3];
+
+                return new AgendaSlide(type, purpose, section);
+            }
+
+            public static AgendaSlide Decode(PowerPointSlide slide)
+            {
+                if (slide == null) return null;
+                return Decode(slide.Name);
+            }
+
+            public static AgendaSlide Decode(Slide slide)
+            {
+                if (slide == null) return null;
+                return Decode(slide.Name);
+            }
+
+            /// <summary>
+            /// Stores metadata in the slide by setting its name.
+            /// </summary>
+            public static void SetSlideName(PowerPointSlide slide, Type agendaType, Purpose slidePurpose, string section)
+            {
+                slide.Name = Encode(agendaType, slidePurpose, section);
+            }
+
+            /// <summary>
+            /// Sets the name to that used by the reference (template) slide.
+            /// </summary>
+            public static void SetAsReferenceSlideName(PowerPointSlide slide, Type type)
+            {
+                slide.Name = Encode(type, Purpose.Reference, string.Empty);
+            }
+
+            public static bool IsReferenceslide(PowerPointSlide slide)
+            {
+                var agendaSlide = Decode(slide);
+                if (agendaSlide == null) return false;
+
+                return agendaSlide.SlidePurpose == Purpose.Reference;
+            }
+
+            public static bool IsReferenceslide(Slide slide)
+            {
+                var agendaSlide = Decode(slide);
+                if (agendaSlide == null) return false;
+
+                return agendaSlide.SlidePurpose == Purpose.Reference;
+            }
+
+            /// <summary>
+            /// Duplicate function of MeetsConditions2 to return a function (PowerPointSlide => bool) instead of (Slide => bool).
+            /// 
+            /// Example Usage:
+            /// <code>
+            ///     var condition = AgendaSlide.MeetsConditions(
+            ///            agendaSlide =>
+            ///                agendaSlide.AgendaType == Type.Visual &&
+            ///                agendaSlide.SlidePurpose == Purpose.VisualAgendaSection);
+            ///     return powerPointSlides.Where(condition);
+            /// </code>
+            /// </summary>
+            /// <param name="condition">Input a condition on (AgendaSlide : bool)</param>
+            /// <returns>Output a condition on (PowerPointSlide : bool).</returns>
+            public static Func<PowerPointSlide, bool> MeetsConditions(Func<AgendaSlide, bool> condition)
+            {
+                return slide =>
+                {
+                    var agendaSlide = Decode(slide);
+                    if (agendaSlide == null) return false;
+                    return condition(agendaSlide);
+                };
+            }
+
+            /// <summary>
+            /// Same as MeetConditions, but returns a function from Slide to bool instead.
+            /// </summary>
+            /// <param name="condition">Input a condition on (AgendaSlide : bool)</param>
+            /// <returns>Output a condition on (Slide : bool).</returns>
+            public static Func<Slide, bool> MeetsConditions2(Func<AgendaSlide, bool> condition)
+            {
+                return slide =>
+                {
+                    var agendaSlide = Decode(slide);
+                    if (agendaSlide == null) return false;
+                    return condition(agendaSlide);
+                };
+            }
+
+            public static bool IsAnyAgendaSlide(PowerPointSlide slide)
+            {
+                return Decode(slide) != null;
+            }
+
+            public static bool IsAnyAgendaSlide(Slide slide)
+            {
+                return Decode(slide) != null;
+            }
+        }
+        # endregion
+
+
         # region Enum
         public enum Type
         {
@@ -53,6 +195,16 @@ namespace PowerPointLabs
             Beam,
             Visual,
             Mixed
+        };
+
+        public enum Purpose
+        {
+            None,
+            Start,
+            End,
+            Reference,
+            VisualAgendaSection,
+            EndOfVisualAgenda
         };
 
         public enum Direction
@@ -91,11 +243,10 @@ namespace PowerPointLabs
 
                 foreach (var slide in slides)
                 {
-                    if (AgendaSlideSearchPattern.IsMatch(slide.Name))
+                    var agendaSlide = AgendaSlide.Decode(slide);
+                    if (agendaSlide != null)
                     {
-                        var type = AgendaSlideSearchPattern.Match(slide.Name).Groups[1].Value;
-
-                        return (Type)Enum.Parse(typeof(Type), type);
+                        return agendaSlide.AgendaType;
                     }
 
                     // here we try to find the first occurance, or potential occurance of beam type agenda.
@@ -213,7 +364,7 @@ namespace PowerPointLabs
             }
 
             PowerPointPresentation.Current.RemoveAckSlide();
-            PowerPointPresentation.Current.RemoveSlide(new Regex(PptLabsAgendaSlideReferenceName), true);
+            PowerPointPresentation.Current.RemoveSlide(AgendaSlide.IsAnyAgendaSlide, true);
 
             var firstSlide = PowerPointPresentation.Current.FirstSlide;
             SelectOriginalSlide(selectedSlides.Count > 0 ? selectedSlides[0] : firstSlide, firstSlide);
@@ -227,7 +378,7 @@ namespace PowerPointLabs
             if (type == Type.None)
             {
                 // no reference slide
-                if (refSlide == null || refSlide.Name != PptLabsAgendaSlideReferenceName)
+                if (!AgendaSlide.IsReferenceslide(refSlide))
                 {
                     MessageBox.Show(TextCollection.AgendaLabNoAgendaError);
                     return;
@@ -261,7 +412,7 @@ namespace PowerPointLabs
             var sections = currentPresentation.Sections.Where(section =>
                                                               section != PptLabsAgendaVisualSectionName).Skip(1).ToList();
 
-            if (refSlide.Name != PptLabsAgendaSlideReferenceName && type != Type.Beam)
+            if (type != Type.Beam && !AgendaSlide.IsReferenceslide(refSlide))
             {
                 MessageBox.Show(TextCollection.AgendaLabNoReferenceError);
             }
@@ -358,7 +509,7 @@ namespace PowerPointLabs
 
             if (refSlide != null)
             {
-                slide.Name = string.Format(PptLabsAgendaSlideNameFormat, Type.Bullet, isEnd ? "End" : "Start", section);
+                AgendaSlide.SetSlideName(slide, Type.Bullet, isEnd ? Purpose.End : Purpose.Start, section);
                 slide.Design = refSlide.Design;
 
                 // since section index is 1-based, focus section index should be substracted by 1
@@ -371,7 +522,7 @@ namespace PowerPointLabs
             }
             else
             {
-                slide.Name = PptLabsAgendaSlideReferenceName;
+                AgendaSlide.SetAsReferenceSlideName(slide, Type.Bullet);
                 slide.Hidden = true;
                 
                 PickupBulletFormats();
@@ -394,7 +545,7 @@ namespace PowerPointLabs
 
             if (refSlide == null)
             {
-                slide.Name = PptLabsAgendaSlideReferenceName;
+                AgendaSlide.SetAsReferenceSlideName(slide, Type.Visual);
                 slide.Hidden = true;
 
                 var previews = slide.GetShapesWithPrefix(PptLabsAgendaVisualItemPrefix);
@@ -409,10 +560,15 @@ namespace PowerPointLabs
             {
                 slide.MoveTo(slideIndex);
                 slide.Design = refSlide.Design;
-                slide.Name = string.Format(PptLabsAgendaSlideNameFormat, Type.Visual, string.Empty,
-                                           relativeSectionIndex == sections.Count
-                                                                   ? "EndOfAgenda"
-                                                                   : sections[relativeSectionIndex]);
+                if (relativeSectionIndex == sections.Count)
+                {
+                    AgendaSlide.SetSlideName(slide, Type.Visual, Purpose.EndOfVisualAgenda, string.Empty);
+                }
+                else
+                {
+                    AgendaSlide.SetSlideName(slide, Type.Visual, Purpose.VisualAgendaSection,
+                        sections[relativeSectionIndex]);
+                }
             }
 
             return slide;
@@ -618,9 +774,9 @@ namespace PowerPointLabs
                 {
                     item.Delete();
 
-                    var corresAgendaName = string.Format(PptLabsAgendaSlideNameFormat, Type.Visual, string.Empty,
-                                                         sectionName);
-                    PowerPointPresentation.Current.RemoveSlide(corresAgendaName, false);
+                    PowerPointPresentation.Current.RemoveSlide(
+                                AgendaSlide.MeetsConditions2(
+                                    slide => slide.AgendaType == Type.Visual && slide.Section == sectionName), false);
                 } else
                 {
                     sections.Remove(corresSection);
@@ -659,7 +815,7 @@ namespace PowerPointLabs
 
             for (var i = 0; i < slides.Count; i ++)
             {
-                if (AgendaSlideSearchPattern.IsMatch(slides[i].Name))
+                if (AgendaSlide.IsAnyAgendaSlide(slides[i]))
                 {
                     sectionProperties.AddBeforeSlide(i + 1, PptLabsAgendaVisualSectionName);
                 }
@@ -716,11 +872,15 @@ namespace PowerPointLabs
         private static PowerPointSlide FindReferenceSlide(Type type)
         {
             var slides = PowerPointPresentation.Current.Slides;
-            var generatedSlideName = string.Format("PptLabs{0}Agenda", type);
-
-            return slides.FirstOrDefault(slide => type == Type.Beam ? slide.GetShapeWithName(PptLabsAgendaBeamShapeName).Count != 0 :
-                                                                      slide.Name == PptLabsAgendaSlideReferenceName ||
-                                                                      slide.Name.Contains(generatedSlideName));
+            if (type == Type.Beam)
+            {
+                return slides.FirstOrDefault(slide => slide.GetShapeWithName(PptLabsAgendaBeamShapeName).Count != 0);
+            }
+            else
+            {
+                return slides.FirstOrDefault(AgendaSlide.IsReferenceslide) ??
+                       slides.FirstOrDefault(AgendaSlide.MeetsConditions(slide => slide.AgendaType == type));
+            }
         }
 
         private static int FindSectionEnd(string section)
@@ -757,10 +917,9 @@ namespace PowerPointLabs
             // return the slide immediately, don't need to be changed
             if (type == Type.Beam) return endSlide;
 
-            if (AgendaSlideSearchPattern.IsMatch(endSlide.Name))
+            if (AgendaSlide.IsAnyAgendaSlide(endSlide))
             {
-                endSlide.Name = string.Format(PptLabsAgendaSlideNameFormat, type,
-                                      type == Type.Visual ? string.Empty : "End", section);
+                AgendaSlide.SetSlideName(endSlide, type, type == Type.Visual ? Purpose.None : Purpose.End, section);
             }
             else
             {
@@ -806,10 +965,9 @@ namespace PowerPointLabs
             // it's an agenda slide.
             if (type == Type.Beam || type == Type.None) return startSlide;
 
-            if (AgendaSlideSearchPattern.IsMatch(startSlide.Name))
+            if (AgendaSlide.IsAnyAgendaSlide(startSlide))
             {
-                startSlide.Name = string.Format(PptLabsAgendaSlideNameFormat, type,
-                                      type == Type.Visual ? string.Empty : "Start", section);
+                AgendaSlide.SetSlideName(startSlide, type, type == Type.Visual ? Purpose.None : Purpose.Start, section);
             }
             else
             {
@@ -875,7 +1033,7 @@ namespace PowerPointLabs
 
             var refSlide = FindReferenceSlide(Type.Bullet);
 
-            if (refSlide == null || refSlide.Name != PptLabsAgendaSlideReferenceName)
+            if (!AgendaSlide.IsReferenceslide(refSlide))
             {
                 // if we do not have legacy template, create a new refslide 
                 refSlide = AddAgendaSlideBulletType(string.Empty, false, null);
@@ -892,8 +1050,8 @@ namespace PowerPointLabs
             PrepareVisualAgendaSlideCapture(sections);
 
             var refSlide = FindReferenceSlide(Type.Visual);
-
-            if (refSlide == null || refSlide.Name != PptLabsAgendaSlideReferenceName)
+            
+            if (!AgendaSlide.IsReferenceslide(refSlide))
             {
                 // if we do not have legacy template, create a new refslide 
                 refSlide = AddAgendaSlideVisualType(sections, null, -1, -1);
@@ -1042,13 +1200,13 @@ namespace PowerPointLabs
         {
             var refSection = FindSlideSection(refSlide);
 
-            if (refSlide.Name != PptLabsAgendaSlideReferenceName)
+            if (!AgendaSlide.IsAnyAgendaSlide(refSlide))
             {
                 refSlide.GetNativeSlide().Copy();
                 var refDesign = refSlide.Design;
                 refSlide = PowerPointSlide.FromSlideFactory(PowerPointPresentation.Current.Presentation.Slides.Paste(1)[1]);
                 refSlide.Design = refDesign;
-                refSlide.Name = PptLabsAgendaSlideReferenceName;
+                AgendaSlide.SetAsReferenceSlideName(refSlide, type);
                 refSlide.Hidden = true;
             }
 
@@ -1163,7 +1321,7 @@ namespace PowerPointLabs
 
         private static void RemoveBulletAgenda()
         {
-            PowerPointPresentation.Current.RemoveSlide(AgendaSlideSearchPattern, true);
+            PowerPointPresentation.Current.RemoveSlide(AgendaSlide.IsAnyAgendaSlide, true);
         }
 
         private static void RemoveVisualAgenda()
@@ -1307,8 +1465,7 @@ namespace PowerPointLabs
                 SyncSingleAgendaVisual(candidate, sections, i);
             }
 
-            var agendas =
-                PowerPointPresentation.Current.Slides.Where(slide => AgendaSlideSearchPattern.IsMatch(slide.Name));
+            var agendas = PowerPointPresentation.Current.Slides.Where(AgendaSlide.IsAnyAgendaSlide);
 
             foreach (var agenda in agendas)
             {
@@ -1511,8 +1668,7 @@ namespace PowerPointLabs
 
             if (type != Type.Bullet) return;
 
-            var slides =
-                PowerPointPresentation.Current.Slides.Where(slide => AgendaSlideSearchPattern.IsMatch(slide.Name));
+            var slides = PowerPointPresentation.Current.Slides.Where(AgendaSlide.IsAnyAgendaSlide);
 
             foreach (var slide in slides)
             {
@@ -1543,8 +1699,7 @@ namespace PowerPointLabs
 
             if (type != Type.Bullet) return;
 
-            var slides =
-                PowerPointPresentation.Current.Slides.Where(slide => AgendaSlideSearchPattern.IsMatch(slide.Name));
+            var slides = PowerPointPresentation.Current.Slides.Where(AgendaSlide.IsAnyAgendaSlide);
 
             foreach (var slide in slides)
             {
