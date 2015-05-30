@@ -200,9 +200,13 @@ namespace PowerPointLabs
         public enum Purpose
         {
             None,
+            Reference,
+            // For Bullet Agenda
             Start,
             End,
-            Reference,
+            // For Visual Agenda
+            ZoomIn,
+            ZoomOut,
             VisualAgendaSection,
             EndOfVisualAgenda
         };
@@ -753,7 +757,11 @@ namespace PowerPointLabs
         private static void CheckVisualAgendaUpdate(PowerPointSlide refSlide)
         {
             // delete all generated transition slides
-            PowerPointPresentation.Current.RemoveSlide(new Regex("PPTLabsZoom"), true);
+            PowerPointPresentation.Current.RemoveSlide(
+                AgendaSlide.MeetsConditions2(
+                    slide =>
+                        slide.SlidePurpose == Purpose.ZoomIn ||
+                        slide.SlidePurpose == Purpose.ZoomOut), true);
 
             var visualItems = refSlide.GetShapesWithPrefix(PptLabsAgendaVisualItemPrefix).ToList();
             var sectionProperties = PowerPointPresentation.Current.SectionProperties;
@@ -1064,8 +1072,11 @@ namespace PowerPointLabs
         {
             // add drill down effect and clean up current slide by deleting drill down
             // shape and recover original slide shape visibility
-            AutoZoom.AddDrillDownAnimation(zoomInShape, slide);
-            slide.GetShapesWithRule(new Regex("PPTZoomIn"))[0].Delete();
+            PowerPointDrillDownSlide addedSlide;
+            AutoZoom.AddDrillDownAnimation(zoomInShape, slide, out addedSlide);
+            slide.GetShapesWithRule(new Regex("PPTZoomIn"))[0].Delete(); // TODO: UNCOMMENT
+            string section = AgendaSlide.Decode(slide).Section;
+            AgendaSlide.SetSlideName(addedSlide, Type.Visual, Purpose.ZoomIn, section);
             zoomInShape.Visible = MsoTriState.msoTrue;
         }
 
@@ -1073,8 +1084,11 @@ namespace PowerPointLabs
         {
             // add step back effect  and clean up current slide by deleting step back
             // shape and recover original slide shape visibility
-            AutoZoom.AddStepBackAnimation(zoomOutShape, slide);
+            PowerPointStepBackSlide addedSlide;
+            AutoZoom.AddStepBackAnimation(zoomOutShape, slide, out addedSlide);
             slide.GetShapesWithRule(new Regex("PPTZoomOut"))[0].Delete();
+            string section = AgendaSlide.Decode(slide).Section;
+            AgendaSlide.SetSlideName(addedSlide, Type.Visual, Purpose.ZoomOut, section);
             zoomOutShape.Visible = MsoTriState.msoTrue;
 
             var index = slide.Index;
@@ -1345,8 +1359,8 @@ namespace PowerPointLabs
             }
 
             // delete all transition slides
-            var nameSearchRegex = new Regex("PptLabsVisualAgenda|PPTLabsZoom");
-            PowerPointPresentation.Current.RemoveSlide(nameSearchRegex, true);
+            PowerPointPresentation.Current.RemoveSlide(
+                AgendaSlide.MeetsConditions2(slide => slide.SlidePurpose != Purpose.Reference), true);
         }
 
         private static bool SectionValidation()

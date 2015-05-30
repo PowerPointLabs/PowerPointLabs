@@ -19,11 +19,18 @@ namespace PowerPointLabs
 
         public static void AddDrillDownAnimation(PowerPoint.Shape selectedShape, PowerPointSlide currentSlide)
         {
+            PowerPointDrillDownSlide addedSlide;
+            AddDrillDownAnimation(selectedShape, currentSlide, out addedSlide);
+        }
+
+        public static void AddDrillDownAnimation(PowerPoint.Shape selectedShape, PowerPointSlide currentSlide, out PowerPointDrillDownSlide addedSlide)
+        {
             try
             {
                 if (currentSlide == null || currentSlide.Index == PowerPointPresentation.Current.SlideCount)
                 {
                     System.Windows.Forms.MessageBox.Show("No next slide is found. Please select the correct slide", "Unable to Add Animations");
+                    addedSlide = null;
                     return;
                 }
 
@@ -33,7 +40,6 @@ namespace PowerPointLabs
                 PowerPointSlide nextSlide = GetNextSlide(currentSlide);
 
                 PowerPoint.Shape nextSlidePicture = null, shapeToZoom = null;
-                PowerPointDrillDownSlide addedSlide = null;
 
                 currentSlide.HideIndicator();
                 if (backgroundZoomChecked)
@@ -105,11 +111,18 @@ namespace PowerPointLabs
 
         public static void AddStepBackAnimation(PowerPoint.Shape selectedShape, PowerPointSlide currentSlide)
         {
+            PowerPointStepBackSlide addedSlide;
+            AddStepBackAnimation(selectedShape, currentSlide, out addedSlide);
+        }
+
+        public static void AddStepBackAnimation(PowerPoint.Shape selectedShape, PowerPointSlide currentSlide, out PowerPointStepBackSlide addedSlide)
+        {
             try
             {
                 if (currentSlide == null || currentSlide.Index == 1)
                 {
                     System.Windows.Forms.MessageBox.Show("No previous slide is found. Please select the correct slide", "Unable to Add Animations");
+                    addedSlide = null;
                     return;
                 }
 
@@ -119,7 +132,6 @@ namespace PowerPointLabs
                 PowerPointSlide previousSlide = GetPreviousSlide(currentSlide);
 
                 PowerPoint.Shape previousSlidePicture = null, shapeToZoom = null;
-                PowerPointStepBackSlide addedSlide = null;
 
                 currentSlide.HideIndicator();
                 if (backgroundZoomChecked)
