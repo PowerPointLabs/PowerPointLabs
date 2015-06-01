@@ -135,6 +135,18 @@ namespace PowerPointLabs
                 return agendaSlide.SlidePurpose == Purpose.Reference;
             }
 
+            // convenience method.
+            public static bool IsNotReferenceslide(PowerPointSlide slide)
+            {
+                return !IsReferenceslide(slide);
+            }
+
+            // convenience method.
+            public static bool IsNotReferenceslide(Slide slide)
+            {
+                return !IsReferenceslide(slide);
+            }
+
             /// <summary>
             /// Duplicate function of MeetsConditions2 to return a function (PowerPointSlide => bool) instead of (Slide => bool).
             /// 
@@ -293,13 +305,7 @@ namespace PowerPointLabs
             if (!SectionValidation()) return;
 
             var selectedSlides = PowerPointCurrentPresentationInfo.SelectedSlides.ToList();
-            var slides = PowerPointPresentation.Current.Slides;
-
-            if (type == Type.Beam && selectedSlides.Count == 0)
-            {
-                MessageBox.Show(TextCollection.AgendaLabNoSelectionError);
-                return;
-            }
+            bool userIsSelectingSlides = PowerPointCurrentPresentationInfo.CurrentSelection.Type == PpSelectionType.ppSelectionSlides;
 
             if (HasDuplicateSectionName())
             {
@@ -322,7 +328,10 @@ namespace PowerPointLabs
             switch (type)
             {
                 case Type.Beam:
-                    GenerateBeamAgenda(sections, selectedSlides);
+                    if (userIsSelectingSlides)
+                        GenerateBeamAgenda(sections, selectedSlides);
+                    else
+                        GenerateBeamAgenda(sections);
                     break;
                 case Type.Bullet:
                     GenerateBulletAgenda(sections);
@@ -357,7 +366,7 @@ namespace PowerPointLabs
             switch (type)
             {
                 case Type.Beam:
-                    RemoveBeamAgenda(selectedSlides);
+                    RemoveBeamAgenda();
                     break;
                 case Type.Bullet:
                     RemoveBulletAgenda();
@@ -368,7 +377,6 @@ namespace PowerPointLabs
             }
 
             PowerPointPresentation.Current.RemoveAckSlide();
-            PowerPointPresentation.Current.RemoveSlide(AgendaSlide.IsAnyAgendaSlide, true);
 
             var firstSlide = PowerPointPresentation.Current.FirstSlide;
             SelectOriginalSlide(selectedSlides.Count > 0 ? selectedSlides[0] : firstSlide, firstSlide);
@@ -382,7 +390,7 @@ namespace PowerPointLabs
             if (type == Type.None)
             {
                 // no reference slide
-                if (!AgendaSlide.IsReferenceslide(refSlide))
+                if (AgendaSlide.IsNotReferenceslide(refSlide))
                 {
                     MessageBox.Show(TextCollection.AgendaLabNoAgendaError);
                     return;
@@ -399,12 +407,7 @@ namespace PowerPointLabs
             if (!SectionValidation()) return;
 
             var selectedSlides = PowerPointCurrentPresentationInfo.SelectedSlides.ToList();
-
-            if (type == Type.Beam && selectedSlides.Count == 0)
-            {
-                MessageBox.Show(TextCollection.AgendaLabNoSelectionError);
-                return;
-            }
+            bool userIsSelectingSlides = PowerPointCurrentPresentationInfo.CurrentSelection.Type == PpSelectionType.ppSelectionSlides;
 
             var curWindow = Globals.ThisAddIn.Application.ActiveWindow;
             var oldViewType = curWindow.ViewType;
@@ -416,7 +419,7 @@ namespace PowerPointLabs
             var sections = currentPresentation.Sections.Where(section =>
                                                               section != PptLabsAgendaVisualSectionName).Skip(1).ToList();
 
-            if (type != Type.Beam && !AgendaSlide.IsReferenceslide(refSlide))
+            if (AgendaSlide.IsNotReferenceslide(refSlide))
             {
                 MessageBox.Show(TextCollection.AgendaLabNoReferenceError);
             }
@@ -429,23 +432,23 @@ namespace PowerPointLabs
             currentPresentation.RemoveAckSlide();
 
             PrepareSync(type, ref refSlide);
-
+            
             try
             {
                 // regenerate slides and sync accordingly
                 switch (type)
                 {
                     case Type.Beam:
-                        RemoveBeamAgenda(selectedSlides);
-                        GenerateBeamAgenda(sections, selectedSlides);
-                        SyncAgendaBeam(refSlide, selectedSlides);
-                        refSlide.Delete();
+                        if (userIsSelectingSlides)
+                            SyncAgendaBeam(sections, refSlide, selectedSlides);
+                        else
+                            SyncAgendaBeam(sections, refSlide);
                         break;
                     case Type.Bullet:
                         SyncAgendaBullet(sections, refSlide);
                         break;
                     case Type.Visual:
-                        CheckAgendaUpdate(Type.Visual, refSlide, "");
+                        CheckAgendaUpdate(Type.Visual, refSlide);
                         SyncAgendaVisual(sections, refSlide);
                         break;
                 }
@@ -690,12 +693,12 @@ namespace PowerPointLabs
             }
         }
 
-        private static void CheckAgendaUpdate(Type type, PowerPointSlide refSlide, string refSection)
+        private static void CheckAgendaUpdate(Type type, PowerPointSlide refSlide)
         {
             switch (type)
             {
                 case Type.Beam:
-                    CheckBeamAgendaUpdate(refSlide, refSection);
+                    CheckBeamAgendaUpdate(refSlide);
                     break;
                 case Type.Bullet:
                     CheckBulletAgendaUpdate();
@@ -706,7 +709,7 @@ namespace PowerPointLabs
             }
         }
 
-        private static void CheckBeamAgendaUpdate(PowerPointSlide refSlide, string refSection)
+        private static void CheckBeamAgendaUpdate(PowerPointSlide refSlide)
         {
             var beamShape = refSlide.GetShapeWithName(PptLabsAgendaBeamShapeName)[0];
 
@@ -728,8 +731,6 @@ namespace PowerPointLabs
             }
 
             _agendaOutdated = !sections.SequenceEqual(beamItems);
-
-            refSlide.Name = refSection;
         }
 
         private static void CheckBulletAgendaUpdate()
@@ -882,7 +883,8 @@ namespace PowerPointLabs
             var slides = PowerPointPresentation.Current.Slides;
             if (type == Type.Beam)
             {
-                return slides.FirstOrDefault(slide => slide.GetShapeWithName(PptLabsAgendaBeamShapeName).Count != 0);
+                return slides.FirstOrDefault(AgendaSlide.IsReferenceslide) ??
+                       slides.FirstOrDefault(slide => slide.GetShapeWithName(PptLabsAgendaBeamShapeName).Count != 0);
             }
             else
             {
@@ -1015,15 +1017,68 @@ namespace PowerPointLabs
             return sections[sections.Count - 1];
         }
 
-        private static void GenerateBeamAgenda(List<string> sections, IEnumerable<PowerPointSlide> selectedSlides)
+        /// <summary>
+        /// Generates the beam agenda on the target slides. Skips over the Reference (Template) slide if included in targetSlides.
+        /// Generates the Reference slide if it does not already exist.
+        /// Leave the targetSlides field blank (=null) to generate the beam agenda over all slides (other than the first section).
+        /// </summary>
+        private static void GenerateBeamAgenda(List<string> sections, IEnumerable<PowerPointSlide> targetSlides = null)
         {
-            var firstSectionIndex = FindSectionStart(FindSectionAbsoluteIndex(sections[0]));
-            var slides = selectedSlides.Where(slide => slide.Index >= firstSectionIndex).ToList();
+            List<PowerPointSlide> slides;
+            if (targetSlides != null && targetSlides.Any())
+            {
+                slides = targetSlides.Where(AgendaSlide.IsNotReferenceslide).ToList();
+            }
+            else
+            {
+                var firstSectionIndex = FindSectionStart(FindSectionAbsoluteIndex(sections[0]));
+                slides = PowerPointPresentation.Current.Slides
+                                                        .Where(slide => slide.Index >= firstSectionIndex && AgendaSlide.IsNotReferenceslide(slide))
+                                                        .ToList();
+            }
 
             if (slides.Count < 1) return;
 
-            PrepareBeamAgendaShapes(sections, slides[0]);
+            var refSlide = FindReferenceSlide(Type.Bullet);
+            bool generateNewReferenceSlide;
+            if (AgendaSlide.IsReferenceslide(refSlide))
+            {
+                var beamShape = FindBeamShape(refSlide);
+                if (beamShape != null)
+                {
+                    generateNewReferenceSlide = false;
+                    beamShape.Copy();
+                }
+                else
+                {
+                    // reference slide doesn't have a beam shape. weird. so we delete and recreate.
+                    generateNewReferenceSlide = true;
+                    refSlide.Delete();
+                }
+            }
+            else
+            {
+                // can't find a reference slide.
+                generateNewReferenceSlide = true;
+            }
 
+            if (generateNewReferenceSlide)
+            {
+                // if we do not have legacy template, create a new refslide 
+                refSlide = PowerPointSlide.FromSlideFactory(PowerPointPresentation.Current
+                                                                                .Presentation
+                                                                                .Slides
+                                                                                .Add(1, PpSlideLayout.ppLayoutBlank)
+                                                                                , includeIndicator: true);
+                AgendaSlide.SetAsReferenceSlideName(refSlide, Type.Beam);
+                refSlide.Hidden = true;
+
+                PrepareBeamAgendaShapes(sections, refSlide);
+                AddAgendaSlideBeamType(sections[0], refSlide);
+                refSlide.BringIndicatorToFront();
+            }
+
+            // The beam shape is now stored in the clipboard to be pasted on each of the slides.
             foreach (var slide in slides)
             {
                 AddAgendaSlideBeamType(FindSlideSection(slide), slide);
@@ -1041,7 +1096,7 @@ namespace PowerPointLabs
 
             var refSlide = FindReferenceSlide(Type.Bullet);
 
-            if (!AgendaSlide.IsReferenceslide(refSlide))
+            if (AgendaSlide.IsNotReferenceslide(refSlide))
             {
                 // if we do not have legacy template, create a new refslide 
                 refSlide = AddAgendaSlideBulletType(string.Empty, false, null);
@@ -1059,7 +1114,7 @@ namespace PowerPointLabs
 
             var refSlide = FindReferenceSlide(Type.Visual);
             
-            if (!AgendaSlide.IsReferenceslide(refSlide))
+            if (AgendaSlide.IsNotReferenceslide(refSlide))
             {
                 // if we do not have legacy template, create a new refslide 
                 refSlide = AddAgendaSlideVisualType(sections, null, -1, -1);
@@ -1074,7 +1129,7 @@ namespace PowerPointLabs
             // shape and recover original slide shape visibility
             PowerPointDrillDownSlide addedSlide;
             AutoZoom.AddDrillDownAnimation(zoomInShape, slide, out addedSlide);
-            slide.GetShapesWithRule(new Regex("PPTZoomIn"))[0].Delete(); // TODO: UNCOMMENT
+            slide.GetShapesWithRule(new Regex("PPTZoomIn"))[0].Delete();
             string section = AgendaSlide.Decode(slide).Section;
             AgendaSlide.SetSlideName(addedSlide, Type.Visual, Purpose.ZoomIn, section);
             zoomInShape.Visible = MsoTriState.msoTrue;
@@ -1212,8 +1267,6 @@ namespace PowerPointLabs
 
         private static void PrepareSync(Type type, ref PowerPointSlide refSlide)
         {
-            var refSection = FindSlideSection(refSlide);
-
             if (!AgendaSlide.IsAnyAgendaSlide(refSlide))
             {
                 refSlide.GetNativeSlide().Copy();
@@ -1224,7 +1277,7 @@ namespace PowerPointLabs
                 refSlide.Hidden = true;
             }
 
-            CheckAgendaUpdate(type, refSlide, refSection);
+            CheckAgendaUpdate(type, refSlide);
         }
 
         private static void PrepareVisualAgendaSlideCapture(IEnumerable<string> sections)
@@ -1313,8 +1366,15 @@ namespace PowerPointLabs
             }
         }
 
-        private static void RemoveBeamAgenda(IEnumerable<PowerPointSlide> candidates)
+        private static void RemoveBeamAgenda()
         {
+            RemoveBeamAgendaFromSlides(PowerPointPresentation.Current.Slides);
+            PowerPointPresentation.Current.RemoveSlide(AgendaSlide.IsAnyAgendaSlide, true);
+        }
+
+        private static void RemoveBeamAgendaFromSlides(IEnumerable<PowerPointSlide> candidates)
+        {
+            candidates = candidates.Where(AgendaSlide.IsNotReferenceslide);
             foreach (var candidate in candidates)
             {
                 try
@@ -1359,8 +1419,7 @@ namespace PowerPointLabs
             }
 
             // delete all transition slides
-            PowerPointPresentation.Current.RemoveSlide(
-                AgendaSlide.MeetsConditions2(slide => slide.SlidePurpose != Purpose.Reference), true);
+            PowerPointPresentation.Current.RemoveSlide(AgendaSlide.IsAnyAgendaSlide, true);
         }
 
         private static bool SectionValidation()
@@ -1409,11 +1468,28 @@ namespace PowerPointLabs
             }
         }
 
-        private static void SyncAgendaBeam(PowerPointSlide refSlide, IEnumerable<PowerPointSlide> slides)
+        /// <summary>
+        /// Synchronises the beam agenda by doing the following:
+        /// 1) For all selected slides, if they do not already have the beam agenda on them, generate the beam agenda on them.
+        /// 2) For all slides in the presentation with the beam agenda, sync it with the reference (template) slide.
+        /// 
+        /// Leave selectedSlides empty (null) if you only want to update slides.
+        /// </summary>
+        private static void SyncAgendaBeam(List<string> sections, PowerPointSlide refSlide, IEnumerable<PowerPointSlide> selectedSlides = null)
         {
+            // Generate beam agenda for all selected slides that do not currently have the beam agenda.
+            if (selectedSlides != null)
+            {
+                var slidesWithoutBeam = selectedSlides.Where(slide => FindBeamShape(slide) == null);
+                GenerateBeamAgenda(sections, slidesWithoutBeam);
+            }
+            
+            // Synchronise agenda for all slides in the presentation that have the beam agenda.
             var refBeamShape = FindBeamShape(refSlide);
-
-            foreach (var slide in slides)
+            var allSlidesWithBeam = PowerPointPresentation.Current.Slides
+                                                                  .Where(slide => AgendaSlide.IsNotReferenceslide(slide) &&
+                                                                                  FindBeamShape(slide) != null);
+            foreach (var slide in allSlidesWithBeam)
             {
                 SyncSingleAgendaBeam(slide, refBeamShape);
             }

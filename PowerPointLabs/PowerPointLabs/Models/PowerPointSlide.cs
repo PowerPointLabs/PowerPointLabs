@@ -680,6 +680,14 @@ namespace PowerPointLabs.Models
                         .ForEach(shape => shape.Visible = MsoTriState.msoTrue);
         }
 
+        public void BringIndicatorToFront()
+        {
+            _slide.Shapes.Cast<Shape>()
+                        .Where(IsIndicator)
+                        .ToList()
+                        .ForEach(shape => shape.ZOrder(MsoZOrderCmd.msoBringToFront));
+        }
+
         public static bool IsIndicator(Shape shape)
         {
             return shape.Name.StartsWith(PptLabsIndicatorShapeName);
