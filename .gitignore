@@ -19,3 +19,9 @@ Thumbs.db
 _ReSharper*/
 
 *.pfx
+
+# UT Build results
+FakesAssemblies/
+PowerPointLabs_UT.csproj
+cov-report/
+cov-report.xml

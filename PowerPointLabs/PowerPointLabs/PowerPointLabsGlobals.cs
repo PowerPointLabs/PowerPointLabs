@@ -12,7 +12,7 @@ using PowerPoint = Microsoft.Office.Interop.PowerPoint;
 namespace PowerPointLabs
 {
     // TODO: this class should not even exist
-    class PowerPointLabsGlobals
+    public class PowerPointLabsGlobals
     {
         // TODO: put these two functions somewhere else but not here
         public static void Log(string logText, string type)
