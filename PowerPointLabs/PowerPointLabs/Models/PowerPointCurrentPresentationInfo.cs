@@ -6,6 +6,8 @@ namespace PowerPointLabs.Models
 {
     public class PowerPointCurrentPresentationInfo
     {
+        public static bool IsInFunctionalTest;
+
         public static PowerPointSlide CurrentSlide
         {
             get
