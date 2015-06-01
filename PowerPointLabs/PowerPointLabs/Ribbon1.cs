@@ -677,9 +677,7 @@ namespace PowerPointLabs
         }
         public void AboutButtonClick(Office.IRibbonControl control)
         {
-            if (PowerPointPresentation.Current.SelectedSlides.Count > 0)
-                MessageBox.Show(PowerPointPresentation.Current.SelectedSlides[0].Name, "Name of slide");
-            //MessageBox.Show(TextCollection.AboutInfo, TextCollection.AboutInfoTitle);
+            MessageBox.Show(TextCollection.AboutInfo, TextCollection.AboutInfoTitle);
         }
         public void HelpButtonClick(Office.IRibbonControl control)
         {
