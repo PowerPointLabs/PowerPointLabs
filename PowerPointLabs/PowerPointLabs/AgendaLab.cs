@@ -9,6 +9,7 @@ using System.Windows.Forms;
 using Microsoft.Office.Core;
 using Microsoft.Office.Interop.PowerPoint;
 using PowerPointLabs.Models;
+using PowerPointLabs.Utils;
 using PowerPointLabs.Views;
 using Shape = Microsoft.Office.Interop.PowerPoint.Shape;
 
@@ -560,7 +561,7 @@ namespace PowerPointLabs
                 foreach (var preview in previews)
                 {
                     var sectionName = preview.Name.Substring(PptLabsAgendaVisualItemPrefix.Length);
-                    var captureName = string.Format("{0} Start.png", sectionName);
+                    var captureName = string.Format("{0} Start.png", Common.FilenameBase64(sectionName));
                     preview.Fill.UserPicture(Path.Combine(SlideCapturePath, captureName));
                 }
             } else
@@ -789,7 +790,7 @@ namespace PowerPointLabs
                 } else
                 {
                     sections.Remove(corresSection);
-                    var captureName = string.Format("{0} Start.png", sectionName);
+                    var captureName = string.Format("{0} Start.png", Common.FilenameBase64(sectionName));
                     item.Fill.UserPicture(Path.Combine(SlideCapturePath, captureName));
                 }
             }
@@ -808,7 +809,7 @@ namespace PowerPointLabs
                 var newItem = refSlide.Shapes.AddShape(MsoAutoShapeType.msoShapeRectangle,
                                                        itemLeft, itemTop,
                                                        itemWidth, itemHeight);
-                var captureName = string.Format("{0} Start.png", section);
+                var captureName = string.Format("{0} Start.png", Common.FilenameBase64(section));
                 newItem.Fill.UserPicture(Path.Combine(SlideCapturePath, captureName));
 
                 itemLeft += itemWidth;
@@ -1302,9 +1303,9 @@ namespace PowerPointLabs
 
                 animatedEndSlide.MoveMotionAnimation();
 
-                var sectionStartName = string.Format("{0} Start.png", section);
-                var sectionEndName = string.Format("{0} End.png", section);
-
+                var sectionStartName = string.Format("{0} Start.png", Common.FilenameBase64(section));
+                var sectionEndName = string.Format("{0} End.png", Common.FilenameBase64(section));
+                // TODO: BUG OCCURS HERE
                 Utils.Graphics.ExportSlide(sectionStartSlide, Path.Combine(SlideCapturePath, sectionStartName));
                 Utils.Graphics.ExportSlide(animatedEndSlide, Path.Combine(SlideCapturePath, sectionEndName));
 
@@ -1692,7 +1693,7 @@ namespace PowerPointLabs
                 } else
                 {
                     var index = sections.FindIndex(section => section == sectionName);
-                    var captureName = string.Format("{0} {1}.png", sectionName, index < sectionIndex ? "End" : "Start");
+                    var captureName = string.Format("{0} {1}.png", Common.FilenameBase64(sectionName), index < sectionIndex ? "End" : "Start");
                     shape.Fill.UserPicture(Path.Combine(SlideCapturePath, captureName));
 
                     if (sectionIndex < sections.Count && index == sectionIndex)

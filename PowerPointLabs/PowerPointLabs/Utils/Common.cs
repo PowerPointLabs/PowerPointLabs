@@ -22,6 +22,19 @@ namespace PowerPointLabs.Utils
             return replacePattern.Replace(str, "\\$1");
         }
 
+        /// <summary>
+        /// Used to encode a string to make it a safe file name.
+        /// Base64 usually uses a / and a + character. This uses a _ and a - instead. (safe for file names)
+        /// </summary>
+        public static string FilenameBase64(string str)
+        {
+            var plainTextBytes = System.Text.Encoding.UTF8.GetBytes(str);
+            str = Convert.ToBase64String(plainTextBytes);
+            str = str.Replace("+", "-");
+            str = str.Replace("/", "_");
+            return str;
+        }
+
         # region Helper Function
         private static int NextDefaultNumber(List<string> nameList, string name)
         {
