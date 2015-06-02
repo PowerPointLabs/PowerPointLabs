@@ -305,6 +305,8 @@ namespace PowerPointLabs
             // validate section information
             if (!SectionValidation()) return;
 
+            PowerPointPresentation.Current.RemoveAckSlide();
+
             var selectedSlides = PowerPointCurrentPresentationInfo.SelectedSlides.ToList();
             bool userIsSelectingSlides = PowerPointCurrentPresentationInfo.CurrentSelection.Type == PpSelectionType.ppSelectionSlides;
 
@@ -429,7 +431,7 @@ namespace PowerPointLabs
             _loadDialog.Show();
             _loadDialog.Refresh();
 
-            selectedSlides.RemoveAll(slide => slide.isAckSlide());
+            selectedSlides.RemoveAll(slide => slide.IsAckSlide());
             currentPresentation.RemoveAckSlide();
 
             PrepareSync(type, ref refSlide);

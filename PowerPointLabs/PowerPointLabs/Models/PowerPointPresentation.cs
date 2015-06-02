@@ -201,19 +201,10 @@ namespace PowerPointLabs.Models
         # region API
         public void AddAckSlide()
         {
-            try
+            if (!HasAckSlide())
             {
                 var lastSlide = Slides.Last();
-                
-                if (!lastSlide.isAckSlide())
-                {
-                    lastSlide.CreateAckSlide();
-                }
-            }
-            catch (Exception e)
-            {
-                PowerPointLabsGlobals.LogException(e, "AddAckSlide");
-                throw;
+                lastSlide.CreateAckSlide();
             }
         }
 
@@ -241,7 +232,12 @@ namespace PowerPointLabs.Models
 
         public void RemoveAckSlide()
         {
-            RemoveSlide(new Regex("PPAck"), true);
+            RemoveSlide(PowerPointAckSlide.IsAckSlide, true);
+        }
+
+        public bool HasAckSlide()
+        {
+            return Slides.Any(PowerPointAckSlide.IsAckSlide);
         }
 
         public void RemoveSlide(Func<Slide, bool> condition, bool deleteAll)

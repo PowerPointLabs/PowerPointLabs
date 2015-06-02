@@ -786,9 +786,9 @@ namespace PowerPointLabs.Models
             return _slide.Name.Contains("PPTLabsSpotlight");
         }
 
-        public bool isAckSlide()
+        public bool IsAckSlide()
         {
-            return _slide.Name.Contains("PPAck");
+            return PowerPointAckSlide.IsAckSlide(this);
         }
 
         public PowerPointSlide CreateAckSlide()

@@ -10,11 +10,14 @@ namespace PowerPointLabs.Models
 {
     class PowerPointAckSlide : PowerPointSlide
     {
+        private const string PptLabsAckSlideName = "PPTLabsAcknowledgementSlide";
+
+
         private PowerPointAckSlide(PowerPoint.Slide slide) : base(slide)
         {
-            if (!slide.Name.Contains("PPAck"))
+            if (!IsAckSlide(slide.Name))
             {
-                _slide.Name = "PPAck" + DateTime.Now.ToString("yyyyMMddHHmmssffff");
+                _slide.Name = PptLabsAckSlideName;
                 String tempFileName = Path.GetTempFileName();
                 Properties.Resources.Acknowledgement.Save(tempFileName);
                 float width = PowerPointPresentation.Current.SlideWidth * 0.858f;
@@ -32,6 +35,23 @@ namespace PowerPointLabs.Models
             }
 
             return new PowerPointAckSlide(slide);
+        }
+
+        private static bool IsAckSlide(string slideName)
+        {
+            return slideName == PptLabsAckSlideName;
+        }
+
+        public static bool IsAckSlide(PowerPointSlide slide)
+        {
+            if (slide == null) return false;
+            return IsAckSlide(slide.Name);
+        }
+
+        public static bool IsAckSlide(PowerPoint.Slide slide)
+        {
+            if (slide == null) return false;
+            return IsAckSlide(slide.Name);
         }
     }
 }
