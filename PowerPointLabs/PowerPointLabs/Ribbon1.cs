@@ -2209,6 +2209,7 @@ namespace PowerPointLabs
             Globals.ThisAddIn.Application.StartNewUndoEntry();
 
             AgendaLab.GenerateAgenda(AgendaLab.Type.Beam);
+            GC.Collect();
         }
 
         public void BulletPointAgendaClick(Office.IRibbonControl control)
@@ -2216,6 +2217,7 @@ namespace PowerPointLabs
             Globals.ThisAddIn.Application.StartNewUndoEntry();
 
             AgendaLab.GenerateAgenda(AgendaLab.Type.Bullet);
+            GC.Collect();
         }
 
         public void VisualAgendaClick(Office.IRibbonControl control)
@@ -2223,6 +2225,7 @@ namespace PowerPointLabs
             Globals.ThisAddIn.Application.StartNewUndoEntry();
 
             AgendaLab.GenerateAgenda(AgendaLab.Type.Visual);
+            GC.Collect();
         }
 
         public void RemoveAgendaClick(Office.IRibbonControl control)
@@ -2230,6 +2233,7 @@ namespace PowerPointLabs
             Globals.ThisAddIn.Application.StartNewUndoEntry();
 
             AgendaLab.RemoveAgenda();
+            GC.Collect();
         }
 
         public void UpdateAgendaClick(Office.IRibbonControl control)
@@ -2237,6 +2241,7 @@ namespace PowerPointLabs
             Globals.ThisAddIn.Application.StartNewUndoEntry();
 
             AgendaLab.SynchronizeAgenda();
+            GC.Collect();
         }
         # endregion
 
