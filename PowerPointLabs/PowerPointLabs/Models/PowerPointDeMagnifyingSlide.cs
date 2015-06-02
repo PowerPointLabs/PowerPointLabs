@@ -100,7 +100,7 @@ namespace PowerPointLabs.Models
         private void PrepareForZoomToArea(PowerPoint.Shape zoomShape)
         {
             RemoveAnimationsForShapes(_slide.Shapes.Cast<PowerPoint.Shape>().ToList());
-            GetShapesWithPrefix("PPIndicator")[0].Delete();
+            DeleteIndicator();
             DeleteShapesWithPrefix("PPTLabsMagnifyAreaSlide");
 
             AddZoomSlideCroppedPicture(zoomShape);

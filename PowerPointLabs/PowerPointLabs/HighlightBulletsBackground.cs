@@ -37,7 +37,7 @@ namespace PowerPointLabs
                         shapesToUse = GetShapesToUse(currentSlide, selectedShapes);
                         break;
                     case HighlightBackgroundSelection.kNoneSelected:
-                        currentSlide.DeleteShapesWithPrefix("PPIndicator");
+                        currentSlide.DeleteIndicator();
                         currentSlide.DeleteShapesWithPrefix("PPTLabsHighlightBackgroundShape");
                         shapesToUse = GetAllUsableShapesInSlide(currentSlide);
                         break;

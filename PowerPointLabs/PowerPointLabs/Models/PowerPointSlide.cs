@@ -664,6 +664,15 @@ namespace PowerPointLabs.Models
             return indicatorShape;
         }
 
+        public void DeleteIndicator()
+        {
+            _slide.Shapes.Cast<Shape>()
+                        .Where(IsIndicator)
+                        .ToList()
+                        .ForEach(shape => shape.Delete());
+        }
+
+
         public void HideIndicator()
         {
             _slide.Shapes.Cast<Shape>()

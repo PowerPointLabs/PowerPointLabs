@@ -38,7 +38,7 @@ namespace PowerPointLabs
                         shapesToUse = GetShapesToUse(currentSlide, selectedShapes);
                         break;
                     case HighlightTextSelection.kNoneSelected:
-                        currentSlide.DeleteShapesWithPrefix("PPIndicator");
+                        currentSlide.DeleteIndicator();
                         currentSlide.DeleteShapesWithPrefix("PPTLabsHighlightBackgroundShape");
                         shapesToUse = GetAllUsableShapesInSlide(currentSlide);
                         break;
@@ -123,7 +123,7 @@ namespace PowerPointLabs
         //Delete existing animations
         private static void ProcessExistingHighlightSlide(PowerPointSlide currentSlide, List<PowerPoint.Shape> shapesToUse)
         {
-            currentSlide.DeleteShapesWithPrefix("PPIndicator");
+            currentSlide.DeleteIndicator();
             currentSlide.DeleteShapesWithPrefix("PPTLabsHighlightBackgroundShape");
 
             foreach (PowerPoint.Shape tmp in currentSlide.Shapes)
