@@ -305,8 +305,6 @@ namespace PowerPointLabs
             // validate section information
             if (!SectionValidation()) return;
 
-            PowerPointPresentation.Current.RemoveAckSlide();
-
             var selectedSlides = PowerPointCurrentPresentationInfo.SelectedSlides.ToList();
             bool userIsSelectingSlides = PowerPointCurrentPresentationInfo.CurrentSelection.Type == PpSelectionType.ppSelectionSlides;
 
@@ -315,6 +313,9 @@ namespace PowerPointLabs
                 MessageBox.Show(TextCollection.AgendaLabDuplicateSectionError);
                 return;
             }
+
+            selectedSlides.RemoveAll(PowerPointAckSlide.IsAckSlide);
+            PowerPointPresentation.Current.RemoveAckSlide();
 
             var sections = PowerPointPresentation.Current.Sections.Skip(1).ToList();
 
@@ -379,8 +380,6 @@ namespace PowerPointLabs
                     break;
             }
 
-            PowerPointPresentation.Current.RemoveAckSlide();
-
             var firstSlide = PowerPointPresentation.Current.FirstSlide;
             SelectOriginalSlide(selectedSlides.Count > 0 ? selectedSlides[0] : firstSlide, firstSlide);
         }
@@ -431,7 +430,7 @@ namespace PowerPointLabs
             _loadDialog.Show();
             _loadDialog.Refresh();
 
-            selectedSlides.RemoveAll(slide => slide.IsAckSlide());
+            selectedSlides.RemoveAll(PowerPointAckSlide.IsAckSlide);
             currentPresentation.RemoveAckSlide();
 
             PrepareSync(type, ref refSlide);
