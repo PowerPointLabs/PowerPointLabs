@@ -44,13 +44,20 @@ namespace PowerPointLabs.Models
             {
                 var sectionProperties = SectionProperties;
 
+                // Fix for rare case where the ack slide is the only slide in the section.
+                // This should be counted as an empty section. so we temporarily remove the ack slide and add it back after.
+                bool hasAckSlide = HasAckSlide();
+                RemoveAckSlide();
+
                 for (var i = 1; i <= sectionProperties.Count; i ++)
                 {
                     if (sectionProperties.SlidesCount(i) == 0)
                     {
+                        if (hasAckSlide) AddAckSlide();
                         return true;
                     }
                 }
+                if (hasAckSlide) AddAckSlide();
 
                 return false;
             }
