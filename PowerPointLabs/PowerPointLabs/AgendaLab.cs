@@ -290,6 +290,9 @@ namespace PowerPointLabs
         # region API
         public static void GenerateAgenda(Type type)
         {
+            // TODO: Respect user's selection when generating a beam agenda while automatically removing previous agenda. Details in github commit comment (the commit after #571ce9a).
+
+            bool afterRemovingPreviousAgenda = false;
             // agenda exists in current presentation
             if (CurrentType != Type.None)
             {
@@ -300,6 +303,7 @@ namespace PowerPointLabs
                 if (confirm != DialogResult.OK) return;
 
                 RemoveAgenda();
+                afterRemovingPreviousAgenda = true;
             }
 
             // validate section information
@@ -332,7 +336,7 @@ namespace PowerPointLabs
             switch (type)
             {
                 case Type.Beam:
-                    if (userIsSelectingSlides && selectedSlides.Any())
+                    if (!afterRemovingPreviousAgenda && userIsSelectingSlides && selectedSlides.Any())
                         GenerateBeamAgenda(sections, selectedSlides);
                     else
                         GenerateBeamAgenda(sections);
