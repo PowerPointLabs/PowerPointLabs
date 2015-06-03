@@ -332,7 +332,7 @@ namespace PowerPointLabs
             switch (type)
             {
                 case Type.Beam:
-                    if (userIsSelectingSlides)
+                    if (userIsSelectingSlides && selectedSlides.Any())
                         GenerateBeamAgenda(sections, selectedSlides);
                     else
                         GenerateBeamAgenda(sections);
@@ -1029,7 +1029,7 @@ namespace PowerPointLabs
         private static void GenerateBeamAgenda(List<string> sections, IEnumerable<PowerPointSlide> targetSlides = null)
         {
             List<PowerPointSlide> slides;
-            if (targetSlides != null && targetSlides.Any())
+            if (targetSlides != null)
             {
                 slides = targetSlides.Where(AgendaSlide.IsNotReferenceslide).ToList();
             }
