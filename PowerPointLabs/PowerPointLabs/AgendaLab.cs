@@ -534,6 +534,7 @@ namespace PowerPointLabs
                 AgendaSlide.SetAsReferenceSlideName(slide, Type.Bullet);
                 slide.AddTemplateSlideMarker();
                 slide.Hidden = true;
+                slide.DeleteIndicator();
                 
                 PickupBulletFormats();
 
@@ -558,6 +559,7 @@ namespace PowerPointLabs
                 AgendaSlide.SetAsReferenceSlideName(slide, Type.Visual);
                 slide.AddTemplateSlideMarker();
                 slide.Hidden = true;
+                slide.DeleteIndicator();
 
                 var previews = slide.GetShapesWithPrefix(PptLabsAgendaVisualItemPrefix);
 
@@ -1072,8 +1074,7 @@ namespace PowerPointLabs
                 refSlide = PowerPointSlide.FromSlideFactory(PowerPointPresentation.Current
                                                                                 .Presentation
                                                                                 .Slides
-                                                                                .Add(1, PpSlideLayout.ppLayoutBlank)
-                                                                                , includeIndicator: true);
+                                                                                .Add(1, PpSlideLayout.ppLayoutBlank));
                 AgendaSlide.SetAsReferenceSlideName(refSlide, Type.Beam);
                 refSlide.AddTemplateSlideMarker();
                 refSlide.Hidden = true;
