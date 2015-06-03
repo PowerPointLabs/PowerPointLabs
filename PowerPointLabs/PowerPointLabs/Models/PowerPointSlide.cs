@@ -14,6 +14,7 @@ namespace PowerPointLabs.Models
     public class PowerPointSlide
     {
         private const string PptLabsIndicatorShapeName = "PPTIndicator";
+        private const string PptLabsTemplateMarkerShapeName = "PPTTemplateMarker";
 
         protected readonly Slide _slide;
 
@@ -54,7 +55,7 @@ namespace PowerPointLabs.Models
             PowerPointSlide powerPointSlide;
             if (slide.Name.Contains("PPTLabsSpotlight"))
                 powerPointSlide = PowerPointSpotlightSlide.FromSlideFactory(slide);
-            else if (slide.Name.Contains("PPTLabsAck"))
+            else if (PowerPointAckSlide.IsAckSlide(slide))
                 powerPointSlide = PowerPointAckSlide.FromSlideFactory(slide);
             else
                 powerPointSlide = new PowerPointSlide(slide);
@@ -645,6 +646,41 @@ namespace PowerPointLabs.Models
                 if (sh.Type == MsoShapeType.msoMedia)
                     sh.Delete();
             }
+        }
+
+        public Shape AddTemplateSlideMarker()
+        {
+            if (HasTemplateSlideMarker()) return null;
+
+            Shape markerShape = _slide.Shapes.AddTextbox(MsoTextOrientation.msoTextOrientationHorizontal, 0, 0, 800, 70);
+
+            markerShape.TextEffect.Alignment = MsoTextEffectAlignment.msoTextEffectAlignmentCentered;
+            markerShape.Fill.ForeColor.RGB = 0xC07000;
+            markerShape.TextFrame2.TextRange.Font.Fill.ForeColor.RGB = 0x00FFFF;
+
+            markerShape.TextFrame2.TextRange.Text = TextCollection.AgendaLabTemplateSlideInstructions;
+
+            markerShape.Left = (PowerPointPresentation.Current.SlideWidth - markerShape.Width) / 2;
+            markerShape.Top = PowerPointPresentation.Current.SlideHeight - markerShape.Height;
+            markerShape.Name = PptLabsTemplateMarkerShapeName;
+
+            Utils.Graphics.MakeShapeViewTimeInvisible(markerShape, _slide);
+            return markerShape;
+        }
+
+        public bool HasTemplateSlideMarker()
+        {
+            return _slide.Shapes.Cast<Shape>().Any(IsTemplateSlideMarker);
+        }
+
+        public static bool IsTemplateSlideMarker(Shape shape)
+        {
+            return shape.Name == PptLabsTemplateMarkerShapeName;
+        }
+
+        public static bool IsNotTemplateSlideMarker(Shape shape)
+        {
+            return !IsTemplateSlideMarker(shape);
         }
 
         protected Shape AddPowerPointLabsIndicator()

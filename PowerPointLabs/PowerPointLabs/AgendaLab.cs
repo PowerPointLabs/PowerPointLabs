@@ -532,6 +532,7 @@ namespace PowerPointLabs
             else
             {
                 AgendaSlide.SetAsReferenceSlideName(slide, Type.Bullet);
+                slide.AddTemplateSlideMarker();
                 slide.Hidden = true;
                 
                 PickupBulletFormats();
@@ -555,6 +556,7 @@ namespace PowerPointLabs
             if (refSlide == null)
             {
                 AgendaSlide.SetAsReferenceSlideName(slide, Type.Visual);
+                slide.AddTemplateSlideMarker();
                 slide.Hidden = true;
 
                 var previews = slide.GetShapesWithPrefix(PptLabsAgendaVisualItemPrefix);
@@ -1073,6 +1075,7 @@ namespace PowerPointLabs
                                                                                 .Add(1, PpSlideLayout.ppLayoutBlank)
                                                                                 , includeIndicator: true);
                 AgendaSlide.SetAsReferenceSlideName(refSlide, Type.Beam);
+                refSlide.AddTemplateSlideMarker();
                 refSlide.Hidden = true;
 
                 PrepareBeamAgendaShapes(sections, refSlide);
@@ -1276,6 +1279,7 @@ namespace PowerPointLabs
                 refSlide = PowerPointSlide.FromSlideFactory(PowerPointPresentation.Current.Presentation.Slides.Paste(1)[1]);
                 refSlide.Design = refDesign;
                 AgendaSlide.SetAsReferenceSlideName(refSlide, type);
+                refSlide.AddTemplateSlideMarker();
                 refSlide.Hidden = true;
             }
 
@@ -1725,7 +1729,8 @@ namespace PowerPointLabs
             var extraShapes = refSlide.Shapes.Cast<Shape>()
                                              .Where(shape => !candidate.HasShapeWithSameName(shape.Name) &&
                                                              !shape.Name.Contains(PptLabsAgendaVisualItemPrefix) &&
-                                                             !PowerPointSlide.IsIndicator(shape))
+                                                             !PowerPointSlide.IsIndicator(shape) &&
+                                                             !PowerPointSlide.IsTemplateSlideMarker(shape))
                                              .Select(shape => shape.Name)
                                              .ToArray();
 
@@ -1742,6 +1747,7 @@ namespace PowerPointLabs
             var sameShapes = refSlide.Shapes.Cast<Shape>()
                                             .Where(shape => shape.Name != PptLabsAgendaContentShapeName &&
                                                             !PowerPointSlide.IsIndicator(shape) &&
+                                                            !PowerPointSlide.IsTemplateSlideMarker(shape) &&
                                                             candidate.HasShapeWithSameName(shape.Name));
 
             foreach (var refShape in sameShapes)
