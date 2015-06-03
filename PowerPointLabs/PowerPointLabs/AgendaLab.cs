@@ -1190,7 +1190,7 @@ namespace PowerPointLabs
         }
 
         private static Shape PrepareBeamAgendaBeamItem(PowerPointSlide slide, float lastLeft,
-                                                       float lastTop, string section)
+                                                       float lastTop, string section, bool enableButtons = false)
         {
             var textBox = slide.Shapes.AddTextbox(MsoTextOrientation.msoTextOrientationHorizontal,
                                                   lastLeft, lastTop, 0, 0);
@@ -1201,11 +1201,14 @@ namespace PowerPointLabs
             textBox.TextFrame.TextRange.Text = section;
             textBox.TextFrame.TextRange.Font.Color.RGB = Utils.Graphics.ConvertColorToRgb(Color.White);
 
-            var mouseOnClickAction = textBox.ActionSettings[PpMouseActivation.ppMouseClick];
+            if (enableButtons)
+            {
+                var mouseOnClickAction = textBox.ActionSettings[PpMouseActivation.ppMouseClick];
 
-            mouseOnClickAction.Action = PpActionType.ppActionNamedSlideShow;
-            mouseOnClickAction.Hyperlink.Address = null;
-            mouseOnClickAction.Hyperlink.SubAddress = CreateInDocHyperLink(FindSectionStartSlide(section, Type.Beam));
+                mouseOnClickAction.Action = PpActionType.ppActionNamedSlideShow;
+                mouseOnClickAction.Hyperlink.Address = null;
+                mouseOnClickAction.Hyperlink.SubAddress = CreateInDocHyperLink(FindSectionStartSlide(section, Type.Beam));
+            }
 
             return textBox;
         }
@@ -1501,7 +1504,7 @@ namespace PowerPointLabs
             }
         }
 
-        private static void SyncAgendaBullet(List<string> sections, PowerPointSlide refSlide)
+        private static void SyncAgendaBullet(List<string> sections, PowerPointSlide refSlide, bool enableButtons = false)
         {
             AdjustBulletTemplateContent(sections.Count);
 
@@ -1518,14 +1521,17 @@ namespace PowerPointLabs
                 SyncSingleAgendaBullet(refSlide, end, section, true, i + 1);
             }
 
-            foreach (var section in sections)
+            if (enableButtons)
             {
-                AddLinkBulletAgenda(FindSectionStartSlide(section, Type.Bullet));
-                AddLinkBulletAgenda(FindSectionEndSlide(section, Type.Bullet));
+                foreach (var section in sections)
+                {
+                    AddLinkBulletAgenda(FindSectionStartSlide(section, Type.Bullet));
+                    AddLinkBulletAgenda(FindSectionEndSlide(section, Type.Bullet));
+                }
             }
         }
 
-        private static void SyncAgendaVisual(List<string> sections, PowerPointSlide refSlide)
+        private static void SyncAgendaVisual(List<string> sections, PowerPointSlide refSlide, bool enableButtons = false)
         {
             // get a copy of slides and sections after the transition slides are deleted
             var sectionProperties = PowerPointPresentation.Current.SectionProperties;
@@ -1563,9 +1569,12 @@ namespace PowerPointLabs
 
             var agendas = PowerPointPresentation.Current.Slides.Where(AgendaSlide.IsAnyAgendaSlide);
 
-            foreach (var agenda in agendas)
+            if (enableButtons)
             {
-                AddLinkVisualAgenda(agenda);
+                foreach (var agenda in agendas)
+                {
+                    AddLinkVisualAgenda(agenda);
+                }
             }
         }
 
