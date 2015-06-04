@@ -652,7 +652,7 @@ namespace PowerPointLabs.Models
         {
             if (HasTemplateSlideMarker()) return null;
 
-            Shape markerShape = _slide.Shapes.AddTextbox(MsoTextOrientation.msoTextOrientationHorizontal, 0, 0, 900, 70);
+            Shape markerShape = _slide.Shapes.AddTextbox(MsoTextOrientation.msoTextOrientationHorizontal, 0, 0, 900, 40);
 
             markerShape.TextEffect.Alignment = MsoTextEffectAlignment.msoTextEffectAlignmentCentered;
 
@@ -660,8 +660,8 @@ namespace PowerPointLabs.Models
             markerShape.Fill.ForeColor.RGB = 0x0000C0;
             markerShape.TextFrame2.TextRange.Font.Bold = MsoTriState.msoTrue;
             markerShape.TextFrame2.TextRange.Font.Fill.ForeColor.RGB = 0x00FFFF;
-            markerShape.TextFrame2.TextRange.Paragraphs[3].Font.Fill.ForeColor.RGB = 0xFFFFFF;
-            markerShape.TextFrame2.TextRange.Paragraphs[3].Font.Bold = MsoTriState.msoFalse;
+            markerShape.TextFrame2.TextRange.Paragraphs[2].Font.Fill.ForeColor.RGB = 0xFFFFFF;
+            markerShape.TextFrame2.TextRange.Paragraphs[2].Font.Bold = MsoTriState.msoFalse;
 
             markerShape.TextFrame2.AutoSize = MsoAutoSize.msoAutoSizeTextToFitShape;
             markerShape.ZOrder(MsoZOrderCmd.msoSendToBack);
