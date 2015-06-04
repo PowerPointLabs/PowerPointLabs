@@ -306,7 +306,10 @@
         public const string AgendaLabLoadingDialogTitle = "Generating...";
         public const string AgendaLabLoadingDialogContent = "Agenda is generating, please wait...";
         public const string AgendaLabReferenceSlideContent = "Visited bullet format\rHighlighted bullet format\rUnvisited bullet format\r";
-        public const string AgendaLabTemplateSlideInstructions = "THIS IS AN AGENDA LAB TEMPLATE SLIDE\rEdit this slide and click \"Sync Agenda\" to replicate the design in the other slides.";
+        public const string AgendaLabTemplateSlideInstructions =
+                            "This slide is used as a ‘Template' for generating agenda slides.\r" +
+                            "Please do not delete this slide.\r" +
+                            "Adjust the design of this slide and click the 'Sync Agenda' (in Agenda Lab) to replicate the design in the other slides.";
         # endregion
 
         # region Task Pane - Recorder

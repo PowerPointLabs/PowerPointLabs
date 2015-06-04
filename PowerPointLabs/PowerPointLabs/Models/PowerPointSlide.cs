@@ -652,14 +652,19 @@ namespace PowerPointLabs.Models
         {
             if (HasTemplateSlideMarker()) return null;
 
-            Shape markerShape = _slide.Shapes.AddTextbox(MsoTextOrientation.msoTextOrientationHorizontal, 0, 0, 800, 70);
+            Shape markerShape = _slide.Shapes.AddTextbox(MsoTextOrientation.msoTextOrientationHorizontal, 0, 0, 900, 70);
 
             markerShape.TextEffect.Alignment = MsoTextEffectAlignment.msoTextEffectAlignmentCentered;
-            markerShape.Fill.ForeColor.RGB = 0xC07000;
-            markerShape.TextFrame2.TextRange.Font.Fill.ForeColor.RGB = 0x00FFFF;
 
             markerShape.TextFrame2.TextRange.Text = TextCollection.AgendaLabTemplateSlideInstructions;
+            markerShape.Fill.ForeColor.RGB = 0x0000C0;
+            markerShape.TextFrame2.TextRange.Font.Bold = MsoTriState.msoTrue;
+            markerShape.TextFrame2.TextRange.Font.Fill.ForeColor.RGB = 0x00FFFF;
+            markerShape.TextFrame2.TextRange.Paragraphs[3].Font.Fill.ForeColor.RGB = 0xFFFFFF;
+            markerShape.TextFrame2.TextRange.Paragraphs[3].Font.Bold = MsoTriState.msoFalse;
 
+            markerShape.TextFrame2.AutoSize = MsoAutoSize.msoAutoSizeTextToFitShape;
+            
             markerShape.Left = (PowerPointPresentation.Current.SlideWidth - markerShape.Width) / 2;
             markerShape.Top = PowerPointPresentation.Current.SlideHeight - markerShape.Height;
             markerShape.Name = PptLabsTemplateMarkerShapeName;
