@@ -664,6 +664,7 @@ namespace PowerPointLabs.Models
             markerShape.TextFrame2.TextRange.Paragraphs[3].Font.Bold = MsoTriState.msoFalse;
 
             markerShape.TextFrame2.AutoSize = MsoAutoSize.msoAutoSizeTextToFitShape;
+            markerShape.ZOrder(MsoZOrderCmd.msoSendToBack);
             
             markerShape.Left = (PowerPointPresentation.Current.SlideWidth - markerShape.Width) / 2;
             markerShape.Top = PowerPointPresentation.Current.SlideHeight - markerShape.Height;
