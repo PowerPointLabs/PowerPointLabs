@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using FunctionalTestInterface;
 using Microsoft.Office.Interop.PowerPoint;
 using PowerPointLabs.Models;
+using System.IO;
 
 namespace PowerPointLabs.FunctionalTestInterface.Impl
 {
@@ -66,24 +67,27 @@ namespace PowerPointLabs.FunctionalTestInterface.Impl
 
         public ShapeRange SelectShapes(string shapeName)
         {
-            var result = new List<Shape>();
             var nameList = new List<String>();
             var shapes = PowerPointCurrentPresentationInfo.CurrentSlide.Shapes;
             foreach (Shape sh in shapes)
             {
                 if (sh.Name == shapeName)
                 {
-                    sh.Select();
                     nameList.Add(sh.Name);
                 }
             }
             var range = PowerPointCurrentPresentationInfo.CurrentSlide.Shapes.Range(nameList.ToArray());
-            return range;
+
+            if (range.Count > 0)
+            {
+                range.Select();
+                return range;
+            }
+            return null;
         }
 
         public ShapeRange SelectShapesByPrefix(string prefix)
         {
-            var result = new List<Shape>();
             var nameList = new List<String>();
             var shapes = PowerPointCurrentPresentationInfo.CurrentSlide.Shapes;
             foreach (Shape sh in shapes)
@@ -94,7 +98,22 @@ namespace PowerPointLabs.FunctionalTestInterface.Impl
                 }
             }
             var range = PowerPointCurrentPresentationInfo.CurrentSlide.Shapes.Range(nameList.ToArray());
-            return range;
+
+            if (range.Count > 0)
+            {
+                range.Select();
+                return range;
+            }
+            return null;
+        }
+
+        public FileInfo ExportSelectedShapes()
+        {
+            var shapes = PowerPointCurrentPresentationInfo.CurrentSelection.ShapeRange;
+            var hashCode = DateTime.Now.GetHashCode();
+            var pathName = Path.GetTempPath() + "shapeName" + hashCode;
+            shapes.Export(pathName, PpShapeFormat.ppShapeFormatPNG);
+            return new FileInfo(pathName);
         }
     }
 }

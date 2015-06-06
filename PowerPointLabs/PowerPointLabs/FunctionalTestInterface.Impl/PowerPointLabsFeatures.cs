@@ -1,7 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using FunctionalTestInterface;
 using PowerPointLabs.Models;
 
@@ -14,6 +11,11 @@ namespace PowerPointLabs.FunctionalTestInterface.Impl
         {
             var selection = PowerPointCurrentPresentationInfo.CurrentSelection;
             CropToShape.Crop(selection);
+        }
+
+        public void AutoAnimate()
+        {
+            PowerPointLabs.AutoAnimate.AddAutoAnimation();
         }
     }
 }

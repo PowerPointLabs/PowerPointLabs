@@ -1,6 +1,5 @@
-﻿using System;
-using System.Drawing;
-using System.IO;
+﻿using FunctionalTest.util;
+using Microsoft.Office.Interop.PowerPoint;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace FunctionalTest
@@ -8,33 +7,66 @@ namespace FunctionalTest
     [TestClass]
     public class AutoCropTest : BaseFunctionalTest
     {
+        protected override string GetTestingSlideName()
+        {
+            return "AutoCrop.pptx";
+        }
+
         [TestMethod]
-        public void TestAutoCrop()
+        public void FT_AutoCropTest()
+        {
+            CropOneShapeSuccessfully();
+            CropMultipleShapesSuccessfully();
+        }
+
+        public void CropOneShapeSuccessfully()
         {
             var actualSlide = PpOperations.SelectSlide(4);
             var shapeBeforeChange = PpOperations.SelectShapes("selectMe")[1];
             Assert.AreEqual("selectMe", shapeBeforeChange.Name);
+
+            // Execute the Crop To Shape feature
             PplFeatures.AutoCrop();
-            var range = PpOperations.SelectShapesByPrefix("selectMe");
-            var resultShape = range[1];
+            var resultShape = PpOperations.SelectShapesByPrefix("selectMe")[1];
+            var resultShapeInPic = PpOperations.ExportSelectedShapes();
             Assert.IsTrue(resultShape.Name.StartsWith("selectMe"));
 
             var expSlide = PpOperations.SelectSlide(5);
-            var text = PpOperations.SelectShapesByPrefix("text");
-            text.Delete();
+            var expShape = PpOperations.SelectShapesByPrefix("selectMe")[1];
+            var expShapeInPic = PpOperations.ExportSelectedShapes();
+            // remove elements that affect comparing slides
+            // e.g. "Expected" textbox
+            PpOperations.SelectShapesByPrefix("text").Delete();
 
-            actualSlide.Export(Path.GetTempPath() + "1.png", "PNG");
-            expSlide.Export(Path.GetTempPath() + "2.png", "PNG");
-
-            var b1 = new Bitmap(Path.GetTempPath() + "1.png");
-            var b2 = new Bitmap(Path.GetTempPath() + "2.png");
-            var resultOfAutoCrop = ImageComparer.Compare(b1, b2);
-            Assert.AreEqual(ImageComparer.CompareResult.CompareOk, resultOfAutoCrop);
+            SlideComparer.IsSameLooking(expShape, expShapeInPic, resultShape, resultShapeInPic);
+            SlideComparer.IsSameLooking(expSlide, actualSlide);
         }
 
-        protected override string GetSlideName()
+        public void CropMultipleShapesSuccessfully()
         {
-            return "AutoCrop.pptx";
+            var actualSlide = PpOperations.SelectSlide(7);
+            var shapesBeforeCrop = PpOperations.SelectShapesByPrefix("selectMe");
+            Assert.AreEqual(6, shapesBeforeCrop.Count);
+
+            // Execute the Crop To Shape feature
+            PplFeatures.AutoCrop();
+
+            // the result shape after crop multiple shapes will have name starts with
+            // Group
+            var resultShape = PpOperations.SelectShapesByPrefix("Group")[1];
+            var resultShapeInPic = PpOperations.ExportSelectedShapes();
+
+            var expSlide = PpOperations.SelectSlide(8);
+
+            var expShape = PpOperations.SelectShapesByPrefix("Group")[1];
+            var expShapeInPic = PpOperations.ExportSelectedShapes();
+
+            // remove elements that affect comparing slides
+            // e.g. "Expected" textbox
+            PpOperations.SelectShapesByPrefix("text").Delete();
+
+            SlideComparer.IsSameLooking(expShape, expShapeInPic, resultShape, resultShapeInPic);
+            SlideComparer.IsSameLooking(expSlide, actualSlide);
         }
     }
 }
