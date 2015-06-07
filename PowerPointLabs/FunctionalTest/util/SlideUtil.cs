@@ -6,12 +6,13 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace FunctionalTest.util
 {
-    class SlideComparer
+    class SlideUtil
     {
         // You may need to call PpOperations.ExportSelectedShapes()
         // to get FileInfo of the exported shape in pic
         public static void IsSameLooking(Shape expShape, FileInfo expFileInfo, Shape actualShape, FileInfo actualFileInfo)
         {
+            Assert.AreEqual(expShape.Rotation, actualShape.Rotation);
             Assert.AreEqual(expShape.Left, actualShape.Left);
             Assert.AreEqual(expShape.Top, actualShape.Top);
             Assert.AreEqual(expShape.Width, actualShape.Width);
@@ -56,6 +57,7 @@ namespace FunctionalTest.util
                 {
                     Assert.AreEqual(expEffect.Shape.Name, actualEffect.Shape.Name, "Different effect shape name.");
                 }
+                Assert.AreEqual(expEffect.Shape.Rotation, actualEffect.Shape.Rotation, "Different effect shape rotation.");
                 Assert.AreEqual(expEffect.Shape.Width, actualEffect.Shape.Width, "Different effect shape width.");
                 Assert.AreEqual(expEffect.Shape.Height, actualEffect.Shape.Height, "Different effect shape height.");
                 Assert.AreEqual(expEffect.Shape.Left, actualEffect.Shape.Left, "Different effect shape left.");

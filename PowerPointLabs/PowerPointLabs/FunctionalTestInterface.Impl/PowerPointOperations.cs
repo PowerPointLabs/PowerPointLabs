@@ -76,7 +76,13 @@ namespace PowerPointLabs.FunctionalTestInterface.Impl
                     nameList.Add(sh.Name);
                 }
             }
-            var range = PowerPointCurrentPresentationInfo.CurrentSlide.Shapes.Range(nameList.ToArray());
+            return SelectShapes(nameList);
+        }
+
+        public ShapeRange SelectShapes(List<string> shapeNames)
+        {
+            var range = PowerPointCurrentPresentationInfo
+                .CurrentSlide.Shapes.Range(shapeNames.ToArray());
 
             if (range.Count > 0)
             {
@@ -97,14 +103,7 @@ namespace PowerPointLabs.FunctionalTestInterface.Impl
                     nameList.Add(sh.Name);
                 }
             }
-            var range = PowerPointCurrentPresentationInfo.CurrentSlide.Shapes.Range(nameList.ToArray());
-
-            if (range.Count > 0)
-            {
-                range.Select();
-                return range;
-            }
-            return null;
+            return SelectShapes(nameList);
         }
 
         public FileInfo ExportSelectedShapes()

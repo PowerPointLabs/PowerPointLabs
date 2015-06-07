@@ -31,8 +31,8 @@ namespace FunctionalTest
             // remove elements that affect comparing slides
             PpOperations.SelectShapesByPrefix("text").Delete();
 
-            SlideComparer.IsSameAnimations(expSlide, actualSlide);
-            SlideComparer.IsSameLooking(expSlide, actualSlide);
+            SlideUtil.IsSameAnimations(expSlide, actualSlide);
+            SlideUtil.IsSameLooking(expSlide, actualSlide);
         }
     }
 }

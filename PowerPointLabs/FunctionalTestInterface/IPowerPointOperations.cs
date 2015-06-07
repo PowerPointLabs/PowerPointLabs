@@ -1,4 +1,5 @@
-﻿using System.IO;
+﻿using System.Collections.Generic;
+using System.IO;
 using Microsoft.Office.Interop.PowerPoint;
 
 namespace FunctionalTestInterface
@@ -15,6 +16,7 @@ namespace FunctionalTestInterface
 
         Selection GetCurrentSelection();
         ShapeRange SelectShapes(string shapeName);
+        ShapeRange SelectShapes(List<string> shapeNames);
         ShapeRange SelectShapesByPrefix(string prefix);
         FileInfo ExportSelectedShapes();
     }
