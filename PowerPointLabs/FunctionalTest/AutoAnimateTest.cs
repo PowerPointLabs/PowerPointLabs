@@ -55,9 +55,12 @@ namespace FunctionalTest
             KeyboardUtil.Paste();
             // let handling takes effect
             ThreadUtil.WaitFor(1000);
-            
-            PpOperations.SelectShapes(new List<string> { "Notched Right Arrow 3", "Group 2" })
-                .Rotation = 90;
+
+            var sh1 = PpOperations.SelectShapes("Notched Right Arrow 3")[1];
+            sh1.Rotation += 90;
+            var sh2 = PpOperations.SelectShapes("Group 2")[1];
+            sh2.Rotation += 90;
+
             // go back to slide 8
             PpOperations.SelectSlide(8);
 
@@ -71,6 +74,7 @@ namespace FunctionalTest
             // remove elements that affect comparing slides
             PpOperations.SelectShapesByPrefix("text").Delete();
 
+            // TODO: actually this expected slide looks a bit strange..
             SlideUtil.IsSameAnimations(expSlide, actualSlide);
             SlideUtil.IsSameLooking(expSlide, actualSlide);
         }
