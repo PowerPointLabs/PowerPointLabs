@@ -39,7 +39,7 @@ namespace FunctionalTest.util
                         break;
                     }
                 }
-                if (retryCount == 0 && msgBoxHandle == IntPtr.Zero)
+                if (msgBoxHandle == IntPtr.Zero)
                 {
                     Assert.Fail("Failed to find message box.");
                 }

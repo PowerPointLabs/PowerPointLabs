@@ -93,6 +93,7 @@
     <Compile Include="AutoCropTest.cs" />
     <Compile Include="AutoAnimateTest.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="util\KeyboardUtil.cs" />
     <Compile Include="util\MessageBoxUtil.cs" />
     <Compile Include="util\NativeUtil.cs" />
     <Compile Include="util\PathUtil.cs" />

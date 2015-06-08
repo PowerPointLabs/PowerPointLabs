@@ -1,4 +1,5 @@
-﻿using FunctionalTest.util;
+﻿using System.Collections.Generic;
+using FunctionalTest.util;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace FunctionalTest
@@ -12,9 +13,16 @@ namespace FunctionalTest
         }
 
         [TestMethod]
-        public void FT_AutoAnimateTest()
+        public void FT_AutoAnimateSuccessfully()
         {
             AutoAnimateSuccessfully();
+        }
+
+        // create a new test, since the previous one will change the later's slide index..
+        [TestMethod]
+        public void FT_AutoAnimateWithCopyPasteSuccessfully()
+        {
+            AutoAnimateWithCopyPasteShapesSuccessfully();
         }
 
         private static void AutoAnimateSuccessfully()
@@ -28,6 +36,38 @@ namespace FunctionalTest
             PpOperations.SelectShapesByPrefix("text").Delete();
 
             var expSlide = PpOperations.SelectSlide(7);
+            // remove elements that affect comparing slides
+            PpOperations.SelectShapesByPrefix("text").Delete();
+
+            SlideUtil.IsSameAnimations(expSlide, actualSlide);
+            SlideUtil.IsSameLooking(expSlide, actualSlide);
+        }
+
+        private static void AutoAnimateWithCopyPasteShapesSuccessfully()
+        {
+            PpOperations.SelectSlide(8);
+            PpOperations.SelectShapes(new List<string> {"Notched Right Arrow 3", "Group 2"});
+            // use keyboard to copy & paste,
+            // otherwise API's copy & paste won't trigger special clipboard event.
+            KeyboardUtil.Copy();
+
+            PpOperations.SelectSlide(9);
+            KeyboardUtil.Paste();
+            // let handling takes effect
+            ThreadUtil.WaitFor(1000);
+            
+            PpOperations.SelectShapes(new List<string> { "Notched Right Arrow 3", "Group 2" })
+                .Rotation = 90;
+            // go back to slide 8
+            PpOperations.SelectSlide(8);
+
+            PplFeatures.AutoAnimate();
+
+            var actualSlide = PpOperations.SelectSlide(9);
+            // remove elements that affect comparing slides
+            PpOperations.SelectShapesByPrefix("text").Delete();
+
+            var expSlide = PpOperations.SelectSlide(11);
             // remove elements that affect comparing slides
             PpOperations.SelectShapesByPrefix("text").Delete();
 
