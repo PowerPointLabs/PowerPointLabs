@@ -7,18 +7,18 @@ namespace FunctionalTest.util
 {
     class MessageBoxUtil
     {
-        public static void ExpectMessageBoxWillPopUp(string title, string expContent, Action action, 
-            int retryCount = 5, int waitTime = 1500)
+        public static void ExpectMessageBoxWillPopUp(string title, string expContent, Action messageBoxTrigger, 
+            string buttonNameToClick = null, int retryCount = 5, int waitTime = 1000)
         {
-            Task expect = ExpectMessageBoxWillPopUp(title, expContent, retryCount, waitTime);
-            action.Invoke();
-            VerifyExpectation(expect);
+            Task expect = ExpectMessageBoxWillPopUp(title, expContent, buttonNameToClick, retryCount, waitTime);
+            messageBoxTrigger.Invoke();
+            VerifyExpectation(expect, retryCount, waitTime);
         }
 
         // This method must be called before PplFeatures,
         // otherwise, PplFeatures will block the test.
         private static Task ExpectMessageBoxWillPopUp(string title, string expContent,
-            int retryCount = 5, int waitTime = 1500)
+            string buttonNameToClick, int retryCount, int waitTime)
         {
             // MessageBox in pptlabs will block the whole thread,
             // so multi-thread is needed here.
@@ -53,16 +53,19 @@ namespace FunctionalTest.util
                 var isGetTextSuccessful = NativeUtil.GetWindowText(dlgHandle, actualContentBuilder, nchars);
 
                 // close the message box, otherwise it will block the test
-                CloseMessageBox(msgBoxHandle);
+                CloseMessageBox(msgBoxHandle, buttonNameToClick);
 
-                Assert.IsTrue(isGetTextSuccessful > 0, "Failed to get text in the label of messagebox.");
-                Assert.AreEqual(expContent, actualContentBuilder.ToString(), true, "Different MessageBox content.");
+                if (expContent != "{*}")
+                {
+                    Assert.IsTrue(isGetTextSuccessful > 0, "Failed to get text in the label of messagebox.");
+                    Assert.AreEqual(expContent, actualContentBuilder.ToString(), true, "Different MessageBox content.");
+                }
             });
             taskToVerify.Start();
             return taskToVerify;
         }
 
-        private static void VerifyExpectation(Task taskToVerify, int retryCount = 5, int waitTime = 1500)
+        private static void VerifyExpectation(Task taskToVerify, int retryCount, int waitTime)
         {
             // wait for task to finish
             while (taskToVerify.Status == TaskStatus.Running && retryCount > 0)
@@ -78,14 +81,23 @@ namespace FunctionalTest.util
             }
         }
 
-        private static void CloseMessageBox(IntPtr msgBoxHandle)
+        private static void CloseMessageBox(IntPtr msgBoxHandle, string buttonName)
         {
-            // try to find OK button and click on it
-            var btnHandle = NativeUtil.FindWindowEx(msgBoxHandle, IntPtr.Zero, "Button", "OK");
-            Assert.AreNotEqual(IntPtr.Zero, btnHandle, "Failed to find button in the messagebox.");
-            NativeUtil.SetForegroundWindow(msgBoxHandle);
-            NativeUtil.SendMessage(btnHandle, 0x0201 /*left button down*/, IntPtr.Zero, IntPtr.Zero);
-            NativeUtil.SendMessage(btnHandle, 0x0202 /*left button up*/, IntPtr.Zero, IntPtr.Zero);
+            if (buttonName == null)
+            {
+                // Simple close message box
+                NativeUtil.SendMessage(msgBoxHandle, 0x0112 /*WM_SYSCOMMAND*/, new IntPtr(0xF060 /*SC_CLOSE*/), IntPtr.Zero);
+            }
+            else
+            {
+                // This may be flaky.. if there're more than one windows pop up at the same time..
+                // it will affect clicking the button
+                var btnHandle = NativeUtil.FindWindowEx(msgBoxHandle, IntPtr.Zero, "Button", buttonName);
+                Assert.AreNotEqual(IntPtr.Zero, btnHandle, "Failed to find button in the messagebox.");
+                NativeUtil.SetForegroundWindow(msgBoxHandle);
+                NativeUtil.SendMessage(btnHandle, 0x0201 /*left button down*/, IntPtr.Zero, IntPtr.Zero);
+                NativeUtil.SendMessage(btnHandle, 0x0202 /*left button up*/, IntPtr.Zero, IntPtr.Zero);
+            }
         }
     }
 }

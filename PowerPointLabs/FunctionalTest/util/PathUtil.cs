@@ -1,8 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.IO;
-using System.Linq;
-using System.Text;
 
 namespace FunctionalTest.util
 {
@@ -25,6 +22,16 @@ namespace FunctionalTest.util
         public static String GetTempPath(String fileName)
         {
             return Path.GetTempPath() + fileName;
+        }
+
+        public static string GetDocTestPath()
+        {
+            //To get the location the assembly normally resides on disk or the install directory
+            var path = new Uri(
+                Path.GetDirectoryName(System.Reflection.Assembly.GetExecutingAssembly().CodeBase))
+                .LocalPath;
+            var parPath = PathUtil.GetParentFolder(path, 4);
+            return Path.Combine(parPath, "doc\\test\\");
         }
     }
 }

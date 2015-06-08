@@ -9,6 +9,8 @@ namespace FunctionalTestInterface
         void EnterFunctionalTest();
         void ExitFunctionalTest();
         bool IsInFunctionalTest();
+        void ClosePresentation();
+        void ActivatePresentation();
 
         Slide GetCurrentSlide();
         Slide SelectSlide(int index);

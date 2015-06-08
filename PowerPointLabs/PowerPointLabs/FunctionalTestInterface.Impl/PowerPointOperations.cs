@@ -4,6 +4,7 @@ using FunctionalTestInterface;
 using Microsoft.Office.Interop.PowerPoint;
 using PowerPointLabs.Models;
 using System.IO;
+using System.Windows.Forms;
 
 namespace PowerPointLabs.FunctionalTestInterface.Impl
 {
@@ -23,6 +24,19 @@ namespace PowerPointLabs.FunctionalTestInterface.Impl
         public bool IsInFunctionalTest()
         {
             return PowerPointCurrentPresentationInfo.IsInFunctionalTest;
+        }
+
+        public void ClosePresentation()
+        {
+            EnterFunctionalTest();
+            Globals.ThisAddIn.Application.ActivePresentation.Close();
+        }
+
+        public void ActivatePresentation()
+        {
+            MessageBox.Show(new Form() { TopMost = true },
+                "###__DO_NOT_OPEN_OTHER_WINDOW__###\n" +
+                "###___DURING_FUNCTIONAL_TEST___###", "PowerPointLabs FT");
         }
 
         public Slide GetCurrentSlide()

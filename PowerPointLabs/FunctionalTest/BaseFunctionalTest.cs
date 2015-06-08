@@ -16,7 +16,6 @@ namespace FunctionalTest
         // ppl - PowerPointLabs
         protected static IPowerPointLabsFeatures PplFeatures;
         protected static IPowerPointOperations PpOperations;
-        protected static Process PpProcess;
 
         // To be implemented by downstream testing classes,
         // specify the name for the testing slide.
@@ -24,49 +23,32 @@ namespace FunctionalTest
         // in "doc/test" folder.
         protected abstract String GetTestingSlideName();
 
-        // Can be overrided by downstream testing classes,
-        // e.g. increase the count.
-        // For now, this retry count is used when try to connect
-        // pptlabs add-in.
-        protected virtual int GetRetryCount()
-        {
-            return 5;
-        }
-
-        protected virtual int GetWaitTime()
-        {
-            return 3000;
-        }
-
         [TestInitialize]
         public void Setup()
         {
-            AssertNoPpProcessRunning();
-
             OpenSlideForTest(GetTestingSlideName());
 
-            ConnectPplWithRetryCount(GetRetryCount());
-
-            PpOperations.EnterFunctionalTest();
-            Assert.IsTrue(PpOperations.IsInFunctionalTest());
+            ConnectPpl();
         }
 
         [TestCleanup]
         public void TearDown()
         {
-            Assert.IsTrue(PpOperations.IsInFunctionalTest());
-            if (PpProcess != null)
-            {
-                PpProcess.CloseMainWindow();
-            }
-            // wait for process to quit entirely
-            AssertNoPpProcessRunningWithRetryCount(GetRetryCount());
+            PpOperations.ClosePresentation();
         }
 
-        private void ConnectPplWithRetryCount(int retryCount)
+        private void ConnectPpl()
         {
+            const int waitTime = 3000;
+            var retryCount = 5;
             while (retryCount > 0)
             {
+                // if already connected, break
+                if (PplFeatures != null && PpOperations != null)
+                {
+                    break;
+                }
+                // otherwise keep trying to connect for some times
                 try
                 {
                     var ftInstance = (IPowerPointLabsFT) Activator.GetObject(typeof (IPowerPointLabsFT),
@@ -78,65 +60,31 @@ namespace FunctionalTest
                 catch (RemotingException)
                 {
                     retryCount--;
-                    ThreadUtil.WaitFor(GetWaitTime());
+                    ThreadUtil.WaitFor(waitTime);
                 }
             }
-            if (retryCount == 0 || PplFeatures == null || PpOperations == null)
+            if (PplFeatures == null || PpOperations == null)
             {
                 Assert.Fail("Failed to connect to PowerPointLabs add-in. You can try to increase retryCount.");
             }
-        }
 
-        private void AssertNoPpProcessRunningWithRetryCount(int retryCount)
-        {
-            while (retryCount > 0)
-            {
-                var pname = Process.GetProcessesByName("POWERPNT");
-                if (pname.Length > 0)
-                {
-                    retryCount--;
-                    ThreadUtil.WaitFor(GetWaitTime());
-                }
-                else
-                {
-                    break;
-                }
-            }
-            if (retryCount == 0)
-            {
-                Assert.Fail("PowerPoint process is still running after a long time.");
-            }
-        }
-
-        // When a PowerPoint process is already running,
-        // it will affect the TearDown process.
-        private void AssertNoPpProcessRunning()
-        {
-            var pname = Process.GetProcessesByName("POWERPNT");
-            if (pname.Length > 0)
-            {
-                Assert.Fail("PowerPoint is running, you need to close it to continue Functional Test.");
-            }
+            // activate the thread of presentation window
+            MessageBoxUtil.ExpectMessageBoxWillPopUp(
+                "PowerPointLabs FT", "{*}",
+                PpOperations.ActivatePresentation);
         }
 
         private void OpenSlideForTest(String slideName)
         {
-            //To get the location the assembly normally resides on disk or the install directory
-            var path = new Uri(
-                Path.GetDirectoryName(System.Reflection.Assembly.GetExecutingAssembly().CodeBase))
-                .LocalPath;
-            var parPath = PathUtil.GetParentFolder(path, 4);
-            var testDocPath = Path.Combine(parPath, "doc\\test\\");
             Process pptProcess = new Process
             {
                 StartInfo =
                 {
                     FileName = slideName, 
-                    WorkingDirectory = testDocPath
+                    WorkingDirectory = PathUtil.GetDocTestPath()
                 }
             };
             pptProcess.Start();
-            PpProcess = pptProcess;
         }
     }
 }
