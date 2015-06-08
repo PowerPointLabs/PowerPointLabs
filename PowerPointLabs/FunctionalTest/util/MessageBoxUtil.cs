@@ -86,6 +86,7 @@ namespace FunctionalTest.util
             if (buttonName == null)
             {
                 // Simple close message box
+                NativeUtil.SetForegroundWindow(msgBoxHandle);
                 NativeUtil.SendMessage(msgBoxHandle, 0x0112 /*WM_SYSCOMMAND*/, new IntPtr(0xF060 /*SC_CLOSE*/), IntPtr.Zero);
             }
             else

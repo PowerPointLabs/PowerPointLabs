@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Diagnostics;
-using System.IO;
 using System.Runtime.Remoting;
 using FunctionalTest.util;
 using FunctionalTestInterface;
@@ -69,6 +68,7 @@ namespace FunctionalTest
             }
 
             // activate the thread of presentation window
+            ThreadUtil.WaitFor(1500);
             MessageBoxUtil.ExpectMessageBoxWillPopUp(
                 "PowerPointLabs FT", "{*}",
                 PpOperations.ActivatePresentation);
