@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Drawing;
 using System.Drawing.Drawing2D;
 using System.Linq;
@@ -300,6 +301,29 @@ namespace PowerPointLabs.Utils
                     break;
                 }
             }
+        }
+
+        // TODO: Make this an extension method of shape.
+        public static void SetText(Shape shape, params string[] lines)
+        {
+            shape.TextFrame2.TextRange.Text = string.Join("\r", lines);
+        }
+
+        // TODO: Make this an extension method of shape.
+        public static void SetText(Shape shape, IEnumerable<string> lines)
+        {
+            shape.TextFrame2.TextRange.Text = string.Join("\r", lines);
+        }
+
+        // TODO: Make this an extension method of shape.
+        /// <summary>
+        /// Get the paragraphs of the shape as a list.
+        /// The paragraphs formats can be modified to change the format of the paragraphs in shape.
+        /// This list is 0-indexed.
+        /// </summary>
+        public static List<TextRange2> GetParagraphs(Shape shape)
+        {
+            return shape.TextFrame2.TextRange.Paragraphs.Cast<TextRange2>().ToList();
         }
 
         # endregion

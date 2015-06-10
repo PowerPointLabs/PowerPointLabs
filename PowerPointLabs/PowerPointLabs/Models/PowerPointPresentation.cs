@@ -128,6 +128,9 @@ namespace PowerPointLabs.Models
             }
         }
 
+        /// <summary>
+        /// 0-indexed.
+        /// </summary>
         public List<PowerPointSlide> Slides
         {
             get

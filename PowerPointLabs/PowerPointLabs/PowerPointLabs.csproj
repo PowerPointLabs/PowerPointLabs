@@ -228,6 +228,14 @@
   -->
   <ItemGroup>
     <Compile Include="AgendaLab.cs" />
+    <Compile Include="AgendaLab2\AgendaLabSyncLogic.cs" />
+    <Compile Include="AgendaLab2\AgendaSection.cs" />
+    <Compile Include="AgendaLab2\AgendaSectionTemplates.cs" />
+    <Compile Include="AgendaLab2\AgendaShape.cs" />
+    <Compile Include="AgendaLab2\SlideSelectionTracker.cs" />
+    <Compile Include="AgendaLab2\AgendaLabMain.cs" />
+    <Compile Include="AgendaLab2\AgendaSlide.cs" />
+    <Compile Include="AgendaLab2\Enums.cs" />
     <Compile Include="AudioMisc\Audio.cs" />
     <Compile Include="AudioMisc\AudioHelper.cs" />
     <Compile Include="AutoAnimate.cs" />

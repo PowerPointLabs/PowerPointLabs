@@ -85,7 +85,7 @@ namespace PowerPointLabs.Models
 
             set
             {
-                if (_slide == null || _slide.HasNotesPage == MsoTriState.msoFalse)
+                if (_slide == null)
                 {
                     return;
                 }
@@ -491,6 +491,11 @@ namespace PowerPointLabs.Models
             List<Shape> matchingShapes = shapes.Where(current => current.Name == name).ToList();
 
             return matchingShapes;
+        }
+
+        public Shape GetShape(Func<Shape, bool> condition)
+        {
+            return _slide.Shapes.Cast<Shape>().Where(condition).FirstOrDefault();
         }
 
         public List<Shape> GetShapesWithMediaType(PpMediaType type, Regex nameRule)

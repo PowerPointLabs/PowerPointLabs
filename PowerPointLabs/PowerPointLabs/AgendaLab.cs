@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Drawing;
 using System.IO;
 using System.Linq;
@@ -312,11 +313,6 @@ namespace PowerPointLabs
             var selectedSlides = PowerPointCurrentPresentationInfo.SelectedSlides.ToList();
             bool userIsSelectingSlides = PowerPointCurrentPresentationInfo.CurrentSelection.Type == PpSelectionType.ppSelectionSlides;
 
-            if (HasDuplicateSectionName())
-            {
-                MessageBox.Show(TextCollection.AgendaLabDuplicateSectionError);
-                return;
-            }
 
             selectedSlides.RemoveAll(PowerPointAckSlide.IsAckSlide);
             PowerPointPresentation.Current.RemoveAckSlide();
@@ -356,6 +352,13 @@ namespace PowerPointLabs
             SelectOriginalSlide(selectedSlides.Count > 0 ? selectedSlides[0] : firstSlide, firstSlide);
 
             _loadDialog.Dispose();
+
+            var moveSlides = PowerPointPresentation.Current.Slides.GetRange(3, 5);
+            moveSlides.Reverse();
+            foreach (var slide in moveSlides)
+            {
+                slide.MoveTo(8);
+            }
         }
 
         public static void RemoveAgenda()
@@ -395,18 +398,13 @@ namespace PowerPointLabs
 
             if (type == Type.None)
             {
+                MessageBox.Show(TextCollection.AgendaLabNoAgendaError);
+                return;
+            }
+            if (AgendaSlide.IsNotReferenceslide(refSlide))
+            {
                 // no reference slide
-                if (AgendaSlide.IsNotReferenceslide(refSlide))
-                {
-                    MessageBox.Show(TextCollection.AgendaLabNoAgendaError);
-                    return;
-                }
-
-                // we have a reference slide, trigger generate process
-                var genType = refSlide.GetShapesWithPrefix(PptLabsAgendaVisualItemPrefix).Count > 0
-                               ? Type.Visual
-                               : Type.Bullet;
-                GenerateAgenda(genType);
+                MessageBox.Show(TextCollection.AgendaLabNoReferenceSlideError);
                 return;
             }
 
@@ -414,6 +412,7 @@ namespace PowerPointLabs
 
             var selectedSlides = PowerPointCurrentPresentationInfo.SelectedSlides.ToList();
             bool userIsSelectingSlides = PowerPointCurrentPresentationInfo.CurrentSelection.Type == PpSelectionType.ppSelectionSlides;
+
 
             var curWindow = Globals.ThisAddIn.Application.ActiveWindow;
             var oldViewType = curWindow.ViewType;
@@ -437,8 +436,11 @@ namespace PowerPointLabs
             selectedSlides.RemoveAll(PowerPointAckSlide.IsAckSlide);
             currentPresentation.RemoveAckSlide();
 
+            //TODO: UNCOMMENT
             PrepareSync(type, ref refSlide);
-            
+            Debug.WriteLine(_agendaOutdated);
+            _agendaOutdated = false;
+
             try
             {
                 // regenerate slides and sync accordingly
@@ -1280,17 +1282,6 @@ namespace PowerPointLabs
 
         private static void PrepareSync(Type type, ref PowerPointSlide refSlide)
         {
-            if (!AgendaSlide.IsAnyAgendaSlide(refSlide))
-            {
-                refSlide.GetNativeSlide().Copy();
-                var refDesign = refSlide.Design;
-                refSlide = PowerPointSlide.FromSlideFactory(PowerPointPresentation.Current.Presentation.Slides.Paste(1)[1]);
-                refSlide.Design = refDesign;
-                AgendaSlide.SetAsReferenceSlideName(refSlide, type);
-                refSlide.AddTemplateSlideMarker();
-                refSlide.Hidden = true;
-            }
-
             CheckAgendaUpdate(type, refSlide);
         }
 
@@ -1455,6 +1446,12 @@ namespace PowerPointLabs
             if (PowerPointPresentation.Current.HasEmptySection)
             {
                 MessageBox.Show(TextCollection.AgendaLabEmptySectionError);
+                return false;
+            }
+
+            if (HasDuplicateSectionName())
+            {
+                MessageBox.Show(TextCollection.AgendaLabDuplicateSectionError);
                 return false;
             }
 
@@ -1682,7 +1679,7 @@ namespace PowerPointLabs
 
         private static bool HasDuplicateSectionName()
         {
-            var sections = PowerPointPresentation.Current.Sections;
+            var sections = PowerPointPresentation.Current.Sections.Where(name => name != PptLabsAgendaVisualSectionName);
             var names = new HashSet<string>();
             foreach (var section in sections)
             {

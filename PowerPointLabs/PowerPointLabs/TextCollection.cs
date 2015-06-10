@@ -302,13 +302,23 @@
         public const string AgendaLabAgendaExistError = "Agenda already exists. By confirm this dialog agenda will be regenerated. Do you want to proceed?";
         public const string AgendaLabAgendaExistErrorCaption = "Confirm Update";
         public const string AgendaLabNoAgendaError = "There's no generated agenda.";
+        public const string AgendaLabNoReferenceSlideError = "The reference slide is missing. Please remove and regenerate the agenda.";
         public const string AgendaLabDuplicateSectionError = "There are multiple sections with the same section name. Please rename the sections accordingly.";
+
         public const string AgendaLabLoadingDialogTitle = "Generating...";
+
         public const string AgendaLabLoadingDialogContent = "Agenda is generating, please wait...";
         public const string AgendaLabReferenceSlideContent = "Visited bullet format\rHighlighted bullet format\rUnvisited bullet format\r";
+
         public const string AgendaLabTemplateSlideInstructions =
                             "This slide is used as a ‘Template' for generating agenda slides. Please do not delete this slide.\r" +
                             "Adjust the design of this slide and click the 'Sync Agenda' (in Agenda Lab) to replicate the design in the other slides.";
+
+        // Bullet Agenda
+        public const string AgendaLabBulletTitleContent = "Agenda";
+        public const string AgendaLabBulletVisitedContent = "Visited bullet format";
+        public const string AgendaLabBulletHighlightedContent = "Highlighted bullet format";
+        public const string AgendaLabBulletUnvisitedContent = "Unvisited bullet format";
         # endregion
 
         # region Task Pane - Recorder

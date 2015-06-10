@@ -7,6 +7,12 @@ namespace PowerPointLabs.Utils
 {
     public static class Common
     {
+        /// <summary>
+        /// Used for the method UniqueDigitString().
+        /// _sessionGlobalUniqueIndex is guaranteed to be unique within the same powerpoint session.
+        /// </summary>
+        private static int _sessionGlobalUniqueIndex = 0;
+
         public static string NextAvailableName(List<string> nameList, string name)
         {
             var orderedNameList = nameList.OrderBy(item => item, new Comparers.AtomicNumberStringCompare()).ToList();
@@ -33,6 +39,18 @@ namespace PowerPointLabs.Utils
             str = str.Replace("+", "-");
             str = str.Replace("/", "_");
             return str;
+        }
+
+        /// <summary>
+        /// Generates a unique string of digits to be used in slide names.
+        /// _sessionGlobalUniqueIndex is guaranteed to be unique within the same powerpoint session.
+        /// DateTimeNow.ToString guaranteed to be unique across different powerpoint sessions.
+        /// </summary>
+        public static string UniqueDigitString()
+        {
+            string digitString = DateTime.Now.ToString("yyyyMMddHHmmssffff") + _sessionGlobalUniqueIndex;
+            _sessionGlobalUniqueIndex++;
+            return digitString;
         }
 
         # region Helper Function
