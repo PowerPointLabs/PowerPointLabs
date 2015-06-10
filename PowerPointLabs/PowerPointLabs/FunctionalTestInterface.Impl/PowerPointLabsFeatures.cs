@@ -23,5 +23,10 @@ namespace PowerPointLabs.FunctionalTestInterface.Impl
             PowerPointLabs.AnimateInSlide.isHighlightBullets = false;
             PowerPointLabs.AnimateInSlide.AddAnimationInSlide();
         }
+
+        public void AutoCaptions()
+        {
+            NotesToCaptions.EmbedCaptionsOnSelectedSlides();
+        }
     }
 }

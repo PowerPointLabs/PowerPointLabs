@@ -5,5 +5,6 @@
         void AutoCrop();
         void AutoAnimate();
         void AnimateInSlide();
+        void AutoCaptions();
     }
 }

@@ -90,6 +90,7 @@
     </Otherwise>
   </Choose>
   <ItemGroup>
+    <Compile Include="AutoCaptionsTest.cs" />
     <Compile Include="BaseFunctionalTest.cs" />
     <Compile Include="AutoCropTest.cs" />
     <Compile Include="AutoAnimateTest.cs" />
