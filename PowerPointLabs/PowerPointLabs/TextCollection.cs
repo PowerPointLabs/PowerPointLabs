@@ -303,11 +303,15 @@
         public const string AgendaLabAgendaExistErrorCaption = "Confirm Update";
         public const string AgendaLabNoAgendaError = "There's no generated agenda.";
         public const string AgendaLabNoReferenceSlideError = "The reference slide is missing. Please remove and regenerate the agenda.";
+        public const string AgendaLabInvalidReferenceSlideError = "The reference slide is invalid. Please remove and regenerate the agenda.";
         public const string AgendaLabDuplicateSectionError = "There are multiple sections with the same section name. Please rename the sections accordingly.";
 
         public const string AgendaLabLoadingDialogTitle = "Generating...";
-
         public const string AgendaLabLoadingDialogContent = "Agenda is generating, please wait...";
+
+        public const string AgendaLabSynchronizingDialogTitle = "Synchronizing...";
+        public const string AgendaLabSynchronizingDialogContent = "Agenda is getting synchronized, please wait...";
+
         public const string AgendaLabReferenceSlideContent = "Visited bullet format\rHighlighted bullet format\rUnvisited bullet format\r";
 
         public const string AgendaLabTemplateSlideInstructions =

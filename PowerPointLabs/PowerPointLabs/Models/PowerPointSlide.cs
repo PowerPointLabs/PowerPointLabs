@@ -498,6 +498,11 @@ namespace PowerPointLabs.Models
             return _slide.Shapes.Cast<Shape>().Where(condition).FirstOrDefault();
         }
 
+        public void RemovePlaceHolders()
+        {
+            _slide.Shapes.Placeholders.Cast<Shape>().ToList().ForEach(shape => shape.Delete());
+        }
+
         public List<Shape> GetShapesWithMediaType(PpMediaType type, Regex nameRule)
         {
             List<Shape> shapes = _slide.Shapes.Cast<Shape>().ToList();

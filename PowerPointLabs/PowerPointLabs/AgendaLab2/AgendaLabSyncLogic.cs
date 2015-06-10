@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.Drawing;
 using System.IO;
 using System.Linq;
@@ -30,29 +29,38 @@ namespace PowerPointLabs.AgendaLab2
                 template.ConfigMiddle();
         }
 
-        private static void l(params Object[] lines)
+        private static void SynchroniseAllSlides(AgendaTemplate template, TemplateIndexTable templateTable,
+            PowerPointSlide refSlide, List<AgendaSection> sections, AgendaSection currentSection)
         {
-            foreach (var line in lines)
+            if (template.NotConfigured) throw new ArgumentException("Template is not configured yet.");
+
+            for (int i = 0; i < template.FrontSlidesCount; ++i)
             {
-                Debug.WriteLine(line.ToString());
+                template.FrontSlides[i].SyncFunction(refSlide, sections, currentSection,
+                    templateTable.FrontSlideObjects[i]);
+            }
+            for (int i = 0; i < template.BackSlidesCount; ++i)
+            {
+                template.BackSlides[i].SyncFunction(refSlide, sections, currentSection,
+                    templateTable.BackSlideObjects[i]);
             }
         }
 
         /// <summary>
         /// Rebuilds the slides in the section to match the slides indicated by the template.
-        /// Does not rename the agendaslides.
+        /// Names the agenda slides properly.
         /// Assumption: Reference slide is the first slide.
         /// </summary>
-        private static void RebuildSectionUsingTemplate(AgendaSection section, AgendaTemplate template)
+        private static TemplateIndexTable RebuildSectionUsingTemplate(AgendaSection currentSection, AgendaTemplate template)
         {
-            ConfigureTemplate(section, template);
+            if (template.NotConfigured) throw new ArgumentException("Template is not configured yet.");
 
             // Step 1: Generate Assignment List and fill in Template Table.
             var templateTable = template.CreateIndexTable();
-            var sectionSlides = GetSectionSlides(section);
+            var sectionSlides = GetSectionSlides(currentSection);
             if (AgendaSlide.IsReferenceslide(sectionSlides[0])) sectionSlides.RemoveAt(0);
 
-            var addToIndex = SectionLastSlideIndex(section) + 1;
+            var addToIndex = SectionLastSlideIndex(currentSection) + 1;
 
             var assignmentList = new List<int>();
             for (var i = 0; i < sectionSlides.Count; ++i) assignmentList.Add(-1);
@@ -65,8 +73,10 @@ namespace PowerPointLabs.AgendaLab2
             GenerateInitialAssignmentList(out indexOfFirstBackSlide, template, templateTable, assignmentList, sectionSlides);
 
             // Step 2: Add all missing slides.
-            var createdSlides = AddAllMissingSlides(ref addToIndex, template, templateTable, assignmentList, indexOfFirstBackSlide);
+            var createdSlides = AddAllMissingSlides(ref addToIndex, template, templateTable, assignmentList, currentSection, indexOfFirstBackSlide);
             sectionSlides.AddRange(createdSlides);
+            templateTable.StoreSlideObjects(sectionSlides);
+
 
             // Step 3: Create Goal Array of Slide Objects and MarkedForDeletion list.
             List<PowerPointSlide> markedForDeletion;
@@ -81,6 +91,9 @@ namespace PowerPointLabs.AgendaLab2
 
             // Step 5: Delete all slides marked for deletion.
             markedForDeletion.ForEach(slide => slide.Delete());
+
+
+            return templateTable;
         }
 
         private static PowerPointSlide[] GenerateGoalArray(int newSlideCount, List<int> assignmentList,
@@ -108,7 +121,9 @@ namespace PowerPointLabs.AgendaLab2
         /// Updates assignmentList (by appending)
         /// Gives placeholder agendaslide name to the created slides.
         /// </summary>
-        private static List<PowerPointSlide> AddAllMissingSlides(ref int addToIndex, AgendaTemplate template, TemplateIndexTable templateTable, List<int> assignmentList, int indexOfFirstBackSlide)
+        private static List<PowerPointSlide> AddAllMissingSlides(ref int addToIndex, AgendaTemplate template,
+            TemplateIndexTable templateTable, List<int> assignmentList, AgendaSection currentSection,
+            int indexOfFirstBackSlide)
         {
             var createdSlides = new List<PowerPointSlide>();
 
@@ -118,7 +133,10 @@ namespace PowerPointLabs.AgendaLab2
                 {
                     var newSlide = AddBlankSlide(addToIndex);
                     createdSlides.Add(newSlide);
-                    AgendaSlide.SetSlideName(newSlide, Type.None, template.FrontSlides[i].SlidePurpose, AgendaSection.None);
+                    AgendaSlide.SetSlideName(newSlide, template.Type, template.FrontSlides[i].SlidePurpose,
+                        currentSection);
+
+                    templateTable.FrontIndexes[i] = assignmentList.Count;
                     assignmentList.Add(i);
                     addToIndex++;
                 }
@@ -129,7 +147,10 @@ namespace PowerPointLabs.AgendaLab2
                 {
                     var newSlide = AddBlankSlide(addToIndex);
                     createdSlides.Add(newSlide);
-                    AgendaSlide.SetSlideName(newSlide, Type.None, template.BackSlides[i].SlidePurpose, AgendaSection.None);
+                    AgendaSlide.SetSlideName(newSlide, template.Type, template.BackSlides[i].SlidePurpose,
+                        currentSection);
+
+                    templateTable.BackIndexes[i] = assignmentList.Count;
                     assignmentList.Add(indexOfFirstBackSlide + i);
                     addToIndex++;
                 }
@@ -139,9 +160,12 @@ namespace PowerPointLabs.AgendaLab2
         }
 
         /// <summary>
-        /// Assignment list specs after generation:
-        /// TemplateIndexTable.NoSlide: Marked for deletion
-        /// any other index: The new position of the slide. [relative to startIndex. first slide is index 0.]
+        /// The assignment list indicates the new position of each of the previous slides.
+        /// assignmentList[oldSlideIndex] = newSlideIndex
+        /// 
+        /// if newSlideIndex is equal to TemplateIndexTable.NoSlide, it means the slide is marked for deletion.
+        /// 
+        /// All slideIndexes are relative to the index of the first slide in the section. first slide is index 0.
         /// </summary>
         private static void GenerateInitialAssignmentList(out int indexOfFirstBackSlide, AgendaTemplate template,
             TemplateIndexTable templateTable, List<int> assignmentList, List<PowerPointSlide> sectionSlides)
@@ -182,7 +206,6 @@ namespace PowerPointLabs.AgendaLab2
                 for (int j = 0; j < assignmentList.Count; ++j)
                 {
                     if (!AgendaSlide.MatchesPurpose(sectionSlides[j], purpose)) continue;
-                    l("MATCH " + purpose);
                     templateTable.FrontIndexes[i] = j;
                     assignmentList[j] = TemplateIndexTable.Reserved;
                     break;
@@ -195,7 +218,6 @@ namespace PowerPointLabs.AgendaLab2
                 for (int j = 0; j < assignmentList.Count; ++j)
                 {
                     if (!AgendaSlide.MatchesPurpose(sectionSlides[j], purpose)) continue;
-                    l("MATCHBACK " + purpose);
                     templateTable.BackIndexes[i] = j;
                     assignmentList[j] = TemplateIndexTable.Reserved;
                     break;

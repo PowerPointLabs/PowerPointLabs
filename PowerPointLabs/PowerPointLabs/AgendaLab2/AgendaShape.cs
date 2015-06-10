@@ -103,5 +103,11 @@ namespace PowerPointLabs.AgendaLab2
         {
             shape.Name = Encode(shapePurpose, section);
         }
+
+
+        public static bool IsAnyAgendaShape(Shape shape)
+        {
+            return Decode(shape) != null;
+        }
     }
 }

@@ -24,6 +24,7 @@ namespace PowerPointLabs.AgendaLab2
     /// </summary>
     internal abstract class AgendaTemplate
     {
+        public abstract Type Type { get; }
         public int FrontSlidesCount { get; private set; }
         public int BackSlidesCount { get; private set; }
         public ReadOnlyCollection<AgendaSlideConfig> FrontSlides { get; private set; }
@@ -61,6 +62,11 @@ namespace PowerPointLabs.AgendaLab2
 
     internal class VisualAgendaTemplate : AgendaTemplate
     {
+        public override Type Type
+        {
+            get { return Type.Visual; }
+        }
+
         public override void ConfigHead()
         {
             AgendaSlideConfig[] frontSlides = { };
@@ -98,6 +104,11 @@ namespace PowerPointLabs.AgendaLab2
 
     internal class BulletAgendaTemplate : AgendaTemplate
     {
+        public override Type Type
+        {
+            get { return Type.Bullet; }
+        }
+
         public override void ConfigHead()
         {
             AgendaSlideConfig[] frontSlides = { };
@@ -165,6 +176,9 @@ namespace PowerPointLabs.AgendaLab2
         public readonly int[] FrontIndexes;
         public readonly int[] BackIndexes;
 
+        public ReadOnlyCollection<PowerPointSlide> FrontSlideObjects;
+        public ReadOnlyCollection<PowerPointSlide> BackSlideObjects;
+
         public TemplateIndexTable (int frontSlideCount, int backSlideCount)
         {
             FrontIndexes = new int[frontSlideCount];
@@ -172,10 +186,31 @@ namespace PowerPointLabs.AgendaLab2
             for (int i = 0; i < FrontIndexes.Length; ++i) FrontIndexes[i] = NoSlide;
             for (int i = 0; i < BackIndexes.Length; ++i) BackIndexes[i] = NoSlide;
         }
+
+        /// <summary>
+        /// Stores the slide objects of the slides indexed by FrontIndexes and BackIndexes.
+        /// </summary>
+        public void StoreSlideObjects(List<PowerPointSlide> sectionSlides)
+        {
+            var frontSlideObjects = new PowerPointSlide[FrontIndexes.Length];
+            var backSlideObjects = new PowerPointSlide[BackIndexes.Length];
+
+            for (int i = 0; i < FrontIndexes.Length; ++i)
+            {
+                frontSlideObjects[i] = sectionSlides[FrontIndexes[i]];
+            }
+            for (int i = 0; i < BackIndexes.Length; ++i)
+            {
+                backSlideObjects[i] = sectionSlides[BackIndexes[i]];
+            }
+
+            FrontSlideObjects = new ReadOnlyCollection<PowerPointSlide>(frontSlideObjects);
+            BackSlideObjects = new ReadOnlyCollection<PowerPointSlide>(backSlideObjects);
+        }
     }
 
-    internal delegate PowerPointSlide SyncFunction(PowerPointSlide refSlide,
-                                                    List<AgendaSection> sections,
-                                                    AgendaSection currentSection,
-                                                    PowerPointSlide targetSlide);
+    internal delegate void SyncFunction(PowerPointSlide refSlide,
+                                        List<AgendaSection> sections,
+                                        AgendaSection currentSection,
+                                        PowerPointSlide targetSlide);
 }
