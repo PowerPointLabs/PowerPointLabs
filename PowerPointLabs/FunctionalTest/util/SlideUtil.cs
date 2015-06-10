@@ -12,6 +12,7 @@ namespace FunctionalTest.util
         // to get FileInfo of the exported shape in pic
         public static void IsSameLooking(Shape expShape, FileInfo expFileInfo, Shape actualShape, FileInfo actualFileInfo)
         {
+            Assert.AreEqual(expShape.Type, actualShape.Type);
             Assert.AreEqual(expShape.Rotation, actualShape.Rotation);
             Assert.AreEqual(expShape.Left, actualShape.Left);
             Assert.AreEqual(expShape.Top, actualShape.Top);
@@ -48,15 +49,8 @@ namespace FunctionalTest.util
                 var actualEffect = actualSeq[i];
                 var expEffect = expSeq[i];
                 // don't compare PPIndicator's effect
-                if (!expEffect.DisplayName.StartsWith("PPIndicator"))
-                {
-                    Assert.AreEqual(expEffect.DisplayName, actualEffect.DisplayName, "Different effect display name.");
-                }
                 Assert.AreEqual(expEffect.EffectType, actualEffect.EffectType, "Different effect type.");
-                if (!expEffect.Shape.Name.StartsWith("PPIndicator"))
-                {
-                    Assert.AreEqual(expEffect.Shape.Name, actualEffect.Shape.Name, "Different effect shape name.");
-                }
+                Assert.AreEqual(expEffect.Shape.Type, actualEffect.Shape.Type, "Different effect shape type.");
                 Assert.AreEqual(expEffect.Shape.Rotation, actualEffect.Shape.Rotation, "Different effect shape rotation.");
                 Assert.AreEqual(expEffect.Shape.Width, actualEffect.Shape.Width, "Different effect shape width.");
                 Assert.AreEqual(expEffect.Shape.Height, actualEffect.Shape.Height, "Different effect shape height.");

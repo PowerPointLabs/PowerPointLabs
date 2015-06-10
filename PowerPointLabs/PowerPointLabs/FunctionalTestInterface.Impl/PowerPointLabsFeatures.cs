@@ -17,5 +17,11 @@ namespace PowerPointLabs.FunctionalTestInterface.Impl
         {
             PowerPointLabs.AutoAnimate.AddAutoAnimation();
         }
+
+        public void AnimateInSlide()
+        {
+            PowerPointLabs.AnimateInSlide.isHighlightBullets = false;
+            PowerPointLabs.AnimateInSlide.AddAnimationInSlide();
+        }
     }
 }

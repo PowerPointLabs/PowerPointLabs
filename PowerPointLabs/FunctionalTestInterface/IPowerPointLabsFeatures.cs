@@ -4,5 +4,6 @@
     {
         void AutoCrop();
         void AutoAnimate();
+        void AnimateInSlide();
     }
 }
