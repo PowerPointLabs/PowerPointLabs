@@ -53,9 +53,9 @@ namespace FunctionalTest
 
             PpOperations.SelectSlide(9);
             KeyboardUtil.Paste();
-            // let handling takes effect
-            ThreadUtil.WaitFor(1000);
 
+            Assert.IsNotNull(PpOperations.SelectShapes("Notched Right Arrow 3"), 
+                "Copy-Paste failed, this task is flaky so please re-run.");
             var sh1 = PpOperations.SelectShapes("Notched Right Arrow 3")[1];
             sh1.Rotation += 90;
             var sh2 = PpOperations.SelectShapes("Group 2")[1];
