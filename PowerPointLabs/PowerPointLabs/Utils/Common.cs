@@ -79,5 +79,18 @@ namespace PowerPointLabs.Utils
             return min + 1;
         }
         # endregion
+
+
+        # region Math
+        /// <summary>
+        /// Computes ceil(dividend / divisor)
+        /// </summary>
+        public static int CeilingDivide(int dividend, int divisor)
+        {
+            return (dividend + divisor - 1)/divisor;
+        }
+
+
+        # endregion
     }
 }

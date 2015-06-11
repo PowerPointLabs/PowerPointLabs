@@ -2225,7 +2225,8 @@ namespace PowerPointLabs
         {
             Globals.ThisAddIn.Application.StartNewUndoEntry();
 
-            AgendaLab.GenerateAgenda(AgendaLab.Type.Visual);
+            //AgendaLab.GenerateAgenda(AgendaLab.Type.Visual);
+            AgendaLab2.AgendaLabMain.GenerateAgenda(AgendaLab2.Type.Visual);
             GC.Collect();
         }
 

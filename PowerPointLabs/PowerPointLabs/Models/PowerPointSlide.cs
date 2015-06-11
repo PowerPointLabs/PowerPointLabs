@@ -310,6 +310,26 @@ namespace PowerPointLabs.Models
             _slide.Shapes.AddPicture(fileName, linkToFile, saveWithDoc, leftTopCorner.Item1, leftTopCorner.Item2).Select();
         }
 
+
+        /// <summary>
+        /// Creates a snapshot of snapshotSlide and places an image of the slide in this slide
+        /// Returns the image shape.
+        /// </summary>
+        public Shape InsertSnapshotOfSlide(PowerPointSlide snapshotSlide)
+        {
+            PowerPointSlide nextSlideCopy = snapshotSlide.Duplicate();
+            nextSlideCopy.Shapes
+                            .Cast<Shape>()
+                            .Where(shape => nextSlideCopy.HasEntryAnimation(shape))
+                            .ToList()
+                            .ForEach(shape => shape.Delete());
+
+            nextSlideCopy.Copy();
+            Shape slidePicture = _slide.Shapes.PasteSpecial(PpPasteDataType.ppPastePNG)[1];
+            nextSlideCopy.Delete();
+            return slidePicture;
+        }
+
         private Effect InsertAnimationBeforeExisting(Shape shape, Effect existing, MsoAnimEffect effect)
         {
             var sequence = _slide.TimeLine.MainSequence;
@@ -498,7 +518,7 @@ namespace PowerPointLabs.Models
             return _slide.Shapes.Cast<Shape>().Where(condition).FirstOrDefault();
         }
 
-        public void RemovePlaceHolders()
+        public void DeletePlaceholderShapes()
         {
             _slide.Shapes.Placeholders.Cast<Shape>().ToList().ForEach(shape => shape.Delete());
         }

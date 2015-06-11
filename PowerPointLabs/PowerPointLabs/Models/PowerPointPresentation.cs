@@ -153,7 +153,7 @@ namespace PowerPointLabs.Models
         {
             get
             {
-                var interopSlides = Presentation.Application.ActiveWindow.Selection.SlideRange;
+                var interopSlides = PowerPointCurrentPresentationInfo.SelectedSlides;
                 var slides = new List<PowerPointSlide>();
 
                 foreach (Slide interopSlide in interopSlides)

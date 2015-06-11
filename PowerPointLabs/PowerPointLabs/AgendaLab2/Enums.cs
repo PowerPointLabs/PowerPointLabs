@@ -43,6 +43,8 @@ namespace PowerPointLabs.AgendaLab2
         // For Beam Agenda
         BeamShapeMainGroup,
 
+        // For Visual Agenda
+        VisualAgendaImage,
        
     }
 

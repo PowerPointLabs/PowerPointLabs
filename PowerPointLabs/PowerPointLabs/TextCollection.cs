@@ -318,8 +318,10 @@
                             "This slide is used as a ‘Template' for generating agenda slides. Please do not delete this slide.\r" +
                             "Adjust the design of this slide and click the 'Sync Agenda' (in Agenda Lab) to replicate the design in the other slides.";
 
+        // Agenda Content
+        public const string AgendaLabTitleContent = "Agenda";
+
         // Bullet Agenda
-        public const string AgendaLabBulletTitleContent = "Agenda";
         public const string AgendaLabBulletVisitedContent = "Visited bullet format";
         public const string AgendaLabBulletHighlightedContent = "Highlighted bullet format";
         public const string AgendaLabBulletUnvisitedContent = "Unvisited bullet format";

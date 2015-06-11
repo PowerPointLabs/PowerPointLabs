@@ -38,18 +38,18 @@ namespace PowerPointLabs.AgendaLab2
                 Unvisited = unvisited;
             }
 
+            /// <summary>
+            /// Assumes the number of paragraphs >= 3.
+            /// The check should have been done before this function is called.
+            /// </summary>
             public static BulletFormats ExtractFormats(Shape contentShape)
             {
                 var paragraphs = contentShape.TextFrame2.TextRange.Paragraphs.Cast<TextRange2>().ToList();
-                //TODO: if paragraphs.Count < 3 return null. then handle error somewhere.
-                
                 return new BulletFormats(paragraphs[0],
                                         paragraphs[1],
                                         paragraphs[2]);
             }
         }
-
-
         #endregion
 
         #region API
@@ -224,6 +224,18 @@ namespace PowerPointLabs.AgendaLab2
         }
 
 
+        /// <summary>
+        /// Assumption: no reference slide exists
+        /// </summary>
+        private static void CreateVisualAgenda()
+        {
+            var refSlide = CreateVisualReferenceSlide();
+
+            // here we invoke sync logic, since it's the same behavior as sync
+            SyncVisualAgenda(refSlide);
+        }
+
+
         private static void SelectOriginalSlide(PowerPointSlide originalSlide, PowerPointSlide fallbackToSlide)
         {
             if (originalSlide != null)
@@ -288,6 +300,24 @@ namespace PowerPointLabs.AgendaLab2
             }
         }
 
+
+        private static void SyncVisualAgenda(PowerPointSlide refSlide)
+        {
+            var sections = Sections;
+            //var sectionMappings = GetSectionMappings();
+            //RemapVisualAgendaImages(sectionMappings);
+
+            ScrambleSlideSectionNames();
+            foreach (var currentSection in sections)
+            {
+                var template = new VisualAgendaTemplate();
+                ConfigureTemplate(currentSection, template);
+
+                var templateTable = RebuildSectionUsingTemplate(currentSection, template);
+                SynchroniseAllSlides(template, templateTable, refSlide, sections, currentSection);
+            }
+        }
+
         /// <summary>
         /// Scrambles the slide section names to avoid duplicate names later on, which can crash powerpoint.
         /// Use this just before reassigning the slide section names! Don't keep the slide names this way!
@@ -300,30 +330,6 @@ namespace PowerPointLabs.AgendaLab2
                     .ForEach(AgendaSlide.AssignUniqueSectionName);
         }
 
-
-        private static void SyncVisualAgenda()
-        {
-            var sections = Sections;
-            var sectionMappings = GetSectionMappings();
-            RemapVisualAgendaImages(sectionMappings);
-
-            ScrambleSlideSectionNames();
-            foreach (var section in sections)
-            {
-                RebuildVisualSectionSlides(section);
-                SyncVisualAgendaSectionSlides(section);
-            }
-        }
-
-        private static void SyncVisualAgendaSectionSlides(AgendaSection section)
-        {
-            throw new NotImplementedException();
-        }
-
-        private static void RebuildVisualSectionSlides(AgendaSection section)
-        {
-            throw new NotImplementedException();
-        }
 
         private static void RemapVisualAgendaImages(Dictionary<int, int> sectionMappings)
         {
@@ -386,7 +392,9 @@ namespace PowerPointLabs.AgendaLab2
 
         public static SyncFunction SyncVisualAgendaSlide = (refSlide, sections, currentSection, targetSlide) =>
         {
-            throw new NotImplementedException();
+            SyncSingleAgendaGeneral(refSlide, targetSlide);
+
+            targetSlide.DeletePlaceholderShapes();
         };
 
         public static SyncFunction SyncBulletAgendaSlide = (refSlide, sections, currentSection, targetSlide) =>
@@ -404,7 +412,7 @@ namespace PowerPointLabs.AgendaLab2
                 pickupTextFormat: false);
 
             ReformatTextRange(targetContentShape.TextFrame2.TextRange, bulletFormats, currentSection);
-            targetSlide.RemovePlaceHolders();
+            targetSlide.DeletePlaceholderShapes();
         };
 
 
@@ -630,6 +638,16 @@ namespace PowerPointLabs.AgendaLab2
             }
         }
 
+        private static List<AgendaSection> GetAllButFirstSection()
+        {
+            var sections = Sections;
+            if (sections.Count > 1)
+            {
+                sections.RemoveAt(0);
+            }
+            return sections;
+        }
+
 
         /// <summary>
         /// Returns -1 when old section index is not found.
@@ -680,12 +698,16 @@ namespace PowerPointLabs.AgendaLab2
         /// </summary>
         private static PowerPointSlide FindSectionStartSlide(AgendaSection section)
         {
-            throw new NotImplementedException();
+            var slides = PowerPointPresentation.Current.Slides;
+            int firstSlideIndex = SectionFirstSlideIndex(section);
+            return slides[firstSlideIndex - 1];
         }
 
         private static PowerPointSlide FindSectionEndSlide(AgendaSection section)
         {
-            throw new NotImplementedException();
+            var slides = PowerPointPresentation.Current.Slides;
+            int firstSlideIndex = SectionLastSlideIndex(section);
+            return slides[firstSlideIndex - 1];
         }
 
         /// <summary>
@@ -801,18 +823,6 @@ namespace PowerPointLabs.AgendaLab2
             }
         }
 
-        private static void CreateVisualAgenda()
-        {
-            throw new NotImplementedException();
-            /*
-            var sections = Sections;
-
-            PrepareVisualAgendaSlideCapture(sections);
-
-            var refSlide = CreateVisualReferenceSlide();
-
-            SyncAgendaVisual(sections, refSlide);*/
-        }
 
         private static PowerPointSlide CreateBeamReferenceSlide()
         {
@@ -839,7 +849,7 @@ namespace PowerPointLabs.AgendaLab2
             AgendaShape.SetShapeName(titleShape, ShapePurpose.TitleShape, AgendaSection.None);
             AgendaShape.SetShapeName(contentShape, ShapePurpose.ContentShape, AgendaSection.None);
 
-            Graphics.SetText(titleShape, TextCollection.AgendaLabBulletTitleContent);
+            Graphics.SetText(titleShape, TextCollection.AgendaLabTitleContent);
             Graphics.SetText(contentShape, TextCollection.AgendaLabBulletVisitedContent,
                                             TextCollection.AgendaLabBulletHighlightedContent,
                                             TextCollection.AgendaLabBulletUnvisitedContent);
@@ -860,8 +870,74 @@ namespace PowerPointLabs.AgendaLab2
 
         private static PowerPointSlide CreateVisualReferenceSlide()
         {
-            throw new NotImplementedException();
+            var refSlide = PowerPointSlide.FromSlideFactory(PowerPointPresentation.Current
+                                                            .Presentation
+                                                            .Slides
+                                                            .Add(1, PpSlideLayout.ppLayoutTitleOnly));
+
+            var titleBar = refSlide.Shapes.Placeholders[1];
+            AgendaShape.SetShapeName(titleBar, ShapePurpose.TitleShape, AgendaSection.None);
+            Graphics.SetText(titleBar, TextCollection.AgendaLabTitleContent);
+
+            InsertVisualAgendaSectionImages(refSlide);
+
+            AgendaSlide.SetAsReferenceSlideName(refSlide, Type.Visual);
+            refSlide.AddTemplateSlideMarker();
+            refSlide.Hidden = true;
+            refSlide.DeleteIndicator();
+
+            return refSlide;
         }
+
+        /// <summary>
+        /// Inserts the section images into the reference slide in a nice square pattern and names them appropriately.
+        /// </summary>
+        private static void InsertVisualAgendaSectionImages(PowerPointSlide refSlide)
+        {
+            var sections = GetAllButFirstSection();
+
+            float slideWidth = PowerPointPresentation.Current.SlideWidth;
+            float slideHeight = PowerPointPresentation.Current.SlideHeight;
+            float aspectRatio = slideWidth / slideHeight;
+
+            // Can be tweaked.
+            float panelFillRatio = 0.9f;
+            float canvasTop = slideHeight * 0.25f;
+            float canvasBottom = slideHeight * 0.85f;
+
+            float canvasHeight = canvasBottom - canvasTop;
+            float canvasWidth = aspectRatio*canvasHeight;
+            float canvasLeft = (slideWidth - canvasWidth)/2;
+
+            int nColumns = (int)Math.Ceiling(Math.Sqrt(sections.Count));
+            int nRows = Common.CeilingDivide(sections.Count, nColumns);
+            float panelWidth = canvasWidth/nColumns;
+            float panelHeight = panelWidth/aspectRatio;
+
+            float pictureWidth = panelFillRatio*panelWidth;
+            float pictureHeight = panelFillRatio*panelHeight;
+            float pictureXOffset = canvasLeft + (panelWidth - pictureWidth)/2;
+            float pictureYOffset = canvasTop + (canvasHeight - nRows*panelHeight)/2 + (panelHeight - pictureHeight)/2;
+
+            foreach (var section in sections)
+            {
+                var sectionFirstSlide = FindSectionStartSlide(section);
+                var shape = refSlide.InsertSnapshotOfSlide(sectionFirstSlide);
+
+                AgendaShape.SetShapeName(shape, ShapePurpose.VisualAgendaImage, section);
+                int position = section.Index - 2;
+                int xPosition = position%nColumns;
+                int yPosition = position/nColumns;
+
+                shape.Left = pictureXOffset + xPosition*panelWidth;
+                shape.Top = pictureYOffset + yPosition*panelHeight;
+                shape.Width = pictureWidth;
+                shape.Height = pictureHeight;
+            }
+        }
+
+
+
 
 
         private static void PrepareBeamAgendaShapes(List<AgendaSection> sections, PowerPointSlide refSlide)
