@@ -66,7 +66,7 @@ namespace PowerPointLabs.AgendaLab2
             for (var i = 0; i < sectionSlides.Count; ++i) assignmentList.Add(-1);
 
             // Step 1a: Filling in Template Table
-            MatchTemplateTableWithSlides(template, sectionSlides, templateTable, assignmentList);
+            MatchTemplateTableWithSlides(template, sectionSlides, templateTable, assignmentList, currentSection);
 
             // Step 1b: Generating Assignment List
             int indexOfFirstBackSlide;
@@ -198,7 +198,7 @@ namespace PowerPointLabs.AgendaLab2
         }
 
         private static void MatchTemplateTableWithSlides(AgendaTemplate template, List<PowerPointSlide> sectionSlides,
-            TemplateIndexTable templateTable, List<int> assignmentList)
+            TemplateIndexTable templateTable, List<int> assignmentList, AgendaSection currentSection)
         {
             for (int i = 0; i < template.FrontSlidesCount; ++i)
             {
@@ -207,6 +207,7 @@ namespace PowerPointLabs.AgendaLab2
                 {
                     if (!AgendaSlide.MatchesPurpose(sectionSlides[j], purpose)) continue;
                     templateTable.FrontIndexes[i] = j;
+                    AgendaSlide.SetSlideName(sectionSlides[j], template.Type, purpose, currentSection);
                     assignmentList[j] = TemplateIndexTable.Reserved;
                     break;
                 }
@@ -219,6 +220,7 @@ namespace PowerPointLabs.AgendaLab2
                 {
                     if (!AgendaSlide.MatchesPurpose(sectionSlides[j], purpose)) continue;
                     templateTable.BackIndexes[i] = j;
+                    AgendaSlide.SetSlideName(sectionSlides[j], template.Type, purpose, currentSection);
                     assignmentList[j] = TemplateIndexTable.Reserved;
                     break;
                 }

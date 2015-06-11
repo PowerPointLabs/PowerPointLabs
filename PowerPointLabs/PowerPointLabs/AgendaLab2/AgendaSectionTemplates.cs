@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text;
-using DocumentFormat.OpenXml.Office2010.Drawing.Charts;
 using PowerPointLabs.Models;
 
 namespace PowerPointLabs.AgendaLab2
