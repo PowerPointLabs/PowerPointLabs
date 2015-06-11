@@ -33,5 +33,17 @@ namespace PowerPointLabs.FunctionalTestInterface.Impl
         {
             PowerPointLabs.Spotlight.AddSpotlightEffect();
         }
+
+        public void FitToWidth()
+        {
+            var selectedShape = PowerPointCurrentPresentationInfo.CurrentSelection.ShapeRange[1];
+            FitToSlide.FitToWidth(selectedShape);
+        }
+
+        public void FitToHeight()
+        {
+            var selectedShape = PowerPointCurrentPresentationInfo.CurrentSelection.ShapeRange[1];
+            FitToSlide.FitToHeight(selectedShape);
+        }
     }
 }
