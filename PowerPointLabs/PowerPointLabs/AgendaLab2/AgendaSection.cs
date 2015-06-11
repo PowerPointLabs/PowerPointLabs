@@ -26,7 +26,7 @@ namespace PowerPointLabs.AgendaLab2
             return Name + "_" + Index;
         }
 
-        public bool matchIndex(AgendaSection other)
+        public bool MatchesIndex(AgendaSection other)
         {
             return Index == other.Index;
         }

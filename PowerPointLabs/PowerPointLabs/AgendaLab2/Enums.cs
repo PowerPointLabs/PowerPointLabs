@@ -27,6 +27,8 @@ namespace PowerPointLabs.AgendaLab2
         // For Visual Agenda
         ZoomIn,
         ZoomOut,
+        FinalZoomOut,
+
         VisualAgendaSection,
         EndOfVisualAgenda
     };

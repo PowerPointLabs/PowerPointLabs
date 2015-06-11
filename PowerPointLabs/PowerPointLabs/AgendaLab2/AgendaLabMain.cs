@@ -87,10 +87,10 @@ namespace PowerPointLabs.AgendaLab2
                         CreateBeamAgenda(slideTracker.SelectedSlides);
                         break;
                     case Type.Bullet:
-                        CreateBulletAgenda();
+                        CreateBulletAgenda(slideTracker);
                         break;
                     case Type.Visual:
-                        CreateVisualAgenda();
+                        CreateVisualAgenda(slideTracker);
                         break;
                 }
 
@@ -172,11 +172,13 @@ namespace PowerPointLabs.AgendaLab2
                 switch (type)
                 {
                     case Type.Beam:
+
                         break;
                     case Type.Bullet:
-                        SyncBulletAgenda(refSlide);
+                        SyncBulletAgenda(slideTracker, refSlide);
                         break;
                     case Type.Visual:
+                        SyncVisualAgenda(slideTracker, refSlide);
                         break;
                 }
 
@@ -215,24 +217,24 @@ namespace PowerPointLabs.AgendaLab2
         /// <summary>
         /// Assumption: no reference slide exists
         /// </summary>
-        private static void CreateBulletAgenda()
+        private static void CreateBulletAgenda(SlideSelectionTracker slideTracker)
         {
             var refSlide = CreateBulletReferenceSlide();
 
             // here we invoke sync logic, since it's the same behavior as sync
-            SyncBulletAgenda(refSlide);
+            SyncBulletAgenda(slideTracker, refSlide);
         }
 
 
         /// <summary>
         /// Assumption: no reference slide exists
         /// </summary>
-        private static void CreateVisualAgenda()
+        private static void CreateVisualAgenda(SlideSelectionTracker slideTracker)
         {
             var refSlide = CreateVisualReferenceSlide();
 
             // here we invoke sync logic, since it's the same behavior as sync
-            SyncVisualAgenda(refSlide);
+            SyncVisualAgenda(slideTracker, refSlide);
         }
 
 
@@ -280,13 +282,8 @@ namespace PowerPointLabs.AgendaLab2
             slide.MoveTo(1);
         }
 
-        private static void SyncBulletAgenda(PowerPointSlide refSlide)
+        private static void SyncBulletAgenda(SlideSelectionTracker slideTracker, PowerPointSlide refSlide)
         {
-            if (InvalidBulletAgendaReferenceSlide(refSlide))
-            {
-                return;
-            }
-
             var sections = Sections;
 
             ScrambleSlideSectionNames();
@@ -295,27 +292,38 @@ namespace PowerPointLabs.AgendaLab2
                 var template = new BulletAgendaTemplate();
                 ConfigureTemplate(currentSection, template);
 
-                var templateTable = RebuildSectionUsingTemplate(currentSection, template);
+                var templateTable = RebuildSectionUsingTemplate(slideTracker, currentSection, template);
                 SynchroniseAllSlides(template, templateTable, refSlide, sections, currentSection);
             }
         }
 
 
-        private static void SyncVisualAgenda(PowerPointSlide refSlide)
+        private static void SyncVisualAgenda(SlideSelectionTracker slideTracker, PowerPointSlide refSlide)
         {
             var sections = Sections;
             //var sectionMappings = GetSectionMappings();
             //RemapVisualAgendaImages(sectionMappings);
 
+            DeleteAllZoomSlides(slideTracker);
             ScrambleSlideSectionNames();
             foreach (var currentSection in sections)
             {
                 var template = new VisualAgendaTemplate();
                 ConfigureTemplate(currentSection, template);
 
-                var templateTable = RebuildSectionUsingTemplate(currentSection, template);
+                var templateTable = RebuildSectionUsingTemplate(slideTracker, currentSection, template);
                 SynchroniseAllSlides(template, templateTable, refSlide, sections, currentSection);
             }
+        }
+
+        private static void DeleteAllZoomSlides(SlideSelectionTracker slideTracker)
+        {
+            PowerPointPresentation.Current.Slides
+                                        .Where(AgendaSlide.MeetsConditions(slide => slide.SlidePurpose == SlidePurpose.ZoomIn ||
+                                                                                    slide.SlidePurpose == SlidePurpose.ZoomOut ||
+                                                                                    slide.SlidePurpose == SlidePurpose.FinalZoomOut))
+                                        .ToList()
+                                        .ForEach(slideTracker.DeleteSlideAndTrack);
         }
 
         /// <summary>
@@ -393,9 +401,86 @@ namespace PowerPointLabs.AgendaLab2
         public static SyncFunction SyncVisualAgendaSlide = (refSlide, sections, currentSection, targetSlide) =>
         {
             SyncSingleAgendaGeneral(refSlide, targetSlide);
+            ReplaceVisualImagesWithAfterZoomOutImages(targetSlide, currentSection.Index);
+
+            if (currentSection.Index > 2)
+            {
+                // Not first visual section.
+                var zoomOutShape = FindShapeCorrespondingToSection(targetSlide, currentSection.Index - 1);
+                GenerateVisualAgendaSlideZoomOut(targetSlide, zoomOutShape);
+            }
+
+            var zoomInShape = FindShapeCorrespondingToSection(targetSlide, currentSection.Index);
+            GenerateVisualAgendaSlideZoomIn(targetSlide, zoomInShape);
 
             targetSlide.DeletePlaceholderShapes();
         };
+
+        public static SyncFunction SyncVisualAgendaEndSlide = (refSlide, sections, currentSection, targetSlide) =>
+        {
+            SyncSingleAgendaGeneral(refSlide, targetSlide);
+            ReplaceVisualImagesWithAfterZoomOutImages(targetSlide, currentSection.Index + 1);
+
+            var zoomOutShape = FindShapeCorrespondingToSection(targetSlide, currentSection.Index);
+            GenerateVisualAgendaSlideZoomOut(targetSlide, zoomOutShape, finalZoomOut: true);
+
+            targetSlide.DeletePlaceholderShapes();
+        };
+
+        private static void ReplaceVisualImagesWithAfterZoomOutImages(PowerPointSlide slide, int sectionIndex)
+        {
+            for (int i = 2; i < sectionIndex; ++i)
+            {
+                var imageShape = slide.Shapes
+                                    .Cast<Shape>()
+                                    .FirstOrDefault(AgendaShape.MeetsConditions(shape => shape.ShapePurpose == ShapePurpose.VisualAgendaImage &&
+                                                                                        shape.Section.Index == i));
+
+                var sectionEndSlide = FindSectionLastNonAgendaSlide(i);
+                var snapshotShape = slide.InsertExitSnapshotOfSlide(sectionEndSlide);
+                Graphics.SyncShape(imageShape, snapshotShape, pickupShapeFormat: false, pickupTextContent: false, pickupTextFormat: false);
+                snapshotShape.Name = imageShape.Name;
+                imageShape.Delete();
+            }
+        }
+
+
+        private static Shape FindShapeCorrespondingToSection(PowerPointSlide inSlide, int sectionIndex)
+        {
+            return inSlide.GetShape(AgendaShape.MeetsConditions(shape => shape.ShapePurpose == ShapePurpose.VisualAgendaImage &&
+                                                                        sectionIndex == shape.Section.Index));
+        }
+
+
+        private static void GenerateVisualAgendaSlideZoomIn(PowerPointSlide slide, Shape zoomInShape)
+        {
+            // add drill down effect and clean up current slide by deleting drill down
+            // shape and recover original slide shape visibility
+            PowerPointDrillDownSlide addedSlide;
+            AutoZoom.AddDrillDownAnimation(zoomInShape, slide, out addedSlide, includeAckSlide: false);
+            slide.GetShapesWithRule(new Regex("PPTZoomIn"))[0].Delete();
+            AgendaSection section = AgendaSlide.Decode(slide).Section;
+            AgendaSlide.SetSlideName(addedSlide, Type.Visual, SlidePurpose.ZoomIn, section);
+            zoomInShape.Visible = MsoTriState.msoTrue;
+        }
+
+        private static void GenerateVisualAgendaSlideZoomOut(PowerPointSlide slide, Shape zoomOutShape, bool finalZoomOut = false)
+        {
+            // add step back effect  and clean up current slide by deleting step back
+            // shape and recover original slide shape visibility
+            PowerPointStepBackSlide addedSlide;
+            AutoZoom.AddStepBackAnimation(zoomOutShape, slide, out addedSlide, includeAckSlide: false);
+            slide.GetShapesWithRule(new Regex("PPTZoomOut"))[0].Delete();
+            AgendaSection section = AgendaSlide.Decode(slide).Section;
+            AgendaSlide.SetSlideName(addedSlide, Type.Visual, finalZoomOut ? SlidePurpose.FinalZoomOut : SlidePurpose.ZoomOut, section);
+            zoomOutShape.Visible = MsoTriState.msoTrue;
+
+            var index = slide.Index;
+
+            // move the step back slide to the first slide of the section
+            PowerPointPresentation.Current.Presentation.Slides[index - 1].MoveTo(index);
+            slide.MoveTo(index);
+        }
 
         public static SyncFunction SyncBulletAgendaSlide = (refSlide, sections, currentSection, targetSlide) =>
         {
@@ -686,28 +771,45 @@ namespace PowerPointLabs.AgendaLab2
             throw new NotImplementedException();
         }
 
-
-        /// <summary>
-        /// the function will return the start agenda slide if the first slide of the requested
-        /// section is an agenda slide, else it will return null. It also modify the name of the
-        /// start slide to adapt the section's name change.
-        /// 
-        /// if it's beam type or none type, return the slide immediately. None type should be
-        /// used if the user wants to return the first slide of each section regardless if
-        /// it's an agenda slide.
-        /// </summary>
         private static PowerPointSlide FindSectionStartSlide(AgendaSection section)
         {
-            var slides = PowerPointPresentation.Current.Slides;
-            int firstSlideIndex = SectionFirstSlideIndex(section);
-            return slides[firstSlideIndex - 1];
+            return FindSectionStartSlide(section.Index);
         }
 
         private static PowerPointSlide FindSectionEndSlide(AgendaSection section)
         {
+            return FindSectionEndSlide(section.Index);
+        }
+
+
+        private static PowerPointSlide FindSectionLastNonAgendaSlide(int sectionIndex)
+        {
             var slides = PowerPointPresentation.Current.Slides;
-            int firstSlideIndex = SectionLastSlideIndex(section);
+            int currentIndex = SectionLastSlideIndex(sectionIndex) - 1;
+            while (AgendaSlide.IsAnyAgendaSlide(slides[currentIndex]))
+            {
+                currentIndex--;
+                if (currentIndex < 0)
+                {
+                    return null;
+                }
+            }
+            return slides[currentIndex];
+        }
+
+
+        private static PowerPointSlide FindSectionStartSlide(int sectionIndex)
+        {
+            var slides = PowerPointPresentation.Current.Slides;
+            int firstSlideIndex = SectionFirstSlideIndex(sectionIndex);
             return slides[firstSlideIndex - 1];
+        }
+
+        private static PowerPointSlide FindSectionEndSlide(int sectionIndex)
+        {
+            var slides = PowerPointPresentation.Current.Slides;
+            int lastSlideIndex = SectionLastSlideIndex(sectionIndex);
+            return slides[lastSlideIndex - 1];
         }
 
         /// <summary>
@@ -715,8 +817,7 @@ namespace PowerPointLabs.AgendaLab2
         /// </summary>
         private static int SectionFirstSlideIndex(AgendaSection section)
         {
-            var sectionProperties = PowerPointPresentation.Current.SectionProperties;
-            return sectionProperties.FirstSlide(section.Index);
+            return SectionFirstSlideIndex(section.Index);
         }
 
         /// <summary>
@@ -724,12 +825,29 @@ namespace PowerPointLabs.AgendaLab2
         /// </summary>
         private static int SectionLastSlideIndex(AgendaSection section)
         {
+            return SectionLastSlideIndex(section.Index);
+        }
+
+        /// <summary>
+        /// 1-indexed.
+        /// </summary>
+        private static int SectionFirstSlideIndex(int sectionIndex)
+        {
+            var sectionProperties = PowerPointPresentation.Current.SectionProperties;
+            return sectionProperties.FirstSlide(sectionIndex);
+        }
+
+        /// <summary>
+        /// 1-indexed
+        /// </summary>
+        private static int SectionLastSlideIndex(int sectionIndex)
+        {
             var sectionProperties = PowerPointPresentation.Current.SectionProperties;
             int lastSlideIndex = PowerPointPresentation.Current.SlideCount;
 
-            if (!IsLastSection(section))
+            if (!IsLastSection(sectionIndex))
             {
-                lastSlideIndex = sectionProperties.FirstSlide(section.Index + 1) - 1;
+                lastSlideIndex = sectionProperties.FirstSlide(sectionIndex + 1) - 1;
             }
 
             return lastSlideIndex;
@@ -748,9 +866,9 @@ namespace PowerPointLabs.AgendaLab2
             return slides.GetRange(firstSlideIndex - 1, lastSlideIndex - firstSlideIndex + 1);
         }
 
-        private static bool IsLastSection(AgendaSection section)
+        private static bool IsLastSection(int sectionIndex)
         {
-            return section.Index == NumberOfSections;
+            return sectionIndex == NumberOfSections;
         }
 
         #endregion
@@ -922,7 +1040,7 @@ namespace PowerPointLabs.AgendaLab2
             foreach (var section in sections)
             {
                 var sectionFirstSlide = FindSectionStartSlide(section);
-                var shape = refSlide.InsertSnapshotOfSlide(sectionFirstSlide);
+                var shape = refSlide.InsertEntrySnapshotOfSlide(sectionFirstSlide);
 
                 AgendaShape.SetShapeName(shape, ShapePurpose.VisualAgendaImage, section);
                 int position = section.Index - 2;

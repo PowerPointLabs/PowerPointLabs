@@ -51,7 +51,7 @@ namespace PowerPointLabs.AgendaLab2
         /// Names the agenda slides properly.
         /// Assumption: Reference slide is the first slide.
         /// </summary>
-        private static TemplateIndexTable RebuildSectionUsingTemplate(AgendaSection currentSection, AgendaTemplate template)
+        private static TemplateIndexTable RebuildSectionUsingTemplate(SlideSelectionTracker slideTracker, AgendaSection currentSection, AgendaTemplate template)
         {
             if (template.NotConfigured) throw new ArgumentException("Template is not configured yet.");
 
@@ -90,7 +90,7 @@ namespace PowerPointLabs.AgendaLab2
             }
 
             // Step 5: Delete all slides marked for deletion.
-            markedForDeletion.ForEach(slide => slide.Delete());
+            markedForDeletion.ForEach(slideTracker.DeleteSlideAndTrack);
 
 
             return templateTable;

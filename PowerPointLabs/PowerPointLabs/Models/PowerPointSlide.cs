@@ -312,10 +312,10 @@ namespace PowerPointLabs.Models
 
 
         /// <summary>
-        /// Creates a snapshot of snapshotSlide and places an image of the slide in this slide
+        /// Creates a snapshot of snapshotSlide before entry animations and places an image of the slide in this slide
         /// Returns the image shape.
         /// </summary>
-        public Shape InsertSnapshotOfSlide(PowerPointSlide snapshotSlide)
+        public Shape InsertEntrySnapshotOfSlide(PowerPointSlide snapshotSlide)
         {
             PowerPointSlide nextSlideCopy = snapshotSlide.Duplicate();
             nextSlideCopy.Shapes
@@ -327,6 +327,26 @@ namespace PowerPointLabs.Models
             nextSlideCopy.Copy();
             Shape slidePicture = _slide.Shapes.PasteSpecial(PpPasteDataType.ppPastePNG)[1];
             nextSlideCopy.Delete();
+            return slidePicture;
+        }
+
+
+        /// <summary>
+        /// Creates a snapshot of snapshotSlide after exit animations and places an image of the slide in this slide
+        /// Returns the image shape.
+        /// </summary>
+        public Shape InsertExitSnapshotOfSlide(PowerPointSlide snapshotSlide)
+        {
+            PowerPointSlide previousSlideCopy = snapshotSlide.Duplicate();
+            previousSlideCopy.Shapes
+                            .Cast<Shape>()
+                            .Where(shape => previousSlideCopy.HasExitAnimation(shape))
+                            .ToList()
+                            .ForEach(shape => shape.Delete());
+
+            previousSlideCopy.Copy();
+            Shape slidePicture = _slide.Shapes.PasteSpecial(PpPasteDataType.ppPastePNG)[1];
+            previousSlideCopy.Delete();
             return slidePicture;
         }
 

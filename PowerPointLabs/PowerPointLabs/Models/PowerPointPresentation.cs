@@ -153,16 +153,7 @@ namespace PowerPointLabs.Models
         {
             get
             {
-                var interopSlides = PowerPointCurrentPresentationInfo.SelectedSlides;
-                var slides = new List<PowerPointSlide>();
-
-                foreach (Slide interopSlide in interopSlides)
-                {
-                    PowerPointSlide s = PowerPointSlide.FromSlideFactory(interopSlide);
-                    slides.Add(s);
-                }
-
-                return slides;
+                return PowerPointCurrentPresentationInfo.SelectedSlides.ToList();
             }
         }
 

@@ -23,7 +23,8 @@ namespace PowerPointLabs
             AddDrillDownAnimation(selectedShape, currentSlide, out addedSlide);
         }
 
-        public static void AddDrillDownAnimation(PowerPoint.Shape selectedShape, PowerPointSlide currentSlide, out PowerPointDrillDownSlide addedSlide)
+        public static void AddDrillDownAnimation(PowerPoint.Shape selectedShape, PowerPointSlide currentSlide,
+            out PowerPointDrillDownSlide addedSlide, bool includeAckSlide = true)
         {
             try
             {
@@ -94,7 +95,7 @@ namespace PowerPointLabs
 
                 Globals.ThisAddIn.Application.ActiveWindow.View.GotoSlide(addedSlide.Index);
                 Globals.ThisAddIn.Application.CommandBars.ExecuteMso("AnimationPreview");
-                PowerPointPresentation.Current.AddAckSlide();
+                if (includeAckSlide) PowerPointPresentation.Current.AddAckSlide();
             }
             catch (Exception e)
             {
@@ -115,7 +116,8 @@ namespace PowerPointLabs
             AddStepBackAnimation(selectedShape, currentSlide, out addedSlide);
         }
 
-        public static void AddStepBackAnimation(PowerPoint.Shape selectedShape, PowerPointSlide currentSlide, out PowerPointStepBackSlide addedSlide)
+        public static void AddStepBackAnimation(PowerPoint.Shape selectedShape, PowerPointSlide currentSlide,
+            out PowerPointStepBackSlide addedSlide, bool includeAckSlide = true)
         {
             try
             {
@@ -171,7 +173,7 @@ namespace PowerPointLabs
                 currentSlide.Transition.Duration = 0.25f;
                 Globals.ThisAddIn.Application.ActiveWindow.View.GotoSlide(addedSlide.Index);
                 Globals.ThisAddIn.Application.CommandBars.ExecuteMso("AnimationPreview");
-                PowerPointPresentation.Current.AddAckSlide();
+                if (includeAckSlide) PowerPointPresentation.Current.AddAckSlide();
             }
             catch (Exception e)
             {
