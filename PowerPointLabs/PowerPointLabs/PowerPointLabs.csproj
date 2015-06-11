@@ -228,7 +228,9 @@
   -->
   <ItemGroup>
     <Compile Include="AgendaLab.cs" />
-    <Compile Include="AgendaLab2\AgendaLabSyncLogic.cs" />
+    <Compile Include="AgendaLab2\AgendaLabSyncFunctions.cs" />
+    <Compile Include="AgendaLab2\AgendaLabTemplateSyncLogic.cs" />
+    <Compile Include="AgendaLab2\AgendaLabUtility.cs" />
     <Compile Include="AgendaLab2\AgendaSection.cs" />
     <Compile Include="AgendaLab2\AgendaSectionTemplates.cs" />
     <Compile Include="AgendaLab2\AgendaShape.cs" />
