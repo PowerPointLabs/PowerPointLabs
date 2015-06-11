@@ -28,5 +28,10 @@ namespace PowerPointLabs.FunctionalTestInterface.Impl
         {
             NotesToCaptions.EmbedCaptionsOnSelectedSlides();
         }
+
+        public void Spotlight()
+        {
+            PowerPointLabs.Spotlight.AddSpotlightEffect();
+        }
     }
 }

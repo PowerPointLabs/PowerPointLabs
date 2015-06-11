@@ -6,5 +6,6 @@
         void AutoAnimate();
         void AnimateInSlide();
         void AutoCaptions();
+        void Spotlight();
     }
 }
