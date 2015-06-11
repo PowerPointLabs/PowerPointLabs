@@ -45,5 +45,11 @@ namespace PowerPointLabs.FunctionalTestInterface.Impl
             var selectedShape = PowerPointCurrentPresentationInfo.CurrentSelection.ShapeRange[1];
             FitToSlide.FitToHeight(selectedShape);
         }
+
+        public void ConvertToPic()
+        {
+            var selection = PowerPointCurrentPresentationInfo.CurrentSelection;
+            ConvertToPicture.Convert(selection);
+        }
     }
 }

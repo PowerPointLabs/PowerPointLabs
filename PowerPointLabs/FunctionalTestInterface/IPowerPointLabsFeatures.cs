@@ -9,5 +9,6 @@
         void Spotlight();
         void FitToWidth();
         void FitToHeight();
+        void ConvertToPic();
     }
 }
