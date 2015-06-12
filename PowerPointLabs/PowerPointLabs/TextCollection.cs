@@ -305,6 +305,7 @@
         public const string AgendaLabNoReferenceSlideError = "The reference slide is missing. Please remove and regenerate the agenda.";
         public const string AgendaLabInvalidReferenceSlideError = "The reference slide is invalid. Please remove and regenerate the agenda.";
         public const string AgendaLabDuplicateSectionError = "There are multiple sections with the same section name. Please rename the sections accordingly.";
+        public static string AgendaLabSectionNameTooLongError = "One of the section names exceeds the maximum size allowed by Agenda Lab. Please rename the section accordingly.";
 
         public const string AgendaLabLoadingDialogTitle = "Generating...";
         public const string AgendaLabLoadingDialogContent = "Agenda is generating, please wait...";

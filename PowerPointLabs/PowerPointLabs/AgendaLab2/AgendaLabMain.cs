@@ -24,6 +24,8 @@ namespace PowerPointLabs.AgendaLab2
     internal static partial class AgendaLabMain
     {
         private static LoadingDialog _loadDialog = new LoadingDialog();
+        private const int SectionNameMaxLength = 180;
+
 
         #region Bullet Formats
         private struct BulletFormats
@@ -313,7 +315,7 @@ namespace PowerPointLabs.AgendaLab2
             return refSlide;
         }
 
-        private static Shape CreateBeamAgendaShapes(PowerPointSlide refSlide, Direction beamDirection = Direction.Top)
+        private static void CreateBeamAgendaShapes(PowerPointSlide refSlide, Direction beamDirection = Direction.Top)
         {
             var sections = GetAllButFirstSection();
 
@@ -330,8 +332,6 @@ namespace PowerPointLabs.AgendaLab2
 
             var group = refSlide.GroupShapes(beamShapeItems);
             AgendaShape.SetShapeName(group, ShapePurpose.BeamShapeMainGroup, AgendaSection.None);
-
-            return group;
         }
 
         private static List<Shape> CreateBeamAgendaTextBoxes(PowerPointSlide refSlide, List<AgendaSection> sections)
@@ -931,7 +931,19 @@ namespace PowerPointLabs.AgendaLab2
                 return false;
             }
 
+            if (HasTooLongSectionName())
+            {
+                MessageBox.Show(TextCollection.AgendaLabSectionNameTooLongError);
+                return false;
+            }
+
             return true;
+        }
+
+        private static bool HasTooLongSectionName()
+        {
+            var sections = Sections;
+            return sections.Any(section => section.Name.Length > SectionNameMaxLength);
         }
 
         /// <summary>
@@ -950,11 +962,6 @@ namespace PowerPointLabs.AgendaLab2
                 }
             }
             return false;
-        }
-
-        private static bool IsReferenceSlidePresent()
-        {
-            return FindReferenceSlide() != null;
         }
 
         private static bool AgendaPresent()

@@ -92,7 +92,6 @@ namespace PowerPointLabs.AgendaLab2
         {
             get
             {
-                // TODO: This is a zip-with-index code. I can rephrase this few lines better (more functional)
                 var sectionNames = PowerPointPresentation.Current.Sections;
                 var sections = new List<AgendaSection>();
                 for (var i = 0; i < sectionNames.Count; ++i)
