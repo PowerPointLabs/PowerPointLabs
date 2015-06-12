@@ -2208,7 +2208,7 @@ namespace PowerPointLabs
         {
             Globals.ThisAddIn.Application.StartNewUndoEntry();
 
-            AgendaLab.GenerateAgenda(AgendaLab.Type.Beam);
+            AgendaLab2.AgendaLabMain.GenerateAgenda(AgendaLab2.Type.Beam);
             GC.Collect();
         }
 
@@ -2216,7 +2216,6 @@ namespace PowerPointLabs
         {
             Globals.ThisAddIn.Application.StartNewUndoEntry();
 
-            //AgendaLab.GenerateAgenda(AgendaLab.Type.Bullet);
             AgendaLab2.AgendaLabMain.GenerateAgenda(AgendaLab2.Type.Bullet);
             GC.Collect();
         }
@@ -2225,7 +2224,6 @@ namespace PowerPointLabs
         {
             Globals.ThisAddIn.Application.StartNewUndoEntry();
 
-            //AgendaLab.GenerateAgenda(AgendaLab.Type.Visual);
             AgendaLab2.AgendaLabMain.GenerateAgenda(AgendaLab2.Type.Visual);
             GC.Collect();
         }
@@ -2234,7 +2232,6 @@ namespace PowerPointLabs
         {
             Globals.ThisAddIn.Application.StartNewUndoEntry();
 
-            //AgendaLab.RemoveAgenda();
             AgendaLab2.AgendaLabMain.RemoveAgenda();
             GC.Collect();
         }
@@ -2243,7 +2240,6 @@ namespace PowerPointLabs
         {
             Globals.ThisAddIn.Application.StartNewUndoEntry();
 
-            //AgendaLab.SynchronizeAgenda();
             AgendaLab2.AgendaLabMain.SynchroniseAgenda();
             GC.Collect();
         }

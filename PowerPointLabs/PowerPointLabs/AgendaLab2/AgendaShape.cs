@@ -66,7 +66,6 @@ namespace PowerPointLabs.AgendaLab2
         }
 
 
-
         /// <summary>
         /// </summary>
         /// <param name="condition">Input a condition on (AgendaShape : bool)</param>

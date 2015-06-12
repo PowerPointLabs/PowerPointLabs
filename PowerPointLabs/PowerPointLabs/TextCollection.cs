@@ -314,6 +314,8 @@
 
         public const string AgendaLabReferenceSlideContent = "Visited bullet format\rHighlighted bullet format\rUnvisited bullet format\r";
 
+        public const string AgendaLabBeamHighlightedText = "Highlighted";
+
         public const string AgendaLabTemplateSlideInstructions =
                             "This slide is used as a ‘Template' for generating agenda slides. Please do not delete this slide.\r" +
                             "Adjust the design of this slide and click the 'Sync Agenda' (in Agenda Lab) to replicate the design in the other slides.";

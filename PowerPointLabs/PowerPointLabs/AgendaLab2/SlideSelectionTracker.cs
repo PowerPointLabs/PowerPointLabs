@@ -16,11 +16,11 @@ namespace PowerPointLabs.AgendaLab2
         private readonly bool isActive;
 
         public PowerPointSlide UserCurrentSlide { get; private set; }
-        private List<PowerPointSlide> _SelectedSlides;
+        private readonly List<PowerPointSlide> _selectedSlides;
 
         public List<PowerPointSlide> SelectedSlides
         {
-            get { return new List<PowerPointSlide>(SelectedSlides); }
+            get { return new List<PowerPointSlide>(_selectedSlides); }
         }
 
 
@@ -28,7 +28,7 @@ namespace PowerPointLabs.AgendaLab2
         {
             isActive = true;
             UserCurrentSlide = userCurrentSlide;
-            _SelectedSlides = selectedSlides;
+            _selectedSlides = selectedSlides;
         }
 
         public SlideSelectionTracker()
@@ -64,7 +64,7 @@ namespace PowerPointLabs.AgendaLab2
         private void RemoveSlideMeetingCondition(Predicate<PowerPointSlide> condition)
         {
             if (UserCurrentSlide != null && condition(UserCurrentSlide)) UserCurrentSlide = null;
-            _SelectedSlides.RemoveAll(condition);
+            _selectedSlides.RemoveAll(condition);
         }
 
     }

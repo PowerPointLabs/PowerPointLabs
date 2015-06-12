@@ -86,7 +86,7 @@ namespace PowerPointLabs.AgendaLab2
         }
 
         /// <summary>
-        /// 1-indexed.
+        /// The list is 0-indexed, section indexes are 1-indexed.
         /// </summary>
         private static List<AgendaSection> Sections
         {
@@ -118,21 +118,6 @@ namespace PowerPointLabs.AgendaLab2
         private static int NumberOfSections
         {
             get { return PowerPointPresentation.Current.Sections.Count; }
-        }
-
-        private static int FindSectionStart(AgendaSection section)
-        {
-            throw new NotImplementedException();
-        }
-
-        private static int FindSectionEnd(AgendaSection section)
-        {
-            throw new NotImplementedException();
-        }
-
-        private static AgendaSection FindSlideSection(PowerPointSlide slide)
-        {
-            throw new NotImplementedException();
         }
 
         private static PowerPointSlide FindSectionStartSlide(AgendaSection section)
@@ -175,6 +160,17 @@ namespace PowerPointLabs.AgendaLab2
             return slides[currentIndex];
         }
 
+        /// <summary>
+        /// Assumes that there are at least two sections.
+        /// </summary>
+        private static List<PowerPointSlide> AllSlidesAfterFirstSection()
+        {
+            var slides = PowerPointPresentation.Current.Slides;
+            int firstSlideIndex = SectionFirstSlideIndex(2);
+            int lastSlideIndex = PowerPointPresentation.Current.SlideCount;
+
+            return slides.GetRange(firstSlideIndex - 1, lastSlideIndex - firstSlideIndex + 1);
+        }
 
         private static PowerPointSlide FindSectionStartSlide(int sectionIndex)
         {
@@ -213,6 +209,24 @@ namespace PowerPointLabs.AgendaLab2
         {
             var sectionProperties = PowerPointPresentation.Current.SectionProperties;
             return sectionProperties.FirstSlide(sectionIndex);
+        }
+
+        private static AgendaSection GetSlideSection(PowerPointSlide slide)
+        {
+            var slideIndex = slide.Index;
+
+            var sections = Sections;
+            var firstSlideIndexes = sections.Select(SectionFirstSlideIndex).ToList();
+
+            int i = 0;
+            for (; i < sections.Count; ++i)
+            {
+                if (slideIndex < firstSlideIndexes[i])
+                {
+                    break;
+                }
+            }
+            return sections[i - 1];
         }
 
         /// <summary>

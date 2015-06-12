@@ -5,6 +5,7 @@ using System.IO;
 using System.Text.RegularExpressions;
 using Microsoft.Office.Core;
 using Microsoft.Office.Interop.PowerPoint;
+using PowerPointLabs.Utils;
 using Shape = Microsoft.Office.Interop.PowerPoint.Shape;
 using Shapes = Microsoft.Office.Interop.PowerPoint.Shapes;
 using Office = Microsoft.Office.Core;
@@ -538,11 +539,6 @@ namespace PowerPointLabs.Models
             return _slide.Shapes.Cast<Shape>().Where(condition).FirstOrDefault();
         }
 
-        public void DeletePlaceholderShapes()
-        {
-            _slide.Shapes.Placeholders.Cast<Shape>().ToList().ForEach(shape => shape.Delete());
-        }
-
         public List<Shape> GetShapesWithMediaType(PpMediaType type, Regex nameRule)
         {
             List<Shape> shapes = _slide.Shapes.Cast<Shape>().ToList();
@@ -568,6 +564,23 @@ namespace PowerPointLabs.Models
                                               nameRule.IsMatch(current.Name)).ToList();
 
             return matchingShapes;
+        }
+
+        public Shape GroupShapes(IEnumerable<Shape> shapes)
+        {
+            var shapeList = shapes.ToList();
+            var oldNames = shapeList.Select(shape => shape.Name).ToList();
+
+            var currentShapeNames = Shapes.Cast<Shape>().Select(shape => shape.Name);
+            var unusedNames = Common.GetUnusedStrings(currentShapeNames, shapeList.Count);
+            shapeList.Zip(unusedNames, (shape, name) => shape.Name = name).ToList();
+
+
+            var shapeRange = Shapes.Range(unusedNames);
+
+            shapeList.Zip(oldNames, (shape, name) => shape.Name = name).ToList();
+
+            return shapeRange.Group();
         }
 
         public bool HasShapeWithRule(Regex nameRule)
@@ -675,6 +688,11 @@ namespace PowerPointLabs.Models
                     return i;
             }
             return -1;
+        }
+
+        public void DeletePlaceholderShapes()
+        {
+            _slide.Shapes.Placeholders.Cast<Shape>().ToList().ForEach(shape => shape.Delete());
         }
 
         protected void DeleteSlideNotes()

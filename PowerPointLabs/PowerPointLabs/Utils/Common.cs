@@ -53,6 +53,23 @@ namespace PowerPointLabs.Utils
             return digitString;
         }
 
+        /// <summary>
+        /// Returns a list of (nStrings) strings that differ from all strings in presentStrings
+        /// </summary>
+        public static string[] GetUnusedStrings(IEnumerable<string> presentStrings, int nStrings)
+        {
+            var unusedStrings = new List<string>();
+
+            int longestString = presentStrings.Select(str => str.Length).Max();
+            string baseString = new string('a', longestString);
+            
+            for (int i = 0; i < nStrings; ++i)
+            {
+                unusedStrings.Add(baseString + i);
+            }
+            return unusedStrings.ToArray();
+        }
+
         # region Helper Function
         private static int NextDefaultNumber(List<string> nameList, string name)
         {
