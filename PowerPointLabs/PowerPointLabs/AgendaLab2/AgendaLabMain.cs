@@ -321,7 +321,7 @@ namespace PowerPointLabs.AgendaLab2
             var textBoxes = CreateBeamAgendaTextBoxes(refSlide, sections);
             SetupBeamTextBoxPositions(textBoxes, background);
 
-            var highlightedTextBox = CreateHighlightedTextBox(0, 10f, refSlide);
+            var highlightedTextBox = CreateHighlightedTextBox(0, 1f, refSlide);
 
             var beamShapeItems = new List<Shape>();
             beamShapeItems.Add(background);
@@ -476,7 +476,7 @@ namespace PowerPointLabs.AgendaLab2
         /// </summary>
         private static void InsertVisualAgendaSectionImages(PowerPointSlide refSlide)
         {
-            var sectionImages = CreateSectionImages(refSlide);
+            var sectionImages = CreateSectionImagesForAllSections(refSlide);
             ArrangeInGrid(sectionImages);
         }
 
@@ -518,7 +518,7 @@ namespace PowerPointLabs.AgendaLab2
             }
         }
 
-        private static List<Shape> CreateSectionImages(PowerPointSlide refSlide)
+        private static List<Shape> CreateSectionImagesForAllSections(PowerPointSlide refSlide)
         {
             var sections = GetAllButFirstSection();
             var sectionImages = new List<Shape>();
@@ -529,6 +529,7 @@ namespace PowerPointLabs.AgendaLab2
             }
             return sectionImages;
         }
+        
 
         private static Shape CreateSectionImage(PowerPointSlide refSlide, AgendaSection section)
         {
@@ -664,9 +665,8 @@ namespace PowerPointLabs.AgendaLab2
 
             markedForDeletion.AddRange(from entry in shapeAssignment where !assignedOldIndexes.Contains(entry.Key) select entry.Value);
 
-            var newSectionImages = 
-                unassignedNewSections.Select(section => CreateSectionImage(refSlide, section))
-                .ToList();
+            var newSectionImages = unassignedNewSections.Select(section => CreateSectionImage(refSlide, section))
+                                                        .ToList();
             PositionNewImageShapes(newSectionImages, existingImageWidth, existingImageHeight);
 
             markedForDeletion.ForEach(shape => shape.Delete());
@@ -705,6 +705,8 @@ namespace PowerPointLabs.AgendaLab2
         /// </summary> 
         private static void PositionNewImageShapes(List<Shape> shapes, float existingImageWidth, float existingImageHeight)
         {
+            if (shapes.Count == 0) return;
+
             ArrangeInGrid(shapes);
             if (existingImageWidth <= 0 || existingImageHeight <= 0) return;
 

@@ -149,7 +149,7 @@ namespace PowerPointLabs.AgendaLab2
         {
             var slides = PowerPointPresentation.Current.Slides;
             int currentIndex = SectionLastSlideIndex(sectionIndex) - 1;
-            while (AgendaSlide.IsAnyAgendaSlide(slides[currentIndex])) // TODO: ARGUMENTOUTOFRANGE
+            while (AgendaSlide.IsAnyAgendaSlide(slides[currentIndex]))
             {
                 currentIndex--;
                 if (currentIndex < 0)
@@ -242,6 +242,7 @@ namespace PowerPointLabs.AgendaLab2
                 lastSlideIndex = sectionProperties.FirstSlide(sectionIndex + 1) - 1;
             }
 
+            if (lastSlideIndex <= -1) lastSlideIndex = -1;
             return lastSlideIndex;
         }
 
@@ -254,6 +255,7 @@ namespace PowerPointLabs.AgendaLab2
 
             int firstSlideIndex = SectionFirstSlideIndex(section);
             int lastSlideIndex = SectionLastSlideIndex(section);
+            if (firstSlideIndex == -1 || lastSlideIndex == -1) return new List<PowerPointSlide>();
 
             return slides.GetRange(firstSlideIndex - 1, lastSlideIndex - firstSlideIndex + 1);
         }

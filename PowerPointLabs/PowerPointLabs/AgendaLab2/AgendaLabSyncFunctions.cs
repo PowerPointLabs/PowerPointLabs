@@ -163,7 +163,7 @@ namespace PowerPointLabs.AgendaLab2
             // add drill down effect and clean up current slide by deleting drill down
             // shape and recover original slide shape visibility
             PowerPointDrillDownSlide addedSlide;
-            AutoZoom.AddDrillDownAnimation(zoomInShape, slide, out addedSlide, includeAckSlide: false);
+            AutoZoom.AddDrillDownAnimation(zoomInShape, slide, out addedSlide, includeAckSlide: false, deletePreviouslyAdded: false);
             slide.GetShapesWithRule(new Regex("PPTZoomIn"))[0].Delete();
             AgendaSection section = AgendaSlide.Decode(slide).Section;
             AgendaSlide.SetSlideName(addedSlide, Type.Visual, SlidePurpose.ZoomIn, section);
@@ -175,7 +175,7 @@ namespace PowerPointLabs.AgendaLab2
             // add step back effect  and clean up current slide by deleting step back
             // shape and recover original slide shape visibility
             PowerPointStepBackSlide addedSlide;
-            AutoZoom.AddStepBackAnimation(zoomOutShape, slide, out addedSlide, includeAckSlide: false);
+            AutoZoom.AddStepBackAnimation(zoomOutShape, slide, out addedSlide, includeAckSlide: false, deletePreviouslyAdded: false);
             slide.GetShapesWithRule(new Regex("PPTZoomOut"))[0].Delete();
             AgendaSection section = AgendaSlide.Decode(slide).Section;
             AgendaSlide.SetSlideName(addedSlide, Type.Visual, finalZoomOut ? SlidePurpose.FinalZoomOut : SlidePurpose.ZoomOut, section);
