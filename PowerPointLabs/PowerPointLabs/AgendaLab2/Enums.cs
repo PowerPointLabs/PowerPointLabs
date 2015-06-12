@@ -45,6 +45,7 @@ namespace PowerPointLabs.AgendaLab2
         // For Beam Agenda
         BeamShapeMainGroup,
         BeamShapeText,
+        BeamShapeBackground,
         BeamShapeHighlightedText,
 
         // For Visual Agenda
