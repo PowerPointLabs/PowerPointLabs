@@ -322,6 +322,7 @@ namespace PowerPointLabs.AgendaLab2
             int rowCount = Common.CeilingDivide(textBoxes.Count, columnCount);
 
             var left = 0f;
+            var leftOffset = (slideWidth - columnCount*spacing)/2;
             var top = 0f;
 
             for (int i = 0; i < textBoxes.Count; ++i)
@@ -330,7 +331,7 @@ namespace PowerPointLabs.AgendaLab2
                 int y = i/columnCount;
 
                 var textBox = textBoxes[i];
-                textBox.Left = left + x*spacing + (spacing - textBox.Width)/2;
+                textBox.Left = left + leftOffset + x*spacing + (spacing - textBox.Width)/2;
                 textBox.Top = top + y*itemHeight;
             }
 
