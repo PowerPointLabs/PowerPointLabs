@@ -227,7 +227,6 @@
     can be found.
   -->
   <ItemGroup>
-    <Compile Include="AgendaLab.cs" />
     <Compile Include="AgendaLab2\AgendaLabSyncFunctions.cs" />
     <Compile Include="AgendaLab2\AgendaLabTemplateSyncLogic.cs" />
     <Compile Include="AgendaLab2\AgendaLabUtility.cs" />

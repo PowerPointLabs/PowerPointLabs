@@ -115,8 +115,8 @@ namespace PowerPointLabs.AgendaLab2
 
                 slideTracker.DeleteAcknowledgementSlideAndTrack();
 
-                dialogOpen = DisplayLoadingDialog(TextCollection.AgendaLabLoadingDialogTitle,
-                                                    TextCollection.AgendaLabLoadingDialogContent);
+                dialogOpen = DisplayLoadingDialog(TextCollection.AgendaLabGeneratingDialogTitle,
+                                                    TextCollection.AgendaLabGeneratingDialogContent);
                 currentWindow.ViewType = PpViewType.ppViewNormal;
 
                 switch (type)
@@ -1068,6 +1068,61 @@ namespace PowerPointLabs.AgendaLab2
         {
             throw new NotImplementedException();
         }
+
+
+
+
+        # region Event Handlers
+        public static void SlideShowBeginHandler()
+        {
+            /*var type = CurrentType;
+
+            if (type != Type.Bullet) return;
+
+            var slides = PowerPointPresentation.Current.Slides.Where(AgendaSlide.IsAnyAgendaSlide);
+
+            foreach (var slide in slides)
+            {
+                var linkShapes = slide.GetShapesWithPrefix(PptLabsAgendaBulletLinkShape);
+                var contentHolder = slide.GetShapeWithName(PptLabsAgendaContentShapeName)[0];
+                var textRange = contentHolder.TextFrame2.TextRange;
+
+                if (linkShapes.Count == 0) return;
+
+                for (var i = 1; i <= textRange.Paragraphs.Count; i++)
+                {
+                    var shape = linkShapes[i - 1];
+                    var curPara = textRange.Paragraphs[i];
+
+                    shape.Left = curPara.BoundLeft;
+                    shape.Top = curPara.BoundTop;
+                    shape.Width = curPara.BoundWidth;
+                    shape.Height = curPara.BoundHeight;
+
+                    shape.Visible = MsoTriState.msoTrue;
+                }
+            }*/
+        }
+
+        public static void SlideShowEndHandler()
+        {
+            /*var type = CurrentType;
+
+            if (type != Type.Bullet) return;
+
+            var slides = PowerPointPresentation.Current.Slides.Where(AgendaSlide.IsAnyAgendaSlide);
+
+            foreach (var slide in slides)
+            {
+                var linkShapes = slide.GetShapesWithPrefix(PptLabsAgendaBulletLinkShape);
+
+                foreach (var linkShape in linkShapes)
+                {
+                    linkShape.Visible = MsoTriState.msoFalse;
+                }
+            }*/
+        }
+        # endregion
     }
 
 }

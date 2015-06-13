@@ -818,7 +818,7 @@ namespace PowerPointLabs
         private void SlideShowBeginHandler(PowerPoint.SlideShowWindow wn)
         {
             _isInSlideShow = true;
-            AgendaLab.SlideShowBeginHandler();
+            AgendaLab2.AgendaLabMain.SlideShowBeginHandler();
         }
 
         private void SlideShowEndHandler(PowerPoint.Presentation presentation)
@@ -829,7 +829,7 @@ namespace PowerPointLabs
 
             if (recorder == null)
             {
-                AgendaLab.SlideShowEndHandler();
+                AgendaLab2.AgendaLabMain.SlideShowEndHandler();
                 return;
             }
 
@@ -872,7 +872,7 @@ namespace PowerPointLabs
             // change back the slide range settings
             Application.ActivePresentation.SlideShowSettings.RangeType = PowerPoint.PpSlideShowRangeType.ppShowAll;
 
-            AgendaLab.SlideShowEndHandler();
+            AgendaLab2.AgendaLabMain.SlideShowEndHandler();
         }
 
         private bool IsEmptyFile(string filePath)
@@ -1069,7 +1069,7 @@ namespace PowerPointLabs
 
                     for (var i = 0; i < pastedSlides.Count; i ++)
                     {
-                        if (AgendaLab.AgendaSlide.IsReferenceslide(_copiedSlides[i]))
+                        if (AgendaLab2.AgendaSlide.IsReferenceslide(_copiedSlides[i]))
                         {
                             pastedSlides[i].Name = _copiedSlides[i].Name;
                             pastedSlides[i].Design = _copiedSlides[i].Design;

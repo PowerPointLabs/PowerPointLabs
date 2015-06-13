@@ -309,8 +309,8 @@
         public static string AgendaLabSectionNameTooLongError = "One of the section names exceeds the maximum size allowed by Agenda Lab. Please rename the section accordingly.";
 
         // Dialog Boxes
-        public const string AgendaLabLoadingDialogTitle = "Generating...";
-        public const string AgendaLabLoadingDialogContent = "Agenda is generating, please wait...";
+        public const string AgendaLabGeneratingDialogTitle = "Generating...";
+        public const string AgendaLabGeneratingDialogContent = "Agenda is generating, please wait...";
         public const string AgendaLabSynchronizingDialogTitle = "Synchronizing...";
         public const string AgendaLabSynchronizingDialogContent = "Agenda is getting synchronized, please wait...";
 
