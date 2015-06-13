@@ -165,12 +165,12 @@ namespace PowerPointLabs.AgendaLab2
     }
 
     /// <summary>
-    /// Note: FrontIndexes and BackIndexes are intialised to -1.
+    /// Note: FrontIndexes and BackIndexes are intialised to NoSlide (-1).
     /// </summary>
     class TemplateIndexTable
     {
         public const int NoSlide = -1;
-        public const int Reserved = -1;
+        public const int Reserved = -2;
 
         public readonly int[] FrontIndexes;
         public readonly int[] BackIndexes;
