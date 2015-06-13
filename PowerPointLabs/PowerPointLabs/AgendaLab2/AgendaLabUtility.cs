@@ -20,7 +20,6 @@ namespace PowerPointLabs.AgendaLab2
     internal static partial class AgendaLabMain
     {
 
-
         #region UTILITY
         /// <summary>
         /// If user has slides selected, return a list of the selected slides.
@@ -119,16 +118,6 @@ namespace PowerPointLabs.AgendaLab2
             get { return PowerPointPresentation.Current.Sections.Count; }
         }
 
-        private static PowerPointSlide FindSectionStartSlide(AgendaSection section)
-        {
-            return FindSectionStartSlide(section.Index);
-        }
-
-        private static PowerPointSlide FindSectionEndSlide(AgendaSection section)
-        {
-            return FindSectionEndSlide(section.Index);
-        }
-
         private static PowerPointSlide FindSectionFirstNonAgendaSlide(int sectionIndex)
         {
             var slides = PowerPointPresentation.Current.Slides;
@@ -169,20 +158,6 @@ namespace PowerPointLabs.AgendaLab2
             int lastSlideIndex = PowerPointPresentation.Current.SlideCount;
 
             return slides.GetRange(firstSlideIndex - 1, lastSlideIndex - firstSlideIndex + 1);
-        }
-
-        private static PowerPointSlide FindSectionStartSlide(int sectionIndex)
-        {
-            var slides = PowerPointPresentation.Current.Slides;
-            int firstSlideIndex = SectionFirstSlideIndex(sectionIndex);
-            return slides[firstSlideIndex - 1];
-        }
-
-        private static PowerPointSlide FindSectionEndSlide(int sectionIndex)
-        {
-            var slides = PowerPointPresentation.Current.Slides;
-            int lastSlideIndex = SectionLastSlideIndex(sectionIndex);
-            return slides[lastSlideIndex - 1];
         }
 
         /// <summary>
@@ -248,7 +223,7 @@ namespace PowerPointLabs.AgendaLab2
         /// <summary>
         /// 0-indexed.
         /// </summary>
-        private static List<PowerPointSlide> GetSectionSlides(AgendaSection section, bool excludeReferenceSlide = false)
+        private static List<PowerPointSlide> GetSectionSlides(AgendaSection section)
         {
             var slides = PowerPointPresentation.Current.Slides;
 

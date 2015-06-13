@@ -1,17 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Drawing;
-using System.IO;
+﻿using System.Collections.Generic;
 using System.Linq;
-using System.Runtime.CompilerServices;
-using System.Runtime.InteropServices;
 using System.Text.RegularExpressions;
-using System.Windows.Forms;
 using Microsoft.Office.Core;
-using Microsoft.Office.Interop.PowerPoint;
 using PowerPointLabs.Models;
-using PowerPointLabs.Utils;
-using PowerPointLabs.Views;
 using Graphics = PowerPointLabs.Utils.Graphics;
 using Shape = Microsoft.Office.Interop.PowerPoint.Shape;
 
@@ -21,10 +12,12 @@ namespace PowerPointLabs.AgendaLab2
     {
         #region Bullet Agenda
 
+        /// <summary>
+        /// The SyncFunction used for synchronising the bullet agenda slides.
+        /// </summary>
         public static readonly SyncFunction SyncBulletAgendaSlide = (refSlide, sections, currentSection, targetSlide) =>
         {
-            AdjustBulletTemplateContent(refSlide, sections.Count);
-            SyncSingleAgendaGeneral(refSlide, targetSlide);
+            SyncShapesFromReferenceSlide(refSlide, targetSlide);
 
             var referenceContentShape = refSlide.GetShape(AgendaShape.WithPurpose(ShapePurpose.ContentShape));
             var targetContentShape = targetSlide.GetShape(AgendaShape.WithPurpose(ShapePurpose.ContentShape));
@@ -35,53 +28,31 @@ namespace PowerPointLabs.AgendaLab2
             Graphics.SyncShape(referenceContentShape, targetContentShape, pickupTextContent: false,
                 pickupTextFormat: false);
 
-            ReformatTextRange(targetContentShape.TextFrame2.TextRange, bulletFormats, currentSection);
+            ApplyBulletFormats(targetContentShape.TextFrame2.TextRange, bulletFormats, currentSection);
             targetSlide.DeletePlaceholderShapes();
         };
 
 
-        private static void AdjustBulletTemplateContent(PowerPointSlide refSlide, int numberOfSections)
-        {
-            // post process bullet points
-            var contentHolder = refSlide.GetShape(AgendaShape.WithPurpose(ShapePurpose.ContentShape));
-            var textRange = contentHolder.TextFrame2.TextRange;
-
-            while (textRange.Paragraphs.Count < numberOfSections)
-            {
-                textRange.InsertAfter("\r ");
-            }
-
-            while (textRange.Paragraphs.Count > 3 && textRange.Paragraphs.Count > numberOfSections)
-            {
-                textRange.Paragraphs[textRange.Paragraphs.Count].Delete();
-            }
-
-            for (var i = 4; i <= textRange.Paragraphs.Count; i++)
-            {
-                textRange.Paragraphs[i].ParagraphFormat.Bullet.Type = MsoBulletType.msoBulletNone;
-            }
-        }
-
-        private static void ReformatTextRange(TextRange2 textRange, BulletFormats bulletFormats, AgendaSection currentSection)
+        private static void ApplyBulletFormats(TextRange2 textRange, BulletFormats bulletFormats, AgendaSection currentSection)
         {
             // - 1 because first section in agenda is at index 2 (exclude first section)
             int focusIndex = currentSection.Index - 1;
 
             for (var i = 1; i <= textRange.Paragraphs.Count; i++)
             {
-                var curPara = textRange.Paragraphs[i];
+                var currentParagraph = textRange.Paragraphs[i];
 
                 if (i == focusIndex)
                 {
-                    Graphics.SyncTextRange(bulletFormats.Highlighted, curPara, pickupTextContent: false);
+                    Graphics.SyncTextRange(bulletFormats.Highlighted, currentParagraph, pickupTextContent: false);
                 }
                 else if (i < focusIndex)
                 {
-                    Graphics.SyncTextRange(bulletFormats.Visited, curPara, pickupTextContent: false);
+                    Graphics.SyncTextRange(bulletFormats.Visited, currentParagraph, pickupTextContent: false);
                 }
                 else
                 {
-                    Graphics.SyncTextRange(bulletFormats.Unvisited, curPara, pickupTextContent: false);
+                    Graphics.SyncTextRange(bulletFormats.Unvisited, currentParagraph, pickupTextContent: false);
                 }
             }
         }
@@ -91,10 +62,13 @@ namespace PowerPointLabs.AgendaLab2
 
         #region Visual Agenda
 
+        /// <summary>
+        /// The SyncFunction used for synchronising the Visual agenda slides (other than the last visual agenda slide).
+        /// </summary>
         public static readonly SyncFunction SyncVisualAgendaSlide = (refSlide, sections, currentSection, targetSlide) =>
         {
             DeleteVisualAgendaImageShapes(targetSlide);
-            SyncSingleAgendaGeneral(refSlide, targetSlide);
+            SyncShapesFromReferenceSlide(refSlide, targetSlide);
             ReplaceVisualImagesWithAfterZoomOutImages(targetSlide, currentSection.Index);
 
             if (currentSection.Index > 2)
@@ -110,10 +84,13 @@ namespace PowerPointLabs.AgendaLab2
             targetSlide.DeletePlaceholderShapes();
         };
 
+        /// <summary>
+        /// The SyncFunction used for synchronising the last visual agenda slide.
+        /// </summary>
         public static readonly SyncFunction SyncVisualAgendaEndSlide = (refSlide, sections, currentSection, targetSlide) =>
         {
             DeleteVisualAgendaImageShapes(targetSlide);
-            SyncSingleAgendaGeneral(refSlide, targetSlide);
+            SyncShapesFromReferenceSlide(refSlide, targetSlide);
             ReplaceVisualImagesWithAfterZoomOutImages(targetSlide, currentSection.Index + 1);
 
             var zoomOutShape = FindShapeCorrespondingToSection(targetSlide, currentSection.Index);
@@ -130,6 +107,10 @@ namespace PowerPointLabs.AgendaLab2
                 .ForEach(shape => shape.Delete());
         }
 
+        /// <summary>
+        /// Within the slide, for all sections that have been "passed", replace their visual agenda image shape with
+        /// an image of the end slide of the section.
+        /// </summary>
         private static void ReplaceVisualImagesWithAfterZoomOutImages(PowerPointSlide slide, int sectionIndex)
         {
             var indexedShapes = new Dictionary<int, Shape>();
@@ -150,18 +131,20 @@ namespace PowerPointLabs.AgendaLab2
             }
         }
 
-
+        /// <summary>
+        /// Searches for the visual agenda image shape that corresponds to the given section index in the slide and returns it.
+        /// </summary>
         private static Shape FindShapeCorrespondingToSection(PowerPointSlide inSlide, int sectionIndex)
         {
             return inSlide.GetShape(AgendaShape.MeetsConditions(shape => shape.ShapePurpose == ShapePurpose.VisualAgendaImage &&
                                                                         sectionIndex == shape.Section.Index));
         }
 
-
+        /// <summary>
+        /// Create the zoom in (drill down) effect in visual agenda. The zoom in slide is not part of the template.
+        /// </summary>
         private static void GenerateVisualAgendaSlideZoomIn(PowerPointSlide slide, Shape zoomInShape)
         {
-            // add drill down effect and clean up current slide by deleting drill down
-            // shape and recover original slide shape visibility
             PowerPointDrillDownSlide addedSlide;
             AutoZoom.AddDrillDownAnimation(zoomInShape, slide, out addedSlide, includeAckSlide: false, deletePreviouslyAdded: false);
             slide.GetShapesWithRule(new Regex("PPTZoomIn"))[0].Delete();
@@ -170,10 +153,11 @@ namespace PowerPointLabs.AgendaLab2
             zoomInShape.Visible = MsoTriState.msoTrue;
         }
 
+        /// <summary>
+        /// Create the zoom out (step back) effect in visual agenda. The zoom out slide is not part of the template.
+        /// </summary>
         private static void GenerateVisualAgendaSlideZoomOut(PowerPointSlide slide, Shape zoomOutShape, bool finalZoomOut = false)
         {
-            // add step back effect  and clean up current slide by deleting step back
-            // shape and recover original slide shape visibility
             PowerPointStepBackSlide addedSlide;
             AutoZoom.AddStepBackAnimation(zoomOutShape, slide, out addedSlide, includeAckSlide: false, deletePreviouslyAdded: false);
             slide.GetShapesWithRule(new Regex("PPTZoomOut"))[0].Delete();
@@ -193,10 +177,13 @@ namespace PowerPointLabs.AgendaLab2
 
         #region General
 
-        private static void SyncSingleAgendaGeneral(PowerPointSlide refSlide, PowerPointSlide candidate)
+        /// <summary>
+        /// Synchronises the shapes in the candidate slide with the shapes in the reference slide.
+        /// Adds any shape that exists in the reference slide but is missing in the candidate slide.
+        /// </summary>
+        private static void SyncShapesFromReferenceSlide(PowerPointSlide refSlide, PowerPointSlide candidate)
         {
-            if (refSlide == null || candidate == null ||
-                refSlide == candidate)
+            if (refSlide == null || candidate == null || refSlide == candidate)
             {
                 return;
             }

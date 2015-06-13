@@ -294,6 +294,7 @@
         # endregion
 
         # region Agenda Lab
+        // Errors
         public const string AgendaLabNoSectionError = "Please group slides into sections before generating agenda.";
         public const string AgendaLabNoSelectionError = "Please select at least one slide to generate / synchronize agenda.";
         public const string AgendaLabNoReferenceError = "Reference slide is not found. The first agenda slide will be taken as reference.";
@@ -307,22 +308,19 @@
         public const string AgendaLabDuplicateSectionError = "There are multiple sections with the same section name. Please rename the sections accordingly.";
         public static string AgendaLabSectionNameTooLongError = "One of the section names exceeds the maximum size allowed by Agenda Lab. Please rename the section accordingly.";
 
+        // Dialog Boxes
         public const string AgendaLabLoadingDialogTitle = "Generating...";
         public const string AgendaLabLoadingDialogContent = "Agenda is generating, please wait...";
-
         public const string AgendaLabSynchronizingDialogTitle = "Synchronizing...";
         public const string AgendaLabSynchronizingDialogContent = "Agenda is getting synchronized, please wait...";
 
+        // Agenda Content
+        public const string AgendaLabTitleContent = "Agenda";
         public const string AgendaLabReferenceSlideContent = "Visited bullet format\rHighlighted bullet format\rUnvisited bullet format\r";
-
         public const string AgendaLabBeamHighlightedText = "Highlighted";
-
         public const string AgendaLabTemplateSlideInstructions =
                             "This slide is used as a ‘Template' for generating agenda slides. Please do not delete this slide.\r" +
                             "Adjust the design of this slide and click the 'Sync Agenda' (in Agenda Lab) to replicate the design in the other slides.";
-
-        // Agenda Content
-        public const string AgendaLabTitleContent = "Agenda";
 
         // Bullet Agenda
         public const string AgendaLabBulletVisitedContent = "Visited bullet format";

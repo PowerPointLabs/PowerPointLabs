@@ -14,7 +14,6 @@ using PowerPointLabs.Utils;
 using PowerPointLabs.Views;
 using Graphics = PowerPointLabs.Utils.Graphics;
 using Shape = Microsoft.Office.Interop.PowerPoint.Shape;
-using ShapeRange = Microsoft.Office.Interop.PowerPoint.ShapeRange;
 
 namespace PowerPointLabs.AgendaLab2
 {
@@ -24,6 +23,7 @@ namespace PowerPointLabs.AgendaLab2
     internal static partial class AgendaLabMain
     {
         private static LoadingDialog _loadDialog = new LoadingDialog();
+
         private const int SectionNameMaxLength = 180;
 
 
@@ -94,8 +94,8 @@ namespace PowerPointLabs.AgendaLab2
         public static void GenerateAgenda(Type type)
         {
             bool dialogOpen = false;
-            var curWindow = Globals.ThisAddIn.Application.ActiveWindow;
-            var oldViewType = curWindow.ViewType;
+            var currentWindow = Globals.ThisAddIn.Application.ActiveWindow;
+            var oldViewType = currentWindow.ViewType;
 
             try
             {
@@ -117,7 +117,7 @@ namespace PowerPointLabs.AgendaLab2
 
                 dialogOpen = DisplayLoadingDialog(TextCollection.AgendaLabLoadingDialogTitle,
                                                     TextCollection.AgendaLabLoadingDialogContent);
-                curWindow.ViewType = PpViewType.ppViewNormal;
+                currentWindow.ViewType = PpViewType.ppViewNormal;
 
                 switch (type)
                 {
@@ -141,14 +141,14 @@ namespace PowerPointLabs.AgendaLab2
                 {
                     DisposeLoadingDialog();
                 }
-                curWindow.ViewType = oldViewType;
+                currentWindow.ViewType = oldViewType;
             }
         }
 
         public static void RemoveAgenda()
         {
-            var curWindow = Globals.ThisAddIn.Application.ActiveWindow;
-            var oldViewType = curWindow.ViewType;
+            var currentWindow = Globals.ThisAddIn.Application.ActiveWindow;
+            var oldViewType = currentWindow.ViewType;
 
             try
             {
@@ -159,7 +159,7 @@ namespace PowerPointLabs.AgendaLab2
                     MessageBox.Show(TextCollection.AgendaLabNoAgendaError);
                     return;
                 }
-                curWindow.ViewType = PpViewType.ppViewNormal;
+                currentWindow.ViewType = PpViewType.ppViewNormal;
 
                 RemoveAllAgendaItems(slideTracker);
 
@@ -167,15 +167,15 @@ namespace PowerPointLabs.AgendaLab2
             }
             finally
             {
-                curWindow.ViewType = oldViewType;
+                currentWindow.ViewType = oldViewType;
             }
         }
 
         public static void SynchroniseAgenda()
         {
             bool dialogOpen = false;
-            var curWindow = Globals.ThisAddIn.Application.ActiveWindow;
-            var oldViewType = curWindow.ViewType;
+            var currentWindow = Globals.ThisAddIn.Application.ActiveWindow;
+            var oldViewType = currentWindow.ViewType;
 
             try
             {
@@ -183,27 +183,13 @@ namespace PowerPointLabs.AgendaLab2
                 var refSlide = FindReferenceSlide();
                 var type = GetReferenceSlideType();
 
-                if (!AgendaPresent())
-                {
-                    MessageBox.Show(TextCollection.AgendaLabNoAgendaError);
-                    return;
-                }
-                if (refSlide == null)
-                {
-                    MessageBox.Show(TextCollection.AgendaLabNoReferenceSlideError);
-                    return;
-                }
-                if (InvalidReferenceSlide(type, refSlide))
-                {
-                    MessageBox.Show(TextCollection.AgendaLabInvalidReferenceSlideError);
-                    return;
-                }
+                if (!ValidAgenda(refSlide, type)) return;
                 if (!ValidSections()) return;
 
                 slideTracker.DeleteAcknowledgementSlideAndTrack();
                 dialogOpen = DisplayLoadingDialog(TextCollection.AgendaLabSynchronizingDialogTitle,
                                                     TextCollection.AgendaLabSynchronizingDialogContent);
-                curWindow.ViewType = PpViewType.ppViewNormal;
+                currentWindow.ViewType = PpViewType.ppViewNormal;
 
                 BringToFront(refSlide);
 
@@ -216,7 +202,6 @@ namespace PowerPointLabs.AgendaLab2
                         SyncBulletAgenda(slideTracker, refSlide);
                         break;
                     case Type.Visual:
-                        RegenerateReferenceSlideImages(refSlide);
                         SyncVisualAgenda(slideTracker, refSlide);
                         break;
                 }
@@ -230,22 +215,8 @@ namespace PowerPointLabs.AgendaLab2
                 {
                     DisposeLoadingDialog();
                 }
-                curWindow.ViewType = oldViewType;
+                currentWindow.ViewType = oldViewType;
             }
-        }
-
-        private static bool InvalidReferenceSlide(Type type, PowerPointSlide refSlide)
-        {
-            switch (type)
-            {
-                case Type.Beam:
-                    return InvalidBeamAgendaReferenceSlide(refSlide);
-                case Type.Bullet:
-                    return InvalidBulletAgendaReferenceSlide(refSlide);
-                case Type.Visual:
-                    return InvalidVisualAgendaReferenceSlide(refSlide);
-            }
-            return true;
         }
 
         #endregion
@@ -261,7 +232,7 @@ namespace PowerPointLabs.AgendaLab2
             var refSlide = CreateBulletReferenceSlide();
 
             // here we invoke sync logic, since it's the same behavior as sync
-            SyncBulletAgenda(slideTracker, refSlide);
+            SyncBulletAgendaSlides(slideTracker, refSlide);
         }
 
 
@@ -273,7 +244,7 @@ namespace PowerPointLabs.AgendaLab2
             var refSlide = CreateVisualReferenceSlide();
 
             // here we invoke sync logic, since it's the same behavior as sync
-            SyncVisualAgenda(slideTracker, refSlide);
+            SyncVisualAgendaSlides(slideTracker, refSlide);
         }
 
 
@@ -540,11 +511,11 @@ namespace PowerPointLabs.AgendaLab2
         }
 
 
-        private static void UpdateSectionImage(PowerPointSlide refSlide, AgendaSection section, Shape imageShape)
+        private static void UpdateSectionImage(PowerPointSlide refSlide, AgendaSection section, Shape previousImageShape)
         {
             var snapshotShape = CreateSectionImage(refSlide, section);
-            Graphics.SyncShape(imageShape, snapshotShape, pickupShapeFormat: false, pickupTextContent: false, pickupTextFormat: false);
-            imageShape.Delete();
+            Graphics.SyncShape(previousImageShape, snapshotShape, pickupShapeFormat: false, pickupTextContent: false, pickupTextFormat: false);
+            previousImageShape.Delete();
         }
         
         #endregion
@@ -575,7 +546,7 @@ namespace PowerPointLabs.AgendaLab2
         #endregion
 
 
-        #region Actions - Synchronise
+        #region Actions - Synchronise - General
 
         private static void BringToFront(PowerPointSlide slide)
         {
@@ -593,8 +564,23 @@ namespace PowerPointLabs.AgendaLab2
                     .ToList()
                     .ForEach(AgendaSlide.AssignUniqueSectionName);
         }
+        #endregion
 
+        #region Actions - Synchronise - Bullet
+
+        /// <summary>
+        /// Called from the Synchronise action only.
+        /// </summary>
         private static void SyncBulletAgenda(SlideSelectionTracker slideTracker, PowerPointSlide refSlide)
+        {
+            AdjustBulletReferenceSlideContent(refSlide);
+            SyncBulletAgendaSlides(slideTracker, refSlide);
+        }
+
+        /// <summary>
+        /// Called from both generate and synchronise actions.
+        /// </summary>
+        private static void SyncBulletAgendaSlides(SlideSelectionTracker slideTracker, PowerPointSlide refSlide)
         {
             var sections = Sections;
 
@@ -609,8 +595,47 @@ namespace PowerPointLabs.AgendaLab2
             }
         }
 
+        private static void AdjustBulletReferenceSlideContent(PowerPointSlide refSlide)
+        {
+            int numberOfSections = NumberOfSections;
 
+            // post process bullet points
+            var contentHolder = refSlide.GetShape(AgendaShape.WithPurpose(ShapePurpose.ContentShape));
+            var textRange = contentHolder.TextFrame2.TextRange;
+
+            while (textRange.Paragraphs.Count < numberOfSections)
+            {
+                textRange.InsertAfter("\r ");
+            }
+
+            while (textRange.Paragraphs.Count > 3 && textRange.Paragraphs.Count > numberOfSections)
+            {
+                textRange.Paragraphs[textRange.Paragraphs.Count].Delete();
+            }
+
+            for (var i = 4; i <= textRange.Paragraphs.Count; i++)
+            {
+                textRange.Paragraphs[i].ParagraphFormat.Bullet.Type = MsoBulletType.msoBulletNone;
+            }
+        }
+
+        #endregion
+
+        #region Actions - Synchronise - Visual
+
+        /// <summary>
+        /// Called from the Synchronise action only.
+        /// </summary>
         private static void SyncVisualAgenda(SlideSelectionTracker slideTracker, PowerPointSlide refSlide)
+        {
+            RegenerateReferenceSlideImages(refSlide);
+            SyncVisualAgendaSlides(slideTracker, refSlide);
+        }
+
+        /// <summary>
+        /// Called from both generate and synchronise actions.
+        /// </summary>
+        private static void SyncVisualAgendaSlides(SlideSelectionTracker slideTracker, PowerPointSlide refSlide)
         {
             var sections = Sections;
 
@@ -746,7 +771,9 @@ namespace PowerPointLabs.AgendaLab2
                                         .ForEach(slideTracker.DeleteSlideAndTrack);
         }
 
+        #endregion
 
+        #region Actions - Synchronise - Beam
 
         private static void SyncBeamAgenda(SlideSelectionTracker slideTracker, PowerPointSlide refSlide)
         {
@@ -758,7 +785,7 @@ namespace PowerPointLabs.AgendaLab2
         private static void UpdateBeamReferenceSlide(PowerPointSlide refSlide)
         {
             var beamShape = FindBeamShape(refSlide);
-            var currentSections = ExtractAgendaSections(beamShape);
+            var currentSections = ExtractAgendaSectionsFromBeam(beamShape);
             var newSections = GetAllButFirstSection();
 
             if (SectionsMatch(currentSections, newSections)) return;
@@ -803,7 +830,7 @@ namespace PowerPointLabs.AgendaLab2
         /// Extracts a list of the current sections from textboxes of the beamshape.
         /// If the textboxes are not consistent (e.g. repeated or missing section), returns null instead.
         /// </summary>
-        private static List<AgendaSection> ExtractAgendaSections(Shape beamShape)
+        private static List<AgendaSection> ExtractAgendaSectionsFromBeam(Shape beamShape)
         {
             var agendaSections = beamShape.GroupItems.Cast<Shape>()
                                                     .Where(AgendaShape.WithPurpose(ShapePurpose.BeamShapeText))
@@ -821,8 +848,6 @@ namespace PowerPointLabs.AgendaLab2
             }
             return agendaSections;
         }
-
-
 
 
         private static void SyncBeamOnSlides(List<PowerPointSlide> targetSlides, PowerPointSlide refSlide)
@@ -969,6 +994,42 @@ namespace PowerPointLabs.AgendaLab2
             return FindAllAgendaSlides().Count > 0 || FindSlidesWithBeam().Count > 0;
         }
 
+        private static bool ValidAgenda(PowerPointSlide refSlide, Type type)
+        {
+            if (!AgendaPresent())
+            {
+                MessageBox.Show(TextCollection.AgendaLabNoAgendaError);
+                return false;
+            }
+
+            if (refSlide == null)
+            {
+                MessageBox.Show(TextCollection.AgendaLabNoReferenceSlideError);
+                return false;
+            }
+
+            if (InvalidReferenceSlide(type, refSlide))
+            {
+                MessageBox.Show(TextCollection.AgendaLabInvalidReferenceSlideError);
+                return false;
+            }
+
+            return true;
+        }
+
+        private static bool InvalidReferenceSlide(Type type, PowerPointSlide refSlide)
+        {
+            switch (type)
+            {
+                case Type.Beam:
+                    return InvalidBeamAgendaReferenceSlide(refSlide);
+                case Type.Bullet:
+                    return InvalidBulletAgendaReferenceSlide(refSlide);
+                case Type.Visual:
+                    return InvalidVisualAgendaReferenceSlide(refSlide);
+            }
+            return true;
+        }
 
         private static bool InvalidBulletAgendaReferenceSlide(PowerPointSlide refSlide)
         {

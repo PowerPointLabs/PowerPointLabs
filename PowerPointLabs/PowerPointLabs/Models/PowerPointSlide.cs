@@ -469,6 +469,23 @@ namespace PowerPointLabs.Models
             }
         }
 
+        public Shape GroupShapes(IEnumerable<Shape> shapes)
+        {
+            var shapeList = shapes.ToList();
+            var oldNames = shapeList.Select(shape => shape.Name).ToList();
+
+            var currentShapeNames = Shapes.Cast<Shape>().Select(shape => shape.Name);
+            var unusedNames = Common.GetUnusedStrings(currentShapeNames, shapeList.Count);
+            shapeList.Zip(unusedNames, (shape, name) => shape.Name = name).ToList();
+
+
+            var shapeRange = Shapes.Range(unusedNames);
+
+            shapeList.Zip(oldNames, (shape, name) => shape.Name = name).ToList();
+
+            return shapeRange.Group();
+        }
+
         public void TransferAnimation(Shape source, Shape destination)
         {
             Sequence sequence = _slide.TimeLine.MainSequence;
@@ -564,23 +581,6 @@ namespace PowerPointLabs.Models
                                               nameRule.IsMatch(current.Name)).ToList();
 
             return matchingShapes;
-        }
-
-        public Shape GroupShapes(IEnumerable<Shape> shapes)
-        {
-            var shapeList = shapes.ToList();
-            var oldNames = shapeList.Select(shape => shape.Name).ToList();
-
-            var currentShapeNames = Shapes.Cast<Shape>().Select(shape => shape.Name);
-            var unusedNames = Common.GetUnusedStrings(currentShapeNames, shapeList.Count);
-            shapeList.Zip(unusedNames, (shape, name) => shape.Name = name).ToList();
-
-
-            var shapeRange = Shapes.Range(unusedNames);
-
-            shapeList.Zip(oldNames, (shape, name) => shape.Name = name).ToList();
-
-            return shapeRange.Group();
         }
 
         public bool HasShapeWithRule(Regex nameRule)
