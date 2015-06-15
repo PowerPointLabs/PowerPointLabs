@@ -76,7 +76,7 @@ namespace FunctionalTest
 
         private void OpenSlideForTest(String slideName)
         {
-            Process pptProcess = new Process
+            var pptProcess = new Process
             {
                 StartInfo =
                 {

@@ -53,6 +53,7 @@ namespace PowerPointLabs.FunctionalTestInterface.Impl
                 {
                     var slide = slides[i].GetNativeSlide();
                     slide.Select();
+                    Globals.ThisAddIn.Application.ActiveWindow.View.GotoSlide(index);
                     return slide;
                 }
             }
@@ -68,6 +69,7 @@ namespace PowerPointLabs.FunctionalTestInterface.Impl
                 {
                     var slide = slides[i].GetNativeSlide();
                     slide.Select();
+                    Globals.ThisAddIn.Application.ActiveWindow.View.GotoSlide(i + 1);
                     return slide;
                 }
             }

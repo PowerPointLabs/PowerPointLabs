@@ -13,7 +13,7 @@ namespace FunctionalTest
         }
 
         [TestMethod]
-        public void FT_ConvertToShapeTest()
+        public void FT_ConvertToPictureTest()
         {
             ConvertSingleObjToPicture();
             CovertGroupObjToPicture();
