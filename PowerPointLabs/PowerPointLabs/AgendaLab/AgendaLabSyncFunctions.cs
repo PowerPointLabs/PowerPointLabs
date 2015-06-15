@@ -1,5 +1,7 @@
-﻿using System.Collections.Generic;
+﻿using System.Collections;
+using System.Collections.Generic;
 using System.Linq;
+using System.Text;
 using System.Text.RegularExpressions;
 using Microsoft.Office.Core;
 using PowerPointLabs.Models;
@@ -188,6 +190,10 @@ namespace PowerPointLabs.AgendaLab
                 return;
             }
 
+            refSlide.MakeShapeNamesNonDefault();
+            refSlide.MakeShapeNamesUnique(shape => !AgendaShape.IsAnyAgendaShape(shape) &&
+                                                   !PowerPointSlide.IsTemplateSlideMarker(shape));
+
             candidate.Layout = refSlide.Layout;
             candidate.Design = refSlide.Design;
 
@@ -207,16 +213,35 @@ namespace PowerPointLabs.AgendaLab
             }
 
             // syncronize shapes position and size, except bullet content
+            var candidateSlideShapes = candidate.GetNameToShapeDictionary();
             var sameShapes = refSlide.Shapes.Cast<Shape>()
                                             .Where(shape => !PowerPointSlide.IsIndicator(shape) &&
                                                             !PowerPointSlide.IsTemplateSlideMarker(shape) &&
-                                                            candidate.HasShapeWithSameName(shape.Name));
+                                                            candidateSlideShapes.ContainsKey(shape.Name));
 
+            var shapeOriginalZOrders = new SortedDictionary<int, Shape>();
             foreach (var refShape in sameShapes)
             {
-                var candidateShape = candidate.GetShapeWithName(refShape.Name)[0];
-
+                var candidateShape = candidateSlideShapes[refShape.Name];
                 Graphics.SyncShape(refShape, candidateShape);
+
+                shapeOriginalZOrders.Add(refShape.ZOrderPosition, candidateShape);
+            }
+
+            SynchroniseZOrders(shapeOriginalZOrders);
+        }
+
+        private static void SynchroniseZOrders(SortedDictionary<int, Shape> shapeOriginalZOrders)
+        {
+            Shape lastShape = null;
+            foreach (var entry in shapeOriginalZOrders.Reverse())
+            {
+                var shape = entry.Value;
+                if (lastShape != null)
+                {
+                    Graphics.MoveZUntilInFront(shape, lastShape);
+                }
+                lastShape = shape;
             }
         }
 

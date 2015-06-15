@@ -16,6 +16,7 @@ namespace PowerPointLabs.Models
     {
         private const string PptLabsIndicatorShapeName = "PPTIndicator";
         private const string PptLabsTemplateMarkerShapeName = "PPTTemplateMarker";
+        private const string UnnamedShapeName = "Unnamed Shape ";
 
         protected readonly Slide _slide;
 
@@ -551,6 +552,24 @@ namespace PowerPointLabs.Models
             return matchingShapes;
         }
 
+        /// <summary>
+        /// Returns a dictionary shapeName => shape,
+        /// where shape refers to the first (any) shape found in the slide with that name.
+        /// </summary>
+        public Dictionary<string, Shape> GetNameToShapeDictionary()
+        {
+            var dictionary = new Dictionary<string, Shape>();
+            var shapes = _slide.Shapes.Cast<Shape>();
+            foreach (var shape in shapes)
+            {
+                if (!dictionary.ContainsKey(shape.Name))
+                {
+                    dictionary.Add(shape.Name, shape);
+                }
+            }
+            return dictionary;
+        }
+
         public Shape GetShape(Func<Shape, bool> condition)
         {
             return _slide.Shapes.Cast<Shape>().Where(condition).FirstOrDefault();
@@ -1031,6 +1050,44 @@ namespace PowerPointLabs.Models
             String name2 = sh2.Name;
 
             return (name1.ToUpper().CompareTo(name2.ToUpper()) == 0);
+        }
+
+        /// <summary>
+        /// Default shapes have the property where if you duplicate them (or copy/paste), they change names.
+        /// This command renames the shapes in the slide so that they don't have the default names.
+        /// </summary>
+        public void MakeShapeNamesNonDefault()
+        {
+            var shapes = _slide.Shapes.Cast<Shape>();
+            foreach (var shape in shapes)
+            {
+                if (Graphics.HasDefaultName(shape))
+                {
+                    shape.Name = UnnamedShapeName + Common.UniqueDigitString();
+                }
+            }
+        }
+
+        /// <summary>
+        /// Gives all shapes in the slide unique names. Good to call before sync logic.
+        /// Note: If the name of the shape is used to identify the shape (e.g. through AgendaShape),
+        /// this can be dangerous if there are duplicates as it overrides the original name.
+        /// </summary>
+        public void MakeShapeNamesUnique(Func<Shape,bool> restrictTo = null)
+        {
+            if (restrictTo == null) restrictTo = shape => true;
+
+            var currentNames = new HashSet<string>();
+            var shapes = _slide.Shapes.Cast<Shape>().Where(restrictTo);
+
+            foreach (var shape in shapes)
+            {
+                if (currentNames.Contains(shape.Name))
+                {
+                    shape.Name = UnnamedShapeName + Common.UniqueDigitString();
+                }
+                currentNames.Add(shape.Name);
+            }
         }
     }
 }

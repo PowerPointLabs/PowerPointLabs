@@ -244,11 +244,11 @@ namespace PowerPointLabs.Utils
         }
 
         /// <summary>
-        /// Moves shiftShape forward/backward until it is just behind destinationShape
+        /// Moves shiftShape backward until it is behind destinationShape.
+        /// (does nothing if already behind)
         /// </summary>
-        public static void MoveZToJustBehind(Shape shiftShape, Shape destinationShape)
+        public static void MoveZUntilBehind(Shape shiftShape, Shape destinationShape)
         {
-            // Step 1: Shift forward until it overshoots destination.
             while (shiftShape.ZOrderPosition < destinationShape.ZOrderPosition)
             {
                 int currentValue = shiftShape.ZOrderPosition;
@@ -259,8 +259,15 @@ namespace PowerPointLabs.Utils
                     break;
                 }
             }
+        }
 
-            // Step 2: Shift backward until it overshoots destination.
+        /// <summary>
+        /// Moves shiftShape backward until it is in front destinationShape.
+        /// (does nothing if already in front)
+        /// </summary>
+        public static void MoveZUntilInFront(Shape shiftShape, Shape destinationShape)
+        {
+            int old = shiftShape.ZOrderPosition;
             while (shiftShape.ZOrderPosition > destinationShape.ZOrderPosition)
             {
                 int currentValue = shiftShape.ZOrderPosition;
@@ -274,34 +281,38 @@ namespace PowerPointLabs.Utils
         }
 
         /// <summary>
+        /// Moves shiftShape forward/backward until it is just behind destinationShape
+        /// </summary>
+        public static void MoveZToJustBehind(Shape shiftShape, Shape destinationShape)
+        {
+            // Step 1: Shift forward until it overshoots destination.
+            MoveZUntilBehind(shiftShape, destinationShape);
+
+            // Step 2: Shift backward until it overshoots destination.
+            MoveZUntilInFront(shiftShape, destinationShape);
+        }
+
+        /// <summary>
         /// Moves shiftShape forward/backward until it is just in front of destinationShape
         /// </summary>
         public static void MoveZToJustInFront(Shape shiftShape, Shape destinationShape)
         {
             // Step 1: Shift backward until it overshoots destination.
-            while (shiftShape.ZOrderPosition > destinationShape.ZOrderPosition)
-            {
-                int currentValue = shiftShape.ZOrderPosition;
-                shiftShape.ZOrder(MsoZOrderCmd.msoSendBackward);
-                if (shiftShape.ZOrderPosition == currentValue)
-                {
-                    // Break if no change. Guards against infinite loops.
-                    break;
-                }
-            }
+            MoveZUntilInFront(shiftShape, destinationShape);
 
             // Step 2: Shift forward until it overshoots destination.
-            while (shiftShape.ZOrderPosition < destinationShape.ZOrderPosition)
-            {
-                int currentValue = shiftShape.ZOrderPosition;
-                shiftShape.ZOrder(MsoZOrderCmd.msoBringForward);
-                if (shiftShape.ZOrderPosition == currentValue)
-                {
-                    // Break if no change. Guards against infinite loops.
-                    break;
-                }
-            }
+            MoveZUntilBehind(shiftShape, destinationShape);
         }
+
+        // TODO: Make this an extension method of shape.
+        public static bool HasDefaultName(Shape shape)
+        {
+            var copy = shape.Duplicate()[1];
+            bool hasDefaultName = copy.Name != shape.Name;
+            copy.Delete();
+            return hasDefaultName;
+        }
+
 
         // TODO: Make this an extension method of shape.
         public static void SetText(Shape shape, params string[] lines)
