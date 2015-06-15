@@ -1,5 +1,5 @@
 ﻿
-namespace PowerPointLabs.AgendaLab2
+namespace PowerPointLabs.AgendaLab
 {
     internal enum Type
     {

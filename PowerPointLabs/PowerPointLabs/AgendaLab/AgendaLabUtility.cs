@@ -15,7 +15,7 @@ using PowerPointLabs.Views;
 using Graphics = PowerPointLabs.Utils.Graphics;
 using Shape = Microsoft.Office.Interop.PowerPoint.Shape;
 
-namespace PowerPointLabs.AgendaLab2
+namespace PowerPointLabs.AgendaLab
 {
     internal static partial class AgendaLabMain
     {

@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using Microsoft.Office.Interop.PowerPoint;
 
-namespace PowerPointLabs.AgendaLab2
+namespace PowerPointLabs.AgendaLab
 {
     /// <summary>
     /// AgendaShape class for Encoding/Decoding shape names

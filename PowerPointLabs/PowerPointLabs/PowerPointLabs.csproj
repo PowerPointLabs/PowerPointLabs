@@ -227,16 +227,16 @@
     can be found.
   -->
   <ItemGroup>
-    <Compile Include="AgendaLab2\AgendaLabSyncFunctions.cs" />
-    <Compile Include="AgendaLab2\AgendaLabTemplateSyncLogic.cs" />
-    <Compile Include="AgendaLab2\AgendaLabUtility.cs" />
-    <Compile Include="AgendaLab2\AgendaSection.cs" />
-    <Compile Include="AgendaLab2\AgendaSectionTemplates.cs" />
-    <Compile Include="AgendaLab2\AgendaShape.cs" />
-    <Compile Include="AgendaLab2\SlideSelectionTracker.cs" />
-    <Compile Include="AgendaLab2\AgendaLabMain.cs" />
-    <Compile Include="AgendaLab2\AgendaSlide.cs" />
-    <Compile Include="AgendaLab2\Enums.cs" />
+    <Compile Include="AgendaLab\AgendaLabSyncFunctions.cs" />
+    <Compile Include="AgendaLab\AgendaLabTemplateSyncLogic.cs" />
+    <Compile Include="AgendaLab\AgendaLabUtility.cs" />
+    <Compile Include="AgendaLab\AgendaSection.cs" />
+    <Compile Include="AgendaLab\AgendaSectionTemplates.cs" />
+    <Compile Include="AgendaLab\AgendaShape.cs" />
+    <Compile Include="AgendaLab\SlideSelectionTracker.cs" />
+    <Compile Include="AgendaLab\AgendaLabMain.cs" />
+    <Compile Include="AgendaLab\AgendaSlide.cs" />
+    <Compile Include="AgendaLab\Enums.cs" />
     <Compile Include="AudioMisc\Audio.cs" />
     <Compile Include="AudioMisc\AudioHelper.cs" />
     <Compile Include="AutoAnimate.cs" />

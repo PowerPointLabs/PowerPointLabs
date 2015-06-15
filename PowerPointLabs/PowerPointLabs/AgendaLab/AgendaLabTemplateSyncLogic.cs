@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using Microsoft.Office.Interop.PowerPoint;
 using PowerPointLabs.Models;
 
-namespace PowerPointLabs.AgendaLab2
+namespace PowerPointLabs.AgendaLab
 {
     internal static partial class AgendaLabMain
     {

@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using PowerPointLabs.Models;
 
-namespace PowerPointLabs.AgendaLab2
+namespace PowerPointLabs.AgendaLab
 {
     /// <summary>
     /// Maintains the user's currently selected slides.

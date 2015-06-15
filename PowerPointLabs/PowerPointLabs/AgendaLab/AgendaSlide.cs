@@ -2,7 +2,7 @@
 using Microsoft.Office.Interop.PowerPoint;
 using PowerPointLabs.Models;
 
-namespace PowerPointLabs.AgendaLab2
+namespace PowerPointLabs.AgendaLab
 {
     /// <summary>
     /// AgendaSlide class for Encoding/Decoding slide names

@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using PowerPointLabs.Utils;
 
-namespace PowerPointLabs.AgendaLab2
+namespace PowerPointLabs.AgendaLab
 {
     internal struct AgendaSection
     {

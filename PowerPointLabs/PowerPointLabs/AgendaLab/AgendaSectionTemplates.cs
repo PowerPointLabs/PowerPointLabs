@@ -5,7 +5,7 @@ using System.Linq;
 using System.Text;
 using PowerPointLabs.Models;
 
-namespace PowerPointLabs.AgendaLab2
+namespace PowerPointLabs.AgendaLab
 {
     /// <summary>
     /// A template for defining the positions of generated slides for each section in the agenda.
