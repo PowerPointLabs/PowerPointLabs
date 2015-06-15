@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.Linq;
 using PowerPointLabs.Models;
 using Office = Microsoft.Office.Core;
@@ -34,6 +33,10 @@ namespace PowerPointLabs
 
                 Globals.ThisAddIn.Application.ActiveWindow.View.GotoSlide(currentSlide.Index);
                 PowerPointPresentation.Current.AddAckSlide();
+
+                // Always call ReleaseComObject and GC.Collect after shape deletion to prevent shape corruption after undo.
+                System.Runtime.InteropServices.Marshal.ReleaseComObject(selectedShapes);
+                GC.Collect();
             }
             catch (Exception e)
             {
