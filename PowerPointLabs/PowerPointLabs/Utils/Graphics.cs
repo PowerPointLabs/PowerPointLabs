@@ -267,7 +267,6 @@ namespace PowerPointLabs.Utils
         /// </summary>
         public static void MoveZUntilInFront(Shape shiftShape, Shape destinationShape)
         {
-            int old = shiftShape.ZOrderPosition;
             while (shiftShape.ZOrderPosition > destinationShape.ZOrderPosition)
             {
                 int currentValue = shiftShape.ZOrderPosition;

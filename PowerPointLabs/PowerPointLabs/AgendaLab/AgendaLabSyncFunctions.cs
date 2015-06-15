@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Text.RegularExpressions;
 using Microsoft.Office.Core;
+using Microsoft.Office.Interop.PowerPoint;
 using PowerPointLabs.Models;
 using Graphics = PowerPointLabs.Utils.Graphics;
 using Shape = Microsoft.Office.Interop.PowerPoint.Shape;
@@ -20,6 +21,9 @@ namespace PowerPointLabs.AgendaLab
         public static readonly SyncFunction SyncBulletAgendaSlide = (refSlide, sections, currentSection, targetSlide) =>
         {
             SyncShapesFromReferenceSlide(refSlide, targetSlide);
+
+            targetSlide.Transition.EntryEffect = PpEntryEffect.ppEffectFadeSmoothly;
+            targetSlide.Transition.Duration = 0.25f;
 
             var referenceContentShape = refSlide.GetShape(AgendaShape.WithPurpose(ShapePurpose.ContentShape));
             var targetContentShape = targetSlide.GetShape(AgendaShape.WithPurpose(ShapePurpose.ContentShape));
