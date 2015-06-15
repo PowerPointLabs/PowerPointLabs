@@ -79,7 +79,7 @@ namespace PowerPointLabs
                         {
                             spotlightShapes.Add(sh);
                         }
-                        else if (sh.Name.Contains("PPIndicator"))
+                        else if (PowerPointSlide.IsIndicator(sh))
                         {
                             indicatorShape = sh;
                         }

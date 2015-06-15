@@ -4,7 +4,6 @@ using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Text.RegularExpressions;
-using System.Windows.Forms;
 using Microsoft.Office.Core;
 using Microsoft.Office.Interop.PowerPoint;
 
@@ -45,13 +44,20 @@ namespace PowerPointLabs.Models
             {
                 var sectionProperties = SectionProperties;
 
+                // Fix for rare case where the ack slide is the only slide in the section.
+                // This should be counted as an empty section. so we temporarily remove the ack slide and add it back after.
+                bool hasAckSlide = HasAckSlide();
+                RemoveAckSlide();
+
                 for (var i = 1; i <= sectionProperties.Count; i ++)
                 {
                     if (sectionProperties.SlidesCount(i) == 0)
                     {
+                        if (hasAckSlide) AddAckSlide();
                         return true;
                     }
                 }
+                if (hasAckSlide) AddAckSlide();
 
                 return false;
             }
@@ -109,6 +115,22 @@ namespace PowerPointLabs.Models
             }
         }
 
+        public PowerPointSlide FirstSlide
+        {
+            get
+            {
+                var slides = Presentation.Slides;
+                if (slides.Count > 0)
+                {
+                    return PowerPointSlide.FromSlideFactory(slides[1]);
+                }
+                return null;
+            }
+        }
+
+        /// <summary>
+        /// 0-indexed.
+        /// </summary>
         public List<PowerPointSlide> Slides
         {
             get
@@ -131,16 +153,7 @@ namespace PowerPointLabs.Models
         {
             get
             {
-                var interopSlides = Presentation.Application.ActiveWindow.Selection.SlideRange;
-                var slides = new List<PowerPointSlide>();
-
-                foreach (Slide interopSlide in interopSlides)
-                {
-                    PowerPointSlide s = PowerPointSlide.FromSlideFactory(interopSlide);
-                    slides.Add(s);
-                }
-
-                return slides;
+                return PowerPointCurrentPresentationInfo.SelectedSlides.ToList();
             }
         }
 
@@ -189,19 +202,10 @@ namespace PowerPointLabs.Models
         # region API
         public void AddAckSlide()
         {
-            try
+            if (!HasAckSlide())
             {
                 var lastSlide = Slides.Last();
-                
-                if (!lastSlide.isAckSlide())
-                {
-                    lastSlide.CreateAckSlide();
-                }
-            }
-            catch (Exception e)
-            {
-                PowerPointLabsGlobals.LogException(e, "AddAckSlide");
-                throw;
+                lastSlide.CreateAckSlide();
             }
         }
 
@@ -229,7 +233,27 @@ namespace PowerPointLabs.Models
 
         public void RemoveAckSlide()
         {
-            RemoveSlide(new Regex("PPAck"), true);
+            RemoveSlide(PowerPointAckSlide.IsAckSlide, true);
+        }
+
+        public bool HasAckSlide()
+        {
+            return Slides.Any(PowerPointAckSlide.IsAckSlide);
+        }
+
+        public void RemoveSlide(Func<Slide, bool> condition, bool deleteAll)
+        {
+            var slides = Presentation.Slides.Cast<Slide>().Where(condition).ToList();
+
+            foreach (var slide in slides)
+            {
+                slide.Delete();
+
+                if (!deleteAll)
+                {
+                    break;
+                }
+            }
         }
 
         public void RemoveSlide(Regex rule, bool deleteAll)

@@ -19,22 +19,30 @@ namespace PowerPointLabs
 
         public static void AddDrillDownAnimation(PowerPoint.Shape selectedShape, PowerPointSlide currentSlide)
         {
+            PowerPointDrillDownSlide addedSlide;
+            AddDrillDownAnimation(selectedShape, currentSlide, out addedSlide);
+        }
+
+        public static void AddDrillDownAnimation(PowerPoint.Shape selectedShape, PowerPointSlide currentSlide,
+            out PowerPointDrillDownSlide addedSlide, bool includeAckSlide = true, bool deletePreviouslyAdded = true)
+        {
             try
             {
                 if (currentSlide == null || currentSlide.Index == PowerPointPresentation.Current.SlideCount)
                 {
                     System.Windows.Forms.MessageBox.Show("No next slide is found. Please select the correct slide", "Unable to Add Animations");
+                    addedSlide = null;
                     return;
                 }
 
                 //Pick up the border and shadow style, to be applied to zoomed shape
                 selectedShape.PickUp();
                 PrepareZoomShape(currentSlide, ref selectedShape);
-                PowerPointSlide nextSlide = GetNextSlide(currentSlide);
+                PowerPointSlide nextSlide = GetNextSlide(currentSlide, deletePreviouslyAdded);
 
                 PowerPoint.Shape nextSlidePicture = null, shapeToZoom = null;
-                PowerPointDrillDownSlide addedSlide = null;
 
+                currentSlide.HideIndicator();
                 if (backgroundZoomChecked)
                 {
                     nextSlidePicture = GetNextSlidePictureWithBackground(currentSlide, nextSlide);
@@ -83,10 +91,11 @@ namespace PowerPointLabs
                     addedSlide.AddDrillDownAnimationNoBackground(backgroundShape, shapeToZoom, pictureOnNextSlide);
                     pictureOnNextSlide.Delete();
                 }
+                currentSlide.ShowIndicator();
 
                 Globals.ThisAddIn.Application.ActiveWindow.View.GotoSlide(addedSlide.Index);
                 Globals.ThisAddIn.Application.CommandBars.ExecuteMso("AnimationPreview");
-                PowerPointPresentation.Current.AddAckSlide();
+                if (includeAckSlide) PowerPointPresentation.Current.AddAckSlide();
             }
             catch (Exception e)
             {
@@ -103,22 +112,30 @@ namespace PowerPointLabs
 
         public static void AddStepBackAnimation(PowerPoint.Shape selectedShape, PowerPointSlide currentSlide)
         {
+            PowerPointStepBackSlide addedSlide;
+            AddStepBackAnimation(selectedShape, currentSlide, out addedSlide);
+        }
+
+        public static void AddStepBackAnimation(PowerPoint.Shape selectedShape, PowerPointSlide currentSlide,
+            out PowerPointStepBackSlide addedSlide, bool includeAckSlide = true, bool deletePreviouslyAdded = true)
+        {
             try
             {
                 if (currentSlide == null || currentSlide.Index == 1)
                 {
                     System.Windows.Forms.MessageBox.Show("No previous slide is found. Please select the correct slide", "Unable to Add Animations");
+                    addedSlide = null;
                     return;
                 }
 
                 //Pick up the border and shadow style, to be applied to zoomed shape
                 selectedShape.PickUp();
                 PrepareZoomShape(currentSlide, ref selectedShape);
-                PowerPointSlide previousSlide = GetPreviousSlide(currentSlide);
+                PowerPointSlide previousSlide = GetPreviousSlide(currentSlide, deletePreviouslyAdded);
 
                 PowerPoint.Shape previousSlidePicture = null, shapeToZoom = null;
-                PowerPointStepBackSlide addedSlide = null;
 
+                currentSlide.HideIndicator();
                 if (backgroundZoomChecked)
                 {
                     previousSlidePicture = GetPreviousSlidePictureWithBackground(currentSlide, previousSlide);
@@ -150,12 +167,13 @@ namespace PowerPointLabs
                     addedSlide.PrepareForStepBack();
                     addedSlide.AddStepBackAnimationNonBackground(shapeToZoom, previousSlidePicture);
                 }
+                currentSlide.ShowIndicator();
 
                 currentSlide.Transition.EntryEffect = PowerPoint.PpEntryEffect.ppEffectFadeSmoothly;
                 currentSlide.Transition.Duration = 0.25f;
                 Globals.ThisAddIn.Application.ActiveWindow.View.GotoSlide(addedSlide.Index);
                 Globals.ThisAddIn.Application.CommandBars.ExecuteMso("AnimationPreview");
-                PowerPointPresentation.Current.AddAckSlide();
+                if (includeAckSlide) PowerPointPresentation.Current.AddAckSlide();
             }
             catch (Exception e)
             {
@@ -179,14 +197,15 @@ namespace PowerPointLabs
         }
 
         //Delete previously added drill down slides
-        private static PowerPointSlide GetNextSlide(PowerPointSlide currentSlide)
+        private static PowerPointSlide GetNextSlide(PowerPointSlide currentSlide, bool deletePreviouslyAdded = true)
         {
             PowerPointSlide nextSlide = PowerPointPresentation.Current.Slides[currentSlide.Index];
             PowerPointSlide tempSlide = nextSlide;
             while (nextSlide.Name.Contains("PPTLabsZoomIn") && nextSlide.Index < PowerPointPresentation.Current.SlideCount)
             {
                 nextSlide = PowerPointPresentation.Current.Slides[tempSlide.Index];
-                tempSlide.Delete();
+                if (deletePreviouslyAdded) tempSlide.Delete();
+                tempSlide = nextSlide;
             }
             nextSlide.Transition.EntryEffect = PowerPoint.PpEntryEffect.ppEffectFadeSmoothly;
             nextSlide.Transition.Duration = 0.25f;
@@ -194,14 +213,15 @@ namespace PowerPointLabs
         }
 
         //Delete previously added step back slides
-        private static PowerPointSlide GetPreviousSlide(PowerPointSlide currentSlide)
+        private static PowerPointSlide GetPreviousSlide(PowerPointSlide currentSlide, bool deletePreviouslyAdded = true)
         {
             PowerPointSlide previousSlide = PowerPointPresentation.Current.Slides[currentSlide.Index - 2];
             PowerPointSlide tempSlide = previousSlide;
             while (previousSlide.Name.Contains("PPTLabsZoomOut") && previousSlide.Index > 1)
             {
                 previousSlide = PowerPointPresentation.Current.Slides[tempSlide.Index - 2];
-                tempSlide.Delete();
+                if (deletePreviouslyAdded) tempSlide.Delete();
+                tempSlide = previousSlide;
             }
 
             return previousSlide;

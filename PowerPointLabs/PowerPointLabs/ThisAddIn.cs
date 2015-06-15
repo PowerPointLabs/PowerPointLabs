@@ -818,7 +818,7 @@ namespace PowerPointLabs
         private void SlideShowBeginHandler(PowerPoint.SlideShowWindow wn)
         {
             _isInSlideShow = true;
-            AgendaLab.SlideShowBeginHandler();
+            AgendaLab.AgendaLabMain.SlideShowBeginHandler();
         }
 
         private void SlideShowEndHandler(PowerPoint.Presentation presentation)
@@ -829,7 +829,7 @@ namespace PowerPointLabs
 
             if (recorder == null)
             {
-                AgendaLab.SlideShowEndHandler();
+                AgendaLab.AgendaLabMain.SlideShowEndHandler();
                 return;
             }
 
@@ -872,7 +872,7 @@ namespace PowerPointLabs
             // change back the slide range settings
             Application.ActivePresentation.SlideShowSettings.RangeType = PowerPoint.PpSlideShowRangeType.ppShowAll;
 
-            AgendaLab.SlideShowEndHandler();
+            AgendaLab.AgendaLabMain.SlideShowEndHandler();
         }
 
         private bool IsEmptyFile(string filePath)
@@ -1062,6 +1062,19 @@ namespace PowerPointLabs
                         shape.Name = nameDictForPastedShapes[shape.Name];
                     }
                     range.Select();
+                } else
+                if (selection.Type == PowerPoint.PpSelectionType.ppSelectionSlides)
+                {
+                    var pastedSlides = selection.SlideRange.Cast<PowerPoint.Slide>().OrderBy(x => x.SlideIndex).ToList();
+
+                    for (var i = 0; i < pastedSlides.Count; i ++)
+                    {
+                        if (AgendaLab.AgendaSlide.IsReferenceslide(_copiedSlides[i]))
+                        {
+                            pastedSlides[i].Name = _copiedSlides[i].Name;
+                            pastedSlides[i].Design = _copiedSlides[i].Design;
+                        }
+                    }
                 }
             }
             catch

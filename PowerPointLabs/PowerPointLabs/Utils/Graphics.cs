@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Drawing;
 using System.Drawing.Drawing2D;
 using System.Linq;
@@ -152,28 +153,42 @@ namespace PowerPointLabs.Utils
                 SyncShapeLocation(refShape, candidateShape);
             }
 
-            if ((pickupTextContent || pickupTextFormat) &&
-                refShape.HasTextFrame == MsoTriState.msoTrue &&
-                candidateShape.HasTextFrame == MsoTriState.msoTrue)
-            {
-                var refParagraphCount = refShape.TextFrame2.TextRange.Paragraphs.Count;
-                var candidateParagraphCount = candidateShape.TextFrame2.TextRange.Paragraphs.Count;
-                var refTextRange = refShape.TextFrame2.TextRange;
-                var candidateTextRange = candidateShape.TextFrame2.TextRange;
-
-                for (var i = 1; i <= candidateParagraphCount; i++)
-                {
-                    var refParagraph = refTextRange.Paragraphs[i < refParagraphCount ? i : refParagraphCount];
-                    var candidateParagraph = candidateTextRange.Paragraphs[i];
-
-                    SyncTextRange(refParagraph, candidateParagraph, pickupTextContent, pickupTextFormat);
-                }
-            }
 
             if (pickupShapeFormat)
             {
                 refShape.PickUp();
                 candidateShape.Apply();
+            }
+
+            if ((pickupTextContent || pickupTextFormat) &&
+                refShape.HasTextFrame == MsoTriState.msoTrue &&
+                candidateShape.HasTextFrame == MsoTriState.msoTrue)
+            {
+                var refTextRange = refShape.TextFrame2.TextRange;
+                var candidateTextRange = candidateShape.TextFrame2.TextRange;
+
+                if (pickupTextContent)
+                {
+                    candidateTextRange.Text = refTextRange.Text;
+                }
+
+                var refParagraphCount = refShape.TextFrame2.TextRange.Paragraphs.Count;
+                var candidateParagraphCount = candidateShape.TextFrame2.TextRange.Paragraphs.Count;
+
+                if (refParagraphCount > 0)
+                {
+                    string originalText = candidateTextRange.Text;
+                    SyncTextRange(refTextRange.Paragraphs[refParagraphCount], candidateTextRange);
+                    candidateTextRange.Text = originalText;
+                }
+
+                for (var i = 1; i <= candidateParagraphCount; i++)
+                {
+                    var refParagraph = refTextRange.Paragraphs[i <= refParagraphCount ? i : refParagraphCount];
+                    var candidateParagraph = candidateTextRange.Paragraphs[i];
+
+                    SyncTextRange(refParagraph, candidateParagraph, pickupTextContent, pickupTextFormat);
+                }
             }
         }
 
@@ -202,19 +217,65 @@ namespace PowerPointLabs.Utils
         public static void SyncTextRange(TextRange2 refTextRange, TextRange2 candidateTextRange,
                                          bool pickupTextContent = true, bool pickupTextFormat = true)
         {
+            bool originallyHadNewLine = candidateTextRange.Text.EndsWith("\r");
+            bool lostTheNewLine = false;
+
             var candidateText = candidateTextRange.Text.TrimEnd('\r');
-            var newCandidateRange = candidateTextRange;
 
             if (pickupTextFormat)
             {
                 // pick up format using copy-paste, since we could not deep copy the format
                 refTextRange.Copy();
-                newCandidateRange = candidateTextRange.PasteSpecial(MsoClipboardFormat.msoClipboardFormatNative);
+                candidateTextRange.PasteSpecial(MsoClipboardFormat.msoClipboardFormatNative);
+                lostTheNewLine = !candidateTextRange.Text.EndsWith("\r");
             }
 
             if (!pickupTextContent)
             {
-                newCandidateRange.Text = candidateText;
+                candidateTextRange.Text = candidateText;
+
+                // Handling an uncommon edge case. If we are not copying paragraph content, only format,
+                // Sometimes (when the reference paragraph doesn't end with a newline), the newline will be lost after copy.
+                if (originallyHadNewLine && lostTheNewLine)
+                {
+                    candidateTextRange.Text = candidateTextRange.Text + "\r";
+                }
+            }
+        }
+
+        /// <summary>
+        /// Moves shiftShape backward until it is behind destinationShape.
+        /// (does nothing if already behind)
+        /// </summary>
+        public static void MoveZUntilBehind(Shape shiftShape, Shape destinationShape)
+        {
+            while (shiftShape.ZOrderPosition < destinationShape.ZOrderPosition)
+            {
+                int currentValue = shiftShape.ZOrderPosition;
+                shiftShape.ZOrder(MsoZOrderCmd.msoBringForward);
+                if (shiftShape.ZOrderPosition == currentValue)
+                {
+                    // Break if no change. Guards against infinite loops.
+                    break;
+                }
+            }
+        }
+
+        /// <summary>
+        /// Moves shiftShape backward until it is in front destinationShape.
+        /// (does nothing if already in front)
+        /// </summary>
+        public static void MoveZUntilInFront(Shape shiftShape, Shape destinationShape)
+        {
+            while (shiftShape.ZOrderPosition > destinationShape.ZOrderPosition)
+            {
+                int currentValue = shiftShape.ZOrderPosition;
+                shiftShape.ZOrder(MsoZOrderCmd.msoSendBackward);
+                if (shiftShape.ZOrderPosition == currentValue)
+                {
+                    // Break if no change. Guards against infinite loops.
+                    break;
+                }
             }
         }
 
@@ -224,28 +285,10 @@ namespace PowerPointLabs.Utils
         public static void MoveZToJustBehind(Shape shiftShape, Shape destinationShape)
         {
             // Step 1: Shift forward until it overshoots destination.
-            while (shiftShape.ZOrderPosition < destinationShape.ZOrderPosition)
-            {
-                int currentValue = shiftShape.ZOrderPosition;
-                shiftShape.ZOrder(MsoZOrderCmd.msoBringForward);
-                if (shiftShape.ZOrderPosition == currentValue)
-                {
-                    // Break if no change. Guards against infinite loops.
-                    break;
-                }
-            }
+            MoveZUntilBehind(shiftShape, destinationShape);
 
             // Step 2: Shift backward until it overshoots destination.
-            while (shiftShape.ZOrderPosition > destinationShape.ZOrderPosition)
-            {
-                int currentValue = shiftShape.ZOrderPosition;
-                shiftShape.ZOrder(MsoZOrderCmd.msoSendBackward);
-                if (shiftShape.ZOrderPosition == currentValue)
-                {
-                    // Break if no change. Guards against infinite loops.
-                    break;
-                }
-            }
+            MoveZUntilInFront(shiftShape, destinationShape);
         }
 
         /// <summary>
@@ -254,28 +297,43 @@ namespace PowerPointLabs.Utils
         public static void MoveZToJustInFront(Shape shiftShape, Shape destinationShape)
         {
             // Step 1: Shift backward until it overshoots destination.
-            while (shiftShape.ZOrderPosition > destinationShape.ZOrderPosition)
-            {
-                int currentValue = shiftShape.ZOrderPosition;
-                shiftShape.ZOrder(MsoZOrderCmd.msoSendBackward);
-                if (shiftShape.ZOrderPosition == currentValue)
-                {
-                    // Break if no change. Guards against infinite loops.
-                    break;
-                }
-            }
+            MoveZUntilInFront(shiftShape, destinationShape);
 
             // Step 2: Shift forward until it overshoots destination.
-            while (shiftShape.ZOrderPosition < destinationShape.ZOrderPosition)
-            {
-                int currentValue = shiftShape.ZOrderPosition;
-                shiftShape.ZOrder(MsoZOrderCmd.msoBringForward);
-                if (shiftShape.ZOrderPosition == currentValue)
-                {
-                    // Break if no change. Guards against infinite loops.
-                    break;
-                }
-            }
+            MoveZUntilBehind(shiftShape, destinationShape);
+        }
+
+        // TODO: Make this an extension method of shape.
+        public static bool HasDefaultName(Shape shape)
+        {
+            var copy = shape.Duplicate()[1];
+            bool hasDefaultName = copy.Name != shape.Name;
+            copy.Delete();
+            return hasDefaultName;
+        }
+
+
+        // TODO: Make this an extension method of shape.
+        public static void SetText(Shape shape, params string[] lines)
+        {
+            shape.TextFrame2.TextRange.Text = string.Join("\r", lines);
+        }
+
+        // TODO: Make this an extension method of shape.
+        public static void SetText(Shape shape, IEnumerable<string> lines)
+        {
+            shape.TextFrame2.TextRange.Text = string.Join("\r", lines);
+        }
+
+        // TODO: Make this an extension method of shape.
+        /// <summary>
+        /// Get the paragraphs of the shape as a list.
+        /// The paragraphs formats can be modified to change the format of the paragraphs in shape.
+        /// This list is 0-indexed.
+        /// </summary>
+        public static List<TextRange2> GetParagraphs(Shape shape)
+        {
+            return shape.TextFrame2.TextRange.Paragraphs.Cast<TextRange2>().ToList();
         }
 
         # endregion

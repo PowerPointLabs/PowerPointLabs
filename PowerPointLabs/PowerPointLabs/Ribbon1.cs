@@ -2208,35 +2208,40 @@ namespace PowerPointLabs
         {
             Globals.ThisAddIn.Application.StartNewUndoEntry();
 
-            AgendaLab.GenerateAgenda(AgendaLab.Type.Beam);
+            AgendaLab.AgendaLabMain.GenerateAgenda(AgendaLab.Type.Beam);
+            GC.Collect();
         }
 
         public void BulletPointAgendaClick(Office.IRibbonControl control)
         {
             Globals.ThisAddIn.Application.StartNewUndoEntry();
 
-            AgendaLab.GenerateAgenda(AgendaLab.Type.Bullet);
+            AgendaLab.AgendaLabMain.GenerateAgenda(AgendaLab.Type.Bullet);
+            GC.Collect();
         }
 
         public void VisualAgendaClick(Office.IRibbonControl control)
         {
             Globals.ThisAddIn.Application.StartNewUndoEntry();
 
-            AgendaLab.GenerateAgenda(AgendaLab.Type.Visual);
+            AgendaLab.AgendaLabMain.GenerateAgenda(AgendaLab.Type.Visual);
+            GC.Collect();
         }
 
         public void RemoveAgendaClick(Office.IRibbonControl control)
         {
             Globals.ThisAddIn.Application.StartNewUndoEntry();
 
-            AgendaLab.RemoveAgenda();
+            AgendaLab.AgendaLabMain.RemoveAgenda();
+            GC.Collect();
         }
 
         public void UpdateAgendaClick(Office.IRibbonControl control)
         {
             Globals.ThisAddIn.Application.StartNewUndoEntry();
 
-            AgendaLab.SynchronizeAgenda();
+            AgendaLab.AgendaLabMain.SynchroniseAgenda();
+            GC.Collect();
         }
         # endregion
 
