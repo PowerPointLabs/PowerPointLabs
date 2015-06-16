@@ -1,6 +1,7 @@
 ﻿using FunctionalTest.util;
 using Microsoft.Office.Core;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Shape = Microsoft.Office.Interop.PowerPoint.Shape;
 
 namespace FunctionalTest
 {
@@ -26,7 +27,7 @@ namespace FunctionalTest
 
             PplFeatures.ConvertToPic();
 
-            var sh = PpOperations.SelectShapes("Picture 1")[1];
+            var sh = PpOperations.SelectShapesByPrefix("Picture")[1] as Shape;
             Assert.AreEqual(MsoShapeType.msoPicture, sh.Type);
 
             var expSlide = PpOperations.SelectSlide(8);
@@ -41,7 +42,7 @@ namespace FunctionalTest
 
             PplFeatures.ConvertToPic();
 
-            var sh = PpOperations.SelectShapes("Picture 1")[1];
+            var sh = PpOperations.SelectShapesByPrefix("Picture")[1] as Shape;
             Assert.AreEqual(MsoShapeType.msoPicture, sh.Type);
 
             var expSlide = PpOperations.SelectSlide(5);
