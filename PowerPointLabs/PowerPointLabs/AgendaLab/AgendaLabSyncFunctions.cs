@@ -13,14 +13,17 @@ namespace PowerPointLabs.AgendaLab
 {
     internal static partial class AgendaLabMain
     {
+        // This file contains Sync Functions, which are used to sync individual slides (not the agenda as a whole).
+        // The methods defined in this file are helper methods for the sync functions.
+
         #region Bullet Agenda
 
         /// <summary>
         /// The SyncFunction used for synchronising the bullet agenda slides.
         /// </summary>
-        public static readonly SyncFunction SyncBulletAgendaSlide = (refSlide, sections, currentSection, targetSlide) =>
+        public static readonly SyncFunction SyncBulletAgendaSlide = (refSlide, sections, currentSection, deletedShapeNames, targetSlide) =>
         {
-            SyncShapesFromReferenceSlide(refSlide, targetSlide);
+            SyncShapesFromReferenceSlide(refSlide, targetSlide, deletedShapeNames);
 
             targetSlide.Transition.EntryEffect = PpEntryEffect.ppEffectFadeSmoothly;
             targetSlide.Transition.Duration = 0.25f;
@@ -71,10 +74,10 @@ namespace PowerPointLabs.AgendaLab
         /// <summary>
         /// The SyncFunction used for synchronising the Visual agenda slides (other than the last visual agenda slide).
         /// </summary>
-        public static readonly SyncFunction SyncVisualAgendaSlide = (refSlide, sections, currentSection, targetSlide) =>
+        public static readonly SyncFunction SyncVisualAgendaSlide = (refSlide, sections, currentSection, deletedShapeNames, targetSlide) =>
         {
             DeleteVisualAgendaImageShapes(targetSlide);
-            SyncShapesFromReferenceSlide(refSlide, targetSlide);
+            SyncShapesFromReferenceSlide(refSlide, targetSlide, deletedShapeNames);
             ReplaceVisualImagesWithAfterZoomOutImages(targetSlide, currentSection.Index);
 
             if (currentSection.Index > 2)
@@ -93,10 +96,10 @@ namespace PowerPointLabs.AgendaLab
         /// <summary>
         /// The SyncFunction used for synchronising the last visual agenda slide.
         /// </summary>
-        public static readonly SyncFunction SyncVisualAgendaEndSlide = (refSlide, sections, currentSection, targetSlide) =>
+        public static readonly SyncFunction SyncVisualAgendaEndSlide = (refSlide, sections, currentSection, deletedShapeNames, targetSlide) =>
         {
             DeleteVisualAgendaImageShapes(targetSlide);
-            SyncShapesFromReferenceSlide(refSlide, targetSlide);
+            SyncShapesFromReferenceSlide(refSlide, targetSlide, deletedShapeNames);
             ReplaceVisualImagesWithAfterZoomOutImages(targetSlide, currentSection.Index + 1);
 
             var zoomOutShape = FindShapeCorrespondingToSection(targetSlide, currentSection.Index);
@@ -187,16 +190,14 @@ namespace PowerPointLabs.AgendaLab
         /// Synchronises the shapes in the candidate slide with the shapes in the reference slide.
         /// Adds any shape that exists in the reference slide but is missing in the candidate slide.
         /// </summary>
-        private static void SyncShapesFromReferenceSlide(PowerPointSlide refSlide, PowerPointSlide candidate)
+        private static void SyncShapesFromReferenceSlide(PowerPointSlide refSlide, PowerPointSlide candidate, List<string> markedForDeletion)
         {
             if (refSlide == null || candidate == null || refSlide == candidate)
             {
                 return;
             }
 
-            refSlide.MakeShapeNamesNonDefault();
-            refSlide.MakeShapeNamesUnique(shape => !AgendaShape.IsAnyAgendaShape(shape) &&
-                                                   !PowerPointSlide.IsTemplateSlideMarker(shape));
+            DeleteShapesMarkedForDeletion(candidate, markedForDeletion);
 
             candidate.Layout = refSlide.Layout;
             candidate.Design = refSlide.Design;
@@ -233,6 +234,22 @@ namespace PowerPointLabs.AgendaLab
             }
 
             SynchroniseZOrders(shapeOriginalZOrders);
+        }
+
+        private static void DeleteShapesMarkedForDeletion(PowerPointSlide candidate, List<string> markedForDeletion)
+        {
+            if (markedForDeletion.Count == 0) return;
+            
+            var candidateSlideShapes = candidate.GetNameToShapeDictionary();
+            foreach (var shapeName in markedForDeletion)
+            {
+                Shape shapeInSlide;
+                bool shapeExists = candidateSlideShapes.TryGetValue(shapeName, out shapeInSlide);
+                if (!shapeExists || shapeInSlide == null) continue;
+                
+                shapeInSlide.Delete();
+                candidateSlideShapes[shapeName] = null;
+            }
         }
 
         private static void SynchroniseZOrders(SortedDictionary<int, Shape> shapeOriginalZOrders)

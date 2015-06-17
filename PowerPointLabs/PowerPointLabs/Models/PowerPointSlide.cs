@@ -102,6 +102,22 @@ namespace PowerPointLabs.Models
             }
         }
 
+        /// <summary>
+        /// TODO: escape newlines so that they can be stored properly?
+        /// TODO: It is a known problem that if you store a string with newlines in NotesPageText, the retrieved string may be slightly different.
+        /// </summary>
+        public void StoreDataInNotes(string data)
+        {
+            NotesPageText = TextCollection.NotesPageStorageText + data;
+        }
+
+        public string RetrieveDataFromNotes()
+        {
+            var text = NotesPageText;
+            if (!text.StartsWith(TextCollection.NotesPageStorageText)) return "";
+            return text.Substring(TextCollection.NotesPageStorageText.Length);
+        }
+
         public Shapes Shapes
         {
             get { return _slide.Shapes; }
