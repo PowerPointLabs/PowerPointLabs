@@ -397,7 +397,6 @@ namespace PowerPointLabs.AgendaLab
 
             var titleShape = refSlide.Shapes.Placeholders[1];
             var contentShape = refSlide.Shapes.Placeholders[2];
-            AgendaShape.SetShapeName(titleShape, ShapePurpose.TitleShape, AgendaSection.None);
             AgendaShape.SetShapeName(contentShape, ShapePurpose.ContentShape, AgendaSection.None);
 
             Graphics.SetText(titleShape, TextCollection.AgendaLabTitleContent);
@@ -430,7 +429,6 @@ namespace PowerPointLabs.AgendaLab
                                                             .Add(1, PpSlideLayout.ppLayoutTitleOnly));
 
             var titleBar = refSlide.Shapes.Placeholders[1];
-            AgendaShape.SetShapeName(titleBar, ShapePurpose.TitleShape, AgendaSection.None);
             Graphics.SetText(titleBar, TextCollection.AgendaLabTitleContent);
 
             InsertVisualAgendaSectionImages(refSlide);
