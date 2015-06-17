@@ -23,7 +23,7 @@ namespace FunctionalTest.util
             var expShapeInPic = new ComparableImage(expFileInfo);
 
             var similarity = actualShapeInPic.CalculateSimilarity(expShapeInPic);
-            Assert.IsTrue(similarity > 0.99, "The shapes look different.");
+            Assert.IsTrue(similarity > 0.95, "The shapes look different.");
         }
 
         public static void IsSameLooking(Slide expSlide, Slide actualSlide)
@@ -36,7 +36,7 @@ namespace FunctionalTest.util
             var expSlideInPic = new ComparableImage(new FileInfo(PathUtil.GetTempPath("expSlide" + hashCode)));
 
             var similarity = actualSlideInPic.CalculateSimilarity(expSlideInPic);
-            Assert.IsTrue(similarity > 0.99, "The slides look different.");
+            Assert.IsTrue(similarity > 0.95, "The slides look different.");
         }
 
         public static void IsSameAnimations(Slide expSlide, Slide actualSlide)
