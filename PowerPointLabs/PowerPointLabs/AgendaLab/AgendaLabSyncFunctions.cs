@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.InteropServices;
 using System.Text;
 using System.Text.RegularExpressions;
 using Microsoft.Office.Core;
@@ -8,6 +9,7 @@ using Microsoft.Office.Interop.PowerPoint;
 using PowerPointLabs.Models;
 using Graphics = PowerPointLabs.Utils.Graphics;
 using Shape = Microsoft.Office.Interop.PowerPoint.Shape;
+using ShapeRange = Microsoft.Office.Interop.PowerPoint.ShapeRange;
 
 namespace PowerPointLabs.AgendaLab
 {
@@ -213,8 +215,7 @@ namespace PowerPointLabs.AgendaLab
             if (extraShapes.Length != 0)
             {
                 var refShapes = refSlide.Shapes.Range(extraShapes);
-                refShapes.Copy();
-                var copiedShapes = candidate.Shapes.Paste();
+                CopyShapesTo(refShapes, candidate);
             }
 
             // syncronize shapes position and size, except bullet content
@@ -234,6 +235,24 @@ namespace PowerPointLabs.AgendaLab
             }
 
             SynchroniseZOrders(shapeOriginalZOrders);
+        }
+
+        private static void CopyShapesTo(ShapeRange refShapes, PowerPointSlide candidate)
+        {
+            foreach (Shape shape in refShapes)
+            {
+                try
+                {
+                    shape.Copy();
+                    candidate.Shapes.Paste();
+                }
+                catch (COMException e)
+                {
+                    // A COMException occurs if you try to copy paste an empty placeholder shape. So I catch it here.
+                    // I can't figure out any other way to detect that it's an empty placeholder shape.
+                    // You know, those things like "Click to add title..."
+                }
+            }
         }
 
         private static void DeleteShapesMarkedForDeletion(PowerPointSlide candidate, List<string> markedForDeletion)
