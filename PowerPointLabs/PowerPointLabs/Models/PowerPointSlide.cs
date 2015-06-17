@@ -748,7 +748,13 @@ namespace PowerPointLabs.Models
         {
             if (HasTemplateSlideMarker()) return null;
 
-            Shape markerShape = _slide.Shapes.AddTextbox(MsoTextOrientation.msoTextOrientationHorizontal, 0, 0, 900, 40);
+            float ratio = 22.5f;
+            float slideWidth = PowerPointPresentation.Current.SlideWidth;
+            float slideHeight = PowerPointPresentation.Current.SlideHeight;
+            float shapeWidth = Math.Min(slideWidth, 900);
+            float shapeHeight = shapeWidth/ratio;
+
+            Shape markerShape = _slide.Shapes.AddTextbox(MsoTextOrientation.msoTextOrientationHorizontal, 0, 0, shapeWidth, shapeHeight);
 
             markerShape.TextEffect.Alignment = MsoTextEffectAlignment.msoTextEffectAlignmentCentered;
 
