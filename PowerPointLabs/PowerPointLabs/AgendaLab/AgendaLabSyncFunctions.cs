@@ -132,7 +132,7 @@ namespace PowerPointLabs.AgendaLab
                 var sectionEndSlide = FindSectionLastNonAgendaSlide(i);
                 var snapshotShape = slide.InsertExitSnapshotOfSlide(sectionEndSlide);
                 snapshotShape.Name = imageShape.Name;
-                Graphics.SyncShape(imageShape, snapshotShape, pickupShapeFormat: false, pickupTextContent: false, pickupTextFormat: false);
+                Graphics.SyncShape(imageShape, snapshotShape, pickupShapeFormat: true, pickupTextContent: false, pickupTextFormat: false);
                 imageShape.Delete();
             }
         }

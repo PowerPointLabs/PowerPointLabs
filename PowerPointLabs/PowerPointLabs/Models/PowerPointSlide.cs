@@ -768,8 +768,8 @@ namespace PowerPointLabs.Models
             markerShape.TextFrame2.AutoSize = MsoAutoSize.msoAutoSizeTextToFitShape;
             markerShape.ZOrder(MsoZOrderCmd.msoSendToBack);
             
-            markerShape.Left = (PowerPointPresentation.Current.SlideWidth - markerShape.Width) / 2;
-            markerShape.Top = PowerPointPresentation.Current.SlideHeight - markerShape.Height;
+            markerShape.Left = (slideWidth - markerShape.Width) / 2;
+            markerShape.Top = slideHeight - markerShape.Height;
             markerShape.Name = PptLabsTemplateMarkerShapeName;
 
             Utils.Graphics.MakeShapeViewTimeInvisible(markerShape, _slide);

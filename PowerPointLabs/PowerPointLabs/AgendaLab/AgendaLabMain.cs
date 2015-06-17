@@ -515,7 +515,7 @@ namespace PowerPointLabs.AgendaLab
         private static void UpdateSectionImage(PowerPointSlide refSlide, AgendaSection section, Shape previousImageShape)
         {
             var snapshotShape = CreateSectionImage(refSlide, section);
-            Graphics.SyncShape(previousImageShape, snapshotShape, pickupShapeFormat: false, pickupTextContent: false, pickupTextFormat: false);
+            Graphics.SyncShape(previousImageShape, snapshotShape, pickupShapeFormat: true, pickupTextContent: false, pickupTextFormat: false);
             previousImageShape.Delete();
         }
         
