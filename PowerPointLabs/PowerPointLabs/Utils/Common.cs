@@ -7,6 +7,12 @@ namespace PowerPointLabs.Utils
 {
     public static class Common
     {
+        /// <summary>
+        /// Used for the method UniqueDigitString().
+        /// _sessionGlobalUniqueIndex is guaranteed to be unique within the same powerpoint session.
+        /// </summary>
+        private static int _sessionGlobalUniqueIndex = 0;
+
         public static string NextAvailableName(List<string> nameList, string name)
         {
             var orderedNameList = nameList.OrderBy(item => item, new Comparers.AtomicNumberStringCompare()).ToList();
@@ -20,6 +26,48 @@ namespace PowerPointLabs.Utils
             var replacePattern = new Regex(@"([^\d\s\w])");
 
             return replacePattern.Replace(str, "\\$1");
+        }
+
+        /// <summary>
+        /// Used to encode a string to make it a safe file name.
+        /// Base64 usually uses a / and a + character. This uses a _ and a - instead. (safe for file names)
+        /// </summary>
+        public static string FilenameBase64(string str)
+        {
+            var plainTextBytes = System.Text.Encoding.UTF8.GetBytes(str);
+            str = Convert.ToBase64String(plainTextBytes);
+            str = str.Replace("+", "-");
+            str = str.Replace("/", "_");
+            return str;
+        }
+
+        /// <summary>
+        /// Generates a unique string of digits to be used in slide names.
+        /// _sessionGlobalUniqueIndex is guaranteed to be unique within the same powerpoint session.
+        /// DateTimeNow.ToString guaranteed to be unique across different powerpoint sessions.
+        /// </summary>
+        public static string UniqueDigitString()
+        {
+            string digitString = DateTime.Now.ToString("yyyyMMddHHmmssffff") + _sessionGlobalUniqueIndex;
+            _sessionGlobalUniqueIndex++;
+            return digitString;
+        }
+
+        /// <summary>
+        /// Returns a list of (nStrings) strings that differ from all strings in presentStrings
+        /// </summary>
+        public static string[] GetUnusedStrings(IEnumerable<string> presentStrings, int nStrings)
+        {
+            var unusedStrings = new List<string>();
+
+            int longestString = presentStrings.Select(str => str.Length).Max();
+            string baseString = new string('a', longestString);
+            
+            for (int i = 0; i < nStrings; ++i)
+            {
+                unusedStrings.Add(baseString + i);
+            }
+            return unusedStrings.ToArray();
         }
 
         # region Helper Function
@@ -47,6 +95,19 @@ namespace PowerPointLabs.Utils
 
             return min + 1;
         }
+        # endregion
+
+
+        # region Math
+        /// <summary>
+        /// Computes ceil(dividend / divisor)
+        /// </summary>
+        public static int CeilingDivide(int dividend, int divisor)
+        {
+            return (dividend + divisor - 1)/divisor;
+        }
+
+
         # endregion
     }
 }

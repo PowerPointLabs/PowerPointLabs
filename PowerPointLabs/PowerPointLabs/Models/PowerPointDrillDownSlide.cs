@@ -29,16 +29,25 @@ namespace PowerPointLabs.Models
             ManageSlideTransitions();
         }
 
-        public void AddDrillDownAnimation(PowerPoint.Shape shapeToZoom, PowerPoint.Shape referenceShape)
+        public void AddDrillDownAnimationNoBackground(PowerPoint.Shape backgroundShape, PowerPoint.Shape shapeToZoom, PowerPoint.Shape referenceShape)
         {
             PowerPoint.Shape indicatorShape = AddPowerPointLabsIndicator();
-            if (AutoZoom.backgroundZoomChecked)
-                DefaultMotionAnimation.AddDrillDownMotionAnimation(this, shapeToZoom, referenceShape, 0.5f, PowerPoint.MsoAnimTriggerType.msoAnimTriggerWithPrevious);
-            else
-            {
-                ManageNonMatchingShapes(shapeToZoom, indicatorShape);
-                DefaultMotionAnimation.AddDefaultMotionAnimation(this, shapeToZoom, referenceShape, 0.5f, PowerPoint.MsoAnimTriggerType.msoAnimTriggerWithPrevious);
-            }
+            ManageNonMatchingShapes(shapeToZoom, indicatorShape);
+            DefaultMotionAnimation.AddDefaultMotionAnimation(this, shapeToZoom, referenceShape, 0.5f, PowerPoint.MsoAnimTriggerType.msoAnimTriggerWithPrevious);
+            
+            DefaultMotionAnimation.PreloadShape(this, shapeToZoom, false);
+            DefaultMotionAnimation.DuplicateAsCoverImage(this, backgroundShape);
+            indicatorShape.ZOrder(Office.MsoZOrderCmd.msoBringToFront);
+        }
+
+        public void AddDrillDownAnimationBackground(PowerPoint.Shape backgroundShape, PowerPoint.Shape shapeToZoom, PowerPoint.Shape referenceShape)
+        {
+            PowerPoint.Shape indicatorShape = AddPowerPointLabsIndicator();
+            DefaultMotionAnimation.AddDrillDownMotionAnimation(this, backgroundShape, referenceShape, 0.5f, PowerPoint.MsoAnimTriggerType.msoAnimTriggerWithPrevious);
+            DefaultMotionAnimation.AddDefaultMotionAnimation(this, shapeToZoom, backgroundShape, 0.5f, PowerPoint.MsoAnimTriggerType.msoAnimTriggerWithPrevious);
+
+            DefaultMotionAnimation.PreloadShape(this, shapeToZoom, false);
+            DefaultMotionAnimation.DuplicateAsCoverImage(this, backgroundShape);
             indicatorShape.ZOrder(Office.MsoZOrderCmd.msoBringToFront);
         }
 
