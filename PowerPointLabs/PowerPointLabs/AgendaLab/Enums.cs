@@ -35,7 +35,6 @@ namespace PowerPointLabs.AgendaLab
     internal enum ShapePurpose
     {
         // For Bullet Agenda
-        TitleShape,
         ContentShape,
 
         // For Beam Agenda

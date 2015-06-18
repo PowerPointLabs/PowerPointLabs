@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.InteropServices;
 using System.Text;
 using System.Text.RegularExpressions;
 using Microsoft.Office.Core;
@@ -8,19 +9,23 @@ using Microsoft.Office.Interop.PowerPoint;
 using PowerPointLabs.Models;
 using Graphics = PowerPointLabs.Utils.Graphics;
 using Shape = Microsoft.Office.Interop.PowerPoint.Shape;
+using ShapeRange = Microsoft.Office.Interop.PowerPoint.ShapeRange;
 
 namespace PowerPointLabs.AgendaLab
 {
     internal static partial class AgendaLabMain
     {
+        // This file contains Sync Functions, which are used to sync individual slides (not the agenda as a whole).
+        // The methods defined in this file are helper methods for the sync functions.
+
         #region Bullet Agenda
 
         /// <summary>
         /// The SyncFunction used for synchronising the bullet agenda slides.
         /// </summary>
-        public static readonly SyncFunction SyncBulletAgendaSlide = (refSlide, sections, currentSection, targetSlide) =>
+        public static readonly SyncFunction SyncBulletAgendaSlide = (refSlide, sections, currentSection, deletedShapeNames, targetSlide) =>
         {
-            SyncShapesFromReferenceSlide(refSlide, targetSlide);
+            SyncShapesFromReferenceSlide(refSlide, targetSlide, deletedShapeNames);
 
             targetSlide.Transition.EntryEffect = PpEntryEffect.ppEffectFadeSmoothly;
             targetSlide.Transition.Duration = 0.25f;
@@ -71,10 +76,10 @@ namespace PowerPointLabs.AgendaLab
         /// <summary>
         /// The SyncFunction used for synchronising the Visual agenda slides (other than the last visual agenda slide).
         /// </summary>
-        public static readonly SyncFunction SyncVisualAgendaSlide = (refSlide, sections, currentSection, targetSlide) =>
+        public static readonly SyncFunction SyncVisualAgendaSlide = (refSlide, sections, currentSection, deletedShapeNames, targetSlide) =>
         {
             DeleteVisualAgendaImageShapes(targetSlide);
-            SyncShapesFromReferenceSlide(refSlide, targetSlide);
+            SyncShapesFromReferenceSlide(refSlide, targetSlide, deletedShapeNames);
             ReplaceVisualImagesWithAfterZoomOutImages(targetSlide, currentSection.Index);
 
             if (currentSection.Index > 2)
@@ -93,10 +98,10 @@ namespace PowerPointLabs.AgendaLab
         /// <summary>
         /// The SyncFunction used for synchronising the last visual agenda slide.
         /// </summary>
-        public static readonly SyncFunction SyncVisualAgendaEndSlide = (refSlide, sections, currentSection, targetSlide) =>
+        public static readonly SyncFunction SyncVisualAgendaEndSlide = (refSlide, sections, currentSection, deletedShapeNames, targetSlide) =>
         {
             DeleteVisualAgendaImageShapes(targetSlide);
-            SyncShapesFromReferenceSlide(refSlide, targetSlide);
+            SyncShapesFromReferenceSlide(refSlide, targetSlide, deletedShapeNames);
             ReplaceVisualImagesWithAfterZoomOutImages(targetSlide, currentSection.Index + 1);
 
             var zoomOutShape = FindShapeCorrespondingToSection(targetSlide, currentSection.Index);
@@ -132,7 +137,7 @@ namespace PowerPointLabs.AgendaLab
                 var sectionEndSlide = FindSectionLastNonAgendaSlide(i);
                 var snapshotShape = slide.InsertExitSnapshotOfSlide(sectionEndSlide);
                 snapshotShape.Name = imageShape.Name;
-                Graphics.SyncShape(imageShape, snapshotShape, pickupShapeFormat: false, pickupTextContent: false, pickupTextFormat: false);
+                Graphics.SyncShape(imageShape, snapshotShape, pickupShapeFormat: true, pickupTextContent: false, pickupTextFormat: false);
                 imageShape.Delete();
             }
         }
@@ -187,16 +192,14 @@ namespace PowerPointLabs.AgendaLab
         /// Synchronises the shapes in the candidate slide with the shapes in the reference slide.
         /// Adds any shape that exists in the reference slide but is missing in the candidate slide.
         /// </summary>
-        private static void SyncShapesFromReferenceSlide(PowerPointSlide refSlide, PowerPointSlide candidate)
+        private static void SyncShapesFromReferenceSlide(PowerPointSlide refSlide, PowerPointSlide candidate, List<string> markedForDeletion)
         {
             if (refSlide == null || candidate == null || refSlide == candidate)
             {
                 return;
             }
 
-            refSlide.MakeShapeNamesNonDefault();
-            refSlide.MakeShapeNamesUnique(shape => !AgendaShape.IsAnyAgendaShape(shape) &&
-                                                   !PowerPointSlide.IsTemplateSlideMarker(shape));
+            DeleteShapesMarkedForDeletion(candidate, markedForDeletion);
 
             candidate.Layout = refSlide.Layout;
             candidate.Design = refSlide.Design;
@@ -212,8 +215,7 @@ namespace PowerPointLabs.AgendaLab
             if (extraShapes.Length != 0)
             {
                 var refShapes = refSlide.Shapes.Range(extraShapes);
-                refShapes.Copy();
-                var copiedShapes = candidate.Shapes.Paste();
+                CopyShapesTo(refShapes, candidate);
             }
 
             // syncronize shapes position and size, except bullet content
@@ -233,6 +235,40 @@ namespace PowerPointLabs.AgendaLab
             }
 
             SynchroniseZOrders(shapeOriginalZOrders);
+        }
+
+        private static void CopyShapesTo(ShapeRange refShapes, PowerPointSlide candidate)
+        {
+            foreach (Shape shape in refShapes)
+            {
+                try
+                {
+                    shape.Copy();
+                    candidate.Shapes.Paste();
+                }
+                catch (COMException e)
+                {
+                    // A COMException occurs if you try to copy paste an empty placeholder shape. So I catch it here.
+                    // I can't figure out any other way to detect that it's an empty placeholder shape.
+                    // You know, those things like "Click to add title..."
+                }
+            }
+        }
+
+        private static void DeleteShapesMarkedForDeletion(PowerPointSlide candidate, List<string> markedForDeletion)
+        {
+            if (markedForDeletion.Count == 0) return;
+            
+            var candidateSlideShapes = candidate.GetNameToShapeDictionary();
+            foreach (var shapeName in markedForDeletion)
+            {
+                Shape shapeInSlide;
+                bool shapeExists = candidateSlideShapes.TryGetValue(shapeName, out shapeInSlide);
+                if (!shapeExists || shapeInSlide == null) continue;
+                
+                shapeInSlide.Delete();
+                candidateSlideShapes[shapeName] = null;
+            }
         }
 
         private static void SynchroniseZOrders(SortedDictionary<int, Shape> shapeOriginalZOrders)

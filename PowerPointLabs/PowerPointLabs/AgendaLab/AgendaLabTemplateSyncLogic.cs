@@ -1,12 +1,42 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using Microsoft.Office.Interop.PowerPoint;
 using PowerPointLabs.Models;
+using PowerPointLabs.Utils;
 
 namespace PowerPointLabs.AgendaLab
 {
     internal static partial class AgendaLabMain
     {
+        #region Main Synchronisation Function
+        /// <summary>
+        /// Call the function like this for example:
+        /// SynchroniseSlidesUsingTemplate(slideTracker, refSlide, () => new VisualAgendaTemplate());
+        /// generateTemplate is a function that returns a newly created template.
+        /// </summary>
+        private static void SynchroniseSlidesUsingTemplate(SlideSelectionTracker slideTracker, PowerPointSlide refSlide, Func<AgendaTemplate> generateTemplate)
+        {
+            var sections = Sections;
+
+            var deletedShapeNames = RetrieveTrackedDeletions(refSlide);
+            refSlide.MakeShapeNamesNonDefault();
+            refSlide.MakeShapeNamesUnique(shape => !AgendaShape.IsAnyAgendaShape(shape) &&
+                                                   !PowerPointSlide.IsTemplateSlideMarker(shape));
+
+            ScrambleSlideSectionNames();
+            foreach (var currentSection in sections)
+            {
+                var template = generateTemplate();
+                ConfigureTemplate(currentSection, template);
+
+                var templateTable = RebuildSectionUsingTemplate(slideTracker, currentSection, template);
+                SynchroniseAllSlides(template, templateTable, refSlide, sections, deletedShapeNames, currentSection);
+            }
+
+            TrackShapesInSlide(refSlide);
+        }
+
         private static void ConfigureTemplate(AgendaSection section, AgendaTemplate template)
         {
             if (section.Index == 1)
@@ -16,24 +46,10 @@ namespace PowerPointLabs.AgendaLab
             else
                 template.ConfigMiddle();
         }
+        #endregion
 
-        private static void SynchroniseAllSlides(AgendaTemplate template, TemplateIndexTable templateTable,
-            PowerPointSlide refSlide, List<AgendaSection> sections, AgendaSection currentSection)
-        {
-            if (template.NotConfigured) throw new ArgumentException("Template is not configured yet.");
 
-            for (int i = 0; i < template.FrontSlidesCount; ++i)
-            {
-                template.FrontSlides[i].SyncFunction(refSlide, sections, currentSection,
-                    templateTable.FrontSlideObjects[i]);
-            }
-            for (int i = 0; i < template.BackSlidesCount; ++i)
-            {
-                template.BackSlides[i].SyncFunction(refSlide, sections, currentSection,
-                    templateTable.BackSlideObjects[i]);
-            }
-        }
-
+        #region Rebuilding the arrangement of slides in a Section
         /// <summary>
         /// Rebuilds the slides in the section to match the slides indicated by the template.
         /// Names the agenda slides properly.
@@ -225,5 +241,51 @@ namespace PowerPointLabs.AgendaLab
                                                                         includeIndicator: true);
             return slide;
         }
+
+        #endregion
+
+
+        #region Synchronising the content of slides
+
+        private static void SynchroniseAllSlides(AgendaTemplate template, TemplateIndexTable templateTable,
+            PowerPointSlide refSlide, List<AgendaSection> sections, List<string> deletedShapeNames, AgendaSection currentSection)
+        {
+            if (template.NotConfigured) throw new ArgumentException("Template is not configured yet.");
+
+            for (int i = 0; i < template.FrontSlidesCount; ++i)
+            {
+                template.FrontSlides[i].SyncFunction(refSlide, sections, currentSection, deletedShapeNames,
+                    templateTable.FrontSlideObjects[i]);
+            }
+            for (int i = 0; i < template.BackSlidesCount; ++i)
+            {
+                template.BackSlides[i].SyncFunction(refSlide, sections, currentSection, deletedShapeNames,
+                    templateTable.BackSlideObjects[i]);
+            }
+
+        }
+
+        /// <summary>
+        /// Retrieves tracked shapes from the slide metadata, finds out which shapes have been deleted by the user,
+        /// and returns the names of those deleted shapes.
+        /// </summary>
+        private static List<string> RetrieveTrackedDeletions(PowerPointSlide slide)
+        {
+            var retrievedNameList = Common.UnserializeCollection(slide.RetrieveDataFromNotes());
+            if (retrievedNameList == null) return new List<string>();
+
+            var currentNames = slide.GetNameToShapeDictionary();
+            return retrievedNameList.Where(name => !currentNames.ContainsKey(name)).ToList();
+        }
+
+        /// <summary>
+        /// Tracks shapes in the slide metadata. (used for tracking deletions later on)
+        /// </summary>
+        private static void TrackShapesInSlide(PowerPointSlide slide)
+        {
+            var nameList = slide.GetNameToShapeDictionary().Keys.ToList();
+            slide.StoreDataInNotes(Common.SerializeCollection(nameList));
+        }
+        #endregion
     }
 }

@@ -102,6 +102,22 @@ namespace PowerPointLabs.Models
             }
         }
 
+        /// <summary>
+        /// TODO: escape newlines so that they can be stored properly?
+        /// TODO: It is a known problem that if you store a string with newlines in NotesPageText, the retrieved string may be slightly different.
+        /// </summary>
+        public void StoreDataInNotes(string data)
+        {
+            NotesPageText = TextCollection.NotesPageStorageText + data;
+        }
+
+        public string RetrieveDataFromNotes()
+        {
+            var text = NotesPageText;
+            if (!text.StartsWith(TextCollection.NotesPageStorageText)) return "";
+            return text.Substring(TextCollection.NotesPageStorageText.Length);
+        }
+
         public Shapes Shapes
         {
             get { return _slide.Shapes; }
@@ -748,7 +764,13 @@ namespace PowerPointLabs.Models
         {
             if (HasTemplateSlideMarker()) return null;
 
-            Shape markerShape = _slide.Shapes.AddTextbox(MsoTextOrientation.msoTextOrientationHorizontal, 0, 0, 900, 40);
+            float ratio = 22.5f;
+            float slideWidth = PowerPointPresentation.Current.SlideWidth;
+            float slideHeight = PowerPointPresentation.Current.SlideHeight;
+            float shapeWidth = Math.Min(slideWidth, 900);
+            float shapeHeight = shapeWidth/ratio;
+
+            Shape markerShape = _slide.Shapes.AddTextbox(MsoTextOrientation.msoTextOrientationHorizontal, 0, 0, shapeWidth, shapeHeight);
 
             markerShape.TextEffect.Alignment = MsoTextEffectAlignment.msoTextEffectAlignmentCentered;
 
@@ -762,8 +784,8 @@ namespace PowerPointLabs.Models
             markerShape.TextFrame2.AutoSize = MsoAutoSize.msoAutoSizeTextToFitShape;
             markerShape.ZOrder(MsoZOrderCmd.msoSendToBack);
             
-            markerShape.Left = (PowerPointPresentation.Current.SlideWidth - markerShape.Width) / 2;
-            markerShape.Top = PowerPointPresentation.Current.SlideHeight - markerShape.Height;
+            markerShape.Left = (slideWidth - markerShape.Width) / 2;
+            markerShape.Top = slideHeight - markerShape.Height;
             markerShape.Name = PptLabsTemplateMarkerShapeName;
 
             Utils.Graphics.MakeShapeViewTimeInvisible(markerShape, _slide);
