@@ -10,5 +10,11 @@
         void FitToWidth();
         void FitToHeight();
         void ConvertToPic();
+        void DrillDown();
+        void StepBack();
+        void AddZoomToArea();
+        void HighlightPoints();
+        void HighlightBackground();
+        void HighlightFragments();
     }
 }

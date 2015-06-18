@@ -18,8 +18,10 @@ namespace FunctionalTestInterface
 
         Selection GetCurrentSelection();
         ShapeRange SelectShapes(string shapeName);
-        ShapeRange SelectShapes(List<string> shapeNames);
+        ShapeRange SelectShapes(IEnumerable<string> shapeNames);
         ShapeRange SelectShapesByPrefix(string prefix);
         FileInfo ExportSelectedShapes();
+        string SelectAllTextInShape(string shapeName);
+        string SelectTextInShape(string shapeName, int startIndex, int endIndex);
     }
 }

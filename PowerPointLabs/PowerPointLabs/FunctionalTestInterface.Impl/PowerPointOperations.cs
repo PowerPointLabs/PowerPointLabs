@@ -4,6 +4,7 @@ using FunctionalTestInterface;
 using Microsoft.Office.Interop.PowerPoint;
 using PowerPointLabs.Models;
 using System.IO;
+using System.Linq;
 using System.Windows.Forms;
 
 namespace PowerPointLabs.FunctionalTestInterface.Impl
@@ -95,7 +96,7 @@ namespace PowerPointLabs.FunctionalTestInterface.Impl
             return SelectShapes(nameList);
         }
 
-        public ShapeRange SelectShapes(List<string> shapeNames)
+        public ShapeRange SelectShapes(IEnumerable<string> shapeNames)
         {
             var range = PowerPointCurrentPresentationInfo
                 .CurrentSlide.Shapes.Range(shapeNames.ToArray());
@@ -129,6 +130,26 @@ namespace PowerPointLabs.FunctionalTestInterface.Impl
             var pathName = Path.GetTempPath() + "shapeName" + hashCode;
             shapes.Export(pathName, PpShapeFormat.ppShapeFormatPNG);
             return new FileInfo(pathName);
+        }
+
+        public string SelectAllTextInShape(string shapeName)
+        {
+            var shape = PowerPointCurrentPresentationInfo.CurrentSlide.Shapes
+                                                                      .Cast<Shape>()
+                                                                      .FirstOrDefault(sh => sh.Name == shapeName);
+            var textRange = shape.TextFrame2.TextRange;
+            textRange.Select();
+            return textRange.Text;
+        }
+
+        public string SelectTextInShape(string shapeName, int startIndex, int endIndex)
+        {
+            var shape = PowerPointCurrentPresentationInfo.CurrentSlide.Shapes
+                                                                      .Cast<Shape>()
+                                                                      .FirstOrDefault(sh => sh.Name == shapeName);
+            var textRange = shape.TextFrame2.TextRange.Characters[startIndex, endIndex];
+            textRange.Select();
+            return textRange.Text;
         }
     }
 }

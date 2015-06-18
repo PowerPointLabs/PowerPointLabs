@@ -1,6 +1,7 @@
 ﻿using System;
 using FunctionalTestInterface;
 using PowerPointLabs.Models;
+using PowerPoint = Microsoft.Office.Interop.PowerPoint;
 
 namespace PowerPointLabs.FunctionalTestInterface.Impl
 {
@@ -50,6 +51,57 @@ namespace PowerPointLabs.FunctionalTestInterface.Impl
         {
             var selection = PowerPointCurrentPresentationInfo.CurrentSelection;
             ConvertToPicture.Convert(selection);
+        }
+
+        public void DrillDown()
+        {
+            AutoZoom.AddDrillDownAnimation();
+        }
+
+        public void StepBack()
+        {
+            AutoZoom.AddStepBackAnimation();
+        }
+
+        public void AddZoomToArea()
+        {
+            ZoomToArea.AddZoomToArea();
+        }
+
+        public void HighlightPoints()
+        {
+            if (Globals.ThisAddIn.Application.ActiveWindow.Selection.Type == PowerPoint.PpSelectionType.ppSelectionShapes)
+                HighlightBulletsText.userSelection = HighlightBulletsText.HighlightTextSelection.kShapeSelected;
+            else if (Globals.ThisAddIn.Application.ActiveWindow.Selection.Type == PowerPoint.PpSelectionType.ppSelectionText)
+                HighlightBulletsText.userSelection = HighlightBulletsText.HighlightTextSelection.kTextSelected;
+            else
+                HighlightBulletsText.userSelection = HighlightBulletsText.HighlightTextSelection.kNoneSelected;
+
+            HighlightBulletsText.AddHighlightBulletsText();
+        }
+
+        public void HighlightBackground()
+        {
+            if (Globals.ThisAddIn.Application.ActiveWindow.Selection.Type == PowerPoint.PpSelectionType.ppSelectionShapes)
+                HighlightBulletsBackground.userSelection = HighlightBulletsBackground.HighlightBackgroundSelection.kShapeSelected;
+            else if (Globals.ThisAddIn.Application.ActiveWindow.Selection.Type == PowerPoint.PpSelectionType.ppSelectionText)
+                HighlightBulletsBackground.userSelection = HighlightBulletsBackground.HighlightBackgroundSelection.kTextSelected;
+            else
+                HighlightBulletsBackground.userSelection = HighlightBulletsBackground.HighlightBackgroundSelection.kNoneSelected;
+
+            HighlightBulletsBackground.AddHighlightBulletsBackground();
+        }
+
+        public void HighlightFragments()
+        {
+            if (Globals.ThisAddIn.Application.ActiveWindow.Selection.Type == PowerPoint.PpSelectionType.ppSelectionShapes)
+                HighlightTextFragments.userSelection = HighlightTextFragments.HighlightTextSelection.kShapeSelected;
+            else if (Globals.ThisAddIn.Application.ActiveWindow.Selection.Type == PowerPoint.PpSelectionType.ppSelectionText)
+                HighlightTextFragments.userSelection = HighlightTextFragments.HighlightTextSelection.kTextSelected;
+            else
+                HighlightTextFragments.userSelection = HighlightTextFragments.HighlightTextSelection.kNoneSelected;
+
+            HighlightTextFragments.AddHighlightedTextFragments();
         }
     }
 }
