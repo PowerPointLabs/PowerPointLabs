@@ -211,5 +211,6 @@ namespace PowerPointLabs.AgendaLab
     internal delegate void SyncFunction(PowerPointSlide refSlide,
                                         List<AgendaSection> sections,
                                         AgendaSection currentSection,
+                                        List<string> deletedShapeNames,
                                         PowerPointSlide targetSlide);
 }

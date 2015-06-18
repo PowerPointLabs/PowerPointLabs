@@ -237,6 +237,12 @@
         # endregion
         # endregion
 
+        # region PowerPointSlide
+
+        public const string NotesPageStorageText = "This notes page is used to store data - Do not edit the notes. ";
+
+        # endregion
+
         # region Ribbon
         public static readonly string AboutInfo =
             "          PowerPointLabs Plugin Version " + Properties.Settings.Default.Version + " [Release date: " + Properties.Settings.Default.ReleaseDate + "]\n     Developed at School of Computing, National University of Singapore.\n        For more information, visit our website " + PowerPointLabsWebsiteUrl;

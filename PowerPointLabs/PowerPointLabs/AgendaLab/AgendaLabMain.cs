@@ -397,7 +397,6 @@ namespace PowerPointLabs.AgendaLab
 
             var titleShape = refSlide.Shapes.Placeholders[1];
             var contentShape = refSlide.Shapes.Placeholders[2];
-            AgendaShape.SetShapeName(titleShape, ShapePurpose.TitleShape, AgendaSection.None);
             AgendaShape.SetShapeName(contentShape, ShapePurpose.ContentShape, AgendaSection.None);
 
             Graphics.SetText(titleShape, TextCollection.AgendaLabTitleContent);
@@ -430,7 +429,6 @@ namespace PowerPointLabs.AgendaLab
                                                             .Add(1, PpSlideLayout.ppLayoutTitleOnly));
 
             var titleBar = refSlide.Shapes.Placeholders[1];
-            AgendaShape.SetShapeName(titleBar, ShapePurpose.TitleShape, AgendaSection.None);
             Graphics.SetText(titleBar, TextCollection.AgendaLabTitleContent);
 
             InsertVisualAgendaSectionImages(refSlide);
@@ -515,7 +513,7 @@ namespace PowerPointLabs.AgendaLab
         private static void UpdateSectionImage(PowerPointSlide refSlide, AgendaSection section, Shape previousImageShape)
         {
             var snapshotShape = CreateSectionImage(refSlide, section);
-            Graphics.SyncShape(previousImageShape, snapshotShape, pickupShapeFormat: false, pickupTextContent: false, pickupTextFormat: false);
+            Graphics.SyncShape(previousImageShape, snapshotShape, pickupShapeFormat: true, pickupTextContent: false, pickupTextFormat: false);
             previousImageShape.Delete();
         }
         
@@ -584,16 +582,7 @@ namespace PowerPointLabs.AgendaLab
         private static void SyncBulletAgendaSlides(SlideSelectionTracker slideTracker, PowerPointSlide refSlide)
         {
             var sections = Sections;
-
-            ScrambleSlideSectionNames();
-            foreach (var currentSection in sections)
-            {
-                var template = new BulletAgendaTemplate();
-                ConfigureTemplate(currentSection, template);
-
-                var templateTable = RebuildSectionUsingTemplate(slideTracker, currentSection, template);
-                SynchroniseAllSlides(template, templateTable, refSlide, sections, currentSection);
-            }
+            SynchroniseSlidesUsingTemplate(slideTracker, refSlide, () => new BulletAgendaTemplate());
         }
 
         private static void AdjustBulletReferenceSlideContent(PowerPointSlide refSlide)
@@ -638,18 +627,8 @@ namespace PowerPointLabs.AgendaLab
         /// </summary>
         private static void SyncVisualAgendaSlides(SlideSelectionTracker slideTracker, PowerPointSlide refSlide)
         {
-            var sections = Sections;
-
             DeleteAllZoomSlides(slideTracker);
-            ScrambleSlideSectionNames();
-            foreach (var currentSection in sections)
-            {
-                var template = new VisualAgendaTemplate();
-                ConfigureTemplate(currentSection, template);
-
-                var templateTable = RebuildSectionUsingTemplate(slideTracker, currentSection, template);
-                SynchroniseAllSlides(template, templateTable, refSlide, sections, currentSection);
-            }
+            SynchroniseSlidesUsingTemplate(slideTracker, refSlide, () => new VisualAgendaTemplate());
         }
 
         private static void RegenerateReferenceSlideImages(PowerPointSlide refSlide)

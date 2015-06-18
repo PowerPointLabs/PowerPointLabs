@@ -42,6 +42,54 @@ namespace PowerPointLabs.Utils
         }
 
         /// <summary>
+        /// Used to encode a string into base64. Uses only alphanumeric chars and + and / characters.
+        /// </summary>
+        public static string Base64Encode(string str)
+        {
+            var plainTextBytes = System.Text.Encoding.UTF8.GetBytes(str);
+            str = Convert.ToBase64String(plainTextBytes);
+            return str;
+        }
+
+        /// <summary>
+        /// Used to decode a string from base64. Uses only alphanumeric chars and + and / characters.
+        /// </summary>
+        public static string Base64Decode(string base64EncodedData)
+        {
+            var base64EncodedBytes = Convert.FromBase64String(base64EncodedData);
+            return System.Text.Encoding.UTF8.GetString(base64EncodedBytes);
+        }
+
+        /// <summary>
+        /// Converts a list of strings into a single string for storage.
+        /// Adds a checksum at the end as well
+        /// </summary>
+        public static string SerializeCollection(List<string> collection)
+        {
+            var serialized = string.Join("@", collection.Select(Base64Encode));
+            return serialized + "@" + serialized.GetHashCode();
+        }
+
+        /// <summary>
+        /// Converts a single serialised string back into a list of strings. (strings serialized by SerializeCollection)
+        /// Verifies the checksum as well. If checksum does not match, returns null.
+        /// </summary>
+        public static List<string> UnserializeCollection(string dataString)
+        {
+            var lastDelim = dataString.LastIndexOf('@');
+            if (lastDelim == -1) return null;
+
+            // Verify checksum
+            var hashCode = dataString.Substring(lastDelim + 1);
+            var serialized = dataString.Substring(0, lastDelim);
+            if (serialized.GetHashCode().ToString() != hashCode) return null;
+
+            return serialized.Split(new[] {'@'}, StringSplitOptions.None)
+                             .Select(Base64Decode)
+                             .ToList();
+        }
+
+        /// <summary>
         /// Generates a unique string of digits to be used in slide names.
         /// _sessionGlobalUniqueIndex is guaranteed to be unique within the same powerpoint session.
         /// DateTimeNow.ToString guaranteed to be unique across different powerpoint sessions.
