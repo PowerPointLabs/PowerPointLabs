@@ -178,18 +178,7 @@ namespace PowerPointLabs
                 throw;
             }
         }
-        public void ReloadSpotlightButtonClick(Office.IRibbonControl control)
-        {
-            try
-            {
-                Spotlight.ReloadSpotlightEffect();
-            }
-            catch (Exception e)
-            {
-                PowerPointLabsGlobals.LogException(e, "ReloadSpotlightButtonClick");
-                throw;
-            }
-        }
+
         public void SpotlightBtnClick(Office.IRibbonControl control)
         {
             try
