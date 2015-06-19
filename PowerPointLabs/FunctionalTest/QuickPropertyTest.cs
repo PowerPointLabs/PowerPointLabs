@@ -25,18 +25,29 @@ namespace FunctionalTest
 
             ThreadUtil.WaitFor(2000);
 
-            // Spy++ helps to look into the handles
-            var pptHandle = NativeUtil.FindWindow("PPTFrameClass", null);
-            Assert.AreNotEqual(IntPtr.Zero, pptHandle, "Failed to find PowerPoint handle.");
+            if (PpOperations.IsOffice2013())
+            {
+                // Spy++ helps to look into the handles
+                var pptHandle = NativeUtil.FindWindow("PPTFrameClass", null);
+                Assert.AreNotEqual(IntPtr.Zero, pptHandle, "Failed to find PowerPoint handle.");
 
-            var dockRightHandle = 
-                NativeUtil.FindWindowEx(pptHandle, IntPtr.Zero, "MsoCommandBarDock", "MsoDockRight");
-            Assert.AreNotEqual(IntPtr.Zero, dockRightHandle, "Failed to find Dock Right handle.");
+                var dockRightHandle =
+                    NativeUtil.FindWindowEx(pptHandle, IntPtr.Zero, "MsoCommandBarDock", "MsoDockRight");
+                Assert.AreNotEqual(IntPtr.Zero, dockRightHandle, "Failed to find Dock Right handle.");
 
-            // AKA property handle
-            var formatObjHandle =
-                NativeUtil.FindWindowEx(dockRightHandle, IntPtr.Zero, "MsoCommandBar", "Format Object");
-            Assert.AreNotEqual(IntPtr.Zero, formatObjHandle, "Failed to find Property handle.");
+                // AKA property handle
+                var formatObjHandle =
+                    NativeUtil.FindWindowEx(dockRightHandle, IntPtr.Zero, "MsoCommandBar", "Format Object");
+                Assert.AreNotEqual(IntPtr.Zero, formatObjHandle, "Failed to find Property handle.");
+            } 
+            else if (PpOperations.IsOffice2010())
+            {
+                // AKA property handle
+                var formatObjHandle = NativeUtil.FindWindow("NUIDialog", "Format Shape");
+                Assert.AreNotEqual(IntPtr.Zero, formatObjHandle, "Failed to find Property handle.");
+                
+                NativeUtil.SendMessage(formatObjHandle, 0x10 /*WM_CLOSE*/, IntPtr.Zero, IntPtr.Zero);
+            }
         }
     }
 }
