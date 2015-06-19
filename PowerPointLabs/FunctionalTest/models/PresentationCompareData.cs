@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
+﻿using System.Collections.Generic;
 using FunctionalTest.util;
 using Microsoft.Office.Core;
 using Microsoft.Office.Interop.PowerPoint;
@@ -13,25 +10,20 @@ namespace FunctionalTest.models
     {
         public struct SlideData
         {
-            public readonly string slideImage;
-            public readonly List<EffectData> animationSequence;
+            private readonly string _slideImage;
+            private readonly List<EffectData> _animationSequence;
 
             private SlideData(Slide slide)
             {
-                slideImage = SlideUtil.SaveAsSlideImage(slide);
+                _slideImage = SlideUtil.SaveAsSlideImage(slide);
 
-                animationSequence = new List<EffectData>();
+                _animationSequence = new List<EffectData>();
                 var seq = slide.TimeLine.MainSequence;
                 for (int i = 1; i <= seq.Count; ++i)
                 {
                     var effect = seq[i];
-                    animationSequence.Add(new EffectData(effect));
+                    _animationSequence.Add(new EffectData(effect));
                 }
-                return;
-                animationSequence = slide.TimeLine.MainSequence
-                                                  .Cast<Effect>()
-                                                  .Select(effect => new EffectData(effect))
-                                                  .ToList();
             }
 
             public static SlideData SaveSlideData(Slide slide)
@@ -41,12 +33,12 @@ namespace FunctionalTest.models
 
             public static void AssertEqual(SlideData expected, SlideData actual)
             {
-                SlideUtil.IsSameLooking(expected.slideImage, actual.slideImage);
-                Assert.AreEqual(expected.animationSequence.Count, actual.animationSequence.Count, "Different animation sequence count.");
-                int count = expected.animationSequence.Count;
+                SlideUtil.IsSameLooking(expected._slideImage, actual._slideImage);
+                Assert.AreEqual(expected._animationSequence.Count, actual._animationSequence.Count, "Different animation sequence count.");
+                int count = expected._animationSequence.Count;
                 for (int i = 0; i < count; ++i)
                 {
-                    EffectData.AssertEqual(expected.animationSequence[i], actual.animationSequence[i]);
+                    EffectData.AssertEqual(expected._animationSequence[i], actual._animationSequence[i]);
                 }
             }
         }
@@ -78,13 +70,19 @@ namespace FunctionalTest.models
             {
                 Assert.AreEqual(expected.EffectType, actual.EffectType, "Different effect type.");
                 Assert.AreEqual(expected.ShapeType, actual.ShapeType, "Different effect shape type.");
-                Assert.IsTrue(SlideUtil.IsAlmostSame(expected.ShapeRotation, actual.ShapeRotation), "Different effect shape rotation.");
-                Assert.IsTrue(SlideUtil.IsAlmostSame(expected.ShapeWidth, actual.ShapeWidth), "Different effect shape width.");
-                Assert.IsTrue(SlideUtil.IsAlmostSame(expected.ShapeHeight, actual.ShapeHeight), "Different effect shape height.");
-                Assert.IsTrue(SlideUtil.IsAlmostSame(expected.ShapeLeft, actual.ShapeLeft), "Different effect shape left.");
-                Assert.IsTrue(SlideUtil.IsAlmostSame(expected.ShapeTop, actual.ShapeTop), "Different effect shape top.");
+                Assert.IsTrue(SlideUtil.IsAlmostSame(expected.ShapeRotation, actual.ShapeRotation),
+                    "Different effect shape rotation. exp:{0}, actual:{1}", expected.ShapeRotation, actual.ShapeRotation);
+                Assert.IsTrue(SlideUtil.IsAlmostSame(expected.ShapeWidth, actual.ShapeWidth),
+                    "Different effect shape width. exp:{0}, actual:{1}", expected.ShapeWidth, actual.ShapeWidth);
+                Assert.IsTrue(SlideUtil.IsAlmostSame(expected.ShapeHeight, actual.ShapeHeight),
+                    "Different effect shape height. exp:{0}, actual:{1}", expected.ShapeHeight, actual.ShapeHeight);
+                Assert.IsTrue(SlideUtil.IsAlmostSame(expected.ShapeLeft, actual.ShapeLeft),
+                    "Different effect shape left. exp:{0}, actual:{1}", expected.ShapeLeft, actual.ShapeLeft);
+                Assert.IsTrue(SlideUtil.IsAlmostSame(expected.ShapeTop, actual.ShapeTop),
+                    "Different effect shape top. exp:{0}, actual:{1}", expected.ShapeTop, actual.ShapeTop);
                 Assert.IsTrue(SlideUtil.IsAlmostSame(expected.TimingTriggerDelayTime, actual.TimingTriggerDelayTime),
-                    "Different effect timing.");
+                    "Different effect timing. exp:{0}, actual:{1}", expected.TimingTriggerDelayTime, 
+                    actual.TimingTriggerDelayTime);
             }
 
         }
