@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.IO;
 using Microsoft.Office.Interop.PowerPoint;
 
@@ -11,6 +12,10 @@ namespace FunctionalTestInterface
         bool IsInFunctionalTest();
         void ClosePresentation();
         void ActivatePresentation();
+        int PointsToScreenPixelsX(float x);
+        int PointsToScreenPixelsY(float y);
+        Boolean IsOffice2010();
+        Boolean IsOffice2013();
 
         Slide GetCurrentSlide();
         Slide SelectSlide(int index);

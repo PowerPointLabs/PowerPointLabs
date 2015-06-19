@@ -105,8 +105,10 @@
     <Compile Include="TextFragmentsTest.cs" />
     <Compile Include="AgendaLabGenerateTest.cs" />
     <Compile Include="ZoomToAreaTest.cs" />
+    <Compile Include="QuickPropertyTest.cs" />
     <Compile Include="util\KeyboardUtil.cs" />
     <Compile Include="util\MessageBoxUtil.cs" />
+    <Compile Include="util\MouseUtil.cs" />
     <Compile Include="util\NativeUtil.cs" />
     <Compile Include="util\PathUtil.cs" />
     <Compile Include="util\SlideUtil.cs" />

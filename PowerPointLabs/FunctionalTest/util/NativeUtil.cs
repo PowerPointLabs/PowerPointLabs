@@ -39,6 +39,13 @@ namespace FunctionalTest.util
             int nYPos   // y-coordinate of pixel
         );
 
+        [DllImport("user32.dll", CharSet = CharSet.Auto, CallingConvention = CallingConvention.StdCall)]
+        public static extern void mouse_event(uint dwFlags, uint dx, uint dy, uint cButtons, UIntPtr dwExtraInfo);
+        public const uint MOUSEEVENTF_LEFTDOWN = 0x02;
+        public const uint MOUSEEVENTF_LEFTUP = 0x04;
+        public const uint MOUSEEVENTF_RIGHTDOWN = 0x08;
+        public const uint MOUSEEVENTF_RIGHTUP = 0x10;
+
         [DllImport("user32.dll", CallingConvention = CallingConvention.StdCall)]
         public static extern IntPtr GetDC(IntPtr wnd);
 

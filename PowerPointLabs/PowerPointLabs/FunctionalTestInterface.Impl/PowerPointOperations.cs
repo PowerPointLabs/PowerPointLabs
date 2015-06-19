@@ -40,6 +40,26 @@ namespace PowerPointLabs.FunctionalTestInterface.Impl
                 "###___DURING_FUNCTIONAL_TEST___###", "PowerPointLabs FT");
         }
 
+        public int PointsToScreenPixelsX(float x)
+        {
+            return Globals.ThisAddIn.Application.ActiveWindow.PointsToScreenPixelsX(x);
+        }
+
+        public int PointsToScreenPixelsY(float y)
+        {
+            return Globals.ThisAddIn.Application.ActiveWindow.PointsToScreenPixelsY(y);
+        }
+
+        public Boolean IsOffice2010()
+        {
+            return Globals.ThisAddIn.Application.Version == Globals.ThisAddIn.OfficeVersion2010;
+        }
+
+        public Boolean IsOffice2013()
+        {
+            return Globals.ThisAddIn.Application.Version == Globals.ThisAddIn.OfficeVersion2013;
+        }
+
         public Slide GetCurrentSlide()
         {
             return PowerPointCurrentPresentationInfo.CurrentSlide.GetNativeSlide();
