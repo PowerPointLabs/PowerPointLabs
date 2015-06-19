@@ -102,8 +102,6 @@ namespace PowerPointLabs
             List<PowerPoint.Shape> previousFragments = currentSlide.GetTextFragments();
             currentSlide.RemoveAnimationsForShapes(previousFragments);
 
-            previousFragments.Reverse();
-
             return previousFragments;
         }
 

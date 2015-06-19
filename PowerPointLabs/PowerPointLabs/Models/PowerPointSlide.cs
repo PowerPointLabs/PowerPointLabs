@@ -713,10 +713,18 @@ namespace PowerPointLabs.Models
             {
                 Effect effect = sequence[x];
                 if (effect.Shape.Name == shape.Name && effect.Shape.Id == shape.Id)
-                    if (entryEffects.Contains(effect.EffectType))
+                    if (IsEntryAnimation(effect.EffectType))
                         return true;
             }
             return false;
+        }
+
+        /// <summary>
+        /// TODO: What does "Entry Animation" mean? entryEffects.Contains(effectType) could mean that it is either an entry or exit animation. Perhaps change it to entryEffects.Contains(effectType) && entryEffects.Exit == Mso False
+        /// </summary>
+        private bool IsEntryAnimation(MsoAnimEffect effectType)
+        {
+            return entryEffects.Contains(effectType);
         }
 
         /// <summary>
@@ -969,17 +977,51 @@ namespace PowerPointLabs.Models
             return false;
         }
 
-        public List<Shape> GetTextFragments()
+        /// <summary>
+        /// Get all shapes in the slide, ordered by when they appear in the animation timeline.
+        /// Shapes with entry animations are ordered behind shapes without entry animations.
+        /// Shapes without animations are placed at the back.
+        /// </summary>
+        public List<Shape> GetShapesOrderedByTimeline()
         {
-            List<Shape> fragmentShapes = new List<Shape>();
-            foreach (Shape sh in _slide.Shapes)
+            var shapesWithEntry = new List<Shape>();
+            var shapesWithoutEntry = new List<Shape>();
+            var identifiedShapeIds = new HashSet<int>();
+
+            var seq = _slide.TimeLine.MainSequence;
+            for (int i = 1; i <= seq.Count; ++i)
             {
-                if (sh.Name.StartsWith("PPTLabsHighlightTextFragmentsShape"))
+                var effect = seq[i];
+                var shape = effect.Shape;
+                if (!identifiedShapeIds.Contains(shape.Id))
                 {
-                    fragmentShapes.Add(sh);
+                    identifiedShapeIds.Add(shape.Id);
+                    if (IsEntryAnimation(effect.EffectType) && effect.Exit == MsoTriState.msoFalse) 
+                    {
+                        shapesWithEntry.Add(shape);
+                    }
+                    else
+                    {
+                        shapesWithoutEntry.Add(shape);
+                    }
                 }
             }
-            return fragmentShapes;
+
+            var remainingShapes = _slide.Shapes.Cast<Shape>().Where(shape => !identifiedShapeIds.Contains(shape.Id));
+
+            var shapes = shapesWithoutEntry;
+            shapes.AddRange(shapesWithEntry);
+            shapes.AddRange(remainingShapes);
+            return shapes;
+        }
+
+        /// <summary>
+        /// Returns all HighlightTextFragmentsShapes in the order they appear in the animation timeline.
+        /// </summary>
+        public List<Shape> GetTextFragments()
+        {
+            var allShapes = GetShapesOrderedByTimeline();
+            return allShapes.Where(shape => shape.Name.StartsWith("PPTLabsHighlightTextFragmentsShape")).ToList();
         }
 
         public bool HasCaptions()
