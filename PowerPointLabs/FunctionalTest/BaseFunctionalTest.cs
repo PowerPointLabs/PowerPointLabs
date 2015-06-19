@@ -20,7 +20,7 @@ namespace FunctionalTest
         // specify the name for the testing slide.
         // It is assumed that the testing slides reside
         // in "doc/test" folder.
-        protected abstract String GetTestingSlideName();
+        protected abstract string GetTestingSlideName();
 
         [TestInitialize]
         public void Setup()
@@ -34,6 +34,13 @@ namespace FunctionalTest
         public void TearDown()
         {
             PpOperations.ClosePresentation();
+        }
+
+        public void OpenAnotherPresentation(string name)
+        {
+            PpOperations.ClosePresentation();
+            OpenSlideForTest(name);
+            ConnectPpl();
         }
 
         private void ConnectPpl()

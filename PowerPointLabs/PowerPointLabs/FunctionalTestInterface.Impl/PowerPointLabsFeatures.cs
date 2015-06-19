@@ -103,5 +103,35 @@ namespace PowerPointLabs.FunctionalTestInterface.Impl
 
             HighlightTextFragments.AddHighlightedTextFragments();
         }
+
+        public void GenerateTextAgenda()
+        {
+            AgendaLab.AgendaLabMain.GenerateAgenda(AgendaLab.Type.Bullet);
+            GC.Collect();
+        }
+
+        public void GenerateVisualAgenda()
+        {
+            AgendaLab.AgendaLabMain.GenerateAgenda(AgendaLab.Type.Visual);
+            GC.Collect();
+        }
+
+        public void GenerateBeamAgenda()
+        {
+            AgendaLab.AgendaLabMain.GenerateAgenda(AgendaLab.Type.Beam);
+            GC.Collect();
+        }
+
+        public void RemoveAgenda()
+        {
+            AgendaLab.AgendaLabMain.RemoveAgenda();
+            GC.Collect();
+        }
+
+        public void SynchronizeAgenda()
+        {
+            AgendaLab.AgendaLabMain.SynchroniseAgenda();
+            GC.Collect();
+        }
     }
 }

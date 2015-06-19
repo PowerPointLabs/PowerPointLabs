@@ -45,6 +45,11 @@ namespace PowerPointLabs.FunctionalTestInterface.Impl
             return PowerPointCurrentPresentationInfo.CurrentSlide.GetNativeSlide();
         }
 
+        public Slide[] GetAllSlides()
+        {
+            return PowerPointPresentation.Current.Presentation.Slides.Cast<Slide>().ToArray();
+        }
+
         public Slide SelectSlide(int index)
         {
             var slides = PowerPointPresentation.Current.Slides;
@@ -147,7 +152,7 @@ namespace PowerPointLabs.FunctionalTestInterface.Impl
             var shape = PowerPointCurrentPresentationInfo.CurrentSlide.Shapes
                                                                       .Cast<Shape>()
                                                                       .FirstOrDefault(sh => sh.Name == shapeName);
-            var textRange = shape.TextFrame2.TextRange.Characters[startIndex, endIndex-startIndex];
+            var textRange = shape.TextFrame2.TextRange.Characters[startIndex, endIndex - startIndex];
             textRange.Select();
             return textRange.Text;
         }

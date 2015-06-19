@@ -16,5 +16,12 @@
         void HighlightPoints();
         void HighlightBackground();
         void HighlightFragments();
+
+        // Agenda Lab
+        void GenerateTextAgenda();
+        void GenerateVisualAgenda();
+        void GenerateBeamAgenda();
+        void RemoveAgenda();
+        void SynchronizeAgenda();
     }
 }

@@ -15,6 +15,7 @@ namespace FunctionalTestInterface
         Slide GetCurrentSlide();
         Slide SelectSlide(int index);
         Slide SelectSlide(string slideName);
+        Slide[] GetAllSlides();
 
         Selection GetCurrentSelection();
         ShapeRange SelectShapes(string shapeName);

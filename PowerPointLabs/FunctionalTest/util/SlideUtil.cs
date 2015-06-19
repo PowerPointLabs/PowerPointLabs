@@ -1,7 +1,9 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.IO;
 using Microsoft.Office.Interop.PowerPoint;
 using EyeOpen.Imaging.Processing;
+using FunctionalTest.models;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace FunctionalTest.util
@@ -39,6 +41,23 @@ namespace FunctionalTest.util
             Assert.IsTrue(similarity > 0.95, "The slides look different. Similarity = " + similarity);
         }
 
+        public static void IsSameLooking(string expSlideImage, string actualSlideImage)
+        {
+            var actualSlideInPic = new ComparableImage(new FileInfo(PathUtil.GetTempPath(actualSlideImage)));
+            var expSlideInPic = new ComparableImage(new FileInfo(PathUtil.GetTempPath(expSlideImage)));
+
+            var similarity = actualSlideInPic.CalculateSimilarity(expSlideInPic);
+            Assert.IsTrue(similarity > 0.95, "The slides look different. Similarity = " + similarity);
+        }
+
+        public static string SaveAsSlideImage(Slide slide)
+        {
+            var hashCode = DateTime.Now.GetHashCode();
+            string fileName = "slide" + hashCode;
+            slide.Export(PathUtil.GetTempPath(fileName), "PNG");
+            return fileName;
+        }
+
         public static void IsSameAnimations(Slide expSlide, Slide actualSlide)
         {
             var actualSeq = actualSlide.TimeLine.MainSequence;
@@ -61,7 +80,7 @@ namespace FunctionalTest.util
             }
         }
 
-        private static bool IsAlmostSame(float a, float b)
+        public static bool IsAlmostSame(float a, float b)
         {
             return Math.Abs(a - b) < 0.001;
         }
