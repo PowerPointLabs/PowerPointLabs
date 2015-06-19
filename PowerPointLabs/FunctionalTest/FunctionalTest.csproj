@@ -101,6 +101,7 @@
     <Compile Include="SpotlightTest.cs" />
     <Compile Include="AutoZoomTest.cs" />
     <Compile Include="HighlightBulletsTest.cs" />
+    <Compile Include="ZoomToAreaTest.cs" />
     <Compile Include="util\KeyboardUtil.cs" />
     <Compile Include="util\MessageBoxUtil.cs" />
     <Compile Include="util\NativeUtil.cs" />

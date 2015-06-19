@@ -1,5 +1,4 @@
-﻿using System;
-using FunctionalTest.util;
+﻿using FunctionalTest.util;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace FunctionalTest
