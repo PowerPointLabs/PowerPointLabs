@@ -152,9 +152,9 @@ namespace PowerPointLabs
             List<PowerPoint.Shape> shapesToDelete = new List<PowerPoint.Shape>();
             bool shouldSelect;
 
-            for (int i = currentSlide.Shapes.Count; i >= 1; i--)
+            var shapes = currentSlide.GetShapesOrderedByTimeline();
+            foreach (var sh in shapes)
             {
-                PowerPoint.Shape sh = currentSlide.Shapes[i];
                 shouldSelect = true; //We should not select existing highlight shapes. Instead they should be deleted
                 if (sh.Name.Contains("PPTLabsHighlightBackgroundShape"))
                 {
