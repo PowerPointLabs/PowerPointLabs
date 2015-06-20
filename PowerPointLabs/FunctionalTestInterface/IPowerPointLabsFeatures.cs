@@ -23,5 +23,7 @@
         void GenerateBeamAgenda();
         void RemoveAgenda();
         void SynchronizeAgenda();
+
+        IColorsLabController ColorsLab { get; }
     }
 }

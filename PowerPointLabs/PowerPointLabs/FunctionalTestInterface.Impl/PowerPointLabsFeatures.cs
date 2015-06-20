@@ -1,5 +1,6 @@
 ﻿using System;
 using FunctionalTestInterface;
+using PowerPointLabs.FunctionalTestInterface.Impl.Controller;
 using PowerPointLabs.Models;
 using PowerPoint = Microsoft.Office.Interop.PowerPoint;
 
@@ -132,6 +133,11 @@ namespace PowerPointLabs.FunctionalTestInterface.Impl
         {
             AgendaLab.AgendaLabMain.SynchroniseAgenda();
             GC.Collect();
+        }
+
+        public IColorsLabController ColorsLab
+        {
+            get { return ColorsLabController.Instance; }
         }
     }
 }

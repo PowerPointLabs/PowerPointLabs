@@ -15,6 +15,11 @@ namespace PowerPointLabs.FunctionalTestInterface.Impl
     [Serializable]
     class PowerPointOperations : MarshalByRefObject, IPowerPointOperations
     {
+        public void MaximizeWindow()
+        {
+            Globals.ThisAddIn.Application.ActiveWindow.WindowState = PpWindowState.ppWindowMaximized;
+        }
+
         public void EnterFunctionalTest()
         {
             PowerPointCurrentPresentationInfo.IsInFunctionalTest = true;

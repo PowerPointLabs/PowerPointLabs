@@ -15,6 +15,7 @@ using System.Runtime.Remoting;
 using System.Runtime.Remoting.Channels;
 using System.Runtime.Remoting.Channels.Ipc;
 using PowerPointLabs.FunctionalTestInterface.Impl;
+using PowerPointLabs.FunctionalTestInterface.Impl.Controller;
 using PowerPointLabs.Models;
 using PowerPointLabs.Utils;
 using PowerPointLabs.Views;
@@ -83,6 +84,7 @@ namespace PowerPointLabs
 
             PPMouse.Init(Application);
             PPCopy.Init(Application);
+            UIThreadExecutor.Init();
             SetupDoubleClickHandler();
             SetupTabActivateHandler();
             SetupAfterCopyPasteHandler();
@@ -393,6 +395,7 @@ namespace PowerPointLabs
         {
             PPMouse.StopHook();
             PPCopy.StopHook();
+            UIThreadExecutor.TearDown();
             Trace.TraceInformation(DateTime.Now.ToString("yyyyMMddHHmmss") + ": PowerPointLabs Exiting");
             Trace.Close();
             if (_FTChannel != null)
