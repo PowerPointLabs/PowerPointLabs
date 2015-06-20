@@ -24,12 +24,17 @@ namespace FunctionalTest
             PpOperations.MaximizeWindow();
             var colorsLab = PplFeatures.ColorsLab;
 
-            TestApplyingColors(colorsLab);
-            TestRecommendedColors(colorsLab);
-            TestFavoriteColors(colorsLab);
-            TestColorInfoDialog(colorsLab);
-
-            colorsLab.ClosePane();
+            try
+            {
+                TestApplyingColors(colorsLab);
+                TestRecommendedColors(colorsLab);
+                TestFavoriteColors(colorsLab);
+                TestColorInfoDialog(colorsLab);
+            }
+            finally
+            {
+                colorsLab.ClosePane();
+            }
         }
 
         private void TestColorInfoDialog(IColorsLabController colorsLab)
