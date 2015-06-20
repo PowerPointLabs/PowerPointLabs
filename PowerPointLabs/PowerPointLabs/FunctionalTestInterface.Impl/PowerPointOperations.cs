@@ -6,6 +6,9 @@ using PowerPointLabs.Models;
 using System.IO;
 using System.Linq;
 using System.Windows.Forms;
+using Microsoft.Office.Core;
+using Shape = Microsoft.Office.Interop.PowerPoint.Shape;
+using ShapeRange = Microsoft.Office.Interop.PowerPoint.ShapeRange;
 
 namespace PowerPointLabs.FunctionalTestInterface.Impl
 {
@@ -25,6 +28,22 @@ namespace PowerPointLabs.FunctionalTestInterface.Impl
         public bool IsInFunctionalTest()
         {
             return PowerPointCurrentPresentationInfo.IsInFunctionalTest;
+        }
+
+        public List<ISlideData> FetchPresentationData(string pathToPresentation)
+        {
+            var presentation = Globals.ThisAddIn.Application.Presentations.Open(pathToPresentation,
+                                                                                WithWindow: MsoTriState.msoFalse);
+            var slideData = presentation.Slides.Cast<Slide>().Select(SlideData.FromSlide).ToList();
+            presentation.Close();
+            return slideData;
+        }
+
+        public List<ISlideData> FetchCurrentPresentationData()
+        {
+            var slideData = PowerPointPresentation.Current.Presentation
+                .Slides.Cast<Slide>().Select(SlideData.FromSlide).ToList();
+            return slideData;
         }
 
         public void ClosePresentation()

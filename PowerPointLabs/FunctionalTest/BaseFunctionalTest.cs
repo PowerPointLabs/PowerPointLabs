@@ -36,13 +36,6 @@ namespace FunctionalTest
             PpOperations.ClosePresentation();
         }
 
-        public void OpenAnotherPresentation(string name)
-        {
-            PpOperations.ClosePresentation();
-            OpenSlideForTest(name);
-            ConnectPpl();
-        }
-
         private void ConnectPpl()
         {
             const int waitTime = 3000;

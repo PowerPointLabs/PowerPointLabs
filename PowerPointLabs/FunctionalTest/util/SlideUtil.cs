@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.IO;
 using Microsoft.Office.Interop.PowerPoint;
 using EyeOpen.Imaging.Processing;
-using FunctionalTest.models;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace FunctionalTest.util
@@ -39,11 +38,7 @@ namespace FunctionalTest.util
             actualSlide.Export(PathUtil.GetTempPath("actualSlide" + hashCode), "PNG");
             expSlide.Export(PathUtil.GetTempPath("expSlide" + hashCode), "PNG");
 
-            var actualSlideInPic = new ComparableImage(new FileInfo(PathUtil.GetTempPath("actualSlide" + hashCode)));
-            var expSlideInPic = new ComparableImage(new FileInfo(PathUtil.GetTempPath("expSlide" + hashCode)));
-
-            var similarity = actualSlideInPic.CalculateSimilarity(expSlideInPic);
-            Assert.IsTrue(similarity > 0.95, "The slides look different. Similarity = " + similarity);
+            IsSameLooking("expSlide" + hashCode, "actualSlide" + hashCode);
         }
 
         public static void IsSameLooking(string expSlideImage, string actualSlideImage)
@@ -53,14 +48,6 @@ namespace FunctionalTest.util
 
             var similarity = actualSlideInPic.CalculateSimilarity(expSlideInPic);
             Assert.IsTrue(similarity > 0.95, "The slides look different. Similarity = " + similarity);
-        }
-
-        public static string SaveAsSlideImage(Slide slide)
-        {
-            var hashCode = DateTime.Now.GetHashCode();
-            string fileName = "slide" + hashCode;
-            slide.Export(PathUtil.GetTempPath(fileName), "PNG");
-            return fileName;
         }
 
         public static void IsSameAnimations(Slide expSlide, Slide actualSlide)

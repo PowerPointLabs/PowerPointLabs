@@ -273,6 +273,7 @@
     <Compile Include="FunctionalTestInterface.Impl\PowerPointLabsFeatures.cs" />
     <Compile Include="FunctionalTestInterface.Impl\PowerPointLabsFT.cs" />
     <Compile Include="FunctionalTestInterface.Impl\PowerPointOperations.cs" />
+    <Compile Include="FunctionalTestInterface.Impl\SlideData.cs" />
     <Compile Include="Models\PowerPointBgEffectSlide.cs" />
     <Compile Include="LabeledThumbnail.cs">
       <SubType>UserControl</SubType>

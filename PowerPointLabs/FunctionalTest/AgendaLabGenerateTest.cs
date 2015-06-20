@@ -1,10 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using FunctionalTest.models;
-using FunctionalTest.util;
+﻿using FunctionalTest.util;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using SlideData = FunctionalTest.models.PresentationCompareData.SlideData;
 
 namespace FunctionalTest
 {
@@ -17,58 +12,56 @@ namespace FunctionalTest
         }
 
         [TestMethod]
-        public void FT_AgendaLabGenerate()
+        public void FT_AgendaLabTest()
         {
-            // AgendaSlidesVisualDefault -> Remove ->
-            // AgendaSlidesDefault -> Generate Text ->
-            // AgendaSlidesTextDefault -> Generate Beam ->
-            // AgendaSlidesBeamDefault -> Generate Visual ->
-            // AgendaSlidesVisualDefault
-            var visualDefaultSlides = SaveAllSlides();
+            TestRemoveAgenda();
+            TestGenerateTextAgenda();
+            TestGenerateBeamAgenda();
+            TestGenerateVisualAgenda();
+        }
 
-            PplFeatures.RemoveAgenda();
-            var actualSlides = SaveAllSlides();
-            OpenAnotherPresentation("AgendaSlidesDefault.pptx");
-            var expectedSlides = SaveAllSlides();
-            AssertEqualSlides(expectedSlides, actualSlides);
-
-            PplFeatures.GenerateTextAgenda();
-            actualSlides = SaveAllSlides();
-            OpenAnotherPresentation("AgendaSlidesTextDefault.pptx");
-            expectedSlides = SaveAllSlides();
-            AssertEqualSlides(expectedSlides, actualSlides);
-
-            //PplFeatures.GenerateBeamAgenda();
-            MessageBoxUtil.ExpectMessageBoxWillPopUp("Confirm Update",
-                "Agenda already exists. By confirm this dialog agenda will be regenerated. Do you want to proceed?",
-                PplFeatures.GenerateBeamAgenda, buttonNameToClick: "OK");
-            actualSlides = SaveAllSlides();
-            OpenAnotherPresentation("AgendaSlidesBeamDefault.pptx");
-            expectedSlides = SaveAllSlides();
-            AssertEqualSlides(expectedSlides, actualSlides);
-
-            //PplFeatures.GenerateVisualAgenda();
+        private static void TestGenerateVisualAgenda()
+        {
             MessageBoxUtil.ExpectMessageBoxWillPopUp("Confirm Update",
                 "Agenda already exists. By confirm this dialog agenda will be regenerated. Do you want to proceed?",
                 PplFeatures.GenerateVisualAgenda, buttonNameToClick: "OK");
-            actualSlides = SaveAllSlides();
-            AssertEqualSlides(visualDefaultSlides, actualSlides);
+
+            var actualSlides = PpOperations.FetchCurrentPresentationData();
+            var expectedSlides = PpOperations.FetchPresentationData(
+                PathUtil.GetDocTestPresentationPath("AgendaSlidesVisualDefault.pptx"));
+            PresentationUtil.AssertEqual(expectedSlides, actualSlides);
         }
 
-        public List<SlideData> SaveAllSlides()
+        private static void TestGenerateBeamAgenda()
         {
-            return PpOperations.GetAllSlides().Select(SlideData.SaveSlideData)
-                                              .ToList();
+            MessageBoxUtil.ExpectMessageBoxWillPopUp("Confirm Update",
+                "Agenda already exists. By confirm this dialog agenda will be regenerated. Do you want to proceed?",
+                PplFeatures.GenerateBeamAgenda, buttonNameToClick: "OK");
+
+            var actualSlides = PpOperations.FetchCurrentPresentationData();
+            var expectedSlides = PpOperations.FetchPresentationData(
+                PathUtil.GetDocTestPresentationPath("AgendaSlidesBeamDefault.pptx"));
+            PresentationUtil.AssertEqual(expectedSlides, actualSlides);
         }
 
-        private void AssertEqualSlides(List<SlideData> expectedSlides, List<SlideData> actualSlides)
-        {   
-            Assert.AreEqual(expectedSlides.Count, actualSlides.Count);
-            int count = expectedSlides.Count;
-            for (int i = 0; i < count; ++i)
-            {
-                SlideData.AssertEqual(expectedSlides[i], actualSlides[i]);
-            }
+        private static void TestGenerateTextAgenda()
+        {
+            PplFeatures.GenerateTextAgenda();
+
+            var actualSlides = PpOperations.FetchCurrentPresentationData();
+            var expectedSlides = PpOperations.FetchPresentationData(
+                PathUtil.GetDocTestPresentationPath("AgendaSlidesTextDefault.pptx"));
+            PresentationUtil.AssertEqual(expectedSlides, actualSlides);
+        }
+
+        private static void TestRemoveAgenda()
+        {
+            PplFeatures.RemoveAgenda();
+
+            var actualSlides = PpOperations.FetchCurrentPresentationData();
+            var expectedSlides = PpOperations.FetchPresentationData(
+                PathUtil.GetDocTestPresentationPath("AgendaSlidesDefault.pptx"));
+            PresentationUtil.AssertEqual(expectedSlides, actualSlides);
         }
     }
 }

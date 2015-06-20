@@ -96,7 +96,7 @@
     <Compile Include="AutoAnimateTest.cs" />
     <Compile Include="ConvertToPictureTest.cs" />
     <Compile Include="FitToSlideTest.cs" />
-    <Compile Include="models\PresentationCompareData.cs" />
+    <Compile Include="util\PresentationUtil.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="AnimateInSlideTest.cs" />
     <Compile Include="SpotlightTest.cs" />

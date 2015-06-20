@@ -33,5 +33,10 @@ namespace FunctionalTest.util
             var parPath = PathUtil.GetParentFolder(path, 4);
             return Path.Combine(parPath, "doc\\test\\");
         }
+
+        public static string GetDocTestPresentationPath(string presentationName)
+        {
+            return GetDocTestPath() + presentationName;
+        }
     }
 }
