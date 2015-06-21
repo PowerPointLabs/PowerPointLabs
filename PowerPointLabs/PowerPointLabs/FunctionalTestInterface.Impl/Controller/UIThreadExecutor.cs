@@ -3,6 +3,15 @@ using System.Windows.Forms;
 
 namespace PowerPointLabs.FunctionalTestInterface.Impl.Controller
 {
+    /// <summary>
+    /// 
+    /// Must use this UI Thread Executor to
+    /// do UI-related stuff:
+    /// e.g. open Colors Lab or Shapes Lab pane.
+    /// Otherwise, modification from FT thread won't
+    /// succeed.
+    /// 
+    /// </summary>
     class UIThreadExecutor : Control
     {
         private static UIThreadExecutor _instance;

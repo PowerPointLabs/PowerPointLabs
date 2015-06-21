@@ -4,6 +4,9 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace FunctionalTest.util
 {
+    // Util class to help assert the data
+    // from PpOperation.FetchPresentationData &
+    // PpOperation.FetchCurrentPresentationData
     public class PresentationUtil
     {
         public static void AssertEqual(List<ISlideData> expectedSlides, List<ISlideData> actualSlides)

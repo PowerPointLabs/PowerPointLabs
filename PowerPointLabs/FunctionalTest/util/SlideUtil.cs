@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.IO;
 using Microsoft.Office.Interop.PowerPoint;
 using EyeOpen.Imaging.Processing;
@@ -9,14 +8,13 @@ namespace FunctionalTest.util
 {
     class SlideUtil
     {
-        // You may need to call PpOperations.ExportSelectedShapes()
-        // to get FileInfo of the exported shape in pic
-        public static void IsSameLooking(Shape expShape, FileInfo expFileInfo, Shape actualShape, FileInfo actualFileInfo)
+        // only comparing shape's properties
+        public static void IsSameShape(Shape expShape, Shape actualShape)
         {
             Assert.AreEqual(expShape.Type, actualShape.Type);
-            Assert.IsTrue(IsAlmostSame(expShape.Rotation, actualShape.Rotation), 
+            Assert.IsTrue(IsAlmostSame(expShape.Rotation, actualShape.Rotation),
                 "different shape rotation. exp:{0}, actual:{1}", expShape.Rotation, actualShape.Rotation);
-            Assert.IsTrue(IsAlmostSame(expShape.Left, actualShape.Left), 
+            Assert.IsTrue(IsAlmostSame(expShape.Left, actualShape.Left),
                 "different shape left. exp:{0}, actual:{1}", expShape.Left, actualShape.Left);
             Assert.IsTrue(IsAlmostSame(expShape.Top, actualShape.Top),
                 "different shape top. exp:{0}, actual:{1}", expShape.Top, actualShape.Top);
@@ -24,6 +22,15 @@ namespace FunctionalTest.util
                 "different shape width. exp:{0}, actual:{1}", expShape.Width, actualShape.Width);
             Assert.IsTrue(IsAlmostSame(expShape.Height, actualShape.Height),
                 "different shape height. exp:{0}, actual:{1}", expShape.Height, actualShape.Height);
+        }
+
+        // compare shape's prop & looking
+        //
+        // You may need to call PpOperations.ExportSelectedShapes()
+        // to get FileInfo of the exported shape in pic
+        public static void IsSameLooking(Shape expShape, FileInfo expFileInfo, Shape actualShape, FileInfo actualFileInfo)
+        {
+            IsSameShape(expShape, actualShape);
 
             var actualShapeInPic = new ComparableImage(actualFileInfo);
             var expShapeInPic = new ComparableImage(expFileInfo);
@@ -59,21 +66,9 @@ namespace FunctionalTest.util
             {
                 var actualEffect = actualSeq[i];
                 var expEffect = expSeq[i];
-                // don't compare PPIndicator's effect
                 Assert.AreEqual(expEffect.EffectType, actualEffect.EffectType, 
                     "Different effect type.");
-                Assert.AreEqual(expEffect.Shape.Type, actualEffect.Shape.Type,
-                    "Different effect shape type.");
-                Assert.IsTrue(IsAlmostSame(expEffect.Shape.Rotation, actualEffect.Shape.Rotation),
-                    "Different effect shape rotation. exp:{0}, actual:{1}", expEffect.Shape.Rotation, actualEffect.Shape.Rotation);
-                Assert.IsTrue(IsAlmostSame(expEffect.Shape.Width, actualEffect.Shape.Width),
-                    "Different effect shape width. exp:{0}, actual:{1}", expEffect.Shape.Width, actualEffect.Shape.Width);
-                Assert.IsTrue(IsAlmostSame(expEffect.Shape.Height, actualEffect.Shape.Height),
-                    "Different effect shape height. exp:{0}, actual:{1}", expEffect.Shape.Height, actualEffect.Shape.Height);
-                Assert.IsTrue(IsAlmostSame(expEffect.Shape.Left, actualEffect.Shape.Left),
-                    "Different effect shape left. exp:{0}, actual:{1}", expEffect.Shape.Left, actualEffect.Shape.Left);
-                Assert.IsTrue(IsAlmostSame(expEffect.Shape.Top, actualEffect.Shape.Top),
-                    "Different effect shape top. exp:{0}, actual:{1}", expEffect.Shape.Top, actualEffect.Shape.Top);
+                IsSameShape(expEffect.Shape, actualEffect.Shape);
                 Assert.IsTrue(IsAlmostSame(expEffect.Timing.TriggerDelayTime, actualEffect.Timing.TriggerDelayTime),
                     "Different effect timing. exp:{0}, actual:{1}", expEffect.Timing.TriggerDelayTime, 
                     actualEffect.Timing.TriggerDelayTime);
