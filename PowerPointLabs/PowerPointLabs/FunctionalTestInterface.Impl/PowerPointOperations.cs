@@ -146,6 +146,7 @@ namespace PowerPointLabs.FunctionalTestInterface.Impl
                 if (sh.Name == shapeName)
                 {
                     nameList.Add(sh.Name);
+                    break;
                 }
             }
             return SelectShapes(nameList);

@@ -10,7 +10,6 @@ namespace FunctionalTest
     [TestClass]
     public abstract class BaseFunctionalTest
     {
-        private static bool _isIpcPipeOpen;
         // prefix legend:
         // pp - PowerPoint
         // ppl - PowerPointLabs
@@ -56,7 +55,7 @@ namespace FunctionalTest
             while (retryCount > 0)
             {
                 // if already connected, break
-                if (PplFeatures != null && PpOperations != null && _isIpcPipeOpen)
+                if (PplFeatures != null && PpOperations != null)
                 {
                     break;
                 }
@@ -80,7 +79,6 @@ namespace FunctionalTest
                 Assert.Fail("Failed to connect to PowerPointLabs add-in. You can try to increase retryCount.");
             }
 
-            _isIpcPipeOpen = true;
             PpOperations.EnterFunctionalTest();
 
             // activate the thread of presentation window
@@ -114,7 +112,8 @@ namespace FunctionalTest
                 }
             }
             WaitForPpInstanceToClose();
-            _isIpcPipeOpen = false;
+            PpOperations = null;
+            PplFeatures = null;
         }
 
         private void WaitForPpInstanceToClose()
