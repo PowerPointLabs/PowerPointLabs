@@ -170,6 +170,62 @@ namespace PowerPointLabs.FunctionalTestInterface.Impl
             });
         }
 
+        public void TransparentEffect()
+        {
+            UIThreadExecutor.Execute(() =>
+            {
+                Ribbon.TransparentEffectClick(new RibbonControl("TransparentEffect"));
+            });
+        }
+
+        public void MagnifyingGlassEffect()
+        {
+            UIThreadExecutor.Execute(() =>
+            {
+                Ribbon.MagnifyGlassEffectClick(new RibbonControl("MagnifyingGlassEffect"));
+            });
+        }
+
+        public void BlurRemainderEffect()
+        {
+            UIThreadExecutor.Execute(() =>
+            {
+                Ribbon.BlurBackgroundEffectClick(new RibbonControl("BlurRemainderEffect"));
+            });
+        }
+
+        public void GreyScaleEffect()
+        {
+            UIThreadExecutor.Execute(() =>
+            {
+                Ribbon.GreyScaleBackgroundEffectClick(new RibbonControl("GreyScaleEffect"));
+            });
+        }
+
+        public void BlackAndWhiteEffect()
+        {
+            UIThreadExecutor.Execute(() =>
+            {
+                Ribbon.BlackWhiteBackgroundEffectClick(new RibbonControl("BlackAndWhiteEffect"));
+            });
+        }
+
+        public void GothamEffect()
+        {
+            UIThreadExecutor.Execute(() =>
+            {
+                Ribbon.GothamBackgroundEffectClick(new RibbonControl("GothamEffect"));
+            });
+        }
+
+        public void SepiaEffect()
+        {
+            UIThreadExecutor.Execute(() =>
+            {
+                Ribbon.SepiaBackgroundEffectClick(new RibbonControl("SepiaEffect"));
+            });
+        }
+
         public IColorsLabController ColorsLab
         {
             get { return ColorsLabController.Instance; }

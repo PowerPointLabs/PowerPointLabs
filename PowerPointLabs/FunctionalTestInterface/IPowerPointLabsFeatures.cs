@@ -25,6 +25,15 @@
         void RemoveAgenda();
         void SynchronizeAgenda();
 
+        // Effects Lab
+        void TransparentEffect();
+        void MagnifyingGlassEffect();
+        void BlurRemainderEffect();
+        void GreyScaleEffect();
+        void BlackAndWhiteEffect();
+        void GothamEffect();
+        void SepiaEffect();
+
         IColorsLabController ColorsLab { get; }
         IShapesLabController ShapesLab { get; }
     }

@@ -99,6 +99,7 @@
     <Compile Include="ColorsLabTest.cs" />
     <Compile Include="ShapesLabTest.cs" />
     <Compile Include="AutoNarrationTest.cs" />
+    <Compile Include="EffectsLabTest.cs" />
     <Compile Include="util\PresentationUtil.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="AnimateInSlideTest.cs" />
