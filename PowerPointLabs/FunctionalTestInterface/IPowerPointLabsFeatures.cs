@@ -16,6 +16,7 @@
         void HighlightPoints();
         void HighlightBackground();
         void HighlightFragments();
+        void AutoNarrate();
 
         // Agenda Lab
         void GenerateTextAgenda();

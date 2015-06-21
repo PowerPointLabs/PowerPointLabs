@@ -1,138 +1,173 @@
 ﻿using System;
 using FunctionalTestInterface;
 using PowerPointLabs.FunctionalTestInterface.Impl.Controller;
-using PowerPointLabs.Models;
-using PowerPoint = Microsoft.Office.Interop.PowerPoint;
 
 namespace PowerPointLabs.FunctionalTestInterface.Impl
 {
     [Serializable]
     class PowerPointLabsFeatures : MarshalByRefObject, IPowerPointLabsFeatures
     {
+        private Ribbon1 Ribbon {
+            get { return Globals.ThisAddIn.Ribbon; }
+        }
+
         public void AutoCrop()
         {
-            var selection = PowerPointCurrentPresentationInfo.CurrentSelection;
-            CropToShape.Crop(selection);
+            UIThreadExecutor.Execute(() =>
+            {
+                Ribbon.CropShapeButtonClick(new RibbonControl("AutoCrop"));
+            });
         }
 
         public void AutoAnimate()
         {
-            PowerPointLabs.AutoAnimate.AddAutoAnimation();
+            UIThreadExecutor.Execute(() =>
+            {
+                Ribbon.AddAnimationButtonClick(new RibbonControl("AutoAnimate"));
+            });
         }
 
         public void AnimateInSlide()
         {
-            PowerPointLabs.AnimateInSlide.isHighlightBullets = false;
-            PowerPointLabs.AnimateInSlide.AddAnimationInSlide();
+            UIThreadExecutor.Execute(() =>
+            {
+                Ribbon.AddInSlideAnimationButtonClick(new RibbonControl("AnimateInSlide"));
+            });
         }
 
         public void AutoCaptions()
         {
-            NotesToCaptions.EmbedCaptionsOnSelectedSlides();
+            UIThreadExecutor.Execute(() =>
+            {
+                Ribbon.AddCaptionClick(new RibbonControl("AutoCaptions"));
+            });
         }
 
         public void Spotlight()
         {
-            PowerPointLabs.Spotlight.AddSpotlightEffect();
+            UIThreadExecutor.Execute(() =>
+            {
+                Ribbon.SpotlightBtnClick(new RibbonControl("Spotlight"));
+            });
         }
 
         public void FitToWidth()
         {
-            var selectedShape = PowerPointCurrentPresentationInfo.CurrentSelection.ShapeRange[1];
-            FitToSlide.FitToWidth(selectedShape);
+            UIThreadExecutor.Execute(() =>
+            {
+                Ribbon.FitToWidthClick(new RibbonControl("FitToWidth"));
+            });
         }
 
         public void FitToHeight()
         {
-            var selectedShape = PowerPointCurrentPresentationInfo.CurrentSelection.ShapeRange[1];
-            FitToSlide.FitToHeight(selectedShape);
+            UIThreadExecutor.Execute(() =>
+            {
+                Ribbon.FitToHeightClick(new RibbonControl("FitToHeight"));
+            });
         }
 
         public void ConvertToPic()
         {
-            var selection = PowerPointCurrentPresentationInfo.CurrentSelection;
-            ConvertToPicture.Convert(selection);
+            UIThreadExecutor.Execute(() =>
+            {
+                Ribbon.ConvertToPictureButtonClick(new RibbonControl("ConvertToPic"));
+            });
         }
 
         public void DrillDown()
         {
-            AutoZoom.AddDrillDownAnimation();
+            UIThreadExecutor.Execute(() =>
+            {
+                Ribbon.AddZoomInButtonClick(new RibbonControl("DrillDown"));
+            });
         }
 
         public void StepBack()
         {
-            AutoZoom.AddStepBackAnimation();
+            UIThreadExecutor.Execute(() =>
+            {
+                Ribbon.AddZoomOutButtonClick(new RibbonControl("StepBack"));
+            });
         }
 
         public void AddZoomToArea()
         {
-            ZoomToArea.AddZoomToArea();
+            UIThreadExecutor.Execute(() =>
+            {
+                Ribbon.ZoomBtnClick(new RibbonControl("ZoomToArea"));
+            });
         }
 
         public void HighlightPoints()
         {
-            if (Globals.ThisAddIn.Application.ActiveWindow.Selection.Type == PowerPoint.PpSelectionType.ppSelectionShapes)
-                HighlightBulletsText.userSelection = HighlightBulletsText.HighlightTextSelection.kShapeSelected;
-            else if (Globals.ThisAddIn.Application.ActiveWindow.Selection.Type == PowerPoint.PpSelectionType.ppSelectionText)
-                HighlightBulletsText.userSelection = HighlightBulletsText.HighlightTextSelection.kTextSelected;
-            else
-                HighlightBulletsText.userSelection = HighlightBulletsText.HighlightTextSelection.kNoneSelected;
-
-            HighlightBulletsText.AddHighlightBulletsText();
+            UIThreadExecutor.Execute(() =>
+            {
+                Ribbon.HighlightBulletsTextButtonClick(new RibbonControl("HighlightPoints"));
+            });
         }
 
         public void HighlightBackground()
         {
-            if (Globals.ThisAddIn.Application.ActiveWindow.Selection.Type == PowerPoint.PpSelectionType.ppSelectionShapes)
-                HighlightBulletsBackground.userSelection = HighlightBulletsBackground.HighlightBackgroundSelection.kShapeSelected;
-            else if (Globals.ThisAddIn.Application.ActiveWindow.Selection.Type == PowerPoint.PpSelectionType.ppSelectionText)
-                HighlightBulletsBackground.userSelection = HighlightBulletsBackground.HighlightBackgroundSelection.kTextSelected;
-            else
-                HighlightBulletsBackground.userSelection = HighlightBulletsBackground.HighlightBackgroundSelection.kNoneSelected;
-
-            HighlightBulletsBackground.AddHighlightBulletsBackground();
+            UIThreadExecutor.Execute(() =>
+            {
+                Ribbon.HighlightBulletsBackgroundButtonClick(new RibbonControl("HighlightBackground"));
+            });
         }
 
         public void HighlightFragments()
         {
-            if (Globals.ThisAddIn.Application.ActiveWindow.Selection.Type == PowerPoint.PpSelectionType.ppSelectionShapes)
-                HighlightTextFragments.userSelection = HighlightTextFragments.HighlightTextSelection.kShapeSelected;
-            else if (Globals.ThisAddIn.Application.ActiveWindow.Selection.Type == PowerPoint.PpSelectionType.ppSelectionText)
-                HighlightTextFragments.userSelection = HighlightTextFragments.HighlightTextSelection.kTextSelected;
-            else
-                HighlightTextFragments.userSelection = HighlightTextFragments.HighlightTextSelection.kNoneSelected;
+            UIThreadExecutor.Execute(() =>
+            {
+                Ribbon.HighlightTextFragmentsButtonClick(new RibbonControl("HighlightFragments"));
+            });
+        }
 
-            HighlightTextFragments.AddHighlightedTextFragments();
+        public void AutoNarrate()
+        {
+            UIThreadExecutor.Execute(() => {
+                Ribbon.AddAudioClick(new RibbonControl("AutoNarrate"));
+            });
         }
 
         public void GenerateTextAgenda()
         {
-            AgendaLab.AgendaLabMain.GenerateAgenda(AgendaLab.Type.Bullet);
-            GC.Collect();
+            UIThreadExecutor.Execute(() =>
+            {
+                Ribbon.BulletPointAgendaClick(new RibbonControl("TextAgenda"));
+            });
         }
 
         public void GenerateVisualAgenda()
         {
-            AgendaLab.AgendaLabMain.GenerateAgenda(AgendaLab.Type.Visual);
-            GC.Collect();
+            UIThreadExecutor.Execute(() =>
+            {
+                Ribbon.VisualAgendaClick(new RibbonControl("VisualAgenda"));
+            });
         }
 
         public void GenerateBeamAgenda()
         {
-            AgendaLab.AgendaLabMain.GenerateAgenda(AgendaLab.Type.Beam);
-            GC.Collect();
+            UIThreadExecutor.Execute(() =>
+            {
+                Ribbon.BeamAgendaClick(new RibbonControl("BeamAgenda"));
+            });
         }
 
         public void RemoveAgenda()
         {
-            AgendaLab.AgendaLabMain.RemoveAgenda();
-            GC.Collect();
+            UIThreadExecutor.Execute(() =>
+            {
+                Ribbon.RemoveAgendaClick(new RibbonControl("RemoveAgenda"));
+            });
         }
 
         public void SynchronizeAgenda()
         {
-            AgendaLab.AgendaLabMain.SynchroniseAgenda();
-            GC.Collect();
+            UIThreadExecutor.Execute(() =>
+            {
+                Ribbon.UpdateAgendaClick(new RibbonControl("SyncAgenda"));
+            });
         }
 
         public IColorsLabController ColorsLab
