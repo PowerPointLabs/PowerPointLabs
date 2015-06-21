@@ -25,7 +25,7 @@ namespace FunctionalTest
             var expSlide = PpOperations.SelectSlide(5);
 
             // remove text "Expected"
-            PpOperations.SelectShapes("text 3")[1].Delete();
+            PpOperations.SelectShape("text 3")[1].Delete();
             SlideUtil.IsSameAnimations(expSlide, actualSlide);
             SlideUtil.IsSameLooking(expSlide, actualSlide);
         }

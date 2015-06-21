@@ -34,9 +34,9 @@ namespace FunctionalTest
             var actualSlide1 = PpOperations.SelectSlide(8);
             var actualSlide2 = PpOperations.SelectSlide(9);
             var expSlide1 = PpOperations.SelectSlide(10);
-            PpOperations.SelectShapes("text 3")[1].Delete();
+            PpOperations.SelectShape("text 3")[1].Delete();
             var expSlide2 = PpOperations.SelectSlide(11);
-            PpOperations.SelectShapes("text 3")[1].Delete();
+            PpOperations.SelectShape("text 3")[1].Delete();
             SlideUtil.IsSameLooking(expSlide1, actualSlide1);
             SlideUtil.IsSameLooking(expSlide2, actualSlide2);
         }

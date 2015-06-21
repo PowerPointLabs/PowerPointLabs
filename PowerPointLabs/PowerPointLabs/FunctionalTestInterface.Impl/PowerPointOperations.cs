@@ -57,6 +57,12 @@ namespace PowerPointLabs.FunctionalTestInterface.Impl
             Globals.ThisAddIn.Application.ActivePresentation.Close();
         }
 
+        public void ClosePowerPointApplication()
+        {
+            EnterFunctionalTest();
+            Globals.ThisAddIn.Application.Quit();
+        }
+
         public void ActivatePresentation()
         {
             MessageBox.Show(new Form() { TopMost = true },
@@ -131,7 +137,7 @@ namespace PowerPointLabs.FunctionalTestInterface.Impl
             return PowerPointCurrentPresentationInfo.CurrentSelection;
         }
 
-        public ShapeRange SelectShapes(string shapeName)
+        public ShapeRange SelectShape(string shapeName)
         {
             var nameList = new List<String>();
             var shapes = PowerPointCurrentPresentationInfo.CurrentSlide.Shapes;

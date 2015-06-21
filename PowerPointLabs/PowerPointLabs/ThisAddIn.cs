@@ -463,7 +463,7 @@ namespace PowerPointLabs
         public void InitializeShapeGallery()
         {
             // achieves singleton ShapePresentation
-            if (ShapePresentation != null) return;
+            if (ShapePresentation != null && ShapePresentation.Opened) return;
 
             var shapeRootFolderPath = ShapesLabConfigs.ShapeRootFolder;
 

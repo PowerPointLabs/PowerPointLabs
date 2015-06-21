@@ -139,5 +139,10 @@ namespace PowerPointLabs.FunctionalTestInterface.Impl
         {
             get { return ColorsLabController.Instance; }
         }
+
+        public IShapesLabController ShapesLab
+        {
+            get { return ShapesLabController.Instance; }
+        }
     }
 }

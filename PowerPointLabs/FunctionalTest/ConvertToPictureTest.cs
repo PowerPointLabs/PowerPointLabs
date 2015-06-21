@@ -23,7 +23,7 @@ namespace FunctionalTest
         private void CovertGroupObjToPicture()
         {
             var actualSlide = PpOperations.SelectSlide(7);
-            PpOperations.SelectShapes("pic");
+            PpOperations.SelectShape("pic");
 
             PplFeatures.ConvertToPic();
 
@@ -31,14 +31,14 @@ namespace FunctionalTest
             Assert.AreEqual(MsoShapeType.msoPicture, sh.Type);
 
             var expSlide = PpOperations.SelectSlide(8);
-            PpOperations.SelectShapes("text 3")[1].Delete();
+            PpOperations.SelectShape("text 3")[1].Delete();
             SlideUtil.IsSameLooking(expSlide, actualSlide);
         }
 
         private static void ConvertSingleObjToPicture()
         {
             var actualSlide = PpOperations.SelectSlide(4);
-            PpOperations.SelectShapes("pic");
+            PpOperations.SelectShape("pic");
 
             PplFeatures.ConvertToPic();
 
@@ -46,7 +46,7 @@ namespace FunctionalTest
             Assert.AreEqual(MsoShapeType.msoPicture, sh.Type);
 
             var expSlide = PpOperations.SelectSlide(5);
-            PpOperations.SelectShapes("text 3")[1].Delete();
+            PpOperations.SelectShape("text 3")[1].Delete();
             SlideUtil.IsSameLooking(expSlide, actualSlide);
         }
     }

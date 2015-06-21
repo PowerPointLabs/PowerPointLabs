@@ -32,7 +32,7 @@ namespace FunctionalTest
         public void CropOneShapeSuccessfully()
         {
             var actualSlide = PpOperations.SelectSlide(4);
-            PpOperations.SelectShapes("selectMe");
+            PpOperations.SelectShape("selectMe");
 
             // Execute the Crop To Shape feature
             PplFeatures.AutoCrop();
@@ -108,7 +108,7 @@ namespace FunctionalTest
         private void CropOnRotatedShapeUnsuccessfully()
         {
             PpOperations.SelectSlide(4);
-            var shape = PpOperations.SelectShapes("selectMe")[1];
+            var shape = PpOperations.SelectShape("selectMe")[1];
             shape.Rotation = 45;
 
             MessageBoxUtil.ExpectMessageBoxWillPopUp(

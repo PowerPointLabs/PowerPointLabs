@@ -36,7 +36,7 @@ namespace FunctionalTestInterface
         # region Shape-related API
 
         Selection GetCurrentSelection();
-        ShapeRange SelectShapes(string shapeName);
+        ShapeRange SelectShape(string shapeName);
         ShapeRange SelectShapes(IEnumerable<string> shapeNames);
         ShapeRange SelectShapesByPrefix(string prefix);
         FileInfo ExportSelectedShapes();

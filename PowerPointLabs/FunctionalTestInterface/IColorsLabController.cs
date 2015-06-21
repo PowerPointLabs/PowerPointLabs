@@ -6,7 +6,6 @@ namespace FunctionalTestInterface
     public interface IColorsLabController
     {
         void OpenPane();
-        void ClosePane();
 
         Panel GetDropletPanel();
 

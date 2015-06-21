@@ -10,6 +10,7 @@ namespace FunctionalTest
     [TestClass]
     public abstract class BaseFunctionalTest
     {
+        private static bool _isIpcPipeOpen;
         // prefix legend:
         // pp - PowerPoint
         // ppl - PowerPointLabs
@@ -22,9 +23,21 @@ namespace FunctionalTest
         // in "doc/test" folder.
         protected abstract string GetTestingSlideName();
 
+        // To be override by some test case to use new
+        // PowerPoint application instance for FT
+        protected virtual bool IsUseNewPpInstance()
+        {
+            return false;
+        }
+
         [TestInitialize]
         public void Setup()
         {
+            if (IsUseNewPpInstance())
+            {
+                CloseActivePpInstance();
+            }
+
             OpenSlideForTest(GetTestingSlideName());
 
             ConnectPpl();
@@ -43,7 +56,7 @@ namespace FunctionalTest
             while (retryCount > 0)
             {
                 // if already connected, break
-                if (PplFeatures != null && PpOperations != null)
+                if (PplFeatures != null && PpOperations != null && _isIpcPipeOpen)
                 {
                     break;
                 }
@@ -67,6 +80,9 @@ namespace FunctionalTest
                 Assert.Fail("Failed to connect to PowerPointLabs add-in. You can try to increase retryCount.");
             }
 
+            _isIpcPipeOpen = true;
+            PpOperations.EnterFunctionalTest();
+
             // activate the thread of presentation window
             ThreadUtil.WaitFor(1500);
             MessageBoxUtil.ExpectMessageBoxWillPopUp(
@@ -85,6 +101,36 @@ namespace FunctionalTest
                 }
             };
             pptProcess.Start();
+        }
+
+        private void CloseActivePpInstance()
+        {
+            var processes = Process.GetProcessesByName("POWERPNT");
+            if (processes.Length > 0)
+            {
+                foreach (Process p in processes)
+                {
+                    p.CloseMainWindow();
+                }
+            }
+            WaitForPpInstanceToClose();
+            _isIpcPipeOpen = false;
+        }
+
+        private void WaitForPpInstanceToClose()
+        {
+            var retry = 5;
+            while (Process.GetProcessesByName("POWERPNT").Length > 0
+                && retry > 0)
+            {
+                retry--;
+                ThreadUtil.WaitFor(1500);
+            }
+
+            if (Process.GetProcessesByName("POWERPNT").Length > 0)
+            {
+                Assert.Fail("Failed to close PowerPoint application instance on time.");
+            }
         }
     }
 }

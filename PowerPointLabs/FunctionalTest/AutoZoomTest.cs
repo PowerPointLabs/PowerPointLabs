@@ -22,7 +22,7 @@ namespace FunctionalTest
         private void TestDrillDown()
         {
             PpOperations.SelectSlide(4);
-            PpOperations.SelectShapes("Drill Down This Shape");
+            PpOperations.SelectShape("Drill Down This Shape");
             PplFeatures.DrillDown();
 
             AssertIsSame(4, 7);
@@ -33,7 +33,7 @@ namespace FunctionalTest
         private void TestStepBack()
         {
             PpOperations.SelectSlide(11);
-            PpOperations.SelectShapes("Step Back This Shape");
+            PpOperations.SelectShape("Step Back This Shape");
             PplFeatures.StepBack();
 
             AssertIsSame(10, 13);

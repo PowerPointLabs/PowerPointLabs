@@ -23,18 +23,12 @@ namespace FunctionalTest
             // if not maximized, some elements in Colors pane may not be seen
             PpOperations.MaximizeWindow();
             var colorsLab = PplFeatures.ColorsLab;
+            colorsLab.OpenPane();
 
-            try
-            {
-                TestApplyingColors(colorsLab);
-                TestRecommendedColors(colorsLab);
-                TestFavoriteColors(colorsLab);
-                TestColorInfoDialog(colorsLab);
-            }
-            finally
-            {
-                colorsLab.ClosePane();
-            }
+            TestApplyingColors(colorsLab);
+            TestRecommendedColors(colorsLab);
+            TestFavoriteColors(colorsLab);
+            TestColorInfoDialog(colorsLab);
         }
 
         private void TestColorInfoDialog(IColorsLabController colorsLab)
@@ -81,7 +75,7 @@ namespace FunctionalTest
         private void TestRecommendedColors(IColorsLabController colorsLab)
         {
             var actualSlide = PpOperations.SelectSlide(3);
-            PpOperations.SelectShapes("selectMe");
+            PpOperations.SelectShape("selectMe");
 
             // mono panel7's color will become main color now
             Click(colorsLab.GetMonoPanel7());
@@ -95,12 +89,11 @@ namespace FunctionalTest
         {
             var actualSlide = PpOperations.SelectSlide(3);
 
-            var fontColorShape = PpOperations.SelectShapes("fontColor")[1];
-            var lineColorShape = PpOperations.SelectShapes("lineColor")[1];
-            var fillColorShape = PpOperations.SelectShapes("fillColor")[1];
-            PpOperations.SelectShapes("selectMe");
+            var fontColorShape = PpOperations.SelectShape("fontColor")[1];
+            var lineColorShape = PpOperations.SelectShape("lineColor")[1];
+            var fillColorShape = PpOperations.SelectShape("fillColor")[1];
+            PpOperations.SelectShape("selectMe");
 
-            colorsLab.OpenPane();
             var dropletPanel = colorsLab.GetDropletPanel();
 
             // get main color from fontColorShape

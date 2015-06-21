@@ -17,7 +17,7 @@ namespace FunctionalTest
         {
             PpOperations.SelectSlide(4);
 
-            var shape = PpOperations.SelectShapes("ffs")[1];
+            var shape = PpOperations.SelectShape("ffs")[1];
 
             var x = PpOperations.PointsToScreenPixelsX(shape.Left + shape.Width / 2);
             var y = PpOperations.PointsToScreenPixelsY(shape.Top + shape.Height / 2);

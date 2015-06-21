@@ -25,5 +25,6 @@
         void SynchronizeAgenda();
 
         IColorsLabController ColorsLab { get; }
+        IShapesLabController ShapesLab { get; }
     }
 }

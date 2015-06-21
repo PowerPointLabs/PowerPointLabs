@@ -35,7 +35,7 @@ namespace FunctionalTest
         private void TestSingleZoom()
         {
             PpOperations.SelectSlide(4);
-            PpOperations.SelectShapes("First ZoomShape");
+            PpOperations.SelectShape("First ZoomShape");
             PplFeatures.AddZoomToArea();
 
             for (int i = 0; i < 4; ++i)

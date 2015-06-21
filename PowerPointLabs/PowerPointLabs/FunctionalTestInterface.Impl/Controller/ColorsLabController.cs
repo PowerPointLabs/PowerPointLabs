@@ -27,14 +27,6 @@ namespace PowerPointLabs.FunctionalTestInterface.Impl.Controller
             });
         }
 
-        public void ClosePane()
-        {
-            if (_pane != null)
-            {
-                _pane.Visible = false;
-            }
-        }
-
         public Panel GetDropletPanel()
         {
             if (_pane != null)

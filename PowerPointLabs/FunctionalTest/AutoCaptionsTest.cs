@@ -20,7 +20,7 @@ namespace FunctionalTest
             PplFeatures.AutoCaptions();
 
             var expSlide = PpOperations.SelectSlide(5);
-            PpOperations.SelectShapes("text 3").Delete();
+            PpOperations.SelectShape("text 3").Delete();
 
             SlideUtil.IsSameAnimations(expSlide, actualSlide);
             SlideUtil.IsSameLooking(expSlide, actualSlide);
