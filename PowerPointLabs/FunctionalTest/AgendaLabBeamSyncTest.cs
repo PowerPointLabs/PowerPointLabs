@@ -1,5 +1,4 @@
-﻿using System;
-using FunctionalTest.util;
+﻿using FunctionalTest.util;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace FunctionalTest
@@ -18,7 +17,6 @@ namespace FunctionalTest
             // TODO: Is there really no way to programmatically select multiple slides at once?
             // TODO: Ideally, I want to select the slides 5,6,7,8 together and apply Synchronise Agenda on them
 
-            ClickOnSlideThumbnailsPanel();
             PpOperations.SelectSlide(5);
             PplFeatures.SynchronizeAgenda();
             PpOperations.SelectSlide(6);
@@ -30,15 +28,6 @@ namespace FunctionalTest
             var expectedSlides = PpOperations.FetchPresentationData(
                 PathUtil.GetDocTestPresentationPath("AgendaSlidesBeamAfterSync.pptx"));
             PresentationUtil.AssertEqual(expectedSlides, actualSlides);
-        }
-
-        private static void ClickOnSlideThumbnailsPanel()
-        {
-            var pptPanel = NativeUtil.FindWindow("PPTFrameClass", null);
-            var mdiPanel = NativeUtil.FindWindowEx(pptPanel, IntPtr.Zero, "MDIClient", null);
-            var mdiPanel2 = NativeUtil.FindWindowEx(mdiPanel, IntPtr.Zero, "mdiClass", null);
-            var thumbnailsPanel = NativeUtil.FindWindowEx(mdiPanel2, IntPtr.Zero, "paneClassDC", "Thumbnails");
-            NativeUtil.SendMessage(thumbnailsPanel, 0x0201 /*left button down*/, IntPtr.Zero, IntPtr.Zero);
         }
     }
 }
