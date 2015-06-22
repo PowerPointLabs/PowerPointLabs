@@ -100,6 +100,8 @@
     <Compile Include="ShapesLabTest.cs" />
     <Compile Include="AutoNarrationTest.cs" />
     <Compile Include="EffectsLabTest.cs" />
+    <Compile Include="AgendaLabVisualSyncTest.cs" />
+    <Compile Include="AgendaLabBeamSyncTest.cs" />
     <Compile Include="util\PresentationUtil.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="AnimateInSlideTest.cs" />
@@ -108,6 +110,7 @@
     <Compile Include="HighlightBulletsTest.cs" />
     <Compile Include="TextFragmentsTest.cs" />
     <Compile Include="AgendaLabGenerateTest.cs" />
+    <Compile Include="AgendaLabTextSyncTest.cs" />
     <Compile Include="ZoomToAreaTest.cs" />
     <Compile Include="QuickPropertyTest.cs" />
     <Compile Include="util\KeyboardUtil.cs" />
