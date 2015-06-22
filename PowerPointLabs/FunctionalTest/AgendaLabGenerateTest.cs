@@ -34,6 +34,7 @@ namespace FunctionalTest
 
         private static void TestGenerateBeamAgenda()
         {
+            PpOperations.SelectSlide(1);
             MessageBoxUtil.ExpectMessageBoxWillPopUp("Confirm Update",
                 "Agenda already exists. By confirm this dialog agenda will be regenerated. Do you want to proceed?",
                 PplFeatures.GenerateBeamAgenda, buttonNameToClick: "OK");
