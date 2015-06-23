@@ -149,6 +149,14 @@ namespace PowerPointLabs.Models
             }
         }
 
+        /// <summary>
+        /// 1-indexed.
+        /// </summary>
+        public PowerPointSlide GetSlide(int index)
+        {
+            return PowerPointSlide.FromSlideFactory(Presentation.Slides[index]);
+        }
+
         public List<PowerPointSlide> SelectedSlides
         {
             get
