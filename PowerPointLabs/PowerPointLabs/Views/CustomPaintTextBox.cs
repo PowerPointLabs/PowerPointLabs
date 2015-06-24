@@ -52,7 +52,6 @@ namespace PowerPointLabs.Views
             switch (m.Msg)
             {
                 case (int)Native.Message.WM_PAINT:
-                    _parentTextBox.Invalidate();
                     base.WndProc(ref m);
                     if (_parentTextBox.Enabled == false)
                     {
