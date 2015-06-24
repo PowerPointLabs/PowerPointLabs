@@ -156,7 +156,7 @@ namespace PowerPointLabs.AgendaLab
 
                 if (!AgendaPresent())
                 {
-                    MessageBox.Show(TextCollection.AgendaLabNoAgendaError);
+                    ShowErrorMessage(TextCollection.AgendaLabNoAgendaError);
                     return;
                 }
                 currentWindow.ViewType = PpViewType.ppViewNormal;
@@ -920,25 +920,25 @@ namespace PowerPointLabs.AgendaLab
 
             if (sections.Count == 0)
             {
-                MessageBox.Show(TextCollection.AgendaLabNoSectionError);
+                ShowErrorMessage(TextCollection.AgendaLabNoSectionError);
                 return false;
             }
 
             if (sections.Count == 1)
             {
-                MessageBox.Show(TextCollection.AgendaLabSingleSectionError);
+                ShowErrorMessage(TextCollection.AgendaLabSingleSectionError);
                 return false;
             }
 
             if (HasEmptySection())
             {
-                MessageBox.Show(TextCollection.AgendaLabEmptySectionError);
+                ShowErrorMessage(TextCollection.AgendaLabEmptySectionError);
                 return false;
             }
 
             if (HasTooLongSectionName())
             {
-                MessageBox.Show(TextCollection.AgendaLabSectionNameTooLongError);
+                ShowErrorMessage(TextCollection.AgendaLabSectionNameTooLongError);
                 return false;
             }
 
@@ -978,19 +978,19 @@ namespace PowerPointLabs.AgendaLab
         {
             if (!AgendaPresent())
             {
-                MessageBox.Show(TextCollection.AgendaLabNoAgendaError);
+                ShowErrorMessage(TextCollection.AgendaLabNoAgendaError);
                 return false;
             }
 
             if (refSlide == null)
             {
-                MessageBox.Show(TextCollection.AgendaLabNoReferenceSlideError);
+                ShowErrorMessage(TextCollection.AgendaLabNoReferenceSlideError);
                 return false;
             }
 
             if (InvalidReferenceSlide(type, refSlide))
             {
-                MessageBox.Show(TextCollection.AgendaLabInvalidReferenceSlideError);
+                ShowErrorMessage(TextCollection.AgendaLabInvalidReferenceSlideError);
                 return false;
             }
 
@@ -1043,6 +1043,11 @@ namespace PowerPointLabs.AgendaLab
 
         #endregion
 
+
+        private static void ShowErrorMessage(string message)
+        {
+            MessageBox.Show(message, TextCollection.AgendaLabErrorDialogTitle);
+        }
 
         private static string CreateInDocHyperLink(PowerPointSlide slide)
         {
