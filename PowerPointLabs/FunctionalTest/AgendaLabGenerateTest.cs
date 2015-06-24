@@ -19,6 +19,8 @@ namespace FunctionalTest
         public void FT_AgendaLabGenerateTest()
         {
             TestRemoveAgenda();
+            NoAgendaRemoveUnsuccessful();
+
             TestGenerateTextAgenda();
             TestGenerateBeamAgenda();
             TestGenerateVisualAgenda();
@@ -79,6 +81,15 @@ namespace FunctionalTest
             var expectedSlides = PpOperations.FetchPresentationData(
                 PathUtil.GetDocTestPresentationPath("AgendaSlidesDefault.pptx"));
             PresentationUtil.AssertEqual(expectedSlides, actualSlides);
+        }
+
+
+        private void NoAgendaRemoveUnsuccessful()
+        {
+            MessageBoxUtil.ExpectMessageBoxWillPopUp(
+                "Unable to execute action",
+                "There's no generated agenda.",
+                PplFeatures.RemoveAgenda);
         }
 
         public void EmptySectionUnsuccessful(bool isTestingSynchronize)
