@@ -39,6 +39,7 @@ namespace FunctionalTestInterface
         ShapeRange SelectShape(string shapeName);
         ShapeRange SelectShapes(IEnumerable<string> shapeNames);
         ShapeRange SelectShapesByPrefix(string prefix);
+        Shape RecursiveGetShapeWithPrefix(params string[] prefixes);
         FileInfo ExportSelectedShapes();
         string SelectAllTextInShape(string shapeName);
         string SelectTextInShape(string shapeName, int startIndex, int endIndex);

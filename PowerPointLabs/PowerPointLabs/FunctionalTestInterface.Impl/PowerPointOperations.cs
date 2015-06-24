@@ -179,6 +179,16 @@ namespace PowerPointLabs.FunctionalTestInterface.Impl
             return SelectShapes(nameList);
         }
 
+        public Shape RecursiveGetShapeWithPrefix(params string[] prefixes)
+        {
+            var parentShape = SelectShapesByPrefix(prefixes[0])[1];
+            for (int i = 1; i < prefixes.Length; ++i)
+            {
+                parentShape = parentShape.GroupItems.Cast<Shape>().FirstOrDefault(shape => shape.Name.StartsWith(prefixes[i]));
+            }
+            return parentShape;
+        }
+
         public FileInfo ExportSelectedShapes()
         {
             var shapes = PowerPointCurrentPresentationInfo.CurrentSelection.ShapeRange;

@@ -1,5 +1,7 @@
 ﻿using System;
+using System.Linq;
 using FunctionalTest.util;
+using Microsoft.Office.Interop.PowerPoint;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace FunctionalTest
@@ -14,6 +16,14 @@ namespace FunctionalTest
 
         [TestMethod]
         public void FT_AgendaLabBeamSyncTest()
+        {
+            BeamSyncSuccessful();
+            NoHighlightedTextUnsuccessful();
+            NoBeamUnsuccessful();
+            NoRefSlideUnsuccessful();
+        }
+
+        public void BeamSyncSuccessful()
         {
             // TODO: Is there really no way to programmatically select multiple slides at once?
             // TODO: Ideally, I want to select the slides 5,6,7,8 together and apply Synchronise Agenda on them
@@ -33,6 +43,43 @@ namespace FunctionalTest
             var expectedSlides = PpOperations.FetchPresentationData(
                 PathUtil.GetDocTestPresentationPath("AgendaSlidesBeamAfterSync.pptx"));
             PresentationUtil.AssertEqual(expectedSlides, actualSlides);
+        }
+
+        public void NoHighlightedTextUnsuccessful()
+        {
+            PpOperations.SelectSlide(1);
+            var highlightedText = PpOperations.RecursiveGetShapeWithPrefix("PptLabsAgenda_&^@BeamShapeMainGroup",              
+                                                                           "PptLabsAgenda_&^@BeamShapeHighlightedText");
+            highlightedText.Delete();
+
+            MessageBoxUtil.ExpectMessageBoxWillPopUp(
+                "Unable to execute action",
+                "The reference slide is invalid. Please remove and regenerate the agenda.",
+                PplFeatures.SynchronizeAgenda);
+        }
+
+        public void NoBeamUnsuccessful()
+        {
+            PpOperations.SelectSlide(1);
+            var beamShape = PpOperations.SelectShapesByPrefix("PptLabsAgenda_&^@BeamShapeMainGroup")[1];
+            beamShape.Delete();
+
+            MessageBoxUtil.ExpectMessageBoxWillPopUp(
+                "Unable to execute action",
+                "The reference slide is invalid. Please remove and regenerate the agenda.",
+                PplFeatures.SynchronizeAgenda,
+                buttonNameToClick: "Ok");
+        }
+
+        public void NoRefSlideUnsuccessful()
+        {
+            var refSlide = PpOperations.SelectSlide(1);
+            refSlide.Delete();
+
+            MessageBoxUtil.ExpectMessageBoxWillPopUp(
+                "Unable to execute action",
+                "The reference slide is missing. Please remove and regenerate the agenda.",
+                PplFeatures.SynchronizeAgenda);
         }
 
         // Click Thumbnails Panel to make selectedSlide focused.
