@@ -301,6 +301,7 @@
 
         # region Agenda Lab
         // Errors
+        public const string AgendaLabErrorDialogTitle = "Unable to execute action";
         public const string AgendaLabNoSectionError = "Please group slides into sections before generating agenda.";
         public const string AgendaLabNoSelectionError = "Please select at least one slide to generate / synchronize agenda.";
         public const string AgendaLabNoReferenceError = "Reference slide is not found. The first agenda slide will be taken as reference.";
