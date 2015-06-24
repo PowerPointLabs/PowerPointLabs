@@ -45,5 +45,13 @@ namespace FunctionalTestInterface
         string SelectTextInShape(string shapeName, int startIndex, int endIndex);
 
         # endregion
+
+        # region Section-related API
+
+        void RenameSection(int index, string newName);
+        void AddSection(int index, string sectionName);
+        void DeleteSection(int index, bool deleteSlides);
+
+        # endregion
     }
 }

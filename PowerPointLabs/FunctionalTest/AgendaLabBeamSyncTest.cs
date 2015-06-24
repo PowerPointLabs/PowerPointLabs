@@ -23,6 +23,13 @@ namespace FunctionalTest
             NoRefSlideUnsuccessful();
         }
 
+        [TestMethod]
+        public void FT_AgendaLabBeamSyncTest2()
+        {
+            NoBeamTextUnsuccessful();
+            NoAgendaUnsuccessful();
+        }
+
         public void BeamSyncSuccessful()
         {
             // TODO: Is there really no way to programmatically select multiple slides at once?
@@ -67,8 +74,7 @@ namespace FunctionalTest
             MessageBoxUtil.ExpectMessageBoxWillPopUp(
                 "Unable to execute action",
                 "The reference slide is invalid. Please remove and regenerate the agenda.",
-                PplFeatures.SynchronizeAgenda,
-                buttonNameToClick: "Ok");
+                PplFeatures.SynchronizeAgenda);
         }
 
         public void NoRefSlideUnsuccessful()
@@ -79,6 +85,31 @@ namespace FunctionalTest
             MessageBoxUtil.ExpectMessageBoxWillPopUp(
                 "Unable to execute action",
                 "The reference slide is missing. Please remove and regenerate the agenda.",
+                PplFeatures.SynchronizeAgenda);
+        }
+
+        public void NoBeamTextUnsuccessful()
+        {
+            PpOperations.SelectSlide(1);
+            for (int i = 0; i < 5; ++i)
+            {
+                var beamText = PpOperations.RecursiveGetShapeWithPrefix("PptLabsAgenda_&^@BeamShapeMainGroup",
+                    "PptLabsAgenda_&^@BeamShapeText");
+                beamText.Delete();
+            }
+
+            MessageBoxUtil.ExpectMessageBoxWillPopUp(
+                "Unable to execute action",
+                "The reference slide is invalid. Please remove and regenerate the agenda.",
+                PplFeatures.SynchronizeAgenda);
+        }
+
+        public void NoAgendaUnsuccessful()
+        {
+            PplFeatures.RemoveAgenda();
+            MessageBoxUtil.ExpectMessageBoxWillPopUp(
+                "Unable to execute action",
+                "There's no generated agenda.",
                 PplFeatures.SynchronizeAgenda);
         }
 

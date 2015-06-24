@@ -14,6 +14,11 @@ namespace FunctionalTest
         [TestMethod]
         public void FT_AgendaLabVisualSyncTest()
         {
+            VisualSyncSuccessful();
+        }
+
+        public void VisualSyncSuccessful()
+        {
             PplFeatures.SynchronizeAgenda();
             var actualSlides = PpOperations.FetchCurrentPresentationData();
             var expectedSlides = PpOperations.FetchPresentationData(

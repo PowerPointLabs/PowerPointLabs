@@ -217,5 +217,20 @@ namespace PowerPointLabs.FunctionalTestInterface.Impl
             textRange.Select();
             return textRange.Text;
         }
+
+        public void RenameSection(int index, string newName)
+        {
+            PowerPointPresentation.Current.SectionProperties.Rename(index, newName);
+        }
+
+        public void AddSection(int index, string sectionName)
+        {
+            PowerPointPresentation.Current.SectionProperties.AddSection(index, sectionName);
+        }
+
+        public void DeleteSection(int index, bool deleteSlides)
+        {
+            PowerPointPresentation.Current.SectionProperties.Delete(index, deleteSlides);
+        }
     }
 }
