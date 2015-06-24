@@ -13,8 +13,10 @@ namespace PowerPointLabs
 
         public static void AddDrillDownAnimation()
         {
+            if (!IsSelectingShapes()) return;
+
             AddDrillDownAnimation(Globals.ThisAddIn.Application.ActiveWindow.Selection.ShapeRange[1],
-                                  PowerPointCurrentPresentationInfo.CurrentSlide);
+                PowerPointCurrentPresentationInfo.CurrentSlide);
         }
 
         public static void AddDrillDownAnimation(PowerPoint.Shape selectedShape, PowerPointSlide currentSlide)
@@ -106,8 +108,10 @@ namespace PowerPointLabs
 
         public static void AddStepBackAnimation()
         {
+            if (!IsSelectingShapes()) return;
+
             AddStepBackAnimation(Globals.ThisAddIn.Application.ActiveWindow.Selection.ShapeRange[1],
-                                 PowerPointCurrentPresentationInfo.CurrentSlide);
+                PowerPointCurrentPresentationInfo.CurrentSlide);
         }
 
         public static void AddStepBackAnimation(PowerPoint.Shape selectedShape, PowerPointSlide currentSlide)
@@ -337,6 +341,12 @@ namespace PowerPointLabs
 
             selectedShape.Visible = Office.MsoTriState.msoFalse;
             previousSlidePicture.Name = "PPTZoomOutShape" + DateTime.Now.ToString("yyyyMMddHHmmssffff");
+        }
+
+        private static bool IsSelectingShapes()
+        {
+            var selection = Globals.ThisAddIn.Application.ActiveWindow.Selection;
+            return selection.Type == PowerPoint.PpSelectionType.ppSelectionShapes && selection.ShapeRange.Count > 0;
         }
 
 

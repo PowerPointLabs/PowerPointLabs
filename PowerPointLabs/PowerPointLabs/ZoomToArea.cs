@@ -14,6 +14,8 @@ namespace PowerPointLabs
 
         public static void AddZoomToArea()
         {
+            if (!IsSelectingShapes()) return;
+
             try
             {
                 var currentSlide = PowerPointCurrentPresentationInfo.CurrentSlide;
@@ -191,6 +193,12 @@ namespace PowerPointLabs
             {
                 sh.Visible = Office.MsoTriState.msoTrue;
             }
+        }
+
+        private static bool IsSelectingShapes()
+        {
+            var selection = Globals.ThisAddIn.Application.ActiveWindow.Selection;
+            return selection.Type == PowerPoint.PpSelectionType.ppSelectionShapes && selection.ShapeRange.Count > 0;
         }
 
         private static void DeleteExistingZoomToAreaSlides(PowerPointSlide currentSlide)
