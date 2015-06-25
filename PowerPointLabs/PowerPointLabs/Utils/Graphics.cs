@@ -336,6 +336,12 @@ namespace PowerPointLabs.Utils
             return shape.TextFrame2.TextRange.Paragraphs.Cast<TextRange2>().ToList();
         }
 
+        // TODO: Make this an extension method of shape.
+        public static bool IsHidden(Shape shape)
+        {
+            return shape.Visible == MsoTriState.msoFalse;
+        }
+
         # endregion
 
         # region Text

@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using PowerPointLabs.Models;
+using PowerPointLabs.Utils;
 using Office = Microsoft.Office.Core;
 using PowerPoint = Microsoft.Office.Interop.PowerPoint;
 
@@ -240,7 +241,7 @@ namespace PowerPointLabs
             List<PowerPoint.Shape> shapesOnNextSlide = new List<PowerPoint.Shape>();
             foreach (PowerPoint.Shape sh in nextSlide.Shapes)
             {
-                if (!nextSlide.HasEntryAnimation(sh))
+                if (!nextSlide.HasEntryAnimation(sh) && !Graphics.IsHidden(sh))
                     shapesOnNextSlide.Add(sh);
             }
 
@@ -386,7 +387,7 @@ namespace PowerPointLabs
 
             foreach (PowerPoint.Shape sh in previousSlide.Shapes)
             {
-                if (!previousSlide.HasExitAnimation(sh))
+                if (!previousSlide.HasExitAnimation(sh) && !Graphics.IsHidden(sh))
                 {
                     sh.Copy();
                     PowerPoint.Shape shapeCopy = addedSlide.Shapes.Paste()[1];
