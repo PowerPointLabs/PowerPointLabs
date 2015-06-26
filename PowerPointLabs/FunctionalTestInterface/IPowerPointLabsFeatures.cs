@@ -13,6 +13,7 @@
         void DrillDown();
         void StepBack();
         void AddZoomToArea();
+        void SetZoomProperties(bool backgroundChecked, bool multiSlideChecked);
         void HighlightPoints();
         void HighlightBackground();
         void HighlightFragments();

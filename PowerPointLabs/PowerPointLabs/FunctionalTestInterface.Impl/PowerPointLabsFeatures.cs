@@ -99,6 +99,14 @@ namespace PowerPointLabs.FunctionalTestInterface.Impl
             });
         }
 
+        public void SetZoomProperties(bool backgroundChecked , bool multiSlideChecked)
+        {
+            UIThreadExecutor.Execute(() =>
+            {
+                Ribbon.ZoomPropertiesEdited(backgroundChecked , multiSlideChecked);
+            });
+        }
+
         public void HighlightPoints()
         {
             UIThreadExecutor.Execute(() =>
