@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using PowerPointLabs.Models;
+using PowerPointLabs.Utils;
 using Office = Microsoft.Office.Core;
 using PowerPoint = Microsoft.Office.Interop.PowerPoint;
 
@@ -14,6 +15,8 @@ namespace PowerPointLabs
 
         public static void AddZoomToArea()
         {
+            if (!IsSelectingShapes()) return;
+
             try
             {
                 var currentSlide = PowerPointCurrentPresentationInfo.CurrentSlide;
@@ -25,10 +28,10 @@ namespace PowerPointLabs
 
                 MakeInvisible(zoomRectangles);
                 List<PowerPoint.Shape> editedSelectedShapes = GetEditedShapesForZoomToArea(currentSlide, zoomRectangles);
-                if (multiSlideZoomChecked)
-                    AddMultiSlideZoomToArea(currentSlide, editedSelectedShapes);
-                else
-                    AddSingleSlideZoomToArea(currentSlide, editedSelectedShapes);
+
+                var addedSlides = AddMultiSlideZoomToArea(currentSlide, editedSelectedShapes);
+                if (!multiSlideZoomChecked) Graphics.SquashSlides(addedSlides);
+
                 MakeVisible(zoomRectangles);
 
                 Globals.ThisAddIn.Application.ActiveWindow.View.GotoSlide(currentSlide.Index);
@@ -45,8 +48,10 @@ namespace PowerPointLabs
             }
         }
 
-        private static void AddMultiSlideZoomToArea(PowerPointSlide currentSlide, List<PowerPoint.Shape> shapesToZoom)
+        private static List<PowerPointSlide> AddMultiSlideZoomToArea(PowerPointSlide currentSlide, List<PowerPoint.Shape> shapesToZoom)
         {
+            var addedSlides = new List<PowerPointSlide>();
+
             int shapeCount = 1;
             PowerPointSlide lastMagnifiedSlide = null;
             PowerPointMagnifyingSlide magnifyingSlide = null;
@@ -61,11 +66,13 @@ namespace PowerPointLabs
 
                 magnifiedSlide = (PowerPointMagnifiedSlide)magnifyingSlide.CreateZoomMagnifiedSlide();
                 magnifiedSlide.AddZoomToAreaAnimation(selectedShape);
+                addedSlides.Add(magnifiedSlide);
 
                 if (shapeCount != 1)
                 {
                     magnifiedPanSlide = (PowerPointMagnifiedPanSlide)lastMagnifiedSlide.CreateZoomPanSlide();
                     magnifiedPanSlide.AddZoomToAreaAnimation(lastMagnifiedSlide, magnifiedSlide);
+                    addedSlides.Add(magnifiedPanSlide);
                 }
 
                 if (shapeCount == shapesToZoom.Count)
@@ -73,6 +80,7 @@ namespace PowerPointLabs
                     deMagnifyingSlide = (PowerPointDeMagnifyingSlide)magnifyingSlide.CreateZoomDeMagnifyingSlide();
                     deMagnifyingSlide.MoveTo(magnifyingSlide.Index + 2);
                     deMagnifyingSlide.AddZoomToAreaAnimation(selectedShape);
+                    addedSlides.Add(deMagnifyingSlide);
                 }
 
                 selectedShape.Delete();
@@ -87,18 +95,15 @@ namespace PowerPointLabs
                 }
                 else
                 {
+                    addedSlides.Add(magnifyingSlide);
                     lastMagnifiedSlide = magnifiedSlide;
                 }
 
                 shapeCount++;
             }
-        }
 
-        private static void AddSingleSlideZoomToArea(PowerPointSlide currentSlide, List<PowerPoint.Shape> shapesToZoom)
-        {
-            var zoomSlide = currentSlide.CreateZoomToAreaSingleSlide() as PowerPointZoomToAreaSingleSlide;
-            zoomSlide.PrepareForZoomToArea(shapesToZoom);
-            zoomSlide.AddZoomToAreaAnimation(currentSlide, shapesToZoom);
+            Graphics.SortByIndex(addedSlides);
+            return addedSlides;
         }
 
         private static List<PowerPoint.Shape> ReplaceWithZoomRectangleImages(PowerPointSlide currentSlide, PowerPoint.ShapeRange shapeRange)
@@ -191,6 +196,12 @@ namespace PowerPointLabs
             {
                 sh.Visible = Office.MsoTriState.msoTrue;
             }
+        }
+
+        private static bool IsSelectingShapes()
+        {
+            var selection = Globals.ThisAddIn.Application.ActiveWindow.Selection;
+            return selection.Type == PowerPoint.PpSelectionType.ppSelectionShapes && selection.ShapeRange.Count > 0;
         }
 
         private static void DeleteExistingZoomToAreaSlides(PowerPointSlide currentSlide)

@@ -244,6 +244,15 @@ namespace PowerPointLabs.Utils
         }
 
         /// <summary>
+        /// Sort by increasing Z-Order.
+        /// (From front to back).
+        /// </summary>
+        public static void SortByZOrder(List<Shape> shapes)
+        {
+            shapes.Sort((sh1, sh2) => sh2.ZOrderPosition - sh1.ZOrderPosition);
+        }
+
+        /// <summary>
         /// Moves shiftShape backward until it is behind destinationShape.
         /// (does nothing if already behind)
         /// </summary>
@@ -336,6 +345,12 @@ namespace PowerPointLabs.Utils
             return shape.TextFrame2.TextRange.Paragraphs.Cast<TextRange2>().ToList();
         }
 
+        // TODO: Make this an extension method of shape.
+        public static bool IsHidden(Shape shape)
+        {
+            return shape.Visible == MsoTriState.msoFalse;
+        }
+
         # endregion
 
         # region Text
@@ -364,6 +379,116 @@ namespace PowerPointLabs.Utils
         {
             ExportSlide(slide.GetNativeSlide(), exportPath);
         }
+
+        /// <summary>
+        /// Sort by increasing index.
+        /// </summary>
+        public static void SortByIndex(List<PowerPointSlide> slides)
+        {
+            slides.Sort((sh1, sh2) => sh1.Index - sh2.Index);
+        }
+
+        /// <summary>
+        /// Used for the SquashSlides method.
+        /// This struct holds transition information for an effect.
+        /// </summary>
+        private struct EffectTransition
+        {
+            private readonly MsoAnimTriggerType SlideTransition;
+            private readonly float TransitionTime;
+
+            public EffectTransition(MsoAnimTriggerType slideTransition , float transitionTime)
+            {
+                SlideTransition = slideTransition;
+                TransitionTime = transitionTime;
+            }
+
+            public void ApplyTransition(Effect effect)
+            {
+                effect.Timing.TriggerType = SlideTransition;
+                effect.Timing.TriggerDelayTime = TransitionTime;
+            }
+        }
+
+        /// <summary>
+        /// Merges multiple animated slides into a single slide.
+        /// TODO: Test this method more thoroughly, in places other than autozoom.
+        /// </summary>
+        public static void SquashSlides(IEnumerable<PowerPointSlide> slides)
+        {
+            PowerPointSlide firstSlide = null;
+            List<Shape> previousShapes = null;
+            EffectTransition slideTransition = new EffectTransition();
+
+            foreach (var slide in slides)
+            {
+                if (firstSlide == null)
+                {
+                    firstSlide = slide;
+                    slideTransition = GetTransitionFromSlide(slide);
+
+                    firstSlide.Transition.AdvanceOnClick = MsoTriState.msoTrue;
+                    firstSlide.Transition.AdvanceOnTime = MsoTriState.msoFalse;
+
+                    //TODO: Check if there will be an exception when there are empty placeholder shapes in firstSlide.
+                    previousShapes = firstSlide.Shapes.Cast<Shape>().ToList();
+                    continue;
+                }
+
+                var effectSequence = firstSlide.GetNativeSlide().TimeLine.MainSequence;
+                int effectStartIndex = effectSequence.Count + 1;
+
+
+                slide.DeleteIndicator();
+                var newShapeRange = firstSlide.CopyShapesToSlide(slide.Shapes.Range());
+                newShapeRange.ZOrder(MsoZOrderCmd.msoSendToBack);
+
+
+                var newShapes = newShapeRange.Cast<Shape>().ToList();
+                newShapes.ForEach(shape => AddAppearAnimation(shape, firstSlide, effectStartIndex));
+                previousShapes.ForEach(shape => AddDisappearAnimation(shape, firstSlide, effectStartIndex));
+                slideTransition.ApplyTransition(effectSequence[effectStartIndex]);
+
+
+                previousShapes = newShapes;
+                slideTransition = GetTransitionFromSlide(slide);
+                slide.Delete();
+            }
+        }
+
+        /// <summary>
+        /// Extracts the transition animation out of slide to be used as a transition animation for shapes.
+        /// For now, it only extracts the trigger type (trigger by wait or by mouse click), not actual slide transitions.
+        /// </summary>
+        private static EffectTransition GetTransitionFromSlide(PowerPointSlide slide)
+        {
+            var transition = slide.GetNativeSlide().SlideShowTransition;
+            
+            if (transition.AdvanceOnTime == MsoTriState.msoTrue)
+            {
+                return new EffectTransition(MsoAnimTriggerType.msoAnimTriggerAfterPrevious, transition.AdvanceTime);
+            }
+            return new EffectTransition(MsoAnimTriggerType.msoAnimTriggerOnPageClick, 0);
+        }
+
+        private static void AddDisappearAnimation(Shape shape, PowerPointSlide inSlide, int effectStartIndex)
+        {
+            if (inSlide.HasExitAnimation(shape)) return;
+
+            var effectFade = inSlide.GetNativeSlide().TimeLine.MainSequence.AddEffect(shape, MsoAnimEffect.msoAnimEffectAppear,
+                MsoAnimateByLevel.msoAnimateLevelNone, MsoAnimTriggerType.msoAnimTriggerWithPrevious, effectStartIndex);
+            effectFade.Exit = MsoTriState.msoTrue;
+        }
+
+        private static void AddAppearAnimation(Shape shape, PowerPointSlide inSlide, int effectStartIndex)
+        {
+            if (inSlide.HasEntryAnimation(shape)) return;
+
+            var effectFade = inSlide.GetNativeSlide().TimeLine.MainSequence.AddEffect(shape, MsoAnimEffect.msoAnimEffectAppear,
+                MsoAnimateByLevel.msoAnimateLevelNone, MsoAnimTriggerType.msoAnimTriggerWithPrevious, effectStartIndex);
+            effectFade.Exit = MsoTriState.msoFalse;
+        }
+
         # endregion
 
         # region Bitmap

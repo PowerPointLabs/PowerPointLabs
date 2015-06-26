@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using PowerPointLabs.Models;
+using PowerPointLabs.Utils;
 using Office = Microsoft.Office.Core;
 using PowerPoint = Microsoft.Office.Interop.PowerPoint;
 
@@ -13,8 +14,10 @@ namespace PowerPointLabs
 
         public static void AddDrillDownAnimation()
         {
+            if (!IsSelectingShapes()) return;
+
             AddDrillDownAnimation(Globals.ThisAddIn.Application.ActiveWindow.Selection.ShapeRange[1],
-                                  PowerPointCurrentPresentationInfo.CurrentSlide);
+                PowerPointCurrentPresentationInfo.CurrentSlide);
         }
 
         public static void AddDrillDownAnimation(PowerPoint.Shape selectedShape, PowerPointSlide currentSlide)
@@ -106,8 +109,10 @@ namespace PowerPointLabs
 
         public static void AddStepBackAnimation()
         {
+            if (!IsSelectingShapes()) return;
+
             AddStepBackAnimation(Globals.ThisAddIn.Application.ActiveWindow.Selection.ShapeRange[1],
-                                 PowerPointCurrentPresentationInfo.CurrentSlide);
+                PowerPointCurrentPresentationInfo.CurrentSlide);
         }
 
         public static void AddStepBackAnimation(PowerPoint.Shape selectedShape, PowerPointSlide currentSlide)
@@ -236,7 +241,7 @@ namespace PowerPointLabs
             List<PowerPoint.Shape> shapesOnNextSlide = new List<PowerPoint.Shape>();
             foreach (PowerPoint.Shape sh in nextSlide.Shapes)
             {
-                if (!nextSlide.HasEntryAnimation(sh))
+                if (!nextSlide.HasEntryAnimation(sh) && !Graphics.IsHidden(sh))
                     shapesOnNextSlide.Add(sh);
             }
 
@@ -339,6 +344,12 @@ namespace PowerPointLabs
             previousSlidePicture.Name = "PPTZoomOutShape" + DateTime.Now.ToString("yyyyMMddHHmmssffff");
         }
 
+        private static bool IsSelectingShapes()
+        {
+            var selection = Globals.ThisAddIn.Application.ActiveWindow.Selection;
+            return selection.Type == PowerPoint.PpSelectionType.ppSelectionShapes && selection.ShapeRange.Count > 0;
+        }
+
 
         private static PowerPoint.Shape GetStepBackWithBackgroundShapeToZoom(PowerPointSlide currentSlide, PowerPointSlide addedSlide, PowerPoint.Shape previousSlidePicture, out PowerPoint.Shape backgroundShape)
         {
@@ -376,7 +387,7 @@ namespace PowerPointLabs
 
             foreach (PowerPoint.Shape sh in previousSlide.Shapes)
             {
-                if (!previousSlide.HasExitAnimation(sh))
+                if (!previousSlide.HasExitAnimation(sh) && !Graphics.IsHidden(sh))
                 {
                     sh.Copy();
                     PowerPoint.Shape shapeCopy = addedSlide.Shapes.Paste()[1];
