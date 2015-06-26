@@ -67,7 +67,7 @@ namespace PowerPointLabs.Utils
         public static string SerializeCollection(List<string> collection)
         {
             var serialized = string.Join("@", collection.Select(Base64Encode));
-            return serialized + "@" + serialized.GetHashCode();
+            return serialized + "@" + ComputeCheckSum(serialized);
         }
 
         /// <summary>
@@ -82,11 +82,26 @@ namespace PowerPointLabs.Utils
             // Verify checksum
             var hashCode = dataString.Substring(lastDelim + 1);
             var serialized = dataString.Substring(0, lastDelim);
-            if (serialized.GetHashCode().ToString() != hashCode) return null;
+            if (ComputeCheckSum(serialized).ToString() != hashCode) return null;
 
             return serialized.Split(new[] {'@'}, StringSplitOptions.None)
                              .Select(Base64Decode)
                              .ToList();
+        }
+
+        /// <summary>
+        /// Works like a hashcode function, but returns a digit string.
+        /// Except that hashcode isn't consistent across all platforms / implementations. This is.
+        /// </summary>
+        private static string ComputeCheckSum(string s)
+        {
+            uint x = 0;
+            foreach (var c in s)
+            {
+                x += c;
+                x *= 565325351;
+            }
+            return x.ToString();
         }
 
         /// <summary>

@@ -2,12 +2,14 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.IO;
+using System.Runtime.InteropServices;
 using System.Text.RegularExpressions;
 using Microsoft.Office.Core;
 using Microsoft.Office.Interop.PowerPoint;
 using PowerPointLabs.Utils;
 using Shape = Microsoft.Office.Interop.PowerPoint.Shape;
 using Shapes = Microsoft.Office.Interop.PowerPoint.Shapes;
+using ShapeRange = Microsoft.Office.Interop.PowerPoint.ShapeRange;
 using Office = Microsoft.Office.Core;
 
 namespace PowerPointLabs.Models
@@ -496,6 +498,11 @@ namespace PowerPointLabs.Models
 
         public Shape GroupShapes(IEnumerable<Shape> shapes)
         {
+            return ToShapeRange(shapes).Group();
+        }
+
+        public ShapeRange ToShapeRange(IEnumerable<Shape> shapes)
+        {
             var shapeList = shapes.ToList();
             var oldNames = shapeList.Select(shape => shape.Name).ToList();
 
@@ -508,7 +515,69 @@ namespace PowerPointLabs.Models
 
             shapeList.Zip(oldNames, (shape, name) => shape.Name = name).ToList();
 
-            return shapeRange.Group();
+            return shapeRange;
+        }
+
+        /// <summary>
+        /// Copies the shape into this slide, without the usual position offset when an existing shape is already there.
+        /// </summary>
+        public Shape CopyShapeToSlide(Shape shape)
+        {
+            try
+            {
+                shape.Copy();
+                var newShape = _slide.Shapes.Paste()[1];
+                newShape.Left = shape.Left;
+                newShape.Top = shape.Top;
+                return newShape;
+            }
+            catch (COMException e)
+            {
+                // invalid shape for copy paste (e.g. a placeholder title box with no content)
+                return null;
+            }
+        }
+
+        /// <summary>
+        /// Copies the shaperange into this slide, without the usual position offset when pasting over an existing shape.
+        /// If you are having difficulty getting a shaperange, use the ToShapeRange method.
+        /// TODO: Test this method more thoroughly in more cases other than Graphics.SquashSlides
+        /// </summary>
+        public ShapeRange CopyShapesToSlide(ShapeRange shapes)
+        {
+            // First Index all the shapes by name, so they can be identified later.
+            int index = 0;
+            var originalShapes = new Dictionary<string, Shape>();
+            var originalNames = new Dictionary<string, string>();
+            foreach(Shape shape in shapes)
+            {
+                var tempName = index.ToString();
+                index++;
+
+                originalNames.Add(tempName, shape.Name);
+                originalShapes.Add(tempName, shape);
+                // temporarily set the name before copy, so we can locate it again in the new slide.
+                shape.Name = tempName;
+            }
+
+            // Copy all the shapes over.
+            shapes.Copy();
+            var newShapes = _slide.Shapes.Paste();
+
+            // Now use the indexed names to set back the names and positions to the original shapes'
+            foreach (Shape shape in newShapes)
+            {
+                var key = shape.Name;
+                var originalName = originalNames[key];
+                var originalShape = originalShapes[key];
+
+                originalShape.Name = originalName;
+                shape.Name = originalName;
+                shape.Left = originalShape.Left;
+                shape.Top = originalShape.Top;
+            }
+
+            return newShapes;
         }
 
         public void TransferAnimation(Shape source, Shape destination)
@@ -663,12 +732,6 @@ namespace PowerPointLabs.Models
             return PowerPointStepBackSlide.FromSlideFactory(duplicatedSlide);
         }
 
-        public PowerPointSlide CreateZoomToAreaSingleSlide()
-        {
-            Slide duplicatedSlide = _slide.Duplicate()[1];
-            return PowerPointZoomToAreaSingleSlide.FromSlideFactory(duplicatedSlide);
-        }
-
         public PowerPointSlide CreateZoomMagnifyingSlide()
         {
             Slide duplicatedSlide = _slide.Duplicate()[1];
@@ -712,7 +775,7 @@ namespace PowerPointLabs.Models
             {
                 Effect effect = sequence[x];
                 if (effect.Shape.Name == shape.Name && effect.Shape.Id == shape.Id)
-                    if (IsEntryAnimation(effect.EffectType))
+                    if (IsEntryEffect(effect))
                         return true;
             }
             return false;
@@ -721,9 +784,9 @@ namespace PowerPointLabs.Models
         /// <summary>
         /// TODO: What does "Entry Animation" mean? entryEffects.Contains(effectType) could mean that it is either an entry or exit animation. Perhaps change it to entryEffects.Contains(effectType) && entryEffects.Exit == Mso False
         /// </summary>
-        private bool IsEntryAnimation(MsoAnimEffect effectType)
+        private bool IsEntryEffect(Effect effect)
         {
-            return entryEffects.Contains(effectType);
+            return effect.Exit == MsoTriState.msoFalse && entryEffects.Contains(effect.EffectType);
         }
 
         /// <summary>
@@ -995,7 +1058,7 @@ namespace PowerPointLabs.Models
                 if (!identifiedShapeIds.Contains(shape.Id))
                 {
                     identifiedShapeIds.Add(shape.Id);
-                    if (IsEntryAnimation(effect.EffectType) && effect.Exit == MsoTriState.msoFalse) 
+                    if (IsEntryEffect(effect))
                     {
                         shapesWithEntry.Add(shape);
                     }
