@@ -57,28 +57,28 @@ namespace FunctionalTest
             PpOperations.SelectShape("Step Back This Shape");
             PplFeatures.StepBack();
 
-            AssertIsSame(16, 19);
-            AssertIsSame(17, 20);
-            AssertIsSame(18, 21);
+            AssertIsSame(16, 20);
+            AssertIsSame(17, 21);
+            AssertIsSame(18, 22);
         }
 
         private void TestStepBackBackground()
         {
             PplFeatures.SetZoomProperties(false, true);
 
-            PpOperations.SelectSlide(23);
+            PpOperations.SelectSlide(24);
             PpOperations.SelectShape("Step Back This Shape");
             PplFeatures.StepBack();
 
-            AssertIsSame(22, 25);
-            AssertIsSame(23, 26);
-            AssertIsSame(24, 27);
+            AssertIsSame(23, 27);
+            AssertIsSame(24, 28);
+            AssertIsSame(25, 29);
         }
 
         private void TestDrillDownUnsuccessful()
         {
-            var slide = PpOperations.SelectSlide(32);
-            slide.MoveTo(33);
+            var slide = PpOperations.SelectSlide(34);
+            slide.MoveTo(35);
             PpOperations.SelectShape("Zoom This Shape");
             MessageBoxUtil.ExpectMessageBoxWillPopUp(
                 "Unable to Add Animations",
@@ -88,7 +88,7 @@ namespace FunctionalTest
 
         private void TestStepBackUnsuccessful()
         {
-            var slide = PpOperations.SelectSlide(33);
+            var slide = PpOperations.SelectSlide(35);
             slide.MoveTo(1);
             PpOperations.SelectShape("Zoom This Shape");
             MessageBoxUtil.ExpectMessageBoxWillPopUp(
