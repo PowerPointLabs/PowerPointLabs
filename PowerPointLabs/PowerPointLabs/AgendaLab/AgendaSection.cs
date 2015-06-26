@@ -26,11 +26,6 @@ namespace PowerPointLabs.AgendaLab
             return Name + "_" + Index;
         }
 
-        public bool MatchesIndex(AgendaSection other)
-        {
-            return Index == other.Index;
-        }
-
         public static AgendaSection Decode(string sectionStr)
         {
             int delimIndex = sectionStr.LastIndexOf("_");

@@ -583,8 +583,8 @@ namespace PowerPointLabs.Models
         /// </summary>
         public Dictionary<string, Shape> GetNameToShapeDictionary()
         {
-            var dictionary = new Dictionary<string, Shape>();
             var shapes = _slide.Shapes.Cast<Shape>();
+            var dictionary = new Dictionary<string, Shape>(shapes.Count());
             foreach (var shape in shapes)
             {
                 if (!dictionary.ContainsKey(shape.Name))
