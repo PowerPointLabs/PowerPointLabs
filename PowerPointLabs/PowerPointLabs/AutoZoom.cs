@@ -311,8 +311,8 @@ namespace PowerPointLabs
                 nextSlidePicture.Width = selectedShape.Width;
 
             PowerPointLabsGlobals.CopyShapePosition(selectedShape, ref nextSlidePicture);
- 
-            selectedShape.Visible = Office.MsoTriState.msoFalse;
+
+            selectedShape.Delete();
             nextSlidePicture.Name = "PPTZoomInShape" + DateTime.Now.ToString("yyyyMMddHHmmssffff");
 
             PowerPoint.Effect effectAppear = currentSlide.TimeLine.MainSequence.AddEffect(nextSlidePicture, PowerPoint.MsoAnimEffect.msoAnimEffectFade, PowerPoint.MsoAnimateByLevel.msoAnimateLevelNone, PowerPoint.MsoAnimTriggerType.msoAnimTriggerOnPageClick);
@@ -330,7 +330,7 @@ namespace PowerPointLabs
 
             PowerPointLabsGlobals.CopyShapePosition(selectedShape, ref previousSlidePicture);
 
-            selectedShape.Visible = Office.MsoTriState.msoFalse;
+            selectedShape.Delete();
             previousSlidePicture.Name = "PPTZoomOutShape" + DateTime.Now.ToString("yyyyMMddHHmmssffff");
         }
 
