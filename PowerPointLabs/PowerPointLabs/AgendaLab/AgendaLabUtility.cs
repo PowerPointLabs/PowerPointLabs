@@ -168,6 +168,16 @@ namespace PowerPointLabs.AgendaLab
         /// <summary>
         /// 1-indexed.
         /// </summary>
+        private static PowerPointSlide TryGetSlideAtIndex(int index)
+        {
+            if (index > PowerPointPresentation.Current.SlideCount) return null;
+            if (index < 1) return null;
+            return PowerPointPresentation.Current.GetSlide(index);
+        }
+
+        /// <summary>
+        /// 1-indexed.
+        /// </summary>
         private static int SectionFirstSlideIndex(AgendaSection section)
         {
             return SectionFirstSlideIndex(section.Index);

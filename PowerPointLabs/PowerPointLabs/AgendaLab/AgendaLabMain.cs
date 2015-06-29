@@ -395,6 +395,9 @@ namespace PowerPointLabs.AgendaLab
                                                             .Slides
                                                             .Add(1, PpSlideLayout.ppLayoutText));
 
+            refSlide.Transition.EntryEffect = PpEntryEffect.ppEffectPushUp;
+            refSlide.Transition.Duration = 0.8f;
+
             var titleShape = refSlide.Shapes.Placeholders[1];
             var contentShape = refSlide.Shapes.Placeholders[2];
             AgendaShape.SetShapeName(contentShape, ShapePurpose.ContentShape, AgendaSection.None);

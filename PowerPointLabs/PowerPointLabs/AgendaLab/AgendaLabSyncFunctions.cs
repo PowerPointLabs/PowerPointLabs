@@ -21,27 +21,57 @@ namespace PowerPointLabs.AgendaLab
         #region Bullet Agenda
 
         /// <summary>
-        /// The SyncFunction used for synchronising the bullet agenda slides.
+        /// The SyncFunction used for synchronising the front bullet agenda slides.
         /// </summary>
-        public static readonly SyncFunction SyncBulletAgendaSlide = (refSlide, sections, currentSection, deletedShapeNames, targetSlide) =>
+        public static readonly SyncFunction SyncStartBulletAgendaSlide = (refSlide, sections, currentSection, deletedShapeNames, isNewlyGenerated, targetSlide) =>
+        {
+            SyncBulletAgendaSlide(refSlide, targetSlide, deletedShapeNames, sections, currentSection);
+
+            if (isNewlyGenerated)
+            {
+                targetSlide.Transition.EntryEffect = PpEntryEffect.ppEffectFadeSmoothly;
+                targetSlide.Transition.Duration = 0.25f;
+
+                var nextSlide = TryGetSlideAtIndex(targetSlide.Index + 1);
+                if (nextSlide != null)
+                {
+                    nextSlide.Transition.EntryEffect = refSlide.Transition.EntryEffect;
+                    nextSlide.Transition.Duration = refSlide.Transition.Duration;
+                }
+            }
+        };
+
+        /// <summary>
+        /// The SyncFunction used for synchronising the end bullet agenda slides.
+        /// </summary>
+        public static readonly SyncFunction SyncEndBulletAgendaSlide = (refSlide, sections, currentSection, deletedShapeNames, isNewlyGenerated, targetSlide) =>
+        {
+            SyncBulletAgendaSlide(refSlide, targetSlide, deletedShapeNames, sections, currentSection);
+
+            if (isNewlyGenerated)
+            {
+                targetSlide.Transition.EntryEffect = refSlide.Transition.EntryEffect;
+                targetSlide.Transition.Duration = refSlide.Transition.Duration;
+            }
+        };
+
+        private static void SyncBulletAgendaSlide(PowerPointSlide refSlide, PowerPointSlide targetSlide,
+            List<string> deletedShapeNames, List<AgendaSection> sections, AgendaSection currentSection)
         {
             SyncShapesFromReferenceSlide(refSlide, targetSlide, deletedShapeNames);
-
-            targetSlide.Transition.EntryEffect = PpEntryEffect.ppEffectFadeSmoothly;
-            targetSlide.Transition.Duration = 0.25f;
 
             var referenceContentShape = refSlide.GetShape(AgendaShape.WithPurpose(ShapePurpose.ContentShape));
             var targetContentShape = targetSlide.GetShape(AgendaShape.WithPurpose(ShapePurpose.ContentShape));
             var bulletFormats = BulletFormats.ExtractFormats(referenceContentShape);
 
             Graphics.SetText(targetContentShape, sections.Where(section => section.Index > 1)
-                                                        .Select(section => section.Name));
+                                                         .Select(section => section.Name));
             Graphics.SyncShape(referenceContentShape, targetContentShape, pickupTextContent: false,
                 pickupTextFormat: false);
 
             ApplyBulletFormats(targetContentShape.TextFrame2.TextRange, bulletFormats, currentSection);
             targetSlide.DeletePlaceholderShapes();
-        };
+        }
 
 
         private static void ApplyBulletFormats(TextRange2 textRange, BulletFormats bulletFormats, AgendaSection currentSection)
@@ -76,7 +106,7 @@ namespace PowerPointLabs.AgendaLab
         /// <summary>
         /// The SyncFunction used for synchronising the Visual agenda slides (other than the last visual agenda slide).
         /// </summary>
-        public static readonly SyncFunction SyncVisualAgendaSlide = (refSlide, sections, currentSection, deletedShapeNames, targetSlide) =>
+        public static readonly SyncFunction SyncVisualAgendaSlide = (refSlide, sections, currentSection, deletedShapeNames, isNewlyGenerated, targetSlide) =>
         {
             DeleteVisualAgendaImageShapes(targetSlide);
             SyncShapesFromReferenceSlide(refSlide, targetSlide, deletedShapeNames);
@@ -98,7 +128,7 @@ namespace PowerPointLabs.AgendaLab
         /// <summary>
         /// The SyncFunction used for synchronising the last visual agenda slide.
         /// </summary>
-        public static readonly SyncFunction SyncVisualAgendaEndSlide = (refSlide, sections, currentSection, deletedShapeNames, targetSlide) =>
+        public static readonly SyncFunction SyncVisualAgendaEndSlide = (refSlide, sections, currentSection, deletedShapeNames, isNewlyGenerated, targetSlide) =>
         {
             DeleteVisualAgendaImageShapes(targetSlide);
             SyncShapesFromReferenceSlide(refSlide, targetSlide, deletedShapeNames);

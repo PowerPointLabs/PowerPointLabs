@@ -114,7 +114,7 @@ namespace PowerPointLabs.AgendaLab
 
             AgendaSlideConfig[] backSlides = 
             {
-                AgendaSlideConfig.AddSlide(AgendaLabMain.SyncBulletAgendaSlide, SlidePurpose.End),
+                AgendaSlideConfig.AddSlide(AgendaLabMain.SyncEndBulletAgendaSlide, SlidePurpose.End),
             };
 
             AddConfiguration(frontSlides, backSlides);
@@ -124,12 +124,12 @@ namespace PowerPointLabs.AgendaLab
         {
             AgendaSlideConfig[] frontSlides = 
             {
-                AgendaSlideConfig.AddSlide(AgendaLabMain.SyncBulletAgendaSlide, SlidePurpose.Start),
+                AgendaSlideConfig.AddSlide(AgendaLabMain.SyncStartBulletAgendaSlide, SlidePurpose.Start),
             };
 
             AgendaSlideConfig[] backSlides = 
             {
-                AgendaSlideConfig.AddSlide(AgendaLabMain.SyncBulletAgendaSlide, SlidePurpose.End),
+                AgendaSlideConfig.AddSlide(AgendaLabMain.SyncEndBulletAgendaSlide, SlidePurpose.End),
             };
 
             AddConfiguration(frontSlides, backSlides);
@@ -139,12 +139,12 @@ namespace PowerPointLabs.AgendaLab
         {
             AgendaSlideConfig[] frontSlides = 
             {
-                AgendaSlideConfig.AddSlide(AgendaLabMain.SyncBulletAgendaSlide, SlidePurpose.Start),
+                AgendaSlideConfig.AddSlide(AgendaLabMain.SyncStartBulletAgendaSlide, SlidePurpose.Start),
             };
 
             AgendaSlideConfig[] backSlides = 
             {
-                AgendaSlideConfig.AddSlide(AgendaLabMain.SyncBulletAgendaSlide, SlidePurpose.End),
+                AgendaSlideConfig.AddSlide(AgendaLabMain.SyncEndBulletAgendaSlide, SlidePurpose.End),
             };
 
             AddConfiguration(frontSlides, backSlides);
@@ -180,6 +180,9 @@ namespace PowerPointLabs.AgendaLab
         public readonly int[] FrontIndexes;
         public readonly int[] BackIndexes;
 
+        public readonly bool[] IsNewlyGeneratedFront;
+        public readonly bool[] IsNewlyGeneratedBack;
+
         public ReadOnlyCollection<PowerPointSlide> FrontSlideObjects;
         public ReadOnlyCollection<PowerPointSlide> BackSlideObjects;
 
@@ -189,6 +192,9 @@ namespace PowerPointLabs.AgendaLab
             BackIndexes = new int[backSlideCount];
             for (int i = 0; i < FrontIndexes.Length; ++i) FrontIndexes[i] = NoSlide;
             for (int i = 0; i < BackIndexes.Length; ++i) BackIndexes[i] = NoSlide;
+
+            IsNewlyGeneratedFront = new bool[frontSlideCount];
+            IsNewlyGeneratedBack = new bool[backSlideCount];
         }
 
         /// <summary>
@@ -217,5 +223,6 @@ namespace PowerPointLabs.AgendaLab
                                         List<AgendaSection> sections,
                                         AgendaSection currentSection,
                                         List<string> deletedShapeNames,
+                                        bool isNewlyGenerated,
                                         PowerPointSlide targetSlide);
 }
