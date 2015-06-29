@@ -25,7 +25,7 @@ namespace PowerPointLabs.AgendaLab
         /// </summary>
         public static readonly SyncFunction SyncStartBulletAgendaSlide = (refSlide, sections, currentSection, deletedShapeNames, isNewlyGenerated, targetSlide) =>
         {
-            SyncBulletAgendaSlide(refSlide, targetSlide, deletedShapeNames, sections, currentSection);
+            SyncBulletAgendaSlide(refSlide, sections, currentSection, deletedShapeNames, targetSlide);
 
             if (isNewlyGenerated)
             {
@@ -46,7 +46,7 @@ namespace PowerPointLabs.AgendaLab
         /// </summary>
         public static readonly SyncFunction SyncEndBulletAgendaSlide = (refSlide, sections, currentSection, deletedShapeNames, isNewlyGenerated, targetSlide) =>
         {
-            SyncBulletAgendaSlide(refSlide, targetSlide, deletedShapeNames, sections, currentSection);
+            SyncBulletAgendaSlide(refSlide, sections, currentSection, deletedShapeNames, targetSlide);
 
             if (isNewlyGenerated)
             {
@@ -55,8 +55,16 @@ namespace PowerPointLabs.AgendaLab
             }
         };
 
-        private static void SyncBulletAgendaSlide(PowerPointSlide refSlide, PowerPointSlide targetSlide,
-            List<string> deletedShapeNames, List<AgendaSection> sections, AgendaSection currentSection)
+        /// <summary>
+        /// The SyncFunction used for synchronising the final bullet agenda slide.
+        /// </summary>
+        public static readonly SyncFunction SyncFinalBulletAgendaSlide = (refSlide, sections, currentSection, deletedShapeNames, isNewlyGenerated, targetSlide) =>
+        {
+            SyncStartBulletAgendaSlide(refSlide, sections, AgendaSection.None, deletedShapeNames, isNewlyGenerated, targetSlide);
+        };
+
+        private static void SyncBulletAgendaSlide(PowerPointSlide refSlide, List<AgendaSection> sections,
+            AgendaSection currentSection, List<string> deletedShapeNames, PowerPointSlide targetSlide)
         {
             SyncShapesFromReferenceSlide(refSlide, targetSlide, deletedShapeNames);
 
@@ -65,7 +73,7 @@ namespace PowerPointLabs.AgendaLab
             var bulletFormats = BulletFormats.ExtractFormats(referenceContentShape);
 
             Graphics.SetText(targetContentShape, sections.Where(section => section.Index > 1)
-                                                         .Select(section => section.Name));
+                .Select(section => section.Name));
             Graphics.SyncShape(referenceContentShape, targetContentShape, pickupTextContent: false,
                 pickupTextFormat: false);
 
@@ -73,11 +81,15 @@ namespace PowerPointLabs.AgendaLab
             targetSlide.DeletePlaceholderShapes();
         }
 
-
+        /// <summary>
+        /// Applies font highlighting by section to the text in the bullet agenda.
+        /// Set currentSection to the first section for everything to be unvisited.
+        /// Set currentSection to AgendaSection.None for everything to be visited.
+        /// </summary>
         private static void ApplyBulletFormats(TextRange2 textRange, BulletFormats bulletFormats, AgendaSection currentSection)
         {
             // - 1 because first section in agenda is at index 2 (exclude first section)
-            int focusIndex = currentSection.Index - 1;
+            int focusIndex = currentSection.IsNone() ? int.MaxValue : currentSection.Index - 1;
 
             for (var i = 1; i <= textRange.Paragraphs.Count; i++)
             {

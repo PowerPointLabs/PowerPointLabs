@@ -145,6 +145,7 @@ namespace PowerPointLabs.AgendaLab
             AgendaSlideConfig[] backSlides = 
             {
                 AgendaSlideConfig.AddSlide(AgendaLabMain.SyncEndBulletAgendaSlide, SlidePurpose.End),
+                AgendaSlideConfig.AddSlide(AgendaLabMain.SyncFinalBulletAgendaSlide, SlidePurpose.EndOfBulletAgenda),
             };
 
             AddConfiguration(frontSlides, backSlides);
