@@ -111,7 +111,12 @@ namespace PowerPointLabs.AgendaLab
         public override void ConfigHead()
         {
             AgendaSlideConfig[] frontSlides = { };
-            AgendaSlideConfig[] backSlides = { };
+
+            AgendaSlideConfig[] backSlides = 
+            {
+                AgendaSlideConfig.AddSlide(AgendaLabMain.SyncBulletAgendaSlide, SlidePurpose.End),
+            };
+
             AddConfiguration(frontSlides, backSlides);
         }
 
