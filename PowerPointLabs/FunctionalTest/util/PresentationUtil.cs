@@ -38,15 +38,15 @@ namespace FunctionalTest.util
             {
                 Assert.AreEqual(expected.EffectType, actual.EffectType, "Different effect type.");
                 Assert.AreEqual(expected.ShapeType, actual.ShapeType, "Different effect shape type.");
-                Assert.IsTrue(SlideUtil.IsAlmostSame(expected.ShapeRotation, actual.ShapeRotation),
+                Assert.IsTrue(SlideUtil.IsRoughlySame(expected.ShapeRotation, actual.ShapeRotation),
                     "Different effect shape rotation. exp:{0}, actual:{1}", expected.ShapeRotation, actual.ShapeRotation);
-                Assert.IsTrue(SlideUtil.IsAlmostSame(expected.ShapeWidth, actual.ShapeWidth),
+                Assert.IsTrue(SlideUtil.IsRoughlySame(expected.ShapeWidth, actual.ShapeWidth),
                     "Different effect shape width. exp:{0}, actual:{1}", expected.ShapeWidth, actual.ShapeWidth);
-                Assert.IsTrue(SlideUtil.IsAlmostSame(expected.ShapeHeight, actual.ShapeHeight),
+                Assert.IsTrue(SlideUtil.IsRoughlySame(expected.ShapeHeight, actual.ShapeHeight),
                     "Different effect shape height. exp:{0}, actual:{1}", expected.ShapeHeight, actual.ShapeHeight);
-                Assert.IsTrue(SlideUtil.IsAlmostSame(expected.ShapeLeft, actual.ShapeLeft),
+                Assert.IsTrue(SlideUtil.IsRoughlySame(expected.ShapeLeft, actual.ShapeLeft),
                     "Different effect shape left. exp:{0}, actual:{1}", expected.ShapeLeft, actual.ShapeLeft);
-                Assert.IsTrue(SlideUtil.IsAlmostSame(expected.ShapeTop, actual.ShapeTop),
+                Assert.IsTrue(SlideUtil.IsRoughlySame(expected.ShapeTop, actual.ShapeTop),
                     "Different effect shape top. exp:{0}, actual:{1}", expected.ShapeTop, actual.ShapeTop);
                 Assert.IsTrue(SlideUtil.IsAlmostSame(expected.TimingTriggerDelayTime, actual.TimingTriggerDelayTime),
                     "Different effect timing. exp:{0}, actual:{1}", expected.TimingTriggerDelayTime, 

@@ -79,6 +79,8 @@ namespace FunctionalTest.util
                 Assert.AreEqual(null, taskToVerify.Exception, "Failed to verify expectation. Exception: {0}",
                     taskToVerify.Exception.Message);
             }
+            // don't end so fast..
+            ThreadUtil.WaitFor(500);
         }
 
         private static void CloseMessageBox(IntPtr msgBoxHandle, string buttonName)
