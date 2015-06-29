@@ -27,6 +27,14 @@ namespace PowerPointLabs.FunctionalTestInterface.Impl
             });
         }
 
+        public void RecreateAutoAnimate()
+        {
+            UIThreadExecutor.Execute(() =>
+            {
+                Ribbon.ReloadButtonClick(new RibbonControl("RecreateAutoAnimate"));
+            });
+        }
+
         public void AnimateInSlide()
         {
             UIThreadExecutor.Execute(() =>

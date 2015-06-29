@@ -4,6 +4,7 @@
     {
         void AutoCrop();
         void AutoAnimate();
+        void RecreateAutoAnimate();
         void AnimateInSlide();
         void AutoCaptions();
         void Spotlight();
