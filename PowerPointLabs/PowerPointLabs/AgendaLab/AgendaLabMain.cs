@@ -292,9 +292,9 @@ namespace PowerPointLabs.AgendaLab
 
             var background = PrepareBeamAgendaBackground(refSlide);
             var textBoxes = CreateBeamAgendaTextBoxes(refSlide, sections);
-            SetupBeamTextBoxPositions(textBoxes, background);
-
-            var highlightedTextBox = CreateHighlightedTextBox(0, 1f, refSlide);
+            var highlightedTextBox = CreateHighlightedTextBox(refSlide);
+            SetupBeamTextBoxPositions(textBoxes, highlightedTextBox, background);
+            MatchColour(highlightedTextBox, background);
 
             var beamShapeItems = new List<Shape>();
             beamShapeItems.Add(background);
@@ -310,7 +310,7 @@ namespace PowerPointLabs.AgendaLab
             return sections.Select(section => PrepareBeamAgendaBeamItem(refSlide, section)).ToList();
         }
 
-        private static void SetupBeamTextBoxPositions(List<Shape> textBoxes, Shape background = null)
+        private static void SetupBeamTextBoxPositions(List<Shape> textBoxes, Shape highlightedTextBox, Shape background = null)
         {
             var slideWidth = PowerPointPresentation.Current.SlideWidth;
             var slideHeight = PowerPointPresentation.Current.SlideHeight;
@@ -342,12 +342,21 @@ namespace PowerPointLabs.AgendaLab
                 background.Height = rowCount*itemHeight;
                 background.Width = slideWidth;
             }
+
+            highlightedTextBox.Top = rowCount*itemHeight;
+            highlightedTextBox.Left = (slideWidth - highlightedTextBox.Width)/2;
         }
 
-        private static Shape CreateHighlightedTextBox(float left, float top, PowerPointSlide slide)
+        private static void MatchColour(Shape highlightedTextBox, Shape background)
+        {
+            if (background == null) return;
+            highlightedTextBox.Fill.ForeColor.RGB = background.Fill.ForeColor.RGB;
+        }
+
+        private static Shape CreateHighlightedTextBox(PowerPointSlide slide)
         {
             var textBox = slide.Shapes.AddTextbox(MsoTextOrientation.msoTextOrientationHorizontal,
-                                                  left, top, 0, 0);
+                                                  0, 0, 0, 0);
 
             AgendaShape.SetShapeName(textBox, ShapePurpose.BeamShapeHighlightedText, AgendaSection.None);
             textBox.TextFrame.AutoSize = PpAutoSize.ppAutoSizeShapeToFitText;
@@ -394,6 +403,9 @@ namespace PowerPointLabs.AgendaLab
                                                             .Presentation
                                                             .Slides
                                                             .Add(1, PpSlideLayout.ppLayoutText));
+
+            refSlide.Transition.EntryEffect = PpEntryEffect.ppEffectPushUp;
+            refSlide.Transition.Duration = 0.8f;
 
             var titleShape = refSlide.Shapes.Placeholders[1];
             var contentShape = refSlide.Shapes.Placeholders[2];
@@ -768,15 +780,18 @@ namespace PowerPointLabs.AgendaLab
             var currentSections = ExtractAgendaSectionsFromBeam(beamShape);
             var newSections = GetAllButFirstSection();
 
-            if (SectionsMatch(currentSections, newSections)) return;
-
             var beamFormats = BeamFormats.ExtractFormats(beamShape);
             var oldTextBoxes = BeamFormats.GetAllShapesWithPurpose(beamShape, ShapePurpose.BeamShapeText);
+            var highlightedTextBox = BeamFormats.GetShapeWithPurpose(beamShape, ShapePurpose.BeamShapeHighlightedText);
             var background = BeamFormats.GetShapeWithPurpose(beamShape, ShapePurpose.BeamShapeBackground);
 
-            var newTextBoxes = CreateBeamAgendaTextBoxes(refSlide, newSections);
-            SetupBeamTextBoxPositions(newTextBoxes, background);
+            MatchColour(highlightedTextBox, background);
 
+            if (SectionsMatch(currentSections, newSections)) return;
+
+            var newTextBoxes = CreateBeamAgendaTextBoxes(refSlide, newSections);
+            SetupBeamTextBoxPositions(newTextBoxes, highlightedTextBox, background);
+            
             for (int i = 0; i < newTextBoxes.Count; ++i)
             {
                 var referenceTextFormat = beamFormats.Regular;
