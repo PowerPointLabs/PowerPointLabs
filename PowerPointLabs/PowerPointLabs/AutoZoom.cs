@@ -139,7 +139,7 @@ namespace PowerPointLabs
                 PowerPointSlide previousSlide = GetPreviousSlide(currentSlide, deletePreviouslyAdded);
 
                 PowerPoint.Shape previousSlidePicture = null, shapeToZoom = null;
-
+                
                 currentSlide.HideIndicator();
                 if (backgroundZoomChecked)
                 {
@@ -245,15 +245,16 @@ namespace PowerPointLabs
                     shapesOnNextSlide.Add(sh);
             }
 
-            PowerPoint.Shape shapeCopy = null;
+            var copiedShapes = new List<PowerPoint.Shape>();
             foreach (PowerPoint.Shape sh in shapesOnNextSlide)
             {
                 sh.Copy();
-                shapeCopy = nextSlide.Shapes.Paste()[1];
+                var shapeCopy = nextSlide.Shapes.Paste()[1];
                 PowerPointLabsGlobals.CopyShapeAttributes(sh, ref shapeCopy);
-                shapeCopy.Select(Office.MsoTriState.msoFalse);
+                copiedShapes.Add(shapeCopy);
             }
 
+            SelectAllShape(copiedShapes);
             PowerPoint.Selection sel = Globals.ThisAddIn.Application.ActiveWindow.Selection;
             PowerPoint.Shape shapeGroup = null;
             if (sel.ShapeRange.Count > 1)
@@ -304,18 +305,13 @@ namespace PowerPointLabs
         //Set position, size and animations of the next slide copy
         private static void PrepareNextSlidePicture(PowerPointSlide currentSlide, PowerPoint.Shape selectedShape, ref PowerPoint.Shape nextSlidePicture)
         {
-            if (selectedShape.Name.Contains("PPTZoomInShape"))
-                PowerPointLabsGlobals.CopyShapeAttributes(selectedShape, ref nextSlidePicture);
+            nextSlidePicture.LockAspectRatio = Office.MsoTriState.msoTrue;
+            if (selectedShape.Width > selectedShape.Height)
+                nextSlidePicture.Height = selectedShape.Height;
             else
-            {
-                nextSlidePicture.LockAspectRatio = Office.MsoTriState.msoTrue;
-                if (selectedShape.Width > selectedShape.Height)
-                    nextSlidePicture.Height = selectedShape.Height;
-                else
-                    nextSlidePicture.Width = selectedShape.Width;
+                nextSlidePicture.Width = selectedShape.Width;
 
-                PowerPointLabsGlobals.CopyShapePosition(selectedShape, ref nextSlidePicture);
-            }
+            PowerPointLabsGlobals.CopyShapePosition(selectedShape, ref nextSlidePicture);
  
             selectedShape.Visible = Office.MsoTriState.msoFalse;
             nextSlidePicture.Name = "PPTZoomInShape" + DateTime.Now.ToString("yyyyMMddHHmmssffff");
@@ -327,18 +323,13 @@ namespace PowerPointLabs
         //Set position, size and animations of the previous slide copy
         private static void PreparePreviousSlidePicture(PowerPointSlide currentSlide, PowerPoint.Shape selectedShape, ref PowerPoint.Shape previousSlidePicture)
         {
-            if (selectedShape.Name.Contains("PPTZoomOutShape"))
-                PowerPointLabsGlobals.CopyShapeAttributes(selectedShape, ref previousSlidePicture);
+            previousSlidePicture.LockAspectRatio = Office.MsoTriState.msoTrue;
+            if (selectedShape.Width > selectedShape.Height)
+                previousSlidePicture.Height = selectedShape.Height;
             else
-            {
-                previousSlidePicture.LockAspectRatio = Office.MsoTriState.msoTrue;
-                if (selectedShape.Width > selectedShape.Height)
-                    previousSlidePicture.Height = selectedShape.Height;
-                else
-                    previousSlidePicture.Width = selectedShape.Width;
+                previousSlidePicture.Width = selectedShape.Width;
 
-                PowerPointLabsGlobals.CopyShapePosition(selectedShape, ref previousSlidePicture);
-            }
+            PowerPointLabsGlobals.CopyShapePosition(selectedShape, ref previousSlidePicture);
 
             selectedShape.Visible = Office.MsoTriState.msoFalse;
             previousSlidePicture.Name = "PPTZoomOutShape" + DateTime.Now.ToString("yyyyMMddHHmmssffff");
@@ -385,6 +376,7 @@ namespace PowerPointLabs
             Globals.ThisAddIn.Application.ActiveWindow.Selection.Unselect();
             Globals.ThisAddIn.Application.ActiveWindow.View.GotoSlide(addedSlide.Index);
 
+            var copiedShapes = new List<PowerPoint.Shape>();
             foreach (PowerPoint.Shape sh in previousSlide.Shapes)
             {
                 if (!previousSlide.HasExitAnimation(sh) && !Graphics.IsHidden(sh))
@@ -392,10 +384,11 @@ namespace PowerPointLabs
                     sh.Copy();
                     PowerPoint.Shape shapeCopy = addedSlide.Shapes.Paste()[1];
                     PowerPointLabsGlobals.CopyShapeAttributes(sh, ref shapeCopy);
-                    shapeCopy.Select(Office.MsoTriState.msoFalse);
+                    copiedShapes.Add(shapeCopy);
                 } 
             }
 
+            SelectAllShape(copiedShapes);
             PowerPoint.Selection sel = Globals.ThisAddIn.Application.ActiveWindow.Selection;
             PowerPoint.Shape shapeGroup = null;
             if (sel.ShapeRange.Count > 1)
@@ -410,6 +403,14 @@ namespace PowerPointLabs
             shapeGroup.Delete();
 
             return previousSlidePicture;
+        }
+
+        private static void SelectAllShape(List<PowerPoint.Shape> shapes)
+        {
+            foreach (PowerPoint.Shape shapeCopy in shapes)
+            {
+                shapeCopy.Select(Office.MsoTriState.msoFalse);
+            }
         }
     }
 }
