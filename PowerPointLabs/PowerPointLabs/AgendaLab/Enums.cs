@@ -19,6 +19,7 @@ namespace PowerPointLabs.AgendaLab
         // For Bullet Agenda
         Start,
         End,
+        EndOfBulletAgenda,
 
         // For Visual Agenda
         ZoomIn,

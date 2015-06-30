@@ -140,6 +140,7 @@ namespace PowerPointLabs.AgendaLab
                     AgendaSlide.SetSlideName(newSlide, template.Type, template.FrontSlides[i].SlidePurpose,
                         currentSection);
 
+                    templateTable.IsNewlyGeneratedFront[i] = true;
                     templateTable.FrontIndexes[i] = assignmentList.Count;
                     assignmentList.Add(i);
                     addToIndex++;
@@ -154,6 +155,7 @@ namespace PowerPointLabs.AgendaLab
                     AgendaSlide.SetSlideName(newSlide, template.Type, template.BackSlides[i].SlidePurpose,
                         currentSection);
 
+                    templateTable.IsNewlyGeneratedBack[i] = true;
                     templateTable.BackIndexes[i] = assignmentList.Count;
                     assignmentList.Add(indexOfFirstBackSlide + i);
                     addToIndex++;
@@ -255,14 +257,13 @@ namespace PowerPointLabs.AgendaLab
             for (int i = 0; i < template.FrontSlidesCount; ++i)
             {
                 template.FrontSlides[i].SyncFunction(refSlide, sections, currentSection, deletedShapeNames,
-                    templateTable.FrontSlideObjects[i]);
+                    templateTable.IsNewlyGeneratedFront[i], templateTable.FrontSlideObjects[i]);
             }
             for (int i = 0; i < template.BackSlidesCount; ++i)
             {
                 template.BackSlides[i].SyncFunction(refSlide, sections, currentSection, deletedShapeNames,
-                    templateTable.BackSlideObjects[i]);
+                    templateTable.IsNewlyGeneratedBack[i], templateTable.BackSlideObjects[i]);
             }
-
         }
 
         /// <summary>
