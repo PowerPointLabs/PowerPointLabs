@@ -708,7 +708,6 @@ namespace PowerPointLabs
             try
             {
                 AutoZoom.AddDrillDownAnimation();
-                GC.Collect();
             }
             catch (Exception e)
             {
@@ -721,7 +720,6 @@ namespace PowerPointLabs
             try
             {
                 AutoZoom.AddStepBackAnimation();
-                GC.Collect();
             }
             catch (Exception e)
             {
