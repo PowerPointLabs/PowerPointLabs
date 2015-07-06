@@ -36,10 +36,12 @@ namespace PowerPointLabs
                     case HighlightTextSelection.kNoneSelected:
                         return;
                     default:
-                        break;
+                        return;
                 }
+                if (selectedText.Length <= 0) return;
+                if (selectedShapes.Count != 1) return;
 
-                List<PowerPoint.Shape> selectionToAnimate = GetShapesFromLinesInText(currentSlide, selectedText);
+                List<PowerPoint.Shape> selectionToAnimate = GetShapesFromLinesInText(currentSlide, selectedText, selectedShapes[1]);
                 GroupShapesForAnimation(selectionToAnimate);
 
                 List<PowerPoint.Shape> shapesToAnimate = GetShapesToAnimate(currentSlide);
@@ -100,12 +102,10 @@ namespace PowerPointLabs
             List<PowerPoint.Shape> previousFragments = currentSlide.GetTextFragments();
             currentSlide.RemoveAnimationsForShapes(previousFragments);
 
-            previousFragments.Reverse();
-
             return previousFragments;
         }
 
-        private static List<PowerPoint.Shape> GetShapesFromLinesInText(PowerPointSlide currentSlide, Office.TextRange2 text)
+        private static List<PowerPoint.Shape> GetShapesFromLinesInText(PowerPointSlide currentSlide, Office.TextRange2 text, PowerPoint.Shape shape)
         {
             List<PowerPoint.Shape> shapesToAnimate = new List<PowerPoint.Shape>();
 
@@ -122,7 +122,7 @@ namespace PowerPointLabs
                 highlightShape.Fill.ForeColor.RGB = Utils.Graphics.ConvertColorToRgb(backgroundColor);
                 highlightShape.Fill.Transparency = 0.50f;
                 highlightShape.Line.Visible = Office.MsoTriState.msoFalse;
-                highlightShape.ZOrder(Office.MsoZOrderCmd.msoSendToBack);
+                Utils.Graphics.MoveZToJustBehind(highlightShape, shape);
                 highlightShape.Name = "PPTLabsHighlightTextFragmentsShape" + Guid.NewGuid().ToString();
                 highlightShape.Tags.Add("HighlightTextFragment", highlightShape.Name);
                 highlightShape.Select(Office.MsoTriState.msoFalse);

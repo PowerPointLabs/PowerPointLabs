@@ -237,6 +237,12 @@
         # endregion
         # endregion
 
+        # region PowerPointSlide
+
+        public const string NotesPageStorageText = "This notes page is used to store data - Do not edit the notes. ";
+
+        # endregion
+
         # region Ribbon
         public static readonly string AboutInfo =
             "          PowerPointLabs Plugin Version " + Properties.Settings.Default.Version + " [Release date: " + Properties.Settings.Default.ReleaseDate + "]\n     Developed at School of Computing, National University of Singapore.\n        For more information, visit our website " + PowerPointLabsWebsiteUrl;
@@ -294,17 +300,35 @@
         # endregion
 
         # region Agenda Lab
+        // Errors
+        public const string AgendaLabErrorDialogTitle = "Unable to execute action";
         public const string AgendaLabNoSectionError = "Please group slides into sections before generating agenda.";
-        public const string AgendaLabNoSelectionError = "Please select at least one slide to generate / synchronize agenda.";
-        public const string AgendaLabNoReferenceError = "Reference slide is not found. The first agenda slide will be taken as reference.";
         public const string AgendaLabSingleSectionError = "Agenda Lab requires slides to be divided into two or more sections.";
         public const string AgendaLabEmptySectionError = "Presentation contains empty section(s). Please fill them up or remove them.";
         public const string AgendaLabAgendaExistError = "Agenda already exists. By confirm this dialog agenda will be regenerated. Do you want to proceed?";
         public const string AgendaLabAgendaExistErrorCaption = "Confirm Update";
         public const string AgendaLabNoAgendaError = "There's no generated agenda.";
-        public const string AgendaLabLoadingDialogTitle = "Generating...";
-        public const string AgendaLabLoadingDialogContent = "Agenda is generating, please wait...";
-        public const string AgendaLabReferenceSlideContent = "Visited bullet format\rHighlight bullet format\rUnvisited bullet format\r";
+        public const string AgendaLabNoReferenceSlideError = "The reference slide is missing. Please remove and regenerate the agenda.";
+        public const string AgendaLabInvalidReferenceSlideError = "The reference slide is invalid. Please remove and regenerate the agenda.";
+        public static string AgendaLabSectionNameTooLongError = "One of the section names exceeds the maximum size allowed by Agenda Lab. Please rename the section accordingly.";
+
+        // Dialog Boxes
+        public const string AgendaLabGeneratingDialogTitle = "Generating...";
+        public const string AgendaLabGeneratingDialogContent = "Agenda is generating, please wait...";
+        public const string AgendaLabSynchronizingDialogTitle = "Synchronizing...";
+        public const string AgendaLabSynchronizingDialogContent = "Agenda is getting synchronized, please wait...";
+
+        // Agenda Content
+        public const string AgendaLabTitleContent = "Agenda";
+
+        public const string AgendaLabBulletVisitedContent = "Visited bullet format";
+        public const string AgendaLabBulletHighlightedContent = "Highlighted bullet format";
+        public const string AgendaLabBulletUnvisitedContent = "Unvisited bullet format";
+        public const string AgendaLabBeamHighlightedText = "Highlighted";
+
+        public const string AgendaLabTemplateSlideInstructions =
+                            "This slide is used as a ‘Template' for generating agenda slides. Please do not delete this slide.\r" +
+                            "Adjust the design of this slide and click the 'Sync Agenda' (in Agenda Lab) to replicate the design in the other slides.";
         # endregion
 
         # region Task Pane - Recorder
