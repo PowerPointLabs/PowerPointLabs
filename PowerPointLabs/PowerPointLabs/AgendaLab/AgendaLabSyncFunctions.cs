@@ -243,6 +243,7 @@ namespace PowerPointLabs.AgendaLab
 
             DeleteShapesMarkedForDeletion(candidate, markedForDeletion);
 
+            candidate.CopyBackgroundColourFrom(refSlide);
             candidate.Layout = refSlide.Layout;
             candidate.Design = refSlide.Design;
 
