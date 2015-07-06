@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.InteropServices;
 using System.Text;
 using Microsoft.Office.Interop.PowerPoint;
 
@@ -62,7 +63,16 @@ namespace PowerPointLabs.AgendaLab
         public static AgendaShape Decode(Shape shape)
         {
             if (shape == null) return null;
-            return Decode(shape.Name);
+            try
+            {
+                return Decode(shape.Name);
+            }
+            catch (COMException e)
+            {
+                // sometims the shape is inaccessible (perhaps deleted. never occurred to me before.)
+                // in this case, a COMException is thrown. so we return null.
+                return null;
+            }
         }
 
 
