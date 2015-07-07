@@ -308,8 +308,8 @@
         public const string AgendaLabAgendaExistError = "Agenda already exists. By confirm this dialog agenda will be regenerated. Do you want to proceed?";
         public const string AgendaLabAgendaExistErrorCaption = "Confirm Update";
         public const string AgendaLabNoAgendaError = "There's no generated agenda.";
-        public const string AgendaLabNoReferenceSlideError = "The reference slide is missing. Please remove and regenerate the agenda.";
-        public const string AgendaLabInvalidReferenceSlideError = "The reference slide is invalid. Please remove and regenerate the agenda.";
+        public const string AgendaLabNoReferenceSlideError = "No reference slide could be found. Either replace the reference slide or regenerate the agenda.";
+        public const string AgendaLabInvalidReferenceSlideError = "The current reference slide is invalid. Either replace the reference slide or regenerate the agenda.";
         public static string AgendaLabSectionNameTooLongError = "One of the section names exceeds the maximum size allowed by Agenda Lab. Please rename the section accordingly.";
 
         // Dialog Boxes
