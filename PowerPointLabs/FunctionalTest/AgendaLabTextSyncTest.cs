@@ -20,8 +20,18 @@ namespace FunctionalTest
             NoAgendaUnsuccessful();
         }
 
-        public void TextSyncSuccessful() {
+        public void TextSyncSuccessful()
+        {
             PplFeatures.SynchronizeAgenda();
+
+            // Duplicate template slide and delete original template slide. It should use the duplicate as the new template slide.
+            var firstSlide = PpOperations.SelectSlide(1);
+            PpOperations.SelectShape("PPTTemplateMarker").Delete();
+            firstSlide.Duplicate();
+            firstSlide.Delete();
+
+            PplFeatures.SynchronizeAgenda();
+
             var actualSlides = PpOperations.FetchCurrentPresentationData();
             var expectedSlides = PpOperations.FetchPresentationData(
                 PathUtil.GetDocTestPresentationPath("AgendaSlidesTextAfterSync.pptx"));
