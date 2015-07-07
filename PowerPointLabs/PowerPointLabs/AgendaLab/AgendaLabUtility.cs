@@ -84,6 +84,29 @@ namespace PowerPointLabs.AgendaLab
             return AgendaSlide.Decode(referenceSlide).AgendaType;
         }
 
+        private static Type GetAnyAgendaSlideType()
+        {
+            var agendaSlide = PowerPointPresentation.Current
+                                                    .Slides
+                                                    .FirstOrDefault(slide => AgendaSlide.IsAnyAgendaSlide(slide) ||
+                                                                             HasBeamShape(slide));
+            if (agendaSlide == null) return Type.None;
+            if (HasBeamShape(agendaSlide)) return Type.Beam;
+            return AgendaSlide.Decode(agendaSlide).AgendaType;
+        }
+
+        /// <summary>
+        /// Only checks the first slide. Checks if it is a suitable candidate for the reference slide, and if it is,
+        /// returns it. Else returns null.
+        /// </summary>
+        private static PowerPointSlide TryFindSuitableRefSlide(Type type)
+        {
+            var firstSlide = PowerPointPresentation.Current.FirstSlide;
+            if (firstSlide == null) return null;
+            if (InvalidReferenceSlide(type, firstSlide)) return null;
+            return firstSlide;
+        }
+
         /// <summary>
         /// The list is 0-indexed, section indexes are 1-indexed.
         /// </summary>

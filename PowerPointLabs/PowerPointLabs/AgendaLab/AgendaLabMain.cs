@@ -113,6 +113,8 @@ namespace PowerPointLabs.AgendaLab
 
                 if (!ValidSections()) return;
 
+                // The process should not abort (return) anytime past this point. Changes will start being made past this point.
+
                 slideTracker.DeleteAcknowledgementSlideAndTrack();
 
                 dialogOpen = DisplayLoadingDialog(TextCollection.AgendaLabGeneratingDialogTitle,
@@ -159,6 +161,9 @@ namespace PowerPointLabs.AgendaLab
                     ShowErrorMessage(TextCollection.AgendaLabNoAgendaError);
                     return;
                 }
+
+                // The process should not abort (return) anytime past this point. Changes will start being made past this point.
+
                 currentWindow.ViewType = PpViewType.ppViewNormal;
 
                 RemoveAllAgendaItems(slideTracker);
@@ -182,9 +187,24 @@ namespace PowerPointLabs.AgendaLab
                 var slideTracker = new SlideSelectionTracker(SelectedSlides, CurrentSlide);
                 var refSlide = FindReferenceSlide();
                 var type = GetReferenceSlideType();
+                bool usingNewReferenceSlide = false;
+
+                if (refSlide == null)
+                {
+                    type = GetAnyAgendaSlideType();
+                    refSlide = TryFindSuitableRefSlide(type);
+                    usingNewReferenceSlide = true;
+                }
 
                 if (!ValidAgenda(refSlide, type)) return;
                 if (!ValidSections()) return;
+
+                // The process should not abort (return) anytime past this point. Changes will start being made past this point.
+
+                if (usingNewReferenceSlide)
+                {
+                    SetAsReferenceSlide(refSlide, type);
+                }
 
                 slideTracker.DeleteAcknowledgementSlideAndTrack();
                 dialogOpen = DisplayLoadingDialog(TextCollection.AgendaLabSynchronizingDialogTitle,
@@ -897,6 +917,18 @@ namespace PowerPointLabs.AgendaLab
 
 
         #region Actions - General
+
+        /// <summary>
+        /// Assumes that there is no reference slide.
+        /// Takes in a slide, and sets it as the reference slide of the agenda.
+        /// </summary>
+        private static void SetAsReferenceSlide(PowerPointSlide refSlide, Type type)
+        {
+            AgendaSlide.SetAsReferenceSlideName(refSlide, type);
+            refSlide.Hidden = true;
+            refSlide.AddTemplateSlideMarker();
+            refSlide.MoveTo(1);
+        }
 
         private static void SelectOriginalSlide(PowerPointSlide originalSlide, PowerPointSlide fallbackToSlide)
         {
