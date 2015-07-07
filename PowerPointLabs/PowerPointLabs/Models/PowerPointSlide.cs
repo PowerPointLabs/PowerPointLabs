@@ -152,13 +152,15 @@ namespace PowerPointLabs.Models
         /// </summary>
         public void CopyBackgroundColourFrom(PowerPointSlide refSlide)
         {
-            _slide.ColorScheme = refSlide._slide.ColorScheme;
             var myFill = _slide.Background[1].Fill;
             var refFill = refSlide._slide.Background[1].Fill;
 
-            _slide.FollowMasterBackground = MsoTriState.msoFalse;
-            myFill.ForeColor.RGB = refFill.ForeColor.RGB;
-            myFill.BackColor.RGB = refFill.BackColor.RGB;
+            if (refFill.Type == MsoFillType.msoFillSolid)
+            {
+                _slide.FollowMasterBackground = MsoTriState.msoFalse;
+                myFill.ForeColor.RGB = refFill.ForeColor.RGB;
+                myFill.BackColor.RGB = refFill.BackColor.RGB;
+            }
         }
 
         public SlideShowTransition Transition
