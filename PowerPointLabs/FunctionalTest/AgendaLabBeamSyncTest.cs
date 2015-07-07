@@ -61,7 +61,7 @@ namespace FunctionalTest
 
             MessageBoxUtil.ExpectMessageBoxWillPopUp(
                 "Unable to execute action",
-                "The reference slide is invalid. Please remove and regenerate the agenda.",
+                "The current reference slide is invalid. Either replace the reference slide or regenerate the agenda.",
                 PplFeatures.SynchronizeAgenda);
         }
 
@@ -73,7 +73,7 @@ namespace FunctionalTest
 
             MessageBoxUtil.ExpectMessageBoxWillPopUp(
                 "Unable to execute action",
-                "The reference slide is invalid. Please remove and regenerate the agenda.",
+                "The current reference slide is invalid. Either replace the reference slide or regenerate the agenda.",
                 PplFeatures.SynchronizeAgenda);
         }
 
@@ -84,7 +84,7 @@ namespace FunctionalTest
 
             MessageBoxUtil.ExpectMessageBoxWillPopUp(
                 "Unable to execute action",
-                "The reference slide is missing. Please remove and regenerate the agenda.",
+                "No reference slide could be found. Either replace the reference slide or regenerate the agenda.",
                 PplFeatures.SynchronizeAgenda);
         }
 
@@ -100,7 +100,7 @@ namespace FunctionalTest
 
             MessageBoxUtil.ExpectMessageBoxWillPopUp(
                 "Unable to execute action",
-                "The reference slide is invalid. Please remove and regenerate the agenda.",
+                "The current reference slide is invalid. Either replace the reference slide or regenerate the agenda.",
                 PplFeatures.SynchronizeAgenda);
         }
 
