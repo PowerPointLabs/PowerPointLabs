@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Runtime.InteropServices;
 using Microsoft.Office.Interop.PowerPoint;
 using PowerPointLabs.Models;
 
@@ -57,13 +58,31 @@ namespace PowerPointLabs.AgendaLab
         public static AgendaSlide Decode(PowerPointSlide slide)
         {
             if (slide == null) return null;
-            return Decode(slide.Name);
+            try
+            {
+                return Decode(slide.Name);
+            }
+            catch (COMException e)
+            {
+                // sometims the shape is inaccessible (perhaps deleted. never occurred to me before.)
+                // in this case, a COMException is thrown. so we return null.
+                return null;
+            }
         }
 
         public static AgendaSlide Decode(Slide slide)
         {
             if (slide == null) return null;
-            return Decode(slide.Name);
+            try
+            {
+                return Decode(slide.Name);
+            }
+            catch (COMException e)
+            {
+                // sometims the shape is inaccessible (perhaps deleted. never occurred to me before.)
+                // in this case, a COMException is thrown. so we return null.
+                return null;
+            }
         }
 
         /// <summary>

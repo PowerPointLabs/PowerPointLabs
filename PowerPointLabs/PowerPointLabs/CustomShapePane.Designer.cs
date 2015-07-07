@@ -106,7 +106,7 @@ namespace PowerPointLabs
             this.renameCategoryToolStripMenuItem,
             this.setAsDefaultToolStripMenuItem,
             this.importCategoryToolStripMenuItem,
-            this.importShapesToolStripMenuItem,
+            //this.importShapesToolStripMenuItem,
             this.settingsToolStripMenuItem});
             this.flowlayoutContextMenuStrip.Name = "flowlayoutContextMenuStrip";
             this.flowlayoutContextMenuStrip.Size = new System.Drawing.Size(68, 158);
