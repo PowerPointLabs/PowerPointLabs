@@ -719,6 +719,10 @@ namespace PowerPointLabs
                 {
                     MessageBox.Show(TextCollection.CustomShapeImportFileError);
                 }
+                else if (importShapeGallery.Slides.Count == 0)
+                {
+                    MessageBox.Show(TextCollection.CustomShapeImportNoSlideError);
+                }
                 else
                 {
                     // if user trys to import shapes but the file contains multiple categories,

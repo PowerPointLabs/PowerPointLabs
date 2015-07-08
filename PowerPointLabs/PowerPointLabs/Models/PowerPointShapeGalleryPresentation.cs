@@ -270,44 +270,6 @@ namespace PowerPointLabs.Models
             return true;
         }
 
-        public void RemoveCategory(string name)
-        {
-            if (!Categories.Contains(name))
-            {
-                return;
-            }
-
-            if (_defaultCategory.Name == name)
-            {
-                _defaultCategory = null;
-            }
-
-            var index = FindCategoryIndex(name) - 1;
-
-            Categories.Remove(name);
-            _categoryNameBoxCollection.RemoveAt(index);
-            RemoveSlide(name, false);
-
-            Save();
-            ActionProtection();
-        }
-
-        public void RemoveCategory(int index)
-        {
-            if (_defaultCategory.Name == Slides[index - 1].Name)
-            {
-                _defaultCategory = null;
-            }
-
-            Categories.RemoveAt(index);
-            _categoryNameBoxCollection.RemoveAt(index);
-            
-            RemoveSlide(index);
-
-            Save();
-            ActionProtection();
-        }
-
         public void RemoveCategory()
         {
             // we need to change the index to 0-based in order to remove from Categories
