@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Drawing;
 using FunctionalTestInterface;
 using PowerPointLabs.FunctionalTestInterface.Impl.Controller;
 
@@ -56,6 +57,22 @@ namespace PowerPointLabs.FunctionalTestInterface.Impl
             UIThreadExecutor.Execute(() =>
             {
                 Ribbon.SpotlightBtnClick(new RibbonControl("Spotlight"));
+            });
+        }
+
+        public void SetSpotlightProperties(float newTransparency, float newSoftEdge, Color newColor)
+        {
+            UIThreadExecutor.Execute(() =>
+            {
+                Ribbon.SpotlightPropertiesEdited(newTransparency, newSoftEdge, newColor);
+            });
+        }
+
+        public void OpenSpotlightDialog()
+        {
+            UIThreadExecutor.Execute(() =>
+            {
+                Ribbon.SpotlightDialogButtonPressed(new RibbonControl("OpenSpotlightDialog"));
             });
         }
 

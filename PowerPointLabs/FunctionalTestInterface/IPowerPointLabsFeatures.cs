@@ -1,4 +1,6 @@
-﻿namespace FunctionalTestInterface
+﻿using System.Drawing;
+
+namespace FunctionalTestInterface
 {
     public interface IPowerPointLabsFeatures
     {
@@ -8,6 +10,8 @@
         void AnimateInSlide();
         void AutoCaptions();
         void Spotlight();
+        void SetSpotlightProperties(float newTransparency, float newSoftEdge, Color newColor);
+        void OpenSpotlightDialog();
         void FitToWidth();
         void FitToHeight();
         void ConvertToPic();
