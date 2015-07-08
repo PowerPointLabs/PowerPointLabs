@@ -262,50 +262,12 @@ namespace PowerPointLabs.Models
 
             // set default category to be the first slide, but do nothing if the presentation
             // has no slide, i.e. it's a newly created presentation
-            if (Presentation.Slides.Count > 1)
+            if (Presentation.Slides.Count > 0)
             {
                 _defaultCategory = PowerPointSlide.FromSlideFactory(Presentation.Slides[1]);  
             }
 
             return true;
-        }
-
-        public void RemoveCategory(string name)
-        {
-            if (!Categories.Contains(name))
-            {
-                return;
-            }
-
-            if (_defaultCategory.Name == name)
-            {
-                _defaultCategory = null;
-            }
-
-            var index = FindCategoryIndex(name) - 1;
-
-            Categories.Remove(name);
-            _categoryNameBoxCollection.RemoveAt(index);
-            RemoveSlide(name, false);
-
-            Save();
-            ActionProtection();
-        }
-
-        public void RemoveCategory(int index)
-        {
-            if (_defaultCategory.Name == Slides[index - 1].Name)
-            {
-                _defaultCategory = null;
-            }
-
-            Categories.RemoveAt(index);
-            _categoryNameBoxCollection.RemoveAt(index);
-            
-            RemoveSlide(index);
-
-            Save();
-            ActionProtection();
         }
 
         public void RemoveCategory()
