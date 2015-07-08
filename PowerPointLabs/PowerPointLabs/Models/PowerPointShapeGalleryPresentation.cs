@@ -262,7 +262,7 @@ namespace PowerPointLabs.Models
 
             // set default category to be the first slide, but do nothing if the presentation
             // has no slide, i.e. it's a newly created presentation
-            if (Presentation.Slides.Count > 1)
+            if (Presentation.Slides.Count > 0)
             {
                 _defaultCategory = PowerPointSlide.FromSlideFactory(Presentation.Slides[1]);  
             }

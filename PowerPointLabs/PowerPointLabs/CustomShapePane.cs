@@ -19,8 +19,10 @@ namespace PowerPointLabs
 {
     public partial class CustomShapePane : UserControl
     {
-        private const string ShapeFileDialogFilter =
+        private const string ImportLibraryFileDialogFilter =
             "PowerPointLabs Shapes File|*.pptlabsshapes;*.pptx";
+        private const string ImportShapesFileDialogFilter =
+            "PowerPointLabs Shape File|*.pptlabsshape;*.pptx";
         private const string ImportFileNameNoExtension = "import";
         private const string ImportFileCopyName = ImportFileNameNoExtension + ".pptx";
 
@@ -323,7 +325,7 @@ namespace PowerPointLabs
         {
             var fileDialog = new OpenFileDialog
                                  {
-                                     Filter = ShapeFileDialogFilter,
+                                     Filter = ImportLibraryFileDialogFilter,
                                      Multiselect = false,
                                      Title = TextCollection.CustomShapeImportLibraryFileDialogTitle
                                  };
@@ -344,7 +346,7 @@ namespace PowerPointLabs
         {
             var fileDialog = new OpenFileDialog
                                  {
-                                     Filter = ShapeFileDialogFilter,
+                                     Filter = ImportShapesFileDialogFilter,
                                      Multiselect = true,
                                      Title = TextCollection.CustomShapeImportShapeFileDialogTitle
                                  };
