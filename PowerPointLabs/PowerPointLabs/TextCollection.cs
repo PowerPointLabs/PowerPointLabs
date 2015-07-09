@@ -318,6 +318,9 @@
         public const string AgendaLabSynchronizingDialogTitle = "Synchronizing...";
         public const string AgendaLabSynchronizingDialogContent = "Agenda is getting synchronized, please wait...";
 
+        public const string AgendaLabBeamGenerateSingleSlideDialogTitle = "Generate on all slides";
+        public const string AgendaLabBeamGenerateSingleSlideDialogContent = "Only one slide is selected. Would you like to generate the beam agenda on all slides instead?";
+
         // Agenda Content
         public const string AgendaLabTitleContent = "Agenda";
 
