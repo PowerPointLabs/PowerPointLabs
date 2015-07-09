@@ -318,6 +318,9 @@
         public const string AgendaLabSynchronizingDialogTitle = "Synchronizing...";
         public const string AgendaLabSynchronizingDialogContent = "Agenda is getting synchronized, please wait...";
 
+        public const string AgendaLabReorganiseSidebarTitle = "Reorganise Sidebar";
+        public const string AgendaLabReorganiseSidebarContent = "The sections have been changed. Do you wish to reorganise the items in the beam?";
+
         // Agenda Content
         public const string AgendaLabTitleContent = "Agenda";
 
