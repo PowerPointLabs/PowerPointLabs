@@ -275,13 +275,26 @@ namespace PowerPointLabs.AgendaLab
         {
             var refSlide = CreateBeamReferenceSlide();
 
-            // here we invoke sync logic, since it's the same behavior as sync
             var targetSlides = slideTracker.SelectedSlides;
             if (targetSlides.Count == 0)
             {
+                // If no slides selected, generate on all slides.
                 targetSlides = AllSlidesAfterFirstSection();
             }
+            else if (targetSlides.Count == 1)
+            {
+                // If only one slide selected, ask whether the user wants to generate on all slides.
+                var confirmResult = MessageBox.Show(new Form { TopMost = true },
+                                                    TextCollection.AgendaLabBeamGenerateSingleSlideDialogContent,
+                                                    TextCollection.AgendaLabBeamGenerateSingleSlideDialogTitle,
+                                                    MessageBoxButtons.YesNo);
+                if (confirmResult == DialogResult.Yes)
+                {
+                    targetSlides = AllSlidesAfterFirstSection();
+                }
+            }
 
+            // here we invoke sync logic, since it's the same behavior as sync
             SyncBeamOnSlides(targetSlides, refSlide);
         }
 

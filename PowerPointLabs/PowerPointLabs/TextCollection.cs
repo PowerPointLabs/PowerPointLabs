@@ -321,6 +321,9 @@
         public const string AgendaLabReorganiseSidebarTitle = "Reorganise Sidebar";
         public const string AgendaLabReorganiseSidebarContent = "The sections have been changed. Do you wish to reorganise the items in the beam?";
 
+        public const string AgendaLabBeamGenerateSingleSlideDialogTitle = "Generate on all slides";
+        public const string AgendaLabBeamGenerateSingleSlideDialogContent = "Only one slide is selected. Would you like to generate the beam agenda on all slides instead?";
+
         // Agenda Content
         public const string AgendaLabTitleContent = "Agenda";
 
