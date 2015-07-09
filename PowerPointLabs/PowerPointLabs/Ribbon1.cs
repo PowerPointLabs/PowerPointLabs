@@ -111,6 +111,8 @@ namespace PowerPointLabs
         {
             try
             {
+                Globals.ThisAddIn.Application.StartNewUndoEntry();
+
                 if (Globals.ThisAddIn.Application.ActiveWindow.Selection.Type == PowerPoint.PpSelectionType.ppSelectionShapes)
                     HighlightBulletsBackground.userSelection = HighlightBulletsBackground.HighlightBackgroundSelection.kShapeSelected;
                 else if (Globals.ThisAddIn.Application.ActiveWindow.Selection.Type == PowerPoint.PpSelectionType.ppSelectionText)
@@ -130,6 +132,8 @@ namespace PowerPointLabs
         {
             try
             {
+                Globals.ThisAddIn.Application.StartNewUndoEntry();
+
                 if (Globals.ThisAddIn.Application.ActiveWindow.Selection.Type == PowerPoint.PpSelectionType.ppSelectionShapes)
                     HighlightBulletsText.userSelection = HighlightBulletsText.HighlightTextSelection.kShapeSelected;
                 else if (Globals.ThisAddIn.Application.ActiveWindow.Selection.Type == PowerPoint.PpSelectionType.ppSelectionText)
@@ -149,6 +153,8 @@ namespace PowerPointLabs
         {
             try
             {
+                Globals.ThisAddIn.Application.StartNewUndoEntry();
+
                 if (Globals.ThisAddIn.Application.ActiveWindow.Selection.Type == PowerPoint.PpSelectionType.ppSelectionShapes)
                     HighlightTextFragments.userSelection = HighlightTextFragments.HighlightTextSelection.kShapeSelected;
                 else if (Globals.ThisAddIn.Application.ActiveWindow.Selection.Type == PowerPoint.PpSelectionType.ppSelectionText)
@@ -169,6 +175,8 @@ namespace PowerPointLabs
         {
             try
             {
+                Globals.ThisAddIn.Application.StartNewUndoEntry();
+
                 AnimateInSlide.isHighlightBullets = false;
                 AnimateInSlide.AddAnimationInSlide();
             }
@@ -178,10 +186,13 @@ namespace PowerPointLabs
                 throw;
             }
         }
+
         public void ReloadSpotlightButtonClick(Office.IRibbonControl control)
         {
             try
             {
+                Globals.ThisAddIn.Application.StartNewUndoEntry();
+
                 Spotlight.ReloadSpotlightEffect();
             }
             catch (Exception e)
@@ -190,10 +201,13 @@ namespace PowerPointLabs
                 throw;
             }
         }
+
         public void SpotlightBtnClick(Office.IRibbonControl control)
         {
             try
             {
+                Globals.ThisAddIn.Application.StartNewUndoEntry();
+
                 Spotlight.AddSpotlightEffect();
             }
             catch (Exception e)
@@ -651,6 +665,8 @@ namespace PowerPointLabs
         {
             try
             {
+                Globals.ThisAddIn.Application.StartNewUndoEntry();
+
                 AutoAnimate.AddAutoAnimation();
             }
             catch (Exception e)
@@ -663,6 +679,8 @@ namespace PowerPointLabs
         {
             try
             {
+                Globals.ThisAddIn.Application.StartNewUndoEntry();
+
                 AutoAnimate.ReloadAutoAnimation();
             }
             catch (Exception e)
@@ -673,6 +691,8 @@ namespace PowerPointLabs
         }
         public void ZoomBtnClick(Office.IRibbonControl control)
         {
+            Globals.ThisAddIn.Application.StartNewUndoEntry();
+
             ZoomToArea.AddZoomToArea();
         }
         public void AboutButtonClick(Office.IRibbonControl control)
@@ -707,6 +727,8 @@ namespace PowerPointLabs
         {
             try
             {
+                Globals.ThisAddIn.Application.StartNewUndoEntry();
+
                 AutoZoom.AddDrillDownAnimation();
             }
             catch (Exception e)
@@ -719,6 +741,8 @@ namespace PowerPointLabs
         {
             try
             {
+                Globals.ThisAddIn.Application.StartNewUndoEntry();
+
                 AutoZoom.AddStepBackAnimation();
             }
             catch (Exception e)
@@ -1391,6 +1415,8 @@ namespace PowerPointLabs
         {
             try
             {
+                Globals.ThisAddIn.Application.StartNewUndoEntry();
+
                 PowerPoint.Shape selectedShape = Globals.ThisAddIn.Application.ActiveWindow.Selection.ShapeRange[1];
                 selectedShape.Name = newName;
             }
@@ -1584,23 +1610,31 @@ namespace PowerPointLabs
 
         public void FitToWidthClick(Office.IRibbonControl control)
         {
+            Globals.ThisAddIn.Application.StartNewUndoEntry();
+
             var selectedShape = PowerPointCurrentPresentationInfo.CurrentSelection.ShapeRange[1];
             FitToSlide.FitToWidth(selectedShape);
         }
 
         public void FitToHeightClick(Office.IRibbonControl control)
         {
+            Globals.ThisAddIn.Application.StartNewUndoEntry();
+
             var selectedShape = PowerPointCurrentPresentationInfo.CurrentSelection.ShapeRange[1];
             FitToSlide.FitToHeight(selectedShape);
         }
 
         public Bitmap GetFitToWidthImage(Office.IRibbonControl control)
         {
+            Globals.ThisAddIn.Application.StartNewUndoEntry();
+
             return FitToSlide.GetFitToWidthImage(control);
         }
 
         public Bitmap GetFitToHeightImage(Office.IRibbonControl control)
         {
+            Globals.ThisAddIn.Application.StartNewUndoEntry();
+
             return FitToSlide.GetFitToHeightImage(control);
         }
 
@@ -1610,6 +1644,8 @@ namespace PowerPointLabs
 
         public void CropShapeButtonClick(Office.IRibbonControl control)
         {
+            Globals.ThisAddIn.Application.StartNewUndoEntry();
+
             var selection = PowerPointCurrentPresentationInfo.CurrentSelection;
             CropToShape.Crop(selection);
         }
@@ -1625,6 +1661,8 @@ namespace PowerPointLabs
 
         public void ConvertToPictureButtonClick(Office.IRibbonControl control)
         {
+            Globals.ThisAddIn.Application.StartNewUndoEntry();
+
             var selection = PowerPointCurrentPresentationInfo.CurrentSelection;
             ConvertToPicture.Convert(selection);
         }
@@ -1785,6 +1823,8 @@ namespace PowerPointLabs
         # region Feature: Auto Caption
         public void AddCaptionClick(Office.IRibbonControl control)
         {
+            Globals.ThisAddIn.Application.StartNewUndoEntry();
+
             foreach (PowerPointSlide slide in PowerPointCurrentPresentationInfo.SelectedSlides)
             {
                 if (slide.NotesPageText.Trim() != "")
