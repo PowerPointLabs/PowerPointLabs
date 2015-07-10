@@ -197,9 +197,9 @@
 
         # region Agenda Lab
         public const string AgendaLabButtonLabel = "Agenda Lab";
-        public const string AgendaLabBulletPointButtonLabel = "Agenda slides (text)";
-        public const string AgendaLabVisualAgendaButtonLabel = "Agenda slides (visual)";
-        public const string AgendaLabBeamAgendaButtonLabel = "Agenda sidebar";
+        public const string AgendaLabBulletPointButtonLabel = "Create Text Agenda";
+        public const string AgendaLabVisualAgendaButtonLabel = "Create Visual Agenda";
+        public const string AgendaLabBeamAgendaButtonLabel = "Create Sidebar Agenda";
         public const string AgendaLabUpdateAgendaButtonLabel = "Syncronize Agenda";
         public const string AgendaLabRemoveAgendaButtonLabel = "Remove Agenda";
         public const string AgendaLabAgendaSettingsButtonLabel = "Agenda Settings";
