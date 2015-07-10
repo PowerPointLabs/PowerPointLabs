@@ -302,12 +302,12 @@
         # region Agenda Lab
         // Errors
         public const string AgendaLabErrorDialogTitle = "Unable to execute action";
-        public const string AgendaLabNoSectionError = "Please group slides into sections before generating agenda.";
-        public const string AgendaLabSingleSectionError = "Agenda Lab requires slides to be divided into two or more sections.";
+        public const string AgendaLabNoSectionError = "Please group the slides into sections before generating agenda.";
+        public const string AgendaLabSingleSectionError = "Please divide the slides into two or more sections.";
         public const string AgendaLabEmptySectionError = "Presentation contains empty section(s). Please fill them up or remove them.";
-        public const string AgendaLabAgendaExistError = "Agenda already exists. By confirm this dialog agenda will be regenerated. Do you want to proceed?";
+        public const string AgendaLabAgendaExistError = "Agenda already exists. The previous agenda will be removed and regenerated. Do you want to proceed?";
         public const string AgendaLabAgendaExistErrorCaption = "Confirm Update";
-        public const string AgendaLabNoAgendaError = "There's no generated agenda.";
+        public const string AgendaLabNoAgendaError = "There is no generated agenda.";
         public const string AgendaLabNoReferenceSlideError = "No reference slide could be found. Either replace the reference slide or regenerate the agenda.";
         public const string AgendaLabInvalidReferenceSlideError = "The current reference slide is invalid. Either replace the reference slide or regenerate the agenda.";
         public static string AgendaLabSectionNameTooLongError = "One of the section names exceeds the maximum size allowed by Agenda Lab. Please rename the section accordingly.";
@@ -316,13 +316,13 @@
         public const string AgendaLabGeneratingDialogTitle = "Generating...";
         public const string AgendaLabGeneratingDialogContent = "Agenda is generating, please wait...";
         public const string AgendaLabSynchronizingDialogTitle = "Synchronizing...";
-        public const string AgendaLabSynchronizingDialogContent = "Agenda is getting synchronized, please wait...";
+        public const string AgendaLabSynchronizingDialogContent = "Agenda is being synchronized, please wait...";
 
         public const string AgendaLabReorganiseSidebarTitle = "Reorganise Sidebar";
-        public const string AgendaLabReorganiseSidebarContent = "The sections have been changed. Do you wish to reorganise the items in the beam?";
+        public const string AgendaLabReorganiseSidebarContent = "The sections have been changed. Do you wish to reorganise the items in the sidebar?";
 
         public const string AgendaLabBeamGenerateSingleSlideDialogTitle = "Generate on all slides";
-        public const string AgendaLabBeamGenerateSingleSlideDialogContent = "Only one slide is selected. Would you like to generate the beam agenda on all slides instead?";
+        public const string AgendaLabBeamGenerateSingleSlideDialogContent = "Only one slide is selected. Would you like to generate the sidebar on all slides instead?";
 
         // Agenda Content
         public const string AgendaLabTitleContent = "Agenda";
