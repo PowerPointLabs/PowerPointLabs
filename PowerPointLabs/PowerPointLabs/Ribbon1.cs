@@ -2014,6 +2014,7 @@ namespace PowerPointLabs
             if (effectSlide == null) return;
 
             effectSlide.BlurBackground();
+            effectSlide.GetNativeSlide().Select();
         }
 
         public void GreyScaleRemainderEffectClick(Office.IRibbonControl control)
@@ -2025,6 +2026,7 @@ namespace PowerPointLabs
             if (effectSlide == null) return;
 
             effectSlide.GreyScaleBackground();
+            effectSlide.GetNativeSlide().Select();
         }
 
         public void BlackWhiteRemainderEffectClick(Office.IRibbonControl control)
@@ -2036,6 +2038,7 @@ namespace PowerPointLabs
             if (effectSlide == null) return;
 
             effectSlide.BlackWhiteBackground();
+            effectSlide.GetNativeSlide().Select();
         }
 
         public void GothamRemainderEffectClick(Office.IRibbonControl control)
@@ -2047,6 +2050,7 @@ namespace PowerPointLabs
             if (effectSlide == null) return;
 
             effectSlide.GothamBackground();
+            effectSlide.GetNativeSlide().Select();
         }
 
         public void SepiaRemainderEffectClick(Office.IRibbonControl control)
@@ -2058,6 +2062,7 @@ namespace PowerPointLabs
             if (effectSlide == null) return;
 
             effectSlide.SepiaBackground();
+            effectSlide.GetNativeSlide().Select();
         }
 
         public void BlurBackgroundEffectClick(Office.IRibbonControl control)
@@ -2069,6 +2074,7 @@ namespace PowerPointLabs
             if (effectSlide == null) return;
 
             effectSlide.BlurBackground();
+            effectSlide.GetNativeSlide().Select();
         }
 
         public void GreyScaleBackgroundEffectClick(Office.IRibbonControl control)
@@ -2080,6 +2086,7 @@ namespace PowerPointLabs
             if (effectSlide == null) return;
 
             effectSlide.GreyScaleBackground();
+            effectSlide.GetNativeSlide().Select();
         }
 
         public void BlackWhiteBackgroundEffectClick(Office.IRibbonControl control)
@@ -2091,6 +2098,7 @@ namespace PowerPointLabs
             if (effectSlide == null) return;
 
             effectSlide.BlackWhiteBackground();
+            effectSlide.GetNativeSlide().Select();
         }
 
         public void GothamBackgroundEffectClick(Office.IRibbonControl control)
@@ -2102,6 +2110,7 @@ namespace PowerPointLabs
             if (effectSlide == null) return;
 
             effectSlide.GothamBackground();
+            effectSlide.GetNativeSlide().Select();
         }
 
         public void SepiaBackgroundEffectClick(Office.IRibbonControl control)
@@ -2113,6 +2122,7 @@ namespace PowerPointLabs
             if (effectSlide == null) return;
 
             effectSlide.SepiaBackground();
+            effectSlide.GetNativeSlide().Select();
         }
 
         public void TransparentEffectClick(Office.IRibbonControl control)
