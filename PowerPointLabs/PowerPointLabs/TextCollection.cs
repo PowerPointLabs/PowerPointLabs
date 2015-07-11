@@ -98,8 +98,8 @@
         public const string EffectsLabMagnifyGlassSupertip = @"Magnify a small area or detail on the slide.";
         public const string EffectsLabBlurRemainderSupertip = @"Draw attention to an area of the slide by blurring everything else.";
         public const string EffectsLabColorizeRemainderSupertip = @"Recolor an area of a slide to attract attention to it.";
-        public const string EffectsLabBlurBackgroundSupertip = @"Blur everything in the slide except for this shape.";
-        public const string EffectsLabColorizeBackgroundSupertip = @"Recolor everything in the slide except for this shape.";
+        public const string EffectsLabBlurBackgroundSupertip = @"Blur everything in the slide except for the selected shapes.";
+        public const string EffectsLabColorizeBackgroundSupertip = @"Recolor everything in the slide except for the selected shapes.";
         # endregion
 
         # region Agenda Lab
@@ -194,7 +194,6 @@
         public const string EffectsLabMagnifyGlassButtonLabel = "Magnifying Glass";
         public const string EffectsLabBlurRemainderButtonLabel = "Blur Remainder";
         public const string EffectsLabBlurBackgroundButtonLabel = "Blur All Except Selected";
-        public const string EffectsLabBlurAllButtonLabel = "Blur All Except Selected";
         public const string EffectsLabRecolorRemainderButtonLabel = "Recolor Remainder";
         public const string EffectsLabRecolorBackgroundButtonLabel = "Recolor All Except Selected";
         # endregion
