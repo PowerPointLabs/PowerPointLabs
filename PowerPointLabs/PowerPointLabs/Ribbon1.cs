@@ -536,10 +536,6 @@ namespace PowerPointLabs
         {
             return TextCollection.EffectsLabBlurBackgroundButtonLabel;
         }
-        public string GetEffectsLabBlurAllButtonLabel(Office.IRibbonControl control)
-        {
-            return TextCollection.EffectsLabBlurAllButtonLabel;
-        }
         public string GetEffectsLabRecolorRemainderButtonLabel(Office.IRibbonControl control)
         {
             return TextCollection.EffectsLabRecolorRemainderButtonLabel;
@@ -1017,18 +1013,6 @@ namespace PowerPointLabs
             try
             {
                 return new System.Drawing.Bitmap(Properties.Resources.RecolorRemainder);
-            }
-            catch (Exception e)
-            {
-                PowerPointLabsGlobals.LogException(e, "GetRecolorRemainderImage");
-                throw;
-            }
-        }
-        public Bitmap GetEffectsLabSettingsImage(Office.IRibbonControl control)
-        {
-            try
-            {
-                return new System.Drawing.Bitmap(Properties.Resources.AgendaSettings);
             }
             catch (Exception e)
             {
@@ -2134,14 +2118,6 @@ namespace PowerPointLabs
             TransparentEffect(selection.ShapeRange);
         }
 
-        /*public void EffectsLabSettingsButtonClick(Office.IRibbonControl control)
-        {
-            var effectsLabSettingsDialog = new EffectsLabSettings(_effectsLabSelectionIsCover);
-            effectsLabSettingsDialog.SettingsHandler += EffectsLabSettingChangedHandler;
-            effectsLabSettingsDialog.ShowDialog();
-            effectsLabSettingsDialog.Dispose();
-        }*/
-
         private void MagnifyGlassEffect(PowerPoint.Shape shape, float ratio)
         {
             var delta = 0.5f * (ratio - 1);
@@ -2313,12 +2289,6 @@ namespace PowerPointLabs
         {
             shape.Fill.Transparency = 0.5f;
             shape.Line.Transparency = 0.5f;
-        }
-
-        private void EffectsLabSettingChangedHandler(bool isCover)
-        {
-            throw new NotImplementedException("Removed");
-            //_effectsLabSelectionIsCover = generateOnRemainder;
         }
         # endregion
 

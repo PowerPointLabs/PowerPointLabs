@@ -274,11 +274,6 @@
                       label="Sepia"
                       onAction="SepiaBackgroundEffectClick"/>
             </menu>
-            <!--<menuSeparator id="effectSettingsSeparator"/>
-            <button id="effectsLabSettings"
-                    label="Effects Lab Settings"
-                    getImage="GetEffectsLabSettingsImage"
-                    onAction="EffectsLabSettingsButtonClick"/>-->
           </menu>
           <menu id="AgendaLabsMenu"
                 getLabel="GetAgendaLabButtonLabel"

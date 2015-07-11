@@ -194,7 +194,6 @@
         public const string EffectsLabMagnifyGlassButtonLabel = "Magnifying Glass";
         public const string EffectsLabBlurRemainderButtonLabel = "Blur Remainder";
         public const string EffectsLabBlurBackgroundButtonLabel = "Blur All Except Selected";
-        public const string EffectsLabBlurAllButtonLabel = "Blur All Except Selected";
         public const string EffectsLabRecolorRemainderButtonLabel = "Recolor Remainder";
         public const string EffectsLabRecolorBackgroundButtonLabel = "Recolor All Except Selected";
         # endregion
