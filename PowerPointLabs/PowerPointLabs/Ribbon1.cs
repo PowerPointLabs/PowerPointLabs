@@ -2170,7 +2170,7 @@ namespace PowerPointLabs
             shape.LockAspectRatio = Office.MsoTriState.msoTrue;
         }
 
-        private PowerPointBgEffectSlide GenerateEffectSlide(bool isCover)
+        private PowerPointBgEffectSlide GenerateEffectSlide(bool generateOnRemainder)
         {
             var curSlide = PowerPointCurrentPresentationInfo.CurrentSlide;
             var selection = PowerPointCurrentPresentationInfo.CurrentSelection;
@@ -2187,7 +2187,7 @@ namespace PowerPointLabs
 
                 shapeRange.Cut();
 
-                var effectSlide = PowerPointBgEffectSlide.BgEffectFactory(curSlide.GetNativeSlide(), isCover);
+                var effectSlide = PowerPointBgEffectSlide.BgEffectFactory(curSlide.GetNativeSlide(), generateOnRemainder);
 
                 if (dupSlide != null)
                 {
@@ -2318,7 +2318,7 @@ namespace PowerPointLabs
         private void EffectsLabSettingChangedHandler(bool isCover)
         {
             throw new NotImplementedException("Removed");
-            //_effectsLabSelectionIsCover = isCover;
+            //_effectsLabSelectionIsCover = generateOnRemainder;
         }
         # endregion
 
