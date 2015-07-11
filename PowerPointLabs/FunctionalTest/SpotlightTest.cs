@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Drawing;
+using System.Linq;
 using System.Text;
 using FunctionalTest.util;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
@@ -38,7 +39,12 @@ namespace FunctionalTest
             // Set text
             NativeUtil.SendMessage(transparencyDialog, 0x000C /*WM_SETTEXT*/, IntPtr.Zero, "1");
 
-            var fadeComboBox = NativeUtil.FindWindowEx(spotlightDialog, IntPtr.Zero, "WindowsForms10.COMBOBOX.app.0.3dd72c2_r54_ad2", null);
+            // try to get class's build id
+            var actualContentBuilder = new StringBuilder(1024);
+            NativeUtil.GetClassName(spotlightDialog, actualContentBuilder, 1024);
+            var classBuildId = actualContentBuilder.ToString().Split('.').Last();
+
+            var fadeComboBox = NativeUtil.FindWindowEx(spotlightDialog, IntPtr.Zero, "WindowsForms10.COMBOBOX.app.0." + classBuildId, null);
             Assert.AreNotEqual(IntPtr.Zero, fadeComboBox, "Failed to find Fade Dialog.");
 
             var sb = new StringBuilder(256, 256);
