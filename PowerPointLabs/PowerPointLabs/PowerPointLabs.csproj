@@ -190,6 +190,7 @@
       <EmbedInteropTypes>True</EmbedInteropTypes>
       <HintPath>..\..\..\..\..\..\..\..\Program Files (x86)\Microsoft Visual Studio 12.0\Visual Studio Tools for Office\PIA\Office14\Office.dll</HintPath>
     </Reference>
+    <Reference Include="PresentationCore" />
     <Reference Include="PresentationFramework" />
     <Reference Include="stdole, Version=7.0.3300.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
       <EmbedInteropTypes>True</EmbedInteropTypes>
@@ -201,12 +202,14 @@
     <Reference Include="System.Speech" />
     <Reference Include="System.Windows.Forms" />
     <Reference Include="System.Windows.Forms.DataVisualization" />
+    <Reference Include="System.Xaml" />
     <Reference Include="System.Xml" />
     <Reference Include="System.Core" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="WindowsBase" />
+    <Reference Include="WindowsFormsIntegration" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="Microsoft.Office.Tools.v4.0.Framework, Version=10.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL" />
@@ -269,6 +272,16 @@
     <Compile Include="ConvertToPicture.cs" />
     <Compile Include="CropToShape.cs" />
     <Compile Include="DataSources\ShapesLabSettingsDataSource.cs" />
+    <Compile Include="ImageSearch\ImageSearchPane.xaml.cs">
+      <DependentUpon>ImageSearchPane.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="ImageSearch\ImageSearchPaneForm.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="ImageSearch\ImageSearchPaneForm.Designer.cs">
+      <DependentUpon>ImageSearchPaneForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="ImageSearch\SearchResultItem.cs" />
     <Compile Include="Models\PowerPointBgEffectSlide.cs" />
     <Compile Include="LabeledThumbnail.cs">
       <SubType>UserControl</SubType>
@@ -462,6 +475,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="ColorPicker\ColorPane.resx">
       <DependentUpon>ColorPane.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="ImageSearch\ImageSearchPaneForm.resx">
+      <DependentUpon>ImageSearchPaneForm.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Views\EffectsLabSettings.resx">
       <DependentUpon>EffectsLabSettings.cs</DependentUpon>
@@ -717,6 +733,12 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\AgendaVisual.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Page Include="ImageSearch\ImageSearchPane.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
   </ItemGroup>
   <!-- Include the build rules for a C# project. -->
   <PropertyGroup>

@@ -1,0 +1,55 @@
+﻿<UserControl x:Class="PowerPointLabs.ImageSearch.ImageSearchPane"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             mc:Ignorable="d" 
+             Background="White"
+             d:DesignHeight="300" d:DesignWidth="340">
+    <Grid Margin="5,0,0,0">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="40" />
+            <RowDefinition Height="30" />
+            <RowDefinition Height="*" />
+        </Grid.RowDefinitions>
+        <Label Grid.Row="0" Margin="0,10,0,5" FontFamily="Tahoma">Type to search for images</Label>
+        <Grid Grid.Row="1" Margin="0,0,0,5">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="180" />
+                <ColumnDefinition Width="75" />
+                <ColumnDefinition Width="70" />
+            </Grid.ColumnDefinitions>
+            <TextBox Name="SearchTextBox" MouseEnter="SearchTextBox_OnMouseEnter" VerticalContentAlignment="Center" Grid.Column="0" Margin="0,0,5,0" ToolTip="Type here to search for images" FontFamily="Tahoma"></TextBox>
+            <Button Name="SearchButton" Click="SearchButton_OnClick"  Grid.Column="1" Margin="0,0,5,0" FontFamily="Tahoma">Search</Button>
+            <Button Grid.Column="2" FontFamily="Tahoma">Advanced..</Button>
+        </Grid>
+        <ListBox Name="SearchListBox" Grid.Row="2" VerticalAlignment="Top">
+            <ListBox.Template>
+                <ControlTemplate TargetType="{x:Type ListBox}">
+                    <ScrollViewer HorizontalScrollBarVisibility="Disabled" VerticalScrollBarVisibility="Auto">
+                        <WrapPanel Orientation="Horizontal" IsItemsHost="True" ScrollViewer.CanContentScroll="True"/>
+                    </ScrollViewer>
+                </ControlTemplate>
+            </ListBox.Template>
+            <ListBox.ItemContainerStyle>
+                <Style TargetType="ListBoxItem">
+                    <Setter Property="Height" Value="108"></Setter>
+                    <Setter Property="Width" Value="130"></Setter>
+                </Style>
+            </ListBox.ItemContainerStyle>
+            <ListBox.ItemTemplate>
+                <DataTemplate>
+                    <Image Margin="3,0,6,0" Source="{Binding ImageFile}" />
+                </DataTemplate>
+            </ListBox.ItemTemplate>
+            <!-- demo data -->
+            <!-- change Source to the images in the local disk -->
+<!--            <ListBoxItem Height="108" Width="130" Selected="ListBoxItem_Selected">-->
+<!--                <Image Margin="3,0,6,0"  Source="C:\Users\Giki\Downloads\Marz-Z-at-Dreamer-Hack.jpg" />-->
+<!--            </ListBoxItem>-->
+<!--            <ListBoxItem Height="108" Width="130" Selected="ListBoxItem_Selected">-->
+<!--                <Image Margin="3,0,6,0"  Source="C:\Users\Giki\Downloads\Hackathon_TLV_2013_-_48.jpg" />-->
+<!--            </ListBoxItem>-->
+        </ListBox>
+    </Grid>
+</UserControl>
