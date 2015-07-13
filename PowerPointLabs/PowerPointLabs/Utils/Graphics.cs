@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Drawing;
 using System.Drawing.Drawing2D;
 using System.Linq;
+using System.Runtime.InteropServices;
 using System.Windows.Forms;
 using Microsoft.Office.Core;
 using Microsoft.Office.Interop.PowerPoint;
@@ -140,6 +141,38 @@ namespace PowerPointLabs.Utils
         public static void MakeShapeViewTimeInvisible(ShapeRange shapeRange, PowerPointSlide curSlide)
         {
             MakeShapeViewTimeInvisible(shapeRange, curSlide.GetNativeSlide());
+        }
+
+        /// <summary>
+        /// A better version of SyncShape, but cannot do a partial sync like SyncShape can.
+        /// SyncShape cannot operate on Groups and Charts. If those are detected, SyncWholeShape resorts to deleting
+        /// candidateShape and replacing it with a copy of refShape instead of syncing.
+        /// </summary>
+        public static void SyncWholeShape(Shape refShape, ref Shape candidateShape, PowerPointSlide candidateSlide)
+        {
+            bool succeeded = true;
+            try
+            {
+                SyncShape(refShape, candidateShape);
+            }
+            catch (UnauthorizedAccessException e)
+            {
+                succeeded = false;
+            }
+            catch (ArgumentException e)
+            {
+                succeeded = false;
+            }
+            catch (COMException e)
+            {
+                succeeded = false;
+            }
+            if (succeeded) return;
+
+            candidateShape.Delete();
+            refShape.Copy();
+            candidateShape = candidateSlide.Shapes.Paste()[1];
+            candidateShape.Name = refShape.Name;
         }
 
         public static void SyncShape(Shape refShape, Shape candidateShape,
