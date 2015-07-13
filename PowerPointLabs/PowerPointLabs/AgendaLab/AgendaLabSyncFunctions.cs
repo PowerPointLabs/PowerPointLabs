@@ -275,7 +275,7 @@ namespace PowerPointLabs.AgendaLab
             foreach (var refShape in sameShapes)
             {
                 var candidateShape = candidateSlideShapes[refShape.Name];
-                Graphics.SyncShape(refShape, candidateShape);
+                Graphics.SyncWholeShape(refShape, ref candidateShape, candidate);
 
                 shapeOriginalZOrders.Add(refShape.ZOrderPosition, candidateShape);
             }
