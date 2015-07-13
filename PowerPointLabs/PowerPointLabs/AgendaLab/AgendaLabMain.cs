@@ -275,13 +275,26 @@ namespace PowerPointLabs.AgendaLab
         {
             var refSlide = CreateBeamReferenceSlide();
 
-            // here we invoke sync logic, since it's the same behavior as sync
             var targetSlides = slideTracker.SelectedSlides;
             if (targetSlides.Count == 0)
             {
+                // If no slides selected, generate on all slides.
                 targetSlides = AllSlidesAfterFirstSection();
             }
+            else if (targetSlides.Count == 1)
+            {
+                // If only one slide selected, ask whether the user wants to generate on all slides.
+                var confirmResult = MessageBox.Show(new Form { TopMost = true },
+                                                    TextCollection.AgendaLabBeamGenerateSingleSlideDialogContent,
+                                                    TextCollection.AgendaLabBeamGenerateSingleSlideDialogTitle,
+                                                    MessageBoxButtons.YesNo);
+                if (confirmResult == DialogResult.Yes)
+                {
+                    targetSlides = AllSlidesAfterFirstSection();
+                }
+            }
 
+            // here we invoke sync logic, since it's the same behavior as sync
             SyncBeamOnSlides(targetSlides, refSlide);
         }
 
@@ -809,9 +822,99 @@ namespace PowerPointLabs.AgendaLab
 
             if (SectionsMatch(currentSections, newSections)) return;
 
+
+            var confirmResult = MessageBox.Show(new Form() { TopMost = true },
+                                                TextCollection.AgendaLabReorganiseSidebarContent,
+                                                TextCollection.AgendaLabReorganiseSidebarTitle,
+                                                MessageBoxButtons.YesNo);
+            if (confirmResult == DialogResult.Yes)
+            {
+                ReorganiseBeam(refSlide, newSections, highlightedTextBox, background, beamFormats, oldTextBoxes, beamShape);
+            }
+            else
+            {
+                UpdateBeamItems(refSlide, newSections, highlightedTextBox, background, beamFormats, oldTextBoxes, beamShape);
+            }
+        }
+
+        /// <summary>
+        /// Does not reogranise the positions of the text boxes in the beam. Instead, it only deletes text boxes
+        /// that no longer correspond to a section, and creates new text boxes for the new sections.
+        /// </summary>
+        private static void UpdateBeamItems(PowerPointSlide refSlide, List<AgendaSection> newSections, Shape highlightedTextBox,
+                Shape background, BeamFormats beamFormats, List<Shape> oldTextBoxes, Shape beamShape)
+        {
+            List<Shape> markedForDeletion;
+            var textboxAssignment = GetBeamTextboxAssignment(oldTextBoxes, out markedForDeletion);
+
+            var reassignedTextboxIndexes = new HashSet<int>();
+            var newTextboxes = new List<Shape>();
+
+            foreach (var section in newSections)
+            {
+                int index = section.Index;
+                if (textboxAssignment.ContainsKey(index))
+                {
+                    // Reuse old textbox
+                    var textbox = textboxAssignment[index];
+                    Graphics.SetText(textbox, section.Name);
+                    AgendaShape.SetShapeName(textbox, ShapePurpose.BeamShapeText, section);
+                    reassignedTextboxIndexes.Add(index);
+                }
+                else
+                {
+                    // Create new textbox
+                    var textbox = PrepareBeamAgendaBeamItem(refSlide, section);
+                    var referenceTextFormat = beamFormats.Regular;
+                    Graphics.SyncTextRange(referenceTextFormat, textbox.TextFrame2.TextRange, pickupTextContent: false);
+                    newTextboxes.Add(textbox);
+                }
+            }
+            
+            markedForDeletion.AddRange(from entry in textboxAssignment where !reassignedTextboxIndexes.Contains(entry.Key) select entry.Value);
+            markedForDeletion.ForEach(shape => shape.Delete());
+
+            var beamShapeShapes = beamShape.Ungroup().Cast<Shape>().ToList();
+            beamShapeShapes.AddRange(newTextboxes);
+            beamShape = refSlide.GroupShapes(beamShapeShapes);
+            AgendaShape.SetShapeName(beamShape, ShapePurpose.BeamShapeMainGroup, AgendaSection.None);
+        }
+
+        /// <summary>
+        /// Assumes that all shapes in textboxes are beam shape textboxes.
+        /// </summary>
+        private static Dictionary<int, Shape> GetBeamTextboxAssignment(IEnumerable<Shape> textboxes , out List<Shape> unassignedShapes)
+        {
+            unassignedShapes = new List<Shape>();
+            var shapeAssignment = new Dictionary<int, Shape>();
+
+            foreach (var shape in textboxes)
+            {
+                var agendaShape = AgendaShape.Decode(shape);
+                
+                int index = agendaShape.Section.Index;
+                if (shapeAssignment.ContainsKey(index))
+                {
+                    unassignedShapes.Add(shape);
+                }
+                else
+                {
+                    shapeAssignment.Add(index, shape);
+                }
+            }
+
+            return shapeAssignment;
+        }
+
+        /// <summary>
+        /// Reorganises the positions of all the text boxes in the beam.
+        /// </summary>
+        private static void ReorganiseBeam(PowerPointSlide refSlide, List<AgendaSection> newSections, Shape highlightedTextBox,
+            Shape background, BeamFormats beamFormats, List<Shape> oldTextBoxes, Shape beamShape)
+        {
             var newTextBoxes = CreateBeamAgendaTextBoxes(refSlide, newSections);
             SetupBeamTextBoxPositions(newTextBoxes, highlightedTextBox, background);
-            
+
             for (int i = 0; i < newTextBoxes.Count; ++i)
             {
                 var referenceTextFormat = beamFormats.Regular;
