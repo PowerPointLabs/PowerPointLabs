@@ -35,10 +35,12 @@ namespace FunctionalTestInterface
         void TransparentEffect();
         void MagnifyingGlassEffect();
         void BlurRemainderEffect();
-        void GreyScaleEffect();
-        void BlackAndWhiteEffect();
-        void GothamEffect();
-        void SepiaEffect();
+        void GreyScaleRemainderEffect();
+        void GothamRemainderEffect();
+        void SepiaRemainderEffect();
+        void BlurBackgroundEffect();
+        void BlackAndWhiteBackgroundEffect();
+        void SepiaBackgroundEffect();
 
         IColorsLabController ColorsLab { get; }
         IShapesLabController ShapesLab { get; }

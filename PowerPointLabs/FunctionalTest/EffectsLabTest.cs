@@ -7,42 +7,34 @@ namespace FunctionalTest
     [TestClass]
     public class EffectsLabTest : BaseFunctionalTest
     {
+        protected override string GetTestingSlideName()
+        {
+            return "EffectsLab.pptx";
+        }
+
         [TestMethod]
         public void FT_EffectsLabTest()
         {
-            TestSepia();
-            TestGotham();
-            TestBlackAndWhite();
-            TestGreyScale();
-            TestBlurRemainder();
+            TestRemainderEffect(26, PplFeatures.SepiaBackgroundEffect);
+            TestRemainderEffect(23, PplFeatures.BlurBackgroundEffect);
+            TestRemainderEffect(20, PplFeatures.SepiaRemainderEffect);
+            TestRemainderEffect(17, PplFeatures.GothamRemainderEffect);
+            TestRemainderEffect(14, PplFeatures.BlackAndWhiteBackgroundEffect);
+            TestRemainderEffect(11, PplFeatures.GreyScaleRemainderEffect);
+            TestRemainderEffect(8, PplFeatures.BlurRemainderEffect);
             TestMagnifyingGlass();
             TestTransparent();
         }
 
-        private void TestSepia()
+        private void TestRemainderEffect(int startIdx, Action effectAction)
         {
-            TestRemainderEffect(20, PplFeatures.SepiaEffect);
+            PpOperations.SelectSlide(startIdx);
+            PpOperations.SelectShape("selectMe");
+            effectAction.Invoke();
+            AssertIsSame(startIdx, startIdx + 2);
+            AssertIsSame(startIdx + 1, startIdx + 3);
         }
 
-        private void TestGotham()
-        {
-            TestRemainderEffect(17, PplFeatures.GothamEffect);
-        }
-
-        private void TestBlackAndWhite()
-        {
-            TestRemainderEffect(14, PplFeatures.BlackAndWhiteEffect);
-        }
-
-        private void TestGreyScale()
-        {
-            TestRemainderEffect(11, PplFeatures.GreyScaleEffect);
-        }
-
-        private void TestBlurRemainder()
-        {
-            TestRemainderEffect(8, PplFeatures.BlurRemainderEffect);
-        }
 
         private void TestMagnifyingGlass()
         {
@@ -58,20 +50,6 @@ namespace FunctionalTest
             PpOperations.SelectShape("selectMe");
             PplFeatures.TransparentEffect();
             AssertIsSame(4, 5);
-        }
-
-        protected override string GetTestingSlideName()
-        {
-            return "EffectsLab.pptx";
-        }
-
-        private void TestRemainderEffect(int startIdx, Action effectAction)
-        {
-            PpOperations.SelectSlide(startIdx);
-            PpOperations.SelectShape("selectMe");
-            effectAction.Invoke();
-            AssertIsSame(startIdx, startIdx + 2);
-            AssertIsSame(startIdx + 1, startIdx + 3);
         }
 
         private void AssertIsSame(int actualSlideIndex, int expectedSlideIndex)

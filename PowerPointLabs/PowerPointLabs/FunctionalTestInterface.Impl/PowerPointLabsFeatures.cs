@@ -223,19 +223,45 @@ namespace PowerPointLabs.FunctionalTestInterface.Impl
         {
             UIThreadExecutor.Execute(() =>
             {
+                Ribbon.BlurRemainderEffectClick(new RibbonControl("BlurRemainderEffect"));
+            });
+        }
+
+        public void GreyScaleRemainderEffect()
+        {
+            UIThreadExecutor.Execute(() =>
+            {
+                Ribbon.GreyScaleRemainderEffectClick(new RibbonControl("GreyScaleEffect"));
+            });
+        }
+
+
+        public void GothamRemainderEffect()
+        {
+            UIThreadExecutor.Execute(() =>
+            {
+                Ribbon.GothamRemainderEffectClick(new RibbonControl("GothamEffect"));
+            });
+        }
+
+        public void SepiaRemainderEffect()
+        {
+            UIThreadExecutor.Execute(() =>
+            {
+                Ribbon.SepiaRemainderEffectClick(new RibbonControl("SepiaEffect"));
+            });
+        }
+
+
+        public void BlurBackgroundEffect()
+        {
+            UIThreadExecutor.Execute(() =>
+            {
                 Ribbon.BlurBackgroundEffectClick(new RibbonControl("BlurRemainderEffect"));
             });
         }
 
-        public void GreyScaleEffect()
-        {
-            UIThreadExecutor.Execute(() =>
-            {
-                Ribbon.GreyScaleBackgroundEffectClick(new RibbonControl("GreyScaleEffect"));
-            });
-        }
-
-        public void BlackAndWhiteEffect()
+        public void BlackAndWhiteBackgroundEffect()
         {
             UIThreadExecutor.Execute(() =>
             {
@@ -243,15 +269,7 @@ namespace PowerPointLabs.FunctionalTestInterface.Impl
             });
         }
 
-        public void GothamEffect()
-        {
-            UIThreadExecutor.Execute(() =>
-            {
-                Ribbon.GothamBackgroundEffectClick(new RibbonControl("GothamEffect"));
-            });
-        }
-
-        public void SepiaEffect()
+        public void SepiaBackgroundEffect()
         {
             UIThreadExecutor.Execute(() =>
             {
