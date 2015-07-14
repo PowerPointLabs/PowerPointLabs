@@ -32,17 +32,31 @@ namespace FunctionalTest
             shapesLab.OpenPane();
 
             TestSaveShapesToShapesLab(shapesLab);
-            TestImportLibrary(shapesLab);
+            TestImportLibraryAndShape(shapesLab);
         }
 
-        private void TestImportLibrary(IShapesLabController shapesLab)
+        private void TestImportLibraryAndShape(IShapesLabController shapesLab)
         {
             shapesLab.ImportLibrary(
                 PathUtil.GetDocTestPresentationPath("LibraryToImport.pptlabsshapes"));
+            shapesLab.ImportLibrary(
+                PathUtil.GetDocTestPresentationPath("ShapeToImport.pptlabsshape"));
             var actualShapeDataAfterImport = shapesLab.FetchShapeGalleryPresentationData();
             var expShapeDataAfterImport = PpOperations.FetchPresentationData(
-                PathUtil.GetDocTestPresentationPath("ExpShapeGalleryAftImport.pptx"));
+                PathUtil.GetDocTestPresentationPath(ExpectedShapeGalleryFileName()));
             PresentationUtil.AssertEqual(expShapeDataAfterImport, actualShapeDataAfterImport);
+        }
+
+        private string ExpectedShapeGalleryFileName()
+        {
+            if (PpOperations.IsOffice2010())
+            {
+                return "ExpShapeGalleryAftImportNonWide.pptx";
+            }
+            else
+            {
+                return "ExpShapeGalleryAftImport.pptx";
+            }
         }
 
         private void TestSaveShapesToShapesLab(IShapesLabController shapesLab)

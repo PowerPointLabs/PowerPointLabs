@@ -54,6 +54,14 @@ namespace PowerPointLabs.FunctionalTestInterface.Impl.Controller
             }
         }
 
+        public void ImportShape(string pathToShape)
+        {
+            if (_pane != null)
+            {
+                _pane.ImportShape(pathToShape);
+            }
+        }
+
         public List<ISlideData> FetchShapeGalleryPresentationData()
         {
             if (_pane != null)
