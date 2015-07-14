@@ -8,7 +8,7 @@ namespace FunctionalTest
     {
         private const string AgendaExistsTitle = "Confirm Update";
         private const string AgendaExistsContent =
-            "Agenda already exists. By confirm this dialog agenda will be regenerated. Do you want to proceed?";
+            "Agenda already exists. The previous agenda will be removed and regenerated. Do you want to proceed?";
 
         protected override string GetTestingSlideName()
         {
@@ -88,7 +88,7 @@ namespace FunctionalTest
         {
             MessageBoxUtil.ExpectMessageBoxWillPopUp(
                 "Unable to execute action",
-                "There's no generated agenda.",
+                "There is no generated agenda.",
                 PplFeatures.RemoveAgenda);
         }
 
@@ -146,7 +146,7 @@ namespace FunctionalTest
             PpOperations.DeleteSection(2, false);
 
             var title = "Unable to execute action";
-            var message = "Agenda Lab requires slides to be divided into two or more sections.";
+            var message = "Please divide the slides into two or more sections.";
 
             if (isTestingSynchronize)
             {
@@ -165,7 +165,7 @@ namespace FunctionalTest
             PpOperations.DeleteSection(1, false);
 
             var title = "Unable to execute action";
-            var message = "Please group slides into sections before generating agenda.";
+            var message = "Please group the slides into sections before generating agenda.";
 
             if (isTestingSynchronize)
             {

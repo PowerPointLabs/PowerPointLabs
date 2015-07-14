@@ -67,7 +67,7 @@ namespace FunctionalTest
             PplFeatures.RemoveAgenda();
             MessageBoxUtil.ExpectMessageBoxWillPopUp(
                 "Unable to execute action",
-                "There's no generated agenda.",
+                "There is no generated agenda.",
                 PplFeatures.SynchronizeAgenda);
         }
     }
