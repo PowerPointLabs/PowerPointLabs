@@ -2401,15 +2401,15 @@ namespace PowerPointLabs
         {
             try
             {
-                Globals.ThisAddIn.RegisterColorPane(PowerPointPresentation.Current.Presentation);
+                Globals.ThisAddIn.RegisterDrawingsPane(PowerPointPresentation.Current.Presentation);
 
-                var colorPane = Globals.ThisAddIn.GetActivePane(typeof(ColorPane));
+                var drawingsPane = Globals.ThisAddIn.GetActivePane(typeof(DrawingsPane));
 
                 // if currently the pane is hidden, show the pane
-                if (!colorPane.Visible)
+                if (!drawingsPane.Visible)
                 {
                     // fire the pane visble change event
-                    colorPane.Visible = true;
+                    drawingsPane.Visible = true;
                 }
             }
             catch (Exception e)

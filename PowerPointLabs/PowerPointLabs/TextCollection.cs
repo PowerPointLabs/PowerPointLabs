@@ -284,6 +284,7 @@
             "ton to save.";
         public const string ShapesLabTaskPanelTitle = "Shapes Lab";
         public const string ColorsLabTaskPanelTitle = "Colors Lab";
+        public const string DrawingsLabTaskPanelTitle = "Drawings Lab";
         public const string RecManagementPanelTitle = "Record Management";
         # endregion 
 

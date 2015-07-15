@@ -269,6 +269,12 @@
     <Compile Include="ConvertToPicture.cs" />
     <Compile Include="CropToShape.cs" />
     <Compile Include="DataSources\ShapesLabSettingsDataSource.cs" />
+    <Compile Include="DrawingsLab\DrawingsPane.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="DrawingsLab\DrawingsPane.Designer.cs">
+      <DependentUpon>DrawingsPane.cs</DependentUpon>
+    </Compile>
     <Compile Include="Models\PowerPointBgEffectSlide.cs" />
     <Compile Include="LabeledThumbnail.cs">
       <SubType>UserControl</SubType>
@@ -456,6 +462,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="ColorPicker\ColorPane.resx">
       <DependentUpon>ColorPane.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="DrawingsLab\DrawingsPane.resx">
+      <DependentUpon>DrawingsPane.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Views\LoadingDialog.resx">
       <DependentUpon>LoadingDialog.cs</DependentUpon>
