@@ -9,7 +9,7 @@ using Microsoft.Office.Interop.PowerPoint;
 
 namespace PowerPointLabs.Models
 {
-    internal class PowerPointPresentation
+    public class PowerPointPresentation
     {
         # region Properties
         private string _name;

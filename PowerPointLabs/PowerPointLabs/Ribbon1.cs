@@ -7,6 +7,7 @@ using System.Reflection;
 using System.Runtime.InteropServices;
 using System.Diagnostics;
 using System.Windows.Forms;
+using PowerPointLabs.ImageSearch;
 using PowerPointLabs.Models;
 using PowerPointLabs.Views;
 using Office = Microsoft.Office.Core;
@@ -1657,10 +1658,13 @@ namespace PowerPointLabs
 
         public void CropShapeButtonClick(Office.IRibbonControl control)
         {
-            Globals.ThisAddIn.Application.StartNewUndoEntry();
-
-            var selection = PowerPointCurrentPresentationInfo.CurrentSelection;
-            CropToShape.Crop(selection);
+//            Globals.ThisAddIn.Application.StartNewUndoEntry();
+//
+//            var selection = PowerPointCurrentPresentationInfo.CurrentSelection;
+//            CropToShape.Crop(selection);
+            var imagesLab = new ImageSearchPane();
+            imagesLab.FocusSearchTextBox();
+            imagesLab.Show();
         }
 
         public Bitmap GetCutOutShapeMenuImage(Office.IRibbonControl control)
