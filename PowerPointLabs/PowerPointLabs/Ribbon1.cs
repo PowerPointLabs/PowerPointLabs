@@ -366,6 +366,11 @@ namespace PowerPointLabs
         {
             return TextCollection.AgendaLabBulletAgendaSettingsSupertip;
         }
+
+        public string GetDrawingsLabButtonSupertip(Office.IRibbonControl control)
+        {
+            return TextCollection.DrawingsLabButtonSupertip;
+        }
         
         public string GetHelpButtonSupertip(Office.IRibbonControl control)
         {
@@ -576,6 +581,11 @@ namespace PowerPointLabs
         public string GetAgendaLabBulletAgendaSettingsButtonLabel(Office.IRibbonControl control)
         {
             return TextCollection.AgendaLabBulletAgendaSettingsButtonLabel;
+        }
+
+        public string GetDrawingsLabButtonLabel(Office.IRibbonControl control)
+        {
+            return TextCollection.DrawingsLabButtonLabel;
         }
 
         public string GetPPTLabsHelpGroupLabel(Office.IRibbonControl control)
@@ -1102,6 +1112,18 @@ namespace PowerPointLabs
             catch (Exception e)
             {
                 PowerPointLabsGlobals.LogException(e, "GetAgendaSettingsImage");
+                throw;
+            }
+        }
+        public Bitmap GetDrawingsLabImage(Office.IRibbonControl control)
+        {
+            try
+            {
+                return new System.Drawing.Bitmap(Properties.Resources.ColorsLab);
+            }
+            catch (Exception e)
+            {
+                PowerPointLabsGlobals.LogException(e, "GetDrawingsLabImage");
                 throw;
             }
         }
@@ -2373,6 +2395,31 @@ namespace PowerPointLabs
             GC.Collect();
         }
         # endregion
+
+        #region Feature: Drawings Lab
+        public void DrawingsLabButtonClick(Office.IRibbonControl control)
+        {
+            try
+            {
+                Globals.ThisAddIn.RegisterColorPane(PowerPointPresentation.Current.Presentation);
+
+                var colorPane = Globals.ThisAddIn.GetActivePane(typeof(ColorPane));
+
+                // if currently the pane is hidden, show the pane
+                if (!colorPane.Visible)
+                {
+                    // fire the pane visble change event
+                    colorPane.Visible = true;
+                }
+            }
+            catch (Exception e)
+            {
+                ErrorDialogWrapper.ShowDialog("Error in drawings lab", e.Message, e);
+                PowerPointLabsGlobals.LogException(e, "DrawingsLabButtonClicked");
+                throw;
+            }
+        }
+        #endregion
 
         private static string GetResourceText(string resourceName)
         {

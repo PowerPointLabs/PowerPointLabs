@@ -114,6 +114,11 @@
         public const string AgendaLabAgendaSettingsSupertip = "Configure agenda settings.";
         public const string AgendaLabBulletAgendaSettingsSupertip = "Set color scheme for Bullet Agenda.";
         # endregion
+
+        # region Drawings Lab
+        public const string DrawingsLabButtonSupertip = @"Opens the Drawings Lab Interface";
+        # endregion
+
         # endregion
 
         # region Help
@@ -207,6 +212,10 @@
         public const string AgendaLabRemoveAgendaButtonLabel = "Remove Agenda";
         public const string AgendaLabAgendaSettingsButtonLabel = "Agenda Settings";
         public const string AgendaLabBulletAgendaSettingsButtonLabel = "Bullet Agenda Settings";
+        # endregion
+
+        # region Drawings Lab
+        public const string DrawingsLabButtonLabel = "Drawings Lab";
         # endregion
         # endregion
 
