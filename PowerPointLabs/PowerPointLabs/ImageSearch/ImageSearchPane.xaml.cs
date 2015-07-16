@@ -7,6 +7,7 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Controls.Primitives;
 using System.Windows.Input;
+using ImageProcessor;
 using Microsoft.Office.Core;
 using PowerPointLabs.AutoUpdate;
 using PowerPointLabs.ImageSearch.Model;
@@ -31,7 +32,7 @@ namespace PowerPointLabs.ImageSearch
 
         public PowerPointPresentation PreviewPresentation { get; set; }
 
-        private Timer _previewTimer = new Timer { Interval = 1500 };
+        private Timer _previewTimer = new Timer { Interval = 500 };
 
         private readonly string _loadingImgPath = Path.GetTempPath() + "loading" + DateTime.Now.GetHashCode();
 
@@ -212,7 +213,9 @@ namespace PowerPointLabs.ImageSearch
                 var previewFile2 = Path.GetTempPath() + "directText" + DateTime.Now.GetHashCode();
                 var previewFile3 = Path.GetTempPath() + "overlay" + DateTime.Now.GetHashCode();
                 var previewFile4 = Path.GetTempPath() + "textbox" + DateTime.Now.GetHashCode();
+                var previewFile5 = Path.GetTempPath() + "blur" + DateTime.Now.GetHashCode();
 
+                // TODO multi thread
                 // TODO DRY
                 var thisSlide = PreviewPresentation.AddSlide(PowerPointCurrentPresentationInfo.CurrentSlide.Layout);
                 try
@@ -303,6 +306,47 @@ namespace PowerPointLabs.ImageSearch
                     // TODO why need fullsize image file here?
                     FullSizeImageFile = imageItem.FullSizeImageFile
                 });
+                overlayShape.Delete();
+                //
+                // textbox style 5 starts
+                overlayShape = thisSlide.Shapes.AddShape(MsoAutoShapeType.msoShapeRectangle,
+                                                                0,
+                                                                0,
+                                                                PowerPointPresentation.Current.SlideWidth,
+                                                                PowerPointPresentation.Current.SlideHeight);
+                overlayShape.Fill.ForeColor.RGB = Utils.Graphics.ConvertColorToRgb(Color.Black);
+                overlayShape.Fill.Transparency = 0.8f;
+                overlayShape.Line.Visible = MsoTriState.msoFalse;
+
+                var blurImageFile = Path.GetTempPath() + "blur" + DateTime.Now.GetHashCode();
+                using (var imageFactory = new ImageFactory())
+                {
+                    var image = imageFactory.Load(imageItem.FullSizeImageFile ?? imageItem.ImageFile);
+                    image = image.GaussianBlur(15);
+                    image.Save(blurImageFile);
+                    if (image.MimeType == "image/png")
+                    {
+                        blurImageFile += ".png";
+                    }
+                }
+                var blueImageShape = thisSlide.Shapes.AddPicture(blurImageFile,
+                    MsoTriState.msoFalse, MsoTriState.msoTrue, 0,
+                    0);
+                FitToSlide.AutoFit(blueImageShape, PreviewPresentation);
+                overlayShape.ZOrder(MsoZOrderCmd.msoSendToBack);
+                blueImageShape.ZOrder(MsoZOrderCmd.msoSendToBack);
+                imageShape.ZOrder(MsoZOrderCmd.msoSendToBack);
+
+                thisSlide.GetNativeSlide().Export(previewFile5, "JPG");
+                PreviewList.Add(new ImageItem
+                {
+                    ImageFile = previewFile5,
+                    // TODO why need fullsize image file here?
+                    FullSizeImageFile = imageItem.FullSizeImageFile
+                });
+
+                blueImageShape.Delete();
+
                 overlayShape.Delete();
                 //
                 // Textbox style 3 starts
