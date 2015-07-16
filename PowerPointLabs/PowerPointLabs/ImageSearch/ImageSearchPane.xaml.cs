@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
+using System.Drawing;
 using System.Timers;
 using System.Windows;
 using System.Windows.Controls;
@@ -70,8 +71,8 @@ namespace PowerPointLabs.ImageSearch
             var api =
                 "https://www.googleapis.com/customsearch/v1?filter=1&cx=017201692871514580973%3Awwdg7q__" +
 //                "mb4&imgSize=large&searchType=image&imgType=photo&safe=medium&key=AIzaSyCGcq3O8NN9U7YX-Pj3E7tZde0yaFFeUyY";
-//                "mb4&imgSize=large&searchType=image&imgType=photo&safe=medium&key=AIzaSyDQeqy9efF_ASgi2dk3Ortj2QNnz90RdOw";
-                "mb4&imgSize=large&searchType=image&imgType=photo&safe=medium&key=AIzaSyDXR8wBYL6al5jXIXTHpEF28CCuvL0fjKk";
+                "mb4&imgSize=large&searchType=image&imgType=photo&safe=medium&key=AIzaSyDQeqy9efF_ASgi2dk3Ortj2QNnz90RdOw";
+//                "mb4&imgSize=large&searchType=image&imgType=photo&safe=medium&key=AIzaSyDXR8wBYL6al5jXIXTHpEF28CCuvL0fjKk";
             var query = SearchTextBox.Text;
             // TODO: what if query is empty ... may need escape as well
 
@@ -208,33 +209,144 @@ namespace PowerPointLabs.ImageSearch
                 PreviewList.Clear();
 
                 var previewFile = Path.GetTempPath() + "original" + DateTime.Now.GetHashCode();
+                var previewFile2 = Path.GetTempPath() + "directText" + DateTime.Now.GetHashCode();
+                var previewFile3 = Path.GetTempPath() + "overlay" + DateTime.Now.GetHashCode();
+                var previewFile4 = Path.GetTempPath() + "textbox" + DateTime.Now.GetHashCode();
 
                 // TODO DRY
                 var thisSlide = PreviewPresentation.AddSlide(PowerPointCurrentPresentationInfo.CurrentSlide.Layout);
-                // TODO has error, when nothing to copy
-                PowerPointCurrentPresentationInfo.CurrentSlide.Shapes.Range().Copy();
-                thisSlide.Shapes.Paste();
-                foreach (PowerPoint.Shape shape in thisSlide.Shapes)
+                try
                 {
-                    if (shape.Name.StartsWith("pptImagesLab"))
+                    PowerPointCurrentPresentationInfo.CurrentSlide.Shapes.Range().Copy();
+                    thisSlide.Shapes.Paste();
+                    foreach (PowerPoint.Shape shape in thisSlide.Shapes)
                     {
-                        shape.Delete();
+                        if (shape.Name.StartsWith("pptImagesLab"))
+                        {
+                            shape.Delete();
+                        }
                     }
+                }
+                catch
+                {
+                    // nothing to copy-paste
+                    // TODO then the cannot 
                 }
                 var imageShape = thisSlide.Shapes.AddPicture(imageItem.FullSizeImageFile ?? imageItem.ImageFile, 
                     MsoTriState.msoFalse, MsoTriState.msoTrue, 0,
                     0);
                 FitToSlide.AutoFit(imageShape, PreviewPresentation);
                 imageShape.ZOrder(MsoZOrderCmd.msoSendToBack);
-                thisSlide.GetNativeSlide().Export(previewFile, "JPG");
-                // dont affect next time preview
-                thisSlide.Delete();
 
+                thisSlide.GetNativeSlide().Export(previewFile, "JPG");
                 PreviewList.Add(new ImageItem
                 {
                     ImageFile = previewFile,
                     FullSizeImageFile = imageItem.FullSizeImageFile
                 });
+                // Original Preview done here
+
+                // Textbox style 1 starts
+                foreach (PowerPoint.Shape shape in thisSlide.Shapes)
+                {
+                    if (shape.Type == MsoShapeType.msoPlaceholder
+                        || shape.Type == MsoShapeType.msoTextBox)
+                    {
+                        if (shape.TextEffect.Text.Length == 0
+                            || shape.Tags["GotHighlighted"].Trim().Length != 0)
+                        {
+                            continue;
+                        }
+
+                        // filled by added shape (can control size)
+                        shape.Fill.Visible = MsoTriState.msoFalse;
+                        shape.Line.Visible = MsoTriState.msoFalse;
+
+                        var whiteColor = Color.White;// TODO customize
+                        var r = whiteColor.R;
+                        var g = whiteColor.G;
+                        var b = whiteColor.B;
+
+                        var rgb = (b << 16) | (g << 8) | (r);
+                        var font = shape.TextFrame2.TextRange.TrimText().Font;
+                        font.Fill.ForeColor.RGB = rgb;
+                        font.Bold = MsoTriState.msoFalse;
+                        font.Name = "Segoe UI Light"; // TODO customize
+
+                        var textEffect = shape.TextEffect;
+                        textEffect.FontSize += 10;
+                    }
+                }
+                thisSlide.GetNativeSlide().Export(previewFile2, "JPG");
+                PreviewList.Add(new ImageItem
+                {
+                    ImageFile = previewFile2,
+                    // TODO why need fullsize image file here?
+                    FullSizeImageFile = imageItem.FullSizeImageFile
+                });
+                // Textbox style 1 ends
+                // Textbox style 2 starts
+                var overlayShape = thisSlide.Shapes.AddShape(MsoAutoShapeType.msoShapeRectangle,
+                                                                0,
+                                                                0,
+                                                                PowerPointPresentation.Current.SlideWidth,
+                                                                PowerPointPresentation.Current.SlideHeight);
+                overlayShape.Fill.ForeColor.RGB = Utils.Graphics.ConvertColorToRgb(Color.Black);
+                overlayShape.Fill.Transparency = 0.65f;
+                overlayShape.Line.Visible = MsoTriState.msoFalse;
+                overlayShape.ZOrder(MsoZOrderCmd.msoSendToBack);
+                imageShape.ZOrder(MsoZOrderCmd.msoSendToBack);
+                thisSlide.GetNativeSlide().Export(previewFile3, "JPG");
+                PreviewList.Add(new ImageItem
+                {
+                    ImageFile = previewFile3,
+                    // TODO why need fullsize image file here?
+                    FullSizeImageFile = imageItem.FullSizeImageFile
+                });
+                overlayShape.Delete();
+                //
+                // Textbox style 3 starts
+                foreach (PowerPoint.Shape shape in thisSlide.Shapes)
+                {
+                    if (shape.Type == MsoShapeType.msoPlaceholder
+                        || shape.Type == MsoShapeType.msoTextBox)
+                    {
+                        if (shape.TextEffect.Text.Length == 0
+                            || shape.Tags["GotHighlighted"].Trim().Length != 0)
+                        {
+                            continue;
+                        }
+                        // multiple paragraphs.. 
+                        foreach (TextRange2 paragraph in shape.TextFrame2.TextRange.Paragraphs)
+                        {
+                            if (paragraph.TrimText().Length > 0)
+                            {
+                                var highlightShape = thisSlide.Shapes.AddShape(MsoAutoShapeType.msoShapeRectangle,
+                                                                paragraph.BoundLeft,
+                                                                paragraph.BoundTop,
+                                                                paragraph.BoundWidth,
+                                                                paragraph.BoundHeight);
+                                highlightShape.Fill.ForeColor.RGB = Utils.Graphics.ConvertColorToRgb(Color.Black); // TODO customize
+                                highlightShape.Line.Visible = MsoTriState.msoFalse;
+                                Utils.Graphics.MoveZToJustBehind(highlightShape, shape);
+                                highlightShape.Name = "PPTLabsHighlightBackgroundShape" + DateTime.Now.ToString("yyyyMMddHHmmssffff");
+                                highlightShape.Tags.Add("HighlightBackground", shape.Name);
+                                shape.Tags.Add("GotHighlighted", highlightShape.Name);
+                            }
+                        }
+                    }
+                }
+                thisSlide.GetNativeSlide().Export(previewFile4, "JPG");
+                PreviewList.Add(new ImageItem
+                {
+                    ImageFile = previewFile4,
+                    // TODO why need fullsize image file here?
+                    FullSizeImageFile = imageItem.FullSizeImageFile
+                });
+
+                // dont affect next time preview
+                thisSlide.Delete();
+
                 // try catch finally?
                 PreviewProgressRing.IsActive = false;
             }));

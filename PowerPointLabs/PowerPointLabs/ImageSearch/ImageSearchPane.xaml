@@ -26,12 +26,12 @@
     </controls:MetroWindow.Resources>
     <Grid Name="ImagesLabGrid">
         <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="*"></ColumnDefinition>
-            <ColumnDefinition Width="auto"></ColumnDefinition>
             <ColumnDefinition Width="320"></ColumnDefinition>
+            <ColumnDefinition Width="auto"></ColumnDefinition>
+            <ColumnDefinition Width="*"></ColumnDefinition>
         </Grid.ColumnDefinitions>
         <GridSplitter Name="Splitter" DragDelta="Splitter_OnDragDelta" Grid.Column="1" ResizeDirection="Columns" Width="3" Height="Auto" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" />
-        <Grid Name="StylesPreviewGrid" Margin="10,0,0,0" Grid.Column="2">
+        <Grid Name="StylesPreviewGrid" Margin="10,0,0,0" Grid.Column="0">
             <Grid.RowDefinitions>
                 <RowDefinition Height="5" />
                 <RowDefinition Height="35" />
@@ -60,26 +60,24 @@
                 </ListBox.Template>
                 <ListBox.ItemContainerStyle>
                     <Style TargetType="ListBoxItem">
-                        <Setter Property="Height" Value="170"></Setter>
-                        <Setter Property="Width" Value="300"></Setter>
                         <Setter Property="HorizontalContentAlignment" Value="Center"></Setter>
                         <Setter Property="VerticalContentAlignment" Value="Center"></Setter>
                         <Style.Resources>
                             <!--SelectedItem with focus-->
-                            <SolidColorBrush x:Key="{x:Static SystemColors.HighlightBrushKey}" Color="LightBlue" Opacity=".8"/>
+                            <SolidColorBrush x:Key="{x:Static SystemColors.HighlightBrushKey}" Color="#D74926" />
                             <!--SelectedItem without focus-->
-                            <SolidColorBrush x:Key="{x:Static SystemColors.ControlBrushKey}" Color="LightBlue" Opacity=".8"/>
+                            <SolidColorBrush x:Key="{x:Static SystemColors.ControlBrushKey}" Color="#D74926" />
                         </Style.Resources>
                     </Style>
                 </ListBox.ItemContainerStyle>
                 <ListBox.ItemTemplate>
                     <DataTemplate>
-                        <Image Margin="3,2,5,3" Source="{Binding Path=ImageFile, Mode=TwoWay, NotifyOnSourceUpdated=True}" />
+                        <Image Margin="3,3,5,3" Source="{Binding Path=ImageFile, Mode=TwoWay, NotifyOnSourceUpdated=True}" />
                     </DataTemplate>
                 </ListBox.ItemTemplate>
             </ListBox>
         </Grid>
-        <Grid Name="ImageSearchGrid" Margin="5,0,0,0" Grid.Column="0">
+        <Grid Name="ImageSearchGrid" Margin="5,0,0,0" Grid.Column="2">
             <Grid.RowDefinitions>
                 <RowDefinition Height="5" />
                 <RowDefinition Height="35" />
@@ -113,15 +111,15 @@
                         <Setter Property="VerticalContentAlignment" Value="Center"></Setter>
                         <Style.Resources>
                             <!--SelectedItem with focus-->
-                            <SolidColorBrush x:Key="{x:Static SystemColors.HighlightBrushKey}" Color="LightBlue" Opacity=".8"/>
+                            <SolidColorBrush x:Key="{x:Static SystemColors.HighlightBrushKey}" Color="#D74926" />
                             <!--SelectedItem without focus-->
-                            <SolidColorBrush x:Key="{x:Static SystemColors.ControlBrushKey}" Color="LightBlue" Opacity=".8"/>
+                            <SolidColorBrush x:Key="{x:Static SystemColors.ControlBrushKey}" Color="#D74926" />
                         </Style.Resources>
                     </Style>
                 </ListBox.ItemContainerStyle>
                 <ListBox.ItemTemplate>
                     <DataTemplate>
-                        <Image Margin="1" Source="{Binding Path=ImageFile, Mode=TwoWay, NotifyOnSourceUpdated=True}" />
+                        <Image Margin="2,2,4,2" Source="{Binding Path=ImageFile, Mode=TwoWay, NotifyOnSourceUpdated=True}" />
                     </DataTemplate>
                 </ListBox.ItemTemplate>
             </ListBox>
