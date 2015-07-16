@@ -64,6 +64,7 @@ namespace PowerPointLabs
             new Updater().TryUpdate();
 
             PPMouse.Init(Application);
+            PPKeyboard.Init(Application);
             PPCopy.Init(Application);
             SetupDoubleClickHandler();
             SetupTabActivateHandler();

@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.Diagnostics;
 using System.Drawing;
 using System.IO;
 using System.Linq;
@@ -21,9 +22,13 @@ namespace PowerPointLabs
 
     public partial class DrawingsPane : UserControl
     {
+        private static bool hotkeysInitialised = false;
+
         public DrawingsPane()
         {
             InitializeComponent();
+
+            InitialiseHotkeys();
 
             BindDataToPanels();
 
@@ -46,8 +51,48 @@ namespace PowerPointLabs
                 //"selectedColor",
                 //new Converters.HSLColorToRGBColor()));
         }
-
         #endregion
+
+        #region ButtonCallbacks
+        private void LineButton_Click(object sender, EventArgs e)
+        {
+            SwitchToLineTool();
+        }
+        #endregion
+
+        #region HotkeyInitialisation
+        private bool IsPanelOpen()
+        {
+            return true;
+        }
+
+        private Action RunOnlyWhenOpen(Action action)
+        {
+            return () => { if (IsPanelOpen()) action(); };
+        }
+
+        private void InitialiseHotkeys()
+        {
+            if (hotkeysInitialised) return;
+            hotkeysInitialised = true;
+
+            PPKeyboard.AddKeyupAction(Native.VirtualKey.VK_L, RunOnlyWhenOpen(SwitchToLineTool));
+        }
+        #endregion
+
+        private void SwitchToLineTool()
+        {
+            Debug.WriteLine("Line");
+            // This should trigger the line tool.
+            // see https://github.com/PowerPointLabs/powerpointlabs/blob/master/PowerPointLabs/PowerPointLabs/ThisAddIn.cs#L1381
+            //TODO: Placeholder code. This just triggers the property window.
+            Native.SendMessage(
+                Process.GetCurrentProcess().MainWindowHandle,
+                (uint)Native.Message.WM_COMMAND,
+                new IntPtr(0x8F),
+                IntPtr.Zero
+                );
+        }
 
 
         protected override CreateParams CreateParams

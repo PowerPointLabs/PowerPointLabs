@@ -172,7 +172,9 @@ namespace PPExtraEventHelper
         internal enum HookType
         {
             WH_MOUSE = 0x7,
-            WH_MOUSE_LL = 14
+            WH_MOUSE_LL = 0xE,
+            WH_KEYBOARD = 0x2,
+            WH_KEYBOARD_LL = 0xD
         }
 
         internal enum Message
@@ -201,10 +203,36 @@ namespace PPExtraEventHelper
             WS_EX_COMPOSITED = 0x02000000
         }
 
-        internal enum VirutalKey
+        internal enum VirtualKey
         {
             VK_RETURN = 0x0D,
-          	VK_ESCAPE =	0x1B
+          	VK_ESCAPE =	0x1B,
+            VK_A = 0x41,
+            VK_B = 0x42,
+            VK_C = 0x43,
+            VK_D = 0x44,
+            VK_E = 0x45,
+            VK_F = 0x46,
+            VK_G = 0x47,
+            VK_H = 0x48,
+            VK_I = 0x49,
+            VK_J = 0x4a,
+            VK_K = 0x4b,
+            VK_L = 0x4c,
+            VK_M = 0x4d,
+            VK_N = 0x4e,
+            VK_O = 0x4f,
+            VK_P = 0x50,
+            VK_Q = 0x51,
+            VK_R = 0x52,
+            VK_S = 0x53,
+            VK_T = 0x54,
+            VK_U = 0x55,
+            VK_V = 0x56,
+            VK_W = 0x57,
+            VK_X = 0x58,
+            VK_Y = 0x59,
+            VK_Z = 0x5a,
         }
 
         internal enum Event
