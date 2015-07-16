@@ -572,5 +572,22 @@ namespace PowerPointLabs.ImageSearch
                 }
             }));
         }
+
+        private void Selector_OnSelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            Dispatcher.BeginInvoke(new Action(() =>
+            {
+                var id = DisplayComboBox.SelectedIndex;
+                switch (id)
+                {
+                    case 0:
+                        ImagesLabGrid.ColumnDefinitions[0].Width = new GridLength(320);
+                        break;
+                    case 1:
+                        ImagesLabGrid.ColumnDefinitions[0].Width = new GridLength(620);
+                        break;
+                }
+            }));
+        }
     }
 }
