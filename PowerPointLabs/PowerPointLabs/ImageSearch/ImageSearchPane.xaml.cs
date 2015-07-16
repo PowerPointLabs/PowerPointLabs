@@ -71,8 +71,8 @@ namespace PowerPointLabs.ImageSearch
             // TODO: Store this API somewhere...
             var api =
                 "https://www.googleapis.com/customsearch/v1?filter=1&cx=017201692871514580973%3Awwdg7q__" +
-//                "mb4&imgSize=large&searchType=image&imgType=photo&safe=medium&key=AIzaSyCGcq3O8NN9U7YX-Pj3E7tZde0yaFFeUyY";
-                "mb4&imgSize=large&searchType=image&imgType=photo&safe=medium&key=AIzaSyDQeqy9efF_ASgi2dk3Ortj2QNnz90RdOw";
+                "mb4&imgSize=large&searchType=image&imgType=photo&safe=medium&key=AIzaSyCGcq3O8NN9U7YX-Pj3E7tZde0yaFFeUyY";
+//                "mb4&imgSize=large&searchType=image&imgType=photo&safe=medium&key=AIzaSyDQeqy9efF_ASgi2dk3Ortj2QNnz90RdOw";
 //                "mb4&imgSize=large&searchType=image&imgType=photo&safe=medium&key=AIzaSyDXR8wBYL6al5jXIXTHpEF28CCuvL0fjKk";
             var query = SearchTextBox.Text;
             // TODO: what if query is empty ... may need escape as well
@@ -315,21 +315,25 @@ namespace PowerPointLabs.ImageSearch
                                                                 PowerPointPresentation.Current.SlideWidth,
                                                                 PowerPointPresentation.Current.SlideHeight);
                 overlayShape.Fill.ForeColor.RGB = Utils.Graphics.ConvertColorToRgb(Color.Black);
-                overlayShape.Fill.Transparency = 0.8f;
+                overlayShape.Fill.Transparency = 0.85f;
                 overlayShape.Line.Visible = MsoTriState.msoFalse;
 
-                var blurImageFile = Path.GetTempPath() + "blur" + DateTime.Now.GetHashCode();
-                using (var imageFactory = new ImageFactory())
+                if (imageItem.BlurImageFile == null)
                 {
-                    var image = imageFactory.Load(imageItem.FullSizeImageFile ?? imageItem.ImageFile);
-                    image = image.GaussianBlur(15);
-                    image.Save(blurImageFile);
-                    if (image.MimeType == "image/png")
+                    var blurImageFile = Path.GetTempPath() + "blur" + DateTime.Now.GetHashCode();
+                    using (var imageFactory = new ImageFactory())
                     {
-                        blurImageFile += ".png";
+                        var image = imageFactory.Load(imageItem.ImageFile);
+                        image = image.GaussianBlur(5);
+                        image.Save(blurImageFile);
+                        if (image.MimeType == "image/png")
+                        {
+                            blurImageFile += ".png";
+                        }
+                        imageItem.BlurImageFile = blurImageFile;
                     }
                 }
-                var blueImageShape = thisSlide.Shapes.AddPicture(blurImageFile,
+                var blueImageShape = thisSlide.Shapes.AddPicture(imageItem.BlurImageFile,
                     MsoTriState.msoFalse, MsoTriState.msoTrue, 0,
                     0);
                 FitToSlide.AutoFit(blueImageShape, PreviewPresentation);

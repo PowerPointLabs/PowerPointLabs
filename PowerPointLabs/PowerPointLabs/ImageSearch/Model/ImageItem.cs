@@ -18,17 +18,9 @@ namespace PowerPointLabs.ImageSearch.Model
             }
         }
 
-        private string _fullSizeImageFile;
+        public string BlurImageFile { get; set; }
 
-        public string FullSizeImageFile
-        {
-            get { return _fullSizeImageFile; }
-            set
-            {
-                _fullSizeImageFile = value;
-                OnPropertyChanged("FullSizeImageFile");
-            }
-        }
+        public string FullSizeImageFile { get; set; }
 
         private string _fullSizeImageUri;
 
