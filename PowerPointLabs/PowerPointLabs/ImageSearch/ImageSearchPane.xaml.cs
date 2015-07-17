@@ -222,7 +222,15 @@ namespace PowerPointLabs.ImageSearch
 
                 // TODO multi thread
                 // TODO DRY
-                var thisSlide = PreviewPresentation.AddSlide(PowerPointCurrentPresentationInfo.CurrentSlide.Layout);
+                PowerPointSlide thisSlide;
+                try
+                {
+                    thisSlide = PreviewPresentation.AddSlide(PowerPointCurrentPresentationInfo.CurrentSlide.Layout);
+                }
+                catch
+                {
+                    thisSlide = PreviewPresentation.AddSlide();
+                }
                 try
                 {
                     PowerPointCurrentPresentationInfo.CurrentSlide.Shapes.Range().Copy();
@@ -259,7 +267,7 @@ namespace PowerPointLabs.ImageSearch
                     if (shape.Type == MsoShapeType.msoPlaceholder
                         || shape.Type == MsoShapeType.msoTextBox)
                     {
-                        if (shape.TextEffect.Text.Length == 0
+                        if (shape.TextFrame.HasText == MsoTriState.msoFalse
                             || shape.Tags["GotHighlighted"].Trim().Length != 0)
                         {
                             continue;
@@ -315,7 +323,7 @@ namespace PowerPointLabs.ImageSearch
                                                                 PowerPointPresentation.Current.SlideWidth,
                                                                 PowerPointPresentation.Current.SlideHeight);
                 overlayShape.Fill.ForeColor.RGB = Utils.Graphics.ConvertColorToRgb(Color.Black);
-                overlayShape.Fill.Transparency = 0.95f;
+                overlayShape.Fill.Transparency = 0.85f;
                 overlayShape.Line.Visible = MsoTriState.msoFalse;
 
                 if (imageItem.BlurImageFile == null)
@@ -356,7 +364,7 @@ namespace PowerPointLabs.ImageSearch
                     if (shape.Type == MsoShapeType.msoPlaceholder
                         || shape.Type == MsoShapeType.msoTextBox)
                     {
-                        if (shape.TextEffect.Text.Length == 0
+                        if (shape.TextFrame.HasText == MsoTriState.msoFalse
                             || shape.Tags["GotBlured"].Trim().Length != 0)
                         {
                             continue;
@@ -413,7 +421,7 @@ namespace PowerPointLabs.ImageSearch
                     if (shape.Type == MsoShapeType.msoPlaceholder
                         || shape.Type == MsoShapeType.msoTextBox)
                     {
-                        if (shape.TextEffect.Text.Length == 0
+                        if (shape.TextFrame.HasText == MsoTriState.msoFalse
                             || shape.Tags["GotHighlighted"].Trim().Length != 0)
                         {
                             continue;
