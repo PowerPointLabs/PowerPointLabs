@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Drawing;
@@ -71,9 +72,11 @@ namespace PowerPointLabs.ImageSearch
             // TODO: Store this API somewhere...
             var api =
                 "https://www.googleapis.com/customsearch/v1?filter=1&cx=017201692871514580973%3Awwdg7q__" +
-                "mb4&imgSize=large&searchType=image&imgType=photo&safe=medium&key=AIzaSyCGcq3O8NN9U7YX-Pj3E7tZde0yaFFeUyY";
+//                "mb4&imgSize=large&searchType=image&imgType=photo&safe=medium&key=AIzaSyCGcq3O8NN9U7YX-Pj3E7tZde0yaFFeUyY";
 //                "mb4&imgSize=large&searchType=image&imgType=photo&safe=medium&key=AIzaSyDQeqy9efF_ASgi2dk3Ortj2QNnz90RdOw";
 //                "mb4&imgSize=large&searchType=image&imgType=photo&safe=medium&key=AIzaSyDXR8wBYL6al5jXIXTHpEF28CCuvL0fjKk";
+//                "mb4&imgSize=large&searchType=image&imgType=photo&safe=medium&key=AIzaSyAur2Fc0ewRyGK0U8NCaaEfuY0g_sx-Qwk";
+                "mb4&imgSize=large&searchType=image&imgType=photo&safe=medium&key=AIzaSyArj45s-GLXKX8NSM6HGdSFtRvAMuKE2p0";
             var query = SearchTextBox.Text;
             // TODO: what if query is empty ... may need escape as well
 
@@ -214,6 +217,8 @@ namespace PowerPointLabs.ImageSearch
                 var previewFile3 = Path.GetTempPath() + "overlay" + DateTime.Now.GetHashCode();
                 var previewFile4 = Path.GetTempPath() + "textbox" + DateTime.Now.GetHashCode();
                 var previewFile5 = Path.GetTempPath() + "blur" + DateTime.Now.GetHashCode();
+                var previewFile6 = Path.GetTempPath() + "blur_textbox" + DateTime.Now.GetHashCode();
+                var previewFile7 = Path.GetTempPath() + "blur_part" + DateTime.Now.GetHashCode();
 
                 // TODO multi thread
                 // TODO DRY
@@ -244,8 +249,7 @@ namespace PowerPointLabs.ImageSearch
                 thisSlide.GetNativeSlide().Export(previewFile, "JPG");
                 PreviewList.Add(new ImageItem
                 {
-                    ImageFile = previewFile,
-                    FullSizeImageFile = imageItem.FullSizeImageFile
+                    ImageFile = previewFile
                 });
                 // Original Preview done here
 
@@ -283,9 +287,7 @@ namespace PowerPointLabs.ImageSearch
                 thisSlide.GetNativeSlide().Export(previewFile2, "JPG");
                 PreviewList.Add(new ImageItem
                 {
-                    ImageFile = previewFile2,
-                    // TODO why need fullsize image file here?
-                    FullSizeImageFile = imageItem.FullSizeImageFile
+                    ImageFile = previewFile2
                 });
                 // Textbox style 1 ends
                 // Textbox style 2 starts
@@ -302,9 +304,7 @@ namespace PowerPointLabs.ImageSearch
                 thisSlide.GetNativeSlide().Export(previewFile3, "JPG");
                 PreviewList.Add(new ImageItem
                 {
-                    ImageFile = previewFile3,
-                    // TODO why need fullsize image file here?
-                    FullSizeImageFile = imageItem.FullSizeImageFile
+                    ImageFile = previewFile3
                 });
                 overlayShape.Delete();
                 //
@@ -315,7 +315,7 @@ namespace PowerPointLabs.ImageSearch
                                                                 PowerPointPresentation.Current.SlideWidth,
                                                                 PowerPointPresentation.Current.SlideHeight);
                 overlayShape.Fill.ForeColor.RGB = Utils.Graphics.ConvertColorToRgb(Color.Black);
-                overlayShape.Fill.Transparency = 0.85f;
+                overlayShape.Fill.Transparency = 0.95f;
                 overlayShape.Line.Visible = MsoTriState.msoFalse;
 
                 if (imageItem.BlurImageFile == null)
@@ -333,25 +333,79 @@ namespace PowerPointLabs.ImageSearch
                         imageItem.BlurImageFile = blurImageFile;
                     }
                 }
-                var blueImageShape = thisSlide.Shapes.AddPicture(imageItem.BlurImageFile,
+                var blurImageShape = thisSlide.Shapes.AddPicture(imageItem.BlurImageFile,
                     MsoTriState.msoFalse, MsoTriState.msoTrue, 0,
                     0);
-                FitToSlide.AutoFit(blueImageShape, PreviewPresentation);
+                FitToSlide.AutoFit(blurImageShape, PreviewPresentation);
                 overlayShape.ZOrder(MsoZOrderCmd.msoSendToBack);
-                blueImageShape.ZOrder(MsoZOrderCmd.msoSendToBack);
+                blurImageShape.ZOrder(MsoZOrderCmd.msoSendToBack);
                 imageShape.ZOrder(MsoZOrderCmd.msoSendToBack);
 
                 thisSlide.GetNativeSlide().Export(previewFile5, "JPG");
                 PreviewList.Add(new ImageItem
                 {
-                    ImageFile = previewFile5,
-                    // TODO why need fullsize image file here?
-                    FullSizeImageFile = imageItem.FullSizeImageFile
+                    ImageFile = previewFile5
                 });
 
-                blueImageShape.Delete();
+                overlayShape.ZOrder(MsoZOrderCmd.msoSendToBack);
 
+                // blur textbox region starts
+                var listOfBlurImageCopy = new List<PowerPoint.Shape>();
+                foreach (PowerPoint.Shape shape in thisSlide.Shapes)
+                {
+                    if (shape.Type == MsoShapeType.msoPlaceholder
+                        || shape.Type == MsoShapeType.msoTextBox)
+                    {
+                        if (shape.TextEffect.Text.Length == 0
+                            || shape.Tags["GotBlured"].Trim().Length != 0)
+                        {
+                            continue;
+                        }
+                        // multiple paragraphs.. 
+                        foreach (TextRange2 paragraph in shape.TextFrame2.TextRange.Paragraphs)
+                        {
+                            if (paragraph.TrimText().Length > 0)
+                            {
+                                blurImageShape.Copy();
+                                var blurImageShapeCopy = thisSlide.Shapes.Paste()[1];
+                                listOfBlurImageCopy.Add(blurImageShapeCopy);
+                                PowerPointLabsGlobals.CopyShapePosition(blurImageShape, ref blurImageShapeCopy);
+                                blurImageShapeCopy.PictureFormat.Crop.ShapeLeft = paragraph.BoundLeft - 5;
+                                blurImageShapeCopy.PictureFormat.Crop.ShapeWidth = paragraph.BoundWidth + 10;
+                                blurImageShapeCopy.PictureFormat.Crop.ShapeTop = paragraph.BoundTop - 5;
+                                blurImageShapeCopy.PictureFormat.Crop.ShapeHeight = paragraph.BoundHeight + 10;
+                                var overlayBlurShape = thisSlide.Shapes.AddShape(MsoAutoShapeType.msoShapeRectangle,
+                                                                paragraph.BoundLeft - 5,
+                                                                paragraph.BoundTop - 5,
+                                                                paragraph.BoundWidth + 10,
+                                                                paragraph.BoundHeight + 10);
+                                overlayBlurShape.Fill.ForeColor.RGB = Utils.Graphics.ConvertColorToRgb(Color.Black);
+                                overlayBlurShape.Fill.Transparency = 0.85f;
+                                overlayBlurShape.Line.Visible = MsoTriState.msoFalse;
+                                listOfBlurImageCopy.Add(overlayBlurShape);
+                                Utils.Graphics.MoveZToJustBehind(blurImageShapeCopy, shape);
+                                Utils.Graphics.MoveZToJustBehind(overlayBlurShape, shape);
+                                shape.Tags.Add("GotBlured", blurImageShapeCopy.Name);
+                            }
+                        }
+                    }
+                }
+                blurImageShape.ZOrder(MsoZOrderCmd.msoSendToBack);
+
+                thisSlide.GetNativeSlide().Export(previewFile6, "JPG");
+                PreviewList.Add(new ImageItem
+                {
+                    ImageFile = previewFile6
+                });
+
+                foreach (var shape in listOfBlurImageCopy)
+                {
+                    shape.Delete();
+                }
+                
+                blurImageShape.Delete();
                 overlayShape.Delete();
+
                 //
                 // Textbox style 3 starts
                 foreach (PowerPoint.Shape shape in thisSlide.Shapes)
@@ -370,10 +424,10 @@ namespace PowerPointLabs.ImageSearch
                             if (paragraph.TrimText().Length > 0)
                             {
                                 var highlightShape = thisSlide.Shapes.AddShape(MsoAutoShapeType.msoShapeRectangle,
-                                                                paragraph.BoundLeft,
-                                                                paragraph.BoundTop,
-                                                                paragraph.BoundWidth,
-                                                                paragraph.BoundHeight);
+                                                                paragraph.BoundLeft - 5,
+                                                                paragraph.BoundTop - 5,
+                                                                paragraph.BoundWidth + 10,
+                                                                paragraph.BoundHeight + 10);
                                 highlightShape.Fill.ForeColor.RGB = Utils.Graphics.ConvertColorToRgb(Color.Black); // TODO customize
                                 highlightShape.Line.Visible = MsoTriState.msoFalse;
                                 Utils.Graphics.MoveZToJustBehind(highlightShape, shape);
@@ -387,11 +441,10 @@ namespace PowerPointLabs.ImageSearch
                 thisSlide.GetNativeSlide().Export(previewFile4, "JPG");
                 PreviewList.Add(new ImageItem
                 {
-                    ImageFile = previewFile4,
-                    // TODO why need fullsize image file here?
-                    FullSizeImageFile = imageItem.FullSizeImageFile
+                    ImageFile = previewFile4
                 });
 
+                //
                 // dont affect next time preview
                 thisSlide.Delete();
 
