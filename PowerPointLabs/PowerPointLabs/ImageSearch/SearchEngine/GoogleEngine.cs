@@ -12,6 +12,7 @@ namespace PowerPointLabs.ImageSearch.SearchEngine
     {
         public const int NumOfItemsPerSearch = 30;
         public const int NumOfItemsPerRequest = 10;
+        public const int MaxNumOfItems = 100;
 
         // state, used for Search More
         private string _lastTimeQuery = "";
@@ -48,7 +49,7 @@ namespace PowerPointLabs.ImageSearch.SearchEngine
             return this;
         }
 
-        public delegate void WhenCompletedEventDelegate();
+        public delegate void WhenCompletedEventDelegate(bool isSuccessful);
 
         private event WhenCompletedEventDelegate WhenCompletedDelegate;
 
@@ -62,9 +63,9 @@ namespace PowerPointLabs.ImageSearch.SearchEngine
         private string api =
             "https://www.googleapis.com/customsearch/v1?filter=1&cx=017201692871514580973%3Awwdg7q__" +
 //            "mb4&imgSize=large&searchType=image&imgType=photo&safe=medium&key=AIzaSyCGcq3O8NN9U7YX-Pj3E7tZde0yaFFeUyY";
-                "mb4&imgSize=large&searchType=image&imgType=photo&safe=medium&key=AIzaSyDQeqy9efF_ASgi2dk3Ortj2QNnz90RdOw";
+//                "mb4&imgSize=large&searchType=image&imgType=photo&safe=medium&key=AIzaSyDQeqy9efF_ASgi2dk3Ortj2QNnz90RdOw";
 //                "mb4&imgSize=large&searchType=image&imgType=photo&safe=medium&key=AIzaSyDXR8wBYL6al5jXIXTHpEF28CCuvL0fjKk";
-//                "mb4&imgSize=large&searchType=image&imgType=photo&safe=medium&key=AIzaSyAur2Fc0ewRyGK0U8NCaaEfuY0g_sx-Qwk";
+                "mb4&imgSize=large&searchType=image&imgType=photo&safe=medium&key=AIzaSyAur2Fc0ewRyGK0U8NCaaEfuY0g_sx-Qwk";
 //                "mb4&imgSize=large&searchType=image&imgType=photo&safe=medium&key=AIzaSyArj45s-GLXKX8NSM6HGdSFtRvAMuKE2p0";
 
         public void Search(string query)
@@ -84,8 +85,8 @@ namespace PowerPointLabs.ImageSearch.SearchEngine
 
         public void SearchMore()
         {
-            _nextStartIndex += NumOfItemsPerRequest;
             Search(_lastTimeQuery, _nextStartIndex, CreateBarrier(1));
+            _nextStartIndex += NumOfItemsPerRequest;
         }
 
         private void Search(string query, int startIdx, Barrier barrier = null)
@@ -131,10 +132,11 @@ namespace PowerPointLabs.ImageSearch.SearchEngine
         {
             return new Barrier(numOfParticipants, b =>
             {
+                var isSuccessful = !_isFailedAlready;
                 _isFailedAlready = false;
                 if (WhenCompletedDelegate != null)
                 {
-                    WhenCompletedDelegate();
+                    WhenCompletedDelegate(isSuccessful);
                 }
             });
         }

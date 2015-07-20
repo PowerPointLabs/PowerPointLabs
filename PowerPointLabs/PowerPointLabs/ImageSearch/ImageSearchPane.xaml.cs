@@ -68,39 +68,79 @@ namespace PowerPointLabs.ImageSearch
         private void InitSearchEngine()
         {
             // TODO MUST load options from config
-            SearchEngine = new GoogleEngine(new GoogleOptions()).WhenSucceed((searchResults, startIdx) =>
+            SearchEngine = new GoogleEngine(new GoogleOptions())
+            .WhenSucceed((searchResults, startIdx) =>
             {
-                for (int i = 0; i < searchResults.Items.Count; i++)
+                // TODO: when result is < 10, clear added image item
+                if (searchResults.Items == null)
+                {
+                    for (var i = startIdx + 0; i < startIdx + GoogleEngine.NumOfItemsPerRequest; i++)
+                    {
+                        SearchList[i].IsToDelete = true;
+                    }
+                    return;
+                }
+                for (var i = 0; i < GoogleEngine.NumOfItemsPerRequest; i++)
                 {
                     var item = SearchList[startIdx + i];
-                    var searchResult = searchResults.Items[i];
-                    var targetLocation = TempPath.GetPath("thumbnail");
+                    if (i < searchResults.Items.Count)
+                    {
+                        var searchResult = searchResults.Items[i];
+                        var targetLocation = TempPath.GetPath("thumbnail");
 
-                    // intent: 
-                    // download thumbnail and show it,
-                    // also save other meta info (e.g. full-size img link)
-                    new Downloader()
-                        .Get(searchResult.Image.ThumbnailLink, targetLocation)
-                        .After(() =>
-                        {
-                            item.ImageFile = targetLocation;
-                            item.FullSizeImageUri = searchResult.Link;
-                        })
-                        .Start();
+                        // intent: 
+                        // download thumbnail and show it,
+                        // also save other meta info (e.g. full-size img link)
+                        new Downloader()
+                            .Get(searchResult.Image.ThumbnailLink, targetLocation)
+                            .After(() =>
+                            {
+                                item.ImageFile = targetLocation;
+                                item.FullSizeImageUri = searchResult.Link;
+                            })
+                            .Start();
+                    }
+                    else
+                    {
+                        item.IsToDelete = true;
+                    }
                 }
-            }).WhenFail(response =>
+            })
+            .WhenFail(response =>
             {
                 Dispatcher.BeginInvoke(new Action(() =>
                 {
                     this.ShowMessageAsync("Error",
                         "Failed to search images. Please check your network, or the API quota is ran out.");
-                    SearchList.Clear();
                 }));
-            }).WhenCompleted(() =>
+            })
+            .WhenCompleted(isSuccess =>
             {
                 Dispatcher.BeginInvoke(new Action(() =>
                 {
                     SearchProgressRing.IsActive = false;
+                    var isNoMoreSearchResults = false;
+                    for (int i = 0; i < SearchList.Count;)
+                    {
+                        if (SearchList[i].IsToDelete)
+                        {
+                            SearchList.RemoveAt(i);
+                            isNoMoreSearchResults = true;
+                        }
+                        else
+                        {
+                            i++;
+                        }
+                    }
+                    if (isSuccess 
+                        && !isNoMoreSearchResults 
+                        && SearchList.Count + GoogleEngine.NumOfItemsPerRequest - 1/*load more item*/ <= GoogleEngine.MaxNumOfItems)
+                    {
+                        SearchList.Add(new ImageItem
+                        {
+                            ImageFile = TempPath.LoadMoreImgPath
+                        });
+                    }
                 }));
             });
         }
@@ -191,16 +231,19 @@ namespace PowerPointLabs.ImageSearch
                 return;
             }
 
-            PrepareToSearch();
+            PrepareToSearch(GoogleEngine.NumOfItemsPerSearch);
             SearchEngine.Search(query);
         }
 
-        private void PrepareToSearch()
+        private void PrepareToSearch(int expectedNumOfImages, bool isListClearNeeded = true)
         {
             // clear search list, and show a list of
             // 'Loading...' images
-            SearchList.Clear();
-            for (var i = 0; i < GoogleEngine.NumOfItemsPerSearch; i++)
+            if (isListClearNeeded)
+            {
+                SearchList.Clear();
+            }
+            for (var i = 0; i < expectedNumOfImages; i++)
             {
                 SearchList.Add(new ImageItem
                 {
@@ -226,17 +269,26 @@ namespace PowerPointLabs.ImageSearch
         private void SearchListBox_OnSelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             var image = (ImageItem) SearchListBox.SelectedValue;
-            if (image == null || image.ImageFile == TempPath.LoadingImgPath || image.ImageFile == TempPath.LoadMoreImgPath)
+            if (image == null || image.ImageFile == TempPath.LoadingImgPath)
             {
-                return;
+                PreviewList.Clear();
+                PreviewProgressRing.IsActive = false;
+            } 
+            else if (image.ImageFile == TempPath.LoadMoreImgPath)
+            {
+                image.ImageFile = TempPath.LoadingImgPath;
+                PrepareToSearch(GoogleEngine.NumOfItemsPerRequest - 1, isListClearNeeded: false);
+                SearchEngine.SearchMore();
             }
-            
-            PreviewTimer.Stop();
+            else
+            {
+                PreviewTimer.Stop();
 
-            DoPreview(image);
+                DoPreview(image);
 
-            // when timer ticks, try to download full size image to replace
-            PreviewTimer.Start();
+                // when timer ticks, try to download full size image to replace
+                PreviewTimer.Start();
+            }
         }
 
         // do preview processing

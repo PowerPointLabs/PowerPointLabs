@@ -25,6 +25,8 @@ namespace PowerPointLabs.ImageSearch.Model
         public string FullSizeImageFile { get; set; }
 
         // meta info
+        public bool IsToDelete { get; set; }
+
         private string _fullSizeImageUri;
 
         public string FullSizeImageUri
