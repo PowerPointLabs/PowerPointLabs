@@ -63,7 +63,8 @@ namespace PowerPointLabs
         #region HotkeyInitialisation
         private bool IsPanelOpen()
         {
-            return true;
+            var drawingsPane = Globals.ThisAddIn.GetActivePane(typeof(DrawingsPane));
+            return drawingsPane.Visible;
         }
 
         private Action RunOnlyWhenOpen(Action action)
@@ -82,7 +83,6 @@ namespace PowerPointLabs
 
         private void SwitchToLineTool()
         {
-            Debug.WriteLine("Line");
             // This should trigger the line tool.
             // see https://github.com/PowerPointLabs/powerpointlabs/blob/master/PowerPointLabs/PowerPointLabs/ThisAddIn.cs#L1381
             //TODO: Placeholder code. This just triggers the property window.
