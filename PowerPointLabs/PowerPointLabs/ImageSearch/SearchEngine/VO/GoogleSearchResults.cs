@@ -1,20 +1,20 @@
 ﻿using System.Collections.Generic;
 
-namespace PowerPointLabs.ImageSearch.VO
+namespace PowerPointLabs.ImageSearch.SearchEngine.VO
 {
-    class SearchResults
+    public class GoogleSearchResults
     {
         public List<SearchResult> Items { get; set; }
     }
 
-    class SearchResult
+    public class SearchResult
     {
         public string Title { get; set; }
         public string Link { get; set; }
         public SearchResultImage Image { get; set; }
     }
 
-    class SearchResultImage
+    public class SearchResultImage
     {
         public string ContextLink { get; set; }
         public string Width { get; set; }

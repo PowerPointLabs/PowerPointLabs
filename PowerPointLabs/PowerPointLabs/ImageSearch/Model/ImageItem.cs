@@ -5,7 +5,7 @@ namespace PowerPointLabs.ImageSearch.Model
 {
     public class ImageItem : INotifyPropertyChanged
     {
-        // thumbnail-purpose
+        // to be shown in the UI
         private string _imageFile;
 
         public string ImageFile
@@ -18,19 +18,18 @@ namespace PowerPointLabs.ImageSearch.Model
             }
         }
 
+        // as cache
         public string BlurImageFile { get; set; }
 
+        // as cache
         public string FullSizeImageFile { get; set; }
 
+        // meta info
         private string _fullSizeImageUri;
 
         public string FullSizeImageUri
         {
-            get
-            {
-                return _fullSizeImageUri;
-                
-            }
+            get { return _fullSizeImageUri; }
             set
             {
                 _fullSizeImageUri = value;
@@ -38,6 +37,7 @@ namespace PowerPointLabs.ImageSearch.Model
             }
         }
 
+        # region impl INotifyPropertyChanged
         public event PropertyChangedEventHandler PropertyChanged;
 
         [NotifyPropertyChangedInvocator]
@@ -46,5 +46,6 @@ namespace PowerPointLabs.ImageSearch.Model
             var handler = PropertyChanged;
             if (handler != null) handler(this, new PropertyChangedEventArgs(propertyName));
         }
+        # endregion
     }
 }

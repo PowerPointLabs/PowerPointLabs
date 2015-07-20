@@ -170,8 +170,8 @@
     <Reference Include="ImageProcessor">
       <HintPath>..\packages\ImageProcessor.1.9.5.0\lib\ImageProcessor.dll</HintPath>
     </Reference>
-    <Reference Include="MahApps.Metro, Version=1.1.2.0, Culture=neutral, PublicKeyToken=f4fb5a3c4d1e5b4f, processorArchitecture=MSIL">
-      <HintPath>..\packages\MahApps.Metro.1.1.2.0\lib\net40\MahApps.Metro.dll</HintPath>
+    <Reference Include="MahApps.Metro, Version=1.0.0.0, Culture=neutral, PublicKeyToken=f4fb5a3c4d1e5b4f, processorArchitecture=MSIL">
+      <HintPath>..\packages\MahApps.Metro.1.0.0.0\lib\net40\MahApps.Metro.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="Microsoft.Office.Interop.PowerPoint, Version=15.0.0.0, Culture=neutral, PublicKeyToken=71e9bce111e9429c, processorArchitecture=MSIL">
@@ -210,8 +210,8 @@
     <Reference Include="System.Speech" />
     <Reference Include="System.Windows.Forms" />
     <Reference Include="System.Windows.Forms.DataVisualization" />
-    <Reference Include="System.Windows.Interactivity">
-      <HintPath>..\packages\MahApps.Metro.1.1.2.0\lib\net40\System.Windows.Interactivity.dll</HintPath>
+    <Reference Include="System.Windows.Interactivity, Version=4.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\MahApps.Metro.1.0.0.0\lib\net40\System.Windows.Interactivity.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="System.Xaml" />
@@ -288,7 +288,10 @@
       <DependentUpon>ImageSearchPane.xaml</DependentUpon>
     </Compile>
     <Compile Include="ImageSearch\Model\ImageItem.cs" />
-    <Compile Include="ImageSearch\VO\SearchResults.cs" />
+    <Compile Include="ImageSearch\SearchEngine\GoogleEngine.cs" />
+    <Compile Include="ImageSearch\SearchEngine\Options\GoogleOptions.cs" />
+    <Compile Include="ImageSearch\Util\TempPath.cs" />
+    <Compile Include="ImageSearch\SearchEngine\VO\GoogleSearchResults.cs" />
     <Compile Include="Models\PowerPointBgEffectSlide.cs" />
     <Compile Include="LabeledThumbnail.cs">
       <SubType>UserControl</SubType>
@@ -750,6 +753,9 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\loading.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\loadMore.png" />
   </ItemGroup>
   <!-- Include the build rules for a C# project. -->
   <PropertyGroup>

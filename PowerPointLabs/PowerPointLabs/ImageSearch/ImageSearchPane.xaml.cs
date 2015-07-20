@@ -9,118 +9,76 @@ using System.Windows.Controls;
 using System.Windows.Controls.Primitives;
 using System.Windows.Input;
 using ImageProcessor;
+using MahApps.Metro.Controls.Dialogs;
 using Microsoft.Office.Core;
 using PowerPointLabs.AutoUpdate;
 using PowerPointLabs.ImageSearch.Model;
-using PowerPointLabs.ImageSearch.VO;
+using PowerPointLabs.ImageSearch.SearchEngine;
+using PowerPointLabs.ImageSearch.SearchEngine.Options;
+using PowerPointLabs.ImageSearch.Util;
 using PowerPointLabs.Models;
-using RestSharp;
-using RestSharp.Deserializers;
 using PowerPoint = Microsoft.Office.Interop.PowerPoint;
-using Path = System.IO.Path;
 
 namespace PowerPointLabs.ImageSearch
 {
     /// <summary>
     /// Interaction logic for ImageSearchPane.xaml
     /// </summary>
-    /// TODO close ppt to close images lab window
+    /// TODO MUST close ppt to close images lab window
+    /// TODO MUST make window singleton
     public partial class ImageSearchPane
     {
+        // list that holds search result item
         public ObservableCollection<ImageItem> SearchList { get; set; }
 
+        // list that holds preview item
         public ObservableCollection<ImageItem> PreviewList { get; set; }
 
+        // a timer used to download full-size image at background
+        public Timer PreviewTimer { get; set; }
+
+        private const int TimerInterval = 2000;
+
+        // TODO REFACTOR customize presentation that contains preview processing logic
+        // a background presentation that will do the preview processing
         public PowerPointPresentation PreviewPresentation { get; set; }
 
-        private Timer _previewTimer = new Timer { Interval = 2000 };
+        public GoogleEngine SearchEngine { get; set; }
 
-        private readonly string _loadingImgPath = Path.GetTempPath() + "loading" + DateTime.Now.GetHashCode();
-
+        #region Initialization
         public ImageSearchPane()
         {
             InitializeComponent();
-            // TODO show instructions when lists are empty
+
+            // TODO ENHANCEMENT show some instructions when lists are empty
             SearchList = new ObservableCollection<ImageItem>();
             PreviewList = new ObservableCollection<ImageItem>();
             SearchListBox.DataContext = this;
             PreviewListBox.DataContext = this;
-            // intent: background presentation to do preview processing
-            PreviewPresentation = new PowerPointPresentation(Path.GetTempPath(), "imagesLabPreview");
-            PreviewPresentation.Open(withWindow: false, focus: false);
-            try
+
+            var isTempFolderReady = TempPath.InitTempFolder();
+            if (isTempFolderReady)
             {
-                Properties.Resources.Loading.Save(_loadingImgPath);
+                InitSearchEngine();
+                InitPreviewPresentation();
+                InitPreviewTimer();
             }
-            catch
-            {
-                // may fail to save it, cannot override sometimes
-            }
-            InitPreviewTimer();
         }
 
-        // TODO: 
-        // 1. every time sequence different caused by multi-thread (done)
-        // 2. when show up the pane, focus on search textbox (done)
-        // 3. error handling
-        // -- from thread somehow,
-        // -- from IO
-        // -- from rest (not status code OK)
-        // -- from connection
-        private void SearchButton_OnClick(object sender, RoutedEventArgs e)
+        private void InitSearchEngine()
         {
-            // TODO: Store this API somewhere...
-            var api =
-                "https://www.googleapis.com/customsearch/v1?filter=1&cx=017201692871514580973%3Awwdg7q__" +
-                "mb4&imgSize=large&searchType=image&imgType=photo&safe=medium&key=AIzaSyCGcq3O8NN9U7YX-Pj3E7tZde0yaFFeUyY";
-//                "mb4&imgSize=large&searchType=image&imgType=photo&safe=medium&key=AIzaSyDQeqy9efF_ASgi2dk3Ortj2QNnz90RdOw";
-//                "mb4&imgSize=large&searchType=image&imgType=photo&safe=medium&key=AIzaSyDXR8wBYL6al5jXIXTHpEF28CCuvL0fjKk";
-//                "mb4&imgSize=large&searchType=image&imgType=photo&safe=medium&key=AIzaSyAur2Fc0ewRyGK0U8NCaaEfuY0g_sx-Qwk";
-//                "mb4&imgSize=large&searchType=image&imgType=photo&safe=medium&key=AIzaSyArj45s-GLXKX8NSM6HGdSFtRvAMuKE2p0";
-            var query = SearchTextBox.Text;
-            // TODO: what if query is empty ... may need escape as well
-
-            Dispatcher.BeginInvoke(new Action(() =>
+            // TODO MUST load options from config
+            SearchEngine = new GoogleEngine(new GoogleOptions()).WhenSucceed((searchResults, startIdx) =>
             {
-                // intent:
-                // clear search list, and show a list of
-                // 'Loading...' images
-                SearchList.Clear();
-                // TODO: number of result needs to be const
-                for (int i = 0; i < 30; i++)
-                {
-                    SearchList.Add(new ImageItem
-                    {
-                        ImageFile = _loadingImgPath
-                    });
-                }
-                SearchProgressRing.IsActive = true;
-            }));
-
-            // TODO the result can be less than 30
-            // TODO load more
-            SearchImages(api, query, 0);
-            SearchImages(api, query, 10);
-            SearchImages(api, query, 20, true);
-        }
-
-        private void SearchImages(string api, string query, int startIdx, bool isEnd = false)
-        {
-            var restClient = new RestClient {BaseUrl = new Uri(api + "&start=" + (startIdx + 1) + "&q=" + query)};
-            restClient.ExecuteAsync(new RestRequest(Method.GET), response =>
-            {
-                var deser = new JsonDeserializer();
-                var searchResults = deser.Deserialize<SearchResults>(response);
-                // TODO: err handling, eg not deser correctly, status code not 200
-
                 for (int i = 0; i < searchResults.Items.Count; i++)
                 {
                     var item = SearchList[startIdx + i];
                     var searchResult = searchResults.Items[i];
-                    var targetLocation = Path.GetTempPath() + Guid.NewGuid();
+                    var targetLocation = TempPath.GetPath("thumbnail");
+
                     // intent: 
                     // download thumbnail and show it,
-                    // also dump other meta info (e.g. full-size img link)
+                    // also save other meta info (e.g. full-size img link)
                     new Downloader()
                         .Get(searchResult.Image.ThumbnailLink, targetLocation)
                         .After(() =>
@@ -130,14 +88,126 @@ namespace PowerPointLabs.ImageSearch
                         })
                         .Start();
                 }
+            }).WhenFail(response =>
+            {
                 Dispatcher.BeginInvoke(new Action(() =>
                 {
-                    if (isEnd)
-                    {
-                        SearchProgressRing.IsActive = false;
-                    }
+                    this.ShowMessageAsync("Error",
+                        "Failed to search images. Please check your network, or the API quota is ran out.");
+                    SearchList.Clear();
+                }));
+            }).WhenCompleted(() =>
+            {
+                Dispatcher.BeginInvoke(new Action(() =>
+                {
+                    SearchProgressRing.IsActive = false;
                 }));
             });
+        }
+
+        private void InitPreviewPresentation()
+        {
+            PreviewPresentation = new PowerPointPresentation(TempPath.TempFolder, "ImagesLabPreview");
+            PreviewPresentation.Open(withWindow: false, focus: false);
+        }
+
+        // intent:
+        // when select a thumbnail for some time (defined by TimerInterval),
+        // try to download its full size version for better preview and can be used for insertion
+        private void InitPreviewTimer()
+        {
+            PreviewTimer = new Timer { Interval = TimerInterval };
+            PreviewTimer.Elapsed += (sender, args) =>
+            {
+                // in timer thread
+                PreviewTimer.Stop();
+                Dispatcher.BeginInvoke(new Action(() =>
+                {
+                    // UI thread starts
+                    var imageItem = SearchListBox.SelectedValue as ImageItem;
+                    // if already have cached full-size image, ignore
+                    if (imageItem == null || imageItem.FullSizeImageFile != null)
+                    {
+                        return;
+                    }
+
+                    // preview progress ring will be off, after preview processing is done
+                    PreviewProgressRing.IsActive = true;
+
+                    var fullsizeImageFile = TempPath.GetPath("fullsize");
+                    new Downloader()
+                        .Get(imageItem.FullSizeImageUri, fullsizeImageFile)
+                        .After(AfterDownloadFullSizeImage(imageItem, fullsizeImageFile))
+                        .OnError(WhenFailDownloadFullSizeImage())
+                        .Start();
+                }));
+            };
+        }
+
+        private Downloader.ErrorEventDelegate WhenFailDownloadFullSizeImage()
+        {
+            return () =>
+            {
+                // in downloader thread
+                Dispatcher.BeginInvoke(new Action(() =>
+                {
+                    PreviewProgressRing.IsActive = false;
+                }));
+            };
+        }
+
+        private Downloader.AfterDownloadEventDelegate AfterDownloadFullSizeImage(ImageItem imageItem, string fullsizeImageFile)
+        {
+            return () =>
+            {
+                // in downloader thread
+                Dispatcher.BeginInvoke(new Action(() =>
+                {
+                    // UI thread again
+                    // store back to image, so cache it
+                    imageItem.FullSizeImageFile = fullsizeImageFile;
+
+                    // intent: during download, selected item may have been changed to another one
+                    var currentImageItem = SearchListBox.SelectedValue as ImageItem;
+                    if (currentImageItem == null)
+                    {
+                        PreviewProgressRing.IsActive = false;
+                    }
+                    else if (currentImageItem.ImageFile == imageItem.ImageFile)
+                    {
+                        // preview progress ring will be off, after preview
+                        DoPreview(imageItem);
+                    }
+                }));
+            };
+        }
+        # endregion
+
+        private void SearchButton_OnClick(object sender, RoutedEventArgs e)
+        {
+            var query = SearchTextBox.Text;
+            if (query.Trim().Length == 0)
+            {
+                return;
+            }
+
+            PrepareToSearch();
+            SearchEngine.Search(query);
+        }
+
+        private void PrepareToSearch()
+        {
+            // clear search list, and show a list of
+            // 'Loading...' images
+            SearchList.Clear();
+            for (var i = 0; i < GoogleEngine.NumOfItemsPerSearch; i++)
+            {
+                SearchList.Add(new ImageItem
+                {
+                    ImageFile = TempPath.LoadingImgPath
+                });
+            }
+            SearchProgressRing.IsActive = true;
         }
 
         // intent:
@@ -155,53 +225,18 @@ namespace PowerPointLabs.ImageSearch
         // do previewing, when search result item is (not) selected
         private void SearchListBox_OnSelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            _previewTimer.Stop();
-            DoPreview((ImageItem) SearchListBox.SelectedValue);
-            // TODO: start a timer, and if re-select -> reset the timer
-            // when timer ticks, try to download full size image to replace
-            _previewTimer.Start();
-        }
-
-        // intent:
-        // when select a thumbnail for some time,
-        // try to download its full size version for better preview and can be used for insertion
-        private void InitPreviewTimer()
-        {
-            _previewTimer.Elapsed += (sender, args) =>
+            var image = (ImageItem) SearchListBox.SelectedValue;
+            if (image == null || image.ImageFile == TempPath.LoadingImgPath || image.ImageFile == TempPath.LoadMoreImgPath)
             {
-                // timer thread
-                _previewTimer.Stop();
-                Dispatcher.BeginInvoke(new Action(() =>
-                {
-                    // ui thread
-                    if (SearchListBox.SelectedValue != null
-                        && (SearchListBox.SelectedValue as ImageItem).FullSizeImageFile == null)
-                    {
-                        PreviewProgressRing.IsActive = true;
-                        var fullsizeImageFile = Path.GetTempPath() + Guid.NewGuid();
-                        var image = (ImageItem) SearchListBox.SelectedValue;
-                        new Downloader()
-                            .Get(image.FullSizeImageUri, fullsizeImageFile)
-                            .After(() =>
-                            {
-                                // downloader thread
-                                Dispatcher.BeginInvoke(new Action(() =>
-                                {
-                                    // ui thread again
-                                    // store back to image, so cache it
-                                    image.FullSizeImageFile = fullsizeImageFile;
-                                    if (SearchListBox.SelectedValue != null
-                                        && (SearchListBox.SelectedValue as ImageItem).ImageFile == image.ImageFile)
-                                    {
-                                        // intent: aft download, selected value may have been changed
-                                        DoPreview(image);
-                                    }
-                                }));
-                            })
-                            .Start();
-                    }
-                }));
-            };
+                return;
+            }
+            
+            PreviewTimer.Stop();
+
+            DoPreview(image);
+
+            // when timer ticks, try to download full size image to replace
+            PreviewTimer.Start();
         }
 
         // do preview processing
@@ -214,13 +249,13 @@ namespace PowerPointLabs.ImageSearch
                 PreviewProgressRing.IsActive = true;
                 PreviewList.Clear();
 
-                var previewFile = Path.GetTempPath() + "original" + DateTime.Now.GetHashCode(); // --> opt
-                var previewFile2 = Path.GetTempPath() + "directText" + DateTime.Now.GetHashCode();
-                var previewFile3 = Path.GetTempPath() + "overlay" + DateTime.Now.GetHashCode(); // --> opt for direct text
-                var previewFile4 = Path.GetTempPath() + "textbox" + DateTime.Now.GetHashCode(); // --> opt for blur textbox
-                var previewFile5 = Path.GetTempPath() + "blur" + DateTime.Now.GetHashCode();
-                var previewFile6 = Path.GetTempPath() + "blur_textbox" + DateTime.Now.GetHashCode();
-                var previewFile7 = Path.GetTempPath() + "blur_part" + DateTime.Now.GetHashCode(); // --> opt for blur
+                var previewFile = TempPath.GetPath("original"); // --> opt
+                var previewFile2 = TempPath.GetPath("directText");
+                var previewFile3 = TempPath.GetPath("overlay"); // --> opt for direct text
+                var previewFile4 = TempPath.GetPath("textbox"); // --> opt for blur textbox
+                var previewFile5 = TempPath.GetPath("blur");
+                var previewFile6 = TempPath.GetPath("blur_textbox");
+                var previewFile7 = TempPath.GetPath("blur_part"); // --> opt for blur
 
                 // TODO multi thread
                 // TODO DRY
@@ -233,6 +268,7 @@ namespace PowerPointLabs.ImageSearch
                 {
                     thisSlide = PreviewPresentation.AddSlide();
                 }
+                thisSlide.DeleteAllShapes();
                 try
                 {
                     PowerPointCurrentPresentationInfo.CurrentSlide.Shapes.Range().Copy();
@@ -330,7 +366,7 @@ namespace PowerPointLabs.ImageSearch
 
                 if (imageItem.BlurImageFile == null)
                 {
-                    var blurImageFile = Path.GetTempPath() + "blur" + DateTime.Now.GetHashCode();
+                    var blurImageFile = TempPath.GetPath("fullsize_blur");
                     using (var imageFactory = new ImageFactory())
                     {
                         var image = imageFactory.Load(imageItem.ImageFile);
@@ -467,36 +503,39 @@ namespace PowerPointLabs.ImageSearch
 
         // intent:
         // allow arrow keys to navigate the search result items in the list
-        private void SearchListBox_OnKeyDown(object sender, KeyEventArgs e)
+        private void ListBox_OnKeyDown(object sender, KeyEventArgs e)
         {
-            if (SearchListBox.Items.Count > 0)
+            var listbox = sender as ListBox;
+            if (listbox == null || listbox.Items.Count <= 0)
             {
-                switch (e.Key)
-                {
-                    case Key.Right:
-                    case Key.Down:
-                        if (!SearchListBox.Items.MoveCurrentToNext())
-                        {
-                            SearchListBox.Items.MoveCurrentToLast();
-                        }
-                        break;
-
-                    case Key.Left:
-                    case Key.Up:
-                        if (!SearchListBox.Items.MoveCurrentToPrevious())
-                        {
-                            SearchListBox.Items.MoveCurrentToFirst();
-                        }
-                        break;
-
-                    default:
-                        return;
-                }
-
-                e.Handled = true;
-                ListBoxItem lbi = (ListBoxItem)SearchListBox.ItemContainerGenerator.ContainerFromItem(SearchListBox.SelectedItem);
-                lbi.Focus();
+                return;
             }
+
+            switch (e.Key)
+            {
+                case Key.Right:
+                case Key.Down:
+                    if (!listbox.Items.MoveCurrentToNext())
+                    {
+                        listbox.Items.MoveCurrentToLast();
+                    }
+                    break;
+
+                case Key.Left:
+                case Key.Up:
+                    if (!listbox.Items.MoveCurrentToPrevious())
+                    {
+                        listbox.Items.MoveCurrentToFirst();
+                    }
+                    break;
+
+                default:
+                    return;
+            }
+
+            e.Handled = true;
+            var item = (ListBoxItem) listbox.ItemContainerGenerator.ContainerFromItem(listbox.SelectedItem);
+            item.Focus();
         }
 
         // intent: focus on search textbox when
@@ -529,39 +568,6 @@ namespace PowerPointLabs.ImageSearch
             }));
         }
 
-        // TODO DRY
-        private void PreviewListBox_OnKeyDownListBox_OnKeyDown(object sender, KeyEventArgs e)
-        {
-            if (PreviewListBox.Items.Count > 0)
-            {
-                switch (e.Key)
-                {
-                    case Key.Right:
-                    case Key.Down:
-                        if (!PreviewListBox.Items.MoveCurrentToNext())
-                        {
-                            PreviewListBox.Items.MoveCurrentToLast();
-                        }
-                        break;
-
-                    case Key.Left:
-                    case Key.Up:
-                        if (!PreviewListBox.Items.MoveCurrentToPrevious())
-                        {
-                            PreviewListBox.Items.MoveCurrentToFirst();
-                        }
-                        break;
-
-                    default:
-                        return;
-                }
-
-                e.Handled = true;
-                ListBoxItem lbi = (ListBoxItem)PreviewListBox.ItemContainerGenerator.ContainerFromItem(PreviewListBox.SelectedItem);
-                lbi.Focus();
-            }
-        }
-
         // rmb to close background presentation
         private void ImageSearchPane_OnClosing(object sender, CancelEventArgs e)
         {
@@ -576,7 +582,7 @@ namespace PowerPointLabs.ImageSearch
         {
             Dispatcher.BeginInvoke(new Action(() =>
             {
-                _previewTimer.Stop();
+                PreviewTimer.Stop();
                 PreviewProgressRing.IsActive = true;
             
                 // TODO know other style to apply
@@ -602,7 +608,7 @@ namespace PowerPointLabs.ImageSearch
                 {
                     // download full-size image & apply style's algorithm
                     var imageItem = (ImageItem) SearchListBox.SelectedValue;
-                    var fullsizeImageFile = Path.GetTempPath() + Guid.NewGuid();
+                    var fullsizeImageFile = TempPath.GetPath("fullsize");
                     // TODO downloader timeout???
                     new Downloader()
                         .Get(imageItem.FullSizeImageUri, fullsizeImageFile)

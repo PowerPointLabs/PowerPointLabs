@@ -10,8 +10,8 @@
              Width="1100"
              Height="600"
              WindowTitleBrush="#D74926"
-             BorderThickness="0"
              Closing="ImageSearchPane_OnClosing"
+             BorderThickness="0"
              GlowBrush="#000000">
     <controls:MetroWindow.Resources>
         <ResourceDictionary>
@@ -52,7 +52,7 @@
                 <controls:ProgressRing Name="PreviewProgressRing" Width="10" Height="10" Grid.Column="4" IsActive="False" />
                 <controls:ToggleSwitch ToolTip="Expand/collapse preview region" OnLabel="" OffLabel="" IsCheckedChanged="PreviewDisplayToggleSwitch_OnIsCheckedChanged" Name="PreviewDisplayToggleSwitch" Grid.Column="5" Margin="0,-2,0,2" />
             </Grid>
-            <ListBox Name="PreviewListBox" KeyDown="PreviewListBox_OnKeyDownListBox_OnKeyDown" IsSynchronizedWithCurrentItem="True" SelectionChanged="PreivewListBox_OnSelectionChanged" ItemsSource="{Binding Path=PreviewList, Mode=TwoWay}" Grid.Row="2">
+            <ListBox Name="PreviewListBox" KeyDown="ListBox_OnKeyDown" IsSynchronizedWithCurrentItem="True" SelectionChanged="PreivewListBox_OnSelectionChanged" ItemsSource="{Binding Path=PreviewList, Mode=TwoWay}" Grid.Row="2">
                 <ListBox.Template>
                     <ControlTemplate TargetType="{x:Type ListBox}">
                         <ScrollViewer HorizontalScrollBarVisibility="Disabled" VerticalScrollBarVisibility="Auto">
@@ -98,7 +98,7 @@
                 <Button Grid.Column="2">Advanced..</Button>
                 <controls:ProgressRing Name="SearchProgressRing" Width="10" Height="10" Grid.Column="3" IsActive="False" />
             </Grid>
-            <ListBox Name="SearchListBox" KeyDown="SearchListBox_OnKeyDown" IsSynchronizedWithCurrentItem="True" SelectionChanged="SearchListBox_OnSelectionChanged" ItemsSource="{Binding Path=SearchList, Mode=TwoWay}" Grid.Row="2">
+            <ListBox Name="SearchListBox" KeyDown="ListBox_OnKeyDown" IsSynchronizedWithCurrentItem="True" SelectionChanged="SearchListBox_OnSelectionChanged" ItemsSource="{Binding Path=SearchList, Mode=TwoWay}" Grid.Row="2">
                 <ListBox.Template>
                     <ControlTemplate TargetType="{x:Type ListBox}">
                         <ScrollViewer HorizontalScrollBarVisibility="Disabled" VerticalScrollBarVisibility="Auto">
