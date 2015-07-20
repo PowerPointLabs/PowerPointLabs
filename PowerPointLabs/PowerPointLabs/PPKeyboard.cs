@@ -19,7 +19,9 @@ namespace PPExtraEventHelper
         private static Dictionary<int, Action> KeyDownActions;
         private static Dictionary<int, Action> KeyUpActions;
 
-        private static int HookStatus;
+        private static Native.HookProc hookProcedure;
+
+        private static int hookId;
         private static bool Initialised = false;
 
         public static void Init(PowerPoint.Application application)
@@ -31,7 +33,6 @@ namespace PPExtraEventHelper
 
                 application.WindowSelectionChange += (selection) =>
                 {
-                    //Debug.WriteLine("WindowSelectionChange");
                     if (!IsHooked())
                     {
                         IntPtr PPHandle = Process.GetCurrentProcess().MainWindowHandle;
@@ -59,16 +60,16 @@ namespace PPExtraEventHelper
         public static void CreateHook(IntPtr handle)
         {
             var slideViewWindowHandle = FindSlideViewWindowHandle(handle);
-            Native.HookProc hookProcedure = HookProcedureCallback;
-            HookStatus = Native.SetWindowsHookEx((int)Native.HookType.WH_KEYBOARD, hookProcedure, 0,
+            hookProcedure = HookProcedureCallback;
+            hookId = Native.SetWindowsHookEx((int)Native.HookType.WH_KEYBOARD, hookProcedure, 0,
                 Native.GetWindowThreadProcessId(slideViewWindowHandle, 0));
         }
 
-        public static bool Unhook()
+        public static bool StopHook()
         {
-            return Native.UnhookWindowsHookEx(HookStatus);
+            return Native.UnhookWindowsHookEx(hookId);
         }
-
+        
         public static void AddKeydownAction(Native.VirtualKey key, Action action)
         {
             KeyDownActions[(int) key] += action;
@@ -109,7 +110,6 @@ namespace PPExtraEventHelper
                 int keyIndex = wParam.ToInt32();
                 if (IsKeydownCommand(lParam))
                 {
-                    Debug.WriteLine("down");
                     if (!Keypressed[keyIndex])
                     {
                         KeyDownActions[keyIndex]();
@@ -118,7 +118,6 @@ namespace PPExtraEventHelper
                 }
                 else
                 {
-                    Debug.WriteLine("up");
                     if (Keypressed[keyIndex])
                     {
                         KeyUpActions[keyIndex]();
@@ -141,7 +140,7 @@ namespace PPExtraEventHelper
 
         private static bool IsHooked()
         {
-            return HookStatus != 0;
+            return hookId != 0;
         }
 
     }
