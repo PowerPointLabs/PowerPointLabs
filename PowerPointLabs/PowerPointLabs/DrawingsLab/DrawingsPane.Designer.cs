@@ -31,6 +31,8 @@
             this.LineButton = new System.Windows.Forms.Button();
             this.RectButton = new System.Windows.Forms.Button();
             this.button2 = new System.Windows.Forms.Button();
+            this.HideButton = new System.Windows.Forms.Button();
+            this.CloneButton = new System.Windows.Forms.Button();
             this.SuspendLayout();
             // 
             // LineButton
@@ -61,10 +63,32 @@
             this.button2.TabIndex = 2;
             this.button2.UseVisualStyleBackColor = true;
             // 
-            // CircleButton
+            // HideButton
+            // 
+            this.HideButton.Image = global::PowerPointLabs.Properties.Resources.About;
+            this.HideButton.Location = new System.Drawing.Point(144, 91);
+            this.HideButton.Name = "HideButton";
+            this.HideButton.Size = new System.Drawing.Size(44, 45);
+            this.HideButton.TabIndex = 3;
+            this.HideButton.UseVisualStyleBackColor = true;
+            this.HideButton.Click += new System.EventHandler(this.HideButton_Click);
+            // 
+            // CloneButton
+            // 
+            this.CloneButton.Image = global::PowerPointLabs.Properties.Resources.About;
+            this.CloneButton.Location = new System.Drawing.Point(208, 91);
+            this.CloneButton.Name = "CloneButton";
+            this.CloneButton.Size = new System.Drawing.Size(44, 45);
+            this.CloneButton.TabIndex = 4;
+            this.CloneButton.UseVisualStyleBackColor = true;
+            this.CloneButton.Click += new System.EventHandler(this.CloneButton_Click);
+            // 
+            // DrawingsPane
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+            this.Controls.Add(this.CloneButton);
+            this.Controls.Add(this.HideButton);
             this.Controls.Add(this.button2);
             this.Controls.Add(this.RectButton);
             this.Controls.Add(this.LineButton);
@@ -79,6 +103,8 @@
         private System.Windows.Forms.Button LineButton;
         private System.Windows.Forms.Button RectButton;
         private System.Windows.Forms.Button button2;
+        private System.Windows.Forms.Button HideButton;
+        private System.Windows.Forms.Button CloneButton;
 
     }
 }

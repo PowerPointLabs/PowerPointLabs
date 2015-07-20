@@ -16,6 +16,7 @@ using Microsoft.Office.Interop.PowerPoint;
 using PowerPointLabs.ColorPicker;
 using PowerPointLabs.Views;
 using Microsoft.Office.Core;
+using Shape = Microsoft.Office.Interop.PowerPoint.Shape;
 
 namespace PowerPointLabs
 {
@@ -58,6 +59,17 @@ namespace PowerPointLabs
         {
             SwitchToLineTool();
         }
+
+        private void HideButton_Click(object sender, EventArgs e)
+        {
+            HideTool();
+        }
+
+
+        private void CloneButton_Click(object sender, EventArgs e)
+        {
+            CloneTool();
+        }
         #endregion
 
         #region HotkeyInitialisation
@@ -78,6 +90,8 @@ namespace PowerPointLabs
             hotkeysInitialised = true;
 
             PPKeyboard.AddKeyupAction(Native.VirtualKey.VK_L, RunOnlyWhenOpen(SwitchToLineTool));
+            PPKeyboard.AddKeyupAction(Native.VirtualKey.VK_H, RunOnlyWhenOpen(HideTool));
+            PPKeyboard.AddKeyupAction(Native.VirtualKey.VK_D, RunOnlyWhenOpen(CloneTool));
         }
         #endregion
 
@@ -94,6 +108,24 @@ namespace PowerPointLabs
                 );
         }
 
+        private void HideTool()
+        {
+            var selection = PowerPointCurrentPresentationInfo.CurrentSelection;
+            if (selection.Type != PpSelectionType.ppSelectionShapes) return;
+
+            foreach (var shape in selection.ShapeRange.Cast<Shape>())
+            {
+                shape.Visible = MsoTriState.msoFalse;
+            }
+        }
+
+        private void CloneTool()
+        {
+            var selection = PowerPointCurrentPresentationInfo.CurrentSelection;
+            if (selection.Type != PpSelectionType.ppSelectionShapes) return;
+
+            PowerPointCurrentPresentationInfo.CurrentSlide.CopyShapesToSlide(selection.ShapeRange);
+        }
 
         protected override CreateParams CreateParams
         {
