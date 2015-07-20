@@ -33,6 +33,7 @@
             this.button2 = new System.Windows.Forms.Button();
             this.HideButton = new System.Windows.Forms.Button();
             this.CloneButton = new System.Windows.Forms.Button();
+            this.MultiCloneButton = new System.Windows.Forms.Button();
             this.SuspendLayout();
             // 
             // LineButton
@@ -83,10 +84,21 @@
             this.CloneButton.UseVisualStyleBackColor = true;
             this.CloneButton.Click += new System.EventHandler(this.CloneButton_Click);
             // 
+            // MultiCloneButton
+            // 
+            this.MultiCloneButton.Image = global::PowerPointLabs.Properties.Resources.About;
+            this.MultiCloneButton.Location = new System.Drawing.Point(208, 151);
+            this.MultiCloneButton.Name = "MultiCloneButton";
+            this.MultiCloneButton.Size = new System.Drawing.Size(44, 45);
+            this.MultiCloneButton.TabIndex = 4;
+            this.MultiCloneButton.UseVisualStyleBackColor = true;
+            this.MultiCloneButton.Click += new System.EventHandler(this.MultiCloneButton_Click);
+            // 
             // DrawingsPane
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+            this.Controls.Add(this.MultiCloneButton);
             this.Controls.Add(this.CloneButton);
             this.Controls.Add(this.HideButton);
             this.Controls.Add(this.button2);
@@ -105,6 +117,7 @@
         private System.Windows.Forms.Button button2;
         private System.Windows.Forms.Button HideButton;
         private System.Windows.Forms.Button CloneButton;
+        private System.Windows.Forms.Button MultiCloneButton;
 
     }
 }
