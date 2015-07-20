@@ -301,6 +301,7 @@ namespace PowerPointLabs
 
             ShutDownColorPane();
             ShutDownRecorderPane();
+            Globals.ThisAddIn.Ribbon.ImageSearchPane.Close();
 
             // find the document that holds the presentation with pres.Name
             // special case will be embedded slide. in this case pres.Windows return exception

@@ -24,8 +24,6 @@ namespace PowerPointLabs.ImageSearch
     /// <summary>
     /// Interaction logic for ImageSearchPane.xaml
     /// </summary>
-    /// TODO MUST close ppt to close images lab window
-    /// TODO MUST make window singleton
     public partial class ImageSearchPane
     {
         // list that holds search result item
@@ -45,6 +43,8 @@ namespace PowerPointLabs.ImageSearch
 
         public GoogleEngine SearchEngine { get; set; }
 
+        public bool IsOpen { get; set; }
+
         #region Initialization
         public ImageSearchPane()
         {
@@ -55,6 +55,7 @@ namespace PowerPointLabs.ImageSearch
             PreviewList = new ObservableCollection<ImageItem>();
             SearchListBox.DataContext = this;
             PreviewListBox.DataContext = this;
+            IsOpen = true;
 
             var isTempFolderReady = TempPath.InitTempFolder();
             if (isTempFolderReady)
@@ -71,7 +72,6 @@ namespace PowerPointLabs.ImageSearch
             SearchEngine = new GoogleEngine(new GoogleOptions())
             .WhenSucceed((searchResults, startIdx) =>
             {
-                // TODO: when result is < 10, clear added image item
                 if (searchResults.Items == null)
                 {
                     for (var i = startIdx + 0; i < startIdx + GoogleEngine.NumOfItemsPerRequest; i++)
@@ -111,7 +111,7 @@ namespace PowerPointLabs.ImageSearch
                 Dispatcher.BeginInvoke(new Action(() =>
                 {
                     this.ShowMessageAsync("Error",
-                        "Failed to search images. Please check your network, or the API quota is ran out.");
+                        "Failed to search images. Please check your network, or the daily API quota is ran out.");
                 }));
             })
             .WhenCompleted(isSuccess =>
@@ -309,7 +309,6 @@ namespace PowerPointLabs.ImageSearch
                 var previewFile6 = TempPath.GetPath("blur_textbox");
                 var previewFile7 = TempPath.GetPath("blur_part"); // --> opt for blur
 
-                // TODO multi thread
                 // TODO DRY
                 PowerPointSlide thisSlide;
                 try
@@ -336,7 +335,6 @@ namespace PowerPointLabs.ImageSearch
                 catch
                 {
                     // nothing to copy-paste
-                    // TODO then the cannot 
                 }
                 var imageShape = thisSlide.Shapes.AddPicture(imageItem.FullSizeImageFile ?? imageItem.ImageFile, 
                     MsoTriState.msoFalse, MsoTriState.msoTrue, 0,
@@ -623,6 +621,7 @@ namespace PowerPointLabs.ImageSearch
         // rmb to close background presentation
         private void ImageSearchPane_OnClosing(object sender, CancelEventArgs e)
         {
+            IsOpen = false;
             if (PreviewPresentation != null)
             {
                 PreviewPresentation.Close();
@@ -661,7 +660,7 @@ namespace PowerPointLabs.ImageSearch
                     // download full-size image & apply style's algorithm
                     var imageItem = (ImageItem) SearchListBox.SelectedValue;
                     var fullsizeImageFile = TempPath.GetPath("fullsize");
-                    // TODO downloader timeout???
+
                     new Downloader()
                         .Get(imageItem.FullSizeImageUri, fullsizeImageFile)
                         .After(() =>
