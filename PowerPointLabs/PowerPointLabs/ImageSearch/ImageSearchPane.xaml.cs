@@ -708,5 +708,22 @@ namespace PowerPointLabs.ImageSearch
                 }
             }));
         }
+
+        private void ImageSearchPane_OnIsKeyboardFocusWithinChanged(object sender, DependencyPropertyChangedEventArgs e)
+        {
+            var isFocused = (bool) e.NewValue;
+            if (!isFocused) return;
+            
+            var image = (ImageItem) SearchListBox.SelectedValue;
+            if (image == null || image.ImageFile == TempPath.LoadingImgPath)
+            {
+                PreviewList.Clear();
+                PreviewProgressRing.IsActive = false;
+            }
+            else
+            {
+                DoPreview(image);
+            }
+        }
     }
 }

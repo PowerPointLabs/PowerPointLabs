@@ -6,13 +6,14 @@
              xmlns:controls="clr-namespace:MahApps.Metro.Controls;assembly=MahApps.Metro"     
              mc:Ignorable="d" 
              WindowStartupLocation="CenterScreen"
+             SaveWindowPosition="True"
              Title="Images Lab"
              Width="1100"
              Height="600"
              WindowTitleBrush="#D74926"
              Closing="ImageSearchPane_OnClosing"
-             BorderThickness="0"
-             GlowBrush="#000000">
+             GlowBrush="#CACACA"
+             IsKeyboardFocusWithinChanged="ImageSearchPane_OnIsKeyboardFocusWithinChanged">
     <controls:MetroWindow.Resources>
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
