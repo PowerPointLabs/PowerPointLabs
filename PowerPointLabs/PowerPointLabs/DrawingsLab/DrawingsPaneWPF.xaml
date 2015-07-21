@@ -23,13 +23,13 @@
             <RowDefinition Height="1*"/>
         </Grid.RowDefinitions>
         <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="61*"/>
-            <ColumnDefinition Width="61*"/>
-            <ColumnDefinition Width="61"/>
-            <ColumnDefinition Width="61*"/>
-            <ColumnDefinition Width="60*"/>
+            <ColumnDefinition Width="1*"/>
+            <ColumnDefinition Width="1*"/>
+            <ColumnDefinition Width="1*"/>
+            <ColumnDefinition Width="1*"/>
+            <ColumnDefinition Width="1*"/>
         </Grid.ColumnDefinitions>
-        <Button Content="Line" Grid.Row="1" Grid.Column="0" Click="LineButton_Click" BorderBrush="White"/>
+        <Button Content="Line" Grid.Row="1" Grid.Column="0" Click="LineButton_Click"/>
         <Button Content="Rect" Grid.Row="1" Grid.Column="1" Click="LineButton_Click"/>
         <Button Content="Circle" Grid.Row="1" Grid.Column="2" Click="LineButton_Click"/>
         <Button Content="Hide" Grid.Row="2" Grid.Column="2" Click="HideButton_Click"/>

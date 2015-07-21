@@ -115,16 +115,5 @@ namespace PowerPointLabs
                 ));
         }
         #endregion
-
-
-        protected override CreateParams CreateParams
-        {
-            get
-            {
-                var createParams = base.CreateParams;
-                createParams.ExStyle |= (int)Native.Message.WS_EX_COMPOSITED;  // Turn on WS_EX_COMPOSITED
-                return createParams;
-            }
-        }
     }
 }
