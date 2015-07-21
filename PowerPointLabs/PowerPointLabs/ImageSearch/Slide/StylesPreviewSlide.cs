@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Drawing;
+using System.Globalization;
 using ImageProcessor;
 using Microsoft.Office.Core;
 using PowerPointLabs.ImageSearch.Model;
@@ -21,6 +22,8 @@ namespace PowerPointLabs.ImageSearch.Slide
         }
 
         public const string ShapeNamePrefix = "pptImagesLab";
+
+        public const string OriginalFontSize = "originalFontSize";
 
         private ImageItem ImageItem { get; set; }
 
@@ -66,17 +69,20 @@ namespace PowerPointLabs.ImageSearch.Slide
 
         // add a background image shape from imageItem
         // TODO add image reference info
-        public PowerPoint.Shape ApplyBackgroundEffect()
+        public PowerPoint.Shape ApplyBackgroundEffect(string overlayColor,int overlayTransparency)
         {
+            var overlay = ApplyOverlayStyle(overlayColor, overlayTransparency);
+            overlay.ZOrder(MsoZOrderCmd.msoSendToBack);
+
             var imageShape = AddPicture(ImageItem.FullSizeImageFile ?? ImageItem.ImageFile, EffectName.BackGround);
             imageShape.ZOrder(MsoZOrderCmd.msoSendToBack);
             FitToSlide.AutoFit(imageShape, PreviewPresentation);
+            
             return imageShape;
         }
 
         // apply text formats to textbox & placeholer
-        // TODO think about a way to recover
-        public void ApplyTextEffect()
+        public void ApplyTextEffect(string fontFamily, string fontColor, int fontSizeToIncrease)
         {
             foreach (PowerPoint.Shape shape in Shapes)
             {
@@ -92,31 +98,40 @@ namespace PowerPointLabs.ImageSearch.Slide
 
                 var font = shape.TextFrame2.TextRange.TrimText().Font;
 
-                font.Fill.ForeColor.RGB 
-                    = Graphics.ConvertColorToRgb(Color.White); // TODO customize
-                font.Name = "Segoe UI Light"; // TODO customize
-                var textEffect = shape.TextEffect;
-//                textEffect.FontSize += 10; // TODO customize
+                font.Fill.ForeColor.RGB
+                    = Graphics.ConvertColorToRgb(ColorTranslator.FromHtml(fontColor));
+                font.Name = fontFamily;
+
+                if (shape.Tags[OriginalFontSize].Trim().Length != 0)
+                {
+                    shape.TextEffect.FontSize = float.Parse(shape.Tags[OriginalFontSize]);
+                    shape.TextEffect.FontSize += fontSizeToIncrease;
+                }
+                else // not applied before
+                {
+                    shape.Tags.Add(OriginalFontSize, shape.TextEffect.FontSize.ToString(CultureInfo.InvariantCulture));
+                    shape.TextEffect.FontSize += fontSizeToIncrease;
+                }
             }
         }
 
         // add overlay layer 
-        public PowerPoint.Shape ApplyOverlayStyle(float transparency)
+        public PowerPoint.Shape ApplyOverlayStyle(string color, int transparency)
         {
             var overlayShape = Shapes.AddShape(MsoAutoShapeType.msoShapeRectangle, 0, 0,
                 PreviewPresentation.SlideWidth,
                 PreviewPresentation.SlideHeight);
             ChangeName(overlayShape, EffectName.Overlay);
-            overlayShape.Fill.ForeColor.RGB = Graphics.ConvertColorToRgb(Color.Black);
-            overlayShape.Fill.Transparency = transparency;
+            overlayShape.Fill.ForeColor.RGB = Graphics.ConvertColorToRgb(ColorTranslator.FromHtml(color));
+            overlayShape.Fill.Transparency = (float) transparency / 100;
             overlayShape.Line.Visible = MsoTriState.msoFalse;
             return overlayShape;
         }
 
         // add a blured background image shape from imageItem
-        public PowerPoint.Shape ApplyBlurEffect(PowerPoint.Shape imageShape = null)
+        public PowerPoint.Shape ApplyBlurEffect(PowerPoint.Shape imageShape, string overlayColor, int transparency)
         {
-            var overlayShape = ApplyOverlayStyle(0.85f);
+            var overlayShape = ApplyOverlayStyle(overlayColor, transparency);
 
             if (ImageItem.BlurImageFile == null)
             {
@@ -134,7 +149,7 @@ namespace PowerPointLabs.ImageSearch.Slide
             return blurImageShape;
         }
 
-        public void ApplyBlurTextboxEffect(PowerPoint.Shape blurImageShape)
+        public void ApplyBlurTextboxEffect(PowerPoint.Shape blurImageShape, string overlayColor, int transparency)
         {
             foreach (PowerPoint.Shape shape in Shapes)
             {
@@ -164,8 +179,8 @@ namespace PowerPointLabs.ImageSearch.Slide
                             paragraph.BoundTop - 5,
                             paragraph.BoundWidth + 10,
                             paragraph.BoundHeight + 10);
-                        overlayBlurShape.Fill.ForeColor.RGB = Utils.Graphics.ConvertColorToRgb(Color.Black);
-                        overlayBlurShape.Fill.Transparency = 0.85f;
+                        overlayBlurShape.Fill.ForeColor.RGB = Graphics.ConvertColorToRgb(ColorTranslator.FromHtml(overlayColor));
+                        overlayBlurShape.Fill.Transparency = (float)transparency / 100;
                         overlayBlurShape.Line.Visible = MsoTriState.msoFalse;
                         ChangeName(overlayBlurShape, EffectName.Blur);
                         Graphics.MoveZToJustBehind(blurImageShapeCopy, shape);

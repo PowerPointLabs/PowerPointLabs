@@ -1,0 +1,61 @@
+﻿<UserControl x:Class="PowerPointLabs.ImageSearch.StyleOptionsPane"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:controls="clr-namespace:MahApps.Metro.Controls;assembly=MahApps.Metro"
+             mc:Ignorable="d" 
+             d:DesignHeight="350" d:DesignWidth="400">
+    <UserControl.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="pack://application:,,,/MahApps.Metro;component/Styles/Controls.xaml" />
+                <ResourceDictionary Source="pack://application:,,,/MahApps.Metro;component/Styles/Fonts.xaml" />
+                <ResourceDictionary Source="pack://application:,,,/MahApps.Metro;component/Styles/Colors.xaml" />
+                <ResourceDictionary Source="pack://application:,,,/MahApps.Metro;component/Styles/Accents/orange.xaml" />
+                <ResourceDictionary Source="pack://application:,,,/MahApps.Metro;component/Styles/Accents/basedark.xaml" />
+            </ResourceDictionary.MergedDictionaries>
+        </ResourceDictionary>
+    </UserControl.Resources>
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="200"/>
+            <ColumnDefinition Width="200"/>
+        </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="35"/>
+            <RowDefinition Height="35"/>
+            <RowDefinition Height="35"/>
+            <RowDefinition Height="35"/>
+            <RowDefinition Height="35"/>
+            <RowDefinition Height="35"/>
+            <RowDefinition Height="35"/>
+            <RowDefinition Height="35"/>
+            <RowDefinition Height="35"/>
+            <RowDefinition Height="35"/>
+        </Grid.RowDefinitions>
+        <Label Content="General" Foreground="#AAAAAA" FontSize="15" HorizontalAlignment="Left" VerticalAlignment="Center" Grid.Column="0" Grid.Row="0"/>
+        <Label Content="use original text format" Foreground="#FFFFFF" FontSize="15" HorizontalAlignment="Left" VerticalAlignment="Center" Grid.Column="0" Grid.Row="1"/>
+        <controls:ToggleSwitch IsChecked="{Binding Path=IsUseOriginalTextFormat, Mode=TwoWay, NotifyOnSourceUpdated=True}" HorizontalAlignment="Left" OnLabel="" OffLabel="" Grid.Row="1" Grid.Column="1" />
+        <Label Content="font family" Foreground="#FFFFFF" FontSize="15" HorizontalAlignment="Left" VerticalAlignment="Center" Grid.Column="0" Grid.Row="2"/>
+        <ComboBox SelectedIndex="{Binding Path=FontFamily, Mode=TwoWay, NotifyOnSourceUpdated=True}" HorizontalAlignment="Left" VerticalAlignment="Center" Grid.Column="1" Grid.Row="2">
+            <ComboBoxItem>Segoe UI</ComboBoxItem>
+            <ComboBoxItem>Segoe UI Light</ComboBoxItem>
+            <ComboBoxItem>Calibri</ComboBoxItem>
+            <ComboBoxItem>Calibri Light</ComboBoxItem>
+        </ComboBox>
+        <Label Content="font size increase by" Foreground="#FFFFFF" FontSize="15" HorizontalAlignment="Left" VerticalAlignment="Center" Grid.Column="0" Grid.Row="3"/>
+        <controls:NumericUpDown Value="{Binding Path=FontSizeIncrease, Mode=TwoWay, NotifyOnSourceUpdated=True}" Minimum="0" Maximum="20" Interval="1" HorizontalAlignment="Left" VerticalAlignment="Center" Grid.Column="1" Grid.Row="3" />
+        <Label Content="font color" Foreground="#FFFFFF" FontSize="15" HorizontalAlignment="Left" VerticalAlignment="Center" Grid.Column="0" Grid.Row="4"/>
+        <Border Name="FontColorPanel" MouseLeftButtonUp="ColorPanel_OnMouseLeftButtonUp" Background="{Binding Path=FontColor, Mode=TwoWay, NotifyOnSourceUpdated=True}" BorderBrush="#D74926" BorderThickness="1" Height="29" Width="100" HorizontalAlignment="Left" VerticalAlignment="Center" Grid.Column="1" Grid.Row="4" />
+        
+        <Label Content="Overlay" Foreground="#AAAAAA" FontSize="15" HorizontalAlignment="Left" VerticalAlignment="Center" Grid.Column="0" Grid.Row="5"/>
+        <Label Content="Color" Foreground="#FFFFFF" FontSize="15" HorizontalAlignment="Left" VerticalAlignment="Center" Grid.Column="0" Grid.Row="6"/>
+        <Border Name="OverlayColorPanel" MouseLeftButtonUp="ColorPanel_OnMouseLeftButtonUp" Background="{Binding Path=OverlayColor, Mode=TwoWay, NotifyOnSourceUpdated=True}" BorderBrush="#D74926" BorderThickness="1" Height="29" Width="100" HorizontalAlignment="Left" VerticalAlignment="Center" Grid.Column="1" Grid.Row="6" />
+        <Label Content="Transparency" Foreground="#FFFFFF" FontSize="15" HorizontalAlignment="Left" VerticalAlignment="Center" Grid.Column="0" Grid.Row="7"/>
+        <Slider Value="{Binding Path=Transparency, Mode=TwoWay, NotifyOnSourceUpdated=True}" Width="160" Minimum="1" Maximum="100" HorizontalAlignment="Left" VerticalAlignment="Center" Grid.Column="1" Grid.Row="7"></Slider>
+        
+        
+        <Button Click="ButtonBase_OnClick" Content="Reset" Width="50" Height="30" HorizontalAlignment="Left" VerticalAlignment="Center" Grid.Column="0" Grid.Row="9"></Button>
+    </Grid>
+</UserControl>

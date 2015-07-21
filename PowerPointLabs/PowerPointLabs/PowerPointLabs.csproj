@@ -287,10 +287,16 @@
       <DependentUpon>ImageSearchPane.xaml</DependentUpon>
     </Compile>
     <Compile Include="ImageSearch\Model\ImageItem.cs" />
+    <Compile Include="ImageSearch\Model\Notifiable.cs" />
+    <Compile Include="ImageSearch\Model\StyleOptions.cs" />
     <Compile Include="ImageSearch\Presentation\StylesPreviewPresentation.cs" />
     <Compile Include="ImageSearch\SearchEngine\GoogleEngine.cs" />
     <Compile Include="ImageSearch\SearchEngine\Options\GoogleOptions.cs" />
     <Compile Include="ImageSearch\Slide\StylesPreviewSlide.cs" />
+    <Compile Include="ImageSearch\StyleOptionsPane.xaml.cs">
+      <DependentUpon>StyleOptionsPane.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="ImageSearch\Util\StoragePath.cs" />
     <Compile Include="ImageSearch\Util\TempPath.cs" />
     <Compile Include="ImageSearch\SearchEngine\VO\GoogleSearchResults.cs" />
     <Compile Include="Models\PowerPointBgEffectSlide.cs" />
@@ -745,6 +751,10 @@
   </ItemGroup>
   <ItemGroup>
     <Page Include="ImageSearch\ImageSearchPane.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="ImageSearch\StyleOptionsPane.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

@@ -3,7 +3,7 @@ using PowerPointLabs.Annotations;
 
 namespace PowerPointLabs.ImageSearch.Model
 {
-    public class ImageItem : INotifyPropertyChanged
+    public class ImageItem : Notifiable
     {
         // to be shown in the UI
         private string _imageFile;
@@ -38,16 +38,5 @@ namespace PowerPointLabs.ImageSearch.Model
                 OnPropertyChanged("FullSizeImageUri");
             }
         }
-
-        # region impl INotifyPropertyChanged
-        public event PropertyChangedEventHandler PropertyChanged;
-
-        [NotifyPropertyChangedInvocator]
-        protected virtual void OnPropertyChanged(string propertyName)
-        {
-            var handler = PropertyChanged;
-            if (handler != null) handler(this, new PropertyChangedEventArgs(propertyName));
-        }
-        # endregion
     }
 }

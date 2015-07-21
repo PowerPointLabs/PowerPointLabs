@@ -4,6 +4,7 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:controls="clr-namespace:MahApps.Metro.Controls;assembly=MahApps.Metro"     
+             xmlns:custom="clr-namespace:PowerPointLabs.ImageSearch"
              mc:Ignorable="d" 
              WindowStartupLocation="CenterScreen"
              SaveWindowPosition="True"
@@ -26,6 +27,13 @@
             </ResourceDictionary.MergedDictionaries>
         </ResourceDictionary>
     </controls:MetroWindow.Resources>
+    <controls:MetroWindow.Flyouts>
+        <controls:FlyoutsControl>
+            <controls:Flyout Name="StyleOptionsFlyout" Header="Style Options" IsModal="True" Position="Left" Width="400" >
+                <custom:StyleOptionsPane x:Name="OptionsPane" Margin="20,0,0,0" />
+            </controls:Flyout>
+        </controls:FlyoutsControl>
+    </controls:MetroWindow.Flyouts>
     <Grid Name="ImagesLabGrid">
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="320"></ColumnDefinition>
@@ -50,7 +58,7 @@
                 </Grid.ColumnDefinitions>
                 <Label Name="PreviewLabel" Grid.Column="1" Margin="0,0,5,0" FontSize="15">Preview</Label>
                 <Button IsEnabled="False" Name="PreviewInsert" Click="PreviewInsert_OnClick" Grid.Column="2" Margin="0,0,5,0">Insert</Button>
-                <Button Grid.Column="3" Margin="0,0,5,0">Options</Button>
+                <Button Name="StyleOptionsButton" Grid.Column="3" Margin="0,0,5,0" Click="StyleOptionsButton_OnClick">Options</Button>
                 <controls:ProgressRing Name="PreviewProgressRing" Width="10" Height="10" Grid.Column="4" IsActive="False" />
                 <controls:ToggleSwitch ToolTip="Expand/collapse preview region" OnLabel="" OffLabel="" IsCheckedChanged="PreviewDisplayToggleSwitch_OnIsCheckedChanged" Name="PreviewDisplayToggleSwitch" Grid.Column="5" Margin="0,-2,0,2" />
             </Grid>

@@ -45,6 +45,8 @@ namespace PowerPointLabs.ImageSearch
         // indicate whether the window is open/closed or not
         public bool IsOpen { get; set; }
 
+        public StyleOptions StyleOptions { get; set; }
+
         // indicate whether it's downloading fullsize image, so that debounce.
         // timer - it will download full size image after some time
         // insert - it will download full size image when there's no cache and user clicks insert button
@@ -67,6 +69,7 @@ namespace PowerPointLabs.ImageSearch
             SearchListBox.DataContext = this;
             PreviewListBox.DataContext = this;
             IsOpen = true;
+            InitStyleOptions();
 
             var isTempFolderReady = TempPath.InitTempFolder();
             if (isTempFolderReady)
@@ -75,6 +78,19 @@ namespace PowerPointLabs.ImageSearch
                 InitPreviewPresentation();
                 InitPreviewTimer();
             }
+        }
+
+        private void InitStyleOptions()
+        {
+            StyleOptions = StyleOptions.Load(StoragePath.GetPath("ImagesLabStyleOptions"));
+            OptionsPane.DataContext = StyleOptions;
+            StyleOptionsFlyout.IsOpenChanged += (sender, args) =>
+            {
+                if (!StyleOptionsFlyout.IsOpen)
+                {
+                    DoPreview();
+                }
+            };
         }
 
         private void InitSearchEngine()
@@ -168,7 +184,7 @@ namespace PowerPointLabs.ImageSearch
 
         private void InitPreviewPresentation()
         {
-            PreviewPresentation = new StylesPreviewPresentation();
+            PreviewPresentation = new StylesPreviewPresentation(StyleOptions);
             PreviewPresentation.Open(withWindow: false, focus: false);
         }
 
@@ -359,6 +375,7 @@ namespace PowerPointLabs.ImageSearch
                 if (PowerPointCurrentPresentationInfo.CurrentSlide != null)
                 {
                     PreviewPresentation.PreviewStyles(source);
+                    // TODO tooltip for different style.. direct text, blur, textbox...
                     PreviewList.Add(new ImageItem {ImageFile = PreviewPresentation.DirectTextStyleImagePath});
                     PreviewList.Add(new ImageItem {ImageFile = PreviewPresentation.BlurStyleImagePath});
                     PreviewList.Add(new ImageItem {ImageFile = PreviewPresentation.TextboxStyleImagePath});
@@ -438,10 +455,12 @@ namespace PowerPointLabs.ImageSearch
             {
                 PreviewPresentation.Close();
             }
+            StyleOptions.Save(StoragePath.GetPath("ImagesLabStyleOptions"));
         }
 
         private void PreviewInsert_OnClick(object sender, RoutedEventArgs e)
         {
+            // TODO undo stack
             PreviewTimer.Stop();
             PreviewProgressRing.IsActive = true;
 
@@ -494,6 +513,11 @@ namespace PowerPointLabs.ImageSearch
             var isFocused = (bool) e.NewValue;
             if (!isFocused) return;
             
+            DoPreview();
+        }
+
+        private void DoPreview()
+        {
             var image = (ImageItem) SearchListBox.SelectedValue;
             if (image == null || image.ImageFile == TempPath.LoadingImgPath)
             {
@@ -504,6 +528,11 @@ namespace PowerPointLabs.ImageSearch
             {
                 DoPreview(image);
             }
+        }
+
+        private void StyleOptionsButton_OnClick(object sender, RoutedEventArgs e)
+        {
+            StyleOptionsFlyout.IsOpen = true;
         }
     }
 }

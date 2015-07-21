@@ -16,11 +16,13 @@ namespace PowerPointLabs.ImageSearch.Presentation
         public string TextboxStyleImagePath { get; private set; }
         public string BlurStyleImagePath { get; private set; }
         public string DirectTextStyleImagePath { get; private set; }
+        private StyleOptions Options { get; set; }
 
-        public StylesPreviewPresentation()
+        public StylesPreviewPresentation(StyleOptions options)
         {
             Path = TempPath.TempFolder;
             Name = "ImagesLabPreview";
+            Options = options;
         }
 
         public StylesPreviewSlide AddSlide(ImageItem imageItem)
@@ -47,17 +49,21 @@ namespace PowerPointLabs.ImageSearch.Presentation
             var thisSlide = AddSlide(imageItem);
 
             // style: direct text
-            var imageShape = thisSlide.ApplyBackgroundEffect();
-            thisSlide.ApplyTextEffect();
+            var imageShape = thisSlide.ApplyBackgroundEffect(Options.OverlayColor, Options.Transparency);
+            if (!Options.IsUseOriginalTextFormat)
+            {
+                thisSlide.ApplyTextEffect(Options.GetFontFamily(), Options.FontColor, Options.FontSizeIncrease);
+            }
             thisSlide.GetNativeSlide().Export(DirectTextStyleImagePath, "JPG");
+            thisSlide.RemoveStyles(StylesPreviewSlide.EffectName.Overlay);
 
             // style: blur
-            var blurImageShape = thisSlide.ApplyBlurEffect(imageShape);
+            var blurImageShape = thisSlide.ApplyBlurEffect(imageShape, Options.OverlayColor, Options.Transparency);
             thisSlide.GetNativeSlide().Export(BlurStyleImagePath, "JPG");
             thisSlide.RemoveStyles(StylesPreviewSlide.EffectName.Overlay);
 
             // style: textbox
-            thisSlide.ApplyBlurTextboxEffect(blurImageShape);
+            thisSlide.ApplyBlurTextboxEffect(blurImageShape, Options.OverlayColor, Options.Transparency);
             thisSlide.GetNativeSlide().Export(TextboxStyleImagePath, "JPG");
 
             thisSlide.Delete();
@@ -70,21 +76,21 @@ namespace PowerPointLabs.ImageSearch.Presentation
             var thisSlide = new StylesPreviewSlide(currentSlide, Current, imageItem);
             if (previewImageItem.ImageFile.Contains(DirectTextStyle))
             {
-                thisSlide.ApplyBackgroundEffect();
-                thisSlide.ApplyTextEffect();
-            } 
+                thisSlide.ApplyBackgroundEffect(Options.OverlayColor, Options.Transparency);
+                ApplyTextEffect(thisSlide);
+            }
             else if (previewImageItem.ImageFile.Contains(BlurStyle))
             {
-                thisSlide.ApplyTextEffect();
-                thisSlide.ApplyBlurEffect();
+                ApplyTextEffect(thisSlide);
+                thisSlide.ApplyBlurEffect(null/*no need clear image shape*/, Options.OverlayColor, Options.Transparency);
             } 
             else if (previewImageItem.ImageFile.Contains(TextBoxStyle))
             {
-                var imageShape = thisSlide.ApplyBackgroundEffect();
-                thisSlide.ApplyTextEffect();
-                var blurImageShape = thisSlide.ApplyBlurEffect(imageShape);
+                var imageShape = thisSlide.ApplyBackgroundEffect(Options.OverlayColor, Options.Transparency);
+                ApplyTextEffect(thisSlide);
+                var blurImageShape = thisSlide.ApplyBlurEffect(imageShape, Options.OverlayColor, Options.Transparency);
                 thisSlide.RemoveStyles(StylesPreviewSlide.EffectName.Overlay);
-                thisSlide.ApplyBlurTextboxEffect(blurImageShape);
+                thisSlide.ApplyBlurTextboxEffect(blurImageShape, Options.OverlayColor, Options.Transparency);
             }
 
             var currentSelection = PowerPointCurrentPresentationInfo.CurrentSelection;
@@ -92,6 +98,14 @@ namespace PowerPointLabs.ImageSearch.Presentation
             {
                 currentSelection.Unselect();
                 Cursor.Current = Cursors.Default;
+            }
+        }
+
+        private void ApplyTextEffect(StylesPreviewSlide thisSlide)
+        {
+            if (!Options.IsUseOriginalTextFormat)
+            {
+                thisSlide.ApplyTextEffect(Options.GetFontFamily(), Options.FontColor, Options.FontSizeIncrease);
             }
         }
 
