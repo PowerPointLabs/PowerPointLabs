@@ -11,9 +11,9 @@
              Width="1100"
              Height="600"
              WindowTitleBrush="#D74926"
-             Closing="ImageSearchPane_OnClosing"
              BorderThickness="1"
              BorderBrush="#D74926"
+             Closing="ImageSearchPane_OnClosing"
              IsKeyboardFocusWithinChanged="ImageSearchPane_OnIsKeyboardFocusWithinChanged">
     <controls:MetroWindow.Resources>
         <ResourceDictionary>

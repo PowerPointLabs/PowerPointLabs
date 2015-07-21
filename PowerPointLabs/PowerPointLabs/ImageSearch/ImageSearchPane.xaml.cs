@@ -2,15 +2,12 @@
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
-using System.Drawing;
 using System.Timers;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Controls.Primitives;
 using System.Windows.Input;
-using ImageProcessor;
 using MahApps.Metro.Controls.Dialogs;
-using Microsoft.Office.Core;
 using PowerPointLabs.AutoUpdate;
 using PowerPointLabs.ImageSearch.Model;
 using PowerPointLabs.ImageSearch.Presentation;
@@ -18,8 +15,6 @@ using PowerPointLabs.ImageSearch.SearchEngine;
 using PowerPointLabs.ImageSearch.SearchEngine.Options;
 using PowerPointLabs.ImageSearch.SearchEngine.VO;
 using PowerPointLabs.ImageSearch.Util;
-using PowerPointLabs.Models;
-using PowerPoint = Microsoft.Office.Interop.PowerPoint;
 
 namespace PowerPointLabs.ImageSearch
 {
@@ -307,23 +302,13 @@ namespace PowerPointLabs.ImageSearch
                 var selectedId = PreviewListBox.SelectedIndex;
                 PreviewProgressRing.IsActive = true;
                 PreviewList.Clear();
+
                 PreviewPresentation.PreviewStyles(imageItem);
+                PreviewList.Add(new ImageItem { ImageFile = PreviewPresentation.DirectTextStyleImagePath });
+                PreviewList.Add(new ImageItem { ImageFile = PreviewPresentation.BlurStyleImagePath });
+                PreviewList.Add(new ImageItem { ImageFile = PreviewPresentation.TextboxStyleImagePath });
 
-                PreviewList.Add(new ImageItem
-                {
-                    ImageFile = PreviewPresentation.DirectTextStyleImagePath
-                });
-                PreviewList.Add(new ImageItem
-                {
-                    ImageFile = PreviewPresentation.BlurStyleImagePath
-                });
-                PreviewList.Add(new ImageItem
-                {
-                    ImageFile = PreviewPresentation.TextboxStyleImagePath
-                });
                 PreviewListBox.SelectedIndex = selectedId;
-
-                // try catch finally?
                 PreviewProgressRing.IsActive = false;
             }));
         }
@@ -406,70 +391,37 @@ namespace PowerPointLabs.ImageSearch
             }
         }
 
-        // TODO DRY
         private void PreviewInsert_OnClick(object sender, RoutedEventArgs e)
         {
-            Dispatcher.BeginInvoke(new Action(() =>
-            {
-                PreviewTimer.Stop();
-                PreviewProgressRing.IsActive = true;
-            
-                // TODO know other style to apply
-                // selected value can be null, this works if there's cache for full size image
-                if (((ImageItem) SearchListBox.SelectedValue).FullSizeImageFile != null)
-                {
-                    var thisSlide = PowerPointCurrentPresentationInfo.CurrentSlide;
-                    foreach (PowerPoint.Shape shape in thisSlide.Shapes)
-                    {
-                        if (shape.Name.StartsWith("pptImagesLab"))
-                        {
-                            shape.Delete();
-                        }
-                    }
-                    var imageShape = thisSlide.Shapes.AddPicture(((ImageItem) PreviewListBox.SelectedValue).FullSizeImageFile, MsoTriState.msoFalse,
-                        MsoTriState.msoTrue, 0, 0);
-                    imageShape.Name = "pptImagesLab" + DateTime.Now.GetHashCode();
-                    FitToSlide.AutoFit(imageShape, PreviewPresentation);
-                    imageShape.ZOrder(MsoZOrderCmd.msoSendToBack);
-                    PreviewProgressRing.IsActive = false;
-                }
-                else
-                {
-                    // download full-size image & apply style's algorithm
-                    var imageItem = (ImageItem) SearchListBox.SelectedValue;
-                    var fullsizeImageFile = TempPath.GetPath("fullsize");
+            PreviewTimer.Stop();
+            PreviewProgressRing.IsActive = true;
 
-                    new Downloader()
-                        .Get(imageItem.FullSizeImageUri, fullsizeImageFile)
-                        .After(() =>
+            var imageItem = (ImageItem) SearchListBox.SelectedValue;
+            var previewImageItem = (ImageItem) PreviewListBox.SelectedValue;
+            if (imageItem == null || previewImageItem == null) return;
+
+            if (imageItem.FullSizeImageFile != null)
+            {
+                PreviewPresentation.InsertStyles(imageItem, previewImageItem);
+                PreviewProgressRing.IsActive = false;
+            }
+            else
+            {
+                var fullsizeImageFile = TempPath.GetPath("fullsize");
+                new Downloader()
+                    .Get(imageItem.FullSizeImageUri, fullsizeImageFile)
+                    .After(() =>
+                    {
+                        Dispatcher.BeginInvoke(new Action(() =>
                         {
-                            Dispatcher.BeginInvoke(new Action(() =>
-                            {
-                                imageItem.FullSizeImageFile = fullsizeImageFile;
-                                if (SearchListBox.SelectedValue != null
-                                    && (SearchListBox.SelectedValue as ImageItem).ImageFile == imageItem.ImageFile)
-                                {
-                                    DoPreview(imageItem);
-                                }
-                                var thisSlide = PowerPointCurrentPresentationInfo.CurrentSlide;
-                                foreach (PowerPoint.Shape shape in thisSlide.Shapes)
-                                {
-                                    if (shape.Name.StartsWith("pptImagesLab"))
-                                    {
-                                        shape.Delete();
-                                    }
-                                }
-                                var imageShape = thisSlide.Shapes.AddPicture(fullsizeImageFile, MsoTriState.msoFalse,
-                                    MsoTriState.msoTrue, 0, 0);
-                                imageShape.Name = "pptImagesLab" + DateTime.Now.GetHashCode();
-                                FitToSlide.AutoFit(imageShape, PreviewPresentation);
-                                imageShape.ZOrder(MsoZOrderCmd.msoSendToBack);
-                                PreviewProgressRing.IsActive = false;
-                            }));
-                        })
-                        .Start();
-                }
-            }));
+                            imageItem.FullSizeImageFile = fullsizeImageFile;
+                            PreviewPresentation.InsertStyles(imageItem, previewImageItem);
+                            PreviewTimer.Start();
+                            PreviewProgressRing.IsActive = false;
+                        }));
+                    })
+                    .Start();
+            }
         }
 
         private void PreviewDisplayToggleSwitch_OnIsCheckedChanged(object sender, EventArgs e)
