@@ -1,6 +1,4 @@
-﻿using System.ComponentModel;
-using PowerPointLabs.Annotations;
-
+﻿
 namespace PowerPointLabs.ImageSearch.Model
 {
     public class ImageItem : Notifiable

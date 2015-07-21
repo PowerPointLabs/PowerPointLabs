@@ -1,7 +1,4 @@
 ﻿using System.ComponentModel;
-using System.IO;
-using System.Xml.Serialization;
-using PowerPointLabs.Annotations;
 
 namespace PowerPointLabs.ImageSearch.Model
 {
@@ -10,7 +7,6 @@ namespace PowerPointLabs.ImageSearch.Model
         # region impl INotifyPropertyChanged
         public event PropertyChangedEventHandler PropertyChanged;
 
-        [NotifyPropertyChangedInvocator]
         protected virtual void OnPropertyChanged(string propertyName)
         {
             var handler = PropertyChanged;
