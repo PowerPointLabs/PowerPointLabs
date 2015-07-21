@@ -45,8 +45,11 @@ namespace PowerPointLabs.ImageSearch
         public bool IsOpen { get; set; }
 
         // indicate whether it's downloading fullsize image, so that debounce.
-        private readonly HashSet<string> _timerDownloadingList = new HashSet<string>();
-        private readonly HashSet<string> _insertDownloadingList = new HashSet<string>();
+        // timer - it will download full size image after some time
+        // insert - it will download full size image when there's no cache and user clicks insert button
+        private readonly HashSet<string> _timerDownloadingUriList = new HashSet<string>();
+        private readonly HashSet<string> _insertDownloadingUriList = new HashSet<string>();
+        private readonly Dictionary<string, ImageItem> _insertDownloadingUriToPreviewImage = new Dictionary<string, ImageItem>();
 
         #region Initialization
         public ImageSearchPane()
@@ -76,12 +79,17 @@ namespace PowerPointLabs.ImageSearch
                 .WhenSucceed(WhenSearchSucceed())
                 .WhenCompleted(WhenSearchCompleted())
                 .WhenFail(response => {
-                    Dispatcher.BeginInvoke(new Action(() =>
-                    {
-                        this.ShowMessageAsync("Error",
-                            "Failed to search images. Please check your network, or the daily API quota is ran out.");
-                    }));
+                    ShowErrorMessageBox();
                 });
+        }
+
+        private void ShowErrorMessageBox()
+        {
+            Dispatcher.BeginInvoke(new Action(() =>
+            {
+                this.ShowMessageAsync("Error",
+                    "Failed to search images. Please check your network, or the daily API quota is ran out.");
+            }));
         }
 
         private GoogleEngine.WhenCompletedEventDelegate WhenSearchCompleted()
@@ -180,9 +188,9 @@ namespace PowerPointLabs.ImageSearch
                         // do nothing
                     }
                     // if not downloading the full size image yet, download it
-                    else if (!_timerDownloadingList.Contains(imageItem.FullSizeImageUri))
+                    else if (!_timerDownloadingUriList.Contains(imageItem.FullSizeImageUri))
                     {
-                        _timerDownloadingList.Add(imageItem.FullSizeImageUri);
+                        _timerDownloadingUriList.Add(imageItem.FullSizeImageUri);
                         // preview progress ring will be off, after preview processing is done
                         PreviewProgressRing.IsActive = true;
 
@@ -216,28 +224,24 @@ namespace PowerPointLabs.ImageSearch
         }
 
         private Downloader.AfterDownloadEventDelegate
-            AfterDownloadFullSizeImage(ImageItem imageItem, string fullsizeImageFile, ImageItem previewImageItem = null)
+            AfterDownloadFullSizeImage(ImageItem imageItem, string fullsizeImageFile)
         {
+            // timer's downloading will come here at the end,
+            // or both timer + insert's downloading will come here
             return () =>
             {
                 // in downloader thread
                 Dispatcher.BeginInvoke(new Action(() =>
                 {
-                    var isInvokeFromInsert = previewImageItem != null;
-                    if (isInvokeFromInsert)
-                    {
-                        _insertDownloadingList.Remove(imageItem.FullSizeImageUri);
-                    }
-                    else
-                    {
-                        _timerDownloadingList.Remove(imageItem.FullSizeImageUri);
-                    }
-
                     // UI thread again
                     // store back to image, so cache it
                     imageItem.FullSizeImageFile = fullsizeImageFile;
+                    var fullsizeImageUri = imageItem.FullSizeImageUri;
 
                     // intent: during download, selected item may have been changed to another one
+                    // if selected one got changed,
+                    // 1. no need to preview it
+                    // 2. no need to insert it to current slide
                     var currentImageItem = SearchListBox.SelectedValue as ImageItem;
                     if (currentImageItem == null)
                     {
@@ -245,13 +249,30 @@ namespace PowerPointLabs.ImageSearch
                     }
                     else if (currentImageItem.ImageFile == imageItem.ImageFile)
                     {
-                        if (previewImageItem != null)
+                        // if selected one remains
+                        // and it is to insert the full size image,
+                        ImageItem previewImageItem;
+                        if (_insertDownloadingUriList.Contains(fullsizeImageUri)
+                            && _insertDownloadingUriToPreviewImage
+                                .TryGetValue(fullsizeImageUri, out previewImageItem))
                         {
+                            // insert + do preview
                             PreviewPresentation.InsertStyles(imageItem, previewImageItem);
+                            DoPreview(imageItem);
+                        } 
+                        // or it is to preview only (from timer)
+                        else if (_timerDownloadingUriList.Contains(fullsizeImageUri))
+                        {
+                            DoPreview(imageItem);
                         }
-                        // preview progress ring will be off, after preview
-                        DoPreview(imageItem);
                     }
+
+                    // remove debounce check
+                    if (_insertDownloadingUriList.Remove(fullsizeImageUri))
+                    {
+                        _insertDownloadingUriToPreviewImage.Remove(fullsizeImageUri);
+                    }
+                    _timerDownloadingUriList.Remove(fullsizeImageUri);
                 }));
             };
         }
@@ -429,14 +450,24 @@ namespace PowerPointLabs.ImageSearch
                 PreviewPresentation.InsertStyles(imageItem, previewImageItem);
                 PreviewProgressRing.IsActive = false;
             }
-            else if (!_insertDownloadingList.Contains(imageItem.FullSizeImageUri))
+            else if (!_insertDownloadingUriList.Contains(imageItem.FullSizeImageUri))
             {
-                _insertDownloadingList.Add(imageItem.FullSizeImageUri);
+                var fullsizeImageUri = imageItem.FullSizeImageUri;
+                _insertDownloadingUriList.Add(fullsizeImageUri);
+                _insertDownloadingUriToPreviewImage[fullsizeImageUri] = previewImageItem;
+
                 var fullsizeImageFile = TempPath.GetPath("fullsize");
                 new Downloader()
-                    .Get(imageItem.FullSizeImageUri, fullsizeImageFile)
-                    .After(AfterDownloadFullSizeImage(imageItem, fullsizeImageFile, previewImageItem))
+                    .Get(fullsizeImageUri, fullsizeImageFile)
+                    .After(AfterDownloadFullSizeImage(imageItem, fullsizeImageFile))
+                    .OnError(ShowErrorMessageBox)
                     .Start();
+            }
+            // already downloading, then update preview image in the map
+            else
+            {
+                var fullsizeImageUri = imageItem.FullSizeImageUri;
+                _insertDownloadingUriToPreviewImage[fullsizeImageUri] = previewImageItem;
             }
         }
 
