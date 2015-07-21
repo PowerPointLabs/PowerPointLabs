@@ -62,12 +62,12 @@ namespace PowerPointLabs.ImageSearch.SearchEngine
         // TODO: construct api by search options
         private string api =
             "https://www.googleapis.com/customsearch/v1?filter=1&cx=017201692871514580973%3Awwdg7q__" +
-//            "mb4&imgSize=large&searchType=image&imgType=photo&safe=medium&key=AIzaSyCGcq3O8NN9U7YX-Pj3E7tZde0yaFFeUyY";
+            "mb4&imgSize=large&searchType=image&imgType=photo&safe=medium&key=AIzaSyCGcq3O8NN9U7YX-Pj3E7tZde0yaFFeUyY";
 //                "mb4&imgSize=large&searchType=image&imgType=photo&safe=medium&key=AIzaSyDQeqy9efF_ASgi2dk3Ortj2QNnz90RdOw";
 //                "mb4&imgSize=large&searchType=image&imgType=photo&safe=medium&key=AIzaSyDXR8wBYL6al5jXIXTHpEF28CCuvL0fjKk";
 //                "mb4&imgSize=large&searchType=image&imgType=photo&safe=medium&key=AIzaSyAur2Fc0ewRyGK0U8NCaaEfuY0g_sx-Qwk";
 //                "mb4&imgSize=large&searchType=image&imgType=photo&safe=medium&key=AIzaSyArj45s-GLXKX8NSM6HGdSFtRvAMuKE2p0";
-            "mb4&imgSize=large&searchType=image&imgType=photo&safe=medium&key=AIzaSyDCjhE8PoQXl0UYANzyx44LdVG9iQ_IVJ0";
+//            "mb4&imgSize=large&searchType=image&imgType=photo&safe=medium&key=AIzaSyDCjhE8PoQXl0UYANzyx44LdVG9iQ_IVJ0";
 
         public void Search(string query)
         {

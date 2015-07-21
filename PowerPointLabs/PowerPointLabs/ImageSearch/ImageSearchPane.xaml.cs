@@ -23,23 +23,30 @@ namespace PowerPointLabs.ImageSearch
     /// </summary>
     public partial class ImageSearchPane
     {
-        // list that holds search result item
+        // UI model - list that holds search result item
         public ObservableCollection<ImageItem> SearchList { get; set; }
 
-        // list that holds preview item
+        // UI model - list that holds preview item
         public ObservableCollection<ImageItem> PreviewList { get; set; }
 
         // a timer used to download full-size image at background
         public Timer PreviewTimer { get; set; }
 
+        // time to trigger the timer event
         private const int TimerInterval = 2000;
 
         // a background presentation that will do the preview processing
         public StylesPreviewPresentation PreviewPresentation { get; set; }
 
+        // the image search engine
         public GoogleEngine SearchEngine { get; set; }
 
+        // indicate whether the window is open/closed or not
         public bool IsOpen { get; set; }
+
+        // indicate whether it's downloading fullsize image, so that debounce.
+        private readonly HashSet<string> _timerDownloadingList = new HashSet<string>();
+        private readonly HashSet<string> _insertDownloadingList = new HashSet<string>();
 
         #region Initialization
         public ImageSearchPane()
@@ -170,18 +177,28 @@ namespace PowerPointLabs.ImageSearch
                     // if already have cached full-size image, ignore
                     if (imageItem == null || imageItem.FullSizeImageFile != null)
                     {
-                        return;
+                        // do nothing
                     }
+                    // if not downloading the full size image yet, download it
+                    else if (!_timerDownloadingList.Contains(imageItem.FullSizeImageUri))
+                    {
+                        _timerDownloadingList.Add(imageItem.FullSizeImageUri);
+                        // preview progress ring will be off, after preview processing is done
+                        PreviewProgressRing.IsActive = true;
 
-                    // preview progress ring will be off, after preview processing is done
-                    PreviewProgressRing.IsActive = true;
-
-                    var fullsizeImageFile = TempPath.GetPath("fullsize");
-                    new Downloader()
-                        .Get(imageItem.FullSizeImageUri, fullsizeImageFile)
-                        .After(AfterDownloadFullSizeImage(imageItem, fullsizeImageFile))
-                        .OnError(WhenFailDownloadFullSizeImage())
-                        .Start();
+                        var fullsizeImageFile = TempPath.GetPath("fullsize");
+                        new Downloader()
+                            .Get(imageItem.FullSizeImageUri, fullsizeImageFile)
+                            .After(AfterDownloadFullSizeImage(imageItem, fullsizeImageFile))
+                            .OnError(WhenFailDownloadFullSizeImage())
+                            .Start();
+                    }
+                    // it's downloading
+                    else
+                    {
+                        // preview progress ring will be off, after preview processing is done
+                        PreviewProgressRing.IsActive = true;
+                    }
                 }));
             };
         }
@@ -198,13 +215,24 @@ namespace PowerPointLabs.ImageSearch
             };
         }
 
-        private Downloader.AfterDownloadEventDelegate AfterDownloadFullSizeImage(ImageItem imageItem, string fullsizeImageFile)
+        private Downloader.AfterDownloadEventDelegate
+            AfterDownloadFullSizeImage(ImageItem imageItem, string fullsizeImageFile, ImageItem previewImageItem = null)
         {
             return () =>
             {
                 // in downloader thread
                 Dispatcher.BeginInvoke(new Action(() =>
                 {
+                    var isInvokeFromInsert = previewImageItem != null;
+                    if (isInvokeFromInsert)
+                    {
+                        _insertDownloadingList.Remove(imageItem.FullSizeImageUri);
+                    }
+                    else
+                    {
+                        _timerDownloadingList.Remove(imageItem.FullSizeImageUri);
+                    }
+
                     // UI thread again
                     // store back to image, so cache it
                     imageItem.FullSizeImageFile = fullsizeImageFile;
@@ -217,6 +245,10 @@ namespace PowerPointLabs.ImageSearch
                     }
                     else if (currentImageItem.ImageFile == imageItem.ImageFile)
                     {
+                        if (previewImageItem != null)
+                        {
+                            PreviewPresentation.InsertStyles(imageItem, previewImageItem);
+                        }
                         // preview progress ring will be off, after preview
                         DoPreview(imageItem);
                     }
@@ -300,7 +332,6 @@ namespace PowerPointLabs.ImageSearch
             Dispatcher.BeginInvoke(new Action(() =>
             {
                 var selectedId = PreviewListBox.SelectedIndex;
-                PreviewProgressRing.IsActive = true;
                 PreviewList.Clear();
 
                 PreviewPresentation.PreviewStyles(imageItem);
@@ -370,14 +401,7 @@ namespace PowerPointLabs.ImageSearch
         {
             Dispatcher.BeginInvoke(new Action(() =>
             {
-                if (PreviewListBox.SelectedValue != null)
-                {
-                    PreviewInsert.IsEnabled = true;
-                }
-                else
-                {
-                    PreviewInsert.IsEnabled = false;
-                }
+                PreviewInsert.IsEnabled = PreviewListBox.SelectedValue != null;
             }));
         }
 
@@ -405,21 +429,13 @@ namespace PowerPointLabs.ImageSearch
                 PreviewPresentation.InsertStyles(imageItem, previewImageItem);
                 PreviewProgressRing.IsActive = false;
             }
-            else
+            else if (!_insertDownloadingList.Contains(imageItem.FullSizeImageUri))
             {
+                _insertDownloadingList.Add(imageItem.FullSizeImageUri);
                 var fullsizeImageFile = TempPath.GetPath("fullsize");
                 new Downloader()
                     .Get(imageItem.FullSizeImageUri, fullsizeImageFile)
-                    .After(() =>
-                    {
-                        Dispatcher.BeginInvoke(new Action(() =>
-                        {
-                            imageItem.FullSizeImageFile = fullsizeImageFile;
-                            PreviewPresentation.InsertStyles(imageItem, previewImageItem);
-                            PreviewTimer.Start();
-                            PreviewProgressRing.IsActive = false;
-                        }));
-                    })
+                    .After(AfterDownloadFullSizeImage(imageItem, fullsizeImageFile, previewImageItem))
                     .Start();
             }
         }
@@ -428,14 +444,10 @@ namespace PowerPointLabs.ImageSearch
         {
             Dispatcher.BeginInvoke(new Action(() =>
             {
-                if (PreviewDisplayToggleSwitch.IsChecked == true)
-                {
-                    ImagesLabGrid.ColumnDefinitions[0].Width = new GridLength(620);
-                } 
-                else 
-                {
-                    ImagesLabGrid.ColumnDefinitions[0].Width = new GridLength(320);
-                }
+                var targetColumn = ImagesLabGrid.ColumnDefinitions[0];
+                targetColumn.Width = PreviewDisplayToggleSwitch.IsChecked == true 
+                    ? new GridLength(620) 
+                    : new GridLength(320);
             }));
         }
 
