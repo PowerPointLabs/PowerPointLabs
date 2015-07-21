@@ -287,6 +287,7 @@
       <DependentUpon>ImageSearchPane.xaml</DependentUpon>
     </Compile>
     <Compile Include="ImageSearch\Model\ImageItem.cs" />
+    <Compile Include="ImageSearch\Presentation\StylesPreviewPresentation.cs" />
     <Compile Include="ImageSearch\SearchEngine\GoogleEngine.cs" />
     <Compile Include="ImageSearch\SearchEngine\Options\GoogleOptions.cs" />
     <Compile Include="ImageSearch\Util\TempPath.cs" />
