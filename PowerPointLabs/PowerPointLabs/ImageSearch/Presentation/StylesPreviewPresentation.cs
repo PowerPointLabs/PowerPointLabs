@@ -1,4 +1,5 @@
-﻿using Microsoft.Office.Interop.PowerPoint;
+﻿using System.Windows.Forms;
+using Microsoft.Office.Interop.PowerPoint;
 using PowerPointLabs.ImageSearch.Util;
 using PowerPointLabs.Models;
 using PowerPointLabs.ImageSearch.Model;
@@ -90,6 +91,7 @@ namespace PowerPointLabs.ImageSearch.Presentation
             if (currentSelection.Type == PpSelectionType.ppSelectionShapes)
             {
                 currentSelection.Unselect();
+                Cursor.Current = Cursors.Default;
             }
         }
 
