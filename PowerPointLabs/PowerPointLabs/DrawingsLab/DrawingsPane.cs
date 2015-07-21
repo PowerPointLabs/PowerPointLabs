@@ -134,7 +134,6 @@ namespace PowerPointLabs
 
         private void MultiCloneTool()
         {
-            int clones = 5;
             var selection = PowerPointCurrentPresentationInfo.CurrentSelection;
             if (selection.Type != PpSelectionType.ppSelectionShapes) return;
             var shapeList = selection.ShapeRange.Cast<Shape>().ToList();
@@ -144,6 +143,9 @@ namespace PowerPointLabs
                 Error("There must be two sets of shapes selected.");
                 return;
             }
+
+            int clones = ShowNumericDialog("Number of copies:", "Multi-Clone") - 1;
+            if (clones <= 0) return;
 
             int midpoint = shapeList.Count/2;
             for (int i = 0; i < shapeList.Count/2; ++i)
@@ -167,6 +169,54 @@ namespace PowerPointLabs
         private void Error(string message)
         {
             // for now do nothing.
+        }
+
+        private static int ShowNumericDialog(string text, string caption)
+        {
+            var prompt = new Form()
+            {
+                FormBorderStyle = FormBorderStyle.FixedDialog,
+                MinimizeBox = false,
+                MaximizeBox = false,
+                Width = 160,
+                Height = 130,
+                Text = caption,
+                StartPosition = FormStartPosition.CenterScreen,
+            };
+
+            var cancel = new Button();
+            cancel.Click += (sender, e) => prompt.Close();
+            prompt.CancelButton = cancel;
+
+            var textLabel = new Label()
+            {
+                Top = 10,
+                Text = text,
+                TextAlign = ContentAlignment.MiddleCenter,
+                AutoSize = false,
+                Width = prompt.Width
+            };
+
+            var textBox = new NumericUpDown() {Left = 20, Top = 40, Width = 120, Height = 80, Text = "5"};
+            var confirmation = new Button() { Text = "Ok", Left = 30, Top = 70, Width = 100, DialogResult = DialogResult.OK };
+            confirmation.Click += (sender, e) => { prompt.Close(); };
+
+            prompt.Controls.Add(textBox);
+            prompt.Controls.Add(confirmation);
+            prompt.Controls.Add(textLabel);
+            prompt.AcceptButton = confirmation;
+
+            textBox.Select(0, textBox.Text.Length);
+
+            if (prompt.ShowDialog() == DialogResult.OK)
+            {
+                int inputValue;
+                if (int.TryParse(textBox.Text, out inputValue))
+                {
+                    return inputValue;
+                }
+            }
+            return -1;
         }
 
         protected override CreateParams CreateParams
