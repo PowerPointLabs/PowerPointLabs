@@ -1,0 +1,39 @@
+﻿<UserControl x:Class="PowerPointLabs.DrawingsLab.DrawingsPaneWPF"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             mc:Ignorable="d" 
+             d:DesignWidth="304" d:DesignHeight="883">
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="1*"/>
+            <RowDefinition Height="1*"/>
+            <RowDefinition Height="1*"/>
+            <RowDefinition Height="1*"/>
+            <RowDefinition Height="1*"/>
+            <RowDefinition Height="1*"/>
+            <RowDefinition Height="1*"/>
+            <RowDefinition Height="1*"/>
+            <RowDefinition Height="1*"/>
+            <RowDefinition Height="1*"/>
+            <RowDefinition Height="1*"/>
+            <RowDefinition Height="1*"/>
+            <RowDefinition Height="1*"/>
+            <RowDefinition Height="1*"/>
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="61*"/>
+            <ColumnDefinition Width="61*"/>
+            <ColumnDefinition Width="61"/>
+            <ColumnDefinition Width="61*"/>
+            <ColumnDefinition Width="60*"/>
+        </Grid.ColumnDefinitions>
+        <Button Content="Line" Grid.Row="1" Grid.Column="0" Click="LineButton_Click" BorderBrush="White"/>
+        <Button Content="Rect" Grid.Row="1" Grid.Column="1" Click="LineButton_Click"/>
+        <Button Content="Circle" Grid.Row="1" Grid.Column="2" Click="LineButton_Click"/>
+        <Button Content="Hide" Grid.Row="2" Grid.Column="2" Click="HideButton_Click"/>
+        <Button Content="Clone" Grid.Row="3" Grid.Column="2" Click="CloneButton_Click"/>
+        <Button Content="MultiClone" Grid.Row="3" Grid.Column="3" Click="MultiCloneButton_Click"/>
+    </Grid>
+</UserControl>
