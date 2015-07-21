@@ -15,6 +15,7 @@ using PowerPointLabs.ImageSearch.SearchEngine;
 using PowerPointLabs.ImageSearch.SearchEngine.Options;
 using PowerPointLabs.ImageSearch.SearchEngine.VO;
 using PowerPointLabs.ImageSearch.Util;
+using PowerPointLabs.Models;
 
 namespace PowerPointLabs.ImageSearch
 {
@@ -51,6 +52,10 @@ namespace PowerPointLabs.ImageSearch
         private readonly HashSet<string> _insertDownloadingUriList = new HashSet<string>();
         private readonly Dictionary<string, ImageItem> _insertDownloadingUriToPreviewImage = new Dictionary<string, ImageItem>();
 
+        // TODO put to text collection
+        private const string ErrorNetworkOrApiQuota =
+            "Failed to search images. Please check your network, or the daily API quota is ran out.";
+
         #region Initialization
         public ImageSearchPane()
         {
@@ -79,16 +84,15 @@ namespace PowerPointLabs.ImageSearch
                 .WhenSucceed(WhenSearchSucceed())
                 .WhenCompleted(WhenSearchCompleted())
                 .WhenFail(response => {
-                    ShowErrorMessageBox();
+                    ShowErrorMessageBox(ErrorNetworkOrApiQuota);
                 });
         }
 
-        private void ShowErrorMessageBox()
+        private void ShowErrorMessageBox(string content)
         {
             Dispatcher.BeginInvoke(new Action(() =>
             {
-                this.ShowMessageAsync("Error",
-                    "Failed to search images. Please check your network, or the daily API quota is ran out.");
+                this.ShowMessageAsync("Error", content);
             }));
         }
 
@@ -352,12 +356,15 @@ namespace PowerPointLabs.ImageSearch
                 var selectedId = PreviewListBox.SelectedIndex;
                 PreviewList.Clear();
 
-                PreviewPresentation.PreviewStyles(source);
-                PreviewList.Add(new ImageItem { ImageFile = PreviewPresentation.DirectTextStyleImagePath });
-                PreviewList.Add(new ImageItem { ImageFile = PreviewPresentation.BlurStyleImagePath });
-                PreviewList.Add(new ImageItem { ImageFile = PreviewPresentation.TextboxStyleImagePath });
+                if (PowerPointCurrentPresentationInfo.CurrentSlide != null)
+                {
+                    PreviewPresentation.PreviewStyles(source);
+                    PreviewList.Add(new ImageItem {ImageFile = PreviewPresentation.DirectTextStyleImagePath});
+                    PreviewList.Add(new ImageItem {ImageFile = PreviewPresentation.BlurStyleImagePath});
+                    PreviewList.Add(new ImageItem {ImageFile = PreviewPresentation.TextboxStyleImagePath});
 
-                PreviewListBox.SelectedIndex = selectedId;
+                    PreviewListBox.SelectedIndex = selectedId;
+                }
                 PreviewProgressRing.IsActive = false;
             }));
         }
@@ -457,7 +464,10 @@ namespace PowerPointLabs.ImageSearch
                 new Downloader()
                     .Get(fullsizeImageUri, fullsizeImageFile)
                     .After(AfterDownloadFullSizeImage(source, fullsizeImageFile))
-                    .OnError(ShowErrorMessageBox)
+                    .OnError(() =>
+                    {
+                        ShowErrorMessageBox(ErrorNetworkOrApiQuota);
+                    })
                     .Start();
             }
             // already downloading, then update preview image in the map
