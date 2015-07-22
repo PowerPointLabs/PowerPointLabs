@@ -301,10 +301,7 @@ namespace PowerPointLabs
 
             ShutDownColorPane();
             ShutDownRecorderPane();
-            if (Globals.ThisAddIn.Ribbon.ImageSearchPane.IsOpen)
-            {
-                Globals.ThisAddIn.Ribbon.ImageSearchPane.Close();
-            }
+            ShutDownImageSearchPane();
 
             // find the document that holds the presentation with pres.Name
             // special case will be embedded slide. in this case pres.Windows return exception
@@ -368,6 +365,15 @@ namespace PowerPointLabs
                         SendKeys.Send("{ESC}");
                         break;
                 }
+            }
+        }
+
+        private static void ShutDownImageSearchPane()
+        {
+            var imageSearchPane = Globals.ThisAddIn.Ribbon.ImageSearchPane;
+            if (imageSearchPane != null && imageSearchPane.IsOpen)
+            {
+                imageSearchPane.Close();
             }
         }
 
