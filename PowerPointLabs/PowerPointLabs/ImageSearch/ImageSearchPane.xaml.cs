@@ -176,10 +176,25 @@ namespace PowerPointLabs.ImageSearch
                         {
                             item.ImageFile = thumbnailPath;
                             item.FullSizeImageUri = searchResult.Link;
+                            item.Tooltip = GetTooltip(searchResult);
+
+                            Dispatcher.BeginInvoke(new Action(() =>
+                            {
+                                var selectedImageItem = SearchListBox.SelectedValue as ImageItem;
+                                if (selectedImageItem != null && item.ImageFile == selectedImageItem.ImageFile)
+                                {
+                                    DoPreview();
+                                }
+                            }));
                         })
                         .Start();
                 }
             };
+        }
+
+        private static string GetTooltip(SearchResult searchResult)
+        {
+            return searchResult.Title + "\n" + searchResult.Image.Width + " x " + searchResult.Image.Height;
         }
 
         private void InitPreviewPresentation()
@@ -348,6 +363,8 @@ namespace PowerPointLabs.ImageSearch
             } 
             else if (source.ImageFile == TempPath.LoadMoreImgPath)
             {
+                PreviewList.Clear();
+                PreviewProgressRing.IsActive = false;
                 source.ImageFile = TempPath.LoadingImgPath;
                 PrepareToSearch(GoogleEngine.NumOfItemsPerRequest - 1, isListClearNeeded: false);
                 SearchEngine.SearchMore();
@@ -375,15 +392,24 @@ namespace PowerPointLabs.ImageSearch
                 if (PowerPointCurrentPresentationInfo.CurrentSlide != null)
                 {
                     PreviewPresentation.PreviewStyles(source);
-                    // TODO tooltip for different style.. direct text, blur, textbox...
-                    PreviewList.Add(new ImageItem {ImageFile = PreviewPresentation.DirectTextStyleImagePath});
-                    PreviewList.Add(new ImageItem {ImageFile = PreviewPresentation.BlurStyleImagePath});
-                    PreviewList.Add(new ImageItem {ImageFile = PreviewPresentation.TextboxStyleImagePath});
+                    Add(PreviewList, PreviewPresentation.DirectTextStyleImagePath, "Direct Text style");
+                    Add(PreviewList, PreviewPresentation.BlurStyleImagePath, "Blur style");
+                    Add(PreviewList, PreviewPresentation.TextboxStyleImagePath, "TextBox style");
 
                     PreviewListBox.SelectedIndex = selectedId;
                 }
                 PreviewProgressRing.IsActive = false;
             }));
+        }
+
+        // TODO util
+        private void Add(ICollection<ImageItem> list, string imagePath, string tooltip)
+        {
+            list.Add(new ImageItem
+            {
+                ImageFile = imagePath,
+                Tooltip = tooltip
+            });
         }
 
 

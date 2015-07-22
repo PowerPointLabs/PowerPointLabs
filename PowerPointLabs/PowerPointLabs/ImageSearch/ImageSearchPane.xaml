@@ -84,7 +84,7 @@
                 </ListBox.ItemContainerStyle>
                 <ListBox.ItemTemplate>
                     <DataTemplate>
-                        <Image Margin="3,3,5,3" Source="{Binding Path=ImageFile, Mode=TwoWay, NotifyOnSourceUpdated=True}" />
+                        <Image Margin="3,3,5,3" Source="{Binding Path=ImageFile, Mode=TwoWay, NotifyOnSourceUpdated=True}" ToolTip="{Binding Path=Tooltip, Mode=TwoWay, NotifyOnSourceUpdated=True}" />
                     </DataTemplate>
                 </ListBox.ItemTemplate>
             </ListBox>
@@ -132,7 +132,7 @@
                 </ListBox.ItemContainerStyle>
                 <ListBox.ItemTemplate>
                     <DataTemplate>
-                        <Image Margin="2,2,4,2" Source="{Binding Path=ImageFile, Mode=TwoWay, NotifyOnSourceUpdated=True}" />
+                        <Image Margin="2,2,4,2" Source="{Binding Path=ImageFile, Mode=TwoWay, NotifyOnSourceUpdated=True}" ToolTip="{Binding Path=Tooltip, Mode=TwoWay, NotifyOnSourceUpdated=True}"/>
                     </DataTemplate>
                 </ListBox.ItemTemplate>
             </ListBox>

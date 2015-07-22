@@ -16,6 +16,21 @@ namespace PowerPointLabs.ImageSearch.Model
             }
         }
 
+        private string _tooltip;
+
+        public string Tooltip
+        {
+            get
+            {
+                return _tooltip;
+            }
+            set
+            {
+                _tooltip = value;
+                OnPropertyChanged("Tooltip");
+            }
+        }
+
         // as cache
         public string BlurImageFile { get; set; }
 
