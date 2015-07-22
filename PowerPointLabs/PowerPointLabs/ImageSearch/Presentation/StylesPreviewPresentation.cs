@@ -71,6 +71,7 @@ namespace PowerPointLabs.ImageSearch.Presentation
 
         public void InsertStyles(ImageItem imageItem, ImageItem previewImageItem)
         {
+            Globals.ThisAddIn.Application.StartNewUndoEntry();
             InitImagePaths();
             var currentSlide = PowerPointCurrentPresentationInfo.CurrentSlide.GetNativeSlide();
             var thisSlide = new StylesPreviewSlide(currentSlide, Current, imageItem);

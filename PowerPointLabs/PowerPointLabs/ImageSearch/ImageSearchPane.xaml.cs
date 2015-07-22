@@ -486,7 +486,6 @@ namespace PowerPointLabs.ImageSearch
 
         private void PreviewInsert_OnClick(object sender, RoutedEventArgs e)
         {
-            // TODO undo stack
             PreviewTimer.Stop();
             PreviewProgressRing.IsActive = true;
 
