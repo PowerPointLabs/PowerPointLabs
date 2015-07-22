@@ -170,6 +170,10 @@
     <Reference Include="ImageProcessor">
       <HintPath>..\packages\ImageProcessor.1.9.5.0\lib\ImageProcessor.dll</HintPath>
     </Reference>
+    <Reference Include="MahApps.Metro, Version=1.0.0.0, Culture=neutral, PublicKeyToken=f4fb5a3c4d1e5b4f, processorArchitecture=MSIL">
+      <HintPath>..\packages\MahApps.Metro.1.0.0.0\lib\net40\MahApps.Metro.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="Microsoft.Office.Interop.PowerPoint, Version=15.0.0.0, Culture=neutral, PublicKeyToken=71e9bce111e9429c, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <EmbedInteropTypes>True</EmbedInteropTypes>
@@ -190,7 +194,12 @@
       <EmbedInteropTypes>True</EmbedInteropTypes>
       <HintPath>..\..\..\..\..\..\..\..\Program Files (x86)\Microsoft Visual Studio 12.0\Visual Studio Tools for Office\PIA\Office14\Office.dll</HintPath>
     </Reference>
+    <Reference Include="PresentationCore" />
     <Reference Include="PresentationFramework" />
+    <Reference Include="RestSharp, Version=105.1.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\RestSharp.105.1.0\lib\net4-client\RestSharp.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="stdole, Version=7.0.3300.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
       <EmbedInteropTypes>True</EmbedInteropTypes>
     </Reference>
@@ -201,6 +210,11 @@
     <Reference Include="System.Speech" />
     <Reference Include="System.Windows.Forms" />
     <Reference Include="System.Windows.Forms.DataVisualization" />
+    <Reference Include="System.Windows.Interactivity, Version=4.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\MahApps.Metro.1.0.0.0\lib\net40\System.Windows.Interactivity.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System.Xaml" />
     <Reference Include="System.Xml" />
     <Reference Include="System.Core" />
     <Reference Include="System.Xml.Linq" />
@@ -269,6 +283,25 @@
     <Compile Include="ConvertToPicture.cs" />
     <Compile Include="CropToShape.cs" />
     <Compile Include="DataSources\ShapesLabSettingsDataSource.cs" />
+    <Compile Include="ImageSearch\ImageSearchPane.xaml.cs">
+      <DependentUpon>ImageSearchPane.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="ImageSearch\Model\ImageItem.cs" />
+    <Compile Include="ImageSearch\Model\Notifiable.cs" />
+    <Compile Include="ImageSearch\Model\SearchOptions.cs" />
+    <Compile Include="ImageSearch\Model\StyleOptions.cs" />
+    <Compile Include="ImageSearch\Presentation\StylesPreviewPresentation.cs" />
+    <Compile Include="ImageSearch\SearchEngine\GoogleEngine.cs" />
+    <Compile Include="ImageSearch\SearchOptionsPane.xaml.cs">
+      <DependentUpon>SearchOptionsPane.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="ImageSearch\Slide\StylesPreviewSlide.cs" />
+    <Compile Include="ImageSearch\StyleOptionsPane.xaml.cs">
+      <DependentUpon>StyleOptionsPane.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="ImageSearch\Util\StoragePath.cs" />
+    <Compile Include="ImageSearch\Util\TempPath.cs" />
+    <Compile Include="ImageSearch\SearchEngine\VO\GoogleSearchResults.cs" />
     <Compile Include="Models\PowerPointBgEffectSlide.cs" />
     <Compile Include="LabeledThumbnail.cs">
       <SubType>UserControl</SubType>
@@ -708,6 +741,29 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\AgendaVisual.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Page Include="ImageSearch\ImageSearchPane.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="ImageSearch\SearchOptionsPane.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="ImageSearch\StyleOptionsPane.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\loading.gif" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\loading.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\loadMore.png" />
   </ItemGroup>
   <!-- Include the build rules for a C# project. -->
   <PropertyGroup>

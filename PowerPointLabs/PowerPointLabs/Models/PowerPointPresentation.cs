@@ -9,7 +9,7 @@ using Microsoft.Office.Interop.PowerPoint;
 
 namespace PowerPointLabs.Models
 {
-    internal class PowerPointPresentation
+    public class PowerPointPresentation
     {
         # region Properties
         private string _name;
@@ -177,6 +177,10 @@ namespace PowerPointLabs.Models
                 var dimensions = Presentation.PageSetup;
                 return dimensions.SlideWidth;
             }
+            set
+            {
+                Presentation.PageSetup.SlideWidth = value;
+            }
         }
 
         public float SlideHeight
@@ -185,6 +189,10 @@ namespace PowerPointLabs.Models
             {
                 var dimensions = Presentation.PageSetup;
                 return dimensions.SlideHeight;
+            }
+            set
+            {
+                Presentation.PageSetup.SlideHeight = value;
             }
         }
         # endregion

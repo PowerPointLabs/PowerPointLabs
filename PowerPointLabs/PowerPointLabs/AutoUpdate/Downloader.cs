@@ -9,7 +9,10 @@ namespace PowerPointLabs.AutoUpdate
         private readonly WebClient _client = new WebClient();
 
         public delegate void AfterDownloadEventDelegate();
-        public event AfterDownloadEventDelegate AfterDownload;
+        private event AfterDownloadEventDelegate AfterDownload;
+
+        public delegate void ErrorEventDelegate();
+        private event ErrorEventDelegate WhenError;
 
         private String _downloadAddress = "";
         private String _destAddress = "";
@@ -20,9 +23,15 @@ namespace PowerPointLabs.AutoUpdate
             _client.Proxy = null;
         }
 
-        private void OnAfterDownload()
+        private void CallAfterDownloadDelegate()
         {
             var handler = AfterDownload;
+            if (handler != null) handler();
+        }
+
+        private void CallWhenErrorDelegate()
+        {
+            var handler = WhenError;
             if (handler != null) handler();
         }
 
@@ -36,6 +45,12 @@ namespace PowerPointLabs.AutoUpdate
         public Downloader After(AfterDownloadEventDelegate action)
         {
             AfterDownload = action;
+            return this;
+        }
+
+        public Downloader OnError(ErrorEventDelegate action)
+        {
+            WhenError = action;
             return this;
         }
 
@@ -60,10 +75,11 @@ namespace PowerPointLabs.AutoUpdate
             try
             {
                 _client.DownloadFile(_downloadAddress, _destAddress);
-                OnAfterDownload();
+                CallAfterDownloadDelegate();
             }
             catch (Exception e)
             {
+                CallWhenErrorDelegate();
                 PowerPointLabsGlobals.LogException(e, "Failed to execute Downloader.StartDownload");
             }
         }

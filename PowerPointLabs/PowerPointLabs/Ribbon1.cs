@@ -7,6 +7,7 @@ using System.Reflection;
 using System.Runtime.InteropServices;
 using System.Diagnostics;
 using System.Windows.Forms;
+using PowerPointLabs.ImageSearch;
 using PowerPointLabs.Models;
 using PowerPointLabs.Views;
 using Office = Microsoft.Office.Core;
@@ -1635,6 +1636,22 @@ namespace PowerPointLabs
             return FitToSlide.GetFitToHeightImage(control);
         }
 
+        #endregion
+
+        #region Feature: Images Lab
+
+        public ImageSearchPane ImageSearchPane { get; set; }
+
+        public void ImagesLabButtonClick(Office.IRibbonControl control)
+        {
+            if (ImageSearchPane == null || !ImageSearchPane.IsOpen)
+            {
+                ImageSearchPane = new ImageSearchPane();
+            }
+            ImageSearchPane.FocusSearchTextBox();
+            ImageSearchPane.Show();
+        }
+        
         #endregion
 
         #region Feature: Crop to Shape
