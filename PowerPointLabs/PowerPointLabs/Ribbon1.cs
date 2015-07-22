@@ -59,9 +59,6 @@ namespace PowerPointLabs
         public bool EmbedAudioVisible = true;
         public bool RecorderPaneVisible = false;
         
-        // TODO: if this really need public
-        private bool _effectsLabSelectionIsCover = true;
-
         private bool _previewCurrentSlide;
         
         private List<string> _voiceNames;
@@ -111,6 +108,8 @@ namespace PowerPointLabs
         {
             try
             {
+                Globals.ThisAddIn.Application.StartNewUndoEntry();
+
                 if (Globals.ThisAddIn.Application.ActiveWindow.Selection.Type == PowerPoint.PpSelectionType.ppSelectionShapes)
                     HighlightBulletsBackground.userSelection = HighlightBulletsBackground.HighlightBackgroundSelection.kShapeSelected;
                 else if (Globals.ThisAddIn.Application.ActiveWindow.Selection.Type == PowerPoint.PpSelectionType.ppSelectionText)
@@ -130,6 +129,8 @@ namespace PowerPointLabs
         {
             try
             {
+                Globals.ThisAddIn.Application.StartNewUndoEntry();
+
                 if (Globals.ThisAddIn.Application.ActiveWindow.Selection.Type == PowerPoint.PpSelectionType.ppSelectionShapes)
                     HighlightBulletsText.userSelection = HighlightBulletsText.HighlightTextSelection.kShapeSelected;
                 else if (Globals.ThisAddIn.Application.ActiveWindow.Selection.Type == PowerPoint.PpSelectionType.ppSelectionText)
@@ -149,6 +150,8 @@ namespace PowerPointLabs
         {
             try
             {
+                Globals.ThisAddIn.Application.StartNewUndoEntry();
+
                 if (Globals.ThisAddIn.Application.ActiveWindow.Selection.Type == PowerPoint.PpSelectionType.ppSelectionShapes)
                     HighlightTextFragments.userSelection = HighlightTextFragments.HighlightTextSelection.kShapeSelected;
                 else if (Globals.ThisAddIn.Application.ActiveWindow.Selection.Type == PowerPoint.PpSelectionType.ppSelectionText)
@@ -169,6 +172,8 @@ namespace PowerPointLabs
         {
             try
             {
+                Globals.ThisAddIn.Application.StartNewUndoEntry();
+
                 AnimateInSlide.isHighlightBullets = false;
                 AnimateInSlide.AddAnimationInSlide();
             }
@@ -178,10 +183,13 @@ namespace PowerPointLabs
                 throw;
             }
         }
+
         public void ReloadSpotlightButtonClick(Office.IRibbonControl control)
         {
             try
             {
+                Globals.ThisAddIn.Application.StartNewUndoEntry();
+
                 Spotlight.ReloadSpotlightEffect();
             }
             catch (Exception e)
@@ -190,10 +198,13 @@ namespace PowerPointLabs
                 throw;
             }
         }
+
         public void SpotlightBtnClick(Office.IRibbonControl control)
         {
             try
             {
+                Globals.ThisAddIn.Application.StartNewUndoEntry();
+
                 Spotlight.AddSpotlightEffect();
             }
             catch (Exception e)
@@ -306,13 +317,21 @@ namespace PowerPointLabs
         {
             return TextCollection.EffectsLabMagnifyGlassSupertip;
         }
-        public string GetEffectsLabBlurBackgroundSupertip(Office.IRibbonControl control)
+        public string GetEffectsLabBlurRemainderSupertip(Office.IRibbonControl control)
         {
             return TextCollection.EffectsLabBlurRemainderSupertip;
         }
-        public string GetEffectsLabColorizeBackgroundSupertip(Office.IRibbonControl control)
+        public string GetEffectsLabColorizeRemainderSupertip(Office.IRibbonControl control)
         {
             return TextCollection.EffectsLabColorizeRemainderSupertip;
+        }
+        public string GetEffectsLabBlurBackgroundSupertip(Office.IRibbonControl control)
+        {
+            return TextCollection.EffectsLabBlurBackgroundSupertip;
+        }
+        public string GetEffectsLabColorizeBackgroundSupertip(Office.IRibbonControl control)
+        {
+            return TextCollection.EffectsLabColorizeBackgroundSupertip;
         }
 
         public string GetAgendaLabSupertip(Office.IRibbonControl control)
@@ -513,13 +532,17 @@ namespace PowerPointLabs
         {
             return TextCollection.EffectsLabBlurRemainderButtonLabel;
         }
-        public string GetEffectsLabBlurAllButtonLabel(Office.IRibbonControl control)
+        public string GetEffectsLabBlurBackgroundButtonLabel(Office.IRibbonControl control)
         {
-            return TextCollection.EffectsLabBlurAllButtonLabel;
+            return TextCollection.EffectsLabBlurBackgroundButtonLabel;
         }
         public string GetEffectsLabRecolorRemainderButtonLabel(Office.IRibbonControl control)
         {
             return TextCollection.EffectsLabRecolorRemainderButtonLabel;
+        }
+        public string GetEffectsLabRecolorBackgroundButtonLabel(Office.IRibbonControl control)
+        {
+            return TextCollection.EffectsLabRecolorBackgroundButtonLabel;
         }
 
         public string GetAgendaLabButtonLabel(Office.IRibbonControl control)
@@ -651,6 +674,8 @@ namespace PowerPointLabs
         {
             try
             {
+                Globals.ThisAddIn.Application.StartNewUndoEntry();
+
                 AutoAnimate.AddAutoAnimation();
             }
             catch (Exception e)
@@ -663,6 +688,8 @@ namespace PowerPointLabs
         {
             try
             {
+                Globals.ThisAddIn.Application.StartNewUndoEntry();
+
                 AutoAnimate.ReloadAutoAnimation();
             }
             catch (Exception e)
@@ -673,6 +700,8 @@ namespace PowerPointLabs
         }
         public void ZoomBtnClick(Office.IRibbonControl control)
         {
+            Globals.ThisAddIn.Application.StartNewUndoEntry();
+
             ZoomToArea.AddZoomToArea();
         }
         public void AboutButtonClick(Office.IRibbonControl control)
@@ -707,6 +736,8 @@ namespace PowerPointLabs
         {
             try
             {
+                Globals.ThisAddIn.Application.StartNewUndoEntry();
+
                 AutoZoom.AddDrillDownAnimation();
             }
             catch (Exception e)
@@ -719,6 +750,8 @@ namespace PowerPointLabs
         {
             try
             {
+                Globals.ThisAddIn.Application.StartNewUndoEntry();
+
                 AutoZoom.AddStepBackAnimation();
             }
             catch (Exception e)
@@ -980,18 +1013,6 @@ namespace PowerPointLabs
             try
             {
                 return new System.Drawing.Bitmap(Properties.Resources.RecolorRemainder);
-            }
-            catch (Exception e)
-            {
-                PowerPointLabsGlobals.LogException(e, "GetRecolorRemainderImage");
-                throw;
-            }
-        }
-        public Bitmap GetEffectsLabSettingsImage(Office.IRibbonControl control)
-        {
-            try
-            {
-                return new System.Drawing.Bitmap(Properties.Resources.AgendaSettings);
             }
             catch (Exception e)
             {
@@ -1391,6 +1412,8 @@ namespace PowerPointLabs
         {
             try
             {
+                Globals.ThisAddIn.Application.StartNewUndoEntry();
+
                 PowerPoint.Shape selectedShape = Globals.ThisAddIn.Application.ActiveWindow.Selection.ShapeRange[1];
                 selectedShape.Name = newName;
             }
@@ -1584,23 +1607,31 @@ namespace PowerPointLabs
 
         public void FitToWidthClick(Office.IRibbonControl control)
         {
+            Globals.ThisAddIn.Application.StartNewUndoEntry();
+
             var selectedShape = PowerPointCurrentPresentationInfo.CurrentSelection.ShapeRange[1];
             FitToSlide.FitToWidth(selectedShape);
         }
 
         public void FitToHeightClick(Office.IRibbonControl control)
         {
+            Globals.ThisAddIn.Application.StartNewUndoEntry();
+
             var selectedShape = PowerPointCurrentPresentationInfo.CurrentSelection.ShapeRange[1];
             FitToSlide.FitToHeight(selectedShape);
         }
 
         public Bitmap GetFitToWidthImage(Office.IRibbonControl control)
         {
+            Globals.ThisAddIn.Application.StartNewUndoEntry();
+
             return FitToSlide.GetFitToWidthImage(control);
         }
 
         public Bitmap GetFitToHeightImage(Office.IRibbonControl control)
         {
+            Globals.ThisAddIn.Application.StartNewUndoEntry();
+
             return FitToSlide.GetFitToHeightImage(control);
         }
 
@@ -1610,6 +1641,8 @@ namespace PowerPointLabs
 
         public void CropShapeButtonClick(Office.IRibbonControl control)
         {
+            Globals.ThisAddIn.Application.StartNewUndoEntry();
+
             var selection = PowerPointCurrentPresentationInfo.CurrentSelection;
             CropToShape.Crop(selection);
         }
@@ -1625,6 +1658,8 @@ namespace PowerPointLabs
 
         public void ConvertToPictureButtonClick(Office.IRibbonControl control)
         {
+            Globals.ThisAddIn.Application.StartNewUndoEntry();
+
             var selection = PowerPointCurrentPresentationInfo.CurrentSelection;
             ConvertToPicture.Convert(selection);
         }
@@ -1785,6 +1820,8 @@ namespace PowerPointLabs
         # region Feature: Auto Caption
         public void AddCaptionClick(Office.IRibbonControl control)
         {
+            Globals.ThisAddIn.Application.StartNewUndoEntry();
+
             foreach (PowerPointSlide slide in PowerPointCurrentPresentationInfo.SelectedSlides)
             {
                 if (slide.NotesPageText.Trim() != "")
@@ -1952,59 +1989,124 @@ namespace PowerPointLabs
             }
         }
 
+        public void BlurRemainderEffectClick(Office.IRibbonControl control)
+        {
+            Globals.ThisAddIn.Application.StartNewUndoEntry();
+
+            var effectSlide = GenerateEffectSlide(true);
+
+            if (effectSlide == null) return;
+
+            effectSlide.BlurBackground();
+            effectSlide.GetNativeSlide().Select();
+        }
+
+        public void GreyScaleRemainderEffectClick(Office.IRibbonControl control)
+        {
+            Globals.ThisAddIn.Application.StartNewUndoEntry();
+
+            var effectSlide = GenerateEffectSlide(true);
+
+            if (effectSlide == null) return;
+
+            effectSlide.GreyScaleBackground();
+            effectSlide.GetNativeSlide().Select();
+        }
+
+        public void BlackWhiteRemainderEffectClick(Office.IRibbonControl control)
+        {
+            Globals.ThisAddIn.Application.StartNewUndoEntry();
+
+            var effectSlide = GenerateEffectSlide(true);
+
+            if (effectSlide == null) return;
+
+            effectSlide.BlackWhiteBackground();
+            effectSlide.GetNativeSlide().Select();
+        }
+
+        public void GothamRemainderEffectClick(Office.IRibbonControl control)
+        {
+            Globals.ThisAddIn.Application.StartNewUndoEntry();
+
+            var effectSlide = GenerateEffectSlide(true);
+
+            if (effectSlide == null) return;
+
+            effectSlide.GothamBackground();
+            effectSlide.GetNativeSlide().Select();
+        }
+
+        public void SepiaRemainderEffectClick(Office.IRibbonControl control)
+        {
+            Globals.ThisAddIn.Application.StartNewUndoEntry();
+
+            var effectSlide = GenerateEffectSlide(true);
+
+            if (effectSlide == null) return;
+
+            effectSlide.SepiaBackground();
+            effectSlide.GetNativeSlide().Select();
+        }
+
         public void BlurBackgroundEffectClick(Office.IRibbonControl control)
         {
             Globals.ThisAddIn.Application.StartNewUndoEntry();
 
-            var effectSlide = GenerateEffectSlide();
-            
+            var effectSlide = GenerateEffectSlide(false);
+
             if (effectSlide == null) return;
-            
+
             effectSlide.BlurBackground();
+            effectSlide.GetNativeSlide().Select();
         }
 
         public void GreyScaleBackgroundEffectClick(Office.IRibbonControl control)
         {
             Globals.ThisAddIn.Application.StartNewUndoEntry();
 
-            var effectSlide = GenerateEffectSlide();
+            var effectSlide = GenerateEffectSlide(false);
 
             if (effectSlide == null) return;
 
             effectSlide.GreyScaleBackground();
+            effectSlide.GetNativeSlide().Select();
         }
 
         public void BlackWhiteBackgroundEffectClick(Office.IRibbonControl control)
         {
             Globals.ThisAddIn.Application.StartNewUndoEntry();
 
-            var effectSlide = GenerateEffectSlide();
+            var effectSlide = GenerateEffectSlide(false);
 
             if (effectSlide == null) return;
 
             effectSlide.BlackWhiteBackground();
+            effectSlide.GetNativeSlide().Select();
         }
 
         public void GothamBackgroundEffectClick(Office.IRibbonControl control)
         {
             Globals.ThisAddIn.Application.StartNewUndoEntry();
 
-            var effectSlide = GenerateEffectSlide();
+            var effectSlide = GenerateEffectSlide(false);
 
             if (effectSlide == null) return;
 
             effectSlide.GothamBackground();
+            effectSlide.GetNativeSlide().Select();
         }
 
         public void SepiaBackgroundEffectClick(Office.IRibbonControl control)
         {
             Globals.ThisAddIn.Application.StartNewUndoEntry();
 
-            var effectSlide = GenerateEffectSlide();
+            var effectSlide = GenerateEffectSlide(false);
 
             if (effectSlide == null) return;
 
             effectSlide.SepiaBackground();
+            effectSlide.GetNativeSlide().Select();
         }
 
         public void TransparentEffectClick(Office.IRibbonControl control)
@@ -2014,14 +2116,6 @@ namespace PowerPointLabs
             var selection = PowerPointCurrentPresentationInfo.CurrentSelection;
 
             TransparentEffect(selection.ShapeRange);
-        }
-
-        public void EffectsLabSettingsButtonClick(Office.IRibbonControl control)
-        {
-            var effectsLabSettingsDialog = new EffectsLabSettings(_effectsLabSelectionIsCover);
-            effectsLabSettingsDialog.SettingsHandler += EffectsLabSettingChangedHandler;
-            effectsLabSettingsDialog.ShowDialog();
-            effectsLabSettingsDialog.Dispose();
         }
 
         private void MagnifyGlassEffect(PowerPoint.Shape shape, float ratio)
@@ -2052,7 +2146,7 @@ namespace PowerPointLabs
             shape.LockAspectRatio = Office.MsoTriState.msoTrue;
         }
 
-        private PowerPointBgEffectSlide GenerateEffectSlide()
+        private PowerPointBgEffectSlide GenerateEffectSlide(bool generateOnRemainder)
         {
             var curSlide = PowerPointCurrentPresentationInfo.CurrentSlide;
             var selection = PowerPointCurrentPresentationInfo.CurrentSelection;
@@ -2069,7 +2163,7 @@ namespace PowerPointLabs
 
                 shapeRange.Cut();
 
-                var effectSlide = PowerPointBgEffectSlide.BgEffectFactory(curSlide.GetNativeSlide(), _effectsLabSelectionIsCover);
+                var effectSlide = PowerPointBgEffectSlide.BgEffectFactory(curSlide.GetNativeSlide(), generateOnRemainder);
 
                 if (dupSlide != null)
                 {
@@ -2195,11 +2289,6 @@ namespace PowerPointLabs
         {
             shape.Fill.Transparency = 0.5f;
             shape.Line.Transparency = 0.5f;
-        }
-
-        private void EffectsLabSettingChangedHandler(bool isCover)
-        {
-            _effectsLabSelectionIsCover = isCover;
         }
         # endregion
 

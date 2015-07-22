@@ -41,8 +41,15 @@ namespace PowerPointLabs.AutoUpdate
 
         public void Start()
         {
-            var th = new Thread(new ThreadStart(StartDownload));
-            th.Start();
+            var th = new Thread(StartDownload);
+            try
+            {
+                th.Start();
+            }
+            catch (Exception e)
+            {
+                PowerPointLabsGlobals.LogException(e, "Failed to start thread of Downloader.StartDownload");
+            }
         }
 
         private void StartDownload()
@@ -57,7 +64,7 @@ namespace PowerPointLabs.AutoUpdate
             }
             catch (Exception e)
             {
-                PowerPointLabsGlobals.LogException(e, "StartDownload");
+                PowerPointLabsGlobals.LogException(e, "Failed to execute Downloader.StartDownload");
             }
         }
     }

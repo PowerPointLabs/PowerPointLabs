@@ -98,6 +98,8 @@
         public const string EffectsLabMagnifyGlassSupertip = @"Magnify a small area or detail on the slide.";
         public const string EffectsLabBlurRemainderSupertip = @"Draw attention to an area of the slide by blurring everything else.";
         public const string EffectsLabColorizeRemainderSupertip = @"Recolor an area of a slide to attract attention to it.";
+        public const string EffectsLabBlurBackgroundSupertip = @"Blur everything in the slide except for the selected shapes.";
+        public const string EffectsLabColorizeBackgroundSupertip = @"Recolor everything in the slide except for the selected shapes.";
         # endregion
 
         # region Agenda Lab
@@ -191,15 +193,16 @@
         public const string EffectsLabMakeTransparentButtonLabel = "Make Transparent";
         public const string EffectsLabMagnifyGlassButtonLabel = "Magnifying Glass";
         public const string EffectsLabBlurRemainderButtonLabel = "Blur Remainder";
-        public const string EffectsLabBlurAllButtonLabel = "Blur All Except Selected";
+        public const string EffectsLabBlurBackgroundButtonLabel = "Blur All Except Selected";
         public const string EffectsLabRecolorRemainderButtonLabel = "Recolor Remainder";
+        public const string EffectsLabRecolorBackgroundButtonLabel = "Recolor All Except Selected";
         # endregion
 
         # region Agenda Lab
         public const string AgendaLabButtonLabel = "Agenda Lab";
-        public const string AgendaLabBulletPointButtonLabel = "Agenda slides (text)";
-        public const string AgendaLabVisualAgendaButtonLabel = "Agenda slides (visual)";
-        public const string AgendaLabBeamAgendaButtonLabel = "Agenda sidebar";
+        public const string AgendaLabBulletPointButtonLabel = "Create Text Agenda";
+        public const string AgendaLabVisualAgendaButtonLabel = "Create Visual Agenda";
+        public const string AgendaLabBeamAgendaButtonLabel = "Create Sidebar Agenda";
         public const string AgendaLabUpdateAgendaButtonLabel = "Syncronize Agenda";
         public const string AgendaLabRemoveAgendaButtonLabel = "Remove Agenda";
         public const string AgendaLabAgendaSettingsButtonLabel = "Agenda Settings";
@@ -302,21 +305,27 @@
         # region Agenda Lab
         // Errors
         public const string AgendaLabErrorDialogTitle = "Unable to execute action";
-        public const string AgendaLabNoSectionError = "Please group slides into sections before generating agenda.";
-        public const string AgendaLabSingleSectionError = "Agenda Lab requires slides to be divided into two or more sections.";
+        public const string AgendaLabNoSectionError = "Please group the slides into sections before generating agenda.";
+        public const string AgendaLabSingleSectionError = "Please divide the slides into two or more sections.";
         public const string AgendaLabEmptySectionError = "Presentation contains empty section(s). Please fill them up or remove them.";
-        public const string AgendaLabAgendaExistError = "Agenda already exists. By confirm this dialog agenda will be regenerated. Do you want to proceed?";
+        public const string AgendaLabAgendaExistError = "Agenda already exists. The previous agenda will be removed and regenerated. Do you want to proceed?";
         public const string AgendaLabAgendaExistErrorCaption = "Confirm Update";
-        public const string AgendaLabNoAgendaError = "There's no generated agenda.";
-        public const string AgendaLabNoReferenceSlideError = "The reference slide is missing. Please remove and regenerate the agenda.";
-        public const string AgendaLabInvalidReferenceSlideError = "The reference slide is invalid. Please remove and regenerate the agenda.";
+        public const string AgendaLabNoAgendaError = "There is no generated agenda.";
+        public const string AgendaLabNoReferenceSlideError = "No reference slide could be found. Either replace the reference slide or regenerate the agenda.";
+        public const string AgendaLabInvalidReferenceSlideError = "The current reference slide is invalid. Either replace the reference slide or regenerate the agenda.";
         public static string AgendaLabSectionNameTooLongError = "One of the section names exceeds the maximum size allowed by Agenda Lab. Please rename the section accordingly.";
 
         // Dialog Boxes
         public const string AgendaLabGeneratingDialogTitle = "Generating...";
         public const string AgendaLabGeneratingDialogContent = "Agenda is generating, please wait...";
         public const string AgendaLabSynchronizingDialogTitle = "Synchronizing...";
-        public const string AgendaLabSynchronizingDialogContent = "Agenda is getting synchronized, please wait...";
+        public const string AgendaLabSynchronizingDialogContent = "Agenda is being synchronized, please wait...";
+
+        public const string AgendaLabReorganiseSidebarTitle = "Reorganise Sidebar";
+        public const string AgendaLabReorganiseSidebarContent = "The sections have been changed. Do you wish to reorganise the items in the sidebar?";
+
+        public const string AgendaLabBeamGenerateSingleSlideDialogTitle = "Generate on all slides";
+        public const string AgendaLabBeamGenerateSingleSlideDialogContent = "Only one slide is selected. Would you like to generate the sidebar on all slides instead?";
 
         // Agenda Content
         public const string AgendaLabTitleContent = "Agenda";
@@ -411,6 +420,7 @@
             "as default category. Continue?";
         public const string CustomShapeRemoveDefaultCategoryCaption = "Removing Default Category";
         public const string CustomShapeImportFileError = "Import File could not be opened.";
+        public const string CustomShapeImportNoSlideError = "Import File is empty.";
         public const string CustomShapeImportAppendCategoryError = "Your computer does not support this feature.";
         public const string CustomShapeImportSingleCategoryErrorFormat =
             "{0} contains multiple categories. Try \"Import Category\" instead.";

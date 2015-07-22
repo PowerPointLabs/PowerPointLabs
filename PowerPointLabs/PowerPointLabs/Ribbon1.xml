@@ -233,10 +233,32 @@
             <button id="blurRemainderEffect"
                     getLabel="GetEffectsLabBlurRemainderButtonLabel"
                     getImage="GetBlurRemainderImage"
+                    getSupertip="GetEffectsLabBlurRemainderSupertip"
+                    onAction="BlurRemainderEffectClick"/>
+            <button id="blurBackgroundEffect"
+                    getLabel="GetEffectsLabBlurBackgroundButtonLabel"
+                    getImage="GetBlurRemainderImage"
                     getSupertip="GetEffectsLabBlurBackgroundSupertip"
                     onAction="BlurBackgroundEffectClick"/>
-            <menu id="colorizeBackgroundEffect"
+            <menu id="colorizeRemainderEffect"
                 getLabel="GetEffectsLabRecolorRemainderButtonLabel"
+                getSupertip="GetEffectsLabColorizeRemainderSupertip"
+                getImage="GetRecolorRemainderImage">
+              <button id="greyScaleRemainderEffect"
+                      label="Grey Scale"
+                      onAction="GreyScaleRemainderEffectClick"/>
+              <button id="BlackWhiteRemainderEffect"
+                      label="Black and White"
+                      onAction="BlackWhiteRemainderEffectClick"/>
+              <button id="GothamRemainderEffect"
+                      label="Gotham"
+                      onAction="GothamRemainderEffectClick"/>
+              <button id="SepiaRemainderEffect"
+                      label="Sepia"
+                      onAction="SepiaRemainderEffectClick"/>
+            </menu>
+            <menu id="colorizeBackgroundEffect"
+                getLabel="GetEffectsLabRecolorBackgroundButtonLabel"
                 getSupertip="GetEffectsLabColorizeBackgroundSupertip"
                 getImage="GetRecolorRemainderImage">
               <button id="greyScaleBackgroundEffect"
@@ -252,11 +274,6 @@
                       label="Sepia"
                       onAction="SepiaBackgroundEffectClick"/>
             </menu>
-            <menuSeparator id="effectSettingsSeparator"/>
-            <button id="effectsLabSettings"
-                    label="Effects Lab Settings"
-                    getImage="GetEffectsLabSettingsImage"
-                    onAction="EffectsLabSettingsButtonClick"/>
           </menu>
           <menu id="AgendaLabsMenu"
                 getLabel="GetAgendaLabButtonLabel"

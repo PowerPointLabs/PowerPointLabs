@@ -91,6 +91,8 @@ namespace PowerPointLabs.AgendaLab
             // - 1 because first section in agenda is at index 2 (exclude first section)
             int focusIndex = currentSection.IsNone() ? int.MaxValue : currentSection.Index - 1;
 
+            textRange.Font.StrikeThrough = MsoTriState.msoFalse;
+
             for (var i = 1; i <= textRange.Paragraphs.Count; i++)
             {
                 var currentParagraph = textRange.Paragraphs[i];
@@ -243,6 +245,7 @@ namespace PowerPointLabs.AgendaLab
 
             DeleteShapesMarkedForDeletion(candidate, markedForDeletion);
 
+            candidate.CopyBackgroundColourFrom(refSlide);
             candidate.Layout = refSlide.Layout;
             candidate.Design = refSlide.Design;
 
@@ -272,7 +275,7 @@ namespace PowerPointLabs.AgendaLab
             foreach (var refShape in sameShapes)
             {
                 var candidateShape = candidateSlideShapes[refShape.Name];
-                Graphics.SyncShape(refShape, candidateShape);
+                Graphics.SyncWholeShape(refShape, ref candidateShape, candidate);
 
                 shapeOriginalZOrders.Add(refShape.ZOrderPosition, candidateShape);
             }
