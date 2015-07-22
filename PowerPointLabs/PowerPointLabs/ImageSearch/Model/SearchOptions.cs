@@ -1,6 +1,7 @@
 ﻿using System;
 using System.IO;
 using System.Xml.Serialization;
+using PowerPointLabs.Utils;
 
 namespace PowerPointLabs.ImageSearch.Model
 {
@@ -108,6 +109,8 @@ namespace PowerPointLabs.ImageSearch.Model
                 using (var writer = new StreamWriter(filename))
                 {
                     var serializer = new XmlSerializer(GetType());
+                    SearchEngineId = Common.Base64Encode(SearchEngineId);
+                    ApiKey = Common.Base64Encode(ApiKey);
                     serializer.Serialize(writer, this);
                     writer.Flush();
                 }
@@ -130,7 +133,18 @@ namespace PowerPointLabs.ImageSearch.Model
                 using (var stream = File.OpenRead(filename))
                 {
                     var serializer = new XmlSerializer(typeof(SearchOptions));
-                    return serializer.Deserialize(stream) as SearchOptions;
+                    var opt = serializer.Deserialize(stream) as SearchOptions;
+                    if (opt != null)
+                    {
+                        opt.SearchEngineId = Common.Base64Decode(opt.SearchEngineId);
+                        opt.ApiKey = Common.Base64Decode(opt.ApiKey);
+                    }
+                    else
+                    {
+                        opt = new SearchOptions();
+                        opt.Init();
+                    }
+                    return opt;
                 }
             }
             catch (Exception e)

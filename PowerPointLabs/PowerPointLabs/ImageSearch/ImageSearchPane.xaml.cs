@@ -109,7 +109,6 @@ namespace PowerPointLabs.ImageSearch
 
         private void InitSearchEngine()
         {
-            // TODO MUST load options from config
             SearchEngine = new GoogleEngine(SearchOptions)
                 .WhenSucceed(WhenSearchSucceed())
                 .WhenCompleted(WhenSearchCompleted())
