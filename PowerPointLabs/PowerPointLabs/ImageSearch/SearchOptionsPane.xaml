@@ -79,5 +79,10 @@
             <ComboBoxItem>xlarge</ComboBoxItem>
             <ComboBoxItem>xxlarge</ComboBoxItem>
         </ComboBox>
+        <TextBlock HorizontalAlignment="Left" VerticalAlignment="Center" Grid.ColumnSpan="2" Grid.Column="0" Grid.Row="9">           
+            <Hyperlink Foreground="#999999" NavigateUri="http://www.comp.nus.edu.sg/~pptlabs/docs.html" RequestNavigate="Hyperlink_OnRequestNavigate">
+                How to apply for Search Engine ID and API Key?
+            </Hyperlink>
+        </TextBlock>
     </Grid>
 </UserControl>
