@@ -288,10 +288,13 @@
     </Compile>
     <Compile Include="ImageSearch\Model\ImageItem.cs" />
     <Compile Include="ImageSearch\Model\Notifiable.cs" />
+    <Compile Include="ImageSearch\Model\SearchOptions.cs" />
     <Compile Include="ImageSearch\Model\StyleOptions.cs" />
     <Compile Include="ImageSearch\Presentation\StylesPreviewPresentation.cs" />
     <Compile Include="ImageSearch\SearchEngine\GoogleEngine.cs" />
-    <Compile Include="ImageSearch\SearchEngine\Options\GoogleOptions.cs" />
+    <Compile Include="ImageSearch\SearchOptionsPane.xaml.cs">
+      <DependentUpon>SearchOptionsPane.xaml</DependentUpon>
+    </Compile>
     <Compile Include="ImageSearch\Slide\StylesPreviewSlide.cs" />
     <Compile Include="ImageSearch\StyleOptionsPane.xaml.cs">
       <DependentUpon>StyleOptionsPane.xaml</DependentUpon>
@@ -750,6 +753,10 @@
   </ItemGroup>
   <ItemGroup>
     <Page Include="ImageSearch\ImageSearchPane.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="ImageSearch\SearchOptionsPane.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

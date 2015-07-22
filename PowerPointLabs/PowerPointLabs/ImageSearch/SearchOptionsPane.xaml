@@ -1,0 +1,83 @@
+﻿<UserControl x:Class="PowerPointLabs.ImageSearch.SearchOptionsPane"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:controls="clr-namespace:MahApps.Metro.Controls;assembly=MahApps.Metro"
+             mc:Ignorable="d" 
+             d:DesignHeight="350" d:DesignWidth="400">
+    <UserControl.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="pack://application:,,,/MahApps.Metro;component/Styles/Controls.xaml" />
+                <ResourceDictionary Source="pack://application:,,,/MahApps.Metro;component/Styles/Fonts.xaml" />
+                <ResourceDictionary Source="pack://application:,,,/MahApps.Metro;component/Styles/Colors.xaml" />
+                <ResourceDictionary Source="pack://application:,,,/MahApps.Metro;component/Styles/Accents/orange.xaml" />
+                <ResourceDictionary Source="pack://application:,,,/MahApps.Metro;component/Styles/Accents/basedark.xaml" />
+            </ResourceDictionary.MergedDictionaries>
+        </ResourceDictionary>
+    </UserControl.Resources>
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="200"/>
+            <ColumnDefinition Width="200"/>
+        </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="35"/>
+            <RowDefinition Height="35"/>
+            <RowDefinition Height="35"/>
+            <RowDefinition Height="35"/>
+            <RowDefinition Height="35"/>
+            <RowDefinition Height="35"/>
+            <RowDefinition Height="35"/>
+            <RowDefinition Height="35"/>
+            <RowDefinition Height="35"/>
+            <RowDefinition Height="35"/>
+        </Grid.RowDefinitions>
+        <Label Content="General" Foreground="#AAAAAA" FontSize="15" HorizontalAlignment="Left" VerticalAlignment="Center" Grid.Column="0" Grid.Row="0"/>
+        <Label Content="Search Engine ID" Foreground="#FFFFFF" FontSize="15" HorizontalAlignment="Left" VerticalAlignment="Center" Grid.Column="0" Grid.Row="1"/>
+        <TextBox Height="30" Width="150" controls:TextBoxHelper.Watermark="Enter Search Engine ID" VerticalContentAlignment="Center" Text="{Binding Path=SearchEngineId, Mode=TwoWay, NotifyOnSourceUpdated=True, UpdateSourceTrigger=LostFocus}" HorizontalAlignment="Left" Grid.Row="1" Grid.Column="1" />
+        <Label Content="API Key" Foreground="#FFFFFF" FontSize="15" HorizontalAlignment="Left" VerticalAlignment="Center" Grid.Column="0" Grid.Row="2"/>
+        <TextBox Height="30" Width="150" controls:TextBoxHelper.Watermark="Enter API Key" VerticalContentAlignment="Center" Text="{Binding Path=ApiKey, Mode=TwoWay, NotifyOnSourceUpdated=True, UpdateSourceTrigger=LostFocus}" HorizontalAlignment="Left" Grid.Row="2" Grid.Column="1" />
+
+        <Label Content="Search" Foreground="#AAAAAA" FontSize="15" HorizontalAlignment="Left" VerticalAlignment="Center" Grid.Column="0" Grid.Row="3"/>
+        <Label Content="Color Type" Foreground="#FFFFFF" FontSize="15" HorizontalAlignment="Left" VerticalAlignment="Center" Grid.Column="0" Grid.Row="4"/>
+        <ComboBox SelectedIndex="{Binding Path=ColorType, Mode=TwoWay, NotifyOnSourceUpdated=True}" HorizontalAlignment="Left" VerticalAlignment="Center" Grid.Column="1" Grid.Row="4">
+            <ComboBoxItem>color</ComboBoxItem>
+            <ComboBoxItem>gray</ComboBoxItem>
+            <ComboBoxItem>mono</ComboBoxItem>
+        </ComboBox>
+        <Label Content="Dominant Color" Foreground="#FFFFFF" FontSize="15" HorizontalAlignment="Left" VerticalAlignment="Center" Grid.Column="0" Grid.Row="5"/>
+        <ComboBox SelectedIndex="{Binding Path=DominantColor, Mode=TwoWay, NotifyOnSourceUpdated=True}" HorizontalAlignment="Left" VerticalAlignment="Center" Grid.Column="1" Grid.Row="5">
+            <ComboBoxItem>none</ComboBoxItem>
+            <ComboBoxItem>black</ComboBoxItem>
+            <ComboBoxItem>blue</ComboBoxItem>
+            <ComboBoxItem>brown</ComboBoxItem>
+            <ComboBoxItem>gray</ComboBoxItem>
+            <ComboBoxItem>green</ComboBoxItem>
+            <ComboBoxItem>pink</ComboBoxItem>
+            <ComboBoxItem>purple</ComboBoxItem>
+            <ComboBoxItem>teal</ComboBoxItem>
+            <ComboBoxItem>white</ComboBoxItem>
+            <ComboBoxItem>yellow</ComboBoxItem>
+        </ComboBox>
+        <Label Content="Image Type" Foreground="#FFFFFF" FontSize="15" HorizontalAlignment="Left" VerticalAlignment="Center" Grid.Column="0" Grid.Row="6"/>
+        <ComboBox SelectedIndex="{Binding Path=ImageType, Mode=TwoWay, NotifyOnSourceUpdated=True}" HorizontalAlignment="Left" VerticalAlignment="Center" Grid.Column="1" Grid.Row="6">
+            <ComboBoxItem>photo</ComboBoxItem>
+            <ComboBoxItem>clipart</ComboBoxItem>
+            <ComboBoxItem>lineart</ComboBoxItem>
+            <ComboBoxItem>news</ComboBoxItem>
+            <ComboBoxItem>face</ComboBoxItem>
+        </ComboBox>
+        <Label Content="Image Size" Foreground="#FFFFFF" FontSize="15" HorizontalAlignment="Left" VerticalAlignment="Center" Grid.Column="0" Grid.Row="7"/>
+        <ComboBox SelectedIndex="{Binding Path=ImageSize, Mode=TwoWay, NotifyOnSourceUpdated=True}" HorizontalAlignment="Left" VerticalAlignment="Center" Grid.Column="1" Grid.Row="7">
+            <ComboBoxItem>huge</ComboBoxItem>
+            <ComboBoxItem>icon</ComboBoxItem>
+            <ComboBoxItem>large</ComboBoxItem>
+            <ComboBoxItem>medium</ComboBoxItem>
+            <ComboBoxItem>small</ComboBoxItem>
+            <ComboBoxItem>xlarge</ComboBoxItem>
+            <ComboBoxItem>xxlarge</ComboBoxItem>
+        </ComboBox>
+    </Grid>
+</UserControl>

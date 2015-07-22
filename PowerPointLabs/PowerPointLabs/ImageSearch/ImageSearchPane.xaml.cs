@@ -12,7 +12,6 @@ using PowerPointLabs.AutoUpdate;
 using PowerPointLabs.ImageSearch.Model;
 using PowerPointLabs.ImageSearch.Presentation;
 using PowerPointLabs.ImageSearch.SearchEngine;
-using PowerPointLabs.ImageSearch.SearchEngine.Options;
 using PowerPointLabs.ImageSearch.SearchEngine.VO;
 using PowerPointLabs.ImageSearch.Util;
 using PowerPointLabs.Models;
@@ -47,6 +46,8 @@ namespace PowerPointLabs.ImageSearch
 
         public StyleOptions StyleOptions { get; set; }
 
+        public SearchOptions SearchOptions { get; set; }
+
         // indicate whether it's downloading fullsize image, so that debounce.
         // timer - it will download full size image after some time
         // insert - it will download full size image when there's no cache and user clicks insert button
@@ -61,6 +62,9 @@ namespace PowerPointLabs.ImageSearch
         private const string ErrorNetworkOrSourceUnavailable =
             "Failed to insert style. Please check your network, or the image source is unavailable.";
 
+        private const string ErrorNoEngineIdOrApiKey =
+            "Please fill in Search Engine Id and API Key by clicking Advanced.. button.";
+
         #region Initialization
         public ImageSearchPane()
         {
@@ -73,6 +77,7 @@ namespace PowerPointLabs.ImageSearch
             PreviewListBox.DataContext = this;
             IsOpen = true;
             InitStyleOptions();
+            InitSearchOptions();
 
             var isTempFolderReady = TempPath.InitTempFolder();
             if (isTempFolderReady)
@@ -81,6 +86,12 @@ namespace PowerPointLabs.ImageSearch
                 InitPreviewPresentation();
                 InitPreviewTimer();
             }
+        }
+
+        private void InitSearchOptions()
+        {
+            SearchOptions = SearchOptions.Load(StoragePath.GetPath("ImagesLabSearchOptions"));
+            AdvancedPane.DataContext = SearchOptions;
         }
 
         private void InitStyleOptions()
@@ -99,7 +110,7 @@ namespace PowerPointLabs.ImageSearch
         private void InitSearchEngine()
         {
             // TODO MUST load options from config
-            SearchEngine = new GoogleEngine(new GoogleOptions())
+            SearchEngine = new GoogleEngine(SearchOptions)
                 .WhenSucceed(WhenSearchSucceed())
                 .WhenCompleted(WhenSearchCompleted())
                 .WhenFail(response => {
@@ -329,6 +340,12 @@ namespace PowerPointLabs.ImageSearch
             if (query.Trim().Length == 0)
             {
                 return;
+            } 
+            else if (SearchOptions.SearchEngineId.Trim().Length == 0
+                || SearchOptions.ApiKey.Trim().Length == 0)
+            {
+                ShowErrorMessageBox(ErrorNoEngineIdOrApiKey);
+                return;
             }
 
             PrepareToSearch(GoogleEngine.NumOfItemsPerSearch);
@@ -492,6 +509,7 @@ namespace PowerPointLabs.ImageSearch
                 PreviewPresentation.Close();
             }
             StyleOptions.Save(StoragePath.GetPath("ImagesLabStyleOptions"));
+            SearchOptions.Save(StoragePath.GetPath("ImagesLabSearchOptions"));
         }
 
         private void PreviewInsert_OnClick(object sender, RoutedEventArgs e)
@@ -567,6 +585,11 @@ namespace PowerPointLabs.ImageSearch
         private void StyleOptionsButton_OnClick(object sender, RoutedEventArgs e)
         {
             StyleOptionsFlyout.IsOpen = true;
+        }
+
+        private void AdvancedButton_OnClick(object sender, RoutedEventArgs e)
+        {
+            SearchOptionsFlyout.IsOpen = true;
         }
     }
 }

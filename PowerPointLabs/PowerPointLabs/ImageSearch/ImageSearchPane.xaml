@@ -32,6 +32,9 @@
             <controls:Flyout Name="StyleOptionsFlyout" Header="Style Options" IsModal="True" Position="Left" Width="400" >
                 <custom:StyleOptionsPane x:Name="OptionsPane" Margin="20,0,0,0" />
             </controls:Flyout>
+            <controls:Flyout Name="SearchOptionsFlyout" Header="Search Options" IsModal="True" Position="Left" Width="400" >
+                <custom:SearchOptionsPane x:Name="AdvancedPane" Margin="20,0,0,0" />
+            </controls:Flyout>
         </controls:FlyoutsControl>
     </controls:MetroWindow.Flyouts>
     <Grid Name="ImagesLabGrid">
@@ -105,7 +108,7 @@
                 </Grid.ColumnDefinitions>
                 <TextBox Name="SearchTextBox" KeyDown="SearchTextBox_OnKeyDown" VerticalContentAlignment="Center" Grid.Column="0" Margin="0,0,5,0" controls:TextBoxHelper.Watermark="Type here to search for images"></TextBox>
                 <Button Name="SearchButton" Click="SearchButton_OnClick"  Grid.Column="1" Margin="0,0,5,0">Search</Button>
-                <Button Grid.Column="2">Advanced..</Button>
+                <Button Name="AdvancedButton" Click="AdvancedButton_OnClick" Grid.Column="2">Advanced..</Button>
                 <controls:ProgressRing Name="SearchProgressRing" Width="10" Height="10" Grid.Column="3" IsActive="False" />
             </Grid>
             <ListBox Name="SearchListBox" KeyDown="ListBox_OnKeyDown" IsSynchronizedWithCurrentItem="True" SelectionChanged="SearchListBox_OnSelectionChanged" ItemsSource="{Binding Path=SearchList, Mode=TwoWay}" Grid.Row="2">
