@@ -637,5 +637,24 @@ namespace PowerPointLabs.ImageSearch
         {
             SearchOptionsFlyout.IsOpen = true;
         }
+
+        private void PreviewListBox_OnKeyUp(object sender, KeyEventArgs e)
+        {
+            var listbox = sender as ListBox;
+            if (listbox == null || listbox.Items.Count <= 0)
+            {
+                return;
+            }
+
+            switch (e.Key)
+            {
+                case Key.Enter:
+                    if (PreviewInsert.IsEnabled)
+                    {
+                        PreviewInsert.RaiseEvent(new RoutedEventArgs(ButtonBase.ClickEvent));
+                    }
+                    break;
+            }
+        }
     }
 }
