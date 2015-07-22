@@ -552,7 +552,9 @@ namespace PowerPointLabs.ImageSearch
             }
             else
             {
+                PreviewTimer.Stop();
                 DoPreview(image);
+                PreviewTimer.Start();
             }
         }
 
