@@ -339,15 +339,20 @@ namespace PowerPointLabs.ImageSearch
                         }
                     }
 
-                    // remove debounce check
-                    if (_insertDownloadingUriList.Remove(fullsizeImageUri))
-                    {
-                        _insertDownloadingUriToPreviewImage.Remove(fullsizeImageUri);
-                    }
-                    _timerDownloadingUriList.Remove(fullsizeImageUri);
+                    RemoveDebounceCheck(fullsizeImageUri);
                 }));
             };
         }
+
+        private void RemoveDebounceCheck(string fullsizeImageUri)
+        {
+            if (_insertDownloadingUriList.Remove(fullsizeImageUri))
+            {
+                _insertDownloadingUriToPreviewImage.Remove(fullsizeImageUri);
+            }
+            _timerDownloadingUriList.Remove(fullsizeImageUri);
+        }
+
         # endregion
 
         private void SearchButton_OnClick(object sender, RoutedEventArgs e)
@@ -414,6 +419,14 @@ namespace PowerPointLabs.ImageSearch
             }
             else
             {
+                // when selection changed, no need to insert style
+                if (_insertDownloadingUriList.Remove(source.FullSizeImageUri))
+                {
+                    _insertDownloadingUriToPreviewImage.Remove(source.FullSizeImageUri);
+                }
+                // but dont clear timerDownloadingUriList, since timer may still downloading
+                // full size image at the background.
+
                 PreviewTimer.Stop();
 
                 DoPreview(source);
