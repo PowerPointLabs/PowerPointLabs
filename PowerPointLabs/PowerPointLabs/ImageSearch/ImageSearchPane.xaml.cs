@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
+using System.Linq;
 using System.Timers;
 using System.Windows;
 using System.Windows.Controls;
@@ -131,6 +132,15 @@ namespace PowerPointLabs.ImageSearch
                 .WhenCompleted(WhenSearchCompleted())
                 .WhenFail(response => {
                     ShowErrorMessageBox(ErrorNetworkOrApiQuotaUnavailable);
+                    Dispatcher.BeginInvoke(new Action(() =>
+                    {
+                        // if all failed
+                        if (SearchList.Count(source => source.ImageFile == TempPath.LoadingImgPath) 
+                            == SearchList.Count)
+                        {
+                            SearchList.Clear();
+                        }
+                    }));
                 });
         }
 
@@ -150,6 +160,7 @@ namespace PowerPointLabs.ImageSearch
                 {
                     SearchProgressRing.IsActive = false;
                     var isThereMoreSearchResults = !RemoveElementInSearchList(item => item.IsToDelete);
+                    SearchButton.IsEnabled = true;
                     if (isSuccess 
                         && isThereMoreSearchResults 
                         && SearchList.Count + GoogleEngine.NumOfItemsPerRequest - 1/*loadMore item*/ 
@@ -372,6 +383,7 @@ namespace PowerPointLabs.ImageSearch
                 return;
             }
 
+            SearchButton.IsEnabled = false;
             PrepareToSearch(GoogleEngine.NumOfItemsPerSearch);
             SearchEngine.Search(query);
         }
@@ -416,6 +428,8 @@ namespace PowerPointLabs.ImageSearch
             {
                 PreviewList.Clear();
                 PreviewProgressRing.IsActive = false;
+
+                SearchButton.IsEnabled = false;
                 source.ImageFile = TempPath.LoadingImgPath;
                 PrepareToSearch(GoogleEngine.NumOfItemsPerRequest - 1, isListClearNeeded: false);
                 SearchEngine.SearchMore();
