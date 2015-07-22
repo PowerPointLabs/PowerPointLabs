@@ -33,6 +33,8 @@ namespace PowerPointLabs.ImageSearch.Model
 
         // as cache
         public string BlurImageFile { get; set; }
+        public string GrayscaleImageFile { get; set; }
+        public string FullSizeGrayscaleImageFile { get; set; }
 
         // as cache
         public string FullSizeImageFile { get; set; }

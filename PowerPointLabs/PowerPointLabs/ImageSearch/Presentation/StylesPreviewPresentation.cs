@@ -12,7 +12,9 @@ namespace PowerPointLabs.ImageSearch.Presentation
         public const string DirectTextStyle = "directtext";
         public const string BlurStyle = "blur";
         public const string TextBoxStyle = "textbox";
+        public const string GrayscaleStyle = "grayscale";
 
+        public string GrayScaleStyleImagePath { get; private set; }
         public string TextboxStyleImagePath { get; private set; }
         public string BlurStyleImagePath { get; private set; }
         public string DirectTextStyleImagePath { get; private set; }
@@ -62,6 +64,12 @@ namespace PowerPointLabs.ImageSearch.Presentation
             // style: textbox
             thisSlide.ApplyBlurTextboxEffect(blurImageShape, Options.OverlayColor, Options.Transparency);
             thisSlide.GetNativeSlide().Export(TextboxStyleImagePath, "JPG");
+            thisSlide.RemoveStyles(StylesPreviewSlide.EffectName.Overlay);
+            thisSlide.RemoveStyles(StylesPreviewSlide.EffectName.Blur);
+
+            // style: grayscale
+            thisSlide.ApplyGrayscaleEffect(imageShape, Options.OverlayColor, Options.Transparency);
+            thisSlide.GetNativeSlide().Export(GrayScaleStyleImagePath, "JPG");
 
             thisSlide.Delete();
         }
@@ -90,6 +98,11 @@ namespace PowerPointLabs.ImageSearch.Presentation
                 var blurImageShape = thisSlide.ApplyBlurEffect(imageShape, Options.OverlayColor, Options.Transparency);
                 thisSlide.RemoveStyles(StylesPreviewSlide.EffectName.Overlay);
                 thisSlide.ApplyBlurTextboxEffect(blurImageShape, Options.OverlayColor, Options.Transparency);
+            }
+            else if (previewImageItem.ImageFile.Contains(GrayscaleStyle))
+            {
+                ApplyTextEffect(thisSlide);
+                thisSlide.ApplyGrayscaleEffect(null/*no need clear image shape*/, Options.OverlayColor, Options.Transparency);
             }
 
             thisSlide.ApplyImageReference(imageItem.ContextLink);
@@ -125,6 +138,7 @@ namespace PowerPointLabs.ImageSearch.Presentation
             TextboxStyleImagePath = TempPath.GetPath(TextBoxStyle);
             BlurStyleImagePath = TempPath.GetPath(BlurStyle);
             DirectTextStyleImagePath = TempPath.GetPath(DirectTextStyle);
+            GrayScaleStyleImagePath = TempPath.GetPath(GrayscaleStyle);
         }
     }
 }

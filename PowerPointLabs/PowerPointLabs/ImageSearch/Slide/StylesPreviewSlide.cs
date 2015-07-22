@@ -3,6 +3,7 @@ using System.Drawing;
 using System.Globalization;
 using System.Text.RegularExpressions;
 using ImageProcessor;
+using ImageProcessor.Imaging.Filters;
 using Microsoft.Office.Core;
 using PowerPointLabs.ImageSearch.Model;
 using PowerPointLabs.ImageSearch.Util;
@@ -19,7 +20,8 @@ namespace PowerPointLabs.ImageSearch.Slide
             BackGround,
             Overlay,
             Blur,
-            TextBox
+            TextBox,
+            Grayscale
         }
 
         public const string ShapeNamePrefix = "pptImagesLab";
@@ -279,6 +281,31 @@ namespace PowerPointLabs.ImageSearch.Slide
             blurImageShape.ZOrder(MsoZOrderCmd.msoSendToBack);
         }
 
+        public PowerPoint.Shape ApplyGrayscaleEffect(PowerPoint.Shape imageShape, string overlayColor, int transparency)
+        {
+            var overlayShape = ApplyOverlayStyle(overlayColor, transparency);
+
+            if (ImageItem.GrayscaleImageFile == null && ImageItem.FullSizeImageFile == null)
+            {
+                ImageItem.GrayscaleImageFile = GrayscaleImage(ImageItem.ImageFile);
+            }
+            if (ImageItem.FullSizeGrayscaleImageFile == null && ImageItem.FullSizeImageFile != null)
+            {
+                ImageItem.FullSizeGrayscaleImageFile = GrayscaleImage(ImageItem.FullSizeImageFile);
+                ImageItem.GrayscaleImageFile = ImageItem.FullSizeGrayscaleImageFile;
+            }
+            var grayscaleImageShape = AddPicture(ImageItem.GrayscaleImageFile, EffectName.Grayscale);
+            FitToSlide.AutoFit(grayscaleImageShape, PreviewPresentation);
+
+            overlayShape.ZOrder(MsoZOrderCmd.msoSendToBack);
+            grayscaleImageShape.ZOrder(MsoZOrderCmd.msoSendToBack);
+            if (imageShape != null)
+            {
+                imageShape.ZOrder(MsoZOrderCmd.msoSendToBack);
+            }
+            return grayscaleImageShape;
+        }
+
         private PowerPoint.Shape BlurTextbox(PowerPoint.Shape blurImageShape, 
             float left, float top, float width, float height)
         {
@@ -298,15 +325,33 @@ namespace PowerPointLabs.ImageSearch.Slide
             var blurImageFile = TempPath.GetPath("fullsize_blur");
             using (var imageFactory = new ImageFactory())
             {
-                var image = imageFactory.Load(imageFilePath);
-                image = image.GaussianBlur(5);
-                image.Save(blurImageFile);
-                if (image.MimeType == "image/png")
+                imageFactory
+                    .Load(imageFilePath)
+                    .GaussianBlur(5)
+                    .Save(blurImageFile);
+                if (imageFactory.MimeType == "image/png")
                 {
                     blurImageFile += ".png";
                 }
             }
             return blurImageFile;
+        }
+
+        private static string GrayscaleImage(string imageFilePath)
+        {
+            var grayscaleImageFile = TempPath.GetPath("fullsize_grayscale");
+            using (var imageFactory = new ImageFactory())
+            {
+                imageFactory
+                    .Load(imageFilePath)
+                    .Filter(MatrixFilters.GreyScale)
+                    .Save(grayscaleImageFile);
+                if (imageFactory.MimeType == "image/png")
+                {
+                    grayscaleImageFile += ".png";
+                }
+            }
+            return grayscaleImageFile;
         }
 
         private PowerPoint.Shape AddPicture(string imageFile, EffectName effectName)

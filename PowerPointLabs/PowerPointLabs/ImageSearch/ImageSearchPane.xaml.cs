@@ -74,6 +74,7 @@ namespace PowerPointLabs.ImageSearch
             SearchList = new ObservableCollection<ImageItem>();
             PreviewList = new ObservableCollection<ImageItem>();
             InitSearchListEvent();
+            InitPreviewListEvent();
             SearchListBox.DataContext = this;
             PreviewListBox.DataContext = this;
             IsOpen = true;
@@ -87,6 +88,17 @@ namespace PowerPointLabs.ImageSearch
                 InitPreviewPresentation();
                 InitPreviewTimer();
             }
+        }
+
+        private void InitPreviewListEvent()
+        {
+            PreviewList.CollectionChanged += (sender, args) =>
+            {
+                if (PreviewList.Count != 0)
+                {
+                    PreviewInstructions.Visibility = Visibility.Hidden;
+                }
+            };
         }
 
         private void InitSearchListEvent()
@@ -468,6 +480,7 @@ namespace PowerPointLabs.ImageSearch
                     Add(PreviewList, PreviewPresentation.DirectTextStyleImagePath, "Direct Text style");
                     Add(PreviewList, PreviewPresentation.BlurStyleImagePath, "Blur style");
                     Add(PreviewList, PreviewPresentation.TextboxStyleImagePath, "TextBox style");
+                    Add(PreviewList, PreviewPresentation.GrayScaleStyleImagePath, "Grayscale style");
 
                     PreviewListBox.SelectedIndex = selectedId;
                 }
