@@ -60,11 +60,12 @@
                     <ColumnDefinition Width="*"></ColumnDefinition>
                 </Grid.ColumnDefinitions>
                 <Label Name="PreviewLabel" Grid.Column="1" Margin="0,0,5,0" FontSize="15">Preview</Label>
-                <Button IsEnabled="False" Name="PreviewInsert" Click="PreviewInsert_OnClick" Grid.Column="2" Margin="0,0,5,0">Insert</Button>
+                <Button IsEnabled="False" Name="PreviewInsert" Click="PreviewInsert_OnClick" Grid.Column="2" Margin="0,0,5,0">Apply</Button>
                 <Button Name="StyleOptionsButton" Grid.Column="3" Margin="0,0,5,0" Click="StyleOptionsButton_OnClick">Options</Button>
                 <controls:ProgressRing Name="PreviewProgressRing" Width="10" Height="10" Grid.Column="4" IsActive="False" />
                 <controls:ToggleSwitch ToolTip="Expand/collapse preview region" OnLabel="" OffLabel="" IsCheckedChanged="PreviewDisplayToggleSwitch_OnIsCheckedChanged" Name="PreviewDisplayToggleSwitch" Grid.Column="5" Margin="0,-2,0,2" />
             </Grid>
+            <TextBlock Visibility="Hidden" Name="PreviewInstructions" TextWrapping="Wrap" HorizontalAlignment="Center" VerticalAlignment="Center" Foreground="#AAAAAA" FontSize="14" Grid.Row="2">Select a result to preview styles. Pick a style and click APPLY button to apply.</TextBlock>
             <ListBox Name="PreviewListBox" KeyDown="ListBox_OnKeyDown" IsSynchronizedWithCurrentItem="True" SelectionChanged="PreivewListBox_OnSelectionChanged" ItemsSource="{Binding Path=PreviewList, Mode=TwoWay}" Grid.Row="2">
                 <ListBox.Template>
                     <ControlTemplate TargetType="{x:Type ListBox}">
@@ -111,6 +112,7 @@
                 <Button Name="AdvancedButton" Click="AdvancedButton_OnClick" Grid.Column="2">Advanced..</Button>
                 <controls:ProgressRing Name="SearchProgressRing" Width="10" Height="10" Grid.Column="3" IsActive="False" />
             </Grid>
+            <TextBlock Visibility="Visible" Name="SearchInstructions" TextWrapping="Wrap" HorizontalAlignment="Center" VerticalAlignment="Center" Foreground="#AAAAAA" FontSize="14" Grid.Row="2">No result. Type the keywords in the textbox above to search for images.</TextBlock>
             <ListBox Name="SearchListBox" KeyDown="ListBox_OnKeyDown" IsSynchronizedWithCurrentItem="True" SelectionChanged="SearchListBox_OnSelectionChanged" ItemsSource="{Binding Path=SearchList, Mode=TwoWay}" Grid.Row="2">
                 <ListBox.Template>
                     <ControlTemplate TargetType="{x:Type ListBox}">

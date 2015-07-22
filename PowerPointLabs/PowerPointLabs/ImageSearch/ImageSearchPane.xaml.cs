@@ -63,16 +63,16 @@ namespace PowerPointLabs.ImageSearch
             "Failed to insert style. Please check your network, or the image source is unavailable.";
 
         private const string ErrorNoEngineIdOrApiKey =
-            "Please fill in Search Engine Id and API Key by clicking Advanced.. button.";
+            "Please fill in Search Engine Id and API Key by clicking ADVANCED.. button.";
 
         #region Initialization
         public ImageSearchPane()
         {
             InitializeComponent();
 
-            // TODO ENHANCEMENT show some instructions when lists are empty
             SearchList = new ObservableCollection<ImageItem>();
             PreviewList = new ObservableCollection<ImageItem>();
+            InitSearchListEvent();
             SearchListBox.DataContext = this;
             PreviewListBox.DataContext = this;
             IsOpen = true;
@@ -86,6 +86,23 @@ namespace PowerPointLabs.ImageSearch
                 InitPreviewPresentation();
                 InitPreviewTimer();
             }
+        }
+
+        private void InitSearchListEvent()
+        {
+            SearchList.CollectionChanged += (sender, args) =>
+            {
+                if (SearchList.Count == 0)
+                {
+                    SearchInstructions.Visibility = Visibility.Visible;
+                    PreviewInstructions.Visibility = Visibility.Hidden;
+                }
+                else
+                {
+                    SearchInstructions.Visibility = Visibility.Hidden;
+                    PreviewInstructions.Visibility = Visibility.Visible;
+                }
+            };
         }
 
         private void InitSearchOptions()
