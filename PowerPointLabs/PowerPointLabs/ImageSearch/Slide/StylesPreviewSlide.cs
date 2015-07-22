@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Drawing;
 using System.Globalization;
+using System.Text.RegularExpressions;
 using ImageProcessor;
 using Microsoft.Office.Core;
 using PowerPointLabs.ImageSearch.Model;
@@ -67,8 +68,18 @@ namespace PowerPointLabs.ImageSearch.Slide
             DeleteShapesWithPrefix(ShapeNamePrefix + "_" + effectName);
         }
 
+        public void ApplyImageReference(string contextLink)
+        {
+            RemovePreviousImageReference();
+            NotesPageText = "Background image taken from " + contextLink + " on " + DateTime.Now + "\n" + NotesPageText;
+        }
+
+        private void RemovePreviousImageReference()
+        {
+            NotesPageText = Regex.Replace(NotesPageText, @"^Background image taken from .* on .*\n", "");
+        }
+
         // add a background image shape from imageItem
-        // TODO add image reference info
         public PowerPoint.Shape ApplyBackgroundEffect(string overlayColor,int overlayTransparency)
         {
             var overlay = ApplyOverlayStyle(overlayColor, overlayTransparency);
@@ -116,11 +127,13 @@ namespace PowerPointLabs.ImageSearch.Slide
         }
 
         // add overlay layer 
-        public PowerPoint.Shape ApplyOverlayStyle(string color, int transparency)
+        public PowerPoint.Shape ApplyOverlayStyle(string color, int transparency,
+            float left = 0, float top = 0, float? width = null, float? height = null)
         {
-            var overlayShape = Shapes.AddShape(MsoAutoShapeType.msoShapeRectangle, 0, 0,
-                PreviewPresentation.SlideWidth,
-                PreviewPresentation.SlideHeight);
+            width = width ?? PreviewPresentation.SlideWidth;
+            height = height ?? PreviewPresentation.SlideHeight;
+            var overlayShape = Shapes.AddShape(MsoAutoShapeType.msoShapeRectangle, left, top,
+                width.Value, height.Value);
             ChangeName(overlayShape, EffectName.Overlay);
             overlayShape.Fill.ForeColor.RGB = Graphics.ConvertColorToRgb(ColorTranslator.FromHtml(color));
             overlayShape.Fill.Transparency = (float) transparency / 100;
@@ -135,7 +148,7 @@ namespace PowerPointLabs.ImageSearch.Slide
 
             if (ImageItem.BlurImageFile == null)
             {
-                ImageItem.BlurImageFile = BlurImage(ImageItem.ImageFile); // TODO customize - can use full-size image
+                ImageItem.BlurImageFile = BlurImage(ImageItem.ImageFile);
             }
             var blurImageShape = AddPicture(ImageItem.BlurImageFile, EffectName.Blur);
             FitToSlide.AutoFit(blurImageShape, PreviewPresentation);
@@ -166,23 +179,15 @@ namespace PowerPointLabs.ImageSearch.Slide
                 {
                     if (paragraph.TrimText().Length > 0)
                     {
-                        blurImageShape.Copy();
-                        var blurImageShapeCopy = Shapes.Paste()[1];
-                        ChangeName(blurImageShapeCopy, EffectName.Blur);
-                        PowerPointLabsGlobals.CopyShapePosition(blurImageShape, ref blurImageShapeCopy);
-                        blurImageShapeCopy.PictureFormat.Crop.ShapeLeft = paragraph.BoundLeft - 5;
-                        blurImageShapeCopy.PictureFormat.Crop.ShapeWidth = paragraph.BoundWidth + 10;
-                        blurImageShapeCopy.PictureFormat.Crop.ShapeTop = paragraph.BoundTop - 5;
-                        blurImageShapeCopy.PictureFormat.Crop.ShapeHeight = paragraph.BoundHeight + 10;
-                        var overlayBlurShape = Shapes.AddShape(MsoAutoShapeType.msoShapeRectangle,
-                            paragraph.BoundLeft - 5,
-                            paragraph.BoundTop - 5,
-                            paragraph.BoundWidth + 10,
-                            paragraph.BoundHeight + 10);
-                        overlayBlurShape.Fill.ForeColor.RGB = Graphics.ConvertColorToRgb(ColorTranslator.FromHtml(overlayColor));
-                        overlayBlurShape.Fill.Transparency = (float)transparency / 100;
-                        overlayBlurShape.Line.Visible = MsoTriState.msoFalse;
-                        ChangeName(overlayBlurShape, EffectName.Blur);
+                        var left = paragraph.BoundLeft - 5;
+                        var top = paragraph.BoundTop - 5;
+                        var width = paragraph.BoundWidth + 10;
+                        var height = paragraph.BoundHeight + 10;
+
+                        var blurImageShapeCopy = BlurTextbox(blurImageShape,
+                            left, top, width, height);
+                        var overlayBlurShape = ApplyOverlayStyle(overlayColor, transparency,
+                            left, top, width, height);
                         Graphics.MoveZToJustBehind(blurImageShapeCopy, shape);
                         Graphics.MoveZToJustBehind(overlayBlurShape, shape);
                         shape.Tags.Add(ShapeNamePrefix, blurImageShapeCopy.Name);
@@ -194,6 +199,20 @@ namespace PowerPointLabs.ImageSearch.Slide
                 shape.Tags.Add(ShapeNamePrefix, "");
             }
             blurImageShape.ZOrder(MsoZOrderCmd.msoSendToBack);
+        }
+
+        private PowerPoint.Shape BlurTextbox(PowerPoint.Shape blurImageShape, 
+            float left, float top, float width, float height)
+        {
+            blurImageShape.Copy();
+            var blurImageShapeCopy = Shapes.Paste()[1];
+            ChangeName(blurImageShapeCopy, EffectName.Blur);
+            PowerPointLabsGlobals.CopyShapePosition(blurImageShape, ref blurImageShapeCopy);
+            blurImageShapeCopy.PictureFormat.Crop.ShapeLeft = left;
+            blurImageShapeCopy.PictureFormat.Crop.ShapeTop = top;
+            blurImageShapeCopy.PictureFormat.Crop.ShapeWidth = width;
+            blurImageShapeCopy.PictureFormat.Crop.ShapeHeight = height;
+            return blurImageShapeCopy;
         }
 
         private static string BlurImage(string imageFilePath)

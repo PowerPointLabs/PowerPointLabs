@@ -71,6 +71,7 @@ namespace PowerPointLabs.ImageSearch.Presentation
 
         public void InsertStyles(ImageItem imageItem, ImageItem previewImageItem)
         {
+            // TODO refactor options thing
             Globals.ThisAddIn.Application.StartNewUndoEntry();
             InitImagePaths();
             var currentSlide = PowerPointCurrentPresentationInfo.CurrentSlide.GetNativeSlide();
@@ -93,6 +94,8 @@ namespace PowerPointLabs.ImageSearch.Presentation
                 thisSlide.RemoveStyles(StylesPreviewSlide.EffectName.Overlay);
                 thisSlide.ApplyBlurTextboxEffect(blurImageShape, Options.OverlayColor, Options.Transparency);
             }
+
+            thisSlide.ApplyImageReference(imageItem.ContextLink);
 
             var currentSelection = PowerPointCurrentPresentationInfo.CurrentSelection;
             if (currentSelection.Type == PpSelectionType.ppSelectionShapes)

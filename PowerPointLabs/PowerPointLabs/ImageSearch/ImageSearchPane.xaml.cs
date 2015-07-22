@@ -55,8 +55,11 @@ namespace PowerPointLabs.ImageSearch
         private readonly Dictionary<string, ImageItem> _insertDownloadingUriToPreviewImage = new Dictionary<string, ImageItem>();
 
         // TODO put to text collection
-        private const string ErrorNetworkOrApiQuota =
+        private const string ErrorNetworkOrApiQuotaUnavailable =
             "Failed to search images. Please check your network, or the daily API quota is ran out.";
+
+        private const string ErrorNetworkOrSourceUnavailable =
+            "Failed to insert style. Please check your network, or the image source is unavailable.";
 
         #region Initialization
         public ImageSearchPane()
@@ -100,7 +103,7 @@ namespace PowerPointLabs.ImageSearch
                 .WhenSucceed(WhenSearchSucceed())
                 .WhenCompleted(WhenSearchCompleted())
                 .WhenFail(response => {
-                    ShowErrorMessageBox(ErrorNetworkOrApiQuota);
+                    ShowErrorMessageBox(ErrorNetworkOrApiQuotaUnavailable);
                 });
         }
 
@@ -172,23 +175,30 @@ namespace PowerPointLabs.ImageSearch
 
                     new Downloader()
                         .Get(searchResult.Image.ThumbnailLink, thumbnailPath)
-                        .After(() =>
-                        {
-                            item.ImageFile = thumbnailPath;
-                            item.FullSizeImageUri = searchResult.Link;
-                            item.Tooltip = GetTooltip(searchResult);
-
-                            Dispatcher.BeginInvoke(new Action(() =>
-                            {
-                                var selectedImageItem = SearchListBox.SelectedValue as ImageItem;
-                                if (selectedImageItem != null && item.ImageFile == selectedImageItem.ImageFile)
-                                {
-                                    DoPreview();
-                                }
-                            }));
-                        })
+                        .After(AfterDownloadThumbnail(item, thumbnailPath, searchResult))
                         .Start();
                 }
+            };
+        }
+
+        private Downloader.AfterDownloadEventDelegate AfterDownloadThumbnail(
+            ImageItem item, string thumbnailPath, SearchResult searchResult)
+        {
+            return () =>
+            {
+                item.ImageFile = thumbnailPath;
+                item.FullSizeImageUri = searchResult.Link;
+                item.Tooltip = GetTooltip(searchResult);
+                item.ContextLink = searchResult.Image.ContextLink;
+
+                Dispatcher.BeginInvoke(new Action(() =>
+                {
+                    var selectedImageItem = SearchListBox.SelectedValue as ImageItem;
+                    if (selectedImageItem != null && item.ImageFile == selectedImageItem.ImageFile)
+                    {
+                        DoPreview();
+                    }
+                }));
             };
         }
 
@@ -508,10 +518,7 @@ namespace PowerPointLabs.ImageSearch
                 new Downloader()
                     .Get(fullsizeImageUri, fullsizeImageFile)
                     .After(AfterDownloadFullSizeImage(source, fullsizeImageFile))
-                    .OnError(() =>
-                    {
-                        ShowErrorMessageBox(ErrorNetworkOrApiQuota);
-                    })
+                    .OnError(() => { ShowErrorMessageBox(ErrorNetworkOrSourceUnavailable); })
                     .Start();
             }
             // already downloading, then update preview image in the map

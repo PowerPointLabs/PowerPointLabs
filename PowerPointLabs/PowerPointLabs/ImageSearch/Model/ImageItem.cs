@@ -40,6 +40,8 @@ namespace PowerPointLabs.ImageSearch.Model
         // meta info
         public bool IsToDelete { get; set; }
 
+        public string ContextLink { get; set; }
+
         private string _fullSizeImageUri;
 
         public string FullSizeImageUri
