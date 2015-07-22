@@ -213,6 +213,7 @@ namespace PowerPointLabs.ImageSearch
         {
             return () =>
             {
+                if (item == null) return;
                 item.ImageFile = thumbnailPath;
                 item.FullSizeImageUri = searchResult.Link;
                 item.Tooltip = GetTooltip(searchResult);
@@ -305,6 +306,8 @@ namespace PowerPointLabs.ImageSearch
                 // in downloader thread
                 Dispatcher.BeginInvoke(new Action(() =>
                 {
+                    if (source == null) return;
+
                     // UI thread again
                     // store back to image, so cache it
                     source.FullSizeImageFile = fullsizeImageFile;

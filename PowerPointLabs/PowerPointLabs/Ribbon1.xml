@@ -200,6 +200,11 @@
                   getImage="GetColorsLabImage"
                   getSupertip="GetColorPickerButtonSupertip"
                   onAction="ColorPickerButtonClick"/>
+          <button id="ImagesLabButton"
+                  label="Images Lab"
+                  size="large"
+                  onAction="ImagesLabButtonClick"
+                  />
           <button id="ShapesLabButton"
                   getLabel="GetCustomeShapeButtonLabel"
                   size="large"

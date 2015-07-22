@@ -1654,22 +1654,30 @@ namespace PowerPointLabs
 
         #endregion
 
-        #region Feature: Crop to Shape
+        #region Feature: Images Lab
 
         public ImageSearchPane ImageSearchPane { get; set; }
 
-        public void CropShapeButtonClick(Office.IRibbonControl control)
+        public void ImagesLabButtonClick(Office.IRibbonControl control)
         {
-//            Globals.ThisAddIn.Application.StartNewUndoEntry();
-//
-//            var selection = PowerPointCurrentPresentationInfo.CurrentSelection;
-//            CropToShape.Crop(selection);
             if (ImageSearchPane == null || !ImageSearchPane.IsOpen)
             {
                 ImageSearchPane = new ImageSearchPane();
             }
             ImageSearchPane.FocusSearchTextBox();
             ImageSearchPane.Show();
+        }
+        
+        #endregion
+
+        #region Feature: Crop to Shape
+
+        public void CropShapeButtonClick(Office.IRibbonControl control)
+        {
+            Globals.ThisAddIn.Application.StartNewUndoEntry();
+
+            var selection = PowerPointCurrentPresentationInfo.CurrentSelection;
+            CropToShape.Crop(selection);
         }
 
         public Bitmap GetCutOutShapeMenuImage(Office.IRibbonControl control)
