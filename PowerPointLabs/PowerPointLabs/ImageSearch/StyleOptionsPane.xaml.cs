@@ -56,6 +56,7 @@ namespace PowerPointLabs.ImageSearch
             return Color.FromArgb(color.A, color.R, color.G, color.B);
         }
 
+        // TODO util
         private string GetHexValue(System.Drawing.Color color)
         {
             byte[] rgbArray = { color.R, color.G, color.B };

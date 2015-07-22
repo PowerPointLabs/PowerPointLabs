@@ -50,10 +50,7 @@ namespace PowerPointLabs.ImageSearch.Presentation
 
             // style: direct text
             var imageShape = thisSlide.ApplyBackgroundEffect(Options.OverlayColor, Options.Transparency);
-            if (!Options.IsUseOriginalTextFormat)
-            {
-                thisSlide.ApplyTextEffect(Options.GetFontFamily(), Options.FontColor, Options.FontSizeIncrease);
-            }
+            ApplyTextEffect(thisSlide);
             thisSlide.GetNativeSlide().Export(DirectTextStyleImagePath, "JPG");
             thisSlide.RemoveStyles(StylesPreviewSlide.EffectName.Overlay);
 
@@ -107,7 +104,11 @@ namespace PowerPointLabs.ImageSearch.Presentation
 
         private void ApplyTextEffect(StylesPreviewSlide thisSlide)
         {
-            if (!Options.IsUseOriginalTextFormat)
+            if (Options.IsUseOriginalTextFormat)
+            {
+                thisSlide.ApplyOriginalTextEffect();
+            }
+            else
             {
                 thisSlide.ApplyTextEffect(Options.GetFontFamily(), Options.FontColor, Options.FontSizeIncrease);
             }

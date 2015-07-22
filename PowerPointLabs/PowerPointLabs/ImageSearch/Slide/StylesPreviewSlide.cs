@@ -24,7 +24,12 @@ namespace PowerPointLabs.ImageSearch.Slide
 
         public const string ShapeNamePrefix = "pptImagesLab";
 
-        public const string OriginalFontSize = "originalFontSize";
+        // tag names
+        private const string OriginalFontSize = "originalFontSize";
+        private const string OriginalFontColor = "originalFontColor";
+        private const string OriginalFontFamily = "originalFontFamily";
+        private const string OriginalFillVisible = "originalFillVisible";
+        private const string OriginalLineVisible = "originalLineVisible";
 
         private ImageItem ImageItem { get; set; }
 
@@ -92,6 +97,7 @@ namespace PowerPointLabs.ImageSearch.Slide
             return imageShape;
         }
 
+        // TODO shorten this?
         // apply text formats to textbox & placeholer
         public void ApplyTextEffect(string fontFamily, string fontColor, int fontSizeToIncrease)
         {
@@ -104,26 +110,98 @@ namespace PowerPointLabs.ImageSearch.Slide
                     continue;
                 }
 
+                if (IsEmpty(shape.Tags[OriginalFillVisible]))
+                {
+                    shape.Tags.Add(OriginalFillVisible, ToBool(shape.Fill.Visible).ToString());
+                }
                 shape.Fill.Visible = MsoTriState.msoFalse;
+
+                if (IsEmpty(shape.Tags[OriginalLineVisible]))
+                {
+                    shape.Tags.Add(OriginalLineVisible, ToBool(shape.Line.Visible).ToString());
+                }
                 shape.Line.Visible = MsoTriState.msoFalse;
 
                 var font = shape.TextFrame2.TextRange.TrimText().Font;
 
+                if (IsEmpty(shape.Tags[OriginalFontColor]))
+                {
+                    shape.Tags.Add(OriginalFontColor, GetHexValue(Graphics.ConvertRgbToColor(font.Fill.ForeColor.RGB)));
+                }
                 font.Fill.ForeColor.RGB
-                    = Graphics.ConvertColorToRgb(ColorTranslator.FromHtml(fontColor));
+                        = Graphics.ConvertColorToRgb(ColorTranslator.FromHtml(fontColor));
+
+                if (IsEmpty(shape.Tags[OriginalFontFamily]))
+                {
+                    shape.Tags.Add(OriginalFontFamily, font.Name);
+                }
                 font.Name = fontFamily;
 
-                if (shape.Tags[OriginalFontSize].Trim().Length != 0)
-                {
-                    shape.TextEffect.FontSize = float.Parse(shape.Tags[OriginalFontSize]);
-                    shape.TextEffect.FontSize += fontSizeToIncrease;
-                }
-                else // not applied before
+                if (IsEmpty(shape.Tags[OriginalFontSize]))
                 {
                     shape.Tags.Add(OriginalFontSize, shape.TextEffect.FontSize.ToString(CultureInfo.InvariantCulture));
                     shape.TextEffect.FontSize += fontSizeToIncrease;
                 }
+                else // applied before
+                {
+                    shape.TextEffect.FontSize = float.Parse(shape.Tags[OriginalFontSize]);
+                    shape.TextEffect.FontSize += fontSizeToIncrease;
+                }
             }
+        }
+
+        public void ApplyOriginalTextEffect()
+        {
+            foreach (PowerPoint.Shape shape in Shapes)
+            {
+                if ((shape.Type != MsoShapeType.msoPlaceholder
+                        && shape.Type != MsoShapeType.msoTextBox)
+                        || shape.TextFrame.HasText == MsoTriState.msoFalse)
+                {
+                    continue;
+                }
+
+                if (!IsEmpty(shape.Tags[OriginalFillVisible]))
+                {
+                    shape.Fill.Visible = ToMsoTriState(bool.Parse(shape.Tags[OriginalFillVisible]));
+                }
+                if (!IsEmpty(shape.Tags[OriginalLineVisible]))
+                {
+                    shape.Line.Visible = ToMsoTriState(bool.Parse(shape.Tags[OriginalLineVisible]));
+                }
+
+                var font = shape.TextFrame2.TextRange.TrimText().Font;
+
+                if (!IsEmpty(shape.Tags[OriginalFontColor]))
+                {
+                    font.Fill.ForeColor.RGB
+                        = Graphics.ConvertColorToRgb(ColorTranslator.FromHtml(shape.Tags[OriginalFontColor]));
+                }
+                if (!IsEmpty(shape.Tags[OriginalFontFamily]))
+                {
+                    font.Name = shape.Tags[OriginalFontFamily];
+                }
+                if (!IsEmpty(shape.Tags[OriginalFontSize]))
+                {
+                    shape.TextEffect.FontSize = float.Parse(shape.Tags[OriginalFontSize]);
+                }
+            }
+        }
+
+        // TODO util
+        private bool IsEmpty(string str)
+        {
+            return str.Trim().Length == 0;
+        }
+
+        private bool ToBool(MsoTriState state)
+        {
+            return state == MsoTriState.msoTrue;
+        }
+
+        private MsoTriState ToMsoTriState(bool boolean)
+        {
+            return boolean ? MsoTriState.msoTrue : MsoTriState.msoFalse;
         }
 
         // add overlay layer 
@@ -169,7 +247,7 @@ namespace PowerPointLabs.ImageSearch.Slide
                 if ((shape.Type != MsoShapeType.msoPlaceholder
                         && shape.Type != MsoShapeType.msoTextBox)
                         || shape.TextFrame.HasText == MsoTriState.msoFalse
-                        || shape.Tags[ShapeNamePrefix].Trim().Length != 0)
+                        || !IsEmpty(shape.Tags[ShapeNamePrefix]))
                 {
                     continue;
                 }
@@ -243,6 +321,14 @@ namespace PowerPointLabs.ImageSearch.Slide
         private static void ChangeName(PowerPoint.Shape shape, EffectName effectName)
         {
             shape.Name = ShapeNamePrefix + "_" + effectName + "_" + Guid.NewGuid().ToString().Substring(0, 7);
+        }
+
+        // TODO util
+        private string GetHexValue(Color color)
+        {
+            byte[] rgbArray = { color.R, color.G, color.B };
+            var hex = BitConverter.ToString(rgbArray);
+            return "#" + hex.Replace("-", "");
         }
     }
 }
