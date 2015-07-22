@@ -62,12 +62,12 @@ namespace PowerPointLabs.ImageSearch.SearchEngine
         private string GetApi()
         {
             return "https://www.googleapis.com/customsearch/v1?filter=1&searchType=image&safe=medium"
-                   + "&cx=" + SearchOptions.SearchEngineId
+                   + "&cx=" + SearchOptions.SearchEngineId.Trim()
                    + "&imgSize=" + SearchOptions.GetImageSize()
                    + "&imgType=" + SearchOptions.GetImageType()
                    + "&imgColorType=" + SearchOptions.GetColorType()
                    + ("none" != SearchOptions.GetDominantColor()? "&imgDominantColor=" + SearchOptions.GetDominantColor() : "")
-                   + "&key=" + SearchOptions.ApiKey;
+                   + "&key=" + SearchOptions.ApiKey.Trim();
         }
 
         public void Search(string query)
