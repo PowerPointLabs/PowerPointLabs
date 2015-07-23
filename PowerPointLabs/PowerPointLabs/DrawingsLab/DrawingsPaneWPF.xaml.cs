@@ -98,6 +98,11 @@ namespace PowerPointLabs.DrawingsLab
             DrawingsLabMain.HideTool();
         }
 
+        private void ShowAllButton_Click(object sender, EventArgs e)
+        {
+            DrawingsLabMain.ShowAllTool();
+        }
+
         private void CloneButton_Click(object sender, EventArgs e)
         {
             DrawingsLabMain.CloneTool();

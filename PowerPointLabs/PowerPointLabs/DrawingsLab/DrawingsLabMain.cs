@@ -48,6 +48,16 @@ namespace PowerPointLabs.DrawingsLab
             }
         }
 
+        public static void ShowAllTool()
+        {
+            var shapes = PowerPointCurrentPresentationInfo.CurrentSlide.Shapes;
+
+            foreach (var shape in shapes.Cast<Shape>())
+            {
+                shape.Visible = MsoTriState.msoTrue;
+            }
+        }
+
         public static void CloneTool()
         {
             var selection = PowerPointCurrentPresentationInfo.CurrentSelection;

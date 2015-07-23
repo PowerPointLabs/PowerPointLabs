@@ -45,6 +45,7 @@
         <Button Content="Rect" Grid.Row="1" Grid.Column="1" Click="LineButton_Click"/>
         <Button Content="Circle" Grid.Row="1" Grid.Column="2" Click="LineButton_Click"/>
         <Button Content="Hide" Grid.Row="2" Grid.Column="2" Click="HideButton_Click"/>
+        <Button Content="ShowAll" Grid.Row="2" Grid.Column="3" Click="ShowAllButton_Click"/>
         <Button Content="Clone" Grid.Row="3" Grid.Column="2" Click="CloneButton_Click"/>
         <Button Content="MultiClone" Grid.Row="3" Grid.Column="3" Click="MultiCloneButton_Click"/>
         <TextBox Grid.Row="4" Grid.Column="0" Text="{Binding UpdateSourceTrigger=PropertyChanged, Source={StaticResource DrawingsLabData}, Path=ShiftValueX, Mode=TwoWay, Converter={StaticResource FloatToStringConverter}}"/>
