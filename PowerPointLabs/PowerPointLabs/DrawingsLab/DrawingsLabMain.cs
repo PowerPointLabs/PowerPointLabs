@@ -22,8 +22,7 @@ namespace PowerPointLabs.DrawingsLab
             get { return DrawingsPaneWPF.dataSource; }
         }
 
-
-
+        #region API
         public static void SwitchToLineTool()
         {
             // This should trigger the line tool.
@@ -189,8 +188,8 @@ namespace PowerPointLabs.DrawingsLab
             var firstShape = shapes[1];
             var secondShape = shapes[2];
 
-            DataSource.ShiftValueX = secondShape.Left - firstShape.Left;
-            DataSource.ShiftValueY = secondShape.Top - firstShape.Top;
+            DataSource.ShiftValueX = GetX(secondShape) - GetX(firstShape);
+            DataSource.ShiftValueY = GetY(secondShape) - GetY(firstShape);
             DataSource.ShiftValueRotation = secondShape.Rotation - firstShape.Rotation;
         }
 
@@ -202,8 +201,8 @@ namespace PowerPointLabs.DrawingsLab
             {
                 if (DataSource.ShiftIncludePosition)
                 {
-                    shape.Left += DataSource.ShiftValueX;
-                    shape.Top += DataSource.ShiftValueY;
+                    SetX(shape, GetX(shape) + DataSource.ShiftValueX);
+                    SetY(shape, GetY(shape) + DataSource.ShiftValueY);
                 }
                 if (DataSource.ShiftIncludeRotation)
                 {
@@ -225,8 +224,8 @@ namespace PowerPointLabs.DrawingsLab
             }
             var shape = shapes[1];
 
-            DataSource.SavedValueX = shape.Left;
-            DataSource.SavedValueY = shape.Top;
+            DataSource.SavedValueX = GetX(shape);
+            DataSource.SavedValueY = GetY(shape);
             DataSource.SavedValueRotation = shape.Rotation;
         }
 
@@ -239,8 +238,8 @@ namespace PowerPointLabs.DrawingsLab
             {
                 if (DataSource.SavedIncludePosition)
                 {
-                    shape.Left = DataSource.SavedValueX;
-                    shape.Top = DataSource.SavedValueY;
+                    SetX(shape, DataSource.SavedValueX);
+                    SetY(shape, DataSource.SavedValueY);
                 }
                 if (DataSource.SavedIncludeRotation)
                 {
@@ -248,7 +247,75 @@ namespace PowerPointLabs.DrawingsLab
                 }
             }
         }
+        #endregion
 
+        #region Convenience Functions
+        public static float GetX(Shape shape)
+        {
+            switch (DataSource.HorizontalPosition)
+            {
+                case DrawingsLabDataSource.Horizontal.Left:
+                    return shape.Left;
+                case DrawingsLabDataSource.Horizontal.Center:
+                    return Graphics.GetMidpointX(shape);
+                case DrawingsLabDataSource.Horizontal.Right:
+                    return Graphics.GetRight(shape);
+            }
+            throw new ArgumentOutOfRangeException();
+        }
+
+        public static void SetX(Shape shape, float value)
+        {
+            switch (DataSource.HorizontalPosition)
+            {
+                case DrawingsLabDataSource.Horizontal.Left:
+                    shape.Left = value;
+                    return;
+                case DrawingsLabDataSource.Horizontal.Center:
+                    Graphics.SetMidpointX(shape, value);
+                    return;
+                case DrawingsLabDataSource.Horizontal.Right:
+                    Graphics.SetRight(shape, value);
+                    return;
+            }
+            throw new ArgumentOutOfRangeException();
+        }
+
+        public static float GetY(Shape shape)
+        {
+            switch (DataSource.VerticalPosition)
+            {
+                case DrawingsLabDataSource.Vertical.Top:
+                    return shape.Top;
+                case DrawingsLabDataSource.Vertical.Middle:
+                    return Graphics.GetMidpointY(shape);
+                case DrawingsLabDataSource.Vertical.Bottom:
+                    return Graphics.GetBottom(shape);
+            }
+            throw new ArgumentOutOfRangeException();
+        }
+
+        public static void SetY(Shape shape, float value)
+        {
+            switch (DataSource.VerticalPosition)
+            {
+                case DrawingsLabDataSource.Vertical.Top:
+                    shape.Top = value;
+                    return;
+                case DrawingsLabDataSource.Vertical.Middle:
+                    Graphics.SetMidpointY(shape, value);
+                    return;
+                case DrawingsLabDataSource.Vertical.Bottom:
+                    Graphics.SetBottom(shape, value);
+                    return;
+            }
+            throw new ArgumentOutOfRangeException();
+        }
+
+        #endregion
+
+
+        #region Utility Functions
         private static void Error(string message)
         {
             MessageBox.Show(message, "Error");
@@ -302,5 +369,6 @@ namespace PowerPointLabs.DrawingsLab
             }
             return -1;
         }
+        #endregion
     }
 }
