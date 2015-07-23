@@ -345,7 +345,7 @@ namespace PowerPointLabs.Utils
             MoveZUntilBehind(shiftShape, destinationShape);
         }
 
-        // TODO: Make this an extension method of shape.
+        // TODO: This could be an extension method of shape.
         public static bool HasDefaultName(Shape shape)
         {
             var copy = shape.Duplicate()[1];
@@ -354,20 +354,67 @@ namespace PowerPointLabs.Utils
             return hasDefaultName;
         }
 
+        // TODO: This could be an extension method of shape.
+        public static float GetMidpointX(Shape shape)
+        {
+            return shape.Left + shape.Width / 2;
+        }
 
-        // TODO: Make this an extension method of shape.
+        // TODO: This could be an extension method of shape.
+        public static void SetMidpointX(Shape shape, float value)
+        {
+            shape.Left = value - shape.Width / 2;
+        }
+
+        // TODO: This could be an extension method of shape.
+        public static float GetMidpointY(Shape shape)
+        {
+            return shape.Top + shape.Height / 2;
+        }
+
+        // TODO: This could be an extension method of shape.
+        public static void SetMidpointY(Shape shape, float value)
+        {
+            shape.Top = value - shape.Height / 2;
+        }
+
+        // TODO: This could be an extension method of shape.
+        public static float GetRight(Shape shape)
+        {
+            return shape.Left + shape.Width;
+        }
+
+        // TODO: This could be an extension method of shape.
+        public static void SetRight(Shape shape, float value)
+        {
+            shape.Left = value - shape.Width;
+        }
+
+        // TODO: This could be an extension method of shape.
+        public static float GetBottom(Shape shape)
+        {
+            return shape.Top + shape.Height;
+        }
+
+        // TODO: This could be an extension method of shape.
+        public static void SetBottom(Shape shape, float value)
+        {
+            shape.Top = value - shape.Height;
+        }
+
+        // TODO: This could be an extension method of shape.
         public static void SetText(Shape shape, params string[] lines)
         {
             shape.TextFrame2.TextRange.Text = string.Join("\r", lines);
         }
 
-        // TODO: Make this an extension method of shape.
+        // TODO: This could be an extension method of shape.
         public static void SetText(Shape shape, IEnumerable<string> lines)
         {
             shape.TextFrame2.TextRange.Text = string.Join("\r", lines);
         }
 
-        // TODO: Make this an extension method of shape.
+        // TODO: This could be an extension method of shape.
         /// <summary>
         /// Get the paragraphs of the shape as a list.
         /// The paragraphs formats can be modified to change the format of the paragraphs in shape.
@@ -378,7 +425,7 @@ namespace PowerPointLabs.Utils
             return shape.TextFrame2.TextRange.Paragraphs.Cast<TextRange2>().ToList();
         }
 
-        // TODO: Make this an extension method of shape.
+        // TODO: This could be an extension method of shape.
         public static bool IsHidden(Shape shape)
         {
             return shape.Visible == MsoTriState.msoFalse;

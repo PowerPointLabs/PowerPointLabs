@@ -1,11 +1,20 @@
-﻿<UserControl x:Class="PowerPointLabs.DrawingsLab.DrawingsPaneWPF"
+﻿<UserControl
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:PowerPointLabs.DrawingsLab"
+             xmlns:converters="clr-namespace:PowerPointLabs.Converters"
+             xmlns:dataSources="clr-namespace:PowerPointLabs.DataSources"
+             x:Class="PowerPointLabs.DrawingsLab.DrawingsPaneWPF" 
              mc:Ignorable="d" 
              d:DesignWidth="304" d:DesignHeight="883">
-    <Grid>
+    <UserControl.Resources>
+        <local:DrawingsLabMain x:Key="DrawingsLab"/>
+        <dataSources:DrawingsLabDataSource x:Key="DrawingsLabData"/>
+        <converters:FloatToStringConverter x:Key="FloatToStringConverter"/>
+    </UserControl.Resources>
+    <Grid DataContext="{StaticResource DrawingsLabData}">
         <Grid.RowDefinitions>
             <RowDefinition Height="1*"/>
             <RowDefinition Height="1*"/>
@@ -28,6 +37,7 @@
             <ColumnDefinition Width="1*"/>
             <ColumnDefinition Width="1*"/>
             <ColumnDefinition Width="1*"/>
+            <ColumnDefinition Width="1*"/>
         </Grid.ColumnDefinitions>
         <Button Content="Line" Grid.Row="1" Grid.Column="0" Click="LineButton_Click"/>
         <Button Content="Rect" Grid.Row="1" Grid.Column="1" Click="LineButton_Click"/>
@@ -35,5 +45,24 @@
         <Button Content="Hide" Grid.Row="2" Grid.Column="2" Click="HideButton_Click"/>
         <Button Content="Clone" Grid.Row="3" Grid.Column="2" Click="CloneButton_Click"/>
         <Button Content="MultiClone" Grid.Row="3" Grid.Column="3" Click="MultiCloneButton_Click"/>
+        <TextBox Grid.Row="4" Grid.Column="0" Text="{Binding UpdateSourceTrigger=PropertyChanged, Source={StaticResource DrawingsLabData}, Path=ShiftValueX, Mode=TwoWay, Converter={StaticResource FloatToStringConverter}}"/>
+        <TextBox Grid.Row="4" Grid.Column="1" Text="{Binding UpdateSourceTrigger=PropertyChanged, Source={StaticResource DrawingsLabData}, Path=ShiftValueY, Mode=TwoWay, Converter={StaticResource FloatToStringConverter}}"/>
+        <TextBox Grid.Row="4" Grid.Column="2" Text="{Binding UpdateSourceTrigger=PropertyChanged, Source={StaticResource DrawingsLabData}, Path=ShiftValueRotation, Mode=TwoWay, Converter={StaticResource FloatToStringConverter}}"/>
+        <TextBox Grid.Row="5" Grid.Column="0" Text="{Binding UpdateSourceTrigger=PropertyChanged, Source={StaticResource DrawingsLabData}, Path=SavedValueX, Mode=TwoWay, Converter={StaticResource FloatToStringConverter}}"/>
+        <TextBox Grid.Row="5" Grid.Column="1" Text="{Binding UpdateSourceTrigger=PropertyChanged, Source={StaticResource DrawingsLabData}, Path=SavedValueY, Mode=TwoWay, Converter={StaticResource FloatToStringConverter}}"/>
+        <TextBox Grid.Row="5" Grid.Column="2" Text="{Binding UpdateSourceTrigger=PropertyChanged, Source={StaticResource DrawingsLabData}, Path=SavedValueRotation, Mode=TwoWay, Converter={StaticResource FloatToStringConverter}}"/>
+        
+        <Button Content="RecordDisplacement" Grid.Row="4" Grid.Column="3" Click="RecordDisplacementButton_Click"/>
+        <Button Content="ApplyDisplacement" Grid.Row="4" Grid.Column="4" Click="ApplyDisplacementButton_Click"/>
+        <Button Content="RecordPosition" Grid.Row="5" Grid.Column="3" Click="RecordPositionButton_Click"/>
+        <Button Content="ApplyPosition" Grid.Row="5" Grid.Column="4" Click="ApplyPositionButton_Click"/>
+
+        <Button Content="BringInFrontOfShape" Grid.Row="7" Grid.Column="2" Click="BringInFrontOfShapeButton_Click"/>
+        <Button Content="SendBehindShaoe" Grid.Row="7" Grid.Column="3" Click="SendBehindShapeButton_Click"/>
+        <Button Content="BringToFront" Grid.Row="8" Grid.Column="1" Click="BringToFrontButton_Click"/>
+        <Button Content="BringForward" Grid.Row="8" Grid.Column="2" Click="BringForwardButton_Click"/>
+        <Button Content="SendBackward" Grid.Row="8" Grid.Column="3" Click="SendBackwardButton_Click"/>
+        <Button Content="SendToBack" Grid.Row="8" Grid.Column="4" Click="SendToBackButton_Click"/>
+
     </Grid>
 </UserControl>

@@ -13,6 +13,7 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using Microsoft.Office.Core;
 using Microsoft.Office.Interop.PowerPoint;
+using PowerPointLabs.DataSources;
 using PowerPointLabs.Models;
 using PPExtraEventHelper;
 using Shape = System.Windows.Shapes.Shape;
@@ -25,6 +26,8 @@ namespace PowerPointLabs.DrawingsLab
     public partial class DrawingsPaneWPF
     {
         private static bool hotkeysInitialised = false;
+
+        public static DrawingsLabDataSource dataSource { get; private set; }
 
         public DrawingsPaneWPF()
         {
@@ -47,11 +50,16 @@ namespace PowerPointLabs.DrawingsLab
         #region DataBindings
         private void BindDataToPanels()
         {
+            dataSource = FindResource("DrawingsLabData") as DrawingsLabDataSource;
+            //ShiftValueX.DataContext = dataSource;
+            //var binding = new Binding() {Path = new PropertyPath("ShiftValueX")};
+            //this.ShiftValueX.SetBinding(ForegroundProperty, binding);
             //this.panel1.DataBindings.Add(new CustomBinding(
                 //"BackColor",
                 //dataSource,
                 //"selectedColor",
                 //new Converters.HSLColorToRGBColor()));
+
         }
         #endregion
 
@@ -72,7 +80,7 @@ namespace PowerPointLabs.DrawingsLab
         {
             if (hotkeysInitialised) return;
             hotkeysInitialised = true;
-
+            
             PPKeyboard.AddKeyupAction(Native.VirtualKey.VK_L, RunOnlyWhenOpen(DrawingsLabMain.SwitchToLineTool));
             PPKeyboard.AddKeyupAction(Native.VirtualKey.VK_H, RunOnlyWhenOpen(DrawingsLabMain.HideTool));
             PPKeyboard.AddKeyupAction(Native.VirtualKey.VK_D, RunOnlyWhenOpen(DrawingsLabMain.CloneTool));
@@ -98,6 +106,56 @@ namespace PowerPointLabs.DrawingsLab
         private void MultiCloneButton_Click(object sender, EventArgs e)
         {
             DrawingsLabMain.MultiCloneTool();
+        }
+
+        private void ApplyPositionButton_Click(object sender, EventArgs e)
+        {
+            DrawingsLabMain.ApplyPosition();
+        }
+
+        private void RecordPositionButton_Click(object sender, EventArgs e)
+        {
+            DrawingsLabMain.RecordPosition();
+        }
+
+        private void ApplyDisplacementButton_Click(object sender, EventArgs e)
+        {
+            DrawingsLabMain.ApplyDisplacement();
+        }
+
+        private void RecordDisplacementButton_Click(object sender, EventArgs e)
+        {
+            DrawingsLabMain.RecordDisplacement();
+        }
+
+        private void BringForwardButton_Click(object sender, EventArgs e)
+        {
+            DrawingsLabMain.BringForward();
+        }
+
+        private void BringInFrontOfShapeButton_Click(object sender, EventArgs e)
+        {
+            DrawingsLabMain.BringInFrontOfShape();
+        }
+
+        private void BringToFrontButton_Click(object sender, EventArgs e)
+        {
+            DrawingsLabMain.BringToFront();
+        }
+
+        private void SendBackwardButton_Click(object sender, EventArgs e)
+        {
+            DrawingsLabMain.SendBackward();
+        }
+
+        private void SendBehindShapeButton_Click(object sender, EventArgs e)
+        {
+            DrawingsLabMain.SendBehindShape();
+        }
+
+        private void SendToBackButton_Click(object sender, EventArgs e)
+        {
+            DrawingsLabMain.SendToBack();
         }
     }
 }

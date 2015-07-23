@@ -24,8 +24,6 @@ namespace PowerPointLabs
 
     public partial class DrawingsPane : UserControl
     {
-        private static bool hotkeysInitialised = false;
-
         public DrawingsPane()
         {
             InitializeComponent();
