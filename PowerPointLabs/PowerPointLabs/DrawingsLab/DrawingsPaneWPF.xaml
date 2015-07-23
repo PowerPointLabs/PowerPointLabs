@@ -16,20 +16,22 @@
     </UserControl.Resources>
     <Grid DataContext="{StaticResource DrawingsLabData}">
         <Grid.RowDefinitions>
+            <RowDefinition Height="2*"/>
+            <RowDefinition Height="2*"/>
+            <RowDefinition Height="2*"/>
+            <RowDefinition Height="2*"/>
             <RowDefinition Height="1*"/>
             <RowDefinition Height="1*"/>
             <RowDefinition Height="1*"/>
             <RowDefinition Height="1*"/>
-            <RowDefinition Height="1*"/>
-            <RowDefinition Height="1*"/>
-            <RowDefinition Height="1*"/>
-            <RowDefinition Height="1*"/>
-            <RowDefinition Height="1*"/>
-            <RowDefinition Height="1*"/>
-            <RowDefinition Height="1*"/>
-            <RowDefinition Height="1*"/>
-            <RowDefinition Height="1*"/>
-            <RowDefinition Height="1*"/>
+            <RowDefinition Height="2*"/>
+            <RowDefinition Height="2*"/>
+            <RowDefinition Height="2*"/>
+            <RowDefinition Height="2*"/>
+            <RowDefinition Height="2*"/>
+            <RowDefinition Height="2*"/>
+            <RowDefinition Height="2*"/>
+            <RowDefinition Height="2*"/>
         </Grid.RowDefinitions>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="1*"/>
@@ -48,21 +50,26 @@
         <TextBox Grid.Row="4" Grid.Column="0" Text="{Binding UpdateSourceTrigger=PropertyChanged, Source={StaticResource DrawingsLabData}, Path=ShiftValueX, Mode=TwoWay, Converter={StaticResource FloatToStringConverter}}"/>
         <TextBox Grid.Row="4" Grid.Column="1" Text="{Binding UpdateSourceTrigger=PropertyChanged, Source={StaticResource DrawingsLabData}, Path=ShiftValueY, Mode=TwoWay, Converter={StaticResource FloatToStringConverter}}"/>
         <TextBox Grid.Row="4" Grid.Column="2" Text="{Binding UpdateSourceTrigger=PropertyChanged, Source={StaticResource DrawingsLabData}, Path=ShiftValueRotation, Mode=TwoWay, Converter={StaticResource FloatToStringConverter}}"/>
-        <TextBox Grid.Row="5" Grid.Column="0" Text="{Binding UpdateSourceTrigger=PropertyChanged, Source={StaticResource DrawingsLabData}, Path=SavedValueX, Mode=TwoWay, Converter={StaticResource FloatToStringConverter}}"/>
-        <TextBox Grid.Row="5" Grid.Column="1" Text="{Binding UpdateSourceTrigger=PropertyChanged, Source={StaticResource DrawingsLabData}, Path=SavedValueY, Mode=TwoWay, Converter={StaticResource FloatToStringConverter}}"/>
-        <TextBox Grid.Row="5" Grid.Column="2" Text="{Binding UpdateSourceTrigger=PropertyChanged, Source={StaticResource DrawingsLabData}, Path=SavedValueRotation, Mode=TwoWay, Converter={StaticResource FloatToStringConverter}}"/>
-        
-        <Button Content="RecordDisplacement" Grid.Row="4" Grid.Column="3" Click="RecordDisplacementButton_Click"/>
-        <Button Content="ApplyDisplacement" Grid.Row="4" Grid.Column="4" Click="ApplyDisplacementButton_Click"/>
-        <Button Content="RecordPosition" Grid.Row="5" Grid.Column="3" Click="RecordPositionButton_Click"/>
-        <Button Content="ApplyPosition" Grid.Row="5" Grid.Column="4" Click="ApplyPositionButton_Click"/>
+        <TextBox Grid.Row="6" Grid.Column="0" Text="{Binding UpdateSourceTrigger=PropertyChanged, Source={StaticResource DrawingsLabData}, Path=SavedValueX, Mode=TwoWay, Converter={StaticResource FloatToStringConverter}}"/>
+        <TextBox Grid.Row="6" Grid.Column="1"  Text="{Binding UpdateSourceTrigger=PropertyChanged, Source={StaticResource DrawingsLabData}, Path=SavedValueY, Mode=TwoWay, Converter={StaticResource FloatToStringConverter}}"/>
+        <TextBox Grid.Row="6" Grid.Column="2" Text="{Binding UpdateSourceTrigger=PropertyChanged, Source={StaticResource DrawingsLabData}, Path=SavedValueRotation, Mode=TwoWay, Converter={StaticResource FloatToStringConverter}}"/>
 
-        <Button Content="BringInFrontOfShape" Grid.Row="7" Grid.Column="2" Click="BringInFrontOfShapeButton_Click"/>
-        <Button Content="SendBehindShaoe" Grid.Row="7" Grid.Column="3" Click="SendBehindShapeButton_Click"/>
-        <Button Content="BringToFront" Grid.Row="8" Grid.Column="1" Click="BringToFrontButton_Click"/>
-        <Button Content="BringForward" Grid.Row="8" Grid.Column="2" Click="BringForwardButton_Click"/>
-        <Button Content="SendBackward" Grid.Row="8" Grid.Column="3" Click="SendBackwardButton_Click"/>
-        <Button Content="SendToBack" Grid.Row="8" Grid.Column="4" Click="SendToBackButton_Click"/>
+        <CheckBox Grid.Row="5" Grid.Column="1" IsChecked="{Binding UpdateSourceTrigger=PropertyChanged, Source={StaticResource DrawingsLabData}, Path=ShiftIncludePosition, Mode=TwoWay}"/>
+        <CheckBox Grid.Row="5" Grid.Column="2" IsChecked="{Binding UpdateSourceTrigger=PropertyChanged, Source={StaticResource DrawingsLabData}, Path=ShiftIncludeRotation, Mode=TwoWay}"/>
+        <CheckBox Grid.Row="7" Grid.Column="1" IsChecked="{Binding UpdateSourceTrigger=PropertyChanged, Source={StaticResource DrawingsLabData}, Path=SavedIncludePosition, Mode=TwoWay}"/>
+        <CheckBox Grid.Row="7" Grid.Column="2" IsChecked="{Binding UpdateSourceTrigger=PropertyChanged, Source={StaticResource DrawingsLabData}, Path=SavedIncludeRotation, Mode=TwoWay}"/>
+
+        <Button Content="RecordDisplacement" Grid.Row="4" Grid.RowSpan="2" Grid.Column="3" Click="RecordDisplacementButton_Click"/>
+        <Button Content="ApplyDisplacement" Grid.Row="4" Grid.RowSpan="2" Grid.Column="4" Click="ApplyDisplacementButton_Click"/>
+        <Button Content="RecordPosition" Grid.Row="6" Grid.RowSpan="2" Grid.Column="3" Click="RecordPositionButton_Click"/>
+        <Button Content="ApplyPosition" Grid.Row="6" Grid.RowSpan="2" Grid.Column="4" Click="ApplyPositionButton_Click"/>
+
+        <Button Content="BringInFrontOfShape" Grid.Row="9" Grid.Column="2" Click="BringInFrontOfShapeButton_Click"/>
+        <Button Content="SendBehindShaoe" Grid.Row="9" Grid.Column="3" Click="SendBehindShapeButton_Click"/>
+        <Button Content="BringToFront" Grid.Row="10" Grid.Column="1" Click="BringToFrontButton_Click"/>
+        <Button Content="BringForward" Grid.Row="10" Grid.Column="2" Click="BringForwardButton_Click"/>
+        <Button Content="SendBackward" Grid.Row="10" Grid.Column="3" Click="SendBackwardButton_Click"/>
+        <Button Content="SendToBack" Grid.Row="10" Grid.Column="4" Click="SendToBackButton_Click"/>
 
     </Grid>
 </UserControl>
