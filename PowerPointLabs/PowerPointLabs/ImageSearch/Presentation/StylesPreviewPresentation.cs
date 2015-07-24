@@ -39,12 +39,7 @@ namespace PowerPointLabs.ImageSearch.Presentation
             var layout = PowerPointCurrentPresentationInfo.CurrentSlide.Layout;
             var newSlide = Presentation.Slides.Add(SlideCount + 1, layout);
 
-            // sync color theme
-            var colorThemePath = TempPath.GetPath("ColorTheme");
-            PowerPointCurrentPresentationInfo.CurrentSlide.GetNativeSlide().ThemeColorScheme.Save(colorThemePath);
-            newSlide.ThemeColorScheme.Load(colorThemePath);
-
-            // sync design
+            // sync design & theme
             newSlide.Design = PowerPointCurrentPresentationInfo.CurrentSlide.GetNativeSlide().Design;
 
             return new StylesPreviewSlide(newSlide, this, imageItem);
