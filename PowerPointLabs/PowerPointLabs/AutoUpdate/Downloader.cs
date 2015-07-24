@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Net;
-using System.Threading;
+using System.Threading.Tasks;
 
 namespace PowerPointLabs.AutoUpdate
 {
@@ -56,9 +56,9 @@ namespace PowerPointLabs.AutoUpdate
 
         public void Start()
         {
-            var th = new Thread(StartDownload);
             try
             {
+                var th = new Task(StartDownload);
                 th.Start();
             }
             catch (Exception e)
