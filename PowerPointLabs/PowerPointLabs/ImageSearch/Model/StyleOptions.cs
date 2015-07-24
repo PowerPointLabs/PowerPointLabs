@@ -105,6 +105,8 @@ namespace PowerPointLabs.ImageSearch.Model
                     return "Calibri";
                 case 3:
                     return "Calibri Light";
+                case 4:
+                    return "";
                 default:
                     return "Segoe UI";
             }

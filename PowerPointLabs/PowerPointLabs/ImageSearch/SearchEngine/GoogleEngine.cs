@@ -67,6 +67,7 @@ namespace PowerPointLabs.ImageSearch.SearchEngine
                    + "&imgType=" + SearchOptions.GetImageType()
                    + "&imgColorType=" + SearchOptions.GetColorType()
                    + ("none" != SearchOptions.GetDominantColor()? "&imgDominantColor=" + SearchOptions.GetDominantColor() : "")
+                   + ("none" != SearchOptions.GetFileType()? "&fileType=" + SearchOptions.GetFileType() : "")
                    + "&key=" + SearchOptions.ApiKey.Trim();
         }
 

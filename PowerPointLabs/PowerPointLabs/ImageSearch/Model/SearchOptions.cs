@@ -95,6 +95,21 @@ namespace PowerPointLabs.ImageSearch.Model
             }
         }
 
+        private int _fileType;
+
+        public int FileType
+        {
+            get
+            {
+                return _fileType;
+            }
+            set
+            {
+                _fileType = value;
+                OnPropertyChanged("FileType");
+            }
+        }
+
         # region IO serialization
         /// Taken from http://stackoverflow.com/a/14663848
 
@@ -164,6 +179,7 @@ namespace PowerPointLabs.ImageSearch.Model
             DominantColor = 0;
             ImageType = 0;
             ImageSize = 2;
+            FileType = 0;
         }
 
         public string GetColorType()
@@ -252,6 +268,25 @@ namespace PowerPointLabs.ImageSearch.Model
                 default:
                     return "";
 
+            }
+        }
+
+        public string GetFileType()
+        {
+            switch (FileType)
+            {
+                case 0:
+                    return "none";
+                case 1:
+                    return "png";
+                case 2:
+                    return "jpg";
+                case 3:
+                    return "bmp";
+                case 4:
+                    return "gif";
+                default:
+                    return "none";
             }
         }
 

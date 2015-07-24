@@ -43,6 +43,7 @@
             <ComboBoxItem>Segoe UI Light</ComboBoxItem>
             <ComboBoxItem>Calibri</ComboBoxItem>
             <ComboBoxItem>Calibri Light</ComboBoxItem>
+            <ComboBoxItem>Original Font</ComboBoxItem>
         </ComboBox>
         <Label Content="font size increase by" Foreground="#FFFFFF" FontSize="15" HorizontalAlignment="Left" VerticalAlignment="Center" Grid.Column="0" Grid.Row="3"/>
         <controls:NumericUpDown Value="{Binding Path=FontSizeIncrease, Mode=TwoWay, NotifyOnSourceUpdated=True}" Minimum="0" Maximum="20" Interval="1" HorizontalAlignment="Left" VerticalAlignment="Center" Grid.Column="1" Grid.Row="3" />

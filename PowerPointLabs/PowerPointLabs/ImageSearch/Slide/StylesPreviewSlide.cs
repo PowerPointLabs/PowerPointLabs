@@ -137,7 +137,7 @@ namespace PowerPointLabs.ImageSearch.Slide
                 {
                     shape.Tags.Add(OriginalFontFamily, font.Name);
                 }
-                font.Name = fontFamily;
+                font.Name = IsEmpty(fontFamily) ? shape.Tags[OriginalFontFamily] : fontFamily;
 
                 if (IsEmpty(shape.Tags[OriginalFontSize]))
                 {
