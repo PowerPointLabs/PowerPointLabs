@@ -186,7 +186,7 @@ namespace PowerPointLabs.DrawingsLab
             shapes.Reverse();
             foreach (var shape in shapes)
             {
-                Graphics.MoveZToJustBehind(shape, shapeToMoveBehind);
+                Graphics.MoveZUntilBehind(shape, shapeToMoveBehind);
             }
         }
 
@@ -207,7 +207,7 @@ namespace PowerPointLabs.DrawingsLab
             Graphics.SortByZOrder(shapes);
             foreach (var shape in shapes)
             {
-                Graphics.MoveZToJustInFront(shape, shapeToMoveInFront);
+                Graphics.MoveZUntilInFront(shape, shapeToMoveInFront);
             }
         }
 
