@@ -35,18 +35,19 @@ namespace PowerPointLabs.ImageSearch.Presentation
                 return null;
             }
 
+            // sync layout
             var layout = PowerPointCurrentPresentationInfo.CurrentSlide.Layout;
             var newSlide = Presentation.Slides.Add(SlideCount + 1, layout);
 
+            // sync color theme
             var colorThemePath = TempPath.GetPath("ColorTheme");
             PowerPointCurrentPresentationInfo.CurrentSlide.GetNativeSlide().ThemeColorScheme.Save(colorThemePath);
             newSlide.ThemeColorScheme.Load(colorThemePath);
 
-            var previewSlide = new StylesPreviewSlide(newSlide, this, imageItem);
+            // sync design
+            newSlide.Design = PowerPointCurrentPresentationInfo.CurrentSlide.GetNativeSlide().Design;
 
-            Slides.Add(previewSlide);
-
-            return previewSlide;
+            return new StylesPreviewSlide(newSlide, this, imageItem);
         }
 
         public void PreviewStyles(ImageItem imageItem)
