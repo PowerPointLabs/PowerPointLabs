@@ -290,6 +290,7 @@
     <Compile Include="ImageSearch\Model\Notifiable.cs" />
     <Compile Include="ImageSearch\Model\SearchOptions.cs" />
     <Compile Include="ImageSearch\Model\StyleOptions.cs" />
+    <Compile Include="ImageSearch\Model\WatermarkString.cs" />
     <Compile Include="ImageSearch\Presentation\StylesPreviewPresentation.cs" />
     <Compile Include="ImageSearch\SearchEngine\GoogleEngine.cs" />
     <Compile Include="ImageSearch\SearchOptionsPane.xaml.cs">

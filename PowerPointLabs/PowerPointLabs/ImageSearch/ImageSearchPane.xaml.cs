@@ -1,13 +1,17 @@
 ﻿using System;
+using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
+using System.Drawing;
 using System.Linq;
-using System.Timers;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Controls.Primitives;
+using System.Windows.Forms;
 using System.Windows.Input;
+using System.Windows.Interop;
+using System.Windows.Media.Imaging;
 using MahApps.Metro.Controls.Dialogs;
 using PowerPointLabs.AutoUpdate;
 using PowerPointLabs.ImageSearch.Model;
@@ -16,6 +20,12 @@ using PowerPointLabs.ImageSearch.SearchEngine;
 using PowerPointLabs.ImageSearch.SearchEngine.VO;
 using PowerPointLabs.ImageSearch.Util;
 using PowerPointLabs.Models;
+using ButtonBase = System.Windows.Controls.Primitives.ButtonBase;
+using Clipboard = System.Windows.Clipboard;
+using Image = System.Drawing.Image;
+using KeyEventArgs = System.Windows.Input.KeyEventArgs;
+using ListBox = System.Windows.Controls.ListBox;
+using Timer = System.Timers.Timer;
 
 namespace PowerPointLabs.ImageSearch
 {
@@ -27,8 +37,20 @@ namespace PowerPointLabs.ImageSearch
         // UI model - list that holds search result item
         public ObservableCollection<ImageItem> SearchList { get; set; }
 
+        // caches for multiple-purpose buttons
+        // downloadedImages - to be loaded to SearchList, when button is Download
+        // fromFileImages - to be loaded to SearchList, when button is From file
+        private List<ImageItem> _downloadedImages;
+        private List<ImageItem> _fromFileImages;
+
         // UI model - list that holds preview item
         public ObservableCollection<ImageItem> PreviewList { get; set; }
+
+        // UI model - list that holds multiple purpose buttons
+        public ObservableCollection<string> MultiplePurposeButtons { get; set; }
+
+        // UI model - search textbox watermark
+        public WatermarkString SearchTextboxWatermark { get; set; }
 
         // a timer used to download full-size image at background
         public Timer PreviewTimer { get; set; }
@@ -70,11 +92,10 @@ namespace PowerPointLabs.ImageSearch
         public ImageSearchPane()
         {
             InitializeComponent();
-
-            SearchList = new ObservableCollection<ImageItem>();
-            PreviewList = new ObservableCollection<ImageItem>();
-            InitSearchListEvent();
-            InitPreviewListEvent();
+            InitSearchTextbox();
+            InitMultiplePurposeButtons();
+            InitSearchList();
+            InitPreviewList();
             SearchListBox.DataContext = this;
             PreviewListBox.DataContext = this;
             IsOpen = true;
@@ -90,31 +111,53 @@ namespace PowerPointLabs.ImageSearch
             }
         }
 
-        private void InitPreviewListEvent()
+        private void InitSearchTextbox()
         {
+            SearchTextboxWatermark = new WatermarkString();
+            SearchTextboxWatermark.Watermark = "Type here to search for images";
+            SearchTextBox.DataContext = SearchTextboxWatermark;
+        }
+
+        private void InitMultiplePurposeButtons()
+        {
+            MultiplePurposeButtons = new ObservableCollection<string>(new List<string> { "Search", "Download", "From File" });
+            SearchButton.ItemsSource = MultiplePurposeButtons;
+            SearchButton.SelectedIndex = 0;
+        }
+
+        private void InitPreviewList()
+        {
+            PreviewList = new ObservableCollection<ImageItem>();
             PreviewList.CollectionChanged += (sender, args) =>
             {
                 if (PreviewList.Count != 0)
                 {
                     PreviewInstructions.Visibility = Visibility.Hidden;
+                    PreviewInstructionsWhenNoSelectedSlide.Visibility = Visibility.Hidden;
                 }
-            };
-        }
-
-        private void InitSearchListEvent()
-        {
-            SearchList.CollectionChanged += (sender, args) =>
-            {
-                if (SearchList.Count == 0)
+                else if (PowerPointCurrentPresentationInfo.CurrentSlide == null)
                 {
-                    SearchInstructions.Visibility = Visibility.Visible;
+                    PreviewInstructionsWhenNoSelectedSlide.Visibility = Visibility.Visible;
                     PreviewInstructions.Visibility = Visibility.Hidden;
                 }
                 else
                 {
-                    SearchInstructions.Visibility = Visibility.Hidden;
                     PreviewInstructions.Visibility = Visibility.Visible;
+                    PreviewInstructionsWhenNoSelectedSlide.Visibility = Visibility.Hidden;
                 }
+            };
+        }
+
+        private void InitSearchList()
+        {
+            SearchList = new ObservableCollection<ImageItem>();
+            _downloadedImages = new List<ImageItem>();
+            _fromFileImages = new List<ImageItem>();
+            SearchList.CollectionChanged += (sender, args) =>
+            {
+                SearchInstructions.Visibility = SearchList.Count == 0 
+                    ? Visibility.Visible 
+                    : Visibility.Hidden;
             };
         }
 
@@ -238,9 +281,16 @@ namespace PowerPointLabs.ImageSearch
             {
                 if (item == null) return;
                 item.ImageFile = thumbnailPath;
-                item.FullSizeImageUri = searchResult.Link;
-                item.Tooltip = GetTooltip(searchResult);
-                item.ContextLink = searchResult.Image.ContextLink;
+                if (searchResult != null)
+                {
+                    item.FullSizeImageUri = searchResult.Link;
+                    item.Tooltip = GetTooltip(searchResult);
+                    item.ContextLink = searchResult.Image.ContextLink;
+                }
+                else // use case when thumbnail is already full-size
+                {
+                    item.FullSizeImageFile = item.ImageFile;
+                }
 
                 Dispatcher.BeginInvoke(new Action(() =>
                 {
@@ -383,13 +433,102 @@ namespace PowerPointLabs.ImageSearch
 
         private void SearchButton_OnClick(object sender, RoutedEventArgs e)
         {
+            switch (SearchButton.SelectedIndex)
+            {
+                case 0:// search
+                    StartSearching();
+                    break;
+                case 1:// download link
+                    var downloadLink = SearchTextBox.Text.Trim();
+                    if (downloadLink.Length == 0)
+                    {
+                        return;
+                    }
+
+                    // TODO parse downloadLink.. 
+                    // maybe a link from google image?
+                    // maybe without http://
+                    var item = new ImageItem
+                    {
+                        ImageFile = TempPath.LoadingImgPath,
+                        ContextLink = downloadLink
+                    };
+                    SearchList.Add(item);
+                    SearchProgressRing.IsActive = true;
+
+                    var thumbnailPath = TempPath.GetPath("thumbnail");
+                    new Downloader()
+                        .Get(downloadLink, thumbnailPath)
+                        .After(() =>
+                        {
+                            AfterDownloadThumbnail(item, thumbnailPath, null)();
+                            try
+                            {
+                                Image imgInput = Image.FromFile(thumbnailPath);
+                                Graphics.FromImage(imgInput);
+                                // so this is an image
+                                Dispatcher.Invoke(new Action(() =>
+                                {
+                                    SearchProgressRing.IsActive = false;
+                                    _downloadedImages.Add(item);
+                                }));
+                            }
+                            catch
+                            {
+                                // not an image
+                                Dispatcher.BeginInvoke(new Action(() =>
+                                {
+                                    SearchProgressRing.IsActive = false;
+                                    SearchList.Remove(item);
+                                }));
+                            }
+                        })
+                        .OnError(() =>
+                        {
+                            Dispatcher.BeginInvoke(new Action(() =>
+                            {
+                                SearchProgressRing.IsActive = false;
+                                SearchList.Remove(item);
+                            }));
+                            
+                        })
+                        .Start();
+                    break;
+                case 2:// image from file
+                    var openFileDialog = new OpenFileDialog
+                    {
+                        DefaultExt = "*.png",
+                        Multiselect = false,
+                        Filter = "Image File|*.png;*.jpg;*.jpeg;"
+                    };
+                    var fileDialogResult = openFileDialog.ShowDialog();
+                    if (fileDialogResult != System.Windows.Forms.DialogResult.OK)
+                    {
+                        return;
+                    }
+
+                    var fromFileItem = new ImageItem
+                    {
+                        ImageFile = openFileDialog.FileName,
+                        FullSizeImageFile = openFileDialog.FileName,
+                        FullSizeImageUri = openFileDialog.FileName,
+                        ContextLink = openFileDialog.FileName
+                    };
+                    SearchList.Add(fromFileItem);
+                    _fromFileImages.Add(fromFileItem);
+                    break;
+            }
+        }
+
+        private void StartSearching()
+        {
             var query = SearchTextBox.Text;
             if (query.Trim().Length == 0)
             {
                 return;
-            } 
+            }
             else if (SearchOptions.SearchEngineId.Trim().Length == 0
-                || SearchOptions.ApiKey.Trim().Length == 0)
+                     || SearchOptions.ApiKey.Trim().Length == 0)
             {
                 ShowErrorMessageBox(ErrorNoEngineIdOrApiKey);
                 return;
@@ -471,6 +610,7 @@ namespace PowerPointLabs.ImageSearch
             // ui thread
             Dispatcher.BeginInvoke(new Action(() =>
             {
+                var previousTextCopy = Clipboard.GetText();
                 var selectedId = PreviewListBox.SelectedIndex;
                 PreviewList.Clear();
 
@@ -483,6 +623,10 @@ namespace PowerPointLabs.ImageSearch
                     Add(PreviewList, PreviewPresentation.GrayScaleStyleImagePath, "Grayscale style");
 
                     PreviewListBox.SelectedIndex = selectedId;
+                }
+                if (previousTextCopy.Length > 0)
+                {
+                    Clipboard.SetText(previousTextCopy);
                 }
                 PreviewProgressRing.IsActive = false;
             }));
@@ -667,6 +811,48 @@ namespace PowerPointLabs.ImageSearch
                         PreviewInsert.RaiseEvent(new RoutedEventArgs(ButtonBase.ClickEvent));
                     }
                     break;
+            }
+        }
+
+        private void SearchButton_OnSelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            SearchList.Clear();
+            SearchTextBox.Text = "";
+            switch (SearchButton.SelectedIndex)
+            {
+                // TODO remove those magic
+                case 0: // search
+                    SearchTextBox.IsEnabled = true;
+                    SearchTextboxWatermark.Watermark = "Type here to search for images";
+                    SearchInstructions.Text = "No result. Type the keywords in the textbox above to search for images.";
+                    break;
+                case 1: // download
+                    SearchTextBox.IsEnabled = true;
+                    SearchTextboxWatermark.Watermark = "Paste the image link here";
+                    SearchInstructions.Text = "No image. Paste the image link in the textbox above to download images.";
+                    CopyContentToObservableList(_downloadedImages, SearchList);
+                    break;
+                case 2: // from file
+                    SearchTextBox.IsEnabled = false;
+                    SearchTextboxWatermark.Watermark = "";
+                    SearchInstructions.Text = "No image. Click the 'From File' button above to load local images.";
+                    CopyContentToObservableList(_fromFileImages, SearchList);
+                    break;
+            }
+        }
+
+        // TODO util
+        private void CopyContentToObservableList(IEnumerable<ImageItem> content, ObservableCollection<ImageItem> target)
+        {
+            foreach (var image in content)
+            {
+                target.Add(new ImageItem
+                {
+                    ImageFile = image.ImageFile,
+                    FullSizeImageFile = image.FullSizeImageFile,
+                    FullSizeImageUri = image.FullSizeImageUri,
+                    ContextLink = image.ContextLink
+                });
             }
         }
     }
