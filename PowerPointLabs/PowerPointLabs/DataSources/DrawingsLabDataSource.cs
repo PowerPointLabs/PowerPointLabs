@@ -157,112 +157,125 @@ namespace PowerPointLabs.DataSources
         }
         # endregion
 
-        private Horizontal horizontalPosition;
-        private Vertical verticalPosition;
+        private Horizontal _anchorHorizontal;
+        private Vertical _anchorVertical;
 
-        public Horizontal HorizontalPosition
+        public Horizontal AnchorHorizontal
         {
-            get { return horizontalPosition; }
+            get { return _anchorHorizontal; }
             set
             {
-                horizontalPosition = value;
-                OnPropertyChanged("PositionAlignment");
+                _anchorHorizontal = value;
+                OnPropertyChanged("Anchor");
             }
         }
 
-        public Vertical VerticalPosition
+        public Vertical AnchorVertical
         {
-            get { return verticalPosition; }
+            get { return _anchorVertical; }
             set
             {
-                verticalPosition = value;
-                OnPropertyChanged("PositionAlignment");
+                _anchorVertical = value;
+                OnPropertyChanged("Anchor");
             }
         }
 
-        public Alignment PositionAlignment
+        public Alignment Anchor
         {
-            get {
-                switch (horizontalPosition)
-                {
-                    case Horizontal.Left:
-                        switch (verticalPosition)
-                        {
-                            case Vertical.Top:
-                                return Alignment.TopLeft;
-                            case Vertical.Middle:
-                                return Alignment.MiddleLeft;
-                            case Vertical.Bottom:
-                                return Alignment.BottomLeft;
-                        }
-                        break;
-                    case Horizontal.Center:
-                        switch (verticalPosition)
-                        {
-                            case Vertical.Top:
-                                return Alignment.TopCenter;
-                            case Vertical.Middle:
-                                return Alignment.MiddleCenter;
-                            case Vertical.Bottom:
-                                return Alignment.BottomCenter;
-                        }
-                        break;
-                    case Horizontal.Right:
-                        switch (verticalPosition)
-                        {
-                            case Vertical.Top:
-                                return Alignment.TopRight;
-                            case Vertical.Middle:
-                                return Alignment.MiddleRight;
-                            case Vertical.Bottom:
-                                return Alignment.BottomRight;
-                        }
-                        break;
-                }
-                throw new IndexOutOfRangeException();
+            get
+            {
+                return HorizontalVerticalToAlignment(_anchorHorizontal, _anchorVertical);
             }
             set
             {
-                switch (value)
-                {
-                    case Alignment.BottomLeft:
-                        verticalPosition = Vertical.Bottom;
-                        horizontalPosition = Horizontal.Left;
-                        break;
-                    case Alignment.BottomCenter:
-                        verticalPosition = Vertical.Bottom;
-                        horizontalPosition = Horizontal.Center;
-                        break;
-                    case Alignment.BottomRight:
-                        verticalPosition = Vertical.Bottom;
-                        horizontalPosition = Horizontal.Right;
-                        break;
-                    case Alignment.MiddleLeft:
-                        verticalPosition = Vertical.Middle;
-                        horizontalPosition = Horizontal.Left;
-                        break;
-                    case Alignment.MiddleCenter:
-                        verticalPosition = Vertical.Middle;
-                        horizontalPosition = Horizontal.Center;
-                        break;
-                    case Alignment.MiddleRight:
-                        verticalPosition = Vertical.Middle;
-                        horizontalPosition = Horizontal.Right;
-                        break;
-                    case Alignment.TopLeft:
-                        verticalPosition = Vertical.Top;
-                        horizontalPosition = Horizontal.Left;
-                        break;
-                    case Alignment.TopCenter:
-                        verticalPosition = Vertical.Top;
-                        horizontalPosition = Horizontal.Center;
-                        break;
-                    case Alignment.TopRight:
-                        verticalPosition = Vertical.Top;
-                        horizontalPosition = Horizontal.Right;
-                        break;
-                }
-                OnPropertyChanged("PositionAlignment");
+                AlignmentToHorizontalVertical(value, out _anchorHorizontal, out _anchorVertical);
+                OnPropertyChanged("Anchor");
+            }
+        }
+
+        private static Alignment HorizontalVerticalToAlignment(Horizontal horizontal, Vertical vertical)
+        {
+            switch (horizontal)
+            {
+                case Horizontal.Left:
+                    switch (vertical)
+                    {
+                        case Vertical.Top:
+                            return Alignment.TopLeft;
+                        case Vertical.Middle:
+                            return Alignment.MiddleLeft;
+                        case Vertical.Bottom:
+                            return Alignment.BottomLeft;
+                    }
+                    break;
+                case Horizontal.Center:
+                    switch (vertical)
+                    {
+                        case Vertical.Top:
+                            return Alignment.TopCenter;
+                        case Vertical.Middle:
+                            return Alignment.MiddleCenter;
+                        case Vertical.Bottom:
+                            return Alignment.BottomCenter;
+                    }
+                    break;
+                case Horizontal.Right:
+                    switch (vertical)
+                    {
+                        case Vertical.Top:
+                            return Alignment.TopRight;
+                        case Vertical.Middle:
+                            return Alignment.MiddleRight;
+                        case Vertical.Bottom:
+                            return Alignment.BottomRight;
+                    }
+                    break;
+            }
+            throw new IndexOutOfRangeException();
+        }
+
+        private static void AlignmentToHorizontalVertical(Alignment alignment, out Horizontal horizontal, out Vertical vertical)
+        {
+            switch (alignment)
+            {
+                case Alignment.BottomLeft:
+                    vertical = Vertical.Bottom;
+                    horizontal = Horizontal.Left;
+                    return;
+                case Alignment.BottomCenter:
+                    vertical = Vertical.Bottom;
+                    horizontal = Horizontal.Center;
+                    return;
+                case Alignment.BottomRight:
+                    vertical = Vertical.Bottom;
+                    horizontal = Horizontal.Right;
+                    return;
+                case Alignment.MiddleLeft:
+                    vertical = Vertical.Middle;
+                    horizontal = Horizontal.Left;
+                    return;
+                case Alignment.MiddleCenter:
+                    vertical = Vertical.Middle;
+                    horizontal = Horizontal.Center;
+                    return;
+                case Alignment.MiddleRight:
+                    vertical = Vertical.Middle;
+                    horizontal = Horizontal.Right;
+                    return;
+                case Alignment.TopLeft:
+                    vertical = Vertical.Top;
+                    horizontal = Horizontal.Left;
+                    return;
+                case Alignment.TopCenter:
+                    vertical = Vertical.Top;
+                    horizontal = Horizontal.Center;
+                    return;
+                case Alignment.TopRight:
+                    vertical = Vertical.Top;
+                    horizontal = Horizontal.Right;
+                    return;
+                default:
+                    throw new IndexOutOfRangeException();
             }
         }
 

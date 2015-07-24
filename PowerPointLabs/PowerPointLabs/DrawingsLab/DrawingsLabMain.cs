@@ -247,12 +247,13 @@ namespace PowerPointLabs.DrawingsLab
                 }
             }
         }
+
         #endregion
 
         #region Convenience Functions
         public static float GetX(Shape shape)
         {
-            switch (DataSource.HorizontalPosition)
+            switch (DataSource.AnchorHorizontal)
             {
                 case DrawingsLabDataSource.Horizontal.Left:
                     return shape.Left;
@@ -266,7 +267,7 @@ namespace PowerPointLabs.DrawingsLab
 
         public static void SetX(Shape shape, float value)
         {
-            switch (DataSource.HorizontalPosition)
+            switch (DataSource.AnchorHorizontal)
             {
                 case DrawingsLabDataSource.Horizontal.Left:
                     shape.Left = value;
@@ -283,7 +284,7 @@ namespace PowerPointLabs.DrawingsLab
 
         public static float GetY(Shape shape)
         {
-            switch (DataSource.VerticalPosition)
+            switch (DataSource.AnchorVertical)
             {
                 case DrawingsLabDataSource.Vertical.Top:
                     return shape.Top;
@@ -297,7 +298,7 @@ namespace PowerPointLabs.DrawingsLab
 
         public static void SetY(Shape shape, float value)
         {
-            switch (DataSource.VerticalPosition)
+            switch (DataSource.AnchorVertical)
             {
                 case DrawingsLabDataSource.Vertical.Top:
                     shape.Top = value;
