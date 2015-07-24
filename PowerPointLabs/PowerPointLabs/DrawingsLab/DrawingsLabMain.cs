@@ -65,7 +65,7 @@ namespace PowerPointLabs.DrawingsLab
             PowerPointCurrentPresentationInfo.CurrentSlide.CopyShapesToSlide(selection.ShapeRange);
         }
 
-        public static void MultiCloneTool()
+        public static void MultiCloneExtendTool()
         {
             var selection = PowerPointCurrentPresentationInfo.CurrentSelection;
             if (selection.Type != PpSelectionType.ppSelectionShapes) return;
@@ -95,6 +95,43 @@ namespace PowerPointLabs.DrawingsLab
                     newShape.Left = secondShape.Left + (secondShape.Left - firstShape.Left) * index;
                     newShape.Top = secondShape.Top + (secondShape.Top - firstShape.Top) * index;
                     newShape.Rotation = secondShape.Rotation + (secondShape.Rotation - firstShape.Rotation) * index;
+                }
+            }
+        }
+
+        public static void MultiCloneBetweenTool()
+        {
+            var selection = PowerPointCurrentPresentationInfo.CurrentSelection;
+            if (selection.Type != PpSelectionType.ppSelectionShapes) return;
+            var shapeList = selection.ShapeRange.Cast<Shape>().ToList();
+
+            if (shapeList.Count % 2 != 0)
+            {
+                Error("There must be two sets of shapes selected.");
+                return;
+            }
+
+            int clones = ShowNumericDialog("Number of copies:", "Multi-Clone") - 1;
+            if (clones <= 0) return;
+
+            int divisions = clones + 1;
+
+            int midpoint = shapeList.Count / 2;
+            for (int i = 0; i < shapeList.Count / 2; ++i)
+            {
+                // Do the cloning for every pair of shapes (i, midpoint+i)
+                var firstShape = shapeList[i];
+                var lastShape = shapeList[midpoint + i];
+
+                for (int j = 0; j < clones; ++j)
+                {
+                    var newShape = firstShape.Duplicate()[1];
+                    int index = j + 1;
+
+                    newShape.Left = firstShape.Left + (lastShape.Left - firstShape.Left) / divisions * index;
+                    newShape.Top = firstShape.Top + (lastShape.Top - firstShape.Top) / divisions * index;
+                    newShape.Rotation = firstShape.Rotation + (lastShape.Rotation - firstShape.Rotation) / divisions * index;
+                    Graphics.MoveZUntilBehind(newShape, lastShape);
                 }
             }
         }

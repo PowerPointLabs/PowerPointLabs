@@ -84,7 +84,8 @@ namespace PowerPointLabs.DrawingsLab
             PPKeyboard.AddKeyupAction(Native.VirtualKey.VK_L, RunOnlyWhenOpen(DrawingsLabMain.SwitchToLineTool));
             PPKeyboard.AddKeyupAction(Native.VirtualKey.VK_H, RunOnlyWhenOpen(DrawingsLabMain.HideTool));
             PPKeyboard.AddKeyupAction(Native.VirtualKey.VK_D, RunOnlyWhenOpen(DrawingsLabMain.CloneTool));
-            PPKeyboard.AddKeyupAction(Native.VirtualKey.VK_F, RunOnlyWhenOpen(DrawingsLabMain.MultiCloneTool));
+            PPKeyboard.AddKeyupAction(Native.VirtualKey.VK_F, RunOnlyWhenOpen(DrawingsLabMain.MultiCloneExtendTool));
+            PPKeyboard.AddKeyupAction(Native.VirtualKey.VK_G, RunOnlyWhenOpen(DrawingsLabMain.MultiCloneBetweenTool));
         }
         #endregion
 
@@ -108,9 +109,14 @@ namespace PowerPointLabs.DrawingsLab
             DrawingsLabMain.CloneTool();
         }
 
-        private void MultiCloneButton_Click(object sender, EventArgs e)
+        private void MultiCloneExtendButton_Click(object sender, EventArgs e)
         {
-            DrawingsLabMain.MultiCloneTool();
+            DrawingsLabMain.MultiCloneExtendTool();
+        }
+
+        private void MultiCloneBetweenButton_Click(object sender, EventArgs e)
+        {
+            DrawingsLabMain.MultiCloneBetweenTool();
         }
 
         private void ApplyPositionButton_Click(object sender, EventArgs e)

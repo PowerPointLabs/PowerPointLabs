@@ -48,7 +48,8 @@
         <Button Content="Hide" Grid.Row="2" Grid.Column="2" Click="HideButton_Click"/>
         <Button Content="ShowAll" Grid.Row="2" Grid.Column="3" Click="ShowAllButton_Click"/>
         <Button Content="Clone" Grid.Row="3" Grid.Column="2" Click="CloneButton_Click"/>
-        <Button Content="MultiClone" Grid.Row="3" Grid.Column="3" Click="MultiCloneButton_Click"/>
+        <Button Content="MultiClone Extend" Grid.Row="3" Grid.Column="3" Click="MultiCloneExtendButton_Click"/>
+        <Button Content="MultiClone Between" Grid.Row="3" Grid.Column="4" Click="MultiCloneBetweenButton_Click"/>
         <TextBox Grid.Row="4" Grid.Column="0" Text="{Binding UpdateSourceTrigger=PropertyChanged, Source={StaticResource DrawingsLabData}, Path=ShiftValueX, Mode=TwoWay, Converter={StaticResource FloatToStringConverter}}"/>
         <TextBox Grid.Row="4" Grid.Column="1" Text="{Binding UpdateSourceTrigger=PropertyChanged, Source={StaticResource DrawingsLabData}, Path=ShiftValueY, Mode=TwoWay, Converter={StaticResource FloatToStringConverter}}"/>
         <TextBox Grid.Row="4" Grid.Column="2" Text="{Binding UpdateSourceTrigger=PropertyChanged, Source={StaticResource DrawingsLabData}, Path=ShiftValueRotation, Mode=TwoWay, Converter={StaticResource FloatToStringConverter}}"/>
