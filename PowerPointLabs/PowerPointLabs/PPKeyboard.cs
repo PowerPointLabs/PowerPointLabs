@@ -137,7 +137,8 @@ namespace PPExtraEventHelper
         private static bool IsKeydownCommand(IntPtr lParam)
         {
             // It seems that the first bit of the IntPtr lParam decides whether it is a keyDown or keyUp.
-            return (lParam.ToInt32() & 0x80000000) == 0;
+            // Note: using lParam.ToInt32() here causes an OverflowException on 64-bit machines for some reason.
+            return (lParam.ToInt64() & 0x80000000) == 0;
         }
 
         private static bool IsHooked()
