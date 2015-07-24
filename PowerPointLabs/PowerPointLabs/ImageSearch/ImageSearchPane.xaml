@@ -15,7 +15,7 @@
              BorderThickness="1"
              BorderBrush="#D74926"
              Closing="ImageSearchPane_OnClosing"
-             IsKeyboardFocusWithinChanged="ImageSearchPane_OnIsKeyboardFocusWithinChanged">
+             Activated="ImageSearchPane_OnActivated">
     <controls:MetroWindow.Resources>
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>

@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
@@ -10,8 +9,6 @@ using System.Windows.Controls;
 using System.Windows.Controls.Primitives;
 using System.Windows.Forms;
 using System.Windows.Input;
-using System.Windows.Interop;
-using System.Windows.Media.Imaging;
 using MahApps.Metro.Controls.Dialogs;
 using PowerPointLabs.AutoUpdate;
 using PowerPointLabs.ImageSearch.Model;
@@ -500,7 +497,7 @@ namespace PowerPointLabs.ImageSearch
                     {
                         DefaultExt = "*.png",
                         Multiselect = false,
-                        Filter = "Image File|*.png;*.jpg;*.jpeg;"
+                        Filter = @"Image File|*.png;*.jpg;*.jpeg;"
                     };
                     var fileDialogResult = openFileDialog.ShowDialog();
                     if (fileDialogResult != System.Windows.Forms.DialogResult.OK)
@@ -762,14 +759,6 @@ namespace PowerPointLabs.ImageSearch
             }));
         }
 
-        private void ImageSearchPane_OnIsKeyboardFocusWithinChanged(object sender, DependencyPropertyChangedEventArgs e)
-        {
-            var isFocused = (bool) e.NewValue;
-            if (!isFocused) return;
-            
-            DoPreview();
-        }
-
         private void DoPreview()
         {
             var image = (ImageItem) SearchListBox.SelectedValue;
@@ -855,6 +844,11 @@ namespace PowerPointLabs.ImageSearch
                     ContextLink = image.ContextLink
                 });
             }
+        }
+
+        private void ImageSearchPane_OnActivated(object sender, EventArgs e)
+        {
+            DoPreview();
         }
     }
 }
