@@ -72,15 +72,49 @@ namespace PowerPointLabs.DataSources
             }
         }
 
-        private bool shiftIncludePosition = true;
+        private bool shiftIncludePositionX = true;
 
-        public bool ShiftIncludePosition
+        public bool ShiftIncludePositionX
         {
-            get { return shiftIncludePosition; }
+            get { return shiftIncludePositionX; }
             set
             {
-                shiftIncludePosition = value;
-                OnPropertyChanged("ShiftIncludePosition");
+                shiftIncludePositionX = value;
+                OnPropertyChanged("ShiftIncludePositionX");
+                OnPropertyChanged("ShiftIncludePositionBoth");
+            }
+        }
+
+        private bool shiftIncludePositionY = true;
+
+        public bool ShiftIncludePositionY
+        {
+            get { return shiftIncludePositionY; }
+            set
+            {
+                shiftIncludePositionY = value;
+                OnPropertyChanged("ShiftIncludePositionY");
+                OnPropertyChanged("ShiftIncludePositionBoth");
+            }
+        }
+
+        public bool? ShiftIncludePositionBoth
+        {
+            get
+            {
+                if (ShiftIncludePositionX != ShiftIncludePositionY) return null;
+                return ShiftIncludePositionX;
+            }
+            set
+            {
+                if (value == null) return;
+                bool valueBool = (value == true);
+
+                shiftIncludePositionX = valueBool;
+                shiftIncludePositionY = valueBool;
+                OnPropertyChanged("ShiftIncludePositionX");
+                OnPropertyChanged("ShiftIncludePositionY");
+                OnPropertyChanged("ShiftIncludePositionBoth");
             }
         }
 
@@ -132,15 +166,49 @@ namespace PowerPointLabs.DataSources
             }
         }
 
-        private bool savedIncludePosition = true;
+        private bool savedIncludePositionX = true;
 
-        public bool SavedIncludePosition
+        public bool SavedIncludePositionX
         {
-            get { return savedIncludePosition; }
+            get { return savedIncludePositionX; }
             set
             {
-                savedIncludePosition = value;
-                OnPropertyChanged("SavedIncludePosition");
+                savedIncludePositionX = value;
+                OnPropertyChanged("SavedIncludePositionX");
+                OnPropertyChanged("SavedIncludePositionBoth");
+            }
+        }
+
+        private bool savedIncludePositionY = true;
+
+        public bool SavedIncludePositionY
+        {
+            get { return savedIncludePositionY; }
+            set
+            {
+                savedIncludePositionY = value;
+                OnPropertyChanged("SavedIncludePositionY");
+                OnPropertyChanged("SavedIncludePositionBoth");
+            }
+        }
+
+        public bool? SavedIncludePositionBoth
+        {
+            get
+            {
+                if (SavedIncludePositionX != SavedIncludePositionY) return null;
+                return SavedIncludePositionX;
+            }
+            set
+            {
+                if (value == null) return;
+                bool valueBool = (value == true);
+
+                savedIncludePositionX = valueBool;
+                savedIncludePositionY = valueBool;
+                OnPropertyChanged("SavedIncludePositionX");
+                OnPropertyChanged("SavedIncludePositionY");
+                OnPropertyChanged("SavedIncludePositionBoth");
             }
         }
 
@@ -153,6 +221,7 @@ namespace PowerPointLabs.DataSources
             {
                 savedIncludeRotation = value;
                 OnPropertyChanged("SavedIncludeRotation");
+                OnPropertyChanged("SavedIncludePositionBoth");
             }
         }
         # endregion

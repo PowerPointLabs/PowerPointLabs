@@ -77,7 +77,7 @@ namespace PowerPointLabs.DrawingsLab
                 return;
             }
 
-            int clones = ShowNumericDialog("Number of copies:", "Multi-Clone") - 1;
+            int clones = DrawingsLabDialogs.ShowNumericDialog("Number of copies:", "Multi-Clone") - 1;
             if (clones <= 0) return;
 
             int midpoint = shapeList.Count / 2;
@@ -111,7 +111,7 @@ namespace PowerPointLabs.DrawingsLab
                 return;
             }
 
-            int clones = ShowNumericDialog("Number of copies:", "Multi-Clone") - 1;
+            int clones = DrawingsLabDialogs.ShowNumericDialog("Number of copies:", "Multi-Clone") - 1;
             if (clones <= 0) return;
 
             int divisions = clones + 1;
@@ -236,9 +236,12 @@ namespace PowerPointLabs.DrawingsLab
             if (selection.Type != PpSelectionType.ppSelectionShapes) return;
             foreach (var shape in selection.ShapeRange.Cast<Shape>())
             {
-                if (DataSource.ShiftIncludePosition)
+                if (DataSource.ShiftIncludePositionX)
                 {
                     SetX(shape, GetX(shape) + DataSource.ShiftValueX);
+                }
+                if (DataSource.ShiftIncludePositionY)
+                {
                     SetY(shape, GetY(shape) + DataSource.ShiftValueY);
                 }
                 if (DataSource.ShiftIncludeRotation)
@@ -273,9 +276,12 @@ namespace PowerPointLabs.DrawingsLab
 
             foreach (var shape in selection.ShapeRange.Cast<Shape>())
             {
-                if (DataSource.SavedIncludePosition)
+                if (DataSource.SavedIncludePositionX)
                 {
                     SetX(shape, DataSource.SavedValueX);
+                }
+                if (DataSource.SavedIncludePositionY)
+                {
                     SetY(shape, DataSource.SavedValueY);
                 }
                 if (DataSource.SavedIncludeRotation)
@@ -360,53 +366,6 @@ namespace PowerPointLabs.DrawingsLab
             // for now do nothing.
         }
 
-        private static int ShowNumericDialog(string text, string caption)
-        {
-            var prompt = new Form()
-            {
-                FormBorderStyle = FormBorderStyle.FixedDialog,
-                MinimizeBox = false,
-                MaximizeBox = false,
-                Width = 160,
-                Height = 130,
-                Text = caption,
-                StartPosition = FormStartPosition.CenterScreen,
-            };
-
-            var cancel = new Button();
-            cancel.Click += (sender, e) => prompt.Close();
-            prompt.CancelButton = cancel;
-
-            var textLabel = new Label()
-            {
-                Top = 10,
-                Text = text,
-                TextAlign = ContentAlignment.MiddleCenter,
-                AutoSize = false,
-                Width = prompt.Width
-            };
-
-            var textBox = new NumericUpDown() { Left = 20, Top = 40, Width = 120, Height = 80, Text = "5" };
-            var confirmation = new Button() { Text = "Ok", Left = 30, Top = 70, Width = 100, DialogResult = DialogResult.OK };
-            confirmation.Click += (sender, e) => { prompt.Close(); };
-
-            prompt.Controls.Add(textBox);
-            prompt.Controls.Add(confirmation);
-            prompt.Controls.Add(textLabel);
-            prompt.AcceptButton = confirmation;
-
-            textBox.Select(0, textBox.Text.Length);
-
-            if (prompt.ShowDialog() == DialogResult.OK)
-            {
-                int inputValue;
-                if (int.TryParse(textBox.Text, out inputValue))
-                {
-                    return inputValue;
-                }
-            }
-            return -1;
-        }
         #endregion
     }
 }
