@@ -108,20 +108,23 @@ namespace PPExtraEventHelper
             if (nCode == 0)
             {
                 int keyIndex = wParam.ToInt32();
-                if (IsKeydownCommand(lParam))
+                if (Keypressed.ContainsKey(keyIndex))
                 {
-                    if (!Keypressed[keyIndex])
+                    if (IsKeydownCommand(lParam))
                     {
-                        KeyDownActions[keyIndex]();
-                        Keypressed[keyIndex] = true;
+                        if (!Keypressed[keyIndex])
+                        {
+                            KeyDownActions[keyIndex]();
+                            Keypressed[keyIndex] = true;
+                        }
                     }
-                }
-                else
-                {
-                    if (Keypressed[keyIndex])
+                    else
                     {
-                        KeyUpActions[keyIndex]();
-                        Keypressed[keyIndex] = false;
+                        if (Keypressed[keyIndex])
+                        {
+                            KeyUpActions[keyIndex]();
+                            Keypressed[keyIndex] = false;
+                        }
                     }
                 }
             }
