@@ -29,6 +29,7 @@ using Timer = System.Timers.Timer;
 
 namespace PowerPointLabs.ImageSearch
 {
+    // TODO more partial class to clean up codes
     /// <summary>
     /// Interaction logic for ImageSearchPane.xaml
     /// </summary>

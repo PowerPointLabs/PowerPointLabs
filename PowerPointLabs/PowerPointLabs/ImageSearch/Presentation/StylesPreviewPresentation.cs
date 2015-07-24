@@ -29,6 +29,7 @@ namespace PowerPointLabs.ImageSearch.Presentation
 
         public StylesPreviewSlide AddSlide(ImageItem imageItem)
         {
+            // Assumption: current slide is not null
             if (!Opened)
             {
                 return null;
@@ -36,6 +37,11 @@ namespace PowerPointLabs.ImageSearch.Presentation
 
             var layout = PowerPointCurrentPresentationInfo.CurrentSlide.Layout;
             var newSlide = Presentation.Slides.Add(SlideCount + 1, layout);
+
+            var colorThemePath = TempPath.GetPath("ColorTheme");
+            PowerPointCurrentPresentationInfo.CurrentSlide.GetNativeSlide().ThemeColorScheme.Save(colorThemePath);
+            newSlide.ThemeColorScheme.Load(colorThemePath);
+
             var previewSlide = new StylesPreviewSlide(newSlide, this, imageItem);
 
             Slides.Add(previewSlide);
