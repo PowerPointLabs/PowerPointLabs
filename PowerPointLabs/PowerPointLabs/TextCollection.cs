@@ -302,6 +302,14 @@
         public const string ErrorWindowTitle = "Convert to Picture: Unsupported Object";
         # endregion
 
+        public class ImagesLabText
+        {
+            public const string StyleNameDirectText = "Direct Text style";
+            public const string StyleNameBlur = "Blur style";
+            public const string StyleNameTextBox = "TextBox style";
+            public const string StyleNameGrayscale = "Grayscale style";
+        }
+
         # region Agenda Lab
         // Errors
         public const string AgendaLabErrorDialogTitle = "Unable to execute action";

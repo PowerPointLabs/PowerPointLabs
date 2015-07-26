@@ -283,20 +283,21 @@
     <Compile Include="ConvertToPicture.cs" />
     <Compile Include="CropToShape.cs" />
     <Compile Include="DataSources\ShapesLabSettingsDataSource.cs" />
+    <Compile Include="ImageSearch\Handler\Preview\PreviewInfo.cs" />
     <Compile Include="ImageSearch\ImageSearchPane.xaml.cs">
       <DependentUpon>ImageSearchPane.xaml</DependentUpon>
     </Compile>
     <Compile Include="Utils\Assumption.cs" />
-    <Compile Include="ImageSearch\Domain\Exceptions\ImagesLabException.cs" />
+    <Compile Include="Utils\Exceptions\AssumptionFailedException.cs" />
     <Compile Include="ImageSearch\Domain\ImageItem.cs" />
     <Compile Include="ImageSearch\Domain\SearchOptions.cs" />
     <Compile Include="ImageSearch\Domain\StyleOptions.cs" />
-    <Compile Include="ImageSearch\Presentation\StylesPreviewPresentation.cs" />
+    <Compile Include="ImageSearch\Handler\StylesHandler.cs" />
     <Compile Include="ImageSearch\SearchEngine\GoogleEngine.cs" />
     <Compile Include="ImageSearch\SearchOptionsPane.xaml.cs">
       <DependentUpon>SearchOptionsPane.xaml</DependentUpon>
     </Compile>
-    <Compile Include="ImageSearch\Slide\StylesPreviewSlide.cs" />
+    <Compile Include="ImageSearch\Handler\EffectsHandler.cs" />
     <Compile Include="ImageSearch\StyleOptionsPane.xaml.cs">
       <DependentUpon>StyleOptionsPane.xaml</DependentUpon>
     </Compile>

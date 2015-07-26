@@ -11,9 +11,9 @@ using PowerPointLabs.Models;
 using Graphics = PowerPointLabs.Utils.Graphics;
 using PowerPoint = Microsoft.Office.Interop.PowerPoint;
 
-namespace PowerPointLabs.ImageSearch.Slide
+namespace PowerPointLabs.ImageSearch.Handler
 {
-    public class StylesPreviewSlide : PowerPointSlide
+    public class EffectsHandler : PowerPointSlide
     {
         public enum EffectName
         {
@@ -37,7 +37,7 @@ namespace PowerPointLabs.ImageSearch.Slide
 
         private PowerPointPresentation PreviewPresentation { get; set; }
 
-        public StylesPreviewSlide(PowerPoint.Slide slide, PowerPointPresentation pres, ImageItem imageItem)
+        public EffectsHandler(PowerPoint.Slide slide, PowerPointPresentation pres, ImageItem imageItem)
             : base(slide)
         {
             PreviewPresentation = pres;
@@ -77,8 +77,11 @@ namespace PowerPointLabs.ImageSearch.Slide
 
         public void ApplyImageReference(string contextLink)
         {
+            if (StringUtil.IsEmpty(contextLink)) return;
+
             RemovePreviousImageReference();
-            NotesPageText = "Background image taken from " + contextLink + " on " + DateTime.Now + "\n" + NotesPageText;
+            NotesPageText = "Background image taken from " + contextLink + " on " + DateTime.Now + "\n" +
+                            NotesPageText;
         }
 
         private void RemovePreviousImageReference()
@@ -92,10 +95,15 @@ namespace PowerPointLabs.ImageSearch.Slide
             var overlay = ApplyOverlayStyle(overlayColor, overlayTransparency);
             overlay.ZOrder(MsoZOrderCmd.msoSendToBack);
 
+            return ApplyBackgroundEffect();
+        }
+
+        public PowerPoint.Shape ApplyBackgroundEffect()
+        {
             var imageShape = AddPicture(ImageItem.FullSizeImageFile ?? ImageItem.ImageFile, EffectName.BackGround);
             imageShape.ZOrder(MsoZOrderCmd.msoSendToBack);
             FitToSlide.AutoFit(imageShape, PreviewPresentation);
-            
+
             return imageShape;
         }
 
@@ -225,13 +233,7 @@ namespace PowerPointLabs.ImageSearch.Slide
         public PowerPoint.Shape ApplyBlurEffect(PowerPoint.Shape imageShape, string overlayColor, int transparency)
         {
             var overlayShape = ApplyOverlayStyle(overlayColor, transparency);
-
-            if (ImageItem.BlurImageFile == null)
-            {
-                ImageItem.BlurImageFile = BlurImage(ImageItem.ImageFile);
-            }
-            var blurImageShape = AddPicture(ImageItem.BlurImageFile, EffectName.Blur);
-            FitToSlide.AutoFit(blurImageShape, PreviewPresentation);
+            var blurImageShape = ApplyBlurEffect();
 
             overlayShape.ZOrder(MsoZOrderCmd.msoSendToBack);
             blurImageShape.ZOrder(MsoZOrderCmd.msoSendToBack);
@@ -239,6 +241,17 @@ namespace PowerPointLabs.ImageSearch.Slide
             {
                 imageShape.ZOrder(MsoZOrderCmd.msoSendToBack);
             }
+            return blurImageShape;
+        }
+
+        public PowerPoint.Shape ApplyBlurEffect()
+        {
+            if (ImageItem.BlurImageFile == null)
+            {
+                ImageItem.BlurImageFile = BlurImage(ImageItem.ImageFile);
+            }
+            var blurImageShape = AddPicture(ImageItem.BlurImageFile, EffectName.Blur);
+            FitToSlide.AutoFit(blurImageShape, PreviewPresentation);
             return blurImageShape;
         }
 

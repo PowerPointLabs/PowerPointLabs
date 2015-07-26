@@ -12,7 +12,7 @@ using System.Windows.Input;
 using MahApps.Metro.Controls.Dialogs;
 using PowerPointLabs.AutoUpdate;
 using PowerPointLabs.ImageSearch.Domain;
-using PowerPointLabs.ImageSearch.Presentation;
+using PowerPointLabs.ImageSearch.Handler;
 using PowerPointLabs.ImageSearch.SearchEngine;
 using PowerPointLabs.ImageSearch.SearchEngine.VO;
 using PowerPointLabs.ImageSearch.Util;
@@ -58,7 +58,7 @@ namespace PowerPointLabs.ImageSearch
         private const int TimerInterval = 2000;
 
         // a background presentation that will do the preview processing
-        public StylesPreviewPresentation PreviewPresentation { get; set; }
+        public StylesHandler PreviewPresentation { get; set; }
 
         // the image search engine
         public GoogleEngine SearchEngine { get; set; }
@@ -308,7 +308,7 @@ namespace PowerPointLabs.ImageSearch
 
         private void InitPreviewPresentation()
         {
-            PreviewPresentation = new StylesPreviewPresentation(StyleOptions);
+            PreviewPresentation = new StylesHandler(StyleOptions);
             PreviewPresentation.Open(withWindow: false, focus: false);
         }
 
@@ -403,7 +403,7 @@ namespace PowerPointLabs.ImageSearch
                                 .TryGetValue(fullsizeImageUri, out targetStyle))
                         {
                             // insert + do preview
-                            PreviewPresentation.InsertStyles(source, targetStyle);
+                            PreviewPresentation.ApplyStyle(source, targetStyle.Tooltip);
                             DoPreview(source);
                         } 
                         // or it is to preview only (from timer)
@@ -614,11 +614,11 @@ namespace PowerPointLabs.ImageSearch
 
                 if (PowerPointCurrentPresentationInfo.CurrentSlide != null)
                 {
-                    PreviewPresentation.PreviewStyles(source);
-                    Add(PreviewList, PreviewPresentation.DirectTextStyleImagePath, "Direct Text style");
-                    Add(PreviewList, PreviewPresentation.BlurStyleImagePath, "Blur style");
-                    Add(PreviewList, PreviewPresentation.TextboxStyleImagePath, "TextBox style");
-                    Add(PreviewList, PreviewPresentation.GrayScaleStyleImagePath, "Grayscale style");
+                    var previewInfo = PreviewPresentation.PreviewStyles(source);
+                    Add(PreviewList, previewInfo.DirectTextStyleImagePath, TextCollection.ImagesLabText.StyleNameDirectText);
+                    Add(PreviewList, previewInfo.BlurStyleImagePath, TextCollection.ImagesLabText.StyleNameBlur);
+                    Add(PreviewList, previewInfo.TextboxStyleImagePath, TextCollection.ImagesLabText.StyleNameTextBox);
+                    Add(PreviewList, previewInfo.GrayScaleStyleImagePath, TextCollection.ImagesLabText.StyleNameGrayscale);
 
                     PreviewListBox.SelectedIndex = selectedId;
                 }
@@ -724,7 +724,7 @@ namespace PowerPointLabs.ImageSearch
 
             if (source.FullSizeImageFile != null)
             {
-                PreviewPresentation.InsertStyles(source, targetStyle);
+                PreviewPresentation.ApplyStyle(source, targetStyle.Tooltip);
                 PreviewProgressRing.IsActive = false;
             }
             else if (!_insertDownloadingUriList.Contains(source.FullSizeImageUri))
