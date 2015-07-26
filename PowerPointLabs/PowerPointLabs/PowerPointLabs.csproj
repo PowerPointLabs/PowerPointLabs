@@ -287,13 +287,13 @@
     <Compile Include="ImageSearch\Handler\Effect\EffectName.cs" />
     <Compile Include="ImageSearch\Handler\Preview\PreviewInfo.cs" />
     <Compile Include="ImageSearch\Handler\Effect\Tag.cs" />
-    <Compile Include="ImageSearch\ImageSearchPane.xaml.ApplyStyle.cs" />
-    <Compile Include="ImageSearch\ImageSearchPane.xaml.BackgroundDownload.cs" />
+    <Compile Include="ImageSearch\ImageSearchPane.xaml.OnApplyStyle.cs" />
+    <Compile Include="ImageSearch\ImageSearchPane.xaml.OnBackgroundDownload.cs" />
     <Compile Include="ImageSearch\ImageSearchPane.xaml.cs">
       <DependentUpon>ImageSearchPane.xaml</DependentUpon>
     </Compile>
-    <Compile Include="ImageSearch\ImageSearchPane.xaml.Preview.cs" />
-    <Compile Include="ImageSearch\ImageSearchPane.xaml.LoadImages.cs" />
+    <Compile Include="ImageSearch\ImageSearchPane.xaml.OnPreview.cs" />
+    <Compile Include="ImageSearch\ImageSearchPane.xaml.OnLoadImages.cs" />
     <Compile Include="ImageSearch\SearchEngine\GoogleEngine.Events.cs" />
     <Compile Include="Utils\Assumption.cs" />
     <Compile Include="Utils\Exceptions\AssumptionFailedException.cs" />
