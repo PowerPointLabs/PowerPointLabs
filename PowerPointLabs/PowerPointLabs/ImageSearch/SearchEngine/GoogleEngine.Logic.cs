@@ -20,6 +20,7 @@ namespace PowerPointLabs.ImageSearch.SearchEngine
         // multi thread state
         private readonly Object _syncLock = new object();
         private bool _isFailedAlready;
+        private bool _isFailedWithExceptionAlready;
 
         private SearchOptions SearchOptions { get; set; }
 
@@ -95,6 +96,25 @@ namespace PowerPointLabs.ImageSearch.SearchEngine
                         if (WhenSucceedDelegate != null)
                         {
                             WhenSucceedDelegate(searchResults, startIdx);
+                        }
+                    }
+                }
+                catch (Exception e)
+                {
+                    lock (_syncLock)
+                    {
+                        if (WhenExceptionDelegate != null && !_isFailedWithExceptionAlready)
+                        {
+                            // ensure only call failure delegate once
+                            _isFailedWithExceptionAlready = true;
+                            try
+                            {
+                                WhenExceptionDelegate(e);
+                            }
+                            catch (Exception e2)
+                            {
+                                PowerPointLabsGlobals.Log("Error", e2.Message);
+                            }
                         }
                     }
                 }

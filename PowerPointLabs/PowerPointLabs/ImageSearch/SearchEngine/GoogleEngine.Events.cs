@@ -1,10 +1,21 @@
-﻿using PowerPointLabs.ImageSearch.SearchEngine.VO;
+﻿using System;
+using PowerPointLabs.ImageSearch.SearchEngine.VO;
 using RestSharp;
 
 namespace PowerPointLabs.ImageSearch.SearchEngine
 {
     partial class GoogleEngine
     {
+        public delegate void WhenExceptionEventDelegate(Exception e);
+
+        private event WhenExceptionEventDelegate WhenExceptionDelegate;
+
+        public GoogleEngine WhenException(WhenExceptionEventDelegate action)
+        {
+            WhenExceptionDelegate += action;
+            return this;
+        }
+
         public delegate void WhenFailEventDelegate(IRestResponse response);
 
         private event WhenFailEventDelegate WhenFailDelegate;
