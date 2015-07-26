@@ -308,6 +308,25 @@
             public const string StyleNameBlur = "Blur style";
             public const string StyleNameTextBox = "TextBox style";
             public const string StyleNameGrayscale = "Grayscale style";
+
+            public const string ErrorNetworkOrApiQuotaUnavailable =
+            "Failed to search images. Please check your network, or the daily API quota is ran out.";
+            public const string ErrorNetworkOrSourceUnavailable =
+                "Failed to insert style. Please check your network, or the image source is unavailable.";
+            public const string ErrorNoEngineIdOrApiKey =
+                "Please fill in Search Engine Id and API Key by clicking ADVANCED.. button.";
+
+            public const string MultiPurposeButtonNameSearch = "Search";
+            public const string MultiPurposeButtonNameDownload = "Download";
+            public const string MultiPurposeButtonNameFromFile = "From File";
+
+            public const string TextBoxWatermarkSearch = "Type here to search for images";
+            public const string TextBoxWatermarkDownload = "Paste the image link here";
+            public const string TextBoxWatermarkFromFile = "";
+
+            public const string InstructionForSearch = "No result. Type the keywords in the textbox above to search for images.";
+            public const string InstructionForDownload = "No image. Paste the image link in the textbox above to download images.";
+            public const string InstructionForFromFile = "No image. Click the 'From File' button above to load local images.";
         }
 
         # region Agenda Lab

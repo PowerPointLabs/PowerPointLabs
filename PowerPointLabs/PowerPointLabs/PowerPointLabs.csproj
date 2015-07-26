@@ -283,20 +283,25 @@
     <Compile Include="ConvertToPicture.cs" />
     <Compile Include="CropToShape.cs" />
     <Compile Include="DataSources\ShapesLabSettingsDataSource.cs" />
+    <Compile Include="ImageSearch\ImageSearchPane.xaml.Common.cs" />
     <Compile Include="ImageSearch\Handler\Effect\EffectName.cs" />
-    <Compile Include="ImageSearch\Handler\Effect\ImageProcessHelper.cs" />
     <Compile Include="ImageSearch\Handler\Preview\PreviewInfo.cs" />
     <Compile Include="ImageSearch\Handler\Effect\Tag.cs" />
+    <Compile Include="ImageSearch\ImageSearchPane.xaml.ApplyStyle.cs" />
+    <Compile Include="ImageSearch\ImageSearchPane.xaml.BackgroundDownload.cs" />
     <Compile Include="ImageSearch\ImageSearchPane.xaml.cs">
       <DependentUpon>ImageSearchPane.xaml</DependentUpon>
     </Compile>
+    <Compile Include="ImageSearch\ImageSearchPane.xaml.Preview.cs" />
+    <Compile Include="ImageSearch\ImageSearchPane.xaml.LoadImages.cs" />
+    <Compile Include="ImageSearch\SearchEngine\GoogleEngine.Events.cs" />
     <Compile Include="Utils\Assumption.cs" />
     <Compile Include="Utils\Exceptions\AssumptionFailedException.cs" />
     <Compile Include="ImageSearch\Domain\ImageItem.cs" />
     <Compile Include="ImageSearch\Domain\SearchOptions.cs" />
     <Compile Include="ImageSearch\Domain\StyleOptions.cs" />
     <Compile Include="ImageSearch\Handler\StylesHandler.cs" />
-    <Compile Include="ImageSearch\SearchEngine\GoogleEngine.cs" />
+    <Compile Include="ImageSearch\SearchEngine\GoogleEngine.Logic.cs" />
     <Compile Include="ImageSearch\SearchOptionsPane.xaml.cs">
       <DependentUpon>SearchOptionsPane.xaml</DependentUpon>
     </Compile>

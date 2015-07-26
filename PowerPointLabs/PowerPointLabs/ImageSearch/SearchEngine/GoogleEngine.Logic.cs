@@ -13,6 +13,10 @@ namespace PowerPointLabs.ImageSearch.SearchEngine
 {
     public partial class GoogleEngine
     {
+        public const int NumOfItemsPerSearch = 30;
+        public const int NumOfItemsPerRequest = 10;
+        public const int MaxNumOfItems = 100;
+
         // state, used for Search More
         private string _lastTimeQuery = "";
         private int _nextStartIndex;

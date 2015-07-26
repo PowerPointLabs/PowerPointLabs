@@ -60,7 +60,7 @@
                     <ColumnDefinition Width="*"></ColumnDefinition>
                 </Grid.ColumnDefinitions>
                 <Label Name="PreviewLabel" Grid.Column="1" Margin="0,0,5,0" FontSize="15">Preview</Label>
-                <Button IsEnabled="False" Name="PreviewInsert" Click="PreviewInsert_OnClick" Grid.Column="2" Margin="0,0,5,0">Apply</Button>
+                <Button IsEnabled="False" Name="PreviewInsert" Click="PreviewApply_OnClick" Grid.Column="2" Margin="0,0,5,0">Apply</Button>
                 <Button Name="StyleOptionsButton" Grid.Column="3" Margin="0,0,5,0" Click="StyleOptionsButton_OnClick">Options</Button>
                 <controls:ProgressRing Name="PreviewProgressRing" Width="10" Height="10" Grid.Column="4" IsActive="False" />
                 <controls:ToggleSwitch ToolTip="Expand/collapse preview region" OnLabel="" OffLabel="" IsCheckedChanged="PreviewDisplayToggleSwitch_OnIsCheckedChanged" Name="PreviewDisplayToggleSwitch" Grid.Column="5" Margin="0,-2,0,2" />
