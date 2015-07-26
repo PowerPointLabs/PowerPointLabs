@@ -2,6 +2,8 @@
 using System.Drawing;
 using System.Globalization;
 using System.Text.RegularExpressions;
+using ImageProcessor;
+using ImageProcessor.Imaging.Filters;
 using Microsoft.Office.Core;
 using PowerPointLabs.ImageSearch.Domain;
 using PowerPointLabs.ImageSearch.Handler.Effect;
@@ -172,7 +174,7 @@ namespace PowerPointLabs.ImageSearch.Handler
         {
             if (Source.BlurImageFile == null)
             {
-                Source.BlurImageFile = ImageProcessHelper.BlurImage(Source.ImageFile, 
+                Source.BlurImageFile = BlurImage(Source.ImageFile, 
                     Source.ImageFile == Source.FullSizeImageFile);
             }
             var blurImageShape = AddPicture(Source.BlurImageFile, EffectName.Blur);
@@ -225,11 +227,11 @@ namespace PowerPointLabs.ImageSearch.Handler
 
             if (Source.GrayscaleImageFile == null && Source.FullSizeImageFile == null)
             {
-                Source.GrayscaleImageFile = ImageProcessHelper.GrayscaleImage(Source.ImageFile);
+                Source.GrayscaleImageFile = GrayscaleImage(Source.ImageFile);
             }
             if (Source.FullSizeGrayscaleImageFile == null && Source.FullSizeImageFile != null)
             {
-                Source.FullSizeGrayscaleImageFile = ImageProcessHelper.GrayscaleImage(Source.FullSizeImageFile);
+                Source.FullSizeGrayscaleImageFile = GrayscaleImage(Source.FullSizeImageFile);
                 Source.GrayscaleImageFile = Source.FullSizeGrayscaleImageFile;
             }
             var grayscaleImageShape = AddPicture(Source.GrayscaleImageFile, EffectName.Grayscale);
@@ -305,6 +307,47 @@ namespace PowerPointLabs.ImageSearch.Handler
             {
                 shape.Tags.Add(tagName, value);
             }
+        }
+
+        public static string BlurImage(string imageFilePath, bool isBlurForFullsize)
+        {
+            var blurImageFile = TempPath.GetPath("fullsize_blur");
+            using (var imageFactory = new ImageFactory())
+            {
+                if (isBlurForFullsize)
+                {// for full-size image, need to resize first
+                    var image = imageFactory
+                        .Load(imageFilePath)
+                        .Image;
+                    image = imageFactory
+                        .Resize(new Size(image.Width / 4, image.Height / 4))
+                        .GaussianBlur(5).Image;
+                    image.Save(blurImageFile);
+                }
+                else
+                {
+                    var image = imageFactory
+                        .Load(imageFilePath)
+                        .GaussianBlur(5)
+                        .Image;
+                    image.Save(blurImageFile);
+                }
+            }
+            return blurImageFile;
+        }
+
+        public static string GrayscaleImage(string imageFilePath)
+        {
+            var grayscaleImageFile = TempPath.GetPath("fullsize_grayscale");
+            using (var imageFactory = new ImageFactory())
+            {
+                var image = imageFactory
+                    .Load(imageFilePath)
+                    .Filter(MatrixFilters.GreyScale)
+                    .Image;
+                image.Save(grayscaleImageFile);
+            }
+            return grayscaleImageFile;
         }
         #endregion
     }
