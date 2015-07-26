@@ -2,10 +2,9 @@
 using System.Drawing;
 using System.Globalization;
 using System.Text.RegularExpressions;
-using ImageProcessor;
-using ImageProcessor.Imaging.Filters;
 using Microsoft.Office.Core;
 using PowerPointLabs.ImageSearch.Domain;
+using PowerPointLabs.ImageSearch.Handler.Effect;
 using PowerPointLabs.ImageSearch.Util;
 using PowerPointLabs.Models;
 using Graphics = PowerPointLabs.Utils.Graphics;
@@ -15,62 +14,22 @@ namespace PowerPointLabs.ImageSearch.Handler
 {
     public class EffectsHandler : PowerPointSlide
     {
-        public enum EffectName
-        {
-            BackGround,
-            Overlay,
-            Blur,
-            TextBox,
-            Grayscale
-        }
+        private const string ShapeNamePrefix = "pptImagesLab";
 
-        public const string ShapeNamePrefix = "pptImagesLab";
-
-        // tag names
-        private const string OriginalFontSize = "originalFontSize";
-        private const string OriginalFontColor = "originalFontColor";
-        private const string OriginalFontFamily = "originalFontFamily";
-        private const string OriginalFillVisible = "originalFillVisible";
-        private const string OriginalLineVisible = "originalLineVisible";
-
-        private ImageItem ImageItem { get; set; }
+        private ImageItem Source { get; set; }
 
         private PowerPointPresentation PreviewPresentation { get; set; }
 
-        public EffectsHandler(PowerPoint.Slide slide, PowerPointPresentation pres, ImageItem imageItem)
+        # region APIs
+        public EffectsHandler(PowerPoint.Slide slide, PowerPointPresentation pres, ImageItem source)
             : base(slide)
         {
             PreviewPresentation = pres;
-            ImageItem = imageItem;
+            Source = source;
             PrepareShapesForPreview();
         }
 
-        private void PrepareShapesForPreview()
-        {
-            try
-            {
-                var currentSlide = PowerPointCurrentPresentationInfo.CurrentSlide;
-                if (_slide != currentSlide.GetNativeSlide())
-                {
-                    DeleteAllShapes();
-                    currentSlide.Shapes.Range().Copy();
-                    _slide.Shapes.Paste();
-                }
-                RemoveAnyStyles();
-            }
-            catch
-            {
-                // nothing to copy-paste
-            }
-        }
-
-        public void RemoveAnyStyles()
-        {
-            // cannot restore text format though..
-            DeleteShapesWithPrefix(ShapeNamePrefix);
-        }
-
-        public void RemoveStyles(EffectName effectName)
+        public void RemoveEffect(EffectName effectName)
         {
             DeleteShapesWithPrefix(ShapeNamePrefix + "_" + effectName);
         }
@@ -84,13 +43,8 @@ namespace PowerPointLabs.ImageSearch.Handler
                             NotesPageText;
         }
 
-        private void RemovePreviousImageReference()
-        {
-            NotesPageText = Regex.Replace(NotesPageText, @"^Background image taken from .* on .*\n", "");
-        }
-
         // add a background image shape from imageItem
-        public PowerPoint.Shape ApplyBackgroundEffect(string overlayColor,int overlayTransparency)
+        public PowerPoint.Shape ApplyBackgroundEffect(string overlayColor, int overlayTransparency)
         {
             var overlay = ApplyOverlayStyle(overlayColor, overlayTransparency);
             overlay.ZOrder(MsoZOrderCmd.msoSendToBack);
@@ -100,14 +54,13 @@ namespace PowerPointLabs.ImageSearch.Handler
 
         public PowerPoint.Shape ApplyBackgroundEffect()
         {
-            var imageShape = AddPicture(ImageItem.FullSizeImageFile ?? ImageItem.ImageFile, EffectName.BackGround);
+            var imageShape = AddPicture(Source.FullSizeImageFile ?? Source.ImageFile, EffectName.BackGround);
             imageShape.ZOrder(MsoZOrderCmd.msoSendToBack);
             FitToSlide.AutoFit(imageShape, PreviewPresentation);
 
             return imageShape;
         }
 
-        // TODO shorten this?
         // apply text formats to textbox & placeholer
         public void ApplyTextEffect(string fontFamily, string fontColor, int fontSizeToIncrease)
         {
@@ -120,41 +73,28 @@ namespace PowerPointLabs.ImageSearch.Handler
                     continue;
                 }
 
-                if (IsEmpty(shape.Tags[OriginalFillVisible]))
-                {
-                    shape.Tags.Add(OriginalFillVisible, ToBool(shape.Fill.Visible).ToString());
-                }
+                AddTag(shape, Tag.OriginalFillVisible, BoolUtil.ToBool(shape.Fill.Visible).ToString());
                 shape.Fill.Visible = MsoTriState.msoFalse;
 
-                if (IsEmpty(shape.Tags[OriginalLineVisible]))
-                {
-                    shape.Tags.Add(OriginalLineVisible, ToBool(shape.Line.Visible).ToString());
-                }
+                AddTag(shape, Tag.OriginalLineVisible, BoolUtil.ToBool(shape.Line.Visible).ToString());
                 shape.Line.Visible = MsoTriState.msoFalse;
 
                 var font = shape.TextFrame2.TextRange.TrimText().Font;
 
-                if (IsEmpty(shape.Tags[OriginalFontColor]))
-                {
-                    shape.Tags.Add(OriginalFontColor, GetHexValue(Graphics.ConvertRgbToColor(font.Fill.ForeColor.RGB)));
-                }
-                font.Fill.ForeColor.RGB
-                        = Graphics.ConvertColorToRgb(ColorTranslator.FromHtml(fontColor));
+                AddTag(shape, Tag.OriginalFontColor, StringUtil.GetHexValue(Graphics.ConvertRgbToColor(font.Fill.ForeColor.RGB)));
+                font.Fill.ForeColor.RGB = Graphics.ConvertColorToRgb(ColorTranslator.FromHtml(fontColor));
 
-                if (IsEmpty(shape.Tags[OriginalFontFamily]))
-                {
-                    shape.Tags.Add(OriginalFontFamily, font.Name);
-                }
-                font.Name = IsEmpty(fontFamily) ? shape.Tags[OriginalFontFamily] : fontFamily;
+                AddTag(shape, Tag.OriginalFontFamily, font.Name);
+                font.Name = StringUtil.IsEmpty(fontFamily) ? shape.Tags[Tag.OriginalFontFamily] : fontFamily;
 
-                if (IsEmpty(shape.Tags[OriginalFontSize]))
+                if (StringUtil.IsEmpty(shape.Tags[Tag.OriginalFontSize]))
                 {
-                    shape.Tags.Add(OriginalFontSize, shape.TextEffect.FontSize.ToString(CultureInfo.InvariantCulture));
+                    shape.Tags.Add(Tag.OriginalFontSize, shape.TextEffect.FontSize.ToString(CultureInfo.InvariantCulture));
                     shape.TextEffect.FontSize += fontSizeToIncrease;
                 }
                 else // applied before
                 {
-                    shape.TextEffect.FontSize = float.Parse(shape.Tags[OriginalFontSize]);
+                    shape.TextEffect.FontSize = float.Parse(shape.Tags[Tag.OriginalFontSize]);
                     shape.TextEffect.FontSize += fontSizeToIncrease;
                 }
             }
@@ -171,47 +111,31 @@ namespace PowerPointLabs.ImageSearch.Handler
                     continue;
                 }
 
-                if (!IsEmpty(shape.Tags[OriginalFillVisible]))
+                if (StringUtil.IsNotEmpty(shape.Tags[Tag.OriginalFillVisible]))
                 {
-                    shape.Fill.Visible = ToMsoTriState(bool.Parse(shape.Tags[OriginalFillVisible]));
+                    shape.Fill.Visible = BoolUtil.ToMsoTriState(bool.Parse(shape.Tags[Tag.OriginalFillVisible]));
                 }
-                if (!IsEmpty(shape.Tags[OriginalLineVisible]))
+                if (StringUtil.IsNotEmpty(shape.Tags[Tag.OriginalLineVisible]))
                 {
-                    shape.Line.Visible = ToMsoTriState(bool.Parse(shape.Tags[OriginalLineVisible]));
+                    shape.Line.Visible = BoolUtil.ToMsoTriState(bool.Parse(shape.Tags[Tag.OriginalLineVisible]));
                 }
 
                 var font = shape.TextFrame2.TextRange.TrimText().Font;
 
-                if (!IsEmpty(shape.Tags[OriginalFontColor]))
+                if (StringUtil.IsNotEmpty(shape.Tags[Tag.OriginalFontColor]))
                 {
                     font.Fill.ForeColor.RGB
-                        = Graphics.ConvertColorToRgb(ColorTranslator.FromHtml(shape.Tags[OriginalFontColor]));
+                        = Graphics.ConvertColorToRgb(ColorTranslator.FromHtml(shape.Tags[Tag.OriginalFontColor]));
                 }
-                if (!IsEmpty(shape.Tags[OriginalFontFamily]))
+                if (StringUtil.IsNotEmpty(shape.Tags[Tag.OriginalFontFamily]))
                 {
-                    font.Name = shape.Tags[OriginalFontFamily];
+                    font.Name = shape.Tags[Tag.OriginalFontFamily];
                 }
-                if (!IsEmpty(shape.Tags[OriginalFontSize]))
+                if (StringUtil.IsNotEmpty(shape.Tags[Tag.OriginalFontSize]))
                 {
-                    shape.TextEffect.FontSize = float.Parse(shape.Tags[OriginalFontSize]);
+                    shape.TextEffect.FontSize = float.Parse(shape.Tags[Tag.OriginalFontSize]);
                 }
             }
-        }
-
-        // TODO util
-        private bool IsEmpty(string str)
-        {
-            return str.Trim().Length == 0;
-        }
-
-        private bool ToBool(MsoTriState state)
-        {
-            return state == MsoTriState.msoTrue;
-        }
-
-        private MsoTriState ToMsoTriState(bool boolean)
-        {
-            return boolean ? MsoTriState.msoTrue : MsoTriState.msoFalse;
         }
 
         // add overlay layer 
@@ -246,11 +170,12 @@ namespace PowerPointLabs.ImageSearch.Handler
 
         public PowerPoint.Shape ApplyBlurEffect()
         {
-            if (ImageItem.BlurImageFile == null)
+            if (Source.BlurImageFile == null)
             {
-                ImageItem.BlurImageFile = BlurImage(ImageItem.ImageFile);
+                Source.BlurImageFile = ImageProcessHelper.BlurImage(Source.ImageFile, 
+                    Source.ImageFile == Source.FullSizeImageFile);
             }
-            var blurImageShape = AddPicture(ImageItem.BlurImageFile, EffectName.Blur);
+            var blurImageShape = AddPicture(Source.BlurImageFile, EffectName.Blur);
             FitToSlide.AutoFit(blurImageShape, PreviewPresentation);
             return blurImageShape;
         }
@@ -262,7 +187,7 @@ namespace PowerPointLabs.ImageSearch.Handler
                 if ((shape.Type != MsoShapeType.msoPlaceholder
                         && shape.Type != MsoShapeType.msoTextBox)
                         || shape.TextFrame.HasText == MsoTriState.msoFalse
-                        || !IsEmpty(shape.Tags[ShapeNamePrefix]))
+                        || StringUtil.IsNotEmpty(shape.Tags[Tag.AddedTextbox]))
                 {
                     continue;
                 }
@@ -270,7 +195,7 @@ namespace PowerPointLabs.ImageSearch.Handler
                 // multiple paragraphs.. 
                 foreach (TextRange2 paragraph in shape.TextFrame2.TextRange.Paragraphs)
                 {
-                    if (paragraph.TrimText().Length > 0)
+                    if (StringUtil.IsNotEmpty(paragraph.Text))
                     {
                         var left = paragraph.BoundLeft - 5;
                         var top = paragraph.BoundTop - 5;
@@ -283,13 +208,13 @@ namespace PowerPointLabs.ImageSearch.Handler
                             left, top, width, height);
                         Graphics.MoveZToJustBehind(blurImageShapeCopy, shape);
                         Graphics.MoveZToJustBehind(overlayBlurShape, shape);
-                        shape.Tags.Add(ShapeNamePrefix, blurImageShapeCopy.Name);
+                        shape.Tags.Add(Tag.AddedTextbox, blurImageShapeCopy.Name);
                     }
                 }
             }
             foreach (PowerPoint.Shape shape in Shapes)
             {
-                shape.Tags.Add(ShapeNamePrefix, "");
+                shape.Tags.Add(Tag.AddedTextbox, "");
             }
             blurImageShape.ZOrder(MsoZOrderCmd.msoSendToBack);
         }
@@ -298,16 +223,16 @@ namespace PowerPointLabs.ImageSearch.Handler
         {
             var overlayShape = ApplyOverlayStyle(overlayColor, transparency);
 
-            if (ImageItem.GrayscaleImageFile == null && ImageItem.FullSizeImageFile == null)
+            if (Source.GrayscaleImageFile == null && Source.FullSizeImageFile == null)
             {
-                ImageItem.GrayscaleImageFile = GrayscaleImage(ImageItem.ImageFile);
+                Source.GrayscaleImageFile = ImageProcessHelper.GrayscaleImage(Source.ImageFile);
             }
-            if (ImageItem.FullSizeGrayscaleImageFile == null && ImageItem.FullSizeImageFile != null)
+            if (Source.FullSizeGrayscaleImageFile == null && Source.FullSizeImageFile != null)
             {
-                ImageItem.FullSizeGrayscaleImageFile = GrayscaleImage(ImageItem.FullSizeImageFile);
-                ImageItem.GrayscaleImageFile = ImageItem.FullSizeGrayscaleImageFile;
+                Source.FullSizeGrayscaleImageFile = ImageProcessHelper.GrayscaleImage(Source.FullSizeImageFile);
+                Source.GrayscaleImageFile = Source.FullSizeGrayscaleImageFile;
             }
-            var grayscaleImageShape = AddPicture(ImageItem.GrayscaleImageFile, EffectName.Grayscale);
+            var grayscaleImageShape = AddPicture(Source.GrayscaleImageFile, EffectName.Grayscale);
             FitToSlide.AutoFit(grayscaleImageShape, PreviewPresentation);
 
             overlayShape.ZOrder(MsoZOrderCmd.msoSendToBack);
@@ -317,6 +242,33 @@ namespace PowerPointLabs.ImageSearch.Handler
                 imageShape.ZOrder(MsoZOrderCmd.msoSendToBack);
             }
             return grayscaleImageShape;
+        }
+
+        # endregion
+
+        # region Helper Funcs
+        private void RemovePreviousImageReference()
+        {
+            NotesPageText = Regex.Replace(NotesPageText, @"^Background image taken from .* on .*\n", "");
+        }
+
+        private void PrepareShapesForPreview()
+        {
+            try
+            {
+                var currentSlide = PowerPointCurrentPresentationInfo.CurrentSlide;
+                if (currentSlide != null && _slide != currentSlide.GetNativeSlide())
+                {
+                    DeleteAllShapes();
+                    currentSlide.Shapes.Range().Copy();
+                    _slide.Shapes.Paste();
+                }
+                DeleteShapesWithPrefix(ShapeNamePrefix);
+            }
+            catch
+            {
+                // nothing to copy-paste
+            }
         }
 
         private PowerPoint.Shape BlurTextbox(PowerPoint.Shape blurImageShape, 
@@ -333,47 +285,6 @@ namespace PowerPointLabs.ImageSearch.Handler
             return blurImageShapeCopy;
         }
 
-        private string BlurImage(string imageFilePath)
-        {
-            var blurImageFile = TempPath.GetPath("fullsize_blur");
-            using (var imageFactory = new ImageFactory())
-            {
-                if (ImageItem.FullSizeImageFile == imageFilePath)
-                {// for full-size image, need to resize first
-                    var image = imageFactory
-                        .Load(imageFilePath)
-                        .Image;
-                    image = imageFactory
-                        .Resize(new Size(image.Width / 4, image.Height / 4))
-                        .GaussianBlur(5).Image;
-                    image.Save(blurImageFile);
-                }
-                else
-                {
-                    var image = imageFactory
-                        .Load(imageFilePath)
-                        .GaussianBlur(5)
-                        .Image;
-                    image.Save(blurImageFile);
-                }
-            }
-            return blurImageFile;
-        }
-
-        private string GrayscaleImage(string imageFilePath)
-        {
-            var grayscaleImageFile = TempPath.GetPath("fullsize_grayscale");
-            using (var imageFactory = new ImageFactory())
-            {
-                var image = imageFactory
-                    .Load(imageFilePath)
-                    .Filter(MatrixFilters.GreyScale)
-                    .Image;
-                image.Save(grayscaleImageFile);
-            }
-            return grayscaleImageFile;
-        }
-
         private PowerPoint.Shape AddPicture(string imageFile, EffectName effectName)
         {
             var imageShape = Shapes.AddPicture(imageFile,
@@ -388,12 +299,13 @@ namespace PowerPointLabs.ImageSearch.Handler
             shape.Name = ShapeNamePrefix + "_" + effectName + "_" + Guid.NewGuid().ToString().Substring(0, 7);
         }
 
-        // TODO util
-        private string GetHexValue(Color color)
+        private static void AddTag(PowerPoint.Shape shape, string tagName, String value)
         {
-            byte[] rgbArray = { color.R, color.G, color.B };
-            var hex = BitConverter.ToString(rgbArray);
-            return "#" + hex.Replace("-", "");
+            if (StringUtil.IsEmpty(shape.Tags[tagName]))
+            {
+                shape.Tags.Add(tagName, value);
+            }
         }
+        #endregion
     }
 }

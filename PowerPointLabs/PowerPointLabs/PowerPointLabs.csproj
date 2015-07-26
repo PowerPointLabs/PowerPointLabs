@@ -283,7 +283,10 @@
     <Compile Include="ConvertToPicture.cs" />
     <Compile Include="CropToShape.cs" />
     <Compile Include="DataSources\ShapesLabSettingsDataSource.cs" />
+    <Compile Include="ImageSearch\Handler\Effect\EffectName.cs" />
+    <Compile Include="ImageSearch\Handler\Effect\ImageProcessHelper.cs" />
     <Compile Include="ImageSearch\Handler\Preview\PreviewInfo.cs" />
+    <Compile Include="ImageSearch\Handler\Effect\Tag.cs" />
     <Compile Include="ImageSearch\ImageSearchPane.xaml.cs">
       <DependentUpon>ImageSearchPane.xaml</DependentUpon>
     </Compile>

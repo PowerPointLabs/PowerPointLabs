@@ -3,6 +3,7 @@ using Microsoft.Office.Interop.PowerPoint;
 using PowerPointLabs.ImageSearch.Util;
 using PowerPointLabs.Models;
 using PowerPointLabs.ImageSearch.Domain;
+using PowerPointLabs.ImageSearch.Handler.Effect;
 using PowerPointLabs.ImageSearch.Handler.Preview;
 using PowerPointLabs.Utils;
 using PowerPointLabs.Utils.Exceptions;
@@ -45,18 +46,18 @@ namespace PowerPointLabs.ImageSearch.Handler
             handler.GetNativeSlide().Export(previewInfo.DirectTextStyleImagePath, "JPG");
 
             // style: blur
-            handler.RemoveStyles(EffectsHandler.EffectName.Overlay);
+            handler.RemoveEffect(EffectName.Overlay);
             var blurImageShape = handler.ApplyBlurEffect(imageShape, Options.OverlayColor, Options.Transparency);
             handler.GetNativeSlide().Export(previewInfo.BlurStyleImagePath, "JPG");
 
             // style: textbox
-            handler.RemoveStyles(EffectsHandler.EffectName.Overlay);
+            handler.RemoveEffect(EffectName.Overlay);
             handler.ApplyBlurTextboxEffect(blurImageShape, Options.OverlayColor, Options.Transparency);
             handler.GetNativeSlide().Export(previewInfo.TextboxStyleImagePath, "JPG");
 
             // style: grayscale
-            handler.RemoveStyles(EffectsHandler.EffectName.Overlay);
-            handler.RemoveStyles(EffectsHandler.EffectName.Blur);
+            handler.RemoveEffect(EffectName.Overlay);
+            handler.RemoveEffect(EffectName.Blur);
             handler.ApplyGrayscaleEffect(imageShape, Options.OverlayColor, Options.Transparency);
             handler.GetNativeSlide().Export(previewInfo.GrayScaleStyleImagePath, "JPG");
 
