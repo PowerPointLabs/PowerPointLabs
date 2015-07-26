@@ -148,6 +148,7 @@ namespace PowerPointLabs.ImageSearch
 
         # endregion
 
+        # region Common UI Events & Interactions
         private void StyleOptionsFlyout_OnIsOpenChanged(object sender, RoutedEventArgs e)
         {
             if (!StyleOptionsFlyout.IsOpen)
@@ -393,5 +394,7 @@ namespace PowerPointLabs.ImageSearch
         {
             DoPreview();
         }
+
+        # endregion
     }
 }
