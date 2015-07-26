@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Net;
 using System.Threading;
-using PowerPointLabs.ImageSearch.Model;
+using PowerPointLabs.ImageSearch.Domain;
 using PowerPointLabs.ImageSearch.SearchEngine.VO;
 using RestSharp;
 using RestSharp.Deserializers;

@@ -108,7 +108,7 @@
                     <ColumnDefinition Width="40" />
                     <ColumnDefinition Width="*"></ColumnDefinition>
                 </Grid.ColumnDefinitions>
-                <TextBox TabIndex="0" Name="SearchTextBox" KeyDown="SearchTextBox_OnKeyDown" VerticalContentAlignment="Center" Grid.Column="0" Margin="0,0,5,0" controls:TextBoxHelper.Watermark="{Binding Path=Watermark, NotifyOnSourceUpdated=True}"></TextBox>
+                <TextBox TabIndex="0" Name="SearchTextBox" KeyDown="SearchTextBox_OnKeyDown" VerticalContentAlignment="Center" Grid.Column="0" Margin="0,0,5,0" controls:TextBoxHelper.Watermark="{Binding Path=Text, NotifyOnSourceUpdated=True}"></TextBox>
                 <controls:SplitButton SelectionChanged="SearchButton_OnSelectionChanged" Click="SearchButton_OnClick" Name="SearchButton" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" Grid.Column="1" Margin="0,0,5,0"/>
                 <Button Name="AdvancedButton" Click="AdvancedButton_OnClick" Grid.Column="2">Advanced..</Button>
                 <controls:ProgressRing Name="SearchProgressRing" Width="10" Height="10" Grid.Column="3" IsActive="False" />

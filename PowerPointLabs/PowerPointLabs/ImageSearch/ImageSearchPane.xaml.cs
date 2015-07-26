@@ -11,12 +11,13 @@ using System.Windows.Forms;
 using System.Windows.Input;
 using MahApps.Metro.Controls.Dialogs;
 using PowerPointLabs.AutoUpdate;
-using PowerPointLabs.ImageSearch.Model;
+using PowerPointLabs.ImageSearch.Domain;
 using PowerPointLabs.ImageSearch.Presentation;
 using PowerPointLabs.ImageSearch.SearchEngine;
 using PowerPointLabs.ImageSearch.SearchEngine.VO;
 using PowerPointLabs.ImageSearch.Util;
 using PowerPointLabs.Models;
+using PowerPointLabs.WPF.Observable;
 using ButtonBase = System.Windows.Controls.Primitives.ButtonBase;
 using Clipboard = System.Windows.Clipboard;
 using Image = System.Drawing.Image;
@@ -48,7 +49,7 @@ namespace PowerPointLabs.ImageSearch
         public ObservableCollection<string> MultiplePurposeButtons { get; set; }
 
         // UI model - search textbox watermark
-        public WatermarkString SearchTextboxWatermark { get; set; }
+        public ObservableString SearchTextboxWatermark { get; set; }
 
         // a timer used to download full-size image at background
         public Timer PreviewTimer { get; set; }
@@ -111,8 +112,7 @@ namespace PowerPointLabs.ImageSearch
 
         private void InitSearchTextbox()
         {
-            SearchTextboxWatermark = new WatermarkString();
-            SearchTextboxWatermark.Watermark = "Type here to search for images";
+            SearchTextboxWatermark = new ObservableString {Text = "Type here to search for images"};
             SearchTextBox.DataContext = SearchTextboxWatermark;
         }
 
@@ -813,18 +813,18 @@ namespace PowerPointLabs.ImageSearch
                 // TODO remove those magic
                 case 0: // search
                     SearchTextBox.IsEnabled = true;
-                    SearchTextboxWatermark.Watermark = "Type here to search for images";
+                    SearchTextboxWatermark.Text = "Type here to search for images";
                     SearchInstructions.Text = "No result. Type the keywords in the textbox above to search for images.";
                     break;
                 case 1: // download
                     SearchTextBox.IsEnabled = true;
-                    SearchTextboxWatermark.Watermark = "Paste the image link here";
+                    SearchTextboxWatermark.Text = "Paste the image link here";
                     SearchInstructions.Text = "No image. Paste the image link in the textbox above to download images.";
                     CopyContentToObservableList(_downloadedImages, SearchList);
                     break;
                 case 2: // from file
                     SearchTextBox.IsEnabled = false;
-                    SearchTextboxWatermark.Watermark = "";
+                    SearchTextboxWatermark.Text = "";
                     SearchInstructions.Text = "No image. Click the 'From File' button above to load local images.";
                     CopyContentToObservableList(_fromFileImages, SearchList);
                     break;

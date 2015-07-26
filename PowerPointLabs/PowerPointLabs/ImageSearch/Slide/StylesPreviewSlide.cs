@@ -5,7 +5,7 @@ using System.Text.RegularExpressions;
 using ImageProcessor;
 using ImageProcessor.Imaging.Filters;
 using Microsoft.Office.Core;
-using PowerPointLabs.ImageSearch.Model;
+using PowerPointLabs.ImageSearch.Domain;
 using PowerPointLabs.ImageSearch.Util;
 using PowerPointLabs.Models;
 using Graphics = PowerPointLabs.Utils.Graphics;

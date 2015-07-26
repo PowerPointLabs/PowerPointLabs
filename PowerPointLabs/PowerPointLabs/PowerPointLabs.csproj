@@ -286,11 +286,11 @@
     <Compile Include="ImageSearch\ImageSearchPane.xaml.cs">
       <DependentUpon>ImageSearchPane.xaml</DependentUpon>
     </Compile>
-    <Compile Include="ImageSearch\Model\ImageItem.cs" />
-    <Compile Include="ImageSearch\Model\Notifiable.cs" />
-    <Compile Include="ImageSearch\Model\SearchOptions.cs" />
-    <Compile Include="ImageSearch\Model\StyleOptions.cs" />
-    <Compile Include="ImageSearch\Model\WatermarkString.cs" />
+    <Compile Include="Utils\Assumption.cs" />
+    <Compile Include="ImageSearch\Domain\Exceptions\ImagesLabException.cs" />
+    <Compile Include="ImageSearch\Domain\ImageItem.cs" />
+    <Compile Include="ImageSearch\Domain\SearchOptions.cs" />
+    <Compile Include="ImageSearch\Domain\StyleOptions.cs" />
     <Compile Include="ImageSearch\Presentation\StylesPreviewPresentation.cs" />
     <Compile Include="ImageSearch\SearchEngine\GoogleEngine.cs" />
     <Compile Include="ImageSearch\SearchOptionsPane.xaml.cs">
@@ -326,10 +326,12 @@
     <Compile Include="Settings.cs" />
     <Compile Include="ShapesLabConfig.cs" />
     <Compile Include="TextCollection.cs" />
+    <Compile Include="Utils\BoolUtil.cs" />
     <Compile Include="Utils\Common.cs" />
     <Compile Include="Utils\Comparers.cs" />
     <Compile Include="Utils\FileDir.cs" />
     <Compile Include="Utils\Graphics.cs" />
+    <Compile Include="Utils\StringUtil.cs" />
     <Compile Include="Views\CustomPaintTextBox.cs" />
     <Compile Include="Views\ErrorDialogWrapper.cs" />
     <Compile Include="FitToSlide.cs" />
@@ -454,6 +456,10 @@
     <Compile Include="Views\LoadingDialog.Designer.cs">
       <DependentUpon>LoadingDialog.cs</DependentUpon>
     </Compile>
+    <Compile Include="WPF\Observable\Model.cs" />
+    <Compile Include="WPF\Observable\ObservableBoolean.cs" />
+    <Compile Include="WPF\Observable\ObservableInt.cs" />
+    <Compile Include="WPF\Observable\ObservableString.cs" />
     <Compile Include="XMLMisc\XMLParser.cs" />
     <Compile Include="ZipStorer.cs" />
     <Compile Include="ZoomToArea.cs" />

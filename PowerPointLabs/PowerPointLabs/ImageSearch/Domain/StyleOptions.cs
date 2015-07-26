@@ -1,12 +1,14 @@
 ﻿using System;
 using System.IO;
 using System.Xml.Serialization;
+using PowerPointLabs.WPF.Observable;
 
-namespace PowerPointLabs.ImageSearch.Model
+namespace PowerPointLabs.ImageSearch.Domain
 {
     [Serializable]
-    public class StyleOptions : Notifiable
+    public class StyleOptions : Model
     {
+        # region UI related prop
         private bool _isUseOriginalTextFormat;
 
         public bool IsUseOriginalTextFormat
@@ -82,7 +84,9 @@ namespace PowerPointLabs.ImageSearch.Model
                 OnPropertyChanged("Transparency");
             }
         }
+        # endregion
 
+        # region Logic
         public void Init()
         {
             IsUseOriginalTextFormat = false;
@@ -111,6 +115,7 @@ namespace PowerPointLabs.ImageSearch.Model
                     return "Segoe UI";
             }
         }
+        # endregion
 
         # region IO serialization
         /// Taken from http://stackoverflow.com/a/14663848
@@ -148,17 +153,24 @@ namespace PowerPointLabs.ImageSearch.Model
                 using (var stream = File.OpenRead(filename))
                 {
                     var serializer = new XmlSerializer(typeof (StyleOptions));
-                    return serializer.Deserialize(stream) as StyleOptions;
+                    var opt = serializer.Deserialize(stream) as StyleOptions;
+                    return opt ?? CreateDefault();
                 }
             }
             catch (Exception e)
             {
                 PowerPointLabsGlobals.Log("Failed to load Images Lab Style Options: " + e.StackTrace, "Error");
-                var opt = new StyleOptions();
-                opt.Init();
-                return opt;
+                return CreateDefault();
             }
         }
+
+        private static StyleOptions CreateDefault()
+        {
+            var opt = new StyleOptions();
+            opt.Init();
+            return opt;
+        }
+
         # endregion
     }
 }

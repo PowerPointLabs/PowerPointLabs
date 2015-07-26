@@ -2,7 +2,7 @@
 using Microsoft.Office.Interop.PowerPoint;
 using PowerPointLabs.ImageSearch.Util;
 using PowerPointLabs.Models;
-using PowerPointLabs.ImageSearch.Model;
+using PowerPointLabs.ImageSearch.Domain;
 using PowerPointLabs.ImageSearch.Slide;
 
 namespace PowerPointLabs.ImageSearch.Presentation
