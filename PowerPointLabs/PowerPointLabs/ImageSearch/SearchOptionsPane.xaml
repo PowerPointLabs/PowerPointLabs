@@ -5,7 +5,7 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:controls="clr-namespace:MahApps.Metro.Controls;assembly=MahApps.Metro"
              mc:Ignorable="d" 
-             d:DesignHeight="350" d:DesignWidth="400">
+             d:DesignHeight="385" d:DesignWidth="400">
     <UserControl.Resources>
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
@@ -23,6 +23,7 @@
             <ColumnDefinition Width="200"/>
         </Grid.ColumnDefinitions>
         <Grid.RowDefinitions>
+            <RowDefinition Height="35"/>
             <RowDefinition Height="35"/>
             <RowDefinition Height="35"/>
             <RowDefinition Height="35"/>
@@ -79,7 +80,15 @@
             <ComboBoxItem>xlarge</ComboBoxItem>
             <ComboBoxItem>xxlarge</ComboBoxItem>
         </ComboBox>
-        <TextBlock HorizontalAlignment="Left" VerticalAlignment="Center" Grid.ColumnSpan="2" Grid.Column="0" Grid.Row="9">           
+        <Label Content="File Type" Foreground="#FFFFFF" FontSize="15" HorizontalAlignment="Left" VerticalAlignment="Center" Grid.Column="0" Grid.Row="8"/>
+        <ComboBox SelectedIndex="{Binding Path=FileType, Mode=TwoWay, NotifyOnSourceUpdated=True}" HorizontalAlignment="Left" VerticalAlignment="Center" Grid.Column="1" Grid.Row="8">
+            <ComboBoxItem>any</ComboBoxItem>
+            <ComboBoxItem>png</ComboBoxItem>
+            <ComboBoxItem>jpg</ComboBoxItem>
+            <ComboBoxItem>bmp</ComboBoxItem>
+            <ComboBoxItem>gif</ComboBoxItem>
+        </ComboBox>
+        <TextBlock HorizontalAlignment="Left" VerticalAlignment="Center" Grid.ColumnSpan="2" Grid.Column="0" Grid.Row="10">           
             <Hyperlink Foreground="#999999" NavigateUri="http://www.comp.nus.edu.sg/~pptlabs/docs.html" RequestNavigate="Hyperlink_OnRequestNavigate">
                 How to apply for Search Engine ID and API Key?
             </Hyperlink>

@@ -15,14 +15,14 @@
              BorderThickness="1"
              BorderBrush="#D74926"
              Closing="ImageSearchPane_OnClosing"
-             IsKeyboardFocusWithinChanged="ImageSearchPane_OnIsKeyboardFocusWithinChanged">
+             Activated="ImageSearchPane_OnActivated">
     <controls:MetroWindow.Resources>
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
                 <ResourceDictionary Source="pack://application:,,,/MahApps.Metro;component/Styles/Controls.xaml" />
                 <ResourceDictionary Source="pack://application:,,,/MahApps.Metro;component/Styles/Fonts.xaml" />
                 <ResourceDictionary Source="pack://application:,,,/MahApps.Metro;component/Styles/Colors.xaml" />
-                <ResourceDictionary Source="pack://application:,,,/MahApps.Metro;component/Styles/Accents/orange.xaml" />
+                <ResourceDictionary Source="pack://application:,,,/MahApps.Metro;component/Styles/Accents/red.xaml" />
                 <ResourceDictionary Source="pack://application:,,,/MahApps.Metro;component/Styles/Accents/BaseLight.xaml" />
             </ResourceDictionary.MergedDictionaries>
         </ResourceDictionary>
@@ -43,7 +43,7 @@
             <ColumnDefinition Width="auto"></ColumnDefinition>
             <ColumnDefinition Width="*"></ColumnDefinition>
         </Grid.ColumnDefinitions>
-        <GridSplitter Name="Splitter" Margin="2,0,0,0" DragDelta="Splitter_OnDragDelta" Grid.Column="1" ResizeDirection="Columns" Width="3" Height="Auto" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" />
+        <GridSplitter Name="Splitter" DragDelta="Splitter_OnDragDelta" Grid.Column="1" ResizeDirection="Columns" Width="3" Height="Auto" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" />
         <Grid Name="StylesPreviewGrid" Margin="10,0,0,0" Grid.Column="0">
             <Grid.RowDefinitions>
                 <RowDefinition Height="5" />
@@ -60,12 +60,13 @@
                     <ColumnDefinition Width="*"></ColumnDefinition>
                 </Grid.ColumnDefinitions>
                 <Label Name="PreviewLabel" Grid.Column="1" Margin="0,0,5,0" FontSize="15">Preview</Label>
-                <Button IsEnabled="False" Name="PreviewInsert" Click="PreviewInsert_OnClick" Grid.Column="2" Margin="0,0,5,0">Apply</Button>
+                <Button IsEnabled="False" Name="PreviewInsert" Click="PreviewApply_OnClick" Grid.Column="2" Margin="0,0,5,0">Apply</Button>
                 <Button Name="StyleOptionsButton" Grid.Column="3" Margin="0,0,5,0" Click="StyleOptionsButton_OnClick">Options</Button>
                 <controls:ProgressRing Name="PreviewProgressRing" Width="10" Height="10" Grid.Column="4" IsActive="False" />
                 <controls:ToggleSwitch ToolTip="Expand/collapse preview region" OnLabel="" OffLabel="" IsCheckedChanged="PreviewDisplayToggleSwitch_OnIsCheckedChanged" Name="PreviewDisplayToggleSwitch" Grid.Column="5" Margin="0,-2,0,2" />
             </Grid>
-            <TextBlock Visibility="Hidden" Name="PreviewInstructions" TextWrapping="Wrap" HorizontalAlignment="Center" VerticalAlignment="Center" Foreground="#AAAAAA" FontSize="14" Grid.Row="2">Select a result to preview styles. Pick a style and click APPLY button to apply.</TextBlock>
+            <TextBlock Visibility="Visible" Name="PreviewInstructions" TextWrapping="Wrap" HorizontalAlignment="Center" VerticalAlignment="Center" Foreground="#AAAAAA" FontSize="14" Grid.Row="2">Select an image to preview styles. Pick a style and click APPLY button to apply.</TextBlock>
+            <TextBlock Visibility="Hidden" Name="PreviewInstructionsWhenNoSelectedSlide" TextWrapping="Wrap" HorizontalAlignment="Center" VerticalAlignment="Center" Foreground="#AAAAAA" FontSize="14" Grid.Row="2">Select a slide in the presentation to preview styles. Pick a style and click APPLY button to apply.</TextBlock>
             <ListBox TabIndex="2" Name="PreviewListBox" KeyUp="PreviewListBox_OnKeyUp" KeyDown="ListBox_OnKeyDown" IsSynchronizedWithCurrentItem="True" SelectionChanged="PreivewListBox_OnSelectionChanged" ItemsSource="{Binding Path=PreviewList, Mode=TwoWay}" Grid.Row="2">
                 <ListBox.Template>
                     <ControlTemplate TargetType="{x:Type ListBox}">
@@ -102,13 +103,13 @@
             <Grid Grid.Row="1" Margin="0,0,0,5">
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="180" />
-                    <ColumnDefinition Width="75" />
+                    <ColumnDefinition Width="100" />
                     <ColumnDefinition Width="75" />
                     <ColumnDefinition Width="40" />
                     <ColumnDefinition Width="*"></ColumnDefinition>
                 </Grid.ColumnDefinitions>
-                <TextBox TabIndex="0" Name="SearchTextBox" KeyDown="SearchTextBox_OnKeyDown" VerticalContentAlignment="Center" Grid.Column="0" Margin="0,0,5,0" controls:TextBoxHelper.Watermark="Type here to search for images"></TextBox>
-                <Button Name="SearchButton" Click="SearchButton_OnClick"  Grid.Column="1" Margin="0,0,5,0">Search</Button>
+                <TextBox TabIndex="0" Name="SearchTextBox" KeyDown="SearchTextBox_OnKeyDown" VerticalContentAlignment="Center" Grid.Column="0" Margin="0,0,5,0" controls:TextBoxHelper.Watermark="{Binding Path=Text, NotifyOnSourceUpdated=True}"></TextBox>
+                <controls:SplitButton SelectionChanged="SearchButton_OnSelectionChanged" Click="SearchButton_OnClick" Name="SearchButton" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" Grid.Column="1" Margin="0,0,5,0"/>
                 <Button Name="AdvancedButton" Click="AdvancedButton_OnClick" Grid.Column="2">Advanced..</Button>
                 <controls:ProgressRing Name="SearchProgressRing" Width="10" Height="10" Grid.Column="3" IsActive="False" />
             </Grid>

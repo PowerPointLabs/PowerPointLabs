@@ -8,18 +8,40 @@ namespace PowerPointLabs.ImageSearch.Util
     class TempPath
     {
         // resources & const
-        public static readonly string TempFolder = Path.GetTempPath() + "pptlabs_imagesLab"
+        public static string TempFolder = Path.GetTempPath() + "pptlabs_imagesLab"
                                                    + DateTime.Now.GetHashCode() + @"\";
+        public static readonly string BackupTempFolder = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments) + @"\"
+                + "pptlabs_imagesLab" + DateTime.Now.GetHashCode() + @"\";
 
         public static readonly string LoadingImgPath = TempFolder + "loading_" + DateTime.Now.GetHashCode();
         public static readonly string LoadMoreImgPath = TempFolder + "loadMore_" + DateTime.Now.GetHashCode();
 
-        /// <summary>
-        /// 
-        /// </summary>
         /// <returns>is successful</returns>
         public static bool InitTempFolder()
         {
+            return Init() || RetryInit();
+        }
+
+        private static bool Init()
+        {
+            if (!Directory.Exists(TempFolder))
+            {
+                try
+                {
+                    Directory.CreateDirectory(TempFolder);
+                    InitResources();
+                }
+                catch
+                {
+                    return false;
+                }
+            }
+            return true;
+        }
+
+        private static bool RetryInit()
+        {
+            TempFolder = BackupTempFolder;
             if (!Directory.Exists(TempFolder))
             {
                 try

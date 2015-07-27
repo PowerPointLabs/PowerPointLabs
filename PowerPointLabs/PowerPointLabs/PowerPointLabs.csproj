@@ -283,19 +283,30 @@
     <Compile Include="ConvertToPicture.cs" />
     <Compile Include="CropToShape.cs" />
     <Compile Include="DataSources\ShapesLabSettingsDataSource.cs" />
+    <Compile Include="ImageSearch\ImageSearchPane.xaml.Common.cs" />
+    <Compile Include="ImageSearch\Handler\Effect\EffectName.cs" />
+    <Compile Include="ImageSearch\Handler\Preview\PreviewInfo.cs" />
+    <Compile Include="ImageSearch\Handler\Effect\Tag.cs" />
+    <Compile Include="ImageSearch\ImageSearchPane.xaml.OnApplyStyle.cs" />
+    <Compile Include="ImageSearch\ImageSearchPane.xaml.OnBackgroundDownload.cs" />
     <Compile Include="ImageSearch\ImageSearchPane.xaml.cs">
       <DependentUpon>ImageSearchPane.xaml</DependentUpon>
     </Compile>
-    <Compile Include="ImageSearch\Model\ImageItem.cs" />
-    <Compile Include="ImageSearch\Model\Notifiable.cs" />
-    <Compile Include="ImageSearch\Model\SearchOptions.cs" />
-    <Compile Include="ImageSearch\Model\StyleOptions.cs" />
-    <Compile Include="ImageSearch\Presentation\StylesPreviewPresentation.cs" />
-    <Compile Include="ImageSearch\SearchEngine\GoogleEngine.cs" />
+    <Compile Include="ImageSearch\ImageSearchPane.xaml.OnPreview.cs" />
+    <Compile Include="ImageSearch\ImageSearchPane.xaml.OnLoadImages.cs" />
+    <Compile Include="ImageSearch\SearchEngine\GoogleEngine.Events.cs" />
+    <Compile Include="ImageSearch\Util\UrlUtil.cs" />
+    <Compile Include="Utils\Assumption.cs" />
+    <Compile Include="Utils\Exceptions\AssumptionFailedException.cs" />
+    <Compile Include="ImageSearch\Domain\ImageItem.cs" />
+    <Compile Include="ImageSearch\Domain\SearchOptions.cs" />
+    <Compile Include="ImageSearch\Domain\StyleOptions.cs" />
+    <Compile Include="ImageSearch\Handler\StylesHandler.cs" />
+    <Compile Include="ImageSearch\SearchEngine\GoogleEngine.Logic.cs" />
     <Compile Include="ImageSearch\SearchOptionsPane.xaml.cs">
       <DependentUpon>SearchOptionsPane.xaml</DependentUpon>
     </Compile>
-    <Compile Include="ImageSearch\Slide\StylesPreviewSlide.cs" />
+    <Compile Include="ImageSearch\Handler\EffectsHandler.cs" />
     <Compile Include="ImageSearch\StyleOptionsPane.xaml.cs">
       <DependentUpon>StyleOptionsPane.xaml</DependentUpon>
     </Compile>
@@ -325,10 +336,12 @@
     <Compile Include="Settings.cs" />
     <Compile Include="ShapesLabConfig.cs" />
     <Compile Include="TextCollection.cs" />
+    <Compile Include="Utils\BoolUtil.cs" />
     <Compile Include="Utils\Common.cs" />
     <Compile Include="Utils\Comparers.cs" />
     <Compile Include="Utils\FileDir.cs" />
     <Compile Include="Utils\Graphics.cs" />
+    <Compile Include="Utils\StringUtil.cs" />
     <Compile Include="Views\CustomPaintTextBox.cs" />
     <Compile Include="Views\ErrorDialogWrapper.cs" />
     <Compile Include="FitToSlide.cs" />
@@ -453,6 +466,10 @@
     <Compile Include="Views\LoadingDialog.Designer.cs">
       <DependentUpon>LoadingDialog.cs</DependentUpon>
     </Compile>
+    <Compile Include="WPF\Observable\Model.cs" />
+    <Compile Include="WPF\Observable\ObservableBoolean.cs" />
+    <Compile Include="WPF\Observable\ObservableInt.cs" />
+    <Compile Include="WPF\Observable\ObservableString.cs" />
     <Compile Include="XMLMisc\XMLParser.cs" />
     <Compile Include="ZipStorer.cs" />
     <Compile Include="ZoomToArea.cs" />

@@ -1,9 +1,8 @@
-﻿
-namespace PowerPointLabs.ImageSearch.Model
+﻿namespace PowerPointLabs.ImageSearch.Domain
 {
-    public class ImageItem : Notifiable
+    public class ImageItem : WPF.Observable.Model
     {
-        // to be shown in the UI
+        # region UI related prop
         private string _imageFile;
 
         public string ImageFile
@@ -30,28 +29,19 @@ namespace PowerPointLabs.ImageSearch.Model
                 OnPropertyChanged("Tooltip");
             }
         }
+        # endregion
 
+        # region other info
         // as cache
         public string BlurImageFile { get; set; }
-
-        // as cache
+        public string GrayscaleImageFile { get; set; }
+        public string FullSizeGrayscaleImageFile { get; set; }
         public string FullSizeImageFile { get; set; }
 
         // meta info
         public bool IsToDelete { get; set; }
-
         public string ContextLink { get; set; }
-
-        private string _fullSizeImageUri;
-
-        public string FullSizeImageUri
-        {
-            get { return _fullSizeImageUri; }
-            set
-            {
-                _fullSizeImageUri = value;
-                OnPropertyChanged("FullSizeImageUri");
-            }
-        }
+        public string FullSizeImageUri { get; set; }
+        # endregion
     }
 }

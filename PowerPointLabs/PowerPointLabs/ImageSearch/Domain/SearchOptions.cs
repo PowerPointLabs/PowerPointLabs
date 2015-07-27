@@ -2,12 +2,14 @@
 using System.IO;
 using System.Xml.Serialization;
 using PowerPointLabs.Utils;
+using PowerPointLabs.WPF.Observable;
 
-namespace PowerPointLabs.ImageSearch.Model
+namespace PowerPointLabs.ImageSearch.Domain
 {
     [Serializable]
-    public class SearchOptions : Notifiable
+    public class SearchOptions : Model
     {
+        # region UI related prop
         private string _searchEngineId;
 
         public string SearchEngineId
@@ -95,7 +97,24 @@ namespace PowerPointLabs.ImageSearch.Model
             }
         }
 
+        private int _fileType;
+
+        public int FileType
+        {
+            get
+            {
+                return _fileType;
+            }
+            set
+            {
+                _fileType = value;
+                OnPropertyChanged("FileType");
+            }
+        }
+        # endregion
+
         # region IO serialization
+
         /// Taken from http://stackoverflow.com/a/14663848
 
         /// <summary>
@@ -108,9 +127,8 @@ namespace PowerPointLabs.ImageSearch.Model
             {
                 using (var writer = new StreamWriter(filename))
                 {
+                    Encrypt();
                     var serializer = new XmlSerializer(GetType());
-                    SearchEngineId = Common.Base64Encode(SearchEngineId);
-                    ApiKey = Common.Base64Encode(ApiKey);
                     serializer.Serialize(writer, this);
                     writer.Flush();
                 }
@@ -136,13 +154,11 @@ namespace PowerPointLabs.ImageSearch.Model
                     var opt = serializer.Deserialize(stream) as SearchOptions;
                     if (opt != null)
                     {
-                        opt.SearchEngineId = Common.Base64Decode(opt.SearchEngineId);
-                        opt.ApiKey = Common.Base64Decode(opt.ApiKey);
+                        Decrypt(opt);
                     }
                     else
                     {
-                        opt = new SearchOptions();
-                        opt.Init();
+                        opt = CreateDefault();
                     }
                     return opt;
                 }
@@ -150,11 +166,32 @@ namespace PowerPointLabs.ImageSearch.Model
             catch (Exception e)
             {
                 PowerPointLabsGlobals.Log("Failed to load Images Lab Search Options: " + e.StackTrace, "Error");
-                var opt = new SearchOptions();
-                opt.Init();
-                return opt;
+                return CreateDefault();
             }
         }
+
+        private static SearchOptions CreateDefault()
+        {
+            var opt = new SearchOptions();
+            opt.Init();
+            return opt;
+        }
+
+        private void Encrypt()
+        {
+            SearchEngineId = Common.Base64Encode(SearchEngineId);
+            ApiKey = Common.Base64Encode(ApiKey);
+        }
+
+        private static void Decrypt(SearchOptions opt)
+        {
+            opt.SearchEngineId = Common.Base64Decode(opt.SearchEngineId);
+            opt.ApiKey = Common.Base64Decode(opt.ApiKey);
+        }
+
+        # endregion
+        
+        # region Logic
 
         private void Init()
         {
@@ -164,6 +201,7 @@ namespace PowerPointLabs.ImageSearch.Model
             DominantColor = 0;
             ImageType = 0;
             ImageSize = 2;
+            FileType = 0;
         }
 
         public string GetColorType()
@@ -255,6 +293,25 @@ namespace PowerPointLabs.ImageSearch.Model
             }
         }
 
-        # endregion
+        public string GetFileType()
+        {
+            switch (FileType)
+            {
+                case 0:
+                    return "none";
+                case 1:
+                    return "png";
+                case 2:
+                    return "jpg";
+                case 3:
+                    return "bmp";
+                case 4:
+                    return "gif";
+                default:
+                    return "none";
+            }
+        }
+
+        #endregion
     }
 }

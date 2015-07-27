@@ -1,10 +1,11 @@
-﻿using System;
-using System.Windows;
+﻿using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Forms;
 using System.Windows.Input;
 using System.Windows.Media;
-using PowerPointLabs.ImageSearch.Model;
+using PowerPointLabs.ImageSearch.Domain;
+using PowerPointLabs.ImageSearch.Util;
+using Color = System.Drawing.Color;
 
 namespace PowerPointLabs.ImageSearch
 {
@@ -30,41 +31,27 @@ namespace PowerPointLabs.ImageSearch
             };
             if (colorDialog.ShowDialog() != DialogResult.OK) return;
             
-            var hexString = GetHexValue(colorDialog.Color);
+            var hexString = StringUtil.GetHexValue(colorDialog.Color);
             var options = DataContext as StyleOptions;
-            if (options != null)
+            if (options == null) return;
+            
+            switch (panel.Name)
             {
-                switch (panel.Name)
-                {
-                    case "FontColorPanel":
-                        options.FontColor = hexString;
-                        break;
-                    case "OverlayColorPanel":
-                        options.OverlayColor = hexString;
-                        break;
-                }
+                case "FontColorPanel":
+                    options.FontColor = hexString;
+                    break;
+                case "OverlayColorPanel":
+                    options.OverlayColor = hexString;
+                    break;
             }
         }
 
-        public System.Drawing.Color GetColor(SolidColorBrush brush)
+        public Color GetColor(SolidColorBrush brush)
         {
-            return System.Drawing.Color.FromArgb(brush.Color.A, brush.Color.R, brush.Color.G, brush.Color.B);
+            return Color.FromArgb(brush.Color.A, brush.Color.R, brush.Color.G, brush.Color.B);
         }
 
-        public Color GetColor(System.Drawing.Color color)
-        {
-            return Color.FromArgb(color.A, color.R, color.G, color.B);
-        }
-
-        // TODO util
-        private string GetHexValue(System.Drawing.Color color)
-        {
-            byte[] rgbArray = { color.R, color.G, color.B };
-            var hex = BitConverter.ToString(rgbArray);
-            return "#" + hex.Replace("-", "");
-        }
-
-        private void ButtonBase_OnClick(object sender, RoutedEventArgs e)
+        private void ResetButton_OnClick(object sender, RoutedEventArgs e)
         {
             var options = DataContext as StyleOptions;
             if (options != null)

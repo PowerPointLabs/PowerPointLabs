@@ -43,6 +43,7 @@
             <ComboBoxItem>Segoe UI Light</ComboBoxItem>
             <ComboBoxItem>Calibri</ComboBoxItem>
             <ComboBoxItem>Calibri Light</ComboBoxItem>
+            <ComboBoxItem>Original Font</ComboBoxItem>
         </ComboBox>
         <Label Content="font size increase by" Foreground="#FFFFFF" FontSize="15" HorizontalAlignment="Left" VerticalAlignment="Center" Grid.Column="0" Grid.Row="3"/>
         <controls:NumericUpDown Value="{Binding Path=FontSizeIncrease, Mode=TwoWay, NotifyOnSourceUpdated=True}" Minimum="0" Maximum="20" Interval="1" HorizontalAlignment="Left" VerticalAlignment="Center" Grid.Column="1" Grid.Row="3" />
@@ -56,6 +57,6 @@
         <Slider Value="{Binding Path=Transparency, Mode=TwoWay, NotifyOnSourceUpdated=True}" Width="160" Minimum="1" Maximum="100" HorizontalAlignment="Left" VerticalAlignment="Center" Grid.Column="1" Grid.Row="7"></Slider>
         
         
-        <Button Click="ButtonBase_OnClick" Content="Reset" Width="50" Height="30" HorizontalAlignment="Left" VerticalAlignment="Center" Grid.Column="0" Grid.Row="9"></Button>
+        <Button Click="ResetButton_OnClick" Content="Reset" Width="50" Height="30" HorizontalAlignment="Left" VerticalAlignment="Center" Grid.Column="0" Grid.Row="9"></Button>
     </Grid>
 </UserControl>
