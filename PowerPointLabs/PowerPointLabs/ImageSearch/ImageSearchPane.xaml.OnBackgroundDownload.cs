@@ -38,7 +38,7 @@ namespace PowerPointLabs.ImageSearch
                         new Downloader()
                             .Get(source.FullSizeImageUri, fullsizeImageFile)
                             .After(()=> { HandleDownloadedFullSizeImage(source, fullsizeImageFile); })
-                            .OnError(WhenFailDownloadFullSizeImage())
+                            .OnError(WhenFailDownloadFullSizeImage)
                             .Start();
                     }
                     // it's downloading
@@ -51,16 +51,12 @@ namespace PowerPointLabs.ImageSearch
             };
         }
 
-        private Downloader.ErrorEventDelegate WhenFailDownloadFullSizeImage()
+        private void WhenFailDownloadFullSizeImage()
         {
-            return () =>
+            Dispatcher.BeginInvoke(new Action(() =>
             {
-                // in downloader thread
-                Dispatcher.BeginInvoke(new Action(() =>
-                {
-                    PreviewProgressRing.IsActive = false;
-                }));
-            };
+                PreviewProgressRing.IsActive = false;
+            }));
         }
     }
 }
