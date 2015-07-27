@@ -12,12 +12,9 @@ namespace PPExtraEventHelper
 {
     internal class PPKeyboard
     {
-        // An action that does nothing.
-        private static readonly Action EmptyAction = () => { };
-
         private static Dictionary<int, bool> Keypressed;
-        private static Dictionary<int, Action> KeyDownActions;
-        private static Dictionary<int, Action> KeyUpActions;
+        private static Dictionary<int, List<Func<bool>>> KeyDownActions;
+        private static Dictionary<int, List<Func<bool>>> KeyUpActions;
 
         private static Native.HookProc hookProcedure;
 
@@ -45,15 +42,15 @@ namespace PPExtraEventHelper
         private static void InitialiseDictionaries()
         {
             Keypressed = new Dictionary<int, bool>();
-            KeyDownActions = new Dictionary<int, Action>();
-            KeyUpActions = new Dictionary<int, Action>();
+            KeyDownActions = new Dictionary<int, List<Func<bool>>>();
+            KeyUpActions = new Dictionary<int, List<Func<bool>>>();
 
             foreach (var key in Enum.GetValues(typeof(Native.VirtualKey)))
             {
                 int keyIndex = (int)key;
                 Keypressed.Add(keyIndex, false);
-                KeyDownActions.Add(keyIndex, EmptyAction);
-                KeyUpActions.Add(keyIndex, EmptyAction);
+                KeyDownActions.Add(keyIndex, new List<Func<bool>>());
+                KeyUpActions.Add(keyIndex, new List<Func<bool>>());
             }
         }
 
@@ -69,15 +66,34 @@ namespace PPExtraEventHelper
         {
             return Native.UnhookWindowsHookEx(hookId);
         }
-        
+
         public static void AddKeydownAction(Native.VirtualKey key, Action action)
         {
-            KeyDownActions[(int) key] += action;
+            AddKeydownAction(key, ReturnFalse(action));
+        }
+
+        public static void AddKeydownAction(Native.VirtualKey key, Func<bool> action)
+        {
+            KeyDownActions[(int)key].Add(action);
         }
 
         public static void AddKeyupAction(Native.VirtualKey key, Action action)
         {
-            KeyUpActions[(int) key] += action;
+            AddKeyupAction(key, ReturnFalse(action));
+        }
+
+        public static void AddKeyupAction(Native.VirtualKey key, Func<bool> action)
+        {
+            KeyUpActions[(int)key].Add(action);
+        }
+
+        private static Func<bool> ReturnFalse(Action action)
+        {
+            return () =>
+            {
+                action();
+                return false;
+            };
         }
 
         //for Office 2010, its window structure is like MDIClient --> mdiClass --> paneClassDC (SlideView)
@@ -105,7 +121,8 @@ namespace PPExtraEventHelper
 
         private static int HookProcedureCallback(int nCode, IntPtr wParam, IntPtr lParam)
         {
-            if (nCode == 0)
+            bool blockInput = false;
+            if (nCode == 3)
             {
                 int keyIndex = wParam.ToInt32();
                 if (Keypressed.ContainsKey(keyIndex))
@@ -114,7 +131,11 @@ namespace PPExtraEventHelper
                     {
                         if (!Keypressed[keyIndex])
                         {
-                            KeyDownActions[keyIndex]();
+                            foreach (var action in KeyDownActions[keyIndex])
+                            {
+                                var block = action();
+                                if (block) blockInput = true;
+                            }
                             Keypressed[keyIndex] = true;
                         }
                     }
@@ -122,13 +143,20 @@ namespace PPExtraEventHelper
                     {
                         if (Keypressed[keyIndex])
                         {
-                            KeyUpActions[keyIndex]();
+                            foreach (var action in KeyUpActions[keyIndex])
+                            {
+                                var block = action();
+                                if (block) blockInput = true;
+                            }
                             Keypressed[keyIndex] = false;
                         }
                     }
                 }
             }
-            return Native.CallNextHookEx(0, nCode, wParam, lParam);
+            Debug.WriteLine(blockInput);
+
+            if (blockInput) return 1;
+            else return Native.CallNextHookEx(0, nCode, wParam, lParam);
         }
 
         /// <summary>

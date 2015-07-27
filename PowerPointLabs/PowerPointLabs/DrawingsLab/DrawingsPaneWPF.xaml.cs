@@ -76,11 +76,23 @@ namespace PowerPointLabs.DrawingsLab
             return () => { if (IsPanelOpen()) action(); };
         }
 
+        private Func<bool> BlockInput()
+        {
+            return IsPanelOpen;
+        }
+
         private void InitialiseHotkeys()
         {
             if (hotkeysInitialised) return;
             hotkeysInitialised = true;
-            
+
+            PPKeyboard.AddKeydownAction(Native.VirtualKey.VK_L, BlockInput());
+            PPKeyboard.AddKeydownAction(Native.VirtualKey.VK_H, BlockInput());
+            PPKeyboard.AddKeydownAction(Native.VirtualKey.VK_D, BlockInput());
+            PPKeyboard.AddKeydownAction(Native.VirtualKey.VK_F, BlockInput());
+            PPKeyboard.AddKeydownAction(Native.VirtualKey.VK_G, BlockInput());
+
+
             PPKeyboard.AddKeyupAction(Native.VirtualKey.VK_L, RunOnlyWhenOpen(DrawingsLabMain.SwitchToLineTool));
             PPKeyboard.AddKeyupAction(Native.VirtualKey.VK_H, RunOnlyWhenOpen(DrawingsLabMain.HideTool));
             PPKeyboard.AddKeyupAction(Native.VirtualKey.VK_D, RunOnlyWhenOpen(DrawingsLabMain.CloneTool));
