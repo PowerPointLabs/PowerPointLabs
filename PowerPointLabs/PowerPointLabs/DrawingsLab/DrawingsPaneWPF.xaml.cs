@@ -76,9 +76,11 @@ namespace PowerPointLabs.DrawingsLab
             return () => { if (IsPanelOpen()) action(); };
         }
 
-        private Func<bool> BlockInput()
+        // Block input when panel is open and user is not selecting text.
+        private bool BlockInput()
         {
-            return IsPanelOpen;
+            return IsPanelOpen() &&
+                   PowerPointCurrentPresentationInfo.CurrentSelection.Type != PpSelectionType.ppSelectionText;
         }
 
         private void InitialiseHotkeys()
@@ -86,12 +88,7 @@ namespace PowerPointLabs.DrawingsLab
             if (hotkeysInitialised) return;
             hotkeysInitialised = true;
 
-            PPKeyboard.AddKeydownAction(Native.VirtualKey.VK_L, BlockInput());
-            PPKeyboard.AddKeydownAction(Native.VirtualKey.VK_H, BlockInput());
-            PPKeyboard.AddKeydownAction(Native.VirtualKey.VK_D, BlockInput());
-            PPKeyboard.AddKeydownAction(Native.VirtualKey.VK_F, BlockInput());
-            PPKeyboard.AddKeydownAction(Native.VirtualKey.VK_G, BlockInput());
-
+            PPKeyboard.AddConditionToBlockTextInput(BlockInput);
 
             PPKeyboard.AddKeyupAction(Native.VirtualKey.VK_L, RunOnlyWhenOpen(DrawingsLabMain.SwitchToLineTool));
             PPKeyboard.AddKeyupAction(Native.VirtualKey.VK_H, RunOnlyWhenOpen(DrawingsLabMain.HideTool));

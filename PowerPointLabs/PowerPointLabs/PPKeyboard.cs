@@ -4,6 +4,7 @@ using System.Diagnostics;
 using System.Runtime.InteropServices;
 using System.Windows.Forms;
 using System.Drawing;
+using System.Linq;
 using PowerPointLabs;
 using PowerPoint = Microsoft.Office.Interop.PowerPoint;
 using System.Text;
@@ -87,6 +88,14 @@ namespace PPExtraEventHelper
             KeyUpActions[(int)key].Add(action);
         }
 
+        public static void AddConditionToBlockTextInput(Func<bool> condition)
+        {
+            Enum.GetValues(typeof (Native.VirtualKey)).Cast<Native.VirtualKey>()
+                                                      .Where(Native.IsAlphanumericKey)
+                                                      .ToList()
+                                                      .ForEach(key => AddKeydownAction(key, condition));
+        }
+
         private static Func<bool> ReturnFalse(Action action)
         {
             return () =>
@@ -151,6 +160,10 @@ namespace PPExtraEventHelper
                             Keypressed[keyIndex] = false;
                         }
                     }
+                }
+                else
+                {
+                    Debug.WriteLine(keyIndex);
                 }
             }
             Debug.WriteLine(blockInput);

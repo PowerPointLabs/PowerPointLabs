@@ -233,6 +233,22 @@ namespace PPExtraEventHelper
             VK_X = 0x58,
             VK_Y = 0x59,
             VK_Z = 0x5a,
+            VK_0 = 0x30,
+            VK_1 = 0x31,
+            VK_2 = 0x32,
+            VK_3 = 0x33,
+            VK_4 = 0x34,
+            VK_5 = 0x35,
+            VK_6 = 0x36,
+            VK_7 = 0x37,
+            VK_8 = 0x38,
+            VK_9 = 0x39,
+        }
+
+        internal static bool IsAlphanumericKey(VirtualKey key)
+        {
+            return (VirtualKey.VK_0 <= key && key <= VirtualKey.VK_9) ||
+                   (VirtualKey.VK_A <= key && key <= VirtualKey.VK_Z);
         }
 
         internal enum Event
