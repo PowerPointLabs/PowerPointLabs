@@ -68,15 +68,26 @@ namespace PowerPointLabs.ImageSearch
                     return;
                 }
 
-                var fromFileItem = new ImageItem
+                try
                 {
-                    ImageFile = openFileDialog.FileName,
-                    FullSizeImageFile = openFileDialog.FileName,
-                    FullSizeImageUri = openFileDialog.FileName,
-                    ContextLink = openFileDialog.FileName
-                };
-                SearchList.Add(fromFileItem);
-                _fromFileImages.Add(fromFileItem);
+                    var imgInput = Image.FromFile(openFileDialog.FileName);
+                    Graphics.FromImage(imgInput);
+                    // so this is an image
+                    var fromFileItem = new ImageItem
+                    {
+                        ImageFile = openFileDialog.FileName,
+                        FullSizeImageFile = openFileDialog.FileName,
+                        FullSizeImageUri = openFileDialog.FileName,
+                        ContextLink = openFileDialog.FileName
+                    };
+                    SearchList.Add(fromFileItem);
+                    _fromFileImages.Add(fromFileItem);
+                }
+                catch
+                {
+                    // not an image or image is corrupted
+                    ShowErrorMessageBox(TextCollection.ImagesLabText.ErrorImageCorrupted);
+                }
             }));
         }
 
@@ -89,15 +100,18 @@ namespace PowerPointLabs.ImageSearch
                 {
                     return;
                 }
+                if (!UrlUtil.IsUrlValid(downloadLink))
+                {
+                    ShowErrorMessageBox(TextCollection.ImagesLabText.ErrorUrlLinkIncorrect);
+                    return;
+                }
 
-                // TODO parse downloadLink.. 
-                // maybe a link from google image?
-                // maybe without http://
                 var item = new ImageItem
                 {
                     ImageFile = TempPath.LoadingImgPath,
                     ContextLink = downloadLink
                 };
+                UrlUtil.GetMetaInfo(ref downloadLink, item);
                 SearchList.Add(item);
                 SearchProgressRing.IsActive = true;
 
@@ -193,6 +207,7 @@ namespace PowerPointLabs.ImageSearch
                 SearchProgressRing.IsActive = false;
                 SearchList.Remove(item);
             }));
+            ShowErrorMessageBox(TextCollection.ImagesLabText.ErrorImageCorrupted);
         }
 
         private void HandleDownloadedPicture(ImageItem item, string thumbnailPath)

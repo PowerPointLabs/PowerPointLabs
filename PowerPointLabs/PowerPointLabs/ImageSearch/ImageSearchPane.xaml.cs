@@ -360,6 +360,7 @@ namespace PowerPointLabs.ImageSearch
                     SearchTextBox.IsEnabled = true;
                     SearchTextboxWatermark.Text = TextCollection.ImagesLabText.TextBoxWatermarkSearch;
                     SearchInstructions.Text = TextCollection.ImagesLabText.InstructionForSearch;
+                    FocusSearchTextBox();
                     break;
                 case 1: // download
                     SearchTextBox.IsEnabled = true;

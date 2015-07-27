@@ -315,6 +315,10 @@
                 "Failed to insert style. Please check your network, or the image source is unavailable.";
             public const string ErrorNoEngineIdOrApiKey =
                 "Please fill in Search Engine Id and API Key by clicking ADVANCED.. button.";
+            public const string ErrorImageCorrupted =
+                "Failed to load image. The image file is corrupted.";
+            public const string ErrorUrlLinkIncorrect =
+                "The download link is not in the correct format. Did the link miss out 'http://'?";
 
             public const string MultiPurposeButtonNameSearch = "Search";
             public const string MultiPurposeButtonNameDownload = "Download";
