@@ -101,6 +101,9 @@ namespace PPExtraEventHelper
         internal static extern byte VkKeyScan(char key);
 
         [DllImport("user32.dll")]
+        internal static extern short GetKeyState(VirtualKey nVirtKey);
+
+        [DllImport("user32.dll")]
         internal static extern IntPtr SetWinEventHook(uint eventMin, uint eventMax, IntPtr
            hmodWinEventProc, WinEventDelegate lpfnWinEventProc, uint idProcess,
            uint idThread, uint dwFlags);
@@ -205,6 +208,12 @@ namespace PPExtraEventHelper
 
         internal enum VirtualKey
         {
+            VK_LSHIFT = 0xA0,
+            VK_RSHIFT = 0xA1,
+            VK_LCONTROL = 0xA2,
+            VK_RCONTROL = 0xA3,
+            VK_LMENU = 0xA4,
+            VK_RMENU = 0xA5,
             VK_RETURN = 0x0D,
           	VK_ESCAPE =	0x1B,
             VK_A = 0x41,
