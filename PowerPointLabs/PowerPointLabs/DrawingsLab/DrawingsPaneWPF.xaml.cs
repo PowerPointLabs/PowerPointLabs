@@ -71,16 +71,16 @@ namespace PowerPointLabs.DrawingsLab
             return drawingsPane.Visible;
         }
 
-        private Action RunOnlyWhenOpen(Action action)
+        private bool IsReadingHotkeys()
         {
-            return () => { if (IsPanelOpen()) action(); };
-        }
-
-        // Block input when panel is open and user is not selecting text.
-        private bool BlockInput()
-        {
+            // Is reading hotkeys when panel is open and user is not selecting text.
             return IsPanelOpen() &&
                    PowerPointCurrentPresentationInfo.CurrentSelection.Type != PpSelectionType.ppSelectionText;
+        }
+
+        private Action RunOnlyWhenOpen(Action action)
+        {
+            return () => { if (IsReadingHotkeys()) action(); };
         }
 
         private void InitialiseHotkeys()
@@ -88,7 +88,26 @@ namespace PowerPointLabs.DrawingsLab
             if (hotkeysInitialised) return;
             hotkeysInitialised = true;
 
-            PPKeyboard.AddConditionToBlockTextInput(BlockInput);
+            PPKeyboard.AddConditionToBlockTextInput(IsReadingHotkeys);
+
+            var numericKeys = new[]
+            {
+                Native.VirtualKey.VK_0,
+                Native.VirtualKey.VK_1,
+                Native.VirtualKey.VK_2,
+                Native.VirtualKey.VK_3,
+                Native.VirtualKey.VK_4,
+                Native.VirtualKey.VK_5,
+                Native.VirtualKey.VK_6,
+                Native.VirtualKey.VK_7,
+                Native.VirtualKey.VK_8,
+                Native.VirtualKey.VK_9,
+            };
+            foreach (var key in numericKeys)
+            {
+                PPKeyboard.AddKeyupAction(key, RunOnlyWhenOpen(() => DrawingsLabMain.SelectControlGroup(key)));
+                PPKeyboard.AddKeyupAction(key, RunOnlyWhenOpen(() => DrawingsLabMain.SetControlGroup(key)), ctrl: true);
+            }
 
             PPKeyboard.AddKeyupAction(Native.VirtualKey.VK_L, RunOnlyWhenOpen(DrawingsLabMain.SwitchToLineTool));
             PPKeyboard.AddKeyupAction(Native.VirtualKey.VK_H, RunOnlyWhenOpen(DrawingsLabMain.HideTool));

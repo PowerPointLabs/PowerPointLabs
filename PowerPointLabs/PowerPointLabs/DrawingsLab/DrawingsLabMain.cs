@@ -17,6 +17,21 @@ namespace PowerPointLabs.DrawingsLab
 {
     internal class DrawingsLabMain
     {
+        private static Dictionary<Native.VirtualKey, ControlGroup> ControlGroups = new Dictionary<Native.VirtualKey, ControlGroup>();  
+
+        private struct ControlGroup
+        {
+            public readonly int SlideId;
+            public readonly HashSet<int> ShapeIds;
+
+            public ControlGroup(int slideId, HashSet<int> shapeIds)
+            {
+                SlideId = slideId;
+                ShapeIds = shapeIds;
+            }
+        }
+
+
         public static DrawingsLabDataSource DataSource
         {
             get { return DrawingsPaneWPF.dataSource; }
@@ -289,6 +304,44 @@ namespace PowerPointLabs.DrawingsLab
                     shape.Rotation = DataSource.SavedValueRotation;
                 }
             }
+        }
+
+        public static void SetControlGroup(Native.VirtualKey key)
+        {
+            if (!Native.IsNumberKey(key)) return;
+
+            var selection = Globals.ThisAddIn.Application.ActiveWindow.Selection;
+            if (selection.Type != PpSelectionType.ppSelectionShapes) return;
+
+            var shapes = new HashSet<int>(selection.ShapeRange.Cast<Shape>().Select(shape => shape.Id));
+            var slideId = PowerPointCurrentPresentationInfo.CurrentSlide.ID;
+
+            ControlGroups[key] = new ControlGroup(slideId, shapes);
+        }
+
+        public static void SelectControlGroup(Native.VirtualKey key)
+        {
+            if (!Native.IsNumberKey(key)) return;
+
+            var selection = Globals.ThisAddIn.Application.ActiveWindow.Selection;
+            if (selection.Type == PpSelectionType.ppSelectionSlides) return;
+
+            var currentSlide = PowerPointCurrentPresentationInfo.CurrentSlide;
+            if (!ControlGroups.ContainsKey(key)) return;
+
+            var controlGroup = ControlGroups[key];
+            var targetSlide = PowerPointPresentation.Current.Slides.FirstOrDefault(slide => slide.ID == controlGroup.SlideId);
+            if (targetSlide == null) return;
+
+
+            targetSlide.GetNativeSlide().Select();
+
+            Globals.ThisAddIn.Application.ActiveWindow.Selection.Unselect();
+            var shapeIds = controlGroup.ShapeIds;
+            currentSlide.Shapes.Cast<Shape>()
+                               .Where(shape => shapeIds.Contains(shape.Id))
+                               .ToList()
+                               .ForEach(shape => shape.Select(MsoTriState.msoFalse));
         }
 
         #endregion

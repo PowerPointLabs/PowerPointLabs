@@ -260,6 +260,11 @@ namespace PPExtraEventHelper
                    (VirtualKey.VK_A <= key && key <= VirtualKey.VK_Z);
         }
 
+        internal static bool IsNumberKey(VirtualKey key)
+        {
+            return (VirtualKey.VK_0 <= key && key <= VirtualKey.VK_9);
+        }
+
         internal enum Event
         {
             EVENT_SYSTEM_MENUEND = 0x5,
