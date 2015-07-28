@@ -156,7 +156,7 @@ namespace PPExtraEventHelper
         private static int HookProcedureCallback(int nCode, IntPtr wParam, IntPtr lParam)
         {
             bool blockInput = false;
-            if (nCode == 3)
+            if (nCode == 0)
             {
                 int keyIndex = wParam.ToInt32();
                 if (Keypressed.ContainsKey(keyIndex))
