@@ -13,9 +13,31 @@ namespace PPExtraEventHelper
 {
     internal class PPKeyboard
     {
-        private static Dictionary<int, bool> Keypressed;
+        private static Dictionary<int, KeyStatus> KeyStatuses;
         private static Dictionary<int, List<BindedAction>> KeyDownActions;
         private static Dictionary<int, List<BindedAction>> KeyUpActions;
+        private static bool IsDictionaryInitialised = false;
+
+        private class KeyStatus
+        {
+            public bool IsPressed { get; private set; }
+            public bool Ctrl { get; private set; }
+            public bool Alt { get; private set; }
+            public bool Shift { get; private set; }
+
+            public void Press()
+            {
+                IsPressed = true;
+                Ctrl = IsCtrlPressed();
+                Shift = IsShiftPressed();
+                Alt = IsAltPressed();
+            }
+
+            public void Release()
+            {
+                IsPressed = false;
+            }
+        }
 
         private struct BindedAction
         {
@@ -32,9 +54,9 @@ namespace PPExtraEventHelper
                 ExecuteAction = action;
             }
 
-            public bool RunConditionally()
+            public bool RunConditionally(KeyStatus keyStatus)
             {
-                if (Ctrl == IsCtrlPressed() && Shift == IsShiftPressed() && Alt == IsAltPressed())
+                if (Ctrl == keyStatus.Ctrl && Shift == keyStatus.Shift && Alt == keyStatus.Alt)
                 {
                     return ExecuteAction();
                 }
@@ -49,32 +71,34 @@ namespace PPExtraEventHelper
 
         public static void Init(PowerPoint.Application application)
         {
-            if (!Initialised)
-            {
-                Initialised = true;
-                InitialiseDictionaries();
+            if (Initialised) return;
+            Initialised = true;
 
-                application.WindowSelectionChange += (selection) =>
+            InitialiseDictionaries();
+
+            application.WindowSelectionChange += (selection) =>
+            {
+                if (!IsHooked())
                 {
-                    if (!IsHooked())
-                    {
-                        IntPtr PPHandle = Process.GetCurrentProcess().MainWindowHandle;
-                        CreateHook(PPHandle);
-                    }
-                };
-            }
+                    IntPtr PPHandle = Process.GetCurrentProcess().MainWindowHandle;
+                    CreateHook(PPHandle);
+                }
+            };
         }
 
         private static void InitialiseDictionaries()
         {
-            Keypressed = new Dictionary<int, bool>();
+            if (IsDictionaryInitialised) return;
+            IsDictionaryInitialised = true;
+
+            KeyStatuses = new Dictionary<int, KeyStatus>();
             KeyDownActions = new Dictionary<int, List<BindedAction>>();
             KeyUpActions = new Dictionary<int, List<BindedAction>>();
 
             foreach (var key in Enum.GetValues(typeof(Native.VirtualKey)))
             {
                 int keyIndex = (int)key;
-                Keypressed.Add(keyIndex, false);
+                KeyStatuses.Add(keyIndex, new KeyStatus());
                 KeyDownActions.Add(keyIndex, new List<BindedAction>());
                 KeyUpActions.Add(keyIndex, new List<BindedAction>());
             }
@@ -93,6 +117,7 @@ namespace PPExtraEventHelper
             return Native.UnhookWindowsHookEx(hookId);
         }
 
+        #region API
         public static void AddKeydownAction(Native.VirtualKey key, Action action, bool ctrl = false, bool alt = false, bool shift = false)
         {
             AddKeydownAction(key, ReturnFalse(action), ctrl, alt, shift);
@@ -120,6 +145,7 @@ namespace PPExtraEventHelper
                                                       .ToList()
                                                       .ForEach(key => AddKeydownAction(key, condition, ctrl, alt, shift));
         }
+        #endregion
 
         private static Func<bool> ReturnFalse(Action action)
         {
@@ -159,30 +185,31 @@ namespace PPExtraEventHelper
             if (nCode == 0)
             {
                 int keyIndex = wParam.ToInt32();
-                if (Keypressed.ContainsKey(keyIndex))
+                if (KeyStatuses.ContainsKey(keyIndex))
                 {
+                    var keyStatus = KeyStatuses[keyIndex];
                     if (IsKeydownCommand(lParam))
                     {
-                        if (!Keypressed[keyIndex])
+                        if (!keyStatus.IsPressed)
                         {
+                            keyStatus.Press();
                             foreach (var action in KeyDownActions[keyIndex])
                             {
-                                var block = action.RunConditionally();
+                                var block = action.RunConditionally(keyStatus);
                                 if (block) blockInput = true;
                             }
-                            Keypressed[keyIndex] = true;
                         }
                     }
                     else
                     {
-                        if (Keypressed[keyIndex])
+                        if (keyStatus.IsPressed)
                         {
                             foreach (var action in KeyUpActions[keyIndex])
                             {
-                                var block = action.RunConditionally();
+                                var block = action.RunConditionally(keyStatus);
                                 if (block) blockInput = true;
                             }
-                            Keypressed[keyIndex] = false;
+                            keyStatus.Release();
                         }
                     }
                 }
@@ -202,6 +229,7 @@ namespace PPExtraEventHelper
             return (lParam.ToInt64() & 0x80000000) == 0;
         }
 
+        #region Modifier Keys
         private static bool IsCtrlPressed()
         {
             return IsModifierPressed(Native.VirtualKey.VK_LCONTROL) || IsModifierPressed(Native.VirtualKey.VK_RCONTROL);
@@ -224,6 +252,7 @@ namespace PPExtraEventHelper
         {
             return (Native.GetKeyState(key) & 0x80000000) != 0;
         }
+        #endregion
 
         private static bool IsHooked()
         {
