@@ -1298,7 +1298,7 @@ namespace PowerPointLabs
         #endregion
 
         #region Double Click to Open Property Window
-        private const string ShortcutAltHO = "%ho";
+        private const string ShortcutAltHO = "%h%o";
 
         private const int CommandOpenBackgroundFormat = 0x8F;
 
