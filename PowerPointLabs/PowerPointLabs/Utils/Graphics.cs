@@ -286,8 +286,8 @@ namespace PowerPointLabs.Utils
         }
 
         /// <summary>
-        /// Moves shiftShape backward until it is behind destinationShape.
-        /// (does nothing if already behind)
+        /// Moves shiftShape forward until it is in front of destinationShape.
+        /// (does nothing if already in front)
         /// </summary>
         public static void MoveZUntilInFront(Shape shiftShape, Shape destinationShape)
         {
@@ -304,8 +304,8 @@ namespace PowerPointLabs.Utils
         }
 
         /// <summary>
-        /// Moves shiftShape backward until it is in front destinationShape.
-        /// (does nothing if already in front)
+        /// Moves shiftShape backward until it is behind destinationShape.
+        /// (does nothing if already behind)
         /// </summary>
         public static void MoveZUntilBehind(Shape shiftShape, Shape destinationShape)
         {
