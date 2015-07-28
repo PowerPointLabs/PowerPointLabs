@@ -344,6 +344,20 @@ namespace PowerPointLabs.DrawingsLab
                                .ForEach(shape => shape.Select(MsoTriState.msoFalse));
         }
 
+
+        public static void SelectAllOfType()
+        {
+            var selection = Globals.ThisAddIn.Application.ActiveWindow.Selection;
+            if (selection.Type != PpSelectionType.ppSelectionShapes) return;
+
+            var selectedShapeTypes = new HashSet<MsoAutoShapeType>(selection.ShapeRange.Cast<Shape>().Select(shape => shape.AutoShapeType));
+
+            PowerPointCurrentPresentationInfo.CurrentSlide.Shapes.Cast<Shape>()
+                                                                 .Where(shape => selectedShapeTypes.Contains(shape.AutoShapeType))
+                                                                 .ToList()
+                                                                 .ForEach(shape => shape.Select(MsoTriState.msoFalse));
+        }
+
         #endregion
 
         #region Convenience Functions

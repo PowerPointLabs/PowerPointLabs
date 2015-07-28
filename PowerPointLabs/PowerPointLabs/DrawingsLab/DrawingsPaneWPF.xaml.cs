@@ -109,6 +109,7 @@ namespace PowerPointLabs.DrawingsLab
                 PPKeyboard.AddKeyupAction(key, RunOnlyWhenOpen(() => DrawingsLabMain.SetControlGroup(key)), ctrl: true);
             }
 
+            PPKeyboard.AddKeyupAction(Native.VirtualKey.VK_Q, RunOnlyWhenOpen(DrawingsLabMain.SelectAllOfType));
             PPKeyboard.AddKeyupAction(Native.VirtualKey.VK_L, RunOnlyWhenOpen(DrawingsLabMain.SwitchToLineTool));
             PPKeyboard.AddKeyupAction(Native.VirtualKey.VK_H, RunOnlyWhenOpen(DrawingsLabMain.HideTool));
             PPKeyboard.AddKeyupAction(Native.VirtualKey.VK_D, RunOnlyWhenOpen(DrawingsLabMain.CloneTool));
@@ -120,6 +121,11 @@ namespace PowerPointLabs.DrawingsLab
         private void LineButton_Click(object sender, EventArgs e)
         {
             DrawingsLabMain.SwitchToLineTool();
+        }
+
+        private void SelectAllOfTypeButton_Click(object sender, EventArgs e)
+        {
+            DrawingsLabMain.SelectAllOfType();
         }
 
         private void HideButton_Click(object sender, EventArgs e)
