@@ -16,7 +16,10 @@ namespace PPExtraEventHelper
         private static Dictionary<int, KeyStatus> KeyStatuses;
         private static Dictionary<int, List<BindedAction>> KeyDownActions;
         private static Dictionary<int, List<BindedAction>> KeyUpActions;
-        private static bool IsDictionaryInitialised = false;
+        private static bool _isDictionaryInitialised = false;
+
+        private static IntPtr _currentSlideViewWindowHandle;
+
 
         private class KeyStatus
         {
@@ -88,8 +91,8 @@ namespace PPExtraEventHelper
 
         private static void InitialiseDictionaries()
         {
-            if (IsDictionaryInitialised) return;
-            IsDictionaryInitialised = true;
+            if (_isDictionaryInitialised) return;
+            _isDictionaryInitialised = true;
 
             KeyStatuses = new Dictionary<int, KeyStatus>();
             KeyDownActions = new Dictionary<int, List<BindedAction>>();
@@ -106,10 +109,10 @@ namespace PPExtraEventHelper
 
         public static void CreateHook(IntPtr handle)
         {
-            var slideViewWindowHandle = FindSlideViewWindowHandle(handle);
+            _currentSlideViewWindowHandle = FindSlideViewWindowHandle(handle);
             hookProcedure = HookProcedureCallback;
             hookId = Native.SetWindowsHookEx((int)Native.HookType.WH_KEYBOARD, hookProcedure, 0,
-                Native.GetWindowThreadProcessId(slideViewWindowHandle, 0));
+                Native.GetWindowThreadProcessId(_currentSlideViewWindowHandle, 0));
         }
 
         public static bool StopHook()
@@ -147,6 +150,11 @@ namespace PPExtraEventHelper
         }
         #endregion
 
+
+        /// <summary>
+        /// A wrapper function for an Action that returns nothing, to make it into a Func&lt;bool&gt; that returns false.
+        /// </summary>
+        // A wrapper function for an Action that returns nothing, to make it into a Func<bool> that returns false.
         private static Func<bool> ReturnFalse(Action action)
         {
             return () =>
@@ -179,8 +187,19 @@ namespace PPExtraEventHelper
             return slideViewWindowHandle;
         }
 
+        /// <summary>
+        /// Returns true iff the main slide view window (the area which contains the slide) is focused by the user.
+        /// </summary>
+        private static bool IsSlideViewWindowFocused()
+        {
+            return Native.GetFocus() == _currentSlideViewWindowHandle;
+        }
+
         private static int HookProcedureCallback(int nCode, IntPtr wParam, IntPtr lParam)
         {
+            //Only process inputs that are sent to the main slide view window.
+            if (!IsSlideViewWindowFocused()) return Native.CallNextHookEx(0, nCode, wParam, lParam);
+
             bool blockInput = false;
             if (nCode == 0)
             {

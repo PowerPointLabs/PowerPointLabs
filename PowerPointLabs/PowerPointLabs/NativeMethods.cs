@@ -32,6 +32,9 @@ namespace PPExtraEventHelper
         [DllImport("user32")]
         public static extern bool HideCaret(IntPtr hWnd);
 
+        [DllImport("user32.dll")]
+        public static extern IntPtr GetFocus();
+
         [DllImport("gdi32.dll", CallingConvention = CallingConvention.StdCall)]
         public static extern int GetPixel(
             System.IntPtr hdc,    // handle to DC
