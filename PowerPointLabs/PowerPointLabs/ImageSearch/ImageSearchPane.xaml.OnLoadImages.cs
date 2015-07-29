@@ -42,9 +42,6 @@ namespace PowerPointLabs.ImageSearch
         {
             Dispatcher.Invoke(new Action(() =>
             {
-                PreviewList.Clear();
-                PreviewProgressRing.IsActive = false;
-
                 SearchButton.IsEnabled = false;
                 loadMoreItem.ImageFile = TempPath.LoadingImgPath;
                 PrepareToSearch(GoogleEngine.NumOfItemsPerRequest - 1, isListClearNeeded: false);

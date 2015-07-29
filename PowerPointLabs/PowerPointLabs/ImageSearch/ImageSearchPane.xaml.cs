@@ -396,6 +396,19 @@ namespace PowerPointLabs.ImageSearch
             DoPreview();
         }
 
+        // intent: clicking 'load more' should not change selection
+        private void SearchListBox_OnPreviewMouseDown(object sender, MouseButtonEventArgs e)
+        {
+            var item = ItemsControl.ContainerFromElement((ItemsControl) sender, e.OriginalSource as DependencyObject) as ListBoxItem;
+            if (item == null || item.Content == null) return;
+            var imageItem = item.Content as ImageItem;
+            if (imageItem != null && imageItem.ImageFile == TempPath.LoadMoreImgPath)
+            {
+                DoSearchMore(imageItem);
+                e.Handled = true;
+            }
+        }
+
         # endregion
     }
 }
