@@ -224,6 +224,117 @@ namespace PowerPointLabs.DataSources
                 OnPropertyChanged("SavedIncludePositionBoth");
             }
         }
+
+        private int _formatFillColor = 0xC07000;
+
+        public int FormatFillColor
+        {
+            get
+            {
+                return _formatFillColor;
+            }
+            set
+            {
+                if (value == _formatFillColor) return;
+                
+                _formatFillColor = value;
+                OnPropertyChanged("FormatFillColor");
+            }
+        }
+
+        private int _formatLineColor = 0x000000;
+
+        public int FormatLineColor
+        {
+            get
+            {
+                return _formatLineColor;
+            }
+            set
+            {
+                if (value == _formatLineColor) return;
+
+                _formatLineColor = value;
+                OnPropertyChanged("FormatLineColor");
+            }
+        }
+
+        private float _formatLineWeight = 5;
+
+        public float FormatLineWeight
+        {
+            get { return _formatLineWeight; }
+            set
+            {
+                _formatLineWeight = value;
+                OnPropertyChanged("FormatLineWeight");
+            }
+        }
+
+        private bool formatIncludeFillColor = true;
+
+        public bool FormatIncludeFillColor
+        {
+            get { return formatIncludeFillColor; }
+            set
+            {
+                formatIncludeFillColor = value;
+                OnPropertyChanged("FormatIncludeFillColor");
+                OnPropertyChanged("FormatIncludeAll");
+            }
+        }
+
+        private bool formatIncludeLineColor = true;
+
+        public bool FormatIncludeLineColor
+        {
+            get { return formatIncludeLineColor; }
+            set
+            {
+                formatIncludeLineColor = value;
+                OnPropertyChanged("FormatIncludeLineColor");
+                OnPropertyChanged("FormatIncludeAll");
+            }
+        }
+
+        private bool formatIncludeLineWeight = true;
+
+        public bool FormatIncludeLineWeight
+        {
+            get { return formatIncludeLineWeight; }
+            set
+            {
+                formatIncludeLineWeight = value;
+                OnPropertyChanged("FormatIncludeLineWeight");
+                OnPropertyChanged("FormatIncludeAll");
+            }
+        }
+
+        public bool? FormatIncludeAll
+        {
+            get
+            {
+                // If not all equal, return null.
+                if (!(FormatIncludeFillColor == FormatIncludeLineColor &&
+                      FormatIncludeLineColor == FormatIncludeLineWeight)) return null;
+                return FormatIncludeFillColor;
+            }
+            set
+            {
+                if (value == null) return;
+                bool valueBool = (value == true);
+
+                formatIncludeFillColor = valueBool;
+                formatIncludeLineColor = valueBool;
+                formatIncludeLineWeight = valueBool;
+                OnPropertyChanged("FormatIncludeFillColor");
+                OnPropertyChanged("FormatIncludeLineColor");
+                OnPropertyChanged("FormatIncludeLineWeight");
+                OnPropertyChanged("FormatIncludeAll");
+            }
+        }
+
+
         # endregion
 
         private Horizontal _anchorHorizontal;

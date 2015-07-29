@@ -620,9 +620,21 @@ namespace PowerPointLabs.Utils
             return (argb.B << 16) | (argb.G << 8) | argb.R;
         }
 
+        public static int PackRgbInt(byte r, int g, int b)
+        {
+            return (b << 16) | (g << 8) | r;
+        }
+
         public static Color ConvertRgbToColor(int rgb)
         {
             return Color.FromArgb(rgb & 255, (rgb >> 8) & 255, (rgb >> 16) & 255);
+        }
+
+        public static void UnpackRgbInt(int rgb, out byte r, out byte g, out byte b)
+        {
+            r = (byte)(rgb & 255);
+            g = (byte)((rgb >> 8) & 255);
+            b = (byte)((rgb >> 16) & 255);
         }
         # endregion
         # endregion

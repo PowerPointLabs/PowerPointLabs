@@ -306,6 +306,76 @@ namespace PowerPointLabs.DrawingsLab
             }
         }
 
+
+        public static void RecordFormat()
+        {
+            var selection = PowerPointCurrentPresentationInfo.CurrentSelection;
+            if (selection.Type != PpSelectionType.ppSelectionShapes) return;
+
+            var shapes = selection.ShapeRange;
+            if (shapes.Count != 1)
+            {
+                Error("Please select a single shape");
+                return;
+            }
+            var shape = shapes[1];
+
+            DataSource.FormatFillColor = shape.Fill.ForeColor.RGB;
+            DataSource.FormatLineColor = shape.Line.ForeColor.RGB;
+            DataSource.FormatLineWeight = shape.Line.Visible == MsoTriState.msoTrue ? shape.Line.Weight : 0;
+        }
+
+        public static void ApplyFormat()
+        {
+            var selection = PowerPointCurrentPresentationInfo.CurrentSelection;
+            if (selection.Type != PpSelectionType.ppSelectionShapes) return;
+
+            foreach (var shape in selection.ShapeRange.Cast<Shape>())
+            {
+                if (DataSource.FormatIncludeFillColor)
+                {
+                    try
+                    {
+                        shape.Fill.ForeColor.RGB = DataSource.FormatFillColor;
+                    }
+                    catch (ArgumentException e)
+                    {
+                        // ArgumentException is thrown if the shape does not have this property.
+                    }
+                }
+                if (DataSource.FormatIncludeLineColor)
+                {
+                    try
+                    {
+                        shape.Line.ForeColor.RGB = DataSource.FormatLineColor;
+                    }
+                    catch (ArgumentException e)
+                    {
+                        // ArgumentException is thrown if the shape does not have this property.
+                    }
+                }
+                if (DataSource.FormatIncludeLineWeight)
+                {
+                    if (DataSource.FormatLineWeight <= 0)
+                    {
+                        shape.Line.Visible = MsoTriState.msoFalse;
+                    }
+                    else
+                    {
+                        shape.Line.Visible = MsoTriState.msoTrue;
+                        try
+                        {
+                            shape.Line.Weight = DataSource.FormatLineWeight;
+                        }
+                        catch (ArgumentException e)
+                        {
+                            // ArgumentException is thrown if the value is out of range.
+                        }
+                    }
+                }
+            }
+        }
+
         public static void SetControlGroup(Native.VirtualKey key)
         {
             if (!Native.IsNumberKey(key)) return;

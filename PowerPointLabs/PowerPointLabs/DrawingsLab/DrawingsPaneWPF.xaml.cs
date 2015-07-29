@@ -7,6 +7,7 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Data;
 using System.Windows.Documents;
+using System.Windows.Forms;
 using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
@@ -15,6 +16,7 @@ using Microsoft.Office.Core;
 using Microsoft.Office.Interop.PowerPoint;
 using PowerPointLabs.DataSources;
 using PowerPointLabs.Models;
+using PowerPointLabs.Utils;
 using PPExtraEventHelper;
 using Shape = System.Windows.Shapes.Shape;
 
@@ -173,6 +175,16 @@ namespace PowerPointLabs.DrawingsLab
             DrawingsLabMain.RecordDisplacement();
         }
 
+        private void ApplyFormatButton_Click(object sender, EventArgs e)
+        {
+            DrawingsLabMain.ApplyFormat();
+        }
+
+        private void RecordFormatButton_Click(object sender, EventArgs e)
+        {
+            DrawingsLabMain.RecordFormat();
+        }
+
         private void BringForwardButton_Click(object sender, EventArgs e)
         {
             DrawingsLabMain.BringForward();
@@ -201,6 +213,28 @@ namespace PowerPointLabs.DrawingsLab
         private void SendToBackButton_Click(object sender, EventArgs e)
         {
             DrawingsLabMain.SendToBack();
+        }
+
+        private void FillColor_Click(object sender, EventArgs e)
+        {
+            var colorDialog = new ColorDialog
+            {
+                Color = Graphics.ConvertRgbToColor(dataSource.FormatFillColor),
+                FullOpen = true
+            };
+            if (colorDialog.ShowDialog() == DialogResult.Cancel) return;
+            dataSource.FormatFillColor = Graphics.ConvertColorToRgb(colorDialog.Color);
+        }
+
+        private void LineColor_Click(object sender, EventArgs e)
+        {
+            var colorDialog = new ColorDialog
+            {
+                Color = Graphics.ConvertRgbToColor(dataSource.FormatLineColor),
+                FullOpen = true
+            };
+            if (colorDialog.ShowDialog() == DialogResult.Cancel) return;
+            dataSource.FormatLineColor = Graphics.ConvertColorToRgb(colorDialog.Color);
         }
     }
 }

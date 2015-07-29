@@ -14,6 +14,7 @@
         <dataSources:DrawingsLabDataSource x:Key="DrawingsLabData"/>
         <converters:FloatToStringConverter x:Key="FloatToStringConverter"/>
         <converters:EnumMatchToBooleanConverter x:Key="EnumMatchToBooleanConverter"/>
+        <converters:ColorToBackgroundConverter x:Key="ColorToBackgroundConverter"/>
     </UserControl.Resources>
     <Grid DataContext="{StaticResource DrawingsLabData}">
         <Grid.RowDefinitions>
@@ -28,7 +29,8 @@
             <RowDefinition Height="2*"/>
             <RowDefinition Height="2*"/>
             <RowDefinition Height="2*"/>
-            <RowDefinition Height="2*"/>
+            <RowDefinition Height="1*"/>
+            <RowDefinition Height="1*"/>
             <RowDefinition Height="2*"/>
             <RowDefinition Height="2*"/>
             <RowDefinition Height="2*"/>
@@ -51,12 +53,17 @@
         <Button Content="Clone" Grid.Row="3" Grid.Column="2" Click="CloneButton_Click"/>
         <Button Content="MultiClone Extend" Grid.Row="3" Grid.Column="3" Click="MultiCloneExtendButton_Click"/>
         <Button Content="MultiClone Between" Grid.Row="3" Grid.Column="4" Click="MultiCloneBetweenButton_Click"/>
+        
         <TextBox Grid.Row="4" Grid.Column="1" IsEnabled="{Binding IsChecked, ElementName=ShiftIncludeX}" Text="{Binding UpdateSourceTrigger=PropertyChanged, Source={StaticResource DrawingsLabData}, Path=ShiftValueX, Mode=TwoWay, Converter={StaticResource FloatToStringConverter}}"/>
         <TextBox Grid.Row="4" Grid.Column="2" IsEnabled="{Binding IsChecked, ElementName=ShiftIncludeY}" Text="{Binding UpdateSourceTrigger=PropertyChanged, Source={StaticResource DrawingsLabData}, Path=ShiftValueY, Mode=TwoWay, Converter={StaticResource FloatToStringConverter}}"/>
         <TextBox Grid.Row="4" Grid.Column="3" IsEnabled="{Binding IsChecked, ElementName=ShiftIncludeRotation}" Text="{Binding UpdateSourceTrigger=PropertyChanged, Source={StaticResource DrawingsLabData}, Path=ShiftValueRotation, Mode=TwoWay, Converter={StaticResource FloatToStringConverter}}"/>
         <TextBox Grid.Row="6" Grid.Column="1" IsEnabled="{Binding IsChecked, ElementName=SavedIncludeX}" Text="{Binding UpdateSourceTrigger=PropertyChanged, Source={StaticResource DrawingsLabData}, Path=SavedValueX, Mode=TwoWay, Converter={StaticResource FloatToStringConverter}}"/>
         <TextBox Grid.Row="6" Grid.Column="2" IsEnabled="{Binding IsChecked, ElementName=SavedIncludeY}" Text="{Binding UpdateSourceTrigger=PropertyChanged, Source={StaticResource DrawingsLabData}, Path=SavedValueY, Mode=TwoWay, Converter={StaticResource FloatToStringConverter}}"/>
         <TextBox Grid.Row="6" Grid.Column="3" IsEnabled="{Binding IsChecked, ElementName=SavedIncludeRotation}" Text="{Binding UpdateSourceTrigger=PropertyChanged, Source={StaticResource DrawingsLabData}, Path=SavedValueRotation, Mode=TwoWay, Converter={StaticResource FloatToStringConverter}}"/>
+
+        <Button Grid.Row="11" Grid.Column="1" IsEnabled="{Binding IsChecked, ElementName=FormatIncludeFillColor}" Background="{Binding UpdateSourceTrigger=PropertyChanged, Source={StaticResource DrawingsLabData}, Path=FormatFillColor, Mode=TwoWay, Converter={StaticResource ColorToBackgroundConverter}}" Click="FillColor_Click"/>
+        <Button Grid.Row="11" Grid.Column="2" IsEnabled="{Binding IsChecked, ElementName=FormatIncludeLineColor}" Background="{Binding UpdateSourceTrigger=PropertyChanged, Source={StaticResource DrawingsLabData}, Path=FormatLineColor, Mode=TwoWay, Converter={StaticResource ColorToBackgroundConverter}}" Click="LineColor_Click"/>
+        <TextBox Grid.Row="11" Grid.Column="3" IsEnabled="{Binding IsChecked, ElementName=FormatIncludeLineWeight}" Text="{Binding UpdateSourceTrigger=PropertyChanged, Source={StaticResource DrawingsLabData}, Path=FormatLineWeight, Mode=TwoWay, Converter={StaticResource FloatToStringConverter}}"/>
 
         <CheckBox Grid.Row="5" Grid.Column="0" IsChecked="{Binding UpdateSourceTrigger=PropertyChanged, Source={StaticResource DrawingsLabData}, Path=ShiftIncludePositionBoth, Mode=TwoWay}"/>
         <CheckBox x:Name="ShiftIncludeX" Grid.Row="5" Grid.Column="1" IsChecked="{Binding UpdateSourceTrigger=PropertyChanged, Source={StaticResource DrawingsLabData}, Path=ShiftIncludePositionX, Mode=TwoWay}"/>
@@ -66,11 +73,17 @@
         <CheckBox x:Name="SavedIncludeX" Grid.Row="7" Grid.Column="1" IsChecked="{Binding UpdateSourceTrigger=PropertyChanged, Source={StaticResource DrawingsLabData}, Path=SavedIncludePositionX, Mode=TwoWay}"/>
         <CheckBox x:Name="SavedIncludeY" Grid.Row="7" Grid.Column="2" IsChecked="{Binding UpdateSourceTrigger=PropertyChanged, Source={StaticResource DrawingsLabData}, Path=SavedIncludePositionY, Mode=TwoWay}"/>
         <CheckBox x:Name="SavedIncludeRotation" Grid.Row="7" Grid.Column="3" IsChecked="{Binding UpdateSourceTrigger=PropertyChanged, Source={StaticResource DrawingsLabData}, Path=SavedIncludeRotation, Mode=TwoWay}"/>
+        <CheckBox Grid.Row="12" Grid.Column="0" IsChecked="{Binding UpdateSourceTrigger=PropertyChanged, Source={StaticResource DrawingsLabData}, Path=FormatIncludeAll, Mode=TwoWay}"/>
+        <CheckBox x:Name="FormatIncludeFillColor" Grid.Row="12" Grid.Column="1" IsChecked="{Binding UpdateSourceTrigger=PropertyChanged, Source={StaticResource DrawingsLabData}, Path=FormatIncludeFillColor, Mode=TwoWay}"/>
+        <CheckBox x:Name="FormatIncludeLineColor" Grid.Row="12" Grid.Column="2" IsChecked="{Binding UpdateSourceTrigger=PropertyChanged, Source={StaticResource DrawingsLabData}, Path=FormatIncludeLineColor, Mode=TwoWay}"/>
+        <CheckBox x:Name="FormatIncludeLineWeight" Grid.Row="12" Grid.Column="3" IsChecked="{Binding UpdateSourceTrigger=PropertyChanged, Source={StaticResource DrawingsLabData}, Path=FormatIncludeLineWeight, Mode=TwoWay}"/>
 
         <Button Content="RecordDisplacement" Grid.Row="4" Grid.RowSpan="2" Grid.Column="4" Click="RecordDisplacementButton_Click"/>
         <Button Content="ApplyDisplacement" Grid.Row="4" Grid.RowSpan="2" Grid.Column="5" Click="ApplyDisplacementButton_Click"/>
         <Button Content="RecordPosition" Grid.Row="6" Grid.RowSpan="2" Grid.Column="4" Click="RecordPositionButton_Click"/>
         <Button Content="ApplyPosition" Grid.Row="6" Grid.RowSpan="2" Grid.Column="5" Click="ApplyPositionButton_Click"/>
+        <Button Content="RecordFormat" Grid.Row="11" Grid.RowSpan="2" Grid.Column="4" Click="RecordFormatButton_Click"/>
+        <Button Content="ApplyFormat" Grid.Row="11" Grid.RowSpan="2" Grid.Column="5" Click="ApplyFormatButton_Click"/>
 
         <RadioButton Content="" Grid.Row="8" Grid.Column="0" IsChecked="{Binding UpdateSourceTrigger=PropertyChanged, Source={StaticResource DrawingsLabData}, Path=Anchor, Mode=TwoWay, Converter={StaticResource EnumMatchToBooleanConverter}, ConverterParameter=TopLeft}"/>
         <RadioButton Content="" Grid.Row="8" Grid.Column="1" IsChecked="{Binding UpdateSourceTrigger=PropertyChanged, Source={StaticResource DrawingsLabData}, Path=Anchor, Mode=TwoWay, Converter={StaticResource EnumMatchToBooleanConverter}, ConverterParameter=TopCenter}"/>
@@ -82,12 +95,12 @@
         <RadioButton Content="" Grid.Row="10" Grid.Column="1" IsChecked="{Binding UpdateSourceTrigger=PropertyChanged, Source={StaticResource DrawingsLabData}, Path=Anchor, Mode=TwoWay, Converter={StaticResource EnumMatchToBooleanConverter}, ConverterParameter=BottomCenter}"/>
         <RadioButton Content="" Grid.Row="10" Grid.Column="2" IsChecked="{Binding UpdateSourceTrigger=PropertyChanged, Source={StaticResource DrawingsLabData}, Path=Anchor, Mode=TwoWay, Converter={StaticResource EnumMatchToBooleanConverter}, ConverterParameter=BottomRight}"/>
 
-        <Button Content="BringInFrontOfShape" Grid.Row="11" Grid.Column="2" Click="BringInFrontOfShapeButton_Click"/>
-        <Button Content="SendBehindShaoe" Grid.Row="11" Grid.Column="3" Click="SendBehindShapeButton_Click"/>
-        <Button Content="BringToFront" Grid.Row="12" Grid.Column="1" Click="BringToFrontButton_Click"/>
-        <Button Content="BringForward" Grid.Row="12" Grid.Column="2" Click="BringForwardButton_Click"/>
-        <Button Content="SendBackward" Grid.Row="12" Grid.Column="3" Click="SendBackwardButton_Click"/>
-        <Button Content="SendToBack" Grid.Row="12" Grid.Column="4" Click="SendToBackButton_Click"/>
+        <Button Content="BringInFrontOfShape" Grid.Row="13" Grid.Column="2" Click="BringInFrontOfShapeButton_Click"/>
+        <Button Content="SendBehindShape" Grid.Row="13" Grid.Column="3" Click="SendBehindShapeButton_Click"/>
+        <Button Content="BringToFront" Grid.Row="14" Grid.Column="1" Click="BringToFrontButton_Click"/>
+        <Button Content="BringForward" Grid.Row="14" Grid.Column="2" Click="BringForwardButton_Click"/>
+        <Button Content="SendBackward" Grid.Row="14" Grid.Column="3" Click="SendBackwardButton_Click"/>
+        <Button Content="SendToBack" Grid.Row="14" Grid.Column="4" Click="SendToBackButton_Click"/>
 
     </Grid>
 </UserControl>
