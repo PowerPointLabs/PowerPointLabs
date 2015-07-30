@@ -40,15 +40,20 @@ namespace PowerPointLabs.DrawingsLab
         #region API
         public static void SwitchToLineTool()
         {
-            // This should trigger the line tool.
-            // see https://github.com/PowerPointLabs/powerpointlabs/blob/master/PowerPointLabs/PowerPointLabs/ThisAddIn.cs#L1381
-            //TODO: Placeholder code. This just triggers the property window.
-            Native.SendMessage(
-                Process.GetCurrentProcess().MainWindowHandle,
-                (uint)Native.Message.WM_COMMAND,
-                new IntPtr(0x8F),
-                IntPtr.Zero
-                );
+            var commandBars = Globals.ThisAddIn.Application.CommandBars;
+            commandBars.ExecuteMso("ShapeStraightConnector");
+        }
+
+        public static void SwitchToRectangleTool()
+        {
+            var commandBars = Globals.ThisAddIn.Application.CommandBars;
+            commandBars.ExecuteMso("ShapeRectangle");
+        }
+
+        public static void SwitchToCircleTool()
+        {
+            var commandBars = Globals.ThisAddIn.Application.CommandBars;
+            commandBars.ExecuteMso("ShapeOval");
         }
 
         public static void HideTool()

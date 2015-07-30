@@ -111,8 +111,10 @@ namespace PowerPointLabs.DrawingsLab
                 PPKeyboard.AddKeyupAction(key, RunOnlyWhenOpen(() => DrawingsLabMain.SetControlGroup(key)), ctrl: true);
             }
 
-            PPKeyboard.AddKeyupAction(Native.VirtualKey.VK_Q, RunOnlyWhenOpen(DrawingsLabMain.SelectAllOfType));
-            PPKeyboard.AddKeyupAction(Native.VirtualKey.VK_L, RunOnlyWhenOpen(DrawingsLabMain.SwitchToLineTool));
+            PPKeyboard.AddKeyupAction(Native.VirtualKey.VK_Q, RunOnlyWhenOpen(DrawingsLabMain.SwitchToLineTool));
+            PPKeyboard.AddKeyupAction(Native.VirtualKey.VK_W, RunOnlyWhenOpen(DrawingsLabMain.SwitchToRectangleTool));
+            PPKeyboard.AddKeyupAction(Native.VirtualKey.VK_E, RunOnlyWhenOpen(DrawingsLabMain.SwitchToCircleTool));
+            PPKeyboard.AddKeyupAction(Native.VirtualKey.VK_A, RunOnlyWhenOpen(DrawingsLabMain.SelectAllOfType));
             PPKeyboard.AddKeyupAction(Native.VirtualKey.VK_H, RunOnlyWhenOpen(DrawingsLabMain.HideTool));
             PPKeyboard.AddKeyupAction(Native.VirtualKey.VK_D, RunOnlyWhenOpen(DrawingsLabMain.CloneTool));
             PPKeyboard.AddKeyupAction(Native.VirtualKey.VK_F, RunOnlyWhenOpen(DrawingsLabMain.MultiCloneExtendTool));
@@ -123,6 +125,16 @@ namespace PowerPointLabs.DrawingsLab
         private void LineButton_Click(object sender, EventArgs e)
         {
             DrawingsLabMain.SwitchToLineTool();
+        }
+
+        private void RectangleButton_Click(object sender, EventArgs e)
+        {
+            DrawingsLabMain.SwitchToRectangleTool();
+        }
+
+        private void CircleButton_Click(object sender, EventArgs e)
+        {
+            DrawingsLabMain.SwitchToCircleTool();
         }
 
         private void SelectAllOfTypeButton_Click(object sender, EventArgs e)
