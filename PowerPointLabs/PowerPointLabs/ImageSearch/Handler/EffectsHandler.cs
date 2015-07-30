@@ -87,18 +87,25 @@ namespace PowerPointLabs.ImageSearch.Handler
                 font.Fill.ForeColor.RGB = Graphics.ConvertColorToRgb(ColorTranslator.FromHtml(fontColor));
 
                 AddTag(shape, Tag.OriginalFontFamily, font.Name);
-                font.Name = StringUtil.IsEmpty(fontFamily) ? shape.Tags[Tag.OriginalFontFamily] : fontFamily;
+                if (StringUtil.IsEmpty(fontFamily))
+                {
+                    font.Name = shape.Tags[Tag.OriginalFontFamily];
+                    shape.Tags.Add(Tag.OriginalFontFamily, "");
+                }
+                else
+                {
+                    font.Name = fontFamily;
+                }
 
                 if (StringUtil.IsEmpty(shape.Tags[Tag.OriginalFontSize]))
                 {
                     shape.Tags.Add(Tag.OriginalFontSize, shape.TextEffect.FontSize.ToString(CultureInfo.InvariantCulture));
-                    shape.TextEffect.FontSize += fontSizeToIncrease;
                 }
                 else // applied before
                 {
                     shape.TextEffect.FontSize = float.Parse(shape.Tags[Tag.OriginalFontSize]);
-                    shape.TextEffect.FontSize += fontSizeToIncrease;
                 }
+                shape.TextEffect.FontSize += fontSizeToIncrease;
             }
         }
 
