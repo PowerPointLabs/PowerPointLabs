@@ -116,10 +116,12 @@ namespace PowerPointLabs.ImageSearch.Handler
                 if (StringUtil.IsNotEmpty(shape.Tags[Tag.OriginalFillVisible]))
                 {
                     shape.Fill.Visible = BoolUtil.ToMsoTriState(bool.Parse(shape.Tags[Tag.OriginalFillVisible]));
+                    shape.Tags.Add(Tag.OriginalFillVisible, "");
                 }
                 if (StringUtil.IsNotEmpty(shape.Tags[Tag.OriginalLineVisible]))
                 {
                     shape.Line.Visible = BoolUtil.ToMsoTriState(bool.Parse(shape.Tags[Tag.OriginalLineVisible]));
+                    shape.Tags.Add(Tag.OriginalLineVisible, "");
                 }
 
                 var font = shape.TextFrame2.TextRange.TrimText().Font;
@@ -128,14 +130,17 @@ namespace PowerPointLabs.ImageSearch.Handler
                 {
                     font.Fill.ForeColor.RGB
                         = Graphics.ConvertColorToRgb(ColorTranslator.FromHtml(shape.Tags[Tag.OriginalFontColor]));
+                    shape.Tags.Add(Tag.OriginalFontColor, "");
                 }
                 if (StringUtil.IsNotEmpty(shape.Tags[Tag.OriginalFontFamily]))
                 {
                     font.Name = shape.Tags[Tag.OriginalFontFamily];
+                    shape.Tags.Add(Tag.OriginalFontFamily, "");
                 }
                 if (StringUtil.IsNotEmpty(shape.Tags[Tag.OriginalFontSize]))
                 {
                     shape.TextEffect.FontSize = float.Parse(shape.Tags[Tag.OriginalFontSize]);
+                    shape.Tags.Add(Tag.OriginalFontSize, "");
                 }
             }
         }
