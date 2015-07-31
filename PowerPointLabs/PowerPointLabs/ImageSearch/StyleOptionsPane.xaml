@@ -5,7 +5,7 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:controls="clr-namespace:MahApps.Metro.Controls;assembly=MahApps.Metro"
              mc:Ignorable="d" 
-             d:DesignHeight="490" d:DesignWidth="400">
+             d:DesignHeight="595" d:DesignWidth="400">
     <UserControl.Resources>
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
@@ -23,6 +23,9 @@
             <ColumnDefinition Width="200"/>
         </Grid.ColumnDefinitions>
         <Grid.RowDefinitions>
+            <RowDefinition Height="35"/>
+            <RowDefinition Height="35"/>
+            <RowDefinition Height="35"/>
             <RowDefinition Height="35"/>
             <RowDefinition Height="35"/>
             <RowDefinition Height="35"/>
@@ -80,9 +83,22 @@
         <Label Content="transparency" Foreground="#FFFFFF" FontSize="15" HorizontalAlignment="Left" VerticalAlignment="Center" Grid.Column="0" Grid.Row="9"/>
         <Slider Value="{Binding Path=Transparency, Mode=TwoWay, NotifyOnSourceUpdated=True}" Width="160" Minimum="1" Maximum="100" HorizontalAlignment="Left" VerticalAlignment="Center" Grid.Column="1" Grid.Row="9"></Slider>
 
-        <Label Content="Special Effect Style" Foreground="#AAAAAA" FontSize="15" HorizontalAlignment="Left" VerticalAlignment="Center" Grid.Column="0" Grid.Row="10"/>
-        <Label Content="special effect" Foreground="#FFFFFF" FontSize="15" HorizontalAlignment="Left" VerticalAlignment="Center" Grid.Column="0" Grid.Row="11"/>
-        <ComboBox SelectedIndex="{Binding Path=SpecialEffect, Mode=TwoWay, NotifyOnSourceUpdated=True}" HorizontalAlignment="Left" VerticalAlignment="Center" Grid.Column="1" Grid.Row="11">
+        <Label Content="Banner Style" Foreground="#AAAAAA" FontSize="15" HorizontalAlignment="Left" VerticalAlignment="Center" Grid.Column="0" Grid.Row="10"/>
+        <Label Content="banner shape" Foreground="#FFFFFF" FontSize="15" HorizontalAlignment="Left" VerticalAlignment="Center" Grid.Column="0" Grid.Row="11"/>
+        <ComboBox SelectedIndex="{Binding Path=BannerShape, Mode=TwoWay, NotifyOnSourceUpdated=True}" HorizontalAlignment="Left" VerticalAlignment="Center" Grid.Column="1" Grid.Row="11">
+            <ComboBoxItem>Rectangle</ComboBoxItem>
+            <ComboBoxItem>Circle</ComboBoxItem>
+        </ComboBox>
+        <Label Content="banner direction" Foreground="#FFFFFF" FontSize="15" HorizontalAlignment="Left" VerticalAlignment="Center" Grid.Column="0" Grid.Row="12"/>
+        <ComboBox SelectedIndex="{Binding Path=BannerDirection, Mode=TwoWay, NotifyOnSourceUpdated=True}" HorizontalAlignment="Left" VerticalAlignment="Center" Grid.Column="1" Grid.Row="12">
+            <ComboBoxItem>Auto</ComboBoxItem>
+            <ComboBoxItem>Horizontal</ComboBoxItem>
+            <ComboBoxItem>Vertical</ComboBoxItem>
+        </ComboBox>
+        
+        <Label Content="Special Effect Style" Foreground="#AAAAAA" FontSize="15" HorizontalAlignment="Left" VerticalAlignment="Center" Grid.Column="0" Grid.Row="13"/>
+        <Label Content="special effect" Foreground="#FFFFFF" FontSize="15" HorizontalAlignment="Left" VerticalAlignment="Center" Grid.Column="0" Grid.Row="14"/>
+        <ComboBox SelectedIndex="{Binding Path=SpecialEffect, Mode=TwoWay, NotifyOnSourceUpdated=True}" HorizontalAlignment="Left" VerticalAlignment="Center" Grid.Column="1" Grid.Row="14">
             <ComboBoxItem>Grey Scale</ComboBoxItem>
             <ComboBoxItem>Black White</ComboBoxItem>
             <ComboBoxItem>Comic</ComboBoxItem>
@@ -95,6 +111,6 @@
             <ComboBoxItem>Sepia</ComboBoxItem>
         </ComboBox>
 
-        <Button Click="ResetButton_OnClick" Content="Reset" Width="50" Height="30" HorizontalAlignment="Left" VerticalAlignment="Center" Grid.Column="0" Grid.Row="13"></Button>
+        <Button Click="ResetButton_OnClick" Content="Reset" Width="50" Height="30" HorizontalAlignment="Left" VerticalAlignment="Center" Grid.Column="0" Grid.Row="16"></Button>
     </Grid>
 </UserControl>

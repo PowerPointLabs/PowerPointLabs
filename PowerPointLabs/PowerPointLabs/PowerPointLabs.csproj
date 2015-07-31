@@ -284,6 +284,7 @@
     <Compile Include="CropToShape.cs" />
     <Compile Include="DataSources\ShapesLabSettingsDataSource.cs" />
     <Compile Include="ImageSearch\Handler\Effect\Alignment.cs" />
+    <Compile Include="ImageSearch\Handler\Effect\Banner.cs" />
     <Compile Include="ImageSearch\Handler\Effect\Position.cs" />
     <Compile Include="ImageSearch\Handler\Effect\TextBoxes.cs" />
     <Compile Include="ImageSearch\Handler\Effect\TextBoxInfo.cs" />

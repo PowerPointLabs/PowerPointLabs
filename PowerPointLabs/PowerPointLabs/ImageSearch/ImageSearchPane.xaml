@@ -30,7 +30,9 @@
     <controls:MetroWindow.Flyouts>
         <controls:FlyoutsControl>
             <controls:Flyout Name="StyleOptionsFlyout" Header="Style Options" IsModal="True" Position="Left" Width="400" >
-                <custom:StyleOptionsPane x:Name="OptionsPane" Margin="20,0,0,0" />
+                <ScrollViewer VerticalScrollBarVisibility="Auto">
+                    <custom:StyleOptionsPane x:Name="OptionsPane" Margin="20,0,0,0" />
+                </ScrollViewer>
             </controls:Flyout>
             <controls:Flyout Name="SearchOptionsFlyout" Header="Search Options" IsModal="True" Position="Left" Width="400" >
                 <custom:SearchOptionsPane x:Name="AdvancedPane" Margin="20,0,0,0" />

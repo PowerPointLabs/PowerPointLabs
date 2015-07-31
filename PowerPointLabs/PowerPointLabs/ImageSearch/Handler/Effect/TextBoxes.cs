@@ -11,7 +11,7 @@ namespace PowerPointLabs.ImageSearch.Handler.Effect
 {
     public class TextBoxes
     {
-        private const int Margin = 25;
+        public const int Margin = 25;
 
         private List<Shape> TextShapes { get; set; }
 
@@ -68,6 +68,19 @@ namespace PowerPointLabs.ImageSearch.Handler.Effect
             {
                 RecoverPositioning();
             }
+        }
+
+        public TextBoxInfo GetTextBoxesInfo()
+        {
+            return GetTextBoxesInfo(TextShapes);
+        }
+
+        public static void AddMargin(TextBoxInfo textboxesInfo)
+        {
+            textboxesInfo.Left -= Margin;
+            textboxesInfo.Top -= Margin;
+            textboxesInfo.Width += 2 * Margin;
+            textboxesInfo.Height += 2 * Margin;
         }
 
         # endregion
@@ -254,8 +267,8 @@ namespace PowerPointLabs.ImageSearch.Handler.Effect
             var result = new TextBoxInfo();
             foreach (var partialResult in textShapes.Select(GetTextBoxInfo))
             {
-                result.Left = _left;
-                result.Top = _top;
+                result.Left = partialResult.Left < result.Left ? partialResult.Left : result.Left;
+                result.Top = partialResult.Top < result.Top ? partialResult.Top : result.Top;
                 result.Width = partialResult.Width > result.Width ? partialResult.Width : result.Width;
                 result.Height += partialResult.Height;
             }

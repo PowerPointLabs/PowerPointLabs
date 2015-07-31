@@ -307,6 +307,7 @@
             public const string StyleNameDirectText = "Direct Text style";
             public const string StyleNameBlur = "Blur style";
             public const string StyleNameTextBox = "TextBox style";
+            public const string StyleNameBanner = "Banner style";
             public const string StyleNameSpecialEffect = "Special effect style";
 
             public const string ErrorNetworkOrApiQuotaUnavailable =

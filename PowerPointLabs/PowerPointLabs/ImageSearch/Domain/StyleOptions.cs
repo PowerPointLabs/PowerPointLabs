@@ -111,6 +111,31 @@ namespace PowerPointLabs.ImageSearch.Domain
             }
         }
 
+        // for banner style
+        private int _bannerShape;
+
+        public int BannerShape
+        {
+            get { return _bannerShape; }
+            set
+            {
+                _bannerShape = value;
+                OnPropertyChanged("BannerShape");
+            }
+        }
+
+        private int _bannerDirection;
+
+        public int BannerDirection
+        {
+            get { return _bannerDirection; }
+            set
+            {
+                _bannerDirection = value;
+                OnPropertyChanged("BannerDirection");
+            }
+        }
+
         // for special effect style
         private int _specialEffect;
 
@@ -132,11 +157,14 @@ namespace PowerPointLabs.ImageSearch.Domain
             FontFamily = 1;
             FontSizeIncrease = 10;
             FontColor = "#FFFFFF";
-            TextBoxPosition = 0;
+            TextBoxPosition = 4;
             TextBoxAlignment = 0;
             
             OverlayColor = "#000000";
             Transparency = 85;
+
+            BannerShape = 0;
+            BannerDirection = 0;
             
             SpecialEffect = 0;
         }
@@ -201,6 +229,32 @@ namespace PowerPointLabs.ImageSearch.Domain
                 // case 3:
                 default:
                     return Alignment.Right;
+            }
+        }
+
+        public BannerShape GetBannerShape()
+        {
+            switch (BannerShape)
+            {
+                case 0:
+                    return Handler.Effect.BannerShape.Rectangle;
+                // case 1:
+                default:
+                    return Handler.Effect.BannerShape.Circle;
+            }
+        }
+
+        public BannerDirection GetBannerDirection()
+        {
+            switch (BannerDirection)
+            {
+                case 0:
+                    return Handler.Effect.BannerDirection.Auto;
+                case 1:
+                    return Handler.Effect.BannerDirection.Horizontal;
+                // case 2:
+                default:
+                    return Handler.Effect.BannerDirection.Vertical;
             }
         }
 

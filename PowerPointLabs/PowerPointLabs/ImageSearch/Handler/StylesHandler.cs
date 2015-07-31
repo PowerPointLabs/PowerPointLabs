@@ -55,9 +55,14 @@ namespace PowerPointLabs.ImageSearch.Handler
             handler.ApplyBlurTextboxEffect(blurImageShape, Options.OverlayColor, Options.Transparency);
             handler.GetNativeSlide().Export(previewInfo.TextboxStyleImagePath, "JPG");
 
-            // style: special effect
+            // style: banner
             handler.RemoveEffect(EffectName.Overlay);
             handler.RemoveEffect(EffectName.Blur);
+            ApplyBannerStyle(handler, imageShape);
+            handler.GetNativeSlide().Export(previewInfo.BannerStyleImagePath, "JPG");
+
+            // style: special effect
+            handler.RemoveEffect(EffectName.Overlay);
             handler.ApplySpecialEffectEffect(Options.GetSpecialEffect(), imageShape, Options.OverlayColor, Options.Transparency);
             handler.GetNativeSlide().Export(previewInfo.SpecialEffectStyleImagePath, "JPG");
 
@@ -89,6 +94,9 @@ namespace PowerPointLabs.ImageSearch.Handler
                     break;
                 case TextCollection.ImagesLabText.StyleNameTextBox:
                     ApplyTextBoxStyle(effectsHandler);
+                    break;
+                case TextCollection.ImagesLabText.StyleNameBanner:
+                    ApplyBannerStyle(effectsHandler);
                     break;
                 case TextCollection.ImagesLabText.StyleNameSpecialEffect:
                     ApplySpecialEffectStyle(effectsHandler);
@@ -129,6 +137,26 @@ namespace PowerPointLabs.ImageSearch.Handler
         {
             ApplyTextEffect(effectsHandler);
             effectsHandler.ApplyBlurEffect(null /*no need image shape*/, Options.OverlayColor, Options.Transparency);
+        }
+
+        private void ApplyBannerStyle(EffectsHandler effectsHandler, Shape imageShape = null)
+        {
+            if (imageShape == null) // use case: non-preview
+            {
+                ApplyTextEffect(effectsHandler);
+                imageShape = effectsHandler.ApplyBackgroundEffect();
+            }
+            switch (Options.GetBannerShape())
+            {
+                case BannerShape.Rectangle:
+                    effectsHandler.ApplyRectBannerEffect(Options.GetBannerDirection(), Options.GetTextBoxPosition(), 
+                        imageShape, Options.OverlayColor, Options.Transparency);
+                    break;
+                // case BannerShape.Circle:
+                default:
+                    effectsHandler.ApplyCircleBannerEffect(imageShape, Options.OverlayColor, Options.Transparency);
+                    break;
+            }
         }
 
         private Shape ApplyDirectTextStyle(EffectsHandler effectsHandler)
