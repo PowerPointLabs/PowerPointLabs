@@ -37,7 +37,8 @@ namespace PowerPointLabs.ImageSearch.Handler.Effect
             {
                 if ((shape.Type != MsoShapeType.msoPlaceholder
                         && shape.Type != MsoShapeType.msoTextBox)
-                        || shape.TextFrame.HasText == MsoTriState.msoFalse)
+                        || shape.TextFrame.HasText == MsoTriState.msoFalse
+                        || StringUtil.IsEmpty(shape.TextFrame2.TextRange.Paragraphs.TrimText().Text))
                 {
                     continue;
                 }
@@ -233,16 +234,18 @@ namespace PowerPointLabs.ImageSearch.Handler.Effect
         private TextBoxInfo GetTextBoxInfo(Shape textShape)
         {
             var result = new TextBoxInfo();
-            foreach (TextRange2 textRange in textShape.TextFrame2.TextRange.Paragraphs)
+            var paragraphs = textShape.TextFrame2.TextRange.Paragraphs;
+            foreach (TextRange2 textRange in paragraphs)
             {
                 var paragraph = textRange.TrimText();
-                if (StringUtil.IsEmpty(paragraph.Text)) continue;
-
-                result.Left = paragraph.BoundLeft < result.Left ? paragraph.BoundLeft : result.Left;
-                result.Top = paragraph.BoundTop < result.Top ? paragraph.BoundTop : result.Top;
-                result.Width = paragraph.BoundWidth > result.Width ? paragraph.BoundWidth : result.Width;
-                result.Height += paragraph.BoundHeight;
+                if (StringUtil.IsNotEmpty(paragraph.Text))
+                {
+                    result.Left = paragraph.BoundLeft < result.Left ? paragraph.BoundLeft : result.Left;
+                    result.Top = paragraph.BoundTop < result.Top ? paragraph.BoundTop : result.Top;
+                    result.Width = paragraph.BoundWidth > result.Width ? paragraph.BoundWidth : result.Width;
+                }
             }
+            result.Height = paragraphs.BoundHeight;
             return result;
         }
 
