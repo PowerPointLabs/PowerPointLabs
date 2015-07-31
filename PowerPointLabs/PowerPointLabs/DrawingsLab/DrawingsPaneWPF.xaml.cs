@@ -188,6 +188,16 @@ namespace PowerPointLabs.DrawingsLab
             DrawingsLabMain.RecordFormat();
         }
 
+        private void AlignHorizontalButton_Click(object sender, EventArgs e)
+        {
+            DrawingsLabMain.AlignHorizontal();
+        }
+
+        private void AlignVerticalButton_Click(object sender, EventArgs e)
+        {
+            DrawingsLabMain.AlignVertical();
+        }
+
         private void BringForwardButton_Click(object sender, EventArgs e)
         {
             DrawingsLabMain.BringForward();

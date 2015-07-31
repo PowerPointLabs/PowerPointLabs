@@ -83,6 +83,9 @@
         <Button Content="RecordFormat" Grid.Row="4" Grid.RowSpan="2" Grid.Column="4" Click="RecordFormatButton_Click"/>
         <Button Content="ApplyFormat" Grid.Row="4" Grid.RowSpan="2" Grid.Column="5" Click="ApplyFormatButton_Click"/>
 
+        <Button Content="AlignHorizontal" Grid.Row="11" Grid.Column="0" Click="AlignHorizontalButton_Click"/>
+        <Button Content="AlignVertical" Grid.Row="11" Grid.Column="1" Click="AlignVerticalButton_Click"/>
+
         <RadioButton Grid.Row="10" Grid.Column="3" IsChecked="{Binding UpdateSourceTrigger=PropertyChanged, Source={StaticResource DrawingsLabData}, Path=Anchor, Mode=TwoWay, Converter={StaticResource EnumMatchToBooleanConverter}, ConverterParameter=TopLeft}" HorizontalAlignment="Center" VerticalAlignment="Center"/>
         <RadioButton Grid.Row="10" Grid.Column="4" IsChecked="{Binding UpdateSourceTrigger=PropertyChanged, Source={StaticResource DrawingsLabData}, Path=Anchor, Mode=TwoWay, Converter={StaticResource EnumMatchToBooleanConverter}, ConverterParameter=TopCenter}" HorizontalAlignment="Center" VerticalAlignment="Center"/>
         <RadioButton Grid.Row="10" Grid.Column="5" IsChecked="{Binding UpdateSourceTrigger=PropertyChanged, Source={StaticResource DrawingsLabData}, Path=Anchor, Mode=TwoWay, Converter={StaticResource EnumMatchToBooleanConverter}, ConverterParameter=TopRight}" HorizontalAlignment="Center" VerticalAlignment="Center"/>

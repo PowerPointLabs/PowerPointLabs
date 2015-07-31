@@ -272,8 +272,15 @@
     <Compile Include="Converters\ColorPaneConverters.cs" />
     <Compile Include="ConvertToPicture.cs" />
     <Compile Include="CropToShape.cs" />
+    <Compile Include="DataSources\DrawingsLabAlignmentDataSource.cs" />
     <Compile Include="DataSources\DrawingsLabDataSource.cs" />
     <Compile Include="DataSources\ShapesLabSettingsDataSource.cs" />
+    <Compile Include="DrawingsLab\AlignmentDialogVertical.xaml.cs">
+      <DependentUpon>AlignmentDialogVertical.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="DrawingsLab\AlignmentDialogHorizontal.xaml.cs">
+      <DependentUpon>AlignmentDialogHorizontal.xaml</DependentUpon>
+    </Compile>
     <Compile Include="DrawingsLab\DrawingsLabDialogs.cs" />
     <Compile Include="DrawingsLab\DrawingsLabMain.cs" />
     <Compile Include="DrawingsLab\DrawingsPane.cs">
@@ -730,6 +737,14 @@
     <None Include="Resources\AgendaVisual.png" />
   </ItemGroup>
   <ItemGroup>
+    <Page Include="DrawingsLab\AlignmentDialogVertical.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="DrawingsLab\AlignmentDialogHorizontal.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="DrawingsLab\DrawingsPaneWPF.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
