@@ -8,7 +8,9 @@ using PowerPointLabs.ImageSearch.Domain;
 using PowerPointLabs.ImageSearch.SearchEngine;
 using PowerPointLabs.ImageSearch.SearchEngine.VO;
 using PowerPointLabs.ImageSearch.Util;
+using PowerPointLabs.Utils;
 using RestSharp;
+using Graphics = System.Drawing.Graphics;
 
 namespace PowerPointLabs.ImageSearch
 {

@@ -1,6 +1,6 @@
 ﻿using Microsoft.Office.Core;
 
-namespace PowerPointLabs.ImageSearch.Util
+namespace PowerPointLabs.Utils
 {
     class BoolUtil
     {

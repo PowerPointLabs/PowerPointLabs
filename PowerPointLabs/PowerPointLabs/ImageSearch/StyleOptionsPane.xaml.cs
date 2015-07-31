@@ -5,6 +5,7 @@ using System.Windows.Input;
 using System.Windows.Media;
 using PowerPointLabs.ImageSearch.Domain;
 using PowerPointLabs.ImageSearch.Util;
+using PowerPointLabs.Utils;
 using Color = System.Drawing.Color;
 
 namespace PowerPointLabs.ImageSearch

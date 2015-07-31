@@ -7,6 +7,11 @@
         public const string OriginalFontFamily = "originalFontFamily";
         public const string OriginalFillVisible = "originalFillVisible";
         public const string OriginalLineVisible = "originalLineVisible";
+
+        public const string OriginalTextAlignment = "originalTextAlignment";
+        public const string OriginalShapeLeft = "originalShapeLeft";
+        public const string OriginalShapeTop = "originalShapeTop";
+
         public const string AddedTextbox = "addedTextbox";
     }
 }

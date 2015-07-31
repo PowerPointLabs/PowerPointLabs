@@ -9,6 +9,7 @@ using PowerPointLabs.ImageSearch.Domain;
 using PowerPointLabs.ImageSearch.Handler.Effect;
 using PowerPointLabs.ImageSearch.Util;
 using PowerPointLabs.Models;
+using PowerPointLabs.Utils;
 using Graphics = PowerPointLabs.Utils.Graphics;
 using PowerPoint = Microsoft.Office.Interop.PowerPoint;
 
@@ -84,7 +85,7 @@ namespace PowerPointLabs.ImageSearch.Handler
                 var font = shape.TextFrame2.TextRange.TrimText().Font;
 
                 AddTag(shape, Tag.OriginalFontColor, StringUtil.GetHexValue(Graphics.ConvertRgbToColor(font.Fill.ForeColor.RGB)));
-                font.Fill.ForeColor.RGB = Graphics.ConvertColorToRgb(ColorTranslator.FromHtml(fontColor));
+                font.Fill.ForeColor.RGB = Graphics.ConvertColorToRgb(StringUtil.GetColorFromHexValue(fontColor));
 
                 AddTag(shape, Tag.OriginalFontFamily, font.Name);
                 if (StringUtil.IsEmpty(fontFamily))
@@ -136,7 +137,7 @@ namespace PowerPointLabs.ImageSearch.Handler
                 if (StringUtil.IsNotEmpty(shape.Tags[Tag.OriginalFontColor]))
                 {
                     font.Fill.ForeColor.RGB
-                        = Graphics.ConvertColorToRgb(ColorTranslator.FromHtml(shape.Tags[Tag.OriginalFontColor]));
+                        = Graphics.ConvertColorToRgb(StringUtil.GetColorFromHexValue(shape.Tags[Tag.OriginalFontColor]));
                     shape.Tags.Add(Tag.OriginalFontColor, "");
                 }
                 if (StringUtil.IsNotEmpty(shape.Tags[Tag.OriginalFontFamily]))
@@ -161,7 +162,7 @@ namespace PowerPointLabs.ImageSearch.Handler
             var overlayShape = Shapes.AddShape(MsoAutoShapeType.msoShapeRectangle, left, top,
                 width.Value, height.Value);
             ChangeName(overlayShape, EffectName.Overlay);
-            overlayShape.Fill.ForeColor.RGB = Graphics.ConvertColorToRgb(ColorTranslator.FromHtml(color));
+            overlayShape.Fill.ForeColor.RGB = Graphics.ConvertColorToRgb(StringUtil.GetColorFromHexValue(color));
             overlayShape.Fill.Transparency = (float) transparency / 100;
             overlayShape.Line.Visible = MsoTriState.msoFalse;
             return overlayShape;
@@ -207,10 +208,11 @@ namespace PowerPointLabs.ImageSearch.Handler
                 }
 
                 // multiple paragraphs.. 
-                foreach (TextRange2 paragraph in shape.TextFrame2.TextRange.Paragraphs)
+                foreach (TextRange2 textRange in shape.TextFrame2.TextRange.Paragraphs)
                 {
-                    if (StringUtil.IsNotEmpty(paragraph.Text))
+                    if (StringUtil.IsNotEmpty(textRange.TrimText().Text))
                     {
+                        var paragraph = textRange.TrimText();
                         var left = paragraph.BoundLeft - 5;
                         var top = paragraph.BoundTop - 5;
                         var width = paragraph.BoundWidth + 10;
@@ -310,15 +312,12 @@ namespace PowerPointLabs.ImageSearch.Handler
 
         private static void ChangeName(PowerPoint.Shape shape, EffectName effectName)
         {
-            shape.Name = ShapeNamePrefix + "_" + effectName + "_" + Guid.NewGuid().ToString().Substring(0, 7);
+            ShapeUtil.ChangeName(shape, effectName, ShapeNamePrefix);
         }
 
         private static void AddTag(PowerPoint.Shape shape, string tagName, String value)
         {
-            if (StringUtil.IsEmpty(shape.Tags[tagName]))
-            {
-                shape.Tags.Add(tagName, value);
-            }
+            ShapeUtil.AddTag(shape, tagName, value);
         }
 
         public static string BlurImage(string imageFilePath, bool isBlurForFullsize)
