@@ -115,14 +115,18 @@ namespace PowerPointLabs.DrawingsLab
                 PPKeyboard.AddKeyupAction(key, RunOnlyWhenOpen(() => DrawingsLabMain.SetControlGroup(key, appendToGroup: true)), ctrl: true, shift: true);
             }
 
-            PPKeyboard.AddKeyupAction(Native.VirtualKey.VK_Q, RunOnlyWhenOpen(DrawingsLabMain.SwitchToLineTool));
-            PPKeyboard.AddKeyupAction(Native.VirtualKey.VK_W, RunOnlyWhenOpen(DrawingsLabMain.SwitchToRectangleTool));
-            PPKeyboard.AddKeyupAction(Native.VirtualKey.VK_E, RunOnlyWhenOpen(DrawingsLabMain.SwitchToCircleTool));
+            PPKeyboard.AddKeyupAction(Native.VirtualKey.VK_L, RunOnlyWhenOpen(DrawingsLabMain.SwitchToLineTool));
+            PPKeyboard.AddKeyupAction(Native.VirtualKey.VK_R, RunOnlyWhenOpen(DrawingsLabMain.SwitchToRectangleTool));
+            PPKeyboard.AddKeyupAction(Native.VirtualKey.VK_C, RunOnlyWhenOpen(DrawingsLabMain.SwitchToCircleTool));
+            PPKeyboard.AddKeyupAction(Native.VirtualKey.VK_D, RunOnlyWhenOpen(DrawingsLabMain.CloneTool));
             PPKeyboard.AddKeyupAction(Native.VirtualKey.VK_A, RunOnlyWhenOpen(DrawingsLabMain.SelectAllOfType));
             PPKeyboard.AddKeyupAction(Native.VirtualKey.VK_H, RunOnlyWhenOpen(DrawingsLabMain.HideTool));
-            PPKeyboard.AddKeyupAction(Native.VirtualKey.VK_D, RunOnlyWhenOpen(DrawingsLabMain.CloneTool));
-            PPKeyboard.AddKeyupAction(Native.VirtualKey.VK_F, RunOnlyWhenOpen(DrawingsLabMain.MultiCloneExtendTool));
-            PPKeyboard.AddKeyupAction(Native.VirtualKey.VK_G, RunOnlyWhenOpen(DrawingsLabMain.MultiCloneBetweenTool));
+            PPKeyboard.AddKeyupAction(Native.VirtualKey.VK_S, RunOnlyWhenOpen(DrawingsLabMain.ShowAllTool));
+            PPKeyboard.AddKeyupAction(Native.VirtualKey.VK_M, RunOnlyWhenOpen(DrawingsLabMain.MultiCloneExtendTool));
+            PPKeyboard.AddKeyupAction(Native.VirtualKey.VK_N, RunOnlyWhenOpen(DrawingsLabMain.MultiCloneBetweenTool));
+
+            PPKeyboard.AddKeyupAction(Native.VirtualKey.VK_F, RunOnlyWhenOpen(DrawingsLabMain.BringForward));
+            PPKeyboard.AddKeyupAction(Native.VirtualKey.VK_B, RunOnlyWhenOpen(DrawingsLabMain.SendBackward));
         }
         #endregion
 
