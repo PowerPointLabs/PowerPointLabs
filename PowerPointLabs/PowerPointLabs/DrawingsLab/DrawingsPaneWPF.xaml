@@ -47,13 +47,13 @@
         <Button Content="Circle" Grid.Row="1" Grid.Column="2" Click="CircleButton_Click"/>
         
         <ToggleButton Content="Hotkeys" x:Name="ToggleHotkeys" Grid.Row="1" Grid.Column="5" IsChecked="{Binding UpdateSourceTrigger=PropertyChanged, Source={StaticResource DrawingsLabData}, Path=HotkeysEnabled, Mode=TwoWay}"/>
-        
-        <Button Content="SelectType" Grid.Row="2" Grid.Column="0" Click="SelectAllOfTypeButton_Click"/>
+
+        <Button Content="Select&#xa;Type" Grid.Row="2" Grid.Column="0" Click="SelectAllOfTypeButton_Click"/>
         <Button Content="Hide" Grid.Row="2" Grid.Column="2" Click="HideButton_Click"/>
-        <Button Content="ShowAll" Grid.Row="2" Grid.Column="3" Click="ShowAllButton_Click"/>
+        <Button Content="Show&#xa;All" Grid.Row="2" Grid.Column="3" Click="ShowAllButton_Click"/>
         <Button Content="Clone" Grid.Row="3" Grid.Column="2" Click="CloneButton_Click"/>
-        <Button Content="MultiClone Extend" Grid.Row="3" Grid.Column="3" Click="MultiCloneExtendButton_Click"/>
-        <Button Content="MultiClone Between" Grid.Row="3" Grid.Column="4" Click="MultiCloneBetweenButton_Click"/>
+        <Button Content="MultiClone&#xa;Extend" Grid.Row="3" Grid.Column="3" Click="MultiCloneExtendButton_Click"/>
+        <Button Content="MultiClone&#xa;Between" Grid.Row="3" Grid.Column="4" Click="MultiCloneBetweenButton_Click"/>
 
         <Button Grid.Row="4" Grid.Column="1" IsEnabled="{Binding IsChecked, ElementName=FormatIncludeFillColor}" Background="{Binding UpdateSourceTrigger=PropertyChanged, Source={StaticResource DrawingsLabData}, Path=FormatFillColor, Mode=TwoWay, Converter={StaticResource ColorToBackgroundConverter}}" Click="FillColor_Click"/>
         <Button Grid.Row="4" Grid.Column="2" IsEnabled="{Binding IsChecked, ElementName=FormatIncludeLineColor}" Background="{Binding UpdateSourceTrigger=PropertyChanged, Source={StaticResource DrawingsLabData}, Path=FormatLineColor, Mode=TwoWay, Converter={StaticResource ColorToBackgroundConverter}}" Click="LineColor_Click"/>
@@ -79,15 +79,15 @@
         <CheckBox x:Name="SavedIncludeY" Grid.Row="9" Grid.Column="2" IsChecked="{Binding UpdateSourceTrigger=PropertyChanged, Source={StaticResource DrawingsLabData}, Path=SavedIncludePositionY, Mode=TwoWay}"/>
         <CheckBox x:Name="SavedIncludeRotation" Grid.Row="9" Grid.Column="3" IsChecked="{Binding UpdateSourceTrigger=PropertyChanged, Source={StaticResource DrawingsLabData}, Path=SavedIncludeRotation, Mode=TwoWay}"/>
 
-        <Button Content="RecordDisplacement" Grid.Row="6" Grid.RowSpan="2" Grid.Column="4" Click="RecordDisplacementButton_Click"/>
-        <Button Content="ApplyDisplacement" Grid.Row="6" Grid.RowSpan="2" Grid.Column="5" Click="ApplyDisplacementButton_Click"/>
-        <Button Content="RecordPosition" Grid.Row="8" Grid.RowSpan="2" Grid.Column="4" Click="RecordPositionButton_Click"/>
-        <Button Content="ApplyPosition" Grid.Row="8" Grid.RowSpan="2" Grid.Column="5" Click="ApplyPositionButton_Click"/>
-        <Button Content="RecordFormat" Grid.Row="4" Grid.RowSpan="2" Grid.Column="4" Click="RecordFormatButton_Click"/>
-        <Button Content="ApplyFormat" Grid.Row="4" Grid.RowSpan="2" Grid.Column="5" Click="ApplyFormatButton_Click"/>
+        <Button Content="Record&#xa;Displacement" Grid.Row="6" Grid.RowSpan="2" Grid.Column="4" Click="RecordDisplacementButton_Click"/>
+        <Button Content="Apply&#xa;Displacement" Grid.Row="6" Grid.RowSpan="2" Grid.Column="5" Click="ApplyDisplacementButton_Click"/>
+        <Button Content="Record&#xa;Position" Grid.Row="8" Grid.RowSpan="2" Grid.Column="4" Click="RecordPositionButton_Click"/>
+        <Button Content="Apply&#xa;Position" Grid.Row="8" Grid.RowSpan="2" Grid.Column="5" Click="ApplyPositionButton_Click"/>
+        <Button Content="Record&#xa;Format" Grid.Row="4" Grid.RowSpan="2" Grid.Column="4" Click="RecordFormatButton_Click"/>
+        <Button Content="Apply&#xa;Format" Grid.Row="4" Grid.RowSpan="2" Grid.Column="5" Click="ApplyFormatButton_Click"/>
 
-        <Button Content="AlignHorizontal" Grid.Row="11" Grid.Column="0" Click="AlignHorizontalButton_Click"/>
-        <Button Content="AlignVertical" Grid.Row="11" Grid.Column="1" Click="AlignVerticalButton_Click"/>
+        <Button Content="Align&#xa;Horizontal" Grid.Row="11" Grid.Column="0" Click="AlignHorizontalButton_Click"/>
+        <Button Content="Align&#xa;Vertical" Grid.Row="11" Grid.Column="1" Click="AlignVerticalButton_Click"/>
 
         <RadioButton Grid.Row="10" Grid.Column="3" IsChecked="{Binding UpdateSourceTrigger=PropertyChanged, Source={StaticResource DrawingsLabData}, Path=Anchor, Mode=TwoWay, Converter={StaticResource EnumMatchToBooleanConverter}, ConverterParameter=TopLeft}" HorizontalAlignment="Center" VerticalAlignment="Center"/>
         <RadioButton Grid.Row="10" Grid.Column="4" IsChecked="{Binding UpdateSourceTrigger=PropertyChanged, Source={StaticResource DrawingsLabData}, Path=Anchor, Mode=TwoWay, Converter={StaticResource EnumMatchToBooleanConverter}, ConverterParameter=TopCenter}" HorizontalAlignment="Center" VerticalAlignment="Center"/>
@@ -99,12 +99,12 @@
         <RadioButton Grid.Row="12" Grid.Column="4" IsChecked="{Binding UpdateSourceTrigger=PropertyChanged, Source={StaticResource DrawingsLabData}, Path=Anchor, Mode=TwoWay, Converter={StaticResource EnumMatchToBooleanConverter}, ConverterParameter=BottomCenter}" HorizontalAlignment="Center" VerticalAlignment="Center"/>
         <RadioButton Grid.Row="12" Grid.Column="5" IsChecked="{Binding UpdateSourceTrigger=PropertyChanged, Source={StaticResource DrawingsLabData}, Path=Anchor, Mode=TwoWay, Converter={StaticResource EnumMatchToBooleanConverter}, ConverterParameter=BottomRight}" HorizontalAlignment="Center" VerticalAlignment="Center"/>
 
-        <Button Content="BringInFrontOfShape" Grid.Row="13" Grid.Column="2" Click="BringInFrontOfShapeButton_Click"/>
-        <Button Content="SendBehindShape" Grid.Row="13" Grid.Column="3" Click="SendBehindShapeButton_Click"/>
-        <Button Content="BringToFront" Grid.Row="14" Grid.Column="1" Click="BringToFrontButton_Click"/>
-        <Button Content="BringForward" Grid.Row="14" Grid.Column="2" Click="BringForwardButton_Click"/>
-        <Button Content="SendBackward" Grid.Row="14" Grid.Column="3" Click="SendBackwardButton_Click"/>
-        <Button Content="SendToBack" Grid.Row="14" Grid.Column="4" Click="SendToBackButton_Click"/>
+        <Button Content="Front Of&#xa;Shape" Grid.Row="13" Grid.Column="2" Click="BringInFrontOfShapeButton_Click"/>
+        <Button Content="Behind&#xa;Shape" Grid.Row="13" Grid.Column="3" Click="SendBehindShapeButton_Click"/>
+        <Button Content="Bring&#xa;To Front" Grid.Row="14" Grid.Column="1" Click="BringToFrontButton_Click"/>
+        <Button Content="Bring&#xa;Forward" Grid.Row="14" Grid.Column="2" Click="BringForwardButton_Click"/>
+        <Button Content="Send&#xa;Backward" Grid.Row="14" Grid.Column="3" Click="SendBackwardButton_Click"/>
+        <Button Content="Send&#xa;To Back" Grid.Row="14" Grid.Column="4" Click="SendToBackButton_Click"/>
 
     </Grid>
 </UserControl>
