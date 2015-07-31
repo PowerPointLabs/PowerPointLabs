@@ -97,10 +97,22 @@ namespace PowerPointLabs.DrawingsLab
                 Native.VirtualKey.VK_8,
                 Native.VirtualKey.VK_9,
             };
-            foreach (var key in numericKeys)
+
+            // I use a regular for loop due to inconsistent compiler behaviour when foreach is used.
+            for (int i = 0; i < numericKeys.Length; ++i)
             {
+                var key = numericKeys[i];
+                // Assign number and ctrl+number to control group commands.
                 PPKeyboard.AddKeyupAction(key, RunOnlyWhenOpen(() => DrawingsLabMain.SelectControlGroup(key)));
                 PPKeyboard.AddKeyupAction(key, RunOnlyWhenOpen(() => DrawingsLabMain.SetControlGroup(key)), ctrl: true);
+
+                // Block shift+number and ctrl+shift+number
+                PPKeyboard.AddConditionToBlockTextInput(IsReadingHotkeys, key, shift: true);
+                PPKeyboard.AddConditionToBlockTextInput(IsReadingHotkeys, key, ctrl: true, shift: true);
+
+                // Assign shift+number and ctrl+shift+number to control group commands.
+                PPKeyboard.AddKeyupAction(key, RunOnlyWhenOpen(() => DrawingsLabMain.SelectControlGroup(key, appendToSelection: true)), shift: true);
+                PPKeyboard.AddKeyupAction(key, RunOnlyWhenOpen(() => DrawingsLabMain.SetControlGroup(key, appendToGroup: true)), ctrl: true, shift: true);
             }
 
             PPKeyboard.AddKeyupAction(Native.VirtualKey.VK_Q, RunOnlyWhenOpen(DrawingsLabMain.SwitchToLineTool));

@@ -381,9 +381,13 @@ namespace PowerPointLabs.DrawingsLab
             }
         }
 
-        public static void SetControlGroup(Native.VirtualKey key)
+        public static void SetControlGroup(Native.VirtualKey key, bool appendToGroup = false)
         {
             if (!Native.IsNumberKey(key)) return;
+            if (appendToGroup)
+            {
+                SelectControlGroup(key, true);
+            }
 
             var selection = Globals.ThisAddIn.Application.ActiveWindow.Selection;
             if (selection.Type != PpSelectionType.ppSelectionShapes) return;
@@ -394,7 +398,7 @@ namespace PowerPointLabs.DrawingsLab
             ControlGroups[key] = new ControlGroup(slideId, shapes);
         }
 
-        public static void SelectControlGroup(Native.VirtualKey key)
+        public static void SelectControlGroup(Native.VirtualKey key, bool appendToSelection = false)
         {
             if (!Native.IsNumberKey(key)) return;
 
@@ -411,7 +415,11 @@ namespace PowerPointLabs.DrawingsLab
 
             targetSlide.GetNativeSlide().Select();
 
-            Globals.ThisAddIn.Application.ActiveWindow.Selection.Unselect();
+            if (!appendToSelection)
+            {
+                Globals.ThisAddIn.Application.ActiveWindow.Selection.Unselect();
+            }
+
             var shapeIds = controlGroup.ShapeIds;
             var shapes = currentSlide.Shapes.Cast<Shape>()
                                             .Where(shape => shapeIds.Contains(shape.Id));

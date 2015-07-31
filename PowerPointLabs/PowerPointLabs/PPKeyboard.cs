@@ -148,6 +148,11 @@ namespace PPExtraEventHelper
                                                       .ToList()
                                                       .ForEach(key => AddKeydownAction(key, condition, ctrl, alt, shift));
         }
+
+        public static void AddConditionToBlockTextInput(Func<bool> condition, Native.VirtualKey key, bool ctrl = false, bool alt = false, bool shift = false)
+        {
+            AddKeydownAction(key, condition, ctrl, alt, shift);
+        }
         #endregion
 
 
