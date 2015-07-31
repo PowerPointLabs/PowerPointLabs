@@ -2411,6 +2411,10 @@ namespace PowerPointLabs
                     // fire the pane visble change event
                     drawingsPane.Visible = true;
                 }
+                else
+                {
+                    drawingsPane.Visible = false;
+                }
             }
             catch (Exception e)
             {
