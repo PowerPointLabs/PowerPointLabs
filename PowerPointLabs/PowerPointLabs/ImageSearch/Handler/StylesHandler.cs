@@ -114,8 +114,8 @@ namespace PowerPointLabs.ImageSearch.Handler
             if (currentSelection.Type == PpSelectionType.ppSelectionShapes)
             {
                 currentSelection.Unselect();
-                Cursor.Current = Cursors.Default;
             }
+            Cursor.Current = Cursors.Default;
         }
 
         private void ApplySpecialEffectStyle(EffectsHandler effectsHandler)
