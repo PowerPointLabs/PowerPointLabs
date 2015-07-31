@@ -147,6 +147,7 @@ namespace PowerPointLabs.ImageSearch.Handler
             {
                 effectsHandler.ApplyTextEffect(Options.GetFontFamily(), Options.FontColor, Options.FontSizeIncrease);
             }
+            effectsHandler.ApplyTextPositionAndAlignment(Options.GetTextBoxPosition(), Options.GetTextBoxAlignment());
         }
 
         private EffectsHandler CreateEffectsHandler(ImageItem source)

@@ -153,6 +153,14 @@ namespace PowerPointLabs.ImageSearch.Handler
             }
         }
 
+        public void ApplyTextPositionAndAlignment(Position pos, Alignment alignment)
+        {
+            new TextBoxes(Shapes, PreviewPresentation.SlideWidth, PreviewPresentation.SlideHeight)
+                .SetPosition(pos)
+                .SetAlignment(alignment)
+                .StartBoxing();
+        }
+
         // add overlay layer 
         public PowerPoint.Shape ApplyOverlayStyle(string color, int transparency,
             float left = 0, float top = 0, float? width = null, float? height = null)

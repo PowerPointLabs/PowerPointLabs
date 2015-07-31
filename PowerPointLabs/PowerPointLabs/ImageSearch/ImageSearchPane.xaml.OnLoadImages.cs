@@ -57,9 +57,8 @@ namespace PowerPointLabs.ImageSearch
             {
                 var openFileDialog = new OpenFileDialog
                 {
-                    DefaultExt = "*.png",
                     Multiselect = false,
-                    Filter = @"Image File|*.png;*.jpg;*.jpeg;"
+                    Filter = @"Image File|*.png;*.jpg;*.jpeg;*.bmp;*.gif;"
                 };
                 var fileDialogResult = openFileDialog.ShowDialog();
                 if (fileDialogResult != System.Windows.Forms.DialogResult.OK)

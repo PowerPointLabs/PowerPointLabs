@@ -1,6 +1,7 @@
 ﻿using System;
 using System.IO;
 using System.Xml.Serialization;
+using PowerPointLabs.ImageSearch.Handler.Effect;
 using PowerPointLabs.WPF.Observable;
 
 namespace PowerPointLabs.ImageSearch.Domain
@@ -60,6 +61,30 @@ namespace PowerPointLabs.ImageSearch.Domain
             }
         }
 
+        private int _textBoxPosition;
+
+        public int TextBoxPosition
+        {
+            get { return _textBoxPosition; }
+            set
+            {
+                _textBoxPosition = value;
+                OnPropertyChanged("TextBoxPosition");
+            }
+        }
+
+        private int _textBoxAlignment;
+
+        public int TextBoxAlignment
+        {
+            get { return _textBoxAlignment; }
+            set
+            {
+                _textBoxAlignment = value;
+                OnPropertyChanged("TextBoxAlignment");
+            }
+        }
+
         private string _overlayColor;
 
         public string OverlayColor
@@ -93,6 +118,8 @@ namespace PowerPointLabs.ImageSearch.Domain
             FontFamily = 1;
             FontSizeIncrease = 10;
             FontColor = "#FFFFFF";
+            TextBoxPosition = 0;
+            TextBoxAlignment = 0;
             OverlayColor = "#000000";
             Transparency = 85;
         }
@@ -115,6 +142,51 @@ namespace PowerPointLabs.ImageSearch.Domain
                     return "Segoe UI";
             }
         }
+
+        public Position GetTextBoxPosition()
+        {
+            switch (TextBoxPosition)
+            {
+                case 0:
+                    return Position.Original;
+                case 1:
+                    return Position.TopLeft;
+                case 2:
+                    return Position.Top;
+                case 3:
+                    return Position.TopRight;
+                case 4:
+                    return Position.Left;
+                case 5:
+                    return Position.Centre;
+                case 6:
+                    return Position.Right;
+                case 7:
+                    return Position.BottomLeft;
+                case 8:
+                    return Position.Bottom;
+                // case 9:
+                default:
+                    return Position.BottomRight;
+            }
+        }
+
+        public Alignment GetTextBoxAlignment()
+        {
+            switch (TextBoxAlignment)
+            {
+                case 0:
+                    return Alignment.Auto;
+                case 1:
+                    return Alignment.Left;
+                case 2:
+                    return Alignment.Centre;
+                // case 3:
+                default:
+                    return Alignment.Right;
+            }
+        }
+
         # endregion
 
         # region IO serialization
