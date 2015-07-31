@@ -316,7 +316,7 @@ namespace PowerPointLabs.ImageSearch
             {
                 var targetColumn = ImagesLabGrid.ColumnDefinitions[0];
                 targetColumn.Width = PreviewDisplayToggleSwitch.IsChecked == true 
-                    ? new GridLength(620) 
+                    ? new GridLength(770) 
                     : new GridLength(320);
             }));
         }
