@@ -68,6 +68,7 @@ namespace PowerPointLabs.DrawingsLab
         {
             // Is reading hotkeys when panel is open and user is not selecting text.
             return IsPanelOpen() &&
+                   dataSource.HotkeysEnabled &&
                    PowerPointCurrentPresentationInfo.CurrentSelection.Type != PpSelectionType.ppSelectionText;
         }
 

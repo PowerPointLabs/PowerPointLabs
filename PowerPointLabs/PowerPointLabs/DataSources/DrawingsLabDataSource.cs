@@ -334,6 +334,17 @@ namespace PowerPointLabs.DataSources
             }
         }
 
+        private bool hotkeysEnabled = false;
+
+        public bool HotkeysEnabled
+        {
+            get { return hotkeysEnabled; }
+            set
+            {
+                hotkeysEnabled = value;
+                OnPropertyChanged("HotkeysEnabled");
+            }
+        }
 
         # endregion
 
