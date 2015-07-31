@@ -53,15 +53,6 @@ namespace PowerPointLabs.DrawingsLab
         private void BindDataToPanels()
         {
             dataSource = FindResource("DrawingsLabData") as DrawingsLabDataSource;
-            //ShiftValueX.DataContext = dataSource;
-            //var binding = new Binding() {Path = new PropertyPath("ShiftValueX")};
-            //this.ShiftValueX.SetBinding(ForegroundProperty, binding);
-            //this.panel1.DataBindings.Add(new CustomBinding(
-                //"BackColor",
-                //dataSource,
-                //"selectedColor",
-                //new Converters.HSLColorToRGBColor()));
-
         }
         #endregion
 
