@@ -413,10 +413,13 @@ namespace PowerPointLabs.DrawingsLab
 
             Globals.ThisAddIn.Application.ActiveWindow.Selection.Unselect();
             var shapeIds = controlGroup.ShapeIds;
-            currentSlide.Shapes.Cast<Shape>()
-                               .Where(shape => shapeIds.Contains(shape.Id))
-                               .ToList()
-                               .ForEach(shape => shape.Select(MsoTriState.msoFalse));
+            var shapes = currentSlide.Shapes.Cast<Shape>()
+                                            .Where(shape => shapeIds.Contains(shape.Id));
+            foreach (var shape in shapes)
+            {
+                shape.Visible = MsoTriState.msoTrue;
+                shape.Select(MsoTriState.msoFalse);
+            }
         }
 
 
