@@ -1,4 +1,5 @@
-﻿using PowerPointLabs.AutoUpdate;
+﻿using System;
+using PowerPointLabs.AutoUpdate;
 using PowerPointLabs.ImageSearch.Domain;
 using PowerPointLabs.ImageSearch.Util;
 
@@ -30,7 +31,21 @@ namespace PowerPointLabs.ImageSearch
                 new Downloader()
                     .Get(fullsizeImageUri, fullsizeImageFile)
                     .After(() => { HandleDownloadedFullSizeImage(source, fullsizeImageFile); })
-                    .OnError(() => { ShowErrorMessageBox(TextCollection.ImagesLabText.ErrorNetworkOrSourceUnavailable); })
+                    .OnError(() =>
+                    {
+                        Dispatcher.BeginInvoke(new Action(() =>
+                        {
+                            var currentImageItem = SearchListBox.SelectedValue as ImageItem;
+                            if (currentImageItem == null)
+                            {
+                                PreviewProgressRing.IsActive = false;
+                            }
+                            else if (currentImageItem.ImageFile == source.ImageFile)
+                            {
+                                ShowErrorMessageBox(TextCollection.ImagesLabText.ErrorNetworkOrSourceUnavailable);
+                            }
+                        }));
+                    })
                     .Start();
             }
             // already downloading, then update preview image in the map

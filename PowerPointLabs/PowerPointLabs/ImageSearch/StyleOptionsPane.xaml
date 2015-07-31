@@ -5,7 +5,7 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:controls="clr-namespace:MahApps.Metro.Controls;assembly=MahApps.Metro"
              mc:Ignorable="d" 
-             d:DesignHeight="595" d:DesignWidth="400">
+             d:DesignHeight="630" d:DesignWidth="400">
     <UserControl.Resources>
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
@@ -23,6 +23,7 @@
             <ColumnDefinition Width="200"/>
         </Grid.ColumnDefinitions>
         <Grid.RowDefinitions>
+            <RowDefinition Height="35"/>
             <RowDefinition Height="35"/>
             <RowDefinition Height="35"/>
             <RowDefinition Height="35"/>
