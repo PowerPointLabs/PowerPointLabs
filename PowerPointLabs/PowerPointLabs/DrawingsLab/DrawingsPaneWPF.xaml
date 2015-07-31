@@ -66,18 +66,18 @@
         <TextBox Grid.Row="8" Grid.Column="3" IsEnabled="{Binding IsChecked, ElementName=SavedIncludeRotation}" Text="{Binding UpdateSourceTrigger=PropertyChanged, Source={StaticResource DrawingsLabData}, Path=SavedValueRotation, Mode=TwoWay, Converter={StaticResource FloatToStringConverter}}"/>
 
 
-        <CheckBox Grid.Row="5" Grid.Column="0" IsChecked="{Binding UpdateSourceTrigger=PropertyChanged, Source={StaticResource DrawingsLabData}, Path=FormatIncludeAll, Mode=TwoWay}"/>
-        <CheckBox x:Name="FormatIncludeFillColor" Grid.Row="5" Grid.Column="1" IsChecked="{Binding UpdateSourceTrigger=PropertyChanged, Source={StaticResource DrawingsLabData}, Path=FormatIncludeFillColor, Mode=TwoWay}"/>
-        <CheckBox x:Name="FormatIncludeLineColor" Grid.Row="5" Grid.Column="2" IsChecked="{Binding UpdateSourceTrigger=PropertyChanged, Source={StaticResource DrawingsLabData}, Path=FormatIncludeLineColor, Mode=TwoWay}"/>
-        <CheckBox x:Name="FormatIncludeLineWeight" Grid.Row="5" Grid.Column="3" IsChecked="{Binding UpdateSourceTrigger=PropertyChanged, Source={StaticResource DrawingsLabData}, Path=FormatIncludeLineWeight, Mode=TwoWay}"/>
-        <CheckBox Grid.Row="7" Grid.Column="0" IsChecked="{Binding UpdateSourceTrigger=PropertyChanged, Source={StaticResource DrawingsLabData}, Path=ShiftIncludePositionBoth, Mode=TwoWay}"/>
-        <CheckBox x:Name="ShiftIncludeX" Grid.Row="7" Grid.Column="1" IsChecked="{Binding UpdateSourceTrigger=PropertyChanged, Source={StaticResource DrawingsLabData}, Path=ShiftIncludePositionX, Mode=TwoWay}"/>
-        <CheckBox x:Name="ShiftIncludeY" Grid.Row="7" Grid.Column="2" IsChecked="{Binding UpdateSourceTrigger=PropertyChanged, Source={StaticResource DrawingsLabData}, Path=ShiftIncludePositionY, Mode=TwoWay}"/>
-        <CheckBox x:Name="ShiftIncludeRotation" Grid.Row="7" Grid.Column="3" IsChecked="{Binding UpdateSourceTrigger=PropertyChanged, Source={StaticResource DrawingsLabData}, Path=ShiftIncludeRotation, Mode=TwoWay}"/>
-        <CheckBox Grid.Row="9" Grid.Column="0" IsChecked="{Binding UpdateSourceTrigger=PropertyChanged, Source={StaticResource DrawingsLabData}, Path=SavedIncludePositionBoth, Mode=TwoWay}"/>
-        <CheckBox x:Name="SavedIncludeX" Grid.Row="9" Grid.Column="1" IsChecked="{Binding UpdateSourceTrigger=PropertyChanged, Source={StaticResource DrawingsLabData}, Path=SavedIncludePositionX, Mode=TwoWay}"/>
-        <CheckBox x:Name="SavedIncludeY" Grid.Row="9" Grid.Column="2" IsChecked="{Binding UpdateSourceTrigger=PropertyChanged, Source={StaticResource DrawingsLabData}, Path=SavedIncludePositionY, Mode=TwoWay}"/>
-        <CheckBox x:Name="SavedIncludeRotation" Grid.Row="9" Grid.Column="3" IsChecked="{Binding UpdateSourceTrigger=PropertyChanged, Source={StaticResource DrawingsLabData}, Path=SavedIncludeRotation, Mode=TwoWay}"/>
+        <CheckBox Content="All"  Grid.Row="5" Grid.Column="0" IsChecked="{Binding UpdateSourceTrigger=PropertyChanged, Source={StaticResource DrawingsLabData}, Path=FormatIncludeAll, Mode=TwoWay}"/>
+        <CheckBox Content="Fill" x:Name="FormatIncludeFillColor" Grid.Row="5" Grid.Column="1" IsChecked="{Binding UpdateSourceTrigger=PropertyChanged, Source={StaticResource DrawingsLabData}, Path=FormatIncludeFillColor, Mode=TwoWay}"/>
+        <CheckBox Content="Line" x:Name="FormatIncludeLineColor" Grid.Row="5" Grid.Column="2" IsChecked="{Binding UpdateSourceTrigger=PropertyChanged, Source={StaticResource DrawingsLabData}, Path=FormatIncludeLineColor, Mode=TwoWay}"/>
+        <CheckBox Content="Weight" x:Name="FormatIncludeLineWeight" Grid.Row="5" Grid.Column="3" IsChecked="{Binding UpdateSourceTrigger=PropertyChanged, Source={StaticResource DrawingsLabData}, Path=FormatIncludeLineWeight, Mode=TwoWay}"/>
+        <CheckBox Content="Pos" Grid.Row="7" Grid.Column="0" IsChecked="{Binding UpdateSourceTrigger=PropertyChanged, Source={StaticResource DrawingsLabData}, Path=ShiftIncludePositionBoth, Mode=TwoWay}"/>
+        <CheckBox Content="X" x:Name="ShiftIncludeX" Grid.Row="7" Grid.Column="1" IsChecked="{Binding UpdateSourceTrigger=PropertyChanged, Source={StaticResource DrawingsLabData}, Path=ShiftIncludePositionX, Mode=TwoWay}"/>
+        <CheckBox Content="Y" x:Name="ShiftIncludeY" Grid.Row="7" Grid.Column="2" IsChecked="{Binding UpdateSourceTrigger=PropertyChanged, Source={StaticResource DrawingsLabData}, Path=ShiftIncludePositionY, Mode=TwoWay}"/>
+        <CheckBox Content="Rtn" x:Name="ShiftIncludeRotation" Grid.Row="7" Grid.Column="3" IsChecked="{Binding UpdateSourceTrigger=PropertyChanged, Source={StaticResource DrawingsLabData}, Path=ShiftIncludeRotation, Mode=TwoWay}"/>
+        <CheckBox Content="Pos" Grid.Row="9" Grid.Column="0" IsChecked="{Binding UpdateSourceTrigger=PropertyChanged, Source={StaticResource DrawingsLabData}, Path=SavedIncludePositionBoth, Mode=TwoWay}"/>
+        <CheckBox Content="X" x:Name="SavedIncludeX" Grid.Row="9" Grid.Column="1" IsChecked="{Binding UpdateSourceTrigger=PropertyChanged, Source={StaticResource DrawingsLabData}, Path=SavedIncludePositionX, Mode=TwoWay}"/>
+        <CheckBox Content="Y" x:Name="SavedIncludeY" Grid.Row="9" Grid.Column="2" IsChecked="{Binding UpdateSourceTrigger=PropertyChanged, Source={StaticResource DrawingsLabData}, Path=SavedIncludePositionY, Mode=TwoWay}"/>
+        <CheckBox Content="Rtn" x:Name="SavedIncludeRotation" Grid.Row="9" Grid.Column="3" IsChecked="{Binding UpdateSourceTrigger=PropertyChanged, Source={StaticResource DrawingsLabData}, Path=SavedIncludeRotation, Mode=TwoWay}"/>
 
         <Button Content="Record&#xa;Displacement" Grid.Row="6" Grid.RowSpan="2" Grid.Column="4" Click="RecordDisplacementButton_Click"/>
         <Button Content="Apply&#xa;Displacement" Grid.Row="6" Grid.RowSpan="2" Grid.Column="5" Click="ApplyDisplacementButton_Click"/>
