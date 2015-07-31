@@ -307,7 +307,7 @@
             public const string StyleNameDirectText = "Direct Text style";
             public const string StyleNameBlur = "Blur style";
             public const string StyleNameTextBox = "TextBox style";
-            public const string StyleNameGrayscale = "Grayscale style";
+            public const string StyleNameSpecialEffect = "Special effect style";
 
             public const string ErrorNetworkOrApiQuotaUnavailable =
             "Failed to search images. Please check your network, or the daily API quota is ran out.";

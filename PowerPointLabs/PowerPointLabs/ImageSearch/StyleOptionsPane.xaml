@@ -5,7 +5,7 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:controls="clr-namespace:MahApps.Metro.Controls;assembly=MahApps.Metro"
              mc:Ignorable="d" 
-             d:DesignHeight="420" d:DesignWidth="400">
+             d:DesignHeight="490" d:DesignWidth="400">
     <UserControl.Resources>
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
@@ -23,6 +23,8 @@
             <ColumnDefinition Width="200"/>
         </Grid.ColumnDefinitions>
         <Grid.RowDefinitions>
+            <RowDefinition Height="35"/>
+            <RowDefinition Height="35"/>
             <RowDefinition Height="35"/>
             <RowDefinition Height="35"/>
             <RowDefinition Height="35"/>
@@ -77,8 +79,22 @@
         <Border Name="OverlayColorPanel" MouseLeftButtonUp="ColorPanel_OnMouseLeftButtonUp" Background="{Binding Path=OverlayColor, Mode=TwoWay, NotifyOnSourceUpdated=True}" BorderBrush="#D74926" BorderThickness="1" Height="29" Width="100" HorizontalAlignment="Left" VerticalAlignment="Center" Grid.Column="1" Grid.Row="8" />
         <Label Content="transparency" Foreground="#FFFFFF" FontSize="15" HorizontalAlignment="Left" VerticalAlignment="Center" Grid.Column="0" Grid.Row="9"/>
         <Slider Value="{Binding Path=Transparency, Mode=TwoWay, NotifyOnSourceUpdated=True}" Width="160" Minimum="1" Maximum="100" HorizontalAlignment="Left" VerticalAlignment="Center" Grid.Column="1" Grid.Row="9"></Slider>
-        
-        
-        <Button Click="ResetButton_OnClick" Content="Reset" Width="50" Height="30" HorizontalAlignment="Left" VerticalAlignment="Center" Grid.Column="0" Grid.Row="11"></Button>
+
+        <Label Content="Special Effect Style" Foreground="#AAAAAA" FontSize="15" HorizontalAlignment="Left" VerticalAlignment="Center" Grid.Column="0" Grid.Row="10"/>
+        <Label Content="special effect" Foreground="#FFFFFF" FontSize="15" HorizontalAlignment="Left" VerticalAlignment="Center" Grid.Column="0" Grid.Row="11"/>
+        <ComboBox SelectedIndex="{Binding Path=SpecialEffect, Mode=TwoWay, NotifyOnSourceUpdated=True}" HorizontalAlignment="Left" VerticalAlignment="Center" Grid.Column="1" Grid.Row="11">
+            <ComboBoxItem>Grey Scale</ComboBoxItem>
+            <ComboBoxItem>Black White</ComboBoxItem>
+            <ComboBoxItem>Comic</ComboBoxItem>
+            <ComboBoxItem>Gotham</ComboBoxItem>
+            <ComboBoxItem>HiSatch</ComboBoxItem>
+            <ComboBoxItem>Invert</ComboBoxItem>
+            <ComboBoxItem>Lomograph</ComboBoxItem>
+            <ComboBoxItem>LoSatch</ComboBoxItem>
+            <ComboBoxItem>Polaroid</ComboBoxItem>
+            <ComboBoxItem>Sepia</ComboBoxItem>
+        </ComboBox>
+
+        <Button Click="ResetButton_OnClick" Content="Reset" Width="50" Height="30" HorizontalAlignment="Left" VerticalAlignment="Center" Grid.Column="0" Grid.Row="13"></Button>
     </Grid>
 </UserControl>

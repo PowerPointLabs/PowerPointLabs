@@ -1,6 +1,7 @@
 ﻿using System;
 using System.IO;
 using System.Xml.Serialization;
+using ImageProcessor.Imaging.Filters;
 using PowerPointLabs.ImageSearch.Handler.Effect;
 using PowerPointLabs.WPF.Observable;
 
@@ -109,6 +110,19 @@ namespace PowerPointLabs.ImageSearch.Domain
                 OnPropertyChanged("Transparency");
             }
         }
+
+        // for special effect style
+        private int _specialEffect;
+
+        public int SpecialEffect
+        {
+            get { return _specialEffect; }
+            set
+            {
+                _specialEffect = value;
+                OnPropertyChanged("SpecialEffect");
+            }
+        }
         # endregion
 
         # region Logic
@@ -120,8 +134,11 @@ namespace PowerPointLabs.ImageSearch.Domain
             FontColor = "#FFFFFF";
             TextBoxPosition = 0;
             TextBoxAlignment = 0;
+            
             OverlayColor = "#000000";
             Transparency = 85;
+            
+            SpecialEffect = 0;
         }
 
         public string GetFontFamily()
@@ -184,6 +201,34 @@ namespace PowerPointLabs.ImageSearch.Domain
                 // case 3:
                 default:
                     return Alignment.Right;
+            }
+        }
+
+        public IMatrixFilter GetSpecialEffect()
+        {
+            switch (SpecialEffect)
+            {
+                case 0:
+                    return MatrixFilters.GreyScale;
+                case 1:
+                    return MatrixFilters.BlackWhite;
+                case 2:
+                    return MatrixFilters.Comic;
+                case 3:
+                    return MatrixFilters.Gotham;
+                case 4:
+                    return MatrixFilters.HiSatch;
+                case 5:
+                    return MatrixFilters.Invert;
+                case 6:
+                    return MatrixFilters.Lomograph;
+                case 7:
+                    return MatrixFilters.LoSatch;
+                case 8:
+                    return MatrixFilters.Polaroid;
+                // case 9:
+                default:
+                    return MatrixFilters.Sepia;
             }
         }
 

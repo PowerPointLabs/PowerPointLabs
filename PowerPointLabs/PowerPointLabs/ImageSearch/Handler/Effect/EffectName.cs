@@ -6,6 +6,6 @@
         Overlay,
         Blur,
         TextBox,
-        Grayscale
+        SpecialEffect
     }
 }

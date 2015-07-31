@@ -243,29 +243,22 @@ namespace PowerPointLabs.ImageSearch.Handler
             blurImageShape.ZOrder(MsoZOrderCmd.msoSendToBack);
         }
 
-        public PowerPoint.Shape ApplyGrayscaleEffect(PowerPoint.Shape imageShape, string overlayColor, int transparency)
+        public PowerPoint.Shape ApplySpecialEffectEffect(IMatrixFilter effectFilter, 
+            PowerPoint.Shape imageShape, string overlayColor, int transparency)
         {
             var overlayShape = ApplyOverlayStyle(overlayColor, transparency);
 
-            if (Source.GrayscaleImageFile == null && Source.FullSizeImageFile == null)
-            {
-                Source.GrayscaleImageFile = GrayscaleImage(Source.ImageFile);
-            }
-            if (Source.FullSizeGrayscaleImageFile == null && Source.FullSizeImageFile != null)
-            {
-                Source.FullSizeGrayscaleImageFile = GrayscaleImage(Source.FullSizeImageFile);
-                Source.GrayscaleImageFile = Source.FullSizeGrayscaleImageFile;
-            }
-            var grayscaleImageShape = AddPicture(Source.GrayscaleImageFile, EffectName.Grayscale);
-            FitToSlide.AutoFit(grayscaleImageShape, PreviewPresentation);
+            Source.SpecialEffectImageFile = SpecialEffectImage(effectFilter, Source.FullSizeImageFile ?? Source.ImageFile);
+            var specialEffectImageShape = AddPicture(Source.SpecialEffectImageFile, EffectName.SpecialEffect);
+            FitToSlide.AutoFit(specialEffectImageShape, PreviewPresentation);
 
             overlayShape.ZOrder(MsoZOrderCmd.msoSendToBack);
-            grayscaleImageShape.ZOrder(MsoZOrderCmd.msoSendToBack);
+            specialEffectImageShape.ZOrder(MsoZOrderCmd.msoSendToBack);
             if (imageShape != null)
             {
                 imageShape.ZOrder(MsoZOrderCmd.msoSendToBack);
             }
-            return grayscaleImageShape;
+            return specialEffectImageShape;
         }
 
         # endregion
@@ -355,18 +348,18 @@ namespace PowerPointLabs.ImageSearch.Handler
             return blurImageFile;
         }
 
-        public static string GrayscaleImage(string imageFilePath)
+        public static string SpecialEffectImage(IMatrixFilter effectFilter, string imageFilePath)
         {
-            var grayscaleImageFile = TempPath.GetPath("fullsize_grayscale");
+            var specialEffectImageFile = TempPath.GetPath("fullsize_specialeffect");
             using (var imageFactory = new ImageFactory())
             {
                 var image = imageFactory
                     .Load(imageFilePath)
-                    .Filter(MatrixFilters.GreyScale)
+                    .Filter(effectFilter)
                     .Image;
-                image.Save(grayscaleImageFile);
+                image.Save(specialEffectImageFile);
             }
-            return grayscaleImageFile;
+            return specialEffectImageFile;
         }
         #endregion
     }

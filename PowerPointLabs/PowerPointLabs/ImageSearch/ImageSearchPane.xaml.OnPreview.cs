@@ -43,7 +43,7 @@ namespace PowerPointLabs.ImageSearch
                     Add(PreviewList, previewInfo.DirectTextStyleImagePath, TextCollection.ImagesLabText.StyleNameDirectText);
                     Add(PreviewList, previewInfo.BlurStyleImagePath, TextCollection.ImagesLabText.StyleNameBlur);
                     Add(PreviewList, previewInfo.TextboxStyleImagePath, TextCollection.ImagesLabText.StyleNameTextBox);
-                    Add(PreviewList, previewInfo.GrayScaleStyleImagePath, TextCollection.ImagesLabText.StyleNameGrayscale);
+                    Add(PreviewList, previewInfo.SpecialEffectStyleImagePath, TextCollection.ImagesLabText.StyleNameSpecialEffect);
 
                     PreviewListBox.SelectedIndex = selectedId;
                 }

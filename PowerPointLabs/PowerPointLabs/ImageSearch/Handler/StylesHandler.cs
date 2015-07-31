@@ -55,11 +55,11 @@ namespace PowerPointLabs.ImageSearch.Handler
             handler.ApplyBlurTextboxEffect(blurImageShape, Options.OverlayColor, Options.Transparency);
             handler.GetNativeSlide().Export(previewInfo.TextboxStyleImagePath, "JPG");
 
-            // style: grayscale
+            // style: special effect
             handler.RemoveEffect(EffectName.Overlay);
             handler.RemoveEffect(EffectName.Blur);
-            handler.ApplyGrayscaleEffect(imageShape, Options.OverlayColor, Options.Transparency);
-            handler.GetNativeSlide().Export(previewInfo.GrayScaleStyleImagePath, "JPG");
+            handler.ApplySpecialEffectEffect(Options.GetSpecialEffect(), imageShape, Options.OverlayColor, Options.Transparency);
+            handler.GetNativeSlide().Export(previewInfo.SpecialEffectStyleImagePath, "JPG");
 
             handler.Delete();
             return previewInfo;
@@ -90,8 +90,8 @@ namespace PowerPointLabs.ImageSearch.Handler
                 case TextCollection.ImagesLabText.StyleNameTextBox:
                     ApplyTextBoxStyle(effectsHandler);
                     break;
-                case TextCollection.ImagesLabText.StyleNameGrayscale:
-                    ApplyGrayscaleStyle(effectsHandler);
+                case TextCollection.ImagesLabText.StyleNameSpecialEffect:
+                    ApplySpecialEffectStyle(effectsHandler);
                     break;
             }
             effectsHandler.ApplyImageReference(source.ContextLink);
@@ -110,10 +110,11 @@ namespace PowerPointLabs.ImageSearch.Handler
             }
         }
 
-        private void ApplyGrayscaleStyle(EffectsHandler effectsHandler)
+        private void ApplySpecialEffectStyle(EffectsHandler effectsHandler)
         {
             ApplyTextEffect(effectsHandler);
-            effectsHandler.ApplyGrayscaleEffect(null /*no need image shape*/, Options.OverlayColor, Options.Transparency);
+            effectsHandler.ApplySpecialEffectEffect(Options.GetSpecialEffect(),
+                null /*no need image shape*/, Options.OverlayColor, Options.Transparency);
         }
 
         private void ApplyTextBoxStyle(EffectsHandler effectsHandler)
