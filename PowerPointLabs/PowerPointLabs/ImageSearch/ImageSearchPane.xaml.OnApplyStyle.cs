@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Forms;
 using System.Windows.Input;
 using PowerPointLabs.AutoUpdate;
 using PowerPointLabs.ImageSearch.Domain;
