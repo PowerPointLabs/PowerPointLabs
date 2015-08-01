@@ -304,10 +304,11 @@
 
         public class ImagesLabText
         {
-            public const string StyleNameDirectText = "Direct Text style";
-            public const string StyleNameBlur = "Blur style";
-            public const string StyleNameTextBox = "TextBox style";
-            public const string StyleNameGrayscale = "Grayscale style";
+            public const string StyleNameDirectText = "Direct Text Style";
+            public const string StyleNameBlur = "Blur Style";
+            public const string StyleNameTextBox = "TextBox Style";
+            public const string StyleNameBanner = "Banner Style";
+            public const string StyleNameSpecialEffect = "Special Effect Style";
 
             public const string ErrorNetworkOrApiQuotaUnavailable =
             "Failed to search images. Please check your network, or the daily API quota is ran out.";
@@ -319,6 +320,9 @@
                 "Failed to load image. The image file is corrupted.";
             public const string ErrorUrlLinkIncorrect =
                 "The download link is not in the correct format. Did the link miss out 'http://'?";
+
+            public const string SuccessfullyAppliedStyle =
+                "Successfully Applied.";
 
             public const string MultiPurposeButtonNameSearch = "Search";
             public const string MultiPurposeButtonNameDownload = "Download";

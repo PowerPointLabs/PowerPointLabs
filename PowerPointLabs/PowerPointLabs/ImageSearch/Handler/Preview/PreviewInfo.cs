@@ -4,7 +4,8 @@ namespace PowerPointLabs.ImageSearch.Handler.Preview
 {
     public class PreviewInfo
     {
-        public string GrayScaleStyleImagePath { get; private set; }
+        public string SpecialEffectStyleImagePath { get; private set; }
+        public string BannerStyleImagePath { get; private set; }
         public string TextboxStyleImagePath { get; private set; }
         public string BlurStyleImagePath { get; private set; }
         public string DirectTextStyleImagePath { get; private set; }
@@ -19,7 +20,8 @@ namespace PowerPointLabs.ImageSearch.Handler.Preview
             TextboxStyleImagePath = TempPath.GetPath("textbox");
             BlurStyleImagePath = TempPath.GetPath("blur");
             DirectTextStyleImagePath = TempPath.GetPath("directtext");
-            GrayScaleStyleImagePath = TempPath.GetPath("grayscale");
+            BannerStyleImagePath = TempPath.GetPath("banner");
+            SpecialEffectStyleImagePath = TempPath.GetPath("specialeffect");
         }
     }
 }

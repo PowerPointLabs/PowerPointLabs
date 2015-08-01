@@ -43,6 +43,10 @@ namespace PowerPointLabs.ImageSearch.Handler
 
             // style: direct text
             var imageShape = ApplyDirectTextStyle(handler);
+            if (Options.IsInsertReference)
+            {
+                handler.ApplyImageReferenceInsertion(source.ContextLink, Options.GetFontFamily(), Options.FontColor);
+            }
             handler.GetNativeSlide().Export(previewInfo.DirectTextStyleImagePath, "JPG");
 
             // style: blur
@@ -55,11 +59,16 @@ namespace PowerPointLabs.ImageSearch.Handler
             handler.ApplyBlurTextboxEffect(blurImageShape, Options.OverlayColor, Options.Transparency);
             handler.GetNativeSlide().Export(previewInfo.TextboxStyleImagePath, "JPG");
 
-            // style: grayscale
+            // style: banner
             handler.RemoveEffect(EffectName.Overlay);
             handler.RemoveEffect(EffectName.Blur);
-            handler.ApplyGrayscaleEffect(imageShape, Options.OverlayColor, Options.Transparency);
-            handler.GetNativeSlide().Export(previewInfo.GrayScaleStyleImagePath, "JPG");
+            ApplyBannerStyle(handler, imageShape);
+            handler.GetNativeSlide().Export(previewInfo.BannerStyleImagePath, "JPG");
+
+            // style: special effect
+            handler.RemoveEffect(EffectName.Overlay);
+            handler.ApplySpecialEffectEffect(Options.GetSpecialEffect(), imageShape, Options.OverlayColor, Options.Transparency);
+            handler.GetNativeSlide().Export(previewInfo.SpecialEffectStyleImagePath, "JPG");
 
             handler.Delete();
             return previewInfo;
@@ -90,11 +99,18 @@ namespace PowerPointLabs.ImageSearch.Handler
                 case TextCollection.ImagesLabText.StyleNameTextBox:
                     ApplyTextBoxStyle(effectsHandler);
                     break;
-                case TextCollection.ImagesLabText.StyleNameGrayscale:
-                    ApplyGrayscaleStyle(effectsHandler);
+                case TextCollection.ImagesLabText.StyleNameBanner:
+                    ApplyBannerStyle(effectsHandler);
+                    break;
+                case TextCollection.ImagesLabText.StyleNameSpecialEffect:
+                    ApplySpecialEffectStyle(effectsHandler);
                     break;
             }
             effectsHandler.ApplyImageReference(source.ContextLink);
+            if (Options.IsInsertReference)
+            {
+                effectsHandler.ApplyImageReferenceInsertion(source.ContextLink, Options.GetFontFamily(), Options.FontColor);
+            }
             ClearSelection();
         }
         # endregion
@@ -106,14 +122,15 @@ namespace PowerPointLabs.ImageSearch.Handler
             if (currentSelection.Type == PpSelectionType.ppSelectionShapes)
             {
                 currentSelection.Unselect();
-                Cursor.Current = Cursors.Default;
             }
+            Cursor.Current = Cursors.Default;
         }
 
-        private void ApplyGrayscaleStyle(EffectsHandler effectsHandler)
+        private void ApplySpecialEffectStyle(EffectsHandler effectsHandler)
         {
             ApplyTextEffect(effectsHandler);
-            effectsHandler.ApplyGrayscaleEffect(null /*no need image shape*/, Options.OverlayColor, Options.Transparency);
+            effectsHandler.ApplySpecialEffectEffect(Options.GetSpecialEffect(),
+                null /*no need image shape*/, Options.OverlayColor, Options.Transparency);
         }
 
         private void ApplyTextBoxStyle(EffectsHandler effectsHandler)
@@ -128,6 +145,26 @@ namespace PowerPointLabs.ImageSearch.Handler
         {
             ApplyTextEffect(effectsHandler);
             effectsHandler.ApplyBlurEffect(null /*no need image shape*/, Options.OverlayColor, Options.Transparency);
+        }
+
+        private void ApplyBannerStyle(EffectsHandler effectsHandler, Shape imageShape = null)
+        {
+            if (imageShape == null) // use case: non-preview
+            {
+                ApplyTextEffect(effectsHandler);
+                imageShape = effectsHandler.ApplyBackgroundEffect();
+            }
+            switch (Options.GetBannerShape())
+            {
+                case BannerShape.Rectangle:
+                    effectsHandler.ApplyRectBannerEffect(Options.GetBannerDirection(), Options.GetTextBoxPosition(), 
+                        imageShape, Options.OverlayColor, Options.Transparency);
+                    break;
+                // case BannerShape.Circle:
+                default:
+                    effectsHandler.ApplyCircleBannerEffect(imageShape, Options.OverlayColor, Options.Transparency);
+                    break;
+            }
         }
 
         private Shape ApplyDirectTextStyle(EffectsHandler effectsHandler)
@@ -147,6 +184,7 @@ namespace PowerPointLabs.ImageSearch.Handler
             {
                 effectsHandler.ApplyTextEffect(Options.GetFontFamily(), Options.FontColor, Options.FontSizeIncrease);
             }
+            effectsHandler.ApplyTextPositionAndAlignment(Options.GetTextBoxPosition(), Options.GetTextBoxAlignment());
         }
 
         private EffectsHandler CreateEffectsHandler(ImageItem source)

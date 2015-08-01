@@ -283,6 +283,11 @@
     <Compile Include="ConvertToPicture.cs" />
     <Compile Include="CropToShape.cs" />
     <Compile Include="DataSources\ShapesLabSettingsDataSource.cs" />
+    <Compile Include="ImageSearch\Handler\Effect\Alignment.cs" />
+    <Compile Include="ImageSearch\Handler\Effect\Banner.cs" />
+    <Compile Include="ImageSearch\Handler\Effect\Position.cs" />
+    <Compile Include="ImageSearch\Handler\Effect\TextBoxes.cs" />
+    <Compile Include="ImageSearch\Handler\Effect\TextBoxInfo.cs" />
     <Compile Include="ImageSearch\ImageSearchPane.xaml.Common.cs" />
     <Compile Include="ImageSearch\Handler\Effect\EffectName.cs" />
     <Compile Include="ImageSearch\Handler\Preview\PreviewInfo.cs" />
@@ -295,6 +300,7 @@
     <Compile Include="ImageSearch\ImageSearchPane.xaml.OnPreview.cs" />
     <Compile Include="ImageSearch\ImageSearchPane.xaml.OnLoadImages.cs" />
     <Compile Include="ImageSearch\SearchEngine\GoogleEngine.Events.cs" />
+    <Compile Include="ImageSearch\Util\ShapeUtil.cs" />
     <Compile Include="ImageSearch\Util\UrlUtil.cs" />
     <Compile Include="Utils\Assumption.cs" />
     <Compile Include="Utils\Exceptions\AssumptionFailedException.cs" />

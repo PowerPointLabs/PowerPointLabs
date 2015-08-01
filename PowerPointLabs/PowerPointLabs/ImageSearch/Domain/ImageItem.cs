@@ -34,8 +34,7 @@
         # region other info
         // as cache
         public string BlurImageFile { get; set; }
-        public string GrayscaleImageFile { get; set; }
-        public string FullSizeGrayscaleImageFile { get; set; }
+        public string SpecialEffectImageFile { get; set; }
         public string FullSizeImageFile { get; set; }
 
         // meta info

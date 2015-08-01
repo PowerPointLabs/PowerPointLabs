@@ -8,7 +8,9 @@ using PowerPointLabs.ImageSearch.Domain;
 using PowerPointLabs.ImageSearch.SearchEngine;
 using PowerPointLabs.ImageSearch.SearchEngine.VO;
 using PowerPointLabs.ImageSearch.Util;
+using PowerPointLabs.Utils;
 using RestSharp;
+using Graphics = System.Drawing.Graphics;
 
 namespace PowerPointLabs.ImageSearch
 {
@@ -42,9 +44,6 @@ namespace PowerPointLabs.ImageSearch
         {
             Dispatcher.Invoke(new Action(() =>
             {
-                PreviewList.Clear();
-                PreviewProgressRing.IsActive = false;
-
                 SearchButton.IsEnabled = false;
                 loadMoreItem.ImageFile = TempPath.LoadingImgPath;
                 PrepareToSearch(GoogleEngine.NumOfItemsPerRequest - 1, isListClearNeeded: false);
@@ -58,9 +57,8 @@ namespace PowerPointLabs.ImageSearch
             {
                 var openFileDialog = new OpenFileDialog
                 {
-                    DefaultExt = "*.png",
                     Multiselect = false,
-                    Filter = @"Image File|*.png;*.jpg;*.jpeg;"
+                    Filter = @"Image File|*.png;*.jpg;*.jpeg;*.bmp;*.gif;"
                 };
                 var fileDialogResult = openFileDialog.ShowDialog();
                 if (fileDialogResult != System.Windows.Forms.DialogResult.OK)

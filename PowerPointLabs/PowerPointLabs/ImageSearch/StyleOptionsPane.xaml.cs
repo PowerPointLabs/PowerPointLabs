@@ -1,11 +1,15 @@
-﻿using System.Windows;
+﻿using System;
+using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Forms;
 using System.Windows.Input;
 using System.Windows.Media;
+using MahApps.Metro.Controls;
 using PowerPointLabs.ImageSearch.Domain;
 using PowerPointLabs.ImageSearch.Util;
+using PowerPointLabs.Utils;
 using Color = System.Drawing.Color;
+using ComboBox = System.Windows.Controls.ComboBox;
 
 namespace PowerPointLabs.ImageSearch
 {
@@ -57,6 +61,41 @@ namespace PowerPointLabs.ImageSearch
             if (options != null)
             {
                 options.Init();
+            }
+        }
+
+        private void ToggleSwitch_OnIsCheckedChanged(object sender, EventArgs e)
+        {
+            var toggleSwitch = sender as ToggleSwitch;
+            if (toggleSwitch == null || toggleSwitch.IsChecked == null) return;
+
+            if (toggleSwitch.IsChecked.Value)
+            {
+                FontFamilyComboBox.IsEnabled = false;
+                FontSizeTextBox.IsEnabled = false;
+                FontColorPanel.IsEnabled = false;
+            }
+            else
+            {
+                FontFamilyComboBox.IsEnabled = true;
+                FontSizeTextBox.IsEnabled = true;
+                FontColorPanel.IsEnabled = true;
+            }
+        }
+
+        private void TextboxPositionComboBox_OnSelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            var textboxPosCombobox = sender as ComboBox;
+            if (textboxPosCombobox == null) return;
+
+            var textboxPos = textboxPosCombobox.SelectedIndex;
+            if (textboxPos == 0 /*Original*/)
+            {
+                TextboxAlignmentComboBox.IsEnabled = false;
+            }
+            else
+            {
+                TextboxAlignmentComboBox.IsEnabled = true;
             }
         }
     }

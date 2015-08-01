@@ -1,6 +1,8 @@
 ﻿using System;
 using System.IO;
 using System.Xml.Serialization;
+using ImageProcessor.Imaging.Filters;
+using PowerPointLabs.ImageSearch.Handler.Effect;
 using PowerPointLabs.WPF.Observable;
 
 namespace PowerPointLabs.ImageSearch.Domain
@@ -60,6 +62,30 @@ namespace PowerPointLabs.ImageSearch.Domain
             }
         }
 
+        private int _textBoxPosition;
+
+        public int TextBoxPosition
+        {
+            get { return _textBoxPosition; }
+            set
+            {
+                _textBoxPosition = value;
+                OnPropertyChanged("TextBoxPosition");
+            }
+        }
+
+        private int _textBoxAlignment;
+
+        public int TextBoxAlignment
+        {
+            get { return _textBoxAlignment; }
+            set
+            {
+                _textBoxAlignment = value;
+                OnPropertyChanged("TextBoxAlignment");
+            }
+        }
+
         private string _overlayColor;
 
         public string OverlayColor
@@ -84,6 +110,57 @@ namespace PowerPointLabs.ImageSearch.Domain
                 OnPropertyChanged("Transparency");
             }
         }
+
+        // for banner style
+        private int _bannerShape;
+
+        public int BannerShape
+        {
+            get { return _bannerShape; }
+            set
+            {
+                _bannerShape = value;
+                OnPropertyChanged("BannerShape");
+            }
+        }
+
+        private int _bannerDirection;
+
+        public int BannerDirection
+        {
+            get { return _bannerDirection; }
+            set
+            {
+                _bannerDirection = value;
+                OnPropertyChanged("BannerDirection");
+            }
+        }
+
+        // for special effect style
+        private int _specialEffect;
+
+        public int SpecialEffect
+        {
+            get { return _specialEffect; }
+            set
+            {
+                _specialEffect = value;
+                OnPropertyChanged("SpecialEffect");
+            }
+        }
+
+        // other
+        private bool _isInsertReference;
+
+        public bool IsInsertReference
+        {
+            get { return _isInsertReference; }
+            set
+            {
+                _isInsertReference = value;
+                OnPropertyChanged("IsInsertReference");
+            }
+        }
         # endregion
 
         # region Logic
@@ -93,8 +170,18 @@ namespace PowerPointLabs.ImageSearch.Domain
             FontFamily = 1;
             FontSizeIncrease = 10;
             FontColor = "#FFFFFF";
+            TextBoxPosition = 4;
+            TextBoxAlignment = 0;
+            
             OverlayColor = "#000000";
             Transparency = 85;
+
+            BannerShape = 0;
+            BannerDirection = 0;
+            
+            SpecialEffect = 0;
+
+            IsInsertReference = false;
         }
 
         public string GetFontFamily()
@@ -110,11 +197,112 @@ namespace PowerPointLabs.ImageSearch.Domain
                 case 3:
                     return "Calibri Light";
                 case 4:
+                    return "Trebuchet MS";
+                case 5:
                     return "";
                 default:
                     return "Segoe UI";
             }
         }
+
+        public Position GetTextBoxPosition()
+        {
+            switch (TextBoxPosition)
+            {
+                case 0:
+                    return Position.Original;
+                case 1:
+                    return Position.TopLeft;
+                case 2:
+                    return Position.Top;
+                case 3:
+                    return Position.TopRight;
+                case 4:
+                    return Position.Left;
+                case 5:
+                    return Position.Centre;
+                case 6:
+                    return Position.Right;
+                case 7:
+                    return Position.BottomLeft;
+                case 8:
+                    return Position.Bottom;
+                // case 9:
+                default:
+                    return Position.BottomRight;
+            }
+        }
+
+        public Alignment GetTextBoxAlignment()
+        {
+            switch (TextBoxAlignment)
+            {
+                case 0:
+                    return Alignment.Auto;
+                case 1:
+                    return Alignment.Left;
+                case 2:
+                    return Alignment.Centre;
+                // case 3:
+                default:
+                    return Alignment.Right;
+            }
+        }
+
+        public BannerShape GetBannerShape()
+        {
+            switch (BannerShape)
+            {
+                case 0:
+                    return Handler.Effect.BannerShape.Rectangle;
+                // case 1:
+                default:
+                    return Handler.Effect.BannerShape.Circle;
+            }
+        }
+
+        public BannerDirection GetBannerDirection()
+        {
+            switch (BannerDirection)
+            {
+                case 0:
+                    return Handler.Effect.BannerDirection.Auto;
+                case 1:
+                    return Handler.Effect.BannerDirection.Horizontal;
+                // case 2:
+                default:
+                    return Handler.Effect.BannerDirection.Vertical;
+            }
+        }
+
+        public IMatrixFilter GetSpecialEffect()
+        {
+            switch (SpecialEffect)
+            {
+                case 0:
+                    return MatrixFilters.GreyScale;
+                case 1:
+                    return MatrixFilters.BlackWhite;
+                case 2:
+                    return MatrixFilters.Comic;
+                case 3:
+                    return MatrixFilters.Gotham;
+                case 4:
+                    return MatrixFilters.HiSatch;
+                case 5:
+                    return MatrixFilters.Invert;
+                case 6:
+                    return MatrixFilters.Lomograph;
+                case 7:
+                    return MatrixFilters.LoSatch;
+                case 8:
+                    return MatrixFilters.Polaroid;
+                // case 9:
+                default:
+                    return MatrixFilters.Sepia;
+            }
+        }
+
         # endregion
 
         # region IO serialization
