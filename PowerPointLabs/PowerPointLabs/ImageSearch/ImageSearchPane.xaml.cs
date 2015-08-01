@@ -23,6 +23,8 @@ namespace PowerPointLabs.ImageSearch
     /// <summary>
     /// Interaction logic for ImageSearchPane.xaml
     /// </summary>
+    /// TODO to do unit test for WPF UI,
+    /// MVVM pattern must be applied
     public partial class ImageSearchPane
     {
         # region Props & States
@@ -44,6 +46,12 @@ namespace PowerPointLabs.ImageSearch
 
         // UI model - search textbox watermark
         public ObservableString SearchTextboxWatermark { get; set; }
+
+        // UI model - preview image in Confirm Apply flyout
+        public ObservableString ConfirmApplyPreviewImageFile { get; set; }
+
+        // UI model
+        public ObservableString ConfirmApplyFlyoutTitle { get; set; }
 
         // a timer used to download full-size image at background
         public Timer PreviewTimer { get; set; }
@@ -85,12 +93,22 @@ namespace PowerPointLabs.ImageSearch
             IsOpen = true;
             InitStyleOptions();
             InitSearchOptions();
+            InitConfirmApplyFlyout();
             if (TempPath.InitTempFolder())
             {
                 InitSearchEngine();
                 InitPreviewPresentation();
                 InitPreviewTimer();
             }
+        }
+
+        private void InitConfirmApplyFlyout()
+        {
+            ConfirmApplyPreviewImageFile = new ObservableString { Text = "" };
+            ConfirmApplyFlyoutTitle = new ObservableString { Text = "Confirm Apply" };
+            ConfirmApplyImage.DataContext = ConfirmApplyPreviewImageFile;
+            ConfirmApplyFlyout.DataContext = ConfirmApplyFlyoutTitle;
+            OptionsPane2.DataContext = StyleOptions;
         }
 
         private void InitSearchTextbox()
@@ -290,7 +308,17 @@ namespace PowerPointLabs.ImageSearch
         // enable & disable insert button
         private void PreivewListBox_OnSelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            PreviewInsert.IsEnabled = PreviewListBox.SelectedValue != null;
+            if (PreviewListBox.SelectedValue != null)
+            {
+                var targetStyle = PreviewListBox.SelectedValue as ImageItem;
+                PreviewInsert.IsEnabled = true;
+                UpdateConfirmApplyPreviewImage();
+                UpdateConfirmApplyFlyOut(targetStyle);
+            }
+            else
+            {
+                PreviewInsert.IsEnabled = false;
+            }
         }
 
         // rmb to close background presentation
@@ -308,6 +336,8 @@ namespace PowerPointLabs.ImageSearch
         private void PreviewApply_OnClick(object sender, RoutedEventArgs e)
         {
             ApplyStyle();
+            PreviewListBox.Focus();
+            Keyboard.Focus(PreviewListBox);
         }
 
         private void PreviewDisplayToggleSwitch_OnIsCheckedChanged(object sender, EventArgs e)
@@ -339,14 +369,29 @@ namespace PowerPointLabs.ImageSearch
                 return;
             }
 
-            switch (e.Key)
+            if (ConfirmApplyFlyout.IsOpen)
             {
-                case Key.Enter:
-                    if (PreviewInsert.IsEnabled)
-                    {
-                        PreviewInsert.RaiseEvent(new RoutedEventArgs(ButtonBase.ClickEvent));
-                    }
-                    break;
+                switch (e.Key)
+                {
+                    case Key.Escape:
+                        ConfirmApplyFlyout.IsOpen = false;
+                        break;
+                    case Key.Enter:
+                        ConfirmApplyButton.RaiseEvent(new RoutedEventArgs(ButtonBase.ClickEvent));
+                        break;
+                }
+            }
+            else
+            {
+                switch (e.Key)
+                {
+                    case Key.Enter:
+                        if (PreviewInsert.IsEnabled)
+                        {
+                            PreviewInsert.RaiseEvent(new RoutedEventArgs(ButtonBase.ClickEvent));
+                        }
+                        break;
+                }
             }
         }
 

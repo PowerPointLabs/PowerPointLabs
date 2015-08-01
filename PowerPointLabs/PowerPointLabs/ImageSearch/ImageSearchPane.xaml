@@ -8,6 +8,7 @@
              mc:Ignorable="d" 
              WindowStartupLocation="CenterScreen"
              SaveWindowPosition="True"
+             Name="ImagesLabWindow"
              Title="Images Lab"
              Width="1100"
              Height="600"
@@ -29,6 +30,45 @@
     </controls:MetroWindow.Resources>
     <controls:MetroWindow.Flyouts>
         <controls:FlyoutsControl>
+            <controls:Flyout Focusable="True" KeyDown="ConfirmApplyFlyout_OnKeyDown" Name="ConfirmApplyFlyout" Header="{Binding Path=Text, Mode=TwoWay, NotifyOnSourceUpdated=True}" IsModal="True" Position="Left" Width="{Binding Path=ActualWidth, ElementName=ImagesLabWindow}" >
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="400"></ColumnDefinition>
+                        <ColumnDefinition Width="*"></ColumnDefinition>
+                    </Grid.ColumnDefinitions>
+                    <Grid Grid.Column="1">
+                        <Image Name="ConfirmApplyImage" Margin="3,3,5,3" Source="{Binding Path=Text, Mode=TwoWay, NotifyOnSourceUpdated=True}" />
+                    </Grid>
+                    <Grid Grid.Column="0">
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="*"></RowDefinition>
+                            <RowDefinition Height="10"></RowDefinition>
+                            <RowDefinition Height="35"></RowDefinition>
+                            <RowDefinition Height="15"></RowDefinition>
+                        </Grid.RowDefinitions>
+                        <ScrollViewer Grid.Row="0" VerticalScrollBarVisibility="Auto">
+                            <custom:StyleOptionsPane x:Name="OptionsPane2" Margin="20,0,0,0" />
+                        </ScrollViewer>
+                        <Grid Grid.Row="2">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="20"></ColumnDefinition>
+                                <ColumnDefinition Width="75"></ColumnDefinition>
+                                <ColumnDefinition Width="75"></ColumnDefinition>
+                                <ColumnDefinition Width="*"></ColumnDefinition>
+                            </Grid.ColumnDefinitions>
+                            <Button Grid.Column="1" Click="ConfirmApplyPreviewButton_OnClick" Name="ConfirmApplyPreviewButton" Margin="0,0,5,0">Preview</Button>
+                            <Button Grid.Column="2" Click="ConfirmApplyButton_OnClick" Name="ConfirmApplyButton" Margin="0,0,5,0">Apply</Button>
+                            <ComboBox SelectedIndex="0" Width="150" HorizontalAlignment="Right" Name="TargetStyleComboBox" SelectionChanged="TargetStyleComboBox_OnSelectionChanged" Grid.Column="3">
+                                <ComboBoxItem>Direct Text Style</ComboBoxItem>
+                                <ComboBoxItem>Blur Style</ComboBoxItem>
+                                <ComboBoxItem>TextBox Style</ComboBoxItem>
+                                <ComboBoxItem>Banner Style</ComboBoxItem>
+                                <ComboBoxItem>Special Effect Style</ComboBoxItem>
+                            </ComboBox>
+                        </Grid>
+                    </Grid>
+                </Grid>
+            </controls:Flyout>
             <controls:Flyout Name="StyleOptionsFlyout" Header="Style Options" IsModal="True" Position="Left" Width="400" >
                 <ScrollViewer VerticalScrollBarVisibility="Auto">
                     <custom:StyleOptionsPane x:Name="OptionsPane" Margin="20,0,0,0" />

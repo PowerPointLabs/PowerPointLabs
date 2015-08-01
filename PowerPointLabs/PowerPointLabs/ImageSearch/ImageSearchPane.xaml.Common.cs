@@ -70,8 +70,8 @@ namespace PowerPointLabs.ImageSearch
                         && _insertDownloadingUriToPreviewImage
                             .TryGetValue(fullsizeImageUri, out targetStyle))
                     {
-                        // insert + do preview
-                        PreviewPresentation.ApplyStyle(source, targetStyle.Tooltip);
+                        // open confirm apply flyout + do preview
+                        OpenConfirmApplyFlyout(targetStyle);
                         DoPreview(source);
                     }
                     // or it is to preview only (from timer)

@@ -52,6 +52,8 @@ namespace PowerPointLabs.ImageSearch
                 {
                     Clipboard.SetText(previousTextCopy);
                 }
+
+                UpdateConfirmApplyPreviewImage();
                 PreviewProgressRing.IsActive = false;
             }));
         }

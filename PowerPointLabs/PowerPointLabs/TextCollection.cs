@@ -304,11 +304,11 @@
 
         public class ImagesLabText
         {
-            public const string StyleNameDirectText = "Direct Text style";
-            public const string StyleNameBlur = "Blur style";
-            public const string StyleNameTextBox = "TextBox style";
-            public const string StyleNameBanner = "Banner style";
-            public const string StyleNameSpecialEffect = "Special effect style";
+            public const string StyleNameDirectText = "Direct Text Style";
+            public const string StyleNameBlur = "Blur Style";
+            public const string StyleNameTextBox = "TextBox Style";
+            public const string StyleNameBanner = "Banner Style";
+            public const string StyleNameSpecialEffect = "Special Effect Style";
 
             public const string ErrorNetworkOrApiQuotaUnavailable =
             "Failed to search images. Please check your network, or the daily API quota is ran out.";
