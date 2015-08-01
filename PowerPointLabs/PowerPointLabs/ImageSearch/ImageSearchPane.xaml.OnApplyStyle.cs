@@ -2,6 +2,7 @@
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
+using MahApps.Metro.Controls.Dialogs;
 using PowerPointLabs.AutoUpdate;
 using PowerPointLabs.ImageSearch.Domain;
 using PowerPointLabs.ImageSearch.Util;
@@ -81,6 +82,14 @@ namespace PowerPointLabs.ImageSearch
 
             PreviewPresentation.ApplyStyle(source, targetStyle.Tooltip);
             ConfirmApplyFlyout.IsOpen = false;
+            this.ShowMessageAsync("", TextCollection.ImagesLabText.SuccessfullyAppliedStyle)
+                .ContinueWith(task =>
+                {
+                    Dispatcher.BeginInvoke(new Action(() =>
+                    {
+                        FocusPreviewListBox();
+                    }));
+                });
         }
 
         private void UpdateConfirmApplyFlyOut(ImageItem targetStyle)

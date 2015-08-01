@@ -336,6 +336,11 @@ namespace PowerPointLabs.ImageSearch
         private void PreviewApply_OnClick(object sender, RoutedEventArgs e)
         {
             ApplyStyle();
+            FocusPreviewListBox();
+        }
+
+        private void FocusPreviewListBox()
+        {
             PreviewListBox.Focus();
             Keyboard.Focus(PreviewListBox);
         }

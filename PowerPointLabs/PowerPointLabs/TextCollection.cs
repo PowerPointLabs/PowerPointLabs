@@ -321,6 +321,9 @@
             public const string ErrorUrlLinkIncorrect =
                 "The download link is not in the correct format. Did the link miss out 'http://'?";
 
+            public const string SuccessfullyAppliedStyle =
+                "Successfully Applied.";
+
             public const string MultiPurposeButtonNameSearch = "Search";
             public const string MultiPurposeButtonNameDownload = "Download";
             public const string MultiPurposeButtonNameFromFile = "From File";
