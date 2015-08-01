@@ -38,7 +38,8 @@ namespace PowerPointLabs.ImageSearch.Handler.Effect
                 if ((shape.Type != MsoShapeType.msoPlaceholder
                         && shape.Type != MsoShapeType.msoTextBox)
                         || shape.TextFrame.HasText == MsoTriState.msoFalse
-                        || StringUtil.IsEmpty(shape.TextFrame2.TextRange.Paragraphs.TrimText().Text))
+                        || StringUtil.IsEmpty(shape.TextFrame2.TextRange.Paragraphs.TrimText().Text)
+                        || StringUtil.IsNotEmpty(shape.Tags[Tag.ImageReference]))
                 {
                     continue;
                 }

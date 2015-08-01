@@ -46,10 +46,27 @@ namespace PowerPointLabs.ImageSearch.Handler
                             NotesPageText;
         }
 
+        public void ApplyImageReferenceInsertion(string contextLink, string fontFamily, string fontColor)
+        {
+            var imageRefShape = Shapes.AddTextbox(MsoTextOrientation.msoTextOrientationHorizontal, 0, 0, PreviewPresentation.SlideWidth,
+                20);
+            imageRefShape.TextFrame2.TextRange.Text = "Image From: " + contextLink;
+
+            imageRefShape.TextFrame2.TextRange.TrimText().Font.Fill.ForeColor.RGB 
+                = Graphics.ConvertColorToRgb(StringUtil.GetColorFromHexValue(fontColor));
+            imageRefShape.TextEffect.FontName = StringUtil.IsEmpty(fontFamily) ? "Tahoma" : fontFamily;
+            imageRefShape.TextEffect.FontSize = 14;
+            imageRefShape.TextEffect.Alignment = MsoTextEffectAlignment.msoTextEffectAlignmentRight;
+            imageRefShape.Top = PreviewPresentation.SlideHeight -
+                                imageRefShape.TextFrame2.TextRange.Paragraphs.BoundHeight - 10;
+            AddTag(imageRefShape, Tag.ImageReference, "true");
+            ChangeName(imageRefShape, EffectName.ImageReference);
+        }
+
         // add a background image shape from imageItem
         public PowerPoint.Shape ApplyBackgroundEffect(string overlayColor, int overlayTransparency)
         {
-            var overlay = ApplyOverlayStyle(overlayColor, overlayTransparency);
+            var overlay = ApplyOverlayEffect(overlayColor, overlayTransparency);
             overlay.ZOrder(MsoZOrderCmd.msoSendToBack);
 
             return ApplyBackgroundEffect();
@@ -91,12 +108,12 @@ namespace PowerPointLabs.ImageSearch.Handler
                 AddTag(shape, Tag.OriginalFontFamily, font.Name);
                 if (StringUtil.IsEmpty(fontFamily))
                 {
-                    font.Name = shape.Tags[Tag.OriginalFontFamily];
+                    shape.TextEffect.FontName = shape.Tags[Tag.OriginalFontFamily];
                     shape.Tags.Add(Tag.OriginalFontFamily, "");
                 }
                 else
                 {
-                    font.Name = fontFamily;
+                    shape.TextEffect.FontName = fontFamily;
                 }
 
                 if (StringUtil.IsEmpty(shape.Tags[Tag.OriginalFontSize]))
@@ -163,7 +180,7 @@ namespace PowerPointLabs.ImageSearch.Handler
         }
 
         // add overlay layer 
-        public PowerPoint.Shape ApplyOverlayStyle(string color, int transparency,
+        public PowerPoint.Shape ApplyOverlayEffect(string color, int transparency,
             float left = 0, float top = 0, float? width = null, float? height = null)
         {
             width = width ?? PreviewPresentation.SlideWidth;
@@ -177,7 +194,7 @@ namespace PowerPointLabs.ImageSearch.Handler
             return overlayShape;
         }
 
-        public PowerPoint.Shape ApplyCircleOverlayStyle(string color, int transparency,
+        public PowerPoint.Shape ApplyCircleOverlayEffect(string color, int transparency,
             float left, float top, float width, float height)
         {
             var radius = (float) Math.Sqrt(width*width/4 + height*height/4);
@@ -223,7 +240,7 @@ namespace PowerPointLabs.ImageSearch.Handler
         // add a blured background image shape from imageItem
         public PowerPoint.Shape ApplyBlurEffect(PowerPoint.Shape imageShape, string overlayColor, int transparency)
         {
-            var overlayShape = ApplyOverlayStyle(overlayColor, transparency);
+            var overlayShape = ApplyOverlayEffect(overlayColor, transparency);
             var blurImageShape = ApplyBlurEffect();
 
             overlayShape.ZOrder(MsoZOrderCmd.msoSendToBack);
@@ -255,7 +272,8 @@ namespace PowerPointLabs.ImageSearch.Handler
                 if ((shape.Type != MsoShapeType.msoPlaceholder
                         && shape.Type != MsoShapeType.msoTextBox)
                         || shape.TextFrame.HasText == MsoTriState.msoFalse
-                        || StringUtil.IsNotEmpty(shape.Tags[Tag.AddedTextbox]))
+                        || StringUtil.IsNotEmpty(shape.Tags[Tag.AddedTextbox])
+                        || StringUtil.IsNotEmpty(shape.Tags[Tag.ImageReference]))
                 {
                     continue;
                 }
@@ -273,7 +291,7 @@ namespace PowerPointLabs.ImageSearch.Handler
 
                         var blurImageShapeCopy = BlurTextbox(blurImageShape,
                             left, top, width, height);
-                        var overlayBlurShape = ApplyOverlayStyle(overlayColor, transparency,
+                        var overlayBlurShape = ApplyOverlayEffect(overlayColor, transparency,
                             left, top, width, height);
                         Graphics.MoveZToJustBehind(blurImageShapeCopy, shape);
                         Graphics.MoveZToJustBehind(overlayBlurShape, shape);
@@ -295,7 +313,7 @@ namespace PowerPointLabs.ImageSearch.Handler
                 .GetTextBoxesInfo();
             TextBoxes.AddMargin(tbInfo);
 
-            var overlayShape = ApplyCircleOverlayStyle(overlayColor, transparency, tbInfo.Left, tbInfo.Top, tbInfo.Width,
+            var overlayShape = ApplyCircleOverlayEffect(overlayColor, transparency, tbInfo.Left, tbInfo.Top, tbInfo.Width,
                 tbInfo.Height);
             overlayShape.ZOrder(MsoZOrderCmd.msoSendToBack);
             if (imageShape != null)
@@ -318,12 +336,12 @@ namespace PowerPointLabs.ImageSearch.Handler
             switch (direction)
             {
                 case BannerDirection.Horizontal:
-                    overlayShape = ApplyOverlayStyle(overlayColor, transparency, 0, tbInfo.Top, PreviewPresentation.SlideWidth,
+                    overlayShape = ApplyOverlayEffect(overlayColor, transparency, 0, tbInfo.Top, PreviewPresentation.SlideWidth,
                         tbInfo.Height);
                     break;
                 // case BannerDirection.Vertical:
                 default:
-                    overlayShape = ApplyOverlayStyle(overlayColor, transparency, tbInfo.Left, 0, tbInfo.Width,
+                    overlayShape = ApplyOverlayEffect(overlayColor, transparency, tbInfo.Left, 0, tbInfo.Width,
                         PreviewPresentation.SlideHeight);
                     break;
             }
@@ -352,7 +370,7 @@ namespace PowerPointLabs.ImageSearch.Handler
         public PowerPoint.Shape ApplySpecialEffectEffect(IMatrixFilter effectFilter, 
             PowerPoint.Shape imageShape, string overlayColor, int transparency)
         {
-            var overlayShape = ApplyOverlayStyle(overlayColor, transparency);
+            var overlayShape = ApplyOverlayEffect(overlayColor, transparency);
 
             Source.SpecialEffectImageFile = SpecialEffectImage(effectFilter, Source.FullSizeImageFile ?? Source.ImageFile);
             var specialEffectImageShape = AddPicture(Source.SpecialEffectImageFile, EffectName.SpecialEffect);

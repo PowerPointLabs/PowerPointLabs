@@ -13,5 +13,6 @@
         public const string OriginalShapeTop = "originalShapeTop";
 
         public const string AddedTextbox = "addedTextbox";
+        public const string ImageReference = "imageReference";
     }
 }

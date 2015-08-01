@@ -43,6 +43,10 @@ namespace PowerPointLabs.ImageSearch.Handler
 
             // style: direct text
             var imageShape = ApplyDirectTextStyle(handler);
+            if (Options.IsInsertReference)
+            {
+                handler.ApplyImageReferenceInsertion(source.ContextLink, Options.GetFontFamily(), Options.FontColor);
+            }
             handler.GetNativeSlide().Export(previewInfo.DirectTextStyleImagePath, "JPG");
 
             // style: blur
@@ -103,6 +107,10 @@ namespace PowerPointLabs.ImageSearch.Handler
                     break;
             }
             effectsHandler.ApplyImageReference(source.ContextLink);
+            if (Options.IsInsertReference)
+            {
+                effectsHandler.ApplyImageReferenceInsertion(source.ContextLink, Options.GetFontFamily(), Options.FontColor);
+            }
             ClearSelection();
         }
         # endregion

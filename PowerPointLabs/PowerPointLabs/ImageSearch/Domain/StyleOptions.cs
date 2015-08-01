@@ -148,6 +148,19 @@ namespace PowerPointLabs.ImageSearch.Domain
                 OnPropertyChanged("SpecialEffect");
             }
         }
+
+        // other
+        private bool _isInsertReference;
+
+        public bool IsInsertReference
+        {
+            get { return _isInsertReference; }
+            set
+            {
+                _isInsertReference = value;
+                OnPropertyChanged("IsInsertReference");
+            }
+        }
         # endregion
 
         # region Logic
@@ -167,6 +180,8 @@ namespace PowerPointLabs.ImageSearch.Domain
             BannerDirection = 0;
             
             SpecialEffect = 0;
+
+            IsInsertReference = false;
         }
 
         public string GetFontFamily()
