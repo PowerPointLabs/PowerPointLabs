@@ -182,6 +182,8 @@ namespace PowerPointLabs.ImageSearch.Domain
                 case 3:
                     return "Calibri Light";
                 case 4:
+                    return "Trebuchet MS";
+                case 5:
                     return "";
                 default:
                     return "Segoe UI";

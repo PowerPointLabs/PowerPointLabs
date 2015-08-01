@@ -51,6 +51,7 @@
             <ComboBoxItem>Segoe UI Light</ComboBoxItem>
             <ComboBoxItem>Calibri</ComboBoxItem>
             <ComboBoxItem>Calibri Light</ComboBoxItem>
+            <ComboBoxItem>Trebuchet MS</ComboBoxItem>
             <ComboBoxItem>Original Font</ComboBoxItem>
         </ComboBox>
         <Label Content="font size increase by" Foreground="#FFFFFF" FontSize="15" HorizontalAlignment="Left" VerticalAlignment="Center" Grid.Column="0" Grid.Row="3"/>
