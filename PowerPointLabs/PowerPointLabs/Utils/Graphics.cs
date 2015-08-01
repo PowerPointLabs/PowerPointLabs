@@ -286,10 +286,10 @@ namespace PowerPointLabs.Utils
         }
 
         /// <summary>
-        /// Moves shiftShape backward until it is behind destinationShape.
-        /// (does nothing if already behind)
+        /// Moves shiftShape forward until it is in front of destinationShape.
+        /// (does nothing if already in front)
         /// </summary>
-        public static void MoveZUntilBehind(Shape shiftShape, Shape destinationShape)
+        public static void MoveZUntilInFront(Shape shiftShape, Shape destinationShape)
         {
             while (shiftShape.ZOrderPosition < destinationShape.ZOrderPosition)
             {
@@ -304,10 +304,10 @@ namespace PowerPointLabs.Utils
         }
 
         /// <summary>
-        /// Moves shiftShape backward until it is in front destinationShape.
-        /// (does nothing if already in front)
+        /// Moves shiftShape backward until it is behind destinationShape.
+        /// (does nothing if already behind)
         /// </summary>
-        public static void MoveZUntilInFront(Shape shiftShape, Shape destinationShape)
+        public static void MoveZUntilBehind(Shape shiftShape, Shape destinationShape)
         {
             while (shiftShape.ZOrderPosition > destinationShape.ZOrderPosition)
             {
@@ -327,10 +327,10 @@ namespace PowerPointLabs.Utils
         public static void MoveZToJustBehind(Shape shiftShape, Shape destinationShape)
         {
             // Step 1: Shift forward until it overshoots destination.
-            MoveZUntilBehind(shiftShape, destinationShape);
+            MoveZUntilInFront(shiftShape, destinationShape);
 
             // Step 2: Shift backward until it overshoots destination.
-            MoveZUntilInFront(shiftShape, destinationShape);
+            MoveZUntilBehind(shiftShape, destinationShape);
         }
 
         /// <summary>
@@ -339,10 +339,10 @@ namespace PowerPointLabs.Utils
         public static void MoveZToJustInFront(Shape shiftShape, Shape destinationShape)
         {
             // Step 1: Shift backward until it overshoots destination.
-            MoveZUntilInFront(shiftShape, destinationShape);
+            MoveZUntilBehind(shiftShape, destinationShape);
 
             // Step 2: Shift forward until it overshoots destination.
-            MoveZUntilBehind(shiftShape, destinationShape);
+            MoveZUntilInFront(shiftShape, destinationShape);
         }
 
         // TODO: Make this an extension method of shape.
