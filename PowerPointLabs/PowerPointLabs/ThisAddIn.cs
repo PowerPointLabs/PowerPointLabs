@@ -728,6 +728,9 @@ namespace PowerPointLabs
 
             if (tempPath != null)
             {
+                // every time when recorder pane is open,
+                // save this presentation's copy, which will be used
+                // to load audio files later
                 pres.SaveCopyAs(tempPath + presName);
                 presFullName = tempPath + presName;
             }
