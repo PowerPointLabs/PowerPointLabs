@@ -33,29 +33,40 @@ namespace PowerPointLabs.ImageSearch
             // ui thread
             Dispatcher.BeginInvoke(new Action(() =>
             {
-                var previousTextCopy = Clipboard.GetText();
-                var selectedId = PreviewListBox.SelectedIndex;
-                PreviewList.Clear();
-
-                if (PowerPointCurrentPresentationInfo.CurrentSlide != null)
+                try
                 {
-                    var previewInfo = PreviewPresentation.PreviewStyles(source);
-                    Add(PreviewList, previewInfo.DirectTextStyleImagePath, TextCollection.ImagesLabText.StyleNameDirectText);
-                    Add(PreviewList, previewInfo.BlurStyleImagePath, TextCollection.ImagesLabText.StyleNameBlur);
-                    Add(PreviewList, previewInfo.TextboxStyleImagePath, TextCollection.ImagesLabText.StyleNameTextBox);
-                    Add(PreviewList, previewInfo.BannerStyleImagePath, TextCollection.ImagesLabText.StyleNameBanner);
-                    Add(PreviewList, previewInfo.SpecialEffectStyleImagePath, TextCollection.ImagesLabText.StyleNameSpecialEffect);
+                    var previousTextCopy = Clipboard.GetText();
+                    var selectedId = PreviewListBox.SelectedIndex;
+                    PreviewList.Clear();
 
-                    PreviewListBox.SelectedIndex = selectedId;
-                    _latestPreviewUpdateTime = DateTime.Now;
+                    if (PowerPointCurrentPresentationInfo.CurrentSlide != null)
+                    {
+                        var previewInfo = PreviewPresentation.PreviewStyles(source);
+                        Add(PreviewList, previewInfo.DirectTextStyleImagePath,
+                            TextCollection.ImagesLabText.StyleNameDirectText);
+                        Add(PreviewList, previewInfo.BlurStyleImagePath, TextCollection.ImagesLabText.StyleNameBlur);
+                        Add(PreviewList, previewInfo.TextboxStyleImagePath,
+                            TextCollection.ImagesLabText.StyleNameTextBox);
+                        Add(PreviewList, previewInfo.BannerStyleImagePath, TextCollection.ImagesLabText.StyleNameBanner);
+                        Add(PreviewList, previewInfo.SpecialEffectStyleImagePath,
+                            TextCollection.ImagesLabText.StyleNameSpecialEffect);
+
+                        PreviewListBox.SelectedIndex = selectedId;
+                        _latestPreviewUpdateTime = DateTime.Now;
+                    }
+                    if (previousTextCopy.Length > 0)
+                    {
+                        Clipboard.SetText(previousTextCopy);
+                    }
+
+                    UpdateConfirmApplyPreviewImage();
+                    PreviewProgressRing.IsActive = false;
                 }
-                if (previousTextCopy.Length > 0)
+                catch
                 {
-                    Clipboard.SetText(previousTextCopy);
+                    ShowErrorMessageBox(TextCollection.ImagesLabText.ErrorImageCorrupted);
+                    PreviewProgressRing.IsActive = false;
                 }
-
-                UpdateConfirmApplyPreviewImage();
-                PreviewProgressRing.IsActive = false;
             }));
         }
 
