@@ -79,6 +79,9 @@ namespace PowerPointLabs.ImageSearch
         private readonly HashSet<string> _insertDownloadingUriList = new HashSet<string>();
         private readonly Dictionary<string, ImageItem> _insertDownloadingUriToPreviewImage = new Dictionary<string, ImageItem>();
 
+        private DateTime _latestStyleOptionsUpdateTime = DateTime.Now;
+        private DateTime _latestPreviewUpdateTime = DateTime.Now;
+
         # endregion
 
         #region Initialization
@@ -154,6 +157,10 @@ namespace PowerPointLabs.ImageSearch
         private void InitStyleOptions()
         {
             StyleOptions = StyleOptions.Load(StoragePath.GetPath("ImagesLabStyleOptions"));
+            StyleOptions.PropertyChanged += (sender, args) =>
+            {
+                _latestStyleOptionsUpdateTime = DateTime.Now;
+            };
             OptionsPane.DataContext = StyleOptions;
             StyleOptionsFlyout.IsOpenChanged += StyleOptionsFlyout_OnIsOpenChanged;
         }
@@ -169,7 +176,8 @@ namespace PowerPointLabs.ImageSearch
         # region Common UI Events & Interactions
         private void StyleOptionsFlyout_OnIsOpenChanged(object sender, RoutedEventArgs e)
         {
-            if (!StyleOptionsFlyout.IsOpen)
+            if (!StyleOptionsFlyout.IsOpen
+                && _latestStyleOptionsUpdateTime > _latestPreviewUpdateTime)
             {
                 DoPreview();
             }

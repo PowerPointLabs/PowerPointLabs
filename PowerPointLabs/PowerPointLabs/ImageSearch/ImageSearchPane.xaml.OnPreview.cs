@@ -47,6 +47,7 @@ namespace PowerPointLabs.ImageSearch
                     Add(PreviewList, previewInfo.SpecialEffectStyleImagePath, TextCollection.ImagesLabText.StyleNameSpecialEffect);
 
                     PreviewListBox.SelectedIndex = selectedId;
+                    _latestPreviewUpdateTime = DateTime.Now;
                 }
                 if (previousTextCopy.Length > 0)
                 {
