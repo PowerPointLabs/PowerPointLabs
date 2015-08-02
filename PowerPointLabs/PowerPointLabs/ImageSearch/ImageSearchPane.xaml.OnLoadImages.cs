@@ -68,9 +68,7 @@ namespace PowerPointLabs.ImageSearch
 
                 try
                 {
-                    var imgInput = Image.FromFile(openFileDialog.FileName);
-                    Graphics.FromImage(imgInput);
-                    // so this is an image
+                    VerifyIsProperImage(openFileDialog.FileName);
                     var fromFileItem = new ImageItem
                     {
                         ImageFile = openFileDialog.FileName,
@@ -87,6 +85,14 @@ namespace PowerPointLabs.ImageSearch
                     ShowErrorMessageBox(TextCollection.ImagesLabText.ErrorImageCorrupted);
                 }
             }));
+        }
+
+        private static void VerifyIsProperImage(string filename)
+        {
+            using (Image.FromFile(filename))
+            {
+                // so this is a proper image
+            }
         }
 
         private void DoDownloadImage()
@@ -212,9 +218,7 @@ namespace PowerPointLabs.ImageSearch
         {
             try
             {
-                var imgInput = Image.FromFile(thumbnailPath);
-                Graphics.FromImage(imgInput);
-                // so this is an image
+                VerifyIsProperImage(thumbnailPath);
                 Dispatcher.Invoke(new Action(() =>
                 {
                     SearchProgressRing.IsActive = false;
