@@ -80,6 +80,10 @@ namespace PowerPointLabs.ImageSearch
             var targetStyle = PreviewListBox.SelectedValue as ImageItem;
             Assumption.Made(source != null && targetStyle != null, "source item or target style item is null");
 
+            if (_latestStyleOptionsUpdateTime > _latestPreviewUpdateTime)
+            {
+                DoPreview();
+            }
             PreviewPresentation.ApplyStyle(source, targetStyle.Tooltip);
             ConfirmApplyFlyout.IsOpen = false;
             this.ShowMessageAsync("", TextCollection.ImagesLabText.SuccessfullyAppliedStyle)
