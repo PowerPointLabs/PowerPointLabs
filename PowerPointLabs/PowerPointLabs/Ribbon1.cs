@@ -1564,12 +1564,6 @@ namespace PowerPointLabs
                 return false;
             }
 
-            if (!Globals.ThisAddIn.VerifyOnLocal(pres))
-            {
-                MessageBox.Show(TextCollection.OnlinePresentationNotCompatibleErrorMsg);
-                return false;
-            }
-
             return true;
         }
 
