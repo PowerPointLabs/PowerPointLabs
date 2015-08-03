@@ -120,11 +120,8 @@ namespace PowerPointLabs.ImageSearch.Handler
                 {
                     shape.Tags.Add(Tag.OriginalFontSize, shape.TextEffect.FontSize.ToString(CultureInfo.InvariantCulture));
                 }
-                else // applied before
-                {
-                    shape.TextEffect.FontSize = float.Parse(shape.Tags[Tag.OriginalFontSize]);
-                }
-                shape.TextEffect.FontSize += fontSizeToIncrease;
+                shape.TextFrame.AutoSize = PowerPoint.PpAutoSize.ppAutoSizeNone;
+                shape.TextEffect.FontSize = float.Parse(shape.Tags[Tag.OriginalFontSize]) + fontSizeToIncrease;
             }
         }
 
