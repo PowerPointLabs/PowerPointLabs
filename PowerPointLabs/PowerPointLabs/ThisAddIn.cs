@@ -39,10 +39,6 @@ namespace PowerPointLabs
                                     string> _documentHashcodeMapper = new Dictionary<PowerPoint.DocumentWindow,
                                                                                      string>();
 
-        private readonly Dictionary<PowerPoint.DocumentWindow,
-            bool> _documentPathAssociateMapper = new Dictionary<PowerPoint.DocumentWindow,
-                bool>();
-
         internal ShapesLabConfig ShapesLabConfigs;
 
         internal PowerPointShapeGalleryPresentation ShapePresentation;
@@ -250,8 +246,6 @@ namespace PowerPointLabs
             var activeWindow = pres.Application.ActiveWindow;
             var tempName = pres.Name.GetHashCode().ToString(CultureInfo.InvariantCulture);
 
-            // new unsaved document window does not have path associated
-            _documentPathAssociateMapper[activeWindow] = true;
             _documentHashcodeMapper[activeWindow] = tempName;
         }
 
@@ -267,11 +261,6 @@ namespace PowerPointLabs
         {
             var activeWindow = pres.Application.ActiveWindow;
             var tempName = pres.Name.GetHashCode().ToString(CultureInfo.InvariantCulture);
-
-            if (!_documentPathAssociateMapper.ContainsKey(activeWindow))
-            {
-                _documentPathAssociateMapper[activeWindow] = pres.Path == string.Empty;
-            }
 
             // if we opened a new window, register the window with its name
             if (!_documentHashcodeMapper.ContainsKey(activeWindow))
@@ -325,47 +314,7 @@ namespace PowerPointLabs
             }
 
             Trace.TraceInformation("Closing associated window...");
-
-            if (_documentPathAssociateMapper.ContainsKey(associatedWindow) &&
-                _documentPathAssociateMapper[associatedWindow])
-            {
-                CleanUp(associatedWindow);
-
-                return;
-            }
-
-            if (pres.Saved == Office.MsoTriState.msoTrue)
-            {
-                Trace.TraceInformation("Presentation saved.");
-
-                CleanUp(associatedWindow);
-            }
-            else
-            {
-                var handle = Native.FindWindow("PPTFrameClass", pres.Name + " - Microsoft PowerPoint");
-                var prompt =
-                    MessageBox.Show(string.Format("Do you want to save {0}", associatedWindow.Caption),
-                                    Application.Name,
-                                    MessageBoxButtons.YesNoCancel, MessageBoxIcon.Warning,
-                                    MessageBoxDefaultButton.Button1);
-
-                Native.SetForegroundWindow(handle);
-
-                switch (prompt)
-                {
-                    case DialogResult.Yes:
-                        CleanUp(associatedWindow);
-                        SendKeys.Send("{ENTER}");
-                        break;
-                    case DialogResult.No:
-                        CleanUp(associatedWindow);
-                        SendKeys.Send("N");
-                        break;
-                    default:
-                        SendKeys.Send("{ESC}");
-                        break;
-                }
-            }
+            CleanUp(associatedWindow);
         }
 
         private void ShutDownImageSearchPane()
@@ -747,6 +696,23 @@ namespace PowerPointLabs
             _documentPaneMapper.Remove(activeWindow);
         }
 
+        private void RemoveTaskPane(PowerPoint.DocumentWindow window, Type paneType)
+        {
+            if (!_documentPaneMapper.ContainsKey(window))
+            {
+                return;
+            }
+
+            var activePanes = _documentPaneMapper[window];
+            for (var i = activePanes.Count - 1; i >= 0; i--)
+            {
+                var pane = activePanes[i];
+                if (pane.Control.GetType() != paneType) continue;
+                CustomTaskPanes.Remove(pane);
+                activePanes.RemoveAt(i);
+            }
+        }
+
         private void RegulatePresentationName(PowerPoint.Presentation pres, string tempPath, ref string presName,
                                               ref string presFullName)
         {
@@ -760,22 +726,11 @@ namespace PowerPointLabs
                 presName += ".pptx";
             }
 
-            PowerPoint.DocumentWindow associatedWindow;
-
-            try
+            if (tempPath != null)
             {
-                associatedWindow = pres.Windows[1];
-            }
-            catch (Exception)
-            {
-                associatedWindow = null;
-            }
-
-            if (associatedWindow != null &&
-                _documentPathAssociateMapper.ContainsKey(associatedWindow) &&
-                _documentPathAssociateMapper[associatedWindow] &&
-                !string.IsNullOrEmpty(tempPath))
-            {
+                // every time when recorder pane is open,
+                // save this presentation's copy, which will be used
+                // to load audio files later
                 pres.SaveCopyAs(tempPath + presName);
                 presFullName = tempPath + presName;
             }
@@ -796,6 +751,8 @@ namespace PowerPointLabs
             if (recorder != null && !recorderPane.Visible)
             {
                 recorder.RecorderPaneClosing();
+                // remove recorder pane and force it to reload when next time open
+                RemoveTaskPane(Application.ActiveWindow, typeof(RecorderTaskPane));
             }
         }
 
@@ -946,8 +903,6 @@ namespace PowerPointLabs
         private void CleanUp(PowerPoint.DocumentWindow associatedWindow)
         {
             _isClosing = true;
-
-            _documentPathAssociateMapper.Remove(associatedWindow);
 
             if (_documentHashcodeMapper.ContainsKey(associatedWindow))
             {
