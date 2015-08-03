@@ -19,6 +19,7 @@ using PowerPointLabs.Models;
 using PowerPointLabs.Utils;
 using PPExtraEventHelper;
 using Shape = System.Windows.Shapes.Shape;
+using ToolTip = System.Windows.Controls.ToolTip;
 
 namespace PowerPointLabs.DrawingsLab
 {
@@ -45,7 +46,43 @@ namespace PowerPointLabs.DrawingsLab
         #region ToolTip
         private void InitToolTipControl()
         {
-            //toolTip1.SetToolTip(panel1, TextCollection.ColorsLabText.MainColorBoxTooltips);
+            AddTooltip(AlignHorizontalButton, "Align Shapes Horizontally to last shape in selection.");
+            AddTooltip(AlignVerticalButton, "Align Shapes Vertically to last shape in selection.");
+            
+            AddTooltip(ApplyDisplacementButton, "Apply recorded displacement to selected shapes.");
+            AddTooltip(ApplyFormatButton, "Apply recorded format to selected shapes.");
+            AddTooltip(ApplyPositionButton, "Apply recorded position or rotation to selected shapes.");
+            AddTooltip(RecordDisplacementButton, "Record Displacement between two selected shapes.");
+            AddTooltip(RecordFormatButton, "Record Format of a selected shape.");
+            AddTooltip(RecordPositionButton, "Record position and rotation of a selected shape.");
+            
+            AddTooltip(RectButton, "[R] Draw a Rectangle.");
+            AddTooltip(LineButton, "[L] Draw a Line.");
+            AddTooltip(CircleButton, "[C] Draw a Circle.");
+            
+            AddTooltip(BringForwardButton, "[F] Bring shapes Forward one step.");
+            AddTooltip(BringInFrontOfShapeButton, "Bring shapes in front of last shape in selection.");
+            AddTooltip(BringToFrontButton, "Bring shapes to Front.");
+            AddTooltip(SendBackwardButton, "[B] Send shapes Backward one step.");
+            AddTooltip(SendBehindShapeButton, "Send shapes behind last shape in selection.");
+            AddTooltip(SendToBackButton, "Send shapes to Back.");
+            
+            AddTooltip(SelectTypeButton, "[A] Select all shapes of same type as currently selected shapes.");
+            
+            AddTooltip(ToggleHotkeysButton, "Enable / Disable Hotkeys.");
+            
+            AddTooltip(HideButton, "[H] Hide selected items.");
+            AddTooltip(ShowAllButton, "[S] Show all hidden items.");
+            
+            AddTooltip(DuplicateButton, "[D] Makes a copy of the selected shapes in the exact same location.");
+            AddTooltip(MultiCloneExtendButton, "[N] Extrapolates multiple copies of a shape, extending from two selected shapes.");
+            AddTooltip(MultiCloneBetweenButton, "[M] Interpolates multiple copies of a shape, in between two selected shapes.");
+        }
+
+        private void AddTooltip(DependencyObject item, string message)
+        {
+            ToolTip toolTip = new ToolTip { Content = message };
+            ToolTipService.SetToolTip(item, toolTip);
         }
         #endregion
 
