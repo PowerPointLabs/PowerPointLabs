@@ -73,7 +73,7 @@ namespace PowerPointLabs.ImageSearch.Handler.Effect
 
         public TextBoxInfo GetTextBoxesInfo()
         {
-            return GetTextBoxesInfo(TextShapes);
+            return TextShapes.Count > 0 ? GetTextBoxesInfo(TextShapes) : null;
         }
 
         public static void AddMargin(TextBoxInfo textboxesInfo)
