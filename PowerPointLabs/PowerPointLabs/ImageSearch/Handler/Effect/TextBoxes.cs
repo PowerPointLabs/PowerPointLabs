@@ -249,6 +249,8 @@ namespace PowerPointLabs.ImageSearch.Handler.Effect
         {
             var result = new TextBoxInfo();
             var paragraphs = textShape.TextFrame2.TextRange.Paragraphs;
+            var rightMost = 0f;
+            var bottomMost = 0f;
             foreach (TextRange2 textRange in paragraphs)
             {
                 var paragraph = textRange.TrimText();
@@ -256,23 +258,37 @@ namespace PowerPointLabs.ImageSearch.Handler.Effect
                 {
                     result.Left = paragraph.BoundLeft < result.Left ? paragraph.BoundLeft : result.Left;
                     result.Top = paragraph.BoundTop < result.Top ? paragraph.BoundTop : result.Top;
-                    result.Width = paragraph.BoundWidth > result.Width ? paragraph.BoundWidth : result.Width;
+                    rightMost = paragraph.BoundLeft + paragraph.BoundWidth > rightMost
+                        ? paragraph.BoundLeft + paragraph.BoundWidth
+                        : rightMost;
+                    bottomMost = paragraph.BoundTop + paragraph.BoundHeight > bottomMost
+                        ? paragraph.BoundTop + paragraph.BoundHeight
+                        : bottomMost;
                 }
             }
-            result.Height = paragraphs.BoundHeight;
+            result.Width = rightMost - result.Left;
+            result.Height = bottomMost - result.Top;
             return result;
         }
 
         private TextBoxInfo GetTextBoxesInfo(IEnumerable<Shape> textShapes)
         {
             var result = new TextBoxInfo();
+            var rightMost = 0f;
+            var bottomMost = 0f;
             foreach (var partialResult in textShapes.Select(GetTextBoxInfo))
             {
                 result.Left = partialResult.Left < result.Left ? partialResult.Left : result.Left;
                 result.Top = partialResult.Top < result.Top ? partialResult.Top : result.Top;
-                result.Width = partialResult.Width > result.Width ? partialResult.Width : result.Width;
-                result.Height += partialResult.Height;
+                rightMost = partialResult.Left + partialResult.Width > rightMost
+                        ? partialResult.Left + partialResult.Width
+                        : rightMost;
+                bottomMost = partialResult.Top + partialResult.Height > bottomMost
+                    ? partialResult.Top + partialResult.Height
+                    : bottomMost;
             }
+            result.Width = rightMost - result.Left;
+            result.Height = bottomMost - result.Top;
             return result;
         }
 
