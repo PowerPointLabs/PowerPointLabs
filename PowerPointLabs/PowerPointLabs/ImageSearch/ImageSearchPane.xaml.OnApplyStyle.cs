@@ -9,6 +9,7 @@ using PowerPointLabs.AutoUpdate;
 using PowerPointLabs.ImageSearch.Domain;
 using PowerPointLabs.ImageSearch.Util;
 using PowerPointLabs.Utils;
+using PowerPointLabs.Utils.Exceptions;
 using ButtonBase = System.Windows.Controls.Primitives.ButtonBase;
 using KeyEventArgs = System.Windows.Input.KeyEventArgs;
 
@@ -79,20 +80,27 @@ namespace PowerPointLabs.ImageSearch
             var targetStyles = targetStyleItems.Cast<ImageItem>().Select(item => item.Tooltip).ToList();
             Assumption.Made(source != null && targetStyles.Count > 0, "source item or target style item is null/empty");
 
-            PreviewPresentation.ApplyStyle(source, targetStyles);
-            this.ShowMessageAsync("", TextCollection.ImagesLabText.SuccessfullyAppliedStyle)
-                .ContinueWith(task =>
-                {
-                    Dispatcher.BeginInvoke(new Action(() =>
+            try
+            {
+                PreviewPresentation.ApplyStyle(source, targetStyles);
+                this.ShowMessageAsync("", TextCollection.ImagesLabText.SuccessfullyAppliedStyle)
+                    .ContinueWith(task =>
                     {
-                        if (_latestStyleOptionsUpdateTime > _latestPreviewApplyUpdateTime)
+                        Dispatcher.BeginInvoke(new Action(() =>
                         {
-                            UpdateConfirmApplyPreviewImage();
-                        }
-                        ConfirmApplyButton.Focus();
-                        Keyboard.Focus(ConfirmApplyButton);
-                    }));
-                });
+                            if (_latestStyleOptionsUpdateTime > _latestPreviewApplyUpdateTime)
+                            {
+                                UpdateConfirmApplyPreviewImage();
+                            }
+                            ConfirmApplyButton.Focus();
+                            Keyboard.Focus(ConfirmApplyButton);
+                        }));
+                    });
+            }
+            catch (AssumptionFailedException expt)
+            {
+                ShowErrorMessageBox(TextCollection.ImagesLabText.ErrorNoSelectedSlide);
+            }
         }
 
         private void UpdateConfirmApplyPreviewImage()
@@ -104,10 +112,17 @@ namespace PowerPointLabs.ImageSearch
             var targetStyles = targetStyleItems.Cast<ImageItem>().Select(item => item.Tooltip).ToList();
             Assumption.Made(source != null && targetStyles.Count > 0, "source item or target style item is null/empty");
 
-            var previewInfo = PreviewPresentation.PreviewApplyStyle(source, targetStyles);
+            try
+            {
+                var previewInfo = PreviewPresentation.PreviewApplyStyle(source, targetStyles);
 
-            ConfirmApplyPreviewImageFile.Text = previewInfo.PreviewApplyStyleImagePath;
-            _latestPreviewApplyUpdateTime = DateTime.Now;
+                ConfirmApplyPreviewImageFile.Text = previewInfo.PreviewApplyStyleImagePath;
+                _latestPreviewApplyUpdateTime = DateTime.Now;
+            }
+            catch
+            {
+                // ignore, selected slide may be null
+            }
         }
 
         private void ConfirmApplyFlyout_OnKeyDown(object sender, KeyEventArgs e)

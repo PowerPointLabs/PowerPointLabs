@@ -187,7 +187,8 @@ namespace PowerPointLabs.ImageSearch.Handler
         private static void ClearSelection()
         {
             var currentSelection = PowerPointCurrentPresentationInfo.CurrentSelection;
-            if (currentSelection.Type != PpSelectionType.ppSelectionNone)
+            if (currentSelection.Type == PpSelectionType.ppSelectionShapes
+                || currentSelection.Type == PpSelectionType.ppSelectionText)
             {
                 currentSelection.Unselect();
             }

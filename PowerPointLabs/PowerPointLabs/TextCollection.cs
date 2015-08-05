@@ -330,6 +330,8 @@
                 "Failed to load image. The image file is corrupted.";
             public const string ErrorUrlLinkIncorrect =
                 "The download link is not in the correct format. Did the link miss out 'http://'?";
+            public const string ErrorNoSelectedSlide =
+                "Cannot apply styles. Please select a slide first.";
 
             public const string SuccessfullyAppliedStyle =
                 "Successfully Applied.";
