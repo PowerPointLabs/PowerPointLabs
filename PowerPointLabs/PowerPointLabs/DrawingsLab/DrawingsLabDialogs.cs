@@ -56,5 +56,11 @@ namespace PowerPointLabs.DrawingsLab
             }
             return -1;
         }
+
+        public static int ShowMultiCloneNumericDialog()
+        {
+            return ShowNumericDialog(TextCollection.DrawingsLabMultiCloneDialogText,
+                                     TextCollection.DrawingsLabMultiCloneDialogHeader);
+        }
     }
 }

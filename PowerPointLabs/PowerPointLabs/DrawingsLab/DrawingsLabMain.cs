@@ -93,11 +93,11 @@ namespace PowerPointLabs.DrawingsLab
 
             if (shapeList.Count % 2 != 0)
             {
-                Error("There must be two sets of shapes selected.");
+                Error(TextCollection.DrawingsLabSelectTwoSetsOfShapes);
                 return;
             }
 
-            int clones = DrawingsLabDialogs.ShowNumericDialog("Number of copies:", "Multi-Clone") - 1;
+            int clones = DrawingsLabDialogs.ShowMultiCloneNumericDialog() - 1;
             if (clones <= 0) return;
 
             int midpoint = shapeList.Count / 2;
@@ -127,11 +127,11 @@ namespace PowerPointLabs.DrawingsLab
 
             if (shapeList.Count % 2 != 0)
             {
-                Error("There must be two sets of shapes selected.");
+                Error(TextCollection.DrawingsLabSelectTwoSetsOfShapes);
                 return;
             }
 
-            int clones = DrawingsLabDialogs.ShowNumericDialog("Number of copies:", "Multi-Clone") - 1;
+            int clones = DrawingsLabDialogs.ShowMultiCloneNumericDialog() - 1;
             if (clones <= 0) return;
 
             int divisions = clones + 1;
@@ -196,7 +196,7 @@ namespace PowerPointLabs.DrawingsLab
             var shapes = selection.ShapeRange.Cast<Shape>().ToList();
             if (shapes.Count < 2)
             {
-                Error("Please select at least two shapes");
+                Error(TextCollection.DrawingsLabSelectAtLeastTwoShapes);
                 return;
             }
             var shapeToMoveBehind = shapes.Last();
@@ -218,7 +218,7 @@ namespace PowerPointLabs.DrawingsLab
             var shapes = selection.ShapeRange.Cast<Shape>().ToList();
             if (shapes.Count < 2)
             {
-                Error("Please select at least two shapes");
+                Error(TextCollection.DrawingsLabSelectAtLeastTwoShapes);
                 return;
             }
             var shapeToMoveInFront = shapes.Last();
@@ -239,7 +239,7 @@ namespace PowerPointLabs.DrawingsLab
             var shapes = selection.ShapeRange;
             if (shapes.Count != 2)
             {
-                Error("Please select a start shape and an end shape");
+                Error(TextCollection.DrawingsLabSelectStartAndEndShape);
                 return;
             }
             var firstShape = shapes[1];
@@ -279,7 +279,7 @@ namespace PowerPointLabs.DrawingsLab
             var shapes = selection.ShapeRange;
             if (shapes.Count != 1)
             {
-                Error("Please select a single shape");
+                Error(TextCollection.DrawingsLabSelectExactlyOneShape);
                 return;
             }
             var shape = shapes[1];
@@ -320,7 +320,7 @@ namespace PowerPointLabs.DrawingsLab
             var shapes = selection.ShapeRange;
             if (shapes.Count != 1)
             {
-                Error("Please select a single shape");
+                Error(TextCollection.DrawingsLabSelectExactlyOneShape);
                 return;
             }
             var shape = shapes[1];
@@ -451,7 +451,7 @@ namespace PowerPointLabs.DrawingsLab
             var shapes = selection.ShapeRange.Cast<Shape>().ToList();
             if (shapes.Count <= 1)
             {
-                Error("Please select at least two shapes");
+                Error(TextCollection.DrawingsLabSelectAtLeastTwoShapes);
                 return;
             }
 
@@ -479,7 +479,7 @@ namespace PowerPointLabs.DrawingsLab
             var shapes = selection.ShapeRange.Cast<Shape>().ToList();
             if (shapes.Count <= 1)
             {
-                Error("Please select at least two shapes");
+                Error(TextCollection.DrawingsLabSelectAtLeastTwoShapes);
                 return;
             }
 
@@ -508,7 +508,7 @@ namespace PowerPointLabs.DrawingsLab
             var shapes = selection.ShapeRange.Cast<Shape>().ToList();
             if (shapes.Count < 1)
             {
-                Error("Please select at least one shape");
+                Error(TextCollection.DrawingsLabSelectAtLeastOneShape);
                 return;
             }
 
@@ -533,7 +533,7 @@ namespace PowerPointLabs.DrawingsLab
             var shapes = selection.ShapeRange.Cast<Shape>().ToList();
             if (shapes.Count < 1)
             {
-                Error("Please select at least one shape");
+                Error(TextCollection.DrawingsLabSelectAtLeastOneShape);
                 return;
             }
 

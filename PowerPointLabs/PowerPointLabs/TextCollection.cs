@@ -350,6 +350,22 @@
                             "Adjust the design of this slide and click the 'Sync Agenda' (in Agenda Lab) to replicate the design in the other slides.";
         # endregion
 
+
+        # region Drawings Lab
+
+        public const string DrawingsLabSelectExactlyOneShape = "Please select a single shape.";
+        public const string DrawingsLabSelectAtLeastOneShape = "Please select at least one shape.";
+        public const string DrawingsLabSelectAtLeastTwoShapes = "Please select at least two shapes.";
+        public const string DrawingsLabSelectTwoSetsOfShapes = "Please select two sets of shapes.";
+        public const string DrawingsLabSelectStartAndEndShape = "Please select a start shape and an end shape";
+
+
+        public const string DrawingsLabMultiCloneDialogText = "Number of Copies";
+
+        public const string DrawingsLabMultiCloneDialogHeader = "Multi-Clone";
+
+        # endregion
+
         # region Task Pane - Recorder
         public const string RecorderInitialTimer = "00:00:00";
         public const string RecorderReadyStatusLabel = "Ready.";
