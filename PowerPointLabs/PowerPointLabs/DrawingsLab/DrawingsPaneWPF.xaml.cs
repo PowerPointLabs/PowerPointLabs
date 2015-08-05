@@ -48,6 +48,8 @@ namespace PowerPointLabs.DrawingsLab
         {
             AddTooltip(AlignHorizontalButton, "Align Shapes Horizontally to last shape in selection.");
             AddTooltip(AlignVerticalButton, "Align Shapes Vertically to last shape in selection.");
+            AddTooltip(AlignHorizontalToSlideButton, "Align Shapes Horizontally to a position relative to the slide.");
+            AddTooltip(AlignVerticalToSlideButton, "Align Shapes Vertically to a position relative to the slide.");
             
             AddTooltip(ApplyDisplacementButton, "Apply recorded displacement to selected shapes.");
             AddTooltip(ApplyFormatButton, "Apply recorded format to selected shapes.");
@@ -250,6 +252,16 @@ namespace PowerPointLabs.DrawingsLab
         private void AlignVerticalButton_Click(object sender, EventArgs e)
         {
             DrawingsLabMain.AlignVertical();
+        }
+
+        private void AlignHorizontalToSlideButton_Click(object sender, EventArgs e)
+        {
+            DrawingsLabMain.AlignHorizontalToSlide();
+        }
+
+        private void AlignVerticalToSlideButton_Click(object sender, EventArgs e)
+        {
+            DrawingsLabMain.AlignVerticalToSlide();
         }
 
         private void BringForwardButton_Click(object sender, EventArgs e)

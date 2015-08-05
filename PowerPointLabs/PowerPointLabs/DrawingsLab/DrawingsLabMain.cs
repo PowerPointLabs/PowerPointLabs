@@ -500,6 +500,57 @@ namespace PowerPointLabs.DrawingsLab
             }
         }
 
+
+        public static void AlignVerticalToSlide()
+        {
+            var selection = Globals.ThisAddIn.Application.ActiveWindow.Selection;
+            if (selection.Type != PpSelectionType.ppSelectionShapes) return;
+            var shapes = selection.ShapeRange.Cast<Shape>().ToList();
+            if (shapes.Count < 1)
+            {
+                Error("Please select at least one shape");
+                return;
+            }
+
+            var dialog = new AlignmentDialogHorizontal();
+            if (dialog.ShowDialog() != true) return;
+            if (dialog.DialogResult != true) return;
+
+            float sourceAnchor = dialog.SourceAnchor / 100;
+            float targetAnchor = dialog.TargetAnchor / 100;
+
+            float targetY = (1 - targetAnchor) * PowerPointPresentation.Current.SlideHeight;
+            foreach (var shape in shapes)
+            {
+                shape.Top = targetY - (1 - sourceAnchor) * shape.Height;
+            }
+        }
+
+        public static void AlignHorizontalToSlide()
+        {
+            var selection = Globals.ThisAddIn.Application.ActiveWindow.Selection;
+            if (selection.Type != PpSelectionType.ppSelectionShapes) return;
+            var shapes = selection.ShapeRange.Cast<Shape>().ToList();
+            if (shapes.Count < 1)
+            {
+                Error("Please select at least one shape");
+                return;
+            }
+
+            var dialog = new AlignmentDialogVertical();
+            if (dialog.ShowDialog() != true) return;
+            if (dialog.DialogResult != true) return;
+
+            float sourceAnchor = dialog.SourceAnchor / 100;
+            float targetAnchor = dialog.TargetAnchor / 100;
+
+            float targetX = targetAnchor * PowerPointPresentation.Current.SlideWidth;
+            foreach (var shape in shapes)
+            {
+                shape.Left = targetX - sourceAnchor * shape.Width;
+            }
+        }
+
         #endregion
 
         #region Convenience Functions

@@ -88,6 +88,8 @@
 
         <Button x:Name="AlignHorizontalButton" Content="Align&#xa;Horizontal" Grid.Row="11" Grid.Column="0" Click="AlignHorizontalButton_Click"/>
         <Button x:Name="AlignVerticalButton" Content="Align&#xa;Vertical" Grid.Row="11" Grid.Column="1" Click="AlignVerticalButton_Click"/>
+        <Button x:Name="AlignHorizontalToSlideButton" Content="Align&#xa;Horizontal&#xa;To Slide" Grid.Row="12" Grid.Column="0" Click="AlignHorizontalToSlideButton_Click"/>
+        <Button x:Name="AlignVerticalToSlideButton" Content="Align&#xa;Vertical&#xa;To Slide" Grid.Row="12" Grid.Column="1" Click="AlignVerticalToSlideButton_Click"/>
 
         <RadioButton Grid.Row="10" Grid.Column="3" IsChecked="{Binding UpdateSourceTrigger=PropertyChanged, Source={StaticResource DrawingsLabData}, Path=Anchor, Mode=TwoWay, Converter={StaticResource EnumMatchToBooleanConverter}, ConverterParameter=TopLeft}" HorizontalAlignment="Center" VerticalAlignment="Center"/>
         <RadioButton Grid.Row="10" Grid.Column="4" IsChecked="{Binding UpdateSourceTrigger=PropertyChanged, Source={StaticResource DrawingsLabData}, Path=Anchor, Mode=TwoWay, Converter={StaticResource EnumMatchToBooleanConverter}, ConverterParameter=TopCenter}" HorizontalAlignment="Center" VerticalAlignment="Center"/>
