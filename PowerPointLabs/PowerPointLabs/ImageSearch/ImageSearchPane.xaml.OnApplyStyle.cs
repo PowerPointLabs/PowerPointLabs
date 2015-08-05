@@ -105,24 +105,27 @@ namespace PowerPointLabs.ImageSearch
 
         private void UpdateConfirmApplyPreviewImage()
         {
-            if (PreviewListBox.SelectedValue == null) return;
+            Dispatcher.BeginInvoke(new Action(() =>
+            {
+                if (PreviewListBox.SelectedValue == null) return;
             
-            var source = SearchListBox.SelectedValue as ImageItem;
-            var targetStyleItems = PreviewListBox.SelectedItems;
-            var targetStyles = targetStyleItems.Cast<ImageItem>().Select(item => item.Tooltip).ToList();
-            Assumption.Made(source != null && targetStyles.Count > 0, "source item or target style item is null/empty");
+                var source = SearchListBox.SelectedValue as ImageItem;
+                var targetStyleItems = PreviewListBox.SelectedItems;
+                var targetStyles = targetStyleItems.Cast<ImageItem>().Select(item => item.Tooltip).ToList();
+                Assumption.Made(source != null && targetStyles.Count > 0, "source item or target style item is null/empty");
 
-            try
-            {
-                var previewInfo = PreviewPresentation.PreviewApplyStyle(source, targetStyles);
+                try
+                {
+                    var previewInfo = PreviewPresentation.PreviewApplyStyle(source, targetStyles);
 
-                ConfirmApplyPreviewImageFile.Text = previewInfo.PreviewApplyStyleImagePath;
-                _latestPreviewApplyUpdateTime = DateTime.Now;
-            }
-            catch
-            {
-                // ignore, selected slide may be null
-            }
+                    ConfirmApplyPreviewImageFile.Text = previewInfo.PreviewApplyStyleImagePath;
+                    _latestPreviewApplyUpdateTime = DateTime.Now;
+                }
+                catch
+                {
+                    // ignore, selected slide may be null
+                }
+            }));
         }
 
         private void ConfirmApplyFlyout_OnKeyDown(object sender, KeyEventArgs e)
