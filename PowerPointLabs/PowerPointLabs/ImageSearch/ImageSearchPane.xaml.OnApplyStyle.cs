@@ -80,7 +80,19 @@ namespace PowerPointLabs.ImageSearch
             Assumption.Made(source != null && targetStyles.Count > 0, "source item or target style item is null/empty");
 
             PreviewPresentation.ApplyStyle(source, targetStyles);
-            this.ShowMessageAsync("", TextCollection.ImagesLabText.SuccessfullyAppliedStyle);
+            this.ShowMessageAsync("", TextCollection.ImagesLabText.SuccessfullyAppliedStyle)
+                .ContinueWith(task =>
+                {
+                    Dispatcher.BeginInvoke(new Action(() =>
+                    {
+                        if (_latestStyleOptionsUpdateTime > _latestPreviewApplyUpdateTime)
+                        {
+                            UpdateConfirmApplyPreviewImage();
+                        }
+                        ConfirmApplyButton.Focus();
+                        Keyboard.Focus(ConfirmApplyButton);
+                    }));
+                });
         }
 
         private void UpdateConfirmApplyPreviewImage()
@@ -95,6 +107,7 @@ namespace PowerPointLabs.ImageSearch
             var previewInfo = PreviewPresentation.PreviewApplyStyle(source, targetStyles);
 
             ConfirmApplyPreviewImageFile.Text = previewInfo.PreviewApplyStyleImagePath;
+            _latestPreviewApplyUpdateTime = DateTime.Now;
         }
 
         private void ConfirmApplyFlyout_OnKeyDown(object sender, KeyEventArgs e)

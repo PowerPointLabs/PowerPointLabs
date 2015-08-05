@@ -80,6 +80,7 @@ namespace PowerPointLabs.ImageSearch
 
         private DateTime _latestStyleOptionsUpdateTime = DateTime.Now;
         private DateTime _latestPreviewUpdateTime = DateTime.Now;
+        private DateTime _latestPreviewApplyUpdateTime = DateTime.Now;
 
         # endregion
 
