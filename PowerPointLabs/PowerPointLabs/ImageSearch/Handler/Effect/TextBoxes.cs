@@ -13,6 +13,8 @@ namespace PowerPointLabs.ImageSearch.Handler.Effect
     {
         public const int Margin = 25;
 
+        public const int ExtendMargin = 5;
+
         private List<Shape> TextShapes { get; set; }
 
         private readonly float _slideWidth;
@@ -63,6 +65,11 @@ namespace PowerPointLabs.ImageSearch.Handler.Effect
         {
             if (_pos != Position.Original)
             {
+                // do positioning twice to fix a bug:
+                // if only do positioning once,
+                // textboxes' height/top may be incorrect if each textbox is not directly next to each other;
+                // doing positioning (make every textbox next to each other) the next time will fix the problem.
+                StartPositioning();
                 StartPositioning();
             }
             else
@@ -76,12 +83,13 @@ namespace PowerPointLabs.ImageSearch.Handler.Effect
             return TextShapes.Count > 0 ? GetTextBoxesInfo(TextShapes) : null;
         }
 
-        public static void AddMargin(TextBoxInfo textboxesInfo)
+        public static void AddMargin(TextBoxInfo textboxesInfo, float? margin = null)
         {
-            textboxesInfo.Left -= Margin;
-            textboxesInfo.Top -= Margin;
-            textboxesInfo.Width += 2 * Margin;
-            textboxesInfo.Height += 2 * Margin;
+            margin = margin ?? Margin;
+            textboxesInfo.Left -= margin.Value;
+            textboxesInfo.Top -= margin.Value;
+            textboxesInfo.Width += 2 * margin.Value;
+            textboxesInfo.Height += 2 * margin.Value;
         }
 
         # endregion
@@ -268,6 +276,7 @@ namespace PowerPointLabs.ImageSearch.Handler.Effect
             }
             result.Width = rightMost - result.Left;
             result.Height = bottomMost - result.Top;
+            AddMargin(result, ExtendMargin);
             return result;
         }
 

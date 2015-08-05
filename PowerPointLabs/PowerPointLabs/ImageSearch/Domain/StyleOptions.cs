@@ -10,6 +10,11 @@ namespace PowerPointLabs.ImageSearch.Domain
     [Serializable]
     public class StyleOptions : Model
     {
+        public StyleOptions()
+        {
+            Init();
+        }
+
         # region UI related prop
         private bool _isUseOriginalTextFormat;
 
@@ -86,6 +91,8 @@ namespace PowerPointLabs.ImageSearch.Domain
             }
         }
 
+        // for direct text/special effect/blur style
+        // for background's
         private string _overlayColor;
 
         public string OverlayColor
@@ -100,7 +107,7 @@ namespace PowerPointLabs.ImageSearch.Domain
 
         private int _transparency;
 
-        // for overlay
+        // for background's overlay
         public int Transparency
         {
             get { return _transparency; }
@@ -108,6 +115,32 @@ namespace PowerPointLabs.ImageSearch.Domain
             {
                 _transparency = value;
                 OnPropertyChanged("Transparency");
+            }
+        }
+
+        // for textbox style
+
+        private string _textBoxOverlayColor;
+
+        public string TextBoxOverlayColor
+        {
+            get { return _textBoxOverlayColor; }
+            set
+            {
+                _textBoxOverlayColor = value;
+                OnPropertyChanged("TextBoxOverlayColor");
+            }
+        }
+
+        private int _textBoxTransparency;
+
+        public int TextBoxTransparency
+        {
+            get { return _textBoxTransparency; }
+            set
+            {
+                _textBoxTransparency = value;
+                OnPropertyChanged("TextBoxTransparency");
             }
         }
 
@@ -133,6 +166,30 @@ namespace PowerPointLabs.ImageSearch.Domain
             {
                 _bannerDirection = value;
                 OnPropertyChanged("BannerDirection");
+            }
+        }
+
+        private string _bannerOverlayColor;
+
+        public string BannerOverlayColor
+        {
+            get { return _bannerOverlayColor; }
+            set
+            {
+                _bannerOverlayColor = value;
+                OnPropertyChanged("BannerOverlayColor");
+            }
+        }
+
+        private int _bannerTransparency;
+
+        public int BannerTransparency
+        {
+            get { return _bannerTransparency; }
+            set
+            {
+                _bannerTransparency = value;
+                OnPropertyChanged("BannerTransparency");
             }
         }
 
@@ -172,9 +229,13 @@ namespace PowerPointLabs.ImageSearch.Domain
             FontColor = "#FFFFFF";
             TextBoxPosition = 4;
             TextBoxAlignment = 0;
-            
+
             OverlayColor = "#000000";
             Transparency = 85;
+            BannerOverlayColor = "#000000";
+            BannerTransparency = 25;
+            TextBoxOverlayColor = "#D74926"; // red-orange
+            TextBoxTransparency = 25;
 
             BannerShape = 0;
             BannerDirection = 0;

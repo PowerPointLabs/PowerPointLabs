@@ -65,13 +65,13 @@ namespace PowerPointLabs.ImageSearch
                 {
                     // if selected one remains
                     // and it is to insert the full size image,
-                    ImageItem targetStyle;
-                    if (_insertDownloadingUriList.Contains(fullsizeImageUri)
-                        && _insertDownloadingUriToPreviewImage
-                            .TryGetValue(fullsizeImageUri, out targetStyle))
+                    if (_applyDownloadingUriList.Contains(fullsizeImageUri))
                     {
                         // open confirm apply flyout + do preview
-                        OpenConfirmApplyFlyout(targetStyle);
+                        if (PreviewListBox.SelectedValue != null)
+                        {
+                            OpenConfirmApplyFlyout(PreviewListBox.SelectedItems);
+                        }
                         DoPreview(source);
                     }
                     // or it is to preview only (from timer)
@@ -87,10 +87,7 @@ namespace PowerPointLabs.ImageSearch
 
         private void RemoveDebounceCheck(string fullsizeImageUri)
         {
-            if (_insertDownloadingUriList.Remove(fullsizeImageUri))
-            {
-                _insertDownloadingUriToPreviewImage.Remove(fullsizeImageUri);
-            }
+            _applyDownloadingUriList.Remove(fullsizeImageUri);
             _timerDownloadingUriList.Remove(fullsizeImageUri);
         }
 

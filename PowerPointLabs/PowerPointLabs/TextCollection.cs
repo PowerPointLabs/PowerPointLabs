@@ -304,6 +304,16 @@
 
         public class ImagesLabText
         {
+            public const int ButtonIndexSearch = 0;
+            public const int ButtonIndexDownload = 1;
+            public const int ButtonIndexFromFile = 2;
+
+            public const int StyleIndexDirectText = 0;
+            public const int StyleIndexBlur = 1;
+            public const int StyleIndexTextBox = 2;
+            public const int StyleIndexBanner = 3;
+            public const int StyleIndexSpecialEffect = 4;
+
             public const string StyleNameDirectText = "Direct Text Style";
             public const string StyleNameBlur = "Blur Style";
             public const string StyleNameTextBox = "TextBox Style";

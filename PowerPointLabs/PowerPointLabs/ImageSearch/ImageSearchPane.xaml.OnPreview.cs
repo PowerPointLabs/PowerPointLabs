@@ -1,5 +1,7 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using System.Windows;
 using PowerPointLabs.ImageSearch.Domain;
 using PowerPointLabs.ImageSearch.Util;
@@ -36,7 +38,7 @@ namespace PowerPointLabs.ImageSearch
                 try
                 {
                     var previousTextCopy = Clipboard.GetText();
-                    var selectedId = PreviewListBox.SelectedIndex;
+                    var selectedIds = GetSelectedIndices(PreviewListBox.SelectedItems);
                     PreviewList.Clear();
 
                     if (PowerPointCurrentPresentationInfo.CurrentSlide != null)
@@ -51,7 +53,7 @@ namespace PowerPointLabs.ImageSearch
                         Add(PreviewList, previewInfo.SpecialEffectStyleImagePath,
                             TextCollection.ImagesLabText.StyleNameSpecialEffect);
 
-                        PreviewListBox.SelectedIndex = selectedId;
+                        SelectPreviewListBoxItems(selectedIds);
                         _latestPreviewUpdateTime = DateTime.Now;
                     }
                     if (previousTextCopy.Length > 0)
@@ -68,6 +70,53 @@ namespace PowerPointLabs.ImageSearch
                     PreviewProgressRing.IsActive = false;
                 }
             }));
+        }
+
+        // make it still select the same target styles after preview
+        private void SelectPreviewListBoxItems(IList<int> selectedIds)
+        {
+            SelectPreviewListBox(
+                TextCollection.ImagesLabText.StyleIndexDirectText,
+                selectedIds.Any(val => val == TextCollection.ImagesLabText.StyleIndexDirectText));
+            SelectPreviewListBox(
+                TextCollection.ImagesLabText.StyleIndexBlur,
+                selectedIds.Any(val => val == TextCollection.ImagesLabText.StyleIndexBlur));
+            SelectPreviewListBox(
+                TextCollection.ImagesLabText.StyleIndexTextBox,
+                selectedIds.Any(val => val == TextCollection.ImagesLabText.StyleIndexTextBox));
+            SelectPreviewListBox(
+                TextCollection.ImagesLabText.StyleIndexBanner,
+                selectedIds.Any(val => val == TextCollection.ImagesLabText.StyleIndexBanner));
+            SelectPreviewListBox(
+                TextCollection.ImagesLabText.StyleIndexSpecialEffect,
+                selectedIds.Any(val => val == TextCollection.ImagesLabText.StyleIndexSpecialEffect));
+        }
+
+        private IList<int> GetSelectedIndices(IList items)
+        {
+            var result = new List<int>();
+            foreach (ImageItem imageItem in items)
+            {
+                switch (imageItem.Tooltip)
+                {
+                    case TextCollection.ImagesLabText.StyleNameDirectText:
+                        result.Add(TextCollection.ImagesLabText.StyleIndexDirectText);
+                        break;
+                    case TextCollection.ImagesLabText.StyleNameBlur:
+                        result.Add(TextCollection.ImagesLabText.StyleIndexBlur);
+                        break;
+                    case TextCollection.ImagesLabText.StyleNameTextBox:
+                        result.Add(TextCollection.ImagesLabText.StyleIndexTextBox);
+                        break;
+                    case TextCollection.ImagesLabText.StyleNameBanner:
+                        result.Add(TextCollection.ImagesLabText.StyleIndexBanner);
+                        break;
+                    case TextCollection.ImagesLabText.StyleNameSpecialEffect:
+                        result.Add(TextCollection.ImagesLabText.StyleIndexSpecialEffect);
+                        break;
+                }
+            }
+            return result;
         }
 
         private void Add(ICollection<ImageItem> list, string imagePath, string tooltip)

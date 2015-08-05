@@ -74,10 +74,9 @@ namespace PowerPointLabs.ImageSearch
 
         // indicate whether it's downloading fullsize image, so that debounce.
         // timer - it will download full size image after some time
-        // insert - it will download full size image when there's no cache and user clicks insert button
+        // apply - it will download full size image when there's no cache and user clicks APPLY button
         private readonly HashSet<string> _timerDownloadingUriList = new HashSet<string>();
-        private readonly HashSet<string> _insertDownloadingUriList = new HashSet<string>();
-        private readonly Dictionary<string, ImageItem> _insertDownloadingUriToPreviewImage = new Dictionary<string, ImageItem>();
+        private readonly HashSet<string> _applyDownloadingUriList = new HashSet<string>();
 
         private DateTime _latestStyleOptionsUpdateTime = DateTime.Now;
         private DateTime _latestPreviewUpdateTime = DateTime.Now;
@@ -111,6 +110,7 @@ namespace PowerPointLabs.ImageSearch
             ConfirmApplyFlyoutTitle = new ObservableString { Text = "Confirm Apply" };
             ConfirmApplyImage.DataContext = ConfirmApplyPreviewImageFile;
             ConfirmApplyFlyout.DataContext = ConfirmApplyFlyoutTitle;
+            ConfirmApplyFlyout.IsOpenChanged += ConfirmApplyFlyout_OnIsOpenChanged;
             OptionsPane2.DataContext = StyleOptions;
         }
 
@@ -129,7 +129,7 @@ namespace PowerPointLabs.ImageSearch
                 TextCollection.ImagesLabText.MultiPurposeButtonNameFromFile
             });
             SearchButton.ItemsSource = MultiplePurposeButtons;
-            SearchButton.SelectedIndex = 0;
+            SearchButton.SelectedIndex = TextCollection.ImagesLabText.ButtonIndexSearch;
         }
 
         private void InitPreviewList()
@@ -183,6 +183,15 @@ namespace PowerPointLabs.ImageSearch
             }
         }
 
+        private void ConfirmApplyFlyout_OnIsOpenChanged(object sender, RoutedEventArgs e)
+        {
+            if (!ConfirmApplyFlyout.IsOpen
+                && _latestStyleOptionsUpdateTime > _latestPreviewUpdateTime)
+            {
+                DoPreview();
+            }
+        }
+
         private void SearchList_OnCollectionChanged(object sender, NotifyCollectionChangedEventArgs e)
         {
             SearchInstructions.Visibility = SearchList.Count == 0
@@ -213,13 +222,13 @@ namespace PowerPointLabs.ImageSearch
         {
             switch (SearchButton.SelectedIndex)
             {
-                case 0:// search
+                case TextCollection.ImagesLabText.ButtonIndexSearch:
                     DoSearch();
                     break;
-                case 1:// download link
+                case TextCollection.ImagesLabText.ButtonIndexDownload:
                     DoDownloadImage();
                     break;
-                case 2:// image from file
+                case TextCollection.ImagesLabText.ButtonIndexFromFile:
                     DoLoadImageFromFile();
                     break;
             }
@@ -252,9 +261,9 @@ namespace PowerPointLabs.ImageSearch
                 // full size image at the background.
                 DoPreview(() =>
                 {
-                    if (source != null && _insertDownloadingUriList.Remove(source.FullSizeImageUri))
+                    if (source != null)
                     {
-                        _insertDownloadingUriToPreviewImage.Remove(source.FullSizeImageUri);
+                        _applyDownloadingUriList.Remove(source.FullSizeImageUri);
                     }
                 });
             }
@@ -318,14 +327,16 @@ namespace PowerPointLabs.ImageSearch
         {
             if (PreviewListBox.SelectedValue != null)
             {
-                var targetStyle = PreviewListBox.SelectedValue as ImageItem;
-                PreviewInsert.IsEnabled = true;
-                UpdateConfirmApplyPreviewImage();
-                UpdateConfirmApplyFlyOut(targetStyle);
+                PreviewApply.IsEnabled = true;
+                ConfirmApplyButton.IsEnabled = true;
+                ConfirmApplyPreviewButton.IsEnabled = true;
+                UpdateConfirmApplyFlyOutComboBox(PreviewListBox.SelectedItems);
             }
             else
             {
-                PreviewInsert.IsEnabled = false;
+                PreviewApply.IsEnabled = false;
+                ConfirmApplyButton.IsEnabled = false;
+                ConfirmApplyPreviewButton.IsEnabled = false;
             }
         }
 
@@ -344,13 +355,6 @@ namespace PowerPointLabs.ImageSearch
         private void PreviewApply_OnClick(object sender, RoutedEventArgs e)
         {
             ApplyStyle();
-            FocusPreviewListBox();
-        }
-
-        private void FocusPreviewListBox()
-        {
-            PreviewListBox.Focus();
-            Keyboard.Focus(PreviewListBox);
         }
 
         private void PreviewDisplayToggleSwitch_OnIsCheckedChanged(object sender, EventArgs e)
@@ -399,9 +403,9 @@ namespace PowerPointLabs.ImageSearch
                 switch (e.Key)
                 {
                     case Key.Enter:
-                        if (PreviewInsert.IsEnabled)
+                        if (PreviewApply.IsEnabled)
                         {
-                            PreviewInsert.RaiseEvent(new RoutedEventArgs(ButtonBase.ClickEvent));
+                            PreviewApply.RaiseEvent(new RoutedEventArgs(ButtonBase.ClickEvent));
                         }
                         break;
                 }
@@ -414,19 +418,19 @@ namespace PowerPointLabs.ImageSearch
             SearchTextBox.Text = "";
             switch (SearchButton.SelectedIndex)
             {
-                case 0: // search
+                case TextCollection.ImagesLabText.ButtonIndexSearch:
                     SearchTextBox.IsEnabled = true;
                     SearchTextboxWatermark.Text = TextCollection.ImagesLabText.TextBoxWatermarkSearch;
                     SearchInstructions.Text = TextCollection.ImagesLabText.InstructionForSearch;
                     FocusSearchTextBox();
                     break;
-                case 1: // download
+                case TextCollection.ImagesLabText.ButtonIndexDownload:
                     SearchTextBox.IsEnabled = true;
                     SearchTextboxWatermark.Text = TextCollection.ImagesLabText.TextBoxWatermarkDownload;
                     SearchInstructions.Text = TextCollection.ImagesLabText.InstructionForDownload;
                     CopyContentToObservableList(_downloadedImages, SearchList);
                     break;
-                case 2: // from file
+                case TextCollection.ImagesLabText.ButtonIndexFromFile:
                     SearchTextBox.IsEnabled = false;
                     SearchTextboxWatermark.Text = TextCollection.ImagesLabText.TextBoxWatermarkFromFile;
                     SearchInstructions.Text = TextCollection.ImagesLabText.InstructionForFromFile;
@@ -451,7 +455,14 @@ namespace PowerPointLabs.ImageSearch
 
         private void ImageSearchPane_OnActivated(object sender, EventArgs e)
         {
-            DoPreview();
+            if (ConfirmApplyFlyout.IsOpen)
+            {
+                UpdateConfirmApplyPreviewImage();
+            }
+            else
+            {
+                DoPreview();
+            }
         }
 
         // intent: clicking 'load more' should not change selection

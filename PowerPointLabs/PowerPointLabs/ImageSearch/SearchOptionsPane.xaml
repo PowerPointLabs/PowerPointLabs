@@ -42,13 +42,13 @@
         <TextBox Height="30" Width="150" controls:TextBoxHelper.Watermark="Enter API Key" VerticalContentAlignment="Center" Text="{Binding Path=ApiKey, Mode=TwoWay, NotifyOnSourceUpdated=True, UpdateSourceTrigger=LostFocus}" HorizontalAlignment="Left" Grid.Row="2" Grid.Column="1" />
 
         <Label Content="Search" Foreground="#AAAAAA" FontSize="15" HorizontalAlignment="Left" VerticalAlignment="Center" Grid.Column="0" Grid.Row="3"/>
-        <Label Content="Color Type" Foreground="#FFFFFF" FontSize="15" HorizontalAlignment="Left" VerticalAlignment="Center" Grid.Column="0" Grid.Row="4"/>
+        <Label Content="color type" Foreground="#FFFFFF" FontSize="15" HorizontalAlignment="Left" VerticalAlignment="Center" Grid.Column="0" Grid.Row="4"/>
         <ComboBox SelectedIndex="{Binding Path=ColorType, Mode=TwoWay, NotifyOnSourceUpdated=True}" HorizontalAlignment="Left" VerticalAlignment="Center" Grid.Column="1" Grid.Row="4">
             <ComboBoxItem>color</ComboBoxItem>
             <ComboBoxItem>gray</ComboBoxItem>
             <ComboBoxItem>mono</ComboBoxItem>
         </ComboBox>
-        <Label Content="Dominant Color" Foreground="#FFFFFF" FontSize="15" HorizontalAlignment="Left" VerticalAlignment="Center" Grid.Column="0" Grid.Row="5"/>
+        <Label Content="dominant color" Foreground="#FFFFFF" FontSize="15" HorizontalAlignment="Left" VerticalAlignment="Center" Grid.Column="0" Grid.Row="5"/>
         <ComboBox SelectedIndex="{Binding Path=DominantColor, Mode=TwoWay, NotifyOnSourceUpdated=True}" HorizontalAlignment="Left" VerticalAlignment="Center" Grid.Column="1" Grid.Row="5">
             <ComboBoxItem>none</ComboBoxItem>
             <ComboBoxItem>black</ComboBoxItem>
@@ -62,7 +62,7 @@
             <ComboBoxItem>white</ComboBoxItem>
             <ComboBoxItem>yellow</ComboBoxItem>
         </ComboBox>
-        <Label Content="Image Type" Foreground="#FFFFFF" FontSize="15" HorizontalAlignment="Left" VerticalAlignment="Center" Grid.Column="0" Grid.Row="6"/>
+        <Label Content="image type" Foreground="#FFFFFF" FontSize="15" HorizontalAlignment="Left" VerticalAlignment="Center" Grid.Column="0" Grid.Row="6"/>
         <ComboBox SelectedIndex="{Binding Path=ImageType, Mode=TwoWay, NotifyOnSourceUpdated=True}" HorizontalAlignment="Left" VerticalAlignment="Center" Grid.Column="1" Grid.Row="6">
             <ComboBoxItem>photo</ComboBoxItem>
             <ComboBoxItem>clipart</ComboBoxItem>
@@ -70,7 +70,7 @@
             <ComboBoxItem>news</ComboBoxItem>
             <ComboBoxItem>face</ComboBoxItem>
         </ComboBox>
-        <Label Content="Image Size" Foreground="#FFFFFF" FontSize="15" HorizontalAlignment="Left" VerticalAlignment="Center" Grid.Column="0" Grid.Row="7"/>
+        <Label Content="image size" Foreground="#FFFFFF" FontSize="15" HorizontalAlignment="Left" VerticalAlignment="Center" Grid.Column="0" Grid.Row="7"/>
         <ComboBox SelectedIndex="{Binding Path=ImageSize, Mode=TwoWay, NotifyOnSourceUpdated=True}" HorizontalAlignment="Left" VerticalAlignment="Center" Grid.Column="1" Grid.Row="7">
             <ComboBoxItem>huge</ComboBoxItem>
             <ComboBoxItem>icon</ComboBoxItem>
@@ -80,7 +80,7 @@
             <ComboBoxItem>xlarge</ComboBoxItem>
             <ComboBoxItem>xxlarge</ComboBoxItem>
         </ComboBox>
-        <Label Content="File Type" Foreground="#FFFFFF" FontSize="15" HorizontalAlignment="Left" VerticalAlignment="Center" Grid.Column="0" Grid.Row="8"/>
+        <Label Content="file type" Foreground="#FFFFFF" FontSize="15" HorizontalAlignment="Left" VerticalAlignment="Center" Grid.Column="0" Grid.Row="8"/>
         <ComboBox SelectedIndex="{Binding Path=FileType, Mode=TwoWay, NotifyOnSourceUpdated=True}" HorizontalAlignment="Left" VerticalAlignment="Center" Grid.Column="1" Grid.Row="8">
             <ComboBoxItem>any</ComboBoxItem>
             <ComboBoxItem>png</ComboBoxItem>

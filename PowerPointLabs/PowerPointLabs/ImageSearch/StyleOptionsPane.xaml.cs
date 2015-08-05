@@ -6,7 +6,6 @@ using System.Windows.Input;
 using System.Windows.Media;
 using MahApps.Metro.Controls;
 using PowerPointLabs.ImageSearch.Domain;
-using PowerPointLabs.ImageSearch.Util;
 using PowerPointLabs.Utils;
 using Color = System.Drawing.Color;
 using ComboBox = System.Windows.Controls.ComboBox;
@@ -46,6 +45,12 @@ namespace PowerPointLabs.ImageSearch
                     break;
                 case "OverlayColorPanel":
                     options.OverlayColor = hexString;
+                    break;
+                case "TextBoxOverlayColorPanel":
+                    options.TextBoxOverlayColor = hexString;
+                    break;
+                case "BannerOverlayColorPanel":
+                    options.BannerOverlayColor = hexString;
                     break;
             }
         }
