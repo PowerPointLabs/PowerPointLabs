@@ -1,13 +1,14 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Net;
+using System.Text;
 using System.Threading;
+using System.Threading.Tasks;
 using PowerPointLabs.ImageSearch.Domain;
 using PowerPointLabs.ImageSearch.SearchEngine.VO;
-using PowerPointLabs.ImageSearch.Util;
 using PowerPointLabs.Utils;
 using PowerPointLabs.Utils.Exceptions;
 using RestSharp;
-using RestSharp.Deserializers;
 
 namespace PowerPointLabs.ImageSearch.SearchEngine
 {
@@ -16,6 +17,14 @@ namespace PowerPointLabs.ImageSearch.SearchEngine
         public const int NumOfItemsPerSearch = 30;
         public const int NumOfItemsPerRequest = 10;
         public const int MaxNumOfItems = 100;
+
+        private const string GoogleCustomSearchApiBase = "https://www.googleapis.com";
+        private const string GoogleCustomSearchApiResource = "/customsearch/v1";
+        private const int SearchEngineTimeOut = 15000;
+
+        private readonly IRestClient _restClient = new RestClient { Timeout = SearchEngineTimeOut };
+        private readonly Dictionary<string, GoogleSearchResults> _params2ResultsMap = 
+            new Dictionary<string, GoogleSearchResults>(); 
 
         // state, used for Search More
         private string _lastTimeQuery = "";
@@ -49,6 +58,7 @@ namespace PowerPointLabs.ImageSearch.SearchEngine
 
             _lastTimeQuery = query;
             _nextStartIndex = NumOfItemsPerSearch;
+            _restClient.BaseUrl = GetBaseUrl();
 
             var barrier = CreateBarrier(NumOfItemsPerSearch/NumOfItemsPerRequest);
 
@@ -64,86 +74,156 @@ namespace PowerPointLabs.ImageSearch.SearchEngine
         public void SearchMore()
         {
             if (StringUtil.IsEmpty(_lastTimeQuery)) return;
+            _restClient.BaseUrl = GetBaseUrl();
 
             Search(_lastTimeQuery, _nextStartIndex, CreateBarrier(1));
             _nextStartIndex += NumOfItemsPerRequest;
         }
 
-        private void Search(string query, int startIdx, Barrier barrier = null)
+        private void Search(string query, int startIdx, Barrier barrier)
         {
-            var restClient = new RestClient
+            var req = new RestRequest(Method.GET);
+            AddBaseParameters(req);
+            req.AddParameter("start", (startIdx + 1));
+            req.AddParameter("q", query);
+
+            var reqKey = GetKeyFromReq(req);
+            // check if there's any cache
+            if (_params2ResultsMap.ContainsKey(reqKey))
             {
-                BaseUrl = new Uri(CreateApi() + "&num=" + NumOfItemsPerRequest 
-                    + "&start=" + (startIdx + 1) + "&q=" + query) 
-            };
-            restClient.ExecuteAsync(new RestRequest(Method.GET), response =>
-            {
-                try
+                // barrier with multiple participants
+                // require a task to run in
+                new Task(() =>
                 {
-                    if (response.StatusCode != HttpStatusCode.OK
-                        || StringUtil.IsEmpty(response.Content))
+                    HandleSearchResults(barrier, () =>
                     {
-                        lock (_syncLock)
-                        {
-                            if (WhenFailDelegate != null && !_isFailedAlready)
-                            {
-                                // ensure only call failure delegate once
-                                _isFailedAlready = true;
-                                WhenFailDelegate(response);
-                            }
-                        }
-                    }
-                    else
-                    {
-                        var deser = new JsonDeserializer();
-                        var searchResults = deser.Deserialize<GoogleSearchResults>(response);
+                        var data = _params2ResultsMap[reqKey];
                         if (WhenSucceedDelegate != null)
                         {
-                            WhenSucceedDelegate(searchResults, startIdx);
+                            WhenSucceedDelegate(data, startIdx);
                         }
-                    }
-                }
-                catch (Exception e)
+                    });
+                }).Start();
+            }
+            // go to search
+            else
+            {
+                _restClient.ExecuteAsync<GoogleSearchResults>(req, response =>
                 {
-                    lock (_syncLock)
+                    HandleSearchResults(barrier, () =>
                     {
-                        if (WhenExceptionDelegate != null && !_isFailedWithExceptionAlready)
-                        {
-                            // ensure only call failure delegate once
-                            _isFailedWithExceptionAlready = true;
-                            try
-                            {
-                                WhenExceptionDelegate(e);
-                            }
-                            catch (Exception e2)
-                            {
-                                PowerPointLabsGlobals.Log("Error", e2.Message);
-                            }
-                        }
-                    }
-                }
-                finally
-                {
-                    if (barrier != null)
-                    {
-                        barrier.SignalAndWait();
-                    }
-                }
-            });
+                        TryHandleResponse(response, reqKey, startIdx);
+                    });
+                });
+            }
         }
         # endregion
 
         # region Helper Funcs
-        private string CreateApi()
+
+        private delegate void TryHandleSearchResults();
+
+        private void TryHandleResponse(IRestResponse<GoogleSearchResults> response, string reqKey, int startIdx)
         {
-            return "https://www.googleapis.com/customsearch/v1?filter=1&searchType=image&safe=medium"
-                   + "&cx=" + SearchOptions.SearchEngineId.Trim()
-                   + "&imgSize=" + SearchOptions.GetImageSize()
-                   + "&imgType=" + SearchOptions.GetImageType()
-                   + "&imgColorType=" + SearchOptions.GetColorType()
-                   + ("none" != SearchOptions.GetDominantColor() ? "&imgDominantColor=" + SearchOptions.GetDominantColor() : "")
-                   + ("none" != SearchOptions.GetFileType() ? "&fileType=" + SearchOptions.GetFileType() : "")
-                   + "&key=" + SearchOptions.ApiKey.Trim();
+            if (response.StatusCode != HttpStatusCode.OK || StringUtil.IsEmpty(response.Content))
+            {
+                // ensure only call failure delegate once
+                lock (_syncLock)
+                {
+                    if (WhenFailDelegate != null && !_isFailedAlready)
+                    {
+                        _isFailedAlready = true;
+                        WhenFailDelegate(response);
+                    }
+                }
+            }
+            else // success
+            {
+                // add cache
+                _params2ResultsMap.Add(reqKey, response.Data);
+                if (WhenSucceedDelegate != null)
+                {
+                    WhenSucceedDelegate(response.Data, startIdx);
+                }
+            }
+        }
+
+        private void HandleSearchResults(Barrier barrier, TryHandleSearchResults tryHandle)
+        {
+            try
+            {
+                tryHandle();
+            }
+            catch (Exception e)
+            {
+                lock (_syncLock)
+                {
+                    if (WhenExceptionDelegate != null && !_isFailedWithExceptionAlready)
+                    {
+                        // ensure only call failure delegate once
+                        _isFailedWithExceptionAlready = true;
+                        try
+                        {
+                            WhenExceptionDelegate(e);
+                        }
+                        catch (Exception e2)
+                        {
+                            PowerPointLabsGlobals.Log("Error", e2.Message);
+                        }
+                    }
+                }
+            }
+            finally
+            {
+                if (barrier != null)
+                {
+                    barrier.SignalAndWait();
+                }
+            }
+        }
+
+        /// <summary>
+        /// manually add parameter for id and key in BaseUrl to avoid encoding
+        /// </summary>
+        /// <returns></returns>
+        private Uri GetBaseUrl()
+        {
+            return new Uri(
+                GoogleCustomSearchApiBase + 
+                GoogleCustomSearchApiResource +
+                "?cx=" + SearchOptions.SearchEngineId.Trim() +
+                "&key=" + SearchOptions.ApiKey.Trim());
+        }
+
+        private void AddBaseParameters(IRestRequest req)
+        {
+            req.AddParameter("filter", "1");
+            req.AddParameter("searchType", "image");
+            req.AddParameter("safe", "medium");
+            req.AddParameter("imgSize", SearchOptions.GetImageSize());
+            req.AddParameter("imgType", SearchOptions.GetImageType());
+            req.AddParameter("imgColorType", SearchOptions.GetColorType());
+            if ("none" != SearchOptions.GetDominantColor())
+            {
+                req.AddParameter("imgDominantColor", SearchOptions.GetDominantColor());
+            }
+            if ("none" != SearchOptions.GetFileType())
+            {
+                req.AddParameter("fileType", SearchOptions.GetFileType());
+            }
+            req.AddParameter("num", NumOfItemsPerRequest);
+        }
+
+        private string GetKeyFromReq(IRestRequest req)
+        {
+            var strBuilder = new StringBuilder();
+            var parameters = req.Parameters;
+            foreach (var parameter in parameters)
+            {
+                strBuilder.Append(parameter);
+                strBuilder.Append("&");
+            }
+            return strBuilder.ToString();
         }
 
         private Barrier CreateBarrier(int numOfParticipants)
