@@ -283,10 +283,11 @@ namespace PowerPointLabs.ImageSearch.Handler
                         var width = paragraph.BoundWidth + 10;
                         var height = paragraph.BoundHeight;
 
-                        var overlayBlurShape = ApplyOverlayEffect(overlayColor, transparency,
+                        var overlayShape = ApplyOverlayEffect(overlayColor, transparency,
                             left, top, width, height);
-                        Graphics.MoveZToJustBehind(overlayBlurShape, shape);
-                        shape.Tags.Add(Tag.AddedTextbox, overlayBlurShape.Name);
+                        ChangeName(overlayShape, EffectName.TextBox);
+                        Graphics.MoveZToJustBehind(overlayShape, shape);
+                        shape.Tags.Add(Tag.AddedTextbox, overlayShape.Name);
                     }
                 }
             }
@@ -308,6 +309,7 @@ namespace PowerPointLabs.ImageSearch.Handler
 
             var overlayShape = ApplyCircleOverlayEffect(overlayColor, transparency, tbInfo.Left, tbInfo.Top, tbInfo.Width,
                 tbInfo.Height);
+            ChangeName(overlayShape, EffectName.Banner);
             overlayShape.ZOrder(MsoZOrderCmd.msoSendToBack);
             if (imageShape != null)
             {
@@ -341,6 +343,7 @@ namespace PowerPointLabs.ImageSearch.Handler
                         PreviewPresentation.SlideHeight);
                     break;
             }
+            ChangeName(overlayShape, EffectName.Banner);
             overlayShape.ZOrder(MsoZOrderCmd.msoSendToBack);
             if (imageShape != null)
             {

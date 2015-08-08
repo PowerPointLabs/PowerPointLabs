@@ -45,34 +45,7 @@ namespace PowerPointLabs.ImageSearch.Handler
             var previewInfo = new PreviewInfo();
             var handler = CreateEffectsHandler(source);
 
-            // style: direct text
-            var imageShape = ApplyDirectTextStyle(handler);
-            if (Options.IsInsertReference)
-            {
-                handler.ApplyImageReferenceInsertion(source.ContextLink, Options.GetFontFamily(), Options.FontColor);
-            }
-            handler.GetNativeSlide().Export(previewInfo.DirectTextStyleImagePath, "JPG");
-
-            // style: blur
-            handler.RemoveEffect(EffectName.Overlay);
-            handler.ApplyBlurEffect(imageShape, Options.OverlayColor, Options.Transparency);
-            handler.GetNativeSlide().Export(previewInfo.BlurStyleImagePath, "JPG");
-
-            // style: textbox
-            handler.RemoveEffect(EffectName.Blur);
-            handler.RemoveEffect(EffectName.Overlay);
-            handler.ApplyTextboxEffect(Options.TextBoxOverlayColor, Options.TextBoxTransparency);
-            handler.GetNativeSlide().Export(previewInfo.TextboxStyleImagePath, "JPG");
-
-            // style: banner
-            handler.RemoveEffect(EffectName.Overlay);
-            ApplyBannerStyle(handler, imageShape);
-            handler.GetNativeSlide().Export(previewInfo.BannerStyleImagePath, "JPG");
-
-            // style: special effect
-            handler.RemoveEffect(EffectName.Overlay);
-            handler.ApplySpecialEffectEffect(Options.GetSpecialEffect(), imageShape, Options.OverlayColor, Options.Transparency);
-            handler.GetNativeSlide().Export(previewInfo.SpecialEffectStyleImagePath, "JPG");
+            PreviewStyles(source, handler, previewInfo);
 
             handler.Delete();
             return previewInfo;
@@ -155,10 +128,7 @@ namespace PowerPointLabs.ImageSearch.Handler
                 handler.ApplyTextboxEffect(Options.TextBoxOverlayColor, Options.TextBoxTransparency);
             }
 
-            SendToBack(bannerOverlayShape);
-            SendToBack(backgroundOverlayShape);
-            SendToBack(blurImageShape);
-            SendToBack(imageShape);
+            SendToBack(bannerOverlayShape, backgroundOverlayShape, blurImageShape, imageShape);
 
             handler.ApplyImageReference(source.ContextLink);
             if (Options.IsInsertReference)
@@ -167,9 +137,51 @@ namespace PowerPointLabs.ImageSearch.Handler
             }
         }
 
+        private void PreviewStyles(ImageItem source, EffectsHandler handler, PreviewInfo previewInfo)
+        {
+            // style: direct text
+            var imageShape = handler.ApplyBackgroundEffect();
+            var overlayShape = handler.ApplyOverlayEffect(Options.OverlayColor, Options.Transparency);
+            SendToBack(overlayShape, imageShape);
+            ApplyTextEffect(handler);
+            if (Options.IsInsertReference)
+            {
+                handler.ApplyImageReferenceInsertion(source.ContextLink, Options.GetFontFamily(), Options.FontColor);
+            }
+            handler.GetNativeSlide().Export(previewInfo.DirectTextStyleImagePath, "JPG");
+
+            // style: blur
+            var blurImageShape = handler.ApplyBlurEffect();
+            SendToBack(overlayShape, blurImageShape, imageShape);
+            handler.GetNativeSlide().Export(previewInfo.BlurStyleImagePath, "JPG");
+
+            // style: textbox
+            handler.RemoveEffect(EffectName.Blur);
+            handler.ApplyTextboxEffect(Options.TextBoxOverlayColor, Options.TextBoxTransparency);
+            handler.GetNativeSlide().Export(previewInfo.TextboxStyleImagePath, "JPG");
+
+            // style: banner
+            handler.RemoveEffect(EffectName.TextBox);
+            ApplyBannerStyle(handler, imageShape);
+            handler.GetNativeSlide().Export(previewInfo.BannerStyleImagePath, "JPG");
+
+            // style: special effect
+            handler.RemoveEffect(EffectName.Banner);
+            handler.ApplySpecialEffectEffect(Options.GetSpecialEffect(), imageShape, Options.OverlayColor, Options.Transparency);
+            handler.GetNativeSlide().Export(previewInfo.SpecialEffectStyleImagePath, "JPG");
+        }
+
         # endregion
 
         # region Helper Funcs
+
+        private void SendToBack(params Shape[] shapes)
+        {
+            foreach (var shape in shapes)
+            {
+                SendToBack(shape);
+            }
+        }
 
         private void SendToBack(Shape shape)
         {
@@ -206,13 +218,6 @@ namespace PowerPointLabs.ImageSearch.Handler
                 default:
                     return effectsHandler.ApplyCircleBannerEffect(imageShape, Options.BannerOverlayColor, Options.BannerTransparency);
             }
-        }
-
-        private Shape ApplyDirectTextStyle(EffectsHandler effectsHandler)
-        {
-            var imageShape = effectsHandler.ApplyBackgroundEffect(Options.OverlayColor, Options.Transparency);
-            ApplyTextEffect(effectsHandler);
-            return imageShape;
         }
 
         private void ApplyTextEffect(EffectsHandler effectsHandler)
