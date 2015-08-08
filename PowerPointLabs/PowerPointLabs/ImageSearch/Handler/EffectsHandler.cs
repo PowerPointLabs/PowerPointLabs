@@ -19,6 +19,10 @@ namespace PowerPointLabs.ImageSearch.Handler
     {
         private const string ShapeNamePrefix = "pptImagesLab";
 
+        private const float ThumbnailWidth = 150f;
+
+        private const float ThumbnailHeight = 110f;
+
         private ImageItem Source { get; set; }
 
         private PowerPointPresentation PreviewPresentation { get; set; }
@@ -251,8 +255,12 @@ namespace PowerPointLabs.ImageSearch.Handler
 
         public PowerPoint.Shape ApplyBlurEffect(string imageFileToBlur = null)
         {
-            Source.BlurImageFile = BlurImage(imageFileToBlur ?? Source.ImageFile, 
-                Source.ImageFile == Source.FullSizeImageFile);
+            var isBlurFullSizeImage = (Source.ImageFile == Source.FullSizeImageFile 
+                || imageFileToBlur != null
+                || Source.FullSizeImageFile != null);
+            Source.BlurImageFile = BlurImage(imageFileToBlur 
+                ?? Source.FullSizeImageFile 
+                ?? Source.ImageFile, isBlurFullSizeImage);
             var blurImageShape = AddPicture(Source.BlurImageFile, EffectName.Blur);
             FitToSlide.AutoFit(blurImageShape, PreviewPresentation);
             CropPicture(blurImageShape);
@@ -460,9 +468,19 @@ namespace PowerPointLabs.ImageSearch.Handler
                     var image = imageFactory
                         .Load(imageFilePath)
                         .Image;
-                    image = imageFactory
-                        .Resize(new Size(image.Width / 4, image.Height / 4))
+                    var ratio = (float) image.Width / image.Height;
+                    if (image.Width >= image.Height)
+                    {
+                        image = imageFactory
+                        .Resize(new Size((int)ThumbnailWidth, (int)(ThumbnailWidth / ratio)))
                         .GaussianBlur(5).Image;
+                    }
+                    else
+                    {
+                        image = imageFactory
+                        .Resize(new Size((int)(ThumbnailHeight * ratio), (int)ThumbnailHeight))
+                        .GaussianBlur(5).Image;
+                    }
                     image.Save(blurImageFile);
                 }
                 else
