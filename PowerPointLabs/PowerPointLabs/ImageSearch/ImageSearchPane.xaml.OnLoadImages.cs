@@ -10,7 +10,6 @@ using PowerPointLabs.ImageSearch.SearchEngine.VO;
 using PowerPointLabs.ImageSearch.Util;
 using PowerPointLabs.Utils;
 using RestSharp;
-using Graphics = System.Drawing.Graphics;
 
 namespace PowerPointLabs.ImageSearch
 {
@@ -27,15 +26,22 @@ namespace PowerPointLabs.ImageSearch
                 {
                     return;
                 }
-                if (StringUtil.IsEmpty(SearchOptions.SearchEngineId)
-                    || StringUtil.IsEmpty(SearchOptions.ApiKey))
+                if (SearchOptions.GetSearchEngine() == TextCollection.ImagesLabText.SearchEngineGoogle 
+                    && (StringUtil.IsEmpty(SearchOptions.SearchEngineId)
+                        || StringUtil.IsEmpty(SearchOptions.ApiKey)))
+                {
+                    ShowErrorMessageBox(TextCollection.ImagesLabText.ErrorNoEngineIdOrApiKey);
+                    return;
+                }
+                if (SearchOptions.GetSearchEngine() == TextCollection.ImagesLabText.SearchEngineBing
+                    && StringUtil.IsEmpty(SearchOptions.BingApiKey))
                 {
                     ShowErrorMessageBox(TextCollection.ImagesLabText.ErrorNoEngineIdOrApiKey);
                     return;
                 }
 
                 SearchButton.IsEnabled = false;
-                PrepareToSearch(GoogleEngine.NumOfItemsPerSearch);
+                PrepareToSearch(SearchEngine.NumOfItemsPerSearch());
                 SearchEngine.Search(query);
             }));
         }
@@ -46,7 +52,7 @@ namespace PowerPointLabs.ImageSearch
             {
                 SearchButton.IsEnabled = false;
                 loadMoreItem.ImageFile = TempPath.LoadingImgPath;
-                PrepareToSearch(GoogleEngine.NumOfItemsPerRequest - 1, isListClearNeeded: false);
+                PrepareToSearch(SearchEngine.NumOfItemsPerRequest() - 1, isListClearNeeded: false);
                 SearchEngine.SearchMore();
             }));
         }
@@ -134,37 +140,58 @@ namespace PowerPointLabs.ImageSearch
 
         private void InitSearchEngine()
         {
-            SearchEngine = new GoogleEngine(SearchOptions)
+            var googleEngine = new GoogleEngine(SearchOptions)
                 .WhenSucceed(HandleSearchSuccess)
                 .WhenCompleted(HandleSearchCompletion)
                 .WhenFail(HandleSearchFailure)
                 .WhenException(HandleSearchException);
+            var bingEngine = new BingEngine(SearchOptions)
+                .WhenSucceed(HandleSearchSuccess)
+                .WhenCompleted(HandleSearchCompletion)
+                .WhenFail(HandleSearchFailure)
+                .WhenException(HandleSearchException);
+
+            _id2EngineMap.Add(GoogleEngine.Id(), googleEngine);
+            _id2EngineMap.Add(BingEngine.Id(), bingEngine);
+            SearchEngine = _id2EngineMap[SearchOptions.GetSearchEngine()];
         }
 
         # endregion
 
         # region Helper Funcs
-        private void HandleSearchSuccess(GoogleSearchResults searchResults, int startIdx)
+        private void HandleSearchSuccess(object results, int startIdx)
         {
+            dynamic searchResults = results;
             // in case null result item
-            searchResults.Items = searchResults.Items ?? new List<SearchResult>();
+            if (results is GoogleSearchResults)
+            {
+                searchResults.Items = searchResults.Items ?? new List<GoogleSearchResult>();
+            }
+            else if (results is BingSearchResults)
+            {
+                searchResults.D = searchResults.D ?? 
+                    new BingSearchResultsWrapper { Results = new List<BingSearchResult>() };
+                searchResults.D.Results = searchResults.D.Results ?? new List<BingSearchResult>();
+            }
+            else return;
+
             // in case UI list not prepared
             AddNeededImageItem(startIdx);
 
-            for (var i = 0; i < GoogleEngine.NumOfItemsPerRequest; i++)
+            for (var i = 0; i < SearchEngine.NumOfItemsPerRequest(); i++)
             {
                 var item = SearchList[startIdx + i];
-                if (i >= searchResults.Items.Count)
+                if (i >= VOUtil.GetCount(searchResults))
                 {
                     item.IsToDelete = true;
                     continue;
                 }
 
-                var searchResult = searchResults.Items[i];
+                object searchResult = VOUtil.GetItem(searchResults, i);
                 var thumbnailPath = TempPath.GetPath("thumbnail");
 
                 new Downloader()
-                    .Get(searchResult.Image.ThumbnailLink, thumbnailPath)
+                    .Get(VOUtil.GetThumbnailLink(searchResult), thumbnailPath)
                     .After(()=> { HandleDownloadedThumbnail(item, thumbnailPath, searchResult); })
                     .Start();
             }
@@ -180,8 +207,8 @@ namespace PowerPointLabs.ImageSearch
 
                 if (isSuccessful
                     && isThereMoreSearchResults
-                    && SearchList.Count + GoogleEngine.NumOfItemsPerRequest - 1 /*loadMore item*/
-                        <= GoogleEngine.MaxNumOfItems)
+                    && SearchList.Count + SearchEngine.NumOfItemsPerRequest() - 1 /*loadMore item*/
+                        <= SearchEngine.MaxNumOfItems())
                 {
                     EnableSearchMore();
                 }
@@ -257,7 +284,7 @@ namespace PowerPointLabs.ImageSearch
 
         private void AddNeededImageItem(int startIdx)
         {
-            while (startIdx + GoogleEngine.NumOfItemsPerRequest - 1 >= SearchList.Count)
+            while (startIdx + SearchEngine.NumOfItemsPerRequest() - 1 >= SearchList.Count)
             {
                 Dispatcher.Invoke(new Action(() =>
                 {
@@ -287,9 +314,9 @@ namespace PowerPointLabs.ImageSearch
             return isAnyElementRemoved;
         }
 
-        private static string GetTooltip(SearchResult searchResult)
+        private static string GetTooltip(object searchResult)
         {
-            return searchResult.Title + "\n" + searchResult.Image.Width + " x " + searchResult.Image.Height;
+            return VOUtil.GetTitle(searchResult) + "\n" + VOUtil.GetWidth(searchResult) + " x " + VOUtil.GetHeight(searchResult);
         }
         # endregion
     }

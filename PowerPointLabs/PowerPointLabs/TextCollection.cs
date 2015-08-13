@@ -304,6 +304,9 @@
 
         public class ImagesLabText
         {
+            public const string SearchEngineGoogle = "GoogleEngine";
+            public const string SearchEngineBing = "BingEngine";
+
             public const int ButtonIndexSearch = 0;
             public const int ButtonIndexDownload = 1;
             public const int ButtonIndexFromFile = 2;

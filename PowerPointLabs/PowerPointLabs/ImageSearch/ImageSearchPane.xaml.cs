@@ -62,8 +62,9 @@ namespace PowerPointLabs.ImageSearch
         // a background presentation that will do the preview processing
         public StylesHandler PreviewPresentation { get; set; }
 
-        // the image search engine
-        public GoogleEngine SearchEngine { get; set; }
+        // the current image search engine
+        public AsyncSearchEngine SearchEngine { get; set; }
+        private Dictionary<string, AsyncSearchEngine> _id2EngineMap = new Dictionary<string, AsyncSearchEngine>(); 
 
         // indicate whether the window is open/closed or not
         public bool IsOpen { get; set; }
@@ -152,6 +153,10 @@ namespace PowerPointLabs.ImageSearch
         private void InitSearchOptions()
         {
             SearchOptions = SearchOptions.Load(StoragePath.GetPath("ImagesLabSearchOptions"));
+            SearchOptions.PropertyChanged += (sender, args) =>
+            {
+                SearchEngine = _id2EngineMap[SearchOptions.GetSearchEngine()];
+            };
             AdvancedPane.DataContext = SearchOptions;
         }
 

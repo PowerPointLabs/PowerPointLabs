@@ -5,44 +5,38 @@ using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using PowerPointLabs.ImageSearch.Domain;
-using PowerPointLabs.ImageSearch.SearchEngine.VO;
 using PowerPointLabs.Utils;
 using PowerPointLabs.Utils.Exceptions;
 using RestSharp;
 
 namespace PowerPointLabs.ImageSearch.SearchEngine
 {
-    public partial class GoogleEngine
+    public abstract partial class AsyncSearchEngine
     {
-        public const int NumOfItemsPerSearch = 30;
-        public const int NumOfItemsPerRequest = 10;
-        public const int MaxNumOfItems = 100;
-
-        private const string GoogleCustomSearchApiBase = "https://www.googleapis.com";
-        private const string GoogleCustomSearchApiResource = "/customsearch/v1";
-        private const int SearchEngineTimeOut = 15000;
-
+        // rest client
+        private const int SearchEngineTimeOut = 15000; // 15 sec
         private readonly IRestClient _restClient = new RestClient { Timeout = SearchEngineTimeOut };
-        private readonly Dictionary<string, GoogleSearchResults> _params2ResultsMap = 
-            new Dictionary<string, GoogleSearchResults>(); 
 
-        // state, used for Search More
+        // cache
+        private readonly Dictionary<string, object> _params2ResultsMap = new Dictionary<string, object>();
+
+        // states, used for Search More
         private string _lastTimeQuery = "";
         private int _nextStartIndex;
 
-        // multi thread state
+        // multi thread states
         private readonly Object _syncLock = new object();
         private bool _isFailedAlready;
         private bool _isFailedWithExceptionAlready;
 
-        private SearchOptions SearchOptions { get; set; }
+        protected SearchOptions SearchOptions { get; set; }
 
         # region APIs
 
         /// <exception cref="AssumptionFailedException">
         /// throw exception when options is null
         /// </exception>
-        public GoogleEngine(SearchOptions options)
+        protected AsyncSearchEngine(SearchOptions options)
         {
             Assumption.Made(options != null, "options is null");
             SearchOptions = options;
@@ -57,12 +51,11 @@ namespace PowerPointLabs.ImageSearch.SearchEngine
             if (StringUtil.IsEmpty(query)) return;
 
             _lastTimeQuery = query;
-            _nextStartIndex = NumOfItemsPerSearch;
-            _restClient.BaseUrl = GetBaseUrl();
+            _nextStartIndex = NumOfItemsPerSearch();
 
-            var barrier = CreateBarrier(NumOfItemsPerSearch/NumOfItemsPerRequest);
+            var barrier = CreateBarrier(NumOfItemsPerSearch()/NumOfItemsPerRequest());
 
-            for (var i = 0; i < NumOfItemsPerSearch; i += NumOfItemsPerRequest)
+            for (var i = 0; i < NumOfItemsPerSearch(); i += NumOfItemsPerRequest())
             {
                 Search(query, i, barrier);
             }
@@ -74,18 +67,16 @@ namespace PowerPointLabs.ImageSearch.SearchEngine
         public void SearchMore()
         {
             if (StringUtil.IsEmpty(_lastTimeQuery)) return;
-            _restClient.BaseUrl = GetBaseUrl();
 
             Search(_lastTimeQuery, _nextStartIndex, CreateBarrier(1));
-            _nextStartIndex += NumOfItemsPerRequest;
+            _nextStartIndex += NumOfItemsPerRequest();
         }
 
         private void Search(string query, int startIdx, Barrier barrier)
         {
             var req = new RestRequest(Method.GET);
             AddBaseParameters(req);
-            req.AddParameter("start", (startIdx + 1));
-            req.AddParameter("q", query);
+            AddParametersPerSearch(req, query, startIdx);
 
             var reqKey = GetKeyFromReq(req);
             // check if there's any cache
@@ -108,7 +99,9 @@ namespace PowerPointLabs.ImageSearch.SearchEngine
             // go to search
             else
             {
-                _restClient.ExecuteAsync<GoogleSearchResults>(req, response =>
+                Authorize(_restClient);
+                _restClient.BaseUrl = GetBaseUrl();
+                _restClient.ExecuteAsync(req, response =>
                 {
                     HandleSearchResults(barrier, () =>
                     {
@@ -117,13 +110,46 @@ namespace PowerPointLabs.ImageSearch.SearchEngine
                 });
             }
         }
+
+        # endregion
+
+        # region To be overridden
+
+        protected virtual void Authorize(IRestClient client) { }
+
+        public abstract int NumOfItemsPerSearch();
+
+        public abstract int NumOfItemsPerRequest();
+
+        public abstract int MaxNumOfItems();
+
+        protected abstract Uri GetBaseUrl();
+
+        protected abstract void AddBaseParameters(IRestRequest req);
+
+        protected abstract void AddParametersPerSearch(RestRequest req, string query, int startIdx);
+
+        protected abstract object Deserialize(IRestResponse response);
+
         # endregion
 
         # region Helper Funcs
 
+        private string GetKeyFromReq(IRestRequest req)
+        {
+            var strBuilder = new StringBuilder();
+            var parameters = req.Parameters;
+            foreach (var parameter in parameters)
+            {
+                strBuilder.Append(parameter);
+                strBuilder.Append("&");
+            }
+            return strBuilder.ToString();
+        }
+
         private delegate void TryHandleSearchResults();
 
-        private void TryHandleResponse(IRestResponse<GoogleSearchResults> response, string reqKey, int startIdx)
+        private void TryHandleResponse(IRestResponse response, string reqKey, int startIdx)
         {
             if (response.StatusCode != HttpStatusCode.OK || StringUtil.IsEmpty(response.Content))
             {
@@ -139,11 +165,12 @@ namespace PowerPointLabs.ImageSearch.SearchEngine
             }
             else // success
             {
+                var data = Deserialize(response);
                 // add cache
-                _params2ResultsMap.Add(reqKey, response.Data);
+                _params2ResultsMap.Add(reqKey, data);
                 if (WhenSucceedDelegate != null)
                 {
-                    WhenSucceedDelegate(response.Data, startIdx);
+                    WhenSucceedDelegate(data, startIdx);
                 }
             }
         }
@@ -180,50 +207,6 @@ namespace PowerPointLabs.ImageSearch.SearchEngine
                     barrier.SignalAndWait();
                 }
             }
-        }
-
-        /// <summary>
-        /// manually add parameter for id and key in BaseUrl to avoid encoding
-        /// </summary>
-        /// <returns></returns>
-        private Uri GetBaseUrl()
-        {
-            return new Uri(
-                GoogleCustomSearchApiBase + 
-                GoogleCustomSearchApiResource +
-                "?cx=" + SearchOptions.SearchEngineId.Trim() +
-                "&key=" + SearchOptions.ApiKey.Trim());
-        }
-
-        private void AddBaseParameters(IRestRequest req)
-        {
-            req.AddParameter("filter", "1");
-            req.AddParameter("searchType", "image");
-            req.AddParameter("safe", "medium");
-            req.AddParameter("imgSize", SearchOptions.GetImageSize());
-            req.AddParameter("imgType", SearchOptions.GetImageType());
-            req.AddParameter("imgColorType", SearchOptions.GetColorType());
-            if ("none" != SearchOptions.GetDominantColor())
-            {
-                req.AddParameter("imgDominantColor", SearchOptions.GetDominantColor());
-            }
-            if ("none" != SearchOptions.GetFileType())
-            {
-                req.AddParameter("fileType", SearchOptions.GetFileType());
-            }
-            req.AddParameter("num", NumOfItemsPerRequest);
-        }
-
-        private string GetKeyFromReq(IRestRequest req)
-        {
-            var strBuilder = new StringBuilder();
-            var parameters = req.Parameters;
-            foreach (var parameter in parameters)
-            {
-                strBuilder.Append(parameter);
-                strBuilder.Append("&");
-            }
-            return strBuilder.ToString();
         }
 
         private Barrier CreateBarrier(int numOfParticipants)

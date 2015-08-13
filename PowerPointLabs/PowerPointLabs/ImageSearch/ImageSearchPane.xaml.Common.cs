@@ -1,7 +1,7 @@
 ﻿using System;
 using MahApps.Metro.Controls.Dialogs;
 using PowerPointLabs.ImageSearch.Domain;
-using PowerPointLabs.ImageSearch.SearchEngine.VO;
+using PowerPointLabs.ImageSearch.Util;
 
 namespace PowerPointLabs.ImageSearch
 {
@@ -12,7 +12,7 @@ namespace PowerPointLabs.ImageSearch
         ///////////////////////////////////////////////////////////////
 
         private void HandleDownloadedThumbnail(
-            ImageItem item, string thumbnailPath, SearchResult searchResult = null)
+            ImageItem item, string thumbnailPath, object searchResult = null)
         {
             Dispatcher.BeginInvoke(new Action(() =>
             {
@@ -21,9 +21,9 @@ namespace PowerPointLabs.ImageSearch
 
                 if (searchResult != null)
                 {
-                    item.FullSizeImageUri = searchResult.Link;
+                    item.FullSizeImageUri = VOUtil.GetLink(searchResult);
                     item.Tooltip = GetTooltip(searchResult);
-                    item.ContextLink = searchResult.Image.ContextLink;
+                    item.ContextLink = VOUtil.GetContextLink(searchResult);
                 }
                 else // use case download image & when thumbnail is already full-size
                 {
