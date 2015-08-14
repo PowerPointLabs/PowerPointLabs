@@ -57,32 +57,43 @@ namespace PowerPointLabs.ImageSearch
             }));
         }
 
-        private void DoLoadImageFromFile()
+        private void DoLoadImageFromFile(string filename = null)
         {
             Dispatcher.Invoke(new Action(() =>
             {
-                var openFileDialog = new OpenFileDialog
+                if (filename == null)
                 {
-                    Multiselect = false,
-                    Filter = @"Image File|*.png;*.jpg;*.jpeg;*.bmp;*.gif;"
-                };
-                var fileDialogResult = openFileDialog.ShowDialog();
-                if (fileDialogResult != System.Windows.Forms.DialogResult.OK)
-                {
-                    return;
+                    var openFileDialog = new OpenFileDialog
+                    {
+                        Multiselect = false,
+                        Filter = @"Image File|*.png;*.jpg;*.jpeg;*.bmp;*.gif;"
+                    };
+                    var fileDialogResult = openFileDialog.ShowDialog();
+                    if (fileDialogResult != System.Windows.Forms.DialogResult.OK)
+                    {
+                        return;
+                    }
+                    filename = openFileDialog.FileName;
                 }
 
                 try
                 {
-                    VerifyIsProperImage(openFileDialog.FileName);
+                    VerifyIsProperImage(filename);
                     var fromFileItem = new ImageItem
                     {
-                        ImageFile = openFileDialog.FileName,
-                        FullSizeImageFile = openFileDialog.FileName,
-                        FullSizeImageUri = openFileDialog.FileName,
-                        ContextLink = openFileDialog.FileName
+                        ImageFile = filename,
+                        FullSizeImageFile = filename,
+                        FullSizeImageUri = filename,
+                        ContextLink = filename
                     };
+
+                    if (SearchButton.SelectedIndex != TextCollection.ImagesLabText.ButtonIndexFromFile)
+                    {
+                        SearchButton.SelectedIndex = TextCollection.ImagesLabText.ButtonIndexFromFile;
+                    }
+                    //add and select it
                     SearchList.Add(fromFileItem);
+                    SearchListBox.SelectedIndex = SearchListBox.Items.Count - 1;
                     _fromFileImages.Add(fromFileItem);
                 }
                 catch
@@ -101,11 +112,11 @@ namespace PowerPointLabs.ImageSearch
             }
         }
 
-        private void DoDownloadImage()
+        private void DoDownloadImage(string downloadLink = null)
         {
             Dispatcher.Invoke(new Action(() =>
             {
-                var downloadLink = SearchTextBox.Text.Trim();
+                downloadLink = downloadLink ?? SearchTextBox.Text.Trim();
                 if (StringUtil.IsEmpty(downloadLink))
                 {
                     return;
@@ -122,7 +133,14 @@ namespace PowerPointLabs.ImageSearch
                     ContextLink = downloadLink
                 };
                 UrlUtil.GetMetaInfo(ref downloadLink, item);
+
+                if (SearchButton.SelectedIndex != TextCollection.ImagesLabText.ButtonIndexDownload)
+                {
+                    SearchButton.SelectedIndex = TextCollection.ImagesLabText.ButtonIndexDownload;
+                }
+                // add and select it
                 SearchList.Add(item);
+                SearchListBox.SelectedIndex = SearchListBox.Items.Count - 1;
                 SearchProgressRing.IsActive = true;
 
                 var thumbnailPath = TempPath.GetPath("thumbnail");
@@ -130,8 +148,8 @@ namespace PowerPointLabs.ImageSearch
                     .Get(downloadLink, thumbnailPath)
                     .After(() =>
                     {
-                        HandleDownloadedThumbnail(item, thumbnailPath);
                         HandleDownloadedPicture(item, thumbnailPath);
+                        HandleDownloadedThumbnail(item, thumbnailPath);
                     })
                     .OnError(() => { RemoveImageItem(item); })
                     .Start();
@@ -243,20 +261,12 @@ namespace PowerPointLabs.ImageSearch
 
         private void HandleDownloadedPicture(ImageItem item, string thumbnailPath)
         {
-            try
+            VerifyIsProperImage(thumbnailPath);
+            Dispatcher.Invoke(new Action(() =>
             {
-                VerifyIsProperImage(thumbnailPath);
-                Dispatcher.Invoke(new Action(() =>
-                {
-                    SearchProgressRing.IsActive = false;
-                    _downloadedImages.Add(item);
-                }));
-            }
-            catch
-            {
-                // not an image
-                RemoveImageItem(item);
-            }
+                SearchProgressRing.IsActive = false;
+                _downloadedImages.Add(item);
+            }));
         }
 
         private void PrepareToSearch(int expectedNumOfImages, bool isListClearNeeded = true)

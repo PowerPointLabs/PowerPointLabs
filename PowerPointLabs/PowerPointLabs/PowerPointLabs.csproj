@@ -297,6 +297,7 @@
     <Compile Include="ImageSearch\ImageSearchPane.xaml.cs">
       <DependentUpon>ImageSearchPane.xaml</DependentUpon>
     </Compile>
+    <Compile Include="ImageSearch\ImageSearchPane.xaml.OnDragAndDrop.cs" />
     <Compile Include="ImageSearch\ImageSearchPane.xaml.OnPreview.cs" />
     <Compile Include="ImageSearch\ImageSearchPane.xaml.OnLoadImages.cs" />
     <Compile Include="ImageSearch\SearchEngine\AsyncSearchEngine.Events.cs" />

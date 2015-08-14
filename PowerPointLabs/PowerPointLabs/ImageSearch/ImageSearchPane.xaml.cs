@@ -54,6 +54,9 @@ namespace PowerPointLabs.ImageSearch
         // UI model
         public ObservableString ConfirmApplyFlyoutTitle { get; set; }
 
+        // UI model for drag and drop instructions
+        public ObservableString DragAndDropInstructionText { get; set; }
+
         // a timer used to download full-size image at background
         public Timer PreviewTimer { get; set; }
 
@@ -108,6 +111,7 @@ namespace PowerPointLabs.ImageSearch
                 InitSearchEngine();
                 InitPreviewPresentation();
                 InitPreviewTimer();
+                InitDragAndDrop();
             }
             else
             {

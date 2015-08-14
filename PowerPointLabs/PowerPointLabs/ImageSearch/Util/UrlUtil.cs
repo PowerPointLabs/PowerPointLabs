@@ -17,11 +17,16 @@ namespace PowerPointLabs.ImageSearch.Util
             return Uri.IsWellFormedUriString(url, UriKind.Absolute);
         }
 
+        public static bool IsValidGoogleImageLink(string url)
+        {
+            return new Regex(@".*google.*imgres.*imgurl=.*imgrefurl=.*", 
+                RegexOptions.Compiled | RegexOptions.IgnoreCase)
+                .IsMatch(url);
+        }
+
         public static void GetMetaInfo(ref string url, ImageItem item)
         {
-            var pattern = @".*google.*imgres.*imgurl=.*imgrefurl=.*";
-            var reg = new Regex(pattern, RegexOptions.Compiled | RegexOptions.IgnoreCase);
-            if (reg.IsMatch(url))
+            if (IsValidGoogleImageLink(url))
             {
                 var googleImageUri = new Uri(url);
                 var parameters = HttpUtility.ParseQueryString(googleImageUri.Query);
