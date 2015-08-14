@@ -65,7 +65,10 @@ namespace PowerPointLabs.ImageSearch
 
         // the current image search engine
         public AsyncSearchEngine SearchEngine { get; set; }
-        private Dictionary<string, AsyncSearchEngine> _id2EngineMap = new Dictionary<string, AsyncSearchEngine>(); 
+
+        // search engines map
+        private readonly Dictionary<string, AsyncSearchEngine> _id2EngineMap 
+            = new Dictionary<string, AsyncSearchEngine>(); 
 
         // indicate whether the window is open/closed or not
         public bool IsOpen { get; set; }
@@ -105,6 +108,10 @@ namespace PowerPointLabs.ImageSearch
                 InitSearchEngine();
                 InitPreviewPresentation();
                 InitPreviewTimer();
+            }
+            else
+            {
+                ShowErrorMessageBox(TextCollection.ImagesLabText.ErrorFailToInitTempFolder);
             }
         }
 
@@ -492,7 +499,7 @@ namespace PowerPointLabs.ImageSearch
         // intent: clicking 'load more' should not change selection
         private void SearchListBox_OnPreviewMouseDown(object sender, MouseButtonEventArgs e)
         {
-            var item = ItemsControl.ContainerFromElement((ItemsControl) sender, e.OriginalSource as DependencyObject) as ListBoxItem;
+            var item = ItemsControl.ContainerFromElement((ItemsControl) sender, (DependencyObject) e.OriginalSource) as ListBoxItem;
             if (item == null || item.Content == null) return;
             var imageItem = item.Content as ImageItem;
             if (imageItem != null && imageItem.ImageFile == TempPath.LoadMoreImgPath)
