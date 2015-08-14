@@ -12,6 +12,7 @@ using PowerPointLabs.ImageSearch.Handler;
 using PowerPointLabs.ImageSearch.SearchEngine;
 using PowerPointLabs.ImageSearch.Util;
 using PowerPointLabs.Models;
+using PowerPointLabs.Utils;
 using PowerPointLabs.WPF.Observable;
 using ButtonBase = System.Windows.Controls.Primitives.ButtonBase;
 using KeyEventArgs = System.Windows.Input.KeyEventArgs;
@@ -97,12 +98,29 @@ namespace PowerPointLabs.ImageSearch
             IsOpen = true;
             InitStyleOptions();
             InitSearchOptions();
+            InitSearchButtons();
             InitConfirmApplyFlyout();
             if (TempPath.InitTempFolder())
             {
                 InitSearchEngine();
                 InitPreviewPresentation();
                 InitPreviewTimer();
+            }
+        }
+
+        private void InitSearchButtons()
+        {
+            // if no available API Keys, then set default button to Download
+            if (SearchOptions.GetSearchEngine() == GoogleEngine.Id()
+                && (StringUtil.IsEmpty(SearchOptions.SearchEngineId)
+                    || StringUtil.IsEmpty(SearchOptions.ApiKey)))
+            {
+                SearchButton.SelectedIndex = TextCollection.ImagesLabText.ButtonIndexDownload;
+            } 
+            else if (SearchOptions.GetSearchEngine() == BingEngine.Id()
+                    && StringUtil.IsEmpty(SearchOptions.BingApiKey))
+            {
+                SearchButton.SelectedIndex = TextCollection.ImagesLabText.ButtonIndexDownload;
             }
         }
 
