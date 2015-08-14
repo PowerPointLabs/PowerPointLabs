@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Collections;
+using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
@@ -7,6 +9,7 @@ using PowerPointLabs.AutoUpdate;
 using PowerPointLabs.ImageSearch.Domain;
 using PowerPointLabs.ImageSearch.Util;
 using PowerPointLabs.Utils;
+using PowerPointLabs.Utils.Exceptions;
 using ButtonBase = System.Windows.Controls.Primitives.ButtonBase;
 using KeyEventArgs = System.Windows.Input.KeyEventArgs;
 
@@ -20,19 +23,18 @@ namespace PowerPointLabs.ImageSearch
             PreviewProgressRing.IsActive = true;
 
             var source = (ImageItem)SearchListBox.SelectedValue;
-            var targetStyle = (ImageItem)PreviewListBox.SelectedValue;
-            if (source == null || targetStyle == null) return;
+            var targetStyle = PreviewListBox.SelectedItems;
+            if (source == null || targetStyle == null || targetStyle.Count == 0) return;
 
             if (source.FullSizeImageFile != null)
             {
                 OpenConfirmApplyFlyout(targetStyle);
                 PreviewProgressRing.IsActive = false;
             }
-            else if (!_insertDownloadingUriList.Contains(source.FullSizeImageUri))
+            else if (!_applyDownloadingUriList.Contains(source.FullSizeImageUri))
             {
                 var fullsizeImageUri = source.FullSizeImageUri;
-                _insertDownloadingUriList.Add(fullsizeImageUri);
-                _insertDownloadingUriToPreviewImage[fullsizeImageUri] = targetStyle;
+                _applyDownloadingUriList.Add(fullsizeImageUri);
 
                 var fullsizeImageFile = TempPath.GetPath("fullsize");
                 new Downloader()
@@ -55,86 +57,75 @@ namespace PowerPointLabs.ImageSearch
                     })
                     .Start();
             }
-            // already downloading, then update preview image in the map
-            else
-            {
-                var fullsizeImageUri = source.FullSizeImageUri;
-                _insertDownloadingUriToPreviewImage[fullsizeImageUri] = targetStyle;
-            }
         }
 
-        private void OpenConfirmApplyFlyout(ImageItem targetStyle)
+        private void OpenConfirmApplyFlyout(IList targetStyles)
         {
-            UpdateConfirmApplyFlyOut(targetStyle);
+            UpdateConfirmApplyPreviewImage();
+            UpdateConfirmApplyFlyOutComboBox(targetStyles);
             ConfirmApplyFlyout.IsOpen = true;
         }
 
         private void ConfirmApplyPreviewButton_OnClick(object sender, RoutedEventArgs e)
         {
-            DoPreview();
+            UpdateConfirmApplyPreviewImage();
         }
 
         private void ConfirmApplyButton_OnClick(object sender, RoutedEventArgs e)
         {
+            if (PreviewListBox.SelectedValue == null) return;
+
             var source = SearchListBox.SelectedValue as ImageItem;
-            var targetStyle = PreviewListBox.SelectedValue as ImageItem;
-            Assumption.Made(source != null && targetStyle != null, "source item or target style item is null");
+            var targetStyleItems = PreviewListBox.SelectedItems;
+            var targetStyles = targetStyleItems.Cast<ImageItem>().Select(item => item.Tooltip).ToList();
+            Assumption.Made(source != null && targetStyles.Count > 0, "source item or target style item is null/empty");
 
-            if (_latestStyleOptionsUpdateTime > _latestPreviewUpdateTime)
+            try
             {
-                DoPreview();
-            }
-            PreviewPresentation.ApplyStyle(source, targetStyle.Tooltip);
-            ConfirmApplyFlyout.IsOpen = false;
-            this.ShowMessageAsync("", TextCollection.ImagesLabText.SuccessfullyAppliedStyle)
-                .ContinueWith(task =>
-                {
-                    Dispatcher.BeginInvoke(new Action(() =>
+                PreviewPresentation.ApplyStyle(source, targetStyles);
+                this.ShowMessageAsync("", TextCollection.ImagesLabText.SuccessfullyAppliedStyle)
+                    .ContinueWith(task =>
                     {
-                        FocusPreviewListBox();
-                    }));
-                });
-        }
-
-        private void UpdateConfirmApplyFlyOut(ImageItem targetStyle)
-        {
-            ConfirmApplyFlyoutTitle.Text = "Confirm Apply " + targetStyle.Tooltip;
-            switch (targetStyle.Tooltip)
+                        Dispatcher.BeginInvoke(new Action(() =>
+                        {
+                            if (_latestStyleOptionsUpdateTime > _latestPreviewApplyUpdateTime)
+                            {
+                                UpdateConfirmApplyPreviewImage();
+                            }
+                            ConfirmApplyButton.Focus();
+                            Keyboard.Focus(ConfirmApplyButton);
+                        }));
+                    });
+            }
+            catch (AssumptionFailedException expt)
             {
-                case TextCollection.ImagesLabText.StyleNameDirectText:
-                    TargetStyleComboBox.SelectedIndex = 0;
-                    break;
-                case TextCollection.ImagesLabText.StyleNameBlur:
-                    TargetStyleComboBox.SelectedIndex = 1;
-                    break;
-                case TextCollection.ImagesLabText.StyleNameTextBox:
-                    TargetStyleComboBox.SelectedIndex = 2;
-                    break;
-                case TextCollection.ImagesLabText.StyleNameBanner:
-                    TargetStyleComboBox.SelectedIndex = 3;
-                    break;
-                // case StyleNameSpecialEffect
-                default:
-                    TargetStyleComboBox.SelectedIndex = 4;
-                    break;
+                ShowErrorMessageBox(TextCollection.ImagesLabText.ErrorNoSelectedSlide);
             }
         }
 
         private void UpdateConfirmApplyPreviewImage()
         {
-            if (PreviewListBox.SelectedValue != null)
+            Dispatcher.BeginInvoke(new Action(() =>
             {
-                var targetImageItem = PreviewListBox.SelectedValue as ImageItem;
-                ConfirmApplyPreviewImageFile.Text = targetImageItem.ImageFile;
-            }
-        }
+                if (PreviewListBox.SelectedValue == null) return;
+            
+                var source = SearchListBox.SelectedValue as ImageItem;
+                var targetStyleItems = PreviewListBox.SelectedItems;
+                var targetStyles = targetStyleItems.Cast<ImageItem>().Select(item => item.Tooltip).ToList();
+                Assumption.Made(source != null && targetStyles.Count > 0, "source item or target style item is null/empty");
 
-        private void TargetStyleComboBox_OnSelectionChanged(object sender, SelectionChangedEventArgs e)
-        {
-            if (PreviewList != null && PreviewList.Count > 0)
-            {
-                PreviewListBox.SelectedIndex = TargetStyleComboBox.SelectedIndex;
-            }
+                try
+                {
+                    var previewInfo = PreviewPresentation.PreviewApplyStyle(source, targetStyles);
+
+                    ConfirmApplyPreviewImageFile.Text = previewInfo.PreviewApplyStyleImagePath;
+                    _latestPreviewApplyUpdateTime = DateTime.Now;
+                }
+                catch
+                {
+                    // ignore, selected slide may be null
+                }
+            }));
         }
 
         private void ConfirmApplyFlyout_OnKeyDown(object sender, KeyEventArgs e)
@@ -149,5 +140,104 @@ namespace PowerPointLabs.ImageSearch
                     break;
             }
         }
+
+        # region Sync PreviewListBox styles selection & CheckBox styles selection
+
+        // Sync PreviewListBox styles selection to CheckBox styles selection
+        private void UpdateConfirmApplyFlyOutComboBox(IList targetStyles)
+        {
+            TickCheckBox(
+                GetCheckBoxFromComboBoxItem(TargetStyleComboBox.Items[TextCollection.ImagesLabText.StyleIndexDirectText]),
+                HasStyle(targetStyles, TextCollection.ImagesLabText.StyleNameDirectText));
+            TickCheckBox(
+                GetCheckBoxFromComboBoxItem(TargetStyleComboBox.Items[TextCollection.ImagesLabText.StyleIndexBlur]),
+                HasStyle(targetStyles, TextCollection.ImagesLabText.StyleNameBlur));
+            TickCheckBox(
+                GetCheckBoxFromComboBoxItem(TargetStyleComboBox.Items[TextCollection.ImagesLabText.StyleIndexTextBox]),
+                HasStyle(targetStyles, TextCollection.ImagesLabText.StyleNameTextBox));
+            TickCheckBox(
+                GetCheckBoxFromComboBoxItem(TargetStyleComboBox.Items[TextCollection.ImagesLabText.StyleIndexBanner]),
+                HasStyle(targetStyles, TextCollection.ImagesLabText.StyleNameBanner));
+            TickCheckBox(
+                GetCheckBoxFromComboBoxItem(TargetStyleComboBox.Items[TextCollection.ImagesLabText.StyleIndexSpecialEffect]),
+                HasStyle(targetStyles, TextCollection.ImagesLabText.StyleNameSpecialEffect));
+        }
+
+        // Sync CheckBox styles selection to PreviewListBox styles selection (when checked)
+        private void TargetStyleCheckBox_OnChecked(object sender, RoutedEventArgs e)
+        {
+            var targetStyleCheckBox = sender as CheckBox;
+            if (targetStyleCheckBox == null) return;
+
+            SyncCheckBoxSelectionToPreviewListBox(targetStyleCheckBox);
+        }
+
+        // Sync CheckBox styles selection to PreviewListBox styles selection (when unchecked)
+        private void TargetStyleCheckBox_OnUnchecked(object sender, RoutedEventArgs e)
+        {
+            var targetStyleCheckBox = sender as CheckBox;
+            if (targetStyleCheckBox == null) return;
+
+            SyncCheckBoxSelectionToPreviewListBox(targetStyleCheckBox, isToAddSelection: false);
+        }
+
+        // the rest is helper func
+
+        private bool HasStyle(IList targetStyles, string style)
+        {
+            return targetStyles.Cast<ImageItem>().Any(targetStyle => targetStyle.Tooltip == style);
+        }
+
+        private CheckBox GetCheckBoxFromComboBoxItem(Object item)
+        {
+            return (item as ComboBoxItem) != null ? ((ComboBoxItem)item).Content as CheckBox : null;
+        }
+
+        private void TickCheckBox(CheckBox cb, bool isChecked)
+        {
+            if (cb == null) return;
+            var originalTooltip = cb.ToolTip as string;
+            // avoid triggering Checked/Unchecked event
+            cb.ToolTip = "Updating...";
+            cb.IsChecked = isChecked;
+            cb.ToolTip = originalTooltip;
+        }
+
+        private void SyncCheckBoxSelectionToPreviewListBox(CheckBox targetStyleCheckBox, bool isToAddSelection = true)
+        {
+            switch (targetStyleCheckBox.ToolTip as string)
+            {
+                case "Style 1":
+                    SelectPreviewListBox(TextCollection.ImagesLabText.StyleIndexDirectText, isToAddSelection);
+                    break;
+                case "Style 2":
+                    SelectPreviewListBox(TextCollection.ImagesLabText.StyleIndexBlur, isToAddSelection);
+                    break;
+                case "Style 3":
+                    SelectPreviewListBox(TextCollection.ImagesLabText.StyleIndexTextBox, isToAddSelection);
+                    break;
+                case "Style 4":
+                    SelectPreviewListBox(TextCollection.ImagesLabText.StyleIndexBanner, isToAddSelection);
+                    break;
+                case "Style 5":
+                    SelectPreviewListBox(TextCollection.ImagesLabText.StyleIndexSpecialEffect, isToAddSelection);
+                    break;
+            }
+        }
+
+        private void SelectPreviewListBox(int index, bool isToAdd)
+        {
+            if (index >= PreviewListBox.Items.Count) return;
+            if (isToAdd)
+            {
+                PreviewListBox.SelectedItems.Add(PreviewListBox.Items[index]);
+            }
+            else
+            {
+                PreviewListBox.SelectedItems.Remove(PreviewListBox.Items[index]);
+            }
+        }
+
+        #endregion
     }
 }

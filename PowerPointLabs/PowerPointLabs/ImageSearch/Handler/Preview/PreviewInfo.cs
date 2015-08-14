@@ -10,6 +10,8 @@ namespace PowerPointLabs.ImageSearch.Handler.Preview
         public string BlurStyleImagePath { get; private set; }
         public string DirectTextStyleImagePath { get; private set; }
 
+        public string PreviewApplyStyleImagePath { get; private set; }
+
         public PreviewInfo()
         {
             Init();
@@ -22,6 +24,8 @@ namespace PowerPointLabs.ImageSearch.Handler.Preview
             DirectTextStyleImagePath = TempPath.GetPath("directtext");
             BannerStyleImagePath = TempPath.GetPath("banner");
             SpecialEffectStyleImagePath = TempPath.GetPath("specialeffect");
+
+            PreviewApplyStyleImagePath = TempPath.GetPath("previewapply");
         }
     }
 }

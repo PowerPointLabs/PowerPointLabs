@@ -304,6 +304,19 @@
 
         public class ImagesLabText
         {
+            public const string SearchEngineGoogle = "GoogleEngine";
+            public const string SearchEngineBing = "BingEngine";
+
+            public const int ButtonIndexSearch = 0;
+            public const int ButtonIndexDownload = 1;
+            public const int ButtonIndexFromFile = 2;
+
+            public const int StyleIndexDirectText = 0;
+            public const int StyleIndexBlur = 1;
+            public const int StyleIndexTextBox = 2;
+            public const int StyleIndexBanner = 3;
+            public const int StyleIndexSpecialEffect = 4;
+
             public const string StyleNameDirectText = "Direct Text Style";
             public const string StyleNameBlur = "Blur Style";
             public const string StyleNameTextBox = "TextBox Style";
@@ -320,6 +333,10 @@
                 "Failed to load image. The image file is corrupted.";
             public const string ErrorUrlLinkIncorrect =
                 "The download link is not in the correct format. Did the link miss out 'http://'?";
+            public const string ErrorNoSelectedSlide =
+                "Cannot apply styles. Please select a slide first.";
+            public const string ErrorFailToInitTempFolder =
+                "Failed to initialize Images Lab. Please verify that sufficient permissions have been granted by Administrator.";
 
             public const string SuccessfullyAppliedStyle =
                 "Successfully Applied.";

@@ -1,4 +1,7 @@
-﻿using System.Windows.Forms;
+﻿using System.Collections.Generic;
+using System.Linq;
+using System.Windows.Forms;
+using Microsoft.Office.Core;
 using Microsoft.Office.Interop.PowerPoint;
 using PowerPointLabs.ImageSearch.Util;
 using PowerPointLabs.Models;
@@ -7,6 +10,7 @@ using PowerPointLabs.ImageSearch.Handler.Effect;
 using PowerPointLabs.ImageSearch.Handler.Preview;
 using PowerPointLabs.Utils;
 using PowerPointLabs.Utils.Exceptions;
+using Shape = Microsoft.Office.Interop.PowerPoint.Shape;
 
 namespace PowerPointLabs.ImageSearch.Handler
 {
@@ -41,34 +45,28 @@ namespace PowerPointLabs.ImageSearch.Handler
             var previewInfo = new PreviewInfo();
             var handler = CreateEffectsHandler(source);
 
-            // style: direct text
-            var imageShape = ApplyDirectTextStyle(handler);
-            if (Options.IsInsertReference)
-            {
-                handler.ApplyImageReferenceInsertion(source.ContextLink, Options.GetFontFamily(), Options.FontColor);
-            }
-            handler.GetNativeSlide().Export(previewInfo.DirectTextStyleImagePath, "JPG");
+            PreviewStyles(source, handler, previewInfo);
 
-            // style: blur
-            handler.RemoveEffect(EffectName.Overlay);
-            var blurImageShape = handler.ApplyBlurEffect(imageShape, Options.OverlayColor, Options.Transparency);
-            handler.GetNativeSlide().Export(previewInfo.BlurStyleImagePath, "JPG");
+            handler.Delete();
+            return previewInfo;
+        }
 
-            // style: textbox
-            handler.RemoveEffect(EffectName.Overlay);
-            handler.ApplyBlurTextboxEffect(blurImageShape, Options.OverlayColor, Options.Transparency);
-            handler.GetNativeSlide().Export(previewInfo.TextboxStyleImagePath, "JPG");
+        /// <exception cref="AssumptionFailedException">
+        /// throw exception when ImagesLab presentation is not open OR no selected slide.
+        /// </exception>
+        public PreviewInfo PreviewApplyStyle(ImageItem source, IList<string> targetStyles)
+        {
+            Assumption.Made(
+                Opened && PowerPointCurrentPresentationInfo.CurrentSlide != null,
+                "ImagesLab presentation is not open OR no selected slide.");
 
-            // style: banner
-            handler.RemoveEffect(EffectName.Overlay);
-            handler.RemoveEffect(EffectName.Blur);
-            ApplyBannerStyle(handler, imageShape);
-            handler.GetNativeSlide().Export(previewInfo.BannerStyleImagePath, "JPG");
+            InitSlideSize();
+            var previewInfo = new PreviewInfo();
+            var handler = CreateEffectsHandler(source);
 
-            // style: special effect
-            handler.RemoveEffect(EffectName.Overlay);
-            handler.ApplySpecialEffectEffect(Options.GetSpecialEffect(), imageShape, Options.OverlayColor, Options.Transparency);
-            handler.GetNativeSlide().Export(previewInfo.SpecialEffectStyleImagePath, "JPG");
+            ApplyStyle(handler, source, targetStyles);
+
+            handler.GetNativeSlide().Export(previewInfo.PreviewApplyStyleImagePath, "JPG");
 
             handler.Delete();
             return previewInfo;
@@ -77,7 +75,7 @@ namespace PowerPointLabs.ImageSearch.Handler
         /// <exception cref="AssumptionFailedException">
         /// throw exception when No selected slide.
         /// </exception>
-        public void ApplyStyle(ImageItem source, string targetStyle)
+        public void ApplyStyle(ImageItem source, IList<string> targetStyles)
         {
             Assumption.Made(
                 PowerPointCurrentPresentationInfo.CurrentSlide != null,
@@ -88,90 +86,138 @@ namespace PowerPointLabs.ImageSearch.Handler
             var currentSlide = PowerPointCurrentPresentationInfo.CurrentSlide.GetNativeSlide();
             var effectsHandler = new EffectsHandler(currentSlide, Current, source);
 
-            switch (targetStyle)
-            {
-                case TextCollection.ImagesLabText.StyleNameDirectText:
-                    ApplyDirectTextStyle(effectsHandler);
-                    break;
-                case TextCollection.ImagesLabText.StyleNameBlur:
-                    ApplyBlurStyle(effectsHandler);
-                    break;
-                case TextCollection.ImagesLabText.StyleNameTextBox:
-                    ApplyTextBoxStyle(effectsHandler);
-                    break;
-                case TextCollection.ImagesLabText.StyleNameBanner:
-                    ApplyBannerStyle(effectsHandler);
-                    break;
-                case TextCollection.ImagesLabText.StyleNameSpecialEffect:
-                    ApplySpecialEffectStyle(effectsHandler);
-                    break;
-            }
-            effectsHandler.ApplyImageReference(source.ContextLink);
-            if (Options.IsInsertReference)
-            {
-                effectsHandler.ApplyImageReferenceInsertion(source.ContextLink, Options.GetFontFamily(), Options.FontColor);
-            }
+            ApplyStyle(effectsHandler, source, targetStyles);
+            
             ClearSelection();
         }
+
+        private void ApplyStyle(EffectsHandler handler, ImageItem source, IList<string> targetStyles)
+        {
+            ApplyTextEffect(handler);
+
+            var isSpecialEffectStyle = false;
+
+            Shape imageShape;
+            if (HasStyle(targetStyles, TextCollection.ImagesLabText.StyleNameSpecialEffect))
+            {
+                isSpecialEffectStyle = true;
+                imageShape = handler.ApplySpecialEffectEffect(Options.GetSpecialEffect());
+            }
+            else // Direct Text style
+            {
+                imageShape = handler.ApplyBackgroundEffect();
+            }
+            Shape backgroundOverlayShape = handler.ApplyOverlayEffect(Options.OverlayColor, Options.Transparency);
+
+            Shape blurImageShape = null;
+            if (HasStyle(targetStyles, TextCollection.ImagesLabText.StyleNameBlur))
+            {
+                blurImageShape = isSpecialEffectStyle
+                    ? handler.ApplyBlurEffect(source.SpecialEffectImageFile)
+                    : handler.ApplyBlurEffect();
+            }
+
+            Shape bannerOverlayShape = null;
+            if (HasStyle(targetStyles, TextCollection.ImagesLabText.StyleNameBanner))
+            {
+                bannerOverlayShape = ApplyBannerStyle(handler, imageShape);
+            }
+
+            if (HasStyle(targetStyles, TextCollection.ImagesLabText.StyleNameTextBox))
+            {
+                handler.ApplyTextboxEffect(Options.TextBoxOverlayColor, Options.TextBoxTransparency);
+            }
+
+            SendToBack(bannerOverlayShape, backgroundOverlayShape, blurImageShape, imageShape);
+
+            handler.ApplyImageReference(source.ContextLink);
+            if (Options.IsInsertReference)
+            {
+                handler.ApplyImageReferenceInsertion(source.ContextLink, Options.GetFontFamily(), Options.FontColor);
+            }
+        }
+
+        private void PreviewStyles(ImageItem source, EffectsHandler handler, PreviewInfo previewInfo)
+        {
+            // style: direct text
+            var imageShape = handler.ApplyBackgroundEffect();
+            var overlayShape = handler.ApplyOverlayEffect(Options.OverlayColor, Options.Transparency);
+            SendToBack(overlayShape, imageShape);
+            ApplyTextEffect(handler);
+            if (Options.IsInsertReference)
+            {
+                handler.ApplyImageReferenceInsertion(source.ContextLink, Options.GetFontFamily(), Options.FontColor);
+            }
+            handler.GetNativeSlide().Export(previewInfo.DirectTextStyleImagePath, "JPG");
+
+            // style: blur
+            var blurImageShape = handler.ApplyBlurEffect();
+            SendToBack(overlayShape, blurImageShape, imageShape);
+            handler.GetNativeSlide().Export(previewInfo.BlurStyleImagePath, "JPG");
+
+            // style: textbox
+            handler.RemoveEffect(EffectName.Blur);
+            handler.ApplyTextboxEffect(Options.TextBoxOverlayColor, Options.TextBoxTransparency);
+            handler.GetNativeSlide().Export(previewInfo.TextboxStyleImagePath, "JPG");
+
+            // style: banner
+            handler.RemoveEffect(EffectName.TextBox);
+            ApplyBannerStyle(handler, imageShape);
+            handler.GetNativeSlide().Export(previewInfo.BannerStyleImagePath, "JPG");
+
+            // style: special effect
+            handler.RemoveEffect(EffectName.Banner);
+            handler.ApplySpecialEffectEffect(Options.GetSpecialEffect(), imageShape, Options.OverlayColor, Options.Transparency);
+            handler.GetNativeSlide().Export(previewInfo.SpecialEffectStyleImagePath, "JPG");
+        }
+
         # endregion
 
         # region Helper Funcs
+
+        private void SendToBack(params Shape[] shapes)
+        {
+            foreach (var shape in shapes)
+            {
+                SendToBack(shape);
+            }
+        }
+
+        private void SendToBack(Shape shape)
+        {
+            if (shape != null)
+            {
+                shape.ZOrder(MsoZOrderCmd.msoSendToBack);
+            }
+        }
+
+        private bool HasStyle(IList<string> targetStyles, string style)
+        {
+            return targetStyles.Any(targetStyle => targetStyle == style);
+        }
+
         private static void ClearSelection()
         {
             var currentSelection = PowerPointCurrentPresentationInfo.CurrentSelection;
-            if (currentSelection.Type == PpSelectionType.ppSelectionShapes)
+            if (currentSelection.Type == PpSelectionType.ppSelectionShapes
+                || currentSelection.Type == PpSelectionType.ppSelectionText)
             {
                 currentSelection.Unselect();
             }
             Cursor.Current = Cursors.Default;
         }
 
-        private void ApplySpecialEffectStyle(EffectsHandler effectsHandler)
+        private Shape ApplyBannerStyle(EffectsHandler effectsHandler, Shape imageShape)
         {
-            ApplyTextEffect(effectsHandler);
-            effectsHandler.ApplySpecialEffectEffect(Options.GetSpecialEffect(),
-                null /*no need image shape*/, Options.OverlayColor, Options.Transparency);
-        }
-
-        private void ApplyTextBoxStyle(EffectsHandler effectsHandler)
-        {
-            ApplyTextEffect(effectsHandler);
-            effectsHandler.ApplyBackgroundEffect();
-            var blurImageShape = effectsHandler.ApplyBlurEffect();
-            effectsHandler.ApplyBlurTextboxEffect(blurImageShape, Options.OverlayColor, Options.Transparency);
-        }
-
-        private void ApplyBlurStyle(EffectsHandler effectsHandler)
-        {
-            ApplyTextEffect(effectsHandler);
-            effectsHandler.ApplyBlurEffect(null /*no need image shape*/, Options.OverlayColor, Options.Transparency);
-        }
-
-        private void ApplyBannerStyle(EffectsHandler effectsHandler, Shape imageShape = null)
-        {
-            if (imageShape == null) // use case: non-preview
-            {
-                ApplyTextEffect(effectsHandler);
-                imageShape = effectsHandler.ApplyBackgroundEffect();
-            }
             switch (Options.GetBannerShape())
             {
                 case BannerShape.Rectangle:
-                    effectsHandler.ApplyRectBannerEffect(Options.GetBannerDirection(), Options.GetTextBoxPosition(), 
-                        imageShape, Options.OverlayColor, Options.Transparency);
-                    break;
+                    return effectsHandler.ApplyRectBannerEffect(Options.GetBannerDirection(), Options.GetTextBoxPosition(),
+                        imageShape, Options.BannerOverlayColor, Options.BannerTransparency);
                 // case BannerShape.Circle:
                 default:
-                    effectsHandler.ApplyCircleBannerEffect(imageShape, Options.OverlayColor, Options.Transparency);
-                    break;
+                    return effectsHandler.ApplyCircleBannerEffect(imageShape, Options.BannerOverlayColor, Options.BannerTransparency);
             }
-        }
-
-        private Shape ApplyDirectTextStyle(EffectsHandler effectsHandler)
-        {
-            var imageShape = effectsHandler.ApplyBackgroundEffect(Options.OverlayColor, Options.Transparency);
-            ApplyTextEffect(effectsHandler);
-            return imageShape;
         }
 
         private void ApplyTextEffect(EffectsHandler effectsHandler)

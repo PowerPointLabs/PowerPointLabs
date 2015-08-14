@@ -4,17 +4,17 @@ namespace PowerPointLabs.ImageSearch.SearchEngine.VO
 {
     public class GoogleSearchResults
     {
-        public List<SearchResult> Items { get; set; }
+        public List<GoogleSearchResult> Items { get; set; }
     }
 
-    public class SearchResult
+    public class GoogleSearchResult
     {
         public string Title { get; set; }
         public string Link { get; set; }
-        public SearchResultImage Image { get; set; }
+        public GoogleSearchResultImage Image { get; set; }
     }
 
-    public class SearchResultImage
+    public class GoogleSearchResultImage
     {
         public string ContextLink { get; set; }
         public string Width { get; set; }

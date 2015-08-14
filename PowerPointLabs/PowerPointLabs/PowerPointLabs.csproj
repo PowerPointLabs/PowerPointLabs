@@ -297,18 +297,23 @@
     <Compile Include="ImageSearch\ImageSearchPane.xaml.cs">
       <DependentUpon>ImageSearchPane.xaml</DependentUpon>
     </Compile>
+    <Compile Include="ImageSearch\ImageSearchPane.xaml.OnDragAndDrop.cs" />
     <Compile Include="ImageSearch\ImageSearchPane.xaml.OnPreview.cs" />
     <Compile Include="ImageSearch\ImageSearchPane.xaml.OnLoadImages.cs" />
-    <Compile Include="ImageSearch\SearchEngine\GoogleEngine.Events.cs" />
+    <Compile Include="ImageSearch\SearchEngine\AsyncSearchEngine.Events.cs" />
+    <Compile Include="ImageSearch\SearchEngine\AsyncSearchEngine.Logic.cs" />
+    <Compile Include="ImageSearch\SearchEngine\BingEngine.cs" />
+    <Compile Include="ImageSearch\SearchEngine\VO\BingSearchResults.cs" />
     <Compile Include="ImageSearch\Util\ShapeUtil.cs" />
     <Compile Include="ImageSearch\Util\UrlUtil.cs" />
+    <Compile Include="ImageSearch\Util\VOUtil.cs" />
     <Compile Include="Utils\Assumption.cs" />
     <Compile Include="Utils\Exceptions\AssumptionFailedException.cs" />
     <Compile Include="ImageSearch\Domain\ImageItem.cs" />
     <Compile Include="ImageSearch\Domain\SearchOptions.cs" />
     <Compile Include="ImageSearch\Domain\StyleOptions.cs" />
     <Compile Include="ImageSearch\Handler\StylesHandler.cs" />
-    <Compile Include="ImageSearch\SearchEngine\GoogleEngine.Logic.cs" />
+    <Compile Include="ImageSearch\SearchEngine\GoogleEngine.cs" />
     <Compile Include="ImageSearch\SearchOptionsPane.xaml.cs">
       <DependentUpon>SearchOptionsPane.xaml</DependentUpon>
     </Compile>

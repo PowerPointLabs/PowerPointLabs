@@ -19,6 +19,10 @@ namespace PowerPointLabs.ImageSearch.Handler
     {
         private const string ShapeNamePrefix = "pptImagesLab";
 
+        private const float ThumbnailWidth = 150f;
+
+        private const float ThumbnailHeight = 110f;
+
         private ImageItem Source { get; set; }
 
         private PowerPointPresentation PreviewPresentation { get; set; }
@@ -120,11 +124,8 @@ namespace PowerPointLabs.ImageSearch.Handler
                 {
                     shape.Tags.Add(Tag.OriginalFontSize, shape.TextEffect.FontSize.ToString(CultureInfo.InvariantCulture));
                 }
-                else // applied before
-                {
-                    shape.TextEffect.FontSize = float.Parse(shape.Tags[Tag.OriginalFontSize]);
-                }
-                shape.TextEffect.FontSize += fontSizeToIncrease;
+                shape.TextFrame.AutoSize = PowerPoint.PpAutoSize.ppAutoSizeNone;
+                shape.TextEffect.FontSize = float.Parse(shape.Tags[Tag.OriginalFontSize]) + fontSizeToIncrease;
             }
         }
 
@@ -252,20 +253,21 @@ namespace PowerPointLabs.ImageSearch.Handler
             return blurImageShape;
         }
 
-        public PowerPoint.Shape ApplyBlurEffect()
+        public PowerPoint.Shape ApplyBlurEffect(string imageFileToBlur = null)
         {
-            if (Source.BlurImageFile == null)
-            {
-                Source.BlurImageFile = BlurImage(Source.ImageFile, 
-                    Source.ImageFile == Source.FullSizeImageFile);
-            }
+            var isBlurFullSizeImage = (Source.ImageFile == Source.FullSizeImageFile 
+                || imageFileToBlur != null
+                || Source.FullSizeImageFile != null);
+            Source.BlurImageFile = BlurImage(imageFileToBlur 
+                ?? Source.FullSizeImageFile 
+                ?? Source.ImageFile, isBlurFullSizeImage);
             var blurImageShape = AddPicture(Source.BlurImageFile, EffectName.Blur);
             FitToSlide.AutoFit(blurImageShape, PreviewPresentation);
             CropPicture(blurImageShape);
             return blurImageShape;
         }
 
-        public void ApplyBlurTextboxEffect(PowerPoint.Shape blurImageShape, string overlayColor, int transparency)
+        public void ApplyTextboxEffect(string overlayColor, int transparency)
         {
             foreach (PowerPoint.Shape shape in Shapes)
             {
@@ -285,17 +287,15 @@ namespace PowerPointLabs.ImageSearch.Handler
                     {
                         var paragraph = textRange.TrimText();
                         var left = paragraph.BoundLeft - 5;
-                        var top = paragraph.BoundTop - 5;
+                        var top = paragraph.BoundTop;
                         var width = paragraph.BoundWidth + 10;
-                        var height = paragraph.BoundHeight + 10;
+                        var height = paragraph.BoundHeight;
 
-                        var blurImageShapeCopy = BlurTextbox(blurImageShape,
+                        var overlayShape = ApplyOverlayEffect(overlayColor, transparency,
                             left, top, width, height);
-                        var overlayBlurShape = ApplyOverlayEffect(overlayColor, transparency,
-                            left, top, width, height);
-                        Graphics.MoveZToJustBehind(blurImageShapeCopy, shape);
-                        Graphics.MoveZToJustBehind(overlayBlurShape, shape);
-                        shape.Tags.Add(Tag.AddedTextbox, blurImageShapeCopy.Name);
+                        ChangeName(overlayShape, EffectName.TextBox);
+                        Graphics.MoveZToJustBehind(overlayShape, shape);
+                        shape.Tags.Add(Tag.AddedTextbox, overlayShape.Name);
                     }
                 }
             }
@@ -303,7 +303,6 @@ namespace PowerPointLabs.ImageSearch.Handler
             {
                 shape.Tags.Add(Tag.AddedTextbox, "");
             }
-            blurImageShape.ZOrder(MsoZOrderCmd.msoSendToBack);
         }
 
         public PowerPoint.Shape ApplyCircleBannerEffect(PowerPoint.Shape imageShape, string overlayColor, int transparency)
@@ -311,10 +310,14 @@ namespace PowerPointLabs.ImageSearch.Handler
             var tbInfo =
                 new TextBoxes(Shapes, PreviewPresentation.SlideWidth, PreviewPresentation.SlideHeight)
                 .GetTextBoxesInfo();
+            if (tbInfo == null)
+                return null;
+
             TextBoxes.AddMargin(tbInfo);
 
             var overlayShape = ApplyCircleOverlayEffect(overlayColor, transparency, tbInfo.Left, tbInfo.Top, tbInfo.Width,
                 tbInfo.Height);
+            ChangeName(overlayShape, EffectName.Banner);
             overlayShape.ZOrder(MsoZOrderCmd.msoSendToBack);
             if (imageShape != null)
             {
@@ -329,6 +332,9 @@ namespace PowerPointLabs.ImageSearch.Handler
             var tbInfo =
                 new TextBoxes(Shapes, PreviewPresentation.SlideWidth, PreviewPresentation.SlideHeight)
                 .GetTextBoxesInfo();
+            if (tbInfo == null)
+                return null;
+
             TextBoxes.AddMargin(tbInfo);
 
             PowerPoint.Shape overlayShape;
@@ -345,6 +351,7 @@ namespace PowerPointLabs.ImageSearch.Handler
                         PreviewPresentation.SlideHeight);
                     break;
             }
+            ChangeName(overlayShape, EffectName.Banner);
             overlayShape.ZOrder(MsoZOrderCmd.msoSendToBack);
             if (imageShape != null)
             {
@@ -371,11 +378,7 @@ namespace PowerPointLabs.ImageSearch.Handler
             PowerPoint.Shape imageShape, string overlayColor, int transparency)
         {
             var overlayShape = ApplyOverlayEffect(overlayColor, transparency);
-
-            Source.SpecialEffectImageFile = SpecialEffectImage(effectFilter, Source.FullSizeImageFile ?? Source.ImageFile);
-            var specialEffectImageShape = AddPicture(Source.SpecialEffectImageFile, EffectName.SpecialEffect);
-            FitToSlide.AutoFit(specialEffectImageShape, PreviewPresentation);
-            CropPicture(specialEffectImageShape);
+            var specialEffectImageShape = ApplySpecialEffectEffect(effectFilter);
 
             overlayShape.ZOrder(MsoZOrderCmd.msoSendToBack);
             specialEffectImageShape.ZOrder(MsoZOrderCmd.msoSendToBack);
@@ -383,6 +386,15 @@ namespace PowerPointLabs.ImageSearch.Handler
             {
                 imageShape.ZOrder(MsoZOrderCmd.msoSendToBack);
             }
+            return specialEffectImageShape;
+        }
+
+        public PowerPoint.Shape ApplySpecialEffectEffect(IMatrixFilter effectFilter)
+        {
+            Source.SpecialEffectImageFile = SpecialEffectImage(effectFilter, Source.FullSizeImageFile ?? Source.ImageFile);
+            var specialEffectImageShape = AddPicture(Source.SpecialEffectImageFile, EffectName.SpecialEffect);
+            FitToSlide.AutoFit(specialEffectImageShape, PreviewPresentation);
+            CropPicture(specialEffectImageShape);
             return specialEffectImageShape;
         }
 
@@ -456,9 +468,19 @@ namespace PowerPointLabs.ImageSearch.Handler
                     var image = imageFactory
                         .Load(imageFilePath)
                         .Image;
-                    image = imageFactory
-                        .Resize(new Size(image.Width / 4, image.Height / 4))
+                    var ratio = (float) image.Width / image.Height;
+                    if (image.Width >= image.Height)
+                    {
+                        image = imageFactory
+                        .Resize(new Size((int)ThumbnailWidth, (int)(ThumbnailWidth / ratio)))
                         .GaussianBlur(5).Image;
+                    }
+                    else
+                    {
+                        image = imageFactory
+                        .Resize(new Size((int)(ThumbnailHeight * ratio), (int)ThumbnailHeight))
+                        .GaussianBlur(5).Image;
+                    }
                     image.Save(blurImageFile);
                 }
                 else

@@ -111,6 +111,100 @@ namespace PowerPointLabs.ImageSearch.Domain
                 OnPropertyChanged("FileType");
             }
         }
+
+        // the above options are for google engine
+        // below for bing engine..
+
+        private int _searchEngine;
+
+        public int SearchEngine
+        {
+            get
+            {
+                return _searchEngine;
+            }
+            set
+            {
+                _searchEngine = value;
+                OnPropertyChanged("SearchEngine");
+            }
+        }
+
+        private string _bingApiKey;
+
+        public string BingApiKey
+        {
+            get
+            {
+                return _bingApiKey;
+            }
+            set
+            {
+                _bingApiKey = value;
+                OnPropertyChanged("BingApiKey");
+            }
+        }
+
+        private int _bingImageSize;
+
+        public int BingImageSize
+        {
+            get
+            {
+                return _bingImageSize;
+            }
+            set
+            {
+                _bingImageSize = value;
+                OnPropertyChanged("BingImageSize");
+            }
+        }
+
+        private int _bingImageColor;
+
+        public int BingImageColor
+        {
+            get
+            {
+                return _bingImageColor;
+            }
+            set
+            {
+                _bingImageColor = value;
+                OnPropertyChanged("BingImageColor");
+            }
+        }
+
+        private int _bingImageStyle;
+
+        public int BingImageStyle
+        {
+            get
+            {
+                return _bingImageStyle;
+            }
+            set
+            {
+                _bingImageStyle = value;
+                OnPropertyChanged("BingImageStyle");
+            }
+        }
+
+        private int _bingImageFace;
+
+        public int BingImageFace
+        {
+            get
+            {
+                return _bingImageFace;
+            }
+            set
+            {
+                _bingImageFace = value;
+                OnPropertyChanged("BingImageFace");
+            }
+        }
+
         # endregion
 
         # region IO serialization
@@ -181,12 +275,14 @@ namespace PowerPointLabs.ImageSearch.Domain
         {
             SearchEngineId = Common.Base64Encode(SearchEngineId);
             ApiKey = Common.Base64Encode(ApiKey);
+            BingApiKey = Common.Base64Encode(BingApiKey);
         }
 
         private static void Decrypt(SearchOptions opt)
         {
             opt.SearchEngineId = Common.Base64Decode(opt.SearchEngineId);
             opt.ApiKey = Common.Base64Decode(opt.ApiKey);
+            opt.BingApiKey = Common.Base64Decode(opt.BingApiKey);
         }
 
         # endregion
@@ -197,11 +293,18 @@ namespace PowerPointLabs.ImageSearch.Domain
         {
             SearchEngineId = "";
             ApiKey = "";
+            BingApiKey = "";
             ColorType = 0;
             DominantColor = 0;
             ImageType = 0;
             ImageSize = 2;
             FileType = 0;
+
+            SearchEngine = 0;
+            BingImageSize = 2;
+            BingImageColor = 0;
+            BingImageStyle = 0;
+            BingImageFace = 0;
         }
 
         public string GetColorType()
@@ -309,6 +412,79 @@ namespace PowerPointLabs.ImageSearch.Domain
                     return "gif";
                 default:
                     return "none";
+            }
+        }
+
+        public string GetBingImageFilters()
+        {
+            return "Size:" + GetBingImageSize() +
+                   "+Color:" + GetBingImageColor() +
+                   "+Style:" + GetBingImageStyle() +
+                   (StringUtil.IsEmpty(GetBingImageFace()) ? "" : "+Face:" + GetBingImageFace());
+        }
+
+        private string GetBingImageSize()
+        {
+            switch (BingImageSize)
+            {
+                case 0:
+                    return "Small";
+                case 1:
+                    return "Medium";
+                // case 2:
+                default:
+                    return "Large";
+            }
+        }
+
+        private string GetBingImageColor()
+        {
+            switch (BingImageColor)
+            {
+                case 0:
+                    return "Color";
+                // case 1:
+                default:
+                    return "Monochrome";
+            }
+        }
+
+        private string GetBingImageStyle()
+        {
+            switch (BingImageStyle)
+            {
+                case 0:
+                    return "Photo";
+                //case 1:
+                default:
+                    return "Graphics";
+            }
+        }
+
+        private string GetBingImageFace()
+        {
+            switch (BingImageFace)
+            {
+                case 0:
+                    return "";
+                case 1:
+                    return "Face";
+                case 2:
+                    return "Portrait";
+                // case 3:
+                default:
+                    return "Other";
+            }
+        }
+
+        public string GetSearchEngine()
+        {
+            switch (SearchEngine)
+            {
+                case 0:
+                    return TextCollection.ImagesLabText.SearchEngineBing;
+                default:
+                    return TextCollection.ImagesLabText.SearchEngineGoogle;
             }
         }
 

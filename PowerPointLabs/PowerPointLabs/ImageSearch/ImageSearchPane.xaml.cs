@@ -12,6 +12,7 @@ using PowerPointLabs.ImageSearch.Handler;
 using PowerPointLabs.ImageSearch.SearchEngine;
 using PowerPointLabs.ImageSearch.Util;
 using PowerPointLabs.Models;
+using PowerPointLabs.Utils;
 using PowerPointLabs.WPF.Observable;
 using ButtonBase = System.Windows.Controls.Primitives.ButtonBase;
 using KeyEventArgs = System.Windows.Input.KeyEventArgs;
@@ -53,6 +54,9 @@ namespace PowerPointLabs.ImageSearch
         // UI model
         public ObservableString ConfirmApplyFlyoutTitle { get; set; }
 
+        // UI model for drag and drop instructions
+        public ObservableString DragAndDropInstructionText { get; set; }
+
         // a timer used to download full-size image at background
         public Timer PreviewTimer { get; set; }
 
@@ -62,8 +66,12 @@ namespace PowerPointLabs.ImageSearch
         // a background presentation that will do the preview processing
         public StylesHandler PreviewPresentation { get; set; }
 
-        // the image search engine
-        public GoogleEngine SearchEngine { get; set; }
+        // the current image search engine
+        public AsyncSearchEngine SearchEngine { get; set; }
+
+        // search engines map
+        private readonly Dictionary<string, AsyncSearchEngine> _id2EngineMap 
+            = new Dictionary<string, AsyncSearchEngine>(); 
 
         // indicate whether the window is open/closed or not
         public bool IsOpen { get; set; }
@@ -74,13 +82,13 @@ namespace PowerPointLabs.ImageSearch
 
         // indicate whether it's downloading fullsize image, so that debounce.
         // timer - it will download full size image after some time
-        // insert - it will download full size image when there's no cache and user clicks insert button
+        // apply - it will download full size image when there's no cache and user clicks APPLY button
         private readonly HashSet<string> _timerDownloadingUriList = new HashSet<string>();
-        private readonly HashSet<string> _insertDownloadingUriList = new HashSet<string>();
-        private readonly Dictionary<string, ImageItem> _insertDownloadingUriToPreviewImage = new Dictionary<string, ImageItem>();
+        private readonly HashSet<string> _applyDownloadingUriList = new HashSet<string>();
 
         private DateTime _latestStyleOptionsUpdateTime = DateTime.Now;
         private DateTime _latestPreviewUpdateTime = DateTime.Now;
+        private DateTime _latestPreviewApplyUpdateTime = DateTime.Now;
 
         # endregion
 
@@ -96,12 +104,34 @@ namespace PowerPointLabs.ImageSearch
             IsOpen = true;
             InitStyleOptions();
             InitSearchOptions();
+            InitSearchButtons();
             InitConfirmApplyFlyout();
             if (TempPath.InitTempFolder())
             {
                 InitSearchEngine();
                 InitPreviewPresentation();
                 InitPreviewTimer();
+                InitDragAndDrop();
+            }
+            else
+            {
+                ShowErrorMessageBox(TextCollection.ImagesLabText.ErrorFailToInitTempFolder);
+            }
+        }
+
+        private void InitSearchButtons()
+        {
+            // if no available API Keys, then set default button to Download
+            if (SearchOptions.GetSearchEngine() == GoogleEngine.Id()
+                && (StringUtil.IsEmpty(SearchOptions.SearchEngineId)
+                    || StringUtil.IsEmpty(SearchOptions.ApiKey)))
+            {
+                SearchButton.SelectedIndex = TextCollection.ImagesLabText.ButtonIndexDownload;
+            } 
+            else if (SearchOptions.GetSearchEngine() == BingEngine.Id()
+                    && StringUtil.IsEmpty(SearchOptions.BingApiKey))
+            {
+                SearchButton.SelectedIndex = TextCollection.ImagesLabText.ButtonIndexDownload;
             }
         }
 
@@ -111,6 +141,7 @@ namespace PowerPointLabs.ImageSearch
             ConfirmApplyFlyoutTitle = new ObservableString { Text = "Confirm Apply" };
             ConfirmApplyImage.DataContext = ConfirmApplyPreviewImageFile;
             ConfirmApplyFlyout.DataContext = ConfirmApplyFlyoutTitle;
+            ConfirmApplyFlyout.IsOpenChanged += ConfirmApplyFlyout_OnIsOpenChanged;
             OptionsPane2.DataContext = StyleOptions;
         }
 
@@ -129,7 +160,7 @@ namespace PowerPointLabs.ImageSearch
                 TextCollection.ImagesLabText.MultiPurposeButtonNameFromFile
             });
             SearchButton.ItemsSource = MultiplePurposeButtons;
-            SearchButton.SelectedIndex = 0;
+            SearchButton.SelectedIndex = TextCollection.ImagesLabText.ButtonIndexSearch;
         }
 
         private void InitPreviewList()
@@ -151,6 +182,10 @@ namespace PowerPointLabs.ImageSearch
         private void InitSearchOptions()
         {
             SearchOptions = SearchOptions.Load(StoragePath.GetPath("ImagesLabSearchOptions"));
+            SearchOptions.PropertyChanged += (sender, args) =>
+            {
+                SearchEngine = _id2EngineMap[SearchOptions.GetSearchEngine()];
+            };
             AdvancedPane.DataContext = SearchOptions;
         }
 
@@ -177,6 +212,15 @@ namespace PowerPointLabs.ImageSearch
         private void StyleOptionsFlyout_OnIsOpenChanged(object sender, RoutedEventArgs e)
         {
             if (!StyleOptionsFlyout.IsOpen
+                && _latestStyleOptionsUpdateTime > _latestPreviewUpdateTime)
+            {
+                DoPreview();
+            }
+        }
+
+        private void ConfirmApplyFlyout_OnIsOpenChanged(object sender, RoutedEventArgs e)
+        {
+            if (!ConfirmApplyFlyout.IsOpen
                 && _latestStyleOptionsUpdateTime > _latestPreviewUpdateTime)
             {
                 DoPreview();
@@ -213,13 +257,13 @@ namespace PowerPointLabs.ImageSearch
         {
             switch (SearchButton.SelectedIndex)
             {
-                case 0:// search
+                case TextCollection.ImagesLabText.ButtonIndexSearch:
                     DoSearch();
                     break;
-                case 1:// download link
+                case TextCollection.ImagesLabText.ButtonIndexDownload:
                     DoDownloadImage();
                     break;
-                case 2:// image from file
+                case TextCollection.ImagesLabText.ButtonIndexFromFile:
                     DoLoadImageFromFile();
                     break;
             }
@@ -252,9 +296,9 @@ namespace PowerPointLabs.ImageSearch
                 // full size image at the background.
                 DoPreview(() =>
                 {
-                    if (source != null && _insertDownloadingUriList.Remove(source.FullSizeImageUri))
+                    if (source != null)
                     {
-                        _insertDownloadingUriToPreviewImage.Remove(source.FullSizeImageUri);
+                        _applyDownloadingUriList.Remove(source.FullSizeImageUri);
                     }
                 });
             }
@@ -318,14 +362,16 @@ namespace PowerPointLabs.ImageSearch
         {
             if (PreviewListBox.SelectedValue != null)
             {
-                var targetStyle = PreviewListBox.SelectedValue as ImageItem;
-                PreviewInsert.IsEnabled = true;
-                UpdateConfirmApplyPreviewImage();
-                UpdateConfirmApplyFlyOut(targetStyle);
+                PreviewApply.IsEnabled = true;
+                ConfirmApplyButton.IsEnabled = true;
+                ConfirmApplyPreviewButton.IsEnabled = true;
+                UpdateConfirmApplyFlyOutComboBox(PreviewListBox.SelectedItems);
             }
             else
             {
-                PreviewInsert.IsEnabled = false;
+                PreviewApply.IsEnabled = false;
+                ConfirmApplyButton.IsEnabled = false;
+                ConfirmApplyPreviewButton.IsEnabled = false;
             }
         }
 
@@ -344,13 +390,6 @@ namespace PowerPointLabs.ImageSearch
         private void PreviewApply_OnClick(object sender, RoutedEventArgs e)
         {
             ApplyStyle();
-            FocusPreviewListBox();
-        }
-
-        private void FocusPreviewListBox()
-        {
-            PreviewListBox.Focus();
-            Keyboard.Focus(PreviewListBox);
         }
 
         private void PreviewDisplayToggleSwitch_OnIsCheckedChanged(object sender, EventArgs e)
@@ -399,9 +438,9 @@ namespace PowerPointLabs.ImageSearch
                 switch (e.Key)
                 {
                     case Key.Enter:
-                        if (PreviewInsert.IsEnabled)
+                        if (PreviewApply.IsEnabled)
                         {
-                            PreviewInsert.RaiseEvent(new RoutedEventArgs(ButtonBase.ClickEvent));
+                            PreviewApply.RaiseEvent(new RoutedEventArgs(ButtonBase.ClickEvent));
                         }
                         break;
                 }
@@ -414,19 +453,19 @@ namespace PowerPointLabs.ImageSearch
             SearchTextBox.Text = "";
             switch (SearchButton.SelectedIndex)
             {
-                case 0: // search
+                case TextCollection.ImagesLabText.ButtonIndexSearch:
                     SearchTextBox.IsEnabled = true;
                     SearchTextboxWatermark.Text = TextCollection.ImagesLabText.TextBoxWatermarkSearch;
                     SearchInstructions.Text = TextCollection.ImagesLabText.InstructionForSearch;
                     FocusSearchTextBox();
                     break;
-                case 1: // download
+                case TextCollection.ImagesLabText.ButtonIndexDownload:
                     SearchTextBox.IsEnabled = true;
                     SearchTextboxWatermark.Text = TextCollection.ImagesLabText.TextBoxWatermarkDownload;
                     SearchInstructions.Text = TextCollection.ImagesLabText.InstructionForDownload;
                     CopyContentToObservableList(_downloadedImages, SearchList);
                     break;
-                case 2: // from file
+                case TextCollection.ImagesLabText.ButtonIndexFromFile:
                     SearchTextBox.IsEnabled = false;
                     SearchTextboxWatermark.Text = TextCollection.ImagesLabText.TextBoxWatermarkFromFile;
                     SearchInstructions.Text = TextCollection.ImagesLabText.InstructionForFromFile;
@@ -451,13 +490,20 @@ namespace PowerPointLabs.ImageSearch
 
         private void ImageSearchPane_OnActivated(object sender, EventArgs e)
         {
-            DoPreview();
+            if (ConfirmApplyFlyout.IsOpen)
+            {
+                UpdateConfirmApplyPreviewImage();
+            }
+            else
+            {
+                DoPreview();
+            }
         }
 
         // intent: clicking 'load more' should not change selection
         private void SearchListBox_OnPreviewMouseDown(object sender, MouseButtonEventArgs e)
         {
-            var item = ItemsControl.ContainerFromElement((ItemsControl) sender, e.OriginalSource as DependencyObject) as ListBoxItem;
+            var item = ItemsControl.ContainerFromElement((ItemsControl) sender, (DependencyObject) e.OriginalSource) as ListBoxItem;
             if (item == null || item.Content == null) return;
             var imageItem = item.Content as ImageItem;
             if (imageItem != null && imageItem.ImageFile == TempPath.LoadMoreImgPath)

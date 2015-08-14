@@ -5,7 +5,7 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:controls="clr-namespace:MahApps.Metro.Controls;assembly=MahApps.Metro"
              mc:Ignorable="d" 
-             d:DesignHeight="385" d:DesignWidth="400">
+             d:DesignHeight="420" d:DesignWidth="400">
     <UserControl.Resources>
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
@@ -34,22 +34,57 @@
             <RowDefinition Height="35"/>
             <RowDefinition Height="35"/>
             <RowDefinition Height="35"/>
+            <RowDefinition Height="35"/>
         </Grid.RowDefinitions>
-        <Label Content="General" Foreground="#AAAAAA" FontSize="15" HorizontalAlignment="Left" VerticalAlignment="Center" Grid.Column="0" Grid.Row="0"/>
-        <Label Content="Search Engine ID" Foreground="#FFFFFF" FontSize="15" HorizontalAlignment="Left" VerticalAlignment="Center" Grid.Column="0" Grid.Row="1"/>
-        <TextBox Height="30" Width="150" controls:TextBoxHelper.Watermark="Enter Search Engine ID" VerticalContentAlignment="Center" Text="{Binding Path=SearchEngineId, Mode=TwoWay, NotifyOnSourceUpdated=True, UpdateSourceTrigger=LostFocus}" HorizontalAlignment="Left" Grid.Row="1" Grid.Column="1" />
-        <Label Content="API Key" Foreground="#FFFFFF" FontSize="15" HorizontalAlignment="Left" VerticalAlignment="Center" Grid.Column="0" Grid.Row="2"/>
-        <TextBox Height="30" Width="150" controls:TextBoxHelper.Watermark="Enter API Key" VerticalContentAlignment="Center" Text="{Binding Path=ApiKey, Mode=TwoWay, NotifyOnSourceUpdated=True, UpdateSourceTrigger=LostFocus}" HorizontalAlignment="Left" Grid.Row="2" Grid.Column="1" />
+        <Label Content="Search Engine" Foreground="#FFFFFF" FontSize="15" HorizontalAlignment="Left" VerticalAlignment="Center" Grid.Column="0" Grid.Row="0"/>
+        <ComboBox Name="SearchEngineComboBox" SelectionChanged="SearchEngineComboBox_OnSelectionChanged" SelectedIndex="{Binding Path=SearchEngine, Mode=TwoWay, NotifyOnSourceUpdated=True}" HorizontalAlignment="Left" VerticalAlignment="Center" Grid.Column="1" Grid.Row="0">
+            <ComboBoxItem>Bing</ComboBoxItem>
+            <ComboBoxItem>Google</ComboBoxItem>
+        </ComboBox>
+        <Label Content="General" Foreground="#AAAAAA" FontSize="15" HorizontalAlignment="Left" VerticalAlignment="Center" Grid.Column="0" Grid.Row="1"/>
+        <!--Bing API Key-->
+        <Label Name="BingSearchEngineIdLabel" Content="API Key" Foreground="#FFFFFF" FontSize="15" HorizontalAlignment="Left" VerticalAlignment="Center" Grid.Column="0" Grid.Row="2"/>
+        <TextBox Name="BingSearchEngineIdTextBox" Height="30" Width="150" controls:TextBoxHelper.Watermark="Enter API Key" VerticalContentAlignment="Center" Text="{Binding Path=BingApiKey, Mode=TwoWay, NotifyOnSourceUpdated=True, UpdateSourceTrigger=LostFocus}" HorizontalAlignment="Left" Grid.Row="2" Grid.Column="1" />
+        <!--Google API Key-->
+        <Label Visibility="Hidden" Name="GoogleSearchEngineIdLabel" Content="Search Engine ID" Foreground="#FFFFFF" FontSize="15" HorizontalAlignment="Left" VerticalAlignment="Center" Grid.Column="0" Grid.Row="2"/>
+        <TextBox Visibility="Hidden" Name="GoogleSearchEngineIdTextBox" Height="30" Width="150" controls:TextBoxHelper.Watermark="Enter Search Engine ID" VerticalContentAlignment="Center" Text="{Binding Path=SearchEngineId, Mode=TwoWay, NotifyOnSourceUpdated=True, UpdateSourceTrigger=LostFocus}" HorizontalAlignment="Left" Grid.Row="2" Grid.Column="1" />
+        <Label Visibility="Hidden" Name="GoogleApiKeyLabel" Content="API Key" Foreground="#FFFFFF" FontSize="15" HorizontalAlignment="Left" VerticalAlignment="Center" Grid.Column="0" Grid.Row="3"/>
+        <TextBox Visibility="Hidden" Name="GoogleApiKeyTextBox" Height="30" Width="150" controls:TextBoxHelper.Watermark="Enter API Key" VerticalContentAlignment="Center" Text="{Binding Path=ApiKey, Mode=TwoWay, NotifyOnSourceUpdated=True, UpdateSourceTrigger=LostFocus}" HorizontalAlignment="Left" Grid.Row="3" Grid.Column="1" />
 
-        <Label Content="Search" Foreground="#AAAAAA" FontSize="15" HorizontalAlignment="Left" VerticalAlignment="Center" Grid.Column="0" Grid.Row="3"/>
-        <Label Content="Color Type" Foreground="#FFFFFF" FontSize="15" HorizontalAlignment="Left" VerticalAlignment="Center" Grid.Column="0" Grid.Row="4"/>
-        <ComboBox SelectedIndex="{Binding Path=ColorType, Mode=TwoWay, NotifyOnSourceUpdated=True}" HorizontalAlignment="Left" VerticalAlignment="Center" Grid.Column="1" Grid.Row="4">
+        <Label Content="Search" Foreground="#AAAAAA" FontSize="15" HorizontalAlignment="Left" VerticalAlignment="Center" Grid.Column="0" Grid.Row="4"/>
+        <!--Bing Options-->
+        <Label Name="BingImageSizeLabel" Content="image size" Foreground="#FFFFFF" FontSize="15" HorizontalAlignment="Left" VerticalAlignment="Center" Grid.Column="0" Grid.Row="5"/>
+        <ComboBox Name="BingImageSizeComboBox" SelectedIndex="{Binding Path=BingImageSize, Mode=TwoWay, NotifyOnSourceUpdated=True}" HorizontalAlignment="Left" VerticalAlignment="Center" Grid.Column="1" Grid.Row="5">
+            <ComboBoxItem>Small</ComboBoxItem>
+            <ComboBoxItem>Medium</ComboBoxItem>
+            <ComboBoxItem>Large</ComboBoxItem>
+        </ComboBox>
+        <Label Name="BingImageColorLabel" Content="color type" Foreground="#FFFFFF" FontSize="15" HorizontalAlignment="Left" VerticalAlignment="Center" Grid.Column="0" Grid.Row="6"/>
+        <ComboBox Name="BingImageColorComboBox" SelectedIndex="{Binding Path=BingImageColor, Mode=TwoWay, NotifyOnSourceUpdated=True}" HorizontalAlignment="Left" VerticalAlignment="Center" Grid.Column="1" Grid.Row="6">
+            <ComboBoxItem>Color</ComboBoxItem>
+            <ComboBoxItem>Monochrome</ComboBoxItem>
+        </ComboBox>
+        <Label Name="BingImageStyleLabel" Content="image style" Foreground="#FFFFFF" FontSize="15" HorizontalAlignment="Left" VerticalAlignment="Center" Grid.Column="0" Grid.Row="7"/>
+        <ComboBox Name="BingImageStyleComboBox" SelectedIndex="{Binding Path=BingImageStyle, Mode=TwoWay, NotifyOnSourceUpdated=True}" HorizontalAlignment="Left" VerticalAlignment="Center" Grid.Column="1" Grid.Row="7">
+            <ComboBoxItem>Photo</ComboBoxItem>
+            <ComboBoxItem>Graphics</ComboBoxItem>
+        </ComboBox>
+        <Label Name="BingImageFaceLabel" Content="face" Foreground="#FFFFFF" FontSize="15" HorizontalAlignment="Left" VerticalAlignment="Center" Grid.Column="0" Grid.Row="8"/>
+        <ComboBox Name="BingImageFaceComboBox" SelectedIndex="{Binding Path=BingImageFace, Mode=TwoWay, NotifyOnSourceUpdated=True}" HorizontalAlignment="Left" VerticalAlignment="Center" Grid.Column="1" Grid.Row="8">
+            <ComboBoxItem>none</ComboBoxItem>
+            <ComboBoxItem>face</ComboBoxItem>
+            <ComboBoxItem>portrait</ComboBoxItem>
+            <ComboBoxItem>other</ComboBoxItem>
+        </ComboBox>
+        <!--Google Options-->
+        <Label Visibility="Hidden" Name="GoogleColorTypeLabel" Content="color type" Foreground="#FFFFFF" FontSize="15" HorizontalAlignment="Left" VerticalAlignment="Center" Grid.Column="0" Grid.Row="5"/>
+        <ComboBox Visibility="Hidden" Name="GoogleColorTypeComboBox" SelectedIndex="{Binding Path=ColorType, Mode=TwoWay, NotifyOnSourceUpdated=True}" HorizontalAlignment="Left" VerticalAlignment="Center" Grid.Column="1" Grid.Row="5">
             <ComboBoxItem>color</ComboBoxItem>
             <ComboBoxItem>gray</ComboBoxItem>
             <ComboBoxItem>mono</ComboBoxItem>
         </ComboBox>
-        <Label Content="Dominant Color" Foreground="#FFFFFF" FontSize="15" HorizontalAlignment="Left" VerticalAlignment="Center" Grid.Column="0" Grid.Row="5"/>
-        <ComboBox SelectedIndex="{Binding Path=DominantColor, Mode=TwoWay, NotifyOnSourceUpdated=True}" HorizontalAlignment="Left" VerticalAlignment="Center" Grid.Column="1" Grid.Row="5">
+        <Label Visibility="Hidden" Name="GoogleDominantColorLabel" Content="dominant color" Foreground="#FFFFFF" FontSize="15" HorizontalAlignment="Left" VerticalAlignment="Center" Grid.Column="0" Grid.Row="6"/>
+        <ComboBox Visibility="Hidden" Name="GoogleDominantColorComboBox" SelectedIndex="{Binding Path=DominantColor, Mode=TwoWay, NotifyOnSourceUpdated=True}" HorizontalAlignment="Left" VerticalAlignment="Center" Grid.Column="1" Grid.Row="6">
             <ComboBoxItem>none</ComboBoxItem>
             <ComboBoxItem>black</ComboBoxItem>
             <ComboBoxItem>blue</ComboBoxItem>
@@ -62,16 +97,16 @@
             <ComboBoxItem>white</ComboBoxItem>
             <ComboBoxItem>yellow</ComboBoxItem>
         </ComboBox>
-        <Label Content="Image Type" Foreground="#FFFFFF" FontSize="15" HorizontalAlignment="Left" VerticalAlignment="Center" Grid.Column="0" Grid.Row="6"/>
-        <ComboBox SelectedIndex="{Binding Path=ImageType, Mode=TwoWay, NotifyOnSourceUpdated=True}" HorizontalAlignment="Left" VerticalAlignment="Center" Grid.Column="1" Grid.Row="6">
+        <Label Visibility="Hidden" Name="GoogleImageTypeLabel" Content="image type" Foreground="#FFFFFF" FontSize="15" HorizontalAlignment="Left" VerticalAlignment="Center" Grid.Column="0" Grid.Row="7"/>
+        <ComboBox Visibility="Hidden" Name="GoogleImageTypeComboBox" SelectedIndex="{Binding Path=ImageType, Mode=TwoWay, NotifyOnSourceUpdated=True}" HorizontalAlignment="Left" VerticalAlignment="Center" Grid.Column="1" Grid.Row="7">
             <ComboBoxItem>photo</ComboBoxItem>
             <ComboBoxItem>clipart</ComboBoxItem>
             <ComboBoxItem>lineart</ComboBoxItem>
             <ComboBoxItem>news</ComboBoxItem>
             <ComboBoxItem>face</ComboBoxItem>
         </ComboBox>
-        <Label Content="Image Size" Foreground="#FFFFFF" FontSize="15" HorizontalAlignment="Left" VerticalAlignment="Center" Grid.Column="0" Grid.Row="7"/>
-        <ComboBox SelectedIndex="{Binding Path=ImageSize, Mode=TwoWay, NotifyOnSourceUpdated=True}" HorizontalAlignment="Left" VerticalAlignment="Center" Grid.Column="1" Grid.Row="7">
+        <Label Visibility="Hidden" Name="GoogleImageSizeLabel" Content="image size" Foreground="#FFFFFF" FontSize="15" HorizontalAlignment="Left" VerticalAlignment="Center" Grid.Column="0" Grid.Row="8"/>
+        <ComboBox Visibility="Hidden" Name="GoogleImageSizeComboBox" SelectedIndex="{Binding Path=ImageSize, Mode=TwoWay, NotifyOnSourceUpdated=True}" HorizontalAlignment="Left" VerticalAlignment="Center" Grid.Column="1" Grid.Row="8">
             <ComboBoxItem>huge</ComboBoxItem>
             <ComboBoxItem>icon</ComboBoxItem>
             <ComboBoxItem>large</ComboBoxItem>
@@ -80,15 +115,16 @@
             <ComboBoxItem>xlarge</ComboBoxItem>
             <ComboBoxItem>xxlarge</ComboBoxItem>
         </ComboBox>
-        <Label Content="File Type" Foreground="#FFFFFF" FontSize="15" HorizontalAlignment="Left" VerticalAlignment="Center" Grid.Column="0" Grid.Row="8"/>
-        <ComboBox SelectedIndex="{Binding Path=FileType, Mode=TwoWay, NotifyOnSourceUpdated=True}" HorizontalAlignment="Left" VerticalAlignment="Center" Grid.Column="1" Grid.Row="8">
+        <Label Visibility="Hidden" Name="GoogleFileTypeLabel" Content="file type" Foreground="#FFFFFF" FontSize="15" HorizontalAlignment="Left" VerticalAlignment="Center" Grid.Column="0" Grid.Row="9"/>
+        <ComboBox Visibility="Hidden" Name="GoogleFileTypeComboBox" SelectedIndex="{Binding Path=FileType, Mode=TwoWay, NotifyOnSourceUpdated=True}" HorizontalAlignment="Left" VerticalAlignment="Center" Grid.Column="1" Grid.Row="9">
             <ComboBoxItem>any</ComboBoxItem>
             <ComboBoxItem>png</ComboBoxItem>
             <ComboBoxItem>jpg</ComboBoxItem>
             <ComboBoxItem>bmp</ComboBoxItem>
             <ComboBoxItem>gif</ComboBoxItem>
         </ComboBox>
-        <TextBlock HorizontalAlignment="Left" VerticalAlignment="Center" Grid.ColumnSpan="2" Grid.Column="0" Grid.Row="10">           
+        
+        <TextBlock HorizontalAlignment="Left" VerticalAlignment="Center" Grid.ColumnSpan="2" Grid.Column="0" Grid.Row="11">           
             <Hyperlink Foreground="#999999" NavigateUri="http://www.comp.nus.edu.sg/~pptlabs/docs.html" RequestNavigate="Hyperlink_OnRequestNavigate">
                 How to apply for Search Engine ID and API Key?
             </Hyperlink>

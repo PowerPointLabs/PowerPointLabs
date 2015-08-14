@@ -58,12 +58,17 @@
                             </Grid.ColumnDefinitions>
                             <Button Grid.Column="1" Click="ConfirmApplyPreviewButton_OnClick" Name="ConfirmApplyPreviewButton" Margin="0,0,5,0">Preview</Button>
                             <Button Grid.Column="2" Click="ConfirmApplyButton_OnClick" Name="ConfirmApplyButton" Margin="0,0,5,0">Apply</Button>
-                            <ComboBox SelectedIndex="0" Width="150" HorizontalAlignment="Right" Name="TargetStyleComboBox" SelectionChanged="TargetStyleComboBox_OnSelectionChanged" Grid.Column="3">
-                                <ComboBoxItem>Direct Text Style</ComboBoxItem>
-                                <ComboBoxItem>Blur Style</ComboBoxItem>
-                                <ComboBoxItem>TextBox Style</ComboBoxItem>
-                                <ComboBoxItem>Banner Style</ComboBoxItem>
-                                <ComboBoxItem>Special Effect Style</ComboBoxItem>
+                            <ComboBox IsEditable="True" IsReadOnly="True" Text="--- Select Styles ---" Width="150" HorizontalAlignment="Right" Name="TargetStyleComboBox" Grid.Column="3">
+                                <ComboBoxItem>
+                                    <CheckBox ToolTip="Style 1" Unchecked="TargetStyleCheckBox_OnUnchecked" Checked="TargetStyleCheckBox_OnChecked">Direct Text Style</CheckBox></ComboBoxItem>
+                                <ComboBoxItem>
+                                    <CheckBox ToolTip="Style 2" Unchecked="TargetStyleCheckBox_OnUnchecked" Checked="TargetStyleCheckBox_OnChecked">Blur Style</CheckBox></ComboBoxItem>
+                                <ComboBoxItem>
+                                    <CheckBox ToolTip="Style 3" Unchecked="TargetStyleCheckBox_OnUnchecked" Checked="TargetStyleCheckBox_OnChecked">TextBox Style</CheckBox></ComboBoxItem>
+                                <ComboBoxItem>
+                                    <CheckBox ToolTip="Style 4" Unchecked="TargetStyleCheckBox_OnUnchecked" Checked="TargetStyleCheckBox_OnChecked">Banner Style</CheckBox></ComboBoxItem>
+                                <ComboBoxItem>
+                                    <CheckBox ToolTip="Style 5" Unchecked="TargetStyleCheckBox_OnUnchecked" Checked="TargetStyleCheckBox_OnChecked">Special Effect Style</CheckBox></ComboBoxItem>
                             </ComboBox>
                         </Grid>
                     </Grid>
@@ -79,111 +84,119 @@
             </controls:Flyout>
         </controls:FlyoutsControl>
     </controls:MetroWindow.Flyouts>
-    <Grid Name="ImagesLabGrid">
-        <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="320"></ColumnDefinition>
-            <ColumnDefinition Width="auto"></ColumnDefinition>
-            <ColumnDefinition Width="*"></ColumnDefinition>
-        </Grid.ColumnDefinitions>
-        <GridSplitter Name="Splitter" DragDelta="Splitter_OnDragDelta" Grid.Column="1" ResizeDirection="Columns" Width="3" Height="Auto" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" />
-        <Grid Name="StylesPreviewGrid" Margin="10,0,0,0" Grid.Column="0">
-            <Grid.RowDefinitions>
-                <RowDefinition Height="5" />
-                <RowDefinition Height="35" />
-                <RowDefinition Height="*" />
-            </Grid.RowDefinitions>
-            <Grid Grid.Row="1" Margin="0,0,0,5">
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="5" />
-                    <ColumnDefinition Width="70" />
-                    <ColumnDefinition Width="65" />
-                    <ColumnDefinition Width="65" />
-                    <ColumnDefinition Width="30" />
-                    <ColumnDefinition Width="*"></ColumnDefinition>
-                </Grid.ColumnDefinitions>
-                <Label Name="PreviewLabel" Grid.Column="1" Margin="0,0,5,0" FontSize="15">Preview</Label>
-                <Button IsEnabled="False" Name="PreviewInsert" Click="PreviewApply_OnClick" Grid.Column="2" Margin="0,0,5,0">Apply</Button>
-                <Button Name="StyleOptionsButton" Grid.Column="3" Margin="0,0,5,0" Click="StyleOptionsButton_OnClick">Options</Button>
-                <controls:ProgressRing Name="PreviewProgressRing" Width="10" Height="10" Grid.Column="4" IsActive="False" />
-                <controls:ToggleSwitch ToolTip="Expand/collapse preview region" OnLabel="" OffLabel="" IsCheckedChanged="PreviewDisplayToggleSwitch_OnIsCheckedChanged" Name="PreviewDisplayToggleSwitch" Grid.Column="5" Margin="0,-2,0,2" />
+    <Grid>
+        <Grid Name="ImagesLabGrid">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="320"></ColumnDefinition>
+                <ColumnDefinition Width="auto"></ColumnDefinition>
+                <ColumnDefinition Width="*"></ColumnDefinition>
+            </Grid.ColumnDefinitions>
+            <GridSplitter Name="Splitter" DragDelta="Splitter_OnDragDelta" Grid.Column="1" ResizeDirection="Columns" Width="3" Height="Auto" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" />
+            <Grid Name="StylesPreviewGrid" Margin="10,0,0,0" Grid.Column="0">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="5" />
+                    <RowDefinition Height="35" />
+                    <RowDefinition Height="*" />
+                </Grid.RowDefinitions>
+                <Grid Grid.Row="1" Margin="0,0,0,5">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="5" />
+                        <ColumnDefinition Width="70" />
+                        <ColumnDefinition Width="65" />
+                        <ColumnDefinition Width="65" />
+                        <ColumnDefinition Width="30" />
+                        <ColumnDefinition Width="*"></ColumnDefinition>
+                    </Grid.ColumnDefinitions>
+                    <Label Name="PreviewLabel" Grid.Column="1" Margin="0,0,5,0" FontSize="15">Preview</Label>
+                    <Button IsEnabled="False" Name="PreviewApply" Click="PreviewApply_OnClick" Grid.Column="2" Margin="0,0,5,0">Apply</Button>
+                    <Button Name="StyleOptionsButton" Grid.Column="3" Margin="0,0,5,0" Click="StyleOptionsButton_OnClick">Options</Button>
+                    <controls:ProgressRing Name="PreviewProgressRing" Width="10" Height="10" Grid.Column="4" IsActive="False" />
+                    <controls:ToggleSwitch ToolTip="Expand/collapse preview region" OnLabel="" OffLabel="" IsCheckedChanged="PreviewDisplayToggleSwitch_OnIsCheckedChanged" Name="PreviewDisplayToggleSwitch" Grid.Column="5" Margin="0,-2,0,2" />
+                </Grid>
+                <TextBlock Visibility="Visible" Name="PreviewInstructions" TextWrapping="Wrap" HorizontalAlignment="Center" VerticalAlignment="Center" Foreground="#AAAAAA" FontSize="14" Grid.Row="2">Select an image to preview styles. Pick any styles and click APPLY button to apply.</TextBlock>
+                <TextBlock Visibility="Hidden" Name="PreviewInstructionsWhenNoSelectedSlide" TextWrapping="Wrap" HorizontalAlignment="Center" VerticalAlignment="Center" Foreground="#AAAAAA" FontSize="14" Grid.Row="2">Select a slide in the presentation to preview styles. Pick any styles and click APPLY button to apply.</TextBlock>
+                <ListBox SelectionMode="Multiple" TabIndex="2" Name="PreviewListBox" KeyUp="PreviewListBox_OnKeyUp" KeyDown="ListBox_OnKeyDown" IsSynchronizedWithCurrentItem="True" SelectionChanged="PreivewListBox_OnSelectionChanged" ItemsSource="{Binding Path=PreviewList, Mode=TwoWay}" Grid.Row="2">
+                    <ListBox.Template>
+                        <ControlTemplate TargetType="{x:Type ListBox}">
+                            <ScrollViewer HorizontalScrollBarVisibility="Disabled" VerticalScrollBarVisibility="Auto">
+                                <WrapPanel Orientation="Horizontal" IsItemsHost="True" ScrollViewer.CanContentScroll="True"/>
+                            </ScrollViewer>
+                        </ControlTemplate>
+                    </ListBox.Template>
+                    <ListBox.ItemContainerStyle>
+                        <Style TargetType="ListBoxItem">
+                            <Setter Property="HorizontalContentAlignment" Value="Center"></Setter>
+                            <Setter Property="VerticalContentAlignment" Value="Center"></Setter>
+                            <Style.Resources>
+                                <!--SelectedItem with focus-->
+                                <SolidColorBrush x:Key="{x:Static SystemColors.HighlightBrushKey}" Color="#D74926" />
+                                <!--SelectedItem without focus-->
+                                <SolidColorBrush x:Key="{x:Static SystemColors.ControlBrushKey}" Color="#D74926" />
+                            </Style.Resources>
+                        </Style>
+                    </ListBox.ItemContainerStyle>
+                    <ListBox.ItemTemplate>
+                        <DataTemplate>
+                            <Image Margin="3,3,5,3" Source="{Binding Path=ImageFile, Mode=TwoWay, NotifyOnSourceUpdated=True}" ToolTip="{Binding Path=Tooltip, Mode=TwoWay, NotifyOnSourceUpdated=True}" />
+                        </DataTemplate>
+                    </ListBox.ItemTemplate>
+                </ListBox>
             </Grid>
-            <TextBlock Visibility="Visible" Name="PreviewInstructions" TextWrapping="Wrap" HorizontalAlignment="Center" VerticalAlignment="Center" Foreground="#AAAAAA" FontSize="14" Grid.Row="2">Select an image to preview styles. Pick a style and click APPLY button to apply.</TextBlock>
-            <TextBlock Visibility="Hidden" Name="PreviewInstructionsWhenNoSelectedSlide" TextWrapping="Wrap" HorizontalAlignment="Center" VerticalAlignment="Center" Foreground="#AAAAAA" FontSize="14" Grid.Row="2">Select a slide in the presentation to preview styles. Pick a style and click APPLY button to apply.</TextBlock>
-            <ListBox TabIndex="2" Name="PreviewListBox" KeyUp="PreviewListBox_OnKeyUp" KeyDown="ListBox_OnKeyDown" IsSynchronizedWithCurrentItem="True" SelectionChanged="PreivewListBox_OnSelectionChanged" ItemsSource="{Binding Path=PreviewList, Mode=TwoWay}" Grid.Row="2">
-                <ListBox.Template>
-                    <ControlTemplate TargetType="{x:Type ListBox}">
-                        <ScrollViewer HorizontalScrollBarVisibility="Disabled" VerticalScrollBarVisibility="Auto">
-                            <WrapPanel Orientation="Horizontal" IsItemsHost="True" ScrollViewer.CanContentScroll="True"/>
-                        </ScrollViewer>
-                    </ControlTemplate>
-                </ListBox.Template>
-                <ListBox.ItemContainerStyle>
-                    <Style TargetType="ListBoxItem">
-                        <Setter Property="HorizontalContentAlignment" Value="Center"></Setter>
-                        <Setter Property="VerticalContentAlignment" Value="Center"></Setter>
-                        <Style.Resources>
-                            <!--SelectedItem with focus-->
-                            <SolidColorBrush x:Key="{x:Static SystemColors.HighlightBrushKey}" Color="#D74926" />
-                            <!--SelectedItem without focus-->
-                            <SolidColorBrush x:Key="{x:Static SystemColors.ControlBrushKey}" Color="#D74926" />
-                        </Style.Resources>
-                    </Style>
-                </ListBox.ItemContainerStyle>
-                <ListBox.ItemTemplate>
-                    <DataTemplate>
-                        <Image Margin="3,3,5,3" Source="{Binding Path=ImageFile, Mode=TwoWay, NotifyOnSourceUpdated=True}" ToolTip="{Binding Path=Tooltip, Mode=TwoWay, NotifyOnSourceUpdated=True}" />
-                    </DataTemplate>
-                </ListBox.ItemTemplate>
-            </ListBox>
+            <Grid Name="ImageSearchGrid" Margin="5,0,0,0" Grid.Column="2">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="5" />
+                    <RowDefinition Height="35" />
+                    <RowDefinition Height="*" />
+                </Grid.RowDefinitions>
+                <Grid Grid.Row="1" Margin="0,0,0,5">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="180" />
+                        <ColumnDefinition Width="100" />
+                        <ColumnDefinition Width="75" />
+                        <ColumnDefinition Width="40" />
+                        <ColumnDefinition Width="*"></ColumnDefinition>
+                    </Grid.ColumnDefinitions>
+                    <TextBox TabIndex="0" Name="SearchTextBox" KeyDown="SearchTextBox_OnKeyDown" VerticalContentAlignment="Center" Grid.Column="0" Margin="0,0,5,0" controls:TextBoxHelper.Watermark="{Binding Path=Text, NotifyOnSourceUpdated=True}"></TextBox>
+                    <controls:SplitButton SelectionChanged="SearchButton_OnSelectionChanged" Click="SearchButton_OnClick" Name="SearchButton" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" Grid.Column="1" Margin="0,0,5,0"/>
+                    <Button Name="AdvancedButton" Click="AdvancedButton_OnClick" Grid.Column="2">Advanced..</Button>
+                    <controls:ProgressRing Name="SearchProgressRing" Width="10" Height="10" Grid.Column="3" IsActive="False" />
+                </Grid>
+                <TextBlock Visibility="Visible" Name="SearchInstructions" TextWrapping="Wrap" HorizontalAlignment="Center" VerticalAlignment="Center" Foreground="#AAAAAA" FontSize="14" Grid.Row="2">No result. Type the keywords in the textbox above to search for images.</TextBlock>
+                <ListBox TabIndex="1" PreviewMouseDown="SearchListBox_OnPreviewMouseDown" Name="SearchListBox" KeyDown="ListBox_OnKeyDown" IsSynchronizedWithCurrentItem="True" SelectionChanged="SearchListBox_OnSelectionChanged" ItemsSource="{Binding Path=SearchList, Mode=TwoWay}" Grid.Row="2">
+                    <ListBox.Template>
+                        <ControlTemplate TargetType="{x:Type ListBox}">
+                            <ScrollViewer HorizontalScrollBarVisibility="Disabled" VerticalScrollBarVisibility="Auto">
+                                <WrapPanel Orientation="Horizontal" IsItemsHost="True" ScrollViewer.CanContentScroll="True"/>
+                            </ScrollViewer>
+                        </ControlTemplate>
+                    </ListBox.Template>
+                    <ListBox.ItemContainerStyle>
+                        <Style TargetType="ListBoxItem">
+                            <Setter Property="Height" Value="110"></Setter>
+                            <Setter Property="Width" Value="150"></Setter>
+                            <Setter Property="HorizontalContentAlignment" Value="Center"></Setter>
+                            <Setter Property="VerticalContentAlignment" Value="Center"></Setter>
+                            <Style.Resources>
+                                <!--SelectedItem with focus-->
+                                <SolidColorBrush x:Key="{x:Static SystemColors.HighlightBrushKey}" Color="#D74926" />
+                                <!--SelectedItem without focus-->
+                                <SolidColorBrush x:Key="{x:Static SystemColors.ControlBrushKey}" Color="#D74926" />
+                            </Style.Resources>
+                        </Style>
+                    </ListBox.ItemContainerStyle>
+                    <ListBox.ItemTemplate>
+                        <DataTemplate>
+                            <Image Margin="2,2,4,2" Source="{Binding Path=ImageFile, Mode=TwoWay, NotifyOnSourceUpdated=True}" ToolTip="{Binding Path=Tooltip, Mode=TwoWay, NotifyOnSourceUpdated=True}"/>
+                        </DataTemplate>
+                    </ListBox.ItemTemplate>
+                </ListBox>
+            </Grid>
         </Grid>
-        <Grid Name="ImageSearchGrid" Margin="5,0,0,0" Grid.Column="2">
-            <Grid.RowDefinitions>
-                <RowDefinition Height="5" />
-                <RowDefinition Height="35" />
-                <RowDefinition Height="*" />
-            </Grid.RowDefinitions>
-            <Grid Grid.Row="1" Margin="0,0,0,5">
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="180" />
-                    <ColumnDefinition Width="100" />
-                    <ColumnDefinition Width="75" />
-                    <ColumnDefinition Width="40" />
-                    <ColumnDefinition Width="*"></ColumnDefinition>
-                </Grid.ColumnDefinitions>
-                <TextBox TabIndex="0" Name="SearchTextBox" KeyDown="SearchTextBox_OnKeyDown" VerticalContentAlignment="Center" Grid.Column="0" Margin="0,0,5,0" controls:TextBoxHelper.Watermark="{Binding Path=Text, NotifyOnSourceUpdated=True}"></TextBox>
-                <controls:SplitButton SelectionChanged="SearchButton_OnSelectionChanged" Click="SearchButton_OnClick" Name="SearchButton" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" Grid.Column="1" Margin="0,0,5,0"/>
-                <Button Name="AdvancedButton" Click="AdvancedButton_OnClick" Grid.Column="2">Advanced..</Button>
-                <controls:ProgressRing Name="SearchProgressRing" Width="10" Height="10" Grid.Column="3" IsActive="False" />
-            </Grid>
-            <TextBlock Visibility="Visible" Name="SearchInstructions" TextWrapping="Wrap" HorizontalAlignment="Center" VerticalAlignment="Center" Foreground="#AAAAAA" FontSize="14" Grid.Row="2">No result. Type the keywords in the textbox above to search for images.</TextBlock>
-            <ListBox TabIndex="1" PreviewMouseDown="SearchListBox_OnPreviewMouseDown" Name="SearchListBox" KeyDown="ListBox_OnKeyDown" IsSynchronizedWithCurrentItem="True" SelectionChanged="SearchListBox_OnSelectionChanged" ItemsSource="{Binding Path=SearchList, Mode=TwoWay}" Grid.Row="2">
-                <ListBox.Template>
-                    <ControlTemplate TargetType="{x:Type ListBox}">
-                        <ScrollViewer HorizontalScrollBarVisibility="Disabled" VerticalScrollBarVisibility="Auto">
-                            <WrapPanel Orientation="Horizontal" IsItemsHost="True" ScrollViewer.CanContentScroll="True"/>
-                        </ScrollViewer>
-                    </ControlTemplate>
-                </ListBox.Template>
-                <ListBox.ItemContainerStyle>
-                    <Style TargetType="ListBoxItem">
-                        <Setter Property="Height" Value="110"></Setter>
-                        <Setter Property="Width" Value="150"></Setter>
-                        <Setter Property="HorizontalContentAlignment" Value="Center"></Setter>
-                        <Setter Property="VerticalContentAlignment" Value="Center"></Setter>
-                        <Style.Resources>
-                            <!--SelectedItem with focus-->
-                            <SolidColorBrush x:Key="{x:Static SystemColors.HighlightBrushKey}" Color="#D74926" />
-                            <!--SelectedItem without focus-->
-                            <SolidColorBrush x:Key="{x:Static SystemColors.ControlBrushKey}" Color="#D74926" />
-                        </Style.Resources>
-                    </Style>
-                </ListBox.ItemContainerStyle>
-                <ListBox.ItemTemplate>
-                    <DataTemplate>
-                        <Image Margin="2,2,4,2" Source="{Binding Path=ImageFile, Mode=TwoWay, NotifyOnSourceUpdated=True}" ToolTip="{Binding Path=Tooltip, Mode=TwoWay, NotifyOnSourceUpdated=True}"/>
-                    </DataTemplate>
-                </ListBox.ItemTemplate>
-            </ListBox>
+        <Grid Name="ImagesLabGridOverlay" Visibility="Hidden">
+            <Grid.Background>
+                <SolidColorBrush Opacity="0.80" Color="Black"/>
+            </Grid.Background>
+            <TextBlock Name="DragAndDropInstructions" TextWrapping="Wrap" HorizontalAlignment="Center" VerticalAlignment="Center" Foreground="#FFFFFF" FontSize="18" Text="{Binding Path=Text, Mode=TwoWay, NotifyOnSourceUpdated=True}"></TextBlock>
         </Grid>
     </Grid>
 </controls:MetroWindow>

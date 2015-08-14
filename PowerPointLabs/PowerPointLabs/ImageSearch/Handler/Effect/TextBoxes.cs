@@ -13,6 +13,8 @@ namespace PowerPointLabs.ImageSearch.Handler.Effect
     {
         public const int Margin = 25;
 
+        public const int ExtendMargin = 5;
+
         private List<Shape> TextShapes { get; set; }
 
         private readonly float _slideWidth;
@@ -63,6 +65,11 @@ namespace PowerPointLabs.ImageSearch.Handler.Effect
         {
             if (_pos != Position.Original)
             {
+                // do positioning twice to fix a bug:
+                // if only do positioning once,
+                // textboxes' height/top may be incorrect if each textbox is not directly next to each other;
+                // doing positioning (make every textbox next to each other) the next time will fix the problem.
+                StartPositioning();
                 StartPositioning();
             }
             else
@@ -73,15 +80,16 @@ namespace PowerPointLabs.ImageSearch.Handler.Effect
 
         public TextBoxInfo GetTextBoxesInfo()
         {
-            return GetTextBoxesInfo(TextShapes);
+            return TextShapes.Count > 0 ? GetTextBoxesInfo(TextShapes) : null;
         }
 
-        public static void AddMargin(TextBoxInfo textboxesInfo)
+        public static void AddMargin(TextBoxInfo textboxesInfo, float? margin = null)
         {
-            textboxesInfo.Left -= Margin;
-            textboxesInfo.Top -= Margin;
-            textboxesInfo.Width += 2 * Margin;
-            textboxesInfo.Height += 2 * Margin;
+            margin = margin ?? Margin;
+            textboxesInfo.Left -= margin.Value;
+            textboxesInfo.Top -= margin.Value;
+            textboxesInfo.Width += 2 * margin.Value;
+            textboxesInfo.Height += 2 * margin.Value;
         }
 
         # endregion
@@ -249,6 +257,8 @@ namespace PowerPointLabs.ImageSearch.Handler.Effect
         {
             var result = new TextBoxInfo();
             var paragraphs = textShape.TextFrame2.TextRange.Paragraphs;
+            var rightMost = 0f;
+            var bottomMost = 0f;
             foreach (TextRange2 textRange in paragraphs)
             {
                 var paragraph = textRange.TrimText();
@@ -256,23 +266,38 @@ namespace PowerPointLabs.ImageSearch.Handler.Effect
                 {
                     result.Left = paragraph.BoundLeft < result.Left ? paragraph.BoundLeft : result.Left;
                     result.Top = paragraph.BoundTop < result.Top ? paragraph.BoundTop : result.Top;
-                    result.Width = paragraph.BoundWidth > result.Width ? paragraph.BoundWidth : result.Width;
+                    rightMost = paragraph.BoundLeft + paragraph.BoundWidth > rightMost
+                        ? paragraph.BoundLeft + paragraph.BoundWidth
+                        : rightMost;
+                    bottomMost = paragraph.BoundTop + paragraph.BoundHeight > bottomMost
+                        ? paragraph.BoundTop + paragraph.BoundHeight
+                        : bottomMost;
                 }
             }
-            result.Height = paragraphs.BoundHeight;
+            result.Width = rightMost - result.Left;
+            result.Height = bottomMost - result.Top;
+            AddMargin(result, ExtendMargin);
             return result;
         }
 
         private TextBoxInfo GetTextBoxesInfo(IEnumerable<Shape> textShapes)
         {
             var result = new TextBoxInfo();
+            var rightMost = 0f;
+            var bottomMost = 0f;
             foreach (var partialResult in textShapes.Select(GetTextBoxInfo))
             {
                 result.Left = partialResult.Left < result.Left ? partialResult.Left : result.Left;
                 result.Top = partialResult.Top < result.Top ? partialResult.Top : result.Top;
-                result.Width = partialResult.Width > result.Width ? partialResult.Width : result.Width;
-                result.Height += partialResult.Height;
+                rightMost = partialResult.Left + partialResult.Width > rightMost
+                        ? partialResult.Left + partialResult.Width
+                        : rightMost;
+                bottomMost = partialResult.Top + partialResult.Height > bottomMost
+                    ? partialResult.Top + partialResult.Height
+                    : bottomMost;
             }
+            result.Width = rightMost - result.Left;
+            result.Height = bottomMost - result.Top;
             return result;
         }
 
