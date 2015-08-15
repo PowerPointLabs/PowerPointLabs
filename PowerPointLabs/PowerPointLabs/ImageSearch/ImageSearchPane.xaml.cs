@@ -90,6 +90,8 @@ namespace PowerPointLabs.ImageSearch
         private DateTime _latestPreviewUpdateTime = DateTime.Now;
         private DateTime _latestPreviewApplyUpdateTime = DateTime.Now;
 
+        private bool _isWindowActivatedWithPreview = true;
+
         # endregion
 
         #region Initialization
@@ -494,7 +496,7 @@ namespace PowerPointLabs.ImageSearch
             {
                 UpdateConfirmApplyPreviewImage();
             }
-            else
+            else if (_isWindowActivatedWithPreview)
             {
                 DoPreview();
             }

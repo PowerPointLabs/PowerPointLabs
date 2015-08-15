@@ -28,9 +28,16 @@ namespace PowerPointLabs.ImageSearch
             if (args.Data.GetDataPresent("FileDrop")
                 || args.Data.GetDataPresent("Text"))
             {
-                Activate();
                 ImagesLabGridOverlay.Visibility = Visibility.Visible;
+                ActivateWithoutPreview();
             }
+        }
+
+        private void ActivateWithoutPreview()
+        {
+            _isWindowActivatedWithPreview = false;
+            Activate();
+            _isWindowActivatedWithPreview = true;
         }
 
         private void OnDrop(object sender, DragEventArgs args)
