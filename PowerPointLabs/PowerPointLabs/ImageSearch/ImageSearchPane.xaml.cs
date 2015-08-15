@@ -493,11 +493,13 @@ namespace PowerPointLabs.ImageSearch
 
         private void ImageSearchPane_OnActivated(object sender, EventArgs e)
         {
+            if (!_isWindowActivatedWithPreview) return;
+
             if (ConfirmApplyFlyout.IsOpen)
             {
                 UpdateConfirmApplyPreviewImage();
             }
-            else if (_isWindowActivatedWithPreview)
+            else
             {
                 DoPreview();
             }
