@@ -350,8 +350,8 @@
             public const string TextBoxWatermarkFromFile = "";
 
             public const string InstructionForSearch = "No result. Type the keywords in the textbox above to search for images.";
-            public const string InstructionForDownload = "No image. Paste the image link in the textbox above to download images.";
-            public const string InstructionForFromFile = "No image. Click the 'From File' button above to load local images.";
+            public const string InstructionForDownload = "No image. Paste the image link in the textbox above to download images, or drag and drop the link here.";
+            public const string InstructionForFromFile = "No image. Click the 'From File' button above to load local images, or drag and drop the file here.";
         }
 
         # region Agenda Lab
