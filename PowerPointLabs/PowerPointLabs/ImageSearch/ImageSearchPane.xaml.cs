@@ -90,6 +90,8 @@ namespace PowerPointLabs.ImageSearch
         private DateTime _latestPreviewUpdateTime = DateTime.Now;
         private DateTime _latestPreviewApplyUpdateTime = DateTime.Now;
 
+        private bool _isWindowActivatedWithPreview = true;
+
         # endregion
 
         #region Initialization
@@ -221,7 +223,8 @@ namespace PowerPointLabs.ImageSearch
         private void ConfirmApplyFlyout_OnIsOpenChanged(object sender, RoutedEventArgs e)
         {
             if (!ConfirmApplyFlyout.IsOpen
-                && _latestStyleOptionsUpdateTime > _latestPreviewUpdateTime)
+                && (_latestStyleOptionsUpdateTime > _latestPreviewUpdateTime
+                    || _latestPreviewApplyUpdateTime > _latestPreviewUpdateTime))
             {
                 DoPreview();
             }
@@ -294,13 +297,11 @@ namespace PowerPointLabs.ImageSearch
                 // when selection changed, no need to insert 
                 // but dont clear timerDownloadingUriList, since timer may still downloading
                 // full size image at the background.
-                DoPreview(() =>
+                if (source != null)
                 {
-                    if (source != null)
-                    {
-                        _applyDownloadingUriList.Remove(source.FullSizeImageUri);
-                    }
-                });
+                    _applyDownloadingUriList.Remove(source.FullSizeImageUri);
+                }
+                DoPreview();
             }
         }
 
@@ -490,6 +491,8 @@ namespace PowerPointLabs.ImageSearch
 
         private void ImageSearchPane_OnActivated(object sender, EventArgs e)
         {
+            if (!_isWindowActivatedWithPreview) return;
+
             if (ConfirmApplyFlyout.IsOpen)
             {
                 UpdateConfirmApplyPreviewImage();

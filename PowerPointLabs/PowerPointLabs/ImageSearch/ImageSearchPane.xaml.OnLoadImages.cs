@@ -134,6 +134,7 @@ namespace PowerPointLabs.ImageSearch
                 };
                 UrlUtil.GetMetaInfo(ref downloadLink, item);
 
+                var selectedIds = GetSelectedIndices(PreviewListBox.SelectedItems);
                 if (SearchButton.SelectedIndex != TextCollection.ImagesLabText.ButtonIndexDownload)
                 {
                     SearchButton.SelectedIndex = TextCollection.ImagesLabText.ButtonIndexDownload;
@@ -149,7 +150,7 @@ namespace PowerPointLabs.ImageSearch
                     .After(() =>
                     {
                         HandleDownloadedPicture(item, thumbnailPath);
-                        HandleDownloadedThumbnail(item, thumbnailPath);
+                        HandleDownloadedThumbnail(item, thumbnailPath, selectedIds: selectedIds);
                     })
                     .OnError(() => { RemoveImageItem(item); })
                     .Start();

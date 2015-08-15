@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using MahApps.Metro.Controls.Dialogs;
 using PowerPointLabs.ImageSearch.Domain;
 using PowerPointLabs.ImageSearch.Util;
@@ -12,7 +13,7 @@ namespace PowerPointLabs.ImageSearch
         ///////////////////////////////////////////////////////////////
 
         private void HandleDownloadedThumbnail(
-            ImageItem item, string thumbnailPath, object searchResult = null)
+            ImageItem item, string thumbnailPath, object searchResult = null, IList<int> selectedIds = null)
         {
             Dispatcher.BeginInvoke(new Action(() =>
             {
@@ -33,7 +34,7 @@ namespace PowerPointLabs.ImageSearch
                 var selectedImageItem = SearchListBox.SelectedValue as ImageItem;
                 if (selectedImageItem != null && item.ImageFile == selectedImageItem.ImageFile)
                 {
-                    DoPreview();
+                    DoPreview(selectedIds);
                 }
             }));
         }

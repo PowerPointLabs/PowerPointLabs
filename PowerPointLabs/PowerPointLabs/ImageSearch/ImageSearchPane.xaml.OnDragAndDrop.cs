@@ -28,9 +28,33 @@ namespace PowerPointLabs.ImageSearch
             if (args.Data.GetDataPresent("FileDrop")
                 || args.Data.GetDataPresent("Text"))
             {
-                Activate();
+                CloseFlyouts();
                 ImagesLabGridOverlay.Visibility = Visibility.Visible;
+                ActivateWithoutPreview();
             }
+        }
+
+        private void CloseFlyouts()
+        {
+            if (StyleOptionsFlyout.IsOpen)
+            {
+                StyleOptionsFlyout.IsOpen = false;
+            }
+            if (SearchOptionsFlyout.IsOpen)
+            {
+                SearchOptionsFlyout.IsOpen = false;
+            }
+            if (ConfirmApplyFlyout.IsOpen)
+            {
+                ConfirmApplyFlyout.IsOpen = false;
+            }
+        }
+
+        private void ActivateWithoutPreview()
+        {
+            _isWindowActivatedWithPreview = false;
+            Activate();
+            _isWindowActivatedWithPreview = true;
         }
 
         private void OnDrop(object sender, DragEventArgs args)
