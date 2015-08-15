@@ -223,7 +223,8 @@ namespace PowerPointLabs.ImageSearch
         private void ConfirmApplyFlyout_OnIsOpenChanged(object sender, RoutedEventArgs e)
         {
             if (!ConfirmApplyFlyout.IsOpen
-                && _latestStyleOptionsUpdateTime > _latestPreviewUpdateTime)
+                && (_latestStyleOptionsUpdateTime > _latestPreviewUpdateTime
+                    || _latestPreviewApplyUpdateTime > _latestPreviewUpdateTime))
             {
                 DoPreview();
             }
