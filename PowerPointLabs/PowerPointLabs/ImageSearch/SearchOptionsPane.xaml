@@ -41,7 +41,7 @@
             <ComboBoxItem>Bing</ComboBoxItem>
             <ComboBoxItem>Google</ComboBoxItem>
         </ComboBox>
-        <Label Content="General" Foreground="#AAAAAA" FontSize="15" HorizontalAlignment="Left" VerticalAlignment="Center" Grid.Column="0" Grid.Row="1"/>
+        <Label BorderBrush="#565656" BorderThickness="0,0,0,1" Content="General" Foreground="#AAAAAA" FontSize="15" HorizontalAlignment="Left" VerticalAlignment="Center" Grid.Column="0" Grid.Row="1"/>
         <!--Bing API Key-->
         <Label Name="BingSearchEngineIdLabel" Content="API Key" Foreground="#FFFFFF" FontSize="15" HorizontalAlignment="Left" VerticalAlignment="Center" Grid.Column="0" Grid.Row="2"/>
         <TextBox Name="BingSearchEngineIdTextBox" Height="30" Width="150" controls:TextBoxHelper.Watermark="Enter API Key" VerticalContentAlignment="Center" Text="{Binding Path=BingApiKey, Mode=TwoWay, NotifyOnSourceUpdated=True, UpdateSourceTrigger=LostFocus}" HorizontalAlignment="Left" Grid.Row="2" Grid.Column="1" />
@@ -51,7 +51,7 @@
         <Label Visibility="Hidden" Name="GoogleApiKeyLabel" Content="API Key" Foreground="#FFFFFF" FontSize="15" HorizontalAlignment="Left" VerticalAlignment="Center" Grid.Column="0" Grid.Row="3"/>
         <TextBox Visibility="Hidden" Name="GoogleApiKeyTextBox" Height="30" Width="150" controls:TextBoxHelper.Watermark="Enter API Key" VerticalContentAlignment="Center" Text="{Binding Path=ApiKey, Mode=TwoWay, NotifyOnSourceUpdated=True, UpdateSourceTrigger=LostFocus}" HorizontalAlignment="Left" Grid.Row="3" Grid.Column="1" />
 
-        <Label Content="Search" Foreground="#AAAAAA" FontSize="15" HorizontalAlignment="Left" VerticalAlignment="Center" Grid.Column="0" Grid.Row="4"/>
+        <Label BorderBrush="#565656" BorderThickness="0,0,0,1" Content="Search" Foreground="#AAAAAA" FontSize="15" HorizontalAlignment="Left" VerticalAlignment="Center" Grid.Column="0" Grid.Row="4"/>
         <!--Bing Options-->
         <Label Name="BingImageSizeLabel" Content="image size" Foreground="#FFFFFF" FontSize="15" HorizontalAlignment="Left" VerticalAlignment="Center" Grid.Column="0" Grid.Row="5"/>
         <ComboBox Name="BingImageSizeComboBox" SelectedIndex="{Binding Path=BingImageSize, Mode=TwoWay, NotifyOnSourceUpdated=True}" HorizontalAlignment="Left" VerticalAlignment="Center" Grid.Column="1" Grid.Row="5">
