@@ -469,18 +469,9 @@ namespace PowerPointLabs.ImageSearch.Handler
                         .Load(imageFilePath)
                         .Image;
                     var ratio = (float) image.Width / image.Height;
-                    if (image.Width >= image.Height)
-                    {
-                        image = imageFactory
-                        .Resize(new Size((int)ThumbnailWidth, (int)(ThumbnailWidth / ratio)))
-                        .GaussianBlur(5).Image;
-                    }
-                    else
-                    {
-                        image = imageFactory
+                    image = imageFactory
                         .Resize(new Size((int)(ThumbnailHeight * ratio), (int)ThumbnailHeight))
                         .GaussianBlur(5).Image;
-                    }
                     image.Save(blurImageFile);
                 }
                 else
