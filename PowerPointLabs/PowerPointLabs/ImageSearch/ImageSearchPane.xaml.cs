@@ -297,13 +297,11 @@ namespace PowerPointLabs.ImageSearch
                 // when selection changed, no need to insert 
                 // but dont clear timerDownloadingUriList, since timer may still downloading
                 // full size image at the background.
-                DoPreview(() =>
+                if (source != null)
                 {
-                    if (source != null)
-                    {
-                        _applyDownloadingUriList.Remove(source.FullSizeImageUri);
-                    }
-                });
+                    _applyDownloadingUriList.Remove(source.FullSizeImageUri);
+                }
+                DoPreview();
             }
         }
 

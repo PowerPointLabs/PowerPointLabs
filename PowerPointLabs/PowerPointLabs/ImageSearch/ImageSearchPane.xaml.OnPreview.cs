@@ -11,7 +11,7 @@ namespace PowerPointLabs.ImageSearch
 {
     public partial class ImageSearchPane
     {
-        private void DoPreview(Action beforePreview = null)
+        private void DoPreview(IList<int> selectedIds = null)
         {
             var image = (ImageItem)SearchListBox.SelectedValue;
             if (image == null || image.ImageFile == TempPath.LoadingImgPath)
@@ -21,16 +21,14 @@ namespace PowerPointLabs.ImageSearch
             }
             else
             {
-                if (beforePreview != null) beforePreview();
-
                 PreviewTimer.Stop();
-                DoPreview(image);
+                DoPreview(image, selectedIds);
                 // when timer ticks, try to download full size image to replace
                 PreviewTimer.Start();
             }
         }
 
-        private void DoPreview(ImageItem source)
+        private void DoPreview(ImageItem source, IList<int> selectedIds = null)
         {
             // ui thread
             Dispatcher.BeginInvoke(new Action(() =>
@@ -38,7 +36,7 @@ namespace PowerPointLabs.ImageSearch
                 try
                 {
                     var previousTextCopy = Clipboard.GetText();
-                    var selectedIds = GetSelectedIndices(PreviewListBox.SelectedItems);
+                    selectedIds = selectedIds ?? GetSelectedIndices(PreviewListBox.SelectedItems);
                     PreviewList.Clear();
 
                     if (PowerPointCurrentPresentationInfo.CurrentSlide != null)
@@ -92,6 +90,7 @@ namespace PowerPointLabs.ImageSearch
                 selectedIds.Any(val => val == TextCollection.ImagesLabText.StyleIndexSpecialEffect));
         }
 
+        // TODO extract this to somewhere COMMON
         private IList<int> GetSelectedIndices(IList items)
         {
             var result = new List<int>();
