@@ -668,6 +668,10 @@ namespace PowerPointLabs
         {
             return TextCollection.ContextReplaceAudioLabel;
         }
+        public string GetPowerPointLabsMenuLabel(Office.IRibbonControl control)
+        {
+            return TextCollection.PowerPointLabsMenuLabel;
+        }
         # endregion
 
         //Button Click Callbacks        

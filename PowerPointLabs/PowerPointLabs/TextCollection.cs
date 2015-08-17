@@ -219,6 +219,8 @@
         # endregion
 
         # region Context Menu Labels
+
+        public const string PowerPointLabsMenuLabel = "PowerPointLabs";
         public const string NameEditShapeLabel = "Edit Name";
         public const string SpotlightShapeLabel = "Add Spotlight";
         public const string ZoomInContextMenuLabel = "Drill Down";
