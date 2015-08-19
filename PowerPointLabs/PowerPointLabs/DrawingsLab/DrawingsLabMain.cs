@@ -61,6 +61,7 @@ namespace PowerPointLabs.DrawingsLab
             var selection = PowerPointCurrentPresentationInfo.CurrentSelection;
             if (selection.Type != PpSelectionType.ppSelectionShapes) return;
 
+            Globals.ThisAddIn.Application.StartNewUndoEntry();
             foreach (var shape in selection.ShapeRange.Cast<Shape>())
             {
                 shape.Visible = MsoTriState.msoFalse;
@@ -71,6 +72,7 @@ namespace PowerPointLabs.DrawingsLab
         {
             var shapes = PowerPointCurrentPresentationInfo.CurrentSlide.Shapes;
 
+            Globals.ThisAddIn.Application.StartNewUndoEntry();
             foreach (var shape in shapes.Cast<Shape>())
             {
                 shape.Visible = MsoTriState.msoTrue;
@@ -82,6 +84,7 @@ namespace PowerPointLabs.DrawingsLab
             var selection = PowerPointCurrentPresentationInfo.CurrentSelection;
             if (selection.Type != PpSelectionType.ppSelectionShapes) return;
 
+            Globals.ThisAddIn.Application.StartNewUndoEntry();
             PowerPointCurrentPresentationInfo.CurrentSlide.CopyShapesToSlide(selection.ShapeRange);
         }
 
@@ -100,6 +103,7 @@ namespace PowerPointLabs.DrawingsLab
             int clones = DrawingsLabDialogs.ShowMultiCloneNumericDialog() - 1;
             if (clones <= 0) return;
 
+            Globals.ThisAddIn.Application.StartNewUndoEntry();
             int midpoint = shapeList.Count / 2;
             for (int i = 0; i < shapeList.Count / 2; ++i)
             {
@@ -131,6 +135,7 @@ namespace PowerPointLabs.DrawingsLab
                 return;
             }
 
+            Globals.ThisAddIn.Application.StartNewUndoEntry();
             int clones = DrawingsLabDialogs.ShowMultiCloneNumericDialog() - 1;
             if (clones <= 0) return;
 
@@ -161,6 +166,7 @@ namespace PowerPointLabs.DrawingsLab
             var selection = PowerPointCurrentPresentationInfo.CurrentSelection;
             if (selection.Type != PpSelectionType.ppSelectionShapes) return;
 
+            Globals.ThisAddIn.Application.StartNewUndoEntry();
             selection.ShapeRange.ZOrder(MsoZOrderCmd.msoSendBackward);
         }
 
@@ -169,6 +175,7 @@ namespace PowerPointLabs.DrawingsLab
             var selection = PowerPointCurrentPresentationInfo.CurrentSelection;
             if (selection.Type != PpSelectionType.ppSelectionShapes) return;
 
+            Globals.ThisAddIn.Application.StartNewUndoEntry();
             selection.ShapeRange.ZOrder(MsoZOrderCmd.msoBringForward);
         }
 
@@ -177,6 +184,7 @@ namespace PowerPointLabs.DrawingsLab
             var selection = PowerPointCurrentPresentationInfo.CurrentSelection;
             if (selection.Type != PpSelectionType.ppSelectionShapes) return;
 
+            Globals.ThisAddIn.Application.StartNewUndoEntry();
             selection.ShapeRange.ZOrder(MsoZOrderCmd.msoSendToBack);
         }
 
@@ -185,6 +193,7 @@ namespace PowerPointLabs.DrawingsLab
             var selection = PowerPointCurrentPresentationInfo.CurrentSelection;
             if (selection.Type != PpSelectionType.ppSelectionShapes) return;
 
+            Globals.ThisAddIn.Application.StartNewUndoEntry();
             selection.ShapeRange.ZOrder(MsoZOrderCmd.msoBringToFront);
         }
 
@@ -199,6 +208,8 @@ namespace PowerPointLabs.DrawingsLab
                 Error(TextCollection.DrawingsLabSelectAtLeastTwoShapes);
                 return;
             }
+
+            Globals.ThisAddIn.Application.StartNewUndoEntry();
             var shapeToMoveBehind = shapes.Last();
             shapes.RemoveAt(shapes.Count - 1);
 
@@ -221,6 +232,8 @@ namespace PowerPointLabs.DrawingsLab
                 Error(TextCollection.DrawingsLabSelectAtLeastTwoShapes);
                 return;
             }
+
+            Globals.ThisAddIn.Application.StartNewUndoEntry();
             var shapeToMoveInFront = shapes.Last();
             shapes.RemoveAt(shapes.Count - 1);
 
@@ -242,6 +255,7 @@ namespace PowerPointLabs.DrawingsLab
                 Error(TextCollection.DrawingsLabSelectStartAndEndShape);
                 return;
             }
+
             var firstShape = shapes[1];
             var secondShape = shapes[2];
 
@@ -254,6 +268,8 @@ namespace PowerPointLabs.DrawingsLab
         {
             var selection = PowerPointCurrentPresentationInfo.CurrentSelection;
             if (selection.Type != PpSelectionType.ppSelectionShapes) return;
+
+            Globals.ThisAddIn.Application.StartNewUndoEntry();
             foreach (var shape in selection.ShapeRange.Cast<Shape>())
             {
                 if (DataSource.ShiftIncludePositionX)
@@ -294,6 +310,7 @@ namespace PowerPointLabs.DrawingsLab
             var selection = PowerPointCurrentPresentationInfo.CurrentSelection;
             if (selection.Type != PpSelectionType.ppSelectionShapes) return;
 
+            Globals.ThisAddIn.Application.StartNewUndoEntry();
             foreach (var shape in selection.ShapeRange.Cast<Shape>())
             {
                 if (DataSource.SavedIncludePositionX)
@@ -335,6 +352,7 @@ namespace PowerPointLabs.DrawingsLab
             var selection = PowerPointCurrentPresentationInfo.CurrentSelection;
             if (selection.Type != PpSelectionType.ppSelectionShapes) return;
 
+            Globals.ThisAddIn.Application.StartNewUndoEntry();
             foreach (var shape in selection.ShapeRange.Cast<Shape>())
             {
                 if (DataSource.FormatIncludeFillColor)
@@ -459,6 +477,7 @@ namespace PowerPointLabs.DrawingsLab
             if (dialog.ShowDialog() != true) return;
             if (dialog.DialogResult != true) return;
 
+            Globals.ThisAddIn.Application.StartNewUndoEntry();
             float sourceAnchor = dialog.SourceAnchor / 100;
             float targetAnchor = dialog.TargetAnchor / 100;
 
@@ -487,6 +506,7 @@ namespace PowerPointLabs.DrawingsLab
             if (dialog.ShowDialog() != true) return;
             if (dialog.DialogResult != true) return;
 
+            Globals.ThisAddIn.Application.StartNewUndoEntry();
             float sourceAnchor = dialog.SourceAnchor / 100;
             float targetAnchor = dialog.TargetAnchor / 100;
 
@@ -516,6 +536,7 @@ namespace PowerPointLabs.DrawingsLab
             if (dialog.ShowDialog() != true) return;
             if (dialog.DialogResult != true) return;
 
+            Globals.ThisAddIn.Application.StartNewUndoEntry();
             float sourceAnchor = dialog.SourceAnchor / 100;
             float targetAnchor = dialog.TargetAnchor / 100;
 
@@ -541,6 +562,7 @@ namespace PowerPointLabs.DrawingsLab
             if (dialog.ShowDialog() != true) return;
             if (dialog.DialogResult != true) return;
 
+            Globals.ThisAddIn.Application.StartNewUndoEntry();
             float sourceAnchor = dialog.SourceAnchor / 100;
             float targetAnchor = dialog.TargetAnchor / 100;
 
