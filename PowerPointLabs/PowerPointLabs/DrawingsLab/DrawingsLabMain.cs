@@ -111,6 +111,7 @@ namespace PowerPointLabs.DrawingsLab
                 var firstShape = shapeList[i];
                 var secondShape = shapeList[midpoint + i];
 
+                var newlyAddedShapes = new List<Shape>();
                 for (int j = 0; j < clones; ++j)
                 {
                     var newShape = firstShape.Duplicate()[1];
@@ -119,6 +120,19 @@ namespace PowerPointLabs.DrawingsLab
                     newShape.Left = secondShape.Left + (secondShape.Left - firstShape.Left) * index;
                     newShape.Top = secondShape.Top + (secondShape.Top - firstShape.Top) * index;
                     newShape.Rotation = secondShape.Rotation + (secondShape.Rotation - firstShape.Rotation) * index;
+                    newlyAddedShapes.Add(newShape);
+                }
+
+                // Set Z-Orders of newly created shapes.
+                if (secondShape.ZOrderPosition < firstShape.ZOrderPosition)
+                {
+                    // first shape in front of last shape. Order the in-between shapes accordingly.
+                    Shape prevShape = secondShape;
+                    foreach (var shape in newlyAddedShapes)
+                    {
+                        Graphics.MoveZUntilBehind(shape, prevShape);
+                        prevShape = shape;
+                    }
                 }
             }
         }
@@ -148,6 +162,7 @@ namespace PowerPointLabs.DrawingsLab
                 var firstShape = shapeList[i];
                 var lastShape = shapeList[midpoint + i];
 
+                var newlyAddedShapes = new List<Shape>();
                 for (int j = 0; j < clones; ++j)
                 {
                     var newShape = firstShape.Duplicate()[1];
@@ -156,7 +171,27 @@ namespace PowerPointLabs.DrawingsLab
                     newShape.Left = firstShape.Left + (lastShape.Left - firstShape.Left) / divisions * index;
                     newShape.Top = firstShape.Top + (lastShape.Top - firstShape.Top) / divisions * index;
                     newShape.Rotation = firstShape.Rotation + (lastShape.Rotation - firstShape.Rotation) / divisions * index;
-                    Graphics.MoveZUntilBehind(newShape, lastShape);
+
+                    newlyAddedShapes.Add(newShape);
+                }
+
+                // Set Z-Orders of newly created shapes.
+                if (firstShape.ZOrderPosition < lastShape.ZOrderPosition)
+                {
+                    // last shape in front of first shape. Order the in-between shapes accordingly.
+                    foreach (var shape in newlyAddedShapes)
+                    {
+                        Graphics.MoveZUntilBehind(shape, lastShape);
+                    }
+                }
+                else
+                {
+                    // first shape in front of last shape. Order the in-between shapes accordingly.
+                    newlyAddedShapes.Reverse();
+                    foreach (var shape in newlyAddedShapes)
+                    {
+                        Graphics.MoveZUntilBehind(shape, firstShape);
+                    }
                 }
             }
         }
