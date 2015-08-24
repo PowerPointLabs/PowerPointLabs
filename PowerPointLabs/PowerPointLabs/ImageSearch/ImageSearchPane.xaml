@@ -163,6 +163,11 @@
                 </Grid>
                 <TextBlock Visibility="Visible" Name="SearchInstructions" TextWrapping="Wrap" HorizontalAlignment="Center" VerticalAlignment="Center" Foreground="#AAAAAA" FontSize="14" Grid.Row="2">No result. Type the keywords in the textbox above to search for images.</TextBlock>
                 <ListBox TabIndex="1" PreviewMouseDown="SearchListBox_OnPreviewMouseDown" Name="SearchListBox" KeyDown="ListBox_OnKeyDown" IsSynchronizedWithCurrentItem="True" SelectionChanged="SearchListBox_OnSelectionChanged" ItemsSource="{Binding Path=SearchList, Mode=TwoWay}" Grid.Row="2">
+                    <ListBox.ContextMenu>
+                        <ContextMenu Name="SearchListBoxContextMenu" Visibility="Collapsed">
+                            <MenuItem Header="Delete selected image" Click="MenuItem_OnClick"></MenuItem>
+                        </ContextMenu>
+                    </ListBox.ContextMenu>
                     <ListBox.Template>
                         <ControlTemplate TargetType="{x:Type ListBox}">
                             <ScrollViewer HorizontalScrollBarVisibility="Disabled" VerticalScrollBarVisibility="Auto">

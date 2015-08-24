@@ -129,11 +129,13 @@ namespace PowerPointLabs.ImageSearch
                     || StringUtil.IsEmpty(SearchOptions.ApiKey)))
             {
                 SearchButton.SelectedIndex = TextCollection.ImagesLabText.ButtonIndexDownload;
+                SearchListBoxContextMenu.Visibility = Visibility.Visible;
             } 
             else if (SearchOptions.GetSearchEngine() == BingEngine.Id()
                     && StringUtil.IsEmpty(SearchOptions.BingApiKey))
             {
                 SearchButton.SelectedIndex = TextCollection.ImagesLabText.ButtonIndexDownload;
+                SearchListBoxContextMenu.Visibility = Visibility.Visible;
             }
         }
 
@@ -455,18 +457,21 @@ namespace PowerPointLabs.ImageSearch
             switch (SearchButton.SelectedIndex)
             {
                 case TextCollection.ImagesLabText.ButtonIndexSearch:
+                    SearchListBoxContextMenu.Visibility = Visibility.Collapsed;
                     SearchTextBox.IsEnabled = true;
                     SearchTextboxWatermark.Text = TextCollection.ImagesLabText.TextBoxWatermarkSearch;
                     SearchInstructions.Text = TextCollection.ImagesLabText.InstructionForSearch;
                     FocusSearchTextBox();
                     break;
                 case TextCollection.ImagesLabText.ButtonIndexDownload:
+                    SearchListBoxContextMenu.Visibility = Visibility.Visible;;
                     SearchTextBox.IsEnabled = true;
                     SearchTextboxWatermark.Text = TextCollection.ImagesLabText.TextBoxWatermarkDownload;
                     SearchInstructions.Text = TextCollection.ImagesLabText.InstructionForDownload;
                     CopyContentToObservableList(_downloadedImages, SearchList);
                     break;
                 case TextCollection.ImagesLabText.ButtonIndexFromFile:
+                    SearchListBoxContextMenu.Visibility = Visibility.Visible;;
                     SearchTextBox.IsEnabled = false;
                     SearchTextboxWatermark.Text = TextCollection.ImagesLabText.TextBoxWatermarkFromFile;
                     SearchInstructions.Text = TextCollection.ImagesLabText.InstructionForFromFile;
@@ -514,6 +519,34 @@ namespace PowerPointLabs.ImageSearch
                 DoSearchMore(imageItem);
                 e.Handled = true;
             }
+        }
+
+        private void MenuItem_OnClick(object sender, RoutedEventArgs e)
+        {
+            var selectedImage = (ImageItem) SearchListBox.SelectedValue;
+            if (selectedImage == null) return;
+
+            if (selectedImage.ImageFile != TempPath.LoadingImgPath)
+            {
+                switch (SearchButton.SelectedIndex)
+                {
+                    case TextCollection.ImagesLabText.ButtonIndexDownload:
+                        if (SearchListBox.SelectedIndex < _downloadedImages.Count
+                            && SearchListBox.SelectedIndex > 0)
+                        {
+                            _downloadedImages.RemoveAt(SearchListBox.SelectedIndex);
+                        }
+                        break;
+                    case TextCollection.ImagesLabText.ButtonIndexFromFile:
+                        if (SearchListBox.SelectedIndex < _fromFileImages.Count
+                            && SearchListBox.SelectedIndex > 0)
+                        {
+                            _fromFileImages.RemoveAt(SearchListBox.SelectedIndex);
+                        }
+                        break;
+                }
+            }
+            SearchList.RemoveAt(SearchListBox.SelectedIndex);
         }
 
         # endregion
