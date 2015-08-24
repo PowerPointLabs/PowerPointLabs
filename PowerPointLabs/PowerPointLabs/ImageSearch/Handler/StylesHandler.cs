@@ -87,8 +87,6 @@ namespace PowerPointLabs.ImageSearch.Handler
             var effectsHandler = new EffectsHandler(currentSlide, Current, source);
 
             ApplyStyle(effectsHandler, source, targetStyles);
-            
-            ClearSelection();
         }
 
         private void ApplyStyle(EffectsHandler handler, ImageItem source, IList<string> targetStyles)
@@ -196,17 +194,6 @@ namespace PowerPointLabs.ImageSearch.Handler
             return targetStyles.Any(targetStyle => targetStyle == style);
         }
 
-        private static void ClearSelection()
-        {
-            var currentSelection = PowerPointCurrentPresentationInfo.CurrentSelection;
-            if (currentSelection.Type == PpSelectionType.ppSelectionShapes
-                || currentSelection.Type == PpSelectionType.ppSelectionText)
-            {
-                currentSelection.Unselect();
-            }
-            Cursor.Current = Cursors.Default;
-        }
-
         private Shape ApplyBannerStyle(EffectsHandler effectsHandler, Shape imageShape)
         {
             switch (Options.GetBannerShape())
@@ -214,9 +201,14 @@ namespace PowerPointLabs.ImageSearch.Handler
                 case BannerShape.Rectangle:
                     return effectsHandler.ApplyRectBannerEffect(Options.GetBannerDirection(), Options.GetTextBoxPosition(),
                         imageShape, Options.BannerOverlayColor, Options.BannerTransparency);
-                // case BannerShape.Circle:
-                default:
+                case BannerShape.Circle:
                     return effectsHandler.ApplyCircleBannerEffect(imageShape, Options.BannerOverlayColor, Options.BannerTransparency);
+                case BannerShape.RectangleOutline:
+                    return effectsHandler.ApplyRectOutlineBannerEffect(imageShape, Options.BannerOverlayColor,
+                        Options.BannerTransparency);
+                default:
+                    return effectsHandler.ApplyCircleOutlineBannerEffect(imageShape, Options.BannerOverlayColor,
+                        Options.BannerTransparency);
             }
         }
 

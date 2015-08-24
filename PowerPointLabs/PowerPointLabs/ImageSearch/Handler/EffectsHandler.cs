@@ -191,12 +191,15 @@ namespace PowerPointLabs.ImageSearch.Handler
             ChangeName(overlayShape, EffectName.Overlay);
             overlayShape.Fill.ForeColor.RGB = Graphics.ConvertColorToRgb(StringUtil.GetColorFromHexValue(color));
             overlayShape.Fill.Transparency = (float) transparency / 100;
+            overlayShape.Line.ForeColor.RGB = Graphics.ConvertColorToRgb(StringUtil.GetColorFromHexValue(color));
+            overlayShape.Line.Transparency = (float)transparency / 100;
+            overlayShape.Line.Weight = 5;
             overlayShape.Line.Visible = MsoTriState.msoFalse;
             return overlayShape;
         }
 
         public PowerPoint.Shape ApplyCircleOverlayEffect(string color, int transparency,
-            float left, float top, float width, float height)
+            float left, float top, float width, float height, bool isOutline)
         {
             var radius = (float) Math.Sqrt(width*width/4 + height*height/4);
             var circleLeft = left - radius + width/2;
@@ -207,7 +210,19 @@ namespace PowerPointLabs.ImageSearch.Handler
                 circleWidth, circleWidth);
             overlayShape.Fill.ForeColor.RGB = Graphics.ConvertColorToRgb(StringUtil.GetColorFromHexValue(color));
             overlayShape.Fill.Transparency = (float)transparency / 100;
-            overlayShape.Line.Visible = MsoTriState.msoFalse;
+            overlayShape.Line.ForeColor.RGB = Graphics.ConvertColorToRgb(StringUtil.GetColorFromHexValue(color));
+            overlayShape.Line.Transparency = (float)transparency / 100;
+            overlayShape.Line.Weight = 5;
+            if (isOutline)
+            {
+                overlayShape.Fill.Visible = MsoTriState.msoFalse;
+                overlayShape.Line.Visible = MsoTriState.msoTrue;
+            }
+            else
+            {
+                overlayShape.Fill.Visible = MsoTriState.msoTrue;
+                overlayShape.Line.Visible = MsoTriState.msoFalse;
+            }
             // as picture shape
             overlayShape.Cut();
             overlayShape = Shapes.PasteSpecial(PowerPoint.PpPasteDataType.ppPastePNG)[1];
@@ -305,7 +320,8 @@ namespace PowerPointLabs.ImageSearch.Handler
             }
         }
 
-        public PowerPoint.Shape ApplyCircleBannerEffect(PowerPoint.Shape imageShape, string overlayColor, int transparency)
+        public PowerPoint.Shape ApplyCircleBannerEffect(PowerPoint.Shape imageShape, string overlayColor, int transparency, 
+            bool isOutline = false)
         {
             var tbInfo =
                 new TextBoxes(Shapes, PreviewPresentation.SlideWidth, PreviewPresentation.SlideHeight)
@@ -316,13 +332,23 @@ namespace PowerPointLabs.ImageSearch.Handler
             TextBoxes.AddMargin(tbInfo);
 
             var overlayShape = ApplyCircleOverlayEffect(overlayColor, transparency, tbInfo.Left, tbInfo.Top, tbInfo.Width,
-                tbInfo.Height);
+                tbInfo.Height, isOutline);
             ChangeName(overlayShape, EffectName.Banner);
             overlayShape.ZOrder(MsoZOrderCmd.msoSendToBack);
             if (imageShape != null)
             {
                 imageShape.ZOrder(MsoZOrderCmd.msoSendToBack);
             }
+            return overlayShape;
+        }
+
+        public PowerPoint.Shape ApplyCircleOutlineBannerEffect(PowerPoint.Shape imageShape, string overlayColor, int transparency)
+        {
+            var overlayShape = ApplyCircleBannerEffect(imageShape, overlayColor, transparency, isOutline: true);
+            if (overlayShape == null) return null;
+
+            overlayShape.Fill.Visible = MsoTriState.msoFalse;
+            overlayShape.Line.Visible = MsoTriState.msoFalse;
             return overlayShape;
         }
 
@@ -351,6 +377,30 @@ namespace PowerPointLabs.ImageSearch.Handler
                         PreviewPresentation.SlideHeight);
                     break;
             }
+            ChangeName(overlayShape, EffectName.Banner);
+            overlayShape.ZOrder(MsoZOrderCmd.msoSendToBack);
+            if (imageShape != null)
+            {
+                imageShape.ZOrder(MsoZOrderCmd.msoSendToBack);
+            }
+            return overlayShape;
+        }
+
+        public PowerPoint.Shape ApplyRectOutlineBannerEffect(PowerPoint.Shape imageShape, string overlayColor, int transparency)
+        {
+            var tbInfo =
+                new TextBoxes(Shapes, PreviewPresentation.SlideWidth, PreviewPresentation.SlideHeight)
+                .GetTextBoxesInfo();
+            if (tbInfo == null)
+                return null;
+
+            TextBoxes.AddMargin(tbInfo);
+
+            var overlayShape = ApplyOverlayEffect(overlayColor, transparency, tbInfo.Left, tbInfo.Top, tbInfo.Width,
+                tbInfo.Height);
+            overlayShape.Fill.Visible = MsoTriState.msoFalse;
+            overlayShape.Line.Visible = MsoTriState.msoTrue;
+
             ChangeName(overlayShape, EffectName.Banner);
             overlayShape.ZOrder(MsoZOrderCmd.msoSendToBack);
             if (imageShape != null)

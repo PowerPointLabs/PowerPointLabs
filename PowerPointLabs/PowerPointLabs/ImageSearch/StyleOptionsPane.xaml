@@ -103,6 +103,8 @@
         <ComboBox SelectedIndex="{Binding Path=BannerShape, Mode=TwoWay, NotifyOnSourceUpdated=True}" HorizontalAlignment="Left" VerticalAlignment="Center" Grid.Column="1" Grid.Row="14">
             <ComboBoxItem>Rectangle</ComboBoxItem>
             <ComboBoxItem>Circle</ComboBoxItem>
+            <ComboBoxItem>Rectangle Outline</ComboBoxItem>
+            <ComboBoxItem>Circle Outline</ComboBoxItem>
         </ComboBox>
         <Label Content="banner direction" Foreground="#FFFFFF" FontSize="15" HorizontalAlignment="Left" VerticalAlignment="Center" Grid.Column="0" Grid.Row="15"/>
         <ComboBox SelectedIndex="{Binding Path=BannerDirection, Mode=TwoWay, NotifyOnSourceUpdated=True}" HorizontalAlignment="Left" VerticalAlignment="Center" Grid.Column="1" Grid.Row="15">

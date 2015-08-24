@@ -2,7 +2,7 @@
 {
     public enum BannerShape
     {
-        Rectangle, Circle
+        Rectangle, Circle, RectangleOutline, CircleOutline
     }
 
     public enum BannerDirection

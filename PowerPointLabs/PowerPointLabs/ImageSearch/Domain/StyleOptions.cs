@@ -316,9 +316,12 @@ namespace PowerPointLabs.ImageSearch.Domain
             {
                 case 0:
                     return Handler.Effect.BannerShape.Rectangle;
-                // case 1:
-                default:
+                case 1:
                     return Handler.Effect.BannerShape.Circle;
+                case 2:
+                    return Handler.Effect.BannerShape.RectangleOutline;
+                default:
+                    return Handler.Effect.BannerShape.CircleOutline;
             }
         }
 
