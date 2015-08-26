@@ -328,8 +328,7 @@ namespace PowerPointLabs.ImageSearch.Handler
                 .GetTextBoxesInfo();
             if (tbInfo == null)
                 return null;
-
-            TextBoxes.AddMargin(tbInfo);
+            TextBoxes.AddMargin(tbInfo, 10);
 
             var overlayShape = ApplyCircleOverlayEffect(overlayColor, transparency, tbInfo.Left, tbInfo.Top, tbInfo.Width,
                 tbInfo.Height, isOutline);
@@ -394,7 +393,7 @@ namespace PowerPointLabs.ImageSearch.Handler
             if (tbInfo == null)
                 return null;
 
-            TextBoxes.AddMargin(tbInfo);
+            TextBoxes.AddMargin(tbInfo, 10);
 
             var overlayShape = ApplyOverlayEffect(overlayColor, transparency, tbInfo.Left, tbInfo.Top, tbInfo.Width,
                 tbInfo.Height);
