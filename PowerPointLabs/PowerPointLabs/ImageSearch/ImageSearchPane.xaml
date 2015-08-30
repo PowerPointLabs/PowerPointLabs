@@ -10,8 +10,8 @@
              WindowStartupLocation="CenterScreen"
              Name="ImagesLabWindow"
              Title="Images Lab"
-             Width="1110"
-             Height="600"
+             Width="1200"
+             Height="700"
              WindowTitleBrush="#D74926"
              BorderThickness="1"
              BorderBrush="#D74926"
@@ -90,7 +90,7 @@
     <Grid>
         <Grid Name="ImagesLabGrid">
             <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="485"></ColumnDefinition>
+                <ColumnDefinition Width="570"></ColumnDefinition>
                 <ColumnDefinition Width="auto"></ColumnDefinition>
                 <ColumnDefinition Width="*"></ColumnDefinition>
             </Grid.ColumnDefinitions>
