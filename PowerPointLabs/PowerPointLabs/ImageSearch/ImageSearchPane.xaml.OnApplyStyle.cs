@@ -161,6 +161,9 @@ namespace PowerPointLabs.ImageSearch
             TickCheckBox(
                 GetCheckBoxFromComboBoxItem(TargetStyleComboBox.Items[TextCollection.ImagesLabText.StyleIndexSpecialEffect]),
                 HasStyle(targetStyles, TextCollection.ImagesLabText.StyleNameSpecialEffect));
+            TickCheckBox(
+                GetCheckBoxFromComboBoxItem(TargetStyleComboBox.Items[TextCollection.ImagesLabText.StyleIndexOutline]),
+                HasStyle(targetStyles, TextCollection.ImagesLabText.StyleNameOutline));
         }
 
         // Sync CheckBox styles selection to PreviewListBox styles selection (when checked)
@@ -221,6 +224,9 @@ namespace PowerPointLabs.ImageSearch
                     break;
                 case "Style 5":
                     SelectPreviewListBox(TextCollection.ImagesLabText.StyleIndexSpecialEffect, isToAddSelection);
+                    break;
+                case "Style 6":
+                    SelectPreviewListBox(TextCollection.ImagesLabText.StyleIndexOutline, isToAddSelection);
                     break;
             }
         }

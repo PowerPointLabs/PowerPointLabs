@@ -50,6 +50,8 @@ namespace PowerPointLabs.ImageSearch
                         Add(PreviewList, previewInfo.BannerStyleImagePath, TextCollection.ImagesLabText.StyleNameBanner);
                         Add(PreviewList, previewInfo.SpecialEffectStyleImagePath,
                             TextCollection.ImagesLabText.StyleNameSpecialEffect);
+                        Add(PreviewList, previewInfo.OutlineStyleImagePath,
+                            TextCollection.ImagesLabText.StyleNameOutline);
 
                         SelectPreviewListBoxItems(selectedIds);
                         _latestPreviewUpdateTime = DateTime.Now;

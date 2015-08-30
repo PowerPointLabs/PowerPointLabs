@@ -52,6 +52,9 @@ namespace PowerPointLabs.ImageSearch
                 case "BannerOverlayColorPanel":
                     options.BannerOverlayColor = hexString;
                     break;
+                case "OutlineOverlayColorPanel":
+                    options.OutlineOverlayColor = hexString;
+                    break;
             }
         }
 

@@ -4,6 +4,7 @@ namespace PowerPointLabs.ImageSearch.Handler.Preview
 {
     public class PreviewInfo
     {
+        public string OutlineStyleImagePath { get; private set; }
         public string SpecialEffectStyleImagePath { get; private set; }
         public string BannerStyleImagePath { get; private set; }
         public string TextboxStyleImagePath { get; private set; }
@@ -24,6 +25,7 @@ namespace PowerPointLabs.ImageSearch.Handler.Preview
             DirectTextStyleImagePath = TempPath.GetPath("directtext");
             BannerStyleImagePath = TempPath.GetPath("banner");
             SpecialEffectStyleImagePath = TempPath.GetPath("specialeffect");
+            OutlineStyleImagePath = TempPath.GetPath("outline");
 
             PreviewApplyStyleImagePath = TempPath.GetPath("previewapply");
         }

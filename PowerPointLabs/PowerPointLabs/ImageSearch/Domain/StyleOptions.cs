@@ -206,6 +206,43 @@ namespace PowerPointLabs.ImageSearch.Domain
             }
         }
 
+        // for outline style
+        private int _outlineShape;
+
+        public int OutlineShape
+        {
+            get { return _outlineShape; }
+            set
+            {
+                _outlineShape = value;
+                OnPropertyChanged("OutlineShape");
+            }
+        }
+
+        private string _outlineOverlayColor;
+
+        public string OutlineOverlayColor
+        {
+            get { return _outlineOverlayColor; }
+            set
+            {
+                _outlineOverlayColor = value;
+                OnPropertyChanged("OutlineOverlayColor");
+            }
+        }
+
+        private int _outlineTransparency;
+
+        public int OutlineTransparency
+        {
+            get { return _outlineTransparency; }
+            set
+            {
+                _outlineTransparency = value;
+                OnPropertyChanged("OutlineTransparency");
+            }
+        }
+
         // other
         private bool _isInsertReference;
 
@@ -241,6 +278,10 @@ namespace PowerPointLabs.ImageSearch.Domain
             BannerDirection = 0;
             
             SpecialEffect = 0;
+
+            OutlineShape = 0;
+            OutlineOverlayColor = "#FFFFFF";
+            OutlineTransparency = 1;
 
             IsInsertReference = false;
         }
@@ -316,12 +357,19 @@ namespace PowerPointLabs.ImageSearch.Domain
             {
                 case 0:
                     return Handler.Effect.BannerShape.Rectangle;
-                case 1:
-                    return Handler.Effect.BannerShape.Circle;
-                case 2:
-                    return Handler.Effect.BannerShape.RectangleOutline;
                 default:
-                    return Handler.Effect.BannerShape.CircleOutline;
+                    return Handler.Effect.BannerShape.Circle;
+            }
+        }
+
+        public OutlineShape GetOutlineShape()
+        {
+            switch (OutlineShape)
+            {
+                case 0:
+                    return Handler.Effect.OutlineShape.RectangleOutline;
+                default:
+                    return Handler.Effect.OutlineShape.CircleOutline;
             }
         }
 

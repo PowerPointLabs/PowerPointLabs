@@ -69,6 +69,9 @@
                                     <CheckBox ToolTip="Style 4" Unchecked="TargetStyleCheckBox_OnUnchecked" Checked="TargetStyleCheckBox_OnChecked">Banner Style</CheckBox></ComboBoxItem>
                                 <ComboBoxItem>
                                     <CheckBox ToolTip="Style 5" Unchecked="TargetStyleCheckBox_OnUnchecked" Checked="TargetStyleCheckBox_OnChecked">Special Effect Style</CheckBox></ComboBoxItem>
+                                <ComboBoxItem>
+                                    <CheckBox ToolTip="Style 6" Unchecked="TargetStyleCheckBox_OnUnchecked" Checked="TargetStyleCheckBox_OnChecked">Outline Style</CheckBox>
+                                </ComboBoxItem>
                             </ComboBox>
                         </Grid>
                     </Grid>

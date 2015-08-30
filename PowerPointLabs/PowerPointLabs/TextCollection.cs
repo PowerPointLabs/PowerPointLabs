@@ -318,12 +318,14 @@
             public const int StyleIndexTextBox = 2;
             public const int StyleIndexBanner = 3;
             public const int StyleIndexSpecialEffect = 4;
+            public const int StyleIndexOutline = 5;
 
             public const string StyleNameDirectText = "Direct Text Style";
             public const string StyleNameBlur = "Blur Style";
             public const string StyleNameTextBox = "TextBox Style";
             public const string StyleNameBanner = "Banner Style";
             public const string StyleNameSpecialEffect = "Special Effect Style";
+            public const string StyleNameOutline = "Outline Style";
 
             public const string ErrorNetworkOrApiQuotaUnavailable =
             "Failed to search images. Please check your network, or the daily API quota is ran out.";

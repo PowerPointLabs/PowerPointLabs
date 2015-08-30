@@ -341,7 +341,7 @@ namespace PowerPointLabs.ImageSearch.Handler
             return overlayShape;
         }
 
-        public PowerPoint.Shape ApplyCircleOutlineBannerEffect(PowerPoint.Shape imageShape, string overlayColor, int transparency)
+        public PowerPoint.Shape ApplyCircleOutlineEffect(PowerPoint.Shape imageShape, string overlayColor, int transparency)
         {
             var overlayShape = ApplyCircleBannerEffect(imageShape, overlayColor, transparency, isOutline: true);
             if (overlayShape == null) return null;
@@ -385,7 +385,7 @@ namespace PowerPointLabs.ImageSearch.Handler
             return overlayShape;
         }
 
-        public PowerPoint.Shape ApplyRectOutlineBannerEffect(PowerPoint.Shape imageShape, string overlayColor, int transparency)
+        public PowerPoint.Shape ApplyRectOutlineEffect(PowerPoint.Shape imageShape, string overlayColor, int transparency)
         {
             var tbInfo =
                 new TextBoxes(Shapes, PreviewPresentation.SlideWidth, PreviewPresentation.SlideHeight)

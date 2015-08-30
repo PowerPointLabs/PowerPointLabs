@@ -1,8 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
-using System.Windows.Forms;
 using Microsoft.Office.Core;
-using Microsoft.Office.Interop.PowerPoint;
 using PowerPointLabs.ImageSearch.Util;
 using PowerPointLabs.Models;
 using PowerPointLabs.ImageSearch.Domain;
@@ -121,12 +119,18 @@ namespace PowerPointLabs.ImageSearch.Handler
                 bannerOverlayShape = ApplyBannerStyle(handler, imageShape);
             }
 
+            Shape outlineOverlayShape = null;
+            if (HasStyle(targetStyles, TextCollection.ImagesLabText.StyleNameOutline))
+            {
+                outlineOverlayShape = ApplyOutlineStyle(handler, imageShape);
+            }
+
             if (HasStyle(targetStyles, TextCollection.ImagesLabText.StyleNameTextBox))
             {
                 handler.ApplyTextboxEffect(Options.TextBoxOverlayColor, Options.TextBoxTransparency);
             }
 
-            SendToBack(bannerOverlayShape, backgroundOverlayShape, blurImageShape, imageShape);
+            SendToBack(outlineOverlayShape, bannerOverlayShape, backgroundOverlayShape, blurImageShape, imageShape);
 
             handler.ApplyImageReference(source.ContextLink);
             if (Options.IsInsertReference)
@@ -162,6 +166,11 @@ namespace PowerPointLabs.ImageSearch.Handler
             handler.RemoveEffect(EffectName.TextBox);
             ApplyBannerStyle(handler, imageShape);
             handler.GetNativeSlide().Export(previewInfo.BannerStyleImagePath, "JPG");
+
+            // style: outline
+            handler.RemoveEffect(EffectName.Banner);
+            ApplyOutlineStyle(handler, imageShape);
+            handler.GetNativeSlide().Export(previewInfo.OutlineStyleImagePath, "JPG");
 
             // style: special effect
             handler.RemoveEffect(EffectName.Banner);
@@ -201,14 +210,21 @@ namespace PowerPointLabs.ImageSearch.Handler
                 case BannerShape.Rectangle:
                     return effectsHandler.ApplyRectBannerEffect(Options.GetBannerDirection(), Options.GetTextBoxPosition(),
                         imageShape, Options.BannerOverlayColor, Options.BannerTransparency);
-                case BannerShape.Circle:
-                    return effectsHandler.ApplyCircleBannerEffect(imageShape, Options.BannerOverlayColor, Options.BannerTransparency);
-                case BannerShape.RectangleOutline:
-                    return effectsHandler.ApplyRectOutlineBannerEffect(imageShape, Options.BannerOverlayColor,
-                        Options.BannerTransparency);
                 default:
-                    return effectsHandler.ApplyCircleOutlineBannerEffect(imageShape, Options.BannerOverlayColor,
-                        Options.BannerTransparency);
+                    return effectsHandler.ApplyCircleBannerEffect(imageShape, Options.BannerOverlayColor, Options.BannerTransparency);
+            }
+        }
+
+        private Shape ApplyOutlineStyle(EffectsHandler effectsHandler, Shape imageShape)
+        {
+            switch (Options.GetOutlineShape())
+            {
+                case OutlineShape.RectangleOutline:
+                    return effectsHandler.ApplyRectOutlineEffect(imageShape, Options.OutlineOverlayColor,
+                        Options.OutlineTransparency);
+                default:
+                    return effectsHandler.ApplyCircleOutlineEffect(imageShape, Options.OutlineOverlayColor,
+                        Options.OutlineTransparency);
             }
         }
 
