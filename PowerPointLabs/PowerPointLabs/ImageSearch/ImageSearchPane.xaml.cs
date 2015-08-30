@@ -344,6 +344,18 @@ namespace PowerPointLabs.ImageSearch
             item.Focus();
         }
 
+        private void SearchListBox_OnKeyDown(object sender, KeyEventArgs e)
+        {
+            switch (e.Key)
+            {
+                case Key.Delete:
+                case Key.Back:
+                    DeleteImageShape();
+                    return;
+            }
+            ListBox_OnKeyDown(sender, e);
+        }
+
         // intent: focus on search textbox when
         // pane is open
         public void FocusSearchTextBox()
@@ -506,6 +518,13 @@ namespace PowerPointLabs.ImageSearch
 
         private void MenuItem_OnClick(object sender, RoutedEventArgs e)
         {
+            DeleteImageShape();
+        }
+
+        private void DeleteImageShape()
+        {
+            if (SearchButton.SelectedIndex == TextCollection.ImagesLabText.ButtonIndexSearch) return;
+
             var selectedImage = (ImageItem) SearchListBox.SelectedValue;
             if (selectedImage == null) return;
 
