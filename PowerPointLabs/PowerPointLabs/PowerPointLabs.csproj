@@ -304,6 +304,7 @@
     <Compile Include="ImageSearch\SearchEngine\AsyncSearchEngine.Logic.cs" />
     <Compile Include="ImageSearch\SearchEngine\BingEngine.cs" />
     <Compile Include="ImageSearch\SearchEngine\VO\BingSearchResults.cs" />
+    <Compile Include="ImageSearch\Util\PreviewListBoxImageWidthConverter.cs" />
     <Compile Include="ImageSearch\Util\ShapeUtil.cs" />
     <Compile Include="ImageSearch\Util\UrlUtil.cs" />
     <Compile Include="ImageSearch\Util\VOUtil.cs" />

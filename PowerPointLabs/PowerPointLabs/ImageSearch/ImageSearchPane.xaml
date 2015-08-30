@@ -5,12 +5,12 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:controls="clr-namespace:MahApps.Metro.Controls;assembly=MahApps.Metro"     
              xmlns:custom="clr-namespace:PowerPointLabs.ImageSearch"
+             xmlns:converter="clr-namespace:PowerPointLabs.ImageSearch.Util"
              mc:Ignorable="d" 
              WindowStartupLocation="CenterScreen"
-             SaveWindowPosition="True"
              Name="ImagesLabWindow"
              Title="Images Lab"
-             Width="1100"
+             Width="1110"
              Height="600"
              WindowTitleBrush="#D74926"
              BorderThickness="1"
@@ -87,7 +87,7 @@
     <Grid>
         <Grid Name="ImagesLabGrid">
             <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="320"></ColumnDefinition>
+                <ColumnDefinition Width="485"></ColumnDefinition>
                 <ColumnDefinition Width="auto"></ColumnDefinition>
                 <ColumnDefinition Width="*"></ColumnDefinition>
             </Grid.ColumnDefinitions>
@@ -103,23 +103,23 @@
                         <ColumnDefinition Width="5" />
                         <ColumnDefinition Width="70" />
                         <ColumnDefinition Width="65" />
-                        <ColumnDefinition Width="65" />
                         <ColumnDefinition Width="30" />
                         <ColumnDefinition Width="*"></ColumnDefinition>
                     </Grid.ColumnDefinitions>
                     <Label Name="PreviewLabel" Grid.Column="1" Margin="0,0,5,0" FontSize="15">Preview</Label>
                     <Button IsEnabled="False" Name="PreviewApply" Click="PreviewApply_OnClick" Grid.Column="2" Margin="0,0,5,0">Apply</Button>
-                    <Button Name="StyleOptionsButton" Grid.Column="3" Margin="0,0,5,0" Click="StyleOptionsButton_OnClick">Options</Button>
-                    <controls:ProgressRing Name="PreviewProgressRing" Width="10" Height="10" Grid.Column="4" IsActive="False" />
-                    <controls:ToggleSwitch ToolTip="Expand/collapse preview region" OnLabel="" OffLabel="" IsCheckedChanged="PreviewDisplayToggleSwitch_OnIsCheckedChanged" Name="PreviewDisplayToggleSwitch" Grid.Column="5" Margin="0,-2,0,2" />
+                    <controls:ProgressRing Name="PreviewProgressRing" Width="10" Height="10" Grid.Column="3" IsActive="False" />
                 </Grid>
                 <TextBlock Visibility="Visible" Name="PreviewInstructions" TextWrapping="Wrap" HorizontalAlignment="Center" VerticalAlignment="Center" Foreground="#AAAAAA" FontSize="14" Grid.Row="2">Select an image to preview styles. Pick any styles and click APPLY button to apply.</TextBlock>
                 <TextBlock Visibility="Hidden" Name="PreviewInstructionsWhenNoSelectedSlide" TextWrapping="Wrap" HorizontalAlignment="Center" VerticalAlignment="Center" Foreground="#AAAAAA" FontSize="14" Grid.Row="2">Select a slide in the presentation to preview styles. Pick any styles and click APPLY button to apply.</TextBlock>
                 <ListBox SelectionMode="Multiple" TabIndex="2" Name="PreviewListBox" KeyUp="PreviewListBox_OnKeyUp" KeyDown="ListBox_OnKeyDown" IsSynchronizedWithCurrentItem="True" SelectionChanged="PreivewListBox_OnSelectionChanged" ItemsSource="{Binding Path=PreviewList, Mode=TwoWay}" Grid.Row="2">
+                    <ListBox.Resources>
+                        <converter:PreviewListBoxImageWidthConverter x:Key="PreviewListBoxImageWidthConverter"></converter:PreviewListBoxImageWidthConverter>
+                    </ListBox.Resources>
                     <ListBox.Template>
                         <ControlTemplate TargetType="{x:Type ListBox}">
-                            <ScrollViewer HorizontalScrollBarVisibility="Disabled" VerticalScrollBarVisibility="Auto">
-                                <WrapPanel Orientation="Horizontal" IsItemsHost="True" ScrollViewer.CanContentScroll="True"/>
+                            <ScrollViewer HorizontalScrollBarVisibility="Disabled" VerticalScrollBarVisibility="Visible">
+                                <UniformGrid Columns="2" IsItemsHost="True"/>
                             </ScrollViewer>
                         </ControlTemplate>
                     </ListBox.Template>
@@ -137,7 +137,7 @@
                     </ListBox.ItemContainerStyle>
                     <ListBox.ItemTemplate>
                         <DataTemplate>
-                            <Image Margin="3,3,5,3" Source="{Binding Path=ImageFile, Mode=TwoWay, NotifyOnSourceUpdated=True}" ToolTip="{Binding Path=Tooltip, Mode=TwoWay, NotifyOnSourceUpdated=True}" />
+                            <Image Width="{Binding ActualWidth, ElementName=PreviewListBox, Converter={StaticResource PreviewListBoxImageWidthConverter}}" Margin="3,3,4,3" Source="{Binding Path=ImageFile, Mode=TwoWay, NotifyOnSourceUpdated=True}" ToolTip="{Binding Path=Tooltip, Mode=TwoWay, NotifyOnSourceUpdated=True}" />
                         </DataTemplate>
                     </ListBox.ItemTemplate>
                 </ListBox>
