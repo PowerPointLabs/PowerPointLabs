@@ -12,7 +12,7 @@ download: http://aka.ms/OfficeDevToolsForVS2012
 
 ## Setting Up Environment
 0. Clone the source code from https://github.com/PowerPointLabs/repo
-1. Setup the project by following this article http://ayulin.net/blog/2014/version-control.html
+1. Setup the project by following this article http://ayulin.net/blog/2014/version-control/
 In short, open the project >> open Tools (menu) >> Options >> Office Tools >> Project Migration >> uncheck ‘Always upgrade to installed version of Office’; 
 Then open Project (menu) >> ‘Project Name’ Properties >> Debug >> select ‘Start external program’ and choose POWERPNT.exe in your office folder. Ensure that both Debug and Release configurations have set up this.
 2. Run the project. If you have installed PowerPointLabs, you may have to uninstall it first.
