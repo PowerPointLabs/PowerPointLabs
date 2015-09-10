@@ -24,63 +24,64 @@
                 <ResourceDictionary Source="pack://application:,,,/MahApps.Metro;component/Styles/Fonts.xaml" />
                 <ResourceDictionary Source="pack://application:,,,/MahApps.Metro;component/Styles/Colors.xaml" />
                 <ResourceDictionary Source="pack://application:,,,/MahApps.Metro;component/Styles/Accents/red.xaml" />
-                <ResourceDictionary Source="pack://application:,,,/MahApps.Metro;component/Styles/Accents/BaseLight.xaml" />
+                <ResourceDictionary Source="pack://application:,,,/MahApps.Metro;component/Styles/Accents/baselight.xaml" />
             </ResourceDictionary.MergedDictionaries>
         </ResourceDictionary>
     </controls:MetroWindow.Resources>
     <controls:MetroWindow.Flyouts>
         <controls:FlyoutsControl>
-            <controls:Flyout Focusable="True" KeyDown="ConfirmApplyFlyout_OnKeyDown" Name="ConfirmApplyFlyout" Header="{Binding Path=Text, Mode=TwoWay, NotifyOnSourceUpdated=True}" IsModal="True" Position="Left" Width="{Binding Path=ActualWidth, ElementName=ImagesLabWindow}" >
-                <Grid>
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="400"></ColumnDefinition>
-                        <ColumnDefinition Width="*"></ColumnDefinition>
-                    </Grid.ColumnDefinitions>
-                    <Grid Grid.Column="1">
-                        <Image Name="ConfirmApplyImage" Margin="3,3,5,3" Source="{Binding Path=Text, Mode=TwoWay, NotifyOnSourceUpdated=True}" />
+            <controls:FlyoutsControl.Resources>
+                <converter:StyleVariationWidthConverter x:Key="StyleVariationWidthConverter"></converter:StyleVariationWidthConverter>
+            </controls:FlyoutsControl.Resources>
+            <controls:Flyout Name="StyleVariationsFlyout" Header="Style Variations" IsModal="False" Position="Left" Width="{Binding Path=ActualWidth, ElementName=PreviewListBox, Converter={StaticResource StyleVariationWidthConverter}}" Theme="Light">
+                <Grid Margin="10,0,0,0">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="35"></RowDefinition>
+                        <RowDefinition Height="*"></RowDefinition>
+                    </Grid.RowDefinitions>
+                    <Grid Grid.Row="0" Margin="0,0,0,5">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="75"></ColumnDefinition>
+                            <ColumnDefinition Width="75"></ColumnDefinition>
+                            <ColumnDefinition Width="30"></ColumnDefinition>
+                            <ColumnDefinition Width="*"></ColumnDefinition>
+                        </Grid.ColumnDefinitions>
+                        <Button Name="StyleApplyButton" Click="StyleApplyButton_OnClick" Grid.Column="0" Margin="0,0,5,0">Apply</Button>
+                        <Button Name="StyleCustomizeButton" Click="StyleCustomizeButton_OnClick" Grid.Column="1">Customize</Button>
+                        <controls:ProgressRing Name="VariationProgressRing" Width="10" Height="10" Grid.Column="2" IsActive="False" />
                     </Grid>
-                    <Grid Grid.Column="0">
-                        <Grid.RowDefinitions>
-                            <RowDefinition Height="10"></RowDefinition>
-                            <RowDefinition Height="35"></RowDefinition>
-                            <RowDefinition Height="15"></RowDefinition>
-                            <RowDefinition Height="*"></RowDefinition>
-                        </Grid.RowDefinitions>
-                        <ScrollViewer Grid.Row="3" VerticalScrollBarVisibility="Auto">
-                            <custom:StyleOptionsPane x:Name="OptionsPane2" Margin="20,0,0,0" />
-                        </ScrollViewer>
-                        <Grid Grid.Row="1">
-                            <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="20"></ColumnDefinition>
-                                <ColumnDefinition Width="75"></ColumnDefinition>
-                                <ColumnDefinition Width="75"></ColumnDefinition>
-                                <ColumnDefinition Width="*"></ColumnDefinition>
-                            </Grid.ColumnDefinitions>
-                            <Button Grid.Column="1" Click="ConfirmApplyPreviewButton_OnClick" Name="ConfirmApplyPreviewButton" Margin="0,0,5,0">Preview</Button>
-                            <Button Grid.Column="2" Click="ConfirmApplyButton_OnClick" Name="ConfirmApplyButton" Margin="0,0,5,0">Apply</Button>
-                            <ComboBox IsEditable="True" IsReadOnly="True" Text="--- Select Styles ---" Width="150" HorizontalAlignment="Right" Name="TargetStyleComboBox" Grid.Column="3">
-                                <ComboBoxItem>
-                                    <CheckBox ToolTip="Style 1" Unchecked="TargetStyleCheckBox_OnUnchecked" Checked="TargetStyleCheckBox_OnChecked">Direct Text Style</CheckBox></ComboBoxItem>
-                                <ComboBoxItem>
-                                    <CheckBox ToolTip="Style 2" Unchecked="TargetStyleCheckBox_OnUnchecked" Checked="TargetStyleCheckBox_OnChecked">Blur Style</CheckBox></ComboBoxItem>
-                                <ComboBoxItem>
-                                    <CheckBox ToolTip="Style 3" Unchecked="TargetStyleCheckBox_OnUnchecked" Checked="TargetStyleCheckBox_OnChecked">TextBox Style</CheckBox></ComboBoxItem>
-                                <ComboBoxItem>
-                                    <CheckBox ToolTip="Style 4" Unchecked="TargetStyleCheckBox_OnUnchecked" Checked="TargetStyleCheckBox_OnChecked">Banner Style</CheckBox></ComboBoxItem>
-                                <ComboBoxItem>
-                                    <CheckBox ToolTip="Style 5" Unchecked="TargetStyleCheckBox_OnUnchecked" Checked="TargetStyleCheckBox_OnChecked">Special Effect Style</CheckBox></ComboBoxItem>
-                                <ComboBoxItem>
-                                    <CheckBox ToolTip="Style 6" Unchecked="TargetStyleCheckBox_OnUnchecked" Checked="TargetStyleCheckBox_OnChecked">Outline Style</CheckBox>
-                                </ComboBoxItem>
-                            </ComboBox>
-                        </Grid>
+                    <Grid Grid.Row="1">
+                        <ListBox SelectionMode="Single" Name="VariationListBox" IsSynchronizedWithCurrentItem="True" SelectionChanged="VariationListBox_OnSelectionChanged" ItemsSource="{Binding Path=VariationList, Mode=TwoWay}">
+                            <ListBox.Resources>
+                                <converter:TwoColumnsListBoxImageWidthConverter x:Key="TwoColumnsListBoxImageWidthConverter"></converter:TwoColumnsListBoxImageWidthConverter>
+                            </ListBox.Resources>
+                            <ListBox.Template>
+                                <ControlTemplate TargetType="{x:Type ListBox}">
+                                    <ScrollViewer HorizontalScrollBarVisibility="Disabled" VerticalScrollBarVisibility="Visible">
+                                        <UniformGrid Columns="2" IsItemsHost="True"/>
+                                    </ScrollViewer>
+                                </ControlTemplate>
+                            </ListBox.Template>
+                            <ListBox.ItemContainerStyle>
+                                <Style TargetType="ListBoxItem">
+                                    <Setter Property="HorizontalContentAlignment" Value="Center"></Setter>
+                                    <Setter Property="VerticalContentAlignment" Value="Center"></Setter>
+                                    <Style.Resources>
+                                        <!--SelectedItem with focus-->
+                                        <SolidColorBrush x:Key="{x:Static SystemColors.HighlightBrushKey}" Color="#D74926" />
+                                        <!--SelectedItem without focus-->
+                                        <SolidColorBrush x:Key="{x:Static SystemColors.ControlBrushKey}" Color="#D74926" />
+                                    </Style.Resources>
+                                </Style>
+                            </ListBox.ItemContainerStyle>
+                            <ListBox.ItemTemplate>
+                                <DataTemplate>
+                                    <Image Width="{Binding ActualWidth, ElementName=VariationListBox, Converter={StaticResource TwoColumnsListBoxImageWidthConverter}}" Margin="3,3,4,3" Source="{Binding Path=ImageFile, Mode=TwoWay, NotifyOnSourceUpdated=True}" ToolTip="{Binding Path=Tooltip, Mode=TwoWay, NotifyOnSourceUpdated=True}" />
+                                </DataTemplate>
+                            </ListBox.ItemTemplate>
+                        </ListBox>
                     </Grid>
                 </Grid>
-            </controls:Flyout>
-            <controls:Flyout Name="StyleOptionsFlyout" Header="Style Options" IsModal="True" Position="Left" Width="400" >
-                <ScrollViewer VerticalScrollBarVisibility="Auto">
-                    <custom:StyleOptionsPane x:Name="OptionsPane" Margin="20,0,0,0" />
-                </ScrollViewer>
             </controls:Flyout>
             <controls:Flyout Name="SearchOptionsFlyout" Header="Search Options" IsModal="True" Position="Left" Width="400" >
                 <custom:SearchOptionsPane x:Name="AdvancedPane" Margin="20,0,0,0" />
@@ -90,12 +91,12 @@
     <Grid>
         <Grid Name="ImagesLabGrid">
             <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="570"></ColumnDefinition>
+                <ColumnDefinition Width="auto"></ColumnDefinition>
                 <ColumnDefinition Width="auto"></ColumnDefinition>
                 <ColumnDefinition Width="*"></ColumnDefinition>
             </Grid.ColumnDefinitions>
             <GridSplitter Name="Splitter" DragDelta="Splitter_OnDragDelta" Grid.Column="1" ResizeDirection="Columns" Width="3" Height="Auto" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" />
-            <Grid Name="StylesPreviewGrid" Margin="10,0,0,0" Grid.Column="0">
+            <Grid Visibility="Collapsed" Width="560" Margin="10,0,0,0" Name="StylesPreviewGrid" Grid.Column="0">
                 <Grid.RowDefinitions>
                     <RowDefinition Height="5" />
                     <RowDefinition Height="35" />
@@ -104,20 +105,20 @@
                 <Grid Grid.Row="1" Margin="0,0,0,5">
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="5" />
-                        <ColumnDefinition Width="70" />
+                        <ColumnDefinition Width="60" />
                         <ColumnDefinition Width="65" />
                         <ColumnDefinition Width="30" />
                         <ColumnDefinition Width="*"></ColumnDefinition>
                     </Grid.ColumnDefinitions>
-                    <Label Name="PreviewLabel" Grid.Column="1" Margin="0,0,5,0" FontSize="15">Preview</Label>
-                    <Button IsEnabled="False" Name="PreviewApply" Click="PreviewApply_OnClick" Grid.Column="2" Margin="0,0,5,0">Apply</Button>
+                    <Label Name="PreviewLabel" Grid.Column="1" Margin="0,0,5,0" FontSize="15">Styles</Label>
+                    <Button IsEnabled="False" Name="StylesPickUpButton" Click="StylesPickUpButton_OnClick" Grid.Column="2" Margin="0,0,5,0">Pick Up</Button>
                     <controls:ProgressRing Name="PreviewProgressRing" Width="10" Height="10" Grid.Column="3" IsActive="False" />
                 </Grid>
-                <TextBlock Visibility="Visible" Name="PreviewInstructions" TextWrapping="Wrap" HorizontalAlignment="Center" VerticalAlignment="Center" Foreground="#AAAAAA" FontSize="14" Grid.Row="2">Select an image to preview styles. Pick any styles and click APPLY button to apply.</TextBlock>
-                <TextBlock Visibility="Hidden" Name="PreviewInstructionsWhenNoSelectedSlide" TextWrapping="Wrap" HorizontalAlignment="Center" VerticalAlignment="Center" Foreground="#AAAAAA" FontSize="14" Grid.Row="2">Select a slide in the presentation to preview styles. Pick any styles and click APPLY button to apply.</TextBlock>
+                <TextBlock Visibility="Visible" Name="PreviewInstructions" TextWrapping="Wrap" HorizontalAlignment="Center" VerticalAlignment="Center" Foreground="#AAAAAA" FontSize="14" Grid.Row="2">Select an image to preview styles. Pick any styles and click PICK UP button to continue.</TextBlock>
+                <TextBlock Visibility="Hidden" Name="PreviewInstructionsWhenNoSelectedSlide" TextWrapping="Wrap" HorizontalAlignment="Center" VerticalAlignment="Center" Foreground="#AAAAAA" FontSize="14" Grid.Row="2">Select a slide in the presentation to preview styles. Pick any styles and click PICK UP button to continue.</TextBlock>
                 <ListBox SelectionMode="Multiple" TabIndex="2" Name="PreviewListBox" KeyUp="PreviewListBox_OnKeyUp" KeyDown="ListBox_OnKeyDown" IsSynchronizedWithCurrentItem="True" SelectionChanged="PreivewListBox_OnSelectionChanged" ItemsSource="{Binding Path=PreviewList, Mode=TwoWay}" Grid.Row="2">
                     <ListBox.Resources>
-                        <converter:PreviewListBoxImageWidthConverter x:Key="PreviewListBoxImageWidthConverter"></converter:PreviewListBoxImageWidthConverter>
+                        <converter:TwoColumnsListBoxImageWidthConverter x:Key="TwoColumnsListBoxImageWidthConverter"></converter:TwoColumnsListBoxImageWidthConverter>
                     </ListBox.Resources>
                     <ListBox.Template>
                         <ControlTemplate TargetType="{x:Type ListBox}">
@@ -140,7 +141,7 @@
                     </ListBox.ItemContainerStyle>
                     <ListBox.ItemTemplate>
                         <DataTemplate>
-                            <Image Width="{Binding ActualWidth, ElementName=PreviewListBox, Converter={StaticResource PreviewListBoxImageWidthConverter}}" Margin="3,3,4,3" Source="{Binding Path=ImageFile, Mode=TwoWay, NotifyOnSourceUpdated=True}" ToolTip="{Binding Path=Tooltip, Mode=TwoWay, NotifyOnSourceUpdated=True}" />
+                            <Image Width="{Binding ActualWidth, ElementName=PreviewListBox, Converter={StaticResource TwoColumnsListBoxImageWidthConverter}}" Margin="3,3,4,3" Source="{Binding Path=ImageFile, Mode=TwoWay, NotifyOnSourceUpdated=True}" ToolTip="{Binding Path=Tooltip, Mode=TwoWay, NotifyOnSourceUpdated=True}" />
                         </DataTemplate>
                     </ListBox.ItemTemplate>
                 </ListBox>
@@ -164,7 +165,7 @@
                     <Button Name="AdvancedButton" Click="AdvancedButton_OnClick" Grid.Column="2">Advanced..</Button>
                     <controls:ProgressRing Name="SearchProgressRing" Width="10" Height="10" Grid.Column="3" IsActive="False" />
                 </Grid>
-                <TextBlock Visibility="Visible" Name="SearchInstructions" TextWrapping="Wrap" HorizontalAlignment="Center" VerticalAlignment="Center" Foreground="#AAAAAA" FontSize="14" Grid.Row="2">No result. Type the keywords in the textbox above to search for images.</TextBlock>
+                <TextBlock Visibility="Visible" Name="SearchInstructions" TextWrapping="Wrap" HorizontalAlignment="Center" VerticalAlignment="Center" Foreground="#AAAAAA" FontSize="18" Grid.Row="2">Type the keywords in the textbox above to search for images.</TextBlock>
                 <ListBox TabIndex="1" PreviewMouseDown="SearchListBox_OnPreviewMouseDown" Name="SearchListBox" KeyDown="SearchListBox_OnKeyDown" IsSynchronizedWithCurrentItem="True" SelectionChanged="SearchListBox_OnSelectionChanged" ItemsSource="{Binding Path=SearchList, Mode=TwoWay}" Grid.Row="2">
                     <ListBox.ContextMenu>
                         <ContextMenu Name="SearchListBoxContextMenu" Visibility="Collapsed">
@@ -198,6 +199,110 @@
                         </DataTemplate>
                     </ListBox.ItemTemplate>
                 </ListBox>
+            </Grid>
+        </Grid>
+        <Grid Name="CustomizationFlyout" Background="#252525" Visibility="Collapsed" KeyDown="CustomizationFlyout_OnKeyDown" Width="{Binding Path=ActualWidth, ElementName=ImagesLabWindow}" >
+            <Grid.Resources>
+                <ResourceDictionary>
+                    <ResourceDictionary.MergedDictionaries>
+                        <ResourceDictionary Source="pack://application:,,,/MahApps.Metro;component/Styles/Accents/basedark.xaml" />
+                    </ResourceDictionary.MergedDictionaries>
+                </ResourceDictionary>
+            </Grid.Resources>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="50"></RowDefinition>
+                <RowDefinition Height="*"></RowDefinition>
+            </Grid.RowDefinitions>
+            <Grid Grid.Row="0">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="210"></ColumnDefinition>
+                    <ColumnDefinition Width="40"></ColumnDefinition>
+                    <ColumnDefinition Width="*"></ColumnDefinition>
+                </Grid.ColumnDefinitions>
+                <Label Grid.Column="0" VerticalAlignment="Center" Margin="15,0,5,0" FontSize="20" Foreground="#ffffff">Style Customization</Label>
+                <Button Grid.Column="1"
+                    Name="CustomizationFlyoutBackButton"
+                    Click="CustomizationFlyoutBackButton_OnClick"
+                    ToolTip="Back"
+                    Style="{DynamicResource MetroCircleButtonStyle}"
+                    Height="40"
+                    Width="40"
+                    FontFamily="Segoe UI Symbol"
+                    FontSize="16"
+                    VerticalAlignment="Center">
+                    <Rectangle Width="20"
+                           Height="15"
+                           Fill="#FFFFFF">
+                        <Rectangle.OpacityMask>
+                            <VisualBrush Stretch="Fill">
+                                <VisualBrush.Visual>
+                                    <Canvas Width="48"
+                                        Height="48"
+                                        Clip="F1 M 0,0L 48,0L 48,48L 0,48L 0,0"
+                                        UseLayoutRounding="False">
+                                        <Path Width="25"
+                                          Height="18"
+                                          Canvas.Left="12"
+                                          Canvas.Top="15"
+                                          Stretch="Fill"
+                                          Fill="Black"
+                                          Data="F1 M 12,22L 12,26L 28.25,26L 21,33L 27.5,33L 37,24L 27.5,15L 21,15L 28.25,22L 12,22 Z " />
+                                    </Canvas>
+                                </VisualBrush.Visual>
+                            </VisualBrush>
+                        </Rectangle.OpacityMask>
+                    </Rectangle>
+                </Button>
+            </Grid>
+            <Grid Grid.Row="1">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="400"></ColumnDefinition>
+                    <ColumnDefinition Width="*"></ColumnDefinition>
+                </Grid.ColumnDefinitions>
+                <Grid Grid.Column="1">
+                    <Image Name="ConfirmApplyImage" Margin="3,3,5,3" Source="{Binding Path=Text, Mode=TwoWay, NotifyOnSourceUpdated=True}" />
+                </Grid>
+                <Grid Grid.Column="0">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="10"></RowDefinition>
+                        <RowDefinition Height="35"></RowDefinition>
+                        <RowDefinition Height="15"></RowDefinition>
+                        <RowDefinition Height="*"></RowDefinition>
+                    </Grid.RowDefinitions>
+                    <ScrollViewer Grid.Row="3" VerticalScrollBarVisibility="Auto">
+                        <custom:StyleOptionsPane x:Name="OptionsPane2" Margin="20,0,0,0" />
+                    </ScrollViewer>
+                    <Grid Grid.Row="1">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="20"></ColumnDefinition>
+                            <ColumnDefinition Width="75"></ColumnDefinition>
+                            <ColumnDefinition Width="75"></ColumnDefinition>
+                            <ColumnDefinition Width="*"></ColumnDefinition>
+                        </Grid.ColumnDefinitions>
+                        <Button Grid.Column="1" Click="ConfirmApplyPreviewButton_OnClick" Name="ConfirmApplyPreviewButton" Margin="0,0,5,0" >Preview</Button>
+                        <Button Grid.Column="2" Click="ConfirmApplyButton_OnClick" Name="ConfirmApplyButton" Margin="0,0,5,0" >Apply</Button>
+                        <ComboBox Visibility="Collapsed" IsEditable="True" IsReadOnly="True" Text="--- Select Styles ---" Width="150" HorizontalAlignment="Right" Name="TargetStyleComboBox" Grid.Column="3">
+                            <ComboBoxItem>
+                                <CheckBox ToolTip="Style 1" Unchecked="TargetStyleCheckBox_OnUnchecked" Checked="TargetStyleCheckBox_OnChecked">Direct Text Style</CheckBox>
+                            </ComboBoxItem>
+                            <ComboBoxItem>
+                                <CheckBox ToolTip="Style 2" Unchecked="TargetStyleCheckBox_OnUnchecked" Checked="TargetStyleCheckBox_OnChecked">Blur Style</CheckBox>
+                            </ComboBoxItem>
+                            <ComboBoxItem>
+                                <CheckBox ToolTip="Style 3" Unchecked="TargetStyleCheckBox_OnUnchecked" Checked="TargetStyleCheckBox_OnChecked">TextBox Style</CheckBox>
+                            </ComboBoxItem>
+                            <ComboBoxItem>
+                                <CheckBox ToolTip="Style 4" Unchecked="TargetStyleCheckBox_OnUnchecked" Checked="TargetStyleCheckBox_OnChecked">Banner Style</CheckBox>
+                            </ComboBoxItem>
+                            <ComboBoxItem>
+                                <CheckBox ToolTip="Style 5" Unchecked="TargetStyleCheckBox_OnUnchecked" Checked="TargetStyleCheckBox_OnChecked">Special Effect Style</CheckBox>
+                            </ComboBoxItem>
+                            <ComboBoxItem>
+                                <CheckBox ToolTip="Style 6" Unchecked="TargetStyleCheckBox_OnUnchecked" Checked="TargetStyleCheckBox_OnChecked">Outline Style</CheckBox>
+                            </ComboBoxItem>
+                        </ComboBox>
+                    </Grid>
+                </Grid>
             </Grid>
         </Grid>
         <Grid Name="ImagesLabGridOverlay" Visibility="Hidden">

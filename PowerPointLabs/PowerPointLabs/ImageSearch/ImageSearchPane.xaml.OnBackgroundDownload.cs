@@ -32,7 +32,7 @@ namespace PowerPointLabs.ImageSearch
                     {
                         _timerDownloadingUriList.Add(source.FullSizeImageUri);
                         // preview progress ring will be off, after preview processing is done
-                        PreviewProgressRing.IsActive = true;
+                        SetProgressingRingStatus(true);
 
                         var fullsizeImageFile = TempPath.GetPath("fullsize");
                         new Downloader()
@@ -45,7 +45,7 @@ namespace PowerPointLabs.ImageSearch
                     else
                     {
                         // preview progress ring will be off, after preview processing is done
-                        PreviewProgressRing.IsActive = true;
+                        SetProgressingRingStatus(true);
                     }
                 }));
             };
@@ -55,7 +55,7 @@ namespace PowerPointLabs.ImageSearch
         {
             Dispatcher.BeginInvoke(new Action(() =>
             {
-                PreviewProgressRing.IsActive = false;
+                SetProgressingRingStatus(false);
             }));
         }
     }

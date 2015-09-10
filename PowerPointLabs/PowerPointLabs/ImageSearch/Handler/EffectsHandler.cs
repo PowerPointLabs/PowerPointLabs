@@ -221,7 +221,8 @@ namespace PowerPointLabs.ImageSearch.Handler
             else
             {
                 overlayShape.Fill.Visible = MsoTriState.msoTrue;
-                overlayShape.Line.Visible = MsoTriState.msoFalse;
+                overlayShape.Line.Visible = MsoTriState.msoTrue;
+                overlayShape.Line.ForeColor.RGB = overlayShape.Fill.ForeColor.RGB;
             }
             // as picture shape
             overlayShape.Cut();
@@ -541,9 +542,13 @@ namespace PowerPointLabs.ImageSearch.Handler
             using (var imageFactory = new ImageFactory())
             {
                 var image = imageFactory
-                    .Load(imageFilePath)
-                    .Filter(effectFilter)
-                    .Image;
+                        .Load(imageFilePath)
+                        .Image;
+                var ratio = (float)image.Width / image.Height;
+                image = imageFactory
+                        .Resize(new Size((int)(768 * ratio), 768))
+                        .Filter(effectFilter)
+                        .Image;
                 image.Save(specialEffectImageFile);
             }
             return specialEffectImageFile;

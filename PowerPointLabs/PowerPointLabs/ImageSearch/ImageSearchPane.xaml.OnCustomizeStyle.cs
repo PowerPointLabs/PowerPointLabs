@@ -4,10 +4,10 @@ using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
+using System.Windows.Media;
+using System.Windows.Media.Animation;
 using MahApps.Metro.Controls.Dialogs;
-using PowerPointLabs.AutoUpdate;
 using PowerPointLabs.ImageSearch.Domain;
-using PowerPointLabs.ImageSearch.Util;
 using PowerPointLabs.Utils;
 using PowerPointLabs.Utils.Exceptions;
 using ButtonBase = System.Windows.Controls.Primitives.ButtonBase;
@@ -17,53 +17,86 @@ namespace PowerPointLabs.ImageSearch
 {
     public partial class ImageSearchPane
     {
-        private void ApplyStyle()
-        {
-            PreviewTimer.Stop();
-            PreviewProgressRing.IsActive = true;
+        private bool _isCustomizationFlyoutOpen;
 
-            var source = (ImageItem)SearchListBox.SelectedValue;
-            var targetStyle = PreviewListBox.SelectedItems;
-            if (source == null || targetStyle == null || targetStyle.Count == 0) return;
-
-            if (source.FullSizeImageFile != null)
-            {
-                OpenConfirmApplyFlyout(targetStyle);
-                PreviewProgressRing.IsActive = false;
-            }
-            else if (!_applyDownloadingUriList.Contains(source.FullSizeImageUri))
-            {
-                var fullsizeImageUri = source.FullSizeImageUri;
-                _applyDownloadingUriList.Add(fullsizeImageUri);
-
-                var fullsizeImageFile = TempPath.GetPath("fullsize");
-                new Downloader()
-                    .Get(fullsizeImageUri, fullsizeImageFile)
-                    .After(() => { HandleDownloadedFullSizeImage(source, fullsizeImageFile); })
-                    .OnError(() =>
-                    {
-                        Dispatcher.BeginInvoke(new Action(() =>
-                        {
-                            var currentImageItem = SearchListBox.SelectedValue as ImageItem;
-                            if (currentImageItem == null)
-                            {
-                                PreviewProgressRing.IsActive = false;
-                            }
-                            else if (currentImageItem.ImageFile == source.ImageFile)
-                            {
-                                ShowErrorMessageBox(TextCollection.ImagesLabText.ErrorNetworkOrSourceUnavailable);
-                            }
-                        }));
-                    })
-                    .Start();
-            }
-        }
-
-        private void OpenConfirmApplyFlyout(IList targetStyles)
+        // TODO rename ConfirmApply -> Customization
+        private void OpenCustomizationFlyout(IList targetStyles)
         {
             UpdateConfirmApplyPreviewImage();
             UpdateConfirmApplyFlyOutComboBox(targetStyles);
-            ConfirmApplyFlyout.IsOpen = true;
+            _isCustomizationFlyoutOpen = true;
+
+            var right2LeftToHideTranslate = new TranslateTransform();
+            ImagesLabGrid.RenderTransform = right2LeftToHideTranslate;
+            StyleVariationsFlyout.RenderTransform = right2LeftToHideTranslate;
+            var right2LeftToHideAnimation = new DoubleAnimation(0, -ImagesLabWindow.ActualWidth,
+                TimeSpan.FromMilliseconds(600))
+            {
+                EasingFunction = new SineEase { EasingMode = EasingMode.EaseInOut },
+                AccelerationRatio = 0.5
+            };
+            right2LeftToHideAnimation.Completed += (sender, args) =>
+            {
+                Dispatcher.BeginInvoke(new Action(() =>
+                {
+                    ImagesLabGrid.Visibility = Visibility.Collapsed;
+                    StyleVariationsFlyout.Visibility = Visibility.Collapsed;
+                }));
+            };
+
+            var right2LeftToShowTranslate = new TranslateTransform {X = ImagesLabWindow.ActualWidth};
+            CustomizationFlyout.RenderTransform = right2LeftToShowTranslate;
+            CustomizationFlyout.Visibility = Visibility.Visible;
+            var right2LeftToShowAnimation = new DoubleAnimation(ImagesLabWindow.ActualWidth, 0,
+                TimeSpan.FromMilliseconds(600))
+            {
+                EasingFunction = new SineEase { EasingMode = EasingMode.EaseInOut },
+                AccelerationRatio = 0.5
+            };
+
+            right2LeftToHideTranslate.BeginAnimation(TranslateTransform.XProperty, right2LeftToHideAnimation);
+            right2LeftToShowTranslate.BeginAnimation(TranslateTransform.XProperty, right2LeftToShowAnimation);
+        }
+
+        private void CustomizationFlyoutBackButton_OnClick(object sender, RoutedEventArgs e)
+        {
+            CloseCustomizationFlyout();
+        }
+
+        private void CloseCustomizationFlyout()
+        {
+            _isCustomizationFlyoutOpen = false;
+
+            var left2RightToShowTranslate = new TranslateTransform { X = -ImagesLabWindow.ActualWidth };
+            ImagesLabGrid.RenderTransform = left2RightToShowTranslate;
+            StyleVariationsFlyout.RenderTransform = left2RightToShowTranslate;
+            ImagesLabGrid.Visibility = Visibility.Visible;
+            StyleVariationsFlyout.Visibility = Visibility.Visible;
+            var left2RightToShowAnimation = new DoubleAnimation(-ImagesLabWindow.ActualWidth, 0,
+                TimeSpan.FromMilliseconds(600))
+            {
+                EasingFunction = new SineEase { EasingMode = EasingMode.EaseInOut },
+                AccelerationRatio = 0.5
+            };
+
+            var left2RightToHideTranslate = new TranslateTransform { X = 0 };
+            CustomizationFlyout.RenderTransform = left2RightToHideTranslate;
+            var left2RightToHideAnimation = new DoubleAnimation(0, ImagesLabWindow.ActualWidth,
+                TimeSpan.FromMilliseconds(600))
+            {
+                EasingFunction = new SineEase { EasingMode = EasingMode.EaseInOut },
+                AccelerationRatio = 0.5
+            };
+            left2RightToHideAnimation.Completed += (sender, args) =>
+            {
+                Dispatcher.BeginInvoke(new Action(() =>
+                {
+                    CustomizationFlyout.Visibility = Visibility.Collapsed;
+                }));
+            };
+
+            left2RightToShowTranslate.BeginAnimation(TranslateTransform.XProperty, left2RightToShowAnimation);
+            left2RightToHideTranslate.BeginAnimation(TranslateTransform.XProperty, left2RightToHideAnimation);
         }
 
         private void ConfirmApplyPreviewButton_OnClick(object sender, RoutedEventArgs e)
@@ -128,12 +161,12 @@ namespace PowerPointLabs.ImageSearch
             }));
         }
 
-        private void ConfirmApplyFlyout_OnKeyDown(object sender, KeyEventArgs e)
+        private void CustomizationFlyout_OnKeyDown(object sender, KeyEventArgs e)
         {
             switch (e.Key)
             {
                 case Key.Escape:
-                    ConfirmApplyFlyout.IsOpen = false;
+                    CloseCustomizationFlyout();
                     break;
                 case Key.Enter:
                     ConfirmApplyButton.RaiseEvent(new RoutedEventArgs(ButtonBase.ClickEvent));

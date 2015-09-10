@@ -4,7 +4,7 @@ using System.Windows.Data;
 
 namespace PowerPointLabs.ImageSearch.Util
 {
-    public class PreviewListBoxImageWidthConverter : IValueConverter
+    public class TwoColumnsListBoxImageWidthConverter : IValueConverter
     {
         private const double ImageMargin = 4;
         private const double ScrollBarMargin = 6;

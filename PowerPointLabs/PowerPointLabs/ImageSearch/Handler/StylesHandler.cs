@@ -30,6 +30,11 @@ namespace PowerPointLabs.ImageSearch.Handler
             Options = options;
         }
 
+        public void SetStyleOptions(StyleOptions opt)
+        {
+            Options = opt;
+        }
+
         /// <exception cref="AssumptionFailedException">
         /// throw exception when ImagesLab presentation is not opened OR no selected slide.
         /// </exception>

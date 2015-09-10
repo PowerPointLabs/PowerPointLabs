@@ -42,6 +42,9 @@ namespace PowerPointLabs.ImageSearch
         // UI model - list that holds preview item
         public ObservableCollection<ImageItem> PreviewList { get; set; }
 
+        // UI model - list that holds style variations item
+        public ObservableCollection<ImageItem> VariationList { get; set; }
+
         // UI model - list that holds multiple purpose buttons
         public ObservableCollection<string> MultiplePurposeButtons { get; set; }
 
@@ -76,7 +79,13 @@ namespace PowerPointLabs.ImageSearch
         // indicate whether the window is open/closed or not
         public bool IsOpen { get; set; }
 
+        // default style options
         public StyleOptions StyleOptions { get; set; }
+        public StyleOptions StyleOptions1 { get; set; }
+        public StyleOptions StyleOptions2 { get; set; }
+        public StyleOptions StyleOptions3 { get; set; }
+        public StyleOptions StyleOptions4 { get; set; }
+        public StyleOptions StyleOptions5 { get; set; }
 
         public SearchOptions SearchOptions { get; set; }
 
@@ -92,6 +101,8 @@ namespace PowerPointLabs.ImageSearch
 
         private bool _isWindowActivatedWithPreview = true;
 
+        private bool _isStylePreviewRegionInit;
+
         # endregion
 
         #region Initialization
@@ -103,6 +114,7 @@ namespace PowerPointLabs.ImageSearch
             InitMultiplePurposeButtons();
             InitSearchList();
             InitPreviewList();
+            InitVariationList();
             IsOpen = true;
             InitStyleOptions();
             InitSearchOptions();
@@ -119,6 +131,12 @@ namespace PowerPointLabs.ImageSearch
             {
                 ShowErrorMessageBox(TextCollection.ImagesLabText.ErrorFailToInitTempFolder);
             }
+        }
+
+        private void InitVariationList()
+        {
+            VariationList = new ObservableCollection<ImageItem>();
+            VariationListBox.DataContext = this;
         }
 
         private void InitSearchButtons()
@@ -144,8 +162,7 @@ namespace PowerPointLabs.ImageSearch
             ConfirmApplyPreviewImageFile = new ObservableString { Text = "" };
             ConfirmApplyFlyoutTitle = new ObservableString { Text = "Confirm Apply" };
             ConfirmApplyImage.DataContext = ConfirmApplyPreviewImageFile;
-            ConfirmApplyFlyout.DataContext = ConfirmApplyFlyoutTitle;
-            ConfirmApplyFlyout.IsOpenChanged += ConfirmApplyFlyout_OnIsOpenChanged;
+            CustomizationFlyout.DataContext = ConfirmApplyFlyoutTitle;
             OptionsPane2.DataContext = StyleOptions;
         }
 
@@ -196,12 +213,29 @@ namespace PowerPointLabs.ImageSearch
         private void InitStyleOptions()
         {
             StyleOptions = StyleOptions.Load(StoragePath.GetPath("ImagesLabStyleOptions"));
-            StyleOptions.PropertyChanged += (sender, args) =>
-            {
-                _latestStyleOptionsUpdateTime = DateTime.Now;
-            };
-            OptionsPane.DataContext = StyleOptions;
-            StyleOptionsFlyout.IsOpenChanged += StyleOptionsFlyout_OnIsOpenChanged;
+            StyleOptions.PropertyChanged += StylesOptions_OnPropertyChanged;
+
+            StyleOptions1 = StyleOptions.Load(StoragePath.GetPath("ImagesLabStyleOptions1"));
+            if (StyleOptions1.IsDefaultOptions) StyleOptions1 = StyleOptionsFactory.GetOptions1();
+
+            StyleOptions2 = StyleOptions.Load(StoragePath.GetPath("ImagesLabStyleOptions2"));
+            if (StyleOptions2.IsDefaultOptions) StyleOptions2 = StyleOptionsFactory.GetOptions2();
+
+            StyleOptions3 = StyleOptions.Load(StoragePath.GetPath("ImagesLabStyleOptions3"));
+            if (StyleOptions3.IsDefaultOptions) StyleOptions3 = StyleOptionsFactory.GetOptions3();
+
+            StyleOptions4 = StyleOptions.Load(StoragePath.GetPath("ImagesLabStyleOptions4"));
+            if (StyleOptions4.IsDefaultOptions) StyleOptions4 = StyleOptionsFactory.GetOptions4();
+
+            StyleOptions5 = StyleOptions.Load(StoragePath.GetPath("ImagesLabStyleOptions5"));
+            if (StyleOptions5.IsDefaultOptions) StyleOptions5 = StyleOptionsFactory.GetOptions5();
+
+            StyleVariationsFlyout.IsOpenChanged += StyleVariationsFlyoutOnIsOpenChanged;
+        }
+
+        private void StylesOptions_OnPropertyChanged(object sender, PropertyChangedEventArgs e)
+        {
+            _latestStyleOptionsUpdateTime = DateTime.Now;
         }
 
         private void InitPreviewPresentation()
@@ -213,18 +247,9 @@ namespace PowerPointLabs.ImageSearch
         # endregion
 
         # region Common UI Events & Interactions
-        private void StyleOptionsFlyout_OnIsOpenChanged(object sender, RoutedEventArgs e)
+        private void StyleVariationsFlyoutOnIsOpenChanged(object sender, RoutedEventArgs e)
         {
-            if (!StyleOptionsFlyout.IsOpen
-                && _latestStyleOptionsUpdateTime > _latestPreviewUpdateTime)
-            {
-                DoPreview();
-            }
-        }
-
-        private void ConfirmApplyFlyout_OnIsOpenChanged(object sender, RoutedEventArgs e)
-        {
-            if (!ConfirmApplyFlyout.IsOpen
+            if (!StyleVariationsFlyout.IsOpen
                 && _latestStyleOptionsUpdateTime > _latestPreviewUpdateTime)
             {
                 DoPreview();
@@ -236,6 +261,14 @@ namespace PowerPointLabs.ImageSearch
             SearchInstructions.Visibility = SearchList.Count == 0
                 ? Visibility.Visible
                 : Visibility.Hidden;
+
+            // show StylesPreviewRegion aft there'r some images in the SearchList region
+            if (SearchList.Count > 0 && !_isStylePreviewRegionInit)
+            {
+                // only one entry
+                _isStylePreviewRegionInit = true;
+                StylesPreviewGrid.Visibility = Visibility.Visible;
+            }
         }
 
         private void PreviewList_OnCollectionChanged(object sender, NotifyCollectionChangedEventArgs e)
@@ -262,6 +295,7 @@ namespace PowerPointLabs.ImageSearch
             switch (SearchButton.SelectedIndex)
             {
                 case TextCollection.ImagesLabText.ButtonIndexSearch:
+                    StyleVariationsFlyout.IsOpen = false;
                     DoSearch();
                     break;
                 case TextCollection.ImagesLabText.ButtonIndexDownload:
@@ -367,8 +401,9 @@ namespace PowerPointLabs.ImageSearch
         // intent: drag splitter to change grid width
         private void Splitter_OnDragDelta(object sender, DragDeltaEventArgs e)
         {
-            ImagesLabGrid.ColumnDefinitions[0].Width = 
-                new GridLength(ImagesLabGrid.ColumnDefinitions[0].ActualWidth + e.HorizontalChange);
+            // need remove animation before set its width
+            StylesPreviewGrid.BeginAnimation(WidthProperty, null);
+            StylesPreviewGrid.Width = StylesPreviewGrid.ActualWidth + e.HorizontalChange;
         }
 
         // enable & disable insert button
@@ -376,14 +411,14 @@ namespace PowerPointLabs.ImageSearch
         {
             if (PreviewListBox.SelectedValue != null)
             {
-                PreviewApply.IsEnabled = true;
+                StylesPickUpButton.IsEnabled = true;
                 ConfirmApplyButton.IsEnabled = true;
                 ConfirmApplyPreviewButton.IsEnabled = true;
                 UpdateConfirmApplyFlyOutComboBox(PreviewListBox.SelectedItems);
             }
             else
             {
-                PreviewApply.IsEnabled = false;
+                StylesPickUpButton.IsEnabled = false;
                 ConfirmApplyButton.IsEnabled = false;
                 ConfirmApplyPreviewButton.IsEnabled = false;
             }
@@ -398,12 +433,17 @@ namespace PowerPointLabs.ImageSearch
                 PreviewPresentation.Close();
             }
             StyleOptions.Save(StoragePath.GetPath("ImagesLabStyleOptions"));
+            StyleOptions1.Save(StoragePath.GetPath("ImagesLabStyleOptions1"));
+            StyleOptions2.Save(StoragePath.GetPath("ImagesLabStyleOptions2"));
+            StyleOptions3.Save(StoragePath.GetPath("ImagesLabStyleOptions3"));
+            StyleOptions4.Save(StoragePath.GetPath("ImagesLabStyleOptions4"));
+            StyleOptions5.Save(StoragePath.GetPath("ImagesLabStyleOptions5"));
             SearchOptions.Save(StoragePath.GetPath("ImagesLabSearchOptions"));
         }
 
-        private void PreviewApply_OnClick(object sender, RoutedEventArgs e)
+        private void StylesPickUpButton_OnClick(object sender, RoutedEventArgs e)
         {
-            ApplyStyle();
+            PickUpStyle();
         }
 
         private void AdvancedButton_OnClick(object sender, RoutedEventArgs e)
@@ -419,12 +459,12 @@ namespace PowerPointLabs.ImageSearch
                 return;
             }
 
-            if (ConfirmApplyFlyout.IsOpen)
+            if (_isCustomizationFlyoutOpen)
             {
                 switch (e.Key)
                 {
                     case Key.Escape:
-                        ConfirmApplyFlyout.IsOpen = false;
+                        CloseCustomizationFlyout();
                         break;
                     case Key.Enter:
                         ConfirmApplyButton.RaiseEvent(new RoutedEventArgs(ButtonBase.ClickEvent));
@@ -436,9 +476,9 @@ namespace PowerPointLabs.ImageSearch
                 switch (e.Key)
                 {
                     case Key.Enter:
-                        if (PreviewApply.IsEnabled)
+                        if (StylesPickUpButton.IsEnabled)
                         {
-                            PreviewApply.RaiseEvent(new RoutedEventArgs(ButtonBase.ClickEvent));
+                            StylesPickUpButton.RaiseEvent(new RoutedEventArgs(ButtonBase.ClickEvent));
                         }
                         break;
                 }
@@ -448,6 +488,7 @@ namespace PowerPointLabs.ImageSearch
         private void SearchButton_OnSelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             SearchList.Clear();
+            StyleVariationsFlyout.IsOpen = false;
             SearchTextBox.Text = "";
             switch (SearchButton.SelectedIndex)
             {
@@ -493,9 +534,13 @@ namespace PowerPointLabs.ImageSearch
         {
             if (!_isWindowActivatedWithPreview) return;
 
-            if (ConfirmApplyFlyout.IsOpen)
+            if (_isCustomizationFlyoutOpen)
             {
                 UpdateConfirmApplyPreviewImage();
+            }
+            else if (StyleVariationsFlyout.IsOpen)
+            {
+                UpdateStyleVariationsImages();
             }
             else
             {

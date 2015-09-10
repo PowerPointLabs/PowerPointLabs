@@ -10,6 +10,8 @@ namespace PowerPointLabs.ImageSearch.Domain
     [Serializable]
     public class StyleOptions : Model
     {
+        public bool IsDefaultOptions { get; set; }
+
         public StyleOptions()
         {
             Init();
@@ -260,6 +262,8 @@ namespace PowerPointLabs.ImageSearch.Domain
         # region Logic
         public void Init()
         {
+            IsDefaultOptions = true;
+
             IsUseOriginalTextFormat = false;
             FontFamily = 1;
             FontSizeIncrease = 10;

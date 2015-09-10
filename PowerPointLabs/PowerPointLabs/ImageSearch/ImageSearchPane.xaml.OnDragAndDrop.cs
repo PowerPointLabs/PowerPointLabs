@@ -36,17 +36,17 @@ namespace PowerPointLabs.ImageSearch
 
         private void CloseFlyouts()
         {
-            if (StyleOptionsFlyout.IsOpen)
+            if (StyleVariationsFlyout.IsOpen)
             {
-                StyleOptionsFlyout.IsOpen = false;
+                StyleVariationsFlyout.IsOpen = false;
             }
             if (SearchOptionsFlyout.IsOpen)
             {
                 SearchOptionsFlyout.IsOpen = false;
             }
-            if (ConfirmApplyFlyout.IsOpen)
+            if (_isCustomizationFlyoutOpen)
             {
-                ConfirmApplyFlyout.IsOpen = false;
+                CloseCustomizationFlyout();
             }
         }
 

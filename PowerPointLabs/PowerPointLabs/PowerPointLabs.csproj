@@ -283,6 +283,7 @@
     <Compile Include="ConvertToPicture.cs" />
     <Compile Include="CropToShape.cs" />
     <Compile Include="DataSources\ShapesLabSettingsDataSource.cs" />
+    <Compile Include="ImageSearch\Domain\StyleOptionsFactory.cs" />
     <Compile Include="ImageSearch\Handler\Effect\Alignment.cs" />
     <Compile Include="ImageSearch\Handler\Effect\Banner.cs" />
     <Compile Include="ImageSearch\Handler\Effect\Position.cs" />
@@ -292,20 +293,22 @@
     <Compile Include="ImageSearch\Handler\Effect\EffectName.cs" />
     <Compile Include="ImageSearch\Handler\Preview\PreviewInfo.cs" />
     <Compile Include="ImageSearch\Handler\Effect\Tag.cs" />
-    <Compile Include="ImageSearch\ImageSearchPane.xaml.OnApplyStyle.cs" />
+    <Compile Include="ImageSearch\ImageSearchPane.xaml.OnCustomizeStyle.cs" />
     <Compile Include="ImageSearch\ImageSearchPane.xaml.OnBackgroundDownload.cs" />
     <Compile Include="ImageSearch\ImageSearchPane.xaml.cs">
       <DependentUpon>ImageSearchPane.xaml</DependentUpon>
     </Compile>
     <Compile Include="ImageSearch\ImageSearchPane.xaml.OnDragAndDrop.cs" />
+    <Compile Include="ImageSearch\ImageSearchPane.xaml.OnPickUp.cs" />
     <Compile Include="ImageSearch\ImageSearchPane.xaml.OnPreview.cs" />
     <Compile Include="ImageSearch\ImageSearchPane.xaml.OnLoadImages.cs" />
     <Compile Include="ImageSearch\SearchEngine\AsyncSearchEngine.Events.cs" />
     <Compile Include="ImageSearch\SearchEngine\AsyncSearchEngine.Logic.cs" />
     <Compile Include="ImageSearch\SearchEngine\BingEngine.cs" />
     <Compile Include="ImageSearch\SearchEngine\VO\BingSearchResults.cs" />
-    <Compile Include="ImageSearch\Util\PreviewListBoxImageWidthConverter.cs" />
+    <Compile Include="ImageSearch\Util\TwoColumnsListBoxImageWidthConverter.cs" />
     <Compile Include="ImageSearch\Util\ShapeUtil.cs" />
+    <Compile Include="ImageSearch\Util\StyleVariationWidthConverter.cs" />
     <Compile Include="ImageSearch\Util\UrlUtil.cs" />
     <Compile Include="ImageSearch\Util\VOUtil.cs" />
     <Compile Include="Utils\Assumption.cs" />

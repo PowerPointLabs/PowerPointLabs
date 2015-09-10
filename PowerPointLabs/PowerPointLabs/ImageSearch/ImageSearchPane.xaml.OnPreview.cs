@@ -17,7 +17,13 @@ namespace PowerPointLabs.ImageSearch
             if (image == null || image.ImageFile == TempPath.LoadingImgPath)
             {
                 PreviewList.Clear();
-                PreviewProgressRing.IsActive = false;
+                SetProgressingRingStatus(false);
+            }
+            else if (StyleVariationsFlyout.IsOpen)
+            {
+                PreviewTimer.Stop();
+                UpdateStyleVariationsImages();
+                PreviewTimer.Start();
             }
             else
             {
@@ -61,13 +67,20 @@ namespace PowerPointLabs.ImageSearch
                         Clipboard.SetText(previousTextCopy);
                     }
 
-                    UpdateConfirmApplyPreviewImage();
-                    PreviewProgressRing.IsActive = false;
+                    if (_isCustomizationFlyoutOpen)
+                    {
+                        UpdateConfirmApplyPreviewImage();
+                    } 
+                    else if (StyleVariationsFlyout.IsOpen)
+                    {
+                        UpdateStyleVariationsImages();
+                    }
+                    SetProgressingRingStatus(false);
                 }
                 catch
                 {
                     ShowErrorMessageBox(TextCollection.ImagesLabText.ErrorImageCorrupted);
-                    PreviewProgressRing.IsActive = false;
+                    SetProgressingRingStatus(false);
                 }
             }));
         }
@@ -90,6 +103,9 @@ namespace PowerPointLabs.ImageSearch
             SelectPreviewListBox(
                 TextCollection.ImagesLabText.StyleIndexSpecialEffect,
                 selectedIds.Any(val => val == TextCollection.ImagesLabText.StyleIndexSpecialEffect));
+            SelectPreviewListBox(
+                TextCollection.ImagesLabText.StyleIndexOutline,
+                selectedIds.Any(val => val == TextCollection.ImagesLabText.StyleIndexOutline));
         }
 
         // TODO extract this to somewhere COMMON
@@ -114,6 +130,9 @@ namespace PowerPointLabs.ImageSearch
                         break;
                     case TextCollection.ImagesLabText.StyleNameSpecialEffect:
                         result.Add(TextCollection.ImagesLabText.StyleIndexSpecialEffect);
+                        break;
+                    case TextCollection.ImagesLabText.StyleNameOutline:
+                        result.Add(TextCollection.ImagesLabText.StyleIndexOutline);
                         break;
                 }
             }

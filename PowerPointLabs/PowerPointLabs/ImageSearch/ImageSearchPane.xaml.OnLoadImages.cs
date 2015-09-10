@@ -91,9 +91,8 @@ namespace PowerPointLabs.ImageSearch
                     {
                         SearchButton.SelectedIndex = TextCollection.ImagesLabText.ButtonIndexFromFile;
                     }
-                    //add and select it
+                    //add it
                     SearchList.Add(fromFileItem);
-                    SearchListBox.SelectedIndex = SearchListBox.Items.Count - 1;
                     _fromFileImages.Add(fromFileItem);
                 }
                 catch
@@ -139,9 +138,8 @@ namespace PowerPointLabs.ImageSearch
                 {
                     SearchButton.SelectedIndex = TextCollection.ImagesLabText.ButtonIndexDownload;
                 }
-                // add and select it
+                // add it
                 SearchList.Add(item);
-                SearchListBox.SelectedIndex = SearchListBox.Items.Count - 1;
                 SearchProgressRing.IsActive = true;
 
                 var thumbnailPath = TempPath.GetPath("thumbnail");

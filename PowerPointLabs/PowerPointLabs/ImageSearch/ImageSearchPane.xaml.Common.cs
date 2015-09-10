@@ -12,6 +12,12 @@ namespace PowerPointLabs.ImageSearch
         /// Common
         ///////////////////////////////////////////////////////////////
 
+        private void SetProgressingRingStatus(bool isActive)
+        {
+            PreviewProgressRing.IsActive = isActive;
+            VariationProgressRing.IsActive = isActive;
+        }
+
         private void HandleDownloadedThumbnail(
             ImageItem item, string thumbnailPath, object searchResult = null, IList<int> selectedIds = null)
         {
@@ -60,7 +66,7 @@ namespace PowerPointLabs.ImageSearch
                 var currentImageItem = SearchListBox.SelectedValue as ImageItem;
                 if (currentImageItem == null)
                 {
-                    PreviewProgressRing.IsActive = false;
+                    SetProgressingRingStatus(false);
                 }
                 else if (currentImageItem.ImageFile == source.ImageFile)
                 {
@@ -71,7 +77,7 @@ namespace PowerPointLabs.ImageSearch
                         // open confirm apply flyout + do preview
                         if (PreviewListBox.SelectedValue != null)
                         {
-                            OpenConfirmApplyFlyout(PreviewListBox.SelectedItems);
+                            OpenPickupFlyout();
                         }
                         DoPreview(source);
                     }
