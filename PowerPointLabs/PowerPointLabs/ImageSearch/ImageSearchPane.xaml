@@ -96,7 +96,7 @@
                 <ColumnDefinition Width="*"></ColumnDefinition>
             </Grid.ColumnDefinitions>
             <GridSplitter Name="Splitter" DragDelta="Splitter_OnDragDelta" Grid.Column="1" ResizeDirection="Columns" Width="3" Height="Auto" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" />
-            <Grid Visibility="Collapsed" Width="560" Margin="10,0,0,0" Name="StylesPreviewGrid" Grid.Column="0">
+            <Grid Visibility="Collapsed" Width="0" Margin="10,0,0,0" Name="StylesPreviewGrid" Grid.Column="0">
                 <Grid.RowDefinitions>
                     <RowDefinition Height="5" />
                     <RowDefinition Height="35" />
@@ -114,8 +114,8 @@
                     <Button IsEnabled="False" Name="StylesPickUpButton" Click="StylesPickUpButton_OnClick" Grid.Column="2" Margin="0,0,5,0">Pick Up</Button>
                     <controls:ProgressRing Name="PreviewProgressRing" Width="10" Height="10" Grid.Column="3" IsActive="False" />
                 </Grid>
-                <TextBlock Visibility="Visible" Name="PreviewInstructions" TextWrapping="Wrap" HorizontalAlignment="Center" VerticalAlignment="Center" Foreground="#AAAAAA" FontSize="14" Grid.Row="2">Select an image to preview styles. Pick any styles and click PICK UP button to continue.</TextBlock>
-                <TextBlock Visibility="Hidden" Name="PreviewInstructionsWhenNoSelectedSlide" TextWrapping="Wrap" HorizontalAlignment="Center" VerticalAlignment="Center" Foreground="#AAAAAA" FontSize="14" Grid.Row="2">Select a slide in the presentation to preview styles. Pick any styles and click PICK UP button to continue.</TextBlock>
+                <TextBlock Visibility="Visible" Name="PreviewInstructions" TextWrapping="Wrap" HorizontalAlignment="Center" VerticalAlignment="Center" Foreground="#AAAAAA" FontSize="16" Grid.Row="2">Select an image to preview styles. Pick any styles and click PICK UP button to continue.</TextBlock>
+                <TextBlock Visibility="Hidden" Name="PreviewInstructionsWhenNoSelectedSlide" TextWrapping="Wrap" HorizontalAlignment="Center" VerticalAlignment="Center" Foreground="#AAAAAA" FontSize="16" Grid.Row="2">Select a slide in the presentation to preview styles. Pick any styles and click PICK UP button to continue.</TextBlock>
                 <ListBox SelectionMode="Multiple" TabIndex="2" Name="PreviewListBox" KeyUp="PreviewListBox_OnKeyUp" KeyDown="ListBox_OnKeyDown" IsSynchronizedWithCurrentItem="True" SelectionChanged="PreivewListBox_OnSelectionChanged" ItemsSource="{Binding Path=PreviewList, Mode=TwoWay}" Grid.Row="2">
                     <ListBox.Resources>
                         <converter:TwoColumnsListBoxImageWidthConverter x:Key="TwoColumnsListBoxImageWidthConverter"></converter:TwoColumnsListBoxImageWidthConverter>

@@ -7,6 +7,7 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Controls.Primitives;
 using System.Windows.Input;
+using System.Windows.Media.Animation;
 using PowerPointLabs.ImageSearch.Domain;
 using PowerPointLabs.ImageSearch.Handler;
 using PowerPointLabs.ImageSearch.SearchEngine;
@@ -267,7 +268,46 @@ namespace PowerPointLabs.ImageSearch
             {
                 // only one entry
                 _isStylePreviewRegionInit = true;
+                var isPreviewInstructionsVisible = PreviewInstructions.Visibility == Visibility.Visible;
+                PreviewInstructions.Visibility = Visibility.Collapsed;
+                var isPreviewInstructionsWhenNoSelectedSlideVisible =
+                    PreviewInstructionsWhenNoSelectedSlide.Visibility == Visibility.Visible;
+                PreviewInstructionsWhenNoSelectedSlide.Visibility = Visibility.Collapsed;
+                
+                var previewRegionShowAnimation = new DoubleAnimation(0, 560d, TimeSpan.FromMilliseconds(600))
+                {
+                    EasingFunction = new SineEase { EasingMode = EasingMode.EaseInOut },
+                    AccelerationRatio = 0.5
+                };
+
                 StylesPreviewGrid.Visibility = Visibility.Visible;
+                previewRegionShowAnimation.Completed += (o, args) =>
+                {
+                    Dispatcher.BeginInvoke(new Action(() =>
+                    {
+                        var previewInstructionsShowAnimation = 
+                            new DoubleAnimation(0, 1, TimeSpan.FromMilliseconds(250))
+                        {
+                            EasingFunction = new SineEase { EasingMode = EasingMode.EaseInOut },
+                            AccelerationRatio = 0.5
+                        };
+
+                        if (isPreviewInstructionsVisible)
+                        {
+                            PreviewInstructions.Opacity = 0;
+                            PreviewInstructions.Visibility = Visibility.Visible;
+                            PreviewInstructions.BeginAnimation(OpacityProperty, previewInstructionsShowAnimation);
+                        }
+                        else if (isPreviewInstructionsWhenNoSelectedSlideVisible)
+                        {
+                            PreviewInstructionsWhenNoSelectedSlide.Opacity = 0;
+                            PreviewInstructionsWhenNoSelectedSlide.Visibility = Visibility.Visible;
+                            PreviewInstructionsWhenNoSelectedSlide.BeginAnimation(OpacityProperty,
+                                previewInstructionsShowAnimation);
+                        }
+                    }));
+                };
+                StylesPreviewGrid.BeginAnimation(WidthProperty, previewRegionShowAnimation);
             }
         }
 
