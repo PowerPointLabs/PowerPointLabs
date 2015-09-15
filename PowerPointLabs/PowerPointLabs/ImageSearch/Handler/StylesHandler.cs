@@ -16,6 +16,8 @@ namespace PowerPointLabs.ImageSearch.Handler
     {
         private StyleOptions Options { get; set; }
 
+        private const int PreviewHeight = 300;
+
         # region APIs
 
         /// <exception cref="AssumptionFailedException">
@@ -57,7 +59,7 @@ namespace PowerPointLabs.ImageSearch.Handler
         /// <exception cref="AssumptionFailedException">
         /// throw exception when ImagesLab presentation is not open OR no selected slide.
         /// </exception>
-        public PreviewInfo PreviewApplyStyle(ImageItem source, IList<string> targetStyles)
+        public PreviewInfo PreviewApplyStyle(ImageItem source, IList<string> targetStyles, bool isActualSize = false)
         {
             Assumption.Made(
                 Opened && PowerPointCurrentPresentationInfo.CurrentSlide != null,
@@ -67,9 +69,17 @@ namespace PowerPointLabs.ImageSearch.Handler
             var previewInfo = new PreviewInfo();
             var handler = CreateEffectsHandler(source);
 
-            ApplyStyle(handler, source, targetStyles);
+            ApplyStyle(handler, source, targetStyles, isActualSize);
 
-            handler.GetNativeSlide().Export(previewInfo.PreviewApplyStyleImagePath, "JPG");
+            if (isActualSize)
+            {
+                handler.GetNativeSlide().Export(previewInfo.PreviewApplyStyleImagePath, "JPG");
+            }
+            else
+            {
+                handler.GetNativeSlide().Export(previewInfo.PreviewApplyStyleImagePath, "JPG",
+                    GetPreviewWidth(), PreviewHeight);
+            }
 
             handler.Delete();
             return previewInfo;
@@ -89,10 +99,15 @@ namespace PowerPointLabs.ImageSearch.Handler
             var currentSlide = PowerPointCurrentPresentationInfo.CurrentSlide.GetNativeSlide();
             var effectsHandler = new EffectsHandler(currentSlide, Current, source);
 
-            ApplyStyle(effectsHandler, source, targetStyles);
+            ApplyStyle(effectsHandler, source, targetStyles, isActualSize:true);
         }
 
-        private void ApplyStyle(EffectsHandler handler, ImageItem source, IList<string> targetStyles)
+        private int GetPreviewWidth()
+        {
+            return (int)(SlideWidth / SlideHeight * PreviewHeight);
+        }
+
+        private void ApplyStyle(EffectsHandler handler, ImageItem source, IList<string> targetStyles, bool isActualSize)
         {
             ApplyTextEffect(handler);
 
@@ -102,7 +117,7 @@ namespace PowerPointLabs.ImageSearch.Handler
             if (HasStyle(targetStyles, TextCollection.ImagesLabText.StyleNameSpecialEffect))
             {
                 isSpecialEffectStyle = true;
-                imageShape = handler.ApplySpecialEffectEffect(Options.GetSpecialEffect());
+                imageShape = handler.ApplySpecialEffectEffect(Options.GetSpecialEffect(), isActualSize);
             }
             else // Direct Text style
             {
@@ -155,32 +170,38 @@ namespace PowerPointLabs.ImageSearch.Handler
             {
                 handler.ApplyImageReferenceInsertion(source.ContextLink, Options.GetFontFamily(), Options.FontColor);
             }
-            handler.GetNativeSlide().Export(previewInfo.DirectTextStyleImagePath, "JPG");
+            handler.GetNativeSlide().Export(previewInfo.DirectTextStyleImagePath, "JPG",
+                GetPreviewWidth(), PreviewHeight);
 
             // style: blur
             var blurImageShape = handler.ApplyBlurEffect();
             SendToBack(overlayShape, blurImageShape, imageShape);
-            handler.GetNativeSlide().Export(previewInfo.BlurStyleImagePath, "JPG");
+            handler.GetNativeSlide().Export(previewInfo.BlurStyleImagePath, "JPG",
+                GetPreviewWidth(), PreviewHeight);
 
             // style: textbox
             handler.RemoveEffect(EffectName.Blur);
             handler.ApplyTextboxEffect(Options.TextBoxOverlayColor, Options.TextBoxTransparency);
-            handler.GetNativeSlide().Export(previewInfo.TextboxStyleImagePath, "JPG");
+            handler.GetNativeSlide().Export(previewInfo.TextboxStyleImagePath, "JPG",
+                GetPreviewWidth(), PreviewHeight);
 
             // style: banner
             handler.RemoveEffect(EffectName.TextBox);
             ApplyBannerStyle(handler, imageShape);
-            handler.GetNativeSlide().Export(previewInfo.BannerStyleImagePath, "JPG");
+            handler.GetNativeSlide().Export(previewInfo.BannerStyleImagePath, "JPG",
+                GetPreviewWidth(), PreviewHeight);
 
             // style: outline
             handler.RemoveEffect(EffectName.Banner);
             ApplyOutlineStyle(handler, imageShape);
-            handler.GetNativeSlide().Export(previewInfo.OutlineStyleImagePath, "JPG");
+            handler.GetNativeSlide().Export(previewInfo.OutlineStyleImagePath, "JPG",
+                GetPreviewWidth(), PreviewHeight);
 
             // style: special effect
             handler.RemoveEffect(EffectName.Banner);
             handler.ApplySpecialEffectEffect(Options.GetSpecialEffect(), imageShape, Options.OverlayColor, Options.Transparency);
-            handler.GetNativeSlide().Export(previewInfo.SpecialEffectStyleImagePath, "JPG");
+            handler.GetNativeSlide().Export(previewInfo.SpecialEffectStyleImagePath, "JPG",
+                GetPreviewWidth(), PreviewHeight);
         }
 
         # endregion

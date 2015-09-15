@@ -145,7 +145,7 @@ namespace PowerPointLabs.ImageSearch
 
                 try
                 {
-                    var previewInfo = PreviewPresentation.PreviewApplyStyle(source, targetStyles);
+                    var previewInfo = PreviewPresentation.PreviewApplyStyle(source, targetStyles, isActualSize:true);
 
                     ConfirmApplyPreviewImageFile.Text = previewInfo.PreviewApplyStyleImagePath;
                     _latestPreviewApplyUpdateTime = DateTime.Now;

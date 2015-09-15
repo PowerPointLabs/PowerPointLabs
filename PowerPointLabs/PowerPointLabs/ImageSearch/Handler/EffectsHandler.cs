@@ -428,7 +428,7 @@ namespace PowerPointLabs.ImageSearch.Handler
             PowerPoint.Shape imageShape, string overlayColor, int transparency)
         {
             var overlayShape = ApplyOverlayEffect(overlayColor, transparency);
-            var specialEffectImageShape = ApplySpecialEffectEffect(effectFilter);
+            var specialEffectImageShape = ApplySpecialEffectEffect(effectFilter, isActualSize:false);
 
             overlayShape.ZOrder(MsoZOrderCmd.msoSendToBack);
             specialEffectImageShape.ZOrder(MsoZOrderCmd.msoSendToBack);
@@ -439,9 +439,9 @@ namespace PowerPointLabs.ImageSearch.Handler
             return specialEffectImageShape;
         }
 
-        public PowerPoint.Shape ApplySpecialEffectEffect(IMatrixFilter effectFilter)
+        public PowerPoint.Shape ApplySpecialEffectEffect(IMatrixFilter effectFilter, bool isActualSize)
         {
-            Source.SpecialEffectImageFile = SpecialEffectImage(effectFilter, Source.FullSizeImageFile ?? Source.ImageFile);
+            Source.SpecialEffectImageFile = SpecialEffectImage(effectFilter, Source.FullSizeImageFile ?? Source.ImageFile, isActualSize);
             var specialEffectImageShape = AddPicture(Source.SpecialEffectImageFile, EffectName.SpecialEffect);
             FitToSlide.AutoFit(specialEffectImageShape, PreviewPresentation);
             CropPicture(specialEffectImageShape);
@@ -536,7 +536,8 @@ namespace PowerPointLabs.ImageSearch.Handler
             return blurImageFile;
         }
 
-        public static string SpecialEffectImage(IMatrixFilter effectFilter, string imageFilePath)
+        public static string SpecialEffectImage(IMatrixFilter effectFilter, string imageFilePath,
+            bool isActualSize)
         {
             var specialEffectImageFile = TempPath.GetPath("fullsize_specialeffect");
             using (var imageFactory = new ImageFactory())
@@ -545,10 +546,20 @@ namespace PowerPointLabs.ImageSearch.Handler
                         .Load(imageFilePath)
                         .Image;
                 var ratio = (float)image.Width / image.Height;
-                image = imageFactory
-                        .Resize(new Size((int)(768 * ratio), 768))
+                if (isActualSize)
+                {
+                    image = imageFactory
+                        .Resize(new Size((int) (768 * ratio), 768))
                         .Filter(effectFilter)
                         .Image;
+                }
+                else
+                {
+                    image = imageFactory
+                        .Resize(new Size((int)(300 * ratio), 300))
+                        .Filter(effectFilter)
+                        .Image;
+                }
                 image.Save(specialEffectImageFile);
             }
             return specialEffectImageFile;

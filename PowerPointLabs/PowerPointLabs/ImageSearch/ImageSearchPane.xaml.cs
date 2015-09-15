@@ -564,18 +564,21 @@ namespace PowerPointLabs.ImageSearch
         {
             if (!_isWindowActivatedWithPreview) return;
 
-            if (_isCustomizationFlyoutOpen)
+            Dispatcher.BeginInvoke(new Action(() =>
             {
-                UpdateConfirmApplyPreviewImage();
-            }
-            else if (_isVariationsFlyoutOpen)
-            {
-                UpdateStyleVariationsImages();
-            }
-            else
-            {
-                DoPreview();
-            }
+                if (_isCustomizationFlyoutOpen)
+                {
+                    UpdateConfirmApplyPreviewImage();
+                }
+                else if (_isVariationsFlyoutOpen)
+                {
+                    UpdateStyleVariationsImages();
+                }
+                else
+                {
+                    DoPreview();
+                }
+            }));
         }
 
         // intent: clicking 'load more' should not change selection
