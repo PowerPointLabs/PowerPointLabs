@@ -121,7 +121,7 @@
                     <Label Name="VariationLabel" Grid.Column="1" Margin="0,0,5,0" FontSize="15">Variations</Label>
                     <Button Name="StyleApplyButton" Click="StyleApplyButton_OnClick" Grid.Column="2" Margin="0,0,5,0">Apply</Button>
                     <Button Name="StyleCustomizeButton" Click="StyleCustomizeButton_OnClick" Grid.Column="3">Customize</Button>
-                    <controls:ProgressRing Name="VariationProgressRing" Width="10" Height="10" Grid.Column="4" IsActive="False" />
+                    <controls:ProgressRing Foreground="#FFFFFF" Name="VariationProgressRing" Width="10" Height="10" Grid.Column="4" IsActive="False" />
                     <Button Grid.Column="5"
                         Name="VariationFlyoutBackButton"
                         Click="VariationFlyoutBackButton_OnClick"
