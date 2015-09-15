@@ -30,59 +30,6 @@
     </controls:MetroWindow.Resources>
     <controls:MetroWindow.Flyouts>
         <controls:FlyoutsControl>
-            <controls:FlyoutsControl.Resources>
-                <converter:StyleVariationWidthConverter x:Key="StyleVariationWidthConverter"></converter:StyleVariationWidthConverter>
-            </controls:FlyoutsControl.Resources>
-            <controls:Flyout Name="StyleVariationsFlyout" Header="Style Variations" IsModal="False" Position="Left" Width="{Binding Path=ActualWidth, ElementName=PreviewListBox, Converter={StaticResource StyleVariationWidthConverter}}" Theme="Light">
-                <Grid Margin="10,0,0,0">
-                    <Grid.RowDefinitions>
-                        <RowDefinition Height="35"></RowDefinition>
-                        <RowDefinition Height="*"></RowDefinition>
-                    </Grid.RowDefinitions>
-                    <Grid Grid.Row="0" Margin="0,0,0,5">
-                        <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="75"></ColumnDefinition>
-                            <ColumnDefinition Width="75"></ColumnDefinition>
-                            <ColumnDefinition Width="30"></ColumnDefinition>
-                            <ColumnDefinition Width="*"></ColumnDefinition>
-                        </Grid.ColumnDefinitions>
-                        <Button Name="StyleApplyButton" Click="StyleApplyButton_OnClick" Grid.Column="0" Margin="0,0,5,0">Apply</Button>
-                        <Button Name="StyleCustomizeButton" Click="StyleCustomizeButton_OnClick" Grid.Column="1">Customize</Button>
-                        <controls:ProgressRing Name="VariationProgressRing" Width="10" Height="10" Grid.Column="2" IsActive="False" />
-                    </Grid>
-                    <Grid Grid.Row="1">
-                        <ListBox SelectionMode="Single" Name="VariationListBox" IsSynchronizedWithCurrentItem="True" SelectionChanged="VariationListBox_OnSelectionChanged" ItemsSource="{Binding Path=VariationList, Mode=TwoWay}">
-                            <ListBox.Resources>
-                                <converter:TwoColumnsListBoxImageWidthConverter x:Key="TwoColumnsListBoxImageWidthConverter"></converter:TwoColumnsListBoxImageWidthConverter>
-                            </ListBox.Resources>
-                            <ListBox.Template>
-                                <ControlTemplate TargetType="{x:Type ListBox}">
-                                    <ScrollViewer HorizontalScrollBarVisibility="Disabled" VerticalScrollBarVisibility="Visible">
-                                        <UniformGrid Columns="2" IsItemsHost="True"/>
-                                    </ScrollViewer>
-                                </ControlTemplate>
-                            </ListBox.Template>
-                            <ListBox.ItemContainerStyle>
-                                <Style TargetType="ListBoxItem">
-                                    <Setter Property="HorizontalContentAlignment" Value="Center"></Setter>
-                                    <Setter Property="VerticalContentAlignment" Value="Center"></Setter>
-                                    <Style.Resources>
-                                        <!--SelectedItem with focus-->
-                                        <SolidColorBrush x:Key="{x:Static SystemColors.HighlightBrushKey}" Color="#D74926" />
-                                        <!--SelectedItem without focus-->
-                                        <SolidColorBrush x:Key="{x:Static SystemColors.ControlBrushKey}" Color="#D74926" />
-                                    </Style.Resources>
-                                </Style>
-                            </ListBox.ItemContainerStyle>
-                            <ListBox.ItemTemplate>
-                                <DataTemplate>
-                                    <Image Width="{Binding ActualWidth, ElementName=VariationListBox, Converter={StaticResource TwoColumnsListBoxImageWidthConverter}}" Margin="3,3,4,3" Source="{Binding Path=ImageFile, Mode=TwoWay, NotifyOnSourceUpdated=True}" ToolTip="{Binding Path=Tooltip, Mode=TwoWay, NotifyOnSourceUpdated=True}" />
-                                </DataTemplate>
-                            </ListBox.ItemTemplate>
-                        </ListBox>
-                    </Grid>
-                </Grid>
-            </controls:Flyout>
             <controls:Flyout Name="SearchOptionsFlyout" Header="Search Options" IsModal="True" Position="Left" Width="400" >
                 <custom:SearchOptionsPane x:Name="AdvancedPane" Margin="20,0,0,0" />
             </controls:Flyout>
@@ -90,6 +37,9 @@
     </controls:MetroWindow.Flyouts>
     <Grid>
         <Grid Name="ImagesLabGrid">
+            <Grid.Resources>
+                <converter:StyleVariationWidthConverter x:Key="StyleVariationWidthConverter"></converter:StyleVariationWidthConverter>
+            </Grid.Resources>
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="auto"></ColumnDefinition>
                 <ColumnDefinition Width="auto"></ColumnDefinition>
@@ -145,6 +95,107 @@
                         </DataTemplate>
                     </ListBox.ItemTemplate>
                 </ListBox>
+            </Grid>
+            <Grid Visibility="Collapsed" Name="StyleVariationsFlyout" Width="{Binding Path=ActualWidth, ElementName=PreviewListBox, Converter={StaticResource StyleVariationWidthConverter}}" Background="#252525" Grid.Column="0">
+                <Grid.Resources>
+                    <ResourceDictionary>
+                        <ResourceDictionary.MergedDictionaries>
+                            <ResourceDictionary Source="pack://application:,,,/MahApps.Metro;component/Styles/Accents/basedark.xaml" />
+                        </ResourceDictionary.MergedDictionaries>
+                    </ResourceDictionary>
+                </Grid.Resources>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="5"></RowDefinition>
+                    <RowDefinition Height="35"></RowDefinition>
+                    <RowDefinition Height="*"></RowDefinition>
+                </Grid.RowDefinitions>
+                <Grid Grid.Row="1" Margin="10,0,0,5">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="5"></ColumnDefinition>
+                        <ColumnDefinition Width="80"></ColumnDefinition>
+                        <ColumnDefinition Width="75"></ColumnDefinition>
+                        <ColumnDefinition Width="75"></ColumnDefinition>
+                        <ColumnDefinition Width="30"></ColumnDefinition>
+                        <ColumnDefinition Width="*"></ColumnDefinition>
+                    </Grid.ColumnDefinitions>
+                    <Label Name="VariationLabel" Grid.Column="1" Margin="0,0,5,0" FontSize="15">Variations</Label>
+                    <Button Name="StyleApplyButton" Click="StyleApplyButton_OnClick" Grid.Column="2" Margin="0,0,5,0">Apply</Button>
+                    <Button Name="StyleCustomizeButton" Click="StyleCustomizeButton_OnClick" Grid.Column="3">Customize</Button>
+                    <controls:ProgressRing Name="VariationProgressRing" Width="10" Height="10" Grid.Column="4" IsActive="False" />
+                    <Button Grid.Column="5"
+                        Name="VariationFlyoutBackButton"
+                        Click="VariationFlyoutBackButton_OnClick"
+                        ToolTip="Back"
+                        Style="{DynamicResource MetroCircleButtonStyle}"
+                        Height="38"
+                        Width="38"
+                        FontFamily="Segoe UI Symbol"
+                        FontSize="16"
+                        HorizontalAlignment="Left"
+                        VerticalAlignment="Center">
+                        <Rectangle Width="20"
+                           Height="15"
+                           Fill="#FFFFFF" RenderTransformOrigin="0.5,0.5">
+                            <Rectangle.RenderTransform>
+                                <TransformGroup>
+                                    <ScaleTransform/>
+                                    <SkewTransform/>
+                                    <RotateTransform Angle="180"/>
+                                    <TranslateTransform/>
+                                </TransformGroup>
+                            </Rectangle.RenderTransform>
+                            <Rectangle.OpacityMask>
+                                <VisualBrush Stretch="Fill">
+                                    <VisualBrush.Visual>
+                                        <Canvas Width="48"
+                                        Height="48"
+                                        Clip="F1 M 0,0L 48,0L 48,48L 0,48L 0,0"
+                                        UseLayoutRounding="False">
+                                            <Path Width="25"
+                                          Height="18"
+                                          Canvas.Left="12"
+                                          Canvas.Top="15"
+                                          Stretch="Fill"
+                                          Fill="Black"
+                                          Data="F1 M 12,22L 12,26L 28.25,26L 21,33L 27.5,33L 37,24L 27.5,15L 21,15L 28.25,22L 12,22 Z " />
+                                        </Canvas>
+                                    </VisualBrush.Visual>
+                                </VisualBrush>
+                            </Rectangle.OpacityMask>
+                        </Rectangle>
+                    </Button>
+                </Grid>
+                <Grid Grid.Row="2" Margin="10,0,0,0">
+                    <ListBox SelectionMode="Single" Name="VariationListBox" IsSynchronizedWithCurrentItem="True" SelectionChanged="VariationListBox_OnSelectionChanged" ItemsSource="{Binding Path=VariationList, Mode=TwoWay}">
+                        <ListBox.Resources>
+                            <converter:TwoColumnsListBoxImageWidthConverter x:Key="TwoColumnsListBoxImageWidthConverter"></converter:TwoColumnsListBoxImageWidthConverter>
+                        </ListBox.Resources>
+                        <ListBox.Template>
+                            <ControlTemplate TargetType="{x:Type ListBox}">
+                                <ScrollViewer HorizontalScrollBarVisibility="Disabled" VerticalScrollBarVisibility="Visible">
+                                    <UniformGrid Columns="2" IsItemsHost="True"/>
+                                </ScrollViewer>
+                            </ControlTemplate>
+                        </ListBox.Template>
+                        <ListBox.ItemContainerStyle>
+                            <Style TargetType="ListBoxItem">
+                                <Setter Property="HorizontalContentAlignment" Value="Center"></Setter>
+                                <Setter Property="VerticalContentAlignment" Value="Center"></Setter>
+                                <Style.Resources>
+                                    <!--SelectedItem with focus-->
+                                    <SolidColorBrush x:Key="{x:Static SystemColors.HighlightBrushKey}" Color="#D74926" />
+                                    <!--SelectedItem without focus-->
+                                    <SolidColorBrush x:Key="{x:Static SystemColors.ControlBrushKey}" Color="#D74926" />
+                                </Style.Resources>
+                            </Style>
+                        </ListBox.ItemContainerStyle>
+                        <ListBox.ItemTemplate>
+                            <DataTemplate>
+                                <Image Width="{Binding ActualWidth, ElementName=VariationListBox, Converter={StaticResource TwoColumnsListBoxImageWidthConverter}}" Margin="3,3,4,3" Source="{Binding Path=ImageFile, Mode=TwoWay, NotifyOnSourceUpdated=True}" ToolTip="{Binding Path=Tooltip, Mode=TwoWay, NotifyOnSourceUpdated=True}" />
+                            </DataTemplate>
+                        </ListBox.ItemTemplate>
+                    </ListBox>
+                </Grid>
             </Grid>
             <Grid Name="ImageSearchGrid" Margin="5,0,0,0" Grid.Column="2">
                 <Grid.RowDefinitions>

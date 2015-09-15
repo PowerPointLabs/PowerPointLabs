@@ -28,7 +28,6 @@ namespace PowerPointLabs.ImageSearch
 
             var right2LeftToHideTranslate = new TranslateTransform();
             ImagesLabGrid.RenderTransform = right2LeftToHideTranslate;
-            StyleVariationsFlyout.RenderTransform = right2LeftToHideTranslate;
             var right2LeftToHideAnimation = new DoubleAnimation(0, -ImagesLabWindow.ActualWidth,
                 TimeSpan.FromMilliseconds(600))
             {
@@ -40,7 +39,6 @@ namespace PowerPointLabs.ImageSearch
                 Dispatcher.BeginInvoke(new Action(() =>
                 {
                     ImagesLabGrid.Visibility = Visibility.Collapsed;
-                    StyleVariationsFlyout.Visibility = Visibility.Collapsed;
                 }));
             };
 
@@ -69,9 +67,7 @@ namespace PowerPointLabs.ImageSearch
 
             var left2RightToShowTranslate = new TranslateTransform { X = -ImagesLabWindow.ActualWidth };
             ImagesLabGrid.RenderTransform = left2RightToShowTranslate;
-            StyleVariationsFlyout.RenderTransform = left2RightToShowTranslate;
             ImagesLabGrid.Visibility = Visibility.Visible;
-            StyleVariationsFlyout.Visibility = Visibility.Visible;
             var left2RightToShowAnimation = new DoubleAnimation(-ImagesLabWindow.ActualWidth, 0,
                 TimeSpan.FromMilliseconds(600))
             {

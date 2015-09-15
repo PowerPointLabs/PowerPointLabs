@@ -230,8 +230,6 @@ namespace PowerPointLabs.ImageSearch
 
             StyleOptions5 = StyleOptions.Load(StoragePath.GetPath("ImagesLabStyleOptions5"));
             if (StyleOptions5.IsDefaultOptions) StyleOptions5 = StyleOptionsFactory.GetOptions5();
-
-            StyleVariationsFlyout.IsOpenChanged += StyleVariationsFlyoutOnIsOpenChanged;
         }
 
         private void StylesOptions_OnPropertyChanged(object sender, PropertyChangedEventArgs e)
@@ -248,14 +246,6 @@ namespace PowerPointLabs.ImageSearch
         # endregion
 
         # region Common UI Events & Interactions
-        private void StyleVariationsFlyoutOnIsOpenChanged(object sender, RoutedEventArgs e)
-        {
-            if (!StyleVariationsFlyout.IsOpen
-                && _latestStyleOptionsUpdateTime > _latestPreviewUpdateTime)
-            {
-                DoPreview();
-            }
-        }
 
         private void SearchList_OnCollectionChanged(object sender, NotifyCollectionChangedEventArgs e)
         {
@@ -335,7 +325,7 @@ namespace PowerPointLabs.ImageSearch
             switch (SearchButton.SelectedIndex)
             {
                 case TextCollection.ImagesLabText.ButtonIndexSearch:
-                    StyleVariationsFlyout.IsOpen = false;
+                    CloseVariationsFlyout();
                     DoSearch();
                     break;
                 case TextCollection.ImagesLabText.ButtonIndexDownload:
@@ -528,7 +518,7 @@ namespace PowerPointLabs.ImageSearch
         private void SearchButton_OnSelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             SearchList.Clear();
-            StyleVariationsFlyout.IsOpen = false;
+            CloseVariationsFlyout();
             SearchTextBox.Text = "";
             switch (SearchButton.SelectedIndex)
             {
@@ -578,7 +568,7 @@ namespace PowerPointLabs.ImageSearch
             {
                 UpdateConfirmApplyPreviewImage();
             }
-            else if (StyleVariationsFlyout.IsOpen)
+            else if (_isVariationsFlyoutOpen)
             {
                 UpdateStyleVariationsImages();
             }

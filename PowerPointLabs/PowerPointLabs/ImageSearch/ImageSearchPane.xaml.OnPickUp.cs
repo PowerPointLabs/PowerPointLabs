@@ -3,7 +3,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Input;
+using System.Windows.Media;
+using System.Windows.Media.Animation;
 using MahApps.Metro.Controls.Dialogs;
 using PowerPointLabs.AutoUpdate;
 using PowerPointLabs.ImageSearch.Domain;
@@ -15,10 +16,12 @@ namespace PowerPointLabs.ImageSearch
 {
     partial class ImageSearchPane
     {
+        private bool _isVariationsFlyoutOpen;
+
         private void OpenPickupFlyout()
         {
             UpdateStyleVariationsImages();
-            StyleVariationsFlyout.IsOpen = true;
+            OpenVariationsFlyout();
         }
 
         private void UpdateStyleVariationsImages()
@@ -167,6 +170,53 @@ namespace PowerPointLabs.ImageSearch
             var targetStyles = PreviewListBox.SelectedItems;
             if (source == null || targetStyles == null || targetStyles.Count == 0) return;
             OpenCustomizationFlyout(targetStyles);
+        }
+
+        private void VariationFlyoutBackButton_OnClick(object sender, RoutedEventArgs e)
+        {
+            CloseVariationsFlyout();
+        }
+
+        private void CloseVariationsFlyout()
+        {
+            if (!_isVariationsFlyoutOpen) return;
+
+            var right2LeftToHideTranslate = new TranslateTransform();
+            StyleVariationsFlyout.RenderTransform = right2LeftToHideTranslate;
+            var right2LeftToHideAnimation = new DoubleAnimation(0, -StyleVariationsFlyout.ActualWidth,
+                TimeSpan.FromMilliseconds(600))
+            {
+                EasingFunction = new SineEase { EasingMode = EasingMode.EaseInOut },
+                AccelerationRatio = 0.5
+            };
+            right2LeftToHideAnimation.Completed += (sender, args) =>
+            {
+                Dispatcher.BeginInvoke(new Action(() =>
+                {
+                    StyleVariationsFlyout.Visibility = Visibility.Collapsed;
+                }));
+            };
+
+            right2LeftToHideTranslate.BeginAnimation(TranslateTransform.XProperty, right2LeftToHideAnimation);
+            _isVariationsFlyoutOpen = false;
+        }
+
+        private void OpenVariationsFlyout()
+        {
+            if (_isVariationsFlyoutOpen) return;
+
+            var left2RightToShowTranslate = new TranslateTransform { X = -StylesPreviewGrid.ActualWidth };
+            StyleVariationsFlyout.RenderTransform = left2RightToShowTranslate;
+            StyleVariationsFlyout.Visibility = Visibility.Visible;
+            var left2RightToShowAnimation = new DoubleAnimation(-StylesPreviewGrid.ActualWidth, 0,
+                TimeSpan.FromMilliseconds(600))
+            {
+                EasingFunction = new SineEase { EasingMode = EasingMode.EaseInOut },
+                AccelerationRatio = 0.5
+            };
+
+            left2RightToShowTranslate.BeginAnimation(TranslateTransform.XProperty, left2RightToShowAnimation);
+            _isVariationsFlyoutOpen = true;
         }
     }
 }

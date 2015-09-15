@@ -36,9 +36,9 @@ namespace PowerPointLabs.ImageSearch
 
         private void CloseFlyouts()
         {
-            if (StyleVariationsFlyout.IsOpen)
+            if (_isVariationsFlyoutOpen)
             {
-                StyleVariationsFlyout.IsOpen = false;
+                CloseVariationsFlyout();
             }
             if (SearchOptionsFlyout.IsOpen)
             {

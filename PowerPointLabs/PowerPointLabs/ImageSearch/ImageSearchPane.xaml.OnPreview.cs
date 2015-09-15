@@ -19,7 +19,7 @@ namespace PowerPointLabs.ImageSearch
                 PreviewList.Clear();
                 SetProgressingRingStatus(false);
             }
-            else if (StyleVariationsFlyout.IsOpen)
+            else if (_isVariationsFlyoutOpen)
             {
                 PreviewTimer.Stop();
                 UpdateStyleVariationsImages();
@@ -70,8 +70,8 @@ namespace PowerPointLabs.ImageSearch
                     if (_isCustomizationFlyoutOpen)
                     {
                         UpdateConfirmApplyPreviewImage();
-                    } 
-                    else if (StyleVariationsFlyout.IsOpen)
+                    }
+                    else if (_isVariationsFlyoutOpen)
                     {
                         UpdateStyleVariationsImages();
                     }
