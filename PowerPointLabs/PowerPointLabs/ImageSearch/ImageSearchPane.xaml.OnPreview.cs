@@ -29,6 +29,7 @@ namespace PowerPointLabs.ImageSearch
             {
                 PreviewTimer.Stop();
                 DoPreview(image, selectedIds);
+                _latestPreviewUpdateTime = DateTime.Now;
                 // when timer ticks, try to download full size image to replace
                 PreviewTimer.Start();
             }
@@ -75,7 +76,10 @@ namespace PowerPointLabs.ImageSearch
                     {
                         UpdateStyleVariationsImages();
                     }
-                    SetProgressingRingStatus(false);
+                    if (source.FullSizeImageFile != null)
+                    {
+                        SetProgressingRingStatus(false);
+                    }
                 }
                 catch
                 {

@@ -98,8 +98,10 @@ namespace PowerPointLabs.ImageSearch
         private readonly HashSet<string> _customizeDownloadingUriList = new HashSet<string>();
 
         private DateTime _latestStyleOptionsUpdateTime = DateTime.Now;
-        private DateTime _latestPreviewUpdateTime = DateTime.Now;
         private DateTime _latestPreviewApplyUpdateTime = DateTime.Now;
+
+        private DateTime _latestPreviewUpdateTime = DateTime.Now;
+        private DateTime _latestImageChangedTime = DateTime.Now;
 
         private bool _isWindowActivatedWithPreview = true;
 
@@ -368,6 +370,7 @@ namespace PowerPointLabs.ImageSearch
                     _applyDownloadingUriList.Remove(source.FullSizeImageUri);
                     _customizeDownloadingUriList.Remove(source.FullSizeImageUri);
                 }
+                _latestImageChangedTime = DateTime.Now;
                 DoPreview();
             }
         }

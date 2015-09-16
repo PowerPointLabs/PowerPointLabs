@@ -40,6 +40,10 @@ namespace PowerPointLabs.ImageSearch
                     UpdateStyleVariationsImage(StyleOptions4, source, targetStyles);
                     UpdateStyleVariationsImage(StyleOptions5, source, targetStyles);
                     VariationListBox.SelectedIndex = selectedId;
+                    if (source.FullSizeImageFile != null)
+                    {
+                        SetProgressingRingStatus(false);
+                    }
                 }
                 catch
                 {
@@ -242,6 +246,10 @@ namespace PowerPointLabs.ImageSearch
                 Dispatcher.BeginInvoke(new Action(() =>
                 {
                     StyleVariationsFlyout.Visibility = Visibility.Collapsed;
+                    if (_latestImageChangedTime > _latestPreviewUpdateTime)
+                    {
+                        DoPreview();
+                    }
                 }));
             };
 
