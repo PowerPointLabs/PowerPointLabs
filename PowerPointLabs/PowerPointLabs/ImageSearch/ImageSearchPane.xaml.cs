@@ -95,6 +95,7 @@ namespace PowerPointLabs.ImageSearch
         // apply - it will download full size image when there's no cache and user clicks APPLY button
         private readonly HashSet<string> _timerDownloadingUriList = new HashSet<string>();
         private readonly HashSet<string> _applyDownloadingUriList = new HashSet<string>();
+        private readonly HashSet<string> _customizeDownloadingUriList = new HashSet<string>();
 
         private DateTime _latestStyleOptionsUpdateTime = DateTime.Now;
         private DateTime _latestPreviewUpdateTime = DateTime.Now;
@@ -365,6 +366,7 @@ namespace PowerPointLabs.ImageSearch
                 if (source != null)
                 {
                     _applyDownloadingUriList.Remove(source.FullSizeImageUri);
+                    _customizeDownloadingUriList.Remove(source.FullSizeImageUri);
                 }
                 DoPreview();
             }

@@ -18,12 +18,6 @@ namespace PowerPointLabs.ImageSearch
     {
         private bool _isVariationsFlyoutOpen;
 
-        private void OpenPickupFlyout()
-        {
-            UpdateStyleVariationsImages();
-            OpenVariationsFlyout();
-        }
-
         private void UpdateStyleVariationsImages()
         {
             Dispatcher.BeginInvoke(new Action(() =>
@@ -63,44 +57,12 @@ namespace PowerPointLabs.ImageSearch
 
         private void PickUpStyle()
         {
-            PreviewTimer.Stop();
-            SetProgressingRingStatus(true);
-
             var source = (ImageItem)SearchListBox.SelectedValue;
             var targetStyle = PreviewListBox.SelectedItems;
             if (source == null || targetStyle == null || targetStyle.Count == 0) return;
 
-            if (source.FullSizeImageFile != null)
-            {
-                OpenPickupFlyout();
-                SetProgressingRingStatus(false);
-            }
-            else if (!_applyDownloadingUriList.Contains(source.FullSizeImageUri))
-            {
-                var fullsizeImageUri = source.FullSizeImageUri;
-                _applyDownloadingUriList.Add(fullsizeImageUri);
-
-                var fullsizeImageFile = TempPath.GetPath("fullsize");
-                new Downloader()
-                    .Get(fullsizeImageUri, fullsizeImageFile)
-                    .After(() => { HandleDownloadedFullSizeImage(source, fullsizeImageFile); })
-                    .OnError(() =>
-                    {
-                        Dispatcher.BeginInvoke(new Action(() =>
-                        {
-                            var currentImageItem = SearchListBox.SelectedValue as ImageItem;
-                            if (currentImageItem == null)
-                            {
-                                SetProgressingRingStatus(false);
-                            }
-                            else if (currentImageItem.ImageFile == source.ImageFile)
-                            {
-                                ShowErrorMessageBox(TextCollection.ImagesLabText.ErrorNetworkOrSourceUnavailable);
-                            }
-                        }));
-                    })
-                    .Start();
-            }
+            UpdateStyleVariationsImages();
+            OpenVariationsFlyout();
         }
 
         private void VariationListBox_OnSelectionChanged(object sender, SelectionChangedEventArgs e)
@@ -146,6 +108,49 @@ namespace PowerPointLabs.ImageSearch
 
         private void StyleApplyButton_OnClick(object sender, RoutedEventArgs e)
         {
+            PreviewTimer.Stop();
+            SetProgressingRingStatus(true);
+
+            var source = (ImageItem)SearchListBox.SelectedValue;
+            var targetStyle = PreviewListBox.SelectedItems;
+            if (source == null || targetStyle == null || targetStyle.Count == 0) return;
+
+            if (source.FullSizeImageFile != null)
+            {
+                ApplyStyle();
+                SetProgressingRingStatus(false);
+            }
+            else if (!_applyDownloadingUriList.Contains(source.FullSizeImageUri))
+            {
+                var fullsizeImageUri = source.FullSizeImageUri;
+                _customizeDownloadingUriList.Remove(fullsizeImageUri);
+                _applyDownloadingUriList.Add(fullsizeImageUri);
+
+                var fullsizeImageFile = TempPath.GetPath("fullsize");
+                new Downloader()
+                    .Get(fullsizeImageUri, fullsizeImageFile)
+                    .After(() => { HandleDownloadedFullSizeImage(source, fullsizeImageFile); })
+                    .OnError(() =>
+                    {
+                        Dispatcher.BeginInvoke(new Action(() =>
+                        {
+                            var currentImageItem = SearchListBox.SelectedValue as ImageItem;
+                            if (currentImageItem == null)
+                            {
+                                SetProgressingRingStatus(false);
+                            }
+                            else if (currentImageItem.ImageFile == source.ImageFile)
+                            {
+                                ShowErrorMessageBox(TextCollection.ImagesLabText.ErrorNetworkOrSourceUnavailable);
+                            }
+                        }));
+                    })
+                    .Start();
+            }
+        }
+
+        private void ApplyStyle()
+        {
             if (PreviewListBox.SelectedValue == null) return;
 
             var source = SearchListBox.SelectedValue as ImageItem;
@@ -158,13 +163,56 @@ namespace PowerPointLabs.ImageSearch
                 PreviewPresentation.ApplyStyle(source, targetStyles);
                 this.ShowMessageAsync("", TextCollection.ImagesLabText.SuccessfullyAppliedStyle);
             }
-            catch (AssumptionFailedException expt)
+            catch (AssumptionFailedException)
             {
                 ShowErrorMessageBox(TextCollection.ImagesLabText.ErrorNoSelectedSlide);
             }
         }
 
         private void StyleCustomizeButton_OnClick(object sender, RoutedEventArgs e)
+        {
+            PreviewTimer.Stop();
+            SetProgressingRingStatus(true);
+
+            var source = (ImageItem)SearchListBox.SelectedValue;
+            var targetStyle = PreviewListBox.SelectedItems;
+            if (source == null || targetStyle == null || targetStyle.Count == 0) return;
+
+            if (source.FullSizeImageFile != null)
+            {
+                OpenCustomizationFlyout();
+                SetProgressingRingStatus(false);
+            }
+            else if (!_customizeDownloadingUriList.Contains(source.FullSizeImageUri))
+            {
+                var fullsizeImageUri = source.FullSizeImageUri;
+                _applyDownloadingUriList.Remove(fullsizeImageUri);
+                _customizeDownloadingUriList.Add(fullsizeImageUri);
+
+                var fullsizeImageFile = TempPath.GetPath("fullsize");
+                new Downloader()
+                    .Get(fullsizeImageUri, fullsizeImageFile)
+                    .After(() => { HandleDownloadedFullSizeImage(source, fullsizeImageFile); })
+                    .OnError(() =>
+                    {
+                        Dispatcher.BeginInvoke(new Action(() =>
+                        {
+                            var currentImageItem = SearchListBox.SelectedValue as ImageItem;
+                            if (currentImageItem == null)
+                            {
+                                SetProgressingRingStatus(false);
+                            }
+                            else if (currentImageItem.ImageFile == source.ImageFile)
+                            {
+                                ShowErrorMessageBox(TextCollection.ImagesLabText.ErrorNetworkOrSourceUnavailable);
+                            }
+                        }));
+                    })
+                    .Start();
+            }
+        }
+
+        private void OpenCustomizationFlyout()
         {
             var source = (ImageItem)SearchListBox.SelectedValue;
             var targetStyles = PreviewListBox.SelectedItems;

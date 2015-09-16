@@ -74,10 +74,19 @@ namespace PowerPointLabs.ImageSearch
                     // and it is to insert the full size image,
                     if (_applyDownloadingUriList.Contains(fullsizeImageUri))
                     {
-                        // open confirm apply flyout + do preview
+                        // go apply
                         if (PreviewListBox.SelectedValue != null)
                         {
-                            OpenPickupFlyout();
+                            ApplyStyle();
+                        }
+                        DoPreview(source);
+                    }
+                    else if (_customizeDownloadingUriList.Contains(fullsizeImageUri))
+                    {
+                        // open customization flyout and do preview
+                        if (PreviewListBox.SelectedValue != null)
+                        {
+                            OpenCustomizationFlyout();
                         }
                         DoPreview(source);
                     }
@@ -96,6 +105,7 @@ namespace PowerPointLabs.ImageSearch
         {
             _applyDownloadingUriList.Remove(fullsizeImageUri);
             _timerDownloadingUriList.Remove(fullsizeImageUri);
+            _customizeDownloadingUriList.Remove(fullsizeImageUri);
         }
 
         private void ShowErrorMessageBox(string content)
