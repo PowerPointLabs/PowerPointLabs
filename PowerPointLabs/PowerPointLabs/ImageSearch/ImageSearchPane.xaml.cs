@@ -263,9 +263,11 @@ namespace PowerPointLabs.ImageSearch
                 _isStylePreviewRegionInit = true;
                 var isPreviewInstructionsVisible = PreviewInstructions.Visibility == Visibility.Visible;
                 PreviewInstructions.Visibility = Visibility.Collapsed;
+                PreviewInstructions.Opacity = 0;
                 var isPreviewInstructionsWhenNoSelectedSlideVisible =
                     PreviewInstructionsWhenNoSelectedSlide.Visibility == Visibility.Visible;
                 PreviewInstructionsWhenNoSelectedSlide.Visibility = Visibility.Collapsed;
+                PreviewInstructionsWhenNoSelectedSlide.Opacity = 0;
                 
                 var previewRegionShowAnimation = new DoubleAnimation(0, 560d, TimeSpan.FromMilliseconds(600))
                 {
@@ -287,13 +289,11 @@ namespace PowerPointLabs.ImageSearch
 
                         if (isPreviewInstructionsVisible)
                         {
-                            PreviewInstructions.Opacity = 0;
                             PreviewInstructions.Visibility = Visibility.Visible;
                             PreviewInstructions.BeginAnimation(OpacityProperty, previewInstructionsShowAnimation);
                         }
                         else if (isPreviewInstructionsWhenNoSelectedSlideVisible)
                         {
-                            PreviewInstructionsWhenNoSelectedSlide.Opacity = 0;
                             PreviewInstructionsWhenNoSelectedSlide.Visibility = Visibility.Visible;
                             PreviewInstructionsWhenNoSelectedSlide.BeginAnimation(OpacityProperty,
                                 previewInstructionsShowAnimation);
@@ -369,6 +369,10 @@ namespace PowerPointLabs.ImageSearch
                 {
                     _applyDownloadingUriList.Remove(source.FullSizeImageUri);
                     _customizeDownloadingUriList.Remove(source.FullSizeImageUri);
+                }
+                else
+                {
+                    CloseFlyouts();
                 }
                 _latestImageChangedTime = DateTime.Now;
                 DoPreview();
