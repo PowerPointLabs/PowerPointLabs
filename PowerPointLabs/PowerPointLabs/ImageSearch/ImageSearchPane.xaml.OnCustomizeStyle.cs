@@ -26,15 +26,15 @@ namespace PowerPointLabs.ImageSearch
             UpdateConfirmApplyFlyOutComboBox(targetStyles);
             _isCustomizationFlyoutOpen = true;
 
-            var right2LeftToHideTranslate = new TranslateTransform();
-            ImagesLabGrid.RenderTransform = right2LeftToHideTranslate;
-            var right2LeftToHideAnimation = new DoubleAnimation(0, -ImagesLabWindow.ActualWidth,
+            var toHideTranslate = new TranslateTransform();
+            ImagesLabGrid.RenderTransform = toHideTranslate;
+            var toHideAnimation = new DoubleAnimation(0, ImagesLabWindow.ActualWidth,
                 TimeSpan.FromMilliseconds(600))
             {
                 EasingFunction = new SineEase { EasingMode = EasingMode.EaseInOut },
                 AccelerationRatio = 0.5
             };
-            right2LeftToHideAnimation.Completed += (sender, args) =>
+            toHideAnimation.Completed += (sender, args) =>
             {
                 Dispatcher.BeginInvoke(new Action(() =>
                 {
@@ -42,18 +42,18 @@ namespace PowerPointLabs.ImageSearch
                 }));
             };
 
-            var right2LeftToShowTranslate = new TranslateTransform {X = ImagesLabWindow.ActualWidth};
-            CustomizationFlyout.RenderTransform = right2LeftToShowTranslate;
+            var toShowTranslate = new TranslateTransform {X = -ImagesLabWindow.ActualWidth};
+            CustomizationFlyout.RenderTransform = toShowTranslate;
             CustomizationFlyout.Visibility = Visibility.Visible;
-            var right2LeftToShowAnimation = new DoubleAnimation(ImagesLabWindow.ActualWidth, 0,
+            var toShowAnimation = new DoubleAnimation(-ImagesLabWindow.ActualWidth, 0,
                 TimeSpan.FromMilliseconds(600))
             {
                 EasingFunction = new SineEase { EasingMode = EasingMode.EaseInOut },
                 AccelerationRatio = 0.5
             };
 
-            right2LeftToHideTranslate.BeginAnimation(TranslateTransform.XProperty, right2LeftToHideAnimation);
-            right2LeftToShowTranslate.BeginAnimation(TranslateTransform.XProperty, right2LeftToShowAnimation);
+            toHideTranslate.BeginAnimation(TranslateTransform.XProperty, toHideAnimation);
+            toShowTranslate.BeginAnimation(TranslateTransform.XProperty, toShowAnimation);
         }
 
         private void CustomizationFlyoutBackButton_OnClick(object sender, RoutedEventArgs e)
@@ -65,25 +65,25 @@ namespace PowerPointLabs.ImageSearch
         {
             _isCustomizationFlyoutOpen = false;
 
-            var left2RightToShowTranslate = new TranslateTransform { X = -ImagesLabWindow.ActualWidth };
-            ImagesLabGrid.RenderTransform = left2RightToShowTranslate;
+            var toShowTranslate = new TranslateTransform { X = ImagesLabWindow.ActualWidth };
+            ImagesLabGrid.RenderTransform = toShowTranslate;
             ImagesLabGrid.Visibility = Visibility.Visible;
-            var left2RightToShowAnimation = new DoubleAnimation(-ImagesLabWindow.ActualWidth, 0,
+            var toShowAnimation = new DoubleAnimation(ImagesLabWindow.ActualWidth, 0,
                 TimeSpan.FromMilliseconds(600))
             {
                 EasingFunction = new SineEase { EasingMode = EasingMode.EaseInOut },
                 AccelerationRatio = 0.5
             };
 
-            var left2RightToHideTranslate = new TranslateTransform { X = 0 };
-            CustomizationFlyout.RenderTransform = left2RightToHideTranslate;
-            var left2RightToHideAnimation = new DoubleAnimation(0, ImagesLabWindow.ActualWidth,
+            var toHideTranslate = new TranslateTransform { X = 0 };
+            CustomizationFlyout.RenderTransform = toHideTranslate;
+            var toHideAnimation = new DoubleAnimation(0, -ImagesLabWindow.ActualWidth,
                 TimeSpan.FromMilliseconds(600))
             {
                 EasingFunction = new SineEase { EasingMode = EasingMode.EaseInOut },
                 AccelerationRatio = 0.5
             };
-            left2RightToHideAnimation.Completed += (sender, args) =>
+            toHideAnimation.Completed += (sender, args) =>
             {
                 Dispatcher.BeginInvoke(new Action(() =>
                 {
@@ -91,8 +91,8 @@ namespace PowerPointLabs.ImageSearch
                 }));
             };
 
-            left2RightToShowTranslate.BeginAnimation(TranslateTransform.XProperty, left2RightToShowAnimation);
-            left2RightToHideTranslate.BeginAnimation(TranslateTransform.XProperty, left2RightToHideAnimation);
+            toShowTranslate.BeginAnimation(TranslateTransform.XProperty, toShowAnimation);
+            toHideTranslate.BeginAnimation(TranslateTransform.XProperty, toHideAnimation);
         }
 
         private void ConfirmApplyPreviewButton_OnClick(object sender, RoutedEventArgs e)

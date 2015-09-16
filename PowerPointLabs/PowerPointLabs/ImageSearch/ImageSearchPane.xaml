@@ -283,7 +283,15 @@
                     VerticalAlignment="Center">
                     <Rectangle Width="20"
                            Height="15"
-                           Fill="#FFFFFF">
+                           Fill="#FFFFFF" RenderTransformOrigin="0.5,0.5">
+                        <Rectangle.RenderTransform>
+                            <TransformGroup>
+                                <ScaleTransform/>
+                                <SkewTransform/>
+                                <RotateTransform Angle="180"/>
+                                <TranslateTransform/>
+                            </TransformGroup>
+                        </Rectangle.RenderTransform>
                         <Rectangle.OpacityMask>
                             <VisualBrush Stretch="Fill">
                                 <VisualBrush.Visual>
