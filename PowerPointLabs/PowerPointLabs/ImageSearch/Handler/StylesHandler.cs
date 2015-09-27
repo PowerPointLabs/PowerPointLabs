@@ -1,5 +1,4 @@
-﻿using System.Collections.Generic;
-using System.Linq;
+﻿using ImageProcessor.Imaging.Filters;
 using Microsoft.Office.Core;
 using PowerPointLabs.ImageSearch.Util;
 using PowerPointLabs.Models;
@@ -20,16 +19,11 @@ namespace PowerPointLabs.ImageSearch.Handler
 
         # region APIs
 
-        /// <exception cref="AssumptionFailedException">
-        /// throw exception when options is null
-        /// </exception>
-        public StylesHandler(StyleOptions options)
+        public StylesHandler()
         {
-            Assumption.Made(options != null, "options is null.");
-
             Path = TempPath.TempFolder;
             Name = "ImagesLabPreview";
-            Options = options;
+            Options = new StyleOptions();
         }
 
         public void SetStyleOptions(StyleOptions opt)
@@ -50,7 +44,7 @@ namespace PowerPointLabs.ImageSearch.Handler
             var previewInfo = new PreviewInfo();
             var handler = CreateEffectsHandler(source);
 
-            PreviewStyles(source, handler, previewInfo);
+            PreviewStyles(handler, previewInfo);
 
             handler.Delete();
             return previewInfo;
@@ -59,7 +53,7 @@ namespace PowerPointLabs.ImageSearch.Handler
         /// <exception cref="AssumptionFailedException">
         /// throw exception when ImagesLab presentation is not open OR no selected slide.
         /// </exception>
-        public PreviewInfo PreviewApplyStyle(ImageItem source, IList<string> targetStyles, bool isActualSize = false)
+        public PreviewInfo PreviewApplyStyle(ImageItem source, bool isActualSize = false)
         {
             Assumption.Made(
                 Opened && PowerPointCurrentPresentationInfo.CurrentSlide != null,
@@ -69,7 +63,7 @@ namespace PowerPointLabs.ImageSearch.Handler
             var previewInfo = new PreviewInfo();
             var handler = CreateEffectsHandler(source);
 
-            ApplyStyle(handler, source, targetStyles, isActualSize);
+            ApplyStyle(handler, source, isActualSize);
 
             if (isActualSize)
             {
@@ -88,7 +82,7 @@ namespace PowerPointLabs.ImageSearch.Handler
         /// <exception cref="AssumptionFailedException">
         /// throw exception when No selected slide.
         /// </exception>
-        public void ApplyStyle(ImageItem source, IList<string> targetStyles)
+        public void ApplyStyle(ImageItem source)
         {
             Assumption.Made(
                 PowerPointCurrentPresentationInfo.CurrentSlide != null,
@@ -99,7 +93,7 @@ namespace PowerPointLabs.ImageSearch.Handler
             var currentSlide = PowerPointCurrentPresentationInfo.CurrentSlide.GetNativeSlide();
             var effectsHandler = new EffectsHandler(currentSlide, Current, source);
 
-            ApplyStyle(effectsHandler, source, targetStyles, isActualSize:true);
+            ApplyStyle(effectsHandler, source, isActualSize:true);
         }
 
         private int GetPreviewWidth()
@@ -107,14 +101,14 @@ namespace PowerPointLabs.ImageSearch.Handler
             return (int)(SlideWidth / SlideHeight * PreviewHeight);
         }
 
-        private void ApplyStyle(EffectsHandler handler, ImageItem source, IList<string> targetStyles, bool isActualSize)
+        private void ApplyStyle(EffectsHandler handler, ImageItem source, bool isActualSize)
         {
             ApplyTextEffect(handler);
 
             var isSpecialEffectStyle = false;
 
             Shape imageShape;
-            if (HasStyle(targetStyles, TextCollection.ImagesLabText.StyleNameSpecialEffect))
+            if (Options.IsUseSpecialEffectStyle)
             {
                 isSpecialEffectStyle = true;
                 imageShape = handler.ApplySpecialEffectEffect(Options.GetSpecialEffect(), isActualSize);
@@ -123,34 +117,33 @@ namespace PowerPointLabs.ImageSearch.Handler
             {
                 imageShape = handler.ApplyBackgroundEffect();
             }
-            Shape backgroundOverlayShape = handler.ApplyOverlayEffect(Options.OverlayColor, Options.Transparency);
+
+            Shape backgroundOverlayShape = null;
+            if (Options.IsUseOverlayStyle)
+            {
+                backgroundOverlayShape = handler.ApplyOverlayEffect(Options.OverlayColor, Options.Transparency);
+            }
 
             Shape blurImageShape = null;
-            if (HasStyle(targetStyles, TextCollection.ImagesLabText.StyleNameBlur))
+            if (Options.IsUseBlurStyle)
             {
                 blurImageShape = isSpecialEffectStyle
-                    ? handler.ApplyBlurEffect(source.SpecialEffectImageFile)
-                    : handler.ApplyBlurEffect();
+                    ? handler.ApplyBlurEffect(source.SpecialEffectImageFile, Options.BlurDegree)
+                    : handler.ApplyBlurEffect(degree: Options.BlurDegree);
             }
 
             Shape bannerOverlayShape = null;
-            if (HasStyle(targetStyles, TextCollection.ImagesLabText.StyleNameBanner))
+            if (Options.IsUseBannerStyle)
             {
                 bannerOverlayShape = ApplyBannerStyle(handler, imageShape);
             }
 
-            Shape outlineOverlayShape = null;
-            if (HasStyle(targetStyles, TextCollection.ImagesLabText.StyleNameOutline))
-            {
-                outlineOverlayShape = ApplyOutlineStyle(handler, imageShape);
-            }
-
-            if (HasStyle(targetStyles, TextCollection.ImagesLabText.StyleNameTextBox))
+            if (Options.IsUseTextBoxStyle)
             {
                 handler.ApplyTextboxEffect(Options.TextBoxOverlayColor, Options.TextBoxTransparency);
             }
 
-            SendToBack(outlineOverlayShape, bannerOverlayShape, backgroundOverlayShape, blurImageShape, imageShape);
+            SendToBack(bannerOverlayShape, backgroundOverlayShape, blurImageShape, imageShape);
 
             handler.ApplyImageReference(source.ContextLink);
             if (Options.IsInsertReference)
@@ -159,47 +152,47 @@ namespace PowerPointLabs.ImageSearch.Handler
             }
         }
 
-        private void PreviewStyles(ImageItem source, EffectsHandler handler, PreviewInfo previewInfo)
+        // generate preview-style images, without using any style options
+        private void PreviewStyles(EffectsHandler handler, PreviewInfo previewInfo)
         {
             // style: direct text
             var imageShape = handler.ApplyBackgroundEffect();
-            var overlayShape = handler.ApplyOverlayEffect(Options.OverlayColor, Options.Transparency);
-            SendToBack(overlayShape, imageShape);
-            ApplyTextEffect(handler);
-            if (Options.IsInsertReference)
-            {
-                handler.ApplyImageReferenceInsertion(source.ContextLink, Options.GetFontFamily(), Options.FontColor);
-            }
+            handler.ApplyTextEffect("", "#FFFFFF", 6);
+            handler.ApplyTextPositionAndAlignment(Position.Left, Alignment.Auto);
             handler.GetNativeSlide().Export(previewInfo.DirectTextStyleImagePath, "JPG",
                 GetPreviewWidth(), PreviewHeight);
 
             // style: blur
             var blurImageShape = handler.ApplyBlurEffect();
-            SendToBack(overlayShape, blurImageShape, imageShape);
+            SendToBack(blurImageShape, imageShape);
             handler.GetNativeSlide().Export(previewInfo.BlurStyleImagePath, "JPG",
                 GetPreviewWidth(), PreviewHeight);
 
             // style: textbox
             handler.RemoveEffect(EffectName.Blur);
-            handler.ApplyTextboxEffect(Options.TextBoxOverlayColor, Options.TextBoxTransparency);
+            handler.ApplyTextPositionAndAlignment(Position.BottomLeft, Alignment.Left);
+            handler.ApplyTextboxEffect("#D74926", 25);
             handler.GetNativeSlide().Export(previewInfo.TextboxStyleImagePath, "JPG",
                 GetPreviewWidth(), PreviewHeight);
 
             // style: banner
             handler.RemoveEffect(EffectName.TextBox);
-            ApplyBannerStyle(handler, imageShape);
+            handler.ApplyRectBannerEffect(BannerDirection.Horizontal, Position.BottomLeft,
+                        imageShape, "#000000", 25);
             handler.GetNativeSlide().Export(previewInfo.BannerStyleImagePath, "JPG",
                 GetPreviewWidth(), PreviewHeight);
 
-            // style: outline
+            // style: overlay
             handler.RemoveEffect(EffectName.Banner);
-            ApplyOutlineStyle(handler, imageShape);
-            handler.GetNativeSlide().Export(previewInfo.OutlineStyleImagePath, "JPG",
+            handler.ApplyTextPositionAndAlignment(Position.Centre, Alignment.Left);
+            handler.ApplySpecialEffectEffect(MatrixFilters.GreyScale, imageShape, "#00B1FD"/*Blue*/, 25);
+            handler.GetNativeSlide().Export(previewInfo.OverlayStyleImagePath, "JPG",
                 GetPreviewWidth(), PreviewHeight);
 
             // style: special effect
-            handler.RemoveEffect(EffectName.Banner);
-            handler.ApplySpecialEffectEffect(Options.GetSpecialEffect(), imageShape, Options.OverlayColor, Options.Transparency);
+            handler.RemoveEffect(EffectName.Overlay);
+            handler.RemoveEffect(EffectName.SpecialEffect);
+            handler.ApplySpecialEffectEffect(MatrixFilters.GreyScale, imageShape, "#000000", 85);
             handler.GetNativeSlide().Export(previewInfo.SpecialEffectStyleImagePath, "JPG",
                 GetPreviewWidth(), PreviewHeight);
         }
@@ -224,11 +217,6 @@ namespace PowerPointLabs.ImageSearch.Handler
             }
         }
 
-        private bool HasStyle(IList<string> targetStyles, string style)
-        {
-            return targetStyles.Any(targetStyle => targetStyle == style);
-        }
-
         private Shape ApplyBannerStyle(EffectsHandler effectsHandler, Shape imageShape)
         {
             switch (Options.GetBannerShape())
@@ -236,35 +224,28 @@ namespace PowerPointLabs.ImageSearch.Handler
                 case BannerShape.Rectangle:
                     return effectsHandler.ApplyRectBannerEffect(Options.GetBannerDirection(), Options.GetTextBoxPosition(),
                         imageShape, Options.BannerOverlayColor, Options.BannerTransparency);
-                default:
+                case BannerShape.Circle:
                     return effectsHandler.ApplyCircleBannerEffect(imageShape, Options.BannerOverlayColor, Options.BannerTransparency);
-            }
-        }
-
-        private Shape ApplyOutlineStyle(EffectsHandler effectsHandler, Shape imageShape)
-        {
-            switch (Options.GetOutlineShape())
-            {
-                case OutlineShape.RectangleOutline:
-                    return effectsHandler.ApplyRectOutlineEffect(imageShape, Options.OutlineOverlayColor,
-                        Options.OutlineTransparency);
+                case BannerShape.RectangleOutline:
+                    return effectsHandler.ApplyRectOutlineEffect(imageShape, Options.BannerOverlayColor, Options.BannerTransparency);
                 default:
-                    return effectsHandler.ApplyCircleOutlineEffect(imageShape, Options.OutlineOverlayColor,
-                        Options.OutlineTransparency);
+                    return effectsHandler.ApplyCircleOutlineEffect(imageShape, Options.BannerOverlayColor, Options.BannerTransparency);
             }
         }
 
         private void ApplyTextEffect(EffectsHandler effectsHandler)
         {
-            if (Options.IsUseOriginalTextFormat)
+            if (Options.IsUseTextFormat)
             {
-                effectsHandler.ApplyOriginalTextEffect();
+                effectsHandler.ApplyTextEffect(Options.GetFontFamily(), Options.FontColor, Options.FontSizeIncrease);
+                effectsHandler.ApplyTextPositionAndAlignment(Options.GetTextBoxPosition(), Options.GetTextBoxAlignment());
             }
             else
             {
-                effectsHandler.ApplyTextEffect(Options.GetFontFamily(), Options.FontColor, Options.FontSizeIncrease);
+                effectsHandler.ApplyOriginalTextEffect();
+                effectsHandler.ApplyTextPositionAndAlignment(Position.Original, Alignment.Auto);
             }
-            effectsHandler.ApplyTextPositionAndAlignment(Options.GetTextBoxPosition(), Options.GetTextBoxAlignment());
+            
         }
 
         private EffectsHandler CreateEffectsHandler(ImageItem source)

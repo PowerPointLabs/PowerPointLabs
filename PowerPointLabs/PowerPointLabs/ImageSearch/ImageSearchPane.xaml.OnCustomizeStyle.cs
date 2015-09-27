@@ -2,7 +2,6 @@
 using System.Collections;
 using System.Linq;
 using System.Windows;
-using System.Windows.Controls;
 using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Animation;
@@ -23,7 +22,6 @@ namespace PowerPointLabs.ImageSearch
         private void OpenCustomizationFlyout(IList targetStyles)
         {
             UpdateConfirmApplyPreviewImage();
-            UpdateConfirmApplyFlyOutComboBox(targetStyles);
             _isCustomizationFlyoutOpen = true;
 
             var toHideTranslate = new TranslateTransform();
@@ -111,7 +109,7 @@ namespace PowerPointLabs.ImageSearch
 
             try
             {
-                PreviewPresentation.ApplyStyle(source, targetStyles);
+                PreviewPresentation.ApplyStyle(source);
                 this.ShowMessageAsync("", TextCollection.ImagesLabText.SuccessfullyAppliedStyle)
                     .ContinueWith(task =>
                     {
@@ -126,7 +124,7 @@ namespace PowerPointLabs.ImageSearch
                         }));
                     });
             }
-            catch (AssumptionFailedException expt)
+            catch (AssumptionFailedException)
             {
                 ShowErrorMessageBox(TextCollection.ImagesLabText.ErrorNoSelectedSlide);
             }
@@ -145,7 +143,7 @@ namespace PowerPointLabs.ImageSearch
 
                 try
                 {
-                    var previewInfo = PreviewPresentation.PreviewApplyStyle(source, targetStyles, isActualSize:true);
+                    var previewInfo = PreviewPresentation.PreviewApplyStyle(source, isActualSize:true);
 
                     ConfirmApplyPreviewImageFile.Text = previewInfo.PreviewApplyStyleImagePath;
                     _latestPreviewApplyUpdateTime = DateTime.Now;
@@ -169,110 +167,5 @@ namespace PowerPointLabs.ImageSearch
                     break;
             }
         }
-
-        # region Sync PreviewListBox styles selection & CheckBox styles selection
-
-        // Sync PreviewListBox styles selection to CheckBox styles selection
-        private void UpdateConfirmApplyFlyOutComboBox(IList targetStyles)
-        {
-            TickCheckBox(
-                GetCheckBoxFromComboBoxItem(TargetStyleComboBox.Items[TextCollection.ImagesLabText.StyleIndexDirectText]),
-                HasStyle(targetStyles, TextCollection.ImagesLabText.StyleNameDirectText));
-            TickCheckBox(
-                GetCheckBoxFromComboBoxItem(TargetStyleComboBox.Items[TextCollection.ImagesLabText.StyleIndexBlur]),
-                HasStyle(targetStyles, TextCollection.ImagesLabText.StyleNameBlur));
-            TickCheckBox(
-                GetCheckBoxFromComboBoxItem(TargetStyleComboBox.Items[TextCollection.ImagesLabText.StyleIndexTextBox]),
-                HasStyle(targetStyles, TextCollection.ImagesLabText.StyleNameTextBox));
-            TickCheckBox(
-                GetCheckBoxFromComboBoxItem(TargetStyleComboBox.Items[TextCollection.ImagesLabText.StyleIndexBanner]),
-                HasStyle(targetStyles, TextCollection.ImagesLabText.StyleNameBanner));
-            TickCheckBox(
-                GetCheckBoxFromComboBoxItem(TargetStyleComboBox.Items[TextCollection.ImagesLabText.StyleIndexSpecialEffect]),
-                HasStyle(targetStyles, TextCollection.ImagesLabText.StyleNameSpecialEffect));
-            TickCheckBox(
-                GetCheckBoxFromComboBoxItem(TargetStyleComboBox.Items[TextCollection.ImagesLabText.StyleIndexOutline]),
-                HasStyle(targetStyles, TextCollection.ImagesLabText.StyleNameOutline));
-        }
-
-        // Sync CheckBox styles selection to PreviewListBox styles selection (when checked)
-        private void TargetStyleCheckBox_OnChecked(object sender, RoutedEventArgs e)
-        {
-            var targetStyleCheckBox = sender as CheckBox;
-            if (targetStyleCheckBox == null) return;
-
-            SyncCheckBoxSelectionToPreviewListBox(targetStyleCheckBox);
-        }
-
-        // Sync CheckBox styles selection to PreviewListBox styles selection (when unchecked)
-        private void TargetStyleCheckBox_OnUnchecked(object sender, RoutedEventArgs e)
-        {
-            var targetStyleCheckBox = sender as CheckBox;
-            if (targetStyleCheckBox == null) return;
-
-            SyncCheckBoxSelectionToPreviewListBox(targetStyleCheckBox, isToAddSelection: false);
-        }
-
-        // the rest is helper func
-
-        private bool HasStyle(IList targetStyles, string style)
-        {
-            return targetStyles.Cast<ImageItem>().Any(targetStyle => targetStyle.Tooltip == style);
-        }
-
-        private CheckBox GetCheckBoxFromComboBoxItem(Object item)
-        {
-            return (item as ComboBoxItem) != null ? ((ComboBoxItem)item).Content as CheckBox : null;
-        }
-
-        private void TickCheckBox(CheckBox cb, bool isChecked)
-        {
-            if (cb == null) return;
-            var originalTooltip = cb.ToolTip as string;
-            // avoid triggering Checked/Unchecked event
-            cb.ToolTip = "Updating...";
-            cb.IsChecked = isChecked;
-            cb.ToolTip = originalTooltip;
-        }
-
-        private void SyncCheckBoxSelectionToPreviewListBox(CheckBox targetStyleCheckBox, bool isToAddSelection = true)
-        {
-            switch (targetStyleCheckBox.ToolTip as string)
-            {
-                case "Style 1":
-                    SelectPreviewListBox(TextCollection.ImagesLabText.StyleIndexDirectText, isToAddSelection);
-                    break;
-                case "Style 2":
-                    SelectPreviewListBox(TextCollection.ImagesLabText.StyleIndexBlur, isToAddSelection);
-                    break;
-                case "Style 3":
-                    SelectPreviewListBox(TextCollection.ImagesLabText.StyleIndexTextBox, isToAddSelection);
-                    break;
-                case "Style 4":
-                    SelectPreviewListBox(TextCollection.ImagesLabText.StyleIndexBanner, isToAddSelection);
-                    break;
-                case "Style 5":
-                    SelectPreviewListBox(TextCollection.ImagesLabText.StyleIndexSpecialEffect, isToAddSelection);
-                    break;
-                case "Style 6":
-                    SelectPreviewListBox(TextCollection.ImagesLabText.StyleIndexOutline, isToAddSelection);
-                    break;
-            }
-        }
-
-        private void SelectPreviewListBox(int index, bool isToAdd)
-        {
-            if (index >= PreviewListBox.Items.Count) return;
-            if (isToAdd)
-            {
-                PreviewListBox.SelectedItems.Add(PreviewListBox.Items[index]);
-            }
-            else
-            {
-                PreviewListBox.SelectedItems.Remove(PreviewListBox.Items[index]);
-            }
-        }
-
-        #endregion
     }
 }

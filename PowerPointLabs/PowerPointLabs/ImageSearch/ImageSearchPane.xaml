@@ -64,9 +64,9 @@
                     <Button IsEnabled="False" Name="StylesPickUpButton" Click="StylesPickUpButton_OnClick" Grid.Column="2" Margin="0,0,5,0">Pick Up</Button>
                     <controls:ProgressRing Name="PreviewProgressRing" Width="10" Height="10" Grid.Column="3" IsActive="False" />
                 </Grid>
-                <TextBlock Visibility="Visible" Name="PreviewInstructions" TextWrapping="Wrap" HorizontalAlignment="Center" VerticalAlignment="Center" Foreground="#AAAAAA" FontSize="16" Grid.Row="2">Select an image to preview styles. Pick any styles and click PICK UP button to continue.</TextBlock>
-                <TextBlock Visibility="Hidden" Name="PreviewInstructionsWhenNoSelectedSlide" TextWrapping="Wrap" HorizontalAlignment="Center" VerticalAlignment="Center" Foreground="#AAAAAA" FontSize="16" Grid.Row="2">Select a slide in the presentation to preview styles. Pick any styles and click PICK UP button to continue.</TextBlock>
-                <ListBox SelectionMode="Multiple" TabIndex="2" Name="PreviewListBox" KeyUp="PreviewListBox_OnKeyUp" KeyDown="ListBox_OnKeyDown" IsSynchronizedWithCurrentItem="True" SelectionChanged="PreivewListBox_OnSelectionChanged" ItemsSource="{Binding Path=PreviewList, Mode=TwoWay}" Grid.Row="2">
+                <TextBlock Visibility="Visible" Name="PreviewInstructions" TextWrapping="Wrap" HorizontalAlignment="Center" VerticalAlignment="Center" Foreground="#AAAAAA" FontSize="16" Grid.Row="2">Select an image to preview styles. Pick any style and click PICK UP button to continue.</TextBlock>
+                <TextBlock Visibility="Hidden" Name="PreviewInstructionsWhenNoSelectedSlide" TextWrapping="Wrap" HorizontalAlignment="Center" VerticalAlignment="Center" Foreground="#AAAAAA" FontSize="16" Grid.Row="2">Select a slide in the presentation to preview styles. Pick any style and click PICK UP button to continue.</TextBlock>
+                <ListBox SelectionMode="Single" TabIndex="2" Name="PreviewListBox" KeyUp="PreviewListBox_OnKeyUp" KeyDown="ListBox_OnKeyDown" IsSynchronizedWithCurrentItem="True" SelectionChanged="PreivewListBox_OnSelectionChanged" ItemsSource="{Binding Path=PreviewList, Mode=TwoWay}" Grid.Row="2">
                     <ListBox.Resources>
                         <converter:TwoColumnsListBoxImageWidthConverter x:Key="TwoColumnsListBoxImageWidthConverter"></converter:TwoColumnsListBoxImageWidthConverter>
                     </ListBox.Resources>
@@ -165,6 +165,7 @@
                         </Rectangle>
                     </Button>
                 </Grid>
+                <TextBlock Margin="10,0,0,0" Visibility="Hidden" Name="VariationInstructionsWhenNoSelectedSlide" TextWrapping="Wrap" HorizontalAlignment="Center" VerticalAlignment="Center" Foreground="#AAAAAA" FontSize="16" Grid.Row="2">Select a slide in the presentation to preview variations. Select any one and click APPLY button to apply.</TextBlock>
                 <Grid Grid.Row="2" Margin="10,0,0,0">
                     <ListBox SelectionMode="Single" Name="VariationListBox" IsSynchronizedWithCurrentItem="True" SelectionChanged="VariationListBox_OnSelectionChanged" ItemsSource="{Binding Path=VariationList, Mode=TwoWay}">
                         <ListBox.Resources>
@@ -340,26 +341,6 @@
                         </Grid.ColumnDefinitions>
                         <Button Grid.Column="1" Click="ConfirmApplyPreviewButton_OnClick" Name="ConfirmApplyPreviewButton" Margin="0,0,5,0" >Preview</Button>
                         <Button Grid.Column="2" Click="ConfirmApplyButton_OnClick" Name="ConfirmApplyButton" Margin="0,0,5,0" >Apply</Button>
-                        <ComboBox Visibility="Collapsed" IsEditable="True" IsReadOnly="True" Text="--- Select Styles ---" Width="150" HorizontalAlignment="Right" Name="TargetStyleComboBox" Grid.Column="3">
-                            <ComboBoxItem>
-                                <CheckBox ToolTip="Style 1" Unchecked="TargetStyleCheckBox_OnUnchecked" Checked="TargetStyleCheckBox_OnChecked">Direct Text Style</CheckBox>
-                            </ComboBoxItem>
-                            <ComboBoxItem>
-                                <CheckBox ToolTip="Style 2" Unchecked="TargetStyleCheckBox_OnUnchecked" Checked="TargetStyleCheckBox_OnChecked">Blur Style</CheckBox>
-                            </ComboBoxItem>
-                            <ComboBoxItem>
-                                <CheckBox ToolTip="Style 3" Unchecked="TargetStyleCheckBox_OnUnchecked" Checked="TargetStyleCheckBox_OnChecked">TextBox Style</CheckBox>
-                            </ComboBoxItem>
-                            <ComboBoxItem>
-                                <CheckBox ToolTip="Style 4" Unchecked="TargetStyleCheckBox_OnUnchecked" Checked="TargetStyleCheckBox_OnChecked">Banner Style</CheckBox>
-                            </ComboBoxItem>
-                            <ComboBoxItem>
-                                <CheckBox ToolTip="Style 5" Unchecked="TargetStyleCheckBox_OnUnchecked" Checked="TargetStyleCheckBox_OnChecked">Special Effect Style</CheckBox>
-                            </ComboBoxItem>
-                            <ComboBoxItem>
-                                <CheckBox ToolTip="Style 6" Unchecked="TargetStyleCheckBox_OnUnchecked" Checked="TargetStyleCheckBox_OnChecked">Outline Style</CheckBox>
-                            </ComboBoxItem>
-                        </ComboBox>
                     </Grid>
                 </Grid>
             </Grid>

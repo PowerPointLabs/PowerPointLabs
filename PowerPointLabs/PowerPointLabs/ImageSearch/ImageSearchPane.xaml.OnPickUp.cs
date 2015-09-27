@@ -1,6 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media;
@@ -23,22 +21,22 @@ namespace PowerPointLabs.ImageSearch
             Dispatcher.BeginInvoke(new Action(() =>
             {
                 if (PreviewListBox.SelectedValue == null) return;
-            
+
+                var targetStyle = (ImageItem) PreviewListBox.SelectedValue;
                 var source = SearchListBox.SelectedValue as ImageItem;
-                var targetStyleItems = PreviewListBox.SelectedItems;
-                var targetStyles = targetStyleItems.Cast<ImageItem>().Select(item => item.Tooltip).ToList();
-                Assumption.Made(source != null && targetStyles.Count > 0, "source item or target style item is null/empty");
+                Assumption.Made(source != null && targetStyle != null, "source item or target style is null/empty");
 
                 try
                 {
                     var selectedId = VariationListBox.SelectedIndex >= 0 ? VariationListBox.SelectedIndex : 0;
                     VariationList.Clear();
-                    UpdateStyleVariationsImage(StyleOptions, source, targetStyles);
-                    UpdateStyleVariationsImage(StyleOptions1, source, targetStyles);
-                    UpdateStyleVariationsImage(StyleOptions2, source, targetStyles);
-                    UpdateStyleVariationsImage(StyleOptions3, source, targetStyles);
-                    UpdateStyleVariationsImage(StyleOptions4, source, targetStyles);
-                    UpdateStyleVariationsImage(StyleOptions5, source, targetStyles);
+
+                    var styleOptions = StyleOptionsFactory.GetVariationOptions(targetStyle.Tooltip);
+                    foreach (var styleOption in styleOptions)
+                    {
+                        UpdateStyleVariationsImage(styleOption, source);
+                    }
+
                     VariationListBox.SelectedIndex = selectedId;
                     if (source.FullSizeImageFile != null)
                     {
@@ -52,11 +50,15 @@ namespace PowerPointLabs.ImageSearch
             }));
         }
 
-        private void UpdateStyleVariationsImage(StyleOptions opt, ImageItem source, IList<string> targetStyles)
+        private void UpdateStyleVariationsImage(StyleOptions opt, ImageItem source)
         {
             PreviewPresentation.SetStyleOptions(opt);
-            var previewInfo = PreviewPresentation.PreviewApplyStyle(source, targetStyles);
-            VariationList.Add(new ImageItem { ImageFile = previewInfo.PreviewApplyStyleImagePath });
+            var previewInfo = PreviewPresentation.PreviewApplyStyle(source);
+            VariationList.Add(new ImageItem
+            {
+                ImageFile = previewInfo.PreviewApplyStyleImagePath,
+                Tooltip = opt.OptionName
+            });
         }
 
         private void PickUpStyle()
@@ -71,6 +73,8 @@ namespace PowerPointLabs.ImageSearch
 
         private void VariationListBox_OnSelectionChanged(object sender, SelectionChangedEventArgs e)
         {
+            if (PreviewListBox.SelectedValue == null) return;
+
             if (VariationListBox.SelectedValue == null)
             {
                 StyleApplyButton.IsEnabled = false;
@@ -80,33 +84,18 @@ namespace PowerPointLabs.ImageSearch
             {
                 StyleApplyButton.IsEnabled = true;
                 StyleCustomizeButton.IsEnabled = true;
-                switch (VariationListBox.SelectedIndex)
+
+                var targetStyle = ((ImageItem) PreviewListBox.SelectedValue).Tooltip;
+                var options = StyleOptionsFactory.GetVariationOptions(targetStyle);
+
+                var targetStyleOption = options[VariationListBox.SelectedIndex];
+                targetStyleOption.PropertyChanged += (o, args) =>
                 {
-                    case 0:
-                        PreviewPresentation.SetStyleOptions(StyleOptions);
-                        OptionsPane2.DataContext = StyleOptions;
-                        break;
-                    case 1:
-                        PreviewPresentation.SetStyleOptions(StyleOptions1);
-                        OptionsPane2.DataContext = StyleOptions1;
-                        break;
-                    case 2:
-                        PreviewPresentation.SetStyleOptions(StyleOptions2);
-                        OptionsPane2.DataContext = StyleOptions2;
-                        break;
-                    case 3:
-                        PreviewPresentation.SetStyleOptions(StyleOptions3);
-                        OptionsPane2.DataContext = StyleOptions3;
-                        break;
-                    case 4:
-                        PreviewPresentation.SetStyleOptions(StyleOptions4);
-                        OptionsPane2.DataContext = StyleOptions4;
-                        break;
-                    case 5:
-                        PreviewPresentation.SetStyleOptions(StyleOptions5);
-                        OptionsPane2.DataContext = StyleOptions5;
-                        break;
-                }
+                    _latestStyleOptionsUpdateTime = DateTime.Now;
+                };
+
+                PreviewPresentation.SetStyleOptions(targetStyleOption);
+                OptionsPane2.DataContext = targetStyleOption;
             }
         }
 
@@ -158,13 +147,11 @@ namespace PowerPointLabs.ImageSearch
             if (PreviewListBox.SelectedValue == null) return;
 
             var source = SearchListBox.SelectedValue as ImageItem;
-            var targetStyleItems = PreviewListBox.SelectedItems;
-            var targetStyles = targetStyleItems.Cast<ImageItem>().Select(item => item.Tooltip).ToList();
-            Assumption.Made(source != null && targetStyles.Count > 0, "source item or target style item is null/empty");
+            Assumption.Made(source != null, "source item is null/empty");
 
             try
             {
-                PreviewPresentation.ApplyStyle(source, targetStyles);
+                PreviewPresentation.ApplyStyle(source);
                 this.ShowMessageAsync("", TextCollection.ImagesLabText.SuccessfullyAppliedStyle);
             }
             catch (AssumptionFailedException)

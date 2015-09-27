@@ -10,26 +10,24 @@ namespace PowerPointLabs.ImageSearch.Domain
     [Serializable]
     public class StyleOptions : Model
     {
-        public bool IsDefaultOptions { get; set; }
-
         public StyleOptions()
         {
             Init();
         }
 
         # region UI related prop
-        private bool _isUseOriginalTextFormat;
+        private bool _isUseTextFormat;
 
-        public bool IsUseOriginalTextFormat
+        public bool IsUseTextFormat
         {
             get
             {
-                return _isUseOriginalTextFormat;
+                return _isUseTextFormat;
             }
             set
             {
-                _isUseOriginalTextFormat = value;
-                OnPropertyChanged("IsUseOriginalTextFormat");
+                _isUseTextFormat = value;
+                OnPropertyChanged("IsUseTextFormat");
             }
         }
 
@@ -93,8 +91,22 @@ namespace PowerPointLabs.ImageSearch.Domain
             }
         }
 
-        // for direct text/special effect/blur style
-        // for background's
+        // ******************************************************
+        // for overlay style
+        // ******************************************************
+
+        private bool _isUseOverlayStyle;
+
+        public bool IsUseOverlayStyle
+        {
+            get { return _isUseOverlayStyle; }
+            set
+            {
+                _isUseOverlayStyle = value;
+                OnPropertyChanged("IsUseOverlayStyle");
+            }
+        }
+
         private string _overlayColor;
 
         public string OverlayColor
@@ -120,7 +132,21 @@ namespace PowerPointLabs.ImageSearch.Domain
             }
         }
 
+        // ******************************************************
         // for textbox style
+        // ******************************************************
+
+        private bool _isUseTextBoxStyle;
+
+        public bool IsUseTextBoxStyle
+        {
+            get { return _isUseTextBoxStyle; }
+            set
+            {
+                _isUseTextBoxStyle = value;
+                OnPropertyChanged("IsUseTextBoxStyle");
+            }
+        }
 
         private string _textBoxOverlayColor;
 
@@ -146,7 +172,22 @@ namespace PowerPointLabs.ImageSearch.Domain
             }
         }
 
+        // ******************************************************
         // for banner style
+        // ******************************************************
+
+        private bool _isUseBannerStyle;
+
+        public bool IsUseBannerStyle
+        {
+            get { return _isUseBannerStyle; }
+            set
+            {
+                _isUseBannerStyle = value;
+                OnPropertyChanged("IsUseBannerStyle");
+            }
+        }
+
         private int _bannerShape;
 
         public int BannerShape
@@ -195,7 +236,22 @@ namespace PowerPointLabs.ImageSearch.Domain
             }
         }
 
+        // ******************************************************
         // for special effect style
+        // ******************************************************
+
+        private bool _isUseSpecialEffectStyle;
+
+        public bool IsUseSpecialEffectStyle
+        {
+            get { return _isUseSpecialEffectStyle; }
+            set
+            {
+                _isUseSpecialEffectStyle = value;
+                OnPropertyChanged("IsUseSpecialEffectStyle");
+            }
+        }
+
         private int _specialEffect;
 
         public int SpecialEffect
@@ -208,44 +264,36 @@ namespace PowerPointLabs.ImageSearch.Domain
             }
         }
 
-        // for outline style
-        private int _outlineShape;
+        // ******************************************************
+        // for blur style
+        // ******************************************************
 
-        public int OutlineShape
+        private bool _isUseBlurStyle;
+
+        public bool IsUseBlurStyle
         {
-            get { return _outlineShape; }
+            get { return _isUseBlurStyle; }
             set
             {
-                _outlineShape = value;
-                OnPropertyChanged("OutlineShape");
+                _isUseBlurStyle = value;
+                OnPropertyChanged("IsUseBlurStyle");
             }
         }
 
-        private string _outlineOverlayColor;
+        private int _blurDegree;
 
-        public string OutlineOverlayColor
+        public int BlurDegree
         {
-            get { return _outlineOverlayColor; }
+            get { return _blurDegree; }
             set
             {
-                _outlineOverlayColor = value;
-                OnPropertyChanged("OutlineOverlayColor");
-            }
-        }
-
-        private int _outlineTransparency;
-
-        public int OutlineTransparency
-        {
-            get { return _outlineTransparency; }
-            set
-            {
-                _outlineTransparency = value;
-                OnPropertyChanged("OutlineTransparency");
+                _blurDegree = value;
+                OnPropertyChanged("BlurDegree");
             }
         }
 
         // other
+
         private bool _isInsertReference;
 
         public bool IsInsertReference
@@ -257,37 +305,43 @@ namespace PowerPointLabs.ImageSearch.Domain
                 OnPropertyChanged("IsInsertReference");
             }
         }
+
+        public string OptionName { get; set; }
+
         # endregion
 
         # region Logic
         public void Init()
         {
-            IsDefaultOptions = true;
-
-            IsUseOriginalTextFormat = false;
-            FontFamily = 1;
-            FontSizeIncrease = 10;
+            IsUseTextFormat = false;
+            FontFamily = 5;
+            FontSizeIncrease = 0;
             FontColor = "#FFFFFF";
             TextBoxPosition = 4;
             TextBoxAlignment = 0;
 
-            OverlayColor = "#000000";
-            Transparency = 85;
+            IsUseOverlayStyle = false;
+            OverlayColor = "#00B1FD"; // blue
+            Transparency = 25;
+
+            IsUseBannerStyle = false;
             BannerOverlayColor = "#000000";
             BannerTransparency = 25;
+            BannerShape = 0;
+            BannerDirection = 0;
+
+            IsUseTextBoxStyle = false;
             TextBoxOverlayColor = "#D74926"; // red-orange
             TextBoxTransparency = 25;
 
-            BannerShape = 0;
-            BannerDirection = 0;
-            
+            IsUseSpecialEffectStyle = false;
             SpecialEffect = 0;
 
-            OutlineShape = 0;
-            OutlineOverlayColor = "#FFFFFF";
-            OutlineTransparency = 1;
+            IsUseBlurStyle = false;
+            BlurDegree = 85;
 
             IsInsertReference = false;
+            OptionName = "Default";
         }
 
         public string GetFontFamily()
@@ -361,19 +415,12 @@ namespace PowerPointLabs.ImageSearch.Domain
             {
                 case 0:
                     return Handler.Effect.BannerShape.Rectangle;
-                default:
+                case 1:
                     return Handler.Effect.BannerShape.Circle;
-            }
-        }
-
-        public OutlineShape GetOutlineShape()
-        {
-            switch (OutlineShape)
-            {
-                case 0:
-                    return Handler.Effect.OutlineShape.RectangleOutline;
+                case 2:
+                    return Handler.Effect.BannerShape.RectangleOutline;
                 default:
-                    return Handler.Effect.OutlineShape.CircleOutline;
+                    return Handler.Effect.BannerShape.CircleOutline;
             }
         }
 

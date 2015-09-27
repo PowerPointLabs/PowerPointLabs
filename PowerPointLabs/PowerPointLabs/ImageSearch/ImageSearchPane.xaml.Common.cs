@@ -19,7 +19,7 @@ namespace PowerPointLabs.ImageSearch
         }
 
         private void HandleDownloadedThumbnail(
-            ImageItem item, string thumbnailPath, object searchResult = null, IList<int> selectedIds = null)
+            ImageItem item, string thumbnailPath, object searchResult = null)
         {
             Dispatcher.BeginInvoke(new Action(() =>
             {
@@ -40,7 +40,7 @@ namespace PowerPointLabs.ImageSearch
                 var selectedImageItem = SearchListBox.SelectedValue as ImageItem;
                 if (selectedImageItem != null && item.ImageFile == selectedImageItem.ImageFile)
                 {
-                    DoPreview(selectedIds);
+                    DoPreview();
                 }
             }));
         }

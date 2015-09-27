@@ -1,10 +1,8 @@
-﻿using System;
-using System.Windows;
+﻿using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Forms;
 using System.Windows.Input;
 using System.Windows.Media;
-using MahApps.Metro.Controls;
 using PowerPointLabs.ImageSearch.Domain;
 using PowerPointLabs.Utils;
 using Color = System.Drawing.Color;
@@ -52,9 +50,6 @@ namespace PowerPointLabs.ImageSearch
                 case "BannerOverlayColorPanel":
                     options.BannerOverlayColor = hexString;
                     break;
-                case "OutlineOverlayColorPanel":
-                    options.OutlineOverlayColor = hexString;
-                    break;
             }
         }
 
@@ -69,25 +64,6 @@ namespace PowerPointLabs.ImageSearch
             if (options != null)
             {
                 options.Init();
-            }
-        }
-
-        private void ToggleSwitch_OnIsCheckedChanged(object sender, EventArgs e)
-        {
-            var toggleSwitch = sender as ToggleSwitch;
-            if (toggleSwitch == null || toggleSwitch.IsChecked == null) return;
-
-            if (toggleSwitch.IsChecked.Value)
-            {
-                FontFamilyComboBox.IsEnabled = false;
-                FontSizeTextBox.IsEnabled = false;
-                FontColorPanel.IsEnabled = false;
-            }
-            else
-            {
-                FontFamilyComboBox.IsEnabled = true;
-                FontSizeTextBox.IsEnabled = true;
-                FontColorPanel.IsEnabled = true;
             }
         }
 

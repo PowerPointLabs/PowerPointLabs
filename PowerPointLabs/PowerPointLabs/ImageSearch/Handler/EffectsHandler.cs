@@ -19,9 +19,8 @@ namespace PowerPointLabs.ImageSearch.Handler
     {
         private const string ShapeNamePrefix = "pptImagesLab";
 
-        private const float ThumbnailWidth = 150f;
-
-        private const float ThumbnailHeight = 110f;
+        private const float MinThumbnailHeight = 11f;
+        private const float MaxThumbnailHeight = 1100f;
 
         private ImageItem Source { get; set; }
 
@@ -254,29 +253,14 @@ namespace PowerPointLabs.ImageSearch.Handler
             }
         }
 
-        // add a blured background image shape from imageItem
-        public PowerPoint.Shape ApplyBlurEffect(PowerPoint.Shape imageShape, string overlayColor, int transparency)
-        {
-            var overlayShape = ApplyOverlayEffect(overlayColor, transparency);
-            var blurImageShape = ApplyBlurEffect();
-
-            overlayShape.ZOrder(MsoZOrderCmd.msoSendToBack);
-            blurImageShape.ZOrder(MsoZOrderCmd.msoSendToBack);
-            if (imageShape != null)
-            {
-                imageShape.ZOrder(MsoZOrderCmd.msoSendToBack);
-            }
-            return blurImageShape;
-        }
-
-        public PowerPoint.Shape ApplyBlurEffect(string imageFileToBlur = null)
+        public PowerPoint.Shape ApplyBlurEffect(string imageFileToBlur = null, int degree = 85)
         {
             var isBlurFullSizeImage = (Source.ImageFile == Source.FullSizeImageFile 
                 || imageFileToBlur != null
                 || Source.FullSizeImageFile != null);
             Source.BlurImageFile = BlurImage(imageFileToBlur 
                 ?? Source.FullSizeImageFile 
-                ?? Source.ImageFile, isBlurFullSizeImage);
+                ?? Source.ImageFile, isBlurFullSizeImage, degree);
             var blurImageShape = AddPicture(Source.BlurImageFile, EffectName.Blur);
             FitToSlide.AutoFit(blurImageShape, PreviewPresentation);
             CropPicture(blurImageShape);
@@ -475,20 +459,6 @@ namespace PowerPointLabs.ImageSearch.Handler
             }
         }
 
-        private PowerPoint.Shape BlurTextbox(PowerPoint.Shape blurImageShape, 
-            float left, float top, float width, float height)
-        {
-            blurImageShape.Copy();
-            var blurImageShapeCopy = Shapes.Paste()[1];
-            ChangeName(blurImageShapeCopy, EffectName.Blur);
-            PowerPointLabsGlobals.CopyShapePosition(blurImageShape, ref blurImageShapeCopy);
-            blurImageShapeCopy.PictureFormat.Crop.ShapeLeft = left;
-            blurImageShapeCopy.PictureFormat.Crop.ShapeTop = top;
-            blurImageShapeCopy.PictureFormat.Crop.ShapeWidth = width;
-            blurImageShapeCopy.PictureFormat.Crop.ShapeHeight = height;
-            return blurImageShapeCopy;
-        }
-
         private PowerPoint.Shape AddPicture(string imageFile, EffectName effectName)
         {
             var imageShape = Shapes.AddPicture(imageFile,
@@ -508,7 +478,7 @@ namespace PowerPointLabs.ImageSearch.Handler
             ShapeUtil.AddTag(shape, tagName, value);
         }
 
-        public static string BlurImage(string imageFilePath, bool isBlurForFullsize)
+        private static string BlurImage(string imageFilePath, bool isBlurForFullsize, int degree)
         {
             var blurImageFile = TempPath.GetPath("fullsize_blur");
             using (var imageFactory = new ImageFactory())
@@ -519,8 +489,10 @@ namespace PowerPointLabs.ImageSearch.Handler
                         .Load(imageFilePath)
                         .Image;
                     var ratio = (float) image.Width / image.Height;
+                    var targetHeight = MaxThumbnailHeight - (MaxThumbnailHeight - MinThumbnailHeight) / 100f * degree;
+
                     image = imageFactory
-                        .Resize(new Size((int)(ThumbnailHeight * ratio), (int)ThumbnailHeight))
+                        .Resize(new Size((int)(targetHeight * ratio), (int)targetHeight))
                         .GaussianBlur(5).Image;
                     image.Save(blurImageFile);
                 }

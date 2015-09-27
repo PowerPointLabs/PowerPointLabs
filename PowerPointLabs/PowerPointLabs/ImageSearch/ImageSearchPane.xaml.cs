@@ -80,14 +80,6 @@ namespace PowerPointLabs.ImageSearch
         // indicate whether the window is open/closed or not
         public bool IsOpen { get; set; }
 
-        // default style options
-        public StyleOptions StyleOptions { get; set; }
-        public StyleOptions StyleOptions1 { get; set; }
-        public StyleOptions StyleOptions2 { get; set; }
-        public StyleOptions StyleOptions3 { get; set; }
-        public StyleOptions StyleOptions4 { get; set; }
-        public StyleOptions StyleOptions5 { get; set; }
-
         public SearchOptions SearchOptions { get; set; }
 
         // indicate whether it's downloading fullsize image, so that debounce.
@@ -120,7 +112,6 @@ namespace PowerPointLabs.ImageSearch
             InitPreviewList();
             InitVariationList();
             IsOpen = true;
-            InitStyleOptions();
             InitSearchOptions();
             InitSearchButtons();
             InitConfirmApplyFlyout();
@@ -140,6 +131,7 @@ namespace PowerPointLabs.ImageSearch
         private void InitVariationList()
         {
             VariationList = new ObservableCollection<ImageItem>();
+            VariationList.CollectionChanged += VariationList_OnCollectionChanged;
             VariationListBox.DataContext = this;
         }
 
@@ -167,7 +159,6 @@ namespace PowerPointLabs.ImageSearch
             ConfirmApplyFlyoutTitle = new ObservableString { Text = "Confirm Apply" };
             ConfirmApplyImage.DataContext = ConfirmApplyPreviewImageFile;
             CustomizationFlyout.DataContext = ConfirmApplyFlyoutTitle;
-            OptionsPane2.DataContext = StyleOptions;
         }
 
         private void InitSearchTextbox()
@@ -214,35 +205,9 @@ namespace PowerPointLabs.ImageSearch
             AdvancedPane.DataContext = SearchOptions;
         }
 
-        private void InitStyleOptions()
-        {
-            StyleOptions = StyleOptions.Load(StoragePath.GetPath("ImagesLabStyleOptions"));
-            StyleOptions.PropertyChanged += StylesOptions_OnPropertyChanged;
-
-            StyleOptions1 = StyleOptions.Load(StoragePath.GetPath("ImagesLabStyleOptions1"));
-            if (StyleOptions1.IsDefaultOptions) StyleOptions1 = StyleOptionsFactory.GetOptions1();
-
-            StyleOptions2 = StyleOptions.Load(StoragePath.GetPath("ImagesLabStyleOptions2"));
-            if (StyleOptions2.IsDefaultOptions) StyleOptions2 = StyleOptionsFactory.GetOptions2();
-
-            StyleOptions3 = StyleOptions.Load(StoragePath.GetPath("ImagesLabStyleOptions3"));
-            if (StyleOptions3.IsDefaultOptions) StyleOptions3 = StyleOptionsFactory.GetOptions3();
-
-            StyleOptions4 = StyleOptions.Load(StoragePath.GetPath("ImagesLabStyleOptions4"));
-            if (StyleOptions4.IsDefaultOptions) StyleOptions4 = StyleOptionsFactory.GetOptions4();
-
-            StyleOptions5 = StyleOptions.Load(StoragePath.GetPath("ImagesLabStyleOptions5"));
-            if (StyleOptions5.IsDefaultOptions) StyleOptions5 = StyleOptionsFactory.GetOptions5();
-        }
-
-        private void StylesOptions_OnPropertyChanged(object sender, PropertyChangedEventArgs e)
-        {
-            _latestStyleOptionsUpdateTime = DateTime.Now;
-        }
-
         private void InitPreviewPresentation()
         {
-            PreviewPresentation = new StylesHandler(StyleOptions);
+            PreviewPresentation = new StylesHandler();
             PreviewPresentation.Open(withWindow: false, focus: false);
         }
 
@@ -262,11 +227,11 @@ namespace PowerPointLabs.ImageSearch
                 // only one entry
                 _isStylePreviewRegionInit = true;
                 var isPreviewInstructionsVisible = PreviewInstructions.Visibility == Visibility.Visible;
-                PreviewInstructions.Visibility = Visibility.Collapsed;
+                PreviewInstructions.Visibility = Visibility.Hidden;
                 PreviewInstructions.Opacity = 0;
                 var isPreviewInstructionsWhenNoSelectedSlideVisible =
                     PreviewInstructionsWhenNoSelectedSlide.Visibility == Visibility.Visible;
-                PreviewInstructionsWhenNoSelectedSlide.Visibility = Visibility.Collapsed;
+                PreviewInstructionsWhenNoSelectedSlide.Visibility = Visibility.Hidden;
                 PreviewInstructionsWhenNoSelectedSlide.Opacity = 0;
                 
                 var previewRegionShowAnimation = new DoubleAnimation(0, 560d, TimeSpan.FromMilliseconds(600))
@@ -304,8 +269,29 @@ namespace PowerPointLabs.ImageSearch
             }
         }
 
+        private void VariationList_OnCollectionChanged(object sender, NotifyCollectionChangedEventArgs e)
+        {
+            if (VariationList.Count != 0)
+            {
+                VariationInstructionsWhenNoSelectedSlide.Visibility = Visibility.Hidden;
+            }
+            else if (PowerPointCurrentPresentationInfo.CurrentSlide == null)
+            {
+                VariationInstructionsWhenNoSelectedSlide.Visibility = Visibility.Visible;
+            }
+            else
+            {
+                VariationInstructionsWhenNoSelectedSlide.Visibility = Visibility.Hidden;
+            }
+        }
+
         private void PreviewList_OnCollectionChanged(object sender, NotifyCollectionChangedEventArgs e)
         {
+            PreviewInstructions.BeginAnimation(OpacityProperty, null);
+            PreviewInstructions.Opacity = 100;
+            PreviewInstructionsWhenNoSelectedSlide.BeginAnimation(OpacityProperty, null);
+            PreviewInstructionsWhenNoSelectedSlide.Opacity = 100;
+
             if (PreviewList.Count != 0)
             {
                 PreviewInstructions.Visibility = Visibility.Hidden;
@@ -453,7 +439,6 @@ namespace PowerPointLabs.ImageSearch
                 StylesPickUpButton.IsEnabled = true;
                 ConfirmApplyButton.IsEnabled = true;
                 ConfirmApplyPreviewButton.IsEnabled = true;
-                UpdateConfirmApplyFlyOutComboBox(PreviewListBox.SelectedItems);
             }
             else
             {
@@ -471,12 +456,6 @@ namespace PowerPointLabs.ImageSearch
             {
                 PreviewPresentation.Close();
             }
-            StyleOptions.Save(StoragePath.GetPath("ImagesLabStyleOptions"));
-            StyleOptions1.Save(StoragePath.GetPath("ImagesLabStyleOptions1"));
-            StyleOptions2.Save(StoragePath.GetPath("ImagesLabStyleOptions2"));
-            StyleOptions3.Save(StoragePath.GetPath("ImagesLabStyleOptions3"));
-            StyleOptions4.Save(StoragePath.GetPath("ImagesLabStyleOptions4"));
-            StyleOptions5.Save(StoragePath.GetPath("ImagesLabStyleOptions5"));
             SearchOptions.Save(StoragePath.GetPath("ImagesLabSearchOptions"));
         }
 
@@ -539,14 +518,14 @@ namespace PowerPointLabs.ImageSearch
                     FocusSearchTextBox();
                     break;
                 case TextCollection.ImagesLabText.ButtonIndexDownload:
-                    SearchListBoxContextMenu.Visibility = Visibility.Visible;;
+                    SearchListBoxContextMenu.Visibility = Visibility.Visible;
                     SearchTextBox.IsEnabled = true;
                     SearchTextboxWatermark.Text = TextCollection.ImagesLabText.TextBoxWatermarkDownload;
                     SearchInstructions.Text = TextCollection.ImagesLabText.InstructionForDownload;
                     CopyContentToObservableList(_downloadedImages, SearchList);
                     break;
                 case TextCollection.ImagesLabText.ButtonIndexFromFile:
-                    SearchListBoxContextMenu.Visibility = Visibility.Visible;;
+                    SearchListBoxContextMenu.Visibility = Visibility.Visible;
                     SearchTextBox.IsEnabled = false;
                     SearchTextboxWatermark.Text = TextCollection.ImagesLabText.TextBoxWatermarkFromFile;
                     SearchInstructions.Text = TextCollection.ImagesLabText.InstructionForFromFile;
