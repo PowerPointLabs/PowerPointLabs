@@ -36,7 +36,6 @@
             <RowDefinition Height="Auto"/>
             <RowDefinition Height="35"/>
             <RowDefinition Height="35"/>
-            <RowDefinition Height="35"/>
         </Grid.RowDefinitions>
         <Grid Grid.Column="0" ColumnSpan="2" Grid.Row="0">
             <Grid.RowDefinitions>
@@ -275,10 +274,7 @@
             </Grid>
         </Grid>
 
-        <Grid Background="#D74926" Grid.Column="0" ColumnSpan="2" Grid.Row="6">
-            <Label  Content="other" Foreground="#FFFFFF"  FontSize="15" HorizontalAlignment="Left" VerticalAlignment="Center" Grid.Column="0"/>
-        </Grid>
-        <Grid Background="#454545" Grid.Column="0" ColumnSpan="2" Grid.Row="7">
+        <Grid Background="#454545" Grid.Column="0" ColumnSpan="2" Grid.Row="6">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition></ColumnDefinition>
                 <ColumnDefinition></ColumnDefinition>
@@ -287,6 +283,6 @@
             <controls:ToggleSwitch IsChecked="{Binding Path=IsInsertReference, Mode=TwoWay, NotifyOnSourceUpdated=True}" HorizontalAlignment="Left" OnLabel="" OffLabel="" Grid.Column="1" />
         </Grid>
         
-        <Button Visibility="Hidden" Click="ResetButton_OnClick" Content="Reset" Width="50" Height="30" HorizontalAlignment="Left" VerticalAlignment="Center" Grid.Column="0" Grid.Row="8"></Button>
+        <Button Visibility="Hidden" Click="ResetButton_OnClick" Content="Reset" Width="50" Height="30" HorizontalAlignment="Left" VerticalAlignment="Center" Grid.Column="0" Grid.Row="7"></Button>
     </Grid>
 </UserControl>
