@@ -183,6 +183,22 @@ namespace PowerPointLabs.ImageSearch.Domain
                     TextBoxPosition = 5,//Centered
                     IsUseSpecialEffectStyle = true,
                     SpecialEffect = 9
+                },
+                new StyleOptions
+                {
+                    OptionName = "Gotham",
+                    IsUseTextFormat = true,
+                    TextBoxPosition = 5,//Centered
+                    IsUseSpecialEffectStyle = true,
+                    SpecialEffect = 3
+                },
+                new StyleOptions
+                {
+                    OptionName = "Polaroid",
+                    IsUseTextFormat = true,
+                    TextBoxPosition = 5,//Centered
+                    IsUseSpecialEffectStyle = true,
+                    SpecialEffect = 8
                 }
             };
         } 
