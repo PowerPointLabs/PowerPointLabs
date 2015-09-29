@@ -372,15 +372,15 @@ namespace PowerPointLabs.ImageSearch.Domain
             {
                 new StyleOptions
                 {
-                    OptionName = "100% Blurness",
+                    OptionName = "95% Blurriness",
                     IsUseTextFormat = true,
                     TextBoxPosition = 4,//Left
                     IsUseBlurStyle = true,
-                    BlurDegree = 100
+                    BlurDegree = 99
                 },
                 new StyleOptions
                 {
-                    OptionName = "80% Blurness",
+                    OptionName = "80% Blurriness",
                     IsUseTextFormat = true,
                     TextBoxPosition = 4,//Left
                     IsUseBlurStyle = true,
@@ -388,7 +388,7 @@ namespace PowerPointLabs.ImageSearch.Domain
                 },
                 new StyleOptions
                 {
-                    OptionName = "60% Blurness",
+                    OptionName = "60% Blurriness",
                     IsUseTextFormat = true,
                     TextBoxPosition = 4,//Left
                     IsUseBlurStyle = true,
@@ -396,7 +396,7 @@ namespace PowerPointLabs.ImageSearch.Domain
                 },
                 new StyleOptions
                 {
-                    OptionName = "40% Blurness",
+                    OptionName = "40% Blurriness",
                     IsUseTextFormat = true,
                     TextBoxPosition = 4,//Left
                     IsUseBlurStyle = true,
@@ -404,7 +404,7 @@ namespace PowerPointLabs.ImageSearch.Domain
                 },
                 new StyleOptions
                 {
-                    OptionName = "20% Blurness",
+                    OptionName = "20% Blurriness",
                     IsUseTextFormat = true,
                     TextBoxPosition = 4,//Left
                     IsUseBlurStyle = true,
@@ -412,7 +412,7 @@ namespace PowerPointLabs.ImageSearch.Domain
                 },
                 new StyleOptions
                 {
-                    OptionName = "60% Blurness, Centered",
+                    OptionName = "60% Blurriness, Centered",
                     IsUseTextFormat = true,
                     TextBoxPosition = 5,//Centered
                     IsUseBlurStyle = true,
@@ -420,7 +420,7 @@ namespace PowerPointLabs.ImageSearch.Domain
                 },
                 new StyleOptions
                 {
-                    OptionName = "60% Blurness, Bottom-left",
+                    OptionName = "60% Blurriness, Bottom-left",
                     IsUseTextFormat = true,
                     TextBoxPosition = 7,//Bottom left
                     IsUseBlurStyle = true,
@@ -428,7 +428,7 @@ namespace PowerPointLabs.ImageSearch.Domain
                 },
                 new StyleOptions
                 {
-                    OptionName = "60% Blurness, Bottom",
+                    OptionName = "60% Blurriness, Bottom",
                     IsUseTextFormat = true,
                     TextBoxPosition = 8,//Bottom
                     IsUseBlurStyle = true,
