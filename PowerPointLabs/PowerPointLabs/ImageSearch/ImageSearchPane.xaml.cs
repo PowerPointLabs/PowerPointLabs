@@ -274,14 +274,17 @@ namespace PowerPointLabs.ImageSearch
             if (VariationList.Count != 0)
             {
                 VariationInstructionsWhenNoSelectedSlide.Visibility = Visibility.Hidden;
+                VariantsComboBox.IsEnabled = true;
             }
             else if (PowerPointCurrentPresentationInfo.CurrentSlide == null)
             {
                 VariationInstructionsWhenNoSelectedSlide.Visibility = Visibility.Visible;
+                VariantsComboBox.IsEnabled = false;
             }
             else
             {
                 VariationInstructionsWhenNoSelectedSlide.Visibility = Visibility.Hidden;
+                VariantsComboBox.IsEnabled = true;
             }
         }
 

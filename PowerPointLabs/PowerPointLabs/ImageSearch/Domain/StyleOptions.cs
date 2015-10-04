@@ -313,7 +313,7 @@ namespace PowerPointLabs.ImageSearch.Domain
         # region Logic
         public void Init()
         {
-            IsUseTextFormat = false;
+            IsUseTextFormat = true;
             FontFamily = 5;
             FontSizeIncrease = 0;
             FontColor = "#FFFFFF";
@@ -359,7 +359,11 @@ namespace PowerPointLabs.ImageSearch.Domain
                 case 4:
                     return "Trebuchet MS";
                 case 5:
-                    return "";
+                    return ""; // original font family
+                case 6:
+                    return "Times New Roman";
+                case 7:
+                    return "Tahoma";
                 default:
                     return "Segoe UI";
             }

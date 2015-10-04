@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media;
@@ -16,7 +17,14 @@ namespace PowerPointLabs.ImageSearch
     {
         private bool _isVariationsFlyoutOpen;
 
-        private void UpdateStyleVariationsImages()
+        private const int VariationSize = 8;
+        private bool _isUpdatingVariantsComboBox;
+        private string _previousVariantsCategory;
+        private Dictionary<string, int> _selectedVariants;
+        private IList<StyleOptions> _styleOptions;
+        private Dictionary<string, List<StyleVariants>> _styleVariants; 
+
+        private void UpdateStyleVariationsImages(bool isOpenFlyout = false)
         {
             Dispatcher.BeginInvoke(new Action(() =>
             {
@@ -31,8 +39,39 @@ namespace PowerPointLabs.ImageSearch
                     var selectedId = VariationListBox.SelectedIndex >= 0 ? VariationListBox.SelectedIndex : 0;
                     VariationList.Clear();
 
-                    var styleOptions = StyleOptionsFactory.GetVariationOptions(targetStyle.Tooltip);
-                    foreach (var styleOption in styleOptions)
+                    if (isOpenFlyout)
+                    {
+                        selectedId = 0;
+                        _styleOptions = new List<StyleOptions>();
+                        for (var i = 0; i < VariationSize; i++)
+                        {
+                            _styleOptions.Add(new StyleOptions());
+                        }
+                        _styleVariants = StyleVariantsFactory.GetVariants(targetStyle.Tooltip);
+                        _selectedVariants = new Dictionary<string, int>();
+
+                        _isUpdatingVariantsComboBox = true;
+                        VariantsComboBox.Items.Clear();
+                        foreach (var key in _styleVariants.Keys)
+                        {
+                            VariantsComboBox.Items.Add(key);
+                            _selectedVariants.Add(key, 0);
+                        }
+                        VariantsComboBox.SelectedIndex = 0;
+                        _previousVariantsCategory = (string) VariantsComboBox.SelectedValue;
+                        _isUpdatingVariantsComboBox = false;
+
+                        foreach (var variants in _styleVariants.Values)
+                        {
+                            for (var i = 0; i < variants.Count && i < _styleOptions.Count; i++)
+                            {
+                                variants[i].Apply(_styleOptions[i]);
+                            }
+                            break;
+                        }
+                    }
+
+                    foreach (var styleOption in _styleOptions)
                     {
                         UpdateStyleVariationsImage(styleOption, source);
                     }
@@ -42,12 +81,44 @@ namespace PowerPointLabs.ImageSearch
                     {
                         SetProgressingRingStatus(false);
                     }
+                    VariationListBox.ScrollIntoView(VariationListBox.SelectedItem);
                 }
                 catch
                 {
                     // ignore, selected slide may be null
                 }
             }));
+        }
+
+        private void VariantsComboBox_OnSelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            if (_isUpdatingVariantsComboBox) return;
+
+            _selectedVariants[_previousVariantsCategory] = VariationListBox.SelectedIndex;
+
+            var targetVariants = _styleVariants[_previousVariantsCategory];
+            if (targetVariants.Count == 0) return;
+
+            var targetVariationSelectedIndex = VariationListBox.SelectedIndex > 0 && 
+                VariationListBox.SelectedIndex < targetVariants.Count
+                ? VariationListBox.SelectedIndex
+                : 0;
+            var targetVariant = targetVariants[targetVariationSelectedIndex];
+            foreach (var option in _styleOptions)
+            {
+                targetVariant.Apply(option);
+            }
+
+            var currentVariantsCategory = (string) VariantsComboBox.SelectedValue;
+            var nextCategoryVariants = _styleVariants[currentVariantsCategory];
+            for (var i = 0; i < nextCategoryVariants.Count && i < _styleOptions.Count; i++)
+            {
+                nextCategoryVariants[i].Apply(_styleOptions[i]);
+            }
+
+            _previousVariantsCategory = currentVariantsCategory;
+            VariationListBox.SelectedIndex = _selectedVariants[currentVariantsCategory];
+            UpdateStyleVariationsImages();
         }
 
         private void UpdateStyleVariationsImage(StyleOptions opt, ImageItem source)
@@ -67,7 +138,7 @@ namespace PowerPointLabs.ImageSearch
             var targetStyle = PreviewListBox.SelectedItems;
             if (source == null || targetStyle == null || targetStyle.Count == 0) return;
 
-            UpdateStyleVariationsImages();
+            UpdateStyleVariationsImages(isOpenFlyout: true);
             OpenVariationsFlyout();
         }
 
@@ -85,10 +156,7 @@ namespace PowerPointLabs.ImageSearch
                 StyleApplyButton.IsEnabled = true;
                 StyleCustomizeButton.IsEnabled = true;
 
-                var targetStyle = ((ImageItem) PreviewListBox.SelectedValue).Tooltip;
-                var options = StyleOptionsFactory.GetVariationOptions(targetStyle);
-
-                var targetStyleOption = options[VariationListBox.SelectedIndex];
+                var targetStyleOption = _styleOptions[VariationListBox.SelectedIndex];
                 targetStyleOption.PropertyChanged += (o, args) =>
                 {
                     _latestStyleOptionsUpdateTime = DateTime.Now;

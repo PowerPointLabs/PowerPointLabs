@@ -283,7 +283,8 @@
     <Compile Include="ConvertToPicture.cs" />
     <Compile Include="CropToShape.cs" />
     <Compile Include="DataSources\ShapesLabSettingsDataSource.cs" />
-    <Compile Include="ImageSearch\Domain\StyleOptionsFactory.cs" />
+    <Compile Include="ImageSearch\Domain\StyleVariants.cs" />
+    <Compile Include="ImageSearch\Domain\StyleVariantsFactory.cs" />
     <Compile Include="ImageSearch\Handler\Effect\Alignment.cs" />
     <Compile Include="ImageSearch\Handler\Effect\Banner.cs" />
     <Compile Include="ImageSearch\Handler\Effect\Position.cs" />
