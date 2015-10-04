@@ -32,7 +32,8 @@ namespace PowerPointLabs.ImageSearch.Domain
                 { TextCollection.ImagesLabText.VariantCategoryOverlayColor, GetOverlayVariants() },
                 { TextCollection.ImagesLabText.VariantCategoryTextColor, GetFontColorVariants() },
                 { TextCollection.ImagesLabText.VariantCategoryTextPosition, GetFontPositionVariants() },
-                { TextCollection.ImagesLabText.VariantCategoryFontFamily, GetFontFamilyVariants() }
+                { TextCollection.ImagesLabText.VariantCategoryFontFamily, GetFontFamilyVariants() },
+                { TextCollection.ImagesLabText.VariantCategoryFontSizeIncrease, GetFontSizeIncreaseVariants() }
             };
         }
 
@@ -44,7 +45,8 @@ namespace PowerPointLabs.ImageSearch.Domain
                 { TextCollection.ImagesLabText.VariantCategoryBlurriness, GetBlurVariants() },
                 { TextCollection.ImagesLabText.VariantCategoryTextColor, GetFontColorVariants() },
                 { TextCollection.ImagesLabText.VariantCategoryTextPosition, GetFontPositionVariants() },
-                { TextCollection.ImagesLabText.VariantCategoryFontFamily, GetFontFamilyVariants() }
+                { TextCollection.ImagesLabText.VariantCategoryFontFamily, GetFontFamilyVariants() },
+                { TextCollection.ImagesLabText.VariantCategoryFontSizeIncrease, GetFontSizeIncreaseVariants() }
             };
         }
 
@@ -55,7 +57,8 @@ namespace PowerPointLabs.ImageSearch.Domain
                 { TextCollection.ImagesLabText.VariantCategoryBannerColor, GetBannerVariants() },
                 { TextCollection.ImagesLabText.VariantCategoryTextColor, GetFontColorVariants() },
                 { TextCollection.ImagesLabText.VariantCategoryTextPosition, GetFontPositionVariants() },
-                { TextCollection.ImagesLabText.VariantCategoryFontFamily, GetFontFamilyVariants() }
+                { TextCollection.ImagesLabText.VariantCategoryFontFamily, GetFontFamilyVariants() },
+                { TextCollection.ImagesLabText.VariantCategoryFontSizeIncrease, GetFontSizeIncreaseVariants() }
             };
         }
 
@@ -66,7 +69,8 @@ namespace PowerPointLabs.ImageSearch.Domain
                 { TextCollection.ImagesLabText.VariantCategoryTextBoxColor, GetTextBoxVariants() },
                 { TextCollection.ImagesLabText.VariantCategoryTextColor, GetFontColorVariants() },
                 { TextCollection.ImagesLabText.VariantCategoryTextPosition, GetFontPositionVariants() },
-                { TextCollection.ImagesLabText.VariantCategoryFontFamily, GetFontFamilyVariants() }
+                { TextCollection.ImagesLabText.VariantCategoryFontFamily, GetFontFamilyVariants() },
+                { TextCollection.ImagesLabText.VariantCategoryFontSizeIncrease, GetFontSizeIncreaseVariants() }
             };
         }
 
@@ -77,7 +81,8 @@ namespace PowerPointLabs.ImageSearch.Domain
                 { TextCollection.ImagesLabText.VariantCategoryBlurriness, GetBlurVariants() },
                 { TextCollection.ImagesLabText.VariantCategoryTextColor, GetFontColorVariants() },
                 { TextCollection.ImagesLabText.VariantCategoryTextPosition, GetFontPositionVariants() },
-                { TextCollection.ImagesLabText.VariantCategoryFontFamily, GetFontFamilyVariants() }
+                { TextCollection.ImagesLabText.VariantCategoryFontFamily, GetFontFamilyVariants() },
+                { TextCollection.ImagesLabText.VariantCategoryFontSizeIncrease, GetFontSizeIncreaseVariants() }
             };
         }
 
@@ -88,7 +93,8 @@ namespace PowerPointLabs.ImageSearch.Domain
                 { TextCollection.ImagesLabText.VariantCategoryBrightness, GetBrightnessVariants() },
                 { TextCollection.ImagesLabText.VariantCategoryTextColor, GetFontColorVariants() },
                 { TextCollection.ImagesLabText.VariantCategoryTextPosition, GetFontPositionVariants() },
-                { TextCollection.ImagesLabText.VariantCategoryFontFamily, GetFontFamilyVariants() }
+                { TextCollection.ImagesLabText.VariantCategoryFontFamily, GetFontFamilyVariants() },
+                { TextCollection.ImagesLabText.VariantCategoryFontSizeIncrease, GetFontSizeIncreaseVariants() }
             };
         }
 
@@ -630,6 +636,61 @@ namespace PowerPointLabs.ImageSearch.Domain
                     {"OptionName", "Tahoma"},
                     {"IsUseTextFormat", true},
                     {"FontFamily", 7}
+                })
+            };
+        }
+
+        private static List<StyleVariants> GetFontSizeIncreaseVariants()
+        {
+            return new List<StyleVariants>
+            {
+                new StyleVariants(new Dictionary<string, object>
+                {
+                    {"OptionName", "Original Font Size"},
+                    {"IsUseTextFormat", true},
+                    {"FontSizeIncrease", 0}
+                }),
+                new StyleVariants(new Dictionary<string, object>
+                {
+                    {"OptionName", "Font Size +2"},
+                    {"IsUseTextFormat", true},
+                    {"FontSizeIncrease", 2}
+                }),
+                new StyleVariants(new Dictionary<string, object>
+                {
+                    {"OptionName", "Font Size +4"},
+                    {"IsUseTextFormat", true},
+                    {"FontSizeIncrease", 4}
+                }),
+                new StyleVariants(new Dictionary<string, object>
+                {
+                    {"OptionName", "Font Size +6"},
+                    {"IsUseTextFormat", true},
+                    {"FontSizeIncrease", 6}
+                }),
+                new StyleVariants(new Dictionary<string, object>
+                {
+                    {"OptionName", "Font Size +8"},
+                    {"IsUseTextFormat", true},
+                    {"FontSizeIncrease", 8}
+                }),
+                new StyleVariants(new Dictionary<string, object>
+                {
+                    {"OptionName", "Font Size +10"},
+                    {"IsUseTextFormat", true},
+                    {"FontSizeIncrease", 10}
+                }),
+                new StyleVariants(new Dictionary<string, object>
+                {
+                    {"OptionName", "Font Size +12"},
+                    {"IsUseTextFormat", true},
+                    {"FontSizeIncrease", 12}
+                }),
+                new StyleVariants(new Dictionary<string, object>
+                {
+                    {"OptionName", "Font Size +14"},
+                    {"IsUseTextFormat", true},
+                    {"FontSizeIncrease", 14}
                 })
             };
         }

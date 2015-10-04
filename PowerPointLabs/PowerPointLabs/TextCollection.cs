@@ -315,6 +315,7 @@
             public const string VariantCategorySpecialEffects = "Special Effects";
             public const string VariantCategoryBlurriness = "Blurriness";
             public const string VariantCategoryBrightness = "Brightness";
+            public const string VariantCategoryFontSizeIncrease = "Font Size Increase";
 
             public const string SearchEngineGoogle = "GoogleEngine";
             public const string SearchEngineBing = "BingEngine";
