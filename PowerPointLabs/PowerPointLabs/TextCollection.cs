@@ -316,6 +316,9 @@
             public const string VariantCategoryBlurriness = "Blurriness";
             public const string VariantCategoryBrightness = "Brightness";
             public const string VariantCategoryFontSizeIncrease = "Font Size Increase";
+            public const string VariantCategoryOverlayTransparency = "Overlay Transparency";
+            public const string VariantCategoryBannerTransparency = "Banner Transparency";
+            public const string VariantCategoryTextBoxTransparency = "TextBox Transparency";
 
             public const string SearchEngineGoogle = "GoogleEngine";
             public const string SearchEngineBing = "BingEngine";

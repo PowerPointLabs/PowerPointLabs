@@ -30,6 +30,7 @@ namespace PowerPointLabs.ImageSearch.Domain
             return new Dictionary<string, List<StyleVariants>>
             {
                 { TextCollection.ImagesLabText.VariantCategoryOverlayColor, GetOverlayVariants() },
+                { TextCollection.ImagesLabText.VariantCategoryOverlayTransparency, GetOverlayTransparencyVariants() },
                 { TextCollection.ImagesLabText.VariantCategoryTextColor, GetFontColorVariants() },
                 { TextCollection.ImagesLabText.VariantCategoryTextPosition, GetFontPositionVariants() },
                 { TextCollection.ImagesLabText.VariantCategoryFontFamily, GetFontFamilyVariants() },
@@ -55,6 +56,7 @@ namespace PowerPointLabs.ImageSearch.Domain
             return new Dictionary<string, List<StyleVariants>>
             {
                 { TextCollection.ImagesLabText.VariantCategoryBannerColor, GetBannerVariants() },
+                { TextCollection.ImagesLabText.VariantCategoryBannerTransparency, GetBannerTransparencyVariants() },
                 { TextCollection.ImagesLabText.VariantCategoryTextColor, GetFontColorVariants() },
                 { TextCollection.ImagesLabText.VariantCategoryTextPosition, GetFontPositionVariants() },
                 { TextCollection.ImagesLabText.VariantCategoryFontFamily, GetFontFamilyVariants() },
@@ -67,6 +69,7 @@ namespace PowerPointLabs.ImageSearch.Domain
             return new Dictionary<string, List<StyleVariants>>
             {
                 { TextCollection.ImagesLabText.VariantCategoryTextBoxColor, GetTextBoxVariants() },
+                { TextCollection.ImagesLabText.VariantCategoryTextBoxTransparency, GetTextBoxTransparencyVariants() },
                 { TextCollection.ImagesLabText.VariantCategoryTextColor, GetFontColorVariants() },
                 { TextCollection.ImagesLabText.VariantCategoryTextPosition, GetFontPositionVariants() },
                 { TextCollection.ImagesLabText.VariantCategoryFontFamily, GetFontFamilyVariants() },
@@ -107,7 +110,6 @@ namespace PowerPointLabs.ImageSearch.Domain
                     {"OptionName", "White"},
                     {"IsUseOverlayStyle", true},
                     {"OverlayColor", "#FFFFFF"},
-                    {"Transparency", 40},
                     {"IsUseSpecialEffectStyle", true},
                     {"SpecialEffect", 0}
                 }),
@@ -116,7 +118,6 @@ namespace PowerPointLabs.ImageSearch.Domain
                     {"OptionName", "Black"},
                     {"IsUseOverlayStyle", true},
                     {"OverlayColor", "#000000"},
-                    {"Transparency", 40},
                     {"IsUseSpecialEffectStyle", true},
                     {"SpecialEffect", 0}
                 }),
@@ -125,7 +126,6 @@ namespace PowerPointLabs.ImageSearch.Domain
                     {"OptionName", "Yellow"},
                     {"IsUseOverlayStyle", true},
                     {"OverlayColor", "#FFCC00"},
-                    {"Transparency", 40},
                     {"IsUseSpecialEffectStyle", true},
                     {"SpecialEffect", 0}
                 }),
@@ -134,7 +134,6 @@ namespace PowerPointLabs.ImageSearch.Domain
                     {"OptionName", "Red"},
                     {"IsUseOverlayStyle", true},
                     {"OverlayColor", "#FF0000"},
-                    {"Transparency", 40},
                     {"IsUseSpecialEffectStyle", true},
                     {"SpecialEffect", 0}
                 }),
@@ -143,7 +142,6 @@ namespace PowerPointLabs.ImageSearch.Domain
                     {"OptionName", "Green"},
                     {"IsUseOverlayStyle", true},
                     {"OverlayColor", "#3DFF8F"},
-                    {"Transparency", 40},
                     {"IsUseSpecialEffectStyle", true},
                     {"SpecialEffect", 0}
                 }),
@@ -152,7 +150,6 @@ namespace PowerPointLabs.ImageSearch.Domain
                     {"OptionName", "Blue"},
                     {"IsUseOverlayStyle", true},
                     {"OverlayColor", "#007FFF"},
-                    {"Transparency", 40},
                     {"IsUseSpecialEffectStyle", true},
                     {"SpecialEffect", 0}
                 }),
@@ -161,7 +158,6 @@ namespace PowerPointLabs.ImageSearch.Domain
                     {"OptionName", "Purple"},
                     {"IsUseOverlayStyle", true},
                     {"OverlayColor", "#7800FF"},
-                    {"Transparency", 40},
                     {"IsUseSpecialEffectStyle", true},
                     {"SpecialEffect", 0}
                 }),
@@ -170,9 +166,63 @@ namespace PowerPointLabs.ImageSearch.Domain
                     {"OptionName", "Dark Blue"},
                     {"IsUseOverlayStyle", true},
                     {"OverlayColor", "#001550"},
-                    {"Transparency", 25},
                     {"IsUseSpecialEffectStyle", true},
                     {"SpecialEffect", 0}
+                })
+            };
+        }
+
+        private static List<StyleVariants> GetOverlayTransparencyVariants()
+        {
+            return new List<StyleVariants>
+            {
+                new StyleVariants(new Dictionary<string, object>
+                {
+                    {"OptionName", "50% Transparency"},
+                    {"IsUseOverlayStyle", true},
+                    {"Transparency", 50}
+                }),
+                new StyleVariants(new Dictionary<string, object>
+                {
+                    {"OptionName", "45% Transparency"},
+                    {"IsUseOverlayStyle", true},
+                    {"Transparency", 45}
+                }),
+                new StyleVariants(new Dictionary<string, object>
+                {
+                    {"OptionName", "40% Transparency"},
+                    {"IsUseOverlayStyle", true},
+                    {"Transparency", 40}
+                }),
+                new StyleVariants(new Dictionary<string, object>
+                {
+                    {"OptionName", "35% Transparency"},
+                    {"IsUseOverlayStyle", true},
+                    {"Transparency", 35}
+                }),
+                new StyleVariants(new Dictionary<string, object>
+                {
+                    {"OptionName", "30% Transparency"},
+                    {"IsUseOverlayStyle", true},
+                    {"Transparency", 30}
+                }),
+                new StyleVariants(new Dictionary<string, object>
+                {
+                    {"OptionName", "25% Transparency"},
+                    {"IsUseOverlayStyle", true},
+                    {"Transparency", 25}
+                }),
+                new StyleVariants(new Dictionary<string, object>
+                {
+                    {"OptionName", "20% Transparency"},
+                    {"IsUseOverlayStyle", true},
+                    {"Transparency", 20}
+                }),
+                new StyleVariants(new Dictionary<string, object>
+                {
+                    {"OptionName", "15% Transparency"},
+                    {"IsUseOverlayStyle", true},
+                    {"Transparency", 15}
                 })
             };
         }
@@ -240,56 +290,103 @@ namespace PowerPointLabs.ImageSearch.Domain
                 {
                     {"OptionName", "White"},
                     {"IsUseBannerStyle", true},
-                    {"BannerOverlayColor", "#FFFFFF"},
-                    {"BannerTransparency", 25}
+                    {"BannerOverlayColor", "#FFFFFF"}
                 }),
                 new StyleVariants(new Dictionary<string, object>
                 {
                     {"OptionName", "Black"},
                     {"IsUseBannerStyle", true},
-                    {"BannerOverlayColor", "#000000"},
-                    {"BannerTransparency", 25}
+                    {"BannerOverlayColor", "#000000"}
                 }),
                 new StyleVariants(new Dictionary<string, object>
                 {
                     {"OptionName", "Yellow"},
                     {"IsUseBannerStyle", true},
-                    {"BannerOverlayColor", "#FFC500"},
-                    {"BannerTransparency", 0}
+                    {"BannerOverlayColor", "#FFC500"}
                 }),
                 new StyleVariants(new Dictionary<string, object>
                 {
                     {"OptionName", "Red"},
                     {"IsUseBannerStyle", true},
-                    {"BannerOverlayColor", "#FF0000"},
-                    {"BannerTransparency", 0}
+                    {"BannerOverlayColor", "#FF0000"}
                 }),
                 new StyleVariants(new Dictionary<string, object>
                 {
                     {"OptionName", "Green"},
                     {"IsUseBannerStyle", true},
-                    {"BannerOverlayColor", "#3DFF8F"},
-                    {"BannerTransparency", 0}
+                    {"BannerOverlayColor", "#3DFF8F"}
                 }),
                 new StyleVariants(new Dictionary<string, object>
                 {
                     {"OptionName", "Blue"},
                     {"IsUseBannerStyle", true},
-                    {"BannerOverlayColor", "#007FFF"},
-                    {"BannerTransparency", 0}
+                    {"BannerOverlayColor", "#007FFF"}
                 }),
                 new StyleVariants(new Dictionary<string, object>
                 {
                     {"OptionName", "Purple"},
                     {"IsUseBannerStyle", true},
-                    {"BannerOverlayColor", "#7800FF"},
-                    {"BannerTransparency", 0}
+                    {"BannerOverlayColor", "#7800FF"}
                 }),
                 new StyleVariants(new Dictionary<string, object>
                 {
                     {"OptionName", "Dark Blue"},
                     {"IsUseBannerStyle", true},
-                    {"BannerOverlayColor", "#001550"},
+                    {"BannerOverlayColor", "#001550"}
+                })
+            };
+        }
+
+        private static List<StyleVariants> GetBannerTransparencyVariants()
+        {
+            return new List<StyleVariants>
+            {
+                new StyleVariants(new Dictionary<string, object>
+                {
+                    {"OptionName", "60% Transparency"},
+                    {"IsUseBannerStyle", true},
+                    {"BannerTransparency", 60}
+                }),
+                new StyleVariants(new Dictionary<string, object>
+                {
+                    {"OptionName", "50% Transparency"},
+                    {"IsUseBannerStyle", true},
+                    {"BannerTransparency", 50}
+                }),
+                new StyleVariants(new Dictionary<string, object>
+                {
+                    {"OptionName", "40% Transparency"},
+                    {"IsUseBannerStyle", true},
+                    {"BannerTransparency", 40}
+                }),
+                new StyleVariants(new Dictionary<string, object>
+                {
+                    {"OptionName", "35% Transparency"},
+                    {"IsUseBannerStyle", true},
+                    {"BannerTransparency", 35}
+                }),
+                new StyleVariants(new Dictionary<string, object>
+                {
+                    {"OptionName", "30% Transparency"},
+                    {"IsUseBannerStyle", true},
+                    {"BannerTransparency", 30}
+                }),
+                new StyleVariants(new Dictionary<string, object>
+                {
+                    {"OptionName", "25% Transparency"},
+                    {"IsUseBannerStyle", true},
+                    {"BannerTransparency", 25}
+                }),
+                new StyleVariants(new Dictionary<string, object>
+                {
+                    {"OptionName", "15% Transparency"},
+                    {"IsUseBannerStyle", true},
+                    {"BannerTransparency", 15}
+                }),
+                new StyleVariants(new Dictionary<string, object>
+                {
+                    {"OptionName", "0% Transparency"},
+                    {"IsUseBannerStyle", true},
                     {"BannerTransparency", 0}
                 })
             };
@@ -303,57 +400,104 @@ namespace PowerPointLabs.ImageSearch.Domain
                 {
                     {"OptionName", "White"},
                     {"IsUseTextBoxStyle", true},
-                    {"TextBoxOverlayColor", "#FFFFFF"},
-                    {"TextBoxTransparency", 25}
+                    {"TextBoxOverlayColor", "#FFFFFF"}
                 }),
                 new StyleVariants(new Dictionary<string, object>
                 {
                     {"OptionName", "Black"},
                     {"IsUseTextBoxStyle", true},
-                    {"TextBoxOverlayColor", "#000000"},
-                    {"TextBoxTransparency", 25}
+                    {"TextBoxOverlayColor", "#000000"}
                 }),
                 new StyleVariants(new Dictionary<string, object>
                 {
                     {"OptionName", "Yellow"},
                     {"IsUseTextBoxStyle", true},
-                    {"TextBoxOverlayColor", "#FFC500"},
-                    {"TextBoxTransparency", 25}
+                    {"TextBoxOverlayColor", "#FFC500"}
                 }),
                 new StyleVariants(new Dictionary<string, object>
                 {
                     {"OptionName", "Red"},
                     {"IsUseTextBoxStyle", true},
-                    {"TextBoxOverlayColor", "#FF0000"},
-                    {"TextBoxTransparency", 25}
+                    {"TextBoxOverlayColor", "#FF0000"}
                 }),
                 new StyleVariants(new Dictionary<string, object>
                 {
                     {"OptionName", "Green"},
                     {"IsUseTextBoxStyle", true},
-                    {"TextBoxOverlayColor", "#3DFF8F"},
-                    {"TextBoxTransparency", 25}
+                    {"TextBoxOverlayColor", "#3DFF8F"}
                 }),
                 new StyleVariants(new Dictionary<string, object>
                 {
                     {"OptionName", "Blue"},
                     {"IsUseTextBoxStyle", true},
-                    {"TextBoxOverlayColor", "#007FFF"},
-                    {"TextBoxTransparency", 25}
+                    {"TextBoxOverlayColor", "#007FFF"}
                 }),
                 new StyleVariants(new Dictionary<string, object>
                 {
                     {"OptionName", "Purple"},
                     {"IsUseTextBoxStyle", true},
-                    {"TextBoxOverlayColor", "#7800FF"},
-                    {"TextBoxTransparency", 25}
+                    {"TextBoxOverlayColor", "#7800FF"}
                 }),
                 new StyleVariants(new Dictionary<string, object>
                 {
                     {"OptionName", "Dark Blue"},
                     {"IsUseTextBoxStyle", true},
-                    {"TextBoxOverlayColor", "#001550"},
+                    {"TextBoxOverlayColor", "#001550"}
+                })
+            };
+        }
+
+        private static List<StyleVariants> GetTextBoxTransparencyVariants()
+        {
+            return new List<StyleVariants>
+            {
+                new StyleVariants(new Dictionary<string, object>
+                {
+                    {"OptionName", "60% Transparency"},
+                    {"IsUseTextBoxStyle", true},
+                    {"TextBoxTransparency", 60}
+                }),
+                new StyleVariants(new Dictionary<string, object>
+                {
+                    {"OptionName", "50% Transparency"},
+                    {"IsUseTextBoxStyle", true},
+                    {"TextBoxTransparency", 50}
+                }),
+                new StyleVariants(new Dictionary<string, object>
+                {
+                    {"OptionName", "40% Transparency"},
+                    {"IsUseTextBoxStyle", true},
+                    {"TextBoxTransparency", 40}
+                }),
+                new StyleVariants(new Dictionary<string, object>
+                {
+                    {"OptionName", "35% Transparency"},
+                    {"IsUseTextBoxStyle", true},
+                    {"TextBoxTransparency", 35}
+                }),
+                new StyleVariants(new Dictionary<string, object>
+                {
+                    {"OptionName", "30% Transparency"},
+                    {"IsUseTextBoxStyle", true},
+                    {"TextBoxTransparency", 30}
+                }),
+                new StyleVariants(new Dictionary<string, object>
+                {
+                    {"OptionName", "25% Transparency"},
+                    {"IsUseTextBoxStyle", true},
                     {"TextBoxTransparency", 25}
+                }),
+                new StyleVariants(new Dictionary<string, object>
+                {
+                    {"OptionName", "15% Transparency"},
+                    {"IsUseTextBoxStyle", true},
+                    {"TextBoxTransparency", 15}
+                }),
+                new StyleVariants(new Dictionary<string, object>
+                {
+                    {"OptionName", "0% Transparency"},
+                    {"IsUseTextBoxStyle", true},
+                    {"TextBoxTransparency", 0}
                 })
             };
         }
@@ -362,11 +506,6 @@ namespace PowerPointLabs.ImageSearch.Domain
         {
             return new List<StyleVariants>
             {
-                new StyleVariants(new Dictionary<string, object>
-                {
-                    {"OptionName", "0% Blurriness"},
-                    {"IsUseBlurStyle", false}
-                }),
                 new StyleVariants(new Dictionary<string, object>
                 {
                     {"OptionName", "100% Blurriness"},
@@ -408,6 +547,11 @@ namespace PowerPointLabs.ImageSearch.Domain
                     {"OptionName", "40% Blurriness"},
                     {"IsUseBlurStyle", true},
                     {"BlurDegree", 70}
+                }),
+                new StyleVariants(new Dictionary<string, object>
+                {
+                    {"OptionName", "0% Blurriness"},
+                    {"IsUseBlurStyle", false}
                 })
             };
         }
@@ -652,15 +796,9 @@ namespace PowerPointLabs.ImageSearch.Domain
                 }),
                 new StyleVariants(new Dictionary<string, object>
                 {
-                    {"OptionName", "Font Size +2"},
+                    {"OptionName", "Font Size +3"},
                     {"IsUseTextFormat", true},
-                    {"FontSizeIncrease", 2}
-                }),
-                new StyleVariants(new Dictionary<string, object>
-                {
-                    {"OptionName", "Font Size +4"},
-                    {"IsUseTextFormat", true},
-                    {"FontSizeIncrease", 4}
+                    {"FontSizeIncrease", 3}
                 }),
                 new StyleVariants(new Dictionary<string, object>
                 {
@@ -670,15 +808,9 @@ namespace PowerPointLabs.ImageSearch.Domain
                 }),
                 new StyleVariants(new Dictionary<string, object>
                 {
-                    {"OptionName", "Font Size +8"},
+                    {"OptionName", "Font Size +9"},
                     {"IsUseTextFormat", true},
-                    {"FontSizeIncrease", 8}
-                }),
-                new StyleVariants(new Dictionary<string, object>
-                {
-                    {"OptionName", "Font Size +10"},
-                    {"IsUseTextFormat", true},
-                    {"FontSizeIncrease", 10}
+                    {"FontSizeIncrease", 9}
                 }),
                 new StyleVariants(new Dictionary<string, object>
                 {
@@ -688,9 +820,21 @@ namespace PowerPointLabs.ImageSearch.Domain
                 }),
                 new StyleVariants(new Dictionary<string, object>
                 {
-                    {"OptionName", "Font Size +14"},
+                    {"OptionName", "Font Size +15"},
                     {"IsUseTextFormat", true},
-                    {"FontSizeIncrease", 14}
+                    {"FontSizeIncrease", 15}
+                }),
+                new StyleVariants(new Dictionary<string, object>
+                {
+                    {"OptionName", "Font Size +18"},
+                    {"IsUseTextFormat", true},
+                    {"FontSizeIncrease", 18}
+                }),
+                new StyleVariants(new Dictionary<string, object>
+                {
+                    {"OptionName", "Font Size +21"},
+                    {"IsUseTextFormat", true},
+                    {"FontSizeIncrease", 21}
                 })
             };
         }

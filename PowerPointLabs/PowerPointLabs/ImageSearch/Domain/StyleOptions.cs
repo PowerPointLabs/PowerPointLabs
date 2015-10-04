@@ -322,7 +322,7 @@ namespace PowerPointLabs.ImageSearch.Domain
 
             IsUseOverlayStyle = false;
             OverlayColor = "#00B1FD"; // blue
-            Transparency = 25;
+            Transparency = 35;
 
             IsUseBannerStyle = false;
             BannerOverlayColor = "#000000";

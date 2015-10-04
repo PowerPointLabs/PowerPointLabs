@@ -21,8 +21,6 @@ namespace PowerPointLabs.ImageSearch
     {
         private bool _isVariationsFlyoutOpen;
 
-        private const int VariationSize = 8;
-        private bool _isUpdatingVariantsComboBox;
         private string _previousVariantsCategory;
         private Dictionary<string, int> _selectedVariants;
         private IList<StyleOptions> _styleOptions;
@@ -46,15 +44,10 @@ namespace PowerPointLabs.ImageSearch
                     if (isOpenFlyout)
                     {
                         selectedId = 0;
-                        _styleOptions = new List<StyleOptions>();
-                        for (var i = 0; i < VariationSize; i++)
-                        {
-                            _styleOptions.Add(new StyleOptions());
-                        }
+                        _styleOptions = StyleOptionsFactory.GetOptions(targetStyle.Tooltip);
                         _styleVariants = StyleVariantsFactory.GetVariants(targetStyle.Tooltip);
                         _selectedVariants = new Dictionary<string, int>();
 
-                        _isUpdatingVariantsComboBox = true;
                         VariantsComboBox.Items.Clear();
                         foreach (var key in _styleVariants.Keys)
                         {
@@ -63,7 +56,6 @@ namespace PowerPointLabs.ImageSearch
                         }
                         VariantsComboBox.SelectedIndex = 0;
                         _previousVariantsCategory = (string) VariantsComboBox.SelectedValue;
-                        _isUpdatingVariantsComboBox = false;
 
                         foreach (var variants in _styleVariants.Values)
                         {
@@ -96,7 +88,8 @@ namespace PowerPointLabs.ImageSearch
 
         private void VariantsComboBox_OnSelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            if (_isUpdatingVariantsComboBox) return;
+            if (VariationListBox.SelectedIndex < 0
+                || VariantsComboBox.Items.Count == 0) return;
 
             _selectedVariants[_previousVariantsCategory] = VariationListBox.SelectedIndex;
 
@@ -114,6 +107,21 @@ namespace PowerPointLabs.ImageSearch
             }
 
             var currentVariantsCategory = (string) VariantsComboBox.SelectedValue;
+            if (currentVariantsCategory != TextCollection.ImagesLabText.VariantCategoryTextColor
+                && _previousVariantsCategory != TextCollection.ImagesLabText.VariantCategoryTextColor)
+            {
+                // apply font color variant,
+                // because default styles may contain special font color settings, but not in variants
+                var fontColorVariant = new StyleVariants(new Dictionary<string, object>
+                {
+                    {"FontColor", _styleOptions[targetVariationSelectedIndex].FontColor}
+                });
+                foreach (var option in _styleOptions)
+                {
+                    fontColorVariant.Apply(option);
+                }
+            }
+
             var nextCategoryVariants = _styleVariants[currentVariantsCategory];
             for (var i = 0; i < nextCategoryVariants.Count && i < _styleOptions.Count; i++)
             {
