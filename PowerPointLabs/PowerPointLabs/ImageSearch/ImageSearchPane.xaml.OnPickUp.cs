@@ -2,7 +2,9 @@
 using System.Collections.Generic;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Input;
 using System.Windows.Media;
+using System.Windows.Forms;
 using System.Windows.Media.Animation;
 using MahApps.Metro.Controls.Dialogs;
 using PowerPointLabs.AutoUpdate;
@@ -10,6 +12,8 @@ using PowerPointLabs.ImageSearch.Domain;
 using PowerPointLabs.ImageSearch.Util;
 using PowerPointLabs.Utils;
 using PowerPointLabs.Utils.Exceptions;
+using Brush = System.Windows.Media.Brush;
+using Color = System.Drawing.Color;
 
 namespace PowerPointLabs.ImageSearch
 {
@@ -132,6 +136,113 @@ namespace PowerPointLabs.ImageSearch
             });
         }
 
+        private void ColorPanel_OnMouseLeftButtonUp(object sender, MouseButtonEventArgs e)
+        {
+            var panel = sender as Border;
+            if (panel == null) return;
+
+            var colorDialog = new ColorDialog
+            {
+                Color = GetColor(panel.Background as SolidColorBrush),
+                FullOpen = true
+            };
+            if (colorDialog.ShowDialog() != System.Windows.Forms.DialogResult.OK) return;
+
+            BindColorToStyle(colorDialog.Color);
+            BindColorToVariant(colorDialog.Color);
+        }
+
+        private Color GetColor(SolidColorBrush brush)
+        {
+            return Color.FromArgb(brush.Color.A, brush.Color.R, brush.Color.G, brush.Color.B);
+        }
+
+        private void BindStyleToColorPanel()
+        {
+            if (VariationListBox.SelectedIndex < 0
+                || VariantsComboBox.Items.Count == 0) return;
+
+            var styleOption = _styleOptions[VariationListBox.SelectedIndex];
+            var currentCategory = (string)VariantsComboBox.SelectedValue;
+            var bc = new BrushConverter();
+
+            if (currentCategory.Contains("Color"))
+            {
+                switch (currentCategory)
+                {
+                    case TextCollection.ImagesLabText.VariantCategoryTextColor:
+                        VariantsColorPanel.Background = (Brush) bc.ConvertFrom(styleOption.FontColor);
+                        break;
+                    case TextCollection.ImagesLabText.VariantCategoryTextBoxColor:
+                        VariantsColorPanel.Background = (Brush) bc.ConvertFrom(styleOption.TextBoxOverlayColor);
+                        break;
+                    case TextCollection.ImagesLabText.VariantCategoryBannerColor:
+                        VariantsColorPanel.Background = (Brush) bc.ConvertFrom(styleOption.BannerOverlayColor);
+                        break;
+                    case TextCollection.ImagesLabText.VariantCategoryOverlayColor:
+                        VariantsColorPanel.Background = (Brush) bc.ConvertFrom(styleOption.OverlayColor);
+                        break;
+                }
+            }
+        }
+
+        private void BindColorToStyle(Color color)
+        {
+            if (VariationListBox.SelectedIndex < 0
+                || VariantsComboBox.Items.Count == 0) return;
+
+            var styleOption = _styleOptions[VariationListBox.SelectedIndex];
+            var currentCategory = (string) VariantsComboBox.SelectedValue;
+            var targetColor = StringUtil.GetHexValue(color);
+
+            if (currentCategory.Contains("Color"))
+            {
+                switch (currentCategory)
+                {
+                    case TextCollection.ImagesLabText.VariantCategoryTextColor:
+                        styleOption.FontColor = targetColor;
+                        break;
+                    case TextCollection.ImagesLabText.VariantCategoryTextBoxColor:
+                        styleOption.TextBoxOverlayColor = targetColor;
+                        break;
+                    case TextCollection.ImagesLabText.VariantCategoryBannerColor:
+                        styleOption.BannerOverlayColor = targetColor;
+                        break;
+                    case TextCollection.ImagesLabText.VariantCategoryOverlayColor:
+                        styleOption.OverlayColor = targetColor;
+                        break;
+                }
+            }
+        }
+
+        private void BindColorToVariant(Color color)
+        {
+            if (VariationListBox.SelectedIndex < 0
+                || VariantsComboBox.Items.Count == 0) return;
+
+            var currentCategory = (string)VariantsComboBox.SelectedValue;
+            var styleVariant = _styleVariants[currentCategory][VariationListBox.SelectedIndex];
+
+            if (currentCategory.Contains("Color"))
+            {
+                switch (currentCategory)
+                {
+                    case TextCollection.ImagesLabText.VariantCategoryTextColor:
+                        styleVariant.Set("FontColor", StringUtil.GetHexValue(color));
+                        break;
+                    case TextCollection.ImagesLabText.VariantCategoryTextBoxColor:
+                        styleVariant.Set("TextBoxOverlayColor", StringUtil.GetHexValue(color));
+                        break;
+                    case TextCollection.ImagesLabText.VariantCategoryBannerColor:
+                        styleVariant.Set("BannerOverlayColor", StringUtil.GetHexValue(color));
+                        break;
+                    case TextCollection.ImagesLabText.VariantCategoryOverlayColor:
+                        styleVariant.Set("OverlayColor", StringUtil.GetHexValue(color));
+                        break;
+                }
+            }
+        }
+
         private void PickUpStyle()
         {
             var source = (ImageItem)SearchListBox.SelectedValue;
@@ -164,6 +275,17 @@ namespace PowerPointLabs.ImageSearch
 
                 PreviewPresentation.SetStyleOptions(targetStyleOption);
                 OptionsPane2.DataContext = targetStyleOption;
+
+                var currentCategory = (string)VariantsComboBox.SelectedValue;
+                if (currentCategory.Contains("Color"))
+                {
+                    VariantsColorPanel.Visibility = Visibility.Visible;
+                    BindStyleToColorPanel();
+                }
+                else
+                {
+                    VariantsColorPanel.Visibility = Visibility.Collapsed;
+                }
             }
         }
 

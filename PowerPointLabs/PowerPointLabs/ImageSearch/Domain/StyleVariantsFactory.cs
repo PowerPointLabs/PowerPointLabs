@@ -29,10 +29,10 @@ namespace PowerPointLabs.ImageSearch.Domain
         {
             return new Dictionary<string, List<StyleVariants>>
             {
-                { "Overlay Color", GetOverlayVariants() },
-                { "Text Color", GetFontColorVariants() },
-                { "Text Position", GetFontPositionVariants() },
-                { "Font Family", GetFontFamilyVariants() }
+                { TextCollection.ImagesLabText.VariantCategoryOverlayColor, GetOverlayVariants() },
+                { TextCollection.ImagesLabText.VariantCategoryTextColor, GetFontColorVariants() },
+                { TextCollection.ImagesLabText.VariantCategoryTextPosition, GetFontPositionVariants() },
+                { TextCollection.ImagesLabText.VariantCategoryFontFamily, GetFontFamilyVariants() }
             };
         }
 
@@ -40,11 +40,11 @@ namespace PowerPointLabs.ImageSearch.Domain
         {
             return new Dictionary<string, List<StyleVariants>>
             {
-                { "Special Effects", GetSpecialEffectVariants() },
-                { "Blurriness", GetBlurVariants() },
-                { "Text Color", GetFontColorVariants() },
-                { "Text Position", GetFontPositionVariants() },
-                { "Font Family", GetFontFamilyVariants() }
+                { TextCollection.ImagesLabText.VariantCategorySpecialEffects, GetSpecialEffectVariants() },
+                { TextCollection.ImagesLabText.VariantCategoryBlurriness, GetBlurVariants() },
+                { TextCollection.ImagesLabText.VariantCategoryTextColor, GetFontColorVariants() },
+                { TextCollection.ImagesLabText.VariantCategoryTextPosition, GetFontPositionVariants() },
+                { TextCollection.ImagesLabText.VariantCategoryFontFamily, GetFontFamilyVariants() }
             };
         }
 
@@ -52,10 +52,10 @@ namespace PowerPointLabs.ImageSearch.Domain
         {
             return new Dictionary<string, List<StyleVariants>>
             {
-                { "Banner", GetBannerVariants() },
-                { "Text Color", GetFontColorVariants() },
-                { "Text Position", GetFontPositionVariants() },
-                { "Font Family", GetFontFamilyVariants() }
+                { TextCollection.ImagesLabText.VariantCategoryBannerColor, GetBannerVariants() },
+                { TextCollection.ImagesLabText.VariantCategoryTextColor, GetFontColorVariants() },
+                { TextCollection.ImagesLabText.VariantCategoryTextPosition, GetFontPositionVariants() },
+                { TextCollection.ImagesLabText.VariantCategoryFontFamily, GetFontFamilyVariants() }
             };
         }
 
@@ -63,10 +63,10 @@ namespace PowerPointLabs.ImageSearch.Domain
         {
             return new Dictionary<string, List<StyleVariants>>
             {
-                { "TextBox", GetTextBoxVariants() },
-                { "Text Color", GetFontColorVariants() },
-                { "Text Position", GetFontPositionVariants() },
-                { "Font Family", GetFontFamilyVariants() }
+                { TextCollection.ImagesLabText.VariantCategoryTextBoxColor, GetTextBoxVariants() },
+                { TextCollection.ImagesLabText.VariantCategoryTextColor, GetFontColorVariants() },
+                { TextCollection.ImagesLabText.VariantCategoryTextPosition, GetFontPositionVariants() },
+                { TextCollection.ImagesLabText.VariantCategoryFontFamily, GetFontFamilyVariants() }
             };
         }
 
@@ -74,10 +74,10 @@ namespace PowerPointLabs.ImageSearch.Domain
         {
             return new Dictionary<string, List<StyleVariants>>
             {
-                { "Blurriness", GetBlurVariants() },
-                { "Text Color", GetFontColorVariants() },
-                { "Text Position", GetFontPositionVariants() },
-                { "Font Family", GetFontFamilyVariants() }
+                { TextCollection.ImagesLabText.VariantCategoryBlurriness, GetBlurVariants() },
+                { TextCollection.ImagesLabText.VariantCategoryTextColor, GetFontColorVariants() },
+                { TextCollection.ImagesLabText.VariantCategoryTextPosition, GetFontPositionVariants() },
+                { TextCollection.ImagesLabText.VariantCategoryFontFamily, GetFontFamilyVariants() }
             };
         }
 
@@ -85,10 +85,10 @@ namespace PowerPointLabs.ImageSearch.Domain
         {
             return new Dictionary<string, List<StyleVariants>>
             {
-                { "Brightness", GetBrightnessVariants() },
-                { "Text Color", GetFontColorVariants() },
-                { "Text Position", GetFontPositionVariants() },
-                { "Font Family", GetFontFamilyVariants() }
+                { TextCollection.ImagesLabText.VariantCategoryBrightness, GetBrightnessVariants() },
+                { TextCollection.ImagesLabText.VariantCategoryTextColor, GetFontColorVariants() },
+                { TextCollection.ImagesLabText.VariantCategoryTextPosition, GetFontPositionVariants() },
+                { TextCollection.ImagesLabText.VariantCategoryFontFamily, GetFontFamilyVariants() }
             };
         }
 

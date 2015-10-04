@@ -11,6 +11,11 @@ namespace PowerPointLabs.ImageSearch.Domain
             _variants = var;
         }
 
+        public void Set(string key, object newValue)
+        {
+            _variants[key] = newValue;
+        } 
+
         public void Apply(StyleOptions opt)
         {
             foreach (var pair in _variants)

@@ -306,6 +306,16 @@
 
         public class ImagesLabText
         {
+            public const string VariantCategoryOverlayColor = "Overlay Color";
+            public const string VariantCategoryTextColor = "Text Color";
+            public const string VariantCategoryBannerColor = "Banner Color";
+            public const string VariantCategoryTextBoxColor = "TextBox Color";
+            public const string VariantCategoryTextPosition = "Text Position";
+            public const string VariantCategoryFontFamily = "Font Family";
+            public const string VariantCategorySpecialEffects = "Special Effects";
+            public const string VariantCategoryBlurriness = "Blurriness";
+            public const string VariantCategoryBrightness = "Brightness";
+
             public const string SearchEngineGoogle = "GoogleEngine";
             public const string SearchEngineBing = "BingEngine";
 

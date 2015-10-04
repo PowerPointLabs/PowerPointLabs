@@ -275,16 +275,19 @@ namespace PowerPointLabs.ImageSearch
             {
                 VariationInstructionsWhenNoSelectedSlide.Visibility = Visibility.Hidden;
                 VariantsComboBox.IsEnabled = true;
+                VariantsColorPanel.IsEnabled = true;
             }
             else if (PowerPointCurrentPresentationInfo.CurrentSlide == null)
             {
                 VariationInstructionsWhenNoSelectedSlide.Visibility = Visibility.Visible;
                 VariantsComboBox.IsEnabled = false;
+                VariantsColorPanel.IsEnabled = false;
             }
             else
             {
                 VariationInstructionsWhenNoSelectedSlide.Visibility = Visibility.Hidden;
                 VariantsComboBox.IsEnabled = true;
+                VariantsColorPanel.IsEnabled = true;
             }
         }
 

@@ -115,8 +115,11 @@
                         <ColumnDefinition Width="80"></ColumnDefinition>
                         <ColumnDefinition Width="75"></ColumnDefinition>
                         <ColumnDefinition Width="auto"></ColumnDefinition>
-                        <ColumnDefinition Width="5"></ColumnDefinition>
+                        <ColumnDefinition Width="30"></ColumnDefinition>
                         <ColumnDefinition Width="*"></ColumnDefinition>
+                        <ColumnDefinition Width="65"></ColumnDefinition>
+                        <ColumnDefinition Width="10"></ColumnDefinition>
+                        <ColumnDefinition Width="auto"></ColumnDefinition>
                         <ColumnDefinition Width="15"></ColumnDefinition>
                     </Grid.ColumnDefinitions>
                     <Label Name="VariationLabel" Grid.Column="1" Margin="0,0,5,0" FontSize="15">Variations</Label>
@@ -165,7 +168,8 @@
                             </Rectangle.OpacityMask>
                         </Rectangle>
                     </Button>
-                    <ComboBox Name="VariantsComboBox" SelectionChanged="VariantsComboBox_OnSelectionChanged" HorizontalAlignment="Right" VerticalAlignment="Center" Grid.Column="5">
+                    <Border Name="VariantsColorPanel" ToolTip="Click to change color" MouseLeftButtonUp="ColorPanel_OnMouseLeftButtonUp" BorderBrush="#EEEEEE" BorderThickness="1" Height="26" Width="65" HorizontalAlignment="Right" VerticalAlignment="Center" Grid.Column="6" />
+                    <ComboBox Name="VariantsComboBox" SelectionChanged="VariantsComboBox_OnSelectionChanged" HorizontalAlignment="Right" VerticalAlignment="Center" Grid.Column="8">
                     </ComboBox>
                 </Grid>
                 <TextBlock Margin="10,0,0,0" Visibility="Hidden" Name="VariationInstructionsWhenNoSelectedSlide" TextWrapping="Wrap" HorizontalAlignment="Center" VerticalAlignment="Center" Foreground="#AAAAAA" FontSize="16" Grid.Row="2">Select a slide in the presentation to preview variations. Select any one and click APPLY button to apply.</TextBlock>
