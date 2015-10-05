@@ -37,8 +37,6 @@ namespace PowerPointLabs
             try
             {
                 VerifyIsSelectionValid(selection);
-                //FOR DEBUG. TO BE DELETED.
-                ThrowErrorCode(250);
             }
             catch (Exception e)
             {
