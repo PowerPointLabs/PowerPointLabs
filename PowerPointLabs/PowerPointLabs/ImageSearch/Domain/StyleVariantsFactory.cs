@@ -625,18 +625,6 @@ namespace PowerPointLabs.ImageSearch.Domain
             {
                 new StyleVariants(new Dictionary<string, object>
                 {
-                    {"OptionName", "Left"},
-                    {"IsUseTextFormat", true},
-                    {"TextBoxPosition", 4}
-                }),
-                new StyleVariants(new Dictionary<string, object>
-                {
-                    {"OptionName", "Original"},
-                    {"IsUseTextFormat", true},
-                    {"TextBoxPosition", 0}
-                }),
-                new StyleVariants(new Dictionary<string, object>
-                {
                     {"OptionName", "Centered"},
                     {"IsUseTextFormat", true},
                     {"TextBoxPosition", 5}
@@ -646,6 +634,18 @@ namespace PowerPointLabs.ImageSearch.Domain
                     {"OptionName", "Bottom-left"},
                     {"IsUseTextFormat", true},
                     {"TextBoxPosition", 7}
+                }),
+                new StyleVariants(new Dictionary<string, object>
+                {
+                    {"OptionName", "Left"},
+                    {"IsUseTextFormat", true},
+                    {"TextBoxPosition", 4}
+                }),
+                new StyleVariants(new Dictionary<string, object>
+                {
+                    {"OptionName", "Original"},
+                    {"IsUseTextFormat", true},
+                    {"TextBoxPosition", 0}
                 }),
                 new StyleVariants(new Dictionary<string, object>
                 {

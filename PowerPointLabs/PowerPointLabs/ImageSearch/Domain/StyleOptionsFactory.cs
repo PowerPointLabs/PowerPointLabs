@@ -13,9 +13,9 @@ namespace PowerPointLabs.ImageSearch.Domain
                 case TextCollection.ImagesLabText.StyleNameBlur:
                     return GetOptions();
                 case TextCollection.ImagesLabText.StyleNameTextBox:
-                    return GetOptionsWithSuitableFontColor();
+                    return GetOptionsForTextBox();
                 case TextCollection.ImagesLabText.StyleNameBanner:
-                    return GetOptionsWithSuitableFontColor();
+                    return GetOptionsForTextBox();
                 case TextCollection.ImagesLabText.StyleNameSpecialEffect:
                     return GetOptions();
                 case TextCollection.ImagesLabText.StyleNameOverlay:
@@ -23,6 +23,16 @@ namespace PowerPointLabs.ImageSearch.Domain
                 default:
                     return new List<StyleOptions>();
             }
+        }
+
+        private static List<StyleOptions> GetOptionsForTextBox()
+        {
+            var result = GetOptionsWithSuitableFontColor();
+            foreach (var option in result)
+            {
+                option.TextBoxPosition = 7;//bottom-left;
+            }
+            return result;
         }
 
         private static List<StyleOptions> GetOptionsForDirectText()

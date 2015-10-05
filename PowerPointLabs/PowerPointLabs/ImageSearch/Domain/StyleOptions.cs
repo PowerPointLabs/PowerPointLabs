@@ -317,7 +317,7 @@ namespace PowerPointLabs.ImageSearch.Domain
             FontFamily = 5;
             FontSizeIncrease = 0;
             FontColor = "#FFFFFF";
-            TextBoxPosition = 4;
+            TextBoxPosition = 5;
             TextBoxAlignment = 0;
 
             IsUseOverlayStyle = false;
