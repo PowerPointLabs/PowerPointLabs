@@ -44,6 +44,7 @@ namespace PowerPointLabs.ImageSearch.Domain
             {
                 { TextCollection.ImagesLabText.VariantCategorySpecialEffects, GetSpecialEffectVariants() },
                 { TextCollection.ImagesLabText.VariantCategoryBlurriness, GetBlurVariants() },
+                { TextCollection.ImagesLabText.VariantCategoryBrightness, GetBrightnessVariants() },
                 { TextCollection.ImagesLabText.VariantCategoryTextColor, GetFontColorVariants() },
                 { TextCollection.ImagesLabText.VariantCategoryTextPosition, GetFontPositionVariants() },
                 { TextCollection.ImagesLabText.VariantCategoryFontFamily, GetFontFamilyVariants() },
@@ -82,6 +83,7 @@ namespace PowerPointLabs.ImageSearch.Domain
             return new Dictionary<string, List<StyleVariants>>
             {
                 { TextCollection.ImagesLabText.VariantCategoryBlurriness, GetBlurVariants() },
+                { TextCollection.ImagesLabText.VariantCategoryBrightness, GetBrightnessVariants() },
                 { TextCollection.ImagesLabText.VariantCategoryTextColor, GetFontColorVariants() },
                 { TextCollection.ImagesLabText.VariantCategoryTextPosition, GetFontPositionVariants() },
                 { TextCollection.ImagesLabText.VariantCategoryFontFamily, GetFontFamilyVariants() },
@@ -667,9 +669,9 @@ namespace PowerPointLabs.ImageSearch.Domain
                 }),
                 new StyleVariants(new Dictionary<string, object>
                 {
-                    {"OptionName", "Top-right"},
+                    {"OptionName", "Right"},
                     {"IsUseTextFormat", true},
-                    {"TextBoxPosition", 3}
+                    {"TextBoxPosition", 6}
                 })
             };
         }
