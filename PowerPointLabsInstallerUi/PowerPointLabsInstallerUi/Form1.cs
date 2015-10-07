@@ -13,7 +13,7 @@ namespace PowerPointLabsInstallerUi
         private const string TextButtonClose = "Close";
         private const string TextButtonRunning = "Running...";
         private const string ErrorWindowTitle = "PowerPointLabs Installer";
-        private const string UrlForVstoRuntim = "http://www.microsoft.com/en-us/download/details.aspx?id=44074";
+        private const string UrlForVstoRuntim = "http://www.comp.nus.edu.sg/~pptlabs/vsto-redirect.html";
         private const string UrlForPptlabsOnlineInstaller = "http://www.comp.nus.edu.sg/~pptlabs/download-78563/PowerPointLabs.zip";
 
         private readonly string _onlineInstallerZipAddress = Path.Combine(Path.GetTempPath(),
