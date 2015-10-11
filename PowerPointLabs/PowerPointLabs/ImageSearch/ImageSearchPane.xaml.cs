@@ -268,11 +268,11 @@ namespace PowerPointLabs.ImageSearch
                 VariantsComboBox.IsEnabled = false;
                 VariantsColorPanel.IsEnabled = false;
             }
-            else
+            else // select 'loading' image
             {
                 VariationInstructionsWhenNoSelectedSlide.Visibility = Visibility.Hidden;
-                VariantsComboBox.IsEnabled = true;
-                VariantsColorPanel.IsEnabled = true;
+                VariantsComboBox.IsEnabled = false;
+                VariantsColorPanel.IsEnabled = false;
             }
         }
 
@@ -335,7 +335,7 @@ namespace PowerPointLabs.ImageSearch
         private void SearchListBox_OnSelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             var source = (ImageItem) SearchListBox.SelectedValue;
-            if (source != null && source.ImageFile == TempPath.LoadMoreImgPath)
+            if (source != null && source.ImageFile == StoragePath.LoadMoreImgPath)
             {
                 DoSearchMore(source);
             }
@@ -565,7 +565,7 @@ namespace PowerPointLabs.ImageSearch
             if (item == null || item.Content == null) return;
             var imageItem = item.Content as ImageItem;
             // intent: clicking 'load more' should not change selection
-            if (imageItem != null && imageItem.ImageFile == TempPath.LoadMoreImgPath)
+            if (imageItem != null && imageItem.ImageFile == StoragePath.LoadMoreImgPath)
             {
                 DoSearchMore(imageItem);
                 e.Handled = true;
@@ -621,7 +621,7 @@ namespace PowerPointLabs.ImageSearch
             var selectedImage = (ImageItem) SearchListBox.Items.GetItemAt(_rightClickedSearchListBoxItemIndex);
             if (selectedImage == null) return;
 
-            if (selectedImage.ImageFile != TempPath.LoadingImgPath)
+            if (selectedImage.ImageFile != StoragePath.LoadingImgPath)
             {
                 switch (SearchButton.SelectedIndex)
                 {

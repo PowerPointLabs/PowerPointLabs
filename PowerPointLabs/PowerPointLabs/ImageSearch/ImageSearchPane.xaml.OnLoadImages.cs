@@ -51,7 +51,7 @@ namespace PowerPointLabs.ImageSearch
             Dispatcher.Invoke(new Action(() =>
             {
                 SearchButton.IsEnabled = false;
-                loadMoreItem.ImageFile = TempPath.LoadingImgPath;
+                loadMoreItem.ImageFile = StoragePath.LoadingImgPath;
                 PrepareToSearch(SearchEngine.NumOfItemsPerRequest() - 1, isListClearNeeded: false);
                 SearchEngine.SearchMore();
             }));
@@ -131,7 +131,7 @@ namespace PowerPointLabs.ImageSearch
 
                 var item = new ImageItem
                 {
-                    ImageFile = TempPath.LoadingImgPath,
+                    ImageFile = StoragePath.LoadingImgPath,
                     ContextLink = downloadLink
                 };
                 UrlUtil.GetMetaInfo(ref downloadLink, item);
@@ -234,7 +234,7 @@ namespace PowerPointLabs.ImageSearch
                     EnableSearchMore();
                 }
                 // all failed then clear list
-                else if (!isSuccessful && SearchList.Count(source => source.ImageFile == TempPath.LoadingImgPath)
+                else if (!isSuccessful && SearchList.Count(source => source.ImageFile == StoragePath.LoadingImgPath)
                         == SearchList.Count)
                 {
                     SearchList.Clear();
@@ -282,7 +282,7 @@ namespace PowerPointLabs.ImageSearch
             }
             for (var i = 0; i < expectedNumOfImages; i++)
             {
-                SearchList.Add(new ImageItem { ImageFile = TempPath.LoadingImgPath });
+                SearchList.Add(new ImageItem { ImageFile = StoragePath.LoadingImgPath });
             }
             SearchProgressRing.IsActive = true;
         }
@@ -291,7 +291,7 @@ namespace PowerPointLabs.ImageSearch
         {
             SearchList.Add(new ImageItem
             {
-                ImageFile = TempPath.LoadMoreImgPath
+                ImageFile = StoragePath.LoadMoreImgPath
             });
         }
 
@@ -303,7 +303,7 @@ namespace PowerPointLabs.ImageSearch
                 {
                     SearchList.Add(new ImageItem
                     {
-                        ImageFile = TempPath.LoadingImgPath
+                        ImageFile = StoragePath.LoadingImgPath
                     });
                 }));
             }

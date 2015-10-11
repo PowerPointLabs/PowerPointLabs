@@ -1,6 +1,5 @@
 ﻿using System;
 using System.IO;
-using PowerPointLabs.Properties;
 using PowerPointLabs.Views;
 
 namespace PowerPointLabs.ImageSearch.Util
@@ -19,9 +18,6 @@ namespace PowerPointLabs.ImageSearch.Util
         public static readonly string BackupTempFolder = AggregatedBackupTempFolder + "pptlabs_imagesLab" 
             + DateTime.Now.GetHashCode() + @"\";
 
-        public static readonly string LoadingImgPath = TempFolder + "loading_" + DateTime.Now.GetHashCode();
-        public static readonly string LoadMoreImgPath = TempFolder + "loadMore_" + DateTime.Now.GetHashCode();
-
         /// <returns>is successful</returns>
         public static bool InitTempFolder()
         {
@@ -36,7 +32,6 @@ namespace PowerPointLabs.ImageSearch.Util
                 try
                 {
                     Directory.CreateDirectory(TempFolder);
-                    InitResources();
                 }
                 catch
                 {
@@ -55,7 +50,6 @@ namespace PowerPointLabs.ImageSearch.Util
                 try
                 {
                     Directory.CreateDirectory(TempFolder);
-                    InitResources();
                 }
                 catch (Exception e)
                 {
@@ -64,19 +58,6 @@ namespace PowerPointLabs.ImageSearch.Util
                 }
             }
             return true;
-        }
-
-        private static void InitResources()
-        {
-            try
-            {
-                Resources.Loading.Save(LoadingImgPath);
-                Resources.LoadMore.Save(LoadMoreImgPath);
-            }
-            catch
-            {
-                // may fail to save it, which is fine
-            }
         }
 
         public static string GetPath(string name)

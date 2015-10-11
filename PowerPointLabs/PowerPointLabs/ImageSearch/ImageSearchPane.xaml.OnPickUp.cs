@@ -33,7 +33,14 @@ namespace PowerPointLabs.ImageSearch
 
                 var targetStyle = (ImageItem) PreviewListBox.SelectedValue;
                 var source = SearchListBox.SelectedValue as ImageItem;
-                Assumption.Made(source != null && targetStyle != null, "source item or target style is null/empty");
+
+                if (source == null || source.ImageFile == StoragePath.LoadingImgPath)
+                {
+                    VariationList.Clear();
+                    return;
+                }
+
+                Assumption.Made(targetStyle != null, "target style is null/empty");
 
                 try
                 {

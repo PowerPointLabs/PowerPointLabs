@@ -3,12 +3,16 @@ using System.Collections.Generic;
 using System.IO;
 using System.Xml.Serialization;
 using PowerPointLabs.ImageSearch.Domain;
+using PowerPointLabs.Properties;
 
 namespace PowerPointLabs.ImageSearch.Util
 {
     class StoragePath
     {
         public static string AggregatedFolder = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments) + @"\" + "pptlabs_imagesLab" + @"\";
+
+        public static readonly string LoadingImgPath = AggregatedFolder + "loading_" + DateTime.Now.GetHashCode();
+        public static readonly string LoadMoreImgPath = AggregatedFolder + "loadMore_" + DateTime.Now.GetHashCode();
 
         public static bool InitPersistentFolder()
         {
@@ -23,7 +27,21 @@ namespace PowerPointLabs.ImageSearch.Util
                     return false;
                 }
             }
+            InitResources();
             return true;
+        }
+
+        private static void InitResources()
+        {
+            try
+            {
+                Resources.Loading.Save(LoadingImgPath);
+                Resources.LoadMore.Save(LoadMoreImgPath);
+            }
+            catch
+            {
+                // may fail to save it, which is fine
+            }
         }
 
         public static string GetPath(string name)

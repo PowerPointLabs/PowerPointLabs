@@ -12,9 +12,16 @@ namespace PowerPointLabs.ImageSearch
         private void DoPreview()
         {
             var image = (ImageItem)SearchListBox.SelectedValue;
-            if (image == null || image.ImageFile == TempPath.LoadingImgPath)
+            if (image == null || image.ImageFile == StoragePath.LoadingImgPath)
             {
-                PreviewList.Clear();
+                if (_isVariationsFlyoutOpen)
+                {
+                    VariationList.Clear();
+                }
+                else
+                {
+                    PreviewList.Clear();
+                }
                 SetProgressingRingStatus(false);
             }
             else if (_isVariationsFlyoutOpen)
