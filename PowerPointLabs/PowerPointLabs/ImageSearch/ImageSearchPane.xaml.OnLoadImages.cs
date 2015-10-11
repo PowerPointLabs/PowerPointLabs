@@ -57,15 +57,15 @@ namespace PowerPointLabs.ImageSearch
             }));
         }
 
-        private void DoLoadImageFromFile(string filename = null)
+        private void DoLoadImageFromFile(string[] filenames = null)
         {
             Dispatcher.Invoke(new Action(() =>
             {
-                if (filename == null)
+                if (filenames == null)
                 {
                     var openFileDialog = new OpenFileDialog
                     {
-                        Multiselect = false,
+                        Multiselect = true,
                         Filter = @"Image File|*.png;*.jpg;*.jpeg;*.bmp;*.gif;"
                     };
                     var fileDialogResult = openFileDialog.ShowDialog();
@@ -73,27 +73,30 @@ namespace PowerPointLabs.ImageSearch
                     {
                         return;
                     }
-                    filename = openFileDialog.FileName;
+                    filenames = openFileDialog.FileNames;
                 }
 
                 try
                 {
-                    VerifyIsProperImage(filename);
-                    var fromFileItem = new ImageItem
+                    foreach (var filename in filenames)
                     {
-                        ImageFile = filename,
-                        FullSizeImageFile = filename,
-                        FullSizeImageUri = filename,
-                        ContextLink = filename
-                    };
+                        VerifyIsProperImage(filename);
+                        var fromFileItem = new ImageItem
+                        {
+                            ImageFile = filename,
+                            FullSizeImageFile = filename,
+                            FullSizeImageUri = filename,
+                            ContextLink = filename
+                        };
+                        //add it
+                        SearchList.Add(fromFileItem);
+                        _downloadedImages.Add(fromFileItem);   
+                    }
 
                     if (SearchButton.SelectedIndex != TextCollection.ImagesLabText.ButtonIndexFromFile)
                     {
                         SearchButton.SelectedIndex = TextCollection.ImagesLabText.ButtonIndexFromFile;
                     }
-                    //add it
-                    SearchList.Add(fromFileItem);
-                    _downloadedImages.Add(fromFileItem);
                 }
                 catch
                 {

@@ -68,8 +68,7 @@ namespace PowerPointLabs.ImageSearch
                     var filenames = (args.Data.GetData("FileDrop") as string[]);
                     if (filenames == null || filenames.Length == 0) return;
 
-                    var filename = filenames[0];
-                    DoLoadImageFromFile(filename);
+                    DoLoadImageFromFile(filenames);
                 }
                 else if (args.Data.GetDataPresent("Text"))
                 {
