@@ -323,9 +323,9 @@
             public const string SearchEngineGoogle = "GoogleEngine";
             public const string SearchEngineBing = "BingEngine";
 
-            public const int ButtonIndexSearch = 0;
-            public const int ButtonIndexDownload = 1;
-            public const int ButtonIndexFromFile = 2;
+            public const int ButtonIndexSearch = -999; // not used
+            public const int ButtonIndexDownload = 0;
+            public const int ButtonIndexFromFile = 1;
 
             public const int StyleIndexDirectText = 0;
             public const int StyleIndexBlur = 1;
@@ -361,7 +361,7 @@
 
             public const string MultiPurposeButtonNameSearch = "Search";
             public const string MultiPurposeButtonNameDownload = "Download";
-            public const string MultiPurposeButtonNameFromFile = "From File";
+            public const string MultiPurposeButtonNameFromFile = "Load Images";
 
             public const string TextBoxWatermarkSearch = "Type here to search for images";
             public const string TextBoxWatermarkDownload = "Paste the image link here";
@@ -369,7 +369,7 @@
 
             public const string InstructionForSearch = "Type the keywords in the textbox above to search for images.";
             public const string InstructionForDownload = "Paste the image link in the textbox above to download images, or drag and drop the link here.";
-            public const string InstructionForFromFile = "Click the 'From File' button above to load local images, or drag and drop the file here.";
+            public const string InstructionForFromFile = "Click the 'Load Images' button above to load local images, or drag and drop the files here.";
         }
 
         # region Agenda Lab

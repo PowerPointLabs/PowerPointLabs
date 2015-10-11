@@ -213,18 +213,18 @@
                 </Grid.RowDefinitions>
                 <Grid Grid.Row="1" Margin="0,0,0,5">
                     <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="180" />
-                        <ColumnDefinition Width="100" />
-                        <ColumnDefinition Width="75" />
+                        <ColumnDefinition Width="auto" />
+                        <ColumnDefinition Width="110" />
+                        <ColumnDefinition Width="auto" />
                         <ColumnDefinition Width="40" />
                         <ColumnDefinition Width="*"></ColumnDefinition>
                     </Grid.ColumnDefinitions>
-                    <TextBox TabIndex="0" Name="SearchTextBox" KeyDown="SearchTextBox_OnKeyDown" VerticalContentAlignment="Center" Grid.Column="0" Margin="0,0,5,0" controls:TextBoxHelper.Watermark="{Binding Path=Text, NotifyOnSourceUpdated=True}"></TextBox>
+                    <TextBox Width="180" Visibility="Collapsed" TabIndex="0" Name="SearchTextBox" KeyDown="SearchTextBox_OnKeyDown" VerticalContentAlignment="Center" Grid.Column="0" Margin="0,0,5,0" controls:TextBoxHelper.Watermark="{Binding Path=Text, NotifyOnSourceUpdated=True}"></TextBox>
                     <controls:SplitButton SelectionChanged="SearchButton_OnSelectionChanged" Click="SearchButton_OnClick" Name="SearchButton" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" Grid.Column="1" Margin="0,0,5,0"/>
-                    <Button Name="AdvancedButton" Click="AdvancedButton_OnClick" Grid.Column="2">Advanced..</Button>
+                    <Button Visibility="Collapsed" Name="AdvancedButton" Click="AdvancedButton_OnClick" Grid.Column="2">Advanced..</Button>
                     <controls:ProgressRing Name="SearchProgressRing" Width="10" Height="10" Grid.Column="3" IsActive="False" />
                 </Grid>
-                <TextBlock Visibility="Visible" Name="SearchInstructions" TextWrapping="Wrap" HorizontalAlignment="Center" VerticalAlignment="Center" Foreground="#AAAAAA" FontSize="18" Grid.Row="2">Type the keywords in the textbox above to search for images.</TextBlock>
+                <TextBlock Visibility="Visible" Name="SearchInstructions" TextWrapping="Wrap" HorizontalAlignment="Center" VerticalAlignment="Center" Foreground="#AAAAAA" FontSize="18" Grid.Row="2">Click the 'Load Images' button above to load local images, or drag and drop the files here.</TextBlock>
                 <ListBox TabIndex="1" PreviewMouseDown="SearchListBox_OnPreviewMouseDown" Name="SearchListBox" KeyDown="SearchListBox_OnKeyDown" IsSynchronizedWithCurrentItem="True" SelectionChanged="SearchListBox_OnSelectionChanged" ItemsSource="{Binding Path=SearchList, Mode=TwoWay}" Grid.Row="2">
                     <ListBox.ContextMenu>
                         <ContextMenu Name="SearchListBoxContextMenu" Visibility="Collapsed">

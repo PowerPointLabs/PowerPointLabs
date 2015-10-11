@@ -35,10 +35,8 @@ namespace PowerPointLabs.ImageSearch
         public ObservableCollection<ImageItem> SearchList { get; set; }
 
         // caches for multiple-purpose buttons
-        // downloadedImages - to be loaded to SearchList, when button is Download
-        // fromFileImages - to be loaded to SearchList, when button is From file
+        // downloadedImages - to be loaded to SearchList, when button is Download/From File
         private List<ImageItem> _downloadedImages;
-        private List<ImageItem> _fromFileImages;
 
         // UI model - list that holds preview item
         public ObservableCollection<ImageItem> PreviewList { get; set; }
@@ -163,7 +161,7 @@ namespace PowerPointLabs.ImageSearch
 
         private void InitSearchTextbox()
         {
-            SearchTextboxWatermark = new ObservableString {Text = TextCollection.ImagesLabText.TextBoxWatermarkSearch};
+            SearchTextboxWatermark = new ObservableString {Text = TextCollection.ImagesLabText.TextBoxWatermarkFromFile};
             SearchTextBox.DataContext = SearchTextboxWatermark;
         }
 
@@ -171,12 +169,11 @@ namespace PowerPointLabs.ImageSearch
         {
             MultiplePurposeButtons = new ObservableCollection<string>(new List<string>
             {
-                TextCollection.ImagesLabText.MultiPurposeButtonNameSearch, 
                 TextCollection.ImagesLabText.MultiPurposeButtonNameDownload, 
                 TextCollection.ImagesLabText.MultiPurposeButtonNameFromFile
             });
             SearchButton.ItemsSource = MultiplePurposeButtons;
-            SearchButton.SelectedIndex = TextCollection.ImagesLabText.ButtonIndexSearch;
+            SearchButton.SelectedIndex = TextCollection.ImagesLabText.ButtonIndexFromFile;
         }
 
         private void InitPreviewList()
@@ -190,7 +187,6 @@ namespace PowerPointLabs.ImageSearch
         {
             SearchList = new ObservableCollection<ImageItem>();
             _downloadedImages = new List<ImageItem>();
-            _fromFileImages = new List<ImageItem>();
             SearchList.CollectionChanged += SearchList_OnCollectionChanged;
             SearchListBox.DataContext = this;
         }
@@ -511,7 +507,6 @@ namespace PowerPointLabs.ImageSearch
 
         private void SearchButton_OnSelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            SearchList.Clear();
             CloseVariationsFlyout();
             SearchTextBox.Text = "";
             switch (SearchButton.SelectedIndex)
@@ -525,17 +520,15 @@ namespace PowerPointLabs.ImageSearch
                     break;
                 case TextCollection.ImagesLabText.ButtonIndexDownload:
                     SearchListBoxContextMenu.Visibility = Visibility.Visible;
-                    SearchTextBox.IsEnabled = true;
+                    SearchTextBox.Visibility = Visibility.Visible;
                     SearchTextboxWatermark.Text = TextCollection.ImagesLabText.TextBoxWatermarkDownload;
                     SearchInstructions.Text = TextCollection.ImagesLabText.InstructionForDownload;
-                    CopyContentToObservableList(_downloadedImages, SearchList);
                     break;
                 case TextCollection.ImagesLabText.ButtonIndexFromFile:
                     SearchListBoxContextMenu.Visibility = Visibility.Visible;
-                    SearchTextBox.IsEnabled = false;
+                    SearchTextBox.Visibility = Visibility.Collapsed;
                     SearchTextboxWatermark.Text = TextCollection.ImagesLabText.TextBoxWatermarkFromFile;
                     SearchInstructions.Text = TextCollection.ImagesLabText.InstructionForFromFile;
-                    CopyContentToObservableList(_fromFileImages, SearchList);
                     break;
             }
         }
@@ -605,17 +598,11 @@ namespace PowerPointLabs.ImageSearch
                 switch (SearchButton.SelectedIndex)
                 {
                     case TextCollection.ImagesLabText.ButtonIndexDownload:
+                    case TextCollection.ImagesLabText.ButtonIndexFromFile:
                         if (SearchListBox.SelectedIndex < _downloadedImages.Count
                             && SearchListBox.SelectedIndex > 0)
                         {
                             _downloadedImages.RemoveAt(SearchListBox.SelectedIndex);
-                        }
-                        break;
-                    case TextCollection.ImagesLabText.ButtonIndexFromFile:
-                        if (SearchListBox.SelectedIndex < _fromFileImages.Count
-                            && SearchListBox.SelectedIndex > 0)
-                        {
-                            _fromFileImages.RemoveAt(SearchListBox.SelectedIndex);
                         }
                         break;
                 }

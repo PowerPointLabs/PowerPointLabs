@@ -93,7 +93,7 @@ namespace PowerPointLabs.ImageSearch
                     }
                     //add it
                     SearchList.Add(fromFileItem);
-                    _fromFileImages.Add(fromFileItem);
+                    _downloadedImages.Add(fromFileItem);
                 }
                 catch
                 {
