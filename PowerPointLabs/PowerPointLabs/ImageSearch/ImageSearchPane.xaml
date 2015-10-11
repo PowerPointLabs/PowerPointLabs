@@ -115,7 +115,7 @@
                         <ColumnDefinition Width="80"></ColumnDefinition>
                         <ColumnDefinition Width="75"></ColumnDefinition>
                         <ColumnDefinition Width="auto"></ColumnDefinition>
-                        <ColumnDefinition Width="38"></ColumnDefinition>
+                        <ColumnDefinition Width="85"></ColumnDefinition>
                         <ColumnDefinition Width="*"></ColumnDefinition>
                         <ColumnDefinition Width="65"></ColumnDefinition>
                         <ColumnDefinition Width="10"></ColumnDefinition>
@@ -125,49 +125,13 @@
                     <Label Name="VariationLabel" Grid.Column="1" Margin="0,0,5,0" FontSize="15">Variations</Label>
                     <Button Name="StyleApplyButton" Click="StyleApplyButton_OnClick" Grid.Column="2" Margin="0,0,5,0">Apply</Button>
                     <Button Name="StyleCustomizeButton" Visibility="Collapsed" Click="StyleCustomizeButton_OnClick" Grid.Column="3">Customize</Button>
-                    <controls:ProgressRing ToolTip="Downloading image..." Margin="5,0,0,0" HorizontalAlignment="Left" Foreground="#FFFFFF" Name="VariationProgressRing" Width="10" Height="10" Grid.Column="5" IsActive="False" />
                     <Button Grid.Column="4"
                         Name="VariationFlyoutBackButton"
                         Click="VariationFlyoutBackButton_OnClick"
-                        ToolTip="Back to Styles Selection"
-                        Style="{DynamicResource MetroCircleButtonStyle}"
-                        Height="38"
-                        Width="38"
-                        FontFamily="Segoe UI Symbol"
-                        FontSize="16"
-                        HorizontalAlignment="Left"
-                        VerticalAlignment="Center">
-                        <Rectangle Width="20"
-                           Height="15"
-                           Fill="#FFFFFF" RenderTransformOrigin="0.5,0.5">
-                            <Rectangle.RenderTransform>
-                                <TransformGroup>
-                                    <ScaleTransform/>
-                                    <SkewTransform/>
-                                    <RotateTransform Angle="180"/>
-                                    <TranslateTransform/>
-                                </TransformGroup>
-                            </Rectangle.RenderTransform>
-                            <Rectangle.OpacityMask>
-                                <VisualBrush Stretch="Fill">
-                                    <VisualBrush.Visual>
-                                        <Canvas Width="48"
-                                        Height="48"
-                                        Clip="F1 M 0,0L 48,0L 48,48L 0,48L 0,0"
-                                        UseLayoutRounding="False">
-                                            <Path Width="25"
-                                          Height="18"
-                                          Canvas.Left="12"
-                                          Canvas.Top="15"
-                                          Stretch="Fill"
-                                          Fill="Black"
-                                          Data="F1 M 12,22L 12,26L 28.25,26L 21,33L 27.5,33L 37,24L 27.5,15L 21,15L 28.25,22L 12,22 Z " />
-                                        </Canvas>
-                                    </VisualBrush.Visual>
-                                </VisualBrush>
-                            </Rectangle.OpacityMask>
-                        </Rectangle>
+                        ToolTip="Back to Styles Selection">
+                        Change Style
                     </Button>
+                    <controls:ProgressRing ToolTip="Downloading image..." Margin="5,0,0,0" HorizontalAlignment="Left" Foreground="#FFFFFF" Name="VariationProgressRing" Width="10" Height="10" Grid.Column="5" IsActive="False" />
                     <Border Name="VariantsColorPanel" ToolTip="Click to change color" MouseLeftButtonUp="ColorPanel_OnMouseLeftButtonUp" BorderBrush="#EEEEEE" BorderThickness="1" Height="26" Width="65" HorizontalAlignment="Right" VerticalAlignment="Center" Grid.Column="6" />
                     <ComboBox Name="VariantsComboBox" SelectionChanged="VariantsComboBox_OnSelectionChanged" HorizontalAlignment="Right" VerticalAlignment="Center" Grid.Column="8">
                     </ComboBox>
