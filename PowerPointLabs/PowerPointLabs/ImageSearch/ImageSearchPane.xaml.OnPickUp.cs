@@ -91,7 +91,8 @@ namespace PowerPointLabs.ImageSearch
                 }
                 catch
                 {
-                    // ignore, selected slide may be null
+                    ShowErrorMessageBox(TextCollection.ImagesLabText.ErrorImageCorrupted);
+                    SetProgressingRingStatus(false);
                 }
             }));
         }
