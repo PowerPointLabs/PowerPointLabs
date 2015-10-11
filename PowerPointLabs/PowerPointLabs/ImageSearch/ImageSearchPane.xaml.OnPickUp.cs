@@ -38,6 +38,12 @@ namespace PowerPointLabs.ImageSearch
 
                 try
                 {
+                    Double scrollOffset = 0f;
+                    var scrollViewer = FindScrollViewer(VariationListBox);
+                    if (scrollViewer != null)
+                    {
+                        scrollOffset = scrollViewer.VerticalOffset;
+                    }
                     var selectedId = VariationListBox.SelectedIndex >= 0 ? VariationListBox.SelectedIndex : 0;
                     VariationList.Clear();
 
@@ -52,7 +58,7 @@ namespace PowerPointLabs.ImageSearch
                         foreach (var key in _styleVariants.Keys)
                         {
                             VariantsComboBox.Items.Add(key);
-                            _selectedVariants.Add(key, 0);
+                            _selectedVariants.Add(key, -1);
                         }
                         VariantsComboBox.SelectedIndex = 0;
                         _previousVariantsCategory = (string) VariantsComboBox.SelectedValue;
@@ -73,11 +79,15 @@ namespace PowerPointLabs.ImageSearch
                     }
 
                     VariationListBox.SelectedIndex = selectedId;
+                    if (scrollViewer != null)
+                    {
+                        scrollViewer.ScrollToVerticalOffset(scrollOffset);
+                    }
+                    
                     if (source.FullSizeImageFile != null)
                     {
                         SetProgressingRingStatus(false);
                     }
-                    VariationListBox.ScrollIntoView(VariationListBox.SelectedItem);
                 }
                 catch
                 {
@@ -129,7 +139,10 @@ namespace PowerPointLabs.ImageSearch
             }
 
             _previousVariantsCategory = currentVariantsCategory;
-            VariationListBox.SelectedIndex = _selectedVariants[currentVariantsCategory];
+            if (_selectedVariants[currentVariantsCategory] != -1)
+            {
+                VariationListBox.SelectedIndex = _selectedVariants[currentVariantsCategory];
+            }
             UpdateStyleVariationsImages();
         }
 
@@ -458,6 +471,19 @@ namespace PowerPointLabs.ImageSearch
 
             left2RightToShowTranslate.BeginAnimation(TranslateTransform.XProperty, left2RightToShowAnimation);
             _isVariationsFlyoutOpen = true;
+        }
+
+        static ScrollViewer FindScrollViewer(DependencyObject parent)
+        {
+            var childCount = VisualTreeHelper.GetChildrenCount(parent);
+            for (var i = 0; i < childCount; i++)
+            {
+                var elt = VisualTreeHelper.GetChild(parent, i);
+                if (elt is ScrollViewer) return (ScrollViewer)elt;
+                var result = FindScrollViewer(elt);
+                if (result != null) return result;
+            }
+            return null;
         }
     }
 }
