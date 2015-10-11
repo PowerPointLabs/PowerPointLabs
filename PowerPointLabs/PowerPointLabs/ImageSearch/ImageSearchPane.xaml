@@ -228,7 +228,9 @@
                 <ListBox TabIndex="1" PreviewMouseDown="SearchListBox_OnPreviewMouseDown" Name="SearchListBox" KeyDown="SearchListBox_OnKeyDown" SelectionChanged="SearchListBox_OnSelectionChanged" ItemsSource="{Binding Path=SearchList, Mode=TwoWay}" Grid.Row="2">
                     <ListBox.ContextMenu>
                         <ContextMenu Name="SearchListBoxContextMenu">
-                            <MenuItem Header="Delete selected image" Click="MenuItem_OnClick"></MenuItem>
+                            <MenuItem Header="Delete this image" Click="MenuItemDeleteThisImage_OnClick"></MenuItem>
+                            <Separator />
+                            <MenuItem Header="Delete all images" Click="MenuItemDeleteAllImages_OnClick"></MenuItem>
                         </ContextMenu>
                     </ListBox.ContextMenu>
                     <ListBox.Template>

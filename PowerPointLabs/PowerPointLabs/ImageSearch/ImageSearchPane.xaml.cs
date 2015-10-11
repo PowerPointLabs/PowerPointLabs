@@ -7,6 +7,7 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Controls.Primitives;
 using System.Windows.Input;
+using System.Windows.Media;
 using System.Windows.Media.Animation;
 using PowerPointLabs.ImageSearch.Domain;
 using PowerPointLabs.ImageSearch.Handler;
@@ -93,8 +94,9 @@ namespace PowerPointLabs.ImageSearch
         private DateTime _latestPreviewUpdateTime = DateTime.Now;
         private DateTime _latestImageChangedTime = DateTime.Now;
 
-        private bool _isWindowActivatedWithPreview = true;
+        private int _rightClickedSearchListBoxItemIndex = -1;
 
+        private bool _isWindowActivatedWithPreview = true;
         private bool _isStylePreviewRegionInit;
         private bool _isStylePreviewRegionAnimationCompleted;
 
@@ -557,29 +559,66 @@ namespace PowerPointLabs.ImageSearch
             }));
         }
 
-        // intent: clicking 'load more' should not change selection
         private void SearchListBox_OnPreviewMouseDown(object sender, MouseButtonEventArgs e)
         {
             var item = ItemsControl.ContainerFromElement((ItemsControl) sender, (DependencyObject) e.OriginalSource) as ListBoxItem;
             if (item == null || item.Content == null) return;
             var imageItem = item.Content as ImageItem;
+            // intent: clicking 'load more' should not change selection
             if (imageItem != null && imageItem.ImageFile == TempPath.LoadMoreImgPath)
             {
                 DoSearchMore(imageItem);
                 e.Handled = true;
             }
+            // intent: right click SearchListBox item should not change selection
+            else if (e.RightButton == MouseButtonState.Pressed)
+            {
+                _rightClickedSearchListBoxItemIndex = -1;
+                for (var i = 0; i < SearchListBox.Items.Count; i++)
+                {
+                    var lbi = SearchListBox.ItemContainerGenerator.ContainerFromIndex(i) as ListBoxItem;
+                    if (lbi == null) continue;
+                    if (IsMouseOverTarget(lbi, e.GetPosition(lbi)))
+                    {
+                        _rightClickedSearchListBoxItemIndex = i;
+                        break;
+                    }
+                }
+                e.Handled = true;
+            }
         }
 
-        private void MenuItem_OnClick(object sender, RoutedEventArgs e)
+        private static bool IsMouseOverTarget(Visual target, Point point)
+        {
+            var bounds = VisualTreeHelper.GetDescendantBounds(target);
+            return bounds.Contains(point);
+        }
+
+        private void MenuItemDeleteThisImage_OnClick(object sender, RoutedEventArgs e)
         {
             DeleteImageShape();
+        }
+
+        private void MenuItemDeleteAllImages_OnClick(object sender, RoutedEventArgs e)
+        {
+            DeleteAllImageShapes();
+        }
+
+        private void DeleteAllImageShapes()
+        {
+            _downloadedImages.Clear();
+            SearchList.Clear();
         }
 
         private void DeleteImageShape()
         {
             if (SearchButton.SelectedIndex == TextCollection.ImagesLabText.ButtonIndexSearch) return;
+            
+            if (_rightClickedSearchListBoxItemIndex < 0 
+                || _rightClickedSearchListBoxItemIndex > SearchListBox.Items.Count)
+                return;
 
-            var selectedImage = (ImageItem) SearchListBox.SelectedValue;
+            var selectedImage = (ImageItem) SearchListBox.Items.GetItemAt(_rightClickedSearchListBoxItemIndex);
             if (selectedImage == null) return;
 
             if (selectedImage.ImageFile != TempPath.LoadingImgPath)
@@ -591,12 +630,12 @@ namespace PowerPointLabs.ImageSearch
                         if (SearchListBox.SelectedIndex < _downloadedImages.Count
                             && SearchListBox.SelectedIndex >= 0)
                         {
-                            _downloadedImages.RemoveAt(SearchListBox.SelectedIndex);
+                            _downloadedImages.RemoveAt(_rightClickedSearchListBoxItemIndex);
                         }
                         break;
                 }
             }
-            SearchList.RemoveAt(SearchListBox.SelectedIndex);
+            SearchList.RemoveAt(_rightClickedSearchListBoxItemIndex);
         }
 
         # endregion
