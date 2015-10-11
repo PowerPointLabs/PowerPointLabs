@@ -179,6 +179,12 @@ namespace PowerPointLabs.ImageSearch.Handler
                 .StartBoxing();
         }
 
+        public void ApplyTextWrapping()
+        {
+            new TextBoxes(Shapes, PreviewPresentation.SlideWidth, PreviewPresentation.SlideHeight)
+                .StartTextWrapping();
+        }
+
         // add overlay layer 
         public PowerPoint.Shape ApplyOverlayEffect(string color, int transparency,
             float left = 0, float top = 0, float? width = null, float? height = null)

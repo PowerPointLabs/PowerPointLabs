@@ -103,6 +103,13 @@ namespace PowerPointLabs.ImageSearch.Handler
 
         private void ApplyStyle(EffectsHandler handler, ImageItem source, bool isActualSize)
         {
+            if (Options.IsUseBannerStyle 
+                && (Options.TextBoxPosition == 4/*left*/
+                    || Options.TextBoxPosition == 5/*centered*/
+                    || Options.TextBoxPosition == 6/*right*/))
+            {
+                handler.ApplyTextWrapping();
+            }
             ApplyTextEffect(handler);
 
             var isSpecialEffectStyle = false;

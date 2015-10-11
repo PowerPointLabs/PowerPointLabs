@@ -83,6 +83,17 @@ namespace PowerPointLabs.ImageSearch.Handler.Effect
             return TextShapes.Count > 0 ? GetTextBoxesInfo(TextShapes) : null;
         }
 
+        public void StartTextWrapping()
+        {
+            foreach (var textShape in TextShapes)
+            {
+                if (textShape.Width > _slideWidth / 2)
+                {
+                    textShape.Width = _slideWidth / 2;
+                }
+            }
+        }
+
         public static void AddMargin(TextBoxInfo textboxesInfo, float? margin = null)
         {
             margin = margin ?? Margin;
