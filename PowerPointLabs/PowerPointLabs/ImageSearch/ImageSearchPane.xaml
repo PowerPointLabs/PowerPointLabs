@@ -225,9 +225,9 @@
                     <controls:ProgressRing Name="SearchProgressRing" Width="10" Height="10" Grid.Column="3" IsActive="False" />
                 </Grid>
                 <TextBlock Visibility="Visible" Name="SearchInstructions" TextWrapping="Wrap" HorizontalAlignment="Center" VerticalAlignment="Center" Foreground="#AAAAAA" FontSize="18" Grid.Row="2">Click the 'Load Images' button above to load local images, or drag and drop the files here.</TextBlock>
-                <ListBox TabIndex="1" PreviewMouseDown="SearchListBox_OnPreviewMouseDown" Name="SearchListBox" KeyDown="SearchListBox_OnKeyDown" IsSynchronizedWithCurrentItem="True" SelectionChanged="SearchListBox_OnSelectionChanged" ItemsSource="{Binding Path=SearchList, Mode=TwoWay}" Grid.Row="2">
+                <ListBox TabIndex="1" PreviewMouseDown="SearchListBox_OnPreviewMouseDown" Name="SearchListBox" KeyDown="SearchListBox_OnKeyDown" SelectionChanged="SearchListBox_OnSelectionChanged" ItemsSource="{Binding Path=SearchList, Mode=TwoWay}" Grid.Row="2">
                     <ListBox.ContextMenu>
-                        <ContextMenu Name="SearchListBoxContextMenu" Visibility="Collapsed">
+                        <ContextMenu Name="SearchListBoxContextMenu">
                             <MenuItem Header="Delete selected image" Click="MenuItem_OnClick"></MenuItem>
                         </ContextMenu>
                     </ListBox.ContextMenu>

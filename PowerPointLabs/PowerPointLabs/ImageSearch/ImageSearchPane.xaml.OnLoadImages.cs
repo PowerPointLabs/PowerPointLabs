@@ -141,13 +141,15 @@ namespace PowerPointLabs.ImageSearch
                 SearchList.Add(item);
                 SearchProgressRing.IsActive = true;
 
-                var thumbnailPath = TempPath.GetPath("thumbnail");
+                var imagePath = StoragePath.GetPath("img-" 
+                    + DateTime.Now.GetHashCode() + "-" 
+                    + Guid.NewGuid().ToString().Substring(0, 7));
                 new Downloader()
-                    .Get(downloadLink, thumbnailPath)
+                    .Get(downloadLink, imagePath)
                     .After(() =>
                     {
-                        HandleDownloadedPicture(item, thumbnailPath);
-                        HandleDownloadedThumbnail(item, thumbnailPath);
+                        HandleDownloadedPicture(item, imagePath);
+                        HandleDownloadedThumbnail(item, imagePath);
                     })
                     .OnError(() => { RemoveImageItem(item); })
                     .Start();

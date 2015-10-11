@@ -13,7 +13,6 @@ using PowerPointLabs.ImageSearch.Handler;
 using PowerPointLabs.ImageSearch.SearchEngine;
 using PowerPointLabs.ImageSearch.Util;
 using PowerPointLabs.Models;
-using PowerPointLabs.Utils;
 using PowerPointLabs.WPF.Observable;
 using ButtonBase = System.Windows.Controls.Primitives.ButtonBase;
 using KeyEventArgs = System.Windows.Input.KeyEventArgs;
@@ -64,6 +63,7 @@ namespace PowerPointLabs.ImageSearch
 
         // time to trigger the timer event
         private const int TimerInterval = 2000;
+        private const string ImagesLabImagesList = "ImagesLabImagesList";
 
         // a background presentation that will do the preview processing
         public StylesHandler PreviewPresentation { get; set; }
@@ -96,6 +96,7 @@ namespace PowerPointLabs.ImageSearch
         private bool _isWindowActivatedWithPreview = true;
 
         private bool _isStylePreviewRegionInit;
+        private bool _isStylePreviewRegionAnimationCompleted;
 
         # endregion
 
@@ -111,9 +112,8 @@ namespace PowerPointLabs.ImageSearch
             InitVariationList();
             IsOpen = true;
             InitSearchOptions();
-            InitSearchButtons();
             InitConfirmApplyFlyout();
-            if (TempPath.InitTempFolder())
+            if (TempPath.InitTempFolder() && StoragePath.InitPersistentFolder())
             {
                 InitSearchEngine();
                 InitPreviewPresentation();
@@ -131,24 +131,6 @@ namespace PowerPointLabs.ImageSearch
             VariationList = new ObservableCollection<ImageItem>();
             VariationList.CollectionChanged += VariationList_OnCollectionChanged;
             VariationListBox.DataContext = this;
-        }
-
-        private void InitSearchButtons()
-        {
-            // if no available API Keys, then set default button to Download
-            if (SearchOptions.GetSearchEngine() == GoogleEngine.Id()
-                && (StringUtil.IsEmpty(SearchOptions.SearchEngineId)
-                    || StringUtil.IsEmpty(SearchOptions.ApiKey)))
-            {
-                SearchButton.SelectedIndex = TextCollection.ImagesLabText.ButtonIndexDownload;
-                SearchListBoxContextMenu.Visibility = Visibility.Visible;
-            } 
-            else if (SearchOptions.GetSearchEngine() == BingEngine.Id()
-                    && StringUtil.IsEmpty(SearchOptions.BingApiKey))
-            {
-                SearchButton.SelectedIndex = TextCollection.ImagesLabText.ButtonIndexDownload;
-                SearchListBoxContextMenu.Visibility = Visibility.Visible;
-            }
         }
 
         private void InitConfirmApplyFlyout()
@@ -186,14 +168,18 @@ namespace PowerPointLabs.ImageSearch
         private void InitSearchList()
         {
             SearchList = new ObservableCollection<ImageItem>();
-            _downloadedImages = new List<ImageItem>();
+            _downloadedImages = StoragePath.Load(ImagesLabImagesList);
             SearchList.CollectionChanged += SearchList_OnCollectionChanged;
-            SearchListBox.DataContext = this;
+            CopyContentToObservableList(_downloadedImages, SearchList);
+            Dispatcher.BeginInvoke(new Action(() =>
+            {
+                SearchListBox.DataContext = this;
+            }));
         }
 
         private void InitSearchOptions()
         {
-            SearchOptions = SearchOptions.Load(StoragePath.GetPath("ImagesLabSearchOptions"));
+            SearchOptions = new SearchOptions();
             SearchOptions.PropertyChanged += (sender, args) =>
             {
                 SearchEngine = _id2EngineMap[SearchOptions.GetSearchEngine()];
@@ -259,6 +245,7 @@ namespace PowerPointLabs.ImageSearch
                             PreviewInstructionsWhenNoSelectedSlide.BeginAnimation(OpacityProperty,
                                 previewInstructionsShowAnimation);
                         }
+                        _isStylePreviewRegionAnimationCompleted = true;
                     }));
                 };
                 StylesPreviewGrid.BeginAnimation(WidthProperty, previewRegionShowAnimation);
@@ -289,6 +276,8 @@ namespace PowerPointLabs.ImageSearch
 
         private void PreviewList_OnCollectionChanged(object sender, NotifyCollectionChangedEventArgs e)
         {
+            if (!_isStylePreviewRegionAnimationCompleted) return;
+
             PreviewInstructions.BeginAnimation(OpacityProperty, null);
             PreviewInstructions.Opacity = 100;
             PreviewInstructionsWhenNoSelectedSlide.BeginAnimation(OpacityProperty, null);
@@ -458,7 +447,7 @@ namespace PowerPointLabs.ImageSearch
             {
                 PreviewPresentation.Close();
             }
-            SearchOptions.Save(StoragePath.GetPath("ImagesLabSearchOptions"));
+            StoragePath.Save(ImagesLabImagesList, _downloadedImages);
         }
 
         private void StylesPickUpButton_OnClick(object sender, RoutedEventArgs e)
@@ -600,7 +589,7 @@ namespace PowerPointLabs.ImageSearch
                     case TextCollection.ImagesLabText.ButtonIndexDownload:
                     case TextCollection.ImagesLabText.ButtonIndexFromFile:
                         if (SearchListBox.SelectedIndex < _downloadedImages.Count
-                            && SearchListBox.SelectedIndex > 0)
+                            && SearchListBox.SelectedIndex >= 0)
                         {
                             _downloadedImages.RemoveAt(SearchListBox.SelectedIndex);
                         }
