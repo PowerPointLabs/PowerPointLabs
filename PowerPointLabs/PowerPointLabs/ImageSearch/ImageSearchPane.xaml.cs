@@ -285,7 +285,7 @@ namespace PowerPointLabs.ImageSearch
             PreviewInstructionsWhenNoSelectedSlide.BeginAnimation(OpacityProperty, null);
             PreviewInstructionsWhenNoSelectedSlide.Opacity = 100;
 
-            if (PreviewList.Count != 0)
+            if (PreviewList.Count != 0 || SearchInstructions.Visibility == Visibility.Visible)
             {
                 PreviewInstructions.Visibility = Visibility.Hidden;
                 PreviewInstructionsWhenNoSelectedSlide.Visibility = Visibility.Hidden;
