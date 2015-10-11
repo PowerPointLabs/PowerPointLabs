@@ -22,7 +22,6 @@ namespace PowerPointLabs.ImageSearch
         private bool _isVariationsFlyoutOpen;
 
         private string _previousVariantsCategory;
-        private Dictionary<string, int> _selectedVariants;
         private IList<StyleOptions> _styleOptions;
         private Dictionary<string, List<StyleVariants>> _styleVariants; 
 
@@ -52,13 +51,11 @@ namespace PowerPointLabs.ImageSearch
                         selectedId = 0;
                         _styleOptions = StyleOptionsFactory.GetOptions(targetStyle.Tooltip);
                         _styleVariants = StyleVariantsFactory.GetVariants(targetStyle.Tooltip);
-                        _selectedVariants = new Dictionary<string, int>();
 
                         VariantsComboBox.Items.Clear();
                         foreach (var key in _styleVariants.Keys)
                         {
                             VariantsComboBox.Items.Add(key);
-                            _selectedVariants.Add(key, -1);
                         }
                         VariantsComboBox.SelectedIndex = 0;
                         _previousVariantsCategory = (string) VariantsComboBox.SelectedValue;
@@ -102,8 +99,6 @@ namespace PowerPointLabs.ImageSearch
             if (VariationListBox.SelectedIndex < 0
                 || VariantsComboBox.Items.Count == 0) return;
 
-            _selectedVariants[_previousVariantsCategory] = VariationListBox.SelectedIndex;
-
             var targetVariants = _styleVariants[_previousVariantsCategory];
             if (targetVariants.Count == 0) return;
 
@@ -140,10 +135,6 @@ namespace PowerPointLabs.ImageSearch
             }
 
             _previousVariantsCategory = currentVariantsCategory;
-            if (_selectedVariants[currentVariantsCategory] != -1)
-            {
-                VariationListBox.SelectedIndex = _selectedVariants[currentVariantsCategory];
-            }
             UpdateStyleVariationsImages();
         }
 
