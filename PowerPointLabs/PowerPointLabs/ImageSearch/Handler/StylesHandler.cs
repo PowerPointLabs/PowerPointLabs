@@ -133,11 +133,11 @@ namespace PowerPointLabs.ImageSearch.Handler
             if (Options.IsUseSpecialEffectStyle)
             {
                 isSpecialEffectStyle = true;
-                imageShape = handler.ApplySpecialEffectEffect(Options.GetSpecialEffect(), isActualSize);
+                imageShape = handler.ApplySpecialEffectEffect(Options.GetSpecialEffect(), isActualSize, Options.ImageOffset);
             }
             else // Direct Text style
             {
-                imageShape = handler.ApplyBackgroundEffect();
+                imageShape = handler.ApplyBackgroundEffect(Options.ImageOffset);
             }
 
             Shape backgroundOverlayShape = null;
@@ -150,8 +150,8 @@ namespace PowerPointLabs.ImageSearch.Handler
             if (Options.IsUseBlurStyle)
             {
                 blurImageShape = isSpecialEffectStyle
-                    ? handler.ApplyBlurEffect(source.SpecialEffectImageFile, Options.BlurDegree)
-                    : handler.ApplyBlurEffect(degree: Options.BlurDegree);
+                    ? handler.ApplyBlurEffect(source.SpecialEffectImageFile, Options.BlurDegree, Options.ImageOffset)
+                    : handler.ApplyBlurEffect(degree: Options.BlurDegree, offset: Options.ImageOffset);
             }
 
             Shape bannerOverlayShape = null;
@@ -178,14 +178,14 @@ namespace PowerPointLabs.ImageSearch.Handler
         private void PreviewStyles(EffectsHandler handler, PreviewInfo previewInfo)
         {
             // style: direct text
-            var imageShape = handler.ApplyBackgroundEffect();
+            var imageShape = handler.ApplyBackgroundEffect(Options.ImageOffset);
             handler.ApplyTextEffect("", "#FFFFFF", 0);
             handler.ApplyTextPositionAndAlignment(Position.Left, Alignment.Auto);
             handler.GetNativeSlide().Export(previewInfo.DirectTextStyleImagePath, "JPG",
                 GetPreviewWidth(), PreviewHeight);
 
             // style: blur
-            var blurImageShape = handler.ApplyBlurEffect();
+            var blurImageShape = handler.ApplyBlurEffect(offset: Options.ImageOffset);
             SendToBack(blurImageShape, imageShape);
             handler.GetNativeSlide().Export(previewInfo.BlurStyleImagePath, "JPG",
                 GetPreviewWidth(), PreviewHeight);
@@ -207,14 +207,14 @@ namespace PowerPointLabs.ImageSearch.Handler
             // style: overlay
             handler.RemoveEffect(EffectName.Banner);
             handler.ApplyTextPositionAndAlignment(Position.Centre, Alignment.Left);
-            handler.ApplySpecialEffectEffect(MatrixFilters.GreyScale, imageShape, "#00B1FD"/*Blue*/, 35);
+            handler.ApplySpecialEffectEffect(MatrixFilters.GreyScale, imageShape, "#00B1FD"/*Blue*/, 35, Options.ImageOffset);
             handler.GetNativeSlide().Export(previewInfo.OverlayStyleImagePath, "JPG",
                 GetPreviewWidth(), PreviewHeight);
 
             // style: special effect
             handler.RemoveEffect(EffectName.Overlay);
             handler.RemoveEffect(EffectName.SpecialEffect);
-            handler.ApplySpecialEffectEffect(MatrixFilters.GreyScale, imageShape, "#000000", 85);
+            handler.ApplySpecialEffectEffect(MatrixFilters.GreyScale, imageShape, "#000000", 85, Options.ImageOffset);
             handler.GetNativeSlide().Export(previewInfo.SpecialEffectStyleImagePath, "JPG",
                 GetPreviewWidth(), PreviewHeight);
         }

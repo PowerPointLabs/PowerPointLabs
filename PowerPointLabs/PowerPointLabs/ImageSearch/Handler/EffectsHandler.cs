@@ -67,19 +67,19 @@ namespace PowerPointLabs.ImageSearch.Handler
         }
 
         // add a background image shape from imageItem
-        public PowerPoint.Shape ApplyBackgroundEffect(string overlayColor, int overlayTransparency)
+        public PowerPoint.Shape ApplyBackgroundEffect(string overlayColor, int overlayTransparency, int offset)
         {
             var overlay = ApplyOverlayEffect(overlayColor, overlayTransparency);
             overlay.ZOrder(MsoZOrderCmd.msoSendToBack);
 
-            return ApplyBackgroundEffect();
+            return ApplyBackgroundEffect(offset);
         }
 
-        public PowerPoint.Shape ApplyBackgroundEffect()
+        public PowerPoint.Shape ApplyBackgroundEffect(int offset)
         {
             var imageShape = AddPicture(Source.FullSizeImageFile ?? Source.ImageFile, EffectName.BackGround);
             imageShape.ZOrder(MsoZOrderCmd.msoSendToBack);
-            FitToSlide.AutoFit(imageShape, PreviewPresentation);
+            FitToSlide.AutoFit(imageShape, PreviewPresentation, offset);
 
             CropPicture(imageShape);
             return imageShape;
@@ -259,13 +259,13 @@ namespace PowerPointLabs.ImageSearch.Handler
             }
         }
 
-        public PowerPoint.Shape ApplyBlurEffect(string imageFileToBlur = null, int degree = 85)
+        public PowerPoint.Shape ApplyBlurEffect(string imageFileToBlur = null, int degree = 85, int offset = 0)
         {
             Source.BlurImageFile = BlurImage(imageFileToBlur 
                 ?? Source.FullSizeImageFile 
                 ?? Source.ImageFile, degree);
             var blurImageShape = AddPicture(Source.BlurImageFile, EffectName.Blur);
-            FitToSlide.AutoFit(blurImageShape, PreviewPresentation);
+            FitToSlide.AutoFit(blurImageShape, PreviewPresentation, offset);
             CropPicture(blurImageShape);
             return blurImageShape;
         }
@@ -411,11 +411,11 @@ namespace PowerPointLabs.ImageSearch.Handler
             }
         }
 
-        public PowerPoint.Shape ApplySpecialEffectEffect(IMatrixFilter effectFilter, 
-            PowerPoint.Shape imageShape, string overlayColor, int transparency)
+        public PowerPoint.Shape ApplySpecialEffectEffect(IMatrixFilter effectFilter,
+            PowerPoint.Shape imageShape, string overlayColor, int transparency, int offset)
         {
             var overlayShape = ApplyOverlayEffect(overlayColor, transparency);
-            var specialEffectImageShape = ApplySpecialEffectEffect(effectFilter, isActualSize:false);
+            var specialEffectImageShape = ApplySpecialEffectEffect(effectFilter, false, offset);
 
             overlayShape.ZOrder(MsoZOrderCmd.msoSendToBack);
             specialEffectImageShape.ZOrder(MsoZOrderCmd.msoSendToBack);
@@ -426,11 +426,11 @@ namespace PowerPointLabs.ImageSearch.Handler
             return specialEffectImageShape;
         }
 
-        public PowerPoint.Shape ApplySpecialEffectEffect(IMatrixFilter effectFilter, bool isActualSize)
+        public PowerPoint.Shape ApplySpecialEffectEffect(IMatrixFilter effectFilter, bool isActualSize, int offset)
         {
             Source.SpecialEffectImageFile = SpecialEffectImage(effectFilter, Source.FullSizeImageFile ?? Source.ImageFile, isActualSize);
             var specialEffectImageShape = AddPicture(Source.SpecialEffectImageFile, EffectName.SpecialEffect);
-            FitToSlide.AutoFit(specialEffectImageShape, PreviewPresentation);
+            FitToSlide.AutoFit(specialEffectImageShape, PreviewPresentation, offset);
             CropPicture(specialEffectImageShape);
             return specialEffectImageShape;
         }

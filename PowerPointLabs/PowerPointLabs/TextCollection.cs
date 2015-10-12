@@ -316,6 +316,7 @@
             public const string VariantCategoryBlurriness = "Blurriness";
             public const string VariantCategoryBrightness = "Brightness";
             public const string VariantCategoryFontSizeIncrease = "Font Size";
+            public const string VariantCategoryImageOffset = "Image Offset";
             public const string VariantCategoryOverlayTransparency = "Overlay Transparency";
             public const string VariantCategoryBannerTransparency = "Banner Transparency";
             public const string VariantCategoryTextBoxTransparency = "TextBox Transparency";

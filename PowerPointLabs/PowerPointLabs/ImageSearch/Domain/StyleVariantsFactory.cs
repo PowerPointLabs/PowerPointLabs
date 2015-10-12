@@ -34,7 +34,8 @@ namespace PowerPointLabs.ImageSearch.Domain
                 { TextCollection.ImagesLabText.VariantCategoryTextColor, GetFontColorVariants() },
                 { TextCollection.ImagesLabText.VariantCategoryTextPosition, GetFontPositionVariants() },
                 { TextCollection.ImagesLabText.VariantCategoryFontFamily, GetFontFamilyVariants() },
-                { TextCollection.ImagesLabText.VariantCategoryFontSizeIncrease, GetFontSizeIncreaseVariants() }
+                { TextCollection.ImagesLabText.VariantCategoryFontSizeIncrease, GetFontSizeIncreaseVariants() },
+                { TextCollection.ImagesLabText.VariantCategoryImageOffset, GetImageOffsetVariants() }
             };
         }
 
@@ -48,7 +49,8 @@ namespace PowerPointLabs.ImageSearch.Domain
                 { TextCollection.ImagesLabText.VariantCategoryTextColor, GetFontColorVariants() },
                 { TextCollection.ImagesLabText.VariantCategoryTextPosition, GetFontPositionVariants() },
                 { TextCollection.ImagesLabText.VariantCategoryFontFamily, GetFontFamilyVariants() },
-                { TextCollection.ImagesLabText.VariantCategoryFontSizeIncrease, GetFontSizeIncreaseVariants() }
+                { TextCollection.ImagesLabText.VariantCategoryFontSizeIncrease, GetFontSizeIncreaseVariants() },
+                { TextCollection.ImagesLabText.VariantCategoryImageOffset, GetImageOffsetVariants() }
             };
         }
 
@@ -61,7 +63,8 @@ namespace PowerPointLabs.ImageSearch.Domain
                 { TextCollection.ImagesLabText.VariantCategoryTextColor, GetFontColorVariants() },
                 { TextCollection.ImagesLabText.VariantCategoryTextPosition, GetFontPositionVariants() },
                 { TextCollection.ImagesLabText.VariantCategoryFontFamily, GetFontFamilyVariants() },
-                { TextCollection.ImagesLabText.VariantCategoryFontSizeIncrease, GetFontSizeIncreaseVariants() }
+                { TextCollection.ImagesLabText.VariantCategoryFontSizeIncrease, GetFontSizeIncreaseVariants() },
+                { TextCollection.ImagesLabText.VariantCategoryImageOffset, GetImageOffsetVariants() }
             };
         }
 
@@ -74,7 +77,8 @@ namespace PowerPointLabs.ImageSearch.Domain
                 { TextCollection.ImagesLabText.VariantCategoryTextColor, GetFontColorVariants() },
                 { TextCollection.ImagesLabText.VariantCategoryTextPosition, GetFontPositionVariants() },
                 { TextCollection.ImagesLabText.VariantCategoryFontFamily, GetFontFamilyVariants() },
-                { TextCollection.ImagesLabText.VariantCategoryFontSizeIncrease, GetFontSizeIncreaseVariants() }
+                { TextCollection.ImagesLabText.VariantCategoryFontSizeIncrease, GetFontSizeIncreaseVariants() },
+                { TextCollection.ImagesLabText.VariantCategoryImageOffset, GetImageOffsetVariants() }
             };
         }
 
@@ -87,7 +91,8 @@ namespace PowerPointLabs.ImageSearch.Domain
                 { TextCollection.ImagesLabText.VariantCategoryTextColor, GetFontColorVariants() },
                 { TextCollection.ImagesLabText.VariantCategoryTextPosition, GetFontPositionVariants() },
                 { TextCollection.ImagesLabText.VariantCategoryFontFamily, GetFontFamilyVariants() },
-                { TextCollection.ImagesLabText.VariantCategoryFontSizeIncrease, GetFontSizeIncreaseVariants() }
+                { TextCollection.ImagesLabText.VariantCategoryFontSizeIncrease, GetFontSizeIncreaseVariants() },
+                { TextCollection.ImagesLabText.VariantCategoryImageOffset, GetImageOffsetVariants() }
             };
         }
 
@@ -99,7 +104,8 @@ namespace PowerPointLabs.ImageSearch.Domain
                 { TextCollection.ImagesLabText.VariantCategoryTextColor, GetFontColorVariants() },
                 { TextCollection.ImagesLabText.VariantCategoryTextPosition, GetFontPositionVariants() },
                 { TextCollection.ImagesLabText.VariantCategoryFontFamily, GetFontFamilyVariants() },
-                { TextCollection.ImagesLabText.VariantCategoryFontSizeIncrease, GetFontSizeIncreaseVariants() }
+                { TextCollection.ImagesLabText.VariantCategoryFontSizeIncrease, GetFontSizeIncreaseVariants() },
+                { TextCollection.ImagesLabText.VariantCategoryImageOffset, GetImageOffsetVariants() }
             };
         }
 
@@ -837,6 +843,53 @@ namespace PowerPointLabs.ImageSearch.Domain
                     {"OptionName", "Font Size +21"},
                     {"IsUseTextFormat", true},
                     {"FontSizeIncrease", 21}
+                })
+            };
+        }
+
+        private static List<StyleVariants> GetImageOffsetVariants()
+        {
+            return new List<StyleVariants>
+            {
+                new StyleVariants(new Dictionary<string, object>
+                {
+                    {"OptionName", "No offset"},
+                    {"ImageOffset", 0}
+                }),
+                new StyleVariants(new Dictionary<string, object>
+                {
+                    {"OptionName", "Offset +20%"},
+                    {"ImageOffset", 20}
+                }),
+                new StyleVariants(new Dictionary<string, object>
+                {
+                    {"OptionName", "Offset +50%"},
+                    {"ImageOffset", 50}
+                }),
+                new StyleVariants(new Dictionary<string, object>
+                {
+                    {"OptionName", "Offset +80%"},
+                    {"ImageOffset", 80}
+                }),
+                new StyleVariants(new Dictionary<string, object>
+                {
+                    {"OptionName", "Offset +100%"},
+                    {"ImageOffset", 100}
+                }),
+                new StyleVariants(new Dictionary<string, object>
+                {
+                    {"OptionName", "Offset -20%"},
+                    {"ImageOffset", -20}
+                }),
+                new StyleVariants(new Dictionary<string, object>
+                {
+                    {"OptionName", "Offset -50%"},
+                    {"ImageOffset", -50}
+                }),
+                new StyleVariants(new Dictionary<string, object>
+                {
+                    {"OptionName", "Offset -80%"},
+                    {"ImageOffset", -80}
                 })
             };
         }

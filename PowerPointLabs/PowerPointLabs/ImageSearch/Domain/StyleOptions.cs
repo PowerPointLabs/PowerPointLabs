@@ -91,6 +91,18 @@ namespace PowerPointLabs.ImageSearch.Domain
             }
         }
 
+        private int _imageOffset;
+
+        public int ImageOffset
+        {
+            get { return _imageOffset; }
+            set
+            {
+                _imageOffset = value;
+                OnPropertyChanged("ImageOffset");
+            }
+        }
+
         // ******************************************************
         // for overlay style
         // ******************************************************
@@ -313,6 +325,8 @@ namespace PowerPointLabs.ImageSearch.Domain
         # region Logic
         public void Init()
         {
+            ImageOffset = 0;
+
             IsUseTextFormat = true;
             FontFamily = 5;
             FontSizeIncrease = 0;
