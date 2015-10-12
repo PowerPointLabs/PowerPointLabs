@@ -178,14 +178,14 @@ namespace PowerPointLabs.ImageSearch.Handler
         private void PreviewStyles(EffectsHandler handler, PreviewInfo previewInfo)
         {
             // style: direct text
-            var imageShape = handler.ApplyBackgroundEffect(Options.ImageOffset);
+            var imageShape = handler.ApplyBackgroundEffect(offset: 0);
             handler.ApplyTextEffect("", "#FFFFFF", 0);
             handler.ApplyTextPositionAndAlignment(Position.Left, Alignment.Auto);
             handler.GetNativeSlide().Export(previewInfo.DirectTextStyleImagePath, "JPG",
                 GetPreviewWidth(), PreviewHeight);
 
             // style: blur
-            var blurImageShape = handler.ApplyBlurEffect(offset: Options.ImageOffset);
+            var blurImageShape = handler.ApplyBlurEffect(offset: 0);
             SendToBack(blurImageShape, imageShape);
             handler.GetNativeSlide().Export(previewInfo.BlurStyleImagePath, "JPG",
                 GetPreviewWidth(), PreviewHeight);
@@ -207,14 +207,14 @@ namespace PowerPointLabs.ImageSearch.Handler
             // style: overlay
             handler.RemoveEffect(EffectName.Banner);
             handler.ApplyTextPositionAndAlignment(Position.Centre, Alignment.Left);
-            handler.ApplySpecialEffectEffect(MatrixFilters.GreyScale, imageShape, "#00B1FD"/*Blue*/, 35, Options.ImageOffset);
+            handler.ApplySpecialEffectEffect(MatrixFilters.GreyScale, imageShape, "#00B1FD"/*Blue*/, transparency: 35, offset: 0);
             handler.GetNativeSlide().Export(previewInfo.OverlayStyleImagePath, "JPG",
                 GetPreviewWidth(), PreviewHeight);
 
             // style: special effect
             handler.RemoveEffect(EffectName.Overlay);
             handler.RemoveEffect(EffectName.SpecialEffect);
-            handler.ApplySpecialEffectEffect(MatrixFilters.GreyScale, imageShape, "#000000", 85, Options.ImageOffset);
+            handler.ApplySpecialEffectEffect(MatrixFilters.GreyScale, imageShape, "#000000", transparency: 85, offset: 0);
             handler.GetNativeSlide().Export(previewInfo.SpecialEffectStyleImagePath, "JPG",
                 GetPreviewWidth(), PreviewHeight);
         }
