@@ -46,7 +46,7 @@
                 <ColumnDefinition Width="*"></ColumnDefinition>
             </Grid.ColumnDefinitions>
             <GridSplitter Name="Splitter" DragDelta="Splitter_OnDragDelta" Grid.Column="1" ResizeDirection="Columns" Width="3" Height="Auto" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" />
-            <Grid Visibility="Collapsed" Width="0" Margin="10,0,0,0" Name="StylesPreviewGrid" Grid.Column="0">
+            <Grid Visibility="Collapsed" Width="560" Margin="10,0,0,0" Name="StylesPreviewGrid" Grid.Column="0">
                 <Grid.RowDefinitions>
                     <RowDefinition Height="5" />
                     <RowDefinition Height="35" />
@@ -189,7 +189,7 @@
                     <controls:ProgressRing Name="SearchProgressRing" Width="10" Height="10" Grid.Column="3" IsActive="False" />
                 </Grid>
                 <TextBlock Visibility="Visible" Name="SearchInstructions" TextWrapping="Wrap" HorizontalAlignment="Center" VerticalAlignment="Center" Foreground="#AAAAAA" FontSize="18" Grid.Row="2">Click the 'Load Images' button above to load local images, or drag and drop the files here.</TextBlock>
-                <ListBox Opacity="0" TabIndex="1" PreviewMouseDown="SearchListBox_OnPreviewMouseDown" Name="SearchListBox" KeyDown="SearchListBox_OnKeyDown" SelectionChanged="SearchListBox_OnSelectionChanged" ItemsSource="{Binding Path=SearchList, Mode=TwoWay}" Grid.Row="2">
+                <ListBox TabIndex="1" PreviewMouseDown="SearchListBox_OnPreviewMouseDown" Name="SearchListBox" KeyDown="SearchListBox_OnKeyDown" SelectionChanged="SearchListBox_OnSelectionChanged" ItemsSource="{Binding Path=SearchList, Mode=TwoWay}" Grid.Row="2">
                     <ListBox.ContextMenu>
                         <ContextMenu Name="SearchListBoxContextMenu">
                             <MenuItem Header="Delete this image" Click="MenuItemDeleteThisImage_OnClick"></MenuItem>

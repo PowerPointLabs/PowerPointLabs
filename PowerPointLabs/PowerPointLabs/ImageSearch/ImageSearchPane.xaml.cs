@@ -8,7 +8,6 @@ using System.Windows.Controls;
 using System.Windows.Controls.Primitives;
 using System.Windows.Input;
 using System.Windows.Media;
-using System.Windows.Media.Animation;
 using PowerPointLabs.ImageSearch.Domain;
 using PowerPointLabs.ImageSearch.Handler;
 using PowerPointLabs.ImageSearch.SearchEngine;
@@ -98,7 +97,6 @@ namespace PowerPointLabs.ImageSearch
 
         private bool _isWindowActivatedWithPreview = true;
         private bool _isStylePreviewRegionInit;
-        private bool _isStylePreviewRegionAnimationCompleted;
 
         # endregion
 
@@ -220,58 +218,7 @@ namespace PowerPointLabs.ImageSearch
             {
                 // only one entry
                 _isStylePreviewRegionInit = true;
-                var isPreviewInstructionsVisible = PreviewInstructions.Visibility == Visibility.Visible;
-                PreviewInstructions.Visibility = Visibility.Hidden;
-                PreviewInstructions.Opacity = 0;
-                var isPreviewInstructionsWhenNoSelectedSlideVisible =
-                    PreviewInstructionsWhenNoSelectedSlide.Visibility == Visibility.Visible;
-                PreviewInstructionsWhenNoSelectedSlide.Visibility = Visibility.Hidden;
-                PreviewInstructionsWhenNoSelectedSlide.Opacity = 0;
-                
-                var previewRegionShowAnimation = new DoubleAnimation(0, 560d, TimeSpan.FromMilliseconds(600))
-                {
-                    EasingFunction = new SineEase { EasingMode = EasingMode.EaseInOut },
-                    AccelerationRatio = 0.5
-                };
-
                 StylesPreviewGrid.Visibility = Visibility.Visible;
-                previewRegionShowAnimation.Completed += (o, args) =>
-                {
-                    Dispatcher.BeginInvoke(new Action(() =>
-                    {
-                        var previewInstructionsShowAnimation = 
-                            new DoubleAnimation(0, 1, TimeSpan.FromMilliseconds(250))
-                        {
-                            EasingFunction = new SineEase { EasingMode = EasingMode.EaseInOut },
-                            AccelerationRatio = 0.5
-                        };
-                        previewInstructionsShowAnimation.Completed += (sender1, eventArgs) =>
-                        {
-                            var previewInstructionsShowAnimation2 =
-                            new DoubleAnimation(0, 1, TimeSpan.FromMilliseconds(250))
-                            {
-                                EasingFunction = new SineEase { EasingMode = EasingMode.EaseInOut },
-                                AccelerationRatio = 0.5
-                            };
-                            SearchListBox.BeginAnimation(OpacityProperty,
-                                previewInstructionsShowAnimation2);
-                        };
-
-                        if (isPreviewInstructionsVisible)
-                        {
-                            PreviewInstructions.Visibility = Visibility.Visible;
-                            PreviewInstructions.BeginAnimation(OpacityProperty, previewInstructionsShowAnimation);
-                        }
-                        else if (isPreviewInstructionsWhenNoSelectedSlideVisible)
-                        {
-                            PreviewInstructionsWhenNoSelectedSlide.Visibility = Visibility.Visible;
-                            PreviewInstructionsWhenNoSelectedSlide.BeginAnimation(OpacityProperty,
-                                previewInstructionsShowAnimation);
-                        }
-                        _isStylePreviewRegionAnimationCompleted = true;
-                    }));
-                };
-                StylesPreviewGrid.BeginAnimation(WidthProperty, previewRegionShowAnimation);
             }
         }
 
@@ -299,8 +246,6 @@ namespace PowerPointLabs.ImageSearch
 
         private void PreviewList_OnCollectionChanged(object sender, NotifyCollectionChangedEventArgs e)
         {
-            if (!_isStylePreviewRegionAnimationCompleted) return;
-
             PreviewInstructions.BeginAnimation(OpacityProperty, null);
             PreviewInstructions.Opacity = 1f;
             PreviewInstructionsWhenNoSelectedSlide.BeginAnimation(OpacityProperty, null);

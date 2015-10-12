@@ -434,7 +434,7 @@ namespace PowerPointLabs.ImageSearch
             var right2LeftToHideTranslate = new TranslateTransform();
             StyleVariationsFlyout.RenderTransform = right2LeftToHideTranslate;
             var right2LeftToHideAnimation = new DoubleAnimation(0, -StyleVariationsFlyout.ActualWidth,
-                TimeSpan.FromMilliseconds(600))
+                TimeSpan.FromMilliseconds(350))
             {
                 EasingFunction = new SineEase { EasingMode = EasingMode.EaseInOut },
                 AccelerationRatio = 0.5
@@ -457,20 +457,23 @@ namespace PowerPointLabs.ImageSearch
 
         private void OpenVariationsFlyout()
         {
-            if (_isVariationsFlyoutOpen) return;
-
-            var left2RightToShowTranslate = new TranslateTransform { X = -StylesPreviewGrid.ActualWidth };
-            StyleVariationsFlyout.RenderTransform = left2RightToShowTranslate;
-            StyleVariationsFlyout.Visibility = Visibility.Visible;
-            var left2RightToShowAnimation = new DoubleAnimation(-StylesPreviewGrid.ActualWidth, 0,
-                TimeSpan.FromMilliseconds(600))
+            Dispatcher.BeginInvoke(new Action(() =>
             {
-                EasingFunction = new SineEase { EasingMode = EasingMode.EaseInOut },
-                AccelerationRatio = 0.5
-            };
+                if (_isVariationsFlyoutOpen) return;
 
-            left2RightToShowTranslate.BeginAnimation(TranslateTransform.XProperty, left2RightToShowAnimation);
-            _isVariationsFlyoutOpen = true;
+                var left2RightToShowTranslate = new TranslateTransform {X = -StylesPreviewGrid.ActualWidth};
+                StyleVariationsFlyout.RenderTransform = left2RightToShowTranslate;
+                StyleVariationsFlyout.Visibility = Visibility.Visible;
+                var left2RightToShowAnimation = new DoubleAnimation(-StylesPreviewGrid.ActualWidth, 0,
+                    TimeSpan.FromMilliseconds(350))
+                {
+                    EasingFunction = new SineEase { EasingMode = EasingMode.EaseInOut },
+                    AccelerationRatio = 0.5
+                };
+
+                left2RightToShowTranslate.BeginAnimation(TranslateTransform.XProperty, left2RightToShowAnimation);
+                _isVariationsFlyoutOpen = true;
+            }));
         }
 
         static ScrollViewer FindScrollViewer(DependencyObject parent)
