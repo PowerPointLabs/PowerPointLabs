@@ -68,7 +68,7 @@ namespace PowerPointLabs.ImageSearch.Util
             return fullsizeImageFile;
         }
 
-        public static void Empty(DirectoryInfo directory)
+        private static void Empty(DirectoryInfo directory)
         {
             try
             {

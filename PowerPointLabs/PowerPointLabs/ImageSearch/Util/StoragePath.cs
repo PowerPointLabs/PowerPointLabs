@@ -4,6 +4,7 @@ using System.IO;
 using System.Xml.Serialization;
 using PowerPointLabs.ImageSearch.Domain;
 using PowerPointLabs.Properties;
+using PowerPointLabs.Views;
 
 namespace PowerPointLabs.ImageSearch.Util
 {
@@ -14,8 +15,17 @@ namespace PowerPointLabs.ImageSearch.Util
         public static readonly string LoadingImgPath = AggregatedFolder + "loading";
         public static readonly string LoadMoreImgPath = AggregatedFolder + "loadMore";
 
-        public static bool InitPersistentFolder()
+        public static bool InitPersistentFolder(ICollection<string> filesInUse)
         {
+            try
+            {
+                Empty(new DirectoryInfo(AggregatedFolder), filesInUse);
+            }
+            catch (Exception e)
+            {
+                ErrorDialogWrapper.ShowDialog("Failed to remove unused images.", e.Message, e);
+            }
+
             if (!Directory.Exists(AggregatedFolder))
             {
                 try
@@ -27,8 +37,37 @@ namespace PowerPointLabs.ImageSearch.Util
                     return false;
                 }
             }
+
             InitResources();
             return true;
+        }
+
+        private static void Empty(DirectoryInfo directory, ICollection<string> filesInUse)
+        {
+            try
+            {
+                filesInUse.Add(AggregatedFolder + "ImagesLabImagesList");
+                filesInUse.Add(LoadingImgPath);
+                filesInUse.Add(LoadMoreImgPath);
+                foreach (var file in directory.GetFiles())
+                {
+                    if (!filesInUse.Contains(file.FullName))
+                    {
+                        try
+                        {
+                            file.Delete();
+                        }
+                        catch
+                        {
+                            // may be still in use, which is fine
+                        }
+                    }
+                }
+            }
+            catch (Exception)
+            {
+                // ignore ex, if cannot delete trash
+            }
         }
 
         private static void InitResources()

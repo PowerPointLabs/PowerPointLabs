@@ -873,11 +873,6 @@ namespace PowerPointLabs.ImageSearch.Domain
                 }),
                 new StyleVariants(new Dictionary<string, object>
                 {
-                    {"OptionName", "Offset +100%"},
-                    {"ImageOffset", 100}
-                }),
-                new StyleVariants(new Dictionary<string, object>
-                {
                     {"OptionName", "Offset -20%"},
                     {"ImageOffset", -20}
                 }),
@@ -890,6 +885,11 @@ namespace PowerPointLabs.ImageSearch.Domain
                 {
                     {"OptionName", "Offset -80%"},
                     {"ImageOffset", -80}
+                }),
+                new StyleVariants(new Dictionary<string, object>
+                {
+                    {"OptionName", "Offset -100%"},
+                    {"ImageOffset", -100}
                 })
             };
         }

@@ -97,6 +97,7 @@ namespace PowerPointLabs.ImageSearch
 
         private bool _isWindowActivatedWithPreview = true;
         private bool _isStylePreviewRegionInit;
+        private HashSet<string> _filesInUse = new HashSet<string>(); 
 
         # endregion
 
@@ -113,7 +114,7 @@ namespace PowerPointLabs.ImageSearch
             IsOpen = true;
             InitSearchOptions();
             InitConfirmApplyFlyout();
-            if (TempPath.InitTempFolder() && StoragePath.InitPersistentFolder())
+            if (TempPath.InitTempFolder() && StoragePath.InitPersistentFolder(_filesInUse))
             {
                 InitSearchEngine();
                 InitPreviewPresentation();
@@ -170,6 +171,12 @@ namespace PowerPointLabs.ImageSearch
             SearchList = new ObservableCollection<ImageItem>();
             _downloadedImages = StoragePath.Load(ImagesLabImagesList);
             SearchList.CollectionChanged += SearchList_OnCollectionChanged;
+
+            foreach (var imageItem in _downloadedImages)
+            {
+                _filesInUse.Add(imageItem.ImageFile);
+                _filesInUse.Add(imageItem.FullSizeImageFile);
+            }
             CopyContentToObservableList(_downloadedImages, SearchList);
             Dispatcher.BeginInvoke(new Action(() =>
             {
