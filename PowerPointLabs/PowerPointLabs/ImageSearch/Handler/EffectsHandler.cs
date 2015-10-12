@@ -261,12 +261,9 @@ namespace PowerPointLabs.ImageSearch.Handler
 
         public PowerPoint.Shape ApplyBlurEffect(string imageFileToBlur = null, int degree = 85)
         {
-            var isBlurFullSizeImage = (Source.ImageFile == Source.FullSizeImageFile 
-                || imageFileToBlur != null
-                || Source.FullSizeImageFile != null);
             Source.BlurImageFile = BlurImage(imageFileToBlur 
                 ?? Source.FullSizeImageFile 
-                ?? Source.ImageFile, isBlurFullSizeImage, degree);
+                ?? Source.ImageFile, degree);
             var blurImageShape = AddPicture(Source.BlurImageFile, EffectName.Blur);
             FitToSlide.AutoFit(blurImageShape, PreviewPresentation);
             CropPicture(blurImageShape);
@@ -484,32 +481,21 @@ namespace PowerPointLabs.ImageSearch.Handler
             ShapeUtil.AddTag(shape, tagName, value);
         }
 
-        private static string BlurImage(string imageFilePath, bool isBlurForFullsize, int degree)
+        private static string BlurImage(string imageFilePath, int degree)
         {
             var blurImageFile = TempPath.GetPath("fullsize_blur");
             using (var imageFactory = new ImageFactory())
             {
-                if (isBlurForFullsize)
-                {// for full-size image, need to resize first
-                    var image = imageFactory
-                        .Load(imageFilePath)
-                        .Image;
-                    var ratio = (float) image.Width / image.Height;
-                    var targetHeight = MaxThumbnailHeight - (MaxThumbnailHeight - MinThumbnailHeight) / 100f * degree;
+                var image = imageFactory
+                    .Load(imageFilePath)
+                    .Image;
+                var ratio = (float) image.Width / image.Height;
+                var targetHeight = MaxThumbnailHeight - (MaxThumbnailHeight - MinThumbnailHeight) / 100f * degree;
 
-                    image = imageFactory
-                        .Resize(new Size((int)(targetHeight * ratio), (int)targetHeight))
-                        .GaussianBlur(5).Image;
-                    image.Save(blurImageFile);
-                }
-                else
-                {
-                    var image = imageFactory
-                        .Load(imageFilePath)
-                        .GaussianBlur(5)
-                        .Image;
-                    image.Save(blurImageFile);
-                }
+                image = imageFactory
+                    .Resize(new Size((int)(targetHeight * ratio), (int)targetHeight))
+                    .GaussianBlur(5).Image;
+                image.Save(blurImageFile);
             }
             return blurImageFile;
         }

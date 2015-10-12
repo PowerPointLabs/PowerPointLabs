@@ -83,10 +83,11 @@ namespace PowerPointLabs.ImageSearch
                         VerifyIsProperImage(filename);
                         var fromFileItem = new ImageItem
                         {
-                            ImageFile = filename,
+                            ImageFile = ImageUtil.GetThumbnailFromFullSizeImg(filename),
                             FullSizeImageFile = filename,
                             FullSizeImageUri = filename,
-                            ContextLink = filename
+                            ContextLink = filename,
+                            Tooltip = ImageUtil.GetWidthAndHeight(filename)
                         };
                         //add it
                         SearchList.Add(fromFileItem);

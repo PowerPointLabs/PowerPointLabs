@@ -11,8 +11,8 @@ namespace PowerPointLabs.ImageSearch.Util
     {
         public static string AggregatedFolder = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments) + @"\" + "pptlabs_imagesLab" + @"\";
 
-        public static readonly string LoadingImgPath = AggregatedFolder + "loading_" + DateTime.Now.GetHashCode();
-        public static readonly string LoadMoreImgPath = AggregatedFolder + "loadMore_" + DateTime.Now.GetHashCode();
+        public static readonly string LoadingImgPath = AggregatedFolder + "loading";
+        public static readonly string LoadMoreImgPath = AggregatedFolder + "loadMore";
 
         public static bool InitPersistentFolder()
         {

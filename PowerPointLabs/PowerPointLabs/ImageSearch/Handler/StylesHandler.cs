@@ -44,7 +44,13 @@ namespace PowerPointLabs.ImageSearch.Handler
             var previewInfo = new PreviewInfo();
             var handler = CreateEffectsHandler(source);
 
+            // use thumbnail to apply, in order to speed up
+            var fullSizeImgPath = source.FullSizeImageFile;
+            source.FullSizeImageFile = null;
+
             PreviewStyles(handler, previewInfo);
+
+            source.FullSizeImageFile = fullSizeImgPath;
 
             handler.Delete();
             return previewInfo;
@@ -63,7 +69,16 @@ namespace PowerPointLabs.ImageSearch.Handler
             var previewInfo = new PreviewInfo();
             var handler = CreateEffectsHandler(source);
 
+            // use thumbnail to apply, in order to speed up
+            var fullSizeImgPath = source.FullSizeImageFile;
+            if (!isActualSize)
+            {
+                source.FullSizeImageFile = null;
+            }
+
             ApplyStyle(handler, source, isActualSize);
+
+            source.FullSizeImageFile = fullSizeImgPath;
 
             if (isActualSize)
             {
@@ -164,7 +179,7 @@ namespace PowerPointLabs.ImageSearch.Handler
         {
             // style: direct text
             var imageShape = handler.ApplyBackgroundEffect();
-            handler.ApplyTextEffect("", "#FFFFFF", 6);
+            handler.ApplyTextEffect("", "#FFFFFF", 0);
             handler.ApplyTextPositionAndAlignment(Position.Left, Alignment.Auto);
             handler.GetNativeSlide().Export(previewInfo.DirectTextStyleImagePath, "JPG",
                 GetPreviewWidth(), PreviewHeight);
@@ -178,7 +193,7 @@ namespace PowerPointLabs.ImageSearch.Handler
             // style: textbox
             handler.RemoveEffect(EffectName.Blur);
             handler.ApplyTextPositionAndAlignment(Position.BottomLeft, Alignment.Left);
-            handler.ApplyTextboxEffect("#D74926", 25);
+            handler.ApplyTextboxEffect("#000000", 25);
             handler.GetNativeSlide().Export(previewInfo.TextboxStyleImagePath, "JPG",
                 GetPreviewWidth(), PreviewHeight);
 
@@ -192,7 +207,7 @@ namespace PowerPointLabs.ImageSearch.Handler
             // style: overlay
             handler.RemoveEffect(EffectName.Banner);
             handler.ApplyTextPositionAndAlignment(Position.Centre, Alignment.Left);
-            handler.ApplySpecialEffectEffect(MatrixFilters.GreyScale, imageShape, "#00B1FD"/*Blue*/, 25);
+            handler.ApplySpecialEffectEffect(MatrixFilters.GreyScale, imageShape, "#00B1FD"/*Blue*/, 35);
             handler.GetNativeSlide().Export(previewInfo.OverlayStyleImagePath, "JPG",
                 GetPreviewWidth(), PreviewHeight);
 

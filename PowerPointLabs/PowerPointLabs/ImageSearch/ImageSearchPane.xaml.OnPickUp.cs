@@ -55,6 +55,7 @@ namespace PowerPointLabs.ImageSearch
 
                     if (isOpenFlyout)
                     {
+                        scrollOffset = 0;
                         selectedId = 0;
                         _styleOptions = StyleOptionsFactory.GetOptions(targetStyle.Tooltip);
                         _styleVariants = StyleVariantsFactory.GetVariants(targetStyle.Tooltip);

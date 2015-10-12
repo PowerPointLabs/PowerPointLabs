@@ -35,6 +35,8 @@ namespace PowerPointLabs.ImageSearch
                 else // use case download image & when thumbnail is already full-size
                 {
                     item.FullSizeImageFile = item.ImageFile;
+                    item.ImageFile = ImageUtil.GetThumbnailFromFullSizeImg(item.FullSizeImageFile);
+                    item.Tooltip = ImageUtil.GetWidthAndHeight(item.FullSizeImageFile);
                 }
 
                 var selectedImageItem = SearchListBox.SelectedValue as ImageItem;

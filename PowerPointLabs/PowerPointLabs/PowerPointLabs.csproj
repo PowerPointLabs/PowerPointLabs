@@ -310,6 +310,7 @@
     <Compile Include="ImageSearch\SearchEngine\VO\BingSearchResults.cs" />
     <Compile Include="ImageSearch\Util\BoolToBackgroundColorConverter.cs" />
     <Compile Include="ImageSearch\Util\BoolToVisibilityConverter.cs" />
+    <Compile Include="ImageSearch\Util\ImageUtil.cs" />
     <Compile Include="ImageSearch\Util\TwoColumnsListBoxImageWidthConverter.cs" />
     <Compile Include="ImageSearch\Util\ShapeUtil.cs" />
     <Compile Include="ImageSearch\Util\StyleVariationWidthConverter.cs" />

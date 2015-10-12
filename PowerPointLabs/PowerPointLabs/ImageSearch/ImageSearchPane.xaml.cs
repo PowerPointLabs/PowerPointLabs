@@ -204,6 +204,16 @@ namespace PowerPointLabs.ImageSearch
             SearchInstructions.Visibility = SearchList.Count == 0
                 ? Visibility.Visible
                 : Visibility.Hidden;
+            if (SearchInstructions.Visibility == Visibility.Visible)
+            {
+                PreviewInstructions.Visibility = Visibility.Hidden;
+                PreviewInstructionsWhenNoSelectedSlide.Visibility = Visibility.Hidden;
+            }
+            else
+            {
+                PreviewInstructions.Visibility = Visibility.Visible;
+                PreviewInstructionsWhenNoSelectedSlide.Visibility = Visibility.Hidden;
+            }
 
             // show StylesPreviewRegion aft there'r some images in the SearchList region
             if (SearchList.Count > 0 && !_isStylePreviewRegionInit)
@@ -234,6 +244,17 @@ namespace PowerPointLabs.ImageSearch
                         {
                             EasingFunction = new SineEase { EasingMode = EasingMode.EaseInOut },
                             AccelerationRatio = 0.5
+                        };
+                        previewInstructionsShowAnimation.Completed += (sender1, eventArgs) =>
+                        {
+                            var previewInstructionsShowAnimation2 =
+                            new DoubleAnimation(0, 1, TimeSpan.FromMilliseconds(250))
+                            {
+                                EasingFunction = new SineEase { EasingMode = EasingMode.EaseInOut },
+                                AccelerationRatio = 0.5
+                            };
+                            SearchListBox.BeginAnimation(OpacityProperty,
+                                previewInstructionsShowAnimation2);
                         };
 
                         if (isPreviewInstructionsVisible)
@@ -281,9 +302,9 @@ namespace PowerPointLabs.ImageSearch
             if (!_isStylePreviewRegionAnimationCompleted) return;
 
             PreviewInstructions.BeginAnimation(OpacityProperty, null);
-            PreviewInstructions.Opacity = 100;
+            PreviewInstructions.Opacity = 1f;
             PreviewInstructionsWhenNoSelectedSlide.BeginAnimation(OpacityProperty, null);
-            PreviewInstructionsWhenNoSelectedSlide.Opacity = 100;
+            PreviewInstructionsWhenNoSelectedSlide.Opacity = 1f;
 
             if (PreviewList.Count != 0 || SearchInstructions.Visibility == Visibility.Visible)
             {
@@ -533,7 +554,8 @@ namespace PowerPointLabs.ImageSearch
                     ImageFile = image.ImageFile,
                     FullSizeImageFile = image.FullSizeImageFile,
                     FullSizeImageUri = image.FullSizeImageUri,
-                    ContextLink = image.ContextLink
+                    ContextLink = image.ContextLink,
+                    Tooltip = image.Tooltip
                 });
             }
         }
@@ -627,8 +649,7 @@ namespace PowerPointLabs.ImageSearch
                 {
                     case TextCollection.ImagesLabText.ButtonIndexDownload:
                     case TextCollection.ImagesLabText.ButtonIndexFromFile:
-                        if (SearchListBox.SelectedIndex < _downloadedImages.Count
-                            && SearchListBox.SelectedIndex >= 0)
+                        if (_rightClickedSearchListBoxItemIndex < _downloadedImages.Count)
                         {
                             _downloadedImages.RemoveAt(_rightClickedSearchListBoxItemIndex);
                         }
