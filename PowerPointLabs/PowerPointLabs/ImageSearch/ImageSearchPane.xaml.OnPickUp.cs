@@ -13,6 +13,7 @@ using PowerPointLabs.Utils;
 using PowerPointLabs.Utils.Exceptions;
 using Brush = System.Windows.Media.Brush;
 using Color = System.Drawing.Color;
+using KeyEventArgs = System.Windows.Input.KeyEventArgs;
 
 namespace PowerPointLabs.ImageSearch
 {
@@ -23,7 +24,6 @@ namespace PowerPointLabs.ImageSearch
         private string _previousVariantsCategory;
         private IList<StyleOptions> _styleOptions;
         private Dictionary<string, List<StyleVariants>> _styleVariants;
-        private bool _isFontChangedByVariationSelection;
 
         private void UpdateStyleVariationsImages(bool isOpenFlyout = false)
         {
@@ -228,7 +228,6 @@ namespace PowerPointLabs.ImageSearch
                         break;
                     }
                 }
-                _isFontChangedByVariationSelection = true;
                 FontPanel.SelectedIndex = targetIndex;
             }
         }
@@ -554,14 +553,21 @@ namespace PowerPointLabs.ImageSearch
             return null;
         }
 
-        private void FontChooser_OnSelectionChanged(object sender, SelectionChangedEventArgs e)
+        private void FontPanel_OnDropDownClosed(object sender, EventArgs e)
         {
-            if (_isFontChangedByVariationSelection)
-            {
-                _isFontChangedByVariationSelection = false;
-                return;
-            }
+            BindNewlySelectedFont();
+        }
 
+        private void FontPanel_OnKeyUp(object sender, KeyEventArgs e)
+        {
+            if (e.Key == Key.Up || e.Key == Key.Down)
+            {
+                BindNewlySelectedFont();
+            }
+        }
+
+        private void BindNewlySelectedFont()
+        {
             var selectedFontFamily = (FontFamily) FontPanel.SelectedValue;
             BindFontToStyle(selectedFontFamily.Source);
             BindFontToVariant(selectedFontFamily.Source);

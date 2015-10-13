@@ -135,7 +135,7 @@
                     </Button>
                     <controls:ProgressRing ToolTip="Downloading image..." Margin="5,0,0,0" HorizontalAlignment="Left" Foreground="#FFFFFF" Name="VariationProgressRing" Width="10" Height="10" Grid.Column="5" IsActive="False" />
                     <Border Name="VariantsColorPanel" ToolTip="Click to change color" MouseLeftButtonUp="ColorPanel_OnMouseLeftButtonUp" BorderBrush="#EEEEEE" BorderThickness="1" Height="26" Width="65" HorizontalAlignment="Right" VerticalAlignment="Center" Grid.Column="6" />
-                    <ComboBox Name="FontPanel" SelectionChanged="FontChooser_OnSelectionChanged" ToolTip="Select the font here" Grid.Column="6" ItemsSource="{Binding Source={x:Static Fonts.SystemFontFamilies}}" Height="26" VerticalAlignment="Center">
+                    <ComboBox Name="FontPanel" KeyUp="FontPanel_OnKeyUp" DropDownClosed="FontPanel_OnDropDownClosed" ToolTip="Select the font here" Grid.Column="6" ItemsSource="{Binding Source={x:Static Fonts.SystemFontFamilies}}" Height="26" VerticalAlignment="Center">
                         <ComboBox.ItemsPanel>
                             <ItemsPanelTemplate>
                                 <VirtualizingStackPanel />
