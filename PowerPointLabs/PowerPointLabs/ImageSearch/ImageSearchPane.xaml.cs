@@ -3,11 +3,13 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Collections.Specialized;
 using System.ComponentModel;
+using System.Reflection;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Controls.Primitives;
 using System.Windows.Input;
 using System.Windows.Media;
+using MahApps.Metro.Controls.Dialogs;
 using PowerPointLabs.ImageSearch.Domain;
 using PowerPointLabs.ImageSearch.Handler;
 using PowerPointLabs.ImageSearch.SearchEngine;
@@ -80,6 +82,8 @@ namespace PowerPointLabs.ImageSearch
 
         public SearchOptions SearchOptions { get; set; }
 
+        private SuccessfullyAppliedDialog successfullyAppliedDialog = new SuccessfullyAppliedDialog();
+
         // indicate whether it's downloading fullsize image, so that debounce.
         // timer - it will download full size image after some time
         // apply - it will download full size image when there's no cache and user clicks APPLY button
@@ -114,6 +118,7 @@ namespace PowerPointLabs.ImageSearch
             IsOpen = true;
             InitSearchOptions();
             InitConfirmApplyFlyout();
+            InitSuccessfullyAppliedDialog();
             if (TempPath.InitTempFolder() && StoragePath.InitPersistentFolder(_filesInUse))
             {
                 InitSearchEngine();
@@ -125,6 +130,24 @@ namespace PowerPointLabs.ImageSearch
             {
                 ShowErrorMessageBox(TextCollection.ImagesLabText.ErrorFailToInitTempFolder);
             }
+        }
+
+        private void InitSuccessfullyAppliedDialog()
+        {
+            successfullyAppliedDialog.GetType()
+                    .GetProperty("OwningWindow", BindingFlags.Instance | BindingFlags.NonPublic)
+                    .SetValue(successfullyAppliedDialog, this, null);
+
+            successfullyAppliedDialog.OnGotoNextSlide += () =>
+            {
+                this.HideMetroDialogAsync(successfullyAppliedDialog, MetroDialogOptions);
+                PowerPointPresentation.Current.GotoNextSlide();
+                DoPreview();
+            };
+            successfullyAppliedDialog.OnOk += () =>
+            {
+                this.HideMetroDialogAsync(successfullyAppliedDialog, MetroDialogOptions);
+            };
         }
 
         private void InitVariationList()

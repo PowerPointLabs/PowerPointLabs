@@ -225,6 +225,30 @@ namespace PowerPointLabs.Models
             }
         }
 
+        /// <summary>
+        /// Go to slide
+        /// </summary>
+        /// <param name="index">1-based</param>
+        public void GotoSlide(int index)
+        {
+            Globals.ThisAddIn.Application.ActiveWindow.View.GotoSlide(index);
+        }
+
+        /// <summary>
+        /// will stay in the current slide if exceed slide count
+        /// </summary>
+        public void GotoNextSlide()
+        {
+            var currentSlide = PowerPointCurrentPresentationInfo.CurrentSlide;
+            if (currentSlide == null) return;
+
+            var index = currentSlide.Index;
+            if (index < Slides.Count)
+            {
+                GotoSlide(index + 1);
+            }
+        }
+
         public PowerPointSlide AddSlide(PpSlideLayout layout = PpSlideLayout.ppLayoutText, string name = "")
         {
             if (!Opened)

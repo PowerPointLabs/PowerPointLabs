@@ -308,6 +308,9 @@
     <Compile Include="ImageSearch\SearchEngine\AsyncSearchEngine.Logic.cs" />
     <Compile Include="ImageSearch\SearchEngine\BingEngine.cs" />
     <Compile Include="ImageSearch\SearchEngine\VO\BingSearchResults.cs" />
+    <Compile Include="ImageSearch\SuccessfullyAppliedDialog.xaml.cs">
+      <DependentUpon>SuccessfullyAppliedDialog.xaml</DependentUpon>
+    </Compile>
     <Compile Include="ImageSearch\Util\BoolToBackgroundColorConverter.cs" />
     <Compile Include="ImageSearch\Util\BoolToVisibilityConverter.cs" />
     <Compile Include="ImageSearch\Util\ImageUtil.cs" />
@@ -789,6 +792,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="ImageSearch\StyleOptionsPane.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="ImageSearch\SuccessfullyAppliedDialog.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

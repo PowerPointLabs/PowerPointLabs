@@ -363,7 +363,7 @@ namespace PowerPointLabs.ImageSearch
             try
             {
                 PreviewPresentation.ApplyStyle(source);
-                this.ShowMessageAsync("", TextCollection.ImagesLabText.SuccessfullyAppliedStyle);
+                this.ShowMetroDialogAsync(successfullyAppliedDialog, MetroDialogOptions);
             }
             catch (AssumptionFailedException)
             {
