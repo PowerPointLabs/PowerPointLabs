@@ -142,6 +142,7 @@ namespace PowerPointLabs.ImageSearch
             {
                 this.HideMetroDialogAsync(successfullyAppliedDialog, MetroDialogOptions);
                 PowerPointPresentation.Current.GotoNextSlide();
+                _latestImageChangedTime = DateTime.Now;
                 DoPreview();
             };
             successfullyAppliedDialog.OnOk += () =>

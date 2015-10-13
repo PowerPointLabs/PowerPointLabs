@@ -34,7 +34,8 @@ namespace PowerPointLabs.ImageSearch
                 var targetStyle = (ImageItem) PreviewListBox.SelectedValue;
                 var source = SearchListBox.SelectedValue as ImageItem;
 
-                if (source == null || source.ImageFile == StoragePath.LoadingImgPath)
+                if (source == null || source.ImageFile == StoragePath.LoadingImgPath
+                    || Models.PowerPointCurrentPresentationInfo.CurrentSlide == null)
                 {
                     VariationList.Clear();
                     return;

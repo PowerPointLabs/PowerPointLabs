@@ -35,17 +35,8 @@ namespace PowerPointLabs.ImageSearch.Handler.Effect
             _slideWidth = slideWidth;
             _slideHeight = slideHeight;
             TextShapes = new List<Shape>();
-            var shapesToDelete = new List<Shape>();
             foreach (Shape shape in shapes)
             {
-                if ((shape.Type == MsoShapeType.msoPlaceholder
-                    || shape.Type == MsoShapeType.msoTextBox)
-                        && (shape.TextFrame.HasText == MsoTriState.msoFalse
-                            || StringUtil.IsEmpty(shape.TextFrame2.TextRange.Paragraphs.TrimText().Text)))
-                {
-                    shapesToDelete.Add(shape);
-                    continue;
-                }
                 if ((shape.Type != MsoShapeType.msoPlaceholder
                         && shape.Type != MsoShapeType.msoTextBox)
                         || shape.TextFrame.HasText == MsoTriState.msoFalse
@@ -55,10 +46,6 @@ namespace PowerPointLabs.ImageSearch.Handler.Effect
                     continue;
                 }
                 TextShapes.Add(shape);
-            }
-            foreach (var shape in shapesToDelete)
-            {
-                shape.Delete();   
             }
         }
 
