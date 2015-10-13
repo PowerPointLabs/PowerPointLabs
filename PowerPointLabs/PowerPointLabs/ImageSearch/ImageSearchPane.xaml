@@ -57,15 +57,17 @@
                         <ColumnDefinition Width="5" />
                         <ColumnDefinition Width="60" />
                         <ColumnDefinition Width="65" />
+                        <ColumnDefinition Width="80" />
                         <ColumnDefinition Width="30" />
                         <ColumnDefinition Width="*"></ColumnDefinition>
                     </Grid.ColumnDefinitions>
                     <Label Name="PreviewLabel" Grid.Column="1" Margin="0,0,5,0" FontSize="15">Styles</Label>
-                    <Button IsEnabled="False" Name="StylesPickUpButton" Click="StylesPickUpButton_OnClick" Grid.Column="2" Margin="0,0,5,0">Pick Up</Button>
-                    <controls:ProgressRing Name="PreviewProgressRing" Width="10" Height="10" Grid.Column="3" IsActive="False" />
+                    <Button IsEnabled="False" Name="StylesApplyButton" Click="StylesApplyButton_OnClick" Grid.Column="2" Margin="0,0,5,0">Apply</Button>
+                    <Button IsEnabled="False" Name="StylesPickUpButton" Click="StylesPickUpButton_OnClick" Grid.Column="3" Margin="0,0,5,0">Customize</Button>
+                    <controls:ProgressRing Name="PreviewProgressRing" Width="10" Height="10" Grid.Column="4" IsActive="False" />
                 </Grid>
-                <TextBlock Visibility="Visible" Name="PreviewInstructions" TextWrapping="Wrap" HorizontalAlignment="Center" VerticalAlignment="Center" Foreground="#AAAAAA" FontSize="16" Grid.Row="2">Select an image to preview styles. Pick any style and click PICK UP button to continue.</TextBlock>
-                <TextBlock Visibility="Hidden" Name="PreviewInstructionsWhenNoSelectedSlide" TextWrapping="Wrap" HorizontalAlignment="Center" VerticalAlignment="Center" Foreground="#AAAAAA" FontSize="16" Grid.Row="2">Select a slide in the presentation to preview styles. Pick any style and click PICK UP button to continue.</TextBlock>
+                <TextBlock Visibility="Visible" Name="PreviewInstructions" TextWrapping="Wrap" HorizontalAlignment="Center" VerticalAlignment="Center" Foreground="#AAAAAA" FontSize="16" Grid.Row="2">Select an image to preview styles. Pick any style and click APPLY button to apply.</TextBlock>
+                <TextBlock Visibility="Hidden" Name="PreviewInstructionsWhenNoSelectedSlide" TextWrapping="Wrap" HorizontalAlignment="Center" VerticalAlignment="Center" Foreground="#AAAAAA" FontSize="16" Grid.Row="2">Select a slide in the presentation to preview styles. Pick any style and click APPLY button to apply.</TextBlock>
                 <ListBox SelectionMode="Single" TabIndex="2" Name="PreviewListBox" KeyUp="PreviewListBox_OnKeyUp" KeyDown="ListBox_OnKeyDown" IsSynchronizedWithCurrentItem="True" SelectionChanged="PreivewListBox_OnSelectionChanged" ItemsSource="{Binding Path=PreviewList, Mode=TwoWay}" Grid.Row="2">
                     <ListBox.Resources>
                         <converter:TwoColumnsListBoxImageWidthConverter x:Key="TwoColumnsListBoxImageWidthConverter"></converter:TwoColumnsListBoxImageWidthConverter>

@@ -322,7 +322,7 @@ namespace PowerPointLabs.ImageSearch
 
             if (source.FullSizeImageFile != null)
             {
-                ApplyStyle();
+                ApplyStyleInVariationStage();
                 SetProgressingRingStatus(false);
             }
             else if (!_applyDownloadingUriList.Contains(source.FullSizeImageUri))
@@ -354,7 +354,7 @@ namespace PowerPointLabs.ImageSearch
             }
         }
 
-        private void ApplyStyle()
+        private void ApplyStyleInVariationStage()
         {
             if (PreviewListBox.SelectedValue == null) return;
 

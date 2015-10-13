@@ -1,9 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Windows;
+using MahApps.Metro.Controls.Dialogs;
 using PowerPointLabs.ImageSearch.Domain;
 using PowerPointLabs.ImageSearch.Util;
 using PowerPointLabs.Models;
+using PowerPointLabs.Utils;
+using PowerPointLabs.Utils.Exceptions;
 
 namespace PowerPointLabs.ImageSearch
 {
@@ -92,6 +95,37 @@ namespace PowerPointLabs.ImageSearch
                     SetProgressingRingStatus(false);
                 }
             }));
+        }
+
+        private void StylesPickUpButton_OnClick(object sender, RoutedEventArgs e)
+        {
+            PickUpStyle();
+        }
+
+        private void StylesApplyButton_OnClick(object sender, RoutedEventArgs e)
+        {
+            ApplyStyleInPreviewStage();
+        }
+
+        private void ApplyStyleInPreviewStage()
+        {
+            if (PreviewListBox.SelectedValue == null) return;
+
+            var source = SearchListBox.SelectedValue as ImageItem;
+            Assumption.Made(source != null, "source item is null/empty");
+
+            try
+            {
+                var targetStyle = ((ImageItem) PreviewListBox.SelectedValue).Tooltip;
+                var targetDefaultOptions = StyleOptionsFactory.GetDefaultOption(targetStyle);
+                PreviewPresentation.SetStyleOptions(targetDefaultOptions);
+                PreviewPresentation.ApplyStyle(source);
+                this.ShowMetroDialogAsync(successfullyAppliedDialog, MetroDialogOptions);
+            }
+            catch (AssumptionFailedException)
+            {
+                ShowErrorMessageBox(TextCollection.ImagesLabText.ErrorNoSelectedSlide);
+            }
         }
 
         private void Add(ICollection<ImageItem> list, string imagePath, string tooltip)

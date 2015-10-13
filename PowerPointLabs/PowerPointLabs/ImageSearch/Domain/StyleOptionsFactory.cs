@@ -25,6 +25,78 @@ namespace PowerPointLabs.ImageSearch.Domain
             }
         }
 
+        public static StyleOptions GetDefaultOption(string targetStyle)
+        {
+            switch (targetStyle)
+            {
+                case TextCollection.ImagesLabText.StyleNameDirectText:
+                    return GetDefaultOptionForDirectText();
+                case TextCollection.ImagesLabText.StyleNameBlur:
+                    return GetDefaultOptionForBlur();
+                case TextCollection.ImagesLabText.StyleNameTextBox:
+                    return GetDefaultOptionForTextBox();
+                case TextCollection.ImagesLabText.StyleNameBanner:
+                    return GetDefaultOptionForBanner();
+                case TextCollection.ImagesLabText.StyleNameSpecialEffect:
+                    return GetDefaultOptionForSpecialEffects();
+                case TextCollection.ImagesLabText.StyleNameOverlay:
+                    return GetDefaultOptionForOverlay();
+                default:
+                    return new StyleOptions();
+            }
+        }
+
+        private static StyleOptions GetDefaultOptionForDirectText()
+        {
+            return new StyleOptions
+            {
+                TextBoxPosition = 4
+            };
+        }
+
+        private static StyleOptions GetDefaultOptionForBlur()
+        {
+            return new StyleOptions
+            {
+                IsUseBlurStyle = true,
+                TextBoxPosition = 4
+            };
+        }
+
+        private static StyleOptions GetDefaultOptionForTextBox()
+        {
+            return new StyleOptions
+            {
+                IsUseTextBoxStyle = true,
+                TextBoxPosition = 7
+            };
+        }
+
+        private static StyleOptions GetDefaultOptionForBanner()
+        {
+            return new StyleOptions
+            {
+                IsUseBannerStyle = true,
+                TextBoxPosition = 7
+            };
+        }
+
+        private static StyleOptions GetDefaultOptionForSpecialEffects()
+        {
+            return new StyleOptions
+            {
+                IsUseSpecialEffectStyle = true
+            };
+        }
+
+        private static StyleOptions GetDefaultOptionForOverlay()
+        {
+            return new StyleOptions
+            {
+                IsUseOverlayStyle = true
+            };
+        }
+
         private static List<StyleOptions> GetOptionsForTextBox()
         {
             var result = GetOptionsWithSuitableFontColor();

@@ -427,12 +427,14 @@ namespace PowerPointLabs.ImageSearch
             if (PreviewListBox.SelectedValue != null)
             {
                 StylesPickUpButton.IsEnabled = true;
+                StylesApplyButton.IsEnabled = true;
                 ConfirmApplyButton.IsEnabled = true;
                 ConfirmApplyPreviewButton.IsEnabled = true;
             }
             else
             {
                 StylesPickUpButton.IsEnabled = false;
+                StylesApplyButton.IsEnabled = false;
                 ConfirmApplyButton.IsEnabled = false;
                 ConfirmApplyPreviewButton.IsEnabled = false;
             }
@@ -447,11 +449,6 @@ namespace PowerPointLabs.ImageSearch
                 PreviewPresentation.Close();
             }
             StoragePath.Save(ImagesLabImagesList, _downloadedImages);
-        }
-
-        private void StylesPickUpButton_OnClick(object sender, RoutedEventArgs e)
-        {
-            PickUpStyle();
         }
 
         private void AdvancedButton_OnClick(object sender, RoutedEventArgs e)
@@ -484,9 +481,9 @@ namespace PowerPointLabs.ImageSearch
                 switch (e.Key)
                 {
                     case Key.Enter:
-                        if (StylesPickUpButton.IsEnabled)
+                        if (StylesApplyButton.IsEnabled)
                         {
-                            StylesPickUpButton.RaiseEvent(new RoutedEventArgs(ButtonBase.ClickEvent));
+                            StylesApplyButton.RaiseEvent(new RoutedEventArgs(ButtonBase.ClickEvent));
                         }
                         break;
                 }

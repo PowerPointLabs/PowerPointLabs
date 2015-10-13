@@ -79,7 +79,7 @@ namespace PowerPointLabs.ImageSearch
                         // go apply
                         if (PreviewListBox.SelectedValue != null)
                         {
-                            ApplyStyle();
+                            ApplyStyleInVariationStage();
                         }
                         DoPreview(source);
                     }

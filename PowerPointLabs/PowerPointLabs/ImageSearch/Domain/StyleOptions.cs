@@ -345,7 +345,7 @@ namespace PowerPointLabs.ImageSearch.Domain
             BannerDirection = 0;
 
             IsUseTextBoxStyle = false;
-            TextBoxOverlayColor = "#D74926"; // red-orange
+            TextBoxOverlayColor = "#000000"; // red-orange
             TextBoxTransparency = 25;
 
             IsUseSpecialEffectStyle = false;
