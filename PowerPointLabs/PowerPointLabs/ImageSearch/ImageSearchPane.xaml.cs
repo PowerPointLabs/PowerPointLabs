@@ -63,6 +63,9 @@ namespace PowerPointLabs.ImageSearch
         // a timer used to download full-size image at background
         public Timer PreviewTimer { get; set; }
 
+        // list that holds font family
+        private List<string> _fontFamilyList = new List<string>();
+
         // time to trigger the timer event
         private const int TimerInterval = 2000;
         private const string ImagesLabImagesList = "ImagesLabImagesList";
@@ -115,6 +118,7 @@ namespace PowerPointLabs.ImageSearch
             InitSearchList();
             InitPreviewList();
             InitVariationList();
+            InitFontFamilyList();
             IsOpen = true;
             InitSearchOptions();
             InitConfirmApplyFlyout();
@@ -129,6 +133,15 @@ namespace PowerPointLabs.ImageSearch
             else
             {
                 ShowErrorMessageBox(TextCollection.ImagesLabText.ErrorFailToInitTempFolder);
+            }
+        }
+
+        private void InitFontFamilyList()
+        {
+            var fonts = Fonts.SystemFontFamilies;
+            foreach (var font in fonts)
+            {
+                _fontFamilyList.Add(font.Source);
             }
         }
 

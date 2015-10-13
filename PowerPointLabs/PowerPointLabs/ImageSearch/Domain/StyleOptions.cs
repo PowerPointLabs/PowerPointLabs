@@ -31,9 +31,9 @@ namespace PowerPointLabs.ImageSearch.Domain
             }
         }
 
-        private int _fontFamily;
+        private string _fontFamily;
 
-        public int FontFamily
+        public string FontFamily
         {
             get { return _fontFamily; }
             set
@@ -328,7 +328,7 @@ namespace PowerPointLabs.ImageSearch.Domain
             ImageOffset = 0;
 
             IsUseTextFormat = true;
-            FontFamily = 5;
+            FontFamily = "";
             FontSizeIncrease = 0;
             FontColor = "#FFFFFF";
             TextBoxPosition = 5;
@@ -360,27 +360,7 @@ namespace PowerPointLabs.ImageSearch.Domain
 
         public string GetFontFamily()
         {
-            switch (FontFamily)
-            {
-                case 0:
-                    return "Segoe UI";
-                case 1:
-                    return "Segoe UI Light";
-                case 2:
-                    return "Calibri";
-                case 3:
-                    return "Calibri Light";
-                case 4:
-                    return "Trebuchet MS";
-                case 5:
-                    return ""; // original font family
-                case 6:
-                    return "Times New Roman";
-                case 7:
-                    return "Tahoma";
-                default:
-                    return "Segoe UI";
-            }
+            return FontFamily;
         }
 
         public Position GetTextBoxPosition()

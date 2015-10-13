@@ -743,51 +743,51 @@ namespace PowerPointLabs.ImageSearch.Domain
             {
                 new StyleVariants(new Dictionary<string, object>
                 {
-                    {"OptionName", "Original Font"},
-                    {"IsUseTextFormat", true},
-                    {"FontFamily", 5}
-                }),
-                new StyleVariants(new Dictionary<string, object>
-                {
                     {"OptionName", "Segoe UI"},
                     {"IsUseTextFormat", true},
-                    {"FontFamily", 0}
-                }),
-                new StyleVariants(new Dictionary<string, object>
-                {
-                    {"OptionName", "Segoe UI Light"},
-                    {"IsUseTextFormat", true},
-                    {"FontFamily", 1}
+                    {"FontFamily", "Segoe UI"}
                 }),
                 new StyleVariants(new Dictionary<string, object>
                 {
                     {"OptionName", "Calibri"},
                     {"IsUseTextFormat", true},
-                    {"FontFamily", 2}
+                    {"FontFamily", "Calibri"}
                 }),
                 new StyleVariants(new Dictionary<string, object>
                 {
-                    {"OptionName", "Calibri Light"},
+                    {"OptionName", "Microsoft YaHei"},
                     {"IsUseTextFormat", true},
-                    {"FontFamily", 3}
+                    {"FontFamily", "Microsoft YaHei"}
+                }),
+                new StyleVariants(new Dictionary<string, object>
+                {
+                    {"OptionName", "Arial"},
+                    {"IsUseTextFormat", true},
+                    {"FontFamily", "Arial"}
+                }),
+                new StyleVariants(new Dictionary<string, object>
+                {
+                    {"OptionName", "Courier New"},
+                    {"IsUseTextFormat", true},
+                    {"FontFamily", "Courier New"}
                 }),
                 new StyleVariants(new Dictionary<string, object>
                 {
                     {"OptionName", "Trebuchet MS"},
                     {"IsUseTextFormat", true},
-                    {"FontFamily", 4}
+                    {"FontFamily", "Trebuchet MS"}
                 }),
                 new StyleVariants(new Dictionary<string, object>
                 {
                     {"OptionName", "Times New Roman"},
                     {"IsUseTextFormat", true},
-                    {"FontFamily", 6}
+                    {"FontFamily", "Times New Roman"}
                 }),
                 new StyleVariants(new Dictionary<string, object>
                 {
                     {"OptionName", "Tahoma"},
                     {"IsUseTextFormat", true},
-                    {"FontFamily", 7}
+                    {"FontFamily", "Tahoma"}
                 })
             };
         }

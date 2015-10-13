@@ -119,7 +119,7 @@
                         <ColumnDefinition Width="auto"></ColumnDefinition>
                         <ColumnDefinition Width="85"></ColumnDefinition>
                         <ColumnDefinition Width="*"></ColumnDefinition>
-                        <ColumnDefinition Width="65"></ColumnDefinition>
+                        <ColumnDefinition Width="120"></ColumnDefinition>
                         <ColumnDefinition Width="10"></ColumnDefinition>
                         <ColumnDefinition Width="auto"></ColumnDefinition>
                         <ColumnDefinition Width="15"></ColumnDefinition>
@@ -135,6 +135,18 @@
                     </Button>
                     <controls:ProgressRing ToolTip="Downloading image..." Margin="5,0,0,0" HorizontalAlignment="Left" Foreground="#FFFFFF" Name="VariationProgressRing" Width="10" Height="10" Grid.Column="5" IsActive="False" />
                     <Border Name="VariantsColorPanel" ToolTip="Click to change color" MouseLeftButtonUp="ColorPanel_OnMouseLeftButtonUp" BorderBrush="#EEEEEE" BorderThickness="1" Height="26" Width="65" HorizontalAlignment="Right" VerticalAlignment="Center" Grid.Column="6" />
+                    <ComboBox Name="FontPanel" SelectionChanged="FontChooser_OnSelectionChanged" ToolTip="Select the font here" Grid.Column="6" ItemsSource="{Binding Source={x:Static Fonts.SystemFontFamilies}}" Height="26" VerticalAlignment="Center">
+                        <ComboBox.ItemsPanel>
+                            <ItemsPanelTemplate>
+                                <VirtualizingStackPanel />
+                            </ItemsPanelTemplate>
+                        </ComboBox.ItemsPanel>
+                        <ComboBox.ItemTemplate>
+                            <DataTemplate>
+                                <TextBlock VerticalAlignment="Center" Text="{Binding}" FontFamily="{Binding}" Height="20"/>
+                            </DataTemplate>
+                        </ComboBox.ItemTemplate>
+                    </ComboBox>
                     <ComboBox Name="VariantsComboBox" SelectionChanged="VariantsComboBox_OnSelectionChanged" HorizontalAlignment="Right" VerticalAlignment="Center" Grid.Column="8">
                     </ComboBox>
                 </Grid>

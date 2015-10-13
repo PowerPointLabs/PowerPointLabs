@@ -6,7 +6,6 @@ using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Forms;
 using System.Windows.Media.Animation;
-using MahApps.Metro.Controls.Dialogs;
 using PowerPointLabs.AutoUpdate;
 using PowerPointLabs.ImageSearch.Domain;
 using PowerPointLabs.ImageSearch.Util;
@@ -23,7 +22,8 @@ namespace PowerPointLabs.ImageSearch
 
         private string _previousVariantsCategory;
         private IList<StyleOptions> _styleOptions;
-        private Dictionary<string, List<StyleVariants>> _styleVariants; 
+        private Dictionary<string, List<StyleVariants>> _styleVariants;
+        private bool _isFontChangedByVariationSelection;
 
         private void UpdateStyleVariationsImages(bool isOpenFlyout = false)
         {
@@ -208,6 +208,31 @@ namespace PowerPointLabs.ImageSearch
             }
         }
 
+        private void BindStyleToFontPanel()
+        {
+            if (VariationListBox.SelectedIndex < 0
+                || VariantsComboBox.Items.Count == 0) return;
+
+            var styleOption = _styleOptions[VariationListBox.SelectedIndex];
+            var currentCategory = (string)VariantsComboBox.SelectedValue;
+
+            if (currentCategory == TextCollection.ImagesLabText.VariantCategoryFontFamily)
+            {
+                var styleFontFamily = styleOption.GetFontFamily();
+                var targetIndex = -1;
+                for(var i = 0; i < _fontFamilyList.Count; i++)
+                {
+                    if (styleFontFamily == _fontFamilyList[i])
+                    {
+                        targetIndex = i;
+                        break;
+                    }
+                }
+                _isFontChangedByVariationSelection = true;
+                FontPanel.SelectedIndex = targetIndex;
+            }
+        }
+
         private void BindColorToStyle(Color color)
         {
             if (VariationListBox.SelectedIndex < 0
@@ -265,6 +290,34 @@ namespace PowerPointLabs.ImageSearch
             }
         }
 
+        private void BindFontToStyle(string font)
+        {
+            if (VariationListBox.SelectedIndex < 0
+                || VariantsComboBox.Items.Count == 0) return;
+
+            var styleOption = _styleOptions[VariationListBox.SelectedIndex];
+            var currentCategory = (string)VariantsComboBox.SelectedValue;
+
+            if (currentCategory == TextCollection.ImagesLabText.VariantCategoryFontFamily)
+            {
+                styleOption.FontFamily = font;
+            }
+        }
+
+        private void BindFontToVariant(string font)
+        {
+            if (VariationListBox.SelectedIndex < 0
+                || VariantsComboBox.Items.Count == 0) return;
+
+            var currentCategory = (string)VariantsComboBox.SelectedValue;
+            var styleVariant = _styleVariants[currentCategory][VariationListBox.SelectedIndex];
+
+            if (currentCategory == TextCollection.ImagesLabText.VariantCategoryFontFamily)
+            {
+                styleVariant.Set("FontFamily", font);
+            }
+        }
+
         private void PickUpStyle()
         {
             var source = (ImageItem)SearchListBox.SelectedValue;
@@ -299,6 +352,7 @@ namespace PowerPointLabs.ImageSearch
                 OptionsPane2.DataContext = targetStyleOption;
 
                 var currentCategory = (string)VariantsComboBox.SelectedValue;
+                
                 if (currentCategory.Contains("Color"))
                 {
                     VariantsColorPanel.Visibility = Visibility.Visible;
@@ -307,6 +361,16 @@ namespace PowerPointLabs.ImageSearch
                 else
                 {
                     VariantsColorPanel.Visibility = Visibility.Collapsed;
+                }
+
+                if (currentCategory == TextCollection.ImagesLabText.VariantCategoryFontFamily)
+                {
+                    FontPanel.Visibility = Visibility.Visible;
+                    BindStyleToFontPanel();
+                }
+                else
+                {
+                    FontPanel.Visibility = Visibility.Collapsed;
                 }
             }
         }
@@ -488,6 +552,20 @@ namespace PowerPointLabs.ImageSearch
                 if (result != null) return result;
             }
             return null;
+        }
+
+        private void FontChooser_OnSelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            if (_isFontChangedByVariationSelection)
+            {
+                _isFontChangedByVariationSelection = false;
+                return;
+            }
+
+            var selectedFontFamily = (FontFamily) FontPanel.SelectedValue;
+            BindFontToStyle(selectedFontFamily.Source);
+            BindFontToVariant(selectedFontFamily.Source);
+            DoPreview();
         }
     }
 }

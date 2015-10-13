@@ -131,7 +131,14 @@ namespace PowerPointLabs.ImageSearch
                 successfullyAppliedDialog.ShowGotoNextSlideButton();
                 successfullyAppliedDialog.FocusGotoNextSlideButton();
             }
-            this.ShowMetroDialogAsync(successfullyAppliedDialog, MetroDialogOptions);
+            try
+            {
+                this.ShowMetroDialogAsync(successfullyAppliedDialog, MetroDialogOptions);
+            }
+            catch
+            {
+                // dialog could be fired multiple times
+            }
         }
     }
 }

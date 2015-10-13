@@ -64,7 +64,7 @@
                     <ColumnDefinition></ColumnDefinition>
                 </Grid.ColumnDefinitions>
                 <Label Content="font family" Foreground="#FFFFFF" FontSize="15" HorizontalAlignment="Left" VerticalAlignment="Center" Grid.Column="0" Grid.Row="0"/>
-                <ComboBox Name="FontFamilyComboBox" SelectedIndex="{Binding Path=FontFamily, Mode=TwoWay, NotifyOnSourceUpdated=True}" HorizontalAlignment="Left" VerticalAlignment="Center" Grid.Column="1" Grid.Row="0">
+                <ComboBox Name="FontFamilyComboBox" SelectedValue="{Binding Path=FontFamily, Mode=TwoWay, NotifyOnSourceUpdated=True}" HorizontalAlignment="Left" VerticalAlignment="Center" Grid.Column="1" Grid.Row="0">
                     <ComboBoxItem>Segoe UI</ComboBoxItem>
                     <ComboBoxItem>Segoe UI Light</ComboBoxItem>
                     <ComboBoxItem>Calibri</ComboBoxItem>
