@@ -1,4 +1,5 @@
 ﻿using System.Windows;
+using System.Windows.Input;
 
 namespace PowerPointLabs.ImageSearch
 {
@@ -34,6 +35,28 @@ namespace PowerPointLabs.ImageSearch
             {
                 OnOk();
             }
+        }
+
+        public void ShowGotoNextSlideButton()
+        {
+            GotoNextSlideButton.Visibility = Visibility.Visible;
+        }
+
+        public void HideGotoNextSlideButton()
+        {
+            GotoNextSlideButton.Visibility = Visibility.Hidden;
+        }
+
+        public void FocusOkButton()
+        {
+            OkButton.Focusable = true;
+            OkButton.Focus();
+        }
+
+        public void FocusGotoNextSlideButton()
+        {
+            GotoNextSlideButton.Focusable = true;
+            GotoNextSlideButton.Focus();
         }
     }
 }

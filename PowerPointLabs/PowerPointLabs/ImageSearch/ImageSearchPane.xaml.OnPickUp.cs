@@ -364,7 +364,7 @@ namespace PowerPointLabs.ImageSearch
             try
             {
                 PreviewPresentation.ApplyStyle(source);
-                this.ShowMetroDialogAsync(successfullyAppliedDialog, MetroDialogOptions);
+                OpenSuccessfullyAppliedDialog();
             }
             catch (AssumptionFailedException)
             {

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using MahApps.Metro.Controls.Dialogs;
 using PowerPointLabs.ImageSearch.Domain;
 using PowerPointLabs.ImageSearch.Util;
+using PowerPointLabs.Models;
 
 namespace PowerPointLabs.ImageSearch
 {
@@ -116,6 +117,21 @@ namespace PowerPointLabs.ImageSearch
             {
                 this.ShowMessageAsync("Error", content);
             }));
+        }
+
+        private void OpenSuccessfullyAppliedDialog()
+        {
+            if (PowerPointPresentation.Current.IsLastSlide())
+            {
+                successfullyAppliedDialog.HideGotoNextSlideButton();
+                successfullyAppliedDialog.FocusOkButton();
+            }
+            else
+            {
+                successfullyAppliedDialog.ShowGotoNextSlideButton();
+                successfullyAppliedDialog.FocusGotoNextSlideButton();
+            }
+            this.ShowMetroDialogAsync(successfullyAppliedDialog, MetroDialogOptions);
         }
     }
 }

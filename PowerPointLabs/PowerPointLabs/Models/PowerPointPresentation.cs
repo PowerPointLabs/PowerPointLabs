@@ -249,6 +249,15 @@ namespace PowerPointLabs.Models
             }
         }
 
+        public bool IsLastSlide()
+        {
+            var currentSlide = PowerPointCurrentPresentationInfo.CurrentSlide;
+            if (currentSlide == null) return false;
+
+            var index = currentSlide.Index;
+            return index == Slides.Count;
+        }
+
         public PowerPointSlide AddSlide(PpSlideLayout layout = PpSlideLayout.ppLayoutText, string name = "")
         {
             if (!Opened)

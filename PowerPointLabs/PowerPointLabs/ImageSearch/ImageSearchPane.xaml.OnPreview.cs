@@ -120,7 +120,8 @@ namespace PowerPointLabs.ImageSearch
                 var targetDefaultOptions = StyleOptionsFactory.GetDefaultOption(targetStyle);
                 PreviewPresentation.SetStyleOptions(targetDefaultOptions);
                 PreviewPresentation.ApplyStyle(source);
-                this.ShowMetroDialogAsync(successfullyAppliedDialog, MetroDialogOptions);
+
+                OpenSuccessfullyAppliedDialog();
             }
             catch (AssumptionFailedException)
             {
