@@ -29,13 +29,6 @@
                   getSupertip="GetAddAnimationButtonSupertip"
                   getEnabled="OnGetEnabledAddAutoMotion"
                   onAction="AddAnimationButtonClick"/>
-          <button id="ReloadButton"
-                  getLabel ="GetReloadButtonLabel"
-                  size ="large"
-                  getImage="GetReloadAnimationImage"
-                  getSupertip="GetReloadButtonSupertip"
-                  getEnabled="OnGetEnabledReloadAutoMotion"
-                  onAction="ReloadButtonClick"/>
           <button id="InSlideAnimateButton"
                    getLabel="GetInSlideAnimateButtonLabel"
                    size="large"
