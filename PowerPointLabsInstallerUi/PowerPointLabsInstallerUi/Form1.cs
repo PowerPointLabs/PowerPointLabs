@@ -60,7 +60,7 @@ namespace PowerPointLabsInstallerUi
                         "Visual Studio 2010 Tools for Office (VSTO) Runtime from Microsoft.\n\n" +
                         "Click Yes button to download it, or click No button to continue the installation anyway.",
                         ErrorWindowTitle,
-                        MessageBoxButtons.YesNoCancel, MessageBoxIcon.Error);
+                        MessageBoxButtons.YesNoCancel, MessageBoxIcon.Information);
                     if (dialogResult == DialogResult.Yes)
                     {
                         Process.Start(UrlForVstoRuntim);
@@ -79,7 +79,7 @@ namespace PowerPointLabsInstallerUi
                         "\n[" + vstoConfigDir + "]\n to the new filename [VSTOInstaller.exe.Config.backup]\n\n" +
                         "After that, click OK button to continue.",
                         ErrorWindowTitle, 
-                        MessageBoxButtons.OKCancel, MessageBoxIcon.Error)
+                        MessageBoxButtons.OKCancel, MessageBoxIcon.Information)
                         == DialogResult.Cancel)
                     {
                         return;
