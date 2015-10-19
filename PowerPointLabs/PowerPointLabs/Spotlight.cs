@@ -58,67 +58,6 @@ namespace PowerPointLabs
             }
         }
 
-        public static void ReloadSpotlightEffect()
-        {
-            try
-            {
-                var currentSlide = PowerPointCurrentPresentationInfo.CurrentSlide as PowerPointSpotlightSlide;
-                if (currentSlide.isSpotlightSlide())
-                {
-                    PowerPoint.Shape spotlightPicture = null;
-                    PowerPoint.Shape indicatorShape = null;
-                    List<PowerPoint.Shape> spotlightShapes = new List<PowerPoint.Shape>();
-
-                    foreach (PowerPoint.Shape sh in currentSlide.Shapes)
-                    {
-                        if (sh.Name.Contains("SpotlightShape1"))
-                        {
-                            spotlightPicture = sh;
-                        }
-                        else if (sh.Name.Contains("SpotlightShape"))
-                        {
-                            spotlightShapes.Add(sh);
-                        }
-                        else if (PowerPointSlide.IsIndicator(sh))
-                        {
-                            indicatorShape = sh;
-                        }
-                    }
-
-                    if (spotlightPicture == null || spotlightShapes.Count == 0)
-                    {
-                        System.Windows.Forms.MessageBox.Show("The spotlight effect cannot be recreated for the current slide.\nPlease click on the Create Spotlight button to create a new spotlight.", "Error");
-                    }
-                    else
-                    {
-                        spotlightPicture.Delete();
-
-                        if (indicatorShape != null)
-                            indicatorShape.Delete();
-
-                        foreach (PowerPoint.Shape sh in spotlightShapes)
-                        {
-                            sh.Visible = Office.MsoTriState.msoTrue;
-                            CreateSpotlightDuplicate(sh);
-                        }
-
-                        currentSlide.PrepareForSpotlight();
-                        currentSlide.AddSpotlightEffect(spotlightShapes);
-                        PowerPointPresentation.Current.AddAckSlide();
-                    }
-                }
-                else
-                {
-                    System.Windows.Forms.MessageBox.Show("The current slide is not a spotlight slide added by the PowerPointLabs plugin", "Error");
-                }
-            }
-            catch (Exception e)
-            {
-                PowerPointLabsGlobals.LogException(e, "ReloadSpotlightButtonClick");
-                throw;
-            }
-        }
-
         private static void PreFormatShapeOnCurrentSlide(PowerPoint.Shape spotShape)
         {
             //Change color of shape to white. This is used later for creating spotlight shape

@@ -11,6 +11,11 @@ using Microsoft.Office.Tools;
 using PowerPointLabs.AutoUpdate;
 using PPExtraEventHelper;
 using System.IO.Compression;
+using System.Runtime.Remoting;
+using System.Runtime.Remoting.Channels;
+using System.Runtime.Remoting.Channels.Ipc;
+using PowerPointLabs.FunctionalTestInterface.Impl;
+using PowerPointLabs.FunctionalTestInterface.Impl.Controller;
 using PowerPointLabs.Models;
 using PowerPointLabs.Utils;
 using PowerPointLabs.Views;
@@ -55,6 +60,19 @@ namespace PowerPointLabs
 
         public Ribbon1 Ribbon;
 
+        /// <summary>
+        /// The channel for .NET Remoting calls.
+        /// </summary>
+        private IChannel _FTChannel;
+
+        private void SetupFunctionalTestChannels()
+        {
+            _FTChannel = new IpcChannel("PowerPointLabsFT");
+            ChannelServices.RegisterChannel(_FTChannel, false);
+            RemotingConfiguration.RegisterWellKnownServiceType(typeof(PowerPointLabsFT),
+                "PowerPointLabsFT", WellKnownObjectMode.Singleton);
+        }
+
         # region Powerpoint Application Event Handlers
         private void ThisAddInStartup(object sender, EventArgs e)
         {
@@ -62,9 +80,11 @@ namespace PowerPointLabs
             Trace.TraceInformation(DateTime.Now.ToString("yyyyMMddHHmmss") + ": PowerPointLabs Started");
 
             new Updater().TryUpdate();
+            SetupFunctionalTestChannels();
 
             PPMouse.Init(Application);
             PPCopy.Init(Application);
+            UIThreadExecutor.Init();
             SetupDoubleClickHandler();
             SetupTabActivateHandler();
             SetupAfterCopyPasteHandler();
@@ -342,11 +362,15 @@ namespace PowerPointLabs
             else
             {
                 var handle = Native.FindWindow("PPTFrameClass", pres.Name + " - Microsoft PowerPoint");
-                var prompt =
-                    MessageBox.Show(string.Format("Do you want to save {0}", associatedWindow.Caption),
-                                    Application.Name,
-                                    MessageBoxButtons.YesNoCancel, MessageBoxIcon.Warning,
-                                    MessageBoxDefaultButton.Button1);
+
+                DialogResult prompt = DialogResult.No;
+                if (!PowerPointCurrentPresentationInfo.IsInFunctionalTest)
+                {
+                    prompt = MessageBox.Show(string.Format("Do you want to save {0}", associatedWindow.Caption),
+                        Application.Name,
+                        MessageBoxButtons.YesNoCancel, MessageBoxIcon.Warning,
+                        MessageBoxDefaultButton.Button1);
+                }
 
                 Native.SetForegroundWindow(handle);
 
@@ -371,8 +395,13 @@ namespace PowerPointLabs
         {
             PPMouse.StopHook();
             PPCopy.StopHook();
+            UIThreadExecutor.TearDown();
             Trace.TraceInformation(DateTime.Now.ToString("yyyyMMddHHmmss") + ": PowerPointLabs Exiting");
             Trace.Close();
+            if (_FTChannel != null)
+            {
+                ChannelServices.UnregisterChannel(_FTChannel);
+            }
         }
         # endregion
 
@@ -434,7 +463,7 @@ namespace PowerPointLabs
         public void InitializeShapeGallery()
         {
             // achieves singleton ShapePresentation
-            if (ShapePresentation != null) return;
+            if (ShapePresentation != null && ShapePresentation.Opened) return;
 
             var shapeRootFolderPath = ShapesLabConfigs.ShapeRootFolder;
 
