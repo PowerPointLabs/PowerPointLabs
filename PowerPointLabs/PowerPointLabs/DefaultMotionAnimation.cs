@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Globalization;
 using PowerPointLabs.Models;
 using Office = Microsoft.Office.Core;
 using PowerPoint = Microsoft.Office.Interop.PowerPoint;
@@ -222,7 +223,13 @@ namespace PowerPointLabs
                 float point1Y = ((finalY - initialY) / 2f) / PowerPointPresentation.Current.SlideHeight;
                 float point2X = (finalX - initialX) / PowerPointPresentation.Current.SlideWidth;
                 float point2Y = (finalY - initialY) / PowerPointPresentation.Current.SlideHeight;
-                motion.MotionEffect.Path = "M 0 0 C " + point1X + " " + point1Y + " " + point1X + " " + point1Y + " " + point2X + " " + point2Y + " E";
+                motion.MotionEffect.Path = "M 0 0 C "
+                    + point1X.ToString(CultureInfo.InvariantCulture) + " "
+                    + point1Y.ToString(CultureInfo.InvariantCulture) + " "
+                    + point1X.ToString(CultureInfo.InvariantCulture) + " "
+                    + point1Y.ToString(CultureInfo.InvariantCulture) + " "
+                    + point2X.ToString(CultureInfo.InvariantCulture) + " "
+                    + point2Y.ToString(CultureInfo.InvariantCulture) + " E";
                 effectMotion.Timing.SmoothStart = Office.MsoTriState.msoFalse;
                 effectMotion.Timing.SmoothEnd = Office.MsoTriState.msoFalse;
                 return effectMotion;
