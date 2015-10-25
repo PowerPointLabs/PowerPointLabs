@@ -1,5 +1,4 @@
 ﻿using System.Windows;
-using PowerPointLabs.ImageSearch.Crop;
 using PowerPointLabs.ImageSearch.Domain;
 using PowerPointLabs.ImageSearch.Util;
 
@@ -12,7 +11,7 @@ namespace PowerPointLabs.ImageSearch
             if (imageItem == null && SearchListBox.SelectedValue == null) return;
 
             var source = imageItem ?? (ImageItem)SearchListBox.SelectedValue;
-            var cropWindow = new CropWindow();
+            var cropWindow = new AdjustImageWindow();
             cropWindow.SetThumbnailImage(source.ImageFile);
             cropWindow.SetFullsizeImage(source.FullSizeImageFile);
             if (source.Rect.Width > 1)

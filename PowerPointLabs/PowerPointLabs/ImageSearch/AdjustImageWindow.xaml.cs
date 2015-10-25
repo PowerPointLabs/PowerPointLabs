@@ -9,13 +9,13 @@ using PowerPointLabs.Models;
 using PowerPointLabs.WPF.Observable;
 using Color = System.Windows.Media.Color;
 
-namespace PowerPointLabs.ImageSearch.Crop
+namespace PowerPointLabs.ImageSearch
 {
     /// <summary>
     /// Interaction logic for Window1.xaml
     /// </summary>
 
-    public partial class CropWindow
+    public partial class AdjustImageWindow
     {
         private ObservableString ThumbnailImageFile = new ObservableString();
 
@@ -33,7 +33,7 @@ namespace PowerPointLabs.ImageSearch.Crop
         public Rect Rect { get; set; }
         public bool IsCropped { get; set; }
 
-        public CropWindow()
+        public AdjustImageWindow()
         {
             InitializeComponent();
             ImageHolder.DataContext = ThumbnailImageFile;

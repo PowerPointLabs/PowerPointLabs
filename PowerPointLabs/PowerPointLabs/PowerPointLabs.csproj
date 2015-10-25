@@ -284,8 +284,8 @@
     <Compile Include="CropToShape.cs" />
     <Compile Include="DataSources\ShapesLabSettingsDataSource.cs" />
     <Compile Include="ImageSearch\Crop\CroppingAdorner.cs" />
-    <Compile Include="ImageSearch\Crop\CropWindow.xaml.cs">
-      <DependentUpon>CropWindow.xaml</DependentUpon>
+    <Compile Include="ImageSearch\AdjustImageWindow.xaml.cs">
+      <DependentUpon>AdjustImageWindow.xaml</DependentUpon>
     </Compile>
     <Compile Include="ImageSearch\Crop\PuncturedRect.cs" />
     <Compile Include="ImageSearch\Domain\StyleOptionsFactory.cs" />
@@ -333,12 +333,12 @@
     <Compile Include="ImageSearch\Domain\StyleOptions.cs" />
     <Compile Include="ImageSearch\Handler\StylesHandler.cs" />
     <Compile Include="ImageSearch\SearchEngine\GoogleEngine.cs" />
-    <Compile Include="ImageSearch\SearchOptionsPane.xaml.cs">
-      <DependentUpon>SearchOptionsPane.xaml</DependentUpon>
+    <Compile Include="ImageSearch\SearchOptionsPane.Obsolete.xaml.cs">
+      <DependentUpon>SearchOptionsPane.Obsolete.xaml</DependentUpon>
     </Compile>
     <Compile Include="ImageSearch\Handler\EffectsHandler.cs" />
-    <Compile Include="ImageSearch\StyleOptionsPane.xaml.cs">
-      <DependentUpon>StyleOptionsPane.xaml</DependentUpon>
+    <Compile Include="ImageSearch\StyleOptionsPane.Obsolete.xaml.cs">
+      <DependentUpon>StyleOptionsPane.Obsolete.xaml</DependentUpon>
     </Compile>
     <Compile Include="ImageSearch\Util\StoragePath.cs" />
     <Compile Include="ImageSearch\Util\TempPath.cs" />
@@ -790,7 +790,7 @@
     <None Include="Resources\AgendaVisual.png" />
   </ItemGroup>
   <ItemGroup>
-    <Page Include="ImageSearch\Crop\CropWindow.xaml">
+    <Page Include="ImageSearch\AdjustImageWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -798,11 +798,11 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="ImageSearch\SearchOptionsPane.xaml">
+    <Page Include="ImageSearch\SearchOptionsPane.Obsolete.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="ImageSearch\StyleOptionsPane.xaml">
+    <Page Include="ImageSearch\StyleOptionsPane.Obsolete.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
