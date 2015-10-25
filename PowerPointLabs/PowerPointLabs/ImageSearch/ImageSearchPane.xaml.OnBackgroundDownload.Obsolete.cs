@@ -6,6 +6,7 @@ using PowerPointLabs.ImageSearch.Util;
 
 namespace PowerPointLabs.ImageSearch
 {
+    // TODO: this partial class is obsolete
     public partial class ImageSearchPane
     {
         // intent:

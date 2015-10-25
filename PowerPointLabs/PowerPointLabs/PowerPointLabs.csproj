@@ -300,13 +300,15 @@
     <Compile Include="ImageSearch\Handler\Effect\EffectName.cs" />
     <Compile Include="ImageSearch\Handler\Preview\PreviewInfo.cs" />
     <Compile Include="ImageSearch\Handler\Effect\Tag.cs" />
-    <Compile Include="ImageSearch\ImageSearchPane.xaml.OnCustomizeStyle.cs" />
-    <Compile Include="ImageSearch\ImageSearchPane.xaml.OnBackgroundDownload.cs" />
+    <Compile Include="ImageSearch\ImageSearchPane.xaml.OnAdjustImageOffset.cs" />
+    <Compile Include="ImageSearch\ImageSearchPane.xaml.OnCustomizeStyle.Obsolete.cs" />
+    <Compile Include="ImageSearch\ImageSearchPane.xaml.OnBackgroundDownload.Obsolete.cs" />
     <Compile Include="ImageSearch\ImageSearchPane.xaml.cs">
       <DependentUpon>ImageSearchPane.xaml</DependentUpon>
     </Compile>
     <Compile Include="ImageSearch\ImageSearchPane.xaml.OnDragAndDrop.cs" />
-    <Compile Include="ImageSearch\ImageSearchPane.xaml.OnPickUp.cs" />
+    <Compile Include="ImageSearch\ImageSearchPane.xaml.OnCustomizeStyle.cs" />
+    <Compile Include="ImageSearch\ImageSearchPane.xaml.OnPersistence.cs" />
     <Compile Include="ImageSearch\ImageSearchPane.xaml.OnPreview.cs" />
     <Compile Include="ImageSearch\ImageSearchPane.xaml.OnLoadImages.cs" />
     <Compile Include="ImageSearch\SearchEngine\AsyncSearchEngine.Events.cs" />

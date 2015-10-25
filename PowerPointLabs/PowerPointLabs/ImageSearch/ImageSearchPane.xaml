@@ -74,7 +74,7 @@
                     </ListBox.Resources>
                     <ListBox.ContextMenu>
                         <ContextMenu Name="PreviewListBoxContextMenu">
-                            <MenuItem Header="Adjust image's offset" Click="MenuItemCrop_OnClickFromPreviewListBox"></MenuItem>
+                            <MenuItem Header="Adjust image's offset" Click="MenuItemAdjustImage_OnClickFromPreviewListBox"></MenuItem>
                         </ContextMenu>
                     </ListBox.ContextMenu>
                     <ListBox.Template>
@@ -211,7 +211,7 @@
                 <ListBox TabIndex="1" PreviewMouseDown="SearchListBox_OnPreviewMouseDown" Name="SearchListBox" KeyDown="SearchListBox_OnKeyDown" SelectionChanged="SearchListBox_OnSelectionChanged" ItemsSource="{Binding Path=SearchList, Mode=TwoWay}" Grid.Row="2">
                     <ListBox.ContextMenu>
                         <ContextMenu Name="SearchListBoxContextMenu">
-                            <MenuItem Header="Adjust this image's offset" Click="MenuItemCrop_OnClick"></MenuItem>
+                            <MenuItem Header="Adjust this image's offset" Click="MenuItemAdjustImage_OnClick"></MenuItem>
                             <MenuItem Header="Delete this image" Click="MenuItemDeleteThisImage_OnClick"></MenuItem>
                             <Separator />
                             <MenuItem Header="Delete all images" Click="MenuItemDeleteAllImages_OnClick"></MenuItem>
