@@ -291,6 +291,9 @@
     <Compile Include="ImageSearch\Domain\StyleOptionsFactory.cs" />
     <Compile Include="ImageSearch\Domain\StyleVariants.cs" />
     <Compile Include="ImageSearch\Domain\StyleVariantsFactory.cs" />
+    <Compile Include="ImageSearch\GoToSlideDialog.xaml.cs">
+      <DependentUpon>GoToSlideDialog.xaml</DependentUpon>
+    </Compile>
     <Compile Include="ImageSearch\Handler\Effect\Alignment.cs" />
     <Compile Include="ImageSearch\Handler\Effect\Banner.cs" />
     <Compile Include="ImageSearch\Handler\Effect\Position.cs" />
@@ -308,6 +311,7 @@
     </Compile>
     <Compile Include="ImageSearch\ImageSearchPane.xaml.OnDragAndDrop.cs" />
     <Compile Include="ImageSearch\ImageSearchPane.xaml.OnCustomizeStyle.cs" />
+    <Compile Include="ImageSearch\ImageSearchPane.xaml.OnGotoSlide.cs" />
     <Compile Include="ImageSearch\ImageSearchPane.xaml.OnPersistence.cs" />
     <Compile Include="ImageSearch\ImageSearchPane.xaml.OnPreview.cs" />
     <Compile Include="ImageSearch\ImageSearchPane.xaml.OnLoadImages.cs" />
@@ -791,6 +795,10 @@
   </ItemGroup>
   <ItemGroup>
     <Page Include="ImageSearch\AdjustImageWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="ImageSearch\GoToSlideDialog.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

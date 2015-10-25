@@ -85,6 +85,7 @@ namespace PowerPointLabs.ImageSearch
         public SearchOptions SearchOptions { get; set; }
 
         private SuccessfullyAppliedDialog successfullyAppliedDialog = new SuccessfullyAppliedDialog();
+        private GoToSlideDialog gotoSlideDialog = new GoToSlideDialog();
 
         // indicate whether it's downloading fullsize image, so that debounce.
         // timer - it will download full size image after some time
@@ -124,6 +125,7 @@ namespace PowerPointLabs.ImageSearch
             InitSuccessfullyAppliedDialog();
             if (TempPath.InitTempFolder() && StoragePath.InitPersistentFolder(_filesInUse))
             {
+                InitGotoSlideDialog();
                 InitSearchEngine();
                 InitPreviewPresentation();
                 InitPreviewTimer();
@@ -133,6 +135,28 @@ namespace PowerPointLabs.ImageSearch
             {
                 ShowErrorMessageBox(TextCollection.ImagesLabText.ErrorFailToInitTempFolder);
             }
+        }
+
+        private void InitGotoSlideDialog()
+        {
+            gotoSlideDialog.GetType()
+                    .GetProperty("OwningWindow", BindingFlags.Instance | BindingFlags.NonPublic)
+                    .SetValue(gotoSlideDialog, this, null);
+
+            gotoSlideDialog.OnGotoSlide += () =>
+            {
+                this.HideMetroDialogAsync(gotoSlideDialog, MetroDialogOptions);
+                if (gotoSlideDialog.SelectedSlide > 0)
+                {
+                    PowerPointPresentation.Current.GotoSlide(gotoSlideDialog.SelectedSlide);
+                }
+                _latestImageChangedTime = DateTime.Now;
+                DoPreview();
+            };
+            gotoSlideDialog.OnCancel += () =>
+            {
+                this.HideMetroDialogAsync(gotoSlideDialog, MetroDialogOptions);
+            };
         }
 
         private void InitFontFamilyList()
@@ -475,7 +499,6 @@ namespace PowerPointLabs.ImageSearch
 
         private void SearchButton_OnSelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            CloseVariationsFlyout();
             SearchTextBox.Text = "";
             switch (SearchButton.SelectedIndex)
             {
@@ -504,6 +527,15 @@ namespace PowerPointLabs.ImageSearch
         private void ImageSearchPane_OnActivated(object sender, EventArgs e)
         {
             if (!_isWindowActivatedWithPreview) return;
+
+            if (PowerPointCurrentPresentationInfo.CurrentSlide == null)
+            {
+                GotoSlideButton.IsEnabled = false;
+            }
+            else
+            {
+                GotoSlideButton.IsEnabled = true;
+            }
 
             Dispatcher.BeginInvoke(new Action(() =>
             {

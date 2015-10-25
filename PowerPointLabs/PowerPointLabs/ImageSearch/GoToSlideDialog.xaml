@@ -1,0 +1,67 @@
+﻿<dialog:CustomDialog x:Class="PowerPointLabs.ImageSearch.GoToSlideDialog"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:dialog="clr-namespace:MahApps.Metro.Controls.Dialogs;assembly=MahApps.Metro"
+                     >
+    <Grid Width="600">
+        <Grid.RowDefinitions>
+            <RowDefinition></RowDefinition>
+            <RowDefinition Height="200"></RowDefinition>
+            <RowDefinition Height="50"></RowDefinition>
+            <RowDefinition Height="15"></RowDefinition>
+        </Grid.RowDefinitions>
+        <TextBlock Name="DialogTitle" FontSize="18" Text="{Binding Path=Text, Mode=TwoWay, NotifyOnSourceUpdated=True}" />
+        <Grid Grid.Row="1">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="30"></ColumnDefinition>
+                <ColumnDefinition></ColumnDefinition>
+                <ColumnDefinition Width="30"></ColumnDefinition>
+            </Grid.ColumnDefinitions>
+            <Button ToolTip="Previous" Click="PrevButton_OnClick" Height="30" VerticalContentAlignment="Center" HorizontalContentAlignment="Center" Style="{DynamicResource MetroCircleButtonStyle}" Name="PrevButton" VerticalAlignment="Center" Content="&lt;"></Button>
+            <Button ToolTip="Next" Click="NextButton_OnClick" Height="30" VerticalContentAlignment="Center" HorizontalContentAlignment="Center" Style="{DynamicResource MetroCircleButtonStyle}" Name="NextButton" Grid.Column="2" VerticalAlignment="Center" Content="&gt;"></Button>
+            <ListBox Grid.Column="1" ScrollViewer.HorizontalScrollBarVisibility="Visible"  SelectionMode="Single" SelectionChanged="SlideListBox_OnSelectionChanged" Name="SlideListBox" IsSynchronizedWithCurrentItem="True" ItemsSource="{Binding Path=SlideList, Mode=TwoWay}">
+                <ListBox.ItemsPanel>
+                    <ItemsPanelTemplate>
+                        <WrapPanel IsItemsHost="True" VerticalAlignment="Center" />
+                    </ItemsPanelTemplate>
+                </ListBox.ItemsPanel>
+                <ListBox.ItemContainerStyle>
+                    <Style TargetType="ListBoxItem">
+                        <Setter Property="HorizontalContentAlignment" Value="Center"></Setter>
+                        <Setter Property="VerticalContentAlignment" Value="Center"></Setter>
+                        <Style.Resources>
+                            <!--SelectedItem with focus-->
+                            <SolidColorBrush x:Key="{x:Static SystemColors.HighlightBrushKey}" Color="#D74926" />
+                            <SolidColorBrush x:Key="{x:Static SystemColors.HighlightTextBrushKey}" Color="White"/>
+                            <!--SelectedItem without focus-->
+                            <SolidColorBrush x:Key="{x:Static SystemColors.ControlBrushKey}" Color="#D74926" />
+                            <SolidColorBrush x:Key="{x:Static SystemColors.ControlTextBrushKey}" Color="White"/>
+                        </Style.Resources>
+                    </Style>
+                </ListBox.ItemContainerStyle>
+                <ListBox.ItemTemplate>
+                    <DataTemplate>
+                        <Grid>
+                            <Grid.RowDefinitions>
+                                <RowDefinition></RowDefinition>
+                                <RowDefinition></RowDefinition>
+                            </Grid.RowDefinitions>
+                            <Image Width="180" Margin="3,3,4,3" Source="{Binding Path=ImageFile, Mode=TwoWay, NotifyOnSourceUpdated=True}" ToolTip="{Binding Path=Tooltip, Mode=TwoWay, NotifyOnSourceUpdated=True}" />
+                            <TextBlock Margin="0,0,0,3" Grid.Row="1" HorizontalAlignment="Center" Text="{Binding Path=Tooltip, Mode=TwoWay, NotifyOnSourceUpdated=True}"></TextBlock>
+                        </Grid>
+                    </DataTemplate>
+                </ListBox.ItemTemplate>
+            </ListBox>
+        </Grid>
+        <Grid Grid.Row="2" Margin="0,15,0,0">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition></ColumnDefinition>
+                <ColumnDefinition Width="75"></ColumnDefinition>
+                <ColumnDefinition Width="5"></ColumnDefinition>
+                <ColumnDefinition Width="75"></ColumnDefinition>
+            </Grid.ColumnDefinitions>
+            <Button ToolTip="Go to the selected slide" Click="GotoSlideButton_OnClick" Name="GotoSlideButton" Grid.Column="1">Go</Button>
+            <Button ToolTip="Close the dialog" Click="CancelButton_OnClick" Name="CancelButton" Grid.Column="3">Close</Button>
+        </Grid>
+    </Grid>
+</dialog:CustomDialog>

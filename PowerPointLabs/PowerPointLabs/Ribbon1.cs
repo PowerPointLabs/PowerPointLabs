@@ -1645,9 +1645,12 @@ namespace PowerPointLabs
             if (ImageSearchPane == null || !ImageSearchPane.IsOpen)
             {
                 ImageSearchPane = new ImageSearchPane();
+                ImageSearchPane.Show();
             }
-            ImageSearchPane.FocusSearchTextBox();
-            ImageSearchPane.Show();
+            else
+            {
+                ImageSearchPane.Activate();
+            }            
         }
         
         #endregion

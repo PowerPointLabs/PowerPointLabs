@@ -121,19 +121,11 @@ namespace PowerPointLabs.ImageSearch
 
         private void OpenSuccessfullyAppliedDialog()
         {
-            if (PowerPointPresentation.Current.IsLastSlide())
-            {
-                successfullyAppliedDialog.HideGotoNextSlideButton();
-                successfullyAppliedDialog.FocusOkButton();
-            }
-            else
-            {
-                successfullyAppliedDialog.ShowGotoNextSlideButton();
-                successfullyAppliedDialog.FocusGotoNextSlideButton();
-            }
             try
             {
-                this.ShowMetroDialogAsync(successfullyAppliedDialog, MetroDialogOptions);
+                gotoSlideDialog.Init("Successfully Applied!");
+                gotoSlideDialog.FocusOkButton();
+                this.ShowMetroDialogAsync(gotoSlideDialog, MetroDialogOptions);
             }
             catch
             {
