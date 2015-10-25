@@ -213,6 +213,11 @@ namespace PowerPointLabs.ImageSearch
             {
                 _filesInUse.Add(imageItem.ImageFile);
                 _filesInUse.Add(imageItem.FullSizeImageFile);
+                if (imageItem.CroppedImageFile != null)
+                {
+                    _filesInUse.Add(imageItem.CroppedImageFile);
+                    _filesInUse.Add(imageItem.CroppedThumbnailImageFile);
+                }
             }
             CopyContentToObservableList(_downloadedImages, SearchList);
             Dispatcher.BeginInvoke(new Action(() =>
@@ -541,7 +546,10 @@ namespace PowerPointLabs.ImageSearch
                     FullSizeImageFile = image.FullSizeImageFile,
                     FullSizeImageUri = image.FullSizeImageUri,
                     ContextLink = image.ContextLink,
-                    Tooltip = image.Tooltip
+                    Tooltip = image.Tooltip,
+                    CroppedImageFile = image.CroppedImageFile,
+                    CroppedThumbnailImageFile = image.CroppedThumbnailImageFile,
+                    Rect = image.Rect
                 });
             }
         }

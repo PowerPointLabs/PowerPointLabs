@@ -1,4 +1,6 @@
-﻿namespace PowerPointLabs.ImageSearch.Domain
+﻿using System.Windows;
+
+namespace PowerPointLabs.ImageSearch.Domain
 {
     public class ImageItem : WPF.Observable.Model
     {
@@ -36,6 +38,9 @@
         public string BlurImageFile { get; set; }
         public string SpecialEffectImageFile { get; set; }
         public string FullSizeImageFile { get; set; }
+        public string CroppedImageFile { get; set; }
+        public string CroppedThumbnailImageFile { get; set; }
+        public Rect Rect { get; set; }
 
         // meta info
         public bool IsToDelete { get; set; }

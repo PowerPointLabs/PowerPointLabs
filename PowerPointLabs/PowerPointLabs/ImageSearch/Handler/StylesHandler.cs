@@ -44,12 +44,15 @@ namespace PowerPointLabs.ImageSearch.Handler
             var previewInfo = new PreviewInfo();
             var handler = CreateEffectsHandler(source);
 
-            // use thumbnail to apply, in order to speed up
+            // use (cropped) thumbnail to apply, in order to speed up
             var fullSizeImgPath = source.FullSizeImageFile;
+            var originalThumbnail = source.ImageFile;
             source.FullSizeImageFile = null;
+            source.ImageFile = source.CroppedThumbnailImageFile ?? source.ImageFile;
 
             PreviewStyles(handler, previewInfo);
 
+            source.ImageFile = originalThumbnail;
             source.FullSizeImageFile = fullSizeImgPath;
 
             handler.Delete();
@@ -71,14 +74,21 @@ namespace PowerPointLabs.ImageSearch.Handler
 
             // use thumbnail to apply, in order to speed up
             var fullSizeImgPath = source.FullSizeImageFile;
+            var originalThumbnail = source.ImageFile;
             if (!isActualSize)
             {
                 source.FullSizeImageFile = null;
+                source.ImageFile = source.CroppedThumbnailImageFile ?? source.ImageFile;
+            }
+            else
+            {
+                source.FullSizeImageFile = source.CroppedImageFile ?? source.FullSizeImageFile;
             }
 
             ApplyStyle(handler, source, isActualSize);
 
             source.FullSizeImageFile = fullSizeImgPath;
+            source.ImageFile = originalThumbnail;
 
             if (isActualSize)
             {
@@ -105,10 +115,16 @@ namespace PowerPointLabs.ImageSearch.Handler
 
             Globals.ThisAddIn.Application.StartNewUndoEntry();
 
+            // try to use cropped/adjusted image to apply
+            var fullsizeImage = source.FullSizeImageFile;
+            source.FullSizeImageFile = source.CroppedImageFile ?? source.FullSizeImageFile;
+
             var currentSlide = PowerPointCurrentPresentationInfo.CurrentSlide.GetNativeSlide();
             var effectsHandler = new EffectsHandler(currentSlide, Current, source);
 
             ApplyStyle(effectsHandler, source, isActualSize:true);
+
+            source.FullSizeImageFile = fullsizeImage;
         }
 
         private int GetPreviewWidth()

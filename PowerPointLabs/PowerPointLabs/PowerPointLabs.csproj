@@ -283,6 +283,11 @@
     <Compile Include="ConvertToPicture.cs" />
     <Compile Include="CropToShape.cs" />
     <Compile Include="DataSources\ShapesLabSettingsDataSource.cs" />
+    <Compile Include="ImageSearch\Crop\CroppingAdorner.cs" />
+    <Compile Include="ImageSearch\Crop\CropWindow.xaml.cs">
+      <DependentUpon>CropWindow.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="ImageSearch\Crop\PuncturedRect.cs" />
     <Compile Include="ImageSearch\Domain\StyleOptionsFactory.cs" />
     <Compile Include="ImageSearch\Domain\StyleVariants.cs" />
     <Compile Include="ImageSearch\Domain\StyleVariantsFactory.cs" />
@@ -783,6 +788,10 @@
     <None Include="Resources\AgendaVisual.png" />
   </ItemGroup>
   <ItemGroup>
+    <Page Include="ImageSearch\Crop\CropWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="ImageSearch\ImageSearchPane.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
