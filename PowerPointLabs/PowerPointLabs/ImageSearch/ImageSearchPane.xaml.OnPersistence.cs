@@ -54,13 +54,21 @@ namespace PowerPointLabs.ImageSearch
             {
                 target.Add(new ImageItem
                 {
+                    // thumbnail file to show or generate preview images
                     ImageFile = image.ImageFile,
+                    // full-size image file
                     FullSizeImageFile = image.FullSizeImageFile,
+                    // uri to the full-size image
                     FullSizeImageUri = image.FullSizeImageUri,
+                    // link to image's context
                     ContextLink = image.ContextLink,
+                    // tooltip to be displayed
                     Tooltip = image.Tooltip,
+                    // cropped full-size image file
                     CroppedImageFile = image.CroppedImageFile,
+                    // cropped thumbnail file
                     CroppedThumbnailImageFile = image.CroppedThumbnailImageFile,
+                    // rectangle used to crop the image
                     Rect = image.Rect
                 });
             }

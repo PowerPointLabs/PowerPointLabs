@@ -1,7 +1,7 @@
 ﻿using System;
-using System.Drawing;
 using System.Globalization;
 using System.Text.RegularExpressions;
+using System.Windows;
 using ImageProcessor;
 using ImageProcessor.Imaging.Filters;
 using Microsoft.Office.Core;
@@ -12,6 +12,7 @@ using PowerPointLabs.Models;
 using PowerPointLabs.Utils;
 using Graphics = PowerPointLabs.Utils.Graphics;
 using PowerPoint = Microsoft.Office.Interop.PowerPoint;
+using Size = System.Drawing.Size;
 
 namespace PowerPointLabs.ImageSearch.Handler
 {
@@ -460,6 +461,38 @@ namespace PowerPointLabs.ImageSearch.Handler
             {
                 // nothing to copy-paste
             }
+        }
+
+        public PowerPoint.Shape EmbedStyleOptionsInformation(string originalImageFile, string croppedImageFile, 
+            Rect rect, StyleOptions opt)
+        {
+            var originalImage = AddPicture(originalImageFile, EffectName.Original);
+            originalImage.Visible = MsoTriState.msoFalse;
+
+            // store source image info
+            AddTag(originalImage, Tag.ReloadOriginImg, originalImageFile);
+            AddTag(originalImage, Tag.ReloadCroppedImg, croppedImageFile);
+            AddTag(originalImage, Tag.ReloadRectX, rect.X.ToString(CultureInfo.InvariantCulture));
+            AddTag(originalImage, Tag.ReloadRectY, rect.Y.ToString(CultureInfo.InvariantCulture));
+            AddTag(originalImage, Tag.ReloadRectWidth, rect.Width.ToString(CultureInfo.InvariantCulture));
+            AddTag(originalImage, Tag.ReloadRectHeight, rect.Height.ToString(CultureInfo.InvariantCulture));
+
+            // store style info
+            var type = opt.GetType();
+            var props = type.GetProperties();
+            foreach (var propertyInfo in props)
+            {
+                try
+                {
+                    AddTag(originalImage, Tag.ReloadPrefix + propertyInfo.Name,
+                        propertyInfo.GetValue(opt, null).ToString());
+                }
+                catch (Exception e)
+                {
+                    PowerPointLabsGlobals.LogException(e, "EmbedStyleOptionsInformation");
+                }
+            }
+            return originalImage;
         }
 
         private PowerPoint.Shape AddPicture(string imageFile, EffectName effectName)

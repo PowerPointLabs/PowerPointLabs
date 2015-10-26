@@ -320,6 +320,8 @@ namespace PowerPointLabs.ImageSearch.Domain
 
         public string OptionName { get; set; }
 
+        public string StyleName { get; set; }
+
         # endregion
 
         # region Logic

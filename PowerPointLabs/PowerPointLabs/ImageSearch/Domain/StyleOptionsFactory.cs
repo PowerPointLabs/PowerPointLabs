@@ -9,17 +9,29 @@ namespace PowerPointLabs.ImageSearch.Domain
             switch (targetStyle)
             {
                 case TextCollection.ImagesLabText.StyleNameDirectText:
-                    return GetOptionsForDirectText();
+                    return UpdateStyleName(
+                        GetOptionsForDirectText(),
+                        TextCollection.ImagesLabText.StyleNameDirectText);
                 case TextCollection.ImagesLabText.StyleNameBlur:
-                    return GetOptions();
+                    return UpdateStyleName(
+                        GetOptions(),
+                        TextCollection.ImagesLabText.StyleNameBlur);
                 case TextCollection.ImagesLabText.StyleNameTextBox:
-                    return GetOptionsForTextBox();
+                    return UpdateStyleName(
+                        GetOptionsForTextBox(),
+                        TextCollection.ImagesLabText.StyleNameTextBox);
                 case TextCollection.ImagesLabText.StyleNameBanner:
-                    return GetOptionsForTextBox();
+                    return UpdateStyleName(
+                        GetOptionsForTextBox(),
+                        TextCollection.ImagesLabText.StyleNameBanner);
                 case TextCollection.ImagesLabText.StyleNameSpecialEffect:
-                    return GetOptions();
+                    return UpdateStyleName(
+                        GetOptions(),
+                        TextCollection.ImagesLabText.StyleNameSpecialEffect);
                 case TextCollection.ImagesLabText.StyleNameOverlay:
-                    return GetOptionsWithSuitableFontColor();
+                    return UpdateStyleName(
+                        GetOptionsWithSuitableFontColor(),
+                        TextCollection.ImagesLabText.StyleNameOverlay);
                 default:
                     return new List<StyleOptions>();
             }
@@ -30,20 +42,47 @@ namespace PowerPointLabs.ImageSearch.Domain
             switch (targetStyle)
             {
                 case TextCollection.ImagesLabText.StyleNameDirectText:
-                    return GetDefaultOptionForDirectText();
+                    return UpdateStyleName(
+                        GetDefaultOptionForDirectText(),
+                        TextCollection.ImagesLabText.StyleNameDirectText);
                 case TextCollection.ImagesLabText.StyleNameBlur:
-                    return GetDefaultOptionForBlur();
+                    return UpdateStyleName(
+                        GetDefaultOptionForBlur(),
+                        TextCollection.ImagesLabText.StyleNameBlur);
                 case TextCollection.ImagesLabText.StyleNameTextBox:
-                    return GetDefaultOptionForTextBox();
+                    return UpdateStyleName(
+                        GetDefaultOptionForTextBox(),
+                        TextCollection.ImagesLabText.StyleNameTextBox);
                 case TextCollection.ImagesLabText.StyleNameBanner:
-                    return GetDefaultOptionForBanner();
+                    return UpdateStyleName(
+                        GetDefaultOptionForBanner(),
+                        TextCollection.ImagesLabText.StyleNameBanner);
                 case TextCollection.ImagesLabText.StyleNameSpecialEffect:
-                    return GetDefaultOptionForSpecialEffects();
+                    return UpdateStyleName(
+                        GetDefaultOptionForSpecialEffects(),
+                        TextCollection.ImagesLabText.StyleNameSpecialEffect);
                 case TextCollection.ImagesLabText.StyleNameOverlay:
-                    return GetDefaultOptionForOverlay();
+                    return UpdateStyleName(
+                        GetDefaultOptionForOverlay(),
+                        TextCollection.ImagesLabText.StyleNameOverlay);
                 default:
                     return new StyleOptions();
             }
+        }
+
+        private static List<StyleOptions> UpdateStyleName(List<StyleOptions> opts, string styleName)
+        {
+            foreach (var styleOption in opts)
+            {
+                styleOption.StyleName = styleName;
+            }
+            return opts;
+        }
+
+        private static StyleOptions UpdateStyleName(StyleOptions opt, string styleName)
+        {
+            opt.StyleName = styleName;
+            return opt;
         }
 
         private static StyleOptions GetDefaultOptionForDirectText()

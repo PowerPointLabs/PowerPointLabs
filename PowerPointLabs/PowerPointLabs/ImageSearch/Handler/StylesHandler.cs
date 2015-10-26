@@ -118,6 +118,7 @@ namespace PowerPointLabs.ImageSearch.Handler
             // try to use cropped/adjusted image to apply
             var fullsizeImage = source.FullSizeImageFile;
             source.FullSizeImageFile = source.CroppedImageFile ?? source.FullSizeImageFile;
+            source.OriginalImageFile = fullsizeImage;
 
             var currentSlide = PowerPointCurrentPresentationInfo.CurrentSlide.GetNativeSlide();
             var effectsHandler = new EffectsHandler(currentSlide, Current, source);
@@ -125,6 +126,7 @@ namespace PowerPointLabs.ImageSearch.Handler
             ApplyStyle(effectsHandler, source, isActualSize:true);
 
             source.FullSizeImageFile = fullsizeImage;
+            source.OriginalImageFile = null;
         }
 
         private int GetPreviewWidth()
@@ -144,6 +146,10 @@ namespace PowerPointLabs.ImageSearch.Handler
             ApplyTextEffect(handler);
 
             var isSpecialEffectStyle = false;
+
+            // store style options information into original image shape
+            var originalImage = handler.EmbedStyleOptionsInformation(
+                source.OriginalImageFile, source.FullSizeImageFile, source.Rect, Options);
 
             Shape imageShape;
             if (Options.IsUseSpecialEffectStyle)
@@ -181,7 +187,7 @@ namespace PowerPointLabs.ImageSearch.Handler
                 handler.ApplyTextboxEffect(Options.TextBoxOverlayColor, Options.TextBoxTransparency);
             }
 
-            SendToBack(bannerOverlayShape, backgroundOverlayShape, blurImageShape, imageShape);
+            SendToBack(bannerOverlayShape, backgroundOverlayShape, blurImageShape, imageShape, originalImage);
 
             handler.ApplyImageReference(source.ContextLink);
             if (Options.IsInsertReference)

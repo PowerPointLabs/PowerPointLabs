@@ -14,7 +14,7 @@ namespace PowerPointLabs.ImageSearch.Util
 
         public static void AddTag(PowerPoint.Shape shape, string tagName, String value)
         {
-            if (StringUtil.IsEmpty(shape.Tags[tagName]))
+            if (StringUtil.IsEmpty(shape.Tags[tagName]) && value != null)
             {
                 shape.Tags.Add(tagName, value);
             }

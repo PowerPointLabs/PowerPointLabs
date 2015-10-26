@@ -43,6 +43,7 @@ namespace PowerPointLabs.ImageSearch.Domain
         public Rect Rect { get; set; }
 
         // meta info
+        public string OriginalImageFile { get; set; } // temp
         public bool IsToDelete { get; set; }
         public string ContextLink { get; set; }
         public string FullSizeImageUri { get; set; }

@@ -2,6 +2,7 @@
 {
     public enum EffectName
     {
+        Original,
         BackGround,
         Overlay,
         Blur,
