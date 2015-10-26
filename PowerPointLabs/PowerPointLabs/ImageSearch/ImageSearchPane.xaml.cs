@@ -418,7 +418,7 @@ namespace PowerPointLabs.ImageSearch
             {
                 case Key.Delete:
                 case Key.Back:
-                    DeleteImageShape();
+                    DeleteSelectedImageShape();
                     return;
             }
             ListBox_OnKeyDown(sender, e);
@@ -637,6 +637,27 @@ namespace PowerPointLabs.ImageSearch
                 }
             }
             SearchList.RemoveAt(_rightClickedSearchListBoxItemIndex);
+        }
+
+        private void DeleteSelectedImageShape()
+        {
+            var selectedImage = (ImageItem)SearchListBox.SelectedItem;
+            if (selectedImage == null) return;
+
+            if (selectedImage.ImageFile != StoragePath.LoadingImgPath)
+            {
+                switch (SearchButton.SelectedIndex)
+                {
+                    case TextCollection.ImagesLabText.ButtonIndexDownload:
+                    case TextCollection.ImagesLabText.ButtonIndexFromFile:
+                        if (SearchListBox.SelectedIndex < _downloadedImages.Count)
+                        {
+                            _downloadedImages.RemoveAt(SearchListBox.SelectedIndex);
+                        }
+                        break;
+                }
+            }
+            SearchList.RemoveAt(SearchListBox.SelectedIndex);
         }
 
         # endregion
