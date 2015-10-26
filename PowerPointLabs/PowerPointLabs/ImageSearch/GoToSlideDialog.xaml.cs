@@ -164,6 +164,7 @@ namespace PowerPointLabs.ImageSearch
             else
             {
                 GotoSlideButton.IsEnabled = true;
+                // obtain selected slide
                 var selectedItem = (ImageItem) SlideListBox.SelectedItem;
                 if (selectedItem.Tooltip.Contains("Current"))
                 {
@@ -172,6 +173,16 @@ namespace PowerPointLabs.ImageSearch
                 else
                 {
                     SelectedSlide = Int32.Parse(selectedItem.Tooltip.Substring(6));
+                }
+
+                // auto-load slides when using arrow-keys to navigate
+                if (SlideListBox.SelectedIndex == 0)
+                {
+                    LoadPreviousSlides(isToSelectPrevSlide: false);
+                }
+                else if (SlideListBox.SelectedIndex == SlideListBox.Items.Count - 1)
+                {
+                    LoadNextSlides(isToSelectNextSlide: false);
                 }
             }
         }
@@ -190,7 +201,7 @@ namespace PowerPointLabs.ImageSearch
             }
         }
 
-        private void LoadPreviousSlides()
+        private void LoadPreviousSlides(bool isToSelectPrevSlide = true)
         {
             var newPrevSlideIndex = _prevSlideIndex;
 
@@ -234,7 +245,7 @@ namespace PowerPointLabs.ImageSearch
             }
 
             _prevSlideIndex = newPrevSlideIndex;
-            if (SlideListBox.SelectedIndex - 1 >= 0)
+            if (SlideListBox.SelectedIndex - 1 >= 0 && isToSelectPrevSlide)
             {
                 SlideListBox.SelectedIndex = SlideListBox.SelectedIndex - 1;
             }
@@ -255,7 +266,7 @@ namespace PowerPointLabs.ImageSearch
             }
         }
 
-        private void LoadNextSlides()
+        private void LoadNextSlides(bool isToSelectNextSlide = true)
         {
             var newNextSlideIndex = _nextSlideIndex;
 
@@ -281,7 +292,7 @@ namespace PowerPointLabs.ImageSearch
             }
 
             _nextSlideIndex = newNextSlideIndex;
-            if (SlideListBox.SelectedIndex + 1 < SlideListBox.Items.Count)
+            if (SlideListBox.SelectedIndex + 1 < SlideListBox.Items.Count && isToSelectNextSlide)
             {
                 SlideListBox.SelectedIndex = SlideListBox.SelectedIndex + 1;
             }
