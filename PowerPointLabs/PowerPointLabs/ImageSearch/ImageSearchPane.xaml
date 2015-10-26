@@ -16,7 +16,8 @@
              BorderThickness="1"
              BorderBrush="#D74926"
              Closing="ImageSearchPane_OnClosing"
-             Activated="ImageSearchPane_OnActivated">
+             Activated="ImageSearchPane_OnActivated"
+             Deactivated="ImageSearchPane_OnDeactivated">
     <controls:MetroWindow.Resources>
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>

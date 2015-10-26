@@ -315,6 +315,9 @@
     <Compile Include="ImageSearch\ImageSearchPane.xaml.OnPersistence.cs" />
     <Compile Include="ImageSearch\ImageSearchPane.xaml.OnPreview.cs" />
     <Compile Include="ImageSearch\ImageSearchPane.xaml.OnLoadImages.cs" />
+    <Compile Include="ImageSearch\QuickDropDialog.xaml.cs">
+      <DependentUpon>QuickDropDialog.xaml</DependentUpon>
+    </Compile>
     <Compile Include="ImageSearch\SearchEngine\AsyncSearchEngine.Events.cs" />
     <Compile Include="ImageSearch\SearchEngine\AsyncSearchEngine.Logic.cs" />
     <Compile Include="ImageSearch\SearchEngine\BingEngine.cs" />
@@ -806,6 +809,10 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="ImageSearch\QuickDropDialog.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="ImageSearch\SearchOptionsPane.Obsolete.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -833,6 +840,11 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\ImagesLab.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="ImageSearch\Image\ImagesLab.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
   </ItemGroup>
   <!-- Include the build rules for a C# project. -->
   <PropertyGroup>

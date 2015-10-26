@@ -1,10 +1,13 @@
-﻿using System.Windows;
+﻿using System;
+using System.Windows;
 using PowerPointLabs.WPF.Observable;
 
 namespace PowerPointLabs.ImageSearch
 {
     public partial class ImageSearchPane
     {
+        public QuickDropDialog QuickDropDialog { get; set; }
+
         private void InitDragAndDrop()
         {
             DragAndDropInstructionText = new ObservableString { Text = "Drag and Drop here to get image." };
@@ -16,6 +19,12 @@ namespace PowerPointLabs.ImageSearch
             DragLeave += OnDragLeave;
             DragOver += OnDragEnter;
             Drop += OnDrop;
+        }
+
+        private void InitQuickDropDialog()
+        {
+            QuickDropDialog = new QuickDropDialog(this);
+            QuickDropDialog.DropHandler += OnDrop;
         }
 
         private void OnDragLeave(object sender, DragEventArgs args)
@@ -79,6 +88,15 @@ namespace PowerPointLabs.ImageSearch
             finally
             {
                 ImagesLabGridOverlay.Visibility = Visibility.Hidden;
+            }
+        }
+
+        private void ImageSearchPane_OnDeactivated(object sender, EventArgs e)
+        {
+            if (!IsClosing && (QuickDropDialog == null || !QuickDropDialog.IsOpen))
+            {
+                InitQuickDropDialog();
+                QuickDropDialog.Show();
             }
         }
     }

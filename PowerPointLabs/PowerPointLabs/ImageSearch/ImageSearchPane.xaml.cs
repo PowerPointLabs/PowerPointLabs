@@ -81,6 +81,7 @@ namespace PowerPointLabs.ImageSearch
 
         // indicate whether the window is open/closed or not
         public bool IsOpen { get; set; }
+        public bool IsClosing { get; set; }
 
         public SearchOptions SearchOptions { get; set; }
 
@@ -535,6 +536,12 @@ namespace PowerPointLabs.ImageSearch
             else
             {
                 GotoSlideButton.IsEnabled = true;
+            }
+
+            if (QuickDropDialog != null && QuickDropDialog.IsOpen)
+            {
+                QuickDropDialog.Hide();
+                QuickDropDialog.IsOpen = false;
             }
 
             Dispatcher.BeginInvoke(new Action(() =>

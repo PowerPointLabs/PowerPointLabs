@@ -40,6 +40,11 @@ namespace PowerPointLabs.ImageSearch
             {
                 PreviewPresentation.Close();
             }
+            if (QuickDropDialog != null)
+            {
+                IsClosing = true;
+                QuickDropDialog.Close();
+            }
             StoragePath.Save(ImagesLabImagesList, _downloadedImages);
         }
 
