@@ -98,7 +98,7 @@ namespace PowerPointLabs.ImageSearch
 
         private void StylesPickUpButton_OnClick(object sender, RoutedEventArgs e)
         {
-            PickUpStyle();
+            CustomizeStyle();
         }
 
         private void StylesApplyButton_OnClick(object sender, RoutedEventArgs e)

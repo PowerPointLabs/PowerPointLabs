@@ -85,8 +85,8 @@ namespace PowerPointLabs.ImageSearch
 
         public SearchOptions SearchOptions { get; set; }
 
-        private SuccessfullyAppliedDialog successfullyAppliedDialog = new SuccessfullyAppliedDialog();
-        private GoToSlideDialog gotoSlideDialog = new GoToSlideDialog();
+        private SuccessfullyAppliedDialog _successfullyAppliedDialog = new SuccessfullyAppliedDialog();
+        private GoToSlideDialog _gotoSlideDialog = new GoToSlideDialog();
 
         // indicate whether it's downloading fullsize image, so that debounce.
         // timer - it will download full size image after some time
@@ -127,6 +127,7 @@ namespace PowerPointLabs.ImageSearch
             if (TempPath.InitTempFolder() && StoragePath.InitPersistentFolder(_filesInUse))
             {
                 InitGotoSlideDialog();
+                InitReloadStylesDialog();
                 InitSearchEngine();
                 InitPreviewPresentation();
                 InitPreviewTimer();
@@ -140,23 +141,23 @@ namespace PowerPointLabs.ImageSearch
 
         private void InitGotoSlideDialog()
         {
-            gotoSlideDialog.GetType()
+            _gotoSlideDialog.GetType()
                     .GetProperty("OwningWindow", BindingFlags.Instance | BindingFlags.NonPublic)
-                    .SetValue(gotoSlideDialog, this, null);
+                    .SetValue(_gotoSlideDialog, this, null);
 
-            gotoSlideDialog.OnGotoSlide += () =>
+            _gotoSlideDialog.OnGotoSlide += () =>
             {
-                this.HideMetroDialogAsync(gotoSlideDialog, MetroDialogOptions);
-                if (gotoSlideDialog.SelectedSlide > 0)
+                this.HideMetroDialogAsync(_gotoSlideDialog, MetroDialogOptions);
+                if (_gotoSlideDialog.SelectedSlide > 0)
                 {
-                    PowerPointPresentation.Current.GotoSlide(gotoSlideDialog.SelectedSlide);
+                    PowerPointPresentation.Current.GotoSlide(_gotoSlideDialog.SelectedSlide);
                 }
                 _latestImageChangedTime = DateTime.Now;
                 DoPreview();
             };
-            gotoSlideDialog.OnCancel += () =>
+            _gotoSlideDialog.OnCancel += () =>
             {
-                this.HideMetroDialogAsync(gotoSlideDialog, MetroDialogOptions);
+                this.HideMetroDialogAsync(_gotoSlideDialog, MetroDialogOptions);
             };
         }
 
@@ -171,20 +172,20 @@ namespace PowerPointLabs.ImageSearch
 
         private void InitSuccessfullyAppliedDialog()
         {
-            successfullyAppliedDialog.GetType()
+            _successfullyAppliedDialog.GetType()
                     .GetProperty("OwningWindow", BindingFlags.Instance | BindingFlags.NonPublic)
-                    .SetValue(successfullyAppliedDialog, this, null);
+                    .SetValue(_successfullyAppliedDialog, this, null);
 
-            successfullyAppliedDialog.OnGotoNextSlide += () =>
+            _successfullyAppliedDialog.OnGotoNextSlide += () =>
             {
-                this.HideMetroDialogAsync(successfullyAppliedDialog, MetroDialogOptions);
+                this.HideMetroDialogAsync(_successfullyAppliedDialog, MetroDialogOptions);
                 PowerPointPresentation.Current.GotoNextSlide();
                 _latestImageChangedTime = DateTime.Now;
                 DoPreview();
             };
-            successfullyAppliedDialog.OnOk += () =>
+            _successfullyAppliedDialog.OnOk += () =>
             {
-                this.HideMetroDialogAsync(successfullyAppliedDialog, MetroDialogOptions);
+                this.HideMetroDialogAsync(_successfullyAppliedDialog, MetroDialogOptions);
             };
         }
 

@@ -315,6 +315,7 @@
     <Compile Include="ImageSearch\ImageSearchPane.xaml.OnPersistence.cs" />
     <Compile Include="ImageSearch\ImageSearchPane.xaml.OnPreview.cs" />
     <Compile Include="ImageSearch\ImageSearchPane.xaml.OnLoadImages.cs" />
+    <Compile Include="ImageSearch\ImageSearchPane.xaml.OnReload.cs" />
     <Compile Include="ImageSearch\QuickDropDialog.xaml.cs">
       <DependentUpon>QuickDropDialog.xaml</DependentUpon>
     </Compile>

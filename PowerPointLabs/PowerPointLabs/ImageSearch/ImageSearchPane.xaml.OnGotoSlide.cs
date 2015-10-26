@@ -9,9 +9,9 @@ namespace PowerPointLabs.ImageSearch
         {
             try
             {
-                gotoSlideDialog.Init("Go to the Selected Slide");
-                gotoSlideDialog.FocusOkButton();
-                this.ShowMetroDialogAsync(gotoSlideDialog, MetroDialogOptions);
+                _gotoSlideDialog.Init("Go to the Selected Slide");
+                _gotoSlideDialog.FocusOkButton();
+                this.ShowMetroDialogAsync(_gotoSlideDialog, MetroDialogOptions);
             }
             catch
             {

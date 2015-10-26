@@ -25,7 +25,7 @@ namespace PowerPointLabs.ImageSearch
         private IList<StyleOptions> _styleOptions;
         private Dictionary<string, List<StyleVariants>> _styleVariants;
 
-        private void UpdateStyleVariationsImages(bool isOpenFlyout = false)
+        private void UpdateStyleVariationsImages(bool isOpenFlyout = false, IList<StyleOptions> options = null)
         {
             Dispatcher.BeginInvoke(new Action(() =>
             {
@@ -58,7 +58,7 @@ namespace PowerPointLabs.ImageSearch
                     {
                         scrollOffset = 0;
                         selectedId = 0;
-                        _styleOptions = StyleOptionsFactory.GetOptions(targetStyle.Tooltip);
+                        _styleOptions = options ?? StyleOptionsFactory.GetOptions(targetStyle.Tooltip);
                         _styleVariants = StyleVariantsFactory.GetVariants(targetStyle.Tooltip);
 
                         VariantsComboBox.Items.Clear();
@@ -317,13 +317,13 @@ namespace PowerPointLabs.ImageSearch
             }
         }
 
-        private void PickUpStyle()
+        private void CustomizeStyle(IList<StyleOptions> givenStyles = null)
         {
             var source = (ImageItem)SearchListBox.SelectedValue;
             var targetStyle = PreviewListBox.SelectedItems;
             if (source == null || targetStyle == null || targetStyle.Count == 0) return;
 
-            UpdateStyleVariationsImages(isOpenFlyout: true);
+            UpdateStyleVariationsImages(isOpenFlyout: true, options: givenStyles);
             OpenVariationsFlyout();
         }
 

@@ -49,6 +49,10 @@ namespace PowerPointLabs.ImageSearch
             CancelButton.Focus();
         }
 
+        /// <summary>
+        /// This method can only be called after dialog is fully initialized
+        /// </summary>
+        /// <param name="title"></param>
         public void Init(string title)
         {
             DialogTitleProperty.Text = title;

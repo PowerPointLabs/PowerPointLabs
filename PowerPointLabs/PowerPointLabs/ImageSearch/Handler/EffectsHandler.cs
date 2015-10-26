@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Globalization;
 using System.Text.RegularExpressions;
 using System.Windows;
@@ -463,11 +464,20 @@ namespace PowerPointLabs.ImageSearch.Handler
             }
         }
 
-        public PowerPoint.Shape EmbedStyleOptionsInformation(string originalImageFile, string croppedImageFile, 
+        public List<PowerPoint.Shape> EmbedStyleOptionsInformation(string originalImageFile, string croppedImageFile, 
             Rect rect, StyleOptions opt)
         {
-            var originalImage = AddPicture(originalImageFile, EffectName.Original);
+            if (originalImageFile == null) return new List<PowerPoint.Shape>();
+
+            var originalImage = AddPicture(originalImageFile, EffectName.Original_DO_NOT_REMOVE);
             originalImage.Visible = MsoTriState.msoFalse;
+
+            var croppedImage = AddPicture(croppedImageFile, EffectName.Cropped_DO_NOT_REMOVE);
+            croppedImage.Visible = MsoTriState.msoFalse;
+
+            var result = new List<PowerPoint.Shape>();
+            result.Add(originalImage);
+            result.Add(croppedImage);
 
             // store source image info
             AddTag(originalImage, Tag.ReloadOriginImg, originalImageFile);
@@ -492,7 +502,7 @@ namespace PowerPointLabs.ImageSearch.Handler
                     PowerPointLabsGlobals.LogException(e, "EmbedStyleOptionsInformation");
                 }
             }
-            return originalImage;
+            return result;
         }
 
         private PowerPoint.Shape AddPicture(string imageFile, EffectName effectName)

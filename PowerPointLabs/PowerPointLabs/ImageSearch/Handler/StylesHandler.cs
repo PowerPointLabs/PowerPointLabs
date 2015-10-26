@@ -148,7 +148,8 @@ namespace PowerPointLabs.ImageSearch.Handler
             var isSpecialEffectStyle = false;
 
             // store style options information into original image shape
-            var originalImage = handler.EmbedStyleOptionsInformation(
+            // return original image and cropped image
+            var metaImages = handler.EmbedStyleOptionsInformation(
                 source.OriginalImageFile, source.FullSizeImageFile, source.Rect, Options);
 
             Shape imageShape;
@@ -187,7 +188,15 @@ namespace PowerPointLabs.ImageSearch.Handler
                 handler.ApplyTextboxEffect(Options.TextBoxOverlayColor, Options.TextBoxTransparency);
             }
 
-            SendToBack(bannerOverlayShape, backgroundOverlayShape, blurImageShape, imageShape, originalImage);
+            if (metaImages.Count == 2)
+            {
+                SendToBack(bannerOverlayShape, backgroundOverlayShape, blurImageShape, imageShape, metaImages[1],
+                    metaImages[0]);
+            }
+            else
+            {
+                SendToBack(bannerOverlayShape, backgroundOverlayShape, blurImageShape, imageShape);
+            }
 
             handler.ApplyImageReference(source.ContextLink);
             if (Options.IsInsertReference)

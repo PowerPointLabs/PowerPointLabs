@@ -119,13 +119,21 @@ namespace PowerPointLabs.ImageSearch
             }));
         }
 
+        private void ShowInfoMessageBox(string content)
+        {
+            Dispatcher.BeginInvoke(new Action(() =>
+            {
+                this.ShowMessageAsync("Info", content);
+            }));
+        }
+
         private void OpenSuccessfullyAppliedDialog()
         {
             try
             {
-                gotoSlideDialog.Init("Successfully Applied!");
-                gotoSlideDialog.FocusOkButton();
-                this.ShowMetroDialogAsync(gotoSlideDialog, MetroDialogOptions);
+                _gotoSlideDialog.Init("Successfully Applied!");
+                _gotoSlideDialog.FocusOkButton();
+                this.ShowMetroDialogAsync(_gotoSlideDialog, MetroDialogOptions);
             }
             catch
             {

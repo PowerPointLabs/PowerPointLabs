@@ -2,7 +2,8 @@
 {
     public enum EffectName
     {
-        Original,
+        Original_DO_NOT_REMOVE,
+        Cropped_DO_NOT_REMOVE,
         BackGround,
         Overlay,
         Blur,
