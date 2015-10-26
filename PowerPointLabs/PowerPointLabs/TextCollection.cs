@@ -306,6 +306,8 @@
 
         public class ImagesLabText
         {
+            public const string ImagesLabSupertip = "Open Images Lab window.";
+
             public const string VariantCategoryOverlayColor = "Overlay Color";
             public const string VariantCategoryTextColor = "Text Color";
             public const string VariantCategoryBannerColor = "Banner Color";

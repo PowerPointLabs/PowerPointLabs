@@ -828,6 +828,12 @@
   <ItemGroup>
     <None Include="Resources\loadMore.png" />
   </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\PptlabsContextMenu.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\ImagesLab.png" />
+  </ItemGroup>
   <!-- Include the build rules for a C# project. -->
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>

@@ -1600,6 +1600,19 @@ namespace PowerPointLabs
             return selectedVoice;
         }
 
+        public Bitmap GetContextMenuImage(Office.IRibbonControl control)
+        {
+            try
+            {
+                return new Bitmap(Properties.Resources.PptlabsContextMenu);
+            }
+            catch (Exception e)
+            {
+                PowerPointLabsGlobals.LogException(e, "GetContextMenuImage");
+                throw;
+            }
+        }
+
         #endregion
 
         #region Feature: Fit To Slide | Fit To Width | Fit To Height
@@ -1651,6 +1664,24 @@ namespace PowerPointLabs
             {
                 ImageSearchPane.Activate();
             }            
+        }
+
+        public Bitmap GetImagesLabImage(Office.IRibbonControl control)
+        {
+            try
+            {
+                return new Bitmap(Properties.Resources.ImagesLab);
+            }
+            catch (Exception e)
+            {
+                PowerPointLabsGlobals.LogException(e, "GetImagesLabImage");
+                throw;
+            }
+        }
+
+        public string GetImagesLabSupertip(Office.IRibbonControl control)
+        {
+            return TextCollection.ImagesLabText.ImagesLabSupertip;
         }
         
         #endregion
