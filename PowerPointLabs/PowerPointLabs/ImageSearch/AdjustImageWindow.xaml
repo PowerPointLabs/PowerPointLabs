@@ -29,6 +29,7 @@
             <RowDefinition Height="Auto"></RowDefinition>
         </Grid.RowDefinitions>
         <Image x:Name="ImageHolder" MaxHeight="600" Source="{Binding Path=Text, Mode=TwoWay, NotifyOnSourceUpdated=True}" Margin="10,5,10,10" Grid.Row="0"/>
+        <Button x:Name="AutoFitButton" ToolTip="Auto fit image offset" Click="AutoFitButton_OnClick" Margin="0,0,80,0" Width="55" HorizontalAlignment="Right" Grid.Row="1">Auto Fit</Button>
         <Button x:Name="SaveCropButton" ToolTip="Save current image offset" Click="SaveCropButton_OnClick" Margin="0,0,20,0" Width="55" HorizontalAlignment="Right" Grid.Row="1">Save</Button>
     </Grid>
 </controls:MetroWindow>

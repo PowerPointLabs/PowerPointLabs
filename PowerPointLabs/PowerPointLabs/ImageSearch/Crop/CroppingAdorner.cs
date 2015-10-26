@@ -47,6 +47,12 @@ namespace DAP.Adorners
             {
                 return _prCropMask.RectInterior;
             }
+            set
+            {
+                _prCropMask.RectInterior = value;
+                SetThumbs(_prCropMask.RectInterior);
+                RaiseEvent(new RoutedEventArgs(CropChangedEvent, this));
+            }
         }
         #endregion
 

@@ -87,27 +87,7 @@ namespace PowerPointLabs.ImageSearch
             }
             else
             {
-                var slideWidth = PowerPointPresentation.Current.SlideWidth;
-                var slideHeight = PowerPointPresentation.Current.SlideHeight;
-                if (element.ActualWidth / element.ActualHeight
-                    < slideWidth / slideHeight)
-                {
-                    var targetHeight = element.ActualWidth / slideWidth * slideHeight;
-                    rect = new Rect(
-                        0,
-                        (element.ActualHeight - targetHeight) / 2,
-                        element.ActualWidth,
-                        targetHeight);
-                }
-                else
-                {
-                    var targetWidth = element.ActualHeight / slideHeight * slideWidth;
-                    rect = new Rect(
-                        (element.ActualWidth - targetWidth) / 2,
-                        0,
-                        targetWidth,
-                        element.ActualHeight);
-                }
+                rect = AutoFit(element);
             }
 
             var layer = AdornerLayer.GetAdornerLayer(element);
@@ -192,6 +172,41 @@ namespace PowerPointLabs.ImageSearch
             IsCropped = true;
 
             Close();
+        }
+
+        private void AutoFitButton_OnClick(object sender, RoutedEventArgs e)
+        {
+            var rect = AutoFit();
+            _croppingAdorner.ClippingRectangle = rect;
+        }
+
+        private Rect AutoFit(FrameworkElement element = null)
+        {
+            var slideWidth = PowerPointPresentation.Current.SlideWidth;
+            var slideHeight = PowerPointPresentation.Current.SlideHeight;
+            element = element ?? _frameworkElement;
+
+            Rect rect;
+            if (element.ActualWidth / element.ActualHeight
+                < slideWidth/slideHeight)
+            {
+                var targetHeight = element.ActualWidth / slideWidth * slideHeight;
+                rect = new Rect(
+                    0,
+                    (element.ActualHeight - targetHeight) / 2,
+                    element.ActualWidth,
+                    targetHeight);
+            }
+            else
+            {
+                var targetWidth = element.ActualHeight / slideHeight * slideWidth;
+                rect = new Rect(
+                    (element.ActualWidth - targetWidth) / 2,
+                    0,
+                    targetWidth,
+                    element.ActualHeight);
+            }
+            return rect;
         }
     }
 }
