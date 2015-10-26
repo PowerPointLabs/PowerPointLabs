@@ -36,13 +36,13 @@ namespace PowerPointLabs.ImageSearch
         private void ImageSearchPane_OnClosing(object sender, CancelEventArgs e)
         {
             IsOpen = false;
+            IsClosing = true;
             if (PreviewPresentation != null)
             {
                 PreviewPresentation.Close();
             }
             if (QuickDropDialog != null)
             {
-                IsClosing = true;
                 QuickDropDialog.Close();
             }
             StoragePath.Save(ImagesLabImagesList, _downloadedImages);
