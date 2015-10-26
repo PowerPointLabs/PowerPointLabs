@@ -63,8 +63,8 @@
                         <ColumnDefinition Width="*"></ColumnDefinition>
                     </Grid.ColumnDefinitions>
                     <Label Name="PreviewLabel" Grid.Column="1" Margin="0,0,5,0" FontSize="15">Styles</Label>
-                    <Button IsEnabled="False" Name="StylesApplyButton" Click="StylesApplyButton_OnClick" Grid.Column="2" Margin="0,0,5,0">Apply</Button>
-                    <Button IsEnabled="False" Name="StylesPickUpButton" Click="StylesPickUpButton_OnClick" Grid.Column="3" Margin="0,0,5,0">Customize</Button>
+                    <Button ToolTip="Apply the selected style to the current slide." IsEnabled="False" Name="StylesApplyButton" Click="StylesApplyButton_OnClick" Grid.Column="2" Margin="0,0,5,0">Apply</Button>
+                    <Button ToolTip="Customize the selected style." IsEnabled="False" Name="StylesPickUpButton" Click="StylesPickUpButton_OnClick" Grid.Column="3" Margin="0,0,5,0">Customize</Button>
                     <controls:ProgressRing Name="PreviewProgressRing" Width="10" Height="10" Grid.Column="4" IsActive="False" />
                 </Grid>
                 <TextBlock Visibility="Visible" Name="PreviewInstructions" TextWrapping="Wrap" HorizontalAlignment="Center" VerticalAlignment="Center" Foreground="#AAAAAA" FontSize="16" Grid.Row="2">Select an image to preview styles. Pick any style and click APPLY button to apply.</TextBlock>
@@ -131,7 +131,7 @@
                         <ColumnDefinition Width="15"></ColumnDefinition>
                     </Grid.ColumnDefinitions>
                     <Label Name="VariationLabel" Grid.Column="1" Margin="0,0,5,0" FontSize="15">Variations</Label>
-                    <Button Name="StyleApplyButton" Click="StyleApplyButton_OnClick" Grid.Column="2" Margin="0,0,5,0">Apply</Button>
+                    <Button ToolTip="Apply the selected style to the current slide." Name="StyleApplyButton" Click="StyleApplyButton_OnClick" Grid.Column="2" Margin="0,0,5,0">Apply</Button>
                     <Button Name="StyleCustomizeButton" Visibility="Collapsed" Click="StyleCustomizeButton_OnClick" Grid.Column="3">Customize</Button>
                     <Button Grid.Column="4"
                         Name="VariationFlyoutBackButton"
@@ -204,10 +204,10 @@
                         <ColumnDefinition Width="*"></ColumnDefinition>
                     </Grid.ColumnDefinitions>
                     <TextBox Width="180" Visibility="Collapsed" TabIndex="0" Name="SearchTextBox" KeyDown="SearchTextBox_OnKeyDown" VerticalContentAlignment="Center" Grid.Column="0" Margin="0,0,5,0" controls:TextBoxHelper.Watermark="{Binding Path=Text, NotifyOnSourceUpdated=True}"></TextBox>
-                    <controls:SplitButton SelectionChanged="SearchButton_OnSelectionChanged" Click="SearchButton_OnClick" Name="SearchButton" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" Grid.Column="1" Margin="0,0,5,0"/>
+                    <controls:SplitButton ToolTip="Press the button to load or download image" SelectionChanged="SearchButton_OnSelectionChanged" Click="SearchButton_OnClick" Name="SearchButton" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" Grid.Column="1" Margin="0,0,5,0"/>
                     <Button Visibility="Collapsed" Name="AdvancedButton" Click="AdvancedButton_OnClick" Grid.Column="2">Advanced..</Button>
                     <controls:ProgressRing Name="SearchProgressRing" Width="10" Height="10" Grid.Column="3" IsActive="False" />
-                    <Button Name="ReloadButton" ToolTip="Reload styles from a slide." Width="60" Click="ReloadButton_OnClick" Margin="0,0,105,0" HorizontalAlignment="Right" Grid.Column="4">Reload</Button>
+                    <Button Name="ReloadButton" ToolTip="Reload styles from a slide to customize." Width="60" Click="ReloadButton_OnClick" Margin="0,0,105,0" HorizontalAlignment="Right" Grid.Column="4">Reload</Button>
                     <Button Name="GotoSlideButton" ToolTip="Go to a target slide." Width="85" Click="GotoSlideButton_OnClick" Margin="0,0,15,0" HorizontalAlignment="Right" Grid.Column="4">Go to slide</Button>
                 </Grid>
                 <TextBlock Visibility="Visible" Name="SearchInstructions" TextWrapping="Wrap" HorizontalAlignment="Center" VerticalAlignment="Center" Foreground="#AAAAAA" FontSize="18" Grid.Row="2">Click the 'Load Images' button above to load local images, or drag and drop the files here.</TextBlock>
