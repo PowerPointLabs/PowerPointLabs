@@ -32,6 +32,7 @@ namespace PowerPointLabs.ImageSearch
         public string CropResultThumbnail { get; set; }
         public Rect Rect { get; set; }
         public bool IsCropped { get; set; }
+        public bool IsOpen { get; set; }
 
         public AdjustImageWindow()
         {

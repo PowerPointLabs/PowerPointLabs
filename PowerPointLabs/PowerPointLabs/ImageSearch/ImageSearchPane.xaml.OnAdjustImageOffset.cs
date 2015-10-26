@@ -6,25 +6,29 @@ namespace PowerPointLabs.ImageSearch
 {
     partial class ImageSearchPane
     {
+        public AdjustImageWindow CropWindow { get; set; }
+
         private void AdjustImageOffset(ImageItem imageItem = null)
         {
             if (imageItem == null && SearchListBox.SelectedValue == null) return;
 
             var source = imageItem ?? (ImageItem)SearchListBox.SelectedValue;
-            var cropWindow = new AdjustImageWindow();
-            cropWindow.SetThumbnailImage(source.ImageFile);
-            cropWindow.SetFullsizeImage(source.FullSizeImageFile);
+            CropWindow = new AdjustImageWindow();
+            CropWindow.SetThumbnailImage(source.ImageFile);
+            CropWindow.SetFullsizeImage(source.FullSizeImageFile);
             if (source.Rect.Width > 1)
             {
-                cropWindow.SetCropRect(source.Rect.X, source.Rect.Y, source.Rect.Width, source.Rect.Height);
+                CropWindow.SetCropRect(source.Rect.X, source.Rect.Y, source.Rect.Width, source.Rect.Height);
             }
-            cropWindow.ShowDialog();
+            CropWindow.IsOpen = true;
+            CropWindow.ShowDialog();
+            CropWindow.IsOpen = false;
 
-            if (cropWindow.IsCropped)
+            if (CropWindow.IsCropped)
             {
-                source.CroppedImageFile = cropWindow.CropResult;
-                source.CroppedThumbnailImageFile = cropWindow.CropResultThumbnail;
-                source.Rect = cropWindow.Rect;
+                source.CroppedImageFile = CropWindow.CropResult;
+                source.CroppedThumbnailImageFile = CropWindow.CropResultThumbnail;
+                source.Rect = CropWindow.Rect;
 
                 var imageIndex = SearchListBox.Items.IndexOf(source);
                 if (imageIndex >= 0

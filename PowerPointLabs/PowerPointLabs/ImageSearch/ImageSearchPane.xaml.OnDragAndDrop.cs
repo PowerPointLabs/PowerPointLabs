@@ -93,7 +93,9 @@ namespace PowerPointLabs.ImageSearch
 
         private void ImageSearchPane_OnDeactivated(object sender, EventArgs e)
         {
-            if (!IsClosing && (QuickDropDialog == null || !QuickDropDialog.IsOpen))
+            if (!IsClosing 
+                && (CropWindow == null || !CropWindow.IsOpen) 
+                && (QuickDropDialog == null || !QuickDropDialog.IsOpen))
             {
                 InitQuickDropDialog();
                 QuickDropDialog.Show();
