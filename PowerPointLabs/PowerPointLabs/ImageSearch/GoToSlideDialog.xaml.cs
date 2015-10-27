@@ -97,7 +97,9 @@ namespace PowerPointLabs.ImageSearch
             {
                 SlideListBox.SelectedIndex = 0;
             }
-            SlideListBox.ScrollIntoView(SlideListBox.Items[SlideListBox.SelectedIndex]);
+
+            LoadNextSlides(false);
+            SlideListBox.ScrollIntoView(SlideListBox.SelectedItem);
         }
 
         private void AddSlideThumbnail(PowerPointSlide slide, int pos = -1, bool isCurrentSlide = false)
