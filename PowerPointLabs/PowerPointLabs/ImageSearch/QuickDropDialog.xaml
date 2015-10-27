@@ -21,7 +21,7 @@
                 <RowDefinition Height="32"></RowDefinition>
                 <RowDefinition></RowDefinition>
             </Grid.RowDefinitions>
-            <Image ToolTip="Drag and drop the link or files to Images Lab." Grid.Row="1" Width="32" Height="32" Source="pack://siteoforigin:,,,/ImageSearch/Image/ImagesLab.png"></Image>
+            <Image Name="ImagesLabLogo" ToolTip="Drag and drop the link or files to Images Lab." Grid.Row="1" Width="32" Height="32"></Image>
             <TextBlock VerticalAlignment="Center" HorizontalAlignment="Center" FontSize="10" Grid.Row="2">Quick Drop</TextBlock>
         </Grid>
         <Grid Name="Overlay" Visibility="Hidden">

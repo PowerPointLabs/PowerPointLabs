@@ -40,6 +40,13 @@ namespace PowerPointLabs.ImageSearch
         {
             InitializeComponent();
             ImageHolder.DataContext = ThumbnailImageFile;
+            MoveLeftImage.Source = ImageUtil.BitmapToImageSource(Properties.Resources.Left);
+            MoveUpImage.Source = ImageUtil.BitmapToImageSource(Properties.Resources.Up);
+            MoveDownImage.Source = ImageUtil.BitmapToImageSource(Properties.Resources.Down);
+            MoveRightImage.Source = ImageUtil.BitmapToImageSource(Properties.Resources.Right);
+            ZoomInImage.Source = ImageUtil.BitmapToImageSource(Properties.Resources.PlusZoom);
+            ZoomOutImage.Source = ImageUtil.BitmapToImageSource(Properties.Resources.MinusZoom);
+            AutoFitImage.Source = ImageUtil.BitmapToImageSource(Properties.Resources.Fit);
         }
 
         public void SetThumbnailImage(string imageFile)

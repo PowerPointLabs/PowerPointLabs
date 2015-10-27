@@ -2,6 +2,7 @@
 using System.Windows;
 using System.Windows.Input;
 using MahApps.Metro.Controls;
+using PowerPointLabs.ImageSearch.Util;
 
 namespace PowerPointLabs.ImageSearch
 {
@@ -27,6 +28,7 @@ namespace PowerPointLabs.ImageSearch
             Top = SystemParameters.PrimaryScreenHeight - Height - 50;
             InitDragAndDrop();
             IsOpen = true;
+            ImagesLabLogo.Source = ImageUtil.BitmapToImageSource(Properties.Resources.ImagesLab);
         }
 
         // drag to move window
