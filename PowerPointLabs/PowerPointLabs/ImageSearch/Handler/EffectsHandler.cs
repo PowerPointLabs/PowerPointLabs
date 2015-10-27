@@ -526,6 +526,11 @@ namespace PowerPointLabs.ImageSearch.Handler
 
         private static string BlurImage(string imageFilePath, int degree)
         {
+            if (degree == 0)
+            {
+                return imageFilePath;
+            }
+
             var blurImageFile = TempPath.GetPath("fullsize_blur");
             using (var imageFactory = new ImageFactory())
             {

@@ -25,5 +25,29 @@ namespace PowerPointLabs.ImageSearch.Domain
                 prop.SetValue(opt, pair.Value, null);
             }
         }
+
+        /// <summary>
+        /// return true, when applying variant to this style options has no effect (still same)
+        /// </summary>
+        /// <param name="opt"></param>
+        public bool IsNoEffect(StyleOptions opt)
+        {
+            foreach (var pair in _variants)
+            {
+                if (pair.Key.Equals("OptionName") || pair.Value is bool)
+                {
+                    continue;
+                }
+
+                var type = opt.GetType();
+                var prop = type.GetProperty(pair.Key);
+                var optValue = prop.GetValue(opt, null);
+                if (!pair.Value.Equals(optValue))
+                {
+                    return false;
+                }
+            }
+            return true;
+        }
     }
 }

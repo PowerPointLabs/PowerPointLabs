@@ -74,15 +74,7 @@ namespace PowerPointLabs.ImageSearch
                                 SearchListBox.SelectedIndex = i;
                                 // previewing is done async, need to use beginInvoke
                                 // so that it's after previewing
-                                Dispatcher.BeginInvoke(new Action(() =>
-                                {
-                                    PreviewListBox.SelectedIndex = MapStyleNameToStyleIndex(styleName);
-                                    var listOfStyles = ConstructStylesFromShapeInfo(originalImageShape);
-                                    Dispatcher.BeginInvoke(new Action(() =>
-                                    {
-                                        CustomizeStyle(listOfStyles);
-                                    }));
-                                }));
+                                OpenVariationFlyoutForReload(styleName, originalImageShape);
                             }));
                             break;
                         }
@@ -144,15 +136,7 @@ namespace PowerPointLabs.ImageSearch
                             _downloadedImages.Add(imageItem);
                             SearchListBox.SelectedIndex = SearchListBox.Items.Count - 1;
 
-                            Dispatcher.BeginInvoke(new Action(() =>
-                            {
-                                PreviewListBox.SelectedIndex = MapStyleNameToStyleIndex(styleName);
-                                var listOfStyles = ConstructStylesFromShapeInfo(originalImageShape);
-                                Dispatcher.BeginInvoke(new Action(() =>
-                                {
-                                    CustomizeStyle(listOfStyles);
-                                }));
-                            }));
+                            OpenVariationFlyoutForReload(styleName, originalImageShape);
                         }));
                     }
                 }
@@ -162,6 +146,23 @@ namespace PowerPointLabs.ImageSearch
             {
                 this.HideMetroDialogAsync(_reloadStylesDialog, MetroDialogOptions);
             };
+        }
+
+        private void OpenVariationFlyoutForReload(string styleName, Shape originalImageShape)
+        {
+            Dispatcher.BeginInvoke(new Action(() =>
+            {
+                PreviewListBox.SelectedIndex = MapStyleNameToStyleIndex(styleName);
+                var listOfStyles = ConstructStylesFromShapeInfo(originalImageShape);
+                Dispatcher.BeginInvoke(new Action(() =>
+                {
+                    CustomizeStyle(listOfStyles);
+                    Dispatcher.BeginInvoke(new Action(() =>
+                    {
+                        VariationListBox.ScrollIntoView(VariationListBox.SelectedItem);
+                    }));
+                }));
+            }));
         }
 
         private int MapStyleNameToStyleIndex(string styleName)
@@ -202,6 +203,11 @@ namespace PowerPointLabs.ImageSearch
             foreach (var propertyInfo in props)
             {
                 var valueInStr = shape.Tags[Handler.Effect.Tag.ReloadPrefix + propertyInfo.Name];
+                if (string.IsNullOrEmpty(valueInStr))
+                {
+                    continue;
+                }
+
                 if (propertyInfo.PropertyType == typeof (string))
                 {
                     propertyInfo.SetValue(opt, valueInStr, null);

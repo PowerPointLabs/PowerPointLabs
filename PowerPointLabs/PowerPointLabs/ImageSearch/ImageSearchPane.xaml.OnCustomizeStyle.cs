@@ -46,7 +46,7 @@ namespace PowerPointLabs.ImageSearch
                 try
                 {
                     Double scrollOffset = 0f;
-                    var scrollViewer = FindScrollViewer(VariationListBox);
+                    var scrollViewer = ListBoxUtil.FindScrollViewer(VariationListBox);
                     if (scrollViewer != null)
                     {
                         scrollOffset = scrollViewer.VerticalOffset;
@@ -138,6 +138,26 @@ namespace PowerPointLabs.ImageSearch
             }
 
             var nextCategoryVariants = _styleVariants[currentVariantsCategory];
+            var variantIndexWithoutEffect = -1;
+            for (var i = 0; i < nextCategoryVariants.Count; i++)
+            {
+                if (nextCategoryVariants[i].IsNoEffect(_styleOptions[targetVariationSelectedIndex]))
+                {
+                    variantIndexWithoutEffect = i;
+                    break;
+                }
+            }
+            // swap the no-effect variant with the current selected style's corresponding variant
+            // so that to achieve an effect: jumpt between different category wont change the
+            // selected style
+            if (variantIndexWithoutEffect != -1)
+            {
+                var temp = nextCategoryVariants[variantIndexWithoutEffect];
+                nextCategoryVariants[variantIndexWithoutEffect] =
+                    nextCategoryVariants[targetVariationSelectedIndex];
+                nextCategoryVariants[targetVariationSelectedIndex] = temp;
+            }
+
             for (var i = 0; i < nextCategoryVariants.Count && i < _styleOptions.Count; i++)
             {
                 nextCategoryVariants[i].Apply(_styleOptions[i]);
@@ -540,19 +560,6 @@ namespace PowerPointLabs.ImageSearch
                 left2RightToShowTranslate.BeginAnimation(TranslateTransform.XProperty, left2RightToShowAnimation);
                 _isVariationsFlyoutOpen = true;
             }));
-        }
-
-        static ScrollViewer FindScrollViewer(DependencyObject parent)
-        {
-            var childCount = VisualTreeHelper.GetChildrenCount(parent);
-            for (var i = 0; i < childCount; i++)
-            {
-                var elt = VisualTreeHelper.GetChild(parent, i);
-                if (elt is ScrollViewer) return (ScrollViewer)elt;
-                var result = FindScrollViewer(elt);
-                if (result != null) return result;
-            }
-            return null;
         }
 
         private void FontPanel_OnDropDownClosed(object sender, EventArgs e)

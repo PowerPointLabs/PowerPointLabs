@@ -553,7 +553,8 @@ namespace PowerPointLabs.ImageSearch.Domain
                 new StyleVariants(new Dictionary<string, object>
                 {
                     {"OptionName", "0% Blurriness"},
-                    {"IsUseBlurStyle", false}
+                    {"IsUseBlurStyle", true},
+                    {"BlurDegree", 0}
                 })
             };
         }

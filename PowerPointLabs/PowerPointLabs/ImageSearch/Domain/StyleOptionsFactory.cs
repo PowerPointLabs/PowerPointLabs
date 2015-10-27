@@ -72,9 +72,12 @@ namespace PowerPointLabs.ImageSearch.Domain
 
         private static List<StyleOptions> UpdateStyleName(List<StyleOptions> opts, string styleName)
         {
+            int i = 0;
             foreach (var styleOption in opts)
             {
                 styleOption.StyleName = styleName;
+                styleOption.VariantIndex = i;
+                i++;
             }
             return opts;
         }

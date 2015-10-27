@@ -318,9 +318,14 @@ namespace PowerPointLabs.ImageSearch.Domain
             }
         }
 
+        // used as tooltip for Variation Stage
         public string OptionName { get; set; }
 
+        // used for Reload Styles
         public string StyleName { get; set; }
+
+        // used for Reload Styles
+        public int VariantIndex { get; set; }
 
         # endregion
 
@@ -330,15 +335,15 @@ namespace PowerPointLabs.ImageSearch.Domain
             ImageOffset = 0;
 
             IsUseTextFormat = true;
-            FontFamily = "";
+            FontFamily = "Calibri";
             FontSizeIncrease = 0;
             FontColor = "#FFFFFF";
             TextBoxPosition = 5;
             TextBoxAlignment = 0;
 
             IsUseOverlayStyle = false;
-            OverlayColor = "#00B1FD"; // blue
-            Transparency = 35;
+            OverlayColor = "#000000";
+            Transparency = 100;
 
             IsUseBannerStyle = false;
             BannerOverlayColor = "#000000";
@@ -354,10 +359,12 @@ namespace PowerPointLabs.ImageSearch.Domain
             SpecialEffect = 0;
 
             IsUseBlurStyle = false;
-            BlurDegree = 85;
+            BlurDegree = 0;
 
             IsInsertReference = false;
             OptionName = "Default";
+            StyleName = "";
+            VariantIndex = 0;
         }
 
         public string GetFontFamily()
