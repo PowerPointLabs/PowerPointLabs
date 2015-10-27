@@ -56,7 +56,7 @@ namespace PowerPointLabs.ImageSearch
             AdjustImageOffset(selectedImage);
         }
 
-        private void MenuItemAdjustImage_OnClickFromPreviewListBox(object sender, RoutedEventArgs e)
+        private void MenuItemAdjustImage_OnClickFromListBox(object sender, RoutedEventArgs e)
         {
             var selectedImage = (ImageItem)SearchListBox.SelectedItem;
             if (selectedImage == null || selectedImage.ImageFile == StoragePath.LoadingImgPath) return;

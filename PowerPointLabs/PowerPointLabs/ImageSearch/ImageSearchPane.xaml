@@ -74,8 +74,8 @@
                         <converter:TwoColumnsListBoxImageWidthConverter x:Key="TwoColumnsListBoxImageWidthConverter"></converter:TwoColumnsListBoxImageWidthConverter>
                     </ListBox.Resources>
                     <ListBox.ContextMenu>
-                        <ContextMenu Name="PreviewListBoxContextMenu">
-                            <MenuItem Header="Adjust image's offset" Click="MenuItemAdjustImage_OnClickFromPreviewListBox"></MenuItem>
+                        <ContextMenu>
+                            <MenuItem Header="Adjust image's offset" Click="MenuItemAdjustImage_OnClickFromListBox"></MenuItem>
                         </ContextMenu>
                     </ListBox.ContextMenu>
                     <ListBox.Template>
@@ -162,6 +162,11 @@
                         <ListBox.Resources>
                             <converter:TwoColumnsListBoxImageWidthConverter x:Key="TwoColumnsListBoxImageWidthConverter"></converter:TwoColumnsListBoxImageWidthConverter>
                         </ListBox.Resources>
+                        <ListBox.ContextMenu>
+                            <ContextMenu>
+                                <MenuItem Header="Adjust image's offset" Click="MenuItemAdjustImage_OnClickFromListBox"></MenuItem>
+                            </ContextMenu>
+                        </ListBox.ContextMenu>
                         <ListBox.Template>
                             <ControlTemplate TargetType="{x:Type ListBox}">
                                 <ScrollViewer HorizontalScrollBarVisibility="Disabled" VerticalScrollBarVisibility="Visible">

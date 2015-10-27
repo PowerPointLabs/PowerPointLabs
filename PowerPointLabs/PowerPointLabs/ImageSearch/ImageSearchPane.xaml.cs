@@ -533,10 +533,12 @@ namespace PowerPointLabs.ImageSearch
             if (PowerPointCurrentPresentationInfo.CurrentSlide == null)
             {
                 GotoSlideButton.IsEnabled = false;
+                ReloadButton.IsEnabled = false;
             }
             else
             {
                 GotoSlideButton.IsEnabled = true;
+                ReloadButton.IsEnabled = true;
             }
 
             if (QuickDropDialog != null && QuickDropDialog.IsOpen)

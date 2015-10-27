@@ -19,6 +19,8 @@ namespace PowerPointLabs.ImageSearch
     {
         private ObservableString ThumbnailImageFile = new ObservableString();
 
+        private const int AdjustUnit = 10;
+
         private CroppingAdorner _croppingAdorner;
         private FrameworkElement _frameworkElement;
 
@@ -122,9 +124,11 @@ namespace PowerPointLabs.ImageSearch
 
         private void AdjustControlsSize()
         {
+            // adjust image holder size
             ImageHolder.Width = ImageHolder.ActualWidth;
             ImageHolder.Height = ImageHolder.ActualHeight;
-            Height = ImageHolder.ActualHeight + 15 + SaveCropButton.ActualHeight + 40;
+            // adjust this window size
+            Height = ImageHolder.ActualHeight + 15 + SaveCropButton.ActualHeight + 50;
             Width = ImageHolder.ActualWidth + 20;
         }
 
@@ -207,6 +211,36 @@ namespace PowerPointLabs.ImageSearch
                     element.ActualHeight);
             }
             return rect;
+        }
+
+        private void MoveLeftButton_OnClick(object sender, RoutedEventArgs e)
+        {
+            _croppingAdorner.MoveCroppingRect(-AdjustUnit, 0);
+        }
+
+        private void MoveUpButton_OnClick(object sender, RoutedEventArgs e)
+        {
+            _croppingAdorner.MoveCroppingRect(0, -AdjustUnit);
+        }
+
+        private void MoveDownButton_OnClick(object sender, RoutedEventArgs e)
+        {
+            _croppingAdorner.MoveCroppingRect(0, AdjustUnit);
+        }
+
+        private void MoveRightButton_OnClick(object sender, RoutedEventArgs e)
+        {
+            _croppingAdorner.MoveCroppingRect(AdjustUnit, 0);
+        }
+
+        private void ZoomInButton_OnClick(object sender, RoutedEventArgs e)
+        {
+            _croppingAdorner.ZoomCroppingRect(AdjustUnit);
+        }
+
+        private void ZoomOutButton_OnClick(object sender, RoutedEventArgs e)
+        {
+            _croppingAdorner.ZoomCroppingRect(-AdjustUnit);
         }
     }
 }

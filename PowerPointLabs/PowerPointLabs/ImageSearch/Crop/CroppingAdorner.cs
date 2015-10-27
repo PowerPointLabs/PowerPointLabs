@@ -215,53 +215,57 @@ namespace DAP.Adorners
         {
             if (sender is CropThumb)
             {
-                Rect rcInterior = _prCropMask.RectInterior;
-                Rect rcExterior = _prCropMask.RectExterior;
-
                 var dx = args.HorizontalChange;
+                ZoomCroppingRect(dx);
+            }
+        }
 
-                // boundary: when minimized
-                if (rcInterior.Width + dx < 0)
-                {
-                    dx = -rcInterior.Width;
-                }
+        public void ZoomCroppingRect(double dx)
+        {
+            Rect rcInterior = _prCropMask.RectInterior;
+            Rect rcExterior = _prCropMask.RectExterior;
 
-                var newWidth = rcInterior.Width + dx;
-                var newHeight = newWidth / SlideWidth * SlideHeight;
+            // boundary: when minimized
+            if (rcInterior.Width + dx < 0)
+            {
+                dx = -rcInterior.Width;
+            }
 
-                // boundary: when maximized
-                if (rcInterior.Left + newWidth > rcExterior.Right
-                    && rcInterior.Top + newHeight > rcExterior.Bottom)
-                {
-                    newWidth = rcExterior.Right - rcInterior.Left;
-                    newHeight = newWidth / SlideWidth * SlideHeight;
-                    if (rcInterior.Top + newHeight > rcExterior.Bottom)
-                    {
-                        newHeight = rcExterior.Bottom - rcInterior.Top;
-                        newWidth = newHeight / SlideHeight * SlideWidth;
-                    }
-                }
-                else if (rcInterior.Left + newWidth > rcExterior.Right)
-                {
-                    newWidth = rcExterior.Right - rcInterior.Left;
-                    newHeight = newWidth / SlideWidth * SlideHeight;
-                }
-                else if (rcInterior.Top + newHeight > rcExterior.Bottom)
+            var newWidth = rcInterior.Width + dx;
+            var newHeight = newWidth / SlideWidth * SlideHeight;
+
+            // boundary: when maximized
+            if (rcInterior.Left + newWidth > rcExterior.Right
+                && rcInterior.Top + newHeight > rcExterior.Bottom)
+            {
+                newWidth = rcExterior.Right - rcInterior.Left;
+                newHeight = newWidth / SlideWidth * SlideHeight;
+                if (rcInterior.Top + newHeight > rcExterior.Bottom)
                 {
                     newHeight = rcExterior.Bottom - rcInterior.Top;
                     newWidth = newHeight / SlideHeight * SlideWidth;
                 }
-
-                rcInterior = new Rect(
-                        rcInterior.Left,
-                        rcInterior.Top,
-                        newWidth,
-                        newHeight);
-
-                _prCropMask.RectInterior = rcInterior;
-                SetThumbs(_prCropMask.RectInterior);
-                RaiseEvent(new RoutedEventArgs(CropChangedEvent, this));
             }
+            else if (rcInterior.Left + newWidth > rcExterior.Right)
+            {
+                newWidth = rcExterior.Right - rcInterior.Left;
+                newHeight = newWidth / SlideWidth * SlideHeight;
+            }
+            else if (rcInterior.Top + newHeight > rcExterior.Bottom)
+            {
+                newHeight = rcExterior.Bottom - rcInterior.Top;
+                newWidth = newHeight / SlideHeight * SlideWidth;
+            }
+
+            rcInterior = new Rect(
+                    rcInterior.Left,
+                    rcInterior.Top,
+                    newWidth,
+                    newHeight);
+
+            _prCropMask.RectInterior = rcInterior;
+            SetThumbs(_prCropMask.RectInterior);
+            RaiseEvent(new RoutedEventArgs(CropChangedEvent, this));
         }
 
         // Handler for Cropping from the top-right.
@@ -394,41 +398,46 @@ namespace DAP.Adorners
         {
             if (sender is CropThumb)
             {
-                Rect rcInterior = _prCropMask.RectInterior;
-                Rect rcExterior = _prCropMask.RectExterior;
-
                 var dx = args.HorizontalChange;
                 var dy = args.VerticalChange;
-
-                if (rcInterior.Left + dx < rcExterior.Left)
-                {
-                    dx = rcExterior.Left - rcInterior.Left;
-                }
-                else if (rcInterior.Left + dx + rcInterior.Width > rcExterior.Right)
-                {
-                    dx = rcExterior.Right - rcInterior.Left - rcInterior.Width;
-                }
-
-                if (rcInterior.Top + dy < rcExterior.Top)
-                {
-                    dy = rcExterior.Top - rcInterior.Top;
-                }
-                else if (rcInterior.Top + dy + rcInterior.Height > rcExterior.Bottom)
-                {
-                    dy = rcExterior.Bottom - rcInterior.Top - rcInterior.Height;
-                }
-
-                rcInterior = new Rect(
-                        rcInterior.Left + dx,
-                        rcInterior.Top + dy,
-                        rcInterior.Width,
-                        rcInterior.Height);
-
-                _prCropMask.RectInterior = rcInterior;
-                SetThumbs(_prCropMask.RectInterior);
-                RaiseEvent(new RoutedEventArgs(CropChangedEvent, this));
+                MoveCroppingRect(dx, dy);
             }
         }
+
+        public void MoveCroppingRect(double dx, double dy)
+        {
+            Rect rcInterior = _prCropMask.RectInterior;
+            Rect rcExterior = _prCropMask.RectExterior;  
+
+            if (rcInterior.Left + dx < rcExterior.Left)
+            {
+                dx = rcExterior.Left - rcInterior.Left;
+            }
+            else if (rcInterior.Left + dx + rcInterior.Width > rcExterior.Right)
+            {
+                dx = rcExterior.Right - rcInterior.Left - rcInterior.Width;
+            }
+
+            if (rcInterior.Top + dy < rcExterior.Top)
+            {
+                dy = rcExterior.Top - rcInterior.Top;
+            }
+            else if (rcInterior.Top + dy + rcInterior.Height > rcExterior.Bottom)
+            {
+                dy = rcExterior.Bottom - rcInterior.Top - rcInterior.Height;
+            }
+
+            rcInterior = new Rect(
+                    rcInterior.Left + dx,
+                    rcInterior.Top + dy,
+                    rcInterior.Width,
+                    rcInterior.Height);
+
+            _prCropMask.RectInterior = rcInterior;
+            SetThumbs(_prCropMask.RectInterior);
+            RaiseEvent(new RoutedEventArgs(CropChangedEvent, this));
+        }
+
         #endregion
 
         #region Other handlers

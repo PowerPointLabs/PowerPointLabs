@@ -843,6 +843,27 @@
     <None Include="Resources\ImagesLab.png" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="ImageSearch\Image\icon-down.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="ImageSearch\Image\icon-fit.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="ImageSearch\Image\icon-left.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="ImageSearch\Image\icon-minus.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="ImageSearch\Image\icon-plus.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="ImageSearch\Image\icon-right.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="ImageSearch\Image\icon-up.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
     <Content Include="ImageSearch\Image\ImagesLab.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>

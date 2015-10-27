@@ -29,7 +29,40 @@
             <RowDefinition Height="Auto"></RowDefinition>
         </Grid.RowDefinitions>
         <Image x:Name="ImageHolder" MaxHeight="600" Source="{Binding Path=Text, Mode=TwoWay, NotifyOnSourceUpdated=True}" Margin="10,5,10,10" Grid.Row="0"/>
-        <Button x:Name="AutoFitButton" ToolTip="Auto fit image offset" Click="AutoFitButton_OnClick" Margin="0,0,80,0" Width="55" HorizontalAlignment="Right" Grid.Row="1">Auto Fit</Button>
-        <Button x:Name="SaveCropButton" ToolTip="Save current image offset" Click="SaveCropButton_OnClick" Margin="0,0,20,0" Width="55" HorizontalAlignment="Right" Grid.Row="1">Save</Button>
+        <Grid Grid.Row="1">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="20"></ColumnDefinition>
+                <ColumnDefinition Width="40"></ColumnDefinition>
+                <ColumnDefinition Width="40"></ColumnDefinition>
+                <ColumnDefinition Width="40"></ColumnDefinition>
+                <ColumnDefinition Width="40"></ColumnDefinition>
+                <ColumnDefinition Width="40"></ColumnDefinition>
+                <ColumnDefinition Width="40"></ColumnDefinition>
+                <ColumnDefinition Width="40"></ColumnDefinition>
+                <ColumnDefinition Width="*"></ColumnDefinition>
+            </Grid.ColumnDefinitions>
+            <Button Grid.Column="1" Style="{DynamicResource MetroCircleButtonStyle}" x:Name="MoveLeftButton" ToolTip="Move offset left" Click="MoveLeftButton_OnClick" Width="40" Height="40">
+                <Image Width="24" Height="24" Source="pack://siteoforigin:,,,/ImageSearch/Image/icon-left.png"></Image>
+            </Button>
+            <Button Grid.Column="2" Style="{DynamicResource MetroCircleButtonStyle}" x:Name="MoveUpButton" ToolTip="Move offset up" Click="MoveUpButton_OnClick" Width="40" Height="40">
+                <Image Width="24" Height="24" Source="pack://siteoforigin:,,,/ImageSearch/Image/icon-up.png"></Image>
+            </Button>
+            <Button Grid.Column="3" Style="{DynamicResource MetroCircleButtonStyle}" x:Name="MoveDownButton" ToolTip="Move offset down" Click="MoveDownButton_OnClick" Width="40" Height="40">
+                <Image Width="24" Height="24" Source="pack://siteoforigin:,,,/ImageSearch/Image/icon-down.png"></Image>
+            </Button>
+            <Button Grid.Column="4" Style="{DynamicResource MetroCircleButtonStyle}" x:Name="MoveRightButton" ToolTip="Move offset right" Click="MoveRightButton_OnClick" Width="40" Height="40">
+                <Image Width="24" Height="24" Source="pack://siteoforigin:,,,/ImageSearch/Image/icon-right.png"></Image>
+            </Button>
+            <Button Grid.Column="5" Style="{DynamicResource MetroCircleButtonStyle}" x:Name="ZoomInButton" ToolTip="Increase offset size" Click="ZoomInButton_OnClick" Width="40" Height="40">
+                <Image Width="24" Height="24" Source="pack://siteoforigin:,,,/ImageSearch/Image/icon-plus.png"></Image>
+            </Button>
+            <Button Grid.Column="6" Style="{DynamicResource MetroCircleButtonStyle}" x:Name="ZoomOutButton" ToolTip="Decrease offset size" Click="ZoomOutButton_OnClick" Width="40" Height="40">
+                <Image Width="24" Height="24" Source="pack://siteoforigin:,,,/ImageSearch/Image/icon-minus.png"></Image>
+            </Button>
+            <Button Grid.Column="7" Style="{DynamicResource MetroCircleButtonStyle}" x:Name="AutoFitButton" ToolTip="Auto fit image offset" Click="AutoFitButton_OnClick" Width="40" Height="40">
+                <Image Width="24" Height="24" Source="pack://siteoforigin:,,,/ImageSearch/Image/icon-fit.png"></Image>
+            </Button>
+            <Button Height="28" Grid.Column="8" x:Name="SaveCropButton" ToolTip="Save current image offset" Click="SaveCropButton_OnClick" Margin="0,0,20,0" Width="45" HorizontalAlignment="Right">Save</Button>
+        </Grid>
     </Grid>
 </controls:MetroWindow>
