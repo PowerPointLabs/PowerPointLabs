@@ -25,7 +25,8 @@ namespace PowerPointLabs.ImageSearch
         private IList<StyleOptions> _styleOptions;
         private Dictionary<string, List<StyleVariants>> _styleVariants;
 
-        private void UpdateStyleVariationsImages(bool isOpenFlyout = false, IList<StyleOptions> options = null)
+        private void UpdateStyleVariationsImages(bool isOpenFlyout = false, IList<StyleOptions> givenOptions = null,
+            Dictionary<string, List<StyleVariants>> givenVariants = null)
         {
             Dispatcher.BeginInvoke(new Action(() =>
             {
@@ -58,8 +59,8 @@ namespace PowerPointLabs.ImageSearch
                     {
                         scrollOffset = 0;
                         selectedId = 0;
-                        _styleOptions = options ?? StyleOptionsFactory.GetOptions(targetStyle.Tooltip);
-                        _styleVariants = StyleVariantsFactory.GetVariants(targetStyle.Tooltip);
+                        _styleOptions = givenOptions ?? StyleOptionsFactory.GetOptions(targetStyle.Tooltip);
+                        _styleVariants = givenVariants ?? StyleVariantsFactory.GetVariants(targetStyle.Tooltip);
 
                         VariantsComboBox.Items.Clear();
                         foreach (var key in _styleVariants.Keys)
@@ -337,13 +338,15 @@ namespace PowerPointLabs.ImageSearch
             }
         }
 
-        private void CustomizeStyle(IList<StyleOptions> givenStyles = null)
+        // TODO split files into APIs and helper functions
+        private void CustomizeStyle(IList<StyleOptions> givenStyles = null, 
+            Dictionary<string, List<StyleVariants>> givenVariants = null)
         {
             var source = (ImageItem)SearchListBox.SelectedValue;
             var targetStyle = PreviewListBox.SelectedItems;
             if (source == null || targetStyle == null || targetStyle.Count == 0) return;
 
-            UpdateStyleVariationsImages(isOpenFlyout: true, options: givenStyles);
+            UpdateStyleVariationsImages(isOpenFlyout: true, givenOptions: givenStyles, givenVariants: givenVariants);
             OpenVariationsFlyout();
         }
 

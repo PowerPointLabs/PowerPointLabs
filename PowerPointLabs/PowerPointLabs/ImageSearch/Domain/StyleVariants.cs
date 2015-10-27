@@ -27,6 +27,29 @@ namespace PowerPointLabs.ImageSearch.Domain
         }
 
         /// <summary>
+        /// Copy corresponding variant info from the given style
+        /// </summary>
+        public StyleVariants Copy(StyleOptions opt, string givenOptionName = null)
+        {
+            var newVariants = new Dictionary<string, object>();
+            foreach (var pair in _variants)
+            {
+                if (pair.Key.Equals("OptionName"))
+                {
+                    newVariants["OptionName"] = givenOptionName ?? "Reloaded";
+                }
+                else
+                {
+                    var type = opt.GetType();
+                    var prop = type.GetProperty(pair.Key);
+                    var optValue = prop.GetValue(opt, null);
+                    newVariants[pair.Key] = optValue;
+                }
+            }
+            return new StyleVariants(newVariants);
+        }
+
+        /// <summary>
         /// return true, when applying variant to this style options has no effect (still same)
         /// </summary>
         /// <param name="opt"></param>

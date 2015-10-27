@@ -154,9 +154,10 @@ namespace PowerPointLabs.ImageSearch
             {
                 PreviewListBox.SelectedIndex = MapStyleNameToStyleIndex(styleName);
                 var listOfStyles = ConstructStylesFromShapeInfo(originalImageShape);
+                var variants = ConstructVariantsFromStyle(listOfStyles[0]);
                 Dispatcher.BeginInvoke(new Action(() =>
                 {
-                    CustomizeStyle(listOfStyles);
+                    CustomizeStyle(listOfStyles, variants);
                     Dispatcher.BeginInvoke(new Action(() =>
                     {
                         VariationListBox.ScrollIntoView(VariationListBox.SelectedItem);
@@ -194,6 +195,29 @@ namespace PowerPointLabs.ImageSearch
                 result.Add(ConstructStyleFromShapeInfo(shape));
             }
             return result;
+        }
+
+        private Dictionary<string, List<StyleVariants>> ConstructVariantsFromStyle(StyleOptions opt)
+        {
+            var variants = StyleVariantsFactory.GetVariants(opt.StyleName);
+            // replace each category/aspect's variant
+            // with the new variant from the given style options
+            foreach (var pair in variants)
+            {
+                var firstVariant = pair.Value[0];
+                var newFirstVariant = firstVariant.Copy(opt);
+                for (var i = 0; i < pair.Value.Count; i++)
+                {
+                    // try to swap out the 'no-effect' style options
+                    if (pair.Value[i].IsNoEffect(opt))
+                    {
+                        pair.Value[i] = firstVariant;
+                        break;
+                    }
+                }
+                pair.Value[0] = newFirstVariant;
+            }
+            return variants;
         }
 
         private StyleOptions ConstructStyleFromShapeInfo(Shape shape)
