@@ -124,6 +124,7 @@ namespace PowerPointLabs.ImageSearch
                 {
                     return;
                 }
+                // Error Case 1: If url not valid
                 if (!UrlUtil.IsUrlValid(downloadLink))
                 {
                     ShowErrorMessageBox(TextCollection.ImagesLabText.ErrorUrlLinkIncorrect);
@@ -152,10 +153,31 @@ namespace PowerPointLabs.ImageSearch
                     .Get(downloadLink, imagePath)
                     .After(() =>
                     {
-                        HandleDownloadedPicture(item, imagePath);
-                        HandleDownloadedThumbnail(item, imagePath);
+                        try
+                        {
+                            // Error Case 2: not a proper image
+                            VerifyIsProperImage(imagePath);
+
+                            Dispatcher.Invoke(new Action(() =>
+                            {
+                                // TODO turn off progress ring after all downloaded
+                                SearchProgressRing.IsActive = false;
+                                _downloadedImages.Add(item);
+                            }));
+                            HandleDownloadedThumbnail(item, imagePath);
+                        }
+                        catch
+                        {
+                            ShowErrorMessageBox(TextCollection.ImagesLabText.ErrorImageCorrupted);
+                            Dispatcher.Invoke(new Action(() =>
+                            {
+                                // TODO turn off progress ring after all downloaded
+                                SearchProgressRing.IsActive = false;
+                            }));
+                        }
                     })
-                    .OnError(() => { RemoveImageItem(item); })
+                    // Error Case 3: Possibly network timeout
+                    .OnError(e => { RemoveImageItem(item, e); })
                     .Start();
             }));
         }
@@ -253,24 +275,14 @@ namespace PowerPointLabs.ImageSearch
             ShowErrorMessageBox(e.Message);
         }
 
-        private void RemoveImageItem(ImageItem item)
+        private void RemoveImageItem(ImageItem item, Exception e)
         {
             Dispatcher.BeginInvoke(new Action(() =>
             {
                 SearchProgressRing.IsActive = false;
                 SearchList.Remove(item);
             }));
-            ShowErrorMessageBox(TextCollection.ImagesLabText.ErrorImageCorrupted);
-        }
-
-        private void HandleDownloadedPicture(ImageItem item, string thumbnailPath)
-        {
-            VerifyIsProperImage(thumbnailPath);
-            Dispatcher.Invoke(new Action(() =>
-            {
-                SearchProgressRing.IsActive = false;
-                _downloadedImages.Add(item);
-            }));
+            ShowErrorMessageBox(TextCollection.ImagesLabText.ErrorFailedToLoad + e.Message);
         }
 
         private void PrepareToSearch(int expectedNumOfImages, bool isListClearNeeded = true)

@@ -398,7 +398,7 @@ namespace PowerPointLabs.ImageSearch
                 new Downloader()
                     .Get(fullsizeImageUri, fullsizeImageFile)
                     .After(() => { HandleDownloadedFullSizeImage(source, fullsizeImageFile); })
-                    .OnError(() =>
+                    .OnError(expt =>
                     {
                         Dispatcher.BeginInvoke(new Action(() =>
                         {
@@ -409,7 +409,8 @@ namespace PowerPointLabs.ImageSearch
                             }
                             else if (currentImageItem.ImageFile == source.ImageFile)
                             {
-                                ShowErrorMessageBox(TextCollection.ImagesLabText.ErrorNetworkOrSourceUnavailable);
+                                ShowErrorMessageBox(TextCollection.ImagesLabText.ErrorNetworkOrSourceUnavailable + " (" +
+                                                    expt.Message + ")");
                             }
                         }));
                     })
@@ -459,7 +460,7 @@ namespace PowerPointLabs.ImageSearch
                 new Downloader()
                     .Get(fullsizeImageUri, fullsizeImageFile)
                     .After(() => { HandleDownloadedFullSizeImage(source, fullsizeImageFile); })
-                    .OnError(() =>
+                    .OnError(expt =>
                     {
                         Dispatcher.BeginInvoke(new Action(() =>
                         {
@@ -470,7 +471,8 @@ namespace PowerPointLabs.ImageSearch
                             }
                             else if (currentImageItem.ImageFile == source.ImageFile)
                             {
-                                ShowErrorMessageBox(TextCollection.ImagesLabText.ErrorNetworkOrSourceUnavailable);
+                                ShowErrorMessageBox(TextCollection.ImagesLabText.ErrorNetworkOrSourceUnavailable + " (" +
+                                                    expt.Message + ")");
                             }
                         }));
                     })

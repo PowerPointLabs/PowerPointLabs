@@ -52,7 +52,7 @@ namespace PowerPointLabs.ImageSearch
             };
         }
 
-        private void WhenFailDownloadFullSizeImage()
+        private void WhenFailDownloadFullSizeImage(Exception e)
         {
             Dispatcher.BeginInvoke(new Action(() =>
             {

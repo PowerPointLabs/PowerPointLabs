@@ -352,6 +352,8 @@
                 "Please fill in Search Engine Id and API Key by clicking ADVANCED.. button.";
             public const string ErrorImageCorrupted =
                 "Failed to load image. The image file is corrupted.";
+            public const string ErrorFailedToLoad =
+                "Failed to load image. ";
             public const string ErrorUrlLinkIncorrect =
                 "The download link is not in the correct format. Did the link miss out 'http://'?";
             public const string ErrorNoSelectedSlide =
