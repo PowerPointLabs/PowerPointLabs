@@ -90,8 +90,7 @@ namespace PowerPointLabs.ImageSearch
                             Tooltip = ImageUtil.GetWidthAndHeight(filename)
                         };
                         //add it
-                        SearchList.Add(fromFileItem);
-                        _downloadedImages.Add(fromFileItem);   
+                        SearchList.Add(fromFileItem);  
                     }
 
                     if (SearchButton.SelectedIndex != TextCollection.ImagesLabText.ButtonIndexFromFile)
@@ -162,7 +161,6 @@ namespace PowerPointLabs.ImageSearch
                             {
                                 // TODO turn off progress ring after all downloaded
                                 SearchProgressRing.IsActive = false;
-                                _downloadedImages.Add(item);
                             }));
                             HandleDownloadedThumbnail(item, imagePath);
                         }
@@ -173,6 +171,7 @@ namespace PowerPointLabs.ImageSearch
                             {
                                 // TODO turn off progress ring after all downloaded
                                 SearchProgressRing.IsActive = false;
+                                SearchList.Remove(item);
                             }));
                         }
                     })

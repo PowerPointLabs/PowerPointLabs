@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.IO;
 using System.Xml.Serialization;
 using PowerPointLabs.ImageSearch.Domain;
@@ -88,7 +89,7 @@ namespace PowerPointLabs.ImageSearch.Util
             return AggregatedFolder + name;
         }
 
-        public static void Save(string filename, List<ImageItem> list)
+        public static void Save(string filename, Collection<ImageItem> list)
         {
             try
             {

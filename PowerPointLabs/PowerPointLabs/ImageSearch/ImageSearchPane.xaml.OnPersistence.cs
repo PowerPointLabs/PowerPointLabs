@@ -12,10 +12,10 @@ namespace PowerPointLabs.ImageSearch
         private void InitSearchList()
         {
             SearchList = new ObservableCollection<ImageItem>();
-            _downloadedImages = StoragePath.Load(ImagesLabImagesList);
+            var loadedImages = StoragePath.Load(ImagesLabImagesList);
             SearchList.CollectionChanged += SearchList_OnCollectionChanged;
 
-            foreach (var imageItem in _downloadedImages)
+            foreach (var imageItem in loadedImages)
             {
                 _filesInUse.Add(imageItem.ImageFile);
                 _filesInUse.Add(imageItem.FullSizeImageFile);
@@ -25,7 +25,7 @@ namespace PowerPointLabs.ImageSearch
                     _filesInUse.Add(imageItem.CroppedThumbnailImageFile);
                 }
             }
-            CopyContentToObservableList(_downloadedImages, SearchList);
+            CopyContentToObservableList(loadedImages, SearchList);
             Dispatcher.BeginInvoke(new Action(() =>
             {
                 SearchListBox.DataContext = this;
@@ -45,32 +45,14 @@ namespace PowerPointLabs.ImageSearch
             {
                 QuickDropDialog.Close();
             }
-            StoragePath.Save(ImagesLabImagesList, _downloadedImages);
+            StoragePath.Save(ImagesLabImagesList, SearchList);
         }
 
         private void CopyContentToObservableList(IEnumerable<ImageItem> content, ObservableCollection<ImageItem> target)
         {
             foreach (var image in content)
             {
-                target.Add(new ImageItem
-                {
-                    // thumbnail file to show or generate preview images
-                    ImageFile = image.ImageFile,
-                    // full-size image file
-                    FullSizeImageFile = image.FullSizeImageFile,
-                    // uri to the full-size image
-                    FullSizeImageUri = image.FullSizeImageUri,
-                    // link to image's context
-                    ContextLink = image.ContextLink,
-                    // tooltip to be displayed
-                    Tooltip = image.Tooltip,
-                    // cropped full-size image file
-                    CroppedImageFile = image.CroppedImageFile,
-                    // cropped thumbnail file
-                    CroppedThumbnailImageFile = image.CroppedThumbnailImageFile,
-                    // rectangle used to crop the image
-                    Rect = image.Rect
-                });
+                target.Add(image);
             }
         }
     }

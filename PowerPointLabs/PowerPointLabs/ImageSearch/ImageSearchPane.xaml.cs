@@ -34,10 +34,6 @@ namespace PowerPointLabs.ImageSearch
         // UI model - list that holds search result item
         public ObservableCollection<ImageItem> SearchList { get; set; }
 
-        // caches for multiple-purpose buttons
-        // downloadedImages - to be loaded to SearchList, when button is Download/From File
-        private List<ImageItem> _downloadedImages;
-
         // UI model - list that holds preview item
         public ObservableCollection<ImageItem> PreviewList { get; set; }
 
@@ -611,7 +607,6 @@ namespace PowerPointLabs.ImageSearch
 
         private void DeleteAllImageShapes()
         {
-            _downloadedImages.Clear();
             SearchList.Clear();
         }
 
@@ -626,19 +621,6 @@ namespace PowerPointLabs.ImageSearch
             var selectedImage = (ImageItem) SearchListBox.Items.GetItemAt(_rightClickedSearchListBoxItemIndex);
             if (selectedImage == null) return;
 
-            if (selectedImage.ImageFile != StoragePath.LoadingImgPath)
-            {
-                switch (SearchButton.SelectedIndex)
-                {
-                    case TextCollection.ImagesLabText.ButtonIndexDownload:
-                    case TextCollection.ImagesLabText.ButtonIndexFromFile:
-                        if (_rightClickedSearchListBoxItemIndex < _downloadedImages.Count)
-                        {
-                            _downloadedImages.RemoveAt(_rightClickedSearchListBoxItemIndex);
-                        }
-                        break;
-                }
-            }
             SearchList.RemoveAt(_rightClickedSearchListBoxItemIndex);
         }
 
@@ -647,19 +629,6 @@ namespace PowerPointLabs.ImageSearch
             var selectedImage = (ImageItem)SearchListBox.SelectedItem;
             if (selectedImage == null) return;
 
-            if (selectedImage.ImageFile != StoragePath.LoadingImgPath)
-            {
-                switch (SearchButton.SelectedIndex)
-                {
-                    case TextCollection.ImagesLabText.ButtonIndexDownload:
-                    case TextCollection.ImagesLabText.ButtonIndexFromFile:
-                        if (SearchListBox.SelectedIndex < _downloadedImages.Count)
-                        {
-                            _downloadedImages.RemoveAt(SearchListBox.SelectedIndex);
-                        }
-                        break;
-                }
-            }
             SearchList.RemoveAt(SearchListBox.SelectedIndex);
         }
 

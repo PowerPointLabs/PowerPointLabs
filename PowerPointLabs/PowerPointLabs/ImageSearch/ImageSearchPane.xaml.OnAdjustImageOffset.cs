@@ -29,16 +29,6 @@ namespace PowerPointLabs.ImageSearch
                 source.CroppedImageFile = CropWindow.CropResult;
                 source.CroppedThumbnailImageFile = CropWindow.CropResultThumbnail;
                 source.Rect = CropWindow.Rect;
-
-                var imageIndex = SearchListBox.Items.IndexOf(source);
-                if (imageIndex >= 0
-                    && imageIndex < _downloadedImages.Count)
-                {
-                    var imageToPersist = _downloadedImages[imageIndex];
-                    imageToPersist.CroppedImageFile = source.CroppedImageFile;
-                    imageToPersist.CroppedThumbnailImageFile = source.CroppedThumbnailImageFile;
-                    imageToPersist.Rect = source.Rect;
-                }
             }
         }
 

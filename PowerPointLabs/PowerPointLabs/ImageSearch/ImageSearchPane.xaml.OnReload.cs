@@ -133,7 +133,6 @@ namespace PowerPointLabs.ImageSearch
                         Dispatcher.Invoke(new Action(() =>
                         {
                             SearchList.Add(imageItem);
-                            _downloadedImages.Add(imageItem);
                             SearchListBox.SelectedIndex = SearchListBox.Items.Count - 1;
 
                             OpenVariationFlyoutForReload(styleName, originalImageShape);
