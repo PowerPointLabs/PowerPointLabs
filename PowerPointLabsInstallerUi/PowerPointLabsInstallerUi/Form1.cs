@@ -75,9 +75,11 @@ namespace PowerPointLabsInstallerUi
                 {
                     var vstoConfigDir = GetVstoConfigDir();
                     if (MessageBox.Show(
-                        "In order to install our add-in, you need to rename the file [VSTOInstaller.exe.Config] in the folder" +
+                        "A corrupted system file is detected.\n" +
+                        "In order to install our add-in, you may need to rename the file [VSTOInstaller.exe.Config] in the folder" +
                         "\n[" + vstoConfigDir + "]\n to the new filename [VSTOInstaller.exe.Config.backup]\n\n" +
-                        "After that, click OK button to continue.",
+                        "However, in some PCs, the corrupted system file won't affect the installation.\n" + 
+                        "Click OK button to continue.",
                         ErrorWindowTitle, 
                         MessageBoxButtons.OKCancel, MessageBoxIcon.Information)
                         == DialogResult.Cancel)
