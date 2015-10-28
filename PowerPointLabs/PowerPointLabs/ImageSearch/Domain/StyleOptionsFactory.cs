@@ -101,6 +101,7 @@ namespace PowerPointLabs.ImageSearch.Domain
             return new StyleOptions
             {
                 IsUseBlurStyle = true,
+                BlurDegree = 85,
                 TextBoxPosition = 4
             };
         }
@@ -135,7 +136,9 @@ namespace PowerPointLabs.ImageSearch.Domain
         {
             return new StyleOptions
             {
-                IsUseOverlayStyle = true
+                IsUseOverlayStyle = true,
+                Transparency = 35,
+                OverlayColor = "#00B1FD"
             };
         }
 
@@ -176,6 +179,10 @@ namespace PowerPointLabs.ImageSearch.Domain
             result[4].FontColor = "#001550";//green + dark blue
             result[6].FontColor = "#FFD700";//purple + yellow
             result[7].FontColor = "#3DFF8F";//dark blue + green
+            for (var i = 0; i < 8; i++)
+            {
+                result[i].Transparency = 35;
+            }
             return result;
         } 
     }
