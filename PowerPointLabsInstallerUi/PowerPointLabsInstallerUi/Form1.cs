@@ -221,7 +221,8 @@ namespace PowerPointLabsInstallerUi
             catch (Exception e)
             {
                 PowerPointLabs.Views.ErrorDialogWrapper.ShowDialog("Failed to install",
-                    "An error occurred while installing PowerPointLabs", e);
+                    "An error occurred while installing PowerPointLabs, you can right-click on the setup.exe file " +
+                    "and select 'Run as Administrator' to try again.", e);
             }
         }
 
