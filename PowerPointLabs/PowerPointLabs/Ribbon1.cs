@@ -219,10 +219,6 @@ namespace PowerPointLabs
         {
             return TextCollection.AddAnimationButtonSupertip;
         }
-        public string GetReloadButtonSupertip(Office.IRibbonControl control)
-        {
-            return TextCollection.ReloadButtonSupertip;
-        }
         public string GetInSlideAnimateButtonSupertip(Office.IRibbonControl control)
         {
             return TextCollection.InSlideAnimateButtonSupertip;
@@ -399,10 +395,6 @@ namespace PowerPointLabs
         public string GetAddAnimationButtonLabel(Office.IRibbonControl control)
         {
             return TextCollection.AddAnimationButtonLabel;
-        }
-        public string GetReloadButtonLabel(Office.IRibbonControl control)
-        {
-            return TextCollection.AddAnimationReloadButtonLabel;
         }
         public string GetInSlideAnimateButtonLabel(Office.IRibbonControl control)
         {
@@ -684,20 +676,6 @@ namespace PowerPointLabs
                 throw;
             }
         }
-        public void ReloadButtonClick(Office.IRibbonControl control)
-        {
-            try
-            {
-                Globals.ThisAddIn.Application.StartNewUndoEntry();
-
-                AutoAnimate.ReloadAutoAnimation();
-            }
-            catch (Exception e)
-            {
-                PowerPointLabsGlobals.LogException(e, "ReloadAnimationButtonClick");
-                throw;
-            }
-        }
         public void ZoomBtnClick(Office.IRibbonControl control)
         {
             Globals.ThisAddIn.Application.StartNewUndoEntry();
@@ -771,18 +749,6 @@ namespace PowerPointLabs
             catch (Exception e)
             {
                 PowerPointLabsGlobals.LogException(e, "GetAddAnimationImage");
-                throw;
-            }
-        }
-        public Bitmap GetReloadAnimationImage(Office.IRibbonControl control)
-        {
-            try
-            {
-                return new Bitmap(Properties.Resources.ReloadAnimation);
-            }
-            catch (Exception e)
-            {
-                PowerPointLabsGlobals.LogException(e, "GetReloadAnimationImage");
                 throw;
             }
         }
@@ -1363,10 +1329,6 @@ namespace PowerPointLabs
         {
             return AddAutoMotionEnabled;
         }
-        public bool OnGetEnabledReloadAutoMotion(Office.IRibbonControl control)
-        {
-            return ReloadAutoMotionEnabled;
-        }
         public bool OnGetEnabledAddInSlide(Office.IRibbonControl control)
         {
             return InSlideEnabled;
@@ -1560,12 +1522,6 @@ namespace PowerPointLabs
             if (!Globals.ThisAddIn.VerifyVersion(pres))
             {
                 MessageBox.Show(TextCollection.VersionNotCompatibleErrorMsg);
-                return false;
-            }
-
-            if (!Globals.ThisAddIn.VerifyOnLocal(pres))
-            {
-                MessageBox.Show(TextCollection.OnlinePresentationNotCompatibleErrorMsg);
                 return false;
             }
 

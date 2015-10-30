@@ -148,6 +148,7 @@ namespace PowerPointLabs.Models
         private void AddRectangleShape()
         {
             PowerPoint.Shape rectangleShape = Shapes.AddShape(Office.MsoAutoShapeType.msoShapeRectangle, (-1 * Spotlight.defaultSoftEdges), (-1 * Spotlight.defaultSoftEdges), (PowerPointPresentation.Current.SlideWidth + (2.0f * Spotlight.defaultSoftEdges)), (PowerPointPresentation.Current.SlideHeight + (2.0f * Spotlight.defaultSoftEdges)));
+            rectangleShape.Fill.Solid();
             rectangleShape.Fill.ForeColor.RGB = ColorTranslator.ToWin32(Spotlight.defaultColor);
             rectangleShape.Fill.Transparency = Spotlight.defaultTransparency;
             rectangleShape.Line.Visible = Office.MsoTriState.msoFalse;

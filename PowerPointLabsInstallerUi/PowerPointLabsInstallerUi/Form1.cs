@@ -13,7 +13,7 @@ namespace PowerPointLabsInstallerUi
         private const string TextButtonClose = "Close";
         private const string TextButtonRunning = "Running...";
         private const string ErrorWindowTitle = "PowerPointLabs Installer";
-        private const string UrlForVstoRuntim = "http://www.microsoft.com/en-us/download/details.aspx?id=44074";
+        private const string UrlForVstoRuntim = "http://www.comp.nus.edu.sg/~pptlabs/vsto-redirect.html";
         private const string UrlForPptlabsOnlineInstaller = "http://www.comp.nus.edu.sg/~pptlabs/download-78563/PowerPointLabs.zip";
 
         private readonly string _onlineInstallerZipAddress = Path.Combine(Path.GetTempPath(),
@@ -60,7 +60,7 @@ namespace PowerPointLabsInstallerUi
                         "Visual Studio 2010 Tools for Office (VSTO) Runtime from Microsoft.\n\n" +
                         "Click Yes button to download it, or click No button to continue the installation anyway.",
                         ErrorWindowTitle,
-                        MessageBoxButtons.YesNoCancel, MessageBoxIcon.Error);
+                        MessageBoxButtons.YesNoCancel, MessageBoxIcon.Information);
                     if (dialogResult == DialogResult.Yes)
                     {
                         Process.Start(UrlForVstoRuntim);
@@ -75,11 +75,13 @@ namespace PowerPointLabsInstallerUi
                 {
                     var vstoConfigDir = GetVstoConfigDir();
                     if (MessageBox.Show(
-                        "In order to install our add-in, you need to rename the file [VSTOInstaller.exe.Config] in the folder" +
+                        "A corrupted system file is detected.\n" +
+                        "In order to install our add-in, you may need to rename the file [VSTOInstaller.exe.Config] in the folder" +
                         "\n[" + vstoConfigDir + "]\n to the new filename [VSTOInstaller.exe.Config.backup]\n\n" +
-                        "After that, click OK button to continue.",
+                        "However, in some PCs, the corrupted system file won't affect the installation.\n" + 
+                        "Click OK button to continue.",
                         ErrorWindowTitle, 
-                        MessageBoxButtons.OKCancel, MessageBoxIcon.Error)
+                        MessageBoxButtons.OKCancel, MessageBoxIcon.Information)
                         == DialogResult.Cancel)
                     {
                         return;
@@ -219,7 +221,8 @@ namespace PowerPointLabsInstallerUi
             catch (Exception e)
             {
                 PowerPointLabs.Views.ErrorDialogWrapper.ShowDialog("Failed to install",
-                    "An error occurred while installing PowerPointLabs", e);
+                    "An error occurred while installing PowerPointLabs, you can right-click on the setup.exe file " +
+                    "and select 'Run as Administrator' to try again.", e);
             }
         }
 
