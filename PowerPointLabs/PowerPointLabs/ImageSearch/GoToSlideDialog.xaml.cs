@@ -16,13 +16,15 @@ namespace PowerPointLabs.ImageSearch
     {
         private const int PreviewHeight = 300;
 
-        public delegate void GotoSlideEvent();
+        public delegate void OkEvent();
 
         public delegate void CancelEvent();
 
-        public event GotoSlideEvent OnGotoSlide;
+        public event OkEvent OnGotoSlide;
 
         public event CancelEvent OnCancel;
+
+        public event OkEvent OnAdditionalButtonClick;
 
         public ObservableCollection<ImageItem> SlideList { get; set; }
 
@@ -153,11 +155,32 @@ namespace PowerPointLabs.ImageSearch
             }
         }
 
+        public void CustomizeGotoSlideButton(string content, string tooltip)
+        {
+            GotoSlideButton.Content = content;
+            GotoSlideButton.ToolTip = tooltip;
+        }
+
+        public void CustomizeAdditionalButton(string content, string tooltip)
+        {
+            AdditionalButton.Content = content;
+            AdditionalButton.ToolTip = tooltip;
+            AdditionalButton.Visibility = Visibility.Visible;
+        }
+
         private void CancelButton_OnClick(object sender, RoutedEventArgs e)
         {
             if (OnCancel != null)
             {
                 OnCancel();
+            }
+        }
+
+        private void AdditionalButton_OnClick(object sender, RoutedEventArgs e)
+        {
+            if (OnAdditionalButtonClick != null)
+            {
+                OnAdditionalButtonClick();
             }
         }
 

@@ -21,7 +21,10 @@ namespace PowerPointLabs.ImageSearch
 
         private void ReloadButton_OnClick(object sender, RoutedEventArgs e)
         {
+            // TODO move this to text collection
             _reloadStylesDialog.Init("Load Styles or Image from the Selected Slide");
+            _reloadStylesDialog.CustomizeGotoSlideButton("Load Styles", "Load styles and image from the selected slide.");
+            _reloadStylesDialog.CustomizeAdditionalButton("Load Image", "Load image from the selected slide.");
             _reloadStylesDialog.FocusOkButton();
             this.ShowMetroDialogAsync(_reloadStylesDialog, MetroDialogOptions);
         }
@@ -33,7 +36,19 @@ namespace PowerPointLabs.ImageSearch
                     .GetProperty("OwningWindow", BindingFlags.Instance | BindingFlags.NonPublic)
                     .SetValue(_reloadStylesDialog, this, null);
 
-            _reloadStylesDialog.OnGotoSlide += () =>
+            _reloadStylesDialog.OnGotoSlide += ReloadStyles();
+
+            _reloadStylesDialog.OnAdditionalButtonClick += ReloadStyles(isReloadImageOnly: true);
+
+            _reloadStylesDialog.OnCancel += () =>
+            {
+                this.HideMetroDialogAsync(_reloadStylesDialog, MetroDialogOptions);
+            };
+        }
+
+        private GoToSlideDialog.OkEvent ReloadStyles(bool isReloadImageOnly = false)
+        {
+            return () =>
             {
                 this.HideMetroDialogAsync(_reloadStylesDialog, MetroDialogOptions);
                 // go to the target slide
@@ -74,7 +89,10 @@ namespace PowerPointLabs.ImageSearch
                                 SearchListBox.SelectedIndex = i;
                                 // previewing is done async, need to use beginInvoke
                                 // so that it's after previewing
-                                OpenVariationFlyoutForReload(styleName, originalImageShape);
+                                if (!isReloadImageOnly)
+                                {
+                                    OpenVariationFlyoutForReload(styleName, originalImageShape);
+                                }
                             }));
                             break;
                         }
@@ -133,17 +151,15 @@ namespace PowerPointLabs.ImageSearch
                         Dispatcher.Invoke(new Action(() =>
                         {
                             SearchList.Add(imageItem);
-                            SearchListBox.SelectedIndex = SearchListBox.Items.Count - 1;
 
-                            OpenVariationFlyoutForReload(styleName, originalImageShape);
+                            if (!isReloadImageOnly)
+                            {
+                                SearchListBox.SelectedIndex = SearchListBox.Items.Count - 1;
+                                OpenVariationFlyoutForReload(styleName, originalImageShape);
+                            }
                         }));
                     }
                 }
-            };
-
-            _reloadStylesDialog.OnCancel += () =>
-            {
-                this.HideMetroDialogAsync(_reloadStylesDialog, MetroDialogOptions);
             };
         }
 
