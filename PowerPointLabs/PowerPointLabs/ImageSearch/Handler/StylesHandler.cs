@@ -210,8 +210,8 @@ namespace PowerPointLabs.ImageSearch.Handler
         {
             // style: direct text
             var imageShape = handler.ApplyBackgroundEffect(offset: 0);
-            handler.ApplyTextEffect("", "#FFFFFF", 0);
-            handler.ApplyTextPositionAndAlignment(Position.Left, Alignment.Auto);
+            handler.ApplyTextEffect("Calibri", "#FFFFFF", 0);
+            handler.ApplyTextPositionAndAlignment(Position.Centre, Alignment.Auto);
             handler.GetNativeSlide().Export(previewInfo.DirectTextStyleImagePath, "JPG",
                 GetPreviewWidth(), PreviewHeight);
 
@@ -224,12 +224,14 @@ namespace PowerPointLabs.ImageSearch.Handler
             // style: textbox
             handler.RemoveEffect(EffectName.Blur);
             handler.ApplyTextPositionAndAlignment(Position.BottomLeft, Alignment.Left);
+            handler.ApplyTextEffect("Calibri", "#FFD700", 0);
             handler.ApplyTextboxEffect("#000000", 25);
             handler.GetNativeSlide().Export(previewInfo.TextboxStyleImagePath, "JPG",
                 GetPreviewWidth(), PreviewHeight);
 
             // style: banner
             handler.RemoveEffect(EffectName.TextBox);
+            handler.ApplyTextEffect("Calibri", "#FFD700", 0);
             handler.ApplyRectBannerEffect(BannerDirection.Horizontal, Position.BottomLeft,
                         imageShape, "#000000", 25);
             handler.GetNativeSlide().Export(previewInfo.BannerStyleImagePath, "JPG",
@@ -237,15 +239,16 @@ namespace PowerPointLabs.ImageSearch.Handler
 
             // style: overlay
             handler.RemoveEffect(EffectName.Banner);
+            handler.ApplyTextEffect("Calibri", "#FFFFFF", 0);
             handler.ApplyTextPositionAndAlignment(Position.Centre, Alignment.Left);
-            handler.ApplySpecialEffectEffect(MatrixFilters.GreyScale, imageShape, "#00B1FD"/*Blue*/, transparency: 35, offset: 0);
+            handler.ApplySpecialEffectEffect(MatrixFilters.GreyScale, imageShape, "#007FFF"/*Blue*/, transparency: 35, offset: 0);
             handler.GetNativeSlide().Export(previewInfo.OverlayStyleImagePath, "JPG",
                 GetPreviewWidth(), PreviewHeight);
 
             // style: special effect
             handler.RemoveEffect(EffectName.Overlay);
             handler.RemoveEffect(EffectName.SpecialEffect);
-            handler.ApplySpecialEffectEffect(MatrixFilters.GreyScale, imageShape, "#000000", transparency: 85, offset: 0);
+            handler.ApplySpecialEffectEffect(MatrixFilters.GreyScale, imageShape, "#000000", transparency: 100, offset: 0);
             handler.GetNativeSlide().Export(previewInfo.SpecialEffectStyleImagePath, "JPG",
                 GetPreviewWidth(), PreviewHeight);
         }

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
@@ -70,13 +71,38 @@ namespace PowerPointLabs.ImageSearch
                         VariantsComboBox.SelectedIndex = 0;
                         _previousVariantsCategory = (string) VariantsComboBox.SelectedValue;
 
-                        foreach (var variants in _styleVariants.Values)
+                        // default style options (in preview stage)
+                        var defaultStyleOptions = StyleOptionsFactory.GetDefaultOption(targetStyle.Tooltip);
+                        var currentVariants = _styleVariants.Values.First();
+                        var variantIndexWithoutEffect = -1;
+                        for (var i = 0; i < currentVariants.Count; i++)
                         {
-                            for (var i = 0; i < variants.Count && i < _styleOptions.Count; i++)
+                            if (currentVariants[i].IsNoEffect(defaultStyleOptions))
                             {
-                                variants[i].Apply(_styleOptions[i]);
+                                variantIndexWithoutEffect = i;
+                                break;
                             }
-                            break;
+                        }
+
+                        // swap the no-effect variant with the current selected style's corresponding variant
+                        // so that to achieve continuity
+                        if (variantIndexWithoutEffect != -1 && givenOptions == null)
+                        {
+                            // swap style variant
+                            var tempVariant = currentVariants[variantIndexWithoutEffect];
+                            currentVariants[variantIndexWithoutEffect] =
+                                currentVariants[0];
+                            currentVariants[0] = tempVariant;
+                            // swap default style options (in variation stage)
+                            var tempStyleOpt = _styleOptions[variantIndexWithoutEffect];
+                            _styleOptions[variantIndexWithoutEffect] =
+                                _styleOptions[0];
+                            _styleOptions[0] = tempStyleOpt;
+                        }
+
+                        for (var i = 0; i < currentVariants.Count && i < _styleOptions.Count; i++)
+                        {
+                            currentVariants[i].Apply(_styleOptions[i]);
                         }
                     }
 
