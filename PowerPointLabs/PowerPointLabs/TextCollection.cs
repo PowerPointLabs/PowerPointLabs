@@ -352,6 +352,8 @@
                 "Please fill in Search Engine Id and API Key by clicking ADVANCED.. button.";
             public const string ErrorImageCorrupted =
                 "Failed to load image. The image file is corrupted.";
+            public const string ErrorImageDownloadCorrupted =
+                "Failed to load image. Please try again; or manually download the image and drag it to Images Lab.";
             public const string ErrorFailedToLoad =
                 "Failed to load image. ";
             public const string ErrorUrlLinkIncorrect =

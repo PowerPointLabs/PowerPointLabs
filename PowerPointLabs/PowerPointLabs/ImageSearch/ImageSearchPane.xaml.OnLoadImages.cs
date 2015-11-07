@@ -157,7 +157,7 @@ namespace PowerPointLabs.ImageSearch
                         }
                         catch
                         {
-                            ShowErrorMessageBox(TextCollection.ImagesLabText.ErrorImageCorrupted);
+                            ShowErrorMessageBox(TextCollection.ImagesLabText.ErrorImageDownloadCorrupted);
                             Dispatcher.Invoke(new Action(() =>
                             {
                                 // TODO turn off progress ring after all downloaded
