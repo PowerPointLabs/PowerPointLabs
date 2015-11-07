@@ -34,7 +34,6 @@ namespace PowerPointLabs.ImageSearch
 
         private void MenuItemAdjustImage_OnClick(object sender, RoutedEventArgs e)
         {
-            if (SearchButton.SelectedIndex == TextCollection.ImagesLabText.ButtonIndexSearch) return;
 
             if (_rightClickedSearchListBoxItemIndex < 0
                 || _rightClickedSearchListBoxItemIndex > SearchListBox.Items.Count)

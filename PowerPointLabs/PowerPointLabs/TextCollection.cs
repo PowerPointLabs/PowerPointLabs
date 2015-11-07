@@ -366,7 +366,7 @@
 
             public const string MultiPurposeButtonNameSearch = "Search";
             public const string MultiPurposeButtonNameDownload = "Download";
-            public const string MultiPurposeButtonNameFromFile = "Load Images";
+            public const string MultiPurposeButtonNameFromFile = "Select Images";
 
             public const string TextBoxWatermarkSearch = "Type here to search for images";
             public const string TextBoxWatermarkDownload = "Paste the image link here";
@@ -374,7 +374,7 @@
 
             public const string InstructionForSearch = "Type the keywords in the textbox above to search for images.";
             public const string InstructionForDownload = "Paste the image link in the textbox above to download images, or drag and drop the link here.";
-            public const string InstructionForFromFile = "Click the 'Load Images' button above to load local images, or drag and drop the files here.";
+            public const string InstructionForFromFile = "Click the 'Select Images' button above to load local images, or drag and drop the files here.";
         }
 
         # region Agenda Lab

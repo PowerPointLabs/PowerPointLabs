@@ -1,9 +1,7 @@
 ﻿using System;
-using System.Collections.Generic;
 using MahApps.Metro.Controls.Dialogs;
 using PowerPointLabs.ImageSearch.Domain;
 using PowerPointLabs.ImageSearch.Util;
-using PowerPointLabs.Models;
 
 namespace PowerPointLabs.ImageSearch
 {

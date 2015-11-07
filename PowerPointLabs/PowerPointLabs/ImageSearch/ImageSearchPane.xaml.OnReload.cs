@@ -21,7 +21,7 @@ namespace PowerPointLabs.ImageSearch
 
         private void ReloadButton_OnClick(object sender, RoutedEventArgs e)
         {
-            _reloadStylesDialog.Init("Reload Styles from the Selected Slide");
+            _reloadStylesDialog.Init("Load Styles or Image from the Selected Slide");
             _reloadStylesDialog.FocusOkButton();
             this.ShowMetroDialogAsync(_reloadStylesDialog, MetroDialogOptions);
         }

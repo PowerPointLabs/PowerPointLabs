@@ -92,11 +92,6 @@ namespace PowerPointLabs.ImageSearch
                         //add it
                         SearchList.Add(fromFileItem);  
                     }
-
-                    if (SearchButton.SelectedIndex != TextCollection.ImagesLabText.ButtonIndexFromFile)
-                    {
-                        SearchButton.SelectedIndex = TextCollection.ImagesLabText.ButtonIndexFromFile;
-                    }
                 }
                 catch
                 {
@@ -137,10 +132,6 @@ namespace PowerPointLabs.ImageSearch
                 };
                 UrlUtil.GetMetaInfo(ref downloadLink, item);
 
-                if (SearchButton.SelectedIndex != TextCollection.ImagesLabText.ButtonIndexDownload)
-                {
-                    SearchButton.SelectedIndex = TextCollection.ImagesLabText.ButtonIndexDownload;
-                }
                 // add it
                 SearchList.Add(item);
                 SearchProgressRing.IsActive = true;

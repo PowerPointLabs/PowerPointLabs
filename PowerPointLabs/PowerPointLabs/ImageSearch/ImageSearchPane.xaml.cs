@@ -213,8 +213,6 @@ namespace PowerPointLabs.ImageSearch
                 TextCollection.ImagesLabText.MultiPurposeButtonNameDownload, 
                 TextCollection.ImagesLabText.MultiPurposeButtonNameFromFile
             });
-            SearchButton.ItemsSource = MultiplePurposeButtons;
-            SearchButton.SelectedIndex = TextCollection.ImagesLabText.ButtonIndexFromFile;
         }
 
         private void InitPreviewList()
@@ -317,19 +315,7 @@ namespace PowerPointLabs.ImageSearch
 
         private void SearchButton_OnClick(object sender, RoutedEventArgs e)
         {
-            switch (SearchButton.SelectedIndex)
-            {
-                case TextCollection.ImagesLabText.ButtonIndexSearch:
-                    CloseVariationsFlyout();
-                    DoSearch();
-                    break;
-                case TextCollection.ImagesLabText.ButtonIndexDownload:
-                    DoDownloadImage();
-                    break;
-                case TextCollection.ImagesLabText.ButtonIndexFromFile:
-                    DoLoadImageFromFile();
-                    break;
-            }
+            DoLoadImageFromFile();
         }
 
         // intent:
@@ -495,33 +481,6 @@ namespace PowerPointLabs.ImageSearch
             }
         }
 
-        private void SearchButton_OnSelectionChanged(object sender, SelectionChangedEventArgs e)
-        {
-            SearchTextBox.Text = "";
-            switch (SearchButton.SelectedIndex)
-            {
-                case TextCollection.ImagesLabText.ButtonIndexSearch:
-                    SearchListBoxContextMenu.Visibility = Visibility.Collapsed;
-                    SearchTextBox.IsEnabled = true;
-                    SearchTextboxWatermark.Text = TextCollection.ImagesLabText.TextBoxWatermarkSearch;
-                    SearchInstructions.Text = TextCollection.ImagesLabText.InstructionForSearch;
-                    FocusSearchTextBox();
-                    break;
-                case TextCollection.ImagesLabText.ButtonIndexDownload:
-                    SearchListBoxContextMenu.Visibility = Visibility.Visible;
-                    SearchTextBox.Visibility = Visibility.Visible;
-                    SearchTextboxWatermark.Text = TextCollection.ImagesLabText.TextBoxWatermarkDownload;
-                    SearchInstructions.Text = TextCollection.ImagesLabText.InstructionForDownload;
-                    break;
-                case TextCollection.ImagesLabText.ButtonIndexFromFile:
-                    SearchListBoxContextMenu.Visibility = Visibility.Visible;
-                    SearchTextBox.Visibility = Visibility.Collapsed;
-                    SearchTextboxWatermark.Text = TextCollection.ImagesLabText.TextBoxWatermarkFromFile;
-                    SearchInstructions.Text = TextCollection.ImagesLabText.InstructionForFromFile;
-                    break;
-            }
-        }
-
         private void ImageSearchPane_OnActivated(object sender, EventArgs e)
         {
             if (!_isWindowActivatedWithPreview) return;
@@ -612,8 +571,6 @@ namespace PowerPointLabs.ImageSearch
 
         private void DeleteImageShape()
         {
-            if (SearchButton.SelectedIndex == TextCollection.ImagesLabText.ButtonIndexSearch) return;
-            
             if (_rightClickedSearchListBoxItemIndex < 0 
                 || _rightClickedSearchListBoxItemIndex > SearchListBox.Items.Count)
                 return;
