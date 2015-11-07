@@ -2,6 +2,7 @@
 using System.Windows;
 using System.Windows.Input;
 using MahApps.Metro.Controls;
+using PowerPointLabs.ImageSearch.Domain;
 using PowerPointLabs.ImageSearch.Util;
 
 namespace PowerPointLabs.ImageSearch
@@ -20,12 +21,26 @@ namespace PowerPointLabs.ImageSearch
 
         private MetroWindow _parent;
 
+        private const string DialogSettingsFilename = "quick-drop-dialog.xml";
+
         public QuickDropDialog(MetroWindow parent)
         {
             _parent = parent;
             InitializeComponent();
-            Left = SystemParameters.PrimaryScreenWidth - Width - 100;
-            Top = SystemParameters.PrimaryScreenHeight - Height - 50;
+
+            // init window pos
+            var windowInfo = StoragePath.LoadWindowInfo(DialogSettingsFilename);
+            if (windowInfo.Left != -1)
+            {
+                Left = windowInfo.Left;
+                Top = windowInfo.Top;
+            }
+            else
+            {
+                Left = SystemParameters.PrimaryScreenWidth - Width - 100;
+                Top = SystemParameters.PrimaryScreenHeight - Height - 50;
+            }
+
             InitDragAndDrop();
             IsOpen = true;
             ImagesLabLogo.Source = ImageUtil.BitmapToImageSource(Properties.Resources.ImagesLab);
@@ -83,6 +98,11 @@ namespace PowerPointLabs.ImageSearch
         private void QuickDropDialog_OnClosing(object sender, CancelEventArgs e)
         {
             IsOpen = false;
+
+            var windowInfo = new WindowInfo();
+            windowInfo.Left = Left;
+            windowInfo.Top = Top;
+            StoragePath.Save(DialogSettingsFilename, windowInfo);
         }
 
         private void QuickDropDialog_OnMouseDoubleClick(object sender, MouseButtonEventArgs e)
