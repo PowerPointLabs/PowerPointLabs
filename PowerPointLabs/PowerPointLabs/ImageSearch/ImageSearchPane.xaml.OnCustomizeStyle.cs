@@ -264,6 +264,7 @@ namespace PowerPointLabs.ImageSearch
 
             if (currentCategory.Contains("Color"))
             {
+                styleOption.OptionName = "Customized";
                 switch (currentCategory)
                 {
                     case TextCollection.ImagesLabText.VariantCategoryTextColor:
@@ -292,6 +293,7 @@ namespace PowerPointLabs.ImageSearch
 
             if (currentCategory.Contains("Color"))
             {
+                styleVariant.Set("OptionName", "Customized");
                 switch (currentCategory)
                 {
                     case TextCollection.ImagesLabText.VariantCategoryTextColor:
@@ -320,6 +322,7 @@ namespace PowerPointLabs.ImageSearch
 
             if (currentCategory == TextCollection.ImagesLabText.VariantCategoryFontFamily)
             {
+                styleOption.OptionName = "Customized";
                 styleOption.FontFamily = font;
             }
         }
@@ -334,6 +337,7 @@ namespace PowerPointLabs.ImageSearch
 
             if (currentCategory == TextCollection.ImagesLabText.VariantCategoryFontFamily)
             {
+                styleVariant.Set("OptionName", "Customized");
                 styleVariant.Set("FontFamily", font);
             }
         }

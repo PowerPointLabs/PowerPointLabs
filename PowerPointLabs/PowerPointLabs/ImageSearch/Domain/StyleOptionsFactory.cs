@@ -148,6 +148,7 @@ namespace PowerPointLabs.ImageSearch.Domain
             foreach (var option in result)
             {
                 option.TextBoxPosition = 7;//bottom-left;
+                option.Transparency = 100;
             }
             return result;
         }

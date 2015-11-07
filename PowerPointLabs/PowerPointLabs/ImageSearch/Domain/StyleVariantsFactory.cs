@@ -58,6 +58,7 @@ namespace PowerPointLabs.ImageSearch.Domain
             {
                 { TextCollection.ImagesLabText.VariantCategoryBannerColor, GetBannerVariants() },
                 { TextCollection.ImagesLabText.VariantCategoryBannerTransparency, GetBannerTransparencyVariants() },
+                { TextCollection.ImagesLabText.VariantCategoryBrightness, GetBrightnessVariants() },
                 { TextCollection.ImagesLabText.VariantCategoryTextColor, GetFontColorVariants() },
                 { TextCollection.ImagesLabText.VariantCategoryTextPosition, GetFontPositionVariants() },
                 { TextCollection.ImagesLabText.VariantCategoryFontFamily, GetFontFamilyVariants() },
@@ -71,6 +72,7 @@ namespace PowerPointLabs.ImageSearch.Domain
             {
                 { TextCollection.ImagesLabText.VariantCategoryTextBoxColor, GetTextBoxVariants() },
                 { TextCollection.ImagesLabText.VariantCategoryTextBoxTransparency, GetTextBoxTransparencyVariants() },
+                { TextCollection.ImagesLabText.VariantCategoryBrightness, GetBrightnessVariants() },
                 { TextCollection.ImagesLabText.VariantCategoryTextColor, GetFontColorVariants() },
                 { TextCollection.ImagesLabText.VariantCategoryTextPosition, GetFontPositionVariants() },
                 { TextCollection.ImagesLabText.VariantCategoryFontFamily, GetFontFamilyVariants() },
