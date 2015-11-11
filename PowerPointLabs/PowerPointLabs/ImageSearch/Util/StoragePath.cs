@@ -15,7 +15,6 @@ namespace PowerPointLabs.ImageSearch.Util
 
         public static readonly string LoadingImgPath = AggregatedFolder + "loading";
         public static readonly string LoadMoreImgPath = AggregatedFolder + "loadMore";
-        public static readonly string QuickDropDialogSettingsPath = AggregatedFolder + "quick-drop-dialog.xml";
 
         public static bool InitPersistentFolder(ICollection<string> filesInUse)
         {
@@ -51,7 +50,6 @@ namespace PowerPointLabs.ImageSearch.Util
                 filesInUse.Add(AggregatedFolder + "ImagesLabImagesList");
                 filesInUse.Add(LoadingImgPath);
                 filesInUse.Add(LoadMoreImgPath);
-                filesInUse.Add(QuickDropDialogSettingsPath);
                 foreach (var file in directory.GetFiles())
                 {
                     if (!filesInUse.Contains(file.FullName))
@@ -92,28 +90,6 @@ namespace PowerPointLabs.ImageSearch.Util
         }
 
         /// <summary>
-        /// Save window info (window positions etc)
-        /// </summary>
-        /// <param name="filename"></param>
-        /// <param name="windowInfo"></param>
-        public static void Save(string filename, WindowInfo windowInfo)
-        {
-            try
-            {
-                using (var writer = new StreamWriter(GetPath(filename)))
-                {
-                    var serializer = new XmlSerializer(windowInfo.GetType());
-                    serializer.Serialize(writer, windowInfo);
-                    writer.Flush();
-                }
-            }
-            catch (Exception e)
-            {
-                PowerPointLabsGlobals.Log("Failed to save Images Lab window info: " + e.StackTrace, "Error");
-            }
-        }
-
-        /// <summary>
         /// Save images list
         /// </summary>
         /// <param name="filename"></param>
@@ -132,29 +108,6 @@ namespace PowerPointLabs.ImageSearch.Util
             catch (Exception e)
             {
                 PowerPointLabsGlobals.Log("Failed to save Images Lab settings: " + e.StackTrace, "Error");
-            }
-        }
-
-        /// <summary>
-        /// Load window info
-        /// </summary>
-        /// <param name="filename"></param>
-        /// <returns></returns>
-        public static WindowInfo LoadWindowInfo(string filename)
-        {
-            try
-            {
-                using (var stream = File.OpenRead(GetPath(filename)))
-                {
-                    var serializer = new XmlSerializer(typeof(WindowInfo));
-                    var result = serializer.Deserialize(stream) as WindowInfo ?? new WindowInfo();
-                    return result;
-                }
-            }
-            catch (Exception e)
-            {
-                PowerPointLabsGlobals.Log("Failed to load Images Lab window info: " + e.StackTrace, "Error");
-                return new WindowInfo();
             }
         }
 

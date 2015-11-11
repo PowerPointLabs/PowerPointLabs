@@ -291,7 +291,6 @@
     <Compile Include="ImageSearch\Domain\StyleOptionsFactory.cs" />
     <Compile Include="ImageSearch\Domain\StyleVariants.cs" />
     <Compile Include="ImageSearch\Domain\StyleVariantsFactory.cs" />
-    <Compile Include="ImageSearch\Domain\WindowInfo.cs" />
     <Compile Include="ImageSearch\GoToSlideDialog.xaml.cs">
       <DependentUpon>GoToSlideDialog.xaml</DependentUpon>
     </Compile>
@@ -510,6 +509,7 @@
     <Compile Include="WPF\Observable\ObservableBoolean.cs" />
     <Compile Include="WPF\Observable\ObservableInt.cs" />
     <Compile Include="WPF\Observable\ObservableString.cs" />
+    <Compile Include="WPF\WindowSettings.cs" />
     <Compile Include="XMLMisc\XMLParser.cs" />
     <Compile Include="ZipStorer.cs" />
     <Compile Include="ZoomToArea.cs" />
