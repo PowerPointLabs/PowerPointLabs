@@ -628,6 +628,10 @@ namespace PowerPointLabs
         {
             return TextCollection.AddCustomShapeShapeLabel;
         }
+        public string GetHideSelectedShapeLabel(Office.IRibbonControl control)
+        {
+            return TextCollection.HideSelectedShapeLabel;
+        }
         public string GetCutOutShapeShapeLabel(Office.IRibbonControl control)
         {
             return TextCollection.CutOutShapeShapeLabel;
@@ -2370,5 +2374,12 @@ namespace PowerPointLabs
             }
             return null;
         }
+
+        public void HideShapeButtonClick(Office.IRibbonControl control)
+        {
+            var selectedShapes = Globals.ThisAddIn.Application.ActiveWindow.Selection.ShapeRange;
+            selectedShapes.Visible = Office.MsoTriState.msoFalse;
+        }
+
     }
 }
