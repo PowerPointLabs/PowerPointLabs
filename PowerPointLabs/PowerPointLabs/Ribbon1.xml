@@ -427,6 +427,10 @@
                 getLabel="GetFitToHeightShapeLabel"
                 getImage="GetFitToHeightImage"
                 onAction="FitToHeightClick"/>
+      <button id="hideShapeFreeform"
+              getLabel ="GetHideSelectedShapeLabel"
+              getImage="GetAddToCustomShapeContextImage"
+              onAction="HideShapeButtonClick"/>
       </menu>
     </contextMenu>
     <contextMenu idMso="ContextMenuPicture">
