@@ -23,7 +23,7 @@ namespace PowerPointLabs
 
                 PowerPoint.ShapeRange selectedShapes = null;
                 Office.TextRange2 selectedText = null;
-
+                Boolean hasBackGround = false;
                 //Get shapes to consider for animation
                 switch (userSelection)
                 {
@@ -41,7 +41,12 @@ namespace PowerPointLabs
                 if (selectedText.Length <= 0) return;
                 if (selectedShapes.Count != 1) return;
 
-                List<PowerPoint.Shape> selectionToAnimate = GetShapesFromLinesInText(currentSlide, selectedText, selectedShapes[1]);
+                 if (selectedShapes.Fill.ForeColor.RGB == 16777215)
+                 {
+                     hasBackGround = true;
+                 }
+
+                List<PowerPoint.Shape> selectionToAnimate = GetShapesFromLinesInText(currentSlide, selectedText, selectedShapes[1], hasBackGround);
                 GroupShapesForAnimation(selectionToAnimate);
 
                 List<PowerPoint.Shape> shapesToAnimate = GetShapesToAnimate(currentSlide);
@@ -105,7 +110,7 @@ namespace PowerPointLabs
             return previousFragments;
         }
 
-        private static List<PowerPoint.Shape> GetShapesFromLinesInText(PowerPointSlide currentSlide, Office.TextRange2 text, PowerPoint.Shape shape)
+        private static List<PowerPoint.Shape> GetShapesFromLinesInText(PowerPointSlide currentSlide, Office.TextRange2 text, PowerPoint.Shape shape, Boolean hasBackGround)
         {
             List<PowerPoint.Shape> shapesToAnimate = new List<PowerPoint.Shape>();
 
@@ -122,6 +127,7 @@ namespace PowerPointLabs
                 highlightShape.Fill.ForeColor.RGB = Utils.Graphics.ConvertColorToRgb(backgroundColor);
                 highlightShape.Fill.Transparency = 0.50f;
                 highlightShape.Line.Visible = Office.MsoTriState.msoFalse;
+                if (hasBackGround)
                 Utils.Graphics.MoveZToJustBehind(highlightShape, shape);
                 highlightShape.Name = "PPTLabsHighlightTextFragmentsShape" + Guid.NewGuid().ToString();
                 highlightShape.Tags.Add("HighlightTextFragment", highlightShape.Name);
