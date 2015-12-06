@@ -228,6 +228,8 @@
         # endregion
 
         # region Context Menu Labels
+
+        public const string PowerPointLabsMenuLabel = "PowerPointLabs";
         public const string NameEditShapeLabel = "Edit Name";
         public const string SpotlightShapeLabel = "Add Spotlight";
         public const string ZoomInContextMenuLabel = "Drill Down";
@@ -238,6 +240,7 @@
         public const string HighlightBulletsBackgroundShapeLabel = "Highlight Background";
         public const string ConvertToPictureShapeLabel = "Convert to Picture";
         public const string AddCustomShapeShapeLabel = "Add to Shapes Lab";
+        public const string HideSelectedShapeLabel = "Hide the Shape";
         public const string CutOutShapeShapeLabel = "Crop To Shape";
         public const string FitToWidthShapeLabel = "Fit To Width";
         public const string FitToHeightShapeLabel = "Fit To Height";
@@ -311,6 +314,58 @@
         public const string ErrorTypeNotSupported = "Convert to Picture only supports Shapes and Charts.";
         public const string ErrorWindowTitle = "Convert to Picture: Unsupported Object";
         # endregion
+
+        public class ImagesLabText
+        {
+            public const string SearchEngineGoogle = "GoogleEngine";
+            public const string SearchEngineBing = "BingEngine";
+
+            public const int ButtonIndexSearch = 0;
+            public const int ButtonIndexDownload = 1;
+            public const int ButtonIndexFromFile = 2;
+
+            public const int StyleIndexDirectText = 0;
+            public const int StyleIndexBlur = 1;
+            public const int StyleIndexTextBox = 2;
+            public const int StyleIndexBanner = 3;
+            public const int StyleIndexSpecialEffect = 4;
+
+            public const string StyleNameDirectText = "Direct Text Style";
+            public const string StyleNameBlur = "Blur Style";
+            public const string StyleNameTextBox = "TextBox Style";
+            public const string StyleNameBanner = "Banner Style";
+            public const string StyleNameSpecialEffect = "Special Effect Style";
+
+            public const string ErrorNetworkOrApiQuotaUnavailable =
+            "Failed to search images. Please check your network, or the daily API quota is ran out.";
+            public const string ErrorNetworkOrSourceUnavailable =
+                "Failed to insert style. Please check your network, or the image source is unavailable.";
+            public const string ErrorNoEngineIdOrApiKey =
+                "Please fill in Search Engine Id and API Key by clicking ADVANCED.. button.";
+            public const string ErrorImageCorrupted =
+                "Failed to load image. The image file is corrupted.";
+            public const string ErrorUrlLinkIncorrect =
+                "The download link is not in the correct format. Did the link miss out 'http://'?";
+            public const string ErrorNoSelectedSlide =
+                "Cannot apply styles. Please select a slide first.";
+            public const string ErrorFailToInitTempFolder =
+                "Failed to initialize Images Lab. Please verify that sufficient permissions have been granted by Administrator.";
+
+            public const string SuccessfullyAppliedStyle =
+                "Successfully Applied.";
+
+            public const string MultiPurposeButtonNameSearch = "Search";
+            public const string MultiPurposeButtonNameDownload = "Download";
+            public const string MultiPurposeButtonNameFromFile = "From File";
+
+            public const string TextBoxWatermarkSearch = "Type here to search for images";
+            public const string TextBoxWatermarkDownload = "Paste the image link here";
+            public const string TextBoxWatermarkFromFile = "";
+
+            public const string InstructionForSearch = "No result. Type the keywords in the textbox above to search for images.";
+            public const string InstructionForDownload = "No image. Paste the image link in the textbox above to download images, or drag and drop the link here.";
+            public const string InstructionForFromFile = "No image. Click the 'From File' button above to load local images, or drag and drop the file here.";
+        }
 
         # region Agenda Lab
         // Errors

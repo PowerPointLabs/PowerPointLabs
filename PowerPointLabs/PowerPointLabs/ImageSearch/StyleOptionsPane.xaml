@@ -1,0 +1,140 @@
+﻿<UserControl x:Class="PowerPointLabs.ImageSearch.StyleOptionsPane"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:controls="clr-namespace:MahApps.Metro.Controls;assembly=MahApps.Metro"
+             mc:Ignorable="d" 
+             d:DesignHeight="875" d:DesignWidth="400">
+    <UserControl.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="pack://application:,,,/MahApps.Metro;component/Styles/Controls.xaml" />
+                <ResourceDictionary Source="pack://application:,,,/MahApps.Metro;component/Styles/Fonts.xaml" />
+                <ResourceDictionary Source="pack://application:,,,/MahApps.Metro;component/Styles/Colors.xaml" />
+                <ResourceDictionary Source="pack://application:,,,/MahApps.Metro;component/Styles/Accents/orange.xaml" />
+                <ResourceDictionary Source="pack://application:,,,/MahApps.Metro;component/Styles/Accents/basedark.xaml" />
+            </ResourceDictionary.MergedDictionaries>
+        </ResourceDictionary>
+    </UserControl.Resources>
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="200"/>
+            <ColumnDefinition Width="200"/>
+        </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="35"/>
+            <RowDefinition Height="35"/>
+            <RowDefinition Height="35"/>
+            <RowDefinition Height="35"/>
+            <RowDefinition Height="35"/>
+            <RowDefinition Height="35"/>
+            <RowDefinition Height="35"/>
+            <RowDefinition Height="35"/>
+            <RowDefinition Height="35"/>
+            <RowDefinition Height="35"/>
+            <RowDefinition Height="35"/>
+            <RowDefinition Height="35"/>
+            <RowDefinition Height="35"/>
+            <RowDefinition Height="35"/>
+            <RowDefinition Height="35"/>
+            <RowDefinition Height="35"/>
+            <RowDefinition Height="35"/>
+            <RowDefinition Height="35"/>
+            <RowDefinition Height="35"/>
+            <RowDefinition Height="35"/>
+            <RowDefinition Height="35"/>
+            <RowDefinition Height="35"/>
+            <RowDefinition Height="35"/>
+            <RowDefinition Height="35"/>
+            <RowDefinition Height="35"/>
+        </Grid.RowDefinitions>
+        <Label BorderBrush="#565656" BorderThickness="0,0,0,1" Content="General" Foreground="#AAAAAA" FontSize="15" HorizontalAlignment="Left" VerticalAlignment="Center" Grid.Column="0" Grid.Row="0"/>
+        <Label Content="use original text format" Foreground="#FFFFFF" FontSize="15" HorizontalAlignment="Left" VerticalAlignment="Center" Grid.Column="0" Grid.Row="1"/>
+        <controls:ToggleSwitch IsCheckedChanged="ToggleSwitch_OnIsCheckedChanged" IsChecked="{Binding Path=IsUseOriginalTextFormat, Mode=TwoWay, NotifyOnSourceUpdated=True}" HorizontalAlignment="Left" OnLabel="" OffLabel="" Grid.Row="1" Grid.Column="1" />
+        <Label Content="font family" Foreground="#FFFFFF" FontSize="15" HorizontalAlignment="Left" VerticalAlignment="Center" Grid.Column="0" Grid.Row="2"/>
+        <ComboBox Name="FontFamilyComboBox" SelectedIndex="{Binding Path=FontFamily, Mode=TwoWay, NotifyOnSourceUpdated=True}" HorizontalAlignment="Left" VerticalAlignment="Center" Grid.Column="1" Grid.Row="2">
+            <ComboBoxItem>Segoe UI</ComboBoxItem>
+            <ComboBoxItem>Segoe UI Light</ComboBoxItem>
+            <ComboBoxItem>Calibri</ComboBoxItem>
+            <ComboBoxItem>Calibri Light</ComboBoxItem>
+            <ComboBoxItem>Trebuchet MS</ComboBoxItem>
+            <ComboBoxItem>Original Font</ComboBoxItem>
+        </ComboBox>
+        <Label Content="font size increase by" Foreground="#FFFFFF" FontSize="15" HorizontalAlignment="Left" VerticalAlignment="Center" Grid.Column="0" Grid.Row="3"/>
+        <controls:NumericUpDown Name="FontSizeTextBox" Value="{Binding Path=FontSizeIncrease, Mode=TwoWay, NotifyOnSourceUpdated=True}" Minimum="0" Maximum="30" Interval="1" HorizontalAlignment="Left" VerticalAlignment="Center" Grid.Column="1" Grid.Row="3" />
+        <Label Content="font color" Foreground="#FFFFFF" FontSize="15" HorizontalAlignment="Left" VerticalAlignment="Center" Grid.Column="0" Grid.Row="4"/>
+        <Border Name="FontColorPanel" MouseLeftButtonUp="ColorPanel_OnMouseLeftButtonUp" Background="{Binding Path=FontColor, Mode=TwoWay, NotifyOnSourceUpdated=True}" BorderBrush="#D74926" BorderThickness="1" Height="29" Width="100" HorizontalAlignment="Left" VerticalAlignment="Center" Grid.Column="1" Grid.Row="4" />
+        <Label Content="text position" Foreground="#FFFFFF" FontSize="15" HorizontalAlignment="Left" VerticalAlignment="Center" Grid.Column="0" Grid.Row="5"/>
+        <ComboBox Name="TextboxPositionComboBox" SelectionChanged="TextboxPositionComboBox_OnSelectionChanged" SelectedIndex="{Binding Path=TextBoxPosition, Mode=TwoWay, NotifyOnSourceUpdated=True}" HorizontalAlignment="Left" VerticalAlignment="Center" Grid.Column="1" Grid.Row="5">
+            <ComboBoxItem>Original</ComboBoxItem>
+            <ComboBoxItem>Top Left</ComboBoxItem>
+            <ComboBoxItem>Top</ComboBoxItem>
+            <ComboBoxItem>Top Right</ComboBoxItem>
+            <ComboBoxItem>Left</ComboBoxItem>
+            <ComboBoxItem>Centred</ComboBoxItem>
+            <ComboBoxItem>Right</ComboBoxItem>
+            <ComboBoxItem>Bottom Left</ComboBoxItem>
+            <ComboBoxItem>Bottom</ComboBoxItem>
+            <ComboBoxItem>Bottom Right</ComboBoxItem>
+        </ComboBox>
+        <Label Content="text alignment" Foreground="#FFFFFF" FontSize="15" HorizontalAlignment="Left" VerticalAlignment="Center" Grid.Column="0" Grid.Row="6"/>
+        <ComboBox Name="TextboxAlignmentComboBox" SelectedIndex="{Binding Path=TextBoxAlignment, Mode=TwoWay, NotifyOnSourceUpdated=True}" HorizontalAlignment="Left" VerticalAlignment="Center" Grid.Column="1" Grid.Row="6">
+            <ComboBoxItem>Auto</ComboBoxItem>
+            <ComboBoxItem>Left</ComboBoxItem>
+            <ComboBoxItem>Centred</ComboBoxItem>
+            <ComboBoxItem>Right</ComboBoxItem>
+        </ComboBox>
+
+        <Label BorderBrush="#565656" BorderThickness="0,0,0,1" Content="Background Image" Foreground="#AAAAAA" FontSize="15" HorizontalAlignment="Left" VerticalAlignment="Center" Grid.Column="0" Grid.Row="7"/>
+        <Label Content="overlay color" Foreground="#FFFFFF" FontSize="15" HorizontalAlignment="Left" VerticalAlignment="Center" Grid.Column="0" Grid.Row="8"/>
+        <Border Name="OverlayColorPanel" MouseLeftButtonUp="ColorPanel_OnMouseLeftButtonUp" Background="{Binding Path=OverlayColor, Mode=TwoWay, NotifyOnSourceUpdated=True}" BorderBrush="#D74926" BorderThickness="1" Height="29" Width="100" HorizontalAlignment="Left" VerticalAlignment="Center" Grid.Column="1" Grid.Row="8" />
+        <Label Content="transparency" Foreground="#FFFFFF" FontSize="15" HorizontalAlignment="Left" VerticalAlignment="Center" Grid.Column="0" Grid.Row="9"/>
+        <Slider Value="{Binding Path=Transparency, Mode=TwoWay, NotifyOnSourceUpdated=True}" Width="160" Minimum="1" Maximum="100" HorizontalAlignment="Left" VerticalAlignment="Center" Grid.Column="1" Grid.Row="9"></Slider>
+
+        <Label BorderBrush="#565656" BorderThickness="0,0,0,1" Content="TextBox Style" Foreground="#AAAAAA" FontSize="15" HorizontalAlignment="Left" VerticalAlignment="Center" Grid.Column="0" Grid.Row="10"/>
+        <Label Content="overlay color" Foreground="#FFFFFF" FontSize="15" HorizontalAlignment="Left" VerticalAlignment="Center" Grid.Column="0" Grid.Row="11"/>
+        <Border Name="TextBoxOverlayColorPanel" MouseLeftButtonUp="ColorPanel_OnMouseLeftButtonUp" Background="{Binding Path=TextBoxOverlayColor, Mode=TwoWay, NotifyOnSourceUpdated=True}" BorderBrush="#D74926" BorderThickness="1" Height="29" Width="100" HorizontalAlignment="Left" VerticalAlignment="Center" Grid.Column="1" Grid.Row="11" />
+        <Label Content="transparency" Foreground="#FFFFFF" FontSize="15" HorizontalAlignment="Left" VerticalAlignment="Center" Grid.Column="0" Grid.Row="12"/>
+        <Slider Value="{Binding Path=TextBoxTransparency, Mode=TwoWay, NotifyOnSourceUpdated=True}" Width="160" Minimum="1" Maximum="100" HorizontalAlignment="Left" VerticalAlignment="Center" Grid.Column="1" Grid.Row="12"></Slider>
+
+        <Label BorderBrush="#565656" BorderThickness="0,0,0,1" Content="Banner Style" Foreground="#AAAAAA" FontSize="15" HorizontalAlignment="Left" VerticalAlignment="Center" Grid.Column="0" Grid.Row="13"/>
+        <Label Content="banner shape" Foreground="#FFFFFF" FontSize="15" HorizontalAlignment="Left" VerticalAlignment="Center" Grid.Column="0" Grid.Row="14"/>
+        <ComboBox SelectedIndex="{Binding Path=BannerShape, Mode=TwoWay, NotifyOnSourceUpdated=True}" HorizontalAlignment="Left" VerticalAlignment="Center" Grid.Column="1" Grid.Row="14">
+            <ComboBoxItem>Rectangle</ComboBoxItem>
+            <ComboBoxItem>Circle</ComboBoxItem>
+        </ComboBox>
+        <Label Content="banner direction" Foreground="#FFFFFF" FontSize="15" HorizontalAlignment="Left" VerticalAlignment="Center" Grid.Column="0" Grid.Row="15"/>
+        <ComboBox SelectedIndex="{Binding Path=BannerDirection, Mode=TwoWay, NotifyOnSourceUpdated=True}" HorizontalAlignment="Left" VerticalAlignment="Center" Grid.Column="1" Grid.Row="15">
+            <ComboBoxItem>Auto</ComboBoxItem>
+            <ComboBoxItem>Horizontal</ComboBoxItem>
+            <ComboBoxItem>Vertical</ComboBoxItem>
+        </ComboBox>
+        <Label Content="overlay color" Foreground="#FFFFFF" FontSize="15" HorizontalAlignment="Left" VerticalAlignment="Center" Grid.Column="0" Grid.Row="16"/>
+        <Border Name="BannerOverlayColorPanel" MouseLeftButtonUp="ColorPanel_OnMouseLeftButtonUp" Background="{Binding Path=BannerOverlayColor, Mode=TwoWay, NotifyOnSourceUpdated=True}" BorderBrush="#D74926" BorderThickness="1" Height="29" Width="100" HorizontalAlignment="Left" VerticalAlignment="Center" Grid.Column="1" Grid.Row="16" />
+        <Label Content="transparency" Foreground="#FFFFFF" FontSize="15" HorizontalAlignment="Left" VerticalAlignment="Center" Grid.Column="0" Grid.Row="17"/>
+        <Slider Value="{Binding Path=BannerTransparency, Mode=TwoWay, NotifyOnSourceUpdated=True}" Width="160" Minimum="1" Maximum="100" HorizontalAlignment="Left" VerticalAlignment="Center" Grid.Column="1" Grid.Row="17"></Slider>
+
+        <Label BorderBrush="#565656" BorderThickness="0,0,0,1" Content="Special Effect Style" Foreground="#AAAAAA" FontSize="15" HorizontalAlignment="Left" VerticalAlignment="Center" Grid.Column="0" Grid.Row="18"/>
+        <Label Content="special effect" Foreground="#FFFFFF" FontSize="15" HorizontalAlignment="Left" VerticalAlignment="Center" Grid.Column="0" Grid.Row="19"/>
+        <ComboBox SelectedIndex="{Binding Path=SpecialEffect, Mode=TwoWay, NotifyOnSourceUpdated=True}" HorizontalAlignment="Left" VerticalAlignment="Center" Grid.Column="1" Grid.Row="19">
+            <ComboBoxItem>Grey Scale</ComboBoxItem>
+            <ComboBoxItem>Black White</ComboBoxItem>
+            <ComboBoxItem>Comic</ComboBoxItem>
+            <ComboBoxItem>Gotham</ComboBoxItem>
+            <ComboBoxItem>HiSatch</ComboBoxItem>
+            <ComboBoxItem>Invert</ComboBoxItem>
+            <ComboBoxItem>Lomograph</ComboBoxItem>
+            <ComboBoxItem>LoSatch</ComboBoxItem>
+            <ComboBoxItem>Polaroid</ComboBoxItem>
+            <ComboBoxItem>Sepia</ComboBoxItem>
+        </ComboBox>
+
+
+        <Label BorderBrush="#565656" BorderThickness="0,0,0,1" Content="Other" Foreground="#AAAAAA" FontSize="15" HorizontalAlignment="Left" VerticalAlignment="Center" Grid.Column="0" Grid.Row="20"/>
+        <Label Content="insert image reference" Foreground="#FFFFFF" FontSize="15" HorizontalAlignment="Left" VerticalAlignment="Center" Grid.Column="0" Grid.Row="21"/>
+        <controls:ToggleSwitch IsChecked="{Binding Path=IsInsertReference, Mode=TwoWay, NotifyOnSourceUpdated=True}" HorizontalAlignment="Left" OnLabel="" OffLabel="" Grid.Row="21" Grid.Column="1" />
+
+        <Button Click="ResetButton_OnClick" Content="Reset" Width="50" Height="30" HorizontalAlignment="Left" VerticalAlignment="Center" Grid.Column="0" Grid.Row="23"></Button>
+    </Grid>
+</UserControl>

@@ -170,6 +170,10 @@
     <Reference Include="ImageProcessor">
       <HintPath>..\packages\ImageProcessor.1.9.5.0\lib\ImageProcessor.dll</HintPath>
     </Reference>
+    <Reference Include="MahApps.Metro, Version=1.0.0.0, Culture=neutral, PublicKeyToken=f4fb5a3c4d1e5b4f, processorArchitecture=MSIL">
+      <HintPath>..\packages\MahApps.Metro.1.0.0.0\lib\net40\MahApps.Metro.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="Microsoft.Office.Interop.PowerPoint, Version=15.0.0.0, Culture=neutral, PublicKeyToken=71e9bce111e9429c, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <EmbedInteropTypes>True</EmbedInteropTypes>
@@ -192,6 +196,10 @@
     </Reference>
     <Reference Include="PresentationCore" />
     <Reference Include="PresentationFramework" />
+    <Reference Include="RestSharp, Version=105.1.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\RestSharp.105.1.0\lib\net4-client\RestSharp.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="stdole, Version=7.0.3300.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
       <EmbedInteropTypes>True</EmbedInteropTypes>
     </Reference>
@@ -202,6 +210,10 @@
     <Reference Include="System.Speech" />
     <Reference Include="System.Windows.Forms" />
     <Reference Include="System.Windows.Forms.DataVisualization" />
+    <Reference Include="System.Windows.Interactivity, Version=4.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\MahApps.Metro.1.0.0.0\lib\net40\System.Windows.Interactivity.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="System.Xaml" />
     <Reference Include="System.Xml" />
     <Reference Include="System.Core" />
@@ -292,6 +304,47 @@
     <Compile Include="DrawingsLab\DrawingsPaneWPF.xaml.cs">
       <DependentUpon>DrawingsPaneWPF.xaml</DependentUpon>
     </Compile>
+    <Compile Include="ImageSearch\Handler\Effect\Alignment.cs" />
+    <Compile Include="ImageSearch\Handler\Effect\Banner.cs" />
+    <Compile Include="ImageSearch\Handler\Effect\Position.cs" />
+    <Compile Include="ImageSearch\Handler\Effect\TextBoxes.cs" />
+    <Compile Include="ImageSearch\Handler\Effect\TextBoxInfo.cs" />
+    <Compile Include="ImageSearch\ImageSearchPane.xaml.Common.cs" />
+    <Compile Include="ImageSearch\Handler\Effect\EffectName.cs" />
+    <Compile Include="ImageSearch\Handler\Preview\PreviewInfo.cs" />
+    <Compile Include="ImageSearch\Handler\Effect\Tag.cs" />
+    <Compile Include="ImageSearch\ImageSearchPane.xaml.OnApplyStyle.cs" />
+    <Compile Include="ImageSearch\ImageSearchPane.xaml.OnBackgroundDownload.cs" />
+    <Compile Include="ImageSearch\ImageSearchPane.xaml.cs">
+      <DependentUpon>ImageSearchPane.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="ImageSearch\ImageSearchPane.xaml.OnDragAndDrop.cs" />
+    <Compile Include="ImageSearch\ImageSearchPane.xaml.OnPreview.cs" />
+    <Compile Include="ImageSearch\ImageSearchPane.xaml.OnLoadImages.cs" />
+    <Compile Include="ImageSearch\SearchEngine\AsyncSearchEngine.Events.cs" />
+    <Compile Include="ImageSearch\SearchEngine\AsyncSearchEngine.Logic.cs" />
+    <Compile Include="ImageSearch\SearchEngine\BingEngine.cs" />
+    <Compile Include="ImageSearch\SearchEngine\VO\BingSearchResults.cs" />
+    <Compile Include="ImageSearch\Util\ShapeUtil.cs" />
+    <Compile Include="ImageSearch\Util\UrlUtil.cs" />
+    <Compile Include="ImageSearch\Util\VOUtil.cs" />
+    <Compile Include="Utils\Assumption.cs" />
+    <Compile Include="Utils\Exceptions\AssumptionFailedException.cs" />
+    <Compile Include="ImageSearch\Domain\ImageItem.cs" />
+    <Compile Include="ImageSearch\Domain\SearchOptions.cs" />
+    <Compile Include="ImageSearch\Domain\StyleOptions.cs" />
+    <Compile Include="ImageSearch\Handler\StylesHandler.cs" />
+    <Compile Include="ImageSearch\SearchEngine\GoogleEngine.cs" />
+    <Compile Include="ImageSearch\SearchOptionsPane.xaml.cs">
+      <DependentUpon>SearchOptionsPane.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="ImageSearch\Handler\EffectsHandler.cs" />
+    <Compile Include="ImageSearch\StyleOptionsPane.xaml.cs">
+      <DependentUpon>StyleOptionsPane.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="ImageSearch\Util\StoragePath.cs" />
+    <Compile Include="ImageSearch\Util\TempPath.cs" />
+    <Compile Include="ImageSearch\SearchEngine\VO\GoogleSearchResults.cs" />
     <Compile Include="Models\PowerPointBgEffectSlide.cs" />
     <Compile Include="LabeledThumbnail.cs">
       <SubType>UserControl</SubType>
@@ -316,10 +369,12 @@
     <Compile Include="Settings.cs" />
     <Compile Include="ShapesLabConfig.cs" />
     <Compile Include="TextCollection.cs" />
+    <Compile Include="Utils\BoolUtil.cs" />
     <Compile Include="Utils\Common.cs" />
     <Compile Include="Utils\Comparers.cs" />
     <Compile Include="Utils\FileDir.cs" />
     <Compile Include="Utils\Graphics.cs" />
+    <Compile Include="Utils\StringUtil.cs" />
     <Compile Include="Views\CustomPaintTextBox.cs" />
     <Compile Include="Views\ErrorDialogWrapper.cs" />
     <Compile Include="FitToSlide.cs" />
@@ -444,6 +499,10 @@
     <Compile Include="Views\LoadingDialog.Designer.cs">
       <DependentUpon>LoadingDialog.cs</DependentUpon>
     </Compile>
+    <Compile Include="WPF\Observable\Model.cs" />
+    <Compile Include="WPF\Observable\ObservableBoolean.cs" />
+    <Compile Include="WPF\Observable\ObservableInt.cs" />
+    <Compile Include="WPF\Observable\ObservableString.cs" />
     <Compile Include="XMLMisc\XMLParser.cs" />
     <Compile Include="ZipStorer.cs" />
     <Compile Include="ZoomToArea.cs" />
@@ -751,7 +810,30 @@
     </Page>
   </ItemGroup>
   <ItemGroup>
+    <Page Include="ImageSearch\ImageSearchPane.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="ImageSearch\SearchOptionsPane.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="ImageSearch\StyleOptionsPane.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+  </ItemGroup>
+  <ItemGroup>
     <WCFMetadata Include="Service References\" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\loading.gif" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\loading.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\loadMore.png" />
   </ItemGroup>
   <!-- Include the build rules for a C# project. -->
   <PropertyGroup>

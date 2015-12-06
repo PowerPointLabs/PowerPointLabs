@@ -122,7 +122,14 @@ namespace PowerPointLabs
             {
                 if (audio.Contains(fileNameSearchPattern))
                 {
-                    File.Delete(audio);
+                    try
+                    {
+                        File.Delete(audio);
+                    }
+                    catch (Exception e)
+                    {
+                        PowerPointLabsGlobals.Log("Error", "Failed to delete audio, it may be still playing. " + e.Message);
+                    }
                 }
             }
 
