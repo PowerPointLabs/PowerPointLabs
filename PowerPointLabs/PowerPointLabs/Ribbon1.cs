@@ -1298,6 +1298,18 @@ namespace PowerPointLabs
                 throw;
             }
         }
+        public Bitmap GetHideShapeImage(Office.IRibbonControl control)
+        {
+            try
+            {
+                return new Bitmap(Properties.Resources.HideShape);
+            }
+            catch (Exception e)
+            {
+                PowerPointLabsGlobals.LogException(e, "GetHideShapeImage");
+                throw;
+            }
+        }
         # endregion
 
         public void ZoomStyleChanged(Office.IRibbonControl control, bool pressed)
