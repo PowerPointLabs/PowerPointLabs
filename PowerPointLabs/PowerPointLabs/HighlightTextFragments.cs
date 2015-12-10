@@ -4,7 +4,6 @@ using System.Linq;
 using System.Text;
 using System.Drawing;
 using System.Runtime.InteropServices;
-using DocumentFormat.OpenXml.Presentation;
 using PowerPointLabs.Models;
 using Office = Microsoft.Office.Core;
 using PowerPoint = Microsoft.Office.Interop.PowerPoint;
