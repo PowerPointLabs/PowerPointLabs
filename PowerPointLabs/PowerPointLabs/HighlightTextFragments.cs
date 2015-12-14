@@ -108,7 +108,7 @@ namespace PowerPointLabs
         private static List<PowerPoint.Shape> GetShapesFromLinesInText(PowerPointSlide currentSlide, Office.TextRange2 text, PowerPoint.Shape shape)
         {
             List<PowerPoint.Shape> shapesToAnimate = new List<PowerPoint.Shape>();
-            Boolean isHasBackground = (shape.Fill.Transparency).CompareTo(1.0f) == 0;
+            Boolean isTextBoxTransparent = (shape.Fill.Transparency).CompareTo(1.0f) == 0;
 
             foreach (Office.TextRange2 line in text.Lines)
             {
@@ -123,7 +123,7 @@ namespace PowerPointLabs
                 highlightShape.Fill.ForeColor.RGB = Utils.Graphics.ConvertColorToRgb(backgroundColor);
                 highlightShape.Fill.Transparency = 0.50f;
                 highlightShape.Line.Visible = Office.MsoTriState.msoFalse;
-                if (isHasBackground)
+                if (isTextBoxTransparent)
                 {
                     Utils.Graphics.MoveZToJustBehind(highlightShape, shape);
                 }
