@@ -17,6 +17,7 @@ using Microsoft.Office.Interop.PowerPoint;
 using PowerPointLabs.DataSources;
 using PowerPointLabs.Models;
 using PowerPointLabs.Utils;
+using PowerPointLabs.WPF;
 using PPExtraEventHelper;
 using Shape = System.Windows.Shapes.Shape;
 using ToolTip = System.Windows.Controls.ToolTip;
@@ -46,46 +47,55 @@ namespace PowerPointLabs.DrawingsLab
         #region ToolTip
         private void InitToolTipControl()
         {
-            AddTooltip(AlignHorizontalButton, "Align Shapes Horizontally to last shape in selection.");
-            AddTooltip(AlignVerticalButton, "Align Shapes Vertically to last shape in selection.");
-            AddTooltip(AlignHorizontalToSlideButton, "Align Shapes Horizontally to a position relative to the slide.");
-            AddTooltip(AlignVerticalToSlideButton, "Align Shapes Vertically to a position relative to the slide.");
-            
-            AddTooltip(ApplyDisplacementButton, "Apply recorded displacement to selected shapes.");
-            AddTooltip(ApplyFormatButton, "Apply recorded format to selected shapes.");
-            AddTooltip(ApplyPositionButton, "Apply recorded position or rotation to selected shapes.");
-            AddTooltip(RecordDisplacementButton, "Record Displacement between two selected shapes.");
-            AddTooltip(RecordFormatButton, "Record Format of a selected shape.");
-            AddTooltip(RecordPositionButton, "Record position and rotation of a selected shape.");
-            
-            AddTooltip(RectButton, "[R] Draw a Rectangle.");
-            AddTooltip(LineButton, "[L] Draw a Line.");
-            AddTooltip(CircleButton, "[C] Draw a Circle.");
-            
-            AddTooltip(BringForwardButton, "[F] Bring shapes Forward one step.");
-            AddTooltip(BringInFrontOfShapeButton, "Bring shapes in front of last shape in selection.");
-            AddTooltip(BringToFrontButton, "Bring shapes to Front.");
-            AddTooltip(SendBackwardButton, "[B] Send shapes Backward one step.");
-            AddTooltip(SendBehindShapeButton, "Send shapes behind last shape in selection.");
-            AddTooltip(SendToBackButton, "Send shapes to Back.");
-            
-            AddTooltip(SelectTypeButton, "[A] Select all shapes of same type as currently selected shapes.");
-            
-            AddTooltip(ToggleHotkeysButton, "Enable / Disable Hotkeys.");
-            
-            AddTooltip(HideButton, "[H] Hide selected items.");
-            AddTooltip(ShowAllButton, "[S] Show all hidden items.");
-            
-            AddTooltip(DuplicateButton, "[D] Makes a copy of the selected shapes in the exact same location.");
-            AddTooltip(MultiCloneExtendButton, "[N] Extrapolates multiple copies of a shape, extending from two selected shapes.");
-            AddTooltip(MultiCloneBetweenButton, "[M] Interpolates multiple copies of a shape, in between two selected shapes.");
+            ConfigureButton(AlignHorizontalButton, AlignHorizontalButton_Click, "Align Shapes Horizontally to last shape in selection.");
+            ConfigureButton(AlignVerticalButton, AlignVerticalButton_Click, "Align Shapes Vertically to last shape in selection.");
+            ConfigureButton(AlignHorizontalToSlideButton, AlignHorizontalToSlideButton_Click, "Align Shapes Horizontally to a position relative to the slide.");
+            ConfigureButton(AlignVerticalToSlideButton, AlignVerticalToSlideButton_Click, "Align Shapes Vertically to a position relative to the slide.");
+
+            ConfigureButton(ApplyDisplacementButton, ApplyDisplacementButton_Click, "Apply recorded displacement to selected shapes.");
+            ConfigureButton(ApplyFormatButton, ApplyFormatButton_Click, "Apply recorded format to selected shapes.");
+            ConfigureButton(ApplyPositionButton, ApplyPositionButton_Click, "Apply recorded position or rotation to selected shapes.");
+            ConfigureButton(RecordDisplacementButton, RecordDisplacementButton_Click, "Record Displacement between two selected shapes.");
+            ConfigureButton(RecordFormatButton, RecordFormatButton_Click, "Record Format of a selected shape.");
+            ConfigureButton(RecordPositionButton, RecordPositionButton_Click, "Record position and rotation of a selected shape.");
+
+            ConfigureButton(RectButton, RectangleButton_Click, "[R] Draw a Rectangle.");
+            ConfigureButton(LineButton, LineButton_Click, "[L] Draw a Line.");
+            ConfigureButton(CircleButton, CircleButton_Click, "[C] Draw a Circle.");
+
+            ConfigureButton(BringForwardButton, BringForwardButton_Click, "[F] Bring shapes Forward one step.");
+            ConfigureButton(BringInFrontOfShapeButton, BringInFrontOfShapeButton_Click, "Bring shapes in front of last shape in selection.");
+            ConfigureButton(BringToFrontButton, BringToFrontButton_Click, "Bring shapes to Front.");
+            ConfigureButton(SendBackwardButton, SendBackwardButton_Click, "[B] Send shapes Backward one step.");
+            ConfigureButton(SendBehindShapeButton, SendBehindShapeButton_Click, "Send shapes behind last shape in selection.");
+            ConfigureButton(SendToBackButton, SendToBackButton_Click, "Send shapes to Back.");
+
+            ConfigureButton(SelectTypeButton, SelectAllOfTypeButton_Click, "[A] Select all shapes of same type as currently selected shapes.");
+
+            SetTooltip(ToggleHotkeysButton, "Enable / Disable Hotkeys.");
+
+            ConfigureButton(HideButton, HideButton_Click, "[H] Hide selected items.");
+            ConfigureButton(ShowAllButton, ShowAllButton_Click, "[S] Show all hidden items.");
+
+            ConfigureButton(DuplicateButton, CloneButton_Click, "[D] Makes a copy of the selected shapes in the exact same location.");
+            ConfigureButton(MultiCloneExtendButton, MultiCloneExtendButton_Click, "[N] Extrapolates multiple copies of a shape, extending from two selected shapes.");
+            ConfigureButton(MultiCloneBetweenButton, MultiCloneBetweenButton_Click, "[M] Interpolates multiple copies of a shape, in between two selected shapes.");
         }
 
-        private void AddTooltip(DependencyObject item, string message)
+        private void ConfigureButton(ImageButton button, RoutedEventHandler action, string tooltipMessage)
         {
-            ToolTip toolTip = new ToolTip { Content = message };
-            ToolTipService.SetToolTip(item, toolTip);
+            button.Click += action;
+
+            ToolTip toolTip = new ToolTip { Content = tooltipMessage };
+            ToolTipService.SetToolTip(button, toolTip);
         }
+
+        private void SetTooltip(DependencyObject button, string tooltipMessage)
+        {
+            ToolTip toolTip = new ToolTip { Content = tooltipMessage };
+            ToolTipService.SetToolTip(button, toolTip);
+        }
+
         #endregion
 
         #region DataBindings

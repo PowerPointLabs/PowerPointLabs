@@ -499,6 +499,7 @@
     <Compile Include="Views\LoadingDialog.Designer.cs">
       <DependentUpon>LoadingDialog.cs</DependentUpon>
     </Compile>
+    <Compile Include="WPF\ImageButton.cs" />
     <Compile Include="WPF\Observable\Model.cs" />
     <Compile Include="WPF\Observable\ObservableBoolean.cs" />
     <Compile Include="WPF\Observable\ObservableInt.cs" />
@@ -578,7 +579,7 @@
       <DependentUpon>HighlightBulletsDialogBox.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
-      <Generator>ResXFileCodeGenerator</Generator>
+      <Generator>PublicResXFileCodeGenerator</Generator>
       <SubType>Designer</SubType>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
     </EmbeddedResource>
@@ -834,6 +835,12 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\loadMore.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\DrawingLabTest.bmp" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\DrawingLab\testimage.png" />
   </ItemGroup>
   <!-- Include the build rules for a C# project. -->
   <PropertyGroup>

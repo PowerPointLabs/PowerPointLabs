@@ -5,34 +5,40 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:converters="clr-namespace:PowerPointLabs.Converters"
              xmlns:dataSources="clr-namespace:PowerPointLabs.DataSources"
-             x:Class="PowerPointLabs.DrawingsLab.DrawingsPaneWPF" 
+             xmlns:cc="clr-namespace:PowerPointLabs.WPF"
+             x:Class="PowerPointLabs.DrawingsLab.DrawingsPaneWPF"
              mc:Ignorable="d" 
-             d:DesignWidth="304" d:DesignHeight="883">
+             d:DesignWidth="304" d:DesignHeight="530">
+    <!-- Original: 304 x 883 -->
     <UserControl.Resources>
         <dataSources:DrawingsLabDataSource x:Key="DrawingsLabData"/>
         <converters:FloatToStringConverter x:Key="FloatToStringConverter"/>
         <converters:EnumMatchToBooleanConverter x:Key="EnumMatchToBooleanConverter"/>
         <converters:ColorToBackgroundConverter x:Key="ColorToBackgroundConverter"/>
+        
+        <Style x:Key="ToggleButtonStyle" TargetType="{x:Type ToggleButton}">
+            <Setter Property="Background" Value="#0070c0" />
+            <Setter Property="Foreground" Value="#fff0f0" />
+            <Setter Property="Margin" Value="1" />
+        </Style>
     </UserControl.Resources>
     <Grid DataContext="{StaticResource DrawingsLabData}">
         <Grid.RowDefinitions>
-            <RowDefinition Height="2*"/>
-            <RowDefinition Height="2*"/>
-            <RowDefinition Height="2*"/>
-            <RowDefinition Height="2*"/>
-            <RowDefinition Height="1*"/>
-            <RowDefinition Height="1*"/>
-            <RowDefinition Height="1*"/>
-            <RowDefinition Height="1*"/>
-            <RowDefinition Height="1*"/>
-            <RowDefinition Height="1*"/>
-            <RowDefinition Height="2*"/>
-            <RowDefinition Height="2*"/>
-            <RowDefinition Height="2*"/>
-            <RowDefinition Height="2*"/>
-            <RowDefinition Height="2*"/>
-            <RowDefinition Height="2*"/>
-            <RowDefinition Height="2*"/>
+            <RowDefinition Height="38*"/>
+            <RowDefinition Height="38*"/>
+            <RowDefinition Height="38*"/>
+            <RowDefinition Height="38*"/>
+            <RowDefinition Height="19*"/>
+            <RowDefinition Height="18*"/>
+            <RowDefinition Height="19*"/>
+            <RowDefinition Height="18*"/>
+            <RowDefinition Height="19*"/>
+            <RowDefinition Height="19*"/>
+            <RowDefinition Height="38*"/>
+            <RowDefinition Height="38*"/>
+            <RowDefinition Height="38*"/>
+            <RowDefinition Height="38*"/>
+            <RowDefinition Height="38*"/>
         </Grid.RowDefinitions>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="1*"/>
@@ -42,18 +48,20 @@
             <ColumnDefinition Width="1*"/>
             <ColumnDefinition Width="1*"/>
         </Grid.ColumnDefinitions>
-        <Button x:Name="LineButton" Content="Line" Grid.Row="1" Grid.Column="0" Click="LineButton_Click"/>
-        <Button x:Name="RectButton" Content="Rect" Grid.Row="1" Grid.Column="1" Click="RectangleButton_Click"/>
-        <Button x:Name="CircleButton" Content="Circle" Grid.Row="1" Grid.Column="2" Click="CircleButton_Click"/>
+        <!--<Button x:Name="LineButton" Content="Line" Grid.Row="1" Grid.Column="0" Click="LineButton_Click"/>-->
+        <cc:ImageButton x:Name="LineButton" Text="Line" Grid.Row="1" Grid.Column="0" Image="../Resources/DrawingLab/testimage.png"/>
 
-        <ToggleButton x:Name="ToggleHotkeysButton" Content="Hotkeys" Grid.Row="1" Grid.Column="5" IsChecked="{Binding UpdateSourceTrigger=PropertyChanged, Source={StaticResource DrawingsLabData}, Path=HotkeysEnabled, Mode=TwoWay}"/>
+        <cc:ImageButton x:Name="RectButton" Text="Rect" Grid.Row="1" Grid.Column="1"/>
+        <cc:ImageButton x:Name="CircleButton" Text="Circle" Grid.Row="1" Grid.Column="2"/>
 
-        <Button x:Name="SelectTypeButton" Content="Select&#xa;Type" Grid.Row="2" Grid.Column="0" Click="SelectAllOfTypeButton_Click"/>
-        <Button x:Name="HideButton" Content="Hide" Grid.Row="2" Grid.Column="2" Click="HideButton_Click"/>
-        <Button x:Name="ShowAllButton" Content="Show&#xa;All" Grid.Row="2" Grid.Column="3" Click="ShowAllButton_Click"/>
-        <Button x:Name="DuplicateButton" Content="Duplicate" Grid.Row="3" Grid.Column="2" Click="CloneButton_Click"/>
-        <Button x:Name="MultiCloneExtendButton" Content="MultiClone&#xa;Extend" Grid.Row="3" Grid.Column="3" Click="MultiCloneExtendButton_Click"/>
-        <Button x:Name="MultiCloneBetweenButton" Content="MultiClone&#xa;Between" Grid.Row="3" Grid.Column="4" Click="MultiCloneBetweenButton_Click"/>
+        <ToggleButton x:Name="ToggleHotkeysButton" Content="Hotkeys" Grid.Row="1" Grid.Column="5" IsChecked="{Binding UpdateSourceTrigger=PropertyChanged, Source={StaticResource DrawingsLabData}, Path=HotkeysEnabled, Mode=TwoWay}" Style="{StaticResource ToggleButtonStyle}"/>
+
+        <cc:ImageButton x:Name="SelectTypeButton" Text="Select&#xa;Type" Grid.Row="2" Grid.Column="0"/>
+        <cc:ImageButton x:Name="HideButton" Text="Hide" Grid.Row="2" Grid.Column="2"/>
+        <cc:ImageButton x:Name="ShowAllButton" Text="Show&#xa;All" Grid.Row="2" Grid.Column="3"/>
+        <cc:ImageButton x:Name="DuplicateButton" Text="Duplicate" Grid.Row="3" Grid.Column="2"/>
+        <cc:ImageButton x:Name="MultiCloneExtendButton" Text="MultiClone&#xa;Extend" Grid.Row="3" Grid.Column="3"/>
+        <cc:ImageButton x:Name="MultiCloneBetweenButton" Text="MultiClone&#xa;Between" Grid.Row="3" Grid.Column="4"/>
 
         <Button Grid.Row="4" Grid.Column="1" IsEnabled="{Binding IsChecked, ElementName=FormatIncludeFillColor}" Background="{Binding UpdateSourceTrigger=PropertyChanged, Source={StaticResource DrawingsLabData}, Path=FormatFillColor, Mode=TwoWay, Converter={StaticResource ColorToBackgroundConverter}}" Click="FillColor_Click"/>
         <Button Grid.Row="4" Grid.Column="2" IsEnabled="{Binding IsChecked, ElementName=FormatIncludeLineColor}" Background="{Binding UpdateSourceTrigger=PropertyChanged, Source={StaticResource DrawingsLabData}, Path=FormatLineColor, Mode=TwoWay, Converter={StaticResource ColorToBackgroundConverter}}" Click="LineColor_Click"/>
@@ -79,17 +87,17 @@
         <CheckBox Content="Y" x:Name="SavedIncludeY" Grid.Row="9" Grid.Column="2" IsChecked="{Binding UpdateSourceTrigger=PropertyChanged, Source={StaticResource DrawingsLabData}, Path=SavedIncludePositionY, Mode=TwoWay}"/>
         <CheckBox Content="Rtn" x:Name="SavedIncludeRotation" Grid.Row="9" Grid.Column="3" IsChecked="{Binding UpdateSourceTrigger=PropertyChanged, Source={StaticResource DrawingsLabData}, Path=SavedIncludeRotation, Mode=TwoWay}"/>
 
-        <Button x:Name="RecordDisplacementButton" Content="Record&#xa;Displacement" Grid.Row="6" Grid.RowSpan="2" Grid.Column="4" Click="RecordDisplacementButton_Click"/>
-        <Button x:Name="ApplyDisplacementButton" Content="Apply&#xa;Displacement" Grid.Row="6" Grid.RowSpan="2" Grid.Column="5" Click="ApplyDisplacementButton_Click"/>
-        <Button x:Name="RecordPositionButton" Content="Record&#xa;Position" Grid.Row="8" Grid.RowSpan="2" Grid.Column="4" Click="RecordPositionButton_Click"/>
-        <Button x:Name="ApplyPositionButton" Content="Apply&#xa;Position" Grid.Row="8" Grid.RowSpan="2" Grid.Column="5" Click="ApplyPositionButton_Click"/>
-        <Button x:Name="RecordFormatButton" Content="Record&#xa;Format" Grid.Row="4" Grid.RowSpan="2" Grid.Column="4" Click="RecordFormatButton_Click"/>
-        <Button x:Name="ApplyFormatButton" Content="Apply&#xa;Format" Grid.Row="4" Grid.RowSpan="2" Grid.Column="5" Click="ApplyFormatButton_Click"/>
+        <cc:ImageButton x:Name="RecordDisplacementButton" Text="Record&#xa;Displacement" Grid.Row="6" Grid.RowSpan="2" Grid.Column="4"/>
+        <cc:ImageButton x:Name="ApplyDisplacementButton" Text="Apply&#xa;Displacement" Grid.Row="6" Grid.RowSpan="2" Grid.Column="5"/>
+        <cc:ImageButton x:Name="RecordPositionButton" Text="Record&#xa;Position" Grid.Row="8" Grid.RowSpan="2" Grid.Column="4"/>
+        <cc:ImageButton x:Name="ApplyPositionButton" Text="Apply&#xa;Position" Grid.Row="8" Grid.RowSpan="2" Grid.Column="5"/>
+        <cc:ImageButton x:Name="RecordFormatButton" Text="Record&#xa;Format" Grid.Row="4" Grid.RowSpan="2" Grid.Column="4"/>
+        <cc:ImageButton x:Name="ApplyFormatButton" Text="Apply&#xa;Format" Grid.Row="4" Grid.RowSpan="2" Grid.Column="5"/>
 
-        <Button x:Name="AlignHorizontalButton" Content="Align&#xa;Horizontal" Grid.Row="11" Grid.Column="0" Click="AlignHorizontalButton_Click"/>
-        <Button x:Name="AlignVerticalButton" Content="Align&#xa;Vertical" Grid.Row="11" Grid.Column="1" Click="AlignVerticalButton_Click"/>
-        <Button x:Name="AlignHorizontalToSlideButton" Content="Align&#xa;Horizontal&#xa;To Slide" Grid.Row="12" Grid.Column="0" Click="AlignHorizontalToSlideButton_Click"/>
-        <Button x:Name="AlignVerticalToSlideButton" Content="Align&#xa;Vertical&#xa;To Slide" Grid.Row="12" Grid.Column="1" Click="AlignVerticalToSlideButton_Click"/>
+        <cc:ImageButton x:Name="AlignHorizontalButton" Text="Align&#xa;Horizontal" Grid.Row="11" Grid.Column="0"/>
+        <cc:ImageButton x:Name="AlignVerticalButton" Text="Align&#xa;Vertical" Grid.Row="11" Grid.Column="1"/>
+        <cc:ImageButton x:Name="AlignHorizontalToSlideButton" Text="Align&#xa;Horizontal&#xa;To Slide" Grid.Row="12" Grid.Column="0"/>
+        <cc:ImageButton x:Name="AlignVerticalToSlideButton" Text="Align&#xa;Vertical&#xa;To Slide" Grid.Row="12" Grid.Column="1"/>
 
         <RadioButton Grid.Row="10" Grid.Column="3" IsChecked="{Binding UpdateSourceTrigger=PropertyChanged, Source={StaticResource DrawingsLabData}, Path=Anchor, Mode=TwoWay, Converter={StaticResource EnumMatchToBooleanConverter}, ConverterParameter=TopLeft}" HorizontalAlignment="Center" VerticalAlignment="Center"/>
         <RadioButton Grid.Row="10" Grid.Column="4" IsChecked="{Binding UpdateSourceTrigger=PropertyChanged, Source={StaticResource DrawingsLabData}, Path=Anchor, Mode=TwoWay, Converter={StaticResource EnumMatchToBooleanConverter}, ConverterParameter=TopCenter}" HorizontalAlignment="Center" VerticalAlignment="Center"/>
@@ -101,12 +109,12 @@
         <RadioButton Grid.Row="12" Grid.Column="4" IsChecked="{Binding UpdateSourceTrigger=PropertyChanged, Source={StaticResource DrawingsLabData}, Path=Anchor, Mode=TwoWay, Converter={StaticResource EnumMatchToBooleanConverter}, ConverterParameter=BottomCenter}" HorizontalAlignment="Center" VerticalAlignment="Center"/>
         <RadioButton Grid.Row="12" Grid.Column="5" IsChecked="{Binding UpdateSourceTrigger=PropertyChanged, Source={StaticResource DrawingsLabData}, Path=Anchor, Mode=TwoWay, Converter={StaticResource EnumMatchToBooleanConverter}, ConverterParameter=BottomRight}" HorizontalAlignment="Center" VerticalAlignment="Center"/>
 
-        <Button x:Name="BringInFrontOfShapeButton" Content="Front Of&#xa;Shape" Grid.Row="13" Grid.Column="2" Click="BringInFrontOfShapeButton_Click"/>
-        <Button x:Name="SendBehindShapeButton" Content="Behind&#xa;Shape" Grid.Row="13" Grid.Column="3" Click="SendBehindShapeButton_Click"/>
-        <Button x:Name="BringToFrontButton" Content="Bring&#xa;To Front" Grid.Row="14" Grid.Column="1" Click="BringToFrontButton_Click"/>
-        <Button x:Name="BringForwardButton" Content="Bring&#xa;Forward" Grid.Row="14" Grid.Column="2" Click="BringForwardButton_Click"/>
-        <Button x:Name="SendBackwardButton" Content="Send&#xa;Backward" Grid.Row="14" Grid.Column="3" Click="SendBackwardButton_Click"/>
-        <Button x:Name="SendToBackButton" Content="Send&#xa;To Back" Grid.Row="14" Grid.Column="4" Click="SendToBackButton_Click"/>
+        <cc:ImageButton x:Name="BringInFrontOfShapeButton" Text="Front Of&#xa;Shape" Grid.Row="13" Grid.Column="2"/>
+        <cc:ImageButton x:Name="SendBehindShapeButton" Text="Behind&#xa;Shape" Grid.Row="13" Grid.Column="3"/>
+        <cc:ImageButton x:Name="BringToFrontButton" Text="Bring&#xa;To Front" Grid.Row="14" Grid.Column="1"/>
+        <cc:ImageButton x:Name="BringForwardButton" Text="Bring&#xa;Forward" Grid.Row="14" Grid.Column="2"/>
+        <cc:ImageButton x:Name="SendBackwardButton" Text="Send&#xa;Backward" Grid.Row="14" Grid.Column="3"/>
+        <cc:ImageButton x:Name="SendToBackButton" Text="Send&#xa;To Back" Grid.Row="14" Grid.Column="4"/>
 
     </Grid>
 </UserControl>
