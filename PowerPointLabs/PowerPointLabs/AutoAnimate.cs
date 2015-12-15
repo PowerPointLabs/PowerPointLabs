@@ -41,9 +41,9 @@ namespace PowerPointLabs
                 AddCompleteAnimations(currentSlide, nextSlide);           
             }
             catch (Exception e)
-            {
+            { 
                 PowerPointLabsGlobals.LogException(e, "AddAnimationButtonClick");
-                throw;
+                Views.ErrorDialogWrapper.ShowDialog("PowerPointLabs", e.Message, e);
             }
             
         }
@@ -102,7 +102,7 @@ namespace PowerPointLabs
             catch (Exception e)
             {
                 PowerPointLabsGlobals.LogException(e, "ReloadAutoAnimation");
-                throw;
+                Views.ErrorDialogWrapper.ShowDialog("PowerPointLabs", e.Message, e);
             }
         }
 

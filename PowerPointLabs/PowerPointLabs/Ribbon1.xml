@@ -29,13 +29,6 @@
                   getSupertip="GetAddAnimationButtonSupertip"
                   getEnabled="OnGetEnabledAddAutoMotion"
                   onAction="AddAnimationButtonClick"/>
-          <button id="ReloadButton"
-                  getLabel ="GetReloadButtonLabel"
-                  size ="large"
-                  getImage="GetReloadAnimationImage"
-                  getSupertip="GetReloadButtonSupertip"
-                  getEnabled="OnGetEnabledReloadAutoMotion"
-                  onAction="ReloadButtonClick"/>
           <button id="InSlideAnimateButton"
                    getLabel="GetInSlideAnimateButtonLabel"
                    size="large"
@@ -399,6 +392,10 @@
                 getLabel="GetFitToHeightShapeLabel"
                 getImage="GetFitToHeightImage"
                 onAction="FitToHeightClick"/>
+        <button id="hideShapeShape"
+              getLabel ="GetHideSelectedShapeLabel"
+              getImage="GetHideShapeImage"
+              onAction="HideShapeButtonClick"/>
       </menu>
     </contextMenu>
     <contextMenu idMso="ContextMenuShapeFreeform">
@@ -432,6 +429,10 @@
                 getLabel="GetFitToHeightShapeLabel"
                 getImage="GetFitToHeightImage"
                 onAction="FitToHeightClick"/>
+      <button id="hideShapeFreeform"
+              getLabel ="GetHideSelectedShapeLabel"
+              getImage="GetHideShapeImage"
+              onAction="HideShapeButtonClick"/>
       </menu>
     </contextMenu>
     <contextMenu idMso="ContextMenuPicture">
@@ -463,6 +464,10 @@
                 getLabel ="GetAddCustomShapeShapeLabel"
                 getImage="GetAddToCustomShapeContextImage"
                 onAction="AddShapeButtonClick"/>
+        <button id="hideShape"
+               getLabel ="GetHideSelectedShapeLabel"
+               getImage="GetHideShapeImage"
+               onAction="HideShapeButtonClick"/>
       </menu>
     </contextMenu>
     <contextMenu idMso="ContextMenuChartArea">
@@ -556,6 +561,10 @@
                 getLabel="GetCutOutShapeShapeLabel"
                 getImage="GetCutOutShapeMenuImage"
                 onAction="CropShapeButtonClick"/>
+        <button id="hideShapeGroup"
+              getLabel ="GetHideSelectedShapeLabel"
+              getImage="GetHideShapeImage"
+              onAction="HideShapeButtonClick"/>
       </menu>
     </contextMenu>
     <contextMenu idMso="ContextMenuInk">

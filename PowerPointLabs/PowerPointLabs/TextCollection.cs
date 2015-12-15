@@ -231,6 +231,7 @@
         public const string HighlightBulletsBackgroundShapeLabel = "Highlight Background";
         public const string ConvertToPictureShapeLabel = "Convert to Picture";
         public const string AddCustomShapeShapeLabel = "Add to Shapes Lab";
+        public const string HideSelectedShapeLabel = "Hide the Shape";
         public const string CutOutShapeShapeLabel = "Crop To Shape";
         public const string FitToWidthShapeLabel = "Fit To Width";
         public const string FitToHeightShapeLabel = "Fit To Height";

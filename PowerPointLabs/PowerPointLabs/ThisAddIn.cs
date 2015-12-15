@@ -1283,13 +1283,13 @@ namespace PowerPointLabs
 
                 if (selection.Type == PowerPoint.PpSelectionType.ppSelectionShapes)
                 {
-                    if (Application.Version == OfficeVersion2013)
-                    {
-                        OpenPropertyWindowForOffice13(selection);
-                    }
-                    else if (Application.Version == OfficeVersion2010)
+                    if (Application.Version == OfficeVersion2010)
                     {
                         OpenPropertyWindowForOffice10();
+                    }
+                    else 
+                    {
+                        OpenPropertyWindowForOffice13OrHigher(selection);
                     }
                 }
             }
@@ -1335,10 +1335,10 @@ namespace PowerPointLabs
                 && y < bottom;
         }
 
-        //For office 2013 only:
+        //For office 2013 or Higher version:
         //Open Background Format window, then selecting the shape will
         //convert the window to Property window
-        private void OpenPropertyWindowForOffice13(PowerPoint.Selection selection)
+        private void OpenPropertyWindowForOffice13OrHigher(PowerPoint.Selection selection)
         {
             if (!_isInSlideShow)
             {
