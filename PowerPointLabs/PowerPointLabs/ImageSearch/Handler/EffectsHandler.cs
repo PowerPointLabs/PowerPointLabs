@@ -196,6 +196,7 @@ namespace PowerPointLabs.ImageSearch.Handler
             var overlayShape = Shapes.AddShape(MsoAutoShapeType.msoShapeRectangle, left, top,
                 width.Value, height.Value);
             ChangeName(overlayShape, EffectName.Overlay);
+            overlayShape.Fill.Solid();
             overlayShape.Fill.ForeColor.RGB = Graphics.ConvertColorToRgb(StringUtil.GetColorFromHexValue(color));
             overlayShape.Fill.Transparency = (float) transparency / 100;
             overlayShape.Line.ForeColor.RGB = Graphics.ConvertColorToRgb(StringUtil.GetColorFromHexValue(color));
@@ -215,6 +216,7 @@ namespace PowerPointLabs.ImageSearch.Handler
 
             var overlayShape = Shapes.AddShape(MsoAutoShapeType.msoShapeOval, circleLeft, circleTop,
                 circleWidth, circleWidth);
+            overlayShape.Fill.Solid();
             overlayShape.Fill.ForeColor.RGB = Graphics.ConvertColorToRgb(StringUtil.GetColorFromHexValue(color));
             overlayShape.Fill.Transparency = (float)transparency / 100;
             overlayShape.Line.ForeColor.RGB = Graphics.ConvertColorToRgb(StringUtil.GetColorFromHexValue(color));
