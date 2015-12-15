@@ -42,7 +42,7 @@ namespace PowerPointLabs
             {
                 if (handleError)
                 {
-                    MessageBox.Show(GetErrorMessageForErrorCode(e.Message), MessageBoxTitle);
+                    ProcessErrorMessage(e);
                     return null;
                 }
 
@@ -53,7 +53,7 @@ namespace PowerPointLabs
         }
 
         public static PowerPoint.Shape Crop(PowerPoint.ShapeRange shapeRange, double magnifyRatio = 1.0,
-                                            bool handleError = true)
+            bool handleError = true)
         {
             try
             {
@@ -69,13 +69,14 @@ namespace PowerPointLabs
             {
                 if (handleError)
                 {
-                    MessageBox.Show(GetErrorMessageForErrorCode(e.Message), MessageBoxTitle);
+                    ProcessErrorMessage(e);
                     return null;
                 }
 
                 throw;
             }
         }
+
 
         private static bool VerifyIsShapeRangeValid(PowerPoint.ShapeRange shapeRange, bool handleError)
         {
@@ -97,7 +98,7 @@ namespace PowerPointLabs
             {
                 if (handleError)
                 {
-                    MessageBox.Show(GetErrorMessageForErrorCode(e.Message), MessageBoxTitle);
+                    ProcessErrorMessage(e);
                     return false;
                 }
 
@@ -181,7 +182,7 @@ namespace PowerPointLabs
             croppedImage.Save(FillInBackgroundPicture, ImageFormat.Png);
         }
 
-        private static Bitmap KiCut(Bitmap original, float startX, float startY, float width, float height,
+        public static Bitmap KiCut(Bitmap original, float startX, float startY, float width, float height,
                                     double magnifyRatio = 1.0)
         {
             if (original == null) return null;
@@ -374,6 +375,22 @@ namespace PowerPointLabs
                     return ErrorMessageForRotationNonZero;
                 default:
                     return ErrorMessageForUndefined;
+            }
+        }
+
+        private static void ProcessErrorMessage(Exception e)
+        {
+            //This method prompts the error message to user. If it has an unrecognised error code,
+            //an alternative message window with erro trace stack pops up and prompts the user to
+            //send the trace stack to the developer team.
+            var errMessage = GetErrorMessageForErrorCode(e.Message);
+            if (!string.Equals(errMessage, ErrorMessageForUndefined, StringComparison.Ordinal))
+            {
+                MessageBox.Show(errMessage, MessageBoxTitle);
+            }
+            else
+            {
+                Views.ErrorDialogWrapper.ShowDialog(MessageBoxTitle, e.Message, e);
             }
         }
 

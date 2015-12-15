@@ -7,6 +7,7 @@ using System.Reflection;
 using System.Runtime.InteropServices;
 using System.Diagnostics;
 using System.Windows.Forms;
+using PowerPointLabs.ImageSearch;
 using PowerPointLabs.Models;
 using PowerPointLabs.Views;
 using Office = Microsoft.Office.Core;
@@ -204,10 +205,6 @@ namespace PowerPointLabs
         {
             return TextCollection.AddAnimationButtonSupertip;
         }
-        public string GetReloadButtonSupertip(Office.IRibbonControl control)
-        {
-            return TextCollection.ReloadButtonSupertip;
-        }
         public string GetInSlideAnimateButtonSupertip(Office.IRibbonControl control)
         {
             return TextCollection.InSlideAnimateButtonSupertip;
@@ -384,10 +381,6 @@ namespace PowerPointLabs
         public string GetAddAnimationButtonLabel(Office.IRibbonControl control)
         {
             return TextCollection.AddAnimationButtonLabel;
-        }
-        public string GetReloadButtonLabel(Office.IRibbonControl control)
-        {
-            return TextCollection.AddAnimationReloadButtonLabel;
         }
         public string GetInSlideAnimateButtonLabel(Office.IRibbonControl control)
         {
@@ -620,6 +613,10 @@ namespace PowerPointLabs
         {
             return TextCollection.AddCustomShapeShapeLabel;
         }
+        public string GetHideSelectedShapeLabel(Office.IRibbonControl control)
+        {
+            return TextCollection.HideSelectedShapeLabel;
+        }
         public string GetCutOutShapeShapeLabel(Office.IRibbonControl control)
         {
             return TextCollection.CutOutShapeShapeLabel;
@@ -652,6 +649,10 @@ namespace PowerPointLabs
         {
             return TextCollection.ContextReplaceAudioLabel;
         }
+        public string GetPowerPointLabsMenuLabel(Office.IRibbonControl control)
+        {
+            return TextCollection.PowerPointLabsMenuLabel;
+        }
         # endregion
 
         //Button Click Callbacks        
@@ -666,20 +667,6 @@ namespace PowerPointLabs
             catch (Exception e)
             {
                 PowerPointLabsGlobals.LogException(e, "AddAnimationButtonClick");
-                throw;
-            }
-        }
-        public void ReloadButtonClick(Office.IRibbonControl control)
-        {
-            try
-            {
-                Globals.ThisAddIn.Application.StartNewUndoEntry();
-
-                AutoAnimate.ReloadAutoAnimation();
-            }
-            catch (Exception e)
-            {
-                PowerPointLabsGlobals.LogException(e, "ReloadAnimationButtonClick");
                 throw;
             }
         }
@@ -756,18 +743,6 @@ namespace PowerPointLabs
             catch (Exception e)
             {
                 PowerPointLabsGlobals.LogException(e, "GetAddAnimationImage");
-                throw;
-            }
-        }
-        public Bitmap GetReloadAnimationImage(Office.IRibbonControl control)
-        {
-            try
-            {
-                return new Bitmap(Properties.Resources.ReloadAnimation);
-            }
-            catch (Exception e)
-            {
-                PowerPointLabsGlobals.LogException(e, "GetReloadAnimationImage");
                 throw;
             }
         }
@@ -1308,6 +1283,18 @@ namespace PowerPointLabs
                 throw;
             }
         }
+        public Bitmap GetHideShapeImage(Office.IRibbonControl control)
+        {
+            try
+            {
+                return new Bitmap(Properties.Resources.HideShape);
+            }
+            catch (Exception e)
+            {
+                PowerPointLabsGlobals.LogException(e, "GetHideShapeImage");
+                throw;
+            }
+        }
         # endregion
 
         public void ZoomStyleChanged(Office.IRibbonControl control, bool pressed)
@@ -1347,10 +1334,6 @@ namespace PowerPointLabs
         public bool OnGetEnabledAddAutoMotion(Office.IRibbonControl control)
         {
             return AddAutoMotionEnabled;
-        }
-        public bool OnGetEnabledReloadAutoMotion(Office.IRibbonControl control)
-        {
-            return ReloadAutoMotionEnabled;
         }
         public bool OnGetEnabledAddInSlide(Office.IRibbonControl control)
         {
@@ -1548,12 +1531,6 @@ namespace PowerPointLabs
                 return false;
             }
 
-            if (!Globals.ThisAddIn.VerifyOnLocal(pres))
-            {
-                MessageBox.Show(TextCollection.OnlinePresentationNotCompatibleErrorMsg);
-                return false;
-            }
-
             return true;
         }
 
@@ -1584,6 +1561,19 @@ namespace PowerPointLabs
                 // (It should be impossible for the index to be out of range otherwise.)
             }
             return selectedVoice;
+        }
+
+        public Bitmap GetContextMenuImage(Office.IRibbonControl control)
+        {
+            try
+            {
+                return new Bitmap(Properties.Resources.PptlabsContextMenu);
+            }
+            catch (Exception e)
+            {
+                PowerPointLabsGlobals.LogException(e, "GetContextMenuImage");
+                throw;
+            }
         }
 
         #endregion
@@ -1620,6 +1610,43 @@ namespace PowerPointLabs
             return FitToSlide.GetFitToHeightImage(control);
         }
 
+        #endregion
+
+        #region Feature: Images Lab
+
+        public ImageSearchPane ImageSearchPane { get; set; }
+
+        public void ImagesLabButtonClick(Office.IRibbonControl control)
+        {
+            if (ImageSearchPane == null || !ImageSearchPane.IsOpen)
+            {
+                ImageSearchPane = new ImageSearchPane();
+                ImageSearchPane.Show();
+            }
+            else
+            {
+                ImageSearchPane.Activate();
+            }            
+        }
+
+        public Bitmap GetImagesLabImage(Office.IRibbonControl control)
+        {
+            try
+            {
+                return new Bitmap(Properties.Resources.ImagesLab);
+            }
+            catch (Exception e)
+            {
+                PowerPointLabsGlobals.LogException(e, "GetImagesLabImage");
+                throw;
+            }
+        }
+
+        public string GetImagesLabSupertip(Office.IRibbonControl control)
+        {
+            return TextCollection.ImagesLabText.ImagesLabSupertip;
+        }
+        
         #endregion
 
         #region Feature: Crop to Shape
@@ -2378,5 +2405,12 @@ namespace PowerPointLabs
             }
             return null;
         }
+
+        public void HideShapeButtonClick(Office.IRibbonControl control)
+        {
+            var selectedShapes = Globals.ThisAddIn.Application.ActiveWindow.Selection.ShapeRange;
+            selectedShapes.Visible = Office.MsoTriState.msoFalse;
+        }
+
     }
 }

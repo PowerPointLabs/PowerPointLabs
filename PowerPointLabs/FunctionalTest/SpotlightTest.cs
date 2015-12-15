@@ -33,7 +33,12 @@ namespace FunctionalTest
             var spotlightDialog = NativeUtil.FindWindow(null, "Spotlight Properties");
             Assert.AreNotEqual(IntPtr.Zero, spotlightDialog, "Failed to find Spotlight Dialog.");
 
+            // In Win7, it's "25 %", but in Win10, it's "25%"
             var transparencyDialog = NativeUtil.FindWindowEx(spotlightDialog, IntPtr.Zero, null, "25 %");
+            if (transparencyDialog == IntPtr.Zero)
+            {
+                transparencyDialog = NativeUtil.FindWindowEx(spotlightDialog, IntPtr.Zero, null, "25%");
+            }
             Assert.AreNotEqual(IntPtr.Zero, transparencyDialog, "Failed to find Text Dialog.");
 
             // Set text

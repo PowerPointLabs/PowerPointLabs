@@ -15,33 +15,7 @@ namespace FunctionalTest
         [TestMethod]
         public void FT_AutoAnimateSuccessfully()
         {
-            RecreateAutoAnimateOnMultiSlide();
-            RecreateAutoAnimate();
             AutoAnimateSuccessfully();
-        }
-
-        private void RecreateAutoAnimateOnMultiSlide()
-        {
-            PpOperations.SelectSlide(25);
-            PplFeatures.RecreateAutoAnimate();
-
-            AssertIsSame(26, 31);
-        }
-
-        private void RecreateAutoAnimate()
-        {
-            PpOperations.SelectSlide(12);
-            PplFeatures.RecreateAutoAnimate();
-
-            PpOperations.SelectSlide(16);
-            PplFeatures.RecreateAutoAnimate();
-
-            PpOperations.SelectSlide(20);
-            PplFeatures.RecreateAutoAnimate();
-
-            AssertIsSame(19, 21);
-            AssertIsSame(16, 21);
-            AssertIsSame(13, 21);
         }
 
         // create a new test, since the previous one will change the later's slide index..

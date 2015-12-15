@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 using System.IO;
 using System.Runtime.InteropServices;
@@ -477,7 +478,7 @@ namespace PowerPointLabs.Models
                     val += yShift;
                     isXCoordinate = true;
                 }
-                splitPath[i] = val.ToString();
+                splitPath[i] = val.ToString(CultureInfo.InvariantCulture);
             }
             return string.Join(" ", splitPath);
         }

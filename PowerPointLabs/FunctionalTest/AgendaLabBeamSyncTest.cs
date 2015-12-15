@@ -37,7 +37,11 @@ namespace FunctionalTest
 
             ClickOnSlideThumbnailsPanel();
             PpOperations.SelectSlide(5);
-            PplFeatures.SynchronizeAgenda();
+            MessageBoxUtil.ExpectMessageBoxWillPopUp(
+                "Reorganise Sidebar",
+                "The sections have been changed. Do you wish to reorganise the items in the sidebar?",
+                PplFeatures.SynchronizeAgenda,
+                "&Yes");
 
             PpOperations.SelectSlide(6);
             PplFeatures.SynchronizeAgenda();
@@ -126,7 +130,7 @@ namespace FunctionalTest
                 var thumbnailsPanel = NativeUtil.FindWindowEx(mdiPanel2, IntPtr.Zero, "paneClassDC", "Thumbnails");
                 NativeUtil.SendMessage(thumbnailsPanel, 0x0201 /*left button down*/, IntPtr.Zero, IntPtr.Zero);
             } 
-            else if (PpOperations.IsOffice2013())
+            else // Office2013 or Higher
             {
                 NativeUtil.SendMessage(mdiPanel2, 0x0201 /*left button down*/, IntPtr.Zero, IntPtr.Zero);
             }
