@@ -299,7 +299,7 @@ namespace PowerPointLabs.DrawingsLab
             DataSource.ShiftValueRotation = secondShape.Rotation - firstShape.Rotation;
         }
 
-        public static void ApplyDisplacement()
+        public static void ApplyDisplacement(bool applyAllSettings = false)
         {
             var selection = PowerPointCurrentPresentationInfo.CurrentSelection;
             if (selection.Type != PpSelectionType.ppSelectionShapes) return;
@@ -307,15 +307,15 @@ namespace PowerPointLabs.DrawingsLab
             Globals.ThisAddIn.Application.StartNewUndoEntry();
             foreach (var shape in selection.ShapeRange.Cast<Shape>())
             {
-                if (DataSource.ShiftIncludePositionX)
+                if (applyAllSettings || DataSource.ShiftIncludePositionX)
                 {
                     SetX(shape, GetX(shape) + DataSource.ShiftValueX);
                 }
-                if (DataSource.ShiftIncludePositionY)
+                if (applyAllSettings || DataSource.ShiftIncludePositionY)
                 {
                     SetY(shape, GetY(shape) + DataSource.ShiftValueY);
                 }
-                if (DataSource.ShiftIncludeRotation)
+                if (applyAllSettings || DataSource.ShiftIncludeRotation)
                 {
                     shape.Rotation += DataSource.ShiftValueRotation;
                 }
@@ -340,7 +340,7 @@ namespace PowerPointLabs.DrawingsLab
             DataSource.SavedValueRotation = shape.Rotation;
         }
 
-        public static void ApplyPosition()
+        public static void ApplyPosition(bool applyAllSettings = false)
         {
             var selection = PowerPointCurrentPresentationInfo.CurrentSelection;
             if (selection.Type != PpSelectionType.ppSelectionShapes) return;
@@ -348,15 +348,15 @@ namespace PowerPointLabs.DrawingsLab
             Globals.ThisAddIn.Application.StartNewUndoEntry();
             foreach (var shape in selection.ShapeRange.Cast<Shape>())
             {
-                if (DataSource.SavedIncludePositionX)
+                if (applyAllSettings || DataSource.SavedIncludePositionX)
                 {
                     SetX(shape, DataSource.SavedValueX);
                 }
-                if (DataSource.SavedIncludePositionY)
+                if (applyAllSettings || DataSource.SavedIncludePositionY)
                 {
                     SetY(shape, DataSource.SavedValueY);
                 }
-                if (DataSource.SavedIncludeRotation)
+                if (applyAllSettings || DataSource.SavedIncludeRotation)
                 {
                     shape.Rotation = DataSource.SavedValueRotation;
                 }
@@ -382,7 +382,7 @@ namespace PowerPointLabs.DrawingsLab
             DataSource.FormatLineWeight = shape.Line.Visible == MsoTriState.msoTrue ? shape.Line.Weight : 0;
         }
 
-        public static void ApplyFormat()
+        public static void ApplyFormat(bool applyAllSettings = false)
         {
             var selection = PowerPointCurrentPresentationInfo.CurrentSelection;
             if (selection.Type != PpSelectionType.ppSelectionShapes) return;
@@ -390,7 +390,7 @@ namespace PowerPointLabs.DrawingsLab
             Globals.ThisAddIn.Application.StartNewUndoEntry();
             foreach (var shape in selection.ShapeRange.Cast<Shape>())
             {
-                if (DataSource.FormatIncludeFillColor)
+                if (applyAllSettings || DataSource.FormatIncludeFillColor)
                 {
                     try
                     {
@@ -401,7 +401,7 @@ namespace PowerPointLabs.DrawingsLab
                         // ArgumentException is thrown if the shape does not have this property.
                     }
                 }
-                if (DataSource.FormatIncludeLineColor)
+                if (applyAllSettings || DataSource.FormatIncludeLineColor)
                 {
                     try
                     {
@@ -412,7 +412,7 @@ namespace PowerPointLabs.DrawingsLab
                         // ArgumentException is thrown if the shape does not have this property.
                     }
                 }
-                if (DataSource.FormatIncludeLineWeight)
+                if (applyAllSettings || DataSource.FormatIncludeLineWeight)
                 {
                     if (DataSource.FormatLineWeight <= 0)
                     {

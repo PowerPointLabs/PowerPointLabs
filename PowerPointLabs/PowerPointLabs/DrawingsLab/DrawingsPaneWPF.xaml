@@ -23,6 +23,11 @@
         </Style>
     </UserControl.Resources>
     <Grid DataContext="{StaticResource DrawingsLabData}">
+        <Grid.Resources>
+            <Style TargetType="{x:Type CheckBox}">
+                <Setter Property="VerticalAlignment" Value="Center"/>
+            </Style>
+        </Grid.Resources>
         <Grid.RowDefinitions>
             <RowDefinition Height="38*"/>
             <RowDefinition Height="38*"/>
@@ -49,72 +54,356 @@
             <ColumnDefinition Width="1*"/>
         </Grid.ColumnDefinitions>
         <!--<Button x:Name="LineButton" Content="Line" Grid.Row="1" Grid.Column="0" Click="LineButton_Click"/>-->
-        <cc:ImageButton x:Name="LineButton" Text="Line" Grid.Row="1" Grid.Column="0" Image="../Resources/DrawingLab/testimage.png"/>
-
+        <cc:ImageButton x:Name="CircleButton" Text="Circle" Grid.Row="1" Grid.Column="0"/>
         <cc:ImageButton x:Name="RectButton" Text="Rect" Grid.Row="1" Grid.Column="1"/>
-        <cc:ImageButton x:Name="CircleButton" Text="Circle" Grid.Row="1" Grid.Column="2"/>
+        <cc:ImageButton x:Name="RoundedRectButton" Text="RoundRect" Grid.Row="1" Grid.Column="2"/>
+        
+        <cc:ImageButton x:Name="LineButton" Text="Line" Grid.Row="2" Grid.Column="0" Image="../Resources/DrawingLab/testimage.png"/>
+        <cc:ImageButton x:Name="CurveButton" Text="Curve" Grid.Row="2" Grid.Column="1"/>
+        <cc:ImageButton x:Name="ToggleArrowsButton" Text="Toggle&#xa;Arrows" Grid.Row="2" Grid.Column="2"/>
+
+        <cc:ImageButton x:Name="TextboxButton" Text="TextBox" Grid.Row="1" Grid.Column="3"/>
+        <cc:ImageButton x:Name="MathboxButton" Text="MathBox" Grid.Row="2" Grid.Column="3"/>
 
         <ToggleButton x:Name="ToggleHotkeysButton" Content="Hotkeys" Grid.Row="1" Grid.Column="5" IsChecked="{Binding UpdateSourceTrigger=PropertyChanged, Source={StaticResource DrawingsLabData}, Path=HotkeysEnabled, Mode=TwoWay}" Style="{StaticResource ToggleButtonStyle}"/>
 
-        <cc:ImageButton x:Name="SelectTypeButton" Text="Select&#xa;Type" Grid.Row="2" Grid.Column="0"/>
-        <cc:ImageButton x:Name="HideButton" Text="Hide" Grid.Row="2" Grid.Column="2"/>
-        <cc:ImageButton x:Name="ShowAllButton" Text="Show&#xa;All" Grid.Row="2" Grid.Column="3"/>
-        <cc:ImageButton x:Name="DuplicateButton" Text="Duplicate" Grid.Row="3" Grid.Column="2"/>
-        <cc:ImageButton x:Name="MultiCloneExtendButton" Text="MultiClone&#xa;Extend" Grid.Row="3" Grid.Column="3"/>
-        <cc:ImageButton x:Name="MultiCloneBetweenButton" Text="MultiClone&#xa;Between" Grid.Row="3" Grid.Column="4"/>
+        <cc:ImageButton x:Name="SelectTypeButton" Text="Select&#xa;Type" Grid.Row="3" Grid.Column="0"/>
+        <cc:ImageButton x:Name="HideButton" Text="Hide" Grid.Row="3" Grid.Column="2"/>
+        <cc:ImageButton x:Name="ShowAllButton" Text="Show&#xa;All" Grid.Row="3" Grid.Column="3"/>
+        <cc:ImageButton x:Name="DuplicateButton" Text="Duplicate" Grid.Row="3" Grid.Column="1"/>
 
-        <Button Grid.Row="4" Grid.Column="1" IsEnabled="{Binding IsChecked, ElementName=FormatIncludeFillColor}" Background="{Binding UpdateSourceTrigger=PropertyChanged, Source={StaticResource DrawingsLabData}, Path=FormatFillColor, Mode=TwoWay, Converter={StaticResource ColorToBackgroundConverter}}" Click="FillColor_Click"/>
-        <Button Grid.Row="4" Grid.Column="2" IsEnabled="{Binding IsChecked, ElementName=FormatIncludeLineColor}" Background="{Binding UpdateSourceTrigger=PropertyChanged, Source={StaticResource DrawingsLabData}, Path=FormatLineColor, Mode=TwoWay, Converter={StaticResource ColorToBackgroundConverter}}" Click="LineColor_Click"/>
-        <TextBox Grid.Row="4" Grid.Column="3" IsEnabled="{Binding IsChecked, ElementName=FormatIncludeLineWeight}" Text="{Binding UpdateSourceTrigger=PropertyChanged, Source={StaticResource DrawingsLabData}, Path=FormatLineWeight, Mode=TwoWay, Converter={StaticResource FloatToStringConverter}}"/>
-        <TextBox Grid.Row="6" Grid.Column="1" IsEnabled="{Binding IsChecked, ElementName=ShiftIncludeX}" Text="{Binding UpdateSourceTrigger=PropertyChanged, Source={StaticResource DrawingsLabData}, Path=ShiftValueX, Mode=TwoWay, Converter={StaticResource FloatToStringConverter}}"/>
-        <TextBox Grid.Row="6" Grid.Column="2" IsEnabled="{Binding IsChecked, ElementName=ShiftIncludeY}" Text="{Binding UpdateSourceTrigger=PropertyChanged, Source={StaticResource DrawingsLabData}, Path=ShiftValueY, Mode=TwoWay, Converter={StaticResource FloatToStringConverter}}"/>
-        <TextBox Grid.Row="6" Grid.Column="3" IsEnabled="{Binding IsChecked, ElementName=ShiftIncludeRotation}" Text="{Binding UpdateSourceTrigger=PropertyChanged, Source={StaticResource DrawingsLabData}, Path=ShiftValueRotation, Mode=TwoWay, Converter={StaticResource FloatToStringConverter}}"/>
-        <TextBox Grid.Row="8" Grid.Column="1" IsEnabled="{Binding IsChecked, ElementName=SavedIncludeX}" Text="{Binding UpdateSourceTrigger=PropertyChanged, Source={StaticResource DrawingsLabData}, Path=SavedValueX, Mode=TwoWay, Converter={StaticResource FloatToStringConverter}}"/>
-        <TextBox Grid.Row="8" Grid.Column="2" IsEnabled="{Binding IsChecked, ElementName=SavedIncludeY}" Text="{Binding UpdateSourceTrigger=PropertyChanged, Source={StaticResource DrawingsLabData}, Path=SavedValueY, Mode=TwoWay, Converter={StaticResource FloatToStringConverter}}"/>
-        <TextBox Grid.Row="8" Grid.Column="3" IsEnabled="{Binding IsChecked, ElementName=SavedIncludeRotation}" Text="{Binding UpdateSourceTrigger=PropertyChanged, Source={StaticResource DrawingsLabData}, Path=SavedValueRotation, Mode=TwoWay, Converter={StaticResource FloatToStringConverter}}"/>
+        <TabControl Grid.Row="4" Grid.Column="0"  Grid.RowSpan="11"  Grid.ColumnSpan="6" TabStripPlacement="Right">
+            <TabControl.Resources>
+                <Style TargetType="{x:Type TabItem}">
+                    <Setter Property="Padding" Value="7" />
+                    <Setter Property="Height" Value="80" />
+                    <Setter Property="HeaderTemplate">
+                        <Setter.Value>
+                            <DataTemplate>
+                                <ContentPresenter Content="{TemplateBinding Content}">
+                                    <ContentPresenter.LayoutTransform>
+                                        <RotateTransform Angle="90" />
+                                    </ContentPresenter.LayoutTransform>
+                                </ContentPresenter>
+                            </DataTemplate>
+                        </Setter.Value>
+                    </Setter>
+                </Style>
+            </TabControl.Resources>
+
+            <!-- TAB: MAIN - START -->
+            <TabItem Name="TabMain" Header="Main">
+                <TabItem.Content>
+                    <Grid DataContext="{StaticResource DrawingsLabData}">
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="38*"/>
+                            <RowDefinition Height="38*"/>
+                            <RowDefinition Height="76*"/>
+                            <RowDefinition Height="38*"/>
+                            <RowDefinition Height="38*"/>
+                            <RowDefinition Height="38*"/>
+                            <RowDefinition Height="38*"/>
+                        </Grid.RowDefinitions>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="1*"/>
+                            <ColumnDefinition Width="1*"/>
+                            <ColumnDefinition Width="1*"/>
+                            <ColumnDefinition Width="1*"/>
+                            <ColumnDefinition Width="1*"/>
+                        </Grid.ColumnDefinitions>
+
+                        <cc:ImageButton x:Name="AddTextButtonMain" Text="Add&#xa;Text" Grid.Row="0" Grid.Column="0"/>
+                        <cc:ImageButton x:Name="AddMathButtonMain" Text="Add&#xa;Math" Grid.Row="0" Grid.Column="1"/>
+                        <cc:ImageButton x:Name="RemoveTextButtonMain" Text="Remove&#xa;Text" Grid.Row="0" Grid.Column="2"/>
+
+                        <cc:ImageButton x:Name="GroupButtonMain" Text="Group" Grid.Row="1" Grid.Column="3"/>
+                        <cc:ImageButton x:Name="UngroupButtonMain" Text="Ungroup" Grid.Row="1" Grid.Column="4"/>
+
+                        <Grid Row="2" Column="0" ColumnSpan="5" DataContext="{StaticResource DrawingsLabData}">
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="38*"/>
+                                <RowDefinition Height="38*"/>
+                            </Grid.RowDefinitions>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="1*"/>
+                                <ColumnDefinition Width="1*"/>
+                                <ColumnDefinition Width="1*"/>
+                                <ColumnDefinition Width="1*"/>
+                                <ColumnDefinition Width="1*"/>
+                                <ColumnDefinition Width="1*"/>
+                            </Grid.ColumnDefinitions>
+                            <cc:ImageButton x:Name="RecordPositionButtonMain" Text="Record&#xa;Position" Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="2"/>
+                            <cc:ImageButton x:Name="ApplyPositionButtonMain" Text="Apply&#xa;Position" Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2"/>
+                            <cc:ImageButton x:Name="RecordDisplacementButtonMain" Text="Record&#xa;Displacement" Grid.Row="0" Grid.Column="2" Grid.ColumnSpan="2"/>
+                            <cc:ImageButton x:Name="ApplyDisplacementButtonMain" Text="Apply&#xa;Displacement" Grid.Row="1" Grid.Column="2" Grid.ColumnSpan="2"/>
+                            <cc:ImageButton x:Name="RecordFormatButtonMain" Text="Record&#xa;Format" Grid.Row="0" Grid.Column="4" Grid.ColumnSpan="2"/>
+                            <cc:ImageButton x:Name="ApplyFormatButtonMain" Text="Apply&#xa;Format" Grid.Row="1" Grid.Column="4" Grid.ColumnSpan="2"/>
+                        </Grid>
+
+                        <cc:ImageButton x:Name="AlignHorizontalButtonMain" Text="Align&#xa;Horizontal" Grid.Row="3" Grid.Column="0"/>
+                        <cc:ImageButton x:Name="AlignVerticalButtonMain" Text="Align&#xa;Vertical" Grid.Row="3" Grid.Column="1"/>
+
+                        <cc:ImageButton x:Name="MultiCloneBetweenButtonMain" Text="MultiClone&#xa;Between" Grid.Row="3" Grid.Column="3"/>
+                        <cc:ImageButton x:Name="MultiCloneExtendButtonMain" Text="MultiClone&#xa;Extend" Grid.Row="3" Grid.Column="4"/>
+
+                        <cc:ImageButton x:Name="BringInFrontOfShapeButtonMain" Text="Front Of&#xa;Shape" Grid.Row="5" Grid.Column="1"/>
+                        <cc:ImageButton x:Name="SendBehindShapeButtonMain" Text="Behind&#xa;Shape" Grid.Row="5" Grid.Column="2"/>
+                        <cc:ImageButton x:Name="BringToFrontButtonMain" Text="Bring&#xa;To Front" Grid.Row="6" Grid.Column="0"/>
+                        <cc:ImageButton x:Name="BringForwardButtonMain" Text="Bring&#xa;Forward" Grid.Row="6" Grid.Column="1"/>
+                        <cc:ImageButton x:Name="SendBackwardButtonMain" Text="Send&#xa;Backward" Grid.Row="6" Grid.Column="2"/>
+                        <cc:ImageButton x:Name="SendToBackButtonMain" Text="Send&#xa;To Back" Grid.Row="6" Grid.Column="3"/>
+                    </Grid>
+                </TabItem.Content>
+            </TabItem>
+            <!-- TAB: MAIN - END -->
+
+            <!-- TAB: FORMAT - START -->
+            <TabItem Name="TabFormat" Header="Format">
+                <TabItem.Content>
+                    <Grid DataContext="{StaticResource DrawingsLabData}">
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="38*"/>
+                            <RowDefinition Height="38*"/>
+                            <RowDefinition Height="190*"/>
+                            <RowDefinition Height="38*"/>
+                        </Grid.RowDefinitions>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="1*"/>
+                            <ColumnDefinition Width="1*"/>
+                            <ColumnDefinition Width="1*"/>
+                            <ColumnDefinition Width="1*"/>
+                            <ColumnDefinition Width="1*"/>
+                        </Grid.ColumnDefinitions>
+
+                        <Grid Grid.Row="2" Column="0" ColumnSpan="5" DataContext="{StaticResource DrawingsLabData}">
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="2*"/>
+                                <RowDefinition Height="1*"/>
+                                <RowDefinition Height="1*"/>
+                                <RowDefinition Height="1*"/>
+                                <RowDefinition Height="1*"/>
+                                <RowDefinition Height="1*"/>
+                                <RowDefinition Height="1*"/>
+                                <RowDefinition Height="1*"/>
+                                <RowDefinition Height="1*"/>
+                            </Grid.RowDefinitions>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="2*"/>
+                                <ColumnDefinition Width="2*"/>
+                                <ColumnDefinition Width="2*"/>
+                                <ColumnDefinition Width="2*"/>
+                                <ColumnDefinition Width="2*"/>
+                                <ColumnDefinition Width="2*"/>
+                            </Grid.ColumnDefinitions>
+                            <cc:ImageButton x:Name="RecordFormatButton" Text="Record&#xa;Format" Grid.Row="0" Grid.ColumnSpan="3" Grid.Column="0"/>
+                            <cc:ImageButton x:Name="ApplyFormatButton" Text="Apply&#xa;Format" Grid.Row="0" Grid.ColumnSpan="3" Grid.Column="3"/>
+
+                            <!-- Text -->
+                            <ToggleButton x:Name="ToggleSyncTextButton" Content="Sync Text" Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2" IsChecked="{Binding UpdateSourceTrigger=PropertyChanged, Source={StaticResource DrawingsLabData}, Path=HotkeysEnabled, Mode=TwoWay}"/>
+
+                            <ToggleButton x:Name="ToggleTextButton" Content="Present" Grid.Row="2" Grid.Column="0" IsChecked="{Binding UpdateSourceTrigger=PropertyChanged, Source={StaticResource DrawingsLabData}, Path=HotkeysEnabled, Mode=TwoWay}"/>
+                            <CheckBox Content=""  Grid.Row="2" Grid.Column="1" IsChecked="{Binding UpdateSourceTrigger=PropertyChanged, Source={StaticResource DrawingsLabData}, Path=FormatIncludeAll, Mode=TwoWay}"/>
+
+                            <Button Grid.Row="3" Grid.Column="0" IsEnabled="{Binding IsChecked, ElementName=FormatIncludeLineColor}" Background="{Binding UpdateSourceTrigger=PropertyChanged, Source={StaticResource DrawingsLabData}, Path=FormatLineColor, Mode=TwoWay, Converter={StaticResource ColorToBackgroundConverter}}" Click="LineColor_Click"/>
+                            <CheckBox Content="" x:Name="FormatIncludeTextColor" Grid.Row="3" Grid.Column="1" IsChecked="{Binding UpdateSourceTrigger=PropertyChanged, Source={StaticResource DrawingsLabData}, Path=FormatIncludeLineColor, Mode=TwoWay}"/>
+
+                            <TextBox Grid.Row="4" Grid.Column="0" IsEnabled="{Binding IsChecked, ElementName=FormatIncludeLineWeight}" Text="{Binding UpdateSourceTrigger=PropertyChanged, Source={StaticResource DrawingsLabData}, Path=FormatLineWeight, Mode=TwoWay, Converter={StaticResource FloatToStringConverter}}"/>
+                            <CheckBox Content="" x:Name="FormatIncludeFontSize" Grid.Row="4" Grid.Column="1" IsChecked="{Binding UpdateSourceTrigger=PropertyChanged, Source={StaticResource DrawingsLabData}, Path=FormatIncludeLineWeight, Mode=TwoWay}"/>
+
+                            <cc:ImageButton x:Name="TextFontButton" Content="Font" Grid.Row="5" Grid.Column="0" Margin="0"/>
+                            <CheckBox Content=""  Grid.Row="5" Grid.Column="1" IsChecked="{Binding UpdateSourceTrigger=PropertyChanged, Source={StaticResource DrawingsLabData}, Path=FormatIncludeAll, Mode=TwoWay}"/>
+
+                            <ToggleButton x:Name="ToggleTextWrapButton" Content="Wrap" Grid.Row="6" Grid.Column="0" IsChecked="{Binding UpdateSourceTrigger=PropertyChanged, Source={StaticResource DrawingsLabData}, Path=HotkeysEnabled, Mode=TwoWay}"/>
+                            <CheckBox Content=""  Grid.Row="6" Grid.Column="1" IsChecked="{Binding UpdateSourceTrigger=PropertyChanged, Source={StaticResource DrawingsLabData}, Path=FormatIncludeAll, Mode=TwoWay}"/>
+
+                            <ToggleButton x:Name="ToggleTextShrinkButton" Content="Shrink" Grid.Row="7" Grid.Column="0" IsChecked="{Binding UpdateSourceTrigger=PropertyChanged, Source={StaticResource DrawingsLabData}, Path=HotkeysEnabled, Mode=TwoWay}"/>
+                            <CheckBox Content=""  Grid.Row="7" Grid.Column="1" IsChecked="{Binding UpdateSourceTrigger=PropertyChanged, Source={StaticResource DrawingsLabData}, Path=FormatIncludeAll, Mode=TwoWay}"/>
+
+                            <!-- FONT -->
+
+                            <!-- Line -->
+                            <ToggleButton x:Name="ToggleSyncLineButton" Content="Sync Line" Grid.Row="1" Grid.Column="2" Grid.ColumnSpan="2" IsChecked="{Binding UpdateSourceTrigger=PropertyChanged, Source={StaticResource DrawingsLabData}, Path=HotkeysEnabled, Mode=TwoWay}"/>
+
+                            <ToggleButton x:Name="ToggleLineButton" Content="Present" Grid.Row="2" Grid.Column="2" IsChecked="{Binding UpdateSourceTrigger=PropertyChanged, Source={StaticResource DrawingsLabData}, Path=HotkeysEnabled, Mode=TwoWay}"/>
+                            <CheckBox Content=""  Grid.Row="2" Grid.Column="3" IsChecked="{Binding UpdateSourceTrigger=PropertyChanged, Source={StaticResource DrawingsLabData}, Path=FormatIncludeAll, Mode=TwoWay}"/>
+
+                            <Button Grid.Row="3" Grid.Column="2" IsEnabled="{Binding IsChecked, ElementName=FormatIncludeLineColor}" Background="{Binding UpdateSourceTrigger=PropertyChanged, Source={StaticResource DrawingsLabData}, Path=FormatLineColor, Mode=TwoWay, Converter={StaticResource ColorToBackgroundConverter}}" Click="LineColor_Click"/>
+                            <CheckBox Content="" x:Name="FormatIncludeLineColor" Grid.Row="3" Grid.Column="3" IsChecked="{Binding UpdateSourceTrigger=PropertyChanged, Source={StaticResource DrawingsLabData}, Path=FormatIncludeLineColor, Mode=TwoWay}"/>
+
+                            <TextBox Grid.Row="4" Grid.Column="2" IsEnabled="{Binding IsChecked, ElementName=FormatIncludeLineWeight}" Text="{Binding UpdateSourceTrigger=PropertyChanged, Source={StaticResource DrawingsLabData}, Path=FormatLineWeight, Mode=TwoWay, Converter={StaticResource FloatToStringConverter}}"/>
+                            <CheckBox Content="" x:Name="FormatIncludeLineWeight" Grid.Row="4" Grid.Column="3" IsChecked="{Binding UpdateSourceTrigger=PropertyChanged, Source={StaticResource DrawingsLabData}, Path=FormatIncludeLineWeight, Mode=TwoWay}"/>
+
+                            <cc:ImageButton x:Name="LineStyleButton" Content="Style" Grid.Row="5" Grid.Column="2" Margin="0"/>
+                            <CheckBox Content=""  Grid.Row="5" Grid.Column="3" IsChecked="{Binding UpdateSourceTrigger=PropertyChanged, Source={StaticResource DrawingsLabData}, Path=FormatIncludeAll, Mode=TwoWay}"/>
+
+                            <cc:ImageButton x:Name="LineArrowButton" Content="Arrow" Grid.Row="6" Grid.Column="2" Margin="0"/>
+                            <CheckBox Content=""  Grid.Row="6" Grid.Column="3" IsChecked="{Binding UpdateSourceTrigger=PropertyChanged, Source={StaticResource DrawingsLabData}, Path=FormatIncludeAll, Mode=TwoWay}"/>
 
 
-        <CheckBox Content="All"  Grid.Row="5" Grid.Column="0" IsChecked="{Binding UpdateSourceTrigger=PropertyChanged, Source={StaticResource DrawingsLabData}, Path=FormatIncludeAll, Mode=TwoWay}"/>
-        <CheckBox Content="Fill" x:Name="FormatIncludeFillColor" Grid.Row="5" Grid.Column="1" IsChecked="{Binding UpdateSourceTrigger=PropertyChanged, Source={StaticResource DrawingsLabData}, Path=FormatIncludeFillColor, Mode=TwoWay}"/>
-        <CheckBox Content="Line" x:Name="FormatIncludeLineColor" Grid.Row="5" Grid.Column="2" IsChecked="{Binding UpdateSourceTrigger=PropertyChanged, Source={StaticResource DrawingsLabData}, Path=FormatIncludeLineColor, Mode=TwoWay}"/>
-        <CheckBox Content="Weight" x:Name="FormatIncludeLineWeight" Grid.Row="5" Grid.Column="3" IsChecked="{Binding UpdateSourceTrigger=PropertyChanged, Source={StaticResource DrawingsLabData}, Path=FormatIncludeLineWeight, Mode=TwoWay}"/>
-        <CheckBox Content="Pos" Grid.Row="7" Grid.Column="0" IsChecked="{Binding UpdateSourceTrigger=PropertyChanged, Source={StaticResource DrawingsLabData}, Path=ShiftIncludePositionBoth, Mode=TwoWay}"/>
-        <CheckBox Content="X" x:Name="ShiftIncludeX" Grid.Row="7" Grid.Column="1" IsChecked="{Binding UpdateSourceTrigger=PropertyChanged, Source={StaticResource DrawingsLabData}, Path=ShiftIncludePositionX, Mode=TwoWay}"/>
-        <CheckBox Content="Y" x:Name="ShiftIncludeY" Grid.Row="7" Grid.Column="2" IsChecked="{Binding UpdateSourceTrigger=PropertyChanged, Source={StaticResource DrawingsLabData}, Path=ShiftIncludePositionY, Mode=TwoWay}"/>
-        <CheckBox Content="Rtn" x:Name="ShiftIncludeRotation" Grid.Row="7" Grid.Column="3" IsChecked="{Binding UpdateSourceTrigger=PropertyChanged, Source={StaticResource DrawingsLabData}, Path=ShiftIncludeRotation, Mode=TwoWay}"/>
-        <CheckBox Content="Pos" Grid.Row="9" Grid.Column="0" IsChecked="{Binding UpdateSourceTrigger=PropertyChanged, Source={StaticResource DrawingsLabData}, Path=SavedIncludePositionBoth, Mode=TwoWay}"/>
-        <CheckBox Content="X" x:Name="SavedIncludeX" Grid.Row="9" Grid.Column="1" IsChecked="{Binding UpdateSourceTrigger=PropertyChanged, Source={StaticResource DrawingsLabData}, Path=SavedIncludePositionX, Mode=TwoWay}"/>
-        <CheckBox Content="Y" x:Name="SavedIncludeY" Grid.Row="9" Grid.Column="2" IsChecked="{Binding UpdateSourceTrigger=PropertyChanged, Source={StaticResource DrawingsLabData}, Path=SavedIncludePositionY, Mode=TwoWay}"/>
-        <CheckBox Content="Rtn" x:Name="SavedIncludeRotation" Grid.Row="9" Grid.Column="3" IsChecked="{Binding UpdateSourceTrigger=PropertyChanged, Source={StaticResource DrawingsLabData}, Path=SavedIncludeRotation, Mode=TwoWay}"/>
+                            <!-- Fill -->
+                            <ToggleButton x:Name="ToggleSyncFillButton" Content="Sync Fill" Grid.Row="1" Grid.Column="4" Grid.ColumnSpan="2" IsChecked="{Binding UpdateSourceTrigger=PropertyChanged, Source={StaticResource DrawingsLabData}, Path=HotkeysEnabled, Mode=TwoWay}"/>
 
-        <cc:ImageButton x:Name="RecordDisplacementButton" Text="Record&#xa;Displacement" Grid.Row="6" Grid.RowSpan="2" Grid.Column="4"/>
-        <cc:ImageButton x:Name="ApplyDisplacementButton" Text="Apply&#xa;Displacement" Grid.Row="6" Grid.RowSpan="2" Grid.Column="5"/>
-        <cc:ImageButton x:Name="RecordPositionButton" Text="Record&#xa;Position" Grid.Row="8" Grid.RowSpan="2" Grid.Column="4"/>
-        <cc:ImageButton x:Name="ApplyPositionButton" Text="Apply&#xa;Position" Grid.Row="8" Grid.RowSpan="2" Grid.Column="5"/>
-        <cc:ImageButton x:Name="RecordFormatButton" Text="Record&#xa;Format" Grid.Row="4" Grid.RowSpan="2" Grid.Column="4"/>
-        <cc:ImageButton x:Name="ApplyFormatButton" Text="Apply&#xa;Format" Grid.Row="4" Grid.RowSpan="2" Grid.Column="5"/>
+                            <ToggleButton x:Name="ToggleFillButton" Content="Present" Grid.Row="2" Grid.Column="4" IsChecked="{Binding UpdateSourceTrigger=PropertyChanged, Source={StaticResource DrawingsLabData}, Path=HotkeysEnabled, Mode=TwoWay}"/>
+                            <CheckBox Content=""  Grid.Row="2" Grid.Column="5" IsChecked="{Binding UpdateSourceTrigger=PropertyChanged, Source={StaticResource DrawingsLabData}, Path=FormatIncludeAll, Mode=TwoWay}"/>
 
-        <cc:ImageButton x:Name="AlignHorizontalButton" Text="Align&#xa;Horizontal" Grid.Row="11" Grid.Column="0"/>
-        <cc:ImageButton x:Name="AlignVerticalButton" Text="Align&#xa;Vertical" Grid.Row="11" Grid.Column="1"/>
-        <cc:ImageButton x:Name="AlignHorizontalToSlideButton" Text="Align&#xa;Horizontal&#xa;To Slide" Grid.Row="12" Grid.Column="0"/>
-        <cc:ImageButton x:Name="AlignVerticalToSlideButton" Text="Align&#xa;Vertical&#xa;To Slide" Grid.Row="12" Grid.Column="1"/>
+                            <Button Grid.Row="3" Grid.Column="4" IsEnabled="{Binding IsChecked, ElementName=FormatIncludeFillColor}" Background="{Binding UpdateSourceTrigger=PropertyChanged, Source={StaticResource DrawingsLabData}, Path=FormatFillColor, Mode=TwoWay, Converter={StaticResource ColorToBackgroundConverter}}" Click="FillColor_Click"/>
+                            <CheckBox Content="" x:Name="FormatIncludeFillColor" Grid.Row="3" Grid.Column="5" IsChecked="{Binding UpdateSourceTrigger=PropertyChanged, Source={StaticResource DrawingsLabData}, Path=FormatIncludeFillColor, Mode=TwoWay}"/>
 
-        <RadioButton Grid.Row="10" Grid.Column="3" IsChecked="{Binding UpdateSourceTrigger=PropertyChanged, Source={StaticResource DrawingsLabData}, Path=Anchor, Mode=TwoWay, Converter={StaticResource EnumMatchToBooleanConverter}, ConverterParameter=TopLeft}" HorizontalAlignment="Center" VerticalAlignment="Center"/>
-        <RadioButton Grid.Row="10" Grid.Column="4" IsChecked="{Binding UpdateSourceTrigger=PropertyChanged, Source={StaticResource DrawingsLabData}, Path=Anchor, Mode=TwoWay, Converter={StaticResource EnumMatchToBooleanConverter}, ConverterParameter=TopCenter}" HorizontalAlignment="Center" VerticalAlignment="Center"/>
-        <RadioButton Grid.Row="10" Grid.Column="5" IsChecked="{Binding UpdateSourceTrigger=PropertyChanged, Source={StaticResource DrawingsLabData}, Path=Anchor, Mode=TwoWay, Converter={StaticResource EnumMatchToBooleanConverter}, ConverterParameter=TopRight}" HorizontalAlignment="Center" VerticalAlignment="Center"/>
-        <RadioButton Grid.Row="11" Grid.Column="3" IsChecked="{Binding UpdateSourceTrigger=PropertyChanged, Source={StaticResource DrawingsLabData}, Path=Anchor, Mode=TwoWay, Converter={StaticResource EnumMatchToBooleanConverter}, ConverterParameter=MiddleLeft}" HorizontalAlignment="Center" VerticalAlignment="Center"/>
-        <RadioButton Grid.Row="11" Grid.Column="4" IsChecked="{Binding UpdateSourceTrigger=PropertyChanged, Source={StaticResource DrawingsLabData}, Path=Anchor, Mode=TwoWay, Converter={StaticResource EnumMatchToBooleanConverter}, ConverterParameter=MiddleCenter}" HorizontalAlignment="Center" VerticalAlignment="Center"/>
-        <RadioButton Grid.Row="11" Grid.Column="5" IsChecked="{Binding UpdateSourceTrigger=PropertyChanged, Source={StaticResource DrawingsLabData}, Path=Anchor, Mode=TwoWay, Converter={StaticResource EnumMatchToBooleanConverter}, ConverterParameter=MiddleRight}" HorizontalAlignment="Center" VerticalAlignment="Center"/>
-        <RadioButton Grid.Row="12" Grid.Column="3" IsChecked="{Binding UpdateSourceTrigger=PropertyChanged, Source={StaticResource DrawingsLabData}, Path=Anchor, Mode=TwoWay, Converter={StaticResource EnumMatchToBooleanConverter}, ConverterParameter=BottomLeft}" HorizontalAlignment="Center" VerticalAlignment="Center"/>
-        <RadioButton Grid.Row="12" Grid.Column="4" IsChecked="{Binding UpdateSourceTrigger=PropertyChanged, Source={StaticResource DrawingsLabData}, Path=Anchor, Mode=TwoWay, Converter={StaticResource EnumMatchToBooleanConverter}, ConverterParameter=BottomCenter}" HorizontalAlignment="Center" VerticalAlignment="Center"/>
-        <RadioButton Grid.Row="12" Grid.Column="5" IsChecked="{Binding UpdateSourceTrigger=PropertyChanged, Source={StaticResource DrawingsLabData}, Path=Anchor, Mode=TwoWay, Converter={StaticResource EnumMatchToBooleanConverter}, ConverterParameter=BottomRight}" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                            <TextBox Grid.Row="4" Grid.Column="4" IsEnabled="{Binding IsChecked, ElementName=FormatIncludeLineWeight}" Text="{Binding UpdateSourceTrigger=PropertyChanged, Source={StaticResource DrawingsLabData}, Path=FormatLineWeight, Mode=TwoWay, Converter={StaticResource FloatToStringConverter}}"/>
+                            <CheckBox Content="X" x:Name="FormatIncludeXDim" Grid.Row="4" Grid.Column="5" IsChecked="{Binding UpdateSourceTrigger=PropertyChanged, Source={StaticResource DrawingsLabData}, Path=FormatIncludeLineWeight, Mode=TwoWay}"/>
 
-        <cc:ImageButton x:Name="BringInFrontOfShapeButton" Text="Front Of&#xa;Shape" Grid.Row="13" Grid.Column="2"/>
-        <cc:ImageButton x:Name="SendBehindShapeButton" Text="Behind&#xa;Shape" Grid.Row="13" Grid.Column="3"/>
-        <cc:ImageButton x:Name="BringToFrontButton" Text="Bring&#xa;To Front" Grid.Row="14" Grid.Column="1"/>
-        <cc:ImageButton x:Name="BringForwardButton" Text="Bring&#xa;Forward" Grid.Row="14" Grid.Column="2"/>
-        <cc:ImageButton x:Name="SendBackwardButton" Text="Send&#xa;Backward" Grid.Row="14" Grid.Column="3"/>
-        <cc:ImageButton x:Name="SendToBackButton" Text="Send&#xa;To Back" Grid.Row="14" Grid.Column="4"/>
+                            <TextBox Grid.Row="5" Grid.Column="4" IsEnabled="{Binding IsChecked, ElementName=FormatIncludeLineWeight}" Text="{Binding UpdateSourceTrigger=PropertyChanged, Source={StaticResource DrawingsLabData}, Path=FormatLineWeight, Mode=TwoWay, Converter={StaticResource FloatToStringConverter}}"/>
+                            <CheckBox Content="Y" x:Name="FormatIncludeYDim" Grid.Row="5" Grid.Column="5" IsChecked="{Binding UpdateSourceTrigger=PropertyChanged, Source={StaticResource DrawingsLabData}, Path=FormatIncludeLineWeight, Mode=TwoWay}"/>
 
+                        </Grid>
+
+                        <cc:ImageButton x:Name="AddTextButton" Text="Add&#xa;Text" Grid.Row="0" Grid.Column="0"/>
+                        <cc:ImageButton x:Name="AddMathButton" Text="Add&#xa;Math" Grid.Row="0" Grid.Column="1"/>
+                        <cc:ImageButton x:Name="RemoveTextButton" Text="Remove&#xa;Text" Grid.Row="0" Grid.Column="2"/>
+
+                    </Grid>
+                </TabItem.Content>
+            </TabItem>
+            <!-- TAB: FORMAT - END -->
+
+            <!-- TAB: POSITION - START -->
+            <TabItem Name="TabPosition" Header="Position">
+                <TabItem.Content>
+                    <Grid DataContext="{StaticResource DrawingsLabData}">
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="114*"/>
+                            <RowDefinition Height="38*"/>
+                            <RowDefinition Height="38*"/>
+                            <RowDefinition Height="38*"/>
+                            <RowDefinition Height="38*"/>
+                            <RowDefinition Height="38*"/>
+                        </Grid.RowDefinitions>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="1*"/>
+                            <ColumnDefinition Width="1*"/>
+                            <ColumnDefinition Width="1*"/>
+                            <ColumnDefinition Width="1*"/>
+                            <ColumnDefinition Width="1*"/>
+                        </Grid.ColumnDefinitions>
+                        <Grid Grid.Row="2" Grid.Column="1" DataContext="{StaticResource DrawingsLabData}">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="3*"/>
+                                <ColumnDefinition Width="3*"/>
+                            </Grid.ColumnDefinitions>
+                        </Grid>
+
+                        <Grid Row="0" Column="0" ColumnSpan="5" DataContext="{StaticResource DrawingsLabData}">
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="38*"/>
+                                <RowDefinition Height="19*"/>
+                                <RowDefinition Height="19*"/>
+                                <RowDefinition Height="19*"/>
+                                <RowDefinition Height="19*"/>
+                            </Grid.RowDefinitions>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="1*"/>
+                                <ColumnDefinition Width="1*"/>
+                                <ColumnDefinition Width="1*"/>
+                                <ColumnDefinition Width="1*"/>
+                                <ColumnDefinition Width="1*"/>
+                                <ColumnDefinition Width="1*"/>
+                            </Grid.ColumnDefinitions>
+                            <cc:ImageButton x:Name="RecordPositionButton" Text="Record&#xa;Position" Grid.Row="0" Grid.Column="0"/>
+                            <cc:ImageButton x:Name="ApplyPositionButton" Text="Apply&#xa;Position" Grid.Row="0" Grid.Column="1"/>
+                            <cc:ImageButton x:Name="RecordDisplacementButton" Text="Record&#xa;Displacement" Grid.Row="0" Grid.Column="2"/>
+                            <cc:ImageButton x:Name="ApplyDisplacementButton" Text="Apply&#xa;Displacement" Grid.Row="0" Grid.Column="3"/>
+
+                            <TextBox Grid.Row="1" Grid.Column="0" IsEnabled="{Binding IsChecked, ElementName=SavedIncludeX}" Text="{Binding UpdateSourceTrigger=PropertyChanged, Source={StaticResource DrawingsLabData}, Path=SavedValueX, Mode=TwoWay, Converter={StaticResource FloatToStringConverter}}"/>
+                            <TextBox Grid.Row="2" Grid.Column="0" IsEnabled="{Binding IsChecked, ElementName=SavedIncludeY}" Text="{Binding UpdateSourceTrigger=PropertyChanged, Source={StaticResource DrawingsLabData}, Path=SavedValueY, Mode=TwoWay, Converter={StaticResource FloatToStringConverter}}"/>
+                            <TextBox Grid.Row="3" Grid.Column="0" IsEnabled="{Binding IsChecked, ElementName=SavedIncludeRotation}" Text="{Binding UpdateSourceTrigger=PropertyChanged, Source={StaticResource DrawingsLabData}, Path=SavedValueRotation, Mode=TwoWay, Converter={StaticResource FloatToStringConverter}}"/>
+                            <CheckBox Content="Pos" Grid.Row="4" Grid.Column="1" IsChecked="{Binding UpdateSourceTrigger=PropertyChanged, Source={StaticResource DrawingsLabData}, Path=SavedIncludePositionBoth, Mode=TwoWay}"/>
+                            <CheckBox Content="X" x:Name="SavedIncludeX" Grid.Row="1" Grid.Column="1" IsChecked="{Binding UpdateSourceTrigger=PropertyChanged, Source={StaticResource DrawingsLabData}, Path=SavedIncludePositionX, Mode=TwoWay}"/>
+                            <CheckBox Content="Y" x:Name="SavedIncludeY" Grid.Row="2" Grid.Column="1" IsChecked="{Binding UpdateSourceTrigger=PropertyChanged, Source={StaticResource DrawingsLabData}, Path=SavedIncludePositionY, Mode=TwoWay}"/>
+                            <CheckBox Content="Rtn" x:Name="SavedIncludeRotation" Grid.Row="3" Grid.Column="1" IsChecked="{Binding UpdateSourceTrigger=PropertyChanged, Source={StaticResource DrawingsLabData}, Path=SavedIncludeRotation, Mode=TwoWay}"/>
+
+                            <TextBox Grid.Row="1" Grid.Column="2" IsEnabled="{Binding IsChecked, ElementName=ShiftIncludeX}" Text="{Binding UpdateSourceTrigger=PropertyChanged, Source={StaticResource DrawingsLabData}, Path=ShiftValueX, Mode=TwoWay, Converter={StaticResource FloatToStringConverter}}"/>
+                            <TextBox Grid.Row="2" Grid.Column="2" IsEnabled="{Binding IsChecked, ElementName=ShiftIncludeY}" Text="{Binding UpdateSourceTrigger=PropertyChanged, Source={StaticResource DrawingsLabData}, Path=ShiftValueY, Mode=TwoWay, Converter={StaticResource FloatToStringConverter}}"/>
+                            <TextBox Grid.Row="3" Grid.Column="2" IsEnabled="{Binding IsChecked, ElementName=ShiftIncludeRotation}" Text="{Binding UpdateSourceTrigger=PropertyChanged, Source={StaticResource DrawingsLabData}, Path=ShiftValueRotation, Mode=TwoWay, Converter={StaticResource FloatToStringConverter}}"/>
+                            <CheckBox Content="Pos" Grid.Row="4" Grid.Column="3" IsChecked="{Binding UpdateSourceTrigger=PropertyChanged, Source={StaticResource DrawingsLabData}, Path=ShiftIncludePositionBoth, Mode=TwoWay}"/>
+                            <CheckBox Content="X" x:Name="ShiftIncludeX" Grid.Row="1" Grid.Column="3" IsChecked="{Binding UpdateSourceTrigger=PropertyChanged, Source={StaticResource DrawingsLabData}, Path=ShiftIncludePositionX, Mode=TwoWay}"/>
+                            <CheckBox Content="Y" x:Name="ShiftIncludeY" Grid.Row="2" Grid.Column="3" IsChecked="{Binding UpdateSourceTrigger=PropertyChanged, Source={StaticResource DrawingsLabData}, Path=ShiftIncludePositionY, Mode=TwoWay}"/>
+                            <CheckBox Content="Rtn" x:Name="ShiftIncludeRotation" Grid.Row="3" Grid.Column="3" IsChecked="{Binding UpdateSourceTrigger=PropertyChanged, Source={StaticResource DrawingsLabData}, Path=ShiftIncludeRotation, Mode=TwoWay}"/>
+
+
+                            <Grid Row="0" Column="4" RowSpan="3" ColumnSpan="2" DataContext="{StaticResource DrawingsLabData}">
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="1*"/>
+                                    <RowDefinition Height="1*"/>
+                                    <RowDefinition Height="1*"/>
+                                </Grid.RowDefinitions>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="1*"/>
+                                    <ColumnDefinition Width="1*"/>
+                                    <ColumnDefinition Width="1*"/>
+                                </Grid.ColumnDefinitions>
+                                <RadioButton Grid.Row="0" Grid.Column="0" IsChecked="{Binding UpdateSourceTrigger=PropertyChanged, Source={StaticResource DrawingsLabData}, Path=Anchor, Mode=TwoWay, Converter={StaticResource EnumMatchToBooleanConverter}, ConverterParameter=TopLeft}" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                                <RadioButton Grid.Row="0" Grid.Column="1" IsChecked="{Binding UpdateSourceTrigger=PropertyChanged, Source={StaticResource DrawingsLabData}, Path=Anchor, Mode=TwoWay, Converter={StaticResource EnumMatchToBooleanConverter}, ConverterParameter=TopCenter}" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                                <RadioButton Grid.Row="0" Grid.Column="2" IsChecked="{Binding UpdateSourceTrigger=PropertyChanged, Source={StaticResource DrawingsLabData}, Path=Anchor, Mode=TwoWay, Converter={StaticResource EnumMatchToBooleanConverter}, ConverterParameter=TopRight}" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                                <RadioButton Grid.Row="1" Grid.Column="0" IsChecked="{Binding UpdateSourceTrigger=PropertyChanged, Source={StaticResource DrawingsLabData}, Path=Anchor, Mode=TwoWay, Converter={StaticResource EnumMatchToBooleanConverter}, ConverterParameter=MiddleLeft}" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                                <RadioButton Grid.Row="1" Grid.Column="1" IsChecked="{Binding UpdateSourceTrigger=PropertyChanged, Source={StaticResource DrawingsLabData}, Path=Anchor, Mode=TwoWay, Converter={StaticResource EnumMatchToBooleanConverter}, ConverterParameter=MiddleCenter}" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                                <RadioButton Grid.Row="1" Grid.Column="2" IsChecked="{Binding UpdateSourceTrigger=PropertyChanged, Source={StaticResource DrawingsLabData}, Path=Anchor, Mode=TwoWay, Converter={StaticResource EnumMatchToBooleanConverter}, ConverterParameter=MiddleRight}" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                                <RadioButton Grid.Row="2" Grid.Column="0" IsChecked="{Binding UpdateSourceTrigger=PropertyChanged, Source={StaticResource DrawingsLabData}, Path=Anchor, Mode=TwoWay, Converter={StaticResource EnumMatchToBooleanConverter}, ConverterParameter=BottomLeft}" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                                <RadioButton Grid.Row="2" Grid.Column="1" IsChecked="{Binding UpdateSourceTrigger=PropertyChanged, Source={StaticResource DrawingsLabData}, Path=Anchor, Mode=TwoWay, Converter={StaticResource EnumMatchToBooleanConverter}, ConverterParameter=BottomCenter}" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                                <RadioButton Grid.Row="2" Grid.Column="2" IsChecked="{Binding UpdateSourceTrigger=PropertyChanged, Source={StaticResource DrawingsLabData}, Path=Anchor, Mode=TwoWay, Converter={StaticResource EnumMatchToBooleanConverter}, ConverterParameter=BottomRight}" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                            </Grid>
+ 
+                        </Grid>
+                        
+                        <cc:ImageButton x:Name="AlignHorizontalButton" Text="Align&#xa;Horizontal" Grid.Row="1" Grid.Column="2"/>
+                        <cc:ImageButton x:Name="AlignVerticalButton" Text="Align&#xa;Vertical" Grid.Row="1" Grid.Column="3"/>
+                        <cc:ImageButton x:Name="AlignBothButton" Text="Align&#xa;Both" Grid.Row="1" Grid.Column="4"/>
+                        <cc:ImageButton x:Name="AlignHorizontalToSlideButton" Text="Align&#xa;Horizontal&#xa;To Slide" Grid.Row="2" Grid.Column="2"/>
+                        <cc:ImageButton x:Name="AlignVerticalToSlideButton" Text="Align&#xa;Vertical&#xa;To Slide" Grid.Row="2" Grid.Column="3"/>
+                        <cc:ImageButton x:Name="AlignBothToSlideButton" Text="Align&#xa;Both&#xa;To Slide" Grid.Row="2" Grid.Column="4"/>
+
+                        <cc:ImageButton x:Name="MultiCloneBetweenButton" Text="MultiClone&#xa;Between" Grid.Row="3" Grid.Column="0"/>
+                        <cc:ImageButton x:Name="MultiCloneExtendButton" Text="MultiClone&#xa;Extend" Grid.Row="3" Grid.Column="1"/>
+                        <cc:ImageButton x:Name="MultiCloneGridButton" Text="MultiClone&#xa;Grid" Grid.Row="3" Grid.Column="2"/>
+                        <cc:ImageButton x:Name="PivotAroundButton" Text="Pivot&#xa;Around" Grid.Row="3" Grid.Column="3"/>
+
+
+                        <cc:ImageButton x:Name="BringInFrontOfShapeButton" Text="Front Of&#xa;Shape" Grid.Row="4" Grid.Column="1"/>
+                        <cc:ImageButton x:Name="SendBehindShapeButton" Text="Behind&#xa;Shape" Grid.Row="4" Grid.Column="2"/>
+                        <cc:ImageButton x:Name="BringToFrontButton" Text="Bring&#xa;To Front" Grid.Row="5" Grid.Column="0"/>
+                        <cc:ImageButton x:Name="BringForwardButton" Text="Bring&#xa;Forward" Grid.Row="5" Grid.Column="1"/>
+                        <cc:ImageButton x:Name="SendBackwardButton" Text="Send&#xa;Backward" Grid.Row="5" Grid.Column="2"/>
+                        <cc:ImageButton x:Name="SendToBackButton" Text="Send&#xa;To Back" Grid.Row="5" Grid.Column="3"/>
+
+                    </Grid>
+                </TabItem.Content>
+            </TabItem>
+            <!-- TAB: POSITION - END -->
+
+            <!-- TAB: SELECTION - START -->
+            <TabItem Name="TabSelection" Header="Selection">
+                <TabItem.Content>
+                    <Grid DataContext="{StaticResource DrawingsLabData}">
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="38*"/>
+                            <RowDefinition Height="38*"/>
+                            <RowDefinition Height="38*"/>
+                            <RowDefinition Height="38*"/>
+                            <RowDefinition Height="38*"/>
+                            <RowDefinition Height="38*"/>
+                            <RowDefinition Height="38*"/>
+                            <RowDefinition Height="38*"/>
+                        </Grid.RowDefinitions>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="1*"/>
+                            <ColumnDefinition Width="1*"/>
+                            <ColumnDefinition Width="1*"/>
+                            <ColumnDefinition Width="1*"/>
+                            <ColumnDefinition Width="1*"/>
+                        </Grid.ColumnDefinitions>
+                    </Grid>
+                </TabItem.Content>
+            </TabItem>
+            <!-- TAB: SELECTION - END -->
+        </TabControl>
     </Grid>
 </UserControl>

@@ -47,21 +47,91 @@ namespace PowerPointLabs.DrawingsLab
         #region ToolTip
         private void InitToolTipControl()
         {
-            ConfigureButton(AlignHorizontalButton, AlignHorizontalButton_Click, "Align Shapes Horizontally to last shape in selection.");
-            ConfigureButton(AlignVerticalButton, AlignVerticalButton_Click, "Align Shapes Vertically to last shape in selection.");
-            ConfigureButton(AlignHorizontalToSlideButton, AlignHorizontalToSlideButton_Click, "Align Shapes Horizontally to a position relative to the slide.");
-            ConfigureButton(AlignVerticalToSlideButton, AlignVerticalToSlideButton_Click, "Align Shapes Vertically to a position relative to the slide.");
+            // ---------------
+            // || Top Panel ||
+            // ---------------
+
+            ConfigureButton(CircleButton, CircleButton_Click, "[C] Draw a Circle.");
+            ConfigureButton(RectButton, RectangleButton_Click, "[R] Draw a Rectangle.");
+            // ConfigureButton RoundedRectButton
+
+            ConfigureButton(LineButton, LineButton_Click, "[L] Draw a Line.");
+            // ConfigureButton CurveButton
+            // SetTooltip ToggleArrowsButton
+
+            // ConfigureButton TextboxButton
+            // ConfigureButton MathboxButton
+
+            ConfigureButton(SelectTypeButton, SelectAllOfTypeButton_Click, "[A] Select all shapes of same type as currently selected shapes.");
+            ConfigureButton(HideButton, HideButton_Click, "[H] Hide selected items.");
+            ConfigureButton(ShowAllButton, ShowAllButton_Click, "[S] Show all hidden items.");
+            ConfigureButton(DuplicateButton, CloneButton_Click, "[D] Makes a copy of the selected shapes in the exact same location.");
+            
+
+            SetTooltip(ToggleHotkeysButton, "Enable / Disable Hotkeys.");
+
+
+            // ---------------
+            // || Tab: Main ||
+            // ---------------
+
+            // ConfigureButton AddTextButtonMain
+            // ConfigureButton AddMathButtonMain
+            // ConfigureButton RemoveTextButtonMain
+
+            // ConfigureButton GroupButtonMain
+            // ConfigureButton UngroupButtonMain
+
+            ConfigureButton(ApplyDisplacementButtonMain, ApplyDisplacementButtonMain_Click, "Apply recorded displacement to selected shapes.");
+            ConfigureButton(ApplyFormatButtonMain, ApplyFormatButtonMain_Click, "Apply recorded format to selected shapes.");
+            ConfigureButton(ApplyPositionButtonMain, ApplyPositionButtonMain_Click, "Apply recorded position or rotation to selected shapes.");
+            ConfigureButton(RecordDisplacementButtonMain, RecordDisplacementButtonMain_Click, "Record Displacement between two selected shapes.");
+            ConfigureButton(RecordFormatButtonMain, RecordFormatButtonMain_Click, "Record Format of a selected shape.");
+            ConfigureButton(RecordPositionButtonMain, RecordPositionButtonMain_Click, "Record position and rotation of a selected shape.");
+
+            ConfigureButton(AlignHorizontalButtonMain, AlignHorizontalButton_Click, "Align Shapes Horizontally to last shape in selection.");
+            ConfigureButton(AlignVerticalButtonMain, AlignVerticalButton_Click, "Align Shapes Vertically to last shape in selection.");
+
+            ConfigureButton(MultiCloneExtendButtonMain, MultiCloneExtendButton_Click, "[N] Extrapolates multiple copies of a shape, extending from two selected shapes.");
+            ConfigureButton(MultiCloneBetweenButtonMain, MultiCloneBetweenButton_Click, "[M] Interpolates multiple copies of a shape, in between two selected shapes.");
+
+            ConfigureButton(BringForwardButtonMain, BringForwardButton_Click, "[F] Bring shapes Forward one step.");
+            ConfigureButton(BringInFrontOfShapeButtonMain, BringInFrontOfShapeButton_Click, "Bring shapes in front of last shape in selection.");
+            ConfigureButton(BringToFrontButtonMain, BringToFrontButton_Click, "Bring shapes to Front.");
+            ConfigureButton(SendBackwardButtonMain, SendBackwardButton_Click, "[B] Send shapes Backward one step.");
+            ConfigureButton(SendBehindShapeButtonMain, SendBehindShapeButton_Click, "Send shapes behind last shape in selection.");
+            ConfigureButton(SendToBackButtonMain, SendToBackButton_Click, "Send shapes to Back.");
+
+
+            // -----------------
+            // || Tab: Format ||
+            // -----------------
+
+            ConfigureButton(ApplyFormatButton, ApplyFormatButton_Click, "Apply recorded format to selected shapes.");
+            ConfigureButton(RecordFormatButton, RecordFormatButton_Click, "Record Format of a selected shape.");
+            
+
+            // -------------------
+            // || Tab: Position ||
+            // -------------------
 
             ConfigureButton(ApplyDisplacementButton, ApplyDisplacementButton_Click, "Apply recorded displacement to selected shapes.");
-            ConfigureButton(ApplyFormatButton, ApplyFormatButton_Click, "Apply recorded format to selected shapes.");
             ConfigureButton(ApplyPositionButton, ApplyPositionButton_Click, "Apply recorded position or rotation to selected shapes.");
             ConfigureButton(RecordDisplacementButton, RecordDisplacementButton_Click, "Record Displacement between two selected shapes.");
-            ConfigureButton(RecordFormatButton, RecordFormatButton_Click, "Record Format of a selected shape.");
             ConfigureButton(RecordPositionButton, RecordPositionButton_Click, "Record position and rotation of a selected shape.");
+            
+            ConfigureButton(AlignHorizontalButton, AlignHorizontalButton_Click, "Align Shapes Horizontally to last shape in selection.");
+            ConfigureButton(AlignVerticalButton, AlignVerticalButton_Click, "Align Shapes Vertically to last shape in selection.");
+            // ConfigureButton AlignBothButton
+            
+            ConfigureButton(AlignHorizontalToSlideButton, AlignHorizontalToSlideButton_Click, "Align Shapes Horizontally to a position relative to the slide.");
+            ConfigureButton(AlignVerticalToSlideButton, AlignVerticalToSlideButton_Click, "Align Shapes Vertically to a position relative to the slide.");
+            // ConfigureButton AlignBothToSlideButton
 
-            ConfigureButton(RectButton, RectangleButton_Click, "[R] Draw a Rectangle.");
-            ConfigureButton(LineButton, LineButton_Click, "[L] Draw a Line.");
-            ConfigureButton(CircleButton, CircleButton_Click, "[C] Draw a Circle.");
+            ConfigureButton(MultiCloneExtendButton, MultiCloneExtendButton_Click, "[N] Extrapolates multiple copies of a shape, extending from two selected shapes.");
+            ConfigureButton(MultiCloneBetweenButton, MultiCloneBetweenButton_Click, "[M] Interpolates multiple copies of a shape, in between two selected shapes.");
+            // ConfigureButton MultiCloneGridButton
+            // ConfigureButton PivotAroundButton
 
             ConfigureButton(BringForwardButton, BringForwardButton_Click, "[F] Bring shapes Forward one step.");
             ConfigureButton(BringInFrontOfShapeButton, BringInFrontOfShapeButton_Click, "Bring shapes in front of last shape in selection.");
@@ -70,20 +140,16 @@ namespace PowerPointLabs.DrawingsLab
             ConfigureButton(SendBehindShapeButton, SendBehindShapeButton_Click, "Send shapes behind last shape in selection.");
             ConfigureButton(SendToBackButton, SendToBackButton_Click, "Send shapes to Back.");
 
-            ConfigureButton(SelectTypeButton, SelectAllOfTypeButton_Click, "[A] Select all shapes of same type as currently selected shapes.");
 
-            SetTooltip(ToggleHotkeysButton, "Enable / Disable Hotkeys.");
+            // --------------------
+            // || Tab: Selection ||
+            // --------------------
 
-            ConfigureButton(HideButton, HideButton_Click, "[H] Hide selected items.");
-            ConfigureButton(ShowAllButton, ShowAllButton_Click, "[S] Show all hidden items.");
-
-            ConfigureButton(DuplicateButton, CloneButton_Click, "[D] Makes a copy of the selected shapes in the exact same location.");
-            ConfigureButton(MultiCloneExtendButton, MultiCloneExtendButton_Click, "[N] Extrapolates multiple copies of a shape, extending from two selected shapes.");
-            ConfigureButton(MultiCloneBetweenButton, MultiCloneBetweenButton_Click, "[M] Interpolates multiple copies of a shape, in between two selected shapes.");
         }
 
         private void ConfigureButton(ImageButton button, RoutedEventHandler action, string tooltipMessage)
         {
+            Debug.WriteLine(button.ToolTip);
             button.Click += action;
 
             ToolTip toolTip = new ToolTip { Content = tooltipMessage };
@@ -222,6 +288,36 @@ namespace PowerPointLabs.DrawingsLab
         private void MultiCloneBetweenButton_Click(object sender, EventArgs e)
         {
             DrawingsLabMain.MultiCloneBetweenTool();
+        }
+
+        private void ApplyPositionButtonMain_Click(object sender, EventArgs e)
+        {
+            DrawingsLabMain.ApplyPosition(applyAllSettings:true);
+        }
+
+        private void RecordPositionButtonMain_Click(object sender, EventArgs e)
+        {
+            DrawingsLabMain.RecordPosition();
+        }
+
+        private void ApplyDisplacementButtonMain_Click(object sender, EventArgs e)
+        {
+            DrawingsLabMain.ApplyDisplacement(applyAllSettings: true);
+        }
+
+        private void RecordDisplacementButtonMain_Click(object sender, EventArgs e)
+        {
+            DrawingsLabMain.RecordDisplacement();
+        }
+
+        private void ApplyFormatButtonMain_Click(object sender, EventArgs e)
+        {
+            DrawingsLabMain.ApplyFormat(applyAllSettings:true);
+        }
+
+        private void RecordFormatButtonMain_Click(object sender, EventArgs e)
+        {
+            DrawingsLabMain.RecordFormat();
         }
 
         private void ApplyPositionButton_Click(object sender, EventArgs e)
