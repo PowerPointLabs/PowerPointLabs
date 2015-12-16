@@ -51,21 +51,21 @@ namespace PowerPointLabs.DrawingsLab
             // || Top Panel ||
             // ---------------
 
-            ConfigureButton(CircleButton, CircleButton_Click, "[C] Draw a Circle.");
-            ConfigureButton(RectButton, RectangleButton_Click, "[R] Draw a Rectangle.");
+            ConfigureButton(CircleButton, DrawingsLabMain.SwitchToCircleTool, "[C] Draw a Circle.");
+            ConfigureButton(RectButton, DrawingsLabMain.SwitchToRectangleTool, "[R] Draw a Rectangle.");
             // ConfigureButton RoundedRectButton
 
-            ConfigureButton(LineButton, LineButton_Click, "[L] Draw a Line.");
+            ConfigureButton(LineButton, DrawingsLabMain.SwitchToLineTool, "[L] Draw a Line.");
             // ConfigureButton CurveButton
             // SetTooltip ToggleArrowsButton
 
             // ConfigureButton TextboxButton
             // ConfigureButton MathboxButton
 
-            ConfigureButton(SelectTypeButton, SelectAllOfTypeButton_Click, "[A] Select all shapes of same type as currently selected shapes.");
-            ConfigureButton(HideButton, HideButton_Click, "[H] Hide selected items.");
-            ConfigureButton(ShowAllButton, ShowAllButton_Click, "[S] Show all hidden items.");
-            ConfigureButton(DuplicateButton, CloneButton_Click, "[D] Makes a copy of the selected shapes in the exact same location.");
+            ConfigureButton(SelectTypeButton, DrawingsLabMain.SelectAllOfType, "[A] Select all shapes of same type as currently selected shapes.");
+            ConfigureButton(HideButton, DrawingsLabMain.HideTool, "[H] Hide selected items.");
+            ConfigureButton(ShowAllButton, DrawingsLabMain.ShowAllTool, "[S] Show all hidden items.");
+            ConfigureButton(DuplicateButton, DrawingsLabMain.CloneTool, "[D] Makes a copy of the selected shapes in the exact same location.");
             
 
             SetTooltip(ToggleHotkeysButton, "Enable / Disable Hotkeys.");
@@ -82,63 +82,63 @@ namespace PowerPointLabs.DrawingsLab
             // ConfigureButton GroupButtonMain
             // ConfigureButton UngroupButtonMain
 
-            ConfigureButton(ApplyDisplacementButtonMain, ApplyDisplacementButtonMain_Click, "Apply recorded displacement to selected shapes.");
-            ConfigureButton(ApplyFormatButtonMain, ApplyFormatButtonMain_Click, "Apply recorded format to selected shapes.");
-            ConfigureButton(ApplyPositionButtonMain, ApplyPositionButtonMain_Click, "Apply recorded position or rotation to selected shapes.");
-            ConfigureButton(RecordDisplacementButtonMain, RecordDisplacementButtonMain_Click, "Record Displacement between two selected shapes.");
-            ConfigureButton(RecordFormatButtonMain, RecordFormatButtonMain_Click, "Record Format of a selected shape.");
-            ConfigureButton(RecordPositionButtonMain, RecordPositionButtonMain_Click, "Record position and rotation of a selected shape.");
+            ConfigureButton(ApplyDisplacementButtonMain, ()=>DrawingsLabMain.ApplyDisplacement(applyAllSettings: true), "Apply recorded displacement to selected shapes.");
+            ConfigureButton(ApplyFormatButtonMain, ()=>DrawingsLabMain.ApplyFormat(applyAllSettings: true), "Apply recorded format to selected shapes.");
+            ConfigureButton(ApplyPositionButtonMain, ()=>DrawingsLabMain.ApplyPosition(applyAllSettings: true), "Apply recorded position or rotation to selected shapes.");
+            ConfigureButton(RecordDisplacementButtonMain, DrawingsLabMain.RecordDisplacement, "Record Displacement between two selected shapes.");
+            ConfigureButton(RecordFormatButtonMain, DrawingsLabMain.RecordFormat, "Record Format of a selected shape.");
+            ConfigureButton(RecordPositionButtonMain, DrawingsLabMain.RecordPosition, "Record position and rotation of a selected shape.");
 
-            ConfigureButton(AlignHorizontalButtonMain, AlignHorizontalButton_Click, "Align Shapes Horizontally to last shape in selection.");
-            ConfigureButton(AlignVerticalButtonMain, AlignVerticalButton_Click, "Align Shapes Vertically to last shape in selection.");
+            ConfigureButton(AlignHorizontalButtonMain, DrawingsLabMain.AlignHorizontal, "Align Shapes Horizontally to last shape in selection.");
+            ConfigureButton(AlignVerticalButtonMain, DrawingsLabMain.AlignVertical, "Align Shapes Vertically to last shape in selection.");
 
-            ConfigureButton(MultiCloneExtendButtonMain, MultiCloneExtendButton_Click, "[N] Extrapolates multiple copies of a shape, extending from two selected shapes.");
-            ConfigureButton(MultiCloneBetweenButtonMain, MultiCloneBetweenButton_Click, "[M] Interpolates multiple copies of a shape, in between two selected shapes.");
+            ConfigureButton(MultiCloneExtendButtonMain, DrawingsLabMain.MultiCloneExtendTool, "[N] Extrapolates multiple copies of a shape, extending from two selected shapes.");
+            ConfigureButton(MultiCloneBetweenButtonMain, DrawingsLabMain.MultiCloneBetweenTool, "[M] Interpolates multiple copies of a shape, in between two selected shapes.");
 
-            ConfigureButton(BringForwardButtonMain, BringForwardButton_Click, "[F] Bring shapes Forward one step.");
-            ConfigureButton(BringInFrontOfShapeButtonMain, BringInFrontOfShapeButton_Click, "Bring shapes in front of last shape in selection.");
-            ConfigureButton(BringToFrontButtonMain, BringToFrontButton_Click, "Bring shapes to Front.");
-            ConfigureButton(SendBackwardButtonMain, SendBackwardButton_Click, "[B] Send shapes Backward one step.");
-            ConfigureButton(SendBehindShapeButtonMain, SendBehindShapeButton_Click, "Send shapes behind last shape in selection.");
-            ConfigureButton(SendToBackButtonMain, SendToBackButton_Click, "Send shapes to Back.");
+            ConfigureButton(BringForwardButtonMain, DrawingsLabMain.BringForward, "[F] Bring shapes Forward one step.");
+            ConfigureButton(BringInFrontOfShapeButtonMain, DrawingsLabMain.BringInFrontOfShape, "Bring shapes in front of last shape in selection.");
+            ConfigureButton(BringToFrontButtonMain, DrawingsLabMain.BringToFront, "Bring shapes to Front.");
+            ConfigureButton(SendBackwardButtonMain, DrawingsLabMain.SendBackward, "[B] Send shapes Backward one step.");
+            ConfigureButton(SendBehindShapeButtonMain, DrawingsLabMain.SendBehindShape, "Send shapes behind last shape in selection.");
+            ConfigureButton(SendToBackButtonMain, DrawingsLabMain.SendToBack, "Send shapes to Back.");
 
 
             // -----------------
             // || Tab: Format ||
             // -----------------
 
-            ConfigureButton(ApplyFormatButton, ApplyFormatButton_Click, "Apply recorded format to selected shapes.");
-            ConfigureButton(RecordFormatButton, RecordFormatButton_Click, "Record Format of a selected shape.");
+            ConfigureButton(ApplyFormatButton, ()=>DrawingsLabMain.ApplyFormat(applyAllSettings:false), "Apply recorded format to selected shapes.");
+            ConfigureButton(RecordFormatButton, DrawingsLabMain.RecordFormat, "Record Format of a selected shape.");
             
 
             // -------------------
             // || Tab: Position ||
             // -------------------
 
-            ConfigureButton(ApplyDisplacementButton, ApplyDisplacementButton_Click, "Apply recorded displacement to selected shapes.");
-            ConfigureButton(ApplyPositionButton, ApplyPositionButton_Click, "Apply recorded position or rotation to selected shapes.");
-            ConfigureButton(RecordDisplacementButton, RecordDisplacementButton_Click, "Record Displacement between two selected shapes.");
-            ConfigureButton(RecordPositionButton, RecordPositionButton_Click, "Record position and rotation of a selected shape.");
-            
-            ConfigureButton(AlignHorizontalButton, AlignHorizontalButton_Click, "Align Shapes Horizontally to last shape in selection.");
-            ConfigureButton(AlignVerticalButton, AlignVerticalButton_Click, "Align Shapes Vertically to last shape in selection.");
+            ConfigureButton(ApplyDisplacementButton, ()=>DrawingsLabMain.ApplyDisplacement(applyAllSettings:false), "Apply recorded displacement to selected shapes.");
+            ConfigureButton(ApplyPositionButton, () => DrawingsLabMain.ApplyPosition(applyAllSettings: false), "Apply recorded position or rotation to selected shapes.");
+            ConfigureButton(RecordDisplacementButton, DrawingsLabMain.RecordDisplacement, "Record Displacement between two selected shapes.");
+            ConfigureButton(RecordPositionButton, DrawingsLabMain.RecordPosition, "Record position and rotation of a selected shape.");
+
+            ConfigureButton(AlignHorizontalButton, DrawingsLabMain.AlignHorizontal, "Align Shapes Horizontally to last shape in selection.");
+            ConfigureButton(AlignVerticalButton, DrawingsLabMain.AlignVertical, "Align Shapes Vertically to last shape in selection.");
             // ConfigureButton AlignBothButton
-            
-            ConfigureButton(AlignHorizontalToSlideButton, AlignHorizontalToSlideButton_Click, "Align Shapes Horizontally to a position relative to the slide.");
-            ConfigureButton(AlignVerticalToSlideButton, AlignVerticalToSlideButton_Click, "Align Shapes Vertically to a position relative to the slide.");
+
+            ConfigureButton(AlignHorizontalToSlideButton, DrawingsLabMain.AlignHorizontalToSlide, "Align Shapes Horizontally to a position relative to the slide.");
+            ConfigureButton(AlignVerticalToSlideButton, DrawingsLabMain.AlignVerticalToSlide, "Align Shapes Vertically to a position relative to the slide.");
             // ConfigureButton AlignBothToSlideButton
 
-            ConfigureButton(MultiCloneExtendButton, MultiCloneExtendButton_Click, "[N] Extrapolates multiple copies of a shape, extending from two selected shapes.");
-            ConfigureButton(MultiCloneBetweenButton, MultiCloneBetweenButton_Click, "[M] Interpolates multiple copies of a shape, in between two selected shapes.");
+            ConfigureButton(MultiCloneExtendButton, DrawingsLabMain.MultiCloneExtendTool, "[N] Extrapolates multiple copies of a shape, extending from two selected shapes.");
+            ConfigureButton(MultiCloneBetweenButton, DrawingsLabMain.MultiCloneBetweenTool, "[M] Interpolates multiple copies of a shape, in between two selected shapes.");
             // ConfigureButton MultiCloneGridButton
             // ConfigureButton PivotAroundButton
 
-            ConfigureButton(BringForwardButton, BringForwardButton_Click, "[F] Bring shapes Forward one step.");
-            ConfigureButton(BringInFrontOfShapeButton, BringInFrontOfShapeButton_Click, "Bring shapes in front of last shape in selection.");
-            ConfigureButton(BringToFrontButton, BringToFrontButton_Click, "Bring shapes to Front.");
-            ConfigureButton(SendBackwardButton, SendBackwardButton_Click, "[B] Send shapes Backward one step.");
-            ConfigureButton(SendBehindShapeButton, SendBehindShapeButton_Click, "Send shapes behind last shape in selection.");
-            ConfigureButton(SendToBackButton, SendToBackButton_Click, "Send shapes to Back.");
+            ConfigureButton(BringForwardButton, DrawingsLabMain.BringForward, "[F] Bring shapes Forward one step.");
+            ConfigureButton(BringInFrontOfShapeButton, DrawingsLabMain.BringInFrontOfShape, "Bring shapes in front of last shape in selection.");
+            ConfigureButton(BringToFrontButton, DrawingsLabMain.BringToFront, "Bring shapes to Front.");
+            ConfigureButton(SendBackwardButton, DrawingsLabMain.SendBackward, "[B] Send shapes Backward one step.");
+            ConfigureButton(SendBehindShapeButton, DrawingsLabMain.SendBehindShape, "Send shapes behind last shape in selection.");
+            ConfigureButton(SendToBackButton, DrawingsLabMain.SendToBack, "Send shapes to Back.");
 
 
             // --------------------
@@ -147,11 +147,10 @@ namespace PowerPointLabs.DrawingsLab
 
         }
 
-        private void ConfigureButton(ImageButton button, RoutedEventHandler action, string tooltipMessage)
+        private void ConfigureButton(ImageButton button, Action action, string tooltipMessage)
         {
-            Debug.WriteLine(button.ToolTip);
-            button.Click += action;
-
+            button.Click += (sender, e) => action();
+            
             ToolTip toolTip = new ToolTip { Content = tooltipMessage };
             ToolTipService.SetToolTip(button, toolTip);
         }
@@ -244,161 +243,6 @@ namespace PowerPointLabs.DrawingsLab
             PPKeyboard.AddKeyupAction(Native.VirtualKey.VK_B, RunOnlyWhenOpen(DrawingsLabMain.SendBackward));
         }
         #endregion
-
-        private void LineButton_Click(object sender, EventArgs e)
-        {
-            DrawingsLabMain.SwitchToLineTool();
-        }
-
-        private void RectangleButton_Click(object sender, EventArgs e)
-        {
-            DrawingsLabMain.SwitchToRectangleTool();
-        }
-
-        private void CircleButton_Click(object sender, EventArgs e)
-        {
-            DrawingsLabMain.SwitchToCircleTool();
-        }
-
-        private void SelectAllOfTypeButton_Click(object sender, EventArgs e)
-        {
-            DrawingsLabMain.SelectAllOfType();
-        }
-
-        private void HideButton_Click(object sender, EventArgs e)
-        {
-            DrawingsLabMain.HideTool();
-        }
-
-        private void ShowAllButton_Click(object sender, EventArgs e)
-        {
-            DrawingsLabMain.ShowAllTool();
-        }
-
-        private void CloneButton_Click(object sender, EventArgs e)
-        {
-            DrawingsLabMain.CloneTool();
-        }
-
-        private void MultiCloneExtendButton_Click(object sender, EventArgs e)
-        {
-            DrawingsLabMain.MultiCloneExtendTool();
-        }
-
-        private void MultiCloneBetweenButton_Click(object sender, EventArgs e)
-        {
-            DrawingsLabMain.MultiCloneBetweenTool();
-        }
-
-        private void ApplyPositionButtonMain_Click(object sender, EventArgs e)
-        {
-            DrawingsLabMain.ApplyPosition(applyAllSettings:true);
-        }
-
-        private void RecordPositionButtonMain_Click(object sender, EventArgs e)
-        {
-            DrawingsLabMain.RecordPosition();
-        }
-
-        private void ApplyDisplacementButtonMain_Click(object sender, EventArgs e)
-        {
-            DrawingsLabMain.ApplyDisplacement(applyAllSettings: true);
-        }
-
-        private void RecordDisplacementButtonMain_Click(object sender, EventArgs e)
-        {
-            DrawingsLabMain.RecordDisplacement();
-        }
-
-        private void ApplyFormatButtonMain_Click(object sender, EventArgs e)
-        {
-            DrawingsLabMain.ApplyFormat(applyAllSettings:true);
-        }
-
-        private void RecordFormatButtonMain_Click(object sender, EventArgs e)
-        {
-            DrawingsLabMain.RecordFormat();
-        }
-
-        private void ApplyPositionButton_Click(object sender, EventArgs e)
-        {
-            DrawingsLabMain.ApplyPosition();
-        }
-
-        private void RecordPositionButton_Click(object sender, EventArgs e)
-        {
-            DrawingsLabMain.RecordPosition();
-        }
-
-        private void ApplyDisplacementButton_Click(object sender, EventArgs e)
-        {
-            DrawingsLabMain.ApplyDisplacement();
-        }
-
-        private void RecordDisplacementButton_Click(object sender, EventArgs e)
-        {
-            DrawingsLabMain.RecordDisplacement();
-        }
-
-        private void ApplyFormatButton_Click(object sender, EventArgs e)
-        {
-            DrawingsLabMain.ApplyFormat();
-        }
-
-        private void RecordFormatButton_Click(object sender, EventArgs e)
-        {
-            DrawingsLabMain.RecordFormat();
-        }
-
-        private void AlignHorizontalButton_Click(object sender, EventArgs e)
-        {
-            DrawingsLabMain.AlignHorizontal();
-        }
-
-        private void AlignVerticalButton_Click(object sender, EventArgs e)
-        {
-            DrawingsLabMain.AlignVertical();
-        }
-
-        private void AlignHorizontalToSlideButton_Click(object sender, EventArgs e)
-        {
-            DrawingsLabMain.AlignHorizontalToSlide();
-        }
-
-        private void AlignVerticalToSlideButton_Click(object sender, EventArgs e)
-        {
-            DrawingsLabMain.AlignVerticalToSlide();
-        }
-
-        private void BringForwardButton_Click(object sender, EventArgs e)
-        {
-            DrawingsLabMain.BringForward();
-        }
-
-        private void BringInFrontOfShapeButton_Click(object sender, EventArgs e)
-        {
-            DrawingsLabMain.BringInFrontOfShape();
-        }
-
-        private void BringToFrontButton_Click(object sender, EventArgs e)
-        {
-            DrawingsLabMain.BringToFront();
-        }
-
-        private void SendBackwardButton_Click(object sender, EventArgs e)
-        {
-            DrawingsLabMain.SendBackward();
-        }
-
-        private void SendBehindShapeButton_Click(object sender, EventArgs e)
-        {
-            DrawingsLabMain.SendBehindShape();
-        }
-
-        private void SendToBackButton_Click(object sender, EventArgs e)
-        {
-            DrawingsLabMain.SendToBack();
-        }
 
         private void FillColor_Click(object sender, EventArgs e)
         {
