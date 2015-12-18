@@ -57,10 +57,49 @@ namespace PowerPointLabs.DrawingsLab
             return -1;
         }
 
+        public static string ShowTextDialog(string caption)
+        {
+            var prompt = new Form()
+            {
+                FormBorderStyle = FormBorderStyle.FixedDialog,
+                MinimizeBox = false,
+                MaximizeBox = false,
+                Width = 200,
+                Height = 110,
+                Text = caption,
+                StartPosition = FormStartPosition.CenterScreen,
+            };
+
+            var cancel = new Button();
+            cancel.Click += (sender, e) => prompt.Close();
+            prompt.CancelButton = cancel;
+
+            var textBox = new TextBox() { Left = 20, Top = 20, Width = 160, Height = 80, Text = "" };
+            var confirmation = new Button() { Text = "Ok", Left = 50, Top = 50, Width = 100, DialogResult = DialogResult.OK };
+            confirmation.Click += (sender, e) => { prompt.Close(); };
+
+            prompt.Controls.Add(textBox);
+            prompt.Controls.Add(confirmation);
+            prompt.AcceptButton = confirmation;
+
+            textBox.Select(0, textBox.Text.Length);
+
+            if (prompt.ShowDialog() == DialogResult.OK)
+            {
+                return textBox.Text;
+            }
+            return null;
+        }
+
         public static int ShowMultiCloneNumericDialog()
         {
             return ShowNumericDialog(TextCollection.DrawingsLabMultiCloneDialogText,
                                      TextCollection.DrawingsLabMultiCloneDialogHeader);
+        }
+
+        public static string ShowInsertTextDialog()
+        {
+            return ShowTextDialog(TextCollection.DrawingsLabSetTextDialogHeader);
         }
     }
 }

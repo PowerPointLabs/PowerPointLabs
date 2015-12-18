@@ -53,10 +53,10 @@ namespace PowerPointLabs.DrawingsLab
 
             ConfigureButton(CircleButton, DrawingsLabMain.SwitchToCircleTool, "[C] Draw a Circle.");
             ConfigureButton(RectButton, DrawingsLabMain.SwitchToRectangleTool, "[R] Draw a Rectangle.");
-            // ConfigureButton RoundedRectButton
+            ConfigureButton(RoundedRectButton, DrawingsLabMain.SwitchToRoundedRectangleTool, "Draw a Rounded Rectangle.");
 
             ConfigureButton(LineButton, DrawingsLabMain.SwitchToLineTool, "[L] Draw a Line.");
-            // ConfigureButton CurveButton
+            ConfigureButton(CurveButton, DrawingsLabMain.SwitchToCurvedLineTool, "Draw a Curved Line.");
             // SetTooltip ToggleArrowsButton
 
             // ConfigureButton TextboxButton
@@ -75,7 +75,8 @@ namespace PowerPointLabs.DrawingsLab
             // || Tab: Main ||
             // ---------------
 
-            // ConfigureButton AddTextButtonMain
+            ConfigureButton(AddTextButtonMain, DrawingsLabMain.AddText, "Add Text to the selected shapes.");
+            ConfigureButton(AddTextButtonMain, DrawingsLabMain.AddMath, "Add Math");
             // ConfigureButton AddMathButtonMain
             // ConfigureButton RemoveTextButtonMain
 

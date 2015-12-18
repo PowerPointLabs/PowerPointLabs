@@ -416,8 +416,9 @@
 
 
         public const string DrawingsLabMultiCloneDialogText = "Number of Copies";
-
         public const string DrawingsLabMultiCloneDialogHeader = "Multi-Clone";
+
+        public const string DrawingsLabSetTextDialogHeader = "Set Text";
 
         # endregion
 

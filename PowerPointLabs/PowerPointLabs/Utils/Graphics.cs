@@ -403,6 +403,12 @@ namespace PowerPointLabs.Utils
         }
 
         // TODO: This could be an extension method of shape.
+        public static string GetText(Shape shape, params string[] lines)
+        {
+            return shape.TextFrame2.TextRange.Text;
+        }
+
+        // TODO: This could be an extension method of shape.
         public static void SetText(Shape shape, params string[] lines)
         {
             shape.TextFrame2.TextRange.Text = string.Join("\r", lines);

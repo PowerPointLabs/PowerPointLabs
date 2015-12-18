@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Drawing;
 using System.Linq;
+using System.Runtime.InteropServices;
 using System.Text;
 using System.Windows.Forms;
 using Microsoft.Office.Core;
@@ -38,10 +39,37 @@ namespace PowerPointLabs.DrawingsLab
         }
 
         #region API
+
+        public static void TestControlId()
+        {
+            var commandBars = Globals.ThisAddIn.Application.CommandBars;
+
+            var selection = PowerPointCurrentPresentationInfo.CurrentSelection;
+            if (selection.Type != PpSelectionType.ppSelectionShapes) return;
+            var cmd = Graphics.GetText(selection.ShapeRange[1]);
+            //commandBars.ExecuteMso("MakeSegmentCurved");
+            //commandBars.ExecuteMso("ShapeStraightConnector");
+            try
+            {
+                Debug.WriteLine("Execute: " + cmd);
+                commandBars.ExecuteMso(cmd);
+            }
+            catch (Exception e)
+            {
+                Debug.WriteLine("ERROR!");
+                Debug.WriteLine(e);
+            }
+        }
+
         public static void SwitchToLineTool()
         {
             var commandBars = Globals.ThisAddIn.Application.CommandBars;
             commandBars.ExecuteMso("ShapeStraightConnector");
+        }
+
+        public static void SwitchToCurvedLineTool()
+        {
+            throw new NotImplementedException("Not implemented yet");
         }
 
         public static void SwitchToRectangleTool()
@@ -50,17 +78,47 @@ namespace PowerPointLabs.DrawingsLab
             commandBars.ExecuteMso("ShapeRectangle");
         }
 
+        public static void SwitchToRoundedRectangleTool()
+        {
+            var commandBars = Globals.ThisAddIn.Application.CommandBars;
+            commandBars.ExecuteMso("ShapeRoundedRectangle");
+        }
+
         public static void SwitchToCircleTool()
         {
             var commandBars = Globals.ThisAddIn.Application.CommandBars;
             commandBars.ExecuteMso("ShapeOval");
         }
 
-        public static void HideTool()
+        public static void AddText()
         {
             var selection = PowerPointCurrentPresentationInfo.CurrentSelection;
             if (selection.Type != PpSelectionType.ppSelectionShapes) return;
 
+            var text = DrawingsLabDialogs.ShowInsertTextDialog();
+            foreach (var shape in selection.ShapeRange.Cast<Shape>())
+            {
+                try
+                {
+                    Graphics.SetText(shape, text);
+                }
+                catch (ArgumentException e)
+                {
+                    Debug.WriteLine("Unable to write text to " + shape.Name);
+                }
+            }
+        }
+
+        public static void AddMath()
+        {
+            throw new NotImplementedException("Not implemented yet");
+        }
+
+        public static void HideTool()
+        {
+            var selection = PowerPointCurrentPresentationInfo.CurrentSelection;
+            if (selection.Type != PpSelectionType.ppSelectionShapes) return;
+                     
             Globals.ThisAddIn.Application.StartNewUndoEntry();
             foreach (var shape in selection.ShapeRange.Cast<Shape>())
             {
