@@ -134,7 +134,8 @@ namespace PowerPointLabs.ImagesLab.Factory
             return new StyleOptions
             {
                 StyleName = TextCollection.ImagesLabText.StyleNameSpecialEffect,
-                IsUseSpecialEffectStyle = true
+                IsUseSpecialEffectStyle = true,
+                SpecialEffect = 0
             };
         }
 

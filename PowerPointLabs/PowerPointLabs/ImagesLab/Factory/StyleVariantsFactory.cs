@@ -35,6 +35,7 @@ namespace PowerPointLabs.ImagesLab.Factory
             return new Dictionary<string, List<StyleVariants>>
             {
                 { TextCollection.ImagesLabText.VariantCategoryFrameTransparency, GetFrameTransparencyVariants() },
+                { TextCollection.ImagesLabText.VariantCategorySpecialEffects, GetGeneralSpecialEffectVariants() },
                 { TextCollection.ImagesLabText.VariantCategoryBlurriness, GetBlurVariants() },
                 { TextCollection.ImagesLabText.VariantCategoryBrightness, GetBrightnessVariants() },
                 { TextCollection.ImagesLabText.VariantCategoryTextColor, GetFontColorVariants() },
@@ -49,6 +50,7 @@ namespace PowerPointLabs.ImagesLab.Factory
             return new Dictionary<string, List<StyleVariants>>
             {
                 { TextCollection.ImagesLabText.VariantCategoryTextColor, GetFontColorVariants() },
+                { TextCollection.ImagesLabText.VariantCategorySpecialEffects, GetGeneralSpecialEffectVariants() },
                 { TextCollection.ImagesLabText.VariantCategoryBlurriness, GetBlurVariants() },
                 { TextCollection.ImagesLabText.VariantCategoryBrightness, GetBrightnessVariants() },
                 { TextCollection.ImagesLabText.VariantCategoryTextPosition, GetFontPositionVariants() },
@@ -90,6 +92,7 @@ namespace PowerPointLabs.ImagesLab.Factory
             {
                 { TextCollection.ImagesLabText.VariantCategoryBannerColor, GetBannerVariants() },
                 { TextCollection.ImagesLabText.VariantCategoryBannerTransparency, GetBannerTransparencyVariants() },
+                { TextCollection.ImagesLabText.VariantCategorySpecialEffects, GetGeneralSpecialEffectVariants() },
                 { TextCollection.ImagesLabText.VariantCategoryBrightness, GetBrightnessVariants() },
                 { TextCollection.ImagesLabText.VariantCategoryTextColor, GetFontColorVariants() },
                 { TextCollection.ImagesLabText.VariantCategoryTextPosition, GetFontPositionVariants() },
@@ -104,6 +107,7 @@ namespace PowerPointLabs.ImagesLab.Factory
             {
                 { TextCollection.ImagesLabText.VariantCategoryTextBoxColor, GetTextBoxVariants() },
                 { TextCollection.ImagesLabText.VariantCategoryTextBoxTransparency, GetTextBoxTransparencyVariants() },
+                { TextCollection.ImagesLabText.VariantCategorySpecialEffects, GetGeneralSpecialEffectVariants() },
                 { TextCollection.ImagesLabText.VariantCategoryBrightness, GetBrightnessVariants() },
                 { TextCollection.ImagesLabText.VariantCategoryTextColor, GetFontColorVariants() },
                 { TextCollection.ImagesLabText.VariantCategoryTextPosition, GetFontPositionVariants() },
@@ -117,6 +121,7 @@ namespace PowerPointLabs.ImagesLab.Factory
             return new Dictionary<string, List<StyleVariants>>
             {
                 { TextCollection.ImagesLabText.VariantCategoryBlurriness, GetBlurVariants() },
+                { TextCollection.ImagesLabText.VariantCategorySpecialEffects, GetGeneralSpecialEffectVariants() },
                 { TextCollection.ImagesLabText.VariantCategoryBrightness, GetBrightnessVariants() },
                 { TextCollection.ImagesLabText.VariantCategoryTextColor, GetFontColorVariants() },
                 { TextCollection.ImagesLabText.VariantCategoryTextPosition, GetFontPositionVariants() },
@@ -314,6 +319,61 @@ namespace PowerPointLabs.ImagesLab.Factory
                     {"OptionName", "Sepia"},
                     {"IsUseSpecialEffectStyle", true},
                     {"SpecialEffect", 9}
+                })
+            };
+        }
+
+        private static List<StyleVariants> GetGeneralSpecialEffectVariants()
+        {
+            return new List<StyleVariants>
+            {
+                new StyleVariants(new Dictionary<string, object>
+                {
+                    {"OptionName", "Grayscale"},
+                    {"IsUseSpecialEffectStyle", true},
+                    {"SpecialEffect", 0}
+                }),
+                new StyleVariants(new Dictionary<string, object>
+                {
+                    {"OptionName", "Black and White"},
+                    {"IsUseSpecialEffectStyle", true},
+                    {"SpecialEffect", 1}
+                }),
+                new StyleVariants(new Dictionary<string, object>
+                {
+                    {"OptionName", "Gotham"},
+                    {"IsUseSpecialEffectStyle", true},
+                    {"SpecialEffect", 3}
+                }),
+                new StyleVariants(new Dictionary<string, object>
+                {
+                    {"OptionName", "HiSatch"},
+                    {"IsUseSpecialEffectStyle", true},
+                    {"SpecialEffect", 4}
+                }),
+                new StyleVariants(new Dictionary<string, object>
+                {
+                    {"OptionName", "Invert"},
+                    {"IsUseSpecialEffectStyle", true},
+                    {"SpecialEffect", 5}
+                }),
+                new StyleVariants(new Dictionary<string, object>
+                {
+                    {"OptionName", "Lomograph"},
+                    {"IsUseSpecialEffectStyle", true},
+                    {"SpecialEffect", 6}
+                }),
+                new StyleVariants(new Dictionary<string, object>
+                {
+                    {"OptionName", "Polaroid"},
+                    {"IsUseSpecialEffectStyle", true},
+                    {"SpecialEffect", 8}
+                }),
+                new StyleVariants(new Dictionary<string, object>
+                {
+                    {"OptionName", "No Effect"},
+                    {"IsUseSpecialEffectStyle", false},
+                    {"SpecialEffect", -1}
                 })
             };
         }

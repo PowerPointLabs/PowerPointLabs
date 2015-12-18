@@ -412,7 +412,7 @@ namespace PowerPointLabs.ImagesLab.Domain
             TextBoxTransparency = 25;
 
             IsUseSpecialEffectStyle = false;
-            SpecialEffect = 0;
+            SpecialEffect = -1;
 
             IsUseBlurStyle = false;
             BlurDegree = 0;
