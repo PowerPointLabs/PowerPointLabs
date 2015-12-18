@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Windows;
 using PowerPointLabs.ImagesLab.Domain;
+using PowerPointLabs.ImagesLab.Factory;
 using PowerPointLabs.ImagesLab.Util;
 using PowerPointLabs.Models;
 using PowerPointLabs.Utils;
@@ -50,17 +51,14 @@ namespace PowerPointLabs.ImagesLab
 
                     if (PowerPointCurrentPresentationInfo.CurrentSlide != null)
                     {
-                        var previewInfo = PreviewPresentation.PreviewStyles(source);
-                        Add(StylesPreviewList, previewInfo.DirectTextStyleImagePath,
-                            TextCollection.ImagesLabText.StyleNameDirectText);
-                        Add(StylesPreviewList, previewInfo.BlurStyleImagePath, TextCollection.ImagesLabText.StyleNameBlur);
-                        Add(StylesPreviewList, previewInfo.TextboxStyleImagePath,
-                            TextCollection.ImagesLabText.StyleNameTextBox);
-                        Add(StylesPreviewList, previewInfo.BannerStyleImagePath, TextCollection.ImagesLabText.StyleNameBanner);
-                        Add(StylesPreviewList, previewInfo.SpecialEffectStyleImagePath,
-                            TextCollection.ImagesLabText.StyleNameSpecialEffect);
-                        Add(StylesPreviewList, previewInfo.OverlayStyleImagePath,
-                            TextCollection.ImagesLabText.StyleNameOverlay);
+                        var allStylesPreviewOptions = StyleOptionsFactory.GetAllStylesPreviewOptions();
+                        foreach (var stylesPreviewOption in allStylesPreviewOptions)
+                        {
+                            PreviewPresentation.SetStyleOptions(stylesPreviewOption);
+                            var previewInfo = PreviewPresentation.PreviewApplyStyle(source);
+                            Add(StylesPreviewList, previewInfo.PreviewApplyStyleImagePath,
+                                stylesPreviewOption.StyleName);
+                        }
 
                         StylesPreviewListBox.SelectedIndex = selectedId;
                         _latestPreviewUpdateTime = DateTime.Now;
@@ -107,7 +105,7 @@ namespace PowerPointLabs.ImagesLab
             try
             {
                 var targetStyle = ((ImageItem) StylesPreviewListBox.SelectedValue).Tooltip;
-                var targetDefaultOptions = StyleOptionsFactory.GetDefaultOption(targetStyle);
+                var targetDefaultOptions = StyleOptionsFactory.GetStylesPreviewOption(targetStyle);
                 PreviewPresentation.SetStyleOptions(targetDefaultOptions);
                 PreviewPresentation.ApplyStyle(source);
 

@@ -294,9 +294,9 @@
       <DependentUpon>AdjustImageWindow.xaml</DependentUpon>
     </Compile>
     <Compile Include="ImagesLab\Crop\PuncturedRect.cs" />
-    <Compile Include="ImagesLab\Domain\StyleOptionsFactory.cs" />
+    <Compile Include="ImagesLab\Factory\StyleOptionsFactory.cs" />
     <Compile Include="ImagesLab\Domain\StyleVariants.cs" />
-    <Compile Include="ImagesLab\Domain\StyleVariantsFactory.cs" />
+    <Compile Include="ImagesLab\Factory\StyleVariantsFactory.cs" />
     <Compile Include="ImagesLab\SlideSelectionDialog.xaml.cs">
       <DependentUpon>SlideSelectionDialog.xaml</DependentUpon>
     </Compile>
@@ -334,7 +334,6 @@
     <Compile Include="Utils\Assumption.cs" />
     <Compile Include="Utils\Exceptions\AssumptionFailedException.cs" />
     <Compile Include="ImagesLab\Domain\ImageItem.cs" />
-    <Compile Include="ImagesLab\Domain\SearchOptions.cs" />
     <Compile Include="ImagesLab\Domain\StyleOptions.cs" />
     <Compile Include="ImagesLab\Handler\StylesHandler.cs" />
     <Compile Include="ImagesLab\Handler\EffectsHandler.cs" />
@@ -841,6 +840,7 @@
   <ItemGroup>
     <None Include="Resources\icon-up.png" />
   </ItemGroup>
+  <ItemGroup />
   <!-- Include the build rules for a C# project. -->
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>

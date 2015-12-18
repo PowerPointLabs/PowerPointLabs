@@ -1,5 +1,4 @@
-﻿using ImageProcessor.Imaging.Filters;
-using Microsoft.Office.Core;
+﻿using Microsoft.Office.Core;
 using PowerPointLabs.ImagesLab.Domain;
 using PowerPointLabs.ImagesLab.Handler.Effect;
 using PowerPointLabs.ImagesLab.Handler.Preview;
@@ -29,34 +28,6 @@ namespace PowerPointLabs.ImagesLab.Handler
         public void SetStyleOptions(StyleOptions opt)
         {
             Options = opt;
-        }
-
-        /// <exception cref="AssumptionFailedException">
-        /// throw exception when ImagesLab presentation is not opened OR no selected slide.
-        /// </exception>
-        public PreviewInfo PreviewStyles(ImageItem source)
-        {
-            Assumption.Made(
-                Opened && PowerPointCurrentPresentationInfo.CurrentSlide != null,
-                "ImagesLab presentation is not open OR no selected slide.");
-
-            InitSlideSize();
-            var previewInfo = new PreviewInfo();
-            var handler = CreateEffectsHandler(source);
-
-            // use (cropped) thumbnail to apply, in order to speed up
-            var fullSizeImgPath = source.FullSizeImageFile;
-            var originalThumbnail = source.ImageFile;
-            source.FullSizeImageFile = null;
-            source.ImageFile = source.CroppedThumbnailImageFile ?? source.ImageFile;
-
-            PreviewStyles(handler, previewInfo);
-
-            source.ImageFile = originalThumbnail;
-            source.FullSizeImageFile = fullSizeImgPath;
-
-            handler.Delete();
-            return previewInfo;
         }
 
         /// <exception cref="AssumptionFailedException">
@@ -203,54 +174,6 @@ namespace PowerPointLabs.ImagesLab.Handler
             {
                 handler.ApplyImageReferenceInsertion(source.ContextLink, Options.GetFontFamily(), Options.FontColor);
             }
-        }
-
-        // generate preview-style images, without using any style options
-        private void PreviewStyles(EffectsHandler handler, PreviewInfo previewInfo)
-        {
-            // style: direct text
-            var imageShape = handler.ApplyBackgroundEffect(offset: 0);
-            handler.ApplyTextEffect("Calibri", "#FFFFFF", 0);
-            handler.ApplyTextPositionAndAlignment(Position.Centre, Alignment.Auto);
-            handler.GetNativeSlide().Export(previewInfo.DirectTextStyleImagePath, "JPG",
-                GetPreviewWidth(), PreviewHeight);
-
-            // style: blur
-            var blurImageShape = handler.ApplyBlurEffect(offset: 0);
-            SendToBack(blurImageShape, imageShape);
-            handler.GetNativeSlide().Export(previewInfo.BlurStyleImagePath, "JPG",
-                GetPreviewWidth(), PreviewHeight);
-
-            // style: textbox
-            handler.RemoveEffect(EffectName.Blur);
-            handler.ApplyTextPositionAndAlignment(Position.BottomLeft, Alignment.Left);
-            handler.ApplyTextEffect("Calibri", "#FFD700", 0);
-            handler.ApplyTextboxEffect("#000000", 25);
-            handler.GetNativeSlide().Export(previewInfo.TextboxStyleImagePath, "JPG",
-                GetPreviewWidth(), PreviewHeight);
-
-            // style: banner
-            handler.RemoveEffect(EffectName.TextBox);
-            handler.ApplyTextEffect("Calibri", "#FFD700", 0);
-            handler.ApplyRectBannerEffect(BannerDirection.Horizontal, Position.BottomLeft,
-                        imageShape, "#000000", 25);
-            handler.GetNativeSlide().Export(previewInfo.BannerStyleImagePath, "JPG",
-                GetPreviewWidth(), PreviewHeight);
-
-            // style: overlay
-            handler.RemoveEffect(EffectName.Banner);
-            handler.ApplyTextEffect("Calibri", "#FFFFFF", 0);
-            handler.ApplyTextPositionAndAlignment(Position.Centre, Alignment.Left);
-            handler.ApplySpecialEffectEffect(MatrixFilters.GreyScale, imageShape, "#007FFF"/*Blue*/, transparency: 35, offset: 0);
-            handler.GetNativeSlide().Export(previewInfo.OverlayStyleImagePath, "JPG",
-                GetPreviewWidth(), PreviewHeight);
-
-            // style: special effect
-            handler.RemoveEffect(EffectName.Overlay);
-            handler.RemoveEffect(EffectName.SpecialEffect);
-            handler.ApplySpecialEffectEffect(MatrixFilters.GreyScale, imageShape, "#000000", transparency: 100, offset: 0);
-            handler.GetNativeSlide().Export(previewInfo.SpecialEffectStyleImagePath, "JPG",
-                GetPreviewWidth(), PreviewHeight);
         }
 
         # endregion

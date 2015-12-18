@@ -324,20 +324,6 @@
             public const string VariantCategoryBannerTransparency = "Banner Transparency";
             public const string VariantCategoryTextBoxTransparency = "TextBox Transparency";
 
-            public const string SearchEngineGoogle = "GoogleEngine";
-            public const string SearchEngineBing = "BingEngine";
-
-            public const int ButtonIndexSearch = -999; // not used
-            public const int ButtonIndexDownload = 0;
-            public const int ButtonIndexFromFile = 1;
-
-            public const int StyleIndexDirectText = 0;
-            public const int StyleIndexBlur = 1;
-            public const int StyleIndexTextBox = 2;
-            public const int StyleIndexBanner = 3;
-            public const int StyleIndexSpecialEffect = 4;
-            public const int StyleIndexOverlay = 5;
-
             public const string StyleNameDirectText = "Direct Text Style";
             public const string StyleNameBlur = "Blur Style";
             public const string StyleNameTextBox = "TextBox Style";
@@ -366,18 +352,6 @@
 
             public const string SuccessfullyAppliedStyle =
                 "Successfully Applied.";
-
-            public const string MultiPurposeButtonNameSearch = "Search";
-            public const string MultiPurposeButtonNameDownload = "Download";
-            public const string MultiPurposeButtonNameFromFile = "Select Images";
-
-            public const string TextBoxWatermarkSearch = "Type here to search for images";
-            public const string TextBoxWatermarkDownload = "Paste the image link here";
-            public const string TextBoxWatermarkFromFile = "";
-
-            public const string InstructionForSearch = "Type the keywords in the textbox above to search for images.";
-            public const string InstructionForDownload = "Paste the image link in the textbox above to download images, or drag and drop the link here.";
-            public const string InstructionForFromFile = "Click the 'Select Images' button above to load local images, or drag and drop the files here.";
         }
 
         # region Agenda Lab

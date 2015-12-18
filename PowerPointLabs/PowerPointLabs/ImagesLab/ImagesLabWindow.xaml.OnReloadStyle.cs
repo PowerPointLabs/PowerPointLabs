@@ -6,6 +6,7 @@ using MahApps.Metro.Controls.Dialogs;
 using Microsoft.Office.Core;
 using Microsoft.Office.Interop.PowerPoint;
 using PowerPointLabs.ImagesLab.Domain;
+using PowerPointLabs.ImagesLab.Factory;
 using PowerPointLabs.ImagesLab.Handler.Effect;
 using PowerPointLabs.ImagesLab.Util;
 using PowerPointLabs.Models;
@@ -178,23 +179,15 @@ namespace PowerPointLabs.ImagesLab
 
         private int MapStyleNameToStyleIndex(string styleName)
         {
-            switch (styleName)
+            var allOptions = StyleOptionsFactory.GetAllStylesPreviewOptions();
+            for (var i = 0; i < allOptions.Count; i++)
             {
-                case TextCollection.ImagesLabText.StyleNameDirectText:
-                    return TextCollection.ImagesLabText.StyleIndexDirectText;
-                case TextCollection.ImagesLabText.StyleNameBlur:
-                    return TextCollection.ImagesLabText.StyleIndexBlur;
-                case TextCollection.ImagesLabText.StyleNameTextBox:
-                    return TextCollection.ImagesLabText.StyleIndexTextBox;
-                case TextCollection.ImagesLabText.StyleNameBanner:
-                    return TextCollection.ImagesLabText.StyleIndexBanner;
-                case TextCollection.ImagesLabText.StyleNameSpecialEffect:
-                    return TextCollection.ImagesLabText.StyleIndexSpecialEffect;
-                case TextCollection.ImagesLabText.StyleNameOverlay:
-                    return TextCollection.ImagesLabText.StyleIndexOverlay;
-                default:
-                    return 0;
+                if (allOptions[i].StyleName == styleName)
+                {
+                    return i;
+                }
             }
+            return 0;
         }
 
         private List<StyleOptions> ConstructStylesFromShapeInfo(Shape shape)

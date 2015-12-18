@@ -8,6 +8,7 @@ using System.Windows.Media;
 using System.Windows.Forms;
 using System.Windows.Media.Animation;
 using PowerPointLabs.ImagesLab.Domain;
+using PowerPointLabs.ImagesLab.Factory;
 using PowerPointLabs.ImagesLab.Util;
 using PowerPointLabs.Utils;
 using PowerPointLabs.Utils.Exceptions;
@@ -92,7 +93,7 @@ namespace PowerPointLabs.ImagesLab
         private void InitStylesVariationFlyout(IList<StyleOptions> givenOptions, 
             Dictionary<string, List<StyleVariants>> givenVariants, ImageItem targetStyle)
         {
-            _styleOptions = givenOptions ?? StyleOptionsFactory.GetOptions(targetStyle.Tooltip);
+            _styleOptions = givenOptions ?? StyleOptionsFactory.GetStylesVariationOptions(targetStyle.Tooltip);
             _styleVariants = givenVariants ?? StyleVariantsFactory.GetVariants(targetStyle.Tooltip);
 
             VariantsComboBox.Items.Clear();
@@ -104,7 +105,7 @@ namespace PowerPointLabs.ImagesLab
             _previousVariantsCategory = (string) VariantsComboBox.SelectedValue;
 
             // default style options (in preview stage)
-            var defaultStyleOptions = StyleOptionsFactory.GetDefaultOption(targetStyle.Tooltip);
+            var defaultStyleOptions = StyleOptionsFactory.GetStylesPreviewOption(targetStyle.Tooltip);
             var currentVariants = _styleVariants.Values.First();
             var variantIndexWithoutEffect = -1;
             for (var i = 0; i < currentVariants.Count; i++)
