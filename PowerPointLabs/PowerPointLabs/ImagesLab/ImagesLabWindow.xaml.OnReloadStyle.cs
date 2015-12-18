@@ -51,14 +51,9 @@ namespace PowerPointLabs.ImagesLab
             return () =>
             {
                 this.HideMetroDialogAsync(_reloadStylesDialog, MetroDialogOptions);
-                // go to the target slide
-                if (_reloadStylesDialog.SelectedSlide > 0)
-                {
-                    PowerPointPresentation.Current.GotoSlide(_reloadStylesDialog.SelectedSlide);
-                }
 
                 // which is the current slide
-                var currentSlide = PowerPointCurrentPresentationInfo.CurrentSlide;
+                var currentSlide = PowerPointPresentation.Current.Slides[_reloadStylesDialog.SelectedSlide - 1];
                 if (currentSlide == null) return;
 
                 var originalShapeList = currentSlide.GetShapesWithPrefix(ShapeNamePrefix + "_" + EffectName.Original_DO_NOT_REMOVE);
