@@ -289,75 +289,57 @@
     <Compile Include="ConvertToPicture.cs" />
     <Compile Include="CropToShape.cs" />
     <Compile Include="DataSources\ShapesLabSettingsDataSource.cs" />
-    <Compile Include="ImageSearch\Crop\CroppingAdorner.cs" />
-    <Compile Include="ImageSearch\AdjustImageWindow.xaml.cs">
+    <Compile Include="ImagesLab\Crop\CroppingAdorner.cs" />
+    <Compile Include="ImagesLab\AdjustImageWindow.xaml.cs">
       <DependentUpon>AdjustImageWindow.xaml</DependentUpon>
     </Compile>
-    <Compile Include="ImageSearch\Crop\PuncturedRect.cs" />
-    <Compile Include="ImageSearch\Domain\StyleOptionsFactory.cs" />
-    <Compile Include="ImageSearch\Domain\StyleVariants.cs" />
-    <Compile Include="ImageSearch\Domain\StyleVariantsFactory.cs" />
-    <Compile Include="ImageSearch\GoToSlideDialog.xaml.cs">
-      <DependentUpon>GoToSlideDialog.xaml</DependentUpon>
+    <Compile Include="ImagesLab\Crop\PuncturedRect.cs" />
+    <Compile Include="ImagesLab\Domain\StyleOptionsFactory.cs" />
+    <Compile Include="ImagesLab\Domain\StyleVariants.cs" />
+    <Compile Include="ImagesLab\Domain\StyleVariantsFactory.cs" />
+    <Compile Include="ImagesLab\SlideSelectionDialog.xaml.cs">
+      <DependentUpon>SlideSelectionDialog.xaml</DependentUpon>
     </Compile>
-    <Compile Include="ImageSearch\Handler\Effect\Alignment.cs" />
-    <Compile Include="ImageSearch\Handler\Effect\Banner.cs" />
-    <Compile Include="ImageSearch\Handler\Effect\Position.cs" />
-    <Compile Include="ImageSearch\Handler\Effect\TextBoxes.cs" />
-    <Compile Include="ImageSearch\Handler\Effect\TextBoxInfo.cs" />
-    <Compile Include="ImageSearch\ImageSearchPane.xaml.Common.cs" />
-    <Compile Include="ImageSearch\Handler\Effect\EffectName.cs" />
-    <Compile Include="ImageSearch\Handler\Preview\PreviewInfo.cs" />
-    <Compile Include="ImageSearch\Handler\Effect\Tag.cs" />
-    <Compile Include="ImageSearch\ImageSearchPane.xaml.OnAdjustImageOffset.cs" />
-    <Compile Include="ImageSearch\ImageSearchPane.xaml.OnCustomizeStyle.Obsolete.cs" />
-    <Compile Include="ImageSearch\ImageSearchPane.xaml.OnBackgroundDownload.Obsolete.cs" />
-    <Compile Include="ImageSearch\ImageSearchPane.xaml.cs">
-      <DependentUpon>ImageSearchPane.xaml</DependentUpon>
+    <Compile Include="ImagesLab\Handler\Effect\Alignment.cs" />
+    <Compile Include="ImagesLab\Handler\Effect\Banner.cs" />
+    <Compile Include="ImagesLab\Handler\Effect\Position.cs" />
+    <Compile Include="ImagesLab\Handler\Effect\TextBoxes.cs" />
+    <Compile Include="ImagesLab\Handler\Effect\TextBoxInfo.cs" />
+    <Compile Include="ImagesLab\ImagesLabWindow.xaml.Common.cs" />
+    <Compile Include="ImagesLab\Handler\Effect\EffectName.cs" />
+    <Compile Include="ImagesLab\Handler\Preview\PreviewInfo.cs" />
+    <Compile Include="ImagesLab\Handler\Effect\Tag.cs" />
+    <Compile Include="ImagesLab\ImagesLabWindow.xaml.OnAdjustImageOffset.cs" />
+    <Compile Include="ImagesLab\ImagesLabWindow.xaml.cs">
+      <DependentUpon>ImagesLabWindow.xaml</DependentUpon>
     </Compile>
-    <Compile Include="ImageSearch\ImageSearchPane.xaml.OnDragAndDrop.cs" />
-    <Compile Include="ImageSearch\ImageSearchPane.xaml.OnCustomizeStyle.cs" />
-    <Compile Include="ImageSearch\ImageSearchPane.xaml.OnGotoSlide.cs" />
-    <Compile Include="ImageSearch\ImageSearchPane.xaml.OnPersistence.cs" />
-    <Compile Include="ImageSearch\ImageSearchPane.xaml.OnPreview.cs" />
-    <Compile Include="ImageSearch\ImageSearchPane.xaml.OnLoadImages.cs" />
-    <Compile Include="ImageSearch\ImageSearchPane.xaml.OnReload.cs" />
-    <Compile Include="ImageSearch\QuickDropDialog.xaml.cs">
+    <Compile Include="ImagesLab\ImagesLabWindow.xaml.OnDragAndDrop.cs" />
+    <Compile Include="ImagesLab\ImagesLabWindow.xaml.OnCustomizeStyle.cs" />
+    <Compile Include="ImagesLab\ImagesLabWindow.xaml.OnGotoSlide.cs" />
+    <Compile Include="ImagesLab\ImagesLabWindow.xaml.OnPersistence.cs" />
+    <Compile Include="ImagesLab\ImagesLabWindow.xaml.OnPreview.cs" />
+    <Compile Include="ImagesLab\ImagesLabWindow.xaml.OnLoadImages.cs" />
+    <Compile Include="ImagesLab\ImagesLabWindow.xaml.OnReloadStyle.cs" />
+    <Compile Include="ImagesLab\QuickDropDialog.xaml.cs">
       <DependentUpon>QuickDropDialog.xaml</DependentUpon>
     </Compile>
-    <Compile Include="ImageSearch\SearchEngine\AsyncSearchEngine.Events.cs" />
-    <Compile Include="ImageSearch\SearchEngine\AsyncSearchEngine.Logic.cs" />
-    <Compile Include="ImageSearch\SearchEngine\BingEngine.cs" />
-    <Compile Include="ImageSearch\SearchEngine\VO\BingSearchResults.cs" />
-    <Compile Include="ImageSearch\SuccessfullyAppliedDialog.Obsolete.xaml.cs">
-      <DependentUpon>SuccessfullyAppliedDialog.Obsolete.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="ImageSearch\Util\BoolToBackgroundColorConverter.cs" />
-    <Compile Include="ImageSearch\Util\BoolToVisibilityConverter.cs" />
-    <Compile Include="ImageSearch\Util\ImageUtil.cs" />
-    <Compile Include="ImageSearch\Util\ListBoxUtil.cs" />
-    <Compile Include="ImageSearch\Util\TwoColumnsListBoxImageWidthConverter.cs" />
-    <Compile Include="ImageSearch\Util\ShapeUtil.cs" />
-    <Compile Include="ImageSearch\Util\StyleVariationWidthConverter.cs" />
-    <Compile Include="ImageSearch\Util\UrlUtil.cs" />
-    <Compile Include="ImageSearch\Util\VOUtil.cs" />
+    <Compile Include="ImagesLab\Util\BoolToBackgroundColorConverter.cs" />
+    <Compile Include="ImagesLab\Util\BoolToVisibilityConverter.cs" />
+    <Compile Include="ImagesLab\Util\ImageUtil.cs" />
+    <Compile Include="ImagesLab\Util\ListBoxUtil.cs" />
+    <Compile Include="ImagesLab\Util\TwoColumnsListBoxImageWidthConverter.cs" />
+    <Compile Include="ImagesLab\Util\ShapeUtil.cs" />
+    <Compile Include="ImagesLab\Util\StyleVariationWidthConverter.cs" />
+    <Compile Include="ImagesLab\Util\UrlUtil.cs" />
     <Compile Include="Utils\Assumption.cs" />
     <Compile Include="Utils\Exceptions\AssumptionFailedException.cs" />
-    <Compile Include="ImageSearch\Domain\ImageItem.cs" />
-    <Compile Include="ImageSearch\Domain\SearchOptions.cs" />
-    <Compile Include="ImageSearch\Domain\StyleOptions.cs" />
-    <Compile Include="ImageSearch\Handler\StylesHandler.cs" />
-    <Compile Include="ImageSearch\SearchEngine\GoogleEngine.cs" />
-    <Compile Include="ImageSearch\SearchOptionsPane.Obsolete.xaml.cs">
-      <DependentUpon>SearchOptionsPane.Obsolete.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="ImageSearch\Handler\EffectsHandler.cs" />
-    <Compile Include="ImageSearch\StyleOptionsPane.Obsolete.xaml.cs">
-      <DependentUpon>StyleOptionsPane.Obsolete.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="ImageSearch\Util\StoragePath.cs" />
-    <Compile Include="ImageSearch\Util\TempPath.cs" />
-    <Compile Include="ImageSearch\SearchEngine\VO\GoogleSearchResults.cs" />
+    <Compile Include="ImagesLab\Domain\ImageItem.cs" />
+    <Compile Include="ImagesLab\Domain\SearchOptions.cs" />
+    <Compile Include="ImagesLab\Domain\StyleOptions.cs" />
+    <Compile Include="ImagesLab\Handler\StylesHandler.cs" />
+    <Compile Include="ImagesLab\Handler\EffectsHandler.cs" />
+    <Compile Include="ImagesLab\Util\StoragePath.cs" />
+    <Compile Include="ImagesLab\Util\TempPath.cs" />
     <Compile Include="Models\PowerPointBgEffectSlide.cs" />
     <Compile Include="LabeledThumbnail.cs">
       <SubType>UserControl</SubType>
@@ -806,31 +788,19 @@
     <None Include="Resources\AgendaVisual.png" />
   </ItemGroup>
   <ItemGroup>
-    <Page Include="ImageSearch\AdjustImageWindow.xaml">
+    <Page Include="ImagesLab\AdjustImageWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="ImageSearch\GoToSlideDialog.xaml">
+    <Page Include="ImagesLab\SlideSelectionDialog.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="ImageSearch\ImageSearchPane.xaml">
+    <Page Include="ImagesLab\ImagesLabWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="ImageSearch\QuickDropDialog.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="ImageSearch\SearchOptionsPane.Obsolete.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="ImageSearch\StyleOptionsPane.Obsolete.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="ImageSearch\SuccessfullyAppliedDialog.Obsolete.xaml">
+    <Page Include="ImagesLab\QuickDropDialog.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

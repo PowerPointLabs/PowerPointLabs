@@ -319,10 +319,10 @@ namespace PowerPointLabs
 
         private void ShutDownImageSearchPane()
         {
-            var imageSearchPane = Globals.ThisAddIn.Ribbon.ImageSearchPane;
-            if (imageSearchPane != null && imageSearchPane.IsOpen && Application.Presentations.Count == 2)
+            var imagesLabWindow = Globals.ThisAddIn.Ribbon.ImagesLabWindow;
+            if (imagesLabWindow != null && imagesLabWindow.IsOpen && Application.Presentations.Count == 2)
             {
-                imageSearchPane.Close();
+                imagesLabWindow.Close();
             }
         }
 

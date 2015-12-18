@@ -7,7 +7,7 @@ using System.Reflection;
 using System.Runtime.InteropServices;
 using System.Diagnostics;
 using System.Windows.Forms;
-using PowerPointLabs.ImageSearch;
+using PowerPointLabs.ImagesLab;
 using PowerPointLabs.Models;
 using PowerPointLabs.Views;
 using Office = Microsoft.Office.Core;
@@ -1629,18 +1629,18 @@ namespace PowerPointLabs
 
         #region Feature: Images Lab
 
-        public ImageSearchPane ImageSearchPane { get; set; }
+        public ImagesLabWindow ImagesLabWindow { get; set; }
 
         public void ImagesLabButtonClick(Office.IRibbonControl control)
         {
-            if (ImageSearchPane == null || !ImageSearchPane.IsOpen)
+            if (ImagesLabWindow == null || !ImagesLabWindow.IsOpen)
             {
-                ImageSearchPane = new ImageSearchPane();
-                ImageSearchPane.Show();
+                ImagesLabWindow = new ImagesLabWindow();
+                ImagesLabWindow.Show();
             }
             else
             {
-                ImageSearchPane.Activate();
+                ImagesLabWindow.Activate();
             }            
         }
 
