@@ -21,9 +21,24 @@ namespace PowerPointLabs.ImagesLab.Factory
                     return GetVariantsForSpecialEffect();
                 case TextCollection.ImagesLabText.StyleNameOverlay:
                     return GetVariantsForOverlay();
+                case TextCollection.ImagesLabText.StyleNameOutline:
+                    return GetVariantsForOutline();
                 default:
                     return new Dictionary<string, List<StyleVariants>>();
             }
+        }
+
+        private static Dictionary<string, List<StyleVariants>> GetVariantsForOutline()
+        {
+            return new Dictionary<string, List<StyleVariants>>
+            {
+                { TextCollection.ImagesLabText.VariantCategoryTextColor, GetFontColorVariants() },
+                { TextCollection.ImagesLabText.VariantCategoryBlurriness, GetBlurVariants() },
+                { TextCollection.ImagesLabText.VariantCategoryBrightness, GetBrightnessVariants() },
+                { TextCollection.ImagesLabText.VariantCategoryTextPosition, GetFontPositionVariants() },
+                { TextCollection.ImagesLabText.VariantCategoryFontFamily, GetFontFamilyVariants() },
+                { TextCollection.ImagesLabText.VariantCategoryFontSizeIncrease, GetFontSizeIncreaseVariants() }
+            };
         }
 
         private static Dictionary<string, List<StyleVariants>> GetVariantsForOverlay()

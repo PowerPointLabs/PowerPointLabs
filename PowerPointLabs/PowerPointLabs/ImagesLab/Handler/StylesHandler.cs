@@ -33,7 +33,7 @@ namespace PowerPointLabs.ImagesLab.Handler
         /// <exception cref="AssumptionFailedException">
         /// throw exception when ImagesLab presentation is not open OR no selected slide.
         /// </exception>
-        public PreviewInfo PreviewApplyStyle(ImageItem source, bool isActualSize = false)
+        public PreviewInfo PreviewApplyStyle(ImageItem source)
         {
             Assumption.Made(
                 Opened && PowerPointCurrentPresentationInfo.CurrentSlide != null,
@@ -46,30 +46,16 @@ namespace PowerPointLabs.ImagesLab.Handler
             // use thumbnail to apply, in order to speed up
             var fullSizeImgPath = source.FullSizeImageFile;
             var originalThumbnail = source.ImageFile;
-            if (!isActualSize)
-            {
-                source.FullSizeImageFile = null;
-                source.ImageFile = source.CroppedThumbnailImageFile ?? source.ImageFile;
-            }
-            else
-            {
-                source.FullSizeImageFile = source.CroppedImageFile ?? source.FullSizeImageFile;
-            }
+            source.FullSizeImageFile = null;
+            source.ImageFile = source.CroppedThumbnailImageFile ?? source.ImageFile;
 
-            ApplyStyle(handler, source, isActualSize);
+            ApplyStyle(handler, source, isActualSize: false);
 
+            // recover it back
             source.FullSizeImageFile = fullSizeImgPath;
             source.ImageFile = originalThumbnail;
-
-            if (isActualSize)
-            {
-                handler.GetNativeSlide().Export(previewInfo.PreviewApplyStyleImagePath, "JPG");
-            }
-            else
-            {
-                handler.GetNativeSlide().Export(previewInfo.PreviewApplyStyleImagePath, "JPG",
+            handler.GetNativeSlide().Export(previewInfo.PreviewApplyStyleImagePath, "JPG",
                     GetPreviewWidth(), PreviewHeight);
-            }
 
             handler.Delete();
             return previewInfo;
@@ -105,6 +91,12 @@ namespace PowerPointLabs.ImagesLab.Handler
             return (int)(SlideWidth / SlideHeight * PreviewHeight);
         }
 
+        /// <summary>
+        /// process how to handle a style based on the given source and style option
+        /// </summary>
+        /// <param name="handler"></param>
+        /// <param name="source"></param>
+        /// <param name="isActualSize"></param>
         private void ApplyStyle(EffectsHandler handler, ImageItem source, bool isActualSize)
         {
             if (Options.IsUseBannerStyle 
@@ -159,14 +151,31 @@ namespace PowerPointLabs.ImagesLab.Handler
                 handler.ApplyTextboxEffect(Options.TextBoxOverlayColor, Options.TextBoxTransparency);
             }
 
+            Shape outlineOverlayShape = null;
+            if (Options.IsUseOutlineStyle)
+            {
+                outlineOverlayShape = handler.ApplyRectOutlineEffect(imageShape, Options.FontColor, 0);
+            }
+
             if (metaImages.Count == 2)
             {
-                SendToBack(bannerOverlayShape, backgroundOverlayShape, blurImageShape, imageShape, metaImages[1],
+                SendToBack(
+                    outlineOverlayShape, 
+                    bannerOverlayShape, 
+                    backgroundOverlayShape, 
+                    blurImageShape, 
+                    imageShape, 
+                    metaImages[1],
                     metaImages[0]);
             }
             else
             {
-                SendToBack(bannerOverlayShape, backgroundOverlayShape, blurImageShape, imageShape);
+                SendToBack(
+                    outlineOverlayShape, 
+                    bannerOverlayShape, 
+                    backgroundOverlayShape, 
+                    blurImageShape, 
+                    imageShape);
             }
 
             handler.ApplyImageReference(source.ContextLink);

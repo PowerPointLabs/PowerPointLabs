@@ -330,6 +330,7 @@
             public const string StyleNameBanner = "Banner Style";
             public const string StyleNameSpecialEffect = "Special Effect Style";
             public const string StyleNameOverlay = "Overlay Style";
+            public const string StyleNameOutline = "Outline Style";
 
             public const string ErrorNetworkOrApiQuotaUnavailable =
             "Failed to search images. Please check your network, or the daily API quota is ran out.";

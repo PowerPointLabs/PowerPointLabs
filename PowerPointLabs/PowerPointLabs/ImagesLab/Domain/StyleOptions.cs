@@ -304,6 +304,22 @@ namespace PowerPointLabs.ImagesLab.Domain
             }
         }
 
+        // ******************************************************
+        // for blur style
+        // ******************************************************
+
+        private bool _isUseOutlineStyle;
+
+        public bool IsUseOutlineStyle
+        {
+            get { return _isUseOutlineStyle; }
+            set
+            {
+                _isUseOutlineStyle = value;
+                OnPropertyChanged("IsUseOutlineStyle");
+            }
+        }
+
         // other
 
         private bool _isInsertReference;
@@ -360,6 +376,8 @@ namespace PowerPointLabs.ImagesLab.Domain
 
             IsUseBlurStyle = false;
             BlurDegree = 0;
+
+            IsUseOutlineStyle = false;
 
             IsInsertReference = false;
             OptionName = "Default";

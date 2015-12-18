@@ -19,6 +19,7 @@ namespace PowerPointLabs.ImagesLab.Factory
                 GetOptionsForBanner(),
                 GetOptionsForSpecialEffect(),
                 GetOptionsForOverlay(),
+                GetOptionsForOutline(),
             };
             return options;
         }
@@ -37,6 +38,7 @@ namespace PowerPointLabs.ImagesLab.Factory
                 GetDefaultOptionForBanner(),
                 GetDefaultOptionForSpecialEffects(),
                 GetDefaultOptionForOverlay(),
+                GetDefaultOptionForOutline(),
             };
             return options;
         }
@@ -145,14 +147,36 @@ namespace PowerPointLabs.ImagesLab.Factory
             };
         }
 
+        private static StyleOptions GetDefaultOptionForOutline()
+        {
+            return new StyleOptions()
+            {
+                StyleName = TextCollection.ImagesLabText.StyleNameOutline,
+                IsUseOutlineStyle = true
+            };
+        }
+
         #endregion
         #region Get specific styles variation options
+
+        private static List<StyleOptions> GetOptionsForOutline()
+        {
+            var result = GetOptionsWithSuitableFontColor();
+            foreach (var styleOption in result)
+            {
+                styleOption.IsUseOutlineStyle = true;
+            }
+            UpdateStyleName(
+                result,
+                TextCollection.ImagesLabText.StyleNameOutline);
+            return result;
+        }
 
         private static List<StyleOptions> GetOptionsForOverlay()
         {
             return UpdateStyleName(
                 GetOptionsWithSuitableFontColor(),
-                TextCollection.ImagesLabText.StyleNameOverlay); ;
+                TextCollection.ImagesLabText.StyleNameOverlay);
         } 
 
         private static List<StyleOptions> GetOptionsForSpecialEffect()
@@ -166,7 +190,7 @@ namespace PowerPointLabs.ImagesLab.Factory
         {
             return UpdateStyleName(
                 GetOptionsForTextBox(),
-                TextCollection.ImagesLabText.StyleNameBanner); ;
+                TextCollection.ImagesLabText.StyleNameBanner);
         } 
 
         private static List<StyleOptions> GetOptionsForTextBox()
