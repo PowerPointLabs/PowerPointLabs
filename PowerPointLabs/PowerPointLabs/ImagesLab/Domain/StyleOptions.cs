@@ -305,7 +305,7 @@ namespace PowerPointLabs.ImagesLab.Domain
         }
 
         // ******************************************************
-        // for blur style
+        // for outline style
         // ******************************************************
 
         private bool _isUseOutlineStyle;
@@ -317,6 +317,46 @@ namespace PowerPointLabs.ImagesLab.Domain
             {
                 _isUseOutlineStyle = value;
                 OnPropertyChanged("IsUseOutlineStyle");
+            }
+        }
+
+        // ******************************************************
+        // for frame style
+        // ******************************************************
+
+        private bool _isUseFrameStyle;
+
+        public bool IsUseFrameStyle
+        {
+            get { return _isUseFrameStyle; }
+            set
+            {
+                _isUseFrameStyle = value;
+                OnPropertyChanged("IsUseFrameStyle");
+            }
+        }
+
+        private string _frameColor;
+
+        public string FrameColor
+        {
+            get { return _frameColor; }
+            set
+            {
+                _frameColor = value;
+                OnPropertyChanged("FrameColor");
+            }
+        }
+
+        private int _frameTransparency;
+
+        public int FrameTransparency
+        {
+            get { return _frameTransparency; }
+            set
+            {
+                _frameTransparency = value;
+                OnPropertyChanged("FrameTransparency");
             }
         }
 
@@ -378,6 +418,9 @@ namespace PowerPointLabs.ImagesLab.Domain
             BlurDegree = 0;
 
             IsUseOutlineStyle = false;
+            IsUseFrameStyle = false;
+            FrameColor = "#FFFFFF";
+            FrameTransparency = 30;
 
             IsInsertReference = false;
             OptionName = "Default";

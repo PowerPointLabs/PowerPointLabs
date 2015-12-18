@@ -401,6 +401,21 @@ namespace PowerPointLabs.ImagesLab.Handler
             return overlayShape;
         }
 
+        public PowerPoint.Shape ApplyAlbumFrameEffect(string overlayColor, int transparency)
+        {
+            var width = PreviewPresentation.SlideWidth;
+            var height = PreviewPresentation.SlideHeight;
+            var frameShape = Shapes.AddShape(MsoAutoShapeType.msoShapeRectangle, 0, 0,
+                width, height);
+            ChangeName(frameShape, EffectName.Overlay);
+            frameShape.Fill.Transparency = 1f;
+            frameShape.Line.ForeColor.RGB = Graphics.ConvertColorToRgb(StringUtil.GetColorFromHexValue(overlayColor));
+            frameShape.Line.Transparency = (float)transparency / 100;
+            frameShape.Line.Weight = 60;
+            frameShape.Line.Visible = MsoTriState.msoTrue;
+            return frameShape;
+        }
+
         private BannerDirection HandleAutoDirection(BannerDirection dir, Position textPos)
         {
             if (dir != BannerDirection.Auto) return dir;

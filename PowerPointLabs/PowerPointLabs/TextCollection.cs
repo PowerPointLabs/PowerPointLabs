@@ -323,6 +323,7 @@
             public const string VariantCategoryOverlayTransparency = "Overlay Transparency";
             public const string VariantCategoryBannerTransparency = "Banner Transparency";
             public const string VariantCategoryTextBoxTransparency = "TextBox Transparency";
+            public const string VariantCategoryFrameTransparency = "Frame Transparency";
 
             public const string StyleNameDirectText = "Direct Text Style";
             public const string StyleNameBlur = "Blur Style";
@@ -331,6 +332,7 @@
             public const string StyleNameSpecialEffect = "Special Effect Style";
             public const string StyleNameOverlay = "Overlay Style";
             public const string StyleNameOutline = "Outline Style";
+            public const string StyleNameFrame = "Frame Style";
 
             public const string ErrorNetworkOrApiQuotaUnavailable =
             "Failed to search images. Please check your network, or the daily API quota is ran out.";

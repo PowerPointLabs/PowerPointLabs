@@ -108,17 +108,21 @@ namespace PowerPointLabs.ImagesLab.Handler
             }
             ApplyTextEffect(handler);
 
-            var isSpecialEffectStyle = false;
-
             // store style options information into original image shape
             // return original image and cropped image
             var metaImages = handler.EmbedStyleOptionsInformation(
                 source.OriginalImageFile, source.FullSizeImageFile, source.Rect, Options);
+            Shape originalImage = null;
+            Shape croppedImage = null;
+            if (metaImages.Count == 2)
+            {
+                originalImage = metaImages[0];
+                croppedImage = metaImages[1];
+            }
 
             Shape imageShape;
             if (Options.IsUseSpecialEffectStyle)
             {
-                isSpecialEffectStyle = true;
                 imageShape = handler.ApplySpecialEffectEffect(Options.GetSpecialEffect(), isActualSize, Options.ImageOffset);
             }
             else // Direct Text style
@@ -135,7 +139,7 @@ namespace PowerPointLabs.ImagesLab.Handler
             Shape blurImageShape = null;
             if (Options.IsUseBlurStyle)
             {
-                blurImageShape = isSpecialEffectStyle
+                blurImageShape = Options.IsUseSpecialEffectStyle
                     ? handler.ApplyBlurEffect(source.SpecialEffectImageFile, Options.BlurDegree, Options.ImageOffset)
                     : handler.ApplyBlurEffect(degree: Options.BlurDegree, offset: Options.ImageOffset);
             }
@@ -157,26 +161,21 @@ namespace PowerPointLabs.ImagesLab.Handler
                 outlineOverlayShape = handler.ApplyRectOutlineEffect(imageShape, Options.FontColor, 0);
             }
 
-            if (metaImages.Count == 2)
+            Shape frameOverlayShape = null;
+            if (Options.IsUseFrameStyle)
             {
-                SendToBack(
-                    outlineOverlayShape, 
-                    bannerOverlayShape, 
-                    backgroundOverlayShape, 
-                    blurImageShape, 
-                    imageShape, 
-                    metaImages[1],
-                    metaImages[0]);
+                frameOverlayShape = handler.ApplyAlbumFrameEffect(Options.FrameColor, Options.FrameTransparency);
             }
-            else
-            {
-                SendToBack(
-                    outlineOverlayShape, 
-                    bannerOverlayShape, 
-                    backgroundOverlayShape, 
-                    blurImageShape, 
-                    imageShape);
-            }
+
+            SendToBack(
+                    frameOverlayShape,
+                    outlineOverlayShape,
+                    bannerOverlayShape,
+                    backgroundOverlayShape,
+                    blurImageShape,
+                    imageShape,
+                    croppedImage,
+                    originalImage);
 
             handler.ApplyImageReference(source.ContextLink);
             if (Options.IsInsertReference)

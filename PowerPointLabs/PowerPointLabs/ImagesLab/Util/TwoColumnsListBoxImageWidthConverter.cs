@@ -6,7 +6,7 @@ namespace PowerPointLabs.ImagesLab.Util
 {
     public class TwoColumnsListBoxImageWidthConverter : IValueConverter
     {
-        private const double ImageMargin = 4;
+        private const double ImageMargin = 10;
         private const double ScrollBarMargin = 6;
 
         public object Convert(object value, Type targetType,

@@ -23,9 +23,25 @@ namespace PowerPointLabs.ImagesLab.Factory
                     return GetVariantsForOverlay();
                 case TextCollection.ImagesLabText.StyleNameOutline:
                     return GetVariantsForOutline();
+                case TextCollection.ImagesLabText.StyleNameFrame:
+                    return GetVariantsForFrame();
                 default:
                     return new Dictionary<string, List<StyleVariants>>();
             }
+        }
+
+        private static Dictionary<string, List<StyleVariants>> GetVariantsForFrame()
+        {
+            return new Dictionary<string, List<StyleVariants>>
+            {
+                { TextCollection.ImagesLabText.VariantCategoryFrameTransparency, GetFrameTransparencyVariants() },
+                { TextCollection.ImagesLabText.VariantCategoryBlurriness, GetBlurVariants() },
+                { TextCollection.ImagesLabText.VariantCategoryBrightness, GetBrightnessVariants() },
+                { TextCollection.ImagesLabText.VariantCategoryTextColor, GetFontColorVariants() },
+                { TextCollection.ImagesLabText.VariantCategoryTextPosition, GetFontPositionVariants() },
+                { TextCollection.ImagesLabText.VariantCategoryFontFamily, GetFontFamilyVariants() },
+                { TextCollection.ImagesLabText.VariantCategoryFontSizeIncrease, GetFontSizeIncreaseVariants() }
+            };
         }
 
         private static Dictionary<string, List<StyleVariants>> GetVariantsForOutline()
@@ -573,6 +589,53 @@ namespace PowerPointLabs.ImagesLab.Factory
                     {"OptionName", "0% Blurriness"},
                     {"IsUseBlurStyle", true},
                     {"BlurDegree", 0}
+                })
+            };
+        }
+
+        private static List<StyleVariants> GetFrameTransparencyVariants()
+        {
+            return new List<StyleVariants>
+            {
+                new StyleVariants(new Dictionary<string, object>
+                {
+                    {"OptionName", "0% Transparency"},
+                    {"FrameTransparency", 0}
+                }),
+                new StyleVariants(new Dictionary<string, object>
+                {
+                    {"OptionName", "10% Transparency"},
+                    {"FrameTransparency", 10}
+                }),
+                new StyleVariants(new Dictionary<string, object>
+                {
+                    {"OptionName", "20% Transparency"},
+                    {"FrameTransparency", 20}
+                }),
+                new StyleVariants(new Dictionary<string, object>
+                {
+                    {"OptionName", "30% Transparency"},
+                    {"FrameTransparency", 30}
+                }),
+                new StyleVariants(new Dictionary<string, object>
+                {
+                    {"OptionName", "40% Transparency"},
+                    {"FrameTransparency", 40}
+                }),
+                new StyleVariants(new Dictionary<string, object>
+                {
+                    {"OptionName", "50% Transparency"},
+                    {"FrameTransparency", 50}
+                }),
+                new StyleVariants(new Dictionary<string, object>
+                {
+                    {"OptionName", "60% Transparency"},
+                    {"FrameTransparency", 60}
+                }),
+                new StyleVariants(new Dictionary<string, object>
+                {
+                    {"OptionName", "70% Transparency"},
+                    {"FrameTransparency", 70}
                 })
             };
         }

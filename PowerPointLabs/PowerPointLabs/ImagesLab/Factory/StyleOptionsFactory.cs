@@ -20,6 +20,7 @@ namespace PowerPointLabs.ImagesLab.Factory
                 GetOptionsForSpecialEffect(),
                 GetOptionsForOverlay(),
                 GetOptionsForOutline(),
+                GetOptionsForFrame(),
             };
             return options;
         }
@@ -39,6 +40,7 @@ namespace PowerPointLabs.ImagesLab.Factory
                 GetDefaultOptionForSpecialEffects(),
                 GetDefaultOptionForOverlay(),
                 GetDefaultOptionForOutline(),
+                GetDefaultOptionForFrame(),
             };
             return options;
         }
@@ -156,8 +158,30 @@ namespace PowerPointLabs.ImagesLab.Factory
             };
         }
 
+        private static StyleOptions GetDefaultOptionForFrame()
+        {
+            return new StyleOptions()
+            {
+                StyleName = TextCollection.ImagesLabText.StyleNameFrame,
+                IsUseFrameStyle = true
+            };
+        }
+
         #endregion
         #region Get specific styles variation options
+
+        private static List<StyleOptions> GetOptionsForFrame()
+        {
+            var result = GetOptions();
+            foreach (var styleOption in result)
+            {
+                styleOption.IsUseFrameStyle = true;
+            }
+            UpdateStyleName(
+                result,
+                TextCollection.ImagesLabText.StyleNameFrame);
+            return result;
+        }
 
         private static List<StyleOptions> GetOptionsForOutline()
         {
