@@ -403,15 +403,16 @@ namespace PowerPointLabs.ImagesLab.Handler
 
         public PowerPoint.Shape ApplyAlbumFrameEffect(string overlayColor, int transparency)
         {
-            var width = PreviewPresentation.SlideWidth;
-            var height = PreviewPresentation.SlideHeight;
-            var frameShape = Shapes.AddShape(MsoAutoShapeType.msoShapeRectangle, 0, 0,
+            var halfFrameWidth = 15;
+            var width = PreviewPresentation.SlideWidth - halfFrameWidth * 2;
+            var height = PreviewPresentation.SlideHeight - halfFrameWidth * 2;
+            var frameShape = Shapes.AddShape(MsoAutoShapeType.msoShapeRectangle, halfFrameWidth, halfFrameWidth,
                 width, height);
             ChangeName(frameShape, EffectName.Overlay);
             frameShape.Fill.Transparency = 1f;
             frameShape.Line.ForeColor.RGB = Graphics.ConvertColorToRgb(StringUtil.GetColorFromHexValue(overlayColor));
             frameShape.Line.Transparency = (float)transparency / 100;
-            frameShape.Line.Weight = 60;
+            frameShape.Line.Weight = 30;
             frameShape.Line.Visible = MsoTriState.msoTrue;
             return frameShape;
         }
