@@ -313,14 +313,14 @@ namespace PowerPointLabs.ImagesLab.Handler
         }
 
         public PowerPoint.Shape ApplyCircleBannerEffect(PowerPoint.Shape imageShape, string overlayColor, int transparency, 
-            bool isOutline = false)
+            bool isOutline = false, int margin = 0)
         {
             var tbInfo =
                 new TextBoxes(Shapes, PreviewPresentation.SlideWidth, PreviewPresentation.SlideHeight)
                 .GetTextBoxesInfo();
             if (tbInfo == null)
                 return null;
-            TextBoxes.AddMargin(tbInfo, 10);
+            TextBoxes.AddMargin(tbInfo, margin);
 
             var overlayShape = ApplyCircleOverlayEffect(overlayColor, transparency, tbInfo.Left, tbInfo.Top, tbInfo.Width,
                 tbInfo.Height, isOutline);
@@ -333,7 +333,8 @@ namespace PowerPointLabs.ImagesLab.Handler
             return overlayShape;
         }
 
-        public PowerPoint.Shape ApplyCircleOutlineEffect(PowerPoint.Shape imageShape, string overlayColor, int transparency)
+        public PowerPoint.Shape ApplyCircleOutlineEffect(PowerPoint.Shape imageShape, string overlayColor, 
+            int transparency, int margin)
         {
             var overlayShape = ApplyCircleBannerEffect(imageShape, overlayColor, transparency, isOutline: true);
             if (overlayShape == null) return null;
@@ -415,6 +416,42 @@ namespace PowerPointLabs.ImagesLab.Handler
             frameShape.Line.Weight = 30;
             frameShape.Line.Visible = MsoTriState.msoTrue;
             return frameShape;
+        }
+
+        public PowerPoint.Shape ApplyTriangleEffect(string overlayColor1, string overlayColor2, int transparency)
+        {
+            var width1 = PreviewPresentation.SlideHeight;
+            var height1 = PreviewPresentation.SlideWidth;
+            var centerLeft1 = PreviewPresentation.SlideWidth/2;
+            var centerTop1 = PreviewPresentation.SlideHeight/2;
+            // the bigger triangle
+            var triangle1 = Shapes.AddShape(MsoAutoShapeType.msoShapeIsoscelesTriangle, 
+                centerLeft1 - centerTop1, centerLeft1 + centerTop1 - PreviewPresentation.SlideWidth, width1, height1);
+            triangle1.Rotation = 90;
+            ChangeName(triangle1, EffectName.Overlay);
+            triangle1.Fill.Solid();
+            triangle1.Fill.ForeColor.RGB = Graphics.ConvertColorToRgb(StringUtil.GetColorFromHexValue(overlayColor1));
+            triangle1.Fill.Transparency = (float)transparency / 100;
+            triangle1.Line.Visible = MsoTriState.msoFalse;
+
+            var width2 = PreviewPresentation.SlideHeight/2;
+            var height2 = PreviewPresentation.SlideWidth/2;
+            var centerLeft2 = PreviewPresentation.SlideWidth/4*3;
+            var centerTop2 = PreviewPresentation.SlideHeight/4*3;
+            // the smaller triangle
+            var triangle2 = Shapes.AddShape(MsoAutoShapeType.msoShapeIsoscelesTriangle,
+                centerLeft2 + centerTop2 - PreviewPresentation.SlideHeight, 
+                centerTop2 + PreviewPresentation.SlideWidth/2 - centerLeft2, 
+                width2, 
+                height2);
+            triangle2.Rotation = 270;
+            ChangeName(triangle2, EffectName.Overlay);
+            triangle2.Fill.Solid();
+            triangle2.Fill.ForeColor.RGB = Graphics.ConvertColorToRgb(StringUtil.GetColorFromHexValue(overlayColor2));
+            triangle2.Fill.Transparency = (float)transparency / 100;
+            triangle2.Line.Visible = MsoTriState.msoFalse;
+
+            return Shapes.Range(new [] {triangle1.Name, triangle2.Name}).Group();
         }
 
         private BannerDirection HandleAutoDirection(BannerDirection dir, Position textPos)
@@ -532,6 +569,11 @@ namespace PowerPointLabs.ImagesLab.Handler
             return imageShape;
         }
 
+        /// <summary>
+        /// change the shape name, so that they can be managed (eg delete) by name easily
+        /// </summary>
+        /// <param name="shape"></param>
+        /// <param name="effectName"></param>
         private static void ChangeName(PowerPoint.Shape shape, EffectName effectName)
         {
             ShapeUtil.ChangeName(shape, effectName, ShapeNamePrefix);

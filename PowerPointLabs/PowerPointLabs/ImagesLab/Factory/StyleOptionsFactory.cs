@@ -146,7 +146,9 @@ namespace PowerPointLabs.ImagesLab.Factory
                 StyleName = TextCollection.ImagesLabText.StyleNameOverlay,
                 IsUseOverlayStyle = true,
                 Transparency = 35,
-                OverlayColor = "#007FFF"
+                OverlayColor = "#007FFF",
+                IsUseSpecialEffectStyle = true,
+                SpecialEffect = 0
             };
         }
 

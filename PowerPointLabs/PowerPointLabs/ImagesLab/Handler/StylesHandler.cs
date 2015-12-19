@@ -206,18 +206,8 @@ namespace PowerPointLabs.ImagesLab.Handler
 
         private Shape ApplyBannerStyle(EffectsHandler effectsHandler, Shape imageShape)
         {
-            switch (Options.GetBannerShape())
-            {
-                case BannerShape.Rectangle:
-                    return effectsHandler.ApplyRectBannerEffect(Options.GetBannerDirection(), Options.GetTextBoxPosition(),
+            return effectsHandler.ApplyRectBannerEffect(Options.GetBannerDirection(), Options.GetTextBoxPosition(),
                         imageShape, Options.BannerColor, Options.BannerTransparency);
-                case BannerShape.Circle:
-                    return effectsHandler.ApplyCircleBannerEffect(imageShape, Options.BannerColor, Options.BannerTransparency);
-                case BannerShape.RectangleOutline:
-                    return effectsHandler.ApplyRectOutlineEffect(imageShape, Options.BannerColor, Options.BannerTransparency);
-                default:
-                    return effectsHandler.ApplyCircleOutlineEffect(imageShape, Options.BannerColor, Options.BannerTransparency);
-            }
         }
 
         private void ApplyTextEffect(EffectsHandler effectsHandler)
