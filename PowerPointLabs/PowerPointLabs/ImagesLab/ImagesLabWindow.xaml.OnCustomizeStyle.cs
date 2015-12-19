@@ -158,8 +158,8 @@ namespace PowerPointLabs.ImagesLab
             }
 
             var currentVariantsCategory = (string) VariantsComboBox.SelectedValue;
-            if (currentVariantsCategory != TextCollection.ImagesLabText.VariantCategoryTextColor
-                && _previousVariantsCategory != TextCollection.ImagesLabText.VariantCategoryTextColor)
+            if (currentVariantsCategory != TextCollection.ImagesLabText.VariantCategoryFontColor
+                && _previousVariantsCategory != TextCollection.ImagesLabText.VariantCategoryFontColor)
             {
                 // apply font color variant,
                 // because default styles may contain special font color settings, but not in variants
@@ -246,21 +246,11 @@ namespace PowerPointLabs.ImagesLab
 
             if (currentCategory.Contains("Color"))
             {
-                switch (currentCategory)
-                {
-                    case TextCollection.ImagesLabText.VariantCategoryTextColor:
-                        VariantsColorPanel.Background = (Brush) bc.ConvertFrom(styleOption.FontColor);
-                        break;
-                    case TextCollection.ImagesLabText.VariantCategoryTextBoxColor:
-                        VariantsColorPanel.Background = (Brush) bc.ConvertFrom(styleOption.TextBoxOverlayColor);
-                        break;
-                    case TextCollection.ImagesLabText.VariantCategoryBannerColor:
-                        VariantsColorPanel.Background = (Brush) bc.ConvertFrom(styleOption.BannerOverlayColor);
-                        break;
-                    case TextCollection.ImagesLabText.VariantCategoryOverlayColor:
-                        VariantsColorPanel.Background = (Brush) bc.ConvertFrom(styleOption.OverlayColor);
-                        break;
-                }
+                var propName = GetPropertyName(currentCategory);
+                var type = styleOption.GetType();
+                var prop = type.GetProperty(propName);
+                var optValue = prop.GetValue(styleOption, null);
+                VariantsColorPanel.Background = (Brush)bc.ConvertFrom(optValue);
             }
         }
 
@@ -300,21 +290,10 @@ namespace PowerPointLabs.ImagesLab
             if (currentCategory.Contains("Color"))
             {
                 styleOption.OptionName = "Customized";
-                switch (currentCategory)
-                {
-                    case TextCollection.ImagesLabText.VariantCategoryTextColor:
-                        styleOption.FontColor = targetColor;
-                        break;
-                    case TextCollection.ImagesLabText.VariantCategoryTextBoxColor:
-                        styleOption.TextBoxOverlayColor = targetColor;
-                        break;
-                    case TextCollection.ImagesLabText.VariantCategoryBannerColor:
-                        styleOption.BannerOverlayColor = targetColor;
-                        break;
-                    case TextCollection.ImagesLabText.VariantCategoryOverlayColor:
-                        styleOption.OverlayColor = targetColor;
-                        break;
-                }
+                var propName = GetPropertyName(currentCategory);
+                var type = styleOption.GetType();
+                var prop = type.GetProperty(propName);
+                prop.SetValue(styleOption, targetColor, null);
             }
         }
 
@@ -329,21 +308,7 @@ namespace PowerPointLabs.ImagesLab
             if (currentCategory.Contains("Color"))
             {
                 styleVariant.Set("OptionName", "Customized");
-                switch (currentCategory)
-                {
-                    case TextCollection.ImagesLabText.VariantCategoryTextColor:
-                        styleVariant.Set("FontColor", StringUtil.GetHexValue(color));
-                        break;
-                    case TextCollection.ImagesLabText.VariantCategoryTextBoxColor:
-                        styleVariant.Set("TextBoxOverlayColor", StringUtil.GetHexValue(color));
-                        break;
-                    case TextCollection.ImagesLabText.VariantCategoryBannerColor:
-                        styleVariant.Set("BannerOverlayColor", StringUtil.GetHexValue(color));
-                        break;
-                    case TextCollection.ImagesLabText.VariantCategoryOverlayColor:
-                        styleVariant.Set("OverlayColor", StringUtil.GetHexValue(color));
-                        break;
-                }
+                styleVariant.Set(GetPropertyName(currentCategory), StringUtil.GetHexValue(color));
             }
         }
 
@@ -543,6 +508,11 @@ namespace PowerPointLabs.ImagesLab
             {
                 _fontFamilyList.Add(font.Source);
             }
+        }
+
+        private string GetPropertyName(string categoryName)
+        {
+            return categoryName.Replace(" ", string.Empty);
         }
     }
 }

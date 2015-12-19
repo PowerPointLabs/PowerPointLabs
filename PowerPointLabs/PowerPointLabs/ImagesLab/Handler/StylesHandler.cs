@@ -152,7 +152,7 @@ namespace PowerPointLabs.ImagesLab.Handler
 
             if (Options.IsUseTextBoxStyle)
             {
-                handler.ApplyTextboxEffect(Options.TextBoxOverlayColor, Options.TextBoxTransparency);
+                handler.ApplyTextboxEffect(Options.TextBoxColor, Options.TextBoxTransparency);
             }
 
             Shape outlineOverlayShape = null;
@@ -210,13 +210,13 @@ namespace PowerPointLabs.ImagesLab.Handler
             {
                 case BannerShape.Rectangle:
                     return effectsHandler.ApplyRectBannerEffect(Options.GetBannerDirection(), Options.GetTextBoxPosition(),
-                        imageShape, Options.BannerOverlayColor, Options.BannerTransparency);
+                        imageShape, Options.BannerColor, Options.BannerTransparency);
                 case BannerShape.Circle:
-                    return effectsHandler.ApplyCircleBannerEffect(imageShape, Options.BannerOverlayColor, Options.BannerTransparency);
+                    return effectsHandler.ApplyCircleBannerEffect(imageShape, Options.BannerColor, Options.BannerTransparency);
                 case BannerShape.RectangleOutline:
-                    return effectsHandler.ApplyRectOutlineEffect(imageShape, Options.BannerOverlayColor, Options.BannerTransparency);
+                    return effectsHandler.ApplyRectOutlineEffect(imageShape, Options.BannerColor, Options.BannerTransparency);
                 default:
-                    return effectsHandler.ApplyCircleOutlineEffect(imageShape, Options.BannerOverlayColor, Options.BannerTransparency);
+                    return effectsHandler.ApplyCircleOutlineEffect(imageShape, Options.BannerColor, Options.BannerTransparency);
             }
         }
 

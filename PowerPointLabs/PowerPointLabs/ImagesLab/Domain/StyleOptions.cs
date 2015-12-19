@@ -160,15 +160,15 @@ namespace PowerPointLabs.ImagesLab.Domain
             }
         }
 
-        private string _textBoxOverlayColor;
+        private string _textBoxColor;
 
-        public string TextBoxOverlayColor
+        public string TextBoxColor
         {
-            get { return _textBoxOverlayColor; }
+            get { return _textBoxColor; }
             set
             {
-                _textBoxOverlayColor = value;
-                OnPropertyChanged("TextBoxOverlayColor");
+                _textBoxColor = value;
+                OnPropertyChanged("TextBoxColor");
             }
         }
 
@@ -224,15 +224,15 @@ namespace PowerPointLabs.ImagesLab.Domain
             }
         }
 
-        private string _bannerOverlayColor;
+        private string _bannerColor;
 
-        public string BannerOverlayColor
+        public string BannerColor
         {
-            get { return _bannerOverlayColor; }
+            get { return _bannerColor; }
             set
             {
-                _bannerOverlayColor = value;
-                OnPropertyChanged("BannerOverlayColor");
+                _bannerColor = value;
+                OnPropertyChanged("BannerColor");
             }
         }
 
@@ -402,13 +402,13 @@ namespace PowerPointLabs.ImagesLab.Domain
             Transparency = 100;
 
             IsUseBannerStyle = false;
-            BannerOverlayColor = "#000000";
+            BannerColor = "#000000";
             BannerTransparency = 25;
             BannerShape = 0;
             BannerDirection = 0;
 
             IsUseTextBoxStyle = false;
-            TextBoxOverlayColor = "#000000"; // red-orange
+            TextBoxColor = "#000000"; // red-orange
             TextBoxTransparency = 25;
 
             IsUseSpecialEffectStyle = false;

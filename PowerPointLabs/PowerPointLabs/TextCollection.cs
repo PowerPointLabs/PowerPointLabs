@@ -310,16 +310,16 @@
             public const string ImagesLabSupertip = "Open Images Lab window.";
 
             public const string VariantCategoryOverlayColor = "Overlay Color";
-            public const string VariantCategoryTextColor = "Text Color";
+            public const string VariantCategoryFontColor = "Font Color";
             public const string VariantCategoryBannerColor = "Banner Color";
             public const string VariantCategoryTextBoxColor = "TextBox Color";
+            public const string VariantCategoryFrameColor = "Frame Color";
             public const string VariantCategoryTextPosition = "Text Position";
             public const string VariantCategoryFontFamily = "Font";
             public const string VariantCategorySpecialEffects = "Special Effects";
             public const string VariantCategoryBlurriness = "Blurriness";
             public const string VariantCategoryBrightness = "Brightness";
             public const string VariantCategoryFontSizeIncrease = "Font Size";
-            public const string VariantCategoryImageOffset = "Image Offset";
             public const string VariantCategoryOverlayTransparency = "Overlay Transparency";
             public const string VariantCategoryBannerTransparency = "Banner Transparency";
             public const string VariantCategoryTextBoxTransparency = "TextBox Transparency";

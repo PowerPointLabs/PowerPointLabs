@@ -112,7 +112,7 @@ namespace PowerPointLabs.ImagesLab.Factory
                 StyleName = TextCollection.ImagesLabText.StyleNameTextBox,
                 IsUseTextBoxStyle = true,
                 TextBoxPosition = 7,
-                TextBoxOverlayColor = "#000000",
+                TextBoxColor = "#000000",
                 FontColor = "#FFD700"
             };
         }
@@ -124,7 +124,7 @@ namespace PowerPointLabs.ImagesLab.Factory
                 StyleName = TextCollection.ImagesLabText.StyleNameBanner,
                 IsUseBannerStyle = true,
                 TextBoxPosition = 7,
-                TextBoxOverlayColor = "#000000",
+                TextBoxColor = "#000000",
                 FontColor = "#FFD700"
             };
         }

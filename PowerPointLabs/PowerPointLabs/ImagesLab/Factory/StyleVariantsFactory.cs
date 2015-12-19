@@ -34,11 +34,12 @@ namespace PowerPointLabs.ImagesLab.Factory
         {
             return new Dictionary<string, List<StyleVariants>>
             {
+                { TextCollection.ImagesLabText.VariantCategoryFrameColor, GetFrameColorVariants() },
                 { TextCollection.ImagesLabText.VariantCategoryFrameTransparency, GetFrameTransparencyVariants() },
                 { TextCollection.ImagesLabText.VariantCategorySpecialEffects, GetGeneralSpecialEffectVariants() },
                 { TextCollection.ImagesLabText.VariantCategoryBlurriness, GetBlurVariants() },
                 { TextCollection.ImagesLabText.VariantCategoryBrightness, GetBrightnessVariants() },
-                { TextCollection.ImagesLabText.VariantCategoryTextColor, GetFontColorVariants() },
+                { TextCollection.ImagesLabText.VariantCategoryFontColor, GetFontColorVariants() },
                 { TextCollection.ImagesLabText.VariantCategoryTextPosition, GetFontPositionVariants() },
                 { TextCollection.ImagesLabText.VariantCategoryFontFamily, GetFontFamilyVariants() },
                 { TextCollection.ImagesLabText.VariantCategoryFontSizeIncrease, GetFontSizeIncreaseVariants() }
@@ -49,7 +50,7 @@ namespace PowerPointLabs.ImagesLab.Factory
         {
             return new Dictionary<string, List<StyleVariants>>
             {
-                { TextCollection.ImagesLabText.VariantCategoryTextColor, GetFontColorVariants() },
+                { TextCollection.ImagesLabText.VariantCategoryFontColor, GetFontColorVariants() },
                 { TextCollection.ImagesLabText.VariantCategorySpecialEffects, GetGeneralSpecialEffectVariants() },
                 { TextCollection.ImagesLabText.VariantCategoryBlurriness, GetBlurVariants() },
                 { TextCollection.ImagesLabText.VariantCategoryBrightness, GetBrightnessVariants() },
@@ -65,7 +66,7 @@ namespace PowerPointLabs.ImagesLab.Factory
             {
                 { TextCollection.ImagesLabText.VariantCategoryOverlayColor, GetOverlayVariants() },
                 { TextCollection.ImagesLabText.VariantCategoryOverlayTransparency, GetOverlayTransparencyVariants() },
-                { TextCollection.ImagesLabText.VariantCategoryTextColor, GetFontColorVariants() },
+                { TextCollection.ImagesLabText.VariantCategoryFontColor, GetFontColorVariants() },
                 { TextCollection.ImagesLabText.VariantCategoryTextPosition, GetFontPositionVariants() },
                 { TextCollection.ImagesLabText.VariantCategoryFontFamily, GetFontFamilyVariants() },
                 { TextCollection.ImagesLabText.VariantCategoryFontSizeIncrease, GetFontSizeIncreaseVariants() }
@@ -79,7 +80,7 @@ namespace PowerPointLabs.ImagesLab.Factory
                 { TextCollection.ImagesLabText.VariantCategorySpecialEffects, GetSpecialEffectVariants() },
                 { TextCollection.ImagesLabText.VariantCategoryBlurriness, GetBlurVariants() },
                 { TextCollection.ImagesLabText.VariantCategoryBrightness, GetBrightnessVariants() },
-                { TextCollection.ImagesLabText.VariantCategoryTextColor, GetFontColorVariants() },
+                { TextCollection.ImagesLabText.VariantCategoryFontColor, GetFontColorVariants() },
                 { TextCollection.ImagesLabText.VariantCategoryTextPosition, GetFontPositionVariants() },
                 { TextCollection.ImagesLabText.VariantCategoryFontFamily, GetFontFamilyVariants() },
                 { TextCollection.ImagesLabText.VariantCategoryFontSizeIncrease, GetFontSizeIncreaseVariants() }
@@ -94,7 +95,7 @@ namespace PowerPointLabs.ImagesLab.Factory
                 { TextCollection.ImagesLabText.VariantCategoryBannerTransparency, GetBannerTransparencyVariants() },
                 { TextCollection.ImagesLabText.VariantCategorySpecialEffects, GetGeneralSpecialEffectVariants() },
                 { TextCollection.ImagesLabText.VariantCategoryBrightness, GetBrightnessVariants() },
-                { TextCollection.ImagesLabText.VariantCategoryTextColor, GetFontColorVariants() },
+                { TextCollection.ImagesLabText.VariantCategoryFontColor, GetFontColorVariants() },
                 { TextCollection.ImagesLabText.VariantCategoryTextPosition, GetFontPositionVariants() },
                 { TextCollection.ImagesLabText.VariantCategoryFontFamily, GetFontFamilyVariants() },
                 { TextCollection.ImagesLabText.VariantCategoryFontSizeIncrease, GetFontSizeIncreaseVariants() }
@@ -109,7 +110,7 @@ namespace PowerPointLabs.ImagesLab.Factory
                 { TextCollection.ImagesLabText.VariantCategoryTextBoxTransparency, GetTextBoxTransparencyVariants() },
                 { TextCollection.ImagesLabText.VariantCategorySpecialEffects, GetGeneralSpecialEffectVariants() },
                 { TextCollection.ImagesLabText.VariantCategoryBrightness, GetBrightnessVariants() },
-                { TextCollection.ImagesLabText.VariantCategoryTextColor, GetFontColorVariants() },
+                { TextCollection.ImagesLabText.VariantCategoryFontColor, GetFontColorVariants() },
                 { TextCollection.ImagesLabText.VariantCategoryTextPosition, GetFontPositionVariants() },
                 { TextCollection.ImagesLabText.VariantCategoryFontFamily, GetFontFamilyVariants() },
                 { TextCollection.ImagesLabText.VariantCategoryFontSizeIncrease, GetFontSizeIncreaseVariants() }
@@ -123,7 +124,7 @@ namespace PowerPointLabs.ImagesLab.Factory
                 { TextCollection.ImagesLabText.VariantCategoryBlurriness, GetBlurVariants() },
                 { TextCollection.ImagesLabText.VariantCategorySpecialEffects, GetGeneralSpecialEffectVariants() },
                 { TextCollection.ImagesLabText.VariantCategoryBrightness, GetBrightnessVariants() },
-                { TextCollection.ImagesLabText.VariantCategoryTextColor, GetFontColorVariants() },
+                { TextCollection.ImagesLabText.VariantCategoryFontColor, GetFontColorVariants() },
                 { TextCollection.ImagesLabText.VariantCategoryTextPosition, GetFontPositionVariants() },
                 { TextCollection.ImagesLabText.VariantCategoryFontFamily, GetFontFamilyVariants() },
                 { TextCollection.ImagesLabText.VariantCategoryFontSizeIncrease, GetFontSizeIncreaseVariants() }
@@ -135,7 +136,7 @@ namespace PowerPointLabs.ImagesLab.Factory
             return new Dictionary<string, List<StyleVariants>>
             {
                 { TextCollection.ImagesLabText.VariantCategoryBrightness, GetBrightnessVariants() },
-                { TextCollection.ImagesLabText.VariantCategoryTextColor, GetFontColorVariants() },
+                { TextCollection.ImagesLabText.VariantCategoryFontColor, GetFontColorVariants() },
                 { TextCollection.ImagesLabText.VariantCategoryTextPosition, GetFontPositionVariants() },
                 { TextCollection.ImagesLabText.VariantCategoryFontFamily, GetFontFamilyVariants() },
                 { TextCollection.ImagesLabText.VariantCategoryFontSizeIncrease, GetFontSizeIncreaseVariants() }
@@ -378,6 +379,53 @@ namespace PowerPointLabs.ImagesLab.Factory
             };
         }
 
+        private static List<StyleVariants> GetFrameColorVariants()
+        {
+            return new List<StyleVariants>
+            {
+                new StyleVariants(new Dictionary<string, object>
+                {
+                    {"OptionName", "White"},
+                    {"FrameColor", "#FFFFFF"}
+                }),
+                new StyleVariants(new Dictionary<string, object>
+                {
+                    {"OptionName", "Black"},
+                    {"FrameColor", "#000000"}
+                }),
+                new StyleVariants(new Dictionary<string, object>
+                {
+                    {"OptionName", "Yellow"},
+                    {"FrameColor", "#FFC500"}
+                }),
+                new StyleVariants(new Dictionary<string, object>
+                {
+                    {"OptionName", "Red"},
+                    {"FrameColor", "#FF0000"}
+                }),
+                new StyleVariants(new Dictionary<string, object>
+                {
+                    {"OptionName", "Green"},
+                    {"FrameColor", "#3DFF8F"}
+                }),
+                new StyleVariants(new Dictionary<string, object>
+                {
+                    {"OptionName", "Blue"},
+                    {"FrameColor", "#007FFF"}
+                }),
+                new StyleVariants(new Dictionary<string, object>
+                {
+                    {"OptionName", "Purple"},
+                    {"FrameColor", "#7800FF"}
+                }),
+                new StyleVariants(new Dictionary<string, object>
+                {
+                    {"OptionName", "Dark Blue"},
+                    {"FrameColor", "#001550"}
+                })
+            };
+        }
+
         private static List<StyleVariants> GetBannerVariants()
         {
             return new List<StyleVariants>
@@ -386,49 +434,49 @@ namespace PowerPointLabs.ImagesLab.Factory
                 {
                     {"OptionName", "White"},
                     {"IsUseBannerStyle", true},
-                    {"BannerOverlayColor", "#FFFFFF"}
+                    {"BannerColor", "#FFFFFF"}
                 }),
                 new StyleVariants(new Dictionary<string, object>
                 {
                     {"OptionName", "Black"},
                     {"IsUseBannerStyle", true},
-                    {"BannerOverlayColor", "#000000"}
+                    {"BannerColor", "#000000"}
                 }),
                 new StyleVariants(new Dictionary<string, object>
                 {
                     {"OptionName", "Yellow"},
                     {"IsUseBannerStyle", true},
-                    {"BannerOverlayColor", "#FFC500"}
+                    {"BannerColor", "#FFC500"}
                 }),
                 new StyleVariants(new Dictionary<string, object>
                 {
                     {"OptionName", "Red"},
                     {"IsUseBannerStyle", true},
-                    {"BannerOverlayColor", "#FF0000"}
+                    {"BannerColor", "#FF0000"}
                 }),
                 new StyleVariants(new Dictionary<string, object>
                 {
                     {"OptionName", "Green"},
                     {"IsUseBannerStyle", true},
-                    {"BannerOverlayColor", "#3DFF8F"}
+                    {"BannerColor", "#3DFF8F"}
                 }),
                 new StyleVariants(new Dictionary<string, object>
                 {
                     {"OptionName", "Blue"},
                     {"IsUseBannerStyle", true},
-                    {"BannerOverlayColor", "#007FFF"}
+                    {"BannerColor", "#007FFF"}
                 }),
                 new StyleVariants(new Dictionary<string, object>
                 {
                     {"OptionName", "Purple"},
                     {"IsUseBannerStyle", true},
-                    {"BannerOverlayColor", "#7800FF"}
+                    {"BannerColor", "#7800FF"}
                 }),
                 new StyleVariants(new Dictionary<string, object>
                 {
                     {"OptionName", "Dark Blue"},
                     {"IsUseBannerStyle", true},
-                    {"BannerOverlayColor", "#001550"}
+                    {"BannerColor", "#001550"}
                 })
             };
         }
@@ -496,49 +544,49 @@ namespace PowerPointLabs.ImagesLab.Factory
                 {
                     {"OptionName", "White"},
                     {"IsUseTextBoxStyle", true},
-                    {"TextBoxOverlayColor", "#FFFFFF"}
+                    {"TextBoxColor", "#FFFFFF"}
                 }),
                 new StyleVariants(new Dictionary<string, object>
                 {
                     {"OptionName", "Black"},
                     {"IsUseTextBoxStyle", true},
-                    {"TextBoxOverlayColor", "#000000"}
+                    {"TextBoxColor", "#000000"}
                 }),
                 new StyleVariants(new Dictionary<string, object>
                 {
                     {"OptionName", "Yellow"},
                     {"IsUseTextBoxStyle", true},
-                    {"TextBoxOverlayColor", "#FFC500"}
+                    {"TextBoxColor", "#FFC500"}
                 }),
                 new StyleVariants(new Dictionary<string, object>
                 {
                     {"OptionName", "Red"},
                     {"IsUseTextBoxStyle", true},
-                    {"TextBoxOverlayColor", "#FF0000"}
+                    {"TextBoxColor", "#FF0000"}
                 }),
                 new StyleVariants(new Dictionary<string, object>
                 {
                     {"OptionName", "Green"},
                     {"IsUseTextBoxStyle", true},
-                    {"TextBoxOverlayColor", "#3DFF8F"}
+                    {"TextBoxColor", "#3DFF8F"}
                 }),
                 new StyleVariants(new Dictionary<string, object>
                 {
                     {"OptionName", "Blue"},
                     {"IsUseTextBoxStyle", true},
-                    {"TextBoxOverlayColor", "#007FFF"}
+                    {"TextBoxColor", "#007FFF"}
                 }),
                 new StyleVariants(new Dictionary<string, object>
                 {
                     {"OptionName", "Purple"},
                     {"IsUseTextBoxStyle", true},
-                    {"TextBoxOverlayColor", "#7800FF"}
+                    {"TextBoxColor", "#7800FF"}
                 }),
                 new StyleVariants(new Dictionary<string, object>
                 {
                     {"OptionName", "Dark Blue"},
                     {"IsUseTextBoxStyle", true},
-                    {"TextBoxOverlayColor", "#001550"}
+                    {"TextBoxColor", "#001550"}
                 })
             };
         }
