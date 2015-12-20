@@ -67,9 +67,10 @@ namespace PowerPointLabs.DrawingsLab
             commandBars.ExecuteMso("ShapeStraightConnector");
         }
 
-        public static void SwitchToCurvedLineTool()
+        public static void SwitchToArrowTool()
         {
-            throw new NotImplementedException("Not implemented yet");
+            var commandBars = Globals.ThisAddIn.Application.CommandBars;
+            commandBars.ExecuteMso("ShapeStraightConnectorArrow");
         }
 
         public static void SwitchToRectangleTool()

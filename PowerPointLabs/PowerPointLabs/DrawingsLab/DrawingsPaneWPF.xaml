@@ -53,17 +53,14 @@
             <ColumnDefinition Width="1*"/>
             <ColumnDefinition Width="1*"/>
         </Grid.ColumnDefinitions>
-        <!--<Button x:Name="LineButton" Content="Line" Grid.Row="1" Grid.Column="0" Click="LineButton_Click"/>-->
         <cc:ImageButton x:Name="CircleButton" Text="Circle" Grid.Row="1" Grid.Column="0"/>
         <cc:ImageButton x:Name="RectButton" Text="Rect" Grid.Row="1" Grid.Column="1"/>
-        <cc:ImageButton x:Name="RoundedRectButton" Text="RoundRect" Grid.Row="1" Grid.Column="2"/>
+        <cc:ImageButton x:Name="RoundedRectButton" Text="Round&#xa;Rect" Grid.Row="2" Grid.Column="1"/>
         
-        <cc:ImageButton x:Name="LineButton" Text="Line" Grid.Row="2" Grid.Column="0" Image="../Resources/DrawingLab/testimage.png"/>
-        <cc:ImageButton x:Name="CurveButton" Text="Curve" Grid.Row="2" Grid.Column="1"/>
-        <cc:ImageButton x:Name="ToggleArrowsButton" Text="Toggle&#xa;Arrows" Grid.Row="2" Grid.Column="2"/>
+        <cc:ImageButton x:Name="LineButton" Text="Line" Grid.Row="1" Grid.Column="2" Image="../Resources/DrawingLab/testimage.png"/>
+        <cc:ImageButton x:Name="ArrowButton" Text="Arrow" Grid.Row="2" Grid.Column="2"/>
 
         <cc:ImageButton x:Name="TextboxButton" Text="TextBox" Grid.Row="1" Grid.Column="3"/>
-        <cc:ImageButton x:Name="MathboxButton" Text="MathBox" Grid.Row="2" Grid.Column="3"/>
 
         <ToggleButton x:Name="ToggleHotkeysButton" Content="Hotkeys" Grid.Row="1" Grid.Column="5" IsChecked="{Binding UpdateSourceTrigger=PropertyChanged, Source={StaticResource DrawingsLabData}, Path=HotkeysEnabled, Mode=TwoWay}" Style="{StaticResource ToggleButtonStyle}"/>
 

@@ -56,11 +56,9 @@ namespace PowerPointLabs.DrawingsLab
             ConfigureButton(RoundedRectButton, DrawingsLabMain.SwitchToRoundedRectangleTool, "Draw a Rounded Rectangle.");
 
             ConfigureButton(LineButton, DrawingsLabMain.SwitchToLineTool, "[L] Draw a Line.");
-            ConfigureButton(CurveButton, DrawingsLabMain.SwitchToCurvedLineTool, "Draw a Curved Line.");
-            // SetTooltip ToggleArrowsButton
+            ConfigureButton(ArrowButton, DrawingsLabMain.SwitchToArrowTool, "Draw a Curved Line.");
 
             ConfigureButton(TextboxButton, DrawingsLabMain.SwitchToTextboxTool, "Add a Text Box.");
-            // ConfigureButton MathboxButton
 
             ConfigureButton(SelectTypeButton, DrawingsLabMain.SelectAllOfType, "[A] Select all shapes of same type as currently selected shapes.");
             ConfigureButton(HideButton, DrawingsLabMain.HideTool, "[H] Hide selected items.");
