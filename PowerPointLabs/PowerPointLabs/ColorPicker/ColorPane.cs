@@ -1173,5 +1173,62 @@ namespace PowerPointLabs
                 return createParams;
             }
         }
+
+        # region Functional Test APIs
+
+        public Panel GetDropletPanel()
+        {
+            return panel1;
+        }
+
+        public Button GetFontColorButton()
+        {
+            return FontButton;
+        }
+
+        public Button GetLineColorButton()
+        {
+            return LineButton;
+        }
+
+        public Button GetFillCollorButton()
+        {
+            return FillButton;
+        }
+
+        public Panel GetMonoPanel1()
+        {
+            return MonoPanel1;
+        }
+
+        public Panel GetMonoPanel7()
+        {
+            return MonoPanel7;
+        }
+
+        public Panel GetFavColorPanel1()
+        {
+            return ThemePanel1;
+        }
+
+        public Button GetResetFavColorsButton()
+        {
+            return ResetThemeButton;
+        }
+
+        public Button GetEmptyFavColorsButton()
+        {
+            return EmptyPanelButton;
+        }
+
+        public ColorInformationDialog ShowMoreColorInfo(Color color)
+        {
+            ColorInformationDialog dialog = new ColorInformationDialog(color);
+            dialog.StartPosition = FormStartPosition.CenterScreen;
+            dialog.Show();
+            return dialog;
+        }
+
+        # endregion
     }
 }

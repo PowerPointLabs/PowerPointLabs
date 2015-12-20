@@ -3,11 +3,12 @@ using System.Drawing;
 using System.IO;
 using System.Text.RegularExpressions;
 using System.Windows.Forms;
+using FunctionalTestInterface;
 using PowerPointLabs.Views;
 
 namespace PowerPointLabs
 {
-    public partial class LabeledThumbnail : UserControl
+    public partial class LabeledThumbnail : UserControl, IShapesLabLabeledThumbnail
     {
         private bool _nameFinishHandled;
         private bool _isGoodName;

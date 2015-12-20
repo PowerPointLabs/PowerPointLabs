@@ -170,7 +170,7 @@ namespace PowerPointLabs.Models
             get { return Presentation.Slides.Count; }
         }
 
-        public float SlideWidth
+        public virtual float SlideWidth
         {
             get
             {
@@ -183,7 +183,7 @@ namespace PowerPointLabs.Models
             }
         }
 
-        public float SlideHeight
+        public virtual float SlideHeight
         {
             get
             {

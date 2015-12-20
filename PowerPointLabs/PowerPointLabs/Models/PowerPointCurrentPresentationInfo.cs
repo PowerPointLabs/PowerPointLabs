@@ -5,8 +5,10 @@ using Microsoft.Office.Interop.PowerPoint;
 
 namespace PowerPointLabs.Models
 {
-    internal class PowerPointCurrentPresentationInfo
+    public class PowerPointCurrentPresentationInfo
     {
+        public static bool IsInFunctionalTest;
+
         public static PowerPointSlide CurrentSlide
         {
             get
