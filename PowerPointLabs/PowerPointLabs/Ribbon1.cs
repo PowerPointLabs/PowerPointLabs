@@ -7,7 +7,7 @@ using System.Reflection;
 using System.Runtime.InteropServices;
 using System.Diagnostics;
 using System.Windows.Forms;
-using PowerPointLabs.ImageSearch;
+using PowerPointLabs.ImagesLab;
 using PowerPointLabs.Models;
 using PowerPointLabs.Views;
 using Office = Microsoft.Office.Core;
@@ -1578,6 +1578,19 @@ namespace PowerPointLabs
             return selectedVoice;
         }
 
+        public Bitmap GetContextMenuImage(Office.IRibbonControl control)
+        {
+            try
+            {
+                return new Bitmap(Properties.Resources.PptlabsContextMenu);
+            }
+            catch (Exception e)
+            {
+                PowerPointLabsGlobals.LogException(e, "GetContextMenuImage");
+                throw;
+            }
+        }
+
         #endregion
 
         #region Feature: Fit To Slide | Fit To Width | Fit To Height
@@ -1616,16 +1629,37 @@ namespace PowerPointLabs
 
         #region Feature: Images Lab
 
-        public ImageSearchPane ImageSearchPane { get; set; }
+        public ImagesLabWindow ImagesLabWindow { get; set; }
 
         public void ImagesLabButtonClick(Office.IRibbonControl control)
         {
-            if (ImageSearchPane == null || !ImageSearchPane.IsOpen)
+            if (ImagesLabWindow == null || !ImagesLabWindow.IsOpen)
             {
-                ImageSearchPane = new ImageSearchPane();
+                ImagesLabWindow = new ImagesLabWindow();
+                ImagesLabWindow.Show();
             }
-            ImageSearchPane.FocusSearchTextBox();
-            ImageSearchPane.Show();
+            else
+            {
+                ImagesLabWindow.Activate();
+            }            
+        }
+
+        public Bitmap GetImagesLabImage(Office.IRibbonControl control)
+        {
+            try
+            {
+                return new Bitmap(Properties.Resources.ImagesLab);
+            }
+            catch (Exception e)
+            {
+                PowerPointLabsGlobals.LogException(e, "GetImagesLabImage");
+                throw;
+            }
+        }
+
+        public string GetImagesLabSupertip(Office.IRibbonControl control)
+        {
+            return TextCollection.ImagesLabText.ImagesLabSupertip;
         }
         
         #endregion

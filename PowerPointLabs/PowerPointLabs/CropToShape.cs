@@ -182,7 +182,7 @@ namespace PowerPointLabs
             croppedImage.Save(FillInBackgroundPicture, ImageFormat.Png);
         }
 
-        private static Bitmap KiCut(Bitmap original, float startX, float startY, float width, float height,
+        public static Bitmap KiCut(Bitmap original, float startX, float startY, float width, float height,
                                     double magnifyRatio = 1.0)
         {
             if (original == null) return null;

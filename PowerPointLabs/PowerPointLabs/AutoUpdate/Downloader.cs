@@ -11,7 +11,7 @@ namespace PowerPointLabs.AutoUpdate
         public delegate void AfterDownloadEventDelegate();
         private event AfterDownloadEventDelegate AfterDownload;
 
-        public delegate void ErrorEventDelegate();
+        public delegate void ErrorEventDelegate(Exception e);
         private event ErrorEventDelegate WhenError;
 
         private String _downloadAddress = "";
@@ -29,10 +29,10 @@ namespace PowerPointLabs.AutoUpdate
             if (handler != null) handler();
         }
 
-        private void CallWhenErrorDelegate()
+        private void CallWhenErrorDelegate(Exception e)
         {
             var handler = WhenError;
-            if (handler != null) handler();
+            if (handler != null) handler(e);
         }
 
         public Downloader Get(String webAddress, String destinationPath)
@@ -79,7 +79,7 @@ namespace PowerPointLabs.AutoUpdate
             }
             catch (Exception e)
             {
-                CallWhenErrorDelegate();
+                CallWhenErrorDelegate(e);
                 PowerPointLabsGlobals.LogException(e, "Failed to execute Downloader.StartDownload");
             }
         }
