@@ -76,16 +76,10 @@ namespace PowerPointLabs.ImagesLab
                     {
                         scrollViewer.ScrollToVerticalOffset(scrollOffset);
                     }
-                    
-                    if (source.FullSizeImageFile != null)
-                    {
-                        SetProgressingRingStatus(false);
-                    }
                 }
                 catch
                 {
                     ShowErrorMessageBox(TextCollection.ImagesLabText.ErrorImageCorrupted);
-                    SetProgressingRingStatus(false);
                 }
             }));
         }
@@ -400,17 +394,7 @@ namespace PowerPointLabs.ImagesLab
 
         private void StyleApplyButton_OnClick(object sender, RoutedEventArgs e)
         {
-            SetProgressingRingStatus(true);
-
-            var source = (ImageItem)ImageSelectionListBox.SelectedValue;
-            var targetStyle = StylesPreviewListBox.SelectedItems;
-            if (source == null || targetStyle == null || targetStyle.Count == 0) return;
-
-            if (source.FullSizeImageFile != null)
-            {
-                ApplyStyleInVariationStage();
-                SetProgressingRingStatus(false);
-            }
+            ApplyStyleInVariationStage();
         }
 
         private void ApplyStyleInVariationStage()

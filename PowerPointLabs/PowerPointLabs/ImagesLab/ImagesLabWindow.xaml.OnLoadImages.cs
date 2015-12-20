@@ -107,7 +107,7 @@ namespace PowerPointLabs.ImagesLab
                                 // TODO turn off progress ring after all downloaded
                                 ImageDownloadProgressRing.IsActive = false;
                             }));
-                            HandleDownloadedThumbnail(item, imagePath);
+                            HandleDownloadedImage(item, imagePath);
                         }
                         catch
                         {
