@@ -3,6 +3,14 @@ using PowerPointLabs.ImagesLab.Domain;
 
 namespace PowerPointLabs.ImagesLab.Factory
 {
+    /// <summary>
+    /// in order to ensure continuity in the customisation stage,
+    /// style option provided from this factory should have corresponding values specified 
+    /// in StyleVariantsFactory. e.g., an option generated from this factory has overlay 
+    /// transparency of 35, then in order to swap (ensure continuity), it should have a 
+    /// variant of overlay transparency of 35. Otherwise it cannot swap and so lose continuity, 
+    /// because variants don't match any values in the style option.
+    /// </summary>
     class StyleOptionsFactory
     {
         /// <summary>
@@ -21,6 +29,8 @@ namespace PowerPointLabs.ImagesLab.Factory
                 GetOptionsForOverlay(),
                 GetOptionsForOutline(),
                 GetOptionsForFrame(),
+                GetOptionsForCircle(),
+                GetOptionsForTriangle(),
             };
             return options;
         }
@@ -41,6 +51,8 @@ namespace PowerPointLabs.ImagesLab.Factory
                 GetDefaultOptionForOverlay(),
                 GetDefaultOptionForOutline(),
                 GetDefaultOptionForFrame(),
+                GetDefaultOptionForCircle(),
+                GetDefaultOptionForTriangle(),
             };
             return options;
         }
@@ -146,7 +158,7 @@ namespace PowerPointLabs.ImagesLab.Factory
                 StyleName = TextCollection.ImagesLabText.StyleNameOverlay,
                 IsUseOverlayStyle = true,
                 Transparency = 35,
-                OverlayColor = "#007FFF",
+                OverlayColor = "#007FFF", // blue
                 IsUseSpecialEffectStyle = true,
                 SpecialEffect = 0
             };
@@ -170,8 +182,55 @@ namespace PowerPointLabs.ImagesLab.Factory
             };
         }
 
+        private static StyleOptions GetDefaultOptionForTriangle()
+        {
+            return new StyleOptions()
+            {
+                StyleName = TextCollection.ImagesLabText.StyleNameTriangle,
+                IsUseTriangleStyle = true,
+                TriangleColor = "#007FFF", // blue
+                TextBoxPosition = 4 // left
+            };
+        }
+
+        private static StyleOptions GetDefaultOptionForCircle()
+        {
+            return new StyleOptions()
+            {
+                StyleName = TextCollection.ImagesLabText.StyleNameCircle,
+                IsUseCircleStyle = true,
+                FontColor = "#000000"
+            };
+        }
+
         #endregion
         #region Get specific styles variation options
+
+        private static List<StyleOptions> GetOptionsForTriangle()
+        {
+            var result = GetOptionsWithSuitableFontColor();
+            foreach (var styleOption in result)
+            {
+                styleOption.IsUseTriangleStyle = true;
+                styleOption.TextBoxPosition = 4; // left
+            }
+            UpdateStyleName(
+                result,
+                TextCollection.ImagesLabText.StyleNameTriangle);
+            return result;
+        }
+
+        private static List<StyleOptions> GetOptionsForCircle()
+        {
+            var result = GetOptionsWithSuitableFontColor();
+            foreach (var styleOption in result)
+            {
+                styleOption.IsUseCircleStyle = true;
+            }
+            return UpdateStyleName(
+                result,
+                TextCollection.ImagesLabText.StyleNameCircle);
+        }
 
         private static List<StyleOptions> GetOptionsForFrame()
         {
@@ -180,10 +239,9 @@ namespace PowerPointLabs.ImagesLab.Factory
             {
                 styleOption.IsUseFrameStyle = true;
             }
-            UpdateStyleName(
+            return UpdateStyleName(
                 result,
                 TextCollection.ImagesLabText.StyleNameFrame);
-            return result;
         }
 
         private static List<StyleOptions> GetOptionsForOutline()
@@ -193,16 +251,19 @@ namespace PowerPointLabs.ImagesLab.Factory
             {
                 styleOption.IsUseOutlineStyle = true;
             }
-            UpdateStyleName(
+            return UpdateStyleName(
                 result,
                 TextCollection.ImagesLabText.StyleNameOutline);
-            return result;
         }
 
         private static List<StyleOptions> GetOptionsForOverlay()
         {
-            return UpdateStyleName(
-                GetOptionsWithSuitableFontColor(),
+            var result = GetOptionsWithSuitableFontColor();
+            foreach (var styleOption in result)
+            {
+                styleOption.Transparency = 35;
+            }
+            return UpdateStyleName(result,
                 TextCollection.ImagesLabText.StyleNameOverlay);
         } 
 
@@ -226,7 +287,6 @@ namespace PowerPointLabs.ImagesLab.Factory
             foreach (var option in result)
             {
                 option.TextBoxPosition = 7;//bottom-left;
-                option.Transparency = 100;
             }
             UpdateStyleName(
                 result,
@@ -271,10 +331,6 @@ namespace PowerPointLabs.ImagesLab.Factory
             result[4].FontColor = "#001550";//green + dark blue
             result[6].FontColor = "#FFD700";//purple + yellow
             result[7].FontColor = "#3DFF8F";//dark blue + green
-            for (var i = 0; i < 8; i++)
-            {
-                result[i].Transparency = 35;
-            }
             return result;
         }
         #endregion

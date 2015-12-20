@@ -167,15 +167,30 @@ namespace PowerPointLabs.ImagesLab.Handler
                 frameOverlayShape = handler.ApplyAlbumFrameEffect(Options.FrameColor, Options.FrameTransparency);
             }
 
+            Shape circleOverlayShape = null;
+            if (Options.IsUseCircleStyle)
+            {
+                circleOverlayShape = handler.ApplyCircleRingsEffect(Options.CircleColor, Options.CircleTransparency);
+            }
+
+            Shape triangleOverlayShape = null;
+            if (Options.IsUseTriangleStyle)
+            {
+                triangleOverlayShape = handler.ApplyTriangleEffect(Options.TriangleColor, Options.FontColor,
+                    Options.TriangleTransparency);
+            }
+
             SendToBack(
-                    frameOverlayShape,
-                    outlineOverlayShape,
-                    bannerOverlayShape,
-                    backgroundOverlayShape,
-                    blurImageShape,
-                    imageShape,
-                    croppedImage,
-                    originalImage);
+                triangleOverlayShape,
+                circleOverlayShape,
+                frameOverlayShape,
+                outlineOverlayShape,
+                bannerOverlayShape,
+                backgroundOverlayShape,
+                blurImageShape,
+                imageShape,
+                croppedImage,
+                originalImage);
 
             handler.ApplyImageReference(source.ContextLink);
             if (Options.IsInsertReference)

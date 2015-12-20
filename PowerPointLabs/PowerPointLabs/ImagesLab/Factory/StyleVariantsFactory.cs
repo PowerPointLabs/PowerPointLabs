@@ -25,9 +25,45 @@ namespace PowerPointLabs.ImagesLab.Factory
                     return GetVariantsForOutline();
                 case TextCollection.ImagesLabText.StyleNameFrame:
                     return GetVariantsForFrame();
+                case TextCollection.ImagesLabText.StyleNameCircle:
+                    return GetVariantsForCircle();
+                case TextCollection.ImagesLabText.StyleNameTriangle:
+                    return GetVariantsForTriangle();
                 default:
                     return new Dictionary<string, List<StyleVariants>>();
             }
+        }
+
+        private static Dictionary<string, List<StyleVariants>> GetVariantsForTriangle()
+        {
+            return new Dictionary<string, List<StyleVariants>>
+            {
+                { TextCollection.ImagesLabText.VariantCategoryTriangleColor, GetTriangleColorVariants() },
+                { TextCollection.ImagesLabText.VariantCategoryTriangleTransparency, GetTriangleTransparencyVariants() },
+                { TextCollection.ImagesLabText.VariantCategorySpecialEffects, GetGeneralSpecialEffectVariants() },
+                { TextCollection.ImagesLabText.VariantCategoryBlurriness, GetBlurVariants() },
+                { TextCollection.ImagesLabText.VariantCategoryBrightness, GetBrightnessVariants() },
+                { TextCollection.ImagesLabText.VariantCategoryFontColor, GetFontColorVariants() },
+                { TextCollection.ImagesLabText.VariantCategoryTextPosition, GetFontPositionVariants() },
+                { TextCollection.ImagesLabText.VariantCategoryFontFamily, GetFontFamilyVariants() },
+                { TextCollection.ImagesLabText.VariantCategoryFontSizeIncrease, GetFontSizeIncreaseVariants() }
+            };
+        }
+
+        private static Dictionary<string, List<StyleVariants>> GetVariantsForCircle()
+        {
+            return new Dictionary<string, List<StyleVariants>>
+            {
+                { TextCollection.ImagesLabText.VariantCategoryCircleColor, GetCircleColorVariants() },
+                { TextCollection.ImagesLabText.VariantCategoryCircleTransparency, GetCircleTransparencyVariants() },
+                { TextCollection.ImagesLabText.VariantCategorySpecialEffects, GetGeneralSpecialEffectVariants() },
+                { TextCollection.ImagesLabText.VariantCategoryBlurriness, GetBlurVariants() },
+                { TextCollection.ImagesLabText.VariantCategoryBrightness, GetBrightnessVariants() },
+                { TextCollection.ImagesLabText.VariantCategoryFontColor, GetFontColorVariants() },
+                { TextCollection.ImagesLabText.VariantCategoryTextPosition, GetFontPositionVariants() },
+                { TextCollection.ImagesLabText.VariantCategoryFontFamily, GetFontFamilyVariants() },
+                { TextCollection.ImagesLabText.VariantCategoryFontSizeIncrease, GetFontSizeIncreaseVariants() }
+            };
         }
 
         private static Dictionary<string, List<StyleVariants>> GetVariantsForFrame()
@@ -140,6 +176,194 @@ namespace PowerPointLabs.ImagesLab.Factory
                 { TextCollection.ImagesLabText.VariantCategoryTextPosition, GetFontPositionVariants() },
                 { TextCollection.ImagesLabText.VariantCategoryFontFamily, GetFontFamilyVariants() },
                 { TextCollection.ImagesLabText.VariantCategoryFontSizeIncrease, GetFontSizeIncreaseVariants() }
+            };
+        }
+
+        private static List<StyleVariants> GetTriangleTransparencyVariants()
+        {
+            return new List<StyleVariants>
+            {
+                new StyleVariants(new Dictionary<string, object>
+                {
+                    {"OptionName", "0% Transparency"},
+                    {"TriangleTransparency", 0}
+                }),
+                new StyleVariants(new Dictionary<string, object>
+                {
+                    {"OptionName", "5% Transparency"},
+                    {"TriangleTransparency", 5}
+                }),
+                new StyleVariants(new Dictionary<string, object>
+                {
+                    {"OptionName", "10% Transparency"},
+                    {"TriangleTransparency", 10}
+                }),
+                new StyleVariants(new Dictionary<string, object>
+                {
+                    {"OptionName", "15% Transparency"},
+                    {"TriangleTransparency", 15}
+                }),
+                new StyleVariants(new Dictionary<string, object>
+                {
+                    {"OptionName", "20% Transparency"},
+                    {"TriangleTransparency", 20}
+                }),
+                new StyleVariants(new Dictionary<string, object>
+                {
+                    {"OptionName", "25% Transparency"},
+                    {"TriangleTransparency", 25}
+                }),
+                new StyleVariants(new Dictionary<string, object>
+                {
+                    {"OptionName", "30% Transparency"},
+                    {"TriangleTransparency", 30}
+                }),
+                new StyleVariants(new Dictionary<string, object>
+                {
+                    {"OptionName", "35% Transparency"},
+                    {"TriangleTransparency", 35}
+                })
+            };
+        }
+
+        private static List<StyleVariants> GetTriangleColorVariants()
+        {
+            return new List<StyleVariants>
+            {
+                new StyleVariants(new Dictionary<string, object>
+                {
+                    {"OptionName", "White"},
+                    {"TriangleColor", "#FFFFFF"}
+                }),
+                new StyleVariants(new Dictionary<string, object>
+                {
+                    {"OptionName", "Black"},
+                    {"TriangleColor", "#000000"}
+                }),
+                new StyleVariants(new Dictionary<string, object>
+                {
+                    {"OptionName", "Yellow"},
+                    {"TriangleColor", "#FFCC00"}
+                }),
+                new StyleVariants(new Dictionary<string, object>
+                {
+                    {"OptionName", "Red"},
+                    {"TriangleColor", "#FF0000"}
+                }),
+                new StyleVariants(new Dictionary<string, object>
+                {
+                    {"OptionName", "Green"},
+                    {"TriangleColor", "#3DFF8F"}
+                }),
+                new StyleVariants(new Dictionary<string, object>
+                {
+                    {"OptionName", "Blue"},
+                    {"TriangleColor", "#007FFF"}
+                }),
+                new StyleVariants(new Dictionary<string, object>
+                {
+                    {"OptionName", "Purple"},
+                    {"TriangleColor", "#7800FF"}
+                }),
+                new StyleVariants(new Dictionary<string, object>
+                {
+                    {"OptionName", "Dark Blue"},
+                    {"TriangleColor", "#001550"}
+                })
+            };
+        }
+
+        private static List<StyleVariants> GetCircleTransparencyVariants()
+        {
+            return new List<StyleVariants>
+            {
+                new StyleVariants(new Dictionary<string, object>
+                {
+                    {"OptionName", "0% Transparency"},
+                    {"CircleTransparency", 0}
+                }),
+                new StyleVariants(new Dictionary<string, object>
+                {
+                    {"OptionName", "5% Transparency"},
+                    {"CircleTransparency", 5}
+                }),
+                new StyleVariants(new Dictionary<string, object>
+                {
+                    {"OptionName", "10% Transparency"},
+                    {"CircleTransparency", 10}
+                }),
+                new StyleVariants(new Dictionary<string, object>
+                {
+                    {"OptionName", "15% Transparency"},
+                    {"CircleTransparency", 15}
+                }),
+                new StyleVariants(new Dictionary<string, object>
+                {
+                    {"OptionName", "20% Transparency"},
+                    {"CircleTransparency", 20}
+                }),
+                new StyleVariants(new Dictionary<string, object>
+                {
+                    {"OptionName", "25% Transparency"},
+                    {"CircleTransparency", 25}
+                }),
+                new StyleVariants(new Dictionary<string, object>
+                {
+                    {"OptionName", "30% Transparency"},
+                    {"CircleTransparency", 30}
+                }),
+                new StyleVariants(new Dictionary<string, object>
+                {
+                    {"OptionName", "35% Transparency"},
+                    {"CircleTransparency", 35}
+                })
+            };
+        }
+
+        private static List<StyleVariants> GetCircleColorVariants()
+        {
+            return new List<StyleVariants>
+            {
+                new StyleVariants(new Dictionary<string, object>
+                {
+                    {"OptionName", "White"},
+                    {"CircleColor", "#FFFFFF"}
+                }),
+                new StyleVariants(new Dictionary<string, object>
+                {
+                    {"OptionName", "Black"},
+                    {"CircleColor", "#000000"}
+                }),
+                new StyleVariants(new Dictionary<string, object>
+                {
+                    {"OptionName", "Yellow"},
+                    {"CircleColor", "#FFCC00"}
+                }),
+                new StyleVariants(new Dictionary<string, object>
+                {
+                    {"OptionName", "Red"},
+                    {"CircleColor", "#FF0000"}
+                }),
+                new StyleVariants(new Dictionary<string, object>
+                {
+                    {"OptionName", "Green"},
+                    {"CircleColor", "#3DFF8F"}
+                }),
+                new StyleVariants(new Dictionary<string, object>
+                {
+                    {"OptionName", "Blue"},
+                    {"CircleColor", "#007FFF"}
+                }),
+                new StyleVariants(new Dictionary<string, object>
+                {
+                    {"OptionName", "Purple"},
+                    {"CircleColor", "#7800FF"}
+                }),
+                new StyleVariants(new Dictionary<string, object>
+                {
+                    {"OptionName", "Dark Blue"},
+                    {"CircleColor", "#001550"}
+                })
             };
         }
 

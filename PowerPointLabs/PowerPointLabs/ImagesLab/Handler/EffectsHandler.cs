@@ -312,7 +312,7 @@ namespace PowerPointLabs.ImagesLab.Handler
             }
         }
 
-        public PowerPoint.Shape ApplyCircleBannerEffect(PowerPoint.Shape imageShape, string overlayColor, int transparency, 
+        public PowerPoint.Shape ApplyCircleBannerEffect(string overlayColor, int transparency, 
             bool isOutline = false, int margin = 0)
         {
             var tbInfo =
@@ -325,23 +325,18 @@ namespace PowerPointLabs.ImagesLab.Handler
             var overlayShape = ApplyCircleOverlayEffect(overlayColor, transparency, tbInfo.Left, tbInfo.Top, tbInfo.Width,
                 tbInfo.Height, isOutline);
             ChangeName(overlayShape, EffectName.Banner);
-            overlayShape.ZOrder(MsoZOrderCmd.msoSendToBack);
-            if (imageShape != null)
-            {
-                imageShape.ZOrder(MsoZOrderCmd.msoSendToBack);
-            }
             return overlayShape;
         }
 
-        public PowerPoint.Shape ApplyCircleOutlineEffect(PowerPoint.Shape imageShape, string overlayColor, 
-            int transparency, int margin)
+        public PowerPoint.Shape ApplyCircleRingsEffect(string color, int transparency)
         {
-            var overlayShape = ApplyCircleBannerEffect(imageShape, overlayColor, transparency, isOutline: true);
-            if (overlayShape == null) return null;
-
-            overlayShape.Fill.Visible = MsoTriState.msoFalse;
-            overlayShape.Line.Visible = MsoTriState.msoFalse;
-            return overlayShape;
+            var innerCircleShape = ApplyCircleBannerEffect(color, transparency);
+            var outerCircleShape = ApplyCircleBannerEffect(color, transparency, isOutline: true, margin: 10);
+            outerCircleShape.Left = innerCircleShape.Left + innerCircleShape.Width / 2 - outerCircleShape.Width / 2;
+            outerCircleShape.Top = innerCircleShape.Top + innerCircleShape.Height / 2 - outerCircleShape.Height / 2;
+            var result = Shapes.Range(new[] {innerCircleShape.Name, outerCircleShape.Name}).Group();
+            ChangeName(result, EffectName.Overlay);
+            return result;
         }
 
         public PowerPoint.Shape ApplyRectBannerEffect(BannerDirection direction, Position textPos, PowerPoint.Shape imageShape, 
@@ -451,7 +446,9 @@ namespace PowerPointLabs.ImagesLab.Handler
             triangle2.Fill.Transparency = (float)transparency / 100;
             triangle2.Line.Visible = MsoTriState.msoFalse;
 
-            return Shapes.Range(new [] {triangle1.Name, triangle2.Name}).Group();
+            var result = Shapes.Range(new [] {triangle1.Name, triangle2.Name}).Group();
+            ChangeName(result, EffectName.Overlay);
+            return result;
         }
 
         private BannerDirection HandleAutoDirection(BannerDirection dir, Position textPos)

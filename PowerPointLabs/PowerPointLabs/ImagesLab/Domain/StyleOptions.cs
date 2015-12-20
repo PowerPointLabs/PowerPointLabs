@@ -360,6 +360,86 @@ namespace PowerPointLabs.ImagesLab.Domain
             }
         }
 
+        // ******************************************************
+        // for circle style
+        // ******************************************************
+
+        private bool _isUseCircleStyle;
+
+        public bool IsUseCircleStyle
+        {
+            get { return _isUseCircleStyle; }
+            set
+            {
+                _isUseCircleStyle = value;
+                OnPropertyChanged("IsUseCircleStyle");
+            }
+        }
+
+        private string _circleColor;
+
+        public string CircleColor
+        {
+            get { return _circleColor; }
+            set
+            {
+                _circleColor = value;
+                OnPropertyChanged("CircleColor");
+            }
+        }
+
+        private int _circleTransparency;
+
+        public int CircleTransparency
+        {
+            get { return _circleTransparency; }
+            set
+            {
+                _circleTransparency = value;
+                OnPropertyChanged("CircleTransparency");
+            }
+        }
+
+        // ******************************************************
+        // for triangle style
+        // ******************************************************
+
+        private bool _isUseTriangleStyle;
+
+        public bool IsUseTriangleStyle
+        {
+            get { return _isUseTriangleStyle; }
+            set
+            {
+                _isUseTriangleStyle = value;
+                OnPropertyChanged("IsUseTriangleStyle");
+            }
+        }
+
+        private string _triangleColor;
+
+        public string TriangleColor
+        {
+            get { return _triangleColor; }
+            set
+            {
+                _triangleColor = value;
+                OnPropertyChanged("TriangleColor");
+            }
+        }
+
+        private int _triangleTransparency;
+
+        public int TriangleTransparency
+        {
+            get { return _triangleTransparency; }
+            set
+            {
+                _triangleTransparency = value;
+                OnPropertyChanged("TriangleTransparency");
+            }
+        }
+
         // other
 
         private bool _isInsertReference;
@@ -408,7 +488,7 @@ namespace PowerPointLabs.ImagesLab.Domain
             BannerDirection = 0;
 
             IsUseTextBoxStyle = false;
-            TextBoxColor = "#000000"; // red-orange
+            TextBoxColor = "#000000";
             TextBoxTransparency = 25;
 
             IsUseSpecialEffectStyle = false;
@@ -418,9 +498,18 @@ namespace PowerPointLabs.ImagesLab.Domain
             BlurDegree = 0;
 
             IsUseOutlineStyle = false;
+
             IsUseFrameStyle = false;
             FrameColor = "#FFFFFF";
             FrameTransparency = 30;
+
+            IsUseCircleStyle = false;
+            CircleColor = "#FFFFFF";
+            CircleTransparency = 0;
+
+            IsUseTriangleStyle = false;
+            TriangleColor = "#000000";
+            TriangleTransparency = 0;
 
             IsInsertReference = false;
             OptionName = "Default";

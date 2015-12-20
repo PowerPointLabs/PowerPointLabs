@@ -118,7 +118,12 @@ namespace PowerPointLabs.ImagesLab
             }
 
             // swap the no-effect variant with the current selected style's corresponding variant
-            // so that to achieve continuity
+            // so that to achieve continuity.
+            // in order to swap, style option provided from StyleOptionsFactory should have
+            // corresponding values specified in StyleVariantsFactory. e.g., an option generated
+            // from factory has overlay transparency of 35, then in order to swap, it should have
+            // a variant of overlay transparency of 35. Otherwise it cannot swap, because variants
+            // don't match any values in the style options.
             if (variantIndexWithoutEffect != -1 && givenOptions == null)
             {
                 // swap style variant
