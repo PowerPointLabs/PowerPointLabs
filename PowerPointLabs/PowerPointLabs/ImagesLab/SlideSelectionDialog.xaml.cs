@@ -87,21 +87,21 @@ namespace PowerPointLabs.ImagesLab
                 _nextSlideIndex = currentSlide.Index - 1;
             }
 
-            if (SlideListBox.Items.Count == 3)
-            {
-                SlideListBox.SelectedIndex = 1;
-            }
-            else if (SlideListBox.Items.Count == 2)
-            {
-                SlideListBox.SelectedIndex = 1;
-            }
-            else
-            {
-                SlideListBox.SelectedIndex = 0;
-            }
+            SelectCurrentSlide();
 
             LoadNextSlides(false);
             SlideListBox.ScrollIntoView(SlideListBox.SelectedItem);
+        }
+
+        private void SelectCurrentSlide()
+        {
+            foreach (var slide in SlideList)
+            {
+                if (slide.Tooltip.Contains("Current"))
+                {
+                    SlideListBox.SelectedItem = slide;
+                }
+            }
         }
 
         private void AddSlideThumbnail(PowerPointSlide slide, int pos = -1, bool isCurrentSlide = false)
