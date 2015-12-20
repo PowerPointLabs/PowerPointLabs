@@ -437,6 +437,19 @@ namespace PowerPointLabs.Utils
             return shape.Visible == MsoTriState.msoFalse;
         }
 
+        public static bool IsAGroup(Shape shape)
+        {
+            try
+            {
+                var groupItems = shape.GroupItems;
+            }
+            catch (UnauthorizedAccessException e)
+            {
+                return false;
+            }
+            return true;
+        }
+
         # endregion
 
         # region Text

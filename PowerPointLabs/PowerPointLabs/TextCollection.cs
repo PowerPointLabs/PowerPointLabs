@@ -414,6 +414,8 @@
         public const string DrawingsLabSelectTwoSetsOfShapes = "Please select two sets of shapes.";
         public const string DrawingsLabSelectStartAndEndShape = "Please select a start shape and an end shape";
 
+        public const string DrawingsLabErrorCannotGroup = "These shapes cannot be grouped.";
+        public const string DrawingsLabErrorNothingUngrouped = "Please select shapes that have been grouped.";
 
         public const string DrawingsLabMultiCloneDialogText = "Number of Copies";
         public const string DrawingsLabMultiCloneDialogHeader = "Multi-Clone";

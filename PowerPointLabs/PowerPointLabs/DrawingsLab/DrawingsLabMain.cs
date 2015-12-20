@@ -154,11 +154,62 @@ namespace PowerPointLabs.DrawingsLab
             }
         }
 
+        public static void GroupShapes()
+        {
+            var selection = PowerPointCurrentPresentationInfo.CurrentSelection;
+            if (selection.Type != PpSelectionType.ppSelectionShapes)
+            {
+                Error(TextCollection.DrawingsLabSelectAtLeastTwoShapes);
+                return;
+            }
+
+            var slide = PowerPointCurrentPresentationInfo.CurrentSlide;
+            var shapes = selection.ShapeRange.Cast<Shape>().ToList();
+
+            if (shapes.Count < 2)
+            {
+                Error(TextCollection.DrawingsLabSelectAtLeastTwoShapes);
+                return;
+            }
+
+            try
+            {
+                Globals.ThisAddIn.Application.StartNewUndoEntry();
+                slide.GroupShapes(shapes);
+            }
+            catch (UnauthorizedAccessException e)
+            {
+                Error(TextCollection.DrawingsLabErrorCannotGroup);
+            }
+        }
+
+        public static void UngroupShapes()
+        {
+            var selection = PowerPointCurrentPresentationInfo.CurrentSelection;
+            if (selection.Type != PpSelectionType.ppSelectionShapes)
+            {
+                Error(TextCollection.DrawingsLabSelectAtLeastOneShape);
+                return;
+            }
+
+            bool didSomething = false;
+            foreach (var shape in selection.ShapeRange.Cast<Shape>().Where(shape => Graphics.IsAGroup(shape)))
+            {
+                shape.Ungroup();
+                didSomething = true;
+            }
+            if (!didSomething)
+            {
+                Error(TextCollection.DrawingsLabErrorNothingUngrouped);
+            }
+        }
+
+
         public static void HideTool()
         {
             var selection = PowerPointCurrentPresentationInfo.CurrentSelection;
             if (selection.Type != PpSelectionType.ppSelectionShapes) return;
-                     
+
             Globals.ThisAddIn.Application.StartNewUndoEntry();
             foreach (var shape in selection.ShapeRange.Cast<Shape>())
             {

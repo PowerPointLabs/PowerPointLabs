@@ -79,8 +79,8 @@ namespace PowerPointLabs.DrawingsLab
             ConfigureButton(AddMathButtonMain, DrawingsLabMain.AddMath, "Add Math to a selected shape.");
             ConfigureButton(RemoveTextButtonMain, DrawingsLabMain.RemoveText, "Remove all text from the selected shapes.");
 
-            // ConfigureButton GroupButtonMain
-            // ConfigureButton UngroupButtonMain
+            ConfigureButton(GroupButtonMain, DrawingsLabMain.GroupShapes, "Groups the selected shapes into a single shape.");
+            ConfigureButton(UngroupButtonMain, DrawingsLabMain.UngroupShapes, "Ungroups the selected group of shapes.");
 
             ConfigureButton(ApplyDisplacementButtonMain, ()=>DrawingsLabMain.ApplyDisplacement(applyAllSettings: true), "Apply recorded displacement to selected shapes.");
             ConfigureButton(ApplyFormatButtonMain, ()=>DrawingsLabMain.ApplyFormat(applyAllSettings: true), "Apply recorded format to selected shapes.");
