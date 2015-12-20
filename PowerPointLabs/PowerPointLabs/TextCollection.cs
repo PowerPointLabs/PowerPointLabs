@@ -370,12 +370,15 @@
                 "Cannot apply styles. Please select a slide first.";
             public const string ErrorFailToInitTempFolder =
                 "Failed to initialize Images Lab. Please verify that sufficient permissions have been granted by Administrator.";
-
-            public const string SuccessfullyAppliedStyle =
-                "Successfully Applied.";
-
+            public const string ErrorNoEmbeddedStyleInfo =
+                "No Images Lab styles are detected for the current slide.";
+            
             public const string SuccessfullyGoToSlide =
                 "You are now editing Slide _SlideNumber_.";
+            public const string SuccessfullyLoadedImage =
+                "Successfully loaded image from the slide.";
+            public const string SuccessfullyLoadedStyle =
+                "Successfully loaded style from the slide.";
         }
 
         # region Agenda Lab

@@ -63,7 +63,7 @@ namespace PowerPointLabs.ImagesLab
                 // if no original shape, show info
                 if (originalShapeList.Count == 0)
                 {
-                    ShowInfoMessageBox("No Images Lab styles are detected for the current slide.");
+                    ShowInfoMessageBox(TextCollection.ImagesLabText.ErrorNoEmbeddedStyleInfo);
                 }
                 else
                 {
@@ -85,7 +85,11 @@ namespace PowerPointLabs.ImagesLab
                                 ImageSelectionListBox.SelectedIndex = i;
                                 // previewing is done async, need to use beginInvoke
                                 // so that it's after previewing
-                                if (!isReloadImageOnly)
+                                if (isReloadImageOnly)
+                                {
+                                    ShowInfoMessageBox(TextCollection.ImagesLabText.SuccessfullyLoadedImage);
+                                }
+                                else
                                 {
                                     OpenVariationFlyoutForReload(styleName, originalImageShape);
                                 }
@@ -148,7 +152,11 @@ namespace PowerPointLabs.ImagesLab
                         {
                             ImageSelectionList.Add(imageItem);
 
-                            if (!isReloadImageOnly)
+                            if (isReloadImageOnly)
+                            {
+                                ShowInfoMessageBox(TextCollection.ImagesLabText.SuccessfullyLoadedImage);
+                            }
+                            else
                             {
                                 ImageSelectionListBox.SelectedIndex = ImageSelectionListBox.Items.Count - 1;
                                 OpenVariationFlyoutForReload(styleName, originalImageShape);
@@ -172,6 +180,7 @@ namespace PowerPointLabs.ImagesLab
                     Dispatcher.BeginInvoke(new Action(() =>
                     {
                         StylesVariationListBox.ScrollIntoView(StylesVariationListBox.SelectedItem);
+                        ShowInfoMessageBox(TextCollection.ImagesLabText.SuccessfullyLoadedStyle);
                     }));
                 }));
             }));
