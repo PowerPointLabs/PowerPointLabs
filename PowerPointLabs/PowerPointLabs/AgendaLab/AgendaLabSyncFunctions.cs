@@ -325,7 +325,7 @@ namespace PowerPointLabs.AgendaLab
                 var shape = entry.Value;
                 if (lastShape != null)
                 {
-                    Graphics.MoveZUntilInFront(shape, lastShape);
+                    Graphics.MoveZUntilBehind(shape, lastShape);
                 }
                 lastShape = shape;
             }

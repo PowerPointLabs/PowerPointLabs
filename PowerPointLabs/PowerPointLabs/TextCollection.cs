@@ -219,6 +219,8 @@
         # endregion
 
         # region Context Menu Labels
+
+        public const string PowerPointLabsMenuLabel = "PowerPointLabs";
         public const string NameEditShapeLabel = "Edit Name";
         public const string SpotlightShapeLabel = "Add Spotlight";
         public const string ZoomInContextMenuLabel = "Drill Down";
@@ -229,6 +231,7 @@
         public const string HighlightBulletsBackgroundShapeLabel = "Highlight Background";
         public const string ConvertToPictureShapeLabel = "Convert to Picture";
         public const string AddCustomShapeShapeLabel = "Add to Shapes Lab";
+        public const string HideSelectedShapeLabel = "Hide the Shape";
         public const string CutOutShapeShapeLabel = "Crop To Shape";
         public const string FitToWidthShapeLabel = "Fit To Width";
         public const string FitToHeightShapeLabel = "Fit To Height";
@@ -301,6 +304,82 @@
         public const string ErrorTypeNotSupported = "Convert to Picture only supports Shapes and Charts.";
         public const string ErrorWindowTitle = "Convert to Picture: Unsupported Object";
         # endregion
+
+        public class ImagesLabText
+        {
+            public const string ImagesLabSupertip = "Open Images Lab window.";
+
+            /// <summary>
+            /// Styles Variation Category Name
+            /// 
+            /// Color category's name (without spaces) should be equal to corresponding style option's 
+            /// property name, so that the color picker can work properly
+            /// </summary>
+            public const string VariantCategoryOverlayColor = "Overlay Color";
+            public const string VariantCategoryFontColor = "Font Color";
+            public const string VariantCategoryBannerColor = "Banner Color";
+            public const string VariantCategoryTextBoxColor = "TextBox Color";
+            public const string VariantCategoryFrameColor = "Frame Color";
+            public const string VariantCategoryCircleColor = "Circle Color";
+            public const string VariantCategoryTriangleColor = "Triangle Color";
+            public const string VariantCategoryTextPosition = "Text Position";
+            public const string VariantCategoryFontFamily = "Font";
+            public const string VariantCategorySpecialEffects = "Special Effects";
+            public const string VariantCategoryBlurriness = "Blurriness";
+            public const string VariantCategoryBrightness = "Brightness";
+            public const string VariantCategoryFontSizeIncrease = "Font Size";
+            public const string VariantCategoryOverlayTransparency = "Overlay Transparency";
+            public const string VariantCategoryBannerTransparency = "Banner Transparency";
+            public const string VariantCategoryTextBoxTransparency = "TextBox Transparency";
+            public const string VariantCategoryFrameTransparency = "Frame Transparency";
+            public const string VariantCategoryCircleTransparency = "Circle Transparency";
+            public const string VariantCategoryTriangleTransparency = "Triangle Transparency";
+
+            /// <summary>
+            /// Styles Preview Name
+            /// </summary>
+            public const string StyleNameDirectText = "Direct Text Style";
+            public const string StyleNameBlur = "Blur Style";
+            public const string StyleNameTextBox = "TextBox Style";
+            public const string StyleNameBanner = "Banner Style";
+            public const string StyleNameSpecialEffect = "Special Effect Style";
+            public const string StyleNameOverlay = "Overlay Style";
+            public const string StyleNameOutline = "Outline Style";
+            public const string StyleNameFrame = "Frame Style";
+            public const string StyleNameCircle = "Circle Style";
+            public const string StyleNameTriangle = "Triangle Style";
+
+            /// <summary>
+            /// Messages
+            /// </summary>
+            public const string ErrorNetworkOrApiQuotaUnavailable =
+            "Failed to search images. Please check your network, or the daily API quota is ran out.";
+            public const string ErrorNetworkOrSourceUnavailable =
+                "Failed to insert style. Please check your network, or the image source is unavailable.";
+            public const string ErrorNoEngineIdOrApiKey =
+                "Please fill in Search Engine Id and API Key by clicking ADVANCED.. button.";
+            public const string ErrorImageCorrupted =
+                "Failed to load image. The image file is corrupted.";
+            public const string ErrorImageDownloadCorrupted =
+                "Failed to load image. Please try again; or manually download the image and drag it to Images Lab.";
+            public const string ErrorFailedToLoad =
+                "Failed to load image. ";
+            public const string ErrorUrlLinkIncorrect =
+                "The download link is not in the correct format. Did the link miss out 'http://'?";
+            public const string ErrorNoSelectedSlide =
+                "Cannot apply styles. Please select a slide first.";
+            public const string ErrorFailToInitTempFolder =
+                "Failed to initialize Images Lab. Please verify that sufficient permissions have been granted by Administrator.";
+            public const string ErrorNoEmbeddedStyleInfo =
+                "No Images Lab styles are detected for the current slide.";
+            
+            public const string SuccessfullyGoToSlide =
+                "You are now editing Slide _SlideNumber_.";
+            public const string SuccessfullyLoadedImage =
+                "Successfully loaded image from the slide.";
+            public const string SuccessfullyLoadedStyle =
+                "Successfully loaded style from the slide.";
+        }
 
         # region Agenda Lab
         // Errors

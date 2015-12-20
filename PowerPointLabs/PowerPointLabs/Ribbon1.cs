@@ -7,6 +7,7 @@ using System.Reflection;
 using System.Runtime.InteropServices;
 using System.Diagnostics;
 using System.Windows.Forms;
+using PowerPointLabs.ImagesLab;
 using PowerPointLabs.Models;
 using PowerPointLabs.Views;
 using Office = Microsoft.Office.Core;
@@ -180,21 +181,6 @@ namespace PowerPointLabs
             catch (Exception e)
             {
                 PowerPointLabsGlobals.LogException(e, "AddInSlideAnimationButtonClick");
-                throw;
-            }
-        }
-
-        public void ReloadSpotlightButtonClick(Office.IRibbonControl control)
-        {
-            try
-            {
-                Globals.ThisAddIn.Application.StartNewUndoEntry();
-
-                Spotlight.ReloadSpotlightEffect();
-            }
-            catch (Exception e)
-            {
-                PowerPointLabsGlobals.LogException(e, "ReloadSpotlightButtonClick");
                 throw;
             }
         }
@@ -627,6 +613,10 @@ namespace PowerPointLabs
         {
             return TextCollection.AddCustomShapeShapeLabel;
         }
+        public string GetHideSelectedShapeLabel(Office.IRibbonControl control)
+        {
+            return TextCollection.HideSelectedShapeLabel;
+        }
         public string GetCutOutShapeShapeLabel(Office.IRibbonControl control)
         {
             return TextCollection.CutOutShapeShapeLabel;
@@ -658,6 +648,10 @@ namespace PowerPointLabs
         public string GetContextReplaceAudioLabel(Office.IRibbonControl control)
         {
             return TextCollection.ContextReplaceAudioLabel;
+        }
+        public string GetPowerPointLabsMenuLabel(Office.IRibbonControl control)
+        {
+            return TextCollection.PowerPointLabsMenuLabel;
         }
         # endregion
 
@@ -1289,6 +1283,18 @@ namespace PowerPointLabs
                 throw;
             }
         }
+        public Bitmap GetHideShapeImage(Office.IRibbonControl control)
+        {
+            try
+            {
+                return new Bitmap(Properties.Resources.HideShape);
+            }
+            catch (Exception e)
+            {
+                PowerPointLabsGlobals.LogException(e, "GetHideShapeImage");
+                throw;
+            }
+        }
         # endregion
 
         public void ZoomStyleChanged(Office.IRibbonControl control, bool pressed)
@@ -1557,6 +1563,19 @@ namespace PowerPointLabs
             return selectedVoice;
         }
 
+        public Bitmap GetContextMenuImage(Office.IRibbonControl control)
+        {
+            try
+            {
+                return new Bitmap(Properties.Resources.PptlabsContextMenu);
+            }
+            catch (Exception e)
+            {
+                PowerPointLabsGlobals.LogException(e, "GetContextMenuImage");
+                throw;
+            }
+        }
+
         #endregion
 
         #region Feature: Fit To Slide | Fit To Width | Fit To Height
@@ -1591,6 +1610,43 @@ namespace PowerPointLabs
             return FitToSlide.GetFitToHeightImage(control);
         }
 
+        #endregion
+
+        #region Feature: Images Lab
+
+        public ImagesLabWindow ImagesLabWindow { get; set; }
+
+        public void ImagesLabButtonClick(Office.IRibbonControl control)
+        {
+            if (ImagesLabWindow == null || !ImagesLabWindow.IsOpen)
+            {
+                ImagesLabWindow = new ImagesLabWindow();
+                ImagesLabWindow.Show();
+            }
+            else
+            {
+                ImagesLabWindow.Activate();
+            }            
+        }
+
+        public Bitmap GetImagesLabImage(Office.IRibbonControl control)
+        {
+            try
+            {
+                return new Bitmap(Properties.Resources.ImagesLab);
+            }
+            catch (Exception e)
+            {
+                PowerPointLabsGlobals.LogException(e, "GetImagesLabImage");
+                throw;
+            }
+        }
+
+        public string GetImagesLabSupertip(Office.IRibbonControl control)
+        {
+            return TextCollection.ImagesLabText.ImagesLabSupertip;
+        }
+        
         #endregion
 
         #region Feature: Crop to Shape
@@ -2349,5 +2405,12 @@ namespace PowerPointLabs
             }
             return null;
         }
+
+        public void HideShapeButtonClick(Office.IRibbonControl control)
+        {
+            var selectedShapes = Globals.ThisAddIn.Application.ActiveWindow.Selection.ShapeRange;
+            selectedShapes.Visible = Office.MsoTriState.msoFalse;
+        }
+
     }
 }

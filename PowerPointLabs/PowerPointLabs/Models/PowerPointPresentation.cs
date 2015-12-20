@@ -9,7 +9,7 @@ using Microsoft.Office.Interop.PowerPoint;
 
 namespace PowerPointLabs.Models
 {
-    internal class PowerPointPresentation
+    public class PowerPointPresentation
     {
         # region Properties
         private string _name;
@@ -170,21 +170,29 @@ namespace PowerPointLabs.Models
             get { return Presentation.Slides.Count; }
         }
 
-        public float SlideWidth
+        public virtual float SlideWidth
         {
             get
             {
                 var dimensions = Presentation.PageSetup;
                 return dimensions.SlideWidth;
             }
+            set
+            {
+                Presentation.PageSetup.SlideWidth = value;
+            }
         }
 
-        public float SlideHeight
+        public virtual float SlideHeight
         {
             get
             {
                 var dimensions = Presentation.PageSetup;
                 return dimensions.SlideHeight;
+            }
+            set
+            {
+                Presentation.PageSetup.SlideHeight = value;
             }
         }
         # endregion
@@ -215,6 +223,39 @@ namespace PowerPointLabs.Models
                 var lastSlide = Slides.Last();
                 lastSlide.CreateAckSlide();
             }
+        }
+
+        /// <summary>
+        /// Go to slide
+        /// </summary>
+        /// <param name="index">1-based</param>
+        public void GotoSlide(int index)
+        {
+            Globals.ThisAddIn.Application.ActiveWindow.View.GotoSlide(index);
+        }
+
+        /// <summary>
+        /// will stay in the current slide if exceed slide count
+        /// </summary>
+        public void GotoNextSlide()
+        {
+            var currentSlide = PowerPointCurrentPresentationInfo.CurrentSlide;
+            if (currentSlide == null) return;
+
+            var index = currentSlide.Index;
+            if (index < Slides.Count)
+            {
+                GotoSlide(index + 1);
+            }
+        }
+
+        public bool IsLastSlide()
+        {
+            var currentSlide = PowerPointCurrentPresentationInfo.CurrentSlide;
+            if (currentSlide == null) return false;
+
+            var index = currentSlide.Index;
+            return index == Slides.Count;
         }
 
         public PowerPointSlide AddSlide(PpSlideLayout layout = PpSlideLayout.ppLayoutText, string name = "")

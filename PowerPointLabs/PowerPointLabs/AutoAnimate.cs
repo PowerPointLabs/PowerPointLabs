@@ -132,7 +132,7 @@ namespace PowerPointLabs
             Globals.ThisAddIn.Application.CommandBars.ExecuteMso("AnimationPreview");
             PowerPointPresentation.Current.AddAckSlide();
 
-            progressForm.Visible = false;
+            progressForm.Close();
         }
 
         private static void PrepareNextSlide(PowerPointSlide nextSlide)

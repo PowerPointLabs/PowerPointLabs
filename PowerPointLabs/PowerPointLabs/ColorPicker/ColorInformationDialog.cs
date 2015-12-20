@@ -7,10 +7,11 @@ using System.Drawing;
 using System.Linq;
 using System.Text;
 using System.Windows.Forms;
+using FunctionalTestInterface;
 
 namespace PowerPointLabs.ColorPicker
 {
-    public partial class ColorInformationDialog : Form
+    public partial class ColorInformationDialog : Form, IColorsLabMoreInfoDialog
     {
         private HSLColor _selectedColor;
         
@@ -81,5 +82,27 @@ namespace PowerPointLabs.ColorPicker
             string hex = BitConverter.ToString(ba);
             return hex.Replace("-", "");
         }
+
+        #region Functional Test method
+        public string GetHslText()
+        {
+            return HSLTextBox.Text;
+        }
+
+        public string GetRgbText()
+        {
+            return rgbTextBox.Text;
+        }
+
+        public string GetHexText()
+        {
+            return hexTextBox.Text;
+        }
+
+        public void TearDown()
+        {
+            Close();
+        }
+        # endregion
     }
 }

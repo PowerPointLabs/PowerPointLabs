@@ -10,6 +10,30 @@ namespace PowerPointLabs
         private const int TopMost = 0;
         private const int LeftMost = 0;
 
+        // auto fit to fill the screen entirely, don't care to width or to height
+        // offset from -100 ~ +100
+        public static void AutoFit(PowerPoint.Shape selectedShape, PowerPointPresentation pres = null, int offset = 0)
+        {
+            if (pres == null)
+            {
+                pres = PowerPointPresentation.Current;
+            }
+
+            if ((selectedShape.Width / selectedShape.Height) >
+                (pres.SlideWidth / pres.SlideHeight))
+            {
+                FitToHeight(selectedShape);
+                var availableOffset = selectedShape.Width/2 - pres.SlideWidth/2;
+                selectedShape.Left += availableOffset * offset / 100f;
+            }
+            else
+            {
+                FitToWidth(selectedShape);
+                var availableOffset = selectedShape.Height/2 - pres.SlideHeight/2;
+                selectedShape.Top += availableOffset * offset / 100f;
+            }
+        }
+
         public static void FitToHeight(PowerPoint.Shape selectedShape)
         {
             float shapeSizeRatio = GetSizeRatio(selectedShape);

@@ -11,6 +11,11 @@ using Microsoft.Office.Tools;
 using PowerPointLabs.AutoUpdate;
 using PPExtraEventHelper;
 using System.IO.Compression;
+using System.Runtime.Remoting;
+using System.Runtime.Remoting.Channels;
+using System.Runtime.Remoting.Channels.Ipc;
+using PowerPointLabs.FunctionalTestInterface.Impl;
+using PowerPointLabs.FunctionalTestInterface.Impl.Controller;
 using PowerPointLabs.Models;
 using PowerPointLabs.Utils;
 using PowerPointLabs.Views;
@@ -51,6 +56,19 @@ namespace PowerPointLabs
 
         public Ribbon1 Ribbon;
 
+        /// <summary>
+        /// The channel for .NET Remoting calls.
+        /// </summary>
+        private IChannel _FTChannel;
+
+        private void SetupFunctionalTestChannels()
+        {
+            _FTChannel = new IpcChannel("PowerPointLabsFT");
+            ChannelServices.RegisterChannel(_FTChannel, false);
+            RemotingConfiguration.RegisterWellKnownServiceType(typeof(PowerPointLabsFT),
+                "PowerPointLabsFT", WellKnownObjectMode.Singleton);
+        }
+
         # region Powerpoint Application Event Handlers
         private void ThisAddInStartup(object sender, EventArgs e)
         {
@@ -58,9 +76,11 @@ namespace PowerPointLabs
             Trace.TraceInformation(DateTime.Now.ToString("yyyyMMddHHmmss") + ": PowerPointLabs Started");
 
             new Updater().TryUpdate();
+            SetupFunctionalTestChannels();
 
             PPMouse.Init(Application);
             PPCopy.Init(Application);
+            UIThreadExecutor.Init();
             SetupDoubleClickHandler();
             SetupTabActivateHandler();
             SetupAfterCopyPasteHandler();
@@ -290,6 +310,7 @@ namespace PowerPointLabs
 
             ShutDownColorPane();
             ShutDownRecorderPane();
+            ShutDownImageSearchPane();
 
             // find the document that holds the presentation with pres.Name
             // special case will be embedded slide. in this case pres.Windows return exception
@@ -312,16 +333,38 @@ namespace PowerPointLabs
                 return;
             }
 
+            // for Functional Test to close presentation
+            if (PowerPointCurrentPresentationInfo.IsInFunctionalTest)
+            {
+                var handle = Native.FindWindow("PPTFrameClass", pres.Name + " - Microsoft PowerPoint");
+                Native.SetForegroundWindow(handle);
+                SendKeys.Send("N");
+            }
+
             Trace.TraceInformation("Closing associated window...");
             CleanUp(associatedWindow);
+        }
+
+        private void ShutDownImageSearchPane()
+        {
+            var imagesLabWindow = Globals.ThisAddIn.Ribbon.ImagesLabWindow;
+            if (imagesLabWindow != null && imagesLabWindow.IsOpen && Application.Presentations.Count == 2)
+            {
+                imagesLabWindow.Close();
+            }
         }
 
         private void ThisAddInShutdown(object sender, EventArgs e)
         {
             PPMouse.StopHook();
             PPCopy.StopHook();
+            UIThreadExecutor.TearDown();
             Trace.TraceInformation(DateTime.Now.ToString("yyyyMMddHHmmss") + ": PowerPointLabs Exiting");
             Trace.Close();
+            if (_FTChannel != null)
+            {
+                ChannelServices.UnregisterChannel(_FTChannel);
+            }
         }
         # endregion
 
@@ -383,7 +426,7 @@ namespace PowerPointLabs
         public void InitializeShapeGallery()
         {
             // achieves singleton ShapePresentation
-            if (ShapePresentation != null) return;
+            if (ShapePresentation != null && ShapePresentation.Opened) return;
 
             var shapeRootFolderPath = ShapesLabConfigs.ShapeRootFolder;
 
@@ -1273,13 +1316,13 @@ namespace PowerPointLabs
 
                 if (selection.Type == PowerPoint.PpSelectionType.ppSelectionShapes)
                 {
-                    if (Application.Version == OfficeVersion2013)
-                    {
-                        OpenPropertyWindowForOffice13(selection);
-                    }
-                    else if (Application.Version == OfficeVersion2010)
+                    if (Application.Version == OfficeVersion2010)
                     {
                         OpenPropertyWindowForOffice10();
+                    }
+                    else 
+                    {
+                        OpenPropertyWindowForOffice13OrHigher(selection);
                     }
                 }
             }
@@ -1325,10 +1368,10 @@ namespace PowerPointLabs
                 && y < bottom;
         }
 
-        //For office 2013 only:
+        //For office 2013 or Higher version:
         //Open Background Format window, then selecting the shape will
         //convert the window to Property window
-        private void OpenPropertyWindowForOffice13(PowerPoint.Selection selection)
+        private void OpenPropertyWindowForOffice13OrHigher(PowerPoint.Selection selection)
         {
             if (!_isInSlideShow)
             {
