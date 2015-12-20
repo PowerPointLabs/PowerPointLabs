@@ -23,6 +23,9 @@ namespace PowerPointLabs.DataSources
         private float sourceAnchor = Mid; // between 0 and 100
         private float targetAnchor = Mid; // between 0 and 100
 
+        public Action sourcePropertyChangeEvent = () => { };
+        public Action targetPropertyChangeEvent = () => { };
+
         public float SourceAnchor
         {
             get { return sourceAnchor; }
@@ -107,12 +110,14 @@ namespace PowerPointLabs.DataSources
         {
             OnPropertyChanged("SourceAnchor");
             OnPropertyChanged("SourcePosition");
+            sourcePropertyChangeEvent();
         }
 
         private void TargetOnPropertyChanged()
         {
             OnPropertyChanged("TargetAnchor");
             OnPropertyChanged("TargetPosition");
+            targetPropertyChangeEvent();
         }
         #endregion
 

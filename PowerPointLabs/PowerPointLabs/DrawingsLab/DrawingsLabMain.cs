@@ -656,7 +656,11 @@ namespace PowerPointLabs.DrawingsLab
         public static void AlignHorizontal()
         {
             var selection = Globals.ThisAddIn.Application.ActiveWindow.Selection;
-            if (selection.Type != PpSelectionType.ppSelectionShapes) return;
+            if (selection.Type != PpSelectionType.ppSelectionShapes)
+            {
+                Error(TextCollection.DrawingsLabSelectAtLeastTwoShapes);
+                return;
+            }
             var shapes = selection.ShapeRange.Cast<Shape>().ToList();
             if (shapes.Count <= 1)
             {
@@ -685,7 +689,11 @@ namespace PowerPointLabs.DrawingsLab
         public static void AlignVertical()
         {
             var selection = Globals.ThisAddIn.Application.ActiveWindow.Selection;
-            if (selection.Type != PpSelectionType.ppSelectionShapes) return;
+            if (selection.Type != PpSelectionType.ppSelectionShapes)
+            {
+                Error(TextCollection.DrawingsLabSelectAtLeastTwoShapes);
+                return;
+            }
             var shapes = selection.ShapeRange.Cast<Shape>().ToList();
             if (shapes.Count <= 1)
             {

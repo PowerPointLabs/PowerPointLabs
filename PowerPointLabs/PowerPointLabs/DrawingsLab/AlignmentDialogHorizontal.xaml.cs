@@ -27,7 +27,61 @@ namespace PowerPointLabs.DrawingsLab
             InitializeComponent();
 
             InitialiseDataSource();
+
+            dataSource.targetPropertyChangeEvent += DrawAlignmentCanvas;
+            dataSource.sourcePropertyChangeEvent += DrawAlignmentCanvas;
         }
+
+        private void Window_Loaded(object sender, RoutedEventArgs e)
+        {
+            DrawAlignmentCanvas();
+        }
+
+        private float CanvasAbsoluteY(float f)
+        {
+            return (float)(f * AlignmentCanvas.ActualHeight);
+        }
+
+        private void DrawAlignmentCanvas()
+        {
+            AlignmentCanvas.Children.Clear();
+            float middle = (float)(AlignmentCanvas.ActualWidth / 2f);
+            float gapWidth = 10f;
+
+            float targetSquareWidth = CanvasAbsoluteY(1f / 3f);
+            float sourceSquareWidth = CanvasAbsoluteY(1f / 4f);
+            float anchorY = (100-dataSource.TargetAnchor) / 300f + 1 / 3f;
+            float topY = anchorY - (100-dataSource.SourceAnchor) / 400f;
+
+            DrawRect(middle + gapWidth, CanvasAbsoluteY(1f / 3), targetSquareWidth, targetSquareWidth, Brushes.OrangeRed);
+            DrawRect(middle - gapWidth - sourceSquareWidth, CanvasAbsoluteY(topY), sourceSquareWidth, sourceSquareWidth, Brushes.DarkOrange);
+
+            var line = new Line
+            {
+                X1 = middle - gapWidth - sourceSquareWidth - 10f,
+                Y1 = CanvasAbsoluteY(anchorY),
+                X2 = middle + gapWidth + targetSquareWidth + 10f,
+                Y2 = CanvasAbsoluteY(anchorY),
+                Stroke = Brushes.CornflowerBlue,
+                StrokeThickness = 2
+            };
+            AlignmentCanvas.Children.Add(line);
+        }
+
+        private void DrawRect(float x, float y, float width, float height, Brush colour)
+        {
+            var rect = new Rectangle
+            {
+                Width = width,
+                Height = height,
+                Stroke = colour,
+                StrokeThickness = 3
+            };
+            Canvas.SetLeft(rect, x);
+            Canvas.SetTop(rect, y);
+            AlignmentCanvas.Children.Add(rect);
+        }
+
 
         private void InitialiseDataSource()
         {
