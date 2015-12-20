@@ -93,7 +93,7 @@ namespace PowerPointLabs.DrawingsLab
         public static void AddText()
         {
             var selection = PowerPointCurrentPresentationInfo.CurrentSelection;
-            if (selection.Type != PpSelectionType.ppSelectionShapes) return;
+            if (selection.Type != PpSelectionType.ppSelectionShapes && selection.Type != PpSelectionType.ppSelectionText) return;
 
             var text = DrawingsLabDialogs.ShowInsertTextDialog();
             if (text == null) return;
@@ -139,6 +139,18 @@ namespace PowerPointLabs.DrawingsLab
             catch (COMException e)
             {
                 // Do nothing. EquationInsertNew throws an exception even as it succeeds.
+            }
+        }
+
+        public static void RemoveText()
+        {
+            var selection = PowerPointCurrentPresentationInfo.CurrentSelection;
+            if (selection.Type != PpSelectionType.ppSelectionShapes && selection.Type != PpSelectionType.ppSelectionText) return;
+
+            Globals.ThisAddIn.Application.StartNewUndoEntry();
+            foreach (var shape in selection.ShapeRange.Cast<Shape>())
+            {
+                Graphics.SetText(shape, String.Empty);
             }
         }
 

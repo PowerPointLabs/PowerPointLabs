@@ -76,9 +76,8 @@ namespace PowerPointLabs.DrawingsLab
             // ---------------
 
             ConfigureButton(AddTextButtonMain, DrawingsLabMain.AddText, "Add Text to the selected shapes.");
-            ConfigureButton(AddMathButtonMain, DrawingsLabMain.AddMath, "Add Math");
-            // ConfigureButton AddMathButtonMain
-            // ConfigureButton RemoveTextButtonMain
+            ConfigureButton(AddMathButtonMain, DrawingsLabMain.AddMath, "Add Math to a selected shape.");
+            ConfigureButton(RemoveTextButtonMain, DrawingsLabMain.RemoveText, "Remove all text from the selected shapes.");
 
             // ConfigureButton GroupButtonMain
             // ConfigureButton UngroupButtonMain
