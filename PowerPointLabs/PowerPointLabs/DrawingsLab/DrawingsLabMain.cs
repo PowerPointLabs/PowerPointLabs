@@ -90,6 +90,12 @@ namespace PowerPointLabs.DrawingsLab
             commandBars.ExecuteMso("ShapeOval");
         }
 
+        public static void SwitchToTextboxTool()
+        {
+            var commandBars = Globals.ThisAddIn.Application.CommandBars;
+            commandBars.ExecuteMso("TextBoxInsertHorizontal");
+        }
+
         public static void AddText()
         {
             var selection = PowerPointCurrentPresentationInfo.CurrentSelection;

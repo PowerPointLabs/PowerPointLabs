@@ -59,7 +59,7 @@ namespace PowerPointLabs.DrawingsLab
             ConfigureButton(CurveButton, DrawingsLabMain.SwitchToCurvedLineTool, "Draw a Curved Line.");
             // SetTooltip ToggleArrowsButton
 
-            // ConfigureButton TextboxButton
+            ConfigureButton(TextboxButton, DrawingsLabMain.SwitchToTextboxTool, "Add a Text Box.");
             // ConfigureButton MathboxButton
 
             ConfigureButton(SelectTypeButton, DrawingsLabMain.SelectAllOfType, "[A] Select all shapes of same type as currently selected shapes.");
