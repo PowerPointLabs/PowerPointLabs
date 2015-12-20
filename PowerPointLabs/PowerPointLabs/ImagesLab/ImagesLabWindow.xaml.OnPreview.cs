@@ -25,7 +25,6 @@ namespace PowerPointLabs.ImagesLab
                 {
                     StylesPreviewList.Clear();
                 }
-                SetProgressingRingStatus(false);
             }
             else if (_isVariationsFlyoutOpen)
             {
@@ -72,15 +71,10 @@ namespace PowerPointLabs.ImagesLab
                     {
                         UpdateStyleVariationsImages();
                     }
-                    if (source.FullSizeImageFile != null)
-                    {
-                        SetProgressingRingStatus(false);
-                    }
                 }
                 catch
                 {
                     ShowErrorMessageBox(TextCollection.ImagesLabText.ErrorImageCorrupted);
-                    SetProgressingRingStatus(false);
                 }
             }));
         }

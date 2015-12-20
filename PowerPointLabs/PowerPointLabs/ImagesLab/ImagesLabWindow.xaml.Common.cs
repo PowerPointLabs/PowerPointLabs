@@ -17,14 +17,13 @@ namespace PowerPointLabs.ImagesLab
             VariationProgressRing.IsActive = isActive;
         }
 
-        private void HandleDownloadedThumbnail(
-            ImageItem item, string thumbnailPath)
+        private void HandleDownloadedImage(
+            ImageItem item, string imagePath)
         {
             Dispatcher.BeginInvoke(new Action(() =>
             {
                 if (item == null) return;
-                item.ImageFile = thumbnailPath;
-                item.FullSizeImageFile = item.ImageFile;
+                item.FullSizeImageFile = imagePath;
                 item.ImageFile = ImageUtil.GetThumbnailFromFullSizeImg(item.FullSizeImageFile);
                 item.Tooltip = ImageUtil.GetWidthAndHeight(item.FullSizeImageFile);
 
