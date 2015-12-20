@@ -9,6 +9,7 @@ using System.Text.RegularExpressions;
 using System.Windows.Forms;
 using Microsoft.Office.Core;
 using Microsoft.Office.Interop.PowerPoint;
+using PowerPointLabs.FunctionalTestInterface.Impl;
 using PowerPointLabs.Models;
 using PowerPointLabs.Utils;
 using PowerPointLabs.Views;
@@ -1048,10 +1049,18 @@ namespace PowerPointLabs.AgendaLab
 
         private static bool DisplayLoadingDialog(string title, string content)
         {
-            _loadDialog = new LoadingDialog(title, content);
-            _loadDialog.Show();
-            _loadDialog.Refresh();
-            return true;
+            // make FT run stably
+            if (PowerPointCurrentPresentationInfo.IsInFunctionalTest)
+            {
+                return false;
+            }
+            else
+            {
+                _loadDialog = new LoadingDialog(title, content);
+                _loadDialog.Show();
+                _loadDialog.Refresh();
+                return true;
+            }
         }
 
         private static void DisposeLoadingDialog()

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Text;
+using PowerPointLabs.Models;
 
 namespace PowerPointLabs
 {
@@ -25,10 +26,22 @@ namespace PowerPointLabs
         # region Constructor
         public ShapesLabConfig(string appDataFolder)
         {
-            ShapeRootFolder = _defaultShapeMasterFolderPrefix + DefaultShapeMasterFolderName;
-            DefaultCategory = DefaultShapeCategoryName;
+            if (!PowerPointCurrentPresentationInfo.IsInFunctionalTest)
+            {
+                ShapeRootFolder = _defaultShapeMasterFolderPrefix + DefaultShapeMasterFolderName;
+                DefaultCategory = DefaultShapeCategoryName;
 
-            ReadShapeLabConfig(appDataFolder);
+                ReadShapeLabConfig(appDataFolder);
+            }
+            else
+            {
+                // if it's in FT, use new temp shape root folder every time
+                var tmpPath = Path.GetTempPath();
+                var hash = DateTime.Now.GetHashCode();
+                ShapeRootFolder = tmpPath + DefaultShapeMasterFolderName + hash;
+                DefaultCategory = DefaultShapeCategoryName + hash;
+                _configFilePath = tmpPath + "ShapeRootFolder" + hash;
+            }
         }
         # endregion
 

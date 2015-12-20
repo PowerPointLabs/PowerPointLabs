@@ -39,7 +39,6 @@ namespace PowerPointLabs.Models
             MsoAnimEffect.msoAnimEffectSpiral, MsoAnimEffect.msoAnimEffectWhip
         };
 
-
         protected PowerPointSlide(Slide slide)
         {
             _slide = slide;

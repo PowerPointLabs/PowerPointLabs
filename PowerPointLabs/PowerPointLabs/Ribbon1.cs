@@ -185,21 +185,6 @@ namespace PowerPointLabs
             }
         }
 
-        public void ReloadSpotlightButtonClick(Office.IRibbonControl control)
-        {
-            try
-            {
-                Globals.ThisAddIn.Application.StartNewUndoEntry();
-
-                Spotlight.ReloadSpotlightEffect();
-            }
-            catch (Exception e)
-            {
-                PowerPointLabsGlobals.LogException(e, "ReloadSpotlightButtonClick");
-                throw;
-            }
-        }
-
         public void SpotlightBtnClick(Office.IRibbonControl control)
         {
             try

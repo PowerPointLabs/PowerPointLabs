@@ -4,7 +4,6 @@ using System.Diagnostics;
 using System.IO;
 using System.IO.Compression;
 using System.Windows.Forms;
-using System.Web;
 
 namespace PowerPointLabsInstallerUi
 {
@@ -14,25 +13,34 @@ namespace PowerPointLabsInstallerUi
         private const string TextButtonClose = "Close";
         private const string TextButtonRunning = "Running...";
         private const string ErrorWindowTitle = "PowerPointLabs Installer";
-        private const string UrlForVstoRuntim = "http://www.microsoft.com/en-us/download/details.aspx?id=44074";
+        private const string UrlForVstoRuntim = "http://www.comp.nus.edu.sg/~pptlabs/vsto-redirect.html";
         private const string UrlForPptlabsOnlineInstaller = "http://www.comp.nus.edu.sg/~pptlabs/download-78563/PowerPointLabs.zip";
 
         private readonly string _onlineInstallerZipAddress = Path.Combine(Path.GetTempPath(),
             @"PowerPointLabsInstaller\olInstaller.zip");
 
+        private readonly string _targetInstallFolder;
+
         public Form1()
         {
             InitializeComponent();
+
+            // handle special char case for EURO user
+            _targetInstallFolder = Path.Combine(
+                (IsSpecialCharPresentInInstallPath() 
+                    ? Path.GetPathRoot(Environment.SystemDirectory) 
+                    : Path.GetTempPath()),
+                @"PowerPointLabsInstaller");
         }
 
         /// <summary>
         /// If there are special characters (eg é) present in the install path,
-        /// the offline installer (ClickOnce) will fail to install. Thus need to download and install online installer instead.
+        /// the offline installer (ClickOnce) will fail to install. Thus need to install it to the root path.
         /// </summary>
         /// <returns></returns>
         private bool IsSpecialCharPresentInInstallPath()
         {
-            return HttpUtility.UrlPathEncode(Path.GetTempPath()) != Path.GetTempPath();
+            return new Uri(Path.GetTempPath()).AbsolutePath.Replace("/", "\\") != Path.GetTempPath();
         }
 
         /// <summary>
@@ -52,7 +60,7 @@ namespace PowerPointLabsInstallerUi
                         "Visual Studio 2010 Tools for Office (VSTO) Runtime from Microsoft.\n\n" +
                         "Click Yes button to download it, or click No button to continue the installation anyway.",
                         ErrorWindowTitle,
-                        MessageBoxButtons.YesNoCancel, MessageBoxIcon.Error);
+                        MessageBoxButtons.YesNoCancel, MessageBoxIcon.Information);
                     if (dialogResult == DialogResult.Yes)
                     {
                         Process.Start(UrlForVstoRuntim);
@@ -67,11 +75,13 @@ namespace PowerPointLabsInstallerUi
                 {
                     var vstoConfigDir = GetVstoConfigDir();
                     if (MessageBox.Show(
-                        "In order to install our add-in, you need to rename the file [VSTOInstaller.exe.Config] in the folder" +
+                        "A corrupted system file is detected.\n" +
+                        "In order to install our add-in, you may need to rename the file [VSTOInstaller.exe.Config] in the folder" +
                         "\n[" + vstoConfigDir + "]\n to the new filename [VSTOInstaller.exe.Config.backup]\n\n" +
-                        "After that, click OK button to continue.",
+                        "However, in some PCs, the corrupted system file won't affect the installation.\n" + 
+                        "Click OK button to continue.",
                         ErrorWindowTitle, 
-                        MessageBoxButtons.OKCancel, MessageBoxIcon.Error)
+                        MessageBoxButtons.OKCancel, MessageBoxIcon.Information)
                         == DialogResult.Cancel)
                     {
                         return;
@@ -81,26 +91,15 @@ namespace PowerPointLabsInstallerUi
                 //run installation files
                 button1.Enabled = false;
                 button1.Text = TextButtonRunning;
-                if (IsSpecialCharPresentInInstallPath())
+
+                //normal offline installer
+                Boolean isUnzipSuccessful = UnzipInstaller(_installerZipAddress);
+                if (isUnzipSuccessful)
                 {
-                    //download and run online installer
-                    new Downloader()
-                        .Get(UrlForPptlabsOnlineInstaller, _onlineInstallerZipAddress)
-                        .After(AfterOnlineInstallerDownload)
-                        .WhenFail(WhenDownloadFailure)
-                        .Start();
+                    RunInstaller();
                 }
-                else
-                {
-                    //normal offline installer
-                    Boolean isUnzipSuccessful = UnzipInstaller(_installerZipAddress);
-                    if (isUnzipSuccessful)
-                    {
-                        RunInstaller();
-                    }
-                    button1.Enabled = true;
-                    button1.Text = TextButtonClose;
-                }
+                button1.Enabled = true;
+                button1.Text = TextButtonClose;
             }
             else
             {
@@ -204,7 +203,7 @@ namespace PowerPointLabsInstallerUi
             return result;
         } 
 
-        private static void RunInstaller()
+        private void RunInstaller()
         {
             try
             {
@@ -212,7 +211,7 @@ namespace PowerPointLabsInstallerUi
                 {
                     StartInfo =
                     {
-                        FileName = Path.Combine(Path.GetTempPath(), @"PowerPointLabsInstaller\setup.exe"),
+                        FileName = Path.Combine(_targetInstallFolder, "setup.exe"),
                         WindowStyle = ProcessWindowStyle.Hidden
                     }
                 };
@@ -222,7 +221,8 @@ namespace PowerPointLabsInstallerUi
             catch (Exception e)
             {
                 PowerPointLabs.Views.ErrorDialogWrapper.ShowDialog("Failed to install",
-                    "An error occurred while installing PowerPointLabs", e);
+                    "An error occurred while installing PowerPointLabs, you can right-click on the setup.exe file " +
+                    "and select 'Run as Administrator' to try again.", e);
             }
         }
 
@@ -235,7 +235,7 @@ namespace PowerPointLabsInstallerUi
                 foreach (var file in zipDir)
                 {
                     installerZip.ExtractFile(file,
-                        Path.Combine(Path.GetTempPath(), @"PowerPointLabsInstaller\" + file.FilenameInZip));
+                        Path.Combine(_targetInstallFolder, file.FilenameInZip));
                 }
                 installerZip.Close();
                 return true;
