@@ -373,6 +373,9 @@
 
             public const string SuccessfullyAppliedStyle =
                 "Successfully Applied.";
+
+            public const string SuccessfullyGoToSlide =
+                "You are now editing Slide _SlideNumber_.";
         }
 
         # region Agenda Lab

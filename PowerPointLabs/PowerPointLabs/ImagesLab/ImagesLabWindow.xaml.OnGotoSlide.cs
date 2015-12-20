@@ -33,9 +33,12 @@ namespace PowerPointLabs.ImagesLab
             _gotoSlideDialog.OnGotoSlide += () =>
             {
                 this.HideMetroDialogAsync(_gotoSlideDialog, MetroDialogOptions);
-                if (_gotoSlideDialog.SelectedSlide > 0)
+                if (PowerPointCurrentPresentationInfo.CurrentSlide == null
+                    || _gotoSlideDialog.SelectedSlide != PowerPointCurrentPresentationInfo.CurrentSlide.Index)
                 {
                     PowerPointPresentation.Current.GotoSlide(_gotoSlideDialog.SelectedSlide);
+                    ShowInfoMessageBox(TextCollection.ImagesLabText.SuccessfullyGoToSlide
+                        .Replace("_SlideNumber_", _gotoSlideDialog.SelectedSlide.ToString()));
                 }
                 _latestImageChangedTime = DateTime.Now;
                 DoPreview();
