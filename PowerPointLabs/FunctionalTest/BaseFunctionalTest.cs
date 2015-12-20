@@ -128,7 +128,10 @@ namespace FunctionalTest
 
             if (Process.GetProcessesByName("POWERPNT").Length > 0)
             {
-                Assert.Fail("Failed to close PowerPoint application instance on time.");
+                foreach (var process in Process.GetProcessesByName("POWERPNT"))
+                {
+                    process.Kill();
+                }
             }
         }
     }
