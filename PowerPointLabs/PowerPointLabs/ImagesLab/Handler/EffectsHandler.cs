@@ -332,6 +332,11 @@ namespace PowerPointLabs.ImagesLab.Handler
         {
             var innerCircleShape = ApplyCircleBannerEffect(color, transparency);
             var outerCircleShape = ApplyCircleBannerEffect(color, transparency, isOutline: true, margin: 10);
+            if (innerCircleShape == null || outerCircleShape == null)
+            {
+                return null;
+            }
+
             outerCircleShape.Left = innerCircleShape.Left + innerCircleShape.Width / 2 - outerCircleShape.Width / 2;
             outerCircleShape.Top = innerCircleShape.Top + innerCircleShape.Height / 2 - outerCircleShape.Height / 2;
             var result = Shapes.Range(new[] {innerCircleShape.Name, outerCircleShape.Name}).Group();
