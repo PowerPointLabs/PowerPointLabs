@@ -96,6 +96,9 @@ namespace PowerPointLabs.DrawingsLab
             if (selection.Type != PpSelectionType.ppSelectionShapes) return;
 
             var text = DrawingsLabDialogs.ShowInsertTextDialog();
+            if (text == null) return;
+
+            Globals.ThisAddIn.Application.StartNewUndoEntry();
             foreach (var shape in selection.ShapeRange.Cast<Shape>())
             {
                 try
@@ -111,7 +114,32 @@ namespace PowerPointLabs.DrawingsLab
 
         public static void AddMath()
         {
-            throw new NotImplementedException("Not implemented yet");
+            var selection = PowerPointCurrentPresentationInfo.CurrentSelection;
+            if (selection.Type != PpSelectionType.ppSelectionText)
+            {
+                if (selection.Type != PpSelectionType.ppSelectionShapes)
+                {
+                    Error(TextCollection.DrawingsLabSelectExactlyOneShape);
+                    return;
+                }
+                var shapes = selection.ShapeRange.Cast<Shape>().ToList();
+                if (shapes.Count != 1)
+                {
+                    Error(TextCollection.DrawingsLabSelectExactlyOneShape);
+                    return;
+                }
+            }
+
+            try
+            {
+                Globals.ThisAddIn.Application.StartNewUndoEntry();
+                var commandBars = Globals.ThisAddIn.Application.CommandBars;
+                commandBars.ExecuteMso("EquationInsertNew");
+            }
+            catch (COMException e)
+            {
+                // Do nothing. EquationInsertNew throws an exception even as it succeeds.
+            }
         }
 
         public static void HideTool()
