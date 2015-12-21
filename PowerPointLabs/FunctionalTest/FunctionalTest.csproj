@@ -46,7 +46,6 @@
     <Reference Include="Microsoft.Office.Interop.PowerPoint, Version=15.0.0.0, Culture=neutral, PublicKeyToken=71e9bce111e9429c, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <EmbedInteropTypes>False</EmbedInteropTypes>
-      <HintPath>C:\Program Files (x86)\Microsoft Visual Studio 12.0\Visual Studio Tools for Office\PIA\Office14\Microsoft.Office.Interop.PowerPoint.dll</HintPath>
     </Reference>
     <Reference Include="Microsoft.Office.Tools, Version=10.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
       <EmbedInteropTypes>False</EmbedInteropTypes>
@@ -62,11 +61,6 @@
     <Reference Include="Office, Version=15.0.0.0, Culture=neutral, PublicKeyToken=71e9bce111e9429c, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <EmbedInteropTypes>False</EmbedInteropTypes>
-      <HintPath>C:\Program Files (x86)\Microsoft Visual Studio 12.0\Visual Studio Tools for Office\PIA\Office14\Office.dll</HintPath>
-    </Reference>
-    <Reference Include="PowerPointLabs, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\PowerPointLabs\bin\Debug\PowerPointLabs.dll</HintPath>
     </Reference>
     <Reference Include="PresentationFramework" />
     <Reference Include="System" />
@@ -125,6 +119,10 @@
     <ProjectReference Include="..\FunctionalTestInterface\FunctionalTestInterface.csproj">
       <Project>{573cc738-5349-4a0d-bc53-9325fa9c0e6f}</Project>
       <Name>FunctionalTestInterface</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\PowerPointLabs\PowerPointLabs.csproj">
+      <Project>{e0696df3-9906-4e0e-906e-f9d47f41ef80}</Project>
+      <Name>PowerPointLabs</Name>
     </ProjectReference>
   </ItemGroup>
   <Choose>

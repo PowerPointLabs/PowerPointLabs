@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.IO;
 using FunctionalTestInterface;
-using Microsoft.Office.Core;
 using Microsoft.Office.Interop.PowerPoint;
 
 namespace PowerPointLabs.FunctionalTestInterface.Impl
@@ -38,8 +37,8 @@ namespace PowerPointLabs.FunctionalTestInterface.Impl
     [Serializable]
     public class EffectData : IEffectData
     {
-        public MsoAnimEffect EffectType { get; private set; }
-        public MsoShapeType ShapeType { get; private set; }
+        public int EffectType { get; private set; }
+        public int ShapeType { get; private set; }
         public float ShapeRotation { get; private set; }
         public float ShapeWidth { get; private set; }
         public float ShapeHeight { get; private set; }
@@ -49,8 +48,8 @@ namespace PowerPointLabs.FunctionalTestInterface.Impl
 
         private EffectData(Effect effect)
         {
-            EffectType = effect.EffectType;
-            ShapeType = effect.Shape.Type;
+            EffectType = effect.EffectType.GetHashCode();
+            ShapeType = effect.Shape.Type.GetHashCode();
             ShapeRotation = effect.Shape.Rotation;
             ShapeWidth = effect.Shape.Width;
             ShapeHeight = effect.Shape.Height;
