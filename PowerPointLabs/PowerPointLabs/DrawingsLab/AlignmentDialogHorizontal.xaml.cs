@@ -45,13 +45,13 @@ namespace PowerPointLabs.DrawingsLab
         private void DrawAlignmentCanvas()
         {
             AlignmentCanvas.Children.Clear();
-            float middle = (float)(AlignmentCanvas.ActualWidth / 2f);
+            float middle = CanvasAbsoluteY(0.5f);
             float gapWidth = 10f;
 
             float targetSquareWidth = CanvasAbsoluteY(1f / 3f);
             float sourceSquareWidth = CanvasAbsoluteY(1f / 4f);
-            float anchorY = (100-dataSource.TargetAnchor) / 300f + 1 / 3f;
-            float topY = anchorY - (100-dataSource.SourceAnchor) / 400f;
+            float anchorY = (100-TargetAnchor) / 300f + 1 / 3f;
+            float topY = anchorY - (100-SourceAnchor) / 400f;
 
             DrawRect(middle + gapWidth, CanvasAbsoluteY(1f / 3), targetSquareWidth, targetSquareWidth, Brushes.OrangeRed);
             DrawRect(middle - gapWidth - sourceSquareWidth, CanvasAbsoluteY(topY), sourceSquareWidth, sourceSquareWidth, Brushes.DarkOrange);

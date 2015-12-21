@@ -287,6 +287,9 @@
     <Compile Include="DataSources\DrawingsLabAlignmentDataSource.cs" />
     <Compile Include="DataSources\DrawingsLabDataSource.cs" />
     <Compile Include="DataSources\ShapesLabSettingsDataSource.cs" />
+    <Compile Include="DrawingsLab\AlignmentDialogBoth.xaml.cs">
+      <DependentUpon>AlignmentDialogBoth.xaml</DependentUpon>
+    </Compile>
     <Compile Include="DrawingsLab\AlignmentDialogVertical.xaml.cs">
       <DependentUpon>AlignmentDialogVertical.xaml</DependentUpon>
     </Compile>
@@ -797,6 +800,10 @@
     <None Include="Resources\AgendaVisual.png" />
   </ItemGroup>
   <ItemGroup>
+    <Page Include="DrawingsLab\AlignmentDialogBoth.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
     <Page Include="DrawingsLab\AlignmentDialogVertical.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>

@@ -712,10 +712,47 @@ namespace PowerPointLabs.DrawingsLab
             var targetShape = shapes.Last();
             shapes.RemoveAt(shapes.Count - 1);
 
-            float targetX = targetShape.Left + targetAnchor*targetShape.Width;
+            float targetX = targetShape.Left + targetAnchor * targetShape.Width;
             foreach (var shape in shapes)
             {
-                shape.Left = targetX - sourceAnchor*shape.Width;
+                shape.Left = targetX - sourceAnchor * shape.Width;
+            }
+        }
+
+        public static void AlignBoth()
+        {
+            var selection = Globals.ThisAddIn.Application.ActiveWindow.Selection;
+            if (selection.Type != PpSelectionType.ppSelectionShapes)
+            {
+                Error(TextCollection.DrawingsLabSelectAtLeastTwoShapes);
+                return;
+            }
+            var shapes = selection.ShapeRange.Cast<Shape>().ToList();
+            if (shapes.Count <= 1)
+            {
+                Error(TextCollection.DrawingsLabSelectAtLeastTwoShapes);
+                return;
+            }
+
+            var dialog = new AlignmentDialogBoth();
+            if (dialog.ShowDialog() != true) return;
+            if (dialog.DialogResult != true) return;
+
+            Globals.ThisAddIn.Application.StartNewUndoEntry();
+            float sourceAnchorX = dialog.SourceAnchorVertical / 100;
+            float targetAnchorX = dialog.TargetAnchorVertical / 100;
+            float sourceAnchorY = dialog.SourceAnchorHorizontal / 100;
+            float targetAnchorY = dialog.TargetAnchorHorizontal / 100;
+
+            var targetShape = shapes.Last();
+            shapes.RemoveAt(shapes.Count - 1);
+
+            float targetX = targetShape.Left + targetAnchorX * targetShape.Width;
+            float targetY = targetShape.Top + (1 - targetAnchorY)*targetShape.Height;
+            foreach (var shape in shapes)
+            {
+                shape.Left = targetX - sourceAnchorX * shape.Width;
+                shape.Top = targetY - (1 - sourceAnchorY) * shape.Height;
             }
         }
 
@@ -723,7 +760,11 @@ namespace PowerPointLabs.DrawingsLab
         public static void AlignVerticalToSlide()
         {
             var selection = Globals.ThisAddIn.Application.ActiveWindow.Selection;
-            if (selection.Type != PpSelectionType.ppSelectionShapes) return;
+            if (selection.Type != PpSelectionType.ppSelectionShapes)
+            {
+                Error(TextCollection.DrawingsLabSelectAtLeastOneShape);
+                return;
+            }
             var shapes = selection.ShapeRange.Cast<Shape>().ToList();
             if (shapes.Count < 1)
             {
@@ -749,7 +790,11 @@ namespace PowerPointLabs.DrawingsLab
         public static void AlignHorizontalToSlide()
         {
             var selection = Globals.ThisAddIn.Application.ActiveWindow.Selection;
-            if (selection.Type != PpSelectionType.ppSelectionShapes) return;
+            if (selection.Type != PpSelectionType.ppSelectionShapes)
+            {
+                Error(TextCollection.DrawingsLabSelectAtLeastOneShape);
+                return;
+            }
             var shapes = selection.ShapeRange.Cast<Shape>().ToList();
             if (shapes.Count < 1)
             {
@@ -769,6 +814,41 @@ namespace PowerPointLabs.DrawingsLab
             foreach (var shape in shapes)
             {
                 shape.Left = targetX - sourceAnchor * shape.Width;
+            }
+        }
+
+
+        public static void AlignBothToSlide()
+        {
+            var selection = Globals.ThisAddIn.Application.ActiveWindow.Selection;
+            if (selection.Type != PpSelectionType.ppSelectionShapes)
+            {
+                Error(TextCollection.DrawingsLabSelectAtLeastOneShape);
+                return;
+            }
+            var shapes = selection.ShapeRange.Cast<Shape>().ToList();
+            if (shapes.Count < 1)
+            {
+                Error(TextCollection.DrawingsLabSelectAtLeastOneShape);
+                return;
+            }
+
+            var dialog = new AlignmentDialogBoth();
+            if (dialog.ShowDialog() != true) return;
+            if (dialog.DialogResult != true) return;
+
+            Globals.ThisAddIn.Application.StartNewUndoEntry();
+            float sourceAnchorX = dialog.SourceAnchorVertical / 100;
+            float targetAnchorX = dialog.TargetAnchorVertical / 100;
+            float sourceAnchorY = dialog.SourceAnchorHorizontal / 100;
+            float targetAnchorY = dialog.TargetAnchorHorizontal / 100;
+
+            float targetX = targetAnchorX * PowerPointPresentation.Current.SlideWidth;
+            float targetY = (1 - targetAnchorY) * PowerPointPresentation.Current.SlideHeight;
+            foreach (var shape in shapes)
+            {
+                shape.Left = targetX - sourceAnchorX * shape.Width;
+                shape.Top = targetY - (1 - sourceAnchorY) * shape.Height;
             }
         }
 

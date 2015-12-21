@@ -120,12 +120,12 @@ namespace PowerPointLabs.DrawingsLab
 
             ConfigureButton(AlignHorizontalButton, DrawingsLabMain.AlignHorizontal, "Align Shapes Horizontally to last shape in selection.");
             ConfigureButton(AlignVerticalButton, DrawingsLabMain.AlignVertical, "Align Shapes Vertically to last shape in selection.");
-            // ConfigureButton AlignBothButton
-
+            ConfigureButton(AlignBothButton, DrawingsLabMain.AlignBoth, "Align Shapes both Horizontally and Vertically to last shape in selection.");
+            
             ConfigureButton(AlignHorizontalToSlideButton, DrawingsLabMain.AlignHorizontalToSlide, "Align Shapes Horizontally to a position relative to the slide.");
             ConfigureButton(AlignVerticalToSlideButton, DrawingsLabMain.AlignVerticalToSlide, "Align Shapes Vertically to a position relative to the slide.");
-            // ConfigureButton AlignBothToSlideButton
-
+            ConfigureButton(AlignBothToSlideButton, DrawingsLabMain.AlignBothToSlide, "Align Shapes both Horizontally and Vertically to a position relative to the slide.");
+            
             ConfigureButton(MultiCloneExtendButton, DrawingsLabMain.MultiCloneExtendTool, "[N] Extrapolates multiple copies of a shape, extending from two selected shapes.");
             ConfigureButton(MultiCloneBetweenButton, DrawingsLabMain.MultiCloneBetweenTool, "[M] Interpolates multiple copies of a shape, in between two selected shapes.");
             // ConfigureButton MultiCloneGridButton
