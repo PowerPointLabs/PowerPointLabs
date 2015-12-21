@@ -284,6 +284,7 @@
     <Compile Include="Converters\ColorPaneConverters.cs" />
     <Compile Include="ConvertToPicture.cs" />
     <Compile Include="CropToShape.cs" />
+    <Compile Include="DataSources\DrawingsLabMultiCloneGridDataSource.cs" />
     <Compile Include="DataSources\DrawingsLabAlignmentDataSource.cs" />
     <Compile Include="DataSources\DrawingsLabDataSource.cs" />
     <Compile Include="DataSources\ShapesLabSettingsDataSource.cs" />
@@ -292,6 +293,9 @@
     </Compile>
     <Compile Include="DrawingsLab\AlignmentDialogVertical.xaml.cs">
       <DependentUpon>AlignmentDialogVertical.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="DrawingsLab\MultiCloneGridDialog.xaml.cs">
+      <DependentUpon>MultiCloneGridDialog.xaml</DependentUpon>
     </Compile>
     <Compile Include="DrawingsLab\AlignmentDialogHorizontal.xaml.cs">
       <DependentUpon>AlignmentDialogHorizontal.xaml</DependentUpon>
@@ -502,6 +506,7 @@
     <Compile Include="Views\LoadingDialog.Designer.cs">
       <DependentUpon>LoadingDialog.cs</DependentUpon>
     </Compile>
+    <Compile Include="WPF\ClickSelectTextBox.cs" />
     <Compile Include="WPF\ImageButton.cs" />
     <Compile Include="WPF\Observable\Model.cs" />
     <Compile Include="WPF\Observable\ObservableBoolean.cs" />
@@ -805,6 +810,10 @@
       <SubType>Designer</SubType>
     </Page>
     <Page Include="DrawingsLab\AlignmentDialogVertical.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="DrawingsLab\MultiCloneGridDialog.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>

@@ -410,6 +410,7 @@
 
         public const string DrawingsLabSelectExactlyOneShape = "Please select a single shape.";
         public const string DrawingsLabSelectAtLeastOneShape = "Please select at least one shape.";
+        public const string DrawingsLabSelectExactlyTwoShapes = "Please select two shapes.";
         public const string DrawingsLabSelectAtLeastTwoShapes = "Please select at least two shapes.";
         public const string DrawingsLabSelectTwoSetsOfShapes = "Please select two sets of shapes.";
         public const string DrawingsLabSelectStartAndEndShape = "Please select a start shape and an end shape";

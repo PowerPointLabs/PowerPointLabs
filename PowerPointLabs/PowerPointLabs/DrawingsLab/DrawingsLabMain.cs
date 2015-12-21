@@ -352,6 +352,113 @@ namespace PowerPointLabs.DrawingsLab
             }
         }
 
+        public static void MultiCloneGridTool()
+        {
+            var selection = PowerPointCurrentPresentationInfo.CurrentSelection;
+            if (selection.Type != PpSelectionType.ppSelectionShapes) return;
+            var shapeList = selection.ShapeRange.Cast<Shape>().ToList();
+            if (shapeList.Count != 2)
+            {
+                Error(TextCollection.DrawingsLabSelectExactlyTwoShapes);
+                return;
+            }
+
+            var sourceShape = shapeList[0];
+            var targetShape = shapeList[1];
+
+            var dialog = new MultiCloneGridDialog(sourceShape.Left, sourceShape.Top, targetShape.Left, targetShape.Top);
+            if (dialog.ShowDialog() != true) return;
+            if (dialog.DialogResult != true) return;
+
+            Globals.ThisAddIn.Application.StartNewUndoEntry();
+            // Clone shapes in a grid.
+            var newlyAddedShapes = new List<Shape>();
+
+            var dx = targetShape.Left - sourceShape.Left;
+            var dy = targetShape.Top - sourceShape.Top;
+            int skipIndexX = 1;
+            int skipIndexY = 1;
+            if (!dialog.IsExtend)
+            {
+                // Is between.
+                dx = dx/(dialog.XCopies - 1);
+                dy = dy/(dialog.YCopies - 1);
+                skipIndexX = dialog.XCopies - 1;
+                skipIndexY = dialog.YCopies - 1;
+            }
+
+            for (int y = 0; y < dialog.YCopies; ++y)
+            {
+                for (int x = 0; x < dialog.XCopies; ++x)
+                {
+                    if (x == 0 && y == 0) continue;
+                    if (x == skipIndexX && y == skipIndexY) continue;
+
+                    var newShape = sourceShape.Duplicate()[1];
+                    newShape.Left = sourceShape.Left + dx*x;
+                    newShape.Top = sourceShape.Top + dy * y;
+                    newlyAddedShapes.Add(newShape);
+
+                }
+            }
+
+            // Set Z-Orders of newly created shapes.
+            if (dialog.IsExtend)
+            {
+                // Multiclone Extend
+                if (sourceShape.ZOrderPosition < targetShape.ZOrderPosition)
+                {
+                    if (newlyAddedShapes.Count >= dialog.YCopies)
+                    {
+                        for (int i = 0; i < dialog.YCopies; ++i)
+                        {
+                            Graphics.MoveZToJustBehind(newlyAddedShapes[i], targetShape);
+                        }
+                    }
+                }
+                else
+                {
+                    // first shape in front of last shape. Order the in-between shapes accordingly.
+                    Shape prevShape = targetShape;
+                    foreach (var shape in newlyAddedShapes)
+                    {
+                        Graphics.MoveZUntilBehind(shape, prevShape);
+                        prevShape = shape;
+                    }
+
+                    if (newlyAddedShapes.Count >= dialog.YCopies)
+                    {
+                        for (int i = 0; i < dialog.YCopies; ++i)
+                        {
+                            Graphics.MoveZToJustInFront(newlyAddedShapes[i], targetShape);
+                        }
+                    }
+                }
+            }
+            else
+            {
+                // Multiclone Between
+                if (sourceShape.ZOrderPosition < targetShape.ZOrderPosition)
+                {
+                    // last shape in front of first shape. Order the in-between shapes accordingly.
+                    foreach (var shape in newlyAddedShapes)
+                    {
+                        Graphics.MoveZUntilBehind(shape, targetShape);
+                    }
+                }
+                else
+                {
+                    // first shape in front of last shape. Order the in-between shapes accordingly.
+                    newlyAddedShapes.Reverse();
+                    foreach (var shape in newlyAddedShapes)
+                    {
+                        Graphics.MoveZUntilBehind(shape, sourceShape);
+                    }
+                }
+            }
+        }
+
+
         public static void SendBackward()
         {
             var selection = PowerPointCurrentPresentationInfo.CurrentSelection;

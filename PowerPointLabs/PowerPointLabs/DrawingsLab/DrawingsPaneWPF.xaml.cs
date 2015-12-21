@@ -128,7 +128,7 @@ namespace PowerPointLabs.DrawingsLab
             
             ConfigureButton(MultiCloneExtendButton, DrawingsLabMain.MultiCloneExtendTool, "[N] Extrapolates multiple copies of a shape, extending from two selected shapes.");
             ConfigureButton(MultiCloneBetweenButton, DrawingsLabMain.MultiCloneBetweenTool, "[M] Interpolates multiple copies of a shape, in between two selected shapes.");
-            // ConfigureButton MultiCloneGridButton
+            ConfigureButton(MultiCloneGridButton, DrawingsLabMain.MultiCloneGridTool, "Extends two shapes into a grid of shapes.");
             // ConfigureButton PivotAroundButton
 
             ConfigureButton(BringForwardButton, DrawingsLabMain.BringForward, "[F] Bring shapes Forward one step.");

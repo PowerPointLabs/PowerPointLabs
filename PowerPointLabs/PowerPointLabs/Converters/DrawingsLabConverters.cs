@@ -24,6 +24,22 @@ namespace PowerPointLabs.Converters
         }
     }
 
+    [ValueConversion(typeof(int), typeof(string))]
+    class IntToStringConverter : IValueConverter
+    {
+        public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
+        {
+            return value;
+        }
+
+        public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
+        {
+            return value == null || string.IsNullOrEmpty(value.ToString())
+                ? 0
+                : value;
+        }
+    }
+
     public class EnumMatchToBooleanConverter : IValueConverter
     {
         public object Convert(object value, Type targetType,
