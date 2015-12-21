@@ -256,7 +256,7 @@ namespace PowerPointLabs.DrawingsLab
                 return;
             }
 
-            int clones = DrawingsLabDialogs.ShowMultiCloneNumericDialog() - 1;
+            int clones = DrawingsLabDialogs.ShowMultiCloneNumericDialog();
             if (clones <= 0) return;
 
             Globals.ThisAddIn.Application.StartNewUndoEntry();
@@ -306,7 +306,7 @@ namespace PowerPointLabs.DrawingsLab
             }
 
             Globals.ThisAddIn.Application.StartNewUndoEntry();
-            int clones = DrawingsLabDialogs.ShowMultiCloneNumericDialog() - 1;
+            int clones = DrawingsLabDialogs.ShowMultiCloneNumericDialog();
             if (clones <= 0) return;
 
             int divisions = clones + 1;

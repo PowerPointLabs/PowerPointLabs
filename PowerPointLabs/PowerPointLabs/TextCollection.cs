@@ -417,7 +417,7 @@
         public const string DrawingsLabErrorCannotGroup = "These shapes cannot be grouped.";
         public const string DrawingsLabErrorNothingUngrouped = "Please select shapes that have been grouped.";
 
-        public const string DrawingsLabMultiCloneDialogText = "Number of Copies";
+        public const string DrawingsLabMultiCloneDialogText = "Number of Extra Copies";
         public const string DrawingsLabMultiCloneDialogHeader = "Multi-Clone";
 
         public const string DrawingsLabSetTextDialogHeader = "Set Text";
