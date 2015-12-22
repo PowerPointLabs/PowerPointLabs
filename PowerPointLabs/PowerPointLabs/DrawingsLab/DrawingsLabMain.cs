@@ -780,16 +780,16 @@ namespace PowerPointLabs.DrawingsLab
             if (dialog.DialogResult != true) return;
 
             Globals.ThisAddIn.Application.StartNewUndoEntry();
-            float sourceAnchor = dialog.SourceAnchor / 100;
-            float targetAnchor = dialog.TargetAnchor / 100;
+            double sourceAnchor = dialog.SourceAnchor / 100;
+            double targetAnchor = dialog.TargetAnchor / 100;
 
             var targetShape = shapes.Last();
             shapes.RemoveAt(shapes.Count - 1);
 
-            float targetY = targetShape.Top + (1 - targetAnchor) * targetShape.Height;
+            double targetY = targetShape.Top + (1 - targetAnchor) * targetShape.Height;
             foreach (var shape in shapes)
             {
-                shape.Top = targetY - (1 - sourceAnchor) * shape.Height;
+                shape.Top = (float)(targetY - (1 - sourceAnchor) * shape.Height);
             }
         }
 
@@ -813,16 +813,16 @@ namespace PowerPointLabs.DrawingsLab
             if (dialog.DialogResult != true) return;
 
             Globals.ThisAddIn.Application.StartNewUndoEntry();
-            float sourceAnchor = dialog.SourceAnchor / 100;
-            float targetAnchor = dialog.TargetAnchor / 100;
+            double sourceAnchor = dialog.SourceAnchor / 100;
+            double targetAnchor = dialog.TargetAnchor / 100;
 
             var targetShape = shapes.Last();
             shapes.RemoveAt(shapes.Count - 1);
 
-            float targetX = targetShape.Left + targetAnchor * targetShape.Width;
+            double targetX = targetShape.Left + targetAnchor * targetShape.Width;
             foreach (var shape in shapes)
             {
-                shape.Left = targetX - sourceAnchor * shape.Width;
+                shape.Left = (float)(targetX - sourceAnchor * shape.Width);
             }
         }
 
@@ -846,20 +846,20 @@ namespace PowerPointLabs.DrawingsLab
             if (dialog.DialogResult != true) return;
 
             Globals.ThisAddIn.Application.StartNewUndoEntry();
-            float sourceAnchorX = dialog.SourceAnchorVertical / 100;
-            float targetAnchorX = dialog.TargetAnchorVertical / 100;
-            float sourceAnchorY = dialog.SourceAnchorHorizontal / 100;
-            float targetAnchorY = dialog.TargetAnchorHorizontal / 100;
+            double sourceAnchorX = dialog.SourceAnchorVertical / 100;
+            double targetAnchorX = dialog.TargetAnchorVertical / 100;
+            double sourceAnchorY = dialog.SourceAnchorHorizontal / 100;
+            double targetAnchorY = dialog.TargetAnchorHorizontal / 100;
 
             var targetShape = shapes.Last();
             shapes.RemoveAt(shapes.Count - 1);
 
-            float targetX = targetShape.Left + targetAnchorX * targetShape.Width;
-            float targetY = targetShape.Top + (1 - targetAnchorY)*targetShape.Height;
+            double targetX = targetShape.Left + targetAnchorX * targetShape.Width;
+            double targetY = targetShape.Top + (1 - targetAnchorY) * targetShape.Height;
             foreach (var shape in shapes)
             {
-                shape.Left = targetX - sourceAnchorX * shape.Width;
-                shape.Top = targetY - (1 - sourceAnchorY) * shape.Height;
+                shape.Left = (float)(targetX - sourceAnchorX * shape.Width);
+                shape.Top = (float)(targetY - (1 - sourceAnchorY) * shape.Height);
             }
         }
 
@@ -884,13 +884,13 @@ namespace PowerPointLabs.DrawingsLab
             if (dialog.DialogResult != true) return;
 
             Globals.ThisAddIn.Application.StartNewUndoEntry();
-            float sourceAnchor = dialog.SourceAnchor / 100;
-            float targetAnchor = dialog.TargetAnchor / 100;
+            double sourceAnchor = dialog.SourceAnchor / 100;
+            double targetAnchor = dialog.TargetAnchor / 100;
 
-            float targetY = (1 - targetAnchor) * PowerPointPresentation.Current.SlideHeight;
+            double targetY = (1 - targetAnchor) * PowerPointPresentation.Current.SlideHeight;
             foreach (var shape in shapes)
             {
-                shape.Top = targetY - (1 - sourceAnchor) * shape.Height;
+                shape.Top = (float)(targetY - (1 - sourceAnchor) * shape.Height);
             }
         }
 
@@ -914,13 +914,13 @@ namespace PowerPointLabs.DrawingsLab
             if (dialog.DialogResult != true) return;
 
             Globals.ThisAddIn.Application.StartNewUndoEntry();
-            float sourceAnchor = dialog.SourceAnchor / 100;
-            float targetAnchor = dialog.TargetAnchor / 100;
+            double sourceAnchor = dialog.SourceAnchor / 100;
+            double targetAnchor = dialog.TargetAnchor / 100;
 
-            float targetX = targetAnchor * PowerPointPresentation.Current.SlideWidth;
+            double targetX = targetAnchor * PowerPointPresentation.Current.SlideWidth;
             foreach (var shape in shapes)
             {
-                shape.Left = targetX - sourceAnchor * shape.Width;
+                shape.Left = (float)(targetX - sourceAnchor * shape.Width);
             }
         }
 
@@ -945,17 +945,17 @@ namespace PowerPointLabs.DrawingsLab
             if (dialog.DialogResult != true) return;
 
             Globals.ThisAddIn.Application.StartNewUndoEntry();
-            float sourceAnchorX = dialog.SourceAnchorVertical / 100;
-            float targetAnchorX = dialog.TargetAnchorVertical / 100;
-            float sourceAnchorY = dialog.SourceAnchorHorizontal / 100;
-            float targetAnchorY = dialog.TargetAnchorHorizontal / 100;
+            double sourceAnchorX = dialog.SourceAnchorVertical / 100;
+            double targetAnchorX = dialog.TargetAnchorVertical / 100;
+            double sourceAnchorY = dialog.SourceAnchorHorizontal / 100;
+            double targetAnchorY = dialog.TargetAnchorHorizontal / 100;
 
-            float targetX = targetAnchorX * PowerPointPresentation.Current.SlideWidth;
-            float targetY = (1 - targetAnchorY) * PowerPointPresentation.Current.SlideHeight;
+            double targetX = targetAnchorX * PowerPointPresentation.Current.SlideWidth;
+            double targetY = (1 - targetAnchorY) * PowerPointPresentation.Current.SlideHeight;
             foreach (var shape in shapes)
             {
-                shape.Left = targetX - sourceAnchorX * shape.Width;
-                shape.Top = targetY - (1 - sourceAnchorY) * shape.Height;
+                shape.Left = (float)(targetX - sourceAnchorX * shape.Width);
+                shape.Top = (float)(targetY - (1 - sourceAnchorY) * shape.Height);
             }
         }
 

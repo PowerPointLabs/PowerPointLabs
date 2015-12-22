@@ -40,34 +40,34 @@ namespace PowerPointLabs.DrawingsLab
             DrawAlignmentCanvas();
         }
 
-        private float CanvasAbsoluteX(float f)
+        private double CanvasAbsoluteX(double f)
         {
             // Assumption: AlignmentCanvas.ActualWidth > AlignmentCanvasActualHeight
 
             var left = (AlignmentCanvas.ActualWidth - AlignmentCanvas.ActualHeight)/2;
-            return (float)(left + f * AlignmentCanvas.ActualHeight);
+            return left + f*AlignmentCanvas.ActualHeight;
         }
 
-        private float CanvasAbsoluteY(float f)
+        private double CanvasAbsoluteY(double f)
         {
-            return (float)(f * AlignmentCanvas.ActualHeight);
+            return f*AlignmentCanvas.ActualHeight;
         }
 
         private void DrawAlignmentCanvas()
         {
             AlignmentCanvas.Children.Clear();
-            float middleX = CanvasAbsoluteX(0.5f);
-            float middleY = CanvasAbsoluteY(0.5f);
+            double middleX = CanvasAbsoluteX(0.5f);
+            double middleY = CanvasAbsoluteY(0.5f);
 
-            float targetSquareWidth = CanvasAbsoluteY(1f / 3f);
-            float sourceSquareWidth = CanvasAbsoluteY(1f / 4f);
-            float lineHalfLength = targetSquareWidth/2 + sourceSquareWidth + 10f;;
+            double targetSquareWidth = CanvasAbsoluteY(1f / 3f);
+            double sourceSquareWidth = CanvasAbsoluteY(1f / 4f);
+            double lineHalfLength = targetSquareWidth/2 + sourceSquareWidth + 10f;;
 
-            float anchorX = TargetAnchorVertical / 300f + 1 / 3f;
-            float leftX = anchorX - SourceAnchorVertical / 400f;
+            double anchorX = TargetAnchorVertical / 300f + 1 / 3f;
+            double leftX = anchorX - SourceAnchorVertical / 400f;
 
-            float anchorY = (100 - TargetAnchorHorizontal) / 300f + 1 / 3f;
-            float topY = anchorY - (100 - SourceAnchorHorizontal) / 400f;
+            double anchorY = (100 - TargetAnchorHorizontal) / 300f + 1 / 3f;
+            double topY = anchorY - (100 - SourceAnchorHorizontal) / 400f;
 
             DrawRect(middleX - targetSquareWidth/2, middleY - targetSquareWidth/2, targetSquareWidth, targetSquareWidth, Brushes.OrangeRed);
             DrawRect(CanvasAbsoluteX(leftX), CanvasAbsoluteY(topY), sourceSquareWidth, sourceSquareWidth, Brushes.DarkOrange);
@@ -78,7 +78,7 @@ namespace PowerPointLabs.DrawingsLab
                      CanvasAbsoluteX(anchorX), middleY + lineHalfLength);
         }
 
-        private void DrawLine(float x1, float y1, float x2, float y2)
+        private void DrawLine(double x1, double y1, double x2, double y2)
         {
             var line = new Line
             {
@@ -92,7 +92,7 @@ namespace PowerPointLabs.DrawingsLab
             AlignmentCanvas.Children.Add(line);
         }
 
-        private void DrawRect(float x, float y, float width, float height, Brush colour)
+        private void DrawRect(double x, double y, double width, double height, Brush colour)
         {
             var rect = new Rectangle
             {
@@ -118,22 +118,22 @@ namespace PowerPointLabs.DrawingsLab
             this.DialogResult = true;
         }
 
-        public float SourceAnchorHorizontal
+        public double SourceAnchorHorizontal
         {
             get { return dataSourceHorizontal.SourceAnchor; }
         }
 
-        public float TargetAnchorHorizontal
+        public double TargetAnchorHorizontal
         {
             get { return dataSourceHorizontal.TargetAnchor; }
         }
 
-        public float SourceAnchorVertical
+        public double SourceAnchorVertical
         {
             get { return dataSourceVertical.SourceAnchor; }
         }
 
-        public float TargetAnchorVertical
+        public double TargetAnchorVertical
         {
             get { return dataSourceVertical.TargetAnchor; }
         }

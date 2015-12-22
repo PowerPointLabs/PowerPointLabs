@@ -37,21 +37,21 @@ namespace PowerPointLabs.DrawingsLab
             DrawAlignmentCanvas();
         }
 
-        private float CanvasAbsoluteY(float f)
+        private double CanvasAbsoluteY(double f)
         {
-            return (float)(f * AlignmentCanvas.ActualHeight);
+            return f * AlignmentCanvas.ActualHeight;
         }
 
         private void DrawAlignmentCanvas()
         {
             AlignmentCanvas.Children.Clear();
-            float middle = CanvasAbsoluteY(0.5f);
-            float gapWidth = 10f;
+            double middle = CanvasAbsoluteY(0.5f);
+            double gapWidth = 10f;
 
-            float targetSquareWidth = CanvasAbsoluteY(1f / 3f);
-            float sourceSquareWidth = CanvasAbsoluteY(1f / 4f);
-            float anchorY = (100-TargetAnchor) / 300f + 1 / 3f;
-            float topY = anchorY - (100-SourceAnchor) / 400f;
+            double targetSquareWidth = CanvasAbsoluteY(1f / 3f);
+            double sourceSquareWidth = CanvasAbsoluteY(1f / 4f);
+            double anchorY = (100-TargetAnchor) / 300f + 1 / 3f;
+            double topY = anchorY - (100-SourceAnchor) / 400f;
 
             DrawRect(middle + gapWidth, CanvasAbsoluteY(1f / 3), targetSquareWidth, targetSquareWidth, Brushes.OrangeRed);
             DrawRect(middle - gapWidth - sourceSquareWidth, CanvasAbsoluteY(topY), sourceSquareWidth, sourceSquareWidth, Brushes.DarkOrange);
@@ -68,7 +68,7 @@ namespace PowerPointLabs.DrawingsLab
             AlignmentCanvas.Children.Add(line);
         }
 
-        private void DrawRect(float x, float y, float width, float height, Brush colour)
+        private void DrawRect(double x, double y, double width, double height, Brush colour)
         {
             var rect = new Rectangle
             {
@@ -93,12 +93,12 @@ namespace PowerPointLabs.DrawingsLab
             this.DialogResult = true;
         }
 
-        public float SourceAnchor
+        public double SourceAnchor
         {
             get { return dataSource.SourceAnchor; }
         }
 
-        public float TargetAnchor
+        public double TargetAnchor
         {
             get { return dataSource.TargetAnchor; }
         }

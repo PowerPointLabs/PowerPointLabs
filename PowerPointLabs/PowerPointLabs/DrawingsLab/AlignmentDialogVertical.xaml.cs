@@ -37,21 +37,21 @@ namespace PowerPointLabs.DrawingsLab
             DrawAlignmentCanvas();
         }
 
-        private float CanvasAbsoluteX(float f)
+        private double CanvasAbsoluteX(double f)
         {
-            return (float)(f * AlignmentCanvas.ActualWidth);
+            return f * AlignmentCanvas.ActualWidth;
         }
 
         private void DrawAlignmentCanvas()
         {
             AlignmentCanvas.Children.Clear();
-            float middle = CanvasAbsoluteX(0.5f);
-            float gapHeight = 10f;
+            double middle = CanvasAbsoluteX(0.5f);
+            double gapHeight = 10f;
 
-            float targetSquareWidth = CanvasAbsoluteX(1f / 3f);
-            float sourceSquareWidth = CanvasAbsoluteX(1f / 4f);
-            float anchorX = TargetAnchor/300f + 1/3f;
-            float leftX = anchorX - SourceAnchor/400f;
+            double targetSquareWidth = CanvasAbsoluteX(1f / 3f);
+            double sourceSquareWidth = CanvasAbsoluteX(1f / 4f);
+            double anchorX = TargetAnchor/300f + 1/3f;
+            double leftX = anchorX - SourceAnchor/400f;
 
             DrawRect(CanvasAbsoluteX(1f / 3), middle + gapHeight, targetSquareWidth, targetSquareWidth, Brushes.OrangeRed);
             DrawRect(CanvasAbsoluteX(leftX), middle - gapHeight - sourceSquareWidth, sourceSquareWidth, sourceSquareWidth, Brushes.DarkOrange);
@@ -68,7 +68,7 @@ namespace PowerPointLabs.DrawingsLab
             AlignmentCanvas.Children.Add(line);
         }
 
-        private void DrawRect(float x, float y, float width, float height, Brush colour)
+        private void DrawRect(double x, double y, double width, double height, Brush colour)
         {
             var rect = new Rectangle
             {
@@ -92,12 +92,12 @@ namespace PowerPointLabs.DrawingsLab
             this.DialogResult = true;
         }
 
-        public float SourceAnchor
+        public double SourceAnchor
         {
             get { return dataSource.SourceAnchor; }
         }
 
-        public float TargetAnchor
+        public double TargetAnchor
         {
             get { return dataSource.TargetAnchor; }
         }
