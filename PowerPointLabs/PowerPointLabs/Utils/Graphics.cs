@@ -403,6 +403,46 @@ namespace PowerPointLabs.Utils
         }
 
         // TODO: This could be an extension method of shape.
+        /// <summary>
+        /// anchorFraction = 0 means left side, anchorFraction = 1 means right side.
+        /// </summary>
+        public static void SetShapeX(Shape shape, float value, float anchorFraction)
+        {
+            shape.Left = value - shape.Width * anchorFraction;
+        }
+
+        /// <summary>
+        /// anchorFraction = 0 means top side, anchorFraction = 1 means bottom side.
+        /// </summary>
+        public static void SetShapeY(Shape shape, float value, float anchorFraction)
+        {
+            shape.Top = value - shape.Height * anchorFraction;
+        }
+
+        /// <summary>
+        /// anchorX and anchorY are between 0 and 1. They represent the pivot to rotate the shape about.
+        /// The shape rotates by angle difference angle from its current angle. angle is in degrees.
+        /// </summary>
+        public static void RotateShapeAboutPivot(Shape shape, float angle, float anchorX, float anchorY)
+        {
+            double pivotX = shape.Left + anchorX*shape.Width;
+            double pivotY = shape.Top + anchorY*shape.Height;
+            double midpointX = GetMidpointX(shape);
+            double midpointY = GetMidpointY(shape);
+
+            double dx = midpointX - pivotX;
+            double dy = midpointY - pivotY;
+
+            double radAngle = angle * Math.PI / 180;
+            double newdx = Math.Cos(radAngle) * dx - Math.Sin(radAngle) * dy;
+            double newdy = Math.Sin(radAngle) * dx + Math.Cos(radAngle) * dy;
+
+            SetMidpointX(shape, (float)(pivotX + newdx));
+            SetMidpointY(shape, (float)(pivotY + newdy));
+            shape.Rotation += angle;
+        }
+
+        // TODO: This could be an extension method of shape.
         public static string GetText(Shape shape, params string[] lines)
         {
             return shape.TextFrame2.TextRange.Text;

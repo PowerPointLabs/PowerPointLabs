@@ -285,6 +285,7 @@
     <Compile Include="ConvertToPicture.cs" />
     <Compile Include="CropToShape.cs" />
     <Compile Include="DataSources\DrawingsLabMultiCloneGridDataSource.cs" />
+    <Compile Include="DataSources\DrawingsLabPivotAroundDataSource.cs" />
     <Compile Include="DataSources\DrawingsLabAlignmentDataSource.cs" />
     <Compile Include="DataSources\DrawingsLabDataSource.cs" />
     <Compile Include="DataSources\ShapesLabSettingsDataSource.cs" />
@@ -293,6 +294,9 @@
     </Compile>
     <Compile Include="DrawingsLab\AlignmentDialogVertical.xaml.cs">
       <DependentUpon>AlignmentDialogVertical.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="DrawingsLab\PivotAroundToolDialog.xaml.cs">
+      <DependentUpon>PivotAroundToolDialog.xaml</DependentUpon>
     </Compile>
     <Compile Include="DrawingsLab\MultiCloneGridDialog.xaml.cs">
       <DependentUpon>MultiCloneGridDialog.xaml</DependentUpon>
@@ -810,6 +814,10 @@
       <SubType>Designer</SubType>
     </Page>
     <Page Include="DrawingsLab\AlignmentDialogVertical.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="DrawingsLab\PivotAroundToolDialog.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>

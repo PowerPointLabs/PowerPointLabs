@@ -459,6 +459,65 @@ namespace PowerPointLabs.DrawingsLab
         }
 
 
+        public static void PivotAroundTool()
+        {
+            var selection = PowerPointCurrentPresentationInfo.CurrentSelection;
+            if (selection.Type != PpSelectionType.ppSelectionShapes) return;
+            var shapeList = selection.ShapeRange.Cast<Shape>().ToList();
+            if (shapeList.Count != 2)
+            {
+                Error(TextCollection.DrawingsLabSelectExactlyTwoShapes);
+                return;
+            }
+
+            var sourceShape = shapeList[0];
+            var pivotShape = shapeList[1];
+
+            var dialog = new PivotAroundToolDialog(sourceShape, pivotShape);
+            if (dialog.ShowDialog() != true) return;
+            if (dialog.DialogResult != true) return;
+
+            double dx = dialog.SourceCenterX - dialog.PivotCenterX;
+            double dy = dialog.SourceCenterY - dialog.PivotCenterY;
+            double radius = Math.Sqrt(dx*dx + dy*dy);
+            double initialAngle = Math.Atan2(dy, dx)*180/Math.PI;
+
+            if (!dialog.FixOriginalLocation)
+            {
+                double radAngle = dialog.StartAngle*Math.PI/180;
+                float cx = (float) (Math.Cos(radAngle)*radius + dialog.PivotCenterX);
+                float cy = (float) (Math.Sin(radAngle)*radius + dialog.PivotCenterY);
+                float anchorX = (float) dialog.SourceAnchorFractionX;
+                float anchorY = (float) dialog.SourceAnchorFractionY;
+                float angleDifference = (float) (dialog.StartAngle-initialAngle);
+
+                Graphics.SetShapeX(sourceShape, cx, anchorX);
+                Graphics.SetShapeY(sourceShape, cy, anchorY);
+                if (dialog.RotateShape) Graphics.RotateShapeAboutPivot(sourceShape, angleDifference, anchorX, anchorY);
+            }
+
+            double angleStep = dialog.AngleDifference;
+            if (!dialog.IsExtend) angleStep /= (dialog.Copies - 1);
+
+            for (int i = 1; i < dialog.Copies; ++i)
+            {
+                var newShape = sourceShape.Duplicate()[1];
+                double angle = dialog.StartAngle + angleStep*i;
+
+                double radAngle = angle * Math.PI / 180;
+                float cx = (float)(Math.Cos(radAngle) * radius + dialog.PivotCenterX);
+                float cy = (float)(Math.Sin(radAngle) * radius + dialog.PivotCenterY);
+                float anchorX = (float)dialog.SourceAnchorFractionX;
+                float anchorY = (float)dialog.SourceAnchorFractionY;
+                float angleDifference = (float) (angleStep*i);
+
+                Graphics.SetShapeX(newShape, cx, anchorX);
+                Graphics.SetShapeY(newShape, cy, anchorY);
+                if (dialog.RotateShape) Graphics.RotateShapeAboutPivot(newShape, angleDifference, anchorX, anchorY);
+            }
+        }
+
+
         public static void SendBackward()
         {
             var selection = PowerPointCurrentPresentationInfo.CurrentSelection;
