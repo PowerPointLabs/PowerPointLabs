@@ -32,7 +32,7 @@
             this.selectedColorPanel = new System.Windows.Forms.Panel();
             this.hexTextBox = new System.Windows.Forms.TextBox();
             this.rgbTextBox = new System.Windows.Forms.TextBox();
-            this.HSLTextBox = new System.Windows.Forms.TextBox();
+            this.hslTextBox = new System.Windows.Forms.TextBox();
             this.toolTip1 = new System.Windows.Forms.ToolTip(this.components);
             this.statusStrip1 = new System.Windows.Forms.StatusStrip();
             this.label1 = new System.Windows.Forms.Label();
@@ -70,14 +70,14 @@
             // 
             // HSLTextBox
             // 
-            this.HSLTextBox.BackColor = System.Drawing.SystemColors.ControlLight;
-            this.HSLTextBox.Font = new System.Drawing.Font("Calibri", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.HSLTextBox.HideSelection = false;
-            this.HSLTextBox.Location = new System.Drawing.Point(12, 150);
-            this.HSLTextBox.Name = "HSLTextBox";
-            this.HSLTextBox.ReadOnly = true;
-            this.HSLTextBox.Size = new System.Drawing.Size(138, 27);
-            this.HSLTextBox.TabIndex = 5;
+            this.hslTextBox.BackColor = System.Drawing.SystemColors.ControlLight;
+            this.hslTextBox.Font = new System.Drawing.Font("Calibri", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.hslTextBox.HideSelection = false;
+            this.hslTextBox.Location = new System.Drawing.Point(12, 150);
+            this.hslTextBox.Name = "hslTextBox";
+            this.hslTextBox.ReadOnly = true;
+            this.hslTextBox.Size = new System.Drawing.Size(138, 27);
+            this.hslTextBox.TabIndex = 5;
             // 
             // statusStrip1
             // 
@@ -102,7 +102,7 @@
             this.ClientSize = new System.Drawing.Size(162, 208);
             this.Controls.Add(this.label1);
             this.Controls.Add(this.statusStrip1);
-            this.Controls.Add(this.HSLTextBox);
+            this.Controls.Add(this.hslTextBox);
             this.Controls.Add(this.rgbTextBox);
             this.Controls.Add(this.hexTextBox);
             this.Controls.Add(this.selectedColorPanel);
@@ -124,7 +124,7 @@
         private System.Windows.Forms.Panel selectedColorPanel;
         private System.Windows.Forms.TextBox hexTextBox;
         private System.Windows.Forms.TextBox rgbTextBox;
-        private System.Windows.Forms.TextBox HSLTextBox;
+        private System.Windows.Forms.TextBox hslTextBox;
         private System.Windows.Forms.ToolTip toolTip1;
         private System.Windows.Forms.StatusStrip statusStrip1;
         private System.Windows.Forms.Label label1;

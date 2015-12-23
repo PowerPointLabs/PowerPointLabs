@@ -427,19 +427,19 @@ namespace PowerPointLabs.Utils
         /// </summary>
         private struct EffectTransition
         {
-            private readonly MsoAnimTriggerType SlideTransition;
-            private readonly float TransitionTime;
+            private readonly MsoAnimTriggerType slideTransition;
+            private readonly float transitionTime;
 
-            public EffectTransition(MsoAnimTriggerType slideTransition , float transitionTime)
+            public EffectTransition(MsoAnimTriggerType slideTransition, float transitionTime)
             {
-                SlideTransition = slideTransition;
-                TransitionTime = transitionTime;
+                this.slideTransition = slideTransition;
+                this.transitionTime = transitionTime;
             }
 
             public void ApplyTransition(Effect effect)
             {
-                effect.Timing.TriggerType = SlideTransition;
-                effect.Timing.TriggerDelayTime = TransitionTime;
+                effect.Timing.TriggerType = slideTransition;
+                effect.Timing.TriggerDelayTime = transitionTime;
             }
         }
 

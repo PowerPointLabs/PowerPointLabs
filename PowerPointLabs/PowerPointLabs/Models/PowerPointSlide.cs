@@ -566,7 +566,7 @@ namespace PowerPointLabs.Models
             int index = 0;
             var originalShapes = new Dictionary<string, Shape>();
             var originalNames = new Dictionary<string, string>();
-            foreach(Shape shape in shapes)
+            foreach (Shape shape in shapes)
             {
                 var tempName = index.ToString();
                 index++;
@@ -995,7 +995,7 @@ namespace PowerPointLabs.Models
             Shape tempMatchingShape = null;
             foreach (Shape sh in _slide.Shapes)
             {
-                if (shapeToMatch.Id == sh.Id && haveSameNames(shapeToMatch, sh))
+                if (shapeToMatch.Id == sh.Id && HaveSameNames(shapeToMatch, sh))
                 {
                     if (tempMatchingShape == null)
                         tempMatchingShape = sh;
@@ -1014,7 +1014,7 @@ namespace PowerPointLabs.Models
             Shape tempMatchingShape = null;
             foreach (Shape sh in _slide.Shapes)
             {
-                if (haveSameNames(shapeToMatch, sh))
+                if (HaveSameNames(shapeToMatch, sh))
                 {
                     if (tempMatchingShape == null)
                         tempMatchingShape = sh;
@@ -1028,7 +1028,7 @@ namespace PowerPointLabs.Models
             return tempMatchingShape;
         }
 
-        public bool isSpotlightSlide()
+        public bool IsSpotlightSlide()
         {
             return _slide.Name.Contains("PPTLabsSpotlight");
         }
@@ -1044,7 +1044,7 @@ namespace PowerPointLabs.Models
             return PowerPointAckSlide.FromSlideFactory(ackSlide);
         }
 
-        public bool hasTextFragments()
+        public bool HasTextFragments()
         {
             foreach (Shape sh in _slide.Shapes)
             {
@@ -1196,7 +1196,7 @@ namespace PowerPointLabs.Models
             return (float)(Math.Sqrt(distSquared));
         }
 
-        private bool haveSameNames(Shape sh1, Shape sh2)
+        private bool HaveSameNames(Shape sh1, Shape sh2)
         {
             String name1 = sh1.Name;
             String name2 = sh2.Name;
@@ -1225,7 +1225,7 @@ namespace PowerPointLabs.Models
         /// Note: If the name of the shape is used to identify the shape (e.g. through AgendaShape),
         /// this can be dangerous if there are duplicates as it overrides the original name.
         /// </summary>
-        public void MakeShapeNamesUnique(Func<Shape,bool> restrictTo = null)
+        public void MakeShapeNamesUnique(Func<Shape, bool> restrictTo = null)
         {
             if (restrictTo == null) restrictTo = shape => true;
 

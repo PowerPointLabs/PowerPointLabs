@@ -7,7 +7,11 @@
         public string Text
         {
             get { return _text; }
-            set { _text = value; OnPropertyChanged("Text"); }
+            set
+            {
+                _text = value;
+                OnPropertyChanged("Text");
+            }
         }
     }
 }

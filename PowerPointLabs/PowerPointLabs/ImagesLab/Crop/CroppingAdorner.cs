@@ -67,11 +67,11 @@ namespace DAP.Adorners
         {
             add
             {
-                base.AddHandler(CroppingAdorner.CropChangedEvent, value);
+                AddHandler(CroppingAdorner.CropChangedEvent, value);
             }
             remove
             {
-                base.RemoveHandler(CroppingAdorner.CropChangedEvent, value);
+                RemoveHandler(CroppingAdorner.CropChangedEvent, value);
             }
         }
         #endregion

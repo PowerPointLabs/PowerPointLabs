@@ -95,7 +95,7 @@ namespace PowerPointLabs
             AddFrameAnimationEffects(animationSlide, initialShape, incrementLeft, incrementTop, incrementWidth, incrementHeight, 0.0f, 0.0f, duration, numFrames);
         }
 
-        private static void AddFrameAnimationEffects(PowerPointSlide animationSlide, PowerPoint.Shape initialShape, float incrementLeft, float incrementTop, float incrementWidth, float incrementHeight, float incrementRotation ,float incrementFont, float duration, int numFrames)
+        private static void AddFrameAnimationEffects(PowerPointSlide animationSlide, PowerPoint.Shape initialShape, float incrementLeft, float incrementTop, float incrementWidth, float incrementHeight, float incrementRotation, float incrementFont, float duration, int numFrames)
         {
             PowerPoint.Shape lastShape = initialShape;
             PowerPoint.Sequence sequence = animationSlide.TimeLine.MainSequence;

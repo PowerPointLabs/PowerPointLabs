@@ -49,7 +49,7 @@ namespace PowerPointLabs.Models
                 bool hasAckSlide = HasAckSlide();
                 RemoveAckSlide();
 
-                for (var i = 1; i <= sectionProperties.Count; i ++)
+                for (var i = 1; i <= sectionProperties.Count; i++)
                 {
                     if (sectionProperties.SlidesCount(i) == 0)
                     {

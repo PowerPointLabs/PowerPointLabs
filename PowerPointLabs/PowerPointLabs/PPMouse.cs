@@ -117,10 +117,10 @@ namespace PPExtraEventHelper
         //this structure can be found using SPY++ provided by visual studio
         private static void FindSlideViewWindowHandle(IntPtr handle)
         {
-            IntPtr MDIClient = Native.FindWindowEx(handle, IntPtr.Zero, "MDIClient", "");
-            if (MDIClient != IntPtr.Zero)
+            IntPtr mdiClient = Native.FindWindowEx(handle, IntPtr.Zero, "MDIClient", "");
+            if (mdiClient != IntPtr.Zero)
             {
-                IntPtr mdiClass = Native.FindWindowEx(MDIClient, IntPtr.Zero, "mdiClass", "");
+                IntPtr mdiClass = Native.FindWindowEx(mdiClient, IntPtr.Zero, "mdiClass", "");
                 if (mdiClass != IntPtr.Zero)
                 {
                     slideViewWindowHandle = Native.FindWindowEx(mdiClass, IntPtr.Zero, "paneClassDC", "Slide");
@@ -152,21 +152,21 @@ namespace PPExtraEventHelper
     public class LMouseUpListener
     {
 
-        int HC_ACTION = 0;
-        Native.HookProc CallBack = null;
+        int hcAction = 0;
+        Native.HookProc callBack = null;
         IntPtr _hook = IntPtr.Zero;
 
         public event EventHandler<SysMouseEventInfo> LButtonUpClicked;
         public LMouseUpListener()
         {
-            this.CallBack += new Native.HookProc(MouseEvents);
+            this.callBack += new Native.HookProc(MouseEvents);
             using (System.Diagnostics.Process process = System.Diagnostics.Process.GetCurrentProcess())
             using (System.Diagnostics.ProcessModule module = process.MainModule)
             {
                 IntPtr hModule = Native.GetModuleHandle(module.ModuleName);
                 _hook = Native.SetWindowsHookEx(
                     (int)Native.HookType.WH_MOUSE_LL, 
-                    this.CallBack, 
+                    this.callBack, 
                     hModule, 
                     0);
             }
@@ -177,7 +177,7 @@ namespace PPExtraEventHelper
             if (code < 0)
                 return Native.CallNextHookEx(_hook, code, wParam, lParam);
 
-            if (code == this.HC_ACTION)
+            if (code == this.hcAction)
             {
                 // Left button pressed somewhere
                 if (wParam.ToInt32() == (uint)Native.Message.WM_LBUTTONUP)

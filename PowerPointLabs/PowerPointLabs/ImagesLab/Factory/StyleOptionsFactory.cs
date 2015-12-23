@@ -286,7 +286,7 @@ namespace PowerPointLabs.ImagesLab.Factory
             var result = GetOptionsWithSuitableFontColor();
             foreach (var option in result)
             {
-                option.TextBoxPosition = 7;//bottom-left;
+                option.TextBoxPosition = 7; //bottom-left;
             }
             UpdateStyleName(
                 result,
@@ -325,12 +325,12 @@ namespace PowerPointLabs.ImagesLab.Factory
         private static List<StyleOptions> GetOptionsWithSuitableFontColor()
         {
             var result = GetOptions();
-            result[0].FontColor = "#000000";//white(bg color) + black
-            result[1].FontColor = "#FFD700";//black + yellow
-            result[2].FontColor = "#000000";//yellow + black
-            result[4].FontColor = "#001550";//green + dark blue
-            result[6].FontColor = "#FFD700";//purple + yellow
-            result[7].FontColor = "#3DFF8F";//dark blue + green
+            result[0].FontColor = "#000000"; //white(bg color) + black
+            result[1].FontColor = "#FFD700"; //black + yellow
+            result[2].FontColor = "#000000"; //yellow + black
+            result[4].FontColor = "#001550"; //green + dark blue
+            result[6].FontColor = "#FFD700"; //purple + yellow
+            result[7].FontColor = "#3DFF8F"; //dark blue + green
             return result;
         }
         #endregion

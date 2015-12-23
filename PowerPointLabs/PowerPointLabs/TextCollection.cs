@@ -266,8 +266,8 @@
             "the .ppt format. To use them, please resave the " +
             "presentation with the .pptx format.";
         public const string OnlinePresentationNotCompatibleErrorMsg =
-        	"Some features of PowerPointLabs do not work with online presentations. " +
-        	"To use them, please save the file locally.";
+            "Some features of PowerPointLabs do not work with online presentations. " +
+            "To use them, please save the file locally.";
         public const string ShapeGalleryInitErrorMsg =
             "Could not connect to shape database from your default location.\n\n" +
             "To check your default location, right click on the Shapes Lab's panel and select 'Settings' option.";

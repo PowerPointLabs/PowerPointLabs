@@ -52,6 +52,9 @@
     <FriendlyName>PowerPointLabs</FriendlyName>
     <OfficeApplicationDescription />
     <LoadBehavior>3</LoadBehavior>
+    <NuGetPackageImportStamp>
+    </NuGetPackageImportStamp>
+    <StyleCopTreatErrorsAsWarnings>false</StyleCopTreatErrorsAsWarnings>
   </PropertyGroup>
   <ItemGroup>
     <BootstrapperPackage Include=".NETFramework,Version=v4.0,Profile=Client">
@@ -335,8 +338,6 @@
     <Compile Include="ImagesLab\QuickDropDialog.xaml.cs">
       <DependentUpon>QuickDropDialog.xaml</DependentUpon>
     </Compile>
-    <Compile Include="ImagesLab\Util\BoolToBackgroundColorConverter.cs" />
-    <Compile Include="ImagesLab\Util\BoolToVisibilityConverter.cs" />
     <Compile Include="ImagesLab\Util\ImageUtil.cs" />
     <Compile Include="ImagesLab\Util\ListBoxUtil.cs" />
     <Compile Include="ImagesLab\Util\TwoColumnsListBoxImageWidthConverter.cs" />
@@ -514,8 +515,6 @@
     <Compile Include="ZoomToArea.cs" />
     <None Include="app.config" />
     <None Include="PowerPointLabs.dev.pfx" />
-    <None Include="PowerPointLabs_1_TemporaryKey.pfx" />
-    <None Include="PowerPointLabs_TemporaryKey.pfx" />
     <None Include="Resources\AddToCustomShapes.png" />
     <None Include="Resources\ClosedHand.cur" />
     <None Include="Resources\OpenHand.cur" />
@@ -877,4 +876,11 @@
       </FlavorProperties>
     </VisualStudio>
   </ProjectExtensions>
+  <Import Project="..\packages\Visual-StyleCop.MSBuild.4.7.58.3\build\Visual-StyleCop.MSBuild.Targets" Condition="Exists('..\packages\Visual-StyleCop.MSBuild.4.7.58.3\build\Visual-StyleCop.MSBuild.Targets')" />
+  <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
+    <PropertyGroup>
+      <ErrorText>This project references NuGet package(s) that are missing on this computer. Use NuGet Package Restore to download them.  For more information, see http://go.microsoft.com/fwlink/?LinkID=322105. The missing file is {0}.</ErrorText>
+    </PropertyGroup>
+    <Error Condition="!Exists('..\packages\Visual-StyleCop.MSBuild.4.7.58.3\build\Visual-StyleCop.MSBuild.Targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\Visual-StyleCop.MSBuild.4.7.58.3\build\Visual-StyleCop.MSBuild.Targets'))" />
+  </Target>
 </Project>

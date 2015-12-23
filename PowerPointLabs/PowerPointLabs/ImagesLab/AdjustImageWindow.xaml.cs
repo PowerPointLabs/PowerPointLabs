@@ -17,7 +17,7 @@ namespace PowerPointLabs.ImagesLab
 
     public partial class AdjustImageWindow
     {
-        private ObservableString ThumbnailImageFile = new ObservableString();
+        private ObservableString thumbnailImageFile = new ObservableString();
 
         private const int AdjustUnit = 10;
 
@@ -39,7 +39,7 @@ namespace PowerPointLabs.ImagesLab
         public AdjustImageWindow()
         {
             InitializeComponent();
-            ImageHolder.DataContext = ThumbnailImageFile;
+            ImageHolder.DataContext = thumbnailImageFile;
             MoveLeftImage.Source = ImageUtil.BitmapToImageSource(Properties.Resources.Left);
             MoveUpImage.Source = ImageUtil.BitmapToImageSource(Properties.Resources.Up);
             MoveDownImage.Source = ImageUtil.BitmapToImageSource(Properties.Resources.Down);
@@ -54,7 +54,7 @@ namespace PowerPointLabs.ImagesLab
             CropResultThumbnail = imageFile;
             Dispatcher.Invoke(new Action(() =>
             {
-                ThumbnailImageFile.Text = imageFile;
+                thumbnailImageFile.Text = imageFile;
             }));
         }
 

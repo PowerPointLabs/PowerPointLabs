@@ -2222,20 +2222,20 @@ namespace PowerPointLabs
                     var subShapeRange = shape.Ungroup();
                     TransparentEffect(subShapeRange);
                     subShapeRange.Group();
-                } else
-                if (shape.Type == Office.MsoShapeType.msoPlaceholder)
+                }
+                else if (shape.Type == Office.MsoShapeType.msoPlaceholder)
                 {
                     PlaceholderTransparencyHandler(shape);
-                } else
-                if (shape.Type == Office.MsoShapeType.msoPicture)
+                }
+                else if (shape.Type == Office.MsoShapeType.msoPicture)
                 {
                     PictureTransparencyHandler(shape);
-                } else
-                if (shape.Type == Office.MsoShapeType.msoLine)
+                }
+                else if (shape.Type == Office.MsoShapeType.msoLine)
                 {
                     LineTransparencyHandler(shape);
-                } else
-                if (IsTransparentableShape(shape))
+                }
+                else if (IsTransparentableShape(shape))
                 {
                     ShapeTransparencyHandler(shape);
                 }

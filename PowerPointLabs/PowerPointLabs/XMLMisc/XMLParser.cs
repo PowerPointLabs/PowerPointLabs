@@ -24,7 +24,7 @@ namespace PowerPointLabs.XMLMisc
             var regexRelation = new Regex(relaitonFormat);
             var matches = regexRelation.Matches(doc);
 
-            for (int i = 0; i < matches.Count; i ++)
+            for (int i = 0; i < matches.Count; i++)
             {
                 var match = matches[i];
 
@@ -43,8 +43,7 @@ namespace PowerPointLabs.XMLMisc
 
                 var data = from item in audioShape
                            where
-                               pptSpeechFormat.IsMatch(item.Element(_p + "nvPicPr").Element(_p + "cNvPr").
-                                                       Attribute("name").Value)
+                               pptSpeechFormat.IsMatch(item.Element(_p + "nvPicPr").Element(_p + "cNvPr").Attribute("name").Value)
                            select new
                                       {
                                           name = item.Element(_p + "nvPicPr").Element(_p + "cNvPr").Attribute("name").Value,
