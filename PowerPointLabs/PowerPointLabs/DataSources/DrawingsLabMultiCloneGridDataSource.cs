@@ -12,8 +12,6 @@ namespace PowerPointLabs.DataSources
         private static int _xCopies = 5;
         private static int _yCopies = 5;
 
-        public Action PropertyChangeEvent = () => { };
-
         public int XCopies
         {
             get { return _xCopies; }
@@ -50,7 +48,6 @@ namespace PowerPointLabs.DataSources
         protected void OnPropertyChanged(string propertyName)
         {
             PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
-            PropertyChangeEvent();
         }
         # endregion
     }
