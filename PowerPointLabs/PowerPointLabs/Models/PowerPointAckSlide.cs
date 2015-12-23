@@ -36,7 +36,7 @@ namespace PowerPointLabs.Models
             }
         }
 
-        new public static PowerPointSlide FromSlideFactory(PowerPoint.Slide slide)
+        public static PowerPointSlide FromSlideFactory(PowerPoint.Slide slide)
         {
             if (slide == null)
             {

@@ -548,7 +548,7 @@ namespace PowerPointLabs.Models
                 newShape.Top = shape.Top;
                 return newShape;
             }
-            catch (COMException e)
+            catch (COMException)
             {
                 // invalid shape for copy paste (e.g. a placeholder title box with no content)
                 return null;

@@ -62,7 +62,7 @@ namespace PowerPointLabs.AgendaLab
             {
                 return Decode(slide.Name);
             }
-            catch (COMException e)
+            catch (COMException)
             {
                 // sometims the shape is inaccessible (perhaps deleted. never occurred to me before.)
                 // in this case, a COMException is thrown. so we return null.
@@ -77,7 +77,7 @@ namespace PowerPointLabs.AgendaLab
             {
                 return Decode(slide.Name);
             }
-            catch (COMException e)
+            catch (COMException)
             {
                 // sometims the shape is inaccessible (perhaps deleted. never occurred to me before.)
                 // in this case, a COMException is thrown. so we return null.

@@ -14,7 +14,7 @@ namespace PowerPointLabs.Models
             _slide.Name = "PPTLabsZoomIn" + DateTime.Now.ToString("yyyyMMddHHmmssffff");
         }
 
-        new public static PowerPointSlide FromSlideFactory(PowerPoint.Slide slide)
+        public static PowerPointSlide FromSlideFactory(PowerPoint.Slide slide)
         {
             if (slide == null)
                 return null;

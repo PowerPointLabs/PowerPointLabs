@@ -1187,7 +1187,7 @@ namespace PowerPointLabs.AgendaLab
                 if (BeamFormats.GetShapeWithPurpose(beamShape, ShapePurpose.BeamShapeText) == null)
                     return true;
             }
-            catch (COMException e)
+            catch (COMException)
             {
                 // beam shape is not a group
                 return true;

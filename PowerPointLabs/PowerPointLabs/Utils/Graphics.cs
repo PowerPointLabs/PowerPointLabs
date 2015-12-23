@@ -155,15 +155,15 @@ namespace PowerPointLabs.Utils
             {
                 SyncShape(refShape, candidateShape);
             }
-            catch (UnauthorizedAccessException e)
+            catch (UnauthorizedAccessException)
             {
                 succeeded = false;
             }
-            catch (ArgumentException e)
+            catch (ArgumentException)
             {
                 succeeded = false;
             }
-            catch (COMException e)
+            catch (COMException)
             {
                 succeeded = false;
             }

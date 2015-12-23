@@ -490,7 +490,7 @@ namespace PowerPointLabs
                     var rgb = (b << 16) | (g << 8) | (r);
                     ColorShapeWithColor(_selectedText, rgb, currMode);
                 }
-                catch (Exception e)
+                catch (Exception)
                 {
                 }  
             }
@@ -1081,10 +1081,8 @@ namespace PowerPointLabs
             {
                 case MODE.FILL:
                     return Color.FromArgb(ColorHelper.ReverseRGBToArgb(selectedShape.Fill.ForeColor.RGB));
-                    break;
                 case MODE.LINE:
                     return Color.FromArgb(ColorHelper.ReverseRGBToArgb(selectedShape.Line.ForeColor.RGB));
-                    break;
                 case MODE.FONT:
                     if (selectedShape.HasTextFrame == Microsoft.Office.Core.MsoTriState.msoTrue
                         && Globals.ThisAddIn.Application.ActiveWindow.Selection.ShapeRange.HasTextFrame
