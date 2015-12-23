@@ -8,9 +8,9 @@ namespace PowerPointLabs.DataSources
 {
     public class DrawingsLabMultiCloneGridDataSource : INotifyPropertyChanged
     {
-        private bool _isExtend = true;
-        private int _xCopies = 5;
-        private int _yCopies = 5;
+        private static bool _isExtend = true;
+        private static int _xCopies = 5;
+        private static int _yCopies = 5;
 
         public Action PropertyChangeEvent = () => { };
 

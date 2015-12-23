@@ -21,14 +21,15 @@ namespace PowerPointLabs.DataSources
             BottomRight,
         }
 
-        private int _copies = 1;
+        // Static values are values that are meant to be retained when the dialog box is closed and reopened.
+        private static int _copies = 1;
         private double _startAngle = 0;
-        private double _angleDifference = 45;
-        private bool _isExtend = false;
-        private bool _fixOriginalLocation = true;
-        private bool _rotateShape = true;
-        private Alignment _pivotAnchor = Alignment.MiddleCenter;
-        private Alignment _sourceAnchor = Alignment.MiddleCenter;
+        private static double _angleDifference = 45;
+        private static bool _isExtend = false;
+        private static bool _fixOriginalLocation = true;
+        private static bool _rotateShape = true;
+        private static Alignment _pivotAnchor = Alignment.MiddleCenter;
+        private static Alignment _sourceAnchor = Alignment.MiddleCenter;
 
         public double StartAngle
         {
