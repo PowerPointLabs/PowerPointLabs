@@ -1125,13 +1125,13 @@ namespace PowerPointLabs
         {
             switch (buttonName)
             {
-                case "FillButton":
+                case "fillButton":
                     SetMode(MODE.FILL);
                     break;
-                case "FontButton":
+                case "fontButton":
                     SetMode(MODE.FONT);
                     break;
-                case "LineButton":
+                case "lineButton":
                     SetMode(MODE.LINE);
                     break;
                 default:
