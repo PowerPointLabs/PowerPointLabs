@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Diagnostics;
+using System.IO;
 using System.Runtime.Remoting;
 using FunctionalTest.util;
 using FunctionalTestInterface;
@@ -10,6 +11,8 @@ namespace FunctionalTest
     [TestClass]
     public abstract class BaseFunctionalTest
     {
+        private static TestContext TestContext { get; set; }
+
         // prefix legend:
         // pp - PowerPoint
         // ppl - PowerPointLabs
@@ -29,6 +32,20 @@ namespace FunctionalTest
             return false;
         }
 
+        [AssemblyInitialize]
+        public static void AssemblySetup(TestContext context)
+        {
+            TestContext = context;
+            var folderToClean = new DirectoryInfo(PathUtil.GetTestFailurePath());
+            if (folderToClean.Exists)
+            {
+                foreach (var file in folderToClean.GetFiles())
+                {
+                    file.Delete();
+                }
+            }
+        }
+
         [TestInitialize]
         public void Setup()
         {
@@ -45,6 +62,16 @@ namespace FunctionalTest
         [TestCleanup]
         public void TearDown()
         {
+            if (TestContext.CurrentTestOutcome != UnitTestOutcome.Passed)
+            {
+                if (!Directory.Exists(PathUtil.GetTestFailurePath()))
+                {
+                    Directory.CreateDirectory(PathUtil.GetTestFailurePath());
+                }
+                PpOperations.SavePresentationAs(
+                    PathUtil.GetTestFailurePresentationPath(
+                        GetTestingSlideName()));
+            }
             PpOperations.ClosePresentation();
         }
 
