@@ -4,6 +4,8 @@ The typical PowerPoint presentation isn't very interesting. Walls of text or bul
 Your slides don't have to be this way, and it doesn't take a whole lot of effort to make them better.
 PowerPointLabs makes creating engaging PowerPoint presentations easy. Check out what it can do for you here: http://powerpointlabs.info
 
+[![Build status](https://img.shields.io/appveyor/ci/kai33/powerpointlabs/master.svg)](https://ci.appveyor.com/project/kai33/powerpointlabs)
+
 ### Dev Prerequisites
 0. Install Office 2016, 2013 or 2010 with PowerPoint.
 1. Install GitHub for Windows (recommended), or at least, Git.
