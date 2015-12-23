@@ -323,7 +323,7 @@ namespace PowerPointLabs
                 return -1;
             }
 
-            for (var i = 0; i < _audioList[relativeId].Count; i ++)
+            for (var i = 0; i < _audioList[relativeId].Count; i++)
             {
                 var audio = _audioList[relativeId][i];
 
@@ -880,7 +880,7 @@ namespace PowerPointLabs
 
         public void InitializeAudioAndScript(List<PowerPointSlide> slides, List<string[]> names, bool forceRefresh)
         {
-            for (int i = 0; i < slides.Count; i ++)
+            for (int i = 0; i < slides.Count; i++)
             {
                 var slide = slides[i];
 
@@ -1302,8 +1302,8 @@ namespace PowerPointLabs
                         // 2. current slide == null during slide show, use in show box status to guard
                         // null ptr exception.
                         if (_inShowControlBox == null ||
-                            _inShowControlBox.GetCurrentStatus() != InShowControl.ButtonStatus.Rec &&
-                            relativeSlideId == GetRelativeSlideIndex(PowerPointCurrentPresentationInfo.CurrentSlide.ID))
+                            (_inShowControlBox.GetCurrentStatus() != InShowControl.ButtonStatus.Rec &&
+                            relativeSlideId == GetRelativeSlideIndex(PowerPointCurrentPresentationInfo.CurrentSlide.ID)))
                         {
                             UpdateRecordList(recordIndex, displayName, newRec.Length);
                         }
@@ -1335,8 +1335,8 @@ namespace PowerPointLabs
 
                         // update the whole record display list if not in slide show mode
                         if (_inShowControlBox == null ||
-                            _inShowControlBox.GetCurrentStatus() != InShowControl.ButtonStatus.Rec &&
-                            relativeSlideId == GetRelativeSlideIndex(PowerPointCurrentPresentationInfo.CurrentSlide.ID))
+                            (_inShowControlBox.GetCurrentStatus() != InShowControl.ButtonStatus.Rec &&
+                            relativeSlideId == GetRelativeSlideIndex(PowerPointCurrentPresentationInfo.CurrentSlide.ID)))
                         {
                             UpdateRecordList(relativeSlideId);
 
@@ -1349,9 +1349,10 @@ namespace PowerPointLabs
                     NMergeAudios(_tempFullPath, "temp", saveName);
 
                     // update the script list if not in slide show mode
-                    if (scriptIndex != -1 && (_inShowControlBox == null ||
-                        _inShowControlBox.GetCurrentStatus() != InShowControl.ButtonStatus.Rec &&
-                        relativeSlideId == GetRelativeSlideIndex(PowerPointCurrentPresentationInfo.CurrentSlide.ID)))
+                    if (scriptIndex != -1 && 
+                        (_inShowControlBox == null ||
+                            (_inShowControlBox.GetCurrentStatus() != InShowControl.ButtonStatus.Rec &&
+                            relativeSlideId == GetRelativeSlideIndex(PowerPointCurrentPresentationInfo.CurrentSlide.ID))))
                     {
                         UpdateScriptList(scriptIndex, null, ScriptStatus.Recorded);
                     }
@@ -1529,8 +1530,8 @@ namespace PowerPointLabs
                 _recButtonStatus == RecorderStatus.Pause)
             {
                 StopButtonRecordingHandler(_replaceScriptIndex, _replaceScriptSlide, false);
-            } else
-            if (_playButtonStatus == RecorderStatus.Playing ||
+            }
+            else if (_playButtonStatus == RecorderStatus.Playing ||
                 _playButtonStatus == RecorderStatus.Pause)
             {
                 StopButtonPlayingHandler();
@@ -1729,15 +1730,15 @@ namespace PowerPointLabs
                 {
                     PlayButtonClick(null, null);
                 }
-            } else
-            if (item.Name.Contains("record"))
+            }
+            else if (item.Name.Contains("record"))
             {
                 if (recDisplay.SelectedItems.Count == 1)
                 {
                     RecButtonClick(null, null);
                 }
-            } else
-            if (item.Name.Contains("remove"))
+            }
+            else if (item.Name.Contains("remove"))
             {
                 if (recDisplay.SelectedItems.Count == 1)
                 {

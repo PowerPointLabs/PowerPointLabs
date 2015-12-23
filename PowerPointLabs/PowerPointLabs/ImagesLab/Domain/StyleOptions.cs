@@ -660,7 +660,7 @@ namespace PowerPointLabs.ImagesLab.Domain
             {
                 using (var stream = File.OpenRead(filename))
                 {
-                    var serializer = new XmlSerializer(typeof (StyleOptions));
+                    var serializer = new XmlSerializer(typeof(StyleOptions));
                     var opt = serializer.Deserialize(stream) as StyleOptions;
                     return opt ?? CreateDefault();
                 }

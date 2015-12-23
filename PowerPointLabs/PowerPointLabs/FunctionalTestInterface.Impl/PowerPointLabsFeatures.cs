@@ -8,7 +8,8 @@ namespace PowerPointLabs.FunctionalTestInterface.Impl
     [Serializable]
     class PowerPointLabsFeatures : MarshalByRefObject, IPowerPointLabsFeatures
     {
-        private Ribbon1 Ribbon {
+        private Ribbon1 Ribbon
+        {
             get { return Globals.ThisAddIn.Ribbon; }
         }
 
@@ -116,11 +117,11 @@ namespace PowerPointLabs.FunctionalTestInterface.Impl
             });
         }
 
-        public void SetZoomProperties(bool backgroundChecked , bool multiSlideChecked)
+        public void SetZoomProperties(bool backgroundChecked, bool multiSlideChecked)
         {
             UIThreadExecutor.Execute(() =>
             {
-                Ribbon.ZoomPropertiesEdited(backgroundChecked , multiSlideChecked);
+                Ribbon.ZoomPropertiesEdited(backgroundChecked, multiSlideChecked);
             });
         }
 
@@ -150,7 +151,8 @@ namespace PowerPointLabs.FunctionalTestInterface.Impl
 
         public void AutoNarrate()
         {
-            UIThreadExecutor.Execute(() => {
+            UIThreadExecutor.Execute(() =>
+            {
                 Ribbon.AddAudioClick(new RibbonControl("AutoNarrate"));
             });
         }

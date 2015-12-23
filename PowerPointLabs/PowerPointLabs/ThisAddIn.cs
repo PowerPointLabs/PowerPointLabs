@@ -59,12 +59,12 @@ namespace PowerPointLabs
         /// <summary>
         /// The channel for .NET Remoting calls.
         /// </summary>
-        private IChannel _FTChannel;
+        private IChannel _ftChannel;
 
         private void SetupFunctionalTestChannels()
         {
-            _FTChannel = new IpcChannel("PowerPointLabsFT");
-            ChannelServices.RegisterChannel(_FTChannel, false);
+            _ftChannel = new IpcChannel("PowerPointLabsFT");
+            ChannelServices.RegisterChannel(_ftChannel, false);
             RemotingConfiguration.RegisterWellKnownServiceType(typeof(PowerPointLabsFT),
                 "PowerPointLabsFT", WellKnownObjectMode.Singleton);
         }
@@ -361,9 +361,9 @@ namespace PowerPointLabs
             UIThreadExecutor.TearDown();
             Trace.TraceInformation(DateTime.Now.ToString("yyyyMMddHHmmss") + ": PowerPointLabs Exiting");
             Trace.Close();
-            if (_FTChannel != null)
+            if (_ftChannel != null)
             {
-                ChannelServices.UnregisterChannel(_FTChannel);
+                ChannelServices.UnregisterChannel(_ftChannel);
             }
         }
         # endregion
@@ -408,7 +408,6 @@ namespace PowerPointLabs
                         return pane;
                     }
                 }
-
                 catch (Exception)
                 {
                     return null;
@@ -1060,12 +1059,12 @@ namespace PowerPointLabs
                         shape.Name = nameDictForPastedShapes[shape.Name];
                     }
                     range.Select();
-                } else
-                if (selection.Type == PowerPoint.PpSelectionType.ppSelectionSlides)
+                }
+                else if (selection.Type == PowerPoint.PpSelectionType.ppSelectionSlides)
                 {
                     var pastedSlides = selection.SlideRange.Cast<PowerPoint.Slide>().OrderBy(x => x.SlideIndex).ToList();
 
-                    for (var i = 0; i < pastedSlides.Count; i ++)
+                    for (var i = 0; i < pastedSlides.Count; i++)
                     {
                         if (AgendaLab.AgendaSlide.IsReferenceslide(_copiedSlides[i]))
                         {
@@ -1350,7 +1349,7 @@ namespace PowerPointLabs
                     overlappingShapeZIndex = shape.ZOrderPosition;
                 }
             }
-            if(overlappingShape != null)
+            if (overlappingShape != null)
                 overlappingShape.Select();
         }
 
@@ -1411,7 +1410,7 @@ namespace PowerPointLabs
             }
             catch (InvalidOperationException)
             {
-                //
+                // ignore exception
             }
         }
         # endregion

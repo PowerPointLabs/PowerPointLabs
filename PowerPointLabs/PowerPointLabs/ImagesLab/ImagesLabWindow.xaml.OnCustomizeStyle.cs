@@ -265,7 +265,7 @@ namespace PowerPointLabs.ImagesLab
             {
                 var styleFontFamily = styleOption.GetFontFamily();
                 var targetIndex = -1;
-                for(var i = 0; i < _fontFamilyList.Count; i++)
+                for (var i = 0; i < _fontFamilyList.Count; i++)
                 {
                     if (styleFontFamily == _fontFamilyList[i])
                     {

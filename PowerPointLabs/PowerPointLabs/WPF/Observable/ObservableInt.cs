@@ -7,7 +7,11 @@
         public int Number
         {
             get { return _number; }
-            set { _number = value; OnPropertyChanged("Number"); }
+            set
+            {
+                _number = value;
+                OnPropertyChanged("Number");
+            }
         }
     }
 }

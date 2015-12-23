@@ -80,7 +80,7 @@ namespace PowerPointLabs.ImagesLab.Handler
             var currentSlide = PowerPointCurrentPresentationInfo.CurrentSlide.GetNativeSlide();
             var effectsHandler = new EffectsHandler(currentSlide, Current, source);
 
-            ApplyStyle(effectsHandler, source, isActualSize:true);
+            ApplyStyle(effectsHandler, source, isActualSize: true);
 
             source.FullSizeImageFile = fullsizeImage;
             source.OriginalImageFile = null;

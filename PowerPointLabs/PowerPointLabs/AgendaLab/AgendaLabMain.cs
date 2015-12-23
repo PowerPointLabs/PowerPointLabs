@@ -884,7 +884,7 @@ namespace PowerPointLabs.AgendaLab
         /// <summary>
         /// Assumes that all shapes in textboxes are beam shape textboxes.
         /// </summary>
-        private static Dictionary<int, Shape> GetBeamTextboxAssignment(IEnumerable<Shape> textboxes , out List<Shape> unassignedShapes)
+        private static Dictionary<int, Shape> GetBeamTextboxAssignment(IEnumerable<Shape> textboxes, out List<Shape> unassignedShapes)
         {
             unassignedShapes = new List<Shape>();
             var shapeAssignment = new Dictionary<int, Shape>();
@@ -1187,7 +1187,7 @@ namespace PowerPointLabs.AgendaLab
                 if (BeamFormats.GetShapeWithPurpose(beamShape, ShapePurpose.BeamShapeText) == null)
                     return true;
             }
-            catch (COMException e)
+            catch (COMException)
             {
                 // beam shape is not a group
                 return true;

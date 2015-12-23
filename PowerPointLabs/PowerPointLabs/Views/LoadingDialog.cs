@@ -7,7 +7,6 @@ namespace PowerPointLabs.Views
     {
         public LoadingDialog(string title = TextCollection.LoadingDialogDefaultTitle,
                              string content = TextCollection.LoadingDialogDefaultContent)
-
         {
             InitializeComponent();
 

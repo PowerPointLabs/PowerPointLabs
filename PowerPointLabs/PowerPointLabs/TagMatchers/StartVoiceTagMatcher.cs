@@ -6,7 +6,7 @@ namespace PowerPointLabs.TagMatchers
 {
     public class StartVoiceTagMatcher : ITagMatcher
     {
-        public Regex Regex { get { return new Regex(@"\[Voice: \w+\]", RegexOptions.IgnoreCase);} }
+        public Regex Regex { get { return new Regex(@"\[Voice: \w+\]", RegexOptions.IgnoreCase); } }
 
         public List<ITag> Matches(string text)
         {

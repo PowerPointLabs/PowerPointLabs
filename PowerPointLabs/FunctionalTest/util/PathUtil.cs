@@ -34,6 +34,16 @@ namespace FunctionalTest.util
             return Path.Combine(parPath, "doc\\test\\");
         }
 
+        public static string GetTestFailurePath()
+        {
+            return GetDocTestPath() + "TestFailed\\";
+        }
+
+        public static string GetTestFailurePresentationPath(string presentationName)
+        {
+            return GetTestFailurePath() + presentationName;
+        }
+
         public static string GetDocTestPresentationPath(string presentationName)
         {
             return GetDocTestPath() + presentationName;

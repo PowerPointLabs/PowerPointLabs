@@ -22,11 +22,11 @@ namespace PowerPointLabs.ColorPicker
             SetUpUI();
         }
 
-        private void textBox_Enter(object sender, EventArgs e)
+        private void TextBox_Enter(object sender, EventArgs e)
         {
             var textBox = (TextBox) sender;
             Clipboard.SetText(textBox.Text.Substring(5));
-            if (textBox.Equals(HSLTextBox))
+            if (textBox.Equals(hslTextBox))
             {
                 label1.Text = "HSL value copied";
             } 
@@ -52,29 +52,29 @@ namespace PowerPointLabs.ColorPicker
         private void SetUpToolTips()
         {
             toolTip1.SetToolTip(this.rgbTextBox, "Red, Blue, Green");
-            toolTip1.SetToolTip(this.HSLTextBox, "Hue, Saturation, Luminance");
+            toolTip1.SetToolTip(this.hslTextBox, "Hue, Saturation, Luminance");
             toolTip1.SetToolTip(this.hexTextBox, "Hex Triplet");
         }
 
         private void UpdateHSLTextBox()
         {
-            HSLTextBox.Text = String.Format("HSL: {0}, {1}, {2}", (int)_selectedColor.Hue,
+            hslTextBox.Text = String.Format("HSL: {0}, {1}, {2}", (int)_selectedColor.Hue,
             (int) (_selectedColor.Saturation), (int) (_selectedColor.Luminosity));
-            HSLTextBox.Enter += textBox_Enter;
+            hslTextBox.Enter += TextBox_Enter;
         }
 
         private void UpdateRGBTextBox()
         {
             rgbTextBox.Text = String.Format("RGB: {0}, {1}, {2}", ((Color)_selectedColor).R,
             ((Color)_selectedColor).G, ((Color)_selectedColor).B);
-            rgbTextBox.Enter += textBox_Enter;
+            rgbTextBox.Enter += TextBox_Enter;
         }
 
         private void UpdateHexTextBox()
         {
             byte[] rgbArray = { ((Color)_selectedColor).R, ((Color)_selectedColor).G, ((Color)_selectedColor).B };
             hexTextBox.Text = "HEX: #" + ByteArrayToString(rgbArray);
-            hexTextBox.Enter += textBox_Enter;
+            hexTextBox.Enter += TextBox_Enter;
         }
 
         private string ByteArrayToString(byte[] ba)
@@ -86,7 +86,7 @@ namespace PowerPointLabs.ColorPicker
         #region Functional Test method
         public string GetHslText()
         {
-            return HSLTextBox.Text;
+            return hslTextBox.Text;
         }
 
         public string GetRgbText()

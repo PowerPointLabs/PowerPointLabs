@@ -15,6 +15,7 @@ namespace FunctionalTestInterface
         bool IsInFunctionalTest();
         List<ISlideData> FetchPresentationData(string pathToPresentation);
         List<ISlideData> FetchCurrentPresentationData();
+        void SavePresentationAs(string presName);
         void ClosePresentation();
         void ActivatePresentation();
         int PointsToScreenPixelsX(float x);

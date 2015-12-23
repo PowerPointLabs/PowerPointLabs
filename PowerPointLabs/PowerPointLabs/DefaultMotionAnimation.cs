@@ -8,7 +8,6 @@ namespace PowerPointLabs
 {
     class DefaultMotionAnimation
     {
-        private static PowerPoint.Effect effect;
         //Use initial shape and final shape to calculate intial and final positions
         //Add motion, resize and rotation animations to shape
         public static void AddDefaultMotionAnimation(

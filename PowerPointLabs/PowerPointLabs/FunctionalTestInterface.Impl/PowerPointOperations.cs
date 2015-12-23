@@ -51,6 +51,11 @@ namespace PowerPointLabs.FunctionalTestInterface.Impl
             return slideData;
         }
 
+        public void SavePresentationAs(string presName)
+        {
+            Globals.ThisAddIn.Application.ActivePresentation.SaveCopyAs(presName);
+        }
+
         public void ClosePresentation()
         {
             EnterFunctionalTest();

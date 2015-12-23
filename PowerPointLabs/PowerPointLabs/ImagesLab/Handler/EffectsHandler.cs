@@ -451,7 +451,7 @@ namespace PowerPointLabs.ImagesLab.Handler
             triangle2.Fill.Transparency = (float)transparency / 100;
             triangle2.Line.Visible = MsoTriState.msoFalse;
 
-            var result = Shapes.Range(new [] {triangle1.Name, triangle2.Name}).Group();
+            var result = Shapes.Range(new[] {triangle1.Name, triangle2.Name}).Group();
             ChangeName(result, EffectName.Overlay);
             return result;
         }

@@ -1,12 +1,9 @@
-﻿using Microsoft.Office.Core;
-using Microsoft.Office.Interop.PowerPoint;
-
-namespace FunctionalTestInterface
+﻿namespace FunctionalTestInterface
 {
     public interface IEffectData
     {
-        MsoAnimEffect EffectType { get; }
-        MsoShapeType ShapeType { get; }
+        int EffectType { get; }
+        int ShapeType { get; }
         float ShapeRotation { get; }
         float ShapeWidth { get; }
         float ShapeHeight { get; }

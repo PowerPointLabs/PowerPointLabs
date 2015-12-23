@@ -20,7 +20,7 @@ namespace PowerPointLabs.Views
             this.pictureBox2.BackColor = defaultTextColor;
             this.pictureBox3.BackColor = defaultBackgroundColor;
         }
-        private void pictureBox1_Click(object sender, EventArgs e)
+        private void PictureBox1_Click(object sender, EventArgs e)
         {
             ColorDialog colorDialog = new ColorDialog();
             colorDialog.Color = this.pictureBox1.BackColor;
@@ -31,13 +31,13 @@ namespace PowerPointLabs.Views
             }
         }
 
-        private void button1_Click(object sender, EventArgs e)
+        private void Button1_Click(object sender, EventArgs e)
         {
             SettingsHandler(this.pictureBox1.BackColor, this.pictureBox2.BackColor, this.pictureBox3.BackColor);
             this.Close();
         }
 
-        private void pictureBox2_Click(object sender, EventArgs e)
+        private void PictureBox2_Click(object sender, EventArgs e)
         {
             ColorDialog colorDialog = new ColorDialog();
             colorDialog.Color = this.pictureBox2.BackColor;
@@ -48,7 +48,7 @@ namespace PowerPointLabs.Views
             }
         }
 
-        private void pictureBox3_Click(object sender, EventArgs e)
+        private void PictureBox3_Click(object sender, EventArgs e)
         {
             ColorDialog colorDialog = new ColorDialog();
             colorDialog.Color = this.pictureBox3.BackColor;

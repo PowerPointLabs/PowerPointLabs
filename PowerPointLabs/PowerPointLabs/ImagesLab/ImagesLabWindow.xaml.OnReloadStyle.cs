@@ -73,7 +73,7 @@ namespace PowerPointLabs.ImagesLab
 
                     // if the image source is still in the listbox,
                     // select it as source and also select the target style
-                    for(var i = 0; i < ImageSelectionListBox.Items.Count; i++)
+                    for (var i = 0; i < ImageSelectionListBox.Items.Count; i++)
                     {
                         var imageItem = (ImageItem) ImageSelectionListBox.Items[i];
                         if (imageItem.FullSizeImageFile
@@ -244,16 +244,16 @@ namespace PowerPointLabs.ImagesLab
                     continue;
                 }
 
-                if (propertyInfo.PropertyType == typeof (string))
+                if (propertyInfo.PropertyType == typeof(string))
                 {
                     propertyInfo.SetValue(opt, valueInStr, null);
                 }
-                else if (propertyInfo.PropertyType == typeof (int))
+                else if (propertyInfo.PropertyType == typeof(int))
                 {
                     var valueInInt = int.Parse(valueInStr);
                     propertyInfo.SetValue(opt, valueInInt, null);
                 }
-                else if (propertyInfo.PropertyType == typeof (bool))
+                else if (propertyInfo.PropertyType == typeof(bool))
                 {
                     var valueInBool = bool.Parse(valueInStr);
                     propertyInfo.SetValue(opt, valueInBool, null);

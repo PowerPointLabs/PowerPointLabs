@@ -14,12 +14,12 @@
 bin/
 obj/
 TestResults/
+TestFailed/
 
 Thumbs.db
 
 _ReSharper*/
 
-*.pfx
 
 # UT Build results
 FakesAssemblies/

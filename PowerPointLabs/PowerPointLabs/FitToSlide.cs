@@ -177,7 +177,8 @@ namespace PowerPointLabs
 
         private static float ConvertDegToRad(float rotation)
         {
-            rotation = (float)((rotation) * Math.PI / 180); return rotation;
+            rotation = (float)((rotation) * Math.PI / 180);
+            return rotation;
         }
 
         private static float GetSizeRatio(PowerPoint.Shape shape)

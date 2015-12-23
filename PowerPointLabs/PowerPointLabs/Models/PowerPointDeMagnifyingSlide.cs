@@ -14,7 +14,7 @@ namespace PowerPointLabs.Models
             _slide.Name = "PPTLabsDeMagnifyingSlide" + DateTime.Now.ToString("yyyyMMddHHmmssffff");
         }
 
-        new public static PowerPointSlide FromSlideFactory(PowerPoint.Slide slide)
+        public static PowerPointSlide FromSlideFactory(PowerPoint.Slide slide)
         {
             if (slide == null)
                 return null;
@@ -25,8 +25,7 @@ namespace PowerPointLabs.Models
         public void AddZoomToAreaAnimation(PowerPoint.Shape zoomShape)
         {
             PrepareForZoomToArea(zoomShape);
-
-            PowerPoint.Effect lastEffect = null;
+            
             if (!ZoomToArea.backgroundZoomChecked)
             {
                 //Zoom stored shape to fit slide
@@ -178,7 +177,7 @@ namespace PowerPointLabs.Models
 
         private void ManageSlideTransitions()
         {
-            base.RemoveSlideTransitions();
+            RemoveSlideTransitions();
             _slide.SlideShowTransition.AdvanceOnTime = Office.MsoTriState.msoFalse;
             _slide.SlideShowTransition.AdvanceOnClick = Office.MsoTriState.msoTrue;
         }
