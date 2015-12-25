@@ -10,6 +10,7 @@ using System.Windows.Forms;
 using PowerPointLabs.ImagesLab;
 using PowerPointLabs.Models;
 using PowerPointLabs.Views;
+using ImagesLabWindow = PowerPointLabs.ImagesLab.View.ImagesLabWindow;
 using Office = Microsoft.Office.Core;
 using PowerPoint = Microsoft.Office.Interop.PowerPoint;
 

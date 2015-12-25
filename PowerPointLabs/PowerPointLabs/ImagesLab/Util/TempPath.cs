@@ -70,6 +70,8 @@ namespace PowerPointLabs.ImagesLab.Util
 
         private static void Empty(DirectoryInfo directory)
         {
+            if (!directory.Exists) return;
+
             try
             {
                 foreach (FileInfo file in directory.GetFiles()) file.Delete();
