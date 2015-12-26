@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
 using System.Text;
+using Microsoft.Office.Core;
 
 namespace PowerPointLabs.DataSources
 {
@@ -35,64 +36,73 @@ namespace PowerPointLabs.DataSources
             Right,
         }
 
-        # region Properties
-        private float shiftValueX;
+        private bool _hotkeysEnabled = true;
+
+        public bool HotkeysEnabled
+        {
+            get { return _hotkeysEnabled; }
+            set
+            {
+                _hotkeysEnabled = value;
+                OnPropertyChanged("HotkeysEnabled");
+            }
+        }
+
+        # region Properties - Record / Apply Displacement
+        private float _shiftValueX;
+        private float _shiftValueY;
+        private float _shiftValueRotation;
+        private bool _shiftIncludePositionX = true;
+        private bool _shiftIncludePositionY = true;
+        private bool _shiftIncludeRotation = true;
 
         public float ShiftValueX
         {
-            get { return shiftValueX; }
+            get { return _shiftValueX; }
             set
             {
-                shiftValueX = value;
+                _shiftValueX = value;
                 OnPropertyChanged("ShiftValueX");
             }
         }
 
-        private float shiftValueY;
-
         public float ShiftValueY
         {
-            get { return shiftValueY; }
+            get { return _shiftValueY; }
             set
             {
-                shiftValueY = value;
+                _shiftValueY = value;
                 OnPropertyChanged("ShiftValueY");
             }
         }
 
-        private float shiftValueRotation;
-
         public float ShiftValueRotation
         {
-            get { return shiftValueRotation; }
+            get { return _shiftValueRotation; }
             set
             {
-                shiftValueRotation = value;
+                _shiftValueRotation = value;
                 OnPropertyChanged("ShiftValueRotation");
             }
         }
 
-        private bool shiftIncludePositionX = true;
-
         public bool ShiftIncludePositionX
         {
-            get { return shiftIncludePositionX; }
+            get { return _shiftIncludePositionX; }
             set
             {
-                shiftIncludePositionX = value;
+                _shiftIncludePositionX = value;
                 OnPropertyChanged("ShiftIncludePositionX");
                 OnPropertyChanged("ShiftIncludePositionBoth");
             }
         }
 
-        private bool shiftIncludePositionY = true;
-
         public bool ShiftIncludePositionY
         {
-            get { return shiftIncludePositionY; }
+            get { return _shiftIncludePositionY; }
             set
             {
-                shiftIncludePositionY = value;
+                _shiftIncludePositionY = value;
                 OnPropertyChanged("ShiftIncludePositionY");
                 OnPropertyChanged("ShiftIncludePositionBoth");
             }
@@ -110,83 +120,81 @@ namespace PowerPointLabs.DataSources
                 if (value == null) return;
                 bool valueBool = (value == true);
 
-                shiftIncludePositionX = valueBool;
-                shiftIncludePositionY = valueBool;
+                _shiftIncludePositionX = valueBool;
+                _shiftIncludePositionY = valueBool;
                 OnPropertyChanged("ShiftIncludePositionX");
                 OnPropertyChanged("ShiftIncludePositionY");
                 OnPropertyChanged("ShiftIncludePositionBoth");
             }
         }
 
-        private bool shiftIncludeRotation = true;
-
         public bool ShiftIncludeRotation
         {
-            get { return shiftIncludeRotation; }
+            get { return _shiftIncludeRotation; }
             set
             {
-                shiftIncludeRotation = value;
+                _shiftIncludeRotation = value;
                 OnPropertyChanged("ShiftIncludeRotation");
             }
         }
 
-        private float savedValueX;
-
         public float SavedValueX
         {
-            get { return savedValueX; }
+            get { return _savedValueX; }
             set
             {
-                savedValueX = value;
+                _savedValueX = value;
                 OnPropertyChanged("SavedValueX");
             }
         }
+        # endregion
 
-        private float savedValueY;
+        # region Properties - Record / Apply Position
+        private float _savedValueX;
+        private float _savedValueY;
+        private float _savedValueRotation;
+        private bool _savedIncludePositionX = true;
+        private bool _savedIncludePositionY = true;
+        private bool _savedIncludeRotation = true;
 
         public float SavedValueY
         {
-            get { return savedValueY; }
+            get { return _savedValueY; }
             set
             {
-                savedValueY = value;
+                _savedValueY = value;
                 OnPropertyChanged("SavedValueY");
             }
         }
 
-        private float savedValueRotation;
-
         public float SavedValueRotation
         {
-            get { return savedValueRotation; }
+            get { return _savedValueRotation; }
             set
             {
-                savedValueRotation = value;
+                _savedValueRotation = value;
                 OnPropertyChanged("SavedValueRotation");
             }
         }
 
-        private bool savedIncludePositionX = true;
 
         public bool SavedIncludePositionX
         {
-            get { return savedIncludePositionX; }
+            get { return _savedIncludePositionX; }
             set
             {
-                savedIncludePositionX = value;
+                _savedIncludePositionX = value;
                 OnPropertyChanged("SavedIncludePositionX");
                 OnPropertyChanged("SavedIncludePositionBoth");
             }
         }
 
-        private bool savedIncludePositionY = true;
-
         public bool SavedIncludePositionY
         {
-            get { return savedIncludePositionY; }
+            get { return _savedIncludePositionY; }
             set
             {
-                savedIncludePositionY = value;
+                _savedIncludePositionY = value;
                 OnPropertyChanged("SavedIncludePositionY");
                 OnPropertyChanged("SavedIncludePositionBoth");
             }
@@ -204,62 +212,250 @@ namespace PowerPointLabs.DataSources
                 if (value == null) return;
                 bool valueBool = (value == true);
 
-                savedIncludePositionX = valueBool;
-                savedIncludePositionY = valueBool;
+                _savedIncludePositionX = valueBool;
+                _savedIncludePositionY = valueBool;
                 OnPropertyChanged("SavedIncludePositionX");
                 OnPropertyChanged("SavedIncludePositionY");
                 OnPropertyChanged("SavedIncludePositionBoth");
             }
         }
 
-        private bool savedIncludeRotation = true;
-
         public bool SavedIncludeRotation
         {
-            get { return savedIncludeRotation; }
+            get { return _savedIncludeRotation; }
             set
             {
-                savedIncludeRotation = value;
+                _savedIncludeRotation = value;
                 OnPropertyChanged("SavedIncludeRotation");
                 OnPropertyChanged("SavedIncludePositionBoth");
             }
         }
 
-        private int _formatFillColor = 0xC07000;
+        # endregion
 
-        public int FormatFillColor
+        # region Properties - Record / Apply Format
+        private bool _formatSyncTextStyle = true;
+
+        private bool _formatHasText = true;
+        private bool _formatIncludeHasText = false;
+        private int _formatTextColor = 0x000000;
+        private bool _formatIncludeTextColor = true;
+        private int _formatTextFontSize = 5;
+        private bool _formatIncludeTextFontSize = true;
+        private string _formatTextFont = "Arial";
+        private bool _formatIncludeTextFont = true;
+        private bool _formatTextFontWrap = false;
+        private bool _formatIncludeTextFontWrap = true;
+        private bool _formatTextFontShrink = false;
+        private bool _formatIncludeTextFontShrink = true;
+
+
+        private bool _formatSyncLineStyle = true;
+
+        private bool _formatHasLine = true;
+        private bool _formatIncludeHasLine = false;
+        private int _formatLineColor = 0x000000;
+        private bool _formatIncludeLineColor = true;
+        private float _formatLineWeight = 5;
+        private bool _formatIncludeLineWeight = true;
+        private MsoLineDashStyle _formatLineDashStyle = MsoLineDashStyle.msoLineSolid;
+        private bool _formatIncludeLineDashStyle = true;
+
+
+        private bool _formatSyncFillStyle = true;
+
+        private bool _formatHasFill = true;
+        private bool _formatIncludeHasFill = false;
+        private int _formatFillColor = 0xC07000;
+        private bool _formatIncludeFillColor = true;
+
+
+        private bool _formatSyncSize = false;
+
+        private float _formatWidth = 0;
+        private bool _formatIncludeWidth = false;
+        private float _formatHeight = 0;
+        private bool _formatIncludeHeight = false;
+
+        public bool FormatSyncTextStyle
         {
-            get
-            {
-                return _formatFillColor;
-            }
+            get { return _formatSyncTextStyle; }
             set
             {
-                if (value == _formatFillColor) return;
-                
-                _formatFillColor = value;
-                OnPropertyChanged("FormatFillColor");
+                _formatSyncTextStyle = value;
+                OnPropertyChanged("FormatSyncTextStyle");
             }
         }
 
-        private int _formatLineColor = 0x000000;
+        public bool FormatHasText
+        {
+            get { return _formatHasText; }
+            set
+            {
+                _formatHasText = value;
+                OnPropertyChanged("FormatHasText");
+            }
+        }
+
+        public bool FormatIncludeHasText
+        {
+            get { return _formatIncludeHasText; }
+            set
+            {
+                _formatIncludeHasText = value;
+                OnPropertyChanged("FormatIncludeHasText");
+            }
+        }
+
+        public int FormatTextColor
+        {
+            get { return _formatTextColor; }
+            set
+            {
+                _formatTextColor = value;
+                OnPropertyChanged("FormatTextColor");
+            }
+        }
+
+        public bool FormatIncludeTextColor
+        {
+            get { return _formatIncludeTextColor; }
+            set
+            {
+                _formatIncludeTextColor = value;
+                OnPropertyChanged("FormatIncludeTextColor");
+            }
+        }
+
+        public int FormatTextFontSize
+        {
+            get { return _formatTextFontSize; }
+            set
+            {
+                _formatTextFontSize = value;
+                OnPropertyChanged("FormatTextFontSize");
+            }
+        }
+
+        public bool FormatIncludeTextFontSize
+        {
+            get { return _formatIncludeTextFontSize; }
+            set
+            {
+                _formatIncludeTextFontSize = value;
+                OnPropertyChanged("FormatIncludeTextFontSize");
+            }
+        }
+
+        public string FormatTextFont
+        {
+            get { return _formatTextFont; }
+            set
+            {
+                _formatTextFont = value;
+                OnPropertyChanged("FormatTextFont");
+            }
+        }
+
+        public bool FormatIncludeTextFont
+        {
+            get { return _formatIncludeTextFont; }
+            set
+            {
+                _formatIncludeTextFont = value;
+                OnPropertyChanged("FormatIncludeTextFont");
+            }
+        }
+
+        public bool FormatTextFontWrap
+        {
+            get { return _formatTextFontWrap; }
+            set
+            {
+                _formatTextFontWrap = value;
+                OnPropertyChanged("FormatTextFontWrap");
+            }
+        }
+
+        public bool FormatIncludeTextFontWrap
+        {
+            get { return _formatIncludeTextFontWrap; }
+            set
+            {
+                _formatIncludeTextFontWrap = value;
+                OnPropertyChanged("FormatIncludeTextFontWrap");
+            }
+        }
+
+        public bool FormatTextFontShrink
+        {
+            get { return _formatTextFontShrink; }
+            set
+            {
+                _formatTextFontShrink = value;
+                OnPropertyChanged("FormatTextFontShrink");
+            }
+        }
+
+        public bool FormatIncludeTextFontShrink
+        {
+            get { return _formatIncludeTextFontShrink; }
+            set
+            {
+                _formatIncludeTextFontShrink = value;
+                OnPropertyChanged("FormatIncludeTextFontShrink");
+            }
+        }
+
+        public bool FormatSyncLineStyle
+        {
+            get { return _formatSyncLineStyle; }
+            set
+            {
+                _formatSyncLineStyle = value;
+                OnPropertyChanged("FormatSyncLineStyle");
+            }
+        }
+
+        public bool FormatHasLine
+        {
+            get { return _formatHasLine; }
+            set
+            {
+                _formatHasLine = value;
+                OnPropertyChanged("FormatHasLine");
+            }
+        }
+
+        public bool FormatIncludeHasLine
+        {
+            get { return _formatIncludeHasLine; }
+            set
+            {
+                _formatIncludeHasLine = value;
+                OnPropertyChanged("FormatIncludeHasLine");
+            }
+        }
 
         public int FormatLineColor
         {
-            get
-            {
-                return _formatLineColor;
-            }
+            get { return _formatLineColor; }
             set
             {
-                if (value == _formatLineColor) return;
-
                 _formatLineColor = value;
                 OnPropertyChanged("FormatLineColor");
             }
         }
 
-        private float _formatLineWeight = 5;
+        public bool FormatIncludeLineColor
+        {
+            get { return _formatIncludeLineColor; }
+            set
+            {
+                _formatIncludeLineColor = value;
+                OnPropertyChanged("FormatIncludeLineColor");
+            }
+        }
 
         public float FormatLineWeight
         {
@@ -271,83 +467,138 @@ namespace PowerPointLabs.DataSources
             }
         }
 
-        private bool formatIncludeFillColor = true;
+        public bool FormatIncludeLineWeight
+        {
+            get { return _formatIncludeLineWeight; }
+            set
+            {
+                _formatIncludeLineWeight = value;
+                OnPropertyChanged("FormatIncludeLineWeight");
+            }
+        }
+
+        public MsoLineDashStyle FormatLineDashStyle
+        {
+            get { return _formatLineDashStyle; }
+            set
+            {
+                _formatLineDashStyle = value;
+                OnPropertyChanged("FormatLineDashStyle");
+            }
+        }
+
+        public bool FormatIncludeLineDashStyle
+        {
+            get { return _formatIncludeLineDashStyle; }
+            set
+            {
+                _formatIncludeLineDashStyle = value;
+                OnPropertyChanged("FormatIncludeLineDashStyle");
+            }
+        }
+
+        public bool FormatSyncFillStyle
+        {
+            get { return _formatSyncFillStyle; }
+            set
+            {
+                _formatSyncFillStyle = value;
+                OnPropertyChanged("FormatSyncFillStyle");
+            }
+        }
+
+        public bool FormatHasFill
+        {
+            get { return _formatHasFill; }
+            set
+            {
+                _formatHasFill = value;
+                OnPropertyChanged("FormatHasFill");
+            }
+        }
+
+        public bool FormatIncludeHasFill
+        {
+            get { return _formatIncludeHasFill; }
+            set
+            {
+                _formatIncludeHasFill = value;
+                OnPropertyChanged("FormatIncludeHasFill");
+            }
+        }
+
+        public int FormatFillColor
+        {
+            get { return _formatFillColor; }
+            set
+            {
+                _formatFillColor = value;
+                OnPropertyChanged("FormatFillColor");
+            }
+        }
 
         public bool FormatIncludeFillColor
         {
-            get { return formatIncludeFillColor; }
+            get { return _formatIncludeFillColor; }
             set
             {
-                formatIncludeFillColor = value;
+                _formatIncludeFillColor = value;
                 OnPropertyChanged("FormatIncludeFillColor");
-                OnPropertyChanged("FormatIncludeAll");
             }
         }
 
-        private bool formatIncludeLineColor = true;
-
-        public bool FormatIncludeLineColor
+        public bool FormatSyncSize
         {
-            get { return formatIncludeLineColor; }
+            get { return _formatSyncSize; }
             set
             {
-                formatIncludeLineColor = value;
-                OnPropertyChanged("FormatIncludeLineColor");
-                OnPropertyChanged("FormatIncludeAll");
+                _formatSyncSize = value;
+                OnPropertyChanged("FormatSyncSize");
             }
         }
 
-        private bool formatIncludeLineWeight = true;
-
-        public bool FormatIncludeLineWeight
+        public float FormatWidth
         {
-            get { return formatIncludeLineWeight; }
+            get { return _formatWidth; }
             set
             {
-                formatIncludeLineWeight = value;
-                OnPropertyChanged("FormatIncludeLineWeight");
-                OnPropertyChanged("FormatIncludeAll");
+                _formatWidth = value;
+                OnPropertyChanged("FormatWidth");
             }
         }
 
-        public bool? FormatIncludeAll
+        public bool FormatIncludeWidth
         {
-            get
-            {
-                // If not all equal, return null.
-                if (!(FormatIncludeFillColor == FormatIncludeLineColor &&
-                      FormatIncludeLineColor == FormatIncludeLineWeight)) return null;
-                return FormatIncludeFillColor;
-            }
+            get { return _formatIncludeWidth; }
             set
             {
-                if (value == null) return;
-                bool valueBool = (value == true);
-
-                formatIncludeFillColor = valueBool;
-                formatIncludeLineColor = valueBool;
-                formatIncludeLineWeight = valueBool;
-                OnPropertyChanged("FormatIncludeFillColor");
-                OnPropertyChanged("FormatIncludeLineColor");
-                OnPropertyChanged("FormatIncludeLineWeight");
-                OnPropertyChanged("FormatIncludeAll");
+                _formatIncludeWidth = value;
+                OnPropertyChanged("FormatIncludeWidth");
             }
         }
 
-        private bool hotkeysEnabled = false;
-
-        public bool HotkeysEnabled
+        public float FormatHeight
         {
-            get { return hotkeysEnabled; }
+            get { return _formatHeight; }
             set
             {
-                hotkeysEnabled = value;
-                OnPropertyChanged("HotkeysEnabled");
+                _formatHeight = value;
+                OnPropertyChanged("FormatHeight");
             }
         }
 
+        public bool FormatIncludeHeight
+        {
+            get { return _formatIncludeHeight; }
+            set
+            {
+                _formatIncludeHeight = value;
+                OnPropertyChanged("FormatIncludeHeight");
+            }
+        }
         # endregion
 
+        # region Properties - Anchor
         private Horizontal _anchorHorizontal;
         private Vertical _anchorVertical;
 
@@ -469,6 +720,7 @@ namespace PowerPointLabs.DataSources
                     throw new IndexOutOfRangeException();
             }
         }
+        # endregion
 
         # region Event Implementation
         public event PropertyChangedEventHandler PropertyChanged = delegate {};

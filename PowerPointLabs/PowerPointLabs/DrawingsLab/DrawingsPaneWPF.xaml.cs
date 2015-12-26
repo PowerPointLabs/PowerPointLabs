@@ -263,5 +263,16 @@ namespace PowerPointLabs.DrawingsLab
             if (colorDialog.ShowDialog() == DialogResult.Cancel) return;
             dataSource.FormatLineColor = Graphics.ConvertColorToRgb(colorDialog.Color);
         }
+
+        private void TextColor_Click(object sender, EventArgs e)
+        {
+            var colorDialog = new ColorDialog
+            {
+                Color = Graphics.ConvertRgbToColor(dataSource.FormatTextColor),
+                FullOpen = true
+            };
+            if (colorDialog.ShowDialog() == DialogResult.Cancel) return;
+            dataSource.FormatTextColor = Graphics.ConvertColorToRgb(colorDialog.Color);
+        }
     }
 }

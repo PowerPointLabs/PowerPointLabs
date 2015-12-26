@@ -490,7 +490,7 @@ namespace PowerPointLabs.DrawingsLab
                 float anchorX = (float) dialog.SourceAnchorFractionX;
                 float anchorY = (float) dialog.SourceAnchorFractionY;
                 float angleDifference = (float) (dialog.StartAngle-initialAngle);
-
+                
                 Graphics.SetShapeX(sourceShape, cx, anchorX);
                 Graphics.SetShapeY(sourceShape, cy, anchorY);
                 if (dialog.RotateShape) Graphics.RotateShapeAboutPivot(sourceShape, angleDifference, anchorX, anchorY);
