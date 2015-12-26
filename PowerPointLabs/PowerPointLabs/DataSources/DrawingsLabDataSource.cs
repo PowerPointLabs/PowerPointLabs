@@ -236,24 +236,24 @@ namespace PowerPointLabs.DataSources
         # region Properties - Record / Apply Format
         private bool _formatSyncTextStyle = true;
 
-        private bool _formatHasText = true;
-        private bool _formatIncludeHasText = false;
+        private string _formatText = "Text";
+        private bool _formatIncludeText = false;
         private int _formatTextColor = 0x000000;
         private bool _formatIncludeTextColor = true;
-        private int _formatTextFontSize = 5;
+        private float _formatTextFontSize = 5;
         private bool _formatIncludeTextFontSize = true;
         private string _formatTextFont = "Arial";
         private bool _formatIncludeTextFont = true;
-        private bool _formatTextFontWrap = false;
-        private bool _formatIncludeTextFontWrap = true;
-        private bool _formatTextFontShrink = false;
-        private bool _formatIncludeTextFontShrink = true;
+        private bool _formatTextWrap = false;
+        private bool _formatIncludeTextWrap = true;
+        private MsoAutoSize _formatTextAutoSize = MsoAutoSize.msoAutoSizeNone;
+        private bool _formatIncludeTextAutoSize = true;
 
 
         private bool _formatSyncLineStyle = true;
 
         private bool _formatHasLine = true;
-        private bool _formatIncludeHasLine = false;
+        private bool _formatIncludeHasLine = true;
         private int _formatLineColor = 0x000000;
         private bool _formatIncludeLineColor = true;
         private float _formatLineWeight = 5;
@@ -265,7 +265,7 @@ namespace PowerPointLabs.DataSources
         private bool _formatSyncFillStyle = true;
 
         private bool _formatHasFill = true;
-        private bool _formatIncludeHasFill = false;
+        private bool _formatIncludeHasFill = true;
         private int _formatFillColor = 0xC07000;
         private bool _formatIncludeFillColor = true;
 
@@ -273,9 +273,9 @@ namespace PowerPointLabs.DataSources
         private bool _formatSyncSize = false;
 
         private float _formatWidth = 0;
-        private bool _formatIncludeWidth = false;
+        private bool _formatIncludeWidth = true;
         private float _formatHeight = 0;
-        private bool _formatIncludeHeight = false;
+        private bool _formatIncludeHeight = true;
 
         public bool FormatSyncTextStyle
         {
@@ -287,23 +287,23 @@ namespace PowerPointLabs.DataSources
             }
         }
 
-        public bool FormatHasText
+        public string FormatText
         {
-            get { return _formatHasText; }
+            get { return _formatText; }
             set
             {
-                _formatHasText = value;
-                OnPropertyChanged("FormatHasText");
+                _formatText = value;
+                OnPropertyChanged("FormatText");
             }
         }
 
-        public bool FormatIncludeHasText
+        public bool FormatIncludeText
         {
-            get { return _formatIncludeHasText; }
+            get { return _formatIncludeText; }
             set
             {
-                _formatIncludeHasText = value;
-                OnPropertyChanged("FormatIncludeHasText");
+                _formatIncludeText = value;
+                OnPropertyChanged("FormatIncludeText");
             }
         }
 
@@ -327,7 +327,7 @@ namespace PowerPointLabs.DataSources
             }
         }
 
-        public int FormatTextFontSize
+        public float FormatTextFontSize
         {
             get { return _formatTextFontSize; }
             set
@@ -367,43 +367,43 @@ namespace PowerPointLabs.DataSources
             }
         }
 
-        public bool FormatTextFontWrap
+        public bool FormatTextWrap
         {
-            get { return _formatTextFontWrap; }
+            get { return _formatTextWrap; }
             set
             {
-                _formatTextFontWrap = value;
-                OnPropertyChanged("FormatTextFontWrap");
+                _formatTextWrap = value;
+                OnPropertyChanged("FormatTextWrap");
             }
         }
 
-        public bool FormatIncludeTextFontWrap
+        public bool FormatIncludeTextWrap
         {
-            get { return _formatIncludeTextFontWrap; }
+            get { return _formatIncludeTextWrap; }
             set
             {
-                _formatIncludeTextFontWrap = value;
-                OnPropertyChanged("FormatIncludeTextFontWrap");
+                _formatIncludeTextWrap = value;
+                OnPropertyChanged("FormatIncludeTextWrap");
             }
         }
 
-        public bool FormatTextFontShrink
+        public MsoAutoSize FormatTextAutoSize
         {
-            get { return _formatTextFontShrink; }
+            get { return _formatTextAutoSize; }
             set
             {
-                _formatTextFontShrink = value;
-                OnPropertyChanged("FormatTextFontShrink");
+                _formatTextAutoSize = value;
+                OnPropertyChanged("FormatTextAutoSize");
             }
         }
 
-        public bool FormatIncludeTextFontShrink
+        public bool FormatIncludeTextAutoSize
         {
-            get { return _formatIncludeTextFontShrink; }
+            get { return _formatIncludeTextAutoSize; }
             set
             {
-                _formatIncludeTextFontShrink = value;
-                OnPropertyChanged("FormatIncludeTextFontShrink");
+                _formatIncludeTextAutoSize = value;
+                OnPropertyChanged("FormatIncludeTextAutoSize");
             }
         }
 

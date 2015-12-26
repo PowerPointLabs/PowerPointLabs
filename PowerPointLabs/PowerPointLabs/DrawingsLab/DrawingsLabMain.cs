@@ -699,9 +699,47 @@ namespace PowerPointLabs.DrawingsLab
             }
             var shape = shapes[1];
 
-            DataSource.FormatFillColor = shape.Fill.ForeColor.RGB;
-            DataSource.FormatLineColor = shape.Line.ForeColor.RGB;
-            DataSource.FormatLineWeight = shape.Line.Visible == MsoTriState.msoTrue ? shape.Line.Weight : 0;
+            try
+            {
+                var font = shape.TextFrame2.TextRange.Font;
+                DataSource.FormatText = Graphics.GetText(shape);
+                DataSource.FormatTextColor = font.Fill.ForeColor.RGB;
+                DataSource.FormatTextFontSize = font.Size;
+                DataSource.FormatTextFont = font.Name;
+                DataSource.FormatTextWrap = shape.TextFrame2.WordWrap == MsoTriState.msoTrue;
+                DataSource.FormatTextAutoSize = shape.TextFrame2.AutoSize;
+            }
+            catch (ArgumentException e)
+            {
+                // ArgumentException is thrown if the shape does not have this property.
+            }
+
+            try
+            {
+                var line = shape.Line;
+                DataSource.FormatHasLine = line.Visible == MsoTriState.msoTrue;
+                DataSource.FormatLineColor = line.ForeColor.RGB;
+                DataSource.FormatLineWeight = line.Weight;
+                DataSource.FormatLineDashStyle = line.DashStyle;
+            }
+            catch (ArgumentException e)
+            {
+                // ArgumentException is thrown if the shape does not have this property.
+            }
+
+            try
+            {
+                var fill = shape.Fill;
+                DataSource.FormatHasFill = fill.Visible == MsoTriState.msoTrue;
+                DataSource.FormatFillColor = fill.ForeColor.RGB;
+            }
+            catch (ArgumentException e)
+            {
+                // ArgumentException is thrown if the shape does not have this property.
+            }
+
+            DataSource.FormatWidth = shape.Width;
+            DataSource.FormatHeight = shape.Height;
         }
 
         public static void ApplyFormat(bool applyAllSettings = false)
@@ -710,49 +748,61 @@ namespace PowerPointLabs.DrawingsLab
             if (selection.Type != PpSelectionType.ppSelectionShapes) return;
 
             Globals.ThisAddIn.Application.StartNewUndoEntry();
-            foreach (var shape in selection.ShapeRange.Cast<Shape>())
+
+            Action<bool, bool, Action> apply = (isDefaultSetting, condition, action) =>
             {
-                if (applyAllSettings || DataSource.FormatIncludeFillColor)
+                if (applyAllSettings && !isDefaultSetting) return;
+                if (!applyAllSettings && !condition) return;
+
+                try
                 {
-                    try
-                    {
-                        shape.Fill.ForeColor.RGB = DataSource.FormatFillColor;
-                    }
-                    catch (ArgumentException e)
-                    {
-                        // ArgumentException is thrown if the shape does not have this property.
-                    }
+                    action();
                 }
-                if (applyAllSettings || DataSource.FormatIncludeLineColor)
+                catch (ArgumentException e)
                 {
-                    try
-                    {
-                        shape.Line.ForeColor.RGB = DataSource.FormatLineColor;
-                    }
-                    catch (ArgumentException e)
-                    {
-                        // ArgumentException is thrown if the shape does not have this property.
-                    }
+                    // ArgumentException is thrown if the shape does not have this property.
                 }
-                if (applyAllSettings || DataSource.FormatIncludeLineWeight)
-                {
-                    if (DataSource.FormatLineWeight <= 0)
-                    {
-                        shape.Line.Visible = MsoTriState.msoFalse;
-                    }
-                    else
-                    {
-                        shape.Line.Visible = MsoTriState.msoTrue;
-                        try
-                        {
-                            shape.Line.Weight = DataSource.FormatLineWeight;
-                        }
-                        catch (ArgumentException e)
-                        {
-                            // ArgumentException is thrown if the value is out of range.
-                        }
-                    }
-                }
+            };
+
+            foreach (var s in selection.ShapeRange.Cast<Shape>())
+            {
+                var shape = s;
+
+                // Sync Text Style
+                apply(false, DataSource.FormatSyncTextStyle && DataSource.FormatIncludeText,
+                    () => Graphics.SetText(shape, DataSource.FormatText));
+                apply(true, DataSource.FormatSyncTextStyle && DataSource.FormatIncludeTextColor,
+                    () => shape.TextFrame2.TextRange.Font.Fill.ForeColor.RGB = DataSource.FormatTextColor);
+                apply(true, DataSource.FormatSyncTextStyle && DataSource.FormatIncludeTextFontSize,
+                    () => shape.TextFrame2.TextRange.Font.Size = DataSource.FormatTextFontSize);
+                apply(true, DataSource.FormatSyncTextStyle && DataSource.FormatIncludeTextFont,
+                    () => shape.TextFrame2.TextRange.Font.Name = DataSource.FormatTextFont);
+                apply(true, DataSource.FormatSyncTextStyle && DataSource.FormatIncludeTextWrap,
+                    () => shape.TextFrame2.WordWrap = DataSource.FormatTextWrap ? MsoTriState.msoTrue : MsoTriState.msoFalse);
+                apply(true, DataSource.FormatSyncTextStyle && DataSource.FormatIncludeTextAutoSize,
+                    () => shape.TextFrame2.AutoSize = DataSource.FormatTextAutoSize);
+
+                // Sync Line Style
+                apply(true, DataSource.FormatSyncLineStyle && DataSource.FormatIncludeHasLine,
+                    () => shape.Line.Visible = DataSource.FormatHasLine ? MsoTriState.msoTrue : MsoTriState.msoFalse);
+                apply(true, DataSource.FormatSyncLineStyle && DataSource.FormatIncludeLineColor,
+                    () => shape.Line.ForeColor.RGB = DataSource.FormatLineColor);
+                apply(true, DataSource.FormatSyncLineStyle && DataSource.FormatIncludeLineWeight,
+                    () => shape.Line.Weight = DataSource.FormatLineWeight);
+                apply(true, DataSource.FormatSyncLineStyle && DataSource.FormatIncludeLineDashStyle,
+                    () => shape.Line.DashStyle = DataSource.FormatLineDashStyle);
+
+                // Sync Fill Style
+                apply(true, DataSource.FormatSyncFillStyle && DataSource.FormatIncludeHasFill,
+                    () => shape.Fill.Visible = DataSource.FormatHasFill ? MsoTriState.msoTrue : MsoTriState.msoFalse);
+                apply(true, DataSource.FormatSyncFillStyle && DataSource.FormatIncludeFillColor,
+                    () => shape.Fill.ForeColor.RGB = DataSource.FormatFillColor);
+
+                // Sync Size
+                apply(false, DataSource.FormatSyncSize && DataSource.FormatIncludeWidth,
+                    () => shape.Width = DataSource.FormatWidth);
+                apply(false, DataSource.FormatSyncSize && DataSource.FormatIncludeHeight,
+                    () => shape.Height = DataSource.FormatHeight);
             }
         }
 

@@ -443,7 +443,7 @@ namespace PowerPointLabs.Utils
         }
 
         // TODO: This could be an extension method of shape.
-        public static string GetText(Shape shape, params string[] lines)
+        public static string GetText(Shape shape)
         {
             return shape.TextFrame2.TextRange.Text;
         }
