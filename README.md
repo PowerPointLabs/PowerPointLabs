@@ -16,7 +16,7 @@ PowerPointLabs makes creating engaging PowerPoint presentations easy. Check out 
    for VS2015 - http://aka.ms/OfficeDevToolsForVS2015<br>
 
 ### Setting Up Environment
-0. Fork and clone the source codes from this repo.
+0. [Fork](http://help.github.com/fork-a-repo/) and clone the source codes from this repo.
 1. Turn off *Office Version Upgrading*: Open the solution `PowerPointLabs\PowerPointLabs.sln` >> open Tools (menu) >> Options >> Office Tools >> Project Migration >> uncheck ‘Always upgrade to installed version of Office’.
 2. Set up *External Office Program*: Open ‘PowerPointLabs’ Properties >> Debug >> select ‘Start external program’ and choose `POWERPNT.exe` in the Office folder. Ensure that both **Debug** and **Release** configurations have set up this.
 3. Run the solution by pressing F5 and then PowerPointLabs tab will appear in the PowerPoint ribbon. If you have installed PowerPointLabs add-in, you may have to uninstall it first and rebuild the solution.
