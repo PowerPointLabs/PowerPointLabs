@@ -7,110 +7,143 @@ using PowerPointLabs.AutoUpdate.Interface;
 using PowerPointLabs.ImagesLab.Model;
 using PowerPointLabs.ImagesLab.ModelFactory;
 using PowerPointLabs.ImagesLab.Service;
+using PowerPointLabs.ImagesLab.Service.Interface;
 using PowerPointLabs.ImagesLab.Thread;
 using PowerPointLabs.ImagesLab.Util;
 using PowerPointLabs.ImagesLab.View.Interface;
 using PowerPointLabs.Models;
 using PowerPointLabs.Utils;
 using PowerPointLabs.Utils.Exceptions;
+using PowerPointLabs.WPF.Observable;
 
 namespace PowerPointLabs.ImagesLab.ViewModel
 {
-    class ImagesLabWindowViewModel
+    partial class ImagesLabWindowViewModel
     {
-        // UI model - list that holds image items
+        #region UI Models
+        // UI model - for image selection stage
         public ObservableCollection<ImageItem> ImageSelectionList { get; set; }
 
-        // UI model - list that holds styles preview items
+        public ObservableInt ImageSelectionListSelectedId { get; set; }
+
+        public ObservableImageItem ImageSelectionListSelectedItem { get; set; }
+
+        public ObservableBoolean IsActiveDownloadProgressRing { get; set; }
+
+        // UI model - for preview stage
         public ObservableCollection<ImageItem> StylesPreviewList { get; set; }
 
-        // UI model - list that holds styles variations items
+        public ObservableInt StylesPreviewListSelectedId { get; set; }
+
+        public ObservableImageItem StylesPreviewListSelectedItem { get; set; }
+
+        // UI model - for variation stage
         public ObservableCollection<ImageItem> StylesVariationList { get; set; }
 
+        public ObservableInt StylesVariationListSelectedId { get; set; }
+
+        public ObservableImageItem StylesVariationListSelectedItem { get; set; }
+
+        public ObservableString CurrentVariantCategory { get; set; }
+
+        public ObservableInt CurrentVariantCategoryId { get; set; }
+
+        public ObservableCollection<string> VariantsCategory { get; set; }
+
+        public ObservableInt SelectedFontId { get; set; }
+
+        public ObservableFont SelectedFontFamily { get; set; }
+
+        #endregion
+
+        #region Dependency
+
         // UI controller
-        public IImagesLabWindow ImagesLabWindow { get; set; }
+        public IImagesLabWindowView View { private get; set; }
 
         // Downloader
-        public IDownloader ImageDownloader { get; set; }
+        public IDownloader ImageDownloader { private get; set; }
 
-        // a background presentation that will do the preview processing
-        // TODO: rename it
-        private StylesDesigner PreviewPresentation { get; set; }
+        // Background presentation that will do the styles processing
+        public IStylesDesigner Designer { private get; set; }
 
-        // used to clean up unused image files
-        private HashSet<string> ImageFilesInUse { get; set; }
+        #endregion
 
-        // for variation stage
+        #region States for variation stage
         private string _previousVariantsCategory;
-        private IList<StyleOptions> _styleOptions;
+        private List<StyleOptions> _styleOptions;
+        // key - variant category, value - variants
         private Dictionary<string, List<StyleVariants>> _styleVariants;
+        #endregion
 
-        public ImagesLabWindowViewModel(IImagesLabWindow imagesLabWindow)
+        #region Lifecycle
+        public ImagesLabWindowViewModel(IImagesLabWindowView view)
         {
-            ImagesLabWindow = imagesLabWindow;
-            ImageDownloader = new ContextDownloader(ImagesLabWindow.GetThreadContext());
+            View = view;
+            ImageDownloader = new ContextDownloader(View.GetThreadContext());
+            InitUiModels();
+            InitStorage();
+            Designer = new StylesDesigner();
+        }
 
+        private void InitUiModels()
+        {
             StylesVariationList = new ObservableCollection<ImageItem>();
-            StylesPreviewList = new ObservableCollection<ImageItem>();
-            ImageSelectionList = StoragePath.Load();
+            StylesVariationListSelectedId = new ObservableInt {Number = -1};
+            StylesVariationListSelectedItem = new ObservableImageItem();
+            CurrentVariantCategory = new ObservableString();
+            CurrentVariantCategoryId = new ObservableInt {Number = -1};
+            VariantsCategory = new ObservableCollection<string>();
+            SelectedFontId = new ObservableInt();
+            SelectedFontFamily = new ObservableFont();
 
-            ImageFilesInUse = new HashSet<string>();
+            StylesPreviewList = new ObservableCollection<ImageItem>();
+            StylesPreviewListSelectedId = new ObservableInt {Number = -1};
+            StylesPreviewListSelectedItem = new ObservableImageItem();
+
+            ImageSelectionList = StoragePath.Load();
+            ImageSelectionListSelectedId = new ObservableInt {Number = -1};
+            ImageSelectionListSelectedItem = new ObservableImageItem();
+            IsActiveDownloadProgressRing = new ObservableBoolean {Flag = false};
+        }
+
+        private void InitStorage()
+        {
+            var imageFilesInUse = new HashSet<string>();
             foreach (var imageItem in ImageSelectionList)
             {
-                ImageFilesInUse.Add(imageItem.ImageFile);
-                ImageFilesInUse.Add(imageItem.FullSizeImageFile);
+                imageFilesInUse.Add(imageItem.ImageFile);
+                imageFilesInUse.Add(imageItem.FullSizeImageFile);
                 if (imageItem.CroppedImageFile != null)
                 {
-                    ImageFilesInUse.Add(imageItem.CroppedImageFile);
-                    ImageFilesInUse.Add(imageItem.CroppedThumbnailImageFile);
+                    imageFilesInUse.Add(imageItem.CroppedImageFile);
+                    imageFilesInUse.Add(imageItem.CroppedThumbnailImageFile);
                 }
             }
 
             var isTempPathInit = TempPath.InitTempFolder();
-            var isStoragePathInit = StoragePath.InitPersistentFolder(ImageFilesInUse);
+            var isStoragePathInit = StoragePath.InitPersistentFolder(imageFilesInUse);
             if (!isTempPathInit || !isStoragePathInit)
             {
-                ImagesLabWindow.ShowErrorMessageBox(TextCollection.ImagesLabText.ErrorFailToInitTempFolder);
+                View.ShowErrorMessageBox(TextCollection.ImagesLabText.ErrorFailToInitTempFolder);
             }
-
-            PreviewPresentation = new StylesDesigner();
-            PreviewPresentation.Open(withWindow: false, focus: false);
         }
 
         public void CleanUp()
         {
-            if (PreviewPresentation != null)
+            if (Designer != null)
             {
-                PreviewPresentation.Close();
+                Designer.CleanUp();
             }
             StoragePath.Save(ImageSelectionList);
         }
+        #endregion
 
-        public void RemoveImageSelectionListItem(int index)
-        {
-            ImageSelectionList.RemoveAt(index);
-        }
-
-        public void ClearImageSelectionList()
-        {
-            ImageSelectionList.Clear();
-        }
-
-        public void ClearStyleVariationList()
-        {
-            StylesVariationList.Clear();
-        }
-
-        public void ClearStylesPreviewList()
-        {
-            StylesPreviewList.Clear();
-        }
-
-        public void AddImageSelectionListItem(ImageItem item)
-        {
-            ImageSelectionList.Add(item);
-        }
-
+        #region Stage - Image Selection (Add Image)
+        /// <summary>
+        /// Add images from local files
+        /// </summary>
+        /// <param name="filenames"></param>
         public void AddImageSelectionListItem(string[] filenames)
         {
             try
@@ -132,15 +165,19 @@ namespace PowerPointLabs.ImagesLab.ViewModel
             catch
             {
                 // not an image or image is corrupted
-                ImagesLabWindow.ShowErrorMessageBox(TextCollection.ImagesLabText.ErrorImageCorrupted);
+                View.ShowErrorMessageBox(TextCollection.ImagesLabText.ErrorImageCorrupted);
             }
         }
 
+        /// <summary>
+        /// Add image by downloading
+        /// </summary>
+        /// <param name="downloadLink"></param>
         public void AddImageSelectionListItem(string downloadLink)
         {
             if (StringUtil.IsEmpty(downloadLink) || !UrlUtil.IsUrlValid(downloadLink)) // Case 1: If url not valid
             {
-                ImagesLabWindow.ShowErrorMessageBox(TextCollection.ImagesLabText.ErrorUrlLinkIncorrect);
+                View.ShowErrorMessageBox(TextCollection.ImagesLabText.ErrorUrlLinkIncorrect);
                 return;
             }
             var item = new ImageItem
@@ -150,7 +187,7 @@ namespace PowerPointLabs.ImagesLab.ViewModel
             };
             UrlUtil.GetMetaInfo(ref downloadLink, item);
             ImageSelectionList.Add(item);
-            ImagesLabWindow.ActivateImageDownloadProgressRing();
+            IsActiveDownloadProgressRing.Flag = true;
 
             var imagePath = StoragePath.GetPath("img-"
                 + DateTime.Now.GetHashCode() + "-"
@@ -163,157 +200,131 @@ namespace PowerPointLabs.ImagesLab.ViewModel
                     {
                         VerifyIsProperImage(imagePath); // Case 2: not a proper image
                         item.UpdateDownloadedImage(imagePath);
-                        ImagesLabWindow.UpdatePreviewImagesForDownloadedImage(item);
+                        if (ImageSelectionListSelectedItem.ImageItem != null 
+                            && imagePath == ImageSelectionListSelectedItem.ImageItem.ImageFile)
+                        {
+                            UpdatePreviewImages();
+                        }
                     }
                     catch
                     {
-                        ImagesLabWindow.ShowErrorMessageBox(TextCollection.ImagesLabText.ErrorImageDownloadCorrupted);
+                        View.ShowErrorMessageBox(TextCollection.ImagesLabText.ErrorImageDownloadCorrupted);
                         ImageSelectionList.Remove(item);
                     }
                     finally
                     {
-                        ImagesLabWindow.DeactivateImageDownloadProgressRing();
+                        IsActiveDownloadProgressRing.Flag = false;
                     }
                 })
                 // Case 3: Possibly network timeout
                 .OnError(e =>
                 {
-                    ImagesLabWindow.DeactivateImageDownloadProgressRing();
+                    IsActiveDownloadProgressRing.Flag = false;
                     ImageSelectionList.Remove(item);
-                    ImagesLabWindow.ShowErrorMessageBox(TextCollection.ImagesLabText.ErrorFailedToLoad + e.Message);
+                    View.ShowErrorMessageBox(TextCollection.ImagesLabText.ErrorFailedToLoad + e.Message);
                 })
                 .Start();
         }
+        #endregion
 
-        private static void VerifyIsProperImage(string filename)
+        #region Stage - Styles Previewing
+        public void UpdatePreviewImages()
         {
-            using (Image.FromFile(filename))
+            if (View.IsVariationsFlyoutOpen)
             {
-                // so this is a proper image
+                UpdateStylesVariationImages();
+            }
+            else
+            {
+                UpdateStylesPreviewImages();
             }
         }
 
-        public void UpdatePreviewImages(ImageItem source)
-        {
-            StylesPreviewList.Clear();
-            if (PowerPointCurrentPresentationInfo.CurrentSlide == null) return;
-            try
-            {
-                foreach (var stylesPreviewOption in StyleOptionsFactory.GetAllStylesPreviewOptions())
-                {
-                    var previewInfo = PreviewPresentation.PreviewApplyStyle(source, stylesPreviewOption);
-                    StylesPreviewList.Add(new ImageItem
-                    {
-                        ImageFile = previewInfo.PreviewApplyStyleImagePath,
-                        Tooltip = stylesPreviewOption.StyleName
-                    });
-                }
-            }
-            catch
-            {
-                ImagesLabWindow.ShowErrorMessageBox(TextCollection.ImagesLabText.ErrorImageCorrupted);
-            }
-        }
-
-        public void ApplyStyleInPreviewStage(ImageItem source, string targetStyle)
+        public void ApplyStyleInPreviewStage()
         {
             try
             {
-                var targetDefaultOptions = StyleOptionsFactory.GetStylesPreviewOption(targetStyle);
-                PreviewPresentation.ApplyStyle(source, targetDefaultOptions);
-                ImagesLabWindow.ShowSuccessfullyAppliedDialog();
+                var targetDefaultOptions = StyleOptionsFactory
+                    .GetStylesPreviewOption(StylesPreviewListSelectedItem.ImageItem.Tooltip);
+                Designer.ApplyStyle(ImageSelectionListSelectedItem.ImageItem, targetDefaultOptions);
+                View.ShowSuccessfullyAppliedDialog();
             }
             catch (AssumptionFailedException)
             {
-                ImagesLabWindow.ShowErrorMessageBox(TextCollection.ImagesLabText.ErrorNoSelectedSlide);
+                View.ShowErrorMessageBox(TextCollection.ImagesLabText.ErrorNoSelectedSlide);
             }
         }
+        #endregion
 
-        public void InitStyleVariationCategories(IList<StyleOptions> givenOptions,
-            Dictionary<string, List<StyleVariants>> givenVariants, string targetStyle)
+        #region Stage - Styles Variation
+        /// <summary>
+        /// When stylesVariationListSelectedItem is changed,
+        /// this method will be called to update the corresponding style options of designer
+        /// </summary>
+        public void UpdateStyleVariationStyleOptionsWhenSelectedItemChange()
         {
-            _styleOptions = givenOptions ?? StyleOptionsFactory.GetStylesVariationOptions(targetStyle);
-            _styleVariants = givenVariants ?? StyleVariantsFactory.GetVariants(targetStyle);
-            _previousVariantsCategory = ImagesLabWindow.InitVariantsComboBox(_styleVariants);
-
-            // default style options (in preview stage)
-            var defaultStyleOptions = StyleOptionsFactory.GetStylesPreviewOption(targetStyle);
-            var currentVariants = _styleVariants.Values.First();
-            var variantIndexWithoutEffect = -1;
-            for (var i = 0; i < currentVariants.Count; i++)
-            {
-                if (currentVariants[i].IsNoEffect(defaultStyleOptions))
-                {
-                    variantIndexWithoutEffect = i;
-                    break;
-                }
-            }
-
-            // swap the no-effect variant with the current selected style's corresponding variant
-            // so that to achieve continuity.
-            // in order to swap, style option provided from StyleOptionsFactory should have
-            // corresponding values specified in StyleVariantsFactory. e.g., an option generated
-            // from factory has overlay transparency of 35, then in order to swap, it should have
-            // a variant of overlay transparency of 35. Otherwise it cannot swap, because variants
-            // don't match any values in the style options.
-            if (variantIndexWithoutEffect != -1 && givenOptions == null)
-            {
-                // swap style variant
-                var tempVariant = currentVariants[variantIndexWithoutEffect];
-                currentVariants[variantIndexWithoutEffect] =
-                    currentVariants[0];
-                currentVariants[0] = tempVariant;
-                // swap default style options (in variation stage)
-                var tempStyleOpt = _styleOptions[variantIndexWithoutEffect];
-                _styleOptions[variantIndexWithoutEffect] =
-                    _styleOptions[0];
-                _styleOptions[0] = tempStyleOpt;
-            }
-
-            for (var i = 0; i < currentVariants.Count && i < _styleOptions.Count; i++)
-            {
-                currentVariants[i].Apply(_styleOptions[i]);
-            }
+            Designer.SetStyleOptions(_styleOptions[StylesVariationListSelectedId.Number]);
         }
 
-        public void UpdateStyleVariationImages(ImageItem source)
+        /// <summary>
+        /// Update styles variation iamges before its flyout is open
+        /// </summary>
+        /// <param name="givenOptions">can be null</param>
+        /// <param name="givenVariants">can be null</param>
+        public void UpdateStyleVariationImagesWhenOpenFlyout(List<StyleOptions> givenOptions = null,
+            Dictionary<string, List<StyleVariants>> givenVariants = null)
         {
-            try
-            {
-                var scrollOffset = ImagesLabWindow.GetVariationListBoxScrollOffset();
-                var selectedId = ImagesLabWindow.GetVariationListBoxSelectedId();
-                ClearStyleVariationList();
-                foreach (var styleOption in _styleOptions)
-                {
-                    var previewInfo = PreviewPresentation.PreviewApplyStyle(source, styleOption);
-                    StylesVariationList.Add(new ImageItem
-                    {
-                        ImageFile = previewInfo.PreviewApplyStyleImagePath,
-                        Tooltip = styleOption.OptionName
-                    });
-                }
-                ImagesLabWindow.SetVariationListBoxSelectedId(selectedId);
-                ImagesLabWindow.SetVariationListBoxScrollOffset(scrollOffset);
-            }
-            catch
-            {
-                ImagesLabWindow.ShowErrorMessageBox(TextCollection.ImagesLabText.ErrorImageCorrupted);
-            }
+            var targetStyleItem = StylesPreviewListSelectedItem.ImageItem;
+            var source = ImageSelectionListSelectedItem.ImageItem;
+            StylesVariationList.Clear();
+
+            if (!IsAbleToUpdateStylesVariationImages(source, targetStyleItem))
+                return;
+
+            InitStylesVariationCategories(givenOptions, givenVariants, targetStyleItem.Tooltip);
+            UpdateStylesVariationImages(source);
+
+            StylesVariationListSelectedId.Number = 0;
+            View.SetVariationListBoxScrollOffset(0d);
         }
 
-        public void UpdateStyleVariationCategories()
+        /// <summary>
+        /// Update styles variation images after its flyout been open
+        /// </summary>
+        public void UpdateStylesVariationImages()
         {
-            var targetVariants = _styleVariants[_previousVariantsCategory];
-            if (targetVariants.Count == 0) return;
+            var selectedId = StylesVariationListSelectedId.Number;
+            var scrollOffset = View.GetVariationListBoxScrollOffset();
+            var targetStyleItem = StylesPreviewListSelectedItem.ImageItem;
+            var source = ImageSelectionListSelectedItem.ImageItem;
+            StylesVariationList.Clear();
 
-            var targetVariationSelectedIndex = ImagesLabWindow.GetVariationListBoxSelectedId();
-            var targetVariant = targetVariants[targetVariationSelectedIndex];
+            if (!IsAbleToUpdateStylesVariationImages(source, targetStyleItem))
+                return;
+
+            UpdateStylesVariationImages(source);
+
+            StylesVariationListSelectedId.Number = selectedId;
+            View.SetVariationListBoxScrollOffset(scrollOffset);
+        }
+
+        /// <summary>
+        /// This method implements the way to guide the user step by step to customize
+        /// style
+        /// </summary>
+        public void UpdateStepByStepStylesVariationImages()
+        {
+            if (StylesVariationListSelectedId.Number < 0
+                || VariantsCategory.Count == 0) return;
+
+            var targetVariationSelectedIndex = StylesVariationListSelectedId.Number;
+            var targetVariant = _styleVariants[_previousVariantsCategory][targetVariationSelectedIndex];
             foreach (var option in _styleOptions)
             {
                 targetVariant.Apply(option);
             }
-
-            var currentVariantsCategory = ImagesLabWindow.GetVariantsComboBoxSelectedValue();
+            
+            var currentVariantsCategory = CurrentVariantCategory.Text;
             if (currentVariantsCategory != TextCollection.ImagesLabText.VariantCategoryFontColor
                 && _previousVariantsCategory != TextCollection.ImagesLabText.VariantCategoryFontColor)
             {
@@ -356,35 +367,150 @@ namespace PowerPointLabs.ImagesLab.ViewModel
             }
 
             _previousVariantsCategory = currentVariantsCategory;
-            ImagesLabWindow.UpdateStyleVariationsImages();
+            UpdateStylesVariationImages();
         }
 
-        public StyleOptions GetStyleVariationStyleOptions(int index)
-        {
-            return _styleOptions[index];
-        }
-
-        public StyleVariants GetStyleVariationStyleVariants(string category, int index)
-        {
-            return _styleVariants[category][index];
-        }
-
-        public void ApplyStyleInVariationStage(ImageItem source)
+        public void ApplyStyleInVariationStage()
         {
             try
             {
-                PreviewPresentation.ApplyStyle(source);
-                ImagesLabWindow.ShowSuccessfullyAppliedDialog();
+                Designer.ApplyStyle(ImageSelectionListSelectedItem.ImageItem);
+                View.ShowSuccessfullyAppliedDialog();
             }
             catch (AssumptionFailedException)
             {
-                ImagesLabWindow.ShowErrorMessageBox(TextCollection.ImagesLabText.ErrorNoSelectedSlide);
+                View.ShowErrorMessageBox(TextCollection.ImagesLabText.ErrorNoSelectedSlide);
+            }
+        }
+        #endregion
+
+        #region Helper funcs
+        private static void VerifyIsProperImage(string filename)
+        {
+            using (Image.FromFile(filename))
+            {
+                // so this is a proper image
             }
         }
 
-        public void SetStyleDesignerOptions(StyleOptions option)
+        private void UpdateStylesPreviewImages()
         {
-            PreviewPresentation.SetStyleOptions(option);
+            var selectedId = StylesPreviewListSelectedId.Number;
+            var source = ImageSelectionListSelectedItem.ImageItem;
+            StylesPreviewList.Clear();
+
+            if (!IsAbleToUpdateStylesPreviewImages(source))
+                return;
+
+            try
+            {
+                foreach (var stylesPreviewOption in StyleOptionsFactory.GetAllStylesPreviewOptions())
+                {
+                    var previewInfo = Designer.PreviewApplyStyle(source, stylesPreviewOption);
+                    StylesPreviewList.Add(new ImageItem
+                    {
+                        ImageFile = previewInfo.PreviewApplyStyleImagePath,
+                        Tooltip = stylesPreviewOption.StyleName
+                    });
+                }
+            }
+            catch
+            {
+                View.ShowErrorMessageBox(TextCollection.ImagesLabText.ErrorImageCorrupted);
+            }
+
+            StylesPreviewListSelectedId.Number = selectedId;
         }
+
+        private static bool IsAbleToUpdateStylesPreviewImages(ImageItem source)
+        {
+            return !(source == null
+                    || source.ImageFile == StoragePath.LoadingImgPath
+                    || PowerPointCurrentPresentationInfo.CurrentSlide == null);
+        }
+
+        private void InitStylesVariationCategories(List<StyleOptions> givenOptions,
+            Dictionary<string, List<StyleVariants>> givenVariants, string targetStyle)
+        {
+            _styleOptions = givenOptions ?? StyleOptionsFactory.GetStylesVariationOptions(targetStyle);
+            _styleVariants = givenVariants ?? StyleVariantsFactory.GetVariants(targetStyle);
+
+            VariantsCategory.Clear();
+            foreach (var styleVariant in _styleVariants.Keys)
+            {
+                VariantsCategory.Add(styleVariant);
+            }
+            CurrentVariantCategoryId.Number = 0;
+            _previousVariantsCategory = VariantsCategory[0];
+
+            // default style options (in preview stage)
+            var defaultStyleOptions = StyleOptionsFactory.GetStylesPreviewOption(targetStyle);
+            var currentVariants = _styleVariants.Values.First();
+            var variantIndexWithoutEffect = -1;
+            for (var i = 0; i < currentVariants.Count; i++)
+            {
+                if (currentVariants[i].IsNoEffect(defaultStyleOptions))
+                {
+                    variantIndexWithoutEffect = i;
+                    break;
+                }
+            }
+
+            // swap the no-effect variant with the current selected style's corresponding variant
+            // so that to achieve continuity.
+            // in order to swap, style option provided from StyleOptionsFactory should have
+            // corresponding values specified in StyleVariantsFactory. e.g., an option generated
+            // from factory has overlay transparency of 35, then in order to swap, it should have
+            // a variant of overlay transparency of 35. Otherwise it cannot swap, because variants
+            // don't match any values in the style options.
+            if (variantIndexWithoutEffect != -1 && givenOptions == null)
+            {
+                // swap style variant
+                var tempVariant = currentVariants[variantIndexWithoutEffect];
+                currentVariants[variantIndexWithoutEffect] =
+                    currentVariants[0];
+                currentVariants[0] = tempVariant;
+                // swap default style options (in variation stage)
+                var tempStyleOpt = _styleOptions[variantIndexWithoutEffect];
+                _styleOptions[variantIndexWithoutEffect] =
+                    _styleOptions[0];
+                _styleOptions[0] = tempStyleOpt;
+            }
+
+            for (var i = 0; i < currentVariants.Count && i < _styleOptions.Count; i++)
+            {
+                currentVariants[i].Apply(_styleOptions[i]);
+            }
+        }
+
+        private static bool IsAbleToUpdateStylesVariationImages(ImageItem source, ImageItem targetStyleItem)
+        {
+            return !(source == null
+                    || source.ImageFile == StoragePath.LoadingImgPath
+                    || targetStyleItem == null
+                    || targetStyleItem.Tooltip == null
+                    || PowerPointCurrentPresentationInfo.CurrentSlide == null);
+        }
+
+        private void UpdateStylesVariationImages(ImageItem source)
+        {
+            try
+            {
+                foreach (var styleOption in _styleOptions)
+                {
+                    var previewInfo = Designer.PreviewApplyStyle(source, styleOption);
+                    StylesVariationList.Add(new ImageItem
+                    {
+                        ImageFile = previewInfo.PreviewApplyStyleImagePath,
+                        Tooltip = styleOption.OptionName
+                    });
+                }
+            }
+            catch
+            {
+                View.ShowErrorMessageBox(TextCollection.ImagesLabText.ErrorImageCorrupted);
+            }
+        }
+        #endregion
     }
 }

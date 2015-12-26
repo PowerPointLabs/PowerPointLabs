@@ -9,6 +9,7 @@ using System.Windows.Controls.Primitives;
 using System.Windows.Forms;
 using System.Windows.Input;
 using System.Windows.Media;
+using System.Windows.Media.Animation;
 using PowerPointLabs.ImagesLab.Model;
 using PowerPointLabs.ImagesLab.Util;
 using PowerPointLabs.ImagesLab.View.Interface;
@@ -19,19 +20,20 @@ using ButtonBase = System.Windows.Controls.Primitives.ButtonBase;
 using DragEventArgs = System.Windows.DragEventArgs;
 using KeyEventArgs = System.Windows.Input.KeyEventArgs;
 using ListBox = System.Windows.Controls.ListBox;
+using Color = System.Drawing.Color;
 
 namespace PowerPointLabs.ImagesLab.View
 {
     /// <summary>
     /// Interaction logic for Images Lab
     /// </summary>
-    public partial class ImagesLabWindow : IImagesLabWindow
+    public partial class ImagesLabWindow : IImagesLabWindowView
     {
         # region Props & States
-        // view model that contains the presenting logic
+        // View model that contains the presenting logic
         private ImagesLabWindowViewModel ViewModel { set; get; }
 
-        // used to adjust image offset
+        // UI model used to adjust image offset
         public AdjustImageWindow CropWindow { get; set; }
 
         // UI model for drag and drop
@@ -44,32 +46,24 @@ namespace PowerPointLabs.ImagesLab.View
         // indicate that whether the window is closing
         private bool IsClosing { get; set; }
 
-        // used to refresh preview and variation images
-        private DateTime _latestPreviewUpdateTime = DateTime.Now;
-        private DateTime _latestImageChangedTime = DateTime.Now;
+        public bool IsVariationsFlyoutOpen { get; private set; }
 
         // used to indicate right-click item
         private int _clickedImageSelectionItemIndex = -1;
 
-        // other control flags
+        // other UI control flags
         private bool _isWindowActivatedWithPreview = true;
         private bool _isStylePreviewRegionInit;
-        private bool _isVariationsFlyoutOpen;
-
-        // list that holds font families
-        private readonly List<string> _fontFamilyList = new List<string>();
 
         # endregion
 
-        #region Initialization
+        #region Lifecycle
 
         public ImagesLabWindow()
         {
             InitializeComponent();
 
             InitViewModel();
-
-            InitFontFamilyList();
             InitGotoSlideDialog();
             InitReloadStylesDialog();
             InitDragAndDrop();
@@ -84,19 +78,15 @@ namespace PowerPointLabs.ImagesLab.View
             ViewModel.StylesPreviewList.CollectionChanged += StylesPreviewList_OnCollectionChanged;
             ViewModel.ImageSelectionList.CollectionChanged += ImageSelectionList_OnCollectionChanged;
             DataContext = ViewModel;
+
             UpdatePreviewInterfaceWhenImageListChange(ViewModel.ImageSelectionList);
         }
 
         private void InitDragAndDrop()
         {
-            // TODO move to text collection
-            DragAndDropInstructionText = new ObservableString { Text = "Drag and Drop here to get image." };
+            DragAndDropInstructionText = new ObservableString { Text = TextCollection.ImagesLabText.DragAndDropInstruction };
             DragAndDropInstructions.DataContext = DragAndDropInstructionText;
         }
-
-        # endregion
-
-        # region Common UI Events & Interactions
 
         private void ImagesLabWindow_OnClosing(object sender, CancelEventArgs e)
         {
@@ -108,6 +98,10 @@ namespace PowerPointLabs.ImagesLab.View
             }
             ViewModel.CleanUp();
         }
+
+        # endregion
+
+        # region Common UI Events & Interactions
 
         private void ImageSelectionList_OnCollectionChanged(object sender, NotifyCollectionChangedEventArgs e)
         {
@@ -124,7 +118,7 @@ namespace PowerPointLabs.ImagesLab.View
             UpdatePreviewInterfaceWhenPreviewListChange(sender as Collection<ImageItem>);
         }
 
-        private void ImageSelectButton_OnClick(object sender, RoutedEventArgs e)
+        private void SelectImageButton_OnClick(object sender, RoutedEventArgs e)
         {
             var openFileDialog = new OpenFileDialog
             {
@@ -137,6 +131,7 @@ namespace PowerPointLabs.ImagesLab.View
             }
         }
 
+        #region Drag and Drop
         private void ImagesLabWindow_OnDragLeave(object sender, DragEventArgs args)
         {
             ImagesLabGridOverlay.Visibility = Visibility.Hidden;
@@ -178,7 +173,13 @@ namespace PowerPointLabs.ImagesLab.View
                 ImagesLabGridOverlay.Visibility = Visibility.Hidden;
             }
         }
+        #endregion
 
+        /// <summary>
+        /// Show QuickDrop dialog when ImagesLab window is deactivated
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void ImagesLabWindow_OnDeactivated(object sender, EventArgs e)
         {
             if (!IsClosing
@@ -191,33 +192,36 @@ namespace PowerPointLabs.ImagesLab.View
             }
         }
 
+        /// <summary>
+        /// Show preview images when an image is selected in the ImageSelectionList
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void ImageSelectionListBox_OnSelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            var source = (ImageItem) ImageSelectionListBox.SelectedValue;
-            if (source == null && _isVariationsFlyoutOpen)
+            if (ImageSelectionListBox.SelectedValue == null 
+                && IsVariationsFlyoutOpen)
             {
                 CloseVariationsFlyout();
             }
-            _latestImageChangedTime = DateTime.Now;
-            UpdatePreviewImages();
+            ViewModel.UpdatePreviewImages();
         }
 
-        private void StylesPickUpButton_OnClick(object sender, RoutedEventArgs e)
+        private void StylesCustomizeButton_OnClick(object sender, RoutedEventArgs e)
         {
             CustomizeStyle();
         }
 
-        private void StylesApplyButton_OnClick(object sender, RoutedEventArgs e)
+        private void StylesPreviewApplyButton_OnClick(object sender, RoutedEventArgs e)
         {
-            if (StylesPreviewListBox.SelectedValue == null) return;
-
-            var source = ImageSelectionListBox.SelectedValue as ImageItem;
-            var targetStyle = ((ImageItem)StylesPreviewListBox.SelectedValue).Tooltip;
-            ViewModel.ApplyStyleInPreviewStage(source, targetStyle);
+            ViewModel.ApplyStyleInPreviewStage();
         }
 
-        // intent:
-        // allow arrow keys to navigate the listbox items
+        /// <summary>
+        /// Allow arrow keys to navigate the listbox items
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void ListBox_OnKeyDown(object sender, KeyEventArgs e)
         {
             var listbox = sender as ListBox;
@@ -254,29 +258,38 @@ namespace PowerPointLabs.ImagesLab.View
             item.Focus();
         }
 
-        // intent:
-        // delete image by backspace/delete key
+        /// <summary>
+        /// Delete image by backspace/delete key
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void ImageSelectionListBox_OnKeyDown(object sender, KeyEventArgs e)
         {
             switch (e.Key)
             {
                 case Key.Delete:
                 case Key.Back:
-                    DeleteSelectedImageShape();
+                    DeleteSelectedImage();
                     return;
             }
             ListBox_OnKeyDown(sender, e);
         }
 
-        // intent: 
-        // drag splitter to change grid width
+        /// <summary>
+        /// Drag splitter to change grid width
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void Splitter_OnDragDelta(object sender, DragDeltaEventArgs e)
         {
             StylesPreviewGrid.Width = StylesPreviewGrid.ActualWidth + e.HorizontalChange;
         }
 
-        // intent:
-        // enable & disable Apply button for preview interface
+        /// <summary>
+        /// Enable & disable Apply button for preview interface
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void StylesPreivewListBox_OnSelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             if (StylesPreviewListBox.SelectedValue != null)
@@ -291,8 +304,11 @@ namespace PowerPointLabs.ImagesLab.View
             }
         }
 
-        // intent:
-        // press ENTER button to apply
+        /// <summary>
+        /// Press ENTER button to apply
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void StylesPreviewListBox_OnKeyUp(object sender, KeyEventArgs e)
         {
             var listbox = sender as ListBox;
@@ -312,6 +328,11 @@ namespace PowerPointLabs.ImagesLab.View
             }
         }
 
+        /// <summary>
+        /// When window is re-activated, refresh the preview images and hide QuickDrop dialog
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void ImagesLabWindow_OnActivated(object sender, EventArgs e)
         {
             if (!_isWindowActivatedWithPreview) return;
@@ -333,11 +354,17 @@ namespace PowerPointLabs.ImagesLab.View
                 QuickDropDialog.IsOpen = false;
             }
 
-            UpdatePreviewImages();
+            Dispatcher.BeginInvoke(new Action(() =>
+            {
+                ViewModel.UpdatePreviewImages();
+            }));
         }
 
-        // intent:
-        // obtain right-clicked listbox item
+        /// <summary>
+        /// Obtain right-clicked listbox item and don't select any image
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void ImageSelectionListBox_OnPreviewMouseDown(object sender, MouseButtonEventArgs e)
         {
             var item = ItemsControl.ContainerFromElement((ItemsControl) sender, (DependencyObject) e.OriginalSource) 
@@ -365,12 +392,12 @@ namespace PowerPointLabs.ImagesLab.View
 
         private void MenuItemDeleteThisImage_OnClick(object sender, RoutedEventArgs e)
         {
-            DeleteImageShape();
+            DeleteImage();
         }
 
         private void MenuItemDeleteAllImages_OnClick(object sender, RoutedEventArgs e)
         {
-            DeleteAllImageShapes();
+            DeleteAllImage();
         }
 
         private void MenuItemAdjustImage_OnClick(object sender, RoutedEventArgs e)
@@ -394,44 +421,56 @@ namespace PowerPointLabs.ImagesLab.View
             AdjustImageOffset(selectedImage);
         }
 
+        /// <summary>
+        /// Update controls states when selection changed in the variation stage
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void VariationListBox_OnSelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            if (StylesVariationListBox.SelectedValue == null
+                || StylesPreviewListBox.SelectedValue == null)
+            {
+                StyleApplyButton.IsEnabled = false;
+            }
+            else
+            {
+                StyleApplyButton.IsEnabled = true;
+                ViewModel.UpdateStyleVariationStyleOptionsWhenSelectedItemChange();
+                UpdateVariationStageControls();
+            }
+        }
+
+        /// <summary>
+        /// step-by-step customization when user changes variant category
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void VariantsComboBox_OnSelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            ViewModel.UpdateStepByStepStylesVariationImages();
+        }
+
+        private void StylesVariationApplyButton_OnClick(object sender, RoutedEventArgs e)
+        {
+            ViewModel.ApplyStyleInVariationStage();
+        }
+
+        private void VariationFlyoutBackButton_OnClick(object sender, RoutedEventArgs e)
+        {
+            CloseVariationsFlyout();
+        }
+
         #endregion
 
         #region Helper funcs
 
-        private void UpdatePreviewImages()
+        private void DeleteAllImage()
         {
-            var image = (ImageItem)ImageSelectionListBox.SelectedValue;
-            if (image == null || image.ImageFile == StoragePath.LoadingImgPath)
-            {
-                if (_isVariationsFlyoutOpen)
-                {
-                    ViewModel.ClearStyleVariationList();
-                }
-                else
-                {
-                    ViewModel.ClearStylesPreviewList();
-                }
-            }
-            else if (_isVariationsFlyoutOpen)
-            {
-                UpdateStyleVariationsImages();
-            }
-            else
-            {
-                var selectedId = StylesPreviewListBox.SelectedIndex;
-                ViewModel.UpdatePreviewImages(image);
-
-                StylesPreviewListBox.SelectedIndex = selectedId;
-                _latestPreviewUpdateTime = DateTime.Now;
-            }
+            ViewModel.ImageSelectionList.Clear();
         }
 
-        private void DeleteAllImageShapes()
-        {
-            ViewModel.ClearImageSelectionList();
-        }
-
-        private void DeleteImageShape()
+        private void DeleteImage()
         {
             if (_clickedImageSelectionItemIndex < 0 
                 || _clickedImageSelectionItemIndex > ImageSelectionListBox.Items.Count)
@@ -440,15 +479,15 @@ namespace PowerPointLabs.ImagesLab.View
             var selectedImage = (ImageItem) ImageSelectionListBox.Items.GetItemAt(_clickedImageSelectionItemIndex);
             if (selectedImage == null) return;
 
-            ViewModel.RemoveImageSelectionListItem(_clickedImageSelectionItemIndex);
+            ViewModel.ImageSelectionList.RemoveAt(_clickedImageSelectionItemIndex);
         }
 
-        private void DeleteSelectedImageShape()
+        private void DeleteSelectedImage()
         {
             var selectedImage = (ImageItem)ImageSelectionListBox.SelectedItem;
             if (selectedImage == null) return;
 
-            ViewModel.RemoveImageSelectionListItem(ImageSelectionListBox.SelectedIndex);
+            ViewModel.ImageSelectionList.RemoveAt(ImageSelectionListBox.SelectedIndex);
         }
 
         private void AdjustImageOffset(ImageItem source)
@@ -550,6 +589,59 @@ namespace PowerPointLabs.ImagesLab.View
         {
             var bounds = VisualTreeHelper.GetDescendantBounds(target);
             return bounds.Contains(point);
+        }
+
+        private void OpenVariationsFlyout()
+        {
+            Dispatcher.BeginInvoke(new Action(() =>
+            {
+                if (IsVariationsFlyoutOpen) return;
+
+                var left2RightToShowTranslate = new TranslateTransform { X = -StylesPreviewGrid.ActualWidth };
+                StyleVariationsFlyout.RenderTransform = left2RightToShowTranslate;
+                StyleVariationsFlyout.Visibility = Visibility.Visible;
+                var left2RightToShowAnimation = new DoubleAnimation(-StylesPreviewGrid.ActualWidth, 0,
+                    TimeSpan.FromMilliseconds(350))
+                {
+                    EasingFunction = new SineEase { EasingMode = EasingMode.EaseInOut },
+                    AccelerationRatio = 0.5
+                };
+
+                left2RightToShowTranslate.BeginAnimation(TranslateTransform.XProperty, left2RightToShowAnimation);
+                IsVariationsFlyoutOpen = true;
+            }));
+        }
+
+        private void CloseVariationsFlyout()
+        {
+            if (!IsVariationsFlyoutOpen) return;
+
+            var right2LeftToHideTranslate = new TranslateTransform();
+            StyleVariationsFlyout.RenderTransform = right2LeftToHideTranslate;
+            var right2LeftToHideAnimation = new DoubleAnimation(0, -StyleVariationsFlyout.ActualWidth,
+                TimeSpan.FromMilliseconds(350))
+            {
+                EasingFunction = new SineEase { EasingMode = EasingMode.EaseInOut },
+                AccelerationRatio = 0.5
+            };
+            right2LeftToHideAnimation.Completed += (sender, args) =>
+            {
+                Dispatcher.BeginInvoke(new Action(() =>
+                {
+                    StyleVariationsFlyout.Visibility = Visibility.Collapsed;
+                    ViewModel.UpdatePreviewImages();
+                }));
+            };
+
+            right2LeftToHideTranslate.BeginAnimation(TranslateTransform.XProperty, right2LeftToHideAnimation);
+            IsVariationsFlyoutOpen = false;
+        }
+
+        private void CustomizeStyle(List<StyleOptions> givenStyles = null,
+            Dictionary<string, List<StyleVariants>> givenVariants = null)
+        {
+            ViewModel.UpdateStyleVariationImagesWhenOpenFlyout(givenStyles, givenVariants);
+            OpenVariationsFlyout();
         }
         #endregion
     }

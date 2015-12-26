@@ -305,10 +305,15 @@
     <Compile Include="FunctionalTestInterface.Impl\PowerPointLabsFT.cs" />
     <Compile Include="FunctionalTestInterface.Impl\PowerPointOperations.cs" />
     <Compile Include="FunctionalTestInterface.Impl\SlideData.cs" />
+    <Compile Include="ImagesLab\Model\ObservableFont.cs" />
+    <Compile Include="ImagesLab\Model\ObservableImageItem.cs" />
+    <Compile Include="ImagesLab\Service\Interface\IStylesDesigner.cs" />
     <Compile Include="ImagesLab\Thread\ContextDownloader.cs" />
     <Compile Include="ImagesLab\Thread\ThreadContext.cs" />
     <Compile Include="ImagesLab\ViewModel\ImagesLabWindowViewModel.cs" />
-    <Compile Include="ImagesLab\View\Interface\IImagesLabWindow.cs" />
+    <Compile Include="ImagesLab\ViewModel\ImagesLabWindowViewModel.VariationStageControls.cs" />
+    <Compile Include="ImagesLab\View\ImagesLabWindow.xaml.VariationStageControls.cs" />
+    <Compile Include="ImagesLab\View\Interface\IImagesLabWindowView.cs" />
     <Compile Include="ImagesLab\View\ImageAdjustment\CroppingAdorner.cs" />
     <Compile Include="ImagesLab\View\AdjustImageWindow.xaml.cs">
       <DependentUpon>AdjustImageWindow.xaml</DependentUpon>
@@ -335,9 +340,8 @@
     <Compile Include="ImagesLab\View\ImagesLabWindow.xaml.cs">
       <DependentUpon>ImagesLabWindow.xaml</DependentUpon>
     </Compile>
-    <Compile Include="ImagesLab\View\ImagesLabWindow.xaml.OnCustomizeStyle.cs" />
-    <Compile Include="ImagesLab\View\ImagesLabWindow.xaml.OnGotoSlide.cs" />
-    <Compile Include="ImagesLab\View\ImagesLabWindow.xaml.OnReloadStyle.cs" />
+    <Compile Include="ImagesLab\View\ImagesLabWindow.xaml.GotoSlide.cs" />
+    <Compile Include="ImagesLab\View\ImagesLabWindow.xaml.ReloadStyle.cs" />
     <Compile Include="ImagesLab\View\QuickDropDialog.xaml.cs">
       <DependentUpon>QuickDropDialog.xaml</DependentUpon>
     </Compile>

@@ -19,7 +19,7 @@ namespace PowerPointLabs.ImagesLab.Service
 {
     public class EffectsDesigner : PowerPointSlide
     {
-        private const string ShapeNamePrefix = "pptImagesLab";
+        public const string ShapeNamePrefix = "pptImagesLab";
 
         private const float MinThumbnailHeight = 11f;
         private const float MaxThumbnailHeight = 1100f;

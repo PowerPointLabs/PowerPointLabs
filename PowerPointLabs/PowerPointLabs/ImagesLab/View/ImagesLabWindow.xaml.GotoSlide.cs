@@ -1,5 +1,4 @@
-﻿using System;
-using System.Reflection;
+﻿using System.Reflection;
 using System.Windows;
 using MahApps.Metro.Controls.Dialogs;
 using PowerPointLabs.Models;
@@ -40,8 +39,7 @@ namespace PowerPointLabs.ImagesLab.View
                     ShowInfoMessageBox(TextCollection.ImagesLabText.SuccessfullyGoToSlide
                         .Replace("_SlideNumber_", _gotoSlideDialog.SelectedSlide.ToString()));
                 }
-                _latestImageChangedTime = DateTime.Now;
-                UpdatePreviewImages();
+                ViewModel.UpdatePreviewImages();
             };
             _gotoSlideDialog.OnCancel += () =>
             {

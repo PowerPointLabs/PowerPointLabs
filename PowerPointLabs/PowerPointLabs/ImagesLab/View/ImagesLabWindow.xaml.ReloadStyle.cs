@@ -7,6 +7,7 @@ using Microsoft.Office.Core;
 using Microsoft.Office.Interop.PowerPoint;
 using PowerPointLabs.ImagesLab.Model;
 using PowerPointLabs.ImagesLab.ModelFactory;
+using PowerPointLabs.ImagesLab.Service;
 using PowerPointLabs.ImagesLab.Service.Effect;
 using PowerPointLabs.ImagesLab.Util;
 using PowerPointLabs.Models;
@@ -18,7 +19,7 @@ namespace PowerPointLabs.ImagesLab.View
     {
         private readonly SlideSelectionDialog _reloadStylesDialog = new SlideSelectionDialog();
 
-        private const string ShapeNamePrefix = "pptImagesLab";
+        private const string ShapeNamePrefix = EffectsDesigner.ShapeNamePrefix;
 
         private void ReloadButton_OnClick(object sender, RoutedEventArgs e)
         {
@@ -30,7 +31,7 @@ namespace PowerPointLabs.ImagesLab.View
             this.ShowMetroDialogAsync(_reloadStylesDialog, MetroDialogOptions);
         }
 
-        // actually using GotoSlide dialog, but to do stuff related to Reload Styles
+        // it's actually using GotoSlide dialog, but to do stuff related to Reload Styles
         private void InitReloadStylesDialog()
         {
             _reloadStylesDialog.GetType()
@@ -144,7 +145,7 @@ namespace PowerPointLabs.ImagesLab.View
                             Rect = rect
                         };
 
-                        ViewModel.AddImageSelectionListItem(imageItem);
+                        ViewModel.ImageSelectionList.Add(imageItem);
 
                         if (isReloadImageOnly)
                         {

@@ -379,6 +379,9 @@
                 "Successfully loaded image from the slide.";
             public const string SuccessfullyLoadedStyle =
                 "Successfully loaded style from the slide.";
+
+            public const string DragAndDropInstruction =
+                "Drag and Drop here to get image.";
         }
 
         # region Agenda Lab

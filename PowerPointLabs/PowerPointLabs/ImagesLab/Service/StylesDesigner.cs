@@ -1,6 +1,7 @@
 ﻿using Microsoft.Office.Core;
 using PowerPointLabs.ImagesLab.Model;
 using PowerPointLabs.ImagesLab.Service.Effect;
+using PowerPointLabs.ImagesLab.Service.Interface;
 using PowerPointLabs.ImagesLab.Service.Preview;
 using PowerPointLabs.ImagesLab.Util;
 using PowerPointLabs.Models;
@@ -10,7 +11,7 @@ using Shape = Microsoft.Office.Interop.PowerPoint.Shape;
 
 namespace PowerPointLabs.ImagesLab.Service
 {
-    public class StylesDesigner : PowerPointPresentation
+    public sealed class StylesDesigner : PowerPointPresentation, IStylesDesigner
     {
         private StyleOptions Options { get; set; }
 
@@ -23,11 +24,17 @@ namespace PowerPointLabs.ImagesLab.Service
             Path = TempPath.TempFolder;
             Name = "ImagesLabPreview";
             Options = new StyleOptions();
+            Open(withWindow: false, focus: false);
         }
 
         public void SetStyleOptions(StyleOptions opt)
         {
             Options = opt;
+        }
+
+        public void CleanUp()
+        {
+            Close();
         }
 
         /// <exception cref="AssumptionFailedException">
