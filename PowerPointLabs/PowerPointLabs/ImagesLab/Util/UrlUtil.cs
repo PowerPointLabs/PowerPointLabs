@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Text.RegularExpressions;
-using PowerPointLabs.ImagesLab.Domain;
+using PowerPointLabs.ImagesLab.Model;
 using RestSharp.Contrib;
 
 namespace PowerPointLabs.ImagesLab.Util
@@ -31,7 +31,6 @@ namespace PowerPointLabs.ImagesLab.Util
                 var googleImageUri = new Uri(url);
                 var parameters = HttpUtility.ParseQueryString(googleImageUri.Query);
                 url = parameters.Get("imgurl");
-                item.FullSizeImageUri = url;
                 item.ContextLink = parameters.Get("imgrefurl");
             }
         }

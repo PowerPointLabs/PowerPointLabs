@@ -1,5 +1,5 @@
 ﻿using System;
-using PowerPointLabs.ImagesLab.Handler.Effect;
+using PowerPointLabs.ImagesLab.Service.Effect;
 using PowerPointLabs.Utils;
 using PowerPoint = Microsoft.Office.Interop.PowerPoint;
 
