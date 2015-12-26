@@ -8,7 +8,7 @@ PowerPointLabs makes creating engaging PowerPoint presentations easy. Check out 
 
 ### Dev Prerequisites
 0. Install Office 2016, 2013 or 2010 with PowerPoint.
-1. Install GitHub for Windows (recommended), or at least, Git.
+1. Install SourceTree (recommended), GitHub for Windows, or at least, Git.
 2. Install Visual Studio 2015 (recommended), 2013, or 2012.
 3. Install VSTO (Visual Studio Tools for Office, AKA the Office SDK):<br>
    for VS2012 - http://aka.ms/OfficeDevToolsForVS2012<br>
@@ -20,3 +20,12 @@ PowerPointLabs makes creating engaging PowerPoint presentations easy. Check out 
 1. Turn off *Office Version Upgrading*: Open the solution `PowerPointLabs\PowerPointLabs.sln` >> open Tools (menu) >> Options >> Office Tools >> Project Migration >> uncheck ‘Always upgrade to installed version of Office’.
 2. Set up *External Office Program*: Open ‘PowerPointLabs’ Properties >> Debug >> select ‘Start external program’ and choose `POWERPNT.exe` in the Office folder. Ensure that both **Debug** and **Release** configurations have set up this.
 3. Run the solution by pressing F5 and then PowerPointLabs tab will appear in the PowerPoint ribbon. If you have installed PowerPointLabs add-in, you may have to uninstall it first and rebuild the solution.
+
+### Contributing To PowerPointLabs
+Interested to contribute? Please take a moment to review the [guidelines for contributing](https://github.com/PowerPointLabs/powerpointlabs/blob/master/doc/CONTRIBUTING.md).
+
+### Acknowledgements
+PowerPointLabs is developed at the School of Computing, National University of Singapore, with funding from an NUS Learning Innovation Fund, Technology (LIFT) grant.
+
+### License
+PowerPointLabs is released under GPLv2.
