@@ -141,4 +141,4 @@ project:
 **IMPORTANT**: By submitting a patch, you agree to allow the project owner to
 license your work under the same license as that used by the project.
 
-Most text of this contributing is taken from this [issue-guidelines](https://github.com/necolas/issue-guidelines).
+Most text of this document is taken from this [issue-guidelines](https://github.com/necolas/issue-guidelines).
