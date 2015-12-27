@@ -94,7 +94,6 @@ namespace PowerPointLabs.DataSources
             {
                 _shiftIncludePositionX = value;
                 OnPropertyChanged("ShiftIncludePositionX");
-                OnPropertyChanged("ShiftIncludePositionBoth");
             }
         }
 
@@ -105,27 +104,6 @@ namespace PowerPointLabs.DataSources
             {
                 _shiftIncludePositionY = value;
                 OnPropertyChanged("ShiftIncludePositionY");
-                OnPropertyChanged("ShiftIncludePositionBoth");
-            }
-        }
-
-        public bool? ShiftIncludePositionBoth
-        {
-            get
-            {
-                if (ShiftIncludePositionX != ShiftIncludePositionY) return null;
-                return ShiftIncludePositionX;
-            }
-            set
-            {
-                if (value == null) return;
-                bool valueBool = (value == true);
-
-                _shiftIncludePositionX = valueBool;
-                _shiftIncludePositionY = valueBool;
-                OnPropertyChanged("ShiftIncludePositionX");
-                OnPropertyChanged("ShiftIncludePositionY");
-                OnPropertyChanged("ShiftIncludePositionBoth");
             }
         }
 
@@ -138,6 +116,15 @@ namespace PowerPointLabs.DataSources
                 OnPropertyChanged("ShiftIncludeRotation");
             }
         }
+        # endregion
+
+        # region Properties - Record / Apply Position
+        private float _savedValueX;
+        private float _savedValueY;
+        private float _savedValueRotation;
+        private bool _savedIncludePositionX = true;
+        private bool _savedIncludePositionY = true;
+        private bool _savedIncludeRotation = true;
 
         public float SavedValueX
         {
@@ -148,15 +135,6 @@ namespace PowerPointLabs.DataSources
                 OnPropertyChanged("SavedValueX");
             }
         }
-        # endregion
-
-        # region Properties - Record / Apply Position
-        private float _savedValueX;
-        private float _savedValueY;
-        private float _savedValueRotation;
-        private bool _savedIncludePositionX = true;
-        private bool _savedIncludePositionY = true;
-        private bool _savedIncludeRotation = true;
 
         public float SavedValueY
         {
@@ -186,7 +164,6 @@ namespace PowerPointLabs.DataSources
             {
                 _savedIncludePositionX = value;
                 OnPropertyChanged("SavedIncludePositionX");
-                OnPropertyChanged("SavedIncludePositionBoth");
             }
         }
 
@@ -197,27 +174,6 @@ namespace PowerPointLabs.DataSources
             {
                 _savedIncludePositionY = value;
                 OnPropertyChanged("SavedIncludePositionY");
-                OnPropertyChanged("SavedIncludePositionBoth");
-            }
-        }
-
-        public bool? SavedIncludePositionBoth
-        {
-            get
-            {
-                if (SavedIncludePositionX != SavedIncludePositionY) return null;
-                return SavedIncludePositionX;
-            }
-            set
-            {
-                if (value == null) return;
-                bool valueBool = (value == true);
-
-                _savedIncludePositionX = valueBool;
-                _savedIncludePositionY = valueBool;
-                OnPropertyChanged("SavedIncludePositionX");
-                OnPropertyChanged("SavedIncludePositionY");
-                OnPropertyChanged("SavedIncludePositionBoth");
             }
         }
 
@@ -228,7 +184,6 @@ namespace PowerPointLabs.DataSources
             {
                 _savedIncludeRotation = value;
                 OnPropertyChanged("SavedIncludeRotation");
-                OnPropertyChanged("SavedIncludePositionBoth");
             }
         }
 

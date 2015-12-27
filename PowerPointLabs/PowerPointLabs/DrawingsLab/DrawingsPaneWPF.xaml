@@ -100,7 +100,8 @@
                         <Grid.RowDefinitions>
                             <RowDefinition Height="38*"/>
                             <RowDefinition Height="38*"/>
-                            <RowDefinition Height="76*"/>
+                            <RowDefinition Height="38*"/>
+                            <RowDefinition Height="38*"/>
                             <RowDefinition Height="38*"/>
                             <RowDefinition Height="38*"/>
                             <RowDefinition Height="38*"/>
@@ -111,49 +112,28 @@
                             <ColumnDefinition Width="1*"/>
                             <ColumnDefinition Width="1*"/>
                             <ColumnDefinition Width="1*"/>
-                            <ColumnDefinition Width="1*"/>
                         </Grid.ColumnDefinitions>
 
                         <cc:ImageButton x:Name="AddTextButtonMain" Text="Add&#xa;Text" Grid.Row="0" Grid.Column="0"/>
                         <cc:ImageButton x:Name="AddMathButtonMain" Text="Add&#xa;Math" Grid.Row="0" Grid.Column="1"/>
                         <cc:ImageButton x:Name="RemoveTextButtonMain" Text="Remove&#xa;Text" Grid.Row="0" Grid.Column="2"/>
 
-                        <cc:ImageButton x:Name="GroupButtonMain" Text="Group" Grid.Row="1" Grid.Column="3"/>
-                        <cc:ImageButton x:Name="UngroupButtonMain" Text="Ungroup" Grid.Row="1" Grid.Column="4"/>
+                        <cc:ImageButton x:Name="GroupButtonMain" Text="Group" Grid.Row="1" Grid.Column="0"/>
+                        <cc:ImageButton x:Name="UngroupButtonMain" Text="Ungroup" Grid.Row="1" Grid.Column="1"/>
 
-                        <Grid Row="2" Column="0" ColumnSpan="5" DataContext="{StaticResource DrawingsLabData}">
-                            <Grid.RowDefinitions>
-                                <RowDefinition Height="38*"/>
-                                <RowDefinition Height="38*"/>
-                            </Grid.RowDefinitions>
-                            <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="1*"/>
-                                <ColumnDefinition Width="1*"/>
-                                <ColumnDefinition Width="1*"/>
-                                <ColumnDefinition Width="1*"/>
-                                <ColumnDefinition Width="1*"/>
-                                <ColumnDefinition Width="1*"/>
-                            </Grid.ColumnDefinitions>
-                            <cc:ImageButton x:Name="RecordPositionButtonMain" Text="Record&#xa;Position" Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="2"/>
-                            <cc:ImageButton x:Name="ApplyPositionButtonMain" Text="Apply&#xa;Position" Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2"/>
-                            <cc:ImageButton x:Name="RecordDisplacementButtonMain" Text="Record&#xa;Displacement" Grid.Row="0" Grid.Column="2" Grid.ColumnSpan="2"/>
-                            <cc:ImageButton x:Name="ApplyDisplacementButtonMain" Text="Apply&#xa;Displacement" Grid.Row="1" Grid.Column="2" Grid.ColumnSpan="2"/>
-                            <cc:ImageButton x:Name="RecordFormatButtonMain" Text="Record&#xa;Format" Grid.Row="0" Grid.Column="4" Grid.ColumnSpan="2"/>
-                            <cc:ImageButton x:Name="ApplyFormatButtonMain" Text="Apply&#xa;Format" Grid.Row="1" Grid.Column="4" Grid.ColumnSpan="2"/>
-                        </Grid>
+                        <cc:ImageButton x:Name="LeftArrowButtonMain" Text="Toggle&#xa;Arrow (L)" Grid.Row="2" Grid.Column="0"/>
+                        <cc:ImageButton x:Name="RightArrowButtonMain" Text="Toggle&#xa;Arrow (R)" Grid.Row="2" Grid.Column="1"/>
 
-                        <cc:ImageButton x:Name="AlignHorizontalButtonMain" Text="Align&#xa;Horizontal" Grid.Row="3" Grid.Column="0"/>
-                        <cc:ImageButton x:Name="AlignVerticalButtonMain" Text="Align&#xa;Vertical" Grid.Row="3" Grid.Column="1"/>
-
-                        <cc:ImageButton x:Name="MultiCloneBetweenButtonMain" Text="MultiClone&#xa;Between" Grid.Row="3" Grid.Column="3"/>
-                        <cc:ImageButton x:Name="MultiCloneExtendButtonMain" Text="MultiClone&#xa;Extend" Grid.Row="3" Grid.Column="4"/>
-
-                        <cc:ImageButton x:Name="BringInFrontOfShapeButtonMain" Text="Front Of&#xa;Shape" Grid.Row="5" Grid.Column="1"/>
-                        <cc:ImageButton x:Name="SendBehindShapeButtonMain" Text="Behind&#xa;Shape" Grid.Row="5" Grid.Column="2"/>
-                        <cc:ImageButton x:Name="BringToFrontButtonMain" Text="Bring&#xa;To Front" Grid.Row="6" Grid.Column="0"/>
-                        <cc:ImageButton x:Name="BringForwardButtonMain" Text="Bring&#xa;Forward" Grid.Row="6" Grid.Column="1"/>
-                        <cc:ImageButton x:Name="SendBackwardButtonMain" Text="Send&#xa;Backward" Grid.Row="6" Grid.Column="2"/>
-                        <cc:ImageButton x:Name="SendToBackButtonMain" Text="Send&#xa;To Back" Grid.Row="6" Grid.Column="3"/>
+                        <cc:ImageButton x:Name="MultiCloneBetweenButton" Text="MultiClone&#xa;Between" Grid.Row="4" Grid.Column="0"/>
+                        <cc:ImageButton x:Name="MultiCloneExtendButton" Text="MultiClone&#xa;Extend" Grid.Row="4" Grid.Column="1"/>
+                        <cc:ImageButton x:Name="MultiCloneGridButton" Text="MultiClone&#xa;Grid" Grid.Row="4" Grid.Column="2"/>
+                        
+                        <cc:ImageButton x:Name="BringInFrontOfShapeButtonMain" Text="Front Of&#xa;Shape" Grid.Row="6" Grid.Column="1"/>
+                        <cc:ImageButton x:Name="SendBehindShapeButtonMain" Text="Behind&#xa;Shape" Grid.Row="6" Grid.Column="2"/>
+                        <cc:ImageButton x:Name="BringToFrontButtonMain" Text="Bring&#xa;To Front" Grid.Row="7" Grid.Column="0"/>
+                        <cc:ImageButton x:Name="BringForwardButtonMain" Text="Bring&#xa;Forward" Grid.Row="7" Grid.Column="1"/>
+                        <cc:ImageButton x:Name="SendBackwardButtonMain" Text="Send&#xa;Backward" Grid.Row="7" Grid.Column="2"/>
+                        <cc:ImageButton x:Name="SendToBackButtonMain" Text="Send&#xa;To Back" Grid.Row="7" Grid.Column="3"/>
                     </Grid>
                 </TabItem.Content>
             </TabItem>
@@ -301,37 +281,30 @@
 
             <!-- TAB: POSITION - START -->
             <TabItem Name="TabPosition" Header="Position">
+                <TabItem.Resources>
+                    <Style TargetType="{x:Type CheckBox}">
+                        <Setter Property="Margin" Value="5 0 0 0"/>
+                        <Setter Property="VerticalAlignment" Value="Center"/>
+                    </Style>
+                </TabItem.Resources>
                 <TabItem.Content>
                     <Grid DataContext="{StaticResource DrawingsLabData}">
                         <Grid.RowDefinitions>
-                            <RowDefinition Height="114*"/>
-                            <RowDefinition Height="38*"/>
-                            <RowDefinition Height="38*"/>
-                            <RowDefinition Height="38*"/>
-                            <RowDefinition Height="38*"/>
-                            <RowDefinition Height="38*"/>
+                            <RowDefinition Height="17*"/>
+                            <RowDefinition Height="1*"/>
+                            <RowDefinition Height="14*"/>
                         </Grid.RowDefinitions>
-                        <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="1*"/>
-                            <ColumnDefinition Width="1*"/>
-                            <ColumnDefinition Width="1*"/>
-                            <ColumnDefinition Width="1*"/>
-                            <ColumnDefinition Width="1*"/>
-                        </Grid.ColumnDefinitions>
-                        <Grid Grid.Row="2" Grid.Column="1" DataContext="{StaticResource DrawingsLabData}">
-                            <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="3*"/>
-                                <ColumnDefinition Width="3*"/>
-                            </Grid.ColumnDefinitions>
-                        </Grid>
 
-                        <Grid Row="0" Column="0" ColumnSpan="5" DataContext="{StaticResource DrawingsLabData}">
+                        <Grid Row="0" DataContext="{StaticResource DrawingsLabData}">
                             <Grid.RowDefinitions>
-                                <RowDefinition Height="38*"/>
-                                <RowDefinition Height="19*"/>
-                                <RowDefinition Height="19*"/>
-                                <RowDefinition Height="19*"/>
-                                <RowDefinition Height="19*"/>
+                                <RowDefinition Height="4*"/>
+                                <RowDefinition Height="2*"/>
+                                <RowDefinition Height="2*"/>
+                                <RowDefinition Height="1*"/>
+                                <RowDefinition Height="2*"/>
+                                <RowDefinition Height="2*"/>
+                                <RowDefinition Height="2*"/>
+                                <RowDefinition Height="2*"/>
                             </Grid.RowDefinitions>
                             <Grid.ColumnDefinitions>
                                 <ColumnDefinition Width="1*"/>
@@ -340,30 +313,36 @@
                                 <ColumnDefinition Width="1*"/>
                                 <ColumnDefinition Width="1*"/>
                                 <ColumnDefinition Width="1*"/>
+                                <ColumnDefinition Width="1*"/>
+                                <ColumnDefinition Width="1*"/>
+                                <ColumnDefinition Width="1*"/>
+                                <ColumnDefinition Width="1*"/>
                             </Grid.ColumnDefinitions>
-                            <cc:ImageButton x:Name="RecordPositionButton" Text="Record&#xa;Position" Grid.Row="0" Grid.Column="0"/>
-                            <cc:ImageButton x:Name="ApplyPositionButton" Text="Apply&#xa;Position" Grid.Row="0" Grid.Column="1"/>
-                            <cc:ImageButton x:Name="RecordDisplacementButton" Text="Record&#xa;Displacement" Grid.Row="0" Grid.Column="2"/>
-                            <cc:ImageButton x:Name="ApplyDisplacementButton" Text="Apply&#xa;Displacement" Grid.Row="0" Grid.Column="3"/>
+                            <cc:ImageButton x:Name="RecordPositionButton" Text="Record&#xa;Position" Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="3"/>
+                            <cc:ImageButton x:Name="ApplyPositionButton" Text="Apply&#xa;Position" Grid.Row="0" Grid.Column="3" Grid.ColumnSpan="3"/>
+                            <cc:ImageButton x:Name="RecordDisplacementButton" Text="Record&#xa;Displacement" Grid.Row="4" Grid.Column="0" Grid.ColumnSpan="3" Grid.RowSpan="2"/>
+                            <cc:ImageButton x:Name="ApplyDisplacementButton" Text="Apply&#xa;Displacement" Grid.Row="4" Grid.Column="3" Grid.ColumnSpan="3" Grid.RowSpan="2"/>
 
-                            <TextBox Grid.Row="1" Grid.Column="0" IsEnabled="{Binding IsChecked, ElementName=SavedIncludeX}" Text="{Binding UpdateSourceTrigger=PropertyChanged, Path=SavedValueX, Mode=TwoWay, Converter={StaticResource FloatToStringConverter}}"/>
-                            <TextBox Grid.Row="2" Grid.Column="0" IsEnabled="{Binding IsChecked, ElementName=SavedIncludeY}" Text="{Binding UpdateSourceTrigger=PropertyChanged, Path=SavedValueY, Mode=TwoWay, Converter={StaticResource FloatToStringConverter}}"/>
-                            <TextBox Grid.Row="3" Grid.Column="0" IsEnabled="{Binding IsChecked, ElementName=SavedIncludeRotation}" Text="{Binding UpdateSourceTrigger=PropertyChanged, Path=SavedValueRotation, Mode=TwoWay, Converter={StaticResource FloatToStringConverter}}"/>
-                            <CheckBox Content="Pos" Grid.Row="4" Grid.Column="1" IsChecked="{Binding UpdateSourceTrigger=PropertyChanged, Path=SavedIncludePositionBoth, Mode=TwoWay}"/>
-                            <CheckBox Content="X" x:Name="SavedIncludeX" Grid.Row="1" Grid.Column="1" IsChecked="{Binding UpdateSourceTrigger=PropertyChanged, Path=SavedIncludePositionX, Mode=TwoWay}"/>
-                            <CheckBox Content="Y" x:Name="SavedIncludeY" Grid.Row="2" Grid.Column="1" IsChecked="{Binding UpdateSourceTrigger=PropertyChanged, Path=SavedIncludePositionY, Mode=TwoWay}"/>
-                            <CheckBox Content="Rtn" x:Name="SavedIncludeRotation" Grid.Row="3" Grid.Column="1" IsChecked="{Binding UpdateSourceTrigger=PropertyChanged, Path=SavedIncludeRotation, Mode=TwoWay}"/>
+                            <TextBox Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2" IsEnabled="{Binding IsChecked, ElementName=SavedIncludeX}" Text="{Binding UpdateSourceTrigger=PropertyChanged, Path=SavedValueX, Mode=TwoWay, Converter={StaticResource FloatToStringConverter}}"/>
+                            <TextBox Grid.Row="1" Grid.Column="2" Grid.ColumnSpan="2" IsEnabled="{Binding IsChecked, ElementName=SavedIncludeY}" Text="{Binding UpdateSourceTrigger=PropertyChanged, Path=SavedValueY, Mode=TwoWay, Converter={StaticResource FloatToStringConverter}}"/>
+                            <TextBox Grid.Row="1" Grid.Column="4" Grid.ColumnSpan="2" IsEnabled="{Binding IsChecked, ElementName=SavedIncludeRotation}" Text="{Binding UpdateSourceTrigger=PropertyChanged, Path=SavedValueRotation, Mode=TwoWay, Converter={StaticResource FloatToStringConverter}}"/>
 
-                            <TextBox Grid.Row="1" Grid.Column="2" IsEnabled="{Binding IsChecked, ElementName=ShiftIncludeX}" Text="{Binding UpdateSourceTrigger=PropertyChanged, Path=ShiftValueX, Mode=TwoWay, Converter={StaticResource FloatToStringConverter}}"/>
-                            <TextBox Grid.Row="2" Grid.Column="2" IsEnabled="{Binding IsChecked, ElementName=ShiftIncludeY}" Text="{Binding UpdateSourceTrigger=PropertyChanged, Path=ShiftValueY, Mode=TwoWay, Converter={StaticResource FloatToStringConverter}}"/>
-                            <TextBox Grid.Row="3" Grid.Column="2" IsEnabled="{Binding IsChecked, ElementName=ShiftIncludeRotation}" Text="{Binding UpdateSourceTrigger=PropertyChanged, Path=ShiftValueRotation, Mode=TwoWay, Converter={StaticResource FloatToStringConverter}}"/>
-                            <CheckBox Content="Pos" Grid.Row="4" Grid.Column="3" IsChecked="{Binding UpdateSourceTrigger=PropertyChanged, Path=ShiftIncludePositionBoth, Mode=TwoWay}"/>
-                            <CheckBox Content="X" x:Name="ShiftIncludeX" Grid.Row="1" Grid.Column="3" IsChecked="{Binding UpdateSourceTrigger=PropertyChanged, Path=ShiftIncludePositionX, Mode=TwoWay}"/>
-                            <CheckBox Content="Y" x:Name="ShiftIncludeY" Grid.Row="2" Grid.Column="3" IsChecked="{Binding UpdateSourceTrigger=PropertyChanged, Path=ShiftIncludePositionY, Mode=TwoWay}"/>
-                            <CheckBox Content="Rtn" x:Name="ShiftIncludeRotation" Grid.Row="3" Grid.Column="3" IsChecked="{Binding UpdateSourceTrigger=PropertyChanged, Path=ShiftIncludeRotation, Mode=TwoWay}"/>
+                            <CheckBox Content="X" x:Name="SavedIncludeX" Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="2" IsChecked="{Binding UpdateSourceTrigger=PropertyChanged, Path=SavedIncludePositionX, Mode=TwoWay}"/>
+                            <CheckBox Content="Y" x:Name="SavedIncludeY" Grid.Row="2" Grid.Column="2" Grid.ColumnSpan="2" IsChecked="{Binding UpdateSourceTrigger=PropertyChanged, Path=SavedIncludePositionY, Mode=TwoWay}"/>
+                            <CheckBox Content="Rtn" x:Name="SavedIncludeRotation" Grid.Row="2" Grid.Column="4" Grid.ColumnSpan="2" IsChecked="{Binding UpdateSourceTrigger=PropertyChanged, Path=SavedIncludeRotation, Mode=TwoWay}"/>
+
+                            <Separator Grid.Row="3" Grid.Column="0" Grid.ColumnSpan="6"/>
+                            
+                            <TextBox Grid.Row="6" Grid.Column="0" Grid.ColumnSpan="2" IsEnabled="{Binding IsChecked, ElementName=ShiftIncludeX}" Text="{Binding UpdateSourceTrigger=PropertyChanged, Path=ShiftValueX, Mode=TwoWay, Converter={StaticResource FloatToStringConverter}}"/>
+                            <TextBox Grid.Row="6" Grid.Column="2" Grid.ColumnSpan="2" IsEnabled="{Binding IsChecked, ElementName=ShiftIncludeY}" Text="{Binding UpdateSourceTrigger=PropertyChanged, Path=ShiftValueY, Mode=TwoWay, Converter={StaticResource FloatToStringConverter}}"/>
+                            <TextBox Grid.Row="6" Grid.Column="4" Grid.ColumnSpan="2" IsEnabled="{Binding IsChecked, ElementName=ShiftIncludeRotation}" Text="{Binding UpdateSourceTrigger=PropertyChanged, Path=ShiftValueRotation, Mode=TwoWay, Converter={StaticResource FloatToStringConverter}}"/>
+
+                            <CheckBox Content="X" x:Name="ShiftIncludeX" Grid.Row="7" Grid.Column="0" Grid.ColumnSpan="2" IsChecked="{Binding UpdateSourceTrigger=PropertyChanged, Path=ShiftIncludePositionX, Mode=TwoWay}"/>
+                            <CheckBox Content="Y" x:Name="ShiftIncludeY" Grid.Row="7" Grid.Column="2" Grid.ColumnSpan="2" IsChecked="{Binding UpdateSourceTrigger=PropertyChanged, Path=ShiftIncludePositionY, Mode=TwoWay}"/>
+                            <CheckBox Content="Rtn" x:Name="ShiftIncludeRotation" Grid.Row="7" Grid.Column="4" Grid.ColumnSpan="2" IsChecked="{Binding UpdateSourceTrigger=PropertyChanged, Path=ShiftIncludeRotation, Mode=TwoWay}"/>
 
 
-                            <Grid Row="0" Column="4" RowSpan="3" ColumnSpan="2" DataContext="{StaticResource DrawingsLabData}">
+                            <Grid Row="0" Column="6" RowSpan="4" ColumnSpan="4" DataContext="{StaticResource DrawingsLabData}">
                                 <Grid.RowDefinitions>
                                     <RowDefinition Height="1*"/>
                                     <RowDefinition Height="1*"/>
@@ -384,29 +363,36 @@
                                 <RadioButton Grid.Row="2" Grid.Column="1" IsChecked="{Binding UpdateSourceTrigger=PropertyChanged, Path=Anchor, Mode=TwoWay, Converter={StaticResource EnumMatchToBooleanConverter}, ConverterParameter=BottomCenter}" HorizontalAlignment="Center" VerticalAlignment="Center"/>
                                 <RadioButton Grid.Row="2" Grid.Column="2" IsChecked="{Binding UpdateSourceTrigger=PropertyChanged, Path=Anchor, Mode=TwoWay, Converter={StaticResource EnumMatchToBooleanConverter}, ConverterParameter=BottomRight}" HorizontalAlignment="Center" VerticalAlignment="Center"/>
                             </Grid>
- 
                         </Grid>
+
+                        <Separator Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="5"/>
+
+                        <Grid Row="2" DataContext="{StaticResource DrawingsLabData}">
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="5*"/>
+                                <RowDefinition Height="5*"/>
+                                <RowDefinition Height="1*"/>
+                                <RowDefinition Height="5*"/>
+                            </Grid.RowDefinitions>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="2*"/>
+                                <ColumnDefinition Width="2*"/>
+                                <ColumnDefinition Width="2*"/>
+                            </Grid.ColumnDefinitions>
+                            <cc:ImageButton x:Name="AlignHorizontalButton" Text="Align&#xa;Horizontal" Grid.Row="0" Grid.Column="0"/>
+                            <cc:ImageButton x:Name="AlignVerticalButton" Text="Align&#xa;Vertical" Grid.Row="0" Grid.Column="1"/>
+                            <cc:ImageButton x:Name="AlignBothButton" Text="Align&#xa;Both" Grid.Row="0" Grid.Column="2"/>
+                            
+                            <cc:ImageButton x:Name="PivotAroundButton" Text="Pivot&#xa;Around" Grid.Row="1" Grid.Column="1"/>
+                            
+                            <Separator Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="5"/>
+                            
+                            <cc:ImageButton x:Name="AlignHorizontalToSlideButton" Text="Align&#xa;Horizontal&#xa;To Slide" Grid.Row="3" Grid.Column="0"/>
+                            <cc:ImageButton x:Name="AlignVerticalToSlideButton" Text="Align&#xa;Vertical&#xa;To Slide" Grid.Row="3" Grid.Column="1"/>
+                            <cc:ImageButton x:Name="AlignBothToSlideButton" Text="Align&#xa;Both&#xa;To Slide" Grid.Row="3" Grid.Column="2"/>
+                        </Grid>
+
                         
-                        <cc:ImageButton x:Name="AlignHorizontalButton" Text="Align&#xa;Horizontal" Grid.Row="1" Grid.Column="2"/>
-                        <cc:ImageButton x:Name="AlignVerticalButton" Text="Align&#xa;Vertical" Grid.Row="1" Grid.Column="3"/>
-                        <cc:ImageButton x:Name="AlignBothButton" Text="Align&#xa;Both" Grid.Row="1" Grid.Column="4"/>
-                        <cc:ImageButton x:Name="AlignHorizontalToSlideButton" Text="Align&#xa;Horizontal&#xa;To Slide" Grid.Row="2" Grid.Column="2"/>
-                        <cc:ImageButton x:Name="AlignVerticalToSlideButton" Text="Align&#xa;Vertical&#xa;To Slide" Grid.Row="2" Grid.Column="3"/>
-                        <cc:ImageButton x:Name="AlignBothToSlideButton" Text="Align&#xa;Both&#xa;To Slide" Grid.Row="2" Grid.Column="4"/>
-
-                        <cc:ImageButton x:Name="MultiCloneBetweenButton" Text="MultiClone&#xa;Between" Grid.Row="3" Grid.Column="0"/>
-                        <cc:ImageButton x:Name="MultiCloneExtendButton" Text="MultiClone&#xa;Extend" Grid.Row="3" Grid.Column="1"/>
-                        <cc:ImageButton x:Name="MultiCloneGridButton" Text="MultiClone&#xa;Grid" Grid.Row="3" Grid.Column="2"/>
-                        <cc:ImageButton x:Name="PivotAroundButton" Text="Pivot&#xa;Around" Grid.Row="3" Grid.Column="3"/>
-
-
-                        <cc:ImageButton x:Name="BringInFrontOfShapeButton" Text="Front Of&#xa;Shape" Grid.Row="4" Grid.Column="1"/>
-                        <cc:ImageButton x:Name="SendBehindShapeButton" Text="Behind&#xa;Shape" Grid.Row="4" Grid.Column="2"/>
-                        <cc:ImageButton x:Name="BringToFrontButton" Text="Bring&#xa;To Front" Grid.Row="5" Grid.Column="0"/>
-                        <cc:ImageButton x:Name="BringForwardButton" Text="Bring&#xa;Forward" Grid.Row="5" Grid.Column="1"/>
-                        <cc:ImageButton x:Name="SendBackwardButton" Text="Send&#xa;Backward" Grid.Row="5" Grid.Column="2"/>
-                        <cc:ImageButton x:Name="SendToBackButton" Text="Send&#xa;To Back" Grid.Row="5" Grid.Column="3"/>
-
                     </Grid>
                 </TabItem.Content>
             </TabItem>
