@@ -4,6 +4,7 @@ using System.ComponentModel;
 using System.Linq;
 using System.Text;
 using Microsoft.Office.Core;
+using PowerPointLabs.Utils;
 
 namespace PowerPointLabs.DataSources
 {
@@ -721,6 +722,36 @@ namespace PowerPointLabs.DataSources
             }
         }
         # endregion
+
+        public Dictionary<MsoLineDashStyle, string> GetLineDashStyles
+        {
+            get
+            {
+                Func<MsoLineDashStyle, string> extractName = (style) =>
+                {
+                    var s = style.ToString();
+                    if (s.ToLower().StartsWith("mso")) s = s.Substring(3);
+                    if (s.ToLower().StartsWith("line")) s = s.Substring(4);
+                    return Common.SplitCamelCase(s);
+                };
+
+                var styles = (MsoLineDashStyle[])Enum.GetValues(typeof(MsoLineDashStyle));
+                return styles.ToDictionary(s => s, extractName);
+            }
+        }
+
+        public Dictionary<MsoAutoSize, string> GetAutoSizeValues
+        {
+            get
+            {
+                return new Dictionary<MsoAutoSize, string>
+                {
+                    {MsoAutoSize.msoAutoSizeNone, "None"},
+                    {MsoAutoSize.msoAutoSizeShapeToFitText, "Shape to fit Text"},
+                    {MsoAutoSize.msoAutoSizeTextToFitShape, "Text to fit Shape"},
+                };
+            }
+        }
 
         # region Event Implementation
         public event PropertyChangedEventHandler PropertyChanged = delegate {};

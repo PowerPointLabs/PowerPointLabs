@@ -217,7 +217,7 @@
                                 <TextBox Grid.Row="1" Grid.Column="0" IsEnabled="{Binding UpdateSourceTrigger=PropertyChanged, Path=FormatIncludeLineWeight}" Text="{Binding UpdateSourceTrigger=PropertyChanged, Path=FormatLineWeight, Mode=TwoWay, Converter={StaticResource FloatToStringConverter}}"/>
                                 <CheckBox Content="" Grid.Row="1" Grid.Column="1" IsChecked="{Binding UpdateSourceTrigger=PropertyChanged, Path=FormatIncludeLineWeight, Mode=TwoWay}"/>
 
-                                <cc:ImageButton x:Name="LineStyleButton" Content="Style" Grid.Row="1" Grid.Column="2" Margin="0"/>
+                                <ComboBox Grid.Row ="1" Grid.Column="2" VerticalAlignment="Center" ItemsSource="{Binding Path=GetLineDashStyles}" DisplayMemberPath="Value" SelectedValuePath="Key" SelectedValue="{Binding Path=FormatLineDashStyle, Mode=TwoWay}"/>
                                 <CheckBox Content=""  Grid.Row="1" Grid.Column="3" IsChecked="{Binding UpdateSourceTrigger=PropertyChanged, Path=FormatIncludeLineDashStyle, Mode=TwoWay}"/>
                             </Grid>
 
@@ -270,10 +270,10 @@
                                 <TextBox Grid.Row="1" Grid.Column="2" IsEnabled="{Binding UpdateSourceTrigger=PropertyChanged, Path=FormatIncludeTextFont}" Text="{Binding UpdateSourceTrigger=PropertyChanged, Path=FormatTextFont, Mode=TwoWay}"/>
                                 <CheckBox Content=""  Grid.Row="1" Grid.Column="3" IsChecked="{Binding UpdateSourceTrigger=PropertyChanged, Path=FormatIncludeTextFont, Mode=TwoWay}"/>
 
-                                <ToggleButton x:Name="ToggleTextWrapButton" Content="Wrap" Grid.Row="2" Grid.Column="0" IsEnabled="{Binding UpdateSourceTrigger=PropertyChanged, Path=FormatIncludeTextWrap}" IsChecked="{Binding UpdateSourceTrigger=PropertyChanged, Path=FormatTextWrap, Mode=TwoWay}"/>
+                                <ToggleButton x:Name="ToggleTextWrapButton" Content="Text Wrap" Grid.Row="2" Grid.Column="0" IsEnabled="{Binding UpdateSourceTrigger=PropertyChanged, Path=FormatIncludeTextWrap}" IsChecked="{Binding UpdateSourceTrigger=PropertyChanged, Path=FormatTextWrap, Mode=TwoWay}"/>
                                 <CheckBox Content=""  Grid.Row="2" Grid.Column="1" IsChecked="{Binding UpdateSourceTrigger=PropertyChanged, Path=FormatIncludeTextWrap, Mode=TwoWay}"/>
 
-                                <ToggleButton x:Name="ToggleTextShrinkButton" Content="Shrink" Grid.Row="2" Grid.Column="2" IsEnabled="{Binding UpdateSourceTrigger=PropertyChanged, Path=FormatIncludeTextAutoSize}" IsChecked="{Binding UpdateSourceTrigger=PropertyChanged, Path=FormatTextAutoSize, Mode=TwoWay}"/>
+                                <ComboBox Grid.Row ="2" Grid.Column="2" VerticalAlignment="Center" ItemsSource="{Binding Path=GetAutoSizeValues}" DisplayMemberPath="Value" SelectedValuePath="Key" SelectedValue="{Binding Path=FormatTextAutoSize, Mode=TwoWay}"/>
                                 <CheckBox Content=""  Grid.Row="2" Grid.Column="3" IsChecked="{Binding UpdateSourceTrigger=PropertyChanged, Path=FormatIncludeTextAutoSize, Mode=TwoWay}"/>
 
                             </Grid>
