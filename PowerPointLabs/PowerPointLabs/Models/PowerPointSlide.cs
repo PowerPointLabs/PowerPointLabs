@@ -467,7 +467,7 @@ namespace PowerPointLabs.Models
                 string token = splitPath[i].Trim();
                 if (token.Length <= 1 && char.IsLetter(token, 0)) continue;
 
-                float val = float.Parse(token);
+                float val = float.Parse(token, CultureInfo.InvariantCulture);
                 if (isXCoordinate)
                 {
                     val += xShift;
