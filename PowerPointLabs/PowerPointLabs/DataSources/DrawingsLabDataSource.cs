@@ -555,8 +555,8 @@ namespace PowerPointLabs.DataSources
         # endregion
 
         # region Properties - Anchor
-        private Horizontal _anchorHorizontal;
-        private Vertical _anchorVertical;
+        private Horizontal _anchorHorizontal = Horizontal.Center;
+        private Vertical _anchorVertical = Vertical.Middle;
 
         public Horizontal AnchorHorizontal
         {
