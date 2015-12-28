@@ -91,6 +91,12 @@ namespace PowerPointLabs.DrawingsLab
             commandBars.ExecuteMso("ShapeOval");
         }
 
+        public static void SwitchToTriangleTool()
+        {
+            var commandBars = Globals.ThisAddIn.Application.CommandBars;
+            commandBars.ExecuteMso("ShapeIsoscelesTriangle");
+        }
+
         public static void SwitchToTextboxTool()
         {
             var commandBars = Globals.ThisAddIn.Application.CommandBars;
@@ -200,7 +206,7 @@ namespace PowerPointLabs.DrawingsLab
             }
 
             bool didSomething = false;
-            foreach (var shape in selection.ShapeRange.Cast<Shape>().Where(shape => Graphics.IsAGroup(shape)))
+            foreach (var shape in selection.ShapeRange.Cast<Shape>().Where(Graphics.IsAGroup))
             {
                 shape.Ungroup();
                 didSomething = true;
@@ -295,6 +301,12 @@ namespace PowerPointLabs.DrawingsLab
             {
                 shape.Visible = MsoTriState.msoTrue;
             }
+        }
+
+        public static void OpenSelectionPane()
+        {
+            var commandBars = Globals.ThisAddIn.Application.CommandBars;
+            commandBars.ExecuteMso("SelectionPane");
         }
 
         public static void CloneTool()

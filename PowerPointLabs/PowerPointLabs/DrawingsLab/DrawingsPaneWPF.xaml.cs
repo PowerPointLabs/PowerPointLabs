@@ -52,6 +52,8 @@ namespace PowerPointLabs.DrawingsLab
             // ---------------
 
             ConfigureButton(CircleButton, DrawingsLabMain.SwitchToCircleTool, "[C] Draw a Circle.");
+            ConfigureButton(TriangleButton, DrawingsLabMain.SwitchToTriangleTool, "Draw a Triangle.");
+
             ConfigureButton(RectButton, DrawingsLabMain.SwitchToRectangleTool, "[R] Draw a Rectangle.");
             ConfigureButton(RoundedRectButton, DrawingsLabMain.SwitchToRoundedRectangleTool, "Draw a Rounded Rectangle.");
 
@@ -61,10 +63,11 @@ namespace PowerPointLabs.DrawingsLab
             ConfigureButton(TextboxButton, DrawingsLabMain.SwitchToTextboxTool, "Add a Text Box.");
 
             ConfigureButton(SelectTypeButton, DrawingsLabMain.SelectAllOfType, "[A] Select all shapes of same type as currently selected shapes.");
+            ConfigureButton(DuplicateButton, DrawingsLabMain.CloneTool, "[D] Makes a copy of the selected shapes in the exact same location.");
+
             ConfigureButton(HideButton, DrawingsLabMain.HideTool, "[H] Hide selected items.");
             ConfigureButton(ShowAllButton, DrawingsLabMain.ShowAllTool, "[S] Show all hidden items.");
-            ConfigureButton(DuplicateButton, DrawingsLabMain.CloneTool, "[D] Makes a copy of the selected shapes in the exact same location.");
-            
+            ConfigureButton(SelectionPaneButton, DrawingsLabMain.OpenSelectionPane, "Opens the Selection Pane.");
 
             SetTooltip(ToggleHotkeysButton, "Enable / Disable Hotkeys.");
 
