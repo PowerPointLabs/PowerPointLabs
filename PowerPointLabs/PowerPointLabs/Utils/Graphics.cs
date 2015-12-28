@@ -490,6 +490,20 @@ namespace PowerPointLabs.Utils
             return true;
         }
 
+        public static bool CanAddArrows(Shape shape)
+        {
+            try
+            {
+                if (shape.Line.Visible != MsoTriState.msoTrue) return false;
+                shape.Line.BeginArrowheadStyle = shape.Line.BeginArrowheadStyle;
+                return true;
+            }
+            catch (ArgumentException e)
+            {
+                return false;
+            }
+        }
+
         # endregion
 
         # region Text

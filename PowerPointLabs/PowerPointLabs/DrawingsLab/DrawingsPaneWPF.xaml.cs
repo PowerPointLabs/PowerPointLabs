@@ -80,6 +80,9 @@ namespace PowerPointLabs.DrawingsLab
             ConfigureButton(GroupButtonMain, DrawingsLabMain.GroupShapes, "Groups the selected shapes into a single shape.");
             ConfigureButton(UngroupButtonMain, DrawingsLabMain.UngroupShapes, "Ungroups the selected group of shapes.");
 
+            ConfigureButton(ArrowStartButtonMain, DrawingsLabMain.ToggleArrowStart, "Groups the selected shapes into a single shape.");
+            ConfigureButton(ArrowEndButtonMain, DrawingsLabMain.ToggleArrowEnd, "Groups the selected shapes into a single shape.");
+            
             ConfigureButton(BringForwardButtonMain, DrawingsLabMain.BringForward, "[F] Bring shapes Forward one step.");
             ConfigureButton(BringInFrontOfShapeButtonMain, DrawingsLabMain.BringInFrontOfShape, "Bring shapes in front of last shape in selection.");
             ConfigureButton(BringToFrontButtonMain, DrawingsLabMain.BringToFront, "Bring shapes to Front.");

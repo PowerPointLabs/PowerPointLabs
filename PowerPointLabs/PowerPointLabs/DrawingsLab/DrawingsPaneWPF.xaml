@@ -121,8 +121,8 @@
                         <cc:ImageButton x:Name="GroupButtonMain" Text="Group" Grid.Row="1" Grid.Column="0"/>
                         <cc:ImageButton x:Name="UngroupButtonMain" Text="Ungroup" Grid.Row="1" Grid.Column="1"/>
 
-                        <cc:ImageButton x:Name="LeftArrowButtonMain" Text="Toggle&#xa;Arrow (L)" Grid.Row="2" Grid.Column="0"/>
-                        <cc:ImageButton x:Name="RightArrowButtonMain" Text="Toggle&#xa;Arrow (R)" Grid.Row="2" Grid.Column="1"/>
+                        <cc:ImageButton x:Name="ArrowStartButtonMain" Text="Toggle&#xa;Arrow (S)" Grid.Row="2" Grid.Column="0"/>
+                        <cc:ImageButton x:Name="ArrowEndButtonMain" Text="Toggle&#xa;Arrow (F)" Grid.Row="2" Grid.Column="1"/>
 
                         <cc:ImageButton x:Name="MultiCloneBetweenButton" Text="MultiClone&#xa;Between" Grid.Row="4" Grid.Column="0"/>
                         <cc:ImageButton x:Name="MultiCloneExtendButton" Text="MultiClone&#xa;Extend" Grid.Row="4" Grid.Column="1"/>

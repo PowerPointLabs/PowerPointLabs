@@ -211,6 +211,68 @@ namespace PowerPointLabs.DrawingsLab
             }
         }
 
+        public static void ToggleArrowStart()
+        {
+            var selection = PowerPointCurrentPresentationInfo.CurrentSelection;
+            if (selection.Type != PpSelectionType.ppSelectionShapes)
+            {
+                Error(TextCollection.DrawingsLabSelectAtLeastOneShape);
+                return;
+            }
+
+            var allArrowHeads = selection.ShapeRange
+                                        .Cast<Shape>()
+                                        .Where(Graphics.CanAddArrows)
+                                        .All(shape => shape.Line.BeginArrowheadStyle != MsoArrowheadStyle.msoArrowheadNone);
+
+            if (allArrowHeads)
+            {
+                foreach (var shape in selection.ShapeRange.Cast<Shape>().Where(Graphics.CanAddArrows))
+                {
+                    shape.Line.BeginArrowheadStyle = MsoArrowheadStyle.msoArrowheadNone;
+                }
+            }
+            else
+            {
+                foreach (var shape in selection.ShapeRange.Cast<Shape>().Where(Graphics.CanAddArrows)
+                    .Where(shape => shape.Line.BeginArrowheadStyle == MsoArrowheadStyle.msoArrowheadNone))
+                {
+                    shape.Line.BeginArrowheadStyle = MsoArrowheadStyle.msoArrowheadOpen;
+                }
+            }
+        }
+
+        public static void ToggleArrowEnd()
+        {
+            var selection = PowerPointCurrentPresentationInfo.CurrentSelection;
+            if (selection.Type != PpSelectionType.ppSelectionShapes)
+            {
+                Error(TextCollection.DrawingsLabSelectAtLeastOneShape);
+                return;
+            }
+
+            var allArrowHeads = selection.ShapeRange
+                                        .Cast<Shape>()
+                                        .Where(Graphics.CanAddArrows)
+                                        .All(shape => shape.Line.EndArrowheadStyle != MsoArrowheadStyle.msoArrowheadNone);
+
+            if (allArrowHeads)
+            {
+                foreach (var shape in selection.ShapeRange.Cast<Shape>().Where(Graphics.CanAddArrows))
+                {
+                    shape.Line.EndArrowheadStyle = MsoArrowheadStyle.msoArrowheadNone;
+                }
+            }
+            else
+            {
+                foreach (var shape in selection.ShapeRange.Cast<Shape>().Where(Graphics.CanAddArrows)
+                    .Where(shape => shape.Line.EndArrowheadStyle == MsoArrowheadStyle.msoArrowheadNone))
+                {
+                    shape.Line.EndArrowheadStyle = MsoArrowheadStyle.msoArrowheadOpen;
+                }
+            }
+        }
+
 
         public static void HideTool()
         {
