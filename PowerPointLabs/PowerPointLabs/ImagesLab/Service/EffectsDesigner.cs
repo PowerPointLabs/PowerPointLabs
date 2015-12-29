@@ -230,8 +230,7 @@ namespace PowerPointLabs.ImagesLab.Service
             else
             {
                 overlayShape.Fill.Visible = MsoTriState.msoTrue;
-                overlayShape.Line.Visible = MsoTriState.msoTrue;
-                overlayShape.Line.ForeColor.RGB = overlayShape.Fill.ForeColor.RGB;
+                overlayShape.Line.Visible = MsoTriState.msoFalse;
             }
             // as picture shape
             overlayShape.Cut();
