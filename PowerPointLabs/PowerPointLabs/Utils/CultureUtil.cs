@@ -1,11 +1,14 @@
 ﻿using System;
 using System.Globalization;
 using System.Reflection;
+using System.Threading;
 
 namespace PowerPointLabs.Utils
 {
     class CultureUtil
     {
+        private static CultureInfo _originalCultureInfo = Thread.CurrentThread.CurrentCulture;
+
         /// <summary>
         /// Taken from http://blog.rastating.com/setting-default-currentculture-in-all-versions-of-net/
         /// in order to fix culture settings issue, e.g. 1,1 in Italy and 1.1 in US. 
@@ -52,6 +55,11 @@ namespace PowerPointLabs.Utils
             {
                 // this version of .NET doesn't have this field
             }
+        }
+
+        public static CultureInfo GetOriginalCulture()
+        {
+            return _originalCultureInfo;
         }
     }
 }
