@@ -57,7 +57,7 @@ namespace PowerPointLabs
             SetupLogger();
             Trace.TraceInformation(DateTime.Now.ToString("yyyyMMddHHmmss") + ": PowerPointLabs Started");
 
-            CultureUtil.SetDefaultCulture(CultureInfo.InvariantCulture);
+            CultureUtil.SetDefaultCulture(CultureInfo.GetCultureInfo("en-US"));
 
             new Updater().TryUpdate();
 
