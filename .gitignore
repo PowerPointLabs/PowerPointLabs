@@ -26,3 +26,6 @@ FakesAssemblies/
 PowerPointLabs_UT.csproj
 cov-report/
 cov-report.xml
+
+# config
+.hubturboconfig/
