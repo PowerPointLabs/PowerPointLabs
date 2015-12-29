@@ -239,7 +239,6 @@ namespace PowerPointLabs.ImagesLab.Service
             overlayShape.Left = circleLeft;
             overlayShape.Top = circleTop;
             ChangeName(overlayShape, EffectName.Overlay);
-            CropPicture(overlayShape);
             return overlayShape;
         }
 
@@ -339,6 +338,9 @@ namespace PowerPointLabs.ImagesLab.Service
 
             outerCircleShape.Left = innerCircleShape.Left + innerCircleShape.Width / 2 - outerCircleShape.Width / 2;
             outerCircleShape.Top = innerCircleShape.Top + innerCircleShape.Height / 2 - outerCircleShape.Height / 2;
+            CropPicture(innerCircleShape);
+            CropPicture(outerCircleShape);
+
             var result = Shapes.Range(new[] {innerCircleShape.Name, outerCircleShape.Name}).Group();
             ChangeName(result, EffectName.Overlay);
             return result;
