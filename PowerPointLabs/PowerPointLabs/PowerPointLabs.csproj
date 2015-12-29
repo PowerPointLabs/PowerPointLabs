@@ -352,6 +352,7 @@
     <Compile Include="ImagesLab\Util\StyleVariationWidthConverter.cs" />
     <Compile Include="ImagesLab\Util\UrlUtil.cs" />
     <Compile Include="Utils\Assumption.cs" />
+    <Compile Include="Utils\CultureUtil.cs" />
     <Compile Include="Utils\Exceptions\AssumptionFailedException.cs" />
     <Compile Include="ImagesLab\Service\StylesDesigner.cs" />
     <Compile Include="ImagesLab\Service\EffectsDesigner.cs" />
