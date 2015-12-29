@@ -1,4 +1,4 @@
-<img src="https://raw.githubusercontent.com/PowerPointLabs/powerpointlabs/master/PowerPointLabsInstallerUi/PowerPointLabsInstallerUi/Resources/logo.png" width='300'>
+<img src="https://raw.githubusercontent.com/PowerPointLabs/PowerPointLabs-Installer/master/PowerPointLabsInstaller/PowerPointLabsInstallerUi/Resources/logo.png" width='300'>
 
 The typical PowerPoint presentation isn't very interesting. Walls of text or bullet points, with few visuals - it's no wonder audiences find it hard to pay attention.
 Your slides don't have to be this way, and it doesn't take a whole lot of effort to make them better.
