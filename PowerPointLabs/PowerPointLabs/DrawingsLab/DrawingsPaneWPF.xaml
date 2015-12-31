@@ -417,7 +417,7 @@
             <!-- TAB: POSITION - END -->
 
             <!-- TAB: SELECTION - START -->
-            <TabItem Name="TabSelection" Header="Selection">
+            <!--<TabItem Name="TabSelection" Header="Selection">
                 <TabItem.Content>
                     <Grid DataContext="{StaticResource DrawingsLabData}">
                         <Grid.RowDefinitions>
@@ -439,7 +439,7 @@
                         </Grid.ColumnDefinitions>
                     </Grid>
                 </TabItem.Content>
-            </TabItem>
+            </TabItem>-->
             <!-- TAB: SELECTION - END -->
         </TabControl>
     </Grid>
