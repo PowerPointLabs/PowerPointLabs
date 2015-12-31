@@ -118,9 +118,51 @@ namespace PowerPointLabs.DrawingsLab
             // || Tab: Format ||
             // -----------------
 
-            configureButton(ApplyFormatButton, ()=>DrawingsLabMain.ApplyFormat(applyAllSettings: false), "Apply recorded format to selected shapes.");
+            configureButton(ApplyFormatButton, () => DrawingsLabMain.ApplyFormat(applyAllSettings: false), "Apply recorded format to selected shapes.");
             configureButton(RecordFormatButton, DrawingsLabMain.RecordFormat, "Record Format of a selected shape.");
             
+
+            Func<string, string> toggleSyncButtonToolTip = type => "Enable if you want to sync the " + type + " settings to the selected shapes when \"Apply Format\" is used.";
+            Func<string, string> setterToolTip = description => "Determines " + description + " the shape. Use \"Apply Format\" to apply the setting.";
+            Func<string, string> checkboxToolTip = description => "Check if you want the " + description + " setting to be synced when using \"Apply Format\".";
+
+            SetTooltip(ToggleSyncLineButton, toggleSyncButtonToolTip("line style"));
+            SetTooltip(ToggleSyncFillButton, toggleSyncButtonToolTip("fill style"));
+            SetTooltip(ToggleSyncTextButton, toggleSyncButtonToolTip("text format"));
+            SetTooltip(ToggleSyncSizeButton, toggleSyncButtonToolTip("size"));
+
+            SetTooltip(FormatHasLine, setterToolTip("whether line is enabled for"));
+            SetTooltip(FormatIncludeHasLine, checkboxToolTip("has line"));
+            SetTooltip(FormatLineColor, setterToolTip("the line color of"));
+            SetTooltip(FormatIncludeLineColor, checkboxToolTip("line color"));
+            SetTooltip(FormatLineWeight, setterToolTip("the line thickness of"));
+            SetTooltip(FormatIncludeLineWeight, checkboxToolTip("line thickness"));
+            SetTooltip(FormatLineDashStyle, setterToolTip("the dash style (e.g. solid, dashed) of"));
+            SetTooltip(FormatIncludeLineDashStyle, checkboxToolTip("dash style"));
+
+            SetTooltip(FormatHasFill, setterToolTip("whether fill is enabled for"));
+            SetTooltip(FormatIncludeHasFill, checkboxToolTip("has fill"));
+            SetTooltip(FormatFillColor, setterToolTip("the fill color of"));
+            SetTooltip(FormatIncludeFillColor, checkboxToolTip("fill color"));
+
+            SetTooltip(FormatText, setterToolTip("the text content of"));
+            SetTooltip(FormatIncludeText, checkboxToolTip("text content"));
+            SetTooltip(FormatTextColor, setterToolTip("the color of the text in"));
+            SetTooltip(FormatIncludeTextColor, checkboxToolTip("text color"));
+            SetTooltip(FormatTextFontSize, setterToolTip("the font size of the text in"));
+            SetTooltip(FormatIncludeTextFontSize, checkboxToolTip("font size"));
+            SetTooltip(FormatTextFont, setterToolTip("the font of the text in"));
+            SetTooltip(FormatIncludeTextFont, checkboxToolTip("font"));
+            SetTooltip(FormatTextWrap, setterToolTip("whether text wrap is enabled for"));
+            SetTooltip(FormatIncludeTextWrap, checkboxToolTip("text wrap"));
+            SetTooltip(FormatTextAutoSize, setterToolTip("the text auto size setting (e.g. shrink text to fit) for"));
+            SetTooltip(FormatIncludeTextAutoSize, checkboxToolTip("text auto size"));
+
+            SetTooltip(FormatWidth, setterToolTip("the width of"));
+            SetTooltip(FormatIncludeWidth, checkboxToolTip("width"));
+            SetTooltip(FormatHeight, setterToolTip("the height of"));
+            SetTooltip(FormatIncludeHeight, checkboxToolTip("height"));
+
 
             // -------------------
             // || Tab: Position ||

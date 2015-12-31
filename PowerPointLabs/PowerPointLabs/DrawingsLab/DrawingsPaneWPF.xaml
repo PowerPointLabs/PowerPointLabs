@@ -201,17 +201,17 @@
                                 <ColumnDefinition Width="1*"/>
                             </Grid.ColumnDefinitions>
 
-                            <ToggleButton x:Name="ToggleLineButton" Content="Present" Grid.Row="0" Grid.Column="0" IsEnabled="{Binding UpdateSourceTrigger=PropertyChanged, Path=FormatIncludeHasLine}" IsChecked="{Binding UpdateSourceTrigger=PropertyChanged, Path=FormatHasLine, Mode=TwoWay}"/>
-                            <CheckBox Content=""  Grid.Row="0" Grid.Column="1" IsChecked="{Binding UpdateSourceTrigger=PropertyChanged, Path=FormatIncludeHasLine, Mode=TwoWay}"/>
+                            <ToggleButton x:Name="FormatHasLine" Content="Present" Grid.Row="0" Grid.Column="0" IsEnabled="{Binding UpdateSourceTrigger=PropertyChanged, Path=FormatIncludeHasLine}" IsChecked="{Binding UpdateSourceTrigger=PropertyChanged, Path=FormatHasLine, Mode=TwoWay}"/>
+                            <CheckBox x:Name="FormatIncludeHasLine" Content=""  Grid.Row="0" Grid.Column="1" IsChecked="{Binding UpdateSourceTrigger=PropertyChanged, Path=FormatIncludeHasLine, Mode=TwoWay}"/>
 
-                            <Button Grid.Row="0" Grid.Column="2" IsEnabled="{Binding UpdateSourceTrigger=PropertyChanged, Path=FormatIncludeLineColor}" Background="{Binding UpdateSourceTrigger=PropertyChanged, Path=FormatLineColor, Mode=TwoWay, Converter={StaticResource ColorToBackgroundConverter}}" Click="LineColor_Click"/>
-                            <CheckBox Content="" Grid.Row="0" Grid.Column="3" IsChecked="{Binding UpdateSourceTrigger=PropertyChanged, Path=FormatIncludeLineColor, Mode=TwoWay}"/>
+                            <Button x:Name="FormatLineColor" Grid.Row="0" Grid.Column="2" IsEnabled="{Binding UpdateSourceTrigger=PropertyChanged, Path=FormatIncludeLineColor}" Background="{Binding UpdateSourceTrigger=PropertyChanged, Path=FormatLineColor, Mode=TwoWay, Converter={StaticResource ColorToBackgroundConverter}}" Click="LineColor_Click"/>
+                            <CheckBox  x:Name="FormatIncludeLineColor" Content="" Grid.Row="0" Grid.Column="3" IsChecked="{Binding UpdateSourceTrigger=PropertyChanged, Path=FormatIncludeLineColor, Mode=TwoWay}"/>
 
-                            <TextBox Grid.Row="1" Grid.Column="0" IsEnabled="{Binding UpdateSourceTrigger=PropertyChanged, Path=FormatIncludeLineWeight}" Text="{Binding UpdateSourceTrigger=PropertyChanged, Path=FormatLineWeight, Mode=TwoWay, Converter={StaticResource FloatToStringConverter}}"/>
-                            <CheckBox Content="" Grid.Row="1" Grid.Column="1" IsChecked="{Binding UpdateSourceTrigger=PropertyChanged, Path=FormatIncludeLineWeight, Mode=TwoWay}"/>
+                            <TextBox x:Name="FormatLineWeight" Grid.Row="1" Grid.Column="0" IsEnabled="{Binding UpdateSourceTrigger=PropertyChanged, Path=FormatIncludeLineWeight}" Text="{Binding UpdateSourceTrigger=PropertyChanged, Path=FormatLineWeight, Mode=TwoWay, Converter={StaticResource FloatToStringConverter}}"/>
+                            <CheckBox x:Name="FormatIncludeLineWeight" Content="" Grid.Row="1" Grid.Column="1" IsChecked="{Binding UpdateSourceTrigger=PropertyChanged, Path=FormatIncludeLineWeight, Mode=TwoWay}"/>
 
-                            <ComboBox Grid.Row ="1" Grid.Column="2" VerticalAlignment="Center" ItemsSource="{Binding Path=GetLineDashStyles}" DisplayMemberPath="Value" SelectedValuePath="Key" SelectedValue="{Binding Path=FormatLineDashStyle, Mode=TwoWay}"/>
-                            <CheckBox Content=""  Grid.Row="1" Grid.Column="3" IsChecked="{Binding UpdateSourceTrigger=PropertyChanged, Path=FormatIncludeLineDashStyle, Mode=TwoWay}"/>
+                            <ComboBox x:Name="FormatLineDashStyle" Grid.Row ="1" Grid.Column="2" VerticalAlignment="Center" ItemsSource="{Binding UpdateSourceTrigger=PropertyChanged, Path=GetLineDashStyles}" DisplayMemberPath="Value" SelectedValuePath="Key" SelectedValue="{Binding UpdateSourceTrigger=PropertyChanged, Path=FormatLineDashStyle, Mode=TwoWay}"/>
+                            <CheckBox x:Name="FormatIncludeLineDashStyle" Content=""  Grid.Row="1" Grid.Column="3" IsChecked="{Binding UpdateSourceTrigger=PropertyChanged, Path=FormatIncludeLineDashStyle, Mode=TwoWay}"/>
                         </Grid>
 
                         <!-- Fill -->
@@ -228,11 +228,11 @@
                                 <ColumnDefinition Width="1*"/>
                             </Grid.ColumnDefinitions>
 
-                            <ToggleButton x:Name="ToggleFillButton" Content="Present" Grid.Row="0" Grid.Column="0" IsEnabled="{Binding UpdateSourceTrigger=PropertyChanged, Path=FormatIncludeHasFill}" IsChecked="{Binding UpdateSourceTrigger=PropertyChanged, Path=FormatHasFill, Mode=TwoWay}"/>
-                            <CheckBox Content=""  Grid.Row="0" Grid.Column="1" IsChecked="{Binding UpdateSourceTrigger=PropertyChanged, Path=FormatIncludeHasFill, Mode=TwoWay}"/>
+                            <ToggleButton x:Name="FormatHasFill" Content="Present" Grid.Row="0" Grid.Column="0" IsEnabled="{Binding UpdateSourceTrigger=PropertyChanged, Path=FormatIncludeHasFill}" IsChecked="{Binding UpdateSourceTrigger=PropertyChanged, Path=FormatHasFill, Mode=TwoWay}"/>
+                            <CheckBox x:Name="FormatIncludeHasFill" Content=""  Grid.Row="0" Grid.Column="1" IsChecked="{Binding UpdateSourceTrigger=PropertyChanged, Path=FormatIncludeHasFill, Mode=TwoWay}"/>
 
-                            <Button Grid.Row="0" Grid.Column="2" IsEnabled="{Binding UpdateSourceTrigger=PropertyChanged, Path=FormatIncludeFillColor}" Background="{Binding UpdateSourceTrigger=PropertyChanged, Path=FormatFillColor, Mode=TwoWay, Converter={StaticResource ColorToBackgroundConverter}}" Click="FillColor_Click"/>
-                            <CheckBox Content="" Grid.Row="0" Grid.Column="3" IsChecked="{Binding UpdateSourceTrigger=PropertyChanged, Path=FormatIncludeFillColor, Mode=TwoWay}"/>
+                            <Button x:Name="FormatFillColor" Grid.Row="0" Grid.Column="2" IsEnabled="{Binding UpdateSourceTrigger=PropertyChanged, Path=FormatIncludeFillColor}" Background="{Binding UpdateSourceTrigger=PropertyChanged, Path=FormatFillColor, Mode=TwoWay, Converter={StaticResource ColorToBackgroundConverter}}" Click="FillColor_Click"/>
+                            <CheckBox x:Name="FormatIncludeFillColor" Content="" Grid.Row="0" Grid.Column="3" IsChecked="{Binding UpdateSourceTrigger=PropertyChanged, Path=FormatIncludeFillColor, Mode=TwoWay}"/>
 
                         </Grid>
 
@@ -251,23 +251,23 @@
                                 <ColumnDefinition Width="2*"/>
                                 <ColumnDefinition Width="1*"/>
                             </Grid.ColumnDefinitions>
-                            <TextBox Grid.Row="0" Grid.Column="0" IsEnabled="{Binding UpdateSourceTrigger=PropertyChanged, Path=FormatIncludeText}" Text="{Binding UpdateSourceTrigger=PropertyChanged, Path=FormatText, Mode=TwoWay}"/>
-                            <CheckBox Content=""  Grid.Row="0" Grid.Column="1" IsChecked="{Binding UpdateSourceTrigger=PropertyChanged, Path=FormatIncludeText, Mode=TwoWay}"/>
+                            <TextBox x:Name="FormatText" Grid.Row="0" Grid.Column="0" IsEnabled="{Binding UpdateSourceTrigger=PropertyChanged, Path=FormatIncludeText}" Text="{Binding UpdateSourceTrigger=PropertyChanged, Path=FormatText, Mode=TwoWay}"/>
+                            <CheckBox x:Name="FormatIncludeText" Content=""  Grid.Row="0" Grid.Column="1" IsChecked="{Binding UpdateSourceTrigger=PropertyChanged, Path=FormatIncludeText, Mode=TwoWay}"/>
 
-                            <Button Grid.Row="0" Grid.Column="2" IsEnabled="{Binding UpdateSourceTrigger=PropertyChanged, Path=FormatIncludeTextColor}" Background="{Binding UpdateSourceTrigger=PropertyChanged, Path=FormatTextColor, Mode=TwoWay, Converter={StaticResource ColorToBackgroundConverter}}" Click="TextColor_Click"/>
-                            <CheckBox Content="" Grid.Row="0" Grid.Column="3" IsChecked="{Binding UpdateSourceTrigger=PropertyChanged, Path=FormatIncludeTextColor, Mode=TwoWay}"/>
+                            <Button x:Name="FormatTextColor" Grid.Row="0" Grid.Column="2" IsEnabled="{Binding UpdateSourceTrigger=PropertyChanged, Path=FormatIncludeTextColor}" Background="{Binding UpdateSourceTrigger=PropertyChanged, Path=FormatTextColor, Mode=TwoWay, Converter={StaticResource ColorToBackgroundConverter}}" Click="TextColor_Click"/>
+                            <CheckBox x:Name="FormatIncludeTextColor" Content="" Grid.Row="0" Grid.Column="3" IsChecked="{Binding UpdateSourceTrigger=PropertyChanged, Path=FormatIncludeTextColor, Mode=TwoWay}"/>
 
-                            <TextBox Grid.Row="1" Grid.Column="0" IsEnabled="{Binding UpdateSourceTrigger=PropertyChanged, Path=FormatIncludeTextFontSize}" Text="{Binding UpdateSourceTrigger=PropertyChanged, Path=FormatTextFontSize, Mode=TwoWay, Converter={StaticResource FloatToStringConverter}}"/>
-                            <CheckBox Content="" Grid.Row="1" Grid.Column="1" IsChecked="{Binding UpdateSourceTrigger=PropertyChanged, Path=FormatIncludeTextFontSize, Mode=TwoWay}"/>
+                            <TextBox x:Name="FormatTextFontSize" Grid.Row="1" Grid.Column="0" IsEnabled="{Binding UpdateSourceTrigger=PropertyChanged, Path=FormatIncludeTextFontSize}" Text="{Binding UpdateSourceTrigger=PropertyChanged, Path=FormatTextFontSize, Mode=TwoWay, Converter={StaticResource FloatToStringConverter}}"/>
+                            <CheckBox x:Name="FormatIncludeTextFontSize" Content="" Grid.Row="1" Grid.Column="1" IsChecked="{Binding UpdateSourceTrigger=PropertyChanged, Path=FormatIncludeTextFontSize, Mode=TwoWay}"/>
 
-                            <TextBox Grid.Row="1" Grid.Column="2" IsEnabled="{Binding UpdateSourceTrigger=PropertyChanged, Path=FormatIncludeTextFont}" Text="{Binding UpdateSourceTrigger=PropertyChanged, Path=FormatTextFont, Mode=TwoWay}"/>
-                            <CheckBox Content=""  Grid.Row="1" Grid.Column="3" IsChecked="{Binding UpdateSourceTrigger=PropertyChanged, Path=FormatIncludeTextFont, Mode=TwoWay}"/>
+                            <TextBox x:Name="FormatTextFont" Grid.Row="1" Grid.Column="2" IsEnabled="{Binding UpdateSourceTrigger=PropertyChanged, Path=FormatIncludeTextFont}" Text="{Binding UpdateSourceTrigger=PropertyChanged, Path=FormatTextFont, Mode=TwoWay}"/>
+                            <CheckBox x:Name="FormatIncludeTextFont" Content=""  Grid.Row="1" Grid.Column="3" IsChecked="{Binding UpdateSourceTrigger=PropertyChanged, Path=FormatIncludeTextFont, Mode=TwoWay}"/>
 
-                            <ToggleButton x:Name="ToggleTextWrapButton" Content="Text Wrap" Grid.Row="2" Grid.Column="0" IsEnabled="{Binding UpdateSourceTrigger=PropertyChanged, Path=FormatIncludeTextWrap}" IsChecked="{Binding UpdateSourceTrigger=PropertyChanged, Path=FormatTextWrap, Mode=TwoWay}"/>
-                            <CheckBox Content=""  Grid.Row="2" Grid.Column="1" IsChecked="{Binding UpdateSourceTrigger=PropertyChanged, Path=FormatIncludeTextWrap, Mode=TwoWay}"/>
+                            <ToggleButton x:Name="FormatTextWrap" Content="Text Wrap" Grid.Row="2" Grid.Column="0" IsEnabled="{Binding UpdateSourceTrigger=PropertyChanged, Path=FormatIncludeTextWrap}" IsChecked="{Binding UpdateSourceTrigger=PropertyChanged, Path=FormatTextWrap, Mode=TwoWay}"/>
+                            <CheckBox x:Name="FormatIncludeTextWrap" Content=""  Grid.Row="2" Grid.Column="1" IsChecked="{Binding UpdateSourceTrigger=PropertyChanged, Path=FormatIncludeTextWrap, Mode=TwoWay}"/>
 
-                            <ComboBox Grid.Row ="2" Grid.Column="2" VerticalAlignment="Center" ItemsSource="{Binding Path=GetAutoSizeValues}" DisplayMemberPath="Value" SelectedValuePath="Key" SelectedValue="{Binding Path=FormatTextAutoSize, Mode=TwoWay}"/>
-                            <CheckBox Content=""  Grid.Row="2" Grid.Column="3" IsChecked="{Binding UpdateSourceTrigger=PropertyChanged, Path=FormatIncludeTextAutoSize, Mode=TwoWay}"/>
+                            <ComboBox x:Name="FormatTextAutoSize" Grid.Row ="2" Grid.Column="2" VerticalAlignment="Center" ItemsSource="{Binding UpdateSourceTrigger=PropertyChanged, Path=GetAutoSizeValues}" DisplayMemberPath="Value" SelectedValuePath="Key" SelectedValue="{Binding UpdateSourceTrigger=PropertyChanged, Path=FormatTextAutoSize, Mode=TwoWay}"/>
+                            <CheckBox x:Name="FormatIncludeTextAutoSize" Content=""  Grid.Row="2" Grid.Column="3" IsChecked="{Binding UpdateSourceTrigger=PropertyChanged, Path=FormatIncludeTextAutoSize, Mode=TwoWay}"/>
 
                         </Grid>
 
@@ -286,11 +286,11 @@
                                 <ColumnDefinition Width="1*"/>
                             </Grid.ColumnDefinitions>
 
-                            <TextBox Grid.Row="0" Grid.Column="0" IsEnabled="{Binding UpdateSourceTrigger=PropertyChanged, Path=FormatIncludeWidth}" Text="{Binding UpdateSourceTrigger=PropertyChanged, Path=FormatWidth, Mode=TwoWay, Converter={StaticResource FloatToStringConverter}}"/>
-                            <CheckBox Content="X" Grid.Row="0" Grid.Column="1" IsChecked="{Binding UpdateSourceTrigger=PropertyChanged, Path=FormatIncludeWidth, Mode=TwoWay}"/>
+                            <TextBox x:Name="FormatWidth" Grid.Row="0" Grid.Column="0" IsEnabled="{Binding UpdateSourceTrigger=PropertyChanged, Path=FormatIncludeWidth}" Text="{Binding UpdateSourceTrigger=PropertyChanged, Path=FormatWidth, Mode=TwoWay, Converter={StaticResource FloatToStringConverter}}"/>
+                            <CheckBox x:Name="FormatIncludeWidth" Content="X" Grid.Row="0" Grid.Column="1" IsChecked="{Binding UpdateSourceTrigger=PropertyChanged, Path=FormatIncludeWidth, Mode=TwoWay}"/>
 
-                            <TextBox Grid.Row="0" Grid.Column="2" IsEnabled="{Binding UpdateSourceTrigger=PropertyChanged, Path=FormatIncludeHeight}" Text="{Binding UpdateSourceTrigger=PropertyChanged, Path=FormatHeight, Mode=TwoWay, Converter={StaticResource FloatToStringConverter}}"/>
-                            <CheckBox Content="Y" Grid.Row="0" Grid.Column="3" IsChecked="{Binding UpdateSourceTrigger=PropertyChanged, Path=FormatIncludeHeight, Mode=TwoWay}"/>
+                            <TextBox x:Name="FormatHeight" Grid.Row="0" Grid.Column="2" IsEnabled="{Binding UpdateSourceTrigger=PropertyChanged, Path=FormatIncludeHeight}" Text="{Binding UpdateSourceTrigger=PropertyChanged, Path=FormatHeight, Mode=TwoWay, Converter={StaticResource FloatToStringConverter}}"/>
+                            <CheckBox x:Name="FormatIncludeHeight" Content="Y" Grid.Row="0" Grid.Column="3" IsChecked="{Binding UpdateSourceTrigger=PropertyChanged, Path=FormatIncludeHeight, Mode=TwoWay}"/>
                         </Grid>
                     </Grid>
                 </TabItem.Content>
