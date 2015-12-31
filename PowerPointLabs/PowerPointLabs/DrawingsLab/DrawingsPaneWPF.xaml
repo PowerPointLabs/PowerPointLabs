@@ -19,7 +19,7 @@
         
         <Style x:Key="ToggleButtonStyle" TargetType="{x:Type ToggleButton}">
             <Setter Property="Background" Value="#0070c0" />
-            <Setter Property="Foreground" Value="#fff0f0" />
+            <Setter Property="Foreground" Value="#000000" />
             <Setter Property="Margin" Value="1" />
         </Style>
     </UserControl.Resources>
