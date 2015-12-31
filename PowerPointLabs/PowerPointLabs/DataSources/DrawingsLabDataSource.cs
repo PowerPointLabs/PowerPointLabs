@@ -190,22 +190,6 @@ namespace PowerPointLabs.DataSources
         # endregion
 
         # region Properties - Record / Apply Format
-        private bool _formatSyncTextStyle = true;
-
-        private string _formatText = "Text";
-        private bool _formatIncludeText = false;
-        private int _formatTextColor = 0x000000;
-        private bool _formatIncludeTextColor = true;
-        private float _formatTextFontSize = 5;
-        private bool _formatIncludeTextFontSize = true;
-        private string _formatTextFont = "Arial";
-        private bool _formatIncludeTextFont = true;
-        private bool _formatTextWrap = false;
-        private bool _formatIncludeTextWrap = true;
-        private MsoAutoSize _formatTextAutoSize = MsoAutoSize.msoAutoSizeNone;
-        private bool _formatIncludeTextAutoSize = true;
-
-
         private bool _formatSyncLineStyle = true;
 
         private bool _formatHasLine = true;
@@ -224,6 +208,22 @@ namespace PowerPointLabs.DataSources
         private bool _formatIncludeHasFill = true;
         private int _formatFillColor = 0xC07000;
         private bool _formatIncludeFillColor = true;
+
+
+        private bool _formatSyncTextStyle = true;
+
+        private string _formatText = "Text";
+        private bool _formatIncludeText = false;
+        private int _formatTextColor = 0x000000;
+        private bool _formatIncludeTextColor = true;
+        private float _formatTextFontSize = 18;
+        private bool _formatIncludeTextFontSize = true;
+        private string _formatTextFont = "Calibri (Body)";
+        private bool _formatIncludeTextFont = true;
+        private bool _formatTextWrap = false;
+        private bool _formatIncludeTextWrap = true;
+        private MsoAutoSize _formatTextAutoSize = MsoAutoSize.msoAutoSizeNone;
+        private bool _formatIncludeTextAutoSize = true;
 
 
         private bool _formatSyncSize = false;

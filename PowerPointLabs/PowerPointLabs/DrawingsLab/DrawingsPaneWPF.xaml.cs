@@ -94,22 +94,26 @@ namespace PowerPointLabs.DrawingsLab
             // || Tab: Main ||
             // ---------------
 
-            ConfigureButton(AddTextButtonMain, DrawingsLabMain.AddText, "Add Text to the selected shapes.");
-            ConfigureButton(AddMathButtonMain, DrawingsLabMain.AddMath, "Add Math to a selected shape.");
-            ConfigureButton(RemoveTextButtonMain, DrawingsLabMain.RemoveText, "Remove all text from the selected shapes.");
+            ConfigureButton(AddTextButton, DrawingsLabMain.AddText, "Add Text to the selected shapes.");
+            ConfigureButton(AddMathButton, DrawingsLabMain.AddMath, "Add Math to a selected shape.");
+            ConfigureButton(RemoveTextButton, DrawingsLabMain.RemoveText, "Remove all text from the selected shapes.");
 
-            ConfigureButton(GroupButtonMain, DrawingsLabMain.GroupShapes, "Groups the selected shapes into a single shape.");
-            ConfigureButton(UngroupButtonMain, DrawingsLabMain.UngroupShapes, "Ungroups the selected group of shapes.");
+            ConfigureButton(GroupButton, DrawingsLabMain.GroupShapes, "Groups the selected shapes into a single shape.");
+            ConfigureButton(UngroupButton, DrawingsLabMain.UngroupShapes, "Ungroups the selected group of shapes.");
 
-            ConfigureButton(ArrowStartButtonMain, DrawingsLabMain.ToggleArrowStart, "Groups the selected shapes into a single shape.");
-            ConfigureButton(ArrowEndButtonMain, DrawingsLabMain.ToggleArrowEnd, "Groups the selected shapes into a single shape.");
+            ConfigureButton(ArrowStartButton, DrawingsLabMain.ToggleArrowStart, "Groups the selected shapes into a single shape.");
+            ConfigureButton(ArrowEndButton, DrawingsLabMain.ToggleArrowEnd, "Groups the selected shapes into a single shape.");
+
+            ConfigureButton(MultiCloneExtendButton, DrawingsLabMain.MultiCloneExtendTool, "Extrapolates multiple copies of a shape, extending from two selected shapes.");
+            ConfigureButton(MultiCloneBetweenButton, DrawingsLabMain.MultiCloneBetweenTool, "Interpolates multiple copies of a shape, in between two selected shapes.");
+            ConfigureButton(MultiCloneGridButton, DrawingsLabMain.MultiCloneGridTool, "Extends two shapes into a grid of shapes.");
             
-            ConfigureButton(BringForwardButtonMain, DrawingsLabMain.BringForward, "Bring shapes Forward one step.");
-            ConfigureButton(BringInFrontOfShapeButtonMain, DrawingsLabMain.BringInFrontOfShape, "Bring shapes in front of last shape in selection.");
-            ConfigureButton(BringToFrontButtonMain, DrawingsLabMain.BringToFront, "Bring shapes to Front.");
-            ConfigureButton(SendBackwardButtonMain, DrawingsLabMain.SendBackward, "Send shapes Backward one step.");
-            ConfigureButton(SendBehindShapeButtonMain, DrawingsLabMain.SendBehindShape, "Send shapes behind last shape in selection.");
-            ConfigureButton(SendToBackButtonMain, DrawingsLabMain.SendToBack, "Send shapes to Back.");
+            ConfigureButton(BringForwardButton, DrawingsLabMain.BringForward, "Bring shapes Forward one step.");
+            ConfigureButton(BringInFrontOfShapeButton, DrawingsLabMain.BringInFrontOfShape, "Bring shapes in front of last shape in selection.");
+            ConfigureButton(BringToFrontButton, DrawingsLabMain.BringToFront, "Bring shapes to Front.");
+            ConfigureButton(SendBackwardButton, DrawingsLabMain.SendBackward, "Send shapes Backward one step.");
+            ConfigureButton(SendBehindShapeButton, DrawingsLabMain.SendBehindShape, "Send shapes behind last shape in selection.");
+            ConfigureButton(SendToBackButton, DrawingsLabMain.SendToBack, "Send shapes to Back.");
 
 
             // -----------------
@@ -133,14 +137,11 @@ namespace PowerPointLabs.DrawingsLab
             ConfigureButton(AlignVerticalButton, DrawingsLabMain.AlignVertical, "Align Shapes Vertically to last shape in selection.");
             ConfigureButton(AlignBothButton, DrawingsLabMain.AlignBoth, "Align Shapes both Horizontally and Vertically to last shape in selection.");
             
+            ConfigureButton(PivotAroundButton, DrawingsLabMain.PivotAroundTool, "Rotate / Multiclone a shape around another shape.");
+
             ConfigureButton(AlignHorizontalToSlideButton, DrawingsLabMain.AlignHorizontalToSlide, "Align Shapes Horizontally to a position relative to the slide.");
             ConfigureButton(AlignVerticalToSlideButton, DrawingsLabMain.AlignVerticalToSlide, "Align Shapes Vertically to a position relative to the slide.");
             ConfigureButton(AlignBothToSlideButton, DrawingsLabMain.AlignBothToSlide, "Align Shapes both Horizontally and Vertically to a position relative to the slide.");
-            
-            ConfigureButton(MultiCloneExtendButton, DrawingsLabMain.MultiCloneExtendTool, "Extrapolates multiple copies of a shape, extending from two selected shapes.");
-            ConfigureButton(MultiCloneBetweenButton, DrawingsLabMain.MultiCloneBetweenTool, "Interpolates multiple copies of a shape, in between two selected shapes.");
-            ConfigureButton(MultiCloneGridButton, DrawingsLabMain.MultiCloneGridTool, "Extends two shapes into a grid of shapes.");
-            ConfigureButton(PivotAroundButton, DrawingsLabMain.PivotAroundTool, "Rotate / Multiclone a shape around another shape.");
             
             // --------------------
             // || Tab: Selection ||
@@ -208,8 +209,8 @@ namespace PowerPointLabs.DrawingsLab
             Assign(Native.VirtualKey.VK_D, DuplicateButton);
             Assign(Native.VirtualKey.VK_A, SelectTypeButton);
             Assign(Native.VirtualKey.VK_H, HideButton);
-            Assign(Native.VirtualKey.VK_F, BringForwardButtonMain);
-            Assign(Native.VirtualKey.VK_B, SendBackwardButtonMain);
+            Assign(Native.VirtualKey.VK_F, BringForwardButton);
+            Assign(Native.VirtualKey.VK_B, SendBackwardButton);
 
             return bindings;
         }

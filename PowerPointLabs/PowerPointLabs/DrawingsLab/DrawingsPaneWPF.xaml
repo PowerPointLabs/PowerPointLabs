@@ -125,15 +125,15 @@
                         <Separator Grid.Row="5" Grid.Column="0" Grid.ColumnSpan="4"/>
                         <Separator Grid.Row="7" Grid.Column="0" Grid.ColumnSpan="4"/>
 
-                        <cc:ImageButton x:Name="AddTextButtonMain" Text="Add&#xa;Text" Grid.Row="0" Grid.Column="0"/>
-                        <cc:ImageButton x:Name="AddMathButtonMain" Text="Add&#xa;Math" Grid.Row="0" Grid.Column="1"/>
-                        <cc:ImageButton x:Name="RemoveTextButtonMain" Text="Remove&#xa;Text" Grid.Row="0" Grid.Column="2"/>
+                        <cc:ImageButton x:Name="AddTextButton" Text="Add&#xa;Text" Grid.Row="0" Grid.Column="0"/>
+                        <cc:ImageButton x:Name="AddMathButton" Text="Add&#xa;Math" Grid.Row="0" Grid.Column="1"/>
+                        <cc:ImageButton x:Name="RemoveTextButton" Text="Remove&#xa;Text" Grid.Row="0" Grid.Column="2"/>
 
-                        <cc:ImageButton x:Name="GroupButtonMain" Text="Group" Grid.Row="2" Grid.Column="0"/>
-                        <cc:ImageButton x:Name="UngroupButtonMain" Text="Ungroup" Grid.Row="2" Grid.Column="1"/>
+                        <cc:ImageButton x:Name="GroupButton" Text="Group" Grid.Row="2" Grid.Column="0"/>
+                        <cc:ImageButton x:Name="UngroupButton" Text="Ungroup" Grid.Row="2" Grid.Column="1"/>
 
-                        <cc:ImageButton x:Name="ArrowStartButtonMain" Text="Toggle&#xa;Arrow (S)" Grid.Row="4" Grid.Column="0"/>
-                        <cc:ImageButton x:Name="ArrowEndButtonMain" Text="Toggle&#xa;Arrow (F)" Grid.Row="4" Grid.Column="1"/>
+                        <cc:ImageButton x:Name="ArrowStartButton" Text="Toggle&#xa;Arrow (S)" Grid.Row="4" Grid.Column="0"/>
+                        <cc:ImageButton x:Name="ArrowEndButton" Text="Toggle&#xa;Arrow (F)" Grid.Row="4" Grid.Column="1"/>
 
                         <Grid Row="6" Column="0" ColumnSpan="4" DataContext="{StaticResource DrawingsLabData}">
                             <Grid.ColumnDefinitions>
@@ -146,12 +146,12 @@
                             <cc:ImageButton x:Name="MultiCloneGridButton" Text="MultiClone&#xa;Grid" Grid.Row="6" Grid.Column="2"/>
                         </Grid>
                         
-                        <cc:ImageButton x:Name="BringInFrontOfShapeButtonMain" Text="Front Of&#xa;Shape" Grid.Row="8" Grid.Column="1"/>
-                        <cc:ImageButton x:Name="SendBehindShapeButtonMain" Text="Behind&#xa;Shape" Grid.Row="8" Grid.Column="2"/>
-                        <cc:ImageButton x:Name="BringToFrontButtonMain" Text="Bring&#xa;To Front" Grid.Row="9" Grid.Column="0"/>
-                        <cc:ImageButton x:Name="BringForwardButtonMain" Text="Bring&#xa;Forward" Grid.Row="9" Grid.Column="1"/>
-                        <cc:ImageButton x:Name="SendBackwardButtonMain" Text="Send&#xa;Backward" Grid.Row="9" Grid.Column="2"/>
-                        <cc:ImageButton x:Name="SendToBackButtonMain" Text="Send&#xa;To Back" Grid.Row="9" Grid.Column="3"/>
+                        <cc:ImageButton x:Name="BringInFrontOfShapeButton" Text="Front Of&#xa;Shape" Grid.Row="8" Grid.Column="1"/>
+                        <cc:ImageButton x:Name="SendBehindShapeButton" Text="Behind&#xa;Shape" Grid.Row="8" Grid.Column="2"/>
+                        <cc:ImageButton x:Name="BringToFrontButton" Text="Bring&#xa;To Front" Grid.Row="9" Grid.Column="0"/>
+                        <cc:ImageButton x:Name="BringForwardButton" Text="Bring&#xa;Forward" Grid.Row="9" Grid.Column="1"/>
+                        <cc:ImageButton x:Name="SendBackwardButton" Text="Send&#xa;Backward" Grid.Row="9" Grid.Column="2"/>
+                        <cc:ImageButton x:Name="SendToBackButton" Text="Send&#xa;To Back" Grid.Row="9" Grid.Column="3"/>
                     </Grid>
                 </TabItem.Content>
             </TabItem>
