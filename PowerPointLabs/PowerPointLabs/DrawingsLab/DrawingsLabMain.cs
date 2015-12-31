@@ -105,14 +105,18 @@ namespace PowerPointLabs.DrawingsLab
 
         public static void AddText()
         {
-            var selection = PowerPointCurrentPresentationInfo.CurrentSelection;
-            if (selection.Type != PpSelectionType.ppSelectionShapes && selection.Type != PpSelectionType.ppSelectionText) return;
+            var shapes = GetCurrentlySelectedShapes();
+            if (shapes.Count <= 0)
+            {
+                Error(TextCollection.DrawingsLabSelectAtLeastOneShape);
+                return;
+            }
 
             var text = DrawingsLabDialogs.ShowInsertTextDialog();
             if (text == null) return;
 
             Globals.ThisAddIn.Application.StartNewUndoEntry();
-            foreach (var shape in selection.ShapeRange.Cast<Shape>())
+            foreach (var shape in shapes)
             {
                 try
                 {
@@ -127,20 +131,11 @@ namespace PowerPointLabs.DrawingsLab
 
         public static void AddMath()
         {
-            var selection = PowerPointCurrentPresentationInfo.CurrentSelection;
-            if (selection.Type != PpSelectionType.ppSelectionText)
+            var shapes = GetCurrentlySelectedShapes();
+            if (shapes.Count != 1)
             {
-                if (selection.Type != PpSelectionType.ppSelectionShapes)
-                {
-                    Error(TextCollection.DrawingsLabSelectExactlyOneShape);
-                    return;
-                }
-                var shapes = selection.ShapeRange.Cast<Shape>().ToList();
-                if (shapes.Count != 1)
-                {
-                    Error(TextCollection.DrawingsLabSelectExactlyOneShape);
-                    return;
-                }
+                Error(TextCollection.DrawingsLabSelectExactlyOneShape);
+                return;
             }
 
             try
@@ -157,11 +152,15 @@ namespace PowerPointLabs.DrawingsLab
 
         public static void RemoveText()
         {
-            var selection = PowerPointCurrentPresentationInfo.CurrentSelection;
-            if (selection.Type != PpSelectionType.ppSelectionShapes && selection.Type != PpSelectionType.ppSelectionText) return;
+            var shapes = GetCurrentlySelectedShapes();
+            if (shapes.Count <= 0)
+            {
+                Error(TextCollection.DrawingsLabSelectAtLeastOneShape);
+                return;
+            }
 
             Globals.ThisAddIn.Application.StartNewUndoEntry();
-            foreach (var shape in selection.ShapeRange.Cast<Shape>())
+            foreach (var shape in shapes)
             {
                 Graphics.SetText(shape, String.Empty);
             }
@@ -169,21 +168,14 @@ namespace PowerPointLabs.DrawingsLab
 
         public static void GroupShapes()
         {
-            var selection = PowerPointCurrentPresentationInfo.CurrentSelection;
-            if (selection.Type != PpSelectionType.ppSelectionShapes)
+            var shapes = GetCurrentlySelectedShapes();
+            if (shapes.Count < 2)
             {
                 Error(TextCollection.DrawingsLabSelectAtLeastTwoShapes);
                 return;
             }
 
             var slide = PowerPointCurrentPresentationInfo.CurrentSlide;
-            var shapes = selection.ShapeRange.Cast<Shape>().ToList();
-
-            if (shapes.Count < 2)
-            {
-                Error(TextCollection.DrawingsLabSelectAtLeastTwoShapes);
-                return;
-            }
 
             try
             {
@@ -198,15 +190,16 @@ namespace PowerPointLabs.DrawingsLab
 
         public static void UngroupShapes()
         {
-            var selection = PowerPointCurrentPresentationInfo.CurrentSelection;
-            if (selection.Type != PpSelectionType.ppSelectionShapes)
+            var shapes = GetCurrentlySelectedShapes();
+            if (shapes.Count <= 0)
             {
                 Error(TextCollection.DrawingsLabSelectAtLeastOneShape);
                 return;
             }
-
+            
+            Globals.ThisAddIn.Application.StartNewUndoEntry();
             bool didSomething = false;
-            foreach (var shape in selection.ShapeRange.Cast<Shape>().Where(Graphics.IsAGroup))
+            foreach (var shape in shapes.Where(Graphics.IsAGroup))
             {
                 shape.Ungroup();
                 didSomething = true;
@@ -219,28 +212,27 @@ namespace PowerPointLabs.DrawingsLab
 
         public static void ToggleArrowStart()
         {
-            var selection = PowerPointCurrentPresentationInfo.CurrentSelection;
-            if (selection.Type != PpSelectionType.ppSelectionShapes)
+            var shapes = GetCurrentlySelectedShapes();
+            if (shapes.Count <= 0)
             {
                 Error(TextCollection.DrawingsLabSelectAtLeastOneShape);
                 return;
             }
 
-            var allArrowHeads = selection.ShapeRange
-                                        .Cast<Shape>()
-                                        .Where(Graphics.CanAddArrows)
-                                        .All(shape => shape.Line.BeginArrowheadStyle != MsoArrowheadStyle.msoArrowheadNone);
+            Globals.ThisAddIn.Application.StartNewUndoEntry();
+            var allArrowHeads = shapes.Where(Graphics.CanAddArrows)
+                                      .All(shape => shape.Line.BeginArrowheadStyle != MsoArrowheadStyle.msoArrowheadNone);
 
             if (allArrowHeads)
             {
-                foreach (var shape in selection.ShapeRange.Cast<Shape>().Where(Graphics.CanAddArrows))
+                foreach (var shape in shapes.Where(Graphics.CanAddArrows))
                 {
                     shape.Line.BeginArrowheadStyle = MsoArrowheadStyle.msoArrowheadNone;
                 }
             }
             else
             {
-                foreach (var shape in selection.ShapeRange.Cast<Shape>().Where(Graphics.CanAddArrows)
+                foreach (var shape in shapes.Where(Graphics.CanAddArrows)
                     .Where(shape => shape.Line.BeginArrowheadStyle == MsoArrowheadStyle.msoArrowheadNone))
                 {
                     shape.Line.BeginArrowheadStyle = MsoArrowheadStyle.msoArrowheadOpen;
@@ -250,28 +242,27 @@ namespace PowerPointLabs.DrawingsLab
 
         public static void ToggleArrowEnd()
         {
-            var selection = PowerPointCurrentPresentationInfo.CurrentSelection;
-            if (selection.Type != PpSelectionType.ppSelectionShapes)
+            var shapes = GetCurrentlySelectedShapes();
+            if (shapes.Count <= 0)
             {
                 Error(TextCollection.DrawingsLabSelectAtLeastOneShape);
                 return;
             }
 
-            var allArrowHeads = selection.ShapeRange
-                                        .Cast<Shape>()
-                                        .Where(Graphics.CanAddArrows)
-                                        .All(shape => shape.Line.EndArrowheadStyle != MsoArrowheadStyle.msoArrowheadNone);
+            Globals.ThisAddIn.Application.StartNewUndoEntry();
+            var allArrowHeads = shapes.Where(Graphics.CanAddArrows)
+                                      .All(shape => shape.Line.EndArrowheadStyle != MsoArrowheadStyle.msoArrowheadNone);
 
             if (allArrowHeads)
             {
-                foreach (var shape in selection.ShapeRange.Cast<Shape>().Where(Graphics.CanAddArrows))
+                foreach (var shape in shapes.Where(Graphics.CanAddArrows))
                 {
                     shape.Line.EndArrowheadStyle = MsoArrowheadStyle.msoArrowheadNone;
                 }
             }
             else
             {
-                foreach (var shape in selection.ShapeRange.Cast<Shape>().Where(Graphics.CanAddArrows)
+                foreach (var shape in shapes.Where(Graphics.CanAddArrows)
                     .Where(shape => shape.Line.EndArrowheadStyle == MsoArrowheadStyle.msoArrowheadNone))
                 {
                     shape.Line.EndArrowheadStyle = MsoArrowheadStyle.msoArrowheadOpen;
@@ -282,11 +273,15 @@ namespace PowerPointLabs.DrawingsLab
 
         public static void HideTool()
         {
-            var selection = PowerPointCurrentPresentationInfo.CurrentSelection;
-            if (selection.Type != PpSelectionType.ppSelectionShapes) return;
+            var shapes = GetCurrentlySelectedShapes();
+            if (shapes.Count <= 0)
+            {
+                Error(TextCollection.DrawingsLabSelectAtLeastOneShape);
+                return;
+            }
 
             Globals.ThisAddIn.Application.StartNewUndoEntry();
-            foreach (var shape in selection.ShapeRange.Cast<Shape>())
+            foreach (var shape in shapes)
             {
                 shape.Visible = MsoTriState.msoFalse;
             }
@@ -312,7 +307,11 @@ namespace PowerPointLabs.DrawingsLab
         public static void CloneTool()
         {
             var selection = PowerPointCurrentPresentationInfo.CurrentSelection;
-            if (selection.Type != PpSelectionType.ppSelectionShapes) return;
+            if (selection.Type != PpSelectionType.ppSelectionShapes)
+            {
+                Error(TextCollection.DrawingsLabSelectAtLeastOneShape);
+                return;
+            }
 
             Globals.ThisAddIn.Application.StartNewUndoEntry();
             PowerPointCurrentPresentationInfo.CurrentSlide.CopyShapesToSlide(selection.ShapeRange);
@@ -320,11 +319,8 @@ namespace PowerPointLabs.DrawingsLab
 
         public static void MultiCloneExtendTool()
         {
-            var selection = PowerPointCurrentPresentationInfo.CurrentSelection;
-            if (selection.Type != PpSelectionType.ppSelectionShapes) return;
-            var shapeList = selection.ShapeRange.Cast<Shape>().ToList();
-
-            if (shapeList.Count % 2 != 0)
+            var shapes = GetCurrentlySelectedShapes();
+            if (shapes.Count == 0 || shapes.Count % 2 != 0)
             {
                 Error(TextCollection.DrawingsLabSelectTwoSetsOfShapes);
                 return;
@@ -334,12 +330,12 @@ namespace PowerPointLabs.DrawingsLab
             if (clones <= 0) return;
 
             Globals.ThisAddIn.Application.StartNewUndoEntry();
-            int midpoint = shapeList.Count / 2;
-            for (int i = 0; i < shapeList.Count / 2; ++i)
+            int midpoint = shapes.Count / 2;
+            for (int i = 0; i < shapes.Count / 2; ++i)
             {
                 // Do the cloning for every pair of shapes (i, midpoint+i)
-                var firstShape = shapeList[i];
-                var secondShape = shapeList[midpoint + i];
+                var firstShape = shapes[i];
+                var secondShape = shapes[midpoint + i];
 
                 var newlyAddedShapes = new List<Shape>();
                 for (int j = 0; j < clones; ++j)
@@ -369,11 +365,8 @@ namespace PowerPointLabs.DrawingsLab
 
         public static void MultiCloneBetweenTool()
         {
-            var selection = PowerPointCurrentPresentationInfo.CurrentSelection;
-            if (selection.Type != PpSelectionType.ppSelectionShapes) return;
-            var shapeList = selection.ShapeRange.Cast<Shape>().ToList();
-
-            if (shapeList.Count % 2 != 0)
+            var shapes = GetCurrentlySelectedShapes();
+            if (shapes.Count == 0 || shapes.Count % 2 != 0)
             {
                 Error(TextCollection.DrawingsLabSelectTwoSetsOfShapes);
                 return;
@@ -385,12 +378,12 @@ namespace PowerPointLabs.DrawingsLab
 
             int divisions = clones + 1;
 
-            int midpoint = shapeList.Count / 2;
-            for (int i = 0; i < shapeList.Count / 2; ++i)
+            int midpoint = shapes.Count / 2;
+            for (int i = 0; i < shapes.Count / 2; ++i)
             {
                 // Do the cloning for every pair of shapes (i, midpoint+i)
-                var firstShape = shapeList[i];
-                var lastShape = shapeList[midpoint + i];
+                var firstShape = shapes[i];
+                var lastShape = shapes[midpoint + i];
 
                 var newlyAddedShapes = new List<Shape>();
                 for (int j = 0; j < clones; ++j)
@@ -428,17 +421,15 @@ namespace PowerPointLabs.DrawingsLab
 
         public static void MultiCloneGridTool()
         {
-            var selection = PowerPointCurrentPresentationInfo.CurrentSelection;
-            if (selection.Type != PpSelectionType.ppSelectionShapes) return;
-            var shapeList = selection.ShapeRange.Cast<Shape>().ToList();
-            if (shapeList.Count != 2)
+            var shapes = GetCurrentlySelectedShapes();
+            if (shapes.Count != 2)
             {
                 Error(TextCollection.DrawingsLabSelectExactlyTwoShapes);
                 return;
             }
 
-            var sourceShape = shapeList[0];
-            var targetShape = shapeList[1];
+            var sourceShape = shapes[0];
+            var targetShape = shapes[1];
 
             var dialog = new MultiCloneGridDialog(sourceShape.Left, sourceShape.Top, targetShape.Left, targetShape.Top);
             if (dialog.ShowDialog() != true) return;
@@ -535,17 +526,15 @@ namespace PowerPointLabs.DrawingsLab
 
         public static void PivotAroundTool()
         {
-            var selection = PowerPointCurrentPresentationInfo.CurrentSelection;
-            if (selection.Type != PpSelectionType.ppSelectionShapes) return;
-            var shapeList = selection.ShapeRange.Cast<Shape>().ToList();
-            if (shapeList.Count != 2)
+            var shapes = GetCurrentlySelectedShapes();
+            if (shapes.Count != 2)
             {
                 Error(TextCollection.DrawingsLabSelectExactlyTwoShapes);
                 return;
             }
 
-            var sourceShape = shapeList[0];
-            var pivotShape = shapeList[1];
+            var sourceShape = shapes[0];
+            var pivotShape = shapes[1];
 
             var dialog = new PivotAroundToolDialog(sourceShape, pivotShape);
             if (dialog.ShowDialog() != true) return;
@@ -595,7 +584,11 @@ namespace PowerPointLabs.DrawingsLab
         public static void SendBackward()
         {
             var selection = PowerPointCurrentPresentationInfo.CurrentSelection;
-            if (selection.Type != PpSelectionType.ppSelectionShapes) return;
+            if (selection.Type != PpSelectionType.ppSelectionShapes && selection.Type != PpSelectionType.ppSelectionText)
+            {
+                Error(TextCollection.DrawingsLabSelectAtLeastOneShape);
+                return;
+            }
 
             Globals.ThisAddIn.Application.StartNewUndoEntry();
             selection.ShapeRange.ZOrder(MsoZOrderCmd.msoSendBackward);
@@ -604,7 +597,11 @@ namespace PowerPointLabs.DrawingsLab
         public static void BringForward()
         {
             var selection = PowerPointCurrentPresentationInfo.CurrentSelection;
-            if (selection.Type != PpSelectionType.ppSelectionShapes) return;
+            if (selection.Type != PpSelectionType.ppSelectionShapes && selection.Type != PpSelectionType.ppSelectionText)
+            {
+                Error(TextCollection.DrawingsLabSelectAtLeastOneShape);
+                return;
+            }
 
             Globals.ThisAddIn.Application.StartNewUndoEntry();
             selection.ShapeRange.ZOrder(MsoZOrderCmd.msoBringForward);
@@ -613,7 +610,11 @@ namespace PowerPointLabs.DrawingsLab
         public static void SendToBack()
         {
             var selection = PowerPointCurrentPresentationInfo.CurrentSelection;
-            if (selection.Type != PpSelectionType.ppSelectionShapes) return;
+            if (selection.Type != PpSelectionType.ppSelectionShapes && selection.Type != PpSelectionType.ppSelectionText)
+            {
+                Error(TextCollection.DrawingsLabSelectAtLeastOneShape);
+                return;
+            }
 
             Globals.ThisAddIn.Application.StartNewUndoEntry();
             selection.ShapeRange.ZOrder(MsoZOrderCmd.msoSendToBack);
@@ -622,7 +623,11 @@ namespace PowerPointLabs.DrawingsLab
         public static void BringToFront()
         {
             var selection = PowerPointCurrentPresentationInfo.CurrentSelection;
-            if (selection.Type != PpSelectionType.ppSelectionShapes) return;
+            if (selection.Type != PpSelectionType.ppSelectionShapes && selection.Type != PpSelectionType.ppSelectionText)
+            {
+                Error(TextCollection.DrawingsLabSelectAtLeastOneShape);
+                return;
+            }
 
             Globals.ThisAddIn.Application.StartNewUndoEntry();
             selection.ShapeRange.ZOrder(MsoZOrderCmd.msoBringToFront);
@@ -630,10 +635,7 @@ namespace PowerPointLabs.DrawingsLab
 
         public static void SendBehindShape()
         {
-            var selection = PowerPointCurrentPresentationInfo.CurrentSelection;
-            if (selection.Type != PpSelectionType.ppSelectionShapes) return;
-
-            var shapes = selection.ShapeRange.Cast<Shape>().ToList();
+            var shapes = GetCurrentlySelectedShapes();
             if (shapes.Count < 2)
             {
                 Error(TextCollection.DrawingsLabSelectAtLeastTwoShapes);
@@ -654,10 +656,7 @@ namespace PowerPointLabs.DrawingsLab
 
         public static void BringInFrontOfShape()
         {
-            var selection = PowerPointCurrentPresentationInfo.CurrentSelection;
-            if (selection.Type != PpSelectionType.ppSelectionShapes) return;
-
-            var shapes = selection.ShapeRange.Cast<Shape>().ToList();
+            var shapes = GetCurrentlySelectedShapes();
             if (shapes.Count < 2)
             {
                 Error(TextCollection.DrawingsLabSelectAtLeastTwoShapes);
@@ -677,18 +676,15 @@ namespace PowerPointLabs.DrawingsLab
 
         public static void RecordDisplacement()
         {
-            var selection = PowerPointCurrentPresentationInfo.CurrentSelection;
-            if (selection.Type != PpSelectionType.ppSelectionShapes) return;
-
-            var shapes = selection.ShapeRange;
+            var shapes = GetCurrentlySelectedShapes();
             if (shapes.Count != 2)
             {
                 Error(TextCollection.DrawingsLabSelectStartAndEndShape);
                 return;
             }
 
-            var firstShape = shapes[1];
-            var secondShape = shapes[2];
+            var firstShape = shapes[0];
+            var secondShape = shapes[1];
 
             DataSource.ShiftValueX = GetX(secondShape) - GetX(firstShape);
             DataSource.ShiftValueY = GetY(secondShape) - GetY(firstShape);
@@ -697,11 +693,15 @@ namespace PowerPointLabs.DrawingsLab
 
         public static void ApplyDisplacement(bool applyAllSettings = false)
         {
-            var selection = PowerPointCurrentPresentationInfo.CurrentSelection;
-            if (selection.Type != PpSelectionType.ppSelectionShapes) return;
+            var shapes = GetCurrentlySelectedShapes();
+            if (shapes.Count <= 0)
+            {
+                Error(TextCollection.DrawingsLabSelectAtLeastOneShape);
+                return;
+            }
 
             Globals.ThisAddIn.Application.StartNewUndoEntry();
-            foreach (var shape in selection.ShapeRange.Cast<Shape>())
+            foreach (var shape in shapes)
             {
                 if (applyAllSettings || DataSource.ShiftIncludePositionX)
                 {
@@ -720,16 +720,13 @@ namespace PowerPointLabs.DrawingsLab
 
         public static void RecordPosition()
         {
-            var selection = PowerPointCurrentPresentationInfo.CurrentSelection;
-            if (selection.Type != PpSelectionType.ppSelectionShapes) return;
-
-            var shapes = selection.ShapeRange;
+            var shapes = GetCurrentlySelectedShapes();
             if (shapes.Count != 1)
             {
                 Error(TextCollection.DrawingsLabSelectExactlyOneShape);
                 return;
             }
-            var shape = shapes[1];
+            var shape = shapes[0];
 
             DataSource.SavedValueX = GetX(shape);
             DataSource.SavedValueY = GetY(shape);
@@ -738,11 +735,15 @@ namespace PowerPointLabs.DrawingsLab
 
         public static void ApplyPosition(bool applyAllSettings = false)
         {
-            var selection = PowerPointCurrentPresentationInfo.CurrentSelection;
-            if (selection.Type != PpSelectionType.ppSelectionShapes) return;
+            var shapes = GetCurrentlySelectedShapes();
+            if (shapes.Count <= 0)
+            {
+                Error(TextCollection.DrawingsLabSelectAtLeastOneShape);
+                return;
+            }
 
             Globals.ThisAddIn.Application.StartNewUndoEntry();
-            foreach (var shape in selection.ShapeRange.Cast<Shape>())
+            foreach (var shape in shapes)
             {
                 if (applyAllSettings || DataSource.SavedIncludePositionX)
                 {
@@ -762,16 +763,13 @@ namespace PowerPointLabs.DrawingsLab
 
         public static void RecordFormat()
         {
-            var selection = PowerPointCurrentPresentationInfo.CurrentSelection;
-            if (selection.Type != PpSelectionType.ppSelectionShapes) return;
-
-            var shapes = selection.ShapeRange;
+            var shapes = GetCurrentlySelectedShapes();
             if (shapes.Count != 1)
             {
                 Error(TextCollection.DrawingsLabSelectExactlyOneShape);
                 return;
             }
-            var shape = shapes[1];
+            var shape = shapes[0];
 
             try
             {
@@ -818,8 +816,12 @@ namespace PowerPointLabs.DrawingsLab
 
         public static void ApplyFormat(bool applyAllSettings = false)
         {
-            var selection = PowerPointCurrentPresentationInfo.CurrentSelection;
-            if (selection.Type != PpSelectionType.ppSelectionShapes) return;
+            var shapes = GetCurrentlySelectedShapes();
+            if (shapes.Count <= 0)
+            {
+                Error(TextCollection.DrawingsLabSelectAtLeastOneShape);
+                return;
+            }
 
             Globals.ThisAddIn.Application.StartNewUndoEntry();
 
@@ -838,7 +840,7 @@ namespace PowerPointLabs.DrawingsLab
                 }
             };
 
-            foreach (var s in selection.ShapeRange.Cast<Shape>())
+            foreach (var s in shapes)
             {
                 var shape = s;
 
@@ -945,13 +947,7 @@ namespace PowerPointLabs.DrawingsLab
 
         public static void AlignHorizontal()
         {
-            var selection = Globals.ThisAddIn.Application.ActiveWindow.Selection;
-            if (selection.Type != PpSelectionType.ppSelectionShapes)
-            {
-                Error(TextCollection.DrawingsLabSelectAtLeastTwoShapes);
-                return;
-            }
-            var shapes = selection.ShapeRange.Cast<Shape>().ToList();
+            var shapes = GetCurrentlySelectedShapes();
             if (shapes.Count <= 1)
             {
                 Error(TextCollection.DrawingsLabSelectAtLeastTwoShapes);
@@ -978,13 +974,7 @@ namespace PowerPointLabs.DrawingsLab
 
         public static void AlignVertical()
         {
-            var selection = Globals.ThisAddIn.Application.ActiveWindow.Selection;
-            if (selection.Type != PpSelectionType.ppSelectionShapes)
-            {
-                Error(TextCollection.DrawingsLabSelectAtLeastTwoShapes);
-                return;
-            }
-            var shapes = selection.ShapeRange.Cast<Shape>().ToList();
+            var shapes = GetCurrentlySelectedShapes();
             if (shapes.Count <= 1)
             {
                 Error(TextCollection.DrawingsLabSelectAtLeastTwoShapes);
@@ -1011,13 +1001,7 @@ namespace PowerPointLabs.DrawingsLab
 
         public static void AlignBoth()
         {
-            var selection = Globals.ThisAddIn.Application.ActiveWindow.Selection;
-            if (selection.Type != PpSelectionType.ppSelectionShapes)
-            {
-                Error(TextCollection.DrawingsLabSelectAtLeastTwoShapes);
-                return;
-            }
-            var shapes = selection.ShapeRange.Cast<Shape>().ToList();
+            var shapes = GetCurrentlySelectedShapes();
             if (shapes.Count <= 1)
             {
                 Error(TextCollection.DrawingsLabSelectAtLeastTwoShapes);
@@ -1049,14 +1033,8 @@ namespace PowerPointLabs.DrawingsLab
 
         public static void AlignVerticalToSlide()
         {
-            var selection = Globals.ThisAddIn.Application.ActiveWindow.Selection;
-            if (selection.Type != PpSelectionType.ppSelectionShapes)
-            {
-                Error(TextCollection.DrawingsLabSelectAtLeastOneShape);
-                return;
-            }
-            var shapes = selection.ShapeRange.Cast<Shape>().ToList();
-            if (shapes.Count < 1)
+            var shapes = GetCurrentlySelectedShapes();
+            if (shapes.Count <= 0)
             {
                 Error(TextCollection.DrawingsLabSelectAtLeastOneShape);
                 return;
@@ -1079,14 +1057,8 @@ namespace PowerPointLabs.DrawingsLab
 
         public static void AlignHorizontalToSlide()
         {
-            var selection = Globals.ThisAddIn.Application.ActiveWindow.Selection;
-            if (selection.Type != PpSelectionType.ppSelectionShapes)
-            {
-                Error(TextCollection.DrawingsLabSelectAtLeastOneShape);
-                return;
-            }
-            var shapes = selection.ShapeRange.Cast<Shape>().ToList();
-            if (shapes.Count < 1)
+            var shapes = GetCurrentlySelectedShapes();
+            if (shapes.Count <= 0)
             {
                 Error(TextCollection.DrawingsLabSelectAtLeastOneShape);
                 return;
@@ -1110,14 +1082,8 @@ namespace PowerPointLabs.DrawingsLab
 
         public static void AlignBothToSlide()
         {
-            var selection = Globals.ThisAddIn.Application.ActiveWindow.Selection;
-            if (selection.Type != PpSelectionType.ppSelectionShapes)
-            {
-                Error(TextCollection.DrawingsLabSelectAtLeastOneShape);
-                return;
-            }
-            var shapes = selection.ShapeRange.Cast<Shape>().ToList();
-            if (shapes.Count < 1)
+            var shapes = GetCurrentlySelectedShapes();
+            if (shapes.Count <= 0)
             {
                 Error(TextCollection.DrawingsLabSelectAtLeastOneShape);
                 return;
@@ -1205,6 +1171,16 @@ namespace PowerPointLabs.DrawingsLab
                     return;
             }
             throw new ArgumentOutOfRangeException();
+        }
+
+        public static List<Shape> GetCurrentlySelectedShapes()
+        {
+            var selection = Globals.ThisAddIn.Application.ActiveWindow.Selection;
+            if (selection.Type == PpSelectionType.ppSelectionShapes || selection.Type == PpSelectionType.ppSelectionText)
+            {
+                return selection.ShapeRange.Cast<Shape>().ToList();
+            }
+            return new List<Shape>();
         }
 
         #endregion
