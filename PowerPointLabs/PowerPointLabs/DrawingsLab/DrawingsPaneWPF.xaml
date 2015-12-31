@@ -125,15 +125,15 @@
                         <Separator Grid.Row="5" Grid.Column="0" Grid.ColumnSpan="4"/>
                         <Separator Grid.Row="7" Grid.Column="0" Grid.ColumnSpan="4"/>
 
-                        <cc:ImageButton x:Name="AddTextButton" Text="Add&#xa;Text" Grid.Row="0" Grid.Column="0"/>
+                        <cc:ImageButton x:Name="AddTextButton" Text="Set&#xa;Text" Grid.Row="0" Grid.Column="0"/>
                         <cc:ImageButton x:Name="AddMathButton" Text="Add&#xa;Math" Grid.Row="0" Grid.Column="1"/>
                         <cc:ImageButton x:Name="RemoveTextButton" Text="Remove&#xa;Text" Grid.Row="0" Grid.Column="2"/>
 
                         <cc:ImageButton x:Name="GroupButton" Text="Group" Grid.Row="2" Grid.Column="0"/>
                         <cc:ImageButton x:Name="UngroupButton" Text="Ungroup" Grid.Row="2" Grid.Column="1"/>
 
-                        <cc:ImageButton x:Name="ArrowStartButton" Text="Toggle&#xa;Arrow (S)" Grid.Row="4" Grid.Column="0"/>
-                        <cc:ImageButton x:Name="ArrowEndButton" Text="Toggle&#xa;Arrow (F)" Grid.Row="4" Grid.Column="1"/>
+                        <cc:ImageButton x:Name="ArrowStartButton" Text="Arrow&#xa;(Start)" Grid.Row="4" Grid.Column="0"/>
+                        <cc:ImageButton x:Name="ArrowEndButton" Text="Arrow&#xa;(End)" Grid.Row="4" Grid.Column="1"/>
 
                         <Grid Row="6" Column="0" ColumnSpan="4" DataContext="{StaticResource DrawingsLabData}">
                             <Grid.ColumnDefinitions>

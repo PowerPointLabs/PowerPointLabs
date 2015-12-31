@@ -36,17 +36,15 @@ namespace PowerPointLabs.DrawingsLab
         public DrawingsPaneWPF()
         {
             InitializeComponent();
-
-
-            BindDataToPanels();
+            InitializeDataSource();
 
             var buttonHotkeyBindings = SetupButtonHotkeys();
-            var hotkeyActionBindings = InitToolTipControl(buttonHotkeyBindings);
-            InitialiseHotkeys(hotkeyActionBindings);
+            var hotkeyActionBindings = SetupButtons(buttonHotkeyBindings);
+            InitializeHotkeys(hotkeyActionBindings);
         }
 
         #region ToolTip
-        private Dictionary<Native.VirtualKey, Action> InitToolTipControl(Dictionary<int, Native.VirtualKey> buttonHotkeyBindings)
+        private Dictionary<Native.VirtualKey, Action> SetupButtons(Dictionary<int, Native.VirtualKey> buttonHotkeyBindings)
         {
             var hotkeyActionBindings = new Dictionary<Native.VirtualKey, Action>();
 
@@ -147,7 +145,7 @@ namespace PowerPointLabs.DrawingsLab
             // || Tab: Selection ||
             // --------------------
 
-
+            // Empty as of now.
 
             return hotkeyActionBindings;
         }
@@ -158,8 +156,20 @@ namespace PowerPointLabs.DrawingsLab
             ToolTipService.SetToolTip(button, toolTip);
         }
 
+        /// <summary>
+        /// Returns the string representaiton of the hotkey,
+        /// to be used for hotkey displays in tooltips. E.g. "[L] Draw a Line"
+        /// </summary>
         private static string VirtualKeyName(Native.VirtualKey key)
         {
+            switch (key)
+            {
+                case Native.VirtualKey.VK_OEM_COMMA:
+                    return " , ";
+                case Native.VirtualKey.VK_OEM_PERIOD:
+                    return " . ";
+            }
+
             var s = key.ToString();
             if (s.StartsWith("VK_")) s = s.Substring(3);
             return s;
@@ -168,7 +178,7 @@ namespace PowerPointLabs.DrawingsLab
         #endregion
 
         #region DataBindings
-        private void BindDataToPanels()
+        private void InitializeDataSource()
         {
             dataSource = FindResource("DrawingsLabData") as DrawingsLabDataSource;
         }
@@ -197,25 +207,47 @@ namespace PowerPointLabs.DrawingsLab
 
         private Dictionary<int, Native.VirtualKey> SetupButtonHotkeys()
         {
+            var usedKeys = new HashSet<Native.VirtualKey>();
             var bindings = new Dictionary<int, Native.VirtualKey>();
             Action<Native.VirtualKey, ImageButton> Assign = (key, button) =>
             {
-                bindings.Add(button.ImageButtonUniqueId,key);
+                bindings.Add(button.ImageButtonUniqueId, key);
+                if (usedKeys.Contains(key)) throw new ArgumentException("Key already has a binding: " + key.ToString());
+                usedKeys.Add(key);
             };
 
             Assign(Native.VirtualKey.VK_L, LineButton);
             Assign(Native.VirtualKey.VK_R, RectButton);
+            Assign(Native.VirtualKey.VK_E, RoundedRectButton);
+            Assign(Native.VirtualKey.VK_Y, TriangleButton);
             Assign(Native.VirtualKey.VK_C, CircleButton);
+            Assign(Native.VirtualKey.VK_A, ArrowButton);
+            Assign(Native.VirtualKey.VK_T, TextboxButton);
+
             Assign(Native.VirtualKey.VK_D, DuplicateButton);
-            Assign(Native.VirtualKey.VK_A, SelectTypeButton);
+            Assign(Native.VirtualKey.VK_S, SelectTypeButton);
             Assign(Native.VirtualKey.VK_H, HideButton);
+            Assign(Native.VirtualKey.VK_J, SelectionPaneButton);
+
+            Assign(Native.VirtualKey.VK_X, AddTextButton);
+            Assign(Native.VirtualKey.VK_G, GroupButton);
+            Assign(Native.VirtualKey.VK_U, UngroupButton);
+            Assign(Native.VirtualKey.VK_OEM_COMMA, ArrowStartButton);
+            Assign(Native.VirtualKey.VK_OEM_PERIOD, ArrowEndButton);
+
+            Assign(Native.VirtualKey.VK_N, MultiCloneBetweenButton);
+            Assign(Native.VirtualKey.VK_M, MultiCloneExtendButton);
+
+            Assign(Native.VirtualKey.VK_O, AlignBothButton);
+            Assign(Native.VirtualKey.VK_P, PivotAroundButton);
+
             Assign(Native.VirtualKey.VK_F, BringForwardButton);
             Assign(Native.VirtualKey.VK_B, SendBackwardButton);
 
             return bindings;
         }
 
-        private void InitialiseHotkeys(Dictionary<Native.VirtualKey, Action> hotkeyActionBindings)
+        private void InitializeHotkeys(Dictionary<Native.VirtualKey, Action> hotkeyActionBindings)
         {
             if (hotkeysInitialised) return;
             hotkeysInitialised = true;

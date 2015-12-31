@@ -219,6 +219,8 @@ namespace PPExtraEventHelper
             VK_RMENU = 0xA5,
             VK_RETURN = 0x0D,
           	VK_ESCAPE =	0x1B,
+            VK_OEM_COMMA = 0xBC,
+            VK_OEM_PERIOD = 0xBE,
             VK_A = 0x41,
             VK_B = 0x42,
             VK_C = 0x43,
