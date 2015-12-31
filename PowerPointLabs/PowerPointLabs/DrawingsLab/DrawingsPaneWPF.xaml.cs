@@ -37,36 +37,54 @@ namespace PowerPointLabs.DrawingsLab
         {
             InitializeComponent();
 
-            InitialiseHotkeys();
 
             BindDataToPanels();
 
-            InitToolTipControl();
+            var buttonHotkeyBindings = SetupButtonHotkeys();
+            var hotkeyActionBindings = InitToolTipControl(buttonHotkeyBindings);
+            InitialiseHotkeys(hotkeyActionBindings);
         }
 
         #region ToolTip
-        private void InitToolTipControl()
+        private Dictionary<Native.VirtualKey, Action> InitToolTipControl(Dictionary<int, Native.VirtualKey> buttonHotkeyBindings)
         {
+            var hotkeyActionBindings = new Dictionary<Native.VirtualKey, Action>();
+
+            Action<ImageButton, Action, string> ConfigureButton = (button, action, tooltipMessage) =>
+            {
+                button.Click += (sender, e) => action();
+
+                if (buttonHotkeyBindings.ContainsKey(button.ImageButtonUniqueId))
+                {
+                    var key = buttonHotkeyBindings[button.ImageButtonUniqueId];
+                    tooltipMessage = "[" + VirtualKeyName(key) + "] " + tooltipMessage;
+                    hotkeyActionBindings.Add(key, action);
+                }
+
+                SetTooltip(button, tooltipMessage);
+            };
+
+
             // ---------------
             // || Top Panel ||
             // ---------------
 
-            ConfigureButton(CircleButton, DrawingsLabMain.SwitchToCircleTool, "[C] Draw a Circle.");
+            ConfigureButton(CircleButton, DrawingsLabMain.SwitchToCircleTool, "Draw a Circle.");
             ConfigureButton(TriangleButton, DrawingsLabMain.SwitchToTriangleTool, "Draw a Triangle.");
 
-            ConfigureButton(RectButton, DrawingsLabMain.SwitchToRectangleTool, "[R] Draw a Rectangle.");
+            ConfigureButton(RectButton, DrawingsLabMain.SwitchToRectangleTool, "Draw a Rectangle.");
             ConfigureButton(RoundedRectButton, DrawingsLabMain.SwitchToRoundedRectangleTool, "Draw a Rounded Rectangle.");
 
-            ConfigureButton(LineButton, DrawingsLabMain.SwitchToLineTool, "[L] Draw a Line.");
+            ConfigureButton(LineButton, DrawingsLabMain.SwitchToLineTool, "Draw a Line.");
             ConfigureButton(ArrowButton, DrawingsLabMain.SwitchToArrowTool, "Draw a Curved Line.");
 
             ConfigureButton(TextboxButton, DrawingsLabMain.SwitchToTextboxTool, "Add a Text Box.");
 
-            ConfigureButton(SelectTypeButton, DrawingsLabMain.SelectAllOfType, "[A] Select all shapes of same type as currently selected shapes.");
-            ConfigureButton(DuplicateButton, DrawingsLabMain.CloneTool, "[D] Makes a copy of the selected shapes in the exact same location.");
+            ConfigureButton(SelectTypeButton, DrawingsLabMain.SelectAllOfType, "Select all shapes of same type as currently selected shapes.");
+            ConfigureButton(DuplicateButton, DrawingsLabMain.CloneTool, "Makes a copy of the selected shapes in the exact same location.");
 
-            ConfigureButton(HideButton, DrawingsLabMain.HideTool, "[H] Hide selected items.");
-            ConfigureButton(ShowAllButton, DrawingsLabMain.ShowAllTool, "[S] Show all hidden items.");
+            ConfigureButton(HideButton, DrawingsLabMain.HideTool, "Hide selected items.");
+            ConfigureButton(ShowAllButton, DrawingsLabMain.ShowAllTool, "Show all hidden items.");
             ConfigureButton(SelectionPaneButton, DrawingsLabMain.OpenSelectionPane, "Opens the Selection Pane.");
 
             SetTooltip(ToggleHotkeysButton, "Enable / Disable Hotkeys.");
@@ -86,10 +104,10 @@ namespace PowerPointLabs.DrawingsLab
             ConfigureButton(ArrowStartButtonMain, DrawingsLabMain.ToggleArrowStart, "Groups the selected shapes into a single shape.");
             ConfigureButton(ArrowEndButtonMain, DrawingsLabMain.ToggleArrowEnd, "Groups the selected shapes into a single shape.");
             
-            ConfigureButton(BringForwardButtonMain, DrawingsLabMain.BringForward, "[F] Bring shapes Forward one step.");
+            ConfigureButton(BringForwardButtonMain, DrawingsLabMain.BringForward, "Bring shapes Forward one step.");
             ConfigureButton(BringInFrontOfShapeButtonMain, DrawingsLabMain.BringInFrontOfShape, "Bring shapes in front of last shape in selection.");
             ConfigureButton(BringToFrontButtonMain, DrawingsLabMain.BringToFront, "Bring shapes to Front.");
-            ConfigureButton(SendBackwardButtonMain, DrawingsLabMain.SendBackward, "[B] Send shapes Backward one step.");
+            ConfigureButton(SendBackwardButtonMain, DrawingsLabMain.SendBackward, "Send shapes Backward one step.");
             ConfigureButton(SendBehindShapeButtonMain, DrawingsLabMain.SendBehindShape, "Send shapes behind last shape in selection.");
             ConfigureButton(SendToBackButtonMain, DrawingsLabMain.SendToBack, "Send shapes to Back.");
 
@@ -119,8 +137,8 @@ namespace PowerPointLabs.DrawingsLab
             ConfigureButton(AlignVerticalToSlideButton, DrawingsLabMain.AlignVerticalToSlide, "Align Shapes Vertically to a position relative to the slide.");
             ConfigureButton(AlignBothToSlideButton, DrawingsLabMain.AlignBothToSlide, "Align Shapes both Horizontally and Vertically to a position relative to the slide.");
             
-            ConfigureButton(MultiCloneExtendButton, DrawingsLabMain.MultiCloneExtendTool, "[N] Extrapolates multiple copies of a shape, extending from two selected shapes.");
-            ConfigureButton(MultiCloneBetweenButton, DrawingsLabMain.MultiCloneBetweenTool, "[M] Interpolates multiple copies of a shape, in between two selected shapes.");
+            ConfigureButton(MultiCloneExtendButton, DrawingsLabMain.MultiCloneExtendTool, "Extrapolates multiple copies of a shape, extending from two selected shapes.");
+            ConfigureButton(MultiCloneBetweenButton, DrawingsLabMain.MultiCloneBetweenTool, "Interpolates multiple copies of a shape, in between two selected shapes.");
             ConfigureButton(MultiCloneGridButton, DrawingsLabMain.MultiCloneGridTool, "Extends two shapes into a grid of shapes.");
             ConfigureButton(PivotAroundButton, DrawingsLabMain.PivotAroundTool, "Rotate / Multiclone a shape around another shape.");
             
@@ -128,20 +146,22 @@ namespace PowerPointLabs.DrawingsLab
             // || Tab: Selection ||
             // --------------------
 
-        }
 
-        private void ConfigureButton(ImageButton button, Action action, string tooltipMessage)
-        {
-            button.Click += (sender, e) => action();
-            
-            ToolTip toolTip = new ToolTip { Content = tooltipMessage };
-            ToolTipService.SetToolTip(button, toolTip);
+
+            return hotkeyActionBindings;
         }
 
         private void SetTooltip(DependencyObject button, string tooltipMessage)
         {
             ToolTip toolTip = new ToolTip { Content = tooltipMessage };
             ToolTipService.SetToolTip(button, toolTip);
+        }
+
+        private static string VirtualKeyName(Native.VirtualKey key)
+        {
+            var s = key.ToString();
+            if (s.StartsWith("VK_")) s = s.Substring(3);
+            return s;
         }
 
         #endregion
@@ -174,7 +194,27 @@ namespace PowerPointLabs.DrawingsLab
             return () => { if (IsReadingHotkeys()) action(); };
         }
 
-        private void InitialiseHotkeys()
+        private Dictionary<int, Native.VirtualKey> SetupButtonHotkeys()
+        {
+            var bindings = new Dictionary<int, Native.VirtualKey>();
+            Action<Native.VirtualKey, ImageButton> Assign = (key, button) =>
+            {
+                bindings.Add(button.ImageButtonUniqueId,key);
+            };
+
+            Assign(Native.VirtualKey.VK_L, LineButton);
+            Assign(Native.VirtualKey.VK_R, RectButton);
+            Assign(Native.VirtualKey.VK_C, CircleButton);
+            Assign(Native.VirtualKey.VK_D, DuplicateButton);
+            Assign(Native.VirtualKey.VK_A, SelectTypeButton);
+            Assign(Native.VirtualKey.VK_H, HideButton);
+            Assign(Native.VirtualKey.VK_F, BringForwardButtonMain);
+            Assign(Native.VirtualKey.VK_B, SendBackwardButtonMain);
+
+            return bindings;
+        }
+
+        private void InitialiseHotkeys(Dictionary<Native.VirtualKey, Action> hotkeyActionBindings)
         {
             if (hotkeysInitialised) return;
             hotkeysInitialised = true;
@@ -212,18 +252,10 @@ namespace PowerPointLabs.DrawingsLab
                 PPKeyboard.AddKeyupAction(key, RunOnlyWhenOpen(() => DrawingsLabMain.SetControlGroup(key, appendToGroup: true)), ctrl: true, shift: true);
             }
 
-            PPKeyboard.AddKeyupAction(Native.VirtualKey.VK_L, RunOnlyWhenOpen(DrawingsLabMain.SwitchToLineTool));
-            PPKeyboard.AddKeyupAction(Native.VirtualKey.VK_R, RunOnlyWhenOpen(DrawingsLabMain.SwitchToRectangleTool));
-            PPKeyboard.AddKeyupAction(Native.VirtualKey.VK_C, RunOnlyWhenOpen(DrawingsLabMain.SwitchToCircleTool));
-            PPKeyboard.AddKeyupAction(Native.VirtualKey.VK_D, RunOnlyWhenOpen(DrawingsLabMain.CloneTool));
-            PPKeyboard.AddKeyupAction(Native.VirtualKey.VK_A, RunOnlyWhenOpen(DrawingsLabMain.SelectAllOfType));
-            PPKeyboard.AddKeyupAction(Native.VirtualKey.VK_H, RunOnlyWhenOpen(DrawingsLabMain.HideTool));
-            PPKeyboard.AddKeyupAction(Native.VirtualKey.VK_S, RunOnlyWhenOpen(DrawingsLabMain.ShowAllTool));
-            PPKeyboard.AddKeyupAction(Native.VirtualKey.VK_M, RunOnlyWhenOpen(DrawingsLabMain.MultiCloneExtendTool));
-            PPKeyboard.AddKeyupAction(Native.VirtualKey.VK_N, RunOnlyWhenOpen(DrawingsLabMain.MultiCloneBetweenTool));
-
-            PPKeyboard.AddKeyupAction(Native.VirtualKey.VK_F, RunOnlyWhenOpen(DrawingsLabMain.BringForward));
-            PPKeyboard.AddKeyupAction(Native.VirtualKey.VK_B, RunOnlyWhenOpen(DrawingsLabMain.SendBackward));
+            foreach (var entry in hotkeyActionBindings)
+            {
+                PPKeyboard.AddKeyupAction(entry.Key, RunOnlyWhenOpen(entry.Value));
+            }
         }
         #endregion
 
