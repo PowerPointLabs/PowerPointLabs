@@ -8,6 +8,7 @@
 # User-specific files
 *.suo
 *.user
+*.DotSettings
 
 # Build results
 
