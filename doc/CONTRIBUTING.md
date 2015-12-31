@@ -11,7 +11,7 @@ patches and features.
 
 ## Using the issue tracker
 
-The issue tracker is the preferred channel for [bug reports](#bugs),
+The [issue tracker](https://github.com/PowerPointLabs/PowerPointLabs/issues) is the preferred channel for [bug reports](#bugs),
 [features requests](#features) and [submitting pull
 requests](#pull-requests), but please respect the following restrictions:
 
@@ -36,8 +36,8 @@ Guidelines for bug reports:
 2. **Check if the issue has been fixed** &mdash; try to reproduce it using the
    latest `master` in the repository.
 
-3. **Isolate the problem** &mdash; create an example PPT slides that reproduce 
-   the bug if possible.
+3. **Isolate the problem** &mdash; create an example .PPT file that reproduces 
+   the bug or take some screenshots.
 
 A good bug report shouldn't leave others needing to chase you up for more
 information. Please try to be as detailed as possible in your report. What is
@@ -56,7 +56,8 @@ Example:
 > 2. This is the second step
 > 3. Further steps, etc.
 >
-> `<url>` - a link to the example PPT slides that reproduce the bug.
+> `<url>` - a link to the example PPT slides that reproduce the bug.  
+> `<img>` - any screenshots.
 >
 > Any other information you want to share that is relevant to the issue being
 > reported. This might include the lines of code that you have identified as
@@ -81,12 +82,14 @@ help. They should remain focused on the selected issues and avoid containing unr
 
 For your first pull request, select an issue labelled `forFirstTimers`. For subsequent pull requests, prefer those labelled `forContributors` and with higher priority.
 
+**Please reference the selected issue** like this `#{issue-number}` in the pull request.
+
 **Please ask first** before embarking on any significant pull request (e.g.
 implementing features, refactoring code, porting to a different language),
 otherwise you risk spending a lot of time working on something that the
 project's developers might not want to merge into the project.
 
-Please adhere to the coding conventions used throughout a project and pass the CI checks.
+Please adhere to the coding conventions used throughout a project and pass the CI checks (at least not increase the number of errors).
 
 Follow this process if you'd like your work considered for inclusion in the
 project:
@@ -96,11 +99,11 @@ project:
 
    ```bash
    # Clone your fork of the repo into the current directory
-   git clone https://github.com/<your-username>/powerpointlabs.git
+   git clone https://github.com/<your-username>/PowerPointLabs.git
    # Navigate to the newly cloned directory
-   cd powerpointlabs
+   cd PowerPointLabs
    # Assign the original repo to a remote called "upstream"
-   git remote add upstream https://github.com/PowerPointLabs/powerpointlabs.git
+   git remote add upstream https://github.com/PowerPointLabs/PowerPointLabs.git
    ```
 
 2. If you cloned a while ago, get the latest changes from upstream:
