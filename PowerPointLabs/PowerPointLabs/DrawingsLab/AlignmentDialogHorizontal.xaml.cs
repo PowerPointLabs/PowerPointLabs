@@ -45,7 +45,7 @@ namespace PowerPointLabs.DrawingsLab
         private void DrawAlignmentCanvas()
         {
             AlignmentCanvas.Children.Clear();
-            double middle = CanvasAbsoluteY(0.5f);
+            double middle = AlignmentCanvas.ActualWidth / 2;
             double gapWidth = 10f;
 
             double targetSquareWidth = CanvasAbsoluteY(1f / 3f);
