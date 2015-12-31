@@ -74,12 +74,12 @@ namespace PowerPointLabs.DrawingsLab
             configureButton(RoundedRectButton, DrawingsLabMain.SwitchToRoundedRectangleTool, "Draw a Rounded Rectangle.");
 
             configureButton(LineButton, DrawingsLabMain.SwitchToLineTool, "Draw a Line.");
-            configureButton(ArrowButton, DrawingsLabMain.SwitchToArrowTool, "Draw a Curved Line.");
+            configureButton(ArrowButton, DrawingsLabMain.SwitchToArrowTool, "Draw an Arrow.");
 
             configureButton(TextboxButton, DrawingsLabMain.SwitchToTextboxTool, "Add a Text Box.");
 
-            configureButton(SelectTypeButton, DrawingsLabMain.SelectAllOfType, "Select all shapes of same type as currently selected shapes.");
-            configureButton(DuplicateButton, DrawingsLabMain.CloneTool, "Makes a copy of the selected shapes in the exact same location.");
+            configureButton(SelectTypeButton, DrawingsLabMain.SelectAllOfType, "Select all items of same type as the currently selected items.");
+            configureButton(DuplicateButton, DrawingsLabMain.CloneTool, "Makes a copy of the selected items in the exact same location.");
 
             configureButton(HideButton, DrawingsLabMain.HideTool, "Hide selected items.");
             configureButton(ShowAllButton, DrawingsLabMain.ShowAllTool, "Show all hidden items.");
@@ -92,26 +92,26 @@ namespace PowerPointLabs.DrawingsLab
             // || Tab: Main ||
             // ---------------
 
-            configureButton(AddTextButton, DrawingsLabMain.AddText, "Add Text to the selected shapes.");
-            configureButton(AddMathButton, DrawingsLabMain.AddMath, "Add Math to a selected shape.");
+            configureButton(AddTextButton, DrawingsLabMain.AddText, "Set the Text for the selected shapes.");
+            configureButton(AddMathButton, DrawingsLabMain.AddMath, "Add Math to a selected shape, or convert highlighted text to Math.");
             configureButton(RemoveTextButton, DrawingsLabMain.RemoveText, "Remove all text from the selected shapes.");
 
             configureButton(GroupButton, DrawingsLabMain.GroupShapes, "Groups the selected shapes into a single shape.");
             configureButton(UngroupButton, DrawingsLabMain.UngroupShapes, "Ungroups the selected group of shapes.");
 
-            configureButton(ArrowStartButton, DrawingsLabMain.ToggleArrowStart, "Groups the selected shapes into a single shape.");
-            configureButton(ArrowEndButton, DrawingsLabMain.ToggleArrowEnd, "Groups the selected shapes into a single shape.");
+            configureButton(ArrowStartButton, DrawingsLabMain.ToggleArrowStart, "Toggles arrowheads at the start of the selected lines.");
+            configureButton(ArrowEndButton, DrawingsLabMain.ToggleArrowEnd, "Toggles arrowheads at the end of the selected lines.");
 
             configureButton(MultiCloneExtendButton, DrawingsLabMain.MultiCloneExtendTool, "Extrapolates multiple copies of a shape, extending from two selected shapes.");
             configureButton(MultiCloneBetweenButton, DrawingsLabMain.MultiCloneBetweenTool, "Interpolates multiple copies of a shape, in between two selected shapes.");
             configureButton(MultiCloneGridButton, DrawingsLabMain.MultiCloneGridTool, "Extends two shapes into a grid of shapes.");
             
             configureButton(BringForwardButton, DrawingsLabMain.BringForward, "Bring shapes Forward one step.");
-            configureButton(BringInFrontOfShapeButton, DrawingsLabMain.BringInFrontOfShape, "Bring shapes in front of last shape in selection.");
-            configureButton(BringToFrontButton, DrawingsLabMain.BringToFront, "Bring shapes to Front.");
+            configureButton(BringInFrontOfShapeButton, DrawingsLabMain.BringInFrontOfShape, "Bring shapes in front of last shape in the selection.");
+            configureButton(BringToFrontButton, DrawingsLabMain.BringToFront, "Bring shapes to the Front.");
             configureButton(SendBackwardButton, DrawingsLabMain.SendBackward, "Send shapes Backward one step.");
-            configureButton(SendBehindShapeButton, DrawingsLabMain.SendBehindShape, "Send shapes behind last shape in selection.");
-            configureButton(SendToBackButton, DrawingsLabMain.SendToBack, "Send shapes to Back.");
+            configureButton(SendBehindShapeButton, DrawingsLabMain.SendBehindShape, "Send shapes behind last shape in the selection.");
+            configureButton(SendToBackButton, DrawingsLabMain.SendToBack, "Send shapes to the Back.");
 
 
             // -----------------
@@ -128,14 +128,14 @@ namespace PowerPointLabs.DrawingsLab
 
             configureButton(ApplyDisplacementButton, ()=>DrawingsLabMain.ApplyDisplacement(applyAllSettings: false), "Apply recorded displacement to selected shapes.");
             configureButton(ApplyPositionButton, () => DrawingsLabMain.ApplyPosition(applyAllSettings: false), "Apply recorded position or rotation to selected shapes.");
-            configureButton(RecordDisplacementButton, DrawingsLabMain.RecordDisplacement, "Record Displacement between two selected shapes.");
+            configureButton(RecordDisplacementButton, DrawingsLabMain.RecordDisplacement, "Record the Displacement between two selected shapes.");
             configureButton(RecordPositionButton, DrawingsLabMain.RecordPosition, "Record position and rotation of a selected shape.");
 
             configureButton(AlignHorizontalButton, DrawingsLabMain.AlignHorizontal, "Align Shapes Horizontally to last shape in selection.");
             configureButton(AlignVerticalButton, DrawingsLabMain.AlignVertical, "Align Shapes Vertically to last shape in selection.");
             configureButton(AlignBothButton, DrawingsLabMain.AlignBoth, "Align Shapes both Horizontally and Vertically to last shape in selection.");
             
-            configureButton(PivotAroundButton, DrawingsLabMain.PivotAroundTool, "Rotate / Multiclone a shape around another shape.");
+            configureButton(PivotAroundButton, DrawingsLabMain.PivotAroundTool, "Rotate / Multiclone a shape around another shape. Two shapes must be selected, the shape to be rotated and the pivot, in order.");
 
             configureButton(AlignHorizontalToSlideButton, DrawingsLabMain.AlignHorizontalToSlide, "Align Shapes Horizontally to a position relative to the slide.");
             configureButton(AlignVerticalToSlideButton, DrawingsLabMain.AlignVerticalToSlide, "Align Shapes Vertically to a position relative to the slide.");
