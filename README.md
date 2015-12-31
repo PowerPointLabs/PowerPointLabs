@@ -14,6 +14,7 @@ PowerPointLabs makes creating engaging PowerPoint presentations easy. Check out 
    for VS2012 - http://aka.ms/OfficeDevToolsForVS2012<br>
    for VS2013 - http://aka.ms/OfficeDevToolsForVS2013<br>
    for VS2015 - http://aka.ms/OfficeDevToolsForVS2015<br>
+4. Install Microsoft .NET Framework 4.6.
 
 ### Setting Up Environment
 0. [Fork](http://help.github.com/fork-a-repo/) and clone the source codes from this repo.
