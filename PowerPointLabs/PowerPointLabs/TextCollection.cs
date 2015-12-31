@@ -115,8 +115,8 @@
         public const string AgendaLabBulletAgendaSettingsSupertip = "Set color scheme for Bullet Agenda.";
         # endregion
 
-        # region Drawings Lab
-        public const string DrawingsLabButtonSupertip = @"Opens the Drawings Lab Interface";
+        # region Drawing Lab
+        public const string DrawingsLabButtonSupertip = @"Opens the Drawing Lab Interface";
         # endregion
 
         # endregion
@@ -214,8 +214,8 @@
         public const string AgendaLabBulletAgendaSettingsButtonLabel = "Bullet Agenda Settings";
         # endregion
 
-        # region Drawings Lab
-        public const string DrawingsLabButtonLabel = "Drawings Lab";
+        # region Drawing Lab
+        public const string DrawingsLabButtonLabel = "Drawing Lab";
         # endregion
         # endregion
 
@@ -287,7 +287,7 @@
             "ton to save.";
         public const string ShapesLabTaskPanelTitle = "Shapes Lab";
         public const string ColorsLabTaskPanelTitle = "Colors Lab";
-        public const string DrawingsLabTaskPanelTitle = "Drawings Lab";
+        public const string DrawingsLabTaskPanelTitle = "Drawing Lab";
         public const string RecManagementPanelTitle = "Record Management";
         # endregion 
 
@@ -433,7 +433,7 @@
         # endregion
 
 
-        # region Drawings Lab
+        # region Drawing Lab
 
         public const string DrawingsLabSelectExactlyOneShape = "Please select a single shape.";
         public const string DrawingsLabSelectAtLeastOneShape = "Please select at least one shape.";

@@ -2409,7 +2409,7 @@ namespace PowerPointLabs
         }
         # endregion
 
-        #region Feature: Drawings Lab
+        #region Feature: Drawing Lab
         public void DrawingsLabButtonClick(Office.IRibbonControl control)
         {
             try
@@ -2431,7 +2431,7 @@ namespace PowerPointLabs
             }
             catch (Exception e)
             {
-                ErrorDialogWrapper.ShowDialog("Error in drawings lab", e.Message, e);
+                ErrorDialogWrapper.ShowDialog("Error in drawing lab", e.Message, e);
                 PowerPointLabsGlobals.LogException(e, "DrawingsLabButtonClicked");
                 throw;
             }
