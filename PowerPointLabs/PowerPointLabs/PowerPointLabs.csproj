@@ -864,7 +864,13 @@
     <None Include="Resources\DrawingLabTest.bmp" />
   </ItemGroup>
   <ItemGroup>
-    <Resource Include="Resources\DrawingLab\testimage.png" />
+    <Resource Include="Resources\DrawingLab\arrow.png" />
+    <Resource Include="Resources\DrawingLab\circle.png" />
+    <Resource Include="Resources\DrawingLab\line.png" />
+    <Resource Include="Resources\DrawingLab\rect.png" />
+    <Resource Include="Resources\DrawingLab\roundrect.png" />
+    <Resource Include="Resources\DrawingLab\textbox.png" />
+    <Resource Include="Resources\DrawingLab\triangle.png" />
   </ItemGroup>
   <!-- Include the build rules for a C# project. -->
   <PropertyGroup>

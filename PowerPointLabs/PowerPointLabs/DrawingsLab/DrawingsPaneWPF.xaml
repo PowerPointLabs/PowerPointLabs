@@ -50,16 +50,16 @@
             <ColumnDefinition Width="1*"/>
             <ColumnDefinition Width="3*"/>
         </Grid.ColumnDefinitions>
-        <cc:ImageButton x:Name="CircleButton" Text="Circle" Grid.Row="1" Grid.Column="0"/>
-        <cc:ImageButton x:Name="TriangleButton" Text="Triangle" Grid.Row="2" Grid.Column="0"/>
-        
-        <cc:ImageButton x:Name="RectButton" Text="Rect" Grid.Row="1" Grid.Column="1"/>
-        <cc:ImageButton x:Name="RoundedRectButton" Text="Round&#xa;Rect" Grid.Row="2" Grid.Column="1"/>
-        
-        <cc:ImageButton x:Name="LineButton" Text="Line" Grid.Row="1" Grid.Column="2" Image="../Resources/DrawingLab/testimage.png"/>
-        <cc:ImageButton x:Name="ArrowButton" Text="Arrow" Grid.Row="2" Grid.Column="2"/>
+        <cc:ImageButton x:Name="LineButton" Text="Line" Grid.Row="1" Grid.Column="0" Image="../Resources/DrawingLab/line.png"/>
+        <cc:ImageButton x:Name="ArrowButton" Text="Arrow" Grid.Row="2" Grid.Column="0" Image="../Resources/DrawingLab/arrow.png"/>
 
-        <cc:ImageButton x:Name="TextboxButton" Text="TextBox" Grid.Row="1" Grid.Column="3"/>
+        <cc:ImageButton x:Name="RectButton" Text="Rect" Grid.Row="1" Grid.Column="1" Image="../Resources/DrawingLab/rect.png"/>
+        <cc:ImageButton x:Name="RoundedRectButton" Text="Round&#xa;Rect" Grid.Row="2" Grid.Column="1" Image="../Resources/DrawingLab/roundrect.png"/>
+
+        <cc:ImageButton x:Name="CircleButton" Text="Circle" Grid.Row="1" Grid.Column="2" Image="../Resources/DrawingLab/circle.png"/>
+        <cc:ImageButton x:Name="TriangleButton" Text="Triangle" Grid.Row="2" Grid.Column="2" Image="../Resources/DrawingLab/triangle.png"/>
+
+        <cc:ImageButton x:Name="TextboxButton" Text="TextBox" Grid.Row="1" Grid.Column="3" Image="../Resources/DrawingLab/textbox.png"/>
 
         <ToggleButton x:Name="ToggleHotkeysButton" Content="Hotkeys" Grid.Row="0" Grid.Column="5" Grid.RowSpan="2"  IsChecked="{Binding UpdateSourceTrigger=PropertyChanged, Path=HotkeysEnabled, Mode=TwoWay}" Style="{StaticResource ToggleButtonStyle}"/>
 
