@@ -48,7 +48,7 @@ namespace PowerPointLabs.Views
             ttTextField.SetToolTip(textBox1, "The transparency level of the spotlight effect to be created.");
         }
 
-        private void textBox1_Validating(object sender, System.ComponentModel.CancelEventArgs e)
+        private void TextBox1_Validating(object sender, System.ComponentModel.CancelEventArgs e)
         {
             float enteredValue;
             string text = textBox1.Text;
@@ -67,11 +67,11 @@ namespace PowerPointLabs.Views
             }
             else
             {
-                textBox1.Text = lastTransparency.ToString("P0"); ;
+                textBox1.Text = lastTransparency.ToString("P0");
             }
         }
 
-        private void button1_Click(object sender, EventArgs e)
+        private void Button1_Click(object sender, EventArgs e)
         {
             string text = textBox1.Text;
             if (text.Contains('%'))
@@ -83,12 +83,12 @@ namespace PowerPointLabs.Views
             this.Close();
         }
 
-        private void button2_Click(object sender, EventArgs e)
+        private void Button2_Click(object sender, EventArgs e)
         {
             this.Close();
         }
 
-        private void panel1_Click(object sender, EventArgs e)
+        private void Panel1_Click(object sender, EventArgs e)
         {
             colorDialog1.Color = panel1.BackColor;
             colorDialog1.FullOpen = true;

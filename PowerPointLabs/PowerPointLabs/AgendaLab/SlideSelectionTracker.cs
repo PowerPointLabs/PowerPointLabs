@@ -1,7 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using PowerPointLabs.Models;
 
 namespace PowerPointLabs.AgendaLab
@@ -13,8 +11,6 @@ namespace PowerPointLabs.AgendaLab
     /// </summary>
     internal class SlideSelectionTracker
     {
-        private readonly bool isActive;
-
         public PowerPointSlide UserCurrentSlide { get; private set; }
         private readonly List<PowerPointSlide> _selectedSlides;
 
@@ -26,14 +22,12 @@ namespace PowerPointLabs.AgendaLab
 
         public SlideSelectionTracker(List<PowerPointSlide> selectedSlides, PowerPointSlide userCurrentSlide)
         {
-            isActive = true;
             UserCurrentSlide = userCurrentSlide;
             _selectedSlides = selectedSlides;
         }
 
         public SlideSelectionTracker()
         {
-            isActive = false;
         }
 
         /// <summary>

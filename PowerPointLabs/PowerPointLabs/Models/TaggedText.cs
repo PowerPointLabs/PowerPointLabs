@@ -5,6 +5,7 @@ using System.Text;
 using System.Text.RegularExpressions;
 using PowerPointLabs.TagMatchers;
 using PowerPointLabs.Tags;
+using PowerPointLabs.Utils;
 
 namespace PowerPointLabs.Models
 {
@@ -47,7 +48,7 @@ namespace PowerPointLabs.Models
 
         public PromptBuilder ToPromptBuilder(String defaultVoice)
         {
-            PromptBuilder builder = new PromptBuilder();
+            PromptBuilder builder = new PromptBuilder(CultureUtil.GetOriginalCulture());
             builder.StartVoice(defaultVoice);
 
             var tags = GetTagsInText();

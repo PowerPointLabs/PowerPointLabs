@@ -35,13 +35,13 @@
     </FileUpgradeFlags>
     <UpgradeBackupLocation>
     </UpgradeBackupLocation>
-    <OldToolsVersion>4.0</OldToolsVersion>
+    <OldToolsVersion>12.0</OldToolsVersion>
     <VSTO_TrustAssembliesLocation>true</VSTO_TrustAssembliesLocation>
     <BootstrapperEnabled>true</BootstrapperEnabled>
     <PublishUrl>C:\Users\User\Desktop\PowerPointLabsPublish\</PublishUrl>
     <InstallUrl>http://www.comp.nus.edu.sg/~pptlabs/download/dev/</InstallUrl>
     <TargetCulture>en</TargetCulture>
-    <ApplicationVersion>2.4.0.0</ApplicationVersion>
+    <ApplicationVersion>2.5.5.0</ApplicationVersion>
     <AutoIncrementApplicationRevision>false</AutoIncrementApplicationRevision>
     <UpdateEnabled>true</UpdateEnabled>
     <UpdateInterval>0</UpdateInterval>
@@ -52,6 +52,9 @@
     <FriendlyName>PowerPointLabs</FriendlyName>
     <OfficeApplicationDescription />
     <LoadBehavior>3</LoadBehavior>
+    <NuGetPackageImportStamp>
+    </NuGetPackageImportStamp>
+    <StyleCopTreatErrorsAsWarnings>false</StyleCopTreatErrorsAsWarnings>
   </PropertyGroup>
   <ItemGroup>
     <BootstrapperPackage Include=".NETFramework,Version=v4.0,Profile=Client">
@@ -74,9 +77,19 @@
       <ProductName>Microsoft Office 2007 Primary Interop Assemblies</ProductName>
       <Install>true</Install>
     </BootstrapperPackage>
+    <BootstrapperPackage Include="Microsoft.VSTORuntime.4.0">
+      <Visible>False</Visible>
+      <ProductName>Microsoft Visual Studio 2010 Tools for Office Runtime %28x86 and x64%29</ProductName>
+      <Install>true</Install>
+    </BootstrapperPackage>
     <BootstrapperPackage Include="Microsoft.Windows.Installer.3.1">
       <Visible>False</Visible>
       <ProductName>Windows Installer 3.1</ProductName>
+      <Install>true</Install>
+    </BootstrapperPackage>
+    <BootstrapperPackage Include="Microsoft.Windows.Installer.4.5">
+      <Visible>False</Visible>
+      <ProductName>Windows Installer 4.5</ProductName>
       <Install>true</Install>
     </BootstrapperPackage>
   </ItemGroup>
@@ -113,6 +126,7 @@
     <WarningLevel>4</WarningLevel>
     <Prefer32Bit>false</Prefer32Bit>
     <CodeAnalysisRuleSet>ExtendedDesignGuidelineRules.ruleset</CodeAnalysisRuleSet>
+    <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
   </PropertyGroup>
   <!--
     This section defines properties that are set when the "Release" configuration is selected.
@@ -153,10 +167,10 @@
     <SignManifests>true</SignManifests>
   </PropertyGroup>
   <PropertyGroup>
-    <ManifestKeyFile>PowerPointLabs_TemporaryKey.pfx</ManifestKeyFile>
+    <ManifestKeyFile>PowerPointLabs.dev.pfx</ManifestKeyFile>
   </PropertyGroup>
   <PropertyGroup>
-    <ManifestCertificateThumbprint>23F4E75F0C69E93AD38794F02FCA95ABAD89EFBB</ManifestCertificateThumbprint>
+    <ManifestCertificateThumbprint>B200334E7EFE8551DB3F9CF5B7674D388B3D4A53</ManifestCertificateThumbprint>
   </PropertyGroup>
   <!--
     This section specifies references for the project.
@@ -170,14 +184,12 @@
     <Reference Include="ImageProcessor">
       <HintPath>..\packages\ImageProcessor.1.9.5.0\lib\ImageProcessor.dll</HintPath>
     </Reference>
-    <Reference Include="MahApps.Metro, Version=1.0.0.0, Culture=neutral, PublicKeyToken=f4fb5a3c4d1e5b4f, processorArchitecture=MSIL">
-      <HintPath>..\packages\MahApps.Metro.1.0.0.0\lib\net40\MahApps.Metro.dll</HintPath>
+    <Reference Include="MahApps.Metro, Version=1.1.3.196, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\MahApps.Metro.1.1.3-ALPHA196\lib\net40\MahApps.Metro.dll</HintPath>
       <Private>True</Private>
     </Reference>
-    <Reference Include="Microsoft.Office.Interop.PowerPoint, Version=15.0.0.0, Culture=neutral, PublicKeyToken=71e9bce111e9429c, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
+    <Reference Include="Microsoft.Office.Interop.PowerPoint, Version=15.0.0.0, Culture=neutral, PublicKeyToken=71e9bce111e9429c">
       <EmbedInteropTypes>True</EmbedInteropTypes>
-      <HintPath>..\..\..\..\..\..\Program Files\Microsoft Visual Studio 12.0\Visual Studio Tools for Office\PIA\Office14\Microsoft.Office.Interop.PowerPoint.dll</HintPath>
     </Reference>
     <Reference Include="Microsoft.Office.Tools, Version=10.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
       <EmbedInteropTypes>True</EmbedInteropTypes>
@@ -189,10 +201,8 @@
     <Reference Include="NAudio">
       <HintPath>..\packages\NAudio.1.7.1\lib\net35\NAudio.dll</HintPath>
     </Reference>
-    <Reference Include="Office, Version=15.0.0.0, Culture=neutral, PublicKeyToken=71e9bce111e9429c, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
+    <Reference Include="Office, Version=15.0.0.0, Culture=neutral, PublicKeyToken=71e9bce111e9429c">
       <EmbedInteropTypes>True</EmbedInteropTypes>
-      <HintPath>..\..\..\..\..\..\..\..\Program Files (x86)\Microsoft Visual Studio 12.0\Visual Studio Tools for Office\PIA\Office14\Office.dll</HintPath>
     </Reference>
     <Reference Include="PresentationCore" />
     <Reference Include="PresentationFramework" />
@@ -207,11 +217,12 @@
     <Reference Include="System.Data" />
     <Reference Include="System.Deployment" />
     <Reference Include="System.Drawing" />
+    <Reference Include="System.Runtime.Remoting" />
     <Reference Include="System.Speech" />
     <Reference Include="System.Windows.Forms" />
     <Reference Include="System.Windows.Forms.DataVisualization" />
     <Reference Include="System.Windows.Interactivity, Version=4.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
-      <HintPath>..\packages\MahApps.Metro.1.0.0.0\lib\net40\System.Windows.Interactivity.dll</HintPath>
+      <HintPath>..\packages\MahApps.Metro.1.1.3-ALPHA196\lib\net40\System.Windows.Interactivity.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="System.Xaml" />
@@ -256,6 +267,7 @@
     <Compile Include="AudioMisc\AudioHelper.cs" />
     <Compile Include="AutoAnimate.cs" />
     <Compile Include="AutoUpdate\Downloader.cs" />
+    <Compile Include="AutoUpdate\Interface\IDownloader.cs" />
     <Compile Include="AutoUpdate\Updater.cs" />
     <Compile Include="AutoZoom.cs" />
     <Compile Include="ColorPicker\ColorInformationDialog.cs">
@@ -315,47 +327,69 @@
     <Compile Include="DrawingsLab\DrawingsPaneWPF.xaml.cs">
       <DependentUpon>DrawingsPaneWPF.xaml</DependentUpon>
     </Compile>
-    <Compile Include="ImageSearch\Handler\Effect\Alignment.cs" />
-    <Compile Include="ImageSearch\Handler\Effect\Banner.cs" />
-    <Compile Include="ImageSearch\Handler\Effect\Position.cs" />
-    <Compile Include="ImageSearch\Handler\Effect\TextBoxes.cs" />
-    <Compile Include="ImageSearch\Handler\Effect\TextBoxInfo.cs" />
-    <Compile Include="ImageSearch\ImageSearchPane.xaml.Common.cs" />
-    <Compile Include="ImageSearch\Handler\Effect\EffectName.cs" />
-    <Compile Include="ImageSearch\Handler\Preview\PreviewInfo.cs" />
-    <Compile Include="ImageSearch\Handler\Effect\Tag.cs" />
-    <Compile Include="ImageSearch\ImageSearchPane.xaml.OnApplyStyle.cs" />
-    <Compile Include="ImageSearch\ImageSearchPane.xaml.OnBackgroundDownload.cs" />
-    <Compile Include="ImageSearch\ImageSearchPane.xaml.cs">
-      <DependentUpon>ImageSearchPane.xaml</DependentUpon>
+    <Compile Include="FunctionalTestInterface.Impl\Controller\ColorsLabController.cs" />
+    <Compile Include="FunctionalTestInterface.Impl\Controller\ShapesLabController.cs" />
+    <Compile Include="FunctionalTestInterface.Impl\Controller\UIThreadExecutor.cs">
+      <SubType>Component</SubType>
     </Compile>
-    <Compile Include="ImageSearch\ImageSearchPane.xaml.OnDragAndDrop.cs" />
-    <Compile Include="ImageSearch\ImageSearchPane.xaml.OnPreview.cs" />
-    <Compile Include="ImageSearch\ImageSearchPane.xaml.OnLoadImages.cs" />
-    <Compile Include="ImageSearch\SearchEngine\AsyncSearchEngine.Events.cs" />
-    <Compile Include="ImageSearch\SearchEngine\AsyncSearchEngine.Logic.cs" />
-    <Compile Include="ImageSearch\SearchEngine\BingEngine.cs" />
-    <Compile Include="ImageSearch\SearchEngine\VO\BingSearchResults.cs" />
-    <Compile Include="ImageSearch\Util\ShapeUtil.cs" />
-    <Compile Include="ImageSearch\Util\UrlUtil.cs" />
-    <Compile Include="ImageSearch\Util\VOUtil.cs" />
+    <Compile Include="FunctionalTestInterface.Impl\RibbonControl.cs" />
+    <Compile Include="FunctionalTestInterface.Impl\PowerPointLabsFeatures.cs" />
+    <Compile Include="FunctionalTestInterface.Impl\PowerPointLabsFT.cs" />
+    <Compile Include="FunctionalTestInterface.Impl\PowerPointOperations.cs" />
+    <Compile Include="FunctionalTestInterface.Impl\SlideData.cs" />
+    <Compile Include="ImagesLab\Model\ObservableFont.cs" />
+    <Compile Include="ImagesLab\Model\ObservableImageItem.cs" />
+    <Compile Include="ImagesLab\Service\Interface\IStylesDesigner.cs" />
+    <Compile Include="ImagesLab\Thread\ContextDownloader.cs" />
+    <Compile Include="ImagesLab\Thread\ThreadContext.cs" />
+    <Compile Include="ImagesLab\ViewModel\ImagesLabWindowViewModel.cs" />
+    <Compile Include="ImagesLab\ViewModel\ImagesLabWindowViewModel.VariationStageControls.cs" />
+    <Compile Include="ImagesLab\View\ImagesLabWindow.xaml.VariationStageControls.cs" />
+    <Compile Include="ImagesLab\View\Interface\IImagesLabWindowView.cs" />
+    <Compile Include="ImagesLab\View\ImageAdjustment\CroppingAdorner.cs" />
+    <Compile Include="ImagesLab\View\AdjustImageWindow.xaml.cs">
+      <DependentUpon>AdjustImageWindow.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="ImagesLab\View\ImageAdjustment\PuncturedRect.cs" />
+    <Compile Include="ImagesLab\ModelFactory\StyleOptionsFactory.cs" />
+    <Compile Include="ImagesLab\ModelFactory\StyleVariantsFactory.cs" />
+    <Compile Include="ImagesLab\Model\ImageItem.cs" />
+    <Compile Include="ImagesLab\Model\StyleOptions.cs" />
+    <Compile Include="ImagesLab\Model\StyleVariants.cs" />
+    <Compile Include="ImagesLab\Thread\Interface\IThreadContext.cs" />
+    <Compile Include="ImagesLab\View\SlideSelectionDialog.xaml.cs">
+      <DependentUpon>SlideSelectionDialog.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="ImagesLab\Service\Effect\Alignment.cs" />
+    <Compile Include="ImagesLab\Service\Effect\Banner.cs" />
+    <Compile Include="ImagesLab\Service\Effect\Position.cs" />
+    <Compile Include="ImagesLab\Service\Effect\TextBoxes.cs" />
+    <Compile Include="ImagesLab\Service\Effect\TextBoxInfo.cs" />
+    <Compile Include="ImagesLab\View\ImagesLabWindow.xaml.InterfaceImpl.cs" />
+    <Compile Include="ImagesLab\Service\Effect\EffectName.cs" />
+    <Compile Include="ImagesLab\Service\Preview\PreviewInfo.cs" />
+    <Compile Include="ImagesLab\Service\Effect\Tag.cs" />
+    <Compile Include="ImagesLab\View\ImagesLabWindow.xaml.cs">
+      <DependentUpon>ImagesLabWindow.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="ImagesLab\View\ImagesLabWindow.xaml.GotoSlide.cs" />
+    <Compile Include="ImagesLab\View\ImagesLabWindow.xaml.ReloadStyle.cs" />
+    <Compile Include="ImagesLab\View\QuickDropDialog.xaml.cs">
+      <DependentUpon>QuickDropDialog.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="ImagesLab\Util\ImageUtil.cs" />
+    <Compile Include="ImagesLab\Util\ListBoxUtil.cs" />
+    <Compile Include="ImagesLab\Util\TwoColumnsListBoxImageWidthConverter.cs" />
+    <Compile Include="ImagesLab\Util\ShapeUtil.cs" />
+    <Compile Include="ImagesLab\Util\StyleVariationWidthConverter.cs" />
+    <Compile Include="ImagesLab\Util\UrlUtil.cs" />
     <Compile Include="Utils\Assumption.cs" />
+    <Compile Include="Utils\CultureUtil.cs" />
     <Compile Include="Utils\Exceptions\AssumptionFailedException.cs" />
-    <Compile Include="ImageSearch\Domain\ImageItem.cs" />
-    <Compile Include="ImageSearch\Domain\SearchOptions.cs" />
-    <Compile Include="ImageSearch\Domain\StyleOptions.cs" />
-    <Compile Include="ImageSearch\Handler\StylesHandler.cs" />
-    <Compile Include="ImageSearch\SearchEngine\GoogleEngine.cs" />
-    <Compile Include="ImageSearch\SearchOptionsPane.xaml.cs">
-      <DependentUpon>SearchOptionsPane.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="ImageSearch\Handler\EffectsHandler.cs" />
-    <Compile Include="ImageSearch\StyleOptionsPane.xaml.cs">
-      <DependentUpon>StyleOptionsPane.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="ImageSearch\Util\StoragePath.cs" />
-    <Compile Include="ImageSearch\Util\TempPath.cs" />
-    <Compile Include="ImageSearch\SearchEngine\VO\GoogleSearchResults.cs" />
+    <Compile Include="ImagesLab\Service\StylesDesigner.cs" />
+    <Compile Include="ImagesLab\Service\EffectsDesigner.cs" />
+    <Compile Include="ImagesLab\Util\StoragePath.cs" />
+    <Compile Include="ImagesLab\Util\TempPath.cs" />
     <Compile Include="Models\PowerPointBgEffectSlide.cs" />
     <Compile Include="LabeledThumbnail.cs">
       <SubType>UserControl</SubType>
@@ -516,12 +550,12 @@
     <Compile Include="WPF\Observable\ObservableBoolean.cs" />
     <Compile Include="WPF\Observable\ObservableInt.cs" />
     <Compile Include="WPF\Observable\ObservableString.cs" />
+    <Compile Include="WPF\WindowSettings.cs" />
     <Compile Include="XMLMisc\XMLParser.cs" />
     <Compile Include="ZipStorer.cs" />
     <Compile Include="ZoomToArea.cs" />
     <None Include="app.config" />
-    <None Include="PowerPointLabs_1_TemporaryKey.pfx" />
-    <None Include="PowerPointLabs_TemporaryKey.pfx" />
+    <None Include="PowerPointLabs.dev.pfx" />
     <None Include="Resources\AddToCustomShapes.png" />
     <None Include="Resources\ClosedHand.cur" />
     <None Include="Resources\OpenHand.cur" />
@@ -835,15 +869,23 @@
     </Page>
   </ItemGroup>
   <ItemGroup>
-    <Page Include="ImageSearch\ImageSearchPane.xaml">
+    <ProjectReference Include="..\FunctionalTestInterface\FunctionalTestInterface.csproj">
+      <Project>{573cc738-5349-4a0d-bc53-9325fa9c0e6f}</Project>
+      <Name>FunctionalTestInterface</Name>
+    </ProjectReference>
+    <Page Include="ImagesLab\View\AdjustImageWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="ImageSearch\SearchOptionsPane.xaml">
+    <Page Include="ImagesLab\View\SlideSelectionDialog.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="ImageSearch\StyleOptionsPane.xaml">
+    <Page Include="ImagesLab\View\ImagesLabWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="ImagesLab\View\QuickDropDialog.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -872,6 +914,34 @@
     <Resource Include="Resources\DrawingLab\textbox.png" />
     <Resource Include="Resources\DrawingLab\triangle.png" />
   </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\PptlabsContextMenu.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\ImagesLab.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\icon-down.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\icon-fit.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\icon-left.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\icon-minus.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\icon-plus.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\icon-right.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\icon-up.png" />
+  </ItemGroup>
+  <ItemGroup />
   <!-- Include the build rules for a C# project. -->
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
@@ -884,11 +954,18 @@
   <ProjectExtensions>
     <VisualStudio>
       <FlavorProperties GUID="{BAA0C2D2-18E2-41B9-852F-F413020CAA33}">
-        <ProjectProperties HostName="PowerPoint" HostPackage="{29A7B9D7-A7F1-4328-8EF0-6B2D1A56B2C1}" OfficeVersion="14.0" VstxVersion="4.0" ApplicationType="PowerPoint" Language="cs" TemplatesPath="VSTOTemplates" DebugInfoExeName="#Software\Microsoft\Office\14.0\PowerPoint\InstallRoot\Path#powerpnt.exe" AddItemTemplatesGuid="{51063C3A-E220-4D12-8922-BDA915ACD783}" />
+        <ProjectProperties HostName="PowerPoint" HostPackage="{29A7B9D7-A7F1-4328-8EF0-6B2D1A56B2C1}" OfficeVersion="15.0" VstxVersion="4.0" ApplicationType="PowerPoint" Language="cs" TemplatesPath="VSTOTemplates" DebugInfoExeName="#Software\Microsoft\Office\16.0\PowerPoint\InstallRoot\Path#powerpnt.exe" AddItemTemplatesGuid="{51063C3A-E220-4D12-8922-BDA915ACD783}" />
         <Host Name="PowerPoint" GeneratedCodeNamespace="PowerPointLabs" PublishedHash="69C324AB27932AA2FBF2B7EA72250886FF164DE6" IconIndex="0">
           <HostItem Name="ThisAddIn" Code="ThisAddIn.cs" CanonicalName="AddIn" PublishedHash="55214155BE32CF10E93E0815C7758604B8DF3CF2" CanActivate="false" IconIndex="1" Blueprint="ThisAddIn.Designer.xml" GeneratedCode="ThisAddIn.Designer.cs" />
         </Host>
       </FlavorProperties>
     </VisualStudio>
   </ProjectExtensions>
+  <Import Project="..\packages\Visual-StyleCop.MSBuild.4.7.58.3\build\Visual-StyleCop.MSBuild.Targets" Condition="Exists('..\packages\Visual-StyleCop.MSBuild.4.7.58.3\build\Visual-StyleCop.MSBuild.Targets')" />
+  <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
+    <PropertyGroup>
+      <ErrorText>This project references NuGet package(s) that are missing on this computer. Use NuGet Package Restore to download them.  For more information, see http://go.microsoft.com/fwlink/?LinkID=322105. The missing file is {0}.</ErrorText>
+    </PropertyGroup>
+    <Error Condition="!Exists('..\packages\Visual-StyleCop.MSBuild.4.7.58.3\build\Visual-StyleCop.MSBuild.Targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\Visual-StyleCop.MSBuild.4.7.58.3\build\Visual-StyleCop.MSBuild.Targets'))" />
+  </Target>
 </Project>

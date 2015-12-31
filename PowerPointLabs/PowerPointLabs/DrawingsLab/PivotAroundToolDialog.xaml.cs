@@ -34,7 +34,7 @@ namespace PowerPointLabs.DrawingsLab
         private readonly double _pivotRight;
         private readonly double _pivotBottom;
 
-        private double BaseRotation;
+        private double _baseRotation;
 
         private const double MARGIN = 5.0;
 
@@ -84,7 +84,7 @@ namespace PowerPointLabs.DrawingsLab
         {
             var angle = Math.Atan2(SourceCenterY - PivotCenterY, SourceCenterX - PivotCenterX)*180/Math.PI;
             dataSource.StartAngle = angle;
-            BaseRotation = _sourceRotation - angle;
+            _baseRotation = _sourceRotation - angle;
         }
 
         private double ToActualX(double f)
@@ -154,7 +154,7 @@ namespace PowerPointLabs.DrawingsLab
                 double angleRad = angle*Math.PI/180;
                 double cx = ToActualX(0.5 + Math.Cos(angleRad)*0.4);
                 double cy = ToActualY(0.5 + Math.Sin(angleRad)*0.4);
-                double rotation = RotateShape ? angle + BaseRotation : StartAngle + BaseRotation;
+                double rotation = RotateShape ? angle + _baseRotation : StartAngle + _baseRotation;
 
                 var rectColour = Brushes.Green;
                 var lineColour = Brushes.CornflowerBlue;

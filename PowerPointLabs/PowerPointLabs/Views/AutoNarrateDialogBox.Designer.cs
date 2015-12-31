@@ -54,7 +54,7 @@
             this.cancel.TabIndex = 2;
             this.cancel.Text = "Cancel";
             this.cancel.UseVisualStyleBackColor = true;
-            this.cancel.Click += new System.EventHandler(this.cancel_Click);
+            this.cancel.Click += new System.EventHandler(this.Cancel_Click);
             // 
             // ok
             // 
@@ -64,7 +64,7 @@
             this.ok.TabIndex = 3;
             this.ok.Text = "OK";
             this.ok.UseVisualStyleBackColor = true;
-            this.ok.Click += new System.EventHandler(this.ok_Click);
+            this.ok.Click += new System.EventHandler(this.Ok_Click);
             // 
             // defaultVoice
             // 

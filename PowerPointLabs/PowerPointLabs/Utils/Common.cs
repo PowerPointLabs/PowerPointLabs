@@ -149,7 +149,7 @@ namespace PowerPointLabs.Utils
                 return min;
             }
 
-            for (var i = 1; i < nameList.Count; i ++)
+            for (var i = 1; i < nameList.Count; i++)
             {
                 var currentCnt = int.Parse(namePattern.Match(nameList[i]).Groups[1].Value);
 

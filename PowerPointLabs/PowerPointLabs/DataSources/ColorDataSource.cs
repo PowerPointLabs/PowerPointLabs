@@ -10,7 +10,7 @@ namespace PowerPointLabs.DataSources
     {
         private bool isFillColorSelectedValue;
 
-        public bool isFillColorSelected
+        public bool IsFillColorSelected
         {
             get
             {
@@ -28,7 +28,7 @@ namespace PowerPointLabs.DataSources
 
         private bool isFontColorSelectedValue;
 
-        public bool isFontColorSelected
+        public bool IsFontColorSelected
         {
             get
             {
@@ -46,7 +46,7 @@ namespace PowerPointLabs.DataSources
 
         private bool isLineColorSelectedValue;
 
-        public bool isLineColorSelected
+        public bool IsLineColorSelected
         {
             get
             {
@@ -64,7 +64,7 @@ namespace PowerPointLabs.DataSources
 
         private HSLColor selectedColorValue;
 
-        public HSLColor selectedColor
+        public HSLColor SelectedColor
         {       
             get
             {
@@ -82,7 +82,7 @@ namespace PowerPointLabs.DataSources
 
         private HSLColor themeColorOneValue;
 
-        public HSLColor themeColorOne
+        public HSLColor ThemeColorOne
         {
             get
             {
@@ -100,7 +100,7 @@ namespace PowerPointLabs.DataSources
 
         private HSLColor themeColorTwoValue;
 
-        public HSLColor themeColorTwo
+        public HSLColor ThemeColorTwo
         {
             get
             {
@@ -118,7 +118,7 @@ namespace PowerPointLabs.DataSources
 
         private HSLColor themeColorThreeValue;
 
-        public HSLColor themeColorThree
+        public HSLColor ThemeColorThree
         {
             get
             {
@@ -136,7 +136,7 @@ namespace PowerPointLabs.DataSources
 
         private HSLColor themeColorFourValue;
 
-        public HSLColor themeColorFour
+        public HSLColor ThemeColorFour
         {
             get
             {
@@ -154,7 +154,7 @@ namespace PowerPointLabs.DataSources
 
         private HSLColor themeColorFiveValue;
 
-        public HSLColor themeColorFive
+        public HSLColor ThemeColorFive
         {
             get
             {
@@ -172,7 +172,7 @@ namespace PowerPointLabs.DataSources
 
         private HSLColor themeColorSixValue;
 
-        public HSLColor themeColorSix
+        public HSLColor ThemeColorSix
         {
             get
             {
@@ -190,7 +190,7 @@ namespace PowerPointLabs.DataSources
 
         private HSLColor themeColorSevenValue;
 
-        public HSLColor themeColorSeven
+        public HSLColor ThemeColorSeven
         {
             get
             {
@@ -208,7 +208,7 @@ namespace PowerPointLabs.DataSources
 
         private HSLColor themeColorEightValue;
 
-        public HSLColor themeColorEight
+        public HSLColor ThemeColorEight
         {
             get
             {
@@ -226,7 +226,7 @@ namespace PowerPointLabs.DataSources
 
         private HSLColor themeColorNineValue;
 
-        public HSLColor themeColorNine
+        public HSLColor ThemeColorNine
         {
             get
             {
@@ -244,7 +244,7 @@ namespace PowerPointLabs.DataSources
 
         private HSLColor themeColorTenValue;
 
-        public HSLColor themeColorTen
+        public HSLColor ThemeColorTen
         {
             get
             {
@@ -265,16 +265,16 @@ namespace PowerPointLabs.DataSources
             try
             {
                 List<HSLColor> themeColors = new List<HSLColor>();
-                themeColors.Add(this.themeColorOne);
-                themeColors.Add(this.themeColorTwo);
-                themeColors.Add(this.themeColorThree);
-                themeColors.Add(this.themeColorFour);
-                themeColors.Add(this.themeColorFive);
-                themeColors.Add(this.themeColorSix);
-                themeColors.Add(this.themeColorSeven);
-                themeColors.Add(this.themeColorEight);
-                themeColors.Add(this.themeColorNine);
-                themeColors.Add(this.themeColorTen);
+                themeColors.Add(this.ThemeColorOne);
+                themeColors.Add(this.ThemeColorTwo);
+                themeColors.Add(this.ThemeColorThree);
+                themeColors.Add(this.ThemeColorFour);
+                themeColors.Add(this.ThemeColorFive);
+                themeColors.Add(this.ThemeColorSix);
+                themeColors.Add(this.ThemeColorSeven);
+                themeColors.Add(this.ThemeColorEight);
+                themeColors.Add(this.ThemeColorNine);
+                themeColors.Add(this.ThemeColorTen);
 
                 Stream fileStream = File.Create(filePath);
                 BinaryFormatter serializer = new BinaryFormatter();
@@ -297,16 +297,16 @@ namespace PowerPointLabs.DataSources
                 List<HSLColor> themeColors = (List<HSLColor>)deserializer.Deserialize(openFileStream);
                 openFileStream.Close();
 
-                this.themeColorOne = themeColors[0];
-                this.themeColorTwo = themeColors[1];
-                this.themeColorThree = themeColors[2];
-                this.themeColorFour = themeColors[3];
-                this.themeColorFive = themeColors[4];
-                this.themeColorSix = themeColors[5];
-                this.themeColorSeven = themeColors[6];
-                this.themeColorEight = themeColors[7];
-                this.themeColorNine = themeColors[8];
-                this.themeColorTen = themeColors[9];
+                this.ThemeColorOne = themeColors[0];
+                this.ThemeColorTwo = themeColors[1];
+                this.ThemeColorThree = themeColors[2];
+                this.ThemeColorFour = themeColors[3];
+                this.ThemeColorFive = themeColors[4];
+                this.ThemeColorSix = themeColors[5];
+                this.ThemeColorSeven = themeColors[6];
+                this.ThemeColorEight = themeColors[7];
+                this.ThemeColorNine = themeColors[8];
+                this.ThemeColorTen = themeColors[9];
             }
             catch (Exception)
             {

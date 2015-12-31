@@ -57,8 +57,7 @@ namespace PowerPointLabs
 
         public string CurrentShapeFullName
         {
-            get { return CurrentShapeFolderPath + @"\" +
-                         CurrentShapeNameWithoutExtension + ".png"; }
+            get { return CurrentShapeFolderPath + @"\" + CurrentShapeNameWithoutExtension + ".png"; }
         }
 
         public string CurrentShapeNameWithoutExtension
@@ -134,7 +133,7 @@ namespace PowerPointLabs
             _categoryBinding = new BindingSource { DataSource = Categories };
             categoryBox.DataSource = _categoryBinding;
 
-            for (var i = 0; i < Categories.Count; i ++)
+            for (var i = 0; i < Categories.Count; i++)
             {
                 if (Categories[i] == defaultShapeCategoryName)
                 {
@@ -480,7 +479,8 @@ namespace PowerPointLabs
                 try
                 {
                     Directory.Move(CurrentShapeFolderPath, newPath);
-                } catch (Exception)
+                }
+                catch (Exception)
                 {
                     // this may occur when the newCategoryName.tolower() == oldCategoryName.tolower()
                 }
@@ -579,7 +579,7 @@ namespace PowerPointLabs
             var totalControl = myShapeFlowLayout.Controls.Count;
             var thisControlPosition = -1;
 
-            for (var i = 0; i < totalControl; i ++)
+            for (var i = 0; i < totalControl; i++)
             {
                 var control = myShapeFlowLayout.Controls[i] as LabeledThumbnail;
 
@@ -1142,28 +1142,28 @@ namespace PowerPointLabs
             if (item.Name.Contains("settings"))
             {
                 ContextMenuStripSettingsClicked();
-            } else
-            if (item.Name.Contains("addCategory"))
+            }
+            else if (item.Name.Contains("addCategory"))
             {
                 ContextMenuStripAddCategoryClicked();
-            } else
-            if (item.Name.Contains("removeCategory"))
+            }
+            else if (item.Name.Contains("removeCategory"))
             {
                 ContextMenuStripRemoveCategoryClicked();
-            } else
-            if (item.Name.Contains("renameCategory"))
+            }
+            else if (item.Name.Contains("renameCategory"))
             {
                 ContextMenuStripRenameCategoryClicked();
-            } else
-            if (item.Name.Contains("setAsDefault"))
+            }
+            else if (item.Name.Contains("setAsDefault"))
             {
                 ContextMenuStripSetAsDefaultCategoryClicked();
-            } else
-            if (item.Name.Contains("importCategory"))
+            }
+            else if (item.Name.Contains("importCategory"))
             {
                 ContextMenuStripImportCategoryClicked();
-            } else
-            if (item.Name.Contains("importShape"))
+            }
+            else if (item.Name.Contains("importShape"))
             {
                 ContextMenuStripImportShapesClicked();
             }
@@ -1531,6 +1531,30 @@ namespace PowerPointLabs
             }
         }
         */
+        # endregion
+
+        # region Functional Test APIs
+
+        public LabeledThumbnail GetLabeledThumbnail(string labelName)
+        {
+            return FindLabeledThumbnail(labelName);
+        }
+
+        public void ImportLibrary(string pathToLibrary)
+        {
+            ImportShapes(pathToLibrary, fromLibrary: true);
+        }
+
+        public void ImportShape(string pathToShape)
+        {
+            ImportShapes(pathToShape, fromLibrary: false);
+        }
+
+        public Presentation GetShapeGallery()
+        {
+            return Globals.ThisAddIn.ShapePresentation.Presentation;
+        }
+
         # endregion
     }
 }

@@ -1,21 +1,22 @@
 ﻿using System;
 using System.Net;
 using System.Threading.Tasks;
+using PowerPointLabs.AutoUpdate.Interface;
 
 namespace PowerPointLabs.AutoUpdate
 {
-    class Downloader
+    class Downloader : IDownloader
     {
         private readonly WebClient _client = new WebClient();
 
         public delegate void AfterDownloadEventDelegate();
         private event AfterDownloadEventDelegate AfterDownload;
 
-        public delegate void ErrorEventDelegate();
+        public delegate void ErrorEventDelegate(Exception e);
         private event ErrorEventDelegate WhenError;
 
-        private String _downloadAddress = "";
-        private String _destAddress = "";
+        private string _downloadAddress = "";
+        private string _destAddress = "";
 
         public Downloader()
         {
@@ -29,26 +30,26 @@ namespace PowerPointLabs.AutoUpdate
             if (handler != null) handler();
         }
 
-        private void CallWhenErrorDelegate()
+        private void CallWhenErrorDelegate(Exception e)
         {
             var handler = WhenError;
-            if (handler != null) handler();
+            if (handler != null) handler(e);
         }
 
-        public Downloader Get(String webAddress, String destinationPath)
+        public IDownloader Get(string webAddress, string destinationPath)
         {
             _downloadAddress = webAddress;
             _destAddress = destinationPath;
             return this;
         }
 
-        public Downloader After(AfterDownloadEventDelegate action)
+        public IDownloader After(AfterDownloadEventDelegate action)
         {
             AfterDownload = action;
             return this;
         }
 
-        public Downloader OnError(ErrorEventDelegate action)
+        public IDownloader OnError(ErrorEventDelegate action)
         {
             WhenError = action;
             return this;
@@ -79,7 +80,7 @@ namespace PowerPointLabs.AutoUpdate
             }
             catch (Exception e)
             {
-                CallWhenErrorDelegate();
+                CallWhenErrorDelegate(e);
                 PowerPointLabsGlobals.LogException(e, "Failed to execute Downloader.StartDownload");
             }
         }

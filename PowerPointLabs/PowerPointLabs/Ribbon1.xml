@@ -196,6 +196,8 @@
           <button id="ImagesLabButton"
                   label="Images Lab"
                   size="large"
+                  getImage="GetImagesLabImage"
+                  getSupertip="GetImagesLabSupertip"
                   onAction="ImagesLabButtonClick"
                   />
           <button id="ShapesLabButton"
@@ -340,7 +342,7 @@
   <contextMenus>
     <contextMenu idMso="ContextMenuShape">
       <menuSeparator id="separatorShape"/>
-      <menu id="menuShape" getLabel="GetPowerPointLabsMenuLabel">
+      <menu id="menuShape" getLabel="GetPowerPointLabsMenuLabel" getImage="GetContextMenuImage">
         <button id="nameEditShape"
                 getLabel="GetNameEditShapeLabel"
                 getImage="GetEditNameContextImage"
@@ -398,13 +400,13 @@
                 onAction="FitToHeightClick"/>
         <button id="hideShapeShape"
               getLabel ="GetHideSelectedShapeLabel"
-              getImage="GetAddToCustomShapeContextImage"
+              getImage="GetHideShapeImage"
               onAction="HideShapeButtonClick"/>
       </menu>
     </contextMenu>
     <contextMenu idMso="ContextMenuShapeFreeform">
       <menuSeparator id="separatorFreeform"/>
-      <menu id="menuFreeform" getLabel="GetPowerPointLabsMenuLabel">
+      <menu id="menuFreeform" getLabel="GetPowerPointLabsMenuLabel" getImage="GetContextMenuImage">
         <button id="nameEditFreeform"
                 getLabel="GetNameEditShapeLabel"
                 getImage="GetEditNameContextImage"
@@ -435,13 +437,13 @@
                 onAction="FitToHeightClick"/>
       <button id="hideShapeFreeform"
               getLabel ="GetHideSelectedShapeLabel"
-              getImage="GetAddToCustomShapeContextImage"
+              getImage="GetHideShapeImage"
               onAction="HideShapeButtonClick"/>
       </menu>
     </contextMenu>
     <contextMenu idMso="ContextMenuPicture">
       <menuSeparator id="separatorPicture"/>
-      <menu id="menuPicture" getLabel="GetPowerPointLabsMenuLabel">
+      <menu id="menuPicture" getLabel="GetPowerPointLabsMenuLabel" getImage="GetContextMenuImage">
         <button id="nameEditPicture"
                 getLabel="GetNameEditShapeLabel"
                 getImage="GetEditNameContextImage"
@@ -470,13 +472,13 @@
                 onAction="AddShapeButtonClick"/>
         <button id="hideShape"
                getLabel ="GetHideSelectedShapeLabel"
-               getImage="GetAddToCustomShapeContextImage"
+               getImage="GetHideShapeImage"
                onAction="HideShapeButtonClick"/>
       </menu>
     </contextMenu>
     <contextMenu idMso="ContextMenuChartArea">
       <menuSeparator id="separatorChart"/>
-      <menu id="menuChartArea" getLabel="GetPowerPointLabsMenuLabel">
+      <menu id="menuChartArea" getLabel="GetPowerPointLabsMenuLabel" getImage="GetContextMenuImage">
         <button id="nameEditChart"
                 getLabel="GetNameEditShapeLabel"
                 getImage="GetEditNameContextImage"
@@ -501,7 +503,7 @@
     </contextMenu>
     <contextMenu idMso="ContextMenuTable">
       <menuSeparator id="separatorTable"/>
-      <menu id="menuTable" getLabel="GetPowerPointLabsMenuLabel">
+      <menu id="menuTable" getLabel="GetPowerPointLabsMenuLabel" getImage="GetContextMenuImage">
         <button id="nameEditTable"
                 getLabel="GetNameEditShapeLabel"
                 getImage="GetEditNameContextImage"
@@ -522,7 +524,7 @@
     </contextMenu>
     <contextMenu idMso="ContextMenuObjectsGroup">
       <menuSeparator id="separatorGroup"/>
-      <menu id="menuGroup" getLabel="GetPowerPointLabsMenuLabel">
+      <menu id="menuGroup" getLabel="GetPowerPointLabsMenuLabel" getImage="GetContextMenuImage">
         <button id="nameEditGroup"
                 getLabel="GetNameEditShapeLabel"
                 getImage="GetEditNameContextImage"
@@ -567,13 +569,13 @@
                 onAction="CropShapeButtonClick"/>
         <button id="hideShapeGroup"
               getLabel ="GetHideSelectedShapeLabel"
-              getImage="GetAddToCustomShapeContextImage"
+              getImage="GetHideShapeImage"
               onAction="HideShapeButtonClick"/>
       </menu>
     </contextMenu>
     <contextMenu idMso="ContextMenuInk">
       <menuSeparator id="separatorInk"/>
-      <menu id="menuInk" getLabel="GetPowerPointLabsMenuLabel">
+      <menu id="menuInk" getLabel="GetPowerPointLabsMenuLabel" getImage="GetContextMenuImage">
         <button id="nameEditInk"
                 getLabel="GetNameEditShapeLabel"
                 getImage="GetEditNameContextImage"
@@ -590,7 +592,7 @@
     </contextMenu>
     <contextMenu idMso="ContextMenuSmartArtBackground">
       <menuSeparator id="separatorSmartArt"/>
-      <menu id="menuSmartArtBackground" getLabel="GetPowerPointLabsMenuLabel">
+      <menu id="menuSmartArtBackground" getLabel="GetPowerPointLabsMenuLabel" getImage="GetContextMenuImage">
         <button id="nameEditSmartArt"
                 getLabel="GetNameEditShapeLabel"
                 getImage="GetEditNameContextImage"
@@ -607,7 +609,7 @@
     </contextMenu>
     <contextMenu idMso="ContextMenuThumbnail">
       <menuSeparator id="separatorThumbnail"/>
-      <menu id="menuThumbnail" getLabel="GetPowerPointLabsMenuLabel">
+      <menu id="menuThumbnail" getLabel="GetPowerPointLabsMenuLabel" getImage="GetContextMenuImage">
         <button id="applyAutoMotionThumbnail"
                 getLabel="GetApplyAutoMotionThumbnailLabel"
                 getImage="GetAddAnimationContextImage"
@@ -635,7 +637,7 @@
     </contextMenu>
     <contextMenu idMso="ContextMenuNotesEditText">
       <menuSeparator id="separatorNotes" />
-      <menu id="menuEditText" getLabel="GetPowerPointLabsMenuLabel">
+      <menu id="menuEditText" getLabel="GetPowerPointLabsMenuLabel" getImage="GetContextMenuImage">
         <button id="contextSpeakSelectedText"
                 getLabel="GetContextSpeakSelectedTextLabel"
                 getImage="GetPreviewNarrationContextImage"

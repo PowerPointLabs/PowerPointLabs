@@ -155,15 +155,15 @@ namespace PowerPointLabs.Utils
             {
                 SyncShape(refShape, candidateShape);
             }
-            catch (UnauthorizedAccessException e)
+            catch (UnauthorizedAccessException)
             {
                 succeeded = false;
             }
-            catch (ArgumentException e)
+            catch (ArgumentException)
             {
                 succeeded = false;
             }
-            catch (COMException e)
+            catch (COMException)
             {
                 succeeded = false;
             }
@@ -483,7 +483,7 @@ namespace PowerPointLabs.Utils
             {
                 var groupItems = shape.GroupItems;
             }
-            catch (UnauthorizedAccessException e)
+            catch (UnauthorizedAccessException)
             {
                 return false;
             }
@@ -498,7 +498,7 @@ namespace PowerPointLabs.Utils
                 shape.Line.BeginArrowheadStyle = shape.Line.BeginArrowheadStyle;
                 return true;
             }
-            catch (ArgumentException e)
+            catch (ArgumentException)
             {
                 return false;
             }
@@ -547,19 +547,19 @@ namespace PowerPointLabs.Utils
         /// </summary>
         private struct EffectTransition
         {
-            private readonly MsoAnimTriggerType SlideTransition;
-            private readonly float TransitionTime;
+            private readonly MsoAnimTriggerType slideTransition;
+            private readonly float transitionTime;
 
-            public EffectTransition(MsoAnimTriggerType slideTransition , float transitionTime)
+            public EffectTransition(MsoAnimTriggerType slideTransition, float transitionTime)
             {
-                SlideTransition = slideTransition;
-                TransitionTime = transitionTime;
+                this.slideTransition = slideTransition;
+                this.transitionTime = transitionTime;
             }
 
             public void ApplyTransition(Effect effect)
             {
-                effect.Timing.TriggerType = SlideTransition;
-                effect.Timing.TriggerDelayTime = TransitionTime;
+                effect.Timing.TriggerType = slideTransition;
+                effect.Timing.TriggerDelayTime = transitionTime;
             }
         }
 

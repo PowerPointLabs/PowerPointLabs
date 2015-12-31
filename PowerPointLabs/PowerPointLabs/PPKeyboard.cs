@@ -13,9 +13,9 @@ namespace PPExtraEventHelper
 {
     internal class PPKeyboard
     {
-        private static Dictionary<int, KeyStatus> KeyStatuses;
-        private static Dictionary<int, List<BindedAction>> KeyDownActions;
-        private static Dictionary<int, List<BindedAction>> KeyUpActions;
+        private static Dictionary<int, KeyStatus> _keyStatuses;
+        private static Dictionary<int, List<BindedAction>> _keyDownActions;
+        private static Dictionary<int, List<BindedAction>> _keyUpActions;
         private static bool _isDictionaryInitialised = false;
 
         private static IntPtr _currentSlideViewWindowHandle;
@@ -44,24 +44,24 @@ namespace PPExtraEventHelper
 
         private struct BindedAction
         {
-            private readonly bool Ctrl;
-            private readonly bool Alt;
-            private readonly bool Shift;
-            private readonly Func<bool> ExecuteAction;
+            private readonly bool _ctrl;
+            private readonly bool _alt;
+            private readonly bool _shift;
+            private readonly Func<bool> _executeAction;
 
             public BindedAction(bool ctrl, bool alt, bool shift, Func<bool> action)
             {
-                Ctrl = ctrl;
-                Alt = alt;
-                Shift = shift;
-                ExecuteAction = action;
+                _ctrl = ctrl;
+                _alt = alt;
+                _shift = shift;
+                _executeAction = action;
             }
 
             public bool RunConditionally(KeyStatus keyStatus)
             {
-                if (Ctrl == keyStatus.Ctrl && Shift == keyStatus.Shift && Alt == keyStatus.Alt)
+                if (_ctrl == keyStatus.Ctrl && _shift == keyStatus.Shift && _alt == keyStatus.Alt)
                 {
-                    return ExecuteAction();
+                    return _executeAction();
                 }
                 return false;
             }
@@ -69,13 +69,13 @@ namespace PPExtraEventHelper
 
         private static Native.HookProc hookProcedure;
 
-        private static int hookId;
-        private static bool Initialised = false;
+        private static int _hookId;
+        private static bool _initialised = false;
 
         public static void Init(PowerPoint.Application application)
         {
-            if (Initialised) return;
-            Initialised = true;
+            if (_initialised) return;
+            _initialised = true;
 
             InitialiseDictionaries();
 
@@ -94,16 +94,16 @@ namespace PPExtraEventHelper
             if (_isDictionaryInitialised) return;
             _isDictionaryInitialised = true;
 
-            KeyStatuses = new Dictionary<int, KeyStatus>();
-            KeyDownActions = new Dictionary<int, List<BindedAction>>();
-            KeyUpActions = new Dictionary<int, List<BindedAction>>();
+            _keyStatuses = new Dictionary<int, KeyStatus>();
+            _keyDownActions = new Dictionary<int, List<BindedAction>>();
+            _keyUpActions = new Dictionary<int, List<BindedAction>>();
 
             foreach (var key in Enum.GetValues(typeof(Native.VirtualKey)))
             {
                 int keyIndex = (int)key;
-                KeyStatuses.Add(keyIndex, new KeyStatus());
-                KeyDownActions.Add(keyIndex, new List<BindedAction>());
-                KeyUpActions.Add(keyIndex, new List<BindedAction>());
+                _keyStatuses.Add(keyIndex, new KeyStatus());
+                _keyDownActions.Add(keyIndex, new List<BindedAction>());
+                _keyUpActions.Add(keyIndex, new List<BindedAction>());
             }
         }
 
@@ -111,13 +111,13 @@ namespace PPExtraEventHelper
         {
             _currentSlideViewWindowHandle = FindSlideViewWindowHandle(handle);
             hookProcedure = HookProcedureCallback;
-            hookId = Native.SetWindowsHookEx((int)Native.HookType.WH_KEYBOARD, hookProcedure, 0,
+            _hookId = Native.SetWindowsHookEx((int)Native.HookType.WH_KEYBOARD, hookProcedure, 0,
                 Native.GetWindowThreadProcessId(_currentSlideViewWindowHandle, 0));
         }
 
         public static bool StopHook()
         {
-            return Native.UnhookWindowsHookEx(hookId);
+            return Native.UnhookWindowsHookEx(_hookId);
         }
 
         #region API
@@ -128,7 +128,7 @@ namespace PPExtraEventHelper
 
         public static void AddKeydownAction(Native.VirtualKey key, Func<bool> action, bool ctrl = false, bool alt = false, bool shift = false)
         {
-            KeyDownActions[(int)key].Add(new BindedAction(ctrl, alt, shift, action));
+            _keyDownActions[(int)key].Add(new BindedAction(ctrl, alt, shift, action));
         }
 
         public static void AddKeyupAction(Native.VirtualKey key, Action action, bool ctrl = false, bool alt = false, bool shift = false)
@@ -138,15 +138,15 @@ namespace PPExtraEventHelper
 
         public static void AddKeyupAction(Native.VirtualKey key, Func<bool> action, bool ctrl = false, bool alt = false, bool shift = false)
         {
-            KeyUpActions[(int)key].Add(new BindedAction(ctrl, alt, shift, action));
+            _keyUpActions[(int)key].Add(new BindedAction(ctrl, alt, shift, action));
         }
 
         public static void AddConditionToBlockTextInput(Func<bool> condition, bool ctrl = false, bool alt = false, bool shift = false)
         {
-            Enum.GetValues(typeof (Native.VirtualKey)).Cast<Native.VirtualKey>()
-                                                      .Where(Native.IsAlphanumericKey)
-                                                      .ToList()
-                                                      .ForEach(key => AddKeydownAction(key, condition, ctrl, alt, shift));
+            Enum.GetValues(typeof(Native.VirtualKey)).Cast<Native.VirtualKey>()
+                                                     .Where(Native.IsAlphanumericKey)
+                                                     .ToList()
+                                                     .ForEach(key => AddKeydownAction(key, condition, ctrl, alt, shift));
         }
 
         public static void AddConditionToBlockTextInput(Func<bool> condition, Native.VirtualKey key, bool ctrl = false, bool alt = false, bool shift = false)
@@ -175,10 +175,10 @@ namespace PPExtraEventHelper
         private static IntPtr FindSlideViewWindowHandle(IntPtr handle)
         {
             IntPtr slideViewWindowHandle = IntPtr.Zero;
-            IntPtr MDIClient = Native.FindWindowEx(handle, IntPtr.Zero, "MDIClient", "");
-            if (MDIClient != IntPtr.Zero)
+            IntPtr mdiClient = Native.FindWindowEx(handle, IntPtr.Zero, "MDIClient", "");
+            if (mdiClient != IntPtr.Zero)
             {
-                IntPtr mdiClass = Native.FindWindowEx(MDIClient, IntPtr.Zero, "mdiClass", "");
+                IntPtr mdiClass = Native.FindWindowEx(mdiClient, IntPtr.Zero, "mdiClass", "");
                 if (mdiClass != IntPtr.Zero)
                 {
                     slideViewWindowHandle = Native.FindWindowEx(mdiClass, IntPtr.Zero, "paneClassDC", "Slide");
@@ -209,15 +209,15 @@ namespace PPExtraEventHelper
             if (nCode == 0)
             {
                 int keyIndex = wParam.ToInt32();
-                if (KeyStatuses.ContainsKey(keyIndex))
+                if (_keyStatuses.ContainsKey(keyIndex))
                 {
-                    var keyStatus = KeyStatuses[keyIndex];
+                    var keyStatus = _keyStatuses[keyIndex];
                     if (IsKeydownCommand(lParam))
                     {
                         if (!keyStatus.IsPressed)
                         {
                             keyStatus.Press();
-                            foreach (var action in KeyDownActions[keyIndex])
+                            foreach (var action in _keyDownActions[keyIndex])
                             {
                                 var block = action.RunConditionally(keyStatus);
                                 if (block) blockInput = true;
@@ -228,7 +228,7 @@ namespace PPExtraEventHelper
                     {
                         if (keyStatus.IsPressed)
                         {
-                            foreach (var action in KeyUpActions[keyIndex])
+                            foreach (var action in _keyUpActions[keyIndex])
                             {
                                 var block = action.RunConditionally(keyStatus);
                                 if (block) blockInput = true;
@@ -280,7 +280,7 @@ namespace PPExtraEventHelper
 
         private static bool IsHooked()
         {
-            return hookId != 0;
+            return _hookId != 0;
         }
 
     }

@@ -29,11 +29,11 @@ namespace PowerPointLabs.Views
             ttTextField.SetToolTip(textBox1, "The duration (in seconds) for the animations in the animation slides to be created.");
         }
 
-        private void button2_Click(object sender, EventArgs e)
+        private void Button2_Click(object sender, EventArgs e)
         {
             this.Close();
         }
-        private void textBox1_Validating(object sender, System.ComponentModel.CancelEventArgs e)
+        private void TextBox1_Validating(object sender, System.ComponentModel.CancelEventArgs e)
         {
             float enteredValue;
             if (float.TryParse(textBox1.Text, out enteredValue))
@@ -55,7 +55,7 @@ namespace PowerPointLabs.Views
             lastDuration = enteredValue;
         }
 
-        private void button1_Click(object sender, EventArgs e)
+        private void Button1_Click(object sender, EventArgs e)
         {
             SettingsHandler(float.Parse(this.textBox1.Text), this.checkBox1.Checked);
             this.Close();

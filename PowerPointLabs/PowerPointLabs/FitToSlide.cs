@@ -11,7 +11,8 @@ namespace PowerPointLabs
         private const int LeftMost = 0;
 
         // auto fit to fill the screen entirely, don't care to width or to height
-        public static void AutoFit(PowerPoint.Shape selectedShape, PowerPointPresentation pres = null)
+        // offset from -100 ~ +100
+        public static void AutoFit(PowerPoint.Shape selectedShape, PowerPointPresentation pres = null, int offset = 0)
         {
             if (pres == null)
             {
@@ -22,10 +23,14 @@ namespace PowerPointLabs
                 (pres.SlideWidth / pres.SlideHeight))
             {
                 FitToHeight(selectedShape);
+                var availableOffset = selectedShape.Width/2 - pres.SlideWidth/2;
+                selectedShape.Left += availableOffset * offset / 100f;
             }
             else
             {
                 FitToWidth(selectedShape);
+                var availableOffset = selectedShape.Height/2 - pres.SlideHeight/2;
+                selectedShape.Top += availableOffset * offset / 100f;
             }
         }
 
@@ -172,7 +177,8 @@ namespace PowerPointLabs
 
         private static float ConvertDegToRad(float rotation)
         {
-            rotation = (float)((rotation) * Math.PI / 180); return rotation;
+            rotation = (float)((rotation) * Math.PI / 180);
+            return rotation;
         }
 
         private static float GetSizeRatio(PowerPoint.Shape shape)

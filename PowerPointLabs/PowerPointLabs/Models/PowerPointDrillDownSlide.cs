@@ -14,7 +14,7 @@ namespace PowerPointLabs.Models
             _slide.Name = "PPTLabsZoomIn" + DateTime.Now.ToString("yyyyMMddHHmmssffff");
         }
 
-        new public static PowerPointSlide FromSlideFactory(PowerPoint.Slide slide)
+        public static PowerPointSlide FromSlideFactory(PowerPoint.Slide slide)
         {
             if (slide == null)
                 return null;
@@ -53,7 +53,7 @@ namespace PowerPointLabs.Models
 
         private void ManageSlideTransitions()
         {
-            base.RemoveSlideTransitions();
+            RemoveSlideTransitions();
             _slide.SlideShowTransition.AdvanceOnTime = Office.MsoTriState.msoTrue;
             _slide.SlideShowTransition.AdvanceOnClick = Office.MsoTriState.msoFalse;
             _slide.SlideShowTransition.AdvanceTime = 0;

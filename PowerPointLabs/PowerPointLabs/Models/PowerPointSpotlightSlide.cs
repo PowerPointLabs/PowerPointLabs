@@ -17,7 +17,7 @@ namespace PowerPointLabs.Models
                 _slide.Name = "PPTLabsSpotlight" + DateTime.Now.ToString("yyyyMMddHHmmssffff");
         }
 
-        new public static PowerPointSlide FromSlideFactory(PowerPoint.Slide slide)
+        public static PowerPointSlide FromSlideFactory(PowerPoint.Slide slide)
         {
             if (slide == null)
             {
@@ -112,7 +112,7 @@ namespace PowerPointLabs.Models
 
         private void ManageSlideTransitions()
         {
-            base.RemoveSlideTransitions();
+            RemoveSlideTransitions();
             _slide.SlideShowTransition.AdvanceOnTime = Office.MsoTriState.msoFalse;
             _slide.SlideShowTransition.AdvanceOnClick = Office.MsoTriState.msoTrue;
         }

@@ -275,8 +275,8 @@
             "the .ppt format. To use them, please resave the " +
             "presentation with the .pptx format.";
         public const string OnlinePresentationNotCompatibleErrorMsg =
-        	"Some features of PowerPointLabs do not work with online presentations. " +
-        	"To use them, please save the file locally.";
+            "Some features of PowerPointLabs do not work with online presentations. " +
+            "To use them, please save the file locally.";
         public const string ShapeGalleryInitErrorMsg =
             "Could not connect to shape database from your default location.\n\n" +
             "To check your default location, right click on the Shapes Lab's panel and select 'Settings' option.";
@@ -317,25 +317,51 @@
 
         public class ImagesLabText
         {
-            public const string SearchEngineGoogle = "GoogleEngine";
-            public const string SearchEngineBing = "BingEngine";
+            public const string ImagesLabSupertip = "Open Images Lab window.";
 
-            public const int ButtonIndexSearch = 0;
-            public const int ButtonIndexDownload = 1;
-            public const int ButtonIndexFromFile = 2;
+            /// <summary>
+            /// Styles Variation Category Name
+            /// 
+            /// Color category's name (without spaces) should be equal to corresponding style option's 
+            /// property name, so that the color picker can work properly
+            /// </summary>
+            public const string VariantCategoryOverlayColor = "Overlay Color";
+            public const string VariantCategoryFontColor = "Font Color";
+            public const string VariantCategoryBannerColor = "Banner Color";
+            public const string VariantCategoryTextBoxColor = "TextBox Color";
+            public const string VariantCategoryFrameColor = "Frame Color";
+            public const string VariantCategoryCircleColor = "Circle Color";
+            public const string VariantCategoryTriangleColor = "Triangle Color";
+            public const string VariantCategoryTextPosition = "Text Position";
+            public const string VariantCategoryFontFamily = "Font";
+            public const string VariantCategorySpecialEffects = "Special Effects";
+            public const string VariantCategoryBlurriness = "Blurriness";
+            public const string VariantCategoryBrightness = "Brightness";
+            public const string VariantCategoryFontSizeIncrease = "Font Size";
+            public const string VariantCategoryOverlayTransparency = "Overlay Transparency";
+            public const string VariantCategoryBannerTransparency = "Banner Transparency";
+            public const string VariantCategoryTextBoxTransparency = "TextBox Transparency";
+            public const string VariantCategoryFrameTransparency = "Frame Transparency";
+            public const string VariantCategoryCircleTransparency = "Circle Transparency";
+            public const string VariantCategoryTriangleTransparency = "Triangle Transparency";
 
-            public const int StyleIndexDirectText = 0;
-            public const int StyleIndexBlur = 1;
-            public const int StyleIndexTextBox = 2;
-            public const int StyleIndexBanner = 3;
-            public const int StyleIndexSpecialEffect = 4;
-
+            /// <summary>
+            /// Styles Preview Name
+            /// </summary>
             public const string StyleNameDirectText = "Direct Text Style";
             public const string StyleNameBlur = "Blur Style";
             public const string StyleNameTextBox = "TextBox Style";
             public const string StyleNameBanner = "Banner Style";
             public const string StyleNameSpecialEffect = "Special Effect Style";
+            public const string StyleNameOverlay = "Overlay Style";
+            public const string StyleNameOutline = "Outline Style";
+            public const string StyleNameFrame = "Frame Style";
+            public const string StyleNameCircle = "Circle Style";
+            public const string StyleNameTriangle = "Triangle Style";
 
+            /// <summary>
+            /// Messages
+            /// </summary>
             public const string ErrorNetworkOrApiQuotaUnavailable =
             "Failed to search images. Please check your network, or the daily API quota is ran out.";
             public const string ErrorNetworkOrSourceUnavailable =
@@ -344,27 +370,28 @@
                 "Please fill in Search Engine Id and API Key by clicking ADVANCED.. button.";
             public const string ErrorImageCorrupted =
                 "Failed to load image. The image file is corrupted.";
+            public const string ErrorImageDownloadCorrupted =
+                "Failed to load image. Please try again; or manually download the image and drag it to Images Lab.";
+            public const string ErrorFailedToLoad =
+                "Failed to load image. ";
             public const string ErrorUrlLinkIncorrect =
                 "The download link is not in the correct format. Did the link miss out 'http://'?";
             public const string ErrorNoSelectedSlide =
                 "Cannot apply styles. Please select a slide first.";
             public const string ErrorFailToInitTempFolder =
                 "Failed to initialize Images Lab. Please verify that sufficient permissions have been granted by Administrator.";
+            public const string ErrorNoEmbeddedStyleInfo =
+                "No Images Lab styles are detected for the current slide.";
+            
+            public const string SuccessfullyGoToSlide =
+                "You are now editing Slide _SlideNumber_.";
+            public const string SuccessfullyLoadedImage =
+                "Successfully loaded image from the slide.";
+            public const string SuccessfullyLoadedStyle =
+                "Successfully loaded style from the slide.";
 
-            public const string SuccessfullyAppliedStyle =
-                "Successfully Applied.";
-
-            public const string MultiPurposeButtonNameSearch = "Search";
-            public const string MultiPurposeButtonNameDownload = "Download";
-            public const string MultiPurposeButtonNameFromFile = "From File";
-
-            public const string TextBoxWatermarkSearch = "Type here to search for images";
-            public const string TextBoxWatermarkDownload = "Paste the image link here";
-            public const string TextBoxWatermarkFromFile = "";
-
-            public const string InstructionForSearch = "No result. Type the keywords in the textbox above to search for images.";
-            public const string InstructionForDownload = "No image. Paste the image link in the textbox above to download images, or drag and drop the link here.";
-            public const string InstructionForFromFile = "No image. Click the 'From File' button above to load local images, or drag and drop the file here.";
+            public const string DragAndDropInstruction =
+                "Drag and Drop here to get image.";
         }
 
         # region Agenda Lab

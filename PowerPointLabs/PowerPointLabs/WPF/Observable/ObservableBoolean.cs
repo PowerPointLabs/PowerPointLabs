@@ -7,7 +7,11 @@
         public bool Flag
         {
             get { return _flag; }
-            set { _flag = value; OnPropertyChanged("Flag"); }
+            set
+            {
+                _flag = value;
+                OnPropertyChanged("Flag");
+            }
         }
     }
 }

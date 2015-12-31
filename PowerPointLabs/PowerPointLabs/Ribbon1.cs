@@ -7,9 +7,10 @@ using System.Reflection;
 using System.Runtime.InteropServices;
 using System.Diagnostics;
 using System.Windows.Forms;
-using PowerPointLabs.ImageSearch;
+using PowerPointLabs.ImagesLab;
 using PowerPointLabs.Models;
 using PowerPointLabs.Views;
+using ImagesLabWindow = PowerPointLabs.ImagesLab.View.ImagesLabWindow;
 using Office = Microsoft.Office.Core;
 using PowerPoint = Microsoft.Office.Interop.PowerPoint;
 
@@ -181,21 +182,6 @@ namespace PowerPointLabs
             catch (Exception e)
             {
                 PowerPointLabsGlobals.LogException(e, "AddInSlideAnimationButtonClick");
-                throw;
-            }
-        }
-
-        public void ReloadSpotlightButtonClick(Office.IRibbonControl control)
-        {
-            try
-            {
-                Globals.ThisAddIn.Application.StartNewUndoEntry();
-
-                Spotlight.ReloadSpotlightEffect();
-            }
-            catch (Exception e)
-            {
-                PowerPointLabsGlobals.LogException(e, "ReloadSpotlightButtonClick");
                 throw;
             }
         }
@@ -1320,6 +1306,18 @@ namespace PowerPointLabs
                 throw;
             }
         }
+        public Bitmap GetHideShapeImage(Office.IRibbonControl control)
+        {
+            try
+            {
+                return new Bitmap(Properties.Resources.HideShape);
+            }
+            catch (Exception e)
+            {
+                PowerPointLabsGlobals.LogException(e, "GetHideShapeImage");
+                throw;
+            }
+        }
         # endregion
 
         public void ZoomStyleChanged(Office.IRibbonControl control, bool pressed)
@@ -1588,6 +1586,19 @@ namespace PowerPointLabs
             return selectedVoice;
         }
 
+        public Bitmap GetContextMenuImage(Office.IRibbonControl control)
+        {
+            try
+            {
+                return new Bitmap(Properties.Resources.PptlabsContextMenu);
+            }
+            catch (Exception e)
+            {
+                PowerPointLabsGlobals.LogException(e, "GetContextMenuImage");
+                throw;
+            }
+        }
+
         #endregion
 
         #region Feature: Fit To Slide | Fit To Width | Fit To Height
@@ -1626,16 +1637,37 @@ namespace PowerPointLabs
 
         #region Feature: Images Lab
 
-        public ImageSearchPane ImageSearchPane { get; set; }
+        public ImagesLabWindow ImagesLabWindow { get; set; }
 
         public void ImagesLabButtonClick(Office.IRibbonControl control)
         {
-            if (ImageSearchPane == null || !ImageSearchPane.IsOpen)
+            if (ImagesLabWindow == null || !ImagesLabWindow.IsOpen)
             {
-                ImageSearchPane = new ImageSearchPane();
+                ImagesLabWindow = new ImagesLabWindow();
+                ImagesLabWindow.Show();
             }
-            ImageSearchPane.FocusSearchTextBox();
-            ImageSearchPane.Show();
+            else
+            {
+                ImagesLabWindow.Activate();
+            }            
+        }
+
+        public Bitmap GetImagesLabImage(Office.IRibbonControl control)
+        {
+            try
+            {
+                return new Bitmap(Properties.Resources.ImagesLab);
+            }
+            catch (Exception e)
+            {
+                PowerPointLabsGlobals.LogException(e, "GetImagesLabImage");
+                throw;
+            }
+        }
+
+        public string GetImagesLabSupertip(Office.IRibbonControl control)
+        {
+            return TextCollection.ImagesLabText.ImagesLabSupertip;
         }
         
         #endregion
@@ -2213,20 +2245,20 @@ namespace PowerPointLabs
                     var subShapeRange = shape.Ungroup();
                     TransparentEffect(subShapeRange);
                     subShapeRange.Group();
-                } else
-                if (shape.Type == Office.MsoShapeType.msoPlaceholder)
+                }
+                else if (shape.Type == Office.MsoShapeType.msoPlaceholder)
                 {
                     PlaceholderTransparencyHandler(shape);
-                } else
-                if (shape.Type == Office.MsoShapeType.msoPicture)
+                }
+                else if (shape.Type == Office.MsoShapeType.msoPicture)
                 {
                     PictureTransparencyHandler(shape);
-                } else
-                if (shape.Type == Office.MsoShapeType.msoLine)
+                }
+                else if (shape.Type == Office.MsoShapeType.msoLine)
                 {
                     LineTransparencyHandler(shape);
-                } else
-                if (IsTransparentableShape(shape))
+                }
+                else if (IsTransparentableShape(shape))
                 {
                     ShapeTransparencyHandler(shape);
                 }

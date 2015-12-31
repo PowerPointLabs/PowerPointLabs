@@ -18,7 +18,7 @@ namespace PowerPointLabs.DrawingsLab
 {
     internal class DrawingsLabMain
     {
-        private static Dictionary<Native.VirtualKey, ControlGroup> ControlGroups = new Dictionary<Native.VirtualKey, ControlGroup>();  
+        private static Dictionary<Native.VirtualKey, ControlGroup> _controlGroups = new Dictionary<Native.VirtualKey, ControlGroup>();  
 
         private struct ControlGroup
         {
@@ -35,7 +35,7 @@ namespace PowerPointLabs.DrawingsLab
 
         public static DrawingsLabDataSource DataSource
         {
-            get { return DrawingsPaneWPF.dataSource; }
+            get { return DrawingsPaneWPF.DataSource; }
         }
 
         #region API
@@ -122,7 +122,7 @@ namespace PowerPointLabs.DrawingsLab
                 {
                     Graphics.SetText(shape, text);
                 }
-                catch (ArgumentException e)
+                catch (ArgumentException)
                 {
                     Debug.WriteLine("Unable to write text to " + shape.Name);
                 }
@@ -144,7 +144,7 @@ namespace PowerPointLabs.DrawingsLab
                 var commandBars = Globals.ThisAddIn.Application.CommandBars;
                 commandBars.ExecuteMso("EquationInsertNew");
             }
-            catch (COMException e)
+            catch (COMException)
             {
                 // Do nothing. EquationInsertNew throws an exception even as it succeeds.
             }
@@ -182,7 +182,7 @@ namespace PowerPointLabs.DrawingsLab
                 Globals.ThisAddIn.Application.StartNewUndoEntry();
                 slide.GroupShapes(shapes);
             }
-            catch (UnauthorizedAccessException e)
+            catch (UnauthorizedAccessException)
             {
                 Error(TextCollection.DrawingsLabErrorCannotGroup);
             }
@@ -781,7 +781,7 @@ namespace PowerPointLabs.DrawingsLab
                 DataSource.FormatTextWrap = shape.TextFrame2.WordWrap == MsoTriState.msoTrue;
                 DataSource.FormatTextAutoSize = shape.TextFrame2.AutoSize;
             }
-            catch (ArgumentException e)
+            catch (ArgumentException)
             {
                 // ArgumentException is thrown if the shape does not have this property.
             }
@@ -794,7 +794,7 @@ namespace PowerPointLabs.DrawingsLab
                 DataSource.FormatLineWeight = line.Weight;
                 DataSource.FormatLineDashStyle = line.DashStyle;
             }
-            catch (ArgumentException e)
+            catch (ArgumentException)
             {
                 // ArgumentException is thrown if the shape does not have this property.
             }
@@ -805,7 +805,7 @@ namespace PowerPointLabs.DrawingsLab
                 DataSource.FormatHasFill = fill.Visible == MsoTriState.msoTrue;
                 DataSource.FormatFillColor = fill.ForeColor.RGB;
             }
-            catch (ArgumentException e)
+            catch (ArgumentException)
             {
                 // ArgumentException is thrown if the shape does not have this property.
             }
@@ -834,7 +834,7 @@ namespace PowerPointLabs.DrawingsLab
                 {
                     action();
                 }
-                catch (ArgumentException e)
+                catch (ArgumentException)
                 {
                     // ArgumentException is thrown if the shape does not have this property.
                 }
@@ -896,7 +896,7 @@ namespace PowerPointLabs.DrawingsLab
             var shapes = new HashSet<int>(selection.ShapeRange.Cast<Shape>().Select(shape => shape.Id));
             var slideId = PowerPointCurrentPresentationInfo.CurrentSlide.ID;
 
-            ControlGroups[key] = new ControlGroup(slideId, shapes);
+            _controlGroups[key] = new ControlGroup(slideId, shapes);
         }
 
         public static void SelectControlGroup(Native.VirtualKey key, bool appendToSelection = false)
@@ -907,9 +907,9 @@ namespace PowerPointLabs.DrawingsLab
             if (selection.Type == PpSelectionType.ppSelectionSlides) return;
 
             var currentSlide = PowerPointCurrentPresentationInfo.CurrentSlide;
-            if (!ControlGroups.ContainsKey(key)) return;
+            if (!_controlGroups.ContainsKey(key)) return;
 
-            var controlGroup = ControlGroups[key];
+            var controlGroup = _controlGroups[key];
             var targetSlide = PowerPointPresentation.Current.Slides.FirstOrDefault(slide => slide.ID == controlGroup.SlideId);
             if (targetSlide == null) return;
 

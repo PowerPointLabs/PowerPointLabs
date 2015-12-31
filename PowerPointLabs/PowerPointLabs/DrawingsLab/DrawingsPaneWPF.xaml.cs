@@ -31,7 +31,7 @@ namespace PowerPointLabs.DrawingsLab
     {
         private static bool hotkeysInitialised = false;
 
-        public static DrawingsLabDataSource dataSource { get; private set; }
+        public static DrawingsLabDataSource DataSource { get; private set; }
 
         public DrawingsPaneWPF()
         {
@@ -48,7 +48,7 @@ namespace PowerPointLabs.DrawingsLab
         {
             var hotkeyActionBindings = new Dictionary<Native.VirtualKey, Action>();
 
-            Action<ImageButton, Action, string> ConfigureButton = (button, action, tooltipMessage) =>
+            Action<ImageButton, Action, string> configureButton = (button, action, tooltipMessage) =>
             {
                 button.Click += (sender, e) => action();
 
@@ -67,23 +67,23 @@ namespace PowerPointLabs.DrawingsLab
             // || Top Panel ||
             // ---------------
 
-            ConfigureButton(CircleButton, DrawingsLabMain.SwitchToCircleTool, "Draw a Circle.");
-            ConfigureButton(TriangleButton, DrawingsLabMain.SwitchToTriangleTool, "Draw a Triangle.");
+            configureButton(CircleButton, DrawingsLabMain.SwitchToCircleTool, "Draw a Circle.");
+            configureButton(TriangleButton, DrawingsLabMain.SwitchToTriangleTool, "Draw a Triangle.");
 
-            ConfigureButton(RectButton, DrawingsLabMain.SwitchToRectangleTool, "Draw a Rectangle.");
-            ConfigureButton(RoundedRectButton, DrawingsLabMain.SwitchToRoundedRectangleTool, "Draw a Rounded Rectangle.");
+            configureButton(RectButton, DrawingsLabMain.SwitchToRectangleTool, "Draw a Rectangle.");
+            configureButton(RoundedRectButton, DrawingsLabMain.SwitchToRoundedRectangleTool, "Draw a Rounded Rectangle.");
 
-            ConfigureButton(LineButton, DrawingsLabMain.SwitchToLineTool, "Draw a Line.");
-            ConfigureButton(ArrowButton, DrawingsLabMain.SwitchToArrowTool, "Draw a Curved Line.");
+            configureButton(LineButton, DrawingsLabMain.SwitchToLineTool, "Draw a Line.");
+            configureButton(ArrowButton, DrawingsLabMain.SwitchToArrowTool, "Draw a Curved Line.");
 
-            ConfigureButton(TextboxButton, DrawingsLabMain.SwitchToTextboxTool, "Add a Text Box.");
+            configureButton(TextboxButton, DrawingsLabMain.SwitchToTextboxTool, "Add a Text Box.");
 
-            ConfigureButton(SelectTypeButton, DrawingsLabMain.SelectAllOfType, "Select all shapes of same type as currently selected shapes.");
-            ConfigureButton(DuplicateButton, DrawingsLabMain.CloneTool, "Makes a copy of the selected shapes in the exact same location.");
+            configureButton(SelectTypeButton, DrawingsLabMain.SelectAllOfType, "Select all shapes of same type as currently selected shapes.");
+            configureButton(DuplicateButton, DrawingsLabMain.CloneTool, "Makes a copy of the selected shapes in the exact same location.");
 
-            ConfigureButton(HideButton, DrawingsLabMain.HideTool, "Hide selected items.");
-            ConfigureButton(ShowAllButton, DrawingsLabMain.ShowAllTool, "Show all hidden items.");
-            ConfigureButton(SelectionPaneButton, DrawingsLabMain.OpenSelectionPane, "Opens the Selection Pane.");
+            configureButton(HideButton, DrawingsLabMain.HideTool, "Hide selected items.");
+            configureButton(ShowAllButton, DrawingsLabMain.ShowAllTool, "Show all hidden items.");
+            configureButton(SelectionPaneButton, DrawingsLabMain.OpenSelectionPane, "Opens the Selection Pane.");
 
             SetTooltip(ToggleHotkeysButton, "Enable / Disable Hotkeys.");
 
@@ -92,54 +92,54 @@ namespace PowerPointLabs.DrawingsLab
             // || Tab: Main ||
             // ---------------
 
-            ConfigureButton(AddTextButton, DrawingsLabMain.AddText, "Add Text to the selected shapes.");
-            ConfigureButton(AddMathButton, DrawingsLabMain.AddMath, "Add Math to a selected shape.");
-            ConfigureButton(RemoveTextButton, DrawingsLabMain.RemoveText, "Remove all text from the selected shapes.");
+            configureButton(AddTextButton, DrawingsLabMain.AddText, "Add Text to the selected shapes.");
+            configureButton(AddMathButton, DrawingsLabMain.AddMath, "Add Math to a selected shape.");
+            configureButton(RemoveTextButton, DrawingsLabMain.RemoveText, "Remove all text from the selected shapes.");
 
-            ConfigureButton(GroupButton, DrawingsLabMain.GroupShapes, "Groups the selected shapes into a single shape.");
-            ConfigureButton(UngroupButton, DrawingsLabMain.UngroupShapes, "Ungroups the selected group of shapes.");
+            configureButton(GroupButton, DrawingsLabMain.GroupShapes, "Groups the selected shapes into a single shape.");
+            configureButton(UngroupButton, DrawingsLabMain.UngroupShapes, "Ungroups the selected group of shapes.");
 
-            ConfigureButton(ArrowStartButton, DrawingsLabMain.ToggleArrowStart, "Groups the selected shapes into a single shape.");
-            ConfigureButton(ArrowEndButton, DrawingsLabMain.ToggleArrowEnd, "Groups the selected shapes into a single shape.");
+            configureButton(ArrowStartButton, DrawingsLabMain.ToggleArrowStart, "Groups the selected shapes into a single shape.");
+            configureButton(ArrowEndButton, DrawingsLabMain.ToggleArrowEnd, "Groups the selected shapes into a single shape.");
 
-            ConfigureButton(MultiCloneExtendButton, DrawingsLabMain.MultiCloneExtendTool, "Extrapolates multiple copies of a shape, extending from two selected shapes.");
-            ConfigureButton(MultiCloneBetweenButton, DrawingsLabMain.MultiCloneBetweenTool, "Interpolates multiple copies of a shape, in between two selected shapes.");
-            ConfigureButton(MultiCloneGridButton, DrawingsLabMain.MultiCloneGridTool, "Extends two shapes into a grid of shapes.");
+            configureButton(MultiCloneExtendButton, DrawingsLabMain.MultiCloneExtendTool, "Extrapolates multiple copies of a shape, extending from two selected shapes.");
+            configureButton(MultiCloneBetweenButton, DrawingsLabMain.MultiCloneBetweenTool, "Interpolates multiple copies of a shape, in between two selected shapes.");
+            configureButton(MultiCloneGridButton, DrawingsLabMain.MultiCloneGridTool, "Extends two shapes into a grid of shapes.");
             
-            ConfigureButton(BringForwardButton, DrawingsLabMain.BringForward, "Bring shapes Forward one step.");
-            ConfigureButton(BringInFrontOfShapeButton, DrawingsLabMain.BringInFrontOfShape, "Bring shapes in front of last shape in selection.");
-            ConfigureButton(BringToFrontButton, DrawingsLabMain.BringToFront, "Bring shapes to Front.");
-            ConfigureButton(SendBackwardButton, DrawingsLabMain.SendBackward, "Send shapes Backward one step.");
-            ConfigureButton(SendBehindShapeButton, DrawingsLabMain.SendBehindShape, "Send shapes behind last shape in selection.");
-            ConfigureButton(SendToBackButton, DrawingsLabMain.SendToBack, "Send shapes to Back.");
+            configureButton(BringForwardButton, DrawingsLabMain.BringForward, "Bring shapes Forward one step.");
+            configureButton(BringInFrontOfShapeButton, DrawingsLabMain.BringInFrontOfShape, "Bring shapes in front of last shape in selection.");
+            configureButton(BringToFrontButton, DrawingsLabMain.BringToFront, "Bring shapes to Front.");
+            configureButton(SendBackwardButton, DrawingsLabMain.SendBackward, "Send shapes Backward one step.");
+            configureButton(SendBehindShapeButton, DrawingsLabMain.SendBehindShape, "Send shapes behind last shape in selection.");
+            configureButton(SendToBackButton, DrawingsLabMain.SendToBack, "Send shapes to Back.");
 
 
             // -----------------
             // || Tab: Format ||
             // -----------------
 
-            ConfigureButton(ApplyFormatButton, ()=>DrawingsLabMain.ApplyFormat(applyAllSettings:false), "Apply recorded format to selected shapes.");
-            ConfigureButton(RecordFormatButton, DrawingsLabMain.RecordFormat, "Record Format of a selected shape.");
+            configureButton(ApplyFormatButton, ()=>DrawingsLabMain.ApplyFormat(applyAllSettings: false), "Apply recorded format to selected shapes.");
+            configureButton(RecordFormatButton, DrawingsLabMain.RecordFormat, "Record Format of a selected shape.");
             
 
             // -------------------
             // || Tab: Position ||
             // -------------------
 
-            ConfigureButton(ApplyDisplacementButton, ()=>DrawingsLabMain.ApplyDisplacement(applyAllSettings:false), "Apply recorded displacement to selected shapes.");
-            ConfigureButton(ApplyPositionButton, () => DrawingsLabMain.ApplyPosition(applyAllSettings: false), "Apply recorded position or rotation to selected shapes.");
-            ConfigureButton(RecordDisplacementButton, DrawingsLabMain.RecordDisplacement, "Record Displacement between two selected shapes.");
-            ConfigureButton(RecordPositionButton, DrawingsLabMain.RecordPosition, "Record position and rotation of a selected shape.");
+            configureButton(ApplyDisplacementButton, ()=>DrawingsLabMain.ApplyDisplacement(applyAllSettings: false), "Apply recorded displacement to selected shapes.");
+            configureButton(ApplyPositionButton, () => DrawingsLabMain.ApplyPosition(applyAllSettings: false), "Apply recorded position or rotation to selected shapes.");
+            configureButton(RecordDisplacementButton, DrawingsLabMain.RecordDisplacement, "Record Displacement between two selected shapes.");
+            configureButton(RecordPositionButton, DrawingsLabMain.RecordPosition, "Record position and rotation of a selected shape.");
 
-            ConfigureButton(AlignHorizontalButton, DrawingsLabMain.AlignHorizontal, "Align Shapes Horizontally to last shape in selection.");
-            ConfigureButton(AlignVerticalButton, DrawingsLabMain.AlignVertical, "Align Shapes Vertically to last shape in selection.");
-            ConfigureButton(AlignBothButton, DrawingsLabMain.AlignBoth, "Align Shapes both Horizontally and Vertically to last shape in selection.");
+            configureButton(AlignHorizontalButton, DrawingsLabMain.AlignHorizontal, "Align Shapes Horizontally to last shape in selection.");
+            configureButton(AlignVerticalButton, DrawingsLabMain.AlignVertical, "Align Shapes Vertically to last shape in selection.");
+            configureButton(AlignBothButton, DrawingsLabMain.AlignBoth, "Align Shapes both Horizontally and Vertically to last shape in selection.");
             
-            ConfigureButton(PivotAroundButton, DrawingsLabMain.PivotAroundTool, "Rotate / Multiclone a shape around another shape.");
+            configureButton(PivotAroundButton, DrawingsLabMain.PivotAroundTool, "Rotate / Multiclone a shape around another shape.");
 
-            ConfigureButton(AlignHorizontalToSlideButton, DrawingsLabMain.AlignHorizontalToSlide, "Align Shapes Horizontally to a position relative to the slide.");
-            ConfigureButton(AlignVerticalToSlideButton, DrawingsLabMain.AlignVerticalToSlide, "Align Shapes Vertically to a position relative to the slide.");
-            ConfigureButton(AlignBothToSlideButton, DrawingsLabMain.AlignBothToSlide, "Align Shapes both Horizontally and Vertically to a position relative to the slide.");
+            configureButton(AlignHorizontalToSlideButton, DrawingsLabMain.AlignHorizontalToSlide, "Align Shapes Horizontally to a position relative to the slide.");
+            configureButton(AlignVerticalToSlideButton, DrawingsLabMain.AlignVerticalToSlide, "Align Shapes Vertically to a position relative to the slide.");
+            configureButton(AlignBothToSlideButton, DrawingsLabMain.AlignBothToSlide, "Align Shapes both Horizontally and Vertically to a position relative to the slide.");
             
             // --------------------
             // || Tab: Selection ||
@@ -180,7 +180,7 @@ namespace PowerPointLabs.DrawingsLab
         #region DataBindings
         private void InitializeDataSource()
         {
-            dataSource = FindResource("DrawingsLabData") as DrawingsLabDataSource;
+            DataSource = FindResource("DrawingsLabData") as DrawingsLabDataSource;
         }
         #endregion
 
@@ -196,7 +196,7 @@ namespace PowerPointLabs.DrawingsLab
         {
             // Is reading hotkeys when panel is open and user is not selecting text.
             return IsPanelOpen() &&
-                   dataSource.HotkeysEnabled &&
+                   DataSource.HotkeysEnabled &&
                    PowerPointCurrentPresentationInfo.CurrentSelection.Type != PpSelectionType.ppSelectionText;
         }
 
@@ -209,40 +209,40 @@ namespace PowerPointLabs.DrawingsLab
         {
             var usedKeys = new HashSet<Native.VirtualKey>();
             var bindings = new Dictionary<int, Native.VirtualKey>();
-            Action<Native.VirtualKey, ImageButton> Assign = (key, button) =>
+            Action<Native.VirtualKey, ImageButton> assign = (key, button) =>
             {
                 bindings.Add(button.ImageButtonUniqueId, key);
                 if (usedKeys.Contains(key)) throw new ArgumentException("Key already has a binding: " + key.ToString());
                 usedKeys.Add(key);
             };
 
-            Assign(Native.VirtualKey.VK_L, LineButton);
-            Assign(Native.VirtualKey.VK_R, RectButton);
-            Assign(Native.VirtualKey.VK_E, RoundedRectButton);
-            Assign(Native.VirtualKey.VK_Y, TriangleButton);
-            Assign(Native.VirtualKey.VK_C, CircleButton);
-            Assign(Native.VirtualKey.VK_A, ArrowButton);
-            Assign(Native.VirtualKey.VK_T, TextboxButton);
+            assign(Native.VirtualKey.VK_L, LineButton);
+            assign(Native.VirtualKey.VK_R, RectButton);
+            assign(Native.VirtualKey.VK_E, RoundedRectButton);
+            assign(Native.VirtualKey.VK_Y, TriangleButton);
+            assign(Native.VirtualKey.VK_C, CircleButton);
+            assign(Native.VirtualKey.VK_A, ArrowButton);
+            assign(Native.VirtualKey.VK_T, TextboxButton);
 
-            Assign(Native.VirtualKey.VK_D, DuplicateButton);
-            Assign(Native.VirtualKey.VK_S, SelectTypeButton);
-            Assign(Native.VirtualKey.VK_H, HideButton);
-            Assign(Native.VirtualKey.VK_J, SelectionPaneButton);
+            assign(Native.VirtualKey.VK_D, DuplicateButton);
+            assign(Native.VirtualKey.VK_S, SelectTypeButton);
+            assign(Native.VirtualKey.VK_H, HideButton);
+            assign(Native.VirtualKey.VK_J, SelectionPaneButton);
 
-            Assign(Native.VirtualKey.VK_X, AddTextButton);
-            Assign(Native.VirtualKey.VK_G, GroupButton);
-            Assign(Native.VirtualKey.VK_U, UngroupButton);
-            Assign(Native.VirtualKey.VK_OEM_COMMA, ArrowStartButton);
-            Assign(Native.VirtualKey.VK_OEM_PERIOD, ArrowEndButton);
+            assign(Native.VirtualKey.VK_X, AddTextButton);
+            assign(Native.VirtualKey.VK_G, GroupButton);
+            assign(Native.VirtualKey.VK_U, UngroupButton);
+            assign(Native.VirtualKey.VK_OEM_COMMA, ArrowStartButton);
+            assign(Native.VirtualKey.VK_OEM_PERIOD, ArrowEndButton);
 
-            Assign(Native.VirtualKey.VK_N, MultiCloneBetweenButton);
-            Assign(Native.VirtualKey.VK_M, MultiCloneExtendButton);
+            assign(Native.VirtualKey.VK_N, MultiCloneBetweenButton);
+            assign(Native.VirtualKey.VK_M, MultiCloneExtendButton);
 
-            Assign(Native.VirtualKey.VK_O, AlignBothButton);
-            Assign(Native.VirtualKey.VK_P, PivotAroundButton);
+            assign(Native.VirtualKey.VK_O, AlignBothButton);
+            assign(Native.VirtualKey.VK_P, PivotAroundButton);
 
-            Assign(Native.VirtualKey.VK_F, BringForwardButton);
-            Assign(Native.VirtualKey.VK_B, SendBackwardButton);
+            assign(Native.VirtualKey.VK_F, BringForwardButton);
+            assign(Native.VirtualKey.VK_B, SendBackwardButton);
 
             return bindings;
         }
@@ -296,33 +296,33 @@ namespace PowerPointLabs.DrawingsLab
         {
             var colorDialog = new ColorDialog
             {
-                Color = Graphics.ConvertRgbToColor(dataSource.FormatFillColor),
+                Color = Graphics.ConvertRgbToColor(DataSource.FormatFillColor),
                 FullOpen = true
             };
             if (colorDialog.ShowDialog() == DialogResult.Cancel) return;
-            dataSource.FormatFillColor = Graphics.ConvertColorToRgb(colorDialog.Color);
+            DataSource.FormatFillColor = Graphics.ConvertColorToRgb(colorDialog.Color);
         }
 
         private void LineColor_Click(object sender, EventArgs e)
         {
             var colorDialog = new ColorDialog
             {
-                Color = Graphics.ConvertRgbToColor(dataSource.FormatLineColor),
+                Color = Graphics.ConvertRgbToColor(DataSource.FormatLineColor),
                 FullOpen = true
             };
             if (colorDialog.ShowDialog() == DialogResult.Cancel) return;
-            dataSource.FormatLineColor = Graphics.ConvertColorToRgb(colorDialog.Color);
+            DataSource.FormatLineColor = Graphics.ConvertColorToRgb(colorDialog.Color);
         }
 
         private void TextColor_Click(object sender, EventArgs e)
         {
             var colorDialog = new ColorDialog
             {
-                Color = Graphics.ConvertRgbToColor(dataSource.FormatTextColor),
+                Color = Graphics.ConvertRgbToColor(DataSource.FormatTextColor),
                 FullOpen = true
             };
             if (colorDialog.ShowDialog() == DialogResult.Cancel) return;
-            dataSource.FormatTextColor = Graphics.ConvertColorToRgb(colorDialog.Color);
+            DataSource.FormatTextColor = Graphics.ConvertColorToRgb(colorDialog.Color);
         }
     }
 }

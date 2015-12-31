@@ -292,7 +292,7 @@ namespace PowerPointLabs.AgendaLab
                     shape.Copy();
                     candidate.Shapes.Paste();
                 }
-                catch (COMException e)
+                catch (COMException)
                 {
                     // A COMException occurs if you try to copy paste an empty placeholder shape. So I catch it here.
                     // I can't figure out any other way to detect that it's an empty placeholder shape.

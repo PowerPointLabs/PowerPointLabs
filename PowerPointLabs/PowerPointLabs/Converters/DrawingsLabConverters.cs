@@ -75,8 +75,8 @@ namespace PowerPointLabs.Converters
         {
             byte r, g, b;
             Utils.Graphics.UnpackRgbInt((int) value, out r, out g, out b);
-            return new SolidColorBrush(Color.FromRgb(r,g,b));
-            
+            return new SolidColorBrush(Color.FromRgb(r, g, b));
+
         }
 
         public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
