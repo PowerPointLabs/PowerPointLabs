@@ -202,6 +202,17 @@ namespace PowerPointLabs.DrawingsLab
             SetTooltip(ShiftValueRotation, shiftSetterToolTip("orientation"));
             SetTooltip(ShiftIncludeRotation, shiftCheckboxToolTip("angular"));
 
+            Func<string, string> anchorToolTip = description => "Set the anchor when Recording/Applying shape positions / displacements to the " + description + " of the shape.\nThe anchor is used as the reference point to determine the shape's coordinates.";
+
+            SetTooltip(AnchorTopLeft, anchorToolTip("top left"));
+            SetTooltip(AnchorTopCen, anchorToolTip("top center"));
+            SetTooltip(AnchorTopRight, anchorToolTip("top right"));
+            SetTooltip(AnchorMidLeft, anchorToolTip("middle left"));
+            SetTooltip(AnchorMidCen, anchorToolTip("middle center"));
+            SetTooltip(AnchorMidRight, anchorToolTip("middle right"));
+            SetTooltip(AnchorBotLeft, anchorToolTip("bottom left"));
+            SetTooltip(AnchorBotCen, anchorToolTip("bottom center"));
+            SetTooltip(AnchorBotRight, anchorToolTip("bottom right"));
 
             // --------------------
             // || Tab: Selection ||
