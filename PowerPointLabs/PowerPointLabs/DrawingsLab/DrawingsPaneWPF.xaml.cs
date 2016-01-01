@@ -182,7 +182,27 @@ namespace PowerPointLabs.DrawingsLab
             configureButton(AlignHorizontalToSlideButton, DrawingsLabMain.AlignHorizontalToSlide, "Align Shapes Horizontally to a position relative to the slide.");
             configureButton(AlignVerticalToSlideButton, DrawingsLabMain.AlignVerticalToSlide, "Align Shapes Vertically to a position relative to the slide.");
             configureButton(AlignBothToSlideButton, DrawingsLabMain.AlignBothToSlide, "Align Shapes both Horizontally and Vertically to a position relative to the slide.");
-            
+
+            Func<string, string> savedSetterToolTip = description => "The " + description + " of the shape. Use \"Apply Position\" to apply the setting.";
+            Func<string, string> savedCheckboxToolTip = description => "Check if you want to apply the " + description + " when using \"Apply Position\".";
+            Func<string, string> shiftSetterToolTip = description => "A difference in the " + description + ". Use \"Apply Displacement\" to shift the selected shapes by this amount.";
+            Func<string, string> shiftCheckboxToolTip = description => "Check if you want to apply the " + description + " displacement when using \"Apply Displacement\".";
+
+            SetTooltip(SavedValueX, savedSetterToolTip("x-coordinate"));
+            SetTooltip(SavedIncludeX, savedCheckboxToolTip("x-coordinate position"));
+            SetTooltip(SavedValueY, savedSetterToolTip("y-coordinate"));
+            SetTooltip(SavedIncludeY, savedCheckboxToolTip("y-coordinate position"));
+            SetTooltip(SavedValueRotation, savedSetterToolTip("orientation"));
+            SetTooltip(SavedIncludeRotation, savedCheckboxToolTip("orientation"));
+
+            SetTooltip(ShiftValueX, shiftSetterToolTip("x-coordinate"));
+            SetTooltip(ShiftIncludeX, shiftCheckboxToolTip("x-coordinate"));
+            SetTooltip(ShiftValueY, shiftSetterToolTip("y-coordinate"));
+            SetTooltip(ShiftIncludeY, shiftCheckboxToolTip("y-coordinate"));
+            SetTooltip(ShiftValueRotation, shiftSetterToolTip("orientation"));
+            SetTooltip(ShiftIncludeRotation, shiftCheckboxToolTip("angular"));
+
+
             // --------------------
             // || Tab: Selection ||
             // --------------------

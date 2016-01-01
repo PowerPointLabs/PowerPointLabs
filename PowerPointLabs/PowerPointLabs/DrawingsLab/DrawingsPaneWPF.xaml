@@ -341,19 +341,19 @@
                             <cc:ImageButton x:Name="RecordDisplacementButton" Text="Record&#xa;Displacement" Grid.Row="4" Grid.Column="0" Grid.ColumnSpan="3" Grid.RowSpan="2"/>
                             <cc:ImageButton x:Name="ApplyDisplacementButton" Text="Apply&#xa;Displacement" Grid.Row="4" Grid.Column="3" Grid.ColumnSpan="3" Grid.RowSpan="2"/>
 
-                            <TextBox Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2" IsEnabled="{Binding IsChecked, ElementName=SavedIncludeX}" Text="{Binding UpdateSourceTrigger=PropertyChanged, Path=SavedValueX, Mode=TwoWay, Converter={StaticResource FloatToStringConverter}}"/>
-                            <TextBox Grid.Row="1" Grid.Column="2" Grid.ColumnSpan="2" IsEnabled="{Binding IsChecked, ElementName=SavedIncludeY}" Text="{Binding UpdateSourceTrigger=PropertyChanged, Path=SavedValueY, Mode=TwoWay, Converter={StaticResource FloatToStringConverter}}"/>
-                            <TextBox Grid.Row="1" Grid.Column="4" Grid.ColumnSpan="2" IsEnabled="{Binding IsChecked, ElementName=SavedIncludeRotation}" Text="{Binding UpdateSourceTrigger=PropertyChanged, Path=SavedValueRotation, Mode=TwoWay, Converter={StaticResource FloatToStringConverter}}"/>
+                            <TextBox x:Name="SavedValueX" Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2" IsEnabled="{Binding IsChecked, ElementName=SavedIncludeX}" Text="{Binding UpdateSourceTrigger=PropertyChanged, Path=SavedValueX, Mode=TwoWay, Converter={StaticResource FloatToStringConverter}}"/>
+                            <TextBox x:Name="SavedValueY" Grid.Row="1" Grid.Column="2" Grid.ColumnSpan="2" IsEnabled="{Binding IsChecked, ElementName=SavedIncludeY}" Text="{Binding UpdateSourceTrigger=PropertyChanged, Path=SavedValueY, Mode=TwoWay, Converter={StaticResource FloatToStringConverter}}"/>
+                            <TextBox x:Name="SavedValueRotation" Grid.Row="1" Grid.Column="4" Grid.ColumnSpan="2" IsEnabled="{Binding IsChecked, ElementName=SavedIncludeRotation}" Text="{Binding UpdateSourceTrigger=PropertyChanged, Path=SavedValueRotation, Mode=TwoWay, Converter={StaticResource FloatToStringConverter}}"/>
 
                             <CheckBox Content="X" x:Name="SavedIncludeX" Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="2" IsChecked="{Binding UpdateSourceTrigger=PropertyChanged, Path=SavedIncludePositionX, Mode=TwoWay}"/>
                             <CheckBox Content="Y" x:Name="SavedIncludeY" Grid.Row="2" Grid.Column="2" Grid.ColumnSpan="2" IsChecked="{Binding UpdateSourceTrigger=PropertyChanged, Path=SavedIncludePositionY, Mode=TwoWay}"/>
                             <CheckBox Content="Rtn" x:Name="SavedIncludeRotation" Grid.Row="2" Grid.Column="4" Grid.ColumnSpan="2" IsChecked="{Binding UpdateSourceTrigger=PropertyChanged, Path=SavedIncludeRotation, Mode=TwoWay}"/>
 
                             <Separator Grid.Row="3" Grid.Column="0" Grid.ColumnSpan="6"/>
-                            
-                            <TextBox Grid.Row="6" Grid.Column="0" Grid.ColumnSpan="2" IsEnabled="{Binding IsChecked, ElementName=ShiftIncludeX}" Text="{Binding UpdateSourceTrigger=PropertyChanged, Path=ShiftValueX, Mode=TwoWay, Converter={StaticResource FloatToStringConverter}}"/>
-                            <TextBox Grid.Row="6" Grid.Column="2" Grid.ColumnSpan="2" IsEnabled="{Binding IsChecked, ElementName=ShiftIncludeY}" Text="{Binding UpdateSourceTrigger=PropertyChanged, Path=ShiftValueY, Mode=TwoWay, Converter={StaticResource FloatToStringConverter}}"/>
-                            <TextBox Grid.Row="6" Grid.Column="4" Grid.ColumnSpan="2" IsEnabled="{Binding IsChecked, ElementName=ShiftIncludeRotation}" Text="{Binding UpdateSourceTrigger=PropertyChanged, Path=ShiftValueRotation, Mode=TwoWay, Converter={StaticResource FloatToStringConverter}}"/>
+
+                            <TextBox x:Name="ShiftValueX" Grid.Row="6" Grid.Column="0" Grid.ColumnSpan="2" IsEnabled="{Binding IsChecked, ElementName=ShiftIncludeX}" Text="{Binding UpdateSourceTrigger=PropertyChanged, Path=ShiftValueX, Mode=TwoWay, Converter={StaticResource FloatToStringConverter}}"/>
+                            <TextBox x:Name="ShiftValueY" Grid.Row="6" Grid.Column="2" Grid.ColumnSpan="2" IsEnabled="{Binding IsChecked, ElementName=ShiftIncludeY}" Text="{Binding UpdateSourceTrigger=PropertyChanged, Path=ShiftValueY, Mode=TwoWay, Converter={StaticResource FloatToStringConverter}}"/>
+                            <TextBox x:Name="ShiftValueRotation" Grid.Row="6" Grid.Column="4" Grid.ColumnSpan="2" IsEnabled="{Binding IsChecked, ElementName=ShiftIncludeRotation}" Text="{Binding UpdateSourceTrigger=PropertyChanged, Path=ShiftValueRotation, Mode=TwoWay, Converter={StaticResource FloatToStringConverter}}"/>
 
                             <CheckBox Content="X" x:Name="ShiftIncludeX" Grid.Row="7" Grid.Column="0" Grid.ColumnSpan="2" IsChecked="{Binding UpdateSourceTrigger=PropertyChanged, Path=ShiftIncludePositionX, Mode=TwoWay}"/>
                             <CheckBox Content="Y" x:Name="ShiftIncludeY" Grid.Row="7" Grid.Column="2" Grid.ColumnSpan="2" IsChecked="{Binding UpdateSourceTrigger=PropertyChanged, Path=ShiftIncludePositionY, Mode=TwoWay}"/>
