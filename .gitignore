@@ -30,3 +30,6 @@ cov-report.xml
 
 # config
 .hubturboconfig/
+
+# StyleCop
+PowerPointLabs/PowerPointLabs/StyleCop.Cache
