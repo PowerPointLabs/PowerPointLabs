@@ -20,7 +20,6 @@ using ButtonBase = System.Windows.Controls.Primitives.ButtonBase;
 using DragEventArgs = System.Windows.DragEventArgs;
 using KeyEventArgs = System.Windows.Input.KeyEventArgs;
 using ListBox = System.Windows.Controls.ListBox;
-using Color = System.Drawing.Color;
 
 namespace PowerPointLabs.ImagesLab.View
 {
@@ -473,7 +472,7 @@ namespace PowerPointLabs.ImagesLab.View
         private void DeleteImage()
         {
             if (_clickedImageSelectionItemIndex < 0 
-                || _clickedImageSelectionItemIndex > ImageSelectionListBox.Items.Count)
+                || _clickedImageSelectionItemIndex >= ImageSelectionListBox.Items.Count)
                 return;
 
             var selectedImage = (ImageItem) ImageSelectionListBox.Items.GetItemAt(_clickedImageSelectionItemIndex);
