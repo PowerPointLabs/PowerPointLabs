@@ -16,12 +16,6 @@
         <converters:IntToStringConverter x:Key="IntToStringConverter"/>
         <converters:EnumMatchToBooleanConverter x:Key="EnumMatchToBooleanConverter"/>
         <converters:ColorToBackgroundConverter x:Key="ColorToBackgroundConverter"/>
-        
-        <Style x:Key="ToggleButtonStyle" TargetType="{x:Type ToggleButton}">
-            <Setter Property="Background" Value="#0070c0" />
-            <Setter Property="Foreground" Value="#000000" />
-            <Setter Property="Margin" Value="1" />
-        </Style>
     </UserControl.Resources>
     <Grid DataContext="{StaticResource DrawingsLabData}">
         <Grid.Resources>
@@ -58,7 +52,24 @@
 
         <cc:ImageButton x:Name="TextboxButton" Text="TextBox" Grid.Row="1" Grid.Column="3" Image="../Resources/DrawingLab/textbox.png"/>
 
-        <ToggleButton x:Name="ToggleHotkeysButton" Content="Hotkeys" Grid.Row="0" Grid.Column="5" Grid.RowSpan="2"  IsChecked="{Binding UpdateSourceTrigger=PropertyChanged, Path=HotkeysEnabled, Mode=TwoWay}" Style="{StaticResource ToggleButtonStyle}"/>
+        <ToggleButton x:Name="ToggleHotkeysButton" HorizontalContentAlignment="Center" Grid.Row="0" Grid.Column="5" Grid.RowSpan="2" IsChecked="{Binding UpdateSourceTrigger=PropertyChanged, Path=HotkeysEnabled, Mode=TwoWay}">
+            <StackPanel>
+                <TextBlock Text="Hotkeys" HorizontalAlignment="Center"/>
+                <TextBlock HorizontalAlignment="Center">
+                    <TextBlock.Style>
+                        <Style TargetType="{x:Type TextBlock}">
+                            <Setter Property="Text" Value="OFF"/>
+                            <Style.Triggers>
+                                <DataTrigger Binding="{Binding IsChecked, RelativeSource={RelativeSource FindAncestor, AncestorType=ToggleButton}}" Value="True">
+                                    <Setter Property="Text" Value="ON"/>
+                                </DataTrigger>
+                            </Style.Triggers>
+                        </Style>
+                    </TextBlock.Style>
+                </TextBlock>
+            </StackPanel>
+        </ToggleButton>
+
 
         <Grid Row="4" Column="0" ColumnSpan="6" DataContext="{StaticResource DrawingsLabData}">
             <Grid.ColumnDefinitions>
@@ -434,7 +445,7 @@
                             </Grid>
                         </Grid>
 
-                        <Separator Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="5"/>
+                        <Separator Grid.Row="1" Grid.Column="0"/>
 
                         <Grid Row="2" DataContext="{StaticResource DrawingsLabData}">
                             <Grid.RowDefinitions>
