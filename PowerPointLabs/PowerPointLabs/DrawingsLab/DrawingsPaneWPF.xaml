@@ -73,12 +73,12 @@
 
         <Grid Row="4" Column="0" ColumnSpan="6" DataContext="{StaticResource DrawingsLabData}">
             <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="3*"/>
-                <ColumnDefinition Width="3*"/>
+                <ColumnDefinition Width="7*"/>
+                <ColumnDefinition Width="7*"/>
                 <ColumnDefinition Width="1*"/>
-                <ColumnDefinition Width="3*"/>
-                <ColumnDefinition Width="3*"/>
-                <ColumnDefinition Width="3*"/>
+                <ColumnDefinition Width="7*"/>
+                <ColumnDefinition Width="7*"/>
+                <ColumnDefinition Width="7*"/>
             </Grid.ColumnDefinitions>
             <cc:ImageButton x:Name="SelectTypeButton" Text="Select&#xa;Type" Grid.Row="0" Grid.Column="0"/>
             <cc:ImageButton x:Name="DuplicateButton" Text="Duplicate&#xa;in-place" Grid.Row="0" Grid.Column="1"/>
@@ -364,7 +364,7 @@
             <TabItem Name="TabPosition" Header="Position">
                 <TabItem.Resources>
                     <Style TargetType="{x:Type CheckBox}">
-                        <Setter Property="Margin" Value="5 0 0 0"/>
+                        <Setter Property="Margin" Value="9 0 0 0"/>
                         <Setter Property="VerticalAlignment" Value="Center"/>
                     </Style>
                 </TabItem.Resources>
@@ -394,10 +394,7 @@
                                 <ColumnDefinition Width="1*"/>
                                 <ColumnDefinition Width="1*"/>
                                 <ColumnDefinition Width="1*"/>
-                                <ColumnDefinition Width="1*"/>
-                                <ColumnDefinition Width="1*"/>
-                                <ColumnDefinition Width="1*"/>
-                                <ColumnDefinition Width="1*"/>
+                                <ColumnDefinition Width="3*"/>
                             </Grid.ColumnDefinitions>
                             <cc:ImageButton x:Name="RecordPositionButton" Text="Record&#xa;Position" Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="3"/>
                             <cc:ImageButton x:Name="ApplyPositionButton" Text="Apply&#xa;Position" Grid.Row="0" Grid.Column="3" Grid.ColumnSpan="3"/>
@@ -428,7 +425,7 @@
                                     <RowDefinition Height="3*"/>
                                     <RowDefinition Height="3*"/>
                                     <RowDefinition Height="3*"/>
-                                    <RowDefinition Height="5*"/>
+                                    <RowDefinition Height="6*"/>
                                 </Grid.RowDefinitions>
                                 <Grid.ColumnDefinitions>
                                     <ColumnDefinition Width="1*"/>

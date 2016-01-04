@@ -69,7 +69,11 @@ namespace PowerPointLabs.WPF
                 _text = value;
                 if (!_hasImage)
                 {
-                    this.Content = _text;
+                    this.Content = new TextBlock
+                    {
+                        TextAlignment = TextAlignment.Center,
+                        Text = _text
+                    };
                 }
             }
         }
