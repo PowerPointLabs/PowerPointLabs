@@ -29,9 +29,6 @@
                 <Setter Property="TextAlignment" Value="Center"/>
                 <Setter Property="VerticalAlignment" Value="Center"/>
             </Style>
-            <Style TargetType="{x:Type CheckBox}">
-                <Setter Property="VerticalAlignment" Value="Center"/>
-            </Style>
         </Grid.Resources>
         <Grid.RowDefinitions>
             <RowDefinition Height="5*"/>
@@ -120,10 +117,6 @@
                             <ColumnDefinition Width="1*"/>
                             <ColumnDefinition Width="1*"/>
                         </Grid.ColumnDefinitions>
-                        <Separator Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="4"/>
-                        <Separator Grid.Row="3" Grid.Column="0" Grid.ColumnSpan="4"/>
-                        <Separator Grid.Row="5" Grid.Column="0" Grid.ColumnSpan="4"/>
-                        <Separator Grid.Row="7" Grid.Column="0" Grid.ColumnSpan="4"/>
 
                         <cc:ImageButton x:Name="AddTextButton" Text="Set&#xa;Text" Grid.Row="0" Grid.Column="0"/>
                         <cc:ImageButton x:Name="AddMathButton" Text="Add&#xa;Math" Grid.Row="0" Grid.Column="1"/>
@@ -159,6 +152,12 @@
 
             <!-- TAB: FORMAT - START -->
             <TabItem Name="TabFormat" Header="Format">
+                <TabItem.Resources>
+                    <Style TargetType="{x:Type CheckBox}">
+                        <Setter Property="Margin" Value="3 0 0 0"/>
+                        <Setter Property="VerticalAlignment" Value="Center"/>
+                    </Style>
+                </TabItem.Resources>
                 <TabItem.Content>
                     <Grid DataContext="{StaticResource DrawingsLabData}">
                         <Grid.RowDefinitions>
@@ -175,33 +174,71 @@
                             <RowDefinition Height="2*"/>
                         </Grid.RowDefinitions>
                         <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="2*"/>
-                            <ColumnDefinition Width="2*"/>
+                            <ColumnDefinition Width="16*"/>
                             <ColumnDefinition Width="4*"/>
+                            <ColumnDefinition Width="30*"/>
+                            <ColumnDefinition Width="50*"/>
                         </Grid.ColumnDefinitions>
-                        <Separator Grid.Row ="1" Grid.Column="0" Grid.ColumnSpan="3"/>
-                        <Separator Grid.Row ="4" Grid.Column="0" Grid.ColumnSpan="3"/>
-                        <Separator Grid.Row ="6" Grid.Column="0" Grid.ColumnSpan="3"/>
-                        <Separator Grid.Row ="9" Grid.Column="0" Grid.ColumnSpan="3"/>
-                        
-                        <cc:ImageButton x:Name="RecordFormatButton" Text="Record&#xa;Format" Grid.Row="0" Grid.ColumnSpan="2" Grid.Column="0"/>
-                        <cc:ImageButton x:Name="ApplyFormatButton" Text="Apply&#xa;Format" Grid.Row="0" Grid.ColumnSpan="1" Grid.Column="2"/>
-                        <!-- Line -->
-                        <ToggleButton x:Name="ToggleSyncLineButton" Content="Sync Line" Margin="2" Grid.Row="2" Grid.Column="0" IsChecked="{Binding UpdateSourceTrigger=PropertyChanged, Path=FormatSyncLineStyle, Mode=TwoWay}"/>
 
-                        <Grid Grid.Row="2" Grid.Column="1" Grid.ColumnSpan="2" Grid.RowSpan="2" IsEnabled="{Binding UpdateSourceTrigger=PropertyChanged, Path=FormatSyncLineStyle}">
+                        <Grid Row="1" Column="0" ColumnSpan="4">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="1*"/>
+                                <ColumnDefinition Width="Auto"/>
+                                <ColumnDefinition Width="20*"/>
+                            </Grid.ColumnDefinitions>
+                            <Separator Grid.Row="0" Grid.Column="0"/>
+                            <TextBlock Grid.Row="0" Grid.Column="1" Margin="4 0" Text="Line Style" VerticalAlignment="Center"/>
+                            <Separator Grid.Row="0" Grid.Column="2"/>
+                        </Grid>
+                        <Grid Row="4" Column="0" ColumnSpan="4">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="1*"/>
+                                <ColumnDefinition Width="Auto"/>
+                                <ColumnDefinition Width="20*"/>
+                            </Grid.ColumnDefinitions>
+                            <Separator Grid.Row="0" Grid.Column="0"/>
+                            <TextBlock Grid.Row="0" Grid.Column="1" Margin="4 0" Text="Fill Style" VerticalAlignment="Center"/>
+                            <Separator Grid.Row="0" Grid.Column="2"/>
+                        </Grid>
+                        <Grid Row="6" Column="0" ColumnSpan="4">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="1*"/>
+                                <ColumnDefinition Width="Auto"/>
+                                <ColumnDefinition Width="20*"/>
+                            </Grid.ColumnDefinitions>
+                            <Separator Grid.Row="0" Grid.Column="0"/>
+                            <TextBlock Grid.Row="0" Grid.Column="1" Margin="4 0" Text="Text Style" VerticalAlignment="Center"/>
+                            <Separator Grid.Row="0" Grid.Column="2"/>
+                        </Grid>
+                        <Grid Row="9" Column="0" ColumnSpan="4">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="1*"/>
+                                <ColumnDefinition Width="Auto"/>
+                                <ColumnDefinition Width="20*"/>
+                            </Grid.ColumnDefinitions>
+                            <Separator Grid.Row="0" Grid.Column="0"/>
+                            <TextBlock Grid.Row="0" Grid.Column="1" Margin="4 0" Text="Shape Dimensions" VerticalAlignment="Center"/>
+                            <Separator Grid.Row="0" Grid.Column="2"/>
+                        </Grid>
+                        
+                        <cc:ImageButton x:Name="RecordFormatButton" Text="Record&#xa;Format" Grid.Row="0" Grid.ColumnSpan="3" Grid.Column="0"/>
+                        <cc:ImageButton x:Name="ApplyFormatButton" Text="Apply&#xa;Format" Grid.Row="0" Grid.ColumnSpan="1" Grid.Column="3"/>
+                        <!-- Line -->
+                        <ToggleButton x:Name="ToggleSyncLineButton" Content="Sync" Margin="0" Grid.Row="2" Grid.Column="0" Grid.RowSpan="2"  IsChecked="{Binding UpdateSourceTrigger=PropertyChanged, Path=FormatSyncLineStyle, Mode=TwoWay}"/>
+                        
+                        <Grid Grid.Row="2" Grid.Column="2" Grid.ColumnSpan="2" Grid.RowSpan="2" IsEnabled="{Binding UpdateSourceTrigger=PropertyChanged, Path=FormatSyncLineStyle}">
                             <Grid.RowDefinitions>
                                 <RowDefinition Height="1*"/>
                                 <RowDefinition Height="1*"/>
                             </Grid.RowDefinitions>
                             <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="5*"/>
                                 <ColumnDefinition Width="2*"/>
-                                <ColumnDefinition Width="1*"/>
+                                <ColumnDefinition Width="5*"/>
                                 <ColumnDefinition Width="2*"/>
-                                <ColumnDefinition Width="1*"/>
                             </Grid.ColumnDefinitions>
 
-                            <ToggleButton x:Name="FormatHasLine" Content="Present" Grid.Row="0" Grid.Column="0" IsEnabled="{Binding UpdateSourceTrigger=PropertyChanged, Path=FormatIncludeHasLine}" IsChecked="{Binding UpdateSourceTrigger=PropertyChanged, Path=FormatHasLine, Mode=TwoWay}"/>
+                            <ToggleButton x:Name="FormatHasLine" Content="Has Line" Grid.Row="0" Grid.Column="0" IsEnabled="{Binding UpdateSourceTrigger=PropertyChanged, Path=FormatIncludeHasLine}" IsChecked="{Binding UpdateSourceTrigger=PropertyChanged, Path=FormatHasLine, Mode=TwoWay}"/>
                             <CheckBox x:Name="FormatIncludeHasLine" Content=""  Grid.Row="0" Grid.Column="1" IsChecked="{Binding UpdateSourceTrigger=PropertyChanged, Path=FormatIncludeHasLine, Mode=TwoWay}"/>
 
                             <Button x:Name="FormatLineColor" Grid.Row="0" Grid.Column="2" IsEnabled="{Binding UpdateSourceTrigger=PropertyChanged, Path=FormatIncludeLineColor}" Background="{Binding UpdateSourceTrigger=PropertyChanged, Path=FormatLineColor, Mode=TwoWay, Converter={StaticResource ColorToBackgroundConverter}}" Click="LineColor_Click"/>
@@ -215,20 +252,20 @@
                         </Grid>
 
                         <!-- Fill -->
-                        <ToggleButton x:Name="ToggleSyncFillButton" Content="Sync Fill" Margin="2" Grid.Row="5" Grid.Column="0" IsChecked="{Binding UpdateSourceTrigger=PropertyChanged, Path=FormatSyncFillStyle, Mode=TwoWay}"/>
+                        <ToggleButton x:Name="ToggleSyncFillButton" Content="Sync" Margin="0" Grid.Row="5" Grid.Column="0" IsChecked="{Binding UpdateSourceTrigger=PropertyChanged, Path=FormatSyncFillStyle, Mode=TwoWay}"/>
 
-                        <Grid Grid.Row="5" Grid.Column="1" Grid.ColumnSpan="2" IsEnabled="{Binding UpdateSourceTrigger=PropertyChanged, Path=FormatSyncFillStyle}">
+                        <Grid Grid.Row="5" Grid.Column="2" Grid.ColumnSpan="2" IsEnabled="{Binding UpdateSourceTrigger=PropertyChanged, Path=FormatSyncFillStyle}">
                             <Grid.RowDefinitions>
                                 <RowDefinition Height="1*"/>
                             </Grid.RowDefinitions>
                             <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="5*"/>
                                 <ColumnDefinition Width="2*"/>
-                                <ColumnDefinition Width="1*"/>
+                                <ColumnDefinition Width="5*"/>
                                 <ColumnDefinition Width="2*"/>
-                                <ColumnDefinition Width="1*"/>
                             </Grid.ColumnDefinitions>
 
-                            <ToggleButton x:Name="FormatHasFill" Content="Present" Grid.Row="0" Grid.Column="0" IsEnabled="{Binding UpdateSourceTrigger=PropertyChanged, Path=FormatIncludeHasFill}" IsChecked="{Binding UpdateSourceTrigger=PropertyChanged, Path=FormatHasFill, Mode=TwoWay}"/>
+                            <ToggleButton x:Name="FormatHasFill" Content="Has Fill" Grid.Row="0" Grid.Column="0" IsEnabled="{Binding UpdateSourceTrigger=PropertyChanged, Path=FormatIncludeHasFill}" IsChecked="{Binding UpdateSourceTrigger=PropertyChanged, Path=FormatHasFill, Mode=TwoWay}"/>
                             <CheckBox x:Name="FormatIncludeHasFill" Content=""  Grid.Row="0" Grid.Column="1" IsChecked="{Binding UpdateSourceTrigger=PropertyChanged, Path=FormatIncludeHasFill, Mode=TwoWay}"/>
 
                             <Button x:Name="FormatFillColor" Grid.Row="0" Grid.Column="2" IsEnabled="{Binding UpdateSourceTrigger=PropertyChanged, Path=FormatIncludeFillColor}" Background="{Binding UpdateSourceTrigger=PropertyChanged, Path=FormatFillColor, Mode=TwoWay, Converter={StaticResource ColorToBackgroundConverter}}" Click="FillColor_Click"/>
@@ -237,19 +274,20 @@
                         </Grid>
 
                         <!-- Text -->
-                        <ToggleButton x:Name="ToggleSyncTextButton" Content="Sync Text" Margin="2" Grid.Row="7" Grid.Column="0" IsChecked="{Binding UpdateSourceTrigger=PropertyChanged, Path=FormatSyncTextStyle, Mode=TwoWay}"/>
-
-                        <Grid Grid.Row="7" Grid.Column="1" Grid.ColumnSpan="2" Grid.RowSpan="2" IsEnabled="{Binding UpdateSourceTrigger=PropertyChanged, Path=FormatSyncTextStyle}">
+                        <ToggleButton x:Name="ToggleSyncTextButton" Content="Sync" Margin="0" Grid.Row="7" Grid.Column="0" Grid.RowSpan="2" IsChecked="{Binding UpdateSourceTrigger=PropertyChanged, Path=FormatSyncTextStyle, Mode=TwoWay}"/>
+                        
+                        
+                        <Grid Grid.Row="7" Grid.Column="2" Grid.ColumnSpan="2" Grid.RowSpan="2" IsEnabled="{Binding UpdateSourceTrigger=PropertyChanged, Path=FormatSyncTextStyle}">
                             <Grid.RowDefinitions>
                                 <RowDefinition Height="1*"/>
                                 <RowDefinition Height="1*"/>
                                 <RowDefinition Height="1*"/>
                             </Grid.RowDefinitions>
                             <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="5*"/>
                                 <ColumnDefinition Width="2*"/>
-                                <ColumnDefinition Width="1*"/>
+                                <ColumnDefinition Width="5*"/>
                                 <ColumnDefinition Width="2*"/>
-                                <ColumnDefinition Width="1*"/>
                             </Grid.ColumnDefinitions>
                             <TextBox x:Name="FormatText" Grid.Row="0" Grid.Column="0" IsEnabled="{Binding UpdateSourceTrigger=PropertyChanged, Path=FormatIncludeText}" Text="{Binding UpdateSourceTrigger=PropertyChanged, Path=FormatText, Mode=TwoWay}"/>
                             <CheckBox x:Name="FormatIncludeText" Content=""  Grid.Row="0" Grid.Column="1" IsChecked="{Binding UpdateSourceTrigger=PropertyChanged, Path=FormatIncludeText, Mode=TwoWay}"/>
@@ -273,17 +311,17 @@
 
 
                         <!-- Size -->
-                        <ToggleButton x:Name="ToggleSyncSizeButton" Content="Sync Size" Margin="2" Grid.Row="10" Grid.Column="0" IsChecked="{Binding UpdateSourceTrigger=PropertyChanged, Path=FormatSyncSize, Mode=TwoWay}"/>
+                        <ToggleButton x:Name="ToggleSyncSizeButton" Content="Sync" Margin="0" Grid.Row="10" Grid.Column="0" IsChecked="{Binding UpdateSourceTrigger=PropertyChanged, Path=FormatSyncSize, Mode=TwoWay}"/>
 
-                        <Grid Grid.Row="10" Grid.Column="1" Grid.ColumnSpan="2" IsEnabled="{Binding UpdateSourceTrigger=PropertyChanged, Path=FormatSyncSize}">
+                        <Grid Grid.Row="10" Grid.Column="2" Grid.ColumnSpan="2" IsEnabled="{Binding UpdateSourceTrigger=PropertyChanged, Path=FormatSyncSize}">
                             <Grid.RowDefinitions>
                                 <RowDefinition Height="1*"/>
                             </Grid.RowDefinitions>
                             <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="5*"/>
                                 <ColumnDefinition Width="2*"/>
-                                <ColumnDefinition Width="1*"/>
+                                <ColumnDefinition Width="5*"/>
                                 <ColumnDefinition Width="2*"/>
-                                <ColumnDefinition Width="1*"/>
                             </Grid.ColumnDefinitions>
 
                             <TextBox x:Name="FormatWidth" Grid.Row="0" Grid.Column="0" IsEnabled="{Binding UpdateSourceTrigger=PropertyChanged, Path=FormatIncludeWidth}" Text="{Binding UpdateSourceTrigger=PropertyChanged, Path=FormatWidth, Mode=TwoWay, Converter={StaticResource FloatToStringConverter}}"/>
@@ -349,8 +387,7 @@
                             <CheckBox Content="Y" x:Name="SavedIncludeY" Grid.Row="2" Grid.Column="2" Grid.ColumnSpan="2" IsChecked="{Binding UpdateSourceTrigger=PropertyChanged, Path=SavedIncludePositionY, Mode=TwoWay}"/>
                             <CheckBox Content="Rtn" x:Name="SavedIncludeRotation" Grid.Row="2" Grid.Column="4" Grid.ColumnSpan="2" IsChecked="{Binding UpdateSourceTrigger=PropertyChanged, Path=SavedIncludeRotation, Mode=TwoWay}"/>
 
-                            <Separator Grid.Row="3" Grid.Column="0" Grid.ColumnSpan="6"/>
-
+                            
                             <TextBox x:Name="ShiftValueX" Grid.Row="6" Grid.Column="0" Grid.ColumnSpan="2" IsEnabled="{Binding IsChecked, ElementName=ShiftIncludeX}" Text="{Binding UpdateSourceTrigger=PropertyChanged, Path=ShiftValueX, Mode=TwoWay, Converter={StaticResource FloatToStringConverter}}"/>
                             <TextBox x:Name="ShiftValueY" Grid.Row="6" Grid.Column="2" Grid.ColumnSpan="2" IsEnabled="{Binding IsChecked, ElementName=ShiftIncludeY}" Text="{Binding UpdateSourceTrigger=PropertyChanged, Path=ShiftValueY, Mode=TwoWay, Converter={StaticResource FloatToStringConverter}}"/>
                             <TextBox x:Name="ShiftValueRotation" Grid.Row="6" Grid.Column="4" Grid.ColumnSpan="2" IsEnabled="{Binding IsChecked, ElementName=ShiftIncludeRotation}" Text="{Binding UpdateSourceTrigger=PropertyChanged, Path=ShiftValueRotation, Mode=TwoWay, Converter={StaticResource FloatToStringConverter}}"/>
@@ -403,7 +440,6 @@
                             
                             <cc:ImageButton x:Name="PivotAroundButton" Text="Pivot&#xa;Around" Grid.Row="1" Grid.Column="1"/>
                             
-                            <Separator Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="5"/>
                             
                             <cc:ImageButton x:Name="AlignHorizontalToSlideButton" Text="Align&#xa;Horizontal&#xa;To Slide" Grid.Row="3" Grid.Column="0"/>
                             <cc:ImageButton x:Name="AlignVerticalToSlideButton" Text="Align&#xa;Vertical&#xa;To Slide" Grid.Row="3" Grid.Column="1"/>
