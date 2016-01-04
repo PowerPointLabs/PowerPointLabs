@@ -422,26 +422,30 @@
                             <CheckBox Content="Rtn" x:Name="ShiftIncludeRotation" Grid.Row="7" Grid.Column="4" Grid.ColumnSpan="2" IsChecked="{Binding UpdateSourceTrigger=PropertyChanged, Path=ShiftIncludeRotation, Mode=TwoWay}"/>
 
 
-                            <Grid Row="0" Column="6" RowSpan="4" ColumnSpan="4" DataContext="{StaticResource DrawingsLabData}">
+                            <Grid Row="0" Column="6" RowSpan="8" ColumnSpan="4" DataContext="{StaticResource DrawingsLabData}">
                                 <Grid.RowDefinitions>
-                                    <RowDefinition Height="1*"/>
-                                    <RowDefinition Height="1*"/>
-                                    <RowDefinition Height="1*"/>
+                                    <RowDefinition Height="3*"/>
+                                    <RowDefinition Height="3*"/>
+                                    <RowDefinition Height="3*"/>
+                                    <RowDefinition Height="3*"/>
+                                    <RowDefinition Height="5*"/>
                                 </Grid.RowDefinitions>
                                 <Grid.ColumnDefinitions>
                                     <ColumnDefinition Width="1*"/>
                                     <ColumnDefinition Width="1*"/>
                                     <ColumnDefinition Width="1*"/>
                                 </Grid.ColumnDefinitions>
-                                <RadioButton x:Name="AnchorTopLeft" Grid.Row="0" Grid.Column="0" IsChecked="{Binding UpdateSourceTrigger=PropertyChanged, Path=Anchor, Mode=TwoWay, Converter={StaticResource EnumMatchToBooleanConverter}, ConverterParameter=TopLeft}" HorizontalAlignment="Center" VerticalAlignment="Center"/>
-                                <RadioButton x:Name="AnchorTopCen" Grid.Row="0" Grid.Column="1" IsChecked="{Binding UpdateSourceTrigger=PropertyChanged, Path=Anchor, Mode=TwoWay, Converter={StaticResource EnumMatchToBooleanConverter}, ConverterParameter=TopCenter}" HorizontalAlignment="Center" VerticalAlignment="Center"/>
-                                <RadioButton x:Name="AnchorTopRight" Grid.Row="0" Grid.Column="2" IsChecked="{Binding UpdateSourceTrigger=PropertyChanged, Path=Anchor, Mode=TwoWay, Converter={StaticResource EnumMatchToBooleanConverter}, ConverterParameter=TopRight}" HorizontalAlignment="Center" VerticalAlignment="Center"/>
-                                <RadioButton x:Name="AnchorMidLeft" Grid.Row="1" Grid.Column="0" IsChecked="{Binding UpdateSourceTrigger=PropertyChanged, Path=Anchor, Mode=TwoWay, Converter={StaticResource EnumMatchToBooleanConverter}, ConverterParameter=MiddleLeft}" HorizontalAlignment="Center" VerticalAlignment="Center"/>
-                                <RadioButton x:Name="AnchorMidCen" Grid.Row="1" Grid.Column="1" IsChecked="{Binding UpdateSourceTrigger=PropertyChanged, Path=Anchor, Mode=TwoWay, Converter={StaticResource EnumMatchToBooleanConverter}, ConverterParameter=MiddleCenter}" HorizontalAlignment="Center" VerticalAlignment="Center"/>
-                                <RadioButton x:Name="AnchorMidRight" Grid.Row="1" Grid.Column="2" IsChecked="{Binding UpdateSourceTrigger=PropertyChanged, Path=Anchor, Mode=TwoWay, Converter={StaticResource EnumMatchToBooleanConverter}, ConverterParameter=MiddleRight}" HorizontalAlignment="Center" VerticalAlignment="Center"/>
-                                <RadioButton x:Name="AnchorBotLeft" Grid.Row="2" Grid.Column="0" IsChecked="{Binding UpdateSourceTrigger=PropertyChanged, Path=Anchor, Mode=TwoWay, Converter={StaticResource EnumMatchToBooleanConverter}, ConverterParameter=BottomLeft}" HorizontalAlignment="Center" VerticalAlignment="Center"/>
-                                <RadioButton x:Name="AnchorBotCen" Grid.Row="2" Grid.Column="1" IsChecked="{Binding UpdateSourceTrigger=PropertyChanged, Path=Anchor, Mode=TwoWay, Converter={StaticResource EnumMatchToBooleanConverter}, ConverterParameter=BottomCenter}" HorizontalAlignment="Center" VerticalAlignment="Center"/>
-                                <RadioButton x:Name="AnchorBotRight" Grid.Row="2" Grid.Column="2" IsChecked="{Binding UpdateSourceTrigger=PropertyChanged, Path=Anchor, Mode=TwoWay, Converter={StaticResource EnumMatchToBooleanConverter}, ConverterParameter=BottomRight}" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                                <Label Content="Shape Anchor" Grid.Column="0" Grid.Row="0" Grid.ColumnSpan="3" VerticalAlignment="Bottom" HorizontalAlignment="Center"/>
+                                
+                                <RadioButton x:Name="AnchorTopLeft" Grid.Row="1" Grid.Column="0" IsChecked="{Binding UpdateSourceTrigger=PropertyChanged, Path=Anchor, Mode=TwoWay, Converter={StaticResource EnumMatchToBooleanConverter}, ConverterParameter=TopLeft}" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                                <RadioButton x:Name="AnchorTopCen" Grid.Row="1" Grid.Column="1" IsChecked="{Binding UpdateSourceTrigger=PropertyChanged, Path=Anchor, Mode=TwoWay, Converter={StaticResource EnumMatchToBooleanConverter}, ConverterParameter=TopCenter}" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                                <RadioButton x:Name="AnchorTopRight" Grid.Row="1" Grid.Column="2" IsChecked="{Binding UpdateSourceTrigger=PropertyChanged, Path=Anchor, Mode=TwoWay, Converter={StaticResource EnumMatchToBooleanConverter}, ConverterParameter=TopRight}" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                                <RadioButton x:Name="AnchorMidLeft" Grid.Row="2" Grid.Column="0" IsChecked="{Binding UpdateSourceTrigger=PropertyChanged, Path=Anchor, Mode=TwoWay, Converter={StaticResource EnumMatchToBooleanConverter}, ConverterParameter=MiddleLeft}" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                                <RadioButton x:Name="AnchorMidCen" Grid.Row="2" Grid.Column="1" IsChecked="{Binding UpdateSourceTrigger=PropertyChanged, Path=Anchor, Mode=TwoWay, Converter={StaticResource EnumMatchToBooleanConverter}, ConverterParameter=MiddleCenter}" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                                <RadioButton x:Name="AnchorMidRight" Grid.Row="2" Grid.Column="2" IsChecked="{Binding UpdateSourceTrigger=PropertyChanged, Path=Anchor, Mode=TwoWay, Converter={StaticResource EnumMatchToBooleanConverter}, ConverterParameter=MiddleRight}" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                                <RadioButton x:Name="AnchorBotLeft" Grid.Row="3" Grid.Column="0" IsChecked="{Binding UpdateSourceTrigger=PropertyChanged, Path=Anchor, Mode=TwoWay, Converter={StaticResource EnumMatchToBooleanConverter}, ConverterParameter=BottomLeft}" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                                <RadioButton x:Name="AnchorBotCen" Grid.Row="3" Grid.Column="1" IsChecked="{Binding UpdateSourceTrigger=PropertyChanged, Path=Anchor, Mode=TwoWay, Converter={StaticResource EnumMatchToBooleanConverter}, ConverterParameter=BottomCenter}" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                                <RadioButton x:Name="AnchorBotRight" Grid.Row="3" Grid.Column="2" IsChecked="{Binding UpdateSourceTrigger=PropertyChanged, Path=Anchor, Mode=TwoWay, Converter={StaticResource EnumMatchToBooleanConverter}, ConverterParameter=BottomRight}" HorizontalAlignment="Center" VerticalAlignment="Center"/>
                             </Grid>
                         </Grid>
 
