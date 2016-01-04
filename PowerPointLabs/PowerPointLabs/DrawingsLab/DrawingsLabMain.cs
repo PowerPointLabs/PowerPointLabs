@@ -10,6 +10,7 @@ using Microsoft.Office.Core;
 using Microsoft.Office.Interop.PowerPoint;
 using PowerPointLabs.DataSources;
 using PowerPointLabs.Models;
+using PowerPointLabs.Views;
 using PPExtraEventHelper;
 using Shape = Microsoft.Office.Interop.PowerPoint.Shape;
 using Graphics = PowerPointLabs.Utils.Graphics;
@@ -37,6 +38,25 @@ namespace PowerPointLabs.DrawingsLab
         {
             get { return DrawingsPaneWPF.DataSource; }
         }
+
+
+        public static Action FunctionWrapper(Action action)
+        {
+            return () =>
+            {
+                try
+                {
+                    action();
+                }
+                catch (Exception e)
+                {
+                    ErrorDialogWrapper.ShowDialog("Unexpected error in drawings lab.", e.Message, e);
+                    throw e;
+                }
+                GC.Collect();
+            };
+        }
+
 
         #region API
 

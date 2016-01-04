@@ -50,6 +50,7 @@ namespace PowerPointLabs.DrawingsLab
 
             Action<ImageButton, Action, string> configureButton = (button, action, tooltipMessage) =>
             {
+                action = DrawingsLabMain.FunctionWrapper(action);
                 button.Click += (sender, e) => action();
 
                 if (buttonHotkeyBindings.ContainsKey(button.ImageButtonUniqueId))
