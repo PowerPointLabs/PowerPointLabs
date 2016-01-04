@@ -70,8 +70,8 @@
                 <ColumnDefinition Width="3*"/>
             </Grid.ColumnDefinitions>
             <cc:ImageButton x:Name="SelectTypeButton" Text="Select&#xa;Type" Grid.Row="0" Grid.Column="0"/>
-            <cc:ImageButton x:Name="DuplicateButton" Text="Duplicate" Grid.Row="0" Grid.Column="1"/>
-            <cc:ImageButton x:Name="HideButton" Text="Hide" Grid.Row="0" Grid.Column="3"/>
+            <cc:ImageButton x:Name="DuplicateButton" Text="Duplicate&#xa;in-place" Grid.Row="0" Grid.Column="1"/>
+            <cc:ImageButton x:Name="HideButton" Text="Hide&#xa;Shapes" Grid.Row="0" Grid.Column="3"/>
             <cc:ImageButton x:Name="ShowAllButton" Text="Show&#xa;All" Grid.Row="0" Grid.Column="4"/>
             <cc:ImageButton x:Name="SelectionPaneButton" Text="Selection&#xa;Pane" Grid.Row="0" Grid.Column="5"/>
         </Grid>
@@ -101,13 +101,13 @@
                     <Grid DataContext="{StaticResource DrawingsLabData}">
                         <Grid.RowDefinitions>
                             <RowDefinition Height="8*"/>
-                            <RowDefinition Height="2*"/>
+                            <RowDefinition Height="1*"/>
                             <RowDefinition Height="8*"/>
-                            <RowDefinition Height="2*"/>
+                            <RowDefinition Height="1*"/>
                             <RowDefinition Height="8*"/>
-                            <RowDefinition Height="2*"/>
+                            <RowDefinition Height="1*"/>
                             <RowDefinition Height="8*"/>
-                            <RowDefinition Height="2*"/>
+                            <RowDefinition Height="1*"/>
                             <RowDefinition Height="8*"/>
                             <RowDefinition Height="8*"/>
                         </Grid.RowDefinitions>
@@ -118,15 +118,29 @@
                             <ColumnDefinition Width="1*"/>
                         </Grid.ColumnDefinitions>
 
-                        <cc:ImageButton x:Name="AddTextButton" Text="Set&#xa;Text" Grid.Row="0" Grid.Column="0"/>
-                        <cc:ImageButton x:Name="AddMathButton" Text="Add&#xa;Math" Grid.Row="0" Grid.Column="1"/>
-                        <cc:ImageButton x:Name="RemoveTextButton" Text="Remove&#xa;Text" Grid.Row="0" Grid.Column="2"/>
+                        <Grid Row="0" Column="0" ColumnSpan="4" DataContext="{StaticResource DrawingsLabData}">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="1*"/>
+                                <ColumnDefinition Width="1*"/>
+                                <ColumnDefinition Width="1*"/>
+                            </Grid.ColumnDefinitions>
+                            <cc:ImageButton x:Name="AddTextButton" Text="Set Text" Grid.Row="0" Grid.Column="0"/>
+                            <cc:ImageButton x:Name="AddMathButton" Text="Add Math" Grid.Row="0" Grid.Column="1"/>
+                            <cc:ImageButton x:Name="RemoveTextButton" Text="Remove&#xa;Text" Grid.Row="0" Grid.Column="2"/>
+                        </Grid>
 
-                        <cc:ImageButton x:Name="GroupButton" Text="Group" Grid.Row="2" Grid.Column="0"/>
-                        <cc:ImageButton x:Name="UngroupButton" Text="Ungroup" Grid.Row="2" Grid.Column="1"/>
+                        <cc:ImageButton x:Name="GroupButton" Text="Group&#xa;Shapes" Grid.Row="2" Grid.Column="0"/>
+                        <cc:ImageButton x:Name="UngroupButton" Text="Ungroup&#xa;Shapes" Grid.Row="2" Grid.Column="1"/>
 
-                        <cc:ImageButton x:Name="ArrowStartButton" Text="Arrow&#xa;(Start)" Grid.Row="4" Grid.Column="0"/>
-                        <cc:ImageButton x:Name="ArrowEndButton" Text="Arrow&#xa;(End)" Grid.Row="4" Grid.Column="1"/>
+                        <Grid Row="4" Column="0" ColumnSpan="4" DataContext="{StaticResource DrawingsLabData}">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="1*"/>
+                                <ColumnDefinition Width="1*"/>
+                                <ColumnDefinition Width="1*"/>
+                            </Grid.ColumnDefinitions>
+                            <cc:ImageButton x:Name="ArrowStartButton" Text="Toggle Arrow&#xa;Head (Start)" Grid.Row="0" Grid.Column="0"/>
+                            <cc:ImageButton x:Name="ArrowEndButton" Text="Toggle Arrow&#xa;Head (End)" Grid.Row="0" Grid.Column="1"/>
+                        </Grid>
 
                         <Grid Row="6" Column="0" ColumnSpan="4" DataContext="{StaticResource DrawingsLabData}">
                             <Grid.ColumnDefinitions>
@@ -134,9 +148,9 @@
                                 <ColumnDefinition Width="1*"/>
                                 <ColumnDefinition Width="1*"/>
                             </Grid.ColumnDefinitions>
-                            <cc:ImageButton x:Name="MultiCloneBetweenButton" Text="MultiClone&#xa;Between" Grid.Row="6" Grid.Column="0"/>
-                            <cc:ImageButton x:Name="MultiCloneExtendButton" Text="MultiClone&#xa;Extend" Grid.Row="6" Grid.Column="1"/>
-                            <cc:ImageButton x:Name="MultiCloneGridButton" Text="MultiClone&#xa;Grid" Grid.Row="6" Grid.Column="2"/>
+                            <cc:ImageButton x:Name="MultiCloneBetweenButton" Text="MultiClone&#xa;Between" Grid.Row="0" Grid.Column="0"/>
+                            <cc:ImageButton x:Name="MultiCloneExtendButton" Text="MultiClone&#xa;Extend" Grid.Row="0" Grid.Column="1"/>
+                            <cc:ImageButton x:Name="MultiCloneGridButton" Text="MultiClone&#xa;Grid" Grid.Row="0" Grid.Column="2"/>
                         </Grid>
                         
                         <cc:ImageButton x:Name="BringInFrontOfShapeButton" Text="Front Of&#xa;Shape" Grid.Row="8" Grid.Column="1"/>
