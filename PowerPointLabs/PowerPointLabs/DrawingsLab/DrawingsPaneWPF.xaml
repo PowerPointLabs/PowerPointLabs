@@ -463,16 +463,16 @@
                                 <ColumnDefinition Width="2*"/>
                                 <ColumnDefinition Width="2*"/>
                             </Grid.ColumnDefinitions>
-                            <cc:ImageButton x:Name="AlignHorizontalButton" Text="Align&#xa;Horizontal" Grid.Row="0" Grid.Column="0"/>
-                            <cc:ImageButton x:Name="AlignVerticalButton" Text="Align&#xa;Vertical" Grid.Row="0" Grid.Column="1"/>
+                            <cc:ImageButton x:Name="AlignHorizontalButton" Text="Horizontal&#xa;Align" Grid.Row="0" Grid.Column="0"/>
+                            <cc:ImageButton x:Name="AlignVerticalButton" Text="Vertical&#xa;Align" Grid.Row="0" Grid.Column="1"/>
                             <cc:ImageButton x:Name="AlignBothButton" Text="Align&#xa;Both" Grid.Row="0" Grid.Column="2"/>
                             
                             <cc:ImageButton x:Name="PivotAroundButton" Text="Pivot&#xa;Around" Grid.Row="1" Grid.Column="1"/>
                             
                             
-                            <cc:ImageButton x:Name="AlignHorizontalToSlideButton" Text="Align&#xa;Horizontal&#xa;To Slide" Grid.Row="3" Grid.Column="0"/>
-                            <cc:ImageButton x:Name="AlignVerticalToSlideButton" Text="Align&#xa;Vertical&#xa;To Slide" Grid.Row="3" Grid.Column="1"/>
-                            <cc:ImageButton x:Name="AlignBothToSlideButton" Text="Align&#xa;Both&#xa;To Slide" Grid.Row="3" Grid.Column="2"/>
+                            <cc:ImageButton x:Name="AlignHorizontalToSlideButton" Text="Horizontal&#xa;Align To Slide" Grid.Row="3" Grid.Column="0"/>
+                            <cc:ImageButton x:Name="AlignVerticalToSlideButton" Text="Vertical&#xa;Align To Slide" Grid.Row="3" Grid.Column="1"/>
+                            <cc:ImageButton x:Name="AlignBothToSlideButton" Text="Align Both&#xa;To Slide" Grid.Row="3" Grid.Column="2"/>
                         </Grid>
 
                         
