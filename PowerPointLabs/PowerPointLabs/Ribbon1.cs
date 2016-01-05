@@ -1080,7 +1080,7 @@ namespace PowerPointLabs
         {
             try
             {
-                return new System.Drawing.Bitmap(Properties.Resources.ColorsLab);
+                return new System.Drawing.Bitmap(Properties.Resources.DrawingLab);
             }
             catch (Exception e)
             {
