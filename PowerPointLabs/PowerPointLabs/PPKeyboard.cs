@@ -48,13 +48,15 @@ namespace PPExtraEventHelper
             private readonly bool _alt;
             private readonly bool _shift;
             private readonly Func<bool> _executeAction;
+            private readonly Native.VirtualKey _key;
 
-            public BindedAction(bool ctrl, bool alt, bool shift, Func<bool> action)
+            public BindedAction(bool ctrl, bool alt, bool shift, Func<bool> action, Native.VirtualKey key)
             {
                 _ctrl = ctrl;
                 _alt = alt;
                 _shift = shift;
                 _executeAction = action;
+                _key = key;
             }
 
             public bool RunConditionally(KeyStatus keyStatus)
@@ -87,6 +89,12 @@ namespace PPExtraEventHelper
                     CreateHook(PPHandle);
                 }
             };
+        }
+
+        private static void RefreshSlideViewWindowHandle()
+        {
+            IntPtr handle = Process.GetCurrentProcess().MainWindowHandle;
+            _currentSlideViewWindowHandle = FindSlideViewWindowHandle(handle);
         }
 
         private static void InitialiseDictionaries()
@@ -128,7 +136,7 @@ namespace PPExtraEventHelper
 
         public static void AddKeydownAction(Native.VirtualKey key, Func<bool> action, bool ctrl = false, bool alt = false, bool shift = false)
         {
-            _keyDownActions[(int)key].Add(new BindedAction(ctrl, alt, shift, action));
+            _keyDownActions[(int)key].Add(new BindedAction(ctrl, alt, shift, action, key));
         }
 
         public static void AddKeyupAction(Native.VirtualKey key, Action action, bool ctrl = false, bool alt = false, bool shift = false)
@@ -138,7 +146,7 @@ namespace PPExtraEventHelper
 
         public static void AddKeyupAction(Native.VirtualKey key, Func<bool> action, bool ctrl = false, bool alt = false, bool shift = false)
         {
-            _keyUpActions[(int)key].Add(new BindedAction(ctrl, alt, shift, action));
+            _keyUpActions[(int)key].Add(new BindedAction(ctrl, alt, shift, action, key));
         }
 
         public static void AddConditionToBlockTextInput(Func<bool> condition, bool ctrl = false, bool alt = false, bool shift = false)
@@ -186,7 +194,6 @@ namespace PPExtraEventHelper
                     {
                         slideViewWindowHandle = mdiClass;
                     }
-                    //FindSlideViewWindowRectangle();
                 }
             }
             return slideViewWindowHandle;
@@ -202,6 +209,7 @@ namespace PPExtraEventHelper
 
         private static int HookProcedureCallback(int nCode, IntPtr wParam, IntPtr lParam)
         {
+            RefreshSlideViewWindowHandle();
             //Only process inputs that are sent to the main slide view window.
             if (!IsSlideViewWindowFocused()) return Native.CallNextHookEx(0, nCode, wParam, lParam);
 
