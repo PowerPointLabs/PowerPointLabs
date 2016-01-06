@@ -7,10 +7,9 @@ using System.Reflection;
 using System.Runtime.InteropServices;
 using System.Diagnostics;
 using System.Windows.Forms;
-using PowerPointLabs.ImagesLab;
 using PowerPointLabs.Models;
+using PowerPointLabs.PictureSlidesLab.View;
 using PowerPointLabs.Views;
-using ImagesLabWindow = PowerPointLabs.ImagesLab.View.ImagesLabWindow;
 using Office = Microsoft.Office.Core;
 using PowerPoint = Microsoft.Office.Interop.PowerPoint;
 
@@ -1613,39 +1612,39 @@ namespace PowerPointLabs
 
         #endregion
 
-        #region Feature: Images Lab
+        #region Feature: Picture Slides Lab
 
-        public ImagesLabWindow ImagesLabWindow { get; set; }
+        public PictureSlidesLabWindow PictureSlidesLabWindow { get; set; }
 
-        public void ImagesLabButtonClick(Office.IRibbonControl control)
+        public void PictureSlidesLabButtonClick(Office.IRibbonControl control)
         {
-            if (ImagesLabWindow == null || !ImagesLabWindow.IsOpen)
+            if (PictureSlidesLabWindow == null || !PictureSlidesLabWindow.IsOpen)
             {
-                ImagesLabWindow = new ImagesLabWindow();
-                ImagesLabWindow.Show();
+                PictureSlidesLabWindow = new PictureSlidesLabWindow();
+                PictureSlidesLabWindow.Show();
             }
             else
             {
-                ImagesLabWindow.Activate();
+                PictureSlidesLabWindow.Activate();
             }            
         }
 
-        public Bitmap GetImagesLabImage(Office.IRibbonControl control)
+        public Bitmap GetPictureSlidesLabImage(Office.IRibbonControl control)
         {
             try
             {
-                return new Bitmap(Properties.Resources.ImagesLab);
+                return new Bitmap(Properties.Resources.PictureSlidesLab);
             }
             catch (Exception e)
             {
-                PowerPointLabsGlobals.LogException(e, "GetImagesLabImage");
+                PowerPointLabsGlobals.LogException(e, "GetPictureSlidesLabImage");
                 throw;
             }
         }
 
-        public string GetImagesLabSupertip(Office.IRibbonControl control)
+        public string GetPictureSlidesLabSupertip(Office.IRibbonControl control)
         {
-            return TextCollection.ImagesLabText.ImagesLabSupertip;
+            return TextCollection.PictureSlidesLabText.PictureSlidesLabSupertip;
         }
         
         #endregion

@@ -305,9 +305,9 @@
         public const string ErrorWindowTitle = "Convert to Picture: Unsupported Object";
         # endregion
 
-        public class ImagesLabText
+        public class PictureSlidesLabText
         {
-            public const string ImagesLabSupertip = "Open Images Lab window.";
+            public const string PictureSlidesLabSupertip = "Open Picture Slides Lab window.";
 
             /// <summary>
             /// Styles Variation Category Name
@@ -361,7 +361,7 @@
             public const string ErrorImageCorrupted =
                 "Failed to load image. The image file is corrupted.";
             public const string ErrorImageDownloadCorrupted =
-                "Failed to load image. Please try again; or manually download the image and drag it to Images Lab.";
+                "Failed to load image. Please try again; or manually download the image and drag it to Picture Slides Lab.";
             public const string ErrorFailedToLoad =
                 "Failed to load image. ";
             public const string ErrorUrlLinkIncorrect =
@@ -369,9 +369,9 @@
             public const string ErrorNoSelectedSlide =
                 "Cannot apply styles. Please select a slide first.";
             public const string ErrorFailToInitTempFolder =
-                "Failed to initialize Images Lab. Please verify that sufficient permissions have been granted by Administrator.";
+                "Failed to initialize Picture Slides Lab. Please verify that sufficient permissions have been granted by Administrator.";
             public const string ErrorNoEmbeddedStyleInfo =
-                "No Images Lab styles are detected for the current slide.";
+                "No Picture Slides Lab styles are detected for the current slide.";
             
             public const string SuccessfullyGoToSlide =
                 "You are now editing Slide _SlideNumber_.";
