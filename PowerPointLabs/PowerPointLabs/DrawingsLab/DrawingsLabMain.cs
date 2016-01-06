@@ -99,7 +99,16 @@ namespace PowerPointLabs.DrawingsLab
         public static void SwitchToTextboxTool()
         {
             var commandBars = Globals.ThisAddIn.Application.CommandBars;
-            commandBars.ExecuteMso("TextBoxInsertHorizontal");
+
+            // Either one or the other will work. If TextBoxInsert doesn't work, use TextBoxInsertHorizontal instead.
+            try
+            {
+                commandBars.ExecuteMso("TextBoxInsert");
+            }
+            catch (COMException)
+            {
+                commandBars.ExecuteMso("TextBoxInsertHorizontal");
+            }
         }
 
         public static void AddText()
