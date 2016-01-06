@@ -22,6 +22,7 @@ namespace PowerPointLabs.WPF
         public ImageButton()
         {
             Margin = new Thickness(3);
+            Focusable = false;
 
             StackPanel panel = new StackPanel();
             panel.Orientation = Orientation.Horizontal;

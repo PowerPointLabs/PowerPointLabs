@@ -23,6 +23,9 @@
                 <Setter Property="TextAlignment" Value="Center"/>
                 <Setter Property="VerticalAlignment" Value="Center"/>
             </Style>
+            <Style TargetType="{x:Type ToggleButton}">
+                <Setter Property="Focusable" Value="false"/>
+            </Style>
         </Grid.Resources>
         <Grid.RowDefinitions>
             <RowDefinition Height="5*"/>
