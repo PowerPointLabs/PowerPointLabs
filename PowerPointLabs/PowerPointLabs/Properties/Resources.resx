@@ -346,7 +346,7 @@
   <data name="PptlabsContextMenu" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\PptlabsContextMenu.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
-  <data name="ImagesLab" type="System.Resources.ResXFileRef, System.Windows.Forms">
+  <data name="PictureSlidesLab" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\ImagesLab.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
   <data name="Down" type="System.Resources.ResXFileRef, System.Windows.Forms">

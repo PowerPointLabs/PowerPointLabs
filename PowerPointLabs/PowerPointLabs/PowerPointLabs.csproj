@@ -333,59 +333,59 @@
     <Compile Include="FunctionalTestInterface.Impl\PowerPointLabsFT.cs" />
     <Compile Include="FunctionalTestInterface.Impl\PowerPointOperations.cs" />
     <Compile Include="FunctionalTestInterface.Impl\SlideData.cs" />
-    <Compile Include="ImagesLab\Model\ObservableFont.cs" />
-    <Compile Include="ImagesLab\Model\ObservableImageItem.cs" />
-    <Compile Include="ImagesLab\Service\Interface\IStylesDesigner.cs" />
-    <Compile Include="ImagesLab\Thread\ContextDownloader.cs" />
-    <Compile Include="ImagesLab\Thread\ThreadContext.cs" />
-    <Compile Include="ImagesLab\ViewModel\ImagesLabWindowViewModel.cs" />
-    <Compile Include="ImagesLab\ViewModel\ImagesLabWindowViewModel.VariationStageControls.cs" />
-    <Compile Include="ImagesLab\View\ImagesLabWindow.xaml.VariationStageControls.cs" />
-    <Compile Include="ImagesLab\View\Interface\IImagesLabWindowView.cs" />
-    <Compile Include="ImagesLab\View\ImageAdjustment\CroppingAdorner.cs" />
-    <Compile Include="ImagesLab\View\AdjustImageWindow.xaml.cs">
+    <Compile Include="PictureSlidesLab\Model\ObservableFont.cs" />
+    <Compile Include="PictureSlidesLab\Model\ObservableImageItem.cs" />
+    <Compile Include="PictureSlidesLab\Service\Interface\IStylesDesigner.cs" />
+    <Compile Include="PictureSlidesLab\Thread\ContextDownloader.cs" />
+    <Compile Include="PictureSlidesLab\Thread\ThreadContext.cs" />
+    <Compile Include="PictureSlidesLab\ViewModel\PictureSlidesLabWindowViewModel.cs" />
+    <Compile Include="PictureSlidesLab\ViewModel\PictureSlidesLabWindowViewModel.VariationStageControls.cs" />
+    <Compile Include="PictureSlidesLab\View\PictureSlidesLabWindow.xaml.VariationStageControls.cs" />
+    <Compile Include="PictureSlidesLab\View\Interface\IPictureSlidesLabWindowView.cs" />
+    <Compile Include="PictureSlidesLab\View\ImageAdjustment\CroppingAdorner.cs" />
+    <Compile Include="PictureSlidesLab\View\AdjustImageWindow.xaml.cs">
       <DependentUpon>AdjustImageWindow.xaml</DependentUpon>
     </Compile>
-    <Compile Include="ImagesLab\View\ImageAdjustment\PuncturedRect.cs" />
-    <Compile Include="ImagesLab\ModelFactory\StyleOptionsFactory.cs" />
-    <Compile Include="ImagesLab\ModelFactory\StyleVariantsFactory.cs" />
-    <Compile Include="ImagesLab\Model\ImageItem.cs" />
-    <Compile Include="ImagesLab\Model\StyleOptions.cs" />
-    <Compile Include="ImagesLab\Model\StyleVariants.cs" />
-    <Compile Include="ImagesLab\Thread\Interface\IThreadContext.cs" />
-    <Compile Include="ImagesLab\View\SlideSelectionDialog.xaml.cs">
+    <Compile Include="PictureSlidesLab\View\ImageAdjustment\PuncturedRect.cs" />
+    <Compile Include="PictureSlidesLab\ModelFactory\StyleOptionsFactory.cs" />
+    <Compile Include="PictureSlidesLab\ModelFactory\StyleVariantsFactory.cs" />
+    <Compile Include="PictureSlidesLab\Model\ImageItem.cs" />
+    <Compile Include="PictureSlidesLab\Model\StyleOptions.cs" />
+    <Compile Include="PictureSlidesLab\Model\StyleVariants.cs" />
+    <Compile Include="PictureSlidesLab\Thread\Interface\IThreadContext.cs" />
+    <Compile Include="PictureSlidesLab\View\SlideSelectionDialog.xaml.cs">
       <DependentUpon>SlideSelectionDialog.xaml</DependentUpon>
     </Compile>
-    <Compile Include="ImagesLab\Service\Effect\Alignment.cs" />
-    <Compile Include="ImagesLab\Service\Effect\Banner.cs" />
-    <Compile Include="ImagesLab\Service\Effect\Position.cs" />
-    <Compile Include="ImagesLab\Service\Effect\TextBoxes.cs" />
-    <Compile Include="ImagesLab\Service\Effect\TextBoxInfo.cs" />
-    <Compile Include="ImagesLab\View\ImagesLabWindow.xaml.InterfaceImpl.cs" />
-    <Compile Include="ImagesLab\Service\Effect\EffectName.cs" />
-    <Compile Include="ImagesLab\Service\Preview\PreviewInfo.cs" />
-    <Compile Include="ImagesLab\Service\Effect\Tag.cs" />
-    <Compile Include="ImagesLab\View\ImagesLabWindow.xaml.cs">
-      <DependentUpon>ImagesLabWindow.xaml</DependentUpon>
+    <Compile Include="PictureSlidesLab\Service\Effect\Alignment.cs" />
+    <Compile Include="PictureSlidesLab\Service\Effect\Banner.cs" />
+    <Compile Include="PictureSlidesLab\Service\Effect\Position.cs" />
+    <Compile Include="PictureSlidesLab\Service\Effect\TextBoxes.cs" />
+    <Compile Include="PictureSlidesLab\Service\Effect\TextBoxInfo.cs" />
+    <Compile Include="PictureSlidesLab\View\PictureSlidesLabWindow.xaml.InterfaceImpl.cs" />
+    <Compile Include="PictureSlidesLab\Service\Effect\EffectName.cs" />
+    <Compile Include="PictureSlidesLab\Service\Preview\PreviewInfo.cs" />
+    <Compile Include="PictureSlidesLab\Service\Effect\Tag.cs" />
+    <Compile Include="PictureSlidesLab\View\PictureSlidesLabWindow.xaml.cs">
+      <DependentUpon>PictureSlidesLabWindow.xaml</DependentUpon>
     </Compile>
-    <Compile Include="ImagesLab\View\ImagesLabWindow.xaml.GotoSlide.cs" />
-    <Compile Include="ImagesLab\View\ImagesLabWindow.xaml.ReloadStyle.cs" />
-    <Compile Include="ImagesLab\View\QuickDropDialog.xaml.cs">
+    <Compile Include="PictureSlidesLab\View\PictureSlidesLabWindow.xaml.GotoSlide.cs" />
+    <Compile Include="PictureSlidesLab\View\PictureSlidesLabWindow.xaml.ReloadStyle.cs" />
+    <Compile Include="PictureSlidesLab\View\QuickDropDialog.xaml.cs">
       <DependentUpon>QuickDropDialog.xaml</DependentUpon>
     </Compile>
-    <Compile Include="ImagesLab\Util\ImageUtil.cs" />
-    <Compile Include="ImagesLab\Util\ListBoxUtil.cs" />
-    <Compile Include="ImagesLab\Util\TwoColumnsListBoxImageWidthConverter.cs" />
-    <Compile Include="ImagesLab\Util\ShapeUtil.cs" />
-    <Compile Include="ImagesLab\Util\StyleVariationWidthConverter.cs" />
-    <Compile Include="ImagesLab\Util\UrlUtil.cs" />
+    <Compile Include="PictureSlidesLab\Util\ImageUtil.cs" />
+    <Compile Include="PictureSlidesLab\Util\ListBoxUtil.cs" />
+    <Compile Include="PictureSlidesLab\Util\TwoColumnsListBoxImageWidthConverter.cs" />
+    <Compile Include="PictureSlidesLab\Util\ShapeUtil.cs" />
+    <Compile Include="PictureSlidesLab\Util\StyleVariationWidthConverter.cs" />
+    <Compile Include="PictureSlidesLab\Util\UrlUtil.cs" />
     <Compile Include="Utils\Assumption.cs" />
     <Compile Include="Utils\CultureUtil.cs" />
     <Compile Include="Utils\Exceptions\AssumptionFailedException.cs" />
-    <Compile Include="ImagesLab\Service\StylesDesigner.cs" />
-    <Compile Include="ImagesLab\Service\EffectsDesigner.cs" />
-    <Compile Include="ImagesLab\Util\StoragePath.cs" />
-    <Compile Include="ImagesLab\Util\TempPath.cs" />
+    <Compile Include="PictureSlidesLab\Service\StylesDesigner.cs" />
+    <Compile Include="PictureSlidesLab\Service\EffectsDesigner.cs" />
+    <Compile Include="PictureSlidesLab\Util\StoragePath.cs" />
+    <Compile Include="PictureSlidesLab\Util\TempPath.cs" />
     <Compile Include="Models\PowerPointBgEffectSlide.cs" />
     <Compile Include="LabeledThumbnail.cs">
       <SubType>UserControl</SubType>
@@ -869,19 +869,19 @@
       <Project>{573cc738-5349-4a0d-bc53-9325fa9c0e6f}</Project>
       <Name>FunctionalTestInterface</Name>
     </ProjectReference>
-    <Page Include="ImagesLab\View\AdjustImageWindow.xaml">
+    <Page Include="PictureSlidesLab\View\AdjustImageWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="ImagesLab\View\SlideSelectionDialog.xaml">
+    <Page Include="PictureSlidesLab\View\SlideSelectionDialog.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="ImagesLab\View\ImagesLabWindow.xaml">
+    <Page Include="PictureSlidesLab\View\PictureSlidesLabWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="ImagesLab\View\QuickDropDialog.xaml">
+    <Page Include="PictureSlidesLab\View\QuickDropDialog.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

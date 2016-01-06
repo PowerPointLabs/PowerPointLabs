@@ -493,17 +493,7 @@ namespace PowerPointLabs.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
-        public static System.Drawing.Bitmap ImagesLab {
-            get {
-                object obj = ResourceManager.GetObject("ImagesLab", resourceCulture);
-                return ((System.Drawing.Bitmap)(obj));
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized resource of type System.Drawing.Bitmap.
-        /// </summary>
-        public static System.Drawing.Bitmap Indicator {
+        internal static System.Drawing.Bitmap Indicator {
             get {
                 object obj = ResourceManager.GetObject("Indicator", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
@@ -653,7 +643,17 @@ namespace PowerPointLabs.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
-        public static System.Drawing.Bitmap Play {
+        internal static System.Drawing.Bitmap PictureSlidesLab {
+            get {
+                object obj = ResourceManager.GetObject("PictureSlidesLab", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap Play {
             get {
                 object obj = ResourceManager.GetObject("Play", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
