@@ -60,27 +60,6 @@ namespace PowerPointLabs.DrawingsLab
 
         #region API
 
-        public static void TestControlId()
-        {
-            var commandBars = Globals.ThisAddIn.Application.CommandBars;
-
-            var selection = PowerPointCurrentPresentationInfo.CurrentSelection;
-            if (selection.Type != PpSelectionType.ppSelectionShapes) return;
-            var cmd = Graphics.GetText(selection.ShapeRange[1]);
-            //commandBars.ExecuteMso("MakeSegmentCurved");
-            //commandBars.ExecuteMso("ShapeStraightConnector");
-            try
-            {
-                Debug.WriteLine("Execute: " + cmd);
-                commandBars.ExecuteMso(cmd);
-            }
-            catch (Exception e)
-            {
-                Debug.WriteLine("ERROR!");
-                Debug.WriteLine(e);
-            }
-        }
-
         public static void SwitchToLineTool()
         {
             var commandBars = Globals.ThisAddIn.Application.CommandBars;
@@ -1131,7 +1110,7 @@ namespace PowerPointLabs.DrawingsLab
         #endregion
 
         #region Convenience Functions
-        public static float GetX(Shape shape)
+        private static float GetX(Shape shape)
         {
             switch (DataSource.AnchorHorizontal)
             {
@@ -1145,7 +1124,7 @@ namespace PowerPointLabs.DrawingsLab
             throw new ArgumentOutOfRangeException();
         }
 
-        public static void SetX(Shape shape, float value)
+        private static void SetX(Shape shape, float value)
         {
             switch (DataSource.AnchorHorizontal)
             {
@@ -1162,7 +1141,7 @@ namespace PowerPointLabs.DrawingsLab
             throw new ArgumentOutOfRangeException();
         }
 
-        public static float GetY(Shape shape)
+        private static float GetY(Shape shape)
         {
             switch (DataSource.AnchorVertical)
             {
@@ -1176,7 +1155,7 @@ namespace PowerPointLabs.DrawingsLab
             throw new ArgumentOutOfRangeException();
         }
 
-        public static void SetY(Shape shape, float value)
+        private static void SetY(Shape shape, float value)
         {
             switch (DataSource.AnchorVertical)
             {
@@ -1193,7 +1172,7 @@ namespace PowerPointLabs.DrawingsLab
             throw new ArgumentOutOfRangeException();
         }
 
-        public static List<Shape> GetCurrentlySelectedShapes()
+        private static List<Shape> GetCurrentlySelectedShapes()
         {
             var selection = Globals.ThisAddIn.Application.ActiveWindow.Selection;
             if (selection.Type == PpSelectionType.ppSelectionShapes || selection.Type == PpSelectionType.ppSelectionText)
