@@ -1073,15 +1073,17 @@ namespace PowerPointLabs.PictureSlidesLab.ModelFactory
                 }),
                 new StyleVariants(new Dictionary<string, object>
                 {
-                    {"OptionName", "Top-left"},
+                    {"OptionName", "Centered-left align"},
                     {"IsUseTextFormat", true},
-                    {"TextBoxPosition", 1}
+                    {"TextBoxPosition", 5},
+                    {"TextBoxAlignment", 1}
                 }),
                 new StyleVariants(new Dictionary<string, object>
                 {
-                    {"OptionName", "Top"},
+                    {"OptionName", "Bottom-left align"},
                     {"IsUseTextFormat", true},
-                    {"TextBoxPosition", 2}
+                    {"TextBoxPosition", 8},
+                    {"TextBoxAlignment", 1}
                 }),
                 new StyleVariants(new Dictionary<string, object>
                 {
