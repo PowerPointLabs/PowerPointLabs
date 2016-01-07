@@ -29,8 +29,6 @@ namespace PowerPointLabs.DrawingsLab
     /// </summary>
     public partial class DrawingsPaneWPF
     {
-        private static bool _hotkeysInitialised = false;
-
         private DrawingLabData _data;
         private readonly DrawingsLabDataSource _dataSource;
         private readonly DrawingsLabMain _drawingLab;
@@ -40,10 +38,6 @@ namespace PowerPointLabs.DrawingsLab
             InitializeComponent();
             _dataSource = FindResource("DrawingsLabData") as DrawingsLabDataSource;
             _drawingLab = new DrawingsLabMain(_dataSource);
-
-            var buttonHotkeyBindings = SetupButtonHotkeys();
-            var hotkeyActionBindings = SetupButtons(buttonHotkeyBindings);
-            InitializeHotkeys(hotkeyActionBindings);
         }
 
         #region Data Binding
@@ -53,7 +47,17 @@ namespace PowerPointLabs.DrawingsLab
 
             _data = data;
             _dataSource.AssignData(data);
+
+            InitialiseButtonsAndHotkeys();
         }
+
+        private void InitialiseButtonsAndHotkeys()
+        {
+            var buttonHotkeyBindings = SetupButtonHotkeys();
+            var hotkeyActionBindings = SetupButtons(buttonHotkeyBindings);
+            InitializeHotkeys(hotkeyActionBindings);
+        }
+
         #endregion
 
 
@@ -329,8 +333,8 @@ namespace PowerPointLabs.DrawingsLab
 
         private void InitializeHotkeys(Dictionary<Native.VirtualKey, Action> hotkeyActionBindings)
         {
-            if (_hotkeysInitialised) return;
-            _hotkeysInitialised = true;
+            if (_data.IsHotkeysInitialised) return;
+            _data.IsHotkeysInitialised = true;
 
             PPKeyboard.AddConditionToBlockTextInput(IsReadingHotkeys);
 

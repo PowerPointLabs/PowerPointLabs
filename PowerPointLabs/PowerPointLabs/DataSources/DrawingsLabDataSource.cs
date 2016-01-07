@@ -25,6 +25,8 @@ namespace PowerPointLabs.DataSources
             }
         }
 
+        public bool IsHotkeysInitialised = false;
+
         public bool HotkeysEnabled = true;
 
         // Properties - Record / Apply Displacement
