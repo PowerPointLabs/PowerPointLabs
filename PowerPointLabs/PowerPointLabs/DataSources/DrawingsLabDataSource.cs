@@ -8,8 +8,108 @@ using PowerPointLabs.Utils;
 
 namespace PowerPointLabs.DataSources
 {
+    public class DrawingLabData
+    {
+        private readonly List<Action<string>> _propertyChangedHandlers = new List<Action<string>>();
+
+        public void AddPropertyChangedHandler(Action<string> callPropertyChanged)
+        {
+            _propertyChangedHandlers.Add(callPropertyChanged);
+        }
+
+        public void PropertyChanged(string propertyName)
+        {
+            foreach (var handler in _propertyChangedHandlers)
+            {
+                handler(propertyName);
+            }
+        }
+
+        public bool HotkeysEnabled = true;
+
+        // Properties - Record / Apply Displacement
+        public float ShiftValueX;
+        public float ShiftValueY;
+        public float ShiftValueRotation;
+        public bool ShiftIncludePositionX = true;
+        public bool ShiftIncludePositionY = true;
+        public bool ShiftIncludeRotation = true;
+
+        // Properties - Record / Apply Position
+        public float SavedValueX;
+        public float SavedValueY;
+        public float SavedValueRotation;
+        public bool SavedIncludePositionX = true;
+        public bool SavedIncludePositionY = true;
+        public bool SavedIncludeRotation = true;
+
+
+        // Properties - Record / Apply Format
+        public bool FormatSyncLineStyle = true;
+
+        public bool FormatHasLine = true;
+        public bool FormatIncludeHasLine = true;
+        public int FormatLineColor = 0x000000;
+        public bool FormatIncludeLineColor = true;
+        public float FormatLineWeight = 5;
+        public bool FormatIncludeLineWeight = true;
+        public MsoLineDashStyle FormatLineDashStyle = MsoLineDashStyle.msoLineSolid;
+        public bool FormatIncludeLineDashStyle = true;
+
+
+        public bool FormatSyncFillStyle = true;
+
+        public bool FormatHasFill = true;
+        public bool FormatIncludeHasFill = true;
+        public int FormatFillColor = 0xC07000;
+        public bool FormatIncludeFillColor = true;
+
+
+        public bool FormatSyncTextStyle = true;
+
+        public string FormatText = "Text";
+        public bool FormatIncludeText = false;
+        public int FormatTextColor = 0x000000;
+        public bool FormatIncludeTextColor = true;
+        public float FormatTextFontSize = 18;
+        public bool FormatIncludeTextFontSize = true;
+        public string FormatTextFont = "Calibri (Body)";
+        public bool FormatIncludeTextFont = true;
+        public bool FormatTextWrap = false;
+        public bool FormatIncludeTextWrap = true;
+        public MsoAutoSize FormatTextAutoSize = MsoAutoSize.msoAutoSizeNone;
+        public bool FormatIncludeTextAutoSize = true;
+
+
+        public bool FormatSyncSize = false;
+
+        public float FormatWidth = 0;
+        public bool FormatIncludeWidth = true;
+        public float FormatHeight = 0;
+        public bool FormatIncludeHeight = true;
+
+        // Properties - Anchor
+        public DrawingsLabDataSource.Horizontal AnchorHorizontal = DrawingsLabDataSource.Horizontal.Center;
+        public DrawingsLabDataSource.Vertical AnchorVertical = DrawingsLabDataSource.Vertical.Middle;
+    }
+
     public class DrawingsLabDataSource : INotifyPropertyChanged
     {
+        public DrawingLabData Data { get; private set; }
+
+        public DrawingsLabDataSource()
+        {
+            Data = new DrawingLabData();
+            Data.AddPropertyChangedHandler(CallPropertyChanged);
+        }
+
+        public void AssignData(DrawingLabData data)
+        {
+            this.Data = data;
+            Data.AddPropertyChangedHandler(CallPropertyChanged);
+            CallPropertyChanged("");
+        }
+
         public enum Alignment
         {
             TopLeft,
@@ -37,121 +137,106 @@ namespace PowerPointLabs.DataSources
             Right,
         }
 
-        private bool _hotkeysEnabled = true;
-
         public bool HotkeysEnabled
         {
-            get { return _hotkeysEnabled; }
+            get { return Data.HotkeysEnabled; }
             set
             {
-                _hotkeysEnabled = value;
+                Data.HotkeysEnabled = value;
                 OnPropertyChanged("HotkeysEnabled");
             }
         }
 
         # region Properties - Record / Apply Displacement
-        private float _shiftValueX;
-        private float _shiftValueY;
-        private float _shiftValueRotation;
-        private bool _shiftIncludePositionX = true;
-        private bool _shiftIncludePositionY = true;
-        private bool _shiftIncludeRotation = true;
-
         public float ShiftValueX
         {
-            get { return _shiftValueX; }
+            get { return Data.ShiftValueX; }
             set
             {
-                _shiftValueX = value;
+                Data.ShiftValueX = value;
                 OnPropertyChanged("ShiftValueX");
             }
         }
 
         public float ShiftValueY
         {
-            get { return _shiftValueY; }
+            get { return Data.ShiftValueY; }
             set
             {
-                _shiftValueY = value;
+                Data.ShiftValueY = value;
                 OnPropertyChanged("ShiftValueY");
             }
         }
 
         public float ShiftValueRotation
         {
-            get { return _shiftValueRotation; }
+            get { return Data.ShiftValueRotation; }
             set
             {
-                _shiftValueRotation = value;
+                Data.ShiftValueRotation = value;
                 OnPropertyChanged("ShiftValueRotation");
             }
         }
 
         public bool ShiftIncludePositionX
         {
-            get { return _shiftIncludePositionX; }
+            get { return Data.ShiftIncludePositionX; }
             set
             {
-                _shiftIncludePositionX = value;
+                Data.ShiftIncludePositionX = value;
                 OnPropertyChanged("ShiftIncludePositionX");
             }
         }
 
         public bool ShiftIncludePositionY
         {
-            get { return _shiftIncludePositionY; }
+            get { return Data.ShiftIncludePositionY; }
             set
             {
-                _shiftIncludePositionY = value;
+                Data.ShiftIncludePositionY = value;
                 OnPropertyChanged("ShiftIncludePositionY");
             }
         }
 
         public bool ShiftIncludeRotation
         {
-            get { return _shiftIncludeRotation; }
+            get { return Data.ShiftIncludeRotation; }
             set
             {
-                _shiftIncludeRotation = value;
+                Data.ShiftIncludeRotation = value;
                 OnPropertyChanged("ShiftIncludeRotation");
             }
         }
         # endregion
 
         # region Properties - Record / Apply Position
-        private float _savedValueX;
-        private float _savedValueY;
-        private float _savedValueRotation;
-        private bool _savedIncludePositionX = true;
-        private bool _savedIncludePositionY = true;
-        private bool _savedIncludeRotation = true;
 
         public float SavedValueX
         {
-            get { return _savedValueX; }
+            get { return Data.SavedValueX; }
             set
             {
-                _savedValueX = value;
+                Data.SavedValueX = value;
                 OnPropertyChanged("SavedValueX");
             }
         }
 
         public float SavedValueY
         {
-            get { return _savedValueY; }
+            get { return Data.SavedValueY; }
             set
             {
-                _savedValueY = value;
+                Data.SavedValueY = value;
                 OnPropertyChanged("SavedValueY");
             }
         }
 
         public float SavedValueRotation
         {
-            get { return _savedValueRotation; }
+            get { return Data.SavedValueRotation; }
             set
             {
-                _savedValueRotation = value;
+                Data.SavedValueRotation = value;
                 OnPropertyChanged("SavedValueRotation");
             }
         }
@@ -159,30 +244,30 @@ namespace PowerPointLabs.DataSources
 
         public bool SavedIncludePositionX
         {
-            get { return _savedIncludePositionX; }
+            get { return Data.SavedIncludePositionX; }
             set
             {
-                _savedIncludePositionX = value;
+                Data.SavedIncludePositionX = value;
                 OnPropertyChanged("SavedIncludePositionX");
             }
         }
 
         public bool SavedIncludePositionY
         {
-            get { return _savedIncludePositionY; }
+            get { return Data.SavedIncludePositionY; }
             set
             {
-                _savedIncludePositionY = value;
+                Data.SavedIncludePositionY = value;
                 OnPropertyChanged("SavedIncludePositionY");
             }
         }
 
         public bool SavedIncludeRotation
         {
-            get { return _savedIncludeRotation; }
+            get { return Data.SavedIncludeRotation; }
             set
             {
-                _savedIncludeRotation = value;
+                Data.SavedIncludeRotation = value;
                 OnPropertyChanged("SavedIncludeRotation");
             }
         }
@@ -190,390 +275,346 @@ namespace PowerPointLabs.DataSources
         # endregion
 
         # region Properties - Record / Apply Format
-        private bool _formatSyncLineStyle = true;
-
-        private bool _formatHasLine = true;
-        private bool _formatIncludeHasLine = true;
-        private int _formatLineColor = 0x000000;
-        private bool _formatIncludeLineColor = true;
-        private float _formatLineWeight = 5;
-        private bool _formatIncludeLineWeight = true;
-        private MsoLineDashStyle _formatLineDashStyle = MsoLineDashStyle.msoLineSolid;
-        private bool _formatIncludeLineDashStyle = true;
-
-
-        private bool _formatSyncFillStyle = true;
-
-        private bool _formatHasFill = true;
-        private bool _formatIncludeHasFill = true;
-        private int _formatFillColor = 0xC07000;
-        private bool _formatIncludeFillColor = true;
-
-
-        private bool _formatSyncTextStyle = true;
-
-        private string _formatText = "Text";
-        private bool _formatIncludeText = false;
-        private int _formatTextColor = 0x000000;
-        private bool _formatIncludeTextColor = true;
-        private float _formatTextFontSize = 18;
-        private bool _formatIncludeTextFontSize = true;
-        private string _formatTextFont = "Calibri (Body)";
-        private bool _formatIncludeTextFont = true;
-        private bool _formatTextWrap = false;
-        private bool _formatIncludeTextWrap = true;
-        private MsoAutoSize _formatTextAutoSize = MsoAutoSize.msoAutoSizeNone;
-        private bool _formatIncludeTextAutoSize = true;
-
-
-        private bool _formatSyncSize = false;
-
-        private float _formatWidth = 0;
-        private bool _formatIncludeWidth = true;
-        private float _formatHeight = 0;
-        private bool _formatIncludeHeight = true;
 
         public bool FormatSyncTextStyle
         {
-            get { return _formatSyncTextStyle; }
+            get { return Data.FormatSyncTextStyle; }
             set
             {
-                _formatSyncTextStyle = value;
+                Data.FormatSyncTextStyle = value;
                 OnPropertyChanged("FormatSyncTextStyle");
             }
         }
 
         public string FormatText
         {
-            get { return _formatText; }
+            get { return Data.FormatText; }
             set
             {
-                _formatText = value;
+                Data.FormatText = value;
                 OnPropertyChanged("FormatText");
             }
         }
 
         public bool FormatIncludeText
         {
-            get { return _formatIncludeText; }
+            get { return Data.FormatIncludeText; }
             set
             {
-                _formatIncludeText = value;
+                Data.FormatIncludeText = value;
                 OnPropertyChanged("FormatIncludeText");
             }
         }
 
         public int FormatTextColor
         {
-            get { return _formatTextColor; }
+            get { return Data.FormatTextColor; }
             set
             {
-                _formatTextColor = value;
+                Data.FormatTextColor = value;
                 OnPropertyChanged("FormatTextColor");
             }
         }
 
         public bool FormatIncludeTextColor
         {
-            get { return _formatIncludeTextColor; }
+            get { return Data.FormatIncludeTextColor; }
             set
             {
-                _formatIncludeTextColor = value;
+                Data.FormatIncludeTextColor = value;
                 OnPropertyChanged("FormatIncludeTextColor");
             }
         }
 
         public float FormatTextFontSize
         {
-            get { return _formatTextFontSize; }
+            get { return Data.FormatTextFontSize; }
             set
             {
-                _formatTextFontSize = value;
+                Data.FormatTextFontSize = value;
                 OnPropertyChanged("FormatTextFontSize");
             }
         }
 
         public bool FormatIncludeTextFontSize
         {
-            get { return _formatIncludeTextFontSize; }
+            get { return Data.FormatIncludeTextFontSize; }
             set
             {
-                _formatIncludeTextFontSize = value;
+                Data.FormatIncludeTextFontSize = value;
                 OnPropertyChanged("FormatIncludeTextFontSize");
             }
         }
 
         public string FormatTextFont
         {
-            get { return _formatTextFont; }
+            get { return Data.FormatTextFont; }
             set
             {
-                _formatTextFont = value;
+                Data.FormatTextFont = value;
                 OnPropertyChanged("FormatTextFont");
             }
         }
 
         public bool FormatIncludeTextFont
         {
-            get { return _formatIncludeTextFont; }
+            get { return Data.FormatIncludeTextFont; }
             set
             {
-                _formatIncludeTextFont = value;
+                Data.FormatIncludeTextFont = value;
                 OnPropertyChanged("FormatIncludeTextFont");
             }
         }
 
         public bool FormatTextWrap
         {
-            get { return _formatTextWrap; }
+            get { return Data.FormatTextWrap; }
             set
             {
-                _formatTextWrap = value;
+                Data.FormatTextWrap = value;
                 OnPropertyChanged("FormatTextWrap");
             }
         }
 
         public bool FormatIncludeTextWrap
         {
-            get { return _formatIncludeTextWrap; }
+            get { return Data.FormatIncludeTextWrap; }
             set
             {
-                _formatIncludeTextWrap = value;
+                Data.FormatIncludeTextWrap = value;
                 OnPropertyChanged("FormatIncludeTextWrap");
             }
         }
 
         public MsoAutoSize FormatTextAutoSize
         {
-            get { return _formatTextAutoSize; }
+            get { return Data.FormatTextAutoSize; }
             set
             {
-                _formatTextAutoSize = value;
+                Data.FormatTextAutoSize = value;
                 OnPropertyChanged("FormatTextAutoSize");
             }
         }
 
         public bool FormatIncludeTextAutoSize
         {
-            get { return _formatIncludeTextAutoSize; }
+            get { return Data.FormatIncludeTextAutoSize; }
             set
             {
-                _formatIncludeTextAutoSize = value;
+                Data.FormatIncludeTextAutoSize = value;
                 OnPropertyChanged("FormatIncludeTextAutoSize");
             }
         }
 
         public bool FormatSyncLineStyle
         {
-            get { return _formatSyncLineStyle; }
+            get { return Data.FormatSyncLineStyle; }
             set
             {
-                _formatSyncLineStyle = value;
+                Data.FormatSyncLineStyle = value;
                 OnPropertyChanged("FormatSyncLineStyle");
             }
         }
 
         public bool FormatHasLine
         {
-            get { return _formatHasLine; }
+            get { return Data.FormatHasLine; }
             set
             {
-                _formatHasLine = value;
+                Data.FormatHasLine = value;
                 OnPropertyChanged("FormatHasLine");
             }
         }
 
         public bool FormatIncludeHasLine
         {
-            get { return _formatIncludeHasLine; }
+            get { return Data.FormatIncludeHasLine; }
             set
             {
-                _formatIncludeHasLine = value;
+                Data.FormatIncludeHasLine = value;
                 OnPropertyChanged("FormatIncludeHasLine");
             }
         }
 
         public int FormatLineColor
         {
-            get { return _formatLineColor; }
+            get { return Data.FormatLineColor; }
             set
             {
-                _formatLineColor = value;
+                Data.FormatLineColor = value;
                 OnPropertyChanged("FormatLineColor");
             }
         }
 
         public bool FormatIncludeLineColor
         {
-            get { return _formatIncludeLineColor; }
+            get { return Data.FormatIncludeLineColor; }
             set
             {
-                _formatIncludeLineColor = value;
+                Data.FormatIncludeLineColor = value;
                 OnPropertyChanged("FormatIncludeLineColor");
             }
         }
 
         public float FormatLineWeight
         {
-            get { return _formatLineWeight; }
+            get { return Data.FormatLineWeight; }
             set
             {
-                _formatLineWeight = value;
+                Data.FormatLineWeight = value;
                 OnPropertyChanged("FormatLineWeight");
             }
         }
 
         public bool FormatIncludeLineWeight
         {
-            get { return _formatIncludeLineWeight; }
+            get { return Data.FormatIncludeLineWeight; }
             set
             {
-                _formatIncludeLineWeight = value;
+                Data.FormatIncludeLineWeight = value;
                 OnPropertyChanged("FormatIncludeLineWeight");
             }
         }
 
         public MsoLineDashStyle FormatLineDashStyle
         {
-            get { return _formatLineDashStyle; }
+            get { return Data.FormatLineDashStyle; }
             set
             {
-                _formatLineDashStyle = value;
+                Data.FormatLineDashStyle = value;
                 OnPropertyChanged("FormatLineDashStyle");
             }
         }
 
         public bool FormatIncludeLineDashStyle
         {
-            get { return _formatIncludeLineDashStyle; }
+            get { return Data.FormatIncludeLineDashStyle; }
             set
             {
-                _formatIncludeLineDashStyle = value;
+                Data.FormatIncludeLineDashStyle = value;
                 OnPropertyChanged("FormatIncludeLineDashStyle");
             }
         }
 
         public bool FormatSyncFillStyle
         {
-            get { return _formatSyncFillStyle; }
+            get { return Data.FormatSyncFillStyle; }
             set
             {
-                _formatSyncFillStyle = value;
+                Data.FormatSyncFillStyle = value;
                 OnPropertyChanged("FormatSyncFillStyle");
             }
         }
 
         public bool FormatHasFill
         {
-            get { return _formatHasFill; }
+            get { return Data.FormatHasFill; }
             set
             {
-                _formatHasFill = value;
+                Data.FormatHasFill = value;
                 OnPropertyChanged("FormatHasFill");
             }
         }
 
         public bool FormatIncludeHasFill
         {
-            get { return _formatIncludeHasFill; }
+            get { return Data.FormatIncludeHasFill; }
             set
             {
-                _formatIncludeHasFill = value;
+                Data.FormatIncludeHasFill = value;
                 OnPropertyChanged("FormatIncludeHasFill");
             }
         }
 
         public int FormatFillColor
         {
-            get { return _formatFillColor; }
+            get { return Data.FormatFillColor; }
             set
             {
-                _formatFillColor = value;
+                Data.FormatFillColor = value;
                 OnPropertyChanged("FormatFillColor");
             }
         }
 
         public bool FormatIncludeFillColor
         {
-            get { return _formatIncludeFillColor; }
+            get { return Data.FormatIncludeFillColor; }
             set
             {
-                _formatIncludeFillColor = value;
+                Data.FormatIncludeFillColor = value;
                 OnPropertyChanged("FormatIncludeFillColor");
             }
         }
 
         public bool FormatSyncSize
         {
-            get { return _formatSyncSize; }
+            get { return Data.FormatSyncSize; }
             set
             {
-                _formatSyncSize = value;
+                Data.FormatSyncSize = value;
                 OnPropertyChanged("FormatSyncSize");
             }
         }
 
         public float FormatWidth
         {
-            get { return _formatWidth; }
+            get { return Data.FormatWidth; }
             set
             {
-                _formatWidth = value;
+                Data.FormatWidth = value;
                 OnPropertyChanged("FormatWidth");
             }
         }
 
         public bool FormatIncludeWidth
         {
-            get { return _formatIncludeWidth; }
+            get { return Data.FormatIncludeWidth; }
             set
             {
-                _formatIncludeWidth = value;
+                Data.FormatIncludeWidth = value;
                 OnPropertyChanged("FormatIncludeWidth");
             }
         }
 
         public float FormatHeight
         {
-            get { return _formatHeight; }
+            get { return Data.FormatHeight; }
             set
             {
-                _formatHeight = value;
+                Data.FormatHeight = value;
                 OnPropertyChanged("FormatHeight");
             }
         }
 
         public bool FormatIncludeHeight
         {
-            get { return _formatIncludeHeight; }
+            get { return Data.FormatIncludeHeight; }
             set
             {
-                _formatIncludeHeight = value;
+                Data.FormatIncludeHeight = value;
                 OnPropertyChanged("FormatIncludeHeight");
             }
         }
         # endregion
 
         # region Properties - Anchor
-        private Horizontal _anchorHorizontal = Horizontal.Center;
-        private Vertical _anchorVertical = Vertical.Middle;
 
         public Horizontal AnchorHorizontal
         {
-            get { return _anchorHorizontal; }
+            get { return Data.AnchorHorizontal; }
             set
             {
-                _anchorHorizontal = value;
+                Data.AnchorHorizontal = value;
                 OnPropertyChanged("Anchor");
             }
         }
 
         public Vertical AnchorVertical
         {
-            get { return _anchorVertical; }
+            get { return Data.AnchorVertical; }
             set
             {
-                _anchorVertical = value;
+                Data.AnchorVertical = value;
                 OnPropertyChanged("Anchor");
             }
         }
@@ -582,11 +623,11 @@ namespace PowerPointLabs.DataSources
         {
             get
             {
-                return HorizontalVerticalToAlignment(_anchorHorizontal, _anchorVertical);
+                return HorizontalVerticalToAlignment(Data.AnchorHorizontal, Data.AnchorVertical);
             }
             set
             {
-                AlignmentToHorizontalVertical(value, out _anchorHorizontal, out _anchorVertical);
+                AlignmentToHorizontalVertical(value, out Data.AnchorHorizontal, out Data.AnchorVertical);
                 OnPropertyChanged("Anchor");
             }
         }
@@ -712,6 +753,11 @@ namespace PowerPointLabs.DataSources
         public event PropertyChangedEventHandler PropertyChanged = delegate {};
 
         protected void OnPropertyChanged(string propertyName)
+        {
+            Data.PropertyChanged(propertyName);
+        }
+
+        private void CallPropertyChanged(string propertyName)
         {
             PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
         }

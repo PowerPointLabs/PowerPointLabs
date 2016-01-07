@@ -19,7 +19,8 @@ namespace PowerPointLabs.DrawingsLab
 {
     internal class DrawingsLabMain
     {
-        private static Dictionary<Native.VirtualKey, ControlGroup> _controlGroups = new Dictionary<Native.VirtualKey, ControlGroup>();  
+        private readonly DrawingsLabDataSource _dataSource;
+        private readonly Dictionary<Native.VirtualKey, ControlGroup> _controlGroups = new Dictionary<Native.VirtualKey, ControlGroup>();  
 
         private struct ControlGroup
         {
@@ -33,14 +34,12 @@ namespace PowerPointLabs.DrawingsLab
             }
         }
 
-
-        public static DrawingsLabDataSource DataSource
+        public DrawingsLabMain(DrawingsLabDataSource dataSource)
         {
-            get { return DrawingsPaneWPF.DataSource; }
+            _dataSource = dataSource;
         }
 
-
-        public static Action FunctionWrapper(Action action)
+        public Action FunctionWrapper(Action action)
         {
             return () =>
             {
@@ -60,43 +59,43 @@ namespace PowerPointLabs.DrawingsLab
 
         #region API
 
-        public static void SwitchToLineTool()
+        public void SwitchToLineTool()
         {
             var commandBars = Globals.ThisAddIn.Application.CommandBars;
             commandBars.ExecuteMso("ShapeStraightConnector");
         }
 
-        public static void SwitchToArrowTool()
+        public void SwitchToArrowTool()
         {
             var commandBars = Globals.ThisAddIn.Application.CommandBars;
             commandBars.ExecuteMso("ShapeStraightConnectorArrow");
         }
 
-        public static void SwitchToRectangleTool()
+        public void SwitchToRectangleTool()
         {
             var commandBars = Globals.ThisAddIn.Application.CommandBars;
             commandBars.ExecuteMso("ShapeRectangle");
         }
 
-        public static void SwitchToRoundedRectangleTool()
+        public void SwitchToRoundedRectangleTool()
         {
             var commandBars = Globals.ThisAddIn.Application.CommandBars;
             commandBars.ExecuteMso("ShapeRoundedRectangle");
         }
 
-        public static void SwitchToCircleTool()
+        public void SwitchToCircleTool()
         {
             var commandBars = Globals.ThisAddIn.Application.CommandBars;
             commandBars.ExecuteMso("ShapeOval");
         }
 
-        public static void SwitchToTriangleTool()
+        public void SwitchToTriangleTool()
         {
             var commandBars = Globals.ThisAddIn.Application.CommandBars;
             commandBars.ExecuteMso("ShapeIsoscelesTriangle");
         }
 
-        public static void SwitchToTextboxTool()
+        public void SwitchToTextboxTool()
         {
             var commandBars = Globals.ThisAddIn.Application.CommandBars;
 
@@ -111,7 +110,7 @@ namespace PowerPointLabs.DrawingsLab
             }
         }
 
-        public static void AddText()
+        public void AddText()
         {
             var shapes = GetCurrentlySelectedShapes();
             if (shapes.Count <= 0)
@@ -137,7 +136,7 @@ namespace PowerPointLabs.DrawingsLab
             }
         }
 
-        public static void AddMath()
+        public void AddMath()
         {
             var shapes = GetCurrentlySelectedShapes();
             if (shapes.Count != 1)
@@ -158,7 +157,7 @@ namespace PowerPointLabs.DrawingsLab
             }
         }
 
-        public static void RemoveText()
+        public void RemoveText()
         {
             var shapes = GetCurrentlySelectedShapes();
             if (shapes.Count <= 0)
@@ -174,7 +173,7 @@ namespace PowerPointLabs.DrawingsLab
             }
         }
 
-        public static void GroupShapes()
+        public void GroupShapes()
         {
             var shapes = GetCurrentlySelectedShapes();
             if (shapes.Count < 2)
@@ -196,7 +195,7 @@ namespace PowerPointLabs.DrawingsLab
             }
         }
 
-        public static void UngroupShapes()
+        public void UngroupShapes()
         {
             var shapes = GetCurrentlySelectedShapes();
             if (shapes.Count <= 0)
@@ -218,7 +217,7 @@ namespace PowerPointLabs.DrawingsLab
             }
         }
 
-        public static void ToggleArrowStart()
+        public void ToggleArrowStart()
         {
             var shapes = GetCurrentlySelectedShapes();
             if (shapes.Count <= 0)
@@ -248,7 +247,7 @@ namespace PowerPointLabs.DrawingsLab
             }
         }
 
-        public static void ToggleArrowEnd()
+        public void ToggleArrowEnd()
         {
             var shapes = GetCurrentlySelectedShapes();
             if (shapes.Count <= 0)
@@ -279,7 +278,7 @@ namespace PowerPointLabs.DrawingsLab
         }
 
 
-        public static void HideTool()
+        public void HideTool()
         {
             var shapes = GetCurrentlySelectedShapes();
             if (shapes.Count <= 0)
@@ -295,7 +294,7 @@ namespace PowerPointLabs.DrawingsLab
             }
         }
 
-        public static void ShowAllTool()
+        public void ShowAllTool()
         {
             var shapes = PowerPointCurrentPresentationInfo.CurrentSlide.Shapes;
 
@@ -306,13 +305,13 @@ namespace PowerPointLabs.DrawingsLab
             }
         }
 
-        public static void OpenSelectionPane()
+        public void OpenSelectionPane()
         {
             var commandBars = Globals.ThisAddIn.Application.CommandBars;
             commandBars.ExecuteMso("SelectionPane");
         }
 
-        public static void CloneTool()
+        public void CloneTool()
         {
             var selection = PowerPointCurrentPresentationInfo.CurrentSelection;
             if (selection.Type != PpSelectionType.ppSelectionShapes)
@@ -325,7 +324,7 @@ namespace PowerPointLabs.DrawingsLab
             PowerPointCurrentPresentationInfo.CurrentSlide.CopyShapesToSlide(selection.ShapeRange);
         }
 
-        public static void MultiCloneExtendTool()
+        public void MultiCloneExtendTool()
         {
             var shapes = GetCurrentlySelectedShapes();
             if (shapes.Count == 0 || shapes.Count % 2 != 0)
@@ -371,7 +370,7 @@ namespace PowerPointLabs.DrawingsLab
             }
         }
 
-        public static void MultiCloneBetweenTool()
+        public void MultiCloneBetweenTool()
         {
             var shapes = GetCurrentlySelectedShapes();
             if (shapes.Count == 0 || shapes.Count % 2 != 0)
@@ -427,7 +426,7 @@ namespace PowerPointLabs.DrawingsLab
             }
         }
 
-        public static void MultiCloneGridTool()
+        public void MultiCloneGridTool()
         {
             var shapes = GetCurrentlySelectedShapes();
             if (shapes.Count != 2)
@@ -532,7 +531,7 @@ namespace PowerPointLabs.DrawingsLab
         }
 
 
-        public static void PivotAroundTool()
+        public void PivotAroundTool()
         {
             var shapes = GetCurrentlySelectedShapes();
             if (shapes.Count != 2)
@@ -589,7 +588,7 @@ namespace PowerPointLabs.DrawingsLab
         }
 
 
-        public static void SendBackward()
+        public void SendBackward()
         {
             var selection = PowerPointCurrentPresentationInfo.CurrentSelection;
             if (selection.Type != PpSelectionType.ppSelectionShapes && selection.Type != PpSelectionType.ppSelectionText)
@@ -602,7 +601,7 @@ namespace PowerPointLabs.DrawingsLab
             selection.ShapeRange.ZOrder(MsoZOrderCmd.msoSendBackward);
         }
 
-        public static void BringForward()
+        public void BringForward()
         {
             var selection = PowerPointCurrentPresentationInfo.CurrentSelection;
             if (selection.Type != PpSelectionType.ppSelectionShapes && selection.Type != PpSelectionType.ppSelectionText)
@@ -615,7 +614,7 @@ namespace PowerPointLabs.DrawingsLab
             selection.ShapeRange.ZOrder(MsoZOrderCmd.msoBringForward);
         }
 
-        public static void SendToBack()
+        public void SendToBack()
         {
             var selection = PowerPointCurrentPresentationInfo.CurrentSelection;
             if (selection.Type != PpSelectionType.ppSelectionShapes && selection.Type != PpSelectionType.ppSelectionText)
@@ -628,7 +627,7 @@ namespace PowerPointLabs.DrawingsLab
             selection.ShapeRange.ZOrder(MsoZOrderCmd.msoSendToBack);
         }
 
-        public static void BringToFront()
+        public void BringToFront()
         {
             var selection = PowerPointCurrentPresentationInfo.CurrentSelection;
             if (selection.Type != PpSelectionType.ppSelectionShapes && selection.Type != PpSelectionType.ppSelectionText)
@@ -641,7 +640,7 @@ namespace PowerPointLabs.DrawingsLab
             selection.ShapeRange.ZOrder(MsoZOrderCmd.msoBringToFront);
         }
 
-        public static void SendBehindShape()
+        public void SendBehindShape()
         {
             var shapes = GetCurrentlySelectedShapes();
             if (shapes.Count < 2)
@@ -662,7 +661,7 @@ namespace PowerPointLabs.DrawingsLab
             }
         }
 
-        public static void BringInFrontOfShape()
+        public void BringInFrontOfShape()
         {
             var shapes = GetCurrentlySelectedShapes();
             if (shapes.Count < 2)
@@ -682,7 +681,7 @@ namespace PowerPointLabs.DrawingsLab
             }
         }
 
-        public static void RecordDisplacement()
+        public void RecordDisplacement()
         {
             var shapes = GetCurrentlySelectedShapes();
             if (shapes.Count != 2)
@@ -694,12 +693,12 @@ namespace PowerPointLabs.DrawingsLab
             var firstShape = shapes[0];
             var secondShape = shapes[1];
 
-            DataSource.ShiftValueX = GetX(secondShape) - GetX(firstShape);
-            DataSource.ShiftValueY = GetY(secondShape) - GetY(firstShape);
-            DataSource.ShiftValueRotation = secondShape.Rotation - firstShape.Rotation;
+            _dataSource.ShiftValueX = GetX(secondShape) - GetX(firstShape);
+            _dataSource.ShiftValueY = GetY(secondShape) - GetY(firstShape);
+            _dataSource.ShiftValueRotation = secondShape.Rotation - firstShape.Rotation;
         }
 
-        public static void ApplyDisplacement(bool applyAllSettings = false)
+        public void ApplyDisplacement(bool applyAllSettings = false)
         {
             var shapes = GetCurrentlySelectedShapes();
             if (shapes.Count <= 0)
@@ -711,22 +710,22 @@ namespace PowerPointLabs.DrawingsLab
             Globals.ThisAddIn.Application.StartNewUndoEntry();
             foreach (var shape in shapes)
             {
-                if (applyAllSettings || DataSource.ShiftIncludePositionX)
+                if (applyAllSettings || _dataSource.ShiftIncludePositionX)
                 {
-                    SetX(shape, GetX(shape) + DataSource.ShiftValueX);
+                    SetX(shape, GetX(shape) + _dataSource.ShiftValueX);
                 }
-                if (applyAllSettings || DataSource.ShiftIncludePositionY)
+                if (applyAllSettings || _dataSource.ShiftIncludePositionY)
                 {
-                    SetY(shape, GetY(shape) + DataSource.ShiftValueY);
+                    SetY(shape, GetY(shape) + _dataSource.ShiftValueY);
                 }
-                if (applyAllSettings || DataSource.ShiftIncludeRotation)
+                if (applyAllSettings || _dataSource.ShiftIncludeRotation)
                 {
-                    shape.Rotation += DataSource.ShiftValueRotation;
+                    shape.Rotation += _dataSource.ShiftValueRotation;
                 }
             }
         }
 
-        public static void RecordPosition()
+        public void RecordPosition()
         {
             var shapes = GetCurrentlySelectedShapes();
             if (shapes.Count != 1)
@@ -736,12 +735,12 @@ namespace PowerPointLabs.DrawingsLab
             }
             var shape = shapes[0];
 
-            DataSource.SavedValueX = GetX(shape);
-            DataSource.SavedValueY = GetY(shape);
-            DataSource.SavedValueRotation = shape.Rotation;
+            _dataSource.SavedValueX = GetX(shape);
+            _dataSource.SavedValueY = GetY(shape);
+            _dataSource.SavedValueRotation = shape.Rotation;
         }
 
-        public static void ApplyPosition(bool applyAllSettings = false)
+        public void ApplyPosition(bool applyAllSettings = false)
         {
             var shapes = GetCurrentlySelectedShapes();
             if (shapes.Count <= 0)
@@ -753,23 +752,23 @@ namespace PowerPointLabs.DrawingsLab
             Globals.ThisAddIn.Application.StartNewUndoEntry();
             foreach (var shape in shapes)
             {
-                if (applyAllSettings || DataSource.SavedIncludePositionX)
+                if (applyAllSettings || _dataSource.SavedIncludePositionX)
                 {
-                    SetX(shape, DataSource.SavedValueX);
+                    SetX(shape, _dataSource.SavedValueX);
                 }
-                if (applyAllSettings || DataSource.SavedIncludePositionY)
+                if (applyAllSettings || _dataSource.SavedIncludePositionY)
                 {
-                    SetY(shape, DataSource.SavedValueY);
+                    SetY(shape, _dataSource.SavedValueY);
                 }
-                if (applyAllSettings || DataSource.SavedIncludeRotation)
+                if (applyAllSettings || _dataSource.SavedIncludeRotation)
                 {
-                    shape.Rotation = DataSource.SavedValueRotation;
+                    shape.Rotation = _dataSource.SavedValueRotation;
                 }
             }
         }
 
 
-        public static void RecordFormat()
+        public void RecordFormat()
         {
             var shapes = GetCurrentlySelectedShapes();
             if (shapes.Count != 1)
@@ -782,12 +781,12 @@ namespace PowerPointLabs.DrawingsLab
             try
             {
                 var font = shape.TextFrame2.TextRange.Font;
-                DataSource.FormatText = Graphics.GetText(shape);
-                DataSource.FormatTextColor = font.Fill.ForeColor.RGB;
-                DataSource.FormatTextFontSize = font.Size;
-                DataSource.FormatTextFont = font.Name;
-                DataSource.FormatTextWrap = shape.TextFrame2.WordWrap == MsoTriState.msoTrue;
-                DataSource.FormatTextAutoSize = shape.TextFrame2.AutoSize;
+                _dataSource.FormatText = Graphics.GetText(shape);
+                _dataSource.FormatTextColor = font.Fill.ForeColor.RGB;
+                _dataSource.FormatTextFontSize = font.Size;
+                _dataSource.FormatTextFont = font.Name;
+                _dataSource.FormatTextWrap = shape.TextFrame2.WordWrap == MsoTriState.msoTrue;
+                _dataSource.FormatTextAutoSize = shape.TextFrame2.AutoSize;
             }
             catch (ArgumentException)
             {
@@ -797,10 +796,10 @@ namespace PowerPointLabs.DrawingsLab
             try
             {
                 var line = shape.Line;
-                DataSource.FormatHasLine = line.Visible == MsoTriState.msoTrue;
-                DataSource.FormatLineColor = line.ForeColor.RGB;
-                DataSource.FormatLineWeight = line.Weight;
-                DataSource.FormatLineDashStyle = line.DashStyle;
+                _dataSource.FormatHasLine = line.Visible == MsoTriState.msoTrue;
+                _dataSource.FormatLineColor = line.ForeColor.RGB;
+                _dataSource.FormatLineWeight = line.Weight;
+                _dataSource.FormatLineDashStyle = line.DashStyle;
             }
             catch (ArgumentException)
             {
@@ -810,19 +809,19 @@ namespace PowerPointLabs.DrawingsLab
             try
             {
                 var fill = shape.Fill;
-                DataSource.FormatHasFill = fill.Visible == MsoTriState.msoTrue;
-                DataSource.FormatFillColor = fill.ForeColor.RGB;
+                _dataSource.FormatHasFill = fill.Visible == MsoTriState.msoTrue;
+                _dataSource.FormatFillColor = fill.ForeColor.RGB;
             }
             catch (ArgumentException)
             {
                 // ArgumentException is thrown if the shape does not have this property.
             }
 
-            DataSource.FormatWidth = shape.Width;
-            DataSource.FormatHeight = shape.Height;
+            _dataSource.FormatWidth = shape.Width;
+            _dataSource.FormatHeight = shape.Height;
         }
 
-        public static void ApplyFormat(bool applyAllSettings = false)
+        public void ApplyFormat(bool applyAllSettings = false)
         {
             var shapes = GetCurrentlySelectedShapes();
             if (shapes.Count <= 0)
@@ -853,44 +852,44 @@ namespace PowerPointLabs.DrawingsLab
                 var shape = s;
 
                 // Sync Text Style
-                apply(false, DataSource.FormatSyncTextStyle && DataSource.FormatIncludeText,
-                    () => Graphics.SetText(shape, DataSource.FormatText));
-                apply(true, DataSource.FormatSyncTextStyle && DataSource.FormatIncludeTextColor,
-                    () => shape.TextFrame2.TextRange.Font.Fill.ForeColor.RGB = DataSource.FormatTextColor);
-                apply(true, DataSource.FormatSyncTextStyle && DataSource.FormatIncludeTextFontSize,
-                    () => shape.TextFrame2.TextRange.Font.Size = DataSource.FormatTextFontSize);
-                apply(true, DataSource.FormatSyncTextStyle && DataSource.FormatIncludeTextFont,
-                    () => shape.TextFrame2.TextRange.Font.Name = DataSource.FormatTextFont);
-                apply(true, DataSource.FormatSyncTextStyle && DataSource.FormatIncludeTextWrap,
-                    () => shape.TextFrame2.WordWrap = DataSource.FormatTextWrap ? MsoTriState.msoTrue : MsoTriState.msoFalse);
-                apply(true, DataSource.FormatSyncTextStyle && DataSource.FormatIncludeTextAutoSize,
-                    () => shape.TextFrame2.AutoSize = DataSource.FormatTextAutoSize);
+                apply(false, _dataSource.FormatSyncTextStyle && _dataSource.FormatIncludeText,
+                    () => Graphics.SetText(shape, _dataSource.FormatText));
+                apply(true, _dataSource.FormatSyncTextStyle && _dataSource.FormatIncludeTextColor,
+                    () => shape.TextFrame2.TextRange.Font.Fill.ForeColor.RGB = _dataSource.FormatTextColor);
+                apply(true, _dataSource.FormatSyncTextStyle && _dataSource.FormatIncludeTextFontSize,
+                    () => shape.TextFrame2.TextRange.Font.Size = _dataSource.FormatTextFontSize);
+                apply(true, _dataSource.FormatSyncTextStyle && _dataSource.FormatIncludeTextFont,
+                    () => shape.TextFrame2.TextRange.Font.Name = _dataSource.FormatTextFont);
+                apply(true, _dataSource.FormatSyncTextStyle && _dataSource.FormatIncludeTextWrap,
+                    () => shape.TextFrame2.WordWrap = _dataSource.FormatTextWrap ? MsoTriState.msoTrue : MsoTriState.msoFalse);
+                apply(true, _dataSource.FormatSyncTextStyle && _dataSource.FormatIncludeTextAutoSize,
+                    () => shape.TextFrame2.AutoSize = _dataSource.FormatTextAutoSize);
 
                 // Sync Line Style
-                apply(true, DataSource.FormatSyncLineStyle && DataSource.FormatIncludeHasLine,
-                    () => shape.Line.Visible = DataSource.FormatHasLine ? MsoTriState.msoTrue : MsoTriState.msoFalse);
-                apply(true, DataSource.FormatSyncLineStyle && DataSource.FormatIncludeLineColor,
-                    () => shape.Line.ForeColor.RGB = DataSource.FormatLineColor);
-                apply(true, DataSource.FormatSyncLineStyle && DataSource.FormatIncludeLineWeight,
-                    () => shape.Line.Weight = DataSource.FormatLineWeight);
-                apply(true, DataSource.FormatSyncLineStyle && DataSource.FormatIncludeLineDashStyle,
-                    () => shape.Line.DashStyle = DataSource.FormatLineDashStyle);
+                apply(true, _dataSource.FormatSyncLineStyle && _dataSource.FormatIncludeHasLine,
+                    () => shape.Line.Visible = _dataSource.FormatHasLine ? MsoTriState.msoTrue : MsoTriState.msoFalse);
+                apply(true, _dataSource.FormatSyncLineStyle && _dataSource.FormatIncludeLineColor,
+                    () => shape.Line.ForeColor.RGB = _dataSource.FormatLineColor);
+                apply(true, _dataSource.FormatSyncLineStyle && _dataSource.FormatIncludeLineWeight,
+                    () => shape.Line.Weight = _dataSource.FormatLineWeight);
+                apply(true, _dataSource.FormatSyncLineStyle && _dataSource.FormatIncludeLineDashStyle,
+                    () => shape.Line.DashStyle = _dataSource.FormatLineDashStyle);
 
                 // Sync Fill Style
-                apply(true, DataSource.FormatSyncFillStyle && DataSource.FormatIncludeHasFill,
-                    () => shape.Fill.Visible = DataSource.FormatHasFill ? MsoTriState.msoTrue : MsoTriState.msoFalse);
-                apply(true, DataSource.FormatSyncFillStyle && DataSource.FormatIncludeFillColor,
-                    () => shape.Fill.ForeColor.RGB = DataSource.FormatFillColor);
+                apply(true, _dataSource.FormatSyncFillStyle && _dataSource.FormatIncludeHasFill,
+                    () => shape.Fill.Visible = _dataSource.FormatHasFill ? MsoTriState.msoTrue : MsoTriState.msoFalse);
+                apply(true, _dataSource.FormatSyncFillStyle && _dataSource.FormatIncludeFillColor,
+                    () => shape.Fill.ForeColor.RGB = _dataSource.FormatFillColor);
 
                 // Sync Size
-                apply(false, DataSource.FormatSyncSize && DataSource.FormatIncludeWidth,
-                    () => shape.Width = DataSource.FormatWidth);
-                apply(false, DataSource.FormatSyncSize && DataSource.FormatIncludeHeight,
-                    () => shape.Height = DataSource.FormatHeight);
+                apply(false, _dataSource.FormatSyncSize && _dataSource.FormatIncludeWidth,
+                    () => shape.Width = _dataSource.FormatWidth);
+                apply(false, _dataSource.FormatSyncSize && _dataSource.FormatIncludeHeight,
+                    () => shape.Height = _dataSource.FormatHeight);
             }
         }
 
-        public static void SetControlGroup(Native.VirtualKey key, bool appendToGroup = false)
+        public void SetControlGroup(Native.VirtualKey key, bool appendToGroup = false)
         {
             if (!Native.IsNumberKey(key)) return;
             if (appendToGroup)
@@ -907,7 +906,7 @@ namespace PowerPointLabs.DrawingsLab
             _controlGroups[key] = new ControlGroup(slideId, shapes);
         }
 
-        public static void SelectControlGroup(Native.VirtualKey key, bool appendToSelection = false)
+        public void SelectControlGroup(Native.VirtualKey key, bool appendToSelection = false)
         {
             if (!Native.IsNumberKey(key)) return;
 
@@ -940,7 +939,7 @@ namespace PowerPointLabs.DrawingsLab
         }
 
 
-        public static void SelectAllOfType()
+        public void SelectAllOfType()
         {
             var selection = Globals.ThisAddIn.Application.ActiveWindow.Selection;
             if (selection.Type != PpSelectionType.ppSelectionShapes) return;
@@ -953,7 +952,7 @@ namespace PowerPointLabs.DrawingsLab
                                                                  .ForEach(shape => shape.Select(MsoTriState.msoFalse));
         }
 
-        public static void AlignHorizontal()
+        public void AlignHorizontal()
         {
             var shapes = GetCurrentlySelectedShapes();
             if (shapes.Count <= 1)
@@ -980,7 +979,7 @@ namespace PowerPointLabs.DrawingsLab
             }
         }
 
-        public static void AlignVertical()
+        public void AlignVertical()
         {
             var shapes = GetCurrentlySelectedShapes();
             if (shapes.Count <= 1)
@@ -1007,7 +1006,7 @@ namespace PowerPointLabs.DrawingsLab
             }
         }
 
-        public static void AlignBoth()
+        public void AlignBoth()
         {
             var shapes = GetCurrentlySelectedShapes();
             if (shapes.Count <= 1)
@@ -1039,7 +1038,7 @@ namespace PowerPointLabs.DrawingsLab
         }
 
 
-        public static void AlignVerticalToSlide()
+        public void AlignVerticalToSlide()
         {
             var shapes = GetCurrentlySelectedShapes();
             if (shapes.Count <= 0)
@@ -1063,7 +1062,7 @@ namespace PowerPointLabs.DrawingsLab
             }
         }
 
-        public static void AlignHorizontalToSlide()
+        public void AlignHorizontalToSlide()
         {
             var shapes = GetCurrentlySelectedShapes();
             if (shapes.Count <= 0)
@@ -1088,7 +1087,7 @@ namespace PowerPointLabs.DrawingsLab
         }
 
 
-        public static void AlignBothToSlide()
+        public void AlignBothToSlide()
         {
             var shapes = GetCurrentlySelectedShapes();
             if (shapes.Count <= 0)
@@ -1119,9 +1118,9 @@ namespace PowerPointLabs.DrawingsLab
         #endregion
 
         #region Convenience Functions
-        private static float GetX(Shape shape)
+        private float GetX(Shape shape)
         {
-            switch (DataSource.AnchorHorizontal)
+            switch (_dataSource.AnchorHorizontal)
             {
                 case DrawingsLabDataSource.Horizontal.Left:
                     return shape.Left;
@@ -1133,9 +1132,9 @@ namespace PowerPointLabs.DrawingsLab
             throw new ArgumentOutOfRangeException();
         }
 
-        private static void SetX(Shape shape, float value)
+        private void SetX(Shape shape, float value)
         {
-            switch (DataSource.AnchorHorizontal)
+            switch (_dataSource.AnchorHorizontal)
             {
                 case DrawingsLabDataSource.Horizontal.Left:
                     shape.Left = value;
@@ -1150,9 +1149,9 @@ namespace PowerPointLabs.DrawingsLab
             throw new ArgumentOutOfRangeException();
         }
 
-        private static float GetY(Shape shape)
+        private float GetY(Shape shape)
         {
-            switch (DataSource.AnchorVertical)
+            switch (_dataSource.AnchorVertical)
             {
                 case DrawingsLabDataSource.Vertical.Top:
                     return shape.Top;
@@ -1164,9 +1163,9 @@ namespace PowerPointLabs.DrawingsLab
             throw new ArgumentOutOfRangeException();
         }
 
-        private static void SetY(Shape shape, float value)
+        private void SetY(Shape shape, float value)
         {
-            switch (DataSource.AnchorVertical)
+            switch (_dataSource.AnchorVertical)
             {
                 case DrawingsLabDataSource.Vertical.Top:
                     shape.Top = value;
@@ -1181,7 +1180,7 @@ namespace PowerPointLabs.DrawingsLab
             throw new ArgumentOutOfRangeException();
         }
 
-        private static List<Shape> GetCurrentlySelectedShapes()
+        private List<Shape> GetCurrentlySelectedShapes()
         {
             var selection = Globals.ThisAddIn.Application.ActiveWindow.Selection;
             if (selection.Type == PpSelectionType.ppSelectionShapes || selection.Type == PpSelectionType.ppSelectionText)
@@ -1195,7 +1194,7 @@ namespace PowerPointLabs.DrawingsLab
 
 
         #region Utility Functions
-        private static void Error(string message)
+        private void Error(string message)
         {
             MessageBox.Show(message, "Error");
             // for now do nothing.

@@ -58,7 +58,6 @@ namespace PowerPointLabs
         #endregion
 
         private System.Windows.Forms.Integration.ElementHost WPF;
-        private DrawingsLab.DrawingsPaneWPF drawingsPaneWPF;
-
+        public DrawingsLab.DrawingsPaneWPF drawingsPaneWPF { get; private set; }
     }
 }
