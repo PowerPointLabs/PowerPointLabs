@@ -8,6 +8,7 @@ using System.Runtime.InteropServices;
 using System.Diagnostics;
 using System.Windows.Forms;
 using PowerPointLabs.DataSources;
+using PowerPointLabs.DrawingsLab;
 using PowerPointLabs.Models;
 using PowerPointLabs.PictureSlidesLab.View;
 using PowerPointLabs.Views;
@@ -2410,7 +2411,8 @@ namespace PowerPointLabs
         # endregion
 
         #region Feature: Drawing Lab
-        public DrawingLabData DrawingLabData { get; set; }
+        internal DrawingLabData DrawingLabData { get; set; }
+        internal DrawingsLabMain DrawingLab { get; set; }
 
         public void DrawingsLabButtonClick(Office.IRibbonControl control)
         {
@@ -2419,12 +2421,13 @@ namespace PowerPointLabs
                 if (DrawingLabData == null)
                 {
                     DrawingLabData = new DrawingLabData();
+                    DrawingLab = new DrawingsLabMain(DrawingLabData);
                 }
 
                 Globals.ThisAddIn.RegisterDrawingsPane(PowerPointPresentation.Current.Presentation);
 
                 var drawingsPane = Globals.ThisAddIn.GetActivePane(typeof(DrawingsPane));
-                ((DrawingsPane)drawingsPane.Control).drawingsPaneWPF.TryAssignData(DrawingLabData);
+                ((DrawingsPane)drawingsPane.Control).drawingsPaneWPF.TryInitialise(DrawingLabData, DrawingLab);
                 
                 // if currently the pane is hidden, show the pane
                 if (!drawingsPane.Visible)

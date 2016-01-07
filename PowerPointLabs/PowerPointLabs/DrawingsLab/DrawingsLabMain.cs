@@ -34,9 +34,10 @@ namespace PowerPointLabs.DrawingsLab
             }
         }
 
-        public DrawingsLabMain(DrawingsLabDataSource dataSource)
+        public DrawingsLabMain(DrawingLabData data)
         {
-            _dataSource = dataSource;
+            _dataSource = new DrawingsLabDataSource();
+            _dataSource.AssignData(data);
         }
 
         public Action FunctionWrapper(Action action)

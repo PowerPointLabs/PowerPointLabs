@@ -30,23 +30,23 @@ namespace PowerPointLabs.DrawingsLab
     public partial class DrawingsPaneWPF
     {
         private DrawingLabData _data;
+        private DrawingsLabMain _drawingLab;
         private readonly DrawingsLabDataSource _dataSource;
-        private readonly DrawingsLabMain _drawingLab;
 
         public DrawingsPaneWPF()
         {
             InitializeComponent();
             _dataSource = FindResource("DrawingsLabData") as DrawingsLabDataSource;
-            _drawingLab = new DrawingsLabMain(_dataSource);
         }
 
         #region Data Binding
-        public void TryAssignData(DrawingLabData data)
+        internal void TryInitialise(DrawingLabData data, DrawingsLabMain drawingLab)
         {
             if (_data != null) return;
 
             _data = data;
             _dataSource.AssignData(data);
+            _drawingLab = drawingLab;
 
             InitialiseButtonsAndHotkeys();
         }
