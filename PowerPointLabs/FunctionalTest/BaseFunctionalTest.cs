@@ -2,6 +2,7 @@
 using System.Diagnostics;
 using System.IO;
 using System.Runtime.Remoting;
+using System.Windows.Forms;
 using FunctionalTest.util;
 using FunctionalTestInterface;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
@@ -12,6 +13,8 @@ namespace FunctionalTest
     public abstract class BaseFunctionalTest
     {
         private static TestContext TestContext { get; set; }
+
+        private static int numberOfFailedTest = 0;
 
         // prefix legend:
         // pp - PowerPoint
@@ -64,6 +67,7 @@ namespace FunctionalTest
         {
             if (TestContext.CurrentTestOutcome != UnitTestOutcome.Passed)
             {
+                numberOfFailedTest++;
                 if (!Directory.Exists(PathUtil.GetTestFailurePath()))
                 {
                     Directory.CreateDirectory(PathUtil.GetTestFailurePath());
@@ -73,6 +77,15 @@ namespace FunctionalTest
                         GetTestingSlideName()));
             }
             PpOperations.ClosePresentation();
+        }
+
+        [AssemblyCleanup]
+        public static void AssemblyCleanup()
+        {
+            if (numberOfFailedTest != 0)
+            {
+                MessageBox.Show(@"Failed cases found. Please check failed slides in the folder 'doc\test\TestFailed'");
+            }
         }
 
         private void ConnectPpl()
