@@ -1,6 +1,6 @@
 ##Software Design
 
-(graph here)  
+![Architecture](https://raw.githubusercontent.com/PowerPointLabs/PowerPointLabs/master/doc/DesignAndConventions.png)  
 PowerPointLabs is an add-in for PowerPoint. Given above is an overview of the main components.
 
 * **Add-in Ribbon**: The UI seen by users in the PowerPoint Ribbon tabs or context menu. It consists in [`ThisAddIn.cs`](https://github.com/PowerPointLabs/PowerPointLabs/blob/master/PowerPointLabs/PowerPointLabs/ThisAddIn.cs), [`Ribbon1.cs`](https://github.com/PowerPointLabs/PowerPointLabs/blob/master/PowerPointLabs/PowerPointLabs/Ribbon1.cs), and [`Ribbon1.xml`](https://github.com/PowerPointLabs/PowerPointLabs/blob/master/PowerPointLabs/PowerPointLabs/Ribbon1.xml). `ThisAddIn.cs` is in charge of add-in's lifecycle and other important events. `Ribbon1.xml` defines the styles of add-in ribbon and context menu, and `Ribbon1.cs` routes the user requests to the UI and Logic.
