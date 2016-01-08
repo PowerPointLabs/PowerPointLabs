@@ -7,7 +7,7 @@ PowerPointLabs makes creating engaging PowerPoint presentations easy. Check out 
 [![Build status](https://img.shields.io/appveyor/ci/kai33/powerpointlabs/master.svg)](https://ci.appveyor.com/project/kai33/powerpointlabs)
 
 ### Contributing To PowerPointLabs
-Interested to contribute? Please take a moment to review the [guidelines for contributing](https://github.com/PowerPointLabs/powerpointlabs/blob/master/doc/CONTRIBUTING.md).
+Interested to contribute? Please take a moment to review the [guidelines for contributing](https://github.com/PowerPointLabs/powerpointlabs/blob/master/doc/CONTRIBUTING.md) and [the design](https://github.com/PowerPointLabs/PowerPointLabs/blob/master/doc/SoftwareDesign.md).
 
 ### Dev Prerequisites
 0. Install Office 2016, 2013 or 2010 with PowerPoint.
