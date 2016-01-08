@@ -41,7 +41,7 @@ namespace FunctionalTest.util
 
         public static string GetTestFailurePresentationPath(string presentationName)
         {
-            return GetTestFailurePath() + presentationName;
+            return GetTestFailurePath() + DateTime.Now.ToString("yyyyMMddHHmm-") + presentationName;
         }
 
         public static string GetDocTestPresentationPath(string presentationName)
