@@ -12,7 +12,7 @@ namespace FunctionalTest
     [TestClass]
     public abstract class BaseFunctionalTest
     {
-        private static TestContext TestContext { get; set; }
+        public TestContext TestContext { get; set; }
 
         private static int numberOfFailedTest = 0;
 
@@ -38,7 +38,6 @@ namespace FunctionalTest
         [AssemblyInitialize]
         public static void AssemblySetup(TestContext context)
         {
-            TestContext = context;
             var folderToClean = new DirectoryInfo(PathUtil.GetTestFailurePath());
             if (folderToClean.Exists)
             {
@@ -84,7 +83,12 @@ namespace FunctionalTest
         {
             if (numberOfFailedTest != 0)
             {
-                MessageBox.Show(@"Failed cases found. Please check failed slides in the folder 'doc\test\TestFailed'");
+                MessageBox.Show("Failed cases found. Please check failed slides in the folder 'doc\\test\\TestFailed'.\n" +
+                                "Please submit an issue with the failed slides if the problem persists.");
+            }
+            else
+            {
+                MessageBox.Show("Pass!");
             }
         }
 
