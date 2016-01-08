@@ -19,6 +19,7 @@ using PowerPointLabs.Models;
 using PowerPointLabs.Utils;
 using PowerPointLabs.WPF;
 using PPExtraEventHelper;
+using MessageBox = System.Windows.Forms.MessageBox;
 using Shape = System.Windows.Shapes.Shape;
 using ToolTip = System.Windows.Controls.ToolTip;
 
@@ -273,7 +274,7 @@ namespace PowerPointLabs.DrawingsLab
         private bool IsPanelOpen()
         {
             var drawingsPane = Globals.ThisAddIn.GetActivePane(typeof(DrawingsPane));
-            return drawingsPane.Visible;
+            return drawingsPane != null && drawingsPane.Visible;
         }
 
         private bool IsReadingHotkeys()
