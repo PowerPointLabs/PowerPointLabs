@@ -13,4 +13,4 @@ PowerPointLabs is an add-in for PowerPoint. Given above is an overview of the ma
 
 ## Conventions
 
-* Ensure the codes are [`SOLID`](http://www.codeproject.com/Articles/703634/SOLID-architecture-principles-using-simple-Csharp) and [testable](http://www.toptal.com/qa/how-to-write-testable-code-and-why-it-matters).
+* Ensure the codes are [`SOLID`](http://www.codeproject.com/Articles/703634/SOLID-architecture-principles-using-simple-Csharp) and [`testable`](http://www.toptal.com/qa/how-to-write-testable-code-and-why-it-matters).
