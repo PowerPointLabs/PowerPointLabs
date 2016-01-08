@@ -19,11 +19,15 @@ Interested to contribute? Please take a moment to review the [guidelines for con
    for VS2015 - http://aka.ms/OfficeDevToolsForVS2015<br>
 4. Install Microsoft .NET Framework 4.6.
 
-### Setting Up Environment
+### Setup
 0. [Fork](http://help.github.com/fork-a-repo/) and clone the source codes from this repo.
 1. Turn off *Office Version Upgrading*: Open the solution `PowerPointLabs\PowerPointLabs.sln` >> open Tools (menu) >> Options >> Office Tools >> Project Migration >> uncheck ‘Always upgrade to installed version of Office’.
 2. Set up *External Office Program*: Open ‘PowerPointLabs’ Properties >> Debug >> select ‘Start external program’ and choose `POWERPNT.exe` in the Office folder. Ensure that both **Debug** and **Release** configurations have set up this.
 3. Run the solution by pressing F5 and then PowerPointLabs tab will appear in the PowerPoint ribbon. If you have installed PowerPointLabs add-in, you may have to uninstall it first and rebuild the solution.
+
+### Testing
+0. Click Build (menu) >> Rebuild Solution.
+1. Click Test (menu) >> Windows >> Test Explorer. In the open Test Explorer window, click `Run All`.
 
 ### Acknowledgements
 PowerPointLabs is developed at the School of Computing, National University of Singapore, with funding from an NUS Learning Innovation Fund, Technology (LIFT) grant.
