@@ -16,6 +16,7 @@ namespace FunctionalTest
         }
 
         [TestMethod]
+        [TestCategory("FT")]
         public void FT_AgendaLabGenerateTest()
         {
             TestRemoveAgenda();
@@ -32,6 +33,7 @@ namespace FunctionalTest
         }
 
         [TestMethod]
+        [TestCategory("FT")]
         public void FT_AgendaLabInvalidSectionSyncTest()
         {
             EmptySectionUnsuccessful(true);

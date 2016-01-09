@@ -18,6 +18,7 @@ namespace FunctionalTest
         }
 
         [TestMethod]
+        [TestCategory("FT")]
         public void FT_ColorsLabTest()
         {
             // if not maximized, some elements in Colors pane may not be seen

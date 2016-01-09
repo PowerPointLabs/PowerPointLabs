@@ -13,6 +13,7 @@ namespace FunctionalTest
         }
 
         [TestMethod]
+        [TestCategory("FT")]
         public void FT_AutoAnimateSuccessfully()
         {
             AutoAnimateSuccessfully();
@@ -20,6 +21,7 @@ namespace FunctionalTest
 
         // create a new test, since the previous one will change the later's slide index..
         [TestMethod]
+        [TestCategory("FT")]
         public void FT_Flaky_AutoAnimateWithCopyPasteSuccessfully()
         {
             AutoAnimateWithCopyPasteShapesSuccessfully();

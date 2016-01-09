@@ -13,6 +13,7 @@ namespace FunctionalTest
         }
 
         [TestMethod]
+        [TestCategory("FT")]
         public void FT_AutoCropTest()
         {
             CropOneShapeSuccessfully();
@@ -20,6 +21,7 @@ namespace FunctionalTest
         }
 
         [TestMethod]
+        [TestCategory("FT")]
         public void FT_AutoCropNegativeTest()
         {
             CropOnNothingUnsuccessfully();

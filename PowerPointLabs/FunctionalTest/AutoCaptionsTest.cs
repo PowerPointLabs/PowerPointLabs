@@ -12,6 +12,7 @@ namespace FunctionalTest
         }
 
         [TestMethod]
+        [TestCategory("FT")]
         public void FT_AutoCaptionsTest()
         {
             var actualSlide = PpOperations.SelectSlide(4);

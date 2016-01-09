@@ -13,6 +13,7 @@ namespace FunctionalTest
         }
 
         [TestMethod]
+        [TestCategory("FT")]
         public void FT_ZoomToAreaTest()
         {
             // Do tests in reverse order because added slides change slide numbers lower down.

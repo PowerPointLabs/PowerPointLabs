@@ -13,6 +13,7 @@ namespace FunctionalTest
         }
 
         [TestMethod]
+        [TestCategory("FT")]
         public void FT_QuickPropertyTest()
         {
             PpOperations.SelectSlide(4);

@@ -25,6 +25,7 @@ namespace FunctionalTest
         }
 
         [TestMethod]
+        [TestCategory("FT")]
         public void FT_ShapesLabTest()
         {
             PpOperations.MaximizeWindow();

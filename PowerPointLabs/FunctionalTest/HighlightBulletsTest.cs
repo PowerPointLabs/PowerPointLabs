@@ -12,6 +12,7 @@ namespace FunctionalTest
         }
 
         [TestMethod]
+        [TestCategory("FT")]
         public void FT_HighlightBulletsTest()
         {
             // Do tests in reverse order because added slides change slide numbers lower down.

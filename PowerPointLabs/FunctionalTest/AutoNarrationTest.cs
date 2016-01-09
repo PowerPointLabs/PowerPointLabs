@@ -13,6 +13,7 @@ namespace FunctionalTest
         }
 
         [TestMethod]
+        [TestCategory("FT")]
         public void FT_AutoNarrationTest()
         {
             var actualSlide = PpOperations.SelectSlide(7);

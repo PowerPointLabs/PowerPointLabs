@@ -13,6 +13,7 @@ namespace FunctionalTest
         }
 
         [TestMethod]
+        [TestCategory("FT")]
         public void FT_EffectsLabTest()
         {
             TestRemainderEffect(26, PplFeatures.SepiaBackgroundEffect);

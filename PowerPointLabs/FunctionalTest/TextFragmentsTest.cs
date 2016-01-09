@@ -14,6 +14,7 @@ namespace FunctionalTest
         }
 
         [TestMethod]
+        [TestCategory("FT")]
         public void FT_TextFragmentsTest()
         {
             PpOperations.SelectSlide(3);

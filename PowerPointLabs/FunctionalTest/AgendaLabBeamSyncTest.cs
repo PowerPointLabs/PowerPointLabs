@@ -15,6 +15,7 @@ namespace FunctionalTest
         }
 
         [TestMethod]
+        [TestCategory("FT")]
         public void FT_AgendaLabBeamSyncTest()
         {
             BeamSyncSuccessful();
@@ -24,6 +25,7 @@ namespace FunctionalTest
         }
 
         [TestMethod]
+        [TestCategory("FT")]
         public void FT_AgendaLabBeamSyncTest2()
         {
             NoBeamTextUnsuccessful();
