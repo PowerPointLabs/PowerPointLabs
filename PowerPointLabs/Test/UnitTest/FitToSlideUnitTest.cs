@@ -13,7 +13,7 @@ namespace Test.UnitTest
 
         [TestMethod]
         [TestCategory("UT")]
-        public void UT_FitToSlideUsualCases()
+        public void FitToSlideUsualCases()
         {
             var slideWidth = Pres.PageSetup.SlideWidth;
             var slideHeight = Pres.PageSetup.SlideHeight;

@@ -22,9 +22,6 @@ namespace Test.UnitTest
         // specify the name for the testing slide.
         // It is assumed that the testing slides reside
         // in "doc/test" folder.
-        // NOTES:
-        // If no test slide is needed, return null or empty 
-        // string.
         protected abstract string GetTestingSlideName();
 
         [AssemblyInitialize]
