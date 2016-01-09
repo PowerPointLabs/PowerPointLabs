@@ -1585,7 +1585,8 @@ namespace PowerPointLabs
             Globals.ThisAddIn.Application.StartNewUndoEntry();
 
             var selectedShape = PowerPointCurrentPresentationInfo.CurrentSelection.ShapeRange[1];
-            FitToSlide.FitToWidth(selectedShape);
+            var pres = PowerPointPresentation.Current;
+            FitToSlide.FitToWidth(selectedShape, pres.SlideWidth, pres.SlideHeight);
         }
 
         public void FitToHeightClick(Office.IRibbonControl control)
@@ -1593,7 +1594,8 @@ namespace PowerPointLabs
             Globals.ThisAddIn.Application.StartNewUndoEntry();
 
             var selectedShape = PowerPointCurrentPresentationInfo.CurrentSelection.ShapeRange[1];
-            FitToSlide.FitToHeight(selectedShape);
+            var pres = PowerPointPresentation.Current;
+            FitToSlide.FitToHeight(selectedShape, pres.SlideWidth, pres.SlideHeight);
         }
 
         public Bitmap GetFitToWidthImage(Office.IRibbonControl control)

@@ -801,9 +801,9 @@
     <None Include="Resources\AgendaVisual.png" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\FunctionalTestInterface\FunctionalTestInterface.csproj">
+    <ProjectReference Include="..\TestInterface\TestInterface.csproj">
       <Project>{573cc738-5349-4a0d-bc53-9325fa9c0e6f}</Project>
-      <Name>FunctionalTestInterface</Name>
+      <Name>TestInterface</Name>
     </ProjectReference>
     <Page Include="PictureSlidesLab\View\AdjustImageWindow.xaml">
       <SubType>Designer</SubType>

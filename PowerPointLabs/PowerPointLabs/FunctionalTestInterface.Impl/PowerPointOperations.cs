@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
-using FunctionalTestInterface;
+using TestInterface;
 using Microsoft.Office.Interop.PowerPoint;
 using PowerPointLabs.Models;
 using System.IO;

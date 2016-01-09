@@ -1,64 +1,58 @@
 ﻿using System;
-using PowerPointLabs.Models;
 using Office = Microsoft.Office.Core;
 using PowerPoint = Microsoft.Office.Interop.PowerPoint;
 
 namespace PowerPointLabs
 {
-    class FitToSlide
+    public class FitToSlide
     {
         private const int TopMost = 0;
         private const int LeftMost = 0;
 
         // auto fit to fill the screen entirely, don't care to width or to height
         // offset from -100 ~ +100
-        public static void AutoFit(PowerPoint.Shape selectedShape, PowerPointPresentation pres = null, int offset = 0)
+        public static void AutoFit(PowerPoint.Shape selectedShape, float slideWidth, float slideHeight, int offset = 0)
         {
-            if (pres == null)
-            {
-                pres = PowerPointPresentation.Current;
-            }
-
             if ((selectedShape.Width / selectedShape.Height) >
-                (pres.SlideWidth / pres.SlideHeight))
+                (slideWidth / slideHeight))
             {
-                FitToHeight(selectedShape);
-                var availableOffset = selectedShape.Width/2 - pres.SlideWidth/2;
+                FitToHeight(selectedShape, slideWidth, slideHeight);
+                var availableOffset = selectedShape.Width/2 - slideWidth/2;
                 selectedShape.Left += availableOffset * offset / 100f;
             }
             else
             {
-                FitToWidth(selectedShape);
-                var availableOffset = selectedShape.Height/2 - pres.SlideHeight/2;
+                FitToWidth(selectedShape, slideWidth, slideHeight);
+                var availableOffset = selectedShape.Height/2 - slideHeight/2;
                 selectedShape.Top += availableOffset * offset / 100f;
             }
         }
 
-        public static void FitToHeight(PowerPoint.Shape selectedShape)
+        public static void FitToHeight(PowerPoint.Shape selectedShape, float slideWidth, float slideHeight)
         {
             float shapeSizeRatio = GetSizeRatio(selectedShape);
             float resizeFactor = GetResizeFactorForFitToHeight(selectedShape);
 
-            selectedShape.Height = PowerPointPresentation.Current.SlideHeight / resizeFactor;
+            selectedShape.Height = slideHeight / resizeFactor;
             selectedShape.Width = selectedShape.Height / shapeSizeRatio;
-            MoveToCenterForFitToHeight(selectedShape);
+            MoveToCenterForFitToHeight(selectedShape, slideWidth);
             AdjustPositionForFitToHeight(selectedShape);
         }
 
-        public static void FitToWidth(PowerPoint.Shape selectedShape)
+        public static void FitToWidth(PowerPoint.Shape selectedShape, float slideWidth, float slideHeight)
         {
             float shapeSizeRatio = GetSizeRatio(selectedShape);
             float resizeFactor = GetResizeFactorForFitToWidth(selectedShape);
 
-            selectedShape.Height = PowerPointPresentation.Current.SlideWidth / resizeFactor;
+            selectedShape.Height = slideWidth / resizeFactor;
             selectedShape.Width = selectedShape.Height / shapeSizeRatio;
-            MoveToCenterForFitToWidth(selectedShape);
+            MoveToCenterForFitToWidth(selectedShape, slideHeight);
             AdjustPositionForFitToWidth(selectedShape);
         }
 
-        private static void MoveToCenterForFitToHeight(PowerPoint.Shape selectedShape)
+        private static void MoveToCenterForFitToHeight(PowerPoint.Shape selectedShape, float slideWidth)
         {
-            selectedShape.Left = (PowerPointPresentation.Current.SlideWidth - selectedShape.Width) / 2;
+            selectedShape.Left = (slideWidth - selectedShape.Width) / 2;
             selectedShape.Top = TopMost;
         }
 
@@ -85,9 +79,9 @@ namespace PowerPointLabs
             shape.Top += adjustLength;
         }
 
-        private static void MoveToCenterForFitToWidth(PowerPoint.Shape selectedShape)
+        private static void MoveToCenterForFitToWidth(PowerPoint.Shape selectedShape, float slideHeight)
         {
-            selectedShape.Top = (PowerPointPresentation.Current.SlideHeight - selectedShape.Height) / 2;
+            selectedShape.Top = (slideHeight - selectedShape.Height) / 2;
             selectedShape.Left = LeftMost;
         }
 

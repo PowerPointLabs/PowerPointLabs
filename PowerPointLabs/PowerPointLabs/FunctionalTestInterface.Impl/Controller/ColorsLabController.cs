@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Drawing;
 using System.Windows.Forms;
-using FunctionalTestInterface;
+using TestInterface;
 
 namespace PowerPointLabs.FunctionalTestInterface.Impl.Controller
 {

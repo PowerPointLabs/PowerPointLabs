@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Drawing;
-using FunctionalTestInterface;
+using TestInterface;
 using PowerPointLabs.FunctionalTestInterface.Impl.Controller;
 
 namespace PowerPointLabs.FunctionalTestInterface.Impl
