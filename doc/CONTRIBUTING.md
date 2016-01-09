@@ -82,7 +82,7 @@ help. They should remain focused on the selected issues and avoid containing unr
 
 For your first pull request, select an issue labelled `forFirstTimers`. For subsequent pull requests, prefer those labelled `forContributors` and with higher priority.
 
-**Please reference the selected issue** like this `#{issue-number}` in the pull request.
+**Please reference the selected issue** like this `#{issue-number}` in the pull request. When the pull request is ready for review, apply label `status.toReview` to it.
 
 **Please ask first** before embarking on any significant pull request (e.g.
 implementing features, refactoring code, porting to a different language),
