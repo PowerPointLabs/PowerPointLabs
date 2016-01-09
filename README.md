@@ -27,7 +27,7 @@ Interested to contribute? Please take a moment to review the [guidelines for con
 
 ### Testing
 0. Click Build (menu) >> Rebuild Solution.
-1. Click Test (menu) >> Windows >> Test Explorer. In the open Test Explorer window, click `Run All`.
+1. Click Test (menu) >> Windows >> Test Explorer. In the open Test Explorer window, click `Group by Traits` >> right click `FT` >> click `Run Selected Tests`.
 
 ### Acknowledgements
 PowerPointLabs is developed at the School of Computing, National University of Singapore, with funding from an NUS Learning Innovation Fund, Technology (LIFT) grant.
