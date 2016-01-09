@@ -1199,18 +1199,7 @@ namespace PowerPointLabs
                 throw;
             }
         }
-        public Bitmap GetReloadAnimationContextImage(Office.IRibbonControl control)
-        {
-            try
-            {
-                return new Bitmap(Properties.Resources.ReloadAnimationContext);
-            }
-            catch (Exception e)
-            {
-                PowerPointLabsGlobals.LogException(e, "GetReloadAnimationContextImage");
-                throw;
-            }
-        }
+
         public Bitmap GetAddSpotlightContextImage(Office.IRibbonControl control)
         {
             try
