@@ -1,12 +1,11 @@
 ﻿using Microsoft.Office.Core;
+using Microsoft.Office.Interop.PowerPoint;
 using PowerPointLabs.Models;
 using PowerPointLabs.PictureSlidesLab.Model;
 using PowerPointLabs.PictureSlidesLab.Service.Effect;
 using PowerPointLabs.PictureSlidesLab.Service.Interface;
 using PowerPointLabs.PictureSlidesLab.Service.Preview;
 using PowerPointLabs.PictureSlidesLab.Util;
-using PowerPointLabs.Utils;
-using PowerPointLabs.Utils.Exceptions;
 using Shape = Microsoft.Office.Interop.PowerPoint.Shape;
 
 namespace PowerPointLabs.PictureSlidesLab.Service
@@ -37,19 +36,15 @@ namespace PowerPointLabs.PictureSlidesLab.Service
             Close();
         }
 
-        /// <exception cref="AssumptionFailedException">
-        /// throw exception when PictureSlidesLab presentation is not open OR no selected slide.
-        /// </exception>
-        public PreviewInfo PreviewApplyStyle(ImageItem source, StyleOptions option)
+        public PreviewInfo PreviewApplyStyle(ImageItem source, Slide contentSlide, 
+            float slideWidth, float slideHeight, StyleOptions option)
         {
-            Assumption.Made(
-                Opened && PowerPointCurrentPresentationInfo.CurrentSlide != null,
-                "PictureSlidesLab presentation is not open OR no selected slide.");
-
             SetStyleOptions(option);
-            InitSlideSize();
+            SlideWidth = slideWidth;
+            SlideHeight = slideHeight;
+
             var previewInfo = new PreviewInfo();
-            var handler = CreateEffectsHandler(source);
+            var handler = CreateEffectsHandlerForPreview(source, contentSlide);
 
             // use thumbnail to apply, in order to speed up
             var fullSizeImgPath = source.FullSizeImageFile;
@@ -59,7 +54,7 @@ namespace PowerPointLabs.PictureSlidesLab.Service
 
             ApplyStyle(handler, source, isActualSize: false);
 
-            // recover it back
+            // recover the source back
             source.FullSizeImageFile = fullSizeImgPath;
             source.ImageFile = originalThumbnail;
             handler.GetNativeSlide().Export(previewInfo.PreviewApplyStyleImagePath, "JPG",
@@ -68,16 +63,9 @@ namespace PowerPointLabs.PictureSlidesLab.Service
             handler.Delete();
             return previewInfo;
         }
-
-        /// <exception cref="AssumptionFailedException">
-        /// throw exception when No selected slide.
-        /// </exception>
-        public void ApplyStyle(ImageItem source, StyleOptions option = null)
+        
+        public void ApplyStyle(ImageItem source, Slide contentSlide, StyleOptions option = null)
         {
-            Assumption.Made(
-                PowerPointCurrentPresentationInfo.CurrentSlide != null,
-                "No selected slide.");
-
             Globals.ThisAddIn.Application.StartNewUndoEntry();
             if (option != null)
             {
@@ -88,9 +76,9 @@ namespace PowerPointLabs.PictureSlidesLab.Service
             var fullsizeImage = source.FullSizeImageFile;
             source.FullSizeImageFile = source.CroppedImageFile ?? source.FullSizeImageFile;
             source.OriginalImageFile = fullsizeImage;
-
-            var currentSlide = PowerPointCurrentPresentationInfo.CurrentSlide.GetNativeSlide();
-            var effectsHandler = new EffectsDesigner(currentSlide, Current, source);
+            
+            var effectsHandler = new EffectsDesigner(contentSlide, 
+                SlideWidth, SlideHeight, source);
 
             ApplyStyle(effectsHandler, source, isActualSize: true);
 
@@ -252,23 +240,18 @@ namespace PowerPointLabs.PictureSlidesLab.Service
             
         }
 
-        private EffectsDesigner CreateEffectsHandler(ImageItem source)
+        private EffectsDesigner CreateEffectsHandlerForPreview(ImageItem source, Slide contentSlide)
         {
             // sync layout
-            var layout = PowerPointCurrentPresentationInfo.CurrentSlide.Layout;
+            var layout = contentSlide.Layout;
             var newSlide = Presentation.Slides.Add(SlideCount + 1, layout);
 
             // sync design & theme
-            newSlide.Design = PowerPointCurrentPresentationInfo.CurrentSlide.GetNativeSlide().Design;
+            newSlide.Design = contentSlide.Design;
 
-            return new EffectsDesigner(newSlide, this, source);
+            return new EffectsDesigner(newSlide, contentSlide, SlideWidth, SlideHeight, source);
         }
-
-        private void InitSlideSize()
-        {
-            SlideWidth = Current.SlideWidth;
-            SlideHeight = Current.SlideHeight;
-        }
+        
         #endregion
     }
 }

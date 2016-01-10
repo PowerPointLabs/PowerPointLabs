@@ -26,13 +26,46 @@ namespace PowerPointLabs.PictureSlidesLab.Service
 
         private ImageItem Source { get; set; }
 
-        private PowerPointPresentation PreviewPresentation { get; set; }
+        private float SlideWidth { get; set; }
+
+        private float SlideHeight { get; set; }
+
+        private PowerPoint.Slide ContentSlide { get; set; }
 
         # region APIs
-        public EffectsDesigner(PowerPoint.Slide slide, PowerPointPresentation pres, ImageItem source)
+        /// <summary>
+        /// For `apply`
+        /// </summary>
+        /// <param name="slide"></param>
+        /// <param name="slideWidth"></param>
+        /// <param name="slideHeight"></param>
+        /// <param name="source"></param>
+        public EffectsDesigner(PowerPoint.Slide slide, float slideWidth, float slideHeight, ImageItem source)
             : base(slide)
         {
-            PreviewPresentation = pres;
+            Setup(slideWidth, slideHeight, source);
+        }
+
+        /// <summary>
+        /// For `preview`
+        /// </summary>
+        /// <param name="slide"></param>
+        /// <param name="contentSlide"></param>
+        /// <param name="slideWidth"></param>
+        /// <param name="slideHeight"></param>
+        /// <param name="source"></param>
+        public EffectsDesigner(PowerPoint.Slide slide, PowerPoint.Slide contentSlide, 
+            float slideWidth, float slideHeight, ImageItem source)
+            : base(slide)
+        {
+            ContentSlide = contentSlide;
+            Setup(slideWidth, slideHeight, source);
+        }
+
+        private void Setup(float slideWidth, float slideHeight, ImageItem source)
+        {
+            SlideWidth = slideWidth;
+            SlideHeight = slideHeight;
             Source = source;
             PrepareShapesForPreview();
         }
@@ -53,7 +86,7 @@ namespace PowerPointLabs.PictureSlidesLab.Service
 
         public void ApplyImageReferenceInsertion(string contextLink, string fontFamily, string fontColor)
         {
-            var imageRefShape = Shapes.AddTextbox(MsoTextOrientation.msoTextOrientationHorizontal, 0, 0, PreviewPresentation.SlideWidth,
+            var imageRefShape = Shapes.AddTextbox(MsoTextOrientation.msoTextOrientationHorizontal, 0, 0, SlideWidth,
                 20);
             imageRefShape.TextFrame2.TextRange.Text = "Image From: " + contextLink;
 
@@ -62,7 +95,7 @@ namespace PowerPointLabs.PictureSlidesLab.Service
             imageRefShape.TextEffect.FontName = StringUtil.IsEmpty(fontFamily) ? "Tahoma" : fontFamily;
             imageRefShape.TextEffect.FontSize = 14;
             imageRefShape.TextEffect.Alignment = MsoTextEffectAlignment.msoTextEffectAlignmentRight;
-            imageRefShape.Top = PreviewPresentation.SlideHeight -
+            imageRefShape.Top = SlideHeight -
                                 imageRefShape.TextFrame2.TextRange.Paragraphs.BoundHeight - 10;
             AddTag(imageRefShape, Tag.ImageReference, "true");
             ChangeName(imageRefShape, EffectName.ImageReference);
@@ -81,8 +114,8 @@ namespace PowerPointLabs.PictureSlidesLab.Service
         {
             var imageShape = AddPicture(Source.FullSizeImageFile ?? Source.ImageFile, EffectName.BackGround);
             imageShape.ZOrder(MsoZOrderCmd.msoSendToBack);
-            var slideWidth = PreviewPresentation.SlideWidth;
-            var slideHeight = PreviewPresentation.SlideHeight;
+            var slideWidth = SlideWidth;
+            var slideHeight = SlideHeight;
             FitToSlide.AutoFit(imageShape, slideWidth, slideHeight, offset);
 
             CropPicture(imageShape);
@@ -177,7 +210,7 @@ namespace PowerPointLabs.PictureSlidesLab.Service
 
         public void ApplyTextPositionAndAlignment(Position pos, Alignment alignment)
         {
-            new TextBoxes(Shapes, PreviewPresentation.SlideWidth, PreviewPresentation.SlideHeight)
+            new TextBoxes(Shapes, SlideWidth, SlideHeight)
                 .SetPosition(pos)
                 .SetAlignment(alignment)
                 .StartBoxing();
@@ -185,7 +218,7 @@ namespace PowerPointLabs.PictureSlidesLab.Service
 
         public void ApplyTextWrapping()
         {
-            new TextBoxes(Shapes, PreviewPresentation.SlideWidth, PreviewPresentation.SlideHeight)
+            new TextBoxes(Shapes, SlideWidth, SlideHeight)
                 .StartTextWrapping();
         }
 
@@ -193,8 +226,8 @@ namespace PowerPointLabs.PictureSlidesLab.Service
         public PowerPoint.Shape ApplyOverlayEffect(string color, int transparency,
             float left = 0, float top = 0, float? width = null, float? height = null)
         {
-            width = width ?? PreviewPresentation.SlideWidth;
-            height = height ?? PreviewPresentation.SlideHeight;
+            width = width ?? SlideWidth;
+            height = height ?? SlideHeight;
             var overlayShape = Shapes.AddShape(MsoAutoShapeType.msoShapeRectangle, left, top,
                 width.Value, height.Value);
             ChangeName(overlayShape, EffectName.Overlay);
@@ -253,13 +286,13 @@ namespace PowerPointLabs.PictureSlidesLab.Service
             {
                 picShape.PictureFormat.Crop.ShapeTop = 0;
             }
-            if (picShape.Left + picShape.Width > PreviewPresentation.SlideWidth)
+            if (picShape.Left + picShape.Width > SlideWidth)
             {
-                picShape.PictureFormat.Crop.ShapeWidth = PreviewPresentation.SlideWidth - picShape.Left;
+                picShape.PictureFormat.Crop.ShapeWidth = SlideWidth - picShape.Left;
             }
-            if (picShape.Top + picShape.Height > PreviewPresentation.SlideHeight)
+            if (picShape.Top + picShape.Height > SlideHeight)
             {
-                picShape.PictureFormat.Crop.ShapeHeight = PreviewPresentation.SlideHeight - picShape.Top;
+                picShape.PictureFormat.Crop.ShapeHeight = SlideHeight - picShape.Top;
             }
         }
 
@@ -269,8 +302,8 @@ namespace PowerPointLabs.PictureSlidesLab.Service
                 ?? Source.FullSizeImageFile 
                 ?? Source.ImageFile, degree);
             var blurImageShape = AddPicture(Source.BlurImageFile, EffectName.Blur);
-            var slideWidth = PreviewPresentation.SlideWidth;
-            var slideHeight = PreviewPresentation.SlideHeight;
+            var slideWidth = SlideWidth;
+            var slideHeight = SlideHeight;
             FitToSlide.AutoFit(blurImageShape, slideWidth, slideHeight, offset);
             CropPicture(blurImageShape);
             return blurImageShape;
@@ -318,7 +351,7 @@ namespace PowerPointLabs.PictureSlidesLab.Service
             bool isOutline = false, int margin = 0)
         {
             var tbInfo =
-                new TextBoxes(Shapes, PreviewPresentation.SlideWidth, PreviewPresentation.SlideHeight)
+                new TextBoxes(Shapes, SlideWidth, SlideHeight)
                 .GetTextBoxesInfo();
             if (tbInfo == null)
                 return null;
@@ -353,7 +386,7 @@ namespace PowerPointLabs.PictureSlidesLab.Service
             string overlayColor, int transparency)
         {
             var tbInfo =
-                new TextBoxes(Shapes, PreviewPresentation.SlideWidth, PreviewPresentation.SlideHeight)
+                new TextBoxes(Shapes, SlideWidth, SlideHeight)
                 .GetTextBoxesInfo();
             if (tbInfo == null)
                 return null;
@@ -365,13 +398,13 @@ namespace PowerPointLabs.PictureSlidesLab.Service
             switch (direction)
             {
                 case BannerDirection.Horizontal:
-                    overlayShape = ApplyOverlayEffect(overlayColor, transparency, 0, tbInfo.Top, PreviewPresentation.SlideWidth,
+                    overlayShape = ApplyOverlayEffect(overlayColor, transparency, 0, tbInfo.Top, SlideWidth,
                         tbInfo.Height);
                     break;
                 // case BannerDirection.Vertical:
                 default:
                     overlayShape = ApplyOverlayEffect(overlayColor, transparency, tbInfo.Left, 0, tbInfo.Width,
-                        PreviewPresentation.SlideHeight);
+                        SlideHeight);
                     break;
             }
             ChangeName(overlayShape, EffectName.Banner);
@@ -386,7 +419,7 @@ namespace PowerPointLabs.PictureSlidesLab.Service
         public PowerPoint.Shape ApplyRectOutlineEffect(PowerPoint.Shape imageShape, string overlayColor, int transparency)
         {
             var tbInfo =
-                new TextBoxes(Shapes, PreviewPresentation.SlideWidth, PreviewPresentation.SlideHeight)
+                new TextBoxes(Shapes, SlideWidth, SlideHeight)
                 .GetTextBoxesInfo();
             if (tbInfo == null)
                 return null;
@@ -410,8 +443,8 @@ namespace PowerPointLabs.PictureSlidesLab.Service
         public PowerPoint.Shape ApplyAlbumFrameEffect(string overlayColor, int transparency)
         {
             var halfFrameWidth = 15;
-            var width = PreviewPresentation.SlideWidth - halfFrameWidth * 2;
-            var height = PreviewPresentation.SlideHeight - halfFrameWidth * 2;
+            var width = SlideWidth - halfFrameWidth * 2;
+            var height = SlideHeight - halfFrameWidth * 2;
             var frameShape = Shapes.AddShape(MsoAutoShapeType.msoShapeRectangle, halfFrameWidth, halfFrameWidth,
                 width, height);
             ChangeName(frameShape, EffectName.Overlay);
@@ -425,13 +458,13 @@ namespace PowerPointLabs.PictureSlidesLab.Service
 
         public PowerPoint.Shape ApplyTriangleEffect(string overlayColor1, string overlayColor2, int transparency)
         {
-            var width1 = PreviewPresentation.SlideHeight;
-            var height1 = PreviewPresentation.SlideWidth;
-            var centerLeft1 = PreviewPresentation.SlideWidth/2;
-            var centerTop1 = PreviewPresentation.SlideHeight/2;
+            var width1 = SlideHeight;
+            var height1 = SlideWidth;
+            var centerLeft1 = SlideWidth/2;
+            var centerTop1 = SlideHeight/2;
             // the bigger triangle
             var triangle1 = Shapes.AddShape(MsoAutoShapeType.msoShapeIsoscelesTriangle, 
-                centerLeft1 - centerTop1, centerLeft1 + centerTop1 - PreviewPresentation.SlideWidth, width1, height1);
+                centerLeft1 - centerTop1, centerLeft1 + centerTop1 - SlideWidth, width1, height1);
             triangle1.Rotation = 90;
             ChangeName(triangle1, EffectName.Overlay);
             triangle1.Fill.Solid();
@@ -439,14 +472,14 @@ namespace PowerPointLabs.PictureSlidesLab.Service
             triangle1.Fill.Transparency = (float)transparency / 100;
             triangle1.Line.Visible = MsoTriState.msoFalse;
 
-            var width2 = PreviewPresentation.SlideHeight/2;
-            var height2 = PreviewPresentation.SlideWidth/2;
-            var centerLeft2 = PreviewPresentation.SlideWidth/4*3;
-            var centerTop2 = PreviewPresentation.SlideHeight/4*3;
+            var width2 = SlideHeight/2;
+            var height2 = SlideWidth/2;
+            var centerLeft2 = SlideWidth/4*3;
+            var centerTop2 = SlideHeight/4*3;
             // the smaller triangle
             var triangle2 = Shapes.AddShape(MsoAutoShapeType.msoShapeIsoscelesTriangle,
-                centerLeft2 + centerTop2 - PreviewPresentation.SlideHeight, 
-                centerTop2 + PreviewPresentation.SlideWidth/2 - centerLeft2, 
+                centerLeft2 + centerTop2 - SlideHeight, 
+                centerTop2 + SlideWidth/2 - centerLeft2, 
                 width2, 
                 height2);
             triangle2.Rotation = 270;
@@ -494,8 +527,8 @@ namespace PowerPointLabs.PictureSlidesLab.Service
         {
             Source.SpecialEffectImageFile = SpecialEffectImage(effectFilter, Source.FullSizeImageFile ?? Source.ImageFile, isActualSize);
             var specialEffectImageShape = AddPicture(Source.SpecialEffectImageFile, EffectName.SpecialEffect);
-            var slideWidth = PreviewPresentation.SlideWidth;
-            var slideHeight = PreviewPresentation.SlideHeight;
+            var slideWidth = SlideWidth;
+            var slideHeight = SlideHeight;
             FitToSlide.AutoFit(specialEffectImageShape, slideWidth, slideHeight, offset);
             CropPicture(specialEffectImageShape);
             return specialEffectImageShape;
@@ -513,11 +546,11 @@ namespace PowerPointLabs.PictureSlidesLab.Service
         {
             try
             {
-                var currentSlide = PowerPointCurrentPresentationInfo.CurrentSlide;
-                if (currentSlide != null && _slide != currentSlide.GetNativeSlide())
+                if (ContentSlide != null && _slide != ContentSlide)
                 {
+                    // copy shapes from content slide to preview slide
                     DeleteAllShapes();
-                    currentSlide.Shapes.Range().Copy();
+                    ContentSlide.Shapes.Range().Copy();
                     _slide.Shapes.Paste();
                 }
                 DeleteShapesWithPrefix(ShapeNamePrefix);

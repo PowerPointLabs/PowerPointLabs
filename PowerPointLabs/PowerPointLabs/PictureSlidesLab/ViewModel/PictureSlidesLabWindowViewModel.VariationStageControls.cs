@@ -1,5 +1,6 @@
 ﻿using System.Linq;
 using System.Windows.Media;
+using PowerPointLabs.Models;
 using Color = System.Drawing.Color;
 using PowerPointLabs.Utils;
 
@@ -63,7 +64,10 @@ namespace PowerPointLabs.PictureSlidesLab.ViewModel
         {
             BindFontToStyle(SelectedFontFamily.Font.Source);
             BindFontToVariant(SelectedFontFamily.Font.Source);
-            UpdatePreviewImages();
+            UpdatePreviewImages(
+                PowerPointCurrentPresentationInfo.CurrentSlide.GetNativeSlide(),
+                PowerPointPresentation.Current.SlideWidth,
+                PowerPointPresentation.Current.SlideHeight);
         }
         #endregion
 

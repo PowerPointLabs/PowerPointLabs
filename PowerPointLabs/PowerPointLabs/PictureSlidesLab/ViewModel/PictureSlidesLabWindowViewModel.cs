@@ -3,8 +3,8 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Drawing;
 using System.Linq;
+using Microsoft.Office.Interop.PowerPoint;
 using PowerPointLabs.AutoUpdate.Interface;
-using PowerPointLabs.Models;
 using PowerPointLabs.PictureSlidesLab.Model;
 using PowerPointLabs.PictureSlidesLab.ModelFactory;
 using PowerPointLabs.PictureSlidesLab.Service;
@@ -173,7 +173,11 @@ namespace PowerPointLabs.PictureSlidesLab.ViewModel
         /// Add image by downloading
         /// </summary>
         /// <param name="downloadLink"></param>
-        public void AddImageSelectionListItem(string downloadLink)
+        /// <param name="contentSlide"></param>
+        /// <param name="slideWidth"></param>
+        /// <param name="slideHeight"></param>
+        public void AddImageSelectionListItem(string downloadLink, 
+            Slide contentSlide, float slideWidth, float slideHeight)
         {
             if (StringUtil.IsEmpty(downloadLink) || !UrlUtil.IsUrlValid(downloadLink)) // Case 1: If url not valid
             {
@@ -203,7 +207,7 @@ namespace PowerPointLabs.PictureSlidesLab.ViewModel
                         if (ImageSelectionListSelectedItem.ImageItem != null 
                             && imagePath == ImageSelectionListSelectedItem.ImageItem.ImageFile)
                         {
-                            UpdatePreviewImages();
+                            UpdatePreviewImages(contentSlide, slideWidth, slideHeight);
                         }
                     }
                     catch
@@ -228,25 +232,26 @@ namespace PowerPointLabs.PictureSlidesLab.ViewModel
         #endregion
 
         #region Stage - Styles Previewing
-        public void UpdatePreviewImages()
+        public void UpdatePreviewImages(Slide contentSlide, float slideWidth, float slideHeight)
         {
             if (View.IsVariationsFlyoutOpen)
             {
-                UpdateStylesVariationImages();
+                UpdateStylesVariationImages(contentSlide, slideWidth, slideHeight);
             }
             else
             {
-                UpdateStylesPreviewImages();
+                UpdateStylesPreviewImages(contentSlide, slideWidth, slideHeight);
             }
         }
 
-        public void ApplyStyleInPreviewStage()
+        public void ApplyStyleInPreviewStage(Slide contentSlide)
         {
             try
             {
                 var targetDefaultOptions = StyleOptionsFactory
                     .GetStylesPreviewOption(StylesPreviewListSelectedItem.ImageItem.Tooltip);
-                Designer.ApplyStyle(ImageSelectionListSelectedItem.ImageItem, targetDefaultOptions);
+                Designer.ApplyStyle(ImageSelectionListSelectedItem.ImageItem, 
+                    contentSlide, targetDefaultOptions);
                 View.ShowSuccessfullyAppliedDialog();
             }
             catch (AssumptionFailedException)
@@ -269,20 +274,23 @@ namespace PowerPointLabs.PictureSlidesLab.ViewModel
         /// <summary>
         /// Update styles variation iamges before its flyout is open
         /// </summary>
-        /// <param name="givenOptions">can be null</param>
-        /// <param name="givenVariants">can be null</param>
-        public void UpdateStyleVariationImagesWhenOpenFlyout(List<StyleOptions> givenOptions = null,
-            Dictionary<string, List<StyleVariants>> givenVariants = null)
+        /// <param name="contentSlide"></param>
+        /// <param name="slideWidth"></param>
+        /// <param name="slideHeight"></param>
+        /// <param name="givenOptions"></param>
+        /// <param name="givenVariants"></param>
+        public void UpdateStyleVariationImagesWhenOpenFlyout(Slide contentSlide, float slideWidth, float slideHeight,
+            List<StyleOptions> givenOptions = null, Dictionary<string, List<StyleVariants>> givenVariants = null)
         {
             var targetStyleItem = StylesPreviewListSelectedItem.ImageItem;
             var source = ImageSelectionListSelectedItem.ImageItem;
             StylesVariationList.Clear();
 
-            if (!IsAbleToUpdateStylesVariationImages(source, targetStyleItem))
+            if (!IsAbleToUpdateStylesVariationImages(source, targetStyleItem, contentSlide))
                 return;
 
             InitStylesVariationCategories(givenOptions, givenVariants, targetStyleItem.Tooltip);
-            UpdateStylesVariationImages(source);
+            UpdateStylesVariationImages(source, contentSlide, slideWidth, slideHeight);
 
             StylesVariationListSelectedId.Number = 0;
             View.SetVariationListBoxScrollOffset(0d);
@@ -291,7 +299,7 @@ namespace PowerPointLabs.PictureSlidesLab.ViewModel
         /// <summary>
         /// Update styles variation images after its flyout been open
         /// </summary>
-        public void UpdateStylesVariationImages()
+        public void UpdateStylesVariationImages(Slide contentSlide, float slideWidth, float slideHeight)
         {
             var selectedId = StylesVariationListSelectedId.Number;
             var scrollOffset = View.GetVariationListBoxScrollOffset();
@@ -299,10 +307,10 @@ namespace PowerPointLabs.PictureSlidesLab.ViewModel
             var source = ImageSelectionListSelectedItem.ImageItem;
             StylesVariationList.Clear();
 
-            if (!IsAbleToUpdateStylesVariationImages(source, targetStyleItem))
+            if (!IsAbleToUpdateStylesVariationImages(source, targetStyleItem, contentSlide))
                 return;
 
-            UpdateStylesVariationImages(source);
+            UpdateStylesVariationImages(source, contentSlide, slideWidth, slideHeight);
 
             StylesVariationListSelectedId.Number = selectedId;
             View.SetVariationListBoxScrollOffset(scrollOffset);
@@ -312,7 +320,7 @@ namespace PowerPointLabs.PictureSlidesLab.ViewModel
         /// This method implements the way to guide the user step by step to customize
         /// style
         /// </summary>
-        public void UpdateStepByStepStylesVariationImages()
+        public void UpdateStepByStepStylesVariationImages(Slide contentSlide, float slideWidth, float slideHeight)
         {
             if (StylesVariationListSelectedId.Number < 0
                 || VariantsCategory.Count == 0) return;
@@ -367,14 +375,14 @@ namespace PowerPointLabs.PictureSlidesLab.ViewModel
             }
 
             _previousVariantsCategory = currentVariantsCategory;
-            UpdateStylesVariationImages();
+            UpdateStylesVariationImages(contentSlide, slideWidth, slideHeight);
         }
 
-        public void ApplyStyleInVariationStage()
+        public void ApplyStyleInVariationStage(Slide contentSlide)
         {
             try
             {
-                Designer.ApplyStyle(ImageSelectionListSelectedItem.ImageItem);
+                Designer.ApplyStyle(ImageSelectionListSelectedItem.ImageItem, contentSlide);
                 View.ShowSuccessfullyAppliedDialog();
             }
             catch (AssumptionFailedException)
@@ -393,20 +401,21 @@ namespace PowerPointLabs.PictureSlidesLab.ViewModel
             }
         }
 
-        private void UpdateStylesPreviewImages()
+        private void UpdateStylesPreviewImages(Slide contentSlide, float slideWidth, float slideHeight)
         {
             var selectedId = StylesPreviewListSelectedId.Number;
             var source = ImageSelectionListSelectedItem.ImageItem;
             StylesPreviewList.Clear();
 
-            if (!IsAbleToUpdateStylesPreviewImages(source))
+            if (!IsAbleToUpdateStylesPreviewImages(source, contentSlide))
                 return;
 
             try
             {
                 foreach (var stylesPreviewOption in StyleOptionsFactory.GetAllStylesPreviewOptions())
                 {
-                    var previewInfo = Designer.PreviewApplyStyle(source, stylesPreviewOption);
+                    var previewInfo = Designer.PreviewApplyStyle(source, 
+                        contentSlide, slideWidth, slideHeight, stylesPreviewOption);
                     StylesPreviewList.Add(new ImageItem
                     {
                         ImageFile = previewInfo.PreviewApplyStyleImagePath,
@@ -422,11 +431,11 @@ namespace PowerPointLabs.PictureSlidesLab.ViewModel
             StylesPreviewListSelectedId.Number = selectedId;
         }
 
-        private static bool IsAbleToUpdateStylesPreviewImages(ImageItem source)
+        private static bool IsAbleToUpdateStylesPreviewImages(ImageItem source, Slide contentSlide)
         {
             return !(source == null
                     || source.ImageFile == StoragePath.LoadingImgPath
-                    || PowerPointCurrentPresentationInfo.CurrentSlide == null);
+                    || contentSlide == null);
         }
 
         private void InitStylesVariationCategories(List<StyleOptions> givenOptions,
@@ -483,22 +492,25 @@ namespace PowerPointLabs.PictureSlidesLab.ViewModel
             }
         }
 
-        private static bool IsAbleToUpdateStylesVariationImages(ImageItem source, ImageItem targetStyleItem)
+        private static bool IsAbleToUpdateStylesVariationImages(ImageItem source, ImageItem targetStyleItem, 
+            Slide contentSlide)
         {
             return !(source == null
                     || source.ImageFile == StoragePath.LoadingImgPath
                     || targetStyleItem == null
                     || targetStyleItem.Tooltip == null
-                    || PowerPointCurrentPresentationInfo.CurrentSlide == null);
+                    || contentSlide == null);
         }
 
-        private void UpdateStylesVariationImages(ImageItem source)
+        private void UpdateStylesVariationImages(ImageItem source, Slide contentSlide, 
+            float slideWidth, float slideHeight)
         {
             try
             {
                 foreach (var styleOption in _styleOptions)
                 {
-                    var previewInfo = Designer.PreviewApplyStyle(source, styleOption);
+                    var previewInfo = Designer.PreviewApplyStyle(source, contentSlide, 
+                        slideWidth, slideHeight, styleOption);
                     StylesVariationList.Add(new ImageItem
                     {
                         ImageFile = previewInfo.PreviewApplyStyleImagePath,

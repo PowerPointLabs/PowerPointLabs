@@ -164,7 +164,10 @@ namespace PowerPointLabs.PictureSlidesLab.View
                 else if (args.Data.GetDataPresent("Text"))
                 {
                     var imageUrl = args.Data.GetData("Text") as string;
-                    ViewModel.AddImageSelectionListItem(imageUrl);
+                    ViewModel.AddImageSelectionListItem(imageUrl, 
+                        PowerPointCurrentPresentationInfo.CurrentSlide.GetNativeSlide(),
+                        PowerPointPresentation.Current.SlideWidth,
+                        PowerPointPresentation.Current.SlideHeight);
                 }
             }
             finally
@@ -203,7 +206,10 @@ namespace PowerPointLabs.PictureSlidesLab.View
             {
                 CloseVariationsFlyout();
             }
-            ViewModel.UpdatePreviewImages();
+            ViewModel.UpdatePreviewImages(
+                PowerPointCurrentPresentationInfo.CurrentSlide.GetNativeSlide(),
+                PowerPointPresentation.Current.SlideWidth,
+                PowerPointPresentation.Current.SlideHeight);
         }
 
         private void StylesCustomizeButton_OnClick(object sender, RoutedEventArgs e)
@@ -213,7 +219,8 @@ namespace PowerPointLabs.PictureSlidesLab.View
 
         private void StylesPreviewApplyButton_OnClick(object sender, RoutedEventArgs e)
         {
-            ViewModel.ApplyStyleInPreviewStage();
+            ViewModel.ApplyStyleInPreviewStage(
+                PowerPointCurrentPresentationInfo.CurrentSlide.GetNativeSlide());
         }
 
         /// <summary>
@@ -336,27 +343,31 @@ namespace PowerPointLabs.PictureSlidesLab.View
         {
             if (!_isWindowActivatedWithPreview) return;
 
-            if (PowerPointCurrentPresentationInfo.CurrentSlide == null)
-            {
-                GotoSlideButton.IsEnabled = false;
-                ReloadStylesButton.IsEnabled = false;
-            }
-            else
-            {
-                GotoSlideButton.IsEnabled = true;
-                ReloadStylesButton.IsEnabled = true;
-            }
-
             if (QuickDropDialog != null && QuickDropDialog.IsOpen)
             {
                 QuickDropDialog.Hide();
                 QuickDropDialog.IsOpen = false;
             }
 
-            Dispatcher.BeginInvoke(new Action(() =>
+            if (PowerPointCurrentPresentationInfo.CurrentSlide == null)
             {
-                ViewModel.UpdatePreviewImages();
-            }));
+                GotoSlideButton.IsEnabled = false;
+                ReloadStylesButton.IsEnabled = false;
+                ViewModel.StylesPreviewList.Clear();
+                ViewModel.StylesVariationList.Clear();
+            }
+            else
+            {
+                GotoSlideButton.IsEnabled = true;
+                ReloadStylesButton.IsEnabled = true;
+                Dispatcher.BeginInvoke(new Action(() =>
+                {
+                    ViewModel.UpdatePreviewImages(
+                        PowerPointCurrentPresentationInfo.CurrentSlide.GetNativeSlide(),
+                        PowerPointPresentation.Current.SlideWidth,
+                        PowerPointPresentation.Current.SlideHeight);
+                }));
+            }
         }
 
         /// <summary>
@@ -447,12 +458,16 @@ namespace PowerPointLabs.PictureSlidesLab.View
         /// <param name="e"></param>
         private void VariantsComboBox_OnSelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            ViewModel.UpdateStepByStepStylesVariationImages();
+            ViewModel.UpdateStepByStepStylesVariationImages(
+                PowerPointCurrentPresentationInfo.CurrentSlide.GetNativeSlide(),
+                PowerPointPresentation.Current.SlideWidth,
+                PowerPointPresentation.Current.SlideHeight);
         }
 
         private void StylesVariationApplyButton_OnClick(object sender, RoutedEventArgs e)
         {
-            ViewModel.ApplyStyleInVariationStage();
+            ViewModel.ApplyStyleInVariationStage(
+                PowerPointCurrentPresentationInfo.CurrentSlide.GetNativeSlide());
         }
 
         private void VariationFlyoutBackButton_OnClick(object sender, RoutedEventArgs e)
@@ -628,7 +643,10 @@ namespace PowerPointLabs.PictureSlidesLab.View
                 Dispatcher.BeginInvoke(new Action(() =>
                 {
                     StyleVariationsFlyout.Visibility = Visibility.Collapsed;
-                    ViewModel.UpdatePreviewImages();
+                    ViewModel.UpdatePreviewImages(
+                        PowerPointCurrentPresentationInfo.CurrentSlide.GetNativeSlide(),
+                        PowerPointPresentation.Current.SlideWidth,
+                        PowerPointPresentation.Current.SlideHeight);
                 }));
             };
 
@@ -639,7 +657,11 @@ namespace PowerPointLabs.PictureSlidesLab.View
         private void CustomizeStyle(List<StyleOptions> givenStyles = null,
             Dictionary<string, List<StyleVariants>> givenVariants = null)
         {
-            ViewModel.UpdateStyleVariationImagesWhenOpenFlyout(givenStyles, givenVariants);
+            ViewModel.UpdateStyleVariationImagesWhenOpenFlyout(
+                PowerPointCurrentPresentationInfo.CurrentSlide.GetNativeSlide(),
+                PowerPointPresentation.Current.SlideWidth,
+                PowerPointPresentation.Current.SlideHeight,
+                givenStyles, givenVariants);
             OpenVariationsFlyout();
         }
         #endregion
