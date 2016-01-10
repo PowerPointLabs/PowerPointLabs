@@ -1,6 +1,6 @@
 ﻿namespace PowerPointLabs.PictureSlidesLab.Model
 {
-    class ObservableImageItem : WPF.Observable.Model
+    public class ObservableImageItem : WPF.Observable.Model
     {
         private ImageItem _imageItem;
 

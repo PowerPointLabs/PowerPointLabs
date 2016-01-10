@@ -62,6 +62,7 @@
       <SpecificVersion>False</SpecificVersion>
       <EmbedInteropTypes>False</EmbedInteropTypes>
     </Reference>
+    <Reference Include="PresentationCore" />
     <Reference Include="PresentationFramework" />
     <Reference Include="System" />
     <Reference Include="System.Drawing" />
@@ -108,6 +109,11 @@
     <Compile Include="FunctionalTest\ZoomToAreaTest.cs" />
     <Compile Include="UnitTest\BaseUnitTest.cs" />
     <Compile Include="UnitTest\FitToSlideTest.cs" />
+    <Compile Include="UnitTest\PictureSlidesLab\Model\ImageItemTest.cs" />
+    <Compile Include="UnitTest\PictureSlidesLab\Model\ObservableFontTest.cs" />
+    <Compile Include="UnitTest\PictureSlidesLab\Model\ObservableImageItemTest.cs" />
+    <Compile Include="UnitTest\PictureSlidesLab\Model\StyleOptionsTest.cs" />
+    <Compile Include="UnitTest\PictureSlidesLab\Model\StyleVariantsTest.cs" />
     <Compile Include="UnitTest\TagMatchers\EndSpeedTests.cs" />
     <Compile Include="UnitTest\TagMatchers\EndVoiceTests.cs" />
     <Compile Include="UnitTest\TagMatchers\PauseTest.cs" />
