@@ -109,6 +109,8 @@
     <Compile Include="FunctionalTest\ZoomToAreaTest.cs" />
     <Compile Include="UnitTest\BaseUnitTest.cs" />
     <Compile Include="UnitTest\FitToSlideTest.cs" />
+    <Compile Include="UnitTest\PictureSlidesLab\ModelFactory\StyleOptionsFactoryTest.cs" />
+    <Compile Include="UnitTest\PictureSlidesLab\ModelFactory\StyleVariantsFactoryTest.cs" />
     <Compile Include="UnitTest\PictureSlidesLab\Model\ImageItemTest.cs" />
     <Compile Include="UnitTest\PictureSlidesLab\Model\ObservableFontTest.cs" />
     <Compile Include="UnitTest\PictureSlidesLab\Model\ObservableImageItemTest.cs" />
