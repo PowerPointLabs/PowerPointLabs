@@ -10,11 +10,11 @@ namespace Test.UnitTest
     [TestClass]
     public abstract class BaseUnitTest
     {
-        protected static PowerPoint.Application App;
-
         public TestContext TestContext { get; set; }
 
         protected IPowerPointOperations PpOperations;
+
+        protected PowerPoint.Application App;
 
         protected PowerPoint.Presentation Pres;
 
@@ -24,21 +24,10 @@ namespace Test.UnitTest
         // in "doc/test" folder.
         protected abstract string GetTestingSlideName();
 
-        [AssemblyInitialize]
-        public static void AssemblyInitialize(TestContext context)
-        {
-            App = new PowerPoint.Application();
-        }
-
-        [AssemblyCleanup]
-        public static void AssemblyCleanup()
-        {
-            App.Quit();
-        }
-
         [TestInitialize]
         public void Setup()
         {
+            App = new PowerPoint.Application();
             Pres = App.Presentations.Open(
                 PathUtil.GetDocTestPath() + GetTestingSlideName(),
                 WithWindow: MsoTriState.msoFalse);

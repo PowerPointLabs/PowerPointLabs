@@ -179,31 +179,5 @@ namespace PowerPointLabs
         {
             return shape.Height / shape.Width;
         }
-
-        public static System.Drawing.Bitmap GetFitToWidthImage(Office.IRibbonControl control)
-        {
-            try
-            {
-                return new System.Drawing.Bitmap(Properties.Resources.FitToWidth);
-            }
-            catch (Exception e)
-            {
-                PowerPointLabsGlobals.LogException(e, "GetFitToWidthImage");
-                throw;
-            }
-        }
-
-        public static System.Drawing.Bitmap GetFitToHeightImage(Office.IRibbonControl control)
-        {
-            try
-            {
-                return new System.Drawing.Bitmap(Properties.Resources.FitToHeight);
-            }
-            catch (Exception e)
-            {
-                PowerPointLabsGlobals.LogException(e, "GetFitToHeightImage");
-                throw;
-            }
-        }
     }
 }

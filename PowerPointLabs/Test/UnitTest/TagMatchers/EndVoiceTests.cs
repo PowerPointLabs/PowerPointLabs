@@ -4,7 +4,7 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 using PowerPointLabs.TagMatchers;
 using Test.Util;
 
-namespace Test.UnitTest
+namespace Test.UnitTest.TagMatchers
 {
     [TestClass]
     public class EndVoiceTests

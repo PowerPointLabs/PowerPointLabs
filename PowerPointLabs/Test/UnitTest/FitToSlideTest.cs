@@ -4,7 +4,7 @@ using Test.Util;
 namespace Test.UnitTest
 {
     [TestClass]
-    public class FitToSlideUnitTest : BaseUnitTest
+    public class FitToSlideTest : BaseUnitTest
     {
         protected override string GetTestingSlideName()
         {
@@ -13,12 +13,10 @@ namespace Test.UnitTest
 
         [TestMethod]
         [TestCategory("UT")]
-        public void FitToSlideUsualCases()
+        public void FitToWidth()
         {
             var slideWidth = Pres.PageSetup.SlideWidth;
             var slideHeight = Pres.PageSetup.SlideHeight;
-
-            // Fit to width normal
 
             PpOperations.SelectSlide(4);
             var actualShape = PpOperations.SelectShape("pic")[1];
@@ -28,8 +26,17 @@ namespace Test.UnitTest
             var expectedResultForFitToWidth = PpOperations.SelectShape("pic")[1];
 
             SlideUtil.IsSameShape(expectedResultForFitToWidth, actualShape);
+        }
 
-            // Fit to height normal
+        [TestMethod]
+        [TestCategory("UT")]
+        public void FitToHeight()
+        {
+            var slideWidth = Pres.PageSetup.SlideWidth;
+            var slideHeight = Pres.PageSetup.SlideHeight;
+
+            PpOperations.SelectSlide(4);
+            var actualShape = PpOperations.SelectShape("pic")[1];
 
             PowerPointLabs.FitToSlide.FitToHeight(actualShape, slideWidth, slideHeight);
 
@@ -37,24 +44,38 @@ namespace Test.UnitTest
             var expectedResultForFitToHeight = PpOperations.SelectShape("pic")[1];
 
             SlideUtil.IsSameShape(expectedResultForFitToHeight, actualShape);
+        }
 
-            // Fit to width rotated
+        [TestMethod]
+        [TestCategory("UT")]
+        public void FitToWidthRotated()
+        {
+            var slideWidth = Pres.PageSetup.SlideWidth;
+            var slideHeight = Pres.PageSetup.SlideHeight;
 
             PpOperations.SelectSlide(8);
-            actualShape = PpOperations.SelectShape("pic")[1];
+            var actualShape = PpOperations.SelectShape("pic")[1];
             PowerPointLabs.FitToSlide.FitToWidth(actualShape, slideWidth, slideHeight);
 
             PpOperations.SelectSlide(9);
-            expectedResultForFitToWidth = PpOperations.SelectShape("pic")[1];
+            var expectedResultForFitToWidth = PpOperations.SelectShape("pic")[1];
 
             SlideUtil.IsSameShape(expectedResultForFitToWidth, actualShape);
+        }
 
-            // Fit to height rotated
+        [TestMethod]
+        [TestCategory("UT")]
+        public void FitToHeightRotated()
+        {
+            var slideWidth = Pres.PageSetup.SlideWidth;
+            var slideHeight = Pres.PageSetup.SlideHeight;
 
+            PpOperations.SelectSlide(8);
+            var actualShape = PpOperations.SelectShape("pic")[1];
             PowerPointLabs.FitToSlide.FitToHeight(actualShape, slideWidth, slideHeight);
 
             PpOperations.SelectSlide(10);
-            expectedResultForFitToHeight = PpOperations.SelectShape("pic")[1];
+            var expectedResultForFitToHeight = PpOperations.SelectShape("pic")[1];
 
             SlideUtil.IsSameShape(expectedResultForFitToHeight, actualShape);
         }

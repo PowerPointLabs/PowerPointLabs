@@ -1589,16 +1589,28 @@ namespace PowerPointLabs
 
         public Bitmap GetFitToWidthImage(Office.IRibbonControl control)
         {
-            Globals.ThisAddIn.Application.StartNewUndoEntry();
-
-            return FitToSlide.GetFitToWidthImage(control);
+            try
+            {
+                return new Bitmap(Properties.Resources.FitToWidth);
+            }
+            catch (Exception e)
+            {
+                PowerPointLabsGlobals.LogException(e, "GetFitToWidthImage");
+                throw;
+            }
         }
 
         public Bitmap GetFitToHeightImage(Office.IRibbonControl control)
         {
-            Globals.ThisAddIn.Application.StartNewUndoEntry();
-
-            return FitToSlide.GetFitToHeightImage(control);
+            try
+            {
+                return new Bitmap(Properties.Resources.FitToHeight);
+            }
+            catch (Exception e)
+            {
+                PowerPointLabsGlobals.LogException(e, "GetFitToHeightImage");
+                throw;
+            }
         }
 
         #endregion

@@ -2,7 +2,7 @@
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using PowerPointLabs.Models;
 
-namespace Test.UnitTest
+namespace Test.UnitTest.TagMatchers
 {
     [TestClass]
     public class TaggedTextTest
