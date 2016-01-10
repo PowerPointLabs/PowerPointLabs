@@ -12,8 +12,8 @@
 
 ## How to add new test for Unit Test?
 
-0. If the class under test doesn't depend on `PowerPoint Object Model`, directly create a unit test against the class and can skip the rest of steps.
-1. If the class under test depends on `PowerPoint Object Model`, create the test slides [here](https://github.com/PowerPointLabs/PowerPointLabs/tree/master/doc/test). It should contain the data that can test the feature and the expected results that can be verified.
+0. If the class under test doesn't depend on `PowerPoint Object Model`, directly create a unit test against the class and skip the rest of steps. Remember to add attribute `[TestCategory("UT")]` to the test method.
+1. If the class under test depends on `PowerPoint Object Model`, create the test slides [here](https://github.com/PowerPointLabs/PowerPointLabs/tree/master/doc/test). It should contain the data that can test the class and the expected results that can be verified.
 2. Create a new test class that extends [BaseUnitTest](https://github.com/PowerPointLabs/PowerPointLabs/blob/master/PowerPointLabs/Test/UnitTest/BaseUnitTest.cs). Override the method `GetTestingSlideName` to return the name of the test slides.
 3. Create a new method with attribute `[TestMethod][TestCategory("UT")]`. Test the class and assert the verification at the end.
  
