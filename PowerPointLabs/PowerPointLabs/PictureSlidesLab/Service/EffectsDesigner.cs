@@ -210,7 +210,7 @@ namespace PowerPointLabs.PictureSlidesLab.Service
 
         public void ApplyTextPositionAndAlignment(Position pos, Alignment alignment)
         {
-            new TextBoxes(Shapes, SlideWidth, SlideHeight)
+            new TextBoxes(Shapes.Range(), SlideWidth, SlideHeight)
                 .SetPosition(pos)
                 .SetAlignment(alignment)
                 .StartBoxing();
@@ -218,7 +218,7 @@ namespace PowerPointLabs.PictureSlidesLab.Service
 
         public void ApplyTextWrapping()
         {
-            new TextBoxes(Shapes, SlideWidth, SlideHeight)
+            new TextBoxes(Shapes.Range(), SlideWidth, SlideHeight)
                 .StartTextWrapping();
         }
 
@@ -351,7 +351,7 @@ namespace PowerPointLabs.PictureSlidesLab.Service
             bool isOutline = false, int margin = 0)
         {
             var tbInfo =
-                new TextBoxes(Shapes, SlideWidth, SlideHeight)
+                new TextBoxes(Shapes.Range(), SlideWidth, SlideHeight)
                 .GetTextBoxesInfo();
             if (tbInfo == null)
                 return null;
@@ -386,7 +386,7 @@ namespace PowerPointLabs.PictureSlidesLab.Service
             string overlayColor, int transparency)
         {
             var tbInfo =
-                new TextBoxes(Shapes, SlideWidth, SlideHeight)
+                new TextBoxes(Shapes.Range(), SlideWidth, SlideHeight)
                 .GetTextBoxesInfo();
             if (tbInfo == null)
                 return null;
@@ -419,7 +419,7 @@ namespace PowerPointLabs.PictureSlidesLab.Service
         public PowerPoint.Shape ApplyRectOutlineEffect(PowerPoint.Shape imageShape, string overlayColor, int transparency)
         {
             var tbInfo =
-                new TextBoxes(Shapes, SlideWidth, SlideHeight)
+                new TextBoxes(Shapes.Range(), SlideWidth, SlideHeight)
                 .GetTextBoxesInfo();
             if (tbInfo == null)
                 return null;

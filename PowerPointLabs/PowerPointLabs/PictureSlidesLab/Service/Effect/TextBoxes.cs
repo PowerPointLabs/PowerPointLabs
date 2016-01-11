@@ -5,7 +5,8 @@ using Microsoft.Office.Core;
 using PowerPointLabs.PictureSlidesLab.Util;
 using PowerPointLabs.Utils;
 using Shape = Microsoft.Office.Interop.PowerPoint.Shape;
-using Shapes = Microsoft.Office.Interop.PowerPoint.Shapes;
+using ShapeRange = Microsoft.Office.Interop.PowerPoint.ShapeRange;
+
 
 namespace PowerPointLabs.PictureSlidesLab.Service.Effect
 {
@@ -30,7 +31,7 @@ namespace PowerPointLabs.PictureSlidesLab.Service.Effect
         private float _top;
 
         # region APIs
-        public TextBoxes(Shapes shapes, float slideWidth, float slideHeight)
+        public TextBoxes(ShapeRange shapes, float slideWidth, float slideHeight)
         {
             _slideWidth = slideWidth;
             _slideHeight = slideHeight;
