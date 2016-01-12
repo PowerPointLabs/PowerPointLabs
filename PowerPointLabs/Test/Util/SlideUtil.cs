@@ -50,8 +50,14 @@ namespace Test.Util
 
         public static void IsSameLooking(string expSlideImage, string actualSlideImage)
         {
-            var actualSlideInPic = new ComparableImage(new FileInfo(PathUtil.GetTempPath(actualSlideImage)));
-            var expSlideInPic = new ComparableImage(new FileInfo(PathUtil.GetTempPath(expSlideImage)));
+            IsSameLooking(new FileInfo(PathUtil.GetTempPath(expSlideImage)), 
+                new FileInfo(PathUtil.GetTempPath(actualSlideImage)));
+        }
+
+        public static void IsSameLooking(FileInfo expSlideImage, FileInfo actualSlideImage)
+        {
+            var actualSlideInPic = new ComparableImage(actualSlideImage);
+            var expSlideInPic = new ComparableImage(expSlideImage);
 
             var similarity = actualSlideInPic.CalculateSimilarity(expSlideInPic);
             Assert.IsTrue(similarity > 0.95, "The slides look different. Similarity = " + similarity);

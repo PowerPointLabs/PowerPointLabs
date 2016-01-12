@@ -1,9 +1,11 @@
-﻿using System.IO;
+﻿using System.Globalization;
+using System.IO;
 using TestInterface;
 using Microsoft.Office.Core;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Test.Util;
 using PowerPoint = Microsoft.Office.Interop.PowerPoint;
+using PowerPointLabs.Utils;
 
 namespace Test.UnitTest
 {
@@ -27,6 +29,7 @@ namespace Test.UnitTest
         [TestInitialize]
         public void Setup()
         {
+            CultureUtil.SetDefaultCulture(CultureInfo.GetCultureInfo("en-US"));
             App = new PowerPoint.Application();
             Pres = App.Presentations.Open(
                 PathUtil.GetDocTestPath() + GetTestingSlideName(),

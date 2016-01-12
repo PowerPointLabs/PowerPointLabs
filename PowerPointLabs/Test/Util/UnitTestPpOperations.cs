@@ -19,6 +19,12 @@ namespace Test.Util
 
         private Slide _currentSlide;
 
+        private Slide CurrentSlide
+        {
+            get { return _currentSlide ?? SelectSlide(1); }
+            set { _currentSlide = value; }
+        }
+
         private ShapeRange _currentShape;
 
         public UnitTestPpOperations(Presentation pres, Application app)
@@ -98,13 +104,13 @@ namespace Test.Util
 
         public Slide GetCurrentSlide()
         {
-            return _currentSlide;
+            return CurrentSlide;
         }
 
         public Slide SelectSlide(int index)
         {
             var slide = Pres.Slides[index];
-            _currentSlide = slide;
+            CurrentSlide = slide;
             return slide;
         }
 
@@ -114,7 +120,7 @@ namespace Test.Util
             {
                 if (slide.Name == slideName)
                 {
-                    _currentSlide = slide;
+                    CurrentSlide = slide;
                     return slide;
                 }
             }
@@ -126,6 +132,38 @@ namespace Test.Util
             return Pres.Slides.Cast<Slide>().ToArray();
         }
 
+        public string GetNotesPageText(Slide slide)
+        {
+            if (slide == null || slide.HasNotesPage == MsoTriState.msoFalse)
+            {
+                return string.Empty;
+            }
+
+            var notesPagePlaceholders = slide.NotesPage.Shapes.Placeholders.Cast<Shape>();
+            var notesPageBody = notesPagePlaceholders
+                .FirstOrDefault(shape => shape.PlaceholderFormat.Type == PpPlaceholderType.ppPlaceholderBody);
+
+            string notesText = notesPageBody != null ? notesPageBody.TextFrame.TextRange.Text : string.Empty;
+            return notesText;
+        }
+
+        public void SetNotesPageText(Slide slide, string text)
+        {
+            if (slide == null)
+            {
+                return;
+            }
+
+            var notesPagePlaceholders = slide.NotesPage.Shapes.Placeholders.Cast<Shape>();
+            var notesPageBody = notesPagePlaceholders
+                .FirstOrDefault(shape => shape.PlaceholderFormat.Type == PpPlaceholderType.ppPlaceholderBody);
+
+            if (notesPageBody != null)
+            {
+                notesPageBody.TextFrame.TextRange.Text = text;
+            }
+        }
+
         public Selection GetCurrentSelection()
         {
             throw new NotImplementedException();
@@ -133,34 +171,34 @@ namespace Test.Util
 
         public ShapeRange SelectShape(string shapeName)
         {
-            if (_currentSlide == null) return null;
+            if (CurrentSlide == null) return null;
 
             var nameList = new List<string>();
             nameList.Add(shapeName);
-            _currentShape = _currentSlide.Shapes.Range(nameList.ToArray());
+            _currentShape = CurrentSlide.Shapes.Range(nameList.ToArray());
             return _currentShape;
         }
 
         public ShapeRange SelectShapes(IEnumerable<string> shapeNames)
         {
-            if (_currentSlide == null) return null;
-            _currentShape = _currentSlide.Shapes.Range(shapeNames.ToArray());
+            if (CurrentSlide == null) return null;
+            _currentShape = CurrentSlide.Shapes.Range(shapeNames.ToArray());
             return _currentShape;
         }
 
         public ShapeRange SelectShapesByPrefix(string prefix)
         {
-            if (_currentSlide == null) return null;
+            if (CurrentSlide == null) return null;
 
             var nameList = new List<string>();
-            foreach (Shape shape in _currentSlide.Shapes)
+            foreach (Shape shape in CurrentSlide.Shapes)
             {
                 if (shape.Name.StartsWith(prefix))
                 {
                     nameList.Add(shape.Name);
                 }
             }
-            _currentShape = _currentSlide.Shapes.Range(nameList.ToArray());
+            _currentShape = CurrentSlide.Shapes.Range(nameList.ToArray());
             return _currentShape;
         }
 
@@ -185,7 +223,7 @@ namespace Test.Util
 
         public string SelectAllTextInShape(string shapeName)
         {
-            var shape = _currentSlide.Shapes.Cast<Shape>().FirstOrDefault(sh => sh.Name == shapeName);
+            var shape = CurrentSlide.Shapes.Cast<Shape>().FirstOrDefault(sh => sh.Name == shapeName);
             var textRange = shape.TextFrame2.TextRange;
             textRange.Select();
             return textRange.Text;
@@ -193,7 +231,7 @@ namespace Test.Util
 
         public string SelectTextInShape(string shapeName, int startIndex, int endIndex)
         {
-            var shape = _currentSlide.Shapes.Cast<Shape>().FirstOrDefault(sh => sh.Name == shapeName);
+            var shape = CurrentSlide.Shapes.Cast<Shape>().FirstOrDefault(sh => sh.Name == shapeName);
             var textRange = shape.TextFrame2.TextRange.Characters[startIndex, endIndex - startIndex];
             textRange.Select();
             return textRange.Text;

@@ -31,6 +31,8 @@ namespace TestInterface
         Slide SelectSlide(int index);
         Slide SelectSlide(string slideName);
         Slide[] GetAllSlides();
+        string GetNotesPageText(Slide slide);
+        void SetNotesPageText(Slide slide, string text);
 
         # endregion
 

@@ -41,7 +41,9 @@ namespace Test.Util
 
         public static string GetTestFailurePresentationPath(string presentationName)
         {
-            return GetTestFailurePath() + DateTime.Now.ToString("yyyyMMddHHmm-") + presentationName;
+            return GetTestFailurePath() + 
+                DateTime.Now.ToString("yyyyMMddHHmm-") + 
+                presentationName.Replace("\\", "_");
         }
 
         public static string GetDocTestPresentationPath(string presentationName)

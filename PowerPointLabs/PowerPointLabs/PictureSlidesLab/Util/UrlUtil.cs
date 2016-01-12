@@ -5,7 +5,7 @@ using RestSharp.Contrib;
 
 namespace PowerPointLabs.PictureSlidesLab.Util
 {
-    class UrlUtil
+    public class UrlUtil
     {
         /// <summary>
         /// taken from http://stackoverflow.com/a/5717342

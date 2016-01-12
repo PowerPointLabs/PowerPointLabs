@@ -2,7 +2,7 @@
 
 namespace PowerPointLabs.PictureSlidesLab.Model
 {
-    class ObservableFont : WPF.Observable.Model
+    public class ObservableFont : WPF.Observable.Model
     {
         private FontFamily _font;
 
