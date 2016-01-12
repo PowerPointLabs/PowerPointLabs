@@ -18,11 +18,12 @@ namespace PowerPointLabs.PictureSlidesLab.Service
 
         # region APIs
 
-        public StylesDesigner()
+        public StylesDesigner(Application app = null)
         {
             Path = TempPath.TempFolder;
             Name = "PictureSlidesLabPreview";
             Options = new StyleOptions();
+            Application = app;
             Open(withWindow: false, focus: false);
         }
 
@@ -64,9 +65,13 @@ namespace PowerPointLabs.PictureSlidesLab.Service
             return previewInfo;
         }
         
-        public void ApplyStyle(ImageItem source, Slide contentSlide, StyleOptions option = null)
+        public void ApplyStyle(ImageItem source, Slide contentSlide,
+            float slideWidth, float slideHeight, StyleOptions option = null)
         {
-            Globals.ThisAddIn.Application.StartNewUndoEntry();
+            if (Globals.ThisAddIn != null)
+            {
+                Globals.ThisAddIn.Application.StartNewUndoEntry();
+            }
             if (option != null)
             {
                 SetStyleOptions(option);
@@ -78,17 +83,12 @@ namespace PowerPointLabs.PictureSlidesLab.Service
             source.OriginalImageFile = fullsizeImage;
             
             var effectsHandler = new EffectsDesigner(contentSlide, 
-                SlideWidth, SlideHeight, source);
+                slideWidth, slideHeight, source);
 
             ApplyStyle(effectsHandler, source, isActualSize: true);
 
             source.FullSizeImageFile = fullsizeImage;
             source.OriginalImageFile = null;
-        }
-
-        private int GetPreviewWidth()
-        {
-            return (int)(SlideWidth / SlideHeight * PreviewHeight);
         }
 
         /// <summary>
@@ -202,6 +202,11 @@ namespace PowerPointLabs.PictureSlidesLab.Service
         # endregion
 
         # region Helper Funcs
+
+        private int GetPreviewWidth()
+        {
+            return (int)(SlideWidth / SlideHeight * PreviewHeight);
+        }
 
         private void SendToBack(params Shape[] shapes)
         {

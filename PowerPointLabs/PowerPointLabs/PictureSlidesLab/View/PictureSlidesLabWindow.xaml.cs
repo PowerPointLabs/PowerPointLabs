@@ -220,7 +220,9 @@ namespace PowerPointLabs.PictureSlidesLab.View
         private void StylesPreviewApplyButton_OnClick(object sender, RoutedEventArgs e)
         {
             ViewModel.ApplyStyleInPreviewStage(
-                PowerPointCurrentPresentationInfo.CurrentSlide.GetNativeSlide());
+                PowerPointCurrentPresentationInfo.CurrentSlide.GetNativeSlide(),
+                PowerPointPresentation.Current.SlideWidth,
+                PowerPointPresentation.Current.SlideHeight);
         }
 
         /// <summary>
@@ -467,7 +469,9 @@ namespace PowerPointLabs.PictureSlidesLab.View
         private void StylesVariationApplyButton_OnClick(object sender, RoutedEventArgs e)
         {
             ViewModel.ApplyStyleInVariationStage(
-                PowerPointCurrentPresentationInfo.CurrentSlide.GetNativeSlide());
+                PowerPointCurrentPresentationInfo.CurrentSlide.GetNativeSlide(),
+                PowerPointPresentation.Current.SlideWidth,
+                PowerPointPresentation.Current.SlideHeight);
         }
 
         private void VariationFlyoutBackButton_OnClick(object sender, RoutedEventArgs e)

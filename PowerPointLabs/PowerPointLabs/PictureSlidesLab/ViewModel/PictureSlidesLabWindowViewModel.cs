@@ -244,14 +244,14 @@ namespace PowerPointLabs.PictureSlidesLab.ViewModel
             }
         }
 
-        public void ApplyStyleInPreviewStage(Slide contentSlide)
+        public void ApplyStyleInPreviewStage(Slide contentSlide, float slideWidth, float slideHeight)
         {
             try
             {
                 var targetDefaultOptions = StyleOptionsFactory
                     .GetStylesPreviewOption(StylesPreviewListSelectedItem.ImageItem.Tooltip);
-                Designer.ApplyStyle(ImageSelectionListSelectedItem.ImageItem, 
-                    contentSlide, targetDefaultOptions);
+                Designer.ApplyStyle(ImageSelectionListSelectedItem.ImageItem, contentSlide,
+                    slideWidth, slideHeight, targetDefaultOptions);
                 View.ShowSuccessfullyAppliedDialog();
             }
             catch (AssumptionFailedException)
@@ -378,11 +378,12 @@ namespace PowerPointLabs.PictureSlidesLab.ViewModel
             UpdateStylesVariationImages(contentSlide, slideWidth, slideHeight);
         }
 
-        public void ApplyStyleInVariationStage(Slide contentSlide)
+        public void ApplyStyleInVariationStage(Slide contentSlide, float slideWidth, float slideHeight)
         {
             try
             {
-                Designer.ApplyStyle(ImageSelectionListSelectedItem.ImageItem, contentSlide);
+                Designer.ApplyStyle(ImageSelectionListSelectedItem.ImageItem, contentSlide,
+                    slideWidth, slideHeight);
                 View.ShowSuccessfullyAppliedDialog();
             }
             catch (AssumptionFailedException)

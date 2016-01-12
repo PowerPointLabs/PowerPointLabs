@@ -8,7 +8,8 @@ namespace PowerPointLabs.PictureSlidesLab.Service.Interface
     {
         PreviewInfo PreviewApplyStyle(ImageItem source, Slide contentSlide, 
             float slideWidth, float slideHeight, StyleOptions option);
-        void ApplyStyle(ImageItem source, Slide contentSlide, StyleOptions option = null);
+        void ApplyStyle(ImageItem source, Slide contentSlide,
+            float slideWidth, float slideHeight, StyleOptions option = null);
         void SetStyleOptions(StyleOptions opt);
         void CleanUp();
     }
