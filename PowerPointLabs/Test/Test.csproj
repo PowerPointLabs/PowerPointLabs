@@ -117,6 +117,7 @@
     <Compile Include="UnitTest\PictureSlidesLab\Model\StyleOptionsTest.cs" />
     <Compile Include="UnitTest\PictureSlidesLab\Model\StyleVariantsTest.cs" />
     <Compile Include="UnitTest\PictureSlidesLab\Service\Effect\TextBoxesTest.cs" />
+    <Compile Include="UnitTest\PictureSlidesLab\Service\EffectsDesignerTest.cs" />
     <Compile Include="UnitTest\TagMatchers\EndSpeedTests.cs" />
     <Compile Include="UnitTest\TagMatchers\EndVoiceTests.cs" />
     <Compile Include="UnitTest\TagMatchers\PauseTest.cs" />

@@ -132,6 +132,38 @@ namespace Test.Util
             return Pres.Slides.Cast<Slide>().ToArray();
         }
 
+        public string GetNotesPageText(Slide slide)
+        {
+            if (slide == null || slide.HasNotesPage == MsoTriState.msoFalse)
+            {
+                return string.Empty;
+            }
+
+            var notesPagePlaceholders = slide.NotesPage.Shapes.Placeholders.Cast<Shape>();
+            var notesPageBody = notesPagePlaceholders
+                .FirstOrDefault(shape => shape.PlaceholderFormat.Type == PpPlaceholderType.ppPlaceholderBody);
+
+            string notesText = notesPageBody != null ? notesPageBody.TextFrame.TextRange.Text : string.Empty;
+            return notesText;
+        }
+
+        public void SetNotesPageText(Slide slide, string text)
+        {
+            if (slide == null)
+            {
+                return;
+            }
+
+            var notesPagePlaceholders = slide.NotesPage.Shapes.Placeholders.Cast<Shape>();
+            var notesPageBody = notesPagePlaceholders
+                .FirstOrDefault(shape => shape.PlaceholderFormat.Type == PpPlaceholderType.ppPlaceholderBody);
+
+            if (notesPageBody != null)
+            {
+                notesPageBody.TextFrame.TextRange.Text = text;
+            }
+        }
+
         public Selection GetCurrentSelection()
         {
             throw new NotImplementedException();

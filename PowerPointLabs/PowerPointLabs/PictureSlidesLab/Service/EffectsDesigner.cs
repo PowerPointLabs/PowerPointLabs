@@ -36,7 +36,7 @@ namespace PowerPointLabs.PictureSlidesLab.Service
         /// <summary>
         /// For `apply`
         /// </summary>
-        /// <param name="slide"></param>
+        /// <param name="slide">the slide to apply the style</param>
         /// <param name="slideWidth"></param>
         /// <param name="slideHeight"></param>
         /// <param name="source"></param>
@@ -49,8 +49,8 @@ namespace PowerPointLabs.PictureSlidesLab.Service
         /// <summary>
         /// For `preview`
         /// </summary>
-        /// <param name="slide"></param>
-        /// <param name="contentSlide"></param>
+        /// <param name="slide">the temp slide to produce preview image</param>
+        /// <param name="contentSlide">the slide that contains content</param>
         /// <param name="slideWidth"></param>
         /// <param name="slideHeight"></param>
         /// <param name="source"></param>
@@ -60,19 +60,6 @@ namespace PowerPointLabs.PictureSlidesLab.Service
         {
             ContentSlide = contentSlide;
             Setup(slideWidth, slideHeight, source);
-        }
-
-        private void Setup(float slideWidth, float slideHeight, ImageItem source)
-        {
-            SlideWidth = slideWidth;
-            SlideHeight = slideHeight;
-            Source = source;
-            PrepareShapesForPreview();
-        }
-
-        public void RemoveEffect(EffectName effectName)
-        {
-            DeleteShapesWithPrefix(ShapeNamePrefix + "_" + effectName);
         }
 
         public void ApplyImageReference(string contextLink)
@@ -101,15 +88,6 @@ namespace PowerPointLabs.PictureSlidesLab.Service
             ChangeName(imageRefShape, EffectName.ImageReference);
         }
 
-        // add a background image shape from imageItem
-        public PowerPoint.Shape ApplyBackgroundEffect(string overlayColor, int overlayTransparency, int offset)
-        {
-            var overlay = ApplyOverlayEffect(overlayColor, overlayTransparency);
-            overlay.ZOrder(MsoZOrderCmd.msoSendToBack);
-
-            return ApplyBackgroundEffect(offset);
-        }
-
         public PowerPoint.Shape ApplyBackgroundEffect(int offset)
         {
             var imageShape = AddPicture(Source.FullSizeImageFile ?? Source.ImageFile, EffectName.BackGround);
@@ -123,6 +101,7 @@ namespace PowerPointLabs.PictureSlidesLab.Service
         }
 
         // apply text formats to textbox & placeholer
+
         public void ApplyTextEffect(string fontFamily, string fontColor, int fontSizeToIncrease)
         {
             foreach (PowerPoint.Shape shape in Shapes)
@@ -223,6 +202,7 @@ namespace PowerPointLabs.PictureSlidesLab.Service
         }
 
         // add overlay layer 
+
         public PowerPoint.Shape ApplyOverlayEffect(string color, int transparency,
             float left = 0, float top = 0, float? width = null, float? height = null)
         {
@@ -239,61 +219,6 @@ namespace PowerPointLabs.PictureSlidesLab.Service
             overlayShape.Line.Weight = 5;
             overlayShape.Line.Visible = MsoTriState.msoFalse;
             return overlayShape;
-        }
-
-        public PowerPoint.Shape ApplyCircleOverlayEffect(string color, int transparency,
-            float left, float top, float width, float height, bool isOutline)
-        {
-            var radius = (float) Math.Sqrt(width*width/4 + height*height/4);
-            var circleLeft = left - radius + width/2;
-            var circleTop = top - radius + height/2;
-            var circleWidth = radius*2;
-
-            var overlayShape = Shapes.AddShape(MsoAutoShapeType.msoShapeOval, circleLeft, circleTop,
-                circleWidth, circleWidth);
-            overlayShape.Fill.Solid();
-            overlayShape.Fill.ForeColor.RGB = Graphics.ConvertColorToRgb(StringUtil.GetColorFromHexValue(color));
-            overlayShape.Fill.Transparency = (float)transparency / 100;
-            overlayShape.Line.ForeColor.RGB = Graphics.ConvertColorToRgb(StringUtil.GetColorFromHexValue(color));
-            overlayShape.Line.Transparency = (float)transparency / 100;
-            overlayShape.Line.Weight = 5;
-            if (isOutline)
-            {
-                overlayShape.Fill.Visible = MsoTriState.msoFalse;
-                overlayShape.Line.Visible = MsoTriState.msoTrue;
-            }
-            else
-            {
-                overlayShape.Fill.Visible = MsoTriState.msoTrue;
-                overlayShape.Line.Visible = MsoTriState.msoFalse;
-            }
-            // as picture shape
-            overlayShape.Cut();
-            overlayShape = Shapes.PasteSpecial(PowerPoint.PpPasteDataType.ppPastePNG)[1];
-            overlayShape.Left = circleLeft;
-            overlayShape.Top = circleTop;
-            ChangeName(overlayShape, EffectName.Overlay);
-            return overlayShape;
-        }
-
-        private void CropPicture(PowerPoint.Shape picShape)
-        {
-            if (picShape.Left < 0)
-            {
-                picShape.PictureFormat.Crop.ShapeLeft = 0;
-            }
-            if (picShape.Top < 0)
-            {
-                picShape.PictureFormat.Crop.ShapeTop = 0;
-            }
-            if (picShape.Left + picShape.Width > SlideWidth)
-            {
-                picShape.PictureFormat.Crop.ShapeWidth = SlideWidth - picShape.Left;
-            }
-            if (picShape.Top + picShape.Height > SlideHeight)
-            {
-                picShape.PictureFormat.Crop.ShapeHeight = SlideHeight - picShape.Top;
-            }
         }
 
         public PowerPoint.Shape ApplyBlurEffect(string imageFileToBlur = null, int degree = 85, int offset = 0)
@@ -494,35 +419,6 @@ namespace PowerPointLabs.PictureSlidesLab.Service
             return result;
         }
 
-        private BannerDirection HandleAutoDirection(BannerDirection dir, Position textPos)
-        {
-            if (dir != BannerDirection.Auto) return dir;
-            switch (textPos)
-            {
-                case Position.Left:
-                case Position.Centre:
-                case Position.Right:
-                    return BannerDirection.Vertical;
-                default:
-                    return BannerDirection.Horizontal;
-            }
-        }
-
-        public PowerPoint.Shape ApplySpecialEffectEffect(IMatrixFilter effectFilter,
-            PowerPoint.Shape imageShape, string overlayColor, int transparency, int offset)
-        {
-            var overlayShape = ApplyOverlayEffect(overlayColor, transparency);
-            var specialEffectImageShape = ApplySpecialEffectEffect(effectFilter, false, offset);
-
-            overlayShape.ZOrder(MsoZOrderCmd.msoSendToBack);
-            specialEffectImageShape.ZOrder(MsoZOrderCmd.msoSendToBack);
-            if (imageShape != null)
-            {
-                imageShape.ZOrder(MsoZOrderCmd.msoSendToBack);
-            }
-            return specialEffectImageShape;
-        }
-
         public PowerPoint.Shape ApplySpecialEffectEffect(IMatrixFilter effectFilter, bool isActualSize, int offset)
         {
             Source.SpecialEffectImageFile = SpecialEffectImage(effectFilter, Source.FullSizeImageFile ?? Source.ImageFile, isActualSize);
@@ -537,6 +433,84 @@ namespace PowerPointLabs.PictureSlidesLab.Service
         # endregion
 
         # region Helper Funcs
+
+        private void Setup(float slideWidth, float slideHeight, ImageItem source)
+        {
+            SlideWidth = slideWidth;
+            SlideHeight = slideHeight;
+            Source = source;
+            PrepareShapesForPreview();
+        }
+
+        private BannerDirection HandleAutoDirection(BannerDirection dir, Position textPos)
+        {
+            if (dir != BannerDirection.Auto) return dir;
+            switch (textPos)
+            {
+                case Position.Left:
+                case Position.Centre:
+                case Position.Right:
+                    return BannerDirection.Vertical;
+                default:
+                    return BannerDirection.Horizontal;
+            }
+        }
+
+        private void CropPicture(PowerPoint.Shape picShape)
+        {
+            if (picShape.Left < 0)
+            {
+                picShape.PictureFormat.Crop.ShapeLeft = 0;
+            }
+            if (picShape.Top < 0)
+            {
+                picShape.PictureFormat.Crop.ShapeTop = 0;
+            }
+            if (picShape.Left + picShape.Width > SlideWidth)
+            {
+                picShape.PictureFormat.Crop.ShapeWidth = SlideWidth - picShape.Left;
+            }
+            if (picShape.Top + picShape.Height > SlideHeight)
+            {
+                picShape.PictureFormat.Crop.ShapeHeight = SlideHeight - picShape.Top;
+            }
+        }
+
+        private PowerPoint.Shape ApplyCircleOverlayEffect(string color, int transparency,
+            float left, float top, float width, float height, bool isOutline)
+        {
+            var radius = (float) Math.Sqrt(width*width/4 + height*height/4);
+            var circleLeft = left - radius + width/2;
+            var circleTop = top - radius + height/2;
+            var circleWidth = radius*2;
+
+            var overlayShape = Shapes.AddShape(MsoAutoShapeType.msoShapeOval, circleLeft, circleTop,
+                circleWidth, circleWidth);
+            overlayShape.Fill.Solid();
+            overlayShape.Fill.ForeColor.RGB = Graphics.ConvertColorToRgb(StringUtil.GetColorFromHexValue(color));
+            overlayShape.Fill.Transparency = (float)transparency / 100;
+            overlayShape.Line.ForeColor.RGB = Graphics.ConvertColorToRgb(StringUtil.GetColorFromHexValue(color));
+            overlayShape.Line.Transparency = (float)transparency / 100;
+            overlayShape.Line.Weight = 5;
+            if (isOutline)
+            {
+                overlayShape.Fill.Visible = MsoTriState.msoFalse;
+                overlayShape.Line.Visible = MsoTriState.msoTrue;
+            }
+            else
+            {
+                overlayShape.Fill.Visible = MsoTriState.msoTrue;
+                overlayShape.Line.Visible = MsoTriState.msoFalse;
+            }
+            // as picture shape
+            overlayShape.Cut();
+            overlayShape = Shapes.PasteSpecial(PowerPoint.PpPasteDataType.ppPastePNG)[1];
+            overlayShape.Left = circleLeft;
+            overlayShape.Top = circleTop;
+            ChangeName(overlayShape, EffectName.Overlay);
+            return overlayShape;
+        }
+
         private void RemovePreviousImageReference()
         {
             NotesPageText = Regex.Replace(NotesPageText, @"^Background image taken from .* on .*\n", "");
@@ -650,7 +624,7 @@ namespace PowerPointLabs.PictureSlidesLab.Service
             return blurImageFile;
         }
 
-        public static string SpecialEffectImage(IMatrixFilter effectFilter, string imageFilePath,
+        private static string SpecialEffectImage(IMatrixFilter effectFilter, string imageFilePath,
             bool isActualSize)
         {
             var specialEffectImageFile = TempPath.GetPath("fullsize_specialeffect");

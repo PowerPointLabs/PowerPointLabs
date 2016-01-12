@@ -1,6 +1,8 @@
 ﻿using System;
+using System.Collections.Generic;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using PowerPointLabs.PictureSlidesLab.Model;
+using PowerPointLabs.PictureSlidesLab.Util;
 using Test.Util;
 
 namespace Test.UnitTest.PictureSlidesLab.Model
@@ -52,6 +54,7 @@ namespace Test.UnitTest.PictureSlidesLab.Model
         [TestCategory("UT")]
         public void TestUpdateDownloadedImage()
         {
+            StoragePath.InitPersistentFolder(new List<string>());
             var imagePath = PathUtil.GetDocTestPath() + "koala.jpg";
             item.UpdateDownloadedImage(imagePath);
             Assert.AreEqual(imagePath, item.FullSizeImageFile);
