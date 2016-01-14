@@ -38,10 +38,10 @@
     <OldToolsVersion>4.0</OldToolsVersion>
     <VSTO_TrustAssembliesLocation>true</VSTO_TrustAssembliesLocation>
     <BootstrapperEnabled>true</BootstrapperEnabled>
-    <PublishUrl>C:\Users\User\Desktop\PowerPointLabsPublish\</PublishUrl>
-    <InstallUrl>http://www.comp.nus.edu.sg/~pptlabs/download/dev/</InstallUrl>
+    <PublishUrl>C:\Users\Giki\Desktop\pptlabsPublish\</PublishUrl>
+    <InstallUrl>http://www.comp.nus.edu.sg/~pptlabs/download-78563/</InstallUrl>
     <TargetCulture>en</TargetCulture>
-    <ApplicationVersion>2.5.5.0</ApplicationVersion>
+    <ApplicationVersion>2.6.6.0</ApplicationVersion>
     <AutoIncrementApplicationRevision>false</AutoIncrementApplicationRevision>
     <UpdateEnabled>true</UpdateEnabled>
     <UpdateInterval>0</UpdateInterval>
@@ -77,6 +77,11 @@
     <BootstrapperPackage Include="Microsoft.Windows.Installer.3.1">
       <Visible>False</Visible>
       <ProductName>Windows Installer 3.1</ProductName>
+      <Install>true</Install>
+    </BootstrapperPackage>
+    <BootstrapperPackage Include="Microsoft.Windows.Installer.4.5">
+      <Visible>False</Visible>
+      <ProductName>Windows Installer 4.5</ProductName>
       <Install>true</Install>
     </BootstrapperPackage>
   </ItemGroup>
@@ -153,10 +158,11 @@
     <SignManifests>true</SignManifests>
   </PropertyGroup>
   <PropertyGroup>
-    <ManifestKeyFile>PowerPointLabs_TemporaryKey.pfx</ManifestKeyFile>
+    <ManifestKeyFile>
+    </ManifestKeyFile>
   </PropertyGroup>
   <PropertyGroup>
-    <ManifestCertificateThumbprint>23F4E75F0C69E93AD38794F02FCA95ABAD89EFBB</ManifestCertificateThumbprint>
+    <ManifestCertificateThumbprint>2F6D6C35407CF519C0DC35A642F2993F4EC64DCC</ManifestCertificateThumbprint>
   </PropertyGroup>
   <!--
     This section specifies references for the project.
