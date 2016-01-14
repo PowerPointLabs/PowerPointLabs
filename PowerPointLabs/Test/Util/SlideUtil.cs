@@ -12,6 +12,13 @@ namespace Test.Util
         public static void IsSameShape(Shape expShape, Shape actualShape)
         {
             Assert.AreEqual(expShape.Type, actualShape.Type);
+            if (expShape.Name.StartsWith("PowerPointLabs Speech"))
+            {
+                // Audio shape no need to compare size and position,
+                // otherwise it causes bugs under different Dpi OS.
+                return;
+            }
+
             Assert.IsTrue(IsRoughlySame(expShape.Rotation, actualShape.Rotation),
                 "different shape rotation. exp:{0}, actual:{1}", expShape.Rotation, actualShape.Rotation);
             Assert.IsTrue(IsRoughlySame(expShape.Left, actualShape.Left),

@@ -26,7 +26,15 @@ namespace Test.FunctionalTest
 
             ThreadUtil.WaitFor(2000);
 
-            if (PpOperations.IsOffice2013())
+            if (PpOperations.IsOffice2010())
+            {
+                // AKA property handle
+                var formatObjHandle = NativeUtil.FindWindow("NUIDialog", "Format Shape");
+                Assert.AreNotEqual(IntPtr.Zero, formatObjHandle, "Failed to find Property handle.");
+                
+                NativeUtil.SendMessage(formatObjHandle, 0x10 /*WM_CLOSE*/, IntPtr.Zero, IntPtr.Zero);
+            }
+            else // for Office 2013 or higher
             {
                 // Spy++ helps to look into the handles
                 var pptHandle = NativeUtil.FindWindow("PPTFrameClass", null);
@@ -40,14 +48,6 @@ namespace Test.FunctionalTest
                 var formatObjHandle =
                     NativeUtil.FindWindowEx(dockRightHandle, IntPtr.Zero, "MsoCommandBar", "Format Object");
                 Assert.AreNotEqual(IntPtr.Zero, formatObjHandle, "Failed to find Property handle.");
-            } 
-            else if (PpOperations.IsOffice2010())
-            {
-                // AKA property handle
-                var formatObjHandle = NativeUtil.FindWindow("NUIDialog", "Format Shape");
-                Assert.AreNotEqual(IntPtr.Zero, formatObjHandle, "Failed to find Property handle.");
-                
-                NativeUtil.SendMessage(formatObjHandle, 0x10 /*WM_CLOSE*/, IntPtr.Zero, IntPtr.Zero);
             }
         }
     }
