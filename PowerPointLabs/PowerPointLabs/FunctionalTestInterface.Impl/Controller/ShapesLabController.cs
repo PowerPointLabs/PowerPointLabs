@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using FunctionalTestInterface;
+using TestInterface;
 using Microsoft.Office.Interop.PowerPoint;
 
 namespace PowerPointLabs.FunctionalTestInterface.Impl.Controller

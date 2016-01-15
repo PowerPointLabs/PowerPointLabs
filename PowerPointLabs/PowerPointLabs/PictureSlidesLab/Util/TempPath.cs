@@ -4,7 +4,7 @@ using PowerPointLabs.Views;
 
 namespace PowerPointLabs.PictureSlidesLab.Util
 {
-    class TempPath
+    public class TempPath
     {
         // resources & const
         public static string AggregatedTempFolder = Path.GetTempPath() + "pptlabs_pictureSlidesLab" + @"\";
@@ -17,6 +17,8 @@ namespace PowerPointLabs.PictureSlidesLab.Util
                                                    + DateTime.Now.GetHashCode() + @"\";
         public static readonly string BackupTempFolder = AggregatedBackupTempFolder + "pptlabs_pictureSlidesLab"
             + DateTime.Now.GetHashCode() + @"\";
+
+        private static bool _isInit;
 
         /// <returns>is successful</returns>
         public static bool InitTempFolder()
@@ -38,6 +40,7 @@ namespace PowerPointLabs.PictureSlidesLab.Util
                     return false;
                 }
             }
+            _isInit = true;
             return true;
         }
 
@@ -57,11 +60,16 @@ namespace PowerPointLabs.PictureSlidesLab.Util
                     return false;
                 }
             }
+            _isInit = true;
             return true;
         }
 
         public static string GetPath(string name)
         {
+            if (!_isInit)
+            {
+                throw new Exception("TempPath is not initialized!");
+            }
             var fullsizeImageFile = TempFolder + name + "_"
                                     + Guid.NewGuid().ToString().Substring(0, 6)
                                     + DateTime.Now.GetHashCode();

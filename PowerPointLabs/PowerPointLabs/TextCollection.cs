@@ -1,6 +1,6 @@
 ﻿namespace PowerPointLabs
 {
-    internal class TextCollection
+    public class TextCollection
     {
         # region Common Error
         public const string ErrorNameTooLong = "The name's length cannot be more than 255 characters.";

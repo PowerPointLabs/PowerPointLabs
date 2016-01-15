@@ -39,7 +39,10 @@ namespace PowerPointLabs.PictureSlidesLab.View
                     ShowInfoMessageBox(TextCollection.PictureSlidesLabText.SuccessfullyGoToSlide
                         .Replace("_SlideNumber_", _gotoSlideDialog.SelectedSlide.ToString()));
                 }
-                ViewModel.UpdatePreviewImages();
+                ViewModel.UpdatePreviewImages(
+                    PowerPointCurrentPresentationInfo.CurrentSlide.GetNativeSlide(),
+                    PowerPointPresentation.Current.SlideWidth,
+                    PowerPointPresentation.Current.SlideHeight);
             };
             _gotoSlideDialog.OnCancel += () =>
             {

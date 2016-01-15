@@ -661,21 +661,14 @@ namespace PowerPointLabs.PictureSlidesLab.Model
                 {
                     var serializer = new XmlSerializer(typeof(StyleOptions));
                     var opt = serializer.Deserialize(stream) as StyleOptions;
-                    return opt ?? CreateDefault();
+                    return opt ?? new StyleOptions();
                 }
             }
             catch (Exception e)
             {
                 PowerPointLabsGlobals.Log("Failed to load Picture Slides Lab Style Options: " + e.StackTrace, "Error");
-                return CreateDefault();
+                return new StyleOptions();
             }
-        }
-
-        private static StyleOptions CreateDefault()
-        {
-            var opt = new StyleOptions();
-            opt.Init();
-            return opt;
         }
 
         # endregion

@@ -6,7 +6,7 @@ using ImageProcessor;
 
 namespace PowerPointLabs.PictureSlidesLab.Util
 {
-    class ImageUtil
+    public class ImageUtil
     {
         private const int ThumbnailHeight = 350;
 

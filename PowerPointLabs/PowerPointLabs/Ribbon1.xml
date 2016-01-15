@@ -614,11 +614,6 @@
                 getLabel="GetApplyAutoMotionThumbnailLabel"
                 getImage="GetAddAnimationContextImage"
                 onAction="AddAnimationButtonClick"/>
-        <button id="reloadAutoMotionThumbnail"
-                getLabel="GetReloadButtonLabel"
-                getImage="GetReloadAnimationContextImage"
-                getEnabled="OnGetEnabledReloadAutoMotion"
-                onAction="ReloadButtonClick"/>
         <menu id="HighlightBulletsMenuThumbnail"
               getLabel="GetHighlightBulletsMenuShapeLabel"
               getImage="GetHighlightBulletsBackgroundContextImage">

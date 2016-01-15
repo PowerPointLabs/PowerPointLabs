@@ -3,7 +3,7 @@ using System.Drawing;
 using System.IO;
 using System.Text.RegularExpressions;
 using System.Windows.Forms;
-using FunctionalTestInterface;
+using TestInterface;
 using PowerPointLabs.Views;
 
 namespace PowerPointLabs

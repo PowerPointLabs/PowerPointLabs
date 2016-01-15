@@ -14,6 +14,8 @@ namespace PowerPointLabs.Models
         # region Properties
         private string _name;
 
+        public static Application Application { get; set; }
+
         public static PowerPointPresentation Current
         {
             get
@@ -79,9 +81,14 @@ namespace PowerPointLabs.Models
         {
             get
             {
-                return
-                    Globals.ThisAddIn.Application.Presentations.Cast<Presentation>().Any(
-                        presentation => presentation.Name == Name);
+                if (Globals.ThisAddIn != null)
+                {
+                    return
+                        Globals.ThisAddIn.Application.Presentations.Cast<Presentation>().Any(
+                            presentation => presentation.Name == Name);
+                }
+                return Application.Presentations.Cast<Presentation>().Any(
+                    presentation => presentation.Name == Name);
             }
         }
 
@@ -338,13 +345,19 @@ namespace PowerPointLabs.Models
                 return false;
             }
 
-            var workingWindow = Globals.ThisAddIn.Application.ActiveWindow;
-
-            Presentation = Globals.ThisAddIn.Application.Presentations.Add(BoolToMsoTriState(withWidow));
-            Presentation.SaveAs(FullNameNoExtension);
-
-            if (!focus)
+            if (Globals.ThisAddIn != null)
             {
+                Presentation = Globals.ThisAddIn.Application.Presentations.Add(BoolToMsoTriState(withWidow));
+                Presentation.SaveAs(FullNameNoExtension);
+            }
+            else if (Application != null)
+            {
+                Presentation = Application.Presentations.Add(BoolToMsoTriState(withWidow));
+            }
+
+            if (!focus && Globals.ThisAddIn != null)
+            {
+                var workingWindow = Globals.ThisAddIn.Application.ActiveWindow;
                 workingWindow.Activate();
             }
 

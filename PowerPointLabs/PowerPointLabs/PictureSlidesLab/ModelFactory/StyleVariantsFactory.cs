@@ -3,7 +3,7 @@ using PowerPointLabs.PictureSlidesLab.Model;
 
 namespace PowerPointLabs.PictureSlidesLab.ModelFactory
 {
-    class StyleVariantsFactory
+    public class StyleVariantsFactory
     {
         public static Dictionary<string, List<StyleVariants>> GetVariants(string targetStyle)
         {

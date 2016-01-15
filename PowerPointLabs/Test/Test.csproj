@@ -1,0 +1,184 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{D3FDF77D-35A9-4A94-829D-C038794CB959}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>Test</RootNamespace>
+    <AssemblyName>Test</AssemblyName>
+    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <ProjectTypeGuids>{3AC096D0-A1C2-E12C-1390-A8335801FDAB};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
+    <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
+    <VSToolsPath Condition="'$(VSToolsPath)' == ''">$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)</VSToolsPath>
+    <ReferencePath>$(ProgramFiles)\Common Files\microsoft shared\VSTT\$(VisualStudioVersion)\UITestExtensionPackages</ReferencePath>
+    <IsCodedUITest>False</IsCodedUITest>
+    <TestProjectType>UnitTest</TestProjectType>
+    <TargetFrameworkProfile />
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <PlatformTarget>AnyCPU</PlatformTarget>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="EyeOpen.Imaging.Processing">
+      <HintPath>.\Dependency\EyeOpen.Imaging.Processing.dll</HintPath>
+    </Reference>
+    <Reference Include="ImageProcessor">
+      <HintPath>..\packages\ImageProcessor.1.9.5.0\lib\ImageProcessor.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Office.Interop.PowerPoint, Version=15.0.0.0, Culture=neutral, PublicKeyToken=71e9bce111e9429c, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <EmbedInteropTypes>False</EmbedInteropTypes>
+    </Reference>
+    <Reference Include="Microsoft.Office.Tools, Version=10.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <EmbedInteropTypes>False</EmbedInteropTypes>
+    </Reference>
+    <Reference Include="Microsoft.Office.Tools.Common, Version=10.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <EmbedInteropTypes>False</EmbedInteropTypes>
+    </Reference>
+    <Reference Include="Microsoft.Office.Tools.Common.v4.0.Utilities, Version=10.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL" />
+    <Reference Include="Microsoft.VisualStudio.Tools.Applications.Runtime, Version=10.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL" />
+    <Reference Include="NAudio">
+      <HintPath>..\packages\NAudio.1.7.1\lib\net35\NAudio.dll</HintPath>
+    </Reference>
+    <Reference Include="Office, Version=15.0.0.0, Culture=neutral, PublicKeyToken=71e9bce111e9429c, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <EmbedInteropTypes>False</EmbedInteropTypes>
+    </Reference>
+    <Reference Include="PresentationCore" />
+    <Reference Include="PresentationFramework" />
+    <Reference Include="System" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Speech" />
+    <Reference Include="System.Windows.Forms" />
+    <Reference Include="System.XML" />
+    <Reference Include="System.Xml.Linq" />
+  </ItemGroup>
+  <Choose>
+    <When Condition="('$(VisualStudioVersion)' == '10.0' or '$(VisualStudioVersion)' == '') and '$(TargetFrameworkVersion)' == 'v3.5'">
+      <ItemGroup>
+        <Reference Include="Microsoft.VisualStudio.QualityTools.UnitTestFramework, Version=10.1.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL" />
+      </ItemGroup>
+    </When>
+    <Otherwise>
+      <ItemGroup>
+        <Reference Include="Microsoft.VisualStudio.QualityTools.UnitTestFramework">
+          <Private>False</Private>
+        </Reference>
+      </ItemGroup>
+    </Otherwise>
+  </Choose>
+  <ItemGroup>
+    <Compile Include="FunctionalTest\AgendaLabBeamSyncTest.cs" />
+    <Compile Include="FunctionalTest\AgendaLabGenerateTest.cs" />
+    <Compile Include="FunctionalTest\AgendaLabTextSyncTest.cs" />
+    <Compile Include="FunctionalTest\AgendaLabVisualSyncTest.cs" />
+    <Compile Include="FunctionalTest\AnimateInSlideTest.cs" />
+    <Compile Include="FunctionalTest\AutoAnimateTest.cs" />
+    <Compile Include="FunctionalTest\AutoCaptionsTest.cs" />
+    <Compile Include="FunctionalTest\AutoCropTest.cs" />
+    <Compile Include="FunctionalTest\AutoNarrationTest.cs" />
+    <Compile Include="FunctionalTest\AutoZoomTest.cs" />
+    <Compile Include="FunctionalTest\BaseFunctionalTest.cs" />
+    <Compile Include="FunctionalTest\ColorsLabTest.cs" />
+    <Compile Include="FunctionalTest\ConvertToPictureTest.cs" />
+    <Compile Include="FunctionalTest\EffectsLabTest.cs" />
+    <Compile Include="FunctionalTest\FitToSlideTest.cs" />
+    <Compile Include="FunctionalTest\HighlightBulletsTest.cs" />
+    <Compile Include="FunctionalTest\QuickPropertyTest.cs" />
+    <Compile Include="FunctionalTest\ShapesLabTest.cs" />
+    <Compile Include="FunctionalTest\SpotlightTest.cs" />
+    <Compile Include="FunctionalTest\TextFragmentsTest.cs" />
+    <Compile Include="FunctionalTest\ZoomToAreaTest.cs" />
+    <Compile Include="UnitTest\BaseUnitTest.cs" />
+    <Compile Include="UnitTest\FitToSlideTest.cs" />
+    <Compile Include="UnitTest\PictureSlidesLab\ModelFactory\StyleOptionsFactoryTest.cs" />
+    <Compile Include="UnitTest\PictureSlidesLab\ModelFactory\StyleVariantsFactoryTest.cs" />
+    <Compile Include="UnitTest\PictureSlidesLab\Model\ImageItemTest.cs" />
+    <Compile Include="UnitTest\PictureSlidesLab\Model\ObservableFontTest.cs" />
+    <Compile Include="UnitTest\PictureSlidesLab\Model\ObservableImageItemTest.cs" />
+    <Compile Include="UnitTest\PictureSlidesLab\Model\StyleOptionsTest.cs" />
+    <Compile Include="UnitTest\PictureSlidesLab\Model\StyleVariantsTest.cs" />
+    <Compile Include="UnitTest\PictureSlidesLab\Service\Effect\TextBoxesTest.cs" />
+    <Compile Include="UnitTest\PictureSlidesLab\Service\EffectsDesignerTest.cs" />
+    <Compile Include="UnitTest\PictureSlidesLab\Service\StylesDesignerTest.cs" />
+    <Compile Include="UnitTest\PictureSlidesLab\Util\ImageUtilTest.cs" />
+    <Compile Include="UnitTest\PictureSlidesLab\Util\TempPathTest.cs" />
+    <Compile Include="UnitTest\PictureSlidesLab\Util\StoragePathTest.cs" />
+    <Compile Include="UnitTest\PictureSlidesLab\Util\UrlUtilTest.cs" />
+    <Compile Include="UnitTest\TagMatchers\EndSpeedTests.cs" />
+    <Compile Include="UnitTest\TagMatchers\EndVoiceTests.cs" />
+    <Compile Include="UnitTest\TagMatchers\PauseTest.cs" />
+    <Compile Include="UnitTest\TagMatchers\PronounceTests.cs" />
+    <Compile Include="UnitTest\TagMatchers\StartSpeedTests.cs" />
+    <Compile Include="UnitTest\TagMatchers\StartVoiceTests.cs" />
+    <Compile Include="UnitTest\TagMatchers\TaggedTextTest.cs" />
+    <Compile Include="Util\TagUtil.cs" />
+    <Compile Include="Util\DialogUtil.cs" />
+    <Compile Include="Util\PresentationUtil.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Util\UnitTestPpOperations.cs" />
+    <Compile Include="Util\KeyboardUtil.cs" />
+    <Compile Include="Util\MessageBoxUtil.cs" />
+    <Compile Include="Util\MouseUtil.cs" />
+    <Compile Include="Util\NativeUtil.cs" />
+    <Compile Include="Util\PathUtil.cs" />
+    <Compile Include="Util\SlideUtil.cs" />
+    <Compile Include="Util\ThreadUtil.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\TestInterface\TestInterface.csproj">
+      <Project>{573cc738-5349-4a0d-bc53-9325fa9c0e6f}</Project>
+      <Name>TestInterface</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\PowerPointLabs\PowerPointLabs.csproj">
+      <Project>{e0696df3-9906-4e0e-906e-f9d47f41ef80}</Project>
+      <Name>PowerPointLabs</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup />
+  <Choose>
+    <When Condition="'$(VisualStudioVersion)' == '10.0' And '$(IsCodedUITest)' == 'True'">
+      <ItemGroup>
+        <Reference Include="Microsoft.VisualStudio.QualityTools.CodedUITestFramework, Version=10.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+          <Private>False</Private>
+        </Reference>
+        <Reference Include="Microsoft.VisualStudio.TestTools.UITest.Common, Version=10.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+          <Private>False</Private>
+        </Reference>
+        <Reference Include="Microsoft.VisualStudio.TestTools.UITest.Extension, Version=10.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+          <Private>False</Private>
+        </Reference>
+        <Reference Include="Microsoft.VisualStudio.TestTools.UITesting, Version=10.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+          <Private>False</Private>
+        </Reference>
+      </ItemGroup>
+    </When>
+  </Choose>
+  <Import Project="$(VSToolsPath)\TeamTest\Microsoft.TestTools.targets" Condition="Exists('$(VSToolsPath)\TeamTest\Microsoft.TestTools.targets')" />
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

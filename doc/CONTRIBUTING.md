@@ -82,7 +82,7 @@ help. They should remain focused on the selected issues and avoid containing unr
 
 For your first pull request, select an issue labelled `forFirstTimers`. For subsequent pull requests, prefer those labelled `forContributors` and with higher priority.
 
-**Please reference the selected issue** like this `#{issue-number}` in the pull request.
+**Please reference the selected issue** like this `#{issue-number}` in the pull request. When the pull request is ready for review, apply label `status.toReview` to it.
 
 **Please ask first** before embarking on any significant pull request (e.g.
 implementing features, refactoring code, porting to a different language),
@@ -143,5 +143,14 @@ project:
 
 **IMPORTANT**: By submitting a patch, you agree to allow the project owner to
 license your work under the same license as that used by the project.
+
+
+<a name="dogfooding"></a>
+## Dogfooding
+
+We regularly publish the dev version of PowerPointLabs add-in, and a contributor could help to use and verify the updates. The dev version can be downloaded [here](http://www.comp.nus.edu.sg/~pptlabs/download/dev/PowerPointLabs.zip), or it can be built from the recent commit that has a tag. 
+
+If any strange behaviour or exception is encountered, please submit a [bug report](#bugs).
+
 
 Most text of this document is taken from this [issue-guidelines](https://github.com/necolas/issue-guidelines).

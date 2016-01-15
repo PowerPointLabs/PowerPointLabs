@@ -9,13 +9,15 @@ using PowerPointLabs.Views;
 
 namespace PowerPointLabs.PictureSlidesLab.Util
 {
-    class StoragePath
+    public class StoragePath
     {
         private const string PictureSlidesLabImagesList = "PictureSlidesLabImagesList";
 
         public static string AggregatedFolder = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments) + @"\" + "pptlabs_pictureSlidesLab" + @"\";
 
         public static readonly string LoadingImgPath = AggregatedFolder + "loading";
+
+        private static bool _isInit;
 
         public static bool InitPersistentFolder(ICollection<string> filesInUse)
         {
@@ -41,6 +43,7 @@ namespace PowerPointLabs.PictureSlidesLab.Util
             }
 
             InitResources();
+            _isInit = true;
             return true;
         }
 
@@ -87,6 +90,10 @@ namespace PowerPointLabs.PictureSlidesLab.Util
 
         public static string GetPath(string name)
         {
+            if (!_isInit)
+            {
+                throw new Exception("StoragePath is not initialized!");
+            }
             return AggregatedFolder + name;
         }
 

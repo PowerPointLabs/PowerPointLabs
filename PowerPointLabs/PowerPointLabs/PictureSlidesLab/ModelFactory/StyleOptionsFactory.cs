@@ -11,7 +11,7 @@ namespace PowerPointLabs.PictureSlidesLab.ModelFactory
     /// variant of overlay transparency of 35. Otherwise it cannot swap and so lose continuity, 
     /// because variants don't match any values in the style option.
     /// </summary>
-    class StyleOptionsFactory
+    public class StyleOptionsFactory
     {
         /// <summary>
         /// get all styles variation options for variation stage usage

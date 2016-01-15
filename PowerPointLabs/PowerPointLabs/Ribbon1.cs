@@ -1223,18 +1223,7 @@ namespace PowerPointLabs
                 throw;
             }
         }
-        public Bitmap GetReloadAnimationContextImage(Office.IRibbonControl control)
-        {
-            try
-            {
-                return new Bitmap(Properties.Resources.ReloadAnimationContext);
-            }
-            catch (Exception e)
-            {
-                PowerPointLabsGlobals.LogException(e, "GetReloadAnimationContextImage");
-                throw;
-            }
-        }
+
         public Bitmap GetAddSpotlightContextImage(Office.IRibbonControl control)
         {
             try
@@ -1609,7 +1598,8 @@ namespace PowerPointLabs
             Globals.ThisAddIn.Application.StartNewUndoEntry();
 
             var selectedShape = PowerPointCurrentPresentationInfo.CurrentSelection.ShapeRange[1];
-            FitToSlide.FitToWidth(selectedShape);
+            var pres = PowerPointPresentation.Current;
+            FitToSlide.FitToWidth(selectedShape, pres.SlideWidth, pres.SlideHeight);
         }
 
         public void FitToHeightClick(Office.IRibbonControl control)
@@ -1617,21 +1607,34 @@ namespace PowerPointLabs
             Globals.ThisAddIn.Application.StartNewUndoEntry();
 
             var selectedShape = PowerPointCurrentPresentationInfo.CurrentSelection.ShapeRange[1];
-            FitToSlide.FitToHeight(selectedShape);
+            var pres = PowerPointPresentation.Current;
+            FitToSlide.FitToHeight(selectedShape, pres.SlideWidth, pres.SlideHeight);
         }
 
         public Bitmap GetFitToWidthImage(Office.IRibbonControl control)
         {
-            Globals.ThisAddIn.Application.StartNewUndoEntry();
-
-            return FitToSlide.GetFitToWidthImage(control);
+            try
+            {
+                return new Bitmap(Properties.Resources.FitToWidth);
+            }
+            catch (Exception e)
+            {
+                PowerPointLabsGlobals.LogException(e, "GetFitToWidthImage");
+                throw;
+            }
         }
 
         public Bitmap GetFitToHeightImage(Office.IRibbonControl control)
         {
-            Globals.ThisAddIn.Application.StartNewUndoEntry();
-
-            return FitToSlide.GetFitToHeightImage(control);
+            try
+            {
+                return new Bitmap(Properties.Resources.FitToHeight);
+            }
+            catch (Exception e)
+            {
+                PowerPointLabsGlobals.LogException(e, "GetFitToHeightImage");
+                throw;
+            }
         }
 
         #endregion
