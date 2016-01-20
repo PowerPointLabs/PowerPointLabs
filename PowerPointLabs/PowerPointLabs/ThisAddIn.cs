@@ -163,7 +163,17 @@ namespace PowerPointLabs
             // update recorder pane
             if (sldRange.Count > 0)
             {
-                UpdateRecorderPane(sldRange.Count, sldRange[1].SlideID);
+                int slideID;
+                try
+                {
+                    slideID = sldRange[1].SlideID;
+                }
+                catch (COMException)
+                {
+                    return;
+                }
+                
+                UpdateRecorderPane(sldRange.Count, slideID);
             }
             else
             {
@@ -380,7 +390,16 @@ namespace PowerPointLabs
 
         public CustomTaskPane GetActivePane(Type type)
         {
-            return GetPaneFromWindow(type, Application.ActiveWindow);
+            PowerPoint.DocumentWindow activeWindow;
+            try
+            {
+                activeWindow = Application.ActiveWindow;
+            }
+            catch (COMException)
+            {
+                return null;
+            }
+            return GetPaneFromWindow(type, activeWindow);
         }
 
         public Control GetControlFromWindow(Type type, PowerPoint.DocumentWindow window)
