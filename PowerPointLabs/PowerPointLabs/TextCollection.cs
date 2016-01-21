@@ -114,6 +114,11 @@
         public const string AgendaLabAgendaSettingsSupertip = "Configure agenda settings.";
         public const string AgendaLabBulletAgendaSettingsSupertip = "Set color scheme for Bullet Agenda.";
         # endregion
+
+        # region Drawing Lab
+        public const string DrawingsLabButtonSupertip = @"Opens the Drawing Lab Interface";
+        # endregion
+
         # endregion
 
         # region Help
@@ -208,6 +213,10 @@
         public const string AgendaLabAgendaSettingsButtonLabel = "Agenda Settings";
         public const string AgendaLabBulletAgendaSettingsButtonLabel = "Bullet Agenda Settings";
         # endregion
+
+        # region Drawing Lab
+        public const string DrawingsLabButtonLabel = "Drawing Lab";
+        # endregion
         # endregion
 
         # region Help
@@ -278,6 +287,7 @@
             "ton to save.";
         public const string ShapesLabTaskPanelTitle = "Shapes Lab";
         public const string ColorsLabTaskPanelTitle = "Colors Lab";
+        public const string DrawingsLabTaskPanelTitle = "Drawing Lab";
         public const string RecManagementPanelTitle = "Record Management";
         # endregion 
 
@@ -420,6 +430,26 @@
         public const string AgendaLabTemplateSlideInstructions =
                             "This slide is used as a ‘Template' for generating agenda slides. Please do not delete this slide.\r" +
                             "Adjust the design of this slide and click the 'Sync Agenda' (in Agenda Lab) to replicate the design in the other slides.";
+        # endregion
+
+
+        # region Drawing Lab
+
+        public const string DrawingsLabSelectExactlyOneShape = "Please select a single shape.";
+        public const string DrawingsLabSelectAtLeastOneShape = "Please select at least one shape.";
+        public const string DrawingsLabSelectExactlyTwoShapes = "Please select two shapes.";
+        public const string DrawingsLabSelectAtLeastTwoShapes = "Please select at least two shapes.";
+        public const string DrawingsLabSelectTwoSetsOfShapes = "Please select two sets of shapes.";
+        public const string DrawingsLabSelectStartAndEndShape = "Please select a start shape and an end shape";
+
+        public const string DrawingsLabErrorCannotGroup = "These shapes cannot be grouped.";
+        public const string DrawingsLabErrorNothingUngrouped = "Please select shapes that have been grouped.";
+
+        public const string DrawingsLabMultiCloneDialogText = "Number of Extra Copies";
+        public const string DrawingsLabMultiCloneDialogHeader = "Multi-Clone";
+
+        public const string DrawingsLabSetTextDialogHeader = "Set Text";
+
         # endregion
 
         # region Task Pane - Recorder

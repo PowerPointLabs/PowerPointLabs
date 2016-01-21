@@ -301,12 +301,19 @@
                     getLabel="GetAgendaLabRemoveAgendaButtonLabel"
                     getSupertip="GetAgendaLabRemoveAgendaSupertip"
                     onAction="RemoveAgendaClick"/>
-            <button id="udpateAgenda"
+            <button id="updateAgenda"
                     getImage="GetAgendaSyncImage"
                     getLabel="GetAgendaLabUpdateAgendaButtonLabel"
                     getSupertip="GetAgendaLabUpdateAgendaSupertip"
                     onAction="UpdateAgendaClick"/>
           </menu>
+          <button id="DrawingsLabButton"
+                  visible="false"
+                  getLabel="GetDrawingsLabButtonLabel"
+                  size="large"
+                  getImage="GetDrawingsLabImage"
+                  getSupertip="GetDrawingsLabButtonSupertip"
+                  onAction="DrawingsLabButtonClick"/>
         </group>
         <group id="PPTLabsHelp"
                getLabel="GetPPTLabsHelpGroupLabel"
