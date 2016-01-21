@@ -228,6 +228,7 @@
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="WindowsBase" />
+    <Reference Include="WindowsFormsIntegration" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="Microsoft.Office.Tools.v4.0.Framework, Version=10.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL" />
@@ -272,6 +273,7 @@
       <DependentUpon>ColorInformationDialog.cs</DependentUpon>
     </Compile>
     <Compile Include="ColorPicker\HSLColor.cs" />
+    <Compile Include="Converters\DrawingsLabConverters.cs" />
     <Compile Include="CustomBinding.cs" />
     <Compile Include="CustomControls\BufferedFlowLayoutPanel.cs">
       <SubType>Component</SubType>
@@ -290,7 +292,37 @@
     <Compile Include="Converters\ColorPaneConverters.cs" />
     <Compile Include="ConvertToPicture.cs" />
     <Compile Include="CropToShape.cs" />
+    <Compile Include="DataSources\DrawingsLabMultiCloneGridDataSource.cs" />
+    <Compile Include="DataSources\DrawingsLabPivotAroundDataSource.cs" />
+    <Compile Include="DataSources\DrawingsLabAlignmentDataSource.cs" />
+    <Compile Include="DataSources\DrawingsLabDataSource.cs" />
     <Compile Include="DataSources\ShapesLabSettingsDataSource.cs" />
+    <Compile Include="DrawingsLab\AlignmentDialogBoth.xaml.cs">
+      <DependentUpon>AlignmentDialogBoth.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="DrawingsLab\AlignmentDialogVertical.xaml.cs">
+      <DependentUpon>AlignmentDialogVertical.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="DrawingsLab\PivotAroundToolDialog.xaml.cs">
+      <DependentUpon>PivotAroundToolDialog.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="DrawingsLab\MultiCloneGridDialog.xaml.cs">
+      <DependentUpon>MultiCloneGridDialog.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="DrawingsLab\AlignmentDialogHorizontal.xaml.cs">
+      <DependentUpon>AlignmentDialogHorizontal.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="DrawingsLab\DrawingsLabDialogs.cs" />
+    <Compile Include="DrawingsLab\DrawingsLabMain.cs" />
+    <Compile Include="DrawingsLab\DrawingsPane.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="DrawingsLab\DrawingsPane.Designer.cs">
+      <DependentUpon>DrawingsPane.cs</DependentUpon>
+    </Compile>
+    <Compile Include="DrawingsLab\DrawingsPaneWPF.xaml.cs">
+      <DependentUpon>DrawingsPaneWPF.xaml</DependentUpon>
+    </Compile>
     <Compile Include="FunctionalTestInterface.Impl\Controller\ColorsLabController.cs" />
     <Compile Include="FunctionalTestInterface.Impl\Controller\ShapesLabController.cs" />
     <Compile Include="FunctionalTestInterface.Impl\Controller\UIThreadExecutor.cs">
@@ -369,6 +401,7 @@
     </Compile>
     <Compile Include="Models\PowerPointPresentation.cs" />
     <Compile Include="Models\PowerPointShapeGalleryPresentation.cs" />
+    <Compile Include="PPKeyboard.cs" />
     <Compile Include="Properties\Resources.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -507,6 +540,8 @@
     <Compile Include="Views\LoadingDialog.Designer.cs">
       <DependentUpon>LoadingDialog.cs</DependentUpon>
     </Compile>
+    <Compile Include="WPF\ClickSelectTextBox.cs" />
+    <Compile Include="WPF\ImageButton.cs" />
     <Compile Include="WPF\Observable\Model.cs" />
     <Compile Include="WPF\Observable\ObservableBoolean.cs" />
     <Compile Include="WPF\Observable\ObservableInt.cs" />
@@ -548,6 +583,9 @@
     <EmbeddedResource Include="ColorPicker\ColorPane.resx">
       <DependentUpon>ColorPane.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="DrawingsLab\DrawingsPane.resx">
+      <DependentUpon>DrawingsPane.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Views\LoadingDialog.resx">
       <DependentUpon>LoadingDialog.cs</DependentUpon>
     </EmbeddedResource>
@@ -583,7 +621,7 @@
       <DependentUpon>HighlightBulletsDialogBox.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
-      <Generator>ResXFileCodeGenerator</Generator>
+      <Generator>PublicResXFileCodeGenerator</Generator>
       <SubType>Designer</SubType>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
     </EmbeddedResource>
@@ -801,6 +839,32 @@
     <None Include="Resources\AgendaVisual.png" />
   </ItemGroup>
   <ItemGroup>
+    <Page Include="DrawingsLab\AlignmentDialogBoth.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="DrawingsLab\AlignmentDialogVertical.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="DrawingsLab\PivotAroundToolDialog.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="DrawingsLab\MultiCloneGridDialog.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="DrawingsLab\AlignmentDialogHorizontal.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="DrawingsLab\DrawingsPaneWPF.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+  </ItemGroup>
+  <ItemGroup>
     <ProjectReference Include="..\TestInterface\TestInterface.csproj">
       <Project>{573cc738-5349-4a0d-bc53-9325fa9c0e6f}</Project>
       <Name>TestInterface</Name>
@@ -823,6 +887,9 @@
     </Page>
   </ItemGroup>
   <ItemGroup>
+    <WCFMetadata Include="Service References\" />
+  </ItemGroup>
+  <ItemGroup>
     <None Include="Resources\loading.gif" />
   </ItemGroup>
   <ItemGroup>
@@ -830,6 +897,18 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\loadMore.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\DrawingLabTest.bmp" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\DrawingLab\arrow.png" />
+    <Resource Include="Resources\DrawingLab\circle.png" />
+    <Resource Include="Resources\DrawingLab\line.png" />
+    <Resource Include="Resources\DrawingLab\rect.png" />
+    <Resource Include="Resources\DrawingLab\roundrect.png" />
+    <Resource Include="Resources\DrawingLab\textbox.png" />
+    <Resource Include="Resources\DrawingLab\triangle.png" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\PptlabsContextMenu.png" />

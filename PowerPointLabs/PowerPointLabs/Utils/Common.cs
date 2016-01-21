@@ -133,6 +133,11 @@ namespace PowerPointLabs.Utils
             return unusedStrings.ToArray();
         }
 
+        public static string SplitCamelCase(string input)
+        {
+            return Regex.Replace(input, "([A-Z])", " $1", RegexOptions.Compiled).Trim();
+        }
+
         # region Helper Function
         private static int NextDefaultNumber(List<string> nameList, string name)
         {
