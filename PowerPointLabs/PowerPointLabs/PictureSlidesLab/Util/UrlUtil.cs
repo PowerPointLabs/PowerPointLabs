@@ -30,8 +30,8 @@ namespace PowerPointLabs.PictureSlidesLab.Util
             {
                 var googleImageUri = new Uri(url);
                 var parameters = HttpUtility.ParseQueryString(googleImageUri.Query);
-                url = parameters.Get("imgurl");
-                item.ContextLink = parameters.Get("imgrefurl");
+                url = HttpUtility.UrlDecode(parameters.Get("imgurl"));
+                item.ContextLink = HttpUtility.UrlDecode(parameters.Get("imgrefurl"));
             }
         }
     }
