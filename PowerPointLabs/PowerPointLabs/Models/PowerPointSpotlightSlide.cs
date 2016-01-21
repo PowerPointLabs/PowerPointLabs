@@ -11,6 +11,9 @@ namespace PowerPointLabs.Models
 {
     class PowerPointSpotlightSlide : PowerPointSlide
     {
+        //Padding so that after cropping, circumference of spotLightPicture will not have soft edge
+        private const float SoftEdgePadding = 3.0f;
+
         private PowerPointSpotlightSlide(PowerPoint.Slide slide) : base(slide)
         {
             if (!slide.Name.Contains("PPTLabsSpotlight"))
@@ -107,6 +110,10 @@ namespace PowerPointLabs.Models
                 spotlightPicture.Left, spotlightPicture.Top, spotlightPicture.Width, spotlightPicture.Height);
 
             renderedPicture.Name = spotlightPicture.Name + "_rendered";
+
+            //get rid of extra padding
+            CropSpotlightPictureToSlide(ref renderedPicture);
+
             spotlightPicture.Delete();
         }
 
@@ -147,7 +154,7 @@ namespace PowerPointLabs.Models
 
         private void AddRectangleShape()
         {
-            PowerPoint.Shape rectangleShape = Shapes.AddShape(Office.MsoAutoShapeType.msoShapeRectangle, (-1 * Spotlight.defaultSoftEdges), (-1 * Spotlight.defaultSoftEdges), (PowerPointPresentation.Current.SlideWidth + (2.0f * Spotlight.defaultSoftEdges)), (PowerPointPresentation.Current.SlideHeight + (2.0f * Spotlight.defaultSoftEdges)));
+            PowerPoint.Shape rectangleShape = Shapes.AddShape(Office.MsoAutoShapeType.msoShapeRectangle, (-SoftEdgePadding/2 * Spotlight.defaultSoftEdges), (-SoftEdgePadding/2 * Spotlight.defaultSoftEdges), (PowerPointPresentation.Current.SlideWidth + (SoftEdgePadding * Spotlight.defaultSoftEdges)), (PowerPointPresentation.Current.SlideHeight + (SoftEdgePadding * Spotlight.defaultSoftEdges)));
             rectangleShape.Fill.Solid();
             rectangleShape.Fill.ForeColor.RGB = ColorTranslator.ToWin32(Spotlight.defaultColor);
             rectangleShape.Fill.Transparency = Spotlight.defaultTransparency;
@@ -180,13 +187,14 @@ namespace PowerPointLabs.Models
         {
             spotlightPicture.PictureFormat.TransparencyColor = 0xffffff;
             spotlightPicture.PictureFormat.TransparentBackground = Office.MsoTriState.msoTrue;
-            spotlightPicture.Left = -1 * Spotlight.defaultSoftEdges;
-            spotlightPicture.Top = -1 * Spotlight.defaultSoftEdges;
+            spotlightPicture.Left = -SoftEdgePadding/2 * Spotlight.defaultSoftEdges;
+            spotlightPicture.Top = -SoftEdgePadding/2 * Spotlight.defaultSoftEdges;
             spotlightPicture.LockAspectRatio = Office.MsoTriState.msoFalse;
-            float incrementWidth = (2.0f * Spotlight.defaultSoftEdges) / spotlightPicture.Width;
-            float incrementHeight = (2.0f * Spotlight.defaultSoftEdges) / spotlightPicture.Height;
+            float incrementWidth = (SoftEdgePadding * Spotlight.defaultSoftEdges) / spotlightPicture.Width;
+            float incrementHeight = (SoftEdgePadding * Spotlight.defaultSoftEdges) / spotlightPicture.Height;
 
             spotlightPicture.SoftEdge.Radius = Spotlight.defaultSoftEdges;
+
             spotlightPicture.Name = "SpotlightShape1";
         }
     }
