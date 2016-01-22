@@ -1241,5 +1241,10 @@ namespace PowerPointLabs.Models
                 currentNames.Add(shape.Name);
             }
         }
+
+        public void DeleteSlideNumberShapes()
+        {
+            DeleteShapesWithPrefix("Slide Number Placeholder");
+        }
     }
 }

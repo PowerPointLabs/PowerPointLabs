@@ -20,6 +20,8 @@ namespace PowerPointLabs.AgendaLab
             var sections = Sections;
 
             var deletedShapeNames = RetrieveTrackedDeletions(refSlide);
+
+            refSlide.DeleteSlideNumberShapes();
             refSlide.MakeShapeNamesNonDefault();
             refSlide.MakeShapeNamesUnique(shape => !AgendaShape.IsAnyAgendaShape(shape) &&
                                                    !PowerPointSlide.IsTemplateSlideMarker(shape));
