@@ -560,7 +560,7 @@ namespace PowerPointLabs.Models
         /// If you are having difficulty getting a shaperange, use the ToShapeRange method.
         /// TODO: Test this method more thoroughly in more cases other than Graphics.SquashSlides
         /// </summary>
-        public ShapeRange CopyShapesToSlide(ShapeRange shapes)
+        public ShapeRange CopyShapesToSlide(ShapeRange shapes, Boolean needOffset)
         {
             // First Index all the shapes by name, so they can be identified later.
             int index = 0;
@@ -590,11 +590,29 @@ namespace PowerPointLabs.Models
 
                 originalShape.Name = originalName;
                 shape.Name = originalName;
-                shape.Left = originalShape.Left;
-                shape.Top = originalShape.Top;
+                if (needOffset)
+                {
+                    shape.Left = originalShape.Left + 10;
+                    shape.Top = originalShape.Top + 10;
+                }
+                else
+                {
+                    shape.Left = originalShape.Left;
+                    shape.Top = originalShape.Top;
+                }
             }
 
             return newShapes;
+        }
+
+        public ShapeRange CopyShapesToSlideWithoutOffset(ShapeRange shapes)
+        {
+            return CopyShapesToSlide(shapes, false);
+        }
+
+        public ShapeRange CopyShapesToSlideWithOffset(ShapeRange shapes)
+        {
+            return CopyShapesToSlide(shapes, true);
         }
 
         public void TransferAnimation(Shape source, Shape destination)

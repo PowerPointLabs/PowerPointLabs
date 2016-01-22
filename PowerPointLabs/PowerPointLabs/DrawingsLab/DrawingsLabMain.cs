@@ -322,7 +322,7 @@ namespace PowerPointLabs.DrawingsLab
             }
 
             Globals.ThisAddIn.Application.StartNewUndoEntry();
-            PowerPointCurrentPresentationInfo.CurrentSlide.CopyShapesToSlide(selection.ShapeRange);
+            PowerPointCurrentPresentationInfo.CurrentSlide.CopyShapesToSlideWithOffset(selection.ShapeRange);
         }
 
         public void MultiCloneExtendTool()
