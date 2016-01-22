@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using PowerPointLabs.Models;
 using PowerPointLabs.Utils;
+using PowerPointLabs.Views;
 using Office = Microsoft.Office.Core;
 using PowerPoint = Microsoft.Office.Interop.PowerPoint;
 
@@ -103,6 +104,7 @@ namespace PowerPointLabs
             catch (Exception e)
             {
                 PowerPointLabsGlobals.LogException(e, "AddDrillDownAnimation");
+                ErrorDialogWrapper.ShowDialog("Error when adding drill down animation", "An error occurred when adding drill down animation.", e);
                 throw;
             }
         }
@@ -183,6 +185,7 @@ namespace PowerPointLabs
             catch (Exception e)
             {
                 PowerPointLabsGlobals.LogException(e, "AddStepBackAnimation");
+                ErrorDialogWrapper.ShowDialog("Error when adding step back animation", "An error occurred when adding step back animation.", e);
                 throw;
             }
         }
