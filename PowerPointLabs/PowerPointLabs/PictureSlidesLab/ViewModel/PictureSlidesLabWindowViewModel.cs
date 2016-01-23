@@ -77,13 +77,14 @@ namespace PowerPointLabs.PictureSlidesLab.ViewModel
         #endregion
 
         #region Lifecycle
-        public PictureSlidesLabWindowViewModel(IPictureSlidesLabWindowView view)
+        public PictureSlidesLabWindowViewModel(IPictureSlidesLabWindowView view, 
+            IStylesDesigner stylesDesigner = null)
         {
             View = view;
             ImageDownloader = new ContextDownloader(View.GetThreadContext());
             InitUiModels();
             InitStorage();
-            Designer = new StylesDesigner();
+            Designer = stylesDesigner ?? new StylesDesigner();
         }
 
         private void InitUiModels()

@@ -6,7 +6,7 @@ using PowerPointLabs.Utils;
 
 namespace PowerPointLabs.PictureSlidesLab.ViewModel
 {
-    partial class PictureSlidesLabWindowViewModel
+    public partial class PictureSlidesLabWindowViewModel
     {
         ///////////////////////////////////////////////////////////////
         // Implemented variation stage controls' binding in ViewModel

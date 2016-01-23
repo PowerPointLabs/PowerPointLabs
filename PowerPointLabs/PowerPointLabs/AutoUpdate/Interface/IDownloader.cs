@@ -2,7 +2,7 @@
 
 namespace PowerPointLabs.AutoUpdate.Interface
 {
-    interface IDownloader
+    public interface IDownloader
     {
         IDownloader Get(string webAddress, string destinationPath);
         IDownloader After(Downloader.AfterDownloadEventDelegate action);
