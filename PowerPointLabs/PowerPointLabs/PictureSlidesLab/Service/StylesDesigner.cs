@@ -106,6 +106,16 @@ namespace PowerPointLabs.PictureSlidesLab.Service
             {
                 designer.ApplyTextWrapping();
             }
+            else if (Options.IsUseCircleStyle
+                     || Options.IsUseOutlineStyle)
+            {
+                designer.ApplyTextWrapping();
+            }
+            else
+            {
+                designer.RecoverTextWrapping();
+            }
+
             ApplyTextEffect(designer);
 
             // store style options information into original image shape

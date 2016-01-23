@@ -201,6 +201,12 @@ namespace PowerPointLabs.PictureSlidesLab.Service
                 .StartTextWrapping();
         }
 
+        public void RecoverTextWrapping()
+        {
+            new TextBoxes(Shapes.Range(), SlideWidth, SlideHeight)
+                .RecoverTextWrapping();
+        }
+
         // add overlay layer 
 
         public PowerPoint.Shape ApplyOverlayEffect(string color, int transparency,
