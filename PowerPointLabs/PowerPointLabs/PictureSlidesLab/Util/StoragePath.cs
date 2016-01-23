@@ -97,6 +97,11 @@ namespace PowerPointLabs.PictureSlidesLab.Util
             return AggregatedFolder + name;
         }
 
+        private static string ForceGetPath(string name)
+        {
+            return AggregatedFolder + name;
+        }
+
         /// <summary>
         /// Save images list
         /// </summary>
@@ -126,7 +131,7 @@ namespace PowerPointLabs.PictureSlidesLab.Util
         {
             try
             {
-                using (var stream = File.OpenRead(GetPath(PictureSlidesLabImagesList)))
+                using (var stream = File.OpenRead(ForceGetPath(PictureSlidesLabImagesList)))
                 {
                     var serializer = new XmlSerializer(typeof(ObservableCollection<ImageItem>));
                     var list = serializer.Deserialize(stream) as ObservableCollection<ImageItem> 

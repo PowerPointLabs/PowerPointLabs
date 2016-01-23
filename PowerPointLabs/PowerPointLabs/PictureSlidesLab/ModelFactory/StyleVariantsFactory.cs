@@ -44,7 +44,6 @@ namespace PowerPointLabs.PictureSlidesLab.ModelFactory
                 { TextCollection.PictureSlidesLabText.VariantCategoryBlurriness, GetBlurVariants() },
                 { TextCollection.PictureSlidesLabText.VariantCategoryBrightness, GetBrightnessVariants() },
                 { TextCollection.PictureSlidesLabText.VariantCategoryFontColor, GetFontColorVariants() },
-                { TextCollection.PictureSlidesLabText.VariantCategoryTextPosition, GetFontPositionVariants() },
                 { TextCollection.PictureSlidesLabText.VariantCategoryFontFamily, GetFontFamilyVariants() },
                 { TextCollection.PictureSlidesLabText.VariantCategoryFontSizeIncrease, GetFontSizeIncreaseVariants() }
             };
