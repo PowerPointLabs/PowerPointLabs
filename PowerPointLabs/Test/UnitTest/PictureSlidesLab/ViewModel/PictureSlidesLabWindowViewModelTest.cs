@@ -26,6 +26,8 @@ namespace Test.UnitTest.PictureSlidesLab.ViewModel
             var pslViewModel2 = CreateViewModel();
             Assert.AreEqual(expectedString, 
                 pslViewModel2.ImageSelectionList[0].ImageFile);
+            pslViewModel2.ImageSelectionList.Clear();
+            pslViewModel2.CleanUp();
         }
 
         private PictureSlidesLabWindowViewModel CreateViewModel()
