@@ -201,15 +201,11 @@ namespace PowerPointLabs.PictureSlidesLab.View
         /// <param name="e"></param>
         private void ImageSelectionListBox_OnSelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            if (ImageSelectionListBox.SelectedValue == null 
-                && IsVariationsFlyoutOpen)
+            if (ImageSelectionListBox.SelectedValue != null)
             {
-                CloseVariationsFlyout();
+                _isDisplayDefaultPicture = false;
             }
-            ViewModel.UpdatePreviewImages(
-                PowerPointCurrentPresentationInfo.CurrentSlide.GetNativeSlide(),
-                PowerPointPresentation.Current.SlideWidth,
-                PowerPointPresentation.Current.SlideHeight);
+            UpdatePreviewImages();
         }
 
         private void StylesCustomizeButton_OnClick(object sender, RoutedEventArgs e)
@@ -300,14 +296,15 @@ namespace PowerPointLabs.PictureSlidesLab.View
         /// <param name="e"></param>
         private void StylesPreivewListBox_OnSelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            if (StylesPreviewListBox.SelectedValue != null)
+            if (StylesPreviewListBox.SelectedValue != null
+                && ImageSelectionListBox.SelectedValue != null)
             {
-                StylesPickUpButton.IsEnabled = true;
+                StylesCustomizeButton.IsEnabled = true;
                 StylesApplyButton.IsEnabled = true;
             }
             else
             {
-                StylesPickUpButton.IsEnabled = false;
+                StylesCustomizeButton.IsEnabled = false;
                 StylesApplyButton.IsEnabled = false;
             }
         }
@@ -364,10 +361,7 @@ namespace PowerPointLabs.PictureSlidesLab.View
                 ReloadStylesButton.IsEnabled = true;
                 Dispatcher.BeginInvoke(new Action(() =>
                 {
-                    ViewModel.UpdatePreviewImages(
-                        PowerPointCurrentPresentationInfo.CurrentSlide.GetNativeSlide(),
-                        PowerPointPresentation.Current.SlideWidth,
-                        PowerPointPresentation.Current.SlideHeight);
+                    UpdatePreviewImages();
                 }));
             }
         }
@@ -440,16 +434,17 @@ namespace PowerPointLabs.PictureSlidesLab.View
         /// <param name="e"></param>
         private void VariationListBox_OnSelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            if (StylesVariationListBox.SelectedValue == null
-                || StylesPreviewListBox.SelectedValue == null)
-            {
-                StyleApplyButton.IsEnabled = false;
-            }
-            else
+            if (ImageSelectionListBox.SelectedValue != null
+                && StylesVariationListBox.SelectedValue != null
+                && StylesPreviewListBox.SelectedValue != null)
             {
                 StyleApplyButton.IsEnabled = true;
                 ViewModel.UpdateStyleVariationStyleOptionsWhenSelectedItemChange();
                 UpdateVariationStageControls();
+            }
+            else
+            {
+                StyleApplyButton.IsEnabled = false;
             }
         }
 
@@ -647,10 +642,16 @@ namespace PowerPointLabs.PictureSlidesLab.View
                 Dispatcher.BeginInvoke(new Action(() =>
                 {
                     StyleVariationsFlyout.Visibility = Visibility.Collapsed;
-                    ViewModel.UpdatePreviewImages(
-                        PowerPointCurrentPresentationInfo.CurrentSlide.GetNativeSlide(),
-                        PowerPointPresentation.Current.SlideWidth,
-                        PowerPointPresentation.Current.SlideHeight);
+                    if (_isDisplayDefaultPicture)
+                    {
+                        _isDisplayDefaultPicture = false;
+                        UpdatePreviewImages(CreateDefaultPictureItem());
+                        _isDisplayDefaultPicture = true;
+                    }
+                    else
+                    {
+                        UpdatePreviewImages();
+                    }
                 }));
             };
 
@@ -658,10 +659,22 @@ namespace PowerPointLabs.PictureSlidesLab.View
             IsVariationsFlyoutOpen = false;
         }
 
-        private void CustomizeStyle(List<StyleOptions> givenStyles = null,
+        private void UpdatePreviewImages(ImageItem source = null)
+        {
+            if (_isDisplayDefaultPicture) return;
+
+            ViewModel.UpdatePreviewImages(
+                source ?? (ImageItem) ImageSelectionListBox.SelectedValue,
+                PowerPointCurrentPresentationInfo.CurrentSlide.GetNativeSlide(),
+                PowerPointPresentation.Current.SlideWidth,
+                PowerPointPresentation.Current.SlideHeight);
+        }
+
+        private void CustomizeStyle(ImageItem source = null, List<StyleOptions> givenStyles = null,
             Dictionary<string, List<StyleVariants>> givenVariants = null)
         {
             ViewModel.UpdateStyleVariationImagesWhenOpenFlyout(
+                source ?? (ImageItem) ImageSelectionListBox.SelectedValue,
                 PowerPointCurrentPresentationInfo.CurrentSlide.GetNativeSlide(),
                 PowerPointPresentation.Current.SlideWidth,
                 PowerPointPresentation.Current.SlideHeight,

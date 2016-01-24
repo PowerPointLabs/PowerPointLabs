@@ -383,8 +383,6 @@
             public const string ErrorNoEmbeddedStyleInfo =
                 "No Picture Slides Lab styles are detected for the current slide.";
             
-            public const string SuccessfullyGoToSlide =
-                "You are now editing Slide _SlideNumber_.";
             public const string SuccessfullyLoadedImage =
                 "Successfully loaded image from the slide.";
             public const string SuccessfullyLoadedStyle =

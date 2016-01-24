@@ -16,7 +16,8 @@ namespace Test.UnitTest.PictureSlidesLab.Util
         [TestCategory("UT")]
         public void TestGetThumbnailFromFullSizeImg()
         {
-            StoragePath.InitPersistentFolder(new List<string>());
+            StoragePath.InitPersistentFolder();
+            StoragePath.CleanPersistentFolder(new List<string>());
             var thumbnail = 
                 ImageUtil.GetThumbnailFromFullSizeImg(
                     PathUtil.GetDocTestPath() + "koala.jpg");

@@ -54,7 +54,8 @@ namespace Test.UnitTest.PictureSlidesLab.Model
         [TestCategory("UT")]
         public void TestUpdateDownloadedImage()
         {
-            StoragePath.InitPersistentFolder(new List<string>());
+            StoragePath.InitPersistentFolder();
+            StoragePath.CleanPersistentFolder(new List<string>());
             var imagePath = PathUtil.GetDocTestPath() + "koala.jpg";
             item.UpdateDownloadedImage(imagePath);
             Assert.AreEqual(imagePath, item.FullSizeImageFile);

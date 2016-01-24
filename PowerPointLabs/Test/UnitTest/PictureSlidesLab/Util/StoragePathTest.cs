@@ -28,7 +28,8 @@ namespace Test.UnitTest.PictureSlidesLab.Util
         {
             try
             {
-                StoragePath.InitPersistentFolder(new List<string>());
+                StoragePath.InitPersistentFolder();
+                StoragePath.CleanPersistentFolder(new List<string>());
                 StoragePath.GetPath("some-name");
             }
             catch (Exception)

@@ -937,7 +937,15 @@
   <ItemGroup>
     <None Include="Resources\icon-up.png" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <None Include="Resources\ChoosePicturesIcon.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\SelectAPicturePlaceholder.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\DefaultPicture.png" />
+  </ItemGroup>
   <!-- Include the build rules for a C# project. -->
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>

@@ -61,7 +61,7 @@
                     </Grid.ColumnDefinitions>
                     <Label Name="PreviewLabel" Grid.Column="1" Margin="0,0,5,0" FontSize="15">Styles</Label>
                     <Button ToolTip="Apply the selected style to the current slide." IsEnabled="False" Name="StylesApplyButton" Click="StylesPreviewApplyButton_OnClick" Grid.Column="2" Margin="0,0,5,0">Apply</Button>
-                    <Button ToolTip="Customize the selected style." IsEnabled="False" Name="StylesPickUpButton" Click="StylesCustomizeButton_OnClick" Grid.Column="3" Margin="0,0,5,0">Customize</Button>
+                    <Button ToolTip="Customize the selected style." IsEnabled="False" Name="StylesCustomizeButton" Click="StylesCustomizeButton_OnClick" Grid.Column="3" Margin="0,0,5,0">Customize</Button>
                     <controls:ProgressRing Name="PreviewProgressRing" Width="10" Height="10" Grid.Column="4" IsActive="False" />
                 </Grid>
                 <TextBlock Visibility="Visible" Name="PreviewInstructions" TextWrapping="Wrap" HorizontalAlignment="Center" VerticalAlignment="Center" Foreground="#AAAAAA" FontSize="16" Grid.Row="2">Select a picture to preview styles. Pick any style and click APPLY button to apply.</TextBlock>

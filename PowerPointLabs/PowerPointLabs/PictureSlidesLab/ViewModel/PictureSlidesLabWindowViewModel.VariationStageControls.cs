@@ -65,6 +65,7 @@ namespace PowerPointLabs.PictureSlidesLab.ViewModel
             BindFontToStyle(SelectedFontFamily.Font.Source);
             BindFontToVariant(SelectedFontFamily.Font.Source);
             UpdatePreviewImages(
+                ImageSelectionListSelectedItem.ImageItem,
                 PowerPointCurrentPresentationInfo.CurrentSlide.GetNativeSlide(),
                 PowerPointPresentation.Current.SlideWidth,
                 PowerPointPresentation.Current.SlideHeight);

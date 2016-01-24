@@ -263,6 +263,16 @@ namespace PowerPointLabs.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
+        public static System.Drawing.Bitmap ChoosePicturesIcon {
+            get {
+                object obj = ResourceManager.GetObject("ChoosePicturesIcon", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
         public static System.Drawing.Bitmap Clear_icon {
             get {
                 object obj = ResourceManager.GetObject("Clear_icon", resourceCulture);
@@ -316,6 +326,16 @@ namespace PowerPointLabs.Properties {
         public static System.Drawing.Bitmap CutOutShapeMenu {
             get {
                 object obj = ResourceManager.GetObject("CutOutShapeMenu", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        public static System.Drawing.Bitmap DefaultPicture {
+            get {
+                object obj = ResourceManager.GetObject("DefaultPicture", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }
@@ -493,7 +513,7 @@ namespace PowerPointLabs.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
-        internal static System.Drawing.Bitmap Indicator {
+        public static System.Drawing.Bitmap Indicator {
             get {
                 object obj = ResourceManager.GetObject("Indicator", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
@@ -573,16 +593,6 @@ namespace PowerPointLabs.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
-        public static System.Drawing.Bitmap LoadMore {
-            get {
-                object obj = ResourceManager.GetObject("LoadMore", resourceCulture);
-                return ((System.Drawing.Bitmap)(obj));
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized resource of type System.Drawing.Bitmap.
-        /// </summary>
         public static System.Drawing.Bitmap Logo {
             get {
                 object obj = ResourceManager.GetObject("Logo", resourceCulture);
@@ -643,7 +653,7 @@ namespace PowerPointLabs.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
-        internal static System.Drawing.Bitmap PictureSlidesLab {
+        public static System.Drawing.Bitmap PictureSlidesLab {
             get {
                 object obj = ResourceManager.GetObject("PictureSlidesLab", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
@@ -653,7 +663,7 @@ namespace PowerPointLabs.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
-        internal static System.Drawing.Bitmap Play {
+        public static System.Drawing.Bitmap Play {
             get {
                 object obj = ResourceManager.GetObject("Play", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));

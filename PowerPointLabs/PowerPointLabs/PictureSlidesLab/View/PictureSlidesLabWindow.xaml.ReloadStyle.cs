@@ -25,7 +25,7 @@ namespace PowerPointLabs.PictureSlidesLab.View
         {
             // TODO move this to text collection
             _reloadStylesDialog.Init("Load Styles or Image from the Selected Slide");
-            _reloadStylesDialog.CustomizeGotoSlideButton("Load Styles", "Load styles and image from the selected slide.");
+            _reloadStylesDialog.CustomizeGotoSlideButton("Load Style", "Load style from the selected slide.");
             _reloadStylesDialog.CustomizeAdditionalButton("Load Image", "Load image from the selected slide.");
             _reloadStylesDialog.FocusOkButton();
             this.ShowMetroDialogAsync(_reloadStylesDialog, MetroDialogOptions);
@@ -38,9 +38,9 @@ namespace PowerPointLabs.PictureSlidesLab.View
                     .GetProperty("OwningWindow", BindingFlags.Instance | BindingFlags.NonPublic)
                     .SetValue(_reloadStylesDialog, this, null);
 
-            _reloadStylesDialog.OnGotoSlide += ReloadStyles();
+            _reloadStylesDialog.OnGotoSlide += LoadStyle;
 
-            _reloadStylesDialog.OnAdditionalButtonClick += ReloadStyles(isReloadImageOnly: true);
+            _reloadStylesDialog.OnAdditionalButtonClick += LoadImage;
 
             _reloadStylesDialog.OnCancel += () =>
             {
@@ -48,120 +48,135 @@ namespace PowerPointLabs.PictureSlidesLab.View
             };
         }
 
-        private SlideSelectionDialog.OkEvent ReloadStyles(bool isReloadImageOnly = false)
+        private void LoadImage()
         {
-            return () =>
+            this.HideMetroDialogAsync(_reloadStylesDialog, MetroDialogOptions);
+
+            // which is the current slide
+            var currentSlide = PowerPointPresentation.Current.Slides[_reloadStylesDialog.SelectedSlide - 1];
+            if (currentSlide == null) return;
+
+            var originalShapeList = currentSlide.GetShapesWithPrefix(ShapeNamePrefix + "_" + EffectName.Original_DO_NOT_REMOVE);
+            var croppedShapeList = currentSlide.GetShapesWithPrefix(ShapeNamePrefix + "_" + EffectName.Cropped_DO_NOT_REMOVE);
+
+            // if no original shape, show info
+            if (originalShapeList.Count == 0)
             {
-                this.HideMetroDialogAsync(_reloadStylesDialog, MetroDialogOptions);
+                ShowInfoMessageBox(TextCollection.PictureSlidesLabText.ErrorNoEmbeddedStyleInfo);
+            }
+            else
+            {
+                // TODO repeated methods in GotoSlide
+                var originalImageShape = originalShapeList[0];
+                var isImageStillInListBox = false;
 
-                // which is the current slide
-                var currentSlide = PowerPointPresentation.Current.Slides[_reloadStylesDialog.SelectedSlide - 1];
-                if (currentSlide == null) return;
-
-                var originalShapeList = currentSlide.GetShapesWithPrefix(ShapeNamePrefix + "_" + EffectName.Original_DO_NOT_REMOVE);
-                var croppedShapeList = currentSlide.GetShapesWithPrefix(ShapeNamePrefix + "_" + EffectName.Cropped_DO_NOT_REMOVE);
-
-                // if no original shape, show info
-                if (originalShapeList.Count == 0)
+                // if the image source is still in the listbox,
+                // select it as source and also select the target style
+                for (var i = 0; i < ImageSelectionListBox.Items.Count; i++)
                 {
-                    ShowInfoMessageBox(TextCollection.PictureSlidesLabText.ErrorNoEmbeddedStyleInfo);
+                    var imageItem = (ImageItem)ImageSelectionListBox.Items[i];
+                    if (imageItem.FullSizeImageFile == originalImageShape.Tags[Service.Effect.Tag.ReloadOriginImg]
+                        || imageItem.ContextLink == originalImageShape.Tags[Service.Effect.Tag.ReloadImgContext])
+                    {
+                        isImageStillInListBox = true;
+                        ImageSelectionListBox.SelectedIndex = i;
+                        // previewing is done async, need to use beginInvoke
+                        // so that it's after previewing
+                        ShowInfoMessageBox(TextCollection.PictureSlidesLabText.SuccessfullyLoadedImage);
+                        break;
+                    }
+                }
+
+                // if image source is deleted already, need to re-generate images
+                // and put into listbox
+                if (!isImageStillInListBox)
+                {
+                    var fullsizeImageFile =
+                        StoragePath.GetPath("img-" + DateTime.Now.GetHashCode() +
+                                            Guid.NewGuid().ToString().Substring(0, 7) + ".jpg");
+                    // need to make shape visible so that can export
+                    originalImageShape.Visible = MsoTriState.msoTrue;
+                    originalImageShape.Export(fullsizeImageFile, PpShapeFormat.ppShapeFormatJPG);
+                    originalImageShape.Visible = MsoTriState.msoFalse;
+
+                    var fullsizeThumbnailFile = ImageUtil.GetThumbnailFromFullSizeImg(fullsizeImageFile);
+
+                    var croppedImageFile =
+                        StoragePath.GetPath("crop-" + DateTime.Now.GetHashCode() +
+                                            Guid.NewGuid().ToString().Substring(0, 7) + ".jpg");
+                    string croppedThumbnailFile;
+
+                    var croppedImageShape = croppedShapeList.Count > 0 ? croppedShapeList[0] : null;
+                    if (croppedImageShape != null)
+                    {
+                        croppedImageShape.Visible = MsoTriState.msoTrue;
+                        croppedImageShape.Export(croppedImageFile, PpShapeFormat.ppShapeFormatJPG);
+                        croppedThumbnailFile = ImageUtil.GetThumbnailFromFullSizeImg(croppedImageFile);
+                        croppedImageShape.Visible = MsoTriState.msoFalse;
+                    }
+                    else
+                    {
+                        croppedImageFile = null;
+                        croppedThumbnailFile = null;
+                    }
+
+                    var rect = new Rect();
+                    rect.X = double.Parse(originalImageShape.Tags[Service.Effect.Tag.ReloadRectX]);
+                    rect.Y = double.Parse(originalImageShape.Tags[Service.Effect.Tag.ReloadRectY]);
+                    rect.Width = double.Parse(originalImageShape.Tags[Service.Effect.Tag.ReloadRectWidth]);
+                    rect.Height = double.Parse(originalImageShape.Tags[Service.Effect.Tag.ReloadRectHeight]);
+
+                    var imageItem = new ImageItem
+                    {
+                        ImageFile = fullsizeThumbnailFile,
+                        FullSizeImageFile = fullsizeImageFile,
+                        Tooltip = ImageUtil.GetWidthAndHeight(fullsizeImageFile),
+                        CroppedImageFile = croppedImageFile,
+                        CroppedThumbnailImageFile = croppedThumbnailFile,
+                        ContextLink = originalImageShape.Tags[Service.Effect.Tag.ReloadImgContext],
+                        Rect = rect
+                    };
+
+                    ViewModel.ImageSelectionList.Add(imageItem);
+                    ShowInfoMessageBox(TextCollection.PictureSlidesLabText.SuccessfullyLoadedImage);
+                }
+            }
+        }
+
+        private void LoadStyle()
+        {
+            this.HideMetroDialogAsync(_reloadStylesDialog, MetroDialogOptions);
+
+            // which is the current slide
+            var currentSlide = PowerPointPresentation.Current.Slides[_reloadStylesDialog.SelectedSlide - 1];
+            if (currentSlide == null) return;
+
+            var originalShapeList = currentSlide.GetShapesWithPrefix(ShapeNamePrefix + "_" + EffectName.Original_DO_NOT_REMOVE);
+
+            // if no original shape, show info
+            if (originalShapeList.Count == 0)
+            {
+                ShowInfoMessageBox(TextCollection.PictureSlidesLabText.ErrorNoEmbeddedStyleInfo);
+            }
+            else
+            {
+                if (ImageSelectionListBox.SelectedIndex < 0)
+                {
+                    UpdatePreviewImages(CreateDefaultPictureItem());
                 }
                 else
                 {
-                    var originalImageShape = originalShapeList[0];
-                    var isImageStillInListBox = false;
-                    var styleName = originalImageShape.Tags[Service.Effect.Tag.ReloadPrefix + "StyleName"];
-
-                    // if the image source is still in the listbox,
-                    // select it as source and also select the target style
-                    for (var i = 0; i < ImageSelectionListBox.Items.Count; i++)
-                    {
-                        var imageItem = (ImageItem) ImageSelectionListBox.Items[i];
-                        if (imageItem.FullSizeImageFile
-                            == originalImageShape.Tags[Service.Effect.Tag.ReloadOriginImg])
-                        {
-                            isImageStillInListBox = true;
-                            ImageSelectionListBox.SelectedIndex = i;
-                            // previewing is done async, need to use beginInvoke
-                            // so that it's after previewing
-                            if (isReloadImageOnly)
-                            {
-                                ShowInfoMessageBox(TextCollection.PictureSlidesLabText.SuccessfullyLoadedImage);
-                            }
-                            else
-                            {
-                                OpenVariationFlyoutForReload(styleName, originalImageShape);
-                            }
-                            break;
-                        }
-                    }
-
-                    // if image source is deleted already, need to re-generate images
-                    // and put into listbox
-                    if (!isImageStillInListBox)
-                    {
-                        var fullsizeImageFile =
-                            StoragePath.GetPath("img-" + DateTime.Now.GetHashCode() +
-                                                Guid.NewGuid().ToString().Substring(0, 7) + ".jpg");
-                        // need to make shape visible so that can export
-                        originalImageShape.Visible = MsoTriState.msoTrue;
-                        originalImageShape.Export(fullsizeImageFile, PpShapeFormat.ppShapeFormatJPG);
-                        originalImageShape.Visible = MsoTriState.msoFalse;
-
-                        var fullsizeThumbnailFile = ImageUtil.GetThumbnailFromFullSizeImg(fullsizeImageFile);
-
-                        var croppedImageFile =
-                            StoragePath.GetPath("crop-" + DateTime.Now.GetHashCode() +
-                                                Guid.NewGuid().ToString().Substring(0, 7) + ".jpg");
-                        string croppedThumbnailFile;
-
-                        var croppedImageShape = croppedShapeList.Count > 0 ? croppedShapeList[0] : null;
-                        if (croppedImageShape != null)
-                        {
-                            croppedImageShape.Visible = MsoTriState.msoTrue;
-                            croppedImageShape.Export(croppedImageFile, PpShapeFormat.ppShapeFormatJPG);
-                            croppedThumbnailFile = ImageUtil.GetThumbnailFromFullSizeImg(croppedImageFile);
-                            croppedImageShape.Visible = MsoTriState.msoFalse;
-                        }
-                        else
-                        {
-                            croppedImageFile = null;
-                            croppedThumbnailFile = null;
-                        }
-
-                        var rect = new Rect();
-                        rect.X = double.Parse(originalImageShape.Tags[Service.Effect.Tag.ReloadRectX]);
-                        rect.Y = double.Parse(originalImageShape.Tags[Service.Effect.Tag.ReloadRectY]);
-                        rect.Width = double.Parse(originalImageShape.Tags[Service.Effect.Tag.ReloadRectWidth]);
-                        rect.Height = double.Parse(originalImageShape.Tags[Service.Effect.Tag.ReloadRectHeight]);
-
-                        var imageItem = new ImageItem
-                        {
-                            ImageFile = fullsizeThumbnailFile,
-                            FullSizeImageFile = fullsizeImageFile,
-                            Tooltip = ImageUtil.GetWidthAndHeight(fullsizeImageFile),
-                            CroppedImageFile = croppedImageFile,
-                            CroppedThumbnailImageFile = croppedThumbnailFile,
-                            Rect = rect
-                        };
-
-                        ViewModel.ImageSelectionList.Add(imageItem);
-
-                        if (isReloadImageOnly)
-                        {
-                            ShowInfoMessageBox(TextCollection.PictureSlidesLabText.SuccessfullyLoadedImage);
-                        }
-                        else
-                        {
-                            ImageSelectionListBox.SelectedIndex = ImageSelectionListBox.Items.Count - 1;
-                            OpenVariationFlyoutForReload(styleName, originalImageShape);
-                        }
-                    }
+                    UpdatePreviewImages((ImageItem) ImageSelectionListBox.SelectedValue);
                 }
-            };
+
+                var originalImageShape = originalShapeList[0];
+                var styleName = originalImageShape.Tags[Service.Effect.Tag.ReloadPrefix + "StyleName"];
+                OpenVariationFlyoutForReload(styleName, originalImageShape, canUseDefaultPicture: true);
+            }
         }
 
-        private void OpenVariationFlyoutForReload(string styleName, Shape originalImageShape)
+        private void OpenVariationFlyoutForReload(string styleName, Shape originalImageShape,
+            bool canUseDefaultPicture = false)
         {
             Dispatcher.BeginInvoke(new Action(() =>
             {
@@ -170,11 +185,22 @@ namespace PowerPointLabs.PictureSlidesLab.View
                 var variants = ConstructVariantsFromStyle(listOfStyles[0]);
                 Dispatcher.BeginInvoke(new Action(() =>
                 {
-                    CustomizeStyle(listOfStyles, variants);
+                    if (canUseDefaultPicture
+                        && ImageSelectionListBox.SelectedIndex < 0)
+                    {
+                        CustomizeStyle(CreateDefaultPictureItem(),
+                            listOfStyles, variants);
+                        _isDisplayDefaultPicture = true;
+                    }
+                    else
+                    {
+                        CustomizeStyle(
+                            (ImageItem) ImageSelectionListBox.SelectedValue,
+                            listOfStyles, variants);
+                    }
                     Dispatcher.BeginInvoke(new Action(() =>
                     {
                         StylesVariationListBox.ScrollIntoView(StylesVariationListBox.SelectedItem);
-                        ShowInfoMessageBox(TextCollection.PictureSlidesLabText.SuccessfullyLoadedStyle);
                     }));
                 }));
             }));

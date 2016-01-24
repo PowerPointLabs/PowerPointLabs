@@ -121,7 +121,8 @@ namespace PowerPointLabs.PictureSlidesLab.Service
             // store style options information into original image shape
             // return original image and cropped image
             var metaImages = designer.EmbedStyleOptionsInformation(
-                source.OriginalImageFile, source.FullSizeImageFile, source.Rect, Options);
+                source.OriginalImageFile, source.FullSizeImageFile, 
+                source.ContextLink, source.Rect, Options);
             Shape originalImage = null;
             Shape croppedImage = null;
             if (metaImages.Count == 2)

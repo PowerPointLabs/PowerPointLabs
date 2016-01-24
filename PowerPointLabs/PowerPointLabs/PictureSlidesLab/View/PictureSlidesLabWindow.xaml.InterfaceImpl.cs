@@ -27,6 +27,8 @@ namespace PowerPointLabs.PictureSlidesLab.View
             try
             {
                 _gotoSlideDialog.Init("Successfully Applied!");
+                _gotoSlideDialog.CustomizeAdditionalButton("Go directly", 
+                    "Go to the selected slide without changing the current style.");
                 _gotoSlideDialog.FocusOkButton();
                 this.ShowMetroDialogAsync(_gotoSlideDialog, MetroDialogOptions);
             }
