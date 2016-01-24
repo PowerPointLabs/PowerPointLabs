@@ -71,13 +71,37 @@ namespace Test.FunctionalTest
         [AssemblyCleanup]
         public static void FinalTearDown()
         {
-            // Wait 1.5 second for processes to finish
-            ThreadUtil.WaitFor(1500);
+            const int waitTime = 200;
+            var tempFolder = PathUtil.GetTempTestFolder();
+            var retryCount = 50;
 
-            if (Directory.Exists(PathUtil.GetTempTestFolder()))
+            while (Directory.Exists(tempFolder) && retryCount > 0)
             {
-                Directory.Delete(PathUtil.GetTempTestFolder(), true);
+                DirectoryInfo tempFolderInfo = new DirectoryInfo(tempFolder);
+
+                try
+                {
+                    DeleteTempTestFolder(tempFolderInfo);
+                }
+                catch (Exception)
+                {
+                    retryCount--;
+                    ThreadUtil.WaitFor(waitTime);
+                }
             }
+        }
+
+        private static void DeleteTempTestFolder(DirectoryInfo rootFolder)
+        {
+            rootFolder.Attributes = FileAttributes.Normal;
+
+            foreach (var subFolder in rootFolder.GetDirectories())
+                DeleteTempTestFolder(subFolder);
+
+            foreach (var file in rootFolder.GetFiles())
+                file.IsReadOnly = false;
+            
+            rootFolder.Delete(true);
         }
 
         private void ConnectPpl()
