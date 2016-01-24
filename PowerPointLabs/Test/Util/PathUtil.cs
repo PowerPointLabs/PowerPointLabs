@@ -21,7 +21,12 @@ namespace Test.Util
 
         public static String GetTempPath(String fileName)
         {
-            return Path.GetTempPath() + fileName;
+            return GetTempTestFolder() + fileName;
+        }
+
+        public static String GetTempTestFolder()
+        {
+            return Path.Combine(Path.GetTempPath(), "PowerPointLabsTest\\");
         }
 
         public static string GetDocTestPath()

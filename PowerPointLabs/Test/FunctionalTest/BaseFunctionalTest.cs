@@ -2,6 +2,7 @@
 using System.Diagnostics;
 using System.IO;
 using System.Runtime.Remoting;
+using System.Threading;
 using TestInterface;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Test.Util;
@@ -40,6 +41,11 @@ namespace Test.FunctionalTest
                 CloseActivePpInstance();
             }
 
+            if (!Directory.Exists(PathUtil.GetTempTestFolder()))
+            {
+                Directory.CreateDirectory(PathUtil.GetTempTestFolder());
+            }
+
             OpenSlideForTest(GetTestingSlideName());
 
             ConnectPpl();
@@ -60,6 +66,18 @@ namespace Test.FunctionalTest
                         GetTestingSlideName()));
             }
             PpOperations.ClosePresentation();
+        }
+
+        [AssemblyCleanup]
+        public static void FinalTearDown()
+        {
+            // Wait 1.5 second for processes to finish
+            ThreadUtil.WaitFor(1500);
+
+            if (Directory.Exists(PathUtil.GetTempTestFolder()))
+            {
+                Directory.Delete(PathUtil.GetTempTestFolder(), true);
+            }
         }
 
         private void ConnectPpl()

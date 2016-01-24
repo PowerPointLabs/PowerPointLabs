@@ -17,7 +17,7 @@ namespace PowerPointLabs.FunctionalTestInterface.Impl
         {
             var hashCode = DateTime.Now.GetHashCode();
             SlideImage = "slide" + hashCode;
-            slide.Export(Path.GetTempPath() + SlideImage, "PNG");
+            slide.Export(GetTempTestFolder() + SlideImage, "PNG");
 
             Animation = new List<IEffectData>();
             var seq = slide.TimeLine.MainSequence;
@@ -26,6 +26,11 @@ namespace PowerPointLabs.FunctionalTestInterface.Impl
                 var effect = seq[i];
                 Animation.Add(EffectData.FromEffect(effect));
             }
+        }
+
+        private static String GetTempTestFolder()
+        {
+            return Path.Combine(Path.GetTempPath(), "PowerPointLabsTest\\");
         }
 
         public static ISlideData FromSlide(Slide slide)

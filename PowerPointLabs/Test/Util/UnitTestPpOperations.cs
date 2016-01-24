@@ -216,7 +216,7 @@ namespace Test.Util
         {
             var shapes = _currentShape;
             var hashCode = DateTime.Now.GetHashCode();
-            var pathName = Path.GetTempPath() + "shapeName" + hashCode;
+            var pathName = GetTempTestFolder() + "shapeName" + hashCode;
             shapes.Export(pathName, PpShapeFormat.ppShapeFormatPNG);
             return new FileInfo(pathName);
         }
@@ -250,6 +250,11 @@ namespace Test.Util
         public void DeleteSection(int index, bool deleteSlides)
         {
             Pres.SectionProperties.Delete(index, deleteSlides);
+        }
+
+        private static String GetTempTestFolder()
+        {
+            return Path.Combine(Path.GetTempPath(), "PowerPointLabsTest\\");
         }
     }
 }
