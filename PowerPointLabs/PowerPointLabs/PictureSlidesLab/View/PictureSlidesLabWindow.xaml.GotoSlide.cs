@@ -64,7 +64,9 @@ namespace PowerPointLabs.PictureSlidesLab.View
             // if no original shape, show default picture
             if (originalShapeList.Count == 0)
             {
+                _isDisplayDefaultPicture = true;
                 ImageSelectionListBox.SelectedIndex = -1;
+                _isDisplayDefaultPicture = false;
                 UpdatePreviewImages(CreateDefaultPictureItem());
                 _isDisplayDefaultPicture = true;
             }
