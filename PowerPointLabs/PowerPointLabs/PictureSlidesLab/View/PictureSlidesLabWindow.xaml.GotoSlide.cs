@@ -16,6 +16,7 @@ namespace PowerPointLabs.PictureSlidesLab.View
         {
             try
             {
+                // TODO move this to text collection
                 _gotoSlideDialog.Init("Select the Slide to Edit");
                 _gotoSlideDialog.CustomizeGotoSlideButton("Select",
                     "Select the slide to edit styles.");
@@ -65,6 +66,7 @@ namespace PowerPointLabs.PictureSlidesLab.View
 
                 UpdatePreviewImages(CreateDefaultPictureItem());
                 EnterDefaultPictureMode();
+                UpdatePreviewStageControls();
             }
             else // load the style
             {

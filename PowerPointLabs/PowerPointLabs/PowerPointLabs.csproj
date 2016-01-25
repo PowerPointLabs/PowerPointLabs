@@ -369,7 +369,7 @@
       <DependentUpon>PictureSlidesLabWindow.xaml</DependentUpon>
     </Compile>
     <Compile Include="PictureSlidesLab\View\PictureSlidesLabWindow.xaml.GotoSlide.cs" />
-    <Compile Include="PictureSlidesLab\View\PictureSlidesLabWindow.xaml.ReloadStyle.cs" />
+    <Compile Include="PictureSlidesLab\View\PictureSlidesLabWindow.xaml.LoadStyle.cs" />
     <Compile Include="PictureSlidesLab\View\QuickDropDialog.xaml.cs">
       <DependentUpon>QuickDropDialog.xaml</DependentUpon>
     </Compile>

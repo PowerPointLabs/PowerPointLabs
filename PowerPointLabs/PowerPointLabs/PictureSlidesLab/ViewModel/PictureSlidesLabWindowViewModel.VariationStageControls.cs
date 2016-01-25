@@ -37,7 +37,17 @@ namespace PowerPointLabs.PictureSlidesLab.ViewModel
         {
             BindColorToStyle(color);
             BindColorToVariant(color);
-            // it will auto update preview images, because PictureSlidesLabWindow will re-activate
+            if (View.IsDisplayDefaultPicture())
+            {
+                View.EnableUpdatingPreviewImages();
+                UpdatePreviewImages(
+                    View.CreateDefaultPictureItem(),
+                    PowerPointCurrentPresentationInfo.CurrentSlide.GetNativeSlide(),
+                    PowerPointPresentation.Current.SlideWidth,
+                    PowerPointPresentation.Current.SlideHeight);
+                View.DisableUpdatingPreviewImages();
+            }
+            // else it will auto update preview images, because PictureSlidesLabWindow will re-activate
         }
         #endregion
 
@@ -65,7 +75,8 @@ namespace PowerPointLabs.PictureSlidesLab.ViewModel
             BindFontToStyle(SelectedFontFamily.Font.Source);
             BindFontToVariant(SelectedFontFamily.Font.Source);
             UpdatePreviewImages(
-                ImageSelectionListSelectedItem.ImageItem,
+                ImageSelectionListSelectedItem.ImageItem ??
+                View.CreateDefaultPictureItem(),
                 PowerPointCurrentPresentationInfo.CurrentSlide.GetNativeSlide(),
                 PowerPointPresentation.Current.SlideWidth,
                 PowerPointPresentation.Current.SlideHeight);

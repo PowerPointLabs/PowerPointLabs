@@ -202,7 +202,8 @@ namespace PowerPointLabs.PictureSlidesLab.View
 
         private void StylesCustomizeButton_OnClick(object sender, RoutedEventArgs e)
         {
-            CustomizeStyle();
+            CustomizeStyle(
+                (ImageItem) ImageSelectionListBox.SelectedValue ?? CreateDefaultPictureItem());
         }
 
         private void StylesPreviewApplyButton_OnClick(object sender, RoutedEventArgs e)
@@ -288,8 +289,19 @@ namespace PowerPointLabs.PictureSlidesLab.View
         /// <param name="e"></param>
         private void StylesPreivewListBox_OnSelectionChanged(object sender, SelectionChangedEventArgs e)
         {
+            UpdatePreviewStageControls();
+        }
+
+        private void UpdatePreviewStageControls()
+        {
             if (StylesPreviewListBox.SelectedValue != null
-                && ImageSelectionListBox.SelectedValue != null)
+                && _isDisplayDefaultPicture)
+            {
+                StylesCustomizeButton.IsEnabled = true;
+                StylesApplyButton.IsEnabled = false;
+            }
+            else if (StylesPreviewListBox.SelectedValue != null
+                     && ImageSelectionListBox.SelectedValue != null)
             {
                 StylesCustomizeButton.IsEnabled = true;
                 StylesApplyButton.IsEnabled = true;
@@ -449,6 +461,14 @@ namespace PowerPointLabs.PictureSlidesLab.View
                 && StylesPreviewListBox.SelectedValue != null)
             {
                 StyleApplyButton.IsEnabled = true;
+                ViewModel.UpdateStyleVariationStyleOptionsWhenSelectedItemChange();
+                UpdateVariationStageControls();
+            }
+            else if (_isDisplayDefaultPicture
+                     && StylesVariationListBox.SelectedValue != null
+                     && StylesPreviewListBox.SelectedValue != null)
+            {
+                StyleApplyButton.IsEnabled = false;
                 ViewModel.UpdateStyleVariationStyleOptionsWhenSelectedItemChange();
                 UpdateVariationStageControls();
             }
@@ -673,6 +693,7 @@ namespace PowerPointLabs.PictureSlidesLab.View
                         EnableUpdatingPreviewImages();
                         UpdatePreviewImages(CreateDefaultPictureItem());
                         DisableUpdatingPreviewImages();
+                        UpdatePreviewStageControls();
                     }
                 }));
             };
@@ -692,7 +713,7 @@ namespace PowerPointLabs.PictureSlidesLab.View
                 PowerPointPresentation.Current.SlideHeight);
         }
 
-        private void CustomizeStyle(ImageItem source = null, List<StyleOptions> givenStyles = null,
+        private void CustomizeStyle(ImageItem source, List<StyleOptions> givenStyles = null,
             Dictionary<string, List<StyleVariants>> givenVariants = null)
         {
             ViewModel.UpdateStyleVariationImagesWhenOpenFlyout(
@@ -704,16 +725,6 @@ namespace PowerPointLabs.PictureSlidesLab.View
             OpenVariationsFlyout();
         }
 
-        private void EnableUpdatingPreviewImages()
-        {
-            _isDisplayDefaultPicture = false;
-        }
-
-        private void DisableUpdatingPreviewImages()
-        {
-            _isDisplayDefaultPicture = true;
-        }
-
         private void EnterDefaultPictureMode()
         {
             DisableUpdatingPreviewImages();
@@ -722,15 +733,6 @@ namespace PowerPointLabs.PictureSlidesLab.View
         private bool IsEnableUpdatingPreviewImages()
         {
             return !_isDisplayDefaultPicture;
-        }
-
-        private ImageItem CreateDefaultPictureItem()
-        {
-            return new ImageItem
-            {
-                ImageFile = StoragePath.NoPicturePlaceholderImgPath,
-                Tooltip = "Please select a picture."
-            };
         }
 
         #endregion

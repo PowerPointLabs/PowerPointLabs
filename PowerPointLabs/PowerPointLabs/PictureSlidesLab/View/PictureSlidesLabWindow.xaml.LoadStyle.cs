@@ -24,7 +24,7 @@ namespace PowerPointLabs.PictureSlidesLab.View
         private void LoadButton_OnClick(object sender, RoutedEventArgs e)
         {
             // TODO move this to text collection
-            _loadStylesDialog.Init("Load Styles or Image from the Selected Slide");
+            _loadStylesDialog.Init("Load Style or Image from the Selected Slide");
             _loadStylesDialog.CustomizeGotoSlideButton("Load Style", "Load style from the selected slide.");
             _loadStylesDialog.CustomizeAdditionalButton("Load Image", "Load image from the selected slide.");
             _loadStylesDialog.FocusOkButton();
