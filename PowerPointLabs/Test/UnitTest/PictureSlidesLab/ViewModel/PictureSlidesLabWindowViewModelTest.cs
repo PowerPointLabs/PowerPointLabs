@@ -17,6 +17,9 @@ namespace Test.UnitTest.PictureSlidesLab.ViewModel
             var expectedString = "Test Images Persistence";
             var pslViewModel = CreateViewModel();
             pslViewModel.ImageSelectionList.Clear();
+            // the first image item should be placeholder for `Choose Pictures`
+            // so add a dummy item here
+            pslViewModel.ImageSelectionList.Add(CreateDummyImageItem());
             pslViewModel.ImageSelectionList.Add(new ImageItem
             {
                 ImageFile = expectedString
@@ -25,8 +28,10 @@ namespace Test.UnitTest.PictureSlidesLab.ViewModel
 
             var pslViewModel2 = CreateViewModel();
             Assert.AreEqual(expectedString, 
-                pslViewModel2.ImageSelectionList[0].ImageFile);
+                pslViewModel2.ImageSelectionList[1].ImageFile);
             pslViewModel2.ImageSelectionList.Clear();
+            // create a dummy item in order to clean up
+            pslViewModel2.ImageSelectionList.Add(CreateDummyImageItem());
             pslViewModel2.CleanUp();
         }
 
@@ -37,6 +42,11 @@ namespace Test.UnitTest.PictureSlidesLab.ViewModel
             return new PictureSlidesLabWindowViewModel(
                 viewMock.Object,
                 stylesDesignerMock.Object);
+        }
+
+        private ImageItem CreateDummyImageItem()
+        {
+            return new ImageItem();
         }
     }
 }
