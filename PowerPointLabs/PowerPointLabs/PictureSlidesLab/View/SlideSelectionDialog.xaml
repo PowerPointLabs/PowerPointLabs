@@ -123,12 +123,13 @@
                 <ColumnDefinition></ColumnDefinition>
                 <ColumnDefinition Width="75"></ColumnDefinition>
                 <ColumnDefinition Width="10"></ColumnDefinition>
-                <ColumnDefinition Width="75"></ColumnDefinition>
+                <ColumnDefinition Width="auto"></ColumnDefinition>
                 <ColumnDefinition Width="10"></ColumnDefinition>
                 <ColumnDefinition Width="75"></ColumnDefinition>
+                <ColumnDefinition></ColumnDefinition>
             </Grid.ColumnDefinitions>
-            <Button Visibility="Collapsed" ToolTip="Go to the selected slide" Click="AdditionalButton_OnClick" Name="AdditionalButton" Grid.Column="1">Go</Button>
-            <Button ToolTip="Go to the selected slide" Click="GotoSlideButton_OnClick" Name="GotoSlideButton" Grid.Column="3">Go</Button>
+            <Button ToolTip="Go to the selected slide" Click="GotoSlideButton_OnClick" Name="GotoSlideButton" Grid.Column="1">Go</Button>
+            <Button Width="75" Visibility="Collapsed" ToolTip="Go to the selected slide" Click="AdditionalButton_OnClick" Name="AdditionalButton" Grid.Column="3">Go</Button>
             <Button ToolTip="Close the dialog" Click="CancelButton_OnClick" Name="CancelButton" Grid.Column="5">Close</Button>
         </Grid>
     </Grid>

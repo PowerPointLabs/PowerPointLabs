@@ -64,9 +64,8 @@ namespace PowerPointLabs.PictureSlidesLab.View
 
             InitViewModel();
             InitGotoSlideDialog();
-            InitReloadStylesDialog();
+            InitLoadStylesDialog();
             InitDragAndDrop();
-
             IsOpen = true;
         }
 
@@ -115,19 +114,6 @@ namespace PowerPointLabs.PictureSlidesLab.View
         private void StylesPreviewList_OnCollectionChanged(object sender, NotifyCollectionChangedEventArgs e)
         {
             UpdatePreviewInterfaceWhenPreviewListChange(sender as Collection<ImageItem>);
-        }
-
-        private void SelectImageButton_OnClick(object sender, RoutedEventArgs e)
-        {
-            var openFileDialog = new OpenFileDialog
-            {
-                Multiselect = true,
-                Filter = @"Image File|*.png;*.jpg;*.jpeg;*.bmp;*.gif;"
-            };
-            if (openFileDialog.ShowDialog() == System.Windows.Forms.DialogResult.OK)
-            {
-                ViewModel.AddImageSelectionListItem(openFileDialog.FileNames);
-            }
         }
 
         #region Drag and Drop
@@ -204,6 +190,12 @@ namespace PowerPointLabs.PictureSlidesLab.View
             if (ImageSelectionListBox.SelectedValue != null)
             {
                 EnableUpdatingPreviewImages();
+            }
+            if (ImageSelectionListBox.SelectedIndex == 0)
+            {
+                // 0 is for Choose Pictures placeholder,
+                // de-select it
+                ImageSelectionListBox.SelectedIndex = -1;
             }
             UpdatePreviewImages();
         }
@@ -351,14 +343,14 @@ namespace PowerPointLabs.PictureSlidesLab.View
             if (PowerPointCurrentPresentationInfo.CurrentSlide == null)
             {
                 GotoSlideButton.IsEnabled = false;
-                ReloadStylesButton.IsEnabled = false;
+                LoadStylesButton.IsEnabled = false;
                 ViewModel.StylesPreviewList.Clear();
                 ViewModel.StylesVariationList.Clear();
             }
-            else
+            else if (_isStylePreviewRegionInit)
             {
                 GotoSlideButton.IsEnabled = true;
-                ReloadStylesButton.IsEnabled = true;
+                LoadStylesButton.IsEnabled = true;
                 Dispatcher.BeginInvoke(new Action(() =>
                 {
                     UpdatePreviewImages();
@@ -393,6 +385,24 @@ namespace PowerPointLabs.PictureSlidesLab.View
                     }
                 }
                 e.Handled = true;
+            }
+            else if (e.LeftButton == MouseButtonState.Pressed)
+            {
+                var imageItem = item.Content as ImageItem;
+                if (imageItem != null
+                    && imageItem.ImageFile == StoragePath.ChoosePicturesImgPath)
+                {
+                    var openFileDialog = new OpenFileDialog
+                    {
+                        Multiselect = true,
+                        Filter = @"Image File|*.png;*.jpg;*.jpeg;*.bmp;*.gif;"
+                    };
+                    if (openFileDialog.ShowDialog() == System.Windows.Forms.DialogResult.OK)
+                    {
+                        ViewModel.AddImageSelectionListItem(openFileDialog.FileNames);
+                    }
+                    e.Handled = true;
+                }
             }
         }
 
@@ -456,6 +466,7 @@ namespace PowerPointLabs.PictureSlidesLab.View
         private void VariantsComboBox_OnSelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             ViewModel.UpdateStepByStepStylesVariationImages(
+                (ImageItem) ImageSelectionListBox.SelectedValue ?? CreateDefaultPictureItem(),
                 PowerPointCurrentPresentationInfo.CurrentSlide.GetNativeSlide(),
                 PowerPointPresentation.Current.SlideWidth,
                 PowerPointPresentation.Current.SlideHeight);
@@ -480,12 +491,12 @@ namespace PowerPointLabs.PictureSlidesLab.View
 
         private void DeleteAllImage()
         {
-            ViewModel.ImageSelectionList.Clear();
+            ViewModel.RemoveAllImageSelectionListItems();
         }
 
         private void DeleteImage()
         {
-            if (_clickedImageSelectionItemIndex < 0 
+            if (_clickedImageSelectionItemIndex < 1 
                 || _clickedImageSelectionItemIndex >= ImageSelectionListBox.Items.Count)
                 return;
 
@@ -498,7 +509,9 @@ namespace PowerPointLabs.PictureSlidesLab.View
         private void DeleteSelectedImage()
         {
             var selectedImage = (ImageItem)ImageSelectionListBox.SelectedItem;
-            if (selectedImage == null) return;
+            if (selectedImage == null
+                || ImageSelectionListBox.SelectedIndex == 0)
+                return;
 
             ViewModel.ImageSelectionList.RemoveAt(ImageSelectionListBox.SelectedIndex);
         }
@@ -527,7 +540,7 @@ namespace PowerPointLabs.PictureSlidesLab.View
         /// </summary>
         private void UpdatePreviewInterfaceWhenImageListChange(Collection<ImageItem> list)
         {
-            ImageSelectionInstructions.Visibility = list.Count == 0
+            ImageSelectionInstructions.Visibility = list.Count <= 1
                 ? Visibility.Visible
                 : Visibility.Hidden;
 
@@ -547,11 +560,13 @@ namespace PowerPointLabs.PictureSlidesLab.View
             }
 
             // show StylesPreviewRegion aft there'r some images in the SearchList region
-            if (list.Count > 0 && !_isStylePreviewRegionInit)
+            if (list.Count > 1 && !_isStylePreviewRegionInit)
             {
                 // only one time entry
                 _isStylePreviewRegionInit = true;
                 StylesPreviewGrid.Visibility = Visibility.Visible;
+                GotoSlideButton.IsEnabled = true;
+                LoadStylesButton.IsEnabled = true;
             }
         }
 
@@ -708,6 +723,16 @@ namespace PowerPointLabs.PictureSlidesLab.View
         {
             return !_isDisplayDefaultPicture;
         }
+
+        private ImageItem CreateDefaultPictureItem()
+        {
+            return new ImageItem
+            {
+                ImageFile = StoragePath.NoPicturePlaceholderImgPath,
+                Tooltip = "Please select a picture."
+            };
+        }
+
         #endregion
     }
 }

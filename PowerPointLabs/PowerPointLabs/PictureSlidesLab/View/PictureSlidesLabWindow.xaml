@@ -205,12 +205,11 @@
                         <ColumnDefinition Width="40" />
                         <ColumnDefinition Width="*"></ColumnDefinition>
                     </Grid.ColumnDefinitions>
-                    <Button ToolTip="Press the button to load image" Click="SelectImageButton_OnClick" Name="ImageSelectButton" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" Grid.Column="1" Margin="0,0,5,0">Select Images</Button>
+                    <Button IsEnabled="false" Name="GotoSlideButton" ToolTip="Select a target slide to edit styles." Width="85" Click="GotoSlideButton_OnClick" Margin="0,0,5,0" Grid.Column="1">Change slide</Button>
+                    <Button IsEnabled="false" Name="LoadStylesButton" ToolTip="Load styles from a slide to customize." Width="60" Click="LoadButton_OnClick" Margin="0,0,5,0" Grid.Column="2">Load...</Button>
                     <controls:ProgressRing Name="ImageDownloadProgressRing" Width="10" Height="10" Grid.Column="3" IsActive="{Binding Path=IsActiveDownloadProgressRing.Flag, Mode=TwoWay}" />
-                    <Button Name="ReloadStylesButton" ToolTip="Load styles from a slide to customize." Width="60" Click="ReloadButton_OnClick" Margin="0,0,105,0" HorizontalAlignment="Right" Grid.Column="4">Load...</Button>
-                    <Button Name="GotoSlideButton" ToolTip="Go to a target slide." Width="85" Click="GotoSlideButton_OnClick" Margin="0,0,15,0" HorizontalAlignment="Right" Grid.Column="4">Go to slide</Button>
                 </Grid>
-                <TextBlock Visibility="Visible" Name="ImageSelectionInstructions" MaxWidth="730" TextWrapping="Wrap" HorizontalAlignment="Center" VerticalAlignment="Center" Foreground="#AAAAAA" FontSize="18" Grid.Row="2">Click the 'Select Images' button above to load local images, or drag and drop the files here. You can also drag and drop thumbnail pictures from Google Image Search.</TextBlock>
+                <TextBlock Visibility="Visible" Name="ImageSelectionInstructions" MaxWidth="730" TextWrapping="Wrap" HorizontalAlignment="Center" VerticalAlignment="Center" Foreground="#AAAAAA" FontSize="18" Grid.Row="2">Click the 'Choose Pictures' icon above to load local images, or drag and drop the files here. You can also drag and drop thumbnail pictures from Google Image Search to import.</TextBlock>
                 <ListBox TabIndex="1" PreviewMouseDown="ImageSelectionListBox_OnPreviewMouseDown" Name="ImageSelectionListBox" KeyDown="ImageSelectionListBox_OnKeyDown" SelectionChanged="ImageSelectionListBox_OnSelectionChanged" SelectedItem="{Binding Path=ImageSelectionListSelectedItem.ImageItem, Mode=TwoWay}" SelectedIndex="{Binding Path=ImageSelectionListSelectedId.Number, Mode=TwoWay}" ItemsSource="{Binding Path=ImageSelectionList, Mode=TwoWay}" Grid.Row="2">
                     <ListBox.ContextMenu>
                         <ContextMenu Name="ImageSelectionListBoxContextMenu">

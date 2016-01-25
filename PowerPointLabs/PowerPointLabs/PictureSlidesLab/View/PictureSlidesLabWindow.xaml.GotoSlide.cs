@@ -1,11 +1,9 @@
-﻿using System;
-using System.Reflection;
+﻿using System.Reflection;
 using System.Windows;
 using MahApps.Metro.Controls.Dialogs;
 using PowerPointLabs.Models;
 using PowerPointLabs.PictureSlidesLab.Model;
 using PowerPointLabs.PictureSlidesLab.Service.Effect;
-using PowerPointLabs.PictureSlidesLab.Util;
 
 namespace PowerPointLabs.PictureSlidesLab.View
 {
@@ -18,9 +16,9 @@ namespace PowerPointLabs.PictureSlidesLab.View
         {
             try
             {
-                _gotoSlideDialog.Init("Go to the Selected Slide");
-                _gotoSlideDialog.CustomizeAdditionalButton("Go directly", 
-                    "Go to the selected slide without changing the current style.");
+                _gotoSlideDialog.Init("Select the Slide to Edit");
+                _gotoSlideDialog.CustomizeGotoSlideButton("Select",
+                    "Select the slide to edit styles.");
                 _gotoSlideDialog.FocusOkButton();
                 this.ShowMetroDialogAsync(_gotoSlideDialog, MetroDialogOptions);
             }
@@ -37,8 +35,6 @@ namespace PowerPointLabs.PictureSlidesLab.View
                     .SetValue(_gotoSlideDialog, this, null);
 
             _gotoSlideDialog.OnGotoSlide += GotoSlideWithStyleLoading;
-
-            _gotoSlideDialog.OnAdditionalButtonClick += GotoSlideDirectly;
 
             _gotoSlideDialog.OnCancel += () =>
             {
@@ -106,12 +102,6 @@ namespace PowerPointLabs.PictureSlidesLab.View
             }
         }
 
-        private void GotoSlideDirectly()
-        {
-            this.HideMetroDialogAsync(_gotoSlideDialog, MetroDialogOptions);
-            GotoSlide();
-        }
-
         private void GotoSlide()
         {
             if (PowerPointCurrentPresentationInfo.CurrentSlide == null
@@ -120,15 +110,6 @@ namespace PowerPointLabs.PictureSlidesLab.View
                 PowerPointPresentation.Current.GotoSlide(_gotoSlideDialog.SelectedSlide);
             }
             UpdatePreviewImages();
-        }
-
-        private ImageItem CreateDefaultPictureItem()
-        {
-            return new ImageItem
-            {
-                ImageFile = StoragePath.NoPicturePlaceholderImgPath,
-                Tooltip = "Please select a picture."
-            };
         }
     }
 }

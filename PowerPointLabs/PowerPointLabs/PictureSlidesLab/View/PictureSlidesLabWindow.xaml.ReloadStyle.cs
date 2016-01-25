@@ -17,43 +17,43 @@ namespace PowerPointLabs.PictureSlidesLab.View
 {
     partial class PictureSlidesLabWindow
     {
-        private readonly SlideSelectionDialog _reloadStylesDialog = new SlideSelectionDialog();
+        private readonly SlideSelectionDialog _loadStylesDialog = new SlideSelectionDialog();
 
         private const string ShapeNamePrefix = EffectsDesigner.ShapeNamePrefix;
 
-        private void ReloadButton_OnClick(object sender, RoutedEventArgs e)
+        private void LoadButton_OnClick(object sender, RoutedEventArgs e)
         {
             // TODO move this to text collection
-            _reloadStylesDialog.Init("Load Styles or Image from the Selected Slide");
-            _reloadStylesDialog.CustomizeGotoSlideButton("Load Style", "Load style from the selected slide.");
-            _reloadStylesDialog.CustomizeAdditionalButton("Load Image", "Load image from the selected slide.");
-            _reloadStylesDialog.FocusOkButton();
-            this.ShowMetroDialogAsync(_reloadStylesDialog, MetroDialogOptions);
+            _loadStylesDialog.Init("Load Styles or Image from the Selected Slide");
+            _loadStylesDialog.CustomizeGotoSlideButton("Load Style", "Load style from the selected slide.");
+            _loadStylesDialog.CustomizeAdditionalButton("Load Image", "Load image from the selected slide.");
+            _loadStylesDialog.FocusOkButton();
+            this.ShowMetroDialogAsync(_loadStylesDialog, MetroDialogOptions);
         }
 
-        // it's actually using GotoSlide dialog, but to do stuff related to Reload Styles
-        private void InitReloadStylesDialog()
+        // it's actually using GotoSlide dialog, but to do stuff related to Load Styles
+        private void InitLoadStylesDialog()
         {
-            _reloadStylesDialog.GetType()
+            _loadStylesDialog.GetType()
                     .GetProperty("OwningWindow", BindingFlags.Instance | BindingFlags.NonPublic)
-                    .SetValue(_reloadStylesDialog, this, null);
+                    .SetValue(_loadStylesDialog, this, null);
 
-            _reloadStylesDialog.OnGotoSlide += LoadStyle;
+            _loadStylesDialog.OnGotoSlide += LoadStyle;
 
-            _reloadStylesDialog.OnAdditionalButtonClick += LoadImage;
+            _loadStylesDialog.OnAdditionalButtonClick += LoadImage;
 
-            _reloadStylesDialog.OnCancel += () =>
+            _loadStylesDialog.OnCancel += () =>
             {
-                this.HideMetroDialogAsync(_reloadStylesDialog, MetroDialogOptions);
+                this.HideMetroDialogAsync(_loadStylesDialog, MetroDialogOptions);
             };
         }
 
         private void LoadImage()
         {
-            this.HideMetroDialogAsync(_reloadStylesDialog, MetroDialogOptions);
+            this.HideMetroDialogAsync(_loadStylesDialog, MetroDialogOptions);
 
             // which is the current slide
-            var currentSlide = PowerPointPresentation.Current.Slides[_reloadStylesDialog.SelectedSlide - 1];
+            var currentSlide = PowerPointPresentation.Current.Slides[_loadStylesDialog.SelectedSlide - 1];
             if (currentSlide == null) return;
 
             var originalShapeList = currentSlide.GetShapesWithPrefix(ShapeNamePrefix + "_" + EffectName.Original_DO_NOT_REMOVE);
@@ -100,10 +100,10 @@ namespace PowerPointLabs.PictureSlidesLab.View
 
         private void LoadStyle()
         {
-            this.HideMetroDialogAsync(_reloadStylesDialog, MetroDialogOptions);
+            this.HideMetroDialogAsync(_loadStylesDialog, MetroDialogOptions);
 
             // which is the current slide
-            var currentSlide = PowerPointPresentation.Current.Slides[_reloadStylesDialog.SelectedSlide - 1];
+            var currentSlide = PowerPointPresentation.Current.Slides[_loadStylesDialog.SelectedSlide - 1];
             if (currentSlide == null) return;
 
             var originalShapeList = currentSlide.GetShapesWithPrefix(ShapeNamePrefix + "_" + EffectName.Original_DO_NOT_REMOVE);
