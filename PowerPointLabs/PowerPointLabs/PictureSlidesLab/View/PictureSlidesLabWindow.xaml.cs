@@ -203,7 +203,7 @@ namespace PowerPointLabs.PictureSlidesLab.View
         {
             if (ImageSelectionListBox.SelectedValue != null)
             {
-                _isDisplayDefaultPicture = false;
+                EnableUpdatingPreviewImages();
             }
             UpdatePreviewImages();
         }
@@ -535,11 +535,15 @@ namespace PowerPointLabs.PictureSlidesLab.View
             {
                 PreviewInstructions.Visibility = Visibility.Hidden;
                 PreviewInstructionsWhenNoSelectedSlide.Visibility = Visibility.Hidden;
+                VariationInstructions.Visibility = Visibility.Hidden;
+                VariationInstructionsWhenNoSelectedSlide.Visibility = Visibility.Hidden;
             }
-            else
+            else if (ImageSelectionListBox.SelectedValue == null)
             {
                 PreviewInstructions.Visibility = Visibility.Visible;
                 PreviewInstructionsWhenNoSelectedSlide.Visibility = Visibility.Hidden;
+                VariationInstructions.Visibility = Visibility.Visible;
+                VariationInstructionsWhenNoSelectedSlide.Visibility = Visibility.Hidden;
             }
 
             // show StylesPreviewRegion aft there'r some images in the SearchList region
@@ -558,18 +562,21 @@ namespace PowerPointLabs.PictureSlidesLab.View
         {
             if (list.Count != 0)
             {
+                VariationInstructions.Visibility = Visibility.Hidden;
                 VariationInstructionsWhenNoSelectedSlide.Visibility = Visibility.Hidden;
                 VariantsComboBox.IsEnabled = true;
                 VariantsColorPanel.IsEnabled = true;
             }
             else if (PowerPointCurrentPresentationInfo.CurrentSlide == null)
             {
+                VariationInstructions.Visibility = Visibility.Hidden;
                 VariationInstructionsWhenNoSelectedSlide.Visibility = Visibility.Visible;
                 VariantsComboBox.IsEnabled = false;
                 VariantsColorPanel.IsEnabled = false;
             }
             else // select 'loading' image
             {
+                VariationInstructions.Visibility = Visibility.Visible;
                 VariationInstructionsWhenNoSelectedSlide.Visibility = Visibility.Hidden;
                 VariantsComboBox.IsEnabled = false;
                 VariantsColorPanel.IsEnabled = false;
@@ -642,15 +649,15 @@ namespace PowerPointLabs.PictureSlidesLab.View
                 Dispatcher.BeginInvoke(new Action(() =>
                 {
                     StyleVariationsFlyout.Visibility = Visibility.Collapsed;
-                    if (_isDisplayDefaultPicture)
+                    if (IsEnableUpdatingPreviewImages())
                     {
-                        _isDisplayDefaultPicture = false;
-                        UpdatePreviewImages(CreateDefaultPictureItem());
-                        _isDisplayDefaultPicture = true;
+                        UpdatePreviewImages();
                     }
                     else
                     {
-                        UpdatePreviewImages();
+                        EnableUpdatingPreviewImages();
+                        UpdatePreviewImages(CreateDefaultPictureItem());
+                        DisableUpdatingPreviewImages();
                     }
                 }));
             };
@@ -661,7 +668,7 @@ namespace PowerPointLabs.PictureSlidesLab.View
 
         private void UpdatePreviewImages(ImageItem source = null)
         {
-            if (_isDisplayDefaultPicture) return;
+            if (!IsEnableUpdatingPreviewImages()) return;
 
             ViewModel.UpdatePreviewImages(
                 source ?? (ImageItem) ImageSelectionListBox.SelectedValue,
@@ -680,6 +687,26 @@ namespace PowerPointLabs.PictureSlidesLab.View
                 PowerPointPresentation.Current.SlideHeight,
                 givenStyles, givenVariants);
             OpenVariationsFlyout();
+        }
+
+        private void EnableUpdatingPreviewImages()
+        {
+            _isDisplayDefaultPicture = false;
+        }
+
+        private void DisableUpdatingPreviewImages()
+        {
+            _isDisplayDefaultPicture = true;
+        }
+
+        private void EnterDefaultPictureMode()
+        {
+            DisableUpdatingPreviewImages();
+        }
+
+        private bool IsEnableUpdatingPreviewImages()
+        {
+            return !_isDisplayDefaultPicture;
         }
         #endregion
     }
