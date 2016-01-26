@@ -4,7 +4,7 @@ using PowerPointLabs.PictureSlidesLab.Service.Preview;
 
 namespace PowerPointLabs.PictureSlidesLab.Service.Interface
 {
-    interface IStylesDesigner
+    public interface IStylesDesigner
     {
         PreviewInfo PreviewApplyStyle(ImageItem source, Slide contentSlide, 
             float slideWidth, float slideHeight, StyleOptions option);

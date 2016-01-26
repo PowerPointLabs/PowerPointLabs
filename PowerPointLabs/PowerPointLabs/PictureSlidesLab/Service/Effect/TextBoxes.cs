@@ -90,7 +90,21 @@ namespace PowerPointLabs.PictureSlidesLab.Service.Effect
             {
                 if (textShape.Width > _slideWidth / 2)
                 {
+                    ShapeUtil.AddTag(textShape, Tag.OriginalShapeWidth, 
+                        textShape.Width.ToString(CultureInfo.InvariantCulture));
                     textShape.Width = _slideWidth / 2;
+                }
+            }
+        }
+
+        public void RecoverTextWrapping()
+        {
+            foreach (var textShape in TextShapes)
+            {
+                if (StringUtil.IsNotEmpty(textShape.Tags[Tag.OriginalShapeWidth]))
+                {
+                    textShape.Width = float.Parse(textShape.Tags[Tag.OriginalShapeWidth]);
+                    textShape.Tags.Add(Tag.OriginalShapeWidth, "");
                 }
             }
         }

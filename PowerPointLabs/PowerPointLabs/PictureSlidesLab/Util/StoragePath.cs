@@ -16,20 +16,13 @@ namespace PowerPointLabs.PictureSlidesLab.Util
         public static string AggregatedFolder = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments) + @"\" + "pptlabs_pictureSlidesLab" + @"\";
 
         public static readonly string LoadingImgPath = AggregatedFolder + "loading";
+        public static readonly string ChoosePicturesImgPath = AggregatedFolder + "choosePicture";
+        public static readonly string NoPicturePlaceholderImgPath = AggregatedFolder + "noPicturePlaceholder";
 
         private static bool _isInit;
 
-        public static bool InitPersistentFolder(ICollection<string> filesInUse)
+        public static bool InitPersistentFolder()
         {
-            try
-            {
-                Empty(new DirectoryInfo(AggregatedFolder), filesInUse);
-            }
-            catch (Exception e)
-            {
-                ErrorDialogWrapper.ShowDialog("Failed to remove unused images.", e.Message, e);
-            }
-
             if (!Directory.Exists(AggregatedFolder))
             {
                 try
@@ -47,6 +40,18 @@ namespace PowerPointLabs.PictureSlidesLab.Util
             return true;
         }
 
+        public static void CleanPersistentFolder(ICollection<string> filesInUse)
+        {
+            try
+            {
+                Empty(new DirectoryInfo(AggregatedFolder), filesInUse);
+            }
+            catch (Exception e)
+            {
+                ErrorDialogWrapper.ShowDialog("Failed to remove unused images.", e.Message, e);
+            }
+        }
+
         private static void Empty(DirectoryInfo directory, ICollection<string> filesInUse)
         {
             if (!directory.Exists) return;
@@ -55,6 +60,8 @@ namespace PowerPointLabs.PictureSlidesLab.Util
             {
                 filesInUse.Add(AggregatedFolder + PictureSlidesLabImagesList);
                 filesInUse.Add(LoadingImgPath);
+                filesInUse.Add(ChoosePicturesImgPath);
+                filesInUse.Add(NoPicturePlaceholderImgPath);
                 foreach (var file in directory.GetFiles())
                 {
                     if (!filesInUse.Contains(file.FullName))
@@ -81,6 +88,8 @@ namespace PowerPointLabs.PictureSlidesLab.Util
             try
             {
                 Resources.Loading.Save(LoadingImgPath);
+                Resources.ChoosePicturesIcon.Save(ChoosePicturesImgPath);
+                Resources.DefaultPicture.Save(NoPicturePlaceholderImgPath);
             }
             catch
             {

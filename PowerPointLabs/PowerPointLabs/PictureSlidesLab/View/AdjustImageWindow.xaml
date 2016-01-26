@@ -3,7 +3,7 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     x:Class="PowerPointLabs.PictureSlidesLab.View.AdjustImageWindow"
     xmlns:controls="clr-namespace:MahApps.Metro.Controls;assembly=MahApps.Metro"
-    Title="Adjust Image Offset"
+    Title="Adjust Picture Dimensions"
     WindowStartupLocation="CenterScreen"
     WindowTitleBrush="#D74926"
     BorderThickness="1"

@@ -189,7 +189,8 @@ namespace PowerPointLabs.PictureSlidesLab.ModelFactory
                 StyleName = TextCollection.PictureSlidesLabText.StyleNameTriangle,
                 IsUseTriangleStyle = true,
                 TriangleColor = "#007FFF", // blue
-                TextBoxPosition = 4 // left
+                TextBoxPosition = 4, // left
+                TriangleTransparency = 25
             };
         }
 
@@ -199,7 +200,8 @@ namespace PowerPointLabs.PictureSlidesLab.ModelFactory
             {
                 StyleName = TextCollection.PictureSlidesLabText.StyleNameCircle,
                 IsUseCircleStyle = true,
-                FontColor = "#000000"
+                FontColor = "#000000",
+                CircleTransparency = 25
             };
         }
 
@@ -213,6 +215,7 @@ namespace PowerPointLabs.PictureSlidesLab.ModelFactory
             {
                 styleOption.IsUseTriangleStyle = true;
                 styleOption.TextBoxPosition = 4; // left
+                styleOption.TriangleTransparency = 25;
             }
             UpdateStyleName(
                 result,
@@ -226,6 +229,7 @@ namespace PowerPointLabs.PictureSlidesLab.ModelFactory
             foreach (var styleOption in result)
             {
                 styleOption.IsUseCircleStyle = true;
+                styleOption.CircleTransparency = 25;
             }
             return UpdateStyleName(
                 result,

@@ -2,6 +2,7 @@
 using System.Collections.ObjectModel;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Input;
 using PowerPointLabs.Models;
 using PowerPointLabs.PictureSlidesLab.Model;
 using PowerPointLabs.PictureSlidesLab.Util;
@@ -326,6 +327,18 @@ namespace PowerPointLabs.PictureSlidesLab.View
                 SlideListBox.SelectedIndex = SlideListBox.SelectedIndex + 1;
             }
             SlideListBox.ScrollIntoView(SlideListBox.Items[SlideListBox.SelectedIndex]);
+        }
+
+        private void SlideListBox_OnMouseDoubleClick(object sender, MouseButtonEventArgs e)
+        {
+            var item = ItemsControl.ContainerFromElement((ItemsControl)sender, (DependencyObject)e.OriginalSource)
+                as ListBoxItem;
+            if (item == null || item.Content == null) return;
+
+            if (OnGotoSlide != null)
+            {
+                OnGotoSlide();
+            }
         }
     }
 }

@@ -5,7 +5,7 @@ using PowerPointLabs.AutoUpdate.Interface;
 
 namespace PowerPointLabs.AutoUpdate
 {
-    class Downloader : IDownloader
+    public class Downloader : IDownloader
     {
         private readonly WebClient _client = new WebClient();
 
