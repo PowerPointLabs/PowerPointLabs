@@ -46,8 +46,17 @@ namespace PowerPointLabs.PictureSlidesLab.ViewModel
                     PowerPointPresentation.Current.SlideWidth,
                     PowerPointPresentation.Current.SlideHeight);
                 View.DisableUpdatingPreviewImages();
+                BindStyleToColorPanel();
             }
-            // else it will auto update preview images, because PictureSlidesLabWindow will re-activate
+            else
+            {
+                UpdatePreviewImages(
+                    ImageSelectionListSelectedItem.ImageItem ??
+                    View.CreateDefaultPictureItem(),
+                    PowerPointCurrentPresentationInfo.CurrentSlide.GetNativeSlide(),
+                    PowerPointPresentation.Current.SlideWidth,
+                    PowerPointPresentation.Current.SlideHeight);
+            }
         }
         #endregion
 

@@ -382,11 +382,6 @@
                 "Failed to initialize Picture Slides Lab. Please verify that sufficient permissions have been granted by Administrator.";
             public const string ErrorNoEmbeddedStyleInfo =
                 "No Picture Slides Lab styles are detected for the current slide.";
-            
-            public const string SuccessfullyLoadedImage =
-                "Successfully loaded image from the slide.";
-            public const string SuccessfullyLoadedStyle =
-                "Successfully loaded style from the slide.";
 
             public const string DragAndDropInstruction =
                 "Drag and Drop here to get image.";

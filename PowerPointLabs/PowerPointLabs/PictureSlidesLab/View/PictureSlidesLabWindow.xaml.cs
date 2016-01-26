@@ -51,8 +51,10 @@ namespace PowerPointLabs.PictureSlidesLab.View
         private int _clickedImageSelectionItemIndex = -1;
 
         // other UI control flags
-        private bool _isWindowActivatedWithPreview = true;
+        private bool _isAbleLoadingOnWindowActivate = true;
         private bool _isStylePreviewRegionInit;
+
+        private bool _isFirstTimeOnActivated = true;
 
         # endregion
 
@@ -128,9 +130,9 @@ namespace PowerPointLabs.PictureSlidesLab.View
                 || args.Data.GetDataPresent("Text"))
             {
                 PictureSlidesLabGridOverlay.Visibility = Visibility.Visible;
-                _isWindowActivatedWithPreview = false;
+                DisableLoadingStyleOnWindowActivate();
                 Activate();
-                _isWindowActivatedWithPreview = true;
+                EnableLoadingStyleOnWindowActivate();
             }
         }
 
@@ -344,8 +346,6 @@ namespace PowerPointLabs.PictureSlidesLab.View
         /// <param name="e"></param>
         private void PictureSlidesLabWindow_OnActivated(object sender, EventArgs e)
         {
-            if (!_isWindowActivatedWithPreview) return;
-
             if (QuickDropDialog != null && QuickDropDialog.IsOpen)
             {
                 QuickDropDialog.Hide();
@@ -359,13 +359,20 @@ namespace PowerPointLabs.PictureSlidesLab.View
                 ViewModel.StylesPreviewList.Clear();
                 ViewModel.StylesVariationList.Clear();
             }
-            else if (_isStylePreviewRegionInit)
+            else if (_isStylePreviewRegionInit && _isAbleLoadingOnWindowActivate)
             {
                 GotoSlideButton.IsEnabled = true;
                 LoadStylesButton.IsEnabled = true;
                 Dispatcher.BeginInvoke(new Action(() =>
                 {
-                    UpdatePreviewImages();
+                    if (_isFirstTimeOnActivated)
+                    {
+                        _isFirstTimeOnActivated = false;
+                    }
+                    else
+                    {
+                        LoadStyleAndImage(PowerPointCurrentPresentationInfo.CurrentSlide);
+                    }
                 }));
             }
         }
@@ -409,10 +416,12 @@ namespace PowerPointLabs.PictureSlidesLab.View
                         Multiselect = true,
                         Filter = @"Image File|*.png;*.jpg;*.jpeg;*.bmp;*.gif;"
                     };
+                    DisableLoadingStyleOnWindowActivate();
                     if (openFileDialog.ShowDialog() == System.Windows.Forms.DialogResult.OK)
                     {
                         ViewModel.AddImageSelectionListItem(openFileDialog.FileNames);
                     }
+                    EnableLoadingStyleOnWindowActivate();
                     e.Handled = true;
                 }
             }
@@ -733,6 +742,16 @@ namespace PowerPointLabs.PictureSlidesLab.View
         private bool IsEnableUpdatingPreviewImages()
         {
             return !_isDisplayDefaultPicture;
+        }
+
+        private void EnableLoadingStyleOnWindowActivate()
+        {
+            _isAbleLoadingOnWindowActivate = true;
+        }
+
+        private void DisableLoadingStyleOnWindowActivate()
+        {
+            _isAbleLoadingOnWindowActivate = false;
         }
 
         #endregion
