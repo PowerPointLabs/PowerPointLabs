@@ -91,6 +91,7 @@
   </Choose>
   <ItemGroup>
     <Compile Include="FunctionalTest\AgendaLabBeamSyncTest.cs" />
+    <Compile Include="FunctionalTest\AgendaLabWithSlideNumberGenerateTest.cs" />
     <Compile Include="FunctionalTest\AgendaLabGenerateTest.cs" />
     <Compile Include="FunctionalTest\AgendaLabTextSyncTest.cs" />
     <Compile Include="FunctionalTest\AgendaLabVisualSyncTest.cs" />
