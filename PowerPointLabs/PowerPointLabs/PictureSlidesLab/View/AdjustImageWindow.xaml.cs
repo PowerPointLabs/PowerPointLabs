@@ -49,6 +49,13 @@ namespace PowerPointLabs.PictureSlidesLab.View
             AutoFitImage.Source = ImageUtil.BitmapToImageSource(Properties.Resources.Fit);
         }
 
+        public void ShowAdjustPictureDimensionsDialog()
+        {
+            IsOpen = true;
+            ShowDialog();
+            IsOpen = false;
+        }
+
         public void SetThumbnailImage(string imageFile)
         {
             CropResultThumbnail = imageFile;

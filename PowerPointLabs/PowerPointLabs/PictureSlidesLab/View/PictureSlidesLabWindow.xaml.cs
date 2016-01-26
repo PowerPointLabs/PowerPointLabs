@@ -447,7 +447,7 @@ namespace PowerPointLabs.PictureSlidesLab.View
             var selectedImage = (ImageItem)ImageSelectionListBox.Items.GetItemAt(_clickedImageSelectionItemIndex);
             if (selectedImage == null || selectedImage.ImageFile == StoragePath.LoadingImgPath) return;
 
-            AdjustImageOffset(selectedImage);
+            AdjustImageDimensions(selectedImage);
         }
 
         private void MenuItemAdjustImage_OnClickFromPreviewListBox(object sender, RoutedEventArgs e)
@@ -455,7 +455,7 @@ namespace PowerPointLabs.PictureSlidesLab.View
             var selectedImage = (ImageItem) ImageSelectionListBox.SelectedItem;
             if (selectedImage == null || selectedImage.ImageFile == StoragePath.LoadingImgPath) return;
 
-            AdjustImageOffset(selectedImage);
+            AdjustImageDimensions(selectedImage);
         }
 
         /// <summary>
@@ -545,7 +545,7 @@ namespace PowerPointLabs.PictureSlidesLab.View
             ViewModel.ImageSelectionList.RemoveAt(ImageSelectionListBox.SelectedIndex);
         }
 
-        private void AdjustImageOffset(ImageItem source)
+        private void AdjustImageDimensions(ImageItem source)
         {
             CropWindow = new AdjustImageWindow();
             CropWindow.SetThumbnailImage(source.ImageFile);
@@ -554,13 +554,15 @@ namespace PowerPointLabs.PictureSlidesLab.View
             {
                 CropWindow.SetCropRect(source.Rect.X, source.Rect.Y, source.Rect.Width, source.Rect.Height);
             }
-            CropWindow.IsOpen = true;
-            CropWindow.ShowDialog();
-            CropWindow.IsOpen = false;
+
+            DisableLoadingStyleOnWindowActivate();
+            CropWindow.ShowAdjustPictureDimensionsDialog();
+            EnableLoadingStyleOnWindowActivate();
 
             if (CropWindow.IsCropped)
             {
                 source.UpdateImageAdjustmentOffset(CropWindow.CropResult, CropWindow.CropResultThumbnail, CropWindow.Rect);
+                UpdatePreviewImages();
             }
         }
 
