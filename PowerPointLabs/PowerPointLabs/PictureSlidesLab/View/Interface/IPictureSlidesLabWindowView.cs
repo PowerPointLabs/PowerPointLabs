@@ -1,4 +1,5 @@
 ﻿using System.Windows.Media;
+using PowerPointLabs.PictureSlidesLab.Model;
 using PowerPointLabs.PictureSlidesLab.Thread.Interface;
 
 namespace PowerPointLabs.PictureSlidesLab.View.Interface
@@ -20,5 +21,13 @@ namespace PowerPointLabs.PictureSlidesLab.View.Interface
         void SetVariationListBoxScrollOffset(double offset);
 
         void SetVariantsColorPanelBackground(Brush color);
+
+        bool IsDisplayDefaultPicture();
+
+        ImageItem CreateDefaultPictureItem();
+
+        void EnableUpdatingPreviewImages();
+
+        void DisableUpdatingPreviewImages();
     }
 }

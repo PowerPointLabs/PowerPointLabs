@@ -8,12 +8,16 @@ namespace PowerPointLabs.PictureSlidesLab.View
     partial class PictureSlidesLabWindow
     {
         private readonly SlideSelectionDialog _gotoSlideDialog = new SlideSelectionDialog();
+        private bool _isDisplayDefaultPicture;
 
         private void GotoSlideButton_OnClick(object sender, RoutedEventArgs e)
         {
             try
             {
-                _gotoSlideDialog.Init("Go to the Selected Slide");
+                // TODO move this to text collection
+                _gotoSlideDialog.Init("Select the Slide to Edit");
+                _gotoSlideDialog.CustomizeGotoSlideButton("Select",
+                    "Select the slide to edit styles.");
                 _gotoSlideDialog.FocusOkButton();
                 this.ShowMetroDialogAsync(_gotoSlideDialog, MetroDialogOptions);
             }
@@ -29,25 +33,32 @@ namespace PowerPointLabs.PictureSlidesLab.View
                     .GetProperty("OwningWindow", BindingFlags.Instance | BindingFlags.NonPublic)
                     .SetValue(_gotoSlideDialog, this, null);
 
-            _gotoSlideDialog.OnGotoSlide += () =>
-            {
-                this.HideMetroDialogAsync(_gotoSlideDialog, MetroDialogOptions);
-                if (PowerPointCurrentPresentationInfo.CurrentSlide == null
-                    || _gotoSlideDialog.SelectedSlide != PowerPointCurrentPresentationInfo.CurrentSlide.Index)
-                {
-                    PowerPointPresentation.Current.GotoSlide(_gotoSlideDialog.SelectedSlide);
-                    ShowInfoMessageBox(TextCollection.PictureSlidesLabText.SuccessfullyGoToSlide
-                        .Replace("_SlideNumber_", _gotoSlideDialog.SelectedSlide.ToString()));
-                }
-                ViewModel.UpdatePreviewImages(
-                    PowerPointCurrentPresentationInfo.CurrentSlide.GetNativeSlide(),
-                    PowerPointPresentation.Current.SlideWidth,
-                    PowerPointPresentation.Current.SlideHeight);
-            };
+            _gotoSlideDialog.OnGotoSlide += GotoSlideWithStyleLoading;
+
             _gotoSlideDialog.OnCancel += () =>
             {
                 this.HideMetroDialogAsync(_gotoSlideDialog, MetroDialogOptions);
             };
+        }
+
+        private void GotoSlideWithStyleLoading()
+        {
+            this.HideMetroDialogAsync(_gotoSlideDialog, MetroDialogOptions);
+
+            GotoSlide();
+
+            LoadStyleAndImage(PowerPointPresentation.Current
+                .Slides[_gotoSlideDialog.SelectedSlide - 1]);
+        }
+
+        private void GotoSlide()
+        {
+            if (PowerPointCurrentPresentationInfo.CurrentSlide == null
+                || _gotoSlideDialog.SelectedSlide != PowerPointCurrentPresentationInfo.CurrentSlide.Index)
+            {
+                PowerPointPresentation.Current.GotoSlide(_gotoSlideDialog.SelectedSlide);
+            }
+            UpdatePreviewImages();
         }
     }
 }

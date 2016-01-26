@@ -61,7 +61,7 @@
                     </Grid.ColumnDefinitions>
                     <Label Name="PreviewLabel" Grid.Column="1" Margin="0,0,5,0" FontSize="15">Styles</Label>
                     <Button ToolTip="Apply the selected style to the current slide." IsEnabled="False" Name="StylesApplyButton" Click="StylesPreviewApplyButton_OnClick" Grid.Column="2" Margin="0,0,5,0">Apply</Button>
-                    <Button ToolTip="Customize the selected style." IsEnabled="False" Name="StylesPickUpButton" Click="StylesCustomizeButton_OnClick" Grid.Column="3" Margin="0,0,5,0">Customize</Button>
+                    <Button ToolTip="Customize the selected style." IsEnabled="False" Name="StylesCustomizeButton" Click="StylesCustomizeButton_OnClick" Grid.Column="3" Margin="0,0,5,0">Customize</Button>
                     <controls:ProgressRing Name="PreviewProgressRing" Width="10" Height="10" Grid.Column="4" IsActive="False" />
                 </Grid>
                 <TextBlock Visibility="Visible" Name="PreviewInstructions" TextWrapping="Wrap" HorizontalAlignment="Center" VerticalAlignment="Center" Foreground="#AAAAAA" FontSize="16" Grid.Row="2">Select a picture to preview styles. Pick any style and click APPLY button to apply.</TextBlock>
@@ -152,6 +152,7 @@
                     <ComboBox Name="VariantsComboBox" ItemsSource="{Binding Path=VariantsCategory, Mode=TwoWay}" SelectedItem="{Binding Path=CurrentVariantCategory.Text, Mode=TwoWay}" SelectedIndex="{Binding Path=CurrentVariantCategoryId.Number, Mode=TwoWay}" SelectionChanged="VariantsComboBox_OnSelectionChanged" HorizontalAlignment="Right" VerticalAlignment="Center" Grid.Column="8">
                     </ComboBox>
                 </Grid>
+                <TextBlock Margin="10,0,0,0" Visibility="Hidden" Name="VariationInstructions" TextWrapping="Wrap" HorizontalAlignment="Center" VerticalAlignment="Center" Foreground="#AAAAAA" FontSize="16" Grid.Row="2">Select a picture to preview variations. Select any one and click APPLY button to apply.</TextBlock>
                 <TextBlock Margin="10,0,0,0" Visibility="Hidden" Name="VariationInstructionsWhenNoSelectedSlide" TextWrapping="Wrap" HorizontalAlignment="Center" VerticalAlignment="Center" Foreground="#AAAAAA" FontSize="16" Grid.Row="2">Select a slide in the presentation to preview variations. Select any one and click APPLY button to apply.</TextBlock>
                 <Grid Grid.Row="2" Margin="10,0,0,0">
                     <ListBox SelectionMode="Single" Name="StylesVariationListBox" IsSynchronizedWithCurrentItem="True" SelectionChanged="VariationListBox_OnSelectionChanged" SelectedItem="{Binding Path=StylesVariationListSelectedItem.ImageItem, Mode=TwoWay}" SelectedIndex="{Binding Path=StylesVariationListSelectedId.Number, Mode=TwoWay}" ItemsSource="{Binding Path=StylesVariationList, Mode=TwoWay}">
@@ -204,12 +205,11 @@
                         <ColumnDefinition Width="40" />
                         <ColumnDefinition Width="*"></ColumnDefinition>
                     </Grid.ColumnDefinitions>
-                    <Button ToolTip="Press the button to load image" Click="SelectImageButton_OnClick" Name="ImageSelectButton" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" Grid.Column="1" Margin="0,0,5,0">Select Images</Button>
+                    <Button IsEnabled="false" Name="GotoSlideButton" ToolTip="Select a target slide to edit styles." Width="85" Click="GotoSlideButton_OnClick" Margin="0,0,5,0" Grid.Column="1">Change slide</Button>
+                    <Button IsEnabled="false" Name="LoadStylesButton" ToolTip="Load styles from a slide to customize." Width="60" Click="LoadButton_OnClick" Margin="0,0,5,0" Grid.Column="2">Load...</Button>
                     <controls:ProgressRing Name="ImageDownloadProgressRing" Width="10" Height="10" Grid.Column="3" IsActive="{Binding Path=IsActiveDownloadProgressRing.Flag, Mode=TwoWay}" />
-                    <Button Name="ReloadStylesButton" ToolTip="Load styles from a slide to customize." Width="60" Click="ReloadButton_OnClick" Margin="0,0,105,0" HorizontalAlignment="Right" Grid.Column="4">Load...</Button>
-                    <Button Name="GotoSlideButton" ToolTip="Go to a target slide." Width="85" Click="GotoSlideButton_OnClick" Margin="0,0,15,0" HorizontalAlignment="Right" Grid.Column="4">Go to slide</Button>
                 </Grid>
-                <TextBlock Visibility="Visible" Name="ImageSelectionInstructions" MaxWidth="730" TextWrapping="Wrap" HorizontalAlignment="Center" VerticalAlignment="Center" Foreground="#AAAAAA" FontSize="18" Grid.Row="2">Click the 'Select Images' button above to load local images, or drag and drop the files here. You can also drag and drop thumbnail pictures from Google Image Search.</TextBlock>
+                <TextBlock Visibility="Visible" Name="ImageSelectionInstructions" MaxWidth="730" TextWrapping="Wrap" HorizontalAlignment="Center" VerticalAlignment="Center" Foreground="#AAAAAA" FontSize="18" Grid.Row="2">Click the 'Choose Pictures' icon above to load local images, or drag and drop the files here. You can also drag and drop thumbnail pictures from Google Image Search to import.</TextBlock>
                 <ListBox TabIndex="1" PreviewMouseDown="ImageSelectionListBox_OnPreviewMouseDown" Name="ImageSelectionListBox" KeyDown="ImageSelectionListBox_OnKeyDown" SelectionChanged="ImageSelectionListBox_OnSelectionChanged" SelectedItem="{Binding Path=ImageSelectionListSelectedItem.ImageItem, Mode=TwoWay}" SelectedIndex="{Binding Path=ImageSelectionListSelectedId.Number, Mode=TwoWay}" ItemsSource="{Binding Path=ImageSelectionList, Mode=TwoWay}" Grid.Row="2">
                     <ListBox.ContextMenu>
                         <ContextMenu Name="ImageSelectionListBoxContextMenu">

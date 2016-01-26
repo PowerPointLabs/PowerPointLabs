@@ -82,9 +82,26 @@ namespace PowerPointLabs.PictureSlidesLab.ViewModel
         {
             View = view;
             ImageDownloader = new ContextDownloader(View.GetThreadContext());
-            InitUiModels();
             InitStorage();
+            InitUiModels();
+            CleanUnusedPersistentData();
             Designer = stylesDesigner ?? new StylesDesigner();
+        }
+
+        private void CleanUnusedPersistentData()
+        {
+            var imageFilesInUse = new HashSet<string>();
+            foreach (var imageItem in ImageSelectionList)
+            {
+                imageFilesInUse.Add(imageItem.ImageFile);
+                imageFilesInUse.Add(imageItem.FullSizeImageFile);
+                if (imageItem.CroppedImageFile != null)
+                {
+                    imageFilesInUse.Add(imageItem.CroppedImageFile);
+                    imageFilesInUse.Add(imageItem.CroppedThumbnailImageFile);
+                }
+            }
+            StoragePath.CleanPersistentFolder(imageFilesInUse);
         }
 
         private void InitUiModels()
@@ -102,7 +119,15 @@ namespace PowerPointLabs.PictureSlidesLab.ViewModel
             StylesPreviewListSelectedId = new ObservableInt {Number = -1};
             StylesPreviewListSelectedItem = new ObservableImageItem();
 
-            ImageSelectionList = StoragePath.Load();
+            ImageSelectionList = new ObservableCollection<ImageItem>();
+            ImageSelectionList.Add(CreateChoosePicturesItem());
+
+            var loadedImageSelectionList = StoragePath.Load();
+            foreach (var item in loadedImageSelectionList)
+            {
+                ImageSelectionList.Add(item);
+            }
+
             ImageSelectionListSelectedId = new ObservableInt {Number = -1};
             ImageSelectionListSelectedItem = new ObservableImageItem();
             IsActiveDownloadProgressRing = new ObservableBoolean {Flag = false};
@@ -110,20 +135,8 @@ namespace PowerPointLabs.PictureSlidesLab.ViewModel
 
         private void InitStorage()
         {
-            var imageFilesInUse = new HashSet<string>();
-            foreach (var imageItem in ImageSelectionList)
-            {
-                imageFilesInUse.Add(imageItem.ImageFile);
-                imageFilesInUse.Add(imageItem.FullSizeImageFile);
-                if (imageItem.CroppedImageFile != null)
-                {
-                    imageFilesInUse.Add(imageItem.CroppedImageFile);
-                    imageFilesInUse.Add(imageItem.CroppedThumbnailImageFile);
-                }
-            }
-
             var isTempPathInit = TempPath.InitTempFolder();
-            var isStoragePathInit = StoragePath.InitPersistentFolder(imageFilesInUse);
+            var isStoragePathInit = StoragePath.InitPersistentFolder();
             if (!isTempPathInit || !isStoragePathInit)
             {
                 View.ShowErrorMessageBox(TextCollection.PictureSlidesLabText.ErrorFailToInitTempFolder);
@@ -136,11 +149,19 @@ namespace PowerPointLabs.PictureSlidesLab.ViewModel
             {
                 Designer.CleanUp();
             }
+            ImageSelectionList.RemoveAt(0);
             StoragePath.Save(ImageSelectionList);
         }
         #endregion
 
         #region Stage - Image Selection (Add Image)
+
+        public void RemoveAllImageSelectionListItems()
+        {
+            ImageSelectionList.Clear();
+            ImageSelectionList.Add(CreateChoosePicturesItem());
+        }
+
         /// <summary>
         /// Add images from local files
         /// </summary>
@@ -208,7 +229,8 @@ namespace PowerPointLabs.PictureSlidesLab.ViewModel
                         if (ImageSelectionListSelectedItem.ImageItem != null 
                             && imagePath == ImageSelectionListSelectedItem.ImageItem.ImageFile)
                         {
-                            UpdatePreviewImages(contentSlide, slideWidth, slideHeight);
+                            UpdatePreviewImages(ImageSelectionListSelectedItem.ImageItem,
+                                contentSlide, slideWidth, slideHeight);
                         }
                     }
                     catch
@@ -233,15 +255,15 @@ namespace PowerPointLabs.PictureSlidesLab.ViewModel
         #endregion
 
         #region Stage - Styles Previewing
-        public void UpdatePreviewImages(Slide contentSlide, float slideWidth, float slideHeight)
+        public void UpdatePreviewImages(ImageItem source, Slide contentSlide, float slideWidth, float slideHeight)
         {
             if (View.IsVariationsFlyoutOpen)
             {
-                UpdateStylesVariationImages(contentSlide, slideWidth, slideHeight);
+                UpdateStylesVariationImagesAfterOpenFlyout(source, contentSlide, slideWidth, slideHeight);
             }
             else
             {
-                UpdateStylesPreviewImages(contentSlide, slideWidth, slideHeight);
+                UpdateStylesPreviewImages(source, contentSlide, slideWidth, slideHeight);
             }
         }
 
@@ -275,16 +297,16 @@ namespace PowerPointLabs.PictureSlidesLab.ViewModel
         /// <summary>
         /// Update styles variation iamges before its flyout is open
         /// </summary>
+        /// <param name="source"></param>
         /// <param name="contentSlide"></param>
         /// <param name="slideWidth"></param>
         /// <param name="slideHeight"></param>
         /// <param name="givenOptions"></param>
         /// <param name="givenVariants"></param>
-        public void UpdateStyleVariationImagesWhenOpenFlyout(Slide contentSlide, float slideWidth, float slideHeight,
+        public void UpdateStyleVariationImagesWhenOpenFlyout(ImageItem source, Slide contentSlide, float slideWidth, float slideHeight,
             List<StyleOptions> givenOptions = null, Dictionary<string, List<StyleVariants>> givenVariants = null)
         {
             var targetStyleItem = StylesPreviewListSelectedItem.ImageItem;
-            var source = ImageSelectionListSelectedItem.ImageItem;
             StylesVariationList.Clear();
 
             if (!IsAbleToUpdateStylesVariationImages(source, targetStyleItem, contentSlide))
@@ -300,12 +322,11 @@ namespace PowerPointLabs.PictureSlidesLab.ViewModel
         /// <summary>
         /// Update styles variation images after its flyout been open
         /// </summary>
-        public void UpdateStylesVariationImages(Slide contentSlide, float slideWidth, float slideHeight)
+        public void UpdateStylesVariationImagesAfterOpenFlyout(ImageItem source, Slide contentSlide, float slideWidth, float slideHeight)
         {
             var selectedId = StylesVariationListSelectedId.Number;
             var scrollOffset = View.GetVariationListBoxScrollOffset();
             var targetStyleItem = StylesPreviewListSelectedItem.ImageItem;
-            var source = ImageSelectionListSelectedItem.ImageItem;
             StylesVariationList.Clear();
 
             if (!IsAbleToUpdateStylesVariationImages(source, targetStyleItem, contentSlide))
@@ -321,7 +342,8 @@ namespace PowerPointLabs.PictureSlidesLab.ViewModel
         /// This method implements the way to guide the user step by step to customize
         /// style
         /// </summary>
-        public void UpdateStepByStepStylesVariationImages(Slide contentSlide, float slideWidth, float slideHeight)
+        public void UpdateStepByStepStylesVariationImages(ImageItem source, Slide contentSlide, 
+            float slideWidth, float slideHeight)
         {
             if (StylesVariationListSelectedId.Number < 0
                 || VariantsCategory.Count == 0) return;
@@ -376,7 +398,8 @@ namespace PowerPointLabs.PictureSlidesLab.ViewModel
             }
 
             _previousVariantsCategory = currentVariantsCategory;
-            UpdateStylesVariationImages(contentSlide, slideWidth, slideHeight);
+            UpdateStylesVariationImagesAfterOpenFlyout(source, contentSlide, 
+                slideWidth, slideHeight);
         }
 
         public void ApplyStyleInVariationStage(Slide contentSlide, float slideWidth, float slideHeight)
@@ -403,10 +426,9 @@ namespace PowerPointLabs.PictureSlidesLab.ViewModel
             }
         }
 
-        private void UpdateStylesPreviewImages(Slide contentSlide, float slideWidth, float slideHeight)
+        private void UpdateStylesPreviewImages(ImageItem source, Slide contentSlide, float slideWidth, float slideHeight)
         {
             var selectedId = StylesPreviewListSelectedId.Number;
-            var source = ImageSelectionListSelectedItem.ImageItem;
             StylesPreviewList.Clear();
 
             if (!IsAbleToUpdateStylesPreviewImages(source, contentSlide))
@@ -524,6 +546,15 @@ namespace PowerPointLabs.PictureSlidesLab.ViewModel
             {
                 View.ShowErrorMessageBox(TextCollection.PictureSlidesLabText.ErrorImageCorrupted);
             }
+        }
+
+        private ImageItem CreateChoosePicturesItem()
+        {
+            return new ImageItem
+            {
+                ImageFile = StoragePath.ChoosePicturesImgPath,
+                Tooltip = "Choose pictures from local storage."
+            };
         }
         #endregion
     }

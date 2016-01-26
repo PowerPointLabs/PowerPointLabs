@@ -41,9 +41,12 @@ namespace PowerPointLabs.PictureSlidesLab.View
                 Color = GetColor(panel.Background as SolidColorBrush),
                 FullOpen = true
             };
-            if (colorDialog.ShowDialog() != System.Windows.Forms.DialogResult.OK) return;
-
-            ViewModel.BindSelectedColor(colorDialog.Color);
+            DisableLoadingStyleOnWindowActivate();
+            if (colorDialog.ShowDialog() == System.Windows.Forms.DialogResult.OK)
+            {
+                ViewModel.BindSelectedColor(colorDialog.Color);
+            }
+            EnableLoadingStyleOnWindowActivate();
         }
 
         private void VariantsFontPanel_OnDropDownClosed(object sender, EventArgs e)

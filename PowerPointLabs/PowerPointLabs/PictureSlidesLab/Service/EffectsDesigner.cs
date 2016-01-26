@@ -542,7 +542,7 @@ namespace PowerPointLabs.PictureSlidesLab.Service
         }
 
         public List<PowerPoint.Shape> EmbedStyleOptionsInformation(string originalImageFile, string croppedImageFile, 
-            Rect rect, StyleOptions opt)
+            string imageContext, Rect rect, StyleOptions opt)
         {
             if (originalImageFile == null) return new List<PowerPoint.Shape>();
 
@@ -559,6 +559,7 @@ namespace PowerPointLabs.PictureSlidesLab.Service
             // store source image info
             AddTag(originalImage, Tag.ReloadOriginImg, originalImageFile);
             AddTag(originalImage, Tag.ReloadCroppedImg, croppedImageFile);
+            AddTag(originalImage, Tag.ReloadImgContext, imageContext);
             AddTag(originalImage, Tag.ReloadRectX, rect.X.ToString(CultureInfo.InvariantCulture));
             AddTag(originalImage, Tag.ReloadRectY, rect.Y.ToString(CultureInfo.InvariantCulture));
             AddTag(originalImage, Tag.ReloadRectWidth, rect.Width.ToString(CultureInfo.InvariantCulture));
