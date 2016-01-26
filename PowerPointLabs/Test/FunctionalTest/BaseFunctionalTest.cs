@@ -2,7 +2,6 @@
 using System.Diagnostics;
 using System.IO;
 using System.Runtime.Remoting;
-using System.Threading;
 using TestInterface;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Test.Util;
@@ -71,9 +70,9 @@ namespace Test.FunctionalTest
         [AssemblyCleanup]
         public static void FinalTearDown()
         {
-            const int waitTime = 200;
+            const int waitTime = 500;
             var tempFolder = PathUtil.GetTempTestFolder();
-            var retryCount = 50;
+            var retryCount = 10;
 
             while (Directory.Exists(tempFolder) && retryCount > 0)
             {
@@ -96,11 +95,15 @@ namespace Test.FunctionalTest
             rootFolder.Attributes = FileAttributes.Normal;
 
             foreach (var subFolder in rootFolder.GetDirectories())
+            {
                 DeleteTempTestFolder(subFolder);
+            }
 
             foreach (var file in rootFolder.GetFiles())
+            {
                 file.IsReadOnly = false;
-            
+            }
+
             rootFolder.Delete(true);
         }
 

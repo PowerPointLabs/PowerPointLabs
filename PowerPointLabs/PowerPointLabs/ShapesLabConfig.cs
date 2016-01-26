@@ -4,6 +4,7 @@ using System.IO;
 using System.Linq;
 using System.Text;
 using PowerPointLabs.Models;
+using PowerPointLabs.Utils;
 
 namespace PowerPointLabs
 {
@@ -36,7 +37,7 @@ namespace PowerPointLabs
             else
             {
                 // if it's in FT, use new temp shape root folder every time
-                var tmpPath = Path.Combine(Path.GetTempPath(), "PowerPointLabsTest\\");
+                var tmpPath = PathUtil.GetTempTestFolder();
                 var hash = DateTime.Now.GetHashCode();
                 ShapeRootFolder = tmpPath + DefaultShapeMasterFolderName + hash;
                 DefaultCategory = DefaultShapeCategoryName + hash;

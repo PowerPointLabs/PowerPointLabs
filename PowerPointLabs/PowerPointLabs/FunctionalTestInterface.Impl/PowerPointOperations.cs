@@ -7,6 +7,7 @@ using System.IO;
 using System.Linq;
 using System.Windows.Forms;
 using Microsoft.Office.Core;
+using PowerPointLabs.Utils;
 using Shape = Microsoft.Office.Interop.PowerPoint.Shape;
 using ShapeRange = Microsoft.Office.Interop.PowerPoint.ShapeRange;
 
@@ -230,7 +231,7 @@ namespace PowerPointLabs.FunctionalTestInterface.Impl
         {
             var shapes = PowerPointCurrentPresentationInfo.CurrentSelection.ShapeRange;
             var hashCode = DateTime.Now.GetHashCode();
-            var pathName = GetTempTestFolder() + "shapeName" + hashCode;
+            var pathName = PathUtil.GetTempTestFolder() + "shapeName" + hashCode;
             shapes.Export(pathName, PpShapeFormat.ppShapeFormatPNG);
             return new FileInfo(pathName);
         }
@@ -268,11 +269,6 @@ namespace PowerPointLabs.FunctionalTestInterface.Impl
         public void DeleteSection(int index, bool deleteSlides)
         {
             PowerPointPresentation.Current.SectionProperties.Delete(index, deleteSlides);
-        }
-
-        private static String GetTempTestFolder()
-        {
-            return Path.Combine(Path.GetTempPath(), "PowerPointLabsTest\\");
         }
     }
 }
