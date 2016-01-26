@@ -1244,7 +1244,14 @@ namespace PowerPointLabs.Models
 
         public void DeleteSlideNumberShapes()
         {
-            DeleteShapesWithPrefix("Slide Number Placeholder");
+            List<Shape> shapes = _slide.Shapes.Cast<Shape>().ToList();
+
+            var matchingShapes = shapes.Where(current => current.Type == MsoShapeType.msoPlaceholder && current.PlaceholderFormat.Type == PpPlaceholderType.ppPlaceholderSlideNumber);
+
+            foreach (Shape s in matchingShapes)
+            {
+                s.Delete();
+            }
         }
     }
 }
