@@ -27,10 +27,13 @@ namespace PowerPointLabs.PictureSlidesLab.View
         {
             try
             {
-                _gotoSlideDialog.Init("Successfully Applied!");
-                _gotoSlideDialog.CustomizeGotoSlideButton("Select",
-                    "Select the slide to edit styles.");
-                _gotoSlideDialog.FocusOkButton();
+                if (_gotoSlideDialog.IsOpen) return;
+
+                _gotoSlideDialog
+                    .Init("Successfully Applied!")
+                    .CustomizeGotoSlideButton("Select", "Select the slide to edit styles.")
+                    .FocusOkButton()
+                    .OpenDialog();
                 this.ShowMetroDialogAsync(_gotoSlideDialog, MetroDialogOptions);
             }
             catch
