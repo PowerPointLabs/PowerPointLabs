@@ -46,6 +46,7 @@ namespace PowerPointLabs.PictureSlidesLab.View
 
         private void GotoSlideWithStyleLoading()
         {
+            _gotoSlideDialog.CloseDialog();
             this.HideMetroDialogAsync(_gotoSlideDialog, MetroDialogOptions);
 
             GotoSlide();
