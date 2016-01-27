@@ -6,6 +6,7 @@ using TestInterface;
 using Microsoft.Office.Core;
 using Microsoft.Office.Interop.PowerPoint;
 using PowerPointLabs.FunctionalTestInterface.Impl;
+using PowerPointLabs.Utils;
 using Shape = Microsoft.Office.Interop.PowerPoint.Shape;
 using ShapeRange = Microsoft.Office.Interop.PowerPoint.ShapeRange;
 
@@ -216,7 +217,7 @@ namespace Test.Util
         {
             var shapes = _currentShape;
             var hashCode = DateTime.Now.GetHashCode();
-            var pathName = PathUtil.GetTempTestFolder() + "shapeName" + hashCode;
+            var pathName = TempPath.GetTempTestFolder() + "shapeName" + hashCode;
             shapes.Export(pathName, PpShapeFormat.ppShapeFormatPNG);
             return new FileInfo(pathName);
         }

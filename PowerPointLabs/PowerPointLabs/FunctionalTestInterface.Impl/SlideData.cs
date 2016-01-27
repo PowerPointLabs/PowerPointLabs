@@ -18,7 +18,7 @@ namespace PowerPointLabs.FunctionalTestInterface.Impl
         {
             var hashCode = DateTime.Now.GetHashCode();
             SlideImage = "slide" + hashCode;
-            slide.Export(PathUtil.GetTempTestFolder() + SlideImage, "PNG");
+            slide.Export(TempPath.GetTempTestFolder() + SlideImage, "PNG");
 
             Animation = new List<IEffectData>();
             var seq = slide.TimeLine.MainSequence;

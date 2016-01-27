@@ -4,12 +4,13 @@ using System.IO;
 using System.Runtime.Remoting;
 using TestInterface;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using PowerPointLabs.Utils;
 using Test.Util;
 
 namespace Test.FunctionalTest
 {
     [TestClass]
-    public abstract class BaseFunctionalTest
+    public abstract class BaseFunctionalTest: TestAssemblyFixture
     {
         public TestContext TestContext { get; set; }
 
@@ -40,11 +41,6 @@ namespace Test.FunctionalTest
                 CloseActivePpInstance();
             }
 
-            if (!Directory.Exists(PathUtil.GetTempTestFolder()))
-            {
-                Directory.CreateDirectory(PathUtil.GetTempTestFolder());
-            }
-
             OpenSlideForTest(GetTestingSlideName());
 
             ConnectPpl();
@@ -65,46 +61,6 @@ namespace Test.FunctionalTest
                         GetTestingSlideName()));
             }
             PpOperations.ClosePresentation();
-        }
-
-        [AssemblyCleanup]
-        public static void FinalTearDown()
-        {
-            const int waitTime = 500;
-            var tempFolder = PathUtil.GetTempTestFolder();
-            var retryCount = 10;
-
-            while (Directory.Exists(tempFolder) && retryCount > 0)
-            {
-                DirectoryInfo tempFolderInfo = new DirectoryInfo(tempFolder);
-
-                try
-                {
-                    DeleteTempTestFolder(tempFolderInfo);
-                }
-                catch (Exception)
-                {
-                    retryCount--;
-                    ThreadUtil.WaitFor(waitTime);
-                }
-            }
-        }
-
-        private static void DeleteTempTestFolder(DirectoryInfo rootFolder)
-        {
-            rootFolder.Attributes = FileAttributes.Normal;
-
-            foreach (var subFolder in rootFolder.GetDirectories())
-            {
-                DeleteTempTestFolder(subFolder);
-            }
-
-            foreach (var file in rootFolder.GetFiles())
-            {
-                file.IsReadOnly = false;
-            }
-
-            rootFolder.Delete(true);
         }
 
         private void ConnectPpl()

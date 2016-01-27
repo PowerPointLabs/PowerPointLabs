@@ -37,7 +37,7 @@ namespace PowerPointLabs
             else
             {
                 // if it's in FT, use new temp shape root folder every time
-                var tmpPath = PathUtil.GetTempTestFolder();
+                var tmpPath = TempPath.GetTempTestFolder();
                 var hash = DateTime.Now.GetHashCode();
                 ShapeRootFolder = tmpPath + DefaultShapeMasterFolderName + hash;
                 DefaultCategory = DefaultShapeCategoryName + hash;

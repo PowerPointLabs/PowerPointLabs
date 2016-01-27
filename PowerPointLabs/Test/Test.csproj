@@ -112,6 +112,7 @@
     <Compile Include="FunctionalTest\SpotlightTest.cs" />
     <Compile Include="FunctionalTest\TextFragmentsTest.cs" />
     <Compile Include="FunctionalTest\ZoomToAreaTest.cs" />
+    <Compile Include="TestAssemblyFixture.cs" />
     <Compile Include="UnitTest\BaseUnitTest.cs" />
     <Compile Include="UnitTest\FitToSlideTest.cs" />
     <Compile Include="UnitTest\PictureSlidesLab\ModelFactory\StyleOptionsFactoryTest.cs" />

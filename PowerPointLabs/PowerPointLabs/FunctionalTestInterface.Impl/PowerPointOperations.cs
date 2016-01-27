@@ -231,7 +231,7 @@ namespace PowerPointLabs.FunctionalTestInterface.Impl
         {
             var shapes = PowerPointCurrentPresentationInfo.CurrentSelection.ShapeRange;
             var hashCode = DateTime.Now.GetHashCode();
-            var pathName = PathUtil.GetTempTestFolder() + "shapeName" + hashCode;
+            var pathName = TempPath.GetTempTestFolder() + "shapeName" + hashCode;
             shapes.Export(pathName, PpShapeFormat.ppShapeFormatPNG);
             return new FileInfo(pathName);
         }

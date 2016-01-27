@@ -1,5 +1,6 @@
 ﻿using System;
 using System.IO;
+using PowerPointLabs.Utils;
 
 namespace Test.Util
 {
@@ -21,12 +22,7 @@ namespace Test.Util
 
         public static String GetTempPath(String fileName)
         {
-            return GetTempTestFolder() + fileName;
-        }
-
-        public static String GetTempTestFolder()
-        {
-            return Path.Combine(Path.GetTempPath(), "PowerPointLabsTest\\");
+            return TempPath.GetTempTestFolder() + fileName;
         }
 
         public static string GetDocTestPath()
