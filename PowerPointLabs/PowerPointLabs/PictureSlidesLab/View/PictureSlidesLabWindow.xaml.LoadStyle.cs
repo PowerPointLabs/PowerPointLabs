@@ -54,6 +54,7 @@ namespace PowerPointLabs.PictureSlidesLab.View
 
         private void LoadImage()
         {
+            _loadStylesDialog.CloseDialog();
             this.HideMetroDialogAsync(_loadStylesDialog, MetroDialogOptions);
 
             // which is the current slide
@@ -104,6 +105,7 @@ namespace PowerPointLabs.PictureSlidesLab.View
 
         private void LoadStyle()
         {
+            _loadStylesDialog.CloseDialog();
             this.HideMetroDialogAsync(_loadStylesDialog, MetroDialogOptions);
 
             // which is the current slide
