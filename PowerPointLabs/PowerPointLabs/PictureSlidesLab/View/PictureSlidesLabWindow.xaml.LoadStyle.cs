@@ -23,11 +23,14 @@ namespace PowerPointLabs.PictureSlidesLab.View
 
         private void LoadButton_OnClick(object sender, RoutedEventArgs e)
         {
-            // TODO move this to text collection
-            _loadStylesDialog.Init("Load Style or Image from the Selected Slide");
-            _loadStylesDialog.CustomizeGotoSlideButton("Load Style", "Load style from the selected slide.");
-            _loadStylesDialog.CustomizeAdditionalButton("Load Image", "Load image from the selected slide.");
-            _loadStylesDialog.FocusOkButton();
+            if (_loadStylesDialog.IsOpen) return;
+
+            _loadStylesDialog
+                .Init("Load Style or Image from the Selected Slide")
+                .CustomizeGotoSlideButton("Load Style", "Load style from the selected slide.")
+                .CustomizeAdditionalButton("Load Image", "Load image from the selected slide.")
+                .FocusOkButton()
+                .OpenDialog();
             this.ShowMetroDialogAsync(_loadStylesDialog, MetroDialogOptions);
         }
 
@@ -44,6 +47,7 @@ namespace PowerPointLabs.PictureSlidesLab.View
 
             _loadStylesDialog.OnCancel += () =>
             {
+                _loadStylesDialog.CloseDialog();
                 this.HideMetroDialogAsync(_loadStylesDialog, MetroDialogOptions);
             };
         }

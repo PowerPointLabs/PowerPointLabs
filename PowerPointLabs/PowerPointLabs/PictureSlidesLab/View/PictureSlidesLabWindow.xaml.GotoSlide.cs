@@ -14,11 +14,13 @@ namespace PowerPointLabs.PictureSlidesLab.View
         {
             try
             {
-                // TODO move this to text collection
-                _gotoSlideDialog.Init("Select the Slide to Edit");
-                _gotoSlideDialog.CustomizeGotoSlideButton("Select",
-                    "Select the slide to edit styles.");
-                _gotoSlideDialog.FocusOkButton();
+                if (_gotoSlideDialog.IsOpen) return;
+
+                _gotoSlideDialog
+                    .Init("Select the Slide to Edit")
+                    .CustomizeGotoSlideButton("Select", "Select the slide to edit styles.")
+                    .FocusOkButton()
+                    .OpenDialog();
                 this.ShowMetroDialogAsync(_gotoSlideDialog, MetroDialogOptions);
             }
             catch
@@ -37,6 +39,7 @@ namespace PowerPointLabs.PictureSlidesLab.View
 
             _gotoSlideDialog.OnCancel += () =>
             {
+                _gotoSlideDialog.CloseDialog();
                 this.HideMetroDialogAsync(_gotoSlideDialog, MetroDialogOptions);
             };
         }

@@ -270,5 +270,14 @@ namespace PowerPointLabs.FunctionalTestInterface.Impl
         {
             PowerPointPresentation.Current.SectionProperties.Delete(index, deleteSlides);
         }
+
+        public void ShowAllSlideNumbers()
+        {
+            Slide[] slides = GetAllSlides();
+            foreach (Slide s in slides)
+            {
+                s.HeadersFooters.SlideNumber.Visible = MsoTriState.msoTrue;
+            }
+        }
     }
 }

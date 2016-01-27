@@ -33,6 +33,7 @@ namespace TestInterface
         Slide[] GetAllSlides();
         string GetNotesPageText(Slide slide);
         void SetNotesPageText(Slide slide, string text);
+        void ShowAllSlideNumbers();
 
         # endregion
 
