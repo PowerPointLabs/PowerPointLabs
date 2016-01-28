@@ -621,10 +621,11 @@ namespace PowerPointLabs.PictureSlidesLab.Service
                     .Load(imageFilePath)
                     .Image;
                 var ratio = (float) image.Width / image.Height;
-                var targetHeight = MaxThumbnailHeight - (MaxThumbnailHeight - MinThumbnailHeight) / 100f * degree;
+                var targetHeight = Math.Ceiling(MaxThumbnailHeight - (MaxThumbnailHeight - MinThumbnailHeight) / 100f * degree);
+                var targetWidth = Math.Ceiling(targetHeight * ratio);
 
                 image = imageFactory
-                    .Resize(new Size((int)(targetHeight * ratio), (int)targetHeight))
+                    .Resize(new Size((int) targetWidth, (int) targetHeight))
                     .GaussianBlur(5).Image;
                 image.Save(blurImageFile);
             }
