@@ -1,10 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.IO;
-using System.Linq;
-using System.Text;
-using System.Threading;
-using System.Windows;
 
 namespace PowerPointLabs.Utils
 {
@@ -31,11 +26,9 @@ namespace PowerPointLabs.Utils
 
         public static void DeleteTempTestFolder()
         {
-            const int waitTime = 1000;
             var tempFolder = _tempTestPath;
-            var retryCount = 10;
 
-            while (Directory.Exists(tempFolder) && retryCount > 0)
+            while (Directory.Exists(tempFolder))
             {
                 var tempFolderInfo = new DirectoryInfo(tempFolder);
 
@@ -43,11 +36,8 @@ namespace PowerPointLabs.Utils
                 {
                     DeepDeleteFolder(tempFolderInfo);
                 }
-                catch (Exception)
-                {
-                    retryCount--;
-                    Thread.Sleep(waitTime);
-                }
+                catch (IOException)
+                { }
             }
         }
 
