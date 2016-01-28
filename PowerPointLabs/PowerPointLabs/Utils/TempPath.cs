@@ -12,7 +12,7 @@ namespace PowerPointLabs.Utils
             return _tempTestPath;
         }
 
-        public static bool IsExistingTempFolder()
+        public static bool IsExistingTempTestFolder()
         {
             return Directory.Exists(_tempTestPath);
         }
@@ -21,7 +21,10 @@ namespace PowerPointLabs.Utils
   
         public static void CreateTempTestFolder()
         {
-            Directory.CreateDirectory(_tempTestPath);
+            if (!IsExistingTempTestFolder())
+            {
+                Directory.CreateDirectory(_tempTestPath);
+            }
         }
 
         public static void DeleteTempTestFolder()
@@ -36,7 +39,7 @@ namespace PowerPointLabs.Utils
                 {
                     DeepDeleteFolder(tempFolderInfo);
                 }
-                catch (IOException)
+                catch (Exception)
                 { }
             }
         }

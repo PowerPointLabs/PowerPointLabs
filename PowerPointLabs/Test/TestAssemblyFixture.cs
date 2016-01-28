@@ -1,5 +1,5 @@
 ﻿using System;
-using System.IO;
+using System.Windows;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using PowerPointLabs.Utils;
 
@@ -11,10 +11,7 @@ namespace Test
         [AssemblyInitialize]
         public static void AssemblySetup(TestContext context)
         {
-            if (!TempPath.IsExistingTempFolder())
-            {
-                TempPath.CreateTempTestFolder();
-            }
+            TempPath.CreateTempTestFolder();
         }
 
         [AssemblyCleanup]
