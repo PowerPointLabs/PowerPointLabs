@@ -135,7 +135,7 @@ namespace PowerPointLabs.PictureSlidesLab.ViewModel
 
         private void InitStorage()
         {
-            var isTempPathInit = TempPath.InitTempFolder();
+            var isTempPathInit = Util.TempPath.InitTempFolder();
             var isStoragePathInit = StoragePath.InitPersistentFolder();
             if (!isTempPathInit || !isStoragePathInit)
             {
