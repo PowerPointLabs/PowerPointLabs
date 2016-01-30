@@ -66,5 +66,11 @@ namespace Test.UnitTest
             TempPath.DeleteTempTestFolder();
             Assert.IsFalse(TempPath.IsExistingTempTestFolder());
         }
+
+        [TestCleanup]
+        public void TearDown()
+        {
+            TempPath.CreateTempTestFolder();
+        }
     }
 }
