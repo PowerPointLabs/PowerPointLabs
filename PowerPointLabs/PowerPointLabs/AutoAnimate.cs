@@ -19,9 +19,6 @@ namespace PowerPointLabs
         private static PowerPoint.Shape[] nextSlideShapes;
         private static int[] matchingShapeIDs;
 
-        private const int GuidStartIndex = 0;
-        private const int GuidExtractLength = 7;
-
         public static void AddAutoAnimation()
         {
             try
@@ -145,13 +142,11 @@ namespace PowerPointLabs
 
             if (nextSlide.Name.StartsWith("PPSlideStart") || nextSlide.Name.StartsWith("PPSlideMulti"))
             {
-                nextSlide.Name = "PPSlideMulti" + DateTime.Now.ToString("_yyyyMMddHHmmssffff_") +
-                                 Guid.NewGuid().ToString("N").Substring(GuidStartIndex, GuidExtractLength);
+                nextSlide.Name = "PPSlideMulti" + GetSlideIdentifier();
             }
             else
             {
-                nextSlide.Name = "PPSlideEnd" + DateTime.Now.ToString("_yyyyMMddHHmmssffff_") +
-                                 Guid.NewGuid().ToString("N").Substring(GuidStartIndex, GuidExtractLength);
+                nextSlide.Name = "PPSlideEnd" + GetSlideIdentifier();
             }
         }
 
@@ -159,14 +154,18 @@ namespace PowerPointLabs
         {
             if (currentSlide.Name.StartsWith("PPSlideEnd") || currentSlide.Name.StartsWith("PPSlideMulti"))
             {
-                currentSlide.Name = "PPSlideMulti" + DateTime.Now.ToString("_yyyyMMddHHmmssffff_") +
-                                 Guid.NewGuid().ToString("N").Substring(GuidStartIndex, GuidExtractLength);
+                currentSlide.Name = "PPSlideMulti" + GetSlideIdentifier();
             }
             else
             {
-                currentSlide.Name = "PPSlideStart" + DateTime.Now.ToString("_yyyyMMddHHmmssffff_") +
-                                 Guid.NewGuid().ToString("N").Substring(GuidStartIndex, GuidExtractLength);
+                currentSlide.Name = "PPSlideStart" + GetSlideIdentifier();
             }
+        }
+
+        private static string GetSlideIdentifier()
+        {
+            return DateTime.Now.ToString("_yyyyMMddHHmmssffff_") +
+                   Guid.NewGuid().ToString("N").Substring(0, 7);
         }
 
         private static bool GetMatchingShapeDetails(PowerPointSlide currentSlide, PowerPointSlide nextSlide)
