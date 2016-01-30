@@ -195,6 +195,35 @@ namespace PowerPointLabs.PictureSlidesLab.Service
                 .StartBoxing();
         }
 
+        public void ApplyPseudoTextWhenNoTextShapes()
+        {
+            var isTextShapesEmpty = new TextBoxes(
+                Shapes.Range(), SlideWidth, SlideHeight)
+                .IsTextShapesEmpty();
+
+            if (!isTextShapesEmpty) return;
+
+            try
+            {
+                Shapes.AddTitle().TextFrame2.TextRange.Text = "Picture Slides Lab";
+            }
+            catch
+            {
+                // title already exist
+                foreach (PowerPoint.Shape shape in Shapes)
+                {
+                    switch (shape.PlaceholderFormat.Type)
+                    {
+                        case PowerPoint.PpPlaceholderType.ppPlaceholderTitle:
+                        case PowerPoint.PpPlaceholderType.ppPlaceholderCenterTitle:
+                        case PowerPoint.PpPlaceholderType.ppPlaceholderVerticalTitle:
+                            shape.TextFrame2.TextRange.Text = "Picture Slides Lab";
+                            break;
+                    }
+                }
+            }
+        }
+
         public void ApplyTextWrapping()
         {
             new TextBoxes(Shapes.Range(), SlideWidth, SlideHeight)
