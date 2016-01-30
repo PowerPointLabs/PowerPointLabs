@@ -122,10 +122,18 @@ namespace PowerPointLabs.PictureSlidesLab.ViewModel
             ImageSelectionList = new ObservableCollection<ImageItem>();
             ImageSelectionList.Add(CreateChoosePicturesItem());
 
-            var loadedImageSelectionList = StoragePath.Load();
-            foreach (var item in loadedImageSelectionList)
+            if (StoragePath.IsFirstTimeUsage())
             {
-                ImageSelectionList.Add(item);
+                ImageSelectionList.Add(CreateSamplePic1Item());
+                ImageSelectionList.Add(CreateSamplePic2Item());
+            }
+            else
+            {
+                var loadedImageSelectionList = StoragePath.Load();
+                foreach (var item in loadedImageSelectionList)
+                {
+                    ImageSelectionList.Add(item);
+                }
             }
 
             ImageSelectionListSelectedId = new ObservableInt {Number = -1};
@@ -554,6 +562,30 @@ namespace PowerPointLabs.PictureSlidesLab.ViewModel
             {
                 ImageFile = StoragePath.ChoosePicturesImgPath,
                 Tooltip = "Choose pictures from local storage."
+            };
+        }
+
+        private static ImageItem CreateSamplePic2Item()
+        {
+            return new ImageItem
+            {
+                ImageFile = ImageUtil.GetThumbnailFromFullSizeImg(
+                    StoragePath.SampleImg2Path),
+                FullSizeImageFile = StoragePath.SampleImg2Path,
+                Tooltip = ImageUtil.GetWidthAndHeight(StoragePath.SampleImg2Path),
+                ContextLink = "https://flic.kr/p/mBR8Ym"
+            };
+        }
+
+        private static ImageItem CreateSamplePic1Item()
+        {
+            return new ImageItem
+            {
+                ImageFile = ImageUtil.GetThumbnailFromFullSizeImg(
+                    StoragePath.SampleImg1Path),
+                FullSizeImageFile = StoragePath.SampleImg1Path,
+                Tooltip = ImageUtil.GetWidthAndHeight(StoragePath.SampleImg1Path),
+                ContextLink = "https://flic.kr/p/5fKBTq"
             };
         }
         #endregion

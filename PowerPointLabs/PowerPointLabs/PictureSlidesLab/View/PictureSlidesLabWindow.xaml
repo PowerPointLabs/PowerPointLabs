@@ -210,6 +210,7 @@
                     <controls:ProgressRing Name="ImageDownloadProgressRing" Width="10" Height="10" Grid.Column="3" IsActive="{Binding Path=IsActiveDownloadProgressRing.Flag, Mode=TwoWay}" />
                 </Grid>
                 <TextBlock Visibility="Visible" Name="ImageSelectionInstructions" MaxWidth="730" TextWrapping="Wrap" HorizontalAlignment="Center" VerticalAlignment="Center" Foreground="#AAAAAA" FontSize="18" Grid.Row="2">Click the 'Choose Pictures' icon above to load local images, or drag and drop the files here. You can also drag and drop thumbnail pictures from Google Image Search to import.</TextBlock>
+                <TextBlock Visibility="Hidden" Name="ImageSelectionInstructionsForFirstTime" MaxWidth="730" TextWrapping="Wrap" HorizontalAlignment="Center" VerticalAlignment="Center" Foreground="#AAAAAA" FontSize="18" Grid.Row="2">Select a picture to preview styles, then select a style and click `Apply` button to apply it to the slide.</TextBlock>
                 <ListBox TabIndex="1" PreviewMouseDown="ImageSelectionListBox_OnPreviewMouseDown" Name="ImageSelectionListBox" KeyDown="ImageSelectionListBox_OnKeyDown" SelectionChanged="ImageSelectionListBox_OnSelectionChanged" SelectedItem="{Binding Path=ImageSelectionListSelectedItem.ImageItem, Mode=TwoWay}" SelectedIndex="{Binding Path=ImageSelectionListSelectedId.Number, Mode=TwoWay}" ItemsSource="{Binding Path=ImageSelectionList, Mode=TwoWay}" Grid.Row="2">
                     <ListBox.ContextMenu>
                         <ContextMenu Name="ImageSelectionListBoxContextMenu">

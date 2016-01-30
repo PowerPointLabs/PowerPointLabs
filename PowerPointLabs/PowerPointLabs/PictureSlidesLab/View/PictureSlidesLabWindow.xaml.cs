@@ -571,6 +571,7 @@ namespace PowerPointLabs.PictureSlidesLab.View
         /// </summary>
         private void UpdatePreviewInterfaceWhenImageListChange(Collection<ImageItem> list)
         {
+            // there is only `Choose Picture` placeholder image
             ImageSelectionInstructions.Visibility = list.Count <= 1
                 ? Visibility.Visible
                 : Visibility.Hidden;
@@ -588,6 +589,19 @@ namespace PowerPointLabs.PictureSlidesLab.View
                 PreviewInstructionsWhenNoSelectedSlide.Visibility = Visibility.Hidden;
                 VariationInstructions.Visibility = Visibility.Visible;
                 VariationInstructionsWhenNoSelectedSlide.Visibility = Visibility.Hidden;
+            }
+
+            // there are `Choose Picture` placeholder image +
+            // 2 sample pictures + maybe 1 image chosen by user
+            if (StoragePath.IsFirstTimeUsage() && list.Count <= 4
+                && ImageSelectionInstructions.Visibility == Visibility.Hidden)
+            {
+                PreviewInstructions.Visibility = Visibility.Hidden;
+                ImageSelectionInstructionsForFirstTime.Visibility = Visibility.Visible;
+            }
+            else
+            {
+                ImageSelectionInstructionsForFirstTime.Visibility = Visibility.Hidden;
             }
 
             // show StylesPreviewRegion aft there'r some images in the SearchList region
