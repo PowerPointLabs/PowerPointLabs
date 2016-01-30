@@ -4,7 +4,7 @@ using System.IO;
 using System.Runtime.Remoting;
 using TestInterface;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using PowerPointLabs.Utils;
+using Test.Base;
 using Test.Util;
 
 namespace Test.FunctionalTest

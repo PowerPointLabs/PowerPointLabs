@@ -2,7 +2,7 @@
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using PowerPointLabs.Utils;
 
-namespace Test.UnitTest
+namespace Test.UnitTest.Utils
 {
     [TestClass]
     public class TempPathTest

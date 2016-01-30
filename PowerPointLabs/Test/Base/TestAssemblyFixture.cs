@@ -1,9 +1,7 @@
-﻿using System;
-using System.Windows;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
 using PowerPointLabs.Utils;
 
-namespace Test
+namespace Test.Base
 {
     [TestClass]
     public class TestAssemblyFixture

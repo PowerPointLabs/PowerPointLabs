@@ -6,6 +6,7 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Test.Util;
 using PowerPoint = Microsoft.Office.Interop.PowerPoint;
 using PowerPointLabs.Utils;
+using Test.Base;
 
 namespace Test.UnitTest
 {

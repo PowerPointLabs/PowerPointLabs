@@ -31,16 +31,15 @@ namespace PowerPointLabs.Utils
         {
             var tempFolder = _tempTestPath;
 
-            while (Directory.Exists(tempFolder))
-            {
-                var tempFolderInfo = new DirectoryInfo(tempFolder);
+            var tempFolderInfo = new DirectoryInfo(tempFolder);
 
-                try
-                {
-                    DeepDeleteFolder(tempFolderInfo);
-                }
-                catch (Exception)
-                { }
+            try
+            {
+                DeepDeleteFolder(tempFolderInfo);
+            }
+            catch
+            {
+                // sometimes files cannot be deleted because in use
             }
         }
 
@@ -56,9 +55,24 @@ namespace PowerPointLabs.Utils
             foreach (var file in rootFolder.GetFiles())
             {
                 file.IsReadOnly = false;
+                try
+                {
+                    file.Delete();
+                }
+                catch
+                {
+                    // sometimes files cannot be deleted because in use
+                }
             }
 
-            rootFolder.Delete(true);
+            try
+            {
+                rootFolder.Delete(true);
+            }
+            catch
+            {
+                // sometimes the folder cannot be deleted
+            }
         }
 
         #endregion
