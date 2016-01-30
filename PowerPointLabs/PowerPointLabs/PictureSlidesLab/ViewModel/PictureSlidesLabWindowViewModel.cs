@@ -572,7 +572,7 @@ namespace PowerPointLabs.PictureSlidesLab.ViewModel
                 ImageFile = ImageUtil.GetThumbnailFromFullSizeImg(
                     StoragePath.SampleImg2Path),
                 FullSizeImageFile = StoragePath.SampleImg2Path,
-                Tooltip = ImageUtil.GetWidthAndHeight(StoragePath.SampleImg2Path),
+                Tooltip = "Picture taken from Nahemoth https://flic.kr/p/mBR8Ym",
                 ContextLink = "https://flic.kr/p/mBR8Ym"
             };
         }
@@ -584,7 +584,7 @@ namespace PowerPointLabs.PictureSlidesLab.ViewModel
                 ImageFile = ImageUtil.GetThumbnailFromFullSizeImg(
                     StoragePath.SampleImg1Path),
                 FullSizeImageFile = StoragePath.SampleImg1Path,
-                Tooltip = ImageUtil.GetWidthAndHeight(StoragePath.SampleImg1Path),
+                Tooltip = "Picture taken from Alosh Bennett https://flic.kr/p/5fKBTq",
                 ContextLink = "https://flic.kr/p/5fKBTq"
             };
         }
