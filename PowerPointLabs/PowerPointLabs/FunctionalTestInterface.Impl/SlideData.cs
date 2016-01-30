@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using TestInterface;
 using Microsoft.Office.Interop.PowerPoint;
+using PowerPointLabs.Utils;
 
 namespace PowerPointLabs.FunctionalTestInterface.Impl
 {
@@ -17,7 +18,7 @@ namespace PowerPointLabs.FunctionalTestInterface.Impl
         {
             var hashCode = DateTime.Now.GetHashCode();
             SlideImage = "slide" + hashCode;
-            slide.Export(Path.GetTempPath() + SlideImage, "PNG");
+            slide.Export(TempPath.GetTempTestFolder() + SlideImage, "PNG");
 
             Animation = new List<IEffectData>();
             var seq = slide.TimeLine.MainSequence;
