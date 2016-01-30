@@ -141,9 +141,9 @@ namespace PowerPointLabs
                 nextSlide.Transition.EntryEffect = PowerPoint.PpEntryEffect.ppEffectNone;
 
             if (nextSlide.Name.StartsWith("PPSlideStart") || nextSlide.Name.StartsWith("PPSlideMulti"))
-                nextSlide.Name = "PPSlideMulti" + DateTime.Now.ToString("yyyyMMddHHmmssffff");
+                nextSlide.Name = "PPSlideMulti" + DateTime.Now.ToString("_yyyyMMddHHmmssffff_") + Guid.NewGuid().ToString("N");
             else
-                nextSlide.Name = "PPSlideEnd" + DateTime.Now.ToString("yyyyMMddHHmmssffff");
+                nextSlide.Name = "PPSlideEnd" + DateTime.Now.ToString("_yyyyMMddHHmmssffff_") + Guid.NewGuid().ToString("N");
         }
 
         private static void RenameCurrentSlide(PowerPointSlide currentSlide)
