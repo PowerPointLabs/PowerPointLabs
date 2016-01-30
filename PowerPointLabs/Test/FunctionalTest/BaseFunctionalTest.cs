@@ -4,12 +4,13 @@ using System.IO;
 using System.Runtime.Remoting;
 using TestInterface;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using PowerPointLabs.Utils;
 using Test.Util;
 
 namespace Test.FunctionalTest
 {
     [TestClass]
-    public abstract class BaseFunctionalTest
+    public abstract class BaseFunctionalTest: TestAssemblyFixture
     {
         public TestContext TestContext { get; set; }
 

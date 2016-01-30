@@ -112,6 +112,7 @@
     <Compile Include="FunctionalTest\SpotlightTest.cs" />
     <Compile Include="FunctionalTest\TextFragmentsTest.cs" />
     <Compile Include="FunctionalTest\ZoomToAreaTest.cs" />
+    <Compile Include="TestAssemblyFixture.cs" />
     <Compile Include="UnitTest\BaseUnitTest.cs" />
     <Compile Include="UnitTest\FitToSlideTest.cs" />
     <Compile Include="UnitTest\PictureSlidesLab\ModelFactory\StyleOptionsFactoryTest.cs" />
@@ -136,6 +137,7 @@
     <Compile Include="UnitTest\TagMatchers\StartSpeedTests.cs" />
     <Compile Include="UnitTest\TagMatchers\StartVoiceTests.cs" />
     <Compile Include="UnitTest\TagMatchers\TaggedTextTest.cs" />
+    <Compile Include="UnitTest\TempPathTest.cs" />
     <Compile Include="Util\TagUtil.cs" />
     <Compile Include="Util\DialogUtil.cs" />
     <Compile Include="Util\PresentationUtil.cs" />

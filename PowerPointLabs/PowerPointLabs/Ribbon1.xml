@@ -644,6 +644,326 @@
                 onAction="ContextAddAudioClick"/>
       </menu>
     </contextMenu>
+    <contextMenu idMso="ContextMenuActiveXControl">
+	    <menuSeparator id="separatorActiveXControl" />
+	    <menu id="menuActiveXControl" getLabel="GetPowerPointLabsMenuLabel" getImage="GetContextMenuImage" enabled="false">
+	    </menu>
+    </contextMenu>
+    <contextMenu idMso="ContextMenuAudio">
+	    <menuSeparator id="separatorAudio" />
+	    <menu id="menuAudio" getLabel="GetPowerPointLabsMenuLabel" getImage="GetContextMenuImage" enabled="false">
+	    </menu>
+    </contextMenu>
+    <contextMenu idMso="ContextMenuChartAxis">
+	    <menuSeparator id="separatorChartAxis" />
+	    <menu id="menuChartAxis" getLabel="GetPowerPointLabsMenuLabel" getImage="GetContextMenuImage" enabled="false">
+	    </menu>
+    </contextMenu>
+    <contextMenu idMso="ContextMenuChartAxisTitle">
+	    <menuSeparator id="separatorChartAxisTitle" />
+	    <menu id="menuChartAxisTitle" getLabel="GetPowerPointLabsMenuLabel" getImage="GetContextMenuImage" enabled="false">
+	    </menu>
+    </contextMenu>
+    <contextMenu idMso="ContextMenuChartBackWall">
+	    <menuSeparator id="separatorChartBackWall" />
+	    <menu id="menuChartBackWall" getLabel="GetPowerPointLabsMenuLabel" getImage="GetContextMenuImage" enabled="false">
+	    </menu>
+    </contextMenu>
+    <contextMenu idMso="ContextMenuChartDataLabel">
+	    <menuSeparator id="separatorChartDataLabel" />
+	    <menu id="menuChartDataLabel" getLabel="GetPowerPointLabsMenuLabel" getImage="GetContextMenuImage" enabled="false">
+	    </menu>
+    </contextMenu>
+    <contextMenu idMso="ContextMenuChartDataLabels">
+	    <menuSeparator id="separatorChartDataLabels" />
+	    <menu id="menuChartDataLabels" getLabel="GetPowerPointLabsMenuLabel" getImage="GetContextMenuImage" enabled="false">
+	    </menu>
+    </contextMenu>
+    <contextMenu idMso="ContextMenuChartDataPoint">
+	    <menuSeparator id="separatorChartDataPoint" />
+	    <menu id="menuChartDataPoint" getLabel="GetPowerPointLabsMenuLabel" getImage="GetContextMenuImage" enabled="false">
+	    </menu>
+    </contextMenu>
+    <contextMenu idMso="ContextMenuChartDataSeries">
+	    <menuSeparator id="separatorChartDataSeries" />
+	    <menu id="menuChartDataSeries" getLabel="GetPowerPointLabsMenuLabel" getImage="GetContextMenuImage" enabled="false">
+	    </menu>
+    </contextMenu>
+    <contextMenu idMso="ContextMenuChartDataTable">
+	    <menuSeparator id="separatorChartDataTable" />
+	    <menu id="menuChartDataTable" getLabel="GetPowerPointLabsMenuLabel" getImage="GetContextMenuImage" enabled="false">
+	    </menu>
+    </contextMenu>
+    <contextMenu idMso="ContextMenuChartDisplayUnit">
+	    <menuSeparator id="separatorChartDisplayUnit" />
+	    <menu id="menuChartDisplayUnit" getLabel="GetPowerPointLabsMenuLabel" getImage="GetContextMenuImage" enabled="false">
+	    </menu>
+    </contextMenu>
+    <contextMenu idMso="ContextMenuChartDownBars">
+	    <menuSeparator id="separatorChartDownBars" />
+	    <menu id="menuChartDownBars" getLabel="GetPowerPointLabsMenuLabel" getImage="GetContextMenuImage" enabled="false">
+	    </menu>
+    </contextMenu>
+    <contextMenu idMso="ContextMenuChartDropLines">
+	    <menuSeparator id="separatorChartDropLines" />
+	    <menu id="menuChartDropLines" getLabel="GetPowerPointLabsMenuLabel" getImage="GetContextMenuImage" enabled="false">
+	    </menu>
+    </contextMenu>
+    <contextMenu idMso="ContextMenuChartErrorBars">
+	    <menuSeparator id="separatorChartErrorBars" />
+	    <menu id="menuChartErrorBars" getLabel="GetPowerPointLabsMenuLabel" getImage="GetContextMenuImage" enabled="false">
+	    </menu>
+    </contextMenu>
+    <contextMenu idMso="ContextMenuChartFloor">
+	    <menuSeparator id="separatorChartFloor" />
+	    <menu id="menuChartFloor" getLabel="GetPowerPointLabsMenuLabel" getImage="GetContextMenuImage" enabled="false">
+	    </menu>
+    </contextMenu>
+    <contextMenu idMso="ContextMenuChartGridlines">
+	    <menuSeparator id="separatorChartGridlines" />
+	    <menu id="menuChartGridlines" getLabel="GetPowerPointLabsMenuLabel" getImage="GetContextMenuImage" enabled="false">
+	    </menu>
+    </contextMenu>
+    <contextMenu idMso="ContextMenuChartHighLowLine">
+	    <menuSeparator id="separatorChartHighLowLine" />
+	    <menu id="menuChartHighLowLine" getLabel="GetPowerPointLabsMenuLabel" getImage="GetContextMenuImage" enabled="false">
+	    </menu>
+    </contextMenu>
+    <contextMenu idMso="ContextMenuChartLeaderLines">
+	    <menuSeparator id="separatorChartLeaderLines" />
+	    <menu id="menuChartLeaderLines" getLabel="GetPowerPointLabsMenuLabel" getImage="GetContextMenuImage" enabled="false">
+	    </menu>
+    </contextMenu>
+    <contextMenu idMso="ContextMenuChartLegend">
+	    <menuSeparator id="separatorChartLegend" />
+	    <menu id="menuChartLegend" getLabel="GetPowerPointLabsMenuLabel" getImage="GetContextMenuImage" enabled="false">
+	    </menu>
+    </contextMenu>
+    <contextMenu idMso="ContextMenuChartLegendEntry">
+	    <menuSeparator id="separatorChartLegendEntry" />
+	    <menu id="menuChartLegendEntry" getLabel="GetPowerPointLabsMenuLabel" getImage="GetContextMenuImage" enabled="false">
+	    </menu>
+    </contextMenu>
+    <contextMenu idMso="ContextMenuChartPlotArea">
+	    <menuSeparator id="separatorChartPlotArea" />
+	    <menu id="menuChartPlotArea" getLabel="GetPowerPointLabsMenuLabel" getImage="GetContextMenuImage" enabled="false">
+	    </menu>
+    </contextMenu>
+    <contextMenu idMso="ContextMenuChartSeriesLine">
+	    <menuSeparator id="separatorChartSeriesLine" />
+	    <menu id="menuChartSeriesLine" getLabel="GetPowerPointLabsMenuLabel" getImage="GetContextMenuImage" enabled="false">
+	    </menu>
+    </contextMenu>
+    <contextMenu idMso="ContextMenuChartSideWall">
+	    <menuSeparator id="separatorChartSideWall" />
+	    <menu id="menuChartSideWall" getLabel="GetPowerPointLabsMenuLabel" getImage="GetContextMenuImage" enabled="false">
+	    </menu>
+    </contextMenu>
+    <contextMenu idMso="ContextMenuChartTitle">
+	    <menuSeparator id="separatorChartTitle" />
+	    <menu id="menuChartTitle" getLabel="GetPowerPointLabsMenuLabel" getImage="GetContextMenuImage" enabled="false">
+	    </menu>
+    </contextMenu>
+    <contextMenu idMso="ContextMenuChartTrendline">
+	    <menuSeparator id="separatorChartTrendline" />
+	    <menu id="menuChartTrendline" getLabel="GetPowerPointLabsMenuLabel" getImage="GetContextMenuImage" enabled="false">
+	    </menu>
+    </contextMenu>
+    <contextMenu idMso="ContextMenuChartTrendlineLabel">
+	    <menuSeparator id="separatorChartTrendlineLabel" />
+	    <menu id="menuChartTrendlineLabel" getLabel="GetPowerPointLabsMenuLabel" getImage="GetContextMenuImage" enabled="false">
+	    </menu>
+    </contextMenu>
+    <contextMenu idMso="ContextMenuChartUpBars">
+	    <menuSeparator id="separatorChartUpBars" />
+	    <menu id="menuChartUpBars" getLabel="GetPowerPointLabsMenuLabel" getImage="GetContextMenuImage" enabled="false">
+	    </menu>
+    </contextMenu>
+    <contextMenu idMso="ContextMenuChartWalls">
+	    <menuSeparator id="separatorChartWalls" />
+	    <menu id="menuChartWalls" getLabel="GetPowerPointLabsMenuLabel" getImage="GetContextMenuImage" enabled="false">
+	    </menu>
+    </contextMenu>
+    <contextMenu idMso="ContextMenuCommentMarker">
+	    <menuSeparator id="separatorCommentMarker" />
+	    <menu id="menuCommentMarker" getLabel="GetPowerPointLabsMenuLabel" getImage="GetContextMenuImage" enabled="false">
+	    </menu>
+    </contextMenu>
+    <contextMenu idMso="ContextMenuCurve">
+	    <menuSeparator id="separatorCurve" />
+	    <menu id="menuCurve" getLabel="GetPowerPointLabsMenuLabel" getImage="GetContextMenuImage" enabled="false">
+	    </menu>
+    </contextMenu>
+    <contextMenu idMso="ContextMenuDrawnObject">
+	    <menuSeparator id="separatorDrawnObject" />
+	    <menu id="menuDrawnObject" getLabel="GetPowerPointLabsMenuLabel" getImage="GetContextMenuImage" enabled="false">
+	    </menu>
+    </contextMenu>
+    <contextMenu idMso="ContextMenuEndShow">
+	    <menuSeparator id="separatorEndShow" />
+	    <menu id="menuEndShow" getLabel="GetPowerPointLabsMenuLabel" getImage="GetContextMenuImage" enabled="false">
+	    </menu>
+    </contextMenu>
+    <contextMenu idMso="ContextMenuFrame">
+	    <menuSeparator id="separatorFrame" />
+	    <menu id="menuFrame" getLabel="GetPowerPointLabsMenuLabel" getImage="GetContextMenuImage" enabled="false">
+	    </menu>
+    </contextMenu>
+    <contextMenu idMso="ContextMenuGraphicOleClassic">
+	    <menuSeparator id="separatorGraphicOleClassic" />
+	    <menu id="menuGraphicOleClassic" getLabel="GetPowerPointLabsMenuLabel" getImage="GetContextMenuImage" enabled="false">
+	    </menu>
+    </contextMenu>
+    <contextMenu idMso="ContextMenuGraphicsCompatibility">
+	    <menuSeparator id="separatorGraphicsCompatibility" />
+	    <menu id="menuGraphicsCompatibility" getLabel="GetPowerPointLabsMenuLabel" getImage="GetContextMenuImage" enabled="false">
+	    </menu>
+    </contextMenu>
+    <contextMenu idMso="ContextMenuGuide">
+	    <menuSeparator id="separatorGuide" />
+	    <menu id="menuGuide" getLabel="GetPowerPointLabsMenuLabel" getImage="GetContextMenuImage" enabled="false">
+	    </menu>
+    </contextMenu>
+    <contextMenu idMso="ContextMenuLabelSection">
+	    <menuSeparator id="separatorLabelSection" />
+	    <menu id="menuLabelSection" getLabel="GetPowerPointLabsMenuLabel" getImage="GetContextMenuImage" enabled="false">
+	    </menu>
+    </contextMenu>
+    <contextMenu idMso="ContextMenuMotionPath">
+	    <menuSeparator id="separatorMotionPath" />
+	    <menu id="menuMotionPath" getLabel="GetPowerPointLabsMenuLabel" getImage="GetContextMenuImage" enabled="false">
+	    </menu>
+    </contextMenu>
+    <contextMenu idMso="ContextMenuObjectEditPoint">
+	    <menuSeparator id="separatorObjectEditPoint" />
+	    <menu id="menuObjectEditPoint" getLabel="GetPowerPointLabsMenuLabel" getImage="GetContextMenuImage" enabled="false">
+	    </menu>
+    </contextMenu>
+    <contextMenu idMso="ContextMenuObjectEditSegment">
+	    <menuSeparator id="separatorObjectEditSegment" />
+	    <menu id="menuObjectEditSegment" getLabel="GetPowerPointLabsMenuLabel" getImage="GetContextMenuImage" enabled="false">
+	    </menu>
+    </contextMenu>
+    <contextMenu idMso="ContextMenuOfficePreviewHandlerPowerPoint">
+	    <menuSeparator id="separatorOfficePreviewHandlerPowerPoint" />
+	    <menu id="menuOfficePreviewHandlerPowerPoint" getLabel="GetPowerPointLabsMenuLabel" getImage="GetContextMenuImage" enabled="false">
+	    </menu>
+    </contextMenu>
+    <contextMenu idMso="ContextMenuPathPoint">
+	    <menuSeparator id="separatorPathPoint" />
+	    <menu id="menuPathPoint" getLabel="GetPowerPointLabsMenuLabel" getImage="GetContextMenuImage" enabled="false">
+	    </menu>
+    </contextMenu>
+    <contextMenu idMso="ContextMenuPathSegment">
+	    <menuSeparator id="separatorPathSegment" />
+	    <menu id="menuPathSegment" getLabel="GetPowerPointLabsMenuLabel" getImage="GetContextMenuImage" enabled="false">
+	    </menu>
+    </contextMenu>
+    <contextMenu idMso="ContextMenuPodiumMonitorSettings">
+	    <menuSeparator id="separatorPodiumMonitorSettings" />
+	    <menu id="menuPodiumMonitorSettings" getLabel="GetPowerPointLabsMenuLabel" getImage="GetContextMenuImage" enabled="false">
+	    </menu>
+    </contextMenu>
+    <contextMenu idMso="ContextMenuRevision">
+	    <menuSeparator id="separatorRevision" />
+	    <menu id="menuRevision" getLabel="GetPowerPointLabsMenuLabel" getImage="GetContextMenuImage" enabled="false">
+	    </menu>
+    </contextMenu>
+    <contextMenu idMso="ContextMenuRightDragDrop">
+	    <menuSeparator id="separatorRightDragDrop" />
+	    <menu id="menuRightDragDrop" getLabel="GetPowerPointLabsMenuLabel" getImage="GetContextMenuImage" enabled="false">
+	    </menu>
+    </contextMenu>
+    <contextMenu idMso="ContextMenuShapeConnector">
+	    <menuSeparator id="separatorShapeConnector" />
+	    <menu id="menuShapeConnector" getLabel="GetPowerPointLabsMenuLabel" getImage="GetContextMenuImage" enabled="false">
+	    </menu>
+    </contextMenu>
+    <contextMenu idMso="ContextMenuShowBrowse">
+	    <menuSeparator id="separatorShowBrowse" />
+	    <menu id="menuShowBrowse" getLabel="GetPowerPointLabsMenuLabel" getImage="GetContextMenuImage" enabled="false">
+	    </menu>
+    </contextMenu>
+    <contextMenu idMso="ContextMenuShowHyperlink">
+	    <menuSeparator id="separatorShowHyperlink" />
+	    <menu id="menuShowHyperlink" getLabel="GetPowerPointLabsMenuLabel" getImage="GetContextMenuImage" enabled="false">
+	    </menu>
+    </contextMenu>
+    <contextMenu idMso="ContextMenuShowPointerOptions">
+	    <menuSeparator id="separatorShowPointerOptions" />
+	    <menu id="menuShowPointerOptions" getLabel="GetPowerPointLabsMenuLabel" getImage="GetContextMenuImage" enabled="false">
+	    </menu>
+    </contextMenu>
+    <contextMenu idMso="ContextMenuSlideGap">
+	    <menuSeparator id="separatorSlideGap" />
+	    <menu id="menuSlideGap" getLabel="GetPowerPointLabsMenuLabel" getImage="GetContextMenuImage" enabled="false">
+	    </menu>
+    </contextMenu>
+    <contextMenu idMso="ContextMenuSlideShow">
+	    <menuSeparator id="separatorSlideShow" />
+	    <menu id="menuSlideShow" getLabel="GetPowerPointLabsMenuLabel" getImage="GetContextMenuImage" enabled="false">
+	    </menu>
+    </contextMenu>
+    <contextMenu idMso="ContextMenuSlideSorter">
+	    <menuSeparator id="separatorSlideSorter" />
+	    <menu id="menuSlideSorter" getLabel="GetPowerPointLabsMenuLabel" getImage="GetContextMenuImage" enabled="false">
+	    </menu>
+    </contextMenu>
+    <contextMenu idMso="ContextMenuSlideSync">
+	    <menuSeparator id="separatorSlideSync" />
+	    <menu id="menuSlideSync" getLabel="GetPowerPointLabsMenuLabel" getImage="GetContextMenuImage" enabled="false">
+	    </menu>
+    </contextMenu>
+    <contextMenu idMso="ContextMenuSmartArtContentPane">
+	    <menuSeparator id="separatorSmartArtContentPane" />
+	    <menu id="menuSmartArtContentPane" getLabel="GetPowerPointLabsMenuLabel" getImage="GetContextMenuImage" enabled="false">
+	    </menu>
+    </contextMenu>
+    <contextMenu idMso="ContextMenuSmartArtEdit1DShape">
+	    <menuSeparator id="separatorSmartArtEdit1DShape" />
+	    <menu id="menuSmartArtEdit1DShape" getLabel="GetPowerPointLabsMenuLabel" getImage="GetContextMenuImage" enabled="false">
+	    </menu>
+    </contextMenu>
+    <contextMenu idMso="ContextMenuSmartArtEdit1DShapeText">
+	    <menuSeparator id="separatorSmartArtEdit1DShapeText" />
+	    <menu id="menuSmartArtEdit1DShapeText" getLabel="GetPowerPointLabsMenuLabel" getImage="GetContextMenuImage" enabled="false">
+	    </menu>
+    </contextMenu>
+    <contextMenu idMso="ContextMenuSmartArtEditSmartArt">
+	    <menuSeparator id="separatorSmartArtEditSmartArt" />
+	    <menu id="menuSmartArtEditSmartArt" getLabel="GetPowerPointLabsMenuLabel" getImage="GetContextMenuImage" enabled="false">
+	    </menu>
+    </contextMenu>
+    <contextMenu idMso="ContextMenuSmartArtEditText">
+	    <menuSeparator id="separatorSmartArtEditText" />
+	    <menu id="menuSmartArtEditText" getLabel="GetPowerPointLabsMenuLabel" getImage="GetContextMenuImage" enabled="false">
+	    </menu>
+    </contextMenu>
+    <contextMenu idMso="ContextMenuSpell">
+	    <menuSeparator id="separatorSpell" />
+	    <menu id="menuSpell" getLabel="GetPowerPointLabsMenuLabel" getImage="GetContextMenuImage" enabled="false">
+	    </menu>
+    </contextMenu>
+    <contextMenu idMso="ContextMenuTableWhole">
+	    <menuSeparator id="separatorTableWhole" />
+	    <menu id="menuTableWhole" getLabel="GetPowerPointLabsMenuLabel" getImage="GetContextMenuImage" enabled="false">
+	    </menu>
+    </contextMenu>
+    <contextMenu idMso="ContextMenuTextEdit">
+	    <menuSeparator id="separatorTextEdit" />
+	    <menu id="menuTextEdit" getLabel="GetPowerPointLabsMenuLabel" getImage="GetContextMenuImage" enabled="false">
+	    </menu>
+    </contextMenu>
+    <contextMenu idMso="ContextMenuTextEditOutline">
+	    <menuSeparator id="separatorTextEditOutline" />
+	    <menu id="menuTextEditOutline" getLabel="GetPowerPointLabsMenuLabel" getImage="GetContextMenuImage" enabled="false">
+	    </menu>
+    </contextMenu>
+    <contextMenu idMso="ContextMenuVideo">
+	    <menuSeparator id="separatorVideo" />
+	    <menu id="menuVideo" getLabel="GetPowerPointLabsMenuLabel" getImage="GetContextMenuImage" enabled="false">
+	    </menu>
+    </contextMenu>
   </contextMenus>
 </customUI>
 

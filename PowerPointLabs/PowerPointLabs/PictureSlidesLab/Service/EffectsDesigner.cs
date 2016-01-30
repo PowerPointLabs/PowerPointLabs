@@ -614,7 +614,7 @@ namespace PowerPointLabs.PictureSlidesLab.Service
                 return imageFilePath;
             }
 
-            var blurImageFile = TempPath.GetPath("fullsize_blur");
+            var blurImageFile = Util.TempPath.GetPath("fullsize_blur");
             using (var imageFactory = new ImageFactory())
             {
                 var image = imageFactory
@@ -635,7 +635,7 @@ namespace PowerPointLabs.PictureSlidesLab.Service
         private static string SpecialEffectImage(IMatrixFilter effectFilter, string imageFilePath,
             bool isActualSize)
         {
-            var specialEffectImageFile = TempPath.GetPath("fullsize_specialeffect");
+            var specialEffectImageFile = Util.TempPath.GetPath("fullsize_specialeffect");
             using (var imageFactory = new ImageFactory())
             {
                 var image = imageFactory
