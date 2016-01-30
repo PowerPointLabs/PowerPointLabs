@@ -18,13 +18,17 @@ namespace PowerPointLabs.PictureSlidesLab.Util
         public static readonly string LoadingImgPath = AggregatedFolder + "loading";
         public static readonly string ChoosePicturesImgPath = AggregatedFolder + "choosePicture";
         public static readonly string NoPicturePlaceholderImgPath = AggregatedFolder + "noPicturePlaceholder";
+        public static readonly string SampleImg1Path = AggregatedFolder + "sample1";
+        public static readonly string SampleImg2Path = AggregatedFolder + "sample2";
 
         private static bool _isInit;
+        private static bool _isFirstTimeUsage;
 
         public static bool InitPersistentFolder()
         {
             if (!Directory.Exists(AggregatedFolder))
             {
+                _isFirstTimeUsage = true;
                 try
                 {
                     Directory.CreateDirectory(AggregatedFolder);
@@ -38,6 +42,11 @@ namespace PowerPointLabs.PictureSlidesLab.Util
             InitResources();
             _isInit = true;
             return true;
+        }
+
+        public static bool IsFirstTimeUsage()
+        {
+            return _isFirstTimeUsage;
         }
 
         public static void CleanPersistentFolder(ICollection<string> filesInUse)
@@ -62,6 +71,8 @@ namespace PowerPointLabs.PictureSlidesLab.Util
                 filesInUse.Add(LoadingImgPath);
                 filesInUse.Add(ChoosePicturesImgPath);
                 filesInUse.Add(NoPicturePlaceholderImgPath);
+                filesInUse.Add(SampleImg1Path);
+                filesInUse.Add(SampleImg2Path);
                 foreach (var file in directory.GetFiles())
                 {
                     if (!filesInUse.Contains(file.FullName))
@@ -90,6 +101,8 @@ namespace PowerPointLabs.PictureSlidesLab.Util
                 Resources.Loading.Save(LoadingImgPath);
                 Resources.ChoosePicturesIcon.Save(ChoosePicturesImgPath);
                 Resources.DefaultPicture.Save(NoPicturePlaceholderImgPath);
+                Resources.PslSample1.Save(SampleImg1Path);
+                Resources.PslSample2.Save(SampleImg2Path);
             }
             catch
             {

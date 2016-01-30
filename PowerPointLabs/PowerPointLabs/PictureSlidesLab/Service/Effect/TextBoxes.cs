@@ -50,6 +50,11 @@ namespace PowerPointLabs.PictureSlidesLab.Service.Effect
             }
         }
 
+        public bool IsTextShapesEmpty()
+        {
+            return TextShapes.Count == 0;
+        }
+
         public TextBoxes SetPosition(Position pos)
         {
             _pos = pos;

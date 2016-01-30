@@ -83,7 +83,8 @@ namespace PowerPointLabs.PictureSlidesLab.View
                         || imageItem.ContextLink == originalImageShape.Tags[Service.Effect.Tag.ReloadImgContext])
                     {
                         isImageStillInListBox = true;
-                        ImageSelectionListBox.SelectedIndex = i;
+                        UpdatePictureDimensionsInfo(croppedShapeList, originalImageShape, imageItem);
+                        UpdateImageSelection(i);
                         break;
                     }
                 }
@@ -172,6 +173,7 @@ namespace PowerPointLabs.PictureSlidesLab.View
                         || imageItem.ContextLink == originalImageShape.Tags[Service.Effect.Tag.ReloadImgContext])
                     {
                         isImageStillInListBox = true;
+                        UpdatePictureDimensionsInfo(croppedShapeList, originalImageShape, imageItem);
                         ImageSelectionListBox.SelectedIndex = i;
                         // previewing is done async, need to use beginInvoke
                         // so that it's after previewing
@@ -190,6 +192,20 @@ namespace PowerPointLabs.PictureSlidesLab.View
                     ImageSelectionListBox.SelectedIndex = ImageSelectionListBox.Items.Count - 1;
                     OpenVariationFlyoutForReload(styleName, originalImageShape);
                 }
+            }
+        }
+
+        #region Helper funcs
+
+        private void UpdateImageSelection(int indexToSelect)
+        {
+            if (ImageSelectionListBox.SelectedIndex != indexToSelect)
+            {
+                ImageSelectionListBox.SelectedIndex = indexToSelect;
+            }
+            else // same selection, need to update preview images manually
+            {
+                UpdatePreviewImages();
             }
         }
 
@@ -226,41 +242,15 @@ namespace PowerPointLabs.PictureSlidesLab.View
 
         private static ImageItem ExtractImageItem(Shape originalImageShape, List<Shape> croppedShapeList)
         {
-            var fullsizeImageFile =
-                StoragePath.GetPath("img-" + DateTime.Now.GetHashCode() +
-                                    Guid.NewGuid().ToString().Substring(0, 7) + ".jpg");
-            // need to make shape visible so that can export
-            originalImageShape.Visible = MsoTriState.msoTrue;
-            originalImageShape.Export(fullsizeImageFile, PpShapeFormat.ppShapeFormatJPG);
-            originalImageShape.Visible = MsoTriState.msoFalse;
-
+            // get picture info
+            var fullsizeImageFile = ExtractPictureInfo(originalImageShape);
             var fullsizeThumbnailFile = ImageUtil.GetThumbnailFromFullSizeImg(fullsizeImageFile);
+            // get dimensions/cropped picture info
+            var croppedImageFile = ExtractCroppedPicture(croppedShapeList);
+            var croppedThumbnailFile = ImageUtil.GetThumbnailFromFullSizeImg(croppedImageFile);
+            var rect = ExtractDimensionsInfo(originalImageShape);
 
-            var croppedImageFile =
-                StoragePath.GetPath("crop-" + DateTime.Now.GetHashCode() +
-                                    Guid.NewGuid().ToString().Substring(0, 7) + ".jpg");
-            string croppedThumbnailFile;
-
-            var croppedImageShape = croppedShapeList.Count > 0 ? croppedShapeList[0] : null;
-            if (croppedImageShape != null)
-            {
-                croppedImageShape.Visible = MsoTriState.msoTrue;
-                croppedImageShape.Export(croppedImageFile, PpShapeFormat.ppShapeFormatJPG);
-                croppedThumbnailFile = ImageUtil.GetThumbnailFromFullSizeImg(croppedImageFile);
-                croppedImageShape.Visible = MsoTriState.msoFalse;
-            }
-            else
-            {
-                croppedImageFile = null;
-                croppedThumbnailFile = null;
-            }
-
-            var rect = new Rect();
-            rect.X = double.Parse(originalImageShape.Tags[Service.Effect.Tag.ReloadRectX]);
-            rect.Y = double.Parse(originalImageShape.Tags[Service.Effect.Tag.ReloadRectY]);
-            rect.Width = double.Parse(originalImageShape.Tags[Service.Effect.Tag.ReloadRectWidth]);
-            rect.Height = double.Parse(originalImageShape.Tags[Service.Effect.Tag.ReloadRectHeight]);
-
+            // then form image item
             var imageItem = new ImageItem
             {
                 ImageFile = fullsizeThumbnailFile,
@@ -272,6 +262,58 @@ namespace PowerPointLabs.PictureSlidesLab.View
                 Rect = rect
             };
             return imageItem;
+        }
+
+        private static string ExtractPictureInfo(Shape originalImageShape)
+        {
+            var fullsizeImageFile =
+                StoragePath.GetPath("img-" + DateTime.Now.GetHashCode() +
+                                    Guid.NewGuid().ToString().Substring(0, 7) + ".jpg");
+            // need to make shape visible so that can export
+            originalImageShape.Visible = MsoTriState.msoTrue;
+            originalImageShape.Export(fullsizeImageFile, PpShapeFormat.ppShapeFormatJPG);
+            originalImageShape.Visible = MsoTriState.msoFalse;
+            return fullsizeImageFile;
+        }
+
+        private static void UpdatePictureDimensionsInfo(List<Shape> croppedShapeList, Shape originalImageShape, 
+            ImageItem imageItem)
+        {
+            var croppedImageFile = ExtractCroppedPicture(croppedShapeList);
+            var croppedThumbnailFile = ImageUtil.GetThumbnailFromFullSizeImg(croppedImageFile);
+            var rect = ExtractDimensionsInfo(originalImageShape);
+            imageItem.CroppedImageFile = croppedImageFile;
+            imageItem.CroppedThumbnailImageFile = croppedThumbnailFile;
+            imageItem.Rect = rect;
+        }
+
+        private static string ExtractCroppedPicture(List<Shape> croppedShapeList)
+        {
+            var croppedImageFile =
+                StoragePath.GetPath("crop-" + DateTime.Now.GetHashCode() +
+                                    Guid.NewGuid().ToString().Substring(0, 7) + ".jpg");
+            var croppedImageShape = croppedShapeList.Count > 0 ? croppedShapeList[0] : null;
+            if (croppedImageShape != null)
+            {
+                croppedImageShape.Visible = MsoTriState.msoTrue;
+                croppedImageShape.Export(croppedImageFile, PpShapeFormat.ppShapeFormatJPG);
+                croppedImageShape.Visible = MsoTriState.msoFalse;
+            }
+            else
+            {
+                croppedImageFile = null;
+            }
+            return croppedImageFile;
+        }
+
+        private static Rect ExtractDimensionsInfo(Shape originalImageShape)
+        {
+            var rect = new Rect();
+            rect.X = double.Parse(originalImageShape.Tags[Service.Effect.Tag.ReloadRectX]);
+            rect.Y = double.Parse(originalImageShape.Tags[Service.Effect.Tag.ReloadRectY]);
+            rect.Width = double.Parse(originalImageShape.Tags[Service.Effect.Tag.ReloadRectWidth]);
+            rect.Height = double.Parse(originalImageShape.Tags[Service.Effect.Tag.ReloadRectHeight]);
+            return rect;
         }
 
         private int MapStyleNameToStyleIndex(string styleName)
@@ -350,4 +392,5 @@ namespace PowerPointLabs.PictureSlidesLab.View
             return opt;
         }
     }
+    #endregion
 }
