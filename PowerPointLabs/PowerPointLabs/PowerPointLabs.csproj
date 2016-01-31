@@ -386,6 +386,9 @@
     <Compile Include="PositionsLab\PositionsPane.Designer.cs">
       <DependentUpon>PositionsPane.cs</DependentUpon>
     </Compile>
+    <Compile Include="PositionsLab\PositionsPaneWPF.xaml.cs">
+      <DependentUpon>PositionsPaneWPF.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Utils\Assumption.cs" />
     <Compile Include="Utils\CultureUtil.cs" />
     <Compile Include="Utils\Exceptions\AssumptionFailedException.cs" />
@@ -871,6 +874,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="DrawingsLab\DrawingsPaneWPF.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="PositionsLab\PositionsPaneWPF.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
