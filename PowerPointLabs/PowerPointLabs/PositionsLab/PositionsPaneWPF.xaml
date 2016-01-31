@@ -6,31 +6,42 @@
              xmlns:local="clr-namespace:PowerPointLabs.PositionsLab"
              xmlns:Controls="clr-namespace:MahApps.Metro.Controls;assembly=MahApps.Metro"
              mc:Ignorable="d" Height="541.747" Width="310.738">
-    <Grid>
-        <GroupBox x:Name="alignGroupBox" Header="Align" HorizontalAlignment="Left" Margin="10,5,0,0" VerticalAlignment="Top" Height="120" Width="284"/>
-        <GroupBox x:Name="adjoinGroupBox" Header="Adjoin" HorizontalAlignment="Left" Margin="10,125,0,0" VerticalAlignment="Top" Height="80" Width="284"/>
-        <GroupBox x:Name="distributeGroupBox" Header="Distribute" HorizontalAlignment="Left" Margin="10,205,0,0" VerticalAlignment="Top" Height="80" Width="284"/>
-        <GroupBox x:Name="reorderGroupBox" Header="Reorder" HorizontalAlignment="Left" Margin="10,285,0,0" VerticalAlignment="Top" Height="80" Width="284"/>
-        <GroupBox x:Name="adjustmentGroupBox" Header="Adjustment" HorizontalAlignment="Left" Margin="10,375,0,0" VerticalAlignment="Top" Height="80" Width="284"/>
-        <GroupBox x:Name="snapGroupBox" Header="Snap" HorizontalAlignment="Left" Margin="10,455,0,-5" VerticalAlignment="Top" Height="80" Width="284"/>
-        <Button x:Name="alignLeftButton" Content="Left" HorizontalAlignment="Left" Margin="24,24,0,0" VerticalAlignment="Top" Width="60" Height="45"/>
-        <Button x:Name="alignRightButton" Content="Right" HorizontalAlignment="Left" Margin="89,24,0,0" VerticalAlignment="Top" Width="60" Height="45"/>
-        <Button x:Name="alignTopButton" Content="Top" HorizontalAlignment="Left" Margin="154,24,0,0" VerticalAlignment="Top" Width="60" Height="45"/>
-        <Button x:Name="alignBottomButton" Content="Bottom" HorizontalAlignment="Left" Margin="219,24,0,0" VerticalAlignment="Top" Width="60" Height="45"/>
-        <Button x:Name="alignMiddleButton" Content="Middle" HorizontalAlignment="Left" Margin="24,74,0,0" VerticalAlignment="Top" Width="60" Height="45"/>
-        <Button x:Name="alignCenterButton" Content="Center" HorizontalAlignment="Left" Margin="89,74,0,0" VerticalAlignment="Top" Width="60" Height="45"/>
-        <Button x:Name="alignVertexButton" Content="Vertex" HorizontalAlignment="Left" Margin="154,74,0,0" VerticalAlignment="Top" Width="60" Height="45"/>
-        <Button x:Name="adjoinHorizontalButton" Content="Horizontal" HorizontalAlignment="Left" Margin="24,147,0,0" VerticalAlignment="Top" Width="60" Height="45"/>
-        <Button x:Name="adjoinVerticalButton" Content="Vertical" HorizontalAlignment="Left" Margin="89,147,0,0" VerticalAlignment="Top" Width="60" Height="45"/>
-        <Button x:Name="distributeHorizontalButton" Content="Horizontal" HorizontalAlignment="Left" Margin="24,227,0,0" VerticalAlignment="Top" Width="60" Height="45"/>
-        <Button x:Name="distributeVerticalButton" Content="Vertical" HorizontalAlignment="Left" Margin="89,227,0,0" VerticalAlignment="Top" Width="60" Height="45"/>
-        <Button x:Name="distributeCenterButton" Content="Center" HorizontalAlignment="Left" Margin="154,227,0,0" VerticalAlignment="Top" Width="60" Height="45"/>
-        <Button x:Name="distributeShapesButton" Content="Shapes" HorizontalAlignment="Left" Margin="219,227,0,0" VerticalAlignment="Top" Width="60" Height="45"/>
-        <Button x:Name="swapPositionsButton" Content="Positions" HorizontalAlignment="Left" Margin="24,307,0,0" VerticalAlignment="Top" Width="60" Height="45"/>
-        <Button x:Name="swapDepthButton" Content="Depth" HorizontalAlignment="Left" Margin="89,307,0,0" VerticalAlignment="Top" Width="60" Height="45"/>
-        <Button x:Name="rotationButton" Content="Rotation" HorizontalAlignment="Left" Margin="24,397,0,0" VerticalAlignment="Top" Width="60" Height="45"/>
-        <Button x:Name="oneDirectionButton" Content="One Direction" HorizontalAlignment="Left" Margin="89,397,0,0" VerticalAlignment="Top" Width="60" Height="45"/>
-        <Button x:Name="snapHorizontalButton" Content="Horizontal" HorizontalAlignment="Left" Margin="24,477,0,0" VerticalAlignment="Top" Width="60" Height="45"/>
-        <Button x:Name="snapVerticalButton" Content="Vertical" HorizontalAlignment="Left" Margin="89,477,0,0" VerticalAlignment="Top" Width="60" Height="45"/>
+    <UserControl.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="pack://application:,,,/MahApps.Metro;component/Styles/Controls.xaml" />
+                <ResourceDictionary Source="pack://application:,,,/MahApps.Metro;component/Styles/Fonts.xaml" />
+                <ResourceDictionary Source="pack://application:,,,/MahApps.Metro;component/Styles/Colors.xaml" />
+                <ResourceDictionary Source="pack://application:,,,/MahApps.Metro;component/Styles/Accents/red.xaml" />
+                <ResourceDictionary Source="pack://application:,,,/MahApps.Metro;component/Styles/Accents/baselight.xaml" />
+            </ResourceDictionary.MergedDictionaries>
+        </ResourceDictionary>
+    </UserControl.Resources>
+    <Grid Margin="0,0,0,-40">
+        <GroupBox x:Name="alignGroupBox" Header="Align" HorizontalAlignment="Left" Margin="10,5,0,0" VerticalAlignment="Top" Height="130" Width="284"/>
+        <GroupBox x:Name="adjoinGroupBox" Header="Adjoin" HorizontalAlignment="Left" Margin="10,140,0,0" VerticalAlignment="Top" Height="80" Width="284"/>
+        <GroupBox x:Name="distributeGroupBox" Header="Distribute" HorizontalAlignment="Left" Margin="10,225,0,0" VerticalAlignment="Top" Height="80" Width="284"/>
+        <GroupBox x:Name="reorderGroupBox" Header="Reorder" HorizontalAlignment="Left" Margin="10,310,0,0" VerticalAlignment="Top" Height="80" Width="284"/>
+        <GroupBox x:Name="adjustmentGroupBox" Header="Adjustment" HorizontalAlignment="Left" Margin="10,395,0,0" VerticalAlignment="Top" Height="80" Width="284"/>
+        <GroupBox x:Name="snapGroupBox" Header="Snap" HorizontalAlignment="Left" Margin="10,480,0,0" VerticalAlignment="Top" Height="80" Width="284"/>
+        <Button x:Name="alignLeftButton" Content="Left" HorizontalAlignment="Left" Margin="24,37,0,0" VerticalAlignment="Top" Width="60" Height="45"/>
+        <Button x:Name="alignRightButton" Content="Right" HorizontalAlignment="Left" Margin="89,37,0,0" VerticalAlignment="Top" Width="60" Height="45"/>
+        <Button x:Name="alignTopButton" Content="Top" HorizontalAlignment="Left" Margin="154,37,0,0" VerticalAlignment="Top" Width="60" Height="45"/>
+        <Button x:Name="alignBottomButton" Content="Bottom" HorizontalAlignment="Left" Margin="219,37,0,0" VerticalAlignment="Top" Width="60" Height="45"/>
+        <Button x:Name="alignMiddleButton" Content="Middle" HorizontalAlignment="Left" Margin="24,87,0,0" VerticalAlignment="Top" Width="60" Height="45"/>
+        <Button x:Name="alignCenterButton" Content="Center" HorizontalAlignment="Left" Margin="89,87,0,0" VerticalAlignment="Top" Width="60" Height="45"/>
+        <Button x:Name="alignVertexButton" Content="Vertex" HorizontalAlignment="Left" Margin="154,87,0,0" VerticalAlignment="Top" Width="60" Height="45"/>
+        <Button x:Name="adjoinHorizontalButton" Content="Horizontal" HorizontalAlignment="Left" Margin="24,171,0,0" VerticalAlignment="Top" Width="60" Height="45"/>
+        <Button x:Name="adjoinVerticalButton" Content="Vertical" HorizontalAlignment="Left" Margin="89,171,0,0" VerticalAlignment="Top" Width="60" Height="45"/>
+        <Button x:Name="distributeHorizontalButton" Content="Horizontal" HorizontalAlignment="Left" Margin="24,256,0,0" VerticalAlignment="Top" Width="60" Height="45"/>
+        <Button x:Name="distributeVerticalButton" Content="Vertical" HorizontalAlignment="Left" Margin="89,256,0,0" VerticalAlignment="Top" Width="60" Height="45"/>
+        <Button x:Name="distributeCenterButton" Content="Center" HorizontalAlignment="Left" Margin="154,256,0,0" VerticalAlignment="Top" Width="60" Height="45"/>
+        <Button x:Name="distributeShapesButton" Content="Shapes" HorizontalAlignment="Left" Margin="219,256,0,0" VerticalAlignment="Top" Width="60" Height="45"/>
+        <Button x:Name="swapPositionsButton" Content="Positions" HorizontalAlignment="Left" Margin="24,341,0,0" VerticalAlignment="Top" Width="60" Height="45"/>
+        <Button x:Name="swapDepthButton" Content="Depth" HorizontalAlignment="Left" Margin="89,341,0,0" VerticalAlignment="Top" Width="60" Height="45"/>
+        <Button x:Name="rotationButton" Content="Rotation" HorizontalAlignment="Left" Margin="24,426,0,0" VerticalAlignment="Top" Width="60" Height="45"/>
+        <Button x:Name="oneDirectionButton" Content="One Direction" HorizontalAlignment="Left" Margin="89,426,0,0" VerticalAlignment="Top" Width="60" Height="45"/>
+        <Button x:Name="snapHorizontalButton" Content="Horizontal" HorizontalAlignment="Left" Margin="24,511,0,0" VerticalAlignment="Top" Width="60" Height="45"/>
+        <Button x:Name="snapVerticalButton" Content="Vertical" HorizontalAlignment="Left" Margin="89,511,0,0" VerticalAlignment="Top" Width="60" Height="45"/>
     </Grid>
 </UserControl>
