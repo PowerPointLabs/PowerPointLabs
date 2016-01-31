@@ -100,6 +100,7 @@ namespace PowerPointLabs.PictureSlidesLab.Service
         /// <param name="isActualSize"></param>
         private void ApplyStyle(EffectsDesigner designer, ImageItem source, bool isActualSize)
         {
+            // TODO refactor this method
             designer.ApplyPseudoTextWhenNoTextShapes();
 
             if (Options.IsUseBannerStyle 

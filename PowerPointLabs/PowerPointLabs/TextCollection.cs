@@ -385,6 +385,9 @@
 
             public const string DragAndDropInstruction =
                 "Drag and Drop here to get image.";
+
+            public const string InfoPasteNothing = "No picture to paste.";
+            public const string InfoPasteThumbnail = "Pasted successfully! But you might have pasted the thumbnail picture.";
         }
 
         # region Agenda Lab
