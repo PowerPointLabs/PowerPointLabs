@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Collections.Specialized;
 using System.ComponentModel;
+using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Controls.Primitives;
@@ -17,9 +18,11 @@ using PowerPointLabs.PictureSlidesLab.View.Interface;
 using PowerPointLabs.PictureSlidesLab.ViewModel;
 using PowerPointLabs.WPF.Observable;
 using ButtonBase = System.Windows.Controls.Primitives.ButtonBase;
+using Clipboard = System.Windows.Forms.Clipboard;
 using DragEventArgs = System.Windows.DragEventArgs;
 using KeyEventArgs = System.Windows.Input.KeyEventArgs;
 using ListBox = System.Windows.Controls.ListBox;
+using MessageBox = System.Windows.MessageBox;
 
 namespace PowerPointLabs.PictureSlidesLab.View
 {
@@ -53,8 +56,7 @@ namespace PowerPointLabs.PictureSlidesLab.View
         // other UI control flags
         private bool _isAbleLoadingOnWindowActivate = true;
         private bool _isStylePreviewRegionInit;
-
-        private bool _isFirstTimeOnActivated = true;
+        private int _lastSelectedSlideIndex = -1;
 
         # endregion
 
@@ -165,6 +167,76 @@ namespace PowerPointLabs.PictureSlidesLab.View
         }
         #endregion
 
+        #region Copy and Paste Picture
+
+        private void MenuItemPastePictureHere_OnClick(object sender, RoutedEventArgs e)
+        {
+            HandlePastedPicture();
+        }
+
+        private void PictureSlidesLabWindow_OnKeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.Key == Key.V
+                && Keyboard.Modifiers == ModifierKeys.Control)
+            {
+                HandlePastedPicture();
+            }
+        }
+
+        /// <summary>
+        /// set isUsingWinformMsgBox to true when it requires a msgbox out of
+        /// the main window of PSL
+        /// </summary>
+        /// <param name="isUsingWinformMsgBox"></param>
+        private void HandlePastedPicture(bool isUsingWinformMsgBox = false)
+        {
+            var pastedPicture = Clipboard.GetImage();
+            var pastedFiles = Clipboard.GetFileDropList();
+
+            if (pastedPicture == null && 
+                (pastedFiles == null || pastedFiles.Count == 0))
+            {
+                if (isUsingWinformMsgBox)
+                {
+                    MessageBox.Show(TextCollection.PictureSlidesLabText.InfoPasteNothing, "PowerPointLabs");
+                }
+                else
+                {
+                    ShowInfoMessageBox(TextCollection.PictureSlidesLabText.InfoPasteNothing);
+                }
+                return;
+            }
+
+            if (pastedPicture != null)
+            {
+                var pastedPictureFile = StoragePath.GetPath("pastedImg-"
+                                                            + DateTime.Now.GetHashCode() + "-"
+                                                            + Guid.NewGuid().ToString().Substring(0, 7));
+                pastedPicture.Save(pastedPictureFile);
+                ViewModel.AddImageSelectionListItem(new[] {pastedPictureFile});
+
+                // examine whether it's thumbnail picture
+                if (pastedPicture.Width <= 400
+                && pastedPicture.Height <= 400)
+                {
+                    if (isUsingWinformMsgBox)
+                    {
+                        MessageBox.Show(TextCollection.PictureSlidesLabText.InfoPasteThumbnail, "PowerPointLabs");
+                    }
+                    else
+                    {
+                        ShowInfoMessageBox(TextCollection.PictureSlidesLabText.InfoPasteThumbnail);
+                    }
+                }
+            }
+            else if (pastedFiles != null && pastedFiles.Count > 0)
+            {
+                ViewModel.AddImageSelectionListItem(pastedFiles.Cast<string>().ToArray());
+            }
+        }
+
+        #endregion
+
         /// <summary>
         /// Show QuickDrop dialog when PictureSlidesLab window is deactivated
         /// </summary>
@@ -172,12 +244,15 @@ namespace PowerPointLabs.PictureSlidesLab.View
         /// <param name="e"></param>
         private void PictureSlidesLabWindow_OnDeactivated(object sender, EventArgs e)
         {
+            _lastSelectedSlideIndex = PowerPointCurrentPresentationInfo.CurrentSlide.Index;
+
             if (!IsClosing
                 && (CropWindow == null || !CropWindow.IsOpen)
                 && (QuickDropDialog == null || !QuickDropDialog.IsOpen))
             {
                 QuickDropDialog = new QuickDropDialog(this);
                 QuickDropDialog.DropHandler += PictureSlidesLabWindow_OnDrop;
+                QuickDropDialog.PasteHandler += () => { HandlePastedPicture(isUsingWinformMsgBox: true); };
                 QuickDropDialog.Show();
             }
         }
@@ -346,12 +421,20 @@ namespace PowerPointLabs.PictureSlidesLab.View
         /// <param name="e"></param>
         private void PictureSlidesLabWindow_OnActivated(object sender, EventArgs e)
         {
+            // init last selected slide index
+            if (_lastSelectedSlideIndex == -1)
+            {
+                _lastSelectedSlideIndex = PowerPointCurrentPresentationInfo.CurrentSlide.Index;
+            }
+
+            // hide quick drop dialog when main window activated
             if (QuickDropDialog != null && QuickDropDialog.IsOpen)
             {
                 QuickDropDialog.Hide();
                 QuickDropDialog.IsOpen = false;
             }
 
+            // when no current slide
             if (PowerPointCurrentPresentationInfo.CurrentSlide == null)
             {
                 GotoSlideButton.IsEnabled = false;
@@ -359,16 +442,19 @@ namespace PowerPointLabs.PictureSlidesLab.View
                 ViewModel.StylesPreviewList.Clear();
                 ViewModel.StylesVariationList.Clear();
             }
+            // when allowed to do loading
             else if (_isStylePreviewRegionInit && _isAbleLoadingOnWindowActivate)
             {
                 GotoSlideButton.IsEnabled = true;
                 LoadStylesButton.IsEnabled = true;
                 Dispatcher.BeginInvoke(new Action(() =>
                 {
-                    if (_isFirstTimeOnActivated)
+                    // update preview images when slide no change
+                    if (_lastSelectedSlideIndex == PowerPointCurrentPresentationInfo.CurrentSlide.Index)
                     {
-                        _isFirstTimeOnActivated = false;
+                        UpdatePreviewImages();
                     }
+                    // or load style and image if slide has been changed
                     else
                     {
                         LoadStyleAndImage(PowerPointCurrentPresentationInfo.CurrentSlide);
@@ -583,7 +669,9 @@ namespace PowerPointLabs.PictureSlidesLab.View
                 VariationInstructions.Visibility = Visibility.Hidden;
                 VariationInstructionsWhenNoSelectedSlide.Visibility = Visibility.Hidden;
             }
-            else if (ImageSelectionListBox.SelectedValue == null)
+            else if (ImageSelectionListBox.SelectedValue == null
+                     && StylesPreviewListBox.Items.Count == 0
+                     && StylesVariationListBox.Items.Count == 0)
             {
                 PreviewInstructions.Visibility = Visibility.Visible;
                 PreviewInstructionsWhenNoSelectedSlide.Visibility = Visibility.Hidden;

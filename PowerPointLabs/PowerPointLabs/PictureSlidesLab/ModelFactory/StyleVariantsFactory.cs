@@ -44,6 +44,7 @@ namespace PowerPointLabs.PictureSlidesLab.ModelFactory
                 { TextCollection.PictureSlidesLabText.VariantCategoryBlurriness, GetBlurVariants() },
                 { TextCollection.PictureSlidesLabText.VariantCategoryBrightness, GetBrightnessVariants() },
                 { TextCollection.PictureSlidesLabText.VariantCategoryFontColor, GetFontColorVariants() },
+                { TextCollection.PictureSlidesLabText.VariantCategoryTextGlowColor, GetTextGlowColorVariants() },
                 { TextCollection.PictureSlidesLabText.VariantCategoryFontFamily, GetFontFamilyVariants() },
                 { TextCollection.PictureSlidesLabText.VariantCategoryFontSizeIncrease, GetFontSizeIncreaseVariants() }
             };
@@ -59,6 +60,7 @@ namespace PowerPointLabs.PictureSlidesLab.ModelFactory
                 { TextCollection.PictureSlidesLabText.VariantCategoryBlurriness, GetBlurVariants() },
                 { TextCollection.PictureSlidesLabText.VariantCategoryBrightness, GetBrightnessVariants() },
                 { TextCollection.PictureSlidesLabText.VariantCategoryFontColor, GetFontColorVariants() },
+                { TextCollection.PictureSlidesLabText.VariantCategoryTextGlowColor, GetTextGlowColorVariants() },
                 { TextCollection.PictureSlidesLabText.VariantCategoryTextPosition, GetFontPositionVariants() },
                 { TextCollection.PictureSlidesLabText.VariantCategoryFontFamily, GetFontFamilyVariants() },
                 { TextCollection.PictureSlidesLabText.VariantCategoryFontSizeIncrease, GetFontSizeIncreaseVariants() }
@@ -75,6 +77,7 @@ namespace PowerPointLabs.PictureSlidesLab.ModelFactory
                 { TextCollection.PictureSlidesLabText.VariantCategoryBlurriness, GetBlurVariants() },
                 { TextCollection.PictureSlidesLabText.VariantCategoryBrightness, GetBrightnessVariants() },
                 { TextCollection.PictureSlidesLabText.VariantCategoryFontColor, GetFontColorVariants() },
+                { TextCollection.PictureSlidesLabText.VariantCategoryTextGlowColor, GetTextGlowColorVariants() },
                 { TextCollection.PictureSlidesLabText.VariantCategoryTextPosition, GetFontPositionVariants() },
                 { TextCollection.PictureSlidesLabText.VariantCategoryFontFamily, GetFontFamilyVariants() },
                 { TextCollection.PictureSlidesLabText.VariantCategoryFontSizeIncrease, GetFontSizeIncreaseVariants() }
@@ -89,6 +92,7 @@ namespace PowerPointLabs.PictureSlidesLab.ModelFactory
                 { TextCollection.PictureSlidesLabText.VariantCategorySpecialEffects, GetGeneralSpecialEffectVariants() },
                 { TextCollection.PictureSlidesLabText.VariantCategoryBlurriness, GetBlurVariants() },
                 { TextCollection.PictureSlidesLabText.VariantCategoryBrightness, GetBrightnessVariants() },
+                { TextCollection.PictureSlidesLabText.VariantCategoryTextGlowColor, GetTextGlowColorVariants() },
                 { TextCollection.PictureSlidesLabText.VariantCategoryTextPosition, GetFontPositionVariants() },
                 { TextCollection.PictureSlidesLabText.VariantCategoryFontFamily, GetFontFamilyVariants() },
                 { TextCollection.PictureSlidesLabText.VariantCategoryFontSizeIncrease, GetFontSizeIncreaseVariants() }
@@ -102,6 +106,7 @@ namespace PowerPointLabs.PictureSlidesLab.ModelFactory
                 { TextCollection.PictureSlidesLabText.VariantCategoryOverlayColor, GetOverlayVariants() },
                 { TextCollection.PictureSlidesLabText.VariantCategoryOverlayTransparency, GetOverlayTransparencyVariants() },
                 { TextCollection.PictureSlidesLabText.VariantCategoryFontColor, GetFontColorVariants() },
+                { TextCollection.PictureSlidesLabText.VariantCategoryTextGlowColor, GetTextGlowColorVariants() },
                 { TextCollection.PictureSlidesLabText.VariantCategoryTextPosition, GetFontPositionVariants() },
                 { TextCollection.PictureSlidesLabText.VariantCategoryFontFamily, GetFontFamilyVariants() },
                 { TextCollection.PictureSlidesLabText.VariantCategoryFontSizeIncrease, GetFontSizeIncreaseVariants() }
@@ -116,6 +121,7 @@ namespace PowerPointLabs.PictureSlidesLab.ModelFactory
                 { TextCollection.PictureSlidesLabText.VariantCategoryBlurriness, GetBlurVariants() },
                 { TextCollection.PictureSlidesLabText.VariantCategoryBrightness, GetBrightnessVariants() },
                 { TextCollection.PictureSlidesLabText.VariantCategoryFontColor, GetFontColorVariants() },
+                { TextCollection.PictureSlidesLabText.VariantCategoryTextGlowColor, GetTextGlowColorVariants() },
                 { TextCollection.PictureSlidesLabText.VariantCategoryTextPosition, GetFontPositionVariants() },
                 { TextCollection.PictureSlidesLabText.VariantCategoryFontFamily, GetFontFamilyVariants() },
                 { TextCollection.PictureSlidesLabText.VariantCategoryFontSizeIncrease, GetFontSizeIncreaseVariants() }
@@ -132,6 +138,7 @@ namespace PowerPointLabs.PictureSlidesLab.ModelFactory
                 { TextCollection.PictureSlidesLabText.VariantCategoryBlurriness, GetBlurVariants() },
                 { TextCollection.PictureSlidesLabText.VariantCategoryBrightness, GetBrightnessVariants() },
                 { TextCollection.PictureSlidesLabText.VariantCategoryFontColor, GetFontColorVariants() },
+                { TextCollection.PictureSlidesLabText.VariantCategoryTextGlowColor, GetTextGlowColorVariants() },
                 { TextCollection.PictureSlidesLabText.VariantCategoryTextPosition, GetFontPositionVariants() },
                 { TextCollection.PictureSlidesLabText.VariantCategoryFontFamily, GetFontFamilyVariants() },
                 { TextCollection.PictureSlidesLabText.VariantCategoryFontSizeIncrease, GetFontSizeIncreaseVariants() }
@@ -148,6 +155,7 @@ namespace PowerPointLabs.PictureSlidesLab.ModelFactory
                 { TextCollection.PictureSlidesLabText.VariantCategoryBlurriness, GetBlurVariants() },
                 { TextCollection.PictureSlidesLabText.VariantCategoryBrightness, GetBrightnessVariants() },
                 { TextCollection.PictureSlidesLabText.VariantCategoryFontColor, GetFontColorVariants() },
+                { TextCollection.PictureSlidesLabText.VariantCategoryTextGlowColor, GetTextGlowColorVariants() },
                 { TextCollection.PictureSlidesLabText.VariantCategoryTextPosition, GetFontPositionVariants() },
                 { TextCollection.PictureSlidesLabText.VariantCategoryFontFamily, GetFontFamilyVariants() },
                 { TextCollection.PictureSlidesLabText.VariantCategoryFontSizeIncrease, GetFontSizeIncreaseVariants() }
@@ -162,6 +170,7 @@ namespace PowerPointLabs.PictureSlidesLab.ModelFactory
                 { TextCollection.PictureSlidesLabText.VariantCategorySpecialEffects, GetGeneralSpecialEffectVariants() },
                 { TextCollection.PictureSlidesLabText.VariantCategoryBrightness, GetBrightnessVariants() },
                 { TextCollection.PictureSlidesLabText.VariantCategoryFontColor, GetFontColorVariants() },
+                { TextCollection.PictureSlidesLabText.VariantCategoryTextGlowColor, GetTextGlowColorVariants() },
                 { TextCollection.PictureSlidesLabText.VariantCategoryTextPosition, GetFontPositionVariants() },
                 { TextCollection.PictureSlidesLabText.VariantCategoryFontFamily, GetFontFamilyVariants() },
                 { TextCollection.PictureSlidesLabText.VariantCategoryFontSizeIncrease, GetFontSizeIncreaseVariants() }
@@ -174,6 +183,7 @@ namespace PowerPointLabs.PictureSlidesLab.ModelFactory
             {
                 { TextCollection.PictureSlidesLabText.VariantCategoryBrightness, GetBrightnessVariants() },
                 { TextCollection.PictureSlidesLabText.VariantCategoryFontColor, GetFontColorVariants() },
+                { TextCollection.PictureSlidesLabText.VariantCategoryTextGlowColor, GetTextGlowColorVariants() },
                 { TextCollection.PictureSlidesLabText.VariantCategoryTextPosition, GetFontPositionVariants() },
                 { TextCollection.PictureSlidesLabText.VariantCategoryFontFamily, GetFontFamilyVariants() },
                 { TextCollection.PictureSlidesLabText.VariantCategoryFontSizeIncrease, GetFontSizeIncreaseVariants() }
@@ -812,6 +822,61 @@ namespace PowerPointLabs.PictureSlidesLab.ModelFactory
                     {"OptionName", "Dark Blue"},
                     {"IsUseTextBoxStyle", true},
                     {"TextBoxColor", "#001550"}
+                })
+            };
+        }
+
+        private static List<StyleVariants> GetTextGlowColorVariants()
+        {
+            return new List<StyleVariants>
+            {
+                new StyleVariants(new Dictionary<string, object>
+                {
+                    {"OptionName", "No Effect"},
+                    {"IsUseTextGlow", false},
+                    {"TextGlowColor", "#123456"} // match the default init value
+                }),
+                new StyleVariants(new Dictionary<string, object>
+                {
+                    {"OptionName", "Black"},
+                    {"IsUseTextGlow", true},
+                    {"TextGlowColor", "#000000"}
+                }),
+                new StyleVariants(new Dictionary<string, object>
+                {
+                    {"OptionName", "Yellow"},
+                    {"IsUseTextGlow", true},
+                    {"TextGlowColor", "#FFC500"}
+                }),
+                new StyleVariants(new Dictionary<string, object>
+                {
+                    {"OptionName", "Red"},
+                    {"IsUseTextGlow", true},
+                    {"TextGlowColor", "#FF0000"}
+                }),
+                new StyleVariants(new Dictionary<string, object>
+                {
+                    {"OptionName", "Green"},
+                    {"IsUseTextGlow", true},
+                    {"TextGlowColor", "#3DFF8F"}
+                }),
+                new StyleVariants(new Dictionary<string, object>
+                {
+                    {"OptionName", "Blue"},
+                    {"IsUseTextGlow", true},
+                    {"TextGlowColor", "#007FFF"}
+                }),
+                new StyleVariants(new Dictionary<string, object>
+                {
+                    {"OptionName", "Purple"},
+                    {"IsUseTextGlow", true},
+                    {"TextGlowColor", "#7800FF"}
+                }),
+                new StyleVariants(new Dictionary<string, object>
+                {
+                    {"OptionName", "Dark Blue"},
+                    {"IsUseTextGlow", true},
+                    {"TextGlowColor", "#001550"}
                 })
             };
         }
