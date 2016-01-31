@@ -322,11 +322,16 @@
             /// <summary>
             /// Styles Variation Category Name
             /// 
+            /// Leave OptionName to be ColorNoEffect to hide color panel & picker
+            /// 
             /// Color category's name (without spaces) should be equal to corresponding style option's 
             /// property name, so that the color picker can work properly
             /// </summary>
+            public const string ColorNoEffect = "No Effect";
+            public const string ColorHasEffect = "Color";
             public const string VariantCategoryOverlayColor = "Overlay Color";
             public const string VariantCategoryFontColor = "Font Color";
+            public const string VariantCategoryTextGlowColor = "Text Glow Color";
             public const string VariantCategoryBannerColor = "Banner Color";
             public const string VariantCategoryTextBoxColor = "TextBox Color";
             public const string VariantCategoryFrameColor = "Frame Color";
@@ -385,6 +390,9 @@
 
             public const string DragAndDropInstruction =
                 "Drag and Drop here to get image.";
+
+            public const string InfoPasteNothing = "No picture to paste.";
+            public const string InfoPasteThumbnail = "Pasted successfully! But you might have pasted the thumbnail picture.";
         }
 
         # region Agenda Lab
