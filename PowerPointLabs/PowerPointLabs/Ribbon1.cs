@@ -2452,6 +2452,34 @@ namespace PowerPointLabs
         }
         #endregion
 
+        #region Feature: Positions Lab
+        public void PositionsLabButtonClick(Office.IRibbonControl control)
+        {
+            try
+            {
+                Globals.ThisAddIn.RegisterPositionsPane(PowerPointPresentation.Current.Presentation);
+
+                var positionsPane = Globals.ThisAddIn.GetActivePane(typeof(PositionsPane));
+                // if currently the pane is hidden, show the pane
+                if (!positionsPane.Visible)
+                {
+                    // fire the pane visble change event
+                    positionsPane.Visible = true;
+                }
+                else
+                {
+                    positionsPane.Visible = false;
+                }
+            }
+            catch (Exception e)
+            {
+                ErrorDialogWrapper.ShowDialog("Error in positions lab", e.Message, e);
+                PowerPointLabsGlobals.LogException(e, "PositionsLabButtonClicked");
+                throw;
+            }
+        }
+        #endregion
+
         private static string GetResourceText(string resourceName)
         {
             Assembly asm = Assembly.GetExecutingAssembly();
