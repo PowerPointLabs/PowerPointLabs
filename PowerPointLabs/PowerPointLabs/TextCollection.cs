@@ -117,11 +117,15 @@
 
         # region Drawing Lab
         public const string DrawingsLabButtonSupertip = @"Opens the Drawing Lab Interface";
-        # endregion
+        #endregion
 
-        # endregion
+        #region Resize Lab
+        public const string ResizeLabButtonSupertip = "Opens the Resize Lab Interface";
+        #endregion
 
-        # region Help
+        #endregion
+
+        #region Help
         public const string HelpButtonSupertip = @"Click this to visit PowerPointLabs help page in our website.";
         public const string FeedbackButtonSupertip = @"Click this to email us problem reports or other feedback. ";
         public const string AboutButtonSupertip = @"Information about the PowerPointLabs plugin.";
@@ -217,6 +221,10 @@
         # region Drawing Lab
         public const string DrawingsLabButtonLabel = "Drawing Lab";
         # endregion
+
+        # region Resize Lab
+        public const string ResizeLabButtonLabel = "Resize Lab";
+        # endregion
         # endregion
 
         # region Help
@@ -289,6 +297,7 @@
         public const string ColorsLabTaskPanelTitle = "Colors Lab";
         public const string DrawingsLabTaskPanelTitle = "Drawing Lab";
         public const string RecManagementPanelTitle = "Record Management";
+        public const string ResizeLabsTaskPaneTitle = "Resize Lab";
         # endregion 
 
         # region ShapeGalleryPresentation
@@ -395,7 +404,10 @@
             public const string InfoPasteThumbnail = "Pasted successfully! But you might have pasted the thumbnail picture.";
         }
 
-        # region Agenda Lab
+        #region Resize Lab
+        #endregion
+
+        #region Agenda Lab
         // Errors
         public const string AgendaLabErrorDialogTitle = "Unable to execute action";
         public const string AgendaLabNoSectionError = "Please group the slides into sections before generating agenda.";

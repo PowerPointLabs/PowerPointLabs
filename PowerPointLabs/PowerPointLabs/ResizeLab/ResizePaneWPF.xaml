@@ -4,7 +4,7 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:PowerPointLabs.ResizeLab"
-             xmlns:WPF="clr-namespace:PowerPointLabs.WPF" x:Class="PowerPointLabs.ResizeLab.ResizePane"
+             xmlns:WPF="clr-namespace:PowerPointLabs.WPF" x:Class="PowerPointLabs.ResizeLab.ResizePaneWPF"
              mc:Ignorable="d" 
              d:DesignHeight="530" d:DesignWidth="300">
     <Grid>

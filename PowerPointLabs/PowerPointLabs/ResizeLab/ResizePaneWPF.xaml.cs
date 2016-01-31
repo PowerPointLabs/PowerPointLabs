@@ -17,9 +17,9 @@ namespace PowerPointLabs.ResizeLab
     /// <summary>
     /// Interaction logic for ResizePane.xaml
     /// </summary>
-    public partial class ResizePane : UserControl
+    public partial class ResizePaneWPF : UserControl
     {
-        public ResizePane()
+        public ResizePaneWPF()
         {
             InitializeComponent();
         }

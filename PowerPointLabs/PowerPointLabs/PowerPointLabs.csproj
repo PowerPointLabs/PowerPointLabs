@@ -382,8 +382,14 @@
     <Compile Include="ResizeLab\ResizeLabAspectRatio.cs" />
     <Compile Include="ResizeLab\ResizeLabFitSize.cs" />
     <Compile Include="ResizeLab\ResizeLabMain.cs" />
-    <Compile Include="ResizeLab\ResizePane.xaml.cs">
-      <DependentUpon>ResizePane.xaml</DependentUpon>
+    <Compile Include="ResizeLab\ResizePane.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="ResizeLab\ResizePane.Designer.cs">
+      <DependentUpon>ResizePane.cs</DependentUpon>
+    </Compile>
+    <Compile Include="ResizeLab\ResizePaneWPF.xaml.cs">
+      <DependentUpon>ResizePaneWPF.xaml</DependentUpon>
     </Compile>
     <Compile Include="ResizeLab\ResizeLabSameSize.cs" />
     <Compile Include="ResizeLab\ResizeLabShrinkStretch.cs" />
@@ -872,7 +878,7 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="ResizeLab\ResizePane.xaml">
+    <Page Include="ResizeLab\ResizePaneWPF.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

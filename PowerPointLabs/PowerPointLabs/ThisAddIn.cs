@@ -17,6 +17,7 @@ using System.Runtime.Remoting.Channels.Ipc;
 using PowerPointLabs.FunctionalTestInterface.Impl;
 using PowerPointLabs.FunctionalTestInterface.Impl.Controller;
 using PowerPointLabs.Models;
+using PowerPointLabs.ResizeLab;
 using PowerPointLabs.Utils;
 using PowerPointLabs.Views;
 using MessageBox = System.Windows.Forms.MessageBox;
@@ -555,6 +556,18 @@ namespace PowerPointLabs
             }
 
             return tempPath;
+        }
+
+        public void RegisterResizePane(PowerPoint.Presentation presentation)
+        {
+            if (GetActivePane(typeof(ResizePane)) != null)
+            {
+                return;
+            }
+
+            var activeWindow = presentation.Application.ActiveWindow;
+
+            RegisterTaskPane(new ResizePane(), TextCollection.ResizeLabsTaskPaneTitle, activeWindow, null, null);
         }
 
         public void RegisterRecorderPane(PowerPoint.DocumentWindow activeWindow, string tempFullPath)
