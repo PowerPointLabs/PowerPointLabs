@@ -404,9 +404,6 @@
             public const string InfoPasteThumbnail = "Pasted successfully! But you might have pasted the thumbnail picture.";
         }
 
-        #region Resize Lab
-        #endregion
-
         #region Agenda Lab
         // Errors
         public const string AgendaLabErrorDialogTitle = "Unable to execute action";
@@ -444,7 +441,6 @@
                             "This slide is used as a ‘Template' for generating agenda slides. Please do not delete this slide.\r" +
                             "Adjust the design of this slide and click the 'Sync Agenda' (in Agenda Lab) to replicate the design in the other slides.";
         # endregion
-
 
         # region Drawing Lab
 
@@ -567,9 +563,20 @@
         public const string CustomShapeCategoryContextStripImportShapes = "Import Shapes";
         public const string CustomShapeCategoryContextStripSetAsDefaultCategory = "Set as Default Category";
         public const string CustomShapeCategoryContextStripCategorySettings = "Shapes Lab Settings";
-        # endregion
+        #endregion
 
-        # region Control - ShapesLabSetting
+        #region Task Pane - Resize Lab
+
+        public class ResizeLabText
+        {
+            public const string ErrorNoSelection = "'Resize Lab' requires shape(s) or image(s) to be selected.";
+            public const string ErrorNonShapeSelection = "'Resize Lab' only supports shape or image objects.'";
+            public const string ErrorUndefined = "'Undefined error in Resize Lab'";
+        }
+
+        #endregion
+
+        #region Control - ShapesLabSetting
         public const string FolderDialogDescription = "Select the directory that you want to use as the default.";
         public const string FolderNonEmptyErrorMsg = "Please select an empty folder as default saving folder.";
         # endregion

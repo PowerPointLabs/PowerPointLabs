@@ -2,6 +2,8 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using PowerPointLabs.Models;
+using PowerPointLabs.Views;
 using PowerPoint = Microsoft.Office.Interop.PowerPoint;
 
 namespace PowerPointLabs.ResizeLab
@@ -36,12 +38,21 @@ namespace PowerPointLabs.ResizeLab
         {
             try
             {
-                var selectedShapes = Globals.ThisAddIn.Application.ActiveWindow.Selection.ShapeRange;
+                var selection = PowerPointCurrentPresentationInfo.CurrentSelection;
+
+                if (selection.Type != PowerPoint.PpSelectionType.ppSelectionShapes)
+                {
+                    // Show error message
+                    return;
+                }
+
+                var selectedShapes = selection.ShapeRange;
                 var referenceHeight = GetReferenceHeight(selectedShapes);
                 var referenceWidth = GetReferenceWidth(selectedShapes);
 
                 if ((selectedShapes.Count < 2) || (referenceHeight < 0) || (referenceWidth < 0))
                 {
+                    // Show error message
                     return;
                 }
 
