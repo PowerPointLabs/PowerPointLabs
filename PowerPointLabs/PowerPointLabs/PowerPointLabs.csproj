@@ -379,6 +379,11 @@
     <Compile Include="PictureSlidesLab\Util\ShapeUtil.cs" />
     <Compile Include="PictureSlidesLab\Util\StyleVariationWidthConverter.cs" />
     <Compile Include="PictureSlidesLab\Util\UrlUtil.cs" />
+    <Compile Include="ResizeLab\ResizeLabAspectRatio.cs" />
+    <Compile Include="ResizeLab\ResizeLabFitSize.cs" />
+    <Compile Include="ResizeLab\ResizeLabMain.cs" />
+    <Compile Include="ResizeLab\ResizeLabSameSize.cs" />
+    <Compile Include="ResizeLab\ResizeLabShrinkStretch.cs" />
     <Compile Include="Utils\Assumption.cs" />
     <Compile Include="Utils\CultureUtil.cs" />
     <Compile Include="Utils\Exceptions\AssumptionFailedException.cs" />
