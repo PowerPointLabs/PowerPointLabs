@@ -1831,10 +1831,10 @@ namespace PowerPointLabs
             }
 
             var recorderPane = Globals.ThisAddIn.GetActivePane(typeof(RecorderTaskPane));
+
+            if (recorderPane == null) return;
+
             var recorder = recorderPane.Control as RecorderTaskPane;
-
-            if (recorder == null) return;
-
             recorder.ClearRecordDataListForSelectedSlides();
 
             // if current list is visible, update the pane immediately
