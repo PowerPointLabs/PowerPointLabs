@@ -24,6 +24,32 @@ namespace PowerPointLabs.ResizeLab
             InitializeComponent();
         }
 
+        #region Event Handler: Strech and Shrink
+
+        private void StretchLeftBtn_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
+
+        private void StretchRightBtn_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
+
+        private void StretchTopBtn_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
+
+        private void StretchBottomBtn_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
+
+        #endregion
+
+        #region Event Handler: Same Dimension
+
         private void SameWidthBtn_Click(object sender, RoutedEventArgs e)
         {
             ResizeLabMain.ResizeToSameWidth();
@@ -38,5 +64,39 @@ namespace PowerPointLabs.ResizeLab
         {
             ResizeLabMain.ResizeToSameHeightAndWidth();
         }
+
+        #endregion
+
+        #region Event Handler: Fit
+        private void FitWidthBtn_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
+
+        private void FitHeightBtn_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
+
+        private void FillBtn_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
+
+        #endregion
+
+        #region Event Handler: Aspect Ratio
+
+        private void LockAspectRatioBtn_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
+
+        private void RestoreAspectRatioBtn_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
+
+        #endregion
     }
 }
