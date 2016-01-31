@@ -15,11 +15,11 @@ using System.Windows.Shapes;
 namespace PowerPointLabs.ResizeLab
 {
     /// <summary>
-    /// Interaction logic for UserControl1.xaml
+    /// Interaction logic for ResizePane.xaml
     /// </summary>
-    public partial class UserControl1 : UserControl
+    public partial class ResizePane : UserControl
     {
-        public UserControl1()
+        public ResizePane()
         {
             InitializeComponent();
         }

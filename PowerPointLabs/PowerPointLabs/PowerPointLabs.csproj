@@ -379,6 +379,14 @@
     <Compile Include="PictureSlidesLab\Util\ShapeUtil.cs" />
     <Compile Include="PictureSlidesLab\Util\StyleVariationWidthConverter.cs" />
     <Compile Include="PictureSlidesLab\Util\UrlUtil.cs" />
+    <Compile Include="ResizeLab\ResizeLabAspectRatio.cs" />
+    <Compile Include="ResizeLab\ResizeLabFitSize.cs" />
+    <Compile Include="ResizeLab\ResizeLabMain.cs" />
+    <Compile Include="ResizeLab\ResizePane.xaml.cs">
+      <DependentUpon>ResizePane.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="ResizeLab\ResizeLabSameSize.cs" />
+    <Compile Include="ResizeLab\ResizeLabShrinkStretch.cs" />
     <Compile Include="Utils\Assumption.cs" />
     <Compile Include="Utils\CultureUtil.cs" />
     <Compile Include="Utils\Exceptions\AssumptionFailedException.cs" />
@@ -864,6 +872,10 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="ResizeLab\ResizePane.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\TestInterface\TestInterface.csproj">
@@ -953,6 +965,7 @@
   <ItemGroup>
     <None Include="Resources\closed_business.jpg" />
   </ItemGroup>
+  <ItemGroup />
   <!-- Include the build rules for a C# project. -->
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
