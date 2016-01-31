@@ -121,6 +121,7 @@ namespace PowerPointLabs.PictureSlidesLab.Service
             }
 
             ApplyTextEffect(designer);
+            designer.ApplyTextGlowEffect(Options.IsUseTextGlow, Options.TextGlowColor);
 
             // store style options information into original image shape
             // return original image and cropped image

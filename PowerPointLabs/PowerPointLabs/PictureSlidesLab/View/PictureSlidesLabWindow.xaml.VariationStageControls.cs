@@ -4,6 +4,7 @@ using System.Windows.Controls;
 using System.Windows.Forms;
 using System.Windows.Input;
 using System.Windows.Media;
+using PowerPointLabs.PictureSlidesLab.Model;
 using Color = System.Drawing.Color;
 
 namespace PowerPointLabs.PictureSlidesLab.View
@@ -84,8 +85,12 @@ namespace PowerPointLabs.PictureSlidesLab.View
         {
             if (VariantsComboBox.SelectedValue == null) return;
 
+            var selectedItem = StylesVariationListBox.SelectedValue as ImageItem;
+
             var currentCategory = (string) VariantsComboBox.SelectedValue;
-            if (currentCategory.Contains("Color"))
+            if (currentCategory.Contains(TextCollection.PictureSlidesLabText.ColorHasEffect)
+                && selectedItem != null
+                && selectedItem.Tooltip != TextCollection.PictureSlidesLabText.ColorNoEffect)
             {
                 VariantsColorPanel.Visibility = Visibility.Visible;
                 ViewModel.BindStyleToColorPanel();

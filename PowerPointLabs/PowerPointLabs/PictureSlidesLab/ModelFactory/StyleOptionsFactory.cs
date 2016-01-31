@@ -102,7 +102,9 @@ namespace PowerPointLabs.PictureSlidesLab.ModelFactory
             return new StyleOptions
             {
                 StyleName = TextCollection.PictureSlidesLabText.StyleNameDirectText,
-                TextBoxPosition = 5
+                TextBoxPosition = 5,
+                IsUseTextGlow = true,
+                TextGlowColor = "#000000"
             };
         }
 
@@ -113,7 +115,9 @@ namespace PowerPointLabs.PictureSlidesLab.ModelFactory
                 StyleName = TextCollection.PictureSlidesLabText.StyleNameBlur,
                 IsUseBlurStyle = true,
                 BlurDegree = 85,
-                TextBoxPosition = 5
+                TextBoxPosition = 5,
+                IsUseTextGlow = true,
+                TextGlowColor = "#000000"
             };
         }
 
@@ -178,7 +182,9 @@ namespace PowerPointLabs.PictureSlidesLab.ModelFactory
             return new StyleOptions()
             {
                 StyleName = TextCollection.PictureSlidesLabText.StyleNameFrame,
-                IsUseFrameStyle = true
+                IsUseFrameStyle = true,
+                IsUseTextGlow = true,
+                TextGlowColor = "#000000"
             };
         }
 
@@ -242,6 +248,8 @@ namespace PowerPointLabs.PictureSlidesLab.ModelFactory
             foreach (var styleOption in result)
             {
                 styleOption.IsUseFrameStyle = true;
+                styleOption.IsUseTextGlow = true;
+                styleOption.TextGlowColor = "#000000";
             }
             return UpdateStyleName(
                 result,
@@ -300,16 +308,25 @@ namespace PowerPointLabs.PictureSlidesLab.ModelFactory
 
         private static List<StyleOptions> GetOptionsForBlur()
         {
+            var result = GetOptions();
+            foreach (var styleOption in result)
+            {
+                styleOption.IsUseTextGlow = true;
+                styleOption.TextGlowColor = "#000000";
+            }
             return UpdateStyleName(
-                GetOptions(),
+                result,
                 TextCollection.PictureSlidesLabText.StyleNameBlur);
         } 
 
         private static List<StyleOptions> GetOptionsForDirectText()
         {
             var result = GetOptions();
-            result[0].FontColor = "#000000";
-            result[1].FontColor = "#000000";
+            foreach (var styleOption in result)
+            {
+                styleOption.IsUseTextGlow = true;
+                styleOption.TextGlowColor = "#000000";
+            }
             UpdateStyleName(
                 result,
                 TextCollection.PictureSlidesLabText.StyleNameDirectText);
