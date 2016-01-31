@@ -289,6 +289,7 @@
         public const string ColorsLabTaskPanelTitle = "Colors Lab";
         public const string DrawingsLabTaskPanelTitle = "Drawing Lab";
         public const string RecManagementPanelTitle = "Record Management";
+        public const string PositionsLabTaskPanelTitle = "Positions Lab";
         # endregion 
 
         # region ShapeGalleryPresentation

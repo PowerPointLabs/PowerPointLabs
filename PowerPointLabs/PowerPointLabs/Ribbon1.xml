@@ -314,6 +314,13 @@
                   getImage="GetDrawingsLabImage"
                   getSupertip="GetDrawingsLabButtonSupertip"
                   onAction="DrawingsLabButtonClick"/>
+          <button id="PositionsLabButton"
+                  visible="true"
+                  getLabel="GetPositionsLabButtonLabel"
+                  size="large"
+                  getImage="GetPositionsLabImage"
+                  getSupertip="GetPositionsLabButtonSupertip"
+                  onAction="PositionsLabButtonClick"/>
         </group>
         <group id="PPTLabsHelp"
                getLabel="GetPPTLabsHelpGroupLabel"

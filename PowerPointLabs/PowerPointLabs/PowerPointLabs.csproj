@@ -380,6 +380,15 @@
     <Compile Include="PictureSlidesLab\Util\StyleVariationWidthConverter.cs" />
     <Compile Include="PictureSlidesLab\Util\UrlUtil.cs" />
     <Compile Include="PositionsLab\PositionsLabMain.cs" />
+    <Compile Include="PositionsLab\PositionsPane.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="PositionsLab\PositionsPane.Designer.cs">
+      <DependentUpon>PositionsPane.cs</DependentUpon>
+    </Compile>
+    <Compile Include="PositionsLab\PositionsPaneWPF.xaml.cs">
+      <DependentUpon>PositionsPaneWPF.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Utils\Assumption.cs" />
     <Compile Include="Utils\CultureUtil.cs" />
     <Compile Include="Utils\Exceptions\AssumptionFailedException.cs" />
@@ -587,6 +596,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="DrawingsLab\DrawingsPane.resx">
       <DependentUpon>DrawingsPane.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="PositionsLab\PositionsPane.resx">
+      <DependentUpon>PositionsPane.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Views\LoadingDialog.resx">
       <DependentUpon>LoadingDialog.cs</DependentUpon>
@@ -862,6 +874,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="DrawingsLab\DrawingsPaneWPF.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="PositionsLab\PositionsPaneWPF.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
