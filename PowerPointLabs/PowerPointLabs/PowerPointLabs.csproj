@@ -384,6 +384,15 @@
     <Compile Include="ResizeLab\ResizeLabMain.cs" />
     <Compile Include="ResizeLab\ResizeLabSameSize.cs" />
     <Compile Include="ResizeLab\ResizeLabShrinkStretch.cs" />
+    <Compile Include="ResizeLab\ResizePane.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="ResizeLab\ResizePane.Designer.cs">
+      <DependentUpon>ResizePane.cs</DependentUpon>
+    </Compile>
+    <Compile Include="ResizeLab\ResizePaneWPF.xaml.cs">
+      <DependentUpon>ResizePaneWPF.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Utils\Assumption.cs" />
     <Compile Include="Utils\CultureUtil.cs" />
     <Compile Include="Utils\Exceptions\AssumptionFailedException.cs" />
@@ -868,6 +877,10 @@
     <Page Include="DrawingsLab\DrawingsPaneWPF.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="ResizeLab\ResizePaneWPF.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
     </Page>
   </ItemGroup>
   <ItemGroup>
