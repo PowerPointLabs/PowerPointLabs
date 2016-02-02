@@ -225,6 +225,50 @@ namespace PowerPointLabs.PositionsLab
             return rightMost;
         }
 
+        private static Drawing.PointF TopMostPoint(Drawing.PointF[] coords)
+        {
+            Drawing.PointF topMost = new Drawing.PointF();
+
+            for (int i = 0; i < coords.Length; i++)
+            {
+                if (topMost.IsEmpty)
+                {
+                    topMost = coords[i];
+                }
+                else
+                {
+                    if (coords[i].Y < topMost.Y)
+                    {
+                        topMost = coords[i];
+                    }
+                }
+            }
+
+            return topMost;
+        }
+
+        private static Drawing.PointF LowestPoint(Drawing.PointF[] coords)
+        {
+            Drawing.PointF lowest = new Drawing.PointF();
+
+            for (int i = 0; i < coords.Length; i++)
+            {
+                if (lowest.IsEmpty)
+                {
+                    lowest = coords[i];
+                }
+                else
+                {
+                    if (coords[i].Y > lowest.Y)
+                    {
+                        lowest = coords[i];
+                    }
+                }
+            }
+
+            return lowest;
+        }
+
         private static double GetUnrotatedLeftGivenRotatedLeft(Shape s, float rotatedLeft)
         {
             double rotationInRadian = DegreeToRadian(s.Rotation);
