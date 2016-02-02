@@ -52,17 +52,17 @@ namespace PowerPointLabs.ResizeLab
 
         private void SameWidthBtn_Click(object sender, RoutedEventArgs e)
         {
-            ResizeLabMain.ResizeToSameWidth();
+
         }
 
         private void SameHeightBtn_Click(object sender, RoutedEventArgs e)
         {
-            ResizeLabMain.ResizeToSameHeight();
+
         }
 
         private void SameSizeBtn_Click(object sender, RoutedEventArgs e)
         {
-            ResizeLabMain.ResizeToSameHeightAndWidth();
+
         }
 
         #endregion

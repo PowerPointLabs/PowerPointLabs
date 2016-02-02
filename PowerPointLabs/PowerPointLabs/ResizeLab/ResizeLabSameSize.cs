@@ -10,42 +10,27 @@ namespace PowerPointLabs.ResizeLab
 {
     internal static partial class ResizeLabMain
     {
-        private enum Dimension
+        public static void ResizeToSameHeight(PowerPoint.ShapeRange selectedShapes)
         {
-            Height,
-            Width,
-            HeightAndWidth
+            ResizeShapes(selectedShapes, Dimension.Height);
         }
 
-        public static void ResizeToSameHeight()
+        public static void ResizeToSameWidth(PowerPoint.ShapeRange selectedShapes)
         {
-            ResizeShapes(Dimension.Height);
+            ResizeShapes(selectedShapes, Dimension.Width);
         }
 
-        public static void ResizeToSameWidth()
+        public static void ResizeToSameHeightAndWidth(PowerPoint.ShapeRange selectedShapes)
         {
-            ResizeShapes(Dimension.Width);
-        }
-
-        public static void ResizeToSameHeightAndWidth()
-        {
-            ResizeShapes(Dimension.HeightAndWidth);
+            ResizeShapes(selectedShapes, Dimension.HeightAndWidth);
         }
 
         #region General
 
-        private static void ResizeShapes(Dimension dimensionType)
+        private static void ResizeShapes(PowerPoint.ShapeRange selectedShapes, Dimension dimension)
         {
             try
             {
-                var selection = PowerPointCurrentPresentationInfo.CurrentSelection;
-
-                if (!IsSelecionValid(selection))
-                {
-                    return;
-                }
-
-                var selectedShapes = selection.ShapeRange;
                 var referenceHeight = GetReferenceHeight(selectedShapes);
                 var referenceWidth = GetReferenceWidth(selectedShapes);
 
@@ -56,12 +41,12 @@ namespace PowerPointLabs.ResizeLab
 
                 for (int i = 1; i <= selectedShapes.Count; i++)
                 {
-                    if ((dimensionType == Dimension.Height) || (dimensionType == Dimension.HeightAndWidth))
+                    if ((dimension == Dimension.Height) || (dimension == Dimension.HeightAndWidth))
                     {
                         selectedShapes[i].Height = referenceHeight;
                     }
 
-                    if ((dimensionType == Dimension.Width) || (dimensionType == Dimension.HeightAndWidth))
+                    if ((dimension == Dimension.Width) || (dimension == Dimension.HeightAndWidth))
                     {
                         selectedShapes[i].Width = referenceWidth;
                     }
@@ -72,7 +57,6 @@ namespace PowerPointLabs.ResizeLab
                 PowerPointLabsGlobals.LogException(e, "ResizeShapes");
                 throw;
             }
-            
         }
 
         private static float GetReferenceHeight(PowerPoint.ShapeRange selectedShapes)
