@@ -12,6 +12,8 @@ namespace PowerPointLabs.PictureSlidesLab.Util
 
         public static string GetThumbnailFromFullSizeImg(string filename)
         {
+            if (filename == null) return null;
+
             var thumbnailPath = StoragePath.GetPath("thumbnail-"
                 + DateTime.Now.GetHashCode() + "-"
                 + Guid.NewGuid().ToString().Substring(0, 7));

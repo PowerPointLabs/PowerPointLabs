@@ -144,6 +144,34 @@ namespace PowerPointLabs.PictureSlidesLab.Service
             }
         }
 
+        public void ApplyTextGlowEffect(bool isUseTextGlow, string textGlowColor)
+        {
+            foreach (PowerPoint.Shape shape in Shapes)
+            {
+                if ((shape.Type != MsoShapeType.msoPlaceholder
+                     && shape.Type != MsoShapeType.msoTextBox)
+                    || shape.TextFrame.HasText == MsoTriState.msoFalse)
+                {
+                    continue;
+                }
+
+                if (isUseTextGlow)
+                {
+                    shape.TextFrame2.TextRange.Font.Glow.Radius = 8;
+                    shape.TextFrame2.TextRange.Font.Glow.Color.RGB =
+                        Graphics.ConvertColorToRgb(StringUtil.GetColorFromHexValue(textGlowColor));
+                    shape.TextFrame2.TextRange.Font.Glow.Transparency = 0.6f;
+                }
+                else
+                {
+                    shape.TextFrame2.TextRange.Font.Glow.Radius = 0;
+                    shape.TextFrame2.TextRange.Font.Glow.Color.RGB =
+                        Graphics.ConvertColorToRgb(StringUtil.GetColorFromHexValue(textGlowColor));
+                    shape.TextFrame2.TextRange.Font.Glow.Transparency = 0.0f;
+                }
+            }
+        }
+
         public void ApplyOriginalTextEffect()
         {
             foreach (PowerPoint.Shape shape in Shapes)
@@ -193,6 +221,35 @@ namespace PowerPointLabs.PictureSlidesLab.Service
                 .SetPosition(pos)
                 .SetAlignment(alignment)
                 .StartBoxing();
+        }
+
+        public void ApplyPseudoTextWhenNoTextShapes()
+        {
+            var isTextShapesEmpty = new TextBoxes(
+                Shapes.Range(), SlideWidth, SlideHeight)
+                .IsTextShapesEmpty();
+
+            if (!isTextShapesEmpty) return;
+
+            try
+            {
+                Shapes.AddTitle().TextFrame2.TextRange.Text = "Picture Slides Lab";
+            }
+            catch
+            {
+                // title already exist
+                foreach (PowerPoint.Shape shape in Shapes)
+                {
+                    switch (shape.PlaceholderFormat.Type)
+                    {
+                        case PowerPoint.PpPlaceholderType.ppPlaceholderTitle:
+                        case PowerPoint.PpPlaceholderType.ppPlaceholderCenterTitle:
+                        case PowerPoint.PpPlaceholderType.ppPlaceholderVerticalTitle:
+                            shape.TextFrame2.TextRange.Text = "Picture Slides Lab";
+                            break;
+                    }
+                }
+            }
         }
 
         public void ApplyTextWrapping()
@@ -614,17 +671,18 @@ namespace PowerPointLabs.PictureSlidesLab.Service
                 return imageFilePath;
             }
 
-            var blurImageFile = TempPath.GetPath("fullsize_blur");
+            var blurImageFile = Util.TempPath.GetPath("fullsize_blur");
             using (var imageFactory = new ImageFactory())
             {
                 var image = imageFactory
                     .Load(imageFilePath)
                     .Image;
                 var ratio = (float) image.Width / image.Height;
-                var targetHeight = MaxThumbnailHeight - (MaxThumbnailHeight - MinThumbnailHeight) / 100f * degree;
+                var targetHeight = Math.Ceiling(MaxThumbnailHeight - (MaxThumbnailHeight - MinThumbnailHeight) / 100f * degree);
+                var targetWidth = Math.Ceiling(targetHeight * ratio);
 
                 image = imageFactory
-                    .Resize(new Size((int)(targetHeight * ratio), (int)targetHeight))
+                    .Resize(new Size((int) targetWidth, (int) targetHeight))
                     .GaussianBlur(5).Image;
                 image.Save(blurImageFile);
             }
@@ -634,7 +692,7 @@ namespace PowerPointLabs.PictureSlidesLab.Service
         private static string SpecialEffectImage(IMatrixFilter effectFilter, string imageFilePath,
             bool isActualSize)
         {
-            var specialEffectImageFile = TempPath.GetPath("fullsize_specialeffect");
+            var specialEffectImageFile = Util.TempPath.GetPath("fullsize_specialeffect");
             using (var imageFactory = new ImageFactory())
             {
                 var image = imageFactory

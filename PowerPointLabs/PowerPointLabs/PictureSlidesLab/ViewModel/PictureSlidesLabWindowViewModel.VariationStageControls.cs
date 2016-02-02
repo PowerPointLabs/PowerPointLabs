@@ -23,7 +23,7 @@ namespace PowerPointLabs.PictureSlidesLab.ViewModel
             var currentCategory = CurrentVariantCategory.Text;
             var bc = new BrushConverter();
 
-            if (currentCategory.Contains("Color"))
+            if (currentCategory.Contains(TextCollection.PictureSlidesLabText.ColorHasEffect))
             {
                 var propName = GetPropertyName(currentCategory);
                 var type = styleOption.GetType();

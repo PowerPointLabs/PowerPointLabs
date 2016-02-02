@@ -439,6 +439,34 @@ namespace PowerPointLabs.PictureSlidesLab.Model
             }
         }
 
+        // *****************************************
+        // Text Glow
+        // *****************************************
+
+        private bool _isUseTextGlow;
+
+        public bool IsUseTextGlow
+        {
+            get { return _isUseTextGlow; }
+            set
+            {
+                _isUseTextGlow = value;
+                OnPropertyChanged("IsUseTextGlow");
+            }
+        }
+
+        private string _textGlowColor;
+
+        public string TextGlowColor
+        {
+            get { return _textGlowColor; }
+            set
+            {
+                _textGlowColor = value;
+                OnPropertyChanged("TextGlowColor");
+            }
+        }
+
         // other
 
         private bool _isInsertReference;
@@ -509,6 +537,9 @@ namespace PowerPointLabs.PictureSlidesLab.Model
             IsUseTriangleStyle = false;
             TriangleColor = "#000000";
             TriangleTransparency = 0;
+
+            IsUseTextGlow = false;
+            TextGlowColor = "#123456";
 
             IsInsertReference = false;
             OptionName = "Default";

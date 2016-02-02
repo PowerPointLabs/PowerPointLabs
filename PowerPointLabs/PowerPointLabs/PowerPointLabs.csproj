@@ -416,6 +416,7 @@
     <Compile Include="Utils\Comparers.cs" />
     <Compile Include="Utils\FileDir.cs" />
     <Compile Include="Utils\Graphics.cs" />
+    <Compile Include="Utils\TempPath.cs" />
     <Compile Include="Utils\StringUtil.cs" />
     <Compile Include="Views\CustomPaintTextBox.cs" />
     <Compile Include="Views\ErrorDialogWrapper.cs" />
@@ -946,6 +947,12 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\DefaultPicture.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\cbd.jpg" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\closed_business.jpg" />
   </ItemGroup>
   <!-- Include the build rules for a C# project. -->
   <PropertyGroup>

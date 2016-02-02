@@ -1,8 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Collections.Specialized;
 using System.Drawing;
 using System.Linq;
+using System.Windows.Forms;
 using Microsoft.Office.Interop.PowerPoint;
 using PowerPointLabs.AutoUpdate.Interface;
 using PowerPointLabs.PictureSlidesLab.Model;
@@ -122,10 +124,18 @@ namespace PowerPointLabs.PictureSlidesLab.ViewModel
             ImageSelectionList = new ObservableCollection<ImageItem>();
             ImageSelectionList.Add(CreateChoosePicturesItem());
 
-            var loadedImageSelectionList = StoragePath.Load();
-            foreach (var item in loadedImageSelectionList)
+            if (StoragePath.IsFirstTimeUsage())
             {
-                ImageSelectionList.Add(item);
+                ImageSelectionList.Add(CreateSamplePic1Item());
+                ImageSelectionList.Add(CreateSamplePic2Item());
+            }
+            else
+            {
+                var loadedImageSelectionList = StoragePath.Load();
+                foreach (var item in loadedImageSelectionList)
+                {
+                    ImageSelectionList.Add(item);
+                }
             }
 
             ImageSelectionListSelectedId = new ObservableInt {Number = -1};
@@ -135,7 +145,7 @@ namespace PowerPointLabs.PictureSlidesLab.ViewModel
 
         private void InitStorage()
         {
-            var isTempPathInit = TempPath.InitTempFolder();
+            var isTempPathInit = Util.TempPath.InitTempFolder();
             var isStoragePathInit = StoragePath.InitPersistentFolder();
             if (!isTempPathInit || !isStoragePathInit)
             {
@@ -269,6 +279,7 @@ namespace PowerPointLabs.PictureSlidesLab.ViewModel
 
         public void ApplyStyleInPreviewStage(Slide contentSlide, float slideWidth, float slideHeight)
         {
+            var copiedPicture = LoadClipboardPicture();
             try
             {
                 var targetDefaultOptions = StyleOptionsFactory
@@ -281,6 +292,7 @@ namespace PowerPointLabs.PictureSlidesLab.ViewModel
             {
                 View.ShowErrorMessageBox(TextCollection.PictureSlidesLabText.ErrorNoSelectedSlide);
             }
+            SaveClipboardPicture(copiedPicture);
         }
         #endregion
 
@@ -404,6 +416,7 @@ namespace PowerPointLabs.PictureSlidesLab.ViewModel
 
         public void ApplyStyleInVariationStage(Slide contentSlide, float slideWidth, float slideHeight)
         {
+            var copiedPicture = LoadClipboardPicture();
             try
             {
                 Designer.ApplyStyle(ImageSelectionListSelectedItem.ImageItem, contentSlide,
@@ -414,10 +427,48 @@ namespace PowerPointLabs.PictureSlidesLab.ViewModel
             {
                 View.ShowErrorMessageBox(TextCollection.PictureSlidesLabText.ErrorNoSelectedSlide);
             }
+            SaveClipboardPicture(copiedPicture);
         }
         #endregion
 
         #region Helper funcs
+
+        private static object LoadClipboardPicture()
+        {
+            var pic = Clipboard.GetImage();
+            var text = Clipboard.GetText();
+            var files = Clipboard.GetFileDropList();
+
+            if (pic != null)
+            {
+                return pic;
+            }
+            else if (files != null && files.Count > 0)
+            {
+                return files;
+            }
+            else
+            {
+                return text;
+            }
+        }
+
+        private static void SaveClipboardPicture(object copiedObj)
+        {
+            if (copiedObj is Image)
+            {
+                Clipboard.SetImage((Image) copiedObj);
+            }
+            else if (copiedObj is StringCollection)
+            {
+                Clipboard.SetFileDropList((StringCollection) copiedObj);
+            }
+            else if (copiedObj is string)
+            {
+                Clipboard.SetText((string)copiedObj);
+            }
+        }
+
         private static void VerifyIsProperImage(string filename)
         {
             using (Image.FromFile(filename))
@@ -434,6 +485,7 @@ namespace PowerPointLabs.PictureSlidesLab.ViewModel
             if (!IsAbleToUpdateStylesPreviewImages(source, contentSlide))
                 return;
 
+            var copiedPicture = LoadClipboardPicture();
             try
             {
                 foreach (var stylesPreviewOption in StyleOptionsFactory.GetAllStylesPreviewOptions())
@@ -451,6 +503,7 @@ namespace PowerPointLabs.PictureSlidesLab.ViewModel
             {
                 View.ShowErrorMessageBox(TextCollection.PictureSlidesLabText.ErrorImageCorrupted);
             }
+            SaveClipboardPicture(copiedPicture);
 
             StylesPreviewListSelectedId.Number = selectedId;
         }
@@ -529,6 +582,7 @@ namespace PowerPointLabs.PictureSlidesLab.ViewModel
         private void UpdateStylesVariationImages(ImageItem source, Slide contentSlide, 
             float slideWidth, float slideHeight)
         {
+            var copiedPicture = LoadClipboardPicture();
             try
             {
                 foreach (var styleOption in _styleOptions)
@@ -546,6 +600,7 @@ namespace PowerPointLabs.PictureSlidesLab.ViewModel
             {
                 View.ShowErrorMessageBox(TextCollection.PictureSlidesLabText.ErrorImageCorrupted);
             }
+            SaveClipboardPicture(copiedPicture);
         }
 
         private ImageItem CreateChoosePicturesItem()
@@ -554,6 +609,30 @@ namespace PowerPointLabs.PictureSlidesLab.ViewModel
             {
                 ImageFile = StoragePath.ChoosePicturesImgPath,
                 Tooltip = "Choose pictures from local storage."
+            };
+        }
+
+        private static ImageItem CreateSamplePic2Item()
+        {
+            return new ImageItem
+            {
+                ImageFile = ImageUtil.GetThumbnailFromFullSizeImg(
+                    StoragePath.SampleImg2Path),
+                FullSizeImageFile = StoragePath.SampleImg2Path,
+                Tooltip = "Picture taken from Nahemoth https://flic.kr/p/mBR8Ym",
+                ContextLink = "https://flic.kr/p/mBR8Ym"
+            };
+        }
+
+        private static ImageItem CreateSamplePic1Item()
+        {
+            return new ImageItem
+            {
+                ImageFile = ImageUtil.GetThumbnailFromFullSizeImg(
+                    StoragePath.SampleImg1Path),
+                FullSizeImageFile = StoragePath.SampleImg1Path,
+                Tooltip = "Picture taken from Alosh Bennett https://flic.kr/p/5fKBTq",
+                ContextLink = "https://flic.kr/p/5fKBTq"
             };
         }
         #endregion

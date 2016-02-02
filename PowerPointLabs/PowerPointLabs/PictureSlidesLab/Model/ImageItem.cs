@@ -40,9 +40,10 @@ namespace PowerPointLabs.PictureSlidesLab.Model
         public string SpecialEffectImageFile { get; set; }
         public string FullSizeImageFile { get; set; }
 
-        // image adjustment related
+        // picture dimensions adjustment related
         public string CroppedImageFile { get; set; }
         public string CroppedThumbnailImageFile { get; set; }
+        // define picture dimensions (cropped region)
         public Rect Rect { get; set; }
 
         // meta info

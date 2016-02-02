@@ -87,6 +87,7 @@ namespace PowerPointLabs.PictureSlidesLab.Service
 
             ApplyStyle(effectsHandler, source, isActualSize: true);
 
+            // recover the source back
             source.FullSizeImageFile = fullsizeImage;
             source.OriginalImageFile = null;
         }
@@ -99,6 +100,9 @@ namespace PowerPointLabs.PictureSlidesLab.Service
         /// <param name="isActualSize"></param>
         private void ApplyStyle(EffectsDesigner designer, ImageItem source, bool isActualSize)
         {
+            // TODO refactor this method
+            designer.ApplyPseudoTextWhenNoTextShapes();
+
             if (Options.IsUseBannerStyle 
                 && (Options.TextBoxPosition == 4/*left*/
                     || Options.TextBoxPosition == 5/*centered*/
@@ -117,6 +121,7 @@ namespace PowerPointLabs.PictureSlidesLab.Service
             }
 
             ApplyTextEffect(designer);
+            designer.ApplyTextGlowEffect(Options.IsUseTextGlow, Options.TextGlowColor);
 
             // store style options information into original image shape
             // return original image and cropped image

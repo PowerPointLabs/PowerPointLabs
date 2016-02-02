@@ -6,11 +6,12 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Test.Util;
 using PowerPoint = Microsoft.Office.Interop.PowerPoint;
 using PowerPointLabs.Utils;
+using Test.Base;
 
 namespace Test.UnitTest
 {
     [TestClass]
-    public abstract class BaseUnitTest
+    public abstract class BaseUnitTest: TestAssemblyFixture
     {
         public TestContext TestContext { get; set; }
 
