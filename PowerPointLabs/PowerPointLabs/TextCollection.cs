@@ -569,8 +569,8 @@
 
         public class ResizeLabText
         {
-            public const string ErrorNoSelection = "'Resize Lab' requires shape(s) or image(s) to be selected.";
-            public const string ErrorNonShapeSelection = "'Resize Lab' only supports shape or image objects.'";
+            public const string ErrorNoSelection = "'Resize Lab' requires shape to be selected.";
+            public const string ErrorFewerThanTwoSelection = "'Resize Lab' requires at least two shapes.";
             public const string ErrorUndefined = "'Undefined error in Resize Lab'";
         }
 

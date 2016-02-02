@@ -40,9 +40,8 @@ namespace PowerPointLabs.ResizeLab
             {
                 var selection = PowerPointCurrentPresentationInfo.CurrentSelection;
 
-                if (selection.Type != PowerPoint.PpSelectionType.ppSelectionShapes)
+                if (!IsSelecionValid(selection))
                 {
-                    // Show error message
                     return;
                 }
 
@@ -50,9 +49,8 @@ namespace PowerPointLabs.ResizeLab
                 var referenceHeight = GetReferenceHeight(selectedShapes);
                 var referenceWidth = GetReferenceWidth(selectedShapes);
 
-                if ((selectedShapes.Count < 2) || (referenceHeight < 0) || (referenceWidth < 0))
+                if (!IsMoreThanOneShape(selectedShapes) || (referenceHeight < 0) || (referenceWidth < 0))
                 {
-                    // Show error message
                     return;
                 }
 
