@@ -25,7 +25,7 @@ namespace PowerPointLabs.ResizeLab
             HeightAndWidth
         }
 
-        private static bool IsSelecionValid(PowerPoint.Selection selection)
+        internal static bool IsSelecionValid(PowerPoint.Selection selection)
         {
             try
             {
