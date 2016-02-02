@@ -17,6 +17,56 @@ namespace PowerPointLabs.PositionsLab
     class PositionsLabMain
     {
         #region API
+
+        #region Align
+        public static void AlignLeft()
+        {
+            var selectedShapes = Globals.ThisAddIn.Application.ActiveWindow.Selection.ShapeRange as PowerPoint.ShapeRange;
+
+            if (selectedShapes.Count < 2)
+            {
+                //Error
+                return;
+            }
+
+            Shape refShape = selectedShapes[1];
+            Drawing.PointF[] allPointsOfRef = GetRealCoordinates(refShape);
+            Drawing.PointF leftMostRef = LeftMostPoint(allPointsOfRef);
+            
+            for (int i = 2; i <= selectedShapes.Count; i++)
+            {
+                Shape s = selectedShapes[i];
+                Drawing.PointF[] allPoints = GetRealCoordinates(s);
+                Drawing.PointF leftMost = LeftMostPoint(allPoints);
+                s.IncrementLeft(leftMostRef.X - leftMost.X);
+            }
+        }
+
+        public static void AlignRight()
+        {
+            var selectedShapes = Globals.ThisAddIn.Application.ActiveWindow.Selection.ShapeRange as PowerPoint.ShapeRange;
+
+            if (selectedShapes.Count < 2)
+            {
+                //Error
+                return;
+            }
+
+            Shape refShape = selectedShapes[1];
+            Drawing.PointF[] allPointsOfRef = GetRealCoordinates(refShape);
+            Drawing.PointF rightMostRef = RightMostPoint(allPointsOfRef);
+
+            for (int i = 2; i <= selectedShapes.Count; i++)
+            {
+                Shape s = selectedShapes[i];
+                Drawing.PointF[] allPoints = GetRealCoordinates(s);
+                Drawing.PointF rightMost = RightMostPoint(allPoints);
+                s.IncrementLeft(rightMostRef.X - rightMost.X);
+            }
+        }
+        #endregion
+
+
         public static void SnapVertical()
         {
             var selectedShapes = Globals.ThisAddIn.Application.ActiveWindow.Selection.ShapeRange as PowerPoint.ShapeRange;

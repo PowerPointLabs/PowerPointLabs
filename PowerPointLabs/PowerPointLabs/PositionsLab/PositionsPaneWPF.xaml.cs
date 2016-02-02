@@ -35,5 +35,15 @@ namespace PowerPointLabs.PositionsLab
         {
             PositionsLabMain.SnapVertical();
         }
+
+        private void AlignLeftButton_Click(object sender, RoutedEventArgs e)
+        {
+            PositionsLabMain.AlignLeft();
+        }
+
+        private void AlignRightButton_Click(object sender, RoutedEventArgs e)
+        {
+            PositionsLabMain.AlignRight();
+        }
     }
 }
