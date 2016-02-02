@@ -15,7 +15,7 @@ namespace PowerPointLabs.ResizeLab
             {
                 if (isAspectRatio)
                 {
-                    selectedShapes.LockAspectRatio = MsoTriState.msoCTrue;
+                    selectedShapes.LockAspectRatio = MsoTriState.msoTrue;
                 }
                 else
                 {
@@ -25,6 +25,20 @@ namespace PowerPointLabs.ResizeLab
             catch (Exception e)
             {
                 PowerPointLabsGlobals.LogException(e, "ChangeShapesAspectRatio");
+                throw;
+            }
+        }
+
+        public static void RestoreAspectRatio(PowerPoint.ShapeRange selectedShapes)
+        {
+            try
+            {
+                selectedShapes.ScaleHeight(1, MsoTriState.msoTrue, MsoScaleFrom.msoScaleFromTopLeft);
+                selectedShapes.ScaleWidth(1, MsoTriState.msoTrue, MsoScaleFrom.msoScaleFromTopLeft);
+            }
+            catch (Exception e)
+            {
+                PowerPointLabsGlobals.LogException(e, "RestoreAspectRatio");
                 throw;
             }
         }

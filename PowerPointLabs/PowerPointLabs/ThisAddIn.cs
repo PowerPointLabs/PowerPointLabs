@@ -271,9 +271,8 @@ namespace PowerPointLabs
                     }
                 }
 
-
                 sel.ShapeRange.LockAspectRatio = ResizePaneWPF.IsAspectRatioLocked
-                    ? Office.MsoTriState.msoCTrue
+                    ? Office.MsoTriState.msoTrue
                     : Office.MsoTriState.msoFalse;
 
             }

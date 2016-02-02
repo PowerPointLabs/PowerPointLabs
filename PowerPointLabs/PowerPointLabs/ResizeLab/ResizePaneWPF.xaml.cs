@@ -142,7 +142,12 @@ namespace PowerPointLabs.ResizeLab
 
         private void RestoreAspectRatioBtn_Click(object sender, RoutedEventArgs e)
         {
+            PowerPoint.ShapeRange selectedShapes = GetSelectedShapes();
 
+            if (selectedShapes != null)
+            {
+                ResizeLabMain.RestoreAspectRatio(selectedShapes);
+            }
         }
 
         private void UnlockAspectRatio()
