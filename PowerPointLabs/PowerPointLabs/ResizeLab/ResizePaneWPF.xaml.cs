@@ -21,9 +21,14 @@ namespace PowerPointLabs.ResizeLab
     /// </summary>
     public partial class ResizePaneWPF : UserControl
     {
+        public static bool IsAspectRatioLocked { get; set; }
+        private const string UnlockText = "Unlock";
+        private const string LockText = "Lock";
+
         public ResizePaneWPF()
         {
             InitializeComponent();
+            UnlockAspectRatio();
         }
 
         #region Event Handler: Strech and Shrink
@@ -95,7 +100,7 @@ namespace PowerPointLabs.ResizeLab
 
             if (selectedShapes != null)
             {
-                ResizeLabMain.FitToWidth(selectedShapes);
+                ResizeLabMain.FitToWidth(selectedShapes, IsAspectRatioLocked);
             }
         }
 
@@ -105,7 +110,7 @@ namespace PowerPointLabs.ResizeLab
 
             if (selectedShapes != null)
             {
-                ResizeLabMain.FitToHight(selectedShapes);
+                ResizeLabMain.FitToHight(selectedShapes, IsAspectRatioLocked);
             }
         }
 
@@ -125,7 +130,14 @@ namespace PowerPointLabs.ResizeLab
 
         private void LockAspectRatioBtn_Click(object sender, RoutedEventArgs e)
         {
-
+            if (IsAspectRatioLocked)
+            {
+                UnlockAspectRatio();
+            }
+            else
+            {
+                LockAspectRatio();
+            }
         }
 
         private void RestoreAspectRatioBtn_Click(object sender, RoutedEventArgs e)
@@ -133,22 +145,41 @@ namespace PowerPointLabs.ResizeLab
 
         }
 
+        private void UnlockAspectRatio()
+        {
+            IsAspectRatioLocked = false;
+            LockAspectRatioBtn.Text = UnlockText;
+
+            ModifySelectionAspectRatio();
+        }
+
+        private void LockAspectRatio()
+        {
+            IsAspectRatioLocked = true;
+            LockAspectRatioBtn.Text = LockText;
+
+            ModifySelectionAspectRatio();
+        }
+
+        private void ModifySelectionAspectRatio()
+        {
+            if (ResizeLabMain.IsShapeSelection(GetSelection()))
+            {
+                ResizeLabMain.ChangeShapesAspectRatio(GetSelectedShapes(), IsAspectRatioLocked);
+            }
+        }
+
         #endregion
 
         #region Helper Functions
 
-        private static PowerPoint.ShapeRange GetSelectedShapes()
+        private PowerPoint.ShapeRange GetSelectedShapes()
         {
-            PowerPoint.Selection selection = GetSelection();
-
-            if (ResizeLabMain.IsSelecionValid(selection))
-            {
-                return GetSelection().ShapeRange;
-            }
-            return null;
+            var selection = GetSelection();
+            return ResizeLabMain.IsSelecionValid(selection) ? GetSelection().ShapeRange : null;
         }
 
-        private static PowerPoint.Selection GetSelection()
+        private PowerPoint.Selection GetSelection()
         {
             return PowerPointCurrentPresentationInfo.CurrentSelection;
         }

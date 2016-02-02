@@ -10,9 +10,9 @@ namespace PowerPointLabs.ResizeLab
 {
     internal static partial class ResizeLabMain
     {
-        public static void FitToHight(PowerPoint.ShapeRange selectedShapes, bool isRespectRatio = false)
+        public static void FitToHight(PowerPoint.ShapeRange selectedShapes, bool isAspectRatio = false)
         {
-            if (isRespectRatio)
+            if (isAspectRatio)
             {
                 FitAspectRatioShapes(selectedShapes, Dimension.Height);
             }
@@ -22,9 +22,9 @@ namespace PowerPointLabs.ResizeLab
             }
         }
 
-        public static void FitToWidth(PowerPoint.ShapeRange selectedShapes, bool isRespectRatio = false)
+        public static void FitToWidth(PowerPoint.ShapeRange selectedShapes, bool isAspectRatio = false)
         {
-            if (isRespectRatio)
+            if (isAspectRatio)
             {
                 FitAspectRatioShapes(selectedShapes, Dimension.Width);
             }
@@ -34,9 +34,9 @@ namespace PowerPointLabs.ResizeLab
             }
         }
 
-        public static void FitToFill(PowerPoint.ShapeRange selectedShapes, bool isRespectRatio = false)
+        public static void FitToFill(PowerPoint.ShapeRange selectedShapes, bool isAspectRatio = false)
         {
-            if (isRespectRatio)
+            if (isAspectRatio)
             {
                 FitAspectRatioShapes(selectedShapes, Dimension.HeightAndWidth);
             }
