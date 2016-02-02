@@ -4,9 +4,21 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:PowerPointLabs.ResizeLab"
+             xmlns:Controls="clr-namespace:MahApps.Metro.Controls;assembly=MahApps.Metro"
              xmlns:WPF="clr-namespace:PowerPointLabs.WPF" x:Class="PowerPointLabs.ResizeLab.ResizePaneWPF"
              mc:Ignorable="d" 
              d:DesignHeight="530" d:DesignWidth="300">
+    <UserControl.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="pack://application:,,,/MahApps.Metro;component/Styles/Controls.xaml" />
+                <ResourceDictionary Source="pack://application:,,,/MahApps.Metro;component/Styles/Fonts.xaml" />
+                <ResourceDictionary Source="pack://application:,,,/MahApps.Metro;component/Styles/Colors.xaml" />
+                <ResourceDictionary Source="pack://application:,,,/MahApps.Metro;component/Styles/Accents/Blue.xaml" />
+                <ResourceDictionary Source="pack://application:,,,/MahApps.Metro;component/Styles/Accents/BaseLight.xaml" />
+            </ResourceDictionary.MergedDictionaries>
+        </ResourceDictionary>
+    </UserControl.Resources>
     <Grid>
         <Grid.Resources>
             <Style TargetType="{x:Type TextBox}">
@@ -24,7 +36,7 @@
             <RowDefinition Height="100" />
         </Grid.RowDefinitions>
         <GroupBox x:Name="StretchShrinkBox" Header="Stretch / Shrink" Grid.Row="0" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" >
-            <Grid Margin="10,10,10,10">
+            <Grid>
 
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="1*" />
@@ -39,7 +51,7 @@
             </Grid>
         </GroupBox>
         <GroupBox x:Name="SameSizeGroupBox" Header="Same Dimension" Grid.Row="1" VerticalAlignment="Stretch" HorizontalAlignment="Stretch">
-            <Grid Margin="10,10,10,10">
+            <Grid>
 
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="1*" />
@@ -53,7 +65,7 @@
             </Grid>
         </GroupBox>
         <GroupBox x:Name="FitGroupBox" Header="Fit" Grid.Row="2" VerticalAlignment="Stretch" HorizontalAlignment="Stretch">
-            <Grid Margin="10,10,10,10">
+            <Grid>
 
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="1*" />
@@ -67,7 +79,7 @@
             </Grid>
         </GroupBox>
         <GroupBox x:Name="AspectRatioGroupBox" Header="Aspect Ratio" Grid.Row="3" VerticalAlignment="Stretch" HorizontalAlignment="Stretch">
-            <Grid Margin="10,10,10,10">
+            <Grid>
 
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="1*" />
@@ -81,3 +93,4 @@
         </GroupBox>
     </Grid>
 </UserControl>
+
