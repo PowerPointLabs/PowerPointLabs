@@ -72,7 +72,7 @@ namespace PowerPointLabs.ResizeLab
             }
             catch (Exception e)
             {
-                PowerPointLabsGlobals.LogException(e, "ResizeShapes");
+                PowerPointLabsGlobals.LogException(e, "FitFreeShapes");
                 throw;
             }
         }
@@ -104,7 +104,7 @@ namespace PowerPointLabs.ResizeLab
             }
             catch (Exception e)
             {
-                PowerPointLabsGlobals.LogException(e, "FitShapes");
+                PowerPointLabsGlobals.LogException(e, "FitAspectRatioShapes");
                 throw;
             }
         }
