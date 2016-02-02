@@ -30,26 +30,42 @@ namespace PowerPointLabs.ResizeLab
 
         private void StretchLeftBtn_Click(object sender, RoutedEventArgs e)
         {
-            if (!ResizeLabMain.IsSelecionValid(GetSelection()))
+            PowerPoint.ShapeRange selectedShape = GetSelectedShapes();
+
+            if (selectedShape != null)
             {
-                return;
+                ResizeLabMain.StretchLeft(selectedShape);
             }
-            ResizeLabMain.StretchLeft(GetSelectedShapes());
         }
 
         private void StretchRightBtn_Click(object sender, RoutedEventArgs e)
         {
-            
+            PowerPoint.ShapeRange selectedShape = GetSelectedShapes();
+
+            if (selectedShape != null)
+            {
+                ResizeLabMain.StretchRight(selectedShape);
+            }
         }
 
         private void StretchTopBtn_Click(object sender, RoutedEventArgs e)
         {
+            PowerPoint.ShapeRange selectedShape = GetSelectedShapes();
 
+            if (selectedShape != null)
+            {
+                ResizeLabMain.StretchTop(selectedShape);
+            }
         }
 
         private void StretchBottomBtn_Click(object sender, RoutedEventArgs e)
         {
+            PowerPoint.ShapeRange selectedShape = GetSelectedShapes();
 
+            if (selectedShape != null)
+            {
+                ResizeLabMain.StretchBottom(selectedShape);
+            }
         }
 
         #endregion
