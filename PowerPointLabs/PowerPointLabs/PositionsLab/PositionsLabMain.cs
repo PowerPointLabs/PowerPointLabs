@@ -64,6 +64,52 @@ namespace PowerPointLabs.PositionsLab
                 s.IncrementLeft(rightMostRef.X - rightMost.X);
             }
         }
+
+        public static void AlignTop()
+        {
+            var selectedShapes = Globals.ThisAddIn.Application.ActiveWindow.Selection.ShapeRange as PowerPoint.ShapeRange;
+
+            if (selectedShapes.Count < 2)
+            {
+                //Error
+                return;
+            }
+
+            Shape refShape = selectedShapes[1];
+            Drawing.PointF[] allPointsOfRef = GetRealCoordinates(refShape);
+            Drawing.PointF topMostRef = TopMostPoint(allPointsOfRef);
+
+            for (int i = 2; i <= selectedShapes.Count; i++)
+            {
+                Shape s = selectedShapes[i];
+                Drawing.PointF[] allPoints = GetRealCoordinates(s);
+                Drawing.PointF topMost = TopMostPoint(allPoints);
+                s.IncrementTop(topMostRef.Y - topMost.Y);
+            }
+        }
+
+        public static void AlignBottom()
+        {
+            var selectedShapes = Globals.ThisAddIn.Application.ActiveWindow.Selection.ShapeRange as PowerPoint.ShapeRange;
+
+            if (selectedShapes.Count < 2)
+            {
+                //Error
+                return;
+            }
+
+            Shape refShape = selectedShapes[1];
+            Drawing.PointF[] allPointsOfRef = GetRealCoordinates(refShape);
+            Drawing.PointF lowestRef = LowestPoint(allPointsOfRef);
+
+            for (int i = 2; i <= selectedShapes.Count; i++)
+            {
+                Shape s = selectedShapes[i];
+                Drawing.PointF[] allPoints = GetRealCoordinates(s);
+                Drawing.PointF lowest = LowestPoint(allPoints);
+                s.IncrementTop(lowestRef.Y - lowest.Y);
+            }
+        }
         #endregion
 
 

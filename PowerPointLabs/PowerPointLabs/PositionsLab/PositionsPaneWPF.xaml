@@ -26,8 +26,8 @@
         <GroupBox x:Name="snapGroupBox" Header="Snap" HorizontalAlignment="Left" Margin="10,480,0,0" VerticalAlignment="Top" Height="80" Width="284"/>
         <Button ToolTip="Aligns objects to the left axis of reference object" x:Name="alignLeftButton" Content="Left" HorizontalAlignment="Left" Margin="24,37,0,0" VerticalAlignment="Top" Width="60" Height="45" Click="AlignLeftButton_Click"/>
         <Button ToolTip="Aligns objects to the right axis of reference object" x:Name="alignRightButton" Content="Right" HorizontalAlignment="Left" Margin="89,37,0,0" VerticalAlignment="Top" Width="60" Height="45" Click="AlignRightButton_Click"/>
-        <Button ToolTip="Aligns objects to the top axis of reference object" x:Name="alignTopButton" Content="Top" HorizontalAlignment="Left" Margin="154,37,0,0" VerticalAlignment="Top" Width="60" Height="45"/>
-        <Button ToolTip="Aligns objects to the bottom axis of reference object" x:Name="alignBottomButton" Content="Bottom" HorizontalAlignment="Left" Margin="219,37,0,0" VerticalAlignment="Top" Width="60" Height="45"/>
+        <Button ToolTip="Aligns objects to the top axis of reference object" x:Name="alignTopButton" Content="Top" HorizontalAlignment="Left" Margin="154,37,0,0" VerticalAlignment="Top" Width="60" Height="45" Click="AlignTopButton_Click"/>
+        <Button ToolTip="Aligns objects to the bottom axis of reference object" x:Name="alignBottomButton" Content="Bottom" HorizontalAlignment="Left" Margin="219,37,0,0" VerticalAlignment="Top" Width="60" Height="45" Click="AlignBottomButton_Click"/>
         <Button ToolTip="Aligns objects to the middle axis of reference object" x:Name="alignMiddleButton" Content="Middle" HorizontalAlignment="Left" Margin="24,87,0,0" VerticalAlignment="Top" Width="60" Height="45"/>
         <Button ToolTip="Aligns objects to the center of reference object" x:Name="alignCenterButton" Content="Center" HorizontalAlignment="Left" Margin="89,87,0,0" VerticalAlignment="Top" Width="60" Height="45"/>
         <Button x:Name="alignVertexButton" Content="Vertex" HorizontalAlignment="Left" Margin="154,87,0,0" VerticalAlignment="Top" Width="60" Height="45"/>
