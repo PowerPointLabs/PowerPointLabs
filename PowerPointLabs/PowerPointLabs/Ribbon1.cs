@@ -2478,6 +2478,26 @@ namespace PowerPointLabs
                 throw;
             }
         }
+
+
+        // TODO: Add the image for the icon on the ribbon bar
+        //public Bitmap GetPositionsLabImage(Office.IRibbonControl control)
+        //{
+        //    try
+        //    {
+        //        return new Bitmap(Properties.Resources.PositionsLab);
+        //    }
+        //    catch (Exception e)
+        //    {
+        //        PowerPointLabsGlobals.LogException(e, "GetPositionsLabImage");
+        //        throw;
+        //    }
+        //}
+
+        public string GetPositionsLabSupertip(Office.IRibbonControl control)
+        {
+            return TextCollection.PositionsLab.PositionsLabSupertip;
+        }
         #endregion
 
         private static string GetResourceText(string resourceName)
