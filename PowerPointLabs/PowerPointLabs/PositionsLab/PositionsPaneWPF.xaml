@@ -41,7 +41,7 @@
         <Button x:Name="swapDepthButton" Content="Depth" HorizontalAlignment="Left" Margin="89,341,0,0" VerticalAlignment="Top" Width="60" Height="45"/>
         <Button x:Name="rotationButton" Content="Rotation" HorizontalAlignment="Left" Margin="24,426,0,0" VerticalAlignment="Top" Width="60" Height="45"/>
         <Button x:Name="oneDirectionButton" Content="One Direction" HorizontalAlignment="Left" Margin="89,426,0,0" VerticalAlignment="Top" Width="60" Height="45"/>
-        <Button x:Name="snapHorizontalButton" Content="Horizontal" HorizontalAlignment="Left" Margin="24,511,0,0" VerticalAlignment="Top" Width="60" Height="45"/>
-        <Button x:Name="snapVerticalButton" Content="Vertical" HorizontalAlignment="Left" Margin="89,511,0,0" VerticalAlignment="Top" Width="60" Height="45"/>
+        <Button x:Name="snapHorizontalButton" Content="Horizontal" HorizontalAlignment="Left" Margin="24,511,0,0" VerticalAlignment="Top" Width="60" Height="45" Click="SnapHorizontalButton_Click"/>
+        <Button x:Name="snapVerticalButton" Content="Vertical" HorizontalAlignment="Left" Margin="89,511,0,0" VerticalAlignment="Top" Width="60" Height="45" Click="SnapVerticalButton_Click"/>
     </Grid>
 </UserControl>

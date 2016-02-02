@@ -20,9 +20,20 @@ namespace PowerPointLabs.PositionsLab
     /// </summary>
     public partial class PositionsPaneWPF : UserControl
     {
+
         public PositionsPaneWPF()
         {
             InitializeComponent();
+        }
+
+        private void SnapHorizontalButton_Click(object sender, RoutedEventArgs e)
+        {
+            PositionsLabMain.SnapHorizontal();
+        }
+
+        private void SnapVerticalButton_Click(object sender, RoutedEventArgs e)
+        {
+            PositionsLabMain.SnapVertical();
         }
     }
 }
