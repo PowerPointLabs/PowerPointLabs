@@ -39,7 +39,7 @@ namespace PowerPointLabs.ResizeLab
 
         private void StretchRightBtn_Click(object sender, RoutedEventArgs e)
         {
-
+            
         }
 
         private void StretchTopBtn_Click(object sender, RoutedEventArgs e)
@@ -58,17 +58,32 @@ namespace PowerPointLabs.ResizeLab
 
         private void SameWidthBtn_Click(object sender, RoutedEventArgs e)
         {
+            PowerPoint.ShapeRange selectedShapes = GetSelectedShapes();
 
+            if (selectedShapes != null)
+            {
+                ResizeLabMain.ResizeToSameWidth(selectedShapes);
+            }
         }
 
         private void SameHeightBtn_Click(object sender, RoutedEventArgs e)
         {
+            PowerPoint.ShapeRange selectedShapes = GetSelectedShapes();
 
+            if (selectedShapes != null)
+            {
+                ResizeLabMain.ResizeToSameHeight(selectedShapes);
+            }
         }
 
         private void SameSizeBtn_Click(object sender, RoutedEventArgs e)
         {
+            PowerPoint.ShapeRange selectedShapes = GetSelectedShapes();
 
+            if (selectedShapes != null)
+            {
+                ResizeLabMain.ResizeToSameHeightAndWidth(selectedShapes);
+            }
         }
 
         #endregion
@@ -76,17 +91,32 @@ namespace PowerPointLabs.ResizeLab
         #region Event Handler: Fit
         private void FitWidthBtn_Click(object sender, RoutedEventArgs e)
         {
+            PowerPoint.ShapeRange selectedShapes = GetSelectedShapes();
 
+            if (selectedShapes != null)
+            {
+                ResizeLabMain.FitToWidth(selectedShapes);
+            }
         }
 
         private void FitHeightBtn_Click(object sender, RoutedEventArgs e)
         {
+            PowerPoint.ShapeRange selectedShapes = GetSelectedShapes();
 
+            if (selectedShapes != null)
+            {
+                ResizeLabMain.FitToHight(selectedShapes);
+            }
         }
 
         private void FillBtn_Click(object sender, RoutedEventArgs e)
         {
+            PowerPoint.ShapeRange selectedShapes = GetSelectedShapes();
 
+            if (selectedShapes != null)
+            {
+                ResizeLabMain.FitToFill(selectedShapes);
+            }
         }
 
         #endregion
@@ -109,12 +139,18 @@ namespace PowerPointLabs.ResizeLab
 
         private static PowerPoint.ShapeRange GetSelectedShapes()
         {
-            return GetSelection().ShapeRange;
+            PowerPoint.Selection selection = GetSelection();
+
+            if (ResizeLabMain.IsSelecionValid(selection))
+            {
+                return GetSelection().ShapeRange;
+            }
+            return null;
         }
 
         private static PowerPoint.Selection GetSelection()
         {
-            return PowerPointLabs.Models.PowerPointCurrentPresentationInfo.CurrentSelection;
+            return PowerPointCurrentPresentationInfo.CurrentSelection;
         }
         #endregion
 

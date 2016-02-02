@@ -19,7 +19,7 @@ namespace PowerPointLabs.ResizeLab
             FitShapes(selectedShapes, Dimension.Width);
         }
 
-        public static void Fill(PowerPoint.ShapeRange selectedShapes)
+        public static void FitToFill(PowerPoint.ShapeRange selectedShapes)
         {
             FitShapes(selectedShapes, Dimension.HeightAndWidth);
         }
@@ -31,21 +31,20 @@ namespace PowerPointLabs.ResizeLab
                 var slideHight = PowerPointPresentation.Current.SlideHeight;
                 var slideWidth = PowerPointPresentation.Current.SlideWidth;
 
-                for (int i = 1; i < selectedShapes.Count; i++)
+                for (int i = 1; i <= selectedShapes.Count; i++)
                 {
                     PowerPoint.Shape shape = selectedShapes[i];
+                    float coordinateY = shape.Left;
 
-                    switch (dimension)
+                    if ((dimension == Dimension.Height) || (dimension == Dimension.HeightAndWidth))
                     {
-                        case Dimension.Height:
-                            FitToSlide.FitToHeight(shape, slideWidth, slideHight);
-                            break;
-                        case Dimension.Width:
-                            FitToSlide.FitToWidth(shape, slideWidth, slideHight);
-                            break;
-                        case Dimension.HeightAndWidth:
-                            FitToSlide.AutoFit(shape, slideWidth, slideHight);
-                            break;
+                        shape.Height = slideHight;
+                        
+                    }
+
+                    if ((dimension == Dimension.Width) || (dimension == Dimension.HeightAndWidth))
+                    {
+                        shape.Width = slideWidth;
                     }
                 }
             }
