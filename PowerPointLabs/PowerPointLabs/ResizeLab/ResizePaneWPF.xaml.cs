@@ -11,6 +11,8 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using PowerPoint = Microsoft.Office.Interop.PowerPoint;
+using PowerPointLabs.Models;
 
 namespace PowerPointLabs.ResizeLab
 {
@@ -28,7 +30,11 @@ namespace PowerPointLabs.ResizeLab
 
         private void StretchLeftBtn_Click(object sender, RoutedEventArgs e)
         {
-
+            if (!ResizeLabMain.IsSelecionValid(GetSelection()))
+            {
+                return;
+            }
+            ResizeLabMain.StretchLeft(GetSelectedShapes());
         }
 
         private void StretchRightBtn_Click(object sender, RoutedEventArgs e)
@@ -98,5 +104,19 @@ namespace PowerPointLabs.ResizeLab
         }
 
         #endregion
+
+        #region Helper Functions
+
+        private static PowerPoint.ShapeRange GetSelectedShapes()
+        {
+            return GetSelection().ShapeRange;
+        }
+
+        private static PowerPoint.Selection GetSelection()
+        {
+            return PowerPointLabs.Models.PowerPointCurrentPresentationInfo.CurrentSelection;
+        }
+        #endregion
+
     }
 }

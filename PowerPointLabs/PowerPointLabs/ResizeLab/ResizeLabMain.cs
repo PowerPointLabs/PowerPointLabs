@@ -18,7 +18,7 @@ namespace PowerPointLabs.ResizeLab
         private const string ErrorMessageFewerThanTwoSelection = TextCollection.ResizeLabText.ErrorFewerThanTwoSelection;
         private const string ErrorMessageUndefined = TextCollection.ResizeLabText.ErrorUndefined;
 
-        private static bool IsSelecionValid(PowerPoint.Selection selection)
+        internal static bool IsSelecionValid(PowerPoint.Selection selection)
         {
             try
             {
