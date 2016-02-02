@@ -548,9 +548,16 @@
         public const string CustomShapeCategoryContextStripImportShapes = "Import Shapes";
         public const string CustomShapeCategoryContextStripSetAsDefaultCategory = "Set as Default Category";
         public const string CustomShapeCategoryContextStripCategorySettings = "Shapes Lab Settings";
-        # endregion
+        #endregion
 
-        # region Control - ShapesLabSetting
+        #region Positions Lab
+        public class PositionsLab
+        {
+            public const string PositionsLabSupertip = "Open Picture Slides Lab window.";
+        }
+        #endregion
+
+        #region Control - ShapesLabSetting
         public const string FolderDialogDescription = "Select the directory that you want to use as the default.";
         public const string FolderNonEmptyErrorMsg = "Please select an empty folder as default saving folder.";
         # endregion
