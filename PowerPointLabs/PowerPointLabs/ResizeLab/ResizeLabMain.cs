@@ -25,6 +25,11 @@ namespace PowerPointLabs.ResizeLab
             HeightAndWidth
         }
 
+        internal static bool IsShapeSelection(PowerPoint.Selection selection)
+        {
+            return selection.Type == PowerPoint.PpSelectionType.ppSelectionShapes;
+        }
+
         internal static bool IsSelecionValid(PowerPoint.Selection selection)
         {
             try

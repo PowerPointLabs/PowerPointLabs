@@ -240,12 +240,16 @@ namespace PowerPointLabs
             if (sel.Type == PowerPoint.PpSelectionType.ppSelectionShapes)
             {
                 PowerPoint.Shape sh = sel.ShapeRange[1];
-                if (sh.Type == Office.MsoShapeType.msoAutoShape || sh.Type == Office.MsoShapeType.msoFreeform || sh.Type == Office.MsoShapeType.msoTextBox || sh.Type == Office.MsoShapeType.msoPlaceholder
-                    || sh.Type == Office.MsoShapeType.msoCallout || sh.Type == Office.MsoShapeType.msoInk || sh.Type == Office.MsoShapeType.msoGroup)
+                if (sh.Type == Office.MsoShapeType.msoAutoShape || sh.Type == Office.MsoShapeType.msoFreeform ||
+                    sh.Type == Office.MsoShapeType.msoTextBox || sh.Type == Office.MsoShapeType.msoPlaceholder
+                    || sh.Type == Office.MsoShapeType.msoCallout || sh.Type == Office.MsoShapeType.msoInk ||
+                    sh.Type == Office.MsoShapeType.msoGroup)
                 {
                     Ribbon.SpotlightEnabled = true;
                 }
-                if ((sh.Type == Office.MsoShapeType.msoAutoShape && sh.AutoShapeType == Office.MsoAutoShapeType.msoShapeRectangle) || sh.Type == Office.MsoShapeType.msoPicture)
+                if ((sh.Type == Office.MsoShapeType.msoAutoShape &&
+                     sh.AutoShapeType == Office.MsoAutoShapeType.msoShapeRectangle) ||
+                    sh.Type == Office.MsoShapeType.msoPicture)
                 {
                     Ribbon.ZoomButtonEnabled = true;
                 }
@@ -266,6 +270,12 @@ namespace PowerPointLabs
                         }
                     }
                 }
+
+
+                sel.ShapeRange.LockAspectRatio = ResizePaneWPF.IsAspectRatioLocked
+                    ? Office.MsoTriState.msoCTrue
+                    : Office.MsoTriState.msoFalse;
+
             }
 
             Ribbon.RefreshRibbonControl("AddSpotlightButton");
