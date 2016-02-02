@@ -9,6 +9,8 @@ using PowerPointLabs.Utils;
 using PowerPointLabs.Views;
 using Shape = Microsoft.Office.Interop.PowerPoint.Shape;
 using PowerPoint = Microsoft.Office.Interop.PowerPoint;
+using System.Diagnostics;
+using Drawing = System.Drawing;
 
 namespace PowerPointLabs.PositionsLab
 {
@@ -17,7 +19,6 @@ namespace PowerPointLabs.PositionsLab
         #region API
         public static void SnapVertical()
         {
-            var currentSlide = PowerPointCurrentPresentationInfo.CurrentSlide as PowerPointSlide;
             var selectedShapes = Globals.ThisAddIn.Application.ActiveWindow.Selection.ShapeRange as PowerPoint.ShapeRange;
 
             for (int i = 1; i <= selectedShapes.Count; i++)
@@ -28,7 +29,6 @@ namespace PowerPointLabs.PositionsLab
 
         public static void SnapHorizontal()
         {
-            var currentSlide = PowerPointCurrentPresentationInfo.CurrentSlide as PowerPointSlide;
             var selectedShapes = Globals.ThisAddIn.Application.ActiveWindow.Selection.ShapeRange as PowerPoint.ShapeRange;
 
             for (int i = 1; i <= selectedShapes.Count; i++)
@@ -92,6 +92,71 @@ namespace PowerPointLabs.PositionsLab
         private static bool IsVertical(Shape shape)
         {
             return shape.Height > shape.Width;
+        }
+
+        #endregion
+
+        #region Util
+        private static Drawing.PointF[] GetRealCoordinates(Shape s)
+        {
+            float rotation = s.Rotation;
+
+            Drawing.PointF s1 = new Drawing.PointF(s.Left, s.Top);
+            Drawing.PointF s2 = new Drawing.PointF(s.Left + s.Width, s.Top);
+            Drawing.PointF s3 = new Drawing.PointF(s.Left + s.Width, s.Top + s.Height);
+            Drawing.PointF s4 = new Drawing.PointF(s.Left, s.Top + s.Height);
+
+            Drawing.PointF origin = new Drawing.PointF(s.Left + s.Width/2, s.Top + s.Height/2);
+
+            Drawing.PointF rotated1 = RotatePoint(s1, origin, rotation);
+            Drawing.PointF rotated2 = RotatePoint(s2, origin, rotation);
+            Drawing.PointF rotated3 = RotatePoint(s3, origin, rotation);
+            Drawing.PointF rotated4 = RotatePoint(s4, origin, rotation);
+
+            return new Drawing.PointF[] { rotated1, rotated2, rotated3, rotated4 };
+
+        }
+
+        private static Drawing.PointF RotatePoint(Drawing.PointF p, Drawing.PointF origin, float rotation)
+        {
+            double rotationInRadian = DegreeToRadian(rotation);
+            double rotatedX = Math.Cos(rotationInRadian) * (p.X - origin.X) - Math.Sin(rotationInRadian) * (p.Y - origin.Y) + origin.X;
+            double rotatedY = Math.Sin(rotationInRadian) * (p.X - origin.X) - Math.Cos(rotationInRadian) * (p.Y - origin.Y) + origin.Y;
+
+            return new Drawing.PointF((float)rotatedX, (float)rotatedY);
+        }
+
+        private static double DegreeToRadian(float angle)
+        {
+            return angle / 180.0 * Math.PI;
+        }
+
+        private static Drawing.PointF LeftMostPoint(Drawing.PointF[] coords)
+        {
+            Drawing.PointF leftMost = new Drawing.PointF();
+
+            for (int i = 0; i < coords.Length; i++)
+            {
+                if (leftMost.IsEmpty)
+                {
+                    leftMost = coords[i];
+                }
+                else
+                {
+                    if (coords[i].X < leftMost.X)
+                    {
+                        leftMost = coords[i];
+                    }
+                }
+            }
+
+            return leftMost;
+        }
+
+        private static double GetUnrotatedLeftGivenRotatedLeft(Shape s, float rotatedLeft)
+        {
+            double rotationInRadian = DegreeToRadian(s.Rotation);
+            return rotatedLeft + Math.Cos(rotationInRadian) * (s.Width / 2) - Math.Sin(rotationInRadian) * (s.Height / 2) - s.Width / 2;
         }
         #endregion
     }
