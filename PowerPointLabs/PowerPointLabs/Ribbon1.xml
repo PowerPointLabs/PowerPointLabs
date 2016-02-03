@@ -319,7 +319,7 @@
                   getLabel="GetPositionsLabButtonLabel"
                   size="large"
                   getImage="GetPositionsLabImage"
-                  getSupertip="GetPositionsLabButtonSupertip"
+                  getSupertip="GetPositionsLabSupertip"
                   onAction="PositionsLabButtonClick"/>
         </group>
         <group id="PPTLabsHelp"

@@ -26,16 +26,7 @@ namespace PowerPointLabs.PositionsLab
             InitializeComponent();
         }
 
-        private void SnapHorizontalButton_Click(object sender, RoutedEventArgs e)
-        {
-            PositionsLabMain.SnapHorizontal();
-        }
-
-        private void SnapVerticalButton_Click(object sender, RoutedEventArgs e)
-        {
-            PositionsLabMain.SnapVertical();
-        }
-
+        #region Align
         private void AlignLeftButton_Click(object sender, RoutedEventArgs e)
         {
             PositionsLabMain.AlignLeft();
@@ -55,5 +46,28 @@ namespace PowerPointLabs.PositionsLab
         {
             PositionsLabMain.AlignBottom();
         }
+
+        private void AlignMiddleButton_Click(object sender, RoutedEventArgs e)
+        {
+            PositionsLabMain.AlignMiddle();
+        }
+
+        private void AlignCenterButton_Click(object sender, RoutedEventArgs e)
+        {
+            PositionsLabMain.AlignCenter();
+        }
+        #endregion
+
+        #region Snap
+        private void SnapHorizontalButton_Click(object sender, RoutedEventArgs e)
+        {
+            PositionsLabMain.SnapHorizontal();
+        }
+
+        private void SnapVerticalButton_Click(object sender, RoutedEventArgs e)
+        {
+            PositionsLabMain.SnapVertical();
+        }
+        #endregion
     }
 }

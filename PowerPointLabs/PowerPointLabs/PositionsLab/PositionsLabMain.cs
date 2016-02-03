@@ -110,6 +110,50 @@ namespace PowerPointLabs.PositionsLab
                 s.IncrementTop(lowestRef.Y - lowest.Y);
             }
         }
+
+        public static void AlignMiddle()
+        {
+            var selectedShapes = Globals.ThisAddIn.Application.ActiveWindow.Selection.ShapeRange as PowerPoint.ShapeRange;
+
+            if (selectedShapes.Count < 2)
+            {
+                //Error
+                return;
+            }
+
+            Shape refShape = selectedShapes[1];
+            Drawing.PointF originRef = GetCenterPoint(refShape);
+
+            for (int i = 2; i <= selectedShapes.Count; i++)
+            {
+                Shape s = selectedShapes[i];
+                Drawing.PointF origin = GetCenterPoint(s);
+                s.IncrementTop(originRef.Y - origin.Y);
+            }
+        }
+
+        public static void AlignCenter()
+        {
+            var selectedShapes = Globals.ThisAddIn.Application.ActiveWindow.Selection.ShapeRange as PowerPoint.ShapeRange;
+
+            if (selectedShapes.Count < 2)
+            {
+                //Error
+                return;
+            }
+
+            Shape refShape = selectedShapes[1];
+            Drawing.PointF originRef = GetCenterPoint(refShape);
+
+            for (int i = 2; i <= selectedShapes.Count; i++)
+            {
+                Shape s = selectedShapes[i];
+                Drawing.PointF origin = GetCenterPoint(s);
+                s.IncrementLeft(originRef.X - origin.X);
+                s.IncrementTop(originRef.Y - origin.Y);
+            }
+        }
+
         #endregion
 
         #region Snap

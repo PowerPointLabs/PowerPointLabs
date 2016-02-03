@@ -368,6 +368,10 @@ namespace PowerPointLabs
         {
             return TextCollection.AboutButtonSupertip;
         }
+        public string GetPositionsLabSupertip(Office.IRibbonControl control)
+        {
+            return TextCollection.PositionsLab.PositionsLabSupertip;
+        }
         # endregion
 
         # region Button Labels
@@ -567,7 +571,10 @@ namespace PowerPointLabs
         {
             return TextCollection.DrawingsLabButtonLabel;
         }
-
+        public string GetPositionsLabButtonLabel(Office.IRibbonControl control)
+        {
+            return TextCollection.PositionsLab.PositionsLabButtonLabel;
+        }
         public string GetPPTLabsHelpGroupLabel(Office.IRibbonControl control)
         {
             return TextCollection.PPTLabsHelpGroupLabel;
@@ -2494,10 +2501,6 @@ namespace PowerPointLabs
         //    }
         //}
 
-        public string GetPositionsLabSupertip(Office.IRibbonControl control)
-        {
-            return TextCollection.PositionsLab.PositionsLabSupertip;
-        }
         #endregion
 
         private static string GetResourceText(string resourceName)
