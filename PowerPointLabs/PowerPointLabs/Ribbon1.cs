@@ -368,6 +368,10 @@ namespace PowerPointLabs
         {
             return TextCollection.AboutButtonSupertip;
         }
+        public string GetPositionsLabSupertip(Office.IRibbonControl control)
+        {
+            return TextCollection.PositionsLab.PositionsLabSupertip;
+        }
         # endregion
 
         # region Button Labels
@@ -2494,10 +2498,6 @@ namespace PowerPointLabs
         //    }
         //}
 
-        public string GetPositionsLabSupertip(Office.IRibbonControl control)
-        {
-            return TextCollection.PositionsLab.PositionsLabSupertip;
-        }
         #endregion
 
         private static string GetResourceText(string resourceName)
