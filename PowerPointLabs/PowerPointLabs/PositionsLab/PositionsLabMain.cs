@@ -191,6 +191,52 @@ namespace PowerPointLabs.PositionsLab
         }
         #endregion
 
+        #region Adjoin
+        public static void AdjoinHorizontal()
+        {
+            var selectedShapes = Globals.ThisAddIn.Application.ActiveWindow.Selection.ShapeRange as PowerPoint.ShapeRange;
+
+            if (selectedShapes.Count < 2)
+            {
+                //Error
+                return;
+            }
+
+            Shape refShape = selectedShapes[1];
+            List<Shape> sortedShapes = SortShapesByLeftMost(selectedShapes);
+            int refShapeIndex = sortedShapes.IndexOf(refShape);
+
+            Drawing.PointF[] allPointsOfRef = GetRealCoordinates(refShape);
+            Drawing.PointF centerOfRef = GetCenterPoint(refShape);
+
+            float mostLeft = LeftMostPoint(allPointsOfRef).X;
+            //For all shapes left of refShape, adjoin them from closest to refShape
+            for (int i = refShapeIndex - 1; i >= 0; i--)
+            {
+                Shape neighbour = sortedShapes[i];
+                Drawing.PointF[] allPointsOfNeighbour = GetRealCoordinates(neighbour);
+                float rightOfShape = RightMostPoint(allPointsOfNeighbour).X;
+                neighbour.IncrementLeft(mostLeft - rightOfShape);
+                neighbour.IncrementTop(centerOfRef.Y - GetCenterPoint(neighbour).Y);
+
+                mostLeft = LeftMostPoint(allPointsOfNeighbour).X + mostLeft - rightOfShape;
+            }
+
+            float mostRight = RightMostPoint(allPointsOfRef).X;
+            //For all shapes right of refShape, adjoin them from closest to refShape
+            for (int i = refShapeIndex + 1; i < sortedShapes.Count; i++)
+            {
+                Shape neighbour = sortedShapes[i];
+                Drawing.PointF[] allPointsOfNeighbour = GetRealCoordinates(neighbour);
+                float leftOfShape = LeftMostPoint(allPointsOfNeighbour).X;
+                neighbour.IncrementLeft(mostRight - leftOfShape);
+                neighbour.IncrementTop(centerOfRef.Y - GetCenterPoint(neighbour).Y);
+
+                mostRight = RightMostPoint(allPointsOfNeighbour).X + mostRight - leftOfShape;
+            }
+        }
+        #endregion
+
         #endregion
 
         #region Util
