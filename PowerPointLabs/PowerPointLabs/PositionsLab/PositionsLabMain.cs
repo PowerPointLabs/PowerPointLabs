@@ -201,8 +201,7 @@ namespace PowerPointLabs.PositionsLab
             Drawing.PointF s2 = new Drawing.PointF(s.Left + s.Width, s.Top);
             Drawing.PointF s3 = new Drawing.PointF(s.Left + s.Width, s.Top + s.Height);
             Drawing.PointF s4 = new Drawing.PointF(s.Left, s.Top + s.Height);
-
-            Drawing.PointF origin = new Drawing.PointF(s.Left + s.Width/2, s.Top + s.Height/2);
+            Drawing.PointF origin = GetOrigin(s);
 
             Drawing.PointF rotated1 = RotatePoint(s1, origin, rotation);
             Drawing.PointF rotated2 = RotatePoint(s2, origin, rotation);
@@ -211,6 +210,11 @@ namespace PowerPointLabs.PositionsLab
 
             return new Drawing.PointF[] { rotated1, rotated2, rotated3, rotated4 };
 
+        }
+
+        private static Drawing.PointF GetOrigin(Shape s)
+        {
+            return new Drawing.PointF(s.Left + s.Width / 2, s.Top + s.Height / 2);
         }
 
         private static Drawing.PointF RotatePoint(Drawing.PointF p, Drawing.PointF origin, float rotation)
