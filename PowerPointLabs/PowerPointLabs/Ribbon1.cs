@@ -571,7 +571,10 @@ namespace PowerPointLabs
         {
             return TextCollection.DrawingsLabButtonLabel;
         }
-
+        public string GetPositionsLabButtonLabel(Office.IRibbonControl control)
+        {
+            return TextCollection.PositionsLab.PositionsLabButtonLabel;
+        }
         public string GetPPTLabsHelpGroupLabel(Office.IRibbonControl control)
         {
             return TextCollection.PPTLabsHelpGroupLabel;

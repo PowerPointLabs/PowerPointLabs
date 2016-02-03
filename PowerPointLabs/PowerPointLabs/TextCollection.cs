@@ -554,6 +554,7 @@
         public class PositionsLab
         {
             public const string PositionsLabSupertip = "Open Positions Lab window.";
+            public const string PositionsLabButtonLabel = "Positions Lab";
         }
         #endregion
 
