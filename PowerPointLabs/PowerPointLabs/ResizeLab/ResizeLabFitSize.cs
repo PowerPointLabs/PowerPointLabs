@@ -8,6 +8,10 @@ using PowerPoint = Microsoft.Office.Interop.PowerPoint;
 
 namespace PowerPointLabs.ResizeLab
 {
+    /// <summary>
+    /// ResizeLabFitSize is the parital class of ResizeLabMain.
+    /// It handles fit to height, width and fill to the size of the slide.
+    /// </summary>
     internal static partial class ResizeLabMain
     {
         public static void FitToHight(PowerPoint.ShapeRange selectedShapes, bool isAspectRatio = false)
