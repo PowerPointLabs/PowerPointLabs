@@ -325,6 +325,41 @@ namespace PowerPointLabs.PositionsLab
         }
         #endregion
 
+        #region Swap
+        public static void Swap()
+        {
+            var selectedShapes = Globals.ThisAddIn.Application.ActiveWindow.Selection.ShapeRange as PowerPoint.ShapeRange;
+
+            if (selectedShapes.Count < 2)
+            {
+                //Error
+                return;
+            }
+
+            List<Shape> sortedShapes = SortShapesByLeft(selectedShapes);
+            Drawing.PointF firstPos = GetCenterPoint(sortedShapes[0]);
+
+            for (int i = 0; i < sortedShapes.Count; i++)
+            {
+                Shape currentShape = sortedShapes[i];
+                if (i < sortedShapes.Count - 1)
+                {
+                    Drawing.PointF currentPos = GetCenterPoint(currentShape);
+                    Drawing.PointF nextPos = GetCenterPoint(sortedShapes[i + 1]);
+
+                    currentShape.IncrementLeft(nextPos.X - currentPos.X);
+                    currentShape.IncrementTop(nextPos.Y - currentPos.Y);
+                }
+                else
+                {
+                    Drawing.PointF currentPos = GetCenterPoint(currentShape);
+                    currentShape.IncrementLeft(firstPos.X - currentPos.X);
+                    currentShape.IncrementTop(firstPos.Y - currentPos.Y);
+                }
+            }
+        }
+        #endregion
+
         #endregion
 
         #region Util
