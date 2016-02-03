@@ -2497,7 +2497,7 @@ namespace PowerPointLabs
                 throw;
             }
         }
-
+        #endregion
 
         // TODO: Add the image for the icon on the ribbon bar
         //public Bitmap GetPositionsLabImage(Office.IRibbonControl control)

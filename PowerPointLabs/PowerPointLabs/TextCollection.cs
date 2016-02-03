@@ -572,6 +572,7 @@
             public const string PositionsLabSupertip = "Open Positions Lab window.";
             public const string PositionsLabButtonLabel = "Positions Lab";
         }
+        #endregion
         #region Task Pane - Resize Lab
 
         public class ResizeLabText

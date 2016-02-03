@@ -388,6 +388,7 @@
     </Compile>
     <Compile Include="PositionsLab\PositionsPaneWPF.xaml.cs">
       <DependentUpon>PositionsPaneWPF.xaml</DependentUpon>
+    </Compile>
     <Compile Include="ResizeLab\ResizeLabAspectRatio.cs" />
     <Compile Include="ResizeLab\ResizeLabFitSize.cs" />
     <Compile Include="ResizeLab\ResizeLabMain.cs" />
@@ -893,6 +894,7 @@
     <Page Include="PositionsLab\PositionsPaneWPF.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="ResizeLab\ResizePaneWPF.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
