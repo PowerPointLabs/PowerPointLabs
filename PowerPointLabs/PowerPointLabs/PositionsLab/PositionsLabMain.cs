@@ -110,52 +110,9 @@ namespace PowerPointLabs.PositionsLab
                 s.IncrementTop(lowestRef.Y - lowest.Y);
             }
         }
-
-        public static void AlignMiddle()
-        {
-            var selectedShapes = Globals.ThisAddIn.Application.ActiveWindow.Selection.ShapeRange as PowerPoint.ShapeRange;
-
-            if (selectedShapes.Count < 2)
-            {
-                //Error
-                return;
-            }
-
-            Shape refShape = selectedShapes[1];
-            Drawing.PointF originRef = GetOrigin(refShape);
-
-            for (int i=2; i<= selectedShapes.Count; i++)
-            {
-                Shape s = selectedShapes[i];
-                Drawing.PointF origin = GetOrigin(s);
-                s.IncrementTop(originRef.Y - origin.Y);
-            }
-        }
-
-        public static void AlignCenter()
-        {
-            var selectedShapes = Globals.ThisAddIn.Application.ActiveWindow.Selection.ShapeRange as PowerPoint.ShapeRange;
-
-            if (selectedShapes.Count < 2)
-            {
-                //Error
-                return;
-            }
-
-            Shape refShape = selectedShapes[1];
-            Drawing.PointF originRef = GetOrigin(refShape);
-
-            for (int i = 2; i <= selectedShapes.Count; i++)
-            {
-                Shape s = selectedShapes[i];
-                Drawing.PointF origin = GetOrigin(s);
-                s.IncrementLeft(originRef.X - origin.X);
-                s.IncrementTop(originRef.Y - origin.Y);
-            }
-        }
         #endregion
 
-
+        #region Snap
         public static void SnapVertical()
         {
             var selectedShapes = Globals.ThisAddIn.Application.ActiveWindow.Selection.ShapeRange as PowerPoint.ShapeRange;
@@ -232,6 +189,53 @@ namespace PowerPointLabs.PositionsLab
         {
             return shape.Height > shape.Width;
         }
+        #endregion
+
+        #region Adjoin
+        public static void AdjoinHorizontal()
+        {
+            var selectedShapes = Globals.ThisAddIn.Application.ActiveWindow.Selection.ShapeRange as PowerPoint.ShapeRange;
+
+            if (selectedShapes.Count < 2)
+            {
+                //Error
+                return;
+            }
+
+            Shape refShape = selectedShapes[1];
+            List<Shape> sortedShapes = SortShapesByLeftMost(selectedShapes);
+            int refShapeIndex = sortedShapes.IndexOf(refShape);
+
+            Drawing.PointF[] allPointsOfRef = GetRealCoordinates(refShape);
+            Drawing.PointF centerOfRef = GetCenterPoint(refShape);
+
+            float mostLeft = LeftMostPoint(allPointsOfRef).X;
+            //For all shapes left of refShape, adjoin them from closest to refShape
+            for (int i = refShapeIndex - 1; i >= 0; i--)
+            {
+                Shape neighbour = sortedShapes[i];
+                Drawing.PointF[] allPointsOfNeighbour = GetRealCoordinates(neighbour);
+                float rightOfShape = RightMostPoint(allPointsOfNeighbour).X;
+                neighbour.IncrementLeft(mostLeft - rightOfShape);
+                neighbour.IncrementTop(centerOfRef.Y - GetCenterPoint(neighbour).Y);
+
+                mostLeft = LeftMostPoint(allPointsOfNeighbour).X + mostLeft - rightOfShape;
+            }
+
+            float mostRight = RightMostPoint(allPointsOfRef).X;
+            //For all shapes right of refShape, adjoin them from closest to refShape
+            for (int i = refShapeIndex + 1; i < sortedShapes.Count; i++)
+            {
+                Shape neighbour = sortedShapes[i];
+                Drawing.PointF[] allPointsOfNeighbour = GetRealCoordinates(neighbour);
+                float leftOfShape = LeftMostPoint(allPointsOfNeighbour).X;
+                neighbour.IncrementLeft(mostRight - leftOfShape);
+                neighbour.IncrementTop(centerOfRef.Y - GetCenterPoint(neighbour).Y);
+
+                mostRight = RightMostPoint(allPointsOfNeighbour).X + mostRight - leftOfShape;
+            }
+        }
+        #endregion
 
         #endregion
 
@@ -244,7 +248,8 @@ namespace PowerPointLabs.PositionsLab
             Drawing.PointF s2 = new Drawing.PointF(s.Left + s.Width, s.Top);
             Drawing.PointF s3 = new Drawing.PointF(s.Left + s.Width, s.Top + s.Height);
             Drawing.PointF s4 = new Drawing.PointF(s.Left, s.Top + s.Height);
-            Drawing.PointF origin = GetOrigin(s);
+
+            Drawing.PointF origin = GetCenterPoint(s);
 
             Drawing.PointF rotated1 = RotatePoint(s1, origin, rotation);
             Drawing.PointF rotated2 = RotatePoint(s2, origin, rotation);
@@ -253,11 +258,6 @@ namespace PowerPointLabs.PositionsLab
 
             return new Drawing.PointF[] { rotated1, rotated2, rotated3, rotated4 };
 
-        }
-
-        private static Drawing.PointF GetOrigin(Shape s)
-        {
-            return new Drawing.PointF(s.Left + s.Width / 2, s.Top + s.Height / 2);
         }
 
         private static Drawing.PointF RotatePoint(Drawing.PointF p, Drawing.PointF origin, float rotation)
@@ -367,6 +367,31 @@ namespace PowerPointLabs.PositionsLab
             double rotationInRadian = DegreeToRadian(s.Rotation);
             return rotatedLeft + Math.Cos(rotationInRadian) * (s.Width / 2) - Math.Sin(rotationInRadian) * (s.Height / 2) - s.Width / 2;
         }
+
+        private static Drawing.PointF GetCenterPoint(Shape s)
+        {
+            return new Drawing.PointF(s.Left + s.Width / 2, s.Top + s.Height / 2);
+        }
+
+        private static List<Shape> SortShapesByLeftMost(PowerPoint.ShapeRange selectedShapes)
+        {
+            List<Shape> shapesToBeSorted = new List<Shape>();
+
+            for (int i = 1; i <= selectedShapes.Count; i++)
+            {
+                shapesToBeSorted.Add(selectedShapes[i]);
+            }
+
+            shapesToBeSorted.Sort((s1, s2) => MostLeftComparator(s1, s2));
+
+            return shapesToBeSorted;
+        }
+
+        private static int MostLeftComparator(Shape s1, Shape s2)
+        {
+            return LeftMostPoint(GetRealCoordinates(s1)).X.CompareTo(LeftMostPoint(GetRealCoordinates(s2)).X);
+        }
+
         #endregion
     }
 }
