@@ -236,6 +236,49 @@ namespace PowerPointLabs.PositionsLab
             }
         }
 
+        public static void AdjoinVertical()
+        {
+            var selectedShapes = Globals.ThisAddIn.Application.ActiveWindow.Selection.ShapeRange as PowerPoint.ShapeRange;
+
+            if (selectedShapes.Count < 2)
+            {
+                //Error
+                return;
+            }
+
+            Shape refShape = selectedShapes[1];
+            List<Shape> sortedShapes = SortShapesByTop(selectedShapes);
+            int refShapeIndex = sortedShapes.IndexOf(refShape);
+
+            Drawing.PointF[] allPointsOfRef = GetRealCoordinates(refShape);
+            Drawing.PointF centerOfRef = GetCenterPoint(refShape);
+
+            float mostTop = TopMostPoint(allPointsOfRef).Y;
+            //For all shapes above refShape, adjoin them from closest to refShape
+            for (int i = refShapeIndex - 1; i >= 0; i--)
+            {
+                Shape neighbour = sortedShapes[i];
+                Drawing.PointF[] allPointsOfNeighbour = GetRealCoordinates(neighbour);
+                float bottomOfShape = LowestPoint(allPointsOfNeighbour).Y;
+                neighbour.IncrementLeft(centerOfRef.X - GetCenterPoint(neighbour).X);
+                neighbour.IncrementTop(mostTop - bottomOfShape);
+
+                mostTop = TopMostPoint(allPointsOfNeighbour).Y + mostTop - bottomOfShape;
+            }
+
+            float lowest = LowestPoint(allPointsOfRef).Y;
+            //For all shapes right of refShape, adjoin them from closest to refShape
+            for (int i = refShapeIndex + 1; i < sortedShapes.Count; i++)
+            {
+                Shape neighbour = sortedShapes[i];
+                Drawing.PointF[] allPointsOfNeighbour = GetRealCoordinates(neighbour);
+                float topOfShape = TopMostPoint(allPointsOfNeighbour).Y;
+                neighbour.IncrementLeft(centerOfRef.X - GetCenterPoint(neighbour).X);
+                neighbour.IncrementTop(lowest - topOfShape);
+
+                lowest = LowestPoint(allPointsOfNeighbour).Y + lowest - topOfShape;
+            }
+        }
         #endregion
 
         #endregion
