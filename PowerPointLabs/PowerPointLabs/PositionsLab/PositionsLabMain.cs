@@ -112,7 +112,7 @@ namespace PowerPointLabs.PositionsLab
         }
         #endregion
 
-
+        #region Snap
         public static void SnapVertical()
         {
             var selectedShapes = Globals.ThisAddIn.Application.ActiveWindow.Selection.ShapeRange as PowerPoint.ShapeRange;
@@ -189,6 +189,7 @@ namespace PowerPointLabs.PositionsLab
         {
             return shape.Height > shape.Width;
         }
+        #endregion
 
         #endregion
 
@@ -202,7 +203,7 @@ namespace PowerPointLabs.PositionsLab
             Drawing.PointF s3 = new Drawing.PointF(s.Left + s.Width, s.Top + s.Height);
             Drawing.PointF s4 = new Drawing.PointF(s.Left, s.Top + s.Height);
 
-            Drawing.PointF origin = new Drawing.PointF(s.Left + s.Width/2, s.Top + s.Height/2);
+            Drawing.PointF origin = GetCenterPoint(s);
 
             Drawing.PointF rotated1 = RotatePoint(s1, origin, rotation);
             Drawing.PointF rotated2 = RotatePoint(s2, origin, rotation);
@@ -320,6 +321,12 @@ namespace PowerPointLabs.PositionsLab
             double rotationInRadian = DegreeToRadian(s.Rotation);
             return rotatedLeft + Math.Cos(rotationInRadian) * (s.Width / 2) - Math.Sin(rotationInRadian) * (s.Height / 2) - s.Width / 2;
         }
+
+        private static Drawing.PointF GetCenterPoint(Shape s)
+        {
+            return new Drawing.PointF(s.Left + s.Width / 2, s.Top + s.Height / 2);
+        }
+
         #endregion
     }
 }
