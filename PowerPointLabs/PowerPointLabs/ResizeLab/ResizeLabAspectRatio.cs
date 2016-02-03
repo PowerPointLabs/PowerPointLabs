@@ -7,6 +7,11 @@ using PowerPoint = Microsoft.Office.Interop.PowerPoint;
 
 namespace PowerPointLabs.ResizeLab
 {
+    /// <summary>
+    /// ResizeLabAspectRatio is the parital class of ResizeLabMain.
+    /// It controls the related actions of aspect ratio according to
+    /// the selection.
+    /// </summary>
     internal static partial class ResizeLabMain
     {
         public static void ChangeShapesAspectRatio(PowerPoint.ShapeRange selectedShapes, bool isAspectRatio)
