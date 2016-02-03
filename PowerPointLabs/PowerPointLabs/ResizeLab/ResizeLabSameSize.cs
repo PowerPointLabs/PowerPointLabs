@@ -8,6 +8,11 @@ using PowerPoint = Microsoft.Office.Interop.PowerPoint;
 
 namespace PowerPointLabs.ResizeLab
 {
+    /// <summary>
+    /// ResizeLabSameSize is the parital class of ResizeLabMain.
+    /// It handles the resizing of the shapes to the same dimension 
+    /// (e.g. height, width and both).
+    /// </summary>
     internal static partial class ResizeLabMain
     {
         public static void ResizeToSameHeight(PowerPoint.ShapeRange selectedShapes)
@@ -24,8 +29,6 @@ namespace PowerPointLabs.ResizeLab
         {
             ResizeShapes(selectedShapes, Dimension.HeightAndWidth);
         }
-
-        #region General
 
         private static void ResizeShapes(PowerPoint.ShapeRange selectedShapes, Dimension dimension)
         {
@@ -76,7 +79,5 @@ namespace PowerPointLabs.ResizeLab
             }
             return -1;
         }
-
-        #endregion
     }
 }
