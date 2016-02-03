@@ -15,6 +15,10 @@ namespace PowerPointLabs.PictureSlidesLab.View
 
         public event DropHandle DropHandler;
 
+        public delegate void PasteHandle();
+
+        public event PasteHandle PasteHandler;
+
         // indicate whether the window is open/closed or not
         public bool IsOpen { get; set; }
 
@@ -88,6 +92,24 @@ namespace PowerPointLabs.PictureSlidesLab.View
         {
             _parent.Activate();
             Close();
+        }
+
+        private void MenuItemPastePictureHere_OnClick(object sender, RoutedEventArgs e)
+        {
+            if (PasteHandler != null)
+            {
+                PasteHandler();
+            }
+        }
+
+        private void QuickDropDialog_OnKeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.Key == Key.V
+                && Keyboard.Modifiers == ModifierKeys.Control
+                && PasteHandler != null)
+            {
+                PasteHandler();
+            }
         }
     }
 }

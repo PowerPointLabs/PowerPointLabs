@@ -321,6 +321,12 @@
                   getImage="GetPositionsLabImage"
                   getSupertip="GetPositionsLabSupertip"
                   onAction="PositionsLabButtonClick"/>
+          <button id="ResizeLabButton"
+                  visible="true"
+                  getLabel="GetResizeLabButtonLabel"
+                  size="large"
+                  getSupertip="GetResizeLabButtonSupertip"
+                  onAction="ResizeLabButtonClick"/>
         </group>
         <group id="PPTLabsHelp"
                getLabel="GetPPTLabsHelpGroupLabel"

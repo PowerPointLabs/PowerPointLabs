@@ -117,11 +117,15 @@
 
         # region Drawing Lab
         public const string DrawingsLabButtonSupertip = @"Opens the Drawing Lab Interface";
-        # endregion
+        #endregion
 
-        # endregion
+        #region Resize Lab
+        public const string ResizeLabButtonSupertip = "Opens the Resize Lab Interface";
+        #endregion
 
-        # region Help
+        #endregion
+
+        #region Help
         public const string HelpButtonSupertip = @"Click this to visit PowerPointLabs help page in our website.";
         public const string FeedbackButtonSupertip = @"Click this to email us problem reports or other feedback. ";
         public const string AboutButtonSupertip = @"Information about the PowerPointLabs plugin.";
@@ -217,6 +221,10 @@
         # region Drawing Lab
         public const string DrawingsLabButtonLabel = "Drawing Lab";
         # endregion
+
+        # region Resize Lab
+        public const string ResizeLabButtonLabel = "Resize Lab";
+        # endregion
         # endregion
 
         # region Help
@@ -290,6 +298,7 @@
         public const string DrawingsLabTaskPanelTitle = "Drawing Lab";
         public const string RecManagementPanelTitle = "Record Management";
         public const string PositionsLabTaskPanelTitle = "Positions Lab";
+        public const string ResizeLabsTaskPaneTitle = "Resize Lab";
         # endregion 
 
         # region ShapeGalleryPresentation
@@ -323,11 +332,16 @@
             /// <summary>
             /// Styles Variation Category Name
             /// 
+            /// Leave OptionName to be ColorNoEffect to hide color panel & picker
+            /// 
             /// Color category's name (without spaces) should be equal to corresponding style option's 
             /// property name, so that the color picker can work properly
             /// </summary>
+            public const string ColorNoEffect = "No Effect";
+            public const string ColorHasEffect = "Color";
             public const string VariantCategoryOverlayColor = "Overlay Color";
             public const string VariantCategoryFontColor = "Font Color";
+            public const string VariantCategoryTextGlowColor = "Text Glow Color";
             public const string VariantCategoryBannerColor = "Banner Color";
             public const string VariantCategoryTextBoxColor = "TextBox Color";
             public const string VariantCategoryFrameColor = "Frame Color";
@@ -386,9 +400,12 @@
 
             public const string DragAndDropInstruction =
                 "Drag and Drop here to get image.";
+
+            public const string InfoPasteNothing = "No picture to paste.";
+            public const string InfoPasteThumbnail = "Pasted successfully! But you might have pasted the thumbnail picture.";
         }
 
-        # region Agenda Lab
+        #region Agenda Lab
         // Errors
         public const string AgendaLabErrorDialogTitle = "Unable to execute action";
         public const string AgendaLabNoSectionError = "Please group the slides into sections before generating agenda.";
@@ -425,7 +442,6 @@
                             "This slide is used as a ‘Template' for generating agenda slides. Please do not delete this slide.\r" +
                             "Adjust the design of this slide and click the 'Sync Agenda' (in Agenda Lab) to replicate the design in the other slides.";
         # endregion
-
 
         # region Drawing Lab
 
@@ -556,6 +572,17 @@
             public const string PositionsLabSupertip = "Open Positions Lab window.";
             public const string PositionsLabButtonLabel = "Positions Lab";
         }
+        #region Task Pane - Resize Lab
+
+        public class ResizeLabText
+        {
+            public const string ErrorNoSelection = "'Resize Lab' requires shape to be selected.";
+            public const string ErrorFewerThanTwoSelection = "'Resize Lab' requires at least two shapes.";
+            public const string ErrorUndefined = "'Undefined error in Resize Lab'";
+            public const string WarningShapesNotStretchText =
+                "One or more shapes cannot be resized as it will cause the shape to be small";
+        }
+
         #endregion
 
         #region Control - ShapesLabSetting

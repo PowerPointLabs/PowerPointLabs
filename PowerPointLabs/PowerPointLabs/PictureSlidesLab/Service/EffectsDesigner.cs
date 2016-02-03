@@ -144,6 +144,34 @@ namespace PowerPointLabs.PictureSlidesLab.Service
             }
         }
 
+        public void ApplyTextGlowEffect(bool isUseTextGlow, string textGlowColor)
+        {
+            foreach (PowerPoint.Shape shape in Shapes)
+            {
+                if ((shape.Type != MsoShapeType.msoPlaceholder
+                     && shape.Type != MsoShapeType.msoTextBox)
+                    || shape.TextFrame.HasText == MsoTriState.msoFalse)
+                {
+                    continue;
+                }
+
+                if (isUseTextGlow)
+                {
+                    shape.TextFrame2.TextRange.Font.Glow.Radius = 8;
+                    shape.TextFrame2.TextRange.Font.Glow.Color.RGB =
+                        Graphics.ConvertColorToRgb(StringUtil.GetColorFromHexValue(textGlowColor));
+                    shape.TextFrame2.TextRange.Font.Glow.Transparency = 0.6f;
+                }
+                else
+                {
+                    shape.TextFrame2.TextRange.Font.Glow.Radius = 0;
+                    shape.TextFrame2.TextRange.Font.Glow.Color.RGB =
+                        Graphics.ConvertColorToRgb(StringUtil.GetColorFromHexValue(textGlowColor));
+                    shape.TextFrame2.TextRange.Font.Glow.Transparency = 0.0f;
+                }
+            }
+        }
+
         public void ApplyOriginalTextEffect()
         {
             foreach (PowerPoint.Shape shape in Shapes)

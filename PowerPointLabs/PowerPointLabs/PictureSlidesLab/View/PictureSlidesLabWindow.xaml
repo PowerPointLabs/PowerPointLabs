@@ -21,6 +21,7 @@
              DragEnter="PictureSlidesLabWindow_OnDragEnter"
              DragLeave="PictureSlidesLabWindow_OnDragLeave"
              DragOver="PictureSlidesLabWindow_OnDragEnter"
+             KeyDown="PictureSlidesLabWindow_OnKeyDown"
              Drop="PictureSlidesLabWindow_OnDrop">
     <controls:MetroWindow.Resources>
         <ResourceDictionary>
@@ -215,6 +216,7 @@
                     <ListBox.ContextMenu>
                         <ContextMenu Name="ImageSelectionListBoxContextMenu">
                             <MenuItem Header="Adjust picture dimensions" Click="MenuItemAdjustImage_OnClick"></MenuItem>
+                            <MenuItem Header="Paste picture here" Click="MenuItemPastePictureHere_OnClick"></MenuItem>
                             <MenuItem Header="Delete this picture" Click="MenuItemDeleteThisImage_OnClick"></MenuItem>
                             <Separator />
                             <MenuItem Header="Delete all picture" Click="MenuItemDeleteAllImages_OnClick"></MenuItem>

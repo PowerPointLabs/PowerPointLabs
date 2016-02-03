@@ -1,8 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Collections.Specialized;
 using System.Drawing;
 using System.Linq;
+using System.Windows.Forms;
 using Microsoft.Office.Interop.PowerPoint;
 using PowerPointLabs.AutoUpdate.Interface;
 using PowerPointLabs.PictureSlidesLab.Model;
@@ -277,6 +279,7 @@ namespace PowerPointLabs.PictureSlidesLab.ViewModel
 
         public void ApplyStyleInPreviewStage(Slide contentSlide, float slideWidth, float slideHeight)
         {
+            var copiedPicture = LoadClipboardPicture();
             try
             {
                 var targetDefaultOptions = StyleOptionsFactory
@@ -289,6 +292,7 @@ namespace PowerPointLabs.PictureSlidesLab.ViewModel
             {
                 View.ShowErrorMessageBox(TextCollection.PictureSlidesLabText.ErrorNoSelectedSlide);
             }
+            SaveClipboardPicture(copiedPicture);
         }
         #endregion
 
@@ -412,6 +416,7 @@ namespace PowerPointLabs.PictureSlidesLab.ViewModel
 
         public void ApplyStyleInVariationStage(Slide contentSlide, float slideWidth, float slideHeight)
         {
+            var copiedPicture = LoadClipboardPicture();
             try
             {
                 Designer.ApplyStyle(ImageSelectionListSelectedItem.ImageItem, contentSlide,
@@ -422,10 +427,48 @@ namespace PowerPointLabs.PictureSlidesLab.ViewModel
             {
                 View.ShowErrorMessageBox(TextCollection.PictureSlidesLabText.ErrorNoSelectedSlide);
             }
+            SaveClipboardPicture(copiedPicture);
         }
         #endregion
 
         #region Helper funcs
+
+        private static object LoadClipboardPicture()
+        {
+            var pic = Clipboard.GetImage();
+            var text = Clipboard.GetText();
+            var files = Clipboard.GetFileDropList();
+
+            if (pic != null)
+            {
+                return pic;
+            }
+            else if (files != null && files.Count > 0)
+            {
+                return files;
+            }
+            else
+            {
+                return text;
+            }
+        }
+
+        private static void SaveClipboardPicture(object copiedObj)
+        {
+            if (copiedObj is Image)
+            {
+                Clipboard.SetImage((Image) copiedObj);
+            }
+            else if (copiedObj is StringCollection)
+            {
+                Clipboard.SetFileDropList((StringCollection) copiedObj);
+            }
+            else if (copiedObj is string)
+            {
+                Clipboard.SetText((string)copiedObj);
+            }
+        }
+
         private static void VerifyIsProperImage(string filename)
         {
             using (Image.FromFile(filename))
@@ -442,6 +485,7 @@ namespace PowerPointLabs.PictureSlidesLab.ViewModel
             if (!IsAbleToUpdateStylesPreviewImages(source, contentSlide))
                 return;
 
+            var copiedPicture = LoadClipboardPicture();
             try
             {
                 foreach (var stylesPreviewOption in StyleOptionsFactory.GetAllStylesPreviewOptions())
@@ -459,6 +503,7 @@ namespace PowerPointLabs.PictureSlidesLab.ViewModel
             {
                 View.ShowErrorMessageBox(TextCollection.PictureSlidesLabText.ErrorImageCorrupted);
             }
+            SaveClipboardPicture(copiedPicture);
 
             StylesPreviewListSelectedId.Number = selectedId;
         }
@@ -537,6 +582,7 @@ namespace PowerPointLabs.PictureSlidesLab.ViewModel
         private void UpdateStylesVariationImages(ImageItem source, Slide contentSlide, 
             float slideWidth, float slideHeight)
         {
+            var copiedPicture = LoadClipboardPicture();
             try
             {
                 foreach (var styleOption in _styleOptions)
@@ -554,6 +600,7 @@ namespace PowerPointLabs.PictureSlidesLab.ViewModel
             {
                 View.ShowErrorMessageBox(TextCollection.PictureSlidesLabText.ErrorImageCorrupted);
             }
+            SaveClipboardPicture(copiedPicture);
         }
 
         private ImageItem CreateChoosePicturesItem()
