@@ -203,7 +203,7 @@ namespace PowerPointLabs.PositionsLab
             }
 
             Shape refShape = selectedShapes[1];
-            List<Shape> sortedShapes = SortShapesByLeftMost(selectedShapes);
+            List<Shape> sortedShapes = SortShapesByLeft(selectedShapes);
             int refShapeIndex = sortedShapes.IndexOf(refShape);
 
             Drawing.PointF[] allPointsOfRef = GetRealCoordinates(refShape);
@@ -235,6 +235,7 @@ namespace PowerPointLabs.PositionsLab
                 mostRight = RightMostPoint(allPointsOfNeighbour).X + mostRight - leftOfShape;
             }
         }
+
         #endregion
 
         #endregion
@@ -373,7 +374,7 @@ namespace PowerPointLabs.PositionsLab
             return new Drawing.PointF(s.Left + s.Width / 2, s.Top + s.Height / 2);
         }
 
-        private static List<Shape> SortShapesByLeftMost(PowerPoint.ShapeRange selectedShapes)
+        private static List<Shape> SortShapesByLeft(PowerPoint.ShapeRange selectedShapes)
         {
             List<Shape> shapesToBeSorted = new List<Shape>();
 
@@ -382,12 +383,12 @@ namespace PowerPointLabs.PositionsLab
                 shapesToBeSorted.Add(selectedShapes[i]);
             }
 
-            shapesToBeSorted.Sort((s1, s2) => MostLeftComparator(s1, s2));
+            shapesToBeSorted.Sort((s1, s2) => LeftComparator(s1, s2));
 
             return shapesToBeSorted;
         }
 
-        private static int MostLeftComparator(Shape s1, Shape s2)
+        private static int LeftComparator(Shape s1, Shape s2)
         {
             return LeftMostPoint(GetRealCoordinates(s1)).X.CompareTo(LeftMostPoint(GetRealCoordinates(s2)).X);
         }
