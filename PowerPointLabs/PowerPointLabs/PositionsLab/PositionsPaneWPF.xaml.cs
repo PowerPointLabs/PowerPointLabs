@@ -58,6 +58,18 @@ namespace PowerPointLabs.PositionsLab
         }
         #endregion
 
+        #region Adjoin
+        private void AdjoinHorizontalButton_Click(object sender, RoutedEventArgs e)
+        {
+            PositionsLabMain.AdjoinHorizontal();
+        }
+
+        private void AdjoinVerticalButton_Click(object sender, RoutedEventArgs e)
+        {
+            PositionsLabMain.AdjoinVertical();
+        }
+        #endregion
+
         #region Snap
         private void SnapHorizontalButton_Click(object sender, RoutedEventArgs e)
         {
@@ -67,6 +79,13 @@ namespace PowerPointLabs.PositionsLab
         private void SnapVerticalButton_Click(object sender, RoutedEventArgs e)
         {
             PositionsLabMain.SnapVertical();
+        }
+        #endregion
+
+        #region Swap
+        private void SwapPositionsButton_Click(object sender, RoutedEventArgs e)
+        {
+            PositionsLabMain.Swap();
         }
         #endregion
     }
