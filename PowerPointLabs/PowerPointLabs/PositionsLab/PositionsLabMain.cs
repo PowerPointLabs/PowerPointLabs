@@ -388,9 +388,28 @@ namespace PowerPointLabs.PositionsLab
             return shapesToBeSorted;
         }
 
+        private static List<Shape> SortShapesByTop(PowerPoint.ShapeRange selectedShapes)
+        {
+            List<Shape> shapesToBeSorted = new List<Shape>();
+
+            for (int i = 1; i <= selectedShapes.Count; i++)
+            {
+                shapesToBeSorted.Add(selectedShapes[i]);
+            }
+
+            shapesToBeSorted.Sort((s1, s2) => TopComparator(s1, s2));
+
+            return shapesToBeSorted;
+        }
+
         private static int LeftComparator(Shape s1, Shape s2)
         {
             return LeftMostPoint(GetRealCoordinates(s1)).X.CompareTo(LeftMostPoint(GetRealCoordinates(s2)).X);
+        }
+
+        private static int TopComparator(Shape s1, Shape s2)
+        {
+            return TopMostPoint(GetRealCoordinates(s1)).Y.CompareTo(TopMostPoint(GetRealCoordinates(s2)).Y);
         }
 
         #endregion
