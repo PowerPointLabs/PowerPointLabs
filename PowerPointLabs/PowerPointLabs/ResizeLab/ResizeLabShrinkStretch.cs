@@ -113,18 +113,27 @@ namespace PowerPointLabs.ResizeLab
                 }
             }
 
-            if (!hasStretchedAll)
-            {
-                MessageBox.Show(TextCollection.ResizeLabText.WarningShapesNotStretchText,
-                    TextCollection.ResizeLabText.WarningShapesNotStretchTitle,
-                    MessageBoxButtons.OK, MessageBoxIcon.Warning);
-            }
-
+            ValidateHasStretchedAll(hasStretchedAll);
         }
 
         #endregion
 
         #region Helper Functions
+
+        private static void ValidateHasStretchedAll(bool hasStretchAll)
+        {
+            try
+            {
+                if (!hasStretchAll)
+                {
+                    ThrowErrorCode(ErrorCodeShapesNotStretchText);
+                }
+            }
+            catch (Exception e)
+            {
+                ProcessErrorMessage(e);
+            }
+        }
 
         private static bool ValidateSelection(PowerPoint.ShapeRange shapes)
         {

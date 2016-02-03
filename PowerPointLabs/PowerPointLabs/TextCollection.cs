@@ -574,7 +574,6 @@
             public const string ErrorUndefined = "'Undefined error in Resize Lab'";
             public const string WarningShapesNotStretchText =
                 "One or more shapes cannot be resized as it will cause the shape to be small";
-            public const string WarningShapesNotStretchTitle = "Unable to resize shape";
         }
 
         #endregion

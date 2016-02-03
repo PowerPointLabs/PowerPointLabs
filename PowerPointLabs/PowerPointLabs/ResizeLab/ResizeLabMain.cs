@@ -13,10 +13,13 @@ namespace PowerPointLabs.ResizeLab
 
         private const int ErrorCodeNoSelection = 0;
         private const int ErrorCodeFewerThanTwoSelection = 1;
+        private const int ErrorCodeShapesNotStretchText = 2;
 
         private const string ErrorMessageNoSelection = TextCollection.ResizeLabText.ErrorNoSelection;
         private const string ErrorMessageFewerThanTwoSelection = TextCollection.ResizeLabText.ErrorFewerThanTwoSelection;
         private const string ErrorMessageUndefined = TextCollection.ResizeLabText.ErrorUndefined;
+        private const string ErrorMessageShapesNotStretchText =
+            TextCollection.ResizeLabText.WarningShapesNotStretchText;
 
         private enum Dimension
         {
@@ -103,6 +106,8 @@ namespace PowerPointLabs.ResizeLab
                     return ErrorMessageNoSelection;
                 case ErrorCodeFewerThanTwoSelection:
                     return ErrorMessageFewerThanTwoSelection;
+                case ErrorCodeShapesNotStretchText:
+                    return ErrorMessageShapesNotStretchText;
                 default:
                     return ErrorMessageUndefined;
             }
