@@ -20,6 +20,12 @@ namespace PowerPointLabs.ResizeLab
     {
 
         private const int ModShapesIndex = 2;
+        /// <summary>
+        /// Stretches a given shape to match an edge of the reference shape.
+        /// </summary>
+        /// <param name="referenceShape">The edge to refer to</param>
+        /// <param name="stretchShape">The shape to stretch</param>
+        /// <returns>True if shape is stretched successfully, false otherwise</returns>
         private delegate bool StretchAction(PowerPoint.Shape referenceShape, PowerPoint.Shape stretchShape);
         #region API
 
@@ -37,7 +43,7 @@ namespace PowerPointLabs.ResizeLab
                 {
                     return false;
                 }
-
+                // The actual stretch action
                 stretchShape.Width += stretchShape.Left - referenceShape.Left;
                 stretchShape.Left = referenceShape.Left;
 
@@ -46,15 +52,20 @@ namespace PowerPointLabs.ResizeLab
             Stretch(stretchShapes, sa);
         }
 
+        /// <summary>
+        /// Stretches all selected shapes to the right edge of reference shape
+        /// </summary>
+        /// <param name="stretchShapes">The shapes to stretch</param>
         public void StretchRight(PowerPoint.ShapeRange stretchShapes)
         {
             var sa = new StretchAction((PowerPoint.Shape referenceShape, PowerPoint.Shape stretchShape) =>
             {
+                // Stretching the shape will cause the object to be very small
                 if (stretchShape.Left > GetRight(referenceShape))
                 {
                     return false;
                 }
-
+                // The actual stretch action
                 stretchShape.Width += GetRight(referenceShape) - GetRight(stretchShape);
 
                 return true;
@@ -62,15 +73,20 @@ namespace PowerPointLabs.ResizeLab
             Stretch(stretchShapes, sa);
         }
 
+        /// <summary>
+        /// Stretches all selected shapes to the top edge of reference shape
+        /// </summary>
+        /// <param name="stretchShapes">The shapes to stretch</param>
         public void StretchTop(PowerPoint.ShapeRange stretchShapes)
         {
             var sa = new StretchAction((PowerPoint.Shape referenceShape, PowerPoint.Shape stretchShape) =>
             {
+                // Stretching the shape will cause the object to be very small
                 if (GetBottom(stretchShape) < referenceShape.Top)
                 {
                     return false;
                 }
-
+                // The actual stretch action
                 stretchShape.Height += stretchShape.Top - referenceShape.Top;
                 stretchShape.Top = referenceShape.Top;
 
@@ -79,15 +95,20 @@ namespace PowerPointLabs.ResizeLab
             Stretch(stretchShapes, sa);
         }
 
+        /// <summary>
+        /// Stretches all selected shapes to the left edge of reference shape
+        /// </summary>
+        /// <param name="stretchShapes">The shapes to stretch</param>
         public void StretchBottom(PowerPoint.ShapeRange stretchShapes)
         {
             var sa = new StretchAction((PowerPoint.Shape referenceShape, PowerPoint.Shape stretchShape) =>
             {
+                // Stretching will cause the object to be very small
                 if (stretchShape.Top > GetBottom(referenceShape))
                 {
                     return false;
                 }
-
+                // The actual stretch action
                 stretchShape.Height += GetBottom(referenceShape) - GetBottom(stretchShape);
 
                 return true;
@@ -95,6 +116,11 @@ namespace PowerPointLabs.ResizeLab
             Stretch(stretchShapes, sa);
         }
 
+        /// <summary>
+        /// Stretch shapes in the list
+        /// </summary>
+        /// <param name="stretchShapes">The shapes to stretch</param>
+        /// <param name="stretchAction">The function to use to stretch</param>
         private void Stretch(PowerPoint.ShapeRange stretchShapes, StretchAction stretchAction)
         {
             if (!ValidateSelection(stretchShapes))
