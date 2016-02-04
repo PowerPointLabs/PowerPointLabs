@@ -16,7 +16,7 @@ namespace PowerPointLabs.ResizeLab
     /// <summary>
     /// Handles the stretching and shrinking of shapes in resize lab
     /// </summary>
-    internal static partial class ResizeLabMain
+    internal partial class ResizeLabMain
     {
 
         private const int ModShapesIndex = 2;
@@ -27,7 +27,7 @@ namespace PowerPointLabs.ResizeLab
         /// Stretches all selected shapes to the left edge of reference shape
         /// </summary>
         /// <param name="stretchShapes">The shapes to stretch</param>
-        public static void StretchLeft(PowerPoint.ShapeRange stretchShapes)
+        public void StretchLeft(PowerPoint.ShapeRange stretchShapes)
         {
 
             var sa = new StretchAction((PowerPoint.Shape referenceShape, PowerPoint.Shape stretchShape) =>
@@ -46,7 +46,7 @@ namespace PowerPointLabs.ResizeLab
             Stretch(stretchShapes, sa);
         }
 
-        public static void StretchRight(PowerPoint.ShapeRange stretchShapes)
+        public void StretchRight(PowerPoint.ShapeRange stretchShapes)
         {
             var sa = new StretchAction((PowerPoint.Shape referenceShape, PowerPoint.Shape stretchShape) =>
             {
@@ -62,7 +62,7 @@ namespace PowerPointLabs.ResizeLab
             Stretch(stretchShapes, sa);
         }
 
-        public static void StretchTop(PowerPoint.ShapeRange stretchShapes)
+        public void StretchTop(PowerPoint.ShapeRange stretchShapes)
         {
             var sa = new StretchAction((PowerPoint.Shape referenceShape, PowerPoint.Shape stretchShape) =>
             {
@@ -79,7 +79,7 @@ namespace PowerPointLabs.ResizeLab
             Stretch(stretchShapes, sa);
         }
 
-        public static void StretchBottom(PowerPoint.ShapeRange stretchShapes)
+        public void StretchBottom(PowerPoint.ShapeRange stretchShapes)
         {
             var sa = new StretchAction((PowerPoint.Shape referenceShape, PowerPoint.Shape stretchShape) =>
             {
@@ -95,7 +95,7 @@ namespace PowerPointLabs.ResizeLab
             Stretch(stretchShapes, sa);
         }
 
-        private static void Stretch(PowerPoint.ShapeRange stretchShapes, StretchAction stretchAction)
+        private void Stretch(PowerPoint.ShapeRange stretchShapes, StretchAction stretchAction)
         {
             if (!ValidateSelection(stretchShapes))
             {
@@ -120,7 +120,7 @@ namespace PowerPointLabs.ResizeLab
 
         #region Helper Functions
 
-        private static void ValidateHasStretchedAll(bool hasStretchAll)
+        private void ValidateHasStretchedAll(bool hasStretchAll)
         {
             try
             {
@@ -135,7 +135,7 @@ namespace PowerPointLabs.ResizeLab
             }
         }
 
-        private static bool ValidateSelection(PowerPoint.ShapeRange shapes)
+        private bool ValidateSelection(PowerPoint.ShapeRange shapes)
         {
             if (!IsMoreThanOneShape(shapes))
             {
@@ -145,17 +145,17 @@ namespace PowerPointLabs.ResizeLab
             return true;
         }
 
-        private static PowerPoint.Shape GetReferenceShape(PowerPoint.ShapeRange shapes)
+        private PowerPoint.Shape GetReferenceShape(PowerPoint.ShapeRange shapes)
         {
             return shapes[1];
         }
 
-        private static float GetRight(PowerPoint.Shape aShape)
+        private float GetRight(PowerPoint.Shape aShape)
         {
             return aShape.Left + aShape.Width;
         }
 
-        private static float GetBottom(PowerPoint.Shape aShape)
+        private float GetBottom(PowerPoint.Shape aShape)
         {
             return aShape.Top + aShape.Height;
         }

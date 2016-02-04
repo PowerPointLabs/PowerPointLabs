@@ -7,7 +7,7 @@ using PowerPoint = Microsoft.Office.Interop.PowerPoint;
 
 namespace PowerPointLabs.ResizeLab
 {
-    internal static partial class ResizeLabMain
+    internal partial class ResizeLabMain
     {
         private const string MessageBoxTitle = "Error during Resizing";
 
@@ -28,12 +28,12 @@ namespace PowerPointLabs.ResizeLab
             HeightAndWidth
         }
 
-        internal static bool IsShapeSelection(PowerPoint.Selection selection)
+        internal bool IsShapeSelection(PowerPoint.Selection selection)
         {
             return selection.Type == PowerPoint.PpSelectionType.ppSelectionShapes;
         }
 
-        internal static bool IsSelecionValid(PowerPoint.Selection selection)
+        internal bool IsSelecionValid(PowerPoint.Selection selection)
         {
             try
             {
@@ -51,7 +51,7 @@ namespace PowerPointLabs.ResizeLab
             }
         }
 
-        private static bool IsMoreThanOneShape(PowerPoint.ShapeRange selectedShapes)
+        private bool IsMoreThanOneShape(PowerPoint.ShapeRange selectedShapes)
         {
             try
             {
@@ -71,12 +71,12 @@ namespace PowerPointLabs.ResizeLab
 
         #region Error Message
 
-        private static void ThrowErrorCode(int errorType)
+        private void ThrowErrorCode(int errorType)
         {
             throw new Exception(errorType.ToString(CultureInfo.InvariantCulture));
         }
 
-        private static void ProcessErrorMessage(Exception e)
+        private void ProcessErrorMessage(Exception e)
         {
             var errorMessage = GetErrorMessage(e.Message);
             if (!string.Equals(errorMessage, ErrorMessageUndefined, StringComparison.Ordinal))
@@ -89,7 +89,7 @@ namespace PowerPointLabs.ResizeLab
             }
         }
 
-        private static string GetErrorMessage(string errorCode)
+        private string GetErrorMessage(string errorCode)
         {
             var errorCodeInteger = -1;
             try
@@ -113,7 +113,7 @@ namespace PowerPointLabs.ResizeLab
             }
         }
 
-        private static void IgnoreExceptionThrown() { }
+        private void IgnoreExceptionThrown() { }
 
         #endregion
     }

@@ -13,24 +13,24 @@ namespace PowerPointLabs.ResizeLab
     /// It handles the resizing of the shapes to the same dimension 
     /// (e.g. height, width and both).
     /// </summary>
-    internal static partial class ResizeLabMain
+    internal partial class ResizeLabMain
     {
-        public static void ResizeToSameHeight(PowerPoint.ShapeRange selectedShapes)
+        public void ResizeToSameHeight(PowerPoint.ShapeRange selectedShapes)
         {
             ResizeShapes(selectedShapes, Dimension.Height);
         }
 
-        public static void ResizeToSameWidth(PowerPoint.ShapeRange selectedShapes)
+        public void ResizeToSameWidth(PowerPoint.ShapeRange selectedShapes)
         {
             ResizeShapes(selectedShapes, Dimension.Width);
         }
 
-        public static void ResizeToSameHeightAndWidth(PowerPoint.ShapeRange selectedShapes)
+        public void ResizeToSameHeightAndWidth(PowerPoint.ShapeRange selectedShapes)
         {
             ResizeShapes(selectedShapes, Dimension.HeightAndWidth);
         }
 
-        private static void ResizeShapes(PowerPoint.ShapeRange selectedShapes, Dimension dimension)
+        private void ResizeShapes(PowerPoint.ShapeRange selectedShapes, Dimension dimension)
         {
             try
             {
@@ -62,7 +62,7 @@ namespace PowerPointLabs.ResizeLab
             }
         }
 
-        private static float GetReferenceHeight(PowerPoint.ShapeRange selectedShapes)
+        private float GetReferenceHeight(PowerPoint.ShapeRange selectedShapes)
         {
             if (selectedShapes.Count > 0)
             {
@@ -71,7 +71,7 @@ namespace PowerPointLabs.ResizeLab
             return -1;
         }
 
-        private static float GetReferenceWidth(PowerPoint.ShapeRange selectShapes)
+        private float GetReferenceWidth(PowerPoint.ShapeRange selectShapes)
         {
             if (selectShapes.Count > 0)
             {

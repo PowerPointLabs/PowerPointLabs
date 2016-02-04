@@ -12,9 +12,9 @@ namespace PowerPointLabs.ResizeLab
     /// ResizeLabFitSize is the parital class of ResizeLabMain.
     /// It handles fit to height, width and fill to the size of the slide.
     /// </summary>
-    internal static partial class ResizeLabMain
+    internal partial class ResizeLabMain
     {
-        public static void FitToHight(PowerPoint.ShapeRange selectedShapes, bool isAspectRatio = false)
+        public void FitToHight(PowerPoint.ShapeRange selectedShapes, bool isAspectRatio = false)
         {
             if (isAspectRatio)
             {
@@ -26,7 +26,7 @@ namespace PowerPointLabs.ResizeLab
             }
         }
 
-        public static void FitToWidth(PowerPoint.ShapeRange selectedShapes, bool isAspectRatio = false)
+        public void FitToWidth(PowerPoint.ShapeRange selectedShapes, bool isAspectRatio = false)
         {
             if (isAspectRatio)
             {
@@ -38,7 +38,7 @@ namespace PowerPointLabs.ResizeLab
             }
         }
 
-        public static void FitToFill(PowerPoint.ShapeRange selectedShapes, bool isAspectRatio = false)
+        public void FitToFill(PowerPoint.ShapeRange selectedShapes, bool isAspectRatio = false)
         {
             if (isAspectRatio)
             {
@@ -50,7 +50,7 @@ namespace PowerPointLabs.ResizeLab
             }
         }
 
-        private static void FitFreeShapes(PowerPoint.ShapeRange selectedShapes, Dimension dimension)
+        private void FitFreeShapes(PowerPoint.ShapeRange selectedShapes, Dimension dimension)
         {
             try
             {
@@ -81,7 +81,7 @@ namespace PowerPointLabs.ResizeLab
             }
         }
 
-        private static void FitAspectRatioShapes(PowerPoint.ShapeRange selectedShapes, Dimension dimension)
+        private void FitAspectRatioShapes(PowerPoint.ShapeRange selectedShapes, Dimension dimension)
         {
             try
             {

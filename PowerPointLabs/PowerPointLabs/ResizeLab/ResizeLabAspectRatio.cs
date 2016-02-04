@@ -12,9 +12,9 @@ namespace PowerPointLabs.ResizeLab
     /// It controls the related actions of aspect ratio according to
     /// the selection.
     /// </summary>
-    internal static partial class ResizeLabMain
+    internal partial class ResizeLabMain
     {
-        public static void ChangeShapesAspectRatio(PowerPoint.ShapeRange selectedShapes, bool isAspectRatio)
+        public void ChangeShapesAspectRatio(PowerPoint.ShapeRange selectedShapes, bool isAspectRatio)
         {
             try
             {
@@ -34,7 +34,7 @@ namespace PowerPointLabs.ResizeLab
             }
         }
 
-        public static void RestoreAspectRatio(PowerPoint.ShapeRange selectedShapes)
+        public void RestoreAspectRatio(PowerPoint.ShapeRange selectedShapes)
         {
             try
             {
