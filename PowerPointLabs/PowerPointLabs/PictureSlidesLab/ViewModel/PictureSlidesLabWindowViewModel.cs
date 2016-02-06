@@ -463,7 +463,7 @@ namespace PowerPointLabs.PictureSlidesLab.ViewModel
             {
                 Clipboard.SetFileDropList((StringCollection) copiedObj);
             }
-            else if (copiedObj is string)
+            else if (!string.IsNullOrEmpty(copiedObj as string))
             {
                 Clipboard.SetText((string)copiedObj);
             }
