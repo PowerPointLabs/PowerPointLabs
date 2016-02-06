@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Globalization;
+using System.Runtime.InteropServices;
 using System.Text.RegularExpressions;
 using System.Windows;
 using ImageProcessor;
@@ -240,13 +241,21 @@ namespace PowerPointLabs.PictureSlidesLab.Service
                 // title already exist
                 foreach (PowerPoint.Shape shape in Shapes)
                 {
-                    switch (shape.PlaceholderFormat.Type)
+                    try
                     {
-                        case PowerPoint.PpPlaceholderType.ppPlaceholderTitle:
-                        case PowerPoint.PpPlaceholderType.ppPlaceholderCenterTitle:
-                        case PowerPoint.PpPlaceholderType.ppPlaceholderVerticalTitle:
-                            shape.TextFrame2.TextRange.Text = "Picture Slides Lab";
-                            break;
+                        switch (shape.PlaceholderFormat.Type)
+                        {
+                            case PowerPoint.PpPlaceholderType.ppPlaceholderTitle:
+                            case PowerPoint.PpPlaceholderType.ppPlaceholderCenterTitle:
+                            case PowerPoint.PpPlaceholderType.ppPlaceholderVerticalTitle:
+                                shape.TextFrame2.TextRange.Text = "Picture Slides Lab";
+                                break;
+                        }
+                    }
+                    catch (COMException)
+                    {
+                        // non-placeholder shapes don't have PlaceholderFormat
+                        // and will cause exception
                     }
                 }
             }
