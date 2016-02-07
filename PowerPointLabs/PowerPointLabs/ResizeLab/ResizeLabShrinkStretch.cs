@@ -168,10 +168,10 @@ namespace PowerPointLabs.ResizeLab
             }
 
             var referenceShape = GetReferenceShape(stretchShapes);
+            float referenceEdge = defaultReferenceEdge(referenceShape);
 
             for (var i = ModShapesIndex; i <= stretchShapes.Count; i++)
             {
-                float referenceEdge = defaultReferenceEdge(referenceShape);
                 StretchAction sa = stretchAction(referenceEdge, stretchShapes[i]);
                 sa(referenceEdge, stretchShapes[i]);
             }
