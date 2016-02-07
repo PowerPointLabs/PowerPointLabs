@@ -46,7 +46,8 @@ namespace PowerPointLabs.PictureSlidesLab.ModelFactory
                 { TextCollection.PictureSlidesLabText.VariantCategoryFontColor, GetFontColorVariants() },
                 { TextCollection.PictureSlidesLabText.VariantCategoryTextGlowColor, GetTextGlowColorVariants() },
                 { TextCollection.PictureSlidesLabText.VariantCategoryFontFamily, GetFontFamilyVariants() },
-                { TextCollection.PictureSlidesLabText.VariantCategoryFontSizeIncrease, GetFontSizeIncreaseVariants() }
+                { TextCollection.PictureSlidesLabText.VariantCategoryFontSizeIncrease, GetFontSizeIncreaseVariants() },
+                { TextCollection.PictureSlidesLabText.VariantCategoryImageReference, GetImageReferenceVariants() }
             };
         }
 
@@ -63,7 +64,8 @@ namespace PowerPointLabs.PictureSlidesLab.ModelFactory
                 { TextCollection.PictureSlidesLabText.VariantCategoryTextGlowColor, GetTextGlowColorVariants() },
                 { TextCollection.PictureSlidesLabText.VariantCategoryTextPosition, GetFontPositionVariants() },
                 { TextCollection.PictureSlidesLabText.VariantCategoryFontFamily, GetFontFamilyVariants() },
-                { TextCollection.PictureSlidesLabText.VariantCategoryFontSizeIncrease, GetFontSizeIncreaseVariants() }
+                { TextCollection.PictureSlidesLabText.VariantCategoryFontSizeIncrease, GetFontSizeIncreaseVariants() },
+                { TextCollection.PictureSlidesLabText.VariantCategoryImageReference, GetImageReferenceVariants() }
             };
         }
 
@@ -80,7 +82,8 @@ namespace PowerPointLabs.PictureSlidesLab.ModelFactory
                 { TextCollection.PictureSlidesLabText.VariantCategoryTextGlowColor, GetTextGlowColorVariants() },
                 { TextCollection.PictureSlidesLabText.VariantCategoryTextPosition, GetFontPositionVariants() },
                 { TextCollection.PictureSlidesLabText.VariantCategoryFontFamily, GetFontFamilyVariants() },
-                { TextCollection.PictureSlidesLabText.VariantCategoryFontSizeIncrease, GetFontSizeIncreaseVariants() }
+                { TextCollection.PictureSlidesLabText.VariantCategoryFontSizeIncrease, GetFontSizeIncreaseVariants() },
+                { TextCollection.PictureSlidesLabText.VariantCategoryImageReference, GetImageReferenceVariants() }
             };
         }
 
@@ -95,7 +98,8 @@ namespace PowerPointLabs.PictureSlidesLab.ModelFactory
                 { TextCollection.PictureSlidesLabText.VariantCategoryTextGlowColor, GetTextGlowColorVariants() },
                 { TextCollection.PictureSlidesLabText.VariantCategoryTextPosition, GetFontPositionVariants() },
                 { TextCollection.PictureSlidesLabText.VariantCategoryFontFamily, GetFontFamilyVariants() },
-                { TextCollection.PictureSlidesLabText.VariantCategoryFontSizeIncrease, GetFontSizeIncreaseVariants() }
+                { TextCollection.PictureSlidesLabText.VariantCategoryFontSizeIncrease, GetFontSizeIncreaseVariants() },
+                { TextCollection.PictureSlidesLabText.VariantCategoryImageReference, GetImageReferenceVariants() }
             };
         }
 
@@ -109,7 +113,8 @@ namespace PowerPointLabs.PictureSlidesLab.ModelFactory
                 { TextCollection.PictureSlidesLabText.VariantCategoryTextGlowColor, GetTextGlowColorVariants() },
                 { TextCollection.PictureSlidesLabText.VariantCategoryTextPosition, GetFontPositionVariants() },
                 { TextCollection.PictureSlidesLabText.VariantCategoryFontFamily, GetFontFamilyVariants() },
-                { TextCollection.PictureSlidesLabText.VariantCategoryFontSizeIncrease, GetFontSizeIncreaseVariants() }
+                { TextCollection.PictureSlidesLabText.VariantCategoryFontSizeIncrease, GetFontSizeIncreaseVariants() },
+                { TextCollection.PictureSlidesLabText.VariantCategoryImageReference, GetImageReferenceVariants() }
             };
         }
 
@@ -124,7 +129,8 @@ namespace PowerPointLabs.PictureSlidesLab.ModelFactory
                 { TextCollection.PictureSlidesLabText.VariantCategoryTextGlowColor, GetTextGlowColorVariants() },
                 { TextCollection.PictureSlidesLabText.VariantCategoryTextPosition, GetFontPositionVariants() },
                 { TextCollection.PictureSlidesLabText.VariantCategoryFontFamily, GetFontFamilyVariants() },
-                { TextCollection.PictureSlidesLabText.VariantCategoryFontSizeIncrease, GetFontSizeIncreaseVariants() }
+                { TextCollection.PictureSlidesLabText.VariantCategoryFontSizeIncrease, GetFontSizeIncreaseVariants() },
+                { TextCollection.PictureSlidesLabText.VariantCategoryImageReference, GetImageReferenceVariants() }
             };
         }
 
@@ -141,7 +147,8 @@ namespace PowerPointLabs.PictureSlidesLab.ModelFactory
                 { TextCollection.PictureSlidesLabText.VariantCategoryTextGlowColor, GetTextGlowColorVariants() },
                 { TextCollection.PictureSlidesLabText.VariantCategoryTextPosition, GetFontPositionVariants() },
                 { TextCollection.PictureSlidesLabText.VariantCategoryFontFamily, GetFontFamilyVariants() },
-                { TextCollection.PictureSlidesLabText.VariantCategoryFontSizeIncrease, GetFontSizeIncreaseVariants() }
+                { TextCollection.PictureSlidesLabText.VariantCategoryFontSizeIncrease, GetFontSizeIncreaseVariants() },
+                { TextCollection.PictureSlidesLabText.VariantCategoryImageReference, GetImageReferenceVariants() }
             };
         }
 
@@ -158,7 +165,8 @@ namespace PowerPointLabs.PictureSlidesLab.ModelFactory
                 { TextCollection.PictureSlidesLabText.VariantCategoryTextGlowColor, GetTextGlowColorVariants() },
                 { TextCollection.PictureSlidesLabText.VariantCategoryTextPosition, GetFontPositionVariants() },
                 { TextCollection.PictureSlidesLabText.VariantCategoryFontFamily, GetFontFamilyVariants() },
-                { TextCollection.PictureSlidesLabText.VariantCategoryFontSizeIncrease, GetFontSizeIncreaseVariants() }
+                { TextCollection.PictureSlidesLabText.VariantCategoryFontSizeIncrease, GetFontSizeIncreaseVariants() },
+                { TextCollection.PictureSlidesLabText.VariantCategoryImageReference, GetImageReferenceVariants() }
             };
         }
 
@@ -173,7 +181,8 @@ namespace PowerPointLabs.PictureSlidesLab.ModelFactory
                 { TextCollection.PictureSlidesLabText.VariantCategoryTextGlowColor, GetTextGlowColorVariants() },
                 { TextCollection.PictureSlidesLabText.VariantCategoryTextPosition, GetFontPositionVariants() },
                 { TextCollection.PictureSlidesLabText.VariantCategoryFontFamily, GetFontFamilyVariants() },
-                { TextCollection.PictureSlidesLabText.VariantCategoryFontSizeIncrease, GetFontSizeIncreaseVariants() }
+                { TextCollection.PictureSlidesLabText.VariantCategoryFontSizeIncrease, GetFontSizeIncreaseVariants() },
+                { TextCollection.PictureSlidesLabText.VariantCategoryImageReference, GetImageReferenceVariants() }
             };
         }
 
@@ -186,7 +195,8 @@ namespace PowerPointLabs.PictureSlidesLab.ModelFactory
                 { TextCollection.PictureSlidesLabText.VariantCategoryTextGlowColor, GetTextGlowColorVariants() },
                 { TextCollection.PictureSlidesLabText.VariantCategoryTextPosition, GetFontPositionVariants() },
                 { TextCollection.PictureSlidesLabText.VariantCategoryFontFamily, GetFontFamilyVariants() },
-                { TextCollection.PictureSlidesLabText.VariantCategoryFontSizeIncrease, GetFontSizeIncreaseVariants() }
+                { TextCollection.PictureSlidesLabText.VariantCategoryFontSizeIncrease, GetFontSizeIncreaseVariants() },
+                { TextCollection.PictureSlidesLabText.VariantCategoryImageReference, GetImageReferenceVariants() }
             };
         }
 
@@ -1319,6 +1329,74 @@ namespace PowerPointLabs.PictureSlidesLab.ModelFactory
                     {"OptionName", "Font Size +21"},
                     {"IsUseTextFormat", true},
                     {"FontSizeIncrease", 21}
+                })
+            };
+        }
+
+        private static List<StyleVariants> GetImageReferenceVariants()
+        {
+            return new List<StyleVariants>
+            {
+                new StyleVariants(new Dictionary<string, object>
+                {
+                    {"OptionName", "No Effect"},
+                    {"IsInsertReference", false},
+                }),
+                new StyleVariants(new Dictionary<string, object>
+                {
+                    {"OptionName", "Bottom Right"},
+                    {"IsInsertReference", true},
+                    {"ImageRefAlignment", 3},
+                    {"FontSize", 14},
+                    {"ImageRefTextBoxColor", ""}
+                }),
+                new StyleVariants(new Dictionary<string, object>
+                {
+                    {"OptionName", "Bottom"},
+                    {"IsInsertReference", true},
+                    {"ImageRefAlignment", 2},
+                    {"FontSize", 14},
+                    {"ImageRefTextBoxColor", ""}
+                }),
+                new StyleVariants(new Dictionary<string, object>
+                {
+                    {"OptionName", "Bottom Left"},
+                    {"IsInsertReference", true},
+                    {"ImageRefAlignment", 1},
+                    {"FontSize", 14},
+                    {"ImageRefTextBoxColor", ""}
+                }),
+                new StyleVariants(new Dictionary<string, object>
+                {
+                    {"OptionName", "Bottom Right (Small Font)"},
+                    {"IsInsertReference", true},
+                    {"ImageRefAlignment", 3},
+                    {"FontSize", 10},
+                    {"ImageRefTextBoxColor", ""}
+                }),
+                new StyleVariants(new Dictionary<string, object>
+                {
+                    {"OptionName", "Bottom (Small Font)"},
+                    {"IsInsertReference", true},
+                    {"ImageRefAlignment", 2},
+                    {"FontSize", 10},
+                    {"ImageRefTextBoxColor", ""}
+                }),
+                new StyleVariants(new Dictionary<string, object>
+                {
+                    {"OptionName", "Bottom Left (Small Font)"},
+                    {"IsInsertReference", true},
+                    {"ImageRefAlignment", 1},
+                    {"FontSize", 10},
+                    {"ImageRefTextBoxColor", ""}
+                }),
+                new StyleVariants(new Dictionary<string, object>
+                {
+                    {"OptionName", "Bottom With Banner"},
+                    {"IsInsertReference", true},
+                    {"ImageRefAlignment", 2},
+                    {"FontSize", 12},
+                    {"ImageRefTextBoxColor", "#2F4F4F"} //Grey
                 })
             };
         }

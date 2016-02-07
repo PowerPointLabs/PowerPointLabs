@@ -1,5 +1,6 @@
 ﻿using System;
 using System.IO;
+using System.Windows.Media.Media3D;
 using System.Xml.Serialization;
 using ImageProcessor.Imaging.Filters;
 using PowerPointLabs.PictureSlidesLab.Service.Effect;
@@ -467,7 +468,10 @@ namespace PowerPointLabs.PictureSlidesLab.Model
             }
         }
 
-        // other
+        // *****************************************
+        // Picture reference
+        // *****************************************
+
 
         private bool _isInsertReference;
 
@@ -478,6 +482,42 @@ namespace PowerPointLabs.PictureSlidesLab.Model
             {
                 _isInsertReference = value;
                 OnPropertyChanged("IsInsertReference");
+            }
+        }
+
+        private int _fontSize;
+
+        public int FontSize
+        {
+            get { return _fontSize; }
+            set
+            {
+                _fontSize = value;
+                OnPropertyChanged("FontSize");
+            }
+        }
+
+        private Alignment _imageRefAlignment;
+
+        public Alignment ImageRefAlignment
+        {
+            get { return _imageRefAlignment; }
+            set
+            {
+                _imageRefAlignment = value;
+                OnPropertyChanged("ImageRefAlignment");
+            }
+        }
+
+        private string _imageRefTextBoxColor;
+
+        public string ImageRefTextBoxColor
+        {
+            get { return _imageRefTextBoxColor; }
+            set
+            {
+                _imageRefTextBoxColor = value;
+                OnPropertyChanged("ImageRefTextBoxColor");
             }
         }
 
@@ -542,6 +582,11 @@ namespace PowerPointLabs.PictureSlidesLab.Model
             TextGlowColor = "#123456";
 
             IsInsertReference = false;
+            FontSize = 14;
+            ImageRefAlignment = Alignment.Left;
+            ImageRefTextBoxColor = "";
+            
+
             OptionName = "Default";
             StyleName = "";
             VariantIndex = 0;
