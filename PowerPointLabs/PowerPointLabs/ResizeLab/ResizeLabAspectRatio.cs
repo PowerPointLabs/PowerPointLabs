@@ -38,14 +38,49 @@ namespace PowerPointLabs.ResizeLab
         {
             try
             {
-                selectedShapes.ScaleHeight(1, MsoTriState.msoTrue, MsoScaleFrom.msoScaleFromTopLeft);
-                selectedShapes.ScaleWidth(1, MsoTriState.msoTrue, MsoScaleFrom.msoScaleFromTopLeft);
+                //selectedShapes.ScaleHeight(1, MsoTriState.msoTrue, MsoScaleFrom.msoScaleFromTopLeft);
+                //selectedShapes.ScaleWidth(1, MsoTriState.msoTrue, MsoScaleFrom.msoScaleFromTopLeft);
+
+                var scaleHeight = GetScaleHeight(selectedShapes);
+                var scaleWidth = GetScaleWidth(selectedShapes);
+                var maximumScale = Math.Max(scaleHeight, scaleWidth);
+
+                selectedShapes.ScaleHeight(maximumScale, MsoTriState.msoTrue, MsoScaleFrom.msoScaleFromTopLeft);
+                selectedShapes.ScaleWidth(maximumScale, MsoTriState.msoTrue, MsoScaleFrom.msoScaleFromTopLeft);
             }
             catch (Exception e)
             {
                 PowerPointLabsGlobals.LogException(e, "RestoreAspectRatio");
                 throw;
             }
+        }
+
+        private float GetScaleHeight(PowerPoint.ShapeRange selectedShapes)
+        {
+            var currentHeight = selectedShapes.Height;
+
+            selectedShapes.ScaleHeight(1, MsoTriState.msoTrue, MsoScaleFrom.msoScaleFromTopLeft);
+            var originalHeight = selectedShapes.Height;
+
+            if (Math.Abs(originalHeight - 0) < 0.001)
+            {
+                return 1;
+            }
+            return currentHeight/originalHeight;
+        }
+
+        private float GetScaleWidth(PowerPoint.ShapeRange selectedShapes)
+        {
+            var currentWidth = selectedShapes.Width;
+
+            selectedShapes.ScaleWidth(1, MsoTriState.msoTrue, MsoScaleFrom.msoScaleFromTopLeft);
+            var originalWidth = selectedShapes.Width;
+
+            if (Math.Abs(originalWidth - 0) < 0.001)
+            {
+                return 1;
+            }
+            return currentWidth/originalWidth;
         }
     }
 }
