@@ -14,18 +14,18 @@ namespace PowerPointLabs.ResizeLab
     /// </summary>
     internal partial class ResizeLabMain
     {
+        private const float FloatDiffTolerance = (float) 0.0001;
+
+        /// <summary>
+        /// Unlocks and locks the aspect ratio of particular period of time.
+        /// </summary>
+        /// <param name="selectedShapes"></param>
+        /// <param name="isAspectRatio"></param>
         public void ChangeShapesAspectRatio(PowerPoint.ShapeRange selectedShapes, bool isAspectRatio)
         {
             try
             {
-                if (isAspectRatio)
-                {
-                    selectedShapes.LockAspectRatio = MsoTriState.msoTrue;
-                }
-                else
-                {
-                    selectedShapes.LockAspectRatio = MsoTriState.msoFalse;
-                }
+                selectedShapes.LockAspectRatio = isAspectRatio ? MsoTriState.msoTrue : MsoTriState.msoFalse;
             }
             catch (Exception e)
             {
@@ -34,19 +34,37 @@ namespace PowerPointLabs.ResizeLab
             }
         }
 
-        public void RestoreAspectRatio(PowerPoint.ShapeRange selectedShapes)
+        /// <summary>
+        /// Restores the shapes to their aspect ratio. The longer side will be used first, and checked 
+        /// to ensure that its length is within the length of the slide. If it exceeds the slide, 
+        /// the shorter side will be used.
+        /// </summary>
+        /// <param name="selectedShapes"></param>
+        /// <param name="slideHeight"></param>
+        /// <param name="slideWidth"></param>
+        public void RestoreAspectRatio(PowerPoint.ShapeRange selectedShapes, float slideHeight, float slideWidth)
         {
             try
             {
-                //selectedShapes.ScaleHeight(1, MsoTriState.msoTrue, MsoScaleFrom.msoScaleFromTopLeft);
-                //selectedShapes.ScaleWidth(1, MsoTriState.msoTrue, MsoScaleFrom.msoScaleFromTopLeft);
+                for (int i = 1; i <= selectedShapes.Count; i++)
+                {
+                    var shape = selectedShapes[i];
+                    var scaleHeight = GetScaleHeight(shape);
+                    var scaleWidth = GetScaleWidth(shape);
+                    var maximumScale = Math.Max(scaleHeight, scaleWidth);
+                    var minimumScale = Math.Min(scaleHeight, scaleWidth);
 
-                var scaleHeight = GetScaleHeight(selectedShapes);
-                var scaleWidth = GetScaleWidth(selectedShapes);
-                var maximumScale = Math.Max(scaleHeight, scaleWidth);
-
-                selectedShapes.ScaleHeight(maximumScale, MsoTriState.msoTrue, MsoScaleFrom.msoScaleFromTopLeft);
-                selectedShapes.ScaleWidth(maximumScale, MsoTriState.msoTrue, MsoScaleFrom.msoScaleFromTopLeft);
+                    if (shape.Height*scaleHeight < slideHeight && shape.Width*scaleWidth < slideWidth)
+                    {
+                        shape.ScaleHeight(maximumScale, MsoTriState.msoTrue, MsoScaleFrom.msoScaleFromMiddle);
+                        shape.ScaleWidth(maximumScale, MsoTriState.msoTrue, MsoScaleFrom.msoScaleFromMiddle);
+                    }
+                    else
+                    {
+                        shape.ScaleHeight(minimumScale, MsoTriState.msoTrue, MsoScaleFrom.msoScaleFromMiddle);
+                        shape.ScaleWidth(minimumScale, MsoTriState.msoTrue, MsoScaleFrom.msoScaleFromMiddle);
+                    }
+                }
             }
             catch (Exception e)
             {
@@ -55,32 +73,37 @@ namespace PowerPointLabs.ResizeLab
             }
         }
 
-        private float GetScaleHeight(PowerPoint.ShapeRange selectedShapes)
+        private float GetScaleHeight(PowerPoint.Shape shape)
         {
-            var currentHeight = selectedShapes.Height;
+            var currentHeight = shape.Height;
 
-            selectedShapes.ScaleHeight(1, MsoTriState.msoTrue, MsoScaleFrom.msoScaleFromTopLeft);
-            var originalHeight = selectedShapes.Height;
+            shape.ScaleHeight(1, MsoTriState.msoTrue, MsoScaleFrom.msoScaleFromMiddle);
+            var originalHeight = shape.Height;
 
-            if (Math.Abs(originalHeight - 0) < 0.001)
+            if (IsFloatTheSame(originalHeight, 0))
             {
                 return 1;
             }
             return currentHeight/originalHeight;
         }
 
-        private float GetScaleWidth(PowerPoint.ShapeRange selectedShapes)
+        private float GetScaleWidth(PowerPoint.Shape shape)
         {
-            var currentWidth = selectedShapes.Width;
+            var currentWidth = shape.Width;
 
-            selectedShapes.ScaleWidth(1, MsoTriState.msoTrue, MsoScaleFrom.msoScaleFromTopLeft);
-            var originalWidth = selectedShapes.Width;
+            shape.ScaleWidth(1, MsoTriState.msoTrue, MsoScaleFrom.msoScaleFromMiddle);
+            var originalWidth = shape.Width;
 
-            if (Math.Abs(originalWidth - 0) < 0.001)
+            if (IsFloatTheSame(originalWidth, 0))
             {
                 return 1;
             }
             return currentWidth/originalWidth;
+        }
+
+        private bool IsFloatTheSame(float toCompare, float reference)
+        {
+            return Math.Abs(toCompare - reference) < FloatDiffTolerance;
         }
     }
 }
