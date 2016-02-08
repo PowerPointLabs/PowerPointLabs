@@ -36,7 +36,7 @@ namespace Test.UnitTest.PictureSlidesLab.Service
                 ImageFile = Img,
                 Tooltip = "some tooltips"
             };
-            _designer = new EffectsDesigner(_contentSlide,
+            _designer = EffectsDesigner.CreateEffectsDesignerForApply(_contentSlide,
                 Pres.PageSetup.SlideWidth, Pres.PageSetup.SlideHeight,
                 _imgItem);
         }
@@ -46,7 +46,7 @@ namespace Test.UnitTest.PictureSlidesLab.Service
         public void TestInsertImageReference()
         {
             // constructor for producing preview image
-            var ed = new EffectsDesigner(
+            var ed = EffectsDesigner.CreateEffectsDesignerForPreview(
                 _processingSlide, _contentSlide, 
                 Pres.PageSetup.SlideWidth, Pres.PageSetup.SlideHeight, 
                 new ImageItem
@@ -164,16 +164,6 @@ namespace Test.UnitTest.PictureSlidesLab.Service
 
             Assert.AreEqual(2, shapeRange.Count);
             Assert.AreEqual(MsoShapeType.msoAutoShape, shapeRange[1].Type);
-        }
-
-        [TestMethod]
-        [TestCategory("UT")]
-        public void TestCircleBannerEffect()
-        {
-            var shape = _designer.ApplyCircleBannerEffect("#000000", 35);
-            Assert.IsTrue(shape.Name.StartsWith(
-                EffectsDesigner.ShapeNamePrefix + "_" + EffectName.Banner));
-            Assert.AreEqual(MsoShapeType.msoPicture, shape.Type);
         }
 
         [TestMethod]
