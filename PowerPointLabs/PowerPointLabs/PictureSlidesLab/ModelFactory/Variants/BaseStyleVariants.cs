@@ -10,6 +10,8 @@ namespace PowerPointLabs.PictureSlidesLab.ModelFactory.Variants
     {
         protected abstract IList<IVariantWorker> GetRequiredVariantWorkers();
 
+        public abstract string GetStyleName();
+
         public Dictionary<string, List<StyleVariant>> GetVariantsForStyle()
         {
             var workers = GetRequiredVariantWorkers();

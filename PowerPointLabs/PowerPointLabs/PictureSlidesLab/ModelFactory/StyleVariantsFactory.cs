@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using PowerPointLabs.PictureSlidesLab.Model;
 using PowerPointLabs.PictureSlidesLab.ModelFactory.Variants;
+using PowerPointLabs.PictureSlidesLab.ModelFactory.Variants.Interface;
 
 namespace PowerPointLabs.PictureSlidesLab.ModelFactory
 {
@@ -14,33 +15,37 @@ namespace PowerPointLabs.PictureSlidesLab.ModelFactory
     /// </summary>
     public class StyleVariantsFactory
     {
+        /// <summary>
+        /// Add new style variants here
+        /// </summary>
+        /// <returns></returns>
+        private static List<IStyleVariants> GetAllStyleVariants()
+        {
+            return new List<IStyleVariants>
+            {
+                new DirectTextStyleVariants(),
+                new BlurStyleVariants(),
+                new TextBoxStyleVariants(),
+                new BannerStyleVariants(),
+                new SpecialEffectStyleVariants(),
+                new OverlayStyleVariants(),
+                new OutlineStyleVariants(),
+                new FrameStyleVariants(),
+                new CircleStyleVariants(),
+                new TriangleStyleVariants()
+            };
+        } 
+
         public static Dictionary<string, List<StyleVariant>> GetVariants(string targetStyle)
         {
-            switch (targetStyle)
+            foreach (var styleVariants in GetAllStyleVariants())
             {
-                case TextCollection.PictureSlidesLabText.StyleNameDirectText:
-                    return new DirectTextStyleVariants().GetVariantsForStyle();
-                case TextCollection.PictureSlidesLabText.StyleNameBlur:
-                    return new BlurStyleVariants().GetVariantsForStyle();
-                case TextCollection.PictureSlidesLabText.StyleNameTextBox:
-                    return new TextBoxStyleVariants().GetVariantsForStyle();
-                case TextCollection.PictureSlidesLabText.StyleNameBanner:
-                    return new BannerStyleVariants().GetVariantsForStyle();
-                case TextCollection.PictureSlidesLabText.StyleNameSpecialEffect:
-                    return new SpecialEffectStyleVariants().GetVariantsForStyle();
-                case TextCollection.PictureSlidesLabText.StyleNameOverlay:
-                    return new OverlayStyleVariants().GetVariantsForStyle();
-                case TextCollection.PictureSlidesLabText.StyleNameOutline:
-                    return new OutlineStyleVariants().GetVariantsForStyle();
-                case TextCollection.PictureSlidesLabText.StyleNameFrame:
-                    return new FrameStyleVariants().GetVariantsForStyle();
-                case TextCollection.PictureSlidesLabText.StyleNameCircle:
-                    return new CircleStyleVariants().GetVariantsForStyle();
-                case TextCollection.PictureSlidesLabText.StyleNameTriangle:
-                    return new TriangleStyleVariants().GetVariantsForStyle();
-                default:
-                    return new Dictionary<string, List<StyleVariant>>();
+                if (styleVariants.GetStyleName() == targetStyle)
+                {
+                    return styleVariants.GetVariantsForStyle();
+                }
             }
+            return new Dictionary<string, List<StyleVariant>>();
         }
     }
 }

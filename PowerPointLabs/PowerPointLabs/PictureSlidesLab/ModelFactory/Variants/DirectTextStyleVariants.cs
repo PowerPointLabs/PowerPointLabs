@@ -22,5 +22,10 @@ namespace PowerPointLabs.PictureSlidesLab.ModelFactory.Variants
                 new PictureCitationVariantWorker()
             };
         }
+
+        public override string GetStyleName()
+        {
+            return TextCollection.PictureSlidesLabText.StyleNameDirectText;
+        }
     }
 }
