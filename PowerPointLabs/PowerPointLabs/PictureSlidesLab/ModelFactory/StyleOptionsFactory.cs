@@ -17,9 +17,9 @@ namespace PowerPointLabs.PictureSlidesLab.ModelFactory
         /// get all styles variation options for variation stage usage
         /// </summary>
         /// <returns></returns>
-        public static List<List<StyleOptions>> GetAllStylesVariationOptions()
+        public static List<List<StyleOption>> GetAllStylesVariationOptions()
         {
-            var options = new List<List<StyleOptions>>
+            var options = new List<List<StyleOption>>
             {
                 GetOptionsForDirectText(),
                 GetOptionsForBlur(),
@@ -39,9 +39,9 @@ namespace PowerPointLabs.PictureSlidesLab.ModelFactory
         /// get all styles preview options for preview stage usage
         /// </summary>
         /// <returns></returns>
-        public static List<StyleOptions> GetAllStylesPreviewOptions()
+        public static List<StyleOption> GetAllStylesPreviewOptions()
         {
-            var options = new List<StyleOptions>
+            var options = new List<StyleOption>
             {
                 GetDefaultOptionForDirectText(),
                 GetDefaultOptionForBlur(),
@@ -57,7 +57,7 @@ namespace PowerPointLabs.PictureSlidesLab.ModelFactory
             return options;
         }
 
-        public static StyleOptions GetStylesPreviewOption(string targetStyle)
+        public static StyleOption GetStylesPreviewOption(string targetStyle)
         {
             var options = GetAllStylesPreviewOptions();
             foreach (var option in options)
@@ -70,7 +70,7 @@ namespace PowerPointLabs.PictureSlidesLab.ModelFactory
             return options[0];
         }
 
-        public static List<StyleOptions> GetStylesVariationOptions(string targetStyle)
+        public static List<StyleOption> GetStylesVariationOptions(string targetStyle)
         {
             var allStylesVariationOptions = GetAllStylesVariationOptions();
             foreach (var stylesVariationOptions in allStylesVariationOptions)
@@ -83,13 +83,12 @@ namespace PowerPointLabs.PictureSlidesLab.ModelFactory
             return allStylesVariationOptions[0];
         }
 
-        private static List<StyleOptions> UpdateStyleName(List<StyleOptions> opts, string styleName)
+        private static List<StyleOption> UpdateStyleName(List<StyleOption> opts, string styleName)
         {
             int i = 0;
             foreach (var styleOption in opts)
             {
                 styleOption.StyleName = styleName;
-                styleOption.VariantIndex = i;
                 i++;
             }
             return opts;
@@ -97,9 +96,9 @@ namespace PowerPointLabs.PictureSlidesLab.ModelFactory
 
         #region Get specific styles preview option
 
-        private static StyleOptions GetDefaultOptionForDirectText()
+        private static StyleOption GetDefaultOptionForDirectText()
         {
-            return new StyleOptions
+            return new StyleOption
             {
                 StyleName = TextCollection.PictureSlidesLabText.StyleNameDirectText,
                 TextBoxPosition = 5,
@@ -108,9 +107,9 @@ namespace PowerPointLabs.PictureSlidesLab.ModelFactory
             };
         }
 
-        private static StyleOptions GetDefaultOptionForBlur()
+        private static StyleOption GetDefaultOptionForBlur()
         {
-            return new StyleOptions
+            return new StyleOption
             {
                 StyleName = TextCollection.PictureSlidesLabText.StyleNameBlur,
                 IsUseBlurStyle = true,
@@ -121,9 +120,9 @@ namespace PowerPointLabs.PictureSlidesLab.ModelFactory
             };
         }
 
-        private static StyleOptions GetDefaultOptionForTextBox()
+        private static StyleOption GetDefaultOptionForTextBox()
         {
-            return new StyleOptions
+            return new StyleOption
             {
                 StyleName = TextCollection.PictureSlidesLabText.StyleNameTextBox,
                 IsUseTextBoxStyle = true,
@@ -133,9 +132,9 @@ namespace PowerPointLabs.PictureSlidesLab.ModelFactory
             };
         }
 
-        private static StyleOptions GetDefaultOptionForBanner()
+        private static StyleOption GetDefaultOptionForBanner()
         {
-            return new StyleOptions
+            return new StyleOption
             {
                 StyleName = TextCollection.PictureSlidesLabText.StyleNameBanner,
                 IsUseBannerStyle = true,
@@ -145,9 +144,9 @@ namespace PowerPointLabs.PictureSlidesLab.ModelFactory
             };
         }
 
-        private static StyleOptions GetDefaultOptionForSpecialEffects()
+        private static StyleOption GetDefaultOptionForSpecialEffects()
         {
-            return new StyleOptions
+            return new StyleOption
             {
                 StyleName = TextCollection.PictureSlidesLabText.StyleNameSpecialEffect,
                 IsUseSpecialEffectStyle = true,
@@ -157,9 +156,9 @@ namespace PowerPointLabs.PictureSlidesLab.ModelFactory
             };
         }
 
-        private static StyleOptions GetDefaultOptionForOverlay()
+        private static StyleOption GetDefaultOptionForOverlay()
         {
-            return new StyleOptions
+            return new StyleOption
             {
                 StyleName = TextCollection.PictureSlidesLabText.StyleNameOverlay,
                 IsUseOverlayStyle = true,
@@ -170,9 +169,9 @@ namespace PowerPointLabs.PictureSlidesLab.ModelFactory
             };
         }
 
-        private static StyleOptions GetDefaultOptionForOutline()
+        private static StyleOption GetDefaultOptionForOutline()
         {
-            return new StyleOptions()
+            return new StyleOption()
             {
                 StyleName = TextCollection.PictureSlidesLabText.StyleNameOutline,
                 IsUseOutlineStyle = true,
@@ -181,9 +180,9 @@ namespace PowerPointLabs.PictureSlidesLab.ModelFactory
             };
         }
 
-        private static StyleOptions GetDefaultOptionForFrame()
+        private static StyleOption GetDefaultOptionForFrame()
         {
-            return new StyleOptions()
+            return new StyleOption()
             {
                 StyleName = TextCollection.PictureSlidesLabText.StyleNameFrame,
                 IsUseFrameStyle = true,
@@ -192,9 +191,9 @@ namespace PowerPointLabs.PictureSlidesLab.ModelFactory
             };
         }
 
-        private static StyleOptions GetDefaultOptionForTriangle()
+        private static StyleOption GetDefaultOptionForTriangle()
         {
-            return new StyleOptions()
+            return new StyleOption()
             {
                 StyleName = TextCollection.PictureSlidesLabText.StyleNameTriangle,
                 IsUseTriangleStyle = true,
@@ -204,9 +203,9 @@ namespace PowerPointLabs.PictureSlidesLab.ModelFactory
             };
         }
 
-        private static StyleOptions GetDefaultOptionForCircle()
+        private static StyleOption GetDefaultOptionForCircle()
         {
-            return new StyleOptions()
+            return new StyleOption()
             {
                 StyleName = TextCollection.PictureSlidesLabText.StyleNameCircle,
                 IsUseCircleStyle = true,
@@ -218,7 +217,7 @@ namespace PowerPointLabs.PictureSlidesLab.ModelFactory
         #endregion
         #region Get specific styles variation options
 
-        private static List<StyleOptions> GetOptionsForTriangle()
+        private static List<StyleOption> GetOptionsForTriangle()
         {
             var result = GetOptionsWithSuitableFontColor();
             foreach (var styleOption in result)
@@ -233,7 +232,7 @@ namespace PowerPointLabs.PictureSlidesLab.ModelFactory
             return result;
         }
 
-        private static List<StyleOptions> GetOptionsForCircle()
+        private static List<StyleOption> GetOptionsForCircle()
         {
             var result = GetOptionsWithSuitableFontColor();
             foreach (var styleOption in result)
@@ -246,7 +245,7 @@ namespace PowerPointLabs.PictureSlidesLab.ModelFactory
                 TextCollection.PictureSlidesLabText.StyleNameCircle);
         }
 
-        private static List<StyleOptions> GetOptionsForFrame()
+        private static List<StyleOption> GetOptionsForFrame()
         {
             var result = GetOptions();
             foreach (var styleOption in result)
@@ -260,7 +259,7 @@ namespace PowerPointLabs.PictureSlidesLab.ModelFactory
                 TextCollection.PictureSlidesLabText.StyleNameFrame);
         }
 
-        private static List<StyleOptions> GetOptionsForOutline()
+        private static List<StyleOption> GetOptionsForOutline()
         {
             var result = GetOptionsWithSuitableFontColor();
             foreach (var styleOption in result)
@@ -274,7 +273,7 @@ namespace PowerPointLabs.PictureSlidesLab.ModelFactory
                 TextCollection.PictureSlidesLabText.StyleNameOutline);
         }
 
-        private static List<StyleOptions> GetOptionsForOverlay()
+        private static List<StyleOption> GetOptionsForOverlay()
         {
             var result = GetOptionsWithSuitableFontColor();
             foreach (var styleOption in result)
@@ -285,7 +284,7 @@ namespace PowerPointLabs.PictureSlidesLab.ModelFactory
                 TextCollection.PictureSlidesLabText.StyleNameOverlay);
         } 
 
-        private static List<StyleOptions> GetOptionsForSpecialEffect()
+        private static List<StyleOption> GetOptionsForSpecialEffect()
         {
             var result = GetOptions();
             foreach (var styleOption in result)
@@ -298,14 +297,14 @@ namespace PowerPointLabs.PictureSlidesLab.ModelFactory
                 TextCollection.PictureSlidesLabText.StyleNameSpecialEffect);
         } 
 
-        private static List<StyleOptions> GetOptionsForBanner()
+        private static List<StyleOption> GetOptionsForBanner()
         {
             return UpdateStyleName(
                 GetOptionsForTextBox(),
                 TextCollection.PictureSlidesLabText.StyleNameBanner);
         } 
 
-        private static List<StyleOptions> GetOptionsForTextBox()
+        private static List<StyleOption> GetOptionsForTextBox()
         {
             var result = GetOptionsWithSuitableFontColor();
             foreach (var option in result)
@@ -318,7 +317,7 @@ namespace PowerPointLabs.PictureSlidesLab.ModelFactory
             return result;
         }
 
-        private static List<StyleOptions> GetOptionsForBlur()
+        private static List<StyleOption> GetOptionsForBlur()
         {
             var result = GetOptions();
             foreach (var styleOption in result)
@@ -331,7 +330,7 @@ namespace PowerPointLabs.PictureSlidesLab.ModelFactory
                 TextCollection.PictureSlidesLabText.StyleNameBlur);
         } 
 
-        private static List<StyleOptions> GetOptionsForDirectText()
+        private static List<StyleOption> GetOptionsForDirectText()
         {
             var result = GetOptions();
             foreach (var styleOption in result)
@@ -345,17 +344,17 @@ namespace PowerPointLabs.PictureSlidesLab.ModelFactory
             return result;
         }
 
-        private static List<StyleOptions> GetOptions()
+        private static List<StyleOption> GetOptions()
         {
-            var result = new List<StyleOptions>();
+            var result = new List<StyleOption>();
             for (var i = 0; i < 8; i++)
             {
-                result.Add(new StyleOptions());
+                result.Add(new StyleOption());
             }
             return result;
         }
 
-        private static List<StyleOptions> GetOptionsWithSuitableFontColor()
+        private static List<StyleOption> GetOptionsWithSuitableFontColor()
         {
             var result = GetOptions();
             result[0].FontColor = "#000000"; //white(bg color) + black

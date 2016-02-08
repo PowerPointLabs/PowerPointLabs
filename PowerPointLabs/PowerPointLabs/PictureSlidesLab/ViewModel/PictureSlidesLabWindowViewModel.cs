@@ -73,9 +73,9 @@ namespace PowerPointLabs.PictureSlidesLab.ViewModel
 
         #region States for variation stage
         private string _previousVariantsCategory;
-        private List<StyleOptions> _styleOptions;
+        private List<StyleOption> _styleOptions;
         // key - variant category, value - variants
-        private Dictionary<string, List<StyleVariants>> _styleVariants;
+        private Dictionary<string, List<StyleVariant>> _styleVariants;
         #endregion
 
         #region Lifecycle
@@ -316,7 +316,7 @@ namespace PowerPointLabs.PictureSlidesLab.ViewModel
         /// <param name="givenOptions"></param>
         /// <param name="givenVariants"></param>
         public void UpdateStyleVariationImagesWhenOpenFlyout(ImageItem source, Slide contentSlide, float slideWidth, float slideHeight,
-            List<StyleOptions> givenOptions = null, Dictionary<string, List<StyleVariants>> givenVariants = null)
+            List<StyleOption> givenOptions = null, Dictionary<string, List<StyleVariant>> givenVariants = null)
         {
             var targetStyleItem = StylesPreviewListSelectedItem.ImageItem;
             StylesVariationList.Clear();
@@ -373,7 +373,7 @@ namespace PowerPointLabs.PictureSlidesLab.ViewModel
             {
                 // apply font color variant,
                 // because default styles may contain special font color settings, but not in variants
-                var fontColorVariant = new StyleVariants(new Dictionary<string, object>
+                var fontColorVariant = new StyleVariant(new Dictionary<string, object>
                 {
                     {"FontColor", _styleOptions[targetVariationSelectedIndex].FontColor}
                 });
@@ -515,8 +515,8 @@ namespace PowerPointLabs.PictureSlidesLab.ViewModel
                     || contentSlide == null);
         }
 
-        private void InitStylesVariationCategories(List<StyleOptions> givenOptions,
-            Dictionary<string, List<StyleVariants>> givenVariants, string targetStyle)
+        private void InitStylesVariationCategories(List<StyleOption> givenOptions,
+            Dictionary<string, List<StyleVariant>> givenVariants, string targetStyle)
         {
             _styleOptions = givenOptions ?? StyleOptionsFactory.GetStylesVariationOptions(targetStyle);
             _styleVariants = givenVariants ?? StyleVariantsFactory.GetVariants(targetStyle);

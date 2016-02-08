@@ -97,13 +97,13 @@ namespace PowerPointLabs.PictureSlidesLab.Service
 
         }
 
-        public PowerPoint.Shape ApplyBackgroundEffect(int offset)
+        public PowerPoint.Shape ApplyBackgroundEffect()
         {
             var imageShape = AddPicture(Source.FullSizeImageFile ?? Source.ImageFile, EffectName.BackGround);
             imageShape.ZOrder(MsoZOrderCmd.msoSendToBack);
             var slideWidth = SlideWidth;
             var slideHeight = SlideHeight;
-            FitToSlide.AutoFit(imageShape, slideWidth, slideHeight, offset);
+            FitToSlide.AutoFit(imageShape, slideWidth, slideHeight);
 
             CropPicture(imageShape);
             return imageShape;
@@ -301,7 +301,7 @@ namespace PowerPointLabs.PictureSlidesLab.Service
             return overlayShape;
         }
 
-        public PowerPoint.Shape ApplyBlurEffect(string imageFileToBlur = null, int degree = 85, int offset = 0)
+        public PowerPoint.Shape ApplyBlurEffect(string imageFileToBlur = null, int degree = 85)
         {
             Source.BlurImageFile = BlurImage(imageFileToBlur 
                 ?? Source.FullSizeImageFile 
@@ -309,7 +309,7 @@ namespace PowerPointLabs.PictureSlidesLab.Service
             var blurImageShape = AddPicture(Source.BlurImageFile, EffectName.Blur);
             var slideWidth = SlideWidth;
             var slideHeight = SlideHeight;
-            FitToSlide.AutoFit(blurImageShape, slideWidth, slideHeight, offset);
+            FitToSlide.AutoFit(blurImageShape, slideWidth, slideHeight);
             CropPicture(blurImageShape);
             return blurImageShape;
         }
@@ -499,13 +499,13 @@ namespace PowerPointLabs.PictureSlidesLab.Service
             return result;
         }
 
-        public PowerPoint.Shape ApplySpecialEffectEffect(IMatrixFilter effectFilter, bool isActualSize, int offset)
+        public PowerPoint.Shape ApplySpecialEffectEffect(IMatrixFilter effectFilter, bool isActualSize)
         {
             Source.SpecialEffectImageFile = SpecialEffectImage(effectFilter, Source.FullSizeImageFile ?? Source.ImageFile, isActualSize);
             var specialEffectImageShape = AddPicture(Source.SpecialEffectImageFile, EffectName.SpecialEffect);
             var slideWidth = SlideWidth;
             var slideHeight = SlideHeight;
-            FitToSlide.AutoFit(specialEffectImageShape, slideWidth, slideHeight, offset);
+            FitToSlide.AutoFit(specialEffectImageShape, slideWidth, slideHeight);
             CropPicture(specialEffectImageShape);
             return specialEffectImageShape;
         }
@@ -616,7 +616,7 @@ namespace PowerPointLabs.PictureSlidesLab.Service
         }
 
         public List<PowerPoint.Shape> EmbedStyleOptionsInformation(string originalImageFile, string croppedImageFile, 
-            string imageContext, Rect rect, StyleOptions opt)
+            string imageContext, Rect rect, StyleOption opt)
         {
             if (originalImageFile == null) return new List<PowerPoint.Shape>();
 

@@ -329,9 +329,9 @@ namespace PowerPointLabs.PictureSlidesLab.View
             return 0;
         }
 
-        private List<StyleOptions> ConstructStylesFromShapeInfo(Shape shape)
+        private List<StyleOption> ConstructStylesFromShapeInfo(Shape shape)
         {
-            var result = new List<StyleOptions>();
+            var result = new List<StyleOption>();
             for (var i = 0; i < 8; i++)
             {
                 result.Add(ConstructStyleFromShapeInfo(shape));
@@ -339,7 +339,7 @@ namespace PowerPointLabs.PictureSlidesLab.View
             return result;
         }
 
-        private Dictionary<string, List<StyleVariants>> ConstructVariantsFromStyle(StyleOptions opt)
+        private Dictionary<string, List<StyleVariant>> ConstructVariantsFromStyle(StyleOption opt)
         {
             var variants = StyleVariantsFactory.GetVariants(opt.StyleName);
             // replace each category/aspect's variant
@@ -362,9 +362,9 @@ namespace PowerPointLabs.PictureSlidesLab.View
             return variants;
         }
 
-        private StyleOptions ConstructStyleFromShapeInfo(Shape shape)
+        private StyleOption ConstructStyleFromShapeInfo(Shape shape)
         {
-            var opt = new StyleOptions();
+            var opt = new StyleOption();
             var props = opt.GetType().GetProperties();
             foreach (var propertyInfo in props)
             {

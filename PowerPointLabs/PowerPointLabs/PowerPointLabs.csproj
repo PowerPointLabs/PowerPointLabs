@@ -153,6 +153,8 @@
     <DefineConstants>$(DefineConstants);TRACE</DefineConstants>
     <WarningLevel>4</WarningLevel>
     <Prefer32Bit>false</Prefer32Bit>
+    <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
+    <NoWarn>618</NoWarn>
   </PropertyGroup>
   <!--
     This section enables pre- and post-build steps. However, in VSTO use
@@ -336,6 +338,19 @@
     <Compile Include="FunctionalTestInterface.Impl\SlideData.cs" />
     <Compile Include="PictureSlidesLab\Model\ObservableFont.cs" />
     <Compile Include="PictureSlidesLab\Model\ObservableImageItem.cs" />
+    <Compile Include="PictureSlidesLab\Model\StyleOptions.Properties\StyleOption.BannerStyle.cs" />
+    <Compile Include="PictureSlidesLab\Model\StyleOptions.Properties\StyleOption.BlurStyle.cs" />
+    <Compile Include="PictureSlidesLab\Model\StyleOptions.Properties\StyleOption.CircleStyle.cs" />
+    <Compile Include="PictureSlidesLab\Model\StyleOptions.Properties\StyleOption.FrameStyle.cs" />
+    <Compile Include="PictureSlidesLab\Model\StyleOptions.Properties\StyleOption.Metadata.cs" />
+    <Compile Include="PictureSlidesLab\Model\StyleOptions.Properties\StyleOption.OutlineStyle.cs" />
+    <Compile Include="PictureSlidesLab\Model\StyleOptions.Properties\StyleOption.OverlayStyle.cs" />
+    <Compile Include="PictureSlidesLab\Model\StyleOptions.Properties\StyleOption.PictureCitation.cs" />
+    <Compile Include="PictureSlidesLab\Model\StyleOptions.Properties\StyleOption.SpecialEffects.cs" />
+    <Compile Include="PictureSlidesLab\Model\StyleOptions.Properties\StyleOption.Text.cs" />
+    <Compile Include="PictureSlidesLab\Model\StyleOptions.Properties\StyleOption.TextBoxStyle.cs" />
+    <Compile Include="PictureSlidesLab\Model\StyleOptions.Properties\StyleOption.TextGlow.cs" />
+    <Compile Include="PictureSlidesLab\Model\StyleOptions.Properties\StyleOption.TriangleStyle.cs" />
     <Compile Include="PictureSlidesLab\Service\Interface\IStylesDesigner.cs" />
     <Compile Include="PictureSlidesLab\Thread\ContextDownloader.cs" />
     <Compile Include="PictureSlidesLab\Thread\ThreadContext.cs" />
@@ -351,8 +366,8 @@
     <Compile Include="PictureSlidesLab\ModelFactory\StyleOptionsFactory.cs" />
     <Compile Include="PictureSlidesLab\ModelFactory\StyleVariantsFactory.cs" />
     <Compile Include="PictureSlidesLab\Model\ImageItem.cs" />
-    <Compile Include="PictureSlidesLab\Model\StyleOptions.cs" />
-    <Compile Include="PictureSlidesLab\Model\StyleVariants.cs" />
+    <Compile Include="PictureSlidesLab\Model\StyleOption.cs" />
+    <Compile Include="PictureSlidesLab\Model\StyleVariant.cs" />
     <Compile Include="PictureSlidesLab\Thread\Interface\IThreadContext.cs" />
     <Compile Include="PictureSlidesLab\View\SlideSelectionDialog.xaml.cs">
       <DependentUpon>SlideSelectionDialog.xaml</DependentUpon>
@@ -889,9 +904,6 @@
     </Page>
   </ItemGroup>
   <ItemGroup>
-    <WCFMetadata Include="Service References\" />
-  </ItemGroup>
-  <ItemGroup>
     <None Include="Resources\loading.gif" />
   </ItemGroup>
   <ItemGroup>
@@ -953,6 +965,9 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\closed_business.jpg" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="ActionFramework\" />
   </ItemGroup>
   <!-- Include the build rules for a C# project. -->
   <PropertyGroup>

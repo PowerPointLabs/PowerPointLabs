@@ -196,7 +196,7 @@ namespace Test.UnitTest.PictureSlidesLab.ModelFactory
             Assert.AreEqual(8, options.Count);
         }
 
-        private static List<StyleOptions> GetOptions(string styleName)
+        private static List<StyleOption> GetOptions(string styleName)
         {
             var options = StyleOptionsFactory.GetStylesVariationOptions(styleName);
             var variants = StyleVariantsFactory.GetVariants(styleName);
@@ -209,7 +209,7 @@ namespace Test.UnitTest.PictureSlidesLab.ModelFactory
             return options;
         }
 
-        private static List<object> GetOptionsProperty(List<StyleOptions> options, string propertyName)
+        private static List<object> GetOptionsProperty(List<StyleOption> options, string propertyName)
         {
             var propList = new List<object>();
             foreach (var option in options)

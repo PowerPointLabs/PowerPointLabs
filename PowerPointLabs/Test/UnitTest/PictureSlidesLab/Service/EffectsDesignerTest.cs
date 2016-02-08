@@ -71,7 +71,7 @@ namespace Test.UnitTest.PictureSlidesLab.Service
         [TestCategory("UT")]
         public void TestInsertBackground()
         {
-            var bgShape = _designer.ApplyBackgroundEffect(0);
+            var bgShape = _designer.ApplyBackgroundEffect();
             Assert.IsTrue(bgShape.Name.StartsWith(
                 EffectsDesigner.ShapeNamePrefix + "_" + EffectName.BackGround));
             Assert.AreEqual(MsoShapeType.msoPicture, bgShape.Type);
@@ -234,7 +234,7 @@ namespace Test.UnitTest.PictureSlidesLab.Service
         public void TestSpecialEffectsEffect()
         {
             TempPath.InitTempFolder();
-            var shape = _designer.ApplySpecialEffectEffect(MatrixFilters.GreyScale, true, 0);
+            var shape = _designer.ApplySpecialEffectEffect(MatrixFilters.GreyScale, true);
             Assert.IsTrue(shape.Name.StartsWith(
                 EffectsDesigner.ShapeNamePrefix + "_" + EffectName.SpecialEffect));
             Assert.AreEqual(MsoShapeType.msoPicture, shape.Type);

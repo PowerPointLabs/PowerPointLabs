@@ -826,8 +826,8 @@ namespace PowerPointLabs.PictureSlidesLab.View
                 PowerPointPresentation.Current.SlideHeight);
         }
 
-        private void CustomizeStyle(ImageItem source, List<StyleOptions> givenStyles = null,
-            Dictionary<string, List<StyleVariants>> givenVariants = null)
+        private void CustomizeStyle(ImageItem source, List<StyleOption> givenStyles = null,
+            Dictionary<string, List<StyleVariant>> givenVariants = null)
         {
             ViewModel.UpdateStyleVariationImagesWhenOpenFlyout(
                 source ?? (ImageItem) ImageSelectionListBox.SelectedValue,
