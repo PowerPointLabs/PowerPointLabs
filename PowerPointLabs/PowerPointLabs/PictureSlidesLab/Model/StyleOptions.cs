@@ -467,7 +467,10 @@ namespace PowerPointLabs.PictureSlidesLab.Model
             }
         }
 
-        // other
+        // *****************************************
+        // Picture reference
+        // *****************************************
+
 
         private bool _isInsertReference;
 
@@ -478,6 +481,42 @@ namespace PowerPointLabs.PictureSlidesLab.Model
             {
                 _isInsertReference = value;
                 OnPropertyChanged("IsInsertReference");
+            }
+        }
+
+        private int _citationFontSize;
+
+        public int CitationFontSize
+        {
+            get { return _citationFontSize; }
+            set
+            {
+                _citationFontSize = value;
+                OnPropertyChanged("CitationFontSize");
+            }
+        }
+
+        private int _imageReferenceAlignment;
+
+        public int ImageReferenceAlignment
+        {
+            get { return _imageReferenceAlignment; }
+            set
+            {
+                _imageReferenceAlignment = value;
+                OnPropertyChanged("ImageReferenceAlignment");
+            }
+        }
+
+        private string _imageReferenceTextBoxColor;
+
+        public string ImageReferenceTextBoxColor
+        {
+            get { return _imageReferenceTextBoxColor; }
+            set
+            {
+                _imageReferenceTextBoxColor = value;
+                OnPropertyChanged("ImageReferenceTextBoxColor");
             }
         }
 
@@ -542,6 +581,11 @@ namespace PowerPointLabs.PictureSlidesLab.Model
             TextGlowColor = "#123456";
 
             IsInsertReference = false;
+            CitationFontSize = 14;
+            ImageReferenceAlignment = 0;
+            ImageReferenceTextBoxColor = "";
+            
+
             OptionName = "Default";
             StyleName = "";
             VariantIndex = 0;
@@ -583,6 +627,22 @@ namespace PowerPointLabs.PictureSlidesLab.Model
         public Alignment GetTextBoxAlignment()
         {
             switch (TextBoxAlignment)
+            {
+                case 0:
+                    return Alignment.Auto;
+                case 1:
+                    return Alignment.Left;
+                case 2:
+                    return Alignment.Centre;
+                // case 3:
+                default:
+                    return Alignment.Right;
+            }
+        }
+
+        public Alignment GetCitationTextBoxAlignment()
+        {
+            switch (ImageReferenceAlignment)
             {
                 case 0:
                     return Alignment.Auto;
