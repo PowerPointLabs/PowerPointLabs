@@ -1,6 +1,6 @@
 ﻿namespace PowerPointLabs.ResizeLab
 {
-    partial class ResizePane
+    partial class ResizeLabPane
     {
         /// <summary> 
         /// Required designer variable.

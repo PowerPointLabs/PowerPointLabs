@@ -21,6 +21,13 @@ namespace PowerPointLabs.ResizeLab
         private const string ErrorMessageShapesNotStretchText =
             TextCollection.ResizeLabText.WarningShapesNotStretchText;
 
+        private IResizeLabPane View { get; }
+
+        public ResizeLabMain(IResizeLabPane view)
+        {
+            View = view;
+        }
+
         private enum Dimension
         {
             Height,
@@ -81,11 +88,11 @@ namespace PowerPointLabs.ResizeLab
             var errorMessage = GetErrorMessage(e.Message);
             if (!string.Equals(errorMessage, ErrorMessageUndefined, StringComparison.Ordinal))
             {
-                MessageBox.Show(errorMessage, MessageBoxTitle);
+                View.ShowErrorMessageBox(errorMessage);
             }
             else
             {
-                Views.ErrorDialogWrapper.ShowDialog(MessageBoxTitle, e.Message, e);
+                View.ShowErrorMessageBox(e.Message, e);
             }
         }
 

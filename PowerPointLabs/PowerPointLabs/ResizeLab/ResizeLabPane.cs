@@ -9,9 +9,9 @@ using System.Windows.Forms;
 
 namespace PowerPointLabs.ResizeLab
 {
-    public partial class ResizePane : UserControl
+    public partial class ResizeLabPane : UserControl
     {
-        public ResizePane()
+        public ResizeLabPane()
         {
             InitializeComponent();
         }

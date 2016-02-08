@@ -569,14 +569,14 @@ namespace PowerPointLabs
 
         public void RegisterResizePane(PowerPoint.Presentation presentation)
         {
-            if (GetActivePane(typeof(ResizePane)) != null)
+            if (GetActivePane(typeof(ResizeLabPane)) != null)
             {
                 return;
             }
 
             var activeWindow = presentation.Application.ActiveWindow;
 
-            RegisterTaskPane(new ResizePane(), TextCollection.ResizeLabsTaskPaneTitle, activeWindow, null, null);
+            RegisterTaskPane(new ResizeLabPane(), TextCollection.ResizeLabsTaskPaneTitle, activeWindow, null, null);
         }
 
         public void RegisterRecorderPane(PowerPoint.DocumentWindow activeWindow, string tempFullPath)

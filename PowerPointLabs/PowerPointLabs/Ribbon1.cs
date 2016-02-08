@@ -2519,7 +2519,7 @@ namespace PowerPointLabs
         {
             Globals.ThisAddIn.RegisterResizePane(PowerPointPresentation.Current.Presentation);
 
-            var resizePane = Globals.ThisAddIn.GetActivePane(typeof(ResizePane));
+            var resizePane = Globals.ThisAddIn.GetActivePane(typeof(ResizeLabPane));
 
             // if currently the pane is hidden, show the pane
             if (!resizePane.Visible)
