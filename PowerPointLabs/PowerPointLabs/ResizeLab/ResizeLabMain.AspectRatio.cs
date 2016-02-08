@@ -73,6 +73,11 @@ namespace PowerPointLabs.ResizeLab
             }
         }
 
+        /// <summary>
+        /// Get the scale height of the shape at current state.
+        /// </summary>
+        /// <param name="shape"></param>
+        /// <returns></returns>
         private float GetScaleHeight(PowerPoint.Shape shape)
         {
             var currentHeight = shape.Height;
@@ -87,6 +92,11 @@ namespace PowerPointLabs.ResizeLab
             return currentHeight/originalHeight;
         }
 
+        /// <summary>
+        /// Get the scale width of the shape at current state.
+        /// </summary>
+        /// <param name="shape"></param>
+        /// <returns></returns>
         private float GetScaleWidth(PowerPoint.Shape shape)
         {
             var currentWidth = shape.Width;

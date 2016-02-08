@@ -146,7 +146,7 @@ namespace PowerPointLabs.ResizeLab
 
             if (selectedShapes != null)
             {
-                _resizeLab.FitToFill(selectedShapes);
+                _resizeLab.FitToFill(selectedShapes, IsAspectRatioLocked);
             }
         }
 
@@ -196,7 +196,7 @@ namespace PowerPointLabs.ResizeLab
 
         private void ModifySelectionAspectRatio()
         {
-            if (_resizeLab.IsShapeSelection(GetSelection()))
+            if (_resizeLab.IsSelecionValid(GetSelection(), false))
             {
                 _resizeLab.ChangeShapesAspectRatio(GetSelectedShapes(), IsAspectRatioLocked);
             }
@@ -209,7 +209,7 @@ namespace PowerPointLabs.ResizeLab
         private PowerPoint.ShapeRange GetSelectedShapes()
         {
             var selection = GetSelection();
-            return _resizeLab.IsSelecionValid(selection) ? GetSelection().ShapeRange : null;
+            return _resizeLab.IsSelecionValid(selection, true) ? GetSelection().ShapeRange : null;
         }
 
         private PowerPoint.Selection GetSelection()

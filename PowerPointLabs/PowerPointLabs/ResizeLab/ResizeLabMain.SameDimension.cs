@@ -15,21 +15,41 @@ namespace PowerPointLabs.ResizeLab
     /// </summary>
     internal partial class ResizeLabMain
     {
+        /// <summary>
+        /// Resize the selected shapes to the same height with the reference to
+        /// first selected shape.
+        /// </summary>
+        /// <param name="selectedShapes"></param>
         public void ResizeToSameHeight(PowerPoint.ShapeRange selectedShapes)
         {
             ResizeShapes(selectedShapes, Dimension.Height);
         }
 
+        /// <summary>
+        /// Resize the selected shapes to the same width with the reference to
+        /// first selected shape.
+        /// </summary>
+        /// <param name="selectedShapes"></param>
         public void ResizeToSameWidth(PowerPoint.ShapeRange selectedShapes)
         {
             ResizeShapes(selectedShapes, Dimension.Width);
         }
 
+        /// <summary>
+        /// Resize the selected shapes to the same size (width and height) with 
+        /// the reference to first selected shape.
+        /// </summary>
+        /// <param name="selectedShapes"></param>
         public void ResizeToSameHeightAndWidth(PowerPoint.ShapeRange selectedShapes)
         {
             ResizeShapes(selectedShapes, Dimension.HeightAndWidth);
         }
 
+        /// <summary>
+        /// Resize the selected shapes according to the set dimension type.
+        /// </summary>
+        /// <param name="selectedShapes"></param>
+        /// <param name="dimension"></param>
         private void ResizeShapes(PowerPoint.ShapeRange selectedShapes, Dimension dimension)
         {
             try
@@ -62,6 +82,11 @@ namespace PowerPointLabs.ResizeLab
             }
         }
 
+        /// <summary>
+        /// Get the height of the reference shape.
+        /// </summary>
+        /// <param name="selectedShapes"></param>
+        /// <returns></returns>
         private float GetReferenceHeight(PowerPoint.ShapeRange selectedShapes)
         {
             if (selectedShapes.Count > 0)
@@ -71,6 +96,11 @@ namespace PowerPointLabs.ResizeLab
             return -1;
         }
 
+        /// <summary>
+        /// Get the width of the reference shape.
+        /// </summary>
+        /// <param name="selectShapes"></param>
+        /// <returns></returns>
         private float GetReferenceWidth(PowerPoint.ShapeRange selectShapes)
         {
             if (selectShapes.Count > 0)
