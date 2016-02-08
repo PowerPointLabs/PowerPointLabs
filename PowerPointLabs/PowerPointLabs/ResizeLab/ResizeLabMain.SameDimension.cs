@@ -64,14 +64,16 @@ namespace PowerPointLabs.ResizeLab
 
                 for (int i = 1; i <= selectedShapes.Count; i++)
                 {
+                    var shape = selectedShapes[i];
+
                     if ((dimension == Dimension.Height) || (dimension == Dimension.HeightAndWidth))
                     {
-                        selectedShapes[i].Height = referenceHeight;
+                        shape.Height = referenceHeight;
                     }
 
                     if ((dimension == Dimension.Width) || (dimension == Dimension.HeightAndWidth))
                     {
-                        selectedShapes[i].Width = referenceWidth;
+                        shape.Width = referenceWidth;
                     }
                 }
             }
