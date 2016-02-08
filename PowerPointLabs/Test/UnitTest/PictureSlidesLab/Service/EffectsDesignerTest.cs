@@ -60,7 +60,7 @@ namespace Test.UnitTest.PictureSlidesLab.Service
                 PpOperations.GetNotesPageText(_processingSlide)
                 .Contains(Link));
 
-            ed.ApplyImageReferenceInsertion(Link, "Calibri", "#000000");
+            ed.ApplyImageReferenceInsertion(Link, "Calibri", "#000000", 14, "", Alignment.Left);
             var refShape = PpOperations.SelectShapesByPrefix(
                 EffectsDesigner.ShapeNamePrefix + "_" + EffectName.ImageReference);
             Assert.IsTrue(
