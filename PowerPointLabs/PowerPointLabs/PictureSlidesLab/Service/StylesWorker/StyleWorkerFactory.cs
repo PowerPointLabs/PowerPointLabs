@@ -11,8 +11,8 @@ namespace PowerPointLabs.PictureSlidesLab.Service.StylesWorker
             {
                 new TextStyleWorker(),
                 new StyleEmbeddingWorker(),
-                new OverlayStyleWorker(),
                 new BlurStyleWorker(),
+                new OverlayStyleWorker(),
                 new BannerStyleWorker(),
                 new TextBoxStyleWorker(),
                 new OutlineStyleWorker(),

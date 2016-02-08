@@ -120,8 +120,6 @@ namespace PowerPointLabs.PictureSlidesLab.Service
             }
 
             var resultShapes = new List<Shape>();
-            resultShapes.Add(imageShape);
-
             var styleWorkers = StyleWorkerFactory.GetAllStyleWorkers();
             foreach (var styleWorker in styleWorkers)
             {
@@ -131,6 +129,7 @@ namespace PowerPointLabs.PictureSlidesLab.Service
 
             resultShapes.Reverse();
             SendToBack(resultShapes.ToArray());
+            imageShape.ZOrder(MsoZOrderCmd.msoSendToBack);
         }
 
         # endregion
