@@ -2,6 +2,7 @@
 using Microsoft.Office.Interop.PowerPoint;
 using PowerPointLabs.PictureSlidesLab.Model;
 using PowerPointLabs.PictureSlidesLab.Service.Effect;
+using PowerPointLabs.PictureSlidesLab.Service.StylesWorker.Interface;
 
 namespace PowerPointLabs.PictureSlidesLab.Service.StylesWorker
 {

@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using PowerPointLabs.PictureSlidesLab.Service.StylesWorker.Interface;
 
 namespace PowerPointLabs.PictureSlidesLab.Service.StylesWorker
 {

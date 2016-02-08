@@ -2,7 +2,7 @@
 using PowerPointLabs.PictureSlidesLab.Model;
 using PowerPoint = Microsoft.Office.Interop.PowerPoint;
 
-namespace PowerPointLabs.PictureSlidesLab.Service.StylesWorker
+namespace PowerPointLabs.PictureSlidesLab.Service.StylesWorker.Interface
 {
     public interface IStyleWorker
     {
