@@ -30,7 +30,7 @@
         {
 
             WPF = new System.Windows.Forms.Integration.ElementHost();
-            resizePaneWPF = new ResizePaneWPF();
+            resizePaneWPF = new ResizeLabPaneWPF();
             SuspendLayout();
             // 
             // WPF
@@ -53,7 +53,7 @@
             this.ResumeLayout(false);
 
         }
-        public ResizePaneWPF resizePaneWPF { get; private set; }
+        public ResizeLabPaneWPF resizePaneWPF { get; private set; }
         private System.Windows.Forms.Integration.ElementHost WPF;
         #endregion
     }

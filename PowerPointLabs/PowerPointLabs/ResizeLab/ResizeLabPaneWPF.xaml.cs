@@ -19,14 +19,14 @@ namespace PowerPointLabs.ResizeLab
     /// <summary>
     /// Interaction logic for ResizePane.xaml
     /// </summary>
-    public partial class ResizePaneWPF : IResizeLabPane
+    public partial class ResizeLabPaneWPF : IResizeLabPane
     {
         private ResizeLabMain _resizeLab;
         public static bool IsAspectRatioLocked { get; set; }
         private const string UnlockText = "Unlock";
         private const string LockText = "Lock";
 
-        public ResizePaneWPF()
+        public ResizeLabPaneWPF()
         {
             InitializeComponent();
             InitialiseLogicInstance();

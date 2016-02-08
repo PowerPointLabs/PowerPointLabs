@@ -6,7 +6,7 @@ using System.Windows;
 
 namespace PowerPointLabs.ResizeLab
 {
-    public partial class ResizePaneWPF
+    public partial class ResizeLabPaneWPF
     {
         public void ShowErrorMessageBox(string content, Exception exception = null)
         {
