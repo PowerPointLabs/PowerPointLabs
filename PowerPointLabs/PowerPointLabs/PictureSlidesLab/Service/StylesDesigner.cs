@@ -211,7 +211,8 @@ namespace PowerPointLabs.PictureSlidesLab.Service
             designer.ApplyImageReference(source.ContextLink);
             if (Options.IsInsertReference)
             {
-                designer.ApplyImageReferenceInsertion(source.ContextLink, Options.GetFontFamily(), Options.FontColor, Options.FontSize, Options.ImageRefTextBoxColor, Options.ImageRefAlignment);
+                designer.ApplyImageReferenceInsertion(source.ContextLink, Options.GetFontFamily(), Options.FontColor,
+                    Options.CitationFontSize, Options.ImageReferenceTextBoxColor, Options.GetCitationTextBoxAlignment());
             }
         }
 

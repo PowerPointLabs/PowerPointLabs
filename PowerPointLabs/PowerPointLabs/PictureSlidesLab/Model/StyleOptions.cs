@@ -1,6 +1,5 @@
 ﻿using System;
 using System.IO;
-using System.Windows.Media.Media3D;
 using System.Xml.Serialization;
 using ImageProcessor.Imaging.Filters;
 using PowerPointLabs.PictureSlidesLab.Service.Effect;
@@ -485,39 +484,39 @@ namespace PowerPointLabs.PictureSlidesLab.Model
             }
         }
 
-        private int _fontSize;
+        private int _citationFontSize;
 
-        public int FontSize
+        public int CitationFontSize
         {
-            get { return _fontSize; }
+            get { return _citationFontSize; }
             set
             {
-                _fontSize = value;
-                OnPropertyChanged("FontSize");
+                _citationFontSize = value;
+                OnPropertyChanged("CitationFontSize");
             }
         }
 
-        private Alignment _imageRefAlignment;
+        private int _imageReferenceAlignment;
 
-        public Alignment ImageRefAlignment
+        public int ImageReferenceAlignment
         {
-            get { return _imageRefAlignment; }
+            get { return _imageReferenceAlignment; }
             set
             {
-                _imageRefAlignment = value;
-                OnPropertyChanged("ImageRefAlignment");
+                _imageReferenceAlignment = value;
+                OnPropertyChanged("ImageReferenceAlignment");
             }
         }
 
-        private string _imageRefTextBoxColor;
+        private string _imageReferenceTextBoxColor;
 
-        public string ImageRefTextBoxColor
+        public string ImageReferenceTextBoxColor
         {
-            get { return _imageRefTextBoxColor; }
+            get { return _imageReferenceTextBoxColor; }
             set
             {
-                _imageRefTextBoxColor = value;
-                OnPropertyChanged("ImageRefTextBoxColor");
+                _imageReferenceTextBoxColor = value;
+                OnPropertyChanged("ImageReferenceTextBoxColor");
             }
         }
 
@@ -582,9 +581,9 @@ namespace PowerPointLabs.PictureSlidesLab.Model
             TextGlowColor = "#123456";
 
             IsInsertReference = false;
-            FontSize = 14;
-            ImageRefAlignment = Alignment.Left;
-            ImageRefTextBoxColor = "";
+            CitationFontSize = 14;
+            ImageReferenceAlignment = 0;
+            ImageReferenceTextBoxColor = "";
             
 
             OptionName = "Default";
@@ -628,6 +627,22 @@ namespace PowerPointLabs.PictureSlidesLab.Model
         public Alignment GetTextBoxAlignment()
         {
             switch (TextBoxAlignment)
+            {
+                case 0:
+                    return Alignment.Auto;
+                case 1:
+                    return Alignment.Left;
+                case 2:
+                    return Alignment.Centre;
+                // case 3:
+                default:
+                    return Alignment.Right;
+            }
+        }
+
+        public Alignment GetCitationTextBoxAlignment()
+        {
+            switch (ImageReferenceAlignment)
             {
                 case 0:
                     return Alignment.Auto;

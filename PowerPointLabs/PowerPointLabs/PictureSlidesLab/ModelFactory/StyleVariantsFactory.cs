@@ -1346,57 +1346,57 @@ namespace PowerPointLabs.PictureSlidesLab.ModelFactory
                 {
                     {"OptionName", "Bottom Right"},
                     {"IsInsertReference", true},
-                    {"ImageRefAlignment", 3},
-                    {"FontSize", 14},
-                    {"ImageRefTextBoxColor", ""}
+                    {"ImageReferenceAlignment", 3},
+                    {"CitationFontSize", 14},
+                    {"ImageReferenceTextBoxColor", ""}
                 }),
                 new StyleVariants(new Dictionary<string, object>
                 {
                     {"OptionName", "Bottom"},
                     {"IsInsertReference", true},
-                    {"ImageRefAlignment", 2},
-                    {"FontSize", 14},
-                    {"ImageRefTextBoxColor", ""}
+                    {"ImageReferenceAlignment", 2},
+                    {"CitationFontSize", 14},
+                    {"ImageReferenceTextBoxColor", ""}
                 }),
                 new StyleVariants(new Dictionary<string, object>
                 {
                     {"OptionName", "Bottom Left"},
                     {"IsInsertReference", true},
-                    {"ImageRefAlignment", 1},
-                    {"FontSize", 14},
-                    {"ImageRefTextBoxColor", ""}
+                    {"ImageReferenceAlignment", 1},
+                    {"CitationFontSize", 14},
+                    {"ImageReferenceTextBoxColor", ""}
                 }),
                 new StyleVariants(new Dictionary<string, object>
                 {
                     {"OptionName", "Bottom Right (Small Font)"},
                     {"IsInsertReference", true},
-                    {"ImageRefAlignment", 3},
-                    {"FontSize", 10},
-                    {"ImageRefTextBoxColor", ""}
+                    {"ImageReferenceAlignment", 3},
+                    {"CitationFontSize", 10},
+                    {"ImageReferenceTextBoxColor", ""}
                 }),
                 new StyleVariants(new Dictionary<string, object>
                 {
                     {"OptionName", "Bottom (Small Font)"},
                     {"IsInsertReference", true},
-                    {"ImageRefAlignment", 2},
-                    {"FontSize", 10},
-                    {"ImageRefTextBoxColor", ""}
+                    {"ImageReferenceAlignment", 2},
+                    {"CitationFontSize", 10},
+                    {"ImageReferenceTextBoxColor", ""}
                 }),
                 new StyleVariants(new Dictionary<string, object>
                 {
                     {"OptionName", "Bottom Left (Small Font)"},
                     {"IsInsertReference", true},
-                    {"ImageRefAlignment", 1},
-                    {"FontSize", 10},
-                    {"ImageRefTextBoxColor", ""}
+                    {"ImageReferenceAlignment", 1},
+                    {"CitationFontSize", 10},
+                    {"ImageReferenceTextBoxColor", ""}
                 }),
                 new StyleVariants(new Dictionary<string, object>
                 {
                     {"OptionName", "Bottom With Banner"},
                     {"IsInsertReference", true},
-                    {"ImageRefAlignment", 2},
-                    {"FontSize", 12},
-                    {"ImageRefTextBoxColor", "#2F4F4F"} //Grey
+                    {"ImageReferenceAlignment", 2},
+                    {"CitationFontSize", 12},
+                    {"ImageReferenceTextBoxColor", "#000000"} 
                 })
             };
         }

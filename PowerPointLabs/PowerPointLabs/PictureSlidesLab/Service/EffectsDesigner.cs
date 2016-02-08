@@ -71,7 +71,8 @@ namespace PowerPointLabs.PictureSlidesLab.Service
                             NotesPageText;
         }
 
-        public void ApplyImageReferenceInsertion(string contextLink, string fontFamily, string fontColor, int fontSize, string textBoxColor, Alignment textBoxPosition)
+        public void ApplyImageReferenceInsertion(string contextLink, string fontFamily, string fontColor, 
+            int fontSize, string textBoxColor, Alignment citationTextAlignment)
         {
             var imageRefShape = Shapes.AddTextbox(MsoTextOrientation.msoTextOrientationHorizontal, 0, 0, SlideWidth,
                 20);
@@ -80,14 +81,14 @@ namespace PowerPointLabs.PictureSlidesLab.Service
             if (!StringUtil.IsEmpty(textBoxColor))
             {
                 imageRefShape.Fill.BackColor.RGB
-                = Graphics.ConvertColorToRgb(StringUtil.GetColorFromHexValue(textBoxColor));
+                    = Graphics.ConvertColorToRgb(StringUtil.GetColorFromHexValue(textBoxColor));
                 imageRefShape.Fill.Transparency = 0.2f;
             }
             imageRefShape.TextFrame2.TextRange.TrimText().Font.Fill.ForeColor.RGB 
                 = Graphics.ConvertColorToRgb(StringUtil.GetColorFromHexValue(fontColor));
             imageRefShape.TextEffect.FontName = StringUtil.IsEmpty(fontFamily) ? "Tahoma" : fontFamily;
             imageRefShape.TextEffect.FontSize = fontSize;
-            imageRefShape.TextEffect.Alignment = AlignmentToMsoTextEffectAlignment(textBoxPosition);
+            imageRefShape.TextEffect.Alignment = AlignmentToMsoTextEffectAlignment(citationTextAlignment);
             imageRefShape.Top = SlideHeight - imageRefShape.Height;
 
             AddTag(imageRefShape, Tag.ImageReference, "true");
