@@ -395,7 +395,6 @@
     <Compile Include="ResizeLab\ResizeLabMain.FitSize.cs" />
     <Compile Include="ResizeLab\ResizeLabMain.cs" />
     <Compile Include="ResizeLab\ResizeLabMain.SameDimension.cs" />
-    <Compile Include="ResizeLab\ResizeLabMain.ShrinkStretch.cs" />
     <Compile Include="ResizeLab\ResizeLabPane.cs">
       <SubType>UserControl</SubType>
     </Compile>
@@ -405,6 +404,7 @@
     <Compile Include="ResizeLab\ResizeLabPaneWPF.xaml.cs">
       <DependentUpon>ResizeLabPaneWPF.xaml</DependentUpon>
     </Compile>
+    <Compile Include="ResizeLab\ResizeLabMain.ShrinkStretch.cs" />
     <Compile Include="Utils\Assumption.cs" />
     <Compile Include="Utils\CultureUtil.cs" />
     <Compile Include="Utils\Exceptions\AssumptionFailedException.cs" />
