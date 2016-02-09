@@ -220,16 +220,6 @@ namespace PowerPointLabs.PictureSlidesLab.View
                 {
                     SelectedSlide = Int32.Parse(selectedItem.Tooltip.Substring(6));
                 }
-
-                // auto-load slides when using arrow-keys to navigate
-                if (SlideListBox.SelectedIndex == 0)
-                {
-                    LoadPreviousSlides(isToSelectPrevSlide: false);
-                }
-                else if (SlideListBox.SelectedIndex == SlideListBox.Items.Count - 1)
-                {
-                    LoadNextSlides(isToSelectNextSlide: false);
-                }
             }
         }
 
