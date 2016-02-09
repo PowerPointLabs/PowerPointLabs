@@ -153,7 +153,7 @@ namespace PowerPointLabs.PictureSlidesLab.View
                 ImageSelectionListBox.SelectedIndex = -1;
                 EnableUpdatingPreviewImages();
 
-                UpdatePreviewImages(CreateDefaultPictureItem());
+                UpdatePreviewImages(CreateDefaultPictureItem(), isEnteringPictureVariation: true);
                 EnterDefaultPictureMode();
                 UpdatePreviewStageControls();
             }

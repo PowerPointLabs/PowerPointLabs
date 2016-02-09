@@ -851,7 +851,7 @@ namespace PowerPointLabs.PictureSlidesLab.View
             IsVariationsFlyoutOpen = false;
         }
 
-        private void UpdatePreviewImages(ImageItem source = null)
+        private void UpdatePreviewImages(ImageItem source = null, bool isEnteringPictureVariation = false)
         {
             if (!IsEnableUpdatingPreviewImages() && !ViewModel.IsInPictureVariation()) return;
 
@@ -862,6 +862,13 @@ namespace PowerPointLabs.PictureSlidesLab.View
                     PowerPointCurrentPresentationInfo.CurrentSlide.GetNativeSlide(),
                     PowerPointPresentation.Current.SlideWidth,
                     PowerPointPresentation.Current.SlideHeight);
+            }
+            else if (IsVariationsFlyoutOpen && isEnteringPictureVariation)
+            {
+                // directly jump to picture variation to select picture
+                var picVariationIndex = ViewModel.VariantsCategory.IndexOf(
+                    TextCollection.PictureSlidesLabText.VariantCategoryPicture);
+                VariantsComboBox.SelectedIndex = picVariationIndex;
             }
             else
             {
