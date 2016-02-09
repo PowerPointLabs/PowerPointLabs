@@ -1,17 +1,14 @@
 ﻿using System.Collections.Generic;
-using System.ComponentModel.Composition;
 using PowerPointLabs.PictureSlidesLab.Model;
 using PowerPointLabs.PictureSlidesLab.ModelFactory.VariantWorker.Interface;
 
 namespace PowerPointLabs.PictureSlidesLab.ModelFactory.VariantWorker
 {
-    [Export("GeneralVariantWorker", typeof(IVariantWorker))]
-    [ExportMetadata("GeneralVariantWorkerOrder", 0)]
-    class FontColorVariantWorker : IVariantWorker
+    class OutlineColorVariantWorker : IVariantWorker
     {
         public string GetVariantName()
         {
-            return TextCollection.PictureSlidesLabText.VariantCategoryFontColor;
+            return TextCollection.PictureSlidesLabText.VariantCategoryOutlineColor;
         }
 
         public List<StyleVariant> GetVariants()
@@ -21,50 +18,50 @@ namespace PowerPointLabs.PictureSlidesLab.ModelFactory.VariantWorker
                 new StyleVariant(new Dictionary<string, object>
                 {
                     {"OptionName", "White"},
-                    {"IsUseTextFormat", true},
-                    {"FontColor", "#FFFFFF"}
+                    {"IsUseOutlineStyle", true},
+                    {"OutlineColor", "#FFFFFF"}
                 }),
                 new StyleVariant(new Dictionary<string, object>
                 {
                     {"OptionName", "Black"},
-                    {"IsUseTextFormat", true},
-                    {"FontColor", "#000000"}
+                    {"IsUseOutlineStyle", true},
+                    {"OutlineColor", "#000000"}
                 }),
                 new StyleVariant(new Dictionary<string, object>
                 {
                     {"OptionName", "Yellow"},
-                    {"IsUseTextFormat", true},
-                    {"FontColor", "#FFD700"}
+                    {"IsUseOutlineStyle", true},
+                    {"OutlineColor", "#FFD700"}
                 }),
                 new StyleVariant(new Dictionary<string, object>
                 {
                     {"OptionName", "Red"},
-                    {"IsUseTextFormat", true},
-                    {"FontColor", "#FF0000"}
+                    {"IsUseOutlineStyle", true},
+                    {"OutlineColor", "#FF0000"}
                 }),
                 new StyleVariant(new Dictionary<string, object>
                 {
                     {"OptionName", "Green"},
-                    {"IsUseTextFormat", true},
-                    {"FontColor", "#3DFF8F"}
+                    {"IsUseOutlineStyle", true},
+                    {"OutlineColor", "#3DFF8F"}
                 }),
                 new StyleVariant(new Dictionary<string, object>
                 {
                     {"OptionName", "Blue"},
-                    {"IsUseTextFormat", true},
-                    {"FontColor", "#007FFF"}
+                    {"IsUseOutlineStyle", true},
+                    {"OutlineColor", "#007FFF"}
                 }),
                 new StyleVariant(new Dictionary<string, object>
                 {
                     {"OptionName", "Purple"},
-                    {"IsUseTextFormat", true},
-                    {"FontColor", "#7F00D4"}
+                    {"IsUseOutlineStyle", true},
+                    {"OutlineColor", "#7F00D4"}
                 }),
                 new StyleVariant(new Dictionary<string, object>
                 {
                     {"OptionName", "Dark Blue"},
-                    {"IsUseTextFormat", true},
-                    {"FontColor", "#001550"}
+                    {"IsUseOutlineStyle", true},
+                    {"OutlineColor", "#001550"}
                 })
             };
         }

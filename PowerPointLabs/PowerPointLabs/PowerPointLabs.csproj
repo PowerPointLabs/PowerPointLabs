@@ -356,6 +356,7 @@
     <Compile Include="PictureSlidesLab\ModelFactory\Variants\CircleStyleVariants.cs" />
     <Compile Include="PictureSlidesLab\ModelFactory\Variants\DirectTextStyleVariants.cs" />
     <Compile Include="PictureSlidesLab\ModelFactory\Variants\FrameStyleVariants.cs" />
+    <Compile Include="PictureSlidesLab\ModelFactory\VariantWorker\Interface\IGeneralVariantWorkerOrderMetadata.cs" />
     <Compile Include="PictureSlidesLab\ModelFactory\Variants\Interface\IStyleVariants.cs" />
     <Compile Include="PictureSlidesLab\ModelFactory\Variants\OutlineStyleVariants.cs" />
     <Compile Include="PictureSlidesLab\ModelFactory\Variants\OverlayStyleVariants.cs" />
@@ -376,8 +377,10 @@
     <Compile Include="PictureSlidesLab\ModelFactory\VariantWorker\FrameVariantWorker.cs" />
     <Compile Include="PictureSlidesLab\ModelFactory\VariantWorker\GeneralSpecialEffectsVariantWorker.cs" />
     <Compile Include="PictureSlidesLab\ModelFactory\VariantWorker\Interface\IVariantWorker.cs" />
+    <Compile Include="PictureSlidesLab\ModelFactory\VariantWorker\OutlineColorVariantWorker.cs" />
     <Compile Include="PictureSlidesLab\ModelFactory\VariantWorker\OverlayTransparencyVariantWorker.cs" />
     <Compile Include="PictureSlidesLab\ModelFactory\VariantWorker\OverlayVariantWorker.cs" />
+    <Compile Include="PictureSlidesLab\ModelFactory\VariantWorker\PictureVariantWorker.cs" />
     <Compile Include="PictureSlidesLab\ModelFactory\VariantWorker\SpecialEffectsVariantWorker.cs" />
     <Compile Include="PictureSlidesLab\ModelFactory\VariantWorker\TextBoxTransparencyVariantWorker.cs" />
     <Compile Include="PictureSlidesLab\ModelFactory\VariantWorker\PictureCitationVariantWorker.cs" />
@@ -387,6 +390,7 @@
     <Compile Include="PictureSlidesLab\ModelFactory\VariantWorker\TriangleVariantWorker.cs" />
     <Compile Include="PictureSlidesLab\Model\ObservableFont.cs" />
     <Compile Include="PictureSlidesLab\Model\ObservableImageItem.cs" />
+    <Compile Include="PictureSlidesLab\Model\StyleOption.Partial\StyleOption.PictureVariation.cs" />
     <Compile Include="PictureSlidesLab\Service\EffectsDesigner.Partial\EffectsDesigner.AlbumFrame.cs" />
     <Compile Include="PictureSlidesLab\Service\EffectsDesigner.Partial\EffectsDesigner.Background.cs" />
     <Compile Include="PictureSlidesLab\Service\EffectsDesigner.Partial\EffectsDesigner.CircleBanner.cs" />

@@ -6,12 +6,12 @@ using PowerPointLabs.PictureSlidesLab.ModelFactory.VariantWorker.Interface;
 namespace PowerPointLabs.PictureSlidesLab.ModelFactory.VariantWorker
 {
     [Export("GeneralVariantWorker", typeof(IVariantWorker))]
-    [ExportMetadata("GeneralVariantWorkerOrder", 0)]
-    class FontColorVariantWorker : IVariantWorker
+    [ExportMetadata("GeneralVariantWorkerOrder", 6)]
+    class PictureVariantWorker : IVariantWorker
     {
         public string GetVariantName()
         {
-            return TextCollection.PictureSlidesLabText.VariantCategoryFontColor;
+            return TextCollection.PictureSlidesLabText.VariantCategoryPicture;
         }
 
         public List<StyleVariant> GetVariants()
@@ -20,51 +20,43 @@ namespace PowerPointLabs.PictureSlidesLab.ModelFactory.VariantWorker
             {
                 new StyleVariant(new Dictionary<string, object>
                 {
-                    {"OptionName", "White"},
-                    {"IsUseTextFormat", true},
-                    {"FontColor", "#FFFFFF"}
+                    {"OptionName", "Picture 0"},
+                    {"PictureIndex", 0}
                 }),
                 new StyleVariant(new Dictionary<string, object>
                 {
-                    {"OptionName", "Black"},
-                    {"IsUseTextFormat", true},
-                    {"FontColor", "#000000"}
+                    {"OptionName", "Picture 1"},
+                    {"PictureIndex", 1}
                 }),
                 new StyleVariant(new Dictionary<string, object>
                 {
-                    {"OptionName", "Yellow"},
-                    {"IsUseTextFormat", true},
-                    {"FontColor", "#FFD700"}
+                    {"OptionName", "Picture 2"},
+                    {"PictureIndex", 2}
                 }),
                 new StyleVariant(new Dictionary<string, object>
                 {
-                    {"OptionName", "Red"},
-                    {"IsUseTextFormat", true},
-                    {"FontColor", "#FF0000"}
+                    {"OptionName", "Picture 3"},
+                    {"PictureIndex", 3}
                 }),
                 new StyleVariant(new Dictionary<string, object>
                 {
-                    {"OptionName", "Green"},
-                    {"IsUseTextFormat", true},
-                    {"FontColor", "#3DFF8F"}
+                    {"OptionName", "Picture 4"},
+                    {"PictureIndex", 4}
                 }),
                 new StyleVariant(new Dictionary<string, object>
                 {
-                    {"OptionName", "Blue"},
-                    {"IsUseTextFormat", true},
-                    {"FontColor", "#007FFF"}
+                    {"OptionName", "Picture 5"},
+                    {"PictureIndex", 5}
                 }),
                 new StyleVariant(new Dictionary<string, object>
                 {
-                    {"OptionName", "Purple"},
-                    {"IsUseTextFormat", true},
-                    {"FontColor", "#7F00D4"}
+                    {"OptionName", "Picture 6"},
+                    {"PictureIndex", 6}
                 }),
                 new StyleVariant(new Dictionary<string, object>
                 {
-                    {"OptionName", "Dark Blue"},
-                    {"IsUseTextFormat", true},
-                    {"FontColor", "#001550"}
+                    {"OptionName", "Picture 7"},
+                    {"PictureIndex", 7}
                 })
             };
         }

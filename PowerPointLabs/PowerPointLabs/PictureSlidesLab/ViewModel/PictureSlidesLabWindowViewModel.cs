@@ -11,6 +11,7 @@ using PowerPointLabs.PictureSlidesLab.Model;
 using PowerPointLabs.PictureSlidesLab.ModelFactory;
 using PowerPointLabs.PictureSlidesLab.Service;
 using PowerPointLabs.PictureSlidesLab.Service.Interface;
+using PowerPointLabs.PictureSlidesLab.Service.Preview;
 using PowerPointLabs.PictureSlidesLab.Thread;
 using PowerPointLabs.PictureSlidesLab.Util;
 using PowerPointLabs.PictureSlidesLab.View.Interface;
@@ -82,6 +83,8 @@ namespace PowerPointLabs.PictureSlidesLab.ViewModel
         private List<StyleOption> _styleOptions;
         // key - variant category, value - variants
         private Dictionary<string, List<StyleVariant>> _styleVariants;
+        private List<ImageItem> _last8PicturesForPictureVariation;
+        private int _lastSelectedPictureIndexForPicturevariation;
         #endregion
 
         #region Lifecycle
@@ -273,6 +276,16 @@ namespace PowerPointLabs.PictureSlidesLab.ViewModel
         #endregion
 
         #region Stage - Styles Previewing
+
+        /// <summary>
+        /// General update preview images,
+        /// can be used in most use cases, such as reload preview images
+        /// after re-activate PSL main window.
+        /// </summary>
+        /// <param name="source"></param>
+        /// <param name="contentSlide"></param>
+        /// <param name="slideWidth"></param>
+        /// <param name="slideHeight"></param>
         public void UpdatePreviewImages(ImageItem source, Slide contentSlide, float slideWidth, float slideHeight)
         {
             if (View.IsVariationsFlyoutOpen)
@@ -390,6 +403,32 @@ namespace PowerPointLabs.PictureSlidesLab.ViewModel
                     fontColorVariant.Apply(option);
                 }
             }
+            
+            int pictureIndexToSelect = -1;
+            // Enter picture variation
+            if (CurrentVariantCategory.Text == TextCollection.PictureSlidesLabText.VariantCategoryPicture)
+            {
+                _lastSelectedPictureIndexForPicturevariation = targetVariationSelectedIndex;
+                _last8PicturesForPictureVariation = GetLast8PicturesFromImageSelectionList(targetVariationSelectedIndex);
+            }
+            // Exit picture variation
+            else if (_previousVariantsCategory == TextCollection.PictureSlidesLabText.VariantCategoryPicture)
+            {
+                var targetPicture = _last8PicturesForPictureVariation[targetVariationSelectedIndex];
+                if (targetPicture.ImageFile != View.CreateDefaultPictureItem().ImageFile)
+                {
+                    var indexForTargetPicture = ImageSelectionList.IndexOf(targetPicture);
+                    if (indexForTargetPicture == -1)
+                    {
+                        ImageSelectionList.Add(targetPicture);
+                        pictureIndexToSelect = ImageSelectionList.Count - 1;
+                    }
+                    else
+                    {
+                        pictureIndexToSelect = indexForTargetPicture;
+                    }
+                }
+            }
 
             var nextCategoryVariants = _styleVariants[currentVariantsCategory];
             var variantIndexWithoutEffect = -1;
@@ -418,8 +457,15 @@ namespace PowerPointLabs.PictureSlidesLab.ViewModel
             }
 
             _previousVariantsCategory = currentVariantsCategory;
-            UpdateStylesVariationImagesAfterOpenFlyout(source, contentSlide, 
-                slideWidth, slideHeight);
+            if (pictureIndexToSelect == -1)
+            {
+                UpdateStylesVariationImagesAfterOpenFlyout(source, contentSlide,
+                    slideWidth, slideHeight);
+            }
+            else
+            {
+                ImageSelectionListSelectedId.Number = pictureIndexToSelect;
+            }
         }
 
         public void ApplyStyleInVariationStage(Slide contentSlide, float slideWidth, float slideHeight)
@@ -427,7 +473,11 @@ namespace PowerPointLabs.PictureSlidesLab.ViewModel
             var copiedPicture = LoadClipboardPicture();
             try
             {
-                Designer.ApplyStyle(ImageSelectionListSelectedItem.ImageItem, contentSlide,
+                Designer.ApplyStyle(
+                    IsInPictureVariation()
+                    ? GetSelectedPictureForPictureVariation(
+                        StylesVariationListSelectedId.Number)
+                    : ImageSelectionListSelectedItem.ImageItem, contentSlide,
                     slideWidth, slideHeight);
                 View.ShowSuccessfullyAppliedDialog();
             }
@@ -437,6 +487,60 @@ namespace PowerPointLabs.PictureSlidesLab.ViewModel
             }
             SaveClipboardPicture(copiedPicture);
         }
+
+        #region Picture Variation
+
+        public bool IsInPictureVariation()
+        {
+            return View.IsVariationsFlyoutOpen
+                   && CurrentVariantCategory.Text == TextCollection.PictureSlidesLabText.VariantCategoryPicture;
+        }
+
+        public ImageItem GetSelectedPictureForPictureVariation(int pictureIndex)
+        {
+            return _last8PicturesForPictureVariation[pictureIndex];
+        }
+
+        private void UpdateLast8PicturesFromImageSelectionList()
+        {
+            if (!IsInPictureVariation()) return;
+
+            _last8PicturesForPictureVariation =
+                GetLast8PicturesFromImageSelectionList(_lastSelectedPictureIndexForPicturevariation);
+        }
+
+        private List<ImageItem> GetLast8PicturesFromImageSelectionList(int selectedIdOfVariationList)
+        {
+            if (!IsInPictureVariation()) return new List<ImageItem>();
+
+            var subPictureList = ImageSelectionList.Skip(Math.Max(1, ImageSelectionList.Count - 8));
+            var result = new List<ImageItem>(subPictureList);
+            while (result.Count < 8)
+            {
+                result.Add(View.CreateDefaultPictureItem());
+            }
+            if (ImageSelectionListSelectedItem.ImageItem != null
+                && !result.Contains(ImageSelectionListSelectedItem.ImageItem))
+            {
+                result[selectedIdOfVariationList] = ImageSelectionListSelectedItem.ImageItem;
+            }
+            else if (ImageSelectionListSelectedItem.ImageItem == null)
+            {
+                result[selectedIdOfVariationList] = View.CreateDefaultPictureItem();
+            }
+            else if (selectedIdOfVariationList >= 0)
+            // contains selected item, need swap to selected index
+            {
+                var indexToSwap = result.IndexOf(ImageSelectionListSelectedItem.ImageItem);
+                var tempItem = result[selectedIdOfVariationList];
+                result[selectedIdOfVariationList] = ImageSelectionListSelectedItem.ImageItem;
+                result[indexToSwap] = tempItem;
+            }
+            return result;
+        }
+
+        #endregion
+
         #endregion
 
         #region Helper funcs
@@ -593,10 +697,16 @@ namespace PowerPointLabs.PictureSlidesLab.ViewModel
             var copiedPicture = LoadClipboardPicture();
             try
             {
-                foreach (var styleOption in _styleOptions)
+                UpdateLast8PicturesFromImageSelectionList();
+                for (var i = 0; i < _styleOptions.Count; i++)
                 {
-                    var previewInfo = Designer.PreviewApplyStyle(source, contentSlide, 
-                        slideWidth, slideHeight, styleOption);
+                    var styleOption = _styleOptions[i];
+                    PreviewInfo previewInfo;
+                    previewInfo = Designer.PreviewApplyStyle(
+                        IsInPictureVariation() 
+                            ? _last8PicturesForPictureVariation[i] 
+                            : source, 
+                        contentSlide, slideWidth, slideHeight, styleOption);
                     StylesVariationList.Add(new ImageItem
                     {
                         ImageFile = previewInfo.PreviewApplyStyleImagePath,

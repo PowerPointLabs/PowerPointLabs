@@ -1,9 +1,12 @@
 ﻿using System.Collections.Generic;
+using System.ComponentModel.Composition;
 using PowerPointLabs.PictureSlidesLab.Model;
 using PowerPointLabs.PictureSlidesLab.ModelFactory.VariantWorker.Interface;
 
 namespace PowerPointLabs.PictureSlidesLab.ModelFactory.VariantWorker
 {
+    [Export("GeneralVariantWorker", typeof(IVariantWorker))]
+    [ExportMetadata("GeneralVariantWorkerOrder", 2)]
     class FontPositionVariantWorker : IVariantWorker
     {
         public string GetVariantName()

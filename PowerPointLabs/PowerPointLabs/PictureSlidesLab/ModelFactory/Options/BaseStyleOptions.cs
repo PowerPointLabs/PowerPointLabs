@@ -10,7 +10,7 @@ namespace PowerPointLabs.PictureSlidesLab.ModelFactory.Options
 
         public abstract StyleOption GetDefaultOptionForPreview();
 
-        protected static List<StyleOption> GetOptions()
+        protected List<StyleOption> GetOptions()
         {
             var result = new List<StyleOption>();
             for (var i = 0; i < 8; i++)
@@ -20,7 +20,7 @@ namespace PowerPointLabs.PictureSlidesLab.ModelFactory.Options
             return result;
         }
 
-        protected static List<StyleOption> GetOptionsWithSuitableFontColor()
+        protected List<StyleOption> GetOptionsWithSuitableFontColor()
         {
             var result = GetOptions();
             result[0].FontColor = "#000000"; //white(bg color) + black
@@ -32,7 +32,7 @@ namespace PowerPointLabs.PictureSlidesLab.ModelFactory.Options
             return result;
         }
 
-        protected static List<StyleOption> UpdateStyleName(List<StyleOption> opts, string styleName)
+        protected List<StyleOption> UpdateStyleName(List<StyleOption> opts, string styleName)
         {
             foreach (var styleOption in opts)
             {

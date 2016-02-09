@@ -6,5 +6,8 @@ namespace PowerPointLabs.PictureSlidesLab.Model
     {
         [DefaultValue(false)]
         public bool IsUseOutlineStyle { get; set; }
+
+        [DefaultValue("#FFFFFF")]
+        public string OutlineColor { get; set; }
     }
 }

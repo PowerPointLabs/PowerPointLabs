@@ -17,13 +17,7 @@ namespace PowerPointLabs.PictureSlidesLab.ModelFactory.Variants
                 new TextBoxTransparencyVariantWorker(),
                 new GeneralSpecialEffectsVariantWorker(),
                 new BlurVariantWorker(),
-                new BrightnessVariantWorker(),
-                new FontColorVariantWorker(),
-                new TextGlowVariantWorker(),
-                new FontPositionVariantWorker(),
-                new FontFamilyVariantWorker(),
-                new FontSizeIncreaseVariantWorker(),
-                new PictureCitationVariantWorker()
+                new BrightnessVariantWorker()
             };
         }
 

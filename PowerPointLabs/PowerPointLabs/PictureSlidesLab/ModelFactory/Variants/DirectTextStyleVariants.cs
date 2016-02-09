@@ -13,13 +13,7 @@ namespace PowerPointLabs.PictureSlidesLab.ModelFactory.Variants
         {
             return new List<IVariantWorker>
             {
-                new BrightnessVariantWorker(),
-                new FontColorVariantWorker(),
-                new TextGlowVariantWorker(),
-                new FontPositionVariantWorker(),
-                new FontFamilyVariantWorker(),
-                new FontSizeIncreaseVariantWorker(),
-                new PictureCitationVariantWorker()
+                new BrightnessVariantWorker()
             };
         }
 

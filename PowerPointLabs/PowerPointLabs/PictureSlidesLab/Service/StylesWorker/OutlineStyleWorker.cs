@@ -15,7 +15,7 @@ namespace PowerPointLabs.PictureSlidesLab.Service.StylesWorker
             var result = new List<Shape>();
             if (option.IsUseOutlineStyle)
             {
-                var outlineOverlayShape = designer.ApplyRectOutlineEffect(imageShape, option.FontColor, 0);
+                var outlineOverlayShape = designer.ApplyRectOutlineEffect(imageShape, option.OutlineColor, 0);
                 result.Add(outlineOverlayShape);
             }
             return result;

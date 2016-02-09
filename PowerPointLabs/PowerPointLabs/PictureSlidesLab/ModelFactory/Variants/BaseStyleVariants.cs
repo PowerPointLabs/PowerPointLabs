@@ -1,4 +1,6 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
+using System.ComponentModel.Composition;
 using System.Linq;
 using PowerPointLabs.PictureSlidesLab.Model;
 using PowerPointLabs.PictureSlidesLab.ModelFactory.Variants.Interface;
@@ -8,6 +10,9 @@ namespace PowerPointLabs.PictureSlidesLab.ModelFactory.Variants
 {
     abstract class BaseStyleVariants : IStyleVariants
     {
+        [ImportMany("GeneralVariantWorker", typeof(IVariantWorker))]
+        private IEnumerable<Lazy<IVariantWorker, IGeneralVariantWorkerOrderMetadata>> ImportedGeneralVariantWorkers { get; set; }
+
         protected abstract IList<IVariantWorker> GetRequiredVariantWorkers();
 
         public abstract string GetStyleName();
@@ -15,6 +20,13 @@ namespace PowerPointLabs.PictureSlidesLab.ModelFactory.Variants
         public Dictionary<string, List<StyleVariant>> GetVariantsForStyle()
         {
             var workers = GetRequiredVariantWorkers();
+            var orderedGeneralVariantWorkers = ImportedGeneralVariantWorkers
+                .OrderBy(worker => worker.Metadata.GeneralVariantWorkerOrder)
+                .Select(worker => worker.Value);
+            foreach (var importedGeneralVariantWorker in orderedGeneralVariantWorkers)
+            {
+                workers.Add(importedGeneralVariantWorker);
+            }
             return workers.ToDictionary(
                 worker => worker.GetVariantName(), 
                 worker => worker.GetVariants());
