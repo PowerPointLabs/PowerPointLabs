@@ -11,9 +11,9 @@
              Title="Picture Slides Lab"
              Width="1200"
              Height="700"
-             WindowTitleBrush="#D74926"
+             WindowTitleBrush="#0070C0"
              BorderThickness="1"
-             BorderBrush="#D74926"
+             BorderBrush="#0070C0"
              Closing="PictureSlidesLabWindow_OnClosing"
              Activated="PictureSlidesLabWindow_OnActivated"
              Deactivated="PictureSlidesLabWindow_OnDeactivated"
@@ -89,9 +89,9 @@
                             <Setter Property="VerticalContentAlignment" Value="Center"></Setter>
                             <Style.Resources>
                                 <!--SelectedItem with focus-->
-                                <SolidColorBrush x:Key="{x:Static SystemColors.HighlightBrushKey}" Color="#D74926" />
+                                <SolidColorBrush x:Key="{x:Static SystemColors.HighlightBrushKey}" Color="#FF6600" />
                                 <!--SelectedItem without focus-->
-                                <SolidColorBrush x:Key="{x:Static SystemColors.ControlBrushKey}" Color="#D74926" />
+                                <SolidColorBrush x:Key="{x:Static SystemColors.ControlBrushKey}" Color="#FF6600" />
                             </Style.Resources>
                         </Style>
                     </ListBox.ItemContainerStyle>
@@ -178,9 +178,9 @@
                                 <Setter Property="VerticalContentAlignment" Value="Center"></Setter>
                                 <Style.Resources>
                                     <!--SelectedItem with focus-->
-                                    <SolidColorBrush x:Key="{x:Static SystemColors.HighlightBrushKey}" Color="#D74926" />
+                                    <SolidColorBrush x:Key="{x:Static SystemColors.HighlightBrushKey}" Color="#FF6600" />
                                     <!--SelectedItem without focus-->
-                                    <SolidColorBrush x:Key="{x:Static SystemColors.ControlBrushKey}" Color="#D74926" />
+                                    <SolidColorBrush x:Key="{x:Static SystemColors.ControlBrushKey}" Color="#FF6600" />
                                 </Style.Resources>
                             </Style>
                         </ListBox.ItemContainerStyle>
@@ -237,9 +237,9 @@
                             <Setter Property="VerticalContentAlignment" Value="Center"></Setter>
                             <Style.Resources>
                                 <!--SelectedItem with focus-->
-                                <SolidColorBrush x:Key="{x:Static SystemColors.HighlightBrushKey}" Color="#D74926" />
+                                <SolidColorBrush x:Key="{x:Static SystemColors.HighlightBrushKey}" Color="#FF6600" />
                                 <!--SelectedItem without focus-->
-                                <SolidColorBrush x:Key="{x:Static SystemColors.ControlBrushKey}" Color="#D74926" />
+                                <SolidColorBrush x:Key="{x:Static SystemColors.ControlBrushKey}" Color="#FF6600" />
                             </Style.Resources>
                         </Style>
                     </ListBox.ItemContainerStyle>
