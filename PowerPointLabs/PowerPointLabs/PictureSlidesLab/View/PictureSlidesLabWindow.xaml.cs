@@ -546,7 +546,7 @@ namespace PowerPointLabs.PictureSlidesLab.View
             {
                 var imageItem = ViewModel.GetSelectedPictureForPictureVariation(
                     StylesVariationListBox.SelectedIndex);
-                if (imageItem.ImageFile == CreateDefaultPictureItem().ImageFile
+                if (imageItem.ImageFile == StoragePath.NoPicturePlaceholderImgPath
                     || imageItem.ImageFile == StoragePath.LoadingImgPath)
                 {
                     return;
@@ -575,7 +575,7 @@ namespace PowerPointLabs.PictureSlidesLab.View
                 var selectedImageItem =
                     ViewModel
                     .GetSelectedPictureForPictureVariation(StylesVariationListBox.SelectedIndex);
-                if (selectedImageItem.ImageFile == CreateDefaultPictureItem().ImageFile
+                if (selectedImageItem.ImageFile == StoragePath.NoPicturePlaceholderImgPath
                     || selectedImageItem.ImageFile == StoragePath.LoadingImgPath)
                 {
                     StyleVariationApplyButton.IsEnabled = false;

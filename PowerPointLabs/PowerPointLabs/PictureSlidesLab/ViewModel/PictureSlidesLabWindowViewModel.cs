@@ -415,7 +415,7 @@ namespace PowerPointLabs.PictureSlidesLab.ViewModel
             else if (_previousVariantsCategory == TextCollection.PictureSlidesLabText.VariantCategoryPicture)
             {
                 var targetPicture = _last8PicturesForPictureVariation[targetVariationSelectedIndex];
-                if (targetPicture.ImageFile != View.CreateDefaultPictureItem().ImageFile)
+                if (targetPicture.ImageFile != StoragePath.NoPicturePlaceholderImgPath)
                 {
                     var indexForTargetPicture = ImageSelectionList.IndexOf(targetPicture);
                     if (indexForTargetPicture == -1)
@@ -526,6 +526,14 @@ namespace PowerPointLabs.PictureSlidesLab.ViewModel
             }
             else if (ImageSelectionListSelectedItem.ImageItem == null)
             {
+                for (var i = 0; i < result.Count; i++)
+                {
+                    if (result[i].ImageFile == StoragePath.NoPicturePlaceholderImgPath)
+                    {
+                        result[i] = result[selectedIdOfVariationList];
+                        break;
+                    }
+                }
                 result[selectedIdOfVariationList] = View.CreateDefaultPictureItem();
             }
             else if (selectedIdOfVariationList >= 0)
