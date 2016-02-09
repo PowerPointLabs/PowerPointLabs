@@ -990,6 +990,45 @@
   <ItemGroup>
     <None Include="Resources\closed_business.jpg" />
   </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\ResizeLab\ResizeFitToFill.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\ResizeLab\ResizeFitToHeight.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\ResizeLab\ResizeFitToWidth.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\ResizeLab\ResizeLock.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\ResizeLab\ResizeSameHeight.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\ResizeLab\ResizeSameSize.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\ResizeLab\ResizeSameWidth.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\ResizeLab\ResizeStore.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\ResizeLab\ResizeStretchBottom.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\ResizeLab\ResizeStretchLeft.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\ResizeLab\ResizeStretchRight.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\ResizeLab\ResizeStretchTop.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\ResizeLab\ResizeUnlock.png" />
+  </ItemGroup>
   <!-- Include the build rules for a C# project. -->
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
