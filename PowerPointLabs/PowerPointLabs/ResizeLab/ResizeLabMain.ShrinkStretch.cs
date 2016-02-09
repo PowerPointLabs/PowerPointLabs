@@ -128,7 +128,7 @@ namespace PowerPointLabs.ResizeLab
             });
             var defaultReferenceEdge = new GetDefaultReferenceEdge((PowerPoint.Shape referenceShape) =>
             {
-                return Graphics.LowestPoint(Graphics.GetRealCoordinates(referenceShape)).Y;
+                return Graphics.BottomMostPoint(Graphics.GetRealCoordinates(referenceShape)).Y;
             });
             Stretch(stretchShapes, appropriateStretch, defaultReferenceEdge);
         }
