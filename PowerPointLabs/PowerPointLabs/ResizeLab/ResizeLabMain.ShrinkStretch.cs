@@ -8,6 +8,7 @@ using System.Windows.Forms;
 using Microsoft.Office.Core;
 using PowerPoint = Microsoft.Office.Interop.PowerPoint;
 using PowerPointLabs.Models;
+using PowerPointLabs.Utils;
 using Shape = Microsoft.Office.Interop.PowerPoint.Shape;
 
 
@@ -61,7 +62,7 @@ namespace PowerPointLabs.ResizeLab
             });
             var defaultReferenceEdge = new GetDefaultReferenceEdge((PowerPoint.Shape referenceShape) =>
             {
-                return referenceShape.Left;
+                return Graphics.LeftMostPoint(Graphics.GetRealCoordinates(referenceShape)).X;
             });
             Stretch(stretchShapes, appropriateStretch, defaultReferenceEdge);
         }
@@ -83,7 +84,7 @@ namespace PowerPointLabs.ResizeLab
             });
             var defaultReferenceEdge = new GetDefaultReferenceEdge((PowerPoint.Shape referenceShape) =>
             {
-                return GetRight(referenceShape);
+                return Graphics.RightMostPoint(Graphics.GetRealCoordinates(referenceShape)).X;
             });
             Stretch(stretchShapes, appropriateStretch, defaultReferenceEdge);
         }
@@ -105,7 +106,7 @@ namespace PowerPointLabs.ResizeLab
             });
             var defaultReferenceEdge = new GetDefaultReferenceEdge((PowerPoint.Shape referenceShape) =>
             {
-                return referenceShape.Top;
+                return Graphics.TopMostPoint(Graphics.GetRealCoordinates(referenceShape)).Y;
             });
             Stretch(stretchShapes, appropriateStretch, defaultReferenceEdge);
         }
@@ -127,15 +128,19 @@ namespace PowerPointLabs.ResizeLab
             });
             var defaultReferenceEdge = new GetDefaultReferenceEdge((PowerPoint.Shape referenceShape) =>
             {
-                return GetBottom(referenceShape);
+                return Graphics.LowestPoint(Graphics.GetRealCoordinates(referenceShape)).Y;
             });
             Stretch(stretchShapes, appropriateStretch, defaultReferenceEdge);
         }
 
         private void StretchLeftAction(float referenceEdge, PowerPoint.Shape stretchShape)
         {
+            //var leftMost = Graphics.LeftMostPoint(Graphics.GetRealCoordinates(stretchShape));
             stretchShape.Width += stretchShape.Left - referenceEdge;
             stretchShape.Left = referenceEdge;
+            MessageBox.Show(""+stretchShape.Rotation);
+            //stretchShape.Left = referenceEdge;
+            
         }
 
         private void StretchRightAction(float referenceEdge, PowerPoint.Shape stretchShape)
