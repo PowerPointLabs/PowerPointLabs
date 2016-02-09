@@ -108,6 +108,10 @@ namespace PowerPointLabs.PictureSlidesLab.View
         private void ImageSelectionList_OnCollectionChanged(object sender, NotifyCollectionChangedEventArgs e)
         {
             UpdatePreviewInterfaceWhenImageListChange(sender as Collection<ImageItem>);
+            if (ViewModel.IsInPictureVariation())
+            {
+                UpdatePreviewImages();
+            }
         }
 
         private void StylesVariationList_OnCollectionChanged(object sender, NotifyCollectionChangedEventArgs e)
@@ -538,10 +542,24 @@ namespace PowerPointLabs.PictureSlidesLab.View
 
         private void MenuItemAdjustImage_OnClickFromPreviewListBox(object sender, RoutedEventArgs e)
         {
-            var selectedImage = (ImageItem) ImageSelectionListBox.SelectedItem;
-            if (selectedImage == null || selectedImage.ImageFile == StoragePath.LoadingImgPath) return;
+            if (ViewModel.IsInPictureVariation())
+            {
+                var imageItem = ViewModel.GetSelectedPictureForPictureVariation(
+                    StylesVariationListBox.SelectedIndex);
+                if (imageItem.ImageFile == StoragePath.NoPicturePlaceholderImgPath
+                    || imageItem.ImageFile == StoragePath.LoadingImgPath)
+                {
+                    return;
+                }
+                AdjustImageDimensions(imageItem);
+            }
+            else
+            {
+                var selectedImage = (ImageItem)ImageSelectionListBox.SelectedItem;
+                if (selectedImage == null || selectedImage.ImageFile == StoragePath.LoadingImgPath) return;
 
-            AdjustImageDimensions(selectedImage);
+                AdjustImageDimensions(selectedImage);
+            }
         }
 
         /// <summary>
@@ -551,11 +569,29 @@ namespace PowerPointLabs.PictureSlidesLab.View
         /// <param name="e"></param>
         private void VariationListBox_OnSelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            if (ImageSelectionListBox.SelectedValue != null
+            if (ViewModel.IsInPictureVariation()
+                     && StylesVariationListBox.SelectedIndex >= 0)
+            {
+                var selectedImageItem =
+                    ViewModel
+                    .GetSelectedPictureForPictureVariation(StylesVariationListBox.SelectedIndex);
+                if (selectedImageItem.ImageFile == StoragePath.NoPicturePlaceholderImgPath
+                    || selectedImageItem.ImageFile == StoragePath.LoadingImgPath)
+                {
+                    StyleVariationApplyButton.IsEnabled = false;
+                }
+                else
+                {
+                    StyleVariationApplyButton.IsEnabled = true;
+                }
+                ViewModel.UpdateStyleVariationStyleOptionsWhenSelectedItemChange();
+                UpdateVariationStageControls();
+            }
+            else if (ImageSelectionListBox.SelectedValue != null
                 && StylesVariationListBox.SelectedValue != null
                 && StylesPreviewListBox.SelectedValue != null)
             {
-                StyleApplyButton.IsEnabled = true;
+                StyleVariationApplyButton.IsEnabled = true;
                 ViewModel.UpdateStyleVariationStyleOptionsWhenSelectedItemChange();
                 UpdateVariationStageControls();
             }
@@ -563,13 +599,13 @@ namespace PowerPointLabs.PictureSlidesLab.View
                      && StylesVariationListBox.SelectedValue != null
                      && StylesPreviewListBox.SelectedValue != null)
             {
-                StyleApplyButton.IsEnabled = false;
+                StyleVariationApplyButton.IsEnabled = false;
                 ViewModel.UpdateStyleVariationStyleOptionsWhenSelectedItemChange();
                 UpdateVariationStageControls();
             }
             else
             {
-                StyleApplyButton.IsEnabled = false;
+                StyleVariationApplyButton.IsEnabled = false;
             }
         }
 
@@ -815,19 +851,37 @@ namespace PowerPointLabs.PictureSlidesLab.View
             IsVariationsFlyoutOpen = false;
         }
 
-        private void UpdatePreviewImages(ImageItem source = null)
+        private void UpdatePreviewImages(ImageItem source = null, bool isEnteringPictureVariation = false)
         {
-            if (!IsEnableUpdatingPreviewImages()) return;
+            if (!IsEnableUpdatingPreviewImages() && !ViewModel.IsInPictureVariation()) return;
 
-            ViewModel.UpdatePreviewImages(
-                source ?? (ImageItem) ImageSelectionListBox.SelectedValue,
-                PowerPointCurrentPresentationInfo.CurrentSlide.GetNativeSlide(),
-                PowerPointPresentation.Current.SlideWidth,
-                PowerPointPresentation.Current.SlideHeight);
+            if (!IsEnableUpdatingPreviewImages() && ViewModel.IsInPictureVariation())
+            {
+                ViewModel.UpdatePreviewImages(
+                    source ?? CreateDefaultPictureItem(),
+                    PowerPointCurrentPresentationInfo.CurrentSlide.GetNativeSlide(),
+                    PowerPointPresentation.Current.SlideWidth,
+                    PowerPointPresentation.Current.SlideHeight);
+            }
+            else if (IsVariationsFlyoutOpen && isEnteringPictureVariation)
+            {
+                // directly jump to picture variation to select picture
+                var picVariationIndex = ViewModel.VariantsCategory.IndexOf(
+                    TextCollection.PictureSlidesLabText.VariantCategoryPicture);
+                VariantsComboBox.SelectedIndex = picVariationIndex;
+            }
+            else
+            {
+                ViewModel.UpdatePreviewImages(
+                    source ?? (ImageItem) ImageSelectionListBox.SelectedValue,
+                    PowerPointCurrentPresentationInfo.CurrentSlide.GetNativeSlide(),
+                    PowerPointPresentation.Current.SlideWidth,
+                    PowerPointPresentation.Current.SlideHeight);
+            }
         }
 
-        private void CustomizeStyle(ImageItem source, List<StyleOptions> givenStyles = null,
-            Dictionary<string, List<StyleVariants>> givenVariants = null)
+        private void CustomizeStyle(ImageItem source, List<StyleOption> givenStyles = null,
+            Dictionary<string, List<StyleVariant>> givenVariants = null)
         {
             ViewModel.UpdateStyleVariationImagesWhenOpenFlyout(
                 source ?? (ImageItem) ImageSelectionListBox.SelectedValue,

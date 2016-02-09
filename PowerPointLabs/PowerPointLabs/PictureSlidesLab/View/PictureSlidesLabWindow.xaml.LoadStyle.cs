@@ -7,7 +7,6 @@ using Microsoft.Office.Core;
 using Microsoft.Office.Interop.PowerPoint;
 using PowerPointLabs.Models;
 using PowerPointLabs.PictureSlidesLab.Model;
-using PowerPointLabs.PictureSlidesLab.ModelFactory;
 using PowerPointLabs.PictureSlidesLab.Service;
 using PowerPointLabs.PictureSlidesLab.Service.Effect;
 using PowerPointLabs.PictureSlidesLab.Util;
@@ -154,7 +153,7 @@ namespace PowerPointLabs.PictureSlidesLab.View
                 ImageSelectionListBox.SelectedIndex = -1;
                 EnableUpdatingPreviewImages();
 
-                UpdatePreviewImages(CreateDefaultPictureItem());
+                UpdatePreviewImages(CreateDefaultPictureItem(), isEnteringPictureVariation: true);
                 EnterDefaultPictureMode();
                 UpdatePreviewStageControls();
             }
@@ -318,7 +317,7 @@ namespace PowerPointLabs.PictureSlidesLab.View
 
         private int MapStyleNameToStyleIndex(string styleName)
         {
-            var allOptions = StyleOptionsFactory.GetAllStylesPreviewOptions();
+            var allOptions = ViewModel.OptionsFactory.GetAllStylesPreviewOptions();
             for (var i = 0; i < allOptions.Count; i++)
             {
                 if (allOptions[i].StyleName == styleName)
@@ -329,9 +328,9 @@ namespace PowerPointLabs.PictureSlidesLab.View
             return 0;
         }
 
-        private List<StyleOptions> ConstructStylesFromShapeInfo(Shape shape)
+        private List<StyleOption> ConstructStylesFromShapeInfo(Shape shape)
         {
-            var result = new List<StyleOptions>();
+            var result = new List<StyleOption>();
             for (var i = 0; i < 8; i++)
             {
                 result.Add(ConstructStyleFromShapeInfo(shape));
@@ -339,9 +338,9 @@ namespace PowerPointLabs.PictureSlidesLab.View
             return result;
         }
 
-        private Dictionary<string, List<StyleVariants>> ConstructVariantsFromStyle(StyleOptions opt)
+        private Dictionary<string, List<StyleVariant>> ConstructVariantsFromStyle(StyleOption opt)
         {
-            var variants = StyleVariantsFactory.GetVariants(opt.StyleName);
+            var variants = ViewModel.VariantsFactory.GetVariants(opt.StyleName);
             // replace each category/aspect's variant
             // with the new variant from the given style options
             foreach (var pair in variants)
@@ -362,9 +361,9 @@ namespace PowerPointLabs.PictureSlidesLab.View
             return variants;
         }
 
-        private StyleOptions ConstructStyleFromShapeInfo(Shape shape)
+        private StyleOption ConstructStyleFromShapeInfo(Shape shape)
         {
-            var opt = new StyleOptions();
+            var opt = new StyleOption();
             var props = opt.GetType().GetProperties();
             foreach (var propertyInfo in props)
             {

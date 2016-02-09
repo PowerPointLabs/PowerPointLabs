@@ -1,5 +1,6 @@
 ﻿using System.Globalization;
 using System.IO;
+using System.Runtime.InteropServices;
 using TestInterface;
 using Microsoft.Office.Core;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
@@ -31,7 +32,15 @@ namespace Test.UnitTest
         public void Setup()
         {
             CultureUtil.SetDefaultCulture(CultureInfo.GetCultureInfo("en-US"));
-            App = new PowerPoint.Application();
+            try
+            {
+                App = new PowerPoint.Application();
+            }
+            catch (COMException)
+            {
+                // in case a warm-up is needed
+                App = new PowerPoint.Application();
+            }
             Pres = App.Presentations.Open(
                 PathUtil.GetDocTestPath() + GetTestingSlideName(),
                 WithWindow: MsoTriState.msoFalse);

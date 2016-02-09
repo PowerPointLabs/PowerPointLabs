@@ -10,12 +10,12 @@ namespace Test.UnitTest.PictureSlidesLab.Model
     [TestClass]
     public class StyleOptionsTest
     {
-        private StyleOptions option;
+        private StyleOption option;
 
         [TestInitialize]
         public void Init()
         {
-            option = new StyleOptions();
+            option = new StyleOption();
         }
 
         [TestMethod]
@@ -24,7 +24,7 @@ namespace Test.UnitTest.PictureSlidesLab.Model
         {
             option.OptionName = "Test Option Name";
             option.Save(PathUtil.GetDocTestPath() + "option.user");
-            var loadedOption = StyleOptions.Load(PathUtil.GetDocTestPath() + "option.user");
+            var loadedOption = StyleOption.Load(PathUtil.GetDocTestPath() + "option.user");
             Assert.AreEqual("Test Option Name", loadedOption.OptionName);
         }
 
@@ -53,9 +53,9 @@ namespace Test.UnitTest.PictureSlidesLab.Model
         [TestCategory("UT")]
         public void TestGetTextBoxAlignment()
         {
-            Assert.AreEqual(Alignment.Auto, option.GetTextBoxAlignment());
+            Assert.AreEqual(Alignment.Auto, option.GetTextAlignment());
             option.TextBoxAlignment = 1;
-            Assert.AreEqual(Alignment.Left, option.GetTextBoxAlignment());
+            Assert.AreEqual(Alignment.Left, option.GetTextAlignment());
         }
     }
 }

@@ -347,12 +347,15 @@
             public const string VariantCategoryFrameColor = "Frame Color";
             public const string VariantCategoryCircleColor = "Circle Color";
             public const string VariantCategoryTriangleColor = "Triangle Color";
+            public const string VariantCategoryOutlineColor = "Outline Color";
             public const string VariantCategoryTextPosition = "Text Position";
             public const string VariantCategoryFontFamily = "Font";
             public const string VariantCategorySpecialEffects = "Special Effects";
             public const string VariantCategoryBlurriness = "Blurriness";
             public const string VariantCategoryBrightness = "Brightness";
             public const string VariantCategoryFontSizeIncrease = "Font Size";
+            public const string VariantCategoryPicture = "Picture";
+            public const string VariantCategoryImageReference = "Picture Citation";
             public const string VariantCategoryOverlayTransparency = "Overlay Transparency";
             public const string VariantCategoryBannerTransparency = "Banner Transparency";
             public const string VariantCategoryTextBoxTransparency = "TextBox Transparency";
