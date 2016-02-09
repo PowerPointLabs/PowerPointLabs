@@ -457,7 +457,8 @@ namespace PowerPointLabs.PictureSlidesLab.ViewModel
             }
 
             _previousVariantsCategory = currentVariantsCategory;
-            if (pictureIndexToSelect == -1)
+            if (pictureIndexToSelect == -1
+                || pictureIndexToSelect == ImageSelectionListSelectedId.Number)
             {
                 UpdateStylesVariationImagesAfterOpenFlyout(source, contentSlide,
                     slideWidth, slideHeight);
