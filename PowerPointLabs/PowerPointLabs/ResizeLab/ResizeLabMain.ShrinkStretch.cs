@@ -135,12 +135,8 @@ namespace PowerPointLabs.ResizeLab
 
         private void StretchLeftAction(float referenceEdge, PowerPoint.Shape stretchShape)
         {
-            //var leftMost = Graphics.LeftMostPoint(Graphics.GetRealCoordinates(stretchShape));
             stretchShape.Width += stretchShape.Left - referenceEdge;
             stretchShape.Left = referenceEdge;
-            MessageBox.Show(""+stretchShape.Rotation);
-            //stretchShape.Left = referenceEdge;
-            
         }
 
         private void StretchRightAction(float referenceEdge, PowerPoint.Shape stretchShape)
