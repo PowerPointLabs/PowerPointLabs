@@ -1,6 +1,10 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
+using System.ComponentModel.Composition;
+using System.ComponentModel.Composition.Hosting;
+using System.Linq;
+using System.Reflection;
 using PowerPointLabs.PictureSlidesLab.Model;
-using PowerPointLabs.PictureSlidesLab.ModelFactory.Variants;
 using PowerPointLabs.PictureSlidesLab.ModelFactory.Variants.Interface;
 
 namespace PowerPointLabs.PictureSlidesLab.ModelFactory
@@ -15,28 +19,19 @@ namespace PowerPointLabs.PictureSlidesLab.ModelFactory
     /// </summary>
     public class StyleVariantsFactory
     {
-        /// <summary>
-        /// Add new style variants here
-        /// </summary>
-        /// <returns></returns>
-        private static List<IStyleVariants> GetAllStyleVariants()
-        {
-            return new List<IStyleVariants>
-            {
-                new DirectTextStyleVariants(),
-                new BlurStyleVariants(),
-                new TextBoxStyleVariants(),
-                new BannerStyleVariants(),
-                new SpecialEffectStyleVariants(),
-                new OverlayStyleVariants(),
-                new OutlineStyleVariants(),
-                new FrameStyleVariants(),
-                new CircleStyleVariants(),
-                new TriangleStyleVariants()
-            };
-        } 
 
-        public static Dictionary<string, List<StyleVariant>> GetVariants(string targetStyle)
+        [ImportMany(typeof(IStyleVariants))]
+        private IEnumerable<Lazy<IStyleVariants>> ImportedStyleVariants { get; set; }
+
+        public StyleVariantsFactory()
+        {
+            var catalog = new AggregateCatalog(
+                new AssemblyCatalog(Assembly.GetExecutingAssembly()));
+            var container = new CompositionContainer(catalog);
+            container.ComposeParts(this);
+        }
+
+        public Dictionary<string, List<StyleVariant>> GetVariants(string targetStyle)
         {
             foreach (var styleVariants in GetAllStyleVariants())
             {
@@ -46,6 +41,11 @@ namespace PowerPointLabs.PictureSlidesLab.ModelFactory
                 }
             }
             return new Dictionary<string, List<StyleVariant>>();
+        }
+
+        private IEnumerable<IStyleVariants> GetAllStyleVariants()
+        {
+            return ImportedStyleVariants.Select(variants => variants.Value);
         }
     }
 }

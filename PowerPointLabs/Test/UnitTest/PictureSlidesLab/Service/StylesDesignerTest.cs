@@ -16,6 +16,7 @@ namespace Test.UnitTest.PictureSlidesLab.Service
         private StylesDesigner _designer;
         private ImageItem _sourceImage;
         private Slide _contentSlide;
+        private StyleOptionsFactory _factory;
 
         protected override string GetTestingSlideName()
         {
@@ -25,6 +26,7 @@ namespace Test.UnitTest.PictureSlidesLab.Service
         [TestInitialize]
         public void Init()
         {
+            _factory = new StyleOptionsFactory();
             _designer = new StylesDesigner(App);
             _sourceImage = new ImageItem
             {
@@ -45,7 +47,7 @@ namespace Test.UnitTest.PictureSlidesLab.Service
         public void TestPreviewStyle()
         {
             TempPath.InitTempFolder();
-            foreach (var style in StyleOptionsFactory.GetAllStylesPreviewOptions())
+            foreach (var style in _factory.GetAllStylesPreviewOptions())
             {
                 var previewInfo = _designer.PreviewApplyStyle(_sourceImage, _contentSlide,
                     Pres.PageSetup.SlideWidth, Pres.PageSetup.SlideHeight, style);
@@ -62,7 +64,7 @@ namespace Test.UnitTest.PictureSlidesLab.Service
         public void TestApplyStyle()
         {
             TempPath.InitTempFolder();
-            foreach (var style in StyleOptionsFactory.GetAllStylesPreviewOptions())
+            foreach (var style in _factory.GetAllStylesPreviewOptions())
             {
                 _designer.ApplyStyle(_sourceImage, _contentSlide,
                     Pres.PageSetup.SlideWidth, Pres.PageSetup.SlideHeight, style);

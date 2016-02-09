@@ -1,8 +1,12 @@
 ﻿using System.Collections.Generic;
+using System.ComponentModel.Composition;
 using PowerPointLabs.PictureSlidesLab.Model;
+using PowerPointLabs.PictureSlidesLab.ModelFactory.Options.Interface;
 
 namespace PowerPointLabs.PictureSlidesLab.ModelFactory.Options
 {
+    [Export(typeof(IStyleOptions))]
+    [ExportMetadata("StyleOrder", 1)]
     class DirectTextStyleOptions : BaseStyleOptions
     {
         public override List<StyleOption> GetOptionsForVariation()

@@ -8,6 +8,16 @@ namespace Test.UnitTest.PictureSlidesLab.ModelFactory
     [TestClass]
     public class StyleVariantsFactoryTest
     {
+        private StyleVariantsFactory _variantsFactory;
+        private StyleOptionsFactory _optionsFactory;
+
+        [TestInitialize]
+        public void Init()
+        {
+            _variantsFactory = new StyleVariantsFactory();
+            _optionsFactory = new StyleOptionsFactory();
+        }
+
         [TestMethod]
         [TestCategory("UT")]
         public void TestGetDirectTextVariants()
@@ -88,12 +98,12 @@ namespace Test.UnitTest.PictureSlidesLab.ModelFactory
             VerifyVariants2(TextCollection.PictureSlidesLabText.StyleNameTriangle);
         }
 
-        private static void VerifyVariants(string styleName)
+        private void VerifyVariants(string styleName)
         {
             var variants =
-                StyleVariantsFactory.GetVariants(styleName);
+                _variantsFactory.GetVariants(styleName);
             var option =
-                StyleOptionsFactory.GetStylesPreviewOption(styleName);
+                _optionsFactory.GetStylesPreviewOption(styleName);
 
             var numberOfNoEffectVariant = 0;
             foreach (var variant in variants.Values)
@@ -114,12 +124,12 @@ namespace Test.UnitTest.PictureSlidesLab.ModelFactory
                 "Please modify a variation to have no effect on the style. Ref: issue #802.");
         }
 
-        private static void VerifyVariants2(string styleName)
+        private void VerifyVariants2(string styleName)
         {
             var variants =
-                StyleVariantsFactory.GetVariants(styleName);
+                _variantsFactory.GetVariants(styleName);
             var options =
-                StyleOptionsFactory.GetStylesVariationOptions(styleName);
+                _optionsFactory.GetStylesVariationOptions(styleName);
 
             for (var i = 0; i < options.Count; i++)
             {

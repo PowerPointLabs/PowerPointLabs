@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.ComponentModel.Composition;
 using Microsoft.Office.Interop.PowerPoint;
 using PowerPointLabs.PictureSlidesLab.Model;
 using PowerPointLabs.PictureSlidesLab.Service.Effect;
@@ -6,6 +7,8 @@ using PowerPointLabs.PictureSlidesLab.Service.StylesWorker.Interface;
 
 namespace PowerPointLabs.PictureSlidesLab.Service.StylesWorker
 {
+    [Export(typeof(IStyleWorker))]
+    [ExportMetadata("WorkerOrder", 0)]
     class TextStyleWorker : IStyleWorker
     {
         public IList<Shape> Execute(StyleOption option, EffectsDesigner designer, ImageItem source,

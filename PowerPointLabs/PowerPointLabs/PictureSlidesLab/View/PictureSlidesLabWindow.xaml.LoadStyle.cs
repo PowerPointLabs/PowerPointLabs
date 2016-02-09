@@ -7,7 +7,6 @@ using Microsoft.Office.Core;
 using Microsoft.Office.Interop.PowerPoint;
 using PowerPointLabs.Models;
 using PowerPointLabs.PictureSlidesLab.Model;
-using PowerPointLabs.PictureSlidesLab.ModelFactory;
 using PowerPointLabs.PictureSlidesLab.Service;
 using PowerPointLabs.PictureSlidesLab.Service.Effect;
 using PowerPointLabs.PictureSlidesLab.Util;
@@ -318,7 +317,7 @@ namespace PowerPointLabs.PictureSlidesLab.View
 
         private int MapStyleNameToStyleIndex(string styleName)
         {
-            var allOptions = StyleOptionsFactory.GetAllStylesPreviewOptions();
+            var allOptions = ViewModel.OptionsFactory.GetAllStylesPreviewOptions();
             for (var i = 0; i < allOptions.Count; i++)
             {
                 if (allOptions[i].StyleName == styleName)
@@ -341,7 +340,7 @@ namespace PowerPointLabs.PictureSlidesLab.View
 
         private Dictionary<string, List<StyleVariant>> ConstructVariantsFromStyle(StyleOption opt)
         {
-            var variants = StyleVariantsFactory.GetVariants(opt.StyleName);
+            var variants = ViewModel.VariantsFactory.GetVariants(opt.StyleName);
             // replace each category/aspect's variant
             // with the new variant from the given style options
             foreach (var pair in variants)

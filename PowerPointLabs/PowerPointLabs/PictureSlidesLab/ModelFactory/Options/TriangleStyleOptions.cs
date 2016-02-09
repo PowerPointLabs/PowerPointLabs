@@ -1,11 +1,12 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
+﻿using System.Collections.Generic;
+using System.ComponentModel.Composition;
 using PowerPointLabs.PictureSlidesLab.Model;
+using PowerPointLabs.PictureSlidesLab.ModelFactory.Options.Interface;
 
 namespace PowerPointLabs.PictureSlidesLab.ModelFactory.Options
 {
+    [Export(typeof(IStyleOptions))]
+    [ExportMetadata("StyleOrder", 10)]
     class TriangleStyleOptions : BaseStyleOptions
     {
         public override List<StyleOption> GetOptionsForVariation()

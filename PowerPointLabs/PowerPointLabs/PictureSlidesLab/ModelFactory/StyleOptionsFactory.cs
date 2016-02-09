@@ -1,6 +1,10 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
+using System.ComponentModel.Composition;
+using System.ComponentModel.Composition.Hosting;
+using System.Linq;
+using System.Reflection;
 using PowerPointLabs.PictureSlidesLab.Model;
-using PowerPointLabs.PictureSlidesLab.ModelFactory.Options;
 using PowerPointLabs.PictureSlidesLab.ModelFactory.Options.Interface;
 
 namespace PowerPointLabs.PictureSlidesLab.ModelFactory
@@ -15,32 +19,22 @@ namespace PowerPointLabs.PictureSlidesLab.ModelFactory
     /// </summary>
     public class StyleOptionsFactory
     {
-        /// <summary>
-        /// Add new style options here
-        /// </summary>
-        /// <returns></returns>
-        private static List<IStyleOptions> GetAllStyleOptions()
+        [ImportMany(typeof(IStyleOptions))]
+        private IEnumerable<Lazy<IStyleOptions, IStyleOrderMetadata>> ImportedStyleOptions { get; set; }
+
+        public StyleOptionsFactory()
         {
-            return new List<IStyleOptions>
-            {
-                new DirectTextStyleOptions(),
-                new BlurStyleOptions(),
-                new TextBoxStyleOptions(),
-                new BannerStyleOptions(),
-                new SpecialEffectStyleOptions(),
-                new OverlayStyleOptions(),
-                new OutlineStyleOptions(),
-                new FrameStyleOptions(),
-                new CircleStyleOptions(),
-                new TriangleStyleOptions()
-            };
+            var catalog = new AggregateCatalog(
+                new AssemblyCatalog(Assembly.GetExecutingAssembly()));
+            var container = new CompositionContainer(catalog);
+            container.ComposeParts(this);
         }
 
         /// <summary>
         /// get all styles variation options for variation stage usage
         /// </summary>
         /// <returns></returns>
-        public static List<List<StyleOption>> GetAllStylesVariationOptions()
+        public List<List<StyleOption>> GetAllStylesVariationOptions()
         {
             var options = new List<List<StyleOption>>();
             foreach (var styleOptions in GetAllStyleOptions())
@@ -54,7 +48,7 @@ namespace PowerPointLabs.PictureSlidesLab.ModelFactory
         /// get all styles preview options for preview stage usage
         /// </summary>
         /// <returns></returns>
-        public static List<StyleOption> GetAllStylesPreviewOptions()
+        public List<StyleOption> GetAllStylesPreviewOptions()
         {
             var options = new List<StyleOption>();
             foreach (var styleOptions in GetAllStyleOptions())
@@ -64,7 +58,7 @@ namespace PowerPointLabs.PictureSlidesLab.ModelFactory
             return options;
         }
 
-        public static StyleOption GetStylesPreviewOption(string targetStyle)
+        public StyleOption GetStylesPreviewOption(string targetStyle)
         {
             var options = GetAllStylesPreviewOptions();
             foreach (var option in options)
@@ -77,7 +71,7 @@ namespace PowerPointLabs.PictureSlidesLab.ModelFactory
             return options[0];
         }
 
-        public static List<StyleOption> GetStylesVariationOptions(string targetStyle)
+        public List<StyleOption> GetStylesVariationOptions(string targetStyle)
         {
             var allStylesVariationOptions = GetAllStylesVariationOptions();
             foreach (var stylesVariationOptions in allStylesVariationOptions)
@@ -88,6 +82,13 @@ namespace PowerPointLabs.PictureSlidesLab.ModelFactory
                 }
             }
             return allStylesVariationOptions[0];
+        }
+
+        private IEnumerable<IStyleOptions> GetAllStyleOptions()
+        {
+            return ImportedStyleOptions
+                .OrderBy(options => options.Metadata.StyleOrder)
+                .Select(options => options.Value);
         }
     }
 }

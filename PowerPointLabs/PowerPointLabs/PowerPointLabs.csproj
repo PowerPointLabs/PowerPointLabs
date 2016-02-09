@@ -213,6 +213,7 @@
       <EmbedInteropTypes>True</EmbedInteropTypes>
     </Reference>
     <Reference Include="System" />
+    <Reference Include="System.ComponentModel.Composition" />
     <Reference Include="System.Data" />
     <Reference Include="System.Deployment" />
     <Reference Include="System.Drawing" />
@@ -343,6 +344,7 @@
     <Compile Include="PictureSlidesLab\ModelFactory\Options\DirectTextStyleOptions.cs" />
     <Compile Include="PictureSlidesLab\ModelFactory\Options\FrameStyleOptions.cs" />
     <Compile Include="PictureSlidesLab\ModelFactory\Options\Interface\IStyleOptions.cs" />
+    <Compile Include="PictureSlidesLab\ModelFactory\Options\Interface\IStyleOrderMetadata.cs" />
     <Compile Include="PictureSlidesLab\ModelFactory\Options\OutlineStyleOptions.cs" />
     <Compile Include="PictureSlidesLab\ModelFactory\Options\OverlayStyleOptions.cs" />
     <Compile Include="PictureSlidesLab\ModelFactory\Options\SpecialEffectStyleOptions.cs" />
@@ -416,13 +418,14 @@
     <Compile Include="PictureSlidesLab\Service\StylesWorker\BannerStyleWorker.cs" />
     <Compile Include="PictureSlidesLab\Service\StylesWorker\BlurStyleWorker.cs" />
     <Compile Include="PictureSlidesLab\Service\StylesWorker\CircleStyleWorker.cs" />
+    <Compile Include="PictureSlidesLab\Service\StylesWorker\Factory\StyleWorkerFactory.cs" />
     <Compile Include="PictureSlidesLab\Service\StylesWorker\FrameStyleWorker.cs" />
     <Compile Include="PictureSlidesLab\Service\StylesWorker\Interface\IStyleWorker.cs" />
+    <Compile Include="PictureSlidesLab\Service\StylesWorker\Interface\IWorkerOrderMetadata.cs" />
     <Compile Include="PictureSlidesLab\Service\StylesWorker\OutlineStyleWorker.cs" />
     <Compile Include="PictureSlidesLab\Service\StylesWorker\OverlayStyleWorker.cs" />
     <Compile Include="PictureSlidesLab\Service\StylesWorker\PictureCitationStyleWorker.cs" />
     <Compile Include="PictureSlidesLab\Service\StylesWorker\StyleEmbeddingWorker.cs" />
-    <Compile Include="PictureSlidesLab\Service\StylesWorker\StyleWorkerFactory.cs" />
     <Compile Include="PictureSlidesLab\Service\StylesWorker\TextBoxStyleWorker.cs" />
     <Compile Include="PictureSlidesLab\Service\StylesWorker\TextStyleWorker.cs" />
     <Compile Include="PictureSlidesLab\Service\StylesWorker\TriangleStyleWorker.cs" />

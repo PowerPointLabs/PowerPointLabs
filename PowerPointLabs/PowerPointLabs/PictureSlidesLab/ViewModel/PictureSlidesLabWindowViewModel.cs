@@ -69,6 +69,12 @@ namespace PowerPointLabs.PictureSlidesLab.ViewModel
         // Background presentation that will do the styles processing
         public IStylesDesigner Designer { private get; set; }
 
+        // Style Options Factory
+        public StyleOptionsFactory OptionsFactory { get; set; }
+
+        // Style Variants Factory
+        public StyleVariantsFactory VariantsFactory { get; set; }
+
         #endregion
 
         #region States for variation stage
@@ -88,6 +94,8 @@ namespace PowerPointLabs.PictureSlidesLab.ViewModel
             InitUiModels();
             CleanUnusedPersistentData();
             Designer = stylesDesigner ?? new StylesDesigner();
+            OptionsFactory = new StyleOptionsFactory();
+            VariantsFactory = new StyleVariantsFactory();
         }
 
         private void CleanUnusedPersistentData()
@@ -282,7 +290,7 @@ namespace PowerPointLabs.PictureSlidesLab.ViewModel
             var copiedPicture = LoadClipboardPicture();
             try
             {
-                var targetDefaultOptions = StyleOptionsFactory
+                var targetDefaultOptions = OptionsFactory
                     .GetStylesPreviewOption(StylesPreviewListSelectedItem.ImageItem.Tooltip);
                 Designer.ApplyStyle(ImageSelectionListSelectedItem.ImageItem, contentSlide,
                     slideWidth, slideHeight, targetDefaultOptions);
@@ -488,7 +496,7 @@ namespace PowerPointLabs.PictureSlidesLab.ViewModel
             var copiedPicture = LoadClipboardPicture();
             try
             {
-                foreach (var stylesPreviewOption in StyleOptionsFactory.GetAllStylesPreviewOptions())
+                foreach (var stylesPreviewOption in OptionsFactory.GetAllStylesPreviewOptions())
                 {
                     var previewInfo = Designer.PreviewApplyStyle(source, 
                         contentSlide, slideWidth, slideHeight, stylesPreviewOption);
@@ -518,8 +526,8 @@ namespace PowerPointLabs.PictureSlidesLab.ViewModel
         private void InitStylesVariationCategories(List<StyleOption> givenOptions,
             Dictionary<string, List<StyleVariant>> givenVariants, string targetStyle)
         {
-            _styleOptions = givenOptions ?? StyleOptionsFactory.GetStylesVariationOptions(targetStyle);
-            _styleVariants = givenVariants ?? StyleVariantsFactory.GetVariants(targetStyle);
+            _styleOptions = givenOptions ?? OptionsFactory.GetStylesVariationOptions(targetStyle);
+            _styleVariants = givenVariants ?? VariantsFactory.GetVariants(targetStyle);
 
             VariantsCategory.Clear();
             foreach (var styleVariant in _styleVariants.Keys)
@@ -530,7 +538,7 @@ namespace PowerPointLabs.PictureSlidesLab.ViewModel
             _previousVariantsCategory = VariantsCategory[0];
 
             // default style options (in preview stage)
-            var defaultStyleOptions = StyleOptionsFactory.GetStylesPreviewOption(targetStyle);
+            var defaultStyleOptions = OptionsFactory.GetStylesPreviewOption(targetStyle);
             var currentVariants = _styleVariants.Values.First();
             var variantIndexWithoutEffect = -1;
             for (var i = 0; i < currentVariants.Count; i++)

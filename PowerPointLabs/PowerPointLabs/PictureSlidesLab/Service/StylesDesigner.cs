@@ -1,12 +1,15 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.Composition;
+using System.ComponentModel.Composition.Hosting;
+using System.Reflection;
 using Microsoft.Office.Core;
 using Microsoft.Office.Interop.PowerPoint;
 using PowerPointLabs.Models;
 using PowerPointLabs.PictureSlidesLab.Model;
 using PowerPointLabs.PictureSlidesLab.Service.Interface;
 using PowerPointLabs.PictureSlidesLab.Service.Preview;
-using PowerPointLabs.PictureSlidesLab.Service.StylesWorker;
+using PowerPointLabs.PictureSlidesLab.Service.StylesWorker.Factory;
 using PowerPointLabs.PictureSlidesLab.Util;
 using Shape = Microsoft.Office.Interop.PowerPoint.Shape;
 
@@ -21,6 +24,9 @@ namespace PowerPointLabs.PictureSlidesLab.Service
     /// </summary>
     public sealed class StylesDesigner : PowerPointPresentation, IStylesDesigner
     {
+        [Import(typeof(StyleWorkerFactory))]
+        private StyleWorkerFactory WorkerFactory { get; set; }
+
         private StyleOption Option { get; set; }
 
         private const int PreviewHeight = 300;
@@ -34,6 +40,11 @@ namespace PowerPointLabs.PictureSlidesLab.Service
             Option = new StyleOption();
             Application = app;
             Open(withWindow: false, focus: false);
+
+            var catalog = new AggregateCatalog(
+                new AssemblyCatalog(Assembly.GetExecutingAssembly()));
+            var container = new CompositionContainer(catalog);
+            container.ComposeParts(this);
         }
 
         public void SetStyleOptions(StyleOption opt)
@@ -120,13 +131,13 @@ namespace PowerPointLabs.PictureSlidesLab.Service
             }
 
             var resultShapes = new List<Shape>();
-            var styleWorkers = StyleWorkerFactory.GetAllStyleWorkers();
-            foreach (var styleWorker in styleWorkers)
+            foreach (var styleWorker in WorkerFactory.StyleWorkers)
             {
                 resultShapes.AddRange(
                     styleWorker.Execute(Option, designer, source, imageShape));
             }
-
+            // Those workers executed at the beginning will have the output
+            // put at the back.
             resultShapes.Reverse();
             SendToBack(resultShapes.ToArray());
             imageShape.ZOrder(MsoZOrderCmd.msoSendToBack);
