@@ -88,9 +88,11 @@ namespace PowerPointLabs.PictureSlidesLab.View
             var selectedItem = StylesVariationListBox.SelectedValue as ImageItem;
 
             var currentCategory = (string) VariantsComboBox.SelectedValue;
-            if (currentCategory.Contains(TextCollection.PictureSlidesLabText.ColorHasEffect)
-                && selectedItem != null
-                && selectedItem.Tooltip != TextCollection.PictureSlidesLabText.ColorNoEffect)
+            if ((currentCategory.Contains(TextCollection.PictureSlidesLabText.ColorHasEffect)
+                 && selectedItem != null
+                 && selectedItem.Tooltip != TextCollection.PictureSlidesLabText.ColorNoEffect)
+                    // use case, display color picker for Picture Citation `With Banner`
+                    || (selectedItem != null && selectedItem.Tooltip == "With Banner"))
             {
                 VariantsColorPanel.Visibility = Visibility.Visible;
                 ViewModel.BindStyleToColorPanel();

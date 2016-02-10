@@ -32,9 +32,9 @@ namespace PowerPointLabs.PictureSlidesLab.ModelFactory.VariantWorker
                 }),
                 new StyleVariant(new Dictionary<string, object>
                 {
-                    {"OptionName", "Yellow"},
+                    {"OptionName", "White"},
                     {"IsUseTextGlow", true},
-                    {"TextGlowColor", "#FFC500"}
+                    {"TextGlowColor", "#FFFFFF"}
                 }),
                 new StyleVariant(new Dictionary<string, object>
                 {

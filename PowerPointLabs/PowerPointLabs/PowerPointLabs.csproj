@@ -254,6 +254,37 @@
     can be found.
   -->
   <ItemGroup>
+    <Compile Include="ActionFramework\Common\Attribute\ExportActionRibbonIdAttribute.cs" />
+    <Compile Include="ActionFramework\Action\ColorsLabActionHandler.cs" />
+    <Compile Include="ActionFramework\Action\EmptyActionHandler.cs" />
+    <Compile Include="ActionFramework\Common\Extension\ActionFrameworkExtensions.cs" />
+    <Compile Include="ActionFramework\Common\Extension\ContentControlExtensions.cs" />
+    <Compile Include="ActionFramework\Common\Extension\ActionHandlerExtensions.cs" />
+    <Compile Include="ActionFramework\Common\Factory\ActionHandlerFactory.cs" />
+    <Compile Include="ActionFramework\Action\FitToHeightActionHandler.cs" />
+    <Compile Include="ActionFramework\Action\FitToWidthActionHandler.cs" />
+    <Compile Include="ActionFramework\Common\Interface\ActionHandler.cs" />
+    <Compile Include="ActionFramework\Common\Factory\BaseHandlerFactory.cs" />
+    <Compile Include="ActionFramework\Common\Interface\IRibbonIdMetadata.cs" />
+    <Compile Include="ActionFramework\Common\Attribute\ExportImageRibbonIdAttribute.cs" />
+    <Compile Include="ActionFramework\Image\ColorsLabImageHandler.cs" />
+    <Compile Include="ActionFramework\Image\EmptyImageHandler.cs" />
+    <Compile Include="ActionFramework\Common\Factory\ImageHandlerFactory.cs" />
+    <Compile Include="ActionFramework\Image\FitToHeightImageHandler.cs" />
+    <Compile Include="ActionFramework\Image\FitToWidthImageHandler.cs" />
+    <Compile Include="ActionFramework\Common\Interface\ImageHandler.cs" />
+    <Compile Include="ActionFramework\Common\Attribute\ExportLabelRibbonIdAttribute.cs" />
+    <Compile Include="ActionFramework\Label\ColorsLabLabelHandler.cs" />
+    <Compile Include="ActionFramework\Label\EmptyLabelHandler.cs" />
+    <Compile Include="ActionFramework\Common\Factory\LabelHandlerFactory.cs" />
+    <Compile Include="ActionFramework\Label\FitToHeightLabelHandler.cs" />
+    <Compile Include="ActionFramework\Label\FitToWidthLabelHandler.cs" />
+    <Compile Include="ActionFramework\Common\Interface\LabelHandler.cs" />
+    <Compile Include="ActionFramework\Common\Attribute\ExportSupertipRibbonIdAttribute.cs" />
+    <Compile Include="ActionFramework\Supertip\ColorsLabSupertipHandler.cs" />
+    <Compile Include="ActionFramework\Supertip\EmptySupertipHandler.cs" />
+    <Compile Include="ActionFramework\Common\Factory\SupertipHandlerFactory.cs" />
+    <Compile Include="ActionFramework\Common\Interface\SupertipHandler.cs" />
     <Compile Include="AgendaLab\AgendaLabSyncFunctions.cs" />
     <Compile Include="AgendaLab\AgendaLabTemplateSyncLogic.cs" />
     <Compile Include="AgendaLab\AgendaLabUtility.cs" />
@@ -1083,9 +1114,7 @@
   <ItemGroup>
     <None Include="Resources\closed_business.jpg" />
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="ActionFramework\" />
-  </ItemGroup>
+  <ItemGroup />
   <!-- Include the build rules for a C# project. -->
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>

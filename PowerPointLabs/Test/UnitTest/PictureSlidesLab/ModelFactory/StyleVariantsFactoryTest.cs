@@ -1,6 +1,8 @@
-﻿using System.Linq;
+﻿using System.Collections.Generic;
+using System.Linq;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using PowerPointLabs;
+using PowerPointLabs.PictureSlidesLab.Model;
 using PowerPointLabs.PictureSlidesLab.ModelFactory;
 
 namespace Test.UnitTest.PictureSlidesLab.ModelFactory
@@ -96,6 +98,26 @@ namespace Test.UnitTest.PictureSlidesLab.ModelFactory
         {
             VerifyVariants(TextCollection.PictureSlidesLabText.StyleNameTriangle);
             VerifyVariants2(TextCollection.PictureSlidesLabText.StyleNameTriangle);
+        }
+
+        [TestMethod]
+        [TestCategory("UT")]
+        public void VerifyVariantsKeysCount()
+        {
+            var allVariants =
+                _variantsFactory.GetAllStyleVariants();
+            foreach (var styleVariants in allVariants)
+            {
+                foreach (IEnumerable<StyleVariant> styleVariant in styleVariants.GetVariantsForStyle().Values)
+                {
+                    var expectedKeyCount = styleVariant.First().GetVariants().Keys.Count;
+                    foreach (var variant in styleVariant)
+                    {
+                        Assert.AreEqual(expectedKeyCount, variant.GetVariants().Keys.Count,
+                            "Keys Count should be same for a VariantWorker.");
+                    }
+                }
+            }
         }
 
         private void VerifyVariants(string styleName)

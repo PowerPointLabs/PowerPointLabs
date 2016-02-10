@@ -20,8 +20,8 @@ namespace PowerPointLabs.FunctionalTestInterface.Impl.Controller
         {
             UIThreadExecutor.Execute(() =>
             {
-                Globals.ThisAddIn.Ribbon.ColorPickerButtonClick(
-                    new RibbonControl("ColorsLab"));
+                Globals.ThisAddIn.Ribbon.OnAction(
+                    new RibbonControl("ColorsLabButton"));
                 _pane = Globals.ThisAddIn.GetActivePane(
                     typeof(ColorPane)).Control as ColorPane;
             });
