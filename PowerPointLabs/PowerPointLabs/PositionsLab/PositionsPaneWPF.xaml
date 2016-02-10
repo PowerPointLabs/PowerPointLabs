@@ -44,7 +44,7 @@
             <Button ToolTip="Locks one axis and shape will only move in one direction" x:Name="oneDirectionButton" Content="One Direction" HorizontalAlignment="Left" Margin="191,426,0,0" VerticalAlignment="Top" Width="88" Height="45" Visibility="Hidden"/>
             <Button ToolTip="Snaps object to a horizontal rotation" x:Name="snapHorizontalButton" Content="Horizontal" HorizontalAlignment="Left" Margin="24,341,0,0" VerticalAlignment="Top" Width="60" Height="45" Click="SnapHorizontalButton_Click"/>
             <Button ToolTip="Snaps object to a vertical rotation" x:Name="snapVerticalButton" Content="Vertical" HorizontalAlignment="Left" Margin="89,341,0,0" VerticalAlignment="Top" Width="60" Height="45" Click="SnapVerticalButton_Click"/>
-            <Button ToolTip="Snaps object to a horizontal rotation" x:Name="distributeAlongEdgeButton" Content="Edges" HorizontalAlignment="Left" Margin="154,496,0,0" VerticalAlignment="Top" Width="60" Height="45" Click="" Visibility="Hidden"/>
+            <Button ToolTip="Snaps object to a horizontal rotation" x:Name="distributeAlongEdgeButton" Content="Edges" HorizontalAlignment="Left" Margin="154,496,0,0" VerticalAlignment="Top" Width="60" Height="45" Visibility="Hidden"/>
         </Grid>
     </ScrollViewer>
 </UserControl>
