@@ -8,6 +8,8 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
+using System;
+
 #pragma warning disable 414
 namespace PowerPointLabs {
     
@@ -164,8 +166,9 @@ namespace PowerPointLabs {
             base.OnShutdown();
         }
     }
-    
+
     /// 
+    [Obsolete("DO NOT use this class! Instead, use Action Framework.")]
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
     [global::System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.VisualStudio.Tools.Office.ProgrammingModel.dll", "14.0.0.0")]
     internal sealed partial class Globals {

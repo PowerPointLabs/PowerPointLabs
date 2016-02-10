@@ -1,5 +1,11 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
+using System.ComponentModel.Composition;
+using System.ComponentModel.Composition.Hosting;
+using System.Linq;
+using System.Reflection;
 using PowerPointLabs.PictureSlidesLab.Model;
+using PowerPointLabs.PictureSlidesLab.ModelFactory.Options.Interface;
 
 namespace PowerPointLabs.PictureSlidesLab.ModelFactory
 {
@@ -13,25 +19,28 @@ namespace PowerPointLabs.PictureSlidesLab.ModelFactory
     /// </summary>
     public class StyleOptionsFactory
     {
+        [ImportMany(typeof(IStyleOptions))]
+        private IEnumerable<Lazy<IStyleOptions, IStyleOrderMetadata>> ImportedStyleOptions { get; set; }
+
+        public StyleOptionsFactory()
+        {
+            var catalog = new AggregateCatalog(
+                new AssemblyCatalog(Assembly.GetExecutingAssembly()));
+            var container = new CompositionContainer(catalog);
+            container.ComposeParts(this);
+        }
+
         /// <summary>
         /// get all styles variation options for variation stage usage
         /// </summary>
         /// <returns></returns>
-        public static List<List<StyleOptions>> GetAllStylesVariationOptions()
+        public List<List<StyleOption>> GetAllStylesVariationOptions()
         {
-            var options = new List<List<StyleOptions>>
+            var options = new List<List<StyleOption>>();
+            foreach (var styleOptions in GetAllStyleOptions())
             {
-                GetOptionsForDirectText(),
-                GetOptionsForBlur(),
-                GetOptionsForTextBox(),
-                GetOptionsForBanner(),
-                GetOptionsForSpecialEffect(),
-                GetOptionsForOverlay(),
-                GetOptionsForOutline(),
-                GetOptionsForFrame(),
-                GetOptionsForCircle(),
-                GetOptionsForTriangle(),
-            };
+                options.Add(styleOptions.GetOptionsForVariation());
+            }
             return options;
         }
 
@@ -39,25 +48,17 @@ namespace PowerPointLabs.PictureSlidesLab.ModelFactory
         /// get all styles preview options for preview stage usage
         /// </summary>
         /// <returns></returns>
-        public static List<StyleOptions> GetAllStylesPreviewOptions()
+        public List<StyleOption> GetAllStylesPreviewOptions()
         {
-            var options = new List<StyleOptions>
+            var options = new List<StyleOption>();
+            foreach (var styleOptions in GetAllStyleOptions())
             {
-                GetDefaultOptionForDirectText(),
-                GetDefaultOptionForBlur(),
-                GetDefaultOptionForTextBox(),
-                GetDefaultOptionForBanner(),
-                GetDefaultOptionForSpecialEffects(),
-                GetDefaultOptionForOverlay(),
-                GetDefaultOptionForOutline(),
-                GetDefaultOptionForFrame(),
-                GetDefaultOptionForCircle(),
-                GetDefaultOptionForTriangle(),
-            };
+                options.Add(styleOptions.GetDefaultOptionForPreview());
+            }
             return options;
         }
 
-        public static StyleOptions GetStylesPreviewOption(string targetStyle)
+        public StyleOption GetStylesPreviewOption(string targetStyle)
         {
             var options = GetAllStylesPreviewOptions();
             foreach (var option in options)
@@ -70,7 +71,7 @@ namespace PowerPointLabs.PictureSlidesLab.ModelFactory
             return options[0];
         }
 
-        public static List<StyleOptions> GetStylesVariationOptions(string targetStyle)
+        public List<StyleOption> GetStylesVariationOptions(string targetStyle)
         {
             var allStylesVariationOptions = GetAllStylesVariationOptions();
             foreach (var stylesVariationOptions in allStylesVariationOptions)
@@ -83,289 +84,11 @@ namespace PowerPointLabs.PictureSlidesLab.ModelFactory
             return allStylesVariationOptions[0];
         }
 
-        private static List<StyleOptions> UpdateStyleName(List<StyleOptions> opts, string styleName)
+        private IEnumerable<IStyleOptions> GetAllStyleOptions()
         {
-            int i = 0;
-            foreach (var styleOption in opts)
-            {
-                styleOption.StyleName = styleName;
-                styleOption.VariantIndex = i;
-                i++;
-            }
-            return opts;
+            return ImportedStyleOptions
+                .OrderBy(options => options.Metadata.StyleOrder)
+                .Select(options => options.Value);
         }
-
-        #region Get specific styles preview option
-
-        private static StyleOptions GetDefaultOptionForDirectText()
-        {
-            return new StyleOptions
-            {
-                StyleName = TextCollection.PictureSlidesLabText.StyleNameDirectText,
-                TextBoxPosition = 5,
-                IsUseTextGlow = true,
-                TextGlowColor = "#000000"
-            };
-        }
-
-        private static StyleOptions GetDefaultOptionForBlur()
-        {
-            return new StyleOptions
-            {
-                StyleName = TextCollection.PictureSlidesLabText.StyleNameBlur,
-                IsUseBlurStyle = true,
-                BlurDegree = 85,
-                TextBoxPosition = 5,
-                IsUseTextGlow = true,
-                TextGlowColor = "#000000"
-            };
-        }
-
-        private static StyleOptions GetDefaultOptionForTextBox()
-        {
-            return new StyleOptions
-            {
-                StyleName = TextCollection.PictureSlidesLabText.StyleNameTextBox,
-                IsUseTextBoxStyle = true,
-                TextBoxPosition = 7,
-                TextBoxColor = "#000000",
-                FontColor = "#FFD700"
-            };
-        }
-
-        private static StyleOptions GetDefaultOptionForBanner()
-        {
-            return new StyleOptions
-            {
-                StyleName = TextCollection.PictureSlidesLabText.StyleNameBanner,
-                IsUseBannerStyle = true,
-                TextBoxPosition = 7,
-                TextBoxColor = "#000000",
-                FontColor = "#FFD700"
-            };
-        }
-
-        private static StyleOptions GetDefaultOptionForSpecialEffects()
-        {
-            return new StyleOptions
-            {
-                StyleName = TextCollection.PictureSlidesLabText.StyleNameSpecialEffect,
-                IsUseSpecialEffectStyle = true,
-                SpecialEffect = 0,
-                IsUseTextGlow = true,
-                TextGlowColor = "#000000"
-            };
-        }
-
-        private static StyleOptions GetDefaultOptionForOverlay()
-        {
-            return new StyleOptions
-            {
-                StyleName = TextCollection.PictureSlidesLabText.StyleNameOverlay,
-                IsUseOverlayStyle = true,
-                Transparency = 35,
-                OverlayColor = "#007FFF", // blue
-                IsUseSpecialEffectStyle = true,
-                SpecialEffect = 0
-            };
-        }
-
-        private static StyleOptions GetDefaultOptionForOutline()
-        {
-            return new StyleOptions()
-            {
-                StyleName = TextCollection.PictureSlidesLabText.StyleNameOutline,
-                IsUseOutlineStyle = true,
-                IsUseTextGlow = true,
-                TextGlowColor = "#000000"
-            };
-        }
-
-        private static StyleOptions GetDefaultOptionForFrame()
-        {
-            return new StyleOptions()
-            {
-                StyleName = TextCollection.PictureSlidesLabText.StyleNameFrame,
-                IsUseFrameStyle = true,
-                IsUseTextGlow = true,
-                TextGlowColor = "#000000"
-            };
-        }
-
-        private static StyleOptions GetDefaultOptionForTriangle()
-        {
-            return new StyleOptions()
-            {
-                StyleName = TextCollection.PictureSlidesLabText.StyleNameTriangle,
-                IsUseTriangleStyle = true,
-                TriangleColor = "#007FFF", // blue
-                TextBoxPosition = 4, // left
-                TriangleTransparency = 25
-            };
-        }
-
-        private static StyleOptions GetDefaultOptionForCircle()
-        {
-            return new StyleOptions()
-            {
-                StyleName = TextCollection.PictureSlidesLabText.StyleNameCircle,
-                IsUseCircleStyle = true,
-                FontColor = "#000000",
-                CircleTransparency = 25
-            };
-        }
-
-        #endregion
-        #region Get specific styles variation options
-
-        private static List<StyleOptions> GetOptionsForTriangle()
-        {
-            var result = GetOptionsWithSuitableFontColor();
-            foreach (var styleOption in result)
-            {
-                styleOption.IsUseTriangleStyle = true;
-                styleOption.TextBoxPosition = 4; // left
-                styleOption.TriangleTransparency = 25;
-            }
-            UpdateStyleName(
-                result,
-                TextCollection.PictureSlidesLabText.StyleNameTriangle);
-            return result;
-        }
-
-        private static List<StyleOptions> GetOptionsForCircle()
-        {
-            var result = GetOptionsWithSuitableFontColor();
-            foreach (var styleOption in result)
-            {
-                styleOption.IsUseCircleStyle = true;
-                styleOption.CircleTransparency = 25;
-            }
-            return UpdateStyleName(
-                result,
-                TextCollection.PictureSlidesLabText.StyleNameCircle);
-        }
-
-        private static List<StyleOptions> GetOptionsForFrame()
-        {
-            var result = GetOptions();
-            foreach (var styleOption in result)
-            {
-                styleOption.IsUseFrameStyle = true;
-                styleOption.IsUseTextGlow = true;
-                styleOption.TextGlowColor = "#000000";
-            }
-            return UpdateStyleName(
-                result,
-                TextCollection.PictureSlidesLabText.StyleNameFrame);
-        }
-
-        private static List<StyleOptions> GetOptionsForOutline()
-        {
-            var result = GetOptionsWithSuitableFontColor();
-            foreach (var styleOption in result)
-            {
-                styleOption.IsUseOutlineStyle = true;
-                styleOption.IsUseTextGlow = true;
-                styleOption.TextGlowColor = "#000000";
-            }
-            return UpdateStyleName(
-                result,
-                TextCollection.PictureSlidesLabText.StyleNameOutline);
-        }
-
-        private static List<StyleOptions> GetOptionsForOverlay()
-        {
-            var result = GetOptionsWithSuitableFontColor();
-            foreach (var styleOption in result)
-            {
-                styleOption.Transparency = 35;
-            }
-            return UpdateStyleName(result,
-                TextCollection.PictureSlidesLabText.StyleNameOverlay);
-        } 
-
-        private static List<StyleOptions> GetOptionsForSpecialEffect()
-        {
-            var result = GetOptions();
-            foreach (var styleOption in result)
-            {
-                styleOption.IsUseTextGlow = true;
-                styleOption.TextGlowColor = "#000000";
-            }
-            return UpdateStyleName(
-                result,
-                TextCollection.PictureSlidesLabText.StyleNameSpecialEffect);
-        } 
-
-        private static List<StyleOptions> GetOptionsForBanner()
-        {
-            return UpdateStyleName(
-                GetOptionsForTextBox(),
-                TextCollection.PictureSlidesLabText.StyleNameBanner);
-        } 
-
-        private static List<StyleOptions> GetOptionsForTextBox()
-        {
-            var result = GetOptionsWithSuitableFontColor();
-            foreach (var option in result)
-            {
-                option.TextBoxPosition = 7; //bottom-left;
-            }
-            UpdateStyleName(
-                result,
-                TextCollection.PictureSlidesLabText.StyleNameTextBox);
-            return result;
-        }
-
-        private static List<StyleOptions> GetOptionsForBlur()
-        {
-            var result = GetOptions();
-            foreach (var styleOption in result)
-            {
-                styleOption.IsUseTextGlow = true;
-                styleOption.TextGlowColor = "#000000";
-            }
-            return UpdateStyleName(
-                result,
-                TextCollection.PictureSlidesLabText.StyleNameBlur);
-        } 
-
-        private static List<StyleOptions> GetOptionsForDirectText()
-        {
-            var result = GetOptions();
-            foreach (var styleOption in result)
-            {
-                styleOption.IsUseTextGlow = true;
-                styleOption.TextGlowColor = "#000000";
-            }
-            UpdateStyleName(
-                result,
-                TextCollection.PictureSlidesLabText.StyleNameDirectText);
-            return result;
-        }
-
-        private static List<StyleOptions> GetOptions()
-        {
-            var result = new List<StyleOptions>();
-            for (var i = 0; i < 8; i++)
-            {
-                result.Add(new StyleOptions());
-            }
-            return result;
-        }
-
-        private static List<StyleOptions> GetOptionsWithSuitableFontColor()
-        {
-            var result = GetOptions();
-            result[0].FontColor = "#000000"; //white(bg color) + black
-            result[1].FontColor = "#FFD700"; //black + yellow
-            result[2].FontColor = "#000000"; //yellow + black
-            result[4].FontColor = "#001550"; //green + dark blue
-            result[6].FontColor = "#FFD700"; //purple + yellow
-            result[7].FontColor = "#3DFF8F"; //dark blue + green
-            return result;
-        }
-        #endregion
     }
 }

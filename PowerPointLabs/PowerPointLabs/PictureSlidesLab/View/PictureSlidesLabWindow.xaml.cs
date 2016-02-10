@@ -11,7 +11,7 @@ using System.Windows.Forms;
 using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Animation;
-using PowerPointLabs.Models;
+using PowerPointLabs.ActionFramework.Common.Extension;
 using PowerPointLabs.PictureSlidesLab.Model;
 using PowerPointLabs.PictureSlidesLab.Util;
 using PowerPointLabs.PictureSlidesLab.View.Interface;
@@ -108,6 +108,10 @@ namespace PowerPointLabs.PictureSlidesLab.View
         private void ImageSelectionList_OnCollectionChanged(object sender, NotifyCollectionChangedEventArgs e)
         {
             UpdatePreviewInterfaceWhenImageListChange(sender as Collection<ImageItem>);
+            if (ViewModel.IsInPictureVariation())
+            {
+                UpdatePreviewImages();
+            }
         }
 
         private void StylesVariationList_OnCollectionChanged(object sender, NotifyCollectionChangedEventArgs e)
@@ -155,9 +159,9 @@ namespace PowerPointLabs.PictureSlidesLab.View
                 {
                     var imageUrl = args.Data.GetData("Text") as string;
                     ViewModel.AddImageSelectionListItem(imageUrl, 
-                        PowerPointCurrentPresentationInfo.CurrentSlide.GetNativeSlide(),
-                        PowerPointPresentation.Current.SlideWidth,
-                        PowerPointPresentation.Current.SlideHeight);
+                        this.GetCurrentSlide().GetNativeSlide(),
+                        this.GetCurrentPresentation().SlideWidth,
+                        this.GetCurrentPresentation().SlideHeight);
                 }
             }
             finally
@@ -244,7 +248,7 @@ namespace PowerPointLabs.PictureSlidesLab.View
         /// <param name="e"></param>
         private void PictureSlidesLabWindow_OnDeactivated(object sender, EventArgs e)
         {
-            _lastSelectedSlideIndex = PowerPointCurrentPresentationInfo.CurrentSlide.Index;
+            _lastSelectedSlideIndex = this.GetCurrentSlide().Index;
 
             if (!IsClosing
                 && (CropWindow == null || !CropWindow.IsOpen)
@@ -285,10 +289,11 @@ namespace PowerPointLabs.PictureSlidesLab.View
 
         private void StylesPreviewApplyButton_OnClick(object sender, RoutedEventArgs e)
         {
+            this.StartNewUndoEntry();
             ViewModel.ApplyStyleInPreviewStage(
-                PowerPointCurrentPresentationInfo.CurrentSlide.GetNativeSlide(),
-                PowerPointPresentation.Current.SlideWidth,
-                PowerPointPresentation.Current.SlideHeight);
+                this.GetCurrentSlide().GetNativeSlide(),
+                this.GetCurrentPresentation().SlideWidth,
+                this.GetCurrentPresentation().SlideHeight);
         }
 
         /// <summary>
@@ -424,7 +429,7 @@ namespace PowerPointLabs.PictureSlidesLab.View
             // init last selected slide index
             if (_lastSelectedSlideIndex == -1)
             {
-                _lastSelectedSlideIndex = PowerPointCurrentPresentationInfo.CurrentSlide.Index;
+                _lastSelectedSlideIndex = this.GetCurrentSlide().Index;
             }
 
             // hide quick drop dialog when main window activated
@@ -435,7 +440,7 @@ namespace PowerPointLabs.PictureSlidesLab.View
             }
 
             // when no current slide
-            if (PowerPointCurrentPresentationInfo.CurrentSlide == null)
+            if (this.GetCurrentSlide() == null)
             {
                 GotoSlideButton.IsEnabled = false;
                 LoadStylesButton.IsEnabled = false;
@@ -450,14 +455,14 @@ namespace PowerPointLabs.PictureSlidesLab.View
                 Dispatcher.BeginInvoke(new Action(() =>
                 {
                     // update preview images when slide no change
-                    if (_lastSelectedSlideIndex == PowerPointCurrentPresentationInfo.CurrentSlide.Index)
+                    if (_lastSelectedSlideIndex == this.GetCurrentSlide().Index)
                     {
                         UpdatePreviewImages();
                     }
                     // or load style and image if slide has been changed
                     else
                     {
-                        LoadStyleAndImage(PowerPointCurrentPresentationInfo.CurrentSlide);
+                        LoadStyleAndImage(this.GetCurrentSlide());
                     }
                 }));
             }
@@ -538,10 +543,24 @@ namespace PowerPointLabs.PictureSlidesLab.View
 
         private void MenuItemAdjustImage_OnClickFromPreviewListBox(object sender, RoutedEventArgs e)
         {
-            var selectedImage = (ImageItem) ImageSelectionListBox.SelectedItem;
-            if (selectedImage == null || selectedImage.ImageFile == StoragePath.LoadingImgPath) return;
+            if (ViewModel.IsInPictureVariation())
+            {
+                var imageItem = ViewModel.GetSelectedPictureForPictureVariation(
+                    StylesVariationListBox.SelectedIndex);
+                if (imageItem.ImageFile == StoragePath.NoPicturePlaceholderImgPath
+                    || imageItem.ImageFile == StoragePath.LoadingImgPath)
+                {
+                    return;
+                }
+                AdjustImageDimensions(imageItem);
+            }
+            else
+            {
+                var selectedImage = (ImageItem)ImageSelectionListBox.SelectedItem;
+                if (selectedImage == null || selectedImage.ImageFile == StoragePath.LoadingImgPath) return;
 
-            AdjustImageDimensions(selectedImage);
+                AdjustImageDimensions(selectedImage);
+            }
         }
 
         /// <summary>
@@ -551,11 +570,29 @@ namespace PowerPointLabs.PictureSlidesLab.View
         /// <param name="e"></param>
         private void VariationListBox_OnSelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            if (ImageSelectionListBox.SelectedValue != null
+            if (ViewModel.IsInPictureVariation()
+                     && StylesVariationListBox.SelectedIndex >= 0)
+            {
+                var selectedImageItem =
+                    ViewModel
+                    .GetSelectedPictureForPictureVariation(StylesVariationListBox.SelectedIndex);
+                if (selectedImageItem.ImageFile == StoragePath.NoPicturePlaceholderImgPath
+                    || selectedImageItem.ImageFile == StoragePath.LoadingImgPath)
+                {
+                    StyleVariationApplyButton.IsEnabled = false;
+                }
+                else
+                {
+                    StyleVariationApplyButton.IsEnabled = true;
+                }
+                ViewModel.UpdateStyleVariationStyleOptionsWhenSelectedItemChange();
+                UpdateVariationStageControls();
+            }
+            else if (ImageSelectionListBox.SelectedValue != null
                 && StylesVariationListBox.SelectedValue != null
                 && StylesPreviewListBox.SelectedValue != null)
             {
-                StyleApplyButton.IsEnabled = true;
+                StyleVariationApplyButton.IsEnabled = true;
                 ViewModel.UpdateStyleVariationStyleOptionsWhenSelectedItemChange();
                 UpdateVariationStageControls();
             }
@@ -563,13 +600,13 @@ namespace PowerPointLabs.PictureSlidesLab.View
                      && StylesVariationListBox.SelectedValue != null
                      && StylesPreviewListBox.SelectedValue != null)
             {
-                StyleApplyButton.IsEnabled = false;
+                StyleVariationApplyButton.IsEnabled = false;
                 ViewModel.UpdateStyleVariationStyleOptionsWhenSelectedItemChange();
                 UpdateVariationStageControls();
             }
             else
             {
-                StyleApplyButton.IsEnabled = false;
+                StyleVariationApplyButton.IsEnabled = false;
             }
         }
 
@@ -582,17 +619,18 @@ namespace PowerPointLabs.PictureSlidesLab.View
         {
             ViewModel.UpdateStepByStepStylesVariationImages(
                 (ImageItem) ImageSelectionListBox.SelectedValue ?? CreateDefaultPictureItem(),
-                PowerPointCurrentPresentationInfo.CurrentSlide.GetNativeSlide(),
-                PowerPointPresentation.Current.SlideWidth,
-                PowerPointPresentation.Current.SlideHeight);
+                this.GetCurrentSlide().GetNativeSlide(),
+                this.GetCurrentPresentation().SlideWidth,
+                this.GetCurrentPresentation().SlideHeight);
         }
 
         private void StylesVariationApplyButton_OnClick(object sender, RoutedEventArgs e)
         {
+            this.StartNewUndoEntry();
             ViewModel.ApplyStyleInVariationStage(
-                PowerPointCurrentPresentationInfo.CurrentSlide.GetNativeSlide(),
-                PowerPointPresentation.Current.SlideWidth,
-                PowerPointPresentation.Current.SlideHeight);
+                this.GetCurrentSlide().GetNativeSlide(),
+                this.GetCurrentPresentation().SlideWidth,
+                this.GetCurrentPresentation().SlideHeight);
         }
 
         private void VariationFlyoutBackButton_OnClick(object sender, RoutedEventArgs e)
@@ -715,7 +753,7 @@ namespace PowerPointLabs.PictureSlidesLab.View
                 VariantsComboBox.IsEnabled = true;
                 VariantsColorPanel.IsEnabled = true;
             }
-            else if (PowerPointCurrentPresentationInfo.CurrentSlide == null)
+            else if (this.GetCurrentSlide() == null)
             {
                 VariationInstructions.Visibility = Visibility.Hidden;
                 VariationInstructionsWhenNoSelectedSlide.Visibility = Visibility.Visible;
@@ -741,7 +779,7 @@ namespace PowerPointLabs.PictureSlidesLab.View
                 PreviewInstructions.Visibility = Visibility.Hidden;
                 PreviewInstructionsWhenNoSelectedSlide.Visibility = Visibility.Hidden;
             }
-            else if (PowerPointCurrentPresentationInfo.CurrentSlide == null)
+            else if (this.GetCurrentSlide() == null)
             {
                 PreviewInstructionsWhenNoSelectedSlide.Visibility = Visibility.Visible;
                 PreviewInstructions.Visibility = Visibility.Hidden;
@@ -815,25 +853,43 @@ namespace PowerPointLabs.PictureSlidesLab.View
             IsVariationsFlyoutOpen = false;
         }
 
-        private void UpdatePreviewImages(ImageItem source = null)
+        private void UpdatePreviewImages(ImageItem source = null, bool isEnteringPictureVariation = false)
         {
-            if (!IsEnableUpdatingPreviewImages()) return;
+            if (!IsEnableUpdatingPreviewImages() && !ViewModel.IsInPictureVariation()) return;
 
-            ViewModel.UpdatePreviewImages(
-                source ?? (ImageItem) ImageSelectionListBox.SelectedValue,
-                PowerPointCurrentPresentationInfo.CurrentSlide.GetNativeSlide(),
-                PowerPointPresentation.Current.SlideWidth,
-                PowerPointPresentation.Current.SlideHeight);
+            if (!IsEnableUpdatingPreviewImages() && ViewModel.IsInPictureVariation())
+            {
+                ViewModel.UpdatePreviewImages(
+                    source ?? CreateDefaultPictureItem(),
+                    this.GetCurrentSlide().GetNativeSlide(),
+                    this.GetCurrentPresentation().SlideWidth,
+                    this.GetCurrentPresentation().SlideHeight);
+            }
+            else if (IsVariationsFlyoutOpen && isEnteringPictureVariation)
+            {
+                // directly jump to picture variation to select picture
+                var picVariationIndex = ViewModel.VariantsCategory.IndexOf(
+                    TextCollection.PictureSlidesLabText.VariantCategoryPicture);
+                VariantsComboBox.SelectedIndex = picVariationIndex;
+            }
+            else
+            {
+                ViewModel.UpdatePreviewImages(
+                    source ?? (ImageItem) ImageSelectionListBox.SelectedValue,
+                    this.GetCurrentSlide().GetNativeSlide(),
+                    this.GetCurrentPresentation().SlideWidth,
+                    this.GetCurrentPresentation().SlideHeight);
+            }
         }
 
-        private void CustomizeStyle(ImageItem source, List<StyleOptions> givenStyles = null,
-            Dictionary<string, List<StyleVariants>> givenVariants = null)
+        private void CustomizeStyle(ImageItem source, List<StyleOption> givenStyles = null,
+            Dictionary<string, List<StyleVariant>> givenVariants = null)
         {
             ViewModel.UpdateStyleVariationImagesWhenOpenFlyout(
                 source ?? (ImageItem) ImageSelectionListBox.SelectedValue,
-                PowerPointCurrentPresentationInfo.CurrentSlide.GetNativeSlide(),
-                PowerPointPresentation.Current.SlideWidth,
-                PowerPointPresentation.Current.SlideHeight,
+                this.GetCurrentSlide().GetNativeSlide(),
+                this.GetCurrentPresentation().SlideWidth,
+                this.GetCurrentPresentation().SlideHeight,
                 givenStyles, givenVariants);
             OpenVariationsFlyout();
         }
