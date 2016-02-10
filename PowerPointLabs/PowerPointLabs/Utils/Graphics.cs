@@ -2,9 +2,12 @@
 using System.Collections.Generic;
 using System.Drawing;
 using System.Drawing.Drawing2D;
+using System.Drawing.Imaging;
 using System.Linq;
 using System.Runtime.InteropServices;
 using System.Windows.Forms;
+using System.Windows.Media;
+using System.Windows.Media.Imaging;
 using Microsoft.Office.Core;
 using Microsoft.Office.Interop.PowerPoint;
 using PPExtraEventHelper;
@@ -868,7 +871,7 @@ namespace PowerPointLabs.Utils
         # endregion
 
         # region Color
-        public static int ConvertColorToRgb(Color argb)
+        public static int ConvertColorToRgb(Drawing.Color argb)
         {
             return (argb.B << 16) | (argb.G << 8) | argb.R;
         }
@@ -878,9 +881,9 @@ namespace PowerPointLabs.Utils
             return (b << 16) | (g << 8) | r;
         }
 
-        public static Color ConvertRgbToColor(int rgb)
+        public static Drawing.Color ConvertRgbToColor(int rgb)
         {
-            return Color.FromArgb(rgb & 255, (rgb >> 8) & 255, (rgb >> 16) & 255);
+            return Drawing.Color.FromArgb(rgb & 255, (rgb >> 8) & 255, (rgb >> 16) & 255);
         }
 
         public static void UnpackRgbInt(int rgb, out byte r, out byte g, out byte b)
@@ -943,6 +946,41 @@ namespace PowerPointLabs.Utils
             candidateShape.Height = refShape.Height;
 
             candidateShape.LockAspectRatio = candidateLockRatio;
+        }
+
+        /// <summary>
+        /// Converts a Bitmap to Bitmap source
+        /// </summary>
+        /// <param name="bitmap">The bitmap to convert</param>
+        /// <returns>The converted object</returns>
+        public static BitmapSource CreateBitmapSourceFromGdiBitmap(Bitmap bitmap)
+        {
+            var rect = new System.Drawing.Rectangle(0, 0, bitmap.Width, bitmap.Height);
+
+            var bitmapData = bitmap.LockBits(
+                rect,
+                ImageLockMode.ReadWrite,
+                Drawing.Imaging.PixelFormat.Format32bppArgb);
+
+            try
+            {
+                var size = (rect.Width * rect.Height) * 4;
+
+                return BitmapSource.Create(
+                    bitmap.Width,
+                    bitmap.Height,
+                    bitmap.HorizontalResolution,
+                    bitmap.VerticalResolution,
+                    PixelFormats.Bgra32,
+                    null,
+                    bitmapData.Scan0,
+                    size,
+                    bitmapData.Stride);
+            }
+            finally
+            {
+                bitmap.UnlockBits(bitmapData);
+            }
         }
         # endregion
     }

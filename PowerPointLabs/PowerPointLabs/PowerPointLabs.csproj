@@ -533,6 +533,7 @@
       <DependentUpon>ResizeLabPaneWPF.xaml</DependentUpon>
     </Compile>
     <Compile Include="ResizeLab\ResizeLabMain.ShrinkStretch.cs" />
+    <Compile Include="ResizeLab\ResizeLabShape.cs" />
     <Compile Include="Utils\Assumption.cs" />
     <Compile Include="Utils\CultureUtil.cs" />
     <Compile Include="Utils\Exceptions\AssumptionFailedException.cs" />
@@ -1116,43 +1117,43 @@
     <None Include="Resources\closed_business.jpg" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="Resources\ResizeLab\ResizeFitToFill.png" />
+    <Resource Include="Resources\ResizeLab\ResizeFitToFill.png" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="Resources\ResizeLab\ResizeFitToHeight.png" />
+    <Resource Include="Resources\ResizeLab\ResizeFitToHeight.png" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="Resources\ResizeLab\ResizeFitToWidth.png" />
+    <Resource Include="Resources\ResizeLab\ResizeFitToWidth.png" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="Resources\ResizeLab\ResizeLock.png" />
+    <Resource Include="Resources\ResizeLab\ResizeLock.png" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="Resources\ResizeLab\ResizeSameHeight.png" />
+    <Resource Include="Resources\ResizeLab\ResizeSameHeight.png" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="Resources\ResizeLab\ResizeSameSize.png" />
+    <Resource Include="Resources\ResizeLab\ResizeSameSize.png" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="Resources\ResizeLab\ResizeSameWidth.png" />
+    <Resource Include="Resources\ResizeLab\ResizeSameWidth.png" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="Resources\ResizeLab\ResizeStore.png" />
+    <Resource Include="Resources\ResizeLab\ResizeStore.png" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="Resources\ResizeLab\ResizeStretchBottom.png" />
+    <Resource Include="Resources\ResizeLab\ResizeStretchBottom.png" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="Resources\ResizeLab\ResizeStretchLeft.png" />
+    <Resource Include="Resources\ResizeLab\ResizeStretchLeft.png" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="Resources\ResizeLab\ResizeStretchRight.png" />
+    <Resource Include="Resources\ResizeLab\ResizeStretchRight.png" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="Resources\ResizeLab\ResizeStretchTop.png" />
+    <Resource Include="Resources\ResizeLab\ResizeStretchTop.png" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="Resources\ResizeLab\ResizeUnlock.png" />
+    <Resource Include="Resources\ResizeLab\ResizeUnlock.png" />
   </ItemGroup>
   <ItemGroup />
   <!-- Include the build rules for a C# project. -->
