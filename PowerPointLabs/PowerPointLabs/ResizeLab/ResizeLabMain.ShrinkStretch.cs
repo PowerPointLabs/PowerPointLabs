@@ -7,9 +7,7 @@ using System.Text;
 using System.Windows.Forms;
 using Microsoft.Office.Core;
 using PowerPoint = Microsoft.Office.Interop.PowerPoint;
-using PowerPointLabs.Models;
 using PowerPointLabs.Utils;
-using Shape = Microsoft.Office.Interop.PowerPoint.Shape;
 
 
 namespace PowerPointLabs.ResizeLab

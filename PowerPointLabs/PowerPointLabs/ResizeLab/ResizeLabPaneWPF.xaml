@@ -5,7 +5,7 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:PowerPointLabs.ResizeLab"
              xmlns:Controls="clr-namespace:MahApps.Metro.Controls;assembly=MahApps.Metro"
-             xmlns:WPF="clr-namespace:PowerPointLabs.WPF" x:Class="PowerPointLabs.ResizeLab.ResizeLabPaneWPF"
+             xmlns:cc="clr-namespace:PowerPointLabs.WPF" x:Class="PowerPointLabs.ResizeLab.ResizeLabPaneWPF"
              mc:Ignorable="d" 
              d:DesignHeight="530" d:DesignWidth="300">
     <UserControl.Resources>
@@ -44,10 +44,10 @@
                     <ColumnDefinition Width="1*" />
                     <ColumnDefinition Width="1*" />
                 </Grid.ColumnDefinitions>
-                <WPF:ImageButton x:Name="StretchLeftBtn" Text="Left" Grid.Column="0" Margin="10,10,10,10" Click="StretchLeftBtn_Click" ToolTip="Stretch or shrink selected objects to match the left edge of the first object selected"/>
-                <WPF:ImageButton x:Name="StretchRightBtn" Text="Right" Grid.Column="1" Margin="10,10,10,10" Click="StretchRightBtn_Click" ToolTip="Stretch or shrink selected objects to match the right edge of the first object selected"/>
-                <WPF:ImageButton x:Name="StretchTopBtn" Text="Top" Grid.Column="2" Margin="10,10,10,10" Click="StretchTopBtn_Click" ToolTip="Stretch or shrink selected objects to match the top edge of the first object selected"/>
-                <WPF:ImageButton x:Name="StretchBottomBtn" Text="Bottom" Grid.Column="3" Margin="10,10,10,10" Click="StretchBottomBtn_Click" ToolTip="Stretch or shrink selected objects to match the bottom edge of the first object selected"/>
+                <cc:ImageButton x:Name="StretchLeftBtn" Text="Left" Grid.Column="0" Margin="3,3,3,3" Click="StretchLeftBtn_Click" Width="{Binding ElementName=StretchLeftBtn, Path=ActualHeight}" Image="../Resources/ResizeLab/ResizeStretchLeft.png" ToolTip="Stretch or shrink selected objects to match the left edge of the first object selected"/>
+                <cc:ImageButton x:Name="StretchRightBtn" Text="Right" Grid.Column="1" Margin="3,3,3,3" Click="StretchRightBtn_Click" Width="{Binding ElementName=StretchLeftBtn, Path=ActualHeight}" Image="../Resources/ResizeLab/ResizeStretchRight.png" ToolTip="Stretch or shrink selected objects to match the right edge of the first object selected"/>
+                <cc:ImageButton x:Name="StretchTopBtn" Text="Top" Grid.Column="2" Margin="3,3,3,3" Click="StretchTopBtn_Click" Width="{Binding ElementName=StretchLeftBtn, Path=ActualHeight}" Image="../Resources/ResizeLab/ResizeStretchTop.png" ToolTip="Stretch or shrink selected objects to match the top edge of the first object selected"/>
+                <cc:ImageButton x:Name="StretchBottomBtn" Text="Bottom" Grid.Column="3" Margin="3,3,3,3" Click="StretchBottomBtn_Click" Width="{Binding ElementName=StretchLeftBtn, Path=ActualHeight}" Image="../Resources/ResizeLab/ResizeStretchBottom.png" ToolTip="Stretch or shrink selected objects to match the bottom edge of the first object selected"/>
             </Grid>
         </GroupBox>
         <GroupBox x:Name="SameSizeGroupBox" Header="Same Dimension" Grid.Row="1" VerticalAlignment="Stretch" HorizontalAlignment="Stretch">
@@ -59,9 +59,9 @@
                     <ColumnDefinition Width="1*" />
                     <ColumnDefinition Width="1*" />
                 </Grid.ColumnDefinitions>
-                <WPF:ImageButton x:Name="SameWidthBtn" Text="Width" Grid.Column="0" Margin="10,10,10,10" Click="SameWidthBtn_Click" ToolTip="Resize selected objects to match the width of the first object selected"/>
-                <WPF:ImageButton x:Name="SameHeightBtn" Text="Height" Grid.Column="1" Margin="10,10,10,10" Click="SameHeightBtn_Click" ToolTip="Resize selected objects to match the height of the first object selected"/>
-                <WPF:ImageButton x:Name="SameSizeBtn" Text="Size" Grid.Column="2" Margin="10,10,10,10" Click="SameSizeBtn_Click" ToolTip="Resize selected objects to match the size of the first object selected"/>
+                <cc:ImageButton x:Name="SameWidthBtn" Text="Width" Grid.Column="0" Margin="3,3,3,3" Click="SameWidthBtn_Click" Width="{Binding ElementName=StretchLeftBtn, Path=ActualHeight}" Image="../Resources/ResizeLab/ResizeSameWidth.png" ToolTip="Resize selected objects to match the width of the first object selected"/>
+                <cc:ImageButton x:Name="SameHeightBtn" Text="Height" Grid.Column="1" Margin="3,3,3,3" Width="{Binding ElementName=StretchLeftBtn, Path=ActualHeight}" Image="../Resources/ResizeLab/ResizeSameHeight.png" Click="SameHeightBtn_Click" ToolTip="Resize selected objects to match the height of the first object selected"/>
+                <cc:ImageButton x:Name="SameSizeBtn" Text="Size" Grid.Column="2" Margin="3,3,3,3" Click="SameSizeBtn_Click" Width="{Binding ElementName=StretchLeftBtn, Path=ActualHeight}" Image="../Resources/ResizeLab/ResizeSameSize.png" ToolTip="Resize selected objects to match the size of the first object selected"/>
             </Grid>
         </GroupBox>
         <GroupBox x:Name="FitGroupBox" Header="Fit" Grid.Row="2" VerticalAlignment="Stretch" HorizontalAlignment="Stretch">
@@ -73,9 +73,9 @@
                     <ColumnDefinition Width="1*" />
                     <ColumnDefinition Width="1*" />
                 </Grid.ColumnDefinitions>
-                <WPF:ImageButton x:Name="FitWidthBtn" Text="Width" Grid.Column="0" Margin="10,10,10,10" Click="FitWidthBtn_Click" ToolTip="Expand selected objects horizontally to fit the width of the slide"/>
-                <WPF:ImageButton x:Name="FitHeightBtn" Text="Height" Grid.Column="1" Margin="10,10,10,10" Click="FitHeightBtn_Click" ToolTip="Expand selected objects vertically to fit the height of the slide"/>
-                <WPF:ImageButton x:Name="FillBtn" Text="Fill" Grid.Column="2" Margin="10,10,10,10" Click="FillBtn_Click" ToolTip="Expand selected objects to fit the entire slide"/>
+                <cc:ImageButton x:Name="FitWidthBtn" Text="Width" Grid.Column="0" Margin="3,3,3,3" Click="FitWidthBtn_Click" Width="{Binding ElementName=StretchLeftBtn, Path=ActualHeight}" Image="../Resources/ResizeLab/ResizeFitToWidth.png" ToolTip="Expand selected objects horizontally to fit the width of the slide"/>
+                <cc:ImageButton x:Name="FitHeightBtn" Text="Height" Grid.Column="1" Margin="3,3,3,3" Click="FitHeightBtn_Click" Width="{Binding ElementName=StretchLeftBtn, Path=ActualHeight}" Image="../Resources/ResizeLab/ResizeFitToHeight.png" ToolTip="Expand selected objects vertically to fit the height of the slide"/>
+                <cc:ImageButton x:Name="FillBtn" Text="Fill" Grid.Column="2" Margin="3,3,3,3" Click="FillBtn_Click" Width="{Binding ElementName=StretchLeftBtn, Path=ActualHeight}" Image="../Resources/ResizeLab/ResizeFitToFill.png" ToolTip="Expand selected objects to fit the entire slide"/>
             </Grid>
         </GroupBox>
         <GroupBox x:Name="AspectRatioGroupBox" Header="Aspect Ratio" Grid.Row="3" VerticalAlignment="Stretch" HorizontalAlignment="Stretch">
@@ -87,8 +87,8 @@
                     <ColumnDefinition Width="1*" />
                     <ColumnDefinition Width="1*" />
                 </Grid.ColumnDefinitions>
-                <WPF:ImageButton x:Name="LockAspectRatioBtn" Text="Lock" Grid.Column="0" Margin="10,10,10,10" Click="LockAspectRatioBtn_Click" ToolTip="Lock and unlock the aspect ratio of objects when performing resizing of objects"/>
-                <WPF:ImageButton x:Name="RestoreAspectRatioBtn" Text="Restore" Grid.Column="1" Margin="10,10,10,10" Click="RestoreAspectRatioBtn_Click" ToolTip="Restore the aspect ratio of selected objects"/>
+                <cc:ImageButton x:Name="LockAspectRatioBtn" Text="Unlocked" Grid.Column="0" Margin="3,3,3,3" Click="LockAspectRatioBtn_Click" Width="{Binding ElementName=StretchLeftBtn, Path=ActualHeight}" Image="../Resources/ResizeLab/ResizeUnlock.png" ToolTip="Locks the aspect ratio of objects when performing resizing of objects"/>
+                <cc:ImageButton x:Name="RestoreAspectRatioBtn" Text="Restore" Grid.Column="1" Margin="3,3,3,3" Click="RestoreAspectRatioBtn_Click" Width="{Binding ElementName=StretchLeftBtn, Path=ActualHeight}" Image="../Resources/ResizeLab/ResizeStore.png" ToolTip="Restore the aspect ratio of selected objects"/>
             </Grid>
         </GroupBox>
     </Grid>
