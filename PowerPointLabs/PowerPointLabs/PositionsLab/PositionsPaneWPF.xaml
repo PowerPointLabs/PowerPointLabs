@@ -18,7 +18,7 @@
         </ResourceDictionary>
     </UserControl.Resources>
     <ScrollViewer Margin="0,0,0,-20">
-        <Grid Height="550">
+        <Grid Height="500">
             <GroupBox x:Name="alignGroupBox" Header="Align" HorizontalAlignment="Left" Margin="10,5,0,0" VerticalAlignment="Top" Height="130" Width="284"/>
             <GroupBox x:Name="adjoinGroupBox" Header="Adjoin" HorizontalAlignment="Left" Margin="10,140,0,0" VerticalAlignment="Top" Height="80" Width="284"/>
             <GroupBox x:Name="distributeGroupBox" Header="Distribute" HorizontalAlignment="Left" Margin="10,225,0,0" VerticalAlignment="Top" Height="80" Width="284"/>
