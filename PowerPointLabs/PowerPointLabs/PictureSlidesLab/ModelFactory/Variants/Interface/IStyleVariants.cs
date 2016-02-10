@@ -3,7 +3,7 @@ using PowerPointLabs.PictureSlidesLab.Model;
 
 namespace PowerPointLabs.PictureSlidesLab.ModelFactory.Variants.Interface
 {
-    interface IStyleVariants
+    public interface IStyleVariants
     {
         string GetStyleName();
 

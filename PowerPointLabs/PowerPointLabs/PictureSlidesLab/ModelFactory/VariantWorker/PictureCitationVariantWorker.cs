@@ -22,6 +22,9 @@ namespace PowerPointLabs.PictureSlidesLab.ModelFactory.VariantWorker
                 {
                     {"OptionName", "No Effect"},
                     {"IsInsertReference", false},
+                    {"ImageReferenceAlignment", 0},
+                    {"CitationFontSize", 14},
+                    {"ImageReferenceTextBoxColor", ""}
                 }),
                 new StyleVariant(new Dictionary<string, object>
                 {
@@ -73,7 +76,7 @@ namespace PowerPointLabs.PictureSlidesLab.ModelFactory.VariantWorker
                 }),
                 new StyleVariant(new Dictionary<string, object>
                 {
-                    {"OptionName", "Bottom With Banner"},
+                    {"OptionName", "With Banner"},
                     {"IsInsertReference", true},
                     {"ImageReferenceAlignment", 2},
                     {"CitationFontSize", 12},

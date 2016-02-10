@@ -108,10 +108,6 @@ namespace PowerPointLabs.PictureSlidesLab.View
         private void ImageSelectionList_OnCollectionChanged(object sender, NotifyCollectionChangedEventArgs e)
         {
             UpdatePreviewInterfaceWhenImageListChange(sender as Collection<ImageItem>);
-            if (ViewModel.IsInPictureVariation())
-            {
-                UpdatePreviewImages();
-            }
         }
 
         private void StylesVariationList_OnCollectionChanged(object sender, NotifyCollectionChangedEventArgs e)
@@ -278,6 +274,7 @@ namespace PowerPointLabs.PictureSlidesLab.View
                 // de-select it
                 ImageSelectionListBox.SelectedIndex = -1;
             }
+            ViewModel.UpdateSelectedPictureInPictureVariation();
             UpdatePreviewImages();
         }
 
@@ -545,7 +542,7 @@ namespace PowerPointLabs.PictureSlidesLab.View
         {
             if (ViewModel.IsInPictureVariation())
             {
-                var imageItem = ViewModel.GetSelectedPictureForPictureVariation(
+                var imageItem = ViewModel.GetSelectedPictureInPictureVariation(
                     StylesVariationListBox.SelectedIndex);
                 if (imageItem.ImageFile == StoragePath.NoPicturePlaceholderImgPath
                     || imageItem.ImageFile == StoragePath.LoadingImgPath)
@@ -575,7 +572,7 @@ namespace PowerPointLabs.PictureSlidesLab.View
             {
                 var selectedImageItem =
                     ViewModel
-                    .GetSelectedPictureForPictureVariation(StylesVariationListBox.SelectedIndex);
+                    .GetSelectedPictureInPictureVariation(StylesVariationListBox.SelectedIndex);
                 if (selectedImageItem.ImageFile == StoragePath.NoPicturePlaceholderImgPath
                     || selectedImageItem.ImageFile == StoragePath.LoadingImgPath)
                 {
@@ -855,10 +852,15 @@ namespace PowerPointLabs.PictureSlidesLab.View
 
         private void UpdatePreviewImages(ImageItem source = null, bool isEnteringPictureVariation = false)
         {
+            // if it's in the Default Picture mode and not in the picture variation
+            // don't continue
             if (!IsEnableUpdatingPreviewImages() && !ViewModel.IsInPictureVariation()) return;
 
             if (!IsEnableUpdatingPreviewImages() && ViewModel.IsInPictureVariation())
             {
+                // if it's in Default Picture mode, and
+                // it's in the picture variation, allow
+                // updating preview images
                 ViewModel.UpdatePreviewImages(
                     source ?? CreateDefaultPictureItem(),
                     this.GetCurrentSlide().GetNativeSlide(),
@@ -867,6 +869,8 @@ namespace PowerPointLabs.PictureSlidesLab.View
             }
             else if (IsVariationsFlyoutOpen && isEnteringPictureVariation)
             {
+                // when it's to load the design for a default picture,
+                // and it's at the variation stage,
                 // directly jump to picture variation to select picture
                 var picVariationIndex = ViewModel.VariantsCategory.IndexOf(
                     TextCollection.PictureSlidesLabText.VariantCategoryPicture);
@@ -874,6 +878,8 @@ namespace PowerPointLabs.PictureSlidesLab.View
             }
             else
             {
+                // else, try to update preview images using
+                // source or current selected picture.
                 ViewModel.UpdatePreviewImages(
                     source ?? (ImageItem) ImageSelectionListBox.SelectedValue,
                     this.GetCurrentSlide().GetNativeSlide(),

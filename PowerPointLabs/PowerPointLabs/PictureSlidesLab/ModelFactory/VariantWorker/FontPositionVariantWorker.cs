@@ -22,31 +22,36 @@ namespace PowerPointLabs.PictureSlidesLab.ModelFactory.VariantWorker
                 {
                     {"OptionName", "Centered"},
                     {"IsUseTextFormat", true},
-                    {"TextBoxPosition", 5}
+                    {"TextBoxPosition", 5},
+                    {"TextBoxAlignment", 0}
                 }),
                 new StyleVariant(new Dictionary<string, object>
                 {
                     {"OptionName", "Bottom-left"},
                     {"IsUseTextFormat", true},
-                    {"TextBoxPosition", 7}
+                    {"TextBoxPosition", 7},
+                    {"TextBoxAlignment", 0}
                 }),
                 new StyleVariant(new Dictionary<string, object>
                 {
                     {"OptionName", "Left"},
                     {"IsUseTextFormat", true},
-                    {"TextBoxPosition", 4}
+                    {"TextBoxPosition", 4},
+                    {"TextBoxAlignment", 0}
                 }),
                 new StyleVariant(new Dictionary<string, object>
                 {
                     {"OptionName", "Original"},
                     {"IsUseTextFormat", true},
-                    {"TextBoxPosition", 0}
+                    {"TextBoxPosition", 0},
+                    {"TextBoxAlignment", 0}
                 }),
                 new StyleVariant(new Dictionary<string, object>
                 {
                     {"OptionName", "Bottom"},
                     {"IsUseTextFormat", true},
-                    {"TextBoxPosition", 8}
+                    {"TextBoxPosition", 8},
+                    {"TextBoxAlignment", 0}
                 }),
                 new StyleVariant(new Dictionary<string, object>
                 {
@@ -66,7 +71,8 @@ namespace PowerPointLabs.PictureSlidesLab.ModelFactory.VariantWorker
                 {
                     {"OptionName", "Right"},
                     {"IsUseTextFormat", true},
-                    {"TextBoxPosition", 6}
+                    {"TextBoxPosition", 6},
+                    {"TextBoxAlignment", 0}
                 })
             };
         }

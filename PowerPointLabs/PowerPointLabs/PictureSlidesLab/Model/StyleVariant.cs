@@ -11,6 +11,11 @@ namespace PowerPointLabs.PictureSlidesLab.Model
             _variants = var;
         }
 
+        public Dictionary<string, object> GetVariants()
+        {
+            return new Dictionary<string, object>(_variants);
+        }
+
         public void Set(string key, object newValue)
         {
             _variants[key] = newValue;

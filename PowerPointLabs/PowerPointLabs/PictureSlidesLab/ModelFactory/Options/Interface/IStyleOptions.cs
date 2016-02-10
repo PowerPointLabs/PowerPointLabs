@@ -3,7 +3,7 @@ using PowerPointLabs.PictureSlidesLab.Model;
 
 namespace PowerPointLabs.PictureSlidesLab.ModelFactory.Options.Interface
 {
-    interface IStyleOptions
+    public interface IStyleOptions
     {
         List<StyleOption> GetOptionsForVariation();
 
