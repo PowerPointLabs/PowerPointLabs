@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Windows;
 using PowerPointLabs.Models;
 using PowerPointLabs.Views;
 using PowerPoint = Microsoft.Office.Interop.PowerPoint;
@@ -64,16 +65,17 @@ namespace PowerPointLabs.ResizeLab
 
                 for (int i = 1; i <= selectedShapes.Count; i++)
                 {
-                    var shape = selectedShapes[i];
+                    var shape = new ResizeLabShape(selectedShapes[i]);
 
                     if ((dimension == Dimension.Height) || (dimension == Dimension.HeightAndWidth))
                     {
-                        shape.Height = referenceHeight;
+
+                        shape.VirtualHeight = referenceHeight;
                     }
 
                     if ((dimension == Dimension.Width) || (dimension == Dimension.HeightAndWidth))
                     {
-                        shape.Width = referenceWidth;
+                        shape.VirtualWidth = referenceWidth;
                     }
                 }
             }
@@ -93,7 +95,7 @@ namespace PowerPointLabs.ResizeLab
         {
             if (selectedShapes.Count > 0)
             {
-                return selectedShapes[1].Height;
+                return new ResizeLabShape(selectedShapes[1]).VirtualHeight;
             }
             return -1;
         }
@@ -101,13 +103,13 @@ namespace PowerPointLabs.ResizeLab
         /// <summary>
         /// Get the width of the reference shape.
         /// </summary>
-        /// <param name="selectShapes"></param>
+        /// <param name="selectedShapes"></param>
         /// <returns></returns>
-        private float GetReferenceWidth(PowerPoint.ShapeRange selectShapes)
+        private float GetReferenceWidth(PowerPoint.ShapeRange selectedShapes)
         {
-            if (selectShapes.Count > 0)
+            if (selectedShapes.Count > 0)
             {
-                return selectShapes[1].Width;
+                return new ResizeLabShape(selectedShapes[1]).VirtualWidth;
             }
             return -1;
         }

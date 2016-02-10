@@ -533,6 +533,7 @@
       <DependentUpon>ResizeLabPaneWPF.xaml</DependentUpon>
     </Compile>
     <Compile Include="ResizeLab\ResizeLabMain.ShrinkStretch.cs" />
+    <Compile Include="ResizeLab\ResizeLabShape.cs" />
     <Compile Include="Utils\Assumption.cs" />
     <Compile Include="Utils\CultureUtil.cs" />
     <Compile Include="Utils\Exceptions\AssumptionFailedException.cs" />
