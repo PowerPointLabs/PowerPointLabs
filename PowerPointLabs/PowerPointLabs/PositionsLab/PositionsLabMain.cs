@@ -411,6 +411,57 @@ namespace PowerPointLabs.PositionsLab
                 }
             }
         } 
+
+        public static void DistributeVertical()
+        {
+            var selectedShapes = Globals.ThisAddIn.Application.ActiveWindow.Selection.ShapeRange as PowerPoint.ShapeRange;
+            var shapeCount = selectedShapes.Count;
+            if (shapeCount < 2)
+            {
+                //Error
+                return;
+            }
+
+            Shape refShape = selectedShapes[1];
+            Drawing.PointF[] allPointsOfRef = Graphics.GetRealCoordinates(refShape);
+            Drawing.PointF topMostRef = Graphics.TopMostPoint(allPointsOfRef);
+            Drawing.PointF lowestRef = Graphics.LowestPoint(allPointsOfRef);
+
+            var verticalDistanceInRef = Graphics.RealHeight(allPointsOfRef);
+            var spaceBetweenShapes = verticalDistanceInRef;
+
+            for (int i = 2; i <= shapeCount; i++)
+            {
+                Shape s = selectedShapes[i];
+                Drawing.PointF[] allPoints = Graphics.GetRealCoordinates(s);
+                var shapeHeight = Graphics.RealHeight(allPoints);
+                spaceBetweenShapes -= shapeHeight;
+            }
+
+            // TODO: guard against spaceBetweenShapes < 0
+
+            spaceBetweenShapes /= shapeCount;
+
+            for (int i = 2; i <= shapeCount; i++)
+            {
+                Shape currShape = selectedShapes[i];
+                Drawing.PointF[] allPoints = Graphics.GetRealCoordinates(currShape);
+                Drawing.PointF topMost = Graphics.TopMostPoint(allPoints);
+                refShape = selectedShapes[i - 1];
+                allPointsOfRef = Graphics.GetRealCoordinates(refShape);
+
+                if (i == 2)
+                {
+                    topMostRef = Graphics.TopMostPoint(allPointsOfRef);
+                    currShape.IncrementTop(topMostRef.Y - topMost.Y + spaceBetweenShapes);
+                }
+                else
+                {
+                    lowestRef = Graphics.LowestPoint(allPointsOfRef);
+                    currShape.IncrementTop(lowestRef.Y - topMost.Y + spaceBetweenShapes);
+                }
+            }
+        }
         #endregion
 
         #endregion
