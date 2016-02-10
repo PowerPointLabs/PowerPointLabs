@@ -1,18 +1,33 @@
-﻿using Microsoft.Office.Core;
+﻿using System;
+using System.Collections.Generic;
+using System.ComponentModel.Composition;
+using System.ComponentModel.Composition.Hosting;
+using System.Reflection;
+using Microsoft.Office.Core;
 using Microsoft.Office.Interop.PowerPoint;
 using PowerPointLabs.Models;
 using PowerPointLabs.PictureSlidesLab.Model;
-using PowerPointLabs.PictureSlidesLab.Service.Effect;
 using PowerPointLabs.PictureSlidesLab.Service.Interface;
 using PowerPointLabs.PictureSlidesLab.Service.Preview;
+using PowerPointLabs.PictureSlidesLab.Service.StylesWorker.Factory;
 using PowerPointLabs.PictureSlidesLab.Util;
 using Shape = Microsoft.Office.Interop.PowerPoint.Shape;
 
 namespace PowerPointLabs.PictureSlidesLab.Service
 {
+    /// <summary>
+    /// StylesDesigner provides APIs to preview styles
+    /// and to apply the target style to a slide.
+    /// 
+    /// To support any new styles, create a subclass of IStyleWorker
+    /// and add it to StyleWorkerFactory.
+    /// </summary>
     public sealed class StylesDesigner : PowerPointPresentation, IStylesDesigner
     {
-        private StyleOptions Options { get; set; }
+        [Import(typeof(StyleWorkerFactory))]
+        private StyleWorkerFactory WorkerFactory { get; set; }
+
+        private StyleOption Option { get; set; }
 
         private const int PreviewHeight = 300;
 
@@ -22,14 +37,19 @@ namespace PowerPointLabs.PictureSlidesLab.Service
         {
             Path = TempPath.TempFolder;
             Name = "PictureSlidesLabPreview";
-            Options = new StyleOptions();
+            Option = new StyleOption();
             Application = app;
             Open(withWindow: false, focus: false);
+
+            var catalog = new AggregateCatalog(
+                new AssemblyCatalog(Assembly.GetExecutingAssembly()));
+            var container = new CompositionContainer(catalog);
+            container.ComposeParts(this);
         }
 
-        public void SetStyleOptions(StyleOptions opt)
+        public void SetStyleOptions(StyleOption opt)
         {
-            Options = opt;
+            Option = opt;
         }
 
         public void CleanUp()
@@ -38,7 +58,7 @@ namespace PowerPointLabs.PictureSlidesLab.Service
         }
 
         public PreviewInfo PreviewApplyStyle(ImageItem source, Slide contentSlide, 
-            float slideWidth, float slideHeight, StyleOptions option)
+            float slideWidth, float slideHeight, StyleOption option)
         {
             SetStyleOptions(option);
             SlideWidth = slideWidth;
@@ -66,12 +86,8 @@ namespace PowerPointLabs.PictureSlidesLab.Service
         }
         
         public void ApplyStyle(ImageItem source, Slide contentSlide,
-            float slideWidth, float slideHeight, StyleOptions option = null)
+            float slideWidth, float slideHeight, StyleOption option = null)
         {
-            if (Globals.ThisAddIn != null)
-            {
-                Globals.ThisAddIn.Application.StartNewUndoEntry();
-            }
             if (option != null)
             {
                 SetStyleOptions(option);
@@ -82,7 +98,7 @@ namespace PowerPointLabs.PictureSlidesLab.Service
             source.FullSizeImageFile = source.CroppedImageFile ?? source.FullSizeImageFile;
             source.OriginalImageFile = fullsizeImage;
             
-            var effectsHandler = new EffectsDesigner(contentSlide, 
+            var effectsHandler = EffectsDesigner.CreateEffectsDesignerForApply(contentSlide, 
                 slideWidth, slideHeight, source);
 
             ApplyStyle(effectsHandler, source, isActualSize: true);
@@ -100,120 +116,27 @@ namespace PowerPointLabs.PictureSlidesLab.Service
         /// <param name="isActualSize"></param>
         private void ApplyStyle(EffectsDesigner designer, ImageItem source, bool isActualSize)
         {
-            // TODO refactor this method
-            designer.ApplyPseudoTextWhenNoTextShapes();
-
-            if (Options.IsUseBannerStyle 
-                && (Options.TextBoxPosition == 4/*left*/
-                    || Options.TextBoxPosition == 5/*centered*/
-                    || Options.TextBoxPosition == 6/*right*/))
-            {
-                designer.ApplyTextWrapping();
-            }
-            else if (Options.IsUseCircleStyle
-                     || Options.IsUseOutlineStyle)
-            {
-                designer.ApplyTextWrapping();
-            }
-            else
-            {
-                designer.RecoverTextWrapping();
-            }
-
-            ApplyTextEffect(designer);
-            designer.ApplyTextGlowEffect(Options.IsUseTextGlow, Options.TextGlowColor);
-
-            // store style options information into original image shape
-            // return original image and cropped image
-            var metaImages = designer.EmbedStyleOptionsInformation(
-                source.OriginalImageFile, source.FullSizeImageFile, 
-                source.ContextLink, source.Rect, Options);
-            Shape originalImage = null;
-            Shape croppedImage = null;
-            if (metaImages.Count == 2)
-            {
-                originalImage = metaImages[0];
-                croppedImage = metaImages[1];
-            }
-
             Shape imageShape;
-            if (Options.IsUseSpecialEffectStyle)
+            if (Option.IsUseSpecialEffectStyle)
             {
-                imageShape = designer.ApplySpecialEffectEffect(Options.GetSpecialEffect(), isActualSize, Options.ImageOffset);
+                imageShape = designer.ApplySpecialEffectEffect(Option.GetSpecialEffect(), isActualSize);
             }
-            else // Direct Text style
+            else // non-special-effect style, e.g. direct text style
             {
-                imageShape = designer.ApplyBackgroundEffect(Options.ImageOffset);
-            }
-
-            Shape backgroundOverlayShape = null;
-            if (Options.IsUseOverlayStyle)
-            {
-                backgroundOverlayShape = designer.ApplyOverlayEffect(Options.OverlayColor, Options.Transparency);
+                imageShape = designer.ApplyBackgroundEffect();
             }
 
-            Shape blurImageShape = null;
-            if (Options.IsUseBlurStyle)
+            var resultShapes = new List<Shape>();
+            foreach (var styleWorker in WorkerFactory.StyleWorkers)
             {
-                blurImageShape = Options.IsUseSpecialEffectStyle
-                    ? designer.ApplyBlurEffect(source.SpecialEffectImageFile, Options.BlurDegree, Options.ImageOffset)
-                    : designer.ApplyBlurEffect(degree: Options.BlurDegree, offset: Options.ImageOffset);
+                resultShapes.AddRange(
+                    styleWorker.Execute(Option, designer, source, imageShape));
             }
-
-            Shape bannerOverlayShape = null;
-            if (Options.IsUseBannerStyle)
-            {
-                bannerOverlayShape = ApplyBannerStyle(designer, imageShape);
-            }
-
-            if (Options.IsUseTextBoxStyle)
-            {
-                designer.ApplyTextboxEffect(Options.TextBoxColor, Options.TextBoxTransparency);
-            }
-
-            Shape outlineOverlayShape = null;
-            if (Options.IsUseOutlineStyle)
-            {
-                outlineOverlayShape = designer.ApplyRectOutlineEffect(imageShape, Options.FontColor, 0);
-            }
-
-            Shape frameOverlayShape = null;
-            if (Options.IsUseFrameStyle)
-            {
-                frameOverlayShape = designer.ApplyAlbumFrameEffect(Options.FrameColor, Options.FrameTransparency);
-            }
-
-            Shape circleOverlayShape = null;
-            if (Options.IsUseCircleStyle)
-            {
-                circleOverlayShape = designer.ApplyCircleRingsEffect(Options.CircleColor, Options.CircleTransparency);
-            }
-
-            Shape triangleOverlayShape = null;
-            if (Options.IsUseTriangleStyle)
-            {
-                triangleOverlayShape = designer.ApplyTriangleEffect(Options.TriangleColor, Options.FontColor,
-                    Options.TriangleTransparency);
-            }
-
-            SendToBack(
-                triangleOverlayShape,
-                circleOverlayShape,
-                frameOverlayShape,
-                outlineOverlayShape,
-                bannerOverlayShape,
-                backgroundOverlayShape,
-                blurImageShape,
-                imageShape,
-                croppedImage,
-                originalImage);
-
-            designer.ApplyImageReference(source.ContextLink);
-            if (Options.IsInsertReference)
-            {
-                designer.ApplyImageReferenceInsertion(source.ContextLink, Options.GetFontFamily(), Options.FontColor,
-                    Options.CitationFontSize, Options.ImageReferenceTextBoxColor, Options.GetCitationTextBoxAlignment());
-            }
+            // Those workers executed at the beginning will have the output
+            // put at the back.
+            resultShapes.Reverse();
+            SendToBack(resultShapes.ToArray());
+            imageShape.ZOrder(MsoZOrderCmd.msoSendToBack);
         }
 
         # endregion
@@ -222,44 +145,15 @@ namespace PowerPointLabs.PictureSlidesLab.Service
 
         private int GetPreviewWidth()
         {
-            return (int)(SlideWidth / SlideHeight * PreviewHeight);
+            return (int) Math.Ceiling(SlideWidth / SlideHeight * PreviewHeight);
         }
 
         private void SendToBack(params Shape[] shapes)
         {
             foreach (var shape in shapes)
             {
-                SendToBack(shape);
-            }
-        }
-
-        private void SendToBack(Shape shape)
-        {
-            if (shape != null)
-            {
                 shape.ZOrder(MsoZOrderCmd.msoSendToBack);
             }
-        }
-
-        private Shape ApplyBannerStyle(EffectsDesigner effectsDesigner, Shape imageShape)
-        {
-            return effectsDesigner.ApplyRectBannerEffect(Options.GetBannerDirection(), Options.GetTextBoxPosition(),
-                        imageShape, Options.BannerColor, Options.BannerTransparency);
-        }
-
-        private void ApplyTextEffect(EffectsDesigner effectsDesigner)
-        {
-            if (Options.IsUseTextFormat)
-            {
-                effectsDesigner.ApplyTextEffect(Options.GetFontFamily(), Options.FontColor, Options.FontSizeIncrease);
-                effectsDesigner.ApplyTextPositionAndAlignment(Options.GetTextBoxPosition(), Options.GetTextBoxAlignment());
-            }
-            else
-            {
-                effectsDesigner.ApplyOriginalTextEffect();
-                effectsDesigner.ApplyTextPositionAndAlignment(Position.Original, Alignment.Auto);
-            }
-            
         }
 
         private EffectsDesigner CreateEffectsHandlerForPreview(ImageItem source, Slide contentSlide)
@@ -271,7 +165,7 @@ namespace PowerPointLabs.PictureSlidesLab.Service
             // sync design & theme
             newSlide.Design = contentSlide.Design;
 
-            return new EffectsDesigner(newSlide, contentSlide, SlideWidth, SlideHeight, source);
+            return EffectsDesigner.CreateEffectsDesignerForPreview(newSlide, contentSlide, SlideWidth, SlideHeight, source);
         }
         
         #endregion

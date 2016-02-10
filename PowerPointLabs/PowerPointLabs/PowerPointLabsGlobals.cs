@@ -11,6 +11,7 @@ using PowerPoint = Microsoft.Office.Interop.PowerPoint;
 
 namespace PowerPointLabs
 {
+    [Obsolete("DO NOT use this class! Instead, use Action Framework.")]
     // TODO: this class should not even exist
     public class PowerPointLabsGlobals
     {

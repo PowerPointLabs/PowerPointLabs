@@ -8,12 +8,12 @@ namespace Test.UnitTest.PictureSlidesLab.Model
     [TestClass]
     public class StyleVariantsTest
     {
-        private StyleVariants variant;
+        private StyleVariant variant;
 
         [TestInitialize]
         public void Init()
         {
-            variant = new StyleVariants(new Dictionary<string, object>());
+            variant = new StyleVariant(new Dictionary<string, object>());
         }
 
         [TestMethod]
@@ -21,7 +21,7 @@ namespace Test.UnitTest.PictureSlidesLab.Model
         public void TestApply()
         {
             variant.Set("OptionName", "test option name");
-            var option = new StyleOptions();
+            var option = new StyleOption();
             variant.Apply(option);
             Assert.AreEqual("test option name", option.OptionName);
         }
@@ -32,9 +32,9 @@ namespace Test.UnitTest.PictureSlidesLab.Model
         {
             variant.Set("TextBoxPosition", 999);
             variant.Set("OptionName", "test option name");
-            variant = variant.Copy(new StyleOptions());
+            variant = variant.Copy(new StyleOption());
 
-            var option = new StyleOptions();
+            var option = new StyleOption();
             option.TextBoxPosition = 999;
             option.OptionName = "test option name";
 
@@ -50,7 +50,7 @@ namespace Test.UnitTest.PictureSlidesLab.Model
             variant.Set("TextBoxPosition", 999);
             variant.Set("OptionName", "test option name");
 
-            var option = new StyleOptions();
+            var option = new StyleOption();
             option.TextBoxPosition = 999;
             option.OptionName = "test option name";
 
