@@ -9,8 +9,8 @@ namespace PowerPointLabs.ResizeLab
     internal class ResizeLabShape
     {
         private readonly PowerPoint.Shape _shape;
-        private float _virtualWidth = 0;
-        private float _virtualHeight = 0;
+        private float _virtualWidth;
+        private float _virtualHeight;
 
         public ResizeLabShape(PowerPoint.Shape shape)
         {
@@ -103,7 +103,7 @@ namespace PowerPointLabs.ResizeLab
         }
 
         /// <summary>
-        /// Set the actual width and height respect to the virtual dimension (e.g. width and height).
+        /// Set the actual width and height according to the virtual dimension (e.g. width and height).
         /// </summary>
         private void SetToVirtualDimension()
         {
