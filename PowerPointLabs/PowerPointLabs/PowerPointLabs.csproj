@@ -127,6 +127,7 @@
     <Prefer32Bit>false</Prefer32Bit>
     <CodeAnalysisRuleSet>ExtendedDesignGuidelineRules.ruleset</CodeAnalysisRuleSet>
     <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
+    <NoWarn>618</NoWarn>
   </PropertyGroup>
   <!--
     This section defines properties that are set when the "Release" configuration is selected.
@@ -152,6 +153,8 @@
     <DefineConstants>$(DefineConstants);TRACE</DefineConstants>
     <WarningLevel>4</WarningLevel>
     <Prefer32Bit>false</Prefer32Bit>
+    <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
+    <NoWarn>618</NoWarn>
   </PropertyGroup>
   <!--
     This section enables pre- and post-build steps. However, in VSTO use
@@ -210,6 +213,7 @@
       <EmbedInteropTypes>True</EmbedInteropTypes>
     </Reference>
     <Reference Include="System" />
+    <Reference Include="System.ComponentModel.Composition" />
     <Reference Include="System.Data" />
     <Reference Include="System.Deployment" />
     <Reference Include="System.Drawing" />
@@ -249,6 +253,37 @@
     can be found.
   -->
   <ItemGroup>
+    <Compile Include="ActionFramework\Common\Attribute\ExportActionRibbonIdAttribute.cs" />
+    <Compile Include="ActionFramework\Action\ColorsLabActionHandler.cs" />
+    <Compile Include="ActionFramework\Action\EmptyActionHandler.cs" />
+    <Compile Include="ActionFramework\Common\Extension\ActionFrameworkExtensions.cs" />
+    <Compile Include="ActionFramework\Common\Extension\ContentControlExtensions.cs" />
+    <Compile Include="ActionFramework\Common\Extension\ActionHandlerExtensions.cs" />
+    <Compile Include="ActionFramework\Common\Factory\ActionHandlerFactory.cs" />
+    <Compile Include="ActionFramework\Action\FitToHeightActionHandler.cs" />
+    <Compile Include="ActionFramework\Action\FitToWidthActionHandler.cs" />
+    <Compile Include="ActionFramework\Common\Interface\ActionHandler.cs" />
+    <Compile Include="ActionFramework\Common\Factory\BaseHandlerFactory.cs" />
+    <Compile Include="ActionFramework\Common\Interface\IRibbonIdMetadata.cs" />
+    <Compile Include="ActionFramework\Common\Attribute\ExportImageRibbonIdAttribute.cs" />
+    <Compile Include="ActionFramework\Image\ColorsLabImageHandler.cs" />
+    <Compile Include="ActionFramework\Image\EmptyImageHandler.cs" />
+    <Compile Include="ActionFramework\Common\Factory\ImageHandlerFactory.cs" />
+    <Compile Include="ActionFramework\Image\FitToHeightImageHandler.cs" />
+    <Compile Include="ActionFramework\Image\FitToWidthImageHandler.cs" />
+    <Compile Include="ActionFramework\Common\Interface\ImageHandler.cs" />
+    <Compile Include="ActionFramework\Common\Attribute\ExportLabelRibbonIdAttribute.cs" />
+    <Compile Include="ActionFramework\Label\ColorsLabLabelHandler.cs" />
+    <Compile Include="ActionFramework\Label\EmptyLabelHandler.cs" />
+    <Compile Include="ActionFramework\Common\Factory\LabelHandlerFactory.cs" />
+    <Compile Include="ActionFramework\Label\FitToHeightLabelHandler.cs" />
+    <Compile Include="ActionFramework\Label\FitToWidthLabelHandler.cs" />
+    <Compile Include="ActionFramework\Common\Interface\LabelHandler.cs" />
+    <Compile Include="ActionFramework\Common\Attribute\ExportSupertipRibbonIdAttribute.cs" />
+    <Compile Include="ActionFramework\Supertip\ColorsLabSupertipHandler.cs" />
+    <Compile Include="ActionFramework\Supertip\EmptySupertipHandler.cs" />
+    <Compile Include="ActionFramework\Common\Factory\SupertipHandlerFactory.cs" />
+    <Compile Include="ActionFramework\Common\Interface\SupertipHandler.cs" />
     <Compile Include="AgendaLab\AgendaLabSyncFunctions.cs" />
     <Compile Include="AgendaLab\AgendaLabTemplateSyncLogic.cs" />
     <Compile Include="AgendaLab\AgendaLabUtility.cs" />
@@ -333,9 +368,102 @@
     <Compile Include="FunctionalTestInterface.Impl\PowerPointLabsFT.cs" />
     <Compile Include="FunctionalTestInterface.Impl\PowerPointOperations.cs" />
     <Compile Include="FunctionalTestInterface.Impl\SlideData.cs" />
+    <Compile Include="PictureSlidesLab\ModelFactory\Options\BannerStyleOptions.cs" />
+    <Compile Include="PictureSlidesLab\ModelFactory\Options\BaseStyleOptions.cs" />
+    <Compile Include="PictureSlidesLab\ModelFactory\Options\BlurStyleOptions.cs" />
+    <Compile Include="PictureSlidesLab\ModelFactory\Options\CircleStyleOptions.cs" />
+    <Compile Include="PictureSlidesLab\ModelFactory\Options\DirectTextStyleOptions.cs" />
+    <Compile Include="PictureSlidesLab\ModelFactory\Options\FrameStyleOptions.cs" />
+    <Compile Include="PictureSlidesLab\ModelFactory\Options\Interface\IStyleOptions.cs" />
+    <Compile Include="PictureSlidesLab\ModelFactory\Options\Interface\IStyleOrderMetadata.cs" />
+    <Compile Include="PictureSlidesLab\ModelFactory\Options\OutlineStyleOptions.cs" />
+    <Compile Include="PictureSlidesLab\ModelFactory\Options\OverlayStyleOptions.cs" />
+    <Compile Include="PictureSlidesLab\ModelFactory\Options\SpecialEffectStyleOptions.cs" />
+    <Compile Include="PictureSlidesLab\ModelFactory\Options\TextBoxStyleOptions.cs" />
+    <Compile Include="PictureSlidesLab\ModelFactory\Options\TriangleStyleOptions.cs" />
+    <Compile Include="PictureSlidesLab\ModelFactory\Variants\BannerStyleVariants.cs" />
+    <Compile Include="PictureSlidesLab\ModelFactory\Variants\BaseStyleVariants.cs" />
+    <Compile Include="PictureSlidesLab\ModelFactory\Variants\BlurStyleVariants.cs" />
+    <Compile Include="PictureSlidesLab\ModelFactory\Variants\CircleStyleVariants.cs" />
+    <Compile Include="PictureSlidesLab\ModelFactory\Variants\DirectTextStyleVariants.cs" />
+    <Compile Include="PictureSlidesLab\ModelFactory\Variants\FrameStyleVariants.cs" />
+    <Compile Include="PictureSlidesLab\ModelFactory\VariantWorker\Interface\IGeneralVariantWorkerOrderMetadata.cs" />
+    <Compile Include="PictureSlidesLab\ModelFactory\Variants\Interface\IStyleVariants.cs" />
+    <Compile Include="PictureSlidesLab\ModelFactory\Variants\OutlineStyleVariants.cs" />
+    <Compile Include="PictureSlidesLab\ModelFactory\Variants\OverlayStyleVariants.cs" />
+    <Compile Include="PictureSlidesLab\ModelFactory\Variants\SpecialEffectStyleVariants.cs" />
+    <Compile Include="PictureSlidesLab\ModelFactory\Variants\TextBoxStyleVariants.cs" />
+    <Compile Include="PictureSlidesLab\ModelFactory\Variants\TriangleStyleVariants.cs" />
+    <Compile Include="PictureSlidesLab\ModelFactory\VariantWorker\BannerTransparencyVariantWorker.cs" />
+    <Compile Include="PictureSlidesLab\ModelFactory\VariantWorker\BannerVariantWorker.cs" />
+    <Compile Include="PictureSlidesLab\ModelFactory\VariantWorker\BlurVariantWorker.cs" />
+    <Compile Include="PictureSlidesLab\ModelFactory\VariantWorker\BrightnessVariantWorker.cs" />
+    <Compile Include="PictureSlidesLab\ModelFactory\VariantWorker\CircleTransparencyVariantWorker.cs" />
+    <Compile Include="PictureSlidesLab\ModelFactory\VariantWorker\CircleVariantWorker.cs" />
+    <Compile Include="PictureSlidesLab\ModelFactory\VariantWorker\FontColorVariantWorker.cs" />
+    <Compile Include="PictureSlidesLab\ModelFactory\VariantWorker\FontFamilyVariantWorker.cs" />
+    <Compile Include="PictureSlidesLab\ModelFactory\VariantWorker\FontPositionVariantWorker.cs" />
+    <Compile Include="PictureSlidesLab\ModelFactory\VariantWorker\FontSizeIncreaseVariantWorker.cs" />
+    <Compile Include="PictureSlidesLab\ModelFactory\VariantWorker\FrameTransparencyVariantWorker.cs" />
+    <Compile Include="PictureSlidesLab\ModelFactory\VariantWorker\FrameVariantWorker.cs" />
+    <Compile Include="PictureSlidesLab\ModelFactory\VariantWorker\GeneralSpecialEffectsVariantWorker.cs" />
+    <Compile Include="PictureSlidesLab\ModelFactory\VariantWorker\Interface\IVariantWorker.cs" />
+    <Compile Include="PictureSlidesLab\ModelFactory\VariantWorker\OutlineColorVariantWorker.cs" />
+    <Compile Include="PictureSlidesLab\ModelFactory\VariantWorker\OverlayTransparencyVariantWorker.cs" />
+    <Compile Include="PictureSlidesLab\ModelFactory\VariantWorker\OverlayVariantWorker.cs" />
+    <Compile Include="PictureSlidesLab\ModelFactory\VariantWorker\PictureVariantWorker.cs" />
+    <Compile Include="PictureSlidesLab\ModelFactory\VariantWorker\SpecialEffectsVariantWorker.cs" />
+    <Compile Include="PictureSlidesLab\ModelFactory\VariantWorker\TextBoxTransparencyVariantWorker.cs" />
+    <Compile Include="PictureSlidesLab\ModelFactory\VariantWorker\PictureCitationVariantWorker.cs" />
+    <Compile Include="PictureSlidesLab\ModelFactory\VariantWorker\TextBoxVariantWorker.cs" />
+    <Compile Include="PictureSlidesLab\ModelFactory\VariantWorker\TextGlowVariantWorker.cs" />
+    <Compile Include="PictureSlidesLab\ModelFactory\VariantWorker\TriangleTransparencyVariantWorker.cs" />
+    <Compile Include="PictureSlidesLab\ModelFactory\VariantWorker\TriangleVariantWorker.cs" />
     <Compile Include="PictureSlidesLab\Model\ObservableFont.cs" />
     <Compile Include="PictureSlidesLab\Model\ObservableImageItem.cs" />
+    <Compile Include="PictureSlidesLab\Model\StyleOption.Partial\StyleOption.PictureVariation.cs" />
+    <Compile Include="PictureSlidesLab\Service\EffectsDesigner.Partial\EffectsDesigner.AlbumFrame.cs" />
+    <Compile Include="PictureSlidesLab\Service\EffectsDesigner.Partial\EffectsDesigner.Background.cs" />
+    <Compile Include="PictureSlidesLab\Service\EffectsDesigner.Partial\EffectsDesigner.CircleBanner.cs" />
+    <Compile Include="PictureSlidesLab\Service\EffectsDesigner.Partial\EffectsDesigner.Blur.cs" />
+    <Compile Include="PictureSlidesLab\Service\EffectsDesigner.Partial\EffectsDesigner.Common.cs" />
+    <Compile Include="PictureSlidesLab\Service\EffectsDesigner.Partial\EffectsDesigner.EmbedStyleOption.cs" />
+    <Compile Include="PictureSlidesLab\Service\EffectsDesigner.Partial\EffectsDesigner.Outline.cs" />
+    <Compile Include="PictureSlidesLab\Service\EffectsDesigner.Partial\EffectsDesigner.Overlay.cs" />
+    <Compile Include="PictureSlidesLab\Service\EffectsDesigner.Partial\EffectsDesigner.PictureCitation.cs" />
+    <Compile Include="PictureSlidesLab\Model\StyleOption.Partial\StyleOption.BannerStyle.cs" />
+    <Compile Include="PictureSlidesLab\Model\StyleOption.Partial\StyleOption.BlurStyle.cs" />
+    <Compile Include="PictureSlidesLab\Model\StyleOption.Partial\StyleOption.CircleStyle.cs" />
+    <Compile Include="PictureSlidesLab\Model\StyleOption.Partial\StyleOption.FrameStyle.cs" />
+    <Compile Include="PictureSlidesLab\Model\StyleOption.Partial\StyleOption.Metadata.cs" />
+    <Compile Include="PictureSlidesLab\Model\StyleOption.Partial\StyleOption.OutlineStyle.cs" />
+    <Compile Include="PictureSlidesLab\Model\StyleOption.Partial\StyleOption.OverlayStyle.cs" />
+    <Compile Include="PictureSlidesLab\Model\StyleOption.Partial\StyleOption.PictureCitation.cs" />
+    <Compile Include="PictureSlidesLab\Model\StyleOption.Partial\StyleOption.SpecialEffects.cs" />
+    <Compile Include="PictureSlidesLab\Model\StyleOption.Partial\StyleOption.Text.cs" />
+    <Compile Include="PictureSlidesLab\Model\StyleOption.Partial\StyleOption.TextBoxStyle.cs" />
+    <Compile Include="PictureSlidesLab\Model\StyleOption.Partial\StyleOption.TextGlow.cs" />
+    <Compile Include="PictureSlidesLab\Model\StyleOption.Partial\StyleOption.TriangleStyle.cs" />
+    <Compile Include="PictureSlidesLab\Service\EffectsDesigner.Partial\EffectsDesigner.RectangleBanner.cs" />
+    <Compile Include="PictureSlidesLab\Service\EffectsDesigner.Partial\EffectsDesigner.SpecialEffects.cs" />
+    <Compile Include="PictureSlidesLab\Service\EffectsDesigner.Partial\EffectsDesigner.Text.cs" />
+    <Compile Include="PictureSlidesLab\Service\EffectsDesigner.Partial\EffectsDesigner.TextBox.cs" />
+    <Compile Include="PictureSlidesLab\Service\EffectsDesigner.Partial\EffectsDesigner.TriangleBanner.cs" />
     <Compile Include="PictureSlidesLab\Service\Interface\IStylesDesigner.cs" />
+    <Compile Include="PictureSlidesLab\Service\StylesWorker\BannerStyleWorker.cs" />
+    <Compile Include="PictureSlidesLab\Service\StylesWorker\BlurStyleWorker.cs" />
+    <Compile Include="PictureSlidesLab\Service\StylesWorker\CircleStyleWorker.cs" />
+    <Compile Include="PictureSlidesLab\Service\StylesWorker\Factory\StyleWorkerFactory.cs" />
+    <Compile Include="PictureSlidesLab\Service\StylesWorker\FrameStyleWorker.cs" />
+    <Compile Include="PictureSlidesLab\Service\StylesWorker\Interface\IStyleWorker.cs" />
+    <Compile Include="PictureSlidesLab\Service\StylesWorker\Interface\IWorkerOrderMetadata.cs" />
+    <Compile Include="PictureSlidesLab\Service\StylesWorker\OutlineStyleWorker.cs" />
+    <Compile Include="PictureSlidesLab\Service\StylesWorker\OverlayStyleWorker.cs" />
+    <Compile Include="PictureSlidesLab\Service\StylesWorker\PictureCitationStyleWorker.cs" />
+    <Compile Include="PictureSlidesLab\Service\StylesWorker\StyleEmbeddingWorker.cs" />
+    <Compile Include="PictureSlidesLab\Service\StylesWorker\TextBoxStyleWorker.cs" />
+    <Compile Include="PictureSlidesLab\Service\StylesWorker\TextStyleWorker.cs" />
+    <Compile Include="PictureSlidesLab\Service\StylesWorker\TriangleStyleWorker.cs" />
     <Compile Include="PictureSlidesLab\Thread\ContextDownloader.cs" />
     <Compile Include="PictureSlidesLab\Thread\ThreadContext.cs" />
     <Compile Include="PictureSlidesLab\ViewModel\PictureSlidesLabWindowViewModel.cs" />
@@ -350,8 +478,8 @@
     <Compile Include="PictureSlidesLab\ModelFactory\StyleOptionsFactory.cs" />
     <Compile Include="PictureSlidesLab\ModelFactory\StyleVariantsFactory.cs" />
     <Compile Include="PictureSlidesLab\Model\ImageItem.cs" />
-    <Compile Include="PictureSlidesLab\Model\StyleOptions.cs" />
-    <Compile Include="PictureSlidesLab\Model\StyleVariants.cs" />
+    <Compile Include="PictureSlidesLab\Model\StyleOption.cs" />
+    <Compile Include="PictureSlidesLab\Model\StyleVariant.cs" />
     <Compile Include="PictureSlidesLab\Thread\Interface\IThreadContext.cs" />
     <Compile Include="PictureSlidesLab\View\SlideSelectionDialog.xaml.cs">
       <DependentUpon>SlideSelectionDialog.xaml</DependentUpon>
@@ -923,9 +1051,6 @@
     </Page>
   </ItemGroup>
   <ItemGroup>
-    <WCFMetadata Include="Service References\" />
-  </ItemGroup>
-  <ItemGroup>
     <None Include="Resources\loading.gif" />
   </ItemGroup>
   <ItemGroup>
@@ -988,6 +1113,7 @@
   <ItemGroup>
     <None Include="Resources\closed_business.jpg" />
   </ItemGroup>
+  <ItemGroup />
   <!-- Include the build rules for a C# project. -->
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
