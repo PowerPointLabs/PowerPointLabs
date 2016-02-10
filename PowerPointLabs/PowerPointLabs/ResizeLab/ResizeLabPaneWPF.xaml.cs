@@ -137,30 +137,36 @@ namespace PowerPointLabs.ResizeLab
         private void FitWidthBtn_Click(object sender, RoutedEventArgs e)
         {
             PowerPoint.ShapeRange selectedShapes = GetSelectedShapes();
+            var slideWidth = PowerPointPresentation.Current.SlideWidth;
+            var slideHight = PowerPointPresentation.Current.SlideHeight;
 
             if (selectedShapes != null)
             {
-                _resizeLab.FitToWidth(selectedShapes, IsAspectRatioLocked);
+                _resizeLab.FitToWidth(selectedShapes, slideWidth, slideHight, IsAspectRatioLocked);
             }
         }
 
         private void FitHeightBtn_Click(object sender, RoutedEventArgs e)
         {
             PowerPoint.ShapeRange selectedShapes = GetSelectedShapes();
+            var slideWidth = PowerPointPresentation.Current.SlideWidth;
+            var slideHight = PowerPointPresentation.Current.SlideHeight;
 
             if (selectedShapes != null)
             {
-                _resizeLab.FitToHight(selectedShapes, IsAspectRatioLocked);
+                _resizeLab.FitToHight(selectedShapes, slideWidth, slideHight, IsAspectRatioLocked);
             }
         }
 
         private void FillBtn_Click(object sender, RoutedEventArgs e)
         {
             PowerPoint.ShapeRange selectedShapes = GetSelectedShapes();
+            var slideWidth = PowerPointPresentation.Current.SlideWidth;
+            var slideHight = PowerPointPresentation.Current.SlideHeight;
 
             if (selectedShapes != null)
             {
-                _resizeLab.FitToFill(selectedShapes, IsAspectRatioLocked);
+                _resizeLab.FitToFill(selectedShapes, slideWidth, slideHight, IsAspectRatioLocked);
             }
         }
 

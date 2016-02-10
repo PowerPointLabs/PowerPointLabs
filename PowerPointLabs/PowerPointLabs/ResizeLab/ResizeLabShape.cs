@@ -1,7 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
+using System.Drawing;
 using PowerPoint = Microsoft.Office.Interop.PowerPoint;
 
 namespace PowerPointLabs.ResizeLab
@@ -58,6 +56,18 @@ namespace PowerPointLabs.ResizeLab
                 _virtualHeight = value;
                 SetToVirtualDimension();
             }
+        }
+
+        public float Top
+        {
+            get { return _shape.Top; }
+            set { _shape.Top = value; }
+        }
+
+        public float Left
+        {
+            get { return _shape.Left; }
+            set { _shape.Left = value; }
         }
 
         /// <summary>
