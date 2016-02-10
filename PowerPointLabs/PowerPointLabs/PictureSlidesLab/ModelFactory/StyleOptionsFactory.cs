@@ -84,7 +84,7 @@ namespace PowerPointLabs.PictureSlidesLab.ModelFactory
             return allStylesVariationOptions[0];
         }
 
-        private IEnumerable<IStyleOptions> GetAllStyleOptions()
+        public IEnumerable<IStyleOptions> GetAllStyleOptions()
         {
             return ImportedStyleOptions
                 .OrderBy(options => options.Metadata.StyleOrder)

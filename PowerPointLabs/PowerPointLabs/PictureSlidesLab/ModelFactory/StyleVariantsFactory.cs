@@ -43,7 +43,7 @@ namespace PowerPointLabs.PictureSlidesLab.ModelFactory
             return new Dictionary<string, List<StyleVariant>>();
         }
 
-        private IEnumerable<IStyleVariants> GetAllStyleVariants()
+        public IEnumerable<IStyleVariants> GetAllStyleVariants()
         {
             return ImportedStyleVariants.Select(variants => variants.Value);
         }
