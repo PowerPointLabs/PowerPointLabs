@@ -8,6 +8,10 @@ using PowerPointLabs.ActionFramework.Common.Interface;
 
 namespace PowerPointLabs.ActionFramework.Common.Factory
 {
+    /// <summary>
+    /// Factory for THandler
+    /// </summary>
+    /// <typeparam name="THandler">Target handler type</typeparam>
     public abstract class BaseHandlerFactory<THandler>
     {
         [ImportMany]

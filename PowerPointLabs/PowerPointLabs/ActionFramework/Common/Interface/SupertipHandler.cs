@@ -2,6 +2,9 @@
 
 namespace PowerPointLabs.ActionFramework.Common.Interface
 {
+    /// <summary>
+    /// Handler that handles GetSupertip call
+    /// </summary>
     public abstract class SupertipHandler
     {
         public string Get(string ribbonId)

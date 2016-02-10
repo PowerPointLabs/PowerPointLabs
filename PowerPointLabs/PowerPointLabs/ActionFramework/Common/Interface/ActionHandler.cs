@@ -2,6 +2,9 @@
 
 namespace PowerPointLabs.ActionFramework.Common.Interface
 {
+    /// <summary>
+    /// Handler that handles OnAction call
+    /// </summary>
     public abstract class ActionHandler
     {
         public void Execute(string ribbonId)

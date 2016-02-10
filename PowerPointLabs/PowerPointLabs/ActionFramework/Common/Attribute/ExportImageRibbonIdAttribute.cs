@@ -6,6 +6,9 @@ using PowerPointLabs.ActionFramework.Common.Interface;
 
 namespace PowerPointLabs.ActionFramework.Common.Attribute
 {
+    /// <summary>
+    /// Apply this attribute with Ribbon Id to ImageHandler to register its factory
+    /// </summary>
     [AttributeUsage(AttributeTargets.Class), MetadataAttribute]
     public class ExportImageRibbonIdAttribute : ExportAttribute, IRibbonIdMetadata
     {
