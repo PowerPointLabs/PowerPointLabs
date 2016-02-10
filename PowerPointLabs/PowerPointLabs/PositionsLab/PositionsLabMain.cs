@@ -363,7 +363,53 @@ namespace PowerPointLabs.PositionsLab
         #region Distribute
         public static void DistributeHorizontal()
         {
+            var selectedShapes = Globals.ThisAddIn.Application.ActiveWindow.Selection.ShapeRange as PowerPoint.ShapeRange;
+            var shapeCount = selectedShapes.Count;
+            if (shapeCount < 2)
+            {
+                //Error
+                return;
+            }
 
+            Shape refShape = selectedShapes[1];
+            Drawing.PointF[] allPointsOfRef = Graphics.GetRealCoordinates(refShape);
+            Drawing.PointF leftMostRef = Graphics.LeftMostPoint(allPointsOfRef);
+            Drawing.PointF rightMostRef = Graphics.RightMostPoint(allPointsOfRef);
+
+            var horizontalDistanceInRef = Graphics.RealWidth(allPointsOfRef);
+            var spaceBetweenShapes = horizontalDistanceInRef;
+
+            for (int i = 2; i <= shapeCount; i++)
+            {
+                Shape s = selectedShapes[i];
+                Drawing.PointF[] allPoints = Graphics.GetRealCoordinates(s);
+                var shapeWidth = Graphics.RealWidth(allPoints);
+                spaceBetweenShapes -= shapeWidth;
+            }
+
+            // TODO: guard against spaceBetweenShapes < 0
+
+            spaceBetweenShapes /= shapeCount;
+
+            for (int i = 2; i <= shapeCount; i++)
+            {
+                Shape currShape = selectedShapes[i];
+                Drawing.PointF[] allPoints = Graphics.GetRealCoordinates(currShape);
+                Drawing.PointF leftMost = Graphics.LeftMostPoint(allPoints);
+                refShape = selectedShapes[i - 1];
+                allPointsOfRef = Graphics.GetRealCoordinates(refShape);
+
+                if (i == 2)
+                {
+                    leftMostRef = Graphics.LeftMostPoint(allPointsOfRef);
+                    currShape.IncrementLeft(leftMostRef.X - leftMost.X + spaceBetweenShapes);
+                }
+                else
+                {
+                    rightMostRef = Graphics.RightMostPoint(allPointsOfRef);
+                    currShape.IncrementLeft(rightMostRef.X - leftMost.X + spaceBetweenShapes);
+                }
+            }
         } 
         #endregion
 
