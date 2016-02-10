@@ -80,6 +80,11 @@ namespace PowerPointLabs.PositionsLab
         {
             PositionsLabMain.DistributeVertical();
         }
+
+        private void DistributeCenterButton_Click(object sender, RoutedEventArgs e)
+        {
+            PositionsLabMain.DistributeCenter();
+        }
         #endregion
 
         #region Snap

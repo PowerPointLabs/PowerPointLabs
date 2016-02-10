@@ -462,6 +462,12 @@ namespace PowerPointLabs.PositionsLab
                 }
             }
         }
+
+        public static void DistributeCenter()
+        {
+            DistributeHorizontal();
+            DistributeVertical();
+        }
         #endregion
 
         #endregion
