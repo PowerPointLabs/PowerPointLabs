@@ -628,6 +628,13 @@ namespace PowerPointLabs.Utils
             return lowest;
         }
 
+        public static float RealWidth(Drawing.PointF[] coords)
+        { 
+            Drawing.PointF leftMost = LeftMostPoint(coords);
+            Drawing.PointF rightMost = RightMostPoint(coords);
+            return rightMost.X - leftMost.X;
+        }
+
         public static double GetUnrotatedLeftGivenRotatedLeft(Shape s, float rotatedLeft)
         {
             double rotationInRadian = DegreeToRadian(s.Rotation);
