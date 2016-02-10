@@ -73,7 +73,7 @@ namespace PowerPointLabs.FunctionalTestInterface.Impl
         {
             UIThreadExecutor.Execute(() =>
             {
-                Ribbon.FitToWidthClick(new RibbonControl("FitToWidth"));
+                Ribbon.OnAction(new RibbonControl("fitToWidthShape"));
             });
         }
 
@@ -81,7 +81,7 @@ namespace PowerPointLabs.FunctionalTestInterface.Impl
         {
             UIThreadExecutor.Execute(() =>
             {
-                Ribbon.FitToHeightClick(new RibbonControl("FitToHeight"));
+                Ribbon.OnAction(new RibbonControl("fitToHeightShape"));
             });
         }
 

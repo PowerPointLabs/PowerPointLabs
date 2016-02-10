@@ -88,10 +88,6 @@ namespace PowerPointLabs.PictureSlidesLab.Service
         public void ApplyStyle(ImageItem source, Slide contentSlide,
             float slideWidth, float slideHeight, StyleOption option = null)
         {
-            if (Globals.ThisAddIn != null)
-            {
-                Globals.ThisAddIn.Application.StartNewUndoEntry();
-            }
             if (option != null)
             {
                 SetStyleOptions(option);
