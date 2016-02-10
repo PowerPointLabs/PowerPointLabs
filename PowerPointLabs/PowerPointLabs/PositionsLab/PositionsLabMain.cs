@@ -360,10 +360,17 @@ namespace PowerPointLabs.PositionsLab
         }
         #endregion
 
+        #region Distribute
+        public static void DistributeHorizontal()
+        {
+
+        } 
+        #endregion
+
         #endregion
 
         #region Util
-        
+
 
         #endregion
     }
