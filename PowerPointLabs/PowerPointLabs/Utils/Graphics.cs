@@ -635,6 +635,14 @@ namespace PowerPointLabs.Utils
             return rightMost.X - leftMost.X;
         }
 
+        public static float RealHeight(Drawing.PointF[] coords)
+        {
+            Drawing.PointF topMost = TopMostPoint(coords);
+            Drawing.PointF lowest = LowestPoint(coords);
+
+            return lowest.Y - topMost.Y;
+        }
+
         public static double GetUnrotatedLeftGivenRotatedLeft(Shape s, float rotatedLeft)
         {
             double rotationInRadian = DegreeToRadian(s.Rotation);
