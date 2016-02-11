@@ -70,12 +70,12 @@ namespace PowerPointLabs.ResizeLab
                     if ((dimension == Dimension.Height) || (dimension == Dimension.HeightAndWidth))
                     {
 
-                        shape.VirtualHeight = referenceHeight;
+                        shape.AbsoluteHeight = referenceHeight;
                     }
 
                     if ((dimension == Dimension.Width) || (dimension == Dimension.HeightAndWidth))
                     {
-                        shape.VirtualWidth = referenceWidth;
+                        shape.AbsoluteWidth = referenceWidth;
                     }
                 }
             }
@@ -95,7 +95,7 @@ namespace PowerPointLabs.ResizeLab
         {
             if (selectedShapes.Count > 0)
             {
-                return new ResizeLabShape(selectedShapes[1]).VirtualHeight;
+                return new ResizeLabShape(selectedShapes[1]).AbsoluteHeight;
             }
             return -1;
         }
@@ -109,7 +109,7 @@ namespace PowerPointLabs.ResizeLab
         {
             if (selectedShapes.Count > 0)
             {
-                return new ResizeLabShape(selectedShapes[1]).VirtualWidth;
+                return new ResizeLabShape(selectedShapes[1]).AbsoluteWidth;
             }
             return -1;
         }

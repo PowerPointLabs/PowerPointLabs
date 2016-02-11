@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Drawing;
 using PowerPoint = Microsoft.Office.Interop.PowerPoint;
 
 namespace PowerPointLabs.ResizeLab
@@ -7,123 +6,177 @@ namespace PowerPointLabs.ResizeLab
     internal class ResizeLabShape
     {
         private readonly PowerPoint.Shape _shape;
-        private float _virtualWidth;
-        private float _virtualHeight;
+        private float _absoluteWidth;
+        private float _absoluteHeight;
+        private float _rotatedLeft;
+        private float _rotatedTop;
 
         public ResizeLabShape(PowerPoint.Shape shape)
         {
             _shape = shape;
 
-            UpdateVirtualWidth();
-            UpdateVirtualHeight();
+            UpdateAbsoluteWidth();
+            UpdateAbsoluteHeight();
+
+            UpdateTop();
+            UpdateLeft();
         }
 
-        public float ActualWidth
+        /// <summary>
+        /// Return or set the width of the specified shape.
+        /// </summary>
+        public float ShapeWidth
         {
             get { return _shape.Width; }
             set
             {
                 _shape.Width = value;
-                UpdateVirtualWidth();
+                UpdateAbsoluteWidth();
             }
         }
 
-        public float ActualHeight
+        /// <summary>
+        /// Return or set the height of the specified shape.
+        /// </summary>
+        public float ShapeHeight
         {
             get { return _shape.Height; }
             set
             {
                 _shape.Height = value;
-                UpdateVirtualHeight();
+                UpdateAbsoluteHeight();
             }
         }
 
-        public float VirtualWidth
+        /// <summary>
+        /// Return or set the absolute width of rotated shape.
+        /// </summary>
+        public float AbsoluteWidth
         {
-            get { return _virtualWidth; }
+            get { return _absoluteWidth; }
             set
             {
-                _virtualWidth = value;
-                SetToVirtualDimension();
+                _absoluteWidth = value;
+                SetToAbsoluteDimension();
             }
         }
 
-        public float VirtualHeight
+        /// <summary>
+        /// Return or set the absolute height of rotated shape.
+        /// </summary>
+        public float AbsoluteHeight
         {
-            get { return _virtualHeight; }
+            get { return _absoluteHeight; }
             set
             {
-                _virtualHeight = value;
-                SetToVirtualDimension();
+                _absoluteHeight = value;
+                SetToAbsoluteDimension();
             }
         }
 
+        /// <summary>
+        /// Return or set a single-precision floating-point number that represents the 
+        /// distance from the top most point of the shape to the top edge of the slide.
+        /// </summary>
         public float Top
         {
-            get { return _shape.Top; }
-            set { _shape.Top = value; }
+            get { return _rotatedTop; }
+            set
+            {
+                _rotatedTop = value; 
+                SetTop();
+            }
         }
 
+
+        /// <summary>
+        /// Return or set a single-precision floating-point number that represents the 
+        /// distance from the left most point of the shape to the left edge of the slide.
+        /// </summary>
         public float Left
         {
-            get { return _shape.Left; }
-            set { _shape.Left = value; }
+            get { return _rotatedLeft; }
+            set
+            {
+                _rotatedLeft = value; 
+                SetLeft();
+            }
         }
 
         /// <summary>
-        /// Update the virtual width according to the actual shape width and height.
+        /// Update the absolute width according to the actual shape width and height.
         /// </summary>
-        private void UpdateVirtualWidth()
+        private void UpdateAbsoluteWidth()
         {
             var rotation = GetStandardizedRotation(_shape.Rotation);
 
             if (IsInQuadrant(_shape.Rotation))
             {
-                _virtualWidth = (float) (_shape.Height*Math.Sin(rotation) + _shape.Width*Math.Cos(rotation));
+                _absoluteWidth = (float) (_shape.Height*Math.Sin(rotation) + _shape.Width*Math.Cos(rotation));
             }
             else if ((int) _shape.Rotation == 90 || (int) _shape.Rotation == 270)
             {
-                _virtualWidth = _shape.Height;
+                _absoluteWidth = _shape.Height;
             }
             else
             {
-                _virtualWidth = _shape.Width;
+                _absoluteWidth = _shape.Width;
             }
         }
 
         /// <summary>
-        /// Update the virtual height according to the actual shape width and height.
+        /// Update the absolute height according to the actual shape width and height.
         /// </summary>
-        private void UpdateVirtualHeight()
+        private void UpdateAbsoluteHeight()
         {
             var rotation = GetStandardizedRotation(_shape.Rotation);
 
             if (IsInQuadrant(_shape.Rotation))
             {
-                _virtualHeight = (float) (_shape.Height*Math.Cos(rotation) + _shape.Width*Math.Sin(rotation));
+                _absoluteHeight = (float) (_shape.Height*Math.Cos(rotation) + _shape.Width*Math.Sin(rotation));
             }
             else if ((int) _shape.Rotation == 90 || (int) _shape.Rotation == 270)
             {
-                _virtualHeight = _shape.Width;
+                _absoluteHeight = _shape.Width;
             }
             else
             {
-                _virtualHeight = _shape.Height;
+                _absoluteHeight = _shape.Height;
             }
         }
 
+        private void UpdateTop()
+        {
+            _rotatedTop = _shape.Top + _shape.Height/2 - _absoluteHeight/2;
+        }
+
+        private void UpdateLeft()
+        {
+            _rotatedLeft = _shape.Left + _shape.Width/2 - _absoluteWidth/2;
+        }
+
         /// <summary>
-        /// Set the actual width and height according to the virtual dimension (e.g. width and height).
+        /// Set the actual width and height according to the absolute dimension (e.g. width and height).
         /// </summary>
-        private void SetToVirtualDimension()
+        private void SetToAbsoluteDimension()
         {
             var rotation = GetStandardizedRotation(_shape.Rotation);
             var sinAngle = Math.Sin(rotation);
             var cosAngle = Math.Cos(rotation);
             var ratio = sinAngle/cosAngle;
 
-            _shape.Height = (float) ((_virtualWidth*ratio - _virtualHeight)/(sinAngle*ratio - cosAngle));
-            _shape.Width = (float) ((_virtualWidth - _shape.Height*sinAngle)/cosAngle);
+            _shape.Height = (float) ((_absoluteWidth*ratio - _absoluteHeight)/(sinAngle*ratio - cosAngle));
+            _shape.Width = (float) ((_absoluteWidth - _shape.Height*sinAngle)/cosAngle);
+        }
+
+        private void SetTop()
+        {
+            _shape.Top = _rotatedTop - _shape.Height/2 + _absoluteHeight/2;
+        }
+
+        private void SetLeft()
+        {
+            _shape.Left = _rotatedLeft - _shape.Width/2 + _absoluteWidth/2;
         }
 
         /// <summary>
