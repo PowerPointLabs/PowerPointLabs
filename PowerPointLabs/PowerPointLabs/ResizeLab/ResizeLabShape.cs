@@ -145,11 +145,17 @@ namespace PowerPointLabs.ResizeLab
             }
         }
 
+        /// <summary>
+        /// Update the distance from top most point of the shape to top edge of the slide.
+        /// </summary>
         private void UpdateTop()
         {
             _rotatedTop = _shape.Top + _shape.Height/2 - _absoluteHeight/2;
         }
 
+        /// <summary>
+        /// Update the distance from left most point of the shape to left edge of the slide.
+        /// </summary>
         private void UpdateLeft()
         {
             _rotatedLeft = _shape.Left + _shape.Width/2 - _absoluteWidth/2;
@@ -169,11 +175,17 @@ namespace PowerPointLabs.ResizeLab
             _shape.Width = (float) ((_absoluteWidth - _shape.Height*sinAngle)/cosAngle);
         }
 
+        /// <summary>
+        /// Set the distance from the top edge of unrotated shape to the top edge of the slide.
+        /// </summary>
         private void SetTop()
         {
             _shape.Top = _rotatedTop - _shape.Height/2 + _absoluteHeight/2;
         }
 
+        /// <summary>
+        /// Set the distance from the left edge of unrotated shape to the left edge of the slide.
+        /// </summary>
         private void SetLeft()
         {
             _shape.Left = _rotatedLeft - _shape.Width/2 + _absoluteWidth/2;
