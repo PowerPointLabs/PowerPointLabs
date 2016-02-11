@@ -618,6 +618,21 @@ namespace PowerPointLabs.Utils
             return lowest;
         }
 
+        public static float RealWidth(Drawing.PointF[] coords)
+        {
+            Drawing.PointF leftMost = LeftMostPoint(coords);
+            Drawing.PointF rightMost = RightMostPoint(coords);
+            return rightMost.X - leftMost.X;
+        }
+
+        public static float RealHeight(Drawing.PointF[] coords)
+        {
+            Drawing.PointF topMost = TopMostPoint(coords);
+            Drawing.PointF lowest = BottomMostPoint(coords);
+
+            return lowest.Y - topMost.Y;
+        }
+
         public static float GetVirtualHeightAfterRotation(Shape shape)
         {
             var realCoordinates = GetRealCoordinates(shape);
