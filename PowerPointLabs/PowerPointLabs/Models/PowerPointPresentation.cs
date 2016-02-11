@@ -16,6 +16,7 @@ namespace PowerPointLabs.Models
 
         public static Application Application { get; set; }
 
+        [Obsolete("DO NOT use this property! Instead, use Action Framework.")]
         public static PowerPointPresentation Current
         {
             get

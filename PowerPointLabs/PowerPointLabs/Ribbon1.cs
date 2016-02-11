@@ -7,6 +7,7 @@ using System.Reflection;
 using System.Runtime.InteropServices;
 using System.Diagnostics;
 using System.Windows.Forms;
+using PowerPointLabs.ActionFramework.Common.Factory;
 using PowerPointLabs.DataSources;
 using PowerPointLabs.DrawingsLab;
 using PowerPointLabs.ResizeLab;
@@ -40,6 +41,46 @@ namespace PowerPointLabs
     [ComVisible(true)]
     public class Ribbon1 : Office.IRibbonExtensibility
     {
+        #region Action Framework Factory
+        private ActionHandlerFactory ActionHandlerFactory { get; set; }
+
+        private LabelHandlerFactory LabelHandlerFactory { get; set; }
+
+        private ImageHandlerFactory ImageHandlerFactory { get; set; }
+
+        private SupertipHandlerFactory SupertipHandlerFactory { get; set; }
+        #endregion
+
+        #region Action Framework entry point
+
+        public void OnAction(Office.IRibbonControl control)
+        {
+            var actionHandler = ActionHandlerFactory.CreateInstance(control.Id);
+            actionHandler.Execute(control.Id);
+        }
+
+        public string GetLabel(Office.IRibbonControl control)
+        {
+            var labelHandler = LabelHandlerFactory.CreateInstance(control.Id);
+            return labelHandler.Get(control.Id);
+        }
+
+        public string GetSupertip(Office.IRibbonControl control)
+        {
+            var supertipHandler = SupertipHandlerFactory.CreateInstance(control.Id);
+            return supertipHandler.Get(control.Id);
+        }
+
+        public Bitmap GetImage(Office.IRibbonControl control)
+        {
+            var imageHandler = ImageHandlerFactory.CreateInstance(control.Id);
+            return imageHandler.Get(control.Id);
+        }
+
+        #endregion
+
+        #region Deprecated. Please only use Action Framework to support the feature.
+
         private Office.IRibbonUI _ribbon;
         
         public bool FrameAnimationChecked = false;
@@ -83,6 +124,11 @@ namespace PowerPointLabs
 
         public void RibbonLoad(Office.IRibbonUI ribbonUi)
         {
+            ActionHandlerFactory = new ActionHandlerFactory();
+            LabelHandlerFactory = new LabelHandlerFactory();
+            SupertipHandlerFactory = new SupertipHandlerFactory();
+            ImageHandlerFactory = new ImageHandlerFactory();
+
             _ribbon = ribbonUi;
 
             SetVoicesFromInstalledOptions();
@@ -278,11 +324,6 @@ namespace PowerPointLabs
         public string GetHighlightTextFragmentsButtonSupertip(Office.IRibbonControl control)
         {
             return TextCollection.HighlightTextFragmentsButtonSupertip;
-        }
-        
-        public string GetColorPickerButtonSupertip(Office.IRibbonControl control)
-        {
-            return TextCollection.ColorPickerButtonSupertip;
         }
         
         public string GetCustomeShapeButtonSupertip(Office.IRibbonControl control)
@@ -502,10 +543,6 @@ namespace PowerPointLabs
         {
             return TextCollection.LabsGroupLabel;
         }
-        public string GetColorPickerButtonLabel(Office.IRibbonControl control)
-        {
-            return TextCollection.ColorPickerButtonLabel;
-        }
         public string GetCustomeShapeButtonLabel(Office.IRibbonControl control)
         {
             return TextCollection.CustomeShapeButtonLabel;
@@ -651,14 +688,6 @@ namespace PowerPointLabs
         public string GetCutOutShapeShapeLabel(Office.IRibbonControl control)
         {
             return TextCollection.CutOutShapeShapeLabel;
-        }
-        public string GetFitToWidthShapeLabel(Office.IRibbonControl control)
-        {
-            return TextCollection.FitToWidthShapeLabel;
-        }
-        public string GetFitToHeightShapeLabel(Office.IRibbonControl control)
-        {
-            return TextCollection.FitToHeightShapeLabel;
         }
         public string GetInSlideAnimateGroupLabel(Office.IRibbonControl control)
         {
@@ -935,18 +964,6 @@ namespace PowerPointLabs
             catch (Exception e)
             {
                 PowerPointLabsGlobals.LogException(e, "GetShapesLabImage");
-                throw;
-            }
-        }
-        public Bitmap GetColorsLabImage(Office.IRibbonControl control)
-        {
-            try
-            {
-                return new System.Drawing.Bitmap(Properties.Resources.ColorsLab);
-            }
-            catch (Exception e)
-            {
-                PowerPointLabsGlobals.LogException(e, "GetColorsLabImage");
                 throw;
             }
         }
@@ -1977,31 +1994,6 @@ namespace PowerPointLabs
         }
         # endregion
 
-        #region Feature: Colors Lab
-        public void ColorPickerButtonClick(Office.IRibbonControl control)
-        {
-            try
-            {
-                Globals.ThisAddIn.RegisterColorPane(PowerPointPresentation.Current.Presentation);
-
-                var colorPane = Globals.ThisAddIn.GetActivePane(typeof(ColorPane));
-
-                // if currently the pane is hidden, show the pane
-                if (!colorPane.Visible)
-                {
-                    // fire the pane visble change event
-                    colorPane.Visible = true;
-                }
-            }
-            catch (Exception e)
-            {
-                ErrorDialogWrapper.ShowDialog("Color Picker Failed", e.Message, e);
-                PowerPointLabsGlobals.LogException(e, "ColorPickerButtonClicked");
-                throw;
-            }
-        }
-        #endregion
-
         # region Feature: Effects Lab
         public void MagnifyGlassEffectClick(Office.IRibbonControl control)
         {
@@ -2560,5 +2552,6 @@ namespace PowerPointLabs
             selectedShapes.Visible = Office.MsoTriState.msoFalse;
         }
 
+        #endregion
     }
 }

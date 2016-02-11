@@ -736,9 +736,9 @@ namespace PowerPointLabs
             if (colorLabs != null) colorLabs.SaveDefaultColorPaneThemeColors();
         }
 
-        private void RegisterTaskPane(UserControl control, string title, PowerPoint.DocumentWindow wnd,
-                                      EventHandler visibleChangeEventHandler,
-                                      EventHandler dockPositionChangeEventHandler)
+        public CustomTaskPane RegisterTaskPane(UserControl control, string title, PowerPoint.DocumentWindow wnd,
+                                      EventHandler visibleChangeEventHandler = null,
+                                      EventHandler dockPositionChangeEventHandler = null)
         {
             var loadingDialog = new LoadingDialog();
             loadingDialog.Show();
@@ -780,6 +780,7 @@ namespace PowerPointLabs
             }
 
             loadingDialog.Dispose();
+            return taskPane;
         }
 
         private void RemoveTaskPanes(PowerPoint.DocumentWindow activeWindow)

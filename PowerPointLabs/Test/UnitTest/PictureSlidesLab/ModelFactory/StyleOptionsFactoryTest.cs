@@ -10,11 +10,19 @@ namespace Test.UnitTest.PictureSlidesLab.ModelFactory
     [TestClass]
     public class StyleOptionsFactoryTest
     {
+        private StyleOptionsFactory _factory;
+
+        [TestInitialize]
+        public void Init()
+        {
+            _factory = new StyleOptionsFactory();
+        }
+        
         [TestMethod]
         [TestCategory("UT")]
         public void TestGetAllVariationStyleOptions()
         {
-            var allOptions = StyleOptionsFactory.GetAllStylesVariationOptions();
+            var allOptions = _factory.GetAllStylesVariationOptions();
             Assert.IsTrue(allOptions.Count > 0);
         }
 
@@ -22,7 +30,7 @@ namespace Test.UnitTest.PictureSlidesLab.ModelFactory
         [TestCategory("UT")]
         public void TestGetAllPreviewStyleOptions()
         {
-            var allOptions = StyleOptionsFactory.GetAllStylesPreviewOptions();
+            var allOptions = _factory.GetAllStylesPreviewOptions();
             Assert.IsTrue(allOptions.Count > 0);
         }
 
@@ -30,7 +38,7 @@ namespace Test.UnitTest.PictureSlidesLab.ModelFactory
         [TestCategory("UT")]
         public void TestGetDirectTextOptions()
         {
-            var option = StyleOptionsFactory.GetStylesPreviewOption(
+            var option = _factory.GetStylesPreviewOption(
                 TextCollection.PictureSlidesLabText.StyleNameDirectText);
             Assert.AreEqual(TextCollection.PictureSlidesLabText.StyleNameDirectText, option.StyleName);
 
@@ -45,7 +53,7 @@ namespace Test.UnitTest.PictureSlidesLab.ModelFactory
         [TestCategory("UT")]
         public void TestGetBlurOptions()
         {
-            var option = StyleOptionsFactory.GetStylesPreviewOption(
+            var option = _factory.GetStylesPreviewOption(
                 TextCollection.PictureSlidesLabText.StyleNameBlur);
             Assert.AreEqual(TextCollection.PictureSlidesLabText.StyleNameBlur, option.StyleName);
             Assert.IsTrue(option.IsUseBlurStyle);
@@ -61,7 +69,7 @@ namespace Test.UnitTest.PictureSlidesLab.ModelFactory
         [TestCategory("UT")]
         public void TestGetTextBoxOptions()
         {
-            var option = StyleOptionsFactory.GetStylesPreviewOption(
+            var option = _factory.GetStylesPreviewOption(
                 TextCollection.PictureSlidesLabText.StyleNameTextBox);
             Assert.AreEqual(TextCollection.PictureSlidesLabText.StyleNameTextBox, option.StyleName);
             Assert.IsTrue(option.IsUseTextBoxStyle);
@@ -78,7 +86,7 @@ namespace Test.UnitTest.PictureSlidesLab.ModelFactory
         [TestCategory("UT")]
         public void TestGetBannerOptions()
         {
-            var option = StyleOptionsFactory.GetStylesPreviewOption(
+            var option = _factory.GetStylesPreviewOption(
                 TextCollection.PictureSlidesLabText.StyleNameBanner);
             Assert.AreEqual(TextCollection.PictureSlidesLabText.StyleNameBanner, option.StyleName);
             Assert.IsTrue(option.IsUseBannerStyle);
@@ -95,7 +103,7 @@ namespace Test.UnitTest.PictureSlidesLab.ModelFactory
         [TestCategory("UT")]
         public void TestGetSpecialEffectOptions()
         {
-            var option = StyleOptionsFactory.GetStylesPreviewOption(
+            var option = _factory.GetStylesPreviewOption(
                 TextCollection.PictureSlidesLabText.StyleNameSpecialEffect);
             Assert.AreEqual(TextCollection.PictureSlidesLabText.StyleNameSpecialEffect, option.StyleName);
             Assert.IsTrue(option.IsUseSpecialEffectStyle);
@@ -112,7 +120,7 @@ namespace Test.UnitTest.PictureSlidesLab.ModelFactory
         [TestCategory("UT")]
         public void TestGetOverlayOptions()
         {
-            var option = StyleOptionsFactory.GetStylesPreviewOption(
+            var option = _factory.GetStylesPreviewOption(
                 TextCollection.PictureSlidesLabText.StyleNameOverlay);
             Assert.AreEqual(TextCollection.PictureSlidesLabText.StyleNameOverlay, option.StyleName);
             Assert.IsTrue(option.IsUseOverlayStyle);
@@ -132,7 +140,7 @@ namespace Test.UnitTest.PictureSlidesLab.ModelFactory
         [TestCategory("UT")]
         public void TestGetOutlineOptions()
         {
-            var option = StyleOptionsFactory.GetStylesPreviewOption(
+            var option = _factory.GetStylesPreviewOption(
                 TextCollection.PictureSlidesLabText.StyleNameOutline);
             Assert.AreEqual(TextCollection.PictureSlidesLabText.StyleNameOutline, option.StyleName);
             Assert.IsTrue(option.IsUseOutlineStyle);
@@ -149,7 +157,7 @@ namespace Test.UnitTest.PictureSlidesLab.ModelFactory
         [TestCategory("UT")]
         public void TestGetFrameOptions()
         {
-            var option = StyleOptionsFactory.GetStylesPreviewOption(
+            var option = _factory.GetStylesPreviewOption(
                 TextCollection.PictureSlidesLabText.StyleNameFrame);
             Assert.AreEqual(TextCollection.PictureSlidesLabText.StyleNameFrame, option.StyleName);
             Assert.IsTrue(option.IsUseFrameStyle);
@@ -166,7 +174,7 @@ namespace Test.UnitTest.PictureSlidesLab.ModelFactory
         [TestCategory("UT")]
         public void TestGetCircleOptions()
         {
-            var option = StyleOptionsFactory.GetStylesPreviewOption(
+            var option = _factory.GetStylesPreviewOption(
                 TextCollection.PictureSlidesLabText.StyleNameCircle);
             Assert.AreEqual(TextCollection.PictureSlidesLabText.StyleNameCircle, option.StyleName);
             Assert.IsTrue(option.IsUseCircleStyle);
@@ -183,7 +191,7 @@ namespace Test.UnitTest.PictureSlidesLab.ModelFactory
         [TestCategory("UT")]
         public void TestGetTriangleOptions()
         {
-            var option = StyleOptionsFactory.GetStylesPreviewOption(
+            var option = _factory.GetStylesPreviewOption(
                 TextCollection.PictureSlidesLabText.StyleNameTriangle);
             Assert.AreEqual(TextCollection.PictureSlidesLabText.StyleNameTriangle, option.StyleName);
             Assert.IsTrue(option.IsUseTriangleStyle);
@@ -196,10 +204,10 @@ namespace Test.UnitTest.PictureSlidesLab.ModelFactory
             Assert.AreEqual(8, options.Count);
         }
 
-        private static List<StyleOptions> GetOptions(string styleName)
+        private List<StyleOption> GetOptions(string styleName)
         {
-            var options = StyleOptionsFactory.GetStylesVariationOptions(styleName);
-            var variants = StyleVariantsFactory.GetVariants(styleName);
+            var options = _factory.GetStylesVariationOptions(styleName);
+            var variants = new StyleVariantsFactory().GetVariants(styleName);
 
             for (var i = 0; i < options.Count; i++)
             {
@@ -209,7 +217,7 @@ namespace Test.UnitTest.PictureSlidesLab.ModelFactory
             return options;
         }
 
-        private static List<object> GetOptionsProperty(List<StyleOptions> options, string propertyName)
+        private static List<object> GetOptionsProperty(List<StyleOption> options, string propertyName)
         {
             var propList = new List<object>();
             foreach (var option in options)

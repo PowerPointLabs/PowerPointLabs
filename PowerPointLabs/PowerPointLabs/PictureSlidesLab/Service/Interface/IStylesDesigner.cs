@@ -7,10 +7,10 @@ namespace PowerPointLabs.PictureSlidesLab.Service.Interface
     public interface IStylesDesigner
     {
         PreviewInfo PreviewApplyStyle(ImageItem source, Slide contentSlide, 
-            float slideWidth, float slideHeight, StyleOptions option);
+            float slideWidth, float slideHeight, StyleOption option);
         void ApplyStyle(ImageItem source, Slide contentSlide,
-            float slideWidth, float slideHeight, StyleOptions option = null);
-        void SetStyleOptions(StyleOptions opt);
+            float slideWidth, float slideHeight, StyleOption option = null);
+        void SetStyleOptions(StyleOption opt);
         void CleanUp();
     }
 }

@@ -95,6 +95,23 @@ namespace PowerPointLabs.PositionsLab
         }
         #endregion
 
+        #region Distribute
+        private void DistributeHorizontalButton_Click(object sender, RoutedEventArgs e)
+        {
+            PositionsLabMain.DistributeHorizontal();
+        }
+
+        private void DistributeVerticalButton_Click(object sender, RoutedEventArgs e)
+        {
+            PositionsLabMain.DistributeVertical();
+        }
+
+        private void DistributeCenterButton_Click(object sender, RoutedEventArgs e)
+        {
+            PositionsLabMain.DistributeCenter();
+        }
+        #endregion
+
         #region Snap
         private void SnapHorizontalButton_Click(object sender, RoutedEventArgs e)
         {

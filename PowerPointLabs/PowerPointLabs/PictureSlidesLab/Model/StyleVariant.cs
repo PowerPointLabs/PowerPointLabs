@@ -2,11 +2,11 @@
 
 namespace PowerPointLabs.PictureSlidesLab.Model
 {
-    public class StyleVariants
+    public class StyleVariant
     {
         private readonly Dictionary<string, object> _variants;
 
-        public StyleVariants(Dictionary<string, object> var)
+        public StyleVariant(Dictionary<string, object> var)
         {
             _variants = var;
         }
@@ -16,7 +16,7 @@ namespace PowerPointLabs.PictureSlidesLab.Model
             _variants[key] = newValue;
         } 
 
-        public void Apply(StyleOptions opt)
+        public void Apply(StyleOption opt)
         {
             foreach (var pair in _variants)
             {
@@ -29,7 +29,7 @@ namespace PowerPointLabs.PictureSlidesLab.Model
         /// <summary>
         /// Copy corresponding variant info from the given style
         /// </summary>
-        public StyleVariants Copy(StyleOptions opt, string givenOptionName = null)
+        public StyleVariant Copy(StyleOption opt, string givenOptionName = null)
         {
             var newVariants = new Dictionary<string, object>();
             foreach (var pair in _variants)
@@ -46,14 +46,14 @@ namespace PowerPointLabs.PictureSlidesLab.Model
                     newVariants[pair.Key] = optValue;
                 }
             }
-            return new StyleVariants(newVariants);
+            return new StyleVariant(newVariants);
         }
 
         /// <summary>
         /// return true, when applying variant to this style options has no effect (still same)
         /// </summary>
         /// <param name="opt"></param>
-        public bool IsNoEffect(StyleOptions opt)
+        public bool IsNoEffect(StyleOption opt)
         {
             foreach (var pair in _variants)
             {

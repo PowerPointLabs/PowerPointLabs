@@ -36,7 +36,7 @@ namespace Test.UnitTest.PictureSlidesLab.Service
                 ImageFile = Img,
                 Tooltip = "some tooltips"
             };
-            _designer = new EffectsDesigner(_contentSlide,
+            _designer = EffectsDesigner.CreateEffectsDesignerForApply(_contentSlide,
                 Pres.PageSetup.SlideWidth, Pres.PageSetup.SlideHeight,
                 _imgItem);
         }
@@ -46,7 +46,7 @@ namespace Test.UnitTest.PictureSlidesLab.Service
         public void TestInsertImageReference()
         {
             // constructor for producing preview image
-            var ed = new EffectsDesigner(
+            var ed = EffectsDesigner.CreateEffectsDesignerForPreview(
                 _processingSlide, _contentSlide, 
                 Pres.PageSetup.SlideWidth, Pres.PageSetup.SlideHeight, 
                 new ImageItem
@@ -60,7 +60,7 @@ namespace Test.UnitTest.PictureSlidesLab.Service
                 PpOperations.GetNotesPageText(_processingSlide)
                 .Contains(Link));
 
-            ed.ApplyImageReferenceInsertion(Link, "Calibri", "#000000");
+            ed.ApplyImageReferenceInsertion(Link, "Calibri", "#000000", 14, "", Alignment.Left);
             var refShape = PpOperations.SelectShapesByPrefix(
                 EffectsDesigner.ShapeNamePrefix + "_" + EffectName.ImageReference);
             Assert.IsTrue(
@@ -71,7 +71,7 @@ namespace Test.UnitTest.PictureSlidesLab.Service
         [TestCategory("UT")]
         public void TestInsertBackground()
         {
-            var bgShape = _designer.ApplyBackgroundEffect(0);
+            var bgShape = _designer.ApplyBackgroundEffect();
             Assert.IsTrue(bgShape.Name.StartsWith(
                 EffectsDesigner.ShapeNamePrefix + "_" + EffectName.BackGround));
             Assert.AreEqual(MsoShapeType.msoPicture, bgShape.Type);
@@ -168,16 +168,6 @@ namespace Test.UnitTest.PictureSlidesLab.Service
 
         [TestMethod]
         [TestCategory("UT")]
-        public void TestCircleBannerEffect()
-        {
-            var shape = _designer.ApplyCircleBannerEffect("#000000", 35);
-            Assert.IsTrue(shape.Name.StartsWith(
-                EffectsDesigner.ShapeNamePrefix + "_" + EffectName.Banner));
-            Assert.AreEqual(MsoShapeType.msoPicture, shape.Type);
-        }
-
-        [TestMethod]
-        [TestCategory("UT")]
         public void TestCircleRingsEffect()
         {
             var shape = _designer.ApplyCircleRingsEffect("#000000", 35);
@@ -234,7 +224,7 @@ namespace Test.UnitTest.PictureSlidesLab.Service
         public void TestSpecialEffectsEffect()
         {
             TempPath.InitTempFolder();
-            var shape = _designer.ApplySpecialEffectEffect(MatrixFilters.GreyScale, true, 0);
+            var shape = _designer.ApplySpecialEffectEffect(MatrixFilters.GreyScale, true);
             Assert.IsTrue(shape.Name.StartsWith(
                 EffectsDesigner.ShapeNamePrefix + "_" + EffectName.SpecialEffect));
             Assert.AreEqual(MsoShapeType.msoPicture, shape.Type);
