@@ -532,7 +532,7 @@ namespace PowerPointLabs.Utils
         {
             var rotationInRadian = DegreeToRadian(rotation);
             var rotatedX = Math.Cos(rotationInRadian) * (p.X - origin.X) - Math.Sin(rotationInRadian) * (p.Y - origin.Y) + origin.X;
-            var rotatedY = Math.Sin(rotationInRadian) * (p.X - origin.X) - Math.Cos(rotationInRadian) * (p.Y - origin.Y) + origin.Y;
+            var rotatedY = Math.Sin(rotationInRadian) * (p.X - origin.X) + Math.Cos(rotationInRadian) * (p.Y - origin.Y) + origin.Y;
 
             return new PointF((float)rotatedX, (float)rotatedY);
         }
@@ -616,6 +616,21 @@ namespace PowerPointLabs.Utils
             }
 
             return lowest;
+        }
+
+        public static float RealWidth(Drawing.PointF[] coords)
+        {
+            Drawing.PointF leftMost = LeftMostPoint(coords);
+            Drawing.PointF rightMost = RightMostPoint(coords);
+            return rightMost.X - leftMost.X;
+        }
+
+        public static float RealHeight(Drawing.PointF[] coords)
+        {
+            Drawing.PointF topMost = TopMostPoint(coords);
+            Drawing.PointF lowest = BottomMostPoint(coords);
+
+            return lowest.Y - topMost.Y;
         }
 
         public static float GetVirtualHeightAfterRotation(Shape shape)
