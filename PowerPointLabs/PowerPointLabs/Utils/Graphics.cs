@@ -530,7 +530,7 @@ namespace PowerPointLabs.Utils
         {
             double rotationInRadian = DegreeToRadian(rotation);
             double rotatedX = Math.Cos(rotationInRadian) * (p.X - origin.X) - Math.Sin(rotationInRadian) * (p.Y - origin.Y) + origin.X;
-            double rotatedY = Math.Sin(rotationInRadian) * (p.X - origin.X) - Math.Cos(rotationInRadian) * (p.Y - origin.Y) + origin.Y;
+            double rotatedY = Math.Sin(rotationInRadian) * (p.X - origin.X) + Math.Cos(rotationInRadian) * (p.Y - origin.Y) + origin.Y;
 
             return new Drawing.PointF((float)rotatedX, (float)rotatedY);
         }
@@ -626,12 +626,6 @@ namespace PowerPointLabs.Utils
             }
 
             return lowest;
-        }
-
-        public static double GetUnrotatedLeftGivenRotatedLeft(Shape s, float rotatedLeft)
-        {
-            double rotationInRadian = DegreeToRadian(s.Rotation);
-            return rotatedLeft + Math.Cos(rotationInRadian) * (s.Width / 2) - Math.Sin(rotationInRadian) * (s.Height / 2) - s.Width / 2;
         }
 
         public static Drawing.PointF GetCenterPoint(Shape s)
