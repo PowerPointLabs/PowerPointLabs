@@ -12,6 +12,7 @@ using PowerPointLabs.DataSources;
 using PowerPointLabs.DrawingsLab;
 using PowerPointLabs.Models;
 using PowerPointLabs.PictureSlidesLab.View;
+using PowerPointLabs.ResizeLab;
 using PowerPointLabs.Views;
 using Office = Microsoft.Office.Core;
 using PowerPoint = Microsoft.Office.Interop.PowerPoint;
@@ -396,7 +397,12 @@ namespace PowerPointLabs
         {
             return TextCollection.DrawingsLabButtonSupertip;
         }
-        
+
+        public string GetResizeLabButtonSupertip(Office.IRibbonControl control)
+        {
+            return TextCollection.ResizeLabButtonSupertip;
+        }
+
         public string GetHelpButtonSupertip(Office.IRibbonControl control)
         {
             return TextCollection.HelpButtonSupertip;
@@ -408,6 +414,10 @@ namespace PowerPointLabs
         public string GetAboutButtonSupertip(Office.IRibbonControl control)
         {
             return TextCollection.AboutButtonSupertip;
+        }
+        public string GetPositionsLabSupertip(Office.IRibbonControl control)
+        {
+            return TextCollection.PositionsLab.PositionsLabSupertip;
         }
         # endregion
 
@@ -603,6 +613,16 @@ namespace PowerPointLabs
         public string GetDrawingsLabButtonLabel(Office.IRibbonControl control)
         {
             return TextCollection.DrawingsLabButtonLabel;
+        }
+
+        public string GetPositionsLabButtonLabel(Office.IRibbonControl control)
+        {
+            return TextCollection.PositionsLab.PositionsLabButtonLabel;
+        }
+
+        public string GetResizeLabButtonLabel(Office.IRibbonControl control)
+        {
+            return TextCollection.ResizeLabButtonLabel;
         }
 
         public string GetPPTLabsHelpGroupLabel(Office.IRibbonControl control)
@@ -2392,6 +2412,69 @@ namespace PowerPointLabs
                 ErrorDialogWrapper.ShowDialog("Error in drawing lab", e.Message, e);
                 PowerPointLabsGlobals.LogException(e, "DrawingsLabButtonClicked");
                 throw;
+            }
+        }
+        #endregion
+
+        #region Feature: Positions Lab
+        public void PositionsLabButtonClick(Office.IRibbonControl control)
+        {
+            try
+            {
+                Globals.ThisAddIn.RegisterPositionsPane(PowerPointPresentation.Current.Presentation);
+
+                var positionsPane = Globals.ThisAddIn.GetActivePane(typeof(PositionsPane));
+                // if currently the pane is hidden, show the pane
+                if (!positionsPane.Visible)
+                {
+                    // fire the pane visble change event
+                    positionsPane.Visible = true;
+                }
+                else
+                {
+                    positionsPane.Visible = false;
+                }
+            }
+            catch (Exception e)
+            {
+                ErrorDialogWrapper.ShowDialog("Error in positions lab", e.Message, e);
+                PowerPointLabsGlobals.LogException(e, "PositionsLabButtonClicked");
+                throw;
+            }
+        }
+        #endregion
+
+        // TODO: Add the image for the icon on the ribbon bar
+        //public Bitmap GetPositionsLabImage(Office.IRibbonControl control)
+        //{
+        //    try
+        //    {
+        //        return new Bitmap(Properties.Resources.PositionsLab);
+        //    }
+        //    catch (Exception e)
+        //    {
+        //        PowerPointLabsGlobals.LogException(e, "GetPositionsLabImage");
+        //        throw;
+        //    }
+        //}
+
+        #region Feature: Resize Lab
+
+        public void ResizeLabButtonClick(Office.IRibbonControl control)
+        {
+            Globals.ThisAddIn.RegisterResizePane(PowerPointPresentation.Current.Presentation);
+
+            var resizePane = Globals.ThisAddIn.GetActivePane(typeof(ResizeLabPane));
+
+            // if currently the pane is hidden, show the pane
+            if (!resizePane.Visible)
+            {
+                // fire the pane visble change event
+                resizePane.Visible = true;
+            }
+            else
+            {
+                resizePane.Visible = false;
             }
         }
         #endregion

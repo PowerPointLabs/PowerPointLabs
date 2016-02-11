@@ -9,8 +9,6 @@ namespace PowerPointLabs.ResizeLab
 {
     internal partial class ResizeLabMain
     {
-        private const string MessageBoxTitle = "Error during Resizing";
-
         private const int ErrorCodeNoSelection = 0;
         private const int ErrorCodeFewerThanTwoSelection = 1;
         private const int ErrorCodeShapesNotStretchText = 2;
@@ -21,6 +19,13 @@ namespace PowerPointLabs.ResizeLab
         private const string ErrorMessageShapesNotStretchText =
             TextCollection.ResizeLabText.WarningShapesNotStretchText;
 
+        private IResizeLabPane View { get; }
+
+        public ResizeLabMain(IResizeLabPane view)
+        {
+            View = view;
+        }
+
         private enum Dimension
         {
             Height,
@@ -28,12 +33,12 @@ namespace PowerPointLabs.ResizeLab
             HeightAndWidth
         }
 
-        internal bool IsShapeSelection(PowerPoint.Selection selection)
-        {
-            return selection.Type == PowerPoint.PpSelectionType.ppSelectionShapes;
-        }
-
-        internal bool IsSelecionValid(PowerPoint.Selection selection)
+        /// <summary>
+        /// Check if the selection is of shape type.
+        /// </summary>
+        /// <param name="selection"></param>
+        /// <returns></returns>
+        internal bool IsSelecionValid(PowerPoint.Selection selection, bool handleError)
         {
             try
             {
@@ -46,11 +51,19 @@ namespace PowerPointLabs.ResizeLab
             }
             catch (Exception e)
             {
-                ProcessErrorMessage(e);
+                if (handleError)
+                {
+                    ProcessErrorMessage(e);
+                }
                 return false;
             }
         }
 
+        /// <summary>
+        /// Check if the number of shape is more than one.
+        /// </summary>
+        /// <param name="selectedShapes"></param>
+        /// <returns></returns>
         private bool IsMoreThanOneShape(PowerPoint.ShapeRange selectedShapes)
         {
             try
@@ -71,30 +84,43 @@ namespace PowerPointLabs.ResizeLab
 
         #region Error Message
 
+        /// <summary>
+        /// Store error code in the culture info.
+        /// </summary>
+        /// <param name="errorType"></param>
         private void ThrowErrorCode(int errorType)
         {
             throw new Exception(errorType.ToString(CultureInfo.InvariantCulture));
         }
 
+        /// <summary>
+        /// Show the error message.
+        /// </summary>
+        /// <param name="e"></param>
         private void ProcessErrorMessage(Exception e)
         {
             var errorMessage = GetErrorMessage(e.Message);
             if (!string.Equals(errorMessage, ErrorMessageUndefined, StringComparison.Ordinal))
             {
-                MessageBox.Show(errorMessage, MessageBoxTitle);
+                View.ShowErrorMessageBox(errorMessage);
             }
             else
             {
-                Views.ErrorDialogWrapper.ShowDialog(MessageBoxTitle, e.Message, e);
+                View.ShowErrorMessageBox(e.Message, e);
             }
         }
 
+        /// <summary>
+        /// Get error message corresponds to the error code.
+        /// </summary>
+        /// <param name="errorCode"></param>
+        /// <returns></returns>
         private string GetErrorMessage(string errorCode)
         {
             var errorCodeInteger = -1;
             try
             {
-                errorCodeInteger = Int32.Parse(errorCode);
+                errorCodeInteger = int.Parse(errorCode);
             }
             catch
             {

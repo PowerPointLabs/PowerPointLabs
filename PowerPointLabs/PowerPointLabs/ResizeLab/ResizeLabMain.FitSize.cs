@@ -1,8 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Windows;
 using PowerPointLabs.Models;
 using PowerPoint = Microsoft.Office.Interop.PowerPoint;
 
@@ -14,7 +10,14 @@ namespace PowerPointLabs.ResizeLab
     /// </summary>
     internal partial class ResizeLabMain
     {
-        public void FitToHight(PowerPoint.ShapeRange selectedShapes, bool isAspectRatio = false)
+        /// <summary>
+        /// Fit selected shapes to the height of the slide.
+        /// </summary>
+        /// <param name="selectedShapes"></param>
+        /// <param name="slideHeight"></param>
+        /// <param name="isAspectRatio"></param>
+        /// <param name="slideWidth"></param>
+        public void FitToHight(PowerPoint.ShapeRange selectedShapes, float slideWidth, float slideHeight, bool isAspectRatio)
         {
             if (isAspectRatio)
             {
@@ -22,11 +25,18 @@ namespace PowerPointLabs.ResizeLab
             }
             else
             {
-                FitFreeShapes(selectedShapes, Dimension.Height);
+                FitFreeShapes(selectedShapes, Dimension.Height, slideWidth, slideHeight);
             }
         }
 
-        public void FitToWidth(PowerPoint.ShapeRange selectedShapes, bool isAspectRatio = false)
+        /// <summary>
+        /// Fit selected shapes to the width of the slide.
+        /// </summary>
+        /// <param name="selectedShapes"></param>
+        /// <param name="slideHeight"></param>
+        /// <param name="isAspectRatio"></param>
+        /// <param name="slideWidth"></param>
+        public void FitToWidth(PowerPoint.ShapeRange selectedShapes, float slideWidth, float slideHeight, bool isAspectRatio)
         {
             if (isAspectRatio)
             {
@@ -34,11 +44,18 @@ namespace PowerPointLabs.ResizeLab
             }
             else
             {
-                FitFreeShapes(selectedShapes, Dimension.Width);
+                FitFreeShapes(selectedShapes, Dimension.Width, slideWidth, slideHeight);
             }
         }
 
-        public void FitToFill(PowerPoint.ShapeRange selectedShapes, bool isAspectRatio = false)
+        /// <summary>
+        /// Fit the selected shapes to fill the slide.
+        /// </summary>
+        /// <param name="selectedShapes"></param>
+        /// <param name="slideWidth"></param>
+        /// <param name="slideHeight"></param>
+        /// <param name="isAspectRatio"></param>
+        public void FitToFill(PowerPoint.ShapeRange selectedShapes, float slideWidth, float slideHeight, bool isAspectRatio)
         {
             if (isAspectRatio)
             {
@@ -46,24 +63,28 @@ namespace PowerPointLabs.ResizeLab
             }
             else
             {
-                FitFreeShapes(selectedShapes, Dimension.HeightAndWidth);
+                FitFreeShapes(selectedShapes, Dimension.HeightAndWidth, slideWidth, slideHeight);
             }
         }
 
-        private void FitFreeShapes(PowerPoint.ShapeRange selectedShapes, Dimension dimension)
+        /// <summary>
+        /// Fit the selected shapes without aspect ratio according to the set dimension type.
+        /// </summary>
+        /// <param name="selectedShapes"></param>
+        /// <param name="dimension"></param>
+        /// <param name="slideWidth"></param>
+        /// <param name="slideHeight"></param>
+        private void FitFreeShapes(PowerPoint.ShapeRange selectedShapes, Dimension dimension, float slideWidth, float slideHeight)
         {
             try
             {
-                var slideHight = PowerPointPresentation.Current.SlideHeight;
-                var slideWidth = PowerPointPresentation.Current.SlideWidth;
-
                 for (int i = 1; i <= selectedShapes.Count; i++)
                 {
                     PowerPoint.Shape shape = selectedShapes[i];
 
                     if ((dimension == Dimension.Height) || (dimension == Dimension.HeightAndWidth))
                     {
-                        shape.Height = slideHight;
+                        shape.Height = slideHeight;
                         shape.Top = 0;
                     }
 
@@ -81,6 +102,11 @@ namespace PowerPointLabs.ResizeLab
             }
         }
 
+        /// <summary>
+        /// Fit the selected shapes with aspect ratio according to the set dimension type.
+        /// </summary>
+        /// <param name="selectedShapes"></param>
+        /// <param name="dimension"></param>
         private void FitAspectRatioShapes(PowerPoint.ShapeRange selectedShapes, Dimension dimension)
         {
             try

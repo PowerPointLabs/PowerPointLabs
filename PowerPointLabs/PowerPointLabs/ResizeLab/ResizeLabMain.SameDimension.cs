@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Windows;
 using PowerPointLabs.Models;
 using PowerPointLabs.Views;
 using PowerPoint = Microsoft.Office.Interop.PowerPoint;
@@ -15,21 +16,41 @@ namespace PowerPointLabs.ResizeLab
     /// </summary>
     internal partial class ResizeLabMain
     {
+        /// <summary>
+        /// Resize the selected shapes to the same height with the reference to
+        /// first selected shape.
+        /// </summary>
+        /// <param name="selectedShapes"></param>
         public void ResizeToSameHeight(PowerPoint.ShapeRange selectedShapes)
         {
             ResizeShapes(selectedShapes, Dimension.Height);
         }
 
+        /// <summary>
+        /// Resize the selected shapes to the same width with the reference to
+        /// first selected shape.
+        /// </summary>
+        /// <param name="selectedShapes"></param>
         public void ResizeToSameWidth(PowerPoint.ShapeRange selectedShapes)
         {
             ResizeShapes(selectedShapes, Dimension.Width);
         }
 
+        /// <summary>
+        /// Resize the selected shapes to the same size (width and height) with 
+        /// the reference to first selected shape.
+        /// </summary>
+        /// <param name="selectedShapes"></param>
         public void ResizeToSameHeightAndWidth(PowerPoint.ShapeRange selectedShapes)
         {
             ResizeShapes(selectedShapes, Dimension.HeightAndWidth);
         }
 
+        /// <summary>
+        /// Resize the selected shapes according to the set dimension type.
+        /// </summary>
+        /// <param name="selectedShapes"></param>
+        /// <param name="dimension"></param>
         private void ResizeShapes(PowerPoint.ShapeRange selectedShapes, Dimension dimension)
         {
             try
@@ -44,14 +65,17 @@ namespace PowerPointLabs.ResizeLab
 
                 for (int i = 1; i <= selectedShapes.Count; i++)
                 {
+                    var shape = new ResizeLabShape(selectedShapes[i]);
+
                     if ((dimension == Dimension.Height) || (dimension == Dimension.HeightAndWidth))
                     {
-                        selectedShapes[i].Height = referenceHeight;
+
+                        shape.VirtualHeight = referenceHeight;
                     }
 
                     if ((dimension == Dimension.Width) || (dimension == Dimension.HeightAndWidth))
                     {
-                        selectedShapes[i].Width = referenceWidth;
+                        shape.VirtualWidth = referenceWidth;
                     }
                 }
             }
@@ -62,20 +86,30 @@ namespace PowerPointLabs.ResizeLab
             }
         }
 
+        /// <summary>
+        /// Get the height of the reference shape.
+        /// </summary>
+        /// <param name="selectedShapes"></param>
+        /// <returns></returns>
         private float GetReferenceHeight(PowerPoint.ShapeRange selectedShapes)
         {
             if (selectedShapes.Count > 0)
             {
-                return selectedShapes[1].Height;
+                return new ResizeLabShape(selectedShapes[1]).VirtualHeight;
             }
             return -1;
         }
 
-        private float GetReferenceWidth(PowerPoint.ShapeRange selectShapes)
+        /// <summary>
+        /// Get the width of the reference shape.
+        /// </summary>
+        /// <param name="selectedShapes"></param>
+        /// <returns></returns>
+        private float GetReferenceWidth(PowerPoint.ShapeRange selectedShapes)
         {
-            if (selectShapes.Count > 0)
+            if (selectedShapes.Count > 0)
             {
-                return selectShapes[1].Width;
+                return new ResizeLabShape(selectedShapes[1]).VirtualWidth;
             }
             return -1;
         }

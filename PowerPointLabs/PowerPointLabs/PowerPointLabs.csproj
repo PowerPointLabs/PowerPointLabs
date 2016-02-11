@@ -518,20 +518,23 @@
     <Compile Include="PositionsLab\PositionsPaneWPF.xaml.cs">
       <DependentUpon>PositionsPaneWPF.xaml</DependentUpon>
     </Compile>
-    <Compile Include="ResizeLab\ResizeLabAspectRatio.cs" />
-    <Compile Include="ResizeLab\ResizeLabFitSize.cs" />
+    <Compile Include="ResizeLab\ResizeLabPaneWPF.xaml.InterfaceImpl.cs" />
+    <Compile Include="ResizeLab\IResizeLabPane.cs" />
+    <Compile Include="ResizeLab\ResizeLabMain.AspectRatio.cs" />
+    <Compile Include="ResizeLab\ResizeLabMain.FitSize.cs" />
     <Compile Include="ResizeLab\ResizeLabMain.cs" />
-    <Compile Include="ResizeLab\ResizeLabSameSize.cs" />
-    <Compile Include="ResizeLab\ResizeLabShrinkStretch.cs" />
-    <Compile Include="ResizeLab\ResizePane.cs">
+    <Compile Include="ResizeLab\ResizeLabMain.SameDimension.cs" />
+    <Compile Include="ResizeLab\ResizeLabPane.cs">
       <SubType>UserControl</SubType>
     </Compile>
-    <Compile Include="ResizeLab\ResizePane.Designer.cs">
-      <DependentUpon>ResizePane.cs</DependentUpon>
+    <Compile Include="ResizeLab\ResizeLabPane.Designer.cs">
+      <DependentUpon>ResizeLabPane.cs</DependentUpon>
     </Compile>
-    <Compile Include="ResizeLab\ResizePaneWPF.xaml.cs">
-      <DependentUpon>ResizePaneWPF.xaml</DependentUpon>
+    <Compile Include="ResizeLab\ResizeLabPaneWPF.xaml.cs">
+      <DependentUpon>ResizeLabPaneWPF.xaml</DependentUpon>
     </Compile>
+    <Compile Include="ResizeLab\ResizeLabMain.ShrinkStretch.cs" />
+    <Compile Include="ResizeLab\ResizeLabShape.cs" />
     <Compile Include="Utils\Assumption.cs" />
     <Compile Include="Utils\CultureUtil.cs" />
     <Compile Include="Utils\Exceptions\AssumptionFailedException.cs" />
@@ -1024,7 +1027,7 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="ResizeLab\ResizePaneWPF.xaml">
+    <Page Include="ResizeLab\ResizeLabPaneWPF.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
@@ -1113,6 +1116,45 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\closed_business.jpg" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\ResizeLab\ResizeFitToFill.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\ResizeLab\ResizeFitToHeight.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\ResizeLab\ResizeFitToWidth.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\ResizeLab\ResizeLock.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\ResizeLab\ResizeSameHeight.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\ResizeLab\ResizeSameSize.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\ResizeLab\ResizeSameWidth.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\ResizeLab\ResizeStore.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\ResizeLab\ResizeStretchBottom.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\ResizeLab\ResizeStretchLeft.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\ResizeLab\ResizeStretchRight.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\ResizeLab\ResizeStretchTop.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\ResizeLab\ResizeUnlock.png" />
   </ItemGroup>
   <ItemGroup />
   <!-- Include the build rules for a C# project. -->
