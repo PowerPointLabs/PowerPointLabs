@@ -452,7 +452,7 @@ namespace PowerPointLabs.PositionsLab
 
                 if (i == 2)
                 {
-                    topMostRef = Graphics.BottomMostPoint(allPointsOfRef);
+                    topMostRef = Graphics.TopMostPoint(allPointsOfRef);
                     currShape.IncrementTop(topMostRef.Y - topMost.Y + spaceBetweenShapes);
                 }
                 else
