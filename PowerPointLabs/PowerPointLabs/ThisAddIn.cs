@@ -23,6 +23,7 @@ using PowerPointLabs.Views;
 using MessageBox = System.Windows.Forms.MessageBox;
 using PowerPoint = Microsoft.Office.Interop.PowerPoint;
 using Office = Microsoft.Office.Core;
+using PowerPointLabs.PositionsLab;
 
 namespace PowerPointLabs
 {
@@ -382,6 +383,7 @@ namespace PowerPointLabs
             PPMouse.StopHook();
             PPKeyboard.StopHook();
             PPCopy.StopHook();
+            PositionsPaneWPF.ClearAllEventHandlers();
             UIThreadExecutor.TearDown();
             Trace.TraceInformation(DateTime.Now.ToString("yyyyMMddHHmmss") + ": PowerPointLabs Exiting");
             Trace.Close();

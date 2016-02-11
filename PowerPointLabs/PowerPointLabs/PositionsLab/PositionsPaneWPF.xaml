@@ -5,7 +5,7 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:PowerPointLabs.PositionsLab"
              xmlns:Controls="clr-namespace:MahApps.Metro.Controls;assembly=MahApps.Metro"
-             mc:Ignorable="d" Height="541.747" Width="310.738">
+             mc:Ignorable="d" Height="600" Width="310">
     <UserControl.Resources>
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
@@ -17,14 +17,14 @@
             </ResourceDictionary.MergedDictionaries>
         </ResourceDictionary>
     </UserControl.Resources>
-    <ScrollViewer>
-        <Grid Margin="0,0,0,-40">
+    <ScrollViewer Margin="0,0,0,-20">
+        <Grid Height="585">
             <GroupBox x:Name="alignGroupBox" Header="Align" HorizontalAlignment="Left" Margin="10,5,0,0" VerticalAlignment="Top" Height="130" Width="284"/>
             <GroupBox x:Name="adjoinGroupBox" Header="Adjoin" HorizontalAlignment="Left" Margin="10,140,0,0" VerticalAlignment="Top" Height="80" Width="284"/>
-            <GroupBox x:Name="distributeGroupBox" Header="Distribute" HorizontalAlignment="Left" Margin="10,225,0,0" VerticalAlignment="Top" Height="80" Width="284" Visibility="Hidden"/>
-            <GroupBox x:Name="reorderGroupBox" Header="Reorder" HorizontalAlignment="Left" Margin="10,225,0,0" VerticalAlignment="Top" Height="80" Width="284"/>
-            <GroupBox x:Name="adjustmentGroupBox" Header="Adjustment" HorizontalAlignment="Left" Margin="10,395,0,0" VerticalAlignment="Top" Height="80" Width="284" Visibility="Hidden"/>
-            <GroupBox x:Name="snapGroupBox" Header="Snap" HorizontalAlignment="Left" Margin="10,310,0,0" VerticalAlignment="Top" Height="80" Width="284"/>
+            <GroupBox x:Name="distributeGroupBox" Header="Distribute" HorizontalAlignment="Left" Margin="10,225,0,0" VerticalAlignment="Top" Height="80" Width="284"/>
+            <GroupBox x:Name="reorderGroupBox" Header="Reorder" HorizontalAlignment="Left" Margin="10,307,0,0" VerticalAlignment="Top" Height="80" Width="284"/>
+            <GroupBox x:Name="adjustmentGroupBox" Header="Adjustment" HorizontalAlignment="Left" Margin="10,391,0,0" VerticalAlignment="Top" Height="80" Width="284"/>
+            <GroupBox x:Name="snapGroupBox" Header="Snap" HorizontalAlignment="Left" Margin="10,475,0,0" VerticalAlignment="Top" Height="80" Width="284"/>
             <Button ToolTip="Aligns objects to the left axis of reference object" x:Name="alignLeftButton" Content="Left" HorizontalAlignment="Left" Margin="24,37,0,0" VerticalAlignment="Top" Width="60" Height="45" Click="AlignLeftButton_Click"/>
             <Button ToolTip="Aligns objects to the right axis of reference object" x:Name="alignRightButton" Content="Right" HorizontalAlignment="Left" Margin="89,37,0,0" VerticalAlignment="Top" Width="60" Height="45" Click="AlignRightButton_Click"/>
             <Button ToolTip="Aligns objects to the top axis of reference object" x:Name="alignTopButton" Content="Top" HorizontalAlignment="Left" Margin="154,37,0,0" VerticalAlignment="Top" Width="60" Height="45" Click="AlignTopButton_Click"/>
@@ -34,17 +34,17 @@
             <Button ToolTip="Aligns objects to a vertex of the reference object" x:Name="alignVertexButton" Content="Vertex" HorizontalAlignment="Left" Margin="154,87,0,0" VerticalAlignment="Top" Width="60" Height="45" Visibility="Hidden"/>
             <Button ToolTip="Adjoin objects to the a single horizontal line alongside reference object" x:Name="adjoinHorizontalButton" Content="Horizontal" HorizontalAlignment="Left" Margin="24,171,0,0" VerticalAlignment="Top" Width="60" Height="45" Click="AdjoinHorizontalButton_Click"/>
             <Button ToolTip="Adjoin objects to the a single vertical line alongside reference object" x:Name="adjoinVerticalButton" Content="Vertical" HorizontalAlignment="Left" Margin="89,171,0,0" VerticalAlignment="Top" Width="60" Height="45" Click="AdjoinVerticalButton_Click"/>
-            <Button ToolTip="Equalize horizontal spaces of objects within reference frame" x:Name="distributeHorizontalButton" Content="Horizontal" HorizontalAlignment="Left" Margin="24,256,0,0" VerticalAlignment="Top" Width="60" Height="45" Visibility="Hidden"/>
-            <Button ToolTip="Equalize vertical spaces of objects within reference frame" x:Name="distributeVerticalButton" Content="Vertical" HorizontalAlignment="Left" Margin="89,256,0,0" VerticalAlignment="Top" Width="60" Height="45" Visibility="Hidden"/>
-            <Button ToolTip="Equalize horizontal and vertical spaces of objects within reference frame" x:Name="distributeCenterButton" Content="Center" HorizontalAlignment="Left" Margin="154,256,0,0" VerticalAlignment="Top" Width="60" Height="45" Visibility="Hidden"/>
+            <Button ToolTip="Equalize horizontal spaces of objects within reference frame" x:Name="distributeHorizontalButton" Content="Horizontal" HorizontalAlignment="Left" Margin="24,256,0,0" VerticalAlignment="Top" Width="60" Height="45" Click="DistributeHorizontalButton_Click"/>
+            <Button ToolTip="Equalize vertical spaces of objects within reference frame" x:Name="distributeVerticalButton" Content="Vertical" HorizontalAlignment="Left" Margin="89,256,0,0" VerticalAlignment="Top" Width="60" Height="45" Click="DistributeVerticalButton_Click"/>
+            <Button ToolTip="Equalize horizontal and vertical spaces of objects within reference frame" x:Name="distributeCenterButton" Content="Center" HorizontalAlignment="Left" Margin="154,256,0,0" VerticalAlignment="Top" Width="60" Height="45" Click="DistributeCenterButton_Click"/>
             <Button ToolTip="Equalize horizontal and vertical spaces of objects within reference objects" x:Name="distributeShapesButton" Content="Shapes" HorizontalAlignment="Left" Margin="219,256,0,0" VerticalAlignment="Top" Width="60" Height="45" Visibility="Hidden"/>
-            <Button ToolTip="Swaps the positions of objects in a cyclical order" x:Name="swapPositionsButton" Content="Swap" HorizontalAlignment="Left" Margin="24,256,0,0" VerticalAlignment="Top" Width="60" Height="45" Click="SwapPositionsButton_Click"/>
+            <Button ToolTip="Distribute objects along the edge of reference frame" x:Name="distributeAlongEdgeButton" Content="Edges" HorizontalAlignment="Left" Margin="24,306,0,0" VerticalAlignment="Top" Width="60" Height="45" Visibility="Hidden"/>
+            <Button ToolTip="Swaps the positions of objects in a cyclical order" x:Name="swapPositionsButton" Content="Swap" HorizontalAlignment="Left" Margin="24,337,0,0" VerticalAlignment="Top" Width="60" Height="45" Click="SwapPositionsButton_Click"/>
             <Button ToolTip="Swaps the z-order of the objects selected" x:Name="swapDepthButton" Content="Depth" HorizontalAlignment="Left" Margin="89,341,0,0" VerticalAlignment="Top" Width="60" Height="45" Visibility="Hidden"/>
-            <Button ToolTip="Adjusts the rate of rotation for object" x:Name="rotationButton" Content="Rotation" HorizontalAlignment="Left" Margin="24,426,0,0" VerticalAlignment="Top" Width="60" Height="45" Visibility="Hidden"/>
+            <Button ToolTip="Adjusts the rate of rotation for object" x:Name="rotationButton" Content="Rotation" HorizontalAlignment="Left" Margin="24,422,0,0" VerticalAlignment="Top" Width="60" Height="45" Click="RotationButton_Click"/>
             <Button ToolTip="Locks one axis and shape will only move in one direction" x:Name="oneDirectionButton" Content="One Direction" HorizontalAlignment="Left" Margin="191,426,0,0" VerticalAlignment="Top" Width="88" Height="45" Visibility="Hidden"/>
-            <Button ToolTip="Snaps object to a horizontal rotation" x:Name="snapHorizontalButton" Content="Horizontal" HorizontalAlignment="Left" Margin="24,341,0,0" VerticalAlignment="Top" Width="60" Height="45" Click="SnapHorizontalButton_Click"/>
-            <Button ToolTip="Snaps object to a vertical rotation" x:Name="snapVerticalButton" Content="Vertical" HorizontalAlignment="Left" Margin="89,341,0,0" VerticalAlignment="Top" Width="60" Height="45" Click="SnapVerticalButton_Click"/>
-            <Button ToolTip="Snaps object to a horizontal rotation" x:Name="distributeAlongEdgeButton" Content="Edges" HorizontalAlignment="Left" Margin="154,496,0,0" VerticalAlignment="Top" Width="60" Height="45" Visibility="Hidden"/>
+            <Button ToolTip="Snaps object to a horizontal rotation" x:Name="snapHorizontalButton" Content="Horizontal" HorizontalAlignment="Left" Margin="24,507,0,0" VerticalAlignment="Top" Width="60" Height="45" Click="SnapHorizontalButton_Click"/>
+            <Button ToolTip="Snaps object to a vertical rotation" x:Name="snapVerticalButton" Content="Vertical" HorizontalAlignment="Left" Margin="89,507,0,0" VerticalAlignment="Top" Width="60" Height="45" Click="SnapVerticalButton_Click"/>
         </Grid>
     </ScrollViewer>
 </UserControl>
