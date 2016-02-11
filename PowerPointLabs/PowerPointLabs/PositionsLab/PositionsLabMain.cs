@@ -425,7 +425,7 @@ namespace PowerPointLabs.PositionsLab
             Shape refShape = selectedShapes[1];
             Drawing.PointF[] allPointsOfRef = Graphics.GetRealCoordinates(refShape);
             Drawing.PointF topMostRef = Graphics.TopMostPoint(allPointsOfRef);
-            Drawing.PointF lowestRef = Graphics.LowestPoint(allPointsOfRef);
+            Drawing.PointF lowestRef = Graphics.BottomMostPoint(allPointsOfRef);
 
             var verticalDistanceInRef = Graphics.RealHeight(allPointsOfRef);
             var spaceBetweenShapes = verticalDistanceInRef;
@@ -452,12 +452,12 @@ namespace PowerPointLabs.PositionsLab
 
                 if (i == 2)
                 {
-                    topMostRef = Graphics.TopMostPoint(allPointsOfRef);
+                    topMostRef = Graphics.BottomMostPoint(allPointsOfRef);
                     currShape.IncrementTop(topMostRef.Y - topMost.Y + spaceBetweenShapes);
                 }
                 else
                 {
-                    lowestRef = Graphics.LowestPoint(allPointsOfRef);
+                    lowestRef = Graphics.BottomMostPoint(allPointsOfRef);
                     currShape.IncrementTop(lowestRef.Y - topMost.Y + spaceBetweenShapes);
                 }
             }

@@ -13,6 +13,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using PowerPointLabs.ActionFramework.Common.Extension;
 using PowerPoint = Microsoft.Office.Interop.PowerPoint;
 using PowerPointLabs.Models;
 using PowerPointLabs.Utils;
@@ -137,8 +138,8 @@ namespace PowerPointLabs.ResizeLab
         private void FitWidthBtn_Click(object sender, RoutedEventArgs e)
         {
             PowerPoint.ShapeRange selectedShapes = GetSelectedShapes();
-            var slideWidth = PowerPointPresentation.Current.SlideWidth;
-            var slideHight = PowerPointPresentation.Current.SlideHeight;
+            var slideWidth = this.GetCurrentPresentation().SlideWidth;
+            var slideHight = this.GetCurrentPresentation().SlideHeight;
 
             if (selectedShapes != null)
             {
@@ -149,8 +150,8 @@ namespace PowerPointLabs.ResizeLab
         private void FitHeightBtn_Click(object sender, RoutedEventArgs e)
         {
             PowerPoint.ShapeRange selectedShapes = GetSelectedShapes();
-            var slideWidth = PowerPointPresentation.Current.SlideWidth;
-            var slideHight = PowerPointPresentation.Current.SlideHeight;
+            var slideWidth = this.GetCurrentPresentation().SlideWidth;
+            var slideHight = this.GetCurrentPresentation().SlideHeight;
 
             if (selectedShapes != null)
             {
@@ -161,8 +162,8 @@ namespace PowerPointLabs.ResizeLab
         private void FillBtn_Click(object sender, RoutedEventArgs e)
         {
             PowerPoint.ShapeRange selectedShapes = GetSelectedShapes();
-            var slideWidth = PowerPointPresentation.Current.SlideWidth;
-            var slideHight = PowerPointPresentation.Current.SlideHeight;
+            var slideWidth = this.GetCurrentPresentation().SlideHeight;
+            var slideHight = this.GetCurrentPresentation().SlideHeight;
 
             if (selectedShapes != null)
             {
@@ -189,8 +190,8 @@ namespace PowerPointLabs.ResizeLab
         private void RestoreAspectRatioBtn_Click(object sender, RoutedEventArgs e)
         {
             PowerPoint.ShapeRange selectedShapes = GetSelectedShapes();
-            var slideHight = PowerPointPresentation.Current.SlideHeight;
-            var slideWidth = PowerPointPresentation.Current.SlideWidth;
+            var slideHight = this.GetCurrentPresentation().SlideHeight;
+            var slideWidth = this.GetCurrentPresentation().SlideWidth;
 
             if (selectedShapes != null)
             {
@@ -238,7 +239,7 @@ namespace PowerPointLabs.ResizeLab
 
         private PowerPoint.Selection GetSelection()
         {
-            return PowerPointCurrentPresentationInfo.CurrentSelection;
+            return this.GetCurrentSelection();
         }
         #endregion
 
