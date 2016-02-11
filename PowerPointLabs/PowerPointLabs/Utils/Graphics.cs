@@ -532,7 +532,7 @@ namespace PowerPointLabs.Utils
         {
             var rotationInRadian = DegreeToRadian(rotation);
             var rotatedX = Math.Cos(rotationInRadian) * (p.X - origin.X) - Math.Sin(rotationInRadian) * (p.Y - origin.Y) + origin.X;
-            var rotatedY = Math.Sin(rotationInRadian) * (p.X - origin.X) - Math.Cos(rotationInRadian) * (p.Y - origin.Y) + origin.Y;
+            var rotatedY = Math.Sin(rotationInRadian) * (p.X - origin.X) + Math.Cos(rotationInRadian) * (p.Y - origin.Y) + origin.Y;
 
             return new PointF((float)rotatedX, (float)rotatedY);
         }
