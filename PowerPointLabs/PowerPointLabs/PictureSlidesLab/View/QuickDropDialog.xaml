@@ -8,7 +8,7 @@
              WindowStyle="None"
              ResizeMode="NoResize"
              BorderThickness="1"
-             BorderBrush="#D74926"
+             BorderBrush="#0070C0"
              Background="White"
              MouseDown="QuickDropDialog_OnMouseDown"
              Topmost="True"

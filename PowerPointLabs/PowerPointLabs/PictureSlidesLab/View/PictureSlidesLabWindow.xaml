@@ -85,13 +85,60 @@
                     </ListBox.Template>
                     <ListBox.ItemContainerStyle>
                         <Style TargetType="ListBoxItem">
+                            <Setter Property="Template">
+                                <Setter.Value>
+                                    <ControlTemplate TargetType="{x:Type ListBoxItem}">
+                                        <Border x:Name="Bd"
+                                            Background="{TemplateBinding Background}"
+                                            BorderBrush="{TemplateBinding BorderBrush}"
+                                            BorderThickness="{TemplateBinding BorderThickness}"
+                                            Padding="{TemplateBinding Padding}"
+                                            SnapsToDevicePixels="True">
+                                            <ContentPresenter HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"
+                                            VerticalAlignment="{TemplateBinding VerticalContentAlignment}"
+                                            Content="{TemplateBinding Content}"
+                                            ContentStringFormat="{TemplateBinding ContentStringFormat}"
+                                            ContentTemplate="{TemplateBinding ContentTemplate}"
+                                            SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}" />
+                                        </Border>
+                                        <ControlTemplate.Triggers>
+                                            <MultiTrigger>
+                                                <MultiTrigger.Conditions>
+                                                    <Condition Property="IsMouseOver" Value="True" />
+                                                </MultiTrigger.Conditions>
+                                                <Setter TargetName="Bd" Property="Background" Value="#F0670C" />
+                                                <Setter Property="Foreground" Value="#FFFFFF" />
+                                            </MultiTrigger>
+                                            <MultiTrigger>
+                                                <MultiTrigger.Conditions>
+                                                    <Condition Property="Selector.IsSelectionActive" Value="False" />
+                                                    <Condition Property="IsSelected" Value="True" />
+                                                </MultiTrigger.Conditions>
+                                                <Setter TargetName="Bd" Property="Background" Value="#F0670C" />
+                                                <Setter Property="Foreground" Value="#FFFFFF" />
+                                            </MultiTrigger>
+                                            <MultiTrigger>
+                                                <MultiTrigger.Conditions>
+                                                    <Condition Property="Selector.IsSelectionActive" Value="True" />
+                                                    <Condition Property="IsSelected" Value="True" />
+                                                </MultiTrigger.Conditions>
+                                                <Setter TargetName="Bd" Property="Background" Value="#F0670C" />
+                                                <Setter Property="Foreground" Value="#FFFFFF" />
+                                            </MultiTrigger>
+                                            <Trigger Property="IsEnabled" Value="False">
+                                                <Setter TargetName="Bd" Property="TextElement.Foreground" Value="{DynamicResource {x:Static SystemColors.GrayTextBrushKey}}" />
+                                            </Trigger>
+                                        </ControlTemplate.Triggers>
+                                    </ControlTemplate>
+                                </Setter.Value>
+                            </Setter>
                             <Setter Property="HorizontalContentAlignment" Value="Center"></Setter>
                             <Setter Property="VerticalContentAlignment" Value="Center"></Setter>
                             <Style.Resources>
                                 <!--SelectedItem with focus-->
-                                <SolidColorBrush x:Key="{x:Static SystemColors.HighlightBrushKey}" Color="#FF6600" />
+                                <SolidColorBrush x:Key="{x:Static SystemColors.HighlightBrushKey}" Color="#F0670C" />
                                 <!--SelectedItem without focus-->
-                                <SolidColorBrush x:Key="{x:Static SystemColors.ControlBrushKey}" Color="#FF6600" />
+                                <SolidColorBrush x:Key="{x:Static SystemColors.ControlBrushKey}" Color="#F0670C" />
                             </Style.Resources>
                         </Style>
                     </ListBox.ItemContainerStyle>
@@ -174,13 +221,60 @@
                         </ListBox.Template>
                         <ListBox.ItemContainerStyle>
                             <Style TargetType="ListBoxItem">
+                                <Setter Property="Template">
+                                    <Setter.Value>
+                                        <ControlTemplate TargetType="{x:Type ListBoxItem}">
+                                            <Border x:Name="Bd"
+                                            Background="{TemplateBinding Background}"
+                                            BorderBrush="{TemplateBinding BorderBrush}"
+                                            BorderThickness="{TemplateBinding BorderThickness}"
+                                            Padding="{TemplateBinding Padding}"
+                                            SnapsToDevicePixels="True">
+                                                <ContentPresenter HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"
+                                            VerticalAlignment="{TemplateBinding VerticalContentAlignment}"
+                                            Content="{TemplateBinding Content}"
+                                            ContentStringFormat="{TemplateBinding ContentStringFormat}"
+                                            ContentTemplate="{TemplateBinding ContentTemplate}"
+                                            SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}" />
+                                            </Border>
+                                            <ControlTemplate.Triggers>
+                                                <MultiTrigger>
+                                                    <MultiTrigger.Conditions>
+                                                        <Condition Property="IsMouseOver" Value="True" />
+                                                    </MultiTrigger.Conditions>
+                                                    <Setter TargetName="Bd" Property="Background" Value="#F0670C" />
+                                                    <Setter Property="Foreground" Value="#FFFFFF" />
+                                                </MultiTrigger>
+                                                <MultiTrigger>
+                                                    <MultiTrigger.Conditions>
+                                                        <Condition Property="Selector.IsSelectionActive" Value="False" />
+                                                        <Condition Property="IsSelected" Value="True" />
+                                                    </MultiTrigger.Conditions>
+                                                    <Setter TargetName="Bd" Property="Background" Value="#F0670C" />
+                                                    <Setter Property="Foreground" Value="#FFFFFF" />
+                                                </MultiTrigger>
+                                                <MultiTrigger>
+                                                    <MultiTrigger.Conditions>
+                                                        <Condition Property="Selector.IsSelectionActive" Value="True" />
+                                                        <Condition Property="IsSelected" Value="True" />
+                                                    </MultiTrigger.Conditions>
+                                                    <Setter TargetName="Bd" Property="Background" Value="#F0670C" />
+                                                    <Setter Property="Foreground" Value="#FFFFFF" />
+                                                </MultiTrigger>
+                                                <Trigger Property="IsEnabled" Value="False">
+                                                    <Setter TargetName="Bd" Property="TextElement.Foreground" Value="{DynamicResource {x:Static SystemColors.GrayTextBrushKey}}" />
+                                                </Trigger>
+                                            </ControlTemplate.Triggers>
+                                        </ControlTemplate>
+                                    </Setter.Value>
+                                </Setter>
                                 <Setter Property="HorizontalContentAlignment" Value="Center"></Setter>
                                 <Setter Property="VerticalContentAlignment" Value="Center"></Setter>
                                 <Style.Resources>
                                     <!--SelectedItem with focus-->
-                                    <SolidColorBrush x:Key="{x:Static SystemColors.HighlightBrushKey}" Color="#FF6600" />
+                                    <SolidColorBrush x:Key="{x:Static SystemColors.HighlightBrushKey}" Color="#F0670C" />
                                     <!--SelectedItem without focus-->
-                                    <SolidColorBrush x:Key="{x:Static SystemColors.ControlBrushKey}" Color="#FF6600" />
+                                    <SolidColorBrush x:Key="{x:Static SystemColors.ControlBrushKey}" Color="#F0670C" />
                                 </Style.Resources>
                             </Style>
                         </ListBox.ItemContainerStyle>
@@ -231,15 +325,62 @@
                     </ListBox.Template>
                     <ListBox.ItemContainerStyle>
                         <Style TargetType="ListBoxItem">
+                            <Setter Property="Template">
+                                <Setter.Value>
+                                    <ControlTemplate TargetType="{x:Type ListBoxItem}">
+                                        <Border x:Name="Bd"
+                                            Background="{TemplateBinding Background}"
+                                            BorderBrush="{TemplateBinding BorderBrush}"
+                                            BorderThickness="{TemplateBinding BorderThickness}"
+                                            Padding="{TemplateBinding Padding}"
+                                            SnapsToDevicePixels="True">
+                                            <ContentPresenter HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"
+                                            VerticalAlignment="{TemplateBinding VerticalContentAlignment}"
+                                            Content="{TemplateBinding Content}"
+                                            ContentStringFormat="{TemplateBinding ContentStringFormat}"
+                                            ContentTemplate="{TemplateBinding ContentTemplate}"
+                                            SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}" />
+                                        </Border>
+                                        <ControlTemplate.Triggers>
+                                            <MultiTrigger>
+                                                <MultiTrigger.Conditions>
+                                                    <Condition Property="IsMouseOver" Value="True" />
+                                                </MultiTrigger.Conditions>
+                                                <Setter TargetName="Bd" Property="Background" Value="#F0670C" />
+                                                <Setter Property="Foreground" Value="#FFFFFF" />
+                                            </MultiTrigger>
+                                            <MultiTrigger>
+                                                <MultiTrigger.Conditions>
+                                                    <Condition Property="Selector.IsSelectionActive" Value="False" />
+                                                    <Condition Property="IsSelected" Value="True" />
+                                                </MultiTrigger.Conditions>
+                                                <Setter TargetName="Bd" Property="Background" Value="#F0670C" />
+                                                <Setter Property="Foreground" Value="#FFFFFF" />
+                                            </MultiTrigger>
+                                            <MultiTrigger>
+                                                <MultiTrigger.Conditions>
+                                                    <Condition Property="Selector.IsSelectionActive" Value="True" />
+                                                    <Condition Property="IsSelected" Value="True" />
+                                                </MultiTrigger.Conditions>
+                                                <Setter TargetName="Bd" Property="Background" Value="#F0670C" />
+                                                <Setter Property="Foreground" Value="#FFFFFF" />
+                                            </MultiTrigger>
+                                            <Trigger Property="IsEnabled" Value="False">
+                                                <Setter TargetName="Bd" Property="TextElement.Foreground" Value="{DynamicResource {x:Static SystemColors.GrayTextBrushKey}}" />
+                                            </Trigger>
+                                        </ControlTemplate.Triggers>
+                                    </ControlTemplate>
+                                </Setter.Value>
+                            </Setter>
                             <Setter Property="Height" Value="110"></Setter>
                             <Setter Property="Width" Value="150"></Setter>
                             <Setter Property="HorizontalContentAlignment" Value="Center"></Setter>
                             <Setter Property="VerticalContentAlignment" Value="Center"></Setter>
                             <Style.Resources>
                                 <!--SelectedItem with focus-->
-                                <SolidColorBrush x:Key="{x:Static SystemColors.HighlightBrushKey}" Color="#FF6600" />
+                                <SolidColorBrush x:Key="{x:Static SystemColors.HighlightBrushKey}" Color="#F0670C" />
                                 <!--SelectedItem without focus-->
-                                <SolidColorBrush x:Key="{x:Static SystemColors.ControlBrushKey}" Color="#FF6600" />
+                                <SolidColorBrush x:Key="{x:Static SystemColors.ControlBrushKey}" Color="#F0670C" />
                             </Style.Resources>
                         </Style>
                     </ListBox.ItemContainerStyle>
