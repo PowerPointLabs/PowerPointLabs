@@ -808,8 +808,8 @@ namespace PowerPointLabs.PictureSlidesLab.ViewModel
                 ImageFile = ImageUtil.GetThumbnailFromFullSizeImg(
                     StoragePath.SampleImg2Path),
                 FullSizeImageFile = StoragePath.SampleImg2Path,
-                Tooltip = "Picture taken from Nahemoth https://flic.kr/p/mBR8Ym",
-                ContextLink = "https://flic.kr/p/mBR8Ym"
+                Tooltip = "Picture taken from Gary Elsasser https://flic.kr/p/5s5APp",
+                ContextLink = "https://flic.kr/p/5s5APp"
             };
         }
 
