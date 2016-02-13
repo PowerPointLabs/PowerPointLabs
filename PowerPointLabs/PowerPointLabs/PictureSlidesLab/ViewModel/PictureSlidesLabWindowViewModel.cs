@@ -185,10 +185,14 @@ namespace PowerPointLabs.PictureSlidesLab.ViewModel
         }
 
         /// <summary>
-        /// Add images from local files
+        /// Add image from local files
         /// </summary>
         /// <param name="filenames"></param>
-        public void AddImageSelectionListItem(string[] filenames)
+        /// <param name="contentSlide"></param>
+        /// <param name="slideWidth"></param>
+        /// <param name="slideHeight"></param>
+        public void AddImageSelectionListItem(string[] filenames, Slide contentSlide, 
+            float slideWidth, float slideHeight)
         {
             try
             {
@@ -204,6 +208,13 @@ namespace PowerPointLabs.PictureSlidesLab.ViewModel
                     };
                     //add it
                     ImageSelectionList.Add(fromFileItem);
+                    UpdatePictureInPictureVariationWhenAddedNewOne(fromFileItem);
+                }
+                if (IsInPictureVariation() && filenames.Length > 0)
+                {
+                    UpdatePreviewImages(
+                        ImageSelectionListSelectedItem.ImageItem ?? View.CreateDefaultPictureItem(),
+                        contentSlide, slideWidth, slideHeight);
                 }
             }
             catch
@@ -248,10 +259,17 @@ namespace PowerPointLabs.PictureSlidesLab.ViewModel
                     {
                         VerifyIsProperImage(imagePath); // Case 2: not a proper image
                         item.UpdateDownloadedImage(imagePath);
-                        if (ImageSelectionListSelectedItem.ImageItem != null 
-                            && imagePath == ImageSelectionListSelectedItem.ImageItem.ImageFile)
+                        UpdatePictureInPictureVariationWhenAddedNewOne(item);
+                        if (ImageSelectionListSelectedItem.ImageItem != null
+                            && imagePath == ImageSelectionListSelectedItem.ImageItem.FullSizeImageFile)
                         {
                             UpdatePreviewImages(ImageSelectionListSelectedItem.ImageItem,
+                                contentSlide, slideWidth, slideHeight);
+                        }
+                        else if (IsInPictureVariation())
+                        {
+                            UpdatePreviewImages(
+                                ImageSelectionListSelectedItem.ImageItem ?? View.CreateDefaultPictureItem(),
                                 contentSlide, slideWidth, slideHeight);
                         }
                     }
@@ -571,6 +589,37 @@ namespace PowerPointLabs.PictureSlidesLab.ViewModel
 
             _8PicturesInPictureVariation[StylesVariationListSelectedId.Number]
                 = ImageSelectionListSelectedItem.ImageItem ?? View.CreateDefaultPictureItem();
+        }
+
+        public void UpdatePictureInPictureVariationWhenAddedNewOne(ImageItem newPicture)
+        {
+            if (!IsInPictureVariation() || newPicture == null)
+                return;
+
+            for (var i = 0; i < _8PicturesInPictureVariation.Count; i++)
+            {
+                var imageItem = _8PicturesInPictureVariation[i];
+                if (imageItem.ImageFile == StoragePath.NoPicturePlaceholderImgPath)
+                {
+                    _8PicturesInPictureVariation[i] = newPicture;
+                    break;
+                }
+            }
+        }
+
+        public void UpdatePictureInPictureVariationWhenDeleteSome()
+        {
+            if (!IsInPictureVariation())
+                return;
+
+            for (var i = 0; i < _8PicturesInPictureVariation.Count; i++)
+            {
+                var imageItem = _8PicturesInPictureVariation[i];
+                if (ImageSelectionList.IndexOf(imageItem) == -1)
+                {
+                    _8PicturesInPictureVariation[i] = View.CreateDefaultPictureItem();
+                }
+            }
         }
 
         private List<ImageItem> GetLast8Pictures(int selectedIdOfVariationList)

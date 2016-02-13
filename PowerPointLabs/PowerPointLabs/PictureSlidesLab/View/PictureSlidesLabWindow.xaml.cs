@@ -149,7 +149,10 @@ namespace PowerPointLabs.PictureSlidesLab.View
                     var filenames = (args.Data.GetData("FileDrop") as string[]);
                     if (filenames == null || filenames.Length == 0) return;
 
-                    ViewModel.AddImageSelectionListItem(filenames);
+                    ViewModel.AddImageSelectionListItem(filenames,
+                        this.GetCurrentSlide().GetNativeSlide(),
+                        this.GetCurrentPresentation().SlideWidth,
+                        this.GetCurrentPresentation().SlideHeight);
                 }
                 else if (args.Data.GetDataPresent("Text"))
                 {
@@ -213,7 +216,10 @@ namespace PowerPointLabs.PictureSlidesLab.View
                                                             + DateTime.Now.GetHashCode() + "-"
                                                             + Guid.NewGuid().ToString().Substring(0, 7));
                 pastedPicture.Save(pastedPictureFile);
-                ViewModel.AddImageSelectionListItem(new[] {pastedPictureFile});
+                ViewModel.AddImageSelectionListItem(new[] {pastedPictureFile},
+                    this.GetCurrentSlide().GetNativeSlide(),
+                    this.GetCurrentPresentation().SlideWidth,
+                    this.GetCurrentPresentation().SlideHeight);
 
                 // examine whether it's thumbnail picture
                 if (pastedPicture.Width <= 400
@@ -231,7 +237,10 @@ namespace PowerPointLabs.PictureSlidesLab.View
             }
             else if (pastedFiles != null && pastedFiles.Count > 0)
             {
-                ViewModel.AddImageSelectionListItem(pastedFiles.Cast<string>().ToArray());
+                ViewModel.AddImageSelectionListItem(pastedFiles.Cast<string>().ToArray(),
+                    this.GetCurrentSlide().GetNativeSlide(),
+                    this.GetCurrentPresentation().SlideWidth,
+                    this.GetCurrentPresentation().SlideHeight);
             }
         }
 
@@ -507,7 +516,10 @@ namespace PowerPointLabs.PictureSlidesLab.View
                     DisableLoadingStyleOnWindowActivate();
                     if (openFileDialog.ShowDialog() == System.Windows.Forms.DialogResult.OK)
                     {
-                        ViewModel.AddImageSelectionListItem(openFileDialog.FileNames);
+                        ViewModel.AddImageSelectionListItem(openFileDialog.FileNames,
+                            this.GetCurrentSlide().GetNativeSlide(),
+                            this.GetCurrentPresentation().SlideWidth,
+                            this.GetCurrentPresentation().SlideHeight);
                     }
                     EnableLoadingStyleOnWindowActivate();
                     e.Handled = true;
@@ -642,6 +654,16 @@ namespace PowerPointLabs.PictureSlidesLab.View
         private void DeleteAllImage()
         {
             ViewModel.RemoveAllImageSelectionListItems();
+            HandleDeletePictureInPictureVariation();
+        }
+
+        private void HandleDeletePictureInPictureVariation()
+        {
+            ViewModel.UpdatePictureInPictureVariationWhenDeleteSome();
+            if (ViewModel.IsInPictureVariation())
+            {
+                UpdatePreviewImages();
+            }
         }
 
         private void DeleteImage()
@@ -654,6 +676,7 @@ namespace PowerPointLabs.PictureSlidesLab.View
             if (selectedImage == null) return;
 
             ViewModel.ImageSelectionList.RemoveAt(_clickedImageSelectionItemIndex);
+            HandleDeletePictureInPictureVariation();
         }
 
         private void DeleteSelectedImage()
@@ -664,6 +687,7 @@ namespace PowerPointLabs.PictureSlidesLab.View
                 return;
 
             ViewModel.ImageSelectionList.RemoveAt(ImageSelectionListBox.SelectedIndex);
+            HandleDeletePictureInPictureVariation();
         }
 
         private void AdjustImageDimensions(ImageItem source)
