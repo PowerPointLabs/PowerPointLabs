@@ -17,8 +17,8 @@ namespace PowerPointLabs.PictureSlidesLab.View
                 if (_gotoSlideDialog.IsOpen) return;
 
                 _gotoSlideDialog
-                    .Init("Select the Slide to Edit")
-                    .CustomizeGotoSlideButton("Select", "Select the slide to edit styles.")
+                    .Init("Go to a Slide to Edit")
+                    .CustomizeGotoSlideButton("Go", "Go to the slide to edit its style.")
                     .FocusOkButton()
                     .OpenDialog();
                 this.ShowMetroDialogAsync(_gotoSlideDialog, MetroDialogOptions);

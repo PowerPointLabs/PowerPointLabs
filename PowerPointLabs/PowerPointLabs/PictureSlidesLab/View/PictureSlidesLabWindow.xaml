@@ -54,13 +54,13 @@
                 <Grid Grid.Row="1" Margin="0,0,0,5">
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="5" />
-                        <ColumnDefinition Width="60" />
+                        <ColumnDefinition Width="80" />
                         <ColumnDefinition Width="65" />
                         <ColumnDefinition Width="80" />
                         <ColumnDefinition Width="30" />
                         <ColumnDefinition Width="*"></ColumnDefinition>
                     </Grid.ColumnDefinitions>
-                    <Label Name="PreviewLabel" Grid.Column="1" Margin="0,0,5,0" FontSize="15">Styles</Label>
+                    <Label Name="PreviewLabel" Grid.Column="1" Margin="0,0,5,0" FontSize="15">Preview</Label>
                     <Button ToolTip="Apply the selected style to the current slide." IsEnabled="False" Name="StylesApplyButton" Click="StylesPreviewApplyButton_OnClick" Grid.Column="2" Margin="0,0,5,0">Apply</Button>
                     <Button ToolTip="Customize the selected style." IsEnabled="False" Name="StylesCustomizeButton" Click="StylesCustomizeButton_OnClick" Grid.Column="3" Margin="0,0,5,0">Customize</Button>
                     <controls:ProgressRing Name="PreviewProgressRing" Width="10" Height="10" Grid.Column="4" IsActive="False" />
@@ -128,7 +128,7 @@
                         <ColumnDefinition Width="auto"></ColumnDefinition>
                         <ColumnDefinition Width="15"></ColumnDefinition>
                     </Grid.ColumnDefinitions>
-                    <Label Name="VariationLabel" Grid.Column="1" Margin="0,0,5,0" FontSize="15">Variations</Label>
+                    <Label Name="VariationLabel" Grid.Column="1" Margin="0,0,5,0" FontSize="15">Preview</Label>
                     <Button ToolTip="Apply the selected style to the current slide." Name="StyleVariationApplyButton" Click="StylesVariationApplyButton_OnClick" Grid.Column="2" Margin="0,0,5,0">Apply</Button>
                     <Button Grid.Column="4"
                         Name="VariationFlyoutBackButton"
@@ -206,8 +206,8 @@
                         <ColumnDefinition Width="40" />
                         <ColumnDefinition Width="*"></ColumnDefinition>
                     </Grid.ColumnDefinitions>
-                    <Button IsEnabled="false" Name="GotoSlideButton" ToolTip="Select a target slide to edit styles." Width="85" Click="GotoSlideButton_OnClick" Margin="0,0,5,0" Grid.Column="1">Change slide</Button>
-                    <Button IsEnabled="false" Name="LoadStylesButton" ToolTip="Load styles from a slide to customize." Width="60" Click="LoadButton_OnClick" Margin="0,0,5,0" Grid.Column="2">Load...</Button>
+                    <Button IsEnabled="false" Name="GotoSlideButton" ToolTip="Go to a slide to edit its style." Width="85" Click="GotoSlideButton_OnClick" Margin="0,0,5,0" Grid.Column="1">Go to slide</Button>
+                    <Button IsEnabled="false" Name="LoadStylesButton" ToolTip="Load the style or picture from a slide to customize." Width="60" Click="LoadButton_OnClick" Margin="0,0,5,0" Grid.Column="2">Load...</Button>
                     <controls:ProgressRing Name="ImageDownloadProgressRing" Width="10" Height="10" Grid.Column="3" IsActive="{Binding Path=IsActiveDownloadProgressRing.Flag, Mode=TwoWay}" />
                 </Grid>
                 <TextBlock Visibility="Visible" Name="ImageSelectionInstructions" MaxWidth="730" TextWrapping="Wrap" HorizontalAlignment="Center" VerticalAlignment="Center" Foreground="#AAAAAA" FontSize="18" Grid.Row="2">Click the 'Choose Pictures' icon above to load local images, or drag and drop the files here. You can also drag and drop thumbnail pictures from Google Image Search to import.</TextBlock>

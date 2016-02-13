@@ -26,21 +26,9 @@ namespace PowerPointLabs.PictureSlidesLab.ModelFactory.VariantWorker
                 }),
                 new StyleVariant(new Dictionary<string, object>
                 {
-                    {"OptionName", "Font Size +3"},
-                    {"IsUseTextFormat", true},
-                    {"FontSizeIncrease", 3}
-                }),
-                new StyleVariant(new Dictionary<string, object>
-                {
                     {"OptionName", "Font Size +6"},
                     {"IsUseTextFormat", true},
                     {"FontSizeIncrease", 6}
-                }),
-                new StyleVariant(new Dictionary<string, object>
-                {
-                    {"OptionName", "Font Size +9"},
-                    {"IsUseTextFormat", true},
-                    {"FontSizeIncrease", 9}
                 }),
                 new StyleVariant(new Dictionary<string, object>
                 {
@@ -50,21 +38,33 @@ namespace PowerPointLabs.PictureSlidesLab.ModelFactory.VariantWorker
                 }),
                 new StyleVariant(new Dictionary<string, object>
                 {
-                    {"OptionName", "Font Size +15"},
-                    {"IsUseTextFormat", true},
-                    {"FontSizeIncrease", 15}
-                }),
-                new StyleVariant(new Dictionary<string, object>
-                {
                     {"OptionName", "Font Size +18"},
                     {"IsUseTextFormat", true},
                     {"FontSizeIncrease", 18}
                 }),
                 new StyleVariant(new Dictionary<string, object>
                 {
-                    {"OptionName", "Font Size +21"},
+                    {"OptionName", "Font Size +24"},
                     {"IsUseTextFormat", true},
-                    {"FontSizeIncrease", 21}
+                    {"FontSizeIncrease", 24}
+                }),
+                new StyleVariant(new Dictionary<string, object>
+                {
+                    {"OptionName", "Font Size +30"},
+                    {"IsUseTextFormat", true},
+                    {"FontSizeIncrease", 30}
+                }),
+                new StyleVariant(new Dictionary<string, object>
+                {
+                    {"OptionName", "Font Size +36"},
+                    {"IsUseTextFormat", true},
+                    {"FontSizeIncrease", 36}
+                }),
+                new StyleVariant(new Dictionary<string, object>
+                {
+                    {"OptionName", "Font Size +42"},
+                    {"IsUseTextFormat", true},
+                    {"FontSizeIncrease", 42}
                 })
             };
         }
