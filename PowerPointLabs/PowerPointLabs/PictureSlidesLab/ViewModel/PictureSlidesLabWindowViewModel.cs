@@ -387,7 +387,7 @@ namespace PowerPointLabs.PictureSlidesLab.ViewModel
 
             UpdateStylesVariationImages(source, contentSlide, slideWidth, slideHeight);
 
-            StylesVariationListSelectedId.Number = selectedId;
+            StylesVariationListSelectedId.Number = selectedId < 0 ? 0 : selectedId;
             View.SetVariationListBoxScrollOffset(scrollOffset);
         }
 
@@ -738,7 +738,7 @@ namespace PowerPointLabs.PictureSlidesLab.ViewModel
             }
             SaveClipboardPicture(copiedPicture);
 
-            StylesPreviewListSelectedId.Number = selectedId;
+            StylesPreviewListSelectedId.Number = selectedId < 0 ? 0 : selectedId;
         }
 
         private static bool IsAbleToUpdateStylesPreviewImages(ImageItem source, Slide contentSlide)

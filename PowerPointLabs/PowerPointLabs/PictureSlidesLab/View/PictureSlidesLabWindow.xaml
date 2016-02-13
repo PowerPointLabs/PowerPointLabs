@@ -22,7 +22,8 @@
              DragLeave="PictureSlidesLabWindow_OnDragLeave"
              DragOver="PictureSlidesLabWindow_OnDragEnter"
              KeyDown="PictureSlidesLabWindow_OnKeyDown"
-             Drop="PictureSlidesLabWindow_OnDrop">
+             Drop="PictureSlidesLabWindow_OnDrop"
+             Loaded="PictureSlidesLabWindow_OnLoaded">
     <controls:MetroWindow.Resources>
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
@@ -397,6 +398,12 @@
                 <SolidColorBrush Opacity="0.80" Color="Black"/>
             </Grid.Background>
             <TextBlock Name="DragAndDropInstructions" TextWrapping="Wrap" HorizontalAlignment="Center" VerticalAlignment="Center" Foreground="#FFFFFF" FontSize="18" Text="{Binding Path=Text, Mode=TwoWay, NotifyOnSourceUpdated=True}"></TextBlock>
+        </Grid>
+        <Grid Name="PictureSlidesLabGridLoadingOverlay" Visibility="Hidden">
+            <Grid.Background>
+                <SolidColorBrush Opacity="0.80" Color="Black"/>
+            </Grid.Background>
+            <TextBlock Name="LoadingInstructions" TextWrapping="Wrap" HorizontalAlignment="Center" VerticalAlignment="Center" Foreground="#FFFFFF" FontSize="40" Text="Loading..."></TextBlock>
         </Grid>
     </Grid>
 </controls:MetroWindow>

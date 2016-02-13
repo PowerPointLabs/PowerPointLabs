@@ -54,6 +54,7 @@ namespace PowerPointLabs.PictureSlidesLab.View
         private int _clickedImageSelectionItemIndex = -1;
 
         // other UI control flags
+        private bool _isInit;
         private bool _isAbleLoadingOnWindowActivate = true;
         private bool _isStylePreviewRegionInit;
         private int _lastSelectedSlideIndex = -1;
@@ -65,12 +66,56 @@ namespace PowerPointLabs.PictureSlidesLab.View
         public PictureSlidesLabWindow()
         {
             InitializeComponent();
+            // start loading process
+            PictureSlidesLabGridLoadingOverlay.Visibility = Visibility.Visible;
+        }
+
+        private void PictureSlidesLabWindow_OnLoaded(object sender, RoutedEventArgs e)
+        {
+            // wait for some time to allow UI to be fully loaded
+            var timer = new Timer
+            {
+                Interval = 500 // ms
+            };
+            timer.Tick += (o, args) =>
+            {
+                timer.Stop();
+                Dispatcher.BeginInvoke(new Action(Init));
+            };
+            timer.Start();
+        }
+
+        private void Init()
+        {
+            if (_isInit) return;
 
             InitViewModel();
             InitGotoSlideDialog();
             InitLoadStylesDialog();
             InitDragAndDrop();
+            InitStyleing();
+            // remove loading overlay
+            PictureSlidesLabGridLoadingOverlay.Visibility = Visibility.Hidden;
             IsOpen = true;
+            Activate();
+
+            _isInit = true;
+        }
+
+        private void InitStyleing()
+        {
+            // load back the style from the current slide, or
+            // select the first picture to preview styles
+            var isSuccessfullyLoaded = LoadStyleAndImage(this.GetCurrentSlide(),
+                    isLoadingWithDefaultPicture: false);
+            if (ViewModel.ImageSelectionList.Count >= 2)
+            {
+                if (!isSuccessfullyLoaded)
+                {
+                    // index-0 is choosePicture placeholder
+                    ViewModel.ImageSelectionListSelectedId.Number = 1;
+                }
+            }
         }
 
         private void InitViewModel()
