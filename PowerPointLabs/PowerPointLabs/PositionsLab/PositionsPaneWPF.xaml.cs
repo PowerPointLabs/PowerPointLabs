@@ -19,6 +19,7 @@ using PowerPoint = Microsoft.Office.Interop.PowerPoint;
 using Office = Microsoft.Office.Core;
 using System.Diagnostics;
 using PowerPointLabs.Utils;
+using PowerPointLabs.Models;
 
 namespace PowerPointLabs.PositionsLab
 {
@@ -41,9 +42,8 @@ namespace PowerPointLabs.PositionsLab
         private const float REFPOINT_RADIUS = 10;
         private static Shape refPoint = null;
         private static List<Shape> shapesToBeRotated = new List<Shape>();
-        private List<Shape> currentSelection = new List<Shape>();
-        private float[,] initialShapes;
-        private System.Drawing.Point prevMousePos = new System.Drawing.Point();
+        private static List<Shape> allShapesInSlide = new List<Shape>();
+        private static System.Drawing.Point prevMousePos = new System.Drawing.Point();
 
         public PositionsPaneWPF()
         {
@@ -149,9 +149,12 @@ namespace PowerPointLabs.PositionsLab
             
             if (selectedShapes.Count > 0)
             {
+                var currentSlide = PowerPointCurrentPresentationInfo.CurrentSlide as PowerPointSlide;
+
                 shapesToBeRotated = ConvertShapeRangeToList(selectedShapes);
                 System.Drawing.PointF refCoordinates = CalculateCenterPoint(shapesToBeRotated);
-                refPoint = AddReferencePoint(Globals.ThisAddIn.Application.ActiveWindow.View.Slide.Shapes, refCoordinates.X - REFPOINT_RADIUS/2, refCoordinates.Y - REFPOINT_RADIUS/2);
+                refPoint = AddReferencePoint(currentSlide.Shapes, refCoordinates.X - REFPOINT_RADIUS/2, refCoordinates.Y - REFPOINT_RADIUS/2);
+                allShapesInSlide = ConvertShapesToList(currentSlide.Shapes);
 
                 dispatcherTimer.Tick += new EventHandler(RotationHandler);
 
@@ -168,6 +171,7 @@ namespace PowerPointLabs.PositionsLab
 
         private void RotationHandler(object sender, EventArgs e)
         {
+            //Remove dragging control of user
             Globals.ThisAddIn.Application.ActiveWindow.Selection.Unselect();
             System.Drawing.Point p = System.Windows.Forms.Control.MousePosition;
 
@@ -175,9 +179,9 @@ namespace PowerPointLabs.PositionsLab
             float angle = (float)AngleBetweenTwoPoints(ConvertSlidePointToScreenPoint(Graphics.GetCenterPoint(refPoint)), p) - prevAngle;
             System.Drawing.PointF origin = Graphics.GetCenterPoint(refPoint);
 
-            for (int i = 0; i < currentSelection.Count; i++)
+            for (int i = 0; i < shapesToBeRotated.Count; i++)
             {
-                Shape currentShape = currentSelection[i];
+                Shape currentShape = shapesToBeRotated[i];
                 System.Drawing.PointF unrotatedCenter = Graphics.GetCenterPoint(currentShape);
                 System.Drawing.PointF rotatedCenter = Graphics.RotatePoint(unrotatedCenter, origin, angle);
 
@@ -201,31 +205,29 @@ namespace PowerPointLabs.PositionsLab
             {
                 System.Drawing.Point p = System.Windows.Forms.Control.MousePosition;
 
-                Shape selectedShape = ShapeBelowMousePos(shapesToBeRotated, p);
+                Shape selectedShape = GetShapeDirectlyBelowMousePos(allShapesInSlide, p);
 
-                if (selectedShape == null && !IsPointWithinShape(refPoint, p))
+                if (selectedShape == null)
                 {
-                    ResetRotationMode();
+                    DisableRotationMode();
                     return;
                 }
 
-                if (IsPointWithinShape(refPoint, p))
+                bool isShapeToBeRotated = shapesToBeRotated.Contains(selectedShape);
+                bool isRefPoint = refPoint.Id == selectedShape.Id;
+
+                if (!isShapeToBeRotated && !isRefPoint)
+                {
+                    DisableRotationMode();
+                    return;
+                }
+
+                if (isRefPoint)
                 {
                     return;
                 }
 
-                selectedShape.Select();
-                currentSelection = ConvertShapeRangeToList(Globals.ThisAddIn.Application.ActiveWindow.Selection.ShapeRange as PowerPoint.ShapeRange);
-                prevMousePos = System.Windows.Forms.Control.MousePosition;
-                initialShapes = new float[currentSelection.Count, 3];
-
-                for (int i = 0; i < currentSelection.Count; i++)
-                {
-                    initialShapes[i, LEFT] = currentSelection[i].Left;
-                    initialShapes[i, TOP] = currentSelection[i].Top;
-                    initialShapes[i, ROTATION] = currentSelection[i].Rotation;
-                }
-
+                prevMousePos = p;
                 dispatcherTimer.Start();
             }
             catch (Exception ex)
@@ -243,12 +245,12 @@ namespace PowerPointLabs.PositionsLab
 
         private System.Drawing.PointF CalculateCenterPoint(List<Shape> shapes)
         {
-            System.Drawing.PointF centerPoint = new System.Drawing.PointF();
-
-            if (shapes.Count == 1)
+            if (shapes.Count < 1)
             {
-                centerPoint = Graphics.GetCenterPoint(shapes[0]);
+                return new System.Drawing.PointF();
             }
+
+            System.Drawing.PointF centerPoint = Graphics.GetCenterPoint(shapes[0]);
 
             foreach (Shape s in shapes)
             {
@@ -272,6 +274,11 @@ namespace PowerPointLabs.PositionsLab
 
         private bool IsPointWithinShape(Shape shape, System.Drawing.Point p)
         {
+            float epsilon = 0.00001f;
+
+            System.Drawing.PointF centerPoint = ConvertSlidePointToScreenPoint(Graphics.GetCenterPoint(shape));
+            System.Drawing.PointF rotatedMousePos = Graphics.RotatePoint(p, centerPoint, -shape.Rotation);
+
             float x1 = PointsToScreenPixelsX(shape.Left);
             float y1 = PointsToScreenPixelsY(shape.Top);
             float x2 = PointsToScreenPixelsX(shape.Left + shape.Width);
@@ -287,20 +294,25 @@ namespace PowerPointLabs.PositionsLab
             y1 -= 6;
             y2 += 6;
 
-            return (x1 <= p.X && p.X <= x2) && (y1 <= p.Y && p.Y <= y2);
+            return (x1 - epsilon <= rotatedMousePos.X && rotatedMousePos.X  <= x2 + epsilon) && (y1 - epsilon <= rotatedMousePos.Y && rotatedMousePos.Y <= y2 + epsilon);
         }
 
-        private Shape ShapeBelowMousePos(List<Shape> shapes, System.Drawing.Point p)
+        private Shape GetShapeDirectlyBelowMousePos(List<Shape> shapes, System.Drawing.Point p)
         {
+            Shape aShape = null;
+
             foreach (Shape s in shapes)
             {
                 if (IsPointWithinShape(s, p))
                 {
-                    return s;
+                    if (aShape == null || aShape.ZOrderPosition < s.ZOrderPosition)
+                    {
+                        aShape = s;
+                    }
                 }
             }
 
-            return null;
+            return aShape;
         }
 
         private List<Shape> ConvertShapeRangeToList (PowerPoint.ShapeRange range)
@@ -313,6 +325,18 @@ namespace PowerPointLabs.PositionsLab
             }
 
             return shapes;
+        }
+
+        private List<Shape> ConvertShapesToList(PowerPoint.Shapes shapes)
+        {
+            List<Shape> listOfShapes = new List<Shape>();
+
+            foreach (Shape s in shapes)
+            {
+                listOfShapes.Add(s);
+            }
+
+            return listOfShapes;
         }
 
         private double AngleBetweenTwoPoints(System.Drawing.PointF refPoint, System.Drawing.PointF pt)
@@ -334,7 +358,7 @@ namespace PowerPointLabs.PositionsLab
         private System.Drawing.PointF ConvertSlidePointToScreenPoint(System.Drawing.PointF pt)
         {
             pt.X = PointsToScreenPixelsX(pt.X);
-            pt.Y = PointsToScreenPixelsX(pt.Y);
+            pt.Y = PointsToScreenPixelsY(pt.Y);
 
             return pt;
         }
@@ -342,6 +366,14 @@ namespace PowerPointLabs.PositionsLab
         private float AddAngles(float a, float b)
         {
             return (a + b) % 360;
+        }
+
+        private void SelectShapes(List<Shape> shapes)
+        {
+            foreach (Shape s in shapes)
+            {
+                s.Select(Office.MsoTriState.msoFalse);
+            }
         }
 
         #endregion
@@ -361,7 +393,7 @@ namespace PowerPointLabs.PositionsLab
             dispatcherTimer = new System.Windows.Threading.DispatcherTimer();
         }
 
-        private static void ResetRotationMode()
+        private static void DisableRotationMode()
         {
             ClearAllEventHandlers();
 
@@ -372,6 +404,8 @@ namespace PowerPointLabs.PositionsLab
             }
 
             shapesToBeRotated = new List<Shape>();
+            allShapesInSlide = new List<Shape>();
+            prevMousePos = new System.Drawing.Point();
         }
     }
 }
