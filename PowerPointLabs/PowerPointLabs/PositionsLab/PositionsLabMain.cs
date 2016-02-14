@@ -468,6 +468,11 @@ namespace PowerPointLabs.PositionsLab
             DistributeHorizontal();
             DistributeVertical();
         }
+
+        public static void DistributeShapes()
+        {
+            
+        }
         #endregion
 
         #endregion

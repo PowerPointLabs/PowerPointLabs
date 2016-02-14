@@ -113,6 +113,11 @@ namespace PowerPointLabs.PositionsLab
         {
             PositionsLabMain.DistributeCenter();
         }
+
+        private void DistributeShapesButton_Click(object sender, RoutedEventArgs e)
+        {
+            PositionsLabMain.DistributeShapes();
+        }
         #endregion
 
         #region Snap
@@ -513,5 +518,6 @@ namespace PowerPointLabs.PositionsLab
             allShapesInSlide = new List<Shape>();
             prevMousePos = new System.Drawing.Point();
         }
+
     }
 }
