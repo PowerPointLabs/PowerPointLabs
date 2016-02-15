@@ -56,15 +56,15 @@ namespace PowerPointLabs.PictureSlidesLab.ModelFactory.VariantWorker
                 }),
                 new StyleVariant(new Dictionary<string, object>
                 {
-                    {"OptionName", "Font Size +36"},
+                    {"OptionName", "Font Size +45"},
                     {"IsUseTextFormat", true},
-                    {"FontSizeIncrease", 36}
+                    {"FontSizeIncrease", 45}
                 }),
                 new StyleVariant(new Dictionary<string, object>
                 {
-                    {"OptionName", "Font Size +42"},
+                    {"OptionName", "Font Size +65"},
                     {"IsUseTextFormat", true},
-                    {"FontSizeIncrease", 42}
+                    {"FontSizeIncrease", 65}
                 })
             };
         }
