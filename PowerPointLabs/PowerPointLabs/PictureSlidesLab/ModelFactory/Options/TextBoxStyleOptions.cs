@@ -15,6 +15,7 @@ namespace PowerPointLabs.PictureSlidesLab.ModelFactory.Options
             foreach (var option in result)
             {
                 option.TextBoxPosition = 7; //bottom-left;
+                option.FontFamily = "Calibri";
             }
             UpdateStyleName(
                 result,
@@ -30,7 +31,8 @@ namespace PowerPointLabs.PictureSlidesLab.ModelFactory.Options
                 IsUseTextBoxStyle = true,
                 TextBoxPosition = 7,
                 TextBoxColor = "#000000",
-                FontColor = "#FFD700"
+                FontColor = "#FFD700",
+                FontFamily = "Calibri"
             };
         }
     }

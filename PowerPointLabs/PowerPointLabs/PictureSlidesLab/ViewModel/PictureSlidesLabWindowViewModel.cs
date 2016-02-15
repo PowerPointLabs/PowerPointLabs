@@ -18,6 +18,7 @@ using PowerPointLabs.PictureSlidesLab.View.Interface;
 using PowerPointLabs.Utils;
 using PowerPointLabs.Utils.Exceptions;
 using PowerPointLabs.WPF.Observable;
+using Fonts = System.Windows.Media.Fonts;
 
 namespace PowerPointLabs.PictureSlidesLab.ViewModel
 {
@@ -52,6 +53,8 @@ namespace PowerPointLabs.PictureSlidesLab.ViewModel
         public ObservableInt CurrentVariantCategoryId { get; set; }
 
         public ObservableCollection<string> VariantsCategory { get; set; }
+
+        public ObservableCollection<string> FontFamilies { get; set; } 
 
         public ObservableInt SelectedFontId { get; set; }
 
@@ -96,10 +99,26 @@ namespace PowerPointLabs.PictureSlidesLab.ViewModel
             ImageDownloader = new ContextDownloader(View.GetThreadContext());
             InitStorage();
             InitUiModels();
+            InitFontFamilies();
             CleanUnusedPersistentData();
             Designer = stylesDesigner ?? new StylesDesigner();
             OptionsFactory = new StyleOptionsFactory();
             VariantsFactory = new StyleVariantsFactory();
+        }
+
+        private void InitFontFamilies()
+        {
+            FontFamilies = new ObservableCollection<string>();
+            foreach (var fontFamily in Fonts.SystemFontFamilies)
+            {
+                FontFamilies.Add(fontFamily.Source);
+            }
+
+            // add font family not in Fonts.SystemFontFamilies
+            FontFamilies.Add("Segoe UI Light");
+            FontFamilies.Add("Calibri Light");
+            FontFamilies.Add("Arial Black");
+            FontFamilies.Add("Times New Roman Italic");
         }
 
         private void CleanUnusedPersistentData()
@@ -423,6 +442,29 @@ namespace PowerPointLabs.PictureSlidesLab.ViewModel
                     fontColorVariant.Apply(option);
                 }
             }
+
+            var nextCategoryVariants = _styleVariants[currentVariantsCategory];
+            if (currentVariantsCategory == TextCollection.PictureSlidesLabText.VariantCategoryFontFamily)
+            {
+                var isFontInVariation = false;
+                var currentFontFamily = _styleOptions[targetVariationSelectedIndex].FontFamily;
+                foreach (var variant in nextCategoryVariants)
+                {
+                    if (currentFontFamily == (string) variant.Get("FontFamily"))
+                    {
+                        isFontInVariation = true;
+                    }
+                }
+                if (!isFontInVariation 
+                    && targetVariationSelectedIndex >= 0 
+                    && targetVariationSelectedIndex < nextCategoryVariants.Count)
+                {
+                    nextCategoryVariants[targetVariationSelectedIndex]
+                        .Set("FontFamily", currentFontFamily);
+                    nextCategoryVariants[targetVariationSelectedIndex]
+                        .Set("OptionName", currentFontFamily);
+                }
+            }
             
             int pictureIndexToSelect = -1;
             // Enter picture variation for the first time
@@ -489,7 +531,6 @@ namespace PowerPointLabs.PictureSlidesLab.ViewModel
                 }
             }
 
-            var nextCategoryVariants = _styleVariants[currentVariantsCategory];
             var variantIndexWithoutEffect = -1;
             for (var i = 0; i < nextCategoryVariants.Count; i++)
             {

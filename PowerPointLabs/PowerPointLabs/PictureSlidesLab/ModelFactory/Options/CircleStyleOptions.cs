@@ -16,6 +16,7 @@ namespace PowerPointLabs.PictureSlidesLab.ModelFactory.Options
             {
                 styleOption.IsUseCircleStyle = true;
                 styleOption.CircleTransparency = 25;
+                styleOption.FontFamily = "Impact";
             }
             return UpdateStyleName(
                 result,
@@ -29,7 +30,8 @@ namespace PowerPointLabs.PictureSlidesLab.ModelFactory.Options
                 StyleName = TextCollection.PictureSlidesLabText.StyleNameCircle,
                 IsUseCircleStyle = true,
                 FontColor = "#000000",
-                CircleTransparency = 25
+                CircleTransparency = 25,
+                FontFamily = "Impact"
             };
         }
     }

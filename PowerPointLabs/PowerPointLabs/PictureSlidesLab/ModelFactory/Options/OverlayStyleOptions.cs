@@ -15,6 +15,7 @@ namespace PowerPointLabs.PictureSlidesLab.ModelFactory.Options
             foreach (var styleOption in result)
             {
                 styleOption.Transparency = 35;
+                styleOption.FontFamily = "Trebuchet MS";
             }
             return UpdateStyleName(result,
                 TextCollection.PictureSlidesLabText.StyleNameOverlay);
@@ -29,7 +30,8 @@ namespace PowerPointLabs.PictureSlidesLab.ModelFactory.Options
                 Transparency = 35,
                 OverlayColor = "#007FFF", // blue
                 IsUseSpecialEffectStyle = true,
-                SpecialEffect = 0
+                SpecialEffect = 0,
+                FontFamily = "Trebuchet MS"
             };
         }
     }

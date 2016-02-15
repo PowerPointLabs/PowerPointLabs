@@ -186,7 +186,7 @@
                     </Button>
                     <controls:ProgressRing ToolTip="Downloading picture..." Margin="5,0,0,0" HorizontalAlignment="Left" Foreground="#FFFFFF" Name="VariationProgressRing" Width="10" Height="10" Grid.Column="5" IsActive="False" />
                     <Border Name="VariantsColorPanel" ToolTip="Click to change color" MouseLeftButtonUp="VariantsColorPanel_OnMouseLeftButtonUp" BorderBrush="#EEEEEE" BorderThickness="1" Height="26" Width="65" HorizontalAlignment="Right" VerticalAlignment="Center" Grid.Column="6" />
-                    <ComboBox Name="FontPanel" KeyUp="VariantsFontPanel_OnKeyUp" DropDownClosed="VariantsFontPanel_OnDropDownClosed" ToolTip="Select the font here" Grid.Column="6" SelectedItem="{Binding Path=SelectedFontFamily.Font, Mode=TwoWay}" SelectedIndex="{Binding Path=SelectedFontId.Number, Mode=TwoWay}" ItemsSource="{Binding Source={x:Static Fonts.SystemFontFamilies}}" Height="26" VerticalAlignment="Center">
+                    <ComboBox Name="FontPanel" KeyUp="VariantsFontPanel_OnKeyUp" DropDownClosed="VariantsFontPanel_OnDropDownClosed" ToolTip="Select the font here" Grid.Column="6" SelectedItem="{Binding Path=SelectedFontFamily.Font, Mode=TwoWay}" SelectedIndex="{Binding Path=SelectedFontId.Number, Mode=TwoWay}" ItemsSource="{Binding Path=FontFamilies, Mode=TwoWay}" Height="26" VerticalAlignment="Center">
                         <ComboBox.ItemsPanel>
                             <ItemsPanelTemplate>
                                 <VirtualizingStackPanel />

@@ -16,6 +16,7 @@ namespace PowerPointLabs.PictureSlidesLab.ModelFactory.Options
             {
                 styleOption.IsUseTextGlow = true;
                 styleOption.TextGlowColor = "#000000";
+                styleOption.FontFamily = "Segoe UI";
             }
             return UpdateStyleName(
                 result,
@@ -31,7 +32,8 @@ namespace PowerPointLabs.PictureSlidesLab.ModelFactory.Options
                 BlurDegree = 85,
                 TextBoxPosition = 5,
                 IsUseTextGlow = true,
-                TextGlowColor = "#000000"
+                TextGlowColor = "#000000",
+                FontFamily = "Segoe UI"
             };
         }
     }

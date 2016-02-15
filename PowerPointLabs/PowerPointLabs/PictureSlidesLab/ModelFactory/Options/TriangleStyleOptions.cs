@@ -17,6 +17,7 @@ namespace PowerPointLabs.PictureSlidesLab.ModelFactory.Options
                 styleOption.IsUseTriangleStyle = true;
                 styleOption.TextBoxPosition = 4; // left
                 styleOption.TriangleTransparency = 25;
+                styleOption.FontFamily = "Times New Roman Italic";
             }
             UpdateStyleName(
                 result,
@@ -32,7 +33,8 @@ namespace PowerPointLabs.PictureSlidesLab.ModelFactory.Options
                 IsUseTriangleStyle = true,
                 TriangleColor = "#007FFF", // blue
                 TextBoxPosition = 4, // left
-                TriangleTransparency = 25
+                TriangleTransparency = 25,
+                FontFamily = "Times New Roman Italic"
             };
         }
     }
