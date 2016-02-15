@@ -1,10 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Windows;
-using PowerPointLabs.Models;
-using PowerPointLabs.Views;
+using PowerPointLabs.Utils;
 using PowerPoint = Microsoft.Office.Interop.PowerPoint;
 
 namespace PowerPointLabs.ResizeLab
@@ -65,7 +60,7 @@ namespace PowerPointLabs.ResizeLab
 
                 for (int i = 1; i <= selectedShapes.Count; i++)
                 {
-                    var shape = new ResizeLabShape(selectedShapes[i]);
+                    var shape = new PPShape(selectedShapes[i]);
 
                     if ((dimension == Dimension.Height) || (dimension == Dimension.HeightAndWidth))
                     {
@@ -95,7 +90,7 @@ namespace PowerPointLabs.ResizeLab
         {
             if (selectedShapes.Count > 0)
             {
-                return new ResizeLabShape(selectedShapes[1]).AbsoluteHeight;
+                return new PPShape(selectedShapes[1]).AbsoluteHeight;
             }
             return -1;
         }
@@ -109,7 +104,7 @@ namespace PowerPointLabs.ResizeLab
         {
             if (selectedShapes.Count > 0)
             {
-                return new ResizeLabShape(selectedShapes[1]).AbsoluteWidth;
+                return new PPShape(selectedShapes[1]).AbsoluteWidth;
             }
             return -1;
         }

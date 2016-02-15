@@ -1,9 +1,9 @@
-﻿using System;
+using System;
 using PowerPoint = Microsoft.Office.Interop.PowerPoint;
 
-namespace PowerPointLabs.ResizeLab
+namespace PowerPointLabs.Utils
 {
-    internal class ResizeLabShape
+    internal class PPShape
     {
         private readonly PowerPoint.Shape _shape;
         private float _absoluteWidth;
@@ -11,7 +11,7 @@ namespace PowerPointLabs.ResizeLab
         private float _rotatedLeft;
         private float _rotatedTop;
 
-        public ResizeLabShape(PowerPoint.Shape shape)
+        public PPShape(PowerPoint.Shape shape)
         {
             _shape = shape;
 
