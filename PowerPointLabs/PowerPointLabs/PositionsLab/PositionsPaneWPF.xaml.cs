@@ -489,6 +489,10 @@ namespace PowerPointLabs.PositionsLab
         #endregion
 
         #region Settings
+        // Note: if changing default behavior to using slide as reference, need to ensure that
+        // checkbox for using shape is defined first in PositionsPaneWPF.xaml
+
+        // TODO: Surround with try catch in case the order of checkboxes are wrong
         private void UseShapeAsReference(object sender, RoutedEventArgs e)
         {
             if (!slideAsReference.IsChecked.HasValue || !shapeAsReference.IsChecked.HasValue)
@@ -498,7 +502,7 @@ namespace PowerPointLabs.PositionsLab
             }
             slideAsReference.IsChecked = false;
             shapeAsReference.IsChecked = true;
-
+            PositionsLabMain.ReferToShape();
         }
 
         private void UseSlideAsReference(object sender, RoutedEventArgs e)
@@ -510,6 +514,7 @@ namespace PowerPointLabs.PositionsLab
             }
             shapeAsReference.IsChecked = false;
             slideAsReference.IsChecked = true;
+            PositionsLabMain.ReferToSlide();
         }
         #endregion
 
