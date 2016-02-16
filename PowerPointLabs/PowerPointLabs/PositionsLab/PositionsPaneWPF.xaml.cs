@@ -488,6 +488,31 @@ namespace PowerPointLabs.PositionsLab
 
         #endregion
 
+        #region Settings
+        private void UseShapeAsReference(object sender, RoutedEventArgs e)
+        {
+            if (!slideAsReference.IsChecked.HasValue || !shapeAsReference.IsChecked.HasValue)
+            {
+                //Error
+                return;
+            }
+            slideAsReference.IsChecked = false;
+            shapeAsReference.IsChecked = true;
+
+        }
+
+        private void UseSlideAsReference(object sender, RoutedEventArgs e)
+        {
+            if (!slideAsReference.IsChecked.HasValue || !shapeAsReference.IsChecked.HasValue)
+            {
+                //Error
+                return;
+            }
+            shapeAsReference.IsChecked = false;
+            slideAsReference.IsChecked = true;
+        }
+        #endregion
+
         public static void ClearAllEventHandlers()
         {
             if (_leftMouseUpListener != null)
