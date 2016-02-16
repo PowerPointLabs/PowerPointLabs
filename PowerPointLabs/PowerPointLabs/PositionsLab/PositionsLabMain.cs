@@ -45,27 +45,34 @@ namespace PowerPointLabs.PositionsLab
         {
             var selectedShapes = Globals.ThisAddIn.Application.ActiveWindow.Selection.ShapeRange as PowerPoint.ShapeRange;
 
-            if (selectedShapes.Count < 2)
-            {
-                //Error
-                return;
-            }
-
             if (_useSlideAsReference)
             {
-
+                foreach (Shape s in selectedShapes)
+                {
+                    Drawing.PointF[] allPointsOfShape = Graphics.GetRealCoordinates(s);
+                    Drawing.PointF leftMost = Graphics.LeftMostPoint(allPointsOfShape);
+                    s.IncrementLeft(-leftMost.X);
+                }
             }
-
-            Shape refShape = selectedShapes[1];
-            Drawing.PointF[] allPointsOfRef = Graphics.GetRealCoordinates(refShape);
-            Drawing.PointF leftMostRef = Graphics.LeftMostPoint(allPointsOfRef);
-            
-            for (int i = 2; i <= selectedShapes.Count; i++)
+            else
             {
-                Shape s = selectedShapes[i];
-                Drawing.PointF[] allPoints = Graphics.GetRealCoordinates(s);
-                Drawing.PointF leftMost = Graphics.LeftMostPoint(allPoints);
-                s.IncrementLeft(leftMostRef.X - leftMost.X);
+                if (selectedShapes.Count < 2)
+                {
+                    //Error
+                    return;
+                }
+
+                Shape refShape = selectedShapes[1];
+                Drawing.PointF[] allPointsOfRef = Graphics.GetRealCoordinates(refShape);
+                Drawing.PointF leftMostRef = Graphics.LeftMostPoint(allPointsOfRef);
+
+                for (int i = 2; i <= selectedShapes.Count; i++)
+                {
+                    Shape s = selectedShapes[i];
+                    Drawing.PointF[] allPoints = Graphics.GetRealCoordinates(s);
+                    Drawing.PointF leftMost = Graphics.LeftMostPoint(allPoints);
+                    s.IncrementLeft(leftMostRef.X - leftMost.X);
+                }
             }
         }
 
@@ -96,22 +103,34 @@ namespace PowerPointLabs.PositionsLab
         {
             var selectedShapes = Globals.ThisAddIn.Application.ActiveWindow.Selection.ShapeRange as PowerPoint.ShapeRange;
 
-            if (selectedShapes.Count < 2)
+            if (_useSlideAsReference)
             {
-                //Error
-                return;
+                foreach (Shape s in selectedShapes)
+                {
+                    Drawing.PointF[] allPointsOfShape = Graphics.GetRealCoordinates(s);
+                    Drawing.PointF topMost = Graphics.TopMostPoint(allPointsOfShape);
+                    s.IncrementTop(-topMost.Y);
+                }
             }
-
-            Shape refShape = selectedShapes[1];
-            Drawing.PointF[] allPointsOfRef = Graphics.GetRealCoordinates(refShape);
-            Drawing.PointF topMostRef = Graphics.TopMostPoint(allPointsOfRef);
-
-            for (int i = 2; i <= selectedShapes.Count; i++)
+            else
             {
-                Shape s = selectedShapes[i];
-                Drawing.PointF[] allPoints = Graphics.GetRealCoordinates(s);
-                Drawing.PointF topMost = Graphics.TopMostPoint(allPoints);
-                s.IncrementTop(topMostRef.Y - topMost.Y);
+                if (selectedShapes.Count < 2)
+                {
+                    //Error
+                    return;
+                }
+
+                Shape refShape = selectedShapes[1];
+                Drawing.PointF[] allPointsOfRef = Graphics.GetRealCoordinates(refShape);
+                Drawing.PointF topMostRef = Graphics.TopMostPoint(allPointsOfRef);
+
+                for (int i = 2; i <= selectedShapes.Count; i++)
+                {
+                    Shape s = selectedShapes[i];
+                    Drawing.PointF[] allPoints = Graphics.GetRealCoordinates(s);
+                    Drawing.PointF topMost = Graphics.TopMostPoint(allPoints);
+                    s.IncrementTop(topMostRef.Y - topMost.Y);
+                }
             }
         }
 
