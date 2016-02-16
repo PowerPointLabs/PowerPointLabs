@@ -18,7 +18,7 @@ namespace PowerPointLabs.PositionsLab
     class PositionsLabMain
     {
 
-        private static bool _useSlideAsReference = false;
+        private static bool _useSlideAsReference;
 
         #region API
 
