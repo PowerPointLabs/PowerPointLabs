@@ -16,7 +16,29 @@ namespace PowerPointLabs.PositionsLab
 {
     class PositionsLabMain
     {
+
+        private static bool _useSlideAsReference = false;
+
         #region API
+
+        #region Class Methods
+
+        /// <summary>
+        /// Tells the Positions Lab to use the slide as the reference point for the methods
+        /// </summary>
+        public static void ReferToSlide()
+        {
+            _useSlideAsReference = true;
+        }
+
+        /// <summary>
+        /// Tells the Positions Lab to use reference shapes for the methods
+        /// </summary>
+        public static void ReferToShape()
+        {
+            _useSlideAsReference = false;
+        }
+        #endregion
 
         #region Align
         public static void AlignLeft()
@@ -27,6 +49,11 @@ namespace PowerPointLabs.PositionsLab
             {
                 //Error
                 return;
+            }
+
+            if (_useSlideAsReference)
+            {
+
             }
 
             Shape refShape = selectedShapes[1];
