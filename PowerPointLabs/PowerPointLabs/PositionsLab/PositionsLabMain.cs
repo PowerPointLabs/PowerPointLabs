@@ -89,7 +89,8 @@ namespace PowerPointLabs.PositionsLab
                 {
                     Drawing.PointF[] allPointsOfShape = Graphics.GetRealCoordinates(s);
                     Drawing.PointF leftMost = Graphics.LeftMostPoint(allPointsOfShape);
-                    s.IncrementLeft(currentSlide.SlideWidth - leftMost.X - s.Width);
+                    var shapeWidth = Graphics.RealWidth(allPointsOfShape);
+                    s.IncrementLeft(currentSlide.SlideWidth - leftMost.X - shapeWidth);
                 }
             }
             else
@@ -161,7 +162,8 @@ namespace PowerPointLabs.PositionsLab
 
                     Drawing.PointF[] allPointsOfShape = Graphics.GetRealCoordinates(s);
                     Drawing.PointF topMost = Graphics.TopMostPoint(allPointsOfShape);
-                    s.IncrementTop(currentSlide.SlideHeight - topMost.Y - s.Height);
+                    var shapeHeight = Graphics.RealHeight(allPointsOfShape);
+                    s.IncrementTop(currentSlide.SlideHeight - topMost.Y - shapeHeight);
                 }
             }
             else
@@ -198,7 +200,8 @@ namespace PowerPointLabs.PositionsLab
 
                     Drawing.PointF[] allPointsOfShape = Graphics.GetRealCoordinates(s);
                     Drawing.PointF topMost = Graphics.TopMostPoint(allPointsOfShape);
-                    s.IncrementTop(currentSlide.SlideHeight/2 - topMost.Y - s.Height/2);
+                    var shapeHeight = Graphics.RealHeight(allPointsOfShape);
+                    s.IncrementTop(currentSlide.SlideHeight/2 - topMost.Y - shapeHeight/2);
                 }
             }
             else
@@ -234,8 +237,10 @@ namespace PowerPointLabs.PositionsLab
                     Drawing.PointF[] allPointsOfShape = Graphics.GetRealCoordinates(s);
                     Drawing.PointF topMost = Graphics.TopMostPoint(allPointsOfShape);
                     Drawing.PointF leftMost = Graphics.LeftMostPoint(allPointsOfShape);
-                    s.IncrementTop(currentSlide.SlideHeight/2 - topMost.Y - s.Height/2);
-                    s.IncrementLeft(currentSlide.SlideWidth/2 - leftMost.X - s.Width/2);
+                    var shapeHeight = Graphics.RealHeight(allPointsOfShape);
+                    var shapeWidth = Graphics.RealWidth(allPointsOfShape);
+                    s.IncrementTop(currentSlide.SlideHeight/2 - topMost.Y - shapeHeight/2);
+                    s.IncrementLeft(currentSlide.SlideWidth/2 - leftMost.X - shapeWidth/2);
                 }
             }
             else
