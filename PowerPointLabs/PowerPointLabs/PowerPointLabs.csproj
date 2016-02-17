@@ -368,6 +368,8 @@
     <Compile Include="FunctionalTestInterface.Impl\PowerPointLabsFT.cs" />
     <Compile Include="FunctionalTestInterface.Impl\PowerPointOperations.cs" />
     <Compile Include="FunctionalTestInterface.Impl\SlideData.cs" />
+    <Compile Include="PictureSlidesLab\ModelFactory\Options\FrostedGlassTextBoxStyleOptions.cs" />
+    <Compile Include="PictureSlidesLab\ModelFactory\Options\FrostedGlassBannerStyleOptions.cs" />
     <Compile Include="PictureSlidesLab\ModelFactory\Options\BannerStyleOptions.cs" />
     <Compile Include="PictureSlidesLab\ModelFactory\Options\BaseStyleOptions.cs" />
     <Compile Include="PictureSlidesLab\ModelFactory\Options\BlurStyleOptions.cs" />
@@ -387,6 +389,10 @@
     <Compile Include="PictureSlidesLab\ModelFactory\Variants\CircleStyleVariants.cs" />
     <Compile Include="PictureSlidesLab\ModelFactory\Variants\DirectTextStyleVariants.cs" />
     <Compile Include="PictureSlidesLab\ModelFactory\Variants\FrameStyleVariants.cs" />
+    <Compile Include="PictureSlidesLab\ModelFactory\Variants\FrostedGlassBannerStyleVariants.cs" />
+    <Compile Include="PictureSlidesLab\ModelFactory\Variants\FrostedGlassTextBoxStyleVariants.cs" />
+    <Compile Include="PictureSlidesLab\ModelFactory\VariantWorker\FrostedGlassBannerTransparencyVariantWorker.cs" />
+    <Compile Include="PictureSlidesLab\ModelFactory\VariantWorker\FrostedGlassTextBoxTransparencyVariantWorker.cs" />
     <Compile Include="PictureSlidesLab\ModelFactory\VariantWorker\Interface\IGeneralVariantWorkerOrderMetadata.cs" />
     <Compile Include="PictureSlidesLab\ModelFactory\Variants\Interface\IStyleVariants.cs" />
     <Compile Include="PictureSlidesLab\ModelFactory\Variants\OutlineStyleVariants.cs" />
@@ -415,12 +421,16 @@
     <Compile Include="PictureSlidesLab\ModelFactory\VariantWorker\SpecialEffectsVariantWorker.cs" />
     <Compile Include="PictureSlidesLab\ModelFactory\VariantWorker\TextBoxTransparencyVariantWorker.cs" />
     <Compile Include="PictureSlidesLab\ModelFactory\VariantWorker\PictureCitationVariantWorker.cs" />
+    <Compile Include="PictureSlidesLab\ModelFactory\VariantWorker\FrostedGlassBannerVariantWorker.cs" />
+    <Compile Include="PictureSlidesLab\ModelFactory\VariantWorker\FrostedGlassTextBoxVariantWorker.cs" />
     <Compile Include="PictureSlidesLab\ModelFactory\VariantWorker\TextBoxVariantWorker.cs" />
     <Compile Include="PictureSlidesLab\ModelFactory\VariantWorker\TextGlowVariantWorker.cs" />
     <Compile Include="PictureSlidesLab\ModelFactory\VariantWorker\TriangleTransparencyVariantWorker.cs" />
     <Compile Include="PictureSlidesLab\ModelFactory\VariantWorker\TriangleVariantWorker.cs" />
     <Compile Include="PictureSlidesLab\Model\ObservableFont.cs" />
     <Compile Include="PictureSlidesLab\Model\ObservableImageItem.cs" />
+    <Compile Include="PictureSlidesLab\Model\StyleOption.Partial\StyleOption.FrostedGlassBanner.cs" />
+    <Compile Include="PictureSlidesLab\Model\StyleOption.Partial\StyleOption.FrostedGlassTextBoxStyle.cs" />
     <Compile Include="PictureSlidesLab\Model\StyleOption.Partial\StyleOption.PictureVariation.cs" />
     <Compile Include="PictureSlidesLab\Service\EffectsDesigner.Partial\EffectsDesigner.AlbumFrame.cs" />
     <Compile Include="PictureSlidesLab\Service\EffectsDesigner.Partial\EffectsDesigner.Background.cs" />
@@ -428,6 +438,7 @@
     <Compile Include="PictureSlidesLab\Service\EffectsDesigner.Partial\EffectsDesigner.Blur.cs" />
     <Compile Include="PictureSlidesLab\Service\EffectsDesigner.Partial\EffectsDesigner.Common.cs" />
     <Compile Include="PictureSlidesLab\Service\EffectsDesigner.Partial\EffectsDesigner.EmbedStyleOption.cs" />
+    <Compile Include="PictureSlidesLab\Service\EffectsDesigner.Partial\EffectsDesigner.FrostedGlass.cs" />
     <Compile Include="PictureSlidesLab\Service\EffectsDesigner.Partial\EffectsDesigner.Outline.cs" />
     <Compile Include="PictureSlidesLab\Service\EffectsDesigner.Partial\EffectsDesigner.Overlay.cs" />
     <Compile Include="PictureSlidesLab\Service\EffectsDesigner.Partial\EffectsDesigner.PictureCitation.cs" />
@@ -455,6 +466,8 @@
     <Compile Include="PictureSlidesLab\Service\StylesWorker\CircleStyleWorker.cs" />
     <Compile Include="PictureSlidesLab\Service\StylesWorker\Factory\StyleWorkerFactory.cs" />
     <Compile Include="PictureSlidesLab\Service\StylesWorker\FrameStyleWorker.cs" />
+    <Compile Include="PictureSlidesLab\Service\StylesWorker\FrostedGlassBannerStyleWorker.cs" />
+    <Compile Include="PictureSlidesLab\Service\StylesWorker\FrostedGlassTextBoxStyleWorker.cs" />
     <Compile Include="PictureSlidesLab\Service\StylesWorker\Interface\IStyleWorker.cs" />
     <Compile Include="PictureSlidesLab\Service\StylesWorker\Interface\IWorkerOrderMetadata.cs" />
     <Compile Include="PictureSlidesLab\Service\StylesWorker\OutlineStyleWorker.cs" />
