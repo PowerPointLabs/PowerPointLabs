@@ -29,9 +29,13 @@ namespace PowerPointLabs.PictureSlidesLab.Service
             if (originalImageFile == null) return new List<PowerPoint.Shape>();
 
             var originalImage = AddPicture(originalImageFile, EffectName.Original_DO_NOT_REMOVE);
+            var slideWidth = SlideWidth;
+            var slideHeight = SlideHeight;
+            FitToSlide.AutoFit(originalImage, slideWidth, slideHeight);
             originalImage.Visible = MsoTriState.msoFalse;
 
             var croppedImage = AddPicture(croppedImageFile, EffectName.Cropped_DO_NOT_REMOVE);
+            FitToSlide.AutoFit(croppedImage, slideWidth, slideHeight);
             croppedImage.Visible = MsoTriState.msoFalse;
 
             var result = new List<PowerPoint.Shape>();

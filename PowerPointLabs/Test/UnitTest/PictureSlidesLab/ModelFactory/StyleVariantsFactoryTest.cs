@@ -128,8 +128,12 @@ namespace Test.UnitTest.PictureSlidesLab.ModelFactory
                 _optionsFactory.GetStylesPreviewOption(styleName);
 
             var numberOfNoEffectVariant = 0;
-            foreach (var variant in variants.Values)
+            foreach (var key in variants.Keys)
             {
+                if (key == TextCollection.PictureSlidesLabText.VariantCategoryFontFamily)
+                    continue;
+
+                var variant = variants[key];
                 Assert.AreEqual(8, variant.Count,
                     "Each variant/category/aspect/dimension should have 8 variations");
                 foreach (var styleVariants in variant)
@@ -140,7 +144,7 @@ namespace Test.UnitTest.PictureSlidesLab.ModelFactory
                     }
                 }
             }
-            Assert.AreEqual(variants.Values.Count, numberOfNoEffectVariant,
+            Assert.AreEqual(variants.Values.Count - 1, numberOfNoEffectVariant,
                 "In order to swap no effect variant with the style correctly, it is assumed that " +
                 "number of no effect variant should be equal to number of variants/category/aspect/dimension. " +
                 "Please modify a variation to have no effect on the style. Ref: issue #802.");
@@ -159,8 +163,12 @@ namespace Test.UnitTest.PictureSlidesLab.ModelFactory
             }
 
             var numberOfNoEffectVariant = 0;
-            foreach (var variant in variants.Values)
+            foreach (var key in variants.Keys)
             {
+                if (key == TextCollection.PictureSlidesLabText.VariantCategoryFontFamily)
+                    continue;
+
+                var variant = variants[key];
                 foreach (var styleVariants in variant)
                 {
                     foreach (var option in options)
@@ -172,7 +180,7 @@ namespace Test.UnitTest.PictureSlidesLab.ModelFactory
                     }
                 }
             }
-            Assert.AreEqual(variants.Values.Count * options.Count, numberOfNoEffectVariant,
+            Assert.AreEqual((variants.Values.Count - 1) * options.Count, numberOfNoEffectVariant,
                 "In order to swap no effect variant with the style correctly, it is assumed that " +
                 "number of no effect variant should be equal to number of variants/category/aspect/dimension. " +
                 "Please modify a variation to have no effect on the style. Ref: issue #802.");

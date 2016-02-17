@@ -22,7 +22,8 @@
              DragLeave="PictureSlidesLabWindow_OnDragLeave"
              DragOver="PictureSlidesLabWindow_OnDragEnter"
              KeyDown="PictureSlidesLabWindow_OnKeyDown"
-             Drop="PictureSlidesLabWindow_OnDrop">
+             Drop="PictureSlidesLabWindow_OnDrop"
+             Loaded="PictureSlidesLabWindow_OnLoaded">
     <controls:MetroWindow.Resources>
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
@@ -54,13 +55,13 @@
                 <Grid Grid.Row="1" Margin="0,0,0,5">
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="5" />
-                        <ColumnDefinition Width="60" />
+                        <ColumnDefinition Width="80" />
                         <ColumnDefinition Width="65" />
                         <ColumnDefinition Width="80" />
                         <ColumnDefinition Width="30" />
                         <ColumnDefinition Width="*"></ColumnDefinition>
                     </Grid.ColumnDefinitions>
-                    <Label Name="PreviewLabel" Grid.Column="1" Margin="0,0,5,0" FontSize="15">Styles</Label>
+                    <Label Name="PreviewLabel" Grid.Column="1" Margin="0,0,5,0" FontSize="15">Preview</Label>
                     <Button ToolTip="Apply the selected style to the current slide." IsEnabled="False" Name="StylesApplyButton" Click="StylesPreviewApplyButton_OnClick" Grid.Column="2" Margin="0,0,5,0">Apply</Button>
                     <Button ToolTip="Customize the selected style." IsEnabled="False" Name="StylesCustomizeButton" Click="StylesCustomizeButton_OnClick" Grid.Column="3" Margin="0,0,5,0">Customize</Button>
                     <controls:ProgressRing Name="PreviewProgressRing" Width="10" Height="10" Grid.Column="4" IsActive="False" />
@@ -85,13 +86,60 @@
                     </ListBox.Template>
                     <ListBox.ItemContainerStyle>
                         <Style TargetType="ListBoxItem">
+                            <Setter Property="Template">
+                                <Setter.Value>
+                                    <ControlTemplate TargetType="{x:Type ListBoxItem}">
+                                        <Border x:Name="Bd"
+                                            Background="{TemplateBinding Background}"
+                                            BorderBrush="{TemplateBinding BorderBrush}"
+                                            BorderThickness="{TemplateBinding BorderThickness}"
+                                            Padding="{TemplateBinding Padding}"
+                                            SnapsToDevicePixels="True">
+                                            <ContentPresenter HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"
+                                            VerticalAlignment="{TemplateBinding VerticalContentAlignment}"
+                                            Content="{TemplateBinding Content}"
+                                            ContentStringFormat="{TemplateBinding ContentStringFormat}"
+                                            ContentTemplate="{TemplateBinding ContentTemplate}"
+                                            SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}" />
+                                        </Border>
+                                        <ControlTemplate.Triggers>
+                                            <MultiTrigger>
+                                                <MultiTrigger.Conditions>
+                                                    <Condition Property="IsMouseOver" Value="True" />
+                                                </MultiTrigger.Conditions>
+                                                <Setter TargetName="Bd" Property="Background" Value="#F0670C" />
+                                                <Setter Property="Foreground" Value="#FFFFFF" />
+                                            </MultiTrigger>
+                                            <MultiTrigger>
+                                                <MultiTrigger.Conditions>
+                                                    <Condition Property="Selector.IsSelectionActive" Value="False" />
+                                                    <Condition Property="IsSelected" Value="True" />
+                                                </MultiTrigger.Conditions>
+                                                <Setter TargetName="Bd" Property="Background" Value="#F0670C" />
+                                                <Setter Property="Foreground" Value="#FFFFFF" />
+                                            </MultiTrigger>
+                                            <MultiTrigger>
+                                                <MultiTrigger.Conditions>
+                                                    <Condition Property="Selector.IsSelectionActive" Value="True" />
+                                                    <Condition Property="IsSelected" Value="True" />
+                                                </MultiTrigger.Conditions>
+                                                <Setter TargetName="Bd" Property="Background" Value="#F0670C" />
+                                                <Setter Property="Foreground" Value="#FFFFFF" />
+                                            </MultiTrigger>
+                                            <Trigger Property="IsEnabled" Value="False">
+                                                <Setter TargetName="Bd" Property="TextElement.Foreground" Value="{DynamicResource {x:Static SystemColors.GrayTextBrushKey}}" />
+                                            </Trigger>
+                                        </ControlTemplate.Triggers>
+                                    </ControlTemplate>
+                                </Setter.Value>
+                            </Setter>
                             <Setter Property="HorizontalContentAlignment" Value="Center"></Setter>
                             <Setter Property="VerticalContentAlignment" Value="Center"></Setter>
                             <Style.Resources>
                                 <!--SelectedItem with focus-->
-                                <SolidColorBrush x:Key="{x:Static SystemColors.HighlightBrushKey}" Color="#FF6600" />
+                                <SolidColorBrush x:Key="{x:Static SystemColors.HighlightBrushKey}" Color="#F0670C" />
                                 <!--SelectedItem without focus-->
-                                <SolidColorBrush x:Key="{x:Static SystemColors.ControlBrushKey}" Color="#FF6600" />
+                                <SolidColorBrush x:Key="{x:Static SystemColors.ControlBrushKey}" Color="#F0670C" />
                             </Style.Resources>
                         </Style>
                     </ListBox.ItemContainerStyle>
@@ -128,7 +176,7 @@
                         <ColumnDefinition Width="auto"></ColumnDefinition>
                         <ColumnDefinition Width="15"></ColumnDefinition>
                     </Grid.ColumnDefinitions>
-                    <Label Name="VariationLabel" Grid.Column="1" Margin="0,0,5,0" FontSize="15">Variations</Label>
+                    <Label Name="VariationLabel" Grid.Column="1" Margin="0,0,5,0" FontSize="15">Preview</Label>
                     <Button ToolTip="Apply the selected style to the current slide." Name="StyleVariationApplyButton" Click="StylesVariationApplyButton_OnClick" Grid.Column="2" Margin="0,0,5,0">Apply</Button>
                     <Button Grid.Column="4"
                         Name="VariationFlyoutBackButton"
@@ -138,7 +186,7 @@
                     </Button>
                     <controls:ProgressRing ToolTip="Downloading picture..." Margin="5,0,0,0" HorizontalAlignment="Left" Foreground="#FFFFFF" Name="VariationProgressRing" Width="10" Height="10" Grid.Column="5" IsActive="False" />
                     <Border Name="VariantsColorPanel" ToolTip="Click to change color" MouseLeftButtonUp="VariantsColorPanel_OnMouseLeftButtonUp" BorderBrush="#EEEEEE" BorderThickness="1" Height="26" Width="65" HorizontalAlignment="Right" VerticalAlignment="Center" Grid.Column="6" />
-                    <ComboBox Name="FontPanel" KeyUp="VariantsFontPanel_OnKeyUp" DropDownClosed="VariantsFontPanel_OnDropDownClosed" ToolTip="Select the font here" Grid.Column="6" SelectedItem="{Binding Path=SelectedFontFamily.Font, Mode=TwoWay}" SelectedIndex="{Binding Path=SelectedFontId.Number, Mode=TwoWay}" ItemsSource="{Binding Source={x:Static Fonts.SystemFontFamilies}}" Height="26" VerticalAlignment="Center">
+                    <ComboBox Name="FontPanel" KeyUp="VariantsFontPanel_OnKeyUp" DropDownClosed="VariantsFontPanel_OnDropDownClosed" ToolTip="Select the font here" Grid.Column="6" SelectedItem="{Binding Path=SelectedFontFamily.Font, Mode=TwoWay}" SelectedIndex="{Binding Path=SelectedFontId.Number, Mode=TwoWay}" ItemsSource="{Binding Path=FontFamilies, Mode=TwoWay}" Height="26" VerticalAlignment="Center">
                         <ComboBox.ItemsPanel>
                             <ItemsPanelTemplate>
                                 <VirtualizingStackPanel />
@@ -174,13 +222,60 @@
                         </ListBox.Template>
                         <ListBox.ItemContainerStyle>
                             <Style TargetType="ListBoxItem">
+                                <Setter Property="Template">
+                                    <Setter.Value>
+                                        <ControlTemplate TargetType="{x:Type ListBoxItem}">
+                                            <Border x:Name="Bd"
+                                            Background="{TemplateBinding Background}"
+                                            BorderBrush="{TemplateBinding BorderBrush}"
+                                            BorderThickness="{TemplateBinding BorderThickness}"
+                                            Padding="{TemplateBinding Padding}"
+                                            SnapsToDevicePixels="True">
+                                                <ContentPresenter HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"
+                                            VerticalAlignment="{TemplateBinding VerticalContentAlignment}"
+                                            Content="{TemplateBinding Content}"
+                                            ContentStringFormat="{TemplateBinding ContentStringFormat}"
+                                            ContentTemplate="{TemplateBinding ContentTemplate}"
+                                            SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}" />
+                                            </Border>
+                                            <ControlTemplate.Triggers>
+                                                <MultiTrigger>
+                                                    <MultiTrigger.Conditions>
+                                                        <Condition Property="IsMouseOver" Value="True" />
+                                                    </MultiTrigger.Conditions>
+                                                    <Setter TargetName="Bd" Property="Background" Value="#F0670C" />
+                                                    <Setter Property="Foreground" Value="#FFFFFF" />
+                                                </MultiTrigger>
+                                                <MultiTrigger>
+                                                    <MultiTrigger.Conditions>
+                                                        <Condition Property="Selector.IsSelectionActive" Value="False" />
+                                                        <Condition Property="IsSelected" Value="True" />
+                                                    </MultiTrigger.Conditions>
+                                                    <Setter TargetName="Bd" Property="Background" Value="#F0670C" />
+                                                    <Setter Property="Foreground" Value="#FFFFFF" />
+                                                </MultiTrigger>
+                                                <MultiTrigger>
+                                                    <MultiTrigger.Conditions>
+                                                        <Condition Property="Selector.IsSelectionActive" Value="True" />
+                                                        <Condition Property="IsSelected" Value="True" />
+                                                    </MultiTrigger.Conditions>
+                                                    <Setter TargetName="Bd" Property="Background" Value="#F0670C" />
+                                                    <Setter Property="Foreground" Value="#FFFFFF" />
+                                                </MultiTrigger>
+                                                <Trigger Property="IsEnabled" Value="False">
+                                                    <Setter TargetName="Bd" Property="TextElement.Foreground" Value="{DynamicResource {x:Static SystemColors.GrayTextBrushKey}}" />
+                                                </Trigger>
+                                            </ControlTemplate.Triggers>
+                                        </ControlTemplate>
+                                    </Setter.Value>
+                                </Setter>
                                 <Setter Property="HorizontalContentAlignment" Value="Center"></Setter>
                                 <Setter Property="VerticalContentAlignment" Value="Center"></Setter>
                                 <Style.Resources>
                                     <!--SelectedItem with focus-->
-                                    <SolidColorBrush x:Key="{x:Static SystemColors.HighlightBrushKey}" Color="#FF6600" />
+                                    <SolidColorBrush x:Key="{x:Static SystemColors.HighlightBrushKey}" Color="#F0670C" />
                                     <!--SelectedItem without focus-->
-                                    <SolidColorBrush x:Key="{x:Static SystemColors.ControlBrushKey}" Color="#FF6600" />
+                                    <SolidColorBrush x:Key="{x:Static SystemColors.ControlBrushKey}" Color="#F0670C" />
                                 </Style.Resources>
                             </Style>
                         </ListBox.ItemContainerStyle>
@@ -206,11 +301,11 @@
                         <ColumnDefinition Width="40" />
                         <ColumnDefinition Width="*"></ColumnDefinition>
                     </Grid.ColumnDefinitions>
-                    <Button IsEnabled="false" Name="GotoSlideButton" ToolTip="Select a target slide to edit styles." Width="85" Click="GotoSlideButton_OnClick" Margin="0,0,5,0" Grid.Column="1">Change slide</Button>
-                    <Button IsEnabled="false" Name="LoadStylesButton" ToolTip="Load styles from a slide to customize." Width="60" Click="LoadButton_OnClick" Margin="0,0,5,0" Grid.Column="2">Load...</Button>
+                    <Button IsEnabled="false" Name="GotoSlideButton" ToolTip="Go to a slide to edit its style." Width="85" Click="GotoSlideButton_OnClick" Margin="0,0,5,0" Grid.Column="1">Go to slide</Button>
+                    <Button IsEnabled="false" Name="LoadStylesButton" ToolTip="Load the style or picture from a slide to customize." Width="60" Click="LoadButton_OnClick" Margin="0,0,5,0" Grid.Column="2">Load...</Button>
                     <controls:ProgressRing Name="ImageDownloadProgressRing" Width="10" Height="10" Grid.Column="3" IsActive="{Binding Path=IsActiveDownloadProgressRing.Flag, Mode=TwoWay}" />
                 </Grid>
-                <TextBlock Visibility="Visible" Name="ImageSelectionInstructions" MaxWidth="730" TextWrapping="Wrap" HorizontalAlignment="Center" VerticalAlignment="Center" Foreground="#AAAAAA" FontSize="18" Grid.Row="2">Click the 'Choose Pictures' icon above to load local images, or drag and drop the files here. You can also drag and drop thumbnail pictures from Google Image Search to import.</TextBlock>
+                <TextBlock Visibility="Hidden" Name="ImageSelectionInstructions" MaxWidth="730" TextWrapping="Wrap" HorizontalAlignment="Center" VerticalAlignment="Center" Foreground="#AAAAAA" FontSize="18" Grid.Row="2">Click the 'Choose Pictures' icon above to load local images, or drag and drop the files here. You can also drag and drop thumbnail pictures from Google Image Search to import.</TextBlock>
                 <TextBlock Visibility="Hidden" Name="ImageSelectionInstructionsForFirstTime" MaxWidth="730" TextWrapping="Wrap" HorizontalAlignment="Center" VerticalAlignment="Center" Foreground="#AAAAAA" FontSize="18" Grid.Row="2">Select a picture to preview styles, then select a style and click `Apply` button to apply it to the slide.</TextBlock>
                 <ListBox TabIndex="1" PreviewMouseDown="ImageSelectionListBox_OnPreviewMouseDown" Name="ImageSelectionListBox" KeyDown="ImageSelectionListBox_OnKeyDown" SelectionChanged="ImageSelectionListBox_OnSelectionChanged" SelectedItem="{Binding Path=ImageSelectionListSelectedItem.ImageItem, Mode=TwoWay}" SelectedIndex="{Binding Path=ImageSelectionListSelectedId.Number, Mode=TwoWay}" ItemsSource="{Binding Path=ImageSelectionList, Mode=TwoWay}" Grid.Row="2">
                     <ListBox.ContextMenu>
@@ -231,15 +326,62 @@
                     </ListBox.Template>
                     <ListBox.ItemContainerStyle>
                         <Style TargetType="ListBoxItem">
+                            <Setter Property="Template">
+                                <Setter.Value>
+                                    <ControlTemplate TargetType="{x:Type ListBoxItem}">
+                                        <Border x:Name="Bd"
+                                            Background="{TemplateBinding Background}"
+                                            BorderBrush="{TemplateBinding BorderBrush}"
+                                            BorderThickness="{TemplateBinding BorderThickness}"
+                                            Padding="{TemplateBinding Padding}"
+                                            SnapsToDevicePixels="True">
+                                            <ContentPresenter HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"
+                                            VerticalAlignment="{TemplateBinding VerticalContentAlignment}"
+                                            Content="{TemplateBinding Content}"
+                                            ContentStringFormat="{TemplateBinding ContentStringFormat}"
+                                            ContentTemplate="{TemplateBinding ContentTemplate}"
+                                            SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}" />
+                                        </Border>
+                                        <ControlTemplate.Triggers>
+                                            <MultiTrigger>
+                                                <MultiTrigger.Conditions>
+                                                    <Condition Property="IsMouseOver" Value="True" />
+                                                </MultiTrigger.Conditions>
+                                                <Setter TargetName="Bd" Property="Background" Value="#F0670C" />
+                                                <Setter Property="Foreground" Value="#FFFFFF" />
+                                            </MultiTrigger>
+                                            <MultiTrigger>
+                                                <MultiTrigger.Conditions>
+                                                    <Condition Property="Selector.IsSelectionActive" Value="False" />
+                                                    <Condition Property="IsSelected" Value="True" />
+                                                </MultiTrigger.Conditions>
+                                                <Setter TargetName="Bd" Property="Background" Value="#F0670C" />
+                                                <Setter Property="Foreground" Value="#FFFFFF" />
+                                            </MultiTrigger>
+                                            <MultiTrigger>
+                                                <MultiTrigger.Conditions>
+                                                    <Condition Property="Selector.IsSelectionActive" Value="True" />
+                                                    <Condition Property="IsSelected" Value="True" />
+                                                </MultiTrigger.Conditions>
+                                                <Setter TargetName="Bd" Property="Background" Value="#F0670C" />
+                                                <Setter Property="Foreground" Value="#FFFFFF" />
+                                            </MultiTrigger>
+                                            <Trigger Property="IsEnabled" Value="False">
+                                                <Setter TargetName="Bd" Property="TextElement.Foreground" Value="{DynamicResource {x:Static SystemColors.GrayTextBrushKey}}" />
+                                            </Trigger>
+                                        </ControlTemplate.Triggers>
+                                    </ControlTemplate>
+                                </Setter.Value>
+                            </Setter>
                             <Setter Property="Height" Value="110"></Setter>
                             <Setter Property="Width" Value="150"></Setter>
                             <Setter Property="HorizontalContentAlignment" Value="Center"></Setter>
                             <Setter Property="VerticalContentAlignment" Value="Center"></Setter>
                             <Style.Resources>
                                 <!--SelectedItem with focus-->
-                                <SolidColorBrush x:Key="{x:Static SystemColors.HighlightBrushKey}" Color="#FF6600" />
+                                <SolidColorBrush x:Key="{x:Static SystemColors.HighlightBrushKey}" Color="#F0670C" />
                                 <!--SelectedItem without focus-->
-                                <SolidColorBrush x:Key="{x:Static SystemColors.ControlBrushKey}" Color="#FF6600" />
+                                <SolidColorBrush x:Key="{x:Static SystemColors.ControlBrushKey}" Color="#F0670C" />
                             </Style.Resources>
                         </Style>
                     </ListBox.ItemContainerStyle>
@@ -256,6 +398,12 @@
                 <SolidColorBrush Opacity="0.80" Color="Black"/>
             </Grid.Background>
             <TextBlock Name="DragAndDropInstructions" TextWrapping="Wrap" HorizontalAlignment="Center" VerticalAlignment="Center" Foreground="#FFFFFF" FontSize="18" Text="{Binding Path=Text, Mode=TwoWay, NotifyOnSourceUpdated=True}"></TextBlock>
+        </Grid>
+        <Grid Name="PictureSlidesLabGridLoadingOverlay" Visibility="Hidden">
+            <Grid.Background>
+                <SolidColorBrush Opacity="0.80" Color="Black"/>
+            </Grid.Background>
+            <TextBlock Name="LoadingInstructions" TextWrapping="Wrap" HorizontalAlignment="Center" VerticalAlignment="Center" Foreground="#FFFFFF" FontSize="40" Text="Loading..."></TextBlock>
         </Grid>
     </Grid>
 </controls:MetroWindow>

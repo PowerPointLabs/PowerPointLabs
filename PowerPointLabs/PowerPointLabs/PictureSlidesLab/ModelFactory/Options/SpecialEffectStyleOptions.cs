@@ -6,7 +6,7 @@ using PowerPointLabs.PictureSlidesLab.ModelFactory.Options.Interface;
 namespace PowerPointLabs.PictureSlidesLab.ModelFactory.Options
 {
     [Export(typeof(IStyleOptions))]
-    [ExportMetadata("StyleOrder", 5)]
+    [ExportMetadata("StyleOrder", 7)]
     class SpecialEffectStyleOptions : BaseStyleOptions
     {
         public override List<StyleOption> GetOptionsForVariation()
@@ -16,6 +16,7 @@ namespace PowerPointLabs.PictureSlidesLab.ModelFactory.Options
             {
                 styleOption.IsUseTextGlow = true;
                 styleOption.TextGlowColor = "#000000";
+                styleOption.FontFamily = "Arial Black";
             }
             return UpdateStyleName(
                 result,
@@ -30,7 +31,8 @@ namespace PowerPointLabs.PictureSlidesLab.ModelFactory.Options
                 IsUseSpecialEffectStyle = true,
                 SpecialEffect = 0,
                 IsUseTextGlow = true,
-                TextGlowColor = "#000000"
+                TextGlowColor = "#000000",
+                FontFamily = "Arial Black"
             };
         }
     }

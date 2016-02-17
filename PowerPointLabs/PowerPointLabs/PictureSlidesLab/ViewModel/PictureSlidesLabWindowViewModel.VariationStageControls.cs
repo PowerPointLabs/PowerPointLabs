@@ -76,9 +76,9 @@ namespace PowerPointLabs.PictureSlidesLab.ViewModel
             var styleOption = _styleOptions[StylesVariationListSelectedId.Number];
             var styleFontFamily = styleOption.GetFontFamily();
             var targetIndex = -1;
-            for (var i = 0; i < Fonts.SystemFontFamilies.Count; i++)
+            for (var i = 0; i < FontFamilies.Count; i++)
             {
-                if (styleFontFamily == Fonts.SystemFontFamilies.ElementAt(i).Source)
+                if (styleFontFamily == FontFamilies[i])
                 {
                     targetIndex = i;
                     break;

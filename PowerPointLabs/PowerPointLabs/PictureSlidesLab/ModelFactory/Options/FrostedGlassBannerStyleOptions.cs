@@ -6,31 +6,30 @@ using PowerPointLabs.PictureSlidesLab.ModelFactory.Options.Interface;
 namespace PowerPointLabs.PictureSlidesLab.ModelFactory.Options
 {
     [Export(typeof(IStyleOptions))]
-    [ExportMetadata("StyleOrder", 6)]
-    class BannerStyleOptions : BaseStyleOptions
+    [ExportMetadata("StyleOrder", 4)]
+    class FrostedGlassBannerStyleOptions : BaseStyleOptions
     {
         public override List<StyleOption> GetOptionsForVariation()
         {
-            var options = new TextBoxStyleOptions().GetOptionsForVariation();
+            var options = GetOptions();
             foreach (var option in options)
             {
-                option.FontFamily = "Times New Roman";
+                option.IsUseFrostedGlassBannerStyle = true;
+                option.FontFamily = "Segoe UI";
+                option.TextBoxPosition = 4; // left
             }
             return UpdateStyleName(
                 options,
-                TextCollection.PictureSlidesLabText.StyleNameBanner);
+                TextCollection.PictureSlidesLabText.StyleNameFrostedGlassBanner);
         }
 
         public override StyleOption GetDefaultOptionForPreview()
         {
             return new StyleOption
             {
-                StyleName = TextCollection.PictureSlidesLabText.StyleNameBanner,
-                IsUseBannerStyle = true,
-                TextBoxPosition = 7,
-                TextBoxColor = "#000000",
-                FontColor = "#FFD700",
-                FontFamily = "Times New Roman"
+                StyleName = TextCollection.PictureSlidesLabText.StyleNameFrostedGlassBanner,
+                IsUseFrostedGlassBannerStyle = true,
+                TextBoxPosition = 4
             };
         }
     }
