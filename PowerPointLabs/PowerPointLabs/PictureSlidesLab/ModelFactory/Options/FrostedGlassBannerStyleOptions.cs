@@ -6,7 +6,7 @@ using PowerPointLabs.PictureSlidesLab.ModelFactory.Options.Interface;
 namespace PowerPointLabs.PictureSlidesLab.ModelFactory.Options
 {
     [Export(typeof(IStyleOptions))]
-    [ExportMetadata("StyleOrder", 11)]
+    [ExportMetadata("StyleOrder", 4)]
     class FrostedGlassBannerStyleOptions : BaseStyleOptions
     {
         public override List<StyleOption> GetOptionsForVariation()

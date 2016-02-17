@@ -6,7 +6,7 @@ using PowerPointLabs.PictureSlidesLab.ModelFactory.Options.Interface;
 namespace PowerPointLabs.PictureSlidesLab.ModelFactory.Options
 {
     [Export(typeof(IStyleOptions))]
-    [ExportMetadata("StyleOrder", 6)]
+    [ExportMetadata("StyleOrder", 8)]
     class OverlayStyleOptions : BaseStyleOptions
     {
         public override List<StyleOption> GetOptionsForVariation()

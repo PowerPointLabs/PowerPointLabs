@@ -10,7 +10,7 @@ namespace PowerPointLabs.PictureSlidesLab.Model
         [DefaultValue("#000000")]
         public string FrostedGlassTextBoxColor { get; set; }
 
-        [DefaultValue(90)]
+        [DefaultValue(80)]
         public int FrostedGlassTextBoxTransparency { get; set; }
     }
 }
