@@ -49,7 +49,7 @@ namespace PPExtraEventHelper
 
         //Delegate
         public delegate void DoubleClickEventDelegate(PowerPoint.Selection selection);
-        public delegate void LButtonUpClickedDelegate(SysMouseEventInfo e);
+        public delegate void LButtonUpClickedDelegate();
 
         //Handler
         public static event DoubleClickEventDelegate DoubleClick;
@@ -71,20 +71,12 @@ namespace PPExtraEventHelper
                     }
                 }
 
-                // Left button pressed somewhere
+                // Left mouse button up/released
                 if (wParam.ToInt32() == (uint)Native.Message.WM_LBUTTONUP)
                 {
-                    Native.MSLLHOOKSTRUCT ms = new Native.MSLLHOOKSTRUCT();
-                    ms = (Native.MSLLHOOKSTRUCT)Marshal.PtrToStructure(
-                        lParam,
-                        typeof(Native.MSLLHOOKSTRUCT));
-
-                    IntPtr win = Native.WindowFromPoint(ms.pt);
-
-                    string title = GetWindowTextRaw(win);
                     if (LButtonUpClicked != null)
                     {
-                        LButtonUpClicked(new SysMouseEventInfo { WindowTitle = title });
+                        LButtonUpClicked();
                     }
                 }
 
@@ -163,29 +155,5 @@ namespace PPExtraEventHelper
             slideViewWindowRectangle.Width = rec.Right - rec.Left + 1;
             slideViewWindowRectangle.Height = rec.Bottom - rec.Top + 1;
         }
-
-        private static string GetWindowTextRaw(IntPtr hwnd)
-        {
-            // Allocate correct string length first
-            int length = (int)Native.SendMessage(
-                hwnd,
-                (int)Native.Message.WM_GETTEXTLENGTH,
-                IntPtr.Zero,
-                IntPtr.Zero);
-
-            StringBuilder sb = new StringBuilder(length);
-            Native.SendMessage(
-                hwnd,
-                (int)Native.Message.WM_GETTEXT,
-                (IntPtr)sb.Capacity,
-                sb);
-
-            return sb.ToString();
-        }
-    }
-
-    public class SysMouseEventInfo : EventArgs
-    {
-        public string WindowTitle { get; set; }
     }
 }

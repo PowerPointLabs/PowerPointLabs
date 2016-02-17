@@ -564,7 +564,7 @@ namespace PowerPointLabs
             }
         }
 
-        void _native_LButtonClicked(SysMouseEventInfo e)
+        void _native_LButtonClicked()
         {
             PPMouse.LButtonUpClicked -= _native_LButtonClicked;
             timer1.Stop();
