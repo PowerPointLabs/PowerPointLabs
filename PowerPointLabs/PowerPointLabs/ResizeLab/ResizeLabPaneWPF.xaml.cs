@@ -139,11 +139,11 @@ namespace PowerPointLabs.ResizeLab
         {
             PowerPoint.ShapeRange selectedShapes = GetSelectedShapes();
             var slideWidth = this.GetCurrentPresentation().SlideWidth;
-            var slideHight = this.GetCurrentPresentation().SlideHeight;
+            var slideHeight = this.GetCurrentPresentation().SlideHeight;
 
             if (selectedShapes != null)
             {
-                _resizeLab.FitToWidth(selectedShapes, slideWidth, slideHight, IsAspectRatioLocked);
+                _resizeLab.FitToWidth(selectedShapes, slideWidth, slideHeight, IsAspectRatioLocked);
             }
         }
 
@@ -151,23 +151,23 @@ namespace PowerPointLabs.ResizeLab
         {
             PowerPoint.ShapeRange selectedShapes = GetSelectedShapes();
             var slideWidth = this.GetCurrentPresentation().SlideWidth;
-            var slideHight = this.GetCurrentPresentation().SlideHeight;
+            var slideHeight = this.GetCurrentPresentation().SlideHeight;
 
             if (selectedShapes != null)
             {
-                _resizeLab.FitToHight(selectedShapes, slideWidth, slideHight, IsAspectRatioLocked);
+                _resizeLab.FitToHight(selectedShapes, slideWidth, slideHeight, IsAspectRatioLocked);
             }
         }
 
         private void FillBtn_Click(object sender, RoutedEventArgs e)
         {
             PowerPoint.ShapeRange selectedShapes = GetSelectedShapes();
-            var slideWidth = this.GetCurrentPresentation().SlideHeight;
-            var slideHight = this.GetCurrentPresentation().SlideHeight;
+            var slideWidth = this.GetCurrentPresentation().SlideWidth;
+            var slideHeight = this.GetCurrentPresentation().SlideHeight;
 
             if (selectedShapes != null)
             {
-                _resizeLab.FitToFill(selectedShapes, slideWidth, slideHight, IsAspectRatioLocked);
+                _resizeLab.FitToFill(selectedShapes, slideWidth, slideHeight, IsAspectRatioLocked);
             }
         }
 

@@ -174,7 +174,7 @@
     </ManifestKeyFile>
   </PropertyGroup>
   <PropertyGroup>
-    <ManifestCertificateThumbprint>2F6D6C35407CF519C0DC35A642F2993F4EC64DCC</ManifestCertificateThumbprint>
+    <ManifestCertificateThumbprint>B200334E7EFE8551DB3F9CF5B7674D388B3D4A53</ManifestCertificateThumbprint>
   </PropertyGroup>
   <!--
     This section specifies references for the project.
@@ -547,7 +547,6 @@
       <DependentUpon>ResizeLabPaneWPF.xaml</DependentUpon>
     </Compile>
     <Compile Include="ResizeLab\ResizeLabMain.ShrinkStretch.cs" />
-    <Compile Include="ResizeLab\ResizeLabShape.cs" />
     <Compile Include="Utils\Assumption.cs" />
     <Compile Include="Utils\CultureUtil.cs" />
     <Compile Include="Utils\Exceptions\AssumptionFailedException.cs" />
@@ -584,6 +583,7 @@
     <Compile Include="Utils\Comparers.cs" />
     <Compile Include="Utils\FileDir.cs" />
     <Compile Include="Utils\Graphics.cs" />
+    <Compile Include="Utils\PPShape.cs" />
     <Compile Include="Utils\TempPath.cs" />
     <Compile Include="Utils\StringUtil.cs" />
     <Compile Include="Views\CustomPaintTextBox.cs" />
