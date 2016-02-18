@@ -17,17 +17,19 @@ using System.Runtime.Remoting.Channels.Ipc;
 using PowerPointLabs.FunctionalTestInterface.Impl;
 using PowerPointLabs.FunctionalTestInterface.Impl.Controller;
 using PowerPointLabs.Models;
+using PowerPointLabs.ResizeLab;
 using PowerPointLabs.Utils;
 using PowerPointLabs.Views;
 using MessageBox = System.Windows.Forms.MessageBox;
 using PowerPoint = Microsoft.Office.Interop.PowerPoint;
 using Office = Microsoft.Office.Core;
+using PowerPointLabs.PositionsLab;
 
 namespace PowerPointLabs
 {
     public partial class ThisAddIn
     {
-        private const string AppLogName = "PowerPointLabs_Log_1.log"; 
+        private const string AppLogName = "PowerPointLabs_Log_1.log";
         private const string SlideXmlSearchPattern = @"slide(\d+)\.xml";
         private const string TempFolderNamePrefix = @"\PowerPointLabs Temp\";
         private const string ShapeGalleryPptxName = "ShapeGallery";
@@ -37,12 +39,15 @@ namespace PowerPointLabs
 
         private bool _isClosing;
 
+        private bool isResizePaneVisible;
+
         private readonly Dictionary<PowerPoint.DocumentWindow,
-                                    List<CustomTaskPane>> _documentPaneMapper = new Dictionary<PowerPoint.DocumentWindow,
-                                                                                               List<CustomTaskPane>>();
+            List<CustomTaskPane>> _documentPaneMapper = new Dictionary<PowerPoint.DocumentWindow,
+                List<CustomTaskPane>>();
+
         private readonly Dictionary<PowerPoint.DocumentWindow,
-                                    string> _documentHashcodeMapper = new Dictionary<PowerPoint.DocumentWindow,
-                                                                                     string>();
+            string> _documentHashcodeMapper = new Dictionary<PowerPoint.DocumentWindow,
+                string>();
 
         internal ShapesLabConfig ShapesLabConfigs;
 
@@ -70,6 +75,7 @@ namespace PowerPointLabs
         }
 
         # region Powerpoint Application Event Handlers
+
         private void ThisAddInStartup(object sender, EventArgs e)
         {
             SetupLogger();
@@ -95,7 +101,7 @@ namespace PowerPointLabs
             // Here, we want the priority to be: Application action > Window action > Slide action
 
             // Priority High: Application Actions
-            ((PowerPoint.EApplication_Event)Application).NewPresentation += ThisAddInNewPresentation;
+            ((PowerPoint.EApplication_Event) Application).NewPresentation += ThisAddInNewPresentation;
             Application.AfterNewPresentation += ThisAddInAfterNewPresentation;
             Application.PresentationOpen += ThisAddInPrensentationOpen;
             Application.PresentationClose += ThisAddInPresentationClose;
@@ -114,10 +120,11 @@ namespace PowerPointLabs
         private void ThisAddInApplicationOnWindowDeactivate(PowerPoint.Presentation pres, PowerPoint.DocumentWindow wn)
         {
             Trace.TraceInformation(pres.Name + " terminating...");
-            Trace.TraceInformation(string.Format("Is Closing = {0}, Count = {1}", _isClosing, Application.Presentations.Count));
+            Trace.TraceInformation(string.Format("Is Closing = {0}, Count = {1}", _isClosing,
+                Application.Presentations.Count));
 
             _deactivatedPresFullName = pres.FullName;
-            
+
             // in this case, we are closing the last client presentation, therefore we
             // we can close the shape gallery
             if (_isClosing &&
@@ -173,7 +180,7 @@ namespace PowerPointLabs
                 {
                     return;
                 }
-                
+
                 UpdateRecorderPane(sldRange.Count, slideID);
             }
             else
@@ -210,13 +217,13 @@ namespace PowerPointLabs
                 if (slideIndex > 1)
                     prev = presentation.Slides[slideIndex - 1];
                 if (!((tmp.Name.StartsWith("PPSlideAnimated"))
-                    || ((tmp.Name.StartsWith("PPSlideStart"))
-                    && (next.Name.StartsWith("PPSlideAnimated")))
-                    || ((tmp.Name.StartsWith("PPSlideEnd"))
-                    && (prev.Name.StartsWith("PPSlideAnimated")))
-                    || ((tmp.Name.StartsWith("PPSlideMulti"))
-                    && ((prev.Name.StartsWith("PPSlideAnimated"))
-                    || (next.Name.StartsWith("PPSlideAnimated"))))))
+                      || ((tmp.Name.StartsWith("PPSlideStart"))
+                          && (next.Name.StartsWith("PPSlideAnimated")))
+                      || ((tmp.Name.StartsWith("PPSlideEnd"))
+                          && (prev.Name.StartsWith("PPSlideAnimated")))
+                      || ((tmp.Name.StartsWith("PPSlideMulti"))
+                          && ((prev.Name.StartsWith("PPSlideAnimated"))
+                              || (next.Name.StartsWith("PPSlideAnimated"))))))
                     Ribbon.ReloadAutoMotionEnabled = false;
                 if (!(tmp.Name.Contains("PPTLabsSpotlight")))
                     Ribbon.ReloadSpotlight = false;
@@ -239,12 +246,16 @@ namespace PowerPointLabs
             if (sel.Type == PowerPoint.PpSelectionType.ppSelectionShapes)
             {
                 PowerPoint.Shape sh = sel.ShapeRange[1];
-                if (sh.Type == Office.MsoShapeType.msoAutoShape || sh.Type == Office.MsoShapeType.msoFreeform || sh.Type == Office.MsoShapeType.msoTextBox || sh.Type == Office.MsoShapeType.msoPlaceholder
-                    || sh.Type == Office.MsoShapeType.msoCallout || sh.Type == Office.MsoShapeType.msoInk || sh.Type == Office.MsoShapeType.msoGroup)
+                if (sh.Type == Office.MsoShapeType.msoAutoShape || sh.Type == Office.MsoShapeType.msoFreeform ||
+                    sh.Type == Office.MsoShapeType.msoTextBox || sh.Type == Office.MsoShapeType.msoPlaceholder
+                    || sh.Type == Office.MsoShapeType.msoCallout || sh.Type == Office.MsoShapeType.msoInk ||
+                    sh.Type == Office.MsoShapeType.msoGroup)
                 {
                     Ribbon.SpotlightEnabled = true;
                 }
-                if ((sh.Type == Office.MsoShapeType.msoAutoShape && sh.AutoShapeType == Office.MsoAutoShapeType.msoShapeRectangle) || sh.Type == Office.MsoShapeType.msoPicture)
+                if ((sh.Type == Office.MsoShapeType.msoAutoShape &&
+                     sh.AutoShapeType == Office.MsoAutoShapeType.msoShapeRectangle) ||
+                    sh.Type == Office.MsoShapeType.msoPicture)
                 {
                     Ribbon.ZoomButtonEnabled = true;
                 }
@@ -265,6 +276,14 @@ namespace PowerPointLabs
                         }
                     }
                 }
+
+                if (isResizePaneVisible)
+                {
+                    sel.ShapeRange.LockAspectRatio = ResizeLabPaneWPF.IsAspectRatioLocked
+                        ? Office.MsoTriState.msoTrue
+                        : Office.MsoTriState.msoFalse;
+                }
+
             }
 
             Ribbon.RefreshRibbonControl("AddSpotlightButton");
@@ -372,6 +391,7 @@ namespace PowerPointLabs
             PPMouse.StopHook();
             PPKeyboard.StopHook();
             PPCopy.StopHook();
+            PositionsPaneWPF.ClearAllEventHandlers();
             UIThreadExecutor.TearDown();
             Trace.TraceInformation(DateTime.Now.ToString("yyyyMMddHHmmss") + ": PowerPointLabs Exiting");
             Trace.Close();
@@ -380,9 +400,11 @@ namespace PowerPointLabs
                 ChannelServices.UnregisterChannel(_ftChannel);
             }
         }
+
         # endregion
 
         # region API
+
         public Control GetActiveControl(Type type)
         {
             var taskPane = GetActivePane(type);
@@ -531,7 +553,7 @@ namespace PowerPointLabs
         {
             var presName = pres.Name;
             var presFullName = pres.FullName;
-            
+
             // here presFullName makes no use, just to fit in the signature
             RegulatePresentationName(pres, null, ref presName, ref presFullName);
 
@@ -557,6 +579,19 @@ namespace PowerPointLabs
             return tempPath;
         }
 
+        public void RegisterResizePane(PowerPoint.Presentation presentation)
+        {
+            if (GetActivePane(typeof(ResizeLabPane)) != null)
+            {
+                return;
+            }
+
+            var activeWindow = presentation.Application.ActiveWindow;
+
+            RegisterTaskPane(new ResizeLabPane(), TextCollection.ResizeLabsTaskPaneTitle, activeWindow, 
+                ResizeTaskPaneVisibleValueChangedEventHandler, null);
+        }
+
         public void RegisterRecorderPane(PowerPoint.DocumentWindow activeWindow, string tempFullPath)
         {
             if (GetActivePane(typeof(RecorderTaskPane)) != null)
@@ -565,7 +600,7 @@ namespace PowerPointLabs
             }
 
             RegisterTaskPane(new RecorderTaskPane(tempFullPath), TextCollection.RecManagementPanelTitle, activeWindow,
-                             TaskPaneVisibleValueChangedEventHandler, null);
+                TaskPaneVisibleValueChangedEventHandler, null);
         }
 
         public void RegisterColorPane(PowerPoint.Presentation presentation)
@@ -604,6 +639,17 @@ namespace PowerPointLabs
             RegisterTaskPane(
                 new CustomShapePane(ShapesLabConfigs.ShapeRootFolder, ShapesLabConfigs.DefaultCategory),
                 TextCollection.ShapesLabTaskPanelTitle, activeWindow, null, null);
+        }
+
+        public void RegisterPositionsPane(PowerPoint.Presentation presentation)
+        {
+            if (GetActivePane(typeof(PositionsPane)) != null)
+            {
+                return;
+            }
+            var activeWindow = presentation.Application.ActiveWindow;
+
+            RegisterTaskPane(new PositionsPane(), TextCollection.PositionsLabTaskPanelTitle, activeWindow, null, null);
         }
 
         public void SyncShapeAdd(string shapeName, string shapeFullName, string category)
@@ -660,14 +706,16 @@ namespace PowerPointLabs
 
             return !invalidPathRegex.IsMatch(pres.Path);
         }
-        
+
         public bool VerifyVersion(PowerPoint.Presentation pres)
         {
             return !pres.Name.EndsWith(".ppt");
         }
+
         # endregion
 
         # region Helper Functions
+
         private void SetupLogger()
         {
             // Check if folder exists and if not, create it
@@ -702,8 +750,8 @@ namespace PowerPointLabs
         }
 
         public CustomTaskPane RegisterTaskPane(UserControl control, string title, PowerPoint.DocumentWindow wnd,
-                                      EventHandler visibleChangeEventHandler = null,
-                                      EventHandler dockPositionChangeEventHandler = null)
+            EventHandler visibleChangeEventHandler = null,
+            EventHandler dockPositionChangeEventHandler = null)
         {
             var loadingDialog = new LoadingDialog();
             loadingDialog.Show();
@@ -731,7 +779,7 @@ namespace PowerPointLabs
             Trace.TraceInformation(
                 "After Pane Width Change: " +
                 string.Format("Pane Width = {0}, Pane Height = {1}, Control Width = {2}, Control Height {3}",
-                              taskPane.Width, taskPane.Height, control.Width, control.Height));
+                    taskPane.Width, taskPane.Height, control.Width, control.Height));
 
             // event handlers register
             if (visibleChangeEventHandler != null)
@@ -782,7 +830,7 @@ namespace PowerPointLabs
         }
 
         private void RegulatePresentationName(PowerPoint.Presentation pres, string tempPath, ref string presName,
-                                              ref string presFullName)
+            ref string presFullName)
         {
             // this function is used to handle "embed on other application" issue. In this case,
             // all of presentation name, path and full name do not match the usual rule: name is 
@@ -824,7 +872,19 @@ namespace PowerPointLabs
             }
         }
 
-        private bool SlidesInRangeHaveCaptions(PowerPoint.SlideRange sldRange)
+        private void ResizeTaskPaneVisibleValueChangedEventHandler(object sender, EventArgs e)
+        {
+            var resizePane = GetActivePane(typeof(ResizeLabPane));
+
+            if (resizePane == null)
+            {
+                return;
+            }
+
+            isResizePaneVisible = resizePane.Visible;
+        }
+
+    private bool SlidesInRangeHaveCaptions(PowerPoint.SlideRange sldRange)
         {
             foreach (PowerPoint.Slide slide in sldRange)
             {

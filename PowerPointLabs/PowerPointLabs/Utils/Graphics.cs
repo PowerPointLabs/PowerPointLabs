@@ -2,9 +2,12 @@
 using System.Collections.Generic;
 using System.Drawing;
 using System.Drawing.Drawing2D;
+using System.Drawing.Imaging;
 using System.Linq;
 using System.Runtime.InteropServices;
 using System.Windows.Forms;
+using System.Windows.Media;
+using System.Windows.Media.Imaging;
 using Microsoft.Office.Core;
 using Microsoft.Office.Interop.PowerPoint;
 using PPExtraEventHelper;
@@ -12,6 +15,8 @@ using PowerPointLabs.Models;
 using Shape = Microsoft.Office.Interop.PowerPoint.Shape;
 using ShapeRange = Microsoft.Office.Interop.PowerPoint.ShapeRange;
 using TextFrame2 = Microsoft.Office.Interop.PowerPoint.TextFrame2;
+using Drawing = System.Drawing;
+using PowerPoint = Microsoft.Office.Interop.PowerPoint;
 
 namespace PowerPointLabs.Utils
 {
@@ -504,6 +509,181 @@ namespace PowerPointLabs.Utils
             }
         }
 
+        public static PointF[] GetRealCoordinates(Shape s)
+        {
+            var rotation = s.Rotation;
+
+            var s1 = new PointF(s.Left, s.Top);
+            var s2 = new PointF(s.Left + s.Width, s.Top);
+            var s3 = new PointF(s.Left + s.Width, s.Top + s.Height);
+            var s4 = new PointF(s.Left, s.Top + s.Height);
+
+            var origin = GetCenterPoint(s);
+
+            var rotated1 = RotatePoint(s1, origin, rotation);
+            var rotated2 = RotatePoint(s2, origin, rotation);
+            var rotated3 = RotatePoint(s3, origin, rotation);
+            var rotated4 = RotatePoint(s4, origin, rotation);
+
+            return new[] { rotated1, rotated2, rotated3, rotated4 };
+        }
+
+        public static PointF RotatePoint(PointF p, PointF origin, float rotation)
+        {
+            var rotationInRadian = DegreeToRadian(rotation);
+            var rotatedX = Math.Cos(rotationInRadian) * (p.X - origin.X) - Math.Sin(rotationInRadian) * (p.Y - origin.Y) + origin.X;
+            var rotatedY = Math.Sin(rotationInRadian) * (p.X - origin.X) + Math.Cos(rotationInRadian) * (p.Y - origin.Y) + origin.Y;
+
+            return new PointF((float)rotatedX, (float)rotatedY);
+        }
+
+        public static double DegreeToRadian(float angle)
+        {
+            return angle / 180.0 * Math.PI;
+        }
+
+        public static PointF LeftMostPoint(PointF[] coordinates)
+        {
+            var leftMost = new PointF();
+
+            foreach (var point in coordinates)
+            {
+                if (leftMost.IsEmpty)
+                {
+                    leftMost = point;
+                }
+                else if (point.X < leftMost.X)
+                {
+                    leftMost = point;
+                }
+            }
+
+            return leftMost;
+        }
+
+        public static PointF RightMostPoint(PointF[] coordinates)
+        {
+            var rightMost = new Drawing.PointF();
+
+            foreach (var point in coordinates)
+            {
+                if (rightMost.IsEmpty)
+                {
+                    rightMost = point;
+                }
+                else if (point.X > rightMost.X)
+                {
+                    rightMost = point;
+                }
+            }
+
+            return rightMost;
+        }
+
+        public static PointF TopMostPoint(PointF[] coordinates)
+        {
+            var topMost = new PointF();
+
+            foreach (var point in coordinates)
+            {
+                if (topMost.IsEmpty)
+                {
+                    topMost = point;
+                }
+                else if (point.Y < topMost.Y)
+                {
+                    topMost = point;
+                }
+            }
+
+            return topMost;
+        }
+
+        public static PointF BottomMostPoint(PointF[] coordinates)
+        {
+            var lowest = new PointF();
+
+            foreach (var point in coordinates)
+            {
+                if (lowest.IsEmpty)
+                {
+                    lowest = point;
+                }
+                else if (point.Y > lowest.Y)
+                {
+                    lowest = point;
+                }
+            }
+
+            return lowest;
+        }
+
+        public static float RealWidth(Drawing.PointF[] coords)
+        {
+            Drawing.PointF leftMost = LeftMostPoint(coords);
+            Drawing.PointF rightMost = RightMostPoint(coords);
+            return rightMost.X - leftMost.X;
+        }
+
+        public static float RealHeight(Drawing.PointF[] coords)
+        {
+            Drawing.PointF topMost = TopMostPoint(coords);
+            Drawing.PointF lowest = BottomMostPoint(coords);
+
+            return lowest.Y - topMost.Y;
+        }
+
+        public static double GetUnrotatedLeftGivenRotatedLeft(Shape s, float rotatedLeft)
+        {
+            var rotationInRadian = DegreeToRadian(s.Rotation);
+            return rotatedLeft + Math.Cos(rotationInRadian) * (s.Width / 2) - Math.Sin(rotationInRadian) * (s.Height / 2) - s.Width / 2;
+        }
+
+        public static PointF GetCenterPoint(Shape s)
+        {
+            return new PointF(s.Left + s.Width / 2, s.Top + s.Height / 2);
+        }
+
+        //TODO: Change method signature to take in List of shapes instead
+        public static List<Shape> SortShapesByLeft(PowerPoint.ShapeRange selectedShapes)
+        {
+            List<Shape> shapesToBeSorted = new List<Shape>();
+
+            for (int i = 1; i <= selectedShapes.Count; i++)
+            {
+                shapesToBeSorted.Add(selectedShapes[i]);
+            }
+
+            shapesToBeSorted.Sort((s1, s2) => LeftComparator(s1, s2));
+
+            return shapesToBeSorted;
+        }
+
+        //TODO: Change method signature to take in List of shapes instead
+        public static List<Shape> SortShapesByTop(PowerPoint.ShapeRange selectedShapes)
+        {
+            List<Shape> shapesToBeSorted = new List<Shape>();
+
+            for (int i = 1; i <= selectedShapes.Count; i++)
+            {
+                shapesToBeSorted.Add(selectedShapes[i]);
+            }
+
+            shapesToBeSorted.Sort((s1, s2) => TopComparator(s1, s2));
+
+            return shapesToBeSorted;
+        }
+
+        public static int LeftComparator(Shape s1, Shape s2)
+        {
+            return LeftMostPoint(GetRealCoordinates(s1)).X.CompareTo(LeftMostPoint(GetRealCoordinates(s2)).X);
+        }
+
+        public static int TopComparator(Shape s1, Shape s2)
+        {
+            return TopMostPoint(GetRealCoordinates(s1)).Y.CompareTo(TopMostPoint(GetRealCoordinates(s2)).Y);
+        }
+
         # endregion
 
         # region Text
@@ -688,7 +868,7 @@ namespace PowerPointLabs.Utils
         # endregion
 
         # region Color
-        public static int ConvertColorToRgb(Color argb)
+        public static int ConvertColorToRgb(Drawing.Color argb)
         {
             return (argb.B << 16) | (argb.G << 8) | argb.R;
         }
@@ -698,9 +878,9 @@ namespace PowerPointLabs.Utils
             return (b << 16) | (g << 8) | r;
         }
 
-        public static Color ConvertRgbToColor(int rgb)
+        public static Drawing.Color ConvertRgbToColor(int rgb)
         {
-            return Color.FromArgb(rgb & 255, (rgb >> 8) & 255, (rgb >> 16) & 255);
+            return Drawing.Color.FromArgb(rgb & 255, (rgb >> 8) & 255, (rgb >> 16) & 255);
         }
 
         public static void UnpackRgbInt(int rgb, out byte r, out byte g, out byte b)
@@ -763,6 +943,41 @@ namespace PowerPointLabs.Utils
             candidateShape.Height = refShape.Height;
 
             candidateShape.LockAspectRatio = candidateLockRatio;
+        }
+
+        /// <summary>
+        /// Converts a Bitmap to Bitmap source
+        /// </summary>
+        /// <param name="bitmap">The bitmap to convert</param>
+        /// <returns>The converted object</returns>
+        public static BitmapSource CreateBitmapSourceFromGdiBitmap(Bitmap bitmap)
+        {
+            var rect = new System.Drawing.Rectangle(0, 0, bitmap.Width, bitmap.Height);
+
+            var bitmapData = bitmap.LockBits(
+                rect,
+                ImageLockMode.ReadWrite,
+                Drawing.Imaging.PixelFormat.Format32bppArgb);
+
+            try
+            {
+                var size = (rect.Width * rect.Height) * 4;
+
+                return BitmapSource.Create(
+                    bitmap.Width,
+                    bitmap.Height,
+                    bitmap.HorizontalResolution,
+                    bitmap.VerticalResolution,
+                    PixelFormats.Bgra32,
+                    null,
+                    bitmapData.Scan0,
+                    size,
+                    bitmapData.Stride);
+            }
+            finally
+            {
+                bitmap.UnlockBits(bitmapData);
+            }
         }
         # endregion
     }
