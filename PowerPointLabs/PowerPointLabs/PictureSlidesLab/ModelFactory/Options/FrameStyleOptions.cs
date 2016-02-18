@@ -6,7 +6,7 @@ using PowerPointLabs.PictureSlidesLab.ModelFactory.Options.Interface;
 namespace PowerPointLabs.PictureSlidesLab.ModelFactory.Options
 {
     [Export(typeof(IStyleOptions))]
-    [ExportMetadata("StyleOrder", 8)]
+    [ExportMetadata("StyleOrder", 10)]
     class FrameStyleOptions : BaseStyleOptions
     {
         public override List<StyleOption> GetOptionsForVariation()
@@ -17,6 +17,7 @@ namespace PowerPointLabs.PictureSlidesLab.ModelFactory.Options
                 styleOption.IsUseFrameStyle = true;
                 styleOption.IsUseTextGlow = true;
                 styleOption.TextGlowColor = "#000000";
+                styleOption.FontFamily = "Courier New";
             }
             return UpdateStyleName(
                 result,
@@ -30,7 +31,8 @@ namespace PowerPointLabs.PictureSlidesLab.ModelFactory.Options
                 StyleName = TextCollection.PictureSlidesLabText.StyleNameFrame,
                 IsUseFrameStyle = true,
                 IsUseTextGlow = true,
-                TextGlowColor = "#000000"
+                TextGlowColor = "#000000",
+                FontFamily = "Courier New"
             };
         }
     }

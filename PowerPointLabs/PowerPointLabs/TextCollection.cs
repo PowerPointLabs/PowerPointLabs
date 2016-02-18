@@ -344,6 +344,8 @@
             public const string VariantCategoryTextGlowColor = "Text Glow Color";
             public const string VariantCategoryBannerColor = "Banner Color";
             public const string VariantCategoryTextBoxColor = "TextBox Color";
+            public const string VariantCategoryFrostedGlassTextBoxColor = "Frosted Glass TextBox Color";
+            public const string VariantCategoryFrostedGlassBannerColor = "Frosted Glass Banner Color";
             public const string VariantCategoryFrameColor = "Frame Color";
             public const string VariantCategoryCircleColor = "Circle Color";
             public const string VariantCategoryTriangleColor = "Triangle Color";
@@ -353,6 +355,8 @@
             public const string VariantCategorySpecialEffects = "Special Effects";
             public const string VariantCategoryBlurriness = "Blurriness";
             public const string VariantCategoryBrightness = "Brightness";
+            public const string VariantCategoryFrostedGlassTextBoxTransparency = "TextBox Transparency";
+            public const string VariantCategoryFrostedGlassBannerTransparency = "Banner Transparency";
             public const string VariantCategoryFontSizeIncrease = "Font Size";
             public const string VariantCategoryPicture = "Picture";
             public const string VariantCategoryImageReference = "Picture Citation";
@@ -376,6 +380,8 @@
             public const string StyleNameFrame = "Frame Style";
             public const string StyleNameCircle = "Circle Style";
             public const string StyleNameTriangle = "Triangle Style";
+            public const string StyleNameFrostedGlassTextBox = "Frosted Glass TextBox Style";
+            public const string StyleNameFrostedGlassBanner = "Frosted Glass Banner Style";
 
             /// <summary>
             /// Messages

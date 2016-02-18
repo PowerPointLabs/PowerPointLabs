@@ -26,21 +26,21 @@ namespace PowerPointLabs.PictureSlidesLab.ModelFactory.VariantWorker
                 }),
                 new StyleVariant(new Dictionary<string, object>
                 {
-                    {"OptionName", "Calibri"},
+                    {"OptionName", "Century Gothic"},
                     {"IsUseTextFormat", true},
-                    {"FontFamily", "Calibri"}
+                    {"FontFamily", "Century Gothic"}
                 }),
                 new StyleVariant(new Dictionary<string, object>
                 {
-                    {"OptionName", "Microsoft YaHei"},
+                    {"OptionName", "Times New Roman Italic"},
                     {"IsUseTextFormat", true},
-                    {"FontFamily", "Microsoft YaHei"}
+                    {"FontFamily", "Times New Roman Italic"}
                 }),
                 new StyleVariant(new Dictionary<string, object>
                 {
-                    {"OptionName", "Arial"},
+                    {"OptionName", "Segoe Print"},
                     {"IsUseTextFormat", true},
-                    {"FontFamily", "Arial"}
+                    {"FontFamily", "Segoe Print"}
                 }),
                 new StyleVariant(new Dictionary<string, object>
                 {
@@ -62,9 +62,9 @@ namespace PowerPointLabs.PictureSlidesLab.ModelFactory.VariantWorker
                 }),
                 new StyleVariant(new Dictionary<string, object>
                 {
-                    {"OptionName", "Tahoma"},
+                    {"OptionName", "Impact"},
                     {"IsUseTextFormat", true},
-                    {"FontFamily", "Tahoma"}
+                    {"FontFamily", "Impact"}
                 })
             };
         }

@@ -8,6 +8,8 @@ namespace PowerPointLabs.PictureSlidesLab.Service
 {
     partial class EffectsDesigner
     {
+        public const int BlurDegreeForFrostedGlassEffect = 95;
+
         private PowerPoint.Shape AddPicture(string imageFile, EffectName effectName)
         {
             var imageShape = Shapes.AddPicture(imageFile,
@@ -35,6 +37,14 @@ namespace PowerPointLabs.PictureSlidesLab.Service
             {
                 picShape.PictureFormat.Crop.ShapeHeight = SlideHeight - picShape.Top;
             }
+        }
+
+        private void CropPicture(PowerPoint.Shape picShape, float targetLeft, float targetTop, float targetWidth, float targetHeight)
+        {
+            picShape.PictureFormat.Crop.ShapeLeft = targetLeft;
+            picShape.PictureFormat.Crop.ShapeTop = targetTop;
+            picShape.PictureFormat.Crop.ShapeWidth = targetWidth;
+            picShape.PictureFormat.Crop.ShapeHeight = targetHeight;
         }
 
         /// <summary>
