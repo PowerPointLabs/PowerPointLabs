@@ -125,6 +125,20 @@ namespace PowerPointLabs.PositionsLab
         {
             PositionsLabMain.SnapVertical();
         }
+
+        private void SnapAwayButton_Click(object sender, RoutedEventArgs e)
+        {
+            bool noShapesSelected = Globals.ThisAddIn.Application.ActiveWindow.Selection.Type != PowerPoint.PpSelectionType.ppSelectionShapes;
+
+            if (noShapesSelected)
+            {
+                return;
+            }
+
+            PowerPoint.ShapeRange selectedShapes = Globals.ThisAddIn.Application.ActiveWindow.Selection.ShapeRange;
+
+            PositionsLabMain.SnapAway(ConvertShapeRangeToList(selectedShapes));
+        }
         #endregion
 
         #region Swap
@@ -174,8 +188,8 @@ namespace PowerPointLabs.PositionsLab
             Globals.ThisAddIn.Application.ActiveWindow.Selection.Unselect();
             System.Drawing.Point p = System.Windows.Forms.Control.MousePosition;
 
-            float prevAngle = (float)AngleBetweenTwoPoints(ConvertSlidePointToScreenPoint(Graphics.GetCenterPoint(refPoint)), prevMousePos);
-            float angle = (float)AngleBetweenTwoPoints(ConvertSlidePointToScreenPoint(Graphics.GetCenterPoint(refPoint)), p) - prevAngle;
+            float prevAngle = (float)PositionsLabMain.AngleBetweenTwoPoints(ConvertSlidePointToScreenPoint(Graphics.GetCenterPoint(refPoint)), prevMousePos);
+            float angle = (float)PositionsLabMain.AngleBetweenTwoPoints(ConvertSlidePointToScreenPoint(Graphics.GetCenterPoint(refPoint)), p) - prevAngle;
             System.Drawing.PointF origin = Graphics.GetCenterPoint(refPoint);
 
             for (int i = 0; i < shapesToBeRotated.Count; i++)
@@ -187,7 +201,7 @@ namespace PowerPointLabs.PositionsLab
                 currentShape.Left += (rotatedCenter.X - unrotatedCenter.X);
                 currentShape.Top += (rotatedCenter.Y - unrotatedCenter.Y);
 
-                currentShape.Rotation = AddAngles(currentShape.Rotation, angle);
+                currentShape.Rotation = PositionsLabMain.AddAngles(currentShape.Rotation, angle);
             }
 
             prevMousePos = p;
@@ -444,33 +458,12 @@ namespace PowerPointLabs.PositionsLab
             return listOfShapes;
         }
 
-        private double AngleBetweenTwoPoints(System.Drawing.PointF refPoint, System.Drawing.PointF pt)
-        {
-            double angle = Math.Atan((pt.Y - refPoint.Y) / (pt.X - refPoint.X)) * 180 / Math.PI;
-
-            if (pt.X - refPoint.X > 0)
-            {
-                angle = 90 + angle;
-            }
-            else
-            {
-                angle = 270 + angle;
-            }
-
-            return angle;
-        }
-
         private System.Drawing.PointF ConvertSlidePointToScreenPoint(System.Drawing.PointF pt)
         {
             pt.X = PointsToScreenPixelsX(pt.X);
             pt.Y = PointsToScreenPixelsY(pt.Y);
 
             return pt;
-        }
-
-        private float AddAngles(float a, float b)
-        {
-            return (a + b) % 360;
         }
 
         private void SelectShapes(List<Shape> shapes)

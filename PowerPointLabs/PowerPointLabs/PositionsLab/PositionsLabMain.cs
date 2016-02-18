@@ -9,6 +9,7 @@ using PowerPointLabs.Utils;
 using PowerPointLabs.Views;
 using Shape = Microsoft.Office.Interop.PowerPoint.Shape;
 using PowerPoint = Microsoft.Office.Interop.PowerPoint;
+using AutoShape = Microsoft.Office.Core.MsoAutoShapeType;
 using System.Diagnostics;
 using Drawing = System.Drawing;
 
@@ -16,6 +17,22 @@ namespace PowerPointLabs.PositionsLab
 {
     class PositionsLabMain
     {
+        private static bool isInit = false;
+        private const float epsilon = 0.00001f;
+        private const float ROTATE_LEFT = 90f;
+        private const float ROTATE_RIGHT = 270f;
+        private const float ROTATE_UP = 0f;
+        private const float ROTATE_DOWN = 180f;
+        private const int NONE = -1;
+        private const int RIGHT = 0;
+        private const int DOWN = 1;
+        private const int LEFT = 2;
+        private const int UP = 3;
+        private const int LEFTORRIGHT = 4;
+        private const int UPORDOWN = 5;
+
+        private static Dictionary<MsoAutoShapeType, float> shapeDefaultUpAngle;
+
         #region API
 
         #region Align
@@ -159,6 +176,12 @@ namespace PowerPointLabs.PositionsLab
         #region Snap
         public static void SnapVertical()
         {
+            if (!isInit)
+            {
+                Init();
+                isInit = true;
+            }
+
             var selectedShapes = Globals.ThisAddIn.Application.ActiveWindow.Selection.ShapeRange as PowerPoint.ShapeRange;
 
             for (int i = 1; i <= selectedShapes.Count; i++)
@@ -169,11 +192,96 @@ namespace PowerPointLabs.PositionsLab
 
         public static void SnapHorizontal()
         {
+            if (!isInit)
+            {
+                Init();
+                isInit = true;
+            }
+
             var selectedShapes = Globals.ThisAddIn.Application.ActiveWindow.Selection.ShapeRange as PowerPoint.ShapeRange;
 
             for (int i = 1; i <= selectedShapes.Count; i++)
             {
                 SnapShapeHorizontal(selectedShapes[i]);
+            }
+        }
+
+        public static void SnapAway(List<Shape> shapes)
+        {
+            if (!isInit)
+            {
+                Init();
+                isInit = true;
+            }
+
+            if (shapes.Count <= 1)
+            {
+                return;
+            }
+
+            Drawing.PointF refShapeCenter = Graphics.GetCenterPoint(shapes[0]);
+            bool isAllSameDir = true;
+            int lastDir = -1;
+
+            for (int i = 1; i < shapes.Count; i++)
+            {
+                Shape shape = shapes[i];
+                Drawing.PointF shapeCenter = Graphics.GetCenterPoint(shape);
+                float angle = (float)AngleBetweenTwoPoints(refShapeCenter, shapeCenter);
+
+                int dir = GetDirectionWRTRefShape(shape, angle);
+
+                if (i == 1)
+                {
+                    lastDir = dir;
+                }
+
+                if (!IsSameDirection(lastDir, dir))
+                {
+                    isAllSameDir = false;
+                    break;
+                }
+
+                //only maintain in one direction instead of dual direction
+                if (dir < LEFTORRIGHT)
+                {
+                    lastDir = dir; 
+                }
+            }
+
+            if (!isAllSameDir || lastDir == NONE)
+            {
+                lastDir = 0;
+            }
+            else
+            {
+                lastDir++;
+            }
+
+            for (int i = 1; i < shapes.Count; i++)
+            {
+                Shape shape = shapes[i];
+                Drawing.PointF shapeCenter = Graphics.GetCenterPoint(shape);
+                float angle = (float) AngleBetweenTwoPoints(refShapeCenter, shapeCenter);
+
+                float defaultUpAngle = 0;
+                bool hasDefaultDirection = shapeDefaultUpAngle.TryGetValue(shape.AutoShapeType, out defaultUpAngle);
+
+                if (hasDefaultDirection)
+                {
+                    shape.Rotation = (defaultUpAngle + angle) + lastDir * 90;
+                }
+                else
+                {
+                    if (IsVertical(shape))
+                    {
+                        shape.Rotation = angle + lastDir * 90;
+                    }
+                    else
+                    {
+                        shape.Rotation = (angle - 90) + lastDir * 90;
+                    }
+                }
             }
         }
 
@@ -473,7 +581,159 @@ namespace PowerPointLabs.PositionsLab
         #endregion
 
         #region Util
+        public static double AngleBetweenTwoPoints(System.Drawing.PointF refPoint, System.Drawing.PointF pt)
+        {
+            double angle = Math.Atan((pt.Y - refPoint.Y) / (pt.X - refPoint.X)) * 180 / Math.PI;
 
+            if (pt.X - refPoint.X > 0)
+            {
+                angle = 90 + angle;
+            }
+            else
+            {
+                angle = 270 + angle;
+            }
+
+            return angle;
+        }
+
+        public static bool NearlyEqual(float a, float b, float epsilon)
+        {
+            float absA = Math.Abs(a);
+            float absB = Math.Abs(b);
+            float diff = Math.Abs(a - b);
+
+            if (a == b)
+            { // shortcut, handles infinities
+                return true;
+            }
+            else if (a == 0 || b == 0 || diff < float.Epsilon)
+            {
+                // a or b is zero or both are extremely close to it
+                // relative error is less meaningful here
+                return diff < epsilon;
+            }
+            else
+            { // use relative error
+                return diff / (absA + absB) < epsilon;
+            }
+        }
+
+        private static int GetDirectionWRTRefShape(Shape shape, float angleFromRefShape)
+        {
+            float defaultUpAngle = -1;
+            bool hasDefaultDirection = shapeDefaultUpAngle.TryGetValue(shape.AutoShapeType, out defaultUpAngle);
+
+            if (shape.AutoShapeType == AutoShape.msoShapeLightningBolt)
+            {
+                Debug.WriteLine("defaultDir: " + hasDefaultDirection);
+                Debug.WriteLine("defaultAngle: " + defaultUpAngle);
+            }
+
+            if (!hasDefaultDirection)
+            {
+                if (IsVertical(shape))
+                {
+                    defaultUpAngle = 0;
+                }
+                else
+                {
+                    defaultUpAngle = 90;
+                }
+            }
+
+            float angle = AddAngles(angleFromRefShape, defaultUpAngle);
+            float diff = SubtractAngles(shape.Rotation, angle);
+            float phaseInFloat = diff / 90;
+
+            if (shape.AutoShapeType == AutoShape.msoShapeLightningBolt)
+            {
+                Debug.WriteLine("angle: " + angle);
+                Debug.WriteLine("diff: " + diff);
+                Debug.WriteLine("phaseInFloat: " + defaultUpAngle);
+                Debug.WriteLine("equal: " + NearlyEqual(phaseInFloat, (float)Math.Round(phaseInFloat), epsilon));
+            }
+
+            if (!NearlyEqual(phaseInFloat, (float)Math.Round(phaseInFloat), epsilon))
+            {
+                return NONE;
+            }
+
+            int phase = (int)Math.Round(phaseInFloat);
+
+            if (!hasDefaultDirection)
+            {
+                if (phase == LEFT || phase == RIGHT)
+                {
+                    return LEFTORRIGHT;
+                }
+
+                return UPORDOWN;
+            }
+
+            return phase;
+        }
+
+        private static bool IsSameDirection(int a, int b)
+        {
+            if (a == b) return true;
+            if (a == LEFTORRIGHT) return b == LEFT || b == RIGHT;
+            if (b == LEFTORRIGHT) return a == LEFT || a == RIGHT;
+            if (a == UPORDOWN) return b == UP || b == DOWN;
+            if (b == UPORDOWN) return a == UP || a == DOWN;
+
+            return false;
+       }
+
+        public static float AddAngles(float a, float b)
+        {
+            return (a + b) % 360;
+        }
+
+        public static float SubtractAngles(float a, float b)
+        {
+            float diff = a - b;
+            if (diff < 0)
+            {
+                return 360 + diff;
+            }
+
+            return diff;
+        }
+
+        private static void Init()
+        {
+            shapeDefaultUpAngle = new Dictionary<MsoAutoShapeType, float>();
+
+            shapeDefaultUpAngle.Add(AutoShape.msoShapeLeftArrow, ROTATE_LEFT);
+            shapeDefaultUpAngle.Add(AutoShape.msoShapeLeftRightArrow, ROTATE_LEFT);
+            shapeDefaultUpAngle.Add(AutoShape.msoShapeLeftArrowCallout, ROTATE_LEFT);
+            shapeDefaultUpAngle.Add(AutoShape.msoShapeLeftRightArrowCallout, ROTATE_LEFT);
+            shapeDefaultUpAngle.Add(AutoShape.msoShapeCurvedLeftArrow, ROTATE_LEFT);
+
+            shapeDefaultUpAngle.Add(AutoShape.msoShapeRightArrow, ROTATE_RIGHT);
+            shapeDefaultUpAngle.Add(AutoShape.msoShapeBentArrow, ROTATE_RIGHT);
+            shapeDefaultUpAngle.Add(AutoShape.msoShapeStripedRightArrow, ROTATE_RIGHT);
+            shapeDefaultUpAngle.Add(AutoShape.msoShapeNotchedRightArrow, ROTATE_RIGHT);
+            shapeDefaultUpAngle.Add(AutoShape.msoShapePentagon, ROTATE_RIGHT);
+            shapeDefaultUpAngle.Add(AutoShape.msoShapeChevron, ROTATE_RIGHT);
+            shapeDefaultUpAngle.Add(AutoShape.msoShapeRightArrowCallout, ROTATE_RIGHT);
+            shapeDefaultUpAngle.Add(AutoShape.msoShapeCurvedRightArrow, ROTATE_RIGHT);
+
+            shapeDefaultUpAngle.Add(AutoShape.msoShapeUpArrow, ROTATE_UP);
+            shapeDefaultUpAngle.Add(AutoShape.msoShapeBentUpArrow, ROTATE_UP);
+            shapeDefaultUpAngle.Add(AutoShape.msoShapeUpDownArrow, ROTATE_UP);
+            shapeDefaultUpAngle.Add(AutoShape.msoShapeLeftRightUpArrow, ROTATE_UP);
+            shapeDefaultUpAngle.Add(AutoShape.msoShapeLeftUpArrow, ROTATE_UP);
+            shapeDefaultUpAngle.Add(AutoShape.msoShapeUpArrowCallout, ROTATE_UP);
+            shapeDefaultUpAngle.Add(AutoShape.msoShapeCurvedUpArrow, ROTATE_UP);
+
+            shapeDefaultUpAngle.Add(AutoShape.msoShapeDownArrow, ROTATE_DOWN);
+            shapeDefaultUpAngle.Add(AutoShape.msoShapeUTurnArrow, ROTATE_DOWN);
+            shapeDefaultUpAngle.Add(AutoShape.msoShapeDownArrowCallout, ROTATE_DOWN);
+            shapeDefaultUpAngle.Add(AutoShape.msoShapeCurvedDownArrow, ROTATE_DOWN);
+            shapeDefaultUpAngle.Add(AutoShape.msoShapeCircularArrow, ROTATE_DOWN);
+        }
 
         #endregion
     }
