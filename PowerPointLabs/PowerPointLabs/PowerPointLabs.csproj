@@ -174,7 +174,7 @@
     </ManifestKeyFile>
   </PropertyGroup>
   <PropertyGroup>
-    <ManifestCertificateThumbprint>2F6D6C35407CF519C0DC35A642F2993F4EC64DCC</ManifestCertificateThumbprint>
+    <ManifestCertificateThumbprint>B200334E7EFE8551DB3F9CF5B7674D388B3D4A53</ManifestCertificateThumbprint>
   </PropertyGroup>
   <!--
     This section specifies references for the project.
