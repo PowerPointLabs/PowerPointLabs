@@ -32,7 +32,7 @@ namespace PowerPointLabs.ResizeLab
         /// </summary>
         /// <param name="referenceShape">The shape to get the reference edge from</param>
         /// <returns>The point determining the reference edge</returns>
-        private delegate float GetDefaultReferenceEdge(PowerPoint.Shape referenceShape);
+        private delegate float GetDefaultReferenceEdge(PPShape referenceShape);
         #region API
 
         /// <summary>
@@ -50,7 +50,10 @@ namespace PowerPointLabs.ResizeLab
                 }
                 return StretchLeftAction;
             });
-            var defaultReferenceEdge = new GetDefaultReferenceEdge(referenceShape => new PPShape(referenceShape).Left);
+            var defaultReferenceEdge = new GetDefaultReferenceEdge(referenceShape =>
+            {
+                return referenceShape.Left;
+            });
             Stretch(stretchShapes, appropriateStretch, defaultReferenceEdge);
         }
 
@@ -71,8 +74,7 @@ namespace PowerPointLabs.ResizeLab
             });
             var defaultReferenceEdge = new GetDefaultReferenceEdge(referenceShape =>
             {
-                var shape = new PPShape(referenceShape);
-                return shape.Left + shape.AbsoluteWidth;
+                return referenceShape.Left + referenceShape.AbsoluteWidth;
             });
             Stretch(stretchShapes, appropriateStretch, defaultReferenceEdge);
         }
@@ -92,7 +94,10 @@ namespace PowerPointLabs.ResizeLab
                 }
                 return StretchTopAction;
             });
-            var defaultReferenceEdge = new GetDefaultReferenceEdge(referenceShape => new PPShape(referenceShape).Top);
+            var defaultReferenceEdge = new GetDefaultReferenceEdge(referenceShape =>
+            {
+                return referenceShape.Top;
+            });
             Stretch(stretchShapes, appropriateStretch, defaultReferenceEdge);
         }
 
@@ -113,8 +118,7 @@ namespace PowerPointLabs.ResizeLab
             });
             var defaultReferenceEdge = new GetDefaultReferenceEdge(referenceShape =>
             {
-                var shape = new PPShape(referenceShape);
-                return shape.Top + shape.AbsoluteHeight;
+                return referenceShape.Top + referenceShape.AbsoluteHeight;
             });
             Stretch(stretchShapes, appropriateStretch, defaultReferenceEdge);
         }
@@ -155,7 +159,7 @@ namespace PowerPointLabs.ResizeLab
             }
 
             var referenceShape = GetReferenceShape(stretchShapes);
-            var referenceEdge = defaultReferenceEdge(referenceShape);
+            var referenceEdge = defaultReferenceEdge(new PPShape(referenceShape));
 
             for (var i = ModShapesIndex; i <= stretchShapes.Count; i++)
             {
