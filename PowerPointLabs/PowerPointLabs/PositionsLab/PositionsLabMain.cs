@@ -33,9 +33,9 @@ namespace PowerPointLabs.PositionsLab
         private const int UPORDOWN = 5;
 
         private static Dictionary<MsoAutoShapeType, float> shapeDefaultUpAngle;
-	
-	private static bool _useSlideAsReference;
-	#region API
+        private static bool _useSlideAsReference;
+
+        #region API
 
         #region Class Methods
 
