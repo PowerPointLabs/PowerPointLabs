@@ -135,18 +135,25 @@ namespace PowerPointLabs.PictureSlidesLab.View
                 OpenVariationFlyoutForReload(styleName, originalImageShape, canUseDefaultPicture: true);
             }
         }
-
-        private void LoadStyleAndImage(PowerPointSlide targetSlide)
+        
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="targetSlide"></param>
+        /// <param name="isLoadingWithDefaultPicture">when no style found, use default picture to preview style</param>
+        /// <returns>is successfully loaded</returns>
+        private bool LoadStyleAndImage(PowerPointSlide targetSlide, bool isLoadingWithDefaultPicture = true)
         {
-            if (targetSlide == null) return;
+            if (targetSlide == null) return false;
 
+            var isSuccessfullyLoaded = false;
             var originalShapeList = targetSlide
                 .GetShapesWithPrefix(ShapeNamePrefix + "_" + EffectName.Original_DO_NOT_REMOVE);
             var croppedShapeList = targetSlide
                 .GetShapesWithPrefix(ShapeNamePrefix + "_" + EffectName.Cropped_DO_NOT_REMOVE);
 
             // if no original shape, show default picture
-            if (originalShapeList.Count == 0)
+            if (originalShapeList.Count == 0 && isLoadingWithDefaultPicture)
             {
                 DisableUpdatingPreviewImages();
                 // De-select the picture
@@ -156,8 +163,9 @@ namespace PowerPointLabs.PictureSlidesLab.View
                 UpdatePreviewImages(CreateDefaultPictureItem(), isEnteringPictureVariation: true);
                 EnterDefaultPictureMode();
                 UpdatePreviewStageControls();
+                isSuccessfullyLoaded = true;
             }
-            else // load the style
+            else if (originalShapeList.Count > 0) // load the style
             {
                 var originalImageShape = originalShapeList[0];
                 var isImageStillInListBox = false;
@@ -191,7 +199,9 @@ namespace PowerPointLabs.PictureSlidesLab.View
                     ImageSelectionListBox.SelectedIndex = ImageSelectionListBox.Items.Count - 1;
                     OpenVariationFlyoutForReload(styleName, originalImageShape);
                 }
+                isSuccessfullyLoaded = true;
             }
+            return isSuccessfullyLoaded;
         }
 
         #region Helper funcs
