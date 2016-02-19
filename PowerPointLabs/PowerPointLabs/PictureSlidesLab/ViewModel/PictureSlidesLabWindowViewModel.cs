@@ -614,6 +614,7 @@ namespace PowerPointLabs.PictureSlidesLab.ViewModel
         public bool IsInPictureVariation()
         {
             return View.IsVariationsFlyoutOpen
+                   && CurrentVariantCategory != null && CurrentVariantCategory.Text != null
                    && CurrentVariantCategory.Text == TextCollection.PictureSlidesLabText.VariantCategoryPicture;
         }
 

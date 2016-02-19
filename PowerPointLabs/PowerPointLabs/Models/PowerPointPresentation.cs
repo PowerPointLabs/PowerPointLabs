@@ -365,6 +365,26 @@ namespace PowerPointLabs.Models
             return true;
         }
 
+        public bool CreateInBackground()
+        {
+            if (File.Exists(FullName))
+            {
+                return false;
+            }
+
+            if (Globals.ThisAddIn != null)
+            {
+                Presentation = Globals.ThisAddIn.Application.Presentations.Add(BoolToMsoTriState(false));
+                Presentation.SaveAs(FullNameNoExtension);
+            }
+            else if (Application != null)
+            {
+                Presentation = Application.Presentations.Add(BoolToMsoTriState(false));
+            }
+
+            return true;
+        }
+
         public virtual void Close()
         {
             Presentation.Close();
@@ -402,6 +422,32 @@ namespace PowerPointLabs.Models
             if (!focus)
             {
                 workingWindow.Activate();
+            }
+
+            return true;
+        }
+
+        public virtual bool OpenInBackground()
+        {
+            if (Opened)
+            {
+                return false;
+            }
+
+            // if the file doesn't exist, create and open the file then return
+            if (CreateInBackground())
+            {
+                return true;
+            }
+            try
+            {
+                Presentation = Globals.ThisAddIn.Application.Presentations.Open(FullName, BoolToMsoTriState(false),
+                                                                                BoolToMsoTriState(false),
+                                                                                BoolToMsoTriState(false));
+            }
+            catch (Exception)
+            {
+                return false;
             }
 
             return true;
