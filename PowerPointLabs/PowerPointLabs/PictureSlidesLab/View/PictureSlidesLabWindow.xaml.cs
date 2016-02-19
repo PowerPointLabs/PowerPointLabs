@@ -89,17 +89,26 @@ namespace PowerPointLabs.PictureSlidesLab.View
         {
             if (_isInit) return;
 
-            InitViewModel();
-            InitGotoSlideDialog();
-            InitLoadStylesDialog();
-            InitDragAndDrop();
-            InitStyleing();
-            // remove loading overlay
-            PictureSlidesLabGridLoadingOverlay.Visibility = Visibility.Hidden;
-            IsOpen = true;
-            Activate();
+            try
+            {
+                InitViewModel();
+                InitGotoSlideDialog();
+                InitLoadStylesDialog();
+                InitDragAndDrop();
+                InitStyleing();
+            }
+            catch (Exception e)
+            {
+                Views.ErrorDialogWrapper.ShowDialog("Picture Slides Lab - Init Failure", e.Message, e);
+            }
+            finally
+            {
+                // remove loading overlay
+                PictureSlidesLabGridLoadingOverlay.Visibility = Visibility.Hidden;
+                IsOpen = true;
 
-            _isInit = true;
+                _isInit = true;
+            }
         }
 
         private void InitStyleing()

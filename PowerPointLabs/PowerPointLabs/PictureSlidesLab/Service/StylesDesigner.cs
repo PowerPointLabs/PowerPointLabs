@@ -39,7 +39,7 @@ namespace PowerPointLabs.PictureSlidesLab.Service
             Name = "PictureSlidesLabPreview";
             Option = new StyleOption();
             Application = app;
-            Open(withWindow: false, focus: false);
+            OpenInBackground();
 
             var catalog = new AggregateCatalog(
                 new AssemblyCatalog(Assembly.GetExecutingAssembly()));
