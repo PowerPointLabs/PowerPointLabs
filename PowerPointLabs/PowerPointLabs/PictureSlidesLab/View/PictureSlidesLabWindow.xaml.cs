@@ -151,6 +151,7 @@ namespace PowerPointLabs.PictureSlidesLab.View
             if (QuickDropDialog != null)
             {
                 QuickDropDialog.Close();
+                QuickDropDialog = null;
             }
             ViewModel.CleanUp();
         }
@@ -310,13 +311,19 @@ namespace PowerPointLabs.PictureSlidesLab.View
             _lastSelectedSlideIndex = this.GetCurrentSlide().Index;
 
             if (!IsClosing
-                && (CropWindow == null || !CropWindow.IsOpen)
-                && (QuickDropDialog == null || !QuickDropDialog.IsOpen))
+                && (CropWindow == null || !CropWindow.IsOpen))
             {
-                QuickDropDialog = new QuickDropDialog(this);
-                QuickDropDialog.DropHandler += PictureSlidesLabWindow_OnDrop;
-                QuickDropDialog.PasteHandler += () => { HandlePastedPicture(isUsingWinformMsgBox: true); };
-                QuickDropDialog.Show();
+                if (QuickDropDialog == null)
+                {
+                    QuickDropDialog = new QuickDropDialog(this);
+                    QuickDropDialog.DropHandler += PictureSlidesLabWindow_OnDrop;
+                    QuickDropDialog.PasteHandler += () => { HandlePastedPicture(isUsingWinformMsgBox: true); };
+                    QuickDropDialog.ShowQuickDropDialog();
+                }
+                else if (!QuickDropDialog.IsOpen)
+                {
+                    QuickDropDialog.ShowQuickDropDialog();
+                }
             }
         }
 
@@ -495,8 +502,7 @@ namespace PowerPointLabs.PictureSlidesLab.View
             // hide quick drop dialog when main window activated
             if (QuickDropDialog != null && QuickDropDialog.IsOpen)
             {
-                QuickDropDialog.Hide();
-                QuickDropDialog.IsOpen = false;
+                QuickDropDialog.HideQuickDropDialog();
             }
 
             // when no current slide
