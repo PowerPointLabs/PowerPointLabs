@@ -22,7 +22,7 @@ namespace PowerPointLabs.PictureSlidesLab.Service
         {
             var imageRefShape = Shapes.AddTextbox(MsoTextOrientation.msoTextOrientationHorizontal, 0, 0, SlideWidth,
                 20);
-            imageRefShape.TextFrame2.TextRange.Text = "Image From: " + contextLink;
+            imageRefShape.TextFrame2.TextRange.Text = "Picture taken from: " + contextLink;
 
             if (!StringUtil.IsEmpty(textBoxColor))
             {

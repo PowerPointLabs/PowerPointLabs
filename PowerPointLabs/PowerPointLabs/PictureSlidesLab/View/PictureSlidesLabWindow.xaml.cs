@@ -11,6 +11,7 @@ using System.Windows.Forms;
 using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Animation;
+using MahApps.Metro.Controls.Dialogs;
 using PowerPointLabs.ActionFramework.Common.Extension;
 using PowerPointLabs.PictureSlidesLab.Model;
 using PowerPointLabs.PictureSlidesLab.Util;
@@ -599,7 +600,6 @@ namespace PowerPointLabs.PictureSlidesLab.View
 
         private void MenuItemAdjustImage_OnClick(object sender, RoutedEventArgs e)
         {
-
             if (_clickedImageSelectionItemIndex < 0
                 || _clickedImageSelectionItemIndex > ImageSelectionListBox.Items.Count)
                 return;
@@ -629,6 +629,40 @@ namespace PowerPointLabs.PictureSlidesLab.View
                 if (selectedImage == null || selectedImage.ImageFile == StoragePath.LoadingImgPath) return;
 
                 AdjustImageDimensions(selectedImage);
+            }
+        }
+
+        private void MenuItemEditSource_OnClick(object sender, RoutedEventArgs e)
+        {
+            if (_clickedImageSelectionItemIndex < 0
+                || _clickedImageSelectionItemIndex > ImageSelectionListBox.Items.Count)
+                return;
+
+            var selectedImage = (ImageItem)ImageSelectionListBox.Items.GetItemAt(_clickedImageSelectionItemIndex);
+            if (selectedImage == null || selectedImage.ImageFile == StoragePath.LoadingImgPath) return;
+
+            EditPictureSource(selectedImage);
+        }
+
+        private void MenuItemEditSource_OnClickFromPreviewListBox(object sender, RoutedEventArgs e)
+        {
+            if (ViewModel.IsInPictureVariation())
+            {
+                var imageItem = ViewModel.GetSelectedPictureInPictureVariation(
+                    StylesVariationListBox.SelectedIndex);
+                if (imageItem.ImageFile == StoragePath.NoPicturePlaceholderImgPath
+                    || imageItem.ImageFile == StoragePath.LoadingImgPath)
+                {
+                    return;
+                }
+                EditPictureSource(imageItem);
+            }
+            else
+            {
+                var selectedImage = (ImageItem)ImageSelectionListBox.SelectedItem;
+                if (selectedImage == null || selectedImage.ImageFile == StoragePath.LoadingImgPath) return;
+
+                EditPictureSource(selectedImage);
             }
         }
 
@@ -748,6 +782,22 @@ namespace PowerPointLabs.PictureSlidesLab.View
 
             ViewModel.ImageSelectionList.RemoveAt(ImageSelectionListBox.SelectedIndex);
             HandleDeletePictureInPictureVariation();
+        }
+
+        private void EditPictureSource(ImageItem source)
+        {
+            var metroDialogSettings = new MetroDialogSettings
+            {
+                DefaultText = source.ContextLink
+            };
+            this.ShowInputAsync("Edit Picture Source", "Picture taken from", metroDialogSettings)
+                .ContinueWith(task =>
+                {
+                    if (!string.IsNullOrEmpty(task.Result))
+                    {
+                        source.ContextLink = task.Result;
+                    }
+                });
         }
 
         private void AdjustImageDimensions(ImageItem source)

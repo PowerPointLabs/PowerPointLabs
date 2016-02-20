@@ -30,7 +30,7 @@
                 <ResourceDictionary Source="pack://application:,,,/MahApps.Metro;component/Styles/Controls.xaml" />
                 <ResourceDictionary Source="pack://application:,,,/MahApps.Metro;component/Styles/Fonts.xaml" />
                 <ResourceDictionary Source="pack://application:,,,/MahApps.Metro;component/Styles/Colors.xaml" />
-                <ResourceDictionary Source="pack://application:,,,/MahApps.Metro;component/Styles/Accents/red.xaml" />
+                <ResourceDictionary Source="pack://application:,,,/MahApps.Metro;component/Styles/Accents/blue.xaml" />
                 <ResourceDictionary Source="pack://application:,,,/MahApps.Metro;component/Styles/Accents/baselight.xaml" />
             </ResourceDictionary.MergedDictionaries>
         </ResourceDictionary>
@@ -75,6 +75,7 @@
                     <ListBox.ContextMenu>
                         <ContextMenu>
                             <MenuItem Header="Adjust picture dimensions" Click="MenuItemAdjustImage_OnClickFromPreviewListBox"></MenuItem>
+                            <MenuItem Header="Edit picture source" Click="MenuItemEditSource_OnClickFromPreviewListBox"></MenuItem>
                         </ContextMenu>
                     </ListBox.ContextMenu>
                     <ListBox.Template>
@@ -211,6 +212,7 @@
                         <ListBox.ContextMenu>
                             <ContextMenu>
                                 <MenuItem Header="Adjust picture dimensions" Click="MenuItemAdjustImage_OnClickFromPreviewListBox"></MenuItem>
+                                <MenuItem Header="Edit picture source" Click="MenuItemEditSource_OnClickFromPreviewListBox"></MenuItem>
                             </ContextMenu>
                         </ListBox.ContextMenu>
                         <ListBox.Template>
@@ -311,6 +313,7 @@
                     <ListBox.ContextMenu>
                         <ContextMenu Name="ImageSelectionListBoxContextMenu">
                             <MenuItem Header="Adjust picture dimensions" Click="MenuItemAdjustImage_OnClick"></MenuItem>
+                            <MenuItem Header="Edit picture source" Click="MenuItemEditSource_OnClick"></MenuItem>
                             <MenuItem Header="Paste picture here" Click="MenuItemPastePictureHere_OnClick"></MenuItem>
                             <MenuItem Header="Delete this picture" Click="MenuItemDeleteThisImage_OnClick"></MenuItem>
                             <Separator />

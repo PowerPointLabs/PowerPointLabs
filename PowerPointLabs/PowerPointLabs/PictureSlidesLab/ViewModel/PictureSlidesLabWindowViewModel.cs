@@ -222,7 +222,7 @@ namespace PowerPointLabs.PictureSlidesLab.ViewModel
                     {
                         ImageFile = ImageUtil.GetThumbnailFromFullSizeImg(filename),
                         FullSizeImageFile = filename,
-                        ContextLink = filename,
+                        ContextLink = "local drive",
                         Tooltip = ImageUtil.GetWidthAndHeight(filename)
                     };
                     //add it
