@@ -1,5 +1,4 @@
-﻿using System.Linq;
-using System.Windows.Media;
+﻿using System.Windows.Media;
 using PowerPointLabs.Models;
 using Color = System.Drawing.Color;
 using PowerPointLabs.Utils;
@@ -26,14 +25,6 @@ namespace PowerPointLabs.PictureSlidesLab.ViewModel
             if (currentCategory.Contains(TextCollection.PictureSlidesLabText.ColorHasEffect))
             {
                 var propName = GetPropertyName(currentCategory);
-                var type = styleOption.GetType();
-                var prop = type.GetProperty(propName);
-                var optValue = prop.GetValue(styleOption, null);
-                View.SetVariantsColorPanelBackground((Brush)bc.ConvertFrom(optValue));
-            }
-            else if (currentCategory == TextCollection.PictureSlidesLabText.VariantCategoryImageReference)
-            {
-                var propName = "ImageReferenceTextBoxColor";
                 var type = styleOption.GetType();
                 var prop = type.GetProperty(propName);
                 var optValue = prop.GetValue(styleOption, null);
@@ -118,13 +109,6 @@ namespace PowerPointLabs.PictureSlidesLab.ViewModel
                 var prop = type.GetProperty(propName);
                 prop.SetValue(styleOption, targetColor, null);
             }
-            else if (currentCategory == TextCollection.PictureSlidesLabText.VariantCategoryImageReference)
-            {
-                var propName = "ImageReferenceTextBoxColor";
-                var type = styleOption.GetType();
-                var prop = type.GetProperty(propName);
-                prop.SetValue(styleOption, targetColor, null);
-            }
         }
 
         private void BindColorToVariant(Color color)
@@ -138,10 +122,6 @@ namespace PowerPointLabs.PictureSlidesLab.ViewModel
             {
                 styleVariant.Set("OptionName", "Customized");
                 styleVariant.Set(GetPropertyName(currentCategory), StringUtil.GetHexValue(color));
-            }
-            else if (currentCategory == TextCollection.PictureSlidesLabText.VariantCategoryImageReference)
-            {
-                styleVariant.Set("ImageReferenceTextBoxColor", StringUtil.GetHexValue(color));
             }
         }
 

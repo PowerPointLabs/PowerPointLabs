@@ -50,12 +50,6 @@ namespace PowerPointLabs.PictureSlidesLab.ModelFactory.VariantWorker
                 }),
                 new StyleVariant(new Dictionary<string, object>
                 {
-                    {"OptionName", "Trebuchet MS"},
-                    {"IsUseTextFormat", true},
-                    {"FontFamily", "Trebuchet MS"}
-                }),
-                new StyleVariant(new Dictionary<string, object>
-                {
                     {"OptionName", "Times New Roman"},
                     {"IsUseTextFormat", true},
                     {"FontFamily", "Times New Roman"}
@@ -65,7 +59,13 @@ namespace PowerPointLabs.PictureSlidesLab.ModelFactory.VariantWorker
                     {"OptionName", "Impact"},
                     {"IsUseTextFormat", true},
                     {"FontFamily", "Impact"}
-                })
+                }),
+                new StyleVariant(new Dictionary<string, object>
+                {
+                    {"OptionName", "No Effect"},
+                    {"IsUseTextFormat", true},
+                    {"FontFamily", ""}
+                }),
             };
         }
     }

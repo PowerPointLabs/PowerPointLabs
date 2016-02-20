@@ -92,11 +92,6 @@ namespace Test.UnitTest.PictureSlidesLab.Service
 
             Assert.AreEqual("Tahoma", shape.TextEffect.FontName);
             Assert.AreEqual(originalTextSize + 3, shape.TextEffect.FontSize);
-
-            _designer.ApplyOriginalTextEffect();
-
-            Assert.AreEqual("Calibri", shape.TextEffect.FontName);
-            Assert.AreEqual(originalTextSize, shape.TextEffect.FontSize);
         }
 
         [TestMethod]

@@ -16,7 +16,7 @@ namespace PowerPointLabs.PictureSlidesLab.Model
             switch (TextBoxPosition)
             {
                 case 0:
-                    return Position.Original;
+                    return Position.NoEffect;
                 case 1:
                     return Position.TopLeft;
                 case 2:
@@ -33,9 +33,10 @@ namespace PowerPointLabs.PictureSlidesLab.Model
                     return Position.BottomLeft;
                 case 8:
                     return Position.Bottom;
-                // case 9:
-                default:
+                case 9:
                     return Position.BottomRight;
+                default:
+                    return Position.NoEffect;
             }
         }
 
@@ -49,9 +50,12 @@ namespace PowerPointLabs.PictureSlidesLab.Model
                     return Alignment.Left;
                 case 2:
                     return Alignment.Centre;
-                // case 3:
-                default:
+                case 3:
                     return Alignment.Right;
+                case 4:
+                    return Alignment.NoEffect;
+                default:
+                    return Alignment.NoEffect;
             }
         }
         #endregion
@@ -62,7 +66,7 @@ namespace PowerPointLabs.PictureSlidesLab.Model
         [DefaultValue("Calibri")]
         public string FontFamily { get; set; }
 
-        [DefaultValue(0)]
+        [DefaultValue(-1)]
         public int FontSizeIncrease { get; set; }
 
         [DefaultValue("#FFFFFF")]

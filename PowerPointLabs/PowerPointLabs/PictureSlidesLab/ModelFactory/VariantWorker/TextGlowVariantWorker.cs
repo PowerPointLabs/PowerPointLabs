@@ -20,12 +20,6 @@ namespace PowerPointLabs.PictureSlidesLab.ModelFactory.VariantWorker
             {
                 new StyleVariant(new Dictionary<string, object>
                 {
-                    {"OptionName", "No Effect"},
-                    {"IsUseTextGlow", false},
-                    {"TextGlowColor", ""}
-                }),
-                new StyleVariant(new Dictionary<string, object>
-                {
                     {"OptionName", "Black"},
                     {"IsUseTextGlow", true},
                     {"TextGlowColor", "#000000"}
@@ -65,7 +59,13 @@ namespace PowerPointLabs.PictureSlidesLab.ModelFactory.VariantWorker
                     {"OptionName", "Dark Blue"},
                     {"IsUseTextGlow", true},
                     {"TextGlowColor", "#001550"}
-                })
+                }),
+                new StyleVariant(new Dictionary<string, object>
+                {
+                    {"OptionName", "No Effect"},
+                    {"IsUseTextGlow", false},
+                    {"TextGlowColor", ""}
+                }),
             };
         }
     }

@@ -2,6 +2,7 @@
 {
     public enum Alignment
     {
-        Auto, Left, Centre, Right
+        Auto, Left, Centre, Right,
+        NoEffect
     }
 }
