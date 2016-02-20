@@ -66,7 +66,7 @@ namespace PowerPointLabs.PictureSlidesLab.Model
         [DefaultValue("Calibri")]
         public string FontFamily { get; set; }
 
-        [DefaultValue(-1)]
+        [DefaultValue(0)]
         public int FontSizeIncrease { get; set; }
 
         [DefaultValue("#FFFFFF")]
