@@ -29,6 +29,10 @@ namespace PowerPointLabs
 
             var separatedNotes = SplitNotesByClicks(rawNotes);
             var captionCollection = ConvertSectionsToCaptions(separatedNotes);
+            if (captionCollection.Count == 0)
+            {
+                return;
+            }
 
             Shape previous = null;
             for (int i = 0; i < captionCollection.Count; i++)
@@ -69,8 +73,11 @@ namespace PowerPointLabs
             foreach (string text in separatedNotes)
             {
                 TaggedText section = new TaggedText(text);
-                String currentCaption = section.ToPrettyString();
-                captionCollection.Add(currentCaption);
+                String currentCaption = section.ToPrettyString().Trim();
+                if (!string.IsNullOrEmpty(currentCaption))
+                {
+                    captionCollection.Add(currentCaption);
+                }
             }
             return captionCollection;
         }

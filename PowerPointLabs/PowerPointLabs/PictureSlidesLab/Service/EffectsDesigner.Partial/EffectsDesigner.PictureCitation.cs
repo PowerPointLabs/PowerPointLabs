@@ -13,7 +13,7 @@ namespace PowerPointLabs.PictureSlidesLab.Service
             if (StringUtil.IsEmpty(contextLink)) return;
 
             RemovePreviousImageReference();
-            NotesPageText = "Background image taken from " + contextLink + " on " + DateTime.Now + "\n" +
+            NotesPageText = "[[Picture taken from " + contextLink + " on " + DateTime.Now + "]]\n" +
                             NotesPageText;
         }
 
@@ -43,7 +43,7 @@ namespace PowerPointLabs.PictureSlidesLab.Service
 
         private void RemovePreviousImageReference()
         {
-            NotesPageText = Regex.Replace(NotesPageText, @"^Background image taken from .* on .*\n", "");
+            NotesPageText = Regex.Replace(NotesPageText, @"^\[\[Picture taken from .* on .*\]\]\n", "");
         }
 
         private static MsoTextEffectAlignment AlignmentToMsoTextEffectAlignment(Alignment align)
