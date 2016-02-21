@@ -389,7 +389,7 @@ namespace PowerPointLabs
 
             _timerCounter = 0;
             timer1.Start();
-            PPMouse.LButtonUpClicked += _native_LButtonClicked;
+            PPMouse.LeftButtonUp += LeftMouseButtonUpEventHandler;
         }
 
         private void Timer1_Tick(object sender, EventArgs e)
@@ -564,9 +564,9 @@ namespace PowerPointLabs
             }
         }
 
-        void _native_LButtonClicked()
+        void LeftMouseButtonUpEventHandler()
         {
-            PPMouse.LButtonUpClicked -= _native_LButtonClicked;
+            PPMouse.LeftButtonUp -= LeftMouseButtonUpEventHandler;
             timer1.Stop();
             //this is to ensure that EyeDropper tool feature doesn't
             //affect Color Dialog tool feature

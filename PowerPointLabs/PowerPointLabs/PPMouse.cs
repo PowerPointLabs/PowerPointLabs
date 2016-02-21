@@ -49,11 +49,11 @@ namespace PPExtraEventHelper
 
         //Delegate
         public delegate void DoubleClickEventDelegate(PowerPoint.Selection selection);
-        public delegate void LButtonUpClickedDelegate();
+        public delegate void LeftButtonUpEventDelegate();
 
         //Handler
         public static event DoubleClickEventDelegate DoubleClick;
-        public static event LButtonUpClickedDelegate LButtonUpClicked;
+        public static event LeftButtonUpEventDelegate LeftButtonUp;
 
         private static int HookProcedureCallback(int nCode, IntPtr wParam, IntPtr lParam)
         {
@@ -74,9 +74,9 @@ namespace PPExtraEventHelper
                 // Left mouse button up/released
                 if (wParam.ToInt32() == (uint)Native.Message.WM_LBUTTONUP)
                 {
-                    if (LButtonUpClicked != null)
+                    if (LeftButtonUp != null)
                     {
-                        LButtonUpClicked();
+                        LeftButtonUp();
                     }
                 }
 
