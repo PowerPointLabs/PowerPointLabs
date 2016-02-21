@@ -19,6 +19,13 @@ namespace PowerPointLabs.PictureSlidesLab.View
             this.ShowMessageAsync("Error", content);
         }
 
+        public void ShowErrorMessageBox(string content, Exception e)
+        {
+            this.ShowMessageAsync("Error", content + TextCollection.UserFeedBack + TextCollection.Email + "\r\n\r\n"
+                + e.Message + " " + e.GetType() + "\r\n" 
+                + e.StackTrace);
+        }
+
         public void ShowInfoMessageBox(string content)
         {
             this.ShowMessageAsync("Info", content);
@@ -41,11 +48,6 @@ namespace PowerPointLabs.PictureSlidesLab.View
             {
                 // dialog could be fired multiple times
             }
-        }
-
-        public void ShowExceptionDialog(string title, string description, Exception e)
-        {
-            Views.ErrorDialogWrapper.ShowDialog(title, description, e);
         }
 
         public IThreadContext GetThreadContext()

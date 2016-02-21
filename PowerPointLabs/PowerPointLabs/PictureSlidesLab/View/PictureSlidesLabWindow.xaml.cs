@@ -99,7 +99,7 @@ namespace PowerPointLabs.PictureSlidesLab.View
             }
             catch (Exception e)
             {
-                ShowExceptionDialog("Picture Slides Lab - Init Failure", e.Message, e);
+                ShowErrorMessageBox(TextCollection.PictureSlidesLabText.ErrorWhenInitialize, e);
             }
             finally
             {

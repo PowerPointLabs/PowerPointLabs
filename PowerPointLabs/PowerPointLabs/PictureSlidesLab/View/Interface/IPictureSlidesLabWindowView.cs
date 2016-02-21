@@ -9,11 +9,11 @@ namespace PowerPointLabs.PictureSlidesLab.View.Interface
     {
         void ShowErrorMessageBox(string content);
 
+        void ShowErrorMessageBox(string content, Exception e);
+
         void ShowInfoMessageBox(string content);
 
         void ShowSuccessfullyAppliedDialog();
-
-        void ShowExceptionDialog(string title, string description, Exception e);
 
         IThreadContext GetThreadContext();
 
