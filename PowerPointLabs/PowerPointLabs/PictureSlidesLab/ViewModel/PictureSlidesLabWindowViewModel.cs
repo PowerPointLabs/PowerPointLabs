@@ -774,9 +774,9 @@ namespace PowerPointLabs.PictureSlidesLab.ViewModel
                     });
                 }
             }
-            catch
+            catch (Exception e)
             {
-                View.ShowErrorMessageBox(TextCollection.PictureSlidesLabText.ErrorImageCorrupted);
+                View.ShowExceptionDialog("Picture Slides Lab", e.Message, e);
             }
             SaveClipboardPicture(copiedPicture);
 
@@ -876,9 +876,9 @@ namespace PowerPointLabs.PictureSlidesLab.ViewModel
                     });
                 }
             }
-            catch
+            catch (Exception e)
             {
-                View.ShowErrorMessageBox(TextCollection.PictureSlidesLabText.ErrorImageCorrupted);
+                View.ShowExceptionDialog("Picture Slides Lab", e.Message, e);
             }
             SaveClipboardPicture(copiedPicture);
         }

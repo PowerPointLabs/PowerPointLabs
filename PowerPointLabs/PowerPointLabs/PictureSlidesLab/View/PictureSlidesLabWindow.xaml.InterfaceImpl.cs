@@ -1,4 +1,5 @@
-﻿using System.Windows.Media;
+﻿using System;
+using System.Windows.Media;
 using MahApps.Metro.Controls.Dialogs;
 using PowerPointLabs.PictureSlidesLab.Model;
 using PowerPointLabs.PictureSlidesLab.Thread;
@@ -40,6 +41,11 @@ namespace PowerPointLabs.PictureSlidesLab.View
             {
                 // dialog could be fired multiple times
             }
+        }
+
+        public void ShowExceptionDialog(string title, string description, Exception e)
+        {
+            Views.ErrorDialogWrapper.ShowDialog(title, description, e);
         }
 
         public IThreadContext GetThreadContext()

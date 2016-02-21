@@ -1,4 +1,5 @@
-﻿using System.Windows.Media;
+﻿using System;
+using System.Windows.Media;
 using PowerPointLabs.PictureSlidesLab.Model;
 using PowerPointLabs.PictureSlidesLab.Thread.Interface;
 
@@ -11,6 +12,8 @@ namespace PowerPointLabs.PictureSlidesLab.View.Interface
         void ShowInfoMessageBox(string content);
 
         void ShowSuccessfullyAppliedDialog();
+
+        void ShowExceptionDialog(string title, string description, Exception e);
 
         IThreadContext GetThreadContext();
 
