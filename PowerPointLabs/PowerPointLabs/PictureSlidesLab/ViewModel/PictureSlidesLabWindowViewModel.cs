@@ -776,7 +776,7 @@ namespace PowerPointLabs.PictureSlidesLab.ViewModel
             }
             catch (Exception e)
             {
-                View.ShowExceptionDialog("Picture Slides Lab", e.Message, e);
+                View.ShowErrorMessageBox(TextCollection.PictureSlidesLabText.ErrorImageCorrupted, e);
             }
             SaveClipboardPicture(copiedPicture);
 
@@ -878,7 +878,7 @@ namespace PowerPointLabs.PictureSlidesLab.ViewModel
             }
             catch (Exception e)
             {
-                View.ShowExceptionDialog("Picture Slides Lab", e.Message, e);
+                View.ShowErrorMessageBox(TextCollection.PictureSlidesLabText.ErrorImageCorrupted, e);
             }
             SaveClipboardPicture(copiedPicture);
         }

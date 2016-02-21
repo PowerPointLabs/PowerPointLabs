@@ -396,6 +396,8 @@
                 "Failed to initialize Picture Slides Lab. Please verify that sufficient permissions have been granted by Administrator.";
             public const string ErrorNoEmbeddedStyleInfo =
                 "No Picture Slides Lab styles are detected for the current slide.";
+            public const string ErrorWhenInitialize =
+                "Failed to initialize Picture Slides Lab. Some functions may not work.";
 
             public const string DragAndDropInstruction =
                 "Drag and Drop here to get image.";

@@ -152,6 +152,11 @@ namespace PowerPointLabs.PictureSlidesLab.Service
         {
             foreach (var shape in shapes)
             {
+                if (shape == null)
+                {
+                    continue;
+                }
+
                 shape.ZOrder(MsoZOrderCmd.msoSendToBack);
             }
         }

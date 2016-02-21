@@ -21,30 +21,44 @@ namespace PowerPointLabs.PictureSlidesLab.Service
 
         private void CropPicture(PowerPoint.Shape picShape)
         {
-            if (picShape.Left < 0)
+            try
             {
-                picShape.PictureFormat.Crop.ShapeLeft = 0;
+                if (picShape.Left < 0)
+                {
+                    picShape.PictureFormat.Crop.ShapeLeft = 0;
+                }
+                if (picShape.Top < 0)
+                {
+                    picShape.PictureFormat.Crop.ShapeTop = 0;
+                }
+                if (picShape.Left + picShape.Width > SlideWidth)
+                {
+                    picShape.PictureFormat.Crop.ShapeWidth = SlideWidth - picShape.Left;
+                }
+                if (picShape.Top + picShape.Height > SlideHeight)
+                {
+                    picShape.PictureFormat.Crop.ShapeHeight = SlideHeight - picShape.Top;
+                }
             }
-            if (picShape.Top < 0)
+            catch
             {
-                picShape.PictureFormat.Crop.ShapeTop = 0;
-            }
-            if (picShape.Left + picShape.Width > SlideWidth)
-            {
-                picShape.PictureFormat.Crop.ShapeWidth = SlideWidth - picShape.Left;
-            }
-            if (picShape.Top + picShape.Height > SlideHeight)
-            {
-                picShape.PictureFormat.Crop.ShapeHeight = SlideHeight - picShape.Top;
+                // some kind of picture cannot be cropped
             }
         }
 
         private void CropPicture(PowerPoint.Shape picShape, float targetLeft, float targetTop, float targetWidth, float targetHeight)
         {
-            picShape.PictureFormat.Crop.ShapeLeft = targetLeft;
-            picShape.PictureFormat.Crop.ShapeTop = targetTop;
-            picShape.PictureFormat.Crop.ShapeWidth = targetWidth;
-            picShape.PictureFormat.Crop.ShapeHeight = targetHeight;
+            try
+            {
+                picShape.PictureFormat.Crop.ShapeLeft = targetLeft;
+                picShape.PictureFormat.Crop.ShapeTop = targetTop;
+                picShape.PictureFormat.Crop.ShapeWidth = targetWidth;
+                picShape.PictureFormat.Crop.ShapeHeight = targetHeight;
+            }
+            catch
+            {
+                // some kind of picture cannot be cropped
+            }
         }
 
         /// <summary>
