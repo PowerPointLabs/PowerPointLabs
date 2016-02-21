@@ -33,9 +33,6 @@ namespace PowerPointLabs
         // Keeps track of mouse on mouse down on a matching panel.
         // Needed to determine drag-drop v/s click
         private System.Drawing.Point _mouseDownLocation;
-        
-        // Listener for Mouse Up Events (for EyeDropping)
-        LMouseUpListener _native;
 
         // Shapes to Update
         PowerPoint.ShapeRange _selectedShapes;
@@ -392,9 +389,7 @@ namespace PowerPointLabs
 
             _timerCounter = 0;
             timer1.Start();
-            _native = new LMouseUpListener();
-            _native.LButtonUpClicked +=
-                new EventHandler<SysMouseEventInfo>(_native_LButtonClicked);
+            PPMouse.LeftButtonUp += LeftMouseButtonUpEventHandler;
         }
 
         private void Timer1_Tick(object sender, EventArgs e)
@@ -569,9 +564,9 @@ namespace PowerPointLabs
             }
         }
 
-        void _native_LButtonClicked(object sender, SysMouseEventInfo e)
+        void LeftMouseButtonUpEventHandler()
         {
-            _native.Close();
+            PPMouse.LeftButtonUp -= LeftMouseButtonUpEventHandler;
             timer1.Stop();
             //this is to ensure that EyeDropper tool feature doesn't
             //affect Color Dialog tool feature
