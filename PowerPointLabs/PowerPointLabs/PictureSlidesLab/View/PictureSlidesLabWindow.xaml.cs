@@ -12,8 +12,10 @@ using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Animation;
 using MahApps.Metro.Controls.Dialogs;
+using Microsoft.Office.Interop.PowerPoint;
 using PowerPointLabs.ActionFramework.Common.Extension;
 using PowerPointLabs.PictureSlidesLab.Model;
+using PowerPointLabs.PictureSlidesLab.Service;
 using PowerPointLabs.PictureSlidesLab.Util;
 using PowerPointLabs.PictureSlidesLab.View.Interface;
 using PowerPointLabs.PictureSlidesLab.ViewModel;
@@ -24,6 +26,7 @@ using DragEventArgs = System.Windows.DragEventArgs;
 using KeyEventArgs = System.Windows.Input.KeyEventArgs;
 using ListBox = System.Windows.Controls.ListBox;
 using MessageBox = System.Windows.MessageBox;
+using Point = System.Windows.Point;
 
 namespace PowerPointLabs.PictureSlidesLab.View
 {
@@ -739,6 +742,22 @@ namespace PowerPointLabs.PictureSlidesLab.View
         private void VariationFlyoutBackButton_OnClick(object sender, RoutedEventArgs e)
         {
             CloseVariationsFlyout();
+        }
+
+        private void AddCitationSlideButton_OnClick(object sender, RoutedEventArgs e)
+        {
+            var presentation = this.GetCurrentPresentation();
+            if (presentation.Slides.Any(PictureCitationSlide.IsCitationSlide))
+            {
+                var citationSlide = presentation.Slides.Where(PictureCitationSlide.IsCitationSlide).First();
+                ViewModel.AddPictureCitationSlide(citationSlide.GetNativeSlide(), presentation.Slides);
+            }
+            else // no citation slide yet, so create one
+            {
+                var slide = presentation.Presentation.Slides.Add(presentation.SlideCount + 1, PpSlideLayout.ppLayoutText);
+                ViewModel.AddPictureCitationSlide(slide, presentation.Slides);
+            }
+            ShowInfoMessageBox(TextCollection.PictureSlidesLabText.InfoAddPictureCitationSlide);
         }
 
         #endregion

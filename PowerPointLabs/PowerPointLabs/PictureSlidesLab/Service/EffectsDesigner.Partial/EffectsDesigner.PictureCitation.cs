@@ -8,6 +8,8 @@ namespace PowerPointLabs.PictureSlidesLab.Service
 {
     partial class EffectsDesigner
     {
+        public const string RegexForPictureCitation = @"^\[\[Picture taken from .* on .*\]\]\n";
+
         public void ApplyImageReference(string contextLink)
         {
             if (StringUtil.IsEmpty(contextLink)) return;
@@ -43,7 +45,7 @@ namespace PowerPointLabs.PictureSlidesLab.Service
 
         private void RemovePreviousImageReference()
         {
-            NotesPageText = Regex.Replace(NotesPageText, @"^\[\[Picture taken from .* on .*\]\]\n", "");
+            NotesPageText = Regex.Replace(NotesPageText, RegexForPictureCitation, "");
         }
 
         private static MsoTextEffectAlignment AlignmentToMsoTextEffectAlignment(Alignment align)

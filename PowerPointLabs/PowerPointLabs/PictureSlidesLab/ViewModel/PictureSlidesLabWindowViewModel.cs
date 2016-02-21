@@ -7,6 +7,7 @@ using System.Linq;
 using System.Windows.Forms;
 using Microsoft.Office.Interop.PowerPoint;
 using PowerPointLabs.AutoUpdate.Interface;
+using PowerPointLabs.Models;
 using PowerPointLabs.PictureSlidesLab.Model;
 using PowerPointLabs.PictureSlidesLab.ModelFactory;
 using PowerPointLabs.PictureSlidesLab.Service;
@@ -703,6 +704,15 @@ namespace PowerPointLabs.PictureSlidesLab.ViewModel
         }
 
         #endregion
+
+        #endregion
+
+        #region Add Picture Citation Slide
+
+        public void AddPictureCitationSlide(Slide slide, List<PowerPointSlide> allSlides)
+        {
+            new PictureCitationSlide(slide, allSlides).CreatePictureCitations();
+        }
 
         #endregion
 

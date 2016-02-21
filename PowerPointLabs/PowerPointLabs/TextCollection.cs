@@ -404,6 +404,7 @@
 
             public const string InfoPasteNothing = "No picture to paste.";
             public const string InfoPasteThumbnail = "Pasted successfully! But you might have pasted the thumbnail picture.";
+            public const string InfoAddPictureCitationSlide = "Added successfully!";
         }
 
         # region Agenda Lab

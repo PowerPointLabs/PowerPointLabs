@@ -302,10 +302,12 @@
                         <ColumnDefinition Width="auto" />
                         <ColumnDefinition Width="40" />
                         <ColumnDefinition Width="*"></ColumnDefinition>
+                        <ColumnDefinition Width="125" />
                     </Grid.ColumnDefinitions>
                     <Button IsEnabled="false" Name="GotoSlideButton" ToolTip="Go to a slide to edit its style." Width="85" Click="GotoSlideButton_OnClick" Margin="0,0,5,0" Grid.Column="1">Go to slide</Button>
                     <Button IsEnabled="false" Name="LoadStylesButton" ToolTip="Load the style or picture from a slide to customize." Width="60" Click="LoadButton_OnClick" Margin="0,0,5,0" Grid.Column="2">Load...</Button>
                     <controls:ProgressRing Name="ImageDownloadProgressRing" Width="10" Height="10" Grid.Column="3" IsActive="{Binding Path=IsActiveDownloadProgressRing.Flag, Mode=TwoWay}" />
+                    <Button Name="AddCitationSlideButton" Click="AddCitationSlideButton_OnClick" ToolTip="Add a picture citation slide." Margin="0,0,5,0" Grid.Column="5">Add citation slide</Button>
                 </Grid>
                 <TextBlock Visibility="Hidden" Name="ImageSelectionInstructions" MaxWidth="730" TextWrapping="Wrap" HorizontalAlignment="Center" VerticalAlignment="Center" Foreground="#AAAAAA" FontSize="18" Grid.Row="2">Click the 'Choose Pictures' icon above to load local images, or drag and drop the files here. You can also drag and drop thumbnail pictures from Google Image Search to import.</TextBlock>
                 <TextBlock Visibility="Hidden" Name="ImageSelectionInstructionsForFirstTime" MaxWidth="730" TextWrapping="Wrap" HorizontalAlignment="Center" VerticalAlignment="Center" Foreground="#AAAAAA" FontSize="18" Grid.Row="2">Select a picture to preview styles, then select a style and click `Apply` button to apply it to the slide.</TextBlock>
