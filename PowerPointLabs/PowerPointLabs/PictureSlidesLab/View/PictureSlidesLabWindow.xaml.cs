@@ -723,11 +723,18 @@ namespace PowerPointLabs.PictureSlidesLab.View
         /// <param name="e"></param>
         private void VariantsComboBox_OnSelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            ViewModel.UpdateStepByStepStylesVariationImages(
-                (ImageItem) ImageSelectionListBox.SelectedValue ?? CreateDefaultPictureItem(),
-                this.GetCurrentSlide().GetNativeSlide(),
-                this.GetCurrentPresentation().SlideWidth,
-                this.GetCurrentPresentation().SlideHeight);
+            try
+            {
+                ViewModel.UpdateStepByStepStylesVariationImages(
+                    (ImageItem) ImageSelectionListBox.SelectedValue ?? CreateDefaultPictureItem(),
+                    this.GetCurrentSlide().GetNativeSlide(),
+                    this.GetCurrentPresentation().SlideWidth,
+                    this.GetCurrentPresentation().SlideHeight);
+            }
+            catch (Exception expt)
+            {
+                ShowErrorMessageBox("Failed when loading preview images.", expt);
+            }
         }
 
         private void StylesVariationApplyButton_OnClick(object sender, RoutedEventArgs e)

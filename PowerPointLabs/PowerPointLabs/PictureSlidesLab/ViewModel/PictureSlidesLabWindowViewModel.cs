@@ -363,7 +363,14 @@ namespace PowerPointLabs.PictureSlidesLab.ViewModel
         /// </summary>
         public void UpdateStyleVariationStyleOptionsWhenSelectedItemChange()
         {
-            Designer.SetStyleOptions(_styleOptions[StylesVariationListSelectedId.Number]);
+            try
+            {
+                Designer.SetStyleOptions(_styleOptions[StylesVariationListSelectedId.Number]);
+            }
+            catch (Exception e)
+            {
+                View.ShowErrorMessageBox("Failed when retrieving information from the selected preview image.", e);
+            }
         }
 
         /// <summary>
@@ -621,7 +628,15 @@ namespace PowerPointLabs.PictureSlidesLab.ViewModel
 
         public ImageItem GetSelectedPictureInPictureVariation(int pictureIndex)
         {
-            return _8PicturesInPictureVariation[pictureIndex];
+            try
+            {
+                return _8PicturesInPictureVariation[pictureIndex];
+            }
+            catch (Exception e)
+            {
+                View.ShowErrorMessageBox("Failed when fetching picture aspect.", e);
+                return View.CreateDefaultPictureItem();
+            }
         }
 
         public void UpdateSelectedPictureInPictureVariation()
@@ -630,8 +645,15 @@ namespace PowerPointLabs.PictureSlidesLab.ViewModel
                 || StylesVariationListSelectedId.Number == -1)
                 return;
 
-            _8PicturesInPictureVariation[StylesVariationListSelectedId.Number]
-                = ImageSelectionListSelectedItem.ImageItem ?? View.CreateDefaultPictureItem();
+            try
+            {
+                _8PicturesInPictureVariation[StylesVariationListSelectedId.Number]
+                    = ImageSelectionListSelectedItem.ImageItem ?? View.CreateDefaultPictureItem();
+            }
+            catch (Exception e)
+            {
+                View.ShowErrorMessageBox("Failed when processing picture aspect.", e);
+            }
         }
 
         public void UpdatePictureInPictureVariationWhenAddedNewOne(ImageItem newPicture)
@@ -669,38 +691,46 @@ namespace PowerPointLabs.PictureSlidesLab.ViewModel
         {
             if (!IsInPictureVariation()) return new List<ImageItem>();
 
-            var subPictureList = ImageSelectionList.Skip(Math.Max(1, ImageSelectionList.Count - 8));
-            var result = new List<ImageItem>(subPictureList);
-            while (result.Count < 8)
+            try
             {
-                result.Add(View.CreateDefaultPictureItem());
-            }
-            if (ImageSelectionListSelectedItem.ImageItem != null
-                && !result.Contains(ImageSelectionListSelectedItem.ImageItem))
-            {
-                result[selectedIdOfVariationList] = ImageSelectionListSelectedItem.ImageItem;
-            }
-            else if (ImageSelectionListSelectedItem.ImageItem == null)
-            {
-                for (var i = 0; i < result.Count; i++)
+                var subPictureList = ImageSelectionList.Skip(Math.Max(1, ImageSelectionList.Count - 8));
+                var result = new List<ImageItem>(subPictureList);
+                while (result.Count < 8)
                 {
-                    if (result[i].ImageFile == StoragePath.NoPicturePlaceholderImgPath)
-                    {
-                        result[i] = result[selectedIdOfVariationList];
-                        break;
-                    }
+                    result.Add(View.CreateDefaultPictureItem());
                 }
-                result[selectedIdOfVariationList] = View.CreateDefaultPictureItem();
+                if (ImageSelectionListSelectedItem.ImageItem != null
+                    && !result.Contains(ImageSelectionListSelectedItem.ImageItem))
+                {
+                    result[selectedIdOfVariationList] = ImageSelectionListSelectedItem.ImageItem;
+                }
+                else if (ImageSelectionListSelectedItem.ImageItem == null)
+                {
+                    for (var i = 0; i < result.Count; i++)
+                    {
+                        if (result[i].ImageFile == StoragePath.NoPicturePlaceholderImgPath)
+                        {
+                            result[i] = result[selectedIdOfVariationList];
+                            break;
+                        }
+                    }
+                    result[selectedIdOfVariationList] = View.CreateDefaultPictureItem();
+                }
+                else if (selectedIdOfVariationList >= 0)
+                    // contains selected item, need swap to selected index
+                {
+                    var indexToSwap = result.IndexOf(ImageSelectionListSelectedItem.ImageItem);
+                    var tempItem = result[selectedIdOfVariationList];
+                    result[selectedIdOfVariationList] = ImageSelectionListSelectedItem.ImageItem;
+                    result[indexToSwap] = tempItem;
+                }
+                return result;
             }
-            else if (selectedIdOfVariationList >= 0)
-            // contains selected item, need swap to selected index
+            catch (Exception e)
             {
-                var indexToSwap = result.IndexOf(ImageSelectionListSelectedItem.ImageItem);
-                var tempItem = result[selectedIdOfVariationList];
-                result[selectedIdOfVariationList] = ImageSelectionListSelectedItem.ImageItem;
-                result[indexToSwap] = tempItem;
+                View.ShowErrorMessageBox("Failed when generating picture aspect.", e);
+                return new List<ImageItem>();
             }
-            return result;
         }
 
         #endregion
@@ -720,37 +750,54 @@ namespace PowerPointLabs.PictureSlidesLab.ViewModel
 
         private static object LoadClipboardPicture()
         {
-            var pic = Clipboard.GetImage();
-            var text = Clipboard.GetText();
-            var files = Clipboard.GetFileDropList();
+            try
+            {
+                var pic = Clipboard.GetImage();
+                var text = Clipboard.GetText();
+                var files = Clipboard.GetFileDropList();
 
-            if (pic != null)
-            {
-                return pic;
+                if (pic != null)
+                {
+                    return pic;
+                }
+                else if (files != null && files.Count > 0)
+                {
+                    return files;
+                }
+                else
+                {
+                    return text;
+                }
             }
-            else if (files != null && files.Count > 0)
+            catch (Exception e)
             {
-                return files;
-            }
-            else
-            {
-                return text;
+                // sometimes Clipboard may fail
+                PowerPointLabsGlobals.LogException(e, "LoadClipboardPicture");
+                return "";
             }
         }
 
         private static void SaveClipboardPicture(object copiedObj)
         {
-            if (copiedObj is Image)
+            try
             {
-                Clipboard.SetImage((Image) copiedObj);
+                if (copiedObj is Image)
+                {
+                    Clipboard.SetImage((Image) copiedObj);
+                }
+                else if (copiedObj is StringCollection)
+                {
+                    Clipboard.SetFileDropList((StringCollection) copiedObj);
+                }
+                else if (!string.IsNullOrEmpty(copiedObj as string))
+                {
+                    Clipboard.SetText((string) copiedObj);
+                }
             }
-            else if (copiedObj is StringCollection)
+            catch (Exception e)
             {
-                Clipboard.SetFileDropList((StringCollection) copiedObj);
-            }
-            else if (!string.IsNullOrEmpty(copiedObj as string))
-            {
-                Clipboard.SetText((string)copiedObj);
+                // sometimes Clipboard may fail
+                PowerPointLabsGlobals.LogException(e, "SaveClipboardPicture");
             }
         }
 

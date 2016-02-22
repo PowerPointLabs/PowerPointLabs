@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Runtime.InteropServices;
 using System.Text;
 using System.Text.RegularExpressions;
@@ -59,30 +60,38 @@ namespace PowerPointLabs.PictureSlidesLab.Service
 
         private string GenerateCitations()
         {
-            var strBuilder = new StringBuilder("");
-            var isAnyCitation = false;
-            var slideIndex = 1;
-            foreach (var slide in AllSlides)
+            try
             {
-                var match = Regex.Match(slide.NotesPageText, EffectsDesigner.RegexForPictureCitation);
-                var citation = match.Value.Replace("[[", "").Replace("]]\n", "");
-                if (!string.IsNullOrEmpty(citation))
+                var strBuilder = new StringBuilder("");
+                var isAnyCitation = false;
+                var slideIndex = 1;
+                foreach (var slide in AllSlides)
                 {
-                    strBuilder.Append("P" + slideIndex + ": " + citation + "\n");
-                    isAnyCitation = true;
+                    var match = Regex.Match(slide.NotesPageText, EffectsDesigner.RegexForPictureCitation);
+                    var citation = match.Value.Replace("[[", "").Replace("]]\n", "");
+                    if (!string.IsNullOrEmpty(citation))
+                    {
+                        strBuilder.Append("P" + slideIndex + ": " + citation + "\n");
+                        isAnyCitation = true;
+                    }
+                    slideIndex++;
                 }
-                slideIndex++;
+                if (!isAnyCitation)
+                {
+                    strBuilder.Append("No citation.");
+                }
+                else
+                {
+                    // remove last '\n' char
+                    strBuilder.Remove(strBuilder.Length - 1, 1);
+                }
+                return strBuilder.ToString();
             }
-            if (!isAnyCitation)
+            catch (Exception e)
             {
-                strBuilder.Append("No citation.");
+                PowerPointLabsGlobals.LogException(e, "GenerateCitations");
+                return "";
             }
-            else
-            {
-                // remove last '\n' char
-                strBuilder.Remove(strBuilder.Length - 1, 1);
-            }
-            return strBuilder.ToString();
         }
     }
 }
