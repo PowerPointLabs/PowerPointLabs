@@ -6,13 +6,18 @@ using PowerPointLabs.PictureSlidesLab.ModelFactory.Options.Interface;
 namespace PowerPointLabs.PictureSlidesLab.ModelFactory.Options
 {
     [Export(typeof(IStyleOptions))]
-    [ExportMetadata("StyleOrder", 4)]
+    [ExportMetadata("StyleOrder", 6)]
     class BannerStyleOptions : BaseStyleOptions
     {
         public override List<StyleOption> GetOptionsForVariation()
         {
+            var options = new TextBoxStyleOptions().GetOptionsForVariation();
+            foreach (var option in options)
+            {
+                option.FontFamily = "Times New Roman";
+            }
             return UpdateStyleName(
-                new TextBoxStyleOptions().GetOptionsForVariation(),
+                options,
                 TextCollection.PictureSlidesLabText.StyleNameBanner);
         }
 
@@ -24,7 +29,8 @@ namespace PowerPointLabs.PictureSlidesLab.ModelFactory.Options
                 IsUseBannerStyle = true,
                 TextBoxPosition = 7,
                 TextBoxColor = "#000000",
-                FontColor = "#FFD700"
+                FontColor = "#FFD700",
+                FontFamily = "Times New Roman"
             };
         }
     }

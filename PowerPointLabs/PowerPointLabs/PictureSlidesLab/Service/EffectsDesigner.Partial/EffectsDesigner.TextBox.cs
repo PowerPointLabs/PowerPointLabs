@@ -26,10 +26,10 @@ namespace PowerPointLabs.PictureSlidesLab.Service
                     if (StringUtil.IsNotEmpty(textRange.TrimText().Text))
                     {
                         var paragraph = textRange.TrimText();
-                        var left = paragraph.BoundLeft - 5;
-                        var top = paragraph.BoundTop;
-                        var width = paragraph.BoundWidth + 10;
-                        var height = paragraph.BoundHeight;
+                        var left = paragraph.BoundLeft - 10;
+                        var top = paragraph.BoundTop - 10;
+                        var width = paragraph.BoundWidth + 20;
+                        var height = paragraph.BoundHeight + 20;
 
                         var overlayShape = ApplyOverlayEffect(overlayColor, transparency,
                             left, top, width, height);

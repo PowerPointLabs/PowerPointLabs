@@ -19,7 +19,12 @@ namespace PowerPointLabs.PictureSlidesLab.Model
         public void Set(string key, object newValue)
         {
             _variants[key] = newValue;
-        } 
+        }
+
+        public object Get(string key)
+        {
+            return _variants[key];
+        }
 
         public void Apply(StyleOption opt)
         {

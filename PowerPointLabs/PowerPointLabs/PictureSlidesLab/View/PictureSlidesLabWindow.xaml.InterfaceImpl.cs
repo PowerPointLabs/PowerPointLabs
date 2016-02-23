@@ -1,4 +1,5 @@
-﻿using System.Windows.Media;
+﻿using System;
+using System.Windows.Media;
 using MahApps.Metro.Controls.Dialogs;
 using PowerPointLabs.PictureSlidesLab.Model;
 using PowerPointLabs.PictureSlidesLab.Thread;
@@ -16,6 +17,13 @@ namespace PowerPointLabs.PictureSlidesLab.View
         public void ShowErrorMessageBox(string content)
         {
             this.ShowMessageAsync("Error", content);
+        }
+
+        public void ShowErrorMessageBox(string content, Exception e)
+        {
+            this.ShowMessageAsync("Error", content + TextCollection.UserFeedBack + TextCollection.Email + "\r\n\r\n"
+                + e.Message + " " + e.GetType() + "\r\n" 
+                + e.StackTrace);
         }
 
         public void ShowInfoMessageBox(string content)

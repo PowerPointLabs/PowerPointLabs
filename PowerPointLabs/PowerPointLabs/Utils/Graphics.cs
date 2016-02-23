@@ -633,24 +633,6 @@ namespace PowerPointLabs.Utils
             return lowest.Y - topMost.Y;
         }
 
-        public static float GetVirtualHeightAfterRotation(Shape shape)
-        {
-            var realCoordinates = GetRealCoordinates(shape);
-            var topMostPoint = TopMostPoint(realCoordinates);
-            var bottomMostPoint = BottomMostPoint(realCoordinates);
-
-            return Math.Abs(topMostPoint.Y - bottomMostPoint.Y);
-        }
-
-        public static float GetVirtualWidthAfterRotation(Shape shape)
-        {
-            var realCoordinates = GetRealCoordinates(shape);
-            var rightMostPoint = RightMostPoint(realCoordinates);
-            var leftMostPoint = LeftMostPoint(realCoordinates);
-
-            return Math.Abs(rightMostPoint.X - leftMostPoint.X);
-        }
-
         public static double GetUnrotatedLeftGivenRotatedLeft(Shape s, float rotatedLeft)
         {
             var rotationInRadian = DegreeToRadian(s.Rotation);

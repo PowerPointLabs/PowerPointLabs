@@ -16,10 +16,11 @@ namespace PowerPointLabs.PictureSlidesLab.Service.StylesWorker
         {
             designer.ApplyPseudoTextWhenNoTextShapes();
 
-            if (option.IsUseBannerStyle
-                && (option.GetTextBoxPosition() == Position.Left
-                    || option.GetTextBoxPosition() == Position.Centre
-                    || option.GetTextBoxPosition() == Position.Right))
+            if ((option.IsUseBannerStyle 
+                || option.IsUseFrostedGlassBannerStyle)
+                    && (option.GetTextBoxPosition() == Position.Left
+                        || option.GetTextBoxPosition() == Position.Centre
+                        || option.GetTextBoxPosition() == Position.Right))
             {
                 designer.ApplyTextWrapping();
             }

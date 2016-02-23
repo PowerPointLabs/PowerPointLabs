@@ -49,6 +49,9 @@ namespace PowerPointLabs.ResizeLab
                 for (int i = 1; i <= selectedShapes.Count; i++)
                 {
                     var shape = selectedShapes[i];
+
+                    if (!IsPictureOrOLE(shape)) continue;
+
                     var scaleHeight = GetScaleHeight(shape);
                     var scaleWidth = GetScaleWidth(shape);
                     var maximumScale = Math.Max(scaleHeight, scaleWidth);
@@ -114,6 +117,13 @@ namespace PowerPointLabs.ResizeLab
         private bool IsFloatTheSame(float toCompare, float reference)
         {
             return Math.Abs(toCompare - reference) < FloatDiffTolerance;
+        }
+
+        private bool IsPictureOrOLE(PowerPoint.Shape shape)
+        {
+            return shape.Type == MsoShapeType.msoPicture || shape.Type == MsoShapeType.msoLinkedPicture ||
+                   shape.Type == MsoShapeType.msoEmbeddedOLEObject || shape.Type == MsoShapeType.msoLinkedOLEObject ||
+                   shape.Type == MsoShapeType.msoOLEControlObject;
         }
     }
 }

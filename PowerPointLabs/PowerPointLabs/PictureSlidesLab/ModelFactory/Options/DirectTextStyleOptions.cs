@@ -16,6 +16,7 @@ namespace PowerPointLabs.PictureSlidesLab.ModelFactory.Options
             {
                 styleOption.IsUseTextGlow = true;
                 styleOption.TextGlowColor = "#000000";
+                styleOption.FontFamily = "Century Gothic";
             }
             UpdateStyleName(
                 result,
@@ -30,7 +31,8 @@ namespace PowerPointLabs.PictureSlidesLab.ModelFactory.Options
                 StyleName = TextCollection.PictureSlidesLabText.StyleNameDirectText,
                 TextBoxPosition = 5,
                 IsUseTextGlow = true,
-                TextGlowColor = "#000000"
+                TextGlowColor = "#000000",
+                FontFamily = "Century Gothic"
             };
         }
     }

@@ -7,7 +7,7 @@ using PowerPointLabs.PictureSlidesLab.Service.StylesWorker.Interface;
 namespace PowerPointLabs.PictureSlidesLab.Service.StylesWorker
 {
     [Export(typeof(IStyleWorker))]
-    [ExportMetadata("WorkerOrder", 10)]
+    [ExportMetadata("WorkerOrder", 12)]
     class PictureCitationStyleWorker : IStyleWorker
     {
         public IList<Shape> Execute(StyleOption option, EffectsDesigner designer, ImageItem source, Shape imageShape)

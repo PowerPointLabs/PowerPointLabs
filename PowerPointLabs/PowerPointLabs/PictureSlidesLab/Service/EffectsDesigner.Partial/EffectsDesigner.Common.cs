@@ -8,6 +8,8 @@ namespace PowerPointLabs.PictureSlidesLab.Service
 {
     partial class EffectsDesigner
     {
+        public const int BlurDegreeForFrostedGlassEffect = 95;
+
         private PowerPoint.Shape AddPicture(string imageFile, EffectName effectName)
         {
             var imageShape = Shapes.AddPicture(imageFile,
@@ -19,21 +21,43 @@ namespace PowerPointLabs.PictureSlidesLab.Service
 
         private void CropPicture(PowerPoint.Shape picShape)
         {
-            if (picShape.Left < 0)
+            try
             {
-                picShape.PictureFormat.Crop.ShapeLeft = 0;
+                if (picShape.Left < 0)
+                {
+                    picShape.PictureFormat.Crop.ShapeLeft = 0;
+                }
+                if (picShape.Top < 0)
+                {
+                    picShape.PictureFormat.Crop.ShapeTop = 0;
+                }
+                if (picShape.Left + picShape.Width > SlideWidth)
+                {
+                    picShape.PictureFormat.Crop.ShapeWidth = SlideWidth - picShape.Left;
+                }
+                if (picShape.Top + picShape.Height > SlideHeight)
+                {
+                    picShape.PictureFormat.Crop.ShapeHeight = SlideHeight - picShape.Top;
+                }
             }
-            if (picShape.Top < 0)
+            catch
             {
-                picShape.PictureFormat.Crop.ShapeTop = 0;
+                // some kind of picture cannot be cropped
             }
-            if (picShape.Left + picShape.Width > SlideWidth)
+        }
+
+        private void CropPicture(PowerPoint.Shape picShape, float targetLeft, float targetTop, float targetWidth, float targetHeight)
+        {
+            try
             {
-                picShape.PictureFormat.Crop.ShapeWidth = SlideWidth - picShape.Left;
+                picShape.PictureFormat.Crop.ShapeLeft = targetLeft;
+                picShape.PictureFormat.Crop.ShapeTop = targetTop;
+                picShape.PictureFormat.Crop.ShapeWidth = targetWidth;
+                picShape.PictureFormat.Crop.ShapeHeight = targetHeight;
             }
-            if (picShape.Top + picShape.Height > SlideHeight)
+            catch
             {
-                picShape.PictureFormat.Crop.ShapeHeight = SlideHeight - picShape.Top;
+                // some kind of picture cannot be cropped
             }
         }
 
