@@ -142,7 +142,7 @@ namespace PowerPointLabs.PositionsLab
 
             PowerPoint.ShapeRange selectedShapes = Globals.ThisAddIn.Application.ActiveWindow.Selection.ShapeRange;
 
-            PositionsLabMain.SnapAway(ConvertShapeRangeToList(selectedShapes));
+            PositionsLabMain.SnapAway(ConvertShapeRangeToList(selectedShapes, 1));
         }
         #endregion
 
@@ -165,26 +165,27 @@ namespace PowerPointLabs.PositionsLab
 
             PowerPoint.ShapeRange selectedShapes = Globals.ThisAddIn.Application.ActiveWindow.Selection.ShapeRange;
 
-            if (selectedShapes.Count > 0)
+            if (selectedShapes.Count <= 1)
             {
-                var currentSlide = PowerPointCurrentPresentationInfo.CurrentSlide as PowerPointSlide;
-
-                shapesToBeRotated = ConvertShapeRangeToList(selectedShapes);
-                System.Drawing.PointF refCoordinates = CalculateCenterPoint(shapesToBeRotated);
-                refPoint = AddReferencePoint(currentSlide.Shapes, refCoordinates.X - REFPOINT_RADIUS/2, refCoordinates.Y - REFPOINT_RADIUS/2);
-                allShapesInSlide = ConvertShapesToList(currentSlide.Shapes);
-
-                dispatcherTimer.Tick += new EventHandler(RotationHandler);
-
-                _leftMouseUpListener = new LMouseUpListener();
-                _leftMouseUpListener.LButtonUpClicked +=
-                    new EventHandler<SysMouseEventInfo>(_leftMouseUpListener_Rotation);
-
-                _leftMouseDownListener = new LMouseDownListener();
-                _leftMouseDownListener.LButtonDownClicked +=
-                    new EventHandler<SysMouseEventInfo>(_leftMouseDownListener_Rotation);
-
+                return;
             }
+
+            var currentSlide = PowerPointCurrentPresentationInfo.CurrentSlide as PowerPointSlide;
+
+            refPoint = selectedShapes[1];
+            shapesToBeRotated = ConvertShapeRangeToList(selectedShapes, 2);
+            allShapesInSlide = ConvertShapesToList(currentSlide.Shapes);
+
+            dispatcherTimer.Tick += new EventHandler(RotationHandler);
+
+            _leftMouseUpListener = new LMouseUpListener();
+            _leftMouseUpListener.LButtonUpClicked +=
+                new EventHandler<SysMouseEventInfo>(_leftMouseUpListener_Rotation);
+
+            _leftMouseDownListener = new LMouseDownListener();
+            _leftMouseDownListener.LButtonDownClicked +=
+                new EventHandler<SysMouseEventInfo>(_leftMouseDownListener_Rotation);
+
         }
 
         private void RotationHandler(object sender, EventArgs e)
@@ -439,13 +440,13 @@ namespace PowerPointLabs.PositionsLab
             return aShape;
         }
 
-        private List<Shape> ConvertShapeRangeToList (PowerPoint.ShapeRange range)
+        private List<Shape> ConvertShapeRangeToList (PowerPoint.ShapeRange range, int index)
         {
             List<Shape> shapes = new List<Shape>();
 
-            foreach (Shape s in range)
+            for (int i = index; i <= range.Count; i++)
             {
-                shapes.Add(s);
+                shapes.Add(range[i]);
             }
 
             return shapes;
