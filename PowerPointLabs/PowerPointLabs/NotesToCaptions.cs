@@ -9,6 +9,7 @@ namespace PowerPointLabs
 {
     class NotesToCaptions
     {
+#pragma warning disable 0618
         public static void EmbedCaptionsOnSelectedSlides()
         {
             foreach (PowerPointSlide slide in PowerPointCurrentPresentationInfo.SelectedSlides) 

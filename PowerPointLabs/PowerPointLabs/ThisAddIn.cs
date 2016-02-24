@@ -27,6 +27,7 @@ namespace PowerPointLabs
 {
     public partial class ThisAddIn
     {
+#pragma warning disable 0618
         private const string AppLogName = "PowerPointLabs_Log_1.log"; 
         private const string SlideXmlSearchPattern = @"slide(\d+)\.xml";
         private const string TempFolderNamePrefix = @"\PowerPointLabs Temp\";
@@ -347,7 +348,7 @@ namespace PowerPointLabs
             }
 
             // for Functional Test to close presentation
-            if (PowerPointCurrentPresentationInfo.IsInFunctionalTest)
+            if (PowerPointLabsFT.IsFunctionalTestOn)
             {
                 var handle = Native.FindWindow("PPTFrameClass", pres.Name + " - Microsoft PowerPoint");
                 Native.SetForegroundWindow(handle);

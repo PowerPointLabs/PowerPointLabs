@@ -17,6 +17,7 @@ namespace PowerPointLabs.Models
 {
     public class PowerPointSlide
     {
+#pragma warning disable 0618
         public const string PptLabsIndicatorShapeName = "PPTIndicator";
         private const string PptLabsTemplateMarkerShapeName = "PPTTemplateMarker";
         private const string UnnamedShapeName = "Unnamed Shape ";

@@ -21,6 +21,7 @@ namespace PowerPointLabs
 
     public partial class ColorPane : UserControl
     {
+#pragma warning disable 0618
         // To set eyedropper mode
         private enum MODE
         {

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.IO;
 using System.Xml.Serialization;
+using PowerPointLabs.ActionFramework.Common.Log;
 using PowerPointLabs.PictureSlidesLab.Model;
 using PowerPointLabs.Properties;
 using PowerPointLabs.Views;
@@ -138,7 +139,7 @@ namespace PowerPointLabs.PictureSlidesLab.Util
             }
             catch (Exception e)
             {
-                PowerPointLabsGlobals.Log("Failed to save Picture Slides Lab images list: " + e.StackTrace, "Error");
+                Logger.LogException(e, "Failed to save Picture Slides Lab images list");
             }
         }
         
@@ -159,7 +160,7 @@ namespace PowerPointLabs.PictureSlidesLab.Util
             }
             catch (Exception e)
             {
-                PowerPointLabsGlobals.Log("Failed to save Picture Slides Lab settings: " + e.StackTrace, "Error");
+                Logger.LogException(e, "Failed to save Picture Slides Lab settings");
             }
         }
 
@@ -181,7 +182,7 @@ namespace PowerPointLabs.PictureSlidesLab.Util
             }
             catch (Exception e)
             {
-                PowerPointLabsGlobals.Log("Failed to load Picture Slides Lab images list: " + e.StackTrace, "Error");
+                Logger.LogException(e, "Failed to load Picture Slides Lab images list");
                 return new ObservableCollection<ImageItem>();
             }
         }
@@ -204,7 +205,7 @@ namespace PowerPointLabs.PictureSlidesLab.Util
             }
             catch (Exception e)
             {
-                PowerPointLabsGlobals.Log("Failed to load Picture Slides Lab settings: " + e.StackTrace, "Error");
+                Logger.LogException(e, "Failed to load Picture Slides Lab settings");
                 return new Model.Settings();
             }
         }

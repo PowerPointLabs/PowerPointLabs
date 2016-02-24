@@ -17,7 +17,8 @@ namespace PowerPointLabs.Utils
 {
     public static class Graphics
     {
-        # region Const
+#pragma warning disable 0618
+        #region Const
         public const float PictureExportingRatio = 96.0f / 72.0f;
         # endregion
 

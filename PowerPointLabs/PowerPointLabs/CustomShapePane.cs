@@ -19,6 +19,7 @@ namespace PowerPointLabs
 {
     public partial class CustomShapePane : UserControl
     {
+#pragma warning disable 0618
         private const string ImportLibraryFileDialogFilter =
             "PowerPointLabs Shapes File|*.pptlabsshapes;*.pptx";
         private const string ImportShapesFileDialogFilter =

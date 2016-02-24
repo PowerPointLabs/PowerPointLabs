@@ -12,7 +12,8 @@ namespace PowerPointLabs.AudioMisc
 {
     internal class AudioHelper
     {
-        # region MCI Constants
+#pragma warning disable 0618
+        #region MCI Constants
         public const int MM_MCINOTIFY = 0x03B9;
         public const int MCI_NOTIFY_SUCCESS = 0x01;
         public const int MCI_NOTIFY_ABORTED = 0x04;

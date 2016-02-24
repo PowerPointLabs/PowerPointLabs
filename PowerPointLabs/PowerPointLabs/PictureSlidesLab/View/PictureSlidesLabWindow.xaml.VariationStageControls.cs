@@ -4,6 +4,7 @@ using System.Windows.Controls;
 using System.Windows.Forms;
 using System.Windows.Input;
 using System.Windows.Media;
+using PowerPointLabs.ActionFramework.Common.Extension;
 using PowerPointLabs.PictureSlidesLab.Model;
 using Color = System.Drawing.Color;
 
@@ -45,21 +46,30 @@ namespace PowerPointLabs.PictureSlidesLab.View
             DisableLoadingStyleOnWindowActivate();
             if (colorDialog.ShowDialog() == System.Windows.Forms.DialogResult.OK)
             {
-                ViewModel.BindSelectedColor(colorDialog.Color);
+                ViewModel.BindSelectedColor(colorDialog.Color,
+                    this.GetCurrentSlide().GetNativeSlide(),
+                    this.GetCurrentPresentation().SlideWidth,
+                    this.GetCurrentPresentation().SlideHeight);
             }
             EnableLoadingStyleOnWindowActivate();
         }
 
         private void VariantsFontPanel_OnDropDownClosed(object sender, EventArgs e)
         {
-            ViewModel.BindSelectedFont();
+            ViewModel.BindSelectedFont(
+                this.GetCurrentSlide().GetNativeSlide(),
+                this.GetCurrentPresentation().SlideWidth,
+                this.GetCurrentPresentation().SlideHeight);
         }
 
         private void VariantsFontPanel_OnKeyUp(object sender, System.Windows.Input.KeyEventArgs e)
         {
             if (e.Key == Key.Up || e.Key == Key.Down)
             {
-                ViewModel.BindSelectedFont();
+                ViewModel.BindSelectedFont(
+                    this.GetCurrentSlide().GetNativeSlide(),
+                    this.GetCurrentPresentation().SlideWidth,
+                    this.GetCurrentPresentation().SlideHeight);
             }
         }
         #endregion

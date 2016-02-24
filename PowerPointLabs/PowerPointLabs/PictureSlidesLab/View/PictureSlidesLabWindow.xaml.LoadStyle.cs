@@ -5,6 +5,7 @@ using System.Windows;
 using MahApps.Metro.Controls.Dialogs;
 using Microsoft.Office.Core;
 using Microsoft.Office.Interop.PowerPoint;
+using PowerPointLabs.ActionFramework.Common.Extension;
 using PowerPointLabs.Models;
 using PowerPointLabs.PictureSlidesLab.Model;
 using PowerPointLabs.PictureSlidesLab.Service;
@@ -57,7 +58,7 @@ namespace PowerPointLabs.PictureSlidesLab.View
             this.HideMetroDialogAsync(_loadStylesDialog, MetroDialogOptions);
 
             // which is the current slide
-            var currentSlide = PowerPointPresentation.Current.Slides[_loadStylesDialog.SelectedSlide - 1];
+            var currentSlide = this.GetCurrentPresentation().Slides[_loadStylesDialog.SelectedSlide - 1];
             if (currentSlide == null) return;
 
             var originalShapeList = currentSlide.GetShapesWithPrefix(ShapeNamePrefix + "_" + EffectName.Original_DO_NOT_REMOVE);
@@ -109,7 +110,7 @@ namespace PowerPointLabs.PictureSlidesLab.View
             this.HideMetroDialogAsync(_loadStylesDialog, MetroDialogOptions);
 
             // which is the current slide
-            var currentSlide = PowerPointPresentation.Current.Slides[_loadStylesDialog.SelectedSlide - 1];
+            var currentSlide = this.GetCurrentPresentation().Slides[_loadStylesDialog.SelectedSlide - 1];
             if (currentSlide == null) return;
 
             var originalShapeList = currentSlide.GetShapesWithPrefix(ShapeNamePrefix + "_" + EffectName.Original_DO_NOT_REMOVE);

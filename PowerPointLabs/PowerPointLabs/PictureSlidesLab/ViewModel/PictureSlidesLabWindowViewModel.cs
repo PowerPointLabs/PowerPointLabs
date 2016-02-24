@@ -6,6 +6,7 @@ using System.Drawing;
 using System.Linq;
 using System.Windows.Forms;
 using Microsoft.Office.Interop.PowerPoint;
+using PowerPointLabs.ActionFramework.Common.Log;
 using PowerPointLabs.AutoUpdate.Interface;
 using PowerPointLabs.Models;
 using PowerPointLabs.PictureSlidesLab.Model;
@@ -793,7 +794,7 @@ namespace PowerPointLabs.PictureSlidesLab.ViewModel
             catch (Exception e)
             {
                 // sometimes Clipboard may fail
-                PowerPointLabsGlobals.LogException(e, "LoadClipboardPicture");
+                Logger.LogException(e, "LoadClipboardPicture");
                 return "";
             }
         }
@@ -818,7 +819,7 @@ namespace PowerPointLabs.PictureSlidesLab.ViewModel
             catch (Exception e)
             {
                 // sometimes Clipboard may fail
-                PowerPointLabsGlobals.LogException(e, "SaveClipboardPicture");
+                Logger.LogException(e, "SaveClipboardPicture");
             }
         }
 

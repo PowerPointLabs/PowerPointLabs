@@ -3,6 +3,7 @@ using System.Windows.Forms;
 using Microsoft.Office.Interop.PowerPoint;
 using Microsoft.Office.Tools;
 using PowerPointLabs.Models;
+using Application = Microsoft.Office.Interop.PowerPoint.Application;
 
 namespace PowerPointLabs.ActionFramework.Common.Extension
 {
@@ -12,6 +13,17 @@ namespace PowerPointLabs.ActionFramework.Common.Extension
     [Obsolete("DO NOT use this class in your feature! Used only by Action Framework.")]
     class ActionFrameworkExtensions
     {
+#pragma warning disable 0618
+        public static Application GetApplication()
+        {
+            return Globals.ThisAddIn.Application;
+        }
+
+        public static Presentations GetPresentations()
+        {
+            return Globals.ThisAddIn.Application.Presentations;
+        }
+
         public static DocumentWindow GetCurrentWindow()
         {
             return Globals.ThisAddIn.Application.ActiveWindow;
@@ -86,10 +98,11 @@ namespace PowerPointLabs.ActionFramework.Common.Extension
             }
             catch (Exception e)
             {
-                PowerPointLabsGlobals.LogException(e, "RegisterTaskPane_Extension");
+                Log.Logger.LogException(e, "RegisterTaskPane_Extension");
                 Views.ErrorDialogWrapper.ShowDialog("PowerPointLabs", e.Message, e);
                 return null;
             }
         }
+#pragma warning restore 0618
     }
 }

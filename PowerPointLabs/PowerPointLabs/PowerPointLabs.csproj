@@ -127,7 +127,8 @@
     <Prefer32Bit>false</Prefer32Bit>
     <CodeAnalysisRuleSet>ExtendedDesignGuidelineRules.ruleset</CodeAnalysisRuleSet>
     <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
-    <NoWarn>618</NoWarn>
+    <NoWarn>
+    </NoWarn>
   </PropertyGroup>
   <!--
     This section defines properties that are set when the "Release" configuration is selected.
@@ -257,6 +258,7 @@
     <Compile Include="ActionFramework\Action\ColorsLabActionHandler.cs" />
     <Compile Include="ActionFramework\Action\EmptyActionHandler.cs" />
     <Compile Include="ActionFramework\Common\Extension\ActionFrameworkExtensions.cs" />
+    <Compile Include="ActionFramework\Common\Extension\FunctionalTestExtensions.cs" />
     <Compile Include="ActionFramework\Common\Extension\ContentControlExtensions.cs" />
     <Compile Include="ActionFramework\Common\Extension\ActionHandlerExtensions.cs" />
     <Compile Include="ActionFramework\Common\Factory\ActionHandlerFactory.cs" />
@@ -266,6 +268,8 @@
     <Compile Include="ActionFramework\Common\Factory\BaseHandlerFactory.cs" />
     <Compile Include="ActionFramework\Common\Interface\IRibbonIdMetadata.cs" />
     <Compile Include="ActionFramework\Common\Attribute\ExportImageRibbonIdAttribute.cs" />
+    <Compile Include="ActionFramework\Common\Log\Logger.cs" />
+    <Compile Include="ActionFramework\Common\Log\LogType.cs" />
     <Compile Include="ActionFramework\Image\ColorsLabImageHandler.cs" />
     <Compile Include="ActionFramework\Image\EmptyImageHandler.cs" />
     <Compile Include="ActionFramework\Common\Factory\ImageHandlerFactory.cs" />
@@ -577,7 +581,7 @@
     <Compile Include="Models\PowerPointMagnifiedSlide.cs" />
     <Compile Include="Models\PowerPointMagnifyingSlide.cs" />
     <Compile Include="Models\PowerPointStepBackSlide.cs" />
-    <Compile Include="PowerPointLabsGlobals.cs" />
+    <Compile Include="LegacyShapeUtil.cs" />
     <Compile Include="RecorderTaskPane.cs">
       <SubType>UserControl</SubType>
     </Compile>

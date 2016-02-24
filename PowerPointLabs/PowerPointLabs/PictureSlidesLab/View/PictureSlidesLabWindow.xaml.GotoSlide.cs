@@ -1,7 +1,7 @@
 ﻿using System.Reflection;
 using System.Windows;
 using MahApps.Metro.Controls.Dialogs;
-using PowerPointLabs.Models;
+using PowerPointLabs.ActionFramework.Common.Extension;
 
 namespace PowerPointLabs.PictureSlidesLab.View
 {
@@ -51,16 +51,16 @@ namespace PowerPointLabs.PictureSlidesLab.View
 
             GotoSlide();
 
-            LoadStyleAndImage(PowerPointPresentation.Current
+            LoadStyleAndImage(this.GetCurrentPresentation()
                 .Slides[_gotoSlideDialog.SelectedSlide - 1]);
         }
 
         private void GotoSlide()
         {
-            if (PowerPointCurrentPresentationInfo.CurrentSlide == null
-                || _gotoSlideDialog.SelectedSlide != PowerPointCurrentPresentationInfo.CurrentSlide.Index)
+            if (this.GetCurrentSlide() == null
+                || _gotoSlideDialog.SelectedSlide != this.GetCurrentSlide().Index)
             {
-                PowerPointPresentation.Current.GotoSlide(_gotoSlideDialog.SelectedSlide);
+                this.GetCurrentPresentation().GotoSlide(_gotoSlideDialog.SelectedSlide);
             }
             UpdatePreviewImages();
         }

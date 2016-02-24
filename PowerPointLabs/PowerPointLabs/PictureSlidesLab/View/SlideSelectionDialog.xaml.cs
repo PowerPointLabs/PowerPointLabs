@@ -3,6 +3,7 @@ using System.Collections.ObjectModel;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
+using PowerPointLabs.ActionFramework.Common.Extension;
 using PowerPointLabs.Models;
 using PowerPointLabs.PictureSlidesLab.Model;
 using PowerPointLabs.PictureSlidesLab.Util;
@@ -66,11 +67,11 @@ namespace PowerPointLabs.PictureSlidesLab.View
             {
                 SlideList.Clear();
             }));
-            var currentSlide = PowerPointCurrentPresentationInfo.CurrentSlide;
+            var currentSlide = this.GetCurrentSlide();
             if (currentSlide.Index - 2 >= 0)
             {
                 _prevSlideIndex = currentSlide.Index - 2;
-                var prevSlide = PowerPointPresentation.Current.Slides[currentSlide.Index - 2];
+                var prevSlide = this.GetCurrentPresentation().Slides[currentSlide.Index - 2];
                 AddSlideThumbnail(prevSlide);
             }
             else
@@ -80,10 +81,10 @@ namespace PowerPointLabs.PictureSlidesLab.View
 
             AddSlideThumbnail(currentSlide, isCurrentSlide: true);
 
-            if (currentSlide.Index < PowerPointPresentation.Current.SlideCount)
+            if (currentSlide.Index < this.GetCurrentPresentation().SlideCount)
             {
                 _nextSlideIndex = currentSlide.Index;
-                var nextSlide = PowerPointPresentation.Current.Slides[currentSlide.Index];
+                var nextSlide = this.GetCurrentPresentation().Slides[currentSlide.Index];
                 AddSlideThumbnail(nextSlide);
             }
             else
@@ -159,7 +160,7 @@ namespace PowerPointLabs.PictureSlidesLab.View
 
         private int GetPreviewWidth()
         {
-            return (int)(PowerPointPresentation.Current.SlideWidth / PowerPointPresentation.Current.SlideHeight * PreviewHeight);
+            return (int)(this.GetCurrentPresentation().SlideWidth / this.GetCurrentPresentation().SlideHeight * PreviewHeight);
         }
 
         private void GotoSlideButton_OnClick(object sender, RoutedEventArgs e)
@@ -244,13 +245,13 @@ namespace PowerPointLabs.PictureSlidesLab.View
             if (_prevSlideIndex - 3 >= 0)
             {
                 newPrevSlideIndex = _prevSlideIndex - 3;
-                var prevSlide = PowerPointPresentation.Current.Slides[_prevSlideIndex - 3];
+                var prevSlide = this.GetCurrentPresentation().Slides[_prevSlideIndex - 3];
                 AddSlideThumbnail(prevSlide, 0);
             }
 
             if (_prevSlideIndex - 2 >= 0)
             {
-                var prevSlide = PowerPointPresentation.Current.Slides[_prevSlideIndex - 2];
+                var prevSlide = this.GetCurrentPresentation().Slides[_prevSlideIndex - 2];
                 if (_prevSlideIndex - 3 >= 0)
                 {
                     AddSlideThumbnail(prevSlide, 1);
@@ -264,7 +265,7 @@ namespace PowerPointLabs.PictureSlidesLab.View
 
             if (_prevSlideIndex - 1 >= 0)
             {
-                var prevSlide = PowerPointPresentation.Current.Slides[_prevSlideIndex - 1];
+                var prevSlide = this.GetCurrentPresentation().Slides[_prevSlideIndex - 1];
                 if (_prevSlideIndex - 3 >= 0)
                 {
                     AddSlideThumbnail(prevSlide, 2);
@@ -306,23 +307,23 @@ namespace PowerPointLabs.PictureSlidesLab.View
         {
             var newNextSlideIndex = _nextSlideIndex;
 
-            if (_nextSlideIndex + 1 < PowerPointPresentation.Current.SlideCount)
+            if (_nextSlideIndex + 1 < this.GetCurrentPresentation().SlideCount)
             {
-                var nextSlide = PowerPointPresentation.Current.Slides[_nextSlideIndex + 1];
+                var nextSlide = this.GetCurrentPresentation().Slides[_nextSlideIndex + 1];
                 newNextSlideIndex = _nextSlideIndex + 1;
                 AddSlideThumbnail(nextSlide);
             }
 
-            if (_nextSlideIndex + 2 < PowerPointPresentation.Current.SlideCount)
+            if (_nextSlideIndex + 2 < this.GetCurrentPresentation().SlideCount)
             {
-                var nextSlide = PowerPointPresentation.Current.Slides[_nextSlideIndex + 2];
+                var nextSlide = this.GetCurrentPresentation().Slides[_nextSlideIndex + 2];
                 newNextSlideIndex = _nextSlideIndex + 2;
                 AddSlideThumbnail(nextSlide);
             }
 
-            if (_nextSlideIndex + 3 < PowerPointPresentation.Current.SlideCount)
+            if (_nextSlideIndex + 3 < this.GetCurrentPresentation().SlideCount)
             {
-                var nextSlide = PowerPointPresentation.Current.Slides[_nextSlideIndex + 3];
+                var nextSlide = this.GetCurrentPresentation().Slides[_nextSlideIndex + 3];
                 newNextSlideIndex = _nextSlideIndex + 3;
                 AddSlideThumbnail(nextSlide);
             }

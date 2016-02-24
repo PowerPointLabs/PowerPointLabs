@@ -4,6 +4,7 @@ using System.Runtime.InteropServices;
 using System.Text;
 using System.Text.RegularExpressions;
 using Microsoft.Office.Interop.PowerPoint;
+using PowerPointLabs.ActionFramework.Common.Log;
 using PowerPointLabs.Models;
 
 namespace PowerPointLabs.PictureSlidesLab.Service
@@ -89,7 +90,7 @@ namespace PowerPointLabs.PictureSlidesLab.Service
             }
             catch (Exception e)
             {
-                PowerPointLabsGlobals.LogException(e, "GenerateCitations");
+                Logger.LogException(e, "GenerateCitations");
                 return "";
             }
         }
