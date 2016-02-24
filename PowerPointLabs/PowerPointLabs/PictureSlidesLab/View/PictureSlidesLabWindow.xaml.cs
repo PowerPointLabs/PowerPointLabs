@@ -11,6 +11,7 @@ using System.Windows.Forms;
 using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Animation;
+using System.Windows.Threading;
 using MahApps.Metro.Controls.Dialogs;
 using Microsoft.Office.Interop.PowerPoint;
 using PowerPointLabs.ActionFramework.Common.Extension;
@@ -58,7 +59,6 @@ namespace PowerPointLabs.PictureSlidesLab.View
         private int _clickedImageSelectionItemIndex = -1;
 
         // other UI control flags
-        private bool _isInit;
         private bool _isAbleLoadingOnWindowActivate = true;
         private bool _isStylePreviewRegionInit;
         private int _lastSelectedSlideIndex = -1;
@@ -72,27 +72,13 @@ namespace PowerPointLabs.PictureSlidesLab.View
             InitializeComponent();
             // start loading process
             PictureSlidesLabGridLoadingOverlay.Visibility = Visibility.Visible;
-        }
+            IsOpen = true;
 
-        private void PictureSlidesLabWindow_OnLoaded(object sender, RoutedEventArgs e)
-        {
-            // wait for some time to allow UI to be fully loaded
-            var timer = new Timer
-            {
-                Interval = 500 // ms
-            };
-            timer.Tick += (o, args) =>
-            {
-                timer.Stop();
-                Dispatcher.BeginInvoke(new Action(Init));
-            };
-            timer.Start();
+            SetTimeout(Init, 850);
         }
 
         private void Init()
         {
-            if (_isInit) return;
-
             try
             {
                 InitViewModel();
@@ -108,10 +94,7 @@ namespace PowerPointLabs.PictureSlidesLab.View
             finally
             {
                 // remove loading overlay
-                PictureSlidesLabGridLoadingOverlay.Visibility = Visibility.Hidden;
-                IsOpen = true;
-
-                _isInit = true;
+                PictureSlidesLabGridLoadingOverlay.Visibility = Visibility.Collapsed;
             }
         }
 
@@ -305,6 +288,11 @@ namespace PowerPointLabs.PictureSlidesLab.View
         }
 
         #endregion
+
+        private void PictureSlidesLabGridLoadingOverlay_OnPreviewMouseLeftButtonUp(object sender, MouseButtonEventArgs e)
+        {
+            PictureSlidesLabGridLoadingOverlay.Visibility = Visibility.Collapsed;
+        }
 
         /// <summary>
         /// Show QuickDrop dialog when PictureSlidesLab window is deactivated
@@ -777,17 +765,7 @@ namespace PowerPointLabs.PictureSlidesLab.View
         {
             if (!SettingsFlyoutControl.IsOpen)
             {
-                // wait for some time to allow animation to be finished
-                var timer = new Timer
-                {
-                    Interval = 500 // ms
-                };
-                timer.Tick += (o, args) =>
-                {
-                    timer.Stop();
-                    Dispatcher.BeginInvoke(new Action(()=> { UpdatePreviewImages(isForceUpdating: true); }));
-                };
-                timer.Start();
+                SetTimeout(() => { UpdatePreviewImages(isForceUpdating: true); }, 500);
             }
         }
 
@@ -1111,6 +1089,25 @@ namespace PowerPointLabs.PictureSlidesLab.View
         private void DisableLoadingStyleOnWindowActivate()
         {
             _isAbleLoadingOnWindowActivate = false;
+        }
+
+        /// <summary>
+        /// Execute action after time (in ms)
+        /// </summary>
+        /// <param name="action"></param>
+        /// <param name="time">time in ms</param>
+        private void SetTimeout(Action action, int time)
+        {
+            var timer = new DispatcherTimer
+            {
+                Interval = new TimeSpan(0, 0, 0, 0, time) // in ms
+            };
+            timer.Tick += (o, args) =>
+            {
+                timer.Stop();
+                action();
+            };
+            timer.Start();
         }
 
         #endregion
