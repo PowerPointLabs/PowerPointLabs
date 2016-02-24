@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Drawing;
+using PowerPointLabs.ActionFramework.Common.Extension;
 using TestInterface;
 using PowerPointLabs.FunctionalTestInterface.Impl.Controller;
 
@@ -10,7 +11,7 @@ namespace PowerPointLabs.FunctionalTestInterface.Impl
     {
         private Ribbon1 Ribbon
         {
-            get { return Globals.ThisAddIn.Ribbon; }
+            get { return FunctionalTestExtensions.GetRibbonUi(); }
         }
 
         public void AutoCrop()

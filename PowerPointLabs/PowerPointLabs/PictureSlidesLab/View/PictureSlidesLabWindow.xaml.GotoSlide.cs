@@ -1,7 +1,9 @@
-﻿using System.Reflection;
+﻿using System;
+using System.Reflection;
 using System.Windows;
 using MahApps.Metro.Controls.Dialogs;
-using PowerPointLabs.Models;
+using PowerPointLabs.ActionFramework.Common.Extension;
+using PowerPointLabs.ActionFramework.Common.Log;
 
 namespace PowerPointLabs.PictureSlidesLab.View
 {
@@ -23,9 +25,9 @@ namespace PowerPointLabs.PictureSlidesLab.View
                     .OpenDialog();
                 this.ShowMetroDialogAsync(_gotoSlideDialog, MetroDialogOptions);
             }
-            catch
+            catch (Exception expt)
             {
-                // dialog could be fired multiple times
+                Logger.LogException(expt, "GotoSlideButton_OnClick");
             }
         }
 
@@ -42,6 +44,7 @@ namespace PowerPointLabs.PictureSlidesLab.View
                 _gotoSlideDialog.CloseDialog();
                 this.HideMetroDialogAsync(_gotoSlideDialog, MetroDialogOptions);
             };
+            Logger.Log("PSL init GotoSlideDialog done");
         }
 
         private void GotoSlideWithStyleLoading()
@@ -51,16 +54,16 @@ namespace PowerPointLabs.PictureSlidesLab.View
 
             GotoSlide();
 
-            LoadStyleAndImage(PowerPointPresentation.Current
+            LoadStyleAndImage(this.GetCurrentPresentation()
                 .Slides[_gotoSlideDialog.SelectedSlide - 1]);
         }
 
         private void GotoSlide()
         {
-            if (PowerPointCurrentPresentationInfo.CurrentSlide == null
-                || _gotoSlideDialog.SelectedSlide != PowerPointCurrentPresentationInfo.CurrentSlide.Index)
+            if (this.GetCurrentSlide() == null
+                || _gotoSlideDialog.SelectedSlide != this.GetCurrentSlide().Index)
             {
-                PowerPointPresentation.Current.GotoSlide(_gotoSlideDialog.SelectedSlide);
+                this.GetCurrentPresentation().GotoSlide(_gotoSlideDialog.SelectedSlide);
             }
             UpdatePreviewImages();
         }

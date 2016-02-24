@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Windows.Forms;
+using PowerPointLabs.ActionFramework.Common.Log;
 using PowerPointLabs.Models;
 using PowerPointLabs.Utils;
 using Office = Microsoft.Office.Core;
@@ -9,6 +10,7 @@ namespace PowerPointLabs
 {
     class ConvertToPicture
     {
+#pragma warning disable 0618
         public static void Convert(PowerPoint.Selection selection)
         {
             if (IsSelectionShape(selection))
@@ -45,7 +47,7 @@ namespace PowerPointLabs
             }
             catch (Exception e)
             {
-                PowerPointLabsGlobals.LogException(e, "Chart cannot be rotated.");
+                Logger.LogException(e, "Chart cannot be rotated.");
             }
             shape.Copy();
             float x = shape.Left;
@@ -68,7 +70,7 @@ namespace PowerPointLabs
             }
             catch (Exception e)
             {
-                PowerPointLabsGlobals.LogException(e, "GetConvertToPicMenuImage");
+                Logger.LogException(e, "GetConvertToPicMenuImage");
                 throw;
             }
         }

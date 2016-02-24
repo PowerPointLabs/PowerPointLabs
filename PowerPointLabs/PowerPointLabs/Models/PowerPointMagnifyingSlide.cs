@@ -9,6 +9,7 @@ namespace PowerPointLabs.Models
 {
     class PowerPointMagnifyingSlide : PowerPointSlide
     {
+#pragma warning disable 0618
         private PowerPoint.Shape indicatorShape = null;
         private PowerPoint.Shape zoomSlideCroppedShapes = null;
 
@@ -40,7 +41,7 @@ namespace PowerPointLabs.Models
             {
                 shapeToZoom = zoomSlideCroppedShapes.Duplicate()[1];
                 DeleteShapeAnimations(shapeToZoom);
-                PowerPointLabsGlobals.CopyShapePosition(zoomSlideCroppedShapes, ref shapeToZoom);
+                LegacyShapeUtil.CopyShapePosition(zoomSlideCroppedShapes, ref shapeToZoom);
 
                 referenceShape = GetReferenceShape(zoomShape);
                 DefaultMotionAnimation.AddZoomToAreaMotionAnimation(this, shapeToZoom, zoomShape, referenceShape, 0.5f, PowerPoint.MsoAnimTriggerType.msoAnimTriggerAfterPrevious);
@@ -109,14 +110,14 @@ namespace PowerPointLabs.Models
         {
             PowerPoint.Shape shapeToZoom = zoomSlideCroppedShapes.Duplicate()[1];
             DeleteShapeAnimations(shapeToZoom);
-            PowerPointLabsGlobals.CopyShapePosition(zoomSlideCroppedShapes, ref shapeToZoom);
+            LegacyShapeUtil.CopyShapePosition(zoomSlideCroppedShapes, ref shapeToZoom);
 
             shapeToZoom.PictureFormat.CropLeft += zoomShape.Left;
             shapeToZoom.PictureFormat.CropTop += zoomShape.Top;
             shapeToZoom.PictureFormat.CropRight += (PowerPointPresentation.Current.SlideWidth - (zoomShape.Left + zoomShape.Width));
             shapeToZoom.PictureFormat.CropBottom += (PowerPointPresentation.Current.SlideHeight - (zoomShape.Top + zoomShape.Height));
 
-            PowerPointLabsGlobals.CopyShapePosition(zoomShape, ref shapeToZoom);
+            LegacyShapeUtil.CopyShapePosition(zoomShape, ref shapeToZoom);
             return shapeToZoom;
         }
 

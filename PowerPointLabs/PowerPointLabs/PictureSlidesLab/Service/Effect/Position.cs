@@ -2,9 +2,9 @@
 {
     public enum Position
     {
-        Original,
         TopLeft, Top, TopRight,
         Left, Centre, Right,
-        BottomLeft, Bottom, BottomRight
+        BottomLeft, Bottom, BottomRight,
+        NoEffect
     }
 }

@@ -19,6 +19,7 @@ namespace PowerPointLabs.DrawingsLab
 {
     internal class DrawingsLabMain
     {
+#pragma warning disable 0618
         private readonly DrawingsLabDataSource _dataSource;
         private readonly Dictionary<Native.VirtualKey, ControlGroup> _controlGroups = new Dictionary<Native.VirtualKey, ControlGroup>();  
 

@@ -2,6 +2,7 @@
 using System.ComponentModel;
 using System.IO;
 using System.Xml.Serialization;
+using PowerPointLabs.ActionFramework.Common.Log;
 
 namespace PowerPointLabs.PictureSlidesLab.Model
 {
@@ -35,6 +36,9 @@ namespace PowerPointLabs.PictureSlidesLab.Model
         #endregion
 
         #region IO serialization
+
+        // TODO move these to StorageUtil
+
         /// Taken from http://stackoverflow.com/a/14663848
 
         /// <summary>
@@ -54,7 +58,7 @@ namespace PowerPointLabs.PictureSlidesLab.Model
             }
             catch (Exception e)
             {
-                PowerPointLabsGlobals.Log("Failed to save Picture Slides Lab Style Options: " + e.StackTrace, "Error");
+                Logger.LogException(e, "Failed to save Picture Slides Lab Style Options: " + e.StackTrace);
             }
         }
 
@@ -76,7 +80,7 @@ namespace PowerPointLabs.PictureSlidesLab.Model
             }
             catch (Exception e)
             {
-                PowerPointLabsGlobals.Log("Failed to load Picture Slides Lab Style Options: " + e.StackTrace, "Error");
+                Logger.LogException(e, "Failed to load Picture Slides Lab Style Options: " + e.StackTrace);
                 return new StyleOption();
             }
         }

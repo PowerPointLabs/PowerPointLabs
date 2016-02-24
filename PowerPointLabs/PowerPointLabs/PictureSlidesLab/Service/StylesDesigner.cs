@@ -29,6 +29,8 @@ namespace PowerPointLabs.PictureSlidesLab.Service
 
         private StyleOption Option { get; set; }
 
+        private Settings Settings { get; set; }
+
         private const int PreviewHeight = 300;
 
         # region APIs
@@ -50,6 +52,11 @@ namespace PowerPointLabs.PictureSlidesLab.Service
         public void SetStyleOptions(StyleOption opt)
         {
             Option = opt;
+        }
+
+        public void SetSettings(Settings settings)
+        {
+            Settings = settings;
         }
 
         public void CleanUp()
@@ -130,7 +137,7 @@ namespace PowerPointLabs.PictureSlidesLab.Service
             foreach (var styleWorker in WorkerFactory.StyleWorkers)
             {
                 resultShapes.AddRange(
-                    styleWorker.Execute(Option, designer, source, imageShape));
+                    styleWorker.Execute(Option, designer, source, imageShape, Settings));
             }
             // Those workers executed at the beginning will have the output
             // put at the back.

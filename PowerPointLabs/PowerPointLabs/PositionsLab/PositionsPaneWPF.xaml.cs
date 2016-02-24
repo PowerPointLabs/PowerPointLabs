@@ -18,6 +18,7 @@ using Shape = Microsoft.Office.Interop.PowerPoint.Shape;
 using PowerPoint = Microsoft.Office.Interop.PowerPoint;
 using Office = Microsoft.Office.Core;
 using System.Diagnostics;
+using PowerPointLabs.ActionFramework.Common.Log;
 using PowerPointLabs.Utils;
 using PowerPointLabs.Models;
 
@@ -249,7 +250,7 @@ namespace PowerPointLabs.PositionsLab
             }
             catch (Exception ex)
             {
-                PowerPointLabsGlobals.LogException(ex, "Rotation");
+                Logger.LogException(ex, "Rotation");
             }
         }
 
@@ -355,7 +356,7 @@ namespace PowerPointLabs.PositionsLab
             }
             catch (Exception ex)
             {
-                PowerPointLabsGlobals.LogException(ex, "Rotation");
+                Logger.LogException(ex, "Rotation");
             }
         }
 

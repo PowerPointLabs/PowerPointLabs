@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using Microsoft.Office.Core;
+using PowerPointLabs.ActionFramework.Common.Log;
 using PowerPoint = Microsoft.Office.Interop.PowerPoint;
 
 namespace PowerPointLabs.ResizeLab
@@ -27,9 +28,9 @@ namespace PowerPointLabs.ResizeLab
             {
                 selectedShapes.LockAspectRatio = isAspectRatio ? MsoTriState.msoTrue : MsoTriState.msoFalse;
             }
-            catch (Exception e)
+            catch (Exception e) 
             {
-                PowerPointLabsGlobals.LogException(e, "ChangeShapesAspectRatio");
+                Logger.LogException(e, "ChangeShapesAspectRatio");
                 throw;
             }
         }
@@ -71,7 +72,7 @@ namespace PowerPointLabs.ResizeLab
             }
             catch (Exception e)
             {
-                PowerPointLabsGlobals.LogException(e, "RestoreAspectRatio");
+                Logger.LogException(e, "RestoreAspectRatio");
                 throw;
             }
         }

@@ -11,6 +11,7 @@ namespace PowerPointLabs.Views
 {
     internal partial class InShowControl : Form
     {
+#pragma warning disable 0618
         public enum ButtonStatus
         {
             Idle,

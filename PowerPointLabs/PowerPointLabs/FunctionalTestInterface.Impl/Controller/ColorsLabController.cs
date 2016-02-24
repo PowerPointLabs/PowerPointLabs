@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Drawing;
 using System.Windows.Forms;
+using PowerPointLabs.ActionFramework.Common.Extension;
 using TestInterface;
 
 namespace PowerPointLabs.FunctionalTestInterface.Impl.Controller
@@ -20,9 +21,9 @@ namespace PowerPointLabs.FunctionalTestInterface.Impl.Controller
         {
             UIThreadExecutor.Execute(() =>
             {
-                Globals.ThisAddIn.Ribbon.OnAction(
+                FunctionalTestExtensions.GetRibbonUi().OnAction(
                     new RibbonControl("ColorsLabButton"));
-                _pane = Globals.ThisAddIn.GetActivePane(
+                _pane = FunctionalTestExtensions.GetTaskPane(
                     typeof(ColorPane)).Control as ColorPane;
             });
         }

@@ -10,7 +10,7 @@ namespace PowerPointLabs.PictureSlidesLab.Service.StylesWorker
     [ExportMetadata("WorkerOrder", 5)]
     class TextBoxStyleWorker : IStyleWorker
     {
-        public IList<Shape> Execute(StyleOption option, EffectsDesigner designer, ImageItem source, Shape imageShape)
+        public IList<Shape> Execute(StyleOption option, EffectsDesigner designer, ImageItem source, Shape imageShape, Settings settings)
         {
             if (option.IsUseTextBoxStyle)
             {

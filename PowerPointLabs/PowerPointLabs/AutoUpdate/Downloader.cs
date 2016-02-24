@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Net;
 using System.Threading.Tasks;
+using PowerPointLabs.ActionFramework.Common.Log;
 using PowerPointLabs.AutoUpdate.Interface;
 
 namespace PowerPointLabs.AutoUpdate
@@ -64,7 +65,7 @@ namespace PowerPointLabs.AutoUpdate
             }
             catch (Exception e)
             {
-                PowerPointLabsGlobals.LogException(e, "Failed to start thread of Downloader.StartDownload");
+                Logger.LogException(e, "Failed to start thread of Downloader.StartDownload");
             }
         }
 
@@ -81,7 +82,7 @@ namespace PowerPointLabs.AutoUpdate
             catch (Exception e)
             {
                 CallWhenErrorDelegate(e);
-                PowerPointLabsGlobals.LogException(e, "Failed to execute Downloader.StartDownload");
+                Logger.LogException(e, "Failed to execute Downloader.StartDownload");
             }
         }
     }

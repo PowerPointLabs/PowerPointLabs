@@ -11,7 +11,8 @@ namespace PowerPointLabs.Models
 {
     public class PowerPointPresentation
     {
-        # region Properties
+#pragma warning disable 0618
+        #region Properties
         private string _name;
 
         public static Application Application { get; set; }

@@ -19,7 +19,7 @@ namespace PowerPointLabs.AgendaLab
 {
     internal static partial class AgendaLabMain
     {
-
+#pragma warning disable 0618
         #region UTILITY
         /// <summary>
         /// If user has slides selected, return a list of the selected slides.

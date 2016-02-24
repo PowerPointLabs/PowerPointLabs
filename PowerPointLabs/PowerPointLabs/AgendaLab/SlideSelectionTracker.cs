@@ -11,6 +11,7 @@ namespace PowerPointLabs.AgendaLab
     /// </summary>
     internal class SlideSelectionTracker
     {
+#pragma warning disable 0618
         public PowerPointSlide UserCurrentSlide { get; private set; }
         private readonly List<PowerPointSlide> _selectedSlides;
 

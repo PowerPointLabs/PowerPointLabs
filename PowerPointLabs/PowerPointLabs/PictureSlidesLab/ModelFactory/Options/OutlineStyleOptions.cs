@@ -46,8 +46,8 @@ namespace PowerPointLabs.PictureSlidesLab.ModelFactory.Options
             result[3].FontColor = "#FF0000"; //red
             result[4].FontColor = "#3DFF8F"; //green
             result[5].FontColor = "#007FFF"; //blue
-            result[6].FontColor = "#7F00D4"; //purple
-            result[7].FontColor = "#001550"; //dark blue
+            result[6].FontColor = "#001550"; //dark blue
+            result[7].FontColor = ""; //no effect
             return result;
         }
     }
