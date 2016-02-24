@@ -35,6 +35,9 @@ namespace PowerPointLabs.PictureSlidesLab.Model
         #endregion
 
         #region IO serialization
+
+        // TODO move these to StorageUtil
+
         /// Taken from http://stackoverflow.com/a/14663848
 
         /// <summary>

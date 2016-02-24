@@ -5,6 +5,7 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:controls="clr-namespace:MahApps.Metro.Controls;assembly=MahApps.Metro"
              xmlns:converter="clr-namespace:PowerPointLabs.PictureSlidesLab.Util"
+             xmlns:custom="clr-namespace:PowerPointLabs.PictureSlidesLab.View"
              mc:Ignorable="d" 
              WindowStartupLocation="CenterScreen"
              Name="Window"
@@ -35,6 +36,13 @@
             </ResourceDictionary.MergedDictionaries>
         </ResourceDictionary>
     </controls:MetroWindow.Resources>
+    <controls:MetroWindow.Flyouts>
+        <controls:FlyoutsControl>
+            <controls:Flyout IsOpenChanged="SettingsFlyoutControl_OnIsOpenChanged" Name="SettingsFlyoutControl" Header="Settings" IsModal="True" Position="Right" Width="400" >
+                <custom:SettingsFlyout x:Name="SettingsPane" Margin="20,0,0,0" />
+            </controls:Flyout>
+        </controls:FlyoutsControl>
+    </controls:MetroWindow.Flyouts>
     <Grid>
         <Grid Name="PictureSlidesLabGrid">
             <Grid.Resources>
@@ -199,7 +207,7 @@
                             </DataTemplate>
                         </ComboBox.ItemTemplate>
                     </ComboBox>
-                    <ComboBox Name="VariantsComboBox" ItemsSource="{Binding Path=VariantsCategory, Mode=TwoWay}" SelectedItem="{Binding Path=CurrentVariantCategory.Text, Mode=TwoWay}" SelectedIndex="{Binding Path=CurrentVariantCategoryId.Number, Mode=TwoWay}" SelectionChanged="VariantsComboBox_OnSelectionChanged" HorizontalAlignment="Right" VerticalAlignment="Center" Grid.Column="8">
+                    <ComboBox ToolTip="Click here to change slide preview aspect." Name="VariantsComboBox" ItemsSource="{Binding Path=VariantsCategory, Mode=TwoWay}" SelectedItem="{Binding Path=CurrentVariantCategory.Text, Mode=TwoWay}" SelectedIndex="{Binding Path=CurrentVariantCategoryId.Number, Mode=TwoWay}" SelectionChanged="VariantsComboBox_OnSelectionChanged" HorizontalAlignment="Right" VerticalAlignment="Center" Grid.Column="8">
                     </ComboBox>
                 </Grid>
                 <TextBlock Margin="10,0,0,0" Visibility="Hidden" Name="VariationInstructions" TextWrapping="Wrap" HorizontalAlignment="Center" VerticalAlignment="Center" Foreground="#AAAAAA" FontSize="16" Grid.Row="2">Select a picture to preview variations. Select any one and click APPLY button to apply.</TextBlock>
@@ -303,11 +311,13 @@
                         <ColumnDefinition Width="40" />
                         <ColumnDefinition Width="*"></ColumnDefinition>
                         <ColumnDefinition Width="125" />
+                        <ColumnDefinition Width="80" />
                     </Grid.ColumnDefinitions>
                     <Button IsEnabled="false" Name="GotoSlideButton" ToolTip="Go to a slide to edit its style." Width="85" Click="GotoSlideButton_OnClick" Margin="0,0,5,0" Grid.Column="1">Go to slide</Button>
                     <Button IsEnabled="false" Name="LoadStylesButton" ToolTip="Load the style or picture from a slide to customize." Width="60" Click="LoadButton_OnClick" Margin="0,0,5,0" Grid.Column="2">Load...</Button>
                     <controls:ProgressRing Name="ImageDownloadProgressRing" Width="10" Height="10" Grid.Column="3" IsActive="{Binding Path=IsActiveDownloadProgressRing.Flag, Mode=TwoWay}" />
                     <Button Name="AddCitationSlideButton" Click="AddCitationSlideButton_OnClick" ToolTip="Add a picture citation slide." Margin="0,0,5,0" Grid.Column="5">Add citation slide</Button>
+                    <Button Name="OpenSettingsButton" Click="OpenSettingsButton_OnClick" ToolTip="Open settings flyout." Margin="0,0,5,0" Grid.Column="6">Settings</Button>
                 </Grid>
                 <TextBlock Visibility="Hidden" Name="ImageSelectionInstructions" MaxWidth="730" TextWrapping="Wrap" HorizontalAlignment="Center" VerticalAlignment="Center" Foreground="#AAAAAA" FontSize="18" Grid.Row="2">Click the 'Choose Pictures' icon above to load local images, or drag and drop the files here. You can also drag and drop thumbnail pictures from Google Image Search to import.</TextBlock>
                 <TextBlock Visibility="Hidden" Name="ImageSelectionInstructionsForFirstTime" MaxWidth="730" TextWrapping="Wrap" HorizontalAlignment="Center" VerticalAlignment="Center" Foreground="#AAAAAA" FontSize="18" Grid.Row="2">Select a picture to preview styles, then select a style and click `Apply` button to apply it to the slide.</TextBlock>

@@ -49,6 +49,7 @@ namespace PowerPointLabs.PictureSlidesLab.Model
         // meta info
         public string OriginalImageFile { get; set; }
         public string ContextLink { get; set; }
+        public string Source { get; set; }
         # endregion
 
         public void UpdateDownloadedImage(string imagePath)

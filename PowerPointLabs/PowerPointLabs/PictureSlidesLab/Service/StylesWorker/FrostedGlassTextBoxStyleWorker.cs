@@ -10,7 +10,7 @@ namespace PowerPointLabs.PictureSlidesLab.Service.StylesWorker
     [ExportMetadata("WorkerOrder", 11)]
     class FrostedGlassTextBoxStyleWorker : IStyleWorker
     {
-        public IList<Shape> Execute(StyleOption option, EffectsDesigner designer, ImageItem source, Shape imageShape)
+        public IList<Shape> Execute(StyleOption option, EffectsDesigner designer, ImageItem source, Shape imageShape, Settings settings)
         {
             if (option.IsUseFrostedGlassTextBoxStyle)
             {

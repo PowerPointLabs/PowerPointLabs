@@ -13,6 +13,7 @@
         public const string ReloadOriginImg = "reload_originImg";
         public const string ReloadCroppedImg = "reload_croppedImg";
         public const string ReloadImgContext = "reload_imgContext";
+        public const string ReloadImgSource = "reload_imgSource";
 
         public const string ReloadRectX = "reload_RectX";
         public const string ReloadRectY = "reload_RectY";

@@ -268,6 +268,7 @@ namespace PowerPointLabs.PictureSlidesLab.View
                 CroppedImageFile = croppedImageFile,
                 CroppedThumbnailImageFile = croppedThumbnailFile,
                 ContextLink = originalImageShape.Tags[Service.Effect.Tag.ReloadImgContext],
+                Source = originalImageShape.Tags[Service.Effect.Tag.ReloadImgSource],
                 Rect = rect
             };
             return imageItem;

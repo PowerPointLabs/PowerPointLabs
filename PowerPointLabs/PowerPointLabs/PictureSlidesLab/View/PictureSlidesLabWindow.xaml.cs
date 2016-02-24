@@ -138,6 +138,7 @@ namespace PowerPointLabs.PictureSlidesLab.View
             ViewModel.StylesPreviewList.CollectionChanged += StylesPreviewList_OnCollectionChanged;
             ViewModel.ImageSelectionList.CollectionChanged += ImageSelectionList_OnCollectionChanged;
             DataContext = ViewModel;
+            SettingsPane.DataContext = ViewModel.Settings;
 
             UpdatePreviewInterfaceWhenImageListChange(ViewModel.ImageSelectionList);
         }
@@ -767,6 +768,29 @@ namespace PowerPointLabs.PictureSlidesLab.View
             ShowInfoMessageBox(TextCollection.PictureSlidesLabText.InfoAddPictureCitationSlide);
         }
 
+        private void OpenSettingsButton_OnClick(object sender, RoutedEventArgs e)
+        {
+            SettingsFlyoutControl.IsOpen = true;
+        }
+
+        private void SettingsFlyoutControl_OnIsOpenChanged(object sender, RoutedEventArgs e)
+        {
+            if (!SettingsFlyoutControl.IsOpen)
+            {
+                // wait for some time to allow animation to be finished
+                var timer = new Timer
+                {
+                    Interval = 500 // ms
+                };
+                timer.Tick += (o, args) =>
+                {
+                    timer.Stop();
+                    Dispatcher.BeginInvoke(new Action(()=> { UpdatePreviewImages(isForceUpdating: true); }));
+                };
+                timer.Start();
+            }
+        }
+
         #endregion
 
         #region Helper funcs
@@ -814,14 +838,14 @@ namespace PowerPointLabs.PictureSlidesLab.View
         {
             var metroDialogSettings = new MetroDialogSettings
             {
-                DefaultText = source.ContextLink
+                DefaultText = source.Source
             };
             this.ShowInputAsync("Edit Picture Source", "Picture taken from", metroDialogSettings)
                 .ContinueWith(task =>
                 {
                     if (!string.IsNullOrEmpty(task.Result))
                     {
-                        source.ContextLink = task.Result;
+                        source.Source = task.Result;
                     }
                 });
         }
@@ -1008,13 +1032,14 @@ namespace PowerPointLabs.PictureSlidesLab.View
 
             right2LeftToHideTranslate.BeginAnimation(TranslateTransform.XProperty, right2LeftToHideAnimation);
             IsVariationsFlyoutOpen = false;
+            ViewModel.CurrentVariantCategory.Text = "";
         }
 
-        private void UpdatePreviewImages(ImageItem source = null, bool isEnteringPictureVariation = false)
+        private void UpdatePreviewImages(ImageItem source = null, bool isEnteringPictureVariation = false, bool isForceUpdating = false)
         {
             // if it's in the Default Picture mode and not in the picture variation
             // don't continue
-            if (!IsEnableUpdatingPreviewImages() && !ViewModel.IsInPictureVariation()) return;
+            if (!IsEnableUpdatingPreviewImages() && !ViewModel.IsInPictureVariation() && !isForceUpdating) return;
 
             if (!IsEnableUpdatingPreviewImages() && ViewModel.IsInPictureVariation())
             {
@@ -1035,6 +1060,14 @@ namespace PowerPointLabs.PictureSlidesLab.View
                 var picVariationIndex = ViewModel.VariantsCategory.IndexOf(
                     TextCollection.PictureSlidesLabText.VariantCategoryPicture);
                 VariantsComboBox.SelectedIndex = picVariationIndex;
+            }
+            else if (isForceUpdating)
+            {
+                ViewModel.UpdatePreviewImages(
+                    source ?? (ImageItem) ImageSelectionListBox.SelectedValue ?? CreateDefaultPictureItem(),
+                    this.GetCurrentSlide().GetNativeSlide(),
+                    this.GetCurrentPresentation().SlideWidth,
+                    this.GetCurrentPresentation().SlideHeight);
             }
             else
             {

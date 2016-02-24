@@ -10,21 +10,21 @@ namespace PowerPointLabs.PictureSlidesLab.Service
     {
         public const string RegexForPictureCitation = @"^\[\[Picture taken from .* on .*\]\]\n";
 
-        public void ApplyImageReference(string contextLink)
+        public void ApplyImageReference(string source)
         {
-            if (StringUtil.IsEmpty(contextLink)) return;
+            if (StringUtil.IsEmpty(source)) return;
 
             RemovePreviousImageReference();
-            NotesPageText = "[[Picture taken from " + contextLink + " on " + DateTime.Now + "]]\n" +
+            NotesPageText = "[[Picture taken from " + source + " on " + DateTime.Now + "]]\n" +
                             NotesPageText;
         }
 
-        public void ApplyImageReferenceInsertion(string contextLink, string fontFamily, string fontColor,
+        public void ApplyImageReferenceInsertion(string source, string fontFamily, string fontColor,
             int fontSize, string textBoxColor, Alignment citationTextAlignment)
         {
             var imageRefShape = Shapes.AddTextbox(MsoTextOrientation.msoTextOrientationHorizontal, 0, 0, SlideWidth,
                 20);
-            imageRefShape.TextFrame2.TextRange.Text = "Picture taken from: " + contextLink;
+            imageRefShape.TextFrame2.TextRange.Text = "Picture taken from: " + source;
 
             if (!StringUtil.IsEmpty(textBoxColor))
             {
