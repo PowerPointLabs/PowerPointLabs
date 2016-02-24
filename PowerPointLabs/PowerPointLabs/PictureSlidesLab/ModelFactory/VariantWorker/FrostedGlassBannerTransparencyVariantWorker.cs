@@ -17,49 +17,49 @@ namespace PowerPointLabs.PictureSlidesLab.ModelFactory.VariantWorker
             {
                 new StyleVariant(new Dictionary<string, object>
                 {
-                    {"OptionName", "100% Brightness"},
+                    {"OptionName", "100% Transparency"},
                     {"IsUseFrostedGlassBannerStyle", true},
                     {"FrostedGlassBannerTransparency", 100}
                 }),
                 new StyleVariant(new Dictionary<string, object>
                 {
-                    {"OptionName", "90% Brightness"},
+                    {"OptionName", "90% Transparency"},
                     {"IsUseFrostedGlassBannerStyle", true},
                     {"FrostedGlassBannerTransparency", 90}
                 }),
                 new StyleVariant(new Dictionary<string, object>
                 {
-                    {"OptionName", "80% Brightness"},
+                    {"OptionName", "80% Transparency"},
                     {"IsUseFrostedGlassBannerStyle", true},
                     {"FrostedGlassBannerTransparency", 80}
                 }),
                 new StyleVariant(new Dictionary<string, object>
                 {
-                    {"OptionName", "70% Brightness"},
+                    {"OptionName", "70% Transparency"},
                     {"IsUseFrostedGlassBannerStyle", true},
                     {"FrostedGlassBannerTransparency", 70}
                 }),
                 new StyleVariant(new Dictionary<string, object>
                 {
-                    {"OptionName", "60% Brightness"},
+                    {"OptionName", "60% Transparency"},
                     {"IsUseFrostedGlassBannerStyle", true},
                     {"FrostedGlassBannerTransparency", 60}
                 }),
                 new StyleVariant(new Dictionary<string, object>
                 {
-                    {"OptionName", "50% Brightness"},
+                    {"OptionName", "50% Transparency"},
                     {"IsUseFrostedGlassBannerStyle", true},
                     {"FrostedGlassBannerTransparency", 50}
                 }),
                 new StyleVariant(new Dictionary<string, object>
                 {
-                    {"OptionName", "40% Brightness"},
+                    {"OptionName", "40% Transparency"},
                     {"IsUseFrostedGlassBannerStyle", true},
                     {"FrostedGlassBannerTransparency", 40}
                 }),
                 new StyleVariant(new Dictionary<string, object>
                 {
-                    {"OptionName", "30% Brightness"},
+                    {"OptionName", "30% Transparency"},
                     {"IsUseFrostedGlassBannerStyle", true},
                     {"FrostedGlassBannerTransparency", 30}
                 }),
