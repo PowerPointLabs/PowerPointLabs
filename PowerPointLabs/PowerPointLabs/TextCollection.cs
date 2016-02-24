@@ -119,6 +119,10 @@
         public const string DrawingsLabButtonSupertip = @"Opens the Drawing Lab Interface";
         #endregion
 
+        # region Drawing Lab
+        public const string PositionsLabSupertip = "Open Positions Lab window.";
+        #endregion
+
         #region Resize Lab
         public const string ResizeLabButtonSupertip = "Opens the Resize Lab Interface";
         #endregion
@@ -220,6 +224,10 @@
 
         # region Drawing Lab
         public const string DrawingsLabButtonLabel = "Drawing Lab";
+        # endregion
+
+        # region Positions Lab
+        public const string PositionsLabButtonLabel = "Positions Lab";
         # endregion
 
         # region Resize Lab
@@ -580,8 +588,7 @@
         #region Positions Lab
         public class PositionsLab
         {
-            public const string PositionsLabSupertip = "Open Positions Lab window.";
-            public const string PositionsLabButtonLabel = "Positions Lab";
+            
         }
         #endregion
         #region Task Pane - Resize Lab
