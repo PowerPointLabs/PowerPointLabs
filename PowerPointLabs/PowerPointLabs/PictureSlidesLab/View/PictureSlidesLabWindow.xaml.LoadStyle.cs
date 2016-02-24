@@ -6,6 +6,7 @@ using MahApps.Metro.Controls.Dialogs;
 using Microsoft.Office.Core;
 using Microsoft.Office.Interop.PowerPoint;
 using PowerPointLabs.ActionFramework.Common.Extension;
+using PowerPointLabs.ActionFramework.Common.Log;
 using PowerPointLabs.Models;
 using PowerPointLabs.PictureSlidesLab.Model;
 using PowerPointLabs.PictureSlidesLab.Service;
@@ -50,6 +51,7 @@ namespace PowerPointLabs.PictureSlidesLab.View
                 _loadStylesDialog.CloseDialog();
                 this.HideMetroDialogAsync(_loadStylesDialog, MetroDialogOptions);
             };
+            Logger.Log("PSL init LoadStylesDialog done");
         }
 
         private void LoadImage()

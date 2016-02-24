@@ -1,6 +1,7 @@
 ﻿using System.Globalization;
 using System.Runtime.InteropServices;
 using Microsoft.Office.Core;
+using PowerPointLabs.ActionFramework.Common.Log;
 using PowerPointLabs.PictureSlidesLab.Service.Effect;
 using PowerPointLabs.Utils;
 using PowerPoint = Microsoft.Office.Interop.PowerPoint;
@@ -112,10 +113,9 @@ namespace PowerPointLabs.PictureSlidesLab.Service
                                 break;
                         }
                     }
-                    catch (COMException)
+                    catch (COMException e)
                     {
-                        // non-placeholder shapes don't have PlaceholderFormat
-                        // and will cause exception
+                        Logger.LogException(e, "ApplyPseudoTextWhenNoTextShapes");
                     }
                 }
             }

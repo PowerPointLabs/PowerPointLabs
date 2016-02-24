@@ -6,7 +6,7 @@ namespace PowerPointLabs.ActionFramework.Common.Log
 {
     public class Logger
     {
-        public static void Log(string logText, LogType type)
+        public static void Log(string logText, LogType type = LogType.Info)
         {
             if (type.Equals(LogType.Info))
             {

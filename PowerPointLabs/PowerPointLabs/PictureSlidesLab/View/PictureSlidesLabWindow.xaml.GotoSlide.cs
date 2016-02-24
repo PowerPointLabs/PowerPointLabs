@@ -1,7 +1,9 @@
-﻿using System.Reflection;
+﻿using System;
+using System.Reflection;
 using System.Windows;
 using MahApps.Metro.Controls.Dialogs;
 using PowerPointLabs.ActionFramework.Common.Extension;
+using PowerPointLabs.ActionFramework.Common.Log;
 
 namespace PowerPointLabs.PictureSlidesLab.View
 {
@@ -23,9 +25,9 @@ namespace PowerPointLabs.PictureSlidesLab.View
                     .OpenDialog();
                 this.ShowMetroDialogAsync(_gotoSlideDialog, MetroDialogOptions);
             }
-            catch
+            catch (Exception expt)
             {
-                // dialog could be fired multiple times
+                Logger.LogException(expt, "GotoSlideButton_OnClick");
             }
         }
 
@@ -42,6 +44,7 @@ namespace PowerPointLabs.PictureSlidesLab.View
                 _gotoSlideDialog.CloseDialog();
                 this.HideMetroDialogAsync(_gotoSlideDialog, MetroDialogOptions);
             };
+            Logger.Log("PSL init GotoSlideDialog done");
         }
 
         private void GotoSlideWithStyleLoading()

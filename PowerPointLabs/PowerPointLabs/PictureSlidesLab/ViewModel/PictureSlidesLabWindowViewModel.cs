@@ -246,10 +246,11 @@ namespace PowerPointLabs.PictureSlidesLab.ViewModel
                         contentSlide, slideWidth, slideHeight);
                 }
             }
-            catch
+            catch (Exception e)
             {
                 // not an image or image is corrupted
                 View.ShowErrorMessageBox(TextCollection.PictureSlidesLabText.ErrorImageCorrupted);
+                Logger.LogException(e, "AddImageSelectionListItem");
             }
         }
 
@@ -303,10 +304,11 @@ namespace PowerPointLabs.PictureSlidesLab.ViewModel
                                 contentSlide, slideWidth, slideHeight);
                         }
                     }
-                    catch
+                    catch (Exception e)
                     {
                         View.ShowErrorMessageBox(TextCollection.PictureSlidesLabText.ErrorImageDownloadCorrupted);
                         ImageSelectionList.Remove(item);
+                        Logger.LogException(e, "AddImageSelectionListItem (download)");
                     }
                     finally
                     {
@@ -358,9 +360,10 @@ namespace PowerPointLabs.PictureSlidesLab.ViewModel
                     slideWidth, slideHeight, targetDefaultOptions);
                 View.ShowSuccessfullyAppliedDialog();
             }
-            catch (AssumptionFailedException)
+            catch (Exception e)
             {
                 View.ShowErrorMessageBox(TextCollection.PictureSlidesLabText.ErrorNoSelectedSlide);
+                Logger.LogException(e, "ApplyStyleInPreviewStage");
             }
             SaveClipboardPicture(copiedPicture);
         }
@@ -380,6 +383,7 @@ namespace PowerPointLabs.PictureSlidesLab.ViewModel
             catch (Exception e)
             {
                 View.ShowErrorMessageBox("Failed when retrieving information from the selected preview image.", e);
+                Logger.LogException(e, "UpdateStyleVariationStyleOptionsWhenSelectedItemChange");
             }
         }
 
@@ -633,9 +637,10 @@ namespace PowerPointLabs.PictureSlidesLab.ViewModel
                 }
                 View.ShowSuccessfullyAppliedDialog();
             }
-            catch (AssumptionFailedException)
+            catch (Exception e)
             {
                 View.ShowErrorMessageBox(TextCollection.PictureSlidesLabText.ErrorNoSelectedSlide);
+                Logger.LogException(e, "ApplyStyleInVariationStage");
             }
             SaveClipboardPicture(copiedPicture);
         }
@@ -657,6 +662,7 @@ namespace PowerPointLabs.PictureSlidesLab.ViewModel
             catch (Exception e)
             {
                 View.ShowErrorMessageBox("Failed when fetching picture aspect.", e);
+                Logger.LogException(e, "GetSelectedPictureInPictureVariation");
                 return View.CreateDefaultPictureItem();
             }
         }
@@ -675,6 +681,7 @@ namespace PowerPointLabs.PictureSlidesLab.ViewModel
             catch (Exception e)
             {
                 View.ShowErrorMessageBox("Failed when processing picture aspect.", e);
+                Logger.LogException(e, "UpdateSelectedPictureInPictureVariation");
             }
         }
 
@@ -751,6 +758,7 @@ namespace PowerPointLabs.PictureSlidesLab.ViewModel
             catch (Exception e)
             {
                 View.ShowErrorMessageBox("Failed when generating picture aspect.", e);
+                Logger.LogException(e, "GetLast8Pictures");
                 return new List<ImageItem>();
             }
         }
@@ -856,6 +864,7 @@ namespace PowerPointLabs.PictureSlidesLab.ViewModel
             catch (Exception e)
             {
                 View.ShowErrorMessageBox(TextCollection.PictureSlidesLabText.ErrorImageCorrupted, e);
+                Logger.LogException(e, "UpdateStylesPreviewImages");
             }
             SaveClipboardPicture(copiedPicture);
 
@@ -968,6 +977,7 @@ namespace PowerPointLabs.PictureSlidesLab.ViewModel
             catch (Exception e)
             {
                 View.ShowErrorMessageBox(TextCollection.PictureSlidesLabText.ErrorImageCorrupted, e);
+                Logger.LogException(e, "UpdateStylesVariationImages");
             }
             SaveClipboardPicture(copiedPicture);
         }

@@ -1,5 +1,6 @@
 ﻿using System;
 using Microsoft.Office.Core;
+using PowerPointLabs.ActionFramework.Common.Log;
 using PowerPointLabs.PictureSlidesLab.Service.Effect;
 using PowerPointLabs.PictureSlidesLab.Util;
 using PowerPoint = Microsoft.Office.Interop.PowerPoint;
@@ -40,9 +41,10 @@ namespace PowerPointLabs.PictureSlidesLab.Service
                     picShape.PictureFormat.Crop.ShapeHeight = SlideHeight - picShape.Top;
                 }
             }
-            catch
+            catch (Exception e)
             {
                 // some kind of picture cannot be cropped
+                Logger.LogException(e, "CropPicture");
             }
         }
 
@@ -55,9 +57,10 @@ namespace PowerPointLabs.PictureSlidesLab.Service
                 picShape.PictureFormat.Crop.ShapeWidth = targetWidth;
                 picShape.PictureFormat.Crop.ShapeHeight = targetHeight;
             }
-            catch
+            catch (Exception e)
             {
                 // some kind of picture cannot be cropped
+                Logger.LogException(e, "CropPicture");
             }
         }
 

@@ -14,6 +14,7 @@ using System.IO.Compression;
 using System.Runtime.Remoting;
 using System.Runtime.Remoting.Channels;
 using System.Runtime.Remoting.Channels.Ipc;
+using PowerPointLabs.ActionFramework.Common.Log;
 using PowerPointLabs.FunctionalTestInterface.Impl;
 using PowerPointLabs.FunctionalTestInterface.Impl.Controller;
 using PowerPointLabs.Models;
@@ -28,7 +29,7 @@ namespace PowerPointLabs
     public partial class ThisAddIn
     {
 #pragma warning disable 0618
-        private const string AppLogName = "PowerPointLabs_Log_1.log"; 
+        private const string AppLogName = "PowerPointLabs.log"; 
         private const string SlideXmlSearchPattern = @"slide(\d+)\.xml";
         private const string TempFolderNamePrefix = @"\PowerPointLabs Temp\";
         private const string ShapeGalleryPptxName = "ShapeGallery";
@@ -74,7 +75,7 @@ namespace PowerPointLabs
         private void ThisAddInStartup(object sender, EventArgs e)
         {
             SetupLogger();
-            Trace.TraceInformation(DateTime.Now.ToString("yyyyMMddHHmmss") + ": PowerPointLabs Started");
+            Logger.Log("PowerPointLabs Started");
 
             CultureUtil.SetDefaultCulture(CultureInfo.GetCultureInfo("en-US"));
 
