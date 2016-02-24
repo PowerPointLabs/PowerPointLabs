@@ -18,16 +18,14 @@
         </ResourceDictionary>
     </UserControl.Resources>
     <ScrollViewer Margin="0,0,0,-20">
-        <Grid Height="680">
+        <Grid Height="730">
             <GroupBox x:Name="alignGroupBox" Header="Align" HorizontalAlignment="Left" Margin="10,5,0,0" VerticalAlignment="Top" Height="130" Width="284"/>
             <GroupBox x:Name="adjoinGroupBox" Header="Adjoin" HorizontalAlignment="Left" Margin="10,140,0,0" VerticalAlignment="Top" Height="80" Width="284"/>
-            <GroupBox x:Name="distributeGroupBox" Header="Distribute" HorizontalAlignment="Left" Margin="10,225,0,0" VerticalAlignment="Top" Height="80" Width="284"/>
-            <GroupBox x:Name="reorderGroupBox" Header="Reorder" HorizontalAlignment="Left" Margin="10,307,0,0" VerticalAlignment="Top" Height="80" Width="284"/>
-            <GroupBox x:Name="adjustmentGroupBox" Header="Adjustment" HorizontalAlignment="Left" Margin="10,391,0,0" VerticalAlignment="Top" Height="80" Width="284">
-                <CheckBox x:Name="checkBox" Content="Lock Axis" HorizontalAlignment="Left" Height="33" Margin="77,5,0,0" VerticalAlignment="Top" Checked="LockAxis_Checked" Unchecked="LockAxis_UnChecked"/>
-            </GroupBox>
-            <GroupBox x:Name="snapGroupBox" Header="Snap" HorizontalAlignment="Left" Margin="10,475,0,0" VerticalAlignment="Top" Height="80" Width="284"/>
-            <GroupBox x:Name="Settings" Header="Settings" HorizontalAlignment="Left" Margin="10,560,0,0" VerticalAlignment="Top" Height="90" Width="284"/>
+            <GroupBox x:Name="distributeGroupBox" Header="Distribute" HorizontalAlignment="Left" Margin="10,225,0,0" VerticalAlignment="Top" Height="130" Width="284"/>
+            <GroupBox x:Name="reorderGroupBox" Header="Reorder" HorizontalAlignment="Left" Margin="10,357,0,0" VerticalAlignment="Top" Height="80" Width="284"/>
+            <GroupBox x:Name="adjustmentGroupBox" Header="Adjustment" HorizontalAlignment="Left" Margin="10,441,0,0" VerticalAlignment="Top" Height="80" Width="284"/>
+            <GroupBox x:Name="snapGroupBox" Header="Snap" HorizontalAlignment="Left" Margin="10,525,0,0" VerticalAlignment="Top" Height="80" Width="284"/>
+            <GroupBox x:Name="Settings" Header="Settings" HorizontalAlignment="Left" Margin="10,610,0,0" VerticalAlignment="Top" Height="90" Width="284"/>
             <Button ToolTip="Aligns objects to the left axis of reference object" x:Name="alignLeftButton" Content="Left" HorizontalAlignment="Left" Margin="24,37,0,0" VerticalAlignment="Top" Width="60" Height="45" Click="AlignLeftButton_Click"/>
             <Button ToolTip="Aligns objects to the right axis of reference object" x:Name="alignRightButton" Content="Right" HorizontalAlignment="Left" Margin="89,37,0,0" VerticalAlignment="Top" Width="60" Height="45" Click="AlignRightButton_Click"/>
             <Button ToolTip="Aligns objects to the top axis of reference object" x:Name="alignTopButton" Content="Top" HorizontalAlignment="Left" Margin="154,37,0,0" VerticalAlignment="Top" Width="60" Height="45" Click="AlignTopButton_Click"/>
@@ -41,16 +39,18 @@
             <Button ToolTip="Equalize vertical spaces of objects within reference frame" x:Name="distributeVerticalButton" Content="Vertical" HorizontalAlignment="Left" Margin="89,256,0,0" VerticalAlignment="Top" Width="60" Height="45" Click="DistributeVerticalButton_Click"/>
             <Button ToolTip="Equalize horizontal and vertical spaces of objects within reference frame" x:Name="distributeCenterButton" Content="Center" HorizontalAlignment="Left" Margin="154,256,0,0" VerticalAlignment="Top" Width="60" Height="45" Click="DistributeCenterButton_Click"/>
             <Button ToolTip="Equalize horizontal and vertical spaces of objects amongst selected objects" x:Name="distributeShapesButton" Content="Shapes" HorizontalAlignment="Left" Margin="219,256,0,0" VerticalAlignment="Top" Width="60" Height="45" Click ="DistributeShapesButton_Click"/>
+            <Button ToolTip="Equalize spaces of objects into a grid" x:Name="distributeGridButton" Content="Grid" HorizontalAlignment="Left" Margin="24,306,0,0" VerticalAlignment="Top" Width="60" Height="45" Click="DistributeGridButton_Click"/>
             <Button ToolTip="Distribute objects along the edge of reference frame" x:Name="distributeAlongEdgeButton" Content="Edges" HorizontalAlignment="Left" Margin="24,306,0,0" VerticalAlignment="Top" Width="60" Height="45" Visibility="Hidden"/>
-            <Button ToolTip="Swaps the positions of objects in a cyclical order" x:Name="swapPositionsButton" Content="Swap" HorizontalAlignment="Left" Margin="24,337,0,0" VerticalAlignment="Top" Width="60" Height="45" Click="SwapPositionsButton_Click"/>
-            <Button ToolTip="Swaps the z-order of the objects selected" x:Name="swapDepthButton" Content="Depth" HorizontalAlignment="Left" Margin="89,341,0,0" VerticalAlignment="Top" Width="60" Height="45" Visibility="Hidden"/>
-            <Button ToolTip="Adjusts the rate of rotation for object" x:Name="rotationButton" Content="Rotation" HorizontalAlignment="Left" Margin="24,422,0,0" VerticalAlignment="Top" Width="60" Height="45" Click="RotationButton_Click"/>
-            <Button ToolTip="Locks one axis and shape will only move in one direction" x:Name="oneDirectionButton" Content="One Direction" HorizontalAlignment="Left" Margin="191,426,0,0" VerticalAlignment="Top" Width="88" Height="45" Visibility="Hidden"/>
-            <Button ToolTip="Snaps object to a horizontal rotation" x:Name="snapHorizontalButton" Content="Horizontal" HorizontalAlignment="Left" Margin="24,507,0,0" VerticalAlignment="Top" Width="60" Height="45" Click="SnapHorizontalButton_Click"/>
-            <Button ToolTip="Snaps object to a vertical rotation" x:Name="snapVerticalButton" Content="Vertical" HorizontalAlignment="Left" Margin="89,507,0,0" VerticalAlignment="Top" Width="60" Height="45" Click="SnapVerticalButton_Click"/>
-            <Button ToolTip="Snaps object to a vertical rotation" x:Name="snapAwayButton" Content="Away" HorizontalAlignment="Left" Margin="154,507,0,0" VerticalAlignment="Top" Width="60" Height="45" Click="SnapAwayButton_Click"/>
-	    <CheckBox ToolTip="Select this to set the slide as reference object for the functions" x:Name="slideAsReference" Content="Use slide as reference" HorizontalAlignment="Left" Margin="24,616,0,0" VerticalAlignment="Top" IsChecked="False" Checked="UseSlideAsReference" Unchecked="UseShapeAsReference"/>
-            <CheckBox ToolTip="Select this to choose the reference object for the functions" x:Name="shapeAsReference" Content="Use shape as reference" HorizontalAlignment="Left" Margin="24,593,0,0" VerticalAlignment="Top" IsChecked="True" Checked="UseShapeAsReference" Unchecked="UseSlideAsReference"/>
+            <Button ToolTip="Swaps the positions of objects in a cyclical order" x:Name="swapPositionsButton" Content="Swap" HorizontalAlignment="Left" Margin="24,387,0,0" VerticalAlignment="Top" Width="60" Height="45" Click="SwapPositionsButton_Click"/>
+            <Button ToolTip="Swaps the z-order of the objects selected" x:Name="swapDepthButton" Content="Depth" HorizontalAlignment="Left" Margin="89,391,0,0" VerticalAlignment="Top" Width="60" Height="45" Visibility="Hidden"/>
+            <Button ToolTip="Adjusts the rate of rotation for object" x:Name="rotationButton" Content="Rotation" HorizontalAlignment="Left" Margin="24,472,0,0" VerticalAlignment="Top" Width="60" Height="45" Click="RotationButton_Click"/>
+            <CheckBox x:Name="checkBox" Content="Lock Axis" HorizontalAlignment="Left" Height="33" Margin="94,475,0,0" VerticalAlignment="Top" Checked="LockAxis_Checked" Unchecked="LockAxis_UnChecked"/>
+            <Button ToolTip="Locks one axis and shape will only move in one direction" x:Name="oneDirectionButton" Content="One Direction" HorizontalAlignment="Left" Margin="191,476,0,0" VerticalAlignment="Top" Width="88" Height="45" Visibility="Hidden"/>
+            <Button ToolTip="Snaps object to a horizontal rotation" x:Name="snapHorizontalButton" Content="Horizontal" HorizontalAlignment="Left" Margin="24,557,0,0" VerticalAlignment="Top" Width="60" Height="45" Click="SnapHorizontalButton_Click"/>
+            <Button ToolTip="Snaps object to a vertical rotation" x:Name="snapVerticalButton" Content="Vertical" HorizontalAlignment="Left" Margin="89,557,0,0" VerticalAlignment="Top" Width="60" Height="45" Click="SnapVerticalButton_Click"/>
+            <Button ToolTip="Snaps object to a vertical rotation" x:Name="snapAwayButton" Content="Away" HorizontalAlignment="Left" Margin="154,557,0,0" VerticalAlignment="Top" Width="60" Height="45" Click="SnapAwayButton_Click"/>
+	        <CheckBox ToolTip="Select this to set the slide as reference object for the functions" x:Name="slideAsReference" Content="Use slide as reference" HorizontalAlignment="Left" Margin="24,666,0,0" VerticalAlignment="Top" IsChecked="False" Checked="UseSlideAsReference" Unchecked="UseShapeAsReference"/>
+            <CheckBox ToolTip="Select this to choose the reference object for the functions" x:Name="shapeAsReference" Content="Use shape as reference" HorizontalAlignment="Left" Margin="24,643,0,0" VerticalAlignment="Top" IsChecked="True" Checked="UseShapeAsReference" Unchecked="UseSlideAsReference"/>
         </Grid>
     </ScrollViewer>
 </UserControl>

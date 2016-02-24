@@ -118,6 +118,11 @@ namespace PowerPointLabs.PositionsLab
         {
             PositionsLabMain.DistributeShapes();
         }
+
+        private void DistributeGridButton_Click(object sender, RoutedEventArgs e)
+        {
+            
+        }
         #endregion
 
         #region Snap
