@@ -1,22 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Drawing;
-using System.Drawing.Imaging;
-using System.Linq;
-using System.Text;
+﻿using System.Drawing;
 using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
 using PowerPointLabs.ActionFramework.Common.Extension;
 using PowerPoint = Microsoft.Office.Interop.PowerPoint;
-using PowerPointLabs.Models;
-using PowerPointLabs.Utils;
 
 namespace PowerPointLabs.ResizeLab
 {
@@ -155,7 +140,7 @@ namespace PowerPointLabs.ResizeLab
 
             if (selectedShapes != null)
             {
-                _resizeLab.FitToHight(selectedShapes, slideWidth, slideHeight, IsAspectRatioLocked);
+                _resizeLab.FitToHeight(selectedShapes, slideWidth, slideHeight, IsAspectRatioLocked);
             }
         }
 
@@ -190,12 +175,12 @@ namespace PowerPointLabs.ResizeLab
         private void RestoreAspectRatioBtn_Click(object sender, RoutedEventArgs e)
         {
             PowerPoint.ShapeRange selectedShapes = GetSelectedShapes();
-            var slideHight = this.GetCurrentPresentation().SlideHeight;
+            var slideHeight = this.GetCurrentPresentation().SlideHeight;
             var slideWidth = this.GetCurrentPresentation().SlideWidth;
 
             if (selectedShapes != null)
             {
-                _resizeLab.RestoreAspectRatio(selectedShapes, slideHight, slideWidth);
+                _resizeLab.RestoreAspectRatio(selectedShapes, slideHeight, slideWidth);
             }
         }
 
