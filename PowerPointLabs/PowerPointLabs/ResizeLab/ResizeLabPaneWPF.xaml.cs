@@ -251,6 +251,45 @@ namespace PowerPointLabs.ResizeLab
             Reset();
         }
 
+        private void SameWidthBtn_MouseEnter(object sender, MouseEventArgs e)
+        {
+            var selectedShapes = GetSelectedShapes(false);
+            var resizeAction = new SingleInputResizeAction(shapes => _resizeLab.ResizeToSameWidth);
+
+            Preview(selectedShapes, resizeAction);
+        }
+
+        private void SameWidthBtn_MouseLeave(object sender, MouseEventArgs e)
+        {
+            Reset();
+        }
+
+        private void SameHeightBtn_MouseEnter(object sender, MouseEventArgs e)
+        {
+            var selectedShapes = GetSelectedShapes(false);
+            var resizeAction = new SingleInputResizeAction(shapes => _resizeLab.ResizeToSameHeight);
+
+            Preview(selectedShapes, resizeAction);
+        }
+
+        private void SameHeightBtn_MouseLeave(object sender, MouseEventArgs e)
+        {
+            Reset();
+        }
+
+        private void SameSizeBtn_MouseEnter(object sender, MouseEventArgs e)
+        {
+            var selectedShapes = GetSelectedShapes(false);
+            var resizeAction = new SingleInputResizeAction(shapes => _resizeLab.ResizeToSameHeightAndWidth);
+
+            Preview(selectedShapes, resizeAction);
+        }
+
+        private void SameSizeBtn_MouseLeave(object sender, MouseEventArgs e)
+        {
+            Reset();
+        }
+
         #endregion
 
         #region Helper Functions

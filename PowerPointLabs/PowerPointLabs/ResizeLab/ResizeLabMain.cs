@@ -62,7 +62,7 @@ namespace PowerPointLabs.ResizeLab
         /// <param name="selection"></param>
         /// <param name="handleError"></param>
         /// <returns></returns>
-        internal bool IsSelecionValid(PowerPoint.Selection selection, bool handleError)
+        internal bool IsSelecionValid(PowerPoint.Selection selection, bool handleError = true)
         {
             try
             {
@@ -87,8 +87,9 @@ namespace PowerPointLabs.ResizeLab
         /// Check if the number of shape is more than one.
         /// </summary>
         /// <param name="selectedShapes"></param>
+        /// <param name="handleError"></param>
         /// <returns></returns>
-        private bool IsMoreThanOneShape(PowerPoint.ShapeRange selectedShapes)
+        private bool IsMoreThanOneShape(PowerPoint.ShapeRange selectedShapes, bool handleError = true)
         {
             try
             {
@@ -101,7 +102,10 @@ namespace PowerPointLabs.ResizeLab
             }
             catch (Exception e)
             {
-                ProcessErrorMessage(e);
+                if (handleError)
+                {
+                    ProcessErrorMessage(e);
+                }
                 return false;
             }
         }

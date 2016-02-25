@@ -60,9 +60,9 @@
                         <ColumnDefinition Width="1*" />
                         <ColumnDefinition Width="1*" />
                     </Grid.ColumnDefinitions>
-                    <cc:ImageButton x:Name="SameWidthBtn" Text="Width" Grid.Column="0" Margin="3,3,3,3" Click="SameWidthBtn_Click" Width="{Binding ElementName=StretchLeftBtn, Path=ActualHeight}" Image="../Resources/ResizeLab/ResizeSameWidth.png" ToolTip="Resize selected objects to match the width of the first object selected"/>
-                    <cc:ImageButton x:Name="SameHeightBtn" Text="Height" Grid.Column="1" Margin="3,3,3,3" Width="{Binding ElementName=StretchLeftBtn, Path=ActualHeight}" Image="../Resources/ResizeLab/ResizeSameHeight.png" Click="SameHeightBtn_Click" ToolTip="Resize selected objects to match the height of the first object selected"/>
-                    <cc:ImageButton x:Name="SameSizeBtn" Text="Size" Grid.Column="2" Margin="3,3,3,3" Click="SameSizeBtn_Click" Width="{Binding ElementName=StretchLeftBtn, Path=ActualHeight}" Image="../Resources/ResizeLab/ResizeSameSize.png" ToolTip="Resize selected objects to match the size of the first object selected"/>
+                    <cc:ImageButton x:Name="SameWidthBtn" Text="Width" Grid.Column="0" Margin="3,3,3,3" Click="SameWidthBtn_Click" Width="{Binding ElementName=StretchLeftBtn, Path=ActualHeight}" Image="../Resources/ResizeLab/ResizeSameWidth.png" ToolTip="Resize selected objects to match the width of the first object selected" MouseEnter="SameWidthBtn_MouseEnter" MouseLeave="SameWidthBtn_MouseLeave"/>
+                    <cc:ImageButton x:Name="SameHeightBtn" Text="Height" Grid.Column="1" Margin="3,3,3,3" Width="{Binding ElementName=StretchLeftBtn, Path=ActualHeight}" Image="../Resources/ResizeLab/ResizeSameHeight.png" Click="SameHeightBtn_Click" ToolTip="Resize selected objects to match the height of the first object selected" MouseEnter="SameHeightBtn_MouseEnter" MouseLeave="SameHeightBtn_MouseLeave"/>
+                    <cc:ImageButton x:Name="SameSizeBtn" Text="Size" Grid.Column="2" Margin="3,3,3,3" Click="SameSizeBtn_Click" Width="{Binding ElementName=StretchLeftBtn, Path=ActualHeight}" Image="../Resources/ResizeLab/ResizeSameSize.png" ToolTip="Resize selected objects to match the size of the first object selected" MouseEnter="SameSizeBtn_MouseEnter" MouseLeave="SameSizeBtn_MouseLeave"/>
                 </Grid>
             </GroupBox>
             <GroupBox x:Name="FitGroupBox" Header="Fit" Grid.Row="2" VerticalAlignment="Stretch" HorizontalAlignment="Stretch">
