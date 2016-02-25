@@ -567,7 +567,6 @@ namespace PowerPointLabs.PositionsLab
 
             if (refPoint != null)
             {
-                refPoint.Delete();
                 refPoint = null;
             }
 
