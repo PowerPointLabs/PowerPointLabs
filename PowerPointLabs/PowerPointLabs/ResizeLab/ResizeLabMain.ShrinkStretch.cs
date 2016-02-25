@@ -50,10 +50,7 @@ namespace PowerPointLabs.ResizeLab
                 }
                 return StretchLeftAction;
             });
-            var defaultReferenceEdge = new GetDefaultReferenceEdge(referenceShape =>
-            {
-                return referenceShape.Left;
-            });
+            var defaultReferenceEdge = new GetDefaultReferenceEdge(referenceShape => referenceShape.Left);
             Stretch(stretchShapes, appropriateStretch, defaultReferenceEdge);
         }
 
@@ -72,10 +69,7 @@ namespace PowerPointLabs.ResizeLab
                 }
                 return StretchRightAction;
             });
-            var defaultReferenceEdge = new GetDefaultReferenceEdge(referenceShape =>
-            {
-                return referenceShape.Left + referenceShape.AbsoluteWidth;
-            });
+            var defaultReferenceEdge = new GetDefaultReferenceEdge(referenceShape => referenceShape.Left + referenceShape.AbsoluteWidth);
             Stretch(stretchShapes, appropriateStretch, defaultReferenceEdge);
         }
 
@@ -94,10 +88,7 @@ namespace PowerPointLabs.ResizeLab
                 }
                 return StretchTopAction;
             });
-            var defaultReferenceEdge = new GetDefaultReferenceEdge(referenceShape =>
-            {
-                return referenceShape.Top;
-            });
+            var defaultReferenceEdge = new GetDefaultReferenceEdge(referenceShape => referenceShape.Top);
             Stretch(stretchShapes, appropriateStretch, defaultReferenceEdge);
         }
 
@@ -116,10 +107,7 @@ namespace PowerPointLabs.ResizeLab
                 }
                 return StretchBottomAction;
             });
-            var defaultReferenceEdge = new GetDefaultReferenceEdge(referenceShape =>
-            {
-                return referenceShape.Top + referenceShape.AbsoluteHeight;
-            });
+            var defaultReferenceEdge = new GetDefaultReferenceEdge(referenceShape => referenceShape.Top + referenceShape.AbsoluteHeight);
             Stretch(stretchShapes, appropriateStretch, defaultReferenceEdge);
         }
 
