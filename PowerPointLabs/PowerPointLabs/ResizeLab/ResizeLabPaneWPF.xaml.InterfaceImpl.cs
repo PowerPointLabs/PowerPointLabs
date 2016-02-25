@@ -23,12 +23,9 @@ namespace PowerPointLabs.ResizeLab
         {
             if (selectedShapes == null) return;
 
-            var duplicatedShapes = selectedShapes.Duplicate();
             var action = previewAction(selectedShapes);
 
-            SetOriginalTopLeft(selectedShapes, duplicatedShapes);
-            StoreOriginalShapes(duplicatedShapes);
-
+            StoreOriginalShapesProperties(selectedShapes);
             action(selectedShapes);
         }
 
@@ -37,52 +34,31 @@ namespace PowerPointLabs.ResizeLab
         {
             if (selectedShapes == null) return;
 
-            var duplicatedShapes = selectedShapes.Duplicate();
             var action = previewAction(selectedShapes, slideWidth, slideHeight, IsAspectRatioLocked);
 
-            SetOriginalTopLeft(selectedShapes, duplicatedShapes);
-            StoreOriginalShapes(duplicatedShapes);
-
+            StoreOriginalShapesProperties(selectedShapes);
             action(selectedShapes, slideWidth, slideHeight, IsAspectRatioLocked);
         }
 
         public void Reset()
         {
             var selectedShapes = GetSelectedShapes(false);
+
             if (selectedShapes != null)
             {
-                _resizeLab.ResetShapes(selectedShapes, _originalShapes);
+                _resizeLab.ResetShapes(selectedShapes, _originalShapeProperties);
             }
         }
 
-        /// <summary>
-        /// As the properties of top and left does not maintain after duplication,
-        /// this method enforces the same properties of top and left.
-        /// </summary>
-        /// <param name="selectedShapes"></param>
-        /// <param name="duplicatedShapes"></param>
-        private static void SetOriginalTopLeft(PowerPoint.ShapeRange selectedShapes, PowerPoint.ShapeRange duplicatedShapes)
+        private void StoreOriginalShapesProperties(PowerPoint.ShapeRange selectedShapes)
         {
-            for (int i = 1; i <= selectedShapes.Count; i++)
-            {
-                duplicatedShapes[i].Top = selectedShapes[i].Top;
-                duplicatedShapes[i].Left = selectedShapes[i].Left;
-            }
-        }
-
-        /// <summary>
-        /// Store the properties of the original shapes to the dictionary.
-        /// </summary>
-        /// <param name="selectedShapes"></param>
-        private void StoreOriginalShapes(PowerPoint.ShapeRange selectedShapes)
-        {
-            _originalShapes.Clear();
+            _originalShapeProperties.Clear();
 
             for (int i = 1; i <= selectedShapes.Count; i++)
             {
                 var shape = selectedShapes[i];
-                var shapeName = shape.Name;
-                _originalShapes.Add(shapeName, shape);
+                var properties = new ShapeProperties(shape.Name, shape.Top, shape.Left, shape.Width, shape.Height);
+                _originalShapeProperties.Add(shape.Name, properties);
             }
         }
     }

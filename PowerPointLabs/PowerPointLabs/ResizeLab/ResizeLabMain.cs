@@ -38,21 +38,22 @@ namespace PowerPointLabs.ResizeLab
         /// Reset the shapes to their original properties.
         /// </summary>
         /// <param name="selectedShapes"></param>
-        /// <param name="originalShapes"></param>
-        public void ResetShapes(PowerPoint.ShapeRange selectedShapes, Dictionary<string, PowerPoint.Shape> originalShapes)
+        /// <param name="originalShapeProperties"></param>
+        public void ResetShapes(PowerPoint.ShapeRange selectedShapes,
+            Dictionary<string, ShapeProperties> originalShapeProperties)
         {
             for (int i = 1; i <= selectedShapes.Count; i++)
             {
                 var shape = selectedShapes[i];
                 var shapeName = shape.Name;
 
-                if (!originalShapes.ContainsKey(shapeName)) continue;
+                if (!originalShapeProperties.ContainsKey(shapeName)) continue;
 
-                var originalShape = originalShapes[shapeName];
-                shape.Height = originalShape.Height;
-                shape.Width = originalShape.Width;
-                shape.Top = originalShape.Top;
-                shape.Left = originalShape.Left;
+                var originalProperties = originalShapeProperties[shapeName];
+                shape.Width = originalProperties.Width;
+                shape.Height = originalProperties.Height;
+                shape.Top = originalProperties.Top;
+                shape.Left = originalProperties.Left;
             }
         }
 
