@@ -56,26 +56,26 @@ namespace PowerPointLabs.ResizeLab
 
         private void StretchRightBtn_Click(object sender, RoutedEventArgs e)
         {
-            var selectedShape = GetSelectedShapes();
+            var selectedShapes = GetSelectedShapes();
             var resizeAction = new ResizeAction(shapes => _resizeLab.StretchRight);
 
-            ExecuteResizeAction(selectedShape, resizeAction);
+            ExecuteResizeAction(selectedShapes, resizeAction);
         }
 
         private void StretchTopBtn_Click(object sender, RoutedEventArgs e)
         {
-            var selectedShape = GetSelectedShapes();
+            var selectedShapes = GetSelectedShapes();
             var resizeAction = new ResizeAction(shapes => _resizeLab.StretchTop);
 
-            ExecuteResizeAction(selectedShape, resizeAction);
+            ExecuteResizeAction(selectedShapes, resizeAction);
         }
 
         private void StretchBottomBtn_Click(object sender, RoutedEventArgs e)
         {
-            var selectedShape = GetSelectedShapes();
+            var selectedShapes = GetSelectedShapes();
             var resizeAction = new ResizeAction(shapes => _resizeLab.StretchBottom);
 
-            ExecuteResizeAction(selectedShape, resizeAction);
+            ExecuteResizeAction(selectedShapes, resizeAction);
         }
 
         #endregion
@@ -84,32 +84,26 @@ namespace PowerPointLabs.ResizeLab
 
         private void SameWidthBtn_Click(object sender, RoutedEventArgs e)
         {
-            PowerPoint.ShapeRange selectedShapes = GetSelectedShapes();
+            var selectedShapes = GetSelectedShapes();
+            var resizeAction = new ResizeAction(shapes => _resizeLab.ResizeToSameWidth);
 
-            if (selectedShapes != null)
-            {
-                _resizeLab.ResizeToSameWidth(selectedShapes);
-            }
+            ExecuteResizeAction(selectedShapes, resizeAction);
         }
 
         private void SameHeightBtn_Click(object sender, RoutedEventArgs e)
         {
-            PowerPoint.ShapeRange selectedShapes = GetSelectedShapes();
+            var selectedShapes = GetSelectedShapes();
+            var resizeAction = new ResizeAction(shapes => _resizeLab.ResizeToSameHeight);
 
-            if (selectedShapes != null)
-            {
-                _resizeLab.ResizeToSameHeight(selectedShapes);
-            }
+            ExecuteResizeAction(selectedShapes, resizeAction);
         }
 
         private void SameSizeBtn_Click(object sender, RoutedEventArgs e)
         {
-            PowerPoint.ShapeRange selectedShapes = GetSelectedShapes();
+            var selectedShapes = GetSelectedShapes();
+            var resizeAction = new ResizeAction(shapes => _resizeLab.ResizeToSameHeightAndWidth);
 
-            if (selectedShapes != null)
-            {
-                _resizeLab.ResizeToSameHeightAndWidth(selectedShapes);
-            }
+            ExecuteResizeAction(selectedShapes, resizeAction);
         }
 
         #endregion
@@ -117,37 +111,43 @@ namespace PowerPointLabs.ResizeLab
         #region Event Handler: Fit
         private void FitWidthBtn_Click(object sender, RoutedEventArgs e)
         {
-            PowerPoint.ShapeRange selectedShapes = GetSelectedShapes();
+            var selectedShapes = GetSelectedShapes();
             var slideWidth = this.GetCurrentPresentation().SlideWidth;
             var slideHeight = this.GetCurrentPresentation().SlideHeight;
 
             if (selectedShapes != null)
             {
+                Reset();
                 _resizeLab.FitToWidth(selectedShapes, slideWidth, slideHeight, IsAspectRatioLocked);
+                CleanOriginalShapes();
             }
         }
 
         private void FitHeightBtn_Click(object sender, RoutedEventArgs e)
         {
-            PowerPoint.ShapeRange selectedShapes = GetSelectedShapes();
+            var selectedShapes = GetSelectedShapes();
             var slideWidth = this.GetCurrentPresentation().SlideWidth;
             var slideHeight = this.GetCurrentPresentation().SlideHeight;
 
             if (selectedShapes != null)
             {
+                Reset();
                 _resizeLab.FitToHeight(selectedShapes, slideWidth, slideHeight, IsAspectRatioLocked);
+                CleanOriginalShapes();
             }
         }
 
         private void FillBtn_Click(object sender, RoutedEventArgs e)
         {
-            PowerPoint.ShapeRange selectedShapes = GetSelectedShapes();
+            var selectedShapes = GetSelectedShapes();
             var slideWidth = this.GetCurrentPresentation().SlideWidth;
             var slideHeight = this.GetCurrentPresentation().SlideHeight;
 
             if (selectedShapes != null)
             {
+                Reset();
                 _resizeLab.FitToFill(selectedShapes, slideWidth, slideHeight, IsAspectRatioLocked);
+                CleanOriginalShapes();
             }
         }
 
