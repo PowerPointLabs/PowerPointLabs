@@ -33,13 +33,14 @@ namespace PowerPointLabs.ResizeLab
         private const string LockAspectRatioToolTip = "Locks the aspect ratio of objects when performing resizing of objects";
         private readonly Bitmap _unlockedImage;
         private readonly Bitmap _lockedImage;
+        private Dictionary<string, PowerPoint.Shape> _originalShapes = new Dictionary<string, PowerPoint.Shape>();
 
         public ResizeLabPaneWPF()
         {
             InitializeComponent();
             InitialiseLogicInstance();
-            _unlockedImage = new Bitmap(PowerPointLabs.Properties.Resources.ResizeUnlock);
-            _lockedImage = new Bitmap(PowerPointLabs.Properties.Resources.ResizeLock);
+            _unlockedImage = new Bitmap(Properties.Resources.ResizeUnlock);
+            _lockedImage = new Bitmap(Properties.Resources.ResizeLock);
             UnlockAspectRatio();
         }
 
@@ -60,42 +61,34 @@ namespace PowerPointLabs.ResizeLab
 
         private void StretchLeftBtn_Click(object sender, RoutedEventArgs e)
         {
-            PowerPoint.ShapeRange selectedShape = GetSelectedShapes();
+            var selectedShape = GetSelectedShapes();
+            var resizeAction = new ResizeAction(shapes => _resizeLab.StretchLeft);
 
-            if (selectedShape != null)
-            {
-                _resizeLab.StretchLeft(selectedShape);
-            }
+            ExecuteResizeAction(selectedShape, resizeAction);
         }
 
         private void StretchRightBtn_Click(object sender, RoutedEventArgs e)
         {
-            PowerPoint.ShapeRange selectedShape = GetSelectedShapes();
+            var selectedShape = GetSelectedShapes();
+            var resizeAction = new ResizeAction(shapes => _resizeLab.StretchRight);
 
-            if (selectedShape != null)
-            {
-                _resizeLab.StretchRight(selectedShape);
-            }
+            ExecuteResizeAction(selectedShape, resizeAction);
         }
 
         private void StretchTopBtn_Click(object sender, RoutedEventArgs e)
         {
-            PowerPoint.ShapeRange selectedShape = GetSelectedShapes();
+            var selectedShape = GetSelectedShapes();
+            var resizeAction = new ResizeAction(shapes => _resizeLab.StretchTop);
 
-            if (selectedShape != null)
-            {
-                _resizeLab.StretchTop(selectedShape);
-            }
+            ExecuteResizeAction(selectedShape, resizeAction);
         }
 
         private void StretchBottomBtn_Click(object sender, RoutedEventArgs e)
         {
-            PowerPoint.ShapeRange selectedShape = GetSelectedShapes();
+            var selectedShape = GetSelectedShapes();
+            var resizeAction = new ResizeAction(shapes => _resizeLab.StretchBottom);
 
-            if (selectedShape != null)
-            {
-                _resizeLab.StretchBottom(selectedShape);
-            }
+            ExecuteResizeAction(selectedShape, resizeAction);
         }
 
         #endregion
@@ -229,19 +222,69 @@ namespace PowerPointLabs.ResizeLab
 
         #endregion
 
+        #region Event Handler: Preview
+
+        private void StretchLeftBtn_MouseEnter(object sender, MouseEventArgs e)
+        {
+            var selectedShapes = GetSelectedShapes(false);
+            var resizeAction = new ResizeAction(shapes => _resizeLab.StretchLeft);
+
+            Preview(selectedShapes, resizeAction);
+        }
+
+        private void StretchLeftBtn_MouseLeave(object sender, MouseEventArgs e)
+        {
+            Reset();
+        }
+
+        private void StretchRightBtn_MouseEnter(object sender, MouseEventArgs e)
+        {
+            var selectedShapes = GetSelectedShapes(false);
+            var resizeAction = new ResizeAction(shapes => _resizeLab.StretchRight);
+
+            Preview(selectedShapes, resizeAction);
+        }
+
+        private void StretchRightBtn_MouseLeave(object sender, MouseEventArgs e)
+        {
+            Reset();
+        }
+
+        #endregion
+
         #region Helper Functions
 
-        private PowerPoint.ShapeRange GetSelectedShapes()
+        private void ExecuteResizeAction(PowerPoint.ShapeRange selectedShapes, ResizeAction resizeAction)
+        {
+            if (selectedShapes == null) return;
+
+            var action = resizeAction(selectedShapes);
+
+            Reset();
+            action(selectedShapes);
+            CleanOriginalShapes();
+        }
+
+        private PowerPoint.ShapeRange GetSelectedShapes(bool handleError = true)
         {
             var selection = GetSelection();
-            return _resizeLab.IsSelecionValid(selection, true) ? GetSelection().ShapeRange : null;
+
+            return _resizeLab.IsSelecionValid(selection, handleError) ? GetSelection().ShapeRange : null;
         }
 
         private PowerPoint.Selection GetSelection()
         {
             return this.GetCurrentSelection();
         }
-        #endregion
 
+        private void CleanOriginalShapes()
+        {
+            _originalShapes.Clear();
+        }
+
+        private void DoNothing(PowerPoint.ShapeRange selectedShapes) { }
+
+
+        #endregion
     }
 }

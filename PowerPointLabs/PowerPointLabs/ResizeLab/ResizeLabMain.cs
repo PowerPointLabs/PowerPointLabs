@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
 using System.Windows;
@@ -31,6 +32,28 @@ namespace PowerPointLabs.ResizeLab
             Height,
             Width,
             HeightAndWidth
+        }
+
+        /// <summary>
+        /// Reset the shapes to their original properties.
+        /// </summary>
+        /// <param name="selectedShapes"></param>
+        /// <param name="originalShapes"></param>
+        public void ResetShapes(PowerPoint.ShapeRange selectedShapes, Dictionary<string, PowerPoint.Shape> originalShapes)
+        {
+            for (int i = 1; i <= selectedShapes.Count; i++)
+            {
+                var shape = selectedShapes[i];
+                var shapeName = shape.Name;
+
+                if (!originalShapes.ContainsKey(shapeName)) continue;
+
+                var originalShape = originalShapes[shapeName];
+                shape.Height = originalShape.Height;
+                shape.Width = originalShape.Width;
+                shape.Top = originalShape.Top;
+                shape.Left = originalShape.Left;
+            }
         }
 
         /// <summary>
