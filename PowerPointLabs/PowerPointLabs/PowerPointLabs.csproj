@@ -127,7 +127,8 @@
     <Prefer32Bit>false</Prefer32Bit>
     <CodeAnalysisRuleSet>ExtendedDesignGuidelineRules.ruleset</CodeAnalysisRuleSet>
     <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
-    <NoWarn>618</NoWarn>
+    <NoWarn>
+    </NoWarn>
   </PropertyGroup>
   <!--
     This section defines properties that are set when the "Release" configuration is selected.
