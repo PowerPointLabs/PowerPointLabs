@@ -245,10 +245,10 @@ namespace PowerPointLabs.PositionsLab
                     return;
                 }
 
-                Shape refShape = selectedShapes[1];
+                Shape refShape = selectedShapes[0];
                 Drawing.PointF originRef = Graphics.GetCenterPoint(refShape);
 
-                for (int i = 2; i <= selectedShapes.Count; i++)
+                for (int i = 1; i < selectedShapes.Count; i++)
                 {
                     Shape s = selectedShapes[i];
                     Drawing.PointF origin = Graphics.GetCenterPoint(s);
