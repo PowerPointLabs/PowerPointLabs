@@ -78,7 +78,6 @@ namespace PowerPointLabs.ResizeLab
             catch (Exception e)
             {
                 Logger.LogException(e, "ResizeShapes");
-                throw;
             }
         }
 

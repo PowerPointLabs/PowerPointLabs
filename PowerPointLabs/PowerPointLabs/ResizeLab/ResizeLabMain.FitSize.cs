@@ -1,6 +1,5 @@
 ﻿using System;
 using PowerPointLabs.ActionFramework.Common.Log;
-using PowerPointLabs.Models;
 using PowerPointLabs.Utils;
 using PowerPoint = Microsoft.Office.Interop.PowerPoint;
 
@@ -19,11 +18,11 @@ namespace PowerPointLabs.ResizeLab
         /// <param name="slideHeight"></param>
         /// <param name="isAspectRatio"></param>
         /// <param name="slideWidth"></param>
-        public void FitToHight(PowerPoint.ShapeRange selectedShapes, float slideWidth, float slideHeight, bool isAspectRatio)
+        public void FitToHeight(PowerPoint.ShapeRange selectedShapes, float slideWidth, float slideHeight, bool isAspectRatio)
         {
             if (isAspectRatio)
             {
-                FitAspectRatioShapes(selectedShapes, Dimension.Height);
+                FitAspectRatioShapes(selectedShapes, Dimension.Height, slideWidth, slideHeight);
             }
             else
             {
@@ -42,7 +41,7 @@ namespace PowerPointLabs.ResizeLab
         {
             if (isAspectRatio)
             {
-                FitAspectRatioShapes(selectedShapes, Dimension.Width);
+                FitAspectRatioShapes(selectedShapes, Dimension.Width, slideWidth, slideHeight);
             }
             else
             {
@@ -61,7 +60,7 @@ namespace PowerPointLabs.ResizeLab
         {
             if (isAspectRatio)
             {
-                FitAspectRatioShapes(selectedShapes, Dimension.HeightAndWidth);
+                FitAspectRatioShapes(selectedShapes, Dimension.HeightAndWidth, slideWidth, slideHeight);
             }
             else
             {
@@ -100,7 +99,6 @@ namespace PowerPointLabs.ResizeLab
             catch (Exception e)
             {
                 Logger.LogException(e, "FitFreeShapes");
-                throw;
             }
         }
 
@@ -109,12 +107,12 @@ namespace PowerPointLabs.ResizeLab
         /// </summary>
         /// <param name="selectedShapes"></param>
         /// <param name="dimension"></param>
-        private void FitAspectRatioShapes(PowerPoint.ShapeRange selectedShapes, Dimension dimension)
+        /// <param name="slideWidth"></param>
+        /// <param name="slideHeight"></param>
+        private void FitAspectRatioShapes(PowerPoint.ShapeRange selectedShapes, Dimension dimension, float slideWidth, float slideHeight)
         {
             try
             {
-                var slideHight = PowerPointPresentation.Current.SlideHeight;
-                var slideWidth = PowerPointPresentation.Current.SlideWidth;
 
                 for (int i = 1; i <= selectedShapes.Count; i++)
                 {
@@ -122,22 +120,21 @@ namespace PowerPointLabs.ResizeLab
 
                     if (dimension == Dimension.Height)
                     {
-                        FitToSlide.FitToHeight(shape, slideWidth, slideHight);
+                        FitToSlide.FitToHeight(shape, slideWidth, slideHeight);
                     }
                     else if (dimension == Dimension.Width)
                     {
-                        FitToSlide.FitToWidth(shape, slideWidth, slideHight);
+                        FitToSlide.FitToWidth(shape, slideWidth, slideHeight);
                     }
                     else if (dimension == Dimension.HeightAndWidth)
                     {
-                        FitToSlide.AutoFit(shape, slideWidth, slideHight);
+                        FitToSlide.AutoFit(shape, slideWidth, slideHeight);
                     }
                 }
             }
             catch (Exception e)
             {
                 Logger.LogException(e, "FitAspectRatioShapes");
-                throw;
             }
         }
     }

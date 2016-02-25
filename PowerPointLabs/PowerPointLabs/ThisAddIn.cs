@@ -643,17 +643,6 @@ namespace PowerPointLabs
                 TextCollection.ShapesLabTaskPanelTitle, activeWindow, null, null);
         }
 
-        public void RegisterPositionsPane(PowerPoint.Presentation presentation)
-        {
-            if (GetActivePane(typeof(PositionsPane)) != null)
-            {
-                return;
-            }
-            var activeWindow = presentation.Application.ActiveWindow;
-
-            RegisterTaskPane(new PositionsPane(), TextCollection.PositionsLabTaskPanelTitle, activeWindow, null, null);
-        }
-
         public void SyncShapeAdd(string shapeName, string shapeFullName, string category)
         {
             foreach (PowerPoint.DocumentWindow window in Globals.ThisAddIn.Application.Windows)

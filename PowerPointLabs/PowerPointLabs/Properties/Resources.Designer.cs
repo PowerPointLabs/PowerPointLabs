@@ -683,6 +683,16 @@ namespace PowerPointLabs.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
+        public static System.Drawing.Bitmap PositionsLab {
+            get {
+                object obj = ResourceManager.GetObject("PositionsLab", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
         public static System.Drawing.Bitmap PptlabsContextMenu {
             get {
                 object obj = ResourceManager.GetObject("PptlabsContextMenu", resourceCulture);
@@ -816,6 +826,16 @@ namespace PowerPointLabs.Properties {
         public static System.Drawing.Bitmap ResizeFitToWidth {
             get {
                 object obj = ResourceManager.GetObject("ResizeFitToWidth", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        public static System.Drawing.Bitmap ResizeLab {
+            get {
+                object obj = ResourceManager.GetObject("ResizeLab", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }

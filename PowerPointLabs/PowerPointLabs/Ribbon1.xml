@@ -316,17 +316,18 @@
                   onAction="DrawingsLabButtonClick"/>
           <button id="PositionsLabButton"
                   visible="true"
-                  getLabel="GetPositionsLabButtonLabel"
+                  getLabel="GetLabel"
                   size="large"
-                  getImage="GetPositionsLabImage"
-                  getSupertip="GetPositionsLabSupertip"
-                  onAction="PositionsLabButtonClick"/>
+                  getImage="GetImage"
+                  getSupertip="GetSupertip"
+                  onAction="OnAction"/>
           <button id="ResizeLabButton"
                   visible="true"
-                  getLabel="GetResizeLabButtonLabel"
+                  getLabel="GetLabel"
                   size="large"
-                  getSupertip="GetResizeLabButtonSupertip"
-                  onAction="ResizeLabButtonClick"/>
+                  getImage="GetImage"
+                  getSupertip="GetSupertip"
+                  onAction="OnAction"/>
         </group>
         <group id="PPTLabsHelp"
                getLabel="GetPPTLabsHelpGroupLabel"
