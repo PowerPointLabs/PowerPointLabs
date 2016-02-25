@@ -100,7 +100,6 @@ namespace PowerPointLabs.ResizeLab
             catch (Exception e)
             {
                 Logger.LogException(e, "FitFreeShapes");
-                throw;
             }
         }
 
@@ -137,7 +136,6 @@ namespace PowerPointLabs.ResizeLab
             catch (Exception e)
             {
                 Logger.LogException(e, "FitAspectRatioShapes");
-                throw;
             }
         }
     }

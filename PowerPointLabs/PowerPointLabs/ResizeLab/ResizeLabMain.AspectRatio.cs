@@ -31,7 +31,6 @@ namespace PowerPointLabs.ResizeLab
             catch (Exception e) 
             {
                 Logger.LogException(e, "ChangeShapesAspectRatio");
-                throw;
             }
         }
 
@@ -73,7 +72,6 @@ namespace PowerPointLabs.ResizeLab
             catch (Exception e)
             {
                 Logger.LogException(e, "RestoreAspectRatio");
-                throw;
             }
         }
 
