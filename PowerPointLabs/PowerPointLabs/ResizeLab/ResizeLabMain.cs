@@ -37,6 +37,7 @@ namespace PowerPointLabs.ResizeLab
         /// Check if the selection is of shape type.
         /// </summary>
         /// <param name="selection"></param>
+        /// <param name="handleError"></param>
         /// <returns></returns>
         internal bool IsSelecionValid(PowerPoint.Selection selection, bool handleError)
         {
