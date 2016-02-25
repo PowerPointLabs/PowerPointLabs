@@ -14,6 +14,7 @@ using System.IO.Compression;
 using System.Runtime.Remoting;
 using System.Runtime.Remoting.Channels;
 using System.Runtime.Remoting.Channels.Ipc;
+using PowerPointLabs.ActionFramework.Common.Log;
 using PowerPointLabs.FunctionalTestInterface.Impl;
 using PowerPointLabs.FunctionalTestInterface.Impl.Controller;
 using PowerPointLabs.Models;
@@ -29,7 +30,8 @@ namespace PowerPointLabs
 {
     public partial class ThisAddIn
     {
-        private const string AppLogName = "PowerPointLabs_Log_1.log";
+#pragma warning disable 0618
+        private const string AppLogName = "PowerPointLabs.log"; 
         private const string SlideXmlSearchPattern = @"slide(\d+)\.xml";
         private const string TempFolderNamePrefix = @"\PowerPointLabs Temp\";
         private const string ShapeGalleryPptxName = "ShapeGallery";
@@ -79,7 +81,7 @@ namespace PowerPointLabs
         private void ThisAddInStartup(object sender, EventArgs e)
         {
             SetupLogger();
-            Trace.TraceInformation(DateTime.Now.ToString("yyyyMMddHHmmss") + ": PowerPointLabs Started");
+            Logger.Log("PowerPointLabs Started");
 
             CultureUtil.SetDefaultCulture(CultureInfo.GetCultureInfo("en-US"));
 
@@ -366,7 +368,7 @@ namespace PowerPointLabs
             }
 
             // for Functional Test to close presentation
-            if (PowerPointCurrentPresentationInfo.IsInFunctionalTest)
+            if (PowerPointLabsFT.IsFunctionalTestOn)
             {
                 var handle = Native.FindWindow("PPTFrameClass", pres.Name + " - Microsoft PowerPoint");
                 Native.SetForegroundWindow(handle);
@@ -639,17 +641,6 @@ namespace PowerPointLabs
             RegisterTaskPane(
                 new CustomShapePane(ShapesLabConfigs.ShapeRootFolder, ShapesLabConfigs.DefaultCategory),
                 TextCollection.ShapesLabTaskPanelTitle, activeWindow, null, null);
-        }
-
-        public void RegisterPositionsPane(PowerPoint.Presentation presentation)
-        {
-            if (GetActivePane(typeof(PositionsPane)) != null)
-            {
-                return;
-            }
-            var activeWindow = presentation.Application.ActiveWindow;
-
-            RegisterTaskPane(new PositionsPane(), TextCollection.PositionsLabTaskPanelTitle, activeWindow, null, null);
         }
 
         public void SyncShapeAdd(string shapeName, string shapeFullName, string category)

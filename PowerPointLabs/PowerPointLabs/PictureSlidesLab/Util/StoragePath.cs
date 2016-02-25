@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.IO;
 using System.Xml.Serialization;
+using PowerPointLabs.ActionFramework.Common.Log;
 using PowerPointLabs.PictureSlidesLab.Model;
 using PowerPointLabs.Properties;
 using PowerPointLabs.Views;
@@ -12,6 +13,7 @@ namespace PowerPointLabs.PictureSlidesLab.Util
     public class StoragePath
     {
         private const string PictureSlidesLabImagesList = "PictureSlidesLabImagesList";
+        private const string PictureSlidesLabSettings = "PictureSlidesLabSettings";
 
         public static string AggregatedFolder = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments) + @"\" + "pptlabs_pictureSlidesLab" + @"\";
 
@@ -68,6 +70,7 @@ namespace PowerPointLabs.PictureSlidesLab.Util
             try
             {
                 filesInUse.Add(AggregatedFolder + PictureSlidesLabImagesList);
+                filesInUse.Add(AggregatedFolder + PictureSlidesLabSettings);
                 filesInUse.Add(LoadingImgPath);
                 filesInUse.Add(ChoosePicturesImgPath);
                 filesInUse.Add(NoPicturePlaceholderImgPath);
@@ -136,7 +139,28 @@ namespace PowerPointLabs.PictureSlidesLab.Util
             }
             catch (Exception e)
             {
-                PowerPointLabsGlobals.Log("Failed to save Picture Slides Lab settings: " + e.StackTrace, "Error");
+                Logger.LogException(e, "Failed to save Picture Slides Lab images list");
+            }
+        }
+        
+        /// <summary>
+        /// Save PSL settings
+        /// </summary>
+        /// <param name="settings"></param>
+        public static void Save(Model.Settings settings)
+        {
+            try
+            {
+                using (var writer = new StreamWriter(GetPath(PictureSlidesLabSettings)))
+                {
+                    var serializer = new XmlSerializer(settings.GetType());
+                    serializer.Serialize(writer, settings);
+                    writer.Flush();
+                }
+            }
+            catch (Exception e)
+            {
+                Logger.LogException(e, "Failed to save Picture Slides Lab settings");
             }
         }
 
@@ -144,7 +168,7 @@ namespace PowerPointLabs.PictureSlidesLab.Util
         /// Load images list
         /// </summary>
         /// <returns></returns>
-        public static ObservableCollection<ImageItem> Load()
+        public static ObservableCollection<ImageItem> LoadPictures()
         {
             try
             {
@@ -158,8 +182,31 @@ namespace PowerPointLabs.PictureSlidesLab.Util
             }
             catch (Exception e)
             {
-                PowerPointLabsGlobals.Log("Failed to load Picture Slides Lab settings: " + e.StackTrace, "Error");
+                Logger.LogException(e, "Failed to load Picture Slides Lab images list");
                 return new ObservableCollection<ImageItem>();
+            }
+        }
+
+        /// <summary>
+        /// Load PSL settings
+        /// </summary>
+        /// <returns></returns>
+        public static Model.Settings LoadSettings()
+        {
+            try
+            {
+                using (var stream = File.OpenRead(GetPath(PictureSlidesLabSettings)))
+                {
+                    var serializer = new XmlSerializer(typeof(Model.Settings));
+                    var settings = serializer.Deserialize(stream) as Model.Settings
+                        ?? new Model.Settings();
+                    return settings;
+                }
+            }
+            catch (Exception e)
+            {
+                Logger.LogException(e, "Failed to load Picture Slides Lab settings");
+                return new Model.Settings();
             }
         }
     }

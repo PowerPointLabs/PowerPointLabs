@@ -3,12 +3,14 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Runtime.InteropServices;
+using PowerPointLabs.ActionFramework.Common.Log;
 using PowerPointLabs.Models;
 using Office = Microsoft.Office.Core;
 using PowerPoint = Microsoft.Office.Interop.PowerPoint;
 
 namespace PowerPointLabs
 {
+#pragma warning disable 0618
     class AnimateInSlide
     {
         public static float defaultDuration = 0.5f;
@@ -46,7 +48,7 @@ namespace PowerPointLabs
             }
             catch (Exception e)
             {
-                PowerPointLabsGlobals.LogException(e, "AddAnimationInSlide");
+                Logger.LogException(e, "AddAnimationInSlide");
                 throw;
             }
         }

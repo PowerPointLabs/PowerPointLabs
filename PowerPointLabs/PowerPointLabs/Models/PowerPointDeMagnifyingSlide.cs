@@ -7,6 +7,7 @@ namespace PowerPointLabs.Models
 {
     class PowerPointDeMagnifyingSlide : PowerPointSlide
     {
+#pragma warning disable 0618
         private PowerPoint.Shape indicatorShape = null;
         private PowerPoint.Shape zoomSlideCroppedShapes = null;
         private PowerPointDeMagnifyingSlide(PowerPoint.Slide slide) : base(slide)
@@ -122,7 +123,7 @@ namespace PowerPointLabs.Models
 
             zoomShape.Copy();
             PowerPoint.Shape zoomShapeCopy = _slide.Shapes.Paste()[1];
-            PowerPointLabsGlobals.CopyShapeAttributes(zoomShape, ref zoomShapeCopy);
+            LegacyShapeUtil.CopyShapeAttributes(zoomShape, ref zoomShapeCopy);
 
             Globals.ThisAddIn.Application.ActiveWindow.View.GotoSlide(_slide.SlideIndex);
             zoomSlideCroppedShapes.Select();
@@ -171,7 +172,7 @@ namespace PowerPointLabs.Models
                 zoomSlideCroppedShapes.PictureFormat.CropRight += (PowerPointPresentation.Current.SlideWidth - (zoomShape.Left + zoomShape.Width));
                 zoomSlideCroppedShapes.PictureFormat.CropBottom += (PowerPointPresentation.Current.SlideHeight - (zoomShape.Top + zoomShape.Height));
 
-                PowerPointLabsGlobals.CopyShapePosition(zoomShape, ref zoomSlideCroppedShapes);
+                LegacyShapeUtil.CopyShapePosition(zoomShape, ref zoomSlideCroppedShapes);
             }
         }
 

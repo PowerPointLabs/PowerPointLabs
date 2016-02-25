@@ -119,6 +119,10 @@
         public const string DrawingsLabButtonSupertip = @"Opens the Drawing Lab Interface";
         #endregion
 
+        # region Drawing Lab
+        public const string PositionsLabSupertip = "Open Positions Lab window.";
+        #endregion
+
         #region Resize Lab
         public const string ResizeLabButtonSupertip = "Opens the Resize Lab Interface";
         #endregion
@@ -220,6 +224,10 @@
 
         # region Drawing Lab
         public const string DrawingsLabButtonLabel = "Drawing Lab";
+        # endregion
+
+        # region Positions Lab
+        public const string PositionsLabButtonLabel = "Positions Lab";
         # endregion
 
         # region Resize Lab
@@ -337,7 +345,7 @@
             /// Color category's name (without spaces) should be equal to corresponding style option's 
             /// property name, so that the color picker can work properly
             /// </summary>
-            public const string ColorNoEffect = "No Effect";
+            public const string NoEffect = "No Effect";
             public const string ColorHasEffect = "Color";
             public const string VariantCategoryOverlayColor = "Overlay Color";
             public const string VariantCategoryFontColor = "Font Color";
@@ -406,12 +414,15 @@
                 "Failed to initialize Picture Slides Lab. Please verify that sufficient permissions have been granted by Administrator.";
             public const string ErrorNoEmbeddedStyleInfo =
                 "No Picture Slides Lab styles are detected for the current slide.";
+            public const string ErrorWhenInitialize =
+                "Failed to initialize Picture Slides Lab. Some functions may not work.";
 
             public const string DragAndDropInstruction =
                 "Drag and Drop here to get image.";
 
             public const string InfoPasteNothing = "No picture to paste.";
             public const string InfoPasteThumbnail = "Pasted successfully! But you might have pasted the thumbnail picture.";
+            public const string InfoAddPictureCitationSlide = "Added successfully!";
         }
 
         #region Agenda Lab
@@ -578,8 +589,7 @@
         #region Positions Lab
         public class PositionsLab
         {
-            public const string PositionsLabSupertip = "Open Positions Lab window.";
-            public const string PositionsLabButtonLabel = "Positions Lab";
+            
         }
         #endregion
         #region Task Pane - Resize Lab

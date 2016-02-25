@@ -8,8 +8,6 @@ namespace PowerPointLabs.Models
     [Obsolete("DO NOT use this class! Instead, use Action Framework.")]
     public class PowerPointCurrentPresentationInfo
     {
-        public static bool IsInFunctionalTest;
-
         public static PowerPointSlide CurrentSlide
         {
             get

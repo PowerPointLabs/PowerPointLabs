@@ -11,6 +11,7 @@ namespace PowerPointLabs.PictureSlidesLab.Service.Interface
         void ApplyStyle(ImageItem source, Slide contentSlide,
             float slideWidth, float slideHeight, StyleOption option = null);
         void SetStyleOptions(StyleOption opt);
+        void SetSettings(Settings settings);
         void CleanUp();
     }
 }

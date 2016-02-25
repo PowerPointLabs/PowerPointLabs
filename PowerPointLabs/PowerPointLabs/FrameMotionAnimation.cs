@@ -9,9 +9,9 @@ using PowerPoint = Microsoft.Office.Interop.PowerPoint;
 
 namespace PowerPointLabs
 {
-
     class FrameMotionAnimation
     {
+#pragma warning disable 0618
         public enum FrameMotionAnimationType { kAutoAnimate, kInSlideAnimate, kStepBackWithBackground, kZoomToAreaPan, kZoomToAreaDeMagnify };
         public static FrameMotionAnimationType animationType = FrameMotionAnimationType.kAutoAnimate;
         public static void AddFrameMotionAnimation(PowerPointSlide animationSlide, PowerPoint.Shape initialShape, PowerPoint.Shape finalShape, float duration)
@@ -41,7 +41,7 @@ namespace PowerPointLabs
 
             float incrementWidth = ((finalWidth / initialWidth) - 1.0f) / numFrames;
             float incrementHeight = ((finalHeight / initialHeight) - 1.0f) / numFrames;
-            float incrementRotation = PowerPointLabsGlobals.GetMinimumRotation(initialRotation, finalRotation) / numFrames;
+            float incrementRotation = LegacyShapeUtil.GetMinimumRotation(initialRotation, finalRotation) / numFrames;
             float incrementLeft = (finalX - initialX) / numFrames;
             float incrementTop = (finalY - initialY) / numFrames;
             float incrementFont = (finalFont - initialFont) / numFrames;

@@ -7,6 +7,7 @@ using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Windows.Forms;
+using PowerPointLabs.ActionFramework.Common.Log;
 using PowerPointLabs.Models;
 using Office = Microsoft.Office.Core;
 using PowerPoint = Microsoft.Office.Interop.PowerPoint;
@@ -15,6 +16,7 @@ namespace PowerPointLabs
 {
     public class CropToShape
     {
+#pragma warning disable 0618
         private const int ErrorCodeForSelectionCountZero = 0;
         private const int ErrorCodeForSelectionNonShape = 1;
         private const int ErrorCodeForExceedSlideBound = 2;
@@ -402,7 +404,7 @@ namespace PowerPointLabs
             }
             catch (Exception e)
             {
-                PowerPointLabsGlobals.LogException(e, "GetCutOutShapeMenuImage");
+                Logger.LogException(e, "GetCutOutShapeMenuImage");
                 throw;
             }
         }

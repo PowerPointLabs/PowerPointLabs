@@ -2,11 +2,11 @@
 using System.Collections.Generic;
 using TestInterface;
 using Microsoft.Office.Interop.PowerPoint;
-using PowerPointLabs.Models;
 using System.IO;
 using System.Linq;
 using System.Windows.Forms;
 using Microsoft.Office.Core;
+using PowerPointLabs.ActionFramework.Common.Extension;
 using PowerPointLabs.Utils;
 using Shape = Microsoft.Office.Interop.PowerPoint.Shape;
 using ShapeRange = Microsoft.Office.Interop.PowerPoint.ShapeRange;
@@ -18,27 +18,27 @@ namespace PowerPointLabs.FunctionalTestInterface.Impl
     {
         public void MaximizeWindow()
         {
-            Globals.ThisAddIn.Application.ActiveWindow.WindowState = PpWindowState.ppWindowMaximized;
+            FunctionalTestExtensions.GetCurrentWindow().WindowState = PpWindowState.ppWindowMaximized;
         }
 
         public void EnterFunctionalTest()
         {
-            PowerPointCurrentPresentationInfo.IsInFunctionalTest = true;
+            PowerPointLabsFT.IsFunctionalTestOn = true;
         }
 
         public void ExitFunctionalTest()
         {
-            PowerPointCurrentPresentationInfo.IsInFunctionalTest = false;
+            PowerPointLabsFT.IsFunctionalTestOn = false;
         }
 
         public bool IsInFunctionalTest()
         {
-            return PowerPointCurrentPresentationInfo.IsInFunctionalTest;
+            return PowerPointLabsFT.IsFunctionalTestOn;
         }
 
         public List<ISlideData> FetchPresentationData(string pathToPresentation)
         {
-            var presentation = Globals.ThisAddIn.Application.Presentations.Open(pathToPresentation,
+            var presentation = FunctionalTestExtensions.GetPresentations().Open(pathToPresentation,
                                                                                 WithWindow: MsoTriState.msoFalse);
             var slideData = presentation.Slides.Cast<Slide>().Select(SlideData.FromSlide).ToList();
             presentation.Close();
@@ -47,26 +47,26 @@ namespace PowerPointLabs.FunctionalTestInterface.Impl
 
         public List<ISlideData> FetchCurrentPresentationData()
         {
-            var slideData = PowerPointPresentation.Current.Presentation
+            var slideData = FunctionalTestExtensions.GetCurrentPresentation().Presentation
                 .Slides.Cast<Slide>().Select(SlideData.FromSlide).ToList();
             return slideData;
         }
 
         public void SavePresentationAs(string presName)
         {
-            Globals.ThisAddIn.Application.ActivePresentation.SaveCopyAs(presName);
+            FunctionalTestExtensions.GetCurrentPresentation().Presentation.SaveCopyAs(presName);
         }
 
         public void ClosePresentation()
         {
             EnterFunctionalTest();
-            Globals.ThisAddIn.Application.ActivePresentation.Close();
+            FunctionalTestExtensions.GetCurrentPresentation().Presentation.Close();
         }
 
         public void ClosePowerPointApplication()
         {
             EnterFunctionalTest();
-            Globals.ThisAddIn.Application.Quit();
+            FunctionalTestExtensions.GetApplication().Quit();
         }
 
         public void ActivatePresentation()
@@ -78,44 +78,44 @@ namespace PowerPointLabs.FunctionalTestInterface.Impl
 
         public int PointsToScreenPixelsX(float x)
         {
-            return Globals.ThisAddIn.Application.ActiveWindow.PointsToScreenPixelsX(x);
+            return FunctionalTestExtensions.GetCurrentWindow().PointsToScreenPixelsX(x);
         }
 
         public int PointsToScreenPixelsY(float y)
         {
-            return Globals.ThisAddIn.Application.ActiveWindow.PointsToScreenPixelsY(y);
+            return FunctionalTestExtensions.GetCurrentWindow().PointsToScreenPixelsY(y);
         }
 
-        public Boolean IsOffice2010()
+        public bool IsOffice2010()
         {
-            return Globals.ThisAddIn.Application.Version == Globals.ThisAddIn.OfficeVersion2010;
+            return FunctionalTestExtensions.GetApplication().Version == "14.0";
         }
 
-        public Boolean IsOffice2013()
+        public bool IsOffice2013()
         {
-            return Globals.ThisAddIn.Application.Version == Globals.ThisAddIn.OfficeVersion2013;
+            return FunctionalTestExtensions.GetApplication().Version == "15.0";
         }
 
         public Slide GetCurrentSlide()
         {
-            return PowerPointCurrentPresentationInfo.CurrentSlide.GetNativeSlide();
+            return FunctionalTestExtensions.GetCurrentSlide().GetNativeSlide();
         }
 
         public Slide[] GetAllSlides()
         {
-            return PowerPointPresentation.Current.Presentation.Slides.Cast<Slide>().ToArray();
+            return FunctionalTestExtensions.GetCurrentPresentation().Presentation.Slides.Cast<Slide>().ToArray();
         }
 
         public Slide SelectSlide(int index)
         {
-            var slides = PowerPointPresentation.Current.Slides;
+            var slides = FunctionalTestExtensions.GetCurrentPresentation().Slides;
             for (int i = 0; i <= slides.Count; i++)
             {
                 if (i == (index - 1))
                 {
                     var slide = slides[i].GetNativeSlide();
                     slide.Select();
-                    Globals.ThisAddIn.Application.ActiveWindow.View.GotoSlide(index);
+                    FunctionalTestExtensions.GetCurrentWindow().View.GotoSlide(index);
                     return slide;
                 }
             }
@@ -124,14 +124,14 @@ namespace PowerPointLabs.FunctionalTestInterface.Impl
 
         public Slide SelectSlide(string slideName)
         {
-            var slides = PowerPointPresentation.Current.Slides;
+            var slides = FunctionalTestExtensions.GetCurrentPresentation().Slides;
             for (int i = 0; i <= slides.Count; i++)
             {
                 if (slideName == slides[i].Name)
                 {
                     var slide = slides[i].GetNativeSlide();
                     slide.Select();
-                    Globals.ThisAddIn.Application.ActiveWindow.View.GotoSlide(i + 1);
+                    FunctionalTestExtensions.GetCurrentWindow().View.GotoSlide(i + 1);
                     return slide;
                 }
             }
@@ -172,13 +172,13 @@ namespace PowerPointLabs.FunctionalTestInterface.Impl
 
         public Selection GetCurrentSelection()
         {
-            return PowerPointCurrentPresentationInfo.CurrentSelection;
+            return FunctionalTestExtensions.GetCurrentSelection();
         }
 
         public ShapeRange SelectShape(string shapeName)
         {
             var nameList = new List<String>();
-            var shapes = PowerPointCurrentPresentationInfo.CurrentSlide.Shapes;
+            var shapes = FunctionalTestExtensions.GetCurrentSlide().Shapes;
             foreach (Shape sh in shapes)
             {
                 if (sh.Name == shapeName)
@@ -192,8 +192,7 @@ namespace PowerPointLabs.FunctionalTestInterface.Impl
 
         public ShapeRange SelectShapes(IEnumerable<string> shapeNames)
         {
-            var range = PowerPointCurrentPresentationInfo
-                .CurrentSlide.Shapes.Range(shapeNames.ToArray());
+            var range = FunctionalTestExtensions.GetCurrentSlide().Shapes.Range(shapeNames.ToArray());
 
             if (range.Count > 0)
             {
@@ -206,7 +205,7 @@ namespace PowerPointLabs.FunctionalTestInterface.Impl
         public ShapeRange SelectShapesByPrefix(string prefix)
         {
             var nameList = new List<String>();
-            var shapes = PowerPointCurrentPresentationInfo.CurrentSlide.Shapes;
+            var shapes = FunctionalTestExtensions.GetCurrentSlide().Shapes;
             foreach (Shape sh in shapes)
             {
                 if (sh.Name.StartsWith(prefix))
@@ -229,7 +228,7 @@ namespace PowerPointLabs.FunctionalTestInterface.Impl
 
         public FileInfo ExportSelectedShapes()
         {
-            var shapes = PowerPointCurrentPresentationInfo.CurrentSelection.ShapeRange;
+            var shapes = FunctionalTestExtensions.GetCurrentSelection().ShapeRange;
             var hashCode = DateTime.Now.GetHashCode();
             var pathName = TempPath.GetTempTestFolder() + "shapeName" + hashCode;
             shapes.Export(pathName, PpShapeFormat.ppShapeFormatPNG);
@@ -238,9 +237,9 @@ namespace PowerPointLabs.FunctionalTestInterface.Impl
 
         public string SelectAllTextInShape(string shapeName)
         {
-            var shape = PowerPointCurrentPresentationInfo.CurrentSlide.Shapes
-                                                                      .Cast<Shape>()
-                                                                      .FirstOrDefault(sh => sh.Name == shapeName);
+            var shape = FunctionalTestExtensions.GetCurrentSlide().Shapes
+                                                                  .Cast<Shape>()
+                                                                  .FirstOrDefault(sh => sh.Name == shapeName);
             var textRange = shape.TextFrame2.TextRange;
             textRange.Select();
             return textRange.Text;
@@ -248,7 +247,7 @@ namespace PowerPointLabs.FunctionalTestInterface.Impl
 
         public string SelectTextInShape(string shapeName, int startIndex, int endIndex)
         {
-            var shape = PowerPointCurrentPresentationInfo.CurrentSlide.Shapes
+            var shape = FunctionalTestExtensions.GetCurrentSlide().Shapes
                                                                       .Cast<Shape>()
                                                                       .FirstOrDefault(sh => sh.Name == shapeName);
             var textRange = shape.TextFrame2.TextRange.Characters[startIndex, endIndex - startIndex];
@@ -258,17 +257,17 @@ namespace PowerPointLabs.FunctionalTestInterface.Impl
 
         public void RenameSection(int index, string newName)
         {
-            PowerPointPresentation.Current.SectionProperties.Rename(index, newName);
+            FunctionalTestExtensions.GetCurrentPresentation().SectionProperties.Rename(index, newName);
         }
 
         public void AddSection(int index, string sectionName)
         {
-            PowerPointPresentation.Current.SectionProperties.AddSection(index, sectionName);
+            FunctionalTestExtensions.GetCurrentPresentation().SectionProperties.AddSection(index, sectionName);
         }
 
         public void DeleteSection(int index, bool deleteSlides)
         {
-            PowerPointPresentation.Current.SectionProperties.Delete(index, deleteSlides);
+            FunctionalTestExtensions.GetCurrentPresentation().SectionProperties.Delete(index, deleteSlides);
         }
 
         public void ShowAllSlideNumbers()

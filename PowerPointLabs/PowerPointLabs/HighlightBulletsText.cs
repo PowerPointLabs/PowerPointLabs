@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Drawing;
+using PowerPointLabs.ActionFramework.Common.Log;
 using PowerPointLabs.Models;
 using Office = Microsoft.Office.Core;
 using PowerPoint = Microsoft.Office.Interop.PowerPoint;
@@ -10,6 +11,7 @@ namespace PowerPointLabs
 {
     class HighlightBulletsText
     {
+#pragma warning disable 0618
         public static Color highlightColor = Color.FromArgb(242, 41, 10);
         public static Color defaultColor = Color.FromArgb(0, 0, 0);
         public enum HighlightTextSelection { kShapeSelected, kTextSelected, kNoneSelected };
@@ -102,7 +104,7 @@ namespace PowerPointLabs
             }
             catch (Exception e)
             {
-                PowerPointLabsGlobals.LogException(e, "AddHighlightBulletsText");
+                Logger.LogException(e, "AddHighlightBulletsText");
                 throw;
             }
         }

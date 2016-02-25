@@ -1,5 +1,5 @@
-﻿using System.Linq;
-using System.Windows.Media;
+﻿using System.Windows.Media;
+using Microsoft.Office.Interop.PowerPoint;
 using PowerPointLabs.Models;
 using Color = System.Drawing.Color;
 using PowerPointLabs.Utils;
@@ -31,17 +31,9 @@ namespace PowerPointLabs.PictureSlidesLab.ViewModel
                 var optValue = prop.GetValue(styleOption, null);
                 View.SetVariantsColorPanelBackground((Brush)bc.ConvertFrom(optValue));
             }
-            else if (currentCategory == TextCollection.PictureSlidesLabText.VariantCategoryImageReference)
-            {
-                var propName = "ImageReferenceTextBoxColor";
-                var type = styleOption.GetType();
-                var prop = type.GetProperty(propName);
-                var optValue = prop.GetValue(styleOption, null);
-                View.SetVariantsColorPanelBackground((Brush)bc.ConvertFrom(optValue));
-            }
         }
 
-        public void BindSelectedColor(Color color)
+        public void BindSelectedColor(Color color, Slide contentSlide, float slideWidth, float slideHeight)
         {
             BindColorToStyle(color);
             BindColorToVariant(color);
@@ -50,9 +42,9 @@ namespace PowerPointLabs.PictureSlidesLab.ViewModel
                 View.EnableUpdatingPreviewImages();
                 UpdatePreviewImages(
                     View.CreateDefaultPictureItem(),
-                    PowerPointCurrentPresentationInfo.CurrentSlide.GetNativeSlide(),
-                    PowerPointPresentation.Current.SlideWidth,
-                    PowerPointPresentation.Current.SlideHeight);
+                    contentSlide,
+                    slideWidth,
+                    slideHeight);
                 View.DisableUpdatingPreviewImages();
                 BindStyleToColorPanel();
             }
@@ -61,9 +53,9 @@ namespace PowerPointLabs.PictureSlidesLab.ViewModel
                 UpdatePreviewImages(
                     ImageSelectionListSelectedItem.ImageItem ??
                     View.CreateDefaultPictureItem(),
-                    PowerPointCurrentPresentationInfo.CurrentSlide.GetNativeSlide(),
-                    PowerPointPresentation.Current.SlideWidth,
-                    PowerPointPresentation.Current.SlideHeight);
+                    contentSlide,
+                    slideWidth,
+                    slideHeight);
             }
         }
         #endregion
@@ -87,16 +79,16 @@ namespace PowerPointLabs.PictureSlidesLab.ViewModel
             SelectedFontId.Number = targetIndex;
         }
 
-        public void BindSelectedFont()
+        public void BindSelectedFont(Slide contentSlide, float slideWidth, float slideHeight)
         {
             BindFontToStyle(SelectedFontFamily.Font.Source);
             BindFontToVariant(SelectedFontFamily.Font.Source);
             UpdatePreviewImages(
                 ImageSelectionListSelectedItem.ImageItem ??
                 View.CreateDefaultPictureItem(),
-                PowerPointCurrentPresentationInfo.CurrentSlide.GetNativeSlide(),
-                PowerPointPresentation.Current.SlideWidth,
-                PowerPointPresentation.Current.SlideHeight);
+                contentSlide,
+                slideWidth,
+                slideHeight);
         }
         #endregion
 
@@ -118,13 +110,6 @@ namespace PowerPointLabs.PictureSlidesLab.ViewModel
                 var prop = type.GetProperty(propName);
                 prop.SetValue(styleOption, targetColor, null);
             }
-            else if (currentCategory == TextCollection.PictureSlidesLabText.VariantCategoryImageReference)
-            {
-                var propName = "ImageReferenceTextBoxColor";
-                var type = styleOption.GetType();
-                var prop = type.GetProperty(propName);
-                prop.SetValue(styleOption, targetColor, null);
-            }
         }
 
         private void BindColorToVariant(Color color)
@@ -138,10 +123,6 @@ namespace PowerPointLabs.PictureSlidesLab.ViewModel
             {
                 styleVariant.Set("OptionName", "Customized");
                 styleVariant.Set(GetPropertyName(currentCategory), StringUtil.GetHexValue(color));
-            }
-            else if (currentCategory == TextCollection.PictureSlidesLabText.VariantCategoryImageReference)
-            {
-                styleVariant.Set("ImageReferenceTextBoxColor", StringUtil.GetHexValue(color));
             }
         }
 

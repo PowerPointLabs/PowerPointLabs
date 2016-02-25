@@ -1,5 +1,7 @@
-﻿using System.Windows.Media;
+﻿using System;
+using System.Windows.Media;
 using MahApps.Metro.Controls.Dialogs;
+using PowerPointLabs.ActionFramework.Common.Log;
 using PowerPointLabs.PictureSlidesLab.Model;
 using PowerPointLabs.PictureSlidesLab.Thread;
 using PowerPointLabs.PictureSlidesLab.Thread.Interface;
@@ -15,12 +17,41 @@ namespace PowerPointLabs.PictureSlidesLab.View
 
         public void ShowErrorMessageBox(string content)
         {
-            this.ShowMessageAsync("Error", content);
+            try
+            {
+                this.ShowMessageAsync("Error", content);
+            }
+            catch (Exception e)
+            {
+                Logger.LogException(e, "ShowErrorMessageBox");
+            }
+        }
+
+        public void ShowErrorMessageBox(string content, Exception e)
+        {
+            try
+            {
+                this.ShowMessageAsync("Error", content + TextCollection.UserFeedBack + TextCollection.Email + "\r\n\r\n"
+                                               + e.Message + " " + e.GetType() + "\r\n"
+                                               + e.StackTrace);
+            }
+            catch (Exception expt)
+            {
+                Logger.LogException(e, "ShowErrorMessageBox (parameter)");
+                Logger.LogException(expt, "ShowErrorMessageBox");
+            }
         }
 
         public void ShowInfoMessageBox(string content)
         {
-            this.ShowMessageAsync("Info", content);
+            try
+            {
+                this.ShowMessageAsync("Info", content);
+            }
+            catch (Exception e)
+            {
+                Logger.LogException(e, "ShowInfoMessageBox");
+            }
         }
 
         public void ShowSuccessfullyAppliedDialog()
@@ -36,9 +67,9 @@ namespace PowerPointLabs.PictureSlidesLab.View
                     .OpenDialog();
                 this.ShowMetroDialogAsync(_gotoSlideDialog, MetroDialogOptions);
             }
-            catch
+            catch (Exception e)
             {
-                // dialog could be fired multiple times
+                Logger.LogException(e, "ShowSuccessfullyAppliedDialog");
             }
         }
 

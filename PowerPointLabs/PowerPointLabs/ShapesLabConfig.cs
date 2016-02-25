@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Text;
+using PowerPointLabs.FunctionalTestInterface.Impl;
 using PowerPointLabs.Models;
 using PowerPointLabs.Utils;
 
@@ -10,6 +11,7 @@ namespace PowerPointLabs
 {
     internal class ShapesLabConfig
     {
+#pragma warning disable 0618
         private const string DefaultShapeMasterFolderName = @"\PowerPointLabs Custom Shapes";
         private const string DefaultShapeCategoryName = "My Shapes";
         private const string ShapeRootFolderConfigFileName = "ShapeRootFolder.config";
@@ -27,7 +29,7 @@ namespace PowerPointLabs
         # region Constructor
         public ShapesLabConfig(string appDataFolder)
         {
-            if (!PowerPointCurrentPresentationInfo.IsInFunctionalTest)
+            if (!PowerPointLabsFT.IsFunctionalTestOn)
             {
                 ShapeRootFolder = _defaultShapeMasterFolderPrefix + DefaultShapeMasterFolderName;
                 DefaultCategory = DefaultShapeCategoryName;

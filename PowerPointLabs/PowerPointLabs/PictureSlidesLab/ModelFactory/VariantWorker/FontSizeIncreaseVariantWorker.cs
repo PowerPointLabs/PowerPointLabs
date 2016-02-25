@@ -20,33 +20,27 @@ namespace PowerPointLabs.PictureSlidesLab.ModelFactory.VariantWorker
             {
                 new StyleVariant(new Dictionary<string, object>
                 {
-                    {"OptionName", "Original Font Size"},
+                    {"OptionName", "Font Size +0"},
                     {"IsUseTextFormat", true},
                     {"FontSizeIncrease", 0}
                 }),
                 new StyleVariant(new Dictionary<string, object>
                 {
-                    {"OptionName", "Font Size +6"},
+                    {"OptionName", "Font Size +5"},
                     {"IsUseTextFormat", true},
-                    {"FontSizeIncrease", 6}
+                    {"FontSizeIncrease", 5}
                 }),
                 new StyleVariant(new Dictionary<string, object>
                 {
-                    {"OptionName", "Font Size +12"},
+                    {"OptionName", "Font Size +10"},
                     {"IsUseTextFormat", true},
-                    {"FontSizeIncrease", 12}
+                    {"FontSizeIncrease", 10}
                 }),
                 new StyleVariant(new Dictionary<string, object>
                 {
-                    {"OptionName", "Font Size +18"},
+                    {"OptionName", "Font Size +20"},
                     {"IsUseTextFormat", true},
-                    {"FontSizeIncrease", 18}
-                }),
-                new StyleVariant(new Dictionary<string, object>
-                {
-                    {"OptionName", "Font Size +24"},
-                    {"IsUseTextFormat", true},
-                    {"FontSizeIncrease", 24}
+                    {"FontSizeIncrease", 20}
                 }),
                 new StyleVariant(new Dictionary<string, object>
                 {
@@ -65,6 +59,12 @@ namespace PowerPointLabs.PictureSlidesLab.ModelFactory.VariantWorker
                     {"OptionName", "Font Size +65"},
                     {"IsUseTextFormat", true},
                     {"FontSizeIncrease", 65}
+                }),
+                new StyleVariant(new Dictionary<string, object>
+                {
+                    {"OptionName", "No Effect"},
+                    {"IsUseTextFormat", true},
+                    {"FontSizeIncrease", -1}
                 })
             };
         }

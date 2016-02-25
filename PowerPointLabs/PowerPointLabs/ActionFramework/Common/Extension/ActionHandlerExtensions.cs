@@ -7,10 +7,23 @@ using PowerPointLabs.Models;
 namespace PowerPointLabs.ActionFramework.Common.Extension
 {
     /// <summary>
-    /// Extend action handler with powerpoint context
+    /// Extend action handler with powerpoint context.
+    /// Type `this` in the class/subclass of ActionHandler to access the APIs below.
     /// </summary>
+    [Obsolete("DO NOT use this class in your feature! Used only by Action Framework.")]
     static class ActionHandlerExtensions
     {
+#pragma warning disable 0618
+        public static Application GetApplication(this ActionHandler handler)
+        {
+            return ActionFrameworkExtensions.GetApplication();
+        }
+
+        public static Presentations GetPresentations(this ActionHandler handler)
+        {
+            return ActionFrameworkExtensions.GetPresentations();
+        }
+
         public static DocumentWindow GetCurrentWindow(this ActionHandler handler)
         {
             return ActionFrameworkExtensions.GetCurrentWindow();
@@ -67,5 +80,6 @@ namespace PowerPointLabs.ActionFramework.Common.Extension
             return ActionFrameworkExtensions.RegisterTaskPane(taskPaneType, taskPaneTitle,
                 visibleChangeEventHandler, dockPositionChangeEventHandler);
         }
+#pragma warning restore 0618
     }
 }

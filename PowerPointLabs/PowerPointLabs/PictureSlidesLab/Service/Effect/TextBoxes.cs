@@ -69,19 +69,14 @@ namespace PowerPointLabs.PictureSlidesLab.Service.Effect
 
         public void StartBoxing()
         {
-            if (_pos != Position.Original)
-            {
-                // do positioning twice to fix a bug:
-                // if only do positioning once,
-                // textboxes' height/top may be incorrect if each textbox is not directly next to each other;
-                // doing positioning (make every textbox next to each other) the next time will fix the problem.
-                StartPositioning();
-                StartPositioning();
-            }
-            else
-            {
-                RecoverPositioning();
-            }
+            if (_pos == Position.NoEffect) return;
+
+            // do positioning twice to fix a bug:
+            // if only do positioning once,
+            // textboxes' height/top may be incorrect if each textbox is not directly next to each other;
+            // doing positioning (make every textbox next to each other) the next time will fix the problem.
+            StartPositioning();
+            StartPositioning();
         }
 
         public TextBoxInfo GetTextBoxesInfo()
@@ -126,28 +121,6 @@ namespace PowerPointLabs.PictureSlidesLab.Service.Effect
         # endregion
 
         # region Helper Funcs
-        private void RecoverPositioning()
-        {
-            foreach (var textShape in TextShapes)
-            {
-                if (StringUtil.IsNotEmpty(textShape.Tags[Tag.OriginalShapeLeft]))
-                {
-                    textShape.Left = float.Parse(textShape.Tags[Tag.OriginalShapeLeft]);
-                    textShape.Tags.Add(Tag.OriginalShapeLeft, "");
-                }
-                if (StringUtil.IsNotEmpty(textShape.Tags[Tag.OriginalShapeTop]))
-                {
-                    textShape.Top = float.Parse(textShape.Tags[Tag.OriginalShapeTop]);
-                    textShape.Tags.Add(Tag.OriginalShapeTop, "");
-                }
-                if (StringUtil.IsNotEmpty(textShape.Tags[Tag.OriginalTextAlignment]))
-                {
-                    textShape.TextEffect.Alignment =
-                        StringUtil.GetTextEffectAlignment(textShape.Tags[Tag.OriginalTextAlignment]);
-                    textShape.Tags.Add(Tag.OriginalTextAlignment, "");
-                }
-            }
-        }
 
         private void StartPositioning()
         {
@@ -172,13 +145,11 @@ namespace PowerPointLabs.PictureSlidesLab.Service.Effect
 
         private void AdjustShapeTop(Shape textShape, TextBoxInfo singleBoxInfo, float accumulatedHeight)
         {
-            ShapeUtil.AddTag(textShape, Tag.OriginalShapeTop, textShape.Top.ToString(CultureInfo.InvariantCulture));
             textShape.Top = _top + textShape.Top - (singleBoxInfo.Top - accumulatedHeight);
         }
 
         private void AdjustShapeLeft(Shape textShape, TextBoxInfo boxesInfo, TextBoxInfo singleBoxInfo)
         {
-            ShapeUtil.AddTag(textShape, Tag.OriginalShapeLeft, textShape.Left.ToString(CultureInfo.InvariantCulture));
             switch (_align)
             {
                 case Alignment.Left:
@@ -196,6 +167,8 @@ namespace PowerPointLabs.PictureSlidesLab.Service.Effect
 
         private void SetupTextBoxesAlignment()
         {
+            if (_align == Alignment.NoEffect) return;
+
             HandleAutoAlignment();
             switch (_align)
             {
@@ -238,8 +211,6 @@ namespace PowerPointLabs.PictureSlidesLab.Service.Effect
         {
             foreach (var shape in TextShapes)
             {
-                ShapeUtil.AddTag(shape, Tag.OriginalTextAlignment, 
-                    StringUtil.GetTextEffectAlignment(shape.TextEffect.Alignment));
                 shape.TextEffect.Alignment = alignment;
             }
         }

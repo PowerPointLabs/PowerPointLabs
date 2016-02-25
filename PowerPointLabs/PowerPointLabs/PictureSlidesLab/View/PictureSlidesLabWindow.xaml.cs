@@ -11,8 +11,13 @@ using System.Windows.Forms;
 using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Animation;
+using System.Windows.Threading;
+using MahApps.Metro.Controls.Dialogs;
+using Microsoft.Office.Interop.PowerPoint;
 using PowerPointLabs.ActionFramework.Common.Extension;
+using PowerPointLabs.ActionFramework.Common.Log;
 using PowerPointLabs.PictureSlidesLab.Model;
+using PowerPointLabs.PictureSlidesLab.Service;
 using PowerPointLabs.PictureSlidesLab.Util;
 using PowerPointLabs.PictureSlidesLab.View.Interface;
 using PowerPointLabs.PictureSlidesLab.ViewModel;
@@ -23,6 +28,7 @@ using DragEventArgs = System.Windows.DragEventArgs;
 using KeyEventArgs = System.Windows.Input.KeyEventArgs;
 using ListBox = System.Windows.Controls.ListBox;
 using MessageBox = System.Windows.MessageBox;
+using Point = System.Windows.Point;
 
 namespace PowerPointLabs.PictureSlidesLab.View
 {
@@ -54,7 +60,6 @@ namespace PowerPointLabs.PictureSlidesLab.View
         private int _clickedImageSelectionItemIndex = -1;
 
         // other UI control flags
-        private bool _isInit;
         private bool _isAbleLoadingOnWindowActivate = true;
         private bool _isStylePreviewRegionInit;
         private int _lastSelectedSlideIndex = -1;
@@ -68,38 +73,34 @@ namespace PowerPointLabs.PictureSlidesLab.View
             InitializeComponent();
             // start loading process
             PictureSlidesLabGridLoadingOverlay.Visibility = Visibility.Visible;
-        }
+            IsOpen = true;
+            Logger.Log("PSL begins");
 
-        private void PictureSlidesLabWindow_OnLoaded(object sender, RoutedEventArgs e)
-        {
-            // wait for some time to allow UI to be fully loaded
-            var timer = new Timer
-            {
-                Interval = 500 // ms
-            };
-            timer.Tick += (o, args) =>
-            {
-                timer.Stop();
-                Dispatcher.BeginInvoke(new Action(Init));
-            };
-            timer.Start();
+            SetTimeout(Init, 850);
         }
 
         private void Init()
         {
-            if (_isInit) return;
-
-            InitViewModel();
-            InitGotoSlideDialog();
-            InitLoadStylesDialog();
-            InitDragAndDrop();
-            InitStyleing();
-            // remove loading overlay
-            PictureSlidesLabGridLoadingOverlay.Visibility = Visibility.Hidden;
-            IsOpen = true;
-            Activate();
-
-            _isInit = true;
+            try
+            {
+                InitViewModel();
+                InitGotoSlideDialog();
+                InitLoadStylesDialog();
+                InitDragAndDrop();
+                InitStyleing();
+                Logger.Log("PSL init done");
+            }
+            catch (Exception e)
+            {
+                ShowErrorMessageBox(TextCollection.PictureSlidesLabText.ErrorWhenInitialize, e);
+                Logger.LogException(e, "Init");
+            }
+            finally
+            {
+                // remove loading overlay
+                PictureSlidesLabGridLoadingOverlay.Visibility = Visibility.Collapsed;
+                Logger.Log("PSL init loading screen collapsed");
+            }
         }
 
         private void InitStyleing()
@@ -116,6 +117,7 @@ namespace PowerPointLabs.PictureSlidesLab.View
                     ViewModel.ImageSelectionListSelectedId.Number = 1;
                 }
             }
+            Logger.Log("PSL init styling done");
         }
 
         private void InitViewModel()
@@ -125,25 +127,37 @@ namespace PowerPointLabs.PictureSlidesLab.View
             ViewModel.StylesPreviewList.CollectionChanged += StylesPreviewList_OnCollectionChanged;
             ViewModel.ImageSelectionList.CollectionChanged += ImageSelectionList_OnCollectionChanged;
             DataContext = ViewModel;
+            SettingsPane.DataContext = ViewModel.Settings;
 
             UpdatePreviewInterfaceWhenImageListChange(ViewModel.ImageSelectionList);
+            Logger.Log("PSL init ViewModel done");
         }
 
         private void InitDragAndDrop()
         {
             DragAndDropInstructionText = new ObservableString { Text = TextCollection.PictureSlidesLabText.DragAndDropInstruction };
             DragAndDropInstructions.DataContext = DragAndDropInstructionText;
+            Logger.Log("PSL init drag and drop done");
         }
 
         private void PictureSlidesLabWindow_OnClosing(object sender, CancelEventArgs e)
         {
-            IsOpen = false;
-            IsClosing = true;
-            if (QuickDropDialog != null)
+            try
             {
-                QuickDropDialog.Close();
+                IsOpen = false;
+                IsClosing = true;
+                if (QuickDropDialog != null)
+                {
+                    QuickDropDialog.Close();
+                    QuickDropDialog = null;
+                }
+                ViewModel.CleanUp();
+                Logger.Log("PSL closed");
             }
-            ViewModel.CleanUp();
+            catch (Exception expt)
+            {
+                Logger.LogException(expt, "PictureSlidesLabWindow_OnClosing");
+            }
         }
 
         # endregion
@@ -202,11 +216,15 @@ namespace PowerPointLabs.PictureSlidesLab.View
                 else if (args.Data.GetDataPresent("Text"))
                 {
                     var imageUrl = args.Data.GetData("Text") as string;
-                    ViewModel.AddImageSelectionListItem(imageUrl, 
+                    ViewModel.AddImageSelectionListItem(imageUrl,
                         this.GetCurrentSlide().GetNativeSlide(),
                         this.GetCurrentPresentation().SlideWidth,
                         this.GetCurrentPresentation().SlideHeight);
                 }
+            }
+            catch (Exception e)
+            {
+                Logger.LogException(e, "PictureSlidesLabWindow_OnDrop");
             }
             finally
             {
@@ -238,58 +256,70 @@ namespace PowerPointLabs.PictureSlidesLab.View
         /// <param name="isUsingWinformMsgBox"></param>
         private void HandlePastedPicture(bool isUsingWinformMsgBox = false)
         {
-            var pastedPicture = Clipboard.GetImage();
-            var pastedFiles = Clipboard.GetFileDropList();
-
-            if (pastedPicture == null && 
-                (pastedFiles == null || pastedFiles.Count == 0))
+            try
             {
-                if (isUsingWinformMsgBox)
-                {
-                    MessageBox.Show(TextCollection.PictureSlidesLabText.InfoPasteNothing, "PowerPointLabs");
-                }
-                else
-                {
-                    ShowInfoMessageBox(TextCollection.PictureSlidesLabText.InfoPasteNothing);
-                }
-                return;
-            }
+                var pastedPicture = Clipboard.GetImage();
+                var pastedFiles = Clipboard.GetFileDropList();
 
-            if (pastedPicture != null)
-            {
-                var pastedPictureFile = StoragePath.GetPath("pastedImg-"
-                                                            + DateTime.Now.GetHashCode() + "-"
-                                                            + Guid.NewGuid().ToString().Substring(0, 7));
-                pastedPicture.Save(pastedPictureFile);
-                ViewModel.AddImageSelectionListItem(new[] {pastedPictureFile},
-                    this.GetCurrentSlide().GetNativeSlide(),
-                    this.GetCurrentPresentation().SlideWidth,
-                    this.GetCurrentPresentation().SlideHeight);
-
-                // examine whether it's thumbnail picture
-                if (pastedPicture.Width <= 400
-                && pastedPicture.Height <= 400)
+                if (pastedPicture == null &&
+                    (pastedFiles == null || pastedFiles.Count == 0))
                 {
                     if (isUsingWinformMsgBox)
                     {
-                        MessageBox.Show(TextCollection.PictureSlidesLabText.InfoPasteThumbnail, "PowerPointLabs");
+                        MessageBox.Show(TextCollection.PictureSlidesLabText.InfoPasteNothing, "PowerPointLabs");
                     }
                     else
                     {
-                        ShowInfoMessageBox(TextCollection.PictureSlidesLabText.InfoPasteThumbnail);
+                        ShowInfoMessageBox(TextCollection.PictureSlidesLabText.InfoPasteNothing);
+                    }
+                    return;
+                }
+
+                if (pastedPicture != null)
+                {
+                    var pastedPictureFile = StoragePath.GetPath("pastedImg-"
+                                                                + DateTime.Now.GetHashCode() + "-"
+                                                                + Guid.NewGuid().ToString().Substring(0, 7));
+                    pastedPicture.Save(pastedPictureFile);
+                    ViewModel.AddImageSelectionListItem(new[] {pastedPictureFile},
+                        this.GetCurrentSlide().GetNativeSlide(),
+                        this.GetCurrentPresentation().SlideWidth,
+                        this.GetCurrentPresentation().SlideHeight);
+
+                    // examine whether it's thumbnail picture
+                    if (pastedPicture.Width <= 400
+                        && pastedPicture.Height <= 400)
+                    {
+                        if (isUsingWinformMsgBox)
+                        {
+                            MessageBox.Show(TextCollection.PictureSlidesLabText.InfoPasteThumbnail, "PowerPointLabs");
+                        }
+                        else
+                        {
+                            ShowInfoMessageBox(TextCollection.PictureSlidesLabText.InfoPasteThumbnail);
+                        }
                     }
                 }
+                else if (pastedFiles != null && pastedFiles.Count > 0)
+                {
+                    ViewModel.AddImageSelectionListItem(pastedFiles.Cast<string>().ToArray(),
+                        this.GetCurrentSlide().GetNativeSlide(),
+                        this.GetCurrentPresentation().SlideWidth,
+                        this.GetCurrentPresentation().SlideHeight);
+                }
             }
-            else if (pastedFiles != null && pastedFiles.Count > 0)
+            catch (Exception e)
             {
-                ViewModel.AddImageSelectionListItem(pastedFiles.Cast<string>().ToArray(),
-                    this.GetCurrentSlide().GetNativeSlide(),
-                    this.GetCurrentPresentation().SlideWidth,
-                    this.GetCurrentPresentation().SlideHeight);
+                Logger.LogException(e, "HandlePastedPicture");
             }
         }
 
         #endregion
+
+        private void PictureSlidesLabGridLoadingOverlay_OnPreviewMouseLeftButtonUp(object sender, MouseButtonEventArgs e)
+        {
+            PictureSlidesLabGridLoadingOverlay.Visibility = Visibility.Collapsed;
+        }
 
         /// <summary>
         /// Show QuickDrop dialog when PictureSlidesLab window is deactivated
@@ -298,16 +328,30 @@ namespace PowerPointLabs.PictureSlidesLab.View
         /// <param name="e"></param>
         private void PictureSlidesLabWindow_OnDeactivated(object sender, EventArgs e)
         {
-            _lastSelectedSlideIndex = this.GetCurrentSlide().Index;
-
-            if (!IsClosing
-                && (CropWindow == null || !CropWindow.IsOpen)
-                && (QuickDropDialog == null || !QuickDropDialog.IsOpen))
+            try
             {
-                QuickDropDialog = new QuickDropDialog(this);
-                QuickDropDialog.DropHandler += PictureSlidesLabWindow_OnDrop;
-                QuickDropDialog.PasteHandler += () => { HandlePastedPicture(isUsingWinformMsgBox: true); };
-                QuickDropDialog.Show();
+                _lastSelectedSlideIndex = this.GetCurrentSlide().Index;
+
+                if (!IsClosing
+                    && (CropWindow == null || !CropWindow.IsOpen))
+                {
+                    if (QuickDropDialog == null)
+                    {
+                        QuickDropDialog = new QuickDropDialog(this);
+                        QuickDropDialog.DropHandler += PictureSlidesLabWindow_OnDrop;
+                        QuickDropDialog.PasteHandler += () => { HandlePastedPicture(isUsingWinformMsgBox: true); };
+                        QuickDropDialog.ShowQuickDropDialog();
+                        Logger.Log("PSL Quick Drop Dialog begins");
+                    }
+                    else if (!QuickDropDialog.IsOpen)
+                    {
+                        QuickDropDialog.ShowQuickDropDialog();
+                    }
+                }
+            }
+            catch (Exception expt)
+            {
+                Logger.LogException(expt, "PictureSlidesLabWindow_OnDeactivated");
             }
         }
 
@@ -477,45 +521,51 @@ namespace PowerPointLabs.PictureSlidesLab.View
         /// <param name="e"></param>
         private void PictureSlidesLabWindow_OnActivated(object sender, EventArgs e)
         {
-            // init last selected slide index
-            if (_lastSelectedSlideIndex == -1)
+            try
             {
-                _lastSelectedSlideIndex = this.GetCurrentSlide().Index;
-            }
-
-            // hide quick drop dialog when main window activated
-            if (QuickDropDialog != null && QuickDropDialog.IsOpen)
-            {
-                QuickDropDialog.Hide();
-                QuickDropDialog.IsOpen = false;
-            }
-
-            // when no current slide
-            if (this.GetCurrentSlide() == null)
-            {
-                GotoSlideButton.IsEnabled = false;
-                LoadStylesButton.IsEnabled = false;
-                ViewModel.StylesPreviewList.Clear();
-                ViewModel.StylesVariationList.Clear();
-            }
-            // when allowed to do loading
-            else if (_isStylePreviewRegionInit && _isAbleLoadingOnWindowActivate)
-            {
-                GotoSlideButton.IsEnabled = true;
-                LoadStylesButton.IsEnabled = true;
-                Dispatcher.BeginInvoke(new Action(() =>
+                // init last selected slide index
+                if (_lastSelectedSlideIndex == -1)
                 {
-                    // update preview images when slide no change
-                    if (_lastSelectedSlideIndex == this.GetCurrentSlide().Index)
+                    _lastSelectedSlideIndex = this.GetCurrentSlide().Index;
+                }
+
+                // hide quick drop dialog when main window activated
+                if (QuickDropDialog != null && QuickDropDialog.IsOpen)
+                {
+                    QuickDropDialog.HideQuickDropDialog();
+                }
+
+                // when no current slide
+                if (this.GetCurrentSlide() == null)
+                {
+                    GotoSlideButton.IsEnabled = false;
+                    LoadStylesButton.IsEnabled = false;
+                    ViewModel.StylesPreviewList.Clear();
+                    ViewModel.StylesVariationList.Clear();
+                }
+                // when allowed to do loading
+                else if (_isStylePreviewRegionInit && _isAbleLoadingOnWindowActivate)
+                {
+                    GotoSlideButton.IsEnabled = true;
+                    LoadStylesButton.IsEnabled = true;
+                    Dispatcher.BeginInvoke(new Action(() =>
                     {
-                        UpdatePreviewImages();
-                    }
-                    // or load style and image if slide has been changed
-                    else
-                    {
-                        LoadStyleAndImage(this.GetCurrentSlide());
-                    }
-                }));
+                        // update preview images when slide no change
+                        if (_lastSelectedSlideIndex == this.GetCurrentSlide().Index)
+                        {
+                            UpdatePreviewImages();
+                        }
+                        // or load style and image if slide has been changed
+                        else
+                        {
+                            LoadStyleAndImage(this.GetCurrentSlide());
+                        }
+                    }));
+                }
+            }
+            catch (Exception expt)
+            {
+                Logger.LogException(expt, "PictureSlidesLabWindow_OnActivated");
             }
         }
 
@@ -584,7 +634,6 @@ namespace PowerPointLabs.PictureSlidesLab.View
 
         private void MenuItemAdjustImage_OnClick(object sender, RoutedEventArgs e)
         {
-
             if (_clickedImageSelectionItemIndex < 0
                 || _clickedImageSelectionItemIndex > ImageSelectionListBox.Items.Count)
                 return;
@@ -614,6 +663,40 @@ namespace PowerPointLabs.PictureSlidesLab.View
                 if (selectedImage == null || selectedImage.ImageFile == StoragePath.LoadingImgPath) return;
 
                 AdjustImageDimensions(selectedImage);
+            }
+        }
+
+        private void MenuItemEditSource_OnClick(object sender, RoutedEventArgs e)
+        {
+            if (_clickedImageSelectionItemIndex < 0
+                || _clickedImageSelectionItemIndex > ImageSelectionListBox.Items.Count)
+                return;
+
+            var selectedImage = (ImageItem)ImageSelectionListBox.Items.GetItemAt(_clickedImageSelectionItemIndex);
+            if (selectedImage == null || selectedImage.ImageFile == StoragePath.LoadingImgPath) return;
+
+            EditPictureSource(selectedImage);
+        }
+
+        private void MenuItemEditSource_OnClickFromPreviewListBox(object sender, RoutedEventArgs e)
+        {
+            if (ViewModel.IsInPictureVariation())
+            {
+                var imageItem = ViewModel.GetSelectedPictureInPictureVariation(
+                    StylesVariationListBox.SelectedIndex);
+                if (imageItem.ImageFile == StoragePath.NoPicturePlaceholderImgPath
+                    || imageItem.ImageFile == StoragePath.LoadingImgPath)
+                {
+                    return;
+                }
+                EditPictureSource(imageItem);
+            }
+            else
+            {
+                var selectedImage = (ImageItem)ImageSelectionListBox.SelectedItem;
+                if (selectedImage == null || selectedImage.ImageFile == StoragePath.LoadingImgPath) return;
+
+                EditPictureSource(selectedImage);
             }
         }
 
@@ -671,11 +754,19 @@ namespace PowerPointLabs.PictureSlidesLab.View
         /// <param name="e"></param>
         private void VariantsComboBox_OnSelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            ViewModel.UpdateStepByStepStylesVariationImages(
-                (ImageItem) ImageSelectionListBox.SelectedValue ?? CreateDefaultPictureItem(),
-                this.GetCurrentSlide().GetNativeSlide(),
-                this.GetCurrentPresentation().SlideWidth,
-                this.GetCurrentPresentation().SlideHeight);
+            try
+            {
+                ViewModel.UpdateStepByStepStylesVariationImages(
+                    (ImageItem) ImageSelectionListBox.SelectedValue ?? CreateDefaultPictureItem(),
+                    this.GetCurrentSlide().GetNativeSlide(),
+                    this.GetCurrentPresentation().SlideWidth,
+                    this.GetCurrentPresentation().SlideHeight);
+            }
+            catch (Exception expt)
+            {
+                ShowErrorMessageBox("Failed when loading preview images.", expt);
+                Logger.LogException(expt, "VariantsComboBox_OnSelectionChanged");
+            }
         }
 
         private void StylesVariationApplyButton_OnClick(object sender, RoutedEventArgs e)
@@ -690,6 +781,35 @@ namespace PowerPointLabs.PictureSlidesLab.View
         private void VariationFlyoutBackButton_OnClick(object sender, RoutedEventArgs e)
         {
             CloseVariationsFlyout();
+        }
+
+        private void AddCitationSlideButton_OnClick(object sender, RoutedEventArgs e)
+        {
+            var presentation = this.GetCurrentPresentation();
+            if (presentation.Slides.Any(PictureCitationSlide.IsCitationSlide))
+            {
+                var citationSlide = presentation.Slides.Where(PictureCitationSlide.IsCitationSlide).First();
+                ViewModel.AddPictureCitationSlide(citationSlide.GetNativeSlide(), presentation.Slides);
+            }
+            else // no citation slide yet, so create one
+            {
+                var slide = presentation.Presentation.Slides.Add(presentation.SlideCount + 1, PpSlideLayout.ppLayoutText);
+                ViewModel.AddPictureCitationSlide(slide, presentation.Slides);
+            }
+            ShowInfoMessageBox(TextCollection.PictureSlidesLabText.InfoAddPictureCitationSlide);
+        }
+
+        private void OpenSettingsButton_OnClick(object sender, RoutedEventArgs e)
+        {
+            SettingsFlyoutControl.IsOpen = true;
+        }
+
+        private void SettingsFlyoutControl_OnIsOpenChanged(object sender, RoutedEventArgs e)
+        {
+            if (!SettingsFlyoutControl.IsOpen)
+            {
+                SetTimeout(() => { UpdatePreviewImages(isForceUpdating: true); }, 500);
+            }
         }
 
         #endregion
@@ -733,6 +853,22 @@ namespace PowerPointLabs.PictureSlidesLab.View
 
             ViewModel.ImageSelectionList.RemoveAt(ImageSelectionListBox.SelectedIndex);
             HandleDeletePictureInPictureVariation();
+        }
+
+        private void EditPictureSource(ImageItem source)
+        {
+            var metroDialogSettings = new MetroDialogSettings
+            {
+                DefaultText = source.Source
+            };
+            this.ShowInputAsync("Edit Picture Source", "Picture taken from", metroDialogSettings)
+                .ContinueWith(task =>
+                {
+                    if (!string.IsNullOrEmpty(task.Result))
+                    {
+                        source.Source = task.Result;
+                    }
+                });
         }
 
         private void AdjustImageDimensions(ImageItem source)
@@ -917,56 +1053,79 @@ namespace PowerPointLabs.PictureSlidesLab.View
 
             right2LeftToHideTranslate.BeginAnimation(TranslateTransform.XProperty, right2LeftToHideAnimation);
             IsVariationsFlyoutOpen = false;
+            ViewModel.CurrentVariantCategory.Text = "";
         }
 
-        private void UpdatePreviewImages(ImageItem source = null, bool isEnteringPictureVariation = false)
+        private void UpdatePreviewImages(ImageItem source = null, bool isEnteringPictureVariation = false, bool isForceUpdating = false)
         {
-            // if it's in the Default Picture mode and not in the picture variation
-            // don't continue
-            if (!IsEnableUpdatingPreviewImages() && !ViewModel.IsInPictureVariation()) return;
+            try
+            {
+                // if it's in the Default Picture mode and not in the picture variation
+                // don't continue
+                if (!IsEnableUpdatingPreviewImages() && !ViewModel.IsInPictureVariation() && !isForceUpdating) return;
 
-            if (!IsEnableUpdatingPreviewImages() && ViewModel.IsInPictureVariation())
-            {
-                // if it's in Default Picture mode, and
-                // it's in the picture variation, allow
-                // updating preview images
-                ViewModel.UpdatePreviewImages(
-                    source ?? CreateDefaultPictureItem(),
-                    this.GetCurrentSlide().GetNativeSlide(),
-                    this.GetCurrentPresentation().SlideWidth,
-                    this.GetCurrentPresentation().SlideHeight);
+                if (!IsEnableUpdatingPreviewImages() && ViewModel.IsInPictureVariation())
+                {
+                    // if it's in Default Picture mode, and
+                    // it's in the picture variation, allow
+                    // updating preview images
+                    ViewModel.UpdatePreviewImages(
+                        source ?? CreateDefaultPictureItem(),
+                        this.GetCurrentSlide().GetNativeSlide(),
+                        this.GetCurrentPresentation().SlideWidth,
+                        this.GetCurrentPresentation().SlideHeight);
+                }
+                else if (IsVariationsFlyoutOpen && isEnteringPictureVariation)
+                {
+                    // when it's to load the design for a default picture,
+                    // and it's at the variation stage,
+                    // directly jump to picture variation to select picture
+                    var picVariationIndex = ViewModel.VariantsCategory.IndexOf(
+                        TextCollection.PictureSlidesLabText.VariantCategoryPicture);
+                    VariantsComboBox.SelectedIndex = picVariationIndex;
+                }
+                else if (isForceUpdating)
+                {
+                    ViewModel.UpdatePreviewImages(
+                        source ?? (ImageItem) ImageSelectionListBox.SelectedValue ?? CreateDefaultPictureItem(),
+                        this.GetCurrentSlide().GetNativeSlide(),
+                        this.GetCurrentPresentation().SlideWidth,
+                        this.GetCurrentPresentation().SlideHeight);
+                }
+                else
+                {
+                    // else, try to update preview images using
+                    // source or current selected picture.
+                    ViewModel.UpdatePreviewImages(
+                        source ?? (ImageItem) ImageSelectionListBox.SelectedValue,
+                        this.GetCurrentSlide().GetNativeSlide(),
+                        this.GetCurrentPresentation().SlideWidth,
+                        this.GetCurrentPresentation().SlideHeight);
+                }
             }
-            else if (IsVariationsFlyoutOpen && isEnteringPictureVariation)
+            catch (Exception e)
             {
-                // when it's to load the design for a default picture,
-                // and it's at the variation stage,
-                // directly jump to picture variation to select picture
-                var picVariationIndex = ViewModel.VariantsCategory.IndexOf(
-                    TextCollection.PictureSlidesLabText.VariantCategoryPicture);
-                VariantsComboBox.SelectedIndex = picVariationIndex;
-            }
-            else
-            {
-                // else, try to update preview images using
-                // source or current selected picture.
-                ViewModel.UpdatePreviewImages(
-                    source ?? (ImageItem) ImageSelectionListBox.SelectedValue,
-                    this.GetCurrentSlide().GetNativeSlide(),
-                    this.GetCurrentPresentation().SlideWidth,
-                    this.GetCurrentPresentation().SlideHeight);
+                Logger.LogException(e, "UpdatePreviewImages");
             }
         }
 
         private void CustomizeStyle(ImageItem source, List<StyleOption> givenStyles = null,
             Dictionary<string, List<StyleVariant>> givenVariants = null)
         {
-            ViewModel.UpdateStyleVariationImagesWhenOpenFlyout(
-                source ?? (ImageItem) ImageSelectionListBox.SelectedValue,
-                this.GetCurrentSlide().GetNativeSlide(),
-                this.GetCurrentPresentation().SlideWidth,
-                this.GetCurrentPresentation().SlideHeight,
-                givenStyles, givenVariants);
-            OpenVariationsFlyout();
+            try
+            {
+                ViewModel.UpdateStyleVariationImagesWhenOpenFlyout(
+                    source ?? (ImageItem) ImageSelectionListBox.SelectedValue,
+                    this.GetCurrentSlide().GetNativeSlide(),
+                    this.GetCurrentPresentation().SlideWidth,
+                    this.GetCurrentPresentation().SlideHeight,
+                    givenStyles, givenVariants);
+                OpenVariationsFlyout();
+            }
+            catch (Exception e)
+            {
+                Logger.LogException(e, "CustomizeStyle");
+            }
         }
 
         private void EnterDefaultPictureMode()
@@ -987,6 +1146,25 @@ namespace PowerPointLabs.PictureSlidesLab.View
         private void DisableLoadingStyleOnWindowActivate()
         {
             _isAbleLoadingOnWindowActivate = false;
+        }
+
+        /// <summary>
+        /// Execute action after time (in ms)
+        /// </summary>
+        /// <param name="action"></param>
+        /// <param name="time">time in ms</param>
+        private void SetTimeout(Action action, int time)
+        {
+            var timer = new DispatcherTimer
+            {
+                Interval = new TimeSpan(0, 0, 0, 0, time) // in ms
+            };
+            timer.Tick += (o, args) =>
+            {
+                timer.Stop();
+                action();
+            };
+            timer.Start();
         }
 
         #endregion

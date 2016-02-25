@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
+using PowerPointLabs.ActionFramework.Common.Log;
 using PowerPointLabs.Models;
 using Office = Microsoft.Office.Core;
 using PowerPoint = Microsoft.Office.Interop.PowerPoint;
@@ -10,6 +11,7 @@ namespace PowerPointLabs
 {
     class HighlightBulletsBackground
     {
+#pragma warning disable 0618
         public static Color backgroundColor = Color.FromArgb(255, 255, 0);
         public enum HighlightBackgroundSelection { kShapeSelected, kTextSelected, kNoneSelected };
         public static HighlightBackgroundSelection userSelection = HighlightBackgroundSelection.kNoneSelected;
@@ -67,7 +69,7 @@ namespace PowerPointLabs
             }
             catch (Exception e)
             {
-                PowerPointLabsGlobals.LogException(e, "AddHighlightBulletsBackground");
+                Logger.LogException(e, "AddHighlightBulletsBackground");
                 throw;
             }
         }

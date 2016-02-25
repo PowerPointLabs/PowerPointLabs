@@ -9,6 +9,7 @@ namespace PowerPointLabs.Models
 {
     class PowerPointMagnifiedSlide : PowerPointSlide
     {
+#pragma warning disable 0618
         private PowerPoint.Shape indicatorShape = null;
         private PowerPoint.Shape zoomSlideCroppedShapes = null;
 
@@ -35,7 +36,7 @@ namespace PowerPointLabs.Models
             zoomSlideCroppedShapes.PictureFormat.CropRight += (PowerPointPresentation.Current.SlideWidth - (zoomShape.Left + zoomShape.Width));
             zoomSlideCroppedShapes.PictureFormat.CropBottom += (PowerPointPresentation.Current.SlideHeight - (zoomShape.Top + zoomShape.Height));
 
-            PowerPointLabsGlobals.CopyShapePosition(zoomShape, ref zoomSlideCroppedShapes);
+            LegacyShapeUtil.CopyShapePosition(zoomShape, ref zoomSlideCroppedShapes);
 
             zoomSlideCroppedShapes.LockAspectRatio = Office.MsoTriState.msoTrue;
             if (zoomSlideCroppedShapes.Width > zoomSlideCroppedShapes.Height)

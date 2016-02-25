@@ -23,6 +23,7 @@ namespace PowerPointLabs.AgendaLab
     /// </summary>
     internal static partial class AgendaLabMain
     {
+#pragma warning disable 0618
         private static LoadingDialog _loadDialog = new LoadingDialog();
 
         private const int SectionNameMaxLength = 180;
@@ -752,7 +753,8 @@ namespace PowerPointLabs.AgendaLab
         /// <summary>
         /// Places the newly generated image shapes in some alignment that makes them easy to drag around.
         /// Resizes image shapes to match the sizes of the existing image shapes.
-        /// If existingImageWidth <= 0 or existingImageHeight <= 0, it means there are no already existing image shapes.
+        /// If existingImageWidth less or equal to 0 or existingImageHeight less or equal to 0, it means 
+        /// there are no already existing image shapes.
         /// </summary> 
         private static void PositionNewImageShapes(List<Shape> shapes, float existingImageWidth, float existingImageHeight)
         {
@@ -1050,7 +1052,7 @@ namespace PowerPointLabs.AgendaLab
         private static bool DisplayLoadingDialog(string title, string content)
         {
             // make FT run stably
-            if (PowerPointCurrentPresentationInfo.IsInFunctionalTest)
+            if (PowerPointLabsFT.IsFunctionalTestOn)
             {
                 return false;
             }

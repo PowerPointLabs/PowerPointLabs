@@ -15,6 +15,7 @@ namespace PowerPointLabs.AgendaLab
 {
     internal static partial class AgendaLabMain
     {
+#pragma warning disable 0618
         // This file contains Sync Functions, which are used to sync individual slides (not the agenda as a whole).
         // The methods defined in this file are helper methods for the sync functions.
 

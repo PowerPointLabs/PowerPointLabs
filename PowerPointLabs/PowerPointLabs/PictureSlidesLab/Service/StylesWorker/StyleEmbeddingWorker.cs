@@ -10,14 +10,13 @@ namespace PowerPointLabs.PictureSlidesLab.Service.StylesWorker
     [ExportMetadata("WorkerOrder", 1)]
     class StyleEmbeddingWorker : IStyleWorker
     {
-        public IList<Shape> Execute(StyleOption option, EffectsDesigner designer, ImageItem source,
-            Shape imageShape)
+        public IList<Shape> Execute(StyleOption option, EffectsDesigner designer, ImageItem source, Shape imageShape, Settings settings)
         {
             // store style options information into original image shape
             // return original image and cropped image
             return designer.EmbedStyleOptionsInformation(
                 source.OriginalImageFile, source.FullSizeImageFile,
-                source.ContextLink, source.Rect, option);
+                source.ContextLink, source.Source, source.Rect, option);
         }
     }
 }

@@ -1,5 +1,6 @@
 ﻿using System;
 using Microsoft.Office.Core;
+using PowerPointLabs.ActionFramework.Common.Log;
 using PowerPointLabs.PictureSlidesLab.Service.Effect;
 using PowerPointLabs.PictureSlidesLab.Util;
 using PowerPoint = Microsoft.Office.Interop.PowerPoint;
@@ -21,30 +22,46 @@ namespace PowerPointLabs.PictureSlidesLab.Service
 
         private void CropPicture(PowerPoint.Shape picShape)
         {
-            if (picShape.Left < 0)
+            try
             {
-                picShape.PictureFormat.Crop.ShapeLeft = 0;
+                if (picShape.Left < 0)
+                {
+                    picShape.PictureFormat.Crop.ShapeLeft = 0;
+                }
+                if (picShape.Top < 0)
+                {
+                    picShape.PictureFormat.Crop.ShapeTop = 0;
+                }
+                if (picShape.Left + picShape.Width > SlideWidth)
+                {
+                    picShape.PictureFormat.Crop.ShapeWidth = SlideWidth - picShape.Left;
+                }
+                if (picShape.Top + picShape.Height > SlideHeight)
+                {
+                    picShape.PictureFormat.Crop.ShapeHeight = SlideHeight - picShape.Top;
+                }
             }
-            if (picShape.Top < 0)
+            catch (Exception e)
             {
-                picShape.PictureFormat.Crop.ShapeTop = 0;
-            }
-            if (picShape.Left + picShape.Width > SlideWidth)
-            {
-                picShape.PictureFormat.Crop.ShapeWidth = SlideWidth - picShape.Left;
-            }
-            if (picShape.Top + picShape.Height > SlideHeight)
-            {
-                picShape.PictureFormat.Crop.ShapeHeight = SlideHeight - picShape.Top;
+                // some kind of picture cannot be cropped
+                Logger.LogException(e, "CropPicture");
             }
         }
 
         private void CropPicture(PowerPoint.Shape picShape, float targetLeft, float targetTop, float targetWidth, float targetHeight)
         {
-            picShape.PictureFormat.Crop.ShapeLeft = targetLeft;
-            picShape.PictureFormat.Crop.ShapeTop = targetTop;
-            picShape.PictureFormat.Crop.ShapeWidth = targetWidth;
-            picShape.PictureFormat.Crop.ShapeHeight = targetHeight;
+            try
+            {
+                picShape.PictureFormat.Crop.ShapeLeft = targetLeft;
+                picShape.PictureFormat.Crop.ShapeTop = targetTop;
+                picShape.PictureFormat.Crop.ShapeWidth = targetWidth;
+                picShape.PictureFormat.Crop.ShapeHeight = targetHeight;
+            }
+            catch (Exception e)
+            {
+                // some kind of picture cannot be cropped
+                Logger.LogException(e, "CropPicture");
+            }
         }
 
         /// <summary>
