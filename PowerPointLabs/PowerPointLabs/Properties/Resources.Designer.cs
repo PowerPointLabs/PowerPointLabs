@@ -833,6 +833,16 @@ namespace PowerPointLabs.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
+        public static System.Drawing.Bitmap ResizeLab {
+            get {
+                object obj = ResourceManager.GetObject("ResizeLab", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
         public static System.Drawing.Bitmap ResizeLock {
             get {
                 object obj = ResourceManager.GetObject("ResizeLock", resourceCulture);

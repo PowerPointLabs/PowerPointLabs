@@ -13,7 +13,6 @@ using PowerPointLabs.DataSources;
 using PowerPointLabs.DrawingsLab;
 using PowerPointLabs.Models;
 using PowerPointLabs.PictureSlidesLab.View;
-using PowerPointLabs.ResizeLab;
 using PowerPointLabs.Views;
 using Office = Microsoft.Office.Core;
 using PowerPoint = Microsoft.Office.Interop.PowerPoint;
@@ -620,11 +619,6 @@ namespace PowerPointLabs
         public string GetPositionsLabButtonLabel(Office.IRibbonControl control)
         {
             return TextCollection.PositionsLabButtonLabel;
-        }
-
-        public string GetResizeLabButtonLabel(Office.IRibbonControl control)
-        {
-            return TextCollection.ResizeLabButtonLabel;
         }
 
         public string GetPPTLabsHelpGroupLabel(Office.IRibbonControl control)
@@ -2431,27 +2425,6 @@ namespace PowerPointLabs
         //        throw;
         //    }
         //}
-
-        #region Feature: Resize Lab
-
-        public void ResizeLabButtonClick(Office.IRibbonControl control)
-        {
-            Globals.ThisAddIn.RegisterResizePane(PowerPointPresentation.Current.Presentation);
-
-            var resizePane = Globals.ThisAddIn.GetActivePane(typeof(ResizeLabPane));
-
-            // if currently the pane is hidden, show the pane
-            if (!resizePane.Visible)
-            {
-                // fire the pane visble change event
-                resizePane.Visible = true;
-            }
-            else
-            {
-                resizePane.Visible = false;
-            }
-        }
-        #endregion
 
         private static string GetResourceText(string resourceName)
         {
