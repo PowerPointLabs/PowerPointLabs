@@ -32,6 +32,20 @@ namespace PowerPointLabs.ResizeLab
             action(selectedShapes);
         }
 
+        public void Preview(PowerPoint.ShapeRange selectedShapes, float slideWidth, float slideHeight,
+            MultiInputResizeAction previewAction)
+        {
+            if (selectedShapes == null) return;
+
+            var duplicatedShapes = selectedShapes.Duplicate();
+            var action = previewAction(selectedShapes, slideWidth, slideHeight, IsAspectRatioLocked);
+
+            SetOriginalTopLeft(selectedShapes, duplicatedShapes);
+            StoreOriginalShapes(duplicatedShapes);
+
+            action(selectedShapes, slideWidth, slideHeight, IsAspectRatioLocked);
+        }
+
         public void Reset()
         {
             var selectedShapes = GetSelectedShapes(false);

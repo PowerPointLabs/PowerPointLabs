@@ -15,6 +15,8 @@ namespace PowerPointLabs.ResizeLab
     {
         void ShowErrorMessageBox(string content, Exception exception = null);
         void Preview(PowerPoint.ShapeRange selectedShapes, SingleInputResizeAction previewAction);
+        void Preview(PowerPoint.ShapeRange selectedShapes, float slideWidth, float slideHeight,
+            MultiInputResizeAction previewAction);
         void Reset();
     }
 }

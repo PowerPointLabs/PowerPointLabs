@@ -74,9 +74,9 @@
                         <ColumnDefinition Width="1*" />
                         <ColumnDefinition Width="1*" />
                     </Grid.ColumnDefinitions>
-                    <cc:ImageButton x:Name="FitWidthBtn" Text="Width" Grid.Column="0" Margin="3,3,3,3" Click="FitWidthBtn_Click" Width="{Binding ElementName=StretchLeftBtn, Path=ActualHeight}" Image="../Resources/ResizeLab/ResizeFitToWidth.png" ToolTip="Expand selected objects horizontally to fit the width of the slide"/>
-                    <cc:ImageButton x:Name="FitHeightBtn" Text="Height" Grid.Column="1" Margin="3,3,3,3" Click="FitHeightBtn_Click" Width="{Binding ElementName=StretchLeftBtn, Path=ActualHeight}" Image="../Resources/ResizeLab/ResizeFitToHeight.png" ToolTip="Expand selected objects vertically to fit the height of the slide"/>
-                    <cc:ImageButton x:Name="FillBtn" Text="Fill" Grid.Column="2" Margin="3,3,3,3" Click="FillBtn_Click" Width="{Binding ElementName=StretchLeftBtn, Path=ActualHeight}" Image="../Resources/ResizeLab/ResizeFitToFill.png" ToolTip="Expand selected objects to fit the entire slide"/>
+                    <cc:ImageButton x:Name="FitWidthBtn" Text="Width" Grid.Column="0" Margin="3,3,3,3" Click="FitWidthBtn_Click" Width="{Binding ElementName=StretchLeftBtn, Path=ActualHeight}" Image="../Resources/ResizeLab/ResizeFitToWidth.png" ToolTip="Expand selected objects horizontally to fit the width of the slide" MouseEnter="FitWidthBtn_MouseEnter" MouseLeave="FitWidthBtn_MouseLeave"/>
+                    <cc:ImageButton x:Name="FitHeightBtn" Text="Height" Grid.Column="1" Margin="3,3,3,3" Click="FitHeightBtn_Click" Width="{Binding ElementName=StretchLeftBtn, Path=ActualHeight}" Image="../Resources/ResizeLab/ResizeFitToHeight.png" ToolTip="Expand selected objects vertically to fit the height of the slide" MouseEnter="FitHeightBtn_MouseEnter" MouseLeave="FitHeightBtn_MouseLeave"/>
+                    <cc:ImageButton x:Name="FillBtn" Text="Fill" Grid.Column="2" Margin="3,3,3,3" Click="FillBtn_Click" Width="{Binding ElementName=StretchLeftBtn, Path=ActualHeight}" Image="../Resources/ResizeLab/ResizeFitToFill.png" ToolTip="Expand selected objects to fit the entire slide" MouseEnter="FillBtn_MouseEnter" MouseLeave="FillBtn_MouseLeave"/>
                 </Grid>
             </GroupBox>
             <GroupBox x:Name="AspectRatioGroupBox" Header="Aspect Ratio" Grid.Row="3" VerticalAlignment="Stretch" HorizontalAlignment="Stretch">

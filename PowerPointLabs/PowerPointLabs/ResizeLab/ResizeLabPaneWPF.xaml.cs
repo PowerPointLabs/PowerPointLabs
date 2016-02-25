@@ -290,6 +290,51 @@ namespace PowerPointLabs.ResizeLab
             Reset();
         }
 
+        private void FitWidthBtn_MouseEnter(object sender, MouseEventArgs e)
+        {
+            var selectedShapes = GetSelectedShapes(false);
+            var slideWidth = this.GetCurrentPresentation().SlideWidth;
+            var slideHeight = this.GetCurrentPresentation().SlideHeight;
+            var resizeAction = new MultiInputResizeAction((shapes, width, height, isAspectRatio) => _resizeLab.FitToWidth);
+
+            Preview(selectedShapes, slideWidth, slideHeight, resizeAction);
+        }
+
+        private void FitWidthBtn_MouseLeave(object sender, MouseEventArgs e)
+        {
+            Reset();
+        }
+
+        private void FitHeightBtn_MouseEnter(object sender, MouseEventArgs e)
+        {
+            var selectedShapes = GetSelectedShapes(false);
+            var slideWidth = this.GetCurrentPresentation().SlideWidth;
+            var slideHeight = this.GetCurrentPresentation().SlideHeight;
+            var resizeAction = new MultiInputResizeAction((shapes, width, height, isAspectRatio) => _resizeLab.FitToHeight);
+
+            Preview(selectedShapes, slideWidth, slideHeight, resizeAction);
+        }
+
+        private void FitHeightBtn_MouseLeave(object sender, MouseEventArgs e)
+        {
+            Reset();
+        }
+
+        private void FillBtn_MouseEnter(object sender, MouseEventArgs e)
+        {
+            var selectedShapes = GetSelectedShapes(false);
+            var slideWidth = this.GetCurrentPresentation().SlideWidth;
+            var slideHeight = this.GetCurrentPresentation().SlideHeight;
+            var resizeAction = new MultiInputResizeAction((shapes, width, height, isAspectRatio) => _resizeLab.FitToFill);
+
+            Preview(selectedShapes, slideWidth, slideHeight, resizeAction);
+        }
+
+        private void FillBtn_MouseLeave(object sender, MouseEventArgs e)
+        {
+            Reset();
+        }
+
         #endregion
 
         #region Helper Functions
