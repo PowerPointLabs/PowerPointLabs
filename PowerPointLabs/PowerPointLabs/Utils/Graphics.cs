@@ -646,11 +646,11 @@ namespace PowerPointLabs.Utils
         }
 
         //TODO: Change method signature to take in List of shapes instead
-        public static List<Shape> SortShapesByLeft(PowerPoint.ShapeRange selectedShapes)
+        public static List<Shape> SortShapesByLeft(List<Shape> selectedShapes)
         {
             List<Shape> shapesToBeSorted = new List<Shape>();
 
-            for (int i = 1; i <= selectedShapes.Count; i++)
+            for (int i = 0; i < selectedShapes.Count; i++)
             {
                 shapesToBeSorted.Add(selectedShapes[i]);
             }
@@ -661,11 +661,11 @@ namespace PowerPointLabs.Utils
         }
 
         //TODO: Change method signature to take in List of shapes instead
-        public static List<Shape> SortShapesByTop(PowerPoint.ShapeRange selectedShapes)
+        public static List<Shape> SortShapesByTop(List<Shape> selectedShapes)
         {
             List<Shape> shapesToBeSorted = new List<Shape>();
 
-            for (int i = 1; i <= selectedShapes.Count; i++)
+            for (int i = 0; i < selectedShapes.Count; i++)
             {
                 shapesToBeSorted.Add(selectedShapes[i]);
             }
