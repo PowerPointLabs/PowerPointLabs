@@ -49,7 +49,7 @@ namespace PowerPointLabs.ResizeLab
         private void StretchLeftBtn_Click(object sender, RoutedEventArgs e)
         {
             var selectedShape = GetSelectedShapes();
-            var resizeAction = new ResizeAction(shapes => _resizeLab.StretchLeft);
+            var resizeAction = new SingleInputResizeAction(shapes => _resizeLab.StretchLeft);
 
             ExecuteResizeAction(selectedShape, resizeAction);
         }
@@ -57,7 +57,7 @@ namespace PowerPointLabs.ResizeLab
         private void StretchRightBtn_Click(object sender, RoutedEventArgs e)
         {
             var selectedShapes = GetSelectedShapes();
-            var resizeAction = new ResizeAction(shapes => _resizeLab.StretchRight);
+            var resizeAction = new SingleInputResizeAction(shapes => _resizeLab.StretchRight);
 
             ExecuteResizeAction(selectedShapes, resizeAction);
         }
@@ -65,7 +65,7 @@ namespace PowerPointLabs.ResizeLab
         private void StretchTopBtn_Click(object sender, RoutedEventArgs e)
         {
             var selectedShapes = GetSelectedShapes();
-            var resizeAction = new ResizeAction(shapes => _resizeLab.StretchTop);
+            var resizeAction = new SingleInputResizeAction(shapes => _resizeLab.StretchTop);
 
             ExecuteResizeAction(selectedShapes, resizeAction);
         }
@@ -73,7 +73,7 @@ namespace PowerPointLabs.ResizeLab
         private void StretchBottomBtn_Click(object sender, RoutedEventArgs e)
         {
             var selectedShapes = GetSelectedShapes();
-            var resizeAction = new ResizeAction(shapes => _resizeLab.StretchBottom);
+            var resizeAction = new SingleInputResizeAction(shapes => _resizeLab.StretchBottom);
 
             ExecuteResizeAction(selectedShapes, resizeAction);
         }
@@ -85,7 +85,7 @@ namespace PowerPointLabs.ResizeLab
         private void SameWidthBtn_Click(object sender, RoutedEventArgs e)
         {
             var selectedShapes = GetSelectedShapes();
-            var resizeAction = new ResizeAction(shapes => _resizeLab.ResizeToSameWidth);
+            var resizeAction = new SingleInputResizeAction(shapes => _resizeLab.ResizeToSameWidth);
 
             ExecuteResizeAction(selectedShapes, resizeAction);
         }
@@ -93,7 +93,7 @@ namespace PowerPointLabs.ResizeLab
         private void SameHeightBtn_Click(object sender, RoutedEventArgs e)
         {
             var selectedShapes = GetSelectedShapes();
-            var resizeAction = new ResizeAction(shapes => _resizeLab.ResizeToSameHeight);
+            var resizeAction = new SingleInputResizeAction(shapes => _resizeLab.ResizeToSameHeight);
 
             ExecuteResizeAction(selectedShapes, resizeAction);
         }
@@ -101,7 +101,7 @@ namespace PowerPointLabs.ResizeLab
         private void SameSizeBtn_Click(object sender, RoutedEventArgs e)
         {
             var selectedShapes = GetSelectedShapes();
-            var resizeAction = new ResizeAction(shapes => _resizeLab.ResizeToSameHeightAndWidth);
+            var resizeAction = new SingleInputResizeAction(shapes => _resizeLab.ResizeToSameHeightAndWidth);
 
             ExecuteResizeAction(selectedShapes, resizeAction);
         }
@@ -114,13 +114,9 @@ namespace PowerPointLabs.ResizeLab
             var selectedShapes = GetSelectedShapes();
             var slideWidth = this.GetCurrentPresentation().SlideWidth;
             var slideHeight = this.GetCurrentPresentation().SlideHeight;
+            var resizeAction = new MultiInputResizeAction((shapes, width, height, isAspectRatio) => _resizeLab.FitToWidth);
 
-            if (selectedShapes != null)
-            {
-                Reset();
-                _resizeLab.FitToWidth(selectedShapes, slideWidth, slideHeight, IsAspectRatioLocked);
-                CleanOriginalShapes();
-            }
+            ExecuteResizeAction(selectedShapes, slideWidth, slideHeight, resizeAction);
         }
 
         private void FitHeightBtn_Click(object sender, RoutedEventArgs e)
@@ -128,13 +124,9 @@ namespace PowerPointLabs.ResizeLab
             var selectedShapes = GetSelectedShapes();
             var slideWidth = this.GetCurrentPresentation().SlideWidth;
             var slideHeight = this.GetCurrentPresentation().SlideHeight;
+            var resizeAction = new MultiInputResizeAction((shapes, width, height, isAspectRatio) => _resizeLab.FitToHeight);
 
-            if (selectedShapes != null)
-            {
-                Reset();
-                _resizeLab.FitToHeight(selectedShapes, slideWidth, slideHeight, IsAspectRatioLocked);
-                CleanOriginalShapes();
-            }
+            ExecuteResizeAction(selectedShapes, slideWidth, slideHeight, resizeAction);
         }
 
         private void FillBtn_Click(object sender, RoutedEventArgs e)
@@ -142,13 +134,9 @@ namespace PowerPointLabs.ResizeLab
             var selectedShapes = GetSelectedShapes();
             var slideWidth = this.GetCurrentPresentation().SlideWidth;
             var slideHeight = this.GetCurrentPresentation().SlideHeight;
+            var resizeAction = new MultiInputResizeAction((shapes, width, height, isAspectRatio) => _resizeLab.FitToFill);
 
-            if (selectedShapes != null)
-            {
-                Reset();
-                _resizeLab.FitToFill(selectedShapes, slideWidth, slideHeight, IsAspectRatioLocked);
-                CleanOriginalShapes();
-            }
+            ExecuteResizeAction(selectedShapes, slideWidth, slideHeight, resizeAction);
         }
 
         #endregion
@@ -214,7 +202,7 @@ namespace PowerPointLabs.ResizeLab
         private void StretchLeftBtn_MouseEnter(object sender, MouseEventArgs e)
         {
             var selectedShapes = GetSelectedShapes(false);
-            var resizeAction = new ResizeAction(shapes => _resizeLab.StretchLeft);
+            var resizeAction = new SingleInputResizeAction(shapes => _resizeLab.StretchLeft);
 
             Preview(selectedShapes, resizeAction);
         }
@@ -227,7 +215,7 @@ namespace PowerPointLabs.ResizeLab
         private void StretchRightBtn_MouseEnter(object sender, MouseEventArgs e)
         {
             var selectedShapes = GetSelectedShapes(false);
-            var resizeAction = new ResizeAction(shapes => _resizeLab.StretchRight);
+            var resizeAction = new SingleInputResizeAction(shapes => _resizeLab.StretchRight);
 
             Preview(selectedShapes, resizeAction);
         }
@@ -241,7 +229,7 @@ namespace PowerPointLabs.ResizeLab
 
         #region Helper Functions
 
-        private void ExecuteResizeAction(PowerPoint.ShapeRange selectedShapes, ResizeAction resizeAction)
+        private void ExecuteResizeAction(PowerPoint.ShapeRange selectedShapes, SingleInputResizeAction resizeAction)
         {
             if (selectedShapes == null) return;
 
@@ -249,6 +237,17 @@ namespace PowerPointLabs.ResizeLab
 
             Reset();
             action(selectedShapes);
+            CleanOriginalShapes();
+        }
+
+        private void ExecuteResizeAction(PowerPoint.ShapeRange selectedShapes, float slideWidth, float slideHeight, MultiInputResizeAction resizeAction)
+        {
+            if (selectedShapes == null) return;
+
+            var action = resizeAction(selectedShapes, slideWidth, slideHeight, IsAspectRatioLocked);
+
+            Reset();
+            action(selectedShapes, slideWidth, slideHeight, IsAspectRatioLocked);
             CleanOriginalShapes();
         }
 
