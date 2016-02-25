@@ -6,10 +6,13 @@ using System.Drawing;
 using System.Linq;
 using System.Windows.Forms;
 using Microsoft.Office.Interop.PowerPoint;
+using PowerPointLabs.ActionFramework.Common.Log;
 using PowerPointLabs.AutoUpdate.Interface;
+using PowerPointLabs.Models;
 using PowerPointLabs.PictureSlidesLab.Model;
 using PowerPointLabs.PictureSlidesLab.ModelFactory;
 using PowerPointLabs.PictureSlidesLab.Service;
+using PowerPointLabs.PictureSlidesLab.Service.Effect;
 using PowerPointLabs.PictureSlidesLab.Service.Interface;
 using PowerPointLabs.PictureSlidesLab.Service.Preview;
 using PowerPointLabs.PictureSlidesLab.Thread;
@@ -60,6 +63,8 @@ namespace PowerPointLabs.PictureSlidesLab.ViewModel
 
         public ObservableFont SelectedFontFamily { get; set; }
 
+        public Settings Settings { get; set; }
+
         #endregion
 
         #region Dependency
@@ -102,6 +107,7 @@ namespace PowerPointLabs.PictureSlidesLab.ViewModel
             InitFontFamilies();
             CleanUnusedPersistentData();
             Designer = stylesDesigner ?? new StylesDesigner();
+            Designer.SetSettings(Settings);
             OptionsFactory = new StyleOptionsFactory();
             VariantsFactory = new StyleVariantsFactory();
         }
@@ -155,6 +161,8 @@ namespace PowerPointLabs.PictureSlidesLab.ViewModel
             ImageSelectionList = new ObservableCollection<ImageItem>();
             ImageSelectionList.Add(CreateChoosePicturesItem());
 
+            Settings = StoragePath.LoadSettings();
+
             if (StoragePath.IsFirstTimeUsage())
             {
                 ImageSelectionList.Add(CreateSamplePic1Item());
@@ -162,7 +170,7 @@ namespace PowerPointLabs.PictureSlidesLab.ViewModel
             }
             else
             {
-                var loadedImageSelectionList = StoragePath.Load();
+                var loadedImageSelectionList = StoragePath.LoadPictures();
                 foreach (var item in loadedImageSelectionList)
                 {
                     ImageSelectionList.Add(item);
@@ -192,6 +200,7 @@ namespace PowerPointLabs.PictureSlidesLab.ViewModel
             }
             ImageSelectionList.RemoveAt(0);
             StoragePath.Save(ImageSelectionList);
+            StoragePath.Save(Settings);
         }
         #endregion
 
@@ -223,6 +232,7 @@ namespace PowerPointLabs.PictureSlidesLab.ViewModel
                         ImageFile = ImageUtil.GetThumbnailFromFullSizeImg(filename),
                         FullSizeImageFile = filename,
                         ContextLink = filename,
+                        Source = "local drive",
                         Tooltip = ImageUtil.GetWidthAndHeight(filename)
                     };
                     //add it
@@ -236,10 +246,11 @@ namespace PowerPointLabs.PictureSlidesLab.ViewModel
                         contentSlide, slideWidth, slideHeight);
                 }
             }
-            catch
+            catch (Exception e)
             {
                 // not an image or image is corrupted
                 View.ShowErrorMessageBox(TextCollection.PictureSlidesLabText.ErrorImageCorrupted);
+                Logger.LogException(e, "AddImageSelectionListItem");
             }
         }
 
@@ -261,7 +272,8 @@ namespace PowerPointLabs.PictureSlidesLab.ViewModel
             var item = new ImageItem
             {
                 ImageFile = StoragePath.LoadingImgPath,
-                ContextLink = downloadLink
+                ContextLink = downloadLink,
+                Source = downloadLink
             };
             UrlUtil.GetMetaInfo(ref downloadLink, item);
             ImageSelectionList.Add(item);
@@ -292,10 +304,11 @@ namespace PowerPointLabs.PictureSlidesLab.ViewModel
                                 contentSlide, slideWidth, slideHeight);
                         }
                     }
-                    catch
+                    catch (Exception e)
                     {
                         View.ShowErrorMessageBox(TextCollection.PictureSlidesLabText.ErrorImageDownloadCorrupted);
                         ImageSelectionList.Remove(item);
+                        Logger.LogException(e, "AddImageSelectionListItem (download)");
                     }
                     finally
                     {
@@ -347,9 +360,10 @@ namespace PowerPointLabs.PictureSlidesLab.ViewModel
                     slideWidth, slideHeight, targetDefaultOptions);
                 View.ShowSuccessfullyAppliedDialog();
             }
-            catch (AssumptionFailedException)
+            catch (Exception e)
             {
                 View.ShowErrorMessageBox(TextCollection.PictureSlidesLabText.ErrorNoSelectedSlide);
+                Logger.LogException(e, "ApplyStyleInPreviewStage");
             }
             SaveClipboardPicture(copiedPicture);
         }
@@ -369,6 +383,7 @@ namespace PowerPointLabs.PictureSlidesLab.ViewModel
             catch (Exception e)
             {
                 View.ShowErrorMessageBox("Failed when retrieving information from the selected preview image.", e);
+                Logger.LogException(e, "UpdateStyleVariationStyleOptionsWhenSelectedItemChange");
             }
         }
 
@@ -391,11 +406,24 @@ namespace PowerPointLabs.PictureSlidesLab.ViewModel
                 return;
 
             InitStylesVariationCategories(givenOptions, givenVariants, targetStyleItem.Tooltip);
-            UpdateStylesVariationImages(source, contentSlide, slideWidth, slideHeight);
+            if (Settings.GetDefaultAspectWhenCustomize() == Aspect.PictureAspect)
+            {
+                UpdateStylesVariationImages(source, contentSlide, slideWidth, slideHeight, isMockPreviewImages: true);
+            }
+            else
+            {
+                UpdateStylesVariationImages(source, contentSlide, slideWidth, slideHeight);
+            }
 
             StylesVariationListSelectedId.Number = 0;
             View.SetVariationListBoxScrollOffset(0d);
             _isPictureVariationInit = false;
+
+            if (Settings.GetDefaultAspectWhenCustomize() == Aspect.PictureAspect)
+            {
+                CurrentVariantCategoryId.Number =
+                    VariantsCategory.IndexOf(TextCollection.PictureSlidesLabText.VariantCategoryPicture);
+            }
         }
 
         /// <summary>
@@ -609,9 +637,10 @@ namespace PowerPointLabs.PictureSlidesLab.ViewModel
                 }
                 View.ShowSuccessfullyAppliedDialog();
             }
-            catch (AssumptionFailedException)
+            catch (Exception e)
             {
                 View.ShowErrorMessageBox(TextCollection.PictureSlidesLabText.ErrorNoSelectedSlide);
+                Logger.LogException(e, "ApplyStyleInVariationStage");
             }
             SaveClipboardPicture(copiedPicture);
         }
@@ -620,8 +649,7 @@ namespace PowerPointLabs.PictureSlidesLab.ViewModel
 
         public bool IsInPictureVariation()
         {
-            return View.IsVariationsFlyoutOpen
-                   && CurrentVariantCategory != null && CurrentVariantCategory.Text != null
+            return CurrentVariantCategory != null && CurrentVariantCategory.Text != null
                    && CurrentVariantCategory.Text == TextCollection.PictureSlidesLabText.VariantCategoryPicture;
         }
 
@@ -634,6 +662,7 @@ namespace PowerPointLabs.PictureSlidesLab.ViewModel
             catch (Exception e)
             {
                 View.ShowErrorMessageBox("Failed when fetching picture aspect.", e);
+                Logger.LogException(e, "GetSelectedPictureInPictureVariation");
                 return View.CreateDefaultPictureItem();
             }
         }
@@ -652,6 +681,7 @@ namespace PowerPointLabs.PictureSlidesLab.ViewModel
             catch (Exception e)
             {
                 View.ShowErrorMessageBox("Failed when processing picture aspect.", e);
+                Logger.LogException(e, "UpdateSelectedPictureInPictureVariation");
             }
         }
 
@@ -728,11 +758,21 @@ namespace PowerPointLabs.PictureSlidesLab.ViewModel
             catch (Exception e)
             {
                 View.ShowErrorMessageBox("Failed when generating picture aspect.", e);
+                Logger.LogException(e, "GetLast8Pictures");
                 return new List<ImageItem>();
             }
         }
 
         #endregion
+
+        #endregion
+
+        #region Add Picture Citation Slide
+
+        public void AddPictureCitationSlide(Slide slide, List<PowerPointSlide> allSlides)
+        {
+            new PictureCitationSlide(slide, allSlides).CreatePictureCitations();
+        }
 
         #endregion
 
@@ -762,7 +802,7 @@ namespace PowerPointLabs.PictureSlidesLab.ViewModel
             catch (Exception e)
             {
                 // sometimes Clipboard may fail
-                PowerPointLabsGlobals.LogException(e, "LoadClipboardPicture");
+                Logger.LogException(e, "LoadClipboardPicture");
                 return "";
             }
         }
@@ -787,7 +827,7 @@ namespace PowerPointLabs.PictureSlidesLab.ViewModel
             catch (Exception e)
             {
                 // sometimes Clipboard may fail
-                PowerPointLabsGlobals.LogException(e, "SaveClipboardPicture");
+                Logger.LogException(e, "SaveClipboardPicture");
             }
         }
 
@@ -824,6 +864,7 @@ namespace PowerPointLabs.PictureSlidesLab.ViewModel
             catch (Exception e)
             {
                 View.ShowErrorMessageBox(TextCollection.PictureSlidesLabText.ErrorImageCorrupted, e);
+                Logger.LogException(e, "UpdateStylesPreviewImages");
             }
             SaveClipboardPicture(copiedPicture);
 
@@ -902,7 +943,7 @@ namespace PowerPointLabs.PictureSlidesLab.ViewModel
         }
 
         private void UpdateStylesVariationImages(ImageItem source, Slide contentSlide, 
-            float slideWidth, float slideHeight)
+            float slideWidth, float slideHeight, bool isMockPreviewImages = false)
         {
             var copiedPicture = LoadClipboardPicture();
             try
@@ -911,11 +952,21 @@ namespace PowerPointLabs.PictureSlidesLab.ViewModel
                 {
                     var styleOption = _styleOptions[i];
                     PreviewInfo previewInfo;
-                    previewInfo = Designer.PreviewApplyStyle(
-                        IsInPictureVariation() 
-                            ? _8PicturesInPictureVariation[i] 
-                            : source, 
-                        contentSlide, slideWidth, slideHeight, styleOption);
+                    if (isMockPreviewImages)
+                    {
+                        previewInfo = new PreviewInfo
+                        {
+                            PreviewApplyStyleImagePath = StoragePath.NoPicturePlaceholderImgPath
+                        };
+                    }
+                    else
+                    {
+                        previewInfo = Designer.PreviewApplyStyle(
+                            IsInPictureVariation()
+                                ? _8PicturesInPictureVariation[i]
+                                : source,
+                            contentSlide, slideWidth, slideHeight, styleOption);
+                    }
                     StylesVariationList.Add(new ImageItem
                     {
                         ImageFile = previewInfo.PreviewApplyStyleImagePath,
@@ -926,6 +977,7 @@ namespace PowerPointLabs.PictureSlidesLab.ViewModel
             catch (Exception e)
             {
                 View.ShowErrorMessageBox(TextCollection.PictureSlidesLabText.ErrorImageCorrupted, e);
+                Logger.LogException(e, "UpdateStylesVariationImages");
             }
             SaveClipboardPicture(copiedPicture);
         }
@@ -947,7 +999,8 @@ namespace PowerPointLabs.PictureSlidesLab.ViewModel
                     StoragePath.SampleImg2Path),
                 FullSizeImageFile = StoragePath.SampleImg2Path,
                 Tooltip = "Picture taken from Gary Elsasser https://flic.kr/p/5s5APp",
-                ContextLink = "https://flic.kr/p/5s5APp"
+                ContextLink = "https://flic.kr/p/5s5APp",
+                Source = "https://flic.kr/p/5s5APp"
             };
         }
 
@@ -959,7 +1012,8 @@ namespace PowerPointLabs.PictureSlidesLab.ViewModel
                     StoragePath.SampleImg1Path),
                 FullSizeImageFile = StoragePath.SampleImg1Path,
                 Tooltip = "Picture taken from Alosh Bennett https://flic.kr/p/5fKBTq",
-                ContextLink = "https://flic.kr/p/5fKBTq"
+                ContextLink = "https://flic.kr/p/5fKBTq",
+                Source = "https://flic.kr/p/5fKBTq"
             };
         }
         #endregion

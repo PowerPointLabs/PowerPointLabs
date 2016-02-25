@@ -14,6 +14,7 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using Microsoft.Office.Core;
 using Microsoft.Office.Interop.PowerPoint;
+using PowerPointLabs.ActionFramework.Common.Extension;
 using PowerPointLabs.DataSources;
 using PowerPointLabs.Models;
 using PowerPointLabs.Utils;
@@ -273,7 +274,7 @@ namespace PowerPointLabs.DrawingsLab
         #region Hotkey Initialisation
         private bool IsPanelOpen()
         {
-            var drawingsPane = Globals.ThisAddIn.GetActivePane(typeof(DrawingsPane));
+            var drawingsPane = this.GetTaskPane(typeof(DrawingsPane));
             return drawingsPane != null && drawingsPane.Visible;
         }
 
@@ -282,7 +283,7 @@ namespace PowerPointLabs.DrawingsLab
             // Is reading hotkeys when panel is open and user is not selecting text.
             return IsPanelOpen() &&
                    _dataSource.HotkeysEnabled &&
-                   PowerPointCurrentPresentationInfo.CurrentSelection.Type != PpSelectionType.ppSelectionText;
+                   this.GetCurrentSelection().Type != PpSelectionType.ppSelectionText;
         }
 
         private Action RunOnlyWhenOpen(Action action)

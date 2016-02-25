@@ -9,6 +9,7 @@ namespace PowerPointLabs.AgendaLab
 {
     internal static partial class AgendaLabMain
     {
+#pragma warning disable 0618
         #region Main Synchronisation Function
         /// <summary>
         /// Call the function like this for example:

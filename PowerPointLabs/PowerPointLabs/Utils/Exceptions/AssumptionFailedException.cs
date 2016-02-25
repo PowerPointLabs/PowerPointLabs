@@ -1,4 +1,6 @@
 ﻿using System;
+using PowerPointLabs.ActionFramework.Common.Log;
+using PowerPointLabs.ActionFramework.Common.Logger;
 
 namespace PowerPointLabs.Utils.Exceptions
 {
@@ -6,13 +8,13 @@ namespace PowerPointLabs.Utils.Exceptions
     {
         public AssumptionFailedException(string errorMsg) : base(errorMsg)
         {
-            PowerPointLabsGlobals.Log("Error", errorMsg);
+            Logger.Log(errorMsg, LogType.Error);
         }
 
         public AssumptionFailedException(string errorMsg, Exception e)
             : base(errorMsg, e)
         {
-            PowerPointLabsGlobals.Log("Error", errorMsg);
+            Logger.Log(errorMsg, LogType.Error);
         }
     }
 }

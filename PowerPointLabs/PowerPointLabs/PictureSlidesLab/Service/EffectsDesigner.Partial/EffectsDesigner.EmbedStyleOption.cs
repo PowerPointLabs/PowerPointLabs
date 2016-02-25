@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Globalization;
 using System.Windows;
 using Microsoft.Office.Core;
+using PowerPointLabs.ActionFramework.Common.Log;
 using PowerPointLabs.PictureSlidesLab.Model;
 using PowerPointLabs.PictureSlidesLab.Service.Effect;
 using PowerPoint = Microsoft.Office.Interop.PowerPoint;
@@ -20,11 +21,12 @@ namespace PowerPointLabs.PictureSlidesLab.Service
         /// <param name="originalImageFile"></param>
         /// <param name="croppedImageFile"></param>
         /// <param name="imageContext"></param>
+        /// <param name="imageSource"></param>
         /// <param name="rect"></param>
         /// <param name="opt"></param>
         /// <returns></returns>
         public List<PowerPoint.Shape> EmbedStyleOptionsInformation(string originalImageFile, string croppedImageFile,
-            string imageContext, Rect rect, StyleOption opt)
+            string imageContext, string imageSource, Rect rect, StyleOption opt)
         {
             if (originalImageFile == null) return new List<PowerPoint.Shape>();
 
@@ -46,6 +48,7 @@ namespace PowerPointLabs.PictureSlidesLab.Service
             AddTag(originalImage, Tag.ReloadOriginImg, originalImageFile);
             AddTag(originalImage, Tag.ReloadCroppedImg, croppedImageFile);
             AddTag(originalImage, Tag.ReloadImgContext, imageContext);
+            AddTag(originalImage, Tag.ReloadImgSource, imageSource);
             AddTag(originalImage, Tag.ReloadRectX, rect.X.ToString(CultureInfo.InvariantCulture));
             AddTag(originalImage, Tag.ReloadRectY, rect.Y.ToString(CultureInfo.InvariantCulture));
             AddTag(originalImage, Tag.ReloadRectWidth, rect.Width.ToString(CultureInfo.InvariantCulture));
@@ -63,7 +66,7 @@ namespace PowerPointLabs.PictureSlidesLab.Service
                 }
                 catch (Exception e)
                 {
-                    PowerPointLabsGlobals.LogException(e, "EmbedStyleOptionsInformation");
+                    Logger.LogException(e, "EmbedStyleOptionsInformation");
                 }
             }
             return result;

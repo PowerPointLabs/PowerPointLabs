@@ -3,7 +3,7 @@ using System.Drawing;
 using System.Windows;
 using System.Windows.Documents;
 using System.Windows.Media;
-using PowerPointLabs.Models;
+using PowerPointLabs.ActionFramework.Common.Extension;
 using PowerPointLabs.PictureSlidesLab.Util;
 using PowerPointLabs.PictureSlidesLab.View.ImageAdjustment;
 using PowerPointLabs.WPF.Observable;
@@ -108,8 +108,8 @@ namespace PowerPointLabs.PictureSlidesLab.View
 
             var layer = AdornerLayer.GetAdornerLayer(element);
             _croppingAdorner = new CroppingAdorner(element, rect);
-            _croppingAdorner.SlideWidth = PowerPointPresentation.Current.SlideWidth;
-            _croppingAdorner.SlideHeight = PowerPointPresentation.Current.SlideHeight;
+            _croppingAdorner.SlideWidth = this.GetCurrentPresentation().SlideWidth;
+            _croppingAdorner.SlideHeight = this.GetCurrentPresentation().SlideHeight;
             _croppingAdorner.CropChanged += (sender, args) =>
             {
                 var croppingRect = _croppingAdorner.ClippingRectangle;
@@ -200,8 +200,8 @@ namespace PowerPointLabs.PictureSlidesLab.View
 
         private Rect AutoFit(FrameworkElement element = null)
         {
-            var slideWidth = PowerPointPresentation.Current.SlideWidth;
-            var slideHeight = PowerPointPresentation.Current.SlideHeight;
+            var slideWidth = this.GetCurrentPresentation().SlideWidth;
+            var slideHeight = this.GetCurrentPresentation().SlideHeight;
             element = element ?? _frameworkElement;
 
             Rect rect;

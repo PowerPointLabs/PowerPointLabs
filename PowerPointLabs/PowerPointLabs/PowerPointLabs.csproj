@@ -259,6 +259,7 @@
     <Compile Include="ActionFramework\Action\ColorsLabActionHandler.cs" />
     <Compile Include="ActionFramework\Action\EmptyActionHandler.cs" />
     <Compile Include="ActionFramework\Common\Extension\ActionFrameworkExtensions.cs" />
+    <Compile Include="ActionFramework\Common\Extension\FunctionalTestExtensions.cs" />
     <Compile Include="ActionFramework\Common\Extension\ContentControlExtensions.cs" />
     <Compile Include="ActionFramework\Common\Extension\ActionHandlerExtensions.cs" />
     <Compile Include="ActionFramework\Common\Factory\ActionHandlerFactory.cs" />
@@ -268,6 +269,8 @@
     <Compile Include="ActionFramework\Common\Factory\BaseHandlerFactory.cs" />
     <Compile Include="ActionFramework\Common\Interface\IRibbonIdMetadata.cs" />
     <Compile Include="ActionFramework\Common\Attribute\ExportImageRibbonIdAttribute.cs" />
+    <Compile Include="ActionFramework\Common\Log\Logger.cs" />
+    <Compile Include="ActionFramework\Common\Log\LogType.cs" />
     <Compile Include="ActionFramework\Image\PositionsLabImageHandler.cs" />
     <Compile Include="ActionFramework\Image\ColorsLabImageHandler.cs" />
     <Compile Include="ActionFramework\Image\EmptyImageHandler.cs" />
@@ -432,6 +435,7 @@
     <Compile Include="PictureSlidesLab\ModelFactory\VariantWorker\TextGlowVariantWorker.cs" />
     <Compile Include="PictureSlidesLab\ModelFactory\VariantWorker\TriangleTransparencyVariantWorker.cs" />
     <Compile Include="PictureSlidesLab\ModelFactory\VariantWorker\TriangleVariantWorker.cs" />
+    <Compile Include="PictureSlidesLab\Model\Settings.cs" />
     <Compile Include="PictureSlidesLab\Model\ObservableFont.cs" />
     <Compile Include="PictureSlidesLab\Model\ObservableImageItem.cs" />
     <Compile Include="PictureSlidesLab\Model\StyleOption.Partial\StyleOption.FrostedGlassBanner.cs" />
@@ -465,7 +469,9 @@
     <Compile Include="PictureSlidesLab\Service\EffectsDesigner.Partial\EffectsDesigner.Text.cs" />
     <Compile Include="PictureSlidesLab\Service\EffectsDesigner.Partial\EffectsDesigner.TextBox.cs" />
     <Compile Include="PictureSlidesLab\Service\EffectsDesigner.Partial\EffectsDesigner.TriangleBanner.cs" />
+    <Compile Include="PictureSlidesLab\Service\Effect\Aspect.cs" />
     <Compile Include="PictureSlidesLab\Service\Interface\IStylesDesigner.cs" />
+    <Compile Include="PictureSlidesLab\Service\PictureCitationSlide.cs" />
     <Compile Include="PictureSlidesLab\Service\StylesWorker\BannerStyleWorker.cs" />
     <Compile Include="PictureSlidesLab\Service\StylesWorker\BlurStyleWorker.cs" />
     <Compile Include="PictureSlidesLab\Service\StylesWorker\CircleStyleWorker.cs" />
@@ -499,6 +505,9 @@
     <Compile Include="PictureSlidesLab\Model\StyleOption.cs" />
     <Compile Include="PictureSlidesLab\Model\StyleVariant.cs" />
     <Compile Include="PictureSlidesLab\Thread\Interface\IThreadContext.cs" />
+    <Compile Include="PictureSlidesLab\View\SettingsFlyout.xaml.cs">
+      <DependentUpon>SettingsFlyout.xaml</DependentUpon>
+    </Compile>
     <Compile Include="PictureSlidesLab\View\SlideSelectionDialog.xaml.cs">
       <DependentUpon>SlideSelectionDialog.xaml</DependentUpon>
     </Compile>
@@ -535,6 +544,7 @@
     <Compile Include="PositionsLab\PositionsPaneWPF.xaml.cs">
       <DependentUpon>PositionsPaneWPF.xaml</DependentUpon>
     </Compile>
+    <Compile Include="PPMouseLegacy.cs" />
     <Compile Include="ResizeLab\ResizeLabPaneWPF.xaml.InterfaceImpl.cs" />
     <Compile Include="ResizeLab\IResizeLabPane.cs" />
     <Compile Include="ResizeLab\ResizeLabMain.AspectRatio.cs" />
@@ -551,6 +561,8 @@
       <DependentUpon>ResizeLabPaneWPF.xaml</DependentUpon>
     </Compile>
     <Compile Include="ResizeLab\ResizeLabMain.ShrinkStretch.cs" />
+    <Compile Include="TagMatchers\NoEffectTagMatcher.cs" />
+    <Compile Include="Tags\NoEffectTag.cs" />
     <Compile Include="Utils\Assumption.cs" />
     <Compile Include="Utils\CultureUtil.cs" />
     <Compile Include="Utils\Exceptions\AssumptionFailedException.cs" />
@@ -601,7 +613,7 @@
     <Compile Include="Models\PowerPointMagnifiedSlide.cs" />
     <Compile Include="Models\PowerPointMagnifyingSlide.cs" />
     <Compile Include="Models\PowerPointStepBackSlide.cs" />
-    <Compile Include="PowerPointLabsGlobals.cs" />
+    <Compile Include="LegacyShapeUtil.cs" />
     <Compile Include="RecorderTaskPane.cs">
       <SubType>UserControl</SubType>
     </Compile>
@@ -1055,6 +1067,10 @@
       <Name>TestInterface</Name>
     </ProjectReference>
     <Page Include="PictureSlidesLab\View\AdjustImageWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="PictureSlidesLab\View\SettingsFlyout.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

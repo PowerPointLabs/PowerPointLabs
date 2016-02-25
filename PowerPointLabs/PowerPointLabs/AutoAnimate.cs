@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Runtime.InteropServices;
+using PowerPointLabs.ActionFramework.Common.Log;
 using PowerPointLabs.Models;
 using PowerPointLabs.Views;
 using Office = Microsoft.Office.Core;
@@ -12,6 +13,7 @@ namespace PowerPointLabs
 {
     class AutoAnimate
     {
+#pragma warning disable 0618
         public static float defaultDuration = 0.5f;
         public static bool frameAnimationChecked = false;
 
@@ -42,7 +44,7 @@ namespace PowerPointLabs
             }
             catch (Exception e)
             { 
-                PowerPointLabsGlobals.LogException(e, "AddAnimationButtonClick");
+                Logger.LogException(e, "AddAnimationButtonClick");
                 Views.ErrorDialogWrapper.ShowDialog("PowerPointLabs", e.Message, e);
             }
             
@@ -101,7 +103,7 @@ namespace PowerPointLabs
             }
             catch (Exception e)
             {
-                PowerPointLabsGlobals.LogException(e, "ReloadAutoAnimation");
+                Logger.LogException(e, "ReloadAutoAnimation");
                 Views.ErrorDialogWrapper.ShowDialog("PowerPointLabs", e.Message, e);
             }
         }

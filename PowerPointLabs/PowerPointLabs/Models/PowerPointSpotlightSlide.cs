@@ -4,6 +4,7 @@ using System.Drawing;
 using System.IO;
 using System.Linq;
 using System.Text;
+using PowerPointLabs.ActionFramework.Common.Log;
 using Office = Microsoft.Office.Core;
 using PowerPoint = Microsoft.Office.Interop.PowerPoint;
 
@@ -11,6 +12,7 @@ namespace PowerPointLabs.Models
 {
     class PowerPointSpotlightSlide : PowerPointSlide
     {
+#pragma warning disable 0618
         //Padding so that after cropping, circumference of spotLightPicture will not have soft edge
         private const float SoftEdgePadding = 3.0f;
 
@@ -61,12 +63,12 @@ namespace PowerPointLabs.Models
             if (isCallout)
             {
                 spotlightShape = this.Shapes.Paste()[1];
-                PowerPointLabsGlobals.CopyShapePosition(spotShape, ref spotlightShape);
+                LegacyShapeUtil.CopyShapePosition(spotShape, ref spotlightShape);
             }
             else
             {
                 spotlightShape = this.Shapes.PasteSpecial(PowerPoint.PpPasteDataType.ppPastePNG)[1];
-                PowerPointLabsGlobals.CopyShapePosition(spotShape, ref spotlightShape);
+                LegacyShapeUtil.CopyShapePosition(spotShape, ref spotlightShape);
                 CropSpotlightPictureToSlide(ref spotlightShape);
             }
 
@@ -87,7 +89,7 @@ namespace PowerPointLabs.Models
             }
             catch (Exception e)
             {
-                PowerPointLabsGlobals.LogException(e, "AddSpotlightEffect");
+                Logger.LogException(e, "AddSpotlightEffect");
                 throw;
             }
         }

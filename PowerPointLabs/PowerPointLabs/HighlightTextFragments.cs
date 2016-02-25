@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Drawing;
 using System.Runtime.InteropServices;
+using PowerPointLabs.ActionFramework.Common.Log;
 using PowerPointLabs.Models;
 using Office = Microsoft.Office.Core;
 using PowerPoint = Microsoft.Office.Interop.PowerPoint;
@@ -12,6 +13,7 @@ namespace PowerPointLabs
 {
     class HighlightTextFragments
     {
+#pragma warning disable 0618
         public static Color backgroundColor = Color.FromArgb(255, 255, 0);
         public enum HighlightTextSelection { kShapeSelected, kTextSelected, kNoneSelected };
         public static HighlightTextSelection userSelection = HighlightTextSelection.kNoneSelected;
@@ -52,7 +54,7 @@ namespace PowerPointLabs
             }
             catch (Exception e)
             {
-                PowerPointLabsGlobals.LogException(e, "AddHighlightedTextFragments");
+                Logger.LogException(e, "AddHighlightedTextFragments");
                 throw;
             }
         }

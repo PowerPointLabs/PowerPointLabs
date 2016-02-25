@@ -10,7 +10,7 @@ namespace PowerPointLabs.PictureSlidesLab.Service.StylesWorker
     [ExportMetadata("WorkerOrder", 8)]
     class CircleStyleWorker : IStyleWorker
     {
-        public IList<Shape> Execute(StyleOption option, EffectsDesigner designer, ImageItem source, Shape imageShape)
+        public IList<Shape> Execute(StyleOption option, EffectsDesigner designer, ImageItem source, Shape imageShape, Settings settings)
         {
             var result = new List<Shape>();
             if (option.IsUseCircleStyle)

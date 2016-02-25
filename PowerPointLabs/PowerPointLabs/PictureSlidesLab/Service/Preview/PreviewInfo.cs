@@ -4,7 +4,7 @@ namespace PowerPointLabs.PictureSlidesLab.Service.Preview
 {
     public class PreviewInfo
     {
-        public string PreviewApplyStyleImagePath { get; private set; }
+        public string PreviewApplyStyleImagePath { get; set; }
 
         public PreviewInfo()
         {

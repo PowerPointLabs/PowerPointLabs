@@ -18,7 +18,7 @@ namespace PowerPointLabs {
     [Microsoft.VisualStudio.Tools.Applications.Runtime.StartupObjectAttribute(0)]
     [global::System.Security.Permissions.PermissionSetAttribute(global::System.Security.Permissions.SecurityAction.Demand, Name="FullTrust")]
     public sealed partial class ThisAddIn : Microsoft.Office.Tools.AddInBase {
-        
+#pragma warning disable 0618
         internal Microsoft.Office.Tools.CustomTaskPaneCollection CustomTaskPanes;
         
         [global::System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.VisualStudio.Tools.Office.ProgrammingModel.dll", "14.0.0.0")]

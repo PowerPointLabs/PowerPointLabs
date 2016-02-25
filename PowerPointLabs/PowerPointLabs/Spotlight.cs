@@ -4,6 +4,7 @@ using System.Drawing;
 using System.Linq;
 using System.Text;
 using System.Runtime.InteropServices;
+using PowerPointLabs.ActionFramework.Common.Log;
 using PowerPointLabs.Models;
 using Office = Microsoft.Office.Core;
 using PowerPoint = Microsoft.Office.Interop.PowerPoint;
@@ -12,6 +13,7 @@ namespace PowerPointLabs
 {
     class Spotlight
     {
+#pragma warning disable 0618
         public static float defaultSoftEdges = 10;
         public static float defaultTransparency = 0.25f;
         public static System.Drawing.Color defaultColor = Color.Black;
@@ -53,7 +55,7 @@ namespace PowerPointLabs
             }
             catch (Exception e)
             {
-                PowerPointLabsGlobals.LogException(e, "SpotlightBtnClick");
+                Logger.LogException(e, "SpotlightBtnClick");
                 throw;
             }
         }

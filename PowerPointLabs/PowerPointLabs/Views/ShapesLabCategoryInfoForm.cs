@@ -11,6 +11,7 @@ namespace PowerPointLabs.Views
 {
     public partial class ShapesLabCategoryInfoForm : Form
     {
+#pragma warning disable 0618
         private const string InvalidCharsRegex = "[<>:\"/\\\\|?*]";
 
         # region Properties

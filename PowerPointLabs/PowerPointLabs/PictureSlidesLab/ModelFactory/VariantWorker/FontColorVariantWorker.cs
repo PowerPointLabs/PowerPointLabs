@@ -56,16 +56,16 @@ namespace PowerPointLabs.PictureSlidesLab.ModelFactory.VariantWorker
                 }),
                 new StyleVariant(new Dictionary<string, object>
                 {
-                    {"OptionName", "Purple"},
-                    {"IsUseTextFormat", true},
-                    {"FontColor", "#7F00D4"}
-                }),
-                new StyleVariant(new Dictionary<string, object>
-                {
                     {"OptionName", "Dark Blue"},
                     {"IsUseTextFormat", true},
                     {"FontColor", "#001550"}
-                })
+                }),
+                new StyleVariant(new Dictionary<string, object>
+                {
+                    {"OptionName", "No Effect"},
+                    {"IsUseTextFormat", true},
+                    {"FontColor", ""}
+                }),
             };
         }
     }

@@ -10,6 +10,7 @@ namespace PowerPointLabs.TagMatchers
             {
                 return new List<ITagMatcher>
                 {
+                    new NoEffectTagMatcher(),
                     new PauseTagMatcher(),
                     new StartVoiceTagMatcher(),
                     new EndVoiceTagMatcher(),

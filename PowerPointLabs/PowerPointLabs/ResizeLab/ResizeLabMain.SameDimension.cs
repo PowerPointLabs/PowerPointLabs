@@ -1,4 +1,5 @@
 ﻿using System;
+using PowerPointLabs.ActionFramework.Common.Log;
 using PowerPointLabs.Utils;
 using PowerPoint = Microsoft.Office.Interop.PowerPoint;
 
@@ -76,7 +77,7 @@ namespace PowerPointLabs.ResizeLab
             }
             catch (Exception e)
             {
-                PowerPointLabsGlobals.LogException(e, "ResizeShapes");
+                Logger.LogException(e, "ResizeShapes");
                 throw;
             }
         }

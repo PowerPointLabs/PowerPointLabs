@@ -95,14 +95,6 @@ namespace Test.UnitTest.PictureSlidesLab.Service.Effect
             textBoxInfo = textBoxes.GetTextBoxesInfo();
             Assert.IsTrue(SlideUtil.IsRoughlySame(224.054962f, textBoxInfo.Left));
             Assert.IsTrue(SlideUtil.IsRoughlySame(149.279953f, textBoxInfo.Top));
-
-            textBoxes
-                .SetAlignment(Alignment.Auto)
-                .SetPosition(Position.Original)
-                .StartBoxing();
-            textBoxInfo = textBoxes.GetTextBoxesInfo();
-            Assert.IsTrue(SlideUtil.IsRoughlySame(68.2f, textBoxInfo.Left));
-            Assert.IsTrue(SlideUtil.IsRoughlySame(52.17752f, textBoxInfo.Top));
         }
 
         [TestMethod]

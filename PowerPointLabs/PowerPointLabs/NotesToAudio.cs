@@ -10,12 +10,14 @@ using PowerPointLabs.SpeechEngine;
 using PowerPointLabs.Views;
 using Microsoft.Office.Core;
 using Microsoft.Office.Interop.PowerPoint;
+using PowerPointLabs.ActionFramework.Common.Log;
 using Shape = Microsoft.Office.Interop.PowerPoint.Shape;
 
 namespace PowerPointLabs
 {
     class NotesToAudio
     {
+#pragma warning disable 0618
         private static string TempFolderName
         {
             get
@@ -128,7 +130,7 @@ namespace PowerPointLabs
                     }
                     catch (Exception e)
                     {
-                        PowerPointLabsGlobals.Log("Error", "Failed to delete audio, it may be still playing. " + e.Message);
+                        Logger.LogException(e, "Failed to delete audio, it may be still playing. " + e.Message);
                     }
                 }
             }

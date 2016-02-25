@@ -34,6 +34,18 @@ namespace PowerPointLabs.PictureSlidesLab.View
             PictureSlidesLabLogo.Source = ImageUtil.BitmapToImageSource(Properties.Resources.PictureSlidesLab);
         }
 
+        public void ShowQuickDropDialog()
+        {
+            IsOpen = true;
+            Show();
+        }
+
+        public void HideQuickDropDialog()
+        {
+            IsOpen = false;
+            Hide();
+        }
+
         // drag to move window
         private void QuickDropDialog_OnMouseDown(object sender, MouseButtonEventArgs e)
         {
@@ -91,7 +103,7 @@ namespace PowerPointLabs.PictureSlidesLab.View
         private void QuickDropDialog_OnMouseDoubleClick(object sender, MouseButtonEventArgs e)
         {
             _parent.Activate();
-            Close();
+            e.Handled = true;
         }
 
         private void MenuItemPastePictureHere_OnClick(object sender, RoutedEventArgs e)

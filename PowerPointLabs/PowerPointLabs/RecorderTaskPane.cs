@@ -21,6 +21,7 @@ namespace PowerPointLabs
 {
     internal partial class RecorderTaskPane : UserControl
     {
+#pragma warning disable 0618
         // map slide id to relative index
         private readonly Dictionary<int, int> _slideRelativeMapper;
         // this offset is used to map a slide id to relative slide id
