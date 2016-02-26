@@ -803,6 +803,24 @@ namespace PowerPointLabs.PositionsLab
                 currShape.IncrementTop(lowestRef.Y - topMost.Y + spaceBetweenShapes);
             }
         }
+
+        public static void DistributeGrid(List<Shape> selectedShapes, int rowLength, int colLength, int alignment)
+        {
+            Drawing.PointF refPoint = Graphics.GetCenterPoint(selectedShapes[0]);
+
+            List<PPShape> allShapes = new List<PPShape>();
+            for (int i = 0; i < selectedShapes.Count; i++)
+            {
+                allShapes.Add(new PPShape(selectedShapes[i]));
+            }
+
+            int longestRowIndex = GetIndexOfLongestRow(allShapes, rowLength);
+            int longestColIndex = GetIndexOfLongestCol(allShapes, rowLength);
+
+            float[] rowDifferences = new float[rowLength];
+            float[] colDifferences = new float[colLength];
+
+        }
         #endregion
 
         #endregion
@@ -926,6 +944,67 @@ namespace PowerPointLabs.PositionsLab
             }
 
             return diff;
+        }
+
+        public static int GetIndexOfLongestRow(List<PPShape> shapes, int rowLength)
+        {
+            float longestRowWidth = 0;
+            float currentRowWidth = 0;
+            int index = -1;
+            for (int i = 0; i < shapes.Count; i += rowLength)
+            {
+                int rowIndex = i;
+                for (int j = 0; j < rowLength; j++)
+                {
+                    int currentIndex = i + j;
+                    if (currentIndex >= shapes.Count)
+                    {
+                        break;
+                    }
+
+                    currentRowWidth += shapes[currentIndex].AbsoluteWidth;
+                }
+
+                if (currentRowWidth > longestRowWidth)
+                {
+                    longestRowWidth = currentRowWidth;
+                    index = rowIndex;
+                }
+                currentRowWidth = 0;
+            }
+
+            return index;
+        }
+
+        public static int GetIndexOfLongestCol(List<PPShape> shapes, int rowLength)
+        {
+            float longestColWidth = 0;
+            float currentColWidth = 0;
+            float colLength = shapes.Count / rowLength;
+            int index = -1;
+            for (int i = 0; i < rowLength; i++)
+            {
+                int colIndex = i;
+                for (int j = 0; j < colLength; j++)
+                {
+                    int currentIndex = i + j * rowLength;
+                    if (currentIndex >= shapes.Count)
+                    {
+                        break;
+                    }
+
+                    currentColWidth += shapes[currentIndex].AbsoluteHeight;
+                }
+
+                if (currentColWidth > longestColWidth)
+                {
+                    longestColWidth = currentColWidth;
+                    index = colIndex;
+                }
+                currentColWidth = 0;
+            }
+
+            return index;
         }
 
         private static void Init()
