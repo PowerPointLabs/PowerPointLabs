@@ -323,10 +323,11 @@
                   onAction="OnAction"/>
           <button id="ResizeLabButton"
                   visible="true"
-                  getLabel="GetResizeLabButtonLabel"
+                  getLabel="GetLabel"
                   size="large"
-                  getSupertip="GetResizeLabButtonSupertip"
-                  onAction="ResizeLabButtonClick"/>
+                  getImage="GetImage"
+                  getSupertip="GetSupertip"
+                  onAction="OnAction"/>
         </group>
         <group id="PPTLabsHelp"
                getLabel="GetPPTLabsHelpGroupLabel"
