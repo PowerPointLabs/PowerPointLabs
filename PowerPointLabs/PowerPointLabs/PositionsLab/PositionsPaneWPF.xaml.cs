@@ -32,6 +32,7 @@ namespace PowerPointLabs.PositionsLab
     /// </summary>
     public partial class PositionsPaneWPF : System.Windows.Controls.UserControl
     {
+        private PositionsDistributeGridDialog positionsDistributeGridDialog;
 
         private static LMouseUpListener _leftMouseUpListener = null;
         private static LMouseDownListener _leftMouseDownListener = null;
@@ -146,7 +147,20 @@ namespace PowerPointLabs.PositionsLab
 
         private void DistributeGridButton_Click(object sender, RoutedEventArgs e)
         {
-            
+            List<Shape> selectedShapes = ConvertShapeRangeToList(this.GetCurrentSelection().ShapeRange, 1);
+            int numShapesSelected = selectedShapes.Count;
+            int rowLength = (int)Math.Ceiling(Math.Sqrt(numShapesSelected));
+            int colLength = (int)Math.Ceiling((double)numShapesSelected / rowLength);
+
+            if (positionsDistributeGridDialog == null || !positionsDistributeGridDialog.IsOpen)
+            {
+                positionsDistributeGridDialog = new PositionsDistributeGridDialog(selectedShapes, rowLength, colLength);
+                positionsDistributeGridDialog.Show();
+            }
+            else
+            {
+                positionsDistributeGridDialog.Activate();
+            }
         }
         #endregion
 
