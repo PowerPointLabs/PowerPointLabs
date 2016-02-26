@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Windows;
 using PowerPoint = Microsoft.Office.Interop.PowerPoint;
 
@@ -48,6 +47,28 @@ namespace PowerPointLabs.ResizeLab
             {
                 _resizeLab.ResetShapes(selectedShapes, _originalShapeProperties);
             }
+        }
+
+        public void ExecuteResizeAction(PowerPoint.ShapeRange selectedShapes, SingleInputResizeAction resizeAction)
+        {
+            if (selectedShapes == null) return;
+
+            var action = resizeAction(selectedShapes);
+
+            Reset();
+            action(selectedShapes);
+            CleanOriginalShapes();
+        }
+
+        public void ExecuteResizeAction(PowerPoint.ShapeRange selectedShapes, float slideWidth, float slideHeight, MultiInputResizeAction resizeAction)
+        {
+            if (selectedShapes == null) return;
+
+            var action = resizeAction(selectedShapes, slideWidth, slideHeight, IsAspectRatioLocked);
+
+            Reset();
+            action(selectedShapes, slideWidth, slideHeight, IsAspectRatioLocked);
+            CleanOriginalShapes();
         }
 
         private void StoreOriginalShapesProperties(PowerPoint.ShapeRange selectedShapes)

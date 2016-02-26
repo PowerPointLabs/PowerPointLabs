@@ -18,5 +18,8 @@ namespace PowerPointLabs.ResizeLab
         void Preview(PowerPoint.ShapeRange selectedShapes, float slideWidth, float slideHeight,
             MultiInputResizeAction previewAction);
         void Reset();
+        void ExecuteResizeAction(PowerPoint.ShapeRange selectedShapes, SingleInputResizeAction resizeAction);
+        void ExecuteResizeAction(PowerPoint.ShapeRange selectedShapes, float slideWidth, float slideHeight,
+            MultiInputResizeAction resizeAction);
     }
 }

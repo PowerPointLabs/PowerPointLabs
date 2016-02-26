@@ -339,28 +339,6 @@ namespace PowerPointLabs.ResizeLab
 
         #region Helper Functions
 
-        private void ExecuteResizeAction(PowerPoint.ShapeRange selectedShapes, SingleInputResizeAction resizeAction)
-        {
-            if (selectedShapes == null) return;
-
-            var action = resizeAction(selectedShapes);
-
-            Reset();
-            action(selectedShapes);
-            CleanOriginalShapes();
-        }
-
-        private void ExecuteResizeAction(PowerPoint.ShapeRange selectedShapes, float slideWidth, float slideHeight, MultiInputResizeAction resizeAction)
-        {
-            if (selectedShapes == null) return;
-
-            var action = resizeAction(selectedShapes, slideWidth, slideHeight, IsAspectRatioLocked);
-
-            Reset();
-            action(selectedShapes, slideWidth, slideHeight, IsAspectRatioLocked);
-            CleanOriginalShapes();
-        }
-
         private PowerPoint.ShapeRange GetSelectedShapes(bool handleError = true)
         {
             var selection = GetSelection();
