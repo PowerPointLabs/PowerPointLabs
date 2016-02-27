@@ -105,6 +105,7 @@ namespace PowerPointLabs.PictureSlidesLab.View
 
         private void InitStyleing()
         {
+            Logger.Log("PSL init styling begins");
             // load back the style from the current slide, or
             // select the first picture to preview styles
             var isSuccessfullyLoaded = LoadStyleAndImage(this.GetCurrentSlide(),
@@ -113,6 +114,7 @@ namespace PowerPointLabs.PictureSlidesLab.View
             {
                 if (!isSuccessfullyLoaded)
                 {
+                    Logger.Log("Not loaded back style and picture, going to select a picture.");
                     // index-0 is choosePicture placeholder
                     ViewModel.ImageSelectionListSelectedId.Number = 1;
                 }

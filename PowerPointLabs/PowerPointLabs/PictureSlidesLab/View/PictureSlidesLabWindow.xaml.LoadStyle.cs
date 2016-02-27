@@ -170,6 +170,7 @@ namespace PowerPointLabs.PictureSlidesLab.View
             }
             else if (originalShapeList.Count > 0) // load the style
             {
+                Logger.Log("Original shapes found.");
                 var originalImageShape = originalShapeList[0];
                 var isImageStillInListBox = false;
                 var styleName = originalImageShape.Tags[Service.Effect.Tag.ReloadPrefix + "StyleName"];
