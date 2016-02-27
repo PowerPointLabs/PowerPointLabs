@@ -5,6 +5,7 @@ using System.ComponentModel.Composition.Hosting;
 using System.Reflection;
 using Microsoft.Office.Core;
 using Microsoft.Office.Interop.PowerPoint;
+using PowerPointLabs.ActionFramework.Common.Log;
 using PowerPointLabs.Models;
 using PowerPointLabs.PictureSlidesLab.Model;
 using PowerPointLabs.PictureSlidesLab.Service.Interface;
@@ -38,7 +39,7 @@ namespace PowerPointLabs.PictureSlidesLab.Service
         public StylesDesigner(Application app = null)
         {
             Path = TempPath.TempFolder;
-            Name = "PictureSlidesLabPreview";
+            Name = "PictureSlidesLabPreview" + Guid.NewGuid().ToString().Substring(0, 7);
             Option = new StyleOption();
             Application = app;
             OpenInBackground();
@@ -123,6 +124,7 @@ namespace PowerPointLabs.PictureSlidesLab.Service
         /// <param name="isActualSize"></param>
         private void ApplyStyle(EffectsDesigner designer, ImageItem source, bool isActualSize)
         {
+            Logger.Log("Generate style " + Option.StyleName);
             Shape imageShape;
             if (Option.IsUseSpecialEffectStyle)
             {
@@ -136,6 +138,7 @@ namespace PowerPointLabs.PictureSlidesLab.Service
             var resultShapes = new List<Shape>();
             foreach (var styleWorker in WorkerFactory.StyleWorkers)
             {
+                Logger.Log("Executing worker " + styleWorker.GetType().Name);
                 resultShapes.AddRange(
                     styleWorker.Execute(Option, designer, source, imageShape, Settings));
             }
@@ -144,6 +147,7 @@ namespace PowerPointLabs.PictureSlidesLab.Service
             resultShapes.Reverse();
             SendToBack(resultShapes.ToArray());
             imageShape.ZOrder(MsoZOrderCmd.msoSendToBack);
+            Logger.Log("Complete generating style " + Option.StyleName);
         }
 
         # endregion

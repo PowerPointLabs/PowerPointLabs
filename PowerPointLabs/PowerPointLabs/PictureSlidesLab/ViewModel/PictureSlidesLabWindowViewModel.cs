@@ -399,6 +399,7 @@ namespace PowerPointLabs.PictureSlidesLab.ViewModel
         public void UpdateStyleVariationImagesWhenOpenFlyout(ImageItem source, Slide contentSlide, float slideWidth, float slideHeight,
             List<StyleOption> givenOptions = null, Dictionary<string, List<StyleVariant>> givenVariants = null)
         {
+            Logger.Log("Variation stage is open");
             var targetStyleItem = StylesPreviewListSelectedItem.ImageItem;
             StylesVariationList.Clear();
 
