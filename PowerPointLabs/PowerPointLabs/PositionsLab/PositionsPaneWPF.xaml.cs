@@ -52,8 +52,12 @@ namespace PowerPointLabs.PositionsLab
         private static List<Shape> allShapesInSlide = new List<Shape>();
         private static System.Drawing.Point prevMousePos = new System.Drawing.Point();
 
+        //Variables for settings
+        private Form alignSettingsForm;
+
         public PositionsPaneWPF()
         {
+            alignSettingsForm = new AlignSettingsForm();
             InitializeComponent();
             dispatcherTimer.Interval = TimeSpan.FromMilliseconds(10);
         }
@@ -577,6 +581,7 @@ namespace PowerPointLabs.PositionsLab
 
         private void AlignSettingsButton_Click(object sender, RoutedEventArgs e)
         {
+            alignSettingsForm.ShowDialog();
         }
     }
 }
