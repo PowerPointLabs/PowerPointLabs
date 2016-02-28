@@ -29,6 +29,7 @@ namespace PowerPointLabs.PictureSlidesLab.View
 
         public void ShowErrorMessageBox(string content, Exception e)
         {
+            if (e == null) ShowErrorMessageBox(content);
             try
             {
                 this.ShowMessageAsync("Error", content + TextCollection.UserFeedBack + TextCollection.Email + "\r\n\r\n"

@@ -83,6 +83,7 @@ namespace PowerPointLabs.PictureSlidesLab.View
         {
             try
             {
+                InitUiExceptionHandling();
                 InitViewModel();
                 InitGotoSlideDialog();
                 InitLoadStylesDialog();
@@ -101,6 +102,13 @@ namespace PowerPointLabs.PictureSlidesLab.View
                 PictureSlidesLabGridLoadingOverlay.Visibility = Visibility.Collapsed;
                 Logger.Log("PSL init loading screen collapsed");
             }
+        }
+
+        private void InitUiExceptionHandling()
+        {
+            AppDomain.CurrentDomain.UnhandledException += HandleUnhandledException;
+            Dispatcher.UnhandledException += HandleUnhandledException;
+            Logger.Log("PSL init UI exception handling done");
         }
 
         private void InitStyleing()
@@ -1167,6 +1175,18 @@ namespace PowerPointLabs.PictureSlidesLab.View
                 action();
             };
             timer.Start();
+        }
+
+        private void HandleUnhandledException(object sender, DispatcherUnhandledExceptionEventArgs e)
+        {
+            Logger.LogException(e.Exception, sender.GetType() + " " + sender);
+            ShowErrorMessageBox("Unexpected errors happened!", e.Exception);
+        }
+
+        private void HandleUnhandledException(object sender, UnhandledExceptionEventArgs e)
+        {
+            Logger.LogException(e.ExceptionObject as Exception, sender.GetType() + " " + sender);
+            ShowErrorMessageBox("Unexpected errors happened!", e.ExceptionObject as Exception);
         }
 
         #endregion
