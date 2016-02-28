@@ -19,7 +19,6 @@ using PowerPointLabs.PictureSlidesLab.Thread;
 using PowerPointLabs.PictureSlidesLab.Util;
 using PowerPointLabs.PictureSlidesLab.View.Interface;
 using PowerPointLabs.Utils;
-using PowerPointLabs.Utils.Exceptions;
 using PowerPointLabs.WPF.Observable;
 using Fonts = System.Windows.Media.Fonts;
 
@@ -173,6 +172,14 @@ namespace PowerPointLabs.PictureSlidesLab.ViewModel
                 var loadedImageSelectionList = StoragePath.LoadPictures();
                 foreach (var item in loadedImageSelectionList)
                 {
+                    if (item.FullSizeImageFile == null && item.BackupFullSizeImageFile != null)
+                    {
+                        item.FullSizeImageFile = item.BackupFullSizeImageFile;
+                    }
+                    else if (item.FullSizeImageFile == null && item.BackupFullSizeImageFile == null)
+                    {
+                        continue;
+                    }
                     ImageSelectionList.Add(item);
                 }
             }
@@ -779,50 +786,55 @@ namespace PowerPointLabs.PictureSlidesLab.ViewModel
 
         #region Helper funcs
 
-        private static object LoadClipboardPicture()
+        private static IList<object> LoadClipboardPicture()
         {
             try
             {
+                var result = new List<object>();
                 var pic = Clipboard.GetImage();
                 var text = Clipboard.GetText();
                 var files = Clipboard.GetFileDropList();
 
                 if (pic != null)
                 {
-                    return pic;
+                    result.Add(pic);
                 }
-                else if (files != null && files.Count > 0)
+                if (files != null && files.Count > 0)
                 {
-                    return files;
+                    result.Add(files);
                 }
-                else
+                if (!string.IsNullOrEmpty(text))
                 {
-                    return text;
+                    result.Add(text);
                 }
+                return result;
             }
             catch (Exception e)
             {
                 // sometimes Clipboard may fail
                 Logger.LogException(e, "LoadClipboardPicture");
-                return "";
+                return new List<object>();
             }
         }
 
-        private static void SaveClipboardPicture(object copiedObj)
+        private static void SaveClipboardPicture(IList<object> copiedObjs)
         {
             try
             {
-                if (copiedObj is Image)
+                foreach (var copiedObj in copiedObjs)
                 {
-                    Clipboard.SetImage((Image) copiedObj);
-                }
-                else if (copiedObj is StringCollection)
-                {
-                    Clipboard.SetFileDropList((StringCollection) copiedObj);
-                }
-                else if (!string.IsNullOrEmpty(copiedObj as string))
-                {
-                    Clipboard.SetText((string) copiedObj);
+                    if (copiedObj is Image)
+                    {
+                        Clipboard.SetImage((Image) copiedObj);
+                    }
+                    else if (copiedObj is StringCollection)
+                    {
+                        Clipboard.SetFileDropList((StringCollection) copiedObj);
+                    }
+                    else if (!string.IsNullOrEmpty(copiedObj as string))
+                    {
+                        Clipboard.SetText((string) copiedObj);
+                    }
                 }
             }
             catch (Exception e)

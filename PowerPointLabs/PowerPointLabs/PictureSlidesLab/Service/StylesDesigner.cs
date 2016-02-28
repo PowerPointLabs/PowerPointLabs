@@ -76,16 +76,16 @@ namespace PowerPointLabs.PictureSlidesLab.Service
             var handler = CreateEffectsHandlerForPreview(source, contentSlide);
 
             // use thumbnail to apply, in order to speed up
-            var fullSizeImgPath = source.FullSizeImageFile;
-            var originalThumbnail = source.ImageFile;
+            source.BackupFullSizeImageFile = source.FullSizeImageFile;
+            var backupImageFile = source.ImageFile;
             source.FullSizeImageFile = null;
             source.ImageFile = source.CroppedThumbnailImageFile ?? source.ImageFile;
 
             ApplyStyle(handler, source, isActualSize: false);
 
             // recover the source back
-            source.FullSizeImageFile = fullSizeImgPath;
-            source.ImageFile = originalThumbnail;
+            source.FullSizeImageFile = source.BackupFullSizeImageFile;
+            source.ImageFile = backupImageFile;
             handler.GetNativeSlide().Export(previewInfo.PreviewApplyStyleImagePath, "JPG",
                     GetPreviewWidth(), PreviewHeight);
 
@@ -102,9 +102,8 @@ namespace PowerPointLabs.PictureSlidesLab.Service
             }
 
             // try to use cropped/adjusted image to apply
-            var fullsizeImage = source.FullSizeImageFile;
+            source.BackupFullSizeImageFile = source.FullSizeImageFile;
             source.FullSizeImageFile = source.CroppedImageFile ?? source.FullSizeImageFile;
-            source.OriginalImageFile = fullsizeImage;
             
             var effectsHandler = EffectsDesigner.CreateEffectsDesignerForApply(contentSlide, 
                 slideWidth, slideHeight, source);
@@ -112,8 +111,7 @@ namespace PowerPointLabs.PictureSlidesLab.Service
             ApplyStyle(effectsHandler, source, isActualSize: true);
 
             // recover the source back
-            source.FullSizeImageFile = fullsizeImage;
-            source.OriginalImageFile = null;
+            source.FullSizeImageFile = source.BackupFullSizeImageFile;
         }
 
         /// <summary>

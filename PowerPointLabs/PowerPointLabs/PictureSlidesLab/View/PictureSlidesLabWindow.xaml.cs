@@ -340,9 +340,11 @@ namespace PowerPointLabs.PictureSlidesLab.View
         {
             try
             {
+                if (IsDisposed) return;
+
                 _lastSelectedSlideIndex = this.GetCurrentSlide().Index;
 
-                if (!IsClosing
+                if (!IsDisposed
                     && (CropWindow == null || !CropWindow.IsOpen))
                 {
                     if (QuickDropDialog == null)
@@ -766,6 +768,7 @@ namespace PowerPointLabs.PictureSlidesLab.View
         {
             try
             {
+                Logger.Log("Change aspect to " + ViewModel.CurrentVariantCategory.Text);
                 ViewModel.UpdateStepByStepStylesVariationImages(
                     (ImageItem) ImageSelectionListBox.SelectedValue ?? CreateDefaultPictureItem(),
                     this.GetCurrentSlide().GetNativeSlide(),
@@ -1187,6 +1190,22 @@ namespace PowerPointLabs.PictureSlidesLab.View
         {
             Logger.LogException(e.ExceptionObject as Exception, sender.GetType() + " " + sender);
             ShowErrorMessageBox("Unexpected errors happened!", e.ExceptionObject as Exception);
+        }
+
+        // check PSL window is really closing or not
+        private bool IsDisposed
+        {
+            get
+            {
+                if (IsClosing)
+                {
+                    return true;
+                }
+
+                var propertyInfo = typeof(Window).GetProperty("IsDisposed", 
+                    System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Instance);
+                return (bool) propertyInfo.GetValue(this, null);
+            }
         }
 
         #endregion
