@@ -54,10 +54,12 @@ namespace PowerPointLabs.PositionsLab
 
         //Variables for settings
         private Form alignSettingsForm;
+        private Form distributeSettingsForm;
 
         public PositionsPaneWPF()
         {
             alignSettingsForm = new AlignSettingsForm();
+            distributeSettingsForm = new DistributeSettingsForm();
             InitializeComponent();
             dispatcherTimer.Interval = TimeSpan.FromMilliseconds(10);
         }
@@ -582,6 +584,10 @@ namespace PowerPointLabs.PositionsLab
         private void AlignSettingsButton_Click(object sender, RoutedEventArgs e)
         {
             alignSettingsForm.ShowDialog();
+        }
+
+        private void DistributeSettingsButton_Click(object sender, RoutedEventArgs e)
+        {
         }
     }
 }
