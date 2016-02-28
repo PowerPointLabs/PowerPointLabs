@@ -31,8 +31,7 @@ namespace PowerPointLabs.PictureSlidesLab.Service
                         var width = paragraph.BoundWidth + 20;
                         var height = paragraph.BoundHeight + 20;
 
-                        blurImage.Copy();
-                        var blurTextBox = Shapes.Paste()[1];
+                        var blurTextBox = blurImage.Duplicate()[1];
                         blurTextBox.Left = blurImage.Left;
                         blurTextBox.Top = blurImage.Top;
                         CropPicture(blurTextBox, left, top, width, height);
@@ -66,8 +65,7 @@ namespace PowerPointLabs.PictureSlidesLab.Service
             TextBoxes.AddMargin(tbInfo);
 
             Shape overlayShape;
-            blurImage.Copy();
-            Shape blurBanner = Shapes.Paste()[1];
+            var blurBanner = blurImage.Duplicate()[1];
             blurBanner.Left = blurImage.Left;
             blurBanner.Top = blurImage.Top;
             direction = HandleAutoDirection(direction, textPos);
