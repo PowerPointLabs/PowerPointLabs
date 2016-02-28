@@ -1018,7 +1018,7 @@
     <None Include="Resources\AgendaRemove.png" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="Resources\AgendaSettings.png" />
+    <Resource Include="Resources\AgendaSettings.png" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\AgendaSidebar.png" />
