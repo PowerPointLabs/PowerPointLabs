@@ -39,7 +39,7 @@
             this.alignReferenceSettings.Items.AddRange(new object[] {
             "Use current slide as Reference Object",
             "Use selected shapes as Reference Object"});
-            this.alignReferenceSettings.Location = new System.Drawing.Point(13, 13);
+            this.alignReferenceSettings.Location = new System.Drawing.Point(13, 12);
             this.alignReferenceSettings.Name = "alignReferenceSettings";
             this.alignReferenceSettings.Size = new System.Drawing.Size(259, 21);
             this.alignReferenceSettings.TabIndex = 0;
