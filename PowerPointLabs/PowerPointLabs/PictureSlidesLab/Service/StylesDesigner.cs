@@ -136,7 +136,6 @@ namespace PowerPointLabs.PictureSlidesLab.Service
             var resultShapes = new List<Shape>();
             foreach (var styleWorker in WorkerFactory.StyleWorkers)
             {
-                Logger.Log("Executing worker " + styleWorker.GetType().Name);
                 resultShapes.AddRange(
                     styleWorker.Execute(Option, designer, source, imageShape, Settings));
             }
