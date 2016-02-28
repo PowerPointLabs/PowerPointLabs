@@ -588,6 +588,7 @@ namespace PowerPointLabs.PositionsLab
 
         private void DistributeSettingsButton_Click(object sender, RoutedEventArgs e)
         {
+            distributeSettingsForm.ShowDialog();
         }
     }
 }

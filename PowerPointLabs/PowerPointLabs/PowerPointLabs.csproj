@@ -545,6 +545,12 @@
     <Compile Include="PositionsLab\AlignSettingsForm.Designer.cs">
       <DependentUpon>AlignSettingsForm.cs</DependentUpon>
     </Compile>
+    <Compile Include="PositionsLab\DistributeSettingsForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="PositionsLab\DistributeSettingsForm.Designer.cs">
+      <DependentUpon>DistributeSettingsForm.cs</DependentUpon>
+    </Compile>
     <Compile Include="PositionsLab\PositionsLabMain.cs" />
     <Compile Include="PositionsLab\PositionsPane.cs">
       <SubType>UserControl</SubType>
@@ -785,6 +791,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="PositionsLab\AlignSettingsForm.resx">
       <DependentUpon>AlignSettingsForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="PositionsLab\DistributeSettingsForm.resx">
+      <DependentUpon>DistributeSettingsForm.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="PositionsLab\PositionsPane.resx">
       <DependentUpon>PositionsPane.cs</DependentUpon>
