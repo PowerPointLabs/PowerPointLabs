@@ -99,6 +99,7 @@ namespace PowerPointLabs.PictureSlidesLab.ViewModel
         public PictureSlidesLabWindowViewModel(IPictureSlidesLabWindowView view, 
             IStylesDesigner stylesDesigner = null)
         {
+            Logger.Log("Init PSL View Model begins");
             View = view;
             ImageDownloader = new ContextDownloader(View.GetThreadContext());
             InitStorage();
@@ -109,6 +110,7 @@ namespace PowerPointLabs.PictureSlidesLab.ViewModel
             Designer.SetSettings(Settings);
             OptionsFactory = new StyleOptionsFactory();
             VariantsFactory = new StyleVariantsFactory();
+            Logger.Log("Init PSL View Model done");
         }
 
         private void InitFontFamilies()
@@ -164,6 +166,7 @@ namespace PowerPointLabs.PictureSlidesLab.ViewModel
 
             if (StoragePath.IsFirstTimeUsage())
             {
+                Logger.Log("First time use PSL");
                 ImageSelectionList.Add(CreateSamplePic1Item());
                 ImageSelectionList.Add(CreateSamplePic2Item());
             }
@@ -178,6 +181,7 @@ namespace PowerPointLabs.PictureSlidesLab.ViewModel
                     }
                     else if (item.FullSizeImageFile == null && item.BackupFullSizeImageFile == null)
                     {
+                        Logger.Log("Corrupted picture found. To be removed");
                         continue;
                     }
                     ImageSelectionList.Add(item);
@@ -196,7 +200,9 @@ namespace PowerPointLabs.PictureSlidesLab.ViewModel
             if (!isTempPathInit || !isStoragePathInit)
             {
                 View.ShowErrorMessageBox(TextCollection.PictureSlidesLabText.ErrorFailToInitTempFolder);
+                Logger.Log("Failed to init storage");
             }
+            Logger.Log("Init storage done");
         }
 
         public void CleanUp()
@@ -208,6 +214,7 @@ namespace PowerPointLabs.PictureSlidesLab.ViewModel
             ImageSelectionList.RemoveAt(0);
             StoragePath.Save(ImageSelectionList);
             StoragePath.Save(Settings);
+            Logger.Log("ViewModel clean up done");
         }
         #endregion
 
@@ -217,6 +224,7 @@ namespace PowerPointLabs.PictureSlidesLab.ViewModel
         {
             ImageSelectionList.Clear();
             ImageSelectionList.Add(CreateChoosePicturesItem());
+            Logger.Log("Clear all images done");
         }
 
         /// <summary>
@@ -231,6 +239,7 @@ namespace PowerPointLabs.PictureSlidesLab.ViewModel
         {
             try
             {
+                Logger.Log("Add local picture begins");
                 foreach (var filename in filenames)
                 {
                     VerifyIsProperImage(filename);
@@ -252,6 +261,7 @@ namespace PowerPointLabs.PictureSlidesLab.ViewModel
                         ImageSelectionListSelectedItem.ImageItem ?? View.CreateDefaultPictureItem(),
                         contentSlide, slideWidth, slideHeight);
                 }
+                Logger.Log("Add local picture done");
             }
             catch (Exception e)
             {
@@ -274,6 +284,7 @@ namespace PowerPointLabs.PictureSlidesLab.ViewModel
             if (StringUtil.IsEmpty(downloadLink) || !UrlUtil.IsUrlValid(downloadLink)) // Case 1: If url not valid
             {
                 View.ShowErrorMessageBox(TextCollection.PictureSlidesLabText.ErrorUrlLinkIncorrect);
+                Logger.Log("Url link error when add internet image");
                 return;
             }
             var item = new ImageItem
@@ -295,6 +306,7 @@ namespace PowerPointLabs.PictureSlidesLab.ViewModel
                 {
                     try
                     {
+                        Logger.Log("Add internet picture begins");
                         VerifyIsProperImage(imagePath); // Case 2: not a proper image
                         item.UpdateDownloadedImage(imagePath);
                         UpdatePictureInPictureVariationWhenAddedNewOne(item);
@@ -310,6 +322,7 @@ namespace PowerPointLabs.PictureSlidesLab.ViewModel
                                 ImageSelectionListSelectedItem.ImageItem ?? View.CreateDefaultPictureItem(),
                                 contentSlide, slideWidth, slideHeight);
                         }
+                        Logger.Log("Add internet picture ends");
                     }
                     catch (Exception e)
                     {
@@ -348,16 +361,21 @@ namespace PowerPointLabs.PictureSlidesLab.ViewModel
         {
             if (View.IsVariationsFlyoutOpen)
             {
+                Logger.Log("Generate preview images for variation stage");
                 UpdateStylesVariationImagesAfterOpenFlyout(source, contentSlide, slideWidth, slideHeight);
+                Logger.Log("Generate preview images for variation stage done");
             }
             else
             {
+                Logger.Log("Generate preview images for preview style stage");
                 UpdateStylesPreviewImages(source, contentSlide, slideWidth, slideHeight);
+                Logger.Log("Generate preview images for preview style stage done");
             }
         }
 
         public void ApplyStyleInPreviewStage(Slide contentSlide, float slideWidth, float slideHeight)
         {
+            Logger.Log("Apply style in preview stage begins");
             var copiedPicture = LoadClipboardPicture();
             try
             {
@@ -373,6 +391,7 @@ namespace PowerPointLabs.PictureSlidesLab.ViewModel
                 Logger.LogException(e, "ApplyStyleInPreviewStage");
             }
             SaveClipboardPicture(copiedPicture);
+            Logger.Log("Apply style in preview stage done");
         }
         #endregion
 
@@ -432,6 +451,7 @@ namespace PowerPointLabs.PictureSlidesLab.ViewModel
                 CurrentVariantCategoryId.Number =
                     VariantsCategory.IndexOf(TextCollection.PictureSlidesLabText.VariantCategoryPicture);
             }
+            Logger.Log("Variation open completed");
         }
 
         /// <summary>
@@ -439,6 +459,7 @@ namespace PowerPointLabs.PictureSlidesLab.ViewModel
         /// </summary>
         public void UpdateStylesVariationImagesAfterOpenFlyout(ImageItem source, Slide contentSlide, float slideWidth, float slideHeight)
         {
+            Logger.Log("Variation is already open, update preview images");
             var selectedId = StylesVariationListSelectedId.Number;
             var scrollOffset = View.GetVariationListBoxScrollOffset();
             var targetStyleItem = StylesPreviewListSelectedItem.ImageItem;
@@ -460,9 +481,13 @@ namespace PowerPointLabs.PictureSlidesLab.ViewModel
         public void UpdateStepByStepStylesVariationImages(ImageItem source, Slide contentSlide, 
             float slideWidth, float slideHeight)
         {
+            Logger.Log("Check for step by step preview");
+            Logger.Log("current variation list selected id is " + StylesVariationListSelectedId.Number);
+            Logger.Log("variants category count is " + VariantsCategory.Count);
             if (StylesVariationListSelectedId.Number < 0
                 || VariantsCategory.Count == 0) return;
 
+            Logger.Log("Step by step preview begins");
             var targetVariationSelectedIndex = StylesVariationListSelectedId.Number;
             var targetVariant = _styleVariants[_previousVariantsCategory][targetVariationSelectedIndex];
             foreach (var option in _styleOptions)
@@ -600,6 +625,7 @@ namespace PowerPointLabs.PictureSlidesLab.ViewModel
             }
 
             _previousVariantsCategory = currentVariantsCategory;
+            Logger.Log("picture index to select is " + pictureIndexToSelect);
             if (pictureIndexToSelect == -1
                 || pictureIndexToSelect == ImageSelectionListSelectedId.Number)
             {
@@ -610,10 +636,12 @@ namespace PowerPointLabs.PictureSlidesLab.ViewModel
             {
                 ImageSelectionListSelectedId.Number = pictureIndexToSelect;
             }
+            Logger.Log("Step by step preview done");
         }
 
         public void ApplyStyleInVariationStage(Slide contentSlide, float slideWidth, float slideHeight)
         {
+            Logger.Log("Apply style in variation stage begins");
             var copiedPicture = LoadClipboardPicture();
             try
             {
@@ -651,6 +679,7 @@ namespace PowerPointLabs.PictureSlidesLab.ViewModel
                 Logger.LogException(e, "ApplyStyleInVariationStage");
             }
             SaveClipboardPicture(copiedPicture);
+            Logger.Log("Apply style in variation stage done");
         }
 
         #region Picture Variation
@@ -677,6 +706,9 @@ namespace PowerPointLabs.PictureSlidesLab.ViewModel
 
         public void UpdateSelectedPictureInPictureVariation()
         {
+            Logger.Log("Check for update selected picture in picture aspect");
+            Logger.Log("is in picture aspect: " + IsInPictureVariation());
+            Logger.Log("variation list selectedId is: " + StylesVariationListSelectedId.Number);
             if (!IsInPictureVariation() 
                 || StylesVariationListSelectedId.Number == -1)
                 return;
@@ -695,6 +727,9 @@ namespace PowerPointLabs.PictureSlidesLab.ViewModel
 
         public void UpdatePictureInPictureVariationWhenAddedNewOne(ImageItem newPicture)
         {
+            Logger.Log("Check for update picture in picture aspect when added new one");
+            Logger.Log("is in picture aspect: " + IsInPictureVariation());
+            Logger.Log("new pic is null: " + (newPicture == null));
             if (!IsInPictureVariation() || newPicture == null)
                 return;
 
@@ -711,6 +746,8 @@ namespace PowerPointLabs.PictureSlidesLab.ViewModel
 
         public void UpdatePictureInPictureVariationWhenDeleteSome()
         {
+            Logger.Log("Check for update picture in picture aspect when deleted some");
+            Logger.Log("is in picture aspect: " + IsInPictureVariation());
             if (!IsInPictureVariation())
                 return;
 
@@ -854,6 +891,7 @@ namespace PowerPointLabs.PictureSlidesLab.ViewModel
 
         private void UpdateStylesPreviewImages(ImageItem source, Slide contentSlide, float slideWidth, float slideHeight)
         {
+            Logger.Log("UpdateStylesPreviewImages begins");
             var selectedId = StylesPreviewListSelectedId.Number;
             StylesPreviewList.Clear();
 
@@ -882,10 +920,15 @@ namespace PowerPointLabs.PictureSlidesLab.ViewModel
             SaveClipboardPicture(copiedPicture);
 
             StylesPreviewListSelectedId.Number = selectedId < 0 ? 0 : selectedId;
+            Logger.Log("UpdateStylesPreviewImages done");
         }
 
         private static bool IsAbleToUpdateStylesPreviewImages(ImageItem source, Slide contentSlide)
         {
+            Logger.Log("Check for update styles in preview styles stage");
+            Logger.Log("source is null: " + (source == null));
+            Logger.Log("source is loading img: " + (source != null && source.ImageFile == StoragePath.LoadingImgPath));
+            Logger.Log("content slide is null: " + (contentSlide == null));
             return !(source == null
                     || source.ImageFile == StoragePath.LoadingImgPath
                     || contentSlide == null);
@@ -894,6 +937,7 @@ namespace PowerPointLabs.PictureSlidesLab.ViewModel
         private void InitStylesVariationCategories(List<StyleOption> givenOptions,
             Dictionary<string, List<StyleVariant>> givenVariants, string targetStyle)
         {
+            Logger.Log("Init variation stage begins");
             _styleOptions = givenOptions ?? OptionsFactory.GetStylesVariationOptions(targetStyle);
             _styleVariants = givenVariants ?? VariantsFactory.GetVariants(targetStyle);
 
@@ -943,11 +987,18 @@ namespace PowerPointLabs.PictureSlidesLab.ViewModel
             {
                 currentVariants[i].Apply(_styleOptions[i]);
             }
+            Logger.Log("Init variation stage done");
         }
 
         private static bool IsAbleToUpdateStylesVariationImages(ImageItem source, ImageItem targetStyleItem, 
             Slide contentSlide)
         {
+            Logger.Log("Check for update styles in variation stage");
+            Logger.Log("source is null: " + (source == null));
+            Logger.Log("source is loading img: " + (source != null && source.ImageFile == StoragePath.LoadingImgPath));
+            Logger.Log("target style item is null: " + (targetStyleItem == null));
+            Logger.Log("target style item tooltip is null: " + (targetStyleItem != null && targetStyleItem.Tooltip == null));
+            Logger.Log("content slide is null: " + (contentSlide == null));
             return !(source == null
                     || source.ImageFile == StoragePath.LoadingImgPath
                     || targetStyleItem == null
@@ -958,9 +1009,14 @@ namespace PowerPointLabs.PictureSlidesLab.ViewModel
         private void UpdateStylesVariationImages(ImageItem source, Slide contentSlide, 
             float slideWidth, float slideHeight, bool isMockPreviewImages = false)
         {
+            Logger.Log("UpdateStylesVariationImages begins");
             var copiedPicture = LoadClipboardPicture();
             try
             {
+                if (isMockPreviewImages)
+                {
+                    Logger.Log("Generate mock images for Picture aspect");
+                }
                 for (var i = 0; i < _styleOptions.Count; i++)
                 {
                     var styleOption = _styleOptions[i];
@@ -993,6 +1049,7 @@ namespace PowerPointLabs.PictureSlidesLab.ViewModel
                 Logger.LogException(e, "UpdateStylesVariationImages");
             }
             SaveClipboardPicture(copiedPicture);
+            Logger.Log("UpdateStylesVariationImages done");
         }
 
         private ImageItem CreateChoosePicturesItem()
