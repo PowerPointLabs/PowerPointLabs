@@ -575,5 +575,8 @@ namespace PowerPointLabs.PositionsLab
             prevMousePos = new System.Drawing.Point();
         }
 
+        private void AlignSettingsButton_Click(object sender, RoutedEventArgs e)
+        {
+        }
     }
 }
