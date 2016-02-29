@@ -1,0 +1,94 @@
+﻿<controls:MetroWindow x:Class="PowerPointLabs.PositionsLab.PositionsDistributeGridDialog"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:controls="clr-namespace:MahApps.Metro.Controls;assembly=MahApps.Metro"
+             xmlns:local="clr-namespace:PowerPointLabs.PositionsLab"
+             mc:Ignorable="d"
+             WindowStartupLocation="CenterScreen"
+             Name="Window"
+             Title="Distribute by Grid"
+             Width="335"
+             Height="300"
+             WindowTitleBrush="#0070C0"
+             BorderThickness="1"
+             BorderBrush="#0070C0"
+             ResizeMode="NoResize"
+             Topmost="True"
+             Closed="PositionsDistributeGridDialong_Closed">
+    <controls:MetroWindow.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="pack://application:,,,/MahApps.Metro;component/Styles/Controls.xaml" />
+                <ResourceDictionary Source="pack://application:,,,/MahApps.Metro;component/Styles/Fonts.xaml" />
+                <ResourceDictionary Source="pack://application:,,,/MahApps.Metro;component/Styles/Colors.xaml" />
+                <ResourceDictionary Source="pack://application:,,,/MahApps.Metro;component/Styles/Accents/blue.xaml" />
+                <ResourceDictionary Source="pack://application:,,,/MahApps.Metro;component/Styles/Accents/baselight.xaml" />
+            </ResourceDictionary.MergedDictionaries>
+        </ResourceDictionary>
+    </controls:MetroWindow.Resources>
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="30*"/>
+            <RowDefinition Height="5*"/>
+            <RowDefinition Height="30*"/>
+            <RowDefinition Height="25*"/>
+            <RowDefinition Height="5*"/>
+            <RowDefinition Height="30*"/>
+            <RowDefinition Height="30*"/>
+            <RowDefinition Height="25*"/>
+            <RowDefinition Height="5*"/>
+            <RowDefinition Height="30*"/>
+            <RowDefinition Height="5*"/>
+            <RowDefinition Height="35*"/>
+            <RowDefinition Height="10*"/>
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="5*"/>
+            <ColumnDefinition Width="70*"/>
+            <ColumnDefinition Width="40*"/>
+            <ColumnDefinition Width="40*"/>
+            <ColumnDefinition Width="5*"/>
+            <ColumnDefinition Width="80*"/>
+            <ColumnDefinition Width="40*"/>
+            <ColumnDefinition Width="40*"/>
+            <ColumnDefinition Width="5*"/>
+            <ColumnDefinition Width="5*"/>
+        </Grid.ColumnDefinitions>
+        <TextBlock Name="dimensionsLabel" FontSize="12" FontWeight="Bold" Grid.Column="1" Grid.Row="0" VerticalAlignment="Bottom" HorizontalAlignment="Left">Dimensions</TextBlock>
+        <Separator Grid.Column="1" Grid.Row="1" Grid.ColumnSpan="8"/>
+        <Label Name="rowLengthLabel" Grid.Column="1" Grid.Row="2" FontSize="10" VerticalAlignment="Center" HorizontalAlignment="Right">Row Length:</Label>
+        <Label Name="colLengthLabel" Grid.Column="5" Grid.Row="2" FontSize="10" VerticalAlignment="Center" HorizontalAlignment="Right">Column Length:</Label>
+        <controls:NumericUpDown Name="rowLengthInput" Grid.Column="2" Grid.Row="2" Grid.ColumnSpan="2" Height="20" Width="80" TextAlignment="Left" HideUpDownButtons="True" Minimum="1" Loaded="RowInput_Load" ValueChanged="RowInput_ValueChanged"/>
+        <controls:NumericUpDown Name="colLengthInput" Grid.Column="6" Grid.Row="2" Grid.ColumnSpan="2" Height="20" Width="80" TextAlignment="Left" HideUpDownButtons="True" Minimum="1" Loaded="ColInput_Load" ValueChanged="ColInput_ValueChanged"/>
+
+        <TextBlock Name="marginLabel" FontSize="12" FontWeight="Bold" Grid.Column="1" Grid.Row="3" VerticalAlignment="Bottom" HorizontalAlignment="Left">Margins</TextBlock>
+        <Separator Grid.Column="1" Grid.Row="4" Grid.ColumnSpan="8"/>
+        <Label Name="marginTopLabel" Grid.Column="1" Grid.Row="5" FontSize="10" VerticalAlignment="Center" HorizontalAlignment="Right">Top:</Label>
+        <Label Name="marginBottomLabel" Grid.Column="5" Grid.Row="5" FontSize="10" VerticalAlignment="Center" HorizontalAlignment="Right">Bottom:</Label>
+        <Label Name="marginLeftLabel" Grid.Column="1" Grid.Row="6" FontSize="10" VerticalAlignment="Center" HorizontalAlignment="Right">Left:</Label>
+        <Label Name="marginRightLabel" Grid.Column="5" Grid.Row="6" FontSize="10" VerticalAlignment="Center" HorizontalAlignment="Right">Right:</Label>
+        <controls:NumericUpDown Name="marginTopInput" Grid.Column="2" Grid.Row="5" Grid.ColumnSpan="2" Height="20" Width="80" TextAlignment="Left" HideUpDownButtons="True" Minimum="0" Value="5" Loaded="MarginTopInput_Load"/>
+        <controls:NumericUpDown Name="marginBottomInput" Grid.Column="2" Grid.Row="6" Grid.ColumnSpan="2" Height="20" Width="80" TextAlignment="Left" HideUpDownButtons="True" Minimum="0" Value="5" Loaded="MarginBottomInput_Load"/>
+        <controls:NumericUpDown Name="marginLeftInput" Grid.Column="6" Grid.Row="5" Grid.ColumnSpan="2" Height="20" Width="80" TextAlignment="Left" HideUpDownButtons="True" Minimum="0" Value="5" Loaded="MarginLeftInput_Load"/>
+        <controls:NumericUpDown Name="marginRightInput" Grid.Column="6" Grid.Row="6" Grid.ColumnSpan="2" Height="20" Width="80" TextAlignment="Left" HideUpDownButtons="True" Minimum="0" Value="5" Loaded="MarginRightInput_Load"/>
+
+        <TextBlock Name="alignmentLabel" FontSize="12" FontWeight="Bold" Grid.Column="1" Grid.Row="7" VerticalAlignment="Bottom" HorizontalAlignment="Left">Alignment</TextBlock>
+        <Separator Grid.Column="1" Grid.Row="8" Grid.ColumnSpan="8"/>
+        <Grid Grid.Column="1" Grid.Row="9" Grid.ColumnSpan="8" >
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="5*"/>
+                <ColumnDefinition Width="30*"/>
+                <ColumnDefinition Width="30*"/>
+                <ColumnDefinition Width="30*"/>
+                <ColumnDefinition Width="5*"/>
+            </Grid.ColumnDefinitions>
+            <RadioButton Name="alignLeftButton" Grid.Column="1" HorizontalAlignment="Center" IsChecked="True" Loaded="AlignLeftButton_Load">Left</RadioButton>
+            <RadioButton Name="alignCenterButton" Grid.Column="2" HorizontalAlignment="Center" Loaded="AlignCenterButton_Load">Center</RadioButton>
+            <RadioButton Name="alignRightButton" Grid.Column="3" HorizontalAlignment="Center" Loaded="AlignRightButton_Load">Right</RadioButton>
+        </Grid>
+        <Button Name="okButton" Grid.Column="1" Grid.Row="11" Grid.ColumnSpan="8" Width="80" HorizontalAlignment="Center" VerticalAlignment="Bottom" Click="OKButton_Click">OK</Button>
+    </Grid>
+
+</controls:MetroWindow>

@@ -550,6 +550,7 @@
     </Compile>
     <Compile Include="PositionsLab\DistributeSettingsForm.Designer.cs">
       <DependentUpon>DistributeSettingsForm.cs</DependentUpon>
+    <Compile Include="PositionsLab\PositionsDistributeGridDialog.xaml.cs">
     </Compile>
     <Compile Include="PositionsLab\PositionsLabMain.cs" />
     <Compile Include="PositionsLab\PositionsPane.cs">
@@ -1072,6 +1073,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="DrawingsLab\DrawingsPaneWPF.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="PositionsLab\PositionsDistributeGridDialog.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

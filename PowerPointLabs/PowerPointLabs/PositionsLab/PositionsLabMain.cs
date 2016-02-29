@@ -31,6 +31,11 @@ namespace PowerPointLabs.PositionsLab
         private const int LEFTORRIGHT = 4;
         private const int UPORDOWN = 5;
 
+        //For Grid
+        public const int ALIGN_LEFT = 0;
+        public const int ALIGN_CENTER = 1;
+        public const int ALIGN_RIGHT = 2;
+
         private static Dictionary<MsoAutoShapeType, float> shapeDefaultUpAngle;
         private static bool _alignUseSlideAsReference = false;
         private static bool _distributeUseSlideAsReference = false;
@@ -827,6 +832,69 @@ namespace PowerPointLabs.PositionsLab
                 currShape.IncrementTop(lowestRef.Y - topMost.Y + spaceBetweenShapes);
             }
         }
+
+        public static void DistributeGrid(List<Shape> selectedShapes, int rowLength, int colLength, float marginTop, float marginBottom, float marginLeft, float marginRight, int alignment)
+        {
+            Drawing.PointF refPoint = Graphics.GetCenterPoint(selectedShapes[0]);
+
+            List<PPShape> allShapes = new List<PPShape>();
+            int numShapes = selectedShapes.Count;
+
+            for (int i = 0; i < numShapes; i++)
+            {
+                allShapes.Add(new PPShape(selectedShapes[i]));
+            }
+
+            float[] rowDifferences = GetLongestWidthsOfRows(allShapes, rowLength);
+            float[] colDifferences = GetLongestHeightsOfCols(allShapes, rowLength, colLength);
+
+            float posX = refPoint.X;
+            float posY = refPoint.Y;
+            int numIndicesToSkip = IndicesToSkip(numShapes, rowLength, alignment);
+            int differenceIndex = 0;
+
+            for (int i = 0; i < colLength; i++)
+            {
+                for (int j = 0; j < rowLength; j++)
+                {
+                    int index = i * rowLength + j;
+
+                    if (index >= numShapes)
+                    {
+                        break;
+                    }
+
+                    Shape currentShape = selectedShapes[index];
+                    Drawing.PointF center = Graphics.GetCenterPoint(currentShape);
+                    currentShape.IncrementLeft(posX - center.X);
+                    currentShape.IncrementTop(posY - center.Y);
+                    
+                    if (differenceIndex < rowLength - 1)
+                    {
+                        posX += (rowDifferences[differenceIndex] / 2 + rowDifferences[differenceIndex + 1] / 2 + marginLeft + marginRight);
+                    }
+
+                    differenceIndex++;
+                }
+
+                posX = refPoint.X;
+
+                if (i < colLength - 1)
+                {
+                    differenceIndex = 0;
+                    posY += (colDifferences[i] / 2 + colDifferences[i + 1] / 2 + marginTop + marginBottom);
+                }
+
+                if (i == colLength - 2)
+                {
+                    differenceIndex = numIndicesToSkip;
+                    for (int k = 0; k < numIndicesToSkip; k++)
+                    {
+                        posX += (rowDifferences[k] / 2 + rowDifferences[k + 1] / 2 + marginLeft + marginRight);
+                    }
+                }
+            }
+        }
         #endregion
 
         #endregion
@@ -950,6 +1018,61 @@ namespace PowerPointLabs.PositionsLab
             }
 
             return diff;
+        }
+
+        public static float[] GetLongestWidthsOfRows(List<PPShape> shapes, int rowLength)
+        {
+            float[] longestWidths = new float[rowLength];
+
+            for (int i = 0; i < shapes.Count; i++)
+            {
+                int longestRowIndex = i % rowLength;
+                if (longestWidths[longestRowIndex] < shapes[i].AbsoluteWidth)
+                {
+                    longestWidths[longestRowIndex] = shapes[i].AbsoluteWidth;
+                }
+            }
+
+            return longestWidths;
+        }
+
+        public static float[] GetLongestHeightsOfCols(List<PPShape> shapes, int rowLength, int colLength)
+        {
+            float[] longestHeights = new float[colLength];
+
+            for (int i = 0; i < shapes.Count; i++)
+            {
+                int longestHeightIndex = i / rowLength;
+                if (longestHeights[longestHeightIndex] < shapes[i].AbsoluteHeight)
+                {
+                    longestHeights[longestHeightIndex] = shapes[i].AbsoluteHeight;
+                }
+            }
+
+            return longestHeights;
+        }
+
+        public static int IndicesToSkip(int totalSelectedShapes, int rowLength, int alignment)
+        {
+            if (alignment == ALIGN_LEFT)
+            {
+                return 0;
+            }
+
+            int numOfShapesInLastRow = totalSelectedShapes % rowLength;
+
+            if (alignment == ALIGN_RIGHT)
+            {
+                return rowLength - numOfShapesInLastRow;
+            }
+
+            if (alignment == ALIGN_CENTER)
+            {
+                int difference = rowLength - numOfShapesInLastRow;
+                return difference / 2;
+            }
+
+            return 0;
         }
 
         private static void Init()
