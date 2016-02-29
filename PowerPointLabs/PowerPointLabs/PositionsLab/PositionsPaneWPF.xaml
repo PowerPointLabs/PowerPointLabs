@@ -5,7 +5,7 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:PowerPointLabs.PositionsLab"
              xmlns:Controls="clr-namespace:MahApps.Metro.Controls;assembly=MahApps.Metro"
-             mc:Ignorable="d" Height="740" Width="310">
+             mc:Ignorable="d" Height="650" Width="310">
     <UserControl.Resources>
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
@@ -18,14 +18,13 @@
         </ResourceDictionary>
     </UserControl.Resources>
     <ScrollViewer Margin="0,0,0,-20">
-        <Grid Height="730">
+        <Grid Height="640">
             <GroupBox x:Name="alignGroupBox" Header="Align" HorizontalAlignment="Left" Margin="10,5,0,0" VerticalAlignment="Top" Height="130" Width="284"/>
             <GroupBox x:Name="adjoinGroupBox" Header="Adjoin" HorizontalAlignment="Left" Margin="10,140,0,0" VerticalAlignment="Top" Height="80" Width="284"/>
             <GroupBox x:Name="distributeGroupBox" Header="Distribute" HorizontalAlignment="Left" Margin="10,225,0,0" VerticalAlignment="Top" Height="130" Width="284"/>
             <GroupBox x:Name="reorderGroupBox" Header="Reorder" HorizontalAlignment="Left" Margin="10,357,0,0" VerticalAlignment="Top" Height="80" Width="284"/>
             <GroupBox x:Name="adjustmentGroupBox" Header="Adjustment" HorizontalAlignment="Left" Margin="10,441,0,0" VerticalAlignment="Top" Height="80" Width="284"/>
             <GroupBox x:Name="snapGroupBox" Header="Snap" HorizontalAlignment="Left" Margin="10,525,0,0" VerticalAlignment="Top" Height="80" Width="284"/>
-            <GroupBox x:Name="Settings" Header="Settings" HorizontalAlignment="Left" Margin="10,610,0,0" VerticalAlignment="Top" Height="90" Width="284"/>
             <Button ToolTip="Aligns objects to the left axis of reference object" x:Name="alignLeftButton" Content="Left" HorizontalAlignment="Left" Margin="24,37,0,0" VerticalAlignment="Top" Width="60" Height="45" Click="AlignLeftButton_Click"/>
             <Button ToolTip="Aligns objects to the right axis of reference object" x:Name="alignRightButton" Content="Right" HorizontalAlignment="Left" Margin="89,37,0,0" VerticalAlignment="Top" Width="60" Height="45" Click="AlignRightButton_Click"/>
             <Button ToolTip="Aligns objects to the top axis of reference object" x:Name="alignTopButton" Content="Top" HorizontalAlignment="Left" Margin="154,37,0,0" VerticalAlignment="Top" Width="60" Height="45" Click="AlignTopButton_Click"/>
@@ -51,8 +50,6 @@
             <Button ToolTip="Snaps object to a horizontal rotation" x:Name="snapHorizontalButton" Content="Horizontal" HorizontalAlignment="Left" Margin="24,557,0,0" VerticalAlignment="Top" Width="60" Height="45" Click="SnapHorizontalButton_Click"/>
             <Button ToolTip="Snaps object to a vertical rotation" x:Name="snapVerticalButton" Content="Vertical" HorizontalAlignment="Left" Margin="89,557,0,0" VerticalAlignment="Top" Width="60" Height="45" Click="SnapVerticalButton_Click"/>
             <Button ToolTip="Snaps object to a vertical rotation" x:Name="snapAwayButton" Content="Away" HorizontalAlignment="Left" Margin="154,557,0,0" VerticalAlignment="Top" Width="60" Height="45" Click="SnapAwayButton_Click"/>
-            <CheckBox ToolTip="Select this to set the slide as reference object for the functions" x:Name="slideAsReference" Content="Use slide as reference" HorizontalAlignment="Left" Margin="24,666,0,0" VerticalAlignment="Top" IsChecked="False" Checked="UseSlideAsReference" Unchecked="UseShapeAsReference"/>
-            <CheckBox ToolTip="Select this to choose the reference object for the functions" x:Name="shapeAsReference" Content="Use shape as reference" HorizontalAlignment="Left" Margin="24,643,0,0" VerticalAlignment="Top" IsChecked="True" Checked="UseShapeAsReference" Unchecked="UseSlideAsReference"/>
         </Grid>
     </ScrollViewer>
 </UserControl>

@@ -32,33 +32,51 @@ namespace PowerPointLabs.PositionsLab
         private const int UPORDOWN = 5;
 
         private static Dictionary<MsoAutoShapeType, float> shapeDefaultUpAngle;
-        private static bool _useSlideAsReference;
+        private static bool _alignUseSlideAsReference = false;
+        private static bool _distributeUseSlideAsReference = false;
 
         #region API
 
         #region Class Methods
 
         /// <summary>
-        /// Tells the Positions Lab to use the slide as the reference point for the methods
+        /// Tells the Positions Lab to use the slide as the reference point for Align methods
         /// </summary>
-        public static void ReferToSlide()
+        public static void AlignReferToSlide()
         {
-            _useSlideAsReference = true;
+            _alignUseSlideAsReference = true;
         }
 
         /// <summary>
-        /// Tells the Positions Lab to use reference shapes for the methods
+        /// Tells the Positions Lab to use first selected shape as reference shape for Align methods
         /// </summary>
-        public static void ReferToShape()
+        public static void AlignReferToShape()
         {
-            _useSlideAsReference = false;
+            _alignUseSlideAsReference = false;
         }
+
+        /// <summary>
+        /// Tells the Position Lab to use the slide as the reference point for Distribute methods
+        /// </summary>
+        public static void DistributeReferToSlide()
+        {
+            _distributeUseSlideAsReference = true;
+        }
+
+        /// <summary>
+        /// Tells the Positions Lab to use first selected shape as reference shape for Distribute methods
+        /// </summary>
+        public static void DistributeReferToShape()
+        {
+            _distributeUseSlideAsReference = false;
+        }
+
         #endregion
 
         #region Align
         public static void AlignLeft(List<Shape> selectedShapes)
         {
-            if (_useSlideAsReference)
+            if (_alignUseSlideAsReference)
             {
                 foreach (Shape s in selectedShapes)
                 {
@@ -91,7 +109,7 @@ namespace PowerPointLabs.PositionsLab
 
         public static void AlignRight(List<Shape> selectedShapes, float slideWidth)
         {
-            if (_useSlideAsReference)
+            if (_alignUseSlideAsReference)
             {
                 foreach (Shape s in selectedShapes)
                 {
@@ -125,7 +143,7 @@ namespace PowerPointLabs.PositionsLab
 
         public static void AlignTop(List<Shape> selectedShapes)
         {
-            if (_useSlideAsReference)
+            if (_alignUseSlideAsReference)
             {
                 foreach (Shape s in selectedShapes)
                 {
@@ -158,7 +176,7 @@ namespace PowerPointLabs.PositionsLab
 
         public static void AlignBottom(List<Shape> selectedShapes, float slideHeight)
         {
-            if (_useSlideAsReference)
+            if (_alignUseSlideAsReference)
             {
                 foreach (Shape s in selectedShapes)
                 {
@@ -192,7 +210,7 @@ namespace PowerPointLabs.PositionsLab
 
         public static void AlignMiddle(List<Shape> selectedShapes, float slideHeight)
         {
-            if (_useSlideAsReference)
+            if (_alignUseSlideAsReference)
             {
                 foreach (Shape s in selectedShapes)
                 {
@@ -224,7 +242,7 @@ namespace PowerPointLabs.PositionsLab
 
         public static void AlignCenter(List<Shape> selectedShapes, float slideWidth, float slideHeight)
         {
-            if (_useSlideAsReference)
+            if (_alignUseSlideAsReference)
             {
                 foreach (Shape s in selectedShapes)
                 {
@@ -548,13 +566,19 @@ namespace PowerPointLabs.PositionsLab
         #region Distribute
         public static void DistributeHorizontal(List<Shape> selectedShapes, float slideWidth)
         {
+
+            if (_distributeUseSlideAsReference)
+            {
+                // TODO: Implement distribute horizontal with slide as reference
+            }
+
             var shapeCount = selectedShapes.Count;
 
             Shape refShape = selectedShapes[0];
             Drawing.PointF[] allPointsOfRef = Graphics.GetRealCoordinates(refShape);
             Drawing.PointF rightMostRef;
 
-            if (_useSlideAsReference)
+            if (_alignUseSlideAsReference)
             {
                 var horizontalDistanceInRef = slideWidth;
                 var spaceBetweenShapes = horizontalDistanceInRef;
@@ -641,7 +665,7 @@ namespace PowerPointLabs.PositionsLab
             Drawing.PointF[] allPointsOfRef = Graphics.GetRealCoordinates(refShape);
             Drawing.PointF lowestRef;
 
-            if (_useSlideAsReference)
+            if (_alignUseSlideAsReference)
             {
                 var verticalDistanceInRef = slideHeight;
                 var spaceBetweenShapes = verticalDistanceInRef;

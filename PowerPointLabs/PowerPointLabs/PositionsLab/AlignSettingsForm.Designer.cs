@@ -43,8 +43,7 @@
             this.alignReferenceSettings.Name = "alignReferenceSettings";
             this.alignReferenceSettings.Size = new System.Drawing.Size(259, 21);
             this.alignReferenceSettings.TabIndex = 0;
-            this.alignReferenceSettings.Text = "Select Reference Object";
-            this.alignReferenceSettings.SelectedIndexChanged += new System.EventHandler(this.AlignReferenceSettings_SelectedIndexChanged);
+            this.alignReferenceSettings.SelectedIndex = 1;
             // 
             // okButton
             // 

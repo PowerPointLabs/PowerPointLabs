@@ -525,30 +525,16 @@ namespace PowerPointLabs.PositionsLab
         // Note: if changing default behavior to using slide as reference, need to ensure that
         // checkbox for using shape is defined first in PositionsPaneWPF.xaml
 
-        // TODO: Surround with try catch in case the order of checkboxes are wrong
-        private void UseShapeAsReference(object sender, RoutedEventArgs e)
+        private void AlignSettingsButton_Click(object sender, RoutedEventArgs e)
         {
-            if (!slideAsReference.IsChecked.HasValue || !shapeAsReference.IsChecked.HasValue)
-            {
-                //Error
-                return;
-            }
-            slideAsReference.IsChecked = false;
-            shapeAsReference.IsChecked = true;
-            PositionsLabMain.ReferToShape();
+            alignSettingsForm.ShowDialog();
         }
 
-        private void UseSlideAsReference(object sender, RoutedEventArgs e)
+        private void DistributeSettingsButton_Click(object sender, RoutedEventArgs e)
         {
-            if (!slideAsReference.IsChecked.HasValue || !shapeAsReference.IsChecked.HasValue)
-            {
-                //Error
-                return;
-            }
-            shapeAsReference.IsChecked = false;
-            slideAsReference.IsChecked = true;
-            PositionsLabMain.ReferToSlide();
+            distributeSettingsForm.ShowDialog();
         }
+
         #endregion
 
         public static void ClearAllEventHandlers()
@@ -579,16 +565,6 @@ namespace PowerPointLabs.PositionsLab
             shapesToBeRotated = new List<Shape>();
             allShapesInSlide = new List<Shape>();
             prevMousePos = new System.Drawing.Point();
-        }
-
-        private void AlignSettingsButton_Click(object sender, RoutedEventArgs e)
-        {
-            alignSettingsForm.ShowDialog();
-        }
-
-        private void DistributeSettingsButton_Click(object sender, RoutedEventArgs e)
-        {
-            distributeSettingsForm.ShowDialog();
         }
     }
 }
