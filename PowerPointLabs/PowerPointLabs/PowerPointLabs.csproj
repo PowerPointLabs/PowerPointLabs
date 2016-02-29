@@ -550,6 +550,7 @@
     </Compile>
     <Compile Include="PositionsLab\DistributeSettingsForm.Designer.cs">
       <DependentUpon>DistributeSettingsForm.cs</DependentUpon>
+    </Compile>
     <Compile Include="PositionsLab\PositionsDistributeGridDialog.xaml.cs">
     </Compile>
     <Compile Include="PositionsLab\PositionsLabMain.cs" />
@@ -1227,6 +1228,9 @@
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
     <VSToolsPath Condition="'$(VSToolsPath)' == ''">$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)</VSToolsPath>
+  </PropertyGroup>
+  <PropertyGroup>
+    <StartupObject />
   </PropertyGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- Include additional build rules for an Office application add-in. -->
