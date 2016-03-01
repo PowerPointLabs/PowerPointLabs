@@ -10,7 +10,7 @@
              Name="Window"
              Title="Distribute by Grid"
              Width="335"
-             Height="300"
+             Height="150"
              WindowTitleBrush="#0070C0"
              BorderThickness="1"
              BorderBrush="#0070C0"
@@ -33,14 +33,6 @@
             <RowDefinition Height="30*"/>
             <RowDefinition Height="5*"/>
             <RowDefinition Height="30*"/>
-            <RowDefinition Height="25*"/>
-            <RowDefinition Height="5*"/>
-            <RowDefinition Height="30*"/>
-            <RowDefinition Height="30*"/>
-            <RowDefinition Height="25*"/>
-            <RowDefinition Height="5*"/>
-            <RowDefinition Height="30*"/>
-            <RowDefinition Height="5*"/>
             <RowDefinition Height="35*"/>
             <RowDefinition Height="10*"/>
         </Grid.RowDefinitions>
@@ -62,33 +54,8 @@
         <Label Name="colLengthLabel" Grid.Column="5" Grid.Row="2" FontSize="10" VerticalAlignment="Center" HorizontalAlignment="Right">Column Length:</Label>
         <controls:NumericUpDown Name="rowLengthInput" Grid.Column="2" Grid.Row="2" Grid.ColumnSpan="2" Height="20" Width="80" TextAlignment="Left" HideUpDownButtons="True" Minimum="1" Loaded="RowInput_Load" ValueChanged="RowInput_ValueChanged"/>
         <controls:NumericUpDown Name="colLengthInput" Grid.Column="6" Grid.Row="2" Grid.ColumnSpan="2" Height="20" Width="80" TextAlignment="Left" HideUpDownButtons="True" Minimum="1" Loaded="ColInput_Load" ValueChanged="ColInput_ValueChanged"/>
-
-        <TextBlock Name="marginLabel" FontSize="12" FontWeight="Bold" Grid.Column="1" Grid.Row="3" VerticalAlignment="Bottom" HorizontalAlignment="Left">Margins</TextBlock>
-        <Separator Grid.Column="1" Grid.Row="4" Grid.ColumnSpan="8"/>
-        <Label Name="marginTopLabel" Grid.Column="1" Grid.Row="5" FontSize="10" VerticalAlignment="Center" HorizontalAlignment="Right">Top:</Label>
-        <Label Name="marginBottomLabel" Grid.Column="5" Grid.Row="5" FontSize="10" VerticalAlignment="Center" HorizontalAlignment="Right">Bottom:</Label>
-        <Label Name="marginLeftLabel" Grid.Column="1" Grid.Row="6" FontSize="10" VerticalAlignment="Center" HorizontalAlignment="Right">Left:</Label>
-        <Label Name="marginRightLabel" Grid.Column="5" Grid.Row="6" FontSize="10" VerticalAlignment="Center" HorizontalAlignment="Right">Right:</Label>
-        <controls:NumericUpDown Name="marginTopInput" Grid.Column="2" Grid.Row="5" Grid.ColumnSpan="2" Height="20" Width="80" TextAlignment="Left" HideUpDownButtons="True" Minimum="0" Value="5" Loaded="MarginTopInput_Load"/>
-        <controls:NumericUpDown Name="marginBottomInput" Grid.Column="2" Grid.Row="6" Grid.ColumnSpan="2" Height="20" Width="80" TextAlignment="Left" HideUpDownButtons="True" Minimum="0" Value="5" Loaded="MarginBottomInput_Load"/>
-        <controls:NumericUpDown Name="marginLeftInput" Grid.Column="6" Grid.Row="5" Grid.ColumnSpan="2" Height="20" Width="80" TextAlignment="Left" HideUpDownButtons="True" Minimum="0" Value="5" Loaded="MarginLeftInput_Load"/>
-        <controls:NumericUpDown Name="marginRightInput" Grid.Column="6" Grid.Row="6" Grid.ColumnSpan="2" Height="20" Width="80" TextAlignment="Left" HideUpDownButtons="True" Minimum="0" Value="5" Loaded="MarginRightInput_Load"/>
-
-        <TextBlock Name="alignmentLabel" FontSize="12" FontWeight="Bold" Grid.Column="1" Grid.Row="7" VerticalAlignment="Bottom" HorizontalAlignment="Left">Alignment</TextBlock>
-        <Separator Grid.Column="1" Grid.Row="8" Grid.ColumnSpan="8"/>
-        <Grid Grid.Column="1" Grid.Row="9" Grid.ColumnSpan="8" >
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="5*"/>
-                <ColumnDefinition Width="30*"/>
-                <ColumnDefinition Width="30*"/>
-                <ColumnDefinition Width="30*"/>
-                <ColumnDefinition Width="5*"/>
-            </Grid.ColumnDefinitions>
-            <RadioButton Name="alignLeftButton" Grid.Column="1" HorizontalAlignment="Center" IsChecked="True" Loaded="AlignLeftButton_Load">Left</RadioButton>
-            <RadioButton Name="alignCenterButton" Grid.Column="2" HorizontalAlignment="Center" Loaded="AlignCenterButton_Load">Center</RadioButton>
-            <RadioButton Name="alignRightButton" Grid.Column="3" HorizontalAlignment="Center" Loaded="AlignRightButton_Load">Right</RadioButton>
-        </Grid>
-        <Button Name="okButton" Grid.Column="1" Grid.Row="11" Grid.ColumnSpan="8" Width="80" HorizontalAlignment="Center" VerticalAlignment="Bottom" Click="OKButton_Click">OK</Button>
+        <Button Name="okButton" Grid.Row="3" Width="80" HorizontalAlignment="Right" VerticalAlignment="Bottom" Click="OKButton_Click" Margin="0,0,10,10" Grid.ColumnSpan="3" Grid.Column="3" Grid.RowSpan="2">OK</Button>
+        <Button x:Name="cancelButton" Content="Cancel" HorizontalAlignment="Right" VerticalAlignment="Bottom" Width="80" IsCancel="True" Click="CancelButton_Click"  Grid.ColumnSpan="2" Grid.Column="6" Grid.Row="3"/>
     </Grid>
 
 </controls:MetroWindow>

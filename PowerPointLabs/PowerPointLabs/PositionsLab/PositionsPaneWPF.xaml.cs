@@ -562,7 +562,7 @@ namespace PowerPointLabs.PositionsLab
 
         private void DistributeSettingsButton_Click(object sender, RoutedEventArgs e)
         {
-            distributeSettingsDialog.ShowDialog();
+            distributeSettingsDialog.ShowDialog();            
         }
         #endregion
 

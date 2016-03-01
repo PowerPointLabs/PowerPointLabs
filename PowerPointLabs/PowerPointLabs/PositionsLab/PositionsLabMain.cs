@@ -36,6 +36,12 @@ namespace PowerPointLabs.PositionsLab
         public const int ALIGN_CENTER = 1;
         public const int ALIGN_RIGHT = 2;
 
+        private static int _distributeGridAlignment;
+        private static float _marginTop = 5;
+        private static float _marginBottom = 5;
+        private static float _marginLeft = 5;
+        private static float _marginRight = 5;
+
         private static Dictionary<MsoAutoShapeType, float> shapeDefaultUpAngle;
         private static bool _alignUseSlideAsReference = false;
         private static bool _distributeUseSlideAsReference = false;
@@ -74,6 +80,31 @@ namespace PowerPointLabs.PositionsLab
         public static void DistributeReferToShape()
         {
             _distributeUseSlideAsReference = false;
+        }
+
+        public static void SetDistributeGridAlignment(int alignment)
+        {
+            _distributeGridAlignment = alignment;
+        }
+
+        public static void SetDistributeMarginTop (float marginTop)
+        {
+            _marginTop = marginTop;
+        }
+
+        public static void SetDistributeMarginBottom(float marginBottom)
+        {
+            _marginBottom = marginBottom;
+        }
+
+        public static void SetDistributeMarginLeft(float marginLeft)
+        {
+            _marginLeft = marginLeft;
+        }
+
+        public static void SetDistributeMarginRight(float marginRight)
+        {
+            _marginRight = marginRight;
         }
 
         #endregion
@@ -827,7 +858,7 @@ namespace PowerPointLabs.PositionsLab
             }
         }
 
-        public static void DistributeGrid(List<Shape> selectedShapes, int rowLength, int colLength, float marginTop, float marginBottom, float marginLeft, float marginRight, int alignment)
+        public static void DistributeGrid(List<Shape> selectedShapes, int rowLength, int colLength)
         {
             Drawing.PointF refPoint = Graphics.GetCenterPoint(selectedShapes[0]);
 
@@ -844,7 +875,7 @@ namespace PowerPointLabs.PositionsLab
 
             float posX = refPoint.X;
             float posY = refPoint.Y;
-            int numIndicesToSkip = IndicesToSkip(numShapes, rowLength, alignment);
+            int numIndicesToSkip = IndicesToSkip(numShapes, rowLength, _distributeGridAlignment);
             int differenceIndex = 0;
 
             for (int i = 0; i < colLength; i++)
@@ -865,7 +896,7 @@ namespace PowerPointLabs.PositionsLab
                     
                     if (differenceIndex < rowLength - 1)
                     {
-                        posX += (rowDifferences[differenceIndex] / 2 + rowDifferences[differenceIndex + 1] / 2 + marginLeft + marginRight);
+                        posX += (rowDifferences[differenceIndex] / 2 + rowDifferences[differenceIndex + 1] / 2 + _marginLeft + _marginRight);
                     }
 
                     differenceIndex++;
@@ -876,7 +907,7 @@ namespace PowerPointLabs.PositionsLab
                 if (i < colLength - 1)
                 {
                     differenceIndex = 0;
-                    posY += (colDifferences[i] / 2 + colDifferences[i + 1] / 2 + marginTop + marginBottom);
+                    posY += (colDifferences[i] / 2 + colDifferences[i + 1] / 2 + _marginTop + _marginBottom);
                 }
 
                 if (i == colLength - 2)
@@ -884,7 +915,7 @@ namespace PowerPointLabs.PositionsLab
                     differenceIndex = numIndicesToSkip;
                     for (int k = 0; k < numIndicesToSkip; k++)
                     {
-                        posX += (rowDifferences[k] / 2 + rowDifferences[k + 1] / 2 + marginLeft + marginRight);
+                        posX += (rowDifferences[k] / 2 + rowDifferences[k + 1] / 2 + _marginLeft + _marginRight);
                     }
                 }
             }
