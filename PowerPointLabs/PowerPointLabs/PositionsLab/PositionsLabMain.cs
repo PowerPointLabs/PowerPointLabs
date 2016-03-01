@@ -571,19 +571,13 @@ namespace PowerPointLabs.PositionsLab
         #region Distribute
         public static void DistributeHorizontal(List<Shape> selectedShapes, float slideWidth)
         {
-
-            if (_distributeUseSlideAsReference)
-            {
-                // TODO: Implement distribute horizontal with slide as reference
-            }
-
             var shapeCount = selectedShapes.Count;
 
             Shape refShape = selectedShapes[0];
             Drawing.PointF[] allPointsOfRef = Graphics.GetRealCoordinates(refShape);
             Drawing.PointF rightMostRef;
 
-            if (_alignUseSlideAsReference)
+            if (_distributeUseSlideAsReference)
             {
                 var horizontalDistanceInRef = slideWidth;
                 var spaceBetweenShapes = horizontalDistanceInRef;
@@ -670,7 +664,7 @@ namespace PowerPointLabs.PositionsLab
             Drawing.PointF[] allPointsOfRef = Graphics.GetRealCoordinates(refShape);
             Drawing.PointF lowestRef;
 
-            if (_alignUseSlideAsReference)
+            if (_distributeUseSlideAsReference)
             {
                 var verticalDistanceInRef = slideHeight;
                 var spaceBetweenShapes = verticalDistanceInRef;

@@ -57,10 +57,12 @@ namespace PowerPointLabs.PositionsLab
 
         //Variables for settings
         private AlignSettingsDialog alignSettingsDialog;
+        private DistributeSettingsDialog distributeSettingsDialog;
 
         public PositionsPaneWPF()
         {
             alignSettingsDialog = new AlignSettingsDialog();
+            distributeSettingsDialog = new DistributeSettingsDialog();
             InitializeComponent();
             dispatcherTimer.Interval = TimeSpan.FromMilliseconds(10);
         }
@@ -151,6 +153,7 @@ namespace PowerPointLabs.PositionsLab
             PositionsLabMain.DistributeShapes(selectedShapes);
         }
 
+        //TODO: Catch exception when user clicks on button without selecting any shape
         private void DistributeGridButton_Click(object sender, RoutedEventArgs e)
         {
             List<Shape> selectedShapes = ConvertShapeRangeToList(this.GetCurrentSelection().ShapeRange, 1);
@@ -552,9 +555,6 @@ namespace PowerPointLabs.PositionsLab
         #endregion
 
         #region Settings
-        // Note: if changing default behavior to using slide as reference, need to ensure that
-        // checkbox for using shape is defined first in PositionsPaneWPF.xaml
-
         private void AlignSettingsButton_Click(object sender, RoutedEventArgs e)
         {
             alignSettingsDialog.ShowDialog();
@@ -562,8 +562,8 @@ namespace PowerPointLabs.PositionsLab
 
         private void DistributeSettingsButton_Click(object sender, RoutedEventArgs e)
         {
+            distributeSettingsDialog.ShowDialog();
         }
-
         #endregion
 
         public static void ClearAllEventHandlers()
