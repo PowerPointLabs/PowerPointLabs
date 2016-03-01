@@ -539,11 +539,8 @@
     <Compile Include="PictureSlidesLab\Util\ShapeUtil.cs" />
     <Compile Include="PictureSlidesLab\Util\StyleVariationWidthConverter.cs" />
     <Compile Include="PictureSlidesLab\Util\UrlUtil.cs" />
-    <Compile Include="PositionsLab\AlignSettingsForm.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="PositionsLab\AlignSettingsForm.Designer.cs">
-      <DependentUpon>AlignSettingsForm.cs</DependentUpon>
+    <Compile Include="PositionsLab\AlignSettingsDialog.xaml.cs">
+      <DependentUpon>AlignSettingsDialog.xaml</DependentUpon>
     </Compile>
     <Compile Include="PositionsLab\DistributeSettingsForm.cs">
       <SubType>Form</SubType>
@@ -790,9 +787,6 @@
     </EmbeddedResource>
     <EmbeddedResource Include="DrawingsLab\DrawingsPane.resx">
       <DependentUpon>DrawingsPane.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="PositionsLab\AlignSettingsForm.resx">
-      <DependentUpon>AlignSettingsForm.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="PositionsLab\DistributeSettingsForm.resx">
       <DependentUpon>DistributeSettingsForm.cs</DependentUpon>
@@ -1074,6 +1068,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="DrawingsLab\DrawingsPaneWPF.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="PositionsLab\AlignSettingsDialog.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

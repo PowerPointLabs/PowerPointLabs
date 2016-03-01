@@ -56,13 +56,11 @@ namespace PowerPointLabs.PositionsLab
         private static System.Drawing.Point prevMousePos = new System.Drawing.Point();
 
         //Variables for settings
-        private Form alignSettingsForm;
-        private Form distributeSettingsForm;
+        private AlignSettingsDialog alignSettingsDialog;
 
         public PositionsPaneWPF()
         {
-            alignSettingsForm = new AlignSettingsForm();
-            distributeSettingsForm = new DistributeSettingsForm();
+            alignSettingsDialog = new AlignSettingsDialog();
             InitializeComponent();
             dispatcherTimer.Interval = TimeSpan.FromMilliseconds(10);
         }
@@ -559,12 +557,11 @@ namespace PowerPointLabs.PositionsLab
 
         private void AlignSettingsButton_Click(object sender, RoutedEventArgs e)
         {
-            alignSettingsForm.ShowDialog();
+            alignSettingsDialog.ShowDialog();
         }
 
         private void DistributeSettingsButton_Click(object sender, RoutedEventArgs e)
         {
-            distributeSettingsForm.ShowDialog();
         }
 
         #endregion
