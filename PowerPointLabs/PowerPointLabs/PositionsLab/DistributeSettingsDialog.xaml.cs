@@ -35,6 +35,7 @@ namespace PowerPointLabs.PositionsLab
             InitializeComponent();
         }
 
+        #region On-Load Settings
         private void MarginTopInput_Load(object sender, RoutedEventArgs e)
         {
             _marginTopInput = (NumericUpDown)sender;
@@ -69,7 +70,9 @@ namespace PowerPointLabs.PositionsLab
         {
             _alignRightButton = (RadioButton)sender;
         }
+        #endregion
 
+        #region Button actions
         private void OkButton_Click(object sender, RoutedEventArgs e)
         {
             var marginTopValue = _marginTopInput.Value;
@@ -131,5 +134,6 @@ namespace PowerPointLabs.PositionsLab
         {
             distributeToShapeButton.IsChecked = false;
         }
+        #endregion
     }
 }
