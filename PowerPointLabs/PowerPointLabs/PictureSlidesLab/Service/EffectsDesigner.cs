@@ -1,4 +1,5 @@
-﻿using PowerPointLabs.Models;
+﻿using PowerPointLabs.ActionFramework.Common.Log;
+using PowerPointLabs.Models;
 using PowerPointLabs.PictureSlidesLab.Model;
 using PowerPoint = Microsoft.Office.Interop.PowerPoint;
 
@@ -35,10 +36,12 @@ namespace PowerPointLabs.PictureSlidesLab.Service
 
         public void PreparePreviewing(PowerPoint.Slide contentSlide, float slideWidth, float slideHeight, ImageItem source)
         {
+            Logger.Log("PreparePreviewing begins");
             InitLayoutAndDesign(contentSlide);
             DeleteAllShapes();
             CopyShapes(contentSlide);
             Setup(slideWidth, slideHeight, source);
+            Logger.Log("PreparePreviewing done");
         }
 
         /// <summary>
