@@ -1,11 +1,12 @@
 using System;
+using Microsoft.Office.Core;
 using PowerPoint = Microsoft.Office.Interop.PowerPoint;
 
 namespace PowerPointLabs.Utils
 {
     internal class PPShape
     {
-        private readonly PowerPoint.Shape _shape;
+        private PowerPoint.Shape _shape;
         private float _absoluteWidth;
         private float _absoluteHeight;
         private float _rotatedLeft;
@@ -102,6 +103,41 @@ namespace PowerPointLabs.Utils
                 SetLeft();
             }
         }
+
+        // Only work for sharp edge
+        private void ConvertToFreeform(PowerPoint.Slide slide)
+        {
+            if (_shape.Type != MsoShapeType.msoAutoShape && _shape.Nodes.Count > 0) return;
+            _shape.Nodes.Insert(1, MsoSegmentType.msoSegmentLine, MsoEditingType.msoEditingAuto, 0, 0);
+            _shape.Nodes.Delete(2);
+
+            var nodes = _shape.Nodes;
+            var firstNode = nodes[1];
+            var firstPoint = firstNode.Points;
+ 
+            PowerPoint.FreeformBuilder freeform = slide.Shapes.BuildFreeform(firstNode.EditingType, firstPoint[1, 1], firstPoint[1, 2]);
+
+
+            for (int i = 2; i <= nodes.Count; i++)
+            {
+                var node = nodes[i];
+                var point = node.Points;
+
+                try
+                {
+                    freeform.AddNodes(node.SegmentType, node.EditingType, point[1, 1], point[1, 2]);
+                }
+                catch (Exception)
+                {
+                    freeform.AddNodes(node.SegmentType, MsoEditingType.msoEditingAuto, point[1, 1], point[1, 2]);
+                }
+
+            }
+
+            _shape.Delete();
+            _shape = freeform.ConvertToShape();
+        }
+    
 
         /// <summary>
         /// Update the absolute width according to the actual shape width and height.
