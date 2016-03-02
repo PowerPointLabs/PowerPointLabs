@@ -70,12 +70,20 @@ namespace PowerPointLabs.PositionsLab
         #region Align
         private void AlignLeftButton_Click(object sender, RoutedEventArgs e)
         {
+            if (this.GetCurrentSelection().Type != PowerPoint.PpSelectionType.ppSelectionShapes)
+            {
+                return;
+            }
             List<Shape> selectedShapes = ConvertShapeRangeToList(this.GetCurrentSelection().ShapeRange, 1);
             PositionsLabMain.AlignLeft(selectedShapes);
         }
 
         private void AlignRightButton_Click(object sender, RoutedEventArgs e)
         {
+            if (this.GetCurrentSelection().Type != PowerPoint.PpSelectionType.ppSelectionShapes)
+            {
+                return;
+            }
             List<Shape> selectedShapes = ConvertShapeRangeToList(this.GetCurrentSelection().ShapeRange, 1);
             float slideWidth = this.GetCurrentPresentation().SlideWidth;
             PositionsLabMain.AlignRight(selectedShapes, slideWidth);
@@ -83,12 +91,20 @@ namespace PowerPointLabs.PositionsLab
 
         private void AlignTopButton_Click(object sender, RoutedEventArgs e)
         {
+            if (this.GetCurrentSelection().Type != PowerPoint.PpSelectionType.ppSelectionShapes)
+            {
+                return;
+            }
             List<Shape> selectedShapes = ConvertShapeRangeToList(this.GetCurrentSelection().ShapeRange, 1);
             PositionsLabMain.AlignTop(selectedShapes);
         }
 
         private void AlignBottomButton_Click(object sender, RoutedEventArgs e)
         {
+            if (this.GetCurrentSelection().Type != PowerPoint.PpSelectionType.ppSelectionShapes)
+            {
+                return;
+            }
             List<Shape> selectedShapes = ConvertShapeRangeToList(this.GetCurrentSelection().ShapeRange, 1);
             float slideHeight = this.GetCurrentPresentation().SlideHeight;
             PositionsLabMain.AlignBottom(selectedShapes, slideHeight);
@@ -96,6 +112,10 @@ namespace PowerPointLabs.PositionsLab
 
         private void AlignMiddleButton_Click(object sender, RoutedEventArgs e)
         {
+            if (this.GetCurrentSelection().Type != PowerPoint.PpSelectionType.ppSelectionShapes)
+            {
+                return;
+            }
             List<Shape> selectedShapes = ConvertShapeRangeToList(this.GetCurrentSelection().ShapeRange, 1);
             float slideHeight = this.GetCurrentPresentation().SlideHeight;
             PositionsLabMain.AlignMiddle(selectedShapes, slideHeight);
@@ -103,6 +123,10 @@ namespace PowerPointLabs.PositionsLab
 
         private void AlignCenterButton_Click(object sender, RoutedEventArgs e)
         {
+            if (this.GetCurrentSelection().Type != PowerPoint.PpSelectionType.ppSelectionShapes)
+            {
+                return;
+            }
             List<Shape> selectedShapes = ConvertShapeRangeToList(this.GetCurrentSelection().ShapeRange, 1);
             float slideHeight = this.GetCurrentPresentation().SlideHeight;
             float slideWidth = this.GetCurrentPresentation().SlideWidth;
@@ -113,12 +137,20 @@ namespace PowerPointLabs.PositionsLab
         #region Adjoin
         private void AdjoinHorizontalButton_Click(object sender, RoutedEventArgs e)
         {
+            if (this.GetCurrentSelection().Type != PowerPoint.PpSelectionType.ppSelectionShapes)
+            {
+                return;
+            }
             List<Shape> selectedShapes = ConvertShapeRangeToList(this.GetCurrentSelection().ShapeRange, 1);
             PositionsLabMain.AdjoinHorizontal(selectedShapes);
         }
 
         private void AdjoinVerticalButton_Click(object sender, RoutedEventArgs e)
         {
+            if (this.GetCurrentSelection().Type != PowerPoint.PpSelectionType.ppSelectionShapes)
+            {
+                return;
+            }
             List<Shape> selectedShapes = ConvertShapeRangeToList(this.GetCurrentSelection().ShapeRange, 1);
             PositionsLabMain.AdjoinVertical(selectedShapes);
         }
@@ -127,6 +159,10 @@ namespace PowerPointLabs.PositionsLab
         #region Distribute
         private void DistributeHorizontalButton_Click(object sender, RoutedEventArgs e)
         {
+            if (this.GetCurrentSelection().Type != PowerPoint.PpSelectionType.ppSelectionShapes)
+            {
+                return;
+            }
             List<Shape> selectedShapes = ConvertShapeRangeToList(this.GetCurrentSelection().ShapeRange, 1);
             float slideWidth = this.GetCurrentPresentation().SlideWidth;
             PositionsLabMain.DistributeHorizontal(selectedShapes, slideWidth);
@@ -134,6 +170,10 @@ namespace PowerPointLabs.PositionsLab
 
         private void DistributeVerticalButton_Click(object sender, RoutedEventArgs e)
         {
+            if (this.GetCurrentSelection().Type != PowerPoint.PpSelectionType.ppSelectionShapes)
+            {
+                return;
+            }
             List<Shape> selectedShapes = ConvertShapeRangeToList(this.GetCurrentSelection().ShapeRange, 1);
             float slideHeight = this.GetCurrentPresentation().SlideHeight;
             PositionsLabMain.DistributeVertical(selectedShapes, slideHeight);
@@ -141,6 +181,10 @@ namespace PowerPointLabs.PositionsLab
 
         private void DistributeCenterButton_Click(object sender, RoutedEventArgs e)
         {
+            if (this.GetCurrentSelection().Type != PowerPoint.PpSelectionType.ppSelectionShapes)
+            {
+                return;
+            }
             List<Shape> selectedShapes = ConvertShapeRangeToList(this.GetCurrentSelection().ShapeRange, 1);
             float slideWidth = this.GetCurrentPresentation().SlideWidth;
             float slideHeight = this.GetCurrentPresentation().SlideHeight;
@@ -149,13 +193,20 @@ namespace PowerPointLabs.PositionsLab
 
         private void DistributeShapesButton_Click(object sender, RoutedEventArgs e)
         {
+            if (this.GetCurrentSelection().Type != PowerPoint.PpSelectionType.ppSelectionShapes)
+            {
+                return;
+            }
             List<Shape> selectedShapes = ConvertShapeRangeToList(this.GetCurrentSelection().ShapeRange, 1);
             PositionsLabMain.DistributeShapes(selectedShapes);
         }
 
-        //TODO: Catch exception when user clicks on button without selecting any shape
         private void DistributeGridButton_Click(object sender, RoutedEventArgs e)
         {
+            if (this.GetCurrentSelection().Type != PowerPoint.PpSelectionType.ppSelectionShapes)
+            {
+                return;
+            }
             List<Shape> selectedShapes = ConvertShapeRangeToList(this.GetCurrentSelection().ShapeRange, 1);
             int numShapesSelected = selectedShapes.Count;
             int rowLength = (int)Math.Ceiling(Math.Sqrt(numShapesSelected));
@@ -176,12 +227,20 @@ namespace PowerPointLabs.PositionsLab
         #region Snap
         private void SnapHorizontalButton_Click(object sender, RoutedEventArgs e)
         {
+            if (this.GetCurrentSelection().Type != PowerPoint.PpSelectionType.ppSelectionShapes)
+            {
+                return;
+            }
             List<Shape> selectedShapes = ConvertShapeRangeToList(this.GetCurrentSelection().ShapeRange, 1);
             PositionsLabMain.SnapHorizontal(selectedShapes);
         }
 
         private void SnapVerticalButton_Click(object sender, RoutedEventArgs e)
         {
+            if (this.GetCurrentSelection().Type != PowerPoint.PpSelectionType.ppSelectionShapes)
+            {
+                return;
+            }
             List<Shape> selectedShapes = ConvertShapeRangeToList(this.GetCurrentSelection().ShapeRange, 1);
             PositionsLabMain.SnapVertical(selectedShapes);
         }
@@ -204,6 +263,10 @@ namespace PowerPointLabs.PositionsLab
         #region Swap
         private void SwapPositionsButton_Click(object sender, RoutedEventArgs e)
         {
+            if (this.GetCurrentSelection().Type != PowerPoint.PpSelectionType.ppSelectionShapes)
+            {
+                return;
+            }
             List<Shape> selectedShapes = ConvertShapeRangeToList(this.GetCurrentSelection().ShapeRange, 1);
             PositionsLabMain.Swap(selectedShapes);
         }
