@@ -44,7 +44,7 @@
     <PublishUrl>C:\Users\Giki\Desktop\pptlabsPublish\</PublishUrl>
     <InstallUrl>http://www.comp.nus.edu.sg/~pptlabs/download/dev/</InstallUrl>
     <TargetCulture>en</TargetCulture>
-    <ApplicationVersion>2.8.5.8</ApplicationVersion>
+    <ApplicationVersion>2.8.6.0</ApplicationVersion>
     <AutoIncrementApplicationRevision>false</AutoIncrementApplicationRevision>
     <UpdateEnabled>true</UpdateEnabled>
     <UpdateInterval>0</UpdateInterval>
@@ -539,8 +539,13 @@
     <Compile Include="PictureSlidesLab\Util\ShapeUtil.cs" />
     <Compile Include="PictureSlidesLab\Util\StyleVariationWidthConverter.cs" />
     <Compile Include="PictureSlidesLab\Util\UrlUtil.cs" />
+    <Compile Include="PositionsLab\AlignSettingsDialog.xaml.cs">
+      <DependentUpon>AlignSettingsDialog.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="PositionsLab\DistributeSettingsDialog.xaml.cs">
+      <DependentUpon>DistributeSettingsDialog.xaml</DependentUpon>
+    </Compile>
     <Compile Include="PositionsLab\PositionsDistributeGridDialog.xaml.cs">
-      <DependentUpon>PositionsDistributeGridDialog.xaml</DependentUpon>
     </Compile>
     <Compile Include="PositionsLab\PositionsLabMain.cs" />
     <Compile Include="PositionsLab\PositionsPane.cs">
@@ -1021,7 +1026,7 @@
     <None Include="Resources\AgendaRemove.png" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="Resources\AgendaSettings.png" />
+    <Resource Include="Resources\AgendaSettings.png" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\AgendaSidebar.png" />
@@ -1057,6 +1062,14 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="DrawingsLab\DrawingsPaneWPF.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="PositionsLab\AlignSettingsDialog.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="PositionsLab\DistributeSettingsDialog.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -1211,6 +1224,9 @@
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
     <VSToolsPath Condition="'$(VSToolsPath)' == ''">$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)</VSToolsPath>
+  </PropertyGroup>
+  <PropertyGroup>
+    <StartupObject />
   </PropertyGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- Include additional build rules for an Office application add-in. -->

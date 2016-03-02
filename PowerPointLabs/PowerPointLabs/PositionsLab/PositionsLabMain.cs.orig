@@ -858,20 +858,11 @@ namespace PowerPointLabs.PositionsLab
             }
         }
 
+<<<<<<< HEAD
+        public static void DistributeGridByRow(List<Shape> selectedShapes, int rowLength, int colLength, float marginTop, float marginBottom, float marginLeft, float marginRight, int alignment)
+=======
         public static void DistributeGrid(List<Shape> selectedShapes, int rowLength, int colLength)
-        {
-            int colLengthGivenFullRows = (int)Math.Ceiling((double)selectedShapes.Count / rowLength);
-            if (colLength <= colLengthGivenFullRows)
-            {
-                DistributeGridByRow(selectedShapes, rowLength, colLength);
-            }
-            else
-            {
-                DistributeGridByCol(selectedShapes, rowLength, colLength);
-            }
-        }
-
-        public static void DistributeGridByRow(List<Shape> selectedShapes, int rowLength, int colLength)
+>>>>>>> 264be27e1d5e64aa79ad8b9990c35fbdb57ae994
         {
             Drawing.PointF refPoint = Graphics.GetCenterPoint(selectedShapes[0]);
 
@@ -883,14 +874,18 @@ namespace PowerPointLabs.PositionsLab
                 allShapes.Add(new PPShape(selectedShapes[i]));
             }
 
-            int numIndicesToSkip = IndicesToSkip(numShapes, rowLength, _distributeGridAlignment);
+            int numIndicesToSkip = IndicesToSkip(numShapes, rowLength, alignment);
 
             float[] rowDifferences = GetLongestWidthsOfRowsByRow(allShapes, rowLength, numIndicesToSkip);
             float[] colDifferences = GetLongestHeightsOfColsByRow(allShapes, rowLength, colLength);
 
             float posX = refPoint.X;
             float posY = refPoint.Y;
+<<<<<<< HEAD
             int remainder = numShapes % rowLength;
+=======
+            int numIndicesToSkip = IndicesToSkip(numShapes, rowLength, _distributeGridAlignment);
+>>>>>>> 264be27e1d5e64aa79ad8b9990c35fbdb57ae994
             int differenceIndex = 0;
 
             for (int i = 0; i < numShapes; i++)
@@ -900,27 +895,39 @@ namespace PowerPointLabs.PositionsLab
                 {
                     posX = refPoint.X;
                     differenceIndex = 0;
-                    posY += GetSpaceBetweenShapes(i / rowLength - 1, i / rowLength, colDifferences, _marginTop, _marginBottom);
+                    posY += GetSpaceBetweenShapes(i / rowLength - 1, i / rowLength, colDifferences, marginTop, marginBottom);
                 }
 
                 //If last row, offset by num of indices to skip
                 if (numShapes - i == remainder)
                 {
                     differenceIndex = numIndicesToSkip;
-                    posX += GetSpaceBetweenShapes(0, differenceIndex, rowDifferences, _marginLeft, _marginRight);
+                    posX += GetSpaceBetweenShapes(0, differenceIndex, rowDifferences, marginLeft, marginRight);
                 }
 
+<<<<<<< HEAD
                 Shape currentShape = selectedShapes[i];
                 Drawing.PointF center = Graphics.GetCenterPoint(currentShape);
                 currentShape.IncrementLeft(posX - center.X);
                 currentShape.IncrementTop(posY - center.Y);
+=======
+                    Shape currentShape = selectedShapes[index];
+                    Drawing.PointF center = Graphics.GetCenterPoint(currentShape);
+                    currentShape.IncrementLeft(posX - center.X);
+                    currentShape.IncrementTop(posY - center.Y);
+                    
+                    if (differenceIndex < rowLength - 1)
+                    {
+                        posX += (rowDifferences[differenceIndex] / 2 + rowDifferences[differenceIndex + 1] / 2 + _marginLeft + _marginRight);
+                    }
+>>>>>>> 264be27e1d5e64aa79ad8b9990c35fbdb57ae994
 
-                posX += GetSpaceBetweenShapes(differenceIndex, differenceIndex + 1, rowDifferences, _marginLeft, _marginRight);
+                posX += GetSpaceBetweenShapes(differenceIndex, differenceIndex + 1, rowDifferences, marginLeft, marginRight);
                 differenceIndex++;
             }
         }
 
-        public static void DistributeGridByCol(List<Shape> selectedShapes, int rowLength, int colLength)
+        public static void DistributeGridByCol(List<Shape> selectedShapes, int rowLength, int colLength, float marginTop, float marginBottom, float marginLeft, float marginRight, int alignment)
         {
             Drawing.PointF refPoint = Graphics.GetCenterPoint(selectedShapes[0]);
 
@@ -932,7 +939,7 @@ namespace PowerPointLabs.PositionsLab
                 allShapes.Add(new PPShape(selectedShapes[i]));
             }
 
-            int numIndicesToSkip = IndicesToSkip(numShapes, colLength, _distributeGridAlignment);
+            int numIndicesToSkip = IndicesToSkip(numShapes, colLength, alignment);
 
             float[] rowDifferences = GetLongestWidthsOfRowsByCol(allShapes, rowLength, colLength, numIndicesToSkip);
             float[] colDifferences = GetLongestHeightsOfColsByCol(allShapes, rowLength, colLength, numIndicesToSkip);
@@ -947,8 +954,13 @@ namespace PowerPointLabs.PositionsLab
                 //If last index and need to skip, skip index 
                 if (numIndicesToSkip > 0 && IsLastIndexOfRow(augmentedShapeIndex, rowLength))
                 {
+<<<<<<< HEAD
                     numIndicesToSkip--;
                     augmentedShapeIndex++;
+=======
+                    differenceIndex = 0;
+                    posY += (colDifferences[i] / 2 + colDifferences[i + 1] / 2 + _marginTop + _marginBottom);
+>>>>>>> 264be27e1d5e64aa79ad8b9990c35fbdb57ae994
                 }
 
                 //If last index and no more remainder, skip the rest
@@ -956,7 +968,11 @@ namespace PowerPointLabs.PositionsLab
                 {
                     if (remainder <= 0)
                     {
+<<<<<<< HEAD
                         augmentedShapeIndex++;
+=======
+                        posX += (rowDifferences[k] / 2 + rowDifferences[k + 1] / 2 + _marginLeft + _marginRight);
+>>>>>>> 264be27e1d5e64aa79ad8b9990c35fbdb57ae994
                     }
                     else
                     {
@@ -967,7 +983,7 @@ namespace PowerPointLabs.PositionsLab
                 if (IsFirstIndexOfRow(augmentedShapeIndex, rowLength) && augmentedShapeIndex != 0)
                 {
                     posX = refPoint.X;
-                    posY += GetSpaceBetweenShapes(augmentedShapeIndex / rowLength - 1, augmentedShapeIndex / rowLength, colDifferences, _marginTop, _marginBottom);
+                    posY += GetSpaceBetweenShapes(augmentedShapeIndex / rowLength - 1, augmentedShapeIndex / rowLength, colDifferences, marginTop, marginBottom);
                 }
 
                 Shape currentShape = selectedShapes[i];
@@ -975,7 +991,7 @@ namespace PowerPointLabs.PositionsLab
                 currentShape.IncrementLeft(posX - center.X);
                 currentShape.IncrementTop(posY - center.Y);
 
-                posX += GetSpaceBetweenShapes(augmentedShapeIndex % rowLength, augmentedShapeIndex % rowLength + 1, rowDifferences, _marginLeft, _marginRight);
+                posX += GetSpaceBetweenShapes(augmentedShapeIndex % rowLength, augmentedShapeIndex % rowLength + 1, rowDifferences, marginLeft, marginRight);
                 augmentedShapeIndex++;
             }
         }

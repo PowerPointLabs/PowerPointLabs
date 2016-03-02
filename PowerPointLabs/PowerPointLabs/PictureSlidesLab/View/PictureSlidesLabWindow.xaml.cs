@@ -83,6 +83,7 @@ namespace PowerPointLabs.PictureSlidesLab.View
         {
             try
             {
+                InitUiExceptionHandling();
                 InitViewModel();
                 InitGotoSlideDialog();
                 InitLoadStylesDialog();
@@ -103,8 +104,16 @@ namespace PowerPointLabs.PictureSlidesLab.View
             }
         }
 
+        private void InitUiExceptionHandling()
+        {
+            AppDomain.CurrentDomain.UnhandledException += HandleUnhandledException;
+            Dispatcher.UnhandledException += HandleUnhandledException;
+            Logger.Log("PSL init UI exception handling done");
+        }
+
         private void InitStyleing()
         {
+            Logger.Log("PSL init styling begins");
             // load back the style from the current slide, or
             // select the first picture to preview styles
             var isSuccessfullyLoaded = LoadStyleAndImage(this.GetCurrentSlide(),
@@ -113,6 +122,7 @@ namespace PowerPointLabs.PictureSlidesLab.View
             {
                 if (!isSuccessfullyLoaded)
                 {
+                    Logger.Log("Not loaded back style and picture, going to select a picture.");
                     // index-0 is choosePicture placeholder
                     ViewModel.ImageSelectionListSelectedId.Number = 1;
                 }
@@ -1165,6 +1175,18 @@ namespace PowerPointLabs.PictureSlidesLab.View
                 action();
             };
             timer.Start();
+        }
+
+        private void HandleUnhandledException(object sender, DispatcherUnhandledExceptionEventArgs e)
+        {
+            Logger.LogException(e.Exception, sender.GetType() + " " + sender);
+            ShowErrorMessageBox("Unexpected errors happened!", e.Exception);
+        }
+
+        private void HandleUnhandledException(object sender, UnhandledExceptionEventArgs e)
+        {
+            Logger.LogException(e.ExceptionObject as Exception, sender.GetType() + " " + sender);
+            ShowErrorMessageBox("Unexpected errors happened!", e.ExceptionObject as Exception);
         }
 
         #endregion

@@ -55,8 +55,14 @@ namespace PowerPointLabs.PositionsLab
         private static List<Shape> allShapesInSlide = new List<Shape>();
         private static System.Drawing.Point prevMousePos = new System.Drawing.Point();
 
+        //Variables for settings
+        private AlignSettingsDialog _alignSettingsDialog;
+        private DistributeSettingsDialog _distributeSettingsDialog;
+
         public PositionsPaneWPF()
         {
+            _alignSettingsDialog = new AlignSettingsDialog();
+            _distributeSettingsDialog = new DistributeSettingsDialog();
             InitializeComponent();
             dispatcherTimer.Interval = TimeSpan.FromMilliseconds(10);
         }
@@ -147,6 +153,7 @@ namespace PowerPointLabs.PositionsLab
             PositionsLabMain.DistributeShapes(selectedShapes);
         }
 
+        //TODO: Catch exception when user clicks on button without selecting any shape
         private void DistributeGridButton_Click(object sender, RoutedEventArgs e)
         {
             List<Shape> selectedShapes = ConvertShapeRangeToList(this.GetCurrentSelection().ShapeRange, 1);
@@ -548,32 +555,14 @@ namespace PowerPointLabs.PositionsLab
         #endregion
 
         #region Settings
-        // Note: if changing default behavior to using slide as reference, need to ensure that
-        // checkbox for using shape is defined first in PositionsPaneWPF.xaml
-
-        // TODO: Surround with try catch in case the order of checkboxes are wrong
-        private void UseShapeAsReference(object sender, RoutedEventArgs e)
+        private void AlignSettingsButton_Click(object sender, RoutedEventArgs e)
         {
-            if (!slideAsReference.IsChecked.HasValue || !shapeAsReference.IsChecked.HasValue)
-            {
-                //Error
-                return;
-            }
-            slideAsReference.IsChecked = false;
-            shapeAsReference.IsChecked = true;
-            PositionsLabMain.ReferToShape();
+            _alignSettingsDialog.ShowDialog();
         }
 
-        private void UseSlideAsReference(object sender, RoutedEventArgs e)
+        private void DistributeSettingsButton_Click(object sender, RoutedEventArgs e)
         {
-            if (!slideAsReference.IsChecked.HasValue || !shapeAsReference.IsChecked.HasValue)
-            {
-                //Error
-                return;
-            }
-            shapeAsReference.IsChecked = false;
-            slideAsReference.IsChecked = true;
-            PositionsLabMain.ReferToSlide();
+            _distributeSettingsDialog.ShowDialog();            
         }
         #endregion
 
