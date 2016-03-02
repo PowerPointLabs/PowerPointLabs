@@ -93,25 +93,25 @@ namespace PowerPointLabs.PositionsLab
 
             if (_alignLeftButton.IsChecked.GetValueOrDefault())
             {
-                PositionsLabMain.SetDistributeGridAlignment(PositionsLabMain.ALIGN_LEFT);
+                PositionsLabMain.SetDistributeGridAlignment(PositionsLabMain.GridAlignment.AlignLeft);
             }
 
             if (_alignCenterButton.IsChecked.GetValueOrDefault())
             {
-                PositionsLabMain.SetDistributeGridAlignment(PositionsLabMain.ALIGN_CENTER);
+                PositionsLabMain.SetDistributeGridAlignment(PositionsLabMain.GridAlignment.AlignCenter);
             }
 
             if (_alignRightButton.IsChecked.GetValueOrDefault())
             {
-                PositionsLabMain.SetDistributeGridAlignment(PositionsLabMain.ALIGN_RIGHT);
+                PositionsLabMain.SetDistributeGridAlignment(PositionsLabMain.GridAlignment.AlignRight);
             }
 
-            this.Hide();
+            Hide();
         }
 
         private void CancelButton_Click(object sender, RoutedEventArgs e)
         {
-            this.Hide();
+            Hide();
         }
 
         private void DistributeToShapeButton_Click(object sender, RoutedEventArgs e)

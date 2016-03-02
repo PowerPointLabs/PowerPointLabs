@@ -14,41 +14,41 @@ namespace PowerPointLabs.PositionsLab
     /// <summary>
     /// Interaction logic for PositionsPaneWPF.xaml
     /// </summary>
-    public partial class PositionsPaneWPF : System.Windows.Controls.UserControl
+    public partial class PositionsPaneWpf
     {
-        private PositionsDistributeGridDialog positionsDistributeGridDialog;
+        private PositionsDistributeGridDialog _positionsDistributeGridDialog;
 
-        private static LMouseUpListener _leftMouseUpListener = null;
-        private static LMouseDownListener _leftMouseDownListener = null;
-        private static System.Windows.Threading.DispatcherTimer dispatcherTimer = new System.Windows.Threading.DispatcherTimer();
+        private static LMouseUpListener _leftMouseUpListener;
+        private static LMouseDownListener _leftMouseDownListener;
+        private static System.Windows.Threading.DispatcherTimer _dispatcherTimer = new System.Windows.Threading.DispatcherTimer();
 
         //Variables for lock axis
-        private const int LEFT = 0;
-        private const int TOP = 1;
-        private static bool isLockAxisMode = false;
-        private static PowerPoint.ShapeRange shapesToBeMoved = null;
-        private static System.Drawing.Point initialMousePos = new System.Drawing.Point();
-        private float[,] initialPos;
-        private static int timeCounter = 0;
+        private const int Left = 0;
+        private const int Top = 1;
+        private static bool _isLockAxisMode;
+        private static PowerPoint.ShapeRange _shapesToBeMoved;
+        private static System.Drawing.Point _initialMousePos;
+        private float[,] _initialPos;
+        private static int _timeCounter;
 
         //Variables for rotation
-        private const float REFPOINT_RADIUS = 10;
-        private static bool isRotationMode = false;
-        private static Shape refPoint = null;
-        private static List<Shape> shapesToBeRotated = new List<Shape>();
-        private static List<Shape> allShapesInSlide = new List<Shape>();
-        private static System.Drawing.Point prevMousePos = new System.Drawing.Point();
+        private const float RefpointRadius = 10;
+        private static bool _isRotationMode;
+        private static Shape _refPoint;
+        private static List<Shape> _shapesToBeRotated = new List<Shape>();
+        private static List<Shape> _allShapesInSlide = new List<Shape>();
+        private static System.Drawing.Point _prevMousePos;
 
         //Variables for settings
         private AlignSettingsDialog _alignSettingsDialog;
         private DistributeSettingsDialog _distributeSettingsDialog;
 
-        public PositionsPaneWPF()
+        public PositionsPaneWpf()
         {
             _alignSettingsDialog = new AlignSettingsDialog();
             _distributeSettingsDialog = new DistributeSettingsDialog();
             InitializeComponent();
-            dispatcherTimer.Interval = TimeSpan.FromMilliseconds(10);
+            _dispatcherTimer.Interval = TimeSpan.FromMilliseconds(10);
         }
 
         #region Align
@@ -196,14 +196,14 @@ namespace PowerPointLabs.PositionsLab
             int rowLength = (int)Math.Ceiling(Math.Sqrt(numShapesSelected));
             int colLength = (int)Math.Ceiling((double)numShapesSelected / rowLength);
 
-            if (positionsDistributeGridDialog == null || !positionsDistributeGridDialog.IsOpen)
+            if (_positionsDistributeGridDialog == null || !_positionsDistributeGridDialog.IsOpen)
             {
-                positionsDistributeGridDialog = new PositionsDistributeGridDialog(selectedShapes, rowLength, colLength);
-                positionsDistributeGridDialog.Show();
+                _positionsDistributeGridDialog = new PositionsDistributeGridDialog(selectedShapes, rowLength, colLength);
+                _positionsDistributeGridDialog.Show();
             }
             else
             {
-                positionsDistributeGridDialog.Activate();
+                _positionsDistributeGridDialog.Activate();
             }
         }
         #endregion
@@ -273,28 +273,26 @@ namespace PowerPointLabs.PositionsLab
                 return;
             }
 
-            if (isLockAxisMode)
+            if (_isLockAxisMode)
             {
                 DisableLockAxisMode();
             }
 
-            isRotationMode = true;
+            _isRotationMode = true;
 
             var currentSlide = this.GetCurrentSlide();
 
-            refPoint = selectedShapes[1];
-            shapesToBeRotated = ConvertShapeRangeToList(selectedShapes, 2);
-            allShapesInSlide = ConvertShapesToList(currentSlide.Shapes);
+            _refPoint = selectedShapes[1];
+            _shapesToBeRotated = ConvertShapeRangeToList(selectedShapes, 2);
+            _allShapesInSlide = ConvertShapesToList(currentSlide.Shapes);
 
-            dispatcherTimer.Tick += new EventHandler(RotationHandler);
+            _dispatcherTimer.Tick += RotationHandler;
 
             _leftMouseUpListener = new LMouseUpListener();
-            _leftMouseUpListener.LButtonUpClicked +=
-                new EventHandler<SysMouseEventInfo>(_leftMouseUpListener_Rotation);
+            _leftMouseUpListener.LButtonUpClicked += _leftMouseUpListener_Rotation;
 
             _leftMouseDownListener = new LMouseDownListener();
-            _leftMouseDownListener.LButtonDownClicked +=
-                new EventHandler<SysMouseEventInfo>(_leftMouseDownListener_Rotation);
+            _leftMouseDownListener.LButtonDownClicked += _leftMouseDownListener_Rotation;
 
         }
 
@@ -304,13 +302,12 @@ namespace PowerPointLabs.PositionsLab
             this.GetCurrentSelection().Unselect();
             System.Drawing.Point p = System.Windows.Forms.Control.MousePosition;
 
-            float prevAngle = (float)PositionsLabMain.AngleBetweenTwoPoints(ConvertSlidePointToScreenPoint(Graphics.GetCenterPoint(refPoint)), prevMousePos);
-            float angle = (float)PositionsLabMain.AngleBetweenTwoPoints(ConvertSlidePointToScreenPoint(Graphics.GetCenterPoint(refPoint)), p) - prevAngle;
-            System.Drawing.PointF origin = Graphics.GetCenterPoint(refPoint);
+            float prevAngle = (float)PositionsLabMain.AngleBetweenTwoPoints(ConvertSlidePointToScreenPoint(Graphics.GetCenterPoint(_refPoint)), _prevMousePos);
+            float angle = (float)PositionsLabMain.AngleBetweenTwoPoints(ConvertSlidePointToScreenPoint(Graphics.GetCenterPoint(_refPoint)), p) - prevAngle;
+            System.Drawing.PointF origin = Graphics.GetCenterPoint(_refPoint);
 
-            for (int i = 0; i < shapesToBeRotated.Count; i++)
+            foreach (Shape currentShape in _shapesToBeRotated)
             {
-                Shape currentShape = shapesToBeRotated[i];
                 System.Drawing.PointF unrotatedCenter = Graphics.GetCenterPoint(currentShape);
                 System.Drawing.PointF rotatedCenter = Graphics.RotatePoint(unrotatedCenter, origin, angle);
 
@@ -320,12 +317,12 @@ namespace PowerPointLabs.PositionsLab
                 currentShape.Rotation = PositionsLabMain.AddAngles(currentShape.Rotation, angle);
             }
 
-            prevMousePos = p;
+            _prevMousePos = p;
         }
 
         void _leftMouseUpListener_Rotation(object sender, SysMouseEventInfo e)
         {
-            dispatcherTimer.Stop();
+            _dispatcherTimer.Stop();
         }
 
         void _leftMouseDownListener_Rotation(object sender, SysMouseEventInfo e)
@@ -333,27 +330,27 @@ namespace PowerPointLabs.PositionsLab
             try
             {
                 System.Drawing.Point p = System.Windows.Forms.Control.MousePosition;
-                Shape selectedShape = GetShapeDirectlyBelowMousePos(allShapesInSlide, p);
+                Shape selectedShape = GetShapeDirectlyBelowMousePos(_allShapesInSlide, p);
 
                 if (selectedShape == null)
                 {
                     DisableRotationMode();
 
-                    if (isLockAxisMode)
+                    if (_isLockAxisMode)
                     {
                         StartLockAxisMode();
                     }
                     return;
                 }
 
-                bool isShapeToBeRotated = shapesToBeRotated.Contains(selectedShape);
-                bool isRefPoint = refPoint.Id == selectedShape.Id;
+                bool isShapeToBeRotated = _shapesToBeRotated.Contains(selectedShape);
+                bool isRefPoint = _refPoint.Id == selectedShape.Id;
 
                 if (!isShapeToBeRotated && !isRefPoint)
                 {
                     DisableRotationMode();
 
-                    if (isLockAxisMode)
+                    if (_isLockAxisMode)
                     {
                         StartLockAxisMode();
                     }
@@ -366,8 +363,8 @@ namespace PowerPointLabs.PositionsLab
                     return;
                 }
 
-                prevMousePos = p;
-                dispatcherTimer.Start();
+                _prevMousePos = p;
+                _dispatcherTimer.Start();
             }
             catch (Exception ex)
             {
@@ -378,46 +375,46 @@ namespace PowerPointLabs.PositionsLab
         private void LockAxis_UnChecked(object sender, RoutedEventArgs e)
         {
             DisableLockAxisMode();
-            isLockAxisMode = false;
+            _isLockAxisMode = false;
         }
 
         private void LockAxis_Checked(object sender, RoutedEventArgs e)
         {
-            if (isRotationMode)
+            if (_isRotationMode)
             {
                 DisableRotationMode();
             }
 
             StartLockAxisMode();
-            isLockAxisMode = true;
+            _isLockAxisMode = true;
         }
 
         private void LockAxisHandler(object sender, EventArgs e)
         {
             //Allow mouseclick to register so that shape is selected
             //Solves bug where old selection replaces new selection due to _leftMouseUpListener_LockAxis
-            if (timeCounter < 1)
+            if (_timeCounter < 1)
             {
-                timeCounter++;
+                _timeCounter++;
                 return;
             }
 
             bool noShapesSelected = this.GetCurrentSelection().Type != PowerPoint.PpSelectionType.ppSelectionShapes;
 
-            if (shapesToBeMoved == null && noShapesSelected)
+            if (_shapesToBeMoved == null && noShapesSelected)
             {
                 return;
             }
 
-            if (shapesToBeMoved == null)
+            if (_shapesToBeMoved == null)
             {
-                shapesToBeMoved = this.GetCurrentSelection().ShapeRange;
-                initialPos = new float[shapesToBeMoved.Count, 2];
-                for (int i = 0; i < shapesToBeMoved.Count; i++)
+                _shapesToBeMoved = this.GetCurrentSelection().ShapeRange;
+                _initialPos = new float[_shapesToBeMoved.Count, 2];
+                for (int i = 0; i < _shapesToBeMoved.Count; i++)
                 {
-                    Shape s = shapesToBeMoved[i + 1];
-                    initialPos[i, LEFT] = s.Left;
-                    initialPos[i, TOP] = s.Top;
+                    Shape s = _shapesToBeMoved[i + 1];
+                    _initialPos[i, Left] = s.Left;
+                    _initialPos[i, Top] = s.Top;
                 }
             }
 
@@ -426,33 +423,33 @@ namespace PowerPointLabs.PositionsLab
 
             System.Drawing.Point currentMousePos = System.Windows.Forms.Control.MousePosition;
 
-            float diffX = currentMousePos.X - initialMousePos.X;
-            float diffY = currentMousePos.Y - initialMousePos.Y;
+            float diffX = currentMousePos.X - _initialMousePos.X;
+            float diffY = currentMousePos.Y - _initialMousePos.Y;
 
-            for (int i = 0; i < shapesToBeMoved.Count; i++)
+            for (int i = 0; i < _shapesToBeMoved.Count; i++)
             {
-                Shape s = shapesToBeMoved[i + 1];
+                Shape s = _shapesToBeMoved[i + 1];
                 if (Math.Abs(diffX) > Math.Abs(diffY))
                 {
-                    s.Left = initialPos[i, LEFT] + diffX;
-                    s.Top = initialPos[i, TOP];
+                    s.Left = _initialPos[i, Left] + diffX;
+                    s.Top = _initialPos[i, Top];
                 }
                 else
                 {
-                    s.Left = initialPos[i, LEFT];
-                    s.Top = initialPos[i, TOP] + diffY;
+                    s.Left = _initialPos[i, Left];
+                    s.Top = _initialPos[i, Top] + diffY;
                 }
             }
         }
 
         void _leftMouseUpListener_LockAxis(object sender, SysMouseEventInfo e)
         {
-            dispatcherTimer.Stop();
-            timeCounter = 0;
-            if (shapesToBeMoved != null)
+            _dispatcherTimer.Stop();
+            _timeCounter = 0;
+            if (_shapesToBeMoved != null)
             {
-                shapesToBeMoved.Select();
-                shapesToBeMoved = null;
+                _shapesToBeMoved.Select();
+                _shapesToBeMoved = null;
             }
         }
 
@@ -462,16 +459,16 @@ namespace PowerPointLabs.PositionsLab
             {
                 System.Drawing.Point p = System.Windows.Forms.Control.MousePosition;
                 var currentSlide = this.GetCurrentSlide();
-                allShapesInSlide = ConvertShapesToList(currentSlide.Shapes);
-                Shape selectedShape = GetShapeDirectlyBelowMousePos(allShapesInSlide, p);
+                _allShapesInSlide = ConvertShapesToList(currentSlide.Shapes);
+                Shape selectedShape = GetShapeDirectlyBelowMousePos(_allShapesInSlide, p);
 
                 if (selectedShape == null || PPKeyboard.IsCtrlPressed() || PPKeyboard.IsShiftPressed())
                 {
                     return;
                 }
 
-                initialMousePos = p;
-                dispatcherTimer.Start();
+                _initialMousePos = p;
+                _dispatcherTimer.Start();
             }
             catch (Exception ex)
             {
@@ -484,7 +481,7 @@ namespace PowerPointLabs.PositionsLab
         #region Helper
         private Shape AddReferencePoint(PowerPoint.Shapes shapes, float left, float top)
         {
-            return shapes.AddShape(Microsoft.Office.Core.MsoAutoShapeType.msoShapeOval, left, top, REFPOINT_RADIUS, REFPOINT_RADIUS);
+            return shapes.AddShape(Office.MsoAutoShapeType.msoShapeOval, left, top, RefpointRadius, RefpointRadius);
         }
 
         private System.Drawing.PointF CalculateCenterPoint(List<Shape> shapes)
@@ -625,44 +622,42 @@ namespace PowerPointLabs.PositionsLab
                 _leftMouseDownListener.Close();
             }
 
-            dispatcherTimer.Stop();
-            dispatcherTimer = new System.Windows.Threading.DispatcherTimer();
+            _dispatcherTimer.Stop();
+            _dispatcherTimer = new System.Windows.Threading.DispatcherTimer();
         }
 
         private static void DisableRotationMode()
         {
             ClearAllEventHandlers();
-            isRotationMode = false;
+            _isRotationMode = false;
 
-            if (refPoint != null)
+            if (_refPoint != null)
             {
-                refPoint = null;
+                _refPoint = null;
             }
 
-            shapesToBeRotated = new List<Shape>();
-            allShapesInSlide = new List<Shape>();
-            prevMousePos = new System.Drawing.Point();
+            _shapesToBeRotated = new List<Shape>();
+            _allShapesInSlide = new List<Shape>();
+            _prevMousePos = new System.Drawing.Point();
         }
 
         private void StartLockAxisMode()
         {
-            dispatcherTimer.Tick += new EventHandler(LockAxisHandler);
+            _dispatcherTimer.Tick += LockAxisHandler;
 
             _leftMouseUpListener = new LMouseUpListener();
-            _leftMouseUpListener.LButtonUpClicked +=
-                new EventHandler<SysMouseEventInfo>(_leftMouseUpListener_LockAxis);
+            _leftMouseUpListener.LButtonUpClicked += _leftMouseUpListener_LockAxis;
 
             _leftMouseDownListener = new LMouseDownListener();
-            _leftMouseDownListener.LButtonDownClicked +=
-                new EventHandler<SysMouseEventInfo>(_leftMouseDownListener_LockAxis);
+            _leftMouseDownListener.LButtonDownClicked += _leftMouseDownListener_LockAxis;
         }
 
         private static void DisableLockAxisMode()
         {
             ClearAllEventHandlers();
-            shapesToBeMoved = null;
-            initialMousePos = new System.Drawing.Point();
-            timeCounter = 0;
+            _shapesToBeMoved = null;
+            _initialMousePos = new System.Drawing.Point();
+            _timeCounter = 0;
         }
     }
 }

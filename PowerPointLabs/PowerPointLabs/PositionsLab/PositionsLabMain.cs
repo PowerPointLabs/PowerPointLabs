@@ -11,26 +11,29 @@ namespace PowerPointLabs.PositionsLab
 {
     class PositionsLabMain
     {
-        private static bool isInit = false;
-        private const float epsilon = 0.00001f;
-        private const float ROTATE_LEFT = 90f;
-        private const float ROTATE_RIGHT = 270f;
-        private const float ROTATE_UP = 0f;
-        private const float ROTATE_DOWN = 180f;
-        private const int NONE = -1;
-        private const int RIGHT = 0;
-        private const int DOWN = 1;
-        private const int LEFT = 2;
-        private const int UP = 3;
-        private const int LEFTORRIGHT = 4;
-        private const int UPORDOWN = 5;
+        private static bool _isInit;
+        private const float Epsilon = 0.00001f;
+        private const float RotateLeft = 90f;
+        private const float RotateRight = 270f;
+        private const float RotateUp = 0f;
+        private const float RotateDown = 180f;
+        private const int None = -1;
+        private const int Right = 0;
+        private const int Down = 1;
+        private const int Left = 2;
+        private const int Up = 3;
+        private const int Leftorright = 4;
+        private const int Upordown = 5;
 
         //For Grid
-        public const int ALIGN_LEFT = 0;
-        public const int ALIGN_CENTER = 1;
-        public const int ALIGN_RIGHT = 2;
+        public enum GridAlignment
+        {
+            AlignLeft,
+            AlignCenter,
+            AlignRight
+        }
 
-        private static int _distributeGridAlignment;
+        private static GridAlignment _distributeGridAlignment;
         private static float _marginTop = 5;
         private static float _marginBottom = 5;
         private static float _marginLeft = 5;
@@ -76,7 +79,7 @@ namespace PowerPointLabs.PositionsLab
             _distributeUseSlideAsReference = false;
         }
 
-        public static void SetDistributeGridAlignment(int alignment)
+        public static void SetDistributeGridAlignment(GridAlignment alignment)
         {
             _distributeGridAlignment = alignment;
         }
@@ -311,38 +314,38 @@ namespace PowerPointLabs.PositionsLab
         #region Snap
         public static void SnapVertical(List<Shape> selectedShapes)
         {
-            if (!isInit)
+            if (!_isInit)
             {
                 Init();
-                isInit = true;
+                _isInit = true;
             }
 
-            for (int i = 0; i < selectedShapes.Count; i++)
+            foreach (var s in selectedShapes)
             {
-                SnapShapeVertical(selectedShapes[i]);
+                SnapShapeVertical(s);
             }
         }
 
         public static void SnapHorizontal(List<Shape> selectedShapes)
         {
-            if (!isInit)
+            if (!_isInit)
             {
                 Init();
-                isInit = true;
+                _isInit = true;
             }
 
-            for (int i = 0; i < selectedShapes.Count; i++)
+            foreach (var s in selectedShapes)
             {
-                SnapShapeHorizontal(selectedShapes[i]);
+                SnapShapeHorizontal(s);
             }
         }
 
         public static void SnapAway(List<Shape> shapes)
         {
-            if (!isInit)
+            if (!_isInit)
             {
                 Init();
-                isInit = true;
+                _isInit = true;
             }
 
             if (shapes.Count <= 1)
@@ -374,13 +377,13 @@ namespace PowerPointLabs.PositionsLab
                 }
 
                 //only maintain in one direction instead of dual direction
-                if (dir < LEFTORRIGHT)
+                if (dir < Leftorright)
                 {
                     lastDir = dir; 
                 }
             }
 
-            if (!isAllSameDir || lastDir == NONE)
+            if (!isAllSameDir || lastDir == None)
             {
                 lastDir = 0;
             }
@@ -795,7 +798,7 @@ namespace PowerPointLabs.PositionsLab
 
             Drawing.PointF[] allPointsOfFirstRef = Graphics.GetRealCoordinates(firstRef);
             Drawing.PointF[] allPointsOfLastRef = Graphics.GetRealCoordinates(lastRef);
-            Drawing.PointF[] allPointsOfRef = Graphics.GetRealCoordinates(refShape);
+            Drawing.PointF[] allPointsOfRef;
 
             var horizontalDistance = Graphics.LeftMostPoint(allPointsOfLastRef).X - Graphics.RightMostPoint(allPointsOfFirstRef).X;
             var verticalDistance = Graphics.TopMostPoint(allPointsOfLastRef).Y - Graphics.BottomMostPoint(allPointsOfFirstRef).Y;
@@ -978,7 +981,7 @@ namespace PowerPointLabs.PositionsLab
         #endregion
 
         #region Util
-        public static double AngleBetweenTwoPoints(System.Drawing.PointF refPoint, System.Drawing.PointF pt)
+        public static double AngleBetweenTwoPoints(Drawing.PointF refPoint, Drawing.PointF pt)
         {
             double angle = Math.Atan((pt.Y - refPoint.Y) / (pt.X - refPoint.X)) * 180 / Math.PI;
 
@@ -1004,21 +1007,19 @@ namespace PowerPointLabs.PositionsLab
             { // shortcut, handles infinities
                 return true;
             }
-            else if (a == 0 || b == 0 || diff < float.Epsilon)
+            if (a == 0 || b == 0 || diff < float.Epsilon)
             {
                 // a or b is zero or both are extremely close to it
                 // relative error is less meaningful here
                 return diff < epsilon;
             }
-            else
-            { // use relative error
-                return diff / (absA + absB) < epsilon;
-            }
+            // use relative error
+            return diff / (absA + absB) < epsilon;
         }
 
-        private static int GetDirectionWRTRefShape(Shape shape, float angleFromRefShape)
+        private static int GetDirectionWrtRefShape(Shape shape, float angleFromRefShape)
         {
-            float defaultUpAngle = -1;
+            float defaultUpAngle;
             bool hasDefaultDirection = shapeDefaultUpAngle.TryGetValue(shape.AutoShapeType, out defaultUpAngle);
 
             if (shape.AutoShapeType == AutoShape.msoShapeLightningBolt)
@@ -1048,24 +1049,24 @@ namespace PowerPointLabs.PositionsLab
                 Debug.WriteLine("angle: " + angle);
                 Debug.WriteLine("diff: " + diff);
                 Debug.WriteLine("phaseInFloat: " + defaultUpAngle);
-                Debug.WriteLine("equal: " + NearlyEqual(phaseInFloat, (float)Math.Round(phaseInFloat), epsilon));
+                Debug.WriteLine("equal: " + NearlyEqual(phaseInFloat, (float)Math.Round(phaseInFloat), Epsilon));
             }
 
-            if (!NearlyEqual(phaseInFloat, (float)Math.Round(phaseInFloat), epsilon))
+            if (!NearlyEqual(phaseInFloat, (float)Math.Round(phaseInFloat), Epsilon))
             {
-                return NONE;
+                return None;
             }
 
             int phase = (int)Math.Round(phaseInFloat);
 
             if (!hasDefaultDirection)
             {
-                if (phase == LEFT || phase == RIGHT)
+                if (phase == Left || phase == Right)
                 {
-                    return LEFTORRIGHT;
+                    return Leftorright;
                 }
 
-                return UPORDOWN;
+                return Upordown;
             }
 
             return phase;
@@ -1074,10 +1075,10 @@ namespace PowerPointLabs.PositionsLab
         private static bool IsSameDirection(int a, int b)
         {
             if (a == b) return true;
-            if (a == LEFTORRIGHT) return b == LEFT || b == RIGHT;
-            if (b == LEFTORRIGHT) return a == LEFT || a == RIGHT;
-            if (a == UPORDOWN) return b == UP || b == DOWN;
-            if (b == UPORDOWN) return a == UP || a == DOWN;
+            if (a == Leftorright) return b == Left || b == Right;
+            if (b == Leftorright) return a == Left || a == Right;
+            if (a == Upordown) return b == Up || b == Down;
+            if (b == Upordown) return a == Up || a == Down;
 
             return false;
        }
@@ -1230,21 +1231,21 @@ namespace PowerPointLabs.PositionsLab
             return index % rowLength == rowLength - 1;
         }
 
-        public static int IndicesToSkip(int totalSelectedShapes, int rowLength, int alignment)
+        public static int IndicesToSkip(int totalSelectedShapes, int rowLength, GridAlignment alignment)
         {
             int numOfShapesInLastRow = totalSelectedShapes % rowLength;
 
-            if (alignment == ALIGN_LEFT || numOfShapesInLastRow == 0)
+            if (alignment == GridAlignment.AlignLeft || numOfShapesInLastRow == 0)
             {
                 return 0;
             }
 
-            if (alignment == ALIGN_RIGHT)
+            if (alignment == GridAlignment.AlignRight)
             {
                 return rowLength - numOfShapesInLastRow;
             }
 
-            if (alignment == ALIGN_CENTER)
+            if (alignment == GridAlignment.AlignCenter)
             {
                 int difference = rowLength - numOfShapesInLastRow;
                 return difference / 2;
@@ -1288,34 +1289,34 @@ namespace PowerPointLabs.PositionsLab
         {
             shapeDefaultUpAngle = new Dictionary<MsoAutoShapeType, float>();
 
-            shapeDefaultUpAngle.Add(AutoShape.msoShapeLeftArrow, ROTATE_LEFT);
-            shapeDefaultUpAngle.Add(AutoShape.msoShapeLeftRightArrow, ROTATE_LEFT);
-            shapeDefaultUpAngle.Add(AutoShape.msoShapeLeftArrowCallout, ROTATE_LEFT);
-            shapeDefaultUpAngle.Add(AutoShape.msoShapeLeftRightArrowCallout, ROTATE_LEFT);
-            shapeDefaultUpAngle.Add(AutoShape.msoShapeCurvedLeftArrow, ROTATE_LEFT);
+            shapeDefaultUpAngle.Add(AutoShape.msoShapeLeftArrow, RotateLeft);
+            shapeDefaultUpAngle.Add(AutoShape.msoShapeLeftRightArrow, RotateLeft);
+            shapeDefaultUpAngle.Add(AutoShape.msoShapeLeftArrowCallout, RotateLeft);
+            shapeDefaultUpAngle.Add(AutoShape.msoShapeLeftRightArrowCallout, RotateLeft);
+            shapeDefaultUpAngle.Add(AutoShape.msoShapeCurvedLeftArrow, RotateLeft);
 
-            shapeDefaultUpAngle.Add(AutoShape.msoShapeRightArrow, ROTATE_RIGHT);
-            shapeDefaultUpAngle.Add(AutoShape.msoShapeBentArrow, ROTATE_RIGHT);
-            shapeDefaultUpAngle.Add(AutoShape.msoShapeStripedRightArrow, ROTATE_RIGHT);
-            shapeDefaultUpAngle.Add(AutoShape.msoShapeNotchedRightArrow, ROTATE_RIGHT);
-            shapeDefaultUpAngle.Add(AutoShape.msoShapePentagon, ROTATE_RIGHT);
-            shapeDefaultUpAngle.Add(AutoShape.msoShapeChevron, ROTATE_RIGHT);
-            shapeDefaultUpAngle.Add(AutoShape.msoShapeRightArrowCallout, ROTATE_RIGHT);
-            shapeDefaultUpAngle.Add(AutoShape.msoShapeCurvedRightArrow, ROTATE_RIGHT);
+            shapeDefaultUpAngle.Add(AutoShape.msoShapeRightArrow, RotateRight);
+            shapeDefaultUpAngle.Add(AutoShape.msoShapeBentArrow, RotateRight);
+            shapeDefaultUpAngle.Add(AutoShape.msoShapeStripedRightArrow, RotateRight);
+            shapeDefaultUpAngle.Add(AutoShape.msoShapeNotchedRightArrow, RotateRight);
+            shapeDefaultUpAngle.Add(AutoShape.msoShapePentagon, RotateRight);
+            shapeDefaultUpAngle.Add(AutoShape.msoShapeChevron, RotateRight);
+            shapeDefaultUpAngle.Add(AutoShape.msoShapeRightArrowCallout, RotateRight);
+            shapeDefaultUpAngle.Add(AutoShape.msoShapeCurvedRightArrow, RotateRight);
 
-            shapeDefaultUpAngle.Add(AutoShape.msoShapeUpArrow, ROTATE_UP);
-            shapeDefaultUpAngle.Add(AutoShape.msoShapeBentUpArrow, ROTATE_UP);
-            shapeDefaultUpAngle.Add(AutoShape.msoShapeUpDownArrow, ROTATE_UP);
-            shapeDefaultUpAngle.Add(AutoShape.msoShapeLeftRightUpArrow, ROTATE_UP);
-            shapeDefaultUpAngle.Add(AutoShape.msoShapeLeftUpArrow, ROTATE_UP);
-            shapeDefaultUpAngle.Add(AutoShape.msoShapeUpArrowCallout, ROTATE_UP);
-            shapeDefaultUpAngle.Add(AutoShape.msoShapeCurvedUpArrow, ROTATE_UP);
+            shapeDefaultUpAngle.Add(AutoShape.msoShapeUpArrow, RotateUp);
+            shapeDefaultUpAngle.Add(AutoShape.msoShapeBentUpArrow, RotateUp);
+            shapeDefaultUpAngle.Add(AutoShape.msoShapeUpDownArrow, RotateUp);
+            shapeDefaultUpAngle.Add(AutoShape.msoShapeLeftRightUpArrow, RotateUp);
+            shapeDefaultUpAngle.Add(AutoShape.msoShapeLeftUpArrow, RotateUp);
+            shapeDefaultUpAngle.Add(AutoShape.msoShapeUpArrowCallout, RotateUp);
+            shapeDefaultUpAngle.Add(AutoShape.msoShapeCurvedUpArrow, RotateUp);
 
-            shapeDefaultUpAngle.Add(AutoShape.msoShapeDownArrow, ROTATE_DOWN);
-            shapeDefaultUpAngle.Add(AutoShape.msoShapeUTurnArrow, ROTATE_DOWN);
-            shapeDefaultUpAngle.Add(AutoShape.msoShapeDownArrowCallout, ROTATE_DOWN);
-            shapeDefaultUpAngle.Add(AutoShape.msoShapeCurvedDownArrow, ROTATE_DOWN);
-            shapeDefaultUpAngle.Add(AutoShape.msoShapeCircularArrow, ROTATE_DOWN);
+            shapeDefaultUpAngle.Add(AutoShape.msoShapeDownArrow, RotateDown);
+            shapeDefaultUpAngle.Add(AutoShape.msoShapeUTurnArrow, RotateDown);
+            shapeDefaultUpAngle.Add(AutoShape.msoShapeDownArrowCallout, RotateDown);
+            shapeDefaultUpAngle.Add(AutoShape.msoShapeCurvedDownArrow, RotateDown);
+            shapeDefaultUpAngle.Add(AutoShape.msoShapeCircularArrow, RotateDown);
         }
 
         #endregion
