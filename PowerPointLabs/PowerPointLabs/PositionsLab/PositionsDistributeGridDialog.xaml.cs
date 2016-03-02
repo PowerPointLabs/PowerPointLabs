@@ -48,13 +48,13 @@ namespace PowerPointLabs.PositionsLab
         private void RowInput_Load(object sender, RoutedEventArgs e)
         {
             _rowInput = (NumericUpDown)sender;
-            _rowInput.Value = _rowLength;
+            _rowInput.Value = _colLength;
         }
 
         private void ColInput_Load(object sender, RoutedEventArgs e)
         {
             _colInput = (NumericUpDown)sender;
-            _colInput.Value = _colLength;
+            _colInput.Value = _rowLength;
         }
         private void RowInput_ValueChanged(object sender, RoutedPropertyChangedEventArgs<double?> e)
         {
@@ -108,7 +108,7 @@ namespace PowerPointLabs.PositionsLab
                 return;
             }
             
-            PositionsLabMain.DistributeGrid(_selectedShapes, (int)rowValue, (int)colValue);
+            PositionsLabMain.DistributeGrid(_selectedShapes, (int)colValue, (int)rowValue);
 
             this.Close();
         }
