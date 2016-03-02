@@ -1,14 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using Microsoft.Office.Core;
-using Microsoft.Office.Interop.PowerPoint;
-using PowerPointLabs.Models;
 using PowerPointLabs.Utils;
-using PowerPointLabs.Views;
 using Shape = Microsoft.Office.Interop.PowerPoint.Shape;
-using PowerPoint = Microsoft.Office.Interop.PowerPoint;
 using AutoShape = Microsoft.Office.Core.MsoAutoShapeType;
 using System.Diagnostics;
 using Drawing = System.Drawing;
