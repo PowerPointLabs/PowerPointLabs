@@ -298,13 +298,14 @@ namespace PowerPointLabs.ResizeLab
             var selectedShapes = GetSelectedShapes(false);
             var resizeAction = new SingleInputResizeAction(shapes => _resizeLab.ResizeToSameHeightAndWidth);
 
-            ModifySelectionAspectRatio();
+            _resizeLab.ChangeShapesAspectRatio(selectedShapes, false);
             Preview(selectedShapes, resizeAction, 2);
         }
 
         private void SameSizeBtn_MouseLeave(object sender, MouseEventArgs e)
         {
             Reset();
+            _resizeLab.ChangeShapesAspectRatio(GetSelectedShapes(false), IsAspectRatioLocked);
         }
 
         private void FitWidthBtn_MouseEnter(object sender, MouseEventArgs e)
