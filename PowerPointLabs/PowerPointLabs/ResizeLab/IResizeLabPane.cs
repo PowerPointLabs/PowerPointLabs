@@ -14,7 +14,7 @@ namespace PowerPointLabs.ResizeLab
     public interface IResizeLabPane
     {
         void ShowErrorMessageBox(string content, Exception exception = null);
-        void Preview(PowerPoint.ShapeRange selectedShapes, SingleInputResizeAction previewAction);
+        void Preview(PowerPoint.ShapeRange selectedShapes, SingleInputResizeAction previewAction, int minNoOfSelectedShapes);
         void Preview(PowerPoint.ShapeRange selectedShapes, float slideWidth, float slideHeight,
             MultiInputResizeAction previewAction);
         void Reset();

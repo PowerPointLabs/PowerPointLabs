@@ -18,9 +18,9 @@ namespace PowerPointLabs.ResizeLab
             }
         }
 
-        public void Preview(PowerPoint.ShapeRange selectedShapes, SingleInputResizeAction previewAction)
+        public void Preview(PowerPoint.ShapeRange selectedShapes, SingleInputResizeAction previewAction, int minNoOfSelectedShapes)
         {
-            if (selectedShapes == null) return;
+            if (selectedShapes == null || selectedShapes.Count < minNoOfSelectedShapes) return;
 
             var action = previewAction(selectedShapes);
 

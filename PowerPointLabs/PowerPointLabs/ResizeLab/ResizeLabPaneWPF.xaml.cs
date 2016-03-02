@@ -204,7 +204,7 @@ namespace PowerPointLabs.ResizeLab
             var selectedShapes = GetSelectedShapes(false);
             var resizeAction = new SingleInputResizeAction(shapes => _resizeLab.StretchLeft);
 
-            Preview(selectedShapes, resizeAction);
+            Preview(selectedShapes, resizeAction, 2);
         }
 
         private void StretchLeftBtn_MouseLeave(object sender, MouseEventArgs e)
@@ -217,7 +217,7 @@ namespace PowerPointLabs.ResizeLab
             var selectedShapes = GetSelectedShapes(false);
             var resizeAction = new SingleInputResizeAction(shapes => _resizeLab.StretchRight);
 
-            Preview(selectedShapes, resizeAction);
+            Preview(selectedShapes, resizeAction, 2);
         }
 
         private void StretchRightBtn_MouseLeave(object sender, MouseEventArgs e)
@@ -230,7 +230,7 @@ namespace PowerPointLabs.ResizeLab
             var selectedShapes = GetSelectedShapes(false);
             var resizeAction = new SingleInputResizeAction(shapes => _resizeLab.StretchTop);
 
-            Preview(selectedShapes, resizeAction);
+            Preview(selectedShapes, resizeAction, 2);
         }
 
         private void StretchTopBtn_MouseLeave(object sender, MouseEventArgs e)
@@ -243,7 +243,7 @@ namespace PowerPointLabs.ResizeLab
             var selectedShapes = GetSelectedShapes(false);
             var resizeAction = new SingleInputResizeAction(shapes => _resizeLab.StretchBottom);
 
-            Preview(selectedShapes, resizeAction);
+            Preview(selectedShapes, resizeAction, 2);
         }
 
         private void StretchBottomBtn_MouseLeave(object sender, MouseEventArgs e)
@@ -256,7 +256,7 @@ namespace PowerPointLabs.ResizeLab
             var selectedShapes = GetSelectedShapes(false);
             var resizeAction = new SingleInputResizeAction(shapes => _resizeLab.ResizeToSameWidth);
 
-            Preview(selectedShapes, resizeAction);
+            Preview(selectedShapes, resizeAction, 2);
         }
 
         private void SameWidthBtn_MouseLeave(object sender, MouseEventArgs e)
@@ -269,7 +269,7 @@ namespace PowerPointLabs.ResizeLab
             var selectedShapes = GetSelectedShapes(false);
             var resizeAction = new SingleInputResizeAction(shapes => _resizeLab.ResizeToSameHeight);
 
-            Preview(selectedShapes, resizeAction);
+            Preview(selectedShapes, resizeAction, 2);
         }
 
         private void SameHeightBtn_MouseLeave(object sender, MouseEventArgs e)
@@ -282,7 +282,7 @@ namespace PowerPointLabs.ResizeLab
             var selectedShapes = GetSelectedShapes(false);
             var resizeAction = new SingleInputResizeAction(shapes => _resizeLab.ResizeToSameHeightAndWidth);
 
-            Preview(selectedShapes, resizeAction);
+            Preview(selectedShapes, resizeAction, 2);
         }
 
         private void SameSizeBtn_MouseLeave(object sender, MouseEventArgs e)
