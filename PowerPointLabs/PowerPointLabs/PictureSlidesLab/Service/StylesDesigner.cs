@@ -73,6 +73,7 @@ namespace PowerPointLabs.PictureSlidesLab.Service
         public PreviewInfo PreviewApplyStyle(ImageItem source, Slide contentSlide, 
             float slideWidth, float slideHeight, StyleOption option)
         {
+            Logger.Log("PreviewApplyStyle begins");
             SetStyleOptions(option);
             SlideWidth = slideWidth;
             SlideHeight = slideHeight;
@@ -86,14 +87,14 @@ namespace PowerPointLabs.PictureSlidesLab.Service
             source.FullSizeImageFile = null;
             source.ImageFile = source.CroppedThumbnailImageFile ?? source.ImageFile;
 
-            ApplyStyle(EffectsDesignerForPreview, source, isActualSize: false);
+            GenerateStyle(EffectsDesignerForPreview, source, isActualSize: false);
 
             // recover the source back
             source.FullSizeImageFile = source.BackupFullSizeImageFile;
             source.ImageFile = backupImageFile;
             EffectsDesignerForPreview.GetNativeSlide().Export(previewInfo.PreviewApplyStyleImagePath, "JPG",
                     GetPreviewWidth(), PreviewHeight);
-            
+            Logger.Log("PreviewApplyStyle done");
             return previewInfo;
         }
         
@@ -111,7 +112,7 @@ namespace PowerPointLabs.PictureSlidesLab.Service
             
             var effectsHandler = new EffectsDesigner(contentSlide, slideWidth, slideHeight, source);
 
-            ApplyStyle(effectsHandler, source, isActualSize: true);
+            GenerateStyle(effectsHandler, source, isActualSize: true);
 
             // recover the source back
             source.FullSizeImageFile = source.BackupFullSizeImageFile;
@@ -123,7 +124,7 @@ namespace PowerPointLabs.PictureSlidesLab.Service
         /// <param name="designer"></param>
         /// <param name="source"></param>
         /// <param name="isActualSize"></param>
-        private void ApplyStyle(EffectsDesigner designer, ImageItem source, bool isActualSize)
+        private void GenerateStyle(EffectsDesigner designer, ImageItem source, bool isActualSize)
         {
             Logger.Log("Generate style " + Option.StyleName);
             Shape imageShape;
