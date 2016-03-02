@@ -10,7 +10,7 @@ namespace PowerPointLabs.ActionFramework.Action
         protected override void ExecuteAction(string ribbonId)
         {
             this.RegisterTaskPane(typeof(PositionsPane), TextCollection.PositionsLabTaskPanelTitle);
-            var positionsPane = Globals.ThisAddIn.GetActivePane(typeof(PositionsPane));
+            var positionsPane = this.GetTaskPane(typeof(PositionsPane));
             // if currently the pane is hidden, show the pane
             if (!positionsPane.Visible)
             {

@@ -12,10 +12,15 @@ namespace PowerPointLabs.PictureSlidesLab.Service.StylesWorker
     {
         public IList<Shape> Execute(StyleOption option, EffectsDesigner designer, ImageItem source, Shape imageShape, Settings settings)
         {
+            // in previewing 
+            if (source.FullSizeImageFile == null)
+            {
+                return new List<Shape>();
+            }
             // store style options information into original image shape
             // return original image and cropped image
             return designer.EmbedStyleOptionsInformation(
-                source.OriginalImageFile, source.FullSizeImageFile,
+                source.BackupFullSizeImageFile, source.FullSizeImageFile,
                 source.ContextLink, source.Source, source.Rect, option);
         }
     }

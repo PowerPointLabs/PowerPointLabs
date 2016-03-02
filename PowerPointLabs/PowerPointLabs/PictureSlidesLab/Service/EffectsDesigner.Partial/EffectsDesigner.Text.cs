@@ -1,5 +1,5 @@
-﻿using System.Globalization;
-using System.Runtime.InteropServices;
+﻿using System;
+using System.Globalization;
 using Microsoft.Office.Core;
 using PowerPointLabs.ActionFramework.Common.Log;
 using PowerPointLabs.PictureSlidesLab.Service.Effect;
@@ -104,6 +104,11 @@ namespace PowerPointLabs.PictureSlidesLab.Service
                 {
                     try
                     {
+                        if (shape.Type != MsoShapeType.msoPlaceholder)
+                        {
+                            continue;
+                        }
+
                         switch (shape.PlaceholderFormat.Type)
                         {
                             case PowerPoint.PpPlaceholderType.ppPlaceholderTitle:
@@ -113,7 +118,7 @@ namespace PowerPointLabs.PictureSlidesLab.Service
                                 break;
                         }
                     }
-                    catch (COMException e)
+                    catch (Exception e)
                     {
                         Logger.LogException(e, "ApplyPseudoTextWhenNoTextShapes");
                     }

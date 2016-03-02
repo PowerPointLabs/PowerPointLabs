@@ -22,13 +22,39 @@ namespace Test.UnitTest.PictureSlidesLab.ViewModel
             pslViewModel.ImageSelectionList.Add(CreateDummyImageItem());
             pslViewModel.ImageSelectionList.Add(new ImageItem
             {
-                ImageFile = expectedString
+                ImageFile = expectedString,
+                FullSizeImageFile = "something"
             });
             pslViewModel.CleanUp();
 
             var pslViewModel2 = CreateViewModel();
             Assert.AreEqual(expectedString, 
                 pslViewModel2.ImageSelectionList[1].ImageFile);
+            pslViewModel2.ImageSelectionList.Clear();
+            // create a dummy item in order to clean up
+            pslViewModel2.ImageSelectionList.Add(CreateDummyImageItem());
+            pslViewModel2.CleanUp();
+        }
+
+        [TestMethod]
+        [TestCategory("UT")]
+        public void TestPersistenceWhenNoFullsizeImage()
+        {
+            var expectedString = "Test Images Persistence";
+            var pslViewModel = CreateViewModel();
+            pslViewModel.ImageSelectionList.Clear();
+            // the first image item should be placeholder for `Choose Pictures`
+            // so add a dummy item here
+            pslViewModel.ImageSelectionList.Add(CreateDummyImageItem());
+            pslViewModel.ImageSelectionList.Add(new ImageItem
+            {
+                ImageFile = expectedString
+                // without full size image (null)
+            });
+            pslViewModel.CleanUp();
+
+            var pslViewModel2 = CreateViewModel();
+            Assert.AreEqual(1, pslViewModel2.ImageSelectionList.Count);
             pslViewModel2.ImageSelectionList.Clear();
             // create a dummy item in order to clean up
             pslViewModel2.ImageSelectionList.Add(CreateDummyImageItem());
@@ -46,7 +72,11 @@ namespace Test.UnitTest.PictureSlidesLab.ViewModel
 
         private ImageItem CreateDummyImageItem()
         {
-            return new ImageItem();
+            return new ImageItem
+            {
+                ImageFile = "something",
+                FullSizeImageFile = "something"
+            };
         }
     }
 }

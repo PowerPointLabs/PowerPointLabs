@@ -202,7 +202,7 @@
                         </ComboBox.ItemsPanel>
                         <ComboBox.ItemTemplate>
                             <DataTemplate>
-                                <TextBlock VerticalAlignment="Center" Text="{Binding}" FontFamily="{Binding}" Height="20"/>
+                                <TextBlock VerticalAlignment="Center" Text="{Binding}" Height="20"/>
                             </DataTemplate>
                         </ComboBox.ItemTemplate>
                     </ComboBox>

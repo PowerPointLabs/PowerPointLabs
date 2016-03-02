@@ -3,9 +3,11 @@ using System.Collections.Generic;
 using System.Runtime.InteropServices;
 using System.Text;
 using System.Text.RegularExpressions;
+using Microsoft.Office.Core;
 using Microsoft.Office.Interop.PowerPoint;
 using PowerPointLabs.ActionFramework.Common.Log;
 using PowerPointLabs.Models;
+using Shape = Microsoft.Office.Interop.PowerPoint.Shape;
 
 namespace PowerPointLabs.PictureSlidesLab.Service
 {
@@ -29,6 +31,12 @@ namespace PowerPointLabs.PictureSlidesLab.Service
             {
                 try
                 {
+                    if (shape.Type != MsoShapeType.msoPlaceholder
+                        && shape.Type != MsoShapeType.msoTextBox)
+                    {
+                        continue;
+                    }
+
                     switch (shape.PlaceholderFormat.Type)
                     {
                         case PpPlaceholderType.ppPlaceholderTitle:
