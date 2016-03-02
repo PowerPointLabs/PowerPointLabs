@@ -78,15 +78,14 @@
         <Separator Grid.Column="1" Grid.Row="8" Grid.ColumnSpan="8"/>
         <Grid Grid.Column="1" Grid.Row="9" Grid.ColumnSpan="8" >
             <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="5*"/>
                 <ColumnDefinition Width="30*"/>
                 <ColumnDefinition Width="30*"/>
                 <ColumnDefinition Width="30*"/>
-                <ColumnDefinition Width="5*"/>
+                <ColumnDefinition Width="3*"/>
             </Grid.ColumnDefinitions>
-            <RadioButton Name="alignLeftButton" Grid.Column="1" HorizontalAlignment="Center" IsChecked="True" Loaded="AlignLeftButton_Load">Left</RadioButton>
-            <RadioButton Name="alignCenterButton" Grid.Column="2" HorizontalAlignment="Center" Loaded="AlignCenterButton_Load">Center</RadioButton>
-            <RadioButton Name="alignRightButton" Grid.Column="3" HorizontalAlignment="Center" Loaded="AlignRightButton_Load">Right</RadioButton>
+            <RadioButton Name="alignLeftButton" Grid.Column="0" HorizontalAlignment="Center" IsChecked="True" Loaded="AlignLeftButton_Load">Left / Top</RadioButton>
+            <RadioButton Name="alignCenterButton" Grid.Column="1" HorizontalAlignment="Center" Loaded="AlignCenterButton_Load">Center</RadioButton>
+            <RadioButton Name="alignRightButton" Grid.Column="2" HorizontalAlignment="Center" Loaded="AlignRightButton_Load">Right / Bottom</RadioButton>
         </Grid>
         <Button Name="okButton" Grid.Column="1" Grid.Row="11" Grid.ColumnSpan="8" Width="80" HorizontalAlignment="Center" VerticalAlignment="Bottom" Click="OKButton_Click">OK</Button>
     </Grid>

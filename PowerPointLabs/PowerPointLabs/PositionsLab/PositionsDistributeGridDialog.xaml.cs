@@ -184,8 +184,16 @@ namespace PowerPointLabs.PositionsLab
                 return;
             }
 
-            PositionsLabMain.DistributeGrid(_selectedShapes, (int)rowValue, (int)colValue, (float)marginTopValue, 
+            if (rowValue >= colValue)
+            {
+                PositionsLabMain.DistributeGridByRow(_selectedShapes, (int)rowValue, (int)colValue, (float)marginTopValue,
                 (float)marginBottomValue, (float)marginLeftValue, (float)marginRightValue, alignment);
+            }
+            else
+            {
+                PositionsLabMain.DistributeGridByCol(_selectedShapes, (int)rowValue, (int)colValue, (float)marginTopValue,
+                (float)marginBottomValue, (float)marginLeftValue, (float)marginRightValue, alignment);
+            }
 
             this.Close();
         }
