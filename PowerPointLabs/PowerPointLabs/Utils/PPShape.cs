@@ -8,7 +8,7 @@ namespace PowerPointLabs.Utils
 {
     internal class PPShape
     {
-        private PowerPoint.Shape _shape;
+        private readonly PowerPoint.Shape _shape;
         private float _absoluteWidth;
         private float _absoluteHeight;
         private float _rotatedLeft;
