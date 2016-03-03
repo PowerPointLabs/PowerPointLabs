@@ -44,7 +44,7 @@
     <PublishUrl>C:\Users\Giki\Desktop\pptlabsPublish\</PublishUrl>
     <InstallUrl>http://www.comp.nus.edu.sg/~pptlabs/download/dev/</InstallUrl>
     <TargetCulture>en</TargetCulture>
-    <ApplicationVersion>2.8.6.2</ApplicationVersion>
+    <ApplicationVersion>2.8.6.3</ApplicationVersion>
     <AutoIncrementApplicationRevision>false</AutoIncrementApplicationRevision>
     <UpdateEnabled>true</UpdateEnabled>
     <UpdateInterval>0</UpdateInterval>
@@ -1216,7 +1216,7 @@
     <Resource Include="Resources\ResizeLab\ResizeUnlock.png" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Resources\PositionsLab\PositionsLab.png" />
+    <None Include="Resources\PositionsLab\PositionsLab.png" />
   </ItemGroup>
   <ItemGroup>
     <Resource Include="Resources\ResizeLab\ResizeLab.png" />
