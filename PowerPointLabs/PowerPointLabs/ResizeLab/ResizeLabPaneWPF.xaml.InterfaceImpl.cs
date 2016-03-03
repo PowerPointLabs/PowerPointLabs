@@ -79,7 +79,7 @@ namespace PowerPointLabs.ResizeLab
             for (int i = 1; i <= selectedShapes.Count; i++)
             {
                 var shape = new PPShape(selectedShapes[i]);
-                var properties = new ShapeProperties(shape.Name, shape.Top, shape.Left, shape.ShapeWidth, shape.ShapeHeight);
+                var properties = new ShapeProperties(shape.Name, shape.Top, shape.Left, shape.AbsoluteWidth, shape.AbsoluteHeight);
                 _originalShapeProperties.Add(shape.Name, properties);
             }
         }

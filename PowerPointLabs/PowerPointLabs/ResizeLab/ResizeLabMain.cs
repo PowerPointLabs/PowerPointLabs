@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
 using System.Windows;
+using PowerPointLabs.Utils;
 using Office = Microsoft.Office.Core;
 using PowerPoint = Microsoft.Office.Interop.PowerPoint;
 
@@ -44,14 +45,14 @@ namespace PowerPointLabs.ResizeLab
         {
             for (int i = 1; i <= selectedShapes.Count; i++)
             {
-                var shape = selectedShapes[i];
+                var shape = new PPShape(selectedShapes[i]);
                 var shapeName = shape.Name;
 
                 if (!originalShapeProperties.ContainsKey(shapeName)) continue;
 
                 var originalProperties = originalShapeProperties[shapeName];
-                shape.Width = originalProperties.Width;
-                shape.Height = originalProperties.Height;
+                shape.AbsoluteWidth = originalProperties.AbsoluteWidth;
+                shape.AbsoluteHeight = originalProperties.AbsoluteHeight;
                 shape.Top = originalProperties.Top;
                 shape.Left = originalProperties.Left;
             }

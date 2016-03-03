@@ -10,16 +10,16 @@ namespace PowerPointLabs.ResizeLab
         public string Name { get; }
         public float Top { get; }
         public float Left { get; }
-        public float Width { get; }
-        public float Height { get; }
+        public float AbsoluteWidth { get; }
+        public float AbsoluteHeight { get; }
 
-        public ShapeProperties(string name, float top, float left, float width, float height)
+        public ShapeProperties(string name, float top, float left, float absoluteWidth, float absoluteHeight)
         {
             Name = name;
             Top = top;
             Left = left;
-            Width = width;
-            Height = height;
+            AbsoluteWidth = absoluteWidth;
+            AbsoluteHeight = absoluteHeight;
         }
     }
 }
