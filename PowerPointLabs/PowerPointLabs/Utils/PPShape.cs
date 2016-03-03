@@ -152,14 +152,15 @@ namespace PowerPointLabs.Utils
             if ((int)_shape.Rotation == 0) return;
             if (!(_shape.Type == MsoShapeType.msoAutoShape || _shape.Type == MsoShapeType.msoFreeform) && _shape.Nodes.Count < 1) return;
 
+            // Convert AutoShape to Freeform shape
             if (_shape.Type == MsoShapeType.msoAutoShape)
             {
                 _shape.Nodes.Insert(1, MsoSegmentType.msoSegmentLine, MsoEditingType.msoEditingAuto, 0, 0);
                 _shape.Nodes.Delete(2);
             }
 
+            // Save the coordinates of nodes
             var pointList = new ArrayList();
-
             for (int i = 1; i <= _shape.Nodes.Count; i++)
             {
                 var node = _shape.Nodes[i];
@@ -169,6 +170,8 @@ namespace PowerPointLabs.Utils
                 pointList.Add(newPoint);
             }
 
+            // Rotate bounding box back to 0 degree, and
+            // apply the original coordinates to the nodes
             _shape.Rotation = 0;
             for (int i = 0; i < pointList.Count; i++)
             {
@@ -178,7 +181,6 @@ namespace PowerPointLabs.Utils
                 _shape.Nodes.SetPosition(nodeIndex, point[0], point[1]);
             }
         }
-
 
         /// <summary>
         /// Update the absolute width according to the actual shape width and height.
