@@ -11,7 +11,8 @@
                       BorderBrush="#0070c0"
                       ResizeMode="NoResize"
                       Title="Distribute Settings"
-                      WindowStartupLocation="CenterScreen">
+                      WindowStartupLocation="CenterScreen"
+                      Closed="DistributeSettingsDialong_Closed">
     <controls:MetroWindow.Resources>
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>

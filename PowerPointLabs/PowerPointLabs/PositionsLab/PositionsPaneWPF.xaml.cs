@@ -8,6 +8,7 @@ using Office = Microsoft.Office.Core;
 using PowerPointLabs.ActionFramework.Common.Log;
 using PowerPointLabs.Utils;
 using PowerPointLabs.ActionFramework.Common.Extension;
+using System.Diagnostics;
 
 namespace PowerPointLabs.PositionsLab
 {
@@ -50,8 +51,6 @@ namespace PowerPointLabs.PositionsLab
 
         public PositionsPaneWpf()
         {
-            _alignSettingsDialog = new AlignSettingsDialog();
-            _distributeSettingsDialog = new DistributeSettingsDialog();
             InitializeComponent();
             _dispatcherTimer.Interval = TimeSpan.FromMilliseconds(10);
         }
@@ -757,12 +756,28 @@ namespace PowerPointLabs.PositionsLab
         #region Settings
         private void AlignSettingsButton_Click(object sender, RoutedEventArgs e)
         {
-            _alignSettingsDialog.ShowDialog();
+            if (_alignSettingsDialog == null || !_alignSettingsDialog.IsOpen)
+            {
+                _alignSettingsDialog = new AlignSettingsDialog();
+                _alignSettingsDialog.Show();
+            }
+            else
+            {
+                _alignSettingsDialog.Activate();
+            }
         }
 
         private void DistributeSettingsButton_Click(object sender, RoutedEventArgs e)
         {
-            _distributeSettingsDialog.ShowDialog();            
+            if (_distributeSettingsDialog == null || !_distributeSettingsDialog.IsOpen)
+            {
+                _distributeSettingsDialog = new DistributeSettingsDialog();
+                _distributeSettingsDialog.Show();
+            }
+            else
+            {
+                _distributeSettingsDialog.Activate();
+            }
         }
         #endregion
 

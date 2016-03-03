@@ -8,8 +8,12 @@ namespace PowerPointLabs.PositionsLab
     /// </summary>
     public partial class AlignSettingsDialog : MetroWindow
     {
+        //Flag to trigger
+        public bool IsOpen { get; set; }
+
         public AlignSettingsDialog()
         {
+            IsOpen = true;
             InitializeComponent();
         }
 
@@ -23,12 +27,15 @@ namespace PowerPointLabs.PositionsLab
             {
                 PositionsLabMain.AlignReferToSlide();
             }
-            this.Hide();
+
+            IsOpen = false;
+            Close();
         }
 
         private void CancelButton_Click(object sender, RoutedEventArgs e)
         {
-            this.Hide();
+            IsOpen = false;
+            Close();
         }
 
         private void AlignToShapeButton_Click(object sender, RoutedEventArgs e)
@@ -39,6 +46,11 @@ namespace PowerPointLabs.PositionsLab
         private void AlignToSlideButton_Click(object sender, RoutedEventArgs e)
         {
             alignToShapeButton.IsChecked = false;
+        }
+
+        private void AlignSettingsDialong_Closed(object sender, System.EventArgs e)
+        {
+            IsOpen = false;
         }
     }
 }

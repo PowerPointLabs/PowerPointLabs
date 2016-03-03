@@ -9,6 +9,9 @@ namespace PowerPointLabs.PositionsLab
     /// </summary>
     public partial class DistributeSettingsDialog : MetroWindow
     {
+        //Flag to trigger
+        public bool IsOpen { get; set; }
+
         // User Control
         private NumericUpDown _marginTopInput;
         private NumericUpDown _marginBottomInput;
@@ -21,6 +24,7 @@ namespace PowerPointLabs.PositionsLab
 
         public DistributeSettingsDialog()
         {
+            IsOpen = true;
             InitializeComponent();
         }
 
@@ -106,12 +110,14 @@ namespace PowerPointLabs.PositionsLab
                 PositionsLabMain.SetDistributeGridAlignment(PositionsLabMain.GridAlignment.AlignRight);
             }
 
-            Hide();
+            IsOpen = false;
+            Close();
         }
 
         private void CancelButton_Click(object sender, RoutedEventArgs e)
         {
-            Hide();
+            IsOpen = false;
+            Close();
         }
 
         private void DistributeToShapeButton_Click(object sender, RoutedEventArgs e)
@@ -124,5 +130,10 @@ namespace PowerPointLabs.PositionsLab
             distributeToShapeButton.IsChecked = false;
         }
         #endregion
+
+        private void DistributeSettingsDialong_Closed(object sender, System.EventArgs e)
+        {
+            IsOpen = false;
+        }
     }
 }
