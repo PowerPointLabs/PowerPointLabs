@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Windows;
+using PowerPointLabs.Utils;
 using PowerPoint = Microsoft.Office.Interop.PowerPoint;
 
 namespace PowerPointLabs.ResizeLab
@@ -77,8 +78,8 @@ namespace PowerPointLabs.ResizeLab
 
             for (int i = 1; i <= selectedShapes.Count; i++)
             {
-                var shape = selectedShapes[i];
-                var properties = new ShapeProperties(shape.Name, shape.Top, shape.Left, shape.Width, shape.Height);
+                var shape = new PPShape(selectedShapes[i]);
+                var properties = new ShapeProperties(shape.Name, shape.Top, shape.Left, shape.ShapeWidth, shape.ShapeHeight);
                 _originalShapeProperties.Add(shape.Name, properties);
             }
         }

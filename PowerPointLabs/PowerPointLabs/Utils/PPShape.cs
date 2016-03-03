@@ -30,6 +30,12 @@ namespace PowerPointLabs.Utils
             UpdateLeft();
         }
 
+        public string Name
+        {
+            get { return _shape.Name; }
+            set { _shape.Name = value; }
+        }
+
         /// <summary>
         /// Return or set the width of the specified shape.
         /// </summary>
