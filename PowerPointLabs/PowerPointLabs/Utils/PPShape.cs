@@ -145,18 +145,6 @@ namespace PowerPointLabs.Utils
         }
 
         /// <summary>
-        /// Create a duplicate of the specified Shape object and return new shape.
-        /// </summary>
-        /// <returns></returns>
-        public PPShape Duplicate()
-        {
-            //var newShape = new PPShape(_shape.Duplicate()[1]);
-
-            MessageBox.Show(_shape.Duplicate().Count.ToString());
-            return new PPShape(_shape);
-        }
-
-        /// <summary>
         /// Convert Autoshape to freeform
         /// </summary>
         private void ConvertToFreeform()
