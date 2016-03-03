@@ -25,6 +25,10 @@ namespace PowerPointLabs.PositionsLab
         private const int Leftorright = 4;
         private const int Upordown = 5;
 
+        //Error Messages
+        private const string ErrorMessageFewerThanTwoSelection = TextCollection.PositionsLabText.ErrorFewerThanTwoSelection;
+        private const string ErrorMessageUndefined = TextCollection.PositionsLabText.ErrorUndefined;
+
         //For Grid
         public enum GridAlignment
         {
@@ -122,8 +126,7 @@ namespace PowerPointLabs.PositionsLab
             {
                 if (selectedShapes.Count < 2)
                 {
-                    //Error
-                    return;
+                    throw new Exception(ErrorMessageFewerThanTwoSelection);
                 }
 
                 var refShape = selectedShapes[0];
@@ -156,8 +159,7 @@ namespace PowerPointLabs.PositionsLab
             {
                 if (selectedShapes.Count < 2)
                 {
-                    //Error
-                    return;
+                    throw new Exception(ErrorMessageFewerThanTwoSelection);
                 }
 
                 var refShape = selectedShapes[0];
@@ -189,8 +191,7 @@ namespace PowerPointLabs.PositionsLab
             {
                 if (selectedShapes.Count < 2)
                 {
-                    //Error
-                    return;
+                    throw new Exception(ErrorMessageFewerThanTwoSelection);
                 }
 
                 var refShape = selectedShapes[0];
@@ -223,8 +224,7 @@ namespace PowerPointLabs.PositionsLab
             {
                 if (selectedShapes.Count < 2)
                 {
-                    //Error
-                    return;
+                    throw new Exception(ErrorMessageFewerThanTwoSelection);
                 }
 
                 var refShape = selectedShapes[0];
@@ -257,8 +257,7 @@ namespace PowerPointLabs.PositionsLab
             {
                 if (selectedShapes.Count < 2)
                 {
-                    //Error
-                    return;
+                    throw new Exception(ErrorMessageFewerThanTwoSelection);
                 }
 
                 var refShape = selectedShapes[0];
@@ -292,8 +291,7 @@ namespace PowerPointLabs.PositionsLab
             {
                 if (selectedShapes.Count < 2)
                 {
-                    //Error
-                    return;
+                    throw new Exception(ErrorMessageFewerThanTwoSelection);
                 }
 
                 var refShape = selectedShapes[0];
@@ -348,9 +346,9 @@ namespace PowerPointLabs.PositionsLab
                 _isInit = true;
             }
 
-            if (shapes.Count <= 1)
+            if (shapes.Count < 2)
             {
-                return;
+                throw new Exception(ErrorMessageFewerThanTwoSelection);
             }
 
             var refShapeCenter = Graphics.GetCenterPoint(shapes[0]);
@@ -482,8 +480,7 @@ namespace PowerPointLabs.PositionsLab
         {
             if (selectedShapes.Count < 2)
             {
-                //Error
-                return;
+                throw new Exception(ErrorMessageFewerThanTwoSelection);
             }
 
             var refShape = selectedShapes[0];
@@ -524,8 +521,7 @@ namespace PowerPointLabs.PositionsLab
         {
             if (selectedShapes.Count < 2)
             {
-                //Error
-                return;
+                throw new Exception(ErrorMessageFewerThanTwoSelection);
             }
 
             var refShape = selectedShapes[0];
@@ -568,8 +564,7 @@ namespace PowerPointLabs.PositionsLab
         {
             if (selectedShapes.Count < 2)
             {
-                //Error
-                return;
+                throw new Exception(ErrorMessageFewerThanTwoSelection);
             }
 
             var sortedShapes = Graphics.SortShapesByLeft(selectedShapes);
@@ -643,8 +638,7 @@ namespace PowerPointLabs.PositionsLab
             {
                 if (shapeCount < 2)
                 {
-                    //Error
-                    return;
+                    throw new Exception(ErrorMessageFewerThanTwoSelection);
                 }
 
                 var horizontalDistanceInRef = Graphics.RealWidth(allPointsOfRef);
@@ -730,8 +724,7 @@ namespace PowerPointLabs.PositionsLab
             {
                 if (shapeCount < 2)
                 {
-                    //Error
-                    return;
+                    throw new Exception(ErrorMessageFewerThanTwoSelection);
                 }
 
                 var verticalDistanceInRef = Graphics.RealHeight(allPointsOfRef);
@@ -783,8 +776,7 @@ namespace PowerPointLabs.PositionsLab
 
             if (shapeCount < 2)
             {
-                //Error
-                return;
+                throw new Exception(ErrorMessageFewerThanTwoSelection);
             }
 
             if (shapeCount == 2)
