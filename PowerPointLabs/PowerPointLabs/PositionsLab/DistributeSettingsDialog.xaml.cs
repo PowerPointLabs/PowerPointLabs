@@ -12,16 +12,6 @@ namespace PowerPointLabs.PositionsLab
         //Flag to trigger
         public bool IsOpen { get; set; }
 
-        // User Control
-        private NumericUpDown _marginTopInput;
-        private NumericUpDown _marginBottomInput;
-        private NumericUpDown _marginLeftInput;
-        private NumericUpDown _marginRightInput;
-        private RadioButton _alignLeftButton;
-        private RadioButton _alignCenterButton;
-        private RadioButton _alignRightButton;
-
-
         public DistributeSettingsDialog()
         {
             IsOpen = true;
@@ -31,47 +21,72 @@ namespace PowerPointLabs.PositionsLab
         #region On-Load Settings
         private void MarginTopInput_Load(object sender, RoutedEventArgs e)
         {
-            _marginTopInput = (NumericUpDown)sender;
+            marginTopInput.Value = PositionsLabMain.MarginTop;
         }
 
         private void MarginBottomInput_Load(object sender, RoutedEventArgs e)
         {
-            _marginBottomInput = (NumericUpDown)sender;
+            marginBottomInput.Value = PositionsLabMain.MarginBottom;
         }
 
         private void MarginLeftInput_Load(object sender, RoutedEventArgs e)
         {
-            _marginLeftInput = (NumericUpDown)sender;
+            marginLeftInput.Value = PositionsLabMain.MarginLeft;
         }
 
         private void MarginRightInput_Load(object sender, RoutedEventArgs e)
         {
-            _marginRightInput = (NumericUpDown)sender;
+            marginRightInput.Value = PositionsLabMain.MarginRight;
         }
 
         private void AlignLeftButton_Load(object sender, RoutedEventArgs e)
         {
-            _alignLeftButton = (RadioButton)sender;
+            if (PositionsLabMain.DistributeGridAlignment == PositionsLabMain.GridAlignment.AlignLeft)
+            {
+                alignLeftButton.IsChecked = true;
+            }
         }
 
         private void AlignCenterButton_Load(object sender, RoutedEventArgs e)
         {
-            _alignCenterButton = (RadioButton)sender;
+            if (PositionsLabMain.DistributeGridAlignment == PositionsLabMain.GridAlignment.AlignCenter)
+            {
+                alignCenterButton.IsChecked = true;
+            }
         }
 
         private void AlignRightButton_Load(object sender, RoutedEventArgs e)
         {
-            _alignRightButton = (RadioButton)sender;
+            if (PositionsLabMain.DistributeGridAlignment == PositionsLabMain.GridAlignment.AlignRight)
+            {
+                alignRightButton.IsChecked = true;
+            }
+        }
+
+        private void DistributeToShapeButton_Load(object sender, RoutedEventArgs e)
+        {
+            if (PositionsLabMain.DistributeUseSlideAsReference)
+            {
+                distributeToShapeButton.IsChecked = false;
+            }
+        }
+
+        private void DistributeToSlideButton_Load(object sender, RoutedEventArgs e)
+        {
+            if (PositionsLabMain.DistributeUseSlideAsReference)
+            {
+                distributeToSlideButton.IsChecked = true;
+            }
         }
         #endregion
 
         #region Button actions
         private void OkButton_Click(object sender, RoutedEventArgs e)
         {
-            var marginTopValue = _marginTopInput.Value;
-            var marginBottomValue = _marginBottomInput.Value;
-            var marginLeftValue = _marginLeftInput.Value;
-            var marginRightValue = _marginRightInput.Value;
+            var marginTopValue = marginTopInput.Value;
+            var marginBottomValue = marginBottomInput.Value;
+            var marginLeftValue = marginLeftInput.Value;
+            var marginRightValue = marginRightInput.Value;
 
             if (distributeToShapeButton.IsChecked == true)
             {
@@ -81,6 +96,7 @@ namespace PowerPointLabs.PositionsLab
             {
                 PositionsLabMain.DistributeReferToSlide();
             }
+
             if (!marginTopValue.HasValue || marginTopValue.GetValueOrDefault() < 0 ||
                 !marginBottomValue.HasValue || marginBottomValue.GetValueOrDefault() < 0 ||
                 !marginLeftValue.HasValue || marginLeftValue.GetValueOrDefault() < 0 ||
@@ -95,17 +111,17 @@ namespace PowerPointLabs.PositionsLab
             PositionsLabMain.SetDistributeMarginLeft((float)marginLeftValue);
             PositionsLabMain.SetDistributeMarginRight((float)marginRightValue);
 
-            if (_alignLeftButton.IsChecked.GetValueOrDefault())
+            if (alignLeftButton.IsChecked.GetValueOrDefault())
             {
                 PositionsLabMain.SetDistributeGridAlignment(PositionsLabMain.GridAlignment.AlignLeft);
             }
 
-            if (_alignCenterButton.IsChecked.GetValueOrDefault())
+            if (alignCenterButton.IsChecked.GetValueOrDefault())
             {
                 PositionsLabMain.SetDistributeGridAlignment(PositionsLabMain.GridAlignment.AlignCenter);
             }
 
-            if (_alignRightButton.IsChecked.GetValueOrDefault())
+            if (alignRightButton.IsChecked.GetValueOrDefault())
             {
                 PositionsLabMain.SetDistributeGridAlignment(PositionsLabMain.GridAlignment.AlignRight);
             }
@@ -134,6 +150,6 @@ namespace PowerPointLabs.PositionsLab
         private void DistributeSettingsDialong_Closed(object sender, System.EventArgs e)
         {
             IsOpen = false;
-        }
+        } 
     }
 }

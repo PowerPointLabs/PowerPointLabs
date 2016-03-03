@@ -51,6 +51,7 @@ namespace PowerPointLabs.PositionsLab
 
         public PositionsPaneWpf()
         {
+            PositionsLabMain.InitPositionsLab();
             InitializeComponent();
             _dispatcherTimer.Interval = TimeSpan.FromMilliseconds(10);
         }

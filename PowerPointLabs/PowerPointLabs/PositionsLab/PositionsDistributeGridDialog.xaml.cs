@@ -14,10 +14,6 @@ namespace PowerPointLabs.PositionsLab
         //Flag to trigger
         public bool IsOpen { get; set; }
 
-        //User Control
-        private NumericUpDown _rowInput;
-        private NumericUpDown _colInput;
-
         //Private variables
         private int _numShapesSelected;
         private List<Shape> _selectedShapes;
@@ -36,23 +32,21 @@ namespace PowerPointLabs.PositionsLab
 
         private void RowInput_Load(object sender, RoutedEventArgs e)
         {
-            _rowInput = (NumericUpDown)sender;
-            _rowInput.Value = _colLength;
+            rowInput.Value = _colLength;
         }
 
         private void ColInput_Load(object sender, RoutedEventArgs e)
         {
-            _colInput = (NumericUpDown)sender;
-            _colInput.Value = _rowLength;
+            colInput.Value = _rowLength;
         }
         private void RowInput_ValueChanged(object sender, RoutedPropertyChangedEventArgs<double?> e)
         {
-            if (_colInput == null || _rowInput == null)
+            if (colInput == null || rowInput == null)
             {
                 return;
             }
 
-            var value = _rowInput.Value;
+            var value = rowInput.Value;
 
             if (!value.HasValue)
             {
@@ -60,17 +54,17 @@ namespace PowerPointLabs.PositionsLab
             }
 
             var col = (int)Math.Ceiling(_numShapesSelected / value.GetValueOrDefault());
-            _colInput.Value = col;
+            colInput.Value = col;
         }
 
         private void ColInput_ValueChanged(object sender, RoutedPropertyChangedEventArgs<double?> e)
         {
-            if (_colInput == null || _rowInput == null)
+            if (rowInput == null || colInput == null)
             {
                 return;
             }
 
-            var value = _colInput.Value;
+            var value = colInput.Value;
 
             if (!value.HasValue)
             {
@@ -78,7 +72,7 @@ namespace PowerPointLabs.PositionsLab
             }
 
             var row = (int)Math.Ceiling(_numShapesSelected / value.GetValueOrDefault());
-            _rowInput.Value = row;
+            rowInput.Value = row;
         }
 
         private void PositionsDistributeGridDialong_Closed(object sender, EventArgs e)
@@ -88,8 +82,8 @@ namespace PowerPointLabs.PositionsLab
 
         private void OKButton_Click(object sender, RoutedEventArgs e)
         {
-            var rowValue = _rowInput.Value;
-            var colValue = _colInput.Value;
+            var rowValue = rowInput.Value;
+            var colValue = colInput.Value;
 
             if (!rowValue.HasValue || rowValue.GetValueOrDefault() == 0 || 
                 !colValue.HasValue || colValue.GetValueOrDefault() == 0)

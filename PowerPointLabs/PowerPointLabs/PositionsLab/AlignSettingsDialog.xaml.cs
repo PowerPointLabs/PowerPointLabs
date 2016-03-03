@@ -17,6 +17,22 @@ namespace PowerPointLabs.PositionsLab
             InitializeComponent();
         }
 
+        private void AlignToSlideButton_Load(object sender, RoutedEventArgs e)
+        {
+            if (PositionsLabMain.AlignUseSlideAsReference)
+            {
+                alignToSlideButton.IsChecked = true;
+            }
+        }
+
+        private void AlignToShapeButton_Load(object sender, RoutedEventArgs e)
+        {
+            if (PositionsLabMain.AlignUseSlideAsReference)
+            {
+                alignToShapeButton.IsChecked = false;
+            }
+        }
+
         private void OkButton_Click(object sender, RoutedEventArgs e)
         {
             if (alignToShapeButton.IsChecked == true)
@@ -36,16 +52,6 @@ namespace PowerPointLabs.PositionsLab
         {
             IsOpen = false;
             Close();
-        }
-
-        private void AlignToShapeButton_Click(object sender, RoutedEventArgs e)
-        {
-            alignToSlideButton.IsChecked = false;
-        }
-
-        private void AlignToSlideButton_Click(object sender, RoutedEventArgs e)
-        {
-            alignToShapeButton.IsChecked = false;
         }
 
         private void AlignSettingsDialong_Closed(object sender, System.EventArgs e)

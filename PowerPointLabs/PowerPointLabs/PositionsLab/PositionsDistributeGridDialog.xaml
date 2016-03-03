@@ -51,8 +51,8 @@
         <Separator Grid.Column="1" Grid.Row="1" Grid.ColumnSpan="8"/>
         <Label x:Name="rowLengthLabel" Grid.Column="1" Grid.Row="2" FontSize="10" VerticalAlignment="Center" HorizontalAlignment="Right" Content="Rows:"/>
         <Label x:Name="colLengthLabel" Grid.Column="5" Grid.Row="2" FontSize="10" VerticalAlignment="Center" HorizontalAlignment="Right" Content="Columns:"/>
-        <controls:NumericUpDown Name="rowLengthInput" Grid.Column="2" Grid.Row="2" Grid.ColumnSpan="2" Height="20" Width="80" TextAlignment="Left" HideUpDownButtons="True" Minimum="1" Loaded="RowInput_Load" ValueChanged="RowInput_ValueChanged"/>
-        <controls:NumericUpDown Name="colLengthInput" Grid.Column="6" Grid.Row="2" Grid.ColumnSpan="2" Height="20" Width="80" TextAlignment="Left" HideUpDownButtons="True" Minimum="1" Loaded="ColInput_Load" ValueChanged="ColInput_ValueChanged"/>
+        <controls:NumericUpDown Name="rowInput" Grid.Column="2" Grid.Row="2" Grid.ColumnSpan="2" Height="20" Width="80" TextAlignment="Left" HideUpDownButtons="True" Minimum="1" Loaded="RowInput_Load" ValueChanged="RowInput_ValueChanged"/>
+        <controls:NumericUpDown Name="colInput" Grid.Column="6" Grid.Row="2" Grid.ColumnSpan="2" Height="20" Width="80" TextAlignment="Left" HideUpDownButtons="True" Minimum="1" Loaded="ColInput_Load" ValueChanged="ColInput_ValueChanged"/>
         <Button Name="okButton" Grid.Row="3" Width="80" HorizontalAlignment="Right" VerticalAlignment="Bottom" Click="OKButton_Click" Margin="0,0,10,10" Grid.ColumnSpan="3" Grid.Column="3" Grid.RowSpan="2" IsDefault="True">OK</Button>
         <Button x:Name="cancelButton" Content="Cancel" HorizontalAlignment="Right" VerticalAlignment="Bottom" Width="80" IsCancel="True" Click="CancelButton_Click"  Grid.ColumnSpan="2" Grid.Column="6" Grid.Row="3"/>
     </Grid>
