@@ -30,7 +30,7 @@ namespace PowerPointLabs
         private void InitializeComponent()
         {
             this.WPF = new System.Windows.Forms.Integration.ElementHost();
-            this.positionsPaneWPF = new PowerPointLabs.PositionsLab.PositionsPaneWPF();
+            this.positionsPaneWPF = new PowerPointLabs.PositionsLab.PositionsPaneWpf();
             this.SuspendLayout();
             // 
             // WPF
@@ -58,6 +58,6 @@ namespace PowerPointLabs
         #endregion
 
         private System.Windows.Forms.Integration.ElementHost WPF;
-        public PositionsLab.PositionsPaneWPF positionsPaneWPF { get; private set; }
+        public PositionsLab.PositionsPaneWpf positionsPaneWPF { get; private set; }
     }
 }

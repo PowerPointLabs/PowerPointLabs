@@ -587,9 +587,11 @@
         #endregion
 
         #region Positions Lab
-        public class PositionsLab
+        public class PositionsLabText
         {
-            
+            public const string ErrorNoSelection = "'Positions Lab' requires shape to be selected.";
+            public const string ErrorFewerThanTwoSelection = "'Positions Lab' requires at least two shapes.";
+            public const string ErrorUndefined = "'Undefined error in Resize Lab'";
         }
         #endregion
         #region Task Pane - Resize Lab

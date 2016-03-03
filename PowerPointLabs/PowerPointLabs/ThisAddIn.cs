@@ -393,7 +393,7 @@ namespace PowerPointLabs
             PPMouse.StopHook();
             PPKeyboard.StopHook();
             PPCopy.StopHook();
-            PositionsPaneWPF.ClearAllEventHandlers();
+            PositionsPaneWpf.ClearAllEventHandlers();
             UIThreadExecutor.TearDown();
             Trace.TraceInformation(DateTime.Now.ToString("yyyyMMddHHmmss") + ": PowerPointLabs Exiting");
             Trace.Close();
