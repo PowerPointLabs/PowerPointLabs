@@ -550,6 +550,7 @@
       <DependentUpon>PositionsPaneWPF.xaml</DependentUpon>
     </Compile>
     <Compile Include="PPMouseLegacy.cs" />
+    <Compile Include="ResizeLab\ResizeLabMain.Symmetry.cs" />
     <Compile Include="ResizeLab\ResizeLabPaneWPF.xaml.InterfaceImpl.cs" />
     <Compile Include="ResizeLab\IResizeLabPane.cs" />
     <Compile Include="ResizeLab\ResizeLabMain.AspectRatio.cs" />

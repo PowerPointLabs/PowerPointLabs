@@ -1,6 +1,7 @@
 using System;
 using Microsoft.Office.Core;
 using System.Collections;
+using System.Windows;
 using PowerPoint = Microsoft.Office.Interop.PowerPoint;
 
 namespace PowerPointLabs.Utils
@@ -26,6 +27,9 @@ namespace PowerPointLabs.Utils
             UpdateLeft();
         }
 
+        /// <summary>
+        /// Return or set the name of the specified shape.
+        /// </summary>
         public string Name
         {
             get { return _shape.Name; }
@@ -132,9 +136,30 @@ namespace PowerPointLabs.Utils
         }
 
         /// <summary>
+        /// Flip the specified shape around its horizontal or vertical axis.
+        /// </summary>
+        /// <param name="msoFlipCmd"></param>
+        public void Flip(MsoFlipCmd msoFlipCmd)
+        {
+            _shape.Flip(msoFlipCmd);
+        }
+
+        /// <summary>
+        /// Create a duplicate of the specified Shape object and return new shape.
+        /// </summary>
+        /// <returns></returns>
+        public PPShape Duplicate()
+        {
+            //var newShape = new PPShape(_shape.Duplicate()[1]);
+
+            MessageBox.Show(_shape.Duplicate().Count.ToString());
+            return new PPShape(_shape);
+        }
+
+        /// <summary>
         /// Convert Autoshape to freeform
         /// </summary>
-        public void ConvertToFreeform()
+        private void ConvertToFreeform()
         {
             if ((int)_shape.Rotation == 0) return;
             if (!(_shape.Type == MsoShapeType.msoAutoShape || _shape.Type == MsoShapeType.msoFreeform) && _shape.Nodes.Count < 1) return;
