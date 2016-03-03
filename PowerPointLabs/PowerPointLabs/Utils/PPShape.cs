@@ -1,10 +1,6 @@
 using System;
-using System.Collections;
-using System.Collections.Generic;
-using System.Drawing;
-using System.Windows;
 using Microsoft.Office.Core;
-using Point = System.Windows.Point;
+using System.Collections;
 using PowerPoint = Microsoft.Office.Interop.PowerPoint;
 
 namespace PowerPointLabs.Utils
@@ -71,7 +67,16 @@ namespace PowerPointLabs.Utils
             set
             {
                 _absoluteWidth = value;
-                SetToAbsoluteDimension();
+                
+                if (_shape.LockAspectRatio == MsoTriState.msoTrue)
+                {
+                    SetToAbsoluteWidthAspectRatio();
+                }
+                else
+                {
+                    SetToAbsoluteDimension();
+                }
+                
             }
         }
 
@@ -84,7 +89,16 @@ namespace PowerPointLabs.Utils
             set
             {
                 _absoluteHeight = value;
-                SetToAbsoluteDimension();
+
+                if (_shape.LockAspectRatio == MsoTriState.msoTrue)
+                {
+                    SetToAbsoluteHeightAspectRatio();
+                }
+                else
+                {
+                    SetToAbsoluteDimension();
+                }
+                
             }
         }
 
@@ -221,8 +235,36 @@ namespace PowerPointLabs.Utils
             var cosAngle = Math.Cos(rotation);
             var ratio = sinAngle/cosAngle;
 
-            _shape.Height = (float) ((_absoluteWidth*ratio - _absoluteHeight)/(sinAngle*ratio - cosAngle));
-            _shape.Width = (float) ((_absoluteWidth - _shape.Height*sinAngle)/cosAngle);
+            _shape.Height = (float)((_absoluteWidth * ratio - _absoluteHeight) / (sinAngle * ratio - cosAngle));
+            _shape.Width = (float)((_absoluteWidth - _shape.Height * sinAngle) / cosAngle);
+        }
+
+        private void SetToAbsoluteHeightAspectRatio()
+        {
+            // Store the original position of the shape
+            var originalTop = _shape.Top;
+            var originalLeft = _shape.Left;
+
+            _shape.LockAspectRatio = MsoTriState.msoFalse;
+            FitToSlide.FitToHeight(_shape, _absoluteWidth, _absoluteHeight);
+            _shape.LockAspectRatio = MsoTriState.msoTrue;
+
+            _shape.Top = originalTop;
+            _shape.Left = originalLeft;
+        }
+
+        private void SetToAbsoluteWidthAspectRatio()
+        {
+            // Store the original position of the shape
+            var originalTop = _shape.Top;
+            var originalLeft = _shape.Left;
+
+            _shape.LockAspectRatio = MsoTriState.msoFalse;
+            FitToSlide.FitToWidth(_shape, _absoluteWidth, _absoluteHeight);
+            _shape.LockAspectRatio = MsoTriState.msoTrue;
+
+            _shape.Top = originalTop;
+            _shape.Left = originalLeft;
         }
 
         /// <summary>
