@@ -341,5 +341,46 @@ namespace PowerPointLabs.ResizeLab
         {
             Reset();
         }
+
+        private void SymmetricLeftBtn_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
+
+        private void SymmetricLeftBtn_MouseEnter(object sender, MouseEventArgs e)
+        {
+
+        }
+
+        private void SymmetricRightBtn_MouseEnter(object sender, MouseEventArgs e)
+        {
+
+        }
+
+        private void SymmetricRightBtn_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
+
+        private void SymmetricTopBtn_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
+
+        private void SymmetricTopBtn_MouseEnter(object sender, MouseEventArgs e)
+        {
+
+        }
+
+        private void SymmetricBottomBtn_MouseEnter(object sender, MouseEventArgs e)
+        {
+
+        }
+
+        private void SymmetricBottomBtn_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
+
     }
 }
