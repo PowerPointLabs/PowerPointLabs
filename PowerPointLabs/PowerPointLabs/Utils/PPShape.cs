@@ -137,7 +137,7 @@ namespace PowerPointLabs.Utils
         public void ConvertToFreeform()
         {
             if ((int)_shape.Rotation == 0) return;
-            if (!(_shape.Type == MsoShapeType.msoAutoShape || _shape.Type == MsoShapeType.msoFreeform || _shape.Type == MsoShapeType.msoTextBox) && _shape.Nodes.Count > 0) return;
+            if (!(_shape.Type == MsoShapeType.msoAutoShape || _shape.Type == MsoShapeType.msoFreeform) && _shape.Nodes.Count < 1) return;
 
             if (_shape.Type == MsoShapeType.msoAutoShape)
             {
