@@ -1,5 +1,10 @@
 using System;
+using System.Collections;
+using System.Collections.Generic;
+using System.Drawing;
+using System.Windows;
 using Microsoft.Office.Core;
+using Point = System.Windows.Point;
 using PowerPoint = Microsoft.Office.Interop.PowerPoint;
 
 namespace PowerPointLabs.Utils
@@ -15,6 +20,8 @@ namespace PowerPointLabs.Utils
         public PPShape(PowerPoint.Shape shape)
         {
             _shape = shape;
+
+            ConvertToFreeform();
 
             UpdateAbsoluteWidth();
             UpdateAbsoluteHeight();
@@ -104,40 +111,41 @@ namespace PowerPointLabs.Utils
             }
         }
 
-        // Only work for sharp edge
-        private void ConvertToFreeform(PowerPoint.Slide slide)
+        /// <summary>
+        /// Convert Autoshape to freeform
+        /// </summary>
+        public void ConvertToFreeform()
         {
-            if (_shape.Type != MsoShapeType.msoAutoShape && _shape.Nodes.Count > 0) return;
-            _shape.Nodes.Insert(1, MsoSegmentType.msoSegmentLine, MsoEditingType.msoEditingAuto, 0, 0);
-            _shape.Nodes.Delete(2);
+            if ((int)_shape.Rotation == 0) return;
+            if (!(_shape.Type == MsoShapeType.msoAutoShape || _shape.Type == MsoShapeType.msoFreeform || _shape.Type == MsoShapeType.msoTextBox) && _shape.Nodes.Count > 0) return;
 
-            var nodes = _shape.Nodes;
-            var firstNode = nodes[1];
-            var firstPoint = firstNode.Points;
- 
-            PowerPoint.FreeformBuilder freeform = slide.Shapes.BuildFreeform(firstNode.EditingType, firstPoint[1, 1], firstPoint[1, 2]);
-
-
-            for (int i = 2; i <= nodes.Count; i++)
+            if (_shape.Type == MsoShapeType.msoAutoShape)
             {
-                var node = nodes[i];
-                var point = node.Points;
-
-                try
-                {
-                    freeform.AddNodes(node.SegmentType, node.EditingType, point[1, 1], point[1, 2]);
-                }
-                catch (Exception)
-                {
-                    freeform.AddNodes(node.SegmentType, MsoEditingType.msoEditingAuto, point[1, 1], point[1, 2]);
-                }
-
+                _shape.Nodes.Insert(1, MsoSegmentType.msoSegmentLine, MsoEditingType.msoEditingAuto, 0, 0);
+                _shape.Nodes.Delete(2);
             }
 
-            _shape.Delete();
-            _shape = freeform.ConvertToShape();
+            var pointList = new ArrayList();
+
+            for (int i = 1; i <= _shape.Nodes.Count; i++)
+            {
+                var node = _shape.Nodes[i];
+                var point = node.Points;
+                var newPoint = new float[2] { point[1, 1], point[1, 2] };
+
+                pointList.Add(newPoint);
+            }
+
+            _shape.Rotation = 0;
+            for (int i = 0; i < pointList.Count; i++)
+            {
+                var point = (float[]) pointList[i];
+                var nodeIndex = i + 1;
+
+                _shape.Nodes.SetPosition(nodeIndex, point[0], point[1]);
+            }
         }
-    
+
 
         /// <summary>
         /// Update the absolute width according to the actual shape width and height.
