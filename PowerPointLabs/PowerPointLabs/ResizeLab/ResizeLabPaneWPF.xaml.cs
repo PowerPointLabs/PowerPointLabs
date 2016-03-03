@@ -221,11 +221,6 @@ namespace PowerPointLabs.ResizeLab
             Preview(selectedShapes, resizeAction, 2);
         }
 
-        private void StretchLeftBtn_MouseLeave(object sender, MouseEventArgs e)
-        {
-            Reset();
-        }
-
         private void StretchRightBtn_MouseEnter(object sender, MouseEventArgs e)
         {
             var selectedShapes = GetSelectedShapes(false);
@@ -233,11 +228,6 @@ namespace PowerPointLabs.ResizeLab
 
             ModifySelectionAspectRatio();
             Preview(selectedShapes, resizeAction, 2);
-        }
-
-        private void StretchRightBtn_MouseLeave(object sender, MouseEventArgs e)
-        {
-            Reset();
         }
 
         private void StretchTopBtn_MouseEnter(object sender, MouseEventArgs e)
@@ -249,11 +239,6 @@ namespace PowerPointLabs.ResizeLab
             Preview(selectedShapes, resizeAction, 2);
         }
 
-        private void StretchTopBtn_MouseLeave(object sender, MouseEventArgs e)
-        {
-            Reset();
-        }
-
         private void StretchBottomBtn_MouseEnter(object sender, MouseEventArgs e)
         {
             var selectedShapes = GetSelectedShapes(false);
@@ -261,11 +246,6 @@ namespace PowerPointLabs.ResizeLab
 
             ModifySelectionAspectRatio();
             Preview(selectedShapes, resizeAction, 2);
-        }
-
-        private void StretchBottomBtn_MouseLeave(object sender, MouseEventArgs e)
-        {
-            Reset();
         }
 
         private void SameWidthBtn_MouseEnter(object sender, MouseEventArgs e)
@@ -276,12 +256,7 @@ namespace PowerPointLabs.ResizeLab
             ModifySelectionAspectRatio();
             Preview(selectedShapes, resizeAction, 2);
         }
-
-        private void SameWidthBtn_MouseLeave(object sender, MouseEventArgs e)
-        {
-            Reset();
-        }
-
+        
         private void SameHeightBtn_MouseEnter(object sender, MouseEventArgs e)
         {
             var selectedShapes = GetSelectedShapes(false);
@@ -289,11 +264,6 @@ namespace PowerPointLabs.ResizeLab
 
             ModifySelectionAspectRatio();
             Preview(selectedShapes, resizeAction, 2);
-        }
-
-        private void SameHeightBtn_MouseLeave(object sender, MouseEventArgs e)
-        {
-            Reset();
         }
 
         private void SameSizeBtn_MouseEnter(object sender, MouseEventArgs e)
@@ -322,11 +292,6 @@ namespace PowerPointLabs.ResizeLab
             Preview(selectedShapes, slideWidth, slideHeight, resizeAction);
         }
 
-        private void FitWidthBtn_MouseLeave(object sender, MouseEventArgs e)
-        {
-            Reset();
-        }
-
         private void FitHeightBtn_MouseEnter(object sender, MouseEventArgs e)
         {
             var selectedShapes = GetSelectedShapes(false);
@@ -338,11 +303,6 @@ namespace PowerPointLabs.ResizeLab
             Preview(selectedShapes, slideWidth, slideHeight, resizeAction);
         }
 
-        private void FitHeightBtn_MouseLeave(object sender, MouseEventArgs e)
-        {
-            Reset();
-        }
-
         private void FillBtn_MouseEnter(object sender, MouseEventArgs e)
         {
             var selectedShapes = GetSelectedShapes(false);
@@ -352,11 +312,6 @@ namespace PowerPointLabs.ResizeLab
 
             ModifySelectionAspectRatio();
             Preview(selectedShapes, slideWidth, slideHeight, resizeAction);
-        }
-
-        private void FillBtn_MouseLeave(object sender, MouseEventArgs e)
-        {
-            Reset();
         }
 
         #endregion
@@ -381,5 +336,10 @@ namespace PowerPointLabs.ResizeLab
         }
 
         #endregion
+
+        private void Btn_MouseLeave(object sender, MouseEventArgs e)
+        {
+            Reset();
+        }
     }
 }
