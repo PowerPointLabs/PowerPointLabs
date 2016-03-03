@@ -1,6 +1,5 @@
 ﻿using System.Windows.Media;
 using Microsoft.Office.Interop.PowerPoint;
-using PowerPointLabs.Models;
 using Color = System.Drawing.Color;
 using PowerPointLabs.Utils;
 
@@ -29,7 +28,10 @@ namespace PowerPointLabs.PictureSlidesLab.ViewModel
                 var type = styleOption.GetType();
                 var prop = type.GetProperty(propName);
                 var optValue = prop.GetValue(styleOption, null);
-                View.SetVariantsColorPanelBackground((Brush)bc.ConvertFrom(optValue));
+                if (!string.IsNullOrEmpty(optValue as string))
+                {
+                    View.SetVariantsColorPanelBackground((Brush) bc.ConvertFrom(optValue));
+                }
             }
         }
 
@@ -102,7 +104,7 @@ namespace PowerPointLabs.PictureSlidesLab.ViewModel
             var currentCategory = CurrentVariantCategory.Text;
             var targetColor = StringUtil.GetHexValue(color);
 
-            if (currentCategory.Contains("Color"))
+            if (currentCategory.Contains(TextCollection.PictureSlidesLabText.ColorHasEffect))
             {
                 styleOption.OptionName = "Customized";
                 var propName = GetPropertyName(currentCategory);
@@ -119,7 +121,7 @@ namespace PowerPointLabs.PictureSlidesLab.ViewModel
             var currentCategory = CurrentVariantCategory.Text;
             var styleVariant = _styleVariants[currentCategory][StylesVariationListSelectedId.Number];
 
-            if (currentCategory.Contains("Color"))
+            if (currentCategory.Contains(TextCollection.PictureSlidesLabText.ColorHasEffect))
             {
                 styleVariant.Set("OptionName", "Customized");
                 styleVariant.Set(GetPropertyName(currentCategory), StringUtil.GetHexValue(color));

@@ -405,6 +405,7 @@ namespace PowerPointLabs.PictureSlidesLab.View
                 this.GetCurrentSlide().GetNativeSlide(),
                 this.GetCurrentPresentation().SlideWidth,
                 this.GetCurrentPresentation().SlideHeight);
+            GC.Collect();
         }
 
         /// <summary>
@@ -795,6 +796,7 @@ namespace PowerPointLabs.PictureSlidesLab.View
                 this.GetCurrentSlide().GetNativeSlide(),
                 this.GetCurrentPresentation().SlideWidth,
                 this.GetCurrentPresentation().SlideHeight);
+            GC.Collect();
         }
 
         private void VariationFlyoutBackButton_OnClick(object sender, RoutedEventArgs e)
