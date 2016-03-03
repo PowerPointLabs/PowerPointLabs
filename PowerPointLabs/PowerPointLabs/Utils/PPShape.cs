@@ -1,12 +1,13 @@
 using System;
 using Microsoft.Office.Core;
+using System.Collections;
 using PowerPoint = Microsoft.Office.Interop.PowerPoint;
 
 namespace PowerPointLabs.Utils
 {
     internal class PPShape
     {
-        private readonly PowerPoint.Shape _shape;
+        private PowerPoint.Shape _shape;
         private float _absoluteWidth;
         private float _absoluteHeight;
         private float _rotatedLeft;
@@ -15,6 +16,8 @@ namespace PowerPointLabs.Utils
         public PPShape(PowerPoint.Shape shape)
         {
             _shape = shape;
+
+            ConvertToFreeform();
 
             UpdateAbsoluteWidth();
             UpdateAbsoluteHeight();
@@ -121,6 +124,42 @@ namespace PowerPointLabs.Utils
                 SetLeft();
             }
         }
+
+        /// <summary>
+        /// Convert Autoshape to freeform
+        /// </summary>
+        public void ConvertToFreeform()
+        {
+            if ((int)_shape.Rotation == 0) return;
+            if (!(_shape.Type == MsoShapeType.msoAutoShape || _shape.Type == MsoShapeType.msoFreeform || _shape.Type == MsoShapeType.msoTextBox) && _shape.Nodes.Count > 0) return;
+
+            if (_shape.Type == MsoShapeType.msoAutoShape)
+            {
+                _shape.Nodes.Insert(1, MsoSegmentType.msoSegmentLine, MsoEditingType.msoEditingAuto, 0, 0);
+                _shape.Nodes.Delete(2);
+            }
+
+            var pointList = new ArrayList();
+
+            for (int i = 1; i <= _shape.Nodes.Count; i++)
+            {
+                var node = _shape.Nodes[i];
+                var point = node.Points;
+                var newPoint = new float[2] { point[1, 1], point[1, 2] };
+
+                pointList.Add(newPoint);
+            }
+
+            _shape.Rotation = 0;
+            for (int i = 0; i < pointList.Count; i++)
+            {
+                var point = (float[]) pointList[i];
+                var nodeIndex = i + 1;
+
+                _shape.Nodes.SetPosition(nodeIndex, point[0], point[1]);
+            }
+        }
+
 
         /// <summary>
         /// Update the absolute width according to the actual shape width and height.
