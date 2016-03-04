@@ -1,13 +1,14 @@
 using System;
 using Microsoft.Office.Core;
 using System.Collections;
+using System.Windows;
 using PowerPoint = Microsoft.Office.Interop.PowerPoint;
 
 namespace PowerPointLabs.Utils
 {
     internal class PPShape
     {
-        private PowerPoint.Shape _shape;
+        private readonly PowerPoint.Shape _shape;
         private float _absoluteWidth;
         private float _absoluteHeight;
         private float _rotatedLeft;
@@ -26,6 +27,9 @@ namespace PowerPointLabs.Utils
             UpdateLeft();
         }
 
+        /// <summary>
+        /// Return or set the name of the specified shape.
+        /// </summary>
         public string Name
         {
             get { return _shape.Name; }
@@ -132,21 +136,57 @@ namespace PowerPointLabs.Utils
         }
 
         /// <summary>
+        /// Flip the specified shape around its horizontal or vertical axis.
+        /// </summary>
+        /// <param name="msoFlipCmd"></param>
+        public void Flip(MsoFlipCmd msoFlipCmd)
+        {
+            _shape.Flip(msoFlipCmd);
+        }
+
+        /// <summary>
+        /// Select the specified object.
+        /// </summary>
+        /// <param name="replace"></param>
+        public void Select(MsoTriState replace)
+        {
+            _shape.Select(replace);
+        }
+
+        /// <summary>
+        /// Delete the specified Shape object.
+        /// </summary>
+        public void Delete()
+        {
+            _shape.Delete();
+        }
+
+        /// <summary>
+        /// Create a duplicate of the specified Shape object and return a new shape.
+        /// </summary>
+        /// <returns></returns>
+        public PPShape Duplicate()
+        {
+            return new PPShape(_shape.Duplicate()[1]);
+        }
+
+        /// <summary>
         /// Convert Autoshape to freeform
         /// </summary>
-        public void ConvertToFreeform()
+        private void ConvertToFreeform()
         {
             if ((int)_shape.Rotation == 0) return;
             if (!(_shape.Type == MsoShapeType.msoAutoShape || _shape.Type == MsoShapeType.msoFreeform) && _shape.Nodes.Count < 1) return;
 
+            // Convert AutoShape to Freeform shape
             if (_shape.Type == MsoShapeType.msoAutoShape)
             {
                 _shape.Nodes.Insert(1, MsoSegmentType.msoSegmentLine, MsoEditingType.msoEditingAuto, 0, 0);
                 _shape.Nodes.Delete(2);
             }
 
+            // Save the coordinates of nodes
             var pointList = new ArrayList();
-
             for (int i = 1; i <= _shape.Nodes.Count; i++)
             {
                 var node = _shape.Nodes[i];
@@ -156,6 +196,8 @@ namespace PowerPointLabs.Utils
                 pointList.Add(newPoint);
             }
 
+            // Rotate bounding box back to 0 degree, and
+            // apply the original coordinates to the nodes
             _shape.Rotation = 0;
             for (int i = 0; i < pointList.Count; i++)
             {
@@ -165,7 +207,6 @@ namespace PowerPointLabs.Utils
                 _shape.Nodes.SetPosition(nodeIndex, point[0], point[1]);
             }
         }
-
 
         /// <summary>
         /// Update the absolute width according to the actual shape width and height.

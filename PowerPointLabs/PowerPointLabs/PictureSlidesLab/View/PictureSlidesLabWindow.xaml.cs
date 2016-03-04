@@ -405,6 +405,7 @@ namespace PowerPointLabs.PictureSlidesLab.View
                 this.GetCurrentSlide().GetNativeSlide(),
                 this.GetCurrentPresentation().SlideWidth,
                 this.GetCurrentPresentation().SlideHeight);
+            GC.Collect();
         }
 
         /// <summary>
@@ -795,6 +796,7 @@ namespace PowerPointLabs.PictureSlidesLab.View
                 this.GetCurrentSlide().GetNativeSlide(),
                 this.GetCurrentPresentation().SlideWidth,
                 this.GetCurrentPresentation().SlideHeight);
+            GC.Collect();
         }
 
         private void VariationFlyoutBackButton_OnClick(object sender, RoutedEventArgs e)
@@ -1179,7 +1181,7 @@ namespace PowerPointLabs.PictureSlidesLab.View
         /// <param name="time">time in ms</param>
         private void SetTimeout(Action action, int time)
         {
-            var timer = new DispatcherTimer
+            var timer = new DispatcherTimer(DispatcherPriority.Render)
             {
                 Interval = new TimeSpan(0, 0, 0, 0, time) // in ms
             };

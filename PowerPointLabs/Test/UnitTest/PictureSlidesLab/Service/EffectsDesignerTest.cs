@@ -36,7 +36,7 @@ namespace Test.UnitTest.PictureSlidesLab.Service
                 ImageFile = Img,
                 Tooltip = "some tooltips"
             };
-            _designer = EffectsDesigner.CreateEffectsDesignerForApply(_contentSlide,
+            _designer = new EffectsDesigner(_contentSlide,
                 Pres.PageSetup.SlideWidth, Pres.PageSetup.SlideHeight,
                 _imgItem);
         }
@@ -46,8 +46,9 @@ namespace Test.UnitTest.PictureSlidesLab.Service
         public void TestInsertImageReference()
         {
             // constructor for producing preview image
-            var ed = EffectsDesigner.CreateEffectsDesignerForPreview(
-                _processingSlide, _contentSlide, 
+            var ed = new EffectsDesigner(_processingSlide);
+            ed.PreparePreviewing(
+                _contentSlide, 
                 Pres.PageSetup.SlideWidth, Pres.PageSetup.SlideHeight, 
                 new ImageItem
                 {
