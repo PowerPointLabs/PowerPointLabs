@@ -82,12 +82,10 @@ namespace PowerPointLabs.ResizeLab
         {
             try
             {
-                var newShapes = selectedShapes.Duplicate();
-
-                for (int i = 1; i <= newShapes.Count; i++)
+                for (int i = 1; i <= selectedShapes.Count; i++)
                 {
                     var originalShape = new PPShape(selectedShapes[i]);
-                    var newShape = new PPShape(newShapes[i]);
+                    var newShape = originalShape.Duplicate();
 
                     newShape.Flip(msoFlipCmd);
                     newShape.Select(MsoTriState.msoFalse);
