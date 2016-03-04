@@ -159,6 +159,23 @@ namespace PowerPointLabs.Utils
         }
 
         /// <summary>
+        /// Delete the specified Shape object.
+        /// </summary>
+        public void Delete()
+        {
+            _shape.Delete();
+        }
+
+        /// <summary>
+        /// Create a duplicate of the specified Shape object and return a new shape.
+        /// </summary>
+        /// <returns></returns>
+        public PPShape Duplicate()
+        {
+            return new PPShape(_shape.Duplicate()[1]);
+        }
+
+        /// <summary>
         /// Flip the specified shape around its horizontal or vertical axis.
         /// </summary>
         /// <param name="msoFlipCmd"></param>
@@ -174,23 +191,6 @@ namespace PowerPointLabs.Utils
         public void Select(MsoTriState replace)
         {
             _shape.Select(replace);
-        }
-
-        /// <summary>
-        /// Delete the specified Shape object.
-        /// </summary>
-        public void Delete()
-        {
-            _shape.Delete();
-        }
-
-        /// <summary>
-        /// Create a duplicate of the specified Shape object and return a new shape.
-        /// </summary>
-        /// <returns></returns>
-        public PPShape Duplicate()
-        {
-            return new PPShape(_shape.Duplicate()[1]);
         }
 
         /// <summary>
