@@ -1,6 +1,7 @@
 using System;
 using Microsoft.Office.Core;
 using System.Collections;
+using System.Drawing;
 using System.Windows;
 using PowerPoint = Microsoft.Office.Interop.PowerPoint;
 
@@ -103,6 +104,22 @@ namespace PowerPointLabs.Utils
                     SetToAbsoluteDimension();
                 }
                 
+            }
+        }
+
+        /// <summary>
+        /// Returns a point that represents the center of the shape.
+        /// </summary>
+        public PointF Center
+        {
+            get
+            {
+                var centerPoint = new PointF
+                {
+                    X = _rotatedLeft + _absoluteWidth/2,
+                    Y = _rotatedTop + _absoluteHeight/2
+                };
+                return centerPoint;
             }
         }
 
