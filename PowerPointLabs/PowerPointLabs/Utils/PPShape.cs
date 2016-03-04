@@ -143,6 +143,7 @@ namespace PowerPointLabs.Utils
             set
             {
                 _shape.Rotation = value;
+                ConvertToFreeform();
                 UpdateAbsoluteHeight();
                 UpdateAbsoluteWidth();
                 UpdateLeft();
