@@ -108,21 +108,6 @@ namespace PowerPointLabs.Utils
 
         /// <summary>
         /// Return or set a single-precision floating-point number that represents the 
-        /// distance from the top most point of the shape to the top edge of the slide.
-        /// </summary>
-        public float Top
-        {
-            get { return _rotatedTop; }
-            set
-            {
-                _rotatedTop = value; 
-                SetTop();
-            }
-        }
-
-
-        /// <summary>
-        /// Return or set a single-precision floating-point number that represents the 
         /// distance from the left most point of the shape to the left edge of the slide.
         /// </summary>
         public float Left
@@ -133,6 +118,44 @@ namespace PowerPointLabs.Utils
                 _rotatedLeft = value; 
                 SetLeft();
             }
+        }
+
+        /// <summary>
+        /// Return or set a single-precision floating-point number that represents the 
+        /// distance from the top most point of the shape to the top edge of the slide.
+        /// </summary>
+        public float Top
+        {
+            get { return _rotatedTop; }
+            set
+            {
+                _rotatedTop = value;
+                SetTop();
+            }
+        }
+
+        /// <summary>
+        /// Returns or sets the number of degrees the specified shape is rotated around the z-axis. Read/write.
+        /// </summary>
+        public float Rotation
+        {
+            get { return _shape.Rotation; }
+            set
+            {
+                _shape.Rotation = value;
+                UpdateAbsoluteHeight();
+                UpdateAbsoluteWidth();
+                UpdateLeft();
+                UpdateTop();
+            }
+        }
+
+        /// <summary>
+        /// Returns the position of the specified shape in the z-order. Read-only.
+        /// </summary>
+        public int ZOrderPosition
+        {
+            get { return _shape.ZOrderPosition; }
         }
 
         /// <summary>
@@ -168,14 +191,6 @@ namespace PowerPointLabs.Utils
         public PPShape Duplicate()
         {
             return new PPShape(_shape.Duplicate()[1]);
-        }
-
-        /// <summary>
-        /// Returns the position of the specified shape in the z-order. Read-only.
-        /// </summary>
-        public int ZOrderPosition
-        {
-            get { return _shape.ZOrderPosition; } 
         }
 
         /// <summary>
