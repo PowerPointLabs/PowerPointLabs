@@ -376,22 +376,38 @@ namespace PowerPointLabs.ResizeLab
 
         private void SymmetricLeftBtn_MouseEnter(object sender, MouseEventArgs e)
         {
+            var selectedShapes = GetSelectedShapes(false);
+            Action<PowerPoint.ShapeRange> previewAction = shapes => _resizeLab.SymmetrizeLeft(shapes);
 
+            ModifySelectionAspectRatio();
+            Preview(selectedShapes, previewAction, 1);
         }
 
         private void SymmetricRightBtn_MouseEnter(object sender, MouseEventArgs e)
         {
+            var selectedShapes = GetSelectedShapes(false);
+            Action<PowerPoint.ShapeRange> previewAction = shapes => _resizeLab.SymmetrizeRight(shapes);
 
+            ModifySelectionAspectRatio();
+            Preview(selectedShapes, previewAction, 1);
         }
 
         private void SymmetricTopBtn_MouseEnter(object sender, MouseEventArgs e)
         {
+            var selectedShapes = GetSelectedShapes(false);
+            Action<PowerPoint.ShapeRange> previewAction = shapes => _resizeLab.SymmetrizeTop(shapes);
 
+            ModifySelectionAspectRatio();
+            Preview(selectedShapes, previewAction, 1);
         }
 
         private void SymmetricBottomBtn_MouseEnter(object sender, MouseEventArgs e)
         {
+            var selectedShapes = GetSelectedShapes(false);
+            Action<PowerPoint.ShapeRange> previewAction = shapes => _resizeLab.SymmetrizeBottom(shapes);
 
+            ModifySelectionAspectRatio();
+            Preview(selectedShapes, previewAction, 1);
         }
 
         #endregion

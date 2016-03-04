@@ -145,6 +145,23 @@ namespace PowerPointLabs.Utils
         }
 
         /// <summary>
+        /// Select the specified object.
+        /// </summary>
+        /// <param name="replace"></param>
+        public void Select(MsoTriState replace)
+        {
+            _shape.Select(replace);
+        }
+
+        /// <summary>
+        /// Delete the specified Shape object.
+        /// </summary>
+        public void Delete()
+        {
+            _shape.Delete();
+        }
+
+        /// <summary>
         /// Convert Autoshape to freeform
         /// </summary>
         private void ConvertToFreeform()

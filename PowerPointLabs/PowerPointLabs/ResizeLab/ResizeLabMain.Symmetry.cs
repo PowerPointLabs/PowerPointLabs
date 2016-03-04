@@ -90,6 +90,7 @@ namespace PowerPointLabs.ResizeLab
                     var newShape = new PPShape(newShapes[i]);
 
                     newShape.Flip(msoFlipCmd);
+                    newShape.Select(MsoTriState.msoFalse);
                     adjustPosition.Invoke(originalShape, newShape);
                 }
             }
