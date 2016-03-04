@@ -177,6 +177,24 @@ namespace PowerPointLabs.Utils
         }
 
         /// <summary>
+        /// Moves the specified shape horizontally by the specified number of points.
+        /// </summary>
+        /// <param name="value">Number of points from left of slide</param>
+        public void IncrementLeft(float value)
+        {
+            _shape.IncrementLeft(value);
+        }
+
+        /// <summary>
+        /// Moves the specified shape vertically by the specified number of points.
+        /// </summary>
+        /// <param name="value">Number of points from top of slide</param>
+        public void IncrementTop(float value)
+        {
+            _shape.IncrementTop(value);
+        }
+
+        /// <summary>
         /// Flip the specified shape around its horizontal or vertical axis.
         /// </summary>
         /// <param name="msoFlipCmd"></param>
