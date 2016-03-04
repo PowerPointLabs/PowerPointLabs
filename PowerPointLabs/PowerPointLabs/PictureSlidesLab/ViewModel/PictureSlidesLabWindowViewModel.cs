@@ -827,23 +827,21 @@ namespace PowerPointLabs.PictureSlidesLab.ViewModel
         {
             try
             {
+                Logger.Log("Load clipboard begins.");
                 var result = new List<object>();
-                var pic = Clipboard.GetImage();
-                var text = Clipboard.GetText();
-                var files = Clipboard.GetFileDropList();
-
-                if (pic != null)
+                if (Clipboard.ContainsImage())
                 {
-                    result.Add(pic);
+                    result.Add(Clipboard.GetImage());
                 }
-                if (files != null && files.Count > 0)
+                if (Clipboard.ContainsFileDropList())
                 {
-                    result.Add(files);
+                    result.Add(Clipboard.GetFileDropList());
                 }
-                if (!string.IsNullOrEmpty(text))
+                if (Clipboard.ContainsText())
                 {
-                    result.Add(text);
+                    result.Add(Clipboard.GetText());
                 }
+                Logger.Log("Load clipboard done.");
                 return result;
             }
             catch (Exception e)
@@ -858,21 +856,25 @@ namespace PowerPointLabs.PictureSlidesLab.ViewModel
         {
             try
             {
+                Logger.Log("Save clipboard begins.");
                 foreach (var copiedObj in copiedObjs)
                 {
+                    if (copiedObj == null) continue;
+
                     if (copiedObj is Image)
                     {
-                        Clipboard.SetImage((Image) copiedObj);
+                        Clipboard.SetImage((Image)copiedObj);
                     }
                     else if (copiedObj is StringCollection)
                     {
-                        Clipboard.SetFileDropList((StringCollection) copiedObj);
+                        Clipboard.SetFileDropList((StringCollection)copiedObj);
                     }
                     else if (!string.IsNullOrEmpty(copiedObj as string))
                     {
-                        Clipboard.SetText((string) copiedObj);
+                        Clipboard.SetText((string)copiedObj);
                     }
                 }
+                Logger.Log("Save clipboard done.");
             }
             catch (Exception e)
             {
@@ -901,7 +903,9 @@ namespace PowerPointLabs.PictureSlidesLab.ViewModel
             var copiedPicture = LoadClipboardPicture();
             try
             {
-                foreach (var stylesPreviewOption in OptionsFactory.GetAllStylesPreviewOptions())
+                var allStyleOptions = OptionsFactory.GetAllStylesPreviewOptions();
+                Logger.Log("Number of styles: " + allStyleOptions.Count);
+                foreach (var stylesPreviewOption in allStyleOptions)
                 {
                     var previewInfo = Designer.PreviewApplyStyle(source, 
                         contentSlide, slideWidth, slideHeight, stylesPreviewOption);
@@ -1006,7 +1010,7 @@ namespace PowerPointLabs.PictureSlidesLab.ViewModel
                     || contentSlide == null);
         }
 
-        private void UpdateStylesVariationImages(ImageItem source, Slide contentSlide, 
+        private void UpdateStylesVariationImages(ImageItem source, Slide contentSlide,
             float slideWidth, float slideHeight, bool isMockPreviewImages = false)
         {
             Logger.Log("UpdateStylesVariationImages begins");
@@ -1017,6 +1021,7 @@ namespace PowerPointLabs.PictureSlidesLab.ViewModel
                 {
                     Logger.Log("Generate mock images for Picture aspect");
                 }
+                Logger.Log("Number of styles: " + _styleOptions.Count);
                 for (var i = 0; i < _styleOptions.Count; i++)
                 {
                     var styleOption = _styleOptions[i];

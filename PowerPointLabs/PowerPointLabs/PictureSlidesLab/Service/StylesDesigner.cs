@@ -28,6 +28,8 @@ namespace PowerPointLabs.PictureSlidesLab.Service
         [Import(typeof(StyleWorkerFactory))]
         private StyleWorkerFactory WorkerFactory { get; set; }
 
+        private EffectsDesigner EffectsDesignerForPreview { get; }
+
         private StyleOption Option { get; set; }
 
         private Settings Settings { get; set; }
@@ -43,6 +45,9 @@ namespace PowerPointLabs.PictureSlidesLab.Service
             Option = new StyleOption();
             Application = app;
             OpenInBackground();
+            // re use effects designer (a background slide) to
+            // generate styles
+            EffectsDesignerForPreview = CreateEffectsHandlerForPreview();
 
             var catalog = new AggregateCatalog(
                 new AssemblyCatalog(Assembly.GetExecutingAssembly()));
@@ -68,12 +73,13 @@ namespace PowerPointLabs.PictureSlidesLab.Service
         public PreviewInfo PreviewApplyStyle(ImageItem source, Slide contentSlide, 
             float slideWidth, float slideHeight, StyleOption option)
         {
+            Logger.Log("PreviewApplyStyle begins");
             SetStyleOptions(option);
             SlideWidth = slideWidth;
             SlideHeight = slideHeight;
 
             var previewInfo = new PreviewInfo();
-            var handler = CreateEffectsHandlerForPreview(source, contentSlide);
+            EffectsDesignerForPreview.PreparePreviewing(contentSlide, slideWidth, slideHeight, source);
 
             // use thumbnail to apply, in order to speed up
             source.BackupFullSizeImageFile = source.FullSizeImageFile;
@@ -81,15 +87,14 @@ namespace PowerPointLabs.PictureSlidesLab.Service
             source.FullSizeImageFile = null;
             source.ImageFile = source.CroppedThumbnailImageFile ?? source.ImageFile;
 
-            ApplyStyle(handler, source, isActualSize: false);
+            GenerateStyle(EffectsDesignerForPreview, source, isActualSize: false);
 
             // recover the source back
             source.FullSizeImageFile = source.BackupFullSizeImageFile;
             source.ImageFile = backupImageFile;
-            handler.GetNativeSlide().Export(previewInfo.PreviewApplyStyleImagePath, "JPG",
+            EffectsDesignerForPreview.GetNativeSlide().Export(previewInfo.PreviewApplyStyleImagePath, "JPG",
                     GetPreviewWidth(), PreviewHeight);
-
-            handler.Delete();
+            Logger.Log("PreviewApplyStyle done");
             return previewInfo;
         }
         
@@ -105,10 +110,9 @@ namespace PowerPointLabs.PictureSlidesLab.Service
             source.BackupFullSizeImageFile = source.FullSizeImageFile;
             source.FullSizeImageFile = source.CroppedImageFile ?? source.FullSizeImageFile;
             
-            var effectsHandler = EffectsDesigner.CreateEffectsDesignerForApply(contentSlide, 
-                slideWidth, slideHeight, source);
+            var effectsHandler = new EffectsDesigner(contentSlide, slideWidth, slideHeight, source);
 
-            ApplyStyle(effectsHandler, source, isActualSize: true);
+            GenerateStyle(effectsHandler, source, isActualSize: true);
 
             // recover the source back
             source.FullSizeImageFile = source.BackupFullSizeImageFile;
@@ -120,7 +124,7 @@ namespace PowerPointLabs.PictureSlidesLab.Service
         /// <param name="designer"></param>
         /// <param name="source"></param>
         /// <param name="isActualSize"></param>
-        private void ApplyStyle(EffectsDesigner designer, ImageItem source, bool isActualSize)
+        private void GenerateStyle(EffectsDesigner designer, ImageItem source, bool isActualSize)
         {
             Logger.Log("Generate style " + Option.StyleName);
             Shape imageShape;
@@ -169,16 +173,10 @@ namespace PowerPointLabs.PictureSlidesLab.Service
             }
         }
 
-        private EffectsDesigner CreateEffectsHandlerForPreview(ImageItem source, Slide contentSlide)
+        private EffectsDesigner CreateEffectsHandlerForPreview()
         {
-            // sync layout
-            var layout = contentSlide.Layout;
-            var newSlide = Presentation.Slides.Add(SlideCount + 1, layout);
-
-            // sync design & theme
-            newSlide.Design = contentSlide.Design;
-
-            return EffectsDesigner.CreateEffectsDesignerForPreview(newSlide, contentSlide, SlideWidth, SlideHeight, source);
+            var backgroundSlide = Presentation.Slides.Add(SlideCount + 1, PpSlideLayout.ppLayoutBlank);
+            return new EffectsDesigner(backgroundSlide);
         }
         
         #endregion
