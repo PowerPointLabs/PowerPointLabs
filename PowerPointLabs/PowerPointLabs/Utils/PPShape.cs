@@ -1,4 +1,7 @@
 using System;
+using Microsoft.Office.Core;
+using System.Collections;
+using System.Windows;
 using PowerPoint = Microsoft.Office.Interop.PowerPoint;
 
 namespace PowerPointLabs.Utils
@@ -15,11 +18,22 @@ namespace PowerPointLabs.Utils
         {
             _shape = shape;
 
+            ConvertToFreeform();
+
             UpdateAbsoluteWidth();
             UpdateAbsoluteHeight();
 
             UpdateTop();
             UpdateLeft();
+        }
+
+        /// <summary>
+        /// Return or set the name of the specified shape.
+        /// </summary>
+        public string Name
+        {
+            get { return _shape.Name; }
+            set { _shape.Name = value; }
         }
 
         /// <summary>
@@ -57,7 +71,16 @@ namespace PowerPointLabs.Utils
             set
             {
                 _absoluteWidth = value;
-                SetToAbsoluteDimension();
+                
+                if (_shape.LockAspectRatio == MsoTriState.msoTrue)
+                {
+                    SetToAbsoluteWidthAspectRatio();
+                }
+                else
+                {
+                    SetToAbsoluteDimension();
+                }
+                
             }
         }
 
@@ -70,7 +93,16 @@ namespace PowerPointLabs.Utils
             set
             {
                 _absoluteHeight = value;
-                SetToAbsoluteDimension();
+
+                if (_shape.LockAspectRatio == MsoTriState.msoTrue)
+                {
+                    SetToAbsoluteHeightAspectRatio();
+                }
+                else
+                {
+                    SetToAbsoluteDimension();
+                }
+                
             }
         }
 
@@ -100,6 +132,79 @@ namespace PowerPointLabs.Utils
             {
                 _rotatedLeft = value; 
                 SetLeft();
+            }
+        }
+
+        /// <summary>
+        /// Flip the specified shape around its horizontal or vertical axis.
+        /// </summary>
+        /// <param name="msoFlipCmd"></param>
+        public void Flip(MsoFlipCmd msoFlipCmd)
+        {
+            _shape.Flip(msoFlipCmd);
+        }
+
+        /// <summary>
+        /// Select the specified object.
+        /// </summary>
+        /// <param name="replace"></param>
+        public void Select(MsoTriState replace)
+        {
+            _shape.Select(replace);
+        }
+
+        /// <summary>
+        /// Delete the specified Shape object.
+        /// </summary>
+        public void Delete()
+        {
+            _shape.Delete();
+        }
+
+        /// <summary>
+        /// Create a duplicate of the specified Shape object and return a new shape.
+        /// </summary>
+        /// <returns></returns>
+        public PPShape Duplicate()
+        {
+            return new PPShape(_shape.Duplicate()[1]);
+        }
+
+        /// <summary>
+        /// Convert Autoshape to freeform
+        /// </summary>
+        private void ConvertToFreeform()
+        {
+            if ((int)_shape.Rotation == 0) return;
+            if (!(_shape.Type == MsoShapeType.msoAutoShape || _shape.Type == MsoShapeType.msoFreeform) && _shape.Nodes.Count < 1) return;
+
+            // Convert AutoShape to Freeform shape
+            if (_shape.Type == MsoShapeType.msoAutoShape)
+            {
+                _shape.Nodes.Insert(1, MsoSegmentType.msoSegmentLine, MsoEditingType.msoEditingAuto, 0, 0);
+                _shape.Nodes.Delete(2);
+            }
+
+            // Save the coordinates of nodes
+            var pointList = new ArrayList();
+            for (int i = 1; i <= _shape.Nodes.Count; i++)
+            {
+                var node = _shape.Nodes[i];
+                var point = node.Points;
+                var newPoint = new float[2] { point[1, 1], point[1, 2] };
+
+                pointList.Add(newPoint);
+            }
+
+            // Rotate bounding box back to 0 degree, and
+            // apply the original coordinates to the nodes
+            _shape.Rotation = 0;
+            for (int i = 0; i < pointList.Count; i++)
+            {
+                var point = (float[]) pointList[i];
+                var nodeIndex = i + 1;
+
+                _shape.Nodes.SetPosition(nodeIndex, point[0], point[1]);
             }
         }
 
@@ -171,8 +276,36 @@ namespace PowerPointLabs.Utils
             var cosAngle = Math.Cos(rotation);
             var ratio = sinAngle/cosAngle;
 
-            _shape.Height = (float) ((_absoluteWidth*ratio - _absoluteHeight)/(sinAngle*ratio - cosAngle));
-            _shape.Width = (float) ((_absoluteWidth - _shape.Height*sinAngle)/cosAngle);
+            _shape.Height = (float)((_absoluteWidth * ratio - _absoluteHeight) / (sinAngle * ratio - cosAngle));
+            _shape.Width = (float)((_absoluteWidth - _shape.Height * sinAngle) / cosAngle);
+        }
+
+        private void SetToAbsoluteHeightAspectRatio()
+        {
+            // Store the original position of the shape
+            var originalTop = _shape.Top;
+            var originalLeft = _shape.Left;
+
+            _shape.LockAspectRatio = MsoTriState.msoFalse;
+            FitToSlide.FitToHeight(_shape, _absoluteWidth, _absoluteHeight);
+            _shape.LockAspectRatio = MsoTriState.msoTrue;
+
+            _shape.Top = originalTop;
+            _shape.Left = originalLeft;
+        }
+
+        private void SetToAbsoluteWidthAspectRatio()
+        {
+            // Store the original position of the shape
+            var originalTop = _shape.Top;
+            var originalLeft = _shape.Left;
+
+            _shape.LockAspectRatio = MsoTriState.msoFalse;
+            FitToSlide.FitToWidth(_shape, _absoluteWidth, _absoluteHeight);
+            _shape.LockAspectRatio = MsoTriState.msoTrue;
+
+            _shape.Top = originalTop;
+            _shape.Left = originalLeft;
         }
 
         /// <summary>

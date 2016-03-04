@@ -27,9 +27,9 @@ namespace PowerPointLabs.PictureSlidesLab.View
             if (_loadStylesDialog.IsOpen) return;
 
             _loadStylesDialog
-                .Init("Load Style or Image from the Selected Slide")
+                .Init("Load Style or Picture from the Selected Slide")
                 .CustomizeGotoSlideButton("Load Style", "Load style from the selected slide.")
-                .CustomizeAdditionalButton("Load Image", "Load image from the selected slide.")
+                .CustomizeAdditionalButton("Load Picture", "Load picture from the selected slide.")
                 .FocusOkButton()
                 .OpenDialog();
             this.ShowMetroDialogAsync(_loadStylesDialog, MetroDialogOptions);

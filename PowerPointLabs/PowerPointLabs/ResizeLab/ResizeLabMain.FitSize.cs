@@ -94,6 +94,12 @@ namespace PowerPointLabs.ResizeLab
                         shape.AbsoluteWidth = slideWidth;
                         shape.Left = 0;
                     }
+
+                    if (dimension == Dimension.HeightAndWidth)
+                    {
+                        shape.Top = 0;
+                        shape.Left = 0;
+                    }
                 }
             }
             catch (Exception e)

@@ -24,6 +24,16 @@ namespace PowerPointLabs.PictureSlidesLab.View
 
         private MetroWindow _parent;
 
+        public bool IsDisposed
+        {
+            get
+            {
+                var propertyInfo = typeof(Window).GetProperty("IsDisposed",
+                    System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Instance);
+                return (bool) propertyInfo.GetValue(this, null);
+            }
+        }
+
         public QuickDropDialog(MetroWindow parent)
         {
             _parent = parent;

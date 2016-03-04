@@ -200,6 +200,7 @@ namespace PowerPointLabs.PictureSlidesLab.View
             if (args.Data.GetDataPresent("FileDrop")
                 || args.Data.GetDataPresent("Text"))
             {
+                Logger.Log("Drag enter");
                 PictureSlidesLabGridOverlay.Visibility = Visibility.Visible;
                 DisableLoadingStyleOnWindowActivate();
                 Activate();
@@ -213,6 +214,7 @@ namespace PowerPointLabs.PictureSlidesLab.View
             {
                 if (args == null) return;
 
+                Logger.Log("Drop enter");
                 if (args.Data.GetDataPresent("FileDrop"))
                 {
                     var filenames = (args.Data.GetData("FileDrop") as string[]);
@@ -282,11 +284,13 @@ namespace PowerPointLabs.PictureSlidesLab.View
                     {
                         ShowInfoMessageBox(TextCollection.PictureSlidesLabText.InfoPasteNothing);
                     }
+                    Logger.Log("Nothing to paste");
                     return;
                 }
 
                 if (pastedPicture != null)
                 {
+                    Logger.Log("Pasted enter");
                     var pastedPictureFile = StoragePath.GetPath("pastedImg-"
                                                                 + DateTime.Now.GetHashCode() + "-"
                                                                 + Guid.NewGuid().ToString().Substring(0, 7));
@@ -340,9 +344,11 @@ namespace PowerPointLabs.PictureSlidesLab.View
         {
             try
             {
+                if (IsDisposed) return;
+
                 _lastSelectedSlideIndex = this.GetCurrentSlide().Index;
 
-                if (!IsClosing
+                if (!IsDisposed
                     && (CropWindow == null || !CropWindow.IsOpen))
                 {
                     if (QuickDropDialog == null)
@@ -353,7 +359,7 @@ namespace PowerPointLabs.PictureSlidesLab.View
                         QuickDropDialog.ShowQuickDropDialog();
                         Logger.Log("PSL Quick Drop Dialog begins");
                     }
-                    else if (!QuickDropDialog.IsOpen)
+                    else if (!QuickDropDialog.IsOpen && !QuickDropDialog.IsDisposed)
                     {
                         QuickDropDialog.ShowQuickDropDialog();
                     }
@@ -399,6 +405,7 @@ namespace PowerPointLabs.PictureSlidesLab.View
                 this.GetCurrentSlide().GetNativeSlide(),
                 this.GetCurrentPresentation().SlideWidth,
                 this.GetCurrentPresentation().SlideHeight);
+            GC.Collect();
         }
 
         /// <summary>
@@ -548,6 +555,7 @@ namespace PowerPointLabs.PictureSlidesLab.View
                 // when no current slide
                 if (this.GetCurrentSlide() == null)
                 {
+                    Logger.Log("Current slide is null");
                     GotoSlideButton.IsEnabled = false;
                     LoadStylesButton.IsEnabled = false;
                     ViewModel.StylesPreviewList.Clear();
@@ -609,6 +617,7 @@ namespace PowerPointLabs.PictureSlidesLab.View
             }
             else if (e.LeftButton == MouseButtonState.Pressed)
             {
+                Logger.Log("begin import pictures");
                 var imageItem = item.Content as ImageItem;
                 if (imageItem != null
                     && imageItem.ImageFile == StoragePath.ChoosePicturesImgPath)
@@ -766,6 +775,7 @@ namespace PowerPointLabs.PictureSlidesLab.View
         {
             try
             {
+                Logger.Log("Change aspect to " + ViewModel.CurrentVariantCategory.Text);
                 ViewModel.UpdateStepByStepStylesVariationImages(
                     (ImageItem) ImageSelectionListBox.SelectedValue ?? CreateDefaultPictureItem(),
                     this.GetCurrentSlide().GetNativeSlide(),
@@ -786,6 +796,7 @@ namespace PowerPointLabs.PictureSlidesLab.View
                 this.GetCurrentSlide().GetNativeSlide(),
                 this.GetCurrentPresentation().SlideWidth,
                 this.GetCurrentPresentation().SlideHeight);
+            GC.Collect();
         }
 
         private void VariationFlyoutBackButton_OnClick(object sender, RoutedEventArgs e)
@@ -818,6 +829,7 @@ namespace PowerPointLabs.PictureSlidesLab.View
         {
             if (!SettingsFlyoutControl.IsOpen)
             {
+                Logger.Log("Setting flyout is closed");
                 SetTimeout(() => { UpdatePreviewImages(isForceUpdating: true); }, 500);
             }
         }
@@ -1064,6 +1076,7 @@ namespace PowerPointLabs.PictureSlidesLab.View
             right2LeftToHideTranslate.BeginAnimation(TranslateTransform.XProperty, right2LeftToHideAnimation);
             IsVariationsFlyoutOpen = false;
             ViewModel.CurrentVariantCategory.Text = "";
+            Logger.Log("Variation is closed");
         }
 
         private void UpdatePreviewImages(ImageItem source = null, bool isEnteringPictureVariation = false, bool isForceUpdating = false)
@@ -1076,6 +1089,7 @@ namespace PowerPointLabs.PictureSlidesLab.View
 
                 if (!IsEnableUpdatingPreviewImages() && ViewModel.IsInPictureVariation())
                 {
+                    Logger.Log("In default pic mode & in pic aspect");
                     // if it's in Default Picture mode, and
                     // it's in the picture variation, allow
                     // updating preview images
@@ -1087,6 +1101,7 @@ namespace PowerPointLabs.PictureSlidesLab.View
                 }
                 else if (IsVariationsFlyoutOpen && isEnteringPictureVariation)
                 {
+                    Logger.Log("Entering pic aspect");
                     // when it's to load the design for a default picture,
                     // and it's at the variation stage,
                     // directly jump to picture variation to select picture
@@ -1096,6 +1111,7 @@ namespace PowerPointLabs.PictureSlidesLab.View
                 }
                 else if (isForceUpdating)
                 {
+                    Logger.Log("Force updating preview images");
                     ViewModel.UpdatePreviewImages(
                         source ?? (ImageItem) ImageSelectionListBox.SelectedValue ?? CreateDefaultPictureItem(),
                         this.GetCurrentSlide().GetNativeSlide(),
@@ -1165,7 +1181,7 @@ namespace PowerPointLabs.PictureSlidesLab.View
         /// <param name="time">time in ms</param>
         private void SetTimeout(Action action, int time)
         {
-            var timer = new DispatcherTimer
+            var timer = new DispatcherTimer(DispatcherPriority.Render)
             {
                 Interval = new TimeSpan(0, 0, 0, 0, time) // in ms
             };
@@ -1187,6 +1203,22 @@ namespace PowerPointLabs.PictureSlidesLab.View
         {
             Logger.LogException(e.ExceptionObject as Exception, sender.GetType() + " " + sender);
             ShowErrorMessageBox("Unexpected errors happened!", e.ExceptionObject as Exception);
+        }
+
+        // check PSL window is really closing or not
+        private bool IsDisposed
+        {
+            get
+            {
+                if (IsClosing)
+                {
+                    return true;
+                }
+
+                var propertyInfo = typeof(Window).GetProperty("IsDisposed", 
+                    System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Instance);
+                return (bool) propertyInfo.GetValue(this, null);
+            }
         }
 
         #endregion
