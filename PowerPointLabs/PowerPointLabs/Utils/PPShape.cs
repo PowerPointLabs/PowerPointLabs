@@ -171,6 +171,14 @@ namespace PowerPointLabs.Utils
         }
 
         /// <summary>
+        /// Returns the position of the specified shape in the z-order. Read-only.
+        /// </summary>
+        public int ZOrderPosition
+        {
+            get { return _shape.ZOrderPosition; } 
+        }
+
+        /// <summary>
         /// Convert Autoshape to freeform
         /// </summary>
         private void ConvertToFreeform()
