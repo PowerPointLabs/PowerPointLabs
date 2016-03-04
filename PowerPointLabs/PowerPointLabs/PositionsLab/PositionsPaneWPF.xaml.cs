@@ -640,25 +640,6 @@ namespace PowerPointLabs.PositionsLab
             return shapes.AddShape(Office.MsoAutoShapeType.msoShapeOval, left, top, RefpointRadius, RefpointRadius);
         }
 
-        private System.Drawing.PointF CalculateCenterPoint(List<Shape> shapes)
-        {
-            if (shapes.Count < 1)
-            {
-                return new System.Drawing.PointF();
-            }
-
-            var centerPoint = Graphics.GetCenterPoint(shapes[0]);
-
-            foreach (var s in shapes)
-            {
-                var currentShapeCenterPoint = Graphics.GetCenterPoint(s);
-                centerPoint.X = (centerPoint.X + currentShapeCenterPoint.X) / 2;
-                centerPoint.Y = (centerPoint.Y + currentShapeCenterPoint.Y) / 2;
-            }
-
-            return centerPoint;
-        }
-
         private float PointsToScreenPixelsX(float point)
         {
             return this.GetCurrentWindow().PointsToScreenPixelsX(point);
