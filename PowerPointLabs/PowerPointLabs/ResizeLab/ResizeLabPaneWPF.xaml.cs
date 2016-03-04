@@ -52,7 +52,7 @@ namespace PowerPointLabs.ResizeLab
         private void StretchLeftBtn_Click(object sender, RoutedEventArgs e)
         {
             var selectedShape = GetSelectedShapes();
-            Action<PowerPoint.ShapeRange> resizeAction = shapes => { _resizeLab.StretchLeft(shapes); };
+            Action<PowerPoint.ShapeRange> resizeAction = shapes => _resizeLab.StretchLeft(shapes);
 
             ModifySelectionAspectRatio();
             ExecuteResizeAction(selectedShape, resizeAction);
@@ -61,7 +61,7 @@ namespace PowerPointLabs.ResizeLab
         private void StretchRightBtn_Click(object sender, RoutedEventArgs e)
         {
             var selectedShapes = GetSelectedShapes();
-            Action<PowerPoint.ShapeRange> resizeAction = shapes => { _resizeLab.StretchRight(shapes); };
+            Action<PowerPoint.ShapeRange> resizeAction = shapes => _resizeLab.StretchRight(shapes);
 
             ModifySelectionAspectRatio();
             ExecuteResizeAction(selectedShapes, resizeAction);
@@ -70,7 +70,7 @@ namespace PowerPointLabs.ResizeLab
         private void StretchTopBtn_Click(object sender, RoutedEventArgs e)
         {
             var selectedShapes = GetSelectedShapes();
-            Action<PowerPoint.ShapeRange> resizeAction = shapes => { _resizeLab.StretchTop(shapes); };
+            Action<PowerPoint.ShapeRange> resizeAction = shapes => _resizeLab.StretchTop(shapes);
 
             ModifySelectionAspectRatio();
             ExecuteResizeAction(selectedShapes, resizeAction);
@@ -79,7 +79,7 @@ namespace PowerPointLabs.ResizeLab
         private void StretchBottomBtn_Click(object sender, RoutedEventArgs e)
         {
             var selectedShapes = GetSelectedShapes();
-            Action<PowerPoint.ShapeRange> resizeAction = shapes => { _resizeLab.StretchBottom(shapes); };
+            Action<PowerPoint.ShapeRange> resizeAction = shapes => _resizeLab.StretchBottom(shapes);
 
             ModifySelectionAspectRatio();
             ExecuteResizeAction(selectedShapes, resizeAction);
@@ -92,7 +92,7 @@ namespace PowerPointLabs.ResizeLab
         private void SameWidthBtn_Click(object sender, RoutedEventArgs e)
         {
             var selectedShapes = GetSelectedShapes();
-            Action<PowerPoint.ShapeRange> resizeAction = shapes => { _resizeLab.ResizeToSameWidth(shapes); };
+            Action<PowerPoint.ShapeRange> resizeAction = shapes => _resizeLab.ResizeToSameWidth(shapes);
 
             ModifySelectionAspectRatio();
             ExecuteResizeAction(selectedShapes, resizeAction);
@@ -101,7 +101,7 @@ namespace PowerPointLabs.ResizeLab
         private void SameHeightBtn_Click(object sender, RoutedEventArgs e)
         {
             var selectedShapes = GetSelectedShapes();
-            Action<PowerPoint.ShapeRange> resizeAction = shapes => { _resizeLab.ResizeToSameHeight(shapes); };
+            Action<PowerPoint.ShapeRange> resizeAction = shapes => _resizeLab.ResizeToSameHeight(shapes);
 
             ModifySelectionAspectRatio();
             ExecuteResizeAction(selectedShapes, resizeAction);
@@ -110,7 +110,7 @@ namespace PowerPointLabs.ResizeLab
         private void SameSizeBtn_Click(object sender, RoutedEventArgs e)
         {
             var selectedShapes = GetSelectedShapes();
-            Action<PowerPoint.ShapeRange> resizeAction = shapes => { _resizeLab.ResizeToSameHeightAndWidth(shapes); };
+            Action<PowerPoint.ShapeRange> resizeAction = shapes => _resizeLab.ResizeToSameHeightAndWidth(shapes);
 
             ModifySelectionAspectRatio();
             ExecuteResizeAction(selectedShapes, resizeAction);
@@ -218,6 +218,42 @@ namespace PowerPointLabs.ResizeLab
             {
                 _resizeLab.ChangeShapesAspectRatio(GetSelectedShapes(), IsAspectRatioLocked);
             }
+        }
+
+        #endregion
+
+        #region Event Handler: Symmetry
+
+        private void SymmetricLeftBtn_Click(object sender, RoutedEventArgs e)
+        {
+            var selectedShapes = GetSelectedShapes();
+            Action<PowerPoint.ShapeRange> resizeAction = shapes => _resizeLab.SymmetrizeLeft(shapes);
+
+            ExecuteResizeAction(selectedShapes, resizeAction);
+        }
+
+        private void SymmetricRightBtn_Click(object sender, RoutedEventArgs e)
+        {
+            var selectedShapes = GetSelectedShapes();
+            Action<PowerPoint.ShapeRange> resizeAction = shapes => _resizeLab.SymmetrizeRight(shapes);
+
+            ExecuteResizeAction(selectedShapes, resizeAction);
+        }
+
+        private void SymmetricTopBtn_Click(object sender, RoutedEventArgs e)
+        {
+            var selectedShapes = GetSelectedShapes();
+            Action<PowerPoint.ShapeRange> resizeAction = shapes => _resizeLab.SymmetrizeTop(shapes);
+
+            ExecuteResizeAction(selectedShapes, resizeAction);
+        }
+
+        private void SymmetricBottomBtn_Click(object sender, RoutedEventArgs e)
+        {
+            var selectedShapes = GetSelectedShapes();
+            Action<PowerPoint.ShapeRange> resizeAction = shapes => _resizeLab.SymmetrizeBottom(shapes);
+
+            ExecuteResizeAction(selectedShapes, resizeAction);
         }
 
         #endregion
@@ -338,6 +374,26 @@ namespace PowerPointLabs.ResizeLab
             Preview(selectedShapes, slideWidth, slideHeight, previewAction);
         }
 
+        private void SymmetricLeftBtn_MouseEnter(object sender, MouseEventArgs e)
+        {
+
+        }
+
+        private void SymmetricRightBtn_MouseEnter(object sender, MouseEventArgs e)
+        {
+
+        }
+
+        private void SymmetricTopBtn_MouseEnter(object sender, MouseEventArgs e)
+        {
+
+        }
+
+        private void SymmetricBottomBtn_MouseEnter(object sender, MouseEventArgs e)
+        {
+
+        }
+
         #endregion
 
         #region Helper Functions
@@ -359,52 +415,11 @@ namespace PowerPointLabs.ResizeLab
             _originalShapeProperties.Clear();
         }
 
-        #endregion
-
         private void Btn_MouseLeave(object sender, MouseEventArgs e)
         {
             Reset();
         }
 
-        private void SymmetricLeftBtn_Click(object sender, RoutedEventArgs e)
-        {
-
-        }
-
-        private void SymmetricLeftBtn_MouseEnter(object sender, MouseEventArgs e)
-        {
-
-        }
-
-        private void SymmetricRightBtn_MouseEnter(object sender, MouseEventArgs e)
-        {
-
-        }
-
-        private void SymmetricRightBtn_Click(object sender, RoutedEventArgs e)
-        {
-
-        }
-
-        private void SymmetricTopBtn_Click(object sender, RoutedEventArgs e)
-        {
-
-        }
-
-        private void SymmetricTopBtn_MouseEnter(object sender, MouseEventArgs e)
-        {
-
-        }
-
-        private void SymmetricBottomBtn_MouseEnter(object sender, MouseEventArgs e)
-        {
-
-        }
-
-        private void SymmetricBottomBtn_Click(object sender, RoutedEventArgs e)
-        {
-
-        }
-
+        #endregion
     }
 }
