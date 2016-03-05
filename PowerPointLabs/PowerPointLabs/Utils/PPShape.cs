@@ -200,6 +200,7 @@ namespace PowerPointLabs.Utils
         public void IncrementLeft(float value)
         {
             _shape.IncrementLeft(value);
+            UpdateLeft();
         }
 
         /// <summary>
@@ -209,6 +210,7 @@ namespace PowerPointLabs.Utils
         public void IncrementTop(float value)
         {
             _shape.IncrementTop(value);
+            UpdateTop();
         }
 
         /// <summary>
