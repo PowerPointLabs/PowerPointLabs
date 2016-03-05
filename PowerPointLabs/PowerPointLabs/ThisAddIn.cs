@@ -676,7 +676,7 @@ namespace PowerPointLabs
             if (!Directory.Exists(AppDataFolder))
                 Directory.CreateDirectory(AppDataFolder);
 
-            var fileName = DateTime.Now.ToString("yyyyMMdd") + AppLogName;
+            var fileName = DateTime.Now.ToString("yyyy-MM-dd") + AppLogName;
             var logPath = Path.Combine(AppDataFolder, fileName);
 
             Trace.AutoFlush = true;
