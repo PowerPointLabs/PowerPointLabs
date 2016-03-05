@@ -108,6 +108,17 @@ namespace PowerPointLabs.Utils
         }
 
         /// <summary>
+        /// Returns or sets the shape type for the specified Shape object,
+        /// which must represent an AutoShape other than a line, freeform drawing, or connector.
+        /// Read/write.
+        /// </summary>
+        public MsoAutoShapeType AutoShapeType
+        {
+            get { return _shape.AutoShapeType; }
+            set { _shape.AutoShapeType = value; }
+        }
+
+        /// <summary>
         /// Returns a point that represents the center of the shape.
         /// </summary>
         public PointF Center
