@@ -135,6 +135,14 @@ namespace PowerPointLabs.Utils
         }
 
         /// <summary>
+        /// Returns a 64-bit signed integer that identifies the PPshape. Read-only.
+        /// </summary>
+        public int Id
+        {
+            get { return _shape.Id; }
+        }
+
+        /// <summary>
         /// Return or set a single-precision floating-point number that represents the 
         /// distance from the left most point of the shape to the left edge of the slide.
         /// </summary>
