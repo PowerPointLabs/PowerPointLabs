@@ -128,21 +128,24 @@ namespace PowerPointLabs.Models
 
         private void CropSpotlightPictureToSlide(ref PowerPoint.Shape shapeToCrop)
         {
+            float scaleFactorWidth = PowerPointLabs.Utils.Graphics.GetScaleWidth(shapeToCrop);
+            float scaleFactorHeight = PowerPointLabs.Utils.Graphics.GetScaleHeight(shapeToCrop);
+
             if (shapeToCrop.Left < 0)
             {
-                shapeToCrop.PictureFormat.CropLeft += (0.0f - shapeToCrop.Left);
+                shapeToCrop.PictureFormat.CropLeft += ((0.0f - shapeToCrop.Left) / scaleFactorWidth);
             }
             if (shapeToCrop.Left + shapeToCrop.Width > PowerPointPresentation.Current.SlideWidth)
             {
-                shapeToCrop.PictureFormat.CropRight += (shapeToCrop.Left + shapeToCrop.Width - PowerPointPresentation.Current.SlideWidth);
+                shapeToCrop.PictureFormat.CropRight += ((shapeToCrop.Left + shapeToCrop.Width - PowerPointPresentation.Current.SlideWidth) / scaleFactorWidth);
             }
             if (shapeToCrop.Top < 0)
             {
-                shapeToCrop.PictureFormat.CropTop += (0.0f - shapeToCrop.Top);
+                shapeToCrop.PictureFormat.CropTop += ((0.0f - shapeToCrop.Top) / scaleFactorHeight);
             }
             if (shapeToCrop.Top + shapeToCrop.Height > PowerPointPresentation.Current.SlideHeight)
             {
-                shapeToCrop.PictureFormat.CropBottom += (shapeToCrop.Top + shapeToCrop.Height - PowerPointPresentation.Current.SlideHeight);
+                shapeToCrop.PictureFormat.CropBottom += ((shapeToCrop.Top + shapeToCrop.Height - PowerPointPresentation.Current.SlideHeight) / scaleFactorHeight);
             }
         }
 
@@ -196,6 +199,7 @@ namespace PowerPointLabs.Models
             float incrementHeight = (SoftEdgePadding * Spotlight.defaultSoftEdges) / spotlightPicture.Height;
 
             spotlightPicture.SoftEdge.Radius = Spotlight.defaultSoftEdges;
+            spotlightPicture.Shadow.Size = 0;
 
             spotlightPicture.Name = "SpotlightShape1";
         }
