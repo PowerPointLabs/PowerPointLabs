@@ -1198,6 +1198,10 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Resources\PositionsLab\PositionsLab.png" />
+    <Resource Include="Resources\ResizeLab\ResizeSymmetricTop.png" />
+    <Resource Include="Resources\ResizeLab\ResizeSymmetricRight.png" />
+    <Resource Include="Resources\ResizeLab\ResizeSymmetricLeft.png" />
+    <Resource Include="Resources\ResizeLab\ResizeSymmetricBottom.png" />
   </ItemGroup>
   <ItemGroup>
     <Resource Include="Resources\ResizeLab\ResizeLab.png" />
