@@ -48,6 +48,7 @@ namespace PowerPointLabs.PositionsLab
         //Variables for settings
         private AlignSettingsDialog _alignSettingsDialog;
         private DistributeSettingsDialog _distributeSettingsDialog;
+        private ReorderSettingsDialog _reorderSettingsDialog;
 
         public PositionsPaneWpf()
         {
@@ -771,6 +772,19 @@ namespace PowerPointLabs.PositionsLab
             else
             {
                 _distributeSettingsDialog.Activate();
+            }
+        }
+
+        private void ReorderSettingsButton_Click(object sender, RoutedEventArgs e)
+        {
+            if (_reorderSettingsDialog == null || !_reorderSettingsDialog.IsOpen)
+            {
+                _reorderSettingsDialog = new ReorderSettingsDialog();
+                _reorderSettingsDialog.Show();
+            }
+            else
+            {
+                _reorderSettingsDialog.Activate();
             }
         }
         #endregion

@@ -557,6 +557,9 @@
     <Compile Include="PositionsLab\PositionsPaneWPF.xaml.cs">
       <DependentUpon>PositionsPaneWPF.xaml</DependentUpon>
     </Compile>
+    <Compile Include="PositionsLab\ReorderSettingsDialog.xaml.cs">
+      <DependentUpon>ReorderSettingsDialog.xaml</DependentUpon>
+    </Compile>
     <Compile Include="PPMouseLegacy.cs" />
     <Compile Include="ResizeLab\ResizeLabMain.Symmetry.cs" />
     <Compile Include="ResizeLab\ResizeLabPaneWPF.xaml.InterfaceImpl.cs" />
@@ -1080,6 +1083,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="PositionsLab\PositionsPaneWPF.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="PositionsLab\ReorderSettingsDialog.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

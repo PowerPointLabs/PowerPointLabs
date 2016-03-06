@@ -28,7 +28,7 @@ namespace PowerPointLabs.PositionsLab
         private const string ErrorMessageFewerThanTwoSelection = TextCollection.PositionsLabText.ErrorFewerThanTwoSelection;
         private const string ErrorMessageUndefined = TextCollection.PositionsLabText.ErrorUndefined;
 
-        //For Grid
+        //For Distribute Grid
         public enum GridAlignment
         {
             AlignLeft,
@@ -42,9 +42,22 @@ namespace PowerPointLabs.PositionsLab
         public static float MarginLeft { get; private set; }
         public static float MarginRight { get; private set; }
 
+        //For Reorder Swap Reference
+        public enum SwapReference
+        {
+            Center,
+            Left,
+            Top,
+            Right,
+            Bottom
+        }
+
+        public static SwapReference SwapReferencePoint { get; set; }
+
         private static Dictionary<MsoAutoShapeType, float> shapeDefaultUpAngle;
         public static bool AlignUseSlideAsReference { get; private set; }
         public static bool DistributeUseSlideAsReference { get; private set; }
+        public static bool SwapByClickOrder { get; set; }
 
         #region API
 
