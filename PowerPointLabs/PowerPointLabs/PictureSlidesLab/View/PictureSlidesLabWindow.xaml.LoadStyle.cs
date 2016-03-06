@@ -383,11 +383,6 @@ namespace PowerPointLabs.PictureSlidesLab.View
             foreach (var propertyInfo in props)
             {
                 var valueInStr = shape.Tags[Service.Effect.Tag.ReloadPrefix + propertyInfo.Name];
-                if (string.IsNullOrEmpty(valueInStr))
-                {
-                    continue;
-                }
-
                 if (propertyInfo.PropertyType == typeof(string))
                 {
                     propertyInfo.SetValue(opt, valueInStr, null);

@@ -30,7 +30,7 @@ namespace PowerPointLabs.PictureSlidesLab.Service.StylesWorker
             }
             else
             {
-                designer.RecoverTextWrapping();
+                designer.RecoverTextWrapping(option.GetTextBoxPosition(), option.GetTextAlignment());
             }
 
             ApplyTextEffect(option, designer);
