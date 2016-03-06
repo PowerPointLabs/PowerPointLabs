@@ -407,6 +407,28 @@ namespace PowerPointLabs.Utils
             shape.Top = value - shape.Height;
         }
 
+        public static float GetScaleWidth(Shape shape)
+        {
+            float oldWidth = shape.Width;
+            shape.ScaleWidth(1, MsoTriState.msoCTrue);
+            float scaleFactorWidth = oldWidth / shape.Width;
+
+            shape.ScaleWidth(scaleFactorWidth, MsoTriState.msoCTrue);
+
+            return scaleFactorWidth;
+        }
+
+        public static float GetScaleHeight(Shape shape)
+        {
+            float oldHeight = shape.Height;
+            shape.ScaleHeight(1, MsoTriState.msoCTrue);
+            float scaleFactorHeight = oldHeight / shape.Height;
+
+            shape.ScaleHeight(scaleFactorHeight, MsoTriState.msoCTrue);
+
+            return scaleFactorHeight;
+        }
+
         // TODO: This could be an extension method of shape.
         /// <summary>
         /// anchorFraction = 0 means left side, anchorFraction = 1 means right side.
