@@ -274,154 +274,6 @@ namespace PowerPointLabs.PositionsLab
 
         #endregion
 
-        #region Snap
-        public static void SnapVertical(List<Shape> selectedShapes)
-        {
-            foreach (var s in selectedShapes)
-            {
-                SnapShapeVertical(s);
-            }
-        }
-
-        public static void SnapHorizontal(List<Shape> selectedShapes)
-        {
-            foreach (var s in selectedShapes)
-            {
-                SnapShapeHorizontal(s);
-            }
-        }
-
-        public static void SnapAway(List<Shape> shapes)
-        {
-            if (shapes.Count < 2)
-            {
-                throw new Exception(ErrorMessageFewerThanTwoSelection);
-            }
-
-            var refShapeCenter = Graphics.GetCenterPoint(shapes[0]);
-            var isAllSameDir = true;
-            var lastDir = -1;
-
-            for (var i = 1; i < shapes.Count; i++)
-            {
-                var shape = shapes[i];
-                var shapeCenter = Graphics.GetCenterPoint(shape);
-                var angle = (float)AngleBetweenTwoPoints(refShapeCenter, shapeCenter);
-
-                var dir = GetDirectionWrtRefShape(shape, angle);
-
-                if (i == 1)
-                {
-                    lastDir = dir;
-                }
-
-                if (!IsSameDirection(lastDir, dir))
-                {
-                    isAllSameDir = false;
-                    break;
-                }
-
-                //only maintain in one direction instead of dual direction
-                if (dir < Leftorright)
-                {
-                    lastDir = dir; 
-                }
-            }
-
-            if (!isAllSameDir || lastDir == None)
-            {
-                lastDir = 0;
-            }
-            else
-            {
-                lastDir++;
-            }
-
-            for (var i = 1; i < shapes.Count; i++)
-            {
-                var shape = shapes[i];
-                var shapeCenter = Graphics.GetCenterPoint(shape);
-                var angle = (float) AngleBetweenTwoPoints(refShapeCenter, shapeCenter);
-
-                float defaultUpAngle = 0;
-                var hasDefaultDirection = shapeDefaultUpAngle.TryGetValue(shape.AutoShapeType, out defaultUpAngle);
-
-                if (hasDefaultDirection)
-                {
-                    shape.Rotation = (defaultUpAngle + angle) + lastDir * 90;
-                }
-                else
-                {
-                    if (IsVertical(shape))
-                    {
-                        shape.Rotation = angle + lastDir * 90;
-                    }
-                    else
-                    {
-                        shape.Rotation = (angle - 90) + lastDir * 90;
-                    }
-                }
-            }
-        }
-
-        public static void SnapShapeVertical(Shape shape)
-        {
-            if (IsVertical(shape))
-            {
-                SnapTo0Or180(shape);
-            }
-            else
-            {
-                SnapTo90Or270(shape);
-            }
-        }
-
-        public static void SnapShapeHorizontal(Shape shape)
-        {
-            if (IsVertical(shape))
-            {
-                SnapTo90Or270(shape);
-            }
-            else
-            {
-                SnapTo0Or180(shape);
-            }
-        }
-
-        private static void SnapTo0Or180 (Shape shape)
-        {
-            var rotation = shape.Rotation;
-
-            if (rotation >= 90 && rotation < 270)
-            {
-                shape.Rotation = 180;
-            }
-            else
-            {
-                shape.Rotation = 0;
-            }
-        }
-
-        private static void SnapTo90Or270(Shape shape)
-        {
-            var rotation = shape.Rotation;
-
-            if (rotation >= 0 && rotation < 180)
-            {
-                shape.Rotation = 90;
-            }
-            else
-            {
-                shape.Rotation = 270;
-            }
-        }
-
-        private static bool IsVertical(Shape shape)
-        {
-            return shape.Height > shape.Width;
-        }
-        #endregion
-
         #region Adjoin
         public static void AdjoinHorizontal(List<PPShape> selectedShapes)
         {
@@ -490,38 +342,6 @@ namespace PowerPointLabs.PositionsLab
                 neighbour.IncrementTop(lowest - neighbour.Top);
 
                 lowest = lowest + neighbour.AbsoluteHeight;
-            }
-        }
-        #endregion
-
-        #region Swap
-        public static void Swap(List<PPShape> selectedShapes)
-        {
-            if (selectedShapes.Count < 2)
-            {
-                throw new Exception(ErrorMessageFewerThanTwoSelection);
-            }
-
-            var sortedShapes = Graphics.SortShapesByLeft(selectedShapes);
-            var firstPos = sortedShapes[0].Center;
-
-            for (var i = 0; i < sortedShapes.Count; i++)
-            {
-                var currentShape = sortedShapes[i];
-                if (i < sortedShapes.Count - 1)
-                {
-                    var currentPos = currentShape.Center;
-                    var nextPos = sortedShapes[i + 1].Center;
-
-                    currentShape.IncrementLeft(nextPos.X - currentPos.X);
-                    currentShape.IncrementTop(nextPos.Y - currentPos.Y);
-                }
-                else
-                {
-                    var currentPos = currentShape.Center;
-                    currentShape.IncrementLeft(firstPos.X - currentPos.X);
-                    currentShape.IncrementTop(firstPos.Y - currentPos.Y);
-                }
             }
         }
         #endregion
@@ -842,6 +662,186 @@ namespace PowerPointLabs.PositionsLab
                 posX += GetSpaceBetweenShapes(augmentedShapeIndex % rowLength, augmentedShapeIndex % rowLength + 1, rowDifferences, MarginLeft, MarginRight);
                 augmentedShapeIndex++;
             }
+        }
+        #endregion
+
+        #region Swap
+        public static void Swap(List<PPShape> selectedShapes)
+        {
+            if (selectedShapes.Count < 2)
+            {
+                throw new Exception(ErrorMessageFewerThanTwoSelection);
+            }
+
+            var sortedShapes = Graphics.SortShapesByLeft(selectedShapes);
+            var firstPos = sortedShapes[0].Center;
+
+            for (var i = 0; i < sortedShapes.Count; i++)
+            {
+                var currentShape = sortedShapes[i];
+                if (i < sortedShapes.Count - 1)
+                {
+                    var currentPos = currentShape.Center;
+                    var nextPos = sortedShapes[i + 1].Center;
+
+                    currentShape.IncrementLeft(nextPos.X - currentPos.X);
+                    currentShape.IncrementTop(nextPos.Y - currentPos.Y);
+                }
+                else
+                {
+                    var currentPos = currentShape.Center;
+                    currentShape.IncrementLeft(firstPos.X - currentPos.X);
+                    currentShape.IncrementTop(firstPos.Y - currentPos.Y);
+                }
+            }
+        }
+        #endregion
+
+        #region Snap
+        public static void SnapVertical(List<Shape> selectedShapes)
+        {
+            foreach (var s in selectedShapes)
+            {
+                SnapShapeVertical(s);
+            }
+        }
+
+        public static void SnapHorizontal(List<Shape> selectedShapes)
+        {
+            foreach (var s in selectedShapes)
+            {
+                SnapShapeHorizontal(s);
+            }
+        }
+
+        public static void SnapAway(List<Shape> shapes)
+        {
+            if (shapes.Count < 2)
+            {
+                throw new Exception(ErrorMessageFewerThanTwoSelection);
+            }
+
+            var refShapeCenter = Graphics.GetCenterPoint(shapes[0]);
+            var isAllSameDir = true;
+            var lastDir = -1;
+
+            for (var i = 1; i < shapes.Count; i++)
+            {
+                var shape = shapes[i];
+                var shapeCenter = Graphics.GetCenterPoint(shape);
+                var angle = (float)AngleBetweenTwoPoints(refShapeCenter, shapeCenter);
+
+                var dir = GetDirectionWrtRefShape(shape, angle);
+
+                if (i == 1)
+                {
+                    lastDir = dir;
+                }
+
+                if (!IsSameDirection(lastDir, dir))
+                {
+                    isAllSameDir = false;
+                    break;
+                }
+
+                //only maintain in one direction instead of dual direction
+                if (dir < Leftorright)
+                {
+                    lastDir = dir; 
+                }
+            }
+
+            if (!isAllSameDir || lastDir == None)
+            {
+                lastDir = 0;
+            }
+            else
+            {
+                lastDir++;
+            }
+
+            for (var i = 1; i < shapes.Count; i++)
+            {
+                var shape = shapes[i];
+                var shapeCenter = Graphics.GetCenterPoint(shape);
+                var angle = (float) AngleBetweenTwoPoints(refShapeCenter, shapeCenter);
+
+                float defaultUpAngle = 0;
+                var hasDefaultDirection = shapeDefaultUpAngle.TryGetValue(shape.AutoShapeType, out defaultUpAngle);
+
+                if (hasDefaultDirection)
+                {
+                    shape.Rotation = (defaultUpAngle + angle) + lastDir * 90;
+                }
+                else
+                {
+                    if (IsVertical(shape))
+                    {
+                        shape.Rotation = angle + lastDir * 90;
+                    }
+                    else
+                    {
+                        shape.Rotation = (angle - 90) + lastDir * 90;
+                    }
+                }
+            }
+        }
+
+        public static void SnapShapeVertical(Shape shape)
+        {
+            if (IsVertical(shape))
+            {
+                SnapTo0Or180(shape);
+            }
+            else
+            {
+                SnapTo90Or270(shape);
+            }
+        }
+
+        public static void SnapShapeHorizontal(Shape shape)
+        {
+            if (IsVertical(shape))
+            {
+                SnapTo90Or270(shape);
+            }
+            else
+            {
+                SnapTo0Or180(shape);
+            }
+        }
+
+        private static void SnapTo0Or180 (Shape shape)
+        {
+            var rotation = shape.Rotation;
+
+            if (rotation >= 90 && rotation < 270)
+            {
+                shape.Rotation = 180;
+            }
+            else
+            {
+                shape.Rotation = 0;
+            }
+        }
+
+        private static void SnapTo90Or270(Shape shape)
+        {
+            var rotation = shape.Rotation;
+
+            if (rotation >= 0 && rotation < 180)
+            {
+                shape.Rotation = 90;
+            }
+            else
+            {
+                shape.Rotation = 270;
+            }
+        }
+
+        private static bool IsVertical(Shape shape)
+        {
+            return shape.Height > shape.Width;
         }
         #endregion
 

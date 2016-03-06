@@ -330,66 +330,7 @@ namespace PowerPointLabs.PositionsLab
         }
         #endregion
 
-        #region Snap
-        private void SnapHorizontalButton_Click(object sender, RoutedEventArgs e)
-        {
-            if (this.GetCurrentSelection().Type != PowerPoint.PpSelectionType.ppSelectionShapes)
-            {
-                ShowErrorMessageBox(ErrorMessageNoSelection);
-                return;
-            }
-
-            try
-            {
-                var selectedShapes = ConvertShapeRangeToList_Legacy(this.GetCurrentSelection().ShapeRange, 1);
-                PositionsLabMain.SnapHorizontal(selectedShapes);
-            }
-            catch (Exception ex)
-            {
-                ShowErrorMessageBox(ex.Message, ex);
-            }
-        }
-
-        private void SnapVerticalButton_Click(object sender, RoutedEventArgs e)
-        {
-            if (this.GetCurrentSelection().Type != PowerPoint.PpSelectionType.ppSelectionShapes)
-            {
-                ShowErrorMessageBox(ErrorMessageNoSelection);
-                return;
-            }
-
-            try
-            {
-                var selectedShapes = ConvertShapeRangeToList_Legacy(this.GetCurrentSelection().ShapeRange, 1);
-                PositionsLabMain.SnapVertical(selectedShapes);
-            }
-            catch (Exception ex)
-            {
-                ShowErrorMessageBox(ex.Message, ex);
-            }
-        }
-
-        private void SnapAwayButton_Click(object sender, RoutedEventArgs e)
-        {
-            if (this.GetCurrentSelection().Type != PowerPoint.PpSelectionType.ppSelectionShapes)
-            {
-                ShowErrorMessageBox(ErrorMessageNoSelection);
-                return;
-            }
-
-            try
-            {
-                var selectedShapes = ConvertShapeRangeToList_Legacy(this.GetCurrentSelection().ShapeRange, 1);
-                PositionsLabMain.SnapAway(selectedShapes);
-            }
-            catch (Exception ex)
-            {
-                ShowErrorMessageBox(ex.Message, ex);
-            }
-        }
-        #endregion
-
-        #region Swap
+        #region Reorder
         private void SwapPositionsButton_Click(object sender, RoutedEventArgs e)
         {
             if (this.GetCurrentSelection().Type != PowerPoint.PpSelectionType.ppSelectionShapes)
@@ -632,6 +573,65 @@ namespace PowerPointLabs.PositionsLab
             }
         }
 
+        #endregion
+
+        #region Snap
+        private void SnapHorizontalButton_Click(object sender, RoutedEventArgs e)
+        {
+            if (this.GetCurrentSelection().Type != PowerPoint.PpSelectionType.ppSelectionShapes)
+            {
+                ShowErrorMessageBox(ErrorMessageNoSelection);
+                return;
+            }
+
+            try
+            {
+                var selectedShapes = ConvertShapeRangeToList_Legacy(this.GetCurrentSelection().ShapeRange, 1);
+                PositionsLabMain.SnapHorizontal(selectedShapes);
+            }
+            catch (Exception ex)
+            {
+                ShowErrorMessageBox(ex.Message, ex);
+            }
+        }
+
+        private void SnapVerticalButton_Click(object sender, RoutedEventArgs e)
+        {
+            if (this.GetCurrentSelection().Type != PowerPoint.PpSelectionType.ppSelectionShapes)
+            {
+                ShowErrorMessageBox(ErrorMessageNoSelection);
+                return;
+            }
+
+            try
+            {
+                var selectedShapes = ConvertShapeRangeToList_Legacy(this.GetCurrentSelection().ShapeRange, 1);
+                PositionsLabMain.SnapVertical(selectedShapes);
+            }
+            catch (Exception ex)
+            {
+                ShowErrorMessageBox(ex.Message, ex);
+            }
+        }
+
+        private void SnapAwayButton_Click(object sender, RoutedEventArgs e)
+        {
+            if (this.GetCurrentSelection().Type != PowerPoint.PpSelectionType.ppSelectionShapes)
+            {
+                ShowErrorMessageBox(ErrorMessageNoSelection);
+                return;
+            }
+
+            try
+            {
+                var selectedShapes = ConvertShapeRangeToList_Legacy(this.GetCurrentSelection().ShapeRange, 1);
+                PositionsLabMain.SnapAway(selectedShapes);
+            }
+            catch (Exception ex)
+            {
+                ShowErrorMessageBox(ex.Message, ex);
+            }
+        }
         #endregion
 
         #region Helper

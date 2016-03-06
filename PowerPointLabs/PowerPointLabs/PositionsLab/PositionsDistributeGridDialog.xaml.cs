@@ -1,5 +1,4 @@
-﻿using MahApps.Metro.Controls;
-using PowerPointLabs.Utils;
+﻿using PowerPointLabs.Utils;
 using System;
 using System.Collections.Generic;
 using System.Windows;
