@@ -41,13 +41,11 @@ namespace PowerPointLabs.PictureSlidesLab.ViewModel
             BindColorToVariant(color);
             if (View.IsDisplayDefaultPicture())
             {
-                View.EnableUpdatingPreviewImages();
                 UpdatePreviewImages(
                     View.CreateDefaultPictureItem(),
                     contentSlide,
                     slideWidth,
                     slideHeight);
-                View.DisableUpdatingPreviewImages();
                 BindStyleToColorPanel();
             }
             else

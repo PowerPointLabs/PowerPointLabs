@@ -112,14 +112,12 @@ namespace PowerPointLabs.PictureSlidesLab.View
             return _isDisplayDefaultPicture;
         }
 
-        public void EnableUpdatingPreviewImages()
-        {
-            _isDisplayDefaultPicture = false;
-        }
-
-        public void DisableUpdatingPreviewImages()
+        public void EnterDefaultPictureMode()
         {
             _isDisplayDefaultPicture = true;
+            _isEnableUpdatePreview = false;
+            ImageSelectionListBox.SelectedIndex = -1;
+            _isEnableUpdatePreview = true;
         }
     }
 }

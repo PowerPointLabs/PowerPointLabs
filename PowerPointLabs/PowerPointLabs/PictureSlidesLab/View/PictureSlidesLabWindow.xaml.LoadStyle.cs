@@ -158,13 +158,10 @@ namespace PowerPointLabs.PictureSlidesLab.View
             // if no original shape, show default picture
             if (originalShapeList.Count == 0 && isLoadingWithDefaultPicture)
             {
-                DisableUpdatingPreviewImages();
                 // De-select the picture
-                ImageSelectionListBox.SelectedIndex = -1;
-                EnableUpdatingPreviewImages();
-
-                UpdatePreviewImages(CreateDefaultPictureItem(), isEnteringPictureVariation: true);
                 EnterDefaultPictureMode();
+
+                UpdatePreviewImages(isEnteringPictureVariation: true);
                 UpdatePreviewStageControls();
                 isSuccessfullyLoaded = true;
             }

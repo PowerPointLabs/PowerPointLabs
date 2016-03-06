@@ -593,8 +593,7 @@ namespace PowerPointLabs.PictureSlidesLab.ViewModel
                 else // target picture is the default picture
                 {
                     // enter default picture mode
-                    View.DisableUpdatingPreviewImages();
-                    ImageSelectionListSelectedId.Number = -1;
+                    View.EnterDefaultPictureMode();
                     source = View.CreateDefaultPictureItem();
                 }
             }

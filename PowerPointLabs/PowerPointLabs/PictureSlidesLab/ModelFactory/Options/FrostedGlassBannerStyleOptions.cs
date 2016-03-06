@@ -29,6 +29,7 @@ namespace PowerPointLabs.PictureSlidesLab.ModelFactory.Options
             {
                 StyleName = TextCollection.PictureSlidesLabText.StyleNameFrostedGlassBanner,
                 IsUseFrostedGlassBannerStyle = true,
+                FontFamily = "Segoe UI",
                 TextBoxPosition = 4
             };
         }

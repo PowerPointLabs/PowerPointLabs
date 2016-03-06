@@ -29,8 +29,6 @@ namespace PowerPointLabs.PictureSlidesLab.View.Interface
 
         ImageItem CreateDefaultPictureItem();
 
-        void EnableUpdatingPreviewImages();
-
-        void DisableUpdatingPreviewImages();
+        void EnterDefaultPictureMode();
     }
 }
