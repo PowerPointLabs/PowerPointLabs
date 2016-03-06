@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Threading.Tasks;
 using System.Windows.Media;
 using MahApps.Metro.Controls.Dialogs;
 using PowerPointLabs.ActionFramework.Common.Log;
@@ -43,16 +44,9 @@ namespace PowerPointLabs.PictureSlidesLab.View
             }
         }
 
-        public void ShowInfoMessageBox(string content)
+        public Task<MessageDialogResult> ShowInfoMessageBox(string content, MessageDialogStyle dialogStyle = MessageDialogStyle.Affirmative)
         {
-            try
-            {
-                this.ShowMessageAsync("Info", content);
-            }
-            catch (Exception e)
-            {
-                Logger.LogException(e, "ShowInfoMessageBox");
-            }
+            return this.ShowMessageAsync("Info", content, dialogStyle);
         }
 
         public void ShowSuccessfullyAppliedDialog()

@@ -18,7 +18,8 @@ namespace PowerPointLabs.PictureSlidesLab.Service.StylesWorker
             if ((option.IsUseBannerStyle 
                 || option.IsUseFrostedGlassBannerStyle)
                     && (option.GetTextBoxPosition() == Position.Left
-                        || option.GetTextBoxPosition() == Position.Centre
+                        || (option.GetTextBoxPosition() == Position.Centre 
+                            && option.GetBannerDirection() != BannerDirection.Horizontal)
                         || option.GetTextBoxPosition() == Position.Right))
             {
                 designer.ApplyTextWrapping();

@@ -1,5 +1,7 @@
 ﻿using System;
+using System.Threading.Tasks;
 using System.Windows.Media;
+using MahApps.Metro.Controls.Dialogs;
 using PowerPointLabs.PictureSlidesLab.Model;
 using PowerPointLabs.PictureSlidesLab.Thread.Interface;
 
@@ -11,7 +13,7 @@ namespace PowerPointLabs.PictureSlidesLab.View.Interface
 
         void ShowErrorMessageBox(string content, Exception e);
 
-        void ShowInfoMessageBox(string content);
+        Task<MessageDialogResult> ShowInfoMessageBox(string content, MessageDialogStyle dialogStyle);
 
         void ShowSuccessfullyAppliedDialog();
 

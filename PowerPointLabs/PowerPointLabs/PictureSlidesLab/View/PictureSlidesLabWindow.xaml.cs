@@ -76,6 +76,7 @@ namespace PowerPointLabs.PictureSlidesLab.View
             // start loading process
             PictureSlidesLabGridLoadingOverlay.Visibility = Visibility.Visible;
             IsOpen = true;
+            SettingsButtonIcon.Source = ImageUtil.BitmapToImageSource(Properties.Resources.PslSettings);
             Logger.Log("PSL begins");
 
             SetTimeout(Init, 850);
@@ -650,7 +651,15 @@ namespace PowerPointLabs.PictureSlidesLab.View
 
         private void MenuItemDeleteAllImages_OnClick(object sender, RoutedEventArgs e)
         {
-            DeleteAllImage();
+            ShowInfoMessageBox(TextCollection.PictureSlidesLabText.InfoDeleteAllImage, 
+                MessageDialogStyle.AffirmativeAndNegative)
+                .ContinueWith(task =>
+                {
+                    if (task.Result == MessageDialogResult.Affirmative)
+                    {
+                        Dispatcher.BeginInvoke(new Action(DeleteAllImage));
+                    }
+                });
         }
 
         private void MenuItemAdjustImage_OnClick(object sender, RoutedEventArgs e)

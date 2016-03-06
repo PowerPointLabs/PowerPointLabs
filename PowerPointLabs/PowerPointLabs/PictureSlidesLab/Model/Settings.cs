@@ -29,7 +29,7 @@ namespace PowerPointLabs.PictureSlidesLab.Model
 
         private int _defaultAspectWhenCustomize;
 
-        [DefaultValue(0)]
+        [DefaultValue(1)]
         public int DefaultAspectWhenCustomize
         {
             get
