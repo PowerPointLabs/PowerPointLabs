@@ -77,6 +77,7 @@ namespace PowerPointLabs.PictureSlidesLab.View
             PictureSlidesLabGridLoadingOverlay.Visibility = Visibility.Visible;
             IsOpen = true;
             SettingsButtonIcon.Source = ImageUtil.BitmapToImageSource(Properties.Resources.PslSettings);
+            PictureAspectRefreshButtonIcon.Source = ImageUtil.BitmapToImageSource(Properties.Resources.PslRefresh);
             Logger.Log("PSL begins");
 
             SetTimeout(Init, 850);
@@ -844,6 +845,12 @@ namespace PowerPointLabs.PictureSlidesLab.View
                 Logger.Log("Setting flyout is closed");
                 SetTimeout(() => { UpdatePreviewImages(); }, 500);
             }
+        }
+
+        private void PictureAspectRefreshButton_OnClick(object sender, RoutedEventArgs e)
+        {
+            ViewModel.RefreshLast8Pictures();
+            UpdatePreviewImages();
         }
 
         #endregion

@@ -240,6 +240,7 @@ namespace PowerPointLabs.PictureSlidesLab.ViewModel
             try
             {
                 Logger.Log("Add local picture begins");
+                var isToSelectPicture = ImageSelectionList.Count == 1;
                 foreach (var filename in filenames)
                 {
                     VerifyIsProperImage(filename);
@@ -260,6 +261,10 @@ namespace PowerPointLabs.PictureSlidesLab.ViewModel
                     UpdatePreviewImages(
                         ImageSelectionListSelectedItem.ImageItem ?? View.CreateDefaultPictureItem(),
                         contentSlide, slideWidth, slideHeight);
+                }
+                if (isToSelectPicture)
+                {
+                    ImageSelectionListSelectedId.Number = 1;
                 }
                 Logger.Log("Add local picture done");
             }
@@ -758,6 +763,12 @@ namespace PowerPointLabs.PictureSlidesLab.ViewModel
                     _8PicturesInPictureVariation[i] = View.CreateDefaultPictureItem();
                 }
             }
+        }
+
+        public void RefreshLast8Pictures()
+        {
+            var selectedIdOfVariationList = Math.Max(StylesVariationListSelectedId.Number, 0);
+            _8PicturesInPictureVariation = GetLast8Pictures(selectedIdOfVariationList);
         }
 
         private List<ImageItem> GetLast8Pictures(int selectedIdOfVariationList)
