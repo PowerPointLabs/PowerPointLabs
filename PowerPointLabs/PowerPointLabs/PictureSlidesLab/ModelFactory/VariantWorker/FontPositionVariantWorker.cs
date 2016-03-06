@@ -24,7 +24,7 @@ namespace PowerPointLabs.PictureSlidesLab.ModelFactory.VariantWorker
                     {"IsUseTextFormat", true},
                     {"TextBoxPosition", 5},
                     {"TextBoxAlignment", 0},
-                    {"BannerDirection", 1}
+                    {"BannerDirection", 0}
                 }),
                 new StyleVariant(new Dictionary<string, object>
                 {
@@ -56,7 +56,7 @@ namespace PowerPointLabs.PictureSlidesLab.ModelFactory.VariantWorker
                     {"IsUseTextFormat", true},
                     {"TextBoxPosition", 5},
                     {"TextBoxAlignment", 1},
-                    {"BannerDirection", 0}
+                    {"BannerDirection", 1}
                 }),
                 new StyleVariant(new Dictionary<string, object>
                 {
