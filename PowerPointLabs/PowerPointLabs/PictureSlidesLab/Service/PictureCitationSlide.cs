@@ -14,7 +14,7 @@ namespace PowerPointLabs.PictureSlidesLab.Service
     class PictureCitationSlide : PowerPointSlide
     {
         public const string PictureCitationSlideName = "PPTLabsPictureCitationSlide";
-        public const string PictureCitationSlideTitle = "Picture Citations";
+        public const string PictureCitationSlideTitle = "Picture Sources";
 
         private List<PowerPointSlide> AllSlides { get; set; }
 
@@ -57,7 +57,7 @@ namespace PowerPointLabs.PictureSlidesLab.Service
             }
 
             DeleteShapesWithPrefix(PptLabsIndicatorShapeName);
-            AddPowerPointLabsIndicator();
+            _slide.SlideShowTransition.Hidden = MsoTriState.msoTrue;
         }
 
         public static bool IsCitationSlide(PowerPointSlide slide)
@@ -80,7 +80,7 @@ namespace PowerPointLabs.PictureSlidesLab.Service
                     var citation = match.Value.Replace("[[", "").Replace("]]\n", "");
                     if (!string.IsNullOrEmpty(citation))
                     {
-                        strBuilder.Append("P" + slideIndex + ": " + citation + "\n");
+                        strBuilder.Append("Slide" + slideIndex + ": " + citation + "\n");
                         isAnyCitation = true;
                     }
                     slideIndex++;

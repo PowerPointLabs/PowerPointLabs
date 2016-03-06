@@ -828,6 +828,7 @@ namespace PowerPointLabs.PictureSlidesLab.View
                 var slide = presentation.Presentation.Slides.Add(presentation.SlideCount + 1, PpSlideLayout.ppLayoutText);
                 ViewModel.AddPictureCitationSlide(slide, presentation.Slides);
             }
+            presentation.AddAckSlide();
             ShowInfoMessageBox(TextCollection.PictureSlidesLabText.InfoAddPictureCitationSlide);
         }
 
