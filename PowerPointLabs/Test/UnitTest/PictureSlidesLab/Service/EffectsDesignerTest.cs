@@ -153,7 +153,7 @@ namespace Test.UnitTest.PictureSlidesLab.Service
         [TestCategory("UT")]
         public void TestTextBoxEffect()
         {
-            _designer.ApplyTextboxEffect("#000000", 35);
+            _designer.ApplyTextboxEffect("#000000", 35, 0);
             PpOperations.SelectSlide(1);
             var shapeRange = PpOperations.SelectShapesByPrefix(
                 EffectsDesigner.ShapeNamePrefix + "_" + EffectName.TextBox);

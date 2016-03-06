@@ -18,7 +18,6 @@ namespace PowerPointLabs.PictureSlidesLab.ModelFactory.Options
                 option.FontFamily = "Segoe UI";
                 option.TextBoxPosition = 4; // left
             }
-            options[7].FrostedGlassBannerTransparency = 100;
             return UpdateStyleName(
                 options,
                 TextCollection.PictureSlidesLabText.StyleNameFrostedGlassBanner);

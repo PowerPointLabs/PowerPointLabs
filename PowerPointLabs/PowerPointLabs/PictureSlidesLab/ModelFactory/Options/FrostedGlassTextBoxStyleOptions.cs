@@ -17,7 +17,6 @@ namespace PowerPointLabs.PictureSlidesLab.ModelFactory.Options
                 option.IsUseFrostedGlassTextBoxStyle = true;
                 option.FontFamily = "Segoe UI";
             }
-            options[7].FrostedGlassTextBoxTransparency = 100;
             return UpdateStyleName(
                 options,
                 TextCollection.PictureSlidesLabText.StyleNameFrostedGlassTextBox);
