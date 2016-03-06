@@ -13,7 +13,13 @@ namespace PowerPointLabs.PictureSlidesLab.Service.StylesWorker
     {
         public IList<Shape> Execute(StyleOption option, EffectsDesigner designer, ImageItem source, Shape imageShape, Settings settings)
         {
-            designer.ApplyPseudoTextWhenNoTextShapes();
+            if (option.StyleName != TextCollection.PictureSlidesLabText.StyleNameDirectText
+                && option.StyleName != TextCollection.PictureSlidesLabText.StyleNameBlur
+                && option.StyleName != TextCollection.PictureSlidesLabText.StyleNameSpecialEffect
+                && option.StyleName != TextCollection.PictureSlidesLabText.StyleNameOverlay)
+            {
+                designer.ApplyPseudoTextWhenNoTextShapes();
+            }
 
             if ((option.IsUseBannerStyle 
                 || option.IsUseFrostedGlassBannerStyle)
