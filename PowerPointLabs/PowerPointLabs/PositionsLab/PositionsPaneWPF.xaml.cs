@@ -8,7 +8,7 @@ using Office = Microsoft.Office.Core;
 using PowerPointLabs.ActionFramework.Common.Log;
 using PowerPointLabs.Utils;
 using PowerPointLabs.ActionFramework.Common.Extension;
-using System.Diagnostics;
+using Graphics = PowerPointLabs.Utils.Graphics;
 
 namespace PowerPointLabs.PositionsLab
 {
@@ -341,7 +341,7 @@ namespace PowerPointLabs.PositionsLab
 
             try
             {
-                var selectedShapes = ConvertShapeRangeToList(this.GetCurrentSelection().ShapeRange, 1);
+                var selectedShapes = ConvertShapeRangeToList_Legacy(this.GetCurrentSelection().ShapeRange, 1);
                 PositionsLabMain.SnapHorizontal(selectedShapes);
             }
             catch (Exception ex)
@@ -360,7 +360,7 @@ namespace PowerPointLabs.PositionsLab
 
             try
             {
-                var selectedShapes = ConvertShapeRangeToList(this.GetCurrentSelection().ShapeRange, 1);
+                var selectedShapes = ConvertShapeRangeToList_Legacy(this.GetCurrentSelection().ShapeRange, 1);
                 PositionsLabMain.SnapVertical(selectedShapes);
             }
             catch (Exception ex)
@@ -379,7 +379,7 @@ namespace PowerPointLabs.PositionsLab
 
             try
             {
-                var selectedShapes = ConvertShapeRangeToList(this.GetCurrentSelection().ShapeRange, 1);
+                var selectedShapes = ConvertShapeRangeToList_Legacy(this.GetCurrentSelection().ShapeRange, 1);
                 PositionsLabMain.SnapAway(selectedShapes);
             }
             catch (Exception ex)
@@ -439,7 +439,7 @@ namespace PowerPointLabs.PositionsLab
             var currentSlide = this.GetCurrentSlide();
 
             _refPoint = selectedShapes[1];
-            _shapesToBeRotated = ConvertShapeRangeToList(selectedShapes, 2);
+            _shapesToBeRotated = ConvertShapeRangeToList_Legacy(selectedShapes, 2);
             _allShapesInSlide = ConvertShapesToList(currentSlide.Shapes);
 
             _dispatcherTimer.Tick += RotationHandler;
@@ -693,7 +693,19 @@ namespace PowerPointLabs.PositionsLab
             return aShape;
         }
 
-        private List<Shape> ConvertShapeRangeToList (PowerPoint.ShapeRange range, int index)
+        private List<PPShape> ConvertShapeRangeToList (PowerPoint.ShapeRange range, int index)
+        {
+            var shapes = new List<PPShape>();
+
+            for (var i = index; i <= range.Count; i++)
+            {
+                shapes.Add(new PPShape(range[i]));
+            }
+
+            return shapes;
+        }
+
+        private List<Shape> ConvertShapeRangeToList_Legacy(PowerPoint.ShapeRange range, int index)
         {
             var shapes = new List<Shape>();
 

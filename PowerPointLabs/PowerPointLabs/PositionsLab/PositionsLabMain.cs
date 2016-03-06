@@ -110,15 +110,13 @@ namespace PowerPointLabs.PositionsLab
         #endregion
 
         #region Align
-        public static void AlignLeft(List<Shape> selectedShapes)
+        public static void AlignLeft(List<PPShape> selectedShapes)
         {
             if (AlignUseSlideAsReference)
             {
                 foreach (var s in selectedShapes)
                 {
-                    var allPointsOfShape = Graphics.GetRealCoordinates(s);
-                    var leftMost = Graphics.LeftMostPoint(allPointsOfShape);
-                    s.IncrementLeft(-leftMost.X);
+                    s.IncrementLeft(-s.Left);
                 }
             }
             else
@@ -129,29 +127,22 @@ namespace PowerPointLabs.PositionsLab
                 }
 
                 var refShape = selectedShapes[0];
-                var allPointsOfRef = Graphics.GetRealCoordinates(refShape);
-                var leftMostRef = Graphics.LeftMostPoint(allPointsOfRef);
 
                 for (var i = 1; i < selectedShapes.Count; i++)
                 {
                     var s = selectedShapes[i];
-                    var allPoints = Graphics.GetRealCoordinates(s);
-                    var leftMost = Graphics.LeftMostPoint(allPoints);
-                    s.IncrementLeft(leftMostRef.X - leftMost.X);
+                    s.IncrementLeft(refShape.Left - s.Left);
                 }
             }
         }
 
-        public static void AlignRight(List<Shape> selectedShapes, float slideWidth)
+        public static void AlignRight(List<PPShape> selectedShapes, float slideWidth)
         {
             if (AlignUseSlideAsReference)
             {
                 foreach (var s in selectedShapes)
                 {
-                    var allPointsOfShape = Graphics.GetRealCoordinates(s);
-                    var leftMost = Graphics.LeftMostPoint(allPointsOfShape);
-                    var shapeWidth = Graphics.RealWidth(allPointsOfShape);
-                    s.IncrementLeft(slideWidth - leftMost.X - shapeWidth);
+                    s.IncrementLeft(slideWidth - s.Left - s.AbsoluteWidth);
                 }
             }
             else
@@ -162,28 +153,24 @@ namespace PowerPointLabs.PositionsLab
                 }
 
                 var refShape = selectedShapes[0];
-                var allPointsOfRef = Graphics.GetRealCoordinates(refShape);
-                var rightMostRef = Graphics.RightMostPoint(allPointsOfRef);
+                var rightMostRefPoint = refShape.Left + refShape.AbsoluteWidth;
 
                 for (var i = 1; i < selectedShapes.Count; i++)
                 {
                     var s = selectedShapes[i];
-                    var allPoints = Graphics.GetRealCoordinates(s);
-                    var rightMost = Graphics.RightMostPoint(allPoints);
-                    s.IncrementLeft(rightMostRef.X - rightMost.X);
+                    var rightMostPoint = s.Left + s.AbsoluteWidth;
+                    s.IncrementLeft(rightMostRefPoint - rightMostPoint);
                 }
             }
         }
 
-        public static void AlignTop(List<Shape> selectedShapes)
+        public static void AlignTop(List<PPShape> selectedShapes)
         {
             if (AlignUseSlideAsReference)
             {
                 foreach (var s in selectedShapes)
                 {
-                    var allPointsOfShape = Graphics.GetRealCoordinates(s);
-                    var topMost = Graphics.TopMostPoint(allPointsOfShape);
-                    s.IncrementTop(-topMost.Y);
+                    s.IncrementTop(-s.Top);
                 }
             }
             else
@@ -194,29 +181,22 @@ namespace PowerPointLabs.PositionsLab
                 }
 
                 var refShape = selectedShapes[0];
-                var allPointsOfRef = Graphics.GetRealCoordinates(refShape);
-                var topMostRef = Graphics.TopMostPoint(allPointsOfRef);
 
                 for (var i = 1; i < selectedShapes.Count; i++)
                 {
                     var s = selectedShapes[i];
-                    var allPoints = Graphics.GetRealCoordinates(s);
-                    var topMost = Graphics.TopMostPoint(allPoints);
-                    s.IncrementTop(topMostRef.Y - topMost.Y);
+                    s.IncrementTop(refShape.Top - s.Top);
                 }
             }
         }
 
-        public static void AlignBottom(List<Shape> selectedShapes, float slideHeight)
+        public static void AlignBottom(List<PPShape> selectedShapes, float slideHeight)
         {
             if (AlignUseSlideAsReference)
             {
                 foreach (var s in selectedShapes)
                 {
-                    var allPointsOfShape = Graphics.GetRealCoordinates(s);
-                    var topMost = Graphics.TopMostPoint(allPointsOfShape);
-                    var shapeHeight = Graphics.RealHeight(allPointsOfShape);
-                    s.IncrementTop(slideHeight - topMost.Y - shapeHeight);
+                    s.IncrementTop(slideHeight - s.Top - s.AbsoluteHeight);
                 }
             }
             else
@@ -227,29 +207,24 @@ namespace PowerPointLabs.PositionsLab
                 }
 
                 var refShape = selectedShapes[0];
-                var allPointsOfRef = Graphics.GetRealCoordinates(refShape);
-                var lowestRef = Graphics.BottomMostPoint(allPointsOfRef);
+                var lowestRefPoint = refShape.Top + refShape.AbsoluteHeight;
 
                 for (var i = 1; i < selectedShapes.Count; i++)
                 {
                     var s = selectedShapes[i];
-                    var allPoints = Graphics.GetRealCoordinates(s);
-                    var lowest = Graphics.BottomMostPoint(allPoints);
-                    s.IncrementTop(lowestRef.Y - lowest.Y);
+                    var lowestPoint = s.Top + s.AbsoluteHeight;
+                    s.IncrementTop(lowestRefPoint - lowestPoint);
                 }
             }
         }
 
-        public static void AlignMiddle(List<Shape> selectedShapes, float slideHeight)
+        public static void AlignMiddle(List<PPShape> selectedShapes, float slideHeight)
         {
             if (AlignUseSlideAsReference)
             {
                 foreach (var s in selectedShapes)
                 {
-                    var allPointsOfShape = Graphics.GetRealCoordinates(s);
-                    var topMost = Graphics.TopMostPoint(allPointsOfShape);
-                    var shapeHeight = Graphics.RealHeight(allPointsOfShape);
-                    s.IncrementTop(slideHeight/2 - topMost.Y - shapeHeight/2);
+                    s.IncrementTop(slideHeight/2 - s.Top - s.AbsoluteHeight/2);
                 }
             }
             else
@@ -260,30 +235,23 @@ namespace PowerPointLabs.PositionsLab
                 }
 
                 var refShape = selectedShapes[0];
-                var originRef = Graphics.GetCenterPoint(refShape);
 
                 for (var i = 1; i < selectedShapes.Count; i++)
                 {
                     var s = selectedShapes[i];
-                    var origin = Graphics.GetCenterPoint(s);
-                    s.IncrementTop(originRef.Y - origin.Y);
+                    s.IncrementTop(refShape.Center.Y - s.Center.Y);
                 }
             }
         }
 
-        public static void AlignCenter(List<Shape> selectedShapes, float slideWidth, float slideHeight)
+        public static void AlignCenter(List<PPShape> selectedShapes, float slideWidth, float slideHeight)
         {
             if (AlignUseSlideAsReference)
             {
                 foreach (var s in selectedShapes)
                 {
-                    var allPointsOfShape = Graphics.GetRealCoordinates(s);
-                    var topMost = Graphics.TopMostPoint(allPointsOfShape);
-                    var leftMost = Graphics.LeftMostPoint(allPointsOfShape);
-                    var shapeHeight = Graphics.RealHeight(allPointsOfShape);
-                    var shapeWidth = Graphics.RealWidth(allPointsOfShape);
-                    s.IncrementTop(slideHeight/2 - topMost.Y - shapeHeight/2);
-                    s.IncrementLeft(slideWidth/2 - leftMost.X - shapeWidth/2);
+                    s.IncrementTop(slideHeight/2 - s.Top - s.AbsoluteHeight/2);
+                    s.IncrementLeft(slideWidth/2 - s.Left - s.AbsoluteWidth/2);
                 }
             }
             else
@@ -294,14 +262,12 @@ namespace PowerPointLabs.PositionsLab
                 }
 
                 var refShape = selectedShapes[0];
-                var originRef = Graphics.GetCenterPoint(refShape);
 
                 for (var i = 1; i < selectedShapes.Count; i++)
                 {
                     var s = selectedShapes[i];
-                    var origin = Graphics.GetCenterPoint(s);
-                    s.IncrementLeft(originRef.X - origin.X);
-                    s.IncrementTop(originRef.Y - origin.Y);
+                    s.IncrementLeft(refShape.Center.X - s.Center.X);
+                    s.IncrementTop(refShape.Center.Y - s.Center.Y);
                 }
             }
         }
@@ -457,7 +423,7 @@ namespace PowerPointLabs.PositionsLab
         #endregion
 
         #region Adjoin
-        public static void AdjoinHorizontal(List<Shape> selectedShapes)
+        public static void AdjoinHorizontal(List<PPShape> selectedShapes)
         {
             if (selectedShapes.Count < 2)
             {
@@ -468,37 +434,31 @@ namespace PowerPointLabs.PositionsLab
             var sortedShapes = Graphics.SortShapesByLeft(selectedShapes);
             var refShapeIndex = sortedShapes.IndexOf(refShape);
 
-            var allPointsOfRef = Graphics.GetRealCoordinates(refShape);
-            var centerOfRef = Graphics.GetCenterPoint(refShape);
-
-            var mostLeft = Graphics.LeftMostPoint(allPointsOfRef).X;
+            var mostLeft = refShape.Left;
             //For all shapes left of refShape, adjoin them from closest to refShape
             for (var i = refShapeIndex - 1; i >= 0; i--)
             {
                 var neighbour = sortedShapes[i];
-                var allPointsOfNeighbour = Graphics.GetRealCoordinates(neighbour);
-                var rightOfShape = Graphics.RightMostPoint(allPointsOfNeighbour).X;
-                neighbour.IncrementLeft(mostLeft - rightOfShape);
-                neighbour.IncrementTop(centerOfRef.Y - Graphics.GetCenterPoint(neighbour).Y);
+                var rightOfNeighbour = neighbour.Left + neighbour.AbsoluteWidth;
+                neighbour.IncrementLeft(mostLeft - rightOfNeighbour);
+                neighbour.IncrementTop(refShape.Center.Y - neighbour.Center.Y);
 
-                mostLeft = Graphics.LeftMostPoint(allPointsOfNeighbour).X + mostLeft - rightOfShape;
+                mostLeft = mostLeft - neighbour.AbsoluteWidth;
             }
 
-            var mostRight = Graphics.RightMostPoint(allPointsOfRef).X;
+            var mostRight = refShape.Left + refShape.AbsoluteWidth;
             //For all shapes right of refShape, adjoin them from closest to refShape
             for (var i = refShapeIndex + 1; i < sortedShapes.Count; i++)
             {
                 var neighbour = sortedShapes[i];
-                var allPointsOfNeighbour = Graphics.GetRealCoordinates(neighbour);
-                var leftOfShape = Graphics.LeftMostPoint(allPointsOfNeighbour).X;
-                neighbour.IncrementLeft(mostRight - leftOfShape);
-                neighbour.IncrementTop(centerOfRef.Y - Graphics.GetCenterPoint(neighbour).Y);
+                neighbour.IncrementLeft(mostRight - neighbour.Left);
+                neighbour.IncrementTop(refShape.Center.Y - neighbour.Center.Y);
 
-                mostRight = Graphics.RightMostPoint(allPointsOfNeighbour).X + mostRight - leftOfShape;
+                mostRight = mostRight + neighbour.AbsoluteWidth;
             }
         }
 
-        public static void AdjoinVertical(List<Shape> selectedShapes)
+        public static void AdjoinVertical(List<PPShape> selectedShapes)
         {
             if (selectedShapes.Count < 2)
             {
@@ -509,39 +469,33 @@ namespace PowerPointLabs.PositionsLab
             var sortedShapes = Graphics.SortShapesByTop(selectedShapes);
             var refShapeIndex = sortedShapes.IndexOf(refShape);
 
-            var allPointsOfRef = Graphics.GetRealCoordinates(refShape);
-            var centerOfRef = Graphics.GetCenterPoint(refShape);
-
-            var mostTop = Graphics.TopMostPoint(allPointsOfRef).Y;
+            var mostTop = refShape.Top;
             //For all shapes above refShape, adjoin them from closest to refShape
             for (var i = refShapeIndex - 1; i >= 0; i--)
             {
                 var neighbour = sortedShapes[i];
-                var allPointsOfNeighbour = Graphics.GetRealCoordinates(neighbour);
-                var bottomOfShape = Graphics.BottomMostPoint(allPointsOfNeighbour).Y;
-                neighbour.IncrementLeft(centerOfRef.X - Graphics.GetCenterPoint(neighbour).X);
-                neighbour.IncrementTop(mostTop - bottomOfShape);
+                var bottomOfNeighbour = neighbour.Top + neighbour.AbsoluteHeight;
+                neighbour.IncrementLeft(refShape.Center.X - neighbour.Center.X);
+                neighbour.IncrementTop(mostTop - bottomOfNeighbour);
 
-                mostTop = Graphics.TopMostPoint(allPointsOfNeighbour).Y + mostTop - bottomOfShape;
+                mostTop = mostTop - neighbour.AbsoluteHeight;
             }
 
-            var lowest = Graphics.BottomMostPoint(allPointsOfRef).Y;
+            var lowest = refShape.Top + refShape.AbsoluteHeight;
             //For all shapes right of refShape, adjoin them from closest to refShape
             for (var i = refShapeIndex + 1; i < sortedShapes.Count; i++)
             {
                 var neighbour = sortedShapes[i];
-                var allPointsOfNeighbour = Graphics.GetRealCoordinates(neighbour);
-                var topOfShape = Graphics.TopMostPoint(allPointsOfNeighbour).Y;
-                neighbour.IncrementLeft(centerOfRef.X - Graphics.GetCenterPoint(neighbour).X);
-                neighbour.IncrementTop(lowest - topOfShape);
+                neighbour.IncrementLeft(refShape.Center.X - neighbour.Center.X);
+                neighbour.IncrementTop(lowest - neighbour.Top);
 
-                lowest = Graphics.BottomMostPoint(allPointsOfNeighbour).Y + lowest - topOfShape;
+                lowest = lowest + neighbour.AbsoluteHeight;
             }
         }
         #endregion
 
         #region Swap
-        public static void Swap(List<Shape> selectedShapes)
+        public static void Swap(List<PPShape> selectedShapes)
         {
             if (selectedShapes.Count < 2)
             {
@@ -549,22 +503,22 @@ namespace PowerPointLabs.PositionsLab
             }
 
             var sortedShapes = Graphics.SortShapesByLeft(selectedShapes);
-            var firstPos = Graphics.GetCenterPoint(sortedShapes[0]);
+            var firstPos = sortedShapes[0].Center;
 
             for (var i = 0; i < sortedShapes.Count; i++)
             {
                 var currentShape = sortedShapes[i];
                 if (i < sortedShapes.Count - 1)
                 {
-                    var currentPos = Graphics.GetCenterPoint(currentShape);
-                    var nextPos = Graphics.GetCenterPoint(sortedShapes[i + 1]);
+                    var currentPos = currentShape.Center;
+                    var nextPos = sortedShapes[i + 1].Center;
 
                     currentShape.IncrementLeft(nextPos.X - currentPos.X);
                     currentShape.IncrementTop(nextPos.Y - currentPos.Y);
                 }
                 else
                 {
-                    var currentPos = Graphics.GetCenterPoint(currentShape);
+                    var currentPos = currentShape.Center;
                     currentShape.IncrementLeft(firstPos.X - currentPos.X);
                     currentShape.IncrementTop(firstPos.Y - currentPos.Y);
                 }
@@ -573,45 +527,38 @@ namespace PowerPointLabs.PositionsLab
         #endregion
 
         #region Distribute
-        public static void DistributeHorizontal(List<Shape> selectedShapes, float slideWidth)
+        public static void DistributeHorizontal(List<PPShape> selectedShapes, float slideWidth)
         {
             var shapeCount = selectedShapes.Count;
 
             var refShape = selectedShapes[0];
-            var allPointsOfRef = Graphics.GetRealCoordinates(refShape);
-            Drawing.PointF rightMostRef;
+            float rightMostRef;
 
             if (DistributeUseSlideAsReference)
             {
-                var horizontalDistanceInRef = slideWidth;
-                var spaceBetweenShapes = horizontalDistanceInRef;
-
+                // Calculate the shape between shapes
+                var spaceBetweenShapes = slideWidth;
                 foreach (var s in selectedShapes)
                 {
-                    var allPoints = Graphics.GetRealCoordinates(s);
-                    var shapeWidth = Graphics.RealWidth(allPoints);
-                    spaceBetweenShapes -= shapeWidth;
+                    spaceBetweenShapes -= s.AbsoluteWidth;
                 }
-
                 // TODO: guard against spaceBetweenShapes < 0
-
                 spaceBetweenShapes /= shapeCount + 1;
-
+                
+                // Distribute the shapes
                 for (var i = 0; i < shapeCount; i++)
                 {
                     var currShape = selectedShapes[i];
-                    var allPoints = Graphics.GetRealCoordinates(currShape);
-                    var leftMost = Graphics.LeftMostPoint(allPoints);
                     if (i == 0)
                     {
-                        currShape.IncrementLeft(spaceBetweenShapes - leftMost.X);
+                        // Left most shape
+                        currShape.IncrementLeft(spaceBetweenShapes - currShape.Left);
                     }
                     else
                     {
                         refShape = selectedShapes[i - 1];
-                        allPointsOfRef = Graphics.GetRealCoordinates(refShape);
-                        rightMostRef = Graphics.RightMostPoint(allPointsOfRef);
-                        currShape.IncrementLeft(rightMostRef.X - leftMost.X + spaceBetweenShapes);
+                        rightMostRef = refShape.Left + refShape.AbsoluteWidth;
+                        currShape.IncrementLeft(rightMostRef - currShape.Left + spaceBetweenShapes);
                     }
                 }
             }
@@ -622,82 +569,66 @@ namespace PowerPointLabs.PositionsLab
                     throw new Exception(ErrorMessageFewerThanTwoSelection);
                 }
 
-                var horizontalDistanceInRef = Graphics.RealWidth(allPointsOfRef);
-                var spaceBetweenShapes = horizontalDistanceInRef;
-
+                // Calculate the shape between shapes
+                var spaceBetweenShapes = refShape.AbsoluteWidth;
                 for (var i = 1; i < shapeCount; i++)
                 {
                     var s = selectedShapes[i];
-                    var allPoints = Graphics.GetRealCoordinates(s);
-                    var shapeWidth = Graphics.RealWidth(allPoints);
-                    spaceBetweenShapes -= shapeWidth;
+                    spaceBetweenShapes -= s.AbsoluteWidth;
                 }
-
                 // TODO: guard against spaceBetweenShapes < 0
-
                 spaceBetweenShapes /= shapeCount;
 
+                // Distribute the shapes
                 for (var i = 1; i < shapeCount; i++)
                 {
                     var currShape = selectedShapes[i];
-                    var allPoints = Graphics.GetRealCoordinates(currShape);
-                    var leftMost = Graphics.LeftMostPoint(allPoints);
                     refShape = selectedShapes[i - 1];
-                    allPointsOfRef = Graphics.GetRealCoordinates(refShape);
 
                     if (i == 1)
                     {
-                        var leftMostRef = Graphics.LeftMostPoint(allPointsOfRef);
-                        currShape.IncrementLeft(leftMostRef.X - leftMost.X + spaceBetweenShapes);
+                        currShape.IncrementLeft(refShape.Left - currShape.Left + spaceBetweenShapes);
                     }
                     else
                     {
-                        rightMostRef = Graphics.RightMostPoint(allPointsOfRef);
-                        currShape.IncrementLeft(rightMostRef.X - leftMost.X + spaceBetweenShapes);
+                        rightMostRef = refShape.Left + refShape.AbsoluteWidth;
+                        currShape.IncrementLeft(rightMostRef - currShape.Left + spaceBetweenShapes);
                     }
                 }
             }
         } 
 
-        public static void DistributeVertical(List<Shape> selectedShapes, float slideHeight)
+        public static void DistributeVertical(List<PPShape> selectedShapes, float slideHeight)
         {
             var shapeCount = selectedShapes.Count;
 
             var refShape = selectedShapes[0];
-            var allPointsOfRef = Graphics.GetRealCoordinates(refShape);
-            Drawing.PointF lowestRef;
+            float lowestRef;
 
             if (DistributeUseSlideAsReference)
             {
-                var verticalDistanceInRef = slideHeight;
-                var spaceBetweenShapes = verticalDistanceInRef;
-
+                // Calculate the space between shapes
+                var spaceBetweenShapes = slideHeight;
                 foreach (var s in selectedShapes)
                 {
-                    var allPoints = Graphics.GetRealCoordinates(s);
-                    var shapeHeight = Graphics.RealHeight(allPoints);
-                    spaceBetweenShapes -= shapeHeight;
+                    spaceBetweenShapes -= s.AbsoluteHeight;
                 }
-
                 // TODO: guard against spaceBetweenShapes < 0
-
                 spaceBetweenShapes /= shapeCount + 1;
 
+                // Distribute the shapes
                 for (var i = 0; i < shapeCount; i++)
                 {
                     var currShape = selectedShapes[i];
-                    var allPoints = Graphics.GetRealCoordinates(currShape);
-                    var topMost = Graphics.TopMostPoint(allPoints);
                     if (i == 0)
                     {
-                        currShape.IncrementTop(spaceBetweenShapes - topMost.Y);
+                        currShape.IncrementTop(spaceBetweenShapes - currShape.Top);
                     }
                     else
                     {
                         refShape = selectedShapes[i - 1];
-                        allPointsOfRef = Graphics.GetRealCoordinates(refShape);
-                        lowestRef = Graphics.BottomMostPoint(allPointsOfRef);
-                        currShape.IncrementTop(lowestRef.Y - topMost.Y + spaceBetweenShapes);
+                        lowestRef = refShape.Top + refShape.AbsoluteHeight;
+                        currShape.IncrementTop(lowestRef - currShape.Top + spaceBetweenShapes);
                     }
                 }
             }
@@ -707,51 +638,42 @@ namespace PowerPointLabs.PositionsLab
                 {
                     throw new Exception(ErrorMessageFewerThanTwoSelection);
                 }
-
-                var verticalDistanceInRef = Graphics.RealHeight(allPointsOfRef);
-                var spaceBetweenShapes = verticalDistanceInRef;
-
+                // Calculate the shape between shapes
+                var spaceBetweenShapes = refShape.AbsoluteHeight;
                 for (var i = 1; i < shapeCount; i++)
                 {
                     var s = selectedShapes[i];
-                    var allPoints = Graphics.GetRealCoordinates(s);
-                    var shapeHeight = Graphics.RealHeight(allPoints);
-                    spaceBetweenShapes -= shapeHeight;
+                    spaceBetweenShapes -= s.AbsoluteHeight;
                 }
-
                 // TODO: guard against spaceBetweenShapes < 0
-
                 spaceBetweenShapes /= shapeCount;
 
+                // Distribute the shapes
                 for (var i = 1; i < shapeCount; i++)
                 {
                     var currShape = selectedShapes[i];
-                    var allPoints = Graphics.GetRealCoordinates(currShape);
-                    var topMost = Graphics.TopMostPoint(allPoints);
                     refShape = selectedShapes[i - 1];
-                    allPointsOfRef = Graphics.GetRealCoordinates(refShape);
 
                     if (i == 1)
                     {
-                        var topMostRef = Graphics.TopMostPoint(allPointsOfRef);
-                        currShape.IncrementTop(topMostRef.Y - topMost.Y + spaceBetweenShapes);
+                        currShape.IncrementTop(refShape.Top - currShape.Top + spaceBetweenShapes);
                     }
                     else
                     {
-                        lowestRef = Graphics.BottomMostPoint(allPointsOfRef);
-                        currShape.IncrementTop(lowestRef.Y - topMost.Y + spaceBetweenShapes);
+                        lowestRef = refShape.Top + refShape.AbsoluteHeight;
+                        currShape.IncrementTop(lowestRef - currShape.Top + spaceBetweenShapes);
                     }
                 }
             }
         }
 
-        public static void DistributeCenter(List<Shape> selectedShapes, float slideWidth, float slideHeight)
+        public static void DistributeCenter(List<PPShape> selectedShapes, float slideWidth, float slideHeight)
         {
             DistributeHorizontal(selectedShapes, slideWidth);
             DistributeVertical(selectedShapes, slideHeight);
         }
 
-        public static void DistributeShapes(List<Shape> selectedShapes)
+        public static void DistributeShapes(List<PPShape> selectedShapes)
         {
             var shapeCount = selectedShapes.Count;
 
@@ -767,68 +689,53 @@ namespace PowerPointLabs.PositionsLab
 
             var firstRef = selectedShapes[0];
             var lastRef = selectedShapes[selectedShapes.Count - 1];
-            Shape refShape;
+            PPShape refShape;
 
-            var allPointsOfFirstRef = Graphics.GetRealCoordinates(firstRef);
-            var allPointsOfLastRef = Graphics.GetRealCoordinates(lastRef);
-            Drawing.PointF[] allPointsOfRef;
+            var horizontalDistance = lastRef.Left - firstRef.Left - firstRef.AbsoluteWidth;
+            var verticalDistance = lastRef.Top - firstRef.Top - firstRef.AbsoluteHeight;
 
-            var horizontalDistance = Graphics.LeftMostPoint(allPointsOfLastRef).X - Graphics.RightMostPoint(allPointsOfFirstRef).X;
-            var verticalDistance = Graphics.TopMostPoint(allPointsOfLastRef).Y - Graphics.BottomMostPoint(allPointsOfFirstRef).Y;
-
+            // Calculate the horizontal space between shapes
             var spaceBetweenShapes = horizontalDistance;
-
             for (var i = 1; i < shapeCount - 1; i++)
             {
                 var s = selectedShapes[i];
-                var allPoints = Graphics.GetRealCoordinates(s);
-                var shapeWidth = Graphics.RealWidth(allPoints);
-                spaceBetweenShapes -= shapeWidth;
+                spaceBetweenShapes -= s.AbsoluteWidth;
             }
-
             // TODO: guard against spaceBetweenShapes < 0
-
             spaceBetweenShapes /= (shapeCount-1);
-            
+
+            // Distribute shapes horizontally
             for (var i = 1; i < shapeCount - 1; i++)
             {
                 var currShape = selectedShapes[i];
-                var allPoints = Graphics.GetRealCoordinates(currShape);
-                var leftMost = Graphics.LeftMostPoint(allPoints);
                 refShape = selectedShapes[i - 1];
-                allPointsOfRef = Graphics.GetRealCoordinates(refShape);
 
-                var rightMostRef = Graphics.RightMostPoint(allPointsOfRef);
-                currShape.IncrementLeft(rightMostRef.X - leftMost.X + spaceBetweenShapes);
+                var rightMostRef = refShape.Left + refShape.AbsoluteWidth;
+                currShape.IncrementLeft(rightMostRef - currShape.Left + spaceBetweenShapes);
             }
 
+            // Calculate the vertical space between shapes
             spaceBetweenShapes = verticalDistance;
             for (var i = 1; i < shapeCount - 1; i++)
             {
                 var s = selectedShapes[i];
-                var allPoints = Graphics.GetRealCoordinates(s);
-                var shapeHeight = Graphics.RealHeight(allPoints);
-                spaceBetweenShapes -= shapeHeight;
+                spaceBetweenShapes -= s.AbsoluteHeight;
             }
-
             // TODO: guard against spaceBetweenShapes < 0
+            spaceBetweenShapes /= (shapeCount-1);
 
-            spaceBetweenShapes /= shapeCount;
-
+            // Distribute the shapes vertically
             for (var i = 1; i < shapeCount - 1; i++)
             {
                 var currShape = selectedShapes[i];
-                var allPoints = Graphics.GetRealCoordinates(currShape);
-                var topMost = Graphics.TopMostPoint(allPoints);
                 refShape = selectedShapes[i - 1];
-                allPointsOfRef = Graphics.GetRealCoordinates(refShape);
 
-                var lowestRef = Graphics.BottomMostPoint(allPointsOfRef);
-                currShape.IncrementTop(lowestRef.Y - topMost.Y + spaceBetweenShapes);
+                var lowestRef = refShape.Top + refShape.AbsoluteHeight;
+                currShape.IncrementTop(lowestRef - currShape.Top + spaceBetweenShapes);
             }
         }
 
-        public static void DistributeGrid(List<Shape> selectedShapes, int rowLength, int colLength)
+        public static void DistributeGrid(List<PPShape> selectedShapes, int rowLength, int colLength)
         {
             var colLengthGivenFullRows = (int)Math.Ceiling((double)selectedShapes.Count / rowLength);
             if (colLength <= colLengthGivenFullRows)
@@ -841,22 +748,16 @@ namespace PowerPointLabs.PositionsLab
             }
         }
 
-        public static void DistributeGridByRow(List<Shape> selectedShapes, int rowLength, int colLength)
+        public static void DistributeGridByRow(List<PPShape> selectedShapes, int rowLength, int colLength)
         {
-            var refPoint = Graphics.GetCenterPoint(selectedShapes[0]);
-
-            var allShapes = new List<PPShape>();
+            var refPoint = selectedShapes[0].Center;
+            
             var numShapes = selectedShapes.Count;
-
-            for (var i = 0; i < numShapes; i++)
-            {
-                allShapes.Add(new PPShape(selectedShapes[i]));
-            }
-
+            
             var numIndicesToSkip = IndicesToSkip(numShapes, rowLength, DistributeGridAlignment);
 
-            var rowDifferences = GetLongestWidthsOfRowsByRow(allShapes, rowLength, numIndicesToSkip);
-            var colDifferences = GetLongestHeightsOfColsByRow(allShapes, rowLength, colLength);
+            var rowDifferences = GetLongestWidthsOfRowsByRow(selectedShapes, rowLength, numIndicesToSkip);
+            var colDifferences = GetLongestHeightsOfColsByRow(selectedShapes, rowLength, colLength);
 
             var posX = refPoint.X;
             var posY = refPoint.Y;
@@ -881,31 +782,24 @@ namespace PowerPointLabs.PositionsLab
                 }
 
                 var currentShape = selectedShapes[i];
-                var center = Graphics.GetCenterPoint(currentShape);
-                currentShape.IncrementLeft(posX - center.X);
-                currentShape.IncrementTop(posY - center.Y);
+                currentShape.IncrementLeft(posX - currentShape.Center.X);
+                currentShape.IncrementTop(posY - currentShape.Center.Y);
 
                 posX += GetSpaceBetweenShapes(differenceIndex, differenceIndex + 1, rowDifferences, MarginLeft, MarginRight);
                 differenceIndex++;
             }
         }
 
-        public static void DistributeGridByCol(List<Shape> selectedShapes, int rowLength, int colLength)
+        public static void DistributeGridByCol(List<PPShape> selectedShapes, int rowLength, int colLength)
         {
-            var refPoint = Graphics.GetCenterPoint(selectedShapes[0]);
-
-            var allShapes = new List<PPShape>();
+            var refPoint = selectedShapes[0].Center;
+            
             var numShapes = selectedShapes.Count;
-
-            for (var i = 0; i < numShapes; i++)
-            {
-                allShapes.Add(new PPShape(selectedShapes[i]));
-            }
-
+            
             var numIndicesToSkip = IndicesToSkip(numShapes, colLength, DistributeGridAlignment);
 
-            var rowDifferences = GetLongestWidthsOfRowsByCol(allShapes, rowLength, colLength, numIndicesToSkip);
-            var colDifferences = GetLongestHeightsOfColsByCol(allShapes, rowLength, colLength, numIndicesToSkip);
+            var rowDifferences = GetLongestWidthsOfRowsByCol(selectedShapes, rowLength, colLength, numIndicesToSkip);
+            var colDifferences = GetLongestHeightsOfColsByCol(selectedShapes, rowLength, colLength, numIndicesToSkip);
 
             var posX = refPoint.X;
             var posY = refPoint.Y;
@@ -941,7 +835,7 @@ namespace PowerPointLabs.PositionsLab
                 }
 
                 var currentShape = selectedShapes[i];
-                var center = Graphics.GetCenterPoint(currentShape);
+                var center = currentShape.Center;
                 currentShape.IncrementLeft(posX - center.X);
                 currentShape.IncrementTop(posY - center.Y);
 

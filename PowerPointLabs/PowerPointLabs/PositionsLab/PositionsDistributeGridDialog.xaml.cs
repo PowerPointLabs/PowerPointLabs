@@ -1,8 +1,8 @@
 ﻿using MahApps.Metro.Controls;
+using PowerPointLabs.Utils;
 using System;
 using System.Collections.Generic;
 using System.Windows;
-using Shape = Microsoft.Office.Interop.PowerPoint.Shape;
 
 namespace PowerPointLabs.PositionsLab
 {
@@ -16,11 +16,11 @@ namespace PowerPointLabs.PositionsLab
 
         //Private variables
         private int _numShapesSelected;
-        private List<Shape> _selectedShapes;
+        private List<PPShape> _selectedShapes;
         private int _rowLength;
         private int _colLength;
 
-        public PositionsDistributeGridDialog(List<Shape> selectedShapes, int rowLength, int colLength)
+        internal PositionsDistributeGridDialog(List<PPShape> selectedShapes, int rowLength, int colLength)
         {
             IsOpen = true;
             _selectedShapes = selectedShapes;
