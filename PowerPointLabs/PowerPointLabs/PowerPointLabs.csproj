@@ -1224,6 +1224,12 @@
     <Resource Include="Resources\ResizeLab\ResizeUnlock.png" />
   </ItemGroup>
   <ItemGroup>
+    <Resource Include="Resources\PositionsLab\AlignLeftIcon.png" />
+    <Resource Include="Resources\PositionsLab\AlignBottomIcon.png" />
+    <Resource Include="Resources\PositionsLab\AlignCenterIcon.png" />
+    <Resource Include="Resources\PositionsLab\AlignMiddleIcon.png" />
+    <Resource Include="Resources\PositionsLab\AlignRightIcon.png" />
+    <Resource Include="Resources\PositionsLab\AlignTopIcon.png" />
     <Content Include="Resources\PositionsLab\PositionsLab.png" />
   </ItemGroup>
   <ItemGroup>
