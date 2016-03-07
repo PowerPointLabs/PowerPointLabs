@@ -61,7 +61,7 @@ namespace PowerPointLabs.PositionsLab
         private static Dictionary<MsoAutoShapeType, float> shapeDefaultUpAngle;
         public static bool AlignUseSlideAsReference { get; private set; }
         public static bool DistributeUseSlideAsReference { get; private set; }
-        public static bool SwapByClickOrder { get; set; }
+        public static bool IsSwapByClickOrder { get; set; }
 
         #region API
 
@@ -690,7 +690,13 @@ namespace PowerPointLabs.PositionsLab
                 throw new Exception(ErrorMessageFewerThanTwoSelection);
             }
 
-            var sortedShapes = Graphics.SortShapesByLeft(selectedShapes);
+            var sortedShapes = selectedShapes;
+
+            if (!IsSwapByClickOrder)
+            {
+                sortedShapes = Graphics.SortShapesByLeft(selectedShapes);
+            }
+
             var firstPos = sortedShapes[0].Center;
 
             for (var i = 0; i < sortedShapes.Count; i++)
@@ -1213,9 +1219,38 @@ namespace PowerPointLabs.PositionsLab
             DistributeUseSlideAsReference = false;
         }
 
+        private static Drawing.PointF GetSwapReferencePoint(PPShape shape, SwapReference r) 
+        {
+            switch (r)
+            {
+                case SwapReference.TopLeft:
+                    break;
+                case SwapReference.TopCenter:
+                    break;
+                case SwapReference.TopRight:
+                    break;
+                case SwapReference.MiddleLeft:
+                    break;
+                case SwapReference.MiddleCenter:
+                    break;
+                case SwapReference.MiddleRight:
+                    break;
+                case SwapReference.BottomLeft:
+                    break;
+                case SwapReference.BottomCenter:
+                    break;
+                case SwapReference.BottomRight:
+                    break;
+                default:
+                    break;
+            }
+
+            return new Drawing.PointF();
+        }
+
         private static void InitDefaultSwapSettings()
         {
-            SwapByClickOrder = false;
+            IsSwapByClickOrder = false;
             SwapReferencePoint = SwapReference.MiddleCenter;
         }
 
