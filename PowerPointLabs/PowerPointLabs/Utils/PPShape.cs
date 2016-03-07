@@ -167,7 +167,8 @@ namespace PowerPointLabs.Utils
         /// <returns></returns>
         public PPShape Duplicate()
         {
-            return new PPShape(_shape.Duplicate()[1]);
+            var newShape = new PPShape(_shape.Duplicate()[1]) {Name = _shape.Name + "Copy"};
+            return newShape;
         }
 
         /// <summary>
