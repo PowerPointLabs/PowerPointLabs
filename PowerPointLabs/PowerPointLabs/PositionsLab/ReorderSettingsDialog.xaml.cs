@@ -20,12 +20,12 @@ namespace PowerPointLabs.PositionsLab
         #region On-Load Settings
         private void SwapByLeftToRightButton_Load(object sender, RoutedEventArgs e)
         {
-            swapByLeftToRightButton.IsChecked = !PositionsLabMain.SwapByClickOrder;
+            swapByLeftToRightButton.IsChecked = !PositionsLabMain.IsSwapByClickOrder;
         }
 
         private void SwapByClickOrderButton_Load(object sender, RoutedEventArgs e)
         {
-            swapByClickOrderButton.IsChecked = PositionsLabMain.SwapByClickOrder;
+            swapByClickOrderButton.IsChecked = PositionsLabMain.IsSwapByClickOrder;
         }
 
         private void TopLeftAsReferenceButton_Load(object sender, RoutedEventArgs e)
@@ -87,7 +87,7 @@ namespace PowerPointLabs.PositionsLab
         private void OkButton_Click(object sender, RoutedEventArgs e)
         {
 
-            PositionsLabMain.SwapByClickOrder = swapByClickOrderButton.IsChecked.GetValueOrDefault();
+            PositionsLabMain.IsSwapByClickOrder = swapByClickOrderButton.IsChecked.GetValueOrDefault();
 
             if (topLeftAsReferenceButton.IsChecked.GetValueOrDefault())
             {
