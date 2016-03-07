@@ -44,7 +44,7 @@
             <Button ToolTip="Equalize spaces of objects into a grid" x:Name="distributeGridButton" Content="Grid" HorizontalAlignment="Left" Margin="24,306,0,0" VerticalAlignment="Top" Width="60" Height="45" Click="DistributeGridButton_Click"/>
             <Button ToolTip="Distribute objects along the edge of reference frame" x:Name="distributeAlongEdgeButton" Content="Edges" HorizontalAlignment="Left" Margin="24,306,0,0" VerticalAlignment="Top" Width="60" Height="45" Visibility="Hidden"/>
             <GroupBox x:Name="reorderGroupBox" Header="Reorder" HorizontalAlignment="Left" Margin="10,357,0,0" VerticalAlignment="Top" Height="80" Width="284">
-                <WPF:ImageButton Visibility="Hidden" ToolTip="Opens the settings for Reorder functions" x:Name="reorderSettingsButton" HorizontalAlignment="Right" Margin="0,-29,-3,0" VerticalAlignment="Top" Width="20" Height="20" Click="ReorderSettingsButton_Click" Background="{x:Null}" BorderBrush="{x:Null}">
+                <WPF:ImageButton ToolTip="Opens the settings for Reorder functions" x:Name="reorderSettingsButton" HorizontalAlignment="Right" Margin="0,-29,-3,0" VerticalAlignment="Top" Width="20" Height="20" Click="ReorderSettingsButton_Click" Background="{x:Null}" BorderBrush="{x:Null}">
                     <Image Source="..\Resources\SettingsGear.png"/>
                 </WPF:ImageButton>
             </GroupBox>

@@ -18,9 +18,9 @@ namespace PowerPointLabs.PositionsLab
         }
 
         #region On-Load Settings
-        private void SwapByCyclicOrderButton_Load(object sender, RoutedEventArgs e)
+        private void SwapByLeftToRightButton_Load(object sender, RoutedEventArgs e)
         {
-            swapByCyclicOrderButton.IsChecked = !PositionsLabMain.SwapByClickOrder;
+            swapByLeftToRightButton.IsChecked = !PositionsLabMain.SwapByClickOrder;
         }
 
         private void SwapByClickOrderButton_Load(object sender, RoutedEventArgs e)
@@ -28,34 +28,58 @@ namespace PowerPointLabs.PositionsLab
             swapByClickOrderButton.IsChecked = PositionsLabMain.SwapByClickOrder;
         }
 
-        private void CenterAsReferenceButton_Load(object sender, RoutedEventArgs e)
+        private void TopLeftAsReferenceButton_Load(object sender, RoutedEventArgs e)
         {
-            centerAsReferenceButton.IsChecked = PositionsLabMain.SwapReferencePoint ==
-                                                PositionsLabMain.SwapReference.Center;
+            topLeftAsReferenceButton.IsChecked = PositionsLabMain.SwapReferencePoint ==
+                                                PositionsLabMain.SwapReference.TopLeft;
         }
 
-        private void LeftAsReferenceButton_Load(object sender, RoutedEventArgs e)
+        private void TopCenterAsReferenceButton_Load(object sender, RoutedEventArgs e)
         {
-            leftAsReferenceButton.IsChecked = PositionsLabMain.SwapReferencePoint ==
-                                                PositionsLabMain.SwapReference.Left;
+            topCenterAsReferenceButton.IsChecked = PositionsLabMain.SwapReferencePoint ==
+                                                PositionsLabMain.SwapReference.TopCenter;
         }
 
-        private void TopAsReferenceButton_Load(object sender, RoutedEventArgs e)
+        private void TopRightAsReferenceButton_Load(object sender, RoutedEventArgs e)
         {
-            topAsReferenceButton.IsChecked = PositionsLabMain.SwapReferencePoint ==
-                                                PositionsLabMain.SwapReference.Top;
+            topRightAsReferenceButton.IsChecked = PositionsLabMain.SwapReferencePoint ==
+                                                PositionsLabMain.SwapReference.TopRight;
         }
 
-        private void RightAsReferenceButton_Load(object sender, RoutedEventArgs e)
+        private void MiddleLeftAsReferenceButton_Load(object sender, RoutedEventArgs e)
         {
-            rightAsReferenceButton.IsChecked = PositionsLabMain.SwapReferencePoint ==
-                                                PositionsLabMain.SwapReference.Right;
+            middleLeftAsReferenceButton.IsChecked = PositionsLabMain.SwapReferencePoint ==
+                                                PositionsLabMain.SwapReference.MiddleLeft;
         }
 
-        private void BottomAsReferenceButton_Load(object sender, RoutedEventArgs e)
+        private void MiddleCenterAsReferenceButton_Load(object sender, RoutedEventArgs e)
         {
-            bottomAsReferenceButton.IsChecked = PositionsLabMain.SwapReferencePoint ==
-                                                PositionsLabMain.SwapReference.Bottom;
+            middleCenterAsReferenceButton.IsChecked = PositionsLabMain.SwapReferencePoint ==
+                                                PositionsLabMain.SwapReference.MiddleCenter;
+        }
+
+        private void MiddleRightAsReferenceButton_Load(object sender, RoutedEventArgs e)
+        {
+            middleRightAsReferenceButton.IsChecked = PositionsLabMain.SwapReferencePoint ==
+                                                PositionsLabMain.SwapReference.MiddleRight;
+        }
+
+        private void BottomLeftAsReferenceButton_Load(object sender, RoutedEventArgs e)
+        {
+            bottomLeftAsReferenceButton.IsChecked = PositionsLabMain.SwapReferencePoint ==
+                                                PositionsLabMain.SwapReference.BottomLeft;
+        }
+
+        private void BottomCenterAsReferenceButton_Load(object sender, RoutedEventArgs e)
+        {
+            bottomCenterAsReferenceButton.IsChecked = PositionsLabMain.SwapReferencePoint ==
+                                                PositionsLabMain.SwapReference.BottomCenter;
+        }
+
+        private void BottomRightAsReferenceButton_Load(object sender, RoutedEventArgs e)
+        {
+            bottomRightAsReferenceButton.IsChecked = PositionsLabMain.SwapReferencePoint ==
+                                                PositionsLabMain.SwapReference.BottomRight;
         }
         #endregion
 
@@ -63,31 +87,51 @@ namespace PowerPointLabs.PositionsLab
         private void OkButton_Click(object sender, RoutedEventArgs e)
         {
 
-            PositionsLabMain.SwapByClickOrder = swapByCyclicOrderButton.IsChecked.GetValueOrDefault();
-            
-            if (centerAsReferenceButton.IsChecked.GetValueOrDefault())
+            PositionsLabMain.SwapByClickOrder = swapByClickOrderButton.IsChecked.GetValueOrDefault();
+
+            if (topLeftAsReferenceButton.IsChecked.GetValueOrDefault())
             {
-                PositionsLabMain.SwapReferencePoint = PositionsLabMain.SwapReference.Center;
+                PositionsLabMain.SwapReferencePoint = PositionsLabMain.SwapReference.TopLeft;
             }
 
-            if (leftAsReferenceButton.IsChecked.GetValueOrDefault())
+            if (topCenterAsReferenceButton.IsChecked.GetValueOrDefault())
             {
-                PositionsLabMain.SwapReferencePoint = PositionsLabMain.SwapReference.Left;
+                PositionsLabMain.SwapReferencePoint = PositionsLabMain.SwapReference.TopCenter;
             }
 
-            if (topAsReferenceButton.IsChecked.GetValueOrDefault())
+            if (topRightAsReferenceButton.IsChecked.GetValueOrDefault())
             {
-                PositionsLabMain.SwapReferencePoint = PositionsLabMain.SwapReference.Top;
+                PositionsLabMain.SwapReferencePoint = PositionsLabMain.SwapReference.TopRight;
             }
 
-            if (rightAsReferenceButton.IsChecked.GetValueOrDefault())
+            if (middleLeftAsReferenceButton.IsChecked.GetValueOrDefault())
             {
-                PositionsLabMain.SwapReferencePoint = PositionsLabMain.SwapReference.Right;
+                PositionsLabMain.SwapReferencePoint = PositionsLabMain.SwapReference.MiddleLeft;
             }
 
-            if (bottomAsReferenceButton.IsChecked.GetValueOrDefault())
+            if (middleCenterAsReferenceButton.IsChecked.GetValueOrDefault())
             {
-                PositionsLabMain.SwapReferencePoint = PositionsLabMain.SwapReference.Bottom;
+                PositionsLabMain.SwapReferencePoint = PositionsLabMain.SwapReference.MiddleCenter;
+            }
+
+            if (middleRightAsReferenceButton.IsChecked.GetValueOrDefault())
+            {
+                PositionsLabMain.SwapReferencePoint = PositionsLabMain.SwapReference.MiddleRight;
+            }
+
+            if (bottomLeftAsReferenceButton.IsChecked.GetValueOrDefault())
+            {
+                PositionsLabMain.SwapReferencePoint = PositionsLabMain.SwapReference.BottomLeft;
+            }
+
+            if (bottomCenterAsReferenceButton.IsChecked.GetValueOrDefault())
+            {
+                PositionsLabMain.SwapReferencePoint = PositionsLabMain.SwapReference.BottomCenter;
+            }
+
+            if (bottomRightAsReferenceButton.IsChecked.GetValueOrDefault())
+            {
+                PositionsLabMain.SwapReferencePoint = PositionsLabMain.SwapReference.BottomRight;
             }
 
             IsOpen = false;

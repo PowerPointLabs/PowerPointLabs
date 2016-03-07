@@ -45,11 +45,15 @@ namespace PowerPointLabs.PositionsLab
         //For Reorder Swap Reference
         public enum SwapReference
         {
-            Center,
-            Left,
-            Top,
-            Right,
-            Bottom
+            TopLeft,
+            TopCenter,
+            TopRight,
+            MiddleLeft,
+            MiddleCenter,
+            MiddleRight,
+            BottomLeft,
+            BottomCenter,
+            BottomRight
         }
 
         public static SwapReference SwapReferencePoint { get; set; }
@@ -1209,7 +1213,13 @@ namespace PowerPointLabs.PositionsLab
             DistributeUseSlideAsReference = false;
         }
 
-        private static void InitAlignSettings()
+        private static void InitDefaultSwapSettings()
+        {
+            SwapByClickOrder = false;
+            SwapReferencePoint = SwapReference.MiddleCenter;
+        }
+
+        private static void InitDefaultAlignSettings()
         {
             AlignUseSlideAsReference = false;
         }
@@ -1218,7 +1228,8 @@ namespace PowerPointLabs.PositionsLab
         {
             InitDefaultShapesAngles();
             InitDefaultDistributeSettings();
-            InitAlignSettings();
+            InitDefaultAlignSettings();
+            InitDefaultSwapSettings();
         }
 
         #endregion
