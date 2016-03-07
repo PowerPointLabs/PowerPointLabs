@@ -1230,6 +1230,11 @@
     <Resource Include="Resources\PositionsLab\AlignMiddleIcon.png" />
     <Resource Include="Resources\PositionsLab\AlignRightIcon.png" />
     <Resource Include="Resources\PositionsLab\AlignTopIcon.png" />
+    <Resource Include="Resources\PositionsLab\DistributeCenterIcon.png" />
+    <Resource Include="Resources\PositionsLab\DistributeGridIcon.png" />
+    <Resource Include="Resources\PositionsLab\DistributeHorizontalIcon.png" />
+    <Resource Include="Resources\PositionsLab\DistributeShapeIcon.png" />
+    <Resource Include="Resources\PositionsLab\DistributeVerticalIcon.png" />
     <Content Include="Resources\PositionsLab\PositionsLab.png" />
   </ItemGroup>
   <ItemGroup>

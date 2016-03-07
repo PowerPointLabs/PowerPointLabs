@@ -49,11 +49,21 @@
                     <Image Source="..\Resources\SettingsGear.png"/>
                 </WPF:ImageButton>
             </GroupBox>
-            <Button ToolTip="Equalize horizontal spaces of objects within reference frame" x:Name="distributeHorizontalButton" Content="Horizontal" HorizontalAlignment="Left" Margin="24,256,0,0" VerticalAlignment="Top" Width="60" Height="45" Click="DistributeHorizontalButton_Click"/>
-            <Button ToolTip="Equalize vertical spaces of objects within reference frame" x:Name="distributeVerticalButton" Content="Vertical" HorizontalAlignment="Left" Margin="89,256,0,0" VerticalAlignment="Top" Width="60" Height="45" Click="DistributeVerticalButton_Click"/>
-            <Button ToolTip="Equalize horizontal and vertical spaces of objects within reference frame" x:Name="distributeCenterButton" Content="Center" HorizontalAlignment="Left" Margin="154,256,0,0" VerticalAlignment="Top" Width="60" Height="45" Click="DistributeCenterButton_Click"/>
-            <Button ToolTip="Equalize horizontal and vertical spaces of objects amongst selected objects" x:Name="distributeShapesButton" Content="Shapes" HorizontalAlignment="Left" Margin="219,256,0,0" VerticalAlignment="Top" Width="60" Height="45" Click ="DistributeShapesButton_Click"/>
-            <Button ToolTip="Equalize spaces of objects into a grid" x:Name="distributeGridButton" Content="Grid" HorizontalAlignment="Left" Margin="24,306,0,0" VerticalAlignment="Top" Width="60" Height="45" Click="DistributeGridButton_Click"/>
+            <WPF:ImageButton ToolTip="Equalize horizontal spaces of objects within reference frame" x:Name="distributeHorizontalButton" HorizontalAlignment="Left" Margin="24,256,0,0" VerticalAlignment="Top" Width="60" Height="45" Click="DistributeHorizontalButton_Click" Background="{x:Null}" BorderBrush="{x:Null}">
+                <Image Source="..\Resources\PositionsLab\DistributeHorizontalIcon.png"/>
+            </WPF:ImageButton>
+            <WPF:ImageButton ToolTip="Equalize vertical spaces of objects within reference frame" x:Name="distributeVerticalButton" HorizontalAlignment="Left" Margin="89,256,0,0" VerticalAlignment="Top" Width="60" Height="45" Click="DistributeVerticalButton_Click" Background="{x:Null}" BorderBrush="{x:Null}">
+                <Image Source="..\Resources\PositionsLab\DistributeVerticalIcon.png"/>
+            </WPF:ImageButton>
+            <WPF:ImageButton ToolTip="Equalize horizontal and vertical spaces of objects within reference frame" x:Name="distributeCenterButton" HorizontalAlignment="Left" Margin="154,256,0,0" VerticalAlignment="Top" Width="60" Height="45" Click="DistributeCenterButton_Click"  Background="{x:Null}" BorderBrush="{x:Null}">
+                <Image Source="..\Resources\PositionsLab\DistributeCenterIcon.png"/>
+            </WPF:ImageButton>
+            <WPF:ImageButton ToolTip="Equalize horizontal and vertical spaces of objects amongst selected objects" x:Name="distributeShapesButton" HorizontalAlignment="Left" Margin="219,256,0,0" VerticalAlignment="Top" Width="60" Height="45" Click ="DistributeShapesButton_Click"  Background="{x:Null}" BorderBrush="{x:Null}">
+                <Image Source="..\Resources\PositionsLab\DistributeShapeIcon.png"/>
+            </WPF:ImageButton>
+            <WPF:ImageButton ToolTip="Equalize spaces of objects into a grid" x:Name="distributeGridButton" HorizontalAlignment="Left" Margin="24,306,0,0" VerticalAlignment="Top" Width="60" Height="45" Click="DistributeGridButton_Click" Background="{x:Null}" BorderBrush="{x:Null}">
+                <Image Source="..\Resources\PositionsLab\DistributeGridIcon.png"/>
+            </WPF:ImageButton>
             <Button ToolTip="Distribute objects along the edge of reference frame" x:Name="distributeAlongEdgeButton" Content="Edges" HorizontalAlignment="Left" Margin="24,306,0,0" VerticalAlignment="Top" Width="60" Height="45" Visibility="Hidden"/>
             <GroupBox x:Name="reorderGroupBox" Header="Reorder" HorizontalAlignment="Left" Margin="10,357,0,0" VerticalAlignment="Top" Height="80" Width="284">
                 <WPF:ImageButton ToolTip="Opens the settings for Reorder functions" x:Name="reorderSettingsButton" HorizontalAlignment="Right" Margin="0,-29,-3,0" VerticalAlignment="Top" Width="20" Height="20" Click="ReorderSettingsButton_Click" Background="{x:Null}" BorderBrush="{x:Null}">
