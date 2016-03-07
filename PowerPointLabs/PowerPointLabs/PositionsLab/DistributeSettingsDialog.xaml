@@ -12,7 +12,8 @@
                       ResizeMode="NoResize"
                       Title="Distribute Settings"
                       WindowStartupLocation="CenterScreen"
-                      Closed="DistributeSettingsDialong_Closed">
+                      Closed="DistributeSettingsDialong_Closed"
+                      WindowTransitionsEnabled="False">
     <controls:MetroWindow.Resources>
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
