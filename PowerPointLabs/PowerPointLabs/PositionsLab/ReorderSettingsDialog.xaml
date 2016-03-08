@@ -12,7 +12,8 @@
                       Height="257.949"
                       BorderThickness="1"
                       BorderBrush="#0070C0"
-                      Closed="ReorderSettingsDialong_Closed">
+                      Closed="ReorderSettingsDialong_Closed"
+                      WindowTransitionsEnabled="False">
     <controls:MetroWindow.Resources>
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>

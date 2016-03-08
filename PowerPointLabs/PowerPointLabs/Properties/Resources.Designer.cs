@@ -223,6 +223,66 @@ namespace PowerPointLabs.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
+        public static System.Drawing.Bitmap AlignBottomIcon {
+            get {
+                object obj = ResourceManager.GetObject("AlignBottomIcon", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        public static System.Drawing.Bitmap AlignCenterIcon {
+            get {
+                object obj = ResourceManager.GetObject("AlignCenterIcon", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        public static System.Drawing.Bitmap AlignLeftIcon {
+            get {
+                object obj = ResourceManager.GetObject("AlignLeftIcon", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        public static System.Drawing.Bitmap AlignMiddleIcon {
+            get {
+                object obj = ResourceManager.GetObject("AlignMiddleIcon", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        public static System.Drawing.Bitmap AlignRightIcon {
+            get {
+                object obj = ResourceManager.GetObject("AlignRightIcon", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        public static System.Drawing.Bitmap AlignTopIcon {
+            get {
+                object obj = ResourceManager.GetObject("AlignTopIcon", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
         public static System.Drawing.Bitmap Apply_icon {
             get {
                 object obj = ResourceManager.GetObject("Apply_icon", resourceCulture);
@@ -336,6 +396,56 @@ namespace PowerPointLabs.Properties {
         public static System.Drawing.Bitmap DefaultPicture {
             get {
                 object obj = ResourceManager.GetObject("DefaultPicture", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        public static System.Drawing.Bitmap DistributeCenterIcon {
+            get {
+                object obj = ResourceManager.GetObject("DistributeCenterIcon", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        public static System.Drawing.Bitmap DistributeGridIcon {
+            get {
+                object obj = ResourceManager.GetObject("DistributeGridIcon", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        public static System.Drawing.Bitmap DistributeHorizontalIcon {
+            get {
+                object obj = ResourceManager.GetObject("DistributeHorizontalIcon", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        public static System.Drawing.Bitmap DistributeShapeIcon {
+            get {
+                object obj = ResourceManager.GetObject("DistributeShapeIcon", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        public static System.Drawing.Bitmap DistributeVerticalIcon {
+            get {
+                object obj = ResourceManager.GetObject("DistributeVerticalIcon", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }
