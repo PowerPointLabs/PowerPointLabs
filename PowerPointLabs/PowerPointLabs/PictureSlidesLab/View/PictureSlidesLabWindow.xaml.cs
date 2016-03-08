@@ -142,6 +142,7 @@ namespace PowerPointLabs.PictureSlidesLab.View
             ViewModel.ImageSelectionList.CollectionChanged += ImageSelectionList_OnCollectionChanged;
             DataContext = ViewModel;
             SettingsPane.DataContext = ViewModel.Settings;
+            SettingsPane.UpdateInsertCitationControlsVisibility();
 
             UpdatePreviewInterfaceWhenImageListChange(ViewModel.ImageSelectionList);
             Logger.Log("PSL init ViewModel done");

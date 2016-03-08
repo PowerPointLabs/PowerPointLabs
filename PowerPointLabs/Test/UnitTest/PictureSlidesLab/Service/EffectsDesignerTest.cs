@@ -56,7 +56,7 @@ namespace Test.UnitTest.PictureSlidesLab.Service
                     Tooltip = "some tooltips"
                 });
 
-            ed.ApplyImageReference(Link);
+            ed.ApplyImageReferenceToSlideNote(Link);
             Assert.IsTrue( 
                 PpOperations.GetNotesPageText(_processingSlide)
                 .Contains(Link));

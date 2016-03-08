@@ -141,6 +141,22 @@ namespace PowerPointLabs.PictureSlidesLab.Model
             }
         }
 
+        private bool _isInsertCitationToNote;
+
+        [DefaultValue(false)]
+        public bool IsInsertCitationToNote
+        {
+            get
+            {
+                return _isInsertCitationToNote;
+            }
+            set
+            {
+                _isInsertCitationToNote = value;
+                OnPropertyChanged("IsInsertCitationToNote");
+            }
+        }
+
         #endregion
 
         #region other info

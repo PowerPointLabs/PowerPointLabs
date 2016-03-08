@@ -424,7 +424,6 @@
     <Compile Include="PictureSlidesLab\ModelFactory\VariantWorker\PictureVariantWorker.cs" />
     <Compile Include="PictureSlidesLab\ModelFactory\VariantWorker\SpecialEffectsVariantWorker.cs" />
     <Compile Include="PictureSlidesLab\ModelFactory\VariantWorker\TextBoxTransparencyVariantWorker.cs" />
-    <Compile Include="PictureSlidesLab\ModelFactory\VariantWorker\PictureCitationVariantWorker.cs" />
     <Compile Include="PictureSlidesLab\ModelFactory\VariantWorker\FrostedGlassBannerVariantWorker.cs" />
     <Compile Include="PictureSlidesLab\ModelFactory\VariantWorker\FrostedGlassTextBoxVariantWorker.cs" />
     <Compile Include="PictureSlidesLab\ModelFactory\VariantWorker\TextBoxVariantWorker.cs" />
