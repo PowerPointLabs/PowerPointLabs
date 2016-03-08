@@ -29,6 +29,14 @@ namespace PowerPointLabs.Utils
         }
 
         /// <summary>
+        /// Return specified shape.
+        /// </summary>
+        public PowerPoint.Shape Shape
+        {
+            get { return _shape; }
+        }
+
+        /// <summary>
         /// Return or set the name of the specified shape.
         /// </summary>
         public string Name
@@ -131,6 +139,134 @@ namespace PowerPointLabs.Utils
                     Y = _rotatedTop + _absoluteHeight/2
                 };
                 return centerPoint;
+            }
+        }
+
+        /// <summary>
+        /// Returns a point that represents the top left of the shape's bounding box after rotation.
+        /// </summary>
+        public PointF TopLeft
+        {
+            get
+            {
+                var topLeft = new PointF
+                {
+                    X = _rotatedLeft,
+                    Y = _rotatedTop
+                };
+                return topLeft;
+            }
+        }
+
+        /// <summary>
+        /// Returns a point that represents the top center of the shape's bounding box after rotation.
+        /// </summary>
+        public PointF TopCenter
+        {
+            get
+            {
+                var topCenterPoint = new PointF
+                {
+                    X = _rotatedLeft + _absoluteWidth / 2,
+                    Y = _rotatedTop
+                };
+                return topCenterPoint;
+            }
+        }
+
+        /// <summary>
+        /// Returns a point that represents the top right of the shape's bounding box after rotation.
+        /// </summary>
+        public PointF TopRight
+        {
+            get
+            {
+                var topRightPoint = new PointF
+                {
+                    X = _rotatedLeft + _absoluteWidth,
+                    Y = _rotatedTop
+                };
+                return topRightPoint;
+            }
+        }
+
+        /// <summary>
+        /// Returns a point that represents the middle left of the shape's bounding box after rotation.
+        /// </summary>
+        public PointF MiddleLeft
+        {
+            get
+            {
+                var middleLeftPoint = new PointF
+                {
+                    X = _rotatedLeft,
+                    Y = _rotatedTop + _absoluteHeight / 2
+                };
+                return middleLeftPoint;
+            }
+        }
+
+        /// <summary>
+        /// Returns a point that represents the middle right of the shape's bounding box after rotation.
+        /// </summary>
+        public PointF MiddleRight
+        {
+            get
+            {
+                var middleRightPoint = new PointF
+                {
+                    X = _rotatedLeft + _absoluteWidth,
+                    Y = _rotatedTop + _absoluteHeight / 2
+                };
+                return middleRightPoint;
+            }
+        }
+
+        /// <summary>
+        /// Returns a point that represents the bottom left of the shape's bounding box after rotation.
+        /// </summary>
+        public PointF BottomLeft
+        {
+            get
+            {
+                var bottomLeftPoint = new PointF
+                {
+                    X = _rotatedLeft,
+                    Y = _rotatedTop + _absoluteHeight
+                };
+                return bottomLeftPoint;
+            }
+        }
+
+        /// <summary>
+        /// Returns a point that represents the bottom center of the shape's bounding box after rotation.
+        /// </summary>
+        public PointF BottomCenter
+        {
+            get
+            {
+                var bottomCenterPoint = new PointF
+                {
+                    X = _rotatedLeft + _absoluteWidth / 2,
+                    Y = _rotatedTop + _absoluteHeight
+                };
+                return bottomCenterPoint;
+            }
+        }
+
+        /// <summary>
+        /// Returns a point that represents the bottom right of the shape's bounding box after rotation.
+        /// </summary>
+        public PointF BottomRight
+        {
+            get
+            {
+                var bottomRightPoint = new PointF
+                {
+                    X = _rotatedLeft + _absoluteWidth,
+                    Y = _rotatedTop + _absoluteHeight
+                };
+                return bottomRightPoint;
             }
         }
 

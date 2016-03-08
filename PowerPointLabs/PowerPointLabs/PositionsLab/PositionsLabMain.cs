@@ -28,7 +28,7 @@ namespace PowerPointLabs.PositionsLab
         private const string ErrorMessageFewerThanTwoSelection = TextCollection.PositionsLabText.ErrorFewerThanTwoSelection;
         private const string ErrorMessageUndefined = TextCollection.PositionsLabText.ErrorUndefined;
 
-        //For Distribute Grid
+        //Distribute Grid Variables
         public enum GridAlignment
         {
             AlignLeft,
@@ -41,8 +41,9 @@ namespace PowerPointLabs.PositionsLab
         public static float MarginBottom { get; private set; }
         public static float MarginLeft { get; private set; }
         public static float MarginRight { get; private set; }
+        public static bool DistributeUseSlideAsReference { get; private set; }
 
-        //For Reorder Swap Reference
+        //Reorder Variables
         public enum SwapReference
         {
             TopLeft,
@@ -58,10 +59,15 @@ namespace PowerPointLabs.PositionsLab
 
         public static SwapReference SwapReferencePoint { get; set; }
 
-        private static Dictionary<MsoAutoShapeType, float> shapeDefaultUpAngle;
-        public static bool AlignUseSlideAsReference { get; private set; }
-        public static bool DistributeUseSlideAsReference { get; private set; }
         public static bool IsSwapByClickOrder { get; set; }
+
+        private static Dictionary<int, Drawing.PointF> prevSelectedShapes = new Dictionary<int, Drawing.PointF>();
+        private static List<PPShape> prevSortedShapes;
+
+        //Align Variables
+        public static bool AlignUseSlideAsReference { get; private set; }
+
+        private static Dictionary<MsoAutoShapeType, float> shapeDefaultUpAngle;
 
         #region API
 
@@ -694,29 +700,53 @@ namespace PowerPointLabs.PositionsLab
 
             if (!IsSwapByClickOrder)
             {
-                sortedShapes = Graphics.SortShapesByLeft(selectedShapes);
+                if (ListIsPreviouslySelected(selectedShapes, prevSelectedShapes))
+                {
+                    sortedShapes = prevSortedShapes;
+                }
+                else
+                {
+                    sortedShapes = Graphics.SortShapesByLeft(selectedShapes);
+                }
+            }
+            else
+            {
+                prevSelectedShapes.Clear();
             }
 
-            var firstPos = sortedShapes[0].Center;
+            var firstPos = GetSwapReferencePoint(sortedShapes[0], SwapReferencePoint);
+
+            prevSortedShapes = new List<PPShape>();
 
             for (var i = 0; i < sortedShapes.Count; i++)
             {
                 var currentShape = sortedShapes[i];
                 if (i < sortedShapes.Count - 1)
                 {
-                    var currentPos = currentShape.Center;
-                    var nextPos = sortedShapes[i + 1].Center;
+                    var currentPos = GetSwapReferencePoint(currentShape, SwapReferencePoint);
+                    var nextPos = GetSwapReferencePoint(sortedShapes[i + 1], SwapReferencePoint);
 
                     currentShape.IncrementLeft(nextPos.X - currentPos.X);
                     currentShape.IncrementTop(nextPos.Y - currentPos.Y);
                 }
                 else
                 {
-                    var currentPos = currentShape.Center;
+                    var currentPos = GetSwapReferencePoint(currentShape, SwapReferencePoint);
                     currentShape.IncrementLeft(firstPos.X - currentPos.X);
                     currentShape.IncrementTop(firstPos.Y - currentPos.Y);
                 }
+
+                if (i != 0 && !IsSwapByClickOrder)
+                {
+                    prevSortedShapes.Add(currentShape);
+                }
             }
+
+            if (!IsSwapByClickOrder)
+            {
+                prevSortedShapes.Add(sortedShapes[0]);
+                SaveSelectedList(prevSortedShapes, prevSelectedShapes);
+            }  
         }
         #endregion
 
@@ -1167,12 +1197,59 @@ namespace PowerPointLabs.PositionsLab
 
             float difference = 0;
 
-            for (var i = index1; i < index2; i++)
+            for (var i = start; i < end; i++)
             {
                 difference += (differences[i] / 2 + margin1 + margin2 + differences[i + 1] / 2);
             }
 
             return difference;
+        }
+
+        private static bool ListIsPreviouslySelected(List<PPShape> selectedShapes, Dictionary<int, Drawing.PointF> prevSelectedShapes)
+        {
+            try
+            {
+                if (selectedShapes == null || selectedShapes.Count <= 0)
+                {
+                    return false;
+                }
+
+                for (int i = 0; i < selectedShapes.Count; i++)
+                {
+                    var shapePos = selectedShapes[i].Center;
+                    Drawing.PointF prevShapePos = new Drawing.PointF();
+                    if (!prevSelectedShapes.TryGetValue(selectedShapes[i].Id, out prevShapePos))
+                    {
+                        return false;
+                    }
+
+                    if (!(NearlyEqual(shapePos.X, prevShapePos.X, Epsilon) && (NearlyEqual(shapePos.Y, prevShapePos.Y, Epsilon))))
+                    {
+                        return false;
+                    }
+                }
+            }
+            catch 
+            {
+                return false;
+            }
+
+            return true;
+        }
+
+        private static void SaveSelectedList(List<PPShape> selectedShapes, Dictionary<int, Drawing.PointF> prevSelectedShapes)
+        {
+            if (selectedShapes == null || selectedShapes.Count <= 0)
+            {
+                return;
+            }
+
+            prevSelectedShapes.Clear();
+            for (int i = 0; i < selectedShapes.Count; i++)
+            {
+                var shapePos = selectedShapes[i].Center;
+                prevSelectedShapes.Add(selectedShapes[i].Id, shapePos);
+            }
         }
 
         private static void InitDefaultShapesAngles()
@@ -1224,28 +1301,26 @@ namespace PowerPointLabs.PositionsLab
             switch (r)
             {
                 case SwapReference.TopLeft:
-                    break;
+                    return shape.TopLeft;
                 case SwapReference.TopCenter:
-                    break;
+                    return shape.TopCenter;
                 case SwapReference.TopRight:
-                    break;
+                    return shape.TopRight;
                 case SwapReference.MiddleLeft:
-                    break;
+                    return shape.MiddleLeft;
                 case SwapReference.MiddleCenter:
-                    break;
+                    return shape.Center;
                 case SwapReference.MiddleRight:
-                    break;
+                    return shape.MiddleRight;
                 case SwapReference.BottomLeft:
-                    break;
+                    return shape.BottomLeft;
                 case SwapReference.BottomCenter:
-                    break;
+                    return shape.BottomCenter;
                 case SwapReference.BottomRight:
-                    break;
+                    return shape.BottomRight;
                 default:
-                    break;
+                    return shape.Center;
             }
-
-            return new Drawing.PointF();
         }
 
         private static void InitDefaultSwapSettings()
