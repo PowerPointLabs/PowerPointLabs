@@ -112,6 +112,10 @@ namespace PowerPointLabs.PictureSlidesLab.View
 
         private void QuickDropDialog_OnMouseDoubleClick(object sender, MouseButtonEventArgs e)
         {
+            if (_parent.WindowState == WindowState.Minimized)
+            {
+                _parent.WindowState = WindowState.Normal;
+            }
             _parent.Activate();
             e.Handled = true;
         }

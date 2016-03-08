@@ -571,7 +571,7 @@ namespace PowerPointLabs.PictureSlidesLab.View
                 {
                     GotoSlideButton.IsEnabled = true;
                     LoadStylesButton.IsEnabled = true;
-                    Dispatcher.BeginInvoke(new Action(() =>
+                    SetTimeout(() =>
                     {
                         // update preview images when slide no change
                         if (_lastSelectedSlideIndex == this.GetCurrentSlide().Index)
@@ -583,7 +583,7 @@ namespace PowerPointLabs.PictureSlidesLab.View
                         {
                             LoadStyleAndImage(this.GetCurrentSlide());
                         }
-                    }));
+                    }, 250);
                 }
             }
             catch (Exception expt)
