@@ -12,7 +12,6 @@ namespace PowerPointLabs.PictureSlidesLab.Service.StylesWorker
     {
         public IList<Shape> Execute(StyleOption option, EffectsDesigner designer, ImageItem source, Shape imageShape, Settings settings)
         {
-            designer.ApplyImageReference(source.Source);
             if (settings != null && settings.IsInsertCitation)
             {
                 designer.ApplyImageReferenceInsertion(source.Source, "Calibri", settings.CitationFontColor,
@@ -20,10 +19,14 @@ namespace PowerPointLabs.PictureSlidesLab.Service.StylesWorker
                     settings.IsUseCitationTextBox ? settings.CitationTextBoxColor : "", 
                     settings.GetCitationTextBoxAlignment());
             }
-            else if (option.IsInsertReference)
+
+            if (settings != null && settings.IsInsertCitationToNote)
             {
-                designer.ApplyImageReferenceInsertion(source.Source, option.GetFontFamily(), option.FontColor,
-                    option.CitationFontSize, option.ImageReferenceTextBoxColor, option.GetCitationTextBoxAlignment());
+                designer.ApplyImageReferenceToSlideNote(source.Source);
+            }
+            else
+            {
+                designer.RemoveImageReference();
             }
             return new List<Shape>();
         }

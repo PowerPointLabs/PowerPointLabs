@@ -7,8 +7,9 @@ namespace PowerPointLabs.PictureSlidesLab.Service
 {
     partial class EffectsDesigner
     {
-        public void ApplyTextboxEffect(string overlayColor, int transparency)
+        public void ApplyTextboxEffect(string overlayColor, int transparency, int fontSizeToIncrease)
         {
+            var margin = CalculateTextBoxMargin(fontSizeToIncrease);
             foreach (PowerPoint.Shape shape in Shapes)
             {
                 if ((shape.Type != MsoShapeType.msoPlaceholder
@@ -26,10 +27,10 @@ namespace PowerPointLabs.PictureSlidesLab.Service
                     if (StringUtil.IsNotEmpty(textRange.TrimText().Text))
                     {
                         var paragraph = textRange.TrimText();
-                        var left = paragraph.BoundLeft - 10;
-                        var top = paragraph.BoundTop - 10;
-                        var width = paragraph.BoundWidth + 20;
-                        var height = paragraph.BoundHeight + 20;
+                        var left = paragraph.BoundLeft - margin;
+                        var top = paragraph.BoundTop - margin;
+                        var width = paragraph.BoundWidth + margin * 2;
+                        var height = paragraph.BoundHeight + margin * 2;
 
                         var overlayShape = ApplyOverlayEffect(overlayColor, transparency,
                             left, top, width, height);

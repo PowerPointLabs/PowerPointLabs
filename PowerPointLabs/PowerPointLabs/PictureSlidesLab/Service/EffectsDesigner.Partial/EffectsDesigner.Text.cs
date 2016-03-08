@@ -132,8 +132,12 @@ namespace PowerPointLabs.PictureSlidesLab.Service
                 .StartTextWrapping();
         }
 
-        public void RecoverTextWrapping()
+        public void RecoverTextWrapping(Position position, Alignment alignment)
         {
+            if (position == Position.NoEffect
+                || alignment == Alignment.NoEffect)
+                return;
+
             new TextBoxes(Shapes.Range(), SlideWidth, SlideHeight)
                 .RecoverTextWrapping();
         }

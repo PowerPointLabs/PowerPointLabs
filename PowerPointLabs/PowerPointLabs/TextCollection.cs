@@ -394,16 +394,10 @@
             /// <summary>
             /// Messages
             /// </summary>
-            public const string ErrorNetworkOrApiQuotaUnavailable =
-            "Failed to search images. Please check your network, or the daily API quota is ran out.";
-            public const string ErrorNetworkOrSourceUnavailable =
-                "Failed to insert style. Please check your network, or the image source is unavailable.";
-            public const string ErrorNoEngineIdOrApiKey =
-                "Please fill in Search Engine Id and API Key by clicking ADVANCED.. button.";
             public const string ErrorImageCorrupted =
                 "Failed to load image. The image file is corrupted.";
             public const string ErrorImageDownloadCorrupted =
-                "Failed to load image. Please try again; or manually download the image and drag it to Picture Slides Lab.";
+                "Failed to load image. Please try again.";
             public const string ErrorFailedToLoad =
                 "Failed to load image. ";
             public const string ErrorUrlLinkIncorrect =
@@ -423,6 +417,7 @@
             public const string InfoPasteNothing = "No picture to paste.";
             public const string InfoPasteThumbnail = "Pasted successfully! But you might have pasted the thumbnail picture.";
             public const string InfoAddPictureCitationSlide = "Added successfully!";
+            public const string InfoDeleteAllImage = "Do you want to delete all pictures?";
         }
 
         #region Agenda Lab
