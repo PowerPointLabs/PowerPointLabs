@@ -153,6 +153,26 @@ namespace PowerPointLabs.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
+        public static System.Drawing.Bitmap AdjoinHorizontalIcon {
+            get {
+                object obj = ResourceManager.GetObject("AdjoinHorizontalIcon", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        public static System.Drawing.Bitmap AdjoinVerticalIcon {
+            get {
+                object obj = ResourceManager.GetObject("AdjoinVerticalIcon", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
         public static System.Drawing.Bitmap AgendaLab {
             get {
                 object obj = ResourceManager.GetObject("AgendaLab", resourceCulture);
@@ -1063,6 +1083,16 @@ namespace PowerPointLabs.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
+        public static System.Drawing.Bitmap RotateIcon {
+            get {
+                object obj = ResourceManager.GetObject("RotateIcon", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
         public static System.Drawing.Bitmap Saturation_icon_18x18 {
             get {
                 object obj = ResourceManager.GetObject("Saturation_icon_18x18", resourceCulture);
@@ -1103,6 +1133,36 @@ namespace PowerPointLabs.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
+        public static System.Drawing.Bitmap SnapAwayIcon {
+            get {
+                object obj = ResourceManager.GetObject("SnapAwayIcon", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        public static System.Drawing.Bitmap SnapHorizontalIcon {
+            get {
+                object obj = ResourceManager.GetObject("SnapHorizontalIcon", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        public static System.Drawing.Bitmap SnapVerticalIcon {
+            get {
+                object obj = ResourceManager.GetObject("SnapVerticalIcon", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
         public static System.Drawing.Bitmap SpeakTextContext {
             get {
                 object obj = ResourceManager.GetObject("SpeakTextContext", resourceCulture);
@@ -1126,6 +1186,16 @@ namespace PowerPointLabs.Properties {
         public static System.Drawing.Bitmap Stop {
             get {
                 object obj = ResourceManager.GetObject("Stop", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        public static System.Drawing.Bitmap SwapIcon {
+            get {
+                object obj = ResourceManager.GetObject("SwapIcon", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }

@@ -1224,6 +1224,11 @@
     <Resource Include="Resources\ResizeLab\ResizeUnlock.png" />
   </ItemGroup>
   <ItemGroup>
+    <Resource Include="Resources\PositionsLab\SwapIcon.png" />
+    <Resource Include="Resources\PositionsLab\SnapVerticalIcon.png" />
+    <Resource Include="Resources\PositionsLab\SnapHorizontalIcon.png" />
+    <Resource Include="Resources\PositionsLab\SnapAwayIcon.png" />
+    <Resource Include="Resources\PositionsLab\RotateIcon.png" />
     <Resource Include="Resources\PositionsLab\AlignLeftIcon.png" />
     <Resource Include="Resources\PositionsLab\AlignBottomIcon.png" />
     <Resource Include="Resources\PositionsLab\AlignCenterIcon.png" />
@@ -1235,6 +1240,8 @@
     <Resource Include="Resources\PositionsLab\DistributeHorizontalIcon.png" />
     <Resource Include="Resources\PositionsLab\DistributeShapeIcon.png" />
     <Resource Include="Resources\PositionsLab\DistributeVerticalIcon.png" />
+    <Resource Include="Resources\PositionsLab\AdjoinHorizontalIcon.png" />
+    <Resource Include="Resources\PositionsLab\AdjoinVerticalIcon.png" />
     <Content Include="Resources\PositionsLab\PositionsLab.png" />
   </ItemGroup>
   <ItemGroup>

@@ -466,4 +466,25 @@
   <data name="DistributeVerticalIcon" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\PositionsLab\DistributeVerticalIcon.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
+  <data name="AdjoinHorizontalIcon" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\PositionsLab\AdjoinHorizontalIcon.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="AdjoinVerticalIcon" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\PositionsLab\AdjoinVerticalIcon.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="RotateIcon" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\PositionsLab\RotateIcon.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="SnapAwayIcon" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\PositionsLab\SnapAwayIcon.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="SnapHorizontalIcon" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\PositionsLab\SnapHorizontalIcon.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="SnapVerticalIcon" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\PositionsLab\SnapVerticalIcon.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="SwapIcon" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\PositionsLab\SwapIcon.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
 </root>
