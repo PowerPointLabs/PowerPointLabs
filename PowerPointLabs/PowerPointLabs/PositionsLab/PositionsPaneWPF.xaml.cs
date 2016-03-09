@@ -9,6 +9,7 @@ using PowerPointLabs.ActionFramework.Common.Log;
 using PowerPointLabs.Utils;
 using PowerPointLabs.ActionFramework.Common.Extension;
 using Graphics = PowerPointLabs.Utils.Graphics;
+using System.Diagnostics;
 
 namespace PowerPointLabs.PositionsLab
 {
@@ -27,6 +28,9 @@ namespace PowerPointLabs.PositionsLab
         private const string ErrorMessageNoSelection = TextCollection.PositionsLabText.ErrorNoSelection;
         private const string ErrorMessageFewerThanTwoSelection = TextCollection.PositionsLabText.ErrorFewerThanTwoSelection;
         private const string ErrorMessageUndefined = TextCollection.PositionsLabText.ErrorUndefined;
+
+        //Variable for preview
+        bool _previewIsExecuted = false;
 
         //Variables for lock axis
         private const int Left = 0;
@@ -57,6 +61,7 @@ namespace PowerPointLabs.PositionsLab
             _dispatcherTimer.Interval = TimeSpan.FromMilliseconds(10);
         }
 
+        #region Click Behaviour
         #region Align
         private void AlignLeftButton_Click(object sender, RoutedEventArgs e)
         {
@@ -68,6 +73,10 @@ namespace PowerPointLabs.PositionsLab
 
             try
             {
+                if (_previewIsExecuted)
+                {
+                    UndoPreview();
+                }
                 this.StartNewUndoEntry();
                 var selectedShapes = ConvertShapeRangeToList(this.GetCurrentSelection().ShapeRange, 1);
                 PositionsLabMain.AlignLeft(selectedShapes);
@@ -88,6 +97,10 @@ namespace PowerPointLabs.PositionsLab
 
             try
             {
+                if (_previewIsExecuted)
+                {
+                    UndoPreview();
+                }
                 this.StartNewUndoEntry();
                 var selectedShapes = ConvertShapeRangeToList(this.GetCurrentSelection().ShapeRange, 1);
                 var slideWidth = this.GetCurrentPresentation().SlideWidth;
@@ -109,6 +122,10 @@ namespace PowerPointLabs.PositionsLab
 
             try
             {
+                if (_previewIsExecuted)
+                {
+                    UndoPreview();
+                }
                 this.StartNewUndoEntry();
                 var selectedShapes = ConvertShapeRangeToList(this.GetCurrentSelection().ShapeRange, 1);
                 PositionsLabMain.AlignTop(selectedShapes);
@@ -129,6 +146,10 @@ namespace PowerPointLabs.PositionsLab
 
             try
             {
+                if (_previewIsExecuted)
+                {
+                    UndoPreview();
+                }
                 this.StartNewUndoEntry();
                 var selectedShapes = ConvertShapeRangeToList(this.GetCurrentSelection().ShapeRange, 1);
                 var slideHeight = this.GetCurrentPresentation().SlideHeight;
@@ -150,6 +171,10 @@ namespace PowerPointLabs.PositionsLab
 
             try
             {
+                if (_previewIsExecuted)
+                {
+                    UndoPreview();
+                }
                 this.StartNewUndoEntry();
                 var selectedShapes = ConvertShapeRangeToList(this.GetCurrentSelection().ShapeRange, 1);
                 var slideHeight = this.GetCurrentPresentation().SlideHeight;
@@ -171,6 +196,10 @@ namespace PowerPointLabs.PositionsLab
 
             try
             {
+                if (_previewIsExecuted)
+                {
+                    UndoPreview();
+                }
                 this.StartNewUndoEntry();
                 var selectedShapes = ConvertShapeRangeToList(this.GetCurrentSelection().ShapeRange, 1);
                 var slideHeight = this.GetCurrentPresentation().SlideHeight;
@@ -195,6 +224,10 @@ namespace PowerPointLabs.PositionsLab
 
             try
             {
+                if (_previewIsExecuted)
+                {
+                    UndoPreview();
+                }
                 this.StartNewUndoEntry();
                 var selectedShapes = ConvertShapeRangeToList(this.GetCurrentSelection().ShapeRange, 1);
                 PositionsLabMain.AdjoinHorizontal(selectedShapes);
@@ -215,6 +248,10 @@ namespace PowerPointLabs.PositionsLab
 
             try
             {
+                if (_previewIsExecuted)
+                {
+                    UndoPreview();
+                }
                 this.StartNewUndoEntry();
                 var selectedShapes = ConvertShapeRangeToList(this.GetCurrentSelection().ShapeRange, 1);
                 PositionsLabMain.AdjoinVertical(selectedShapes);
@@ -237,6 +274,10 @@ namespace PowerPointLabs.PositionsLab
 
             try
             {
+                if (_previewIsExecuted)
+                {
+                    UndoPreview();
+                }
                 this.StartNewUndoEntry();
                 var selectedShapes = ConvertShapeRangeToList(this.GetCurrentSelection().ShapeRange, 1);
                 var slideWidth = this.GetCurrentPresentation().SlideWidth;
@@ -258,6 +299,10 @@ namespace PowerPointLabs.PositionsLab
 
             try
             {
+                if (_previewIsExecuted)
+                {
+                    UndoPreview();
+                }
                 this.StartNewUndoEntry();
                 var selectedShapes = ConvertShapeRangeToList(this.GetCurrentSelection().ShapeRange, 1);
                 var slideHeight = this.GetCurrentPresentation().SlideHeight;
@@ -279,6 +324,10 @@ namespace PowerPointLabs.PositionsLab
 
             try
             {
+                if (_previewIsExecuted)
+                {
+                    UndoPreview();
+                }
                 this.StartNewUndoEntry();
                 var selectedShapes = ConvertShapeRangeToList(this.GetCurrentSelection().ShapeRange, 1);
                 var slideWidth = this.GetCurrentPresentation().SlideWidth;
@@ -301,6 +350,10 @@ namespace PowerPointLabs.PositionsLab
 
             try
             {
+                if (_previewIsExecuted)
+                {
+                    UndoPreview();
+                }
                 this.StartNewUndoEntry();
                 var selectedShapes = ConvertShapeRangeToList(this.GetCurrentSelection().ShapeRange, 1);
                 PositionsLabMain.DistributeShapes(selectedShapes);
@@ -321,6 +374,10 @@ namespace PowerPointLabs.PositionsLab
 
             try
             {
+                if (_previewIsExecuted)
+                {
+                    UndoPreview();
+                }
                 this.StartNewUndoEntry();
                 var selectedShapes = ConvertShapeRangeToList(this.GetCurrentSelection().ShapeRange, 1);
                 var numShapesSelected = selectedShapes.Count;
@@ -355,6 +412,10 @@ namespace PowerPointLabs.PositionsLab
 
             try
             {
+                if (_previewIsExecuted)
+                {
+                    UndoPreview();
+                }
                 this.StartNewUndoEntry();
                 var selectedShapes = ConvertShapeRangeToList(this.GetCurrentSelection().ShapeRange, 1);
                 PositionsLabMain.Swap(selectedShapes);
@@ -605,6 +666,10 @@ namespace PowerPointLabs.PositionsLab
 
             try
             {
+                if (_previewIsExecuted)
+                {
+                    UndoPreview();
+                }
                 this.StartNewUndoEntry();
                 var selectedShapes = ConvertShapeRangeToList_Legacy(this.GetCurrentSelection().ShapeRange, 1);
                 PositionsLabMain.SnapHorizontal(selectedShapes);
@@ -625,6 +690,10 @@ namespace PowerPointLabs.PositionsLab
 
             try
             {
+                if (_previewIsExecuted)
+                {
+                    UndoPreview();
+                }
                 this.StartNewUndoEntry();
                 var selectedShapes = ConvertShapeRangeToList_Legacy(this.GetCurrentSelection().ShapeRange, 1);
                 PositionsLabMain.SnapVertical(selectedShapes);
@@ -645,6 +714,10 @@ namespace PowerPointLabs.PositionsLab
 
             try
             {
+                if (_previewIsExecuted)
+                {
+                    UndoPreview();
+                }
                 this.StartNewUndoEntry();
                 var selectedShapes = ConvertShapeRangeToList_Legacy(this.GetCurrentSelection().ShapeRange, 1);
                 PositionsLabMain.SnapAway(selectedShapes);
@@ -652,6 +725,322 @@ namespace PowerPointLabs.PositionsLab
             catch (Exception ex)
             {
                 ShowErrorMessageBox(ex.Message, ex);
+            }
+        }
+        #endregion
+        #endregion
+
+        #region Preview Behaviour
+        private void AlignLeftButton_MouseEnter(object sender, System.Windows.Input.MouseEventArgs e)
+        {
+            if (this.GetCurrentSelection().Type != PowerPoint.PpSelectionType.ppSelectionShapes)
+            {
+                return;
+            }
+            try
+            { 
+                var selectedShapes = ConvertShapeRangeToList(this.GetCurrentSelection().ShapeRange, 1);
+                this.StartNewUndoEntry();
+                PositionsLabMain.AlignLeft(selectedShapes);
+                _previewIsExecuted = true;
+            }
+            catch
+            {
+                return;
+            }
+        }
+
+        private void AlignRightButton_MouseEnter(object sender, System.Windows.Input.MouseEventArgs e)
+        {
+            if (this.GetCurrentSelection().Type != PowerPoint.PpSelectionType.ppSelectionShapes)
+            {
+                return;
+            }
+            try
+            {
+                var selectedShapes = ConvertShapeRangeToList(this.GetCurrentSelection().ShapeRange, 1);
+                this.StartNewUndoEntry();
+                var slideWidth = this.GetCurrentPresentation().SlideWidth;
+                PositionsLabMain.AlignRight(selectedShapes, slideWidth);
+                _previewIsExecuted = true;
+            }
+            catch
+            {
+                return;
+            }
+        }
+
+        private void AlignTopButton_MouseEnter(object sender, System.Windows.Input.MouseEventArgs e)
+        {
+            if (this.GetCurrentSelection().Type != PowerPoint.PpSelectionType.ppSelectionShapes)
+            {
+                return;
+            }
+            try
+            {
+                var selectedShapes = ConvertShapeRangeToList(this.GetCurrentSelection().ShapeRange, 1);
+                this.StartNewUndoEntry();
+                PositionsLabMain.AlignTop(selectedShapes);
+                _previewIsExecuted = true;
+            }
+            catch
+            {
+                return;
+            }
+        }
+
+        private void AlignBottomButton_MouseEnter(object sender, System.Windows.Input.MouseEventArgs e)
+        {
+            if (this.GetCurrentSelection().Type != PowerPoint.PpSelectionType.ppSelectionShapes)
+            {
+                return;
+            }
+            try
+            {
+                var selectedShapes = ConvertShapeRangeToList(this.GetCurrentSelection().ShapeRange, 1);
+                this.StartNewUndoEntry();
+                var slideHeight = this.GetCurrentPresentation().SlideHeight;
+                PositionsLabMain.AlignBottom(selectedShapes, slideHeight);
+                _previewIsExecuted = true;
+            }
+            catch
+            {
+                return;
+            }
+        }
+
+        private void AlignMiddleButton_MouseEnter(object sender, System.Windows.Input.MouseEventArgs e)
+        {
+            if (this.GetCurrentSelection().Type != PowerPoint.PpSelectionType.ppSelectionShapes)
+            {
+                return;
+            }
+            try
+            {
+                var selectedShapes = ConvertShapeRangeToList(this.GetCurrentSelection().ShapeRange, 1);
+                this.StartNewUndoEntry();
+                var slideHeight = this.GetCurrentPresentation().SlideHeight;
+                PositionsLabMain.AlignMiddle(selectedShapes, slideHeight);
+                _previewIsExecuted = true;
+            }
+            catch
+            {
+                return;
+            }
+        }
+
+        private void AlignCenterButton_MouseEnter(object sender, System.Windows.Input.MouseEventArgs e)
+        {
+            if (this.GetCurrentSelection().Type != PowerPoint.PpSelectionType.ppSelectionShapes)
+            {
+                return;
+            }
+            try
+            {
+                var selectedShapes = ConvertShapeRangeToList(this.GetCurrentSelection().ShapeRange, 1);
+                this.StartNewUndoEntry();
+                var slideHeight = this.GetCurrentPresentation().SlideHeight;
+                var slideWidth = this.GetCurrentPresentation().SlideWidth;
+                PositionsLabMain.AlignCenter(selectedShapes, slideHeight, slideWidth);
+                _previewIsExecuted = true;
+            }
+            catch
+            {
+                return;
+            }
+        }
+
+        private void AdjoinHorizontalButton_MouseEnter(object sender, System.Windows.Input.MouseEventArgs e)
+        {
+            if (this.GetCurrentSelection().Type != PowerPoint.PpSelectionType.ppSelectionShapes)
+            {
+                return;
+            }
+            try
+            {
+                var selectedShapes = ConvertShapeRangeToList(this.GetCurrentSelection().ShapeRange, 1);
+                this.StartNewUndoEntry();
+                PositionsLabMain.AdjoinHorizontal(selectedShapes);
+                _previewIsExecuted = true;
+            }
+            catch
+            {
+                return;
+            }
+        }
+
+        private void AdjoinVerticalButton_MouseEnter(object sender, System.Windows.Input.MouseEventArgs e)
+        {
+            if (this.GetCurrentSelection().Type != PowerPoint.PpSelectionType.ppSelectionShapes)
+            {
+                return;
+            }
+            try
+            {
+                var selectedShapes = ConvertShapeRangeToList(this.GetCurrentSelection().ShapeRange, 1);
+                this.StartNewUndoEntry();
+                PositionsLabMain.AdjoinVertical(selectedShapes);
+                _previewIsExecuted = true;
+            }
+            catch
+            {
+                return;
+            }
+        }
+
+        private void DistributeHorizontalButton_MouseEnter(object sender, System.Windows.Input.MouseEventArgs e)
+        {
+            if (this.GetCurrentSelection().Type != PowerPoint.PpSelectionType.ppSelectionShapes)
+            {
+                return;
+            }
+            try
+            {
+                var selectedShapes = ConvertShapeRangeToList(this.GetCurrentSelection().ShapeRange, 1);
+                this.StartNewUndoEntry();
+                var slideWidth = this.GetCurrentPresentation().SlideWidth;
+                PositionsLabMain.DistributeHorizontal(selectedShapes, slideWidth);
+                _previewIsExecuted = true;
+            }
+            catch
+            {
+                return;
+            }
+        }
+
+        private void DistributeVerticalButton_MouseEnter(object sender, System.Windows.Input.MouseEventArgs e)
+        {
+            if (this.GetCurrentSelection().Type != PowerPoint.PpSelectionType.ppSelectionShapes)
+            {
+                return;
+            }
+            try
+            {
+                var selectedShapes = ConvertShapeRangeToList(this.GetCurrentSelection().ShapeRange, 1);
+                this.StartNewUndoEntry();
+                var slideHeight = this.GetCurrentPresentation().SlideHeight;
+                PositionsLabMain.DistributeVertical(selectedShapes, slideHeight);
+                _previewIsExecuted = true;
+            }
+            catch
+            {
+                return;
+            }
+        }
+
+        private void DistributeCenterButton_MouseEnter(object sender, System.Windows.Input.MouseEventArgs e)
+        {
+            if (this.GetCurrentSelection().Type != PowerPoint.PpSelectionType.ppSelectionShapes)
+            {
+                return;
+            }
+            try
+            {
+                var selectedShapes = ConvertShapeRangeToList(this.GetCurrentSelection().ShapeRange, 1);
+                this.StartNewUndoEntry();
+                var slideWidth = this.GetCurrentPresentation().SlideWidth;
+                var slideHeight = this.GetCurrentPresentation().SlideHeight;
+                PositionsLabMain.DistributeCenter(selectedShapes, slideWidth, slideHeight);
+                _previewIsExecuted = true;
+            }
+            catch
+            {
+                return;
+            }
+        }
+
+        private void DistributeShapesButton_MouseEnter(object sender, System.Windows.Input.MouseEventArgs e)
+        {
+            if (this.GetCurrentSelection().Type != PowerPoint.PpSelectionType.ppSelectionShapes)
+            {
+                return;
+            }
+            try
+            {
+                var selectedShapes = ConvertShapeRangeToList(this.GetCurrentSelection().ShapeRange, 1);
+                this.StartNewUndoEntry();
+                PositionsLabMain.DistributeShapes(selectedShapes);
+                _previewIsExecuted = true;
+            }
+            catch
+            {
+                return;
+            }
+        }
+
+        private void SwapPositionsButton_MouseEnter(object sender, System.Windows.Input.MouseEventArgs e)
+        {
+            if (this.GetCurrentSelection().Type != PowerPoint.PpSelectionType.ppSelectionShapes)
+            {
+                return;
+            }
+            try
+            {
+                var selectedShapes = ConvertShapeRangeToList(this.GetCurrentSelection().ShapeRange, 1);
+                this.StartNewUndoEntry();
+                PositionsLabMain.Swap(selectedShapes);
+                _previewIsExecuted = true;
+            }
+            catch
+            {
+                return;
+            }
+        }
+
+        private void SnapHorizontalButton_MouseEnter(object sender, System.Windows.Input.MouseEventArgs e)
+        {
+            if (this.GetCurrentSelection().Type != PowerPoint.PpSelectionType.ppSelectionShapes)
+            {
+                return;
+            }
+            try
+            {
+                var selectedShapes = ConvertShapeRangeToList_Legacy(this.GetCurrentSelection().ShapeRange, 1);
+                this.StartNewUndoEntry();
+                PositionsLabMain.SnapHorizontal(selectedShapes);
+                _previewIsExecuted = true;
+            }
+            catch
+            {
+                return;
+            }
+        }
+
+        private void SnapVerticalButton_MouseEnter(object sender, System.Windows.Input.MouseEventArgs e)
+        {
+            if (this.GetCurrentSelection().Type != PowerPoint.PpSelectionType.ppSelectionShapes)
+            {
+                return;
+            }
+            try
+            {
+                var selectedShapes = ConvertShapeRangeToList_Legacy(this.GetCurrentSelection().ShapeRange, 1);
+                this.StartNewUndoEntry();
+                PositionsLabMain.SnapVertical(selectedShapes);
+                _previewIsExecuted = true;
+            }
+            catch
+            {
+                return;
+            }
+        }
+
+        private void SnapAwayButton_MouseEnter(object sender, System.Windows.Input.MouseEventArgs e)
+        {
+            if (this.GetCurrentSelection().Type != PowerPoint.PpSelectionType.ppSelectionShapes)
+            {
+                return;
+            }
+            try
+            {
+                var selectedShapes = ConvertShapeRangeToList_Legacy(this.GetCurrentSelection().ShapeRange, 1);
+                this.StartNewUndoEntry();
+                PositionsLabMain.SnapAway(selectedShapes);
+                _previewIsExecuted = true;
+            }
+            catch
+            {
+                return;
             }
         }
         #endregion
@@ -895,6 +1284,22 @@ namespace PowerPointLabs.PositionsLab
         }
 
         private void IgnoreExceptionThrown() { }
+
         #endregion
+
+        private void UndoPreview(object sender, System.Windows.Input.MouseEventArgs e)
+        {
+            UndoPreview();
+        }
+
+        private void UndoPreview()
+        {
+            if (_previewIsExecuted)
+            {
+                this.ExecuteOfficeCommand("Undo");
+                _previewIsExecuted = false;
+                GC.Collect();
+            }
+        }
     }
 }
