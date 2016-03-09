@@ -222,42 +222,6 @@ namespace PowerPointLabs.ResizeLab
 
         #endregion
 
-        #region Event Handler: Symmetry
-
-        private void SymmetricLeftBtn_Click(object sender, RoutedEventArgs e)
-        {
-            var selectedShapes = GetSelectedShapes();
-            Action<PowerPoint.ShapeRange> resizeAction = shapes => _resizeLab.SymmetrizeLeft(shapes);
-
-            ExecuteResizeAction(selectedShapes, resizeAction);
-        }
-
-        private void SymmetricRightBtn_Click(object sender, RoutedEventArgs e)
-        {
-            var selectedShapes = GetSelectedShapes();
-            Action<PowerPoint.ShapeRange> resizeAction = shapes => _resizeLab.SymmetrizeRight(shapes);
-
-            ExecuteResizeAction(selectedShapes, resizeAction);
-        }
-
-        private void SymmetricTopBtn_Click(object sender, RoutedEventArgs e)
-        {
-            var selectedShapes = GetSelectedShapes();
-            Action<PowerPoint.ShapeRange> resizeAction = shapes => _resizeLab.SymmetrizeTop(shapes);
-
-            ExecuteResizeAction(selectedShapes, resizeAction);
-        }
-
-        private void SymmetricBottomBtn_Click(object sender, RoutedEventArgs e)
-        {
-            var selectedShapes = GetSelectedShapes();
-            Action<PowerPoint.ShapeRange> resizeAction = shapes => _resizeLab.SymmetrizeBottom(shapes);
-
-            ExecuteResizeAction(selectedShapes, resizeAction);
-        }
-
-        #endregion
-
         #region Event Handler: Preview
 
         private void StretchLeftBtn_MouseEnter(object sender, MouseEventArgs e)
