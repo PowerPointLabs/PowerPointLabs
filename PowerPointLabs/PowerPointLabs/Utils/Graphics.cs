@@ -16,7 +16,6 @@ using Shape = Microsoft.Office.Interop.PowerPoint.Shape;
 using ShapeRange = Microsoft.Office.Interop.PowerPoint.ShapeRange;
 using TextFrame2 = Microsoft.Office.Interop.PowerPoint.TextFrame2;
 using Drawing = System.Drawing;
-using PowerPoint = Microsoft.Office.Interop.PowerPoint;
 
 namespace PowerPointLabs.Utils
 {
@@ -532,25 +531,6 @@ namespace PowerPointLabs.Utils
             }
         }
 
-        public static PointF[] GetRealCoordinates(Shape s)
-        {
-            var rotation = s.Rotation;
-
-            var s1 = new PointF(s.Left, s.Top);
-            var s2 = new PointF(s.Left + s.Width, s.Top);
-            var s3 = new PointF(s.Left + s.Width, s.Top + s.Height);
-            var s4 = new PointF(s.Left, s.Top + s.Height);
-
-            var origin = GetCenterPoint(s);
-
-            var rotated1 = RotatePoint(s1, origin, rotation);
-            var rotated2 = RotatePoint(s2, origin, rotation);
-            var rotated3 = RotatePoint(s3, origin, rotation);
-            var rotated4 = RotatePoint(s4, origin, rotation);
-
-            return new[] { rotated1, rotated2, rotated3, rotated4 };
-        }
-
         public static PointF RotatePoint(PointF p, PointF origin, float rotation)
         {
             var rotationInRadian = DegreeToRadian(rotation);
@@ -565,146 +545,47 @@ namespace PowerPointLabs.Utils
             return angle / 180.0 * Math.PI;
         }
 
-        public static PointF LeftMostPoint(PointF[] coordinates)
-        {
-            var leftMost = new PointF();
-
-            foreach (var point in coordinates)
-            {
-                if (leftMost.IsEmpty)
-                {
-                    leftMost = point;
-                }
-                else if (point.X < leftMost.X)
-                {
-                    leftMost = point;
-                }
-            }
-
-            return leftMost;
-        }
-
-        public static PointF RightMostPoint(PointF[] coordinates)
-        {
-            var rightMost = new Drawing.PointF();
-
-            foreach (var point in coordinates)
-            {
-                if (rightMost.IsEmpty)
-                {
-                    rightMost = point;
-                }
-                else if (point.X > rightMost.X)
-                {
-                    rightMost = point;
-                }
-            }
-
-            return rightMost;
-        }
-
-        public static PointF TopMostPoint(PointF[] coordinates)
-        {
-            var topMost = new PointF();
-
-            foreach (var point in coordinates)
-            {
-                if (topMost.IsEmpty)
-                {
-                    topMost = point;
-                }
-                else if (point.Y < topMost.Y)
-                {
-                    topMost = point;
-                }
-            }
-
-            return topMost;
-        }
-
-        public static PointF BottomMostPoint(PointF[] coordinates)
-        {
-            var lowest = new PointF();
-
-            foreach (var point in coordinates)
-            {
-                if (lowest.IsEmpty)
-                {
-                    lowest = point;
-                }
-                else if (point.Y > lowest.Y)
-                {
-                    lowest = point;
-                }
-            }
-
-            return lowest;
-        }
-
-        public static float RealWidth(Drawing.PointF[] coords)
-        {
-            Drawing.PointF leftMost = LeftMostPoint(coords);
-            Drawing.PointF rightMost = RightMostPoint(coords);
-            return rightMost.X - leftMost.X;
-        }
-
-        public static float RealHeight(Drawing.PointF[] coords)
-        {
-            Drawing.PointF topMost = TopMostPoint(coords);
-            Drawing.PointF lowest = BottomMostPoint(coords);
-
-            return lowest.Y - topMost.Y;
-        }
-
-        public static double GetUnrotatedLeftGivenRotatedLeft(Shape s, float rotatedLeft)
-        {
-            var rotationInRadian = DegreeToRadian(s.Rotation);
-            return rotatedLeft + Math.Cos(rotationInRadian) * (s.Width / 2) - Math.Sin(rotationInRadian) * (s.Height / 2) - s.Width / 2;
-        }
-
         public static PointF GetCenterPoint(Shape s)
         {
             return new PointF(s.Left + s.Width / 2, s.Top + s.Height / 2);
         }
 
-        //TODO: Change method signature to take in List of shapes instead
-        public static List<Shape> SortShapesByLeft(List<Shape> selectedShapes)
+        internal static List<PPShape> SortShapesByLeft(List<PPShape> selectedShapes)
         {
-            List<Shape> shapesToBeSorted = new List<Shape>();
+            List<PPShape> shapesToBeSorted = new List<PPShape>();
 
             for (int i = 0; i < selectedShapes.Count; i++)
             {
                 shapesToBeSorted.Add(selectedShapes[i]);
             }
 
-            shapesToBeSorted.Sort((s1, s2) => LeftComparator(s1, s2));
+            shapesToBeSorted.Sort(LeftComparator);
 
             return shapesToBeSorted;
         }
 
-        //TODO: Change method signature to take in List of shapes instead
-        public static List<Shape> SortShapesByTop(List<Shape> selectedShapes)
+        internal static List<PPShape> SortShapesByTop(List<PPShape> selectedShapes)
         {
-            List<Shape> shapesToBeSorted = new List<Shape>();
+            List<PPShape> shapesToBeSorted = new List<PPShape>();
 
             for (int i = 0; i < selectedShapes.Count; i++)
             {
                 shapesToBeSorted.Add(selectedShapes[i]);
             }
 
-            shapesToBeSorted.Sort((s1, s2) => TopComparator(s1, s2));
+            shapesToBeSorted.Sort(TopComparator);
 
             return shapesToBeSorted;
         }
 
-        public static int LeftComparator(Shape s1, Shape s2)
+        private static int LeftComparator(PPShape s1, PPShape s2)
         {
-            return LeftMostPoint(GetRealCoordinates(s1)).X.CompareTo(LeftMostPoint(GetRealCoordinates(s2)).X);
+            return s1.Left.CompareTo(s2.Left);
         }
 
-        public static int TopComparator(Shape s1, Shape s2)
+        private static int TopComparator(PPShape s1, PPShape s2)
         {
-            return TopMostPoint(GetRealCoordinates(s1)).Y.CompareTo(TopMostPoint(GetRealCoordinates(s2)).Y);
+            return s1.Top.CompareTo(s2.Top);
         }
 
         # endregion

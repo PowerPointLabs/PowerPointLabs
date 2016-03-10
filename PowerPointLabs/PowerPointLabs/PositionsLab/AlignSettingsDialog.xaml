@@ -12,7 +12,8 @@
              Height="150" 
              BorderThickness="1"
              BorderBrush="#0070C0"
-             Closed="AlignSettingsDialong_Closed">
+             Closed="AlignSettingsDialong_Closed"
+             WindowTransitionsEnabled="False">
     <controls:MetroWindow.Resources>
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>

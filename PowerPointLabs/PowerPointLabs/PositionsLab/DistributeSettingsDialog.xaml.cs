@@ -1,13 +1,11 @@
-﻿using MahApps.Metro.Controls;
-using System.Windows;
-using System.Windows.Controls;
+﻿using System.Windows;
 
 namespace PowerPointLabs.PositionsLab
 {
     /// <summary>
     /// Interaction logic for DistributeSettingsDialog.xaml
     /// </summary>
-    public partial class DistributeSettingsDialog : MetroWindow
+    public partial class DistributeSettingsDialog
     {
         //Flag to trigger
         public bool IsOpen { get; set; }

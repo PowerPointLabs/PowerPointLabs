@@ -1,12 +1,11 @@
-﻿using MahApps.Metro.Controls;
-using System.Windows;
+﻿using System.Windows;
 
 namespace PowerPointLabs.PositionsLab
 {
     /// <summary>
     /// Interaction logic for AlignSettingsDialog.xaml
     /// </summary>
-    public partial class AlignSettingsDialog : MetroWindow
+    public partial class AlignSettingsDialog
     {
         //Flag to trigger
         public bool IsOpen { get; set; }

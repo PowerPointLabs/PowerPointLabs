@@ -19,25 +19,21 @@ namespace PowerPointLabs.ResizeLab
             }
         }
 
-        public void Preview(PowerPoint.ShapeRange selectedShapes, SingleInputResizeAction previewAction, int minNoOfSelectedShapes)
-        {
-            if (selectedShapes == null || selectedShapes.Count < minNoOfSelectedShapes) return;
 
-            var action = previewAction(selectedShapes);
+        public void Preview(PowerPoint.ShapeRange selectedShapes, Action<PowerPoint.ShapeRange> previewAction, int minNumberofSelectedShapes)
+        {
+            if (selectedShapes == null || selectedShapes.Count < minNumberofSelectedShapes) return;
 
             StoreOriginalShapesProperties(selectedShapes);
-            action(selectedShapes);
+            previewAction.Invoke(selectedShapes);
         }
 
-        public void Preview(PowerPoint.ShapeRange selectedShapes, float slideWidth, float slideHeight,
-            MultiInputResizeAction previewAction)
+        public void Preview(PowerPoint.ShapeRange selectedShapes, float referenceWidth, float referenceHeight, Action<PowerPoint.ShapeRange, float, float, bool> previewAction)
         {
             if (selectedShapes == null) return;
 
-            var action = previewAction(selectedShapes, slideWidth, slideHeight, IsAspectRatioLocked);
-
             StoreOriginalShapesProperties(selectedShapes);
-            action(selectedShapes, slideWidth, slideHeight, IsAspectRatioLocked);
+            previewAction.Invoke(selectedShapes, referenceWidth, referenceHeight, IsAspectRatioLocked);
         }
 
         public void Reset()
@@ -50,25 +46,21 @@ namespace PowerPointLabs.ResizeLab
             }
         }
 
-        public void ExecuteResizeAction(PowerPoint.ShapeRange selectedShapes, SingleInputResizeAction resizeAction)
+        public void ExecuteResizeAction(PowerPoint.ShapeRange selectedShapes, Action<PowerPoint.ShapeRange> resizeAction)
         {
             if (selectedShapes == null) return;
 
-            var action = resizeAction(selectedShapes);
-
             Reset();
-            action(selectedShapes);
+            resizeAction.Invoke(selectedShapes);
             CleanOriginalShapes();
         }
 
-        public void ExecuteResizeAction(PowerPoint.ShapeRange selectedShapes, float slideWidth, float slideHeight, MultiInputResizeAction resizeAction)
+        public void ExecuteResizeAction(PowerPoint.ShapeRange selectedShapes, float slideWidth, float slideHeight, Action<PowerPoint.ShapeRange, float, float, bool> resizeAction)
         {
             if (selectedShapes == null) return;
 
-            var action = resizeAction(selectedShapes, slideWidth, slideHeight, IsAspectRatioLocked);
-
             Reset();
-            action(selectedShapes, slideWidth, slideHeight, IsAspectRatioLocked);
+            resizeAction.Invoke(selectedShapes, slideWidth, slideHeight, IsAspectRatioLocked);
             CleanOriginalShapes();
         }
 

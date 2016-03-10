@@ -556,7 +556,11 @@
     <Compile Include="PositionsLab\PositionsPaneWPF.xaml.cs">
       <DependentUpon>PositionsPaneWPF.xaml</DependentUpon>
     </Compile>
+    <Compile Include="PositionsLab\ReorderSettingsDialog.xaml.cs">
+      <DependentUpon>ReorderSettingsDialog.xaml</DependentUpon>
+    </Compile>
     <Compile Include="PPMouseLegacy.cs" />
+    <Compile Include="ResizeLab\ResizeLabMain.Symmetry.cs" />
     <Compile Include="ResizeLab\ResizeLabPaneWPF.xaml.InterfaceImpl.cs" />
     <Compile Include="ResizeLab\IResizeLabPane.cs" />
     <Compile Include="ResizeLab\ResizeLabMain.AspectRatio.cs" />
@@ -1081,6 +1085,10 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="PositionsLab\ReorderSettingsDialog.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="ResizeLab\ResizeLabPaneWPF.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -1215,10 +1223,37 @@
     <Resource Include="Resources\ResizeLab\ResizeUnlock.png" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="Resources\PositionsLab\PositionsLab.png" />
+    <Resource Include="Resources\PositionsLab\SwapIcon.png" />
+    <Resource Include="Resources\PositionsLab\SnapVerticalIcon.png" />
+    <Resource Include="Resources\PositionsLab\SnapHorizontalIcon.png" />
+    <Resource Include="Resources\PositionsLab\SnapAwayIcon.png" />
+    <Resource Include="Resources\PositionsLab\RotateIcon.png" />
+    <Resource Include="Resources\PositionsLab\AlignLeftIcon.png" />
+    <Resource Include="Resources\PositionsLab\AlignBottomIcon.png" />
+    <Resource Include="Resources\PositionsLab\AlignCenterIcon.png" />
+    <Resource Include="Resources\PositionsLab\AlignMiddleIcon.png" />
+    <Resource Include="Resources\PositionsLab\AlignRightIcon.png" />
+    <Resource Include="Resources\PositionsLab\AlignTopIcon.png" />
+    <Resource Include="Resources\PositionsLab\DistributeCenterIcon.png" />
+    <Resource Include="Resources\PositionsLab\DistributeGridIcon.png" />
+    <Resource Include="Resources\PositionsLab\DistributeHorizontalIcon.png" />
+    <Resource Include="Resources\PositionsLab\DistributeShapeIcon.png" />
+    <Resource Include="Resources\PositionsLab\DistributeVerticalIcon.png" />
+    <Resource Include="Resources\PositionsLab\AdjoinHorizontalIcon.png" />
+    <Resource Include="Resources\PositionsLab\AdjoinVerticalIcon.png" />
+    <Content Include="Resources\PositionsLab\PositionsLab.png" />
+    <Resource Include="Resources\ResizeLab\ResizeSymmetricTop.png" />
+    <Resource Include="Resources\ResizeLab\ResizeSymmetricRight.png" />
+    <Resource Include="Resources\ResizeLab\ResizeSymmetricLeft.png" />
+    <Resource Include="Resources\ResizeLab\ResizeSymmetricBottom.png" />
   </ItemGroup>
   <ItemGroup>
     <Resource Include="Resources\ResizeLab\ResizeLab.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\SettingsGear.png" />
+  </ItemGroup>
+  <ItemGroup>
     <None Include="Resources\AgendaSettings1.png" />
   </ItemGroup>
   <ItemGroup>
