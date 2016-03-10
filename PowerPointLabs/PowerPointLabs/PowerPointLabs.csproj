@@ -44,7 +44,7 @@
     <PublishUrl>C:\Users\Giki\Desktop\pptlabsPublish\</PublishUrl>
     <InstallUrl>http://www.comp.nus.edu.sg/~pptlabs/download/dev/</InstallUrl>
     <TargetCulture>en</TargetCulture>
-    <ApplicationVersion>2.8.6.4</ApplicationVersion>
+    <ApplicationVersion>2.8.6.5</ApplicationVersion>
     <AutoIncrementApplicationRevision>false</AutoIncrementApplicationRevision>
     <UpdateEnabled>true</UpdateEnabled>
     <UpdateInterval>0</UpdateInterval>
@@ -1241,7 +1241,7 @@
     <Resource Include="Resources\PositionsLab\DistributeVerticalIcon.png" />
     <Resource Include="Resources\PositionsLab\AdjoinHorizontalIcon.png" />
     <Resource Include="Resources\PositionsLab\AdjoinVerticalIcon.png" />
-    <Content Include="Resources\PositionsLab\PositionsLab.png" />
+    <None Include="Resources\PositionsLab\PositionsLab.png" />
     <Resource Include="Resources\ResizeLab\ResizeSymmetricTop.png" />
     <Resource Include="Resources\ResizeLab\ResizeSymmetricRight.png" />
     <Resource Include="Resources\ResizeLab\ResizeSymmetricLeft.png" />
