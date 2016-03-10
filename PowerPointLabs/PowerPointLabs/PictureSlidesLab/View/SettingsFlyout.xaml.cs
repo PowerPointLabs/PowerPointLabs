@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Forms;
 using System.Windows.Input;
@@ -17,6 +18,7 @@ namespace PowerPointLabs.PictureSlidesLab.View
         public SettingsFlyout()
         {
             InitializeComponent();
+            UpdateInsertCitationControlsVisibility();
         }
 
         private void ColorPanel_OnMouseLeftButtonUp(object sender, MouseButtonEventArgs e)
@@ -48,6 +50,50 @@ namespace PowerPointLabs.PictureSlidesLab.View
         private Color GetColor(SolidColorBrush brush)
         {
             return Color.FromArgb(brush.Color.A, brush.Color.R, brush.Color.G, brush.Color.B);
+        }
+
+        public void UpdateInsertCitationControlsVisibility()
+        {
+            if (InsertCitationToggleSwitch.IsChecked != null
+                && InsertCitationToggleSwitch.IsChecked.Value)
+            {
+                CitationFontColorLabel.Visibility = Visibility.Visible;
+                CitationFontColorPanel.Visibility = Visibility.Visible;
+
+                CitationFontSizeLabel.Visibility = Visibility.Visible;
+                CitationFontSizeSlider.Visibility = Visibility.Visible;
+
+                CitationAlignmentLabel.Visibility = Visibility.Visible;
+                CitationAlignmentComboBox.Visibility = Visibility.Visible;
+
+                UseTextBoxLabel.Visibility = Visibility.Visible;
+                UseTextBoxToggleSwitch.Visibility = Visibility.Visible;
+
+                CitationTextBoxColorLabel.Visibility = Visibility.Visible;
+                CitationTextBoxColorPanel.Visibility = Visibility.Visible;
+            }
+            else
+            {
+                CitationFontColorLabel.Visibility = Visibility.Collapsed;
+                CitationFontColorPanel.Visibility = Visibility.Collapsed;
+
+                CitationFontSizeLabel.Visibility = Visibility.Collapsed;
+                CitationFontSizeSlider.Visibility = Visibility.Collapsed;
+
+                CitationAlignmentLabel.Visibility = Visibility.Collapsed;
+                CitationAlignmentComboBox.Visibility = Visibility.Collapsed;
+
+                UseTextBoxLabel.Visibility = Visibility.Collapsed;
+                UseTextBoxToggleSwitch.Visibility = Visibility.Collapsed;
+
+                CitationTextBoxColorLabel.Visibility = Visibility.Collapsed;
+                CitationTextBoxColorPanel.Visibility = Visibility.Collapsed;
+            }
+        }
+
+        private void InsertCitationToggleSwitch_OnIsCheckedChanged(object sender, EventArgs e)
+        {
+            UpdateInsertCitationControlsVisibility();
         }
     }
 }

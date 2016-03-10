@@ -12,7 +12,7 @@
                 <ResourceDictionary Source="pack://application:,,,/MahApps.Metro;component/Styles/Controls.xaml" />
                 <ResourceDictionary Source="pack://application:,,,/MahApps.Metro;component/Styles/Fonts.xaml" />
                 <ResourceDictionary Source="pack://application:,,,/MahApps.Metro;component/Styles/Colors.xaml" />
-                <ResourceDictionary Source="pack://application:,,,/MahApps.Metro;component/Styles/Accents/orange.xaml" />
+                <ResourceDictionary Source="pack://application:,,,/MahApps.Metro;component/Styles/Accents/blue.xaml" />
                 <ResourceDictionary Source="pack://application:,,,/MahApps.Metro;component/Styles/Accents/basedark.xaml" />
             </ResourceDictionary.MergedDictionaries>
         </ResourceDictionary>
@@ -27,10 +27,11 @@
             <RowDefinition Height="35"/>
             <RowDefinition Height="35"/>
             <RowDefinition Height="35"/>
-            <RowDefinition Height="35"/>
-            <RowDefinition Height="35"/>
-            <RowDefinition Height="35"/>
-            <RowDefinition Height="35"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
             <RowDefinition Height="35"/>
             <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
@@ -44,25 +45,29 @@
 
         <Label BorderBrush="#565656" BorderThickness="0,0,0,1" Content="Picture Citation" Foreground="#AAAAAA" FontSize="15" HorizontalAlignment="Left" VerticalAlignment="Center" Grid.Column="0" Grid.Row="2"/>
         <Label Name="IsInsertCitationLabel" Content="Insert Citation" Foreground="#FFFFFF" FontSize="15" HorizontalAlignment="Left" VerticalAlignment="Center" Grid.Column="0" Grid.Row="3"/>
-        <controls:ToggleSwitch IsChecked="{Binding Path=IsInsertCitation, Mode=TwoWay, NotifyOnSourceUpdated=True}" HorizontalAlignment="Left" OnLabel="" OffLabel="" Grid.Column="1" Grid.Row="3" />
+        <controls:ToggleSwitch IsCheckedChanged="InsertCitationToggleSwitch_OnIsCheckedChanged" Name="InsertCitationToggleSwitch" IsChecked="{Binding Path=IsInsertCitation, Mode=TwoWay, NotifyOnSourceUpdated=True}" HorizontalAlignment="Left" OnLabel="" OffLabel="" Grid.Column="1" Grid.Row="3" />
 
-        <Label Name="CitationFontColorLabel" Content="Font Color" Foreground="#FFFFFF" FontSize="15" HorizontalAlignment="Left" VerticalAlignment="Center" Grid.Column="0" Grid.Row="4"/>
+        <Label Height="35" Name="CitationFontColorLabel" Content="Font Color" Foreground="#FFFFFF" FontSize="15" HorizontalAlignment="Left" VerticalAlignment="Center" Grid.Column="0" Grid.Row="4"/>
         <Border IsEnabled="{Binding Path=IsInsertCitation}" Name="CitationFontColorPanel" MouseLeftButtonUp="ColorPanel_OnMouseLeftButtonUp" Background="{Binding Path=CitationFontColor, Mode=TwoWay, NotifyOnSourceUpdated=True}" BorderBrush="#464646" BorderThickness="1" Height="29" Width="100" HorizontalAlignment="Left" VerticalAlignment="Center" Grid.Column="1" Grid.Row="4" />
-        
-        <Label Name="CitationFontSizeLabel" Content="Citation Font Size" Foreground="#FFFFFF" FontSize="15" HorizontalAlignment="Left" VerticalAlignment="Center" Grid.Column="0" Grid.Row="5"/>
-        <Slider Value="{Binding Path=CitationFontSize, Mode=TwoWay, NotifyOnSourceUpdated=True}" Width="120" Minimum="5" Maximum="14" HorizontalAlignment="Left" VerticalAlignment="Center" Grid.Column="1" Grid.Row="5"></Slider>
-        
-        <Label Name="CitationAlignmentLabel" Content="Citation Text Alignment" Foreground="#FFFFFF" FontSize="15" HorizontalAlignment="Left" VerticalAlignment="Center" Grid.Column="0" Grid.Row="6"/>
-        <ComboBox Name="CitationAlignmentComboBox" SelectedIndex="{Binding Path=CitationAlignment, Mode=TwoWay, NotifyOnSourceUpdated=True}" HorizontalAlignment="Left" VerticalAlignment="Center" Grid.Column="1" Grid.Row="6">
+
+        <Label Height="35" Name="CitationFontSizeLabel" Content="Citation Font Size" Foreground="#FFFFFF" FontSize="15" HorizontalAlignment="Left" VerticalAlignment="Center" Grid.Column="0" Grid.Row="5"/>
+        <Slider Height="35" Name="CitationFontSizeSlider" ToolTip="{Binding Value, RelativeSource={RelativeSource self}}" Value="{Binding Path=CitationFontSize, Mode=TwoWay, NotifyOnSourceUpdated=True}" Width="120" Minimum="5" Maximum="14" HorizontalAlignment="Left" VerticalAlignment="Center" Grid.Column="1" Grid.Row="5"></Slider>
+
+        <Label Height="35" Name="CitationAlignmentLabel" Content="Citation Text Alignment" Foreground="#FFFFFF" FontSize="15" HorizontalAlignment="Left" VerticalAlignment="Center" Grid.Column="0" Grid.Row="6"/>
+        <ComboBox Height="35" Name="CitationAlignmentComboBox" SelectedIndex="{Binding Path=CitationAlignment, Mode=TwoWay, NotifyOnSourceUpdated=True}" HorizontalAlignment="Left" VerticalAlignment="Center" Grid.Column="1" Grid.Row="6">
             <ComboBoxItem>Left</ComboBoxItem>
             <ComboBoxItem>Centre</ComboBoxItem>
             <ComboBoxItem>Right</ComboBoxItem>
         </ComboBox>
 
-        <Label Name="UseTextBoxLabel" Content="Use TextBox Style" Foreground="#FFFFFF" FontSize="15" HorizontalAlignment="Left" VerticalAlignment="Center" Grid.Column="0" Grid.Row="7"/>
-        <controls:ToggleSwitch IsChecked="{Binding Path=IsUseCitationTextBox, Mode=TwoWay, NotifyOnSourceUpdated=True}" HorizontalAlignment="Left" OnLabel="" OffLabel="" Grid.Column="1" Grid.Row="7" />
+        <Label Height="35" Name="UseTextBoxLabel" Content="Use TextBox Style" Foreground="#FFFFFF" FontSize="15" HorizontalAlignment="Left" VerticalAlignment="Center" Grid.Column="0" Grid.Row="7"/>
+        <controls:ToggleSwitch Height="35" Name="UseTextBoxToggleSwitch" IsChecked="{Binding Path=IsUseCitationTextBox, Mode=TwoWay, NotifyOnSourceUpdated=True}" HorizontalAlignment="Left" OnLabel="" OffLabel="" Grid.Column="1" Grid.Row="7" />
 
-        <Label Name="CitationTextBoxColorLabel" Content="TextBox Color" Foreground="#FFFFFF" FontSize="15" HorizontalAlignment="Left" VerticalAlignment="Center" Grid.Column="0" Grid.Row="8"/>
+        <Label Height="35" Name="CitationTextBoxColorLabel" Content="TextBox Color" Foreground="#FFFFFF" FontSize="15" HorizontalAlignment="Left" VerticalAlignment="Center" Grid.Column="0" Grid.Row="8"/>
         <Border IsEnabled="{Binding Path=IsUseCitationTextBox}" Name="CitationTextBoxColorPanel" MouseLeftButtonUp="ColorPanel_OnMouseLeftButtonUp" Background="{Binding Path=CitationTextBoxColor, Mode=TwoWay, NotifyOnSourceUpdated=True}" BorderBrush="#464646" BorderThickness="1" Height="29" Width="100" HorizontalAlignment="Left" VerticalAlignment="Center" Grid.Column="1" Grid.Row="8" />
+
+        <Label Name="IsInsertCitationToNoteLabel" Content="Insert Citation to Slide Note" Foreground="#FFFFFF" FontSize="15" HorizontalAlignment="Left" VerticalAlignment="Center" Grid.Column="0" Grid.Row="9"/>
+        <controls:ToggleSwitch IsChecked="{Binding Path=IsInsertCitationToNote, Mode=TwoWay, NotifyOnSourceUpdated=True}" HorizontalAlignment="Left" OnLabel="" OffLabel="" Grid.Column="1" Grid.Row="9" />
+
     </Grid>
 </UserControl>

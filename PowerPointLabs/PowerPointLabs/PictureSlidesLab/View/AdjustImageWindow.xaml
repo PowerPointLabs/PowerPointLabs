@@ -53,13 +53,13 @@
             <Button Grid.Column="4" Style="{DynamicResource MetroCircleButtonStyle}" x:Name="MoveRightButton" ToolTip="Move selection right" Click="MoveRightButton_OnClick" Width="40" Height="40">
                 <Image Width="24" Height="24" Name="MoveRightImage"></Image>
             </Button>
-            <Button Grid.Column="5" Style="{DynamicResource MetroCircleButtonStyle}" x:Name="ZoomInButton" ToolTip="Increase dimensions" Click="ZoomInButton_OnClick" Width="40" Height="40">
+            <Button Grid.Column="5" Style="{DynamicResource MetroCircleButtonStyle}" x:Name="ZoomInButton" ToolTip="Zoom in" Click="ZoomInButton_OnClick" Width="40" Height="40">
                 <Image Width="24" Height="24" Name="ZoomInImage"></Image>
             </Button>
-            <Button Grid.Column="6" Style="{DynamicResource MetroCircleButtonStyle}" x:Name="ZoomOutButton" ToolTip="Decrease dimensions" Click="ZoomOutButton_OnClick" Width="40" Height="40">
+            <Button Grid.Column="6" Style="{DynamicResource MetroCircleButtonStyle}" x:Name="ZoomOutButton" ToolTip="Zoom out" Click="ZoomOutButton_OnClick" Width="40" Height="40">
                 <Image Width="24" Height="24" Name="ZoomOutImage"></Image>
             </Button>
-            <Button Grid.Column="7" Style="{DynamicResource MetroCircleButtonStyle}" x:Name="AutoFitButton" ToolTip="Auto fit image dimensions" Click="AutoFitButton_OnClick" Width="40" Height="40">
+            <Button Grid.Column="7" Style="{DynamicResource MetroCircleButtonStyle}" x:Name="AutoFitButton" ToolTip="Auto fit picture dimensions" Click="AutoFitButton_OnClick" Width="40" Height="40">
                 <Image Width="24" Height="24" Name="AutoFitImage"></Image>
             </Button>
             <Button Height="28" Grid.Column="8" x:Name="SaveCropButton" ToolTip="Save current image dimensions" Click="SaveCropButton_OnClick" Margin="0,0,20,0" Width="45" HorizontalAlignment="Right">Save</Button>

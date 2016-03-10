@@ -27,6 +27,7 @@ namespace PowerPointLabs.PictureSlidesLab.ModelFactory.Options
             return new StyleOption
             {
                 StyleName = TextCollection.PictureSlidesLabText.StyleNameFrostedGlassTextBox,
+                FontFamily = "Segoe UI",
                 IsUseFrostedGlassTextBoxStyle = true
             };
         }

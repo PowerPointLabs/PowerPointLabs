@@ -31,19 +31,30 @@ namespace PowerPointLabs.PictureSlidesLab.Service
                 return imageFilePath;
             }
 
-            var blurImageFile = Util.TempPath.GetPath("fullsize_blur");
+            var resizeImageFile = Util.TempPath.GetPath("fullsize_resize");
             using (var imageFactory = new ImageFactory())
             {
                 var image = imageFactory
                     .Load(imageFilePath)
                     .Image;
+
                 var ratio = (float)image.Width / image.Height;
-                var targetHeight = Math.Ceiling(MaxThumbnailHeight - (MaxThumbnailHeight - MinThumbnailHeight) / 100f * degree);
-                var targetWidth = Math.Ceiling(targetHeight * ratio);
+                var targetHeight = Math.Round(MaxThumbnailHeight - (MaxThumbnailHeight - MinThumbnailHeight) / 100f * degree);
+                var targetWidth = Math.Round(targetHeight * ratio);
 
                 image = imageFactory
                     .Resize(new Size((int)targetWidth, (int)targetHeight))
-                    .GaussianBlur(5).Image;
+                    .Image;
+                image.Save(resizeImageFile);
+            }
+
+            var blurImageFile = Util.TempPath.GetPath("fullsize_blur");
+            using (var imageFactory = new ImageFactory())
+            {
+                var image = imageFactory
+                    .Load(resizeImageFile)
+                    .GaussianBlur(5)
+                    .Image;
                 image.Save(blurImageFile);
             }
             return blurImageFile;

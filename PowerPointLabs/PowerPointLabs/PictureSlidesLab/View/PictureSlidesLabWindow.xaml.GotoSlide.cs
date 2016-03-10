@@ -10,7 +10,6 @@ namespace PowerPointLabs.PictureSlidesLab.View
     partial class PictureSlidesLabWindow
     {
         private readonly SlideSelectionDialog _gotoSlideDialog = new SlideSelectionDialog();
-        private bool _isDisplayDefaultPicture;
 
         private void GotoSlideButton_OnClick(object sender, RoutedEventArgs e)
         {

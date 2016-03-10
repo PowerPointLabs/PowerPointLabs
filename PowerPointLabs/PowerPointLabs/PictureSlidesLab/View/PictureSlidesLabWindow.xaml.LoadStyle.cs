@@ -158,13 +158,10 @@ namespace PowerPointLabs.PictureSlidesLab.View
             // if no original shape, show default picture
             if (originalShapeList.Count == 0 && isLoadingWithDefaultPicture)
             {
-                DisableUpdatingPreviewImages();
                 // De-select the picture
-                ImageSelectionListBox.SelectedIndex = -1;
-                EnableUpdatingPreviewImages();
-
-                UpdatePreviewImages(CreateDefaultPictureItem(), isEnteringPictureVariation: true);
                 EnterDefaultPictureMode();
+
+                UpdatePreviewImages(isEnteringPictureVariation: true);
                 UpdatePreviewStageControls();
                 isSuccessfullyLoaded = true;
             }
@@ -383,11 +380,6 @@ namespace PowerPointLabs.PictureSlidesLab.View
             foreach (var propertyInfo in props)
             {
                 var valueInStr = shape.Tags[Service.Effect.Tag.ReloadPrefix + propertyInfo.Name];
-                if (string.IsNullOrEmpty(valueInStr))
-                {
-                    continue;
-                }
-
                 if (propertyInfo.PropertyType == typeof(string))
                 {
                     propertyInfo.SetValue(opt, valueInStr, null);

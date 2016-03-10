@@ -44,7 +44,7 @@
     <PublishUrl>C:\Users\Giki\Desktop\pptlabsPublish\</PublishUrl>
     <InstallUrl>http://www.comp.nus.edu.sg/~pptlabs/download/dev/</InstallUrl>
     <TargetCulture>en</TargetCulture>
-    <ApplicationVersion>2.8.6.2</ApplicationVersion>
+    <ApplicationVersion>2.8.6.4</ApplicationVersion>
     <AutoIncrementApplicationRevision>false</AutoIncrementApplicationRevision>
     <UpdateEnabled>true</UpdateEnabled>
     <UpdateInterval>0</UpdateInterval>
@@ -433,7 +433,6 @@
     <Compile Include="PictureSlidesLab\ModelFactory\VariantWorker\PictureVariantWorker.cs" />
     <Compile Include="PictureSlidesLab\ModelFactory\VariantWorker\SpecialEffectsVariantWorker.cs" />
     <Compile Include="PictureSlidesLab\ModelFactory\VariantWorker\TextBoxTransparencyVariantWorker.cs" />
-    <Compile Include="PictureSlidesLab\ModelFactory\VariantWorker\PictureCitationVariantWorker.cs" />
     <Compile Include="PictureSlidesLab\ModelFactory\VariantWorker\FrostedGlassBannerVariantWorker.cs" />
     <Compile Include="PictureSlidesLab\ModelFactory\VariantWorker\FrostedGlassTextBoxVariantWorker.cs" />
     <Compile Include="PictureSlidesLab\ModelFactory\VariantWorker\TextBoxVariantWorker.cs" />
@@ -1253,6 +1252,12 @@
   </ItemGroup>
   <ItemGroup>
     <Resource Include="Resources\SettingsGear.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\AgendaSettings1.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\AgendaSync1.png" />
   </ItemGroup>
   <!-- Include the build rules for a C# project. -->
   <PropertyGroup>

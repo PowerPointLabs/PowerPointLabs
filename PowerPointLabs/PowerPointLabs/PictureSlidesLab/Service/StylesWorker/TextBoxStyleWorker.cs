@@ -14,7 +14,7 @@ namespace PowerPointLabs.PictureSlidesLab.Service.StylesWorker
         {
             if (option.IsUseTextBoxStyle)
             {
-                designer.ApplyTextboxEffect(option.TextBoxColor, option.TextBoxTransparency);
+                designer.ApplyTextboxEffect(option.TextBoxColor, option.TextBoxTransparency, option.FontSizeIncrease);
             }
             return new List<Shape>();
         }

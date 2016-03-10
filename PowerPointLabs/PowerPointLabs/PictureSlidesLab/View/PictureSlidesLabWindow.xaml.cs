@@ -63,6 +63,8 @@ namespace PowerPointLabs.PictureSlidesLab.View
         private bool _isAbleLoadingOnWindowActivate = true;
         private bool _isStylePreviewRegionInit;
         private int _lastSelectedSlideIndex = -1;
+        private bool _isDisplayDefaultPicture;
+        private bool _isEnableUpdatePreview = true;
 
         # endregion
 
@@ -74,6 +76,8 @@ namespace PowerPointLabs.PictureSlidesLab.View
             // start loading process
             PictureSlidesLabGridLoadingOverlay.Visibility = Visibility.Visible;
             IsOpen = true;
+            SettingsButtonIcon.Source = ImageUtil.BitmapToImageSource(Properties.Resources.PslSettings);
+            PictureAspectRefreshButtonIcon.Source = ImageUtil.BitmapToImageSource(Properties.Resources.PslRefresh);
             Logger.Log("PSL begins");
 
             SetTimeout(Init, 850);
@@ -138,6 +142,7 @@ namespace PowerPointLabs.PictureSlidesLab.View
             ViewModel.ImageSelectionList.CollectionChanged += ImageSelectionList_OnCollectionChanged;
             DataContext = ViewModel;
             SettingsPane.DataContext = ViewModel.Settings;
+            SettingsPane.UpdateInsertCitationControlsVisibility();
 
             UpdatePreviewInterfaceWhenImageListChange(ViewModel.ImageSelectionList);
             Logger.Log("PSL init ViewModel done");
@@ -380,7 +385,7 @@ namespace PowerPointLabs.PictureSlidesLab.View
         {
             if (ImageSelectionListBox.SelectedValue != null)
             {
-                EnableUpdatingPreviewImages();
+                LeaveDefaultPictureMode();
             }
             if (ImageSelectionListBox.SelectedIndex == 0)
             {
@@ -489,7 +494,7 @@ namespace PowerPointLabs.PictureSlidesLab.View
         private void UpdatePreviewStageControls()
         {
             if (StylesPreviewListBox.SelectedValue != null
-                && _isDisplayDefaultPicture)
+                && IsDisplayDefaultPicture())
             {
                 StylesCustomizeButton.IsEnabled = true;
                 StylesApplyButton.IsEnabled = false;
@@ -566,7 +571,7 @@ namespace PowerPointLabs.PictureSlidesLab.View
                 {
                     GotoSlideButton.IsEnabled = true;
                     LoadStylesButton.IsEnabled = true;
-                    Dispatcher.BeginInvoke(new Action(() =>
+                    SetTimeout(() =>
                     {
                         // update preview images when slide no change
                         if (_lastSelectedSlideIndex == this.GetCurrentSlide().Index)
@@ -578,7 +583,7 @@ namespace PowerPointLabs.PictureSlidesLab.View
                         {
                             LoadStyleAndImage(this.GetCurrentSlide());
                         }
-                    }));
+                    }, 250);
                 }
             }
             catch (Exception expt)
@@ -648,7 +653,15 @@ namespace PowerPointLabs.PictureSlidesLab.View
 
         private void MenuItemDeleteAllImages_OnClick(object sender, RoutedEventArgs e)
         {
-            DeleteAllImage();
+            ShowInfoMessageBox(TextCollection.PictureSlidesLabText.InfoDeleteAllImage, 
+                MessageDialogStyle.AffirmativeAndNegative)
+                .ContinueWith(task =>
+                {
+                    if (task.Result == MessageDialogResult.Affirmative)
+                    {
+                        Dispatcher.BeginInvoke(new Action(DeleteAllImage));
+                    }
+                });
         }
 
         private void MenuItemAdjustImage_OnClick(object sender, RoutedEventArgs e)
@@ -752,7 +765,7 @@ namespace PowerPointLabs.PictureSlidesLab.View
                 ViewModel.UpdateStyleVariationStyleOptionsWhenSelectedItemChange();
                 UpdateVariationStageControls();
             }
-            else if (_isDisplayDefaultPicture
+            else if (IsDisplayDefaultPicture()
                      && StylesVariationListBox.SelectedValue != null
                      && StylesPreviewListBox.SelectedValue != null)
             {
@@ -817,6 +830,7 @@ namespace PowerPointLabs.PictureSlidesLab.View
                 var slide = presentation.Presentation.Slides.Add(presentation.SlideCount + 1, PpSlideLayout.ppLayoutText);
                 ViewModel.AddPictureCitationSlide(slide, presentation.Slides);
             }
+            presentation.AddAckSlide();
             ShowInfoMessageBox(TextCollection.PictureSlidesLabText.InfoAddPictureCitationSlide);
         }
 
@@ -830,8 +844,14 @@ namespace PowerPointLabs.PictureSlidesLab.View
             if (!SettingsFlyoutControl.IsOpen)
             {
                 Logger.Log("Setting flyout is closed");
-                SetTimeout(() => { UpdatePreviewImages(isForceUpdating: true); }, 500);
+                SetTimeout(() => { UpdatePreviewImages(); }, 500);
             }
+        }
+
+        private void PictureAspectRefreshButton_OnClick(object sender, RoutedEventArgs e)
+        {
+            ViewModel.RefreshLast8Pictures();
+            UpdatePreviewImages();
         }
 
         #endregion
@@ -1059,15 +1079,13 @@ namespace PowerPointLabs.PictureSlidesLab.View
                 Dispatcher.BeginInvoke(new Action(() =>
                 {
                     StyleVariationsFlyout.Visibility = Visibility.Collapsed;
-                    if (IsEnableUpdatingPreviewImages())
+                    if (!IsDisplayDefaultPicture())
                     {
                         UpdatePreviewImages();
                     }
                     else
                     {
-                        EnableUpdatingPreviewImages();
                         UpdatePreviewImages(CreateDefaultPictureItem());
-                        DisableUpdatingPreviewImages();
                         UpdatePreviewStageControls();
                     }
                 }));
@@ -1079,27 +1097,13 @@ namespace PowerPointLabs.PictureSlidesLab.View
             Logger.Log("Variation is closed");
         }
 
-        private void UpdatePreviewImages(ImageItem source = null, bool isEnteringPictureVariation = false, bool isForceUpdating = false)
+        private void UpdatePreviewImages(ImageItem source = null, bool isEnteringPictureVariation = false)
         {
             try
             {
-                // if it's in the Default Picture mode and not in the picture variation
-                // don't continue
-                if (!IsEnableUpdatingPreviewImages() && !ViewModel.IsInPictureVariation() && !isForceUpdating) return;
+                if (!_isEnableUpdatePreview) return;
 
-                if (!IsEnableUpdatingPreviewImages() && ViewModel.IsInPictureVariation())
-                {
-                    Logger.Log("In default pic mode & in pic aspect");
-                    // if it's in Default Picture mode, and
-                    // it's in the picture variation, allow
-                    // updating preview images
-                    ViewModel.UpdatePreviewImages(
-                        source ?? CreateDefaultPictureItem(),
-                        this.GetCurrentSlide().GetNativeSlide(),
-                        this.GetCurrentPresentation().SlideWidth,
-                        this.GetCurrentPresentation().SlideHeight);
-                }
-                else if (IsVariationsFlyoutOpen && isEnteringPictureVariation)
+                if (IsVariationsFlyoutOpen && isEnteringPictureVariation)
                 {
                     Logger.Log("Entering pic aspect");
                     // when it's to load the design for a default picture,
@@ -1107,13 +1111,26 @@ namespace PowerPointLabs.PictureSlidesLab.View
                     // directly jump to picture variation to select picture
                     var picVariationIndex = ViewModel.VariantsCategory.IndexOf(
                         TextCollection.PictureSlidesLabText.VariantCategoryPicture);
-                    VariantsComboBox.SelectedIndex = picVariationIndex;
+                    if (VariantsComboBox.SelectedIndex != picVariationIndex)
+                    {
+                        VariantsComboBox.SelectedIndex = picVariationIndex;
+                    }
+                    else
+                    {
+                        ViewModel.UpdatePreviewImages(
+                        source ?? (ImageItem)ImageSelectionListBox.SelectedValue ?? CreateDefaultPictureItem(),
+                        this.GetCurrentSlide().GetNativeSlide(),
+                        this.GetCurrentPresentation().SlideWidth,
+                        this.GetCurrentPresentation().SlideHeight);
+                    }
                 }
-                else if (isForceUpdating)
+                else if (IsDisplayDefaultPicture())
                 {
-                    Logger.Log("Force updating preview images");
+                    Logger.Log("In default pic mode");
+                    // if it's in Default Picture mode, allow
+                    // updating preview images
                     ViewModel.UpdatePreviewImages(
-                        source ?? (ImageItem) ImageSelectionListBox.SelectedValue ?? CreateDefaultPictureItem(),
+                        source ?? CreateDefaultPictureItem(),
                         this.GetCurrentSlide().GetNativeSlide(),
                         this.GetCurrentPresentation().SlideWidth,
                         this.GetCurrentPresentation().SlideHeight);
@@ -1154,14 +1171,9 @@ namespace PowerPointLabs.PictureSlidesLab.View
             }
         }
 
-        private void EnterDefaultPictureMode()
+        private void LeaveDefaultPictureMode()
         {
-            DisableUpdatingPreviewImages();
-        }
-
-        private bool IsEnableUpdatingPreviewImages()
-        {
-            return !_isDisplayDefaultPicture;
+            _isDisplayDefaultPicture = false;
         }
 
         private void EnableLoadingStyleOnWindowActivate()

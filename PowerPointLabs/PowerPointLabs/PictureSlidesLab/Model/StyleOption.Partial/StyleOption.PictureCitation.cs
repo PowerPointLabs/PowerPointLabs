@@ -21,9 +21,6 @@ namespace PowerPointLabs.PictureSlidesLab.Model
             }
         }
 
-        [DefaultValue(false)]
-        public bool IsInsertReference { get; set; }
-
         [DefaultValue(14)]
         public int CitationFontSize { get; set; }
 
