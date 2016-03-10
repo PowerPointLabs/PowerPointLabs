@@ -345,7 +345,8 @@ namespace PowerPointLabs.Utils
         /// <returns></returns>
         public PPShape Duplicate()
         {
-            return new PPShape(_shape.Duplicate()[1]);
+            var newShape = new PPShape(_shape.Duplicate()[1]) {Name = _shape.Name + "Copy"};
+            return newShape;
         }
 
         /// <summary>
@@ -392,7 +393,7 @@ namespace PowerPointLabs.Utils
         private void ConvertToFreeform()
         {
             if ((int)_shape.Rotation == 0) return;
-            if (!(_shape.Type == MsoShapeType.msoAutoShape || _shape.Type == MsoShapeType.msoFreeform) && _shape.Nodes.Count < 1) return;
+            if (!(_shape.Type == MsoShapeType.msoAutoShape || _shape.Type == MsoShapeType.msoFreeform) || _shape.Nodes.Count < 1) return;
 
             // Convert AutoShape to Freeform shape
             if (_shape.Type == MsoShapeType.msoAutoShape)

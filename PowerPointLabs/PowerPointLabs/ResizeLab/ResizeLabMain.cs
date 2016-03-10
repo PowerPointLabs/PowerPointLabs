@@ -50,11 +50,7 @@ namespace PowerPointLabs.ResizeLab
                 var shape = new PPShape(selectedShapes[i]);
                 var shapeName = shape.Name;
 
-                if (!originalShapeProperties.ContainsKey(shapeName))
-                {
-                    shape.Delete();
-                    continue;
-                }
+                if (!originalShapeProperties.ContainsKey(shapeName)) continue;
 
                 var originalProperties = originalShapeProperties[shapeName];
                 shape.AbsoluteWidth = originalProperties.AbsoluteWidth;
