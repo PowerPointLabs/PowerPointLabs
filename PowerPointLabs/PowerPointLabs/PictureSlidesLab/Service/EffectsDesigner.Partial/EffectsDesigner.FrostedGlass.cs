@@ -1,5 +1,6 @@
 ﻿using Microsoft.Office.Core;
 using PowerPointLabs.PictureSlidesLab.Service.Effect;
+using PowerPointLabs.PictureSlidesLab.Util;
 using PowerPointLabs.Utils;
 using Shape = Microsoft.Office.Interop.PowerPoint.Shape;
 
@@ -9,48 +10,35 @@ namespace PowerPointLabs.PictureSlidesLab.Service
     {
         public void ApplyFrostedGlassTextBoxEffect(string overlayColor, int transparency, Shape blurImage, int fontSizeToIncrease)
         {
+            var shape = ShapeUtil.GetTextShapeToProcess(Shapes);
+            if (shape == null)
+                return;
+
             var margin = CalculateTextBoxMargin(fontSizeToIncrease);
-            foreach (Shape shape in Shapes)
+            // multiple paragraphs.. 
+            foreach (TextRange2 textRange in shape.TextFrame2.TextRange.Paragraphs)
             {
-                if ((shape.Type != MsoShapeType.msoPlaceholder
-                        && shape.Type != MsoShapeType.msoTextBox)
-                        || shape.TextFrame.HasText == MsoTriState.msoFalse
-                        || StringUtil.IsNotEmpty(shape.Tags[Tag.AddedTextbox])
-                        || StringUtil.IsNotEmpty(shape.Tags[Tag.ImageReference]))
+                if (StringUtil.IsNotEmpty(textRange.TrimText().Text))
                 {
-                    continue;
+                    var paragraph = textRange.TrimText();
+                    var left = paragraph.BoundLeft - margin;
+                    var top = paragraph.BoundTop - margin;
+                    var width = paragraph.BoundWidth + margin * 2;
+                    var height = paragraph.BoundHeight + margin * 2;
+
+                    var blurTextBox = blurImage.Duplicate()[1];
+                    blurTextBox.Left = blurImage.Left;
+                    blurTextBox.Top = blurImage.Top;
+                    CropPicture(blurTextBox, left, top, width, height);
+                    ChangeName(blurTextBox, EffectName.TextBox);
+
+                    var overlayShape = ApplyOverlayEffect(overlayColor, transparency,
+                        left, top, width, height);
+                    ChangeName(overlayShape, EffectName.TextBox);
+
+                    Graphics.MoveZToJustBehind(blurTextBox, shape);
+                    Graphics.MoveZToJustBehind(overlayShape, shape);
                 }
-
-                // multiple paragraphs.. 
-                foreach (TextRange2 textRange in shape.TextFrame2.TextRange.Paragraphs)
-                {
-                    if (StringUtil.IsNotEmpty(textRange.TrimText().Text))
-                    {
-                        var paragraph = textRange.TrimText();
-                        var left = paragraph.BoundLeft - margin;
-                        var top = paragraph.BoundTop - margin;
-                        var width = paragraph.BoundWidth + margin * 2;
-                        var height = paragraph.BoundHeight + margin * 2;
-
-                        var blurTextBox = blurImage.Duplicate()[1];
-                        blurTextBox.Left = blurImage.Left;
-                        blurTextBox.Top = blurImage.Top;
-                        CropPicture(blurTextBox, left, top, width, height);
-                        ChangeName(blurTextBox, EffectName.TextBox);
-
-                        var overlayShape = ApplyOverlayEffect(overlayColor, transparency,
-                            left, top, width, height);
-                        ChangeName(overlayShape, EffectName.TextBox);
-
-                        Graphics.MoveZToJustBehind(blurTextBox, shape);
-                        Graphics.MoveZToJustBehind(overlayShape, shape);
-                        shape.Tags.Add(Tag.AddedTextbox, overlayShape.Name);
-                    }
-                }
-            }
-            foreach (Shape shape in Shapes)
-            {
-                shape.Tags.Add(Tag.AddedTextbox, "");
             }
         }
 
