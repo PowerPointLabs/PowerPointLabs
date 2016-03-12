@@ -465,6 +465,7 @@
     <Compile Include="PictureSlidesLab\Service\EffectsDesigner.Partial\EffectsDesigner.TextBox.cs" />
     <Compile Include="PictureSlidesLab\Service\EffectsDesigner.Partial\EffectsDesigner.TriangleBanner.cs" />
     <Compile Include="PictureSlidesLab\Service\Effect\Aspect.cs" />
+    <Compile Include="PictureSlidesLab\Service\EveryDayPhraseService.cs" />
     <Compile Include="PictureSlidesLab\Service\Interface\IStylesDesigner.cs" />
     <Compile Include="PictureSlidesLab\Service\PictureCitationSlide.cs" />
     <Compile Include="PictureSlidesLab\Service\StylesWorker\BannerStyleWorker.cs" />

@@ -426,7 +426,12 @@
             <Grid.Background>
                 <SolidColorBrush Opacity="0.80" Color="Black"/>
             </Grid.Background>
-            <TextBlock Name="LoadingInstructions" TextWrapping="Wrap" HorizontalAlignment="Center" VerticalAlignment="Center" Foreground="#FFFFFF" FontSize="40" Text="Loading..."></TextBlock>
+            <Grid.RowDefinitions>
+                <RowDefinition></RowDefinition>
+                <RowDefinition></RowDefinition>
+            </Grid.RowDefinitions>
+            <TextBlock Grid.Row="0" Name="LoadingInstructions" TextWrapping="Wrap" HorizontalAlignment="Center" VerticalAlignment="Bottom" Foreground="#FFFFFF" FontSize="40" Text="Loading..."></TextBlock>
+            <TextBlock Grid.Row="1" MaxWidth="720" Name="EveryDayPhrase" TextWrapping="Wrap" HorizontalAlignment="Center" VerticalAlignment="Top" Foreground="#CCCCCC" FontSize="24"></TextBlock>
         </Grid>
     </Grid>
 </controls:MetroWindow>

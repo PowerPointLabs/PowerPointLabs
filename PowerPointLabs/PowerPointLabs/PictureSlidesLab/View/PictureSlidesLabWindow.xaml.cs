@@ -74,6 +74,7 @@ namespace PowerPointLabs.PictureSlidesLab.View
         {
             InitializeComponent();
             // start loading process
+            EveryDayPhrase.Text = new EveryDayPhraseService().GetEveryDayPhrase();
             PictureSlidesLabGridLoadingOverlay.Visibility = Visibility.Visible;
             IsOpen = true;
             SettingsButtonIcon.Source = ImageUtil.BitmapToImageSource(Properties.Resources.PslSettings);
