@@ -374,14 +374,16 @@ namespace PowerPointLabs.PositionsLab
         {
             var shapeCount = selectedShapes.Count;
 
-            var refShape = selectedShapes[0];
+            var sortedShapes = Graphics.SortShapesByLeft(selectedShapes);
+
+            var refShape = sortedShapes[0];
             float rightMostRef;
 
             if (DistributeUseSlideAsReference)
             {
                 // Calculate the shape between shapes
                 var spaceBetweenShapes = slideWidth;
-                foreach (var s in selectedShapes)
+                foreach (var s in sortedShapes)
                 {
                     spaceBetweenShapes -= s.AbsoluteWidth;
                 }
@@ -391,7 +393,7 @@ namespace PowerPointLabs.PositionsLab
                 // Distribute the shapes
                 for (var i = 0; i < shapeCount; i++)
                 {
-                    var currShape = selectedShapes[i];
+                    var currShape = sortedShapes[i];
                     if (i == 0)
                     {
                         // Left most shape
@@ -399,7 +401,7 @@ namespace PowerPointLabs.PositionsLab
                     }
                     else
                     {
-                        refShape = selectedShapes[i - 1];
+                        refShape = sortedShapes[i - 1];
                         rightMostRef = refShape.Left + refShape.AbsoluteWidth;
                         currShape.IncrementLeft(rightMostRef - currShape.Left + spaceBetweenShapes);
                     }
@@ -416,7 +418,7 @@ namespace PowerPointLabs.PositionsLab
                 var spaceBetweenShapes = refShape.AbsoluteWidth;
                 for (var i = 1; i < shapeCount; i++)
                 {
-                    var s = selectedShapes[i];
+                    var s = sortedShapes[i];
                     spaceBetweenShapes -= s.AbsoluteWidth;
                 }
                 // TODO: guard against spaceBetweenShapes < 0
@@ -425,8 +427,8 @@ namespace PowerPointLabs.PositionsLab
                 // Distribute the shapes
                 for (var i = 1; i < shapeCount; i++)
                 {
-                    var currShape = selectedShapes[i];
-                    refShape = selectedShapes[i - 1];
+                    var currShape = sortedShapes[i];
+                    refShape = sortedShapes[i - 1];
 
                     if (i == 1)
                     {
@@ -445,14 +447,16 @@ namespace PowerPointLabs.PositionsLab
         {
             var shapeCount = selectedShapes.Count;
 
-            var refShape = selectedShapes[0];
+            var sortedShapes = Graphics.SortShapesByTop(selectedShapes);
+
+            var refShape = sortedShapes[0];
             float lowestRef;
 
             if (DistributeUseSlideAsReference)
             {
                 // Calculate the space between shapes
                 var spaceBetweenShapes = slideHeight;
-                foreach (var s in selectedShapes)
+                foreach (var s in sortedShapes)
                 {
                     spaceBetweenShapes -= s.AbsoluteHeight;
                 }
@@ -462,14 +466,14 @@ namespace PowerPointLabs.PositionsLab
                 // Distribute the shapes
                 for (var i = 0; i < shapeCount; i++)
                 {
-                    var currShape = selectedShapes[i];
+                    var currShape = sortedShapes[i];
                     if (i == 0)
                     {
                         currShape.IncrementTop(spaceBetweenShapes - currShape.Top);
                     }
                     else
                     {
-                        refShape = selectedShapes[i - 1];
+                        refShape = sortedShapes[i - 1];
                         lowestRef = refShape.Top + refShape.AbsoluteHeight;
                         currShape.IncrementTop(lowestRef - currShape.Top + spaceBetweenShapes);
                     }
@@ -485,7 +489,7 @@ namespace PowerPointLabs.PositionsLab
                 var spaceBetweenShapes = refShape.AbsoluteHeight;
                 for (var i = 1; i < shapeCount; i++)
                 {
-                    var s = selectedShapes[i];
+                    var s = sortedShapes[i];
                     spaceBetweenShapes -= s.AbsoluteHeight;
                 }
                 // TODO: guard against spaceBetweenShapes < 0
@@ -494,8 +498,8 @@ namespace PowerPointLabs.PositionsLab
                 // Distribute the shapes
                 for (var i = 1; i < shapeCount; i++)
                 {
-                    var currShape = selectedShapes[i];
-                    refShape = selectedShapes[i - 1];
+                    var currShape = sortedShapes[i];
+                    refShape = sortedShapes[i - 1];
 
                     if (i == 1)
                     {
@@ -516,9 +520,9 @@ namespace PowerPointLabs.PositionsLab
             DistributeVertical(selectedShapes, slideHeight);
         }
 
-        public static void DistributeShapes(List<PPShape> selectedShapes)
+        public static void DistributeShapes(List<PPShape> sortedShapes)
         {
-            var shapeCount = selectedShapes.Count;
+            var shapeCount = sortedShapes.Count;
 
             if (shapeCount < 2)
             {
@@ -530,8 +534,8 @@ namespace PowerPointLabs.PositionsLab
                 return;
             }
 
-            var firstRef = selectedShapes[0];
-            var lastRef = selectedShapes[selectedShapes.Count - 1];
+            var firstRef = sortedShapes[0];
+            var lastRef = sortedShapes[sortedShapes.Count - 1];
             PPShape refShape;
 
             var horizontalDistance = lastRef.Left - firstRef.Left - firstRef.AbsoluteWidth;
@@ -541,7 +545,7 @@ namespace PowerPointLabs.PositionsLab
             var spaceBetweenShapes = horizontalDistance;
             for (var i = 1; i < shapeCount - 1; i++)
             {
-                var s = selectedShapes[i];
+                var s = sortedShapes[i];
                 spaceBetweenShapes -= s.AbsoluteWidth;
             }
             // TODO: guard against spaceBetweenShapes < 0
@@ -550,8 +554,8 @@ namespace PowerPointLabs.PositionsLab
             // Distribute shapes horizontally
             for (var i = 1; i < shapeCount - 1; i++)
             {
-                var currShape = selectedShapes[i];
-                refShape = selectedShapes[i - 1];
+                var currShape = sortedShapes[i];
+                refShape = sortedShapes[i - 1];
 
                 var rightMostRef = refShape.Left + refShape.AbsoluteWidth;
                 currShape.IncrementLeft(rightMostRef - currShape.Left + spaceBetweenShapes);
@@ -561,7 +565,7 @@ namespace PowerPointLabs.PositionsLab
             spaceBetweenShapes = verticalDistance;
             for (var i = 1; i < shapeCount - 1; i++)
             {
-                var s = selectedShapes[i];
+                var s = sortedShapes[i];
                 spaceBetweenShapes -= s.AbsoluteHeight;
             }
             // TODO: guard against spaceBetweenShapes < 0
@@ -570,8 +574,8 @@ namespace PowerPointLabs.PositionsLab
             // Distribute the shapes vertically
             for (var i = 1; i < shapeCount - 1; i++)
             {
-                var currShape = selectedShapes[i];
-                refShape = selectedShapes[i - 1];
+                var currShape = sortedShapes[i];
+                refShape = sortedShapes[i - 1];
 
                 var lowestRef = refShape.Top + refShape.AbsoluteHeight;
                 currShape.IncrementTop(lowestRef - currShape.Top + spaceBetweenShapes);
