@@ -394,6 +394,7 @@ namespace PowerPointLabs.PositionsLab
             }
         }
 
+        // TODO: Remove after confirming that Distribute Shapes shall be part of settings
         private void DistributeShapesButton_Click(object sender, RoutedEventArgs e)
         {
             if (this.GetCurrentSelection().Type != PowerPoint.PpSelectionType.ppSelectionShapes)

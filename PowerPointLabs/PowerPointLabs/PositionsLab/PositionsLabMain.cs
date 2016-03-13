@@ -638,6 +638,7 @@ namespace PowerPointLabs.PositionsLab
             DistributeVertical(selectedShapes, slideHeight);
         }
 
+        // TODO: Remove method after confirming that Distribute Shapes shall be part of settings
         public static void DistributeShapes(List<PPShape> sortedShapes)
         {
             var shapeCount = sortedShapes.Count;
