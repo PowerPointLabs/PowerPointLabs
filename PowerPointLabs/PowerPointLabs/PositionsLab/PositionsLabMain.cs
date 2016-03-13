@@ -378,25 +378,48 @@ namespace PowerPointLabs.PositionsLab
 
             var refShape = sortedShapes[0];
             float rightMostRef;
+            float spaceBetweenShapes;
 
+            // Check if referring to slide
             if (DistributeUseSlideAsReference)
             {
-                // Calculate the shape between shapes
-                var spaceBetweenShapes = slideWidth;
+                // Calculate the space between shapes
+                spaceBetweenShapes = slideWidth;
                 foreach (var s in sortedShapes)
                 {
                     spaceBetweenShapes -= s.AbsoluteWidth;
                 }
-                // TODO: guard against spaceBetweenShapes < 0
+
+                // Check if the shapes need to be overlapped
+                if (spaceBetweenShapes < 0)
+                {
+                    spaceBetweenShapes /= shapeCount - 1;
+
+                    for (var i = 0; i < shapeCount; i++)
+                    {
+                        var currShape = sortedShapes[i];
+                        if (i==0)
+                        {
+                            currShape.IncrementLeft(-currShape.Left);
+                        }
+                        else
+                        {
+                            refShape = sortedShapes[i - 1];
+                            rightMostRef = refShape.Left + refShape.AbsoluteWidth;
+                            currShape.IncrementLeft(rightMostRef - currShape.Left + spaceBetweenShapes);
+                        }
+                    }
+                    return;
+                }
+
+                // Need not be overlapped
                 spaceBetweenShapes /= shapeCount + 1;
                 
-                // Distribute the shapes
                 for (var i = 0; i < shapeCount; i++)
                 {
                     var currShape = sortedShapes[i];
                     if (i == 0)
                     {
-                        // Left most shape
                         currShape.IncrementLeft(spaceBetweenShapes - currShape.Left);
                     }
                     else
@@ -406,25 +429,29 @@ namespace PowerPointLabs.PositionsLab
                         currShape.IncrementLeft(rightMostRef - currShape.Left + spaceBetweenShapes);
                     }
                 }
+                return;
             }
-            else
+
+            // Referring to first selected shape
+
+            if (shapeCount < 2)
             {
-                if (shapeCount < 2)
-                {
-                    throw new Exception(ErrorMessageFewerThanTwoSelection);
-                }
+                throw new Exception(ErrorMessageFewerThanTwoSelection);
+            }
 
-                // Calculate the shape between shapes
-                var spaceBetweenShapes = refShape.AbsoluteWidth;
-                for (var i = 1; i < shapeCount; i++)
-                {
-                    var s = sortedShapes[i];
-                    spaceBetweenShapes -= s.AbsoluteWidth;
-                }
-                // TODO: guard against spaceBetweenShapes < 0
-                spaceBetweenShapes /= shapeCount;
+            // Calculate the space between shapes
+            spaceBetweenShapes = refShape.AbsoluteWidth;
+            for (var i = 1; i < shapeCount; i++)
+            {
+                var s = sortedShapes[i];
+                spaceBetweenShapes -= s.AbsoluteWidth;
+            }
+            
+            // Check if the shapes need to be overlapped
+            if (spaceBetweenShapes < 0 )
+            {
+                spaceBetweenShapes /= shapeCount - 2;
 
-                // Distribute the shapes
                 for (var i = 1; i < shapeCount; i++)
                 {
                     var currShape = sortedShapes[i];
@@ -432,13 +459,32 @@ namespace PowerPointLabs.PositionsLab
 
                     if (i == 1)
                     {
-                        currShape.IncrementLeft(refShape.Left - currShape.Left + spaceBetweenShapes);
+                        currShape.IncrementLeft(refShape.Left - currShape.Left);
                     }
                     else
                     {
                         rightMostRef = refShape.Left + refShape.AbsoluteWidth;
                         currShape.IncrementLeft(rightMostRef - currShape.Left + spaceBetweenShapes);
                     }
+                }
+                return;
+            }
+
+            spaceBetweenShapes /= shapeCount;
+            
+            for (var i = 1; i < shapeCount; i++)
+            {
+                var currShape = sortedShapes[i];
+                refShape = sortedShapes[i - 1];
+
+                if (i == 1)
+                {
+                    currShape.IncrementLeft(refShape.Left - currShape.Left + spaceBetweenShapes);
+                }
+                else
+                {
+                    rightMostRef = refShape.Left + refShape.AbsoluteWidth;
+                    currShape.IncrementLeft(rightMostRef - currShape.Left + spaceBetweenShapes);
                 }
             }
         } 
@@ -451,19 +497,42 @@ namespace PowerPointLabs.PositionsLab
 
             var refShape = sortedShapes[0];
             float lowestRef;
+            float spaceBetweenShapes;
 
             if (DistributeUseSlideAsReference)
             {
                 // Calculate the space between shapes
-                var spaceBetweenShapes = slideHeight;
+                spaceBetweenShapes = slideHeight;
                 foreach (var s in sortedShapes)
                 {
                     spaceBetweenShapes -= s.AbsoluteHeight;
                 }
-                // TODO: guard against spaceBetweenShapes < 0
-                spaceBetweenShapes /= shapeCount + 1;
+                
+                // Check if shapes need to be overlapped
+                if ( spaceBetweenShapes < 0)
+                {
+                    spaceBetweenShapes /= shapeCount - 1;
 
-                // Distribute the shapes
+                    for (var i = 0; i < shapeCount; i++)
+                    {
+                        var currShape = sortedShapes[i];
+                        if (i == 0)
+                        {
+                            currShape.IncrementTop(-currShape.Top);
+                        }
+                        else
+                        {
+                            refShape = sortedShapes[i - 1];
+                            lowestRef = refShape.Top + refShape.AbsoluteHeight;
+                            currShape.IncrementTop(lowestRef - currShape.Top + spaceBetweenShapes);
+                        }
+                    }
+                    return;
+                }
+                
+                // Need not overlap
+                spaceBetweenShapes /= shapeCount + 1;
+                
                 for (var i = 0; i < shapeCount; i++)
                 {
                     var currShape = sortedShapes[i];
@@ -478,24 +547,26 @@ namespace PowerPointLabs.PositionsLab
                         currShape.IncrementTop(lowestRef - currShape.Top + spaceBetweenShapes);
                     }
                 }
+                return;
             }
-            else
+            if (shapeCount < 2)
             {
-                if (shapeCount < 2)
-                {
-                    throw new Exception(ErrorMessageFewerThanTwoSelection);
-                }
-                // Calculate the shape between shapes
-                var spaceBetweenShapes = refShape.AbsoluteHeight;
-                for (var i = 1; i < shapeCount; i++)
-                {
-                    var s = sortedShapes[i];
-                    spaceBetweenShapes -= s.AbsoluteHeight;
-                }
-                // TODO: guard against spaceBetweenShapes < 0
-                spaceBetweenShapes /= shapeCount;
+                throw new Exception(ErrorMessageFewerThanTwoSelection);
+            }
 
-                // Distribute the shapes
+            // Calculate the space between shapes
+            spaceBetweenShapes = refShape.AbsoluteHeight;
+            for (var i = 1; i < shapeCount; i++)
+            {
+                var s = sortedShapes[i];
+                spaceBetweenShapes -= s.AbsoluteHeight;
+            }
+
+            // Check if shapes need to be overlapped
+            if (spaceBetweenShapes < 0)
+            {
+                spaceBetweenShapes /= shapeCount - 2;
+
                 for (var i = 1; i < shapeCount; i++)
                 {
                     var currShape = sortedShapes[i];
@@ -503,13 +574,32 @@ namespace PowerPointLabs.PositionsLab
 
                     if (i == 1)
                     {
-                        currShape.IncrementTop(refShape.Top - currShape.Top + spaceBetweenShapes);
+                        currShape.IncrementTop(refShape.Top - currShape.Top);
                     }
                     else
                     {
                         lowestRef = refShape.Top + refShape.AbsoluteHeight;
                         currShape.IncrementTop(lowestRef - currShape.Top + spaceBetweenShapes);
                     }
+                }
+                return;
+            }
+
+            spaceBetweenShapes /= shapeCount;
+            
+            for (var i = 1; i < shapeCount; i++)
+            {
+                var currShape = sortedShapes[i];
+                refShape = sortedShapes[i - 1];
+
+                if (i == 1)
+                {
+                    currShape.IncrementTop(refShape.Top - currShape.Top + spaceBetweenShapes);
+                }
+                else
+                {
+                    lowestRef = refShape.Top + refShape.AbsoluteHeight;
+                    currShape.IncrementTop(lowestRef - currShape.Top + spaceBetweenShapes);
                 }
             }
         }
