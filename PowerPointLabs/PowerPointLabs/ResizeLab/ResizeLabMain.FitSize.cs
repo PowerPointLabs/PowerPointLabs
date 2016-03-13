@@ -9,7 +9,7 @@ namespace PowerPointLabs.ResizeLab
     /// ResizeLabFitSize is the parital class of ResizeLabMain.
     /// It handles fit to height, width and fill to the size of the slide.
     /// </summary>
-    internal partial class ResizeLabMain
+    public partial class ResizeLabMain
     {
         /// <summary>
         /// Fit selected shapes to the height of the slide.

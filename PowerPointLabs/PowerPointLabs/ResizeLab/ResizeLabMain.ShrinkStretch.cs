@@ -7,7 +7,7 @@ namespace PowerPointLabs.ResizeLab
     /// <summary>
     /// Handles the stretching and shrinking of shapes in resize lab
     /// </summary>
-    internal partial class ResizeLabMain
+    public partial class ResizeLabMain
     {
         private const int ModShapesIndex = 2;
 

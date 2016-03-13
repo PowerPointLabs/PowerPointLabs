@@ -6,7 +6,7 @@ using PowerPoint = Microsoft.Office.Interop.PowerPoint;
 
 namespace PowerPointLabs.Utils
 {
-    internal class PPShape
+    public class PPShape
     {
         private readonly PowerPoint.Shape _shape;
         private float _absoluteWidth;

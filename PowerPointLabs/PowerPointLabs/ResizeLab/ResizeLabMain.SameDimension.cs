@@ -10,7 +10,7 @@ namespace PowerPointLabs.ResizeLab
     /// It handles the resizing of the shapes to the same dimension 
     /// (e.g. height, width and both).
     /// </summary>
-    internal partial class ResizeLabMain
+    public partial class ResizeLabMain
     {
         /// <summary>
         /// Resize the selected shapes to the same height with the reference to
