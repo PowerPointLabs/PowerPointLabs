@@ -27,6 +27,8 @@ namespace PowerPointLabs.PositionsLab
         //Error Messages
         private const string ErrorMessageNoSelection = TextCollection.PositionsLabText.ErrorNoSelection;
         private const string ErrorMessageFewerThanTwoSelection = TextCollection.PositionsLabText.ErrorFewerThanTwoSelection;
+        private const string ErrorMessageFewerThanThreeSelection =
+            TextCollection.PositionsLabText.ErrorFewerThanThreeSelection;
         private const string ErrorMessageUndefined = TextCollection.PositionsLabText.ErrorUndefined;
 
         //Variable for preview
@@ -1382,6 +1384,8 @@ namespace PowerPointLabs.PositionsLab
                     return ErrorMessageNoSelection;
                 case ErrorMessageFewerThanTwoSelection:
                     return ErrorMessageFewerThanTwoSelection;
+                case ErrorMessageFewerThanThreeSelection:
+                    return ErrorMessageFewerThanThreeSelection;
                 default:
                     return ErrorMessageUndefined;
             }
