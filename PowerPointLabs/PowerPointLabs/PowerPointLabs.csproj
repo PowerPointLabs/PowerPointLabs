@@ -1238,10 +1238,15 @@
     <Resource Include="Resources\PositionsLab\AlignBottomIcon.png" />
     <Resource Include="Resources\PositionsLab\AlignCenterIcon.png" />
     <Resource Include="Resources\PositionsLab\AlignLeftIcon.png" />
-    <Resource Include="Resources\PositionsLab\AlignLeftIconWithoutARrow.png" />
     <Resource Include="Resources\PositionsLab\AlignMiddleIcon.png" />
     <Resource Include="Resources\PositionsLab\AlignRightIcon.png" />
     <Resource Include="Resources\PositionsLab\AlignTopIcon.png" />
+    <Resource Include="Resources\PositionsLab\AlignBottomDefaultIcon.png" />
+    <Resource Include="Resources\PositionsLab\AlignCenterDefaultIcon.png" />
+    <Resource Include="Resources\PositionsLab\AlignLeftDefaultIcon.png" />
+    <Resource Include="Resources\PositionsLab\AlignMiddleDefaultIcon.png" />
+    <Resource Include="Resources\PositionsLab\AlignRightDefaultIcon.png" />
+    <Resource Include="Resources\PositionsLab\AlignTopDefaultIcon.png" />
     <Content Include="Resources\PositionsLab\PositionsLab.png" />
     <Resource Include="Resources\ResizeLab\ResizeSymmetricTop.png" />
     <Resource Include="Resources\ResizeLab\ResizeSymmetricRight.png" />
