@@ -705,11 +705,25 @@ namespace PowerPointLabs.PositionsLab
             var colLengthGivenFullRows = (int)Math.Ceiling((double)selectedShapes.Count / rowLength);
             if (colLength <= colLengthGivenFullRows)
             {
-                DistributeGridByRow(selectedShapes, rowLength, colLength);
+                if (DistributeReference == DistributeReferenceObject.FirstTwoShapes)
+                {
+                    DistributeGridByRowWithAnchors(selectedShapes, rowLength, colLength);
+                }
+                else
+                {
+                    DistributeGridByRow(selectedShapes, rowLength, colLength);
+                }
             }
             else
             {
-                DistributeGridByCol(selectedShapes, rowLength, colLength);
+                if (DistributeReference == DistributeReferenceObject.FirstTwoShapes)
+                {
+                    DistributeGridByColWithAnchors(selectedShapes, rowLength, colLength);
+                }
+                else
+                {
+                    DistributeGridByCol(selectedShapes, rowLength, colLength);
+                }
             }
         }
 
@@ -805,6 +819,117 @@ namespace PowerPointLabs.PositionsLab
                 currentShape.IncrementTop(posY - center.Y);
 
                 posX += GetSpaceBetweenShapes(augmentedShapeIndex % rowLength, augmentedShapeIndex % rowLength + 1, rowDifferences, MarginLeft, MarginRight);
+                augmentedShapeIndex++;
+            }
+        }
+
+        public static void DistributeGridByRowWithAnchors(List<PPShape> selectedShapes, int rowLength, int colLength)
+        {
+            if (selectedShapes.Count < 2)
+            {
+                throw new Exception(ErrorMessageFewerThanTwoSelection);
+            }
+
+            var startingAnchor = selectedShapes[0].Center;
+            var endingAnchor = selectedShapes[1].Center;
+
+            var rowDifference = (endingAnchor.X- startingAnchor.X) / (rowLength - 1);
+            var colDifference = (endingAnchor.Y - startingAnchor.Y) / (colLength - 1);
+
+            var numShapes = selectedShapes.Count;
+            var numIndicesToSkip = IndicesToSkip(numShapes, rowLength, DistributeGridAlignment);
+
+            var posX = startingAnchor.X;
+            var posY = startingAnchor.Y;
+            var remainder = numShapes % rowLength;
+
+            var endAnchor = selectedShapes[1];
+            selectedShapes.RemoveAt(1);
+            selectedShapes.Add(endAnchor);
+
+            for (var i = 0; i < numShapes - 1; i++)
+            {
+                //Start of new row
+                if (i % rowLength == 0 && i != 0)
+                {
+                    posX = startingAnchor.X;
+                    posY += colDifference;
+                }
+
+                //If last row, offset by num of indices to skip
+                if (numShapes - i == remainder)
+                {
+                    posX += numIndicesToSkip * rowDifference;
+                }
+
+                var currentShape = selectedShapes[i];
+                currentShape.IncrementLeft(posX - currentShape.Center.X);
+                currentShape.IncrementTop(posY - currentShape.Center.Y);
+
+                posX += rowDifference;
+            }
+        }
+
+        public static void DistributeGridByColWithAnchors(List<PPShape> selectedShapes, int rowLength, int colLength)
+        {
+            if (selectedShapes.Count < 2)
+            {
+                throw new Exception(ErrorMessageFewerThanTwoSelection);
+            }
+
+            var startingAnchor = selectedShapes[0].Center;
+            var endingAnchor = selectedShapes[1].Center;
+
+            var rowDifference = (endingAnchor.X - startingAnchor.X) / (rowLength - 1);
+            var colDifference = (endingAnchor.Y - startingAnchor.Y) / (colLength - 1);
+
+            var numShapes = selectedShapes.Count;
+
+            var numIndicesToSkip = IndicesToSkip(numShapes, colLength, DistributeGridAlignment);
+
+            var posX = startingAnchor.X;
+            var posY = startingAnchor.Y;
+            var remainder = colLength - (rowLength * colLength - numShapes);
+            var augmentedShapeIndex = 0;
+
+            var endAnchor = selectedShapes[1];
+            selectedShapes.RemoveAt(1);
+            selectedShapes.Add(endAnchor);
+
+            for (var i = 0; i < numShapes - 1; i++)
+            {
+                //If last index and need to skip, skip index 
+                if (numIndicesToSkip > 0 && IsLastIndexOfRow(augmentedShapeIndex, rowLength))
+                {
+                    numIndicesToSkip--;
+                    augmentedShapeIndex++;
+                }
+
+                //If last index and no more remainder, skip the rest
+                if (IsLastIndexOfRow(augmentedShapeIndex, rowLength))
+                {
+                    if (remainder <= 0)
+                    {
+                        augmentedShapeIndex++;
+                    }
+                    else
+                    {
+                        remainder--;
+                    }
+                }
+
+                if (IsFirstIndexOfRow(augmentedShapeIndex, rowLength) && augmentedShapeIndex != 0)
+                {
+                    posX = startingAnchor.X;
+                    posY += colDifference;
+                }
+
+                var currentShape = selectedShapes[i];
+                var center = currentShape.Center;
+                currentShape.IncrementLeft(posX - center.X);
+                currentShape.IncrementTop(posY - center.Y);
+
+                posX += rowDifference;
                 augmentedShapeIndex++;
             }
         }

@@ -1247,7 +1247,7 @@
     <Resource Include="Resources\PositionsLab\AlignMiddleDefaultIcon.png" />
     <Resource Include="Resources\PositionsLab\AlignRightDefaultIcon.png" />
     <Resource Include="Resources\PositionsLab\AlignTopDefaultIcon.png" />
-    <Content Include="Resources\PositionsLab\PositionsLab.png" />
+    <None Include="Resources\PositionsLab\PositionsLab.png" />
     <Resource Include="Resources\ResizeLab\ResizeSymmetricTop.png" />
     <Resource Include="Resources\ResizeLab\ResizeSymmetricRight.png" />
     <Resource Include="Resources\ResizeLab\ResizeSymmetricLeft.png" />
