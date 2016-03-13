@@ -19,7 +19,7 @@ namespace PowerPointLabs.PictureSlidesLab.Service.StylesWorker
                     ? designer.ApplyBlurEffect(source.SpecialEffectImageFile, blurDegreeForFrostedGlass)
                     : designer.ApplyBlurEffect(degree: blurDegreeForFrostedGlass);
                 designer.ApplyFrostedGlassTextBoxEffect(option.FrostedGlassTextBoxColor, option.FrostedGlassTextBoxTransparency,
-                    blurImageShape);
+                    blurImageShape, option.FontSizeIncrease);
                 blurImageShape.Delete();
             }
             return new List<Shape>();

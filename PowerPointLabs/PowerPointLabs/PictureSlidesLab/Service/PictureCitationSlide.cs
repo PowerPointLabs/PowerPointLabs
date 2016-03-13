@@ -2,11 +2,11 @@
 using System.Collections.Generic;
 using System.Runtime.InteropServices;
 using System.Text;
-using System.Text.RegularExpressions;
 using Microsoft.Office.Core;
 using Microsoft.Office.Interop.PowerPoint;
 using PowerPointLabs.ActionFramework.Common.Log;
 using PowerPointLabs.Models;
+using PowerPointLabs.PictureSlidesLab.Service.Effect;
 using Shape = Microsoft.Office.Interop.PowerPoint.Shape;
 
 namespace PowerPointLabs.PictureSlidesLab.Service
@@ -14,7 +14,7 @@ namespace PowerPointLabs.PictureSlidesLab.Service
     class PictureCitationSlide : PowerPointSlide
     {
         public const string PictureCitationSlideName = "PPTLabsPictureCitationSlide";
-        public const string PictureCitationSlideTitle = "Picture Citations";
+        public const string PictureCitationSlideTitle = "Picture Sources";
 
         private List<PowerPointSlide> AllSlides { get; set; }
 
@@ -57,7 +57,7 @@ namespace PowerPointLabs.PictureSlidesLab.Service
             }
 
             DeleteShapesWithPrefix(PptLabsIndicatorShapeName);
-            AddPowerPointLabsIndicator();
+            _slide.SlideShowTransition.Hidden = MsoTriState.msoTrue;
         }
 
         public static bool IsCitationSlide(PowerPointSlide slide)
@@ -76,13 +76,22 @@ namespace PowerPointLabs.PictureSlidesLab.Service
                 var slideIndex = 1;
                 foreach (var slide in AllSlides)
                 {
-                    var match = Regex.Match(slide.NotesPageText, EffectsDesigner.RegexForPictureCitation);
-                    var citation = match.Value.Replace("[[", "").Replace("]]\n", "");
-                    if (!string.IsNullOrEmpty(citation))
+                    var originalShapeList = slide.GetShapesWithPrefix(
+                        EffectsDesigner.ShapeNamePrefix + "_" + EffectName.Original_DO_NOT_REMOVE);
+                    if (originalShapeList.Count == 0)
                     {
-                        strBuilder.Append("P" + slideIndex + ": " + citation + "\n");
-                        isAnyCitation = true;
+                        continue;
                     }
+
+                    var originalImageShape = originalShapeList[0];
+                    var source = originalImageShape.Tags[Tag.ReloadImgSource];
+                    if (string.IsNullOrEmpty(source))
+                    {
+                        source = "somewhere";
+                    }
+                    var citation = "Picture taken from " + source;
+                    strBuilder.Append("Slide" + slideIndex + ": " + citation + "\n");
+                    isAnyCitation = true;
                     slideIndex++;
                 }
                 if (!isAnyCitation)

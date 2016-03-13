@@ -20,6 +20,14 @@ namespace PowerPointLabs.PictureSlidesLab.Service
             return imageShape;
         }
 
+        private int CalculateTextBoxMargin(int fontSizeToIncrease)
+        {
+            if (fontSizeToIncrease == -1 || fontSizeToIncrease == 0)
+                return 10;
+
+            return (int) (fontSizeToIncrease * 0.25 + 10);
+        }
+
         private void CropPicture(PowerPoint.Shape picShape)
         {
             try

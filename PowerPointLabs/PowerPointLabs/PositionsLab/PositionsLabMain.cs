@@ -1,14 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using Microsoft.Office.Core;
-using Microsoft.Office.Interop.PowerPoint;
-using PowerPointLabs.Models;
 using PowerPointLabs.Utils;
-using PowerPointLabs.Views;
 using Shape = Microsoft.Office.Interop.PowerPoint.Shape;
-using PowerPoint = Microsoft.Office.Interop.PowerPoint;
 using AutoShape = Microsoft.Office.Core.MsoAutoShapeType;
 using System.Diagnostics;
 using Drawing = System.Drawing;
@@ -17,302 +11,780 @@ namespace PowerPointLabs.PositionsLab
 {
     class PositionsLabMain
     {
-        private static bool isInit = false;
-        private const float epsilon = 0.00001f;
-        private const float ROTATE_LEFT = 90f;
-        private const float ROTATE_RIGHT = 270f;
-        private const float ROTATE_UP = 0f;
-        private const float ROTATE_DOWN = 180f;
-        private const int NONE = -1;
-        private const int RIGHT = 0;
-        private const int DOWN = 1;
-        private const int LEFT = 2;
-        private const int UP = 3;
-        private const int LEFTORRIGHT = 4;
-        private const int UPORDOWN = 5;
+        private const float Epsilon = 0.00001f;
+        private const float RotateLeft = 90f;
+        private const float RotateRight = 270f;
+        private const float RotateUp = 0f;
+        private const float RotateDown = 180f;
+        private const int None = -1;
+        private const int Right = 0;
+        private const int Down = 1;
+        private const int Left = 2;
+        private const int Up = 3;
+        private const int Leftorright = 4;
+        private const int Upordown = 5;
+
+        //Error Messages
+        private const string ErrorMessageFewerThanTwoSelection = TextCollection.PositionsLabText.ErrorFewerThanTwoSelection;
+        private const string ErrorMessageUndefined = TextCollection.PositionsLabText.ErrorUndefined;
+
+        //Distribute Grid Variables
+        public enum GridAlignment
+        {
+            AlignLeft,
+            AlignCenter,
+            AlignRight
+        }
+
+        public static GridAlignment DistributeGridAlignment { get; private set; }
+        public static float MarginTop { get; private set; }
+        public static float MarginBottom { get; private set; }
+        public static float MarginLeft { get; private set; }
+        public static float MarginRight { get; private set; }
+        public static bool DistributeUseSlideAsReference { get; private set; }
+
+        //Reorder Variables
+        public enum SwapReference
+        {
+            TopLeft,
+            TopCenter,
+            TopRight,
+            MiddleLeft,
+            MiddleCenter,
+            MiddleRight,
+            BottomLeft,
+            BottomCenter,
+            BottomRight
+        }
+
+        public static SwapReference SwapReferencePoint { get; set; }
+
+        public static bool IsSwapByClickOrder { get; set; }
+
+        private static Dictionary<int, Drawing.PointF> prevSelectedShapes = new Dictionary<int, Drawing.PointF>();
+        private static List<PPShape> prevSortedShapes;
+
+        //Align Variables
+        public static bool AlignUseSlideAsReference { get; private set; }
 
         private static Dictionary<MsoAutoShapeType, float> shapeDefaultUpAngle;
-        private static bool _useSlideAsReference;
 
         #region API
 
         #region Class Methods
 
         /// <summary>
-        /// Tells the Positions Lab to use the slide as the reference point for the methods
+        /// Tells the Positions Lab to use the slide as the reference point for Align methods
         /// </summary>
-        public static void ReferToSlide()
+        public static void AlignReferToSlide()
         {
-            _useSlideAsReference = true;
+            AlignUseSlideAsReference = true;
         }
 
         /// <summary>
-        /// Tells the Positions Lab to use reference shapes for the methods
+        /// Tells the Positions Lab to use first selected shape as reference shape for Align methods
         /// </summary>
-        public static void ReferToShape()
+        public static void AlignReferToShape()
         {
-            _useSlideAsReference = false;
+            AlignUseSlideAsReference = false;
         }
+
+        /// <summary>
+        /// Tells the Position Lab to use the slide as the reference point for Distribute methods
+        /// </summary>
+        public static void DistributeReferToSlide()
+        {
+            DistributeUseSlideAsReference = true;
+        }
+
+        /// <summary>
+        /// Tells the Positions Lab to use first selected shape as reference shape for Distribute methods
+        /// </summary>
+        public static void DistributeReferToShape()
+        {
+            DistributeUseSlideAsReference = false;
+        }
+
+        public static void SetDistributeGridAlignment(GridAlignment alignment)
+        {
+            DistributeGridAlignment = alignment;
+        }
+
+        public static void SetDistributeMarginTop (float marginTop)
+        {
+            MarginTop = marginTop;
+        }
+
+        public static void SetDistributeMarginBottom(float marginBottom)
+        {
+            MarginBottom = marginBottom;
+        }
+
+        public static void SetDistributeMarginLeft(float marginLeft)
+        {
+            MarginLeft = marginLeft;
+        }
+
+        public static void SetDistributeMarginRight(float marginRight)
+        {
+            MarginRight = marginRight;
+        }
+
         #endregion
 
         #region Align
-        public static void AlignLeft(List<Shape> selectedShapes)
+        public static void AlignLeft(List<PPShape> selectedShapes)
         {
-            if (_useSlideAsReference)
+            if (AlignUseSlideAsReference)
             {
-                foreach (Shape s in selectedShapes)
+                foreach (var s in selectedShapes)
                 {
-                    Drawing.PointF[] allPointsOfShape = Graphics.GetRealCoordinates(s);
-                    Drawing.PointF leftMost = Graphics.LeftMostPoint(allPointsOfShape);
-                    s.IncrementLeft(-leftMost.X);
+                    s.IncrementLeft(-s.Left);
                 }
             }
             else
             {
                 if (selectedShapes.Count < 2)
                 {
-                    //Error
-                    return;
+                    throw new Exception(ErrorMessageFewerThanTwoSelection);
                 }
 
-                Shape refShape = selectedShapes[0];
-                Drawing.PointF[] allPointsOfRef = Graphics.GetRealCoordinates(refShape);
-                Drawing.PointF leftMostRef = Graphics.LeftMostPoint(allPointsOfRef);
+                var refShape = selectedShapes[0];
 
-                for (int i = 1; i < selectedShapes.Count; i++)
+                for (var i = 1; i < selectedShapes.Count; i++)
                 {
-                    Shape s = selectedShapes[i];
-                    Drawing.PointF[] allPoints = Graphics.GetRealCoordinates(s);
-                    Drawing.PointF leftMost = Graphics.LeftMostPoint(allPoints);
-                    s.IncrementLeft(leftMostRef.X - leftMost.X);
+                    var s = selectedShapes[i];
+                    s.IncrementLeft(refShape.Left - s.Left);
                 }
             }
         }
 
-        public static void AlignRight(List<Shape> selectedShapes, float slideWidth)
+        public static void AlignRight(List<PPShape> selectedShapes, float slideWidth)
         {
-            if (_useSlideAsReference)
+            if (AlignUseSlideAsReference)
             {
-                foreach (Shape s in selectedShapes)
+                foreach (var s in selectedShapes)
                 {
-                    Drawing.PointF[] allPointsOfShape = Graphics.GetRealCoordinates(s);
-                    Drawing.PointF leftMost = Graphics.LeftMostPoint(allPointsOfShape);
-                    var shapeWidth = Graphics.RealWidth(allPointsOfShape);
-                    s.IncrementLeft(slideWidth - leftMost.X - shapeWidth);
+                    s.IncrementLeft(slideWidth - s.Left - s.AbsoluteWidth);
                 }
             }
             else
             {
                 if (selectedShapes.Count < 2)
                 {
-                    //Error
-                    return;
+                    throw new Exception(ErrorMessageFewerThanTwoSelection);
                 }
 
-                Shape refShape = selectedShapes[0];
-                Drawing.PointF[] allPointsOfRef = Graphics.GetRealCoordinates(refShape);
-                Drawing.PointF rightMostRef = Graphics.RightMostPoint(allPointsOfRef);
+                var refShape = selectedShapes[0];
+                var rightMostRefPoint = refShape.Left + refShape.AbsoluteWidth;
 
-                for (int i = 1; i < selectedShapes.Count; i++)
+                for (var i = 1; i < selectedShapes.Count; i++)
                 {
-                    Shape s = selectedShapes[i];
-                    Drawing.PointF[] allPoints = Graphics.GetRealCoordinates(s);
-                    Drawing.PointF rightMost = Graphics.RightMostPoint(allPoints);
-                    s.IncrementLeft(rightMostRef.X - rightMost.X);
+                    var s = selectedShapes[i];
+                    var rightMostPoint = s.Left + s.AbsoluteWidth;
+                    s.IncrementLeft(rightMostRefPoint - rightMostPoint);
                 }
             }
         }
 
-        public static void AlignTop(List<Shape> selectedShapes)
+        public static void AlignTop(List<PPShape> selectedShapes)
         {
-            if (_useSlideAsReference)
+            if (AlignUseSlideAsReference)
             {
-                foreach (Shape s in selectedShapes)
+                foreach (var s in selectedShapes)
                 {
-                    Drawing.PointF[] allPointsOfShape = Graphics.GetRealCoordinates(s);
-                    Drawing.PointF topMost = Graphics.TopMostPoint(allPointsOfShape);
-                    s.IncrementTop(-topMost.Y);
+                    s.IncrementTop(-s.Top);
                 }
             }
             else
             {
                 if (selectedShapes.Count < 2)
                 {
-                    //Error
-                    return;
+                    throw new Exception(ErrorMessageFewerThanTwoSelection);
                 }
 
-                Shape refShape = selectedShapes[0];
-                Drawing.PointF[] allPointsOfRef = Graphics.GetRealCoordinates(refShape);
-                Drawing.PointF topMostRef = Graphics.TopMostPoint(allPointsOfRef);
+                var refShape = selectedShapes[0];
 
-                for (int i = 1; i < selectedShapes.Count; i++)
+                for (var i = 1; i < selectedShapes.Count; i++)
                 {
-                    Shape s = selectedShapes[i];
-                    Drawing.PointF[] allPoints = Graphics.GetRealCoordinates(s);
-                    Drawing.PointF topMost = Graphics.TopMostPoint(allPoints);
-                    s.IncrementTop(topMostRef.Y - topMost.Y);
+                    var s = selectedShapes[i];
+                    s.IncrementTop(refShape.Top - s.Top);
                 }
             }
         }
 
-        public static void AlignBottom(List<Shape> selectedShapes, float slideHeight)
+        public static void AlignBottom(List<PPShape> selectedShapes, float slideHeight)
         {
-            if (_useSlideAsReference)
+            if (AlignUseSlideAsReference)
             {
-                foreach (Shape s in selectedShapes)
+                foreach (var s in selectedShapes)
                 {
-                    Drawing.PointF[] allPointsOfShape = Graphics.GetRealCoordinates(s);
-                    Drawing.PointF topMost = Graphics.TopMostPoint(allPointsOfShape);
-                    var shapeHeight = Graphics.RealHeight(allPointsOfShape);
-                    s.IncrementTop(slideHeight - topMost.Y - shapeHeight);
+                    s.IncrementTop(slideHeight - s.Top - s.AbsoluteHeight);
                 }
             }
             else
             {
                 if (selectedShapes.Count < 2)
                 {
-                    //Error
-                    return;
+                    throw new Exception(ErrorMessageFewerThanTwoSelection);
                 }
 
-                Shape refShape = selectedShapes[0];
-                Drawing.PointF[] allPointsOfRef = Graphics.GetRealCoordinates(refShape);
-                Drawing.PointF lowestRef = Graphics.BottomMostPoint(allPointsOfRef);
+                var refShape = selectedShapes[0];
+                var lowestRefPoint = refShape.Top + refShape.AbsoluteHeight;
 
-                for (int i = 1; i < selectedShapes.Count; i++)
+                for (var i = 1; i < selectedShapes.Count; i++)
                 {
-                    Shape s = selectedShapes[i];
-                    Drawing.PointF[] allPoints = Graphics.GetRealCoordinates(s);
-                    Drawing.PointF lowest = Graphics.BottomMostPoint(allPoints);
-                    s.IncrementTop(lowestRef.Y - lowest.Y);
+                    var s = selectedShapes[i];
+                    var lowestPoint = s.Top + s.AbsoluteHeight;
+                    s.IncrementTop(lowestRefPoint - lowestPoint);
                 }
             }
         }
 
-        public static void AlignMiddle(List<Shape> selectedShapes, float slideHeight)
+        public static void AlignMiddle(List<PPShape> selectedShapes, float slideHeight)
         {
-            if (_useSlideAsReference)
+            if (AlignUseSlideAsReference)
             {
-                foreach (Shape s in selectedShapes)
+                foreach (var s in selectedShapes)
                 {
-                    Drawing.PointF[] allPointsOfShape = Graphics.GetRealCoordinates(s);
-                    Drawing.PointF topMost = Graphics.TopMostPoint(allPointsOfShape);
-                    var shapeHeight = Graphics.RealHeight(allPointsOfShape);
-                    s.IncrementTop(slideHeight/2 - topMost.Y - shapeHeight/2);
+                    s.IncrementTop(slideHeight/2 - s.Top - s.AbsoluteHeight/2);
                 }
             }
             else
             {
                 if (selectedShapes.Count < 2)
                 {
-                    //Error
-                    return;
+                    throw new Exception(ErrorMessageFewerThanTwoSelection);
                 }
 
-                Shape refShape = selectedShapes[0];
-                Drawing.PointF originRef = Graphics.GetCenterPoint(refShape);
+                var refShape = selectedShapes[0];
 
-                for (int i = 1; i < selectedShapes.Count; i++)
+                for (var i = 1; i < selectedShapes.Count; i++)
                 {
-                    Shape s = selectedShapes[i];
-                    Drawing.PointF origin = Graphics.GetCenterPoint(s);
-                    s.IncrementTop(originRef.Y - origin.Y);
+                    var s = selectedShapes[i];
+                    s.IncrementTop(refShape.Center.Y - s.Center.Y);
                 }
             }
         }
 
-        public static void AlignCenter(List<Shape> selectedShapes, float slideWidth, float slideHeight)
+        public static void AlignCenter(List<PPShape> selectedShapes, float slideWidth, float slideHeight)
         {
-            if (_useSlideAsReference)
+            if (AlignUseSlideAsReference)
             {
-                foreach (Shape s in selectedShapes)
+                foreach (var s in selectedShapes)
                 {
-                    Drawing.PointF[] allPointsOfShape = Graphics.GetRealCoordinates(s);
-                    Drawing.PointF topMost = Graphics.TopMostPoint(allPointsOfShape);
-                    Drawing.PointF leftMost = Graphics.LeftMostPoint(allPointsOfShape);
-                    var shapeHeight = Graphics.RealHeight(allPointsOfShape);
-                    var shapeWidth = Graphics.RealWidth(allPointsOfShape);
-                    s.IncrementTop(slideHeight/2 - topMost.Y - shapeHeight/2);
-                    s.IncrementLeft(slideWidth/2 - leftMost.X - shapeWidth/2);
+                    s.IncrementTop(slideHeight/2 - s.Top - s.AbsoluteHeight/2);
+                    s.IncrementLeft(slideWidth/2 - s.Left - s.AbsoluteWidth/2);
                 }
             }
             else
             {
                 if (selectedShapes.Count < 2)
                 {
-                    //Error
-                    return;
+                    throw new Exception(ErrorMessageFewerThanTwoSelection);
                 }
 
-                Shape refShape = selectedShapes[0];
-                Drawing.PointF originRef = Graphics.GetCenterPoint(refShape);
+                var refShape = selectedShapes[0];
 
-                for (int i = 1; i < selectedShapes.Count; i++)
+                for (var i = 1; i < selectedShapes.Count; i++)
                 {
-                    Shape s = selectedShapes[i];
-                    Drawing.PointF origin = Graphics.GetCenterPoint(s);
-                    s.IncrementLeft(originRef.X - origin.X);
-                    s.IncrementTop(originRef.Y - origin.Y);
+                    var s = selectedShapes[i];
+                    s.IncrementLeft(refShape.Center.X - s.Center.X);
+                    s.IncrementTop(refShape.Center.Y - s.Center.Y);
                 }
             }
         }
 
+        #endregion
+
+        #region Adjoin
+        public static void AdjoinHorizontal(List<PPShape> selectedShapes)
+        {
+            if (selectedShapes.Count < 2)
+            {
+                throw new Exception(ErrorMessageFewerThanTwoSelection);
+            }
+
+            var refShape = selectedShapes[0];
+            var sortedShapes = Graphics.SortShapesByLeft(selectedShapes);
+            var refShapeIndex = sortedShapes.IndexOf(refShape);
+
+            var mostLeft = refShape.Left;
+            //For all shapes left of refShape, adjoin them from closest to refShape
+            for (var i = refShapeIndex - 1; i >= 0; i--)
+            {
+                var neighbour = sortedShapes[i];
+                var rightOfNeighbour = neighbour.Left + neighbour.AbsoluteWidth;
+                neighbour.IncrementLeft(mostLeft - rightOfNeighbour);
+                neighbour.IncrementTop(refShape.Center.Y - neighbour.Center.Y);
+
+                mostLeft = mostLeft - neighbour.AbsoluteWidth;
+            }
+
+            var mostRight = refShape.Left + refShape.AbsoluteWidth;
+            //For all shapes right of refShape, adjoin them from closest to refShape
+            for (var i = refShapeIndex + 1; i < sortedShapes.Count; i++)
+            {
+                var neighbour = sortedShapes[i];
+                neighbour.IncrementLeft(mostRight - neighbour.Left);
+                neighbour.IncrementTop(refShape.Center.Y - neighbour.Center.Y);
+
+                mostRight = mostRight + neighbour.AbsoluteWidth;
+            }
+        }
+
+        public static void AdjoinVertical(List<PPShape> selectedShapes)
+        {
+            if (selectedShapes.Count < 2)
+            {
+                throw new Exception(ErrorMessageFewerThanTwoSelection);
+            }
+
+            var refShape = selectedShapes[0];
+            var sortedShapes = Graphics.SortShapesByTop(selectedShapes);
+            var refShapeIndex = sortedShapes.IndexOf(refShape);
+
+            var mostTop = refShape.Top;
+            //For all shapes above refShape, adjoin them from closest to refShape
+            for (var i = refShapeIndex - 1; i >= 0; i--)
+            {
+                var neighbour = sortedShapes[i];
+                var bottomOfNeighbour = neighbour.Top + neighbour.AbsoluteHeight;
+                neighbour.IncrementLeft(refShape.Center.X - neighbour.Center.X);
+                neighbour.IncrementTop(mostTop - bottomOfNeighbour);
+
+                mostTop = mostTop - neighbour.AbsoluteHeight;
+            }
+
+            var lowest = refShape.Top + refShape.AbsoluteHeight;
+            //For all shapes right of refShape, adjoin them from closest to refShape
+            for (var i = refShapeIndex + 1; i < sortedShapes.Count; i++)
+            {
+                var neighbour = sortedShapes[i];
+                neighbour.IncrementLeft(refShape.Center.X - neighbour.Center.X);
+                neighbour.IncrementTop(lowest - neighbour.Top);
+
+                lowest = lowest + neighbour.AbsoluteHeight;
+            }
+        }
+        #endregion
+
+        #region Distribute
+        public static void DistributeHorizontal(List<PPShape> selectedShapes, float slideWidth)
+        {
+            var shapeCount = selectedShapes.Count;
+
+            var refShape = selectedShapes[0];
+            float rightMostRef;
+
+            if (DistributeUseSlideAsReference)
+            {
+                // Calculate the shape between shapes
+                var spaceBetweenShapes = slideWidth;
+                foreach (var s in selectedShapes)
+                {
+                    spaceBetweenShapes -= s.AbsoluteWidth;
+                }
+                // TODO: guard against spaceBetweenShapes < 0
+                spaceBetweenShapes /= shapeCount + 1;
+                
+                // Distribute the shapes
+                for (var i = 0; i < shapeCount; i++)
+                {
+                    var currShape = selectedShapes[i];
+                    if (i == 0)
+                    {
+                        // Left most shape
+                        currShape.IncrementLeft(spaceBetweenShapes - currShape.Left);
+                    }
+                    else
+                    {
+                        refShape = selectedShapes[i - 1];
+                        rightMostRef = refShape.Left + refShape.AbsoluteWidth;
+                        currShape.IncrementLeft(rightMostRef - currShape.Left + spaceBetweenShapes);
+                    }
+                }
+            }
+            else
+            {
+                if (shapeCount < 2)
+                {
+                    throw new Exception(ErrorMessageFewerThanTwoSelection);
+                }
+
+                // Calculate the shape between shapes
+                var spaceBetweenShapes = refShape.AbsoluteWidth;
+                for (var i = 1; i < shapeCount; i++)
+                {
+                    var s = selectedShapes[i];
+                    spaceBetweenShapes -= s.AbsoluteWidth;
+                }
+                // TODO: guard against spaceBetweenShapes < 0
+                spaceBetweenShapes /= shapeCount;
+
+                // Distribute the shapes
+                for (var i = 1; i < shapeCount; i++)
+                {
+                    var currShape = selectedShapes[i];
+                    refShape = selectedShapes[i - 1];
+
+                    if (i == 1)
+                    {
+                        currShape.IncrementLeft(refShape.Left - currShape.Left + spaceBetweenShapes);
+                    }
+                    else
+                    {
+                        rightMostRef = refShape.Left + refShape.AbsoluteWidth;
+                        currShape.IncrementLeft(rightMostRef - currShape.Left + spaceBetweenShapes);
+                    }
+                }
+            }
+        } 
+
+        public static void DistributeVertical(List<PPShape> selectedShapes, float slideHeight)
+        {
+            var shapeCount = selectedShapes.Count;
+
+            var refShape = selectedShapes[0];
+            float lowestRef;
+
+            if (DistributeUseSlideAsReference)
+            {
+                // Calculate the space between shapes
+                var spaceBetweenShapes = slideHeight;
+                foreach (var s in selectedShapes)
+                {
+                    spaceBetweenShapes -= s.AbsoluteHeight;
+                }
+                // TODO: guard against spaceBetweenShapes < 0
+                spaceBetweenShapes /= shapeCount + 1;
+
+                // Distribute the shapes
+                for (var i = 0; i < shapeCount; i++)
+                {
+                    var currShape = selectedShapes[i];
+                    if (i == 0)
+                    {
+                        currShape.IncrementTop(spaceBetweenShapes - currShape.Top);
+                    }
+                    else
+                    {
+                        refShape = selectedShapes[i - 1];
+                        lowestRef = refShape.Top + refShape.AbsoluteHeight;
+                        currShape.IncrementTop(lowestRef - currShape.Top + spaceBetweenShapes);
+                    }
+                }
+            }
+            else
+            {
+                if (shapeCount < 2)
+                {
+                    throw new Exception(ErrorMessageFewerThanTwoSelection);
+                }
+                // Calculate the shape between shapes
+                var spaceBetweenShapes = refShape.AbsoluteHeight;
+                for (var i = 1; i < shapeCount; i++)
+                {
+                    var s = selectedShapes[i];
+                    spaceBetweenShapes -= s.AbsoluteHeight;
+                }
+                // TODO: guard against spaceBetweenShapes < 0
+                spaceBetweenShapes /= shapeCount;
+
+                // Distribute the shapes
+                for (var i = 1; i < shapeCount; i++)
+                {
+                    var currShape = selectedShapes[i];
+                    refShape = selectedShapes[i - 1];
+
+                    if (i == 1)
+                    {
+                        currShape.IncrementTop(refShape.Top - currShape.Top + spaceBetweenShapes);
+                    }
+                    else
+                    {
+                        lowestRef = refShape.Top + refShape.AbsoluteHeight;
+                        currShape.IncrementTop(lowestRef - currShape.Top + spaceBetweenShapes);
+                    }
+                }
+            }
+        }
+
+        public static void DistributeCenter(List<PPShape> selectedShapes, float slideWidth, float slideHeight)
+        {
+            DistributeHorizontal(selectedShapes, slideWidth);
+            DistributeVertical(selectedShapes, slideHeight);
+        }
+
+        public static void DistributeShapes(List<PPShape> selectedShapes)
+        {
+            var shapeCount = selectedShapes.Count;
+
+            if (shapeCount < 2)
+            {
+                throw new Exception(ErrorMessageFewerThanTwoSelection);
+            }
+
+            if (shapeCount == 2)
+            {
+                return;
+            }
+
+            var firstRef = selectedShapes[0];
+            var lastRef = selectedShapes[selectedShapes.Count - 1];
+            PPShape refShape;
+
+            var horizontalDistance = lastRef.Left - firstRef.Left - firstRef.AbsoluteWidth;
+            var verticalDistance = lastRef.Top - firstRef.Top - firstRef.AbsoluteHeight;
+
+            // Calculate the horizontal space between shapes
+            var spaceBetweenShapes = horizontalDistance;
+            for (var i = 1; i < shapeCount - 1; i++)
+            {
+                var s = selectedShapes[i];
+                spaceBetweenShapes -= s.AbsoluteWidth;
+            }
+            // TODO: guard against spaceBetweenShapes < 0
+            spaceBetweenShapes /= (shapeCount-1);
+
+            // Distribute shapes horizontally
+            for (var i = 1; i < shapeCount - 1; i++)
+            {
+                var currShape = selectedShapes[i];
+                refShape = selectedShapes[i - 1];
+
+                var rightMostRef = refShape.Left + refShape.AbsoluteWidth;
+                currShape.IncrementLeft(rightMostRef - currShape.Left + spaceBetweenShapes);
+            }
+
+            // Calculate the vertical space between shapes
+            spaceBetweenShapes = verticalDistance;
+            for (var i = 1; i < shapeCount - 1; i++)
+            {
+                var s = selectedShapes[i];
+                spaceBetweenShapes -= s.AbsoluteHeight;
+            }
+            // TODO: guard against spaceBetweenShapes < 0
+            spaceBetweenShapes /= (shapeCount-1);
+
+            // Distribute the shapes vertically
+            for (var i = 1; i < shapeCount - 1; i++)
+            {
+                var currShape = selectedShapes[i];
+                refShape = selectedShapes[i - 1];
+
+                var lowestRef = refShape.Top + refShape.AbsoluteHeight;
+                currShape.IncrementTop(lowestRef - currShape.Top + spaceBetweenShapes);
+            }
+        }
+
+        public static void DistributeGrid(List<PPShape> selectedShapes, int rowLength, int colLength)
+        {
+            var colLengthGivenFullRows = (int)Math.Ceiling((double)selectedShapes.Count / rowLength);
+            if (colLength <= colLengthGivenFullRows)
+            {
+                DistributeGridByRow(selectedShapes, rowLength, colLength);
+            }
+            else
+            {
+                DistributeGridByCol(selectedShapes, rowLength, colLength);
+            }
+        }
+
+        public static void DistributeGridByRow(List<PPShape> selectedShapes, int rowLength, int colLength)
+        {
+            var refPoint = selectedShapes[0].Center;
+            
+            var numShapes = selectedShapes.Count;
+            
+            var numIndicesToSkip = IndicesToSkip(numShapes, rowLength, DistributeGridAlignment);
+
+            var rowDifferences = GetLongestWidthsOfRowsByRow(selectedShapes, rowLength, numIndicesToSkip);
+            var colDifferences = GetLongestHeightsOfColsByRow(selectedShapes, rowLength, colLength);
+
+            var posX = refPoint.X;
+            var posY = refPoint.Y;
+            var remainder = numShapes % rowLength;
+            var differenceIndex = 0;
+
+            for (var i = 0; i < numShapes; i++)
+            {
+                //Start of new row
+                if (i % rowLength == 0 && i != 0)
+                {
+                    posX = refPoint.X;
+                    differenceIndex = 0;
+                    posY += GetSpaceBetweenShapes(i / rowLength - 1, i / rowLength, colDifferences, MarginTop, MarginBottom);
+                }
+
+                //If last row, offset by num of indices to skip
+                if (numShapes - i == remainder)
+                {
+                    differenceIndex = numIndicesToSkip;
+                    posX += GetSpaceBetweenShapes(0, differenceIndex, rowDifferences, MarginLeft, MarginRight);
+                }
+
+                var currentShape = selectedShapes[i];
+                currentShape.IncrementLeft(posX - currentShape.Center.X);
+                currentShape.IncrementTop(posY - currentShape.Center.Y);
+
+                posX += GetSpaceBetweenShapes(differenceIndex, differenceIndex + 1, rowDifferences, MarginLeft, MarginRight);
+                differenceIndex++;
+            }
+        }
+
+        public static void DistributeGridByCol(List<PPShape> selectedShapes, int rowLength, int colLength)
+        {
+            var refPoint = selectedShapes[0].Center;
+            
+            var numShapes = selectedShapes.Count;
+            
+            var numIndicesToSkip = IndicesToSkip(numShapes, colLength, DistributeGridAlignment);
+
+            var rowDifferences = GetLongestWidthsOfRowsByCol(selectedShapes, rowLength, colLength, numIndicesToSkip);
+            var colDifferences = GetLongestHeightsOfColsByCol(selectedShapes, rowLength, colLength, numIndicesToSkip);
+
+            var posX = refPoint.X;
+            var posY = refPoint.Y;
+            var remainder = colLength - (rowLength * colLength - numShapes);
+            var augmentedShapeIndex = 0;
+
+            for (var i = 0; i < numShapes; i++)
+            {
+                //If last index and need to skip, skip index 
+                if (numIndicesToSkip > 0 && IsLastIndexOfRow(augmentedShapeIndex, rowLength))
+                {
+                    numIndicesToSkip--;
+                    augmentedShapeIndex++;
+                }
+
+                //If last index and no more remainder, skip the rest
+                if (IsLastIndexOfRow(augmentedShapeIndex, rowLength))
+                {
+                    if (remainder <= 0)
+                    {
+                        augmentedShapeIndex++;
+                    }
+                    else
+                    {
+                        remainder--;
+                    }
+                }
+
+                if (IsFirstIndexOfRow(augmentedShapeIndex, rowLength) && augmentedShapeIndex != 0)
+                {
+                    posX = refPoint.X;
+                    posY += GetSpaceBetweenShapes(augmentedShapeIndex / rowLength - 1, augmentedShapeIndex / rowLength, colDifferences, MarginTop, MarginBottom);
+                }
+
+                var currentShape = selectedShapes[i];
+                var center = currentShape.Center;
+                currentShape.IncrementLeft(posX - center.X);
+                currentShape.IncrementTop(posY - center.Y);
+
+                posX += GetSpaceBetweenShapes(augmentedShapeIndex % rowLength, augmentedShapeIndex % rowLength + 1, rowDifferences, MarginLeft, MarginRight);
+                augmentedShapeIndex++;
+            }
+        }
+        #endregion
+
+        #region Swap
+        public static void Swap(List<PPShape> selectedShapes)
+        {
+            if (selectedShapes.Count < 2)
+            {
+                throw new Exception(ErrorMessageFewerThanTwoSelection);
+            }
+
+            var sortedShapes = selectedShapes;
+
+            if (!IsSwapByClickOrder)
+            {
+                if (ListIsPreviouslySelected(selectedShapes, prevSelectedShapes))
+                {
+                    sortedShapes = prevSortedShapes;
+                }
+                else
+                {
+                    sortedShapes = Graphics.SortShapesByLeft(selectedShapes);
+                }
+            }
+            else
+            {
+                prevSelectedShapes.Clear();
+            }
+
+            var firstPos = GetSwapReferencePoint(sortedShapes[0], SwapReferencePoint);
+
+            prevSortedShapes = new List<PPShape>();
+
+            for (var i = 0; i < sortedShapes.Count; i++)
+            {
+                var currentShape = sortedShapes[i];
+                if (i < sortedShapes.Count - 1)
+                {
+                    var currentPos = GetSwapReferencePoint(currentShape, SwapReferencePoint);
+                    var nextPos = GetSwapReferencePoint(sortedShapes[i + 1], SwapReferencePoint);
+
+                    currentShape.IncrementLeft(nextPos.X - currentPos.X);
+                    currentShape.IncrementTop(nextPos.Y - currentPos.Y);
+                }
+                else
+                {
+                    var currentPos = GetSwapReferencePoint(currentShape, SwapReferencePoint);
+                    currentShape.IncrementLeft(firstPos.X - currentPos.X);
+                    currentShape.IncrementTop(firstPos.Y - currentPos.Y);
+                }
+
+                if (i != 0 && !IsSwapByClickOrder)
+                {
+                    prevSortedShapes.Add(currentShape);
+                }
+            }
+
+            if (!IsSwapByClickOrder)
+            {
+                prevSortedShapes.Add(sortedShapes[0]);
+                SaveSelectedList(prevSortedShapes, prevSelectedShapes);
+            }  
+        }
         #endregion
 
         #region Snap
         public static void SnapVertical(List<Shape> selectedShapes)
         {
-            if (!isInit)
+            foreach (var s in selectedShapes)
             {
-                Init();
-                isInit = true;
-            }
-
-            for (int i = 0; i < selectedShapes.Count; i++)
-            {
-                SnapShapeVertical(selectedShapes[i]);
+                SnapShapeVertical(s);
             }
         }
 
         public static void SnapHorizontal(List<Shape> selectedShapes)
         {
-            if (!isInit)
+            foreach (var s in selectedShapes)
             {
-                Init();
-                isInit = true;
-            }
-
-            for (int i = 0; i < selectedShapes.Count; i++)
-            {
-                SnapShapeHorizontal(selectedShapes[i]);
+                SnapShapeHorizontal(s);
             }
         }
 
         public static void SnapAway(List<Shape> shapes)
         {
-            if (!isInit)
+            if (shapes.Count < 2)
             {
-                Init();
-                isInit = true;
+                throw new Exception(ErrorMessageFewerThanTwoSelection);
             }
 
-            if (shapes.Count <= 1)
+            var refShapeCenter = Graphics.GetCenterPoint(shapes[0]);
+            var isAllSameDir = true;
+            var lastDir = -1;
+
+            for (var i = 1; i < shapes.Count; i++)
             {
-                return;
-            }
+                var shape = shapes[i];
+                var shapeCenter = Graphics.GetCenterPoint(shape);
+                var angle = (float)AngleBetweenTwoPoints(refShapeCenter, shapeCenter);
 
-            Drawing.PointF refShapeCenter = Graphics.GetCenterPoint(shapes[0]);
-            bool isAllSameDir = true;
-            int lastDir = -1;
-
-            for (int i = 1; i < shapes.Count; i++)
-            {
-                Shape shape = shapes[i];
-                Drawing.PointF shapeCenter = Graphics.GetCenterPoint(shape);
-                float angle = (float)AngleBetweenTwoPoints(refShapeCenter, shapeCenter);
-
-                int dir = GetDirectionWRTRefShape(shape, angle);
+                var dir = GetDirectionWrtRefShape(shape, angle);
 
                 if (i == 1)
                 {
@@ -326,13 +798,13 @@ namespace PowerPointLabs.PositionsLab
                 }
 
                 //only maintain in one direction instead of dual direction
-                if (dir < LEFTORRIGHT)
+                if (dir < Leftorright)
                 {
                     lastDir = dir; 
                 }
             }
 
-            if (!isAllSameDir || lastDir == NONE)
+            if (!isAllSameDir || lastDir == None)
             {
                 lastDir = 0;
             }
@@ -341,14 +813,14 @@ namespace PowerPointLabs.PositionsLab
                 lastDir++;
             }
 
-            for (int i = 1; i < shapes.Count; i++)
+            for (var i = 1; i < shapes.Count; i++)
             {
-                Shape shape = shapes[i];
-                Drawing.PointF shapeCenter = Graphics.GetCenterPoint(shape);
-                float angle = (float) AngleBetweenTwoPoints(refShapeCenter, shapeCenter);
+                var shape = shapes[i];
+                var shapeCenter = Graphics.GetCenterPoint(shape);
+                var angle = (float) AngleBetweenTwoPoints(refShapeCenter, shapeCenter);
 
                 float defaultUpAngle = 0;
-                bool hasDefaultDirection = shapeDefaultUpAngle.TryGetValue(shape.AutoShapeType, out defaultUpAngle);
+                var hasDefaultDirection = shapeDefaultUpAngle.TryGetValue(shape.AutoShapeType, out defaultUpAngle);
 
                 if (hasDefaultDirection)
                 {
@@ -394,7 +866,7 @@ namespace PowerPointLabs.PositionsLab
 
         private static void SnapTo0Or180 (Shape shape)
         {
-            float rotation = shape.Rotation;
+            var rotation = shape.Rotation;
 
             if (rotation >= 90 && rotation < 270)
             {
@@ -408,7 +880,7 @@ namespace PowerPointLabs.PositionsLab
 
         private static void SnapTo90Or270(Shape shape)
         {
-            float rotation = shape.Rotation;
+            var rotation = shape.Rotation;
 
             if (rotation >= 0 && rotation < 180)
             {
@@ -426,391 +898,12 @@ namespace PowerPointLabs.PositionsLab
         }
         #endregion
 
-        #region Adjoin
-        public static void AdjoinHorizontal(List<Shape> selectedShapes)
-        {
-            if (selectedShapes.Count < 2)
-            {
-                //Error
-                return;
-            }
-
-            Shape refShape = selectedShapes[0];
-            List<Shape> sortedShapes = Graphics.SortShapesByLeft(selectedShapes);
-            int refShapeIndex = sortedShapes.IndexOf(refShape);
-
-            Drawing.PointF[] allPointsOfRef = Graphics.GetRealCoordinates(refShape);
-            Drawing.PointF centerOfRef = Graphics.GetCenterPoint(refShape);
-
-            float mostLeft = Graphics.LeftMostPoint(allPointsOfRef).X;
-            //For all shapes left of refShape, adjoin them from closest to refShape
-            for (int i = refShapeIndex - 1; i >= 0; i--)
-            {
-                Shape neighbour = sortedShapes[i];
-                Drawing.PointF[] allPointsOfNeighbour = Graphics.GetRealCoordinates(neighbour);
-                float rightOfShape = Graphics.RightMostPoint(allPointsOfNeighbour).X;
-                neighbour.IncrementLeft(mostLeft - rightOfShape);
-                neighbour.IncrementTop(centerOfRef.Y - Graphics.GetCenterPoint(neighbour).Y);
-
-                mostLeft = Graphics.LeftMostPoint(allPointsOfNeighbour).X + mostLeft - rightOfShape;
-            }
-
-            float mostRight = Graphics.RightMostPoint(allPointsOfRef).X;
-            //For all shapes right of refShape, adjoin them from closest to refShape
-            for (int i = refShapeIndex + 1; i < sortedShapes.Count; i++)
-            {
-                Shape neighbour = sortedShapes[i];
-                Drawing.PointF[] allPointsOfNeighbour = Graphics.GetRealCoordinates(neighbour);
-                float leftOfShape = Graphics.LeftMostPoint(allPointsOfNeighbour).X;
-                neighbour.IncrementLeft(mostRight - leftOfShape);
-                neighbour.IncrementTop(centerOfRef.Y - Graphics.GetCenterPoint(neighbour).Y);
-
-                mostRight = Graphics.RightMostPoint(allPointsOfNeighbour).X + mostRight - leftOfShape;
-            }
-        }
-
-        public static void AdjoinVertical(List<Shape> selectedShapes)
-        {
-            if (selectedShapes.Count < 2)
-            {
-                //Error
-                return;
-            }
-
-            Shape refShape = selectedShapes[0];
-            List<Shape> sortedShapes = Graphics.SortShapesByTop(selectedShapes);
-            int refShapeIndex = sortedShapes.IndexOf(refShape);
-
-            Drawing.PointF[] allPointsOfRef = Graphics.GetRealCoordinates(refShape);
-            Drawing.PointF centerOfRef = Graphics.GetCenterPoint(refShape);
-
-            float mostTop = Graphics.TopMostPoint(allPointsOfRef).Y;
-            //For all shapes above refShape, adjoin them from closest to refShape
-            for (int i = refShapeIndex - 1; i >= 0; i--)
-            {
-                Shape neighbour = sortedShapes[i];
-                Drawing.PointF[] allPointsOfNeighbour = Graphics.GetRealCoordinates(neighbour);
-                float bottomOfShape = Graphics.BottomMostPoint(allPointsOfNeighbour).Y;
-                neighbour.IncrementLeft(centerOfRef.X - Graphics.GetCenterPoint(neighbour).X);
-                neighbour.IncrementTop(mostTop - bottomOfShape);
-
-                mostTop = Graphics.TopMostPoint(allPointsOfNeighbour).Y + mostTop - bottomOfShape;
-            }
-
-            float lowest = Graphics.BottomMostPoint(allPointsOfRef).Y;
-            //For all shapes right of refShape, adjoin them from closest to refShape
-            for (int i = refShapeIndex + 1; i < sortedShapes.Count; i++)
-            {
-                Shape neighbour = sortedShapes[i];
-                Drawing.PointF[] allPointsOfNeighbour = Graphics.GetRealCoordinates(neighbour);
-                float topOfShape = Graphics.TopMostPoint(allPointsOfNeighbour).Y;
-                neighbour.IncrementLeft(centerOfRef.X - Graphics.GetCenterPoint(neighbour).X);
-                neighbour.IncrementTop(lowest - topOfShape);
-
-                lowest = Graphics.BottomMostPoint(allPointsOfNeighbour).Y + lowest - topOfShape;
-            }
-        }
-        #endregion
-
-        #region Swap
-        public static void Swap(List<Shape> selectedShapes)
-        {
-            if (selectedShapes.Count < 2)
-            {
-                //Error
-                return;
-            }
-
-            List<Shape> sortedShapes = Graphics.SortShapesByLeft(selectedShapes);
-            Drawing.PointF firstPos = Graphics.GetCenterPoint(sortedShapes[0]);
-
-            for (int i = 0; i < sortedShapes.Count; i++)
-            {
-                Shape currentShape = sortedShapes[i];
-                if (i < sortedShapes.Count - 1)
-                {
-                    Drawing.PointF currentPos = Graphics.GetCenterPoint(currentShape);
-                    Drawing.PointF nextPos = Graphics.GetCenterPoint(sortedShapes[i + 1]);
-
-                    currentShape.IncrementLeft(nextPos.X - currentPos.X);
-                    currentShape.IncrementTop(nextPos.Y - currentPos.Y);
-                }
-                else
-                {
-                    Drawing.PointF currentPos = Graphics.GetCenterPoint(currentShape);
-                    currentShape.IncrementLeft(firstPos.X - currentPos.X);
-                    currentShape.IncrementTop(firstPos.Y - currentPos.Y);
-                }
-            }
-        }
-        #endregion
-
-        #region Distribute
-        public static void DistributeHorizontal(List<Shape> selectedShapes, float slideWidth)
-        {
-            var shapeCount = selectedShapes.Count;
-
-            Shape refShape = selectedShapes[0];
-            Drawing.PointF[] allPointsOfRef = Graphics.GetRealCoordinates(refShape);
-            Drawing.PointF rightMostRef;
-
-            if (_useSlideAsReference)
-            {
-                var horizontalDistanceInRef = slideWidth;
-                var spaceBetweenShapes = horizontalDistanceInRef;
-
-                foreach (Shape s in selectedShapes)
-                {
-                    Drawing.PointF[] allPoints = Graphics.GetRealCoordinates(s);
-                    var shapeWidth = Graphics.RealWidth(allPoints);
-                    spaceBetweenShapes -= shapeWidth;
-                }
-
-                // TODO: guard against spaceBetweenShapes < 0
-
-                spaceBetweenShapes /= shapeCount + 1;
-
-                for (int i = 0; i < shapeCount; i++)
-                {
-                    Shape currShape = selectedShapes[i];
-                    Drawing.PointF[] allPoints = Graphics.GetRealCoordinates(currShape);
-                    Drawing.PointF leftMost = Graphics.LeftMostPoint(allPoints);
-                    if (i == 0)
-                    {
-                        currShape.IncrementLeft(spaceBetweenShapes - leftMost.X);
-                    }
-                    else
-                    {
-                        refShape = selectedShapes[i - 1];
-                        allPointsOfRef = Graphics.GetRealCoordinates(refShape);
-                        rightMostRef = Graphics.RightMostPoint(allPointsOfRef);
-                        currShape.IncrementLeft(rightMostRef.X - leftMost.X + spaceBetweenShapes);
-                    }
-                }
-            }
-            else
-            {
-                if (shapeCount < 2)
-                {
-                    //Error
-                    return;
-                }
-
-                var horizontalDistanceInRef = Graphics.RealWidth(allPointsOfRef);
-                var spaceBetweenShapes = horizontalDistanceInRef;
-
-                for (int i = 1; i < shapeCount; i++)
-                {
-                    Shape s = selectedShapes[i];
-                    Drawing.PointF[] allPoints = Graphics.GetRealCoordinates(s);
-                    var shapeWidth = Graphics.RealWidth(allPoints);
-                    spaceBetweenShapes -= shapeWidth;
-                }
-
-                // TODO: guard against spaceBetweenShapes < 0
-
-                spaceBetweenShapes /= shapeCount;
-
-                for (int i = 1; i < shapeCount; i++)
-                {
-                    Shape currShape = selectedShapes[i];
-                    Drawing.PointF[] allPoints = Graphics.GetRealCoordinates(currShape);
-                    Drawing.PointF leftMost = Graphics.LeftMostPoint(allPoints);
-                    refShape = selectedShapes[i - 1];
-                    allPointsOfRef = Graphics.GetRealCoordinates(refShape);
-
-                    if (i == 1)
-                    {
-                        Drawing.PointF leftMostRef = Graphics.LeftMostPoint(allPointsOfRef);
-                        currShape.IncrementLeft(leftMostRef.X - leftMost.X + spaceBetweenShapes);
-                    }
-                    else
-                    {
-                        rightMostRef = Graphics.RightMostPoint(allPointsOfRef);
-                        currShape.IncrementLeft(rightMostRef.X - leftMost.X + spaceBetweenShapes);
-                    }
-                }
-            }
-        } 
-
-        public static void DistributeVertical(List<Shape> selectedShapes, float slideHeight)
-        {
-            var shapeCount = selectedShapes.Count;
-
-            Shape refShape = selectedShapes[0];
-            Drawing.PointF[] allPointsOfRef = Graphics.GetRealCoordinates(refShape);
-            Drawing.PointF lowestRef;
-
-            if (_useSlideAsReference)
-            {
-                var verticalDistanceInRef = slideHeight;
-                var spaceBetweenShapes = verticalDistanceInRef;
-
-                foreach (Shape s in selectedShapes)
-                {
-                    Drawing.PointF[] allPoints = Graphics.GetRealCoordinates(s);
-                    var shapeHeight = Graphics.RealHeight(allPoints);
-                    spaceBetweenShapes -= shapeHeight;
-                }
-
-                // TODO: guard against spaceBetweenShapes < 0
-
-                spaceBetweenShapes /= shapeCount + 1;
-
-                for (int i = 0; i < shapeCount; i++)
-                {
-                    Shape currShape = selectedShapes[i];
-                    Drawing.PointF[] allPoints = Graphics.GetRealCoordinates(currShape);
-                    Drawing.PointF topMost = Graphics.TopMostPoint(allPoints);
-                    if (i == 0)
-                    {
-                        currShape.IncrementTop(spaceBetweenShapes - topMost.Y);
-                    }
-                    else
-                    {
-                        refShape = selectedShapes[i - 1];
-                        allPointsOfRef = Graphics.GetRealCoordinates(refShape);
-                        lowestRef = Graphics.BottomMostPoint(allPointsOfRef);
-                        currShape.IncrementTop(lowestRef.Y - topMost.Y + spaceBetweenShapes);
-                    }
-                }
-            }
-            else
-            {
-                if (shapeCount < 2)
-                {
-                    //Error
-                    return;
-                }
-
-                var verticalDistanceInRef = Graphics.RealHeight(allPointsOfRef);
-                var spaceBetweenShapes = verticalDistanceInRef;
-
-                for (int i = 1; i < shapeCount; i++)
-                {
-                    Shape s = selectedShapes[i];
-                    Drawing.PointF[] allPoints = Graphics.GetRealCoordinates(s);
-                    var shapeHeight = Graphics.RealHeight(allPoints);
-                    spaceBetweenShapes -= shapeHeight;
-                }
-
-                // TODO: guard against spaceBetweenShapes < 0
-
-                spaceBetweenShapes /= shapeCount;
-
-                for (int i = 1; i < shapeCount; i++)
-                {
-                    Shape currShape = selectedShapes[i];
-                    Drawing.PointF[] allPoints = Graphics.GetRealCoordinates(currShape);
-                    Drawing.PointF topMost = Graphics.TopMostPoint(allPoints);
-                    refShape = selectedShapes[i - 1];
-                    allPointsOfRef = Graphics.GetRealCoordinates(refShape);
-
-                    if (i == 1)
-                    {
-                        Drawing.PointF topMostRef = Graphics.TopMostPoint(allPointsOfRef);
-                        currShape.IncrementTop(topMostRef.Y - topMost.Y + spaceBetweenShapes);
-                    }
-                    else
-                    {
-                        lowestRef = Graphics.BottomMostPoint(allPointsOfRef);
-                        currShape.IncrementTop(lowestRef.Y - topMost.Y + spaceBetweenShapes);
-                    }
-                }
-            }
-        }
-
-        public static void DistributeCenter(List<Shape> selectedShapes, float slideWidth, float slideHeight)
-        {
-            DistributeHorizontal(selectedShapes, slideWidth);
-            DistributeVertical(selectedShapes, slideHeight);
-        }
-
-        public static void DistributeShapes(List<Shape> selectedShapes)
-        {
-            var shapeCount = selectedShapes.Count;
-
-            if (shapeCount < 2)
-            {
-                //Error
-                return;
-            }
-
-            if (shapeCount == 2)
-            {
-                return;
-            }
-
-            Shape firstRef = selectedShapes[0];
-            Shape lastRef = selectedShapes[selectedShapes.Count - 1];
-            Shape refShape = selectedShapes[0];
-
-            Drawing.PointF[] allPointsOfFirstRef = Graphics.GetRealCoordinates(firstRef);
-            Drawing.PointF[] allPointsOfLastRef = Graphics.GetRealCoordinates(lastRef);
-            Drawing.PointF[] allPointsOfRef = Graphics.GetRealCoordinates(refShape);
-
-            var horizontalDistance = Graphics.LeftMostPoint(allPointsOfLastRef).X - Graphics.RightMostPoint(allPointsOfFirstRef).X;
-            var verticalDistance = Graphics.TopMostPoint(allPointsOfLastRef).Y - Graphics.BottomMostPoint(allPointsOfFirstRef).Y;
-
-            var spaceBetweenShapes = horizontalDistance;
-
-            for (int i = 1; i < shapeCount - 1; i++)
-            {
-                Shape s = selectedShapes[i];
-                Drawing.PointF[] allPoints = Graphics.GetRealCoordinates(s);
-                var shapeWidth = Graphics.RealWidth(allPoints);
-                spaceBetweenShapes -= shapeWidth;
-            }
-
-            // TODO: guard against spaceBetweenShapes < 0
-
-            spaceBetweenShapes /= (shapeCount-1);
-            
-            for (int i = 1; i < shapeCount - 1; i++)
-            {
-                Shape currShape = selectedShapes[i];
-                Drawing.PointF[] allPoints = Graphics.GetRealCoordinates(currShape);
-                Drawing.PointF leftMost = Graphics.LeftMostPoint(allPoints);
-                refShape = selectedShapes[i - 1];
-                allPointsOfRef = Graphics.GetRealCoordinates(refShape);
-
-                Drawing.PointF rightMostRef = Graphics.RightMostPoint(allPointsOfRef);
-                currShape.IncrementLeft(rightMostRef.X - leftMost.X + spaceBetweenShapes);
-            }
-
-            spaceBetweenShapes = verticalDistance;
-            for (int i = 1; i < shapeCount - 1; i++)
-            {
-                Shape s = selectedShapes[i];
-                Drawing.PointF[] allPoints = Graphics.GetRealCoordinates(s);
-                var shapeHeight = Graphics.RealHeight(allPoints);
-                spaceBetweenShapes -= shapeHeight;
-            }
-
-            // TODO: guard against spaceBetweenShapes < 0
-
-            spaceBetweenShapes /= shapeCount;
-
-            for (int i = 1; i < shapeCount - 1; i++)
-            {
-                Shape currShape = selectedShapes[i];
-                Drawing.PointF[] allPoints = Graphics.GetRealCoordinates(currShape);
-                Drawing.PointF topMost = Graphics.TopMostPoint(allPoints);
-                refShape = selectedShapes[i - 1];
-                allPointsOfRef = Graphics.GetRealCoordinates(refShape);
-
-                Drawing.PointF lowestRef = Graphics.BottomMostPoint(allPointsOfRef);
-                currShape.IncrementTop(lowestRef.Y - topMost.Y + spaceBetweenShapes);
-            }
-        }
-        #endregion
-
         #endregion
 
         #region Util
-        public static double AngleBetweenTwoPoints(System.Drawing.PointF refPoint, System.Drawing.PointF pt)
+        public static double AngleBetweenTwoPoints(Drawing.PointF refPoint, Drawing.PointF pt)
         {
-            double angle = Math.Atan((pt.Y - refPoint.Y) / (pt.X - refPoint.X)) * 180 / Math.PI;
+            var angle = Math.Atan((pt.Y - refPoint.Y) / (pt.X - refPoint.X)) * 180 / Math.PI;
 
             if (pt.X - refPoint.X > 0)
             {
@@ -826,30 +919,28 @@ namespace PowerPointLabs.PositionsLab
 
         public static bool NearlyEqual(float a, float b, float epsilon)
         {
-            float absA = Math.Abs(a);
-            float absB = Math.Abs(b);
-            float diff = Math.Abs(a - b);
+            var absA = Math.Abs(a);
+            var absB = Math.Abs(b);
+            var diff = Math.Abs(a - b);
 
             if (a == b)
             { // shortcut, handles infinities
                 return true;
             }
-            else if (a == 0 || b == 0 || diff < float.Epsilon)
+            if (a == 0 || b == 0 || diff < float.Epsilon)
             {
                 // a or b is zero or both are extremely close to it
                 // relative error is less meaningful here
                 return diff < epsilon;
             }
-            else
-            { // use relative error
-                return diff / (absA + absB) < epsilon;
-            }
+            // use relative error
+            return diff / (absA + absB) < epsilon;
         }
 
-        private static int GetDirectionWRTRefShape(Shape shape, float angleFromRefShape)
+        private static int GetDirectionWrtRefShape(Shape shape, float angleFromRefShape)
         {
-            float defaultUpAngle = -1;
-            bool hasDefaultDirection = shapeDefaultUpAngle.TryGetValue(shape.AutoShapeType, out defaultUpAngle);
+            float defaultUpAngle;
+            var hasDefaultDirection = shapeDefaultUpAngle.TryGetValue(shape.AutoShapeType, out defaultUpAngle);
 
             if (shape.AutoShapeType == AutoShape.msoShapeLightningBolt)
             {
@@ -869,33 +960,33 @@ namespace PowerPointLabs.PositionsLab
                 }
             }
 
-            float angle = AddAngles(angleFromRefShape, defaultUpAngle);
-            float diff = SubtractAngles(shape.Rotation, angle);
-            float phaseInFloat = diff / 90;
+            var angle = AddAngles(angleFromRefShape, defaultUpAngle);
+            var diff = SubtractAngles(shape.Rotation, angle);
+            var phaseInFloat = diff / 90;
 
             if (shape.AutoShapeType == AutoShape.msoShapeLightningBolt)
             {
                 Debug.WriteLine("angle: " + angle);
                 Debug.WriteLine("diff: " + diff);
                 Debug.WriteLine("phaseInFloat: " + defaultUpAngle);
-                Debug.WriteLine("equal: " + NearlyEqual(phaseInFloat, (float)Math.Round(phaseInFloat), epsilon));
+                Debug.WriteLine("equal: " + NearlyEqual(phaseInFloat, (float)Math.Round(phaseInFloat), Epsilon));
             }
 
-            if (!NearlyEqual(phaseInFloat, (float)Math.Round(phaseInFloat), epsilon))
+            if (!NearlyEqual(phaseInFloat, (float)Math.Round(phaseInFloat), Epsilon))
             {
-                return NONE;
+                return None;
             }
 
-            int phase = (int)Math.Round(phaseInFloat);
+            var phase = (int)Math.Round(phaseInFloat);
 
             if (!hasDefaultDirection)
             {
-                if (phase == LEFT || phase == RIGHT)
+                if (phase == Left || phase == Right)
                 {
-                    return LEFTORRIGHT;
+                    return Leftorright;
                 }
 
-                return UPORDOWN;
+                return Upordown;
             }
 
             return phase;
@@ -904,10 +995,10 @@ namespace PowerPointLabs.PositionsLab
         private static bool IsSameDirection(int a, int b)
         {
             if (a == b) return true;
-            if (a == LEFTORRIGHT) return b == LEFT || b == RIGHT;
-            if (b == LEFTORRIGHT) return a == LEFT || a == RIGHT;
-            if (a == UPORDOWN) return b == UP || b == DOWN;
-            if (b == UPORDOWN) return a == UP || a == DOWN;
+            if (a == Leftorright) return b == Left || b == Right;
+            if (b == Leftorright) return a == Left || a == Right;
+            if (a == Upordown) return b == Up || b == Down;
+            if (b == Upordown) return a == Up || a == Down;
 
             return false;
        }
@@ -919,7 +1010,7 @@ namespace PowerPointLabs.PositionsLab
 
         public static float SubtractAngles(float a, float b)
         {
-            float diff = a - b;
+            var diff = a - b;
             if (diff < 0)
             {
                 return 360 + diff;
@@ -928,38 +1019,327 @@ namespace PowerPointLabs.PositionsLab
             return diff;
         }
 
-        private static void Init()
+        public static float[] GetLongestWidthsOfRowsByRow(List<PPShape> shapes, int rowLength, int numIndicesToSkip)
+        {
+            var longestWidths = new float[rowLength];
+            var numShapes = shapes.Count;
+            var remainder = numShapes % rowLength;
+
+            for (var i = 0; i < numShapes; i++)
+            {
+                var longestRowIndex = i % rowLength;
+                if (numShapes - i == remainder - 1)
+                {
+                    longestRowIndex += numIndicesToSkip;
+                }
+                if (longestWidths[longestRowIndex] < shapes[i].AbsoluteWidth)
+                {
+                    longestWidths[longestRowIndex] = shapes[i].AbsoluteWidth;
+                }
+            }
+
+            return longestWidths;
+        }
+
+        public static float[] GetLongestHeightsOfColsByRow(List<PPShape> shapes, int rowLength, int colLength)
+        {
+            var longestHeights = new float[colLength];
+
+            for (var i = 0; i < shapes.Count; i++)
+            {
+                var longestHeightIndex = i / rowLength;
+                if (longestHeights[longestHeightIndex] < shapes[i].AbsoluteHeight)
+                {
+                    longestHeights[longestHeightIndex] = shapes[i].AbsoluteHeight;
+                }
+            }
+
+            return longestHeights;
+        }
+
+        public static float[] GetLongestWidthsOfRowsByCol(List<PPShape> shapes, int rowLength, int colLength, int numIndicesToSkip)
+        {
+            var longestWidths = new float[rowLength];
+            var numShapes = shapes.Count;
+            var augmentedShapeIndex = 0;
+            var remainder = colLength - (rowLength * colLength - numShapes);
+
+            for (var i = 0; i < numShapes; i++)
+            {
+                //If last index and need to skip, skip index 
+                if (numIndicesToSkip > 0 && IsLastIndexOfRow(augmentedShapeIndex, rowLength))
+                {
+                    numIndicesToSkip--;
+                    augmentedShapeIndex++;
+                }
+
+                //If last index and no more remainder, skip the rest
+                if (IsLastIndexOfRow(augmentedShapeIndex, rowLength))
+                {
+                    if (remainder <= 0)
+                    {
+                        augmentedShapeIndex++;
+                    }
+                    else
+                    {
+                        remainder--;
+                    }
+                }
+
+                var longestWidthsArrayIndex = augmentedShapeIndex % rowLength;
+
+                if (longestWidths[longestWidthsArrayIndex] < shapes[i].AbsoluteWidth)
+                {
+                    longestWidths[longestWidthsArrayIndex] = shapes[i].AbsoluteWidth;
+                }
+
+                augmentedShapeIndex++;
+            }
+
+            return longestWidths;
+        }
+
+        public static float[] GetLongestHeightsOfColsByCol(List<PPShape> shapes, int rowLength, int colLength, int numIndicesToSkip)
+        {
+            var longestHeights = new float[colLength];
+            var numShapes = shapes.Count;
+            var augmentedShapeIndex = 0;
+            var remainder = colLength - (rowLength * colLength - numShapes);
+
+            for (var i = 0; i < numShapes; i++)
+            {              
+                //If last index and need to skip, skip index 
+                if (numIndicesToSkip > 0 && IsLastIndexOfRow(augmentedShapeIndex, rowLength))
+                {
+                    numIndicesToSkip--;
+                    augmentedShapeIndex++;
+                }
+
+                //If last index and no more remainder, skip the rest
+                if (IsLastIndexOfRow(augmentedShapeIndex, rowLength))
+                {
+                    if (remainder <= 0)
+                    {
+                        augmentedShapeIndex++;
+                    }
+                    else
+                    {
+                        remainder--;
+                    }
+                }
+
+                var longestHeightArrayIndex = augmentedShapeIndex / rowLength;
+
+                if (longestHeights[longestHeightArrayIndex] < shapes[i].AbsoluteHeight)
+                {
+                    longestHeights[longestHeightArrayIndex] = shapes[i].AbsoluteHeight;
+                }
+
+                augmentedShapeIndex++;
+            }
+
+            return longestHeights;
+        }
+
+        private static bool IsFirstIndexOfRow(int index, int rowLength)
+        {
+            return index % rowLength == 0;
+        }
+
+        private static bool IsLastIndexOfRow(int index, int rowLength)
+        {
+            return index % rowLength == rowLength - 1;
+        }
+
+        public static int IndicesToSkip(int totalSelectedShapes, int rowLength, GridAlignment alignment)
+        {
+            var numOfShapesInLastRow = totalSelectedShapes % rowLength;
+
+            if (alignment == GridAlignment.AlignLeft || numOfShapesInLastRow == 0)
+            {
+                return 0;
+            }
+
+            if (alignment == GridAlignment.AlignRight)
+            {
+                return rowLength - numOfShapesInLastRow;
+            }
+
+            if (alignment == GridAlignment.AlignCenter)
+            {
+                var difference = rowLength - numOfShapesInLastRow;
+                return difference / 2;
+            }
+
+            return 0;
+        }
+
+        private static float GetSpaceBetweenShapes(int index1, int index2, float[] differences, float margin1, float margin2)
+        {
+            if (index1 >= differences.Length || index2 >= differences.Length)
+            {
+                return -1;
+            }
+
+            var start = 0;
+            var end = 0;
+
+            if (index1 < index2)
+            {
+                start = index1;
+                end = index2;
+            }
+            else
+            {
+                start = index2;
+                end = index1;
+            }
+
+            float difference = 0;
+
+            for (var i = start; i < end; i++)
+            {
+                difference += (differences[i] / 2 + margin1 + margin2 + differences[i + 1] / 2);
+            }
+
+            return difference;
+        }
+
+        private static bool ListIsPreviouslySelected(List<PPShape> selectedShapes, Dictionary<int, Drawing.PointF> prevSelectedShapes)
+        {
+            try
+            {
+                if (selectedShapes == null || selectedShapes.Count <= 0)
+                {
+                    return false;
+                }
+
+                for (int i = 0; i < selectedShapes.Count; i++)
+                {
+                    var shapePos = selectedShapes[i].Center;
+                    Drawing.PointF prevShapePos = new Drawing.PointF();
+                    if (!prevSelectedShapes.TryGetValue(selectedShapes[i].Id, out prevShapePos))
+                    {
+                        return false;
+                    }
+
+                    if (!(NearlyEqual(shapePos.X, prevShapePos.X, Epsilon) && (NearlyEqual(shapePos.Y, prevShapePos.Y, Epsilon))))
+                    {
+                        return false;
+                    }
+                }
+            }
+            catch 
+            {
+                return false;
+            }
+
+            return true;
+        }
+
+        private static void SaveSelectedList(List<PPShape> selectedShapes, Dictionary<int, Drawing.PointF> prevSelectedShapes)
+        {
+            if (selectedShapes == null || selectedShapes.Count <= 0)
+            {
+                return;
+            }
+
+            prevSelectedShapes.Clear();
+            for (int i = 0; i < selectedShapes.Count; i++)
+            {
+                var shapePos = selectedShapes[i].Center;
+                prevSelectedShapes.Add(selectedShapes[i].Id, shapePos);
+            }
+        }
+
+        private static void InitDefaultShapesAngles()
         {
             shapeDefaultUpAngle = new Dictionary<MsoAutoShapeType, float>();
 
-            shapeDefaultUpAngle.Add(AutoShape.msoShapeLeftArrow, ROTATE_LEFT);
-            shapeDefaultUpAngle.Add(AutoShape.msoShapeLeftRightArrow, ROTATE_LEFT);
-            shapeDefaultUpAngle.Add(AutoShape.msoShapeLeftArrowCallout, ROTATE_LEFT);
-            shapeDefaultUpAngle.Add(AutoShape.msoShapeLeftRightArrowCallout, ROTATE_LEFT);
-            shapeDefaultUpAngle.Add(AutoShape.msoShapeCurvedLeftArrow, ROTATE_LEFT);
+            shapeDefaultUpAngle.Add(AutoShape.msoShapeLeftArrow, RotateLeft);
+            shapeDefaultUpAngle.Add(AutoShape.msoShapeLeftRightArrow, RotateLeft);
+            shapeDefaultUpAngle.Add(AutoShape.msoShapeLeftArrowCallout, RotateLeft);
+            shapeDefaultUpAngle.Add(AutoShape.msoShapeLeftRightArrowCallout, RotateLeft);
+            shapeDefaultUpAngle.Add(AutoShape.msoShapeCurvedLeftArrow, RotateLeft);
 
-            shapeDefaultUpAngle.Add(AutoShape.msoShapeRightArrow, ROTATE_RIGHT);
-            shapeDefaultUpAngle.Add(AutoShape.msoShapeBentArrow, ROTATE_RIGHT);
-            shapeDefaultUpAngle.Add(AutoShape.msoShapeStripedRightArrow, ROTATE_RIGHT);
-            shapeDefaultUpAngle.Add(AutoShape.msoShapeNotchedRightArrow, ROTATE_RIGHT);
-            shapeDefaultUpAngle.Add(AutoShape.msoShapePentagon, ROTATE_RIGHT);
-            shapeDefaultUpAngle.Add(AutoShape.msoShapeChevron, ROTATE_RIGHT);
-            shapeDefaultUpAngle.Add(AutoShape.msoShapeRightArrowCallout, ROTATE_RIGHT);
-            shapeDefaultUpAngle.Add(AutoShape.msoShapeCurvedRightArrow, ROTATE_RIGHT);
+            shapeDefaultUpAngle.Add(AutoShape.msoShapeRightArrow, RotateRight);
+            shapeDefaultUpAngle.Add(AutoShape.msoShapeBentArrow, RotateRight);
+            shapeDefaultUpAngle.Add(AutoShape.msoShapeStripedRightArrow, RotateRight);
+            shapeDefaultUpAngle.Add(AutoShape.msoShapeNotchedRightArrow, RotateRight);
+            shapeDefaultUpAngle.Add(AutoShape.msoShapePentagon, RotateRight);
+            shapeDefaultUpAngle.Add(AutoShape.msoShapeChevron, RotateRight);
+            shapeDefaultUpAngle.Add(AutoShape.msoShapeRightArrowCallout, RotateRight);
+            shapeDefaultUpAngle.Add(AutoShape.msoShapeCurvedRightArrow, RotateRight);
 
-            shapeDefaultUpAngle.Add(AutoShape.msoShapeUpArrow, ROTATE_UP);
-            shapeDefaultUpAngle.Add(AutoShape.msoShapeBentUpArrow, ROTATE_UP);
-            shapeDefaultUpAngle.Add(AutoShape.msoShapeUpDownArrow, ROTATE_UP);
-            shapeDefaultUpAngle.Add(AutoShape.msoShapeLeftRightUpArrow, ROTATE_UP);
-            shapeDefaultUpAngle.Add(AutoShape.msoShapeLeftUpArrow, ROTATE_UP);
-            shapeDefaultUpAngle.Add(AutoShape.msoShapeUpArrowCallout, ROTATE_UP);
-            shapeDefaultUpAngle.Add(AutoShape.msoShapeCurvedUpArrow, ROTATE_UP);
+            shapeDefaultUpAngle.Add(AutoShape.msoShapeUpArrow, RotateUp);
+            shapeDefaultUpAngle.Add(AutoShape.msoShapeBentUpArrow, RotateUp);
+            shapeDefaultUpAngle.Add(AutoShape.msoShapeUpDownArrow, RotateUp);
+            shapeDefaultUpAngle.Add(AutoShape.msoShapeLeftRightUpArrow, RotateUp);
+            shapeDefaultUpAngle.Add(AutoShape.msoShapeLeftUpArrow, RotateUp);
+            shapeDefaultUpAngle.Add(AutoShape.msoShapeUpArrowCallout, RotateUp);
+            shapeDefaultUpAngle.Add(AutoShape.msoShapeCurvedUpArrow, RotateUp);
 
-            shapeDefaultUpAngle.Add(AutoShape.msoShapeDownArrow, ROTATE_DOWN);
-            shapeDefaultUpAngle.Add(AutoShape.msoShapeUTurnArrow, ROTATE_DOWN);
-            shapeDefaultUpAngle.Add(AutoShape.msoShapeDownArrowCallout, ROTATE_DOWN);
-            shapeDefaultUpAngle.Add(AutoShape.msoShapeCurvedDownArrow, ROTATE_DOWN);
-            shapeDefaultUpAngle.Add(AutoShape.msoShapeCircularArrow, ROTATE_DOWN);
+            shapeDefaultUpAngle.Add(AutoShape.msoShapeDownArrow, RotateDown);
+            shapeDefaultUpAngle.Add(AutoShape.msoShapeUTurnArrow, RotateDown);
+            shapeDefaultUpAngle.Add(AutoShape.msoShapeDownArrowCallout, RotateDown);
+            shapeDefaultUpAngle.Add(AutoShape.msoShapeCurvedDownArrow, RotateDown);
+            shapeDefaultUpAngle.Add(AutoShape.msoShapeCircularArrow, RotateDown);
+        }
+
+        private static void InitDefaultDistributeSettings()
+        {
+            MarginTop = 5;
+            MarginBottom = 5;
+            MarginLeft = 5;
+            MarginRight = 5;
+            DistributeGridAlignment = GridAlignment.AlignLeft;
+            DistributeUseSlideAsReference = false;
+        }
+
+        private static Drawing.PointF GetSwapReferencePoint(PPShape shape, SwapReference r) 
+        {
+            switch (r)
+            {
+                case SwapReference.TopLeft:
+                    return shape.TopLeft;
+                case SwapReference.TopCenter:
+                    return shape.TopCenter;
+                case SwapReference.TopRight:
+                    return shape.TopRight;
+                case SwapReference.MiddleLeft:
+                    return shape.MiddleLeft;
+                case SwapReference.MiddleCenter:
+                    return shape.Center;
+                case SwapReference.MiddleRight:
+                    return shape.MiddleRight;
+                case SwapReference.BottomLeft:
+                    return shape.BottomLeft;
+                case SwapReference.BottomCenter:
+                    return shape.BottomCenter;
+                case SwapReference.BottomRight:
+                    return shape.BottomRight;
+                default:
+                    return shape.Center;
+            }
+        }
+
+        private static void InitDefaultSwapSettings()
+        {
+            IsSwapByClickOrder = false;
+            SwapReferencePoint = SwapReference.MiddleCenter;
+        }
+
+        private static void InitDefaultAlignSettings()
+        {
+            AlignUseSlideAsReference = false;
+        }
+
+        public static void InitPositionsLab()
+        {
+            InitDefaultShapesAngles();
+            InitDefaultDistributeSettings();
+            InitDefaultAlignSettings();
+            InitDefaultSwapSettings();
         }
 
         #endregion

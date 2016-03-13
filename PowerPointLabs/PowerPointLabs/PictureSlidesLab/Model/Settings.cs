@@ -29,7 +29,7 @@ namespace PowerPointLabs.PictureSlidesLab.Model
 
         private int _defaultAspectWhenCustomize;
 
-        [DefaultValue(0)]
+        [DefaultValue(1)]
         public int DefaultAspectWhenCustomize
         {
             get
@@ -138,6 +138,22 @@ namespace PowerPointLabs.PictureSlidesLab.Model
             {
                 _citationTextBoxColor = value;
                 OnPropertyChanged("CitationTextBoxColor");
+            }
+        }
+
+        private bool _isInsertCitationToNote;
+
+        [DefaultValue(false)]
+        public bool IsInsertCitationToNote
+        {
+            get
+            {
+                return _isInsertCitationToNote;
+            }
+            set
+            {
+                _isInsertCitationToNote = value;
+                OnPropertyChanged("IsInsertCitationToNote");
             }
         }
 

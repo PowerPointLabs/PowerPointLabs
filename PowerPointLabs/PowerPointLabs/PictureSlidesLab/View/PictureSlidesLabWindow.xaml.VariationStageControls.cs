@@ -24,6 +24,7 @@ namespace PowerPointLabs.PictureSlidesLab.View
         {
             UpdateVariantsColorPanelVisibility();
             UpdateVariantFontPanelVisibility();
+            UpdatePictureAspectRefreshButtonVisibility();
         }
         #endregion
 
@@ -112,6 +113,21 @@ namespace PowerPointLabs.PictureSlidesLab.View
             else
             {
                 VariantsColorPanel.Visibility = Visibility.Collapsed;
+            }
+        }
+
+        private void UpdatePictureAspectRefreshButtonVisibility()
+        {
+            if (VariantsComboBox.SelectedValue == null) return;
+
+            var currentCategory = (string) VariantsComboBox.SelectedValue;
+            if (currentCategory == TextCollection.PictureSlidesLabText.VariantCategoryPicture)
+            {
+                PictureAspectRefreshButton.Visibility = Visibility.Visible;
+            }
+            else
+            {
+                PictureAspectRefreshButton.Visibility = Visibility.Collapsed;
             }
         }
 

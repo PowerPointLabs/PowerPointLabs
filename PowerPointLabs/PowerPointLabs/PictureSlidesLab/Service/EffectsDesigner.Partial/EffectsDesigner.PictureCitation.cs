@@ -10,11 +10,11 @@ namespace PowerPointLabs.PictureSlidesLab.Service
     {
         public const string RegexForPictureCitation = @"^\[\[Picture taken from .* on .*\]\]\n";
 
-        public void ApplyImageReference(string source)
+        public void ApplyImageReferenceToSlideNote(string source)
         {
             if (StringUtil.IsEmpty(source)) return;
 
-            RemovePreviousImageReference();
+            RemoveImageReference();
             NotesPageText = "[[Picture taken from " + source + " on " + DateTime.Now + "]]\n" +
                             NotesPageText;
         }
@@ -43,7 +43,7 @@ namespace PowerPointLabs.PictureSlidesLab.Service
             ChangeName(imageRefShape, EffectName.ImageReference);
         }
 
-        private void RemovePreviousImageReference()
+        public void RemoveImageReference()
         {
             NotesPageText = Regex.Replace(NotesPageText, RegexForPictureCitation, "");
         }

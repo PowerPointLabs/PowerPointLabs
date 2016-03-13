@@ -52,8 +52,6 @@ namespace PowerPointLabs.PictureSlidesLab.Model
                     return Alignment.Centre;
                 case 3:
                     return Alignment.Right;
-                case 4:
-                    return Alignment.NoEffect;
                 default:
                     return Alignment.NoEffect;
             }

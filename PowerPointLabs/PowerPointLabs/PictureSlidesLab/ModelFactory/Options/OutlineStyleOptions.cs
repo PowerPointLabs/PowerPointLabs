@@ -16,8 +16,7 @@ namespace PowerPointLabs.PictureSlidesLab.ModelFactory.Options
             {
                 styleOption.IsUseTextGlow = true;
                 styleOption.TextGlowColor = "#000000";
-                styleOption.FontFamily = "Segoe Print";
-                styleOption.TextBoxAlignment = 1;
+                styleOption.FontFamily = "Segoe UI";
             }
             return UpdateStyleName(
                 result,
@@ -32,8 +31,7 @@ namespace PowerPointLabs.PictureSlidesLab.ModelFactory.Options
                 IsUseOutlineStyle = true,
                 IsUseTextGlow = true,
                 TextGlowColor = "#000000",
-                TextBoxAlignment = 1,
-                FontFamily = "Segoe Print"
+                FontFamily = "Segoe UI"
             };
         }
 

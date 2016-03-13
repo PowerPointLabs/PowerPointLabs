@@ -393,7 +393,7 @@ namespace PowerPointLabs
             PPMouse.StopHook();
             PPKeyboard.StopHook();
             PPCopy.StopHook();
-            PositionsPaneWPF.ClearAllEventHandlers();
+            PositionsPaneWpf.ClearAllEventHandlers();
             UIThreadExecutor.TearDown();
             Trace.TraceInformation(DateTime.Now.ToString("yyyyMMddHHmmss") + ": PowerPointLabs Exiting");
             Trace.Close();
@@ -713,7 +713,8 @@ namespace PowerPointLabs
             if (!Directory.Exists(AppDataFolder))
                 Directory.CreateDirectory(AppDataFolder);
 
-            var logPath = Path.Combine(AppDataFolder, AppLogName);
+            var fileName = DateTime.Now.ToString("yyyy-MM-dd") + AppLogName;
+            var logPath = Path.Combine(AppDataFolder, fileName);
 
             Trace.AutoFlush = true;
             Trace.Listeners.Add(new TextWriterTraceListener(logPath));

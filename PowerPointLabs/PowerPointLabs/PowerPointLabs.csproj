@@ -44,7 +44,7 @@
     <PublishUrl>C:\Users\Giki\Desktop\pptlabsPublish\</PublishUrl>
     <InstallUrl>http://www.comp.nus.edu.sg/~pptlabs/download/dev/</InstallUrl>
     <TargetCulture>en</TargetCulture>
-    <ApplicationVersion>2.8.6.2</ApplicationVersion>
+    <ApplicationVersion>2.8.6.5</ApplicationVersion>
     <AutoIncrementApplicationRevision>false</AutoIncrementApplicationRevision>
     <UpdateEnabled>true</UpdateEnabled>
     <UpdateInterval>0</UpdateInterval>
@@ -433,7 +433,6 @@
     <Compile Include="PictureSlidesLab\ModelFactory\VariantWorker\PictureVariantWorker.cs" />
     <Compile Include="PictureSlidesLab\ModelFactory\VariantWorker\SpecialEffectsVariantWorker.cs" />
     <Compile Include="PictureSlidesLab\ModelFactory\VariantWorker\TextBoxTransparencyVariantWorker.cs" />
-    <Compile Include="PictureSlidesLab\ModelFactory\VariantWorker\PictureCitationVariantWorker.cs" />
     <Compile Include="PictureSlidesLab\ModelFactory\VariantWorker\FrostedGlassBannerVariantWorker.cs" />
     <Compile Include="PictureSlidesLab\ModelFactory\VariantWorker\FrostedGlassTextBoxVariantWorker.cs" />
     <Compile Include="PictureSlidesLab\ModelFactory\VariantWorker\TextBoxVariantWorker.cs" />
@@ -539,6 +538,14 @@
     <Compile Include="PictureSlidesLab\Util\ShapeUtil.cs" />
     <Compile Include="PictureSlidesLab\Util\StyleVariationWidthConverter.cs" />
     <Compile Include="PictureSlidesLab\Util\UrlUtil.cs" />
+    <Compile Include="PositionsLab\AlignSettingsDialog.xaml.cs">
+      <DependentUpon>AlignSettingsDialog.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="PositionsLab\DistributeSettingsDialog.xaml.cs">
+      <DependentUpon>DistributeSettingsDialog.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="PositionsLab\PositionsDistributeGridDialog.xaml.cs">
+    </Compile>
     <Compile Include="PositionsLab\PositionsLabMain.cs" />
     <Compile Include="PositionsLab\PositionsPane.cs">
       <SubType>UserControl</SubType>
@@ -548,6 +555,9 @@
     </Compile>
     <Compile Include="PositionsLab\PositionsPaneWPF.xaml.cs">
       <DependentUpon>PositionsPaneWPF.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="PositionsLab\ReorderSettingsDialog.xaml.cs">
+      <DependentUpon>ReorderSettingsDialog.xaml</DependentUpon>
     </Compile>
     <Compile Include="PPMouseLegacy.cs" />
     <Compile Include="ResizeLab\ResizeLabMain.Symmetry.cs" />
@@ -1020,7 +1030,7 @@
     <None Include="Resources\AgendaRemove.png" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="Resources\AgendaSettings.png" />
+    <Resource Include="Resources\AgendaSettings.png" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\AgendaSidebar.png" />
@@ -1059,7 +1069,23 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="PositionsLab\AlignSettingsDialog.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="PositionsLab\DistributeSettingsDialog.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="PositionsLab\PositionsDistributeGridDialog.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="PositionsLab\PositionsPaneWPF.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="PositionsLab\ReorderSettingsDialog.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -1197,7 +1223,25 @@
     <Resource Include="Resources\ResizeLab\ResizeUnlock.png" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Resources\PositionsLab\PositionsLab.png" />
+    <Resource Include="Resources\PositionsLab\SwapIcon.png" />
+    <Resource Include="Resources\PositionsLab\SnapVerticalIcon.png" />
+    <Resource Include="Resources\PositionsLab\SnapHorizontalIcon.png" />
+    <Resource Include="Resources\PositionsLab\SnapAwayIcon.png" />
+    <Resource Include="Resources\PositionsLab\RotateIcon.png" />
+    <Resource Include="Resources\PositionsLab\AlignLeftIcon.png" />
+    <Resource Include="Resources\PositionsLab\AlignBottomIcon.png" />
+    <Resource Include="Resources\PositionsLab\AlignCenterIcon.png" />
+    <Resource Include="Resources\PositionsLab\AlignMiddleIcon.png" />
+    <Resource Include="Resources\PositionsLab\AlignRightIcon.png" />
+    <Resource Include="Resources\PositionsLab\AlignTopIcon.png" />
+    <Resource Include="Resources\PositionsLab\DistributeCenterIcon.png" />
+    <Resource Include="Resources\PositionsLab\DistributeGridIcon.png" />
+    <Resource Include="Resources\PositionsLab\DistributeHorizontalIcon.png" />
+    <Resource Include="Resources\PositionsLab\DistributeShapeIcon.png" />
+    <Resource Include="Resources\PositionsLab\DistributeVerticalIcon.png" />
+    <Resource Include="Resources\PositionsLab\AdjoinHorizontalIcon.png" />
+    <Resource Include="Resources\PositionsLab\AdjoinVerticalIcon.png" />
+    <None Include="Resources\PositionsLab\PositionsLab.png" />
     <Resource Include="Resources\ResizeLab\ResizeSymmetricTop.png" />
     <Resource Include="Resources\ResizeLab\ResizeSymmetricRight.png" />
     <Resource Include="Resources\ResizeLab\ResizeSymmetricLeft.png" />
@@ -1206,10 +1250,22 @@
   <ItemGroup>
     <Resource Include="Resources\ResizeLab\ResizeLab.png" />
   </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\SettingsGear.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\AgendaSettings1.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\AgendaSync1.png" />
+  </ItemGroup>
   <!-- Include the build rules for a C# project. -->
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
     <VSToolsPath Condition="'$(VSToolsPath)' == ''">$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)</VSToolsPath>
+  </PropertyGroup>
+  <PropertyGroup>
+    <StartupObject />
   </PropertyGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- Include additional build rules for an Office application add-in. -->
