@@ -61,19 +61,27 @@ namespace PowerPointLabs.PositionsLab
             }
         }
 
-        private void DistributeToShapeButton_Load(object sender, RoutedEventArgs e)
+        private void DistributeToSlideButton_Load(object sender, RoutedEventArgs e)
         {
-            if (PositionsLabMain.DistributeUseSlideAsReference)
+            if (PositionsLabMain.DistributeReference == PositionsLabMain.DistributeReferenceObject.Slide)
             {
-                distributeToShapeButton.IsChecked = false;
+                distributeToSlideButton.IsChecked = true;
             }
         }
 
-        private void DistributeToSlideButton_Load(object sender, RoutedEventArgs e)
+        private void DistributeToFirstShapeButton_Load(object sender, RoutedEventArgs e)
         {
-            if (PositionsLabMain.DistributeUseSlideAsReference)
+            if (PositionsLabMain.DistributeReference == PositionsLabMain.DistributeReferenceObject.FirstShape)
             {
-                distributeToSlideButton.IsChecked = true;
+                distributeToFirstShapeButton.IsChecked = true;
+            }
+        }
+
+        private void DistributeToFirstTwoShapesButton_Load(object sender, RoutedEventArgs e)
+        {
+            if (PositionsLabMain.DistributeReference == PositionsLabMain.DistributeReferenceObject.FirstTwoShapes)
+            {
+                distributeToFirstTwoShapesButton.IsChecked = true;
             }
         }
         #endregion
@@ -86,13 +94,19 @@ namespace PowerPointLabs.PositionsLab
             var marginLeftValue = marginLeftInput.Value;
             var marginRightValue = marginRightInput.Value;
 
-            if (distributeToShapeButton.IsChecked == true)
-            {
-                PositionsLabMain.DistributeReferToShape();
-            }
-            else
+            if (distributeToSlideButton.IsChecked.GetValueOrDefault())
             {
                 PositionsLabMain.DistributeReferToSlide();
+            }
+
+            if (distributeToFirstShapeButton.IsChecked.GetValueOrDefault())
+            {
+                PositionsLabMain.DistributeReferToFirstShape();
+            }
+
+            if (distributeToFirstTwoShapesButton.IsChecked.GetValueOrDefault())
+            {
+                PositionsLabMain.DistributeRefertoFirstTwoShapes();
             }
 
             if (!marginTopValue.HasValue || marginTopValue.GetValueOrDefault() < 0 ||
@@ -134,20 +148,10 @@ namespace PowerPointLabs.PositionsLab
             Close();
         }
 
-        private void DistributeToShapeButton_Click(object sender, RoutedEventArgs e)
-        {
-            distributeToSlideButton.IsChecked = false;
-        }
-
-        private void DistributeToSlideButton_Click(object sender, RoutedEventArgs e)
-        {
-            distributeToShapeButton.IsChecked = false;
-        }
-        #endregion
-
         private void DistributeSettingsDialong_Closed(object sender, System.EventArgs e)
         {
             IsOpen = false;
-        } 
+        }
+        #endregion
     }
 }

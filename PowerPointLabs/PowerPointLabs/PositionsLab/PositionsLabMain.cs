@@ -28,6 +28,13 @@ namespace PowerPointLabs.PositionsLab
         private const string ErrorMessageFewerThanTwoSelection = TextCollection.PositionsLabText.ErrorFewerThanTwoSelection;
         private const string ErrorMessageUndefined = TextCollection.PositionsLabText.ErrorUndefined;
 
+        public enum DistributeReferenceObject
+        {
+            Slide,
+            FirstShape,
+            FirstTwoShapes
+        }
+
         //Distribute Grid Variables
         public enum GridAlignment
         {
@@ -36,12 +43,12 @@ namespace PowerPointLabs.PositionsLab
             AlignRight
         }
 
+        public static DistributeReferenceObject DistributeReference { get; private set; }
         public static GridAlignment DistributeGridAlignment { get; private set; }
         public static float MarginTop { get; private set; }
         public static float MarginBottom { get; private set; }
         public static float MarginLeft { get; private set; }
         public static float MarginRight { get; private set; }
-        public static bool DistributeUseSlideAsReference { get; private set; }
 
         //Reorder Variables
         public enum SwapReference
@@ -94,15 +101,23 @@ namespace PowerPointLabs.PositionsLab
         /// </summary>
         public static void DistributeReferToSlide()
         {
-            DistributeUseSlideAsReference = true;
+            DistributeReference = DistributeReferenceObject.Slide;
         }
 
         /// <summary>
         /// Tells the Positions Lab to use first selected shape as reference shape for Distribute methods
         /// </summary>
-        public static void DistributeReferToShape()
+        public static void DistributeReferToFirstShape()
         {
-            DistributeUseSlideAsReference = false;
+            DistributeReference = DistributeReferenceObject.FirstShape;
+        }
+
+        /// <summary>
+        /// Tells the Positions Lab to use the first two selected shapes as reference points for Distribute methods
+        /// </summary>
+        public static void DistributeRefertoFirstTwoShapes()
+        {
+            DistributeReference = DistributeReferenceObject.FirstTwoShapes;
         }
 
         public static void SetDistributeGridAlignment(GridAlignment alignment)
@@ -379,9 +394,8 @@ namespace PowerPointLabs.PositionsLab
             var refShape = sortedShapes[0];
             float rightMostRef;
             float spaceBetweenShapes;
-
-            // Check if referring to slide
-            if (DistributeUseSlideAsReference)
+            
+            if (DistributeReference == DistributeReferenceObject.Slide)
             {
                 // Calculate the space between shapes
                 spaceBetweenShapes = slideWidth;
@@ -470,6 +484,7 @@ namespace PowerPointLabs.PositionsLab
                 return;
             }
 
+            // Need not be overlapped
             spaceBetweenShapes /= shapeCount;
             
             for (var i = 1; i < shapeCount; i++)
@@ -499,7 +514,7 @@ namespace PowerPointLabs.PositionsLab
             float lowestRef;
             float spaceBetweenShapes;
 
-            if (DistributeUseSlideAsReference)
+            if (DistributeReference == DistributeReferenceObject.Slide)
             {
                 // Calculate the space between shapes
                 spaceBetweenShapes = slideHeight;
@@ -507,8 +522,8 @@ namespace PowerPointLabs.PositionsLab
                 {
                     spaceBetweenShapes -= s.AbsoluteHeight;
                 }
-                
-                // Check if shapes need to be overlapped
+
+                // Check if the shapes need to be overlapped
                 if ( spaceBetweenShapes < 0)
                 {
                     spaceBetweenShapes /= shapeCount - 1;
@@ -530,7 +545,7 @@ namespace PowerPointLabs.PositionsLab
                     return;
                 }
                 
-                // Need not overlap
+                // Need not be overlapped
                 spaceBetweenShapes /= shapeCount + 1;
                 
                 for (var i = 0; i < shapeCount; i++)
@@ -585,6 +600,7 @@ namespace PowerPointLabs.PositionsLab
                 return;
             }
 
+            // Need not be overlapped
             spaceBetweenShapes /= shapeCount;
             
             for (var i = 1; i < shapeCount; i++)
@@ -1387,7 +1403,7 @@ namespace PowerPointLabs.PositionsLab
             MarginLeft = 5;
             MarginRight = 5;
             DistributeGridAlignment = GridAlignment.AlignLeft;
-            DistributeUseSlideAsReference = false;
+            DistributeReferToFirstShape();
         }
 
         private static Drawing.PointF GetSwapReferencePoint(PPShape shape, SwapReference r) 
