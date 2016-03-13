@@ -174,6 +174,18 @@ namespace PowerPointLabs.PositionsLab
             }
         }
 
+        public static void DefaultAlign(Microsoft.Office.Interop.PowerPoint.ShapeRange selectedShapes, MsoAlignCmd direction)
+        {
+            if (selectedShapes.Count == 1)
+            {
+                selectedShapes.Align(direction, MsoTriState.msoTrue);
+            }
+            else
+            {
+                selectedShapes.Align(direction, MsoTriState.msoFalse);
+            }
+        }
+
         public static void AlignRight(List<PPShape> selectedShapes, float slideWidth)
         {
             if (AlignUseSlideAsReference)

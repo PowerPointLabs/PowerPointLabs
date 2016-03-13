@@ -211,6 +211,60 @@ namespace PowerPointLabs.PositionsLab
                 ShowErrorMessageBox(ex.Message, ex);
             }
         }
+
+        private void DefaultAlignLeftButton_Click(object sender, RoutedEventArgs e)
+        {
+            DefaultAlign(Office.MsoAlignCmd.msoAlignLefts);
+        }
+
+        private void DefaultAlignRightButton_Click(object sender, RoutedEventArgs e)
+        {
+            DefaultAlign(Office.MsoAlignCmd.msoAlignRights);
+        }
+
+        private void DefaultAlignTopButton_Click(object sender, RoutedEventArgs e)
+        {
+            DefaultAlign(Office.MsoAlignCmd.msoAlignTops);
+        }
+
+        private void DefaultAlignBottomButton_Click(object sender, RoutedEventArgs e)
+        {
+            DefaultAlign(Office.MsoAlignCmd.msoAlignBottoms);
+        }
+
+        private void DefaultAlignCenterButton_Click(object sender, RoutedEventArgs e)
+        {
+            DefaultAlign(Office.MsoAlignCmd.msoAlignCenters);
+        }
+
+        private void DefaultAlignMiddleButton_Click(object sender, RoutedEventArgs e)
+        {
+            DefaultAlign(Office.MsoAlignCmd.msoAlignMiddles);
+        }
+
+        private void DefaultAlign(Office.MsoAlignCmd direction)
+        {
+            if (this.GetCurrentSelection().Type != PowerPoint.PpSelectionType.ppSelectionShapes)
+            {
+                ShowErrorMessageBox(ErrorMessageNoSelection);
+                return;
+            }
+
+            try
+            {
+                if (_previewIsExecuted)
+                {
+                    UndoPreview();
+                }
+                this.StartNewUndoEntry();
+                var selectedShapes = this.GetCurrentSelection().ShapeRange;
+                PositionsLabMain.DefaultAlign(selectedShapes, direction);
+            }
+            catch (Exception ex)
+            {
+                ShowErrorMessageBox(ex.Message, ex);
+            }
+        }
         #endregion
 
         #region Adjoin
@@ -842,6 +896,55 @@ namespace PowerPointLabs.PositionsLab
                 var slideHeight = this.GetCurrentPresentation().SlideHeight;
                 var slideWidth = this.GetCurrentPresentation().SlideWidth;
                 PositionsLabMain.AlignCenter(selectedShapes, slideHeight, slideWidth);
+                _previewIsExecuted = true;
+            }
+            catch
+            {
+                return;
+            }
+        }
+
+        private void DefaultAlignCenterButton_MouseEnter(object sender, System.Windows.Input.MouseEventArgs e)
+        {
+            DefaultAlignPreview(Office.MsoAlignCmd.msoAlignCenters);
+        }
+
+        private void DefaultAlignMiddleButton_MouseEnter(object sender, System.Windows.Input.MouseEventArgs e)
+        {
+            DefaultAlignPreview(Office.MsoAlignCmd.msoAlignMiddles);
+        }
+
+        private void DefaultAlignLeftButton_MouseEnter(object sender, System.Windows.Input.MouseEventArgs e)
+        {
+            DefaultAlignPreview(Office.MsoAlignCmd.msoAlignLefts);
+        }
+
+        private void DefaultAlignRightButton_MouseEnter(object sender, System.Windows.Input.MouseEventArgs e)
+        {
+            DefaultAlignPreview(Office.MsoAlignCmd.msoAlignRights);
+        }
+
+        private void DefaultAlignTopButton_MouseEnter(object sender, System.Windows.Input.MouseEventArgs e)
+        {
+            DefaultAlignPreview(Office.MsoAlignCmd.msoAlignTops);
+        }
+
+        private void DefaultAlignBottomButton_MouseEnter(object sender, System.Windows.Input.MouseEventArgs e)
+        {
+            DefaultAlignPreview(Office.MsoAlignCmd.msoAlignBottoms);
+        }
+
+        private void DefaultAlignPreview(Office.MsoAlignCmd direction)
+        {
+            if (this.GetCurrentSelection().Type != PowerPoint.PpSelectionType.ppSelectionShapes)
+            {
+                return;
+            }
+            try
+            {
+                var selectedShapes = this.GetCurrentSelection().ShapeRange;
+                this.StartNewUndoEntry();
+                PositionsLabMain.DefaultAlign(selectedShapes, direction);
                 _previewIsExecuted = true;
             }
             catch
