@@ -75,6 +75,9 @@ namespace PowerPointLabs.PositionsLab
         //Align Variables
         public static bool AlignUseSlideAsReference { get; private set; }
 
+        // Adjoin Variables
+        public static bool AlignShapesToBeAdjoined { get; private set; }
+
         private static Dictionary<MsoAutoShapeType, float> shapeDefaultUpAngle;
 
         #region API
@@ -95,6 +98,22 @@ namespace PowerPointLabs.PositionsLab
         public static void AlignReferToShape()
         {
             AlignUseSlideAsReference = false;
+        }
+
+        /// <summary>
+        /// Tells the Positions Lab to align the shapes that are to be adjoined
+        /// </summary>
+        public static void AdjoinWithAligning()
+        {
+            AlignShapesToBeAdjoined = true;
+        }
+
+        /// <summary>
+        /// Tells the Positions Lab to not align the shapes that are to be adjoined
+        /// </summary>
+        public static void AdjoinWithoutAligning()
+        {
+            AlignShapesToBeAdjoined = false;
         }
 
         /// <summary>
@@ -344,7 +363,10 @@ namespace PowerPointLabs.PositionsLab
                 var neighbour = sortedShapes[i];
                 var rightOfNeighbour = neighbour.Left + neighbour.AbsoluteWidth;
                 neighbour.IncrementLeft(mostLeft - rightOfNeighbour);
-                neighbour.IncrementTop(refShape.Center.Y - neighbour.Center.Y);
+                if (AlignShapesToBeAdjoined)
+                {
+                    neighbour.IncrementTop(refShape.Center.Y - neighbour.Center.Y);
+                }
 
                 mostLeft = mostLeft - neighbour.AbsoluteWidth;
             }
@@ -355,7 +377,10 @@ namespace PowerPointLabs.PositionsLab
             {
                 var neighbour = sortedShapes[i];
                 neighbour.IncrementLeft(mostRight - neighbour.Left);
-                neighbour.IncrementTop(refShape.Center.Y - neighbour.Center.Y);
+                if (AlignShapesToBeAdjoined)
+                {
+                    neighbour.IncrementTop(refShape.Center.Y - neighbour.Center.Y);
+                }
 
                 mostRight = mostRight + neighbour.AbsoluteWidth;
             }
@@ -378,7 +403,10 @@ namespace PowerPointLabs.PositionsLab
             {
                 var neighbour = sortedShapes[i];
                 var bottomOfNeighbour = neighbour.Top + neighbour.AbsoluteHeight;
-                neighbour.IncrementLeft(refShape.Center.X - neighbour.Center.X);
+                if (AlignShapesToBeAdjoined)
+                {
+                    neighbour.IncrementLeft(refShape.Center.X - neighbour.Center.X);
+                }
                 neighbour.IncrementTop(mostTop - bottomOfNeighbour);
 
                 mostTop = mostTop - neighbour.AbsoluteHeight;
@@ -389,7 +417,10 @@ namespace PowerPointLabs.PositionsLab
             for (var i = refShapeIndex + 1; i < sortedShapes.Count; i++)
             {
                 var neighbour = sortedShapes[i];
-                neighbour.IncrementLeft(refShape.Center.X - neighbour.Center.X);
+                if (AlignShapesToBeAdjoined)
+                {
+                    neighbour.IncrementLeft(refShape.Center.X - neighbour.Center.X);
+                }
                 neighbour.IncrementTop(lowest - neighbour.Top);
 
                 lowest = lowest + neighbour.AbsoluteHeight;

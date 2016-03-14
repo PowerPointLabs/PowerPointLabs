@@ -317,6 +317,16 @@ namespace PowerPointLabs.PositionsLab
                 ShowErrorMessageBox(ex.Message, ex);
             }
         }
+
+        private void AlignAdjoinCheckBox_Checked(object sender, RoutedEventArgs e)
+        {
+            PositionsLabMain.AdjoinWithAligning();
+        }
+
+        private void AlignAdjoinCheckBox_Unchecked(object sender, RoutedEventArgs e)
+        {
+            PositionsLabMain.AdjoinWithoutAligning();
+        }
         #endregion
 
         #region Distribute
