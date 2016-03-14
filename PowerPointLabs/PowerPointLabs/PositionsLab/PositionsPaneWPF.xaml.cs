@@ -1030,25 +1030,6 @@ namespace PowerPointLabs.PositionsLab
             }
         }
 
-        private void DistributeShapesButton_MouseEnter(object sender, System.Windows.Input.MouseEventArgs e)
-        {
-            if (this.GetCurrentSelection().Type != PowerPoint.PpSelectionType.ppSelectionShapes)
-            {
-                return;
-            }
-            try
-            {
-                var selectedShapes = ConvertShapeRangeToList(this.GetCurrentSelection().ShapeRange, 1);
-                this.StartNewUndoEntry();
-                PositionsLabMain.DistributeShapes(selectedShapes);
-                _previewIsExecuted = true;
-            }
-            catch
-            {
-                return;
-            }
-        }
-
         private void SwapPositionsButton_MouseEnter(object sender, System.Windows.Input.MouseEventArgs e)
         {
             if (this.GetCurrentSelection().Type != PowerPoint.PpSelectionType.ppSelectionShapes)
