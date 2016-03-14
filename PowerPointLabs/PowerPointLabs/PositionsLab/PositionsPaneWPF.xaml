@@ -4,7 +4,7 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:WPF="clr-namespace:PowerPointLabs.WPF" x:Class="PowerPointLabs.PositionsLab.PositionsPaneWpf"
-             mc:Ignorable="d" Height="620" Width="310">
+             mc:Ignorable="d" Height="590" Width="310">
     <UserControl.Resources>
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
@@ -17,7 +17,7 @@
         </ResourceDictionary>
     </UserControl.Resources>
     <ScrollViewer Margin="0,0,0,-20">
-        <Grid VerticalAlignment="Top" Height="615" Width="300">
+        <Grid VerticalAlignment="Top" Height="580" Width="300">
             <GroupBox x:Name="alignGroupBox" Header="Align" HorizontalAlignment="Left" Margin="10,5,0,0" VerticalAlignment="Top" Height="180" Width="280">
                 <WPF:ImageButton ToolTip="Opens the settings for Distribute functions" x:Name="alignSettingsButton" HorizontalAlignment="Right" Margin="0,-29,-2,0" VerticalAlignment="Top" Width="20" Height="20" Click="AlignSettingsButton_Click" Background="{x:Null}" BorderBrush="{x:Null}">
                     <Image Source="..\Resources\SettingsGear.png"/>
@@ -93,19 +93,18 @@
             <WPF:ImageButton ToolTip="Swaps the positions of objects in a cyclical order" x:Name="swapPositionsButton" HorizontalAlignment="Left" Margin="18,390,0,0" VerticalAlignment="Top" Width="60" Height="45" Click="SwapPositionsButton_Click" MouseEnter="SwapPositionsButton_MouseEnter" MouseLeave="UndoPreview" Background="{x:Null}" BorderBrush="{x:Null}">
                 <Image Source="..\Resources\PositionsLab\SwapIcon.png"/>
             </WPF:ImageButton>
-            <GroupBox x:Name="adjustmentGroupBox" Header="Adjustment" HorizontalAlignment="Left" Margin="10,445,0,0" VerticalAlignment="Top" Height="80" Width="280"/>
+            <GroupBox x:Name="orientationGroupBox" Header="Orientation" HorizontalAlignment="Left" Margin="10,445,0,0" VerticalAlignment="Top" Height="130" Width="280"/>
             <WPF:ImageButton ToolTip="Adjusts the rate of rotation for object" x:Name="rotationButton" HorizontalAlignment="Left" Margin="18,475,0,0" VerticalAlignment="Top" Width="60" Height="45" Click="RotationButton_Click" Background="{x:Null}" BorderBrush="{x:Null}">
                 <Image Source="..\Resources\PositionsLab\RotateIcon.png"/>
             </WPF:ImageButton>
-            <CheckBox x:Name="LockAxisCheckBox" Content="Lock Axis" HorizontalAlignment="Left" Height="33" Margin="86,482,0,0" VerticalAlignment="Top" Checked="LockAxis_Checked" Unchecked="LockAxis_UnChecked"/>
-            <GroupBox x:Name="snapGroupBox" Header="Snap" HorizontalAlignment="Left" Margin="10,530,0,0" VerticalAlignment="Top" Height="80" Width="280"/>
-            <WPF:ImageButton ToolTip="Snaps object to a horizontal rotation" x:Name="snapHorizontalButton" HorizontalAlignment="Left" Margin="18,560,0,0" VerticalAlignment="Top" Width="60" Height="45" Click="SnapHorizontalButton_Click" MouseEnter="SnapHorizontalButton_MouseEnter" MouseLeave="UndoPreview" Background="{x:Null}" BorderBrush="{x:Null}">
+            <CheckBox x:Name="LockAxisCheckBox" Content="Lock Axis" ToolTip="Locks the axis such that when shape is moved, it can only move either horizontally or vertically" HorizontalAlignment="Left" Height="33" Margin="40,532,0,0" VerticalAlignment="Top" Checked="LockAxis_Checked" Unchecked="LockAxis_UnChecked"/>
+            <WPF:ImageButton ToolTip="Snaps object to a horizontal rotation" x:Name="snapHorizontalButton" HorizontalAlignment="Left" Margin="86,475,0,0" VerticalAlignment="Top" Width="60" Height="45" Click="SnapHorizontalButton_Click" MouseEnter="SnapHorizontalButton_MouseEnter" MouseLeave="UndoPreview" Background="{x:Null}" BorderBrush="{x:Null}">
                 <Image Source="..\Resources\PositionsLab\SnapHorizontalIcon.png"/>
             </WPF:ImageButton>
-            <WPF:ImageButton ToolTip="Snaps object to a vertical rotation" x:Name="snapVerticalButton" HorizontalAlignment="Left" Margin="86,560,0,0" VerticalAlignment="Top" Width="60" Height="45" Click="SnapVerticalButton_Click" MouseEnter="SnapVerticalButton_MouseEnter" MouseLeave="UndoPreview" Background="{x:Null}" BorderBrush="{x:Null}">
+            <WPF:ImageButton ToolTip="Snaps object to a vertical rotation" x:Name="snapVerticalButton" HorizontalAlignment="Left" Margin="154,475,0,0" VerticalAlignment="Top" Width="60" Height="45" Click="SnapVerticalButton_Click" MouseEnter="SnapVerticalButton_MouseEnter" MouseLeave="UndoPreview" Background="{x:Null}" BorderBrush="{x:Null}">
                 <Image Source="..\Resources\PositionsLab\SnapVerticalIcon.png"/>
             </WPF:ImageButton>
-            <WPF:ImageButton ToolTip="Snaps objects away from a reference object" x:Name="snapAwayButton" HorizontalAlignment="Left" Margin="154,560,0,0" VerticalAlignment="Top" Width="60" Height="45" Click="SnapAwayButton_Click" MouseEnter="SnapAwayButton_MouseEnter" MouseLeave="UndoPreview" Background="{x:Null}" BorderBrush="{x:Null}">
+            <WPF:ImageButton ToolTip="Snaps objects away from a reference object" x:Name="snapAwayButton" HorizontalAlignment="Left" Margin="222,475,0,0" VerticalAlignment="Top" Width="60" Height="45" Click="SnapAwayButton_Click" MouseEnter="SnapAwayButton_MouseEnter" MouseLeave="UndoPreview" Background="{x:Null}" BorderBrush="{x:Null}">
                 <Image Source="..\Resources\PositionsLab\SnapAwayIcon.png"/>
             </WPF:ImageButton>
         </Grid>
