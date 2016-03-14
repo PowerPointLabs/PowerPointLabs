@@ -204,9 +204,8 @@ namespace PowerPointLabs.PositionsLab
                 }
                 this.StartNewUndoEntry();
                 var selectedShapes = this.GetCurrentSelection().ShapeRange;
-                var slideHeight = this.GetCurrentPresentation().SlideHeight;
                 var slideWidth = this.GetCurrentPresentation().SlideWidth;
-                PositionsLabMain.AlignCenter(selectedShapes, slideWidth, slideHeight);
+                PositionsLabMain.AlignCenter(selectedShapes, slideWidth);
             }
             catch (Exception ex)
             {
@@ -827,9 +826,8 @@ namespace PowerPointLabs.PositionsLab
             {
                 var selectedShapes = this.GetCurrentSelection().ShapeRange;
                 this.StartNewUndoEntry();
-                var slideHeight = this.GetCurrentPresentation().SlideHeight;
                 var slideWidth = this.GetCurrentPresentation().SlideWidth;
-                PositionsLabMain.AlignCenter(selectedShapes, slideHeight, slideWidth);
+                PositionsLabMain.AlignCenter(selectedShapes, slideWidth);
                 _previewIsExecuted = true;
             }
             catch

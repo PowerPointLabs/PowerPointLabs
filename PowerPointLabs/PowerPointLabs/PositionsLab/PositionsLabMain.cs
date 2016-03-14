@@ -414,7 +414,7 @@ namespace PowerPointLabs.PositionsLab
             }
         }
 
-        public static void AlignCenter(ShapeRange toAlign, float slideWidth, float slideHeight)
+        public static void AlignCenter(ShapeRange toAlign, float slideWidth)
         {
             var selectedShapes = new List<PPShape>();
             for (var i = 1; i <= toAlign.Count; i++)
@@ -427,8 +427,7 @@ namespace PowerPointLabs.PositionsLab
                 case AlignReferenceObject.Slide:
                     foreach (var s in selectedShapes)
                     {
-                        s.IncrementTop(slideHeight/2 - s.Top - s.AbsoluteHeight/2);
-                        s.IncrementLeft(slideWidth/2 - s.Left - s.AbsoluteWidth/2);
+                        s.IncrementLeft(slideWidth / 2 - s.Left - s.AbsoluteWidth / 2);
                     }
                     break;
                 case AlignReferenceObject.SelectedShape:
@@ -443,7 +442,6 @@ namespace PowerPointLabs.PositionsLab
                     {
                         var s = selectedShapes[i];
                         s.IncrementLeft(refShape.Center.X - s.Center.X);
-                        s.IncrementTop(refShape.Center.Y - s.Center.Y);
                     }
                     break;
                 case AlignReferenceObject.PowerpointDefaults:
