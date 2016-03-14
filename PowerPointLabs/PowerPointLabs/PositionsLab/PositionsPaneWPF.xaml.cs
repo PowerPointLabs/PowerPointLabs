@@ -395,32 +395,7 @@ namespace PowerPointLabs.PositionsLab
                 ShowErrorMessageBox(ex.Message, ex);
             }
         }
-
-        // TODO: Remove after confirming that Distribute Shapes shall be part of settings
-        private void DistributeShapesButton_Click(object sender, RoutedEventArgs e)
-        {
-            if (this.GetCurrentSelection().Type != PowerPoint.PpSelectionType.ppSelectionShapes)
-            {
-                ShowErrorMessageBox(ErrorMessageNoSelection);
-                return;
-            }
-
-            try
-            {
-                if (_previewIsExecuted)
-                {
-                    UndoPreview();
-                }
-                this.StartNewUndoEntry();
-                var selectedShapes = ConvertShapeRangeToList(this.GetCurrentSelection().ShapeRange, 1);
-                PositionsLabMain.DistributeShapes(selectedShapes);
-            }
-            catch (Exception ex)
-            {
-                ShowErrorMessageBox(ex.Message, ex);
-            }
-        }
-
+        
         private void DistributeGridButton_Click(object sender, RoutedEventArgs e)
         {
             if (this.GetCurrentSelection().Type != PowerPoint.PpSelectionType.ppSelectionShapes)

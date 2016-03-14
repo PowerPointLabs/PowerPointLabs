@@ -80,10 +80,6 @@
             <WPF:ImageButton ToolTip="Equalize horizontal and vertical spaces of objects within reference frame" x:Name="distributeCenterButton" HorizontalAlignment="Left" Margin="154,305,0,0" VerticalAlignment="Top" Width="60" Height="45" Click="DistributeCenterButton_Click" MouseEnter="DistributeCenterButton_MouseEnter" MouseLeave="UndoPreview" Background="{x:Null}" BorderBrush="{x:Null}">
                 <Image Source="..\Resources\PositionsLab\DistributeCenterIcon.png"/>
             </WPF:ImageButton>
-            <!--TODO : Remove after confirming Distribute Shapes shall be part of settings-->
-            <WPF:ImageButton Visibility="Hidden" ToolTip="Equalize horizontal and vertical spaces of objects amongst selected objects" x:Name="distributeShapesButton" HorizontalAlignment="Left" Margin="222,305,0,0" VerticalAlignment="Top" Width="60" Height="45" Click ="DistributeShapesButton_Click" MouseEnter="DistributeShapesButton_MouseEnter" MouseLeave="UndoPreview" Background="{x:Null}" BorderBrush="{x:Null}">
-                <Image Source="..\Resources\PositionsLab\DistributeShapeIcon.png"/>
-            </WPF:ImageButton>
             <WPF:ImageButton ToolTip="Equalize spaces of objects into a grid" x:Name="distributeGridButton" HorizontalAlignment="Left" Margin="222,305,0,0" VerticalAlignment="Top" Width="60" Height="45" Click="DistributeGridButton_Click" Background="{x:Null}" BorderBrush="{x:Null}">
                 <Image Source="..\Resources\PositionsLab\DistributeGridIcon.png"/>
             </WPF:ImageButton>

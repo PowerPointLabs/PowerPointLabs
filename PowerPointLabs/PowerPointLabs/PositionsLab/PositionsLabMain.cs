@@ -606,69 +606,6 @@ namespace PowerPointLabs.PositionsLab
             DistributeVertical(selectedShapes, slideHeight);
         }
 
-        // TODO: Remove method after confirming that Distribute Shapes shall be part of settings
-        public static void DistributeShapes(List<PPShape> sortedShapes)
-        {
-            var shapeCount = sortedShapes.Count;
-
-            if (shapeCount < 2)
-            {
-                throw new Exception(ErrorMessageFewerThanTwoSelection);
-            }
-
-            if (shapeCount == 2)
-            {
-                return;
-            }
-
-            var firstRef = sortedShapes[0];
-            var lastRef = sortedShapes[sortedShapes.Count - 1];
-            PPShape refShape;
-
-            var horizontalDistance = lastRef.Left - firstRef.Left - firstRef.AbsoluteWidth;
-            var verticalDistance = lastRef.Top - firstRef.Top - firstRef.AbsoluteHeight;
-
-            // Calculate the horizontal space between shapes
-            var spaceBetweenShapes = horizontalDistance;
-            for (var i = 1; i < shapeCount - 1; i++)
-            {
-                var s = sortedShapes[i];
-                spaceBetweenShapes -= s.AbsoluteWidth;
-            }
-            // TODO: guard against spaceBetweenShapes < 0
-            spaceBetweenShapes /= (shapeCount - 1);
-
-            // Distribute shapes horizontally
-            for (var i = 1; i < shapeCount - 1; i++)
-            {
-                var currShape = sortedShapes[i];
-                refShape = sortedShapes[i - 1];
-
-                var rightMostRef = refShape.Left + refShape.AbsoluteWidth;
-                currShape.IncrementLeft(rightMostRef - currShape.Left + spaceBetweenShapes);
-            }
-
-            // Calculate the vertical space between shapes
-            spaceBetweenShapes = verticalDistance;
-            for (var i = 1; i < shapeCount - 1; i++)
-            {
-                var s = sortedShapes[i];
-                spaceBetweenShapes -= s.AbsoluteHeight;
-            }
-            // TODO: guard against spaceBetweenShapes < 0
-            spaceBetweenShapes /= (shapeCount - 1);
-
-            // Distribute the shapes vertically
-            for (var i = 1; i < shapeCount - 1; i++)
-            {
-                var currShape = sortedShapes[i];
-                refShape = sortedShapes[i - 1];
-
-                var lowestRef = refShape.Top + refShape.AbsoluteHeight;
-                currShape.IncrementTop(lowestRef - currShape.Top + spaceBetweenShapes);
-            }
-        }
-
         public static void DistributeGrid(List<PPShape> selectedShapes, int rowLength, int colLength)
         {
             var colLengthGivenFullRows = (int) Math.Ceiling((double) selectedShapes.Count/rowLength);
