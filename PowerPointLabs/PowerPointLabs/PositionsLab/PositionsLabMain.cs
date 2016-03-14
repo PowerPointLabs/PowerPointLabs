@@ -4,6 +4,7 @@ using Microsoft.Office.Core;
 using PowerPointLabs.Utils;
 using Shape = Microsoft.Office.Interop.PowerPoint.Shape;
 using AutoShape = Microsoft.Office.Core.MsoAutoShapeType;
+using ShapeRange = Microsoft.Office.Interop.PowerPoint.ShapeRange;
 using System.Diagnostics;
 using Drawing = System.Drawing;
 
@@ -73,6 +74,13 @@ namespace PowerPointLabs.PositionsLab
         private static List<PPShape> prevSortedShapes;
 
         //Align Variables
+        public enum AlignReferenceObject
+        {
+            Slide,
+            SelectedShape,
+            PowerpointDefaults
+        }
+        public static AlignReferenceObject AlignReference { get; private set; }
         public static bool AlignUseSlideAsReference { get; private set; }
 
         // Adjoin Variables
@@ -89,7 +97,7 @@ namespace PowerPointLabs.PositionsLab
         /// </summary>
         public static void AlignReferToSlide()
         {
-            AlignUseSlideAsReference = true;
+            AlignReference = AlignReferenceObject.Slide;
         }
 
         /// <summary>
@@ -97,7 +105,15 @@ namespace PowerPointLabs.PositionsLab
         /// </summary>
         public static void AlignReferToShape()
         {
-            AlignUseSlideAsReference = false;
+            AlignReference = AlignReferenceObject.SelectedShape;
+        }
+
+        /// <summary>
+        /// Tells the Positions Lab to have its align function behave as how powerpoint's does
+        /// </summary>
+        public static void AlignReferToPowerpointDefaults()
+        {
+            AlignReference = AlignReferenceObject.PowerpointDefaults;
         }
 
         /// <summary>
@@ -168,177 +184,280 @@ namespace PowerPointLabs.PositionsLab
         #endregion
 
         #region Align
-        public static void AlignLeft(List<PPShape> selectedShapes)
+        public static void AlignLeft(ShapeRange toAlign)
         {
-            if (AlignUseSlideAsReference)
+            var selectedShapes = new List<PPShape>();
+            for (var i = 1; i <= toAlign.Count; i++)
             {
-                foreach (var s in selectedShapes)
-                {
-                    s.IncrementLeft(-s.Left);
-                }
+                selectedShapes.Add(new PPShape(toAlign[i]));
             }
-            else
+
+            switch (AlignReference)
             {
-                if (selectedShapes.Count < 2)
-                {
-                    throw new Exception(ErrorMessageFewerThanTwoSelection);
-                }
+                case AlignReferenceObject.Slide: 
+                    foreach (var s in selectedShapes)
+                    {
+                        s.IncrementLeft(-s.Left);
+                    }
+                    break;
+                case AlignReferenceObject.SelectedShape:
+                    if (selectedShapes.Count < 2)
+                    {
+                        throw new Exception(ErrorMessageFewerThanTwoSelection);
+                    }
 
-                var refShape = selectedShapes[0];
+                    var refShape = selectedShapes[0];
 
-                for (var i = 1; i < selectedShapes.Count; i++)
-                {
-                    var s = selectedShapes[i];
-                    s.IncrementLeft(refShape.Left - s.Left);
-                }
+                    for (var i = 1; i < selectedShapes.Count; i++)
+                    {
+                        var s = selectedShapes[i];
+                        s.IncrementLeft(refShape.Left - s.Left);
+                    }
+                    break;
+                case AlignReferenceObject.PowerpointDefaults:
+                    if (selectedShapes.Count == 1)
+                    {
+                        toAlign.Align(MsoAlignCmd.msoAlignLefts, MsoTriState.msoTrue);
+                    }
+                    else
+                    {
+                        toAlign.Align(MsoAlignCmd.msoAlignLefts, MsoTriState.msoFalse);
+                    }
+                    break;
+                default:
+                    throw new ArgumentOutOfRangeException();
             }
         }
 
-        public static void DefaultAlign(Microsoft.Office.Interop.PowerPoint.ShapeRange selectedShapes, MsoAlignCmd direction)
+        public static void AlignRight(ShapeRange toAlign, float slideWidth)
         {
-            if (selectedShapes.Count == 1)
+
+            var selectedShapes = new List<PPShape>();
+            for (var i = 1; i <= toAlign.Count; i++)
             {
-                selectedShapes.Align(direction, MsoTriState.msoTrue);
+                selectedShapes.Add(new PPShape(toAlign[i]));
             }
-            else
+
+            switch (AlignReference)
             {
-                selectedShapes.Align(direction, MsoTriState.msoFalse);
+                case AlignReferenceObject.Slide:
+                    foreach (var s in selectedShapes)
+                    {
+                        s.IncrementLeft(slideWidth - s.Left - s.AbsoluteWidth);
+                    }
+                    break;
+                case AlignReferenceObject.SelectedShape:
+                    if (selectedShapes.Count < 2)
+                    {
+                        throw new Exception(ErrorMessageFewerThanTwoSelection);
+                    }
+
+                    var refShape = selectedShapes[0];
+                    var rightMostRefPoint = refShape.Left + refShape.AbsoluteWidth;
+
+                    for (var i = 1; i < selectedShapes.Count; i++)
+                    {
+                        var s = selectedShapes[i];
+                        var rightMostPoint = s.Left + s.AbsoluteWidth;
+                        s.IncrementLeft(rightMostRefPoint - rightMostPoint);
+                    }
+                    break;
+                case AlignReferenceObject.PowerpointDefaults:
+                    if (selectedShapes.Count == 1)
+                    {
+                        toAlign.Align(MsoAlignCmd.msoAlignRights, MsoTriState.msoTrue);
+                    }
+                    else
+                    {
+                        toAlign.Align(MsoAlignCmd.msoAlignRights, MsoTriState.msoFalse);
+                    }
+                    break;
+                default:
+                    throw new ArgumentOutOfRangeException();
             }
         }
 
-        public static void AlignRight(List<PPShape> selectedShapes, float slideWidth)
+        public static void AlignTop(ShapeRange toAlign)
         {
-            if (AlignUseSlideAsReference)
+            var selectedShapes = new List<PPShape>();
+            for (var i = 1; i <= toAlign.Count; i++)
             {
-                foreach (var s in selectedShapes)
-                {
-                    s.IncrementLeft(slideWidth - s.Left - s.AbsoluteWidth);
-                }
+                selectedShapes.Add(new PPShape(toAlign[i]));
             }
-            else
+
+            switch (AlignReference)
             {
-                if (selectedShapes.Count < 2)
-                {
-                    throw new Exception(ErrorMessageFewerThanTwoSelection);
-                }
+                case AlignReferenceObject.Slide:
+                    foreach (var s in selectedShapes)
+                    {
+                        s.IncrementTop(-s.Top);
+                    }
+                    break;
+                case AlignReferenceObject.SelectedShape:
+                    if (selectedShapes.Count < 2)
+                    {
+                        throw new Exception(ErrorMessageFewerThanTwoSelection);
+                    }
 
-                var refShape = selectedShapes[0];
-                var rightMostRefPoint = refShape.Left + refShape.AbsoluteWidth;
+                    var refShape = selectedShapes[0];
 
-                for (var i = 1; i < selectedShapes.Count; i++)
-                {
-                    var s = selectedShapes[i];
-                    var rightMostPoint = s.Left + s.AbsoluteWidth;
-                    s.IncrementLeft(rightMostRefPoint - rightMostPoint);
-                }
+                    for (var i = 1; i < selectedShapes.Count; i++)
+                    {
+                        var s = selectedShapes[i];
+                        s.IncrementTop(refShape.Top - s.Top);
+                    }
+                    break;
+                case AlignReferenceObject.PowerpointDefaults:
+                    if (selectedShapes.Count == 1)
+                    {
+                        toAlign.Align(MsoAlignCmd.msoAlignTops, MsoTriState.msoTrue);
+                    }
+                    else
+                    {
+                        toAlign.Align(MsoAlignCmd.msoAlignTops, MsoTriState.msoFalse);
+                    }
+                    break;
+                default:
+                    throw new ArgumentOutOfRangeException();
             }
         }
 
-        public static void AlignTop(List<PPShape> selectedShapes)
+        public static void AlignBottom(ShapeRange toAlign, float slideHeight)
         {
-            if (AlignUseSlideAsReference)
+            var selectedShapes = new List<PPShape>();
+            for (var i = 1; i <= toAlign.Count; i++)
             {
-                foreach (var s in selectedShapes)
-                {
-                    s.IncrementTop(-s.Top);
-                }
+                selectedShapes.Add(new PPShape(toAlign[i]));
             }
-            else
+
+            switch (AlignReference)
             {
-                if (selectedShapes.Count < 2)
-                {
-                    throw new Exception(ErrorMessageFewerThanTwoSelection);
-                }
+                case AlignReferenceObject.Slide:
+                    foreach (var s in selectedShapes)
+                    {
+                        s.IncrementTop(slideHeight - s.Top - s.AbsoluteHeight);
+                    }
+                    break;
+                case AlignReferenceObject.SelectedShape:
+                    if (selectedShapes.Count < 2)
+                    {
+                        throw new Exception(ErrorMessageFewerThanTwoSelection);
+                    }
 
-                var refShape = selectedShapes[0];
+                    var refShape = selectedShapes[0];
+                    var lowestRefPoint = refShape.Top + refShape.AbsoluteHeight;
 
-                for (var i = 1; i < selectedShapes.Count; i++)
-                {
-                    var s = selectedShapes[i];
-                    s.IncrementTop(refShape.Top - s.Top);
-                }
+                    for (var i = 1; i < selectedShapes.Count; i++)
+                    {
+                        var s = selectedShapes[i];
+                        var lowestPoint = s.Top + s.AbsoluteHeight;
+                        s.IncrementTop(lowestRefPoint - lowestPoint);
+                    }
+                    break;
+                case AlignReferenceObject.PowerpointDefaults:
+                    if (selectedShapes.Count == 1)
+                    {
+                        toAlign.Align(MsoAlignCmd.msoAlignBottoms, MsoTriState.msoTrue);
+                    }
+                    else
+                    {
+                        toAlign.Align(MsoAlignCmd.msoAlignBottoms, MsoTriState.msoFalse);
+                    }
+                    break;
+                default:
+                    throw new ArgumentOutOfRangeException();
             }
         }
 
-        public static void AlignBottom(List<PPShape> selectedShapes, float slideHeight)
+        public static void AlignMiddle(ShapeRange toAlign, float slideHeight)
         {
-            if (AlignUseSlideAsReference)
+            var selectedShapes = new List<PPShape>();
+            for (var i = 1; i <= toAlign.Count; i++)
             {
-                foreach (var s in selectedShapes)
-                {
-                    s.IncrementTop(slideHeight - s.Top - s.AbsoluteHeight);
-                }
+                selectedShapes.Add(new PPShape(toAlign[i]));
             }
-            else
+
+            switch (AlignReference)
             {
-                if (selectedShapes.Count < 2)
-                {
-                    throw new Exception(ErrorMessageFewerThanTwoSelection);
-                }
+                case AlignReferenceObject.Slide:
+                    foreach (var s in selectedShapes)
+                    {
+                        s.IncrementTop(slideHeight / 2 - s.Top - s.AbsoluteHeight / 2);
+                    }
+                    break;
+                case AlignReferenceObject.SelectedShape:
+                    if (selectedShapes.Count < 2)
+                    {
+                        throw new Exception(ErrorMessageFewerThanTwoSelection);
+                    }
 
-                var refShape = selectedShapes[0];
-                var lowestRefPoint = refShape.Top + refShape.AbsoluteHeight;
+                    var refShape = selectedShapes[0];
 
-                for (var i = 1; i < selectedShapes.Count; i++)
-                {
-                    var s = selectedShapes[i];
-                    var lowestPoint = s.Top + s.AbsoluteHeight;
-                    s.IncrementTop(lowestRefPoint - lowestPoint);
-                }
+                    for (var i = 1; i < selectedShapes.Count; i++)
+                    {
+                        var s = selectedShapes[i];
+                        s.IncrementTop(refShape.Center.Y - s.Center.Y);
+                    }
+                    break;
+                case AlignReferenceObject.PowerpointDefaults:
+                    if (selectedShapes.Count == 1)
+                    {
+                        toAlign.Align(MsoAlignCmd.msoAlignMiddles, MsoTriState.msoTrue);
+                    }
+                    else
+                    {
+                        toAlign.Align(MsoAlignCmd.msoAlignMiddles, MsoTriState.msoFalse);
+                    }
+                    break;
+                default:
+                    throw new ArgumentOutOfRangeException();
             }
         }
 
-        public static void AlignMiddle(List<PPShape> selectedShapes, float slideHeight)
+        public static void AlignCenter(ShapeRange toAlign, float slideWidth, float slideHeight)
         {
-            if (AlignUseSlideAsReference)
+            var selectedShapes = new List<PPShape>();
+            for (var i = 1; i <= toAlign.Count; i++)
             {
-                foreach (var s in selectedShapes)
-                {
-                    s.IncrementTop(slideHeight/2 - s.Top - s.AbsoluteHeight/2);
-                }
+                selectedShapes.Add(new PPShape(toAlign[i]));
             }
-            else
+
+            switch (AlignReference)
             {
-                if (selectedShapes.Count < 2)
-                {
-                    throw new Exception(ErrorMessageFewerThanTwoSelection);
-                }
+                case AlignReferenceObject.Slide:
+                    foreach (var s in selectedShapes)
+                    {
+                        s.IncrementTop(slideHeight/2 - s.Top - s.AbsoluteHeight/2);
+                        s.IncrementLeft(slideWidth/2 - s.Left - s.AbsoluteWidth/2);
+                    }
+                    break;
+                case AlignReferenceObject.SelectedShape:
+                    if (selectedShapes.Count < 2)
+                    {
+                        throw new Exception(ErrorMessageFewerThanTwoSelection);
+                    }
 
-                var refShape = selectedShapes[0];
+                    var refShape = selectedShapes[0];
 
-                for (var i = 1; i < selectedShapes.Count; i++)
-                {
-                    var s = selectedShapes[i];
-                    s.IncrementTop(refShape.Center.Y - s.Center.Y);
-                }
-            }
-        }
-
-        public static void AlignCenter(List<PPShape> selectedShapes, float slideWidth, float slideHeight)
-        {
-            if (AlignUseSlideAsReference)
-            {
-                foreach (var s in selectedShapes)
-                {
-                    s.IncrementTop(slideHeight/2 - s.Top - s.AbsoluteHeight/2);
-                    s.IncrementLeft(slideWidth/2 - s.Left - s.AbsoluteWidth/2);
-                }
-            }
-            else
-            {
-                if (selectedShapes.Count < 2)
-                {
-                    throw new Exception(ErrorMessageFewerThanTwoSelection);
-                }
-
-                var refShape = selectedShapes[0];
-
-                for (var i = 1; i < selectedShapes.Count; i++)
-                {
-                    var s = selectedShapes[i];
-                    s.IncrementLeft(refShape.Center.X - s.Center.X);
-                    s.IncrementTop(refShape.Center.Y - s.Center.Y);
-                }
+                    for (var i = 1; i < selectedShapes.Count; i++)
+                    {
+                        var s = selectedShapes[i];
+                        s.IncrementLeft(refShape.Center.X - s.Center.X);
+                        s.IncrementTop(refShape.Center.Y - s.Center.Y);
+                    }
+                    break;
+                case AlignReferenceObject.PowerpointDefaults:
+                    if (selectedShapes.Count == 1)
+                    {
+                        toAlign.Align(MsoAlignCmd.msoAlignCenters, MsoTriState.msoTrue);
+                    }
+                    else
+                    {
+                        toAlign.Align(MsoAlignCmd.msoAlignCenters, MsoTriState.msoFalse);
+                    }
+                    break;
+                default:
+                    throw new ArgumentOutOfRangeException();
             }
         }
 

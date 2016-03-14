@@ -80,7 +80,7 @@ namespace PowerPointLabs.PositionsLab
                     UndoPreview();
                 }
                 this.StartNewUndoEntry();
-                var selectedShapes = ConvertShapeRangeToList(this.GetCurrentSelection().ShapeRange, 1);
+                var selectedShapes = this.GetCurrentSelection().ShapeRange;
                 PositionsLabMain.AlignLeft(selectedShapes);
             }
             catch (Exception ex)
@@ -104,7 +104,7 @@ namespace PowerPointLabs.PositionsLab
                     UndoPreview();
                 }
                 this.StartNewUndoEntry();
-                var selectedShapes = ConvertShapeRangeToList(this.GetCurrentSelection().ShapeRange, 1);
+                var selectedShapes = this.GetCurrentSelection().ShapeRange;
                 var slideWidth = this.GetCurrentPresentation().SlideWidth;
                 PositionsLabMain.AlignRight(selectedShapes, slideWidth);
             }
@@ -129,7 +129,7 @@ namespace PowerPointLabs.PositionsLab
                     UndoPreview();
                 }
                 this.StartNewUndoEntry();
-                var selectedShapes = ConvertShapeRangeToList(this.GetCurrentSelection().ShapeRange, 1);
+                var selectedShapes = this.GetCurrentSelection().ShapeRange;
                 PositionsLabMain.AlignTop(selectedShapes);
             }
             catch (Exception ex)
@@ -153,7 +153,7 @@ namespace PowerPointLabs.PositionsLab
                     UndoPreview();
                 }
                 this.StartNewUndoEntry();
-                var selectedShapes = ConvertShapeRangeToList(this.GetCurrentSelection().ShapeRange, 1);
+                var selectedShapes = this.GetCurrentSelection().ShapeRange;
                 var slideHeight = this.GetCurrentPresentation().SlideHeight;
                 PositionsLabMain.AlignBottom(selectedShapes, slideHeight);
             }
@@ -178,7 +178,7 @@ namespace PowerPointLabs.PositionsLab
                     UndoPreview();
                 }
                 this.StartNewUndoEntry();
-                var selectedShapes = ConvertShapeRangeToList(this.GetCurrentSelection().ShapeRange, 1);
+                var selectedShapes = this.GetCurrentSelection().ShapeRange;
                 var slideHeight = this.GetCurrentPresentation().SlideHeight;
                 PositionsLabMain.AlignMiddle(selectedShapes, slideHeight);
             }
@@ -203,64 +203,10 @@ namespace PowerPointLabs.PositionsLab
                     UndoPreview();
                 }
                 this.StartNewUndoEntry();
-                var selectedShapes = ConvertShapeRangeToList(this.GetCurrentSelection().ShapeRange, 1);
+                var selectedShapes = this.GetCurrentSelection().ShapeRange;
                 var slideHeight = this.GetCurrentPresentation().SlideHeight;
                 var slideWidth = this.GetCurrentPresentation().SlideWidth;
                 PositionsLabMain.AlignCenter(selectedShapes, slideWidth, slideHeight);
-            }
-            catch (Exception ex)
-            {
-                ShowErrorMessageBox(ex.Message, ex);
-            }
-        }
-
-        private void DefaultAlignLeftButton_Click(object sender, RoutedEventArgs e)
-        {
-            DefaultAlign(Office.MsoAlignCmd.msoAlignLefts);
-        }
-
-        private void DefaultAlignRightButton_Click(object sender, RoutedEventArgs e)
-        {
-            DefaultAlign(Office.MsoAlignCmd.msoAlignRights);
-        }
-
-        private void DefaultAlignTopButton_Click(object sender, RoutedEventArgs e)
-        {
-            DefaultAlign(Office.MsoAlignCmd.msoAlignTops);
-        }
-
-        private void DefaultAlignBottomButton_Click(object sender, RoutedEventArgs e)
-        {
-            DefaultAlign(Office.MsoAlignCmd.msoAlignBottoms);
-        }
-
-        private void DefaultAlignCenterButton_Click(object sender, RoutedEventArgs e)
-        {
-            DefaultAlign(Office.MsoAlignCmd.msoAlignCenters);
-        }
-
-        private void DefaultAlignMiddleButton_Click(object sender, RoutedEventArgs e)
-        {
-            DefaultAlign(Office.MsoAlignCmd.msoAlignMiddles);
-        }
-
-        private void DefaultAlign(Office.MsoAlignCmd direction)
-        {
-            if (this.GetCurrentSelection().Type != PowerPoint.PpSelectionType.ppSelectionShapes)
-            {
-                ShowErrorMessageBox(ErrorMessageNoSelection);
-                return;
-            }
-
-            try
-            {
-                if (_previewIsExecuted)
-                {
-                    UndoPreview();
-                }
-                this.StartNewUndoEntry();
-                var selectedShapes = this.GetCurrentSelection().ShapeRange;
-                PositionsLabMain.DefaultAlign(selectedShapes, direction);
             }
             catch (Exception ex)
             {
@@ -781,7 +727,7 @@ namespace PowerPointLabs.PositionsLab
             }
             try
             { 
-                var selectedShapes = ConvertShapeRangeToList(this.GetCurrentSelection().ShapeRange, 1);
+                var selectedShapes = this.GetCurrentSelection().ShapeRange;
                 this.StartNewUndoEntry();
                 PositionsLabMain.AlignLeft(selectedShapes);
                 _previewIsExecuted = true;
@@ -800,7 +746,7 @@ namespace PowerPointLabs.PositionsLab
             }
             try
             {
-                var selectedShapes = ConvertShapeRangeToList(this.GetCurrentSelection().ShapeRange, 1);
+                var selectedShapes = this.GetCurrentSelection().ShapeRange;
                 this.StartNewUndoEntry();
                 var slideWidth = this.GetCurrentPresentation().SlideWidth;
                 PositionsLabMain.AlignRight(selectedShapes, slideWidth);
@@ -820,7 +766,7 @@ namespace PowerPointLabs.PositionsLab
             }
             try
             {
-                var selectedShapes = ConvertShapeRangeToList(this.GetCurrentSelection().ShapeRange, 1);
+                var selectedShapes = this.GetCurrentSelection().ShapeRange;
                 this.StartNewUndoEntry();
                 PositionsLabMain.AlignTop(selectedShapes);
                 _previewIsExecuted = true;
@@ -839,7 +785,7 @@ namespace PowerPointLabs.PositionsLab
             }
             try
             {
-                var selectedShapes = ConvertShapeRangeToList(this.GetCurrentSelection().ShapeRange, 1);
+                var selectedShapes = this.GetCurrentSelection().ShapeRange;
                 this.StartNewUndoEntry();
                 var slideHeight = this.GetCurrentPresentation().SlideHeight;
                 PositionsLabMain.AlignBottom(selectedShapes, slideHeight);
@@ -859,7 +805,7 @@ namespace PowerPointLabs.PositionsLab
             }
             try
             {
-                var selectedShapes = ConvertShapeRangeToList(this.GetCurrentSelection().ShapeRange, 1);
+                var selectedShapes = this.GetCurrentSelection().ShapeRange;
                 this.StartNewUndoEntry();
                 var slideHeight = this.GetCurrentPresentation().SlideHeight;
                 PositionsLabMain.AlignMiddle(selectedShapes, slideHeight);
@@ -879,60 +825,11 @@ namespace PowerPointLabs.PositionsLab
             }
             try
             {
-                var selectedShapes = ConvertShapeRangeToList(this.GetCurrentSelection().ShapeRange, 1);
+                var selectedShapes = this.GetCurrentSelection().ShapeRange;
                 this.StartNewUndoEntry();
                 var slideHeight = this.GetCurrentPresentation().SlideHeight;
                 var slideWidth = this.GetCurrentPresentation().SlideWidth;
                 PositionsLabMain.AlignCenter(selectedShapes, slideHeight, slideWidth);
-                _previewIsExecuted = true;
-            }
-            catch
-            {
-                return;
-            }
-        }
-
-        private void DefaultAlignCenterButton_MouseEnter(object sender, System.Windows.Input.MouseEventArgs e)
-        {
-            DefaultAlignPreview(Office.MsoAlignCmd.msoAlignCenters);
-        }
-
-        private void DefaultAlignMiddleButton_MouseEnter(object sender, System.Windows.Input.MouseEventArgs e)
-        {
-            DefaultAlignPreview(Office.MsoAlignCmd.msoAlignMiddles);
-        }
-
-        private void DefaultAlignLeftButton_MouseEnter(object sender, System.Windows.Input.MouseEventArgs e)
-        {
-            DefaultAlignPreview(Office.MsoAlignCmd.msoAlignLefts);
-        }
-
-        private void DefaultAlignRightButton_MouseEnter(object sender, System.Windows.Input.MouseEventArgs e)
-        {
-            DefaultAlignPreview(Office.MsoAlignCmd.msoAlignRights);
-        }
-
-        private void DefaultAlignTopButton_MouseEnter(object sender, System.Windows.Input.MouseEventArgs e)
-        {
-            DefaultAlignPreview(Office.MsoAlignCmd.msoAlignTops);
-        }
-
-        private void DefaultAlignBottomButton_MouseEnter(object sender, System.Windows.Input.MouseEventArgs e)
-        {
-            DefaultAlignPreview(Office.MsoAlignCmd.msoAlignBottoms);
-        }
-
-        private void DefaultAlignPreview(Office.MsoAlignCmd direction)
-        {
-            if (this.GetCurrentSelection().Type != PowerPoint.PpSelectionType.ppSelectionShapes)
-            {
-                return;
-            }
-            try
-            {
-                var selectedShapes = this.GetCurrentSelection().ShapeRange;
-                this.StartNewUndoEntry();
-                PositionsLabMain.DefaultAlign(selectedShapes, direction);
                 _previewIsExecuted = true;
             }
             catch
