@@ -369,7 +369,7 @@ namespace PowerPointLabs.PositionsLab
             }
         }
 
-        public static void AlignMiddle(ShapeRange toAlign, float slideHeight)
+        public static void AlignHorizontalCenter(ShapeRange toAlign, float slideHeight)
         {
             var selectedShapes = new List<PPShape>();
             for (var i = 1; i <= toAlign.Count; i++)
@@ -414,7 +414,7 @@ namespace PowerPointLabs.PositionsLab
             }
         }
 
-        public static void AlignCenter(ShapeRange toAlign, float slideWidth)
+        public static void AlignVerticalCenter(ShapeRange toAlign, float slideWidth)
         {
             var selectedShapes = new List<PPShape>();
             for (var i = 1; i <= toAlign.Count; i++)
@@ -451,6 +451,55 @@ namespace PowerPointLabs.PositionsLab
                     }
                     else
                     {
+                        toAlign.Align(MsoAlignCmd.msoAlignCenters, MsoTriState.msoFalse);
+                    }
+                    break;
+                default:
+                    throw new ArgumentOutOfRangeException();
+            }
+        }
+
+        public static void AlignCenter(ShapeRange toAlign, float slideHeight, float slideWidth)
+        {
+            var selectedShapes = new List<PPShape>();
+            for (var i = 1; i <= toAlign.Count; i++)
+            {
+                selectedShapes.Add(new PPShape(toAlign[i]));
+            }
+
+            switch (AlignReference)
+            {
+                case AlignReferenceObject.Slide:
+                    foreach (var s in selectedShapes)
+                    {
+                        s.IncrementTop(slideHeight / 2 - s.Top - s.AbsoluteHeight / 2);
+                        s.IncrementLeft(slideWidth / 2 - s.Left - s.AbsoluteWidth / 2);
+                    }
+                    break;
+                case AlignReferenceObject.SelectedShape:
+                    if (selectedShapes.Count < 2)
+                    {
+                        throw new Exception(ErrorMessageFewerThanTwoSelection);
+                    }
+
+                    var refShape = selectedShapes[0];
+
+                    for (var i = 1; i < selectedShapes.Count; i++)
+                    {
+                        var s = selectedShapes[i];
+                        s.IncrementTop(refShape.Center.Y - s.Center.Y);
+                        s.IncrementLeft(refShape.Center.X - s.Center.X);
+                    }
+                    break;
+                case AlignReferenceObject.PowerpointDefaults:
+                    if (selectedShapes.Count == 1)
+                    {
+                        toAlign.Align(MsoAlignCmd.msoAlignMiddles, MsoTriState.msoTrue);
+                        toAlign.Align(MsoAlignCmd.msoAlignCenters, MsoTriState.msoTrue);
+                    }
+                    else
+                    {
+                        toAlign.Align(MsoAlignCmd.msoAlignMiddles, MsoTriState.msoFalse);
                         toAlign.Align(MsoAlignCmd.msoAlignCenters, MsoTriState.msoFalse);
                     }
                     break;

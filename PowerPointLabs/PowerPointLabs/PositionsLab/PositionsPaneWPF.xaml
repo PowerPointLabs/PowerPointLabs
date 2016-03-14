@@ -35,10 +35,13 @@
             <WPF:ImageButton ToolTip="Aligns objects to the bottom axis of reference object" x:Name="alignBottomButton" HorizontalAlignment="Left" Margin="222,35,0,0" VerticalAlignment="Top" Width="60" Height="45" Click="AlignBottomButton_Click" MouseEnter="AlignBottomButton_MouseEnter" MouseLeave="UndoPreview" Background="{x:Null}" BorderBrush="{x:Null}">
                 <Image Source="..\Resources\PositionsLab\AlignBottomIcon.png"/>
             </WPF:ImageButton>
-            <WPF:ImageButton ToolTip="Aligns objects to the middle axis of reference object" x:Name="alignMiddleButton"  HorizontalAlignment="Left" Margin="18,85,0,0" VerticalAlignment="Top" Width="60" Height="45" Click="AlignMiddleButton_Click" MouseEnter="AlignMiddleButton_MouseEnter" MouseLeave="UndoPreview" Background="{x:Null}" BorderBrush="{x:Null}">
+            <WPF:ImageButton ToolTip="Aligns objects to the horizontal center of reference object" x:Name="alignHorizontalCenterButton"  HorizontalAlignment="Left" Margin="18,85,0,0" VerticalAlignment="Top" Width="60" Height="45" Click="AlignHorizontalCenterButton_Click" MouseEnter="AlignHorizontalCenterButton_MouseEnter" MouseLeave="UndoPreview" Background="{x:Null}" BorderBrush="{x:Null}">
                 <Image Source="..\Resources\PositionsLab\AlignMiddleIcon.png"/>
             </WPF:ImageButton>
-            <WPF:ImageButton ToolTip="Aligns objects to the center of reference object" x:Name="alignCenterButton" HorizontalAlignment="Left" Margin="86,85,0,0" VerticalAlignment="Top" Width="60" Height="45" Click="AlignCenterButton_Click" MouseEnter="AlignCenterButton_MouseEnter" MouseLeave="UndoPreview" Background="{x:Null}" BorderBrush="{x:Null}">
+            <WPF:ImageButton ToolTip="Aligns objects to the vertical center of reference object" x:Name="alignVerticalCenterButton" HorizontalAlignment="Left" Margin="86,85,0,0" VerticalAlignment="Top" Width="60" Height="45" Click="AlignVerticalCenterButton_Click" MouseEnter="AlignVerticalCenterButton_MouseEnter" MouseLeave="UndoPreview" Background="{x:Null}" BorderBrush="{x:Null}">
+                <Image Source="..\Resources\PositionsLab\AlignCenterIcon.png"/>
+            </WPF:ImageButton>
+            <WPF:ImageButton ToolTip="Aligns objects to the center of reference object" x:Name="alignCenterButton" HorizontalAlignment="Left" Margin="154,85,0,0" VerticalAlignment="Top" Width="60" Height="45" Click="AlignCenterButton_Click" MouseEnter="AlignCenterButton_MouseEnter" MouseLeave="UndoPreview" Background="{x:Null}" BorderBrush="{x:Null}">
                 <Image Source="..\Resources\PositionsLab\AlignCenterIcon.png"/>
             </WPF:ImageButton>
             <GroupBox x:Name="adjoinGroupBox" Header="Adjoin" HorizontalAlignment="Left" Margin="10,140,0,0" VerticalAlignment="Top" Height="80" Width="280"/>

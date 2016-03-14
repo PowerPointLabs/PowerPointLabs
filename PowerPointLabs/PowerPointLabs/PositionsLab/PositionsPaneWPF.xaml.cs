@@ -163,7 +163,7 @@ namespace PowerPointLabs.PositionsLab
             }
         }
 
-        private void AlignMiddleButton_Click(object sender, RoutedEventArgs e)
+        private void AlignHorizontalCenterButton_Click(object sender, RoutedEventArgs e)
         {
             if (this.GetCurrentSelection().Type != PowerPoint.PpSelectionType.ppSelectionShapes)
             {
@@ -180,7 +180,32 @@ namespace PowerPointLabs.PositionsLab
                 this.StartNewUndoEntry();
                 var selectedShapes = this.GetCurrentSelection().ShapeRange;
                 var slideHeight = this.GetCurrentPresentation().SlideHeight;
-                PositionsLabMain.AlignMiddle(selectedShapes, slideHeight);
+                PositionsLabMain.AlignHorizontalCenter(selectedShapes, slideHeight);
+            }
+            catch (Exception ex)
+            {
+                ShowErrorMessageBox(ex.Message, ex);
+            }
+        }
+
+        private void AlignVerticalCenterButton_Click(object sender, RoutedEventArgs e)
+        {
+            if (this.GetCurrentSelection().Type != PowerPoint.PpSelectionType.ppSelectionShapes)
+            {
+                ShowErrorMessageBox(ErrorMessageNoSelection);
+                return;
+            }
+
+            try
+            {
+                if (_previewIsExecuted)
+                {
+                    UndoPreview();
+                }
+                this.StartNewUndoEntry();
+                var selectedShapes = this.GetCurrentSelection().ShapeRange;
+                var slideWidth = this.GetCurrentPresentation().SlideWidth;
+                PositionsLabMain.AlignVerticalCenter(selectedShapes, slideWidth);
             }
             catch (Exception ex)
             {
@@ -204,8 +229,9 @@ namespace PowerPointLabs.PositionsLab
                 }
                 this.StartNewUndoEntry();
                 var selectedShapes = this.GetCurrentSelection().ShapeRange;
+                var slideHeight = this.GetCurrentPresentation().SlideHeight;
                 var slideWidth = this.GetCurrentPresentation().SlideWidth;
-                PositionsLabMain.AlignCenter(selectedShapes, slideWidth);
+                PositionsLabMain.AlignCenter(selectedShapes, slideHeight, slideWidth);
             }
             catch (Exception ex)
             {
@@ -796,7 +822,7 @@ namespace PowerPointLabs.PositionsLab
             }
         }
 
-        private void AlignMiddleButton_MouseEnter(object sender, System.Windows.Input.MouseEventArgs e)
+        private void AlignHorizontalCenterButton_MouseEnter(object sender, System.Windows.Input.MouseEventArgs e)
         {
             if (this.GetCurrentSelection().Type != PowerPoint.PpSelectionType.ppSelectionShapes)
             {
@@ -807,7 +833,27 @@ namespace PowerPointLabs.PositionsLab
                 var selectedShapes = this.GetCurrentSelection().ShapeRange;
                 this.StartNewUndoEntry();
                 var slideHeight = this.GetCurrentPresentation().SlideHeight;
-                PositionsLabMain.AlignMiddle(selectedShapes, slideHeight);
+                PositionsLabMain.AlignHorizontalCenter(selectedShapes, slideHeight);
+                _previewIsExecuted = true;
+            }
+            catch
+            {
+                return;
+            }
+        }
+
+        private void AlignVerticalCenterButton_MouseEnter(object sender, System.Windows.Input.MouseEventArgs e)
+        {
+            if (this.GetCurrentSelection().Type != PowerPoint.PpSelectionType.ppSelectionShapes)
+            {
+                return;
+            }
+            try
+            {
+                var selectedShapes = this.GetCurrentSelection().ShapeRange;
+                this.StartNewUndoEntry();
+                var slideWidth = this.GetCurrentPresentation().SlideWidth;
+                PositionsLabMain.AlignVerticalCenter(selectedShapes, slideWidth);
                 _previewIsExecuted = true;
             }
             catch
@@ -826,8 +872,9 @@ namespace PowerPointLabs.PositionsLab
             {
                 var selectedShapes = this.GetCurrentSelection().ShapeRange;
                 this.StartNewUndoEntry();
+                var slideHeight = this.GetCurrentPresentation().SlideHeight;
                 var slideWidth = this.GetCurrentPresentation().SlideWidth;
-                PositionsLabMain.AlignCenter(selectedShapes, slideWidth);
+                PositionsLabMain.AlignCenter(selectedShapes, slideHeight, slideWidth);
                 _previewIsExecuted = true;
             }
             catch
