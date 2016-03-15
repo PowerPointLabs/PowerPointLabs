@@ -263,9 +263,9 @@ namespace PowerPointLabs.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
-        public static System.Drawing.Bitmap AlignCenterDefaultIcon {
+        public static System.Drawing.Bitmap AlignCenterIcon {
             get {
-                object obj = ResourceManager.GetObject("AlignCenterDefaultIcon", resourceCulture);
+                object obj = ResourceManager.GetObject("AlignCenterIcon", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }
@@ -273,9 +273,19 @@ namespace PowerPointLabs.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
-        public static System.Drawing.Bitmap AlignCenterIcon {
+        public static System.Drawing.Bitmap AlignHorizontalCenterDefaultIcon {
             get {
-                object obj = ResourceManager.GetObject("AlignCenterIcon", resourceCulture);
+                object obj = ResourceManager.GetObject("AlignHorizontalCenterDefaultIcon", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        public static System.Drawing.Bitmap AlignHorizontalCenterIcon {
+            get {
+                object obj = ResourceManager.GetObject("AlignHorizontalCenterIcon", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }
@@ -296,26 +306,6 @@ namespace PowerPointLabs.Properties {
         public static System.Drawing.Bitmap AlignLeftIcon {
             get {
                 object obj = ResourceManager.GetObject("AlignLeftIcon", resourceCulture);
-                return ((System.Drawing.Bitmap)(obj));
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized resource of type System.Drawing.Bitmap.
-        /// </summary>
-        public static System.Drawing.Bitmap AlignMiddleDefaultIcon {
-            get {
-                object obj = ResourceManager.GetObject("AlignMiddleDefaultIcon", resourceCulture);
-                return ((System.Drawing.Bitmap)(obj));
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized resource of type System.Drawing.Bitmap.
-        /// </summary>
-        public static System.Drawing.Bitmap AlignMiddleIcon {
-            get {
-                object obj = ResourceManager.GetObject("AlignMiddleIcon", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }
@@ -356,6 +346,26 @@ namespace PowerPointLabs.Properties {
         public static System.Drawing.Bitmap AlignTopIcon {
             get {
                 object obj = ResourceManager.GetObject("AlignTopIcon", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        public static System.Drawing.Bitmap AlignVerticalCenterDefaultIcon {
+            get {
+                object obj = ResourceManager.GetObject("AlignVerticalCenterDefaultIcon", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        public static System.Drawing.Bitmap AlignVerticalCenterIcon {
+            get {
+                object obj = ResourceManager.GetObject("AlignVerticalCenterIcon", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }
