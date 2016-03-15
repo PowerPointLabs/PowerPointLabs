@@ -84,6 +84,22 @@ namespace PowerPointLabs.PositionsLab
                 distributeToFirstTwoShapesButton.IsChecked = true;
             }
         }
+
+        private void DistributeByBoundariesButton_Load(object sender, RoutedEventArgs e)
+        {
+            if (PositionsLabMain.DistributeSpaceReference == PositionsLabMain.DistributeSpaceReferenceObject.ObjectBoundary)
+            {
+                distributeByBoundariesButton.IsChecked = true;
+            }
+        }
+
+        private void DistributeByShapeCenterButton_Load(object sender, RoutedEventArgs e)
+        {
+            if (PositionsLabMain.DistributeSpaceReference == PositionsLabMain.DistributeSpaceReferenceObject.ObjectCenter)
+            {
+                distributeByShapeCenterButton.IsChecked = true;
+            }
+        }
         #endregion
 
         #region Button actions
@@ -108,6 +124,17 @@ namespace PowerPointLabs.PositionsLab
             {
                 PositionsLabMain.DistributeRefertoFirstTwoShapes();
             }
+
+            if (distributeByBoundariesButton.IsChecked.GetValueOrDefault())
+            {
+                PositionsLabMain.DistributeSpaceByBoundaries();
+            }
+
+            if (distributeByShapeCenterButton.IsChecked.GetValueOrDefault())
+            {
+                PositionsLabMain.DistributeSpaceByCenter();
+            }
+
 
             if (!marginTopValue.HasValue || marginTopValue.GetValueOrDefault() < 0 ||
                 !marginBottomValue.HasValue || marginBottomValue.GetValueOrDefault() < 0 ||

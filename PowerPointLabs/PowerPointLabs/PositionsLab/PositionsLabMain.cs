@@ -37,6 +37,12 @@ namespace PowerPointLabs.PositionsLab
             FirstTwoShapes
         }
 
+        public enum DistributeSpaceReferenceObject
+        {
+            ObjectBoundary,
+            ObjectCenter
+        }
+
         //Distribute Grid Variables
         public enum GridAlignment
         {
@@ -46,6 +52,7 @@ namespace PowerPointLabs.PositionsLab
         }
 
         public static DistributeReferenceObject DistributeReference { get; private set; }
+        public static DistributeSpaceReferenceObject DistributeSpaceReference { get; private set; }
         public static GridAlignment DistributeGridAlignment { get; private set; }
         public static float MarginTop { get; private set; }
         public static float MarginBottom { get; private set; }
@@ -154,6 +161,22 @@ namespace PowerPointLabs.PositionsLab
         public static void DistributeRefertoFirstTwoShapes()
         {
             DistributeReference = DistributeReferenceObject.FirstTwoShapes;
+        }
+
+        /// <summary>
+        /// Tells the Positions Lab to use object boundaries to calculate how much space to distribute the objects by
+        /// </summary>
+        public static void DistributeSpaceByBoundaries()
+        {
+            DistributeSpaceReference = DistributeSpaceReferenceObject.ObjectBoundary;
+        }
+
+        /// <summary>
+        /// Tells the Positions Lab to use the object center to calculate how much space to distribute the objects by
+        /// </summary>
+        public static void DistributeSpaceByCenter()
+        {
+            DistributeSpaceReference = DistributeSpaceReferenceObject.ObjectCenter;
         }
 
         public static void SetDistributeGridAlignment(GridAlignment alignment)
@@ -647,52 +670,52 @@ namespace PowerPointLabs.PositionsLab
             PPShape refShape;
             var shapeCount = sortedShapes.Count;
             float rightMostRef;
-            var spaceBetweenShapes = referenceWidth;
+            var spaceBetweenShapes = GetHoritonzalSpaceBetweenShapes(sortedShapes, referenceWidth);
 
-            // Calculate space to put between shapes
-            foreach (var s in sortedShapes)
+            switch (DistributeSpaceReference)
             {
-                spaceBetweenShapes -= s.AbsoluteWidth;
-            }
-
-            // Check if shape needs to be overlapped
-
-            if (spaceBetweenShapes < 0)
-            {
-                spaceBetweenShapes /= (shapeCount - 1);
-                for (var i = 0; i < shapeCount; i++)
-                {
-                    var currShape = sortedShapes[i];
-                    if (i == 0)
+                case DistributeSpaceReferenceObject.ObjectBoundary:
+                    for (var i = 0; i < shapeCount; i++)
                     {
-                        currShape.IncrementLeft(startingPoint - currShape.Left);
+                        var currShape = sortedShapes[i];
+                        if (i == 0)
+                        {
+                            // Check if should have leading space
+                            if (spaceBetweenShapes < 0)
+                            {
+                                currShape.IncrementLeft(startingPoint - currShape.Left);
+                            }
+                            else
+                            {
+                                currShape.IncrementLeft(startingPoint - currShape.Left + spaceBetweenShapes);
+                            }
+                        }
+                        else
+                        {
+                            refShape = sortedShapes[i - 1];
+                            rightMostRef = refShape.Left + refShape.AbsoluteWidth;
+                            currShape.IncrementLeft(rightMostRef - currShape.Left + spaceBetweenShapes);
+                        }
                     }
-                    else
+                    break;
+                case DistributeSpaceReferenceObject.ObjectCenter:
+                    for (var i =0; i < shapeCount; i++)
                     {
-                        refShape = sortedShapes[i - 1];
-                        rightMostRef = refShape.Left + refShape.AbsoluteWidth;
-                        currShape.IncrementLeft(rightMostRef - currShape.Left + spaceBetweenShapes);
+                        var currShape = sortedShapes[i];
+                        if (i==0)
+                        {
+                            currShape.IncrementLeft(startingPoint - currShape.Center.X + spaceBetweenShapes);
+                        }
+                        else
+                        {
+                            refShape = sortedShapes[i - 1];
+                            rightMostRef = refShape.Center.X;
+                            currShape.IncrementLeft(rightMostRef - currShape.Center.X + spaceBetweenShapes);
+                        }
                     }
-                }
-                return;
-            }
-
-            // Need not be overlapped
-
-            spaceBetweenShapes /= (shapeCount + 1);
-            for (var i = 0; i < shapeCount; i++)
-            {
-                var currShape = sortedShapes[i];
-                if (i == 0)
-                {
-                    currShape.IncrementLeft(startingPoint - currShape.Left + spaceBetweenShapes);
-                }
-                else
-                {
-                    refShape = sortedShapes[i - 1];
-                    rightMostRef = refShape.Left + refShape.AbsoluteWidth;
-                    currShape.IncrementLeft(rightMostRef - currShape.Left + spaceBetweenShapes);
-                }
+                    break;
+                default:
+                    throw new ArgumentOutOfRangeException();
             }
         }
 
@@ -748,52 +771,52 @@ namespace PowerPointLabs.PositionsLab
             PPShape refShape;
             var shapeCount = sortedShapes.Count;
             float bottomMostRef;
-            var spaceBetweenShapes = referenceHeight;
-
-            // Calculate space to put between shapes
-            foreach (var s in sortedShapes)
+            var spaceBetweenShapes = GetVerticalSpaceBetweenShapes(sortedShapes, referenceHeight);
+      
+            switch (DistributeSpaceReference)
             {
-                spaceBetweenShapes -= s.AbsoluteHeight;
-            }
-
-            // Check if shape needs to be overlapped
-
-            if (spaceBetweenShapes < 0)
-            {
-                spaceBetweenShapes /= (shapeCount - 1);
-                for (var i = 0; i < shapeCount; i++)
-                {
-                    var currShape = sortedShapes[i];
-                    if (i == 0)
+                case DistributeSpaceReferenceObject.ObjectBoundary:
+                    for (var i = 0; i < shapeCount; i++)
                     {
-                        currShape.IncrementTop(startingPoint - currShape.Top);
+                        var currShape = sortedShapes[i];
+                        if (i == 0)
+                        {
+                            // Check if should have leading space
+                            if (spaceBetweenShapes < 0)
+                            {
+                                currShape.IncrementTop(startingPoint - currShape.Top);
+                            }
+                            else
+                            {
+                                currShape.IncrementTop(startingPoint - currShape.Top + spaceBetweenShapes);
+                            }
+                        }
+                        else
+                        {
+                            refShape = sortedShapes[i - 1];
+                            bottomMostRef = refShape.Top + refShape.AbsoluteHeight;
+                            currShape.IncrementTop(bottomMostRef - currShape.Top + spaceBetweenShapes);
+                        }
                     }
-                    else
+                    break;
+                case DistributeSpaceReferenceObject.ObjectCenter:
+                    for (var i = 0; i < shapeCount; i++)
                     {
-                        refShape = sortedShapes[i - 1];
-                        bottomMostRef = refShape.Top + refShape.AbsoluteHeight;
-                        currShape.IncrementTop(bottomMostRef - currShape.Top + spaceBetweenShapes);
+                        var currShape = sortedShapes[i];
+                        if (i == 0)
+                        {
+                            currShape.IncrementTop(startingPoint - currShape.Center.Y + spaceBetweenShapes);
+                        }
+                        else
+                        {
+                            refShape = sortedShapes[i - 1];
+                            bottomMostRef = refShape.Center.Y;
+                            currShape.IncrementTop(bottomMostRef - currShape.Center.Y + spaceBetweenShapes);
+                        }
                     }
-                }
-                return;
-            }
-
-            // Need not be overlapped
-
-            spaceBetweenShapes /= (shapeCount + 1);
-            for (var i = 0; i < shapeCount; i++)
-            {
-                var currShape = sortedShapes[i];
-                if (i == 0)
-                {
-                    currShape.IncrementTop(startingPoint - currShape.Top + spaceBetweenShapes);
-                }
-                else
-                {
-                    refShape = sortedShapes[i - 1];
-                    bottomMostRef = refShape.Top + refShape.AbsoluteHeight;
-                    currShape.IncrementTop(bottomMostRef - currShape.Top + spaceBetweenShapes);
-                }
+                    break;
+                default:
+                    throw new ArgumentOutOfRangeException();
             }
         }
 
@@ -1035,6 +1058,66 @@ namespace PowerPointLabs.PositionsLab
                 posX += rowDifference;
                 augmentedShapeIndex++;
             }
+        }
+
+        private static float GetHoritonzalSpaceBetweenShapes(List<PPShape> sortedShapes, float referenceWidth)
+        {
+            var spaceBetweenShapes = referenceWidth;
+
+            switch (DistributeSpaceReference)
+            {
+                case DistributeSpaceReferenceObject.ObjectBoundary:
+                    foreach (var s in sortedShapes)
+                    {
+                        spaceBetweenShapes -= s.AbsoluteWidth;
+                    }
+                    break;
+                case DistributeSpaceReferenceObject.ObjectCenter:
+                    break;
+                default:
+                    throw new ArgumentOutOfRangeException();
+            }
+
+            if (spaceBetweenShapes < 0)
+            {
+                spaceBetweenShapes /= (sortedShapes.Count - 1);
+            }
+            else
+            {
+                spaceBetweenShapes /= (sortedShapes.Count + 1);
+            }
+
+            return spaceBetweenShapes;
+        }
+
+        private static float GetVerticalSpaceBetweenShapes(List<PPShape> sortedShapes, float referenceHeight)
+        {
+            var spaceBetweenShapes = referenceHeight;
+
+            switch (DistributeSpaceReference)
+            {
+                case DistributeSpaceReferenceObject.ObjectBoundary:
+                    foreach (var s in sortedShapes)
+                    {
+                        spaceBetweenShapes -= s.AbsoluteHeight;
+                    }
+                    break;
+                case DistributeSpaceReferenceObject.ObjectCenter:
+                    break;
+                default:
+                    throw new ArgumentOutOfRangeException();
+            }
+
+            if (spaceBetweenShapes < 0)
+            {
+                spaceBetweenShapes /= (sortedShapes.Count - 1);
+            }
+            else
+            {
+                spaceBetweenShapes /= (sortedShapes.Count + 1);
+            }
+
+            return spaceBetweenShapes;
         }
 
         #endregion
@@ -1651,6 +1734,7 @@ namespace PowerPointLabs.PositionsLab
             MarginRight = 5;
             DistributeGridAlignment = GridAlignment.AlignLeft;
             DistributeReferToFirstShape();
+            DistributeSpaceByBoundaries();
         }
 
         private static Drawing.PointF GetSwapReferencePoint(PPShape shape, SwapReference r)
