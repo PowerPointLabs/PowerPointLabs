@@ -5,7 +5,7 @@
                       xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
                       xmlns:controls="clr-namespace:MahApps.Metro.Controls;assembly=MahApps.Metro"
                       mc:Ignorable="d" d:DesignHeight="300" d:DesignWidth="300"
-                      Height="300"
+                      Height="365"
                       Width="350"
                       BorderThickness="1"
                       BorderBrush="#0070c0"
@@ -28,26 +28,35 @@
     <Grid>
         <TextBlock x:Name="referenceObjectLabel" FontSize="12" FontWeight="Bold" VerticalAlignment="Top" HorizontalAlignment="Left" Margin="5,10,0,0"><Run Text="Reference Object"/></TextBlock>
         <Separator HorizontalAlignment="Left" Height="2" Margin="5,30,0,0" VerticalAlignment="Top" Width="335"/>
-        <WrapPanel HorizontalAlignment="Left" Height="24" Margin="5,32,0,0" VerticalAlignment="Top" Width="327">
-            <RadioButton x:Name="distributeToShapeButton" Content="Selected Shape" HorizontalAlignment="Left" Margin="60,6,0,0" IsChecked="True" VerticalAlignment="Top" Click="DistributeToShapeButton_Click" Loaded="DistributeToShapeButton_Load"/>
-            <RadioButton x:Name="distributeToSlideButton" Content="Slide" HorizontalAlignment="Left" Margin="60,6,0,0" VerticalAlignment="Top" Click="DistributeToSlideButton_Click" Loaded="DistributeToSlideButton_Load"/>
+        <WrapPanel HorizontalAlignment="Left" Height="25" Margin="0,30,0,0" VerticalAlignment="Top" Width="342">
+            <RadioButton x:Name="distributeToSlideButton" Content="Slide" ToolTip="Distribute functions will use the slide as a reference and distribute the selected shapes evenly in the whole slide" HorizontalAlignment="Left" Margin="19,6,0,0" VerticalAlignment="Top" Loaded="DistributeToSlideButton_Load"/>
+            <RadioButton x:Name="distributeToFirstShapeButton" Content="First Selected" ToolTip="Distribute functions will use the first selected shape as a reference and distribute other selected shapes evenly in the first shape" HorizontalAlignment="Left" Margin="20,6,0,0" IsChecked="True" VerticalAlignment="Top" Loaded="DistributeToFirstShapeButton_Load"/>
+            <RadioButton x:Name="distributeToFirstTwoShapesButton" Content="First Two Selected" ToolTip="Distribute functions will use the first two selected shapes as reference points and distribute other selected shapes evenly in the space between the first two shapes" HorizontalAlignment="Left" Margin="20,6,0,0" VerticalAlignment="Top" Loaded="DistributeToFirstTwoShapesButton_Load"/>
+        </WrapPanel>
+        <TextBlock x:Name="distributeSpaceReferenceObjectLabel" FontSize="12" FontWeight="Bold" VerticalAlignment="Top" HorizontalAlignment="Left" Margin="5,75,0,0"><Run Text="Distribute Space Reference Object"/></TextBlock>
+        <Separator HorizontalAlignment="Left" Height="2" Margin="5,95,0,0" VerticalAlignment="Top" Width="335"/>
+        <WrapPanel HorizontalAlignment="Left" Height="25" Margin="0,95,0,0" VerticalAlignment="Top" Width="342">
+            <RadioButton x:Name="distributeByBoundariesButton" Content="Boundaries" ToolTip="Distribute functions will use the slide as a reference and distribute the selected shapes evenly in the whole slide" HorizontalAlignment="Left" Margin="54,6,0,0" VerticalAlignment="Top" IsChecked="True" Loaded="DistributeByBoundariesButton_Load"/>
+            <RadioButton x:Name="distributeByShapeCenterButton" Content="Shape Center" ToolTip="Distribute functions will use the first selected shape as a reference and distribute other selected shapes evenly in the first shape" HorizontalAlignment="Left" Margin="55,6,0,0" VerticalAlignment="Top" Loaded="DistributeByShapeCenterButton_Load"/>
+        </WrapPanel>
+        <TextBlock x:Name="gridMarginsLabel" FontSize="12" FontWeight="Bold" VerticalAlignment="Top" HorizontalAlignment="Left" Margin="4,130,0,0"><Run Text="Grid Margins"/></TextBlock>
+        <Separator HorizontalAlignment="Left" Height="2" Margin="4,150,0,0" VerticalAlignment="Top" Width="335"/>
+        <Label x:Name="marginTopLabel" FontSize="10" VerticalAlignment="Top" HorizontalAlignment="Left" Content="Top:" ToolTip="Set the amount of pixels for the top margin" Margin="41,156,0,0" RenderTransformOrigin="0.56,-0.319"/>
+        <controls:NumericUpDown x:Name="marginTopInput" ToolTip="Set the amount of pixels for the top margin" Height="20" Width="80" TextAlignment="Left" HideUpDownButtons="True" Minimum="0" Value="5" Loaded="MarginTopInput_Load" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="73,156,0,0"/>
+        <Label x:Name="marginBottomLabel" FontSize="10" VerticalAlignment="Top" HorizontalAlignment="Right" Content="Bottom:" ToolTip="Set the amount of pixels for the bottom margin" Margin="0,156,96,0"/>
+        <controls:NumericUpDown x:Name="marginLeftInput" ToolTip="Set the amount of pixels for the bottom margin" Height="20" Width="80" TextAlignment="Left" HideUpDownButtons="True" Minimum="0" Value="5" Loaded="MarginLeftInput_Load" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="251,156,0,0"/>
+        <Label x:Name="marginLeftLabel" FontSize="10" VerticalAlignment="Top" HorizontalAlignment="Left" Content="Left:" ToolTip="Set the amount of pixels for the left margin" Margin="41,187,0,0"/>
+        <controls:NumericUpDown x:Name="marginBottomInput" ToolTip="Set the amount of pixels for the left margin" Height="20" Width="80" TextAlignment="Left" HideUpDownButtons="True" Minimum="0" Value="5" Loaded="MarginBottomInput_Load" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="73,187,0,0"/>
+        <Label x:Name="marginRightLabel" FontSize="10" VerticalAlignment="Top" HorizontalAlignment="Right" Content="Right:" ToolTip="Set the amount of pixels for the right margin" Margin="0,187,96,0"/>
+        <controls:NumericUpDown x:Name="marginRightInput" ToolTip="Set the amount of pixels for the right margin" Height="20" Width="80" TextAlignment="Left" HideUpDownButtons="True" Minimum="0" Value="5" Loaded="MarginRightInput_Load" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="251,187,0,0"/>
+        <TextBlock x:Name="gridAlignmentLabel" FontSize="12" FontWeight="Bold" VerticalAlignment="Top" HorizontalAlignment="Left" Margin="5,223,0,0"><Run Text="Grid Alignment"/></TextBlock>
+        <Separator HorizontalAlignment="Left" Height="2" Margin="5,243,0,0" VerticalAlignment="Top" Width="335"/>
+        <WrapPanel HorizontalAlignment="Left" Height="25" Margin="0,243,0,0" VerticalAlignment="Top" Width="342">
+            <RadioButton x:Name="alignLeftButton" HorizontalAlignment="Left" VerticalAlignment="Top" IsChecked="True" Loaded="AlignLeftButton_Load" Content="Left / Top" ToolTip="Grid takes alignment from the top left and fills out to the bottom right" Margin="27,6,0,0"/>
+            <RadioButton x:Name="alignCenterButton" HorizontalAlignment="Left" VerticalAlignment="Top" Loaded="AlignCenterButton_Load" Content="Center" ToolTip="Grid takes alignment from the center and fills out left right" Margin="28,6,0,0"/>
+            <RadioButton x:Name="alignRightButton" HorizontalAlignment="Left" VerticalAlignment="Top" Loaded="AlignRightButton_Load" Content="Right / Bottom" ToolTip="Grid takes alignment from the bottom right and fills out to the top left" Margin="28,6,0,0"/>
         </WrapPanel>
         <Button x:Name="okButton" Content="OK" HorizontalAlignment="Right" Margin="0,0,100,10" VerticalAlignment="Bottom" Width="80" IsDefault="True" Click="OkButton_Click"/>
         <Button x:Name="cancelButton" Content="Cancel" HorizontalAlignment="Right" Margin="0,0,10,10" VerticalAlignment="Bottom" Width="80" IsCancel="True" Click="CancelButton_Click"/>
-        <TextBlock x:Name="gridMarginsLabel" FontSize="12" FontWeight="Bold" VerticalAlignment="Top" HorizontalAlignment="Left" Margin="4,66,0,0"><Run Text="Grid Margins"/></TextBlock>
-        <Separator HorizontalAlignment="Left" Height="2" Margin="4,87,0,0" VerticalAlignment="Top" Width="335"/>
-        <Label x:Name="marginTopLabel" FontSize="10" VerticalAlignment="Center" HorizontalAlignment="Right" Content="Top:" Margin="0,94,274.4,151.8" RenderTransformOrigin="0.56,-0.319"/>
-        <controls:NumericUpDown x:Name="marginTopInput" Height="20" Width="80" TextAlignment="Left" HideUpDownButtons="True" Minimum="0" Value="5" Loaded="MarginTopInput_Load" Margin="73,94,189.4,148.8"/>
-        <Label x:Name="marginBottomLabel" FontSize="10" VerticalAlignment="Center" HorizontalAlignment="Right" Content="Bottom:" Margin="0,94,96.4,151.8"/>
-        <controls:NumericUpDown x:Name="marginLeftInput" Height="20" Width="80" TextAlignment="Left" HideUpDownButtons="True" Minimum="0" Value="5" Loaded="MarginLeftInput_Load" Margin="251,94,11.4,148.8"/>
-        <Label x:Name="marginLeftLabel" FontSize="10" VerticalAlignment="Center" HorizontalAlignment="Right" Content="Left:" Margin="0,125,273.4,120.8"/>
-        <controls:NumericUpDown x:Name="marginBottomInput" Height="20" Width="80" TextAlignment="Left" HideUpDownButtons="True" Minimum="0" Value="5" Loaded="MarginBottomInput_Load" Margin="73,125,189.4,117.8"/>
-        <Label x:Name="marginRightLabel" FontSize="10" VerticalAlignment="Center" HorizontalAlignment="Right" Content="Right:" Margin="0,125,96.4,120.8"/>
-        <controls:NumericUpDown x:Name="marginRightInput" Height="20" Width="80" TextAlignment="Left" HideUpDownButtons="True" Minimum="0" Value="5" Loaded="MarginRightInput_Load" Margin="251,125,11.4,117.8"/>
-        <TextBlock x:Name="gridAlignmentLabel" FontSize="12" FontWeight="Bold" VerticalAlignment="Bottom" HorizontalAlignment="Left" Margin="5,0,0,90.8"><Run Text="Grid Alignment"/></TextBlock>
-        <Separator HorizontalAlignment="Left" Height="2" Margin="5,183,0,0" VerticalAlignment="Top" Width="335"/>
-        <RadioButton x:Name="alignLeftButton" HorizontalAlignment="Left" VerticalAlignment="Top" IsChecked="True" Loaded="AlignLeftButton_Load" Content="Left / Top" Margin="21,190,0,0"/>
-        <RadioButton x:Name="alignCenterButton" HorizontalAlignment="Left" VerticalAlignment="Top" Loaded="AlignCenterButton_Load" Content="Center" Margin="130,190,0,0"/>
-        <RadioButton x:Name="alignRightButton" HorizontalAlignment="Left" VerticalAlignment="Top" Loaded="AlignRightButton_Load" Content="Right / Bottom" Margin="221,190,0,0"/>
     </Grid>
 </controls:MetroWindow>
