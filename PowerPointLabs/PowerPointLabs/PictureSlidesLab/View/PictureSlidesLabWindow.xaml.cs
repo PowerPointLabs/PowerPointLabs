@@ -81,7 +81,7 @@ namespace PowerPointLabs.PictureSlidesLab.View
             PictureAspectRefreshButtonIcon.Source = ImageUtil.BitmapToImageSource(Properties.Resources.PslRefresh);
             Logger.Log("PSL begins");
 
-            SetTimeout(Init, 850);
+            SetTimeout(Init, 800);
         }
 
         private void Init()
@@ -93,19 +93,14 @@ namespace PowerPointLabs.PictureSlidesLab.View
                 InitGotoSlideDialog();
                 InitLoadStylesDialog();
                 InitDragAndDrop();
-                InitStyleing();
+                // leave some time for data binding to finish
+                SetTimeout(InitStyleing, 50);
                 Logger.Log("PSL init done");
             }
             catch (Exception e)
             {
                 ShowErrorMessageBox(TextCollection.PictureSlidesLabText.ErrorWhenInitialize, e);
                 Logger.LogException(e, "Init");
-            }
-            finally
-            {
-                // remove loading overlay
-                PictureSlidesLabGridLoadingOverlay.Visibility = Visibility.Collapsed;
-                Logger.Log("PSL init loading screen collapsed");
             }
         }
 
@@ -118,21 +113,32 @@ namespace PowerPointLabs.PictureSlidesLab.View
 
         private void InitStyleing()
         {
-            Logger.Log("PSL init styling begins");
-            // load back the style from the current slide, or
-            // select the first picture to preview styles
-            var isSuccessfullyLoaded = LoadStyleAndImage(this.GetCurrentSlide(),
-                    isLoadingWithDefaultPicture: false);
-            if (ViewModel.ImageSelectionList.Count >= 2)
+            try
             {
-                if (!isSuccessfullyLoaded)
+                Logger.Log("PSL init styling begins");
+                // load back the style from the current slide, or
+                // select the first picture to preview styles
+                var isSuccessfullyLoaded = LoadStyleAndImage(this.GetCurrentSlide(),
+                    isLoadingWithDefaultPicture: false);
+                if (ViewModel.ImageSelectionList.Count >= 2 && !isSuccessfullyLoaded)
                 {
                     Logger.Log("Not loaded back style and picture, going to select a picture.");
                     // index-0 is choosePicture placeholder
                     ViewModel.ImageSelectionListSelectedId.Number = 1;
                 }
+                Logger.Log("PSL init styling done");
             }
-            Logger.Log("PSL init styling done");
+            catch (Exception e)
+            {
+                ShowErrorMessageBox(TextCollection.PictureSlidesLabText.ErrorWhenInitialize, e);
+                Logger.LogException(e, "InitStyleing");
+            }
+            finally
+            {
+                // remove loading overlay
+                PictureSlidesLabGridLoadingOverlay.Visibility = Visibility.Collapsed;
+                Logger.Log("PSL init loading screen collapsed");
+            }
         }
 
         private void InitViewModel()
