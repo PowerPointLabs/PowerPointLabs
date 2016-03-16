@@ -17,7 +17,8 @@ namespace PowerPointLabs.Models
 {
     public class PowerPointSlide
     {
-        private const string PptLabsIndicatorShapeName = "PPTIndicator";
+#pragma warning disable 0618
+        public const string PptLabsIndicatorShapeName = "PPTIndicator";
         private const string PptLabsTemplateMarkerShapeName = "PPTTemplateMarker";
         private const string UnnamedShapeName = "Unnamed Shape ";
 
@@ -38,7 +39,6 @@ namespace PowerPointLabs.Models
             MsoAnimEffect.msoAnimEffectFlip, MsoAnimEffect.msoAnimEffectFloat, MsoAnimEffect.msoAnimEffectPinwheel,
             MsoAnimEffect.msoAnimEffectSpiral, MsoAnimEffect.msoAnimEffectWhip
         };
-
 
         protected PowerPointSlide(Slide slide)
         {
@@ -468,7 +468,7 @@ namespace PowerPointLabs.Models
                 string token = splitPath[i].Trim();
                 if (token.Length <= 1 && char.IsLetter(token, 0)) continue;
 
-                float val = float.Parse(token);
+                float val = float.Parse(token, CultureInfo.InvariantCulture);
                 if (isXCoordinate)
                 {
                     val += xShift;
@@ -549,7 +549,7 @@ namespace PowerPointLabs.Models
                 newShape.Top = shape.Top;
                 return newShape;
             }
-            catch (COMException e)
+            catch (COMException)
             {
                 // invalid shape for copy paste (e.g. a placeholder title box with no content)
                 return null;
@@ -567,7 +567,7 @@ namespace PowerPointLabs.Models
             int index = 0;
             var originalShapes = new Dictionary<string, Shape>();
             var originalNames = new Dictionary<string, string>();
-            foreach(Shape shape in shapes)
+            foreach (Shape shape in shapes)
             {
                 var tempName = index.ToString();
                 index++;
@@ -996,7 +996,7 @@ namespace PowerPointLabs.Models
             Shape tempMatchingShape = null;
             foreach (Shape sh in _slide.Shapes)
             {
-                if (shapeToMatch.Id == sh.Id && haveSameNames(shapeToMatch, sh))
+                if (shapeToMatch.Id == sh.Id && HaveSameNames(shapeToMatch, sh))
                 {
                     if (tempMatchingShape == null)
                         tempMatchingShape = sh;
@@ -1015,7 +1015,7 @@ namespace PowerPointLabs.Models
             Shape tempMatchingShape = null;
             foreach (Shape sh in _slide.Shapes)
             {
-                if (haveSameNames(shapeToMatch, sh))
+                if (HaveSameNames(shapeToMatch, sh))
                 {
                     if (tempMatchingShape == null)
                         tempMatchingShape = sh;
@@ -1029,7 +1029,7 @@ namespace PowerPointLabs.Models
             return tempMatchingShape;
         }
 
-        public bool isSpotlightSlide()
+        public bool IsSpotlightSlide()
         {
             return _slide.Name.Contains("PPTLabsSpotlight");
         }
@@ -1045,7 +1045,7 @@ namespace PowerPointLabs.Models
             return PowerPointAckSlide.FromSlideFactory(ackSlide);
         }
 
-        public bool hasTextFragments()
+        public bool HasTextFragments()
         {
             foreach (Shape sh in _slide.Shapes)
             {
@@ -1197,7 +1197,7 @@ namespace PowerPointLabs.Models
             return (float)(Math.Sqrt(distSquared));
         }
 
-        private bool haveSameNames(Shape sh1, Shape sh2)
+        private bool HaveSameNames(Shape sh1, Shape sh2)
         {
             String name1 = sh1.Name;
             String name2 = sh2.Name;
@@ -1226,7 +1226,7 @@ namespace PowerPointLabs.Models
         /// Note: If the name of the shape is used to identify the shape (e.g. through AgendaShape),
         /// this can be dangerous if there are duplicates as it overrides the original name.
         /// </summary>
-        public void MakeShapeNamesUnique(Func<Shape,bool> restrictTo = null)
+        public void MakeShapeNamesUnique(Func<Shape, bool> restrictTo = null)
         {
             if (restrictTo == null) restrictTo = shape => true;
 
@@ -1240,6 +1240,18 @@ namespace PowerPointLabs.Models
                     shape.Name = UnnamedShapeName + Common.UniqueDigitString();
                 }
                 currentNames.Add(shape.Name);
+            }
+        }
+
+        public void DeleteSlideNumberShapes()
+        {
+            List<Shape> shapes = _slide.Shapes.Cast<Shape>().ToList();
+
+            var matchingShapes = shapes.Where(current => current.Type == MsoShapeType.msoPlaceholder && current.PlaceholderFormat.Type == PpPlaceholderType.ppPlaceholderSlideNumber);
+
+            foreach (Shape s in matchingShapes)
+            {
+                s.Delete();
             }
         }
     }

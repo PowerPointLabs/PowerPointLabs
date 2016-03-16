@@ -11,6 +11,12 @@ using Microsoft.Office.Tools;
 using PowerPointLabs.AutoUpdate;
 using PPExtraEventHelper;
 using System.IO.Compression;
+using System.Runtime.Remoting;
+using System.Runtime.Remoting.Channels;
+using System.Runtime.Remoting.Channels.Ipc;
+using PowerPointLabs.ActionFramework.Common.Log;
+using PowerPointLabs.FunctionalTestInterface.Impl;
+using PowerPointLabs.FunctionalTestInterface.Impl.Controller;
 using PowerPointLabs.Models;
 using PowerPointLabs.Utils;
 using PowerPointLabs.Views;
@@ -22,7 +28,8 @@ namespace PowerPointLabs
 {
     public partial class ThisAddIn
     {
-        private const string AppLogName = "PowerPointLabs_Log_1.log"; 
+#pragma warning disable 0618
+        private const string AppLogName = "PowerPointLabs.log"; 
         private const string SlideXmlSearchPattern = @"slide(\d+)\.xml";
         private const string TempFolderNamePrefix = @"\PowerPointLabs Temp\";
         private const string ShapeGalleryPptxName = "ShapeGallery";
@@ -51,18 +58,36 @@ namespace PowerPointLabs
 
         public Ribbon1 Ribbon;
 
+        /// <summary>
+        /// The channel for .NET Remoting calls.
+        /// </summary>
+        private IChannel _ftChannel;
+
+        private void SetupFunctionalTestChannels()
+        {
+            _ftChannel = new IpcChannel("PowerPointLabsFT");
+            ChannelServices.RegisterChannel(_ftChannel, false);
+            RemotingConfiguration.RegisterWellKnownServiceType(typeof(PowerPointLabsFT),
+                "PowerPointLabsFT", WellKnownObjectMode.Singleton);
+        }
+
         # region Powerpoint Application Event Handlers
         private void ThisAddInStartup(object sender, EventArgs e)
         {
             SetupLogger();
-            Trace.TraceInformation(DateTime.Now.ToString("yyyyMMddHHmmss") + ": PowerPointLabs Started");
+            Logger.Log("PowerPointLabs Started");
+
+            CultureUtil.SetDefaultCulture(CultureInfo.GetCultureInfo("en-US"));
 
             CultureUtil.SetDefaultCulture(CultureInfo.GetCultureInfo("en-US"));
 
             new Updater().TryUpdate();
+            SetupFunctionalTestChannels();
 
             PPMouse.Init(Application);
+            PPKeyboard.Init(Application);
             PPCopy.Init(Application);
+            UIThreadExecutor.Init();
             SetupDoubleClickHandler();
             SetupTabActivateHandler();
             SetupAfterCopyPasteHandler();
@@ -143,7 +168,17 @@ namespace PowerPointLabs
             // update recorder pane
             if (sldRange.Count > 0)
             {
-                UpdateRecorderPane(sldRange.Count, sldRange[1].SlideID);
+                int slideID;
+                try
+                {
+                    slideID = sldRange[1].SlideID;
+                }
+                catch (COMException)
+                {
+                    return;
+                }
+                
+                UpdateRecorderPane(sldRange.Count, slideID);
             }
             else
             {
@@ -292,6 +327,7 @@ namespace PowerPointLabs
 
             ShutDownColorPane();
             ShutDownRecorderPane();
+            ShutDownImageSearchPane();
 
             // find the document that holds the presentation with pres.Name
             // special case will be embedded slide. in this case pres.Windows return exception
@@ -314,16 +350,39 @@ namespace PowerPointLabs
                 return;
             }
 
+            // for Functional Test to close presentation
+            if (PowerPointLabsFT.IsFunctionalTestOn)
+            {
+                var handle = Native.FindWindow("PPTFrameClass", pres.Name + " - Microsoft PowerPoint");
+                Native.SetForegroundWindow(handle);
+                SendKeys.Send("N");
+            }
+
             Trace.TraceInformation("Closing associated window...");
             CleanUp(associatedWindow);
+        }
+
+        private void ShutDownImageSearchPane()
+        {
+            var pictureSlidesLabWindow = Globals.ThisAddIn.Ribbon.PictureSlidesLabWindow;
+            if (pictureSlidesLabWindow != null && pictureSlidesLabWindow.IsOpen && Application.Presentations.Count == 2)
+            {
+                pictureSlidesLabWindow.Close();
+            }
         }
 
         private void ThisAddInShutdown(object sender, EventArgs e)
         {
             PPMouse.StopHook();
+            PPKeyboard.StopHook();
             PPCopy.StopHook();
+            UIThreadExecutor.TearDown();
             Trace.TraceInformation(DateTime.Now.ToString("yyyyMMddHHmmss") + ": PowerPointLabs Exiting");
             Trace.Close();
+            if (_ftChannel != null)
+            {
+                ChannelServices.UnregisterChannel(_ftChannel);
+            }
         }
         # endregion
 
@@ -337,7 +396,16 @@ namespace PowerPointLabs
 
         public CustomTaskPane GetActivePane(Type type)
         {
-            return GetPaneFromWindow(type, Application.ActiveWindow);
+            PowerPoint.DocumentWindow activeWindow;
+            try
+            {
+                activeWindow = Application.ActiveWindow;
+            }
+            catch (COMException)
+            {
+                return null;
+            }
+            return GetPaneFromWindow(type, activeWindow);
         }
 
         public Control GetControlFromWindow(Type type, PowerPoint.DocumentWindow window)
@@ -367,7 +435,6 @@ namespace PowerPointLabs
                         return pane;
                     }
                 }
-
                 catch (Exception)
                 {
                     return null;
@@ -385,7 +452,7 @@ namespace PowerPointLabs
         public void InitializeShapeGallery()
         {
             // achieves singleton ShapePresentation
-            if (ShapePresentation != null) return;
+            if (ShapePresentation != null && ShapePresentation.Opened) return;
 
             var shapeRootFolderPath = ShapesLabConfigs.ShapeRootFolder;
 
@@ -517,6 +584,18 @@ namespace PowerPointLabs
             RegisterTaskPane(new ColorPane(), TextCollection.ColorsLabTaskPanelTitle, activeWindow, null, null);
         }
 
+        public void RegisterDrawingsPane(PowerPoint.Presentation presentation)
+        {
+            if (GetActivePane(typeof(DrawingsPane)) != null)
+            {
+                return;
+            }
+
+            var activeWindow = presentation.Application.ActiveWindow;
+
+            RegisterTaskPane(new DrawingsPane(), TextCollection.DrawingsLabTaskPanelTitle, activeWindow, null, null);
+        }
+
         public void RegisterShapesLabPane(PowerPoint.Presentation presentation)
         {
             if (GetActivePane(typeof(CustomShapePane)) != null)
@@ -599,7 +678,8 @@ namespace PowerPointLabs
             if (!Directory.Exists(AppDataFolder))
                 Directory.CreateDirectory(AppDataFolder);
 
-            var logPath = Path.Combine(AppDataFolder, AppLogName);
+            var fileName = DateTime.Now.ToString("yyyy-MM-dd") + AppLogName;
+            var logPath = Path.Combine(AppDataFolder, fileName);
 
             Trace.AutoFlush = true;
             Trace.Listeners.Add(new TextWriterTraceListener(logPath));
@@ -626,9 +706,9 @@ namespace PowerPointLabs
             if (colorLabs != null) colorLabs.SaveDefaultColorPaneThemeColors();
         }
 
-        private void RegisterTaskPane(UserControl control, string title, PowerPoint.DocumentWindow wnd,
-                                      EventHandler visibleChangeEventHandler,
-                                      EventHandler dockPositionChangeEventHandler)
+        public CustomTaskPane RegisterTaskPane(UserControl control, string title, PowerPoint.DocumentWindow wnd,
+                                      EventHandler visibleChangeEventHandler = null,
+                                      EventHandler dockPositionChangeEventHandler = null)
         {
             var loadingDialog = new LoadingDialog();
             loadingDialog.Show();
@@ -670,6 +750,7 @@ namespace PowerPointLabs
             }
 
             loadingDialog.Dispose();
+            return taskPane;
         }
 
         private void RemoveTaskPanes(PowerPoint.DocumentWindow activeWindow)
@@ -1019,12 +1100,12 @@ namespace PowerPointLabs
                         shape.Name = nameDictForPastedShapes[shape.Name];
                     }
                     range.Select();
-                } else
-                if (selection.Type == PowerPoint.PpSelectionType.ppSelectionSlides)
+                }
+                else if (selection.Type == PowerPoint.PpSelectionType.ppSelectionSlides)
                 {
                     var pastedSlides = selection.SlideRange.Cast<PowerPoint.Slide>().OrderBy(x => x.SlideIndex).ToList();
 
-                    for (var i = 0; i < pastedSlides.Count; i ++)
+                    for (var i = 0; i < pastedSlides.Count; i++)
                     {
                         if (AgendaLab.AgendaSlide.IsReferenceslide(_copiedSlides[i]))
                         {
@@ -1241,7 +1322,7 @@ namespace PowerPointLabs
         #endregion
 
         #region Double Click to Open Property Window
-        private const string ShortcutAltHO = "%ho";
+        private const string ShortcutAltHO = "%h%o";
 
         private const int CommandOpenBackgroundFormat = 0x8F;
 
@@ -1275,13 +1356,13 @@ namespace PowerPointLabs
 
                 if (selection.Type == PowerPoint.PpSelectionType.ppSelectionShapes)
                 {
-                    if (Application.Version == OfficeVersion2013)
-                    {
-                        OpenPropertyWindowForOffice13(selection);
-                    }
-                    else if (Application.Version == OfficeVersion2010)
+                    if (Application.Version == OfficeVersion2010)
                     {
                         OpenPropertyWindowForOffice10();
+                    }
+                    else 
+                    {
+                        OpenPropertyWindowForOffice13OrHigher(selection);
                     }
                 }
             }
@@ -1309,7 +1390,7 @@ namespace PowerPointLabs
                     overlappingShapeZIndex = shape.ZOrderPosition;
                 }
             }
-            if(overlappingShape != null)
+            if (overlappingShape != null)
                 overlappingShape.Select();
         }
 
@@ -1327,10 +1408,10 @@ namespace PowerPointLabs
                 && y < bottom;
         }
 
-        //For office 2013 only:
+        //For office 2013 or Higher version:
         //Open Background Format window, then selecting the shape will
         //convert the window to Property window
-        private void OpenPropertyWindowForOffice13(PowerPoint.Selection selection)
+        private void OpenPropertyWindowForOffice13OrHigher(PowerPoint.Selection selection)
         {
             if (!_isInSlideShow)
             {
@@ -1370,7 +1451,7 @@ namespace PowerPointLabs
             }
             catch (InvalidOperationException)
             {
-                //
+                // ignore exception
             }
         }
         # endregion

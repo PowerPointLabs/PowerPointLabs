@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Drawing;
 using System.Runtime.InteropServices;
+using PowerPointLabs.ActionFramework.Common.Log;
 using PowerPointLabs.Models;
 using Office = Microsoft.Office.Core;
 using PowerPoint = Microsoft.Office.Interop.PowerPoint;
@@ -12,6 +13,7 @@ namespace PowerPointLabs
 {
     class HighlightTextFragments
     {
+#pragma warning disable 0618
         public static Color backgroundColor = Color.FromArgb(255, 255, 0);
         public enum HighlightTextSelection { kShapeSelected, kTextSelected, kNoneSelected };
         public static HighlightTextSelection userSelection = HighlightTextSelection.kNoneSelected;
@@ -52,7 +54,7 @@ namespace PowerPointLabs
             }
             catch (Exception e)
             {
-                PowerPointLabsGlobals.LogException(e, "AddHighlightedTextFragments");
+                Logger.LogException(e, "AddHighlightedTextFragments");
                 throw;
             }
         }
@@ -108,6 +110,7 @@ namespace PowerPointLabs
         private static List<PowerPoint.Shape> GetShapesFromLinesInText(PowerPointSlide currentSlide, Office.TextRange2 text, PowerPoint.Shape shape)
         {
             List<PowerPoint.Shape> shapesToAnimate = new List<PowerPoint.Shape>();
+            Boolean isTextBoxTransparent = (shape.Fill.Transparency).CompareTo(1.0f) == 0;
 
             foreach (Office.TextRange2 line in text.Lines)
             {
@@ -122,7 +125,10 @@ namespace PowerPointLabs
                 highlightShape.Fill.ForeColor.RGB = Utils.Graphics.ConvertColorToRgb(backgroundColor);
                 highlightShape.Fill.Transparency = 0.50f;
                 highlightShape.Line.Visible = Office.MsoTriState.msoFalse;
-                Utils.Graphics.MoveZToJustBehind(highlightShape, shape);
+                if (isTextBoxTransparent)
+                {
+                    Utils.Graphics.MoveZToJustBehind(highlightShape, shape);
+                }
                 highlightShape.Name = "PPTLabsHighlightTextFragmentsShape" + Guid.NewGuid().ToString();
                 highlightShape.Tags.Add("HighlightTextFragment", highlightShape.Name);
                 highlightShape.Select(Office.MsoTriState.msoFalse);

@@ -7,6 +7,7 @@ namespace PowerPointLabs.Models
 {
     class PowerPointDeMagnifyingSlide : PowerPointSlide
     {
+#pragma warning disable 0618
         private PowerPoint.Shape indicatorShape = null;
         private PowerPoint.Shape zoomSlideCroppedShapes = null;
         private PowerPointDeMagnifyingSlide(PowerPoint.Slide slide) : base(slide)
@@ -14,7 +15,7 @@ namespace PowerPointLabs.Models
             _slide.Name = "PPTLabsDeMagnifyingSlide" + DateTime.Now.ToString("yyyyMMddHHmmssffff");
         }
 
-        new public static PowerPointSlide FromSlideFactory(PowerPoint.Slide slide)
+        public static PowerPointSlide FromSlideFactory(PowerPoint.Slide slide)
         {
             if (slide == null)
                 return null;
@@ -25,8 +26,7 @@ namespace PowerPointLabs.Models
         public void AddZoomToAreaAnimation(PowerPoint.Shape zoomShape)
         {
             PrepareForZoomToArea(zoomShape);
-
-            PowerPoint.Effect lastEffect = null;
+            
             if (!ZoomToArea.backgroundZoomChecked)
             {
                 //Zoom stored shape to fit slide
@@ -123,7 +123,7 @@ namespace PowerPointLabs.Models
 
             zoomShape.Copy();
             PowerPoint.Shape zoomShapeCopy = _slide.Shapes.Paste()[1];
-            PowerPointLabsGlobals.CopyShapeAttributes(zoomShape, ref zoomShapeCopy);
+            LegacyShapeUtil.CopyShapeAttributes(zoomShape, ref zoomShapeCopy);
 
             Globals.ThisAddIn.Application.ActiveWindow.View.GotoSlide(_slide.SlideIndex);
             zoomSlideCroppedShapes.Select();
@@ -172,13 +172,13 @@ namespace PowerPointLabs.Models
                 zoomSlideCroppedShapes.PictureFormat.CropRight += (PowerPointPresentation.Current.SlideWidth - (zoomShape.Left + zoomShape.Width));
                 zoomSlideCroppedShapes.PictureFormat.CropBottom += (PowerPointPresentation.Current.SlideHeight - (zoomShape.Top + zoomShape.Height));
 
-                PowerPointLabsGlobals.CopyShapePosition(zoomShape, ref zoomSlideCroppedShapes);
+                LegacyShapeUtil.CopyShapePosition(zoomShape, ref zoomSlideCroppedShapes);
             }
         }
 
         private void ManageSlideTransitions()
         {
-            base.RemoveSlideTransitions();
+            RemoveSlideTransitions();
             _slide.SlideShowTransition.AdvanceOnTime = Office.MsoTriState.msoFalse;
             _slide.SlideShowTransition.AdvanceOnClick = Office.MsoTriState.msoTrue;
         }

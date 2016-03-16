@@ -9,6 +9,7 @@ using System.Text.RegularExpressions;
 using System.Windows.Forms;
 using Microsoft.Office.Core;
 using Microsoft.Office.Interop.PowerPoint;
+using PowerPointLabs.FunctionalTestInterface.Impl;
 using PowerPointLabs.Models;
 using PowerPointLabs.Utils;
 using PowerPointLabs.Views;
@@ -22,6 +23,7 @@ namespace PowerPointLabs.AgendaLab
     /// </summary>
     internal static partial class AgendaLabMain
     {
+#pragma warning disable 0618
         private static LoadingDialog _loadDialog = new LoadingDialog();
 
         private const int SectionNameMaxLength = 180;
@@ -751,7 +753,8 @@ namespace PowerPointLabs.AgendaLab
         /// <summary>
         /// Places the newly generated image shapes in some alignment that makes them easy to drag around.
         /// Resizes image shapes to match the sizes of the existing image shapes.
-        /// If existingImageWidth <= 0 or existingImageHeight <= 0, it means there are no already existing image shapes.
+        /// If existingImageWidth less or equal to 0 or existingImageHeight less or equal to 0, it means 
+        /// there are no already existing image shapes.
         /// </summary> 
         private static void PositionNewImageShapes(List<Shape> shapes, float existingImageWidth, float existingImageHeight)
         {
@@ -883,7 +886,7 @@ namespace PowerPointLabs.AgendaLab
         /// <summary>
         /// Assumes that all shapes in textboxes are beam shape textboxes.
         /// </summary>
-        private static Dictionary<int, Shape> GetBeamTextboxAssignment(IEnumerable<Shape> textboxes , out List<Shape> unassignedShapes)
+        private static Dictionary<int, Shape> GetBeamTextboxAssignment(IEnumerable<Shape> textboxes, out List<Shape> unassignedShapes)
         {
             unassignedShapes = new List<Shape>();
             var shapeAssignment = new Dictionary<int, Shape>();
@@ -1048,10 +1051,18 @@ namespace PowerPointLabs.AgendaLab
 
         private static bool DisplayLoadingDialog(string title, string content)
         {
-            _loadDialog = new LoadingDialog(title, content);
-            _loadDialog.Show();
-            _loadDialog.Refresh();
-            return true;
+            // make FT run stably
+            if (PowerPointLabsFT.IsFunctionalTestOn)
+            {
+                return false;
+            }
+            else
+            {
+                _loadDialog = new LoadingDialog(title, content);
+                _loadDialog.Show();
+                _loadDialog.Refresh();
+                return true;
+            }
         }
 
         private static void DisposeLoadingDialog()
@@ -1178,7 +1189,7 @@ namespace PowerPointLabs.AgendaLab
                 if (BeamFormats.GetShapeWithPurpose(beamShape, ShapePurpose.BeamShapeText) == null)
                     return true;
             }
-            catch (COMException e)
+            catch (COMException)
             {
                 // beam shape is not a group
                 return true;

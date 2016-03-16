@@ -5,7 +5,8 @@ using Microsoft.Office.Interop.PowerPoint;
 
 namespace PowerPointLabs.Models
 {
-    internal class PowerPointCurrentPresentationInfo
+    [Obsolete("DO NOT use this class! Instead, use Action Framework.")]
+    public class PowerPointCurrentPresentationInfo
     {
         public static PowerPointSlide CurrentSlide
         {

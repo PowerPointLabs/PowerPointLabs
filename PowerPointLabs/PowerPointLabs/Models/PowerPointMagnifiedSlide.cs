@@ -9,6 +9,7 @@ namespace PowerPointLabs.Models
 {
     class PowerPointMagnifiedSlide : PowerPointSlide
     {
+#pragma warning disable 0618
         private PowerPoint.Shape indicatorShape = null;
         private PowerPoint.Shape zoomSlideCroppedShapes = null;
 
@@ -17,7 +18,7 @@ namespace PowerPointLabs.Models
             _slide.Name = "PPTLabsMagnifiedSlide" + DateTime.Now.ToString("yyyyMMddHHmmssffff");
         }
 
-        new public static PowerPointSlide FromSlideFactory(PowerPoint.Slide slide)
+        public static PowerPointSlide FromSlideFactory(PowerPoint.Slide slide)
         {
             if (slide == null)
                 return null;
@@ -35,7 +36,7 @@ namespace PowerPointLabs.Models
             zoomSlideCroppedShapes.PictureFormat.CropRight += (PowerPointPresentation.Current.SlideWidth - (zoomShape.Left + zoomShape.Width));
             zoomSlideCroppedShapes.PictureFormat.CropBottom += (PowerPointPresentation.Current.SlideHeight - (zoomShape.Top + zoomShape.Height));
 
-            PowerPointLabsGlobals.CopyShapePosition(zoomShape, ref zoomSlideCroppedShapes);
+            LegacyShapeUtil.CopyShapePosition(zoomShape, ref zoomSlideCroppedShapes);
 
             zoomSlideCroppedShapes.LockAspectRatio = Office.MsoTriState.msoTrue;
             if (zoomSlideCroppedShapes.Width > zoomSlideCroppedShapes.Height)
@@ -74,7 +75,7 @@ namespace PowerPointLabs.Models
 
         private void ManageSlideTransitions()
         {
-            base.RemoveSlideTransitions();
+            RemoveSlideTransitions();
             _slide.SlideShowTransition.AdvanceOnTime = Office.MsoTriState.msoFalse;
             _slide.SlideShowTransition.AdvanceOnClick = Office.MsoTriState.msoTrue;
         }

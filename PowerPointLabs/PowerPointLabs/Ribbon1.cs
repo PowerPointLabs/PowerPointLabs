@@ -7,7 +7,12 @@ using System.Reflection;
 using System.Runtime.InteropServices;
 using System.Diagnostics;
 using System.Windows.Forms;
+using PowerPointLabs.ActionFramework.Common.Factory;
+using PowerPointLabs.ActionFramework.Common.Log;
+using PowerPointLabs.DataSources;
+using PowerPointLabs.DrawingsLab;
 using PowerPointLabs.Models;
+using PowerPointLabs.PictureSlidesLab.View;
 using PowerPointLabs.Views;
 using Office = Microsoft.Office.Core;
 using PowerPoint = Microsoft.Office.Interop.PowerPoint;
@@ -36,6 +41,47 @@ namespace PowerPointLabs
     [ComVisible(true)]
     public class Ribbon1 : Office.IRibbonExtensibility
     {
+        #region Action Framework Factory
+        private ActionHandlerFactory ActionHandlerFactory { get; set; }
+
+        private LabelHandlerFactory LabelHandlerFactory { get; set; }
+
+        private ImageHandlerFactory ImageHandlerFactory { get; set; }
+
+        private SupertipHandlerFactory SupertipHandlerFactory { get; set; }
+        #endregion
+
+        #region Action Framework entry point
+
+        public void OnAction(Office.IRibbonControl control)
+        {
+            var actionHandler = ActionHandlerFactory.CreateInstance(control.Id);
+            actionHandler.Execute(control.Id);
+        }
+
+        public string GetLabel(Office.IRibbonControl control)
+        {
+            var labelHandler = LabelHandlerFactory.CreateInstance(control.Id);
+            return labelHandler.Get(control.Id);
+        }
+
+        public string GetSupertip(Office.IRibbonControl control)
+        {
+            var supertipHandler = SupertipHandlerFactory.CreateInstance(control.Id);
+            return supertipHandler.Get(control.Id);
+        }
+
+        public Bitmap GetImage(Office.IRibbonControl control)
+        {
+            var imageHandler = ImageHandlerFactory.CreateInstance(control.Id);
+            return imageHandler.Get(control.Id);
+        }
+
+        #endregion
+
+        #region Deprecated. Please only use Action Framework to support the feature.
+
+#pragma warning disable 0618
         private Office.IRibbonUI _ribbon;
         
         public bool FrameAnimationChecked = false;
@@ -79,6 +125,11 @@ namespace PowerPointLabs
 
         public void RibbonLoad(Office.IRibbonUI ribbonUi)
         {
+            ActionHandlerFactory = new ActionHandlerFactory();
+            LabelHandlerFactory = new LabelHandlerFactory();
+            SupertipHandlerFactory = new SupertipHandlerFactory();
+            ImageHandlerFactory = new ImageHandlerFactory();
+
             _ribbon = ribbonUi;
 
             SetVoicesFromInstalledOptions();
@@ -93,7 +144,7 @@ namespace PowerPointLabs
             }
             catch (Exception e)
             {
-                PowerPointLabsGlobals.LogException(e, "RefreshRibbonControl");
+                Logger.LogException(e, "RefreshRibbonControl");
                 throw;
             }
         }
@@ -121,7 +172,7 @@ namespace PowerPointLabs
             }
             catch (Exception e)
             {
-                PowerPointLabsGlobals.LogException(e, "HighlightBulletsBackgroundButtonClick");
+                Logger.LogException(e, "HighlightBulletsBackgroundButtonClick");
                 throw;
             }
         }
@@ -142,7 +193,7 @@ namespace PowerPointLabs
             }
             catch (Exception e)
             {
-                PowerPointLabsGlobals.LogException(e, "HighlightBulletsTextButtonClick");
+                Logger.LogException(e, "HighlightBulletsTextButtonClick");
                 throw;
             }
         }
@@ -163,7 +214,7 @@ namespace PowerPointLabs
             }
             catch (Exception e)
             {
-                PowerPointLabsGlobals.LogException(e, "HighlightTextFragmentsButtonClick");
+                Logger.LogException(e, "HighlightTextFragmentsButtonClick");
                 throw;
             }
         }
@@ -179,22 +230,7 @@ namespace PowerPointLabs
             }
             catch (Exception e)
             {
-                PowerPointLabsGlobals.LogException(e, "AddInSlideAnimationButtonClick");
-                throw;
-            }
-        }
-
-        public void ReloadSpotlightButtonClick(Office.IRibbonControl control)
-        {
-            try
-            {
-                Globals.ThisAddIn.Application.StartNewUndoEntry();
-
-                Spotlight.ReloadSpotlightEffect();
-            }
-            catch (Exception e)
-            {
-                PowerPointLabsGlobals.LogException(e, "ReloadSpotlightButtonClick");
+                Logger.LogException(e, "AddInSlideAnimationButtonClick");
                 throw;
             }
         }
@@ -209,7 +245,7 @@ namespace PowerPointLabs
             }
             catch (Exception e)
             {
-                PowerPointLabsGlobals.LogException(e, "SpotlightBtnClick");
+                Logger.LogException(e, "SpotlightBtnClick");
                 throw;
             }
         }
@@ -291,11 +327,6 @@ namespace PowerPointLabs
             return TextCollection.HighlightTextFragmentsButtonSupertip;
         }
         
-        public string GetColorPickerButtonSupertip(Office.IRibbonControl control)
-        {
-            return TextCollection.ColorPickerButtonSupertip;
-        }
-        
         public string GetCustomeShapeButtonSupertip(Office.IRibbonControl control)
         {
             return TextCollection.CustomeShapeButtonSupertip;
@@ -361,6 +392,11 @@ namespace PowerPointLabs
         public string GetAgendaLabBulletAgendaSettingsSupertip(Office.IRibbonControl control)
         {
             return TextCollection.AgendaLabBulletAgendaSettingsSupertip;
+        }
+
+        public string GetDrawingsLabButtonSupertip(Office.IRibbonControl control)
+        {
+            return TextCollection.DrawingsLabButtonSupertip;
         }
         
         public string GetHelpButtonSupertip(Office.IRibbonControl control)
@@ -499,10 +535,6 @@ namespace PowerPointLabs
         {
             return TextCollection.LabsGroupLabel;
         }
-        public string GetColorPickerButtonLabel(Office.IRibbonControl control)
-        {
-            return TextCollection.ColorPickerButtonLabel;
-        }
         public string GetCustomeShapeButtonLabel(Office.IRibbonControl control)
         {
             return TextCollection.CustomeShapeButtonLabel;
@@ -570,6 +602,11 @@ namespace PowerPointLabs
             return TextCollection.AgendaLabBulletAgendaSettingsButtonLabel;
         }
 
+        public string GetDrawingsLabButtonLabel(Office.IRibbonControl control)
+        {
+            return TextCollection.DrawingsLabButtonLabel;
+        }
+
         public string GetPPTLabsHelpGroupLabel(Office.IRibbonControl control)
         {
             return TextCollection.PPTLabsHelpGroupLabel;
@@ -627,17 +664,13 @@ namespace PowerPointLabs
         {
             return TextCollection.AddCustomShapeShapeLabel;
         }
+        public string GetHideSelectedShapeLabel(Office.IRibbonControl control)
+        {
+            return TextCollection.HideSelectedShapeLabel;
+        }
         public string GetCutOutShapeShapeLabel(Office.IRibbonControl control)
         {
             return TextCollection.CutOutShapeShapeLabel;
-        }
-        public string GetFitToWidthShapeLabel(Office.IRibbonControl control)
-        {
-            return TextCollection.FitToWidthShapeLabel;
-        }
-        public string GetFitToHeightShapeLabel(Office.IRibbonControl control)
-        {
-            return TextCollection.FitToHeightShapeLabel;
         }
         public string GetInSlideAnimateGroupLabel(Office.IRibbonControl control)
         {
@@ -659,6 +692,10 @@ namespace PowerPointLabs
         {
             return TextCollection.ContextReplaceAudioLabel;
         }
+        public string GetPowerPointLabsMenuLabel(Office.IRibbonControl control)
+        {
+            return TextCollection.PowerPointLabsMenuLabel;
+        }
         # endregion
 
         //Button Click Callbacks        
@@ -672,7 +709,7 @@ namespace PowerPointLabs
             }
             catch (Exception e)
             {
-                PowerPointLabsGlobals.LogException(e, "AddAnimationButtonClick");
+                Logger.LogException(e, "AddAnimationButtonClick");
                 throw;
             }
         }
@@ -694,7 +731,7 @@ namespace PowerPointLabs
             }
             catch (Exception e)
             {
-                PowerPointLabsGlobals.LogException(e, "HelpButtonClick");
+                Logger.LogException(e, "HelpButtonClick");
                 throw;
             }
         }
@@ -706,7 +743,7 @@ namespace PowerPointLabs
             }
             catch (Exception e)
             {
-                PowerPointLabsGlobals.LogException(e, "FeedbackButtonClick");
+                Logger.LogException(e, "FeedbackButtonClick");
                 throw;
             }
         }
@@ -720,7 +757,7 @@ namespace PowerPointLabs
             }
             catch (Exception e)
             {
-                PowerPointLabsGlobals.LogException(e, "AddZoomInButtonClick");
+                Logger.LogException(e, "AddZoomInButtonClick");
                 throw;
             }
         }
@@ -734,7 +771,7 @@ namespace PowerPointLabs
             }
             catch (Exception e)
             {
-                PowerPointLabsGlobals.LogException(e, "AddZoomOutButtonClick");
+                Logger.LogException(e, "AddZoomOutButtonClick");
                 throw;
             }
         }
@@ -748,7 +785,7 @@ namespace PowerPointLabs
             }
             catch (Exception e)
             {
-                PowerPointLabsGlobals.LogException(e, "GetAddAnimationImage");
+                Logger.LogException(e, "GetAddAnimationImage");
                 throw;
             }
         }
@@ -760,7 +797,7 @@ namespace PowerPointLabs
             }
             catch (Exception e)
             {
-                PowerPointLabsGlobals.LogException(e, "GetSpotlightImage");
+                Logger.LogException(e, "GetSpotlightImage");
                 throw;
             }
         }
@@ -772,7 +809,7 @@ namespace PowerPointLabs
             }
             catch (Exception e)
             {
-                PowerPointLabsGlobals.LogException(e, "GetReloadSpotlightImage");
+                Logger.LogException(e, "GetReloadSpotlightImage");
                 throw;
             }
         }
@@ -784,7 +821,7 @@ namespace PowerPointLabs
             }
             catch (Exception e)
             {
-                PowerPointLabsGlobals.LogException(e, "GetHighlightBulletsTextImage");
+                Logger.LogException(e, "GetHighlightBulletsTextImage");
                 throw;
             }
         }
@@ -796,7 +833,7 @@ namespace PowerPointLabs
             }
             catch (Exception e)
             {
-                PowerPointLabsGlobals.LogException(e, "GetHighlightBulletsBackgroundImage");
+                Logger.LogException(e, "GetHighlightBulletsBackgroundImage");
                 throw;
             }
         }
@@ -809,7 +846,7 @@ namespace PowerPointLabs
             }
             catch (Exception e)
             {
-                PowerPointLabsGlobals.LogException(e, "GetHighlightWordsImage");
+                Logger.LogException(e, "GetHighlightWordsImage");
                 throw;
             }
         }
@@ -822,7 +859,7 @@ namespace PowerPointLabs
             }
             catch (Exception e)
             {
-                PowerPointLabsGlobals.LogException(e, "GetHighlightBulletsTextContextImage");
+                Logger.LogException(e, "GetHighlightBulletsTextContextImage");
                 throw;
             }
         }
@@ -834,7 +871,7 @@ namespace PowerPointLabs
             }
             catch (Exception e)
             {
-                PowerPointLabsGlobals.LogException(e, "GetHighlightBulletsBackgroundContextImage");
+                Logger.LogException(e, "GetHighlightBulletsBackgroundContextImage");
                 throw;
             }
         }
@@ -847,7 +884,7 @@ namespace PowerPointLabs
             }
             catch (Exception e)
             {
-                PowerPointLabsGlobals.LogException(e, "GetZoomInImage");
+                Logger.LogException(e, "GetZoomInImage");
                 throw;
             }
         }
@@ -860,7 +897,7 @@ namespace PowerPointLabs
             }
             catch (Exception e)
             {
-                PowerPointLabsGlobals.LogException(e, "GetZoomOutImage");
+                Logger.LogException(e, "GetZoomOutImage");
                 throw;
             }
         }
@@ -872,7 +909,7 @@ namespace PowerPointLabs
             }
             catch (Exception e)
             {
-                PowerPointLabsGlobals.LogException(e, "GetZoomToAreaImage");
+                Logger.LogException(e, "GetZoomToAreaImage");
                 throw;
             }
         }
@@ -884,7 +921,7 @@ namespace PowerPointLabs
             }
             catch (Exception e)
             {
-                PowerPointLabsGlobals.LogException(e, "GetZoomToAreaContextImage");
+                Logger.LogException(e, "GetZoomToAreaContextImage");
                 throw;
             }
         }
@@ -896,7 +933,7 @@ namespace PowerPointLabs
             }
             catch (Exception e)
             {
-                PowerPointLabsGlobals.LogException(e, "GetCropShapeImage");
+                Logger.LogException(e, "GetCropShapeImage");
                 throw;
             }
         }
@@ -909,19 +946,7 @@ namespace PowerPointLabs
             }
             catch (Exception e)
             {
-                PowerPointLabsGlobals.LogException(e, "GetShapesLabImage");
-                throw;
-            }
-        }
-        public Bitmap GetColorsLabImage(Office.IRibbonControl control)
-        {
-            try
-            {
-                return new System.Drawing.Bitmap(Properties.Resources.ColorsLab);
-            }
-            catch (Exception e)
-            {
-                PowerPointLabsGlobals.LogException(e, "GetColorsLabImage");
+                Logger.LogException(e, "GetShapesLabImage");
                 throw;
             }
         }
@@ -934,7 +959,7 @@ namespace PowerPointLabs
             }
             catch (Exception e)
             {
-                PowerPointLabsGlobals.LogException(e, "GetEffectsLabImage");
+                Logger.LogException(e, "GetEffectsLabImage");
                 throw;
             }
         }
@@ -946,7 +971,7 @@ namespace PowerPointLabs
             }
             catch (Exception e)
             {
-                PowerPointLabsGlobals.LogException(e, "GetMakeTransparentImage");
+                Logger.LogException(e, "GetMakeTransparentImage");
                 throw;
             }
         }
@@ -958,7 +983,7 @@ namespace PowerPointLabs
             }
             catch (Exception e)
             {
-                PowerPointLabsGlobals.LogException(e, "GetMagnifyImage");
+                Logger.LogException(e, "GetMagnifyImage");
                 throw;
             }
         }
@@ -970,7 +995,7 @@ namespace PowerPointLabs
             }
             catch (Exception e)
             {
-                PowerPointLabsGlobals.LogException(e, "GetBlurRemainderImage");
+                Logger.LogException(e, "GetBlurRemainderImage");
                 throw;
             }
         }
@@ -982,7 +1007,7 @@ namespace PowerPointLabs
             }
             catch (Exception e)
             {
-                PowerPointLabsGlobals.LogException(e, "GetRecolorRemainderImage");
+                Logger.LogException(e, "GetRecolorRemainderImage");
                 throw;
             }
         }
@@ -995,7 +1020,7 @@ namespace PowerPointLabs
             }
             catch (Exception e)
             {
-                PowerPointLabsGlobals.LogException(e, "GetAgendaLabImage");
+                Logger.LogException(e, "GetAgendaLabImage");
                 throw;
             }
         }
@@ -1007,7 +1032,7 @@ namespace PowerPointLabs
             }
             catch (Exception e)
             {
-                PowerPointLabsGlobals.LogException(e, "GetAgendaTextImage");
+                Logger.LogException(e, "GetAgendaTextImage");
                 throw;
             }
         }
@@ -1019,7 +1044,7 @@ namespace PowerPointLabs
             }
             catch (Exception e)
             {
-                PowerPointLabsGlobals.LogException(e, "GetAgendaVisualImage");
+                Logger.LogException(e, "GetAgendaVisualImage");
                 throw;
             }
         }
@@ -1031,7 +1056,7 @@ namespace PowerPointLabs
             }
             catch (Exception e)
             {
-                PowerPointLabsGlobals.LogException(e, "GetAgendaSidebarImage");
+                Logger.LogException(e, "GetAgendaSidebarImage");
                 throw;
             }
         }
@@ -1043,7 +1068,7 @@ namespace PowerPointLabs
             }
             catch (Exception e)
             {
-                PowerPointLabsGlobals.LogException(e, "GetAgendaRemoveImage");
+                Logger.LogException(e, "GetAgendaRemoveImage");
                 throw;
             }
         }
@@ -1055,7 +1080,7 @@ namespace PowerPointLabs
             }
             catch (Exception e)
             {
-                PowerPointLabsGlobals.LogException(e, "GetAgendaSyncImage");
+                Logger.LogException(e, "GetAgendaSyncImage");
                 throw;
             }
         }
@@ -1067,7 +1092,19 @@ namespace PowerPointLabs
             }
             catch (Exception e)
             {
-                PowerPointLabsGlobals.LogException(e, "GetAgendaSettingsImage");
+                Logger.LogException(e, "GetAgendaSettingsImage");
+                throw;
+            }
+        }
+        public Bitmap GetDrawingsLabImage(Office.IRibbonControl control)
+        {
+            try
+            {
+                return new System.Drawing.Bitmap(Properties.Resources.DrawingLab);
+            }
+            catch (Exception e)
+            {
+                Logger.LogException(e, "GetDrawingsLabImage");
                 throw;
             }
         }
@@ -1080,7 +1117,7 @@ namespace PowerPointLabs
             }
             catch (Exception e)
             {
-                PowerPointLabsGlobals.LogException(e, "GetAboutImage");
+                Logger.LogException(e, "GetAboutImage");
                 throw;
             }
         }
@@ -1092,7 +1129,7 @@ namespace PowerPointLabs
             }
             catch (Exception e)
             {
-                PowerPointLabsGlobals.LogException(e, "GetHelpImage");
+                Logger.LogException(e, "GetHelpImage");
                 throw;
             }
         }
@@ -1104,7 +1141,7 @@ namespace PowerPointLabs
             }
             catch (Exception e)
             {
-                PowerPointLabsGlobals.LogException(e, "GetFeedbackImage");
+                Logger.LogException(e, "GetFeedbackImage");
                 throw;
             }
         }
@@ -1116,7 +1153,7 @@ namespace PowerPointLabs
             }
             catch (Exception e)
             {
-                PowerPointLabsGlobals.LogException(e, "GetAddAudioImage");
+                Logger.LogException(e, "GetAddAudioImage");
                 throw;
             }
         }
@@ -1128,7 +1165,7 @@ namespace PowerPointLabs
             }
             catch (Exception e)
             {
-                PowerPointLabsGlobals.LogException(e, "GetRemoveAudioImage");
+                Logger.LogException(e, "GetRemoveAudioImage");
                 throw;
             }
         }
@@ -1140,7 +1177,7 @@ namespace PowerPointLabs
             }
             catch (Exception e)
             {
-                PowerPointLabsGlobals.LogException(e, "GetAddCaptionsImage");
+                Logger.LogException(e, "GetAddCaptionsImage");
                 throw;
             }
         }
@@ -1152,7 +1189,7 @@ namespace PowerPointLabs
             }
             catch (Exception e)
             {
-                PowerPointLabsGlobals.LogException(e, "GetRemoveCaptionsImage");
+                Logger.LogException(e, "GetRemoveCaptionsImage");
                 throw;
             }
         }
@@ -1165,7 +1202,7 @@ namespace PowerPointLabs
             }
             catch (Exception e)
             {
-                PowerPointLabsGlobals.LogException(e, "GetAddAudioContextImage");
+                Logger.LogException(e, "GetAddAudioContextImage");
                 throw;
             }
         }
@@ -1177,7 +1214,7 @@ namespace PowerPointLabs
             }
             catch (Exception e)
             {
-                PowerPointLabsGlobals.LogException(e, "GetPreviewNarrationContextImage");
+                Logger.LogException(e, "GetPreviewNarrationContextImage");
                 throw;
             }
         }
@@ -1189,7 +1226,7 @@ namespace PowerPointLabs
             }
             catch (Exception e)
             {
-                PowerPointLabsGlobals.LogException(e, "GetInSlideAnimationImage");
+                Logger.LogException(e, "GetInSlideAnimationImage");
                 throw;
             }
         }
@@ -1201,22 +1238,11 @@ namespace PowerPointLabs
             }
             catch (Exception e)
             {
-                PowerPointLabsGlobals.LogException(e, "GetAddAnimationContextImage");
+                Logger.LogException(e, "GetAddAnimationContextImage");
                 throw;
             }
         }
-        public Bitmap GetReloadAnimationContextImage(Office.IRibbonControl control)
-        {
-            try
-            {
-                return new Bitmap(Properties.Resources.ReloadAnimationContext);
-            }
-            catch (Exception e)
-            {
-                PowerPointLabsGlobals.LogException(e, "GetReloadAnimationContextImage");
-                throw;
-            }
-        }
+
         public Bitmap GetAddSpotlightContextImage(Office.IRibbonControl control)
         {
             try
@@ -1225,7 +1251,7 @@ namespace PowerPointLabs
             }
             catch (Exception e)
             {
-                PowerPointLabsGlobals.LogException(e, "GetAddSpotlightContextImage");
+                Logger.LogException(e, "GetAddSpotlightContextImage");
                 throw;
             }
         }
@@ -1237,7 +1263,7 @@ namespace PowerPointLabs
             }
             catch (Exception e)
             {
-                PowerPointLabsGlobals.LogException(e, "GetEditNameContextImage");
+                Logger.LogException(e, "GetEditNameContextImage");
                 throw;
             }
         }
@@ -1249,7 +1275,7 @@ namespace PowerPointLabs
             }
             catch (Exception e)
             {
-                PowerPointLabsGlobals.LogException(e, "GetInSlideAnimationContextImage");
+                Logger.LogException(e, "GetInSlideAnimationContextImage");
                 throw;
             }
         }
@@ -1261,7 +1287,7 @@ namespace PowerPointLabs
             }
             catch (Exception e)
             {
-                PowerPointLabsGlobals.LogException(e, "GetZoomInContextImage");
+                Logger.LogException(e, "GetZoomInContextImage");
                 throw;
             }
         }
@@ -1273,7 +1299,7 @@ namespace PowerPointLabs
             }
             catch (Exception e)
             {
-                PowerPointLabsGlobals.LogException(e, "GetZoomOutContextImage");
+                Logger.LogException(e, "GetZoomOutContextImage");
                 throw;
             }
         }
@@ -1285,7 +1311,19 @@ namespace PowerPointLabs
             }
             catch (Exception e)
             {
-                PowerPointLabsGlobals.LogException(e, "GetZoomOutContextImage");
+                Logger.LogException(e, "GetZoomOutContextImage");
+                throw;
+            }
+        }
+        public Bitmap GetHideShapeImage(Office.IRibbonControl control)
+        {
+            try
+            {
+                return new Bitmap(Properties.Resources.HideShape);
+            }
+            catch (Exception e)
+            {
+                Logger.LogException(e, "GetHideShapeImage");
                 throw;
             }
         }
@@ -1299,7 +1337,7 @@ namespace PowerPointLabs
             }
             catch (Exception e)
             {
-                PowerPointLabsGlobals.LogException(e, "ZoomStyleChanged");
+                Logger.LogException(e, "ZoomStyleChanged");
                 throw;
             }
         }
@@ -1311,7 +1349,7 @@ namespace PowerPointLabs
             }
             catch (Exception e)
             {
-                PowerPointLabsGlobals.LogException(e, "ZoomStyleGetPressed");
+                Logger.LogException(e, "ZoomStyleGetPressed");
                 throw;
             }
         }
@@ -1366,7 +1404,7 @@ namespace PowerPointLabs
             }
             catch (Exception e)
             {
-                PowerPointLabsGlobals.LogException(e, "NameEditBtnClick");
+                Logger.LogException(e, "NameEditBtnClick");
                 throw;
             }
         }
@@ -1381,7 +1419,7 @@ namespace PowerPointLabs
             }
             catch (Exception e)
             {
-                PowerPointLabsGlobals.LogException(e, "ShapeNameEdited");
+                Logger.LogException(e, "ShapeNameEdited");
                 throw;
             }
         }
@@ -1396,7 +1434,7 @@ namespace PowerPointLabs
             }
             catch (Exception e)
             {
-                PowerPointLabsGlobals.LogException(e, "AutoAnimateDialogButtonPressed");
+                Logger.LogException(e, "AutoAnimateDialogButtonPressed");
                 throw;
             }
         }
@@ -1414,7 +1452,7 @@ namespace PowerPointLabs
             }
             catch (Exception e)
             {
-                PowerPointLabsGlobals.LogException(e, "AnimationPropertiesEdited");
+                Logger.LogException(e, "AnimationPropertiesEdited");
                 throw;
             }
         }
@@ -1429,7 +1467,7 @@ namespace PowerPointLabs
             }
             catch (Exception e)
             {
-                PowerPointLabsGlobals.LogException(e, "AutoZoomDialogButtonPressed");
+                Logger.LogException(e, "AutoZoomDialogButtonPressed");
                 throw;
             }
         }
@@ -1446,7 +1484,7 @@ namespace PowerPointLabs
             }
             catch (Exception e)
             {
-                PowerPointLabsGlobals.LogException(e, "ZoomPropertiesEdited");
+                Logger.LogException(e, "ZoomPropertiesEdited");
                 throw;
             }
         }
@@ -1462,7 +1500,7 @@ namespace PowerPointLabs
             }
             catch (Exception e)
             {
-                PowerPointLabsGlobals.LogException(e, "SpotlightDialogButtonPressed");
+                Logger.LogException(e, "SpotlightDialogButtonPressed");
                 throw;
             }
         }
@@ -1477,7 +1515,7 @@ namespace PowerPointLabs
             }
             catch (Exception e)
             {
-                PowerPointLabsGlobals.LogException(e, "SpotlightPropertiesEdited");
+                Logger.LogException(e, "SpotlightPropertiesEdited");
                 throw;
             }
         }
@@ -1493,7 +1531,7 @@ namespace PowerPointLabs
             }
             catch (Exception e)
             {
-                PowerPointLabsGlobals.LogException(e, "HighlightBulletsPropertiesEdited");
+                Logger.LogException(e, "HighlightBulletsPropertiesEdited");
                 throw;
             }
         }
@@ -1507,7 +1545,7 @@ namespace PowerPointLabs
             }
             catch (Exception e)
             {
-                PowerPointLabsGlobals.LogException(e, "HighlightBulletsDialogBoxPressed");
+                Logger.LogException(e, "HighlightBulletsDialogBoxPressed");
                 throw;
             }
         }
@@ -1557,40 +1595,56 @@ namespace PowerPointLabs
             return selectedVoice;
         }
 
+        public Bitmap GetContextMenuImage(Office.IRibbonControl control)
+        {
+            try
+            {
+                return new Bitmap(Properties.Resources.PptlabsContextMenu);
+            }
+            catch (Exception e)
+            {
+                Logger.LogException(e, "GetContextMenuImage");
+                throw;
+            }
+        }
+
         #endregion
 
-        #region Feature: Fit To Slide | Fit To Width | Fit To Height
+        #region Feature: Picture Slides Lab
 
-        public void FitToWidthClick(Office.IRibbonControl control)
+        public PictureSlidesLabWindow PictureSlidesLabWindow { get; set; }
+
+        public void PictureSlidesLabButtonClick(Office.IRibbonControl control)
         {
-            Globals.ThisAddIn.Application.StartNewUndoEntry();
-
-            var selectedShape = PowerPointCurrentPresentationInfo.CurrentSelection.ShapeRange[1];
-            FitToSlide.FitToWidth(selectedShape);
+            if (PictureSlidesLabWindow == null || !PictureSlidesLabWindow.IsOpen)
+            {
+                PictureSlidesLabWindow = new PictureSlidesLabWindow();
+                PictureSlidesLabWindow.Show();
+            }
+            else
+            {
+                PictureSlidesLabWindow.Activate();
+            }            
         }
 
-        public void FitToHeightClick(Office.IRibbonControl control)
+        public Bitmap GetPictureSlidesLabImage(Office.IRibbonControl control)
         {
-            Globals.ThisAddIn.Application.StartNewUndoEntry();
-
-            var selectedShape = PowerPointCurrentPresentationInfo.CurrentSelection.ShapeRange[1];
-            FitToSlide.FitToHeight(selectedShape);
+            try
+            {
+                return new Bitmap(Properties.Resources.PictureSlidesLab);
+            }
+            catch (Exception e)
+            {
+                Logger.LogException(e, "GetPictureSlidesLabImage");
+                throw;
+            }
         }
 
-        public Bitmap GetFitToWidthImage(Office.IRibbonControl control)
+        public string GetPictureSlidesLabSupertip(Office.IRibbonControl control)
         {
-            Globals.ThisAddIn.Application.StartNewUndoEntry();
-
-            return FitToSlide.GetFitToWidthImage(control);
+            return TextCollection.PictureSlidesLabText.PictureSlidesLabSupertip;
         }
-
-        public Bitmap GetFitToHeightImage(Office.IRibbonControl control)
-        {
-            Globals.ThisAddIn.Application.StartNewUndoEntry();
-
-            return FitToSlide.GetFitToHeightImage(control);
-        }
-
+        
         #endregion
 
         #region Feature: Crop to Shape
@@ -1680,7 +1734,7 @@ namespace PowerPointLabs
             }
             catch (Exception e)
             {
-                PowerPointLabsGlobals.LogException(e, "AutoNarrateDialogButtonPressed");
+                Logger.LogException(e, "AutoNarrateDialogButtonPressed");
                 throw;
             }
         }
@@ -1748,10 +1802,10 @@ namespace PowerPointLabs
             }
 
             var recorderPane = Globals.ThisAddIn.GetActivePane(typeof(RecorderTaskPane));
+
+            if (recorderPane == null) return;
+
             var recorder = recorderPane.Control as RecorderTaskPane;
-
-            if (recorder == null) return;
-
             recorder.ClearRecordDataListForSelectedSlides();
 
             // if current list is visible, update the pane immediately
@@ -1874,31 +1928,6 @@ namespace PowerPointLabs
             return customShape;
         }
         # endregion
-
-        #region Feature: Colors Lab
-        public void ColorPickerButtonClick(Office.IRibbonControl control)
-        {
-            try
-            {
-                Globals.ThisAddIn.RegisterColorPane(PowerPointPresentation.Current.Presentation);
-
-                var colorPane = Globals.ThisAddIn.GetActivePane(typeof(ColorPane));
-
-                // if currently the pane is hidden, show the pane
-                if (!colorPane.Visible)
-                {
-                    // fire the pane visble change event
-                    colorPane.Visible = true;
-                }
-            }
-            catch (Exception e)
-            {
-                ErrorDialogWrapper.ShowDialog("Color Picker Failed", e.Message, e);
-                PowerPointLabsGlobals.LogException(e, "ColorPickerButtonClicked");
-                throw;
-            }
-        }
-        #endregion
 
         # region Feature: Effects Lab
         public void MagnifyGlassEffectClick(Office.IRibbonControl control)
@@ -2166,20 +2195,20 @@ namespace PowerPointLabs
                     var subShapeRange = shape.Ungroup();
                     TransparentEffect(subShapeRange);
                     subShapeRange.Group();
-                } else
-                if (shape.Type == Office.MsoShapeType.msoPlaceholder)
+                }
+                else if (shape.Type == Office.MsoShapeType.msoPlaceholder)
                 {
                     PlaceholderTransparencyHandler(shape);
-                } else
-                if (shape.Type == Office.MsoShapeType.msoPicture)
+                }
+                else if (shape.Type == Office.MsoShapeType.msoPicture)
                 {
                     PictureTransparencyHandler(shape);
-                } else
-                if (shape.Type == Office.MsoShapeType.msoLine)
+                }
+                else if (shape.Type == Office.MsoShapeType.msoLine)
                 {
                     LineTransparencyHandler(shape);
-                } else
-                if (IsTransparentableShape(shape))
+                }
+                else if (IsTransparentableShape(shape))
                 {
                     ShapeTransparencyHandler(shape);
                 }
@@ -2330,6 +2359,45 @@ namespace PowerPointLabs
         }
         # endregion
 
+        #region Feature: Drawing Lab
+        internal DrawingLabData DrawingLabData { get; set; }
+        internal DrawingsLabMain DrawingLab { get; set; }
+
+        public void DrawingsLabButtonClick(Office.IRibbonControl control)
+        {
+            try
+            {
+                if (DrawingLabData == null)
+                {
+                    DrawingLabData = new DrawingLabData();
+                    DrawingLab = new DrawingsLabMain(DrawingLabData);
+                }
+
+                Globals.ThisAddIn.RegisterDrawingsPane(PowerPointPresentation.Current.Presentation);
+
+                var drawingsPane = Globals.ThisAddIn.GetActivePane(typeof(DrawingsPane));
+                ((DrawingsPane)drawingsPane.Control).drawingsPaneWPF.TryInitialise(DrawingLabData, DrawingLab);
+                
+                // if currently the pane is hidden, show the pane
+                if (!drawingsPane.Visible)
+                {
+                    // fire the pane visble change event
+                    drawingsPane.Visible = true;
+                }
+                else
+                {
+                    drawingsPane.Visible = false;
+                }
+            }
+            catch (Exception e)
+            {
+                ErrorDialogWrapper.ShowDialog("Error in drawing lab", e.Message, e);
+                Logger.LogException(e, "DrawingsLabButtonClicked");
+                throw;
+            }
+        }
+        #endregion
+
         private static string GetResourceText(string resourceName)
         {
             Assembly asm = Assembly.GetExecutingAssembly();
@@ -2349,5 +2417,13 @@ namespace PowerPointLabs
             }
             return null;
         }
+
+        public void HideShapeButtonClick(Office.IRibbonControl control)
+        {
+            var selectedShapes = Globals.ThisAddIn.Application.ActiveWindow.Selection.ShapeRange;
+            selectedShapes.Visible = Office.MsoTriState.msoFalse;
+        }
+
+        #endregion
     }
 }

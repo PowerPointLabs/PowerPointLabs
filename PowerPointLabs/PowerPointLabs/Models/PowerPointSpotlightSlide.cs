@@ -4,6 +4,7 @@ using System.Drawing;
 using System.IO;
 using System.Linq;
 using System.Text;
+using PowerPointLabs.ActionFramework.Common.Log;
 using Office = Microsoft.Office.Core;
 using PowerPoint = Microsoft.Office.Interop.PowerPoint;
 
@@ -11,13 +12,17 @@ namespace PowerPointLabs.Models
 {
     class PowerPointSpotlightSlide : PowerPointSlide
     {
+#pragma warning disable 0618
+        //Padding so that after cropping, circumference of spotLightPicture will not have soft edge
+        private const float SoftEdgePadding = 3.0f;
+
         private PowerPointSpotlightSlide(PowerPoint.Slide slide) : base(slide)
         {
             if (!slide.Name.Contains("PPTLabsSpotlight"))
                 _slide.Name = "PPTLabsSpotlight" + DateTime.Now.ToString("yyyyMMddHHmmssffff");
         }
 
-        new public static PowerPointSlide FromSlideFactory(PowerPoint.Slide slide)
+        public static PowerPointSlide FromSlideFactory(PowerPoint.Slide slide)
         {
             if (slide == null)
             {
@@ -58,12 +63,12 @@ namespace PowerPointLabs.Models
             if (isCallout)
             {
                 spotlightShape = this.Shapes.Paste()[1];
-                PowerPointLabsGlobals.CopyShapePosition(spotShape, ref spotlightShape);
+                LegacyShapeUtil.CopyShapePosition(spotShape, ref spotlightShape);
             }
             else
             {
                 spotlightShape = this.Shapes.PasteSpecial(PowerPoint.PpPasteDataType.ppPastePNG)[1];
-                PowerPointLabsGlobals.CopyShapePosition(spotShape, ref spotlightShape);
+                LegacyShapeUtil.CopyShapePosition(spotShape, ref spotlightShape);
                 CropSpotlightPictureToSlide(ref spotlightShape);
             }
 
@@ -84,7 +89,7 @@ namespace PowerPointLabs.Models
             }
             catch (Exception e)
             {
-                PowerPointLabsGlobals.LogException(e, "AddSpotlightEffect");
+                Logger.LogException(e, "AddSpotlightEffect");
                 throw;
             }
         }
@@ -107,33 +112,40 @@ namespace PowerPointLabs.Models
                 spotlightPicture.Left, spotlightPicture.Top, spotlightPicture.Width, spotlightPicture.Height);
 
             renderedPicture.Name = spotlightPicture.Name + "_rendered";
+
+            //get rid of extra padding
+            CropSpotlightPictureToSlide(ref renderedPicture);
+
             spotlightPicture.Delete();
         }
 
         private void ManageSlideTransitions()
         {
-            base.RemoveSlideTransitions();
+            RemoveSlideTransitions();
             _slide.SlideShowTransition.AdvanceOnTime = Office.MsoTriState.msoFalse;
             _slide.SlideShowTransition.AdvanceOnClick = Office.MsoTriState.msoTrue;
         }
 
         private void CropSpotlightPictureToSlide(ref PowerPoint.Shape shapeToCrop)
         {
+            float scaleFactorWidth = PowerPointLabs.Utils.Graphics.GetScaleWidth(shapeToCrop);
+            float scaleFactorHeight = PowerPointLabs.Utils.Graphics.GetScaleHeight(shapeToCrop);
+
             if (shapeToCrop.Left < 0)
             {
-                shapeToCrop.PictureFormat.CropLeft += (0.0f - shapeToCrop.Left);
+                shapeToCrop.PictureFormat.CropLeft += ((0.0f - shapeToCrop.Left) / scaleFactorWidth);
             }
             if (shapeToCrop.Left + shapeToCrop.Width > PowerPointPresentation.Current.SlideWidth)
             {
-                shapeToCrop.PictureFormat.CropRight += (shapeToCrop.Left + shapeToCrop.Width - PowerPointPresentation.Current.SlideWidth);
+                shapeToCrop.PictureFormat.CropRight += ((shapeToCrop.Left + shapeToCrop.Width - PowerPointPresentation.Current.SlideWidth) / scaleFactorWidth);
             }
             if (shapeToCrop.Top < 0)
             {
-                shapeToCrop.PictureFormat.CropTop += (0.0f - shapeToCrop.Top);
+                shapeToCrop.PictureFormat.CropTop += ((0.0f - shapeToCrop.Top) / scaleFactorHeight);
             }
             if (shapeToCrop.Top + shapeToCrop.Height > PowerPointPresentation.Current.SlideHeight)
             {
-                shapeToCrop.PictureFormat.CropBottom += (shapeToCrop.Top + shapeToCrop.Height - PowerPointPresentation.Current.SlideHeight);
+                shapeToCrop.PictureFormat.CropBottom += ((shapeToCrop.Top + shapeToCrop.Height - PowerPointPresentation.Current.SlideHeight) / scaleFactorHeight);
             }
         }
 
@@ -147,7 +159,7 @@ namespace PowerPointLabs.Models
 
         private void AddRectangleShape()
         {
-            PowerPoint.Shape rectangleShape = Shapes.AddShape(Office.MsoAutoShapeType.msoShapeRectangle, (-1 * Spotlight.defaultSoftEdges), (-1 * Spotlight.defaultSoftEdges), (PowerPointPresentation.Current.SlideWidth + (2.0f * Spotlight.defaultSoftEdges)), (PowerPointPresentation.Current.SlideHeight + (2.0f * Spotlight.defaultSoftEdges)));
+            PowerPoint.Shape rectangleShape = Shapes.AddShape(Office.MsoAutoShapeType.msoShapeRectangle, (-SoftEdgePadding/2 * Spotlight.defaultSoftEdges), (-SoftEdgePadding/2 * Spotlight.defaultSoftEdges), (PowerPointPresentation.Current.SlideWidth + (SoftEdgePadding * Spotlight.defaultSoftEdges)), (PowerPointPresentation.Current.SlideHeight + (SoftEdgePadding * Spotlight.defaultSoftEdges)));
             rectangleShape.Fill.Solid();
             rectangleShape.Fill.ForeColor.RGB = ColorTranslator.ToWin32(Spotlight.defaultColor);
             rectangleShape.Fill.Transparency = Spotlight.defaultTransparency;
@@ -180,13 +192,15 @@ namespace PowerPointLabs.Models
         {
             spotlightPicture.PictureFormat.TransparencyColor = 0xffffff;
             spotlightPicture.PictureFormat.TransparentBackground = Office.MsoTriState.msoTrue;
-            spotlightPicture.Left = -1 * Spotlight.defaultSoftEdges;
-            spotlightPicture.Top = -1 * Spotlight.defaultSoftEdges;
+            spotlightPicture.Left = -SoftEdgePadding/2 * Spotlight.defaultSoftEdges;
+            spotlightPicture.Top = -SoftEdgePadding/2 * Spotlight.defaultSoftEdges;
             spotlightPicture.LockAspectRatio = Office.MsoTriState.msoFalse;
-            float incrementWidth = (2.0f * Spotlight.defaultSoftEdges) / spotlightPicture.Width;
-            float incrementHeight = (2.0f * Spotlight.defaultSoftEdges) / spotlightPicture.Height;
+            float incrementWidth = (SoftEdgePadding * Spotlight.defaultSoftEdges) / spotlightPicture.Width;
+            float incrementHeight = (SoftEdgePadding * Spotlight.defaultSoftEdges) / spotlightPicture.Height;
 
             spotlightPicture.SoftEdge.Radius = Spotlight.defaultSoftEdges;
+            spotlightPicture.Shadow.Size = 0;
+
             spotlightPicture.Name = "SpotlightShape1";
         }
     }

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Runtime.InteropServices;
+using PowerPointLabs.ActionFramework.Common.Log;
 using PowerPointLabs.Models;
 using PowerPointLabs.Views;
 using Office = Microsoft.Office.Core;
@@ -12,6 +13,7 @@ namespace PowerPointLabs
 {
     class AutoAnimate
     {
+#pragma warning disable 0618
         public static float defaultDuration = 0.5f;
         public static bool frameAnimationChecked = false;
 
@@ -42,7 +44,7 @@ namespace PowerPointLabs
             }
             catch (Exception e)
             { 
-                PowerPointLabsGlobals.LogException(e, "AddAnimationButtonClick");
+                Logger.LogException(e, "AddAnimationButtonClick");
                 Views.ErrorDialogWrapper.ShowDialog("PowerPointLabs", e.Message, e);
             }
             
@@ -101,7 +103,7 @@ namespace PowerPointLabs
             }
             catch (Exception e)
             {
-                PowerPointLabsGlobals.LogException(e, "ReloadAutoAnimation");
+                Logger.LogException(e, "ReloadAutoAnimation");
                 Views.ErrorDialogWrapper.ShowDialog("PowerPointLabs", e.Message, e);
             }
         }
@@ -132,7 +134,7 @@ namespace PowerPointLabs
             Globals.ThisAddIn.Application.CommandBars.ExecuteMso("AnimationPreview");
             PowerPointPresentation.Current.AddAckSlide();
 
-            progressForm.Visible = false;
+            progressForm.Close();
         }
 
         private static void PrepareNextSlide(PowerPointSlide nextSlide)
@@ -141,17 +143,31 @@ namespace PowerPointLabs
                 nextSlide.Transition.EntryEffect = PowerPoint.PpEntryEffect.ppEffectNone;
 
             if (nextSlide.Name.StartsWith("PPSlideStart") || nextSlide.Name.StartsWith("PPSlideMulti"))
-                nextSlide.Name = "PPSlideMulti" + DateTime.Now.ToString("yyyyMMddHHmmssffff");
+            {
+                nextSlide.Name = "PPSlideMulti" + GetSlideIdentifier();
+            }
             else
-                nextSlide.Name = "PPSlideEnd" + DateTime.Now.ToString("yyyyMMddHHmmssffff");
+            {
+                nextSlide.Name = "PPSlideEnd" + GetSlideIdentifier();
+            }
         }
 
         private static void RenameCurrentSlide(PowerPointSlide currentSlide)
         {
             if (currentSlide.Name.StartsWith("PPSlideEnd") || currentSlide.Name.StartsWith("PPSlideMulti"))
-                currentSlide.Name = "PPSlideMulti" + DateTime.Now.ToString("yyyyMMddHHmmssffff");
+            {
+                currentSlide.Name = "PPSlideMulti" + GetSlideIdentifier();
+            }
             else
-                currentSlide.Name = "PPSlideStart" + DateTime.Now.ToString("yyyyMMddHHmmssffff");
+            {
+                currentSlide.Name = "PPSlideStart" + GetSlideIdentifier();
+            }
+        }
+
+        private static string GetSlideIdentifier()
+        {
+            return DateTime.Now.ToString("_yyyyMMddHHmmssffff_") +
+                   Guid.NewGuid().ToString("N").Substring(0, 7);
         }
 
         private static bool GetMatchingShapeDetails(PowerPointSlide currentSlide, PowerPointSlide nextSlide)

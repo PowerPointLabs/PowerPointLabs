@@ -7,10 +7,10 @@ namespace PowerPointLabs.ColorPicker
     {
         public static int ReverseRGBToArgb(int x)
         {
-            int R = 0xff & x;
-            int G = (0xff00 & x) >> 8;
-            int B = (0xff0000 & x) >> 16;
-            return (int)(0xff << 24 | R << 16 | G << 8 | B);
+            int r = 0xff & x;
+            int g = (0xff00 & x) >> 8;
+            int b = (0xff0000 & x) >> 16;
+            return (int)(0xff << 24 | r << 16 | g << 8 | b);
         }
 
         public static Color GetColorShiftedByAngle(HSLColor originalColor, float angle)

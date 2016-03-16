@@ -8,7 +8,7 @@ namespace PowerPointLabs
 {
     class DefaultMotionAnimation
     {
-        private static PowerPoint.Effect effect;
+#pragma warning disable 0618
         //Use initial shape and final shape to calculate intial and final positions
         //Add motion, resize and rotation animations to shape
         public static void AddDefaultMotionAnimation(
@@ -244,7 +244,7 @@ namespace PowerPointLabs
                 PowerPoint.Effect effectRotate = animationSlide.TimeLine.MainSequence.AddEffect(animationShape, PowerPoint.MsoAnimEffect.msoAnimEffectSpin, PowerPoint.MsoAnimateByLevel.msoAnimateLevelNone, trigger);
                 PowerPoint.AnimationBehavior rotate = effectRotate.Behaviors[1];
                 effectRotate.Timing.Duration = duration;
-                effectRotate.EffectParameters.Amount = PowerPointLabsGlobals.GetMinimumRotation(initialRotation, finalRotation);
+                effectRotate.EffectParameters.Amount = LegacyShapeUtil.GetMinimumRotation(initialRotation, finalRotation);
                 trigger = PowerPoint.MsoAnimTriggerType.msoAnimTriggerWithPrevious;
                 return effectRotate;
             }

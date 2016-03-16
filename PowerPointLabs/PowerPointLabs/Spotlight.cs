@@ -4,6 +4,7 @@ using System.Drawing;
 using System.Linq;
 using System.Text;
 using System.Runtime.InteropServices;
+using PowerPointLabs.ActionFramework.Common.Log;
 using PowerPointLabs.Models;
 using Office = Microsoft.Office.Core;
 using PowerPoint = Microsoft.Office.Interop.PowerPoint;
@@ -12,6 +13,7 @@ namespace PowerPointLabs
 {
     class Spotlight
     {
+#pragma warning disable 0618
         public static float defaultSoftEdges = 10;
         public static float defaultTransparency = 0.25f;
         public static System.Drawing.Color defaultColor = Color.Black;
@@ -53,68 +55,7 @@ namespace PowerPointLabs
             }
             catch (Exception e)
             {
-                PowerPointLabsGlobals.LogException(e, "SpotlightBtnClick");
-                throw;
-            }
-        }
-
-        public static void ReloadSpotlightEffect()
-        {
-            try
-            {
-                var currentSlide = PowerPointCurrentPresentationInfo.CurrentSlide as PowerPointSpotlightSlide;
-                if (currentSlide.isSpotlightSlide())
-                {
-                    PowerPoint.Shape spotlightPicture = null;
-                    PowerPoint.Shape indicatorShape = null;
-                    List<PowerPoint.Shape> spotlightShapes = new List<PowerPoint.Shape>();
-
-                    foreach (PowerPoint.Shape sh in currentSlide.Shapes)
-                    {
-                        if (sh.Name.Contains("SpotlightShape1"))
-                        {
-                            spotlightPicture = sh;
-                        }
-                        else if (sh.Name.Contains("SpotlightShape"))
-                        {
-                            spotlightShapes.Add(sh);
-                        }
-                        else if (PowerPointSlide.IsIndicator(sh))
-                        {
-                            indicatorShape = sh;
-                        }
-                    }
-
-                    if (spotlightPicture == null || spotlightShapes.Count == 0)
-                    {
-                        System.Windows.Forms.MessageBox.Show("The spotlight effect cannot be recreated for the current slide.\nPlease click on the Create Spotlight button to create a new spotlight.", "Error");
-                    }
-                    else
-                    {
-                        spotlightPicture.Delete();
-
-                        if (indicatorShape != null)
-                            indicatorShape.Delete();
-
-                        foreach (PowerPoint.Shape sh in spotlightShapes)
-                        {
-                            sh.Visible = Office.MsoTriState.msoTrue;
-                            CreateSpotlightDuplicate(sh);
-                        }
-
-                        currentSlide.PrepareForSpotlight();
-                        currentSlide.AddSpotlightEffect(spotlightShapes);
-                        PowerPointPresentation.Current.AddAckSlide();
-                    }
-                }
-                else
-                {
-                    System.Windows.Forms.MessageBox.Show("The current slide is not a spotlight slide added by the PowerPointLabs plugin", "Error");
-                }
-            }
-            catch (Exception e)
-            {
-                PowerPointLabsGlobals.LogException(e, "ReloadSpotlightButtonClick");
+                Logger.LogException(e, "SpotlightBtnClick");
                 throw;
             }
         }

@@ -9,11 +9,15 @@ using Microsoft.Office.Interop.PowerPoint;
 
 namespace PowerPointLabs.Models
 {
-    internal class PowerPointPresentation
+    public class PowerPointPresentation
     {
-        # region Properties
+#pragma warning disable 0618
+        #region Properties
         private string _name;
 
+        public static Application Application { get; set; }
+
+        [Obsolete("DO NOT use this property! Instead, use Action Framework.")]
         public static PowerPointPresentation Current
         {
             get
@@ -49,7 +53,7 @@ namespace PowerPointLabs.Models
                 bool hasAckSlide = HasAckSlide();
                 RemoveAckSlide();
 
-                for (var i = 1; i <= sectionProperties.Count; i ++)
+                for (var i = 1; i <= sectionProperties.Count; i++)
                 {
                     if (sectionProperties.SlidesCount(i) == 0)
                     {
@@ -79,9 +83,14 @@ namespace PowerPointLabs.Models
         {
             get
             {
-                return
-                    Globals.ThisAddIn.Application.Presentations.Cast<Presentation>().Any(
-                        presentation => presentation.Name == Name);
+                if (Globals.ThisAddIn != null)
+                {
+                    return
+                        Globals.ThisAddIn.Application.Presentations.Cast<Presentation>().Any(
+                            presentation => presentation.Name == Name);
+                }
+                return Application.Presentations.Cast<Presentation>().Any(
+                    presentation => presentation.Name == Name);
             }
         }
 
@@ -170,21 +179,29 @@ namespace PowerPointLabs.Models
             get { return Presentation.Slides.Count; }
         }
 
-        public float SlideWidth
+        public virtual float SlideWidth
         {
             get
             {
                 var dimensions = Presentation.PageSetup;
                 return dimensions.SlideWidth;
             }
+            set
+            {
+                Presentation.PageSetup.SlideWidth = value;
+            }
         }
 
-        public float SlideHeight
+        public virtual float SlideHeight
         {
             get
             {
                 var dimensions = Presentation.PageSetup;
                 return dimensions.SlideHeight;
+            }
+            set
+            {
+                Presentation.PageSetup.SlideHeight = value;
             }
         }
         # endregion
@@ -215,6 +232,39 @@ namespace PowerPointLabs.Models
                 var lastSlide = Slides.Last();
                 lastSlide.CreateAckSlide();
             }
+        }
+
+        /// <summary>
+        /// Go to slide
+        /// </summary>
+        /// <param name="index">1-based</param>
+        public void GotoSlide(int index)
+        {
+            Globals.ThisAddIn.Application.ActiveWindow.View.GotoSlide(index);
+        }
+
+        /// <summary>
+        /// will stay in the current slide if exceed slide count
+        /// </summary>
+        public void GotoNextSlide()
+        {
+            var currentSlide = PowerPointCurrentPresentationInfo.CurrentSlide;
+            if (currentSlide == null) return;
+
+            var index = currentSlide.Index;
+            if (index < Slides.Count)
+            {
+                GotoSlide(index + 1);
+            }
+        }
+
+        public bool IsLastSlide()
+        {
+            var currentSlide = PowerPointCurrentPresentationInfo.CurrentSlide;
+            if (currentSlide == null) return false;
+
+            var index = currentSlide.Index;
+            return index == Slides.Count;
         }
 
         public PowerPointSlide AddSlide(PpSlideLayout layout = PpSlideLayout.ppLayoutText, string name = "")
@@ -297,14 +347,40 @@ namespace PowerPointLabs.Models
                 return false;
             }
 
-            var workingWindow = Globals.ThisAddIn.Application.ActiveWindow;
-
-            Presentation = Globals.ThisAddIn.Application.Presentations.Add(BoolToMsoTriState(withWidow));
-            Presentation.SaveAs(FullNameNoExtension);
-
-            if (!focus)
+            if (Globals.ThisAddIn != null)
             {
+                Presentation = Globals.ThisAddIn.Application.Presentations.Add(BoolToMsoTriState(withWidow));
+                Presentation.SaveAs(FullNameNoExtension);
+            }
+            else if (Application != null)
+            {
+                Presentation = Application.Presentations.Add(BoolToMsoTriState(withWidow));
+            }
+
+            if (!focus && Globals.ThisAddIn != null)
+            {
+                var workingWindow = Globals.ThisAddIn.Application.ActiveWindow;
                 workingWindow.Activate();
+            }
+
+            return true;
+        }
+
+        public bool CreateInBackground()
+        {
+            if (File.Exists(FullName))
+            {
+                return false;
+            }
+
+            if (Globals.ThisAddIn != null)
+            {
+                Presentation = Globals.ThisAddIn.Application.Presentations.Add(BoolToMsoTriState(false));
+                Presentation.SaveAs(FullNameNoExtension);
+            }
+            else if (Application != null)
+            {
+                Presentation = Application.Presentations.Add(BoolToMsoTriState(false));
             }
 
             return true;
@@ -347,6 +423,32 @@ namespace PowerPointLabs.Models
             if (!focus)
             {
                 workingWindow.Activate();
+            }
+
+            return true;
+        }
+
+        public virtual bool OpenInBackground()
+        {
+            if (Opened)
+            {
+                return false;
+            }
+
+            // if the file doesn't exist, create and open the file then return
+            if (CreateInBackground())
+            {
+                return true;
+            }
+            try
+            {
+                Presentation = Globals.ThisAddIn.Application.Presentations.Open(FullName, BoolToMsoTriState(false),
+                                                                                BoolToMsoTriState(false),
+                                                                                BoolToMsoTriState(false));
+            }
+            catch (Exception)
+            {
+                return false;
             }
 
             return true;
