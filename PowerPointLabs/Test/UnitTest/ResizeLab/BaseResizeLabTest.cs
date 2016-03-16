@@ -8,7 +8,7 @@ using PowerPointLabs.Utils;
 namespace Test.UnitTest.ResizeLab
 {
     [TestClass]
-    public class ResizeLabBaseTest : BaseUnitTest
+    public class BaseResizeLabTest : BaseUnitTest
     {
         protected override string GetTestingSlideName()
         {
@@ -63,6 +63,7 @@ namespace Test.UnitTest.ResizeLab
                     if (!actualShape.Name.Equals(expectedShape.Name)) continue;
                     isFound = true;
                     SlideUtil.IsSameShape(expectedShape, actualShape);
+                    break;
                 }
 
                 if (!isFound)
